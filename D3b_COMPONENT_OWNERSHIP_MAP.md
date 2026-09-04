@@ -8,7 +8,7 @@ Define normative SWAP5 component boundaries so that responsibilities, physical s
 
 ## Result
 
-Status: `COMPLETE_PENDING_PUBLICATION_GATE`
+Status: `PUBLISHED_VERIFIED`
 
 D3b adds `docs/architecture/component-map.md` and makes it part of the Architecture navigation and live publication acceptance gate.
 
@@ -41,12 +41,14 @@ It also defines cross-cutting ownership domains for shared immutable parameters,
 
 ## Verification
 
-D3b becomes `PUBLISHED_VERIFIED` when the documentation workflow succeeds through:
+The D3b acceptance gate passed in GitHub Actions run `33884693511` for documentation commit `edc94b901505b19c535268af1e2bd0369f677a6e`.
 
-1. repository source checks;
+Verified successfully:
+
+1. repository documentation source checks;
 2. `mkdocs build --strict`;
 3. GitHub Pages deployment;
-4. live verification of `architecture/component-map/` including the expected ownership and transaction-boundary text.
+4. live verification of `architecture/component-map/` including expected ownership and transaction-boundary text.
 
 ## Follow-on
 
