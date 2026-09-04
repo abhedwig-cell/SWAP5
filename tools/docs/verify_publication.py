@@ -30,6 +30,7 @@ CHECKS = (
     PageCheck("architecture/implementation-status/", ("Implementation status map", "Current architecture-to-implementation matrix")),
     PageCheck("architecture/component-map/", ("Target component ownership map", "Component ownership matrix", "Transaction boundary")),
     PageCheck("architecture/legacy-migration/", ("Legacy-to-target migration map", "all 63 Fortran files", "Highest-risk cuts", "Per-file exit criteria")),
+    PageCheck("architecture/migration-slices/", ("Migration slices and qualification gates", "M3 - Transactional interval execution", "M4 - Soil-water solver boundary", "Gate evidence record")),
     PageCheck("architecture/legacy-migration-control/", ("Control, I/O and accounting", "swap.f90", "SPLIT_AND_RETIRE")),
     PageCheck("architecture/legacy-migration-hydraulic/", ("State, solver and hydraulic core", "headcalc.f90", "DECOMPOSE_CORE_SOLVER")),
     PageCheck("architecture/legacy-migration-processes/", ("Surface, drainage, management and optional flow physics", "macropore.f90", "DECOMPOSE_OPTIONAL_PHYSICS")),
