@@ -8,7 +8,7 @@ Map the complete supplied SWAP 4.3.1 Fortran source baseline onto the SWAP5 targ
 
 ## Result
 
-Status: `COMPLETE_PENDING_PUBLICATION_GATE`
+Status: `PUBLISHED_VERIFIED`
 
 D3c maps all 63 `.f90` files from the supplied SWAP 4.3.1 source archive exactly once. The documentation consists of a normative migration overview plus four inventory pages:
 
@@ -31,14 +31,22 @@ D3c maps all 63 `.f90` files from the supplied SWAP 4.3.1 source archive exactly
 
 D3c uses explicit actions including `RETAIN_*`, `SPLIT*`, `DECOMPOSE*`, `ADAPTER*`, `REPLACE_INTERFACE` and `*_RETIRE*`. A retire action applies to the legacy container/control path only after extracted behaviour is qualified; it never instructs deletion of physical behaviour before equivalence is proven.
 
-## Verification
+## Verification evidence
 
-D3c becomes `PUBLISHED_VERIFIED` only when the Documentation workflow passes:
+GitHub Actions run `33885392856` passed the complete publication chain for documentation commit `2ed2f6c16df4dd760e7bd03d63b06ddd293d6443`:
 
-1. repository source/link/navigation checks;
-2. `mkdocs build --strict`;
-3. GitHub Pages deployment;
-4. live verification of the D3c overview and all four inventory pages.
+1. repository source/link/navigation checks: passed;
+2. `mkdocs build --strict`: passed;
+3. GitHub Pages deployment: passed;
+4. live verification: passed for the D3c overview and all four inventory pages.
+
+The live verifier confirmed:
+
+- `/architecture/legacy-migration/`;
+- `/architecture/legacy-migration-control/`;
+- `/architecture/legacy-migration-hydraulic/`;
+- `/architecture/legacy-migration-processes/`;
+- `/architecture/legacy-migration-biophysics/`.
 
 ## Follow-on
 
