@@ -8,7 +8,7 @@ Create one evidence-based architecture-to-implementation register for the SWAP5 
 
 ## Result
 
-Status: `COMPLETE_PENDING_PUBLICATION_GATE`
+Status: `PUBLISHED_VERIFIED`
 
 D3a adds `docs/architecture/implementation-status.md` as the central implementation register and links it from the architecture navigation and overview.
 
@@ -33,11 +33,23 @@ Each capability row records:
 
 The publication verifier has also been extended so the D3a page is part of the live GitHub Pages acceptance gate.
 
-## Completion gate
+## Publication evidence
 
-D3a becomes `PUBLISHED_VERIFIED` when the Documentation workflow succeeds through:
+GitHub Actions run `33884248051` completed successfully for documentation commit `123b46b974e3552558450d0763e7922d9d651e9f`.
+
+The acceptance chain passed:
 
 1. repository documentation checks;
 2. `mkdocs build --strict`;
 3. GitHub Pages deployment;
-4. live verification of `architecture/implementation-status/`.
+4. live verification of the published site.
+
+The live verifier explicitly confirmed:
+
+- `https://abhedwig-cell.github.io/SWAP5/`
+- `https://abhedwig-cell.github.io/SWAP5/architecture/overview/`
+- `https://abhedwig-cell.github.io/SWAP5/architecture/implementation-status/`
+- `https://abhedwig-cell.github.io/SWAP5/architecture/invariants/`
+- `https://abhedwig-cell.github.io/SWAP5/development/publication/`
+
+D3a is therefore administratively closed as `PUBLISHED_VERIFIED`.
