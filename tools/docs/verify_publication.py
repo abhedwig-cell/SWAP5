@@ -29,6 +29,11 @@ CHECKS = (
     PageCheck("architecture/overview/", ("Target architecture overview", "SWAP kernel")),
     PageCheck("architecture/implementation-status/", ("Implementation status map", "Current architecture-to-implementation matrix")),
     PageCheck("architecture/component-map/", ("Target component ownership map", "Component ownership matrix", "Transaction boundary")),
+    PageCheck("architecture/legacy-migration/", ("Legacy-to-target migration map", "all 63 Fortran files", "Highest-risk cuts", "Per-file exit criteria")),
+    PageCheck("architecture/legacy-migration-control/", ("Control, I/O and accounting", "swap.f90", "SPLIT_AND_RETIRE")),
+    PageCheck("architecture/legacy-migration-hydraulic/", ("State, solver and hydraulic core", "headcalc.f90", "DECOMPOSE_CORE_SOLVER")),
+    PageCheck("architecture/legacy-migration-processes/", ("Surface, drainage, management and optional flow physics", "macropore.f90", "DECOMPOSE_OPTIONAL_PHYSICS")),
+    PageCheck("architecture/legacy-migration-biophysics/", ("Crop, uptake, stress, solute and WOFOST-soil", "oxygenstress.f90", "wofost_soil_declarations.f90")),
     PageCheck("architecture/invariants/", ("Core architecture invariants", "Mass conservation is absolute")),
     PageCheck("development/publication/", ("Online publication", "mkdocs build --strict")),
 )
