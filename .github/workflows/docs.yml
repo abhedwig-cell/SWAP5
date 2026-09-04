@@ -48,12 +48,12 @@ jobs:
       - name: Run repository documentation checks
         run: python tools/docs/check_docs.py
 
+      - name: Build documentation strictly
+        run: mkdocs build --strict --site-dir site
+
       - name: Configure GitHub Pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v6
-
-      - name: Build documentation strictly
-        run: mkdocs build --strict --site-dir site
 
       - name: Upload GitHub Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
