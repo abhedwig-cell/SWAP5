@@ -27,6 +27,7 @@ class PageCheck:
 CHECKS = (
     PageCheck("", ("SWAP technical documentation",)),
     PageCheck("architecture/overview/", ("Target architecture overview", "SWAP kernel")),
+    PageCheck("architecture/implementation-status/", ("Implementation status map", "Current architecture-to-implementation matrix")),
     PageCheck("architecture/invariants/", ("Core architecture invariants", "Mass conservation is absolute")),
     PageCheck("development/publication/", ("Online publication", "mkdocs build --strict")),
 )
