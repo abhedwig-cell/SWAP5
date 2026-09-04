@@ -8,6 +8,12 @@ nav:
   - Overview: architecture/overview.md
   - Implementation status: architecture/implementation-status.md
   - Component ownership map: architecture/component-map.md
+  - Legacy migration:
+    - Migration map: architecture/legacy-migration.md
+    - Control, I/O and accounting: architecture/legacy-migration-control.md
+    - State, solver and hydraulics: architecture/legacy-migration-hydraulic.md
+    - Process physics: architecture/legacy-migration-processes.md
+    - Crop, solute and WOFOST-soil: architecture/legacy-migration-biophysics.md
   - Core invariants: architecture/invariants.md
   - Data ownership: architecture/data-ownership.md
 - Architecture decisions:
