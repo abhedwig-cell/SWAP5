@@ -8,6 +8,8 @@ For the evidence-based migration state of each major capability, see the [implem
 
 For normative ownership boundaries between API, runtime, coupler, kernel, process physics and the soil-water solver, see the [target component ownership map](component-map.md).
 
+For the file-by-file route from the 63-file SWAP 4.3.1 source baseline into those target responsibilities, see the [legacy-to-target migration map](legacy-migration.md).
+
 ## System boundary
 
 SWAP is treated as a computational component that advances one or more soil-plant-atmosphere columns over a generic time interval `[t0, t1]`. The kernel receives typed data and returns typed results. It does not read or write model files.
