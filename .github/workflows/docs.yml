@@ -73,7 +73,21 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy documentation
         id: deployment
         uses: actions/deploy-pages@v5
+
+  verify:
+    name: Verify published site
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Verify live documentation
+        run: python tools/docs/verify_publication.py "${{ needs.deploy.outputs.page_url }}"
