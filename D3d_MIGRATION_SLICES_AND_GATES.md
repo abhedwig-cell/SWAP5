@@ -8,7 +8,7 @@ Convert the D3c legacy-to-target map into bounded migration slices with explicit
 
 ## Result
 
-Status: `COMPLETE_PENDING_PUBLICATION_GATE`
+Status: `PUBLISHED_VERIFIED`
 
 D3d adds `docs/architecture/migration-slices.md` and makes it part of the Architecture navigation and live publication acceptance gate.
 
@@ -44,14 +44,18 @@ The current project work maps as follows without changing the broader implementa
 - existing API/coupler testbanks -> evidence input for **M6**, not yet an M6 exit;
 - qualified solver/audit baselines -> evidence input for **M0/M4**, not automatic capability qualification.
 
-## Publication gate
+## Publication verification
 
-D3d becomes `PUBLISHED_VERIFIED` only when the Documentation workflow passes:
+The complete D3d documentation chain passed GitHub Actions run `33885909020` on documentation commit `91c0de44f9f034bd71f3b1947f4f9e85d917c967`:
 
-1. repository source/link/navigation checks;
-2. `mkdocs build --strict`;
-3. GitHub Pages deployment;
-4. live verification of `architecture/migration-slices/` including M3, M4 and the gate-evidence record.
+1. repository source/link/navigation checks: passed;
+2. `mkdocs build --strict`: passed;
+3. GitHub Pages deployment: passed;
+4. live verification of `architecture/migration-slices/`: passed, including the M3, M4 and gate-evidence text.
+
+Published page:
+
+`https://abhedwig-cell.github.io/SWAP5/architecture/migration-slices/`
 
 ## Follow-on
 
