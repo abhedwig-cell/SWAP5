@@ -1,0 +1,48 @@
+site_name: SWAP Documentation
+site_description: Technical documentation for SWAP and the target modular SWAP architecture
+site_author: SWAP development team
+docs_dir: docs
+nav:
+- Home: index.md
+- Architecture:
+  - Overview: architecture/overview.md
+  - Core invariants: architecture/invariants.md
+  - Data ownership: architecture/data-ownership.md
+- Architecture decisions:
+  - Decision log: decisions/index.md
+  - ADR-0001 One kernel, I/O outside: decisions/ADR-0001-one-kernel-io-outside.md
+  - ADR-0002 Transactional time stepping: decisions/ADR-0002-transactional-time-stepping.md
+  - ADR-0003 Worker-owned scratch: decisions/ADR-0003-worker-owned-scratch.md
+  - ADR-0004 MultiSWAP execution templates: decisions/ADR-0004-multiswap-execution-templates.md
+- Verification:
+  - Verification principles: verification/principles.md
+- Legacy:
+  - SWAP 4.3.1 baseline: legacy/swap-4.3.1-baseline.md
+- Development:
+  - Documentation workflow: development/documentation.md
+  - Online publication: development/publication.md
+theme:
+  name: material
+  language: en
+  features:
+  - navigation.sections
+  - navigation.top
+  - content.code.copy
+  - search.suggest
+  - search.highlight
+plugins:
+- search
+markdown_extensions:
+- admonition
+- attr_list
+- def_list
+- footnotes
+- md_in_html
+- tables
+- toc:
+    permalink: true
+- pymdownx.details
+- pymdownx.highlight
+- pymdownx.inlinehilite
+- pymdownx.superfences
+strict: true
