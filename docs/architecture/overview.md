@@ -4,6 +4,8 @@
 
 This page describes the target modular SWAP architecture. It is not a description of the current SWAP 4.3.1 module graph.
 
+For the evidence-based migration state of each major capability, see the [implementation status map](implementation-status.md). That map is the authoritative place for distinguishing `TARGET`, `PARTIAL`, `IN_PROGRESS` and qualified implementation evidence.
+
 ## System boundary
 
 SWAP is treated as a computational component that advances one or more soil-plant-atmosphere columns over a generic time interval `[t0, t1]`. The kernel receives typed data and returns typed results. It does not read or write model files.
