@@ -8,11 +8,16 @@ Evaluate the active transactional interval refactoring against the M3 exit gate 
 
 ## Result
 
-Status: `COMPLETE_PENDING_PUBLICATION_GATE`
+Status: `PUBLISHED_VERIFIED`
 
 D3e adds `docs/architecture/m3-gate-evidence.md` as the evidence dossier for migration slice M3.
 
 The assessment deliberately does not promote the M3 implementation-status row. The current verdict is `IN_PROGRESS_NOT_READY_TO_EXIT` / `NO_EXIT_YET`.
+
+Verified documentation commit: `62bfc914bd49ec44207df8e68dbb95c7def6e3dd`  
+GitHub Actions run: `33886319217`
+
+The run passed repository checks, `mkdocs build --strict`, GitHub Pages deployment and live verification of the published M3 evidence page.
 
 ## Evidence already recognised
 
@@ -42,15 +47,6 @@ C1 and C2 are the immediate priority because rollback and retry mass-balance qua
 
 The dossier defines M3-T01 through M3-T10 covering normal commit, forced rejection, retry flux accounting, deterministic rerun, warm-start independence, non-midnight/non-day intervals, retry diagnostics, physics-policy invariance and retry water balance.
 
-## Publication gate
-
-D3e becomes `PUBLISHED_VERIFIED` only when the Documentation workflow passes:
-
-1. repository source/link/navigation checks;
-2. `mkdocs build --strict`;
-3. GitHub Pages deployment;
-4. live verification of `architecture/m3-gate-evidence/`, including the exit matrix, C1/C2 and `NO_EXIT_YET` verdict.
-
 ## Follow-on
 
-After publication, the next implementation step should be M3-C1 followed immediately by M3-C2. D3e should be updated only when new code/test evidence changes a gate status.
+The next implementation step is M3-C1 followed immediately by M3-C2. D3e should be updated only when new code/test evidence changes a gate status.
