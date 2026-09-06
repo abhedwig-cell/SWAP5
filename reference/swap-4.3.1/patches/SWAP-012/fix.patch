@@ -1,0 +1,90 @@
+--- SWAP/MOD_MvG_functions.f90
++++ SWAP/MOD_MvG_functions.f90
+@@ -791,6 +791,7 @@
+       use MOD_arrays, only: macp, mcof
+       use variables, only: indeks
+       use MOD_grid,  only: layer
++      use WC_K_models_04_11, only: functionvalue_04_11
+       implicit none
+ 
+ ! --- global
+@@ -800,9 +801,10 @@
+       real(8), intent(in)  :: cofgen_in(mcof,macp)
+ 
+ ! --- local
+-      integer              :: imod
++      integer              :: imod, iter
+       real(8)              :: s_enpr,relsat,help,dummy,prh,locwcon
+       real(8)              :: thetar, thetas, alfamg, npar, mpar, h_enpr
++      real(8)              :: hlow,hhigh,hmid,wclow,wcmid,omega1,alpha2,npar2,mpar2
+ ! ----------------------------------------------------------------------
+ 
+       ! since we use pars from cofgen_in, we cannot use global pointers here
+@@ -826,7 +828,66 @@
+             relsat = (wcon-thetar)/(thetas-thetar)
+             prhead = dlog(relsat)/alfamg
+             
+-         else  ! use default MvG
++         else if (imod == 3 .OR. imod >= 5) then
++            ! These models do not share the analytical inverse of default MvG.
++            ! Invert their actual retention relation by robust bisection.
++            if (thetas-wcon < 1.0d-6) then
++               if (node == 1) then
++                  prhead = disnod
++               else
++                  prhead = h_in(node-1) + disnod
++               end if
++               prhead = dmax1(prhead,0.0d0)
++            else
++               hhigh = 0.0d0
++               if ((imod == 5 .OR. imod == 7 .OR. (imod >= 8 .AND. imod <= 11)) .AND. cofgen_in(18,node) > 0.0d0) then
++                  hlow = -cofgen_in(18,node)
++               else
++                  hlow = -1.0d12
++               end if
++
++               if (imod == 3) then
++                  omega1 = cofgen_in(16,node)
++                  alpha2 = cofgen_in(13,node)
++                  npar2  = cofgen_in(14,node)
++                  mpar2  = cofgen_in(15,node)
++                  wclow = thetar + (thetas-thetar) * &
++                          (omega1/(1.0d0+dabs(alfamg*hlow)**npar)**mpar + &
++                          (1.0d0-omega1)/(1.0d0+dabs(alpha2*hlow)**npar2)**mpar2)
++               else if (imod >= 5 .AND. imod <= 11) then
++                  wclow = functionvalue_04_11(1,node,iHWCKmodel,cofgen_in,hlow)
++               else
++                  iLayer = layer(node)
++                  wclow = dble(WCRIA(hlow*1.0_dp))
++               end if
++
++               if (wcon <= wclow + 1.0d-10) then
++                  prhead = hlow
++               else
++                  do iter = 1, 100
++                     hmid = 0.5d0*(hlow+hhigh)
++                     if (imod == 3) then
++                        wcmid = thetar + (thetas-thetar) * &
++                                (omega1/(1.0d0+dabs(alfamg*hmid)**npar)**mpar + &
++                                (1.0d0-omega1)/(1.0d0+dabs(alpha2*hmid)**npar2)**mpar2)
++                     else if (imod >= 5 .AND. imod <= 11) then
++                        wcmid = functionvalue_04_11(1,node,iHWCKmodel,cofgen_in,hmid)
++                     else
++                        iLayer = layer(node)
++                        wcmid = dble(WCRIA(hmid*1.0_dp))
++                     end if
++                     if (wcmid > wcon) then
++                        hhigh = hmid
++                     else
++                        hlow = hmid
++                     end if
++                     if (dabs(hhigh-hlow) <= dmax1(1.0d-8,1.0d-10*dabs(hmid))) exit
++                  end do
++                  prhead = 0.5d0*(hlow+hhigh)
++               end if
++            end if
++
++         else  ! use analytical default MvG inverse (models 1 and 4)
+ 
+             if (thetas-wcon < 1.0d-6) then
+ 

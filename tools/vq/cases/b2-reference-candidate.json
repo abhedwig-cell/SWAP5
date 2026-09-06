@@ -2,15 +2,15 @@
   "schema_version": 1,
   "workstream": "VQ",
   "slice": "VQ-1d",
-  "observation_baseline": "bfea91d4a26f7165daee8a9df7c969731310c47f",
+  "observation_baseline": "402f278f94eb15261289bf6c2a259e7840e9c155",
   "b1_oracle": {
-    "snapshot": "B1.8",
+    "snapshot": "B1.9",
     "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
-    "reconstructed_manifest_sha256": "e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae"
+    "reconstructed_manifest_sha256": "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657"
   },
   "b2": {
     "status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
-    "commit": "bfea91d4a26f7165daee8a9df7c969731310c47f",
+    "commit": "402f278f94eb15261289bf6c2a259e7840e9c155",
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
@@ -30,7 +30,7 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.8 admission changes legacy corrected-reference input-validation metadata/tooling only and does not create a B2 production seam."
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.9 admission changes legacy corrected-reference inverse behaviour/tooling only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",

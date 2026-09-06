@@ -12,59 +12,55 @@ python tools/vq/b0_source_runner.py \
   --case 2.grassgrowth
 ```
 
-The GNU runner is capability-limited verification infrastructure. It is not declared globally equivalent to the packaged Intel executable. Legacy BAL/BLC normalization is available through `balance.py`, but its `0.01 cm` output precision is not sufficient for the future hard invariant-13 mass gate.
+The GNU runner is capability-limited verification infrastructure and is not declared globally equivalent to the packaged Intel executable.
 
-## Qualified predecessor snapshots
+## Current B1.9 corrected reference
 
-`B1.5p1`, `B1.6` and `B1.7` remain immutable qualified historical predecessors. Their exact identities can be checked with the corresponding pins under `tools/vq/cases/` using `b1_snapshot_identity.py`.
-
-## Current B1.8 corrected reference
-
-`B1.8` is the current corrected-reference oracle:
+`B1.9` is the current corrected-reference oracle:
 
 ```text
-B1.8 = B1.7 + SWAP-013
+B1.9 = B1.8 + SWAP-012
 ```
 
-SWAP-013 targets `readswap.f90`, which is unchanged by B1.1-B1.7, so its ordered B1.7 preimage is identical to canonical B0. The correction adds only the PDI model 8-11 `0 < HA < H0` validation guard after the existing magnitude conversion.
+SWAP-012 targets `MOD_MvG_functions.f90`, unchanged by B1.1-B1.8, so its ordered B1.8 preimage equals canonical B0. The exact stored patch is isolated from the historical SWAP-011 `dhconduc` changes.
 
-Repository admission bookkeeping is checked by:
+Admission bookkeeping:
 
 ```bash
-python tools/vq/b1_8_admission_gate.py
+python tools/vq/b1_9_admission_gate.py
 ```
 
-The exact source-bound guard gate, including a strict GNU Fortran 9-case harness, is:
+The stored actual-source roundtrip evidence is bound to exact patch/preimage/corrected-target identities by:
 
 ```bash
-python reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py
+python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
 ```
 
-Exact source reconstruction from canonical B0 is available through:
+Exact source reconstruction from canonical B0:
 
 ```bash
-python tools/vq/b1_8_reconstruct.py \
+python tools/vq/b1_9_reconstruct.py \
   --archive /path/to/SWAP_4.3.1.zip \
-  --output-dir /tmp/B1.8/SWAP
+  --output-dir /tmp/B1.9/SWAP
 ```
 
-Expected final source identity:
+Expected source identity:
 
 ```text
 members          63
-source bytes      1,860,493
-manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
+source bytes      1,863,300
+manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
 ```
 
-SWAP-013 changes only invalid-input acceptance/rejection. Valid PDI constitutive equations, non-PDI models, solver policy, time integration and water-balance equations are unchanged.
+SWAP-012 qualification is based on the broader D2 22,240-point inverse study plus a separately executed 600-point actual-source strict GNU Fortran gate. B0 fails 513/600 isolated points at `1e-6` decade; the corrected source fails 0/600 with maximum error `1.17e-10` decade. Model 4 remains the analytical control.
 
 ## Expected differences
 
-`docs/verification/expected-differences.json` defines the admitted B0 -> B1.8 difference envelopes. Any unregistered difference remains a qualification failure. B1 is a corrected legacy reference, not a license for approximate equivalence.
+`docs/verification/expected-differences.json` defines the admitted B0 -> B1.9 difference envelopes. Any unregistered difference remains a qualification failure.
 
 ## B2 reference-entrypoint admission
 
-Before a numerical B1.8 -> B2 comparison can run, the candidate checkout must pass:
+Before a numerical B1.9 -> B2 comparison can run, the candidate checkout must pass:
 
 ```bash
 python tools/vq/b2_reference_gate.py \
@@ -72,20 +68,13 @@ python tools/vq/b2_reference_gate.py \
   --candidate tools/vq/cases/b2-reference-candidate.json
 ```
 
-The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
+The fail-closed gate still requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
-The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.8 admission changes legacy reference/input-validation state only; it does not create the missing production B2 seam.
+The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.9 changes corrected legacy inverse behaviour only; it does not create the missing production B2 seam.
 
 ## Unrounded mass accounting
 
-The future B2 normalization contract is:
-
-```text
-docs/verification/mass-accounting-contract.md
-tools/vq/contracts/mass-accounting-record.schema.json
-```
-
-It is a verification interchange contract, not a required production object layout. Hard mass conservation may not be weakened by execution policy.
+The future B2 normalization contract remains under `docs/verification/mass-accounting-contract.md` and `tools/vq/contracts/mass-accounting-record.schema.json`. Hard mass conservation may not be weakened by execution policy.
 
 ## Unit tests
 

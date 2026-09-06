@@ -2,9 +2,7 @@
 
 ## Purpose
 
-This ledger is the authoritative map of intentional numerical or behavioural differences between the immutable B0 audit baseline and the corrected B1 reference line.
-
-A SWAP 5 difference from B0 is acceptable only when it is either explicitly listed here as an admitted B1 correction or separately qualified as an intentional SWAP 5 model/architecture change. Unexplained differences are verification failures until classified.
+This ledger is the authoritative map of intentional numerical or behavioural differences between the immutable B0 audit baseline and the corrected B1 reference line. An unexplained B0/B1 difference is a verification failure until classified.
 
 ## Admission states
 
@@ -15,98 +13,72 @@ A SWAP 5 difference from B0 is acceptable only when it is either explicitly list
 | `FIX_TESTED` | candidate legacy repair has passed its defined qualification |
 | `PATCH_PAYLOAD_PENDING` | fix is qualified, but the exact qualified patch artifact has not yet passed B1 provenance checks |
 | `ADMITTED_B1` | qualified correction is included in the current corrected-reference patch set |
-| `PROVENANCE_REPAIR` | identity metadata repaired without an intended numerical/model change |
+| `PROVENANCE_REPAIR` | identity metadata repaired without intended numerical/model change |
 | `MODEL_CHANGE` | intentional model development; never silently folded into B1 |
 | `DOC_ONLY` | documentation correction without B1 numerical change |
 
-`FIX_TESTED` does not automatically mean `ADMITTED_B1`. Admission requires exact patch provenance, canonical B0 preimage verification, ordered preimage verification when patches share a target, qualification evidence and inclusion in the ordered B1 manifest.
+Admission requires exact patch provenance, canonical B0 preimage verification, ordered preimage verification when patches share a target, qualification evidence and inclusion in the ordered B1 manifest.
 
-## Admitted B0 -> B1 numerical/behavioural differences
+## Admitted B0 -> B1 differences
 
 | First snapshot | Audit ID | Classification | B0 behaviour | B1 correction | Qualification evidence |
 | --- | --- | --- | --- | --- | --- |
-| `B1.1` | `SWAP-001` | `ADMITTED_B1` code bug | whole fixed-length `VlMpDm1Cp` assigned from active slice `1:numnod`, non-conformable when extents differ | clear destination and copy only the active conformable slice | strict B0 5000/112 mismatch; VQ-1c3 full macropore smoke rejects B0 and completes corrected reference |
-| `B1.2` | `SWAP-005` | `ADMITTED_B1` bounds/portability bug | compound `.AND.` may evaluate `cropstart(i+1)` before its bound guard | perform the `i < ifnd` guard before accessing `i+1` | source-bound signaling-NaN reproducer: B0 SIGFPE, corrected reference normal |
-| `B1.3` | `SWAP-006` | `ADMITTED_B1` initialization/portability bug | meteo crop scan relies on an unused zero-initialized `cropstart` sentinel | iterate explicitly over loaded records `1:ifnd` | source-bound signaling-NaN reproducer: B0 enters unused record, corrected reference does not |
-| `B1.4` | `SWAP-007` | `ADMITTED_B1` numerical robustness bug | tiny nonzero `fi_a` can overflow `fi/fi_a` and raise `SIGFPE` | only divide when the quotient is representable; otherwise use the existing large-`lnew` restart route | strict full grass case crashes B0 and completes corrected reference; ordinary output unchanged |
-| `B1.5` | `SWAP-008` | `ADMITTED_B1` Fortran correctness/portability bug | fallback `bandec`/`banbks` read incoming arrays declared `INTENT(OUT)` | declare consumed-and-overwritten arrays as `INTENT(INOUT)`; solver arithmetic unchanged | actual band-solver harness gives identical zero-residual solution while corrected reference restores a defined dummy contract |
-| `B1.6` | `SWAP-009` | `ADMITTED_B1` PDI hydraulic code bug | four PDI conductivity functions pass `abs(h)` into a Kelvin vapor-conductivity relation that expects signed negative unsaturated pressure head | pass signed `h` at the four affected PDI callers | strict PDI function gate, full PDI production path and hard unrounded legacy mass gate PASS |
-| `B1.7` | `SWAP-010` | `ADMITTED_B1` model-7 hydraulic algebra bug | `C_MvG_2_s` is not the derivative of the implemented scaled-bimodal retention curve | use the same weighted common denominator as the implemented retention relation | source-bound derivative gate 784/1000 -> 0/1000 failures; sensitive full model-7 run restores the fixed `1e-6 cm` legacy mass criterion |
-| `B1.8` | `SWAP-013` | `ADMITTED_B1` PDI input-domain bug | scalar ranges allow PDI `HA=0` and `HA>=H0` after magnitude conversion, although downstream formulas use `log10(HA)` and a `log10(HA)-log10(H0)` denominator | reject PDI models 8–11 unless `0 < HA < H0` after magnitude conversion | historical patch compile/hydraulic evidence PASS; source-bound compiled 9-case guard gate PASS; exact patch/preimage/corrected-target identities PASS |
+| `B1.1` | `SWAP-001` | code bug | non-conformable whole-array macropore assignment possible | clear destination and copy active conformable slice | strict mismatch reproducer + corrected smoke run |
+| `B1.2` | `SWAP-005` | bounds/portability bug | `.AND.` may evaluate `cropstart(i+1)` before bound guard | guard `i < ifnd` before `i+1` access | source-bound signaling-NaN gate |
+| `B1.3` | `SWAP-006` | initialization/portability bug | meteo scan relies on unused zero-initialized sentinel | iterate exactly over `1:ifnd` | source-bound signaling-NaN gate |
+| `B1.4` | `SWAP-007` | numerical robustness bug | tiny nonzero derivative can overflow Newton quotient | only divide if quotient representable; otherwise existing restart path | strict FPE case + unchanged ordinary control |
+| `B1.5` | `SWAP-008` | Fortran correctness bug | consumed arrays declared `INTENT(OUT)` | use `INTENT(INOUT)` without arithmetic change | band-solver harness |
+| `B1.6` | `SWAP-009` | PDI hydraulic code bug | `abs(h)` passed to signed Kelvin relation | pass signed `h` | strict PDI function gate + full PDI run + mass gate |
+| `B1.7` | `SWAP-010` | model-7 algebra bug | capacity not derivative of implemented retention curve | use consistent weighted common denominator | derivative gate + sensitive full model-7 run |
+| `B1.8` | `SWAP-013` | PDI input-domain bug | singular `HA=0` / `HA>=H0` accepted | require `0 < HA < H0` for PDI models 8-11 | 9-case source-bound guard gate |
+| `B1.9` | `SWAP-012` | hydraulic inverse algorithm bug | models 3 and 5-12 fall through to unrelated default-MvG `prhead` inverse | numerically invert the selected retention relation; retain model-4 analytical control | D2 22,240-point gate + isolated actual-source 600-point gate |
 
-Machine-readable expected-difference scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope; it does not make arbitrary B0/B1 divergence acceptable.
+Machine-readable scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope.
 
-## Provenance-only difference: B1.5 -> B1.5p1
+## Provenance repair: B1.5 -> B1.5p1
 
-`B1.5p1` is a `PROVENANCE_REPAIR`. It changes no intended corrected source behaviour relative to B1.5. It replaces invalid snapshot identity metadata with the exact stored patch hashes and canonical B0 target-member hashes discovered by the independent VQ-1c gate. Historical B1.2-B1.5 files remain unchanged as audit evidence.
+B1.5p1 repaired incorrect historical patch/preimage identity metadata discovered by VQ-1c without changing the intended five corrected source results. Historical B1.2-B1.5 remain audit records and are not exact executable oracles.
 
-The integrated VQ qualification establishes:
+## B1.5p1 -> B1.8 summary
 
-```text
-VQ-1c1 exact identity/provenance              PASS
-VQ-1c2 deterministic reconstruction           PASS
-VQ-1c2 broad B0 -> B1 control edges           PASS
-VQ-1c3 all five predecessor correction gates  PASS
-```
+B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference for singular PDI `HA/H0` combinations.
 
-## B1.5p1 -> B1.6: SWAP-009 admission
+## B1.8 -> B1.9: SWAP-012 admission
 
-B1.6 added the PDI Kelvin-sign correction with exact source provenance, direct constitutive verification, a representative full PDI run and an unrounded legacy mass gate. Its deterministic source manifest is:
+SWAP-012 targets `SWAP/MOD_MvG_functions.f90`, unchanged by all previously admitted B1 patches, so the canonical B0 and ordered B1.8 preimages are identical:
 
 ```text
-aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+canonical B0 / ordered B1.8 preimage
+a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390
+
+stored SWAP-012 patch
+263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131
+
+corrected target
+4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
 ```
 
-## B1.6 -> B1.7: SWAP-010 admission
+The historical broad patch also contained SWAP-011 work. B1.9 explicitly excludes all `dhconduc`/Jacobian derivative changes and admits only the `prhead` inverse correction.
 
-B1.7 added the model-7 capacity derivative correction. Because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`, the ordered B1.6 preimage is explicitly pinned. The direct derivative gate gives 784/1000 inconsistent B1.6 points versus 0/1000 after correction. In a sensitive full model-7 run, B1.6 reaches an unrounded diagnostic residual of about `1.58e-6 cm` and creates `result.dwb`; the corrected candidate reaches about `1.00e-8 cm` with no `.dwb`, under the unchanged predeclared `1e-6 cm` criterion.
+D2 tested 22,240 valid affected-model round trips: the legacy inverse produced 17,176 errors above `0.01` decade, the corrected inverse produced 0 failures, maximum corrected error `2.09e-8` decade. A separate strict actual-source test of 60 pressure heads for each model 3-12 gave 513/600 B0 failures and 0/600 corrected failures at `1e-6` decade, with maximum corrected error `1.17e-10` decade. Model 4 remained the unaffected analytical control.
 
-Deterministic B1.7 source-tree identity:
-
-```text
-members          63
-source bytes      1,860,091
-manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
-```
-
-## B1.7 -> B1.8: SWAP-013 admission
-
-SWAP-013 changes input validation only. `readswap.f90` was unchanged by all earlier admitted B1 patches, so the canonical B0 and ordered B1.7 preimage identities are equal and explicitly checked:
-
-```text
-canonical B0 / ordered B1.7 readswap.f90
-3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2
-
-SWAP-013 stored patch SHA-256
-066c1c1aba8f32cb3a9aab3d17f1900b0ba8a28f43173d80461c91fb1a8f25f3
-
-B1.8 corrected readswap.f90
-e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c
-```
-
-The guard executes after the existing negative-input-to-positive-magnitude conversion and before APAR is read. It is limited to hydraulic models 8–11 and enforces `0 < HA < H0` on those magnitudes. A fresh strict GNU Fortran predicate gate passes 9/9 cases: four valid PDI inputs accepted, `HA=0`, `HA=H0` and `HA>H0` rejected, and model 7/12 controls unaffected.
-
-This is intentionally not a numerical-trajectory difference for valid runs. The accepted constitutive functions, time integration, solver policy and water-balance equations remain byte-identical to B1.7. The only admitted behaviour change is earlier deterministic rejection of mathematically singular PDI input combinations. A rejected invalid configuration has no accepted physical interval for which a mass-balance concession could be made.
-
-Deterministic B1.8 source-tree identity:
+Deterministic B1.9 identity:
 
 ```text
 members          63
-source bytes      1,860,493
-manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
+source bytes      1,863,300
+manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
 ```
+
+SWAP-012 changes no retention/conductivity formulation, Richards residual/Jacobian, solver policy or mass tolerance. This is an implementation-correctness repair, not model development.
 
 ## Audit findings waiting for B1 admission review
 
-| Audit ID | State | Finding | Qualified correction status | Remaining admission gate |
+| Audit ID | State | Finding | Qualified correction status | Remaining gate |
 | --- | --- | --- | --- | --- |
-| `SWAP-011` | `PATCH_PAYLOAD_PENDING` | `dhconduc` uses a standard MvG conductivity derivative for hydraulic models whose implemented `K(h)` differs, producing an inconsistent implicit Richards Jacobian | E5/E6/E7 correction is `FIX_TESTED` / `READY_PATCH_UPSTREAM` | recover exact final E7 `fix.patch`, verify B0 preimages and patch bytes, then update B1 manifest |
-
-Presence under `patches/` is not sufficient for admission. Only the ordered patch entries in the current manifest define B1 behaviour.
+| `SWAP-011` | `PATCH_PAYLOAD_PENDING` | `dhconduc` derivative inconsistent with implemented `K(h)` for several models | E5/E6/E7 `FIX_TESTED` / `READY_PATCH_UPSTREAM` | recover exact final E7 patch and verify exact provenance |
 
 ## Rule for SWAP 5 verification
-
-For each SWAP 5 test result:
 
 ```text
 if current B1 exact identity/qualification gate != PASS:

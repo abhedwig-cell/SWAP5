@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.8",
+      "candidate": "B1.9",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -98,6 +98,17 @@
           "expected_direction_or_envelope": "For PDI models 8-11, B1.8 rejects inputs after magnitude conversion unless 0 < HA < H0. Previously accepted singular combinations such as HA=0, HA=H0 or HA>H0 may therefore terminate during input validation instead of reaching PDI constitutive evaluation.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-013/qualification.md",
           "known_unchanged_scope": ["all accepted PDI constitutive equations", "valid PDI inputs satisfying 0 < HA < H0", "non-PDI models", "solver policy", "time integration", "water-balance equations and tolerances"]
+        },
+        {
+          "difference_id": "SWAP-012",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
+          "first_admitted_tag_or_commit": "B1.9",
+          "affected_outputs": ["prhead inverse values for hydraulic models 3 and 5-12", "pressure-head reconstruction from water content on affected inverse-call paths"],
+          "expected_direction_or_envelope": "For models 3 and 5-12, B1.9 numerically inverts the actual selected retention relation rather than applying the unrelated default-MvG analytical inverse. Differences are expected only on paths that call prhead for affected models and must be consistent with the selected retention curve.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
+          "known_unchanged_scope": ["hydraulic model 4 analytical inverse", "retention functions", "conductivity functions", "Richards residual and Jacobian", "solver policy", "water-balance equations and tolerances", "SWAP-011 dhconduc behaviour"]
         }
       ]
     },
