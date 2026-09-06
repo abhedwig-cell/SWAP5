@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1b-hardening",
+  "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "provisional_runner": {
+    "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+    "executable_sha256": "5eca528a3635f82713abaa360701010868834397dcdff65d57c4385bb62784d5",
+    "qualification_scope": "provisional source-build regression only",
+    "known_limitations": [
+      "not yet cross-qualified against the packaged Intel executable",
+      "GNU build does not initialize SWAP_csv_output vars_v vector metadata correctly in the tested environment",
+      "vector CSV requests therefore cannot be used as evidence from this build"
+    ]
+  },
+  "cases": [
+    {
+      "id": "B0-OFFICIAL-01",
+      "case": "1.hupselbrook",
+      "official_input_status": "REJECTED_BY_PROVISIONAL_RUNNER",
+      "reason": "vector CSV metadata portability limitation in GNU build; S_CONC lookup fails because vars_v names are not initialized",
+      "qualified_variant": {
+        "changes": ["SWCSV=1 -> 0"],
+        "classification": "runner_portability_output_workaround",
+        "status": "PASS",
+        "published_2002_balance": "PASS at 0.01 cm report precision",
+        "normalized_bal_sha256": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+        "normalized_blc_sha256": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c"
+      }
+    },
+    {
+      "id": "B0-OFFICIAL-02",
+      "case": "2.grassgrowth",
+      "official_swap_swp_sha256": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "official_input_status": "PASS",
+      "interval": "1980-01-01/1984-12-31",
+      "repeatability": {
+        "status": "PASS",
+        "normalized_result_output_csv_sha256": "0a7025b72abbb524760107ca1f0309d8e241a7aa2830bb983afe9245730dec7e"
+      },
+      "balance_output_variant": {
+        "changes": ["SWBAL=0 -> 1", "SWBLC=0 -> 1"],
+        "swap_swp_sha256": "03346e0002e06ee69aadfca4a5c9ce7c0894cf02bdd6a95b5e34f8e3e2342131",
+        "status": "PASS",
+        "normalized_bal_sha256": "7fae2e0c1652aa8db55c2a981bfd21c9917509a9e03345d252d01064da90d1cf",
+        "normalized_blc_sha256": "58b43ddb970a4581a5501382dad58ef25992e8d094a873be7391f9c33974b422",
+        "printed_balance_deviation": "zero at 0.01 cm report resolution"
+      }
+    },
+    {
+      "id": "B0-OFFICIAL-03",
+      "case": "3.macroporeflow",
+      "official_swap_swp_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "official_interval": "1998-01-01/1999-04-26",
+      "official_input_status": "NOT_YET_QUALIFIED_BOUNDED_RUNTIME",
+      "reason": "full official run did not complete within the current bounded VQ execution window; no model failure is inferred",
+      "bounded_smoke_variant": {
+        "changes": ["TEND=1999-04-26 -> 1998-01-31"],
+        "swap_swp_sha256": "46f78ccf7a37d9259051018f9997d6dd7c1e35acd125c7723c4595a36a8a29c8",
+        "status": "PASS",
+        "repeatability": "PASS",
+        "normalized_result_output_csv_sha256": "b09e200702e1c90540816bbf2ce9e11fb1f66b2b946fb7b8e750cf98afb092e6"
+      }
+    },
+    {
+      "id": "B0-OFFICIAL-04",
+      "case": "4.salinitystress",
+      "official_case_status": "PROVISIONAL_PREPROCESS_RECONSTRUCTION",
+      "reason": "official case requires bundled R preprocessing; Rscript is unavailable in the current VQ environment",
+      "preprocess_evidence": "run matrix and irrigation records were read from the bundled datamodel.xlsx and table formatting was reconstructed from the bundled SWAPtools source; generated input has not yet been byte-cross-checked against an official R-generated run directory",
+      "vector_csv_status": "REJECTED_BY_PROVISIONAL_RUNNER",
+      "vector_csv_reason": "same GNU vars_v metadata initialization limitation as Hupselbrook",
+      "balance_variants": [
+        {
+          "scenario": "04dS",
+          "changes": ["SWCSV=1 -> 0", "SWBAL=0 -> 1", "SWBLC=0 -> 1"],
+          "swap_swp_sha256": "834005d20606118be59db85f78c19b8e3bd94ecb27b6c0df47e5a24059c08fc5",
+          "status": "PASS",
+          "repeatability": "PASS",
+          "normalized_bal_sha256": "372f38a23061d0726daeb94cefd123b83c93957780b740f65ac8947c14fce99d",
+          "normalized_blc_sha256": "7bb9cffc0214eb50df255db67d0c4b04592dfd8b4b4a4fa2e1743c941df07428"
+        },
+        {
+          "scenario": "08dS",
+          "changes": ["SWCSV=1 -> 0", "SWBAL=0 -> 1", "SWBLC=0 -> 1"],
+          "swap_swp_sha256": "0d9ad639a1b731665ecdd32ec74307e6cb4096545de1bf92e3b31e6dabbed18e",
+          "status": "PASS",
+          "repeatability": "PASS",
+          "normalized_bal_sha256": "17bc8687d287b6cfc3c5c9b8e9f1e7aad9dd266cfe9399a9c6e3e790f21a69aa",
+          "normalized_blc_sha256": "c0bf9c2a694d76d370198b8bda7fd5a624e7b54533120a7cce8728c2295e5e34"
+        },
+        {
+          "scenario": "16dS",
+          "changes": ["SWCSV=1 -> 0", "SWBAL=0 -> 1", "SWBLC=0 -> 1"],
+          "swap_swp_sha256": "34dfa299de9f11ffd86926dbbcd3e91b3b5a363d11072b86fd25fa572ec40d89",
+          "status": "PASS",
+          "repeatability": "PASS",
+          "normalized_bal_sha256": "a342beed8858447f442e5dbab00672cdee3bc4dd559edd590362917ae65f29e9",
+          "normalized_blc_sha256": "3fc00b97389db093c07708b46f3cf0db9208fe7fa31d91f002ead641310fd9c5"
+        }
+      ],
+      "printed_balance_deviation": "zero at 0.01 cm report resolution for all four annual records in all three scenarios"
+    }
+  ],
+  "mass_conservation_note": "BAL/BLC values are rounded to 0.01 cm and remain regression evidence only; they do not qualify the future unrounded invariant-13 gate."
+}
