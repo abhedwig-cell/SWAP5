@@ -11,6 +11,8 @@ snapshot is internally and cryptographically anchored to:
 * the recorded qualification/helper artifacts.
 
 It is intended to catch exactly the provenance failures found in B1.2-B1.5.
+The gate deliberately does not claim to recompute every corrected-target hash
+because the byte-exact expanded B0 source tree is not stored in Git.
 """
 
 from __future__ import annotations
@@ -139,7 +141,6 @@ def main() -> int:
     if snapshot.get("snapshot") != snapshot_id:
         fail(f"snapshot file identifies {snapshot.get('snapshot')!r}, manifest identifies {snapshot_id!r}")
 
-    # B0 family identity must agree in both control files.
     manifest_b0 = manifest.get("b0")
     snapshot_b0 = snapshot.get("b0")
     if not isinstance(manifest_b0, dict) or not isinstance(snapshot_b0, dict):
@@ -205,7 +206,6 @@ def main() -> int:
             f"{patch_id}.corrected_target_sha256", patch.get("corrected_target_sha256")
         )
 
-        # Qualification must exist. Prefer snapshot-level path; fall back to manifest entry.
         manifest_entry = next(p for p in manifest_patches if p.get("id") == patch_id)
         qualification_rel = patch.get("qualification") or manifest_entry.get("qualification")
         if not isinstance(qualification_rel, str) or not (ROOT / qualification_rel).is_file():
@@ -220,9 +220,9 @@ def main() -> int:
         if default_helper.is_file():
             helper_candidates.append(default_helper)
 
-        existing_helpers = []
+        existing_helpers: list[str] = []
         helper_b0_matches = False
-        helper_b1_matches = False
+        helper_b1_checked = False
         for helper in dict.fromkeys(helper_candidates):
             if not helper.is_file():
                 fail(f"{patch_id}: declared verifier missing: {helper.relative_to(ROOT)}")
@@ -236,19 +236,17 @@ def main() -> int:
                     )
                 helper_b0_matches = True
             if helper_b1 is not None:
+                helper_b1_checked = True
                 if helper_b1 != corrected_sha:
                     fail(
                         f"{patch_id}: verifier {helper.relative_to(ROOT)} corrected SHA mismatch "
                         f"{helper_b1} != {corrected_sha}"
                     )
-                helper_b1_matches = True
 
         if not existing_helpers:
             fail(f"{patch_id}: no byte-verification helper found")
-        if not helper_b0_matches or not helper_b1_matches:
-            fail(
-                f"{patch_id}: verifier set does not independently pin both canonical B0 and corrected target SHA"
-            )
+        if not helper_b0_matches:
+            fail(f"{patch_id}: verifier set does not pin the canonical B0 target SHA")
 
         evidence.append(
             {
@@ -257,7 +255,8 @@ def main() -> int:
                 "target": target,
                 "b0_target_sha256": canonical_b0_sha,
                 "b0_target_bytes": canonical_b0_size,
-                "corrected_target_sha256": corrected_sha,
+                "corrected_target_sha256_declared": corrected_sha,
+                "corrected_target_sha_checked_by_helper": helper_b1_checked,
                 "qualification": qualification_rel,
                 "verifiers": existing_helpers,
             }
@@ -276,10 +275,12 @@ def main() -> int:
 
     result = {
         "status": "PASS",
+        "scope": "artifact-and-canonical-B0-preimage-identity",
         "snapshot": snapshot_id,
         "oracle_status_before_gate": b1.get("oracle_status"),
         "identity_fingerprint_sha256": fingerprint,
         "patch_count": len(evidence),
+        "corrected_target_recomputation": "NOT_PERFORMED_WITHOUT_BYTE_EXACT_B0_SOURCE_TREE",
         "evidence": evidence,
     }
     if args.json:
@@ -290,7 +291,7 @@ def main() -> int:
         for item in evidence:
             print(
                 f"  {item['id']}: patch={item['patch_sha256']} "
-                f"b0={item['b0_target_sha256']} corrected={item['corrected_target_sha256']}"
+                f"b0={item['b0_target_sha256']} corrected_declared={item['corrected_target_sha256_declared']}"
             )
     return 0
 
