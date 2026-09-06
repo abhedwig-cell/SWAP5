@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BN",
+  "status": "PASS_NATIVE_IN_MEMORY_PHYSICAL_SEAM_LEGACY_SINGLETON_ADAPTER_ONLY",
+  "baseline_branch": "integration/a23bk-transactional-rebase",
+  "parent_a23bm_commit": "e972069b5ed54652253452cd09fb641c3049e09f",
+  "oracle": {
+    "snapshot": "B1.6",
+    "binary_endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "endpoint_bytes": 1032,
+    "mass_limit_cm": 1e-06
+  },
+  "gates": {
+    "o0_native_physical": "PASS",
+    "o2_native_physical": "PASS",
+    "o0_o2_log_identity": "PASS",
+    "full_two_half_temporal_error": 0.0,
+    "half_mass_residual_cm": -1.787235042183255e-07,
+    "injected_outer_retry_rollback": "PASS",
+    "binary_oracle_identity": "PASS",
+    "trial_subprocess_used": false,
+    "trial_restart_file_used": false,
+    "adapter_save_count": 0,
+    "natural_internal_b16_retries_jan4_5": 10,
+    "retry_observer_noninterference": "PASS",
+    "retry_observer_state_dump_sha256": "2c68fd7b14016c8e3160589970c0d5b78490e7165c9610e2da0839aabf321883"
+  },
+  "explicit_replay_requirements": [
+    "meteo_rec",
+    "rain_rec",
+    "i_metdetail",
+    "fl_update_meteo",
+    "cmsy(1:numnod)"
+  ],
+  "limitations": [
+    "legacy initialization still parses files outside A23BL",
+    "integer-day physical bridge only",
+    "B1.6 modules remain singleton/global",
+    "not MultiSWAP/thread-safe",
+    "selective step doubling excluded"
+  ],
+  "physics_changed": false,
+  "top_jacobian_route_changed": false,
+  "selective_step_doubling_changed": false,
+  "next_slice": "A23BO"
+}
