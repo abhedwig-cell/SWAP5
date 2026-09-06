@@ -18,6 +18,10 @@ b0/
     ENCODING_NOTES.md
 patches/
     <audit-id>/
+snapshots/
+    B1.0-bootstrap.yml
+    B1.1.yml
+    ...
 b1-manifest.yml
 ```
 
@@ -45,9 +49,16 @@ B1 is intentionally not maintained as a second full copy of the 4.3.1 source tre
 B1.x = B0 + patch A + patch B + ...
 ```
 
-This makes every accepted deviation from official SWAP 4.3.1 directly auditable.
+Immutable snapshot definitions are stored under `snapshots/`. `b1-manifest.yml` identifies the current corrected reference while retaining the snapshot history.
 
-At initial bootstrap there are no admitted patches, so the current corrected reference is numerically identical to B0.
+Current state:
+
+```text
+B1.0-bootstrap = B0
+B1.1           = B0 + SWAP-001
+```
+
+`SWAP-001` is the first admitted correction. Other candidate directories may exist under `patches/`, but a candidate does not affect B1 unless it is explicitly listed in the ordered manifest.
 
 ## Boundary to SWAP 5
 
