@@ -33,7 +33,9 @@ jobs:
         run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
 
       - name: Run fail-closed B1.5p1 identity gate
+        shell: bash
         run: |
+          set -o pipefail
           python reference/swap-4.3.1/verify_b1_identity.py \
             --expect-snapshot B1.5p1 \
             --json | tee b1-identity-gate.json
