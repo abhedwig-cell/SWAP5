@@ -31,8 +31,9 @@ Admission requires exact patch provenance, canonical B0 preimage verification, o
 | `B1.6` | `SWAP-009` | PDI hydraulic code bug | `abs(h)` passed to signed Kelvin relation | pass signed `h` | strict PDI function gate + full PDI run + mass gate |
 | `B1.7` | `SWAP-010` | model-7 algebra bug | capacity not derivative of implemented retention curve | use consistent weighted common denominator | derivative gate + sensitive full model-7 run |
 | `B1.8` | `SWAP-013` | PDI input-domain bug | singular `HA=0` / `HA>=H0` accepted | require `0 < HA < H0` for PDI models 8-11 | 9-case source-bound guard gate |
-| `B1.9` | `SWAP-012` | hydraulic inverse algorithm bug | models 3 and 5-12 fall through to unrelated default-MvG `prhead` inverse | numerically invert the selected retention relation; retain model-4 analytical control | D2 22,240-point gate + isolated actual-source 600-point gate |
-| `B1.10` | `SWAP-002` | tillage control-flow/state-initialization bug | impossible interval test can retain the wrong next-event pointer when a run starts after the first event | choose first event on/after start and load the most recent previous tillage parameter state | historical semantic test + fresh strict compiled 3/6 -> 6/6 gate |
+| `B1.9` | `SWAP-012` | hydraulic inverse algorithm bug | models 3 and 5-12 fall through to unrelated default-MvG `prhead` inverse | numerically invert selected retention relation; retain model-4 analytical control | D2 22,240-point gate + isolated actual-source 600-point gate |
+| `B1.10` | `SWAP-002` | tillage control-flow/state-initialization bug | impossible interval test can retain wrong next-event pointer when a run starts after first event | choose first event on/after start and load most recent previous tillage parameter state | historical semantic test + strict compiled 3/6 -> 6/6 gate |
+| `B1.11` | `SWAP-004` | tillage indexing/input-consistency bug | type code can index outside lookup arrays sized by event count | size/map lookup by type-code domain and reject unresolved event types | strict B0 bounds reproducer + focused candidate 4/4 gate |
 
 Machine-readable scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope.
 
@@ -40,38 +41,41 @@ Machine-readable scopes are in `docs/verification/expected-differences.json`. An
 
 B1.5p1 repaired incorrect historical patch/preimage identity metadata discovered by VQ-1c without changing the intended five corrected source results. Historical B1.2-B1.5 remain audit records and are not exact executable oracles.
 
-## B1.5p1 -> B1.9 summary
+## B1.5p1 -> B1.10 summary
 
-B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and explicitly pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair; historical SWAP-011 `dhconduc` content remained excluded.
+B1.6 admitted SWAP-009 with exact source provenance, direct constitutive verification, a representative full PDI run and hard legacy mass evidence. B1.7 admitted SWAP-010 and pinned the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. B1.8 admitted SWAP-013 as an input-validation-only difference. B1.9 admitted only the isolated SWAP-012 `prhead` inverse repair; historical SWAP-011 `dhconduc` content remained excluded. B1.10 admitted SWAP-002 and established the corrected tillage start-event state semantics.
 
-## B1.9 -> B1.10: SWAP-002 admission
+## B1.10 -> B1.11: SWAP-004 admission
 
-`SWAP/tillage.f90` is unchanged by B1.1-B1.9, so canonical B0 and ordered B1.9 preimages are identical:
+SWAP-004 also targets `SWAP/tillage.f90`, so both canonical B0 provenance and the exact ordered B1.10 preimage are mandatory:
 
 ```text
-canonical B0 / ordered B1.9 tillage.f90
+canonical B0 tillage.f90
 731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
 
-stored SWAP-002 patch
-e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
+ordered B1.10 tillage.f90
+eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
+
+stored SWAP-004 patch
+0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818
 
 corrected target
-eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
+41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede
 ```
 
-The legacy interval condition compares `t1900` against `Date_tillage(i-1)` as both lower and upper bound and therefore can never select a run start between events. The corrected semantics are: `iTill` is the next event still to execute; if historical events precede the simulation start, their latest parameter state is loaded for consolidation.
+Legacy `TYPE_TILLAGE` is used as an index into `iTT1/iTT2`, while those arrays are allocated by `Ntill`. A represented type code greater than the event count can therefore be accepted and later address outside the arrays. The B0 sparse reproducer with `Ntill=1` and type code 3 fails under strict bounds checking. The isolated correction allocates/maps over `1:tmax` and validates that every event type resolves to an `ITYPE_TILLAGE` record.
 
-A fresh strict GNU Fortran source-bound gate checks before-first, exact-first, between-events, exact-second, after-last and unsorted-date cases. B0 passes 3/6; the isolated candidate passes 6/6 and loads the expected previous event. The patch contains no SWAP-003 `PCLAY` guard and no SWAP-004 tillage type-index changes.
+Focused candidate qualification passes 4/4 cases: the dense legacy-valid mapping remains identical, represented type codes above `Ntill` are safe, represented non-contiguous types are safe, and a missing mapping record is rejected. SWAP-003 is absent from the patch.
 
-Deterministic B1.10 identity:
+Deterministic B1.11 identity:
 
 ```text
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,863,998
+manifest SHA-256  a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6
 ```
 
-The expected difference is limited to tillage start-state/event-index initialization and consequences attributable to that corrected state. No tillage constitutive formula, solver policy or mass tolerance changes. Because B0 supplies no standard complete tillage scenario, this does not claim exhaustive qualification of all tillage interactions.
+The expected difference is restricted to the tillage type lookup domain and invalid-mapping rejection. Dense valid legacy mappings remain unchanged. No tillage constitutive formula, solver policy, timestep policy, water-balance equation or mass tolerance changes. Because no standard complete B0 tillage case exists, the admission does not claim exhaustive end-to-end tillage qualification.
 
 ## Audit findings waiting for B1 admission review
 
@@ -79,7 +83,6 @@ The expected difference is limited to tillage start-state/event-index initializa
 | --- | --- | --- | --- | --- |
 | `SWAP-011` | `PATCH_PAYLOAD_PENDING` | `dhconduc` derivative inconsistent with implemented `K(h)` for several models | E5/E6/E7 `FIX_TESTED` / `READY_PATCH_UPSTREAM` | recover exact final E7 patch and verify exact provenance |
 | `SWAP-003` | `CONFIRMED_UNFIXED` | tillage N-model 2 divides by `PCLAY` although zero is accepted | intended domain/targeted full regression not yet qualified | decide intended physical domain and add targeted/full tillage evidence |
-| `SWAP-004` | `CONFIRMED_UNFIXED` | tillage type codes can index outside arrays allocated by event count | targeted input regression not yet qualified | isolate and test allocation/index validation before admission |
 
 ## Rule for SWAP 5 verification
 
