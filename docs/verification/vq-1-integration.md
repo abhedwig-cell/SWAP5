@@ -1,7 +1,8 @@
 # VQ-1 integration record
 
 **Workstream:** VQ  
-**Integration baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
+**Clean integration branch baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
+**Latest main re-read during integration:** `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443`  
 **Integration branch:** `vq/vq-1-integration`  
 **Production code changed:** no
 
@@ -111,9 +112,11 @@ These gates remain specified until an integrated B2/TX interface exposes the req
 
 The kernel qualification target is generic `[t0,t1]`; day boundaries are not assumed fundamental.
 
-## VQ-1c: current B1.4 provenance gate
+## VQ-1c: current B1.5 provenance gate
 
-At the integration baseline, `reference/swap-4.3.1/snapshots/B1.4.yml` declares four admitted corrections. VQ hashes the stored patch bytes before any numerical B0 -> B1 comparison.
+`main` advanced during this integration from B1.4 to B1.5. VQ therefore re-read and pinned B1.5 at commit `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443` rather than treating the earlier B1.4 conclusion as current.
+
+B1.5 adds SWAP-008 on top of B1.4. Exact stored patch bytes give:
 
 | Patch | Snapshot-declared SHA-256 | Observed stored patch | Gate |
 | --- | --- | --- | --- |
@@ -121,17 +124,20 @@ At the integration baseline, `reference/swap-4.3.1/snapshots/B1.4.yml` declares 
 | SWAP-005 | `9c3839ac...8e66` | `243720f5...553` | FAIL |
 | SWAP-006 | `558eb084...718a` | `4530d489...5b2f` | FAIL |
 | SWAP-007 | `e65b703b...5b96` | `3ac9580b...f5f0` | FAIL |
+| SWAP-008 | `8f97ff20...4f4c` | same | PASS |
 
-SWAP-007 additionally declares B0 `SWAP/oxygenstress.f90` SHA-256 `2db206bf...12f75`, while independent extraction from the exact B0 source archive gives `2db206bf...e5735`.
+SWAP-007 additionally declares a B0 `SWAP/oxygenstress.f90` preimage hash that does not match canonical B0. The new SWAP-008 patch and its B0 `SWAP/tridag.f90` preimage both match exactly.
 
 Therefore:
 
 ```text
-B1.4 exact oracle pin: FAIL
-B0 -> B1.4 numerical qualification: BLOCKED
+B1.5 exact oracle pin: FAIL
+B0 -> B1.5 numerical qualification: BLOCKED
 ```
 
-This is tracked in GitHub issue #19. Published B1 snapshots are immutable by policy, so VQ does not silently edit B1.4 to make the hashes agree.
+The failure is inherited reference provenance in SWAP-005/006/007, not the newly admitted SWAP-008 artifact. Detailed evidence is in `docs/verification/vq-1c-b1.5-evidence.md` and GitHub issue #19.
+
+Published B1 snapshots are immutable by policy, so VQ does not silently rewrite B1.3/B1.4/B1.5 to make hashes agree.
 
 ## Expected differences
 
@@ -146,7 +152,8 @@ WORKSTREAM
 VQ
 
 BASELINE
-ce280e110c637a087d2a1aabd70fca5f1d494e48
+clean integration branch from ce280e110c637a087d2a1aabd70fca5f1d494e48
+latest main re-read: 3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443
 
 SCOPE
 Independent B0/B1/B2 verification infrastructure, B0 regression hardening, unrounded mass-accounting contract and fail-closed B1 provenance gate.
@@ -161,7 +168,7 @@ INVARIANTS AFFECTED
 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 23, 24, 25, 26, 28, 29, 30.
 
 TEST/QUALIFICATION STATUS
-B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. B1.4 provenance gate FAIL, so numerical B0->B1 qualification is blocked.
+B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. Current B1.5 provenance gate FAIL, so numerical B0->B1 qualification is blocked.
 
 DEPENDENCIES / REQUIRED INTEGRATION
 Provenance-correct immutable B1 snapshot; integrated B2 reference entry point; callable TX transaction boundary; TX/HY/runtime mapping to unrounded accounting.
