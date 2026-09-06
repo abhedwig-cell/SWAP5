@@ -17,8 +17,8 @@
 - [x] no mass-tolerance change
 - [x] expected-difference envelope documented
 - [x] prospective B1.10 source-tree identity independently reconstructed
-- [ ] B1.10 snapshot/manifest/pin integrated
-- [ ] B2 handoff repinned to B1.10, still fail-closed
+- [x] B1.10 snapshot/manifest/pin integrated
+- [x] B2 handoff repinned to B1.10, still fail-closed
 - [ ] Documentation CI PASS
 - [ ] VQ reference qualification CI PASS
 - [ ] PR merged and issue closed
