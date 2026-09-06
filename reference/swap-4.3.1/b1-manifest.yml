@@ -11,10 +11,10 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.4"
+  snapshot: "B1.5"
   status: "CORRECTED_REFERENCE"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.4.yml"
-  description: "Corrected SWAP 4.3.1 reference containing four admitted qualified legacy fixes."
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.5.yml"
+  description: "Corrected SWAP 4.3.1 reference containing five admitted qualified legacy fixes."
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -32,6 +32,10 @@ b1:
       patch_path: "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
       patch_sha256: "e65b703b73b530915414265c3b647a403f995adc568390ed5da4ecb55be75b96"
       qualification: "reference/swap-4.3.1/patches/SWAP-007/qualification.md"
+    - id: "SWAP-008"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-008/fix.patch"
+      patch_sha256: "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c"
+      qualification: "reference/swap-4.3.1/patches/SWAP-008/qualification.md"
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -44,6 +48,8 @@ history:
     definition: "reference/swap-4.3.1/snapshots/B1.3.yml"
   - snapshot: "B1.4"
     definition: "reference/swap-4.3.1/snapshots/B1.4.yml"
+  - snapshot: "B1.5"
+    definition: "reference/swap-4.3.1/snapshots/B1.5.yml"
 
 admission_rule:
   requires:
