@@ -34,7 +34,15 @@ jobs:
           python-version: '3.13'
 
       - name: Compile measurement tools
-        run: python -m py_compile tools/performance/mp_measure.py tools/performance/mp_b0_shadow.py tools/performance/mp_workloads.py tools/performance/mp_repeatability.py
+        run: >-
+          python -m py_compile
+          tools/performance/mp_measure.py
+          tools/performance/mp_b0_shadow.py
+          tools/performance/mp_workloads.py
+          tools/performance/mp_repeatability.py
+          tools/performance/mp_cpu_baseline.py
+          tools/performance/mp_cpu_runner.py
+          tools/performance/mp_cpu_pairs.py
 
       - name: Validate workload catalog
         run: python tools/performance/mp_workloads.py benchmarks/performance/workload-catalog.json --summary
@@ -46,6 +54,20 @@ jobs:
             --baseline off --measured on > /tmp/mp-repeatability-summary.json
           cmp /tmp/mp-repeatability-summary.json \
             benchmarks/performance/evidence/mp-b01-shadow-repeatability.summary.json
+
+      - name: Validate controlled CPU plan
+        run: >-
+          python -m tools.performance.mp_cpu_baseline validate-plan
+          benchmarks/performance/cpu-baseline-protocol.json
+
+      - name: Validate controlled CPU evidence
+        run: |
+          python -m tools.performance.mp_cpu_pairs \
+            benchmarks/performance/evidence/mp-b01-controlled-cpu.pairs.json \
+            --target-resolution 0.01 --multiplier 2 \
+            > /tmp/mp-cpu-summary.json
+          cmp /tmp/mp-cpu-summary.json \
+            benchmarks/performance/evidence/mp-b01-controlled-cpu.summary.json
 
       - name: Run measurement tests
         run: python -m unittest discover -s tests -p 'test_mp_*.py' -v

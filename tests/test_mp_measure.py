@@ -83,6 +83,7 @@ class MeasurementCollectorTests(unittest.TestCase):
         )
 
         self.assertEqual(record["schema_version"], "mp-benchmark-record-v1")
+        self.assertEqual(record["timing_clock_kind"], "monotonic_elapsed")
         self.assertAlmostEqual(record["timing_seconds"]["constitutive"], 20e-9)
         self.assertAlmostEqual(record["timing_seconds"]["total"], 100e-9)
         self.assertEqual(record["counters"]["newton_iterations"], 2)
@@ -119,7 +120,7 @@ class MeasurementCollectorTests(unittest.TestCase):
                 with recorder.span("jacobian"):
                     pass
 
-    def test_aggregate_reports_tail_batch_and_worker_metrics(self) -> None:
+    def test_aggregate_reports_tail_batch_and_worker_elapsed_metrics(self) -> None:
         records = []
         totals = [1.0, 1.0, 2.0, 10.0]
         workers = ["w1", "w1", "w2", "w2"]
@@ -148,15 +149,19 @@ class MeasurementCollectorTests(unittest.TestCase):
 
         summary = aggregate_records(records)
         self.assertEqual(summary["record_count"], 4)
+        self.assertEqual(summary["timing_clock_kind"], "monotonic_elapsed")
         self.assertEqual(summary["mass_balance_failure_count"], 1)
         self.assertEqual(summary["counter_totals"]["newton_iterations"], 10)
-        self.assertAlmostEqual(summary["top_1pct_total_time_share"], 10 / 14)
+        self.assertAlmostEqual(summary["sum_interval_elapsed_seconds"], 14.0)
+        self.assertAlmostEqual(summary["top_1pct_interval_elapsed_share"], 10 / 14)
         self.assertAlmostEqual(
             summary["batch_divergence_max_over_median"]["max"], 10 / 1.5
         )
-        self.assertAlmostEqual(summary["worker_load_seconds"]["w1"], 2.0)
-        self.assertAlmostEqual(summary["worker_load_seconds"]["w2"], 12.0)
-        self.assertAlmostEqual(summary["worker_load_max_over_mean"], 12 / 7)
+        self.assertAlmostEqual(summary["worker_attributed_elapsed_seconds"]["w1"], 2.0)
+        self.assertAlmostEqual(summary["worker_attributed_elapsed_seconds"]["w2"], 12.0)
+        self.assertAlmostEqual(summary["worker_attributed_elapsed_max_over_mean"], 12 / 7)
+        self.assertNotIn("total_cpu_seconds", summary)
+        self.assertNotIn("worker_load_seconds", summary)
 
     def test_jsonl_roundtrip(self) -> None:
         clock = FakeClock([0, 100])

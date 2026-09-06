@@ -86,8 +86,8 @@ Most work is in harnesses, test cases, comparison tooling and evidence. It can p
 ## Active workstream MP: MultiSWAP performance and batchability
 
 **Status:** Active  
-**Accepted baseline:** `da99f14490ca81737ae9ab070d77a2197e6799ba`  
-**Current slice:** MP-5, [MP-B01 repeatability and observer-overhead qualification](../performance/mp-5-repeatability-overhead.md)
+**Accepted baseline:** `dd2e0d1b9ecac671e8b02f703c7b3b8510fe36e0`  
+**Current slice:** MP-6, [controlled CPU baseline protocol](../performance/mp-6-controlled-cpu-baseline.md)
 
 ### Goal
 
@@ -114,9 +114,11 @@ MP-1 defined the measurement architecture and record. MP-2 integrated measuremen
 
 MP-4 versions the six benchmark families as an explicit workload catalog. It locks the official Staringreeks 2018 B12 hydraulic row as a `parameter-locked` stress profile but does not invent the missing full executable case. Homogeneous scaling, mixed templates, execution-class routing and optional-physics comparisons remain blocked until their owning RT/HY/VQ interfaces and qualifications exist.
 
-MP-5 revalidated MP-B01 with clean byte-safe shadow builds and 18 interleaved paired cycles. It corrected a CRLF-sensitive shadow-injection tooling defect, versioned the raw timing evidence and deterministic summary, and found the measured top-level observer delta unresolved above the approximately 1.56% two-standard-error noise scale of the non-dedicated test host. This is a qualification of measurement mechanics, not a SWAP5 production CPU baseline and not evidence of zero observer cost.
+MP-5 revalidated MP-B01 with clean byte-safe shadow builds and 18 interleaved paired cycles. It corrected a CRLF-sensitive shadow-injection tooling defect, versioned raw timing evidence and a deterministic summary, and found the measured top-level observer delta unresolved above the approximately 1.56% two-standard-error wall-time noise scale of the non-dedicated test host.
 
-The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ.
+MP-6 separates monotonic elapsed time from actual child-process CPU time and introduces a predeclared CPU-baseline qualification protocol. A 1% resolution target led, from the MP-5 pilot, to 44 predeclared paired runs. With the child pinned to one logical CPU, all physical output hashes remained identical, but the measured child-CPU detection floor was about 2.57%, so the current shared host fails the 1% resolution gate. The observed mean on/off delta is therefore not a qualified observer-overhead estimate. This is a measurement-environment rejection, not a model or physics failure.
+
+The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ. B12 remains `parameter-locked` until VQ provides a complete qualified difficult-column fixture.
 
 ### Why it parallelizes well
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -32,10 +33,7 @@ B12_PARAMETERS = {
 def _valid_reference_level(reference: object) -> bool:
     if reference in {"B0", "SWAP5-reference"}:
         return True
-    if not isinstance(reference, str) or not reference.startswith("B1."):
-        return False
-    suffix = reference[3:]
-    return suffix.isdigit() and int(suffix) >= 0
+    return isinstance(reference, str) and re.fullmatch(r"B1\.\d+(?:p\d+)?", reference) is not None
 
 
 def load_catalog(path: str | Path) -> dict[str, Any]:
@@ -53,6 +51,9 @@ def validate_catalog(catalog: Mapping[str, Any]) -> list[str]:
     corrected = policy.get("corrected_legacy")
     if not _valid_reference_level(corrected) or not str(corrected).startswith("B1."):
         errors.append("reference_policy.corrected_legacy must be an exact B1 snapshot")
+    oracle_status = policy.get("corrected_legacy_oracle_status")
+    if not isinstance(oracle_status, str) or not oracle_status:
+        errors.append("reference_policy.corrected_legacy_oracle_status must be non-empty")
     if policy.get("swap5_reference") != "SWAP5-reference":
         errors.append("reference_policy.swap5_reference must be SWAP5-reference")
 

@@ -2,7 +2,8 @@
   "schema_version": "mp-workload-catalog-v1",
   "reference_policy": {
     "immutable_legacy": "B0",
-    "corrected_legacy": "B1.4",
+    "corrected_legacy": "B1.5p1",
+    "corrected_legacy_oracle_status": "PENDING_VQ_IDENTITY_GATE",
     "swap5_reference": "SWAP5-reference"
   },
   "source_evidence": {
@@ -15,11 +16,11 @@
       "family": "MP-B01",
       "purpose": "single-column cost decomposition",
       "status": "shadow-executable",
-      "reference_levels": ["B0", "B1.4", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.5p1", "SWAP5-reference"],
       "source_case": "cases/1.hupselbrook",
       "scale": {"columns": 1},
       "required_measurements": ["timing", "counters", "mass_balance"],
-      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form of this case. MP-5 revalidated a clean byte-safe shadow rebuild over 18 paired cycles and found the measured observer delta unresolved above a 1.56% two-standard-error noise scale on a non-dedicated host. This is still not SWAP5 production qualification."
+      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU B0 shadow form. MP-5 revalidated clean byte-safe shadow execution and quantified non-dedicated-host wall-time noise. MP-6 separated child CPU from elapsed time and exercised a 44-pair affinity-controlled protocol; all physical hashes remained equal, but the 2.57% child-CPU detection floor failed the predeclared 1% resolution target. B1.5p1 is the current corrected definition but remains unavailable as an exact executable oracle while its VQ identity gate is pending. MP-B01 therefore remains shadow-executable, not a SWAP5 production CPU baseline."
     },
     {
       "id": "MP-B02-HOMOGENEOUS-SCALING",
@@ -47,7 +48,7 @@
       "family": "MP-B04",
       "purpose": "heavy-clay hydraulic stress profile and tail-cost tracking",
       "status": "parameter-locked",
-      "reference_levels": ["B0", "B1.4", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.5p1", "SWAP5-reference"],
       "scale": {"columns": 1},
       "stress_profile": {
         "profile_id": "Staringreeks-2018-B12",
@@ -65,7 +66,7 @@
         }
       },
       "required_measurements": ["newton_iterations", "jacobian_builds", "linear_solves", "backtracking_attempts", "retries", "timing", "mass_balance"],
-      "qualification_notes": "The B12 hydraulic row is source-locked, but no complete executable B12 case exists in the inspected distribution. A full fixture must define discretization, forcing, boundaries, crop/process switches and any hysteresis parameters without inventing undocumented B12 defaults."
+      "qualification_notes": "The B12 hydraulic row is source-locked, but no complete executable B12 case exists in the inspected distribution. A full fixture must define discretization, forcing, boundaries, crop/process switches and any hysteresis parameters without inventing undocumented B12 defaults. B1.5p1 is not usable as an exact oracle until its VQ identity gate passes."
     },
     {
       "id": "MP-B05-EXECUTION-CLASS-ROUTING",

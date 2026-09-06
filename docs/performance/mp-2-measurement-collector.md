@@ -42,23 +42,25 @@ Timing categories follow MP-1, including constitutive work, residual evaluation,
 
 Within one interval recorder, timed spans are exclusive and may not be nested. This keeps phase totals interpretable as a decomposition rather than a hierarchy with accidental double counting. If later integration requires nested observation, that must be introduced explicitly rather than silently changing the accounting semantics.
 
-The collector uses a monotonic high-resolution clock by default. Tests can inject a deterministic clock.
+The collector uses `time.perf_counter_ns` by default. MP-6 clarified that this is a monotonic **elapsed-time** clock, not process CPU time. Current records therefore carry `timing_clock_kind = monotonic_elapsed`, and aggregate fields use explicit elapsed-time names. Worker-attributed elapsed totals are accounting proxies and must not be interpreted as measured worker CPU utilization.
+
+Actual process CPU time is measured separately by the controlled CPU-baseline tooling introduced in MP-6. Tests may still inject a deterministic clock into the collector.
 
 ## Aggregation
 
-`aggregate_records()` produces an initial CPU-oriented summary across interval records:
+`aggregate_records()` produces an initial elapsed-time-oriented summary across interval records:
 
 - interval count and accepted count;
 - mass-balance failure count;
-- total measured column-interval time;
-- min, mean, p50, p90, p95, p99 and maximum interval cost;
-- share of total cost consumed by the slowest 1 percent of intervals;
-- phase timing totals;
+- summed measured column-interval elapsed time;
+- min, mean, p50, p90, p95, p99 and maximum interval elapsed cost;
+- share of total elapsed cost consumed by the slowest 1 percent of intervals;
+- phase elapsed totals;
 - solver/retry counter totals;
-- per-template cost distributions;
-- per-execution-class cost distributions;
-- batch divergence as maximum column cost divided by median column cost within a batch;
-- worker load totals and maximum-over-mean worker imbalance.
+- per-template elapsed distributions;
+- per-execution-class elapsed distributions;
+- batch divergence as maximum column elapsed cost divided by median column elapsed cost within a batch;
+- worker-attributed elapsed totals and maximum-over-mean attributed imbalance.
 
 The JSONL command-line path is intentionally simple:
 
@@ -76,7 +78,7 @@ The current unit tests cover:
 2. enabled collection emits the MP-1 record categories;
 3. measurement enabled versus disabled leaves a deterministic dummy calculation and its input state unchanged;
 4. nested timing spans are rejected so accounting remains exclusive;
-5. tail cost, batch divergence and worker imbalance aggregation are reproducible;
+5. tail cost, batch divergence and worker-attributed elapsed aggregation are reproducible;
 6. records survive JSONL write/read round-trip.
 
 The repository CI compiles the Python tool and runs these tests on Python 3.13.
