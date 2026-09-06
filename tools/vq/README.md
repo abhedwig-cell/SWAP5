@@ -52,7 +52,10 @@ The legacy reports expose water values at `0.01 cm` resolution. Passing this gat
 ## Unit tests
 
 ```bash
-python -m unittest tools.vq.test_reference_identity tools.vq.test_balance
+python -m unittest \
+  tools.vq.test_reference_identity \
+  tools.vq.test_balance \
+  tools.vq.test_b0_source_runner
 ```
 
 Future adapters for B1 and B2 must keep recording the exact executable/source identity, case identity and qualification scope used for each result.
