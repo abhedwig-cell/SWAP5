@@ -20,6 +20,11 @@ module mod_transaction_reference
     real(real64) :: mass_out = 0.0_real64
     integer :: nonlinear_iterations = 0
     integer :: internal_retries = 0
+    integer :: headcalc_calls = 0
+    integer :: jacobian_builds = 0
+    integer :: linear_solves = 0
+    integer :: backtracking_attempts = 0
+    integer :: alternative_solver_calls = 0
   end type trial_outcome_t
 
   type, abstract, public :: transaction_model_t
@@ -52,6 +57,16 @@ module mod_transaction_reference
     integer :: accepted_nonlinear_iterations = 0
     integer :: internal_retries = 0
     integer :: accepted_internal_retries = 0
+    integer :: headcalc_calls = 0
+    integer :: accepted_headcalc_calls = 0
+    integer :: jacobian_builds = 0
+    integer :: accepted_jacobian_builds = 0
+    integer :: linear_solves = 0
+    integer :: accepted_linear_solves = 0
+    integer :: backtracking_attempts = 0
+    integer :: accepted_backtracking_attempts = 0
+    integer :: alternative_solver_calls = 0
+    integer :: accepted_alternative_solver_calls = 0
     real(real64) :: requested_t0 = 0.0_real64
     real(real64) :: requested_t1 = 0.0_real64
     real(real64) :: accepted_t1 = 0.0_real64
@@ -137,6 +152,11 @@ contains
       result%full_trials = result%full_trials + 1
       result%nonlinear_iterations = result%nonlinear_iterations + full_outcome%nonlinear_iterations
       result%internal_retries = result%internal_retries + full_outcome%internal_retries
+      result%headcalc_calls = result%headcalc_calls + full_outcome%headcalc_calls
+      result%jacobian_builds = result%jacobian_builds + full_outcome%jacobian_builds
+      result%linear_solves = result%linear_solves + full_outcome%linear_solves
+      result%backtracking_attempts = result%backtracking_attempts + full_outcome%backtracking_attempts
+      result%alternative_solver_calls = result%alternative_solver_calls + full_outcome%alternative_solver_calls
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
@@ -153,12 +173,22 @@ contains
       result%half_trials = result%half_trials + 1
       result%nonlinear_iterations = result%nonlinear_iterations + half1_outcome%nonlinear_iterations
       result%internal_retries = result%internal_retries + half1_outcome%internal_retries
+      result%headcalc_calls = result%headcalc_calls + half1_outcome%headcalc_calls
+      result%jacobian_builds = result%jacobian_builds + half1_outcome%jacobian_builds
+      result%linear_solves = result%linear_solves + half1_outcome%linear_solves
+      result%backtracking_attempts = result%backtracking_attempts + half1_outcome%backtracking_attempts
+      result%alternative_solver_calls = result%alternative_solver_calls + half1_outcome%alternative_solver_calls
 
       if (half1_outcome%solver_ok) then
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
         result%half_trials = result%half_trials + 1
         result%nonlinear_iterations = result%nonlinear_iterations + half2_outcome%nonlinear_iterations
         result%internal_retries = result%internal_retries + half2_outcome%internal_retries
+        result%headcalc_calls = result%headcalc_calls + half2_outcome%headcalc_calls
+        result%jacobian_builds = result%jacobian_builds + half2_outcome%jacobian_builds
+        result%linear_solves = result%linear_solves + half2_outcome%linear_solves
+        result%backtracking_attempts = result%backtracking_attempts + half2_outcome%backtracking_attempts
+        result%alternative_solver_calls = result%alternative_solver_calls + half2_outcome%alternative_solver_calls
       else
         half2_outcome = trial_outcome_t()
       end if
@@ -206,6 +236,11 @@ contains
       result%accepted_dt = attempt_dt
       result%accepted_nonlinear_iterations = half1_outcome%nonlinear_iterations + half2_outcome%nonlinear_iterations
       result%accepted_internal_retries = half1_outcome%internal_retries + half2_outcome%internal_retries
+      result%accepted_headcalc_calls = half1_outcome%headcalc_calls + half2_outcome%headcalc_calls
+      result%accepted_jacobian_builds = half1_outcome%jacobian_builds + half2_outcome%jacobian_builds
+      result%accepted_linear_solves = half1_outcome%linear_solves + half2_outcome%linear_solves
+      result%accepted_backtracking_attempts = half1_outcome%backtracking_attempts + half2_outcome%backtracking_attempts
+      result%accepted_alternative_solver_calls = half1_outcome%alternative_solver_calls + half2_outcome%alternative_solver_calls
       result%commits = result%commits + 1
       return
     end do
