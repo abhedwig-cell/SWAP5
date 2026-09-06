@@ -1,6 +1,6 @@
 # SWAP-013 qualification evidence
 
-Current B1 admission status: **QUALIFIED CANDIDATE FOR B1.8**
+Current B1 admission status: **ADMITTED IN B1.8**
 
 ## Audit evidence
 
@@ -94,7 +94,7 @@ SWAP-013 acts before time integration on invalid input. A rejected invalid confi
 
 This gate does not decide broader PDI behavior outside the dry boundary H0 and does not clamp constitutive outputs. Those are separate scientific/model-domain questions and are explicitly outside SWAP-013.
 
-Prospective B1.8 deterministic source identity:
+B1.8 deterministic source identity:
 
 ```text
 members          63
@@ -102,4 +102,4 @@ source bytes      1,860,493
 manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
 ```
 
-Formal B1.8 admission remains contingent on the repository provenance/admission CI gate and merge to `main`.
+B1.8 admission is represented by the immutable snapshot/manifest and remains integrated repository state only after the admission PR passes CI and is merged to `main`.
