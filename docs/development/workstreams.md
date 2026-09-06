@@ -86,8 +86,8 @@ Most work is in harnesses, test cases, comparison tooling and evidence. It can p
 ## Active workstream MP: MultiSWAP performance and batchability
 
 **Status:** Active  
-**Accepted baseline:** `d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5`  
-**Current slice:** MP-7, [host admission for a 1% CPU baseline](../performance/mp-7-host-admission.md)
+**Accepted baseline:** `8eb863eadbae5f505188d2d6d9404c66fd1b1446`  
+**Current slice:** MP-8, [isolated performance-runner contract](../performance/mp-8-isolated-runner-contract.md)
 
 ### Goal
 
@@ -120,7 +120,9 @@ MP-6 separates monotonic elapsed time from actual child-process CPU time and int
 
 MP-7 makes host quality an explicit admission gate. A baseline-only preflight across all five visible CPUs selected CPU3 deterministically because its child-CPU CV was about 0.81%. A separate ten-pair pilot fixed the final experiment at 21 pairs before examining the final effect. All 42 final runs preserved the qualified BAL/BLC hashes and no measured sample itself experienced cgroup throttling. The final child-CPU MDE improved to about 1.35%, but still failed the 1% target. In addition, the broader qualification window accumulated two cgroup throttling events (65,370 microseconds). The current shared host is therefore explicitly rejected for a 1% CPU baseline; no observer-overhead estimate or production CPU baseline is admitted.
 
-The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ. B12 remains `parameter-locked` until VQ provides a complete qualified difficult-column fixture.
+MP-8 makes the missing performance infrastructure explicit. It defines a versioned isolated-runner contract, machine probe, operator-attestation boundary and manual self-hosted readiness workflow. The repository currently has no repository-visible `self-hosted` performance-runner configuration, while account-level runner inventory is not observable through the repository connector, so readiness is recorded fail-closed as `INFRASTRUCTURE_PENDING`. A future runner must prove CPU/cgroup/frequency/SMT/reference provisioning readiness first and then repeat the full MP-7 1% admission protocol; contract readiness alone cannot establish a CPU baseline.
+
+The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ. B12 remains `parameter-locked` until VQ provides a complete qualified difficult-column fixture. B1.5p1 remains unavailable as an exact corrected-reference oracle while its VQ identity gate is pending.
 
 ### Why it parallelizes well
 

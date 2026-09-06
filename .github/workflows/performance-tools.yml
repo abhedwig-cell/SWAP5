@@ -9,12 +9,14 @@ on:
       - 'tests/test_mp_*.py'
       - 'benchmarks/performance/**'
       - '.github/workflows/performance-tools.yml'
+      - '.github/workflows/performance-isolated-readiness.yml'
   pull_request:
     paths:
       - 'tools/performance/**'
       - 'tests/test_mp_*.py'
       - 'benchmarks/performance/**'
       - '.github/workflows/performance-tools.yml'
+      - '.github/workflows/performance-isolated-readiness.yml'
   workflow_dispatch:
 
 permissions:
@@ -44,6 +46,7 @@ jobs:
           tools/performance/mp_cpu_runner.py
           tools/performance/mp_cpu_pairs.py
           tools/performance/mp_host_admission.py
+          tools/performance/mp_isolated_runner.py
 
       - name: Validate workload catalog
         run: python tools/performance/mp_workloads.py benchmarks/performance/workload-catalog.json --summary
@@ -77,6 +80,13 @@ jobs:
             > /tmp/mp-host-admission-summary.json
           cmp /tmp/mp-host-admission-summary.json \
             benchmarks/performance/evidence/mp-b01-host-admission.summary.json
+
+      - name: Validate isolated runner contract
+        run: |
+          python -m tools.performance.mp_isolated_runner validate-contract \
+            benchmarks/performance/isolated-runner-contract.json
+          python -m tools.performance.mp_isolated_runner validate-readiness \
+            benchmarks/performance/isolated-runner-readiness.json
 
       - name: Run measurement tests
         run: python -m unittest discover -s tests -p 'test_mp_*.py' -v
