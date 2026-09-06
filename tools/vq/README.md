@@ -71,7 +71,7 @@ The reconstruction fails closed unless:
 - all five resulting target SHA-256 values equal the B1.5p1 snapshot declarations;
 - the final 63-member reconstructed source manifest equals `c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30`.
 
-The first B0 -> B1 control edges also pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. This does not yet qualify every defect-triggering B1 correction. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
+The first B0 -> B1 control edges pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. This qualifies source reconstruction and those control paths, not every defect-triggering B1 correction. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
 
 ## Unrounded mass accounting
 
