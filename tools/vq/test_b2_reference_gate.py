@@ -173,9 +173,14 @@ class B2ReferenceGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.prepared_root(root)
+            other_commit = "d" * 40
             seam = valid_contract()
-            seam["implementation"]["commit"] = "d" * 40
-            self.create_integrated_files(root, seam=seam)
+            seam["implementation"]["commit"] = other_commit
+            self.create_integrated_files(
+                root,
+                seam=seam,
+                result_contract=valid_result_contract(other_commit),
+            )
             result = assess_candidate(root, self.write_candidate(root, base_candidate()))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "reference_seam_contract_candidate_mismatch")
