@@ -2,7 +2,8 @@
 
 **Workstream:** MP  
 **Status:** ACTIVE, catalog qualified; production execution pending per workload  
-**Baseline:** `3b19f079a0a744e576f752c4b3e0d7e7ac72603b`  
+**Evidence-start baseline:** `3b19f079a0a744e576f752c4b3e0d7e7ac72603b`  
+**Integration re-read:** `8f921df513ed5f7c4f6a4dee2a274ac2031a3fb4`  
 **Affected invariants:** 6, 13, 16, 23, 24, 25, 26, 27, 30
 
 ## Purpose
@@ -26,10 +27,10 @@ The machine-readable catalog is `benchmarks/performance/workload-catalog.json` a
 The catalog distinguishes three reference levels:
 
 - `B0`: immutable official SWAP 4.3.1 audit baseline;
-- `B1.1`: current corrected legacy reference at the MP-4 baseline;
+- `B1.2`: current corrected legacy reference after the MP-4 integration re-read;
 - `SWAP5-reference`: future full-accuracy SWAP5 reference mode.
 
-Performance records must identify the exact reference level used. A future B1 snapshot does not silently replace B1.1 in historical benchmark records.
+Performance records must identify the exact reference snapshot used. B1 snapshots are immutable historical identities: a future B1.3 does not silently relabel a benchmark that was actually run against B1.1 or B1.2. The validator therefore accepts explicit `B1.<number>` identities while the catalog's `corrected_legacy` field points to the current snapshot.
 
 ## Catalog states
 
@@ -119,7 +120,7 @@ It remains `template-blocked` until comparable qualified templates exist. The co
 2. unique workload IDs;
 3. presence of MP-B01 through MP-B06;
 4. known readiness states;
-5. explicit reference levels;
+5. explicit B0, exact B1 snapshot or SWAP5 reference identities;
 6. non-empty measurement requirements;
 7. exact B12 source row and SHA-256;
 8. exact B12 parameter mapping;
@@ -136,7 +137,7 @@ MP-4 does not claim:
 - that B12 is the worst possible soil;
 - that any particular solver or fallback is preferred;
 - that the nominal scale points are final production sizing targets;
-- that B0 and B1.1 are physically interchangeable for every workload;
+- that B0 and B1.2 are physically interchangeable for every workload;
 - any GPU speedup potential.
 
 ## Integration boundary
