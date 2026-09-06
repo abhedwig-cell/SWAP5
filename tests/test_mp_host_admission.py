@@ -15,12 +15,6 @@ def payload():
             "on_child_cpu_seconds": on,
             "off_wall_elapsed_seconds": off,
             "on_wall_elapsed_seconds": on,
-            "off_hashes": {"bal": digest},
-            "on_hashes": {"bal": digest},
-            "off_throttled_events": 0,
-            "on_throttled_events": 0,
-            "off_throttled_usec": 0,
-            "on_throttled_usec": 0,
         }
 
     return {
@@ -50,7 +44,14 @@ def payload():
             ],
             "predeclared_final_pairs": 2,
         },
-        "final": {"pairs": [pair(0, 1.0, 1.01), pair(1, 1.0, 0.99)]},
+        "final": {
+            "pairs": [pair(0, 1.0, 1.01), pair(1, 1.0, 0.99)],
+            "physical_output_hashes": {"bal": digest},
+            "physical_output_distinct_counts": {"bal": 1},
+            "physical_output_observations": 4,
+            "measured_sample_throttled_events": 0,
+            "measured_sample_throttled_usec": 0,
+        },
         "host": {
             "cpu_max": "max 100000",
             "cpuset": "0-1",
