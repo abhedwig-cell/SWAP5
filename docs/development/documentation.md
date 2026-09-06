@@ -52,6 +52,12 @@ An important architecture change should normally include:
 3. updated API or data-ownership documentation where relevant;
 4. verification evidence or an explicit statement that qualification is still pending.
 
+## Parallel development
+
+Parallel development follows the [workstream coordination guide](workstreams.md). Git plus accepted versioned documentation is the source of truth. Individual chats are working contexts and may not silently redefine a shared interface for other streams.
+
+Material pull requests should identify the workstream, exact baseline, touched components, changed interfaces, affected architecture invariants, verification state and integration dependencies. The repository pull-request template encodes this handoff format.
+
 ## Generated code reference
 
 A later documentation stage can add generated Fortran API reference, for example with FORD. Generated reference should remain subordinate to hand-written architecture and physics documentation. Procedure listings explain what code exists; they do not replace design rationale.
