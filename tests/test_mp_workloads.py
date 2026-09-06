@@ -26,6 +26,20 @@ class WorkloadCatalogTests(unittest.TestCase):
     def test_catalog_valid(self) -> None:
         self.assertEqual(validate_catalog(self.catalog), [])
 
+    def test_corrected_reference_tracks_provenance_repaired_snapshot(self) -> None:
+        policy = self.catalog["reference_policy"]
+        self.assertEqual(policy["corrected_legacy"], "B1.5p1")
+        self.assertEqual(
+            policy["corrected_legacy_oracle_status"], "PENDING_VQ_IDENTITY_GATE"
+        )
+
+    def test_invalid_repaired_snapshot_name_fails(self) -> None:
+        changed = copy.deepcopy(self.catalog)
+        changed["reference_policy"]["corrected_legacy"] = "B1.5x"
+        self.assertTrue(
+            any("corrected_legacy" in error for error in validate_catalog(changed))
+        )
+
     def test_all_six_families_present(self) -> None:
         self.assertEqual(
             {workload["family"] for workload in self.catalog["workloads"]},
