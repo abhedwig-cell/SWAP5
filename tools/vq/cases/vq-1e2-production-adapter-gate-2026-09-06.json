@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1e2",
+  "candidate_status": "BLOCKED_NO_ADMITTED_B2_SEAM",
+  "b2_candidate_path": "tools/vq/cases/b2-reference-candidate.json",
+  "binding_contract_path": null,
+  "b1_snapshot": "B1.10",
+  "b2_commit": "0e5c58134b225014426c75e240f0b668affbb4a1",
+  "b2_admissible_target": false,
+  "production_adapter_binding_admissible": false,
+  "ready_for_production_tx_time": false,
+  "failure": "b2_reference_target_not_admitted",
+  "checks": {
+    "schema_version": true,
+    "b2_candidate_declared": true,
+    "b2_candidate_exists": true,
+    "b2_target_admitted": false,
+    "ready_status": false,
+    "binding_contract_declared": false,
+    "binding_contract_exists": false,
+    "binding_contract_valid": false,
+    "binding_commit_matches_b2": false,
+    "binding_entrypoint_matches_b2": false,
+    "binding_seam_matches_b2": false,
+    "binding_result_contract_matches_b2": false,
+    "binding_reference_policy_matches_b2": false
+  }
+}
