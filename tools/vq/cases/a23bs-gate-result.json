@@ -1,0 +1,102 @@
+{
+  "jacobian": {
+    "formula_changed": false,
+    "jacobian_F_sha256": "9ba4ada31fe629a006d47f30d77b8c6f8a200b232a91483b31735a6b53fb38cb"
+  },
+  "ownership": {
+    "adapter_legacy_time_projection_payload_bytes_hupsel": 59,
+    "calendar_events_are_persistent_column_state": false,
+    "calendar_projection_is_target_kernel_state": false,
+    "kernel_time_contract": "generic [t0,t1]",
+    "legacy_time_projection_fields": [
+      "t1900",
+      "year_time(t)",
+      "day_time(tcum)",
+      "jan1_1900(timjan1)",
+      "daynr",
+      "daycum",
+      "iyear",
+      "imonth",
+      "date"
+    ],
+    "removed_legacy_globals": [
+      "variables%fldaystart",
+      "variables%fldayend"
+    ],
+    "worker_derived_events": [
+      "day_start_event",
+      "day_end_event"
+    ],
+    "worker_execution_time_layout_bytes_gfortran14": 40
+  },
+  "parent_git_branch": "integration/a23bk-transactional-rebase",
+  "parent_git_commit": "da88edf38e84ec93d21752c9b378cdedc29e036a",
+  "physical_gate": {
+    "accepted_headcalc_calls": 81,
+    "accepted_internal_retries": 10,
+    "accepted_nonlinear_iterations": 478,
+    "accepted_storage_cm": 77.01171067220464,
+    "half_mass_residual_cm": -1.7872350177583485e-07,
+    "o0_o2_log_identical": true,
+    "physical_log_sha256": "a01fa12b34777546cb4ec2c3da03169e12fd9d3d4c428768fa83b68e1203cc93",
+    "time_projection_poison_pass": true,
+    "transaction_headcalc_calls": 162,
+    "transaction_internal_retries": 20,
+    "transaction_nonlinear_iterations": 956
+  },
+  "production_release": "HOLD",
+  "reference_oracle": {
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "mass_tolerance_cm": 1e-06,
+    "snapshot": "B1.6",
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"
+  },
+  "remaining_limits": [
+    "legacy calendar projection t1900/t/tcum/timjan1/day counters remains in serialized backend",
+    "Hupsel qualification adapter still accepts integer-day boundaries only",
+    "physical B1.6 backend remains singleton/serial and is not thread-safe",
+    "calendar output counters and process-specific date logic are not yet decomposed",
+    "selective step-doubling remains out of scope"
+  ],
+  "schema_version": 1,
+  "slice": "A23BS",
+  "source_postimage": {
+    "kernel_time_contract": "generic [t0,t1]; calendar projection remains adapter-only",
+    "legacy_calendar_projection_reference_counts": {
+      "daycum": 31,
+      "daynr": 45,
+      "t1900": 136,
+      "tcum": 20,
+      "timjan1": 18
+    },
+    "parent_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "postimage_sha256": {
+      "headcalc.f90": "06dbbdec93e6d38a12cc82e88892087c516cd134729f701f33b85a06111f96f2",
+      "initialize.f90": "2381b5536a9e69bdd8e67783402be48697328959fea73400747274b395c87ae2",
+      "integral.f90": "627d022d285e91bdb989fb67f9627600527099810373997fd6d1143db214906f",
+      "swap.f90": "b228915d60faff914b4713b0016d0685eb6cee312b7f9c2645589b315058f6e1",
+      "timecontrol.f90": "bf43a18a1f1a5e6821b8b11e25fb47ecf14ff74cf4c2b54b82fca7cb47b2bc63",
+      "variables.f90": "54844bbd6a75929f9f49a73354cfaf26158448c31c1d786387ff46618b181890"
+    },
+    "removed_legacy_globals": [
+      "variables%fldaystart",
+      "variables%fldayend"
+    ],
+    "worker_derived_calendar_events": [
+      "worker%time%day_start_event",
+      "worker%time%day_end_event"
+    ]
+  },
+  "status": "PASS_GENERIC_TIME_CONTEXT_AND_WORKER_CALENDAR_EVENTS__LEGACY_CALENDAR_PROJECTION_REMAINS_ADAPTER_ONLY",
+  "transaction_regression": {
+    "log_sha256": "8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548",
+    "o0_o2_identical": true
+  },
+  "worker_gate": {
+    "checks": 8000,
+    "failures": 0,
+    "log_sha256": "53eb00e657fcc5010955655fb28a86c38ff0225f3501593005be6f821e5520fb",
+    "scratch_payload_bytes_per_worker": 3292,
+    "workers": 8
+  }
+}
