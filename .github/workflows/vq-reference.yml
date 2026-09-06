@@ -39,11 +39,13 @@ jobs:
       - name: Check B1.7 predecessor identity
         run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-7-reference-pin.json
 
-      - name: Check B1.8 admission identity
+      - name: Check B1.8 admission identity and ordered preimage
         run: python tools/vq/b1_8_admission_gate.py
 
-      - name: Compile and run SWAP-013 input guard gate
-        run: python reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py
+      - name: Check SWAP-013 source-bound Fortran guard gate
+        run: |
+          gfortran --version
+          python reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py
 
       - name: Check VQ gate unit tests
         run: |
