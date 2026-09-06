@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[5]
 PATCH = REPO_ROOT / "reference/swap-4.3.1/patches/SWAP-002/fix.patch"
 HARNESS = Path(__file__).with_name("tillage_start_harness.f90")
 EVIDENCE = Path(__file__).with_name("actual_source_start_evidence.json")
-EXPECTED_PATCH_SHA256 = "80e12cd4e9f47c192bd6c7d5ee7d460c473b3a2b29a5a553e8c35cf0b90b5c13"
+EXPECTED_PATCH_SHA256 = "e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b"
 EXPECTED_B0_SHA256 = "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
 EXPECTED_CORRECTED_SHA256 = "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
 REQUIRED_NEW_TOKENS = (
@@ -29,7 +29,7 @@ FORBIDDEN_ADMITTED_TOKENS = (
     "allocate(iTT1(tmax))",
     "TYPE_TILLAGE is outside the range defined by ITYPE_TILLAGE",
 )
-LEGACY_IMPOSSIBLE = "t1900 >= Date_tillage(i-1) .AND. t1900 < Date_tillage(i-1)"
+REMOVED_LEGACY_LINE = "-      if (t1900 >= Date_tillage(i-1) .AND. t1900 < Date_tillage(i-1)) iTill = i-1"
 
 
 def sha256(path: Path) -> str:
@@ -47,11 +47,8 @@ def main() -> int:
     positions = [patch_text.find(token) for token in REQUIRED_NEW_TOKENS]
     if any(pos < 0 for pos in positions) or positions != sorted(positions):
         raise SystemExit(f"SWAP-002 gate: required set_iTill token missing/out of order: {positions}")
-    if "-      if (" + LEGACY_IMPOSSIBLE + " iTill = i-1" not in patch_text:
-        # The exact removed line is easier and less ambiguous to check directly below.
-        removed = "-      if (t1900 >= Date_tillage(i-1) .AND. t1900 < Date_tillage(i-1)) iTill = i-1"
-        if removed not in patch_text:
-            raise SystemExit("SWAP-002 gate: legacy impossible interval line is not the removed preimage")
+    if REMOVED_LEGACY_LINE not in patch_text:
+        raise SystemExit("SWAP-002 gate: legacy impossible interval line is not the removed preimage")
     for token in FORBIDDEN_ADMITTED_TOKENS:
         if token in patch_text:
             raise SystemExit(f"SWAP-002 gate: unrelated tillage fix leaked into patch: {token}")
