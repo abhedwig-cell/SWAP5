@@ -1,6 +1,6 @@
 # SWAP-010 qualification evidence
 
-Current B1 admission status: **PROPOSED FOR B1.7**
+Current B1 admission status: **ADMITTED IN B1.7**
 
 ## Exact source identity
 
@@ -110,7 +110,7 @@ Status: **HARD FULL-RUN LEGACY MASS GATE PASS FOR CORRECTED CANDIDATE**.
 
 The evidence establishes a direct implementation defect and its minimal algebraic repair. It does not generalize to a new hydraulic model, alter model-7 retention, change other hydraulic models, or qualify any performance policy.
 
-Prospective B1.7 source identity after ordered application is:
+B1.7 source identity after ordered application is:
 
 ```text
 members          63
@@ -118,4 +118,4 @@ source bytes      1,860,091
 manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
 ```
 
-Formal admission requires the repository bookkeeping and fail-closed B1.7 identity gate to pass in CI.
+The repository branch contains the immutable B1.7 snapshot definition, ordered-preimage contract, deterministic reconstructor and fail-closed identity/admission gate. Admission becomes part of `main` only when the B1.7 pull request passes CI and is merged; the source-level and numerical qualification recorded here is already complete.
