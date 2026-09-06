@@ -52,6 +52,7 @@ The integrated reference workspace uses:
 reference/swap-4.3.1/
     b0/                  immutable B0 identity/source material
     patches/             qualified legacy corrections only
+    snapshots/           immutable B1 snapshot definitions
     b1-manifest.yml      ordered definition of the current B1 snapshot
     README.md            operating rules
 ```
@@ -64,7 +65,31 @@ B1.x = B0 + ordered accepted patch set
 
 This avoids maintaining a second opaque copy of the complete 4.3.1 tree. Each change remains visible as an explicit patch with audit and qualification evidence.
 
-Exact B1 snapshots are named `B1.0`, `B1.1`, ... . Once an identifier is used as a verification oracle, its patch list and B0 identity are immutable.
+Published B1 snapshots are immutable. Historical B1.2-B1.5 remain recorded but fail exact provenance requirements and must not be used as executable oracles. `B1.5p1` repaired the metadata without changing the intended five corrected source results and subsequently passed independent VQ identity, reconstruction, broad-control and targeted-correction gates.
+
+The current corrected reference is **B1.6**:
+
+```text
+B1.6 = B0
+     + SWAP-001
+     + SWAP-005
+     + SWAP-006
+     + SWAP-007
+     + SWAP-008
+     + SWAP-009
+```
+
+`SWAP-009` corrects the PDI Kelvin-sign vapor-conductivity caller defect. Its admission includes exact patch/preimage/corrected-target identity, strict compiled function-level verification, representative full PDI production execution and hard unrounded legacy mass-balance evidence.
+
+The deterministic B1.6 reconstructed source identity is:
+
+```text
+members          63
+source bytes      1,860,085
+manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+```
+
+B1.6 is the current qualified numerical/behavioural legacy-corrected oracle for future B2 regression. Its legacy mass evidence does not replace the separate unrounded transaction-aware mass-accounting gate required for SWAP5/B2.
 
 ## B2: SWAP 5 reference mode
 
@@ -76,6 +101,8 @@ A SWAP 5 release must not merely claim "compatible with SWAP 4.3.1". The preferr
 SWAP 5 reference mode verified against
 SWAP 4.3.1 Corrected Reference B1.x (<exact manifest/commit>)
 ```
+
+The VQ-1d admission gate is currently fail-closed because the integrated repository does not yet expose the complete callable B2 reference entrypoint/result surface required for an honest B1 -> B2 numerical comparison.
 
 ## Admission rule for a new legacy finding
 
@@ -90,7 +117,7 @@ confirmed bug
     -> regression/qualification
     -> add patch and evidence
     -> update B1 manifest
-    -> freeze a new B1 snapshot when appropriate
+    -> freeze a new B1 snapshot
     -> SWAP 5 verifies against corrected behaviour
 
 model development
@@ -104,6 +131,6 @@ Keeping B0/B1 inside the SWAP5 repository does not make legacy source part of th
 
 A later move to a dedicated `SWAP-4.3.1-reference` repository remains possible if repository size, access control or release management makes that useful. Such a move must preserve B0 hashes, B1 patch order and qualification history.
 
-## Current bootstrap status
+## Current operational status
 
-The B0 cryptographic identity, exact 63-member source manifest, archive verifier and B0/B1/B2 policy are recorded. The integrated `reference/swap-4.3.1/` workspace is the accepted operational home for B0/B1. At bootstrap no qualified B1 correction is implied merely by creating the workspace; B1 initially equals B0 until the first patch passes its admission gate.
+The B0 cryptographic identity, exact 63-member source manifest, archive verifier and B0/B1/B2 policy are recorded. B1.6 is the current corrected legacy reference. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.
