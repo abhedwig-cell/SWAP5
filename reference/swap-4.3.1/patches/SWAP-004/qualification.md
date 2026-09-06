@@ -24,6 +24,8 @@ candidate tillage.f90 SHA-256
 
 The ordered preimage differs from canonical B0 only because SWAP-002 is already admitted in B1.10. The SWAP-004 block itself is otherwise the historical isolated indexing hunk.
 
+The Git-stored `fix.patch` was fetched as raw/base64 content and rehashed independently; the observed SHA-256 is exactly `0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818`.
+
 ## Fresh strict qualification
 
 GNU Fortran 14.2.0 with `-fcheck=all` reproduces the legacy defect for:
@@ -51,7 +53,10 @@ The corrected mapping logic was then checked with four focused cases:
 
 ```text
 SWAP-004_CANDIDATE_HARNESS PASS 4/4
+SWAP-004_B0_SPARSE_BOUNDS_REPRODUCER PASS_EXPECTED_FAILURE
 ```
+
+The repository contains `tests/run_mapping_gate.py`, which binds the focused compilation tests to the exact stored patch SHA, canonical B0 hash, ordered B1.10 preimage and candidate target hash. The focused harnesses were re-run successfully with GNU Fortran 14.2.0. CI wiring for the prospective admission snapshot is still pending.
 
 The dense-valid control explicitly compares old and corrected lookup positions and shows no mapping change for that legacy-valid domain.
 
@@ -63,4 +68,10 @@ SWAP-003 remains unqualified and excluded. The candidate does not alter physical
 
 ## Admission still pending
 
-Before immutable B1 admission, the candidate still needs a repository-bound reproducible gate, independent next-snapshot source reconstruction/identity, expected-difference registration, B2 repin and green VQ/Documentation CI.
+The defect and isolated correction are now qualified at focused source level. Immutable B1 admission still requires:
+
+- independent reconstruction and identity of the prospective next B1 snapshot from B1.10;
+- expected-difference registration;
+- B2 handoff repin while remaining fail-closed;
+- VQ workflow wiring for `run_mapping_gate.py` plus predecessor identity checks;
+- green VQ and Documentation CI before merge.
