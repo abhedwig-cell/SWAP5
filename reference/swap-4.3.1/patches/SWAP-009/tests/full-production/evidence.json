@@ -1,0 +1,99 @@
+{
+  "build": {
+    "b0_candidate_fortran_source_differences_after_identical_diagnostics": [
+      "WC_K_models_04_11.f90"
+    ],
+    "compiler": "GNU Fortran 14.2.0",
+    "diagnostic_b0_executable_sha256": "0f9ab2aa7b302728917e88caccae1111d9f45ea5b9d96b461691f60320409999",
+    "diagnostic_candidate_executable_sha256": "a432402431f7b7e8d02449df13c8d3203c7a4995b5de123e9213103994369c71",
+    "diagnostic_source_delta": "identical in B0/candidate; only increases BFO numeric precision and prints existing unrounded checkmassbal residuals",
+    "flags": "-cpp -Dlinux -std=legacy -ffree-line-length-none -fallow-argument-mismatch -fno-range-check -O0 -g -fcheck=all -fbacktrace",
+    "standard_b0_executable_sha256": "df2f6607bb268f28aae9ba43f6aa10807dc7d565a7405e83ba34f96381ac8417",
+    "standard_candidate_executable_sha256": "ba4670fa0ed445e8fe210a5fc090e4cbd10d4450e4a31fcba5abdf854c7225b4"
+  },
+  "conclusion": "The exact SWAP-009 correction changes full-model PDI hydraulic state/flux behavior under a bounded-cost production run while both B0 and candidate retain the same Newton route and satisfy the predeclared 1e-6 cm internal mass-balance criterion.",
+  "finding": "SWAP-009",
+  "gate": "representative_full_pdi_production_path",
+  "mass_balance": {
+    "b0": [
+      {
+        "combined_column_residual_cm": -3.559800249020029e-08,
+        "max_abs_compartment_residual_cm": 2.220446049250313e-16,
+        "ponding_residual_cm": -3.559800160202187e-08,
+        "profile_residual_cm": -8.881784197001252e-16
+      },
+      {
+        "combined_column_residual_cm": -3.3553543277164977e-10,
+        "max_abs_compartment_residual_cm": 8.326672684688674e-17,
+        "ponding_residual_cm": -3.355296041007705e-10,
+        "profile_residual_cm": -5.828670879282072e-15
+      }
+    ],
+    "candidate": [
+      {
+        "combined_column_residual_cm": -3.5598034464623396e-08,
+        "max_abs_compartment_residual_cm": 2.220446049250313e-16,
+        "ponding_residual_cm": -3.55980302457759e-08,
+        "profile_residual_cm": -4.218847493575595e-15
+      },
+      {
+        "combined_column_residual_cm": -3.3552832734429217e-10,
+        "max_abs_compartment_residual_cm": 8.326672684688674e-17,
+        "ponding_residual_cm": -3.3552863265562394e-10,
+        "profile_residual_cm": 3.0531133177191805e-16
+      }
+    ],
+    "criterion_cm": 1e-06,
+    "dwb_created_b0": false,
+    "dwb_created_candidate": false,
+    "max_abs_combined_column_residual_cm_b0": 3.559800249020029e-08,
+    "max_abs_combined_column_residual_cm_candidate": 3.5598034464623396e-08,
+    "scope_note": "legacy unrounded internal ponding/profile/compartment accounting used for B1 qualification; this does not replace the future B2 transaction-aware VQ mass-accounting contract",
+    "status": "PASS"
+  },
+  "production_run": {
+    "b0_normal_completion": true,
+    "candidate_normal_completion": true,
+    "diagnostic_newton_histogram_b0": {"2": 57},
+    "diagnostic_newton_histogram_candidate": {"2": 57},
+    "high_precision_differences_by_day": [
+      {
+        "boundary_flux_depth_m_per_day": {"b0": -0.0015509713552201174, "candidate": -0.0015509708985945844, "index_1based": 86, "max_abs_difference": 4.566255329581381e-10},
+        "head_cm": {"b0": -115205.5106901517, "candidate": -115205.51529085862, "index_1based": 1, "max_abs_difference": 0.004600706917699426},
+        "root_uptake_depth_m": {"b0": 0.0, "candidate": 0.0, "index_1based": 1, "max_abs_difference": 0.0},
+        "theta": {"b0": 0.03997283679326642, "candidate": 0.0399728363009115, "index_1based": 1, "max_abs_difference": 4.923549207225264e-10}
+      },
+      {
+        "boundary_flux_depth_m_per_day": {"b0": -0.0011514657523413604, "candidate": -0.0011514658892641282, "index_1based": 85, "max_abs_difference": 1.3692276782870105e-10},
+        "head_cm": {"b0": -117538.34058338031, "candidate": -117538.34386560899, "index_1based": 1, "max_abs_difference": 0.003282228673924692},
+        "root_uptake_depth_m": {"b0": 0.0, "candidate": 0.0, "index_1based": 1, "max_abs_difference": 0.0},
+        "theta": {"b0": 0.03972633727852149, "candidate": 0.039726336936073026, "index_1based": 1, "max_abs_difference": 3.4244846541797713e-10}
+      }
+    ],
+    "standard_bfo_different_records_after_timestamp_normalization": 1,
+    "standard_bfo_sha256_b0": "7b2d1a50fc7a3c7d57b330475fb9d96d3844c19798d205496ac63d58eb32bda3",
+    "standard_bfo_sha256_candidate": "a93325a58d4430031bc4109b3638f4eb4afb7d122109949e83899a468d894225",
+    "standard_newton_histogram_b0": {"2": 57},
+    "standard_newton_histogram_candidate": {"2": 57}
+  },
+  "qualification_case": {
+    "bottom_boundary": "zero bottom flux (SWBOTB=6)",
+    "crop": "bare soil",
+    "forcing": "ETref=5.0 mm/day on both days; zero rain; SWETR=1",
+    "hydraulic_model": 8,
+    "initial_head_cm": -100000.0,
+    "input_sha256": {
+      "pdi.met": "48c269785405464476ca49dd315e12ae67e782fb0e6d3cd0322155d0ab8fb3bc",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+      "swap.swp": "5de82558c539cbab0fe110c88d3509b25f689a781158c7b511a3f5086c549c7c"
+    },
+    "ksat_cm_per_day": {"layers_1_3": 83.24164, "layers_4_5": 25.81471},
+    "mass_balance_criterion_cm": 1e-06,
+    "origin": "derived from supplied B0 official cases/2.grassgrowth",
+    "pdi_vapor_switch": 1,
+    "period": ["1980-01-01", "1980-01-02"]
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}

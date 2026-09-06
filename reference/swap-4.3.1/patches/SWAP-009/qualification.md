@@ -64,7 +64,7 @@ f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7
 
 ## Exact-candidate strict Fortran hydraulic gate
 
-The candidate has now been rerun through a direct Fortran harness using the canonical B0 module and the byte-verified corrected target.
+The candidate has been rerun through a direct Fortran harness using the canonical B0 module and the byte-verified corrected target.
 
 Compiler and runtime checks:
 
@@ -97,29 +97,99 @@ K with vapor disabled difference          = 0
 
 Thus the actual PDI conductivity call path reproduces the independent Kelvin sign prediction while the non-vapor PDI route remains unchanged in the tested scope.
 
-Reproducible assets and machine-readable evidence are under:
-
-```text
-reference/swap-4.3.1/patches/SWAP-009/tests/
-```
-
 Status:
 
 ```text
 EXACT-CANDIDATE STRICT FORTRAN HYDRAULIC FUNCTION-LEVEL GATE: PASS
 ```
 
+## Full PDI production-path regression
+
+A second gate executes the complete SWAP solver rather than a function harness. The case is deterministically derived from the supplied B0 official `2.grassgrowth` case and uses:
+
+```text
+period             1980-01-01 .. 1980-01-02
+crop               bare soil
+initial h           -100000 cm uniform
+hydraulic model     8 (PDI), all layers
+SWVAPOR             1
+Ksat layers 1-3     83.24164 cm/d
+Ksat layers 4-5     25.81471 cm/d
+bottom boundary     zero flux
+reference ET        5.0 mm/d both days
+rain                0
+CRITDEVMASBAL       1.0e-6 cm
+```
+
+Controlling input identities:
+
+```text
+swap.swp  SHA-256 5de82558c539cbab0fe110c88d3509b25f689a781158c7b511a3f5086c549c7c
+pdi.met   SHA-256 48c269785405464476ca49dd315e12ae67e782fb0e6d3cd0322155d0ab8fb3bc
+```
+
+The full-run GNU compatibility executables are:
+
+```text
+B0        df2f6607bb268f28aae9ba43f6aa10807dc7d565a7405e83ba34f96381ac8417
+candidate ba4670fa0ed445e8fe210a5fc090e4cbd10d4450e4a31fcba5abdf854c7225b4
+```
+
+Both complete normally. Both have exactly the same nonlinear route:
+
+```text
+2 Newton iterations: 57 hits
+```
+
+The normal BFO files already contain one differing record after timestamp normalization. An identical output-only diagnostic transform was additionally applied to both source trees to expose existing `h`, `theta`, boundary-flux and `checkmassbal` values at higher precision. The diagnostic changes no state or physics expression, and after applying it the two Fortran source trees differ only in `WC_K_models_04_11.f90`. The diagnostic runs retain the same 57 x 2-iteration route.
+
+Maximum high-precision pressure-head differences are:
+
+```text
+day 1  0.0046007069 cm
+day 2  0.0032822287 cm
+```
+
+Maximum theta differences are approximately `4.92e-10` and `3.42e-10`; boundary-flux records also differ. This is the expected direction of evidence: the correction changes the active PDI vapor-conductivity path without changing the nonlinear route for this normal-Ksat case.
+
+Status:
+
+```text
+REPRESENTATIVE FULL PDI PRODUCTION-PATH REGRESSION: PASS
+```
+
+## Hard water-balance evidence for the production case
+
+The mass criterion was fixed in the input before comparison:
+
+```text
+CRITDEVMASBAL = 1.0e-6 cm
+```
+
+The diagnostic emits the already-computed unrounded legacy `checkmassbal` residuals. For the two reporting intervals, the maximum absolute combined ponding + profile residual is:
+
+```text
+B0        3.5598002490e-8 cm
+candidate 3.5598034465e-8 cm
+```
+
+Maximum individual-compartment residuals are `<= 2.23e-16 cm`. Neither run creates a `.dwb` deviation file. Both therefore satisfy the predeclared `1e-6 cm` criterion by more than an order of magnitude.
+
+This is hard, unrounded mass evidence for this **legacy B1 qualification case**. It does not replace the separate transaction-aware VQ accounting contract required for future B2/reference/runtime qualification.
+
+Status:
+
+```text
+HARD FULL-RUN LEGACY MASS-BALANCE GATE: PASS
+```
+
+The reproducible case generator, output-only diagnostic transform and machine-readable evidence are under `tests/full-production/`.
+
 ## Qualification boundary
 
-This result demonstrates the sign defect and direct constitutive correction through compiled Fortran, but it is still not a complete production qualification.
+The SWAP-009 technical qualification is now complete through full production execution and hard legacy mass accounting. Formal B1 admission is still deliberately withheld until the repaired B1.5p1 independent VQ identity/reconstruction line is accepted/integrated. Once that dependency passes, corrected-reference bookkeeping may promote the expected difference and freeze a new immutable successor snapshot.
 
-Before formal B1 admission, require:
-
-- accepted/integrated independent VQ identity/reconstruction gate for the repaired B1.5p1 base;
-- at least one representative full PDI SWAP production-path regression that actually exercises the vapor term;
-- complete hard water-balance evidence for that run.
-
-No tolerance relaxation is allowed for water balance. The physically active SWAP-009 correction remains outside B1 until these gates pass.
+No tolerance relaxation is allowed for water balance, and this result does not create B1.6 by itself.
 
 ## Conclusion
 
@@ -130,8 +200,8 @@ CANONICAL B0 PREIMAGE: PASS
 EXACT STORED PATCH IDENTITY: PASS
 AUDIT HYDRAULIC TEST EVIDENCE: PASS
 EXACT-CANDIDATE STRICT FORTRAN HYDRAULIC GATE: PASS
+FULL PDI PRODUCTION-PATH REGRESSION: PASS
+HARD FULL-RUN LEGACY WATER BALANCE: PASS
 CURRENT B1 BASE IDENTITY/RECONSTRUCTION: PENDING VQ INTEGRATION
-FULL PDI PRODUCTION-PATH REGRESSION: PENDING
-HARD FULL-RUN WATER BALANCE: PENDING
 B1 ADMISSION: PENDING
 ```
