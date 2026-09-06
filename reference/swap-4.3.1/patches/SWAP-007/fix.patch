@@ -1,0 +1,16 @@
+--- SWAP/oxygenstress.f90
++++ SWAP/oxygenstress.f90
+@@ -845,8 +845,11 @@
+                    dexp(-l/shape_factor_microbialr)-                    &
+                    r_mroot_z0/d_soil*l*dexp(-l/shape_factor_rootr)
+                
+-            if (dabs(fi_a) > 0.d0) then
+-                lnew = dabs(l - (fi / fi_a))
++            if (dabs(fi_a) > dmax1(tiny(1.0d0), dabs(fi)/huge(1.0d0))) then
++               lnew = dabs(l - (fi / fi_a))
++            else
++               ! Force a controlled restart instead of risking overflow in fi/fi_a.
++               lnew = huge(1.0d0)
+             end if
+             
+ ! --- for convergence --> depends on initial value of lnew

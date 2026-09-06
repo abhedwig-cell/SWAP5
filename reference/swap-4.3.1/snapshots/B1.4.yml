@@ -1,0 +1,27 @@
+schema_version: 1
+snapshot: "B1.4"
+reference_family: SWAP-4.3.1-corrected
+
+b0:
+  source_archive_sha256: "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  expanded_member_manifest_sha256: "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
+
+patches:
+  - id: "SWAP-001"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
+    patch_sha256: "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770"
+  - id: "SWAP-005"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-005/fix.patch"
+    patch_sha256: "9c3839ac0674d7c5c3eb2de797684c7baf83fdc3a18d64de68c9746de9878e66"
+  - id: "SWAP-006"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
+    patch_sha256: "558eb084befac713aec0b923d45182a1efcbed44d71ed00e6faf024b6540718a"
+  - id: "SWAP-007"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
+    patch_sha256: "e65b703b73b530915414265c3b647a403f995adc568390ed5da4ecb55be75b96"
+    target: "SWAP/oxygenstress.f90"
+    b0_target_sha256: "2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75"
+    corrected_target_sha256: "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+    qualification: "reference/swap-4.3.1/patches/SWAP-007/qualification.md"
+
+meaning: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-007 oxygenstress Newton-overflow guard on top of B1.3."

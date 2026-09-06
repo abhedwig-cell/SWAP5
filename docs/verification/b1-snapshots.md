@@ -10,6 +10,7 @@ B1 is an ordered, immutable sequence of corrected SWAP 4.3.1 reference definitio
 | `B1.1` | `reference/swap-4.3.1/snapshots/B1.1.yml` | `SWAP-001` | first corrected reference |
 | `B1.2` | `reference/swap-4.3.1/snapshots/B1.2.yml` | `SWAP-001`, `SWAP-005` | adds crop-calendar bounds/portability correction |
 | `B1.3` | `reference/swap-4.3.1/snapshots/B1.3.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006` | removes meteo crop-calendar sentinel/initialization dependence |
+| `B1.4` | `reference/swap-4.3.1/snapshots/B1.4.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007` | adds oxygenstress Newton-overflow guard |
 
 ## B1.1: SWAP-001
 
@@ -29,8 +30,14 @@ SWAP-006 removes an implicit sentinel based on zero-initialized unused `cropstar
 
 The audit register records a NaN-initialized reproducer that exposes the B0 dependency and a passing patched build. The admission also records the exact B0 `MOD_meteo.f90` identity, the isolated minimal patch SHA-256, deterministic corrected-file SHA-256 and a byte-safe verifier.
 
+## B1.4: SWAP-007
+
+SWAP-007 prevents overflow in an oxygen-stress Newton update when `fi_a` is nonzero but so small that `fi/fi_a` is not representable. B1.4 retains the original Newton update whenever the quotient is representable; otherwise it sends the attempt into the existing large-`lnew` restart route.
+
+The original strict-FPE grass case crashes at `oxygenstress.f90:849`, while the patched strict case completes normally. A normal original-versus-patched grass run produced identical `result_output.csv` after neutralizing only the generated timestamp. The admission records the exact B0 preimage, isolated patch SHA-256, deterministic corrected-file SHA-256 and a byte-safe verifier.
+
 ## Candidate versus admitted
 
-Candidate dossiers may be prepared before their exact patch is ready. For example, SWAP-011 is technically qualified but still has `PATCH_PAYLOAD_PENDING` provenance status. It therefore does not appear in B1.3.
+Candidate dossiers may be prepared before their exact patch is ready. For example, SWAP-011 is technically qualified but still has `PATCH_PAYLOAD_PENDING` provenance status. It therefore does not appear in B1.4.
 
 Only the ordered patch entries in `reference/swap-4.3.1/b1-manifest.yml` define the current B1 behaviour.
