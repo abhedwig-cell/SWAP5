@@ -43,6 +43,7 @@ The current manifest points to `B1.5p1`, but its exact-oracle status is `PENDING
 
 | Audit ID | State | Finding | Qualified correction status | Remaining admission gate |
 | --- | --- | --- | --- | --- |
+| `SWAP-009` | `FIX_TESTED` candidate | four PDI conductivity functions pass `abs(h)` into a Kelvin vapor-conductivity relation that expects signed negative unsaturated pressure head, causing relative humidity greater than one and potentially very large dry-range conductivity error | exact minimal four-call-site patch, canonical B0 preimage, exact stored patch SHA and corrected-target SHA recorded under `reference/swap-4.3.1/patches/SWAP-009/`; existing hydraulic/theory tests support the correction | current B1.5p1 identity gate PASS, exact PDI testbank rerun, representative full PDI production-path regression and hard water-balance evidence |
 | `SWAP-011` | `PATCH_PAYLOAD_PENDING` | `dhconduc` uses a standard MvG conductivity derivative for hydraulic models whose implemented `K(h)` differs, producing an inconsistent implicit Richards Jacobian | E5/E6/E7 correction is `FIX_TESTED` / `READY_PATCH_UPSTREAM`; candidate dossier stored under `reference/swap-4.3.1/patches/SWAP-011/` | recover exact final E7 `fix.patch`, verify B0 preimages and patch bytes, then update B1 manifest |
 
 Presence under `patches/` is not sufficient for admission. Only the ordered patch entries in the current manifest define B1 behaviour.
