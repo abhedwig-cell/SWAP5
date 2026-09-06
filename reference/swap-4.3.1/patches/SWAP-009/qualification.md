@@ -1,6 +1,6 @@
 # SWAP-009 qualification evidence
 
-Current B1 admission status: **CANDIDATE, NOT ADMITTED**
+Current B1 admission status: **ADMITTED IN B1.6**
 
 ## Audit finding
 
@@ -44,7 +44,7 @@ This confirms that the defect becomes increasingly important in the very dry ran
 
 ## Exact B0 / corrected-source verification
 
-The candidate patch is isolated to four identical caller substitutions in `WC_K_models_04_11.f90`.
+The admitted patch is isolated to four identical caller substitutions in `WC_K_models_04_11.f90`.
 
 ```text
 canonical B0 SHA-256:
@@ -64,7 +64,7 @@ f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7
 
 ## Exact-candidate strict Fortran hydraulic gate
 
-The candidate has been rerun through a direct Fortran harness using the canonical B0 module and the byte-verified corrected target.
+The candidate was rerun through a direct Fortran harness using the canonical B0 module and the byte-verified corrected target.
 
 Compiler and runtime checks:
 
@@ -185,11 +185,34 @@ HARD FULL-RUN LEGACY MASS-BALANCE GATE: PASS
 
 The reproducible case generator, output-only diagnostic transform and machine-readable evidence are under `tests/full-production/`.
 
-## Qualification boundary
+## VQ-qualified predecessor and B1.6 reconstruction
 
-The SWAP-009 technical qualification is now complete through full production execution and hard legacy mass accounting. Formal B1 admission is still deliberately withheld until the repaired B1.5p1 independent VQ identity/reconstruction line is accepted/integrated. Once that dependency passes, corrected-reference bookkeeping may promote the expected difference and freeze a new immutable successor snapshot.
+The repaired predecessor `B1.5p1` subsequently passed the independent VQ chain:
 
-No tolerance relaxation is allowed for water balance, and this result does not create B1.6 by itself.
+```text
+exact identity/provenance                    PASS
+deterministic reconstruction                 PASS
+all corrected-target hashes                  PASS
+broad B0 -> B1 control edges                 PASS
+all five predecessor correction gates        PASS
+oracle status                                QUALIFIED_NUMERICAL_BEHAVIOURAL
+```
+
+Applying the exact SWAP-009 correction to that reconstructed predecessor produces the pinned B1.6 source identity:
+
+```text
+members          63
+source bytes      1,860,085
+manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+```
+
+`tools/vq/b1_6_reconstruct.py` reproduces this derivation from the exact B0 distribution through B1.5p1 and then SWAP-009.
+
+## Admission decision
+
+SWAP-009 meets the corrected-reference policy: it is a demonstrated implementation defect, the intended Kelvin-sign rule is established, the patch is minimal and byte-pinned, direct and production execution gates pass, hard legacy mass closure passes, and the expected difference is explicitly bounded.
+
+It is therefore admitted in immutable snapshot `B1.6`. This is a legacy bugfix admission, not model development and not a solver-policy change.
 
 ## Conclusion
 
@@ -202,6 +225,7 @@ AUDIT HYDRAULIC TEST EVIDENCE: PASS
 EXACT-CANDIDATE STRICT FORTRAN HYDRAULIC GATE: PASS
 FULL PDI PRODUCTION-PATH REGRESSION: PASS
 HARD FULL-RUN LEGACY WATER BALANCE: PASS
-CURRENT B1 BASE IDENTITY/RECONSTRUCTION: PENDING VQ INTEGRATION
-B1 ADMISSION: PENDING
+B1.5p1 PREDECESSOR VQ ORACLE: PASS
+DETERMINISTIC B1.6 SOURCE IDENTITY: PASS
+B1 ADMISSION: B1.6
 ```

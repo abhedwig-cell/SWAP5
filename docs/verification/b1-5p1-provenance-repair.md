@@ -9,7 +9,7 @@
 
 VQ-1c applied a fail-closed identity check to the corrected-reference snapshots. That check found that several immutable B1 snapshot records did not match the exact bytes of their stored `fix.patch` artifacts. SWAP-007 also carried an incorrect B0 `oxygenstress.f90` SHA in its dossier/helper even though the correction transformation itself still maps the canonical B0 source to the documented corrected source hash.
 
-The affected historical snapshots remain untouched. `B1.5p1` is a new provenance-correct oracle with the same intended patch set as `B1.5`.
+The affected historical snapshots remain untouched. `B1.5p1` is a provenance-correct replacement with the same intended patch set as `B1.5`.
 
 ## Exact repair
 
@@ -27,8 +27,22 @@ For SWAP-007 the historical B0 hash was `2db206bf28e883a22a1419d4729e03c1bb6b9c6
 
 This repair changes reference provenance metadata, not the intended corrected source semantics. It does not add or remove a legacy bugfix, does not alter SWAP5 production code and does not alter any physical model equation.
 
-The invalid historical snapshot identities remain useful as audit history but must not be used as exact executable oracles. The first corrected-reference snapshot intended to pass the exact artifact/preimage identity gate is `B1.5p1`.
+The invalid historical snapshot identities remain useful as audit history but must not be used as exact executable oracles.
 
-## Verification handoff
+## VQ qualification result
 
-After this change reaches `main`, VQ must rebase or otherwise inspect the new snapshot and rerun its fail-closed B1 identity gate. Numerical B0 -> B1 comparison remains blocked until that independent gate reports PASS.
+The independent VQ handoff has been completed. `B1.5p1` passed:
+
+```text
+snapshot/provenance identity              PASS
+canonical B0 preimages                    PASS
+stored patch identities                   PASS
+deterministic source reconstruction       PASS
+all corrected-target SHA-256 gates        PASS
+broad B0 -> B1 control edges              PASS
+all five correction-triggering gates      PASS
+```
+
+VQ therefore qualified `B1.5p1` as `QUALIFIED_NUMERICAL_BEHAVIOURAL`. It subsequently became the qualified predecessor for `B1.6`, which adds SWAP-009 as a separately qualified sixth correction.
+
+The provenance repair never relaxes the separate hard-mass requirement: rounded legacy `.BAL/.BLC` remains unsuitable as the future SWAP5 machine-precision mass oracle.

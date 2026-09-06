@@ -15,6 +15,8 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CANDIDATE = REPO_ROOT / "tools" / "vq" / "cases" / "b2-reference-candidate.json"
+QUALIFIED_B1_SNAPSHOT = "B1.6"
+QUALIFIED_B1_STATUS = "QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 REQUIRED_CAPABILITIES = (
     "callable_reference_entrypoint",
@@ -53,8 +55,8 @@ def assess_candidate(repo_root: Path, candidate_path: Path = DEFAULT_CANDIDATE) 
 
     checks = result["checks"]
     checks["b1_oracle_qualified"] = (
-        b1.get("snapshot") == "B1.5p1"
-        and b1.get("qualification") == "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+        b1.get("snapshot") == QUALIFIED_B1_SNAPSHOT
+        and b1.get("qualification") == QUALIFIED_B1_STATUS
     )
     checks["exact_b2_commit"] = _valid_sha(b2.get("commit"))
     checks["ready_status"] = b2.get("status") == READY
@@ -78,7 +80,9 @@ def assess_candidate(repo_root: Path, candidate_path: Path = DEFAULT_CANDIDATE) 
 
     result["admissible_adapter_target"] = all(checks.values())
     if not result["admissible_adapter_target"]:
-        if not checks["ready_status"]:
+        if not checks["b1_oracle_qualified"]:
+            result["failure"] = "b1_oracle_not_current_or_not_qualified"
+        elif not checks["ready_status"]:
             result["failure"] = "b2_reference_entrypoint_not_ready"
         elif not checks["exact_b2_commit"]:
             result["failure"] = "invalid_or_missing_b2_commit"

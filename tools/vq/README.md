@@ -2,111 +2,75 @@
 
 This directory contains verification and qualification tooling only. It must not contain production SWAP physics or become a hidden production execution path.
 
-## B0 identity
+## B0 identity and provisional runner
 
 ```bash
 python tools/vq/reference_identity.py --archive /path/to/SWAP_4.3.1.zip
-```
-
-The gate reads `docs/verification/reference-baseline.json` and fails closed on size or SHA-256 mismatch.
-
-## B0 provisional exact-source runner
-
-```bash
 python tools/vq/b0_source_runner.py \
   --archive /path/to/SWAP_4.3.1.zip \
   --work-dir /tmp/vq-b0 \
   --case 2.grassgrowth
 ```
 
-The GNU runner is capability-limited verification infrastructure. It is not declared globally equivalent to the packaged Intel executable. Case-specific evidence and limitations are recorded under `tools/vq/cases/` and `docs/verification/`.
+The GNU runner is capability-limited verification infrastructure. It is not declared globally equivalent to the packaged Intel executable. Legacy BAL/BLC normalization is available through `balance.py`, but its `0.01 cm` output precision is not sufficient for the future hard invariant-13 mass gate.
 
-For the Hupselbrook legacy balance-only smoke:
+## B1.5p1 predecessor qualification
 
-```bash
-python tools/vq/b0_source_runner.py \
-  --archive /path/to/SWAP_4.3.1.zip \
-  --work-dir /tmp/vq-hupsel \
-  --case 1.hupselbrook \
-  --disable-csv
-```
-
-## Legacy balance normalization
+`B1.5p1` is the provenance-repaired five-fix predecessor of the current B1 reference. Its exact identity can still be reproduced with:
 
 ```bash
-python tools/vq/balance.py --bal result.bal --blc result.blc
-python tools/vq/qualify_hupselbrook.py --bal result.bal --blc result.blc
-```
+python tools/vq/b1_snapshot_identity.py \
+  --reference-root /path/to/SWAP5-checkout \
+  --pin tools/vq/cases/b1-5p1-reference-pin.json
 
-BAL/BLC values are rounded to `0.01 cm`. Passing these gates is regression evidence only and does not satisfy the future hard invariant-13 mass gate.
-
-## B1 identity gate
-
-The current default pin is the provenance-repaired `B1.5p1` snapshot:
-
-```bash
-python tools/vq/b1_snapshot_identity.py --reference-root /path/to/SWAP5-checkout
-```
-
-The gate verifies the pinned snapshot blob, canonical B0 member-manifest blob, every stored patch SHA-256 and every declared B0 target preimage. `B1.5p1` passes this identity gate. Historical `B1.2` through `B1.5` remain failed-oracle audit records and are not rewritten.
-
-See `docs/verification/vq-1c-b1.5p1-evidence.md`.
-
-## B1.5p1 deterministic reconstruction
-
-VQ reconstructs the corrected source tree independently from the exact B0 distribution:
-
-```bash
 python tools/vq/b1_reconstruct.py \
   --archive /path/to/SWAP_4.3.1.zip \
   --output-dir /tmp/B1.5p1/SWAP
 ```
 
-The reconstruction fails closed unless:
+VQ qualified B1.5p1 through exact provenance, deterministic reconstruction, broad B0 -> B1 control edges and targeted gates for SWAP-001, -005, -006, -007 and -008. It remains a valid historical qualified predecessor; it is no longer the current B1 oracle after B1.6 admission.
 
-- the B0 distribution identity passes;
-- the nested B0 `SWAP.ZIP` SHA-256 passes;
-- each corrected target starts from the exact canonical B0 preimage;
-- every byte target occurs exactly once;
-- all five resulting target SHA-256 values equal the B1.5p1 snapshot declarations;
-- the final 63-member reconstructed source manifest equals `c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30`.
+## Current B1.6 corrected reference
 
-The first B0 -> B1 control edges pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
+`B1.6` is the current corrected-reference oracle:
 
-## B1.5p1 targeted correction qualification
-
-The VQ-1c3 harness binds each reproducer to the exact B0 and B1.5p1 source fragment before it executes:
-
-```bash
-python tools/vq/b1_targeted_qualification.py \
-  --b0-source-root /tmp/B0/SWAP \
-  --b1-source-root /tmp/B1.5p1/SWAP \
-  --work-dir /tmp/vq-b1-targeted
+```text
+B1.6 = B1.5p1 + SWAP-009
 ```
 
-This runs the source-bound SWAP-001, SWAP-005, SWAP-006 and SWAP-008 gates. To include the full SWAP-007 strict-FPE grass gate, also provide strict reference executables and the unchanged official grass case:
+Its snapshot identity is pinned in `tools/vq/cases/b1-6-reference-pin.json`. Repository admission bookkeeping is checked by:
 
 ```bash
-  --b0-fpe-exe /tmp/b0/swap_fpe \
-  --b1-fpe-exe /tmp/b1/swap_fpe \
-  --grass-case /path/to/cases/2.grassgrowth
+python tools/vq/b1_6_admission_gate.py
 ```
 
-Gate semantics match the admitted defect:
+The gate verifies the current manifest/snapshot, ordered patch identities, canonical B0 preimages and the pinned B1.6 source identity. It is a provenance/bookkeeping gate and does not replace the compiled SWAP-009 qualification evidence.
 
-- `SWAP-001`: shape-mismatch failure versus conformable copy; an additional full macropore smoke confirms B0 reject/B1 completion;
-- `SWAP-005`: signaling-NaN reproducer demonstrates why the `i < ifnd` guard must precede `i+1` access;
-- `SWAP-006`: signaling-NaN reproducer removes the unused-record sentinel dependency;
-- `SWAP-007`: strict-FPE full grass run fails in B0 and completes in B1.5p1;
-- `SWAP-008`: actual `bandec`/`banbks` arithmetic remains equal while `INOUT` restores a defined Fortran contract.
+Exact source reconstruction from canonical B0 is available through:
 
-All five targeted gates pass. Together with VQ-1c1/c2, VQ qualifies B1.5p1 as the numerical/behavioural corrected-reference oracle for B2 regression. This does not make legacy rounded BAL/BLC a hard mass oracle and does not claim exhaustive coverage of every SWAP 4.3.1 option combination.
+```bash
+python tools/vq/b1_6_reconstruct.py \
+  --archive /path/to/SWAP_4.3.1.zip \
+  --output-dir /tmp/B1.6/SWAP
+```
 
-See `docs/verification/vq-1c3-b1.5p1-targeted-qualification.md` and `tools/vq/cases/b1-5p1-targeted-qualification-2026-09-06.json`.
+The reconstructor first reproduces qualified B1.5p1 and then applies the exact SWAP-009 transformation. Expected final source identity:
+
+```text
+members          63
+source bytes      1,860,085
+manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+```
+
+SWAP-009 itself has passed exact patch/preimage/corrected-target checks, strict compiled PDI function-level verification, a representative full PDI SWAP production-path regression and a predeclared hard unrounded legacy mass-balance gate.
+
+## Expected differences
+
+`docs/verification/expected-differences.json` defines the admitted B0 -> B1.6 difference envelopes. Any unregistered difference remains a qualification failure. B1 is a corrected legacy reference, not a license for approximate equivalence.
 
 ## B2 reference-entrypoint admission
 
-VQ-1d does not invent a SWAP5/B2 implementation. Before a numerical B1.5p1 -> B2 comparison can run, the candidate checkout must pass:
+Before a numerical B1.6 -> B2 comparison can run, the candidate checkout must pass:
 
 ```bash
 python tools/vq/b2_reference_gate.py \
@@ -114,22 +78,20 @@ python tools/vq/b2_reference_gate.py \
   --candidate tools/vq/cases/b2-reference-candidate.json
 ```
 
-The fail-closed admission gate requires an exact B2 commit, an integrated callable reference-mode entrypoint, an explicit reference numerical policy, a canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separated numerical configuration, unrounded mass accounting and transaction diagnostics.
+The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
-The current candidate is intentionally `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`: current `main` is documentation-led and does not yet contain the production SWAP5 reference seam required for an honest B1 -> B2 run. The blocked result is recorded in `tools/vq/cases/b2-reference-gate-2026-09-06.json` and explained in `docs/verification/vq-1d-b2-entrypoint-gate.md`.
-
-A future production integration must update the candidate to `READY_FOR_VQ_B1_TO_B2` and pass this gate before VQ executes any B2 regression.
+The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.6 admission changes legacy reference/tooling state only; it does not create the missing production B2 seam.
 
 ## Unrounded mass accounting
 
-The VQ normalization contract is:
+The future B2 normalization contract is:
 
 ```text
 docs/verification/mass-accounting-contract.md
 tools/vq/contracts/mass-accounting-record.schema.json
 ```
 
-It is a verification interchange contract, not a required production object layout.
+It is a verification interchange contract, not a required production object layout. Hard mass conservation may not be weakened by execution policy.
 
 ## Unit tests
 
