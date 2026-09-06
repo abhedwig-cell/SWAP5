@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1c",
+  "snapshot": "B1.5",
+  "integration_commit": "3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443",
+  "snapshot_path": "reference/swap-4.3.1/snapshots/B1.5.yml",
+  "snapshot_git_blob_sha1": "355698a448448ccf5204aa5e38b1425fdc38e515",
+  "b0": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "patches": [
+    {
+      "id": "SWAP-001",
+      "path": "reference/swap-4.3.1/patches/SWAP-001/fix.patch",
+      "expected_sha256": "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770",
+      "observed_sha256_at_integration_commit": "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770",
+      "identity_status": "PASS"
+    },
+    {
+      "id": "SWAP-005",
+      "path": "reference/swap-4.3.1/patches/SWAP-005/fix.patch",
+      "expected_sha256": "9c3839ac0674d7c5c3eb2de797684c7baf83fdc3a18d64de68c9746de9878e66",
+      "observed_sha256_at_integration_commit": "243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553",
+      "identity_status": "FAIL"
+    },
+    {
+      "id": "SWAP-006",
+      "path": "reference/swap-4.3.1/patches/SWAP-006/fix.patch",
+      "expected_sha256": "558eb084befac713aec0b923d45182a1efcbed44d71ed00e6faf024b6540718a",
+      "observed_sha256_at_integration_commit": "4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f",
+      "identity_status": "FAIL"
+    },
+    {
+      "id": "SWAP-007",
+      "path": "reference/swap-4.3.1/patches/SWAP-007/fix.patch",
+      "expected_sha256": "e65b703b73b530915414265c3b647a403f995adc568390ed5da4ecb55be75b96",
+      "observed_sha256_at_integration_commit": "3ac9580bc162f8a4c90b83d59452e7b40bd1e0c82ba92e7a2c1ac58f154af5f0",
+      "identity_status": "FAIL",
+      "b0_target": "SWAP/oxygenstress.f90",
+      "canonical_b0_target_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+      "declared_b0_target_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b9c6bcf560d2221248f3b12f75",
+      "b0_preimage_status": "FAIL"
+    },
+    {
+      "id": "SWAP-008",
+      "path": "reference/swap-4.3.1/patches/SWAP-008/fix.patch",
+      "expected_sha256": "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c",
+      "observed_sha256_at_integration_commit": "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c",
+      "identity_status": "PASS",
+      "b0_target": "SWAP/tridag.f90",
+      "canonical_b0_target_sha256": "6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651",
+      "declared_b0_target_sha256": "6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651",
+      "b0_preimage_status": "PASS"
+    }
+  ],
+  "qualification": {
+    "snapshot_manifest_present": true,
+    "published_snapshot_immutable_by_policy": true,
+    "new_patch_SWAPP_008_identity": "PASS",
+    "all_patch_artifact_hashes_match": false,
+    "all_declared_b0_preimages_match_canonical_b0": false,
+    "b1_oracle_pin_qualified": false,
+    "failure": "inherited_reference_provenance_mismatch"
+  }
+}
