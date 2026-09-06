@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "reference_chain": {
+    "B0": {
+      "name": "SWAP 4.3.1 audit baseline",
+      "status": "immutable_audit_baseline",
+      "model_version": "4.3.1",
+      "release_classification": "development release",
+      "release_date_stated_by_package": "2026-06-30",
+      "distribution": {
+        "name": "SWAP_4.3.1.zip",
+        "size_bytes": 8959314,
+        "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
+      },
+      "source_archive": {
+        "path": "tools/SWAP/source/SWAP.ZIP",
+        "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+      },
+      "executables": {
+        "windows": {
+          "path": "tools/SWAP/swap_4.3.1.exe",
+          "sha256": "d13f5e0321db1780d211520287dc59db2e7aa763649998a4b29a187195ca89a5"
+        },
+        "linux": {
+          "path": "tools/SWAP/swap_431",
+          "sha256": "e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862"
+        }
+      }
+    },
+    "B1": {
+      "name": "SWAP 4.3.1 corrected reference",
+      "status": "repository_bootstrap_pending",
+      "repository_target": "abhedwig-cell/SWAP-4.3.1-reference",
+      "branch_target": "reference/4.3.1-corrected",
+      "tag_pattern": "B1.x"
+    },
+    "B2": {
+      "name": "SWAP 5 reference mode",
+      "repository": "abhedwig-cell/SWAP5",
+      "verification_rule": "pin exact B1 tag and commit"
+    }
+  }
+}
