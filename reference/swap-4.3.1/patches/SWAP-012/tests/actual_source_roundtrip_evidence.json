@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "audit_id": "SWAP-012",
+  "test_kind": "strict_actual_source_roundtrip",
+  "canonical_b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+  "candidate_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "stored_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+  "compiler_family": "GNU Fortran",
+  "failure_tolerance_log10_decade": 1e-6,
+  "points_per_model": 60,
+  "models": [3,4,5,6,7,8,9,10,11,12],
+  "b0": {
+    "total_points": 600,
+    "failures": 513,
+    "max_abs_log10_head_error_decade": 7.4915,
+    "failures_by_model": {"3":60,"4":0,"5":60,"6":60,"7":60,"8":33,"9":60,"10":60,"11":60,"12":60}
+  },
+  "candidate": {
+    "total_points": 600,
+    "failures": 0,
+    "max_abs_log10_head_error_decade": 1.17e-10,
+    "model4_control": "machine_precision"
+  },
+  "scope": "Actual canonical B0 MOD_MvG_functions.f90 versus exact isolated SWAP-012-only corrected source, with matched support modules. SWAP-011 dhconduc changes excluded."
+}
