@@ -28,6 +28,8 @@ python reference/swap-4.3.1/verify_b1_identity.py \
   --json
 ```
 
+The workflow enables Bash `pipefail`, so a verifier failure cannot be hidden by the `tee` command used to preserve machine-readable evidence.
+
 ## What is verified
 
 The gate verifies, without compiling Fortran:
@@ -39,20 +41,29 @@ The gate verifies, without compiling Fortran:
 5. every stored `fix.patch` hashes exactly to its declared SHA-256;
 6. every declared B0 target preimage equals the canonical target-member SHA in `b0/file-manifest.sha256`;
 7. every qualification artifact exists;
-8. each admitted patch has a byte-verification helper that pins the canonical B0 target hash and the documented corrected-target hash;
+8. each admitted patch has a byte-verification helper that pins the canonical B0 target hash; when a helper also pins a corrected-target SHA, that SHA must agree with the snapshot;
 9. the complete identity evidence is reduced to a deterministic SHA-256 fingerprint.
 
 Any missing file, malformed digest, patch hash mismatch, non-canonical B0 preimage, helper mismatch or patch-order difference causes the gate to fail.
 
+## Corrected-target boundary
+
+The snapshot records a deterministic corrected-target SHA for every admitted patch. Some per-patch helpers independently pin that corrected-target SHA, while older helpers compute and print it after transformation without storing it as a constant.
+
+Because the byte-exact expanded B0 source tree is not committed to Git, this repository-only CI gate does **not** claim to reapply every patch to raw B0 bytes and independently recompute all corrected-target hashes. That stronger application check requires the canonical B0 source archive or a binary-safe unpacked B0 tree.
+
+The CI evidence reports this limitation explicitly. This does not weaken the provenance check requested by issue #19: the stored patch bytes and each declared B0 preimage are still checked fail-closed against their canonical identities.
+
 ## What this gate does not prove
 
-A PASS is an **identity/provenance result**, not a numerical or physical qualification result.
+A PASS is an **artifact/preimage identity result**, not a numerical or physical qualification result.
 
 It does not:
 
 - compile SWAP;
 - execute a SWAP case;
 - prove that a corrected target compiles on a particular Fortran compiler;
+- independently reapply every patch to an unpacked byte-exact B0 tree inside CI;
 - replace the original per-fix regression evidence;
 - establish water-balance correctness for a newly admitted physically active fix;
 - qualify SWAP5 B2 against B1.
@@ -66,7 +77,8 @@ The intended sequence is:
 ```text
 canonical B0 identity
         -> exact patch provenance
-        -> B1 identity gate PASS
+        -> B1 artifact/preimage identity gate PASS
+        -> optional raw-B0 patch-application identity gate
         -> per-fix compile/run/regression evidence
         -> hard water-balance gate where physically relevant
         -> immutable B1 snapshot
