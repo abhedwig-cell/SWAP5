@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1d",
+  "observation_baseline": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "candidate_status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
+  "b1_snapshot": "B1.5p1",
+  "b1_qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+  "b2_commit": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "admissible_adapter_target": false,
+  "failure": "b2_reference_entrypoint_not_ready",
+  "checks": {
+    "b1_oracle_qualified": true,
+    "exact_b2_commit": true,
+    "ready_status": false,
+    "entrypoint_declared": false,
+    "result_contract_declared": false,
+    "reference_policy_explicit": false,
+    "entrypoint_exists": false,
+    "result_contract_exists": false,
+    "required_capabilities": false
+  },
+  "missing_capabilities": [
+    "callable_reference_entrypoint",
+    "generic_interval_t0_t1",
+    "committed_state_input",
+    "forcing_input",
+    "numerical_config_separate",
+    "canonical_result_output",
+    "unrounded_mass_accounting",
+    "transaction_diagnostics"
+  ],
+  "interpretation": "Fail-closed VQ result: the corrected B1 oracle is qualified, but no integrated SWAP5/B2 reference-mode entrypoint and canonical result contract exist on the pinned repository commit. No numerical B1-to-B2 comparison is admitted."
+}

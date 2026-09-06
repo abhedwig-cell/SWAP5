@@ -104,6 +104,22 @@ All five targeted gates pass. Together with VQ-1c1/c2, VQ qualifies B1.5p1 as th
 
 See `docs/verification/vq-1c3-b1.5p1-targeted-qualification.md` and `tools/vq/cases/b1-5p1-targeted-qualification-2026-09-06.json`.
 
+## B2 reference-entrypoint admission
+
+VQ-1d does not invent a SWAP5/B2 implementation. Before a numerical B1.5p1 -> B2 comparison can run, the candidate checkout must pass:
+
+```bash
+python tools/vq/b2_reference_gate.py \
+  --repo-root /path/to/SWAP5-checkout \
+  --candidate tools/vq/cases/b2-reference-candidate.json
+```
+
+The fail-closed admission gate requires an exact B2 commit, an integrated callable reference-mode entrypoint, an explicit reference numerical policy, a canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separated numerical configuration, unrounded mass accounting and transaction diagnostics.
+
+The current candidate is intentionally `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`: current `main` is documentation-led and does not yet contain the production SWAP5 reference seam required for an honest B1 -> B2 run. The blocked result is recorded in `tools/vq/cases/b2-reference-gate-2026-09-06.json` and explained in `docs/verification/vq-1d-b2-entrypoint-gate.md`.
+
+A future production integration must update the candidate to `READY_FOR_VQ_B1_TO_B2` and pass this gate before VQ executes any B2 regression.
+
 ## Unrounded mass accounting
 
 The VQ normalization contract is:
@@ -123,7 +139,8 @@ python -m unittest \
   tools.vq.test_balance \
   tools.vq.test_b0_source_runner \
   tools.vq.test_b1_snapshot_identity \
-  tools.vq.test_b1_reconstruct
+  tools.vq.test_b1_reconstruct \
+  tools.vq.test_b2_reference_gate
 ```
 
 Every future B1/B2 adapter must record exact source/artifact identity, case identity, interval, runner capability and qualification scope.
