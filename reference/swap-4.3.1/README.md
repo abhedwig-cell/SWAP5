@@ -21,7 +21,7 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.9.yml
+    B1.10.yml
 b1-manifest.yml
 ```
 
@@ -51,22 +51,23 @@ B1.6           = B1.5p1 + SWAP-009
 B1.7           = B1.6 + SWAP-010
 B1.8           = B1.7 + SWAP-013
 B1.9           = B1.8 + SWAP-012
+B1.10          = B1.9 + SWAP-002
 ```
 
-Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6 added the PDI Kelvin-sign correction; B1.7 added the model-7 capacity-derivative correction; B1.8 added the PDI `HA/H0` relational input guard.
+Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities and qualified the five predecessor corrections. B1.6-B1.9 then admitted SWAP-009, SWAP-010, SWAP-013 and the isolated SWAP-012 inverse correction.
 
-`B1.9` adds only SWAP-012: `prhead` now inverts the actual selected retention relation for hydraulic models 3 and 5-12 rather than applying the unrelated default-MvG analytical inverse. The historical SWAP-011 `dhconduc` change that once shared a broad patch is explicitly excluded. A broad D2 qualification gives 0/22,240 corrected round-trip failures, and an isolated actual-source gate gives 0/600 failures versus 513/600 for B0 at `1e-6` decade tolerance.
+`B1.10` adds only SWAP-002. Legacy `set_iTill` used an impossible interval test and could initialize the next tillage event incorrectly when a run started after the first scheduled event. The correction defines `iTill` as the first event on/after the start, or `Ntill+1` after the final event, and loads the most recent previous tillage parameters when applicable. A fresh strict compiled six-case gate gives B0 3/6 and the corrected candidate 6/6. SWAP-003 and SWAP-004 are explicitly excluded.
 
 The current corrected-reference identity is:
 
 ```text
-snapshot         B1.9
+snapshot         B1.10
 members          63
-source bytes      1,863,300
-manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
+source bytes      1,863,575
+manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
 ```
 
-SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.9.
+SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.10.
 
 ## Boundary to SWAP 5
 
