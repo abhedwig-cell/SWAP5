@@ -60,7 +60,8 @@ The registry is intentionally functional. A chat title or milestone code is not 
 ## Active workstream VQ: Verification and qualification
 
 **Status:** Active  
-**Accepted integration baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
+**Clean integration branch baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
+**Latest main re-read:** `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443`  
 **Current integration branch:** `vq/vq-1-integration`  
 **Current slices:** VQ-1a B0 identity, VQ-1b B0 runner hardening, VQ-1c B1 provenance gate
 
@@ -79,7 +80,9 @@ Build an independent verification layer that can increasingly serve as the accep
 
 ### Current integration boundary
 
-VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0 runner is capability-limited and is not declared equivalent to the packaged Intel executable. B1.4 at the accepted integration baseline fails the VQ provenance gate because several stored patch artifacts do not match snapshot-declared hashes and SWAP-007 also declares a B0 preimage hash inconsistent with canonical B0. Numerical B0 -> B1 qualification therefore remains blocked until a provenance-correct immutable B1 snapshot is available.
+VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0 runner is capability-limited and is not declared equivalent to the packaged Intel executable.
+
+Current `main` declares B1.5. VQ independently confirmed that the new SWAP-008 patch artifact and its canonical B0 `tridag.f90` preimage are byte-consistent. However, B1.5 inherits unresolved provenance failures from SWAP-005, SWAP-006 and SWAP-007, including a SWAP-007 B0 `oxygenstress.f90` preimage hash that does not match canonical B0. The B1.5 exact oracle pin therefore fails and numerical B0 -> B1 qualification remains blocked until a provenance-correct immutable B1 snapshot is available.
 
 The proposed unrounded mass-accounting record is a verification interchange contract only. TX/HY/runtime own any production result-interface implementation.
 
