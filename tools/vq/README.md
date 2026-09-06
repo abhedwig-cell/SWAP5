@@ -12,7 +12,7 @@ python tools/vq/b0_source_runner.py \
   --case 2.grassgrowth
 ```
 
-The GNU runner is capability-limited verification infrastructure. It is not declared globally equivalent to the packaged Intel executable. Legacy BAL/BLC normalization is available through `balance.py`, but its `0.01 cm` output precision is not sufficient for the future hard invariant-13 mass gate.
+The GNU runner is capability-limited verification infrastructure. It is not declared globally equivalent to the packaged Intel executable. Legacy BAL/BLC normalization is available through `balance.py`, but its `0.01 cm` output precision is not sufficient for the hard invariant-13 mass gate.
 
 ## Qualified predecessor snapshots
 
@@ -62,9 +62,9 @@ SWAP-013 changes only invalid-input acceptance/rejection. Valid PDI constitutive
 
 `docs/verification/expected-differences.json` defines the admitted B0 -> B1.8 difference envelopes. Any unregistered difference remains a qualification failure. B1 is a corrected legacy reference, not a license for approximate equivalence.
 
-## B2 reference-entrypoint admission
+## B2 reference admission
 
-Before a numerical B1.8 -> B2 comparison can run, the candidate checkout must pass:
+Before a numerical B1.8 -> B2 comparison can run, the checkout must pass the fail-closed candidate gate:
 
 ```bash
 python tools/vq/b2_reference_gate.py \
@@ -72,31 +72,89 @@ python tools/vq/b2_reference_gate.py \
   --candidate tools/vq/cases/b2-reference-candidate.json
 ```
 
-The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
+VQ-1d1 reads the current B1 oracle from `reference/swap-4.3.1/b1-manifest.yml`, requires candidate snapshot/status/source-manifest identity to match it, binds the production observation commit, and can compare the live fail-closed projection against stored gate evidence.
 
-The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.8 admission changes legacy reference/input-validation state only; it does not create the missing production B2 seam.
+For a candidate marked `READY_FOR_VQ_B1_TO_B2`, VQ-1d2 additionally requires a valid `SWAP5-B2-reference-seam-v1` declaration:
+
+```bash
+python tools/vq/b2_seam_contract.py \
+  --repo-root /path/to/SWAP5-checkout \
+  --contract /path/to/integrated/reference-seam.json
+```
+
+The seam binds exact implementation commit, entrypoint, full-accuracy reference policy, explicit parameters/state/forcing/numerical configuration, generic `[t0,t1]`, rollback-safe transaction semantics, unrounded mass accounting, diagnostics, and absence of hidden kernel file/path/MODFLOW-tile/calendar dependencies.
+
+VQ-1d3 requires the seam's result declaration to satisfy `SWAP5-B2-reference-result-v1` on the same exact implementation commit:
+
+```bash
+python tools/vq/b2_result_contract.py \
+  --repo-root /path/to/SWAP5-checkout \
+  --contract /path/to/integrated/reference-result.contract.json
+```
+
+Accepted production results are normalized to `SWAP5-B2-reference-result-record-v1` and checked with:
+
+```bash
+python tools/vq/b2_result_record.py --record /path/to/normalized/result.json
+```
+
+The canonical record contains the exact interval, committed endpoint state, stable physical result IDs, unrounded mass accounting, transaction history, solver diagnostics and provenance. The record validator independently recomputes the mass residual but deliberately does not apply an unqualified universal mass tolerance.
+
+The current real candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. The VQ contracts do not create a synthetic production B2 seam.
+
+## VQ-1e1 transaction and generic-time harness
+
+The executable verifier self-test is:
+
+```bash
+python tools/vq/tx_time_harness.py \
+  --fixture-suite \
+  --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+```
+
+It runs:
+
+```text
+TX-ROLLBACK-01
+TX-COMMIT-01
+TX-ACCOUNT-01
+TX-RERUN-01
+TX-BC-REPLAY-01
+TX-WARM-01
+TIME-00
+TIME-06
+TIME-18
+TIME-36
+TIME-SPLIT
+```
+
+The synthetic additive adapter exists only to qualify verifier behavior and fault detection. A successful fixture run reports `VERIFIER_HARNESS_ONLY`, `b2_physics_status = NOT_EVALUATED`, `production_physics_executed = false`, and `production_mass_tolerance_qualified = false`.
+
+A future production B2 adapter may reuse the same `QualificationAdapter` protocol only after the VQ-1d reference seam/result gate passes. The fixture's exact TIME-SPLIT comparator is not a production tolerance.
 
 ## Unrounded mass accounting
 
-The future B2 normalization contract is:
+The B2 normalization reuses:
 
 ```text
 docs/verification/mass-accounting-contract.md
 tools/vq/contracts/mass-accounting-record.schema.json
 ```
 
-It is a verification interchange contract, not a required production object layout. Hard mass conservation may not be weakened by execution policy.
+Hard mass conservation may not be weakened by execution policy. Rounded legacy report output is never the B2 acceptance oracle.
 
 ## Unit tests
 
+The integrated VQ reference workflow runs the current B1.8 admission/guard gates plus:
+
 ```bash
 python -m unittest \
-  tools.vq.test_reference_identity \
-  tools.vq.test_balance \
-  tools.vq.test_b0_source_runner \
   tools.vq.test_b1_snapshot_identity \
-  tools.vq.test_b1_reconstruct \
-  tools.vq.test_b2_reference_gate
+  tools.vq.test_b2_result_contract \
+  tools.vq.test_b2_result_record \
+  tools.vq.test_b2_seam_contract \
+  tools.vq.test_b2_reference_gate \
+  tools.vq.test_tx_time_harness
 ```
 
 Every future B1/B2 adapter must record exact source/artifact identity, case identity, interval, runner capability and qualification scope.

@@ -14,6 +14,7 @@
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
+      "seam_contract_path": null,
       "reference_policy": null
     },
     "capabilities": {
@@ -30,11 +31,11 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.8 admission changes legacy corrected-reference input-validation metadata/tooling only and does not create a B2 production seam."
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint, reference-seam declaration or canonical result contract. B1.8 admission changes legacy corrected-reference input validation only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",
-    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned production observation commit.",
-    "next_admission_gate": "Provide an integrated callable reference entrypoint plus the required typed interval/state/forcing/config/result/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint, seam declaration and semantic result contract exist on the pinned production observation commit.",
+    "next_admission_gate": "Provide an integrated callable reference entrypoint, valid SWAP5-B2-reference-seam-v1 declaration and SWAP5-B2-reference-result-v1 contract plus required interval/state/forcing/config/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
   }
 }
