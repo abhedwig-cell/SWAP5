@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import io
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 from tools.performance.mp_b0_shadow import (
@@ -9,6 +11,7 @@ from tools.performance.mp_b0_shadow import (
     instrument_swap_main,
     normalize_physical_output,
     parse_rounded_water_balance,
+    prepare_shadow_source,
     strip_intel_conditionals,
 )
 
@@ -35,6 +38,37 @@ class ShadowToolTests(unittest.TestCase):
         self.assertIn("call mp_dynamic_begin()", result)
         self.assertIn("call mp_dynamic_end()", result)
         self.assertIn("call mp_flush()", result)
+
+    def test_instrument_swap_main_preserves_crlf(self) -> None:
+        source = (
+            "use MOD_swap_base, only: unit_log, unit_wrn, sw_animo\r\n"
+            "   iTask = 2\r\n"
+            "   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)\r\n"
+            "write(*,'(a)')' Swap normal completion!'\r\n"
+        )
+        result = instrument_swap_main(source)
+        self.assertIn("call mp_dynamic_begin()\r\n", result)
+        self.assertIn("call mp_dynamic_end()\r\n", result)
+        self.assertIn("call mp_flush()\r\n", result)
+
+    def test_prepare_shadow_source_handles_crlf_and_non_utf8_bytes(self) -> None:
+        swap_main = (
+            "use MOD_swap_base, only: unit_log, unit_wrn, sw_animo\r\n"
+            "   iTask = 2\r\n"
+            "   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)\r\n"
+            "write(*,'(a)')' Swap normal completion!'\r\n"
+        ).encode("ascii")
+        archive_bytes = io.BytesIO()
+        with zipfile.ZipFile(archive_bytes, "w") as archive:
+            archive.writestr("SWAP/swap_main.f90", swap_main)
+            archive.writestr("SWAP/MOD_RIA.f90", b"! byte marker: \xff\r\n")
+            for index in range(61):
+                archive.writestr(f"SWAP/dummy_{index:02d}.f90", b"! dummy\r\n")
+        with tempfile.TemporaryDirectory() as td:
+            root = prepare_shadow_source(archive_bytes.getvalue(), td)
+            transformed = (root / "swap_main.f90").read_bytes()
+            self.assertIn(b"call mp_dynamic_begin()\r\n", transformed)
+            self.assertIn(b"\xff", (root / "MOD_RIA.f90").read_bytes())
 
     def test_output_normalization_only_removes_run_metadata(self) -> None:
         text = (

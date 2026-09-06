@@ -34,10 +34,18 @@ jobs:
           python-version: '3.13'
 
       - name: Compile measurement tools
-        run: python -m py_compile tools/performance/mp_measure.py tools/performance/mp_b0_shadow.py tools/performance/mp_workloads.py
+        run: python -m py_compile tools/performance/mp_measure.py tools/performance/mp_b0_shadow.py tools/performance/mp_workloads.py tools/performance/mp_repeatability.py
 
       - name: Validate workload catalog
         run: python tools/performance/mp_workloads.py benchmarks/performance/workload-catalog.json --summary
+
+      - name: Validate repeatability evidence
+        run: |
+          python tools/performance/mp_repeatability.py \
+            benchmarks/performance/evidence/mp-b01-shadow-repeatability.samples.jsonl \
+            --baseline off --measured on > /tmp/mp-repeatability-summary.json
+          cmp /tmp/mp-repeatability-summary.json \
+            benchmarks/performance/evidence/mp-b01-shadow-repeatability.summary.json
 
       - name: Run measurement tests
         run: python -m unittest discover -s tests -p 'test_mp_*.py' -v

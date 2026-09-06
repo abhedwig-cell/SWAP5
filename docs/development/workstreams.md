@@ -86,8 +86,8 @@ Most work is in harnesses, test cases, comparison tooling and evidence. It can p
 ## Active workstream MP: MultiSWAP performance and batchability
 
 **Status:** Active  
-**Accepted baseline:** `3b19f079a0a744e576f752c4b3e0d7e7ac72603b`  
-**Current slice:** MP-4, [workload and benchmark catalog](../performance/mp-4-workload-catalog.md)
+**Accepted baseline:** `da99f14490ca81737ae9ab070d77a2197e6799ba`  
+**Current slice:** MP-5, [MP-B01 repeatability and observer-overhead qualification](../performance/mp-5-repeatability-overhead.md)
 
 ### Goal
 
@@ -112,7 +112,9 @@ The first MP phase is measurement-first. It does not introduce a GPU backend and
 
 MP-1 defined the measurement architecture and record. MP-2 integrated measurement-only collection and aggregation tooling without changing production interfaces. MP-3A qualified the mechanics of a coarse observation seam in a disposable B0 shadow build, including measurement-disabled versus measurement-enabled equality for selected Hupsel physical outputs.
 
-MP-4 now versions the six benchmark families as an explicit workload catalog. It locks the official Staringreeks 2018 B12 hydraulic row as a `parameter-locked` stress profile but does not invent the missing full executable case. Homogeneous scaling, mixed templates, execution-class routing and optional-physics comparisons remain blocked until their owning RT/HY/VQ interfaces and qualifications exist.
+MP-4 versions the six benchmark families as an explicit workload catalog. It locks the official Staringreeks 2018 B12 hydraulic row as a `parameter-locked` stress profile but does not invent the missing full executable case. Homogeneous scaling, mixed templates, execution-class routing and optional-physics comparisons remain blocked until their owning RT/HY/VQ interfaces and qualifications exist.
+
+MP-5 revalidated MP-B01 with clean byte-safe shadow builds and 18 interleaved paired cycles. It corrected a CRLF-sensitive shadow-injection tooling defect, versioned the raw timing evidence and deterministic summary, and found the measured top-level observer delta unresolved above the approximately 1.56% two-standard-error noise scale of the non-dedicated test host. This is a qualification of measurement mechanics, not a SWAP5 production CPU baseline and not evidence of zero observer cost.
 
 The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ.
 

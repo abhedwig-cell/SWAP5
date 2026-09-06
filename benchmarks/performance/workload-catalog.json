@@ -2,7 +2,7 @@
   "schema_version": "mp-workload-catalog-v1",
   "reference_policy": {
     "immutable_legacy": "B0",
-    "corrected_legacy": "B1.2",
+    "corrected_legacy": "B1.4",
     "swap5_reference": "SWAP5-reference"
   },
   "source_evidence": {
@@ -15,11 +15,11 @@
       "family": "MP-B01",
       "purpose": "single-column cost decomposition",
       "status": "shadow-executable",
-      "reference_levels": ["B0", "B1.2", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.4", "SWAP5-reference"],
       "source_case": "cases/1.hupselbrook",
       "scale": {"columns": 1},
       "required_measurements": ["timing", "counters", "mass_balance"],
-      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form of this case. This is not yet SWAP5 production qualification."
+      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form of this case. MP-5 revalidated a clean byte-safe shadow rebuild over 18 paired cycles and found the measured observer delta unresolved above a 1.56% two-standard-error noise scale on a non-dedicated host. This is still not SWAP5 production qualification."
     },
     {
       "id": "MP-B02-HOMOGENEOUS-SCALING",
@@ -47,7 +47,7 @@
       "family": "MP-B04",
       "purpose": "heavy-clay hydraulic stress profile and tail-cost tracking",
       "status": "parameter-locked",
-      "reference_levels": ["B0", "B1.2", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.4", "SWAP5-reference"],
       "scale": {"columns": 1},
       "stress_profile": {
         "profile_id": "Staringreeks-2018-B12",
