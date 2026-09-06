@@ -16,6 +16,7 @@ from tools.vq.b2_reference_gate import (
     check_stored_evidence,
     evidence_projection,
 )
+from tools.vq.test_b2_seam_contract import valid_contract
 
 CURRENT_SNAPSHOT = "B1.6"
 CURRENT_MANIFEST_SHA256 = "b" * 64
@@ -37,6 +38,7 @@ def base_candidate() -> dict:
             "integration": {
                 "entrypoint_path": "src/reference_driver.f90",
                 "result_contract_path": "src/reference_result.schema.json",
+                "seam_contract_path": "src/reference_seam.json",
                 "reference_policy": "reference",
             },
             "capabilities": {name: True for name in REQUIRED_CAPABILITIES},
@@ -72,27 +74,35 @@ class B2ReferenceGateTests(unittest.TestCase):
         path.write_text(json.dumps(data), encoding="utf-8")
         return path
 
-    def create_integrated_files(self, root: Path) -> None:
+    def create_integrated_files(self, root: Path, seam: dict | None = None) -> None:
         (root / "src").mkdir()
         (root / "src/reference_driver.f90").write_text("! fixture\n", encoding="utf-8")
         (root / "src/reference_result.schema.json").write_text("{}\n", encoding="utf-8")
+        (root / "src/reference_seam.json").write_text(
+            json.dumps(valid_contract() if seam is None else seam),
+            encoding="utf-8",
+        )
 
     def prepared_root(self, root: Path) -> None:
         self.write_manifest(root)
+
+    def blocked_candidate(self) -> dict:
+        data = base_candidate()
+        data["b2"]["status"] = BLOCKED
+        data["b2"]["integration"] = {
+            "entrypoint_path": None,
+            "result_contract_path": None,
+            "seam_contract_path": None,
+            "reference_policy": None,
+        }
+        data["b2"]["capabilities"] = {name: False for name in REQUIRED_CAPABILITIES}
+        return data
 
     def test_blocked_candidate_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.prepared_root(root)
-            data = base_candidate()
-            data["b2"]["status"] = BLOCKED
-            data["b2"]["integration"] = {
-                "entrypoint_path": None,
-                "result_contract_path": None,
-                "reference_policy": None,
-            }
-            data["b2"]["capabilities"] = {name: False for name in REQUIRED_CAPABILITIES}
-            result = assess_candidate(root, self.write_candidate(root, data))
+            result = assess_candidate(root, self.write_candidate(root, self.blocked_candidate()))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "b2_reference_entrypoint_not_ready")
 
@@ -136,6 +146,38 @@ class B2ReferenceGateTests(unittest.TestCase):
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "integrated_entrypoint_missing")
 
+    def test_ready_candidate_without_seam_contract_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.prepared_root(root)
+            self.create_integrated_files(root)
+            (root / "src/reference_seam.json").unlink()
+            result = assess_candidate(root, self.write_candidate(root, base_candidate()))
+            self.assertFalse(result["admissible_adapter_target"])
+            self.assertEqual(result["failure"], "reference_seam_contract_missing")
+
+    def test_seam_contract_commit_mismatch_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.prepared_root(root)
+            seam = valid_contract()
+            seam["implementation"]["commit"] = "d" * 40
+            self.create_integrated_files(root, seam)
+            result = assess_candidate(root, self.write_candidate(root, base_candidate()))
+            self.assertFalse(result["admissible_adapter_target"])
+            self.assertEqual(result["failure"], "reference_seam_contract_candidate_mismatch")
+
+    def test_invalid_seam_contract_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.prepared_root(root)
+            seam = valid_contract()
+            seam["transaction"]["rejected_trial_mutates_committed_state"] = True
+            self.create_integrated_files(root, seam)
+            result = assess_candidate(root, self.write_candidate(root, base_candidate()))
+            self.assertFalse(result["admissible_adapter_target"])
+            self.assertEqual(result["failure"], "reference_seam_contract_invalid")
+
     def test_missing_capability_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -160,14 +202,7 @@ class B2ReferenceGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             self.prepared_root(root)
-            data = base_candidate()
-            data["b2"]["status"] = BLOCKED
-            data["b2"]["integration"] = {
-                "entrypoint_path": None,
-                "result_contract_path": None,
-                "reference_policy": None,
-            }
-            data["b2"]["capabilities"] = {name: False for name in REQUIRED_CAPABILITIES}
+            data = self.blocked_candidate()
             candidate_path = self.write_candidate(root, data)
             result = assess_candidate(root, candidate_path)
             stored = evidence_projection(data, result)
