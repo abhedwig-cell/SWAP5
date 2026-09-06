@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.10",
+      "candidate": "B1.11",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -62,7 +62,7 @@
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.5",
           "affected_outputs": ["Fortran dummy-argument definedness for bandec/banbks", "compiler portability"],
-          "expected_direction_or_envelope": "No numerical solution difference is expected. B1 changes consumed-and-overwritten dummy arrays from INTENT(OUT) to INTENT(INOUT), making the incoming values defined without altering band-solver arithmetic.",
+          "expected_direction_or_envelope": "No numerical solution difference is expected. B1 changes consumed-and-overwritten dummy arrays from INTENT(OUT) to INTENT(INOUT), making incoming values defined without altering band-solver arithmetic.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
           "known_unchanged_scope": ["banded LU arithmetic", "pivoting", "forward/back substitution", "fallback trigger", "water-balance equations"]
         },
@@ -120,6 +120,17 @@
           "expected_direction_or_envelope": "For starts on or after later tillage events, B1.10 sets iTill to the first event on/after the start, or Ntill+1 after the final event, and loads the most recent preceding event parameters. Differences outside this initialization envelope are not admitted by SWAP-002.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
           "known_unchanged_scope": ["tillage constitutive formulations", "SWAP-003 PCLAY domain behaviour", "SWAP-004 tillage type indexing", "solver policy", "time-step policy", "water-balance equations and tolerances"]
+        },
+        {
+          "difference_id": "SWAP-004",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-004/qualification.md",
+          "first_admitted_tag_or_commit": "B1.11",
+          "affected_outputs": ["tillage type-code lookup validity", "input acceptance/rejection for unresolved TYPE_TILLAGE mappings"],
+          "expected_direction_or_envelope": "B1.11 sizes and constructs iTT1/iTT2 over the accepted type-code domain instead of the event-count domain. Represented TYPE_TILLAGE codes greater than Ntill are mapped safely; an event type without corresponding ITYPE_TILLAGE entries is rejected. Dense legacy-valid mappings remain unchanged.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-004/qualification.md",
+          "known_unchanged_scope": ["dense legacy-valid tillage type mappings", "SWAP-002 start-event semantics", "SWAP-003 PCLAY domain behaviour", "tillage constitutive formulations", "solver policy", "time-step policy", "water-balance equations and tolerances"]
         }
       ]
     },

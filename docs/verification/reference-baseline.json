@@ -14,7 +14,10 @@
       },
       "source_archive": {
         "path": "tools/SWAP/source/SWAP.ZIP",
-        "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+        "sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+        "expanded_member_count": 63,
+        "expanded_source_bytes": 1859823,
+        "expanded_member_manifest_sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
       },
       "executables": {
         "windows": {
@@ -29,15 +32,20 @@
     },
     "B1": {
       "name": "SWAP 4.3.1 corrected reference",
-      "status": "repository_bootstrap_pending",
-      "repository_target": "abhedwig-cell/SWAP-4.3.1-reference",
-      "branch_target": "reference/4.3.1-corrected",
-      "tag_pattern": "B1.x"
+      "status": "qualified_numerical_behavioural",
+      "repository": "abhedwig-cell/SWAP5",
+      "snapshot": "B1.11",
+      "snapshot_definition": "reference/swap-4.3.1/snapshots/B1.11.yml",
+      "source_member_count": 63,
+      "source_bytes": 1863998,
+      "source_manifest_sha256": "a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6",
+      "reconstruction": "tools/vq/b1_11_reconstruct.py"
     },
     "B2": {
       "name": "SWAP 5 reference mode",
       "repository": "abhedwig-cell/SWAP5",
-      "verification_rule": "pin exact B1 tag and commit"
+      "status": "blocked_no_integrated_b2_entrypoint",
+      "verification_rule": "pin exact qualified B1 snapshot/source identity and compare through the integrated B2 reference contract"
     }
   }
 }

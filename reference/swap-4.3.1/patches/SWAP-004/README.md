@@ -1,10 +1,10 @@
 # SWAP-004 — tillage type-index mapping
 
-Status: **QUALIFIED CANDIDATE; NOT ADMITTED TO B1**
+Status: **QUALIFIED CANDIDATE FOR B1.11; PENDING CI/MERGE**
 
-`TYPE_TILLAGE` is used as an index into `iTT1/iTT2`. Legacy SWAP 4.3.1 sizes those arrays by the number of tillage events (`Ntill`) rather than the maximum accepted type code (`tmax`). A legal input shape can therefore index outside the arrays.
+`TYPE_TILLAGE` is used as an index into `iTT1/iTT2`. Legacy SWAP 4.3.1 sizes those arrays by the number of tillage events (`Ntill`) rather than the maximum accepted type code (`tmax`). A legal represented type code can therefore index outside the arrays.
 
-The isolated candidate allocates the lookup arrays by `tmax`, constructs mappings over all accepted type codes, and rejects an event type for which no corresponding `ITYPE_TILLAGE` row exists.
+The isolated correction allocates the lookup arrays by `tmax`, constructs mappings over the accepted type-code domain, and rejects an event type for which no corresponding `ITYPE_TILLAGE` row exists. Dense valid legacy mappings remain unchanged.
 
 This patch is ordered after B1.10 because `tillage.f90` is already changed there by SWAP-002.
 
@@ -24,6 +24,14 @@ candidate target
 41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede
 ```
 
-SWAP-003 is explicitly excluded. No tillage physics, solver policy, time integration or mass-balance tolerance is changed.
+Prospective B1.11 identity:
 
-See `finding.md`, `qualification.md` and `tests/`.
+```text
+members          63
+source bytes      1,863,998
+manifest SHA-256  a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6
+```
+
+SWAP-003 is explicitly excluded. No tillage physics, event timing, solver policy, time integration, water-balance equation or mass-balance tolerance is changed.
+
+See `finding.md`, `qualification.md`, `ADMISSION_CHECKLIST.md` and `tests/`.

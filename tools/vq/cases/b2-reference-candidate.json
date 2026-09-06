@@ -2,15 +2,15 @@
   "schema_version": 1,
   "workstream": "VQ",
   "slice": "VQ-1d",
-  "observation_baseline": "0e5c58134b225014426c75e240f0b668affbb4a1",
+  "observation_baseline": "5a25526e77a4e1ba3b8f2755cb1e59ca0700ee96",
   "b1_oracle": {
-    "snapshot": "B1.10",
+    "snapshot": "B1.11",
     "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
-    "reconstructed_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+    "reconstructed_manifest_sha256": "a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6"
   },
   "b2": {
     "status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
-    "commit": "0e5c58134b225014426c75e240f0b668affbb4a1",
+    "commit": "5a25526e77a4e1ba3b8f2755cb1e59ca0700ee96",
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
@@ -30,7 +30,7 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.10 admission changes corrected-reference tillage start-state semantics/tooling only and does not create a B2 production seam."
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.11 admission changes corrected-reference tillage type-index mapping/input consistency only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",

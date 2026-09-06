@@ -27,12 +27,12 @@ B1 is a controlled ordered derivation:
 B1.x = B0 + ordered accepted patch set
 ```
 
-Historical B1.2-B1.5 remain recorded but fail exact provenance requirements. B1.5p1 repaired their intended five-fix identity and passed independent VQ qualification. B1.6-B1.9 admitted SWAP-009, SWAP-010, SWAP-013 and SWAP-012.
+Historical B1.2-B1.5 remain recorded but fail exact provenance requirements. B1.5p1 repaired their intended five-fix identity and passed independent VQ qualification. B1.6-B1.10 subsequently admitted SWAP-009, SWAP-010, SWAP-013, SWAP-012 and SWAP-002.
 
-The current corrected reference is **B1.10**:
+The current corrected reference is **B1.11**:
 
 ```text
-B1.10 = B0
+B1.11 = B0
       + SWAP-001
       + SWAP-005
       + SWAP-006
@@ -43,42 +43,47 @@ B1.10 = B0
       + SWAP-013
       + SWAP-012
       + SWAP-002
+      + SWAP-004
 ```
 
-`SWAP-002` corrects the tillage start-event initialization. In B0 the interval test in `set_iTill` compares the simulation start against the same event date as both lower and upper bound and can therefore never identify an interval between events. B1.10 sets `iTill` to the first event on or after the start, or `Ntill+1` after the final event, and loads the most recent previous tillage/consolidation parameters when applicable.
+`SWAP-004` corrects the tillage type-index mapping. B0 allocates the `iTT1/iTT2` lookup arrays by event count (`Ntill`) even though they are later indexed by `TYPE_TILLAGE`. A valid represented type code can therefore exceed the array extent. B1.11 allocates and maps over the type-code domain `1:tmax` and rejects an event type without corresponding `ITYPE_TILLAGE` entries.
 
-Qualification evidence:
+Focused qualification evidence:
 
 ```text
-source-bound start cases           6
-B0 passes                          3/6
-corrected passes                   6/6
-B0 failures                        between event 1/2, exact event 2, after final
-corrected previous-event loading   PASS
+B0 sparse represented type > Ntill       strict bounds failure reproduced
+candidate dense legacy-valid mapping      unchanged
+candidate represented type > Ntill        PASS
+candidate non-contiguous represented type PASS
+candidate missing mapping record          rejected
+candidate total                           4/4 PASS
 ```
 
-Exact SWAP-002 identity:
+Exact SWAP-004 ordered identity:
 
 ```text
-canonical B0 / ordered B1.9 tillage.f90
+canonical B0 tillage.f90
 731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
 
-SWAP-002 fix.patch
-e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
-
-corrected target
+ordered B1.10 tillage.f90
 eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
+
+SWAP-004 fix.patch
+0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818
+
+B1.11 tillage.f90
+41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede
 ```
 
-Deterministic B1.10 source identity:
+Deterministic B1.11 source identity:
 
 ```text
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,863,998
+manifest SHA-256  a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6
 ```
 
-The correction is intentionally limited to `set_iTill`; SWAP-003 and SWAP-004 remain outside B1.10. No tillage constitutive equation, solver policy or mass-balance tolerance is changed. B0 has no standard full tillage scenario, so this admission is a focused start-state semantics qualification rather than an exhaustive tillage-module validation.
+The correction is intentionally limited to tillage lookup indexing and input consistency. SWAP-003 remains outside B1.11. No tillage constitutive equation, event timing rule, solver policy, timestep policy, water-balance equation or mass-balance tolerance changes. B0 has no standard complete tillage scenario, so this remains a focused qualification rather than an exhaustive tillage-module validation.
 
 ## B2: SWAP 5 reference mode
 
@@ -88,7 +93,7 @@ A future release statement should therefore name the exact corrected reference, 
 
 ```text
 SWAP 5 reference mode verified against
-SWAP 4.3.1 Corrected Reference B1.10 (<exact manifest/commit>)
+SWAP 4.3.1 Corrected Reference B1.11 (<exact manifest/commit>)
 ```
 
 ## Admission rule
@@ -107,4 +112,4 @@ Production SWAP5 code must not depend on legacy implementation structures under 
 
 ## Current operational status
 
-B1.10 is the current corrected legacy oracle. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.
+B1.11 is the current corrected legacy oracle. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.

@@ -15,7 +15,7 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CANDIDATE = REPO_ROOT / "tools" / "vq" / "cases" / "b2-reference-candidate.json"
-QUALIFIED_B1_SNAPSHOT = "B1.10"
+QUALIFIED_B1_SNAPSHOT = "B1.11"
 QUALIFIED_B1_STATUS = "QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 REQUIRED_CAPABILITIES = (

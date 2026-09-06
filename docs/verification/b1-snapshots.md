@@ -17,55 +17,57 @@ B1 is an ordered sequence of corrected SWAP 4.3.1 reference definitions. Each sn
 | `B1.7` | + `SWAP-010` | qualified predecessor | model-7 capacity-derivative correction |
 | `B1.8` | + `SWAP-013` | qualified predecessor | PDI `HA/H0` input-domain guard |
 | `B1.9` | + `SWAP-012` | qualified predecessor | `prhead` inverse corrected for models 3 and 5-12 |
-| `B1.10` | + `SWAP-002` | **current qualified corrected reference** | tillage start-event pointer/history initialization corrected |
+| `B1.10` | + `SWAP-002` | qualified predecessor | tillage start-event pointer/history initialization corrected |
+| `B1.11` | + `SWAP-004` | **current qualified corrected reference** | tillage type-index mapping/input consistency corrected |
 
 The exact definitions live under `reference/swap-4.3.1/snapshots/`.
 
-## Admitted corrections through B1.10
+## B1.10 -> B1.11: SWAP-004
 
-`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects fallback band-solver dummy-argument contracts without changing arithmetic. `SWAP-009` fixes the PDI Kelvin-sign vapor-conductivity caller error. `SWAP-010` makes model-7 capacity consistent with the implemented retention curve. `SWAP-013` rejects singular PDI `HA/H0` combinations before constitutive evaluation. `SWAP-012` corrects the inverse retention dispatch for models 3 and 5-12 while explicitly excluding SWAP-011.
+`SWAP-004` fixes an indexing/input-consistency defect in `Read_Tillage`. Legacy SWAP allocates `iTT1/iTT2` by `Ntill`, although these lookup arrays are indexed by `TYPE_TILLAGE`. A valid represented type code can therefore be greater than the number of events and index outside the arrays.
 
-`SWAP-002`, first admitted in B1.10, fixes `set_iTill`. The B0 interval condition uses the same event date as both lower and upper bound and therefore can never select a later event. B1.10 defines `iTill` as the first event on or after the simulation start; after the final event it is `Ntill+1`. If the start follows a historical event, the most recent previous tillage/consolidation parameters are loaded.
+B1.11 allocates and constructs the lookup over the accepted type-code domain `1:tmax` and rejects an event type that has no corresponding `ITYPE_TILLAGE` record. The dense legacy-valid mapping remains unchanged. SWAP-003 is explicitly excluded.
 
-## SWAP-002 qualification
-
-The audit testbank established six start-position semantics. A fresh strict GNU Fortran source-bound gate repeats these cases and verifies the loaded previous-event index:
+Focused strict qualification:
 
 ```text
-case                 B0       B1.10
-before first         PASS     PASS
-exact first          PASS     PASS
-between event 1/2    FAIL     PASS
-exact event 2        FAIL     PASS
-after final          FAIL     PASS
-unsorted dates       PASS     PASS
+B0 sparse case: Ntill=1, TYPE_TILLAGE=[3]
+result under -fcheck=all: bounds failure as expected
 
-total                3/6      6/6
+candidate mapping cases
+  dense legacy-valid mapping unchanged        PASS
+  represented type code > Ntill               PASS
+  represented non-contiguous type codes       PASS
+  missing ITYPE_TILLAGE record rejected       PASS
+  total                                       4/4 PASS
 ```
 
-Exact identity:
+Exact ordered identity:
 
 ```text
-canonical B0 / ordered B1.9 tillage.f90 SHA-256
+canonical B0 tillage.f90
 731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
 
-SWAP-002 fix.patch SHA-256
-e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
+ordered B1.10 tillage.f90
+ eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
 
-corrected tillage.f90 SHA-256
-eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
+SWAP-004 fix.patch
+0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818
+
+B1.11 tillage.f90
+41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede
 ```
 
-Deterministic B1.10 source identity:
+Deterministic B1.11 source identity:
 
 ```text
 members          63
-source bytes      1,863,575
-manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+source bytes      1,863,998
+manifest SHA-256  a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6
 ```
 
-SWAP-002 changes only start-state/event-index semantics. SWAP-003 (`PCLAY=0`) and SWAP-004 (tillage type indexing) remain outside B1.10. No solver policy or mass-balance tolerance changes. B0 contains no standard full tillage scenario, so this admission does not claim exhaustive qualification of all tillage process interactions.
+The admitted difference is limited to tillage type-index mapping and invalid mapping rejection. No tillage constitutive equation, event timing rule, solver policy, timestep policy, water-balance equation or mass tolerance is changed. B0 supplies no standard complete tillage scenario, so B1.11 is a focused indexing/input-consistency qualification, not an exhaustive tillage-module validation.
 
 ## Current use rule
 
-`reference/swap-4.3.1/b1-manifest.yml` points to `B1.10`. Historical B1.2-B1.5 remain audit records only; B1.5p1 through B1.9 remain immutable qualified predecessors. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.10.
+`reference/swap-4.3.1/b1-manifest.yml` points to `B1.11`. Historical B1.2-B1.5 remain audit records only; B1.5p1 through B1.10 remain immutable qualified predecessors. SWAP-003 remains unadmitted. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.11.

@@ -11,18 +11,18 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.10"
+  snapshot: "B1.11"
   status: "CORRECTED_REFERENCE"
   oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.10.yml"
-  supersedes_snapshot: "B1.9"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.11.yml"
+  supersedes_snapshot: "B1.10"
   numerical_change_from_superseded_snapshot: true
-  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-002 tillage start-event indexing correction to B1.9."
+  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-004 tillage type-index mapping correction to B1.10."
   source_tree:
     member_count: 63
-    source_bytes: 1863575
-    member_manifest_sha256: "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
-    reconstruction: "tools/vq/b1_10_reconstruct.py"
+    source_bytes: 1863998
+    member_manifest_sha256: "a0f4adc5d0a126e74bfb68b33c00ba665e80b91e926d8bf356adaf97a5d304d6"
+    reconstruction: "tools/vq/b1_11_reconstruct.py"
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -81,6 +81,14 @@ b1:
       ordered_preimage_snapshot: "B1.9"
       ordered_preimage_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
       corrected_target_sha256: "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
+    - id: "SWAP-004"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-004/fix.patch"
+      patch_sha256: "0a1b52cb018ebfc6aa11da2e04d52e858addfa5810c69b0fe078fd5f8bed8818"
+      qualification: "reference/swap-4.3.1/patches/SWAP-004/qualification.md"
+      canonical_b0_target_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
+      ordered_preimage_snapshot: "B1.10"
+      ordered_preimage_sha256: "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
+      corrected_target_sha256: "41a42be1f55e533843b7ecc115f9de2fbd7bc4c08515cb58a9bf6efb0479bede"
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -118,6 +126,9 @@ history:
     exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
   - snapshot: "B1.10"
     definition: "reference/swap-4.3.1/snapshots/B1.10.yml"
+    exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  - snapshot: "B1.11"
+    definition: "reference/swap-4.3.1/snapshots/B1.11.yml"
     exact_oracle_status: "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 admission_rule:
