@@ -16,53 +16,56 @@ B1 is an ordered sequence of corrected SWAP 4.3.1 reference definitions. Each sn
 | `B1.6` | + `SWAP-009` | qualified predecessor | PDI Kelvin-sign correction |
 | `B1.7` | + `SWAP-010` | qualified predecessor | model-7 capacity-derivative correction |
 | `B1.8` | + `SWAP-013` | qualified predecessor | PDI `HA/H0` input-domain guard |
-| `B1.9` | + `SWAP-012` | **current qualified corrected reference** | `prhead` inverse corrected for models 3 and 5-12 |
+| `B1.9` | + `SWAP-012` | qualified predecessor | `prhead` inverse corrected for models 3 and 5-12 |
+| `B1.10` | + `SWAP-002` | **current qualified corrected reference** | tillage start-event pointer/history initialization corrected |
 
 The exact definitions live under `reference/swap-4.3.1/snapshots/`.
 
-## Admitted corrections through B1.9
+## Admitted corrections through B1.10
 
-`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects fallback band-solver dummy-argument contracts without changing arithmetic. `SWAP-009` fixes the PDI Kelvin-sign vapor-conductivity caller error. `SWAP-010` makes model-7 capacity consistent with the implemented retention curve. `SWAP-013` rejects singular PDI `HA/H0` combinations before constitutive evaluation.
+`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects fallback band-solver dummy-argument contracts without changing arithmetic. `SWAP-009` fixes the PDI Kelvin-sign vapor-conductivity caller error. `SWAP-010` makes model-7 capacity consistent with the implemented retention curve. `SWAP-013` rejects singular PDI `HA/H0` combinations before constitutive evaluation. `SWAP-012` corrects the inverse retention dispatch for models 3 and 5-12 while explicitly excluding SWAP-011.
 
-`SWAP-012`, first admitted in B1.9, corrects `prhead`: hydraulic models 3 and 5-12 no longer fall through to the default unimodal MvG analytical inverse when their actual retention relation is different. The repair uses the selected retention relation in a robust bracketed/bisection inverse. Model 4 retains its analytical default-MvG inverse. The historical SWAP-011 `dhconduc` content is explicitly excluded.
+`SWAP-002`, first admitted in B1.10, fixes `set_iTill`. The B0 interval condition uses the same event date as both lower and upper bound and therefore can never select a later event. B1.10 defines `iTill` as the first event on or after the simulation start; after the final event it is `Ntill+1`. If the start follows a historical event, the most recent previous tillage/consolidation parameters are loaded.
 
-## SWAP-012 qualification
+## SWAP-002 qualification
 
-The broader D2 qualification tested 22,240 valid affected-model round trips. The legacy inverse had 17,176 errors above `0.01` decade; the corrected inverse had 0 failures and maximum corrected error `2.09e-8` decade.
-
-A separate isolated actual-source GNU Fortran gate compiled canonical B0 `MOD_MvG_functions.f90` and the exact SWAP-012-only corrected target with matched support modules. It exercised 60 pressure heads for each model 3-12, including model 4 as an unaffected control:
+The audit testbank established six start-position semantics. A fresh strict GNU Fortran source-bound gate repeats these cases and verifies the loaded previous-event index:
 
 ```text
-B0 failures          513 / 600
-corrected failures     0 / 600
-B0 max error          7.4915 decades
-corrected max error   1.17e-10 decade
-criterion             1e-6 decade
+case                 B0       B1.10
+before first         PASS     PASS
+exact first          PASS     PASS
+between event 1/2    FAIL     PASS
+exact event 2        FAIL     PASS
+after final          FAIL     PASS
+unsorted dates       PASS     PASS
+
+total                3/6      6/6
 ```
 
 Exact identity:
 
 ```text
-canonical B0 / ordered B1.8 target SHA-256
-a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390
+canonical B0 / ordered B1.9 tillage.f90 SHA-256
+731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
 
-SWAP-012 fix.patch SHA-256
-263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131
+SWAP-002 fix.patch SHA-256
+e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
 
-corrected target SHA-256
-4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
+corrected tillage.f90 SHA-256
+eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
 ```
 
-Deterministic B1.9 source identity:
+Deterministic B1.10 source identity:
 
 ```text
 members          63
-source bytes      1,863,300
-manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
+source bytes      1,863,575
+manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
 ```
 
-SWAP-012 changes no retention or conductivity formula, no Richards residual/Jacobian, no solver policy and no mass-balance tolerance. A future faster model-specific inverse is an optimization and must qualify against the B1.9 inverse contract.
+SWAP-002 changes only start-state/event-index semantics. SWAP-003 (`PCLAY=0`) and SWAP-004 (tillage type indexing) remain outside B1.10. No solver policy or mass-balance tolerance changes. B0 contains no standard full tillage scenario, so this admission does not claim exhaustive qualification of all tillage process interactions.
 
 ## Current use rule
 
-`reference/swap-4.3.1/b1-manifest.yml` points to `B1.9`. Historical B1.2-B1.5 remain audit records only; B1.5p1 through B1.8 remain immutable qualified predecessors. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.9.
+`reference/swap-4.3.1/b1-manifest.yml` points to `B1.10`. Historical B1.2-B1.5 remain audit records only; B1.5p1 through B1.9 remain immutable qualified predecessors. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.10.

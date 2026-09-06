@@ -1,0 +1,26 @@
+--- SWAP/tillage.f90
++++ SWAP/tillage.f90
+@@ -410,12 +410,20 @@
+    subroutine set_iTill
+    implicit none
+    integer :: i
+-   iTill = 1
+-   if (t1900 <= Date_tillage(1)) iTill = 1
++   ! iTill points to the next tillage event that still has to be executed.
++   ! If the simulation starts between events, initialise parameters from the
++   ! most recent preceding event so consolidation can continue.
++   iTill = Ntill + 1
+    do i = 2, Ntill
+       if (Date_tillage(i) < Date_tillage(i-1)) call swap_error ('set_itill', 'Dates in tabulated tillage events must be sorted')
+-      if (t1900 >= Date_tillage(i-1) .AND. t1900 < Date_tillage(i-1)) iTill = i-1
+    end do
++   do i = 1, Ntill
++      if (t1900 <= Date_tillage(i)) then
++         iTill = i
++         exit
++      end if
++   end do
++   if (iTill > 1) call Change_Tillage_Info(iTill-1)
+    end subroutine set_iTill
+ 
+ ! **************************************************** det_MNSH *********************************************************

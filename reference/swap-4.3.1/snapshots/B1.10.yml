@@ -1,0 +1,113 @@
+schema_version: 1
+snapshot: "B1.10"
+reference_family: SWAP-4.3.1-corrected
+supersedes: "B1.9"
+change_class: "QUALIFIED_BUGFIX_ADMISSION"
+numerical_change_from_superseded_snapshot: true
+
+b0:
+  source_archive_sha256: "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  expanded_member_manifest_sha256: "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
+
+patches:
+  - id: "SWAP-001"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
+    patch_sha256: "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770"
+    target: "SWAP/macropore.f90"
+    b0_target_sha256: "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b"
+    corrected_target_sha256: "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f"
+
+  - id: "SWAP-005"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-005/fix.patch"
+    patch_sha256: "243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553"
+    target: "SWAP/MOD_cropdevelopment.f90"
+    b0_target_sha256: "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+    corrected_target_sha256: "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+
+  - id: "SWAP-006"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
+    patch_sha256: "4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f"
+    target: "SWAP/MOD_meteo.f90"
+    b0_target_sha256: "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+    corrected_target_sha256: "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+
+  - id: "SWAP-007"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
+    patch_sha256: "3ac9580bc162f8a4c90b83d59452e7b40bd1e0c82ba92e7a2c1ac58f154af5f0"
+    target: "SWAP/oxygenstress.f90"
+    b0_target_sha256: "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735"
+    corrected_target_sha256: "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87"
+    canonical_verifier: "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py"
+
+  - id: "SWAP-008"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-008/fix.patch"
+    patch_sha256: "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c"
+    target: "SWAP/tridag.f90"
+    b0_target_sha256: "6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651"
+    corrected_target_sha256: "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a"
+
+  - id: "SWAP-009"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-009/fix.patch"
+    patch_sha256: "43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66"
+    target: "SWAP/WC_K_models_04_11.f90"
+    b0_target_sha256: "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd"
+    corrected_target_sha256: "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7"
+    qualification: "reference/swap-4.3.1/patches/SWAP-009/qualification.md"
+
+  - id: "SWAP-010"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-010/fix.patch"
+    patch_sha256: "f3d67771908e27a23610a650c4ad72813d882169f360a973472f86f545ee5deb"
+    target: "SWAP/WC_K_models_04_11.f90"
+    b0_target_sha256: "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd"
+    ordered_preimage_snapshot: "B1.6"
+    ordered_preimage_sha256: "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7"
+    corrected_target_sha256: "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e"
+    qualification: "reference/swap-4.3.1/patches/SWAP-010/qualification.md"
+
+  - id: "SWAP-013"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-013/fix.patch"
+    patch_sha256: "066c1c1aba8f32cb3a9aab3d17f1900b0ba8a28f43173d80461c91fb1a8f25f3"
+    target: "SWAP/readswap.f90"
+    b0_target_sha256: "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2"
+    ordered_preimage_snapshot: "B1.7"
+    ordered_preimage_sha256: "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2"
+    corrected_target_sha256: "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c"
+    qualification: "reference/swap-4.3.1/patches/SWAP-013/qualification.md"
+
+  - id: "SWAP-012"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-012/fix.patch"
+    patch_sha256: "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131"
+    target: "SWAP/MOD_MvG_functions.f90"
+    b0_target_sha256: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    ordered_preimage_snapshot: "B1.8"
+    ordered_preimage_sha256: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+    corrected_target_sha256: "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+    qualification: "reference/swap-4.3.1/patches/SWAP-012/qualification.md"
+
+  - id: "SWAP-002"
+    patch_path: "reference/swap-4.3.1/patches/SWAP-002/fix.patch"
+    patch_sha256: "e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b"
+    target: "SWAP/tillage.f90"
+    b0_target_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
+    ordered_preimage_snapshot: "B1.9"
+    ordered_preimage_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
+    corrected_target_sha256: "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
+    qualification: "reference/swap-4.3.1/patches/SWAP-002/qualification.md"
+
+source_tree:
+  member_count: 63
+  source_bytes: 1863575
+  member_manifest_sha256: "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  reconstruction: "tools/vq/b1_10_reconstruct.py"
+
+qualification:
+  predecessor_oracle: "B1.9"
+  predecessor_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  admitted_patch: "SWAP-002"
+  patch_provenance: "PASS"
+  historical_semantic_gate: "PASS"
+  source_bound_compiled_start_gate: "PASS"
+  expected_difference: "TILLAGE_START_NEXT_EVENT_AND_PREVIOUS_PARAMETER_INITIALIZATION"
+  mass_tolerance_changed: false
+
+meaning: "Corrected SWAP 4.3.1 reference snapshot adding the qualified SWAP-002 tillage start-event indexing correction to B1.9."

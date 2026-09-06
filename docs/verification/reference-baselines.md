@@ -27,63 +27,58 @@ B1 is a controlled ordered derivation:
 B1.x = B0 + ordered accepted patch set
 ```
 
-Historical B1.2-B1.5 remain recorded but fail exact provenance requirements. B1.5p1 repaired their intended five-fix identity and passed independent VQ qualification. B1.6 through B1.8 then admitted SWAP-009, SWAP-010 and SWAP-013 respectively.
+Historical B1.2-B1.5 remain recorded but fail exact provenance requirements. B1.5p1 repaired their intended five-fix identity and passed independent VQ qualification. B1.6-B1.9 admitted SWAP-009, SWAP-010, SWAP-013 and SWAP-012.
 
-The current corrected reference is **B1.9**:
+The current corrected reference is **B1.10**:
 
 ```text
-B1.9 = B0
-     + SWAP-001
-     + SWAP-005
-     + SWAP-006
-     + SWAP-007
-     + SWAP-008
-     + SWAP-009
-     + SWAP-010
-     + SWAP-013
-     + SWAP-012
+B1.10 = B0
+      + SWAP-001
+      + SWAP-005
+      + SWAP-006
+      + SWAP-007
+      + SWAP-008
+      + SWAP-009
+      + SWAP-010
+      + SWAP-013
+      + SWAP-012
+      + SWAP-002
 ```
 
-`SWAP-012` corrects the `prhead` inverse for hydraulic models 3 and 5-12. B0 applies the default unimodal MvG analytical inverse even when the selected retention relation differs. B1.9 instead inverts the actual selected retention relation using a robust bracketed/bisection path while leaving model 4 on its analytical default-MvG inverse.
-
-The historical broad patch also contained SWAP-011 `dhconduc` work. B1.9 explicitly excludes that content and admits only the isolated inverse correction.
+`SWAP-002` corrects the tillage start-event initialization. In B0 the interval test in `set_iTill` compares the simulation start against the same event date as both lower and upper bound and can therefore never identify an interval between events. B1.10 sets `iTill` to the first event on or after the start, or `Ntill+1` after the final event, and loads the most recent previous tillage/consolidation parameters when applicable.
 
 Qualification evidence:
 
 ```text
-D2 affected-model round trips      22,240
-B0 failures > 0.01 decade          17,176
-corrected failures                 0
-D2 max corrected error             2.09e-8 decade
-
-isolated actual-source points      600
-B0 failures @ 1e-6 decade          513
-corrected failures                 0
-max corrected error                1.17e-10 decade
+source-bound start cases           6
+B0 passes                          3/6
+corrected passes                   6/6
+B0 failures                        between event 1/2, exact event 2, after final
+corrected previous-event loading   PASS
 ```
 
-Exact SWAP-012 identity:
+Exact SWAP-002 identity:
 
 ```text
-canonical B0 / ordered B1.8 MOD_MvG_functions.f90
-a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390
+canonical B0 / ordered B1.9 tillage.f90
+731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486
 
-SWAP-012 fix.patch
-263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131
+SWAP-002 fix.patch
+e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b
 
 corrected target
-4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
+eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3
 ```
 
-Deterministic B1.9 source identity:
+Deterministic B1.10 source identity:
 
 ```text
 members          63
-source bytes      1,863,300
-manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
+source bytes      1,863,575
+manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
 ```
 
-SWAP-012 changes no retention/conductivity equation, Richards residual/Jacobian, solver policy or mass-balance tolerance.
+The correction is intentionally limited to `set_iTill`; SWAP-003 and SWAP-004 remain outside B1.10. No tillage constitutive equation, solver policy or mass-balance tolerance is changed. B0 has no standard full tillage scenario, so this admission is a focused start-state semantics qualification rather than an exhaustive tillage-module validation.
 
 ## B2: SWAP 5 reference mode
 
@@ -93,7 +88,7 @@ A future release statement should therefore name the exact corrected reference, 
 
 ```text
 SWAP 5 reference mode verified against
-SWAP 4.3.1 Corrected Reference B1.9 (<exact manifest/commit>)
+SWAP 4.3.1 Corrected Reference B1.10 (<exact manifest/commit>)
 ```
 
 ## Admission rule
@@ -112,4 +107,4 @@ Production SWAP5 code must not depend on legacy implementation structures under 
 
 ## Current operational status
 
-B1.9 is the current corrected legacy oracle. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.
+B1.10 is the current corrected legacy oracle. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.

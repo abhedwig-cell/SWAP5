@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.9",
+      "candidate": "B1.10",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -109,6 +109,17 @@
           "expected_direction_or_envelope": "For models 3 and 5-12, B1.9 numerically inverts the actual selected retention relation rather than applying the unrelated default-MvG analytical inverse. Differences are expected only on paths that call prhead for affected models and must be consistent with the selected retention curve.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
           "known_unchanged_scope": ["hydraulic model 4 analytical inverse", "retention functions", "conductivity functions", "Richards residual and Jacobian", "solver policy", "water-balance equations and tolerances", "SWAP-011 dhconduc behaviour"]
+        },
+        {
+          "difference_id": "SWAP-002",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
+          "first_admitted_tag_or_commit": "B1.10",
+          "affected_outputs": ["tillage next-event pointer at simulation start", "historical tillage/consolidation parameter initialization when the start follows one or more tillage events"],
+          "expected_direction_or_envelope": "For starts on or after later tillage events, B1.10 sets iTill to the first event on/after the start, or Ntill+1 after the final event, and loads the most recent preceding event parameters. Differences outside this initialization envelope are not admitted by SWAP-002.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
+          "known_unchanged_scope": ["tillage constitutive formulations", "SWAP-003 PCLAY domain behaviour", "SWAP-004 tillage type indexing", "solver policy", "time-step policy", "water-balance equations and tolerances"]
         }
       ]
     },

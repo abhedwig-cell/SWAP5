@@ -14,53 +14,51 @@ python tools/vq/b0_source_runner.py \
 
 The GNU runner is capability-limited verification infrastructure and is not declared globally equivalent to the packaged Intel executable.
 
-## Current B1.9 corrected reference
-
-`B1.9` is the current corrected-reference oracle:
+## Current B1.10 corrected reference
 
 ```text
-B1.9 = B1.8 + SWAP-012
+B1.10 = B1.9 + SWAP-002
 ```
 
-SWAP-012 targets `MOD_MvG_functions.f90`, unchanged by B1.1-B1.8, so its ordered B1.8 preimage equals canonical B0. The exact stored patch is isolated from the historical SWAP-011 `dhconduc` changes.
+SWAP-002 targets `tillage.f90`, unchanged by B1.1-B1.9, so its ordered B1.9 preimage equals canonical B0. The patch is isolated to `set_iTill` and explicitly excludes SWAP-003 and SWAP-004.
 
 Admission bookkeeping:
 
 ```bash
-python tools/vq/b1_9_admission_gate.py
+python tools/vq/b1_10_admission_gate.py
 ```
 
-The stored actual-source roundtrip evidence is bound to exact patch/preimage/corrected-target identities by:
+The source-bound compiled six-case tillage-start gate is:
 
 ```bash
-python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
+python reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py
 ```
 
 Exact source reconstruction from canonical B0:
 
 ```bash
-python tools/vq/b1_9_reconstruct.py \
+python tools/vq/b1_10_reconstruct.py \
   --archive /path/to/SWAP_4.3.1.zip \
-  --output-dir /tmp/B1.9/SWAP
+  --output-dir /tmp/B1.10/SWAP
 ```
 
 Expected source identity:
 
 ```text
 members          63
-source bytes      1,863,300
-manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
+source bytes      1,863,575
+manifest SHA-256  2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
 ```
 
-SWAP-012 qualification is based on the broader D2 22,240-point inverse study plus a separately executed 600-point actual-source strict GNU Fortran gate. B0 fails 513/600 isolated points at `1e-6` decade; the corrected source fails 0/600 with maximum error `1.17e-10` decade. Model 4 remains the analytical control.
+The compiled start-state gate gives B0 3/6 and the corrected source 6/6 across before-first, exact-first, between-events, exact-second, after-final and unsorted-date cases. This is focused qualification of `set_iTill`; it is not an exhaustive validation of all tillage interactions.
 
 ## Expected differences
 
-`docs/verification/expected-differences.json` defines the admitted B0 -> B1.9 difference envelopes. Any unregistered difference remains a qualification failure.
+`docs/verification/expected-differences.json` defines the admitted B0 -> B1.10 difference envelopes. Any unregistered difference remains a qualification failure.
 
 ## B2 reference-entrypoint admission
 
-Before a numerical B1.9 -> B2 comparison can run, the candidate checkout must pass:
+Before a numerical B1.10 -> B2 comparison can run, the candidate checkout must pass:
 
 ```bash
 python tools/vq/b2_reference_gate.py \
@@ -70,7 +68,7 @@ python tools/vq/b2_reference_gate.py \
 
 The fail-closed gate still requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
-The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.9 changes corrected legacy inverse behaviour only; it does not create the missing production B2 seam.
+The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.10 changes corrected legacy tillage start-state semantics only; it does not create the missing production B2 seam.
 
 ## Unrounded mass accounting
 
