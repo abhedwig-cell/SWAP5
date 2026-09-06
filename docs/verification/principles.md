@@ -2,6 +2,20 @@
 
 Verification is part of the architecture, not a final packaging activity.
 
+## Reference chain
+
+SWAP 5 verification uses the explicit reference chain defined in ADR-0005:
+
+```text
+B0  immutable SWAP 4.3.1 audit baseline
+ -> B1 corrected SWAP 4.3.1 reference
+ -> B2 SWAP 5 reference mode
+```
+
+A confirmed legacy bug is corrected and qualified in the B1 line before SWAP 5 is required to reproduce the corrected behaviour. SWAP 5 is not required to recreate a demonstrated B0 defect merely for numerical compatibility.
+
+Every release or qualification result that depends on B1 should pin an exact B1 tag and commit. Unexplained B0/B1/B2 differences are verification failures until classified.
+
 ## Hard requirement: water balance
 
 Mass conservation is non-negotiable. Every accepted standalone, coupled, fallback and performance-oriented path must produce a closed water balance within a defined numerical accounting tolerance.
