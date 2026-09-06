@@ -5,9 +5,9 @@ Verification infrastructure only. This module does not execute SWAP5 physics.
 It determines whether an integrated, exactly pinned B2 reference-mode entrypoint
 exists with the minimum contracts required before VQ may perform B1 -> B2 runs.
 
-VQ-1d1 additionally binds the candidate and stored gate evidence to the current
-corrected-reference manifest. This prevents a B1 oracle update from leaving stale
-B2 qualification evidence behind.
+VQ-1d1 binds the candidate and stored gate evidence to the current corrected-
+reference manifest. VQ-1d2 additionally requires a machine-readable reference-
+seam contract for any candidate that claims to be READY.
 """
 from __future__ import annotations
 
@@ -18,6 +18,11 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
+try:
+    from tools.vq.b2_seam_contract import assess_contract
+except ModuleNotFoundError:  # direct script execution from tools/vq
+    from b2_seam_contract import assess_contract
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CANDIDATE = REPO_ROOT / "tools" / "vq" / "cases" / "b2-reference-candidate.json"
@@ -42,6 +47,10 @@ BLOCKED = "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT"
 
 def _valid_sha(value: object, length: int = 40) -> bool:
     return isinstance(value, str) and re.fullmatch(rf"[0-9a-f]{{{length}}}", value) is not None
+
+
+def _declared_path(value: object) -> bool:
+    return isinstance(value, str) and bool(value.strip())
 
 
 def load_current_b1(repo_root: Path) -> dict[str, str]:
@@ -112,15 +121,35 @@ def assess_candidate(repo_root: Path, candidate_path: Path = DEFAULT_CANDIDATE) 
 
     entrypoint = integration.get("entrypoint_path")
     result_contract = integration.get("result_contract_path")
-    checks["entrypoint_declared"] = isinstance(entrypoint, str) and bool(entrypoint.strip())
-    checks["result_contract_declared"] = isinstance(result_contract, str) and bool(result_contract.strip())
-    checks["reference_policy_explicit"] = bool(integration.get("reference_policy"))
+    seam_contract = integration.get("seam_contract_path")
+    checks["entrypoint_declared"] = _declared_path(entrypoint)
+    checks["result_contract_declared"] = _declared_path(result_contract)
+    checks["seam_contract_declared"] = _declared_path(seam_contract)
+    checks["reference_policy_explicit"] = integration.get("reference_policy") == "reference"
 
     checks["entrypoint_exists"] = bool(
         checks["entrypoint_declared"] and (repo_root / str(entrypoint)).is_file()
     )
     checks["result_contract_exists"] = bool(
         checks["result_contract_declared"] and (repo_root / str(result_contract)).is_file()
+    )
+    checks["seam_contract_exists"] = bool(
+        checks["seam_contract_declared"] and (repo_root / str(seam_contract)).is_file()
+    )
+
+    seam_result: dict[str, Any] | None = None
+    if checks["seam_contract_exists"]:
+        seam_result = assess_contract(repo_root, repo_root / str(seam_contract))
+    result["seam_contract"] = seam_result
+    checks["seam_contract_valid"] = bool(
+        seam_result is not None and seam_result.get("admissible_reference_seam") is True
+    )
+    checks["seam_contract_matches_candidate"] = bool(
+        seam_result is not None
+        and seam_result.get("implementation_commit") == b2.get("commit")
+        and seam_result.get("entrypoint_path") == entrypoint
+        and seam_result.get("result_contract_path") == result_contract
+        and seam_result.get("reference_policy") == integration.get("reference_policy")
     )
 
     missing = [name for name in REQUIRED_CAPABILITIES if capabilities.get(name) is not True]
@@ -148,6 +177,12 @@ def assess_candidate(repo_root: Path, candidate_path: Path = DEFAULT_CANDIDATE) 
             result["failure"] = "integrated_entrypoint_missing"
         elif not checks["result_contract_exists"]:
             result["failure"] = "result_contract_missing"
+        elif not checks["seam_contract_exists"]:
+            result["failure"] = "reference_seam_contract_missing"
+        elif not checks["seam_contract_valid"]:
+            result["failure"] = "reference_seam_contract_invalid"
+        elif not checks["seam_contract_matches_candidate"]:
+            result["failure"] = "reference_seam_contract_candidate_mismatch"
         elif missing:
             result["failure"] = "required_b2_capability_missing"
         else:
@@ -160,7 +195,7 @@ def evidence_projection(candidate: dict[str, Any], result: dict[str, Any]) -> di
     return {
         "schema_version": 1,
         "workstream": "VQ",
-        "slice": "VQ-1d1",
+        "slice": "VQ-1d2",
         "observation_baseline": candidate.get("observation_baseline"),
         "candidate_status": result.get("candidate_status"),
         "b1_snapshot": result.get("b1_snapshot"),
