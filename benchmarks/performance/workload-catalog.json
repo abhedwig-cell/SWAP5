@@ -19,7 +19,7 @@
       "source_case": "cases/1.hupselbrook",
       "scale": {"columns": 1},
       "required_measurements": ["timing", "counters", "mass_balance"],
-      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form of this case. MP-5 revalidated a clean byte-safe shadow rebuild over 18 paired cycles and found the measured observer delta unresolved above a 1.56% two-standard-error noise scale on a non-dedicated host. This is still not SWAP5 production qualification."
+      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form. MP-5 revalidated clean byte-safe shadow execution and quantified non-dedicated-host wall-time noise. MP-6 separated child CPU from elapsed time and exercised a 44-pair affinity-controlled protocol; all physical hashes remained equal, but the 2.57% child-CPU detection floor failed the predeclared 1% resolution target. MP-B01 therefore remains shadow-executable, not a SWAP5 production CPU baseline."
     },
     {
       "id": "MP-B02-HOMOGENEOUS-SCALING",
