@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "B1.9-admission",
+  "snapshot": "B1.9",
+  "integration_commit": "402f278f94eb15261289bf6c2a259e7840e9c155",
+  "snapshot_path": "reference/swap-4.3.1/snapshots/B1.9.yml",
+  "snapshot_git_blob_sha1": "6b79fd3de7972f13eae6b2dc6257d0172c79ef2d",
+  "b0_member_manifest_path": "reference/swap-4.3.1/b0/file-manifest.sha256",
+  "b0_member_manifest_git_blob_sha1": "be8862be45415e49fc366f98d9de76c8b14b1fae",
+  "b0": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "patches": [
+    {"id":"SWAP-001","path":"reference/swap-4.3.1/patches/SWAP-001/fix.patch","expected_sha256":"6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770","b0_target":"SWAP/macropore.f90","expected_b0_sha256":"1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b"},
+    {"id":"SWAP-005","path":"reference/swap-4.3.1/patches/SWAP-005/fix.patch","expected_sha256":"243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553","b0_target":"SWAP/MOD_cropdevelopment.f90","expected_b0_sha256":"c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"},
+    {"id":"SWAP-006","path":"reference/swap-4.3.1/patches/SWAP-006/fix.patch","expected_sha256":"4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f","b0_target":"SWAP/MOD_meteo.f90","expected_b0_sha256":"5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"},
+    {"id":"SWAP-007","path":"reference/swap-4.3.1/patches/SWAP-007/fix.patch","expected_sha256":"3ac9580bc162f8a4c90b83d59452e7b40bd1e0c82ba92e7a2c1ac58f154af5f0","b0_target":"SWAP/oxygenstress.f90","expected_b0_sha256":"2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735"},
+    {"id":"SWAP-008","path":"reference/swap-4.3.1/patches/SWAP-008/fix.patch","expected_sha256":"8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c","b0_target":"SWAP/tridag.f90","expected_b0_sha256":"6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651"},
+    {"id":"SWAP-009","path":"reference/swap-4.3.1/patches/SWAP-009/fix.patch","expected_sha256":"43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66","b0_target":"SWAP/WC_K_models_04_11.f90","expected_b0_sha256":"1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd"},
+    {"id":"SWAP-010","path":"reference/swap-4.3.1/patches/SWAP-010/fix.patch","expected_sha256":"f3d67771908e27a23610a650c4ad72813d882169f360a973472f86f545ee5deb","b0_target":"SWAP/WC_K_models_04_11.f90","expected_b0_sha256":"1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd","ordered_preimage_snapshot":"B1.6","expected_ordered_preimage_sha256":"f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7"},
+    {"id":"SWAP-013","path":"reference/swap-4.3.1/patches/SWAP-013/fix.patch","expected_sha256":"066c1c1aba8f32cb3a9aab3d17f1900b0ba8a28f43173d80461c91fb1a8f25f3","b0_target":"SWAP/readswap.f90","expected_b0_sha256":"3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2","ordered_preimage_snapshot":"B1.7","expected_ordered_preimage_sha256":"3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2"},
+    {"id":"SWAP-012","path":"reference/swap-4.3.1/patches/SWAP-012/fix.patch","expected_sha256":"263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131","b0_target":"SWAP/MOD_MvG_functions.f90","expected_b0_sha256":"a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390","ordered_preimage_snapshot":"B1.8","expected_ordered_preimage_sha256":"a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"}
+  ],
+  "source_tree": {
+    "member_count": 63,
+    "source_bytes": 1863300,
+    "member_manifest_sha256": "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657"
+  },
+  "qualification": {
+    "predecessor_b1_8_oracle": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "all_patch_artifact_hashes_match": true,
+    "all_declared_b0_preimages_match_canonical_manifest": true,
+    "swap012_ordered_preimage_gate": "PASS",
+    "swap012_actual_source_roundtrip_gate": "PASS",
+    "b1_9_oracle_status": "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  }
+}
