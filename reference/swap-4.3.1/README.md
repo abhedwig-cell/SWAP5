@@ -21,6 +21,7 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     B1.1.yml
+    B1.2.yml
     ...
 b1-manifest.yml
 ```
@@ -56,9 +57,10 @@ Current state:
 ```text
 B1.0-bootstrap = B0
 B1.1           = B0 + SWAP-001
+B1.2           = B0 + SWAP-001 + SWAP-005
 ```
 
-`SWAP-001` is the first admitted correction. Other candidate directories may exist under `patches/`, but a candidate does not affect B1 unless it is explicitly listed in the ordered manifest.
+`SWAP-001` and `SWAP-005` are admitted corrections. Other candidate directories may exist under `patches/`, but a candidate does not affect B1 unless it is explicitly listed in the ordered manifest.
 
 ## Boundary to SWAP 5
 
