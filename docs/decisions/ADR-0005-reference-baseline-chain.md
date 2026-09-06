@@ -10,6 +10,8 @@ SWAP 5 is being reconstructed from SWAP 4.3.1 while the technical audit of 4.3.1
 
 At the same time, the project must retain historical reproducibility: results produced by the original 4.3.1 baseline must remain explainable and reproducible.
 
+The logical separation of the legacy references from the SWAP 5 kernel is mandatory. A separate Git repository is not mandatory. Keeping the reference material in the SWAP5 repository can simplify verification, CI and day-to-day work as long as the reference subtree remains explicitly isolated from production code.
+
 ## Decision
 
 The project uses three explicit reference levels.
@@ -29,13 +31,21 @@ B1 starts from B0 and contains only qualified corrections of demonstrated implem
 3. reproducible evidence of the defect;
 4. regression and/or qualification tests;
 5. a documented expected behavioural difference;
-6. a dedicated commit in the corrected-reference history.
+6. an auditable entry in the corrected-reference history.
 
-B1 is a lineage. Immutable tags such as `B1.0`, `B1.1`, ... identify exact corrected snapshots. A moving `B1` tag is not used as a release oracle.
+B1 is a lineage. Exact corrected snapshots use immutable identifiers such as `B1.0`, `B1.1`, ... and, when represented by Git commits or tags, those identifiers are never moved.
+
+Within the integrated repository, B1 is preferably represented as an ordered, qualified patch series applied to B0 rather than as a second full copy of the entire legacy source tree:
+
+```text
+B1.x = B0 + accepted patch 1 + accepted patch 2 + ...
+```
+
+This keeps the B0-to-B1 difference directly auditable.
 
 ### B2: SWAP 5 reference implementation
 
-B2 is SWAP 5 in full-accuracy `reference` mode. SWAP 5 is verified against an exact B1 tag or commit, not against an unspecified "latest corrected" state.
+B2 is SWAP 5 in full-accuracy `reference` mode. SWAP 5 is verified against one exact B1 snapshot, not against an unspecified "latest corrected" state.
 
 Where B1 deliberately differs from B0 because of an accepted bug fix, B2 is expected to reproduce B1 rather than the original B0 defect.
 
@@ -53,31 +63,46 @@ The SWAP 5 kernel will not contain switches whose purpose is to deliberately rep
 
 ## Repository strategy
 
-The intended repository split is:
+The accepted default is an isolated reference workspace inside the SWAP5 repository:
 
 ```text
-SWAP-4.3.1-reference
-    B0 immutable baseline
-    corrected-reference branch
-    B1.0, B1.1, ... tags
-    legacy regression and qualification tests
+SWAP5/
+    reference/
+        swap-4.3.1/
+            b0/
+                immutable B0 identity/source material
+                provenance/
+            patches/
+                SWAP-xxx/
+                    finding/evidence
+                    minimal patch
+                    qualification
+            b1-manifest.yml
+            README.md
 
-SWAP5
-    new kernel and runtime
-    SWAP 5 reference-mode tests
-    documentation
-    pinned reference to an exact B1 tag/commit
+    src/ ...
+    docs/ ...
+    tests/ ...
 ```
 
-This prevents legacy implementation structure from becoming part of the SWAP 5 source tree while retaining a fully auditable comparison chain.
+The rules are:
+
+- `reference/swap-4.3.1/b0/` is immutable once its exact source identity is established;
+- B1 is derived from B0 plus the ordered patch set declared in `b1-manifest.yml`;
+- no SWAP 5 production code imports or depends on legacy implementation structure from this subtree;
+- reference build/test tooling may read this subtree to construct B0/B1 executables or comparison runs;
+- a later split into a dedicated `SWAP-4.3.1-reference` repository remains possible, but is an operational choice rather than an architecture requirement.
+
+This keeps legacy implementation structure out of the SWAP 5 kernel while allowing one repository and one CI environment to own the complete verification chain.
 
 ## Consequences
 
 - Numerical equality with B0 is not, by itself, the definition of correctness for SWAP 5.
-- Every accepted B0-to-B1 difference must be explainable from the difference ledger.
-- SWAP 5 release evidence must state the exact B1 reference used.
+- Every accepted B0-to-B1 difference must be explainable from the difference ledger and patch series.
+- SWAP 5 release evidence must state the exact B1 snapshot used.
 - A new 4.3.1 defect discovered during migration first follows the audit/fix/qualification route before becoming a B1 correction.
 - B0 remains available even after a bug is corrected in B1.
+- Logical reference isolation is mandatory; a separate Git repository is optional.
 
 ## Architecture invariants affected
 
