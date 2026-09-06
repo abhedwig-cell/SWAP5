@@ -1,0 +1,15 @@
+--- SWAP/WC_K_models_04_11.f90
++++ SWAP/WC_K_models_04_11.f90
+@@ -580,9 +580,9 @@
+ if (h >= 0.0d0) then
+    C_MvG_2_s = 0.0d0
+ else
+-   Gam01 = Gamma1 (dabs(h0))
+-   Gam02 = Gamma2 (dabs(h0))
+-   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h)/(1.0d0-Gam01) + Omega2*C2(h)/(1.0d0-Gam02))
++   Gam01 = Omega1*Gamma1 (dabs(h0))
++   Gam02 = Omega2*Gamma2 (dabs(h0))
++   C_MvG_2_s = (WCs-WCr)*(Omega1*C1(h) + Omega2*C2(h))/(1.0d0-Gam01-Gam02)
+ end if
+ end function C_MvG_2_s
+ 
