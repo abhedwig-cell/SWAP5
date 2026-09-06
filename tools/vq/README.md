@@ -42,13 +42,13 @@ BAL/BLC values are rounded to `0.01 cm`. Passing these gates is regression evide
 
 ## B1 provenance gate
 
-The current default pin is B1.4:
+The current default pin is B1.5:
 
 ```bash
 python tools/vq/b1_snapshot_identity.py --reference-root /path/to/SWAP5-checkout
 ```
 
-The gate fails closed when a stored patch artifact is missing or its SHA-256 differs from the immutable snapshot declaration. At integration baseline `ce280e110c637a087d2a1aabd70fca5f1d494e48`, B1.4 fails this gate. See `docs/verification/vq-1c-b1.4-evidence.md` and GitHub issue #19.
+The gate fails closed when a stored patch artifact is missing or its SHA-256 differs from the immutable snapshot declaration. At latest main re-read commit `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443`, B1.5 fails this gate because it inherits unresolved SWAP-005/006/007 provenance mismatches. The newly added SWAP-008 patch and B0 preimage both pass. See `docs/verification/vq-1c-b1.5-evidence.md` and GitHub issue #19.
 
 ## Unrounded mass accounting
 
