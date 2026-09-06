@@ -11,19 +11,18 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.8"
+  snapshot: "B1.9"
   status: "CORRECTED_REFERENCE"
   oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.8.yml"
-  supersedes_snapshot: "B1.7"
-  numerical_change_from_superseded_snapshot: false
-  input_validation_change_from_superseded_snapshot: true
-  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-013 PDI HA/H0 relational input-domain guard to B1.7."
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.9.yml"
+  supersedes_snapshot: "B1.8"
+  numerical_change_from_superseded_snapshot: true
+  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-012 prhead inverse correction to B1.8."
   source_tree:
     member_count: 63
-    source_bytes: 1860493
-    member_manifest_sha256: "e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae"
-    reconstruction: "tools/vq/b1_8_reconstruct.py"
+    source_bytes: 1863300
+    member_manifest_sha256: "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657"
+    reconstruction: "tools/vq/b1_9_reconstruct.py"
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -66,6 +65,14 @@ b1:
       ordered_preimage_snapshot: "B1.7"
       ordered_preimage_sha256: "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2"
       corrected_target_sha256: "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c"
+    - id: "SWAP-012"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-012/fix.patch"
+      patch_sha256: "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131"
+      qualification: "reference/swap-4.3.1/patches/SWAP-012/qualification.md"
+      canonical_b0_target_sha256: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+      ordered_preimage_snapshot: "B1.8"
+      ordered_preimage_sha256: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+      corrected_target_sha256: "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -97,6 +104,9 @@ history:
     exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
   - snapshot: "B1.8"
     definition: "reference/swap-4.3.1/snapshots/B1.8.yml"
+    exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  - snapshot: "B1.9"
+    definition: "reference/swap-4.3.1/snapshots/B1.9.yml"
     exact_oracle_status: "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 admission_rule:
