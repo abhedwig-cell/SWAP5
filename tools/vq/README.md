@@ -82,6 +82,36 @@ The canonical record contains the exact interval, committed endpoint state, stab
 
 The current real candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`; these VQ contracts do not create a synthetic production B2 seam.
 
+## VQ-1e1 transaction and generic-time harness
+
+The executable verifier self-test is:
+
+```bash
+python tools/vq/tx_time_harness.py \
+  --fixture-suite \
+  --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+```
+
+It runs the named harness cases:
+
+```text
+TX-ROLLBACK-01
+TX-COMMIT-01
+TX-ACCOUNT-01
+TX-RERUN-01
+TX-BC-REPLAY-01
+TX-WARM-01
+TIME-00
+TIME-06
+TIME-18
+TIME-36
+TIME-SPLIT
+```
+
+The synthetic additive adapter exists only to qualify verifier behavior and fault detection. A successful fixture run reports `VERIFIER_HARNESS_ONLY`, `b2_physics_status = NOT_EVALUATED`, `production_physics_executed = false`, and `production_mass_tolerance_qualified = false`.
+
+A future production B2 adapter may reuse the same `QualificationAdapter` protocol only after the VQ-1d reference seam/result gate passes. The fixture's exact TIME-SPLIT comparator is not a production tolerance.
+
 ## Unrounded mass accounting
 
 The B2 normalization reuses:
@@ -105,7 +135,8 @@ python -m unittest \
   tools.vq.test_b2_result_contract \
   tools.vq.test_b2_result_record \
   tools.vq.test_b2_seam_contract \
-  tools.vq.test_b2_reference_gate
+  tools.vq.test_b2_reference_gate \
+  tools.vq.test_tx_time_harness
 ```
 
 Every future B1/B2 adapter must record exact source/artifact identity, case identity, interval, runner capability and qualification scope.
