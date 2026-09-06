@@ -86,8 +86,8 @@ Most work is in harnesses, test cases, comparison tooling and evidence. It can p
 ## Active workstream MP: MultiSWAP performance and batchability
 
 **Status:** Active  
-**Accepted baseline:** `40aef01c5c89dc9e02bba50d31c884dcdd2fd2d5`  
-**Current slice:** MP-1, [measurement and benchmark architecture](../performance/multiswap-measurement-architecture.md)
+**Accepted baseline:** `bcd574ce8777d5805eb6e26f8255af3f1222e75e`  
+**Current slice:** MP-3A, [B0 shadow observation seam](../performance/mp-3-b0-shadow-observation.md)
 
 ### Goal
 
@@ -110,7 +110,9 @@ The first MP phase is measurement-first. It does not introduce a GPU backend and
 
 ### Current integration boundary
 
-MP-1 changes no production kernel, solver, runtime or coupler interface. It defines a benchmark-record contract and logical measurement categories. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ.
+MP-1 defined the measurement architecture and record. MP-2 integrated measurement-only collection and aggregation tooling without changing production interfaces. MP-3A has now qualified the mechanics of a coarse observation seam in a disposable B0 shadow build, including measurement-disabled versus measurement-enabled equality for selected Hupsel physical outputs.
+
+The intended SWAP5 production hook is still pending because no stable integrated TX/HY production source seam is yet available in this repository. MP must not copy the legacy `swap_main.f90` hook into the target architecture by implication. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ.
 
 ### Why it parallelizes well
 
