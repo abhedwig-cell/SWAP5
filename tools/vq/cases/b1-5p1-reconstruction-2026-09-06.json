@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1c2",
+  "snapshot": "B1.5p1",
+  "main_re_read_commit": "d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5",
+  "source_of_truth": {
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_snapshot": "reference/swap-4.3.1/snapshots/B1.5p1.yml"
+  },
+  "reconstruction": {
+    "status": "PASS",
+    "method": "independent byte-exact VQ transformations with preimage and corrected-target SHA-256 gates",
+    "member_count": 63,
+    "source_bytes": 1860109,
+    "source_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30",
+    "corrections": [
+      {
+        "id": "SWAP-001",
+        "target": "SWAP/macropore.f90",
+        "b0_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+        "corrected_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f",
+        "status": "PASS"
+      },
+      {
+        "id": "SWAP-005",
+        "target": "SWAP/MOD_cropdevelopment.f90",
+        "b0_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+        "corrected_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+        "status": "PASS"
+      },
+      {
+        "id": "SWAP-006",
+        "target": "SWAP/MOD_meteo.f90",
+        "b0_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+        "corrected_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+        "status": "PASS"
+      },
+      {
+        "id": "SWAP-007",
+        "target": "SWAP/oxygenstress.f90",
+        "b0_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+        "corrected_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+        "status": "PASS"
+      },
+      {
+        "id": "SWAP-008",
+        "target": "SWAP/tridag.f90",
+        "b0_sha256": "6aa6bb863ec296f47afda35a9871b16105087d0eed485e37f13f5f5cdad96651",
+        "corrected_sha256": "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a",
+        "status": "PASS"
+      }
+    ]
+  },
+  "build_environment": {
+    "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+    "qualification_scope": "provisional exact-source GNU regression path; no global Intel/GNU equivalence claim",
+    "b0_executable_sha256": "d8c7f583a9202a3b5fe38d3a3bf855dcac9c179be18562dcca502340656867f2",
+    "b1_executable_sha256": "f8de764c73c6ee2a844fcc865cf2b2f6eeeae6a871d749b2c2027d1f2ebe97a1",
+    "executable_hashes_are_environment_specific": true
+  },
+  "numerical_edges": [
+    {
+      "case": "2.grassgrowth",
+      "interval": "1980-01-01/1984-12-31",
+      "b0_status": "PASS",
+      "b1_status": "PASS",
+      "legacy_exit_code_each": 100,
+      "swap_ok_each": true,
+      "swap_err_empty_each": true,
+      "normalization": "remove only generated timestamp line",
+      "result_output_csv_sha256_b0": "0a7025b72abbb524760107ca1f0309d8e241a7aa2830bb983afe9245730dec7e",
+      "result_output_csv_sha256_b1": "0a7025b72abbb524760107ca1f0309d8e241a7aa2830bb983afe9245730dec7e",
+      "comparison": "BYTE_IDENTICAL_AFTER_TIMESTAMP_NORMALIZATION",
+      "expected_difference_entry_required": false
+    },
+    {
+      "case": "1.hupselbrook",
+      "interval": "2002-01-01/2004-12-31",
+      "qualification_variant": "SWCSV=1 -> 0 on both B0 and B1; output-only GNU compatibility variant",
+      "b0_status": "PASS",
+      "b1_status": "PASS",
+      "legacy_exit_code_each": 100,
+      "swap_ok_each": true,
+      "swap_err_empty_each": true,
+      "normalized_bal_sha256_b0": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "normalized_bal_sha256_b1": "a9cc9b18a404726dfbce22d8372df279b9d3bdf1bc76c8c38f33c8080430d0e7",
+      "normalized_blc_sha256_b0": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "normalized_blc_sha256_b1": "1bd2631d91cb21e72a5949f54524d0cb55ed0bb059a88fc4a4def8507693b77c",
+      "comparison": "BYTE_IDENTICAL_AFTER_TIMESTAMP_NORMALIZATION",
+      "hard_mass_gate_eligible": false,
+      "expected_difference_entry_required": false
+    }
+  ],
+  "unit_tests": {
+    "test_b1_reconstruct": {
+      "count": 4,
+      "status": "PASS",
+      "coverage": [
+        "exact byte replacement",
+        "wrong B0 preimage fails closed",
+        "non-unique target fails closed",
+        "source manifest deterministic"
+      ]
+    }
+  },
+  "qualification_conclusion": {
+    "b1_5p1_deterministic_reconstruction": "PASS",
+    "corrected_target_hash_gate": "PASS_ALL_FIVE",
+    "first_b0_to_b1_numerical_edges": "PASS_NO_DIFFERENCE_ON_TWO_CONTROL_CASES",
+    "b1_5p1_global_numerical_oracle": "NOT_YET_FULLY_QUALIFIED",
+    "next_gate": "targeted cases that exercise admitted corrections and expected-difference classification"
+  },
+  "production_code_changed": false
+}

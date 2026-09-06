@@ -57,31 +57,55 @@ The exact mapping of existing chat threads to workstream IDs is made at their ne
 
 The registry is intentionally functional. A chat title or milestone code is not itself a workstream identity.
 
-## Proposed new workstream VQ: Verification and qualification
+## Active workstream VQ: Verification and qualification
 
-**Status:** Proposed
+**Status:** Active  
+**Current qualified corrected-reference snapshot:** `B1.5p1`  
+**Current slices:** VQ-1a through VQ-1c3 complete; next integration target is B1 -> B2 reference qualification
 
 ### Goal
 
-Build an independent verification layer that can increasingly serve as the acceptance gate for SWAP5 migration slices.
+Build an independent verification layer that increasingly serves as the acceptance gate for SWAP5 migration slices.
 
-### First scope
+### Current scope
 
-- establish executable regression cases against the exact B0 baseline and later B1 snapshots;
-- encode hard water-balance checks;
-- encode transaction checks for rollback, retry and commit;
-- add generic-time tests with non-midnight starts and non-day intervals;
-- record expected legacy differences through the difference ledger;
-- make warm-start correctness independent of the numerical initial guess;
-- provide reusable qualification outputs for other workstreams.
+- exact B0 distribution and source identity;
+- capability-limited exact-source GNU B0 execution and case-specific regression evidence;
+- canonical legacy BAL/BLC normalization while explicitly rejecting rounded reports as the future hard mass oracle;
+- unrounded, transaction-aware mass-accounting verification contract;
+- fail-closed B1 snapshot, patch-artifact and canonical B0-preimage identity gates;
+- deterministic byte-aware reconstruction of `B1.5p1` from exact B0;
+- broad B0 -> B1 control edges;
+- source-bound targeted qualification of all five admitted B1 corrections;
+- explicit expected-difference registration for B0 -> B1.5p1.
+
+### Current integration boundary
+
+VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0 runner is capability-limited and is not declared globally Intel-equivalent.
+
+Historical B1.2-B1.5 remain immutable failed-provenance audit records. `B1.5p1` is the provenance-repaired replacement definition with the same five intended corrections. Independent VQ qualification now establishes:
+
+```text
+snapshot/provenance identity              PASS
+canonical B0 preimages                    PASS
+stored patch identities                   PASS
+deterministic B1.5p1 reconstruction       PASS
+all corrected-target SHA-256 gates        PASS
+broad B0 -> B1 control edges              PASS
+all five correction-triggering gates      PASS
+```
+
+VQ therefore qualifies `B1.5p1` as the numerical/behavioural corrected-reference oracle for B2 regression. This does not make rounded legacy `.BAL/.BLC` a machine-precision mass oracle. Hard mass conservation remains a separate fail-closed gate through the unrounded B2 accounting contract.
+
+The proposed unrounded mass-accounting record is a verification interchange contract only. TX/HY/runtime own the production result-interface mapping.
 
 ### Deliberate exclusions
 
-VQ does not redesign production physics or solver algorithms. When a discrepancy is found, VQ reproduces and classifies it, then hands it to the appropriate implementation or legacy-audit path.
+VQ does not redesign production physics or solver algorithms. When a discrepancy is found, VQ reproduces and classifies it, then hands it to the appropriate implementation or legacy-reference path.
 
 ### Why it parallelizes well
 
-Most work is in harnesses, test cases, comparison tooling and evidence. It can proceed while TX/HY/RT change production code, and it reduces the risk that several coding streams drift without a common oracle.
+Most work is in harnesses, test cases, comparison tooling and evidence. It can proceed while TX/HY/RT change production code, provided reference identities and interface dependencies are re-read at each integration point.
 
 ## Active workstream MP: MultiSWAP performance and batchability
 
@@ -122,7 +146,7 @@ MP-7 makes host quality an explicit admission gate. A baseline-only preflight ac
 
 MP-8 makes the missing performance infrastructure explicit. It defines a versioned isolated-runner contract, machine probe, operator-attestation boundary and manual self-hosted readiness workflow. The repository currently has no repository-visible `self-hosted` performance-runner configuration, while account-level runner inventory is not observable through the repository connector, so readiness is recorded fail-closed as `INFRASTRUCTURE_PENDING`. A future runner must prove CPU/cgroup/frequency/SMT/reference provisioning readiness first and then repeat the full MP-7 1% admission protocol; contract readiness alone cannot establish a CPU baseline.
 
-The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ. B12 remains `parameter-locked` until VQ provides a complete qualified difficult-column fixture. B1.5p1 remains unavailable as an exact corrected-reference oracle while its VQ identity gate is pending.
+The intended SWAP5 production observer is still pending because no stable integrated TX/HY production source seam is yet available in this repository. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ. B12 remains `parameter-locked` until VQ provides a complete qualified difficult-column fixture. `B1.5p1` is now available as the qualified corrected-reference oracle for later B2/performance correctness comparisons, but that does not relax MP's independent hard mass-balance requirements.
 
 ### Why it parallelizes well
 
