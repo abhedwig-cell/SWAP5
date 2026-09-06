@@ -50,7 +50,28 @@ python tools/vq/b1_snapshot_identity.py --reference-root /path/to/SWAP5-checkout
 
 The gate verifies the pinned snapshot blob, canonical B0 member-manifest blob, every stored patch SHA-256 and every declared B0 target preimage. `B1.5p1` passes this identity gate. Historical `B1.2` through `B1.5` remain failed-oracle audit records and are not rewritten.
 
-This PASS admits B1.5p1 to the next gate only. Deterministic patch application, corrected-target verification and numerical B0 -> B1 comparison are still required. See `docs/verification/vq-1c-b1.5p1-evidence.md`.
+See `docs/verification/vq-1c-b1.5p1-evidence.md`.
+
+## B1.5p1 deterministic reconstruction
+
+VQ reconstructs the corrected source tree independently from the exact B0 distribution:
+
+```bash
+python tools/vq/b1_reconstruct.py \
+  --archive /path/to/SWAP_4.3.1.zip \
+  --output-dir /tmp/B1.5p1/SWAP
+```
+
+The reconstruction fails closed unless:
+
+- the B0 distribution identity passes;
+- the nested B0 `SWAP.ZIP` SHA-256 passes;
+- each corrected target starts from the exact canonical B0 preimage;
+- every byte target occurs exactly once;
+- all five resulting target SHA-256 values equal the B1.5p1 snapshot declarations;
+- the final 63-member reconstructed source manifest equals `c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30`.
+
+The first B0 -> B1 control edges also pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. This does not yet qualify every defect-triggering B1 correction. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
 
 ## Unrounded mass accounting
 
@@ -70,7 +91,8 @@ python -m unittest \
   tools.vq.test_reference_identity \
   tools.vq.test_balance \
   tools.vq.test_b0_source_runner \
-  tools.vq.test_b1_snapshot_identity
+  tools.vq.test_b1_snapshot_identity \
+  tools.vq.test_b1_reconstruct
 ```
 
 Every future B1/B2 adapter must record exact source/artifact identity, case identity, interval, runner capability and qualification scope.
