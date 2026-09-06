@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWAP5 MultiSWAP benchmark interval record",
+  "description": "Measurement-only record for one column interval. This schema does not define kernel or solver APIs.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "code_revision",
+    "case_id",
+    "column_id",
+    "template_id",
+    "physics_signature",
+    "numerical_policy_id",
+    "execution_class",
+    "n_nodes",
+    "t0",
+    "t1",
+    "accepted",
+    "mass_balance",
+    "counters",
+    "timing_seconds"
+  ],
+  "properties": {
+    "schema_version": {"const": "mp-benchmark-record-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "code_revision": {"type": "string", "minLength": 7},
+    "case_id": {"type": "string", "minLength": 1},
+    "column_id": {"type": ["string", "integer"]},
+    "template_id": {"type": "string", "minLength": 1},
+    "physics_signature": {"type": "string", "minLength": 1},
+    "numerical_policy_id": {"type": "string", "minLength": 1},
+    "execution_class": {"type": "string", "minLength": 1},
+    "soil_profile_id": {"type": ["string", "null"]},
+    "n_nodes": {"type": "integer", "minimum": 1},
+    "t0": {"type": "string", "minLength": 1},
+    "t1": {"type": "string", "minLength": 1},
+    "worker_id": {"type": ["string", "integer", "null"]},
+    "batch_id": {"type": ["string", "integer", "null"]},
+    "accepted": {"type": "boolean"},
+    "fallback_provenance": {"type": ["string", "null"]},
+    "mass_balance": {
+      "type": "object",
+      "required": ["residual", "passed"],
+      "properties": {
+        "residual": {"type": "number"},
+        "tolerance": {"type": ["number", "null"]},
+        "passed": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "counters": {
+      "type": "object",
+      "required": [
+        "newton_iterations",
+        "residual_evaluations",
+        "jacobian_builds",
+        "linear_solves",
+        "backtracking_attempts",
+        "retries",
+        "timestep_reductions",
+        "alternative_linear_solves"
+      ],
+      "properties": {
+        "newton_iterations": {"type": "integer", "minimum": 0},
+        "residual_evaluations": {"type": "integer", "minimum": 0},
+        "jacobian_builds": {"type": "integer", "minimum": 0},
+        "linear_solves": {"type": "integer", "minimum": 0},
+        "backtracking_attempts": {"type": "integer", "minimum": 0},
+        "retries": {"type": "integer", "minimum": 0},
+        "timestep_reductions": {"type": "integer", "minimum": 0},
+        "alternative_linear_solves": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "timing_seconds": {
+      "type": "object",
+      "required": ["total"],
+      "properties": {
+        "total": {"type": "number", "minimum": 0},
+        "constitutive": {"type": "number", "minimum": 0},
+        "residual": {"type": "number", "minimum": 0},
+        "jacobian": {"type": "number", "minimum": 0},
+        "linear_solve": {"type": "number", "minimum": 0},
+        "newton_control": {"type": "number", "minimum": 0},
+        "soil_water_other": {"type": "number", "minimum": 0},
+        "surface_atmosphere": {"type": "number", "minimum": 0},
+        "crop_et_root": {"type": "number", "minimum": 0},
+        "drainage_irrigation": {"type": "number", "minimum": 0},
+        "macropore": {"type": "number", "minimum": 0},
+        "thermal": {"type": "number", "minimum": 0},
+        "solute": {"type": "number", "minimum": 0},
+        "crop_growth_nutrients": {"type": "number", "minimum": 0},
+        "transaction": {"type": "number", "minimum": 0},
+        "runtime_batching": {"type": "number", "minimum": 0},
+        "diagnostics": {"type": "number", "minimum": 0},
+        "other_kernel": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": {"type": "number", "minimum": 0}
+    },
+    "memory_bytes": {
+      "type": "object",
+      "properties": {
+        "persistent_column_state": {"type": "integer", "minimum": 0},
+        "optional_state": {"type": "integer", "minimum": 0},
+        "column_bookkeeping": {"type": "integer", "minimum": 0},
+        "parameter_references": {"type": "integer", "minimum": 0},
+        "checkpoint": {"type": "integer", "minimum": 0},
+        "warm_start": {"type": "integer", "minimum": 0},
+        "worker_scratch_reserved": {"type": "integer", "minimum": 0},
+        "worker_scratch_peak": {"type": "integer", "minimum": 0},
+        "jacobian_factorisation": {"type": "integer", "minimum": 0},
+        "newton_residual_vectors": {"type": "integer", "minimum": 0},
+        "constitutive_intermediates": {"type": "integer", "minimum": 0},
+        "process_peak_rss": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "compiler": {"type": "string"},
+        "compiler_flags": {"type": "string"},
+        "cpu_model": {"type": "string"},
+        "physical_cores": {"type": "integer", "minimum": 1},
+        "logical_cores": {"type": "integer", "minimum": 1},
+        "worker_count": {"type": "integer", "minimum": 1},
+        "operating_system": {"type": "string"},
+        "clock_source": {"type": "string"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
