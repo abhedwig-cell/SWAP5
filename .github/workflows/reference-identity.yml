@@ -1,0 +1,46 @@
+name: Reference identity
+
+on:
+  pull_request:
+    paths:
+      - 'reference/swap-4.3.1/**'
+      - '.github/workflows/reference-identity.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'reference/swap-4.3.1/**'
+      - '.github/workflows/reference-identity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  b1-identity:
+    name: Verify corrected-reference identity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install YAML dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+
+      - name: Run fail-closed B1.5p1 identity gate
+        run: |
+          python reference/swap-4.3.1/verify_b1_identity.py \
+            --expect-snapshot B1.5p1 \
+            --json | tee b1-identity-gate.json
+
+      - name: Upload identity evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: b1-identity-gate
+          path: b1-identity-gate.json
+          if-no-files-found: error
