@@ -83,9 +83,11 @@ VQ does not redesign production physics or solver algorithms. When a discrepancy
 
 Most work is in harnesses, test cases, comparison tooling and evidence. It can proceed while TX/HY/RT change production code, and it reduces the risk that several coding streams drift without a common oracle.
 
-## Proposed new workstream MP: MultiSWAP performance and batchability
+## Active workstream MP: MultiSWAP performance and batchability
 
-**Status:** Proposed
+**Status:** Active  
+**Accepted baseline:** `40aef01c5c89dc9e02bba50d31c884dcdd2fd2d5`  
+**Current slice:** MP-1, [measurement and benchmark architecture](../performance/multiswap-measurement-architecture.md)
 
 ### Goal
 
@@ -105,6 +107,10 @@ Create a measured performance baseline for the new architecture before GPU or ag
 ### Deliberate exclusions
 
 The first MP phase is measurement-first. It does not introduce a GPU backend and does not alter physical formulations solely for speed.
+
+### Current integration boundary
+
+MP-1 changes no production kernel, solver, runtime or coupler interface. It defines a benchmark-record contract and logical measurement categories. Stable template/execution identifiers remain owned by RT, solver phase events by HY, transaction events by TX and correctness/mass-balance gates by VQ.
 
 ### Why it parallelizes well
 
