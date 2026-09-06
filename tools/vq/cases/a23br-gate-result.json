@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BR",
+  "status": "PASS_TIMESTEP_OWNERSHIP_SPLIT_LEGACY_GLOBAL_DT_BACKEND_PROJECTION_REMAINS_PHYSICAL_BACKEND_SERIAL_ONLY",
+  "oracle": {
+    "snapshot": "B1.6",
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "mass_limit_cm": 1e-6
+  },
+  "ownership": {
+    "persistent_column_numerical_state": ["numerical.dt"],
+    "persistent_dt_payload_bytes": 8,
+    "removed_legacy_globals": ["variables.fldtmin", "variables.fldtreduce"],
+    "worker_derived_control": ["control.at_min_dt"],
+    "local_orchestration_control": ["repeat_current_step"],
+    "worker_control_storage_bytes_gfortran": 12,
+    "legacy_backend_dt_active_references": 531,
+    "legacy_backend_dt_source_files": 21
+  },
+  "physical_gate": {
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_log_identity": "PASS",
+    "log_sha256": "ad65f238e796ea51598bf22da2e93de3d299fadf0bfbd92a14a8bce2f7c6b5a0",
+    "timestep_poison_restore_gate": "PASS",
+    "accepted_storage_cm": 77.011710672204643,
+    "accepted_next_dt_days": 0.0062205964537924707,
+    "half_mass_residual_cm": -1.7872350177583485e-7,
+    "total_internal_retries": 20,
+    "accepted_internal_retries": 10,
+    "total_headcalc_calls": 162,
+    "accepted_headcalc_calls": 81,
+    "total_newton_iterations": 956,
+    "accepted_newton_iterations": 478,
+    "total_jacobian_builds": 956,
+    "accepted_jacobian_builds": 478,
+    "total_linear_solves": 956,
+    "accepted_linear_solves": 478,
+    "total_backtracking_attempts": 1350,
+    "accepted_backtracking_attempts": 675,
+    "alternative_solver_calls": 0
+  },
+  "regression_gates": {
+    "generic_transaction_o0_o2": "PASS",
+    "generic_transaction_log_sha256": "8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548",
+    "worker_isolation_o0_o2": "PASS",
+    "worker_isolation_log_sha256": "c949922ffc3898981a1be2a5cb1085953c16bb357300ad79ee71494130ecec9d",
+    "workers": 8,
+    "parallel_checks": 8000,
+    "parallel_failures": 0,
+    "active_removed_flag_audit": "PASS",
+    "jacobian_block_exact_identity": "PASS",
+    "jacobian_block_sha256": "ed7a8643d59350f4db5315cd27750d7a6df2b790a35eb91ed4549fbadacbeda8"
+  },
+  "postimage_sha256": {
+    "headcalc.f90": "458c53339f6815cf420e7745e9d3dd61fede136250bc6af1a20cad3bb6c0dfc8",
+    "timecontrol.f90": "bb73e8e6784615a26c1a928218b1e3500d4724c262d76d8b18064fd0bfc2d0fa",
+    "swap.f90": "2319c46db5fb875c2f4c9e93dc798ce300d0c3ee33cbdbd9b7159a2f78af26d8",
+    "surfacewater.f90": "6b770314aa5577ef9b7853ca76b66208a5960ea39605daec01cda994d1bafe27",
+    "variables.f90": "44ee8f4255a0327c0e24f8fce27e1d72575cc980b74f7d16e5fa3a6afbdbb2f8",
+    "initialize.f90": "7adfc66a7f18cffc38ac279e28f09e0af30247cf6a013a020595d81b8b54713b"
+  },
+  "physics_changed": false,
+  "solver_policy_changed": false,
+  "jacobian_formula_changed": false,
+  "selective_step_doubling_changed": false,
+  "limitations": [
+    "legacy backend still projects persistent column dt through variables%dt",
+    "B1.6 physical/process backend remains serialized",
+    "Hupsel VQ bridge remains integer-day only",
+    "many calendar/process globals remain singleton-owned"
+  ],
+  "next_slice": "A23BS"
+}
