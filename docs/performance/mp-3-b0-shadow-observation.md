@@ -2,14 +2,17 @@
 
 **Workstream:** MP  
 **Status:** PARTIAL, shadow-qualified; SWAP5 production integration pending  
-**Baseline:** `bcd574ce8777d5805eb6e26f8255af3f1222e75e`  
+**Evidence-start baseline:** `bcd574ce8777d5805eb6e26f8255af3f1222e75e`  
+**Integration re-read:** `f369e68a06e97780e7879a33937b41539a81c557`  
 **Affected invariants:** 3, 7, 13, 23, 25, 26, 30
 
 ## Purpose
 
 MP-3 was intended to attach the MP measurement contract to the first stable production observation seam and then compare measurement-disabled and measurement-enabled execution from the same physical starting state.
 
-At this baseline the SWAP5 repository still does not contain the integrated TX/HY production source that would make such a production hook authoritative. The versioned 4.3.1 reference workspace is explicitly verification material and must remain isolated from production implementation.
+At the evidence-start baseline the SWAP5 repository still did not contain the integrated TX/HY production source that would make such a production hook authoritative. The versioned 4.3.1 reference workspace is explicitly verification material and must remain isolated from production implementation.
+
+While this slice was being prepared, VQ/reference work advanced `main` to the integration re-read above and strengthened the B0 rule: source identity is byte-based, including a per-member manifest and an explicit warning that `MOD_RIA.f90` contains non-UTF-8 bytes. MP-3A was re-read against that baseline before integration. The controlling B0 hashes remained unchanged.
 
 MP-3 therefore takes the smallest safe intermediate slice:
 
@@ -42,9 +45,13 @@ The supplied distribution used for the MP-3A shadow run matched all four control
 
 `tools/performance/mp_b0_shadow.py verify-b0` performs this check and fails closed on any mismatch.
 
+The later VQ source-integrity work adds a per-member manifest for the 63 Fortran sources. MP-3A does not claim that its transformed shadow tree is B0. B0 identity remains the immutable archive/member bytes; the shadow tree is explicitly derived test material.
+
 ## Shadow build
 
 The immutable B0 payload was not edited. A disposable extracted source tree was built with GNU Fortran for this experiment.
+
+Because B0 contains non-UTF-8 source bytes, the shadow transformer uses Latin-1 only as a reversible one-byte-to-one-codepoint mapping while it removes known compiler directives and injects the observer. Untouched bytes therefore are not silently replaced by a text decoder. This is a transformation rule for disposable shadow material, not an encoding claim about B0.
 
 The Intel `!DEC$` conditional compilation directives used by the distribution are not interpreted by GNU Fortran. The shadow tooling therefore resolves only the small known directive subset and fails on unknown conditions. For this run:
 
@@ -131,6 +138,7 @@ MP does **not** promote this into a universal mass-balance tolerance. VQ remains
 `tools/performance/mp_b0_shadow.py` provides:
 
 - exact B0 package verification;
+- byte-safe construction of disposable shadow source material;
 - fail-closed resolution of the known Intel conditional directives for a disposable Linux shadow tree;
 - injection of the top-level dynamic-call observer;
 - generation of the Fortran shadow observer module;
