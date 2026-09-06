@@ -1,0 +1,30 @@
+--- SWAP/tillage.f90
++++ SWAP/tillage.f90
+@@ -507,15 +507,23 @@
+          
+          ! store first and last position per tillage type in vector iType_Tillage
+          ! assumes consitent supply of input: e.g., tmin = 1, tmax > 1 and all intermediate values are present
+-         if (allocated(iTT1)) deallocate(iTT1); allocate(iTT1(Ntill)); iTT1 = 0
+-         if (allocated(iTT2)) deallocate(iTT2); allocate(iTT2(Ntill)); iTT2 = 0
+-         do j = 1, Ntill
++         if (allocated(iTT1)) deallocate(iTT1); allocate(iTT1(tmax)); iTT1 = 0
++         if (allocated(iTT2)) deallocate(iTT2); allocate(iTT2(tmax)); iTT2 = 0
++         do j = 1, tmax
+             do i = 1, Ntypes
+                if (iTT1(j) == 0 .AND. iType_Tillage(i) == j) iTT1(j) = i
+                if (iTT1(j) >  0 .AND. iType_Tillage(i) == j) iTT2(j) = i
+             end do
++         end do
++         do i = 1, Ntill
++            j = Type_Tillage(i)
++            if (j < 1 .OR. j > tmax) then
++               call swap_error ('read_tillage', 'TYPE_TILLAGE is outside the range defined by ITYPE_TILLAGE')
++            else if (iTT1(j) == 0 .OR. iTT2(j) == 0) then
++               call swap_error ('read_tillage', 'Every TYPE_TILLAGE must have corresponding ITYPE_TILLAGE entries')
++            end if
++         end do
+ ! check if NumLay is exceeded; and if iTT2-iTT1+1 corresponds with number of layer within Z_tillage
+-         end do
+          
+          ! special case: consolidation according to time
+          !use_K_T = RDinqr('k_T')
