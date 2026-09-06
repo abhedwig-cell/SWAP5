@@ -1,7 +1,7 @@
 # VQ-1d B2 reference-entrypoint admission gate
 
 **Workstream:** VQ  
-**Slice:** VQ-1d  
+**Slice:** VQ-1d / VQ-1d1  
 **Production observation baseline:** `5576279c915f4d4fbccf3ff182aa480306489080`  
 **Current qualified B1 oracle:** `B1.6`  
 **Production code changed:** no
@@ -33,16 +33,17 @@ The B2 admission gate rejects a stale B1 oracle such as B1.5p1.
 
 `tools/vq/b2_reference_gate.py` evaluates a machine-readable candidate record and fails closed unless all of the following are true:
 
-1. the B1 oracle is exactly the current qualified `B1.6` snapshot;
-2. B2 is pinned to an exact 40-character Git commit SHA;
-3. the candidate status is `READY_FOR_VQ_B1_TO_B2`;
-4. an integrated callable reference entrypoint path is declared and exists on that checkout;
-5. a canonical result-contract path is declared and exists;
-6. the numerical policy is explicitly identified as the reference policy;
-7. the entrypoint accepts a generic `[t0,t1]` interval;
-8. committed physical state, forcing and numerical configuration are explicit inputs rather than hidden global/file state;
-9. parameters/state/forcing/numerical policy/results remain separable at the adapter boundary;
-10. the returned result supports canonical comparison, unrounded mass accounting and transaction diagnostics.
+1. the B1 oracle is exactly the current qualified snapshot from `reference/swap-4.3.1/b1-manifest.yml`;
+2. the candidate B1 source-manifest SHA-256 equals the current manifest source identity;
+3. B2 is pinned to an exact 40-character Git commit SHA and the observation baseline identifies the same commit;
+4. the candidate status is `READY_FOR_VQ_B1_TO_B2`;
+5. an integrated callable reference entrypoint path is declared and exists on that checkout;
+6. a canonical result-contract path is declared and exists;
+7. the numerical policy is explicitly identified as the reference policy;
+8. the entrypoint accepts a generic `[t0,t1]` interval;
+9. committed physical state, forcing and numerical configuration are explicit inputs rather than hidden global/file state;
+10. parameters/state/forcing/numerical policy/results remain separable at the adapter boundary;
+11. the returned result supports canonical comparison, unrounded mass accounting and transaction diagnostics.
 
 The corresponding required capability flags are:
 
@@ -58,6 +59,30 @@ transaction_diagnostics
 ```
 
 The gate intentionally does not prescribe the internal SWAP5 object layout. It only defines the minimum verification surface needed to exercise the architecture invariants.
+
+## VQ-1d1 oracle/evidence consistency hardening
+
+B1.6 admission exposed a bookkeeping weakness in the first VQ-1d implementation: the candidate record had already moved to B1.6 while the stored gate result still named B1.5p1. The numerical B2 comparison remained blocked, but the evidence set was internally inconsistent.
+
+VQ-1d1 closes that gap. The gate now reads the current B1 manifest rather than trusting a hardcoded snapshot name, and it checks all three oracle identity fields:
+
+```text
+snapshot
+qualification status
+reconstructed source-manifest SHA-256
+```
+
+It also requires the declared production observation baseline and B2 commit to match. `check_stored_evidence()` projects the fail-closed fields from the live candidate assessment and compares them with `tools/vq/cases/b2-reference-gate-2026-09-06.json`.
+
+The CI path deliberately distinguishes two states:
+
+```text
+expected BLOCKED + candidate/evidence consistent  -> CI PASS
+oracle/evidence drift                             -> CI FAIL
+real READY candidate satisfying all contracts     -> admission PASS
+```
+
+This means the absence of B2 is not treated as a failing physics test, while stale verification evidence can no longer silently remain green after a B1 oracle update.
 
 ## Current repository observation
 
@@ -82,10 +107,13 @@ No synthetic B2 result is generated and no legacy implementation is relabelled a
 `tools/vq/test_b2_reference_gate.py` covers:
 
 - an explicitly blocked candidate fails closed;
-- a stale B1.5p1 oracle fails after B1.6 admission;
+- a stale B1 snapshot fails against the current manifest;
+- a stale reconstructed B1 source-manifest hash fails;
+- an observation/B2-commit mismatch fails;
 - a nominally ready candidate without an integrated entrypoint fails;
 - a candidate missing a required capability fails;
-- a complete integrated fixture with all required fields/files passes admission.
+- a complete integrated fixture with all required fields/files passes admission;
+- stale stored gate evidence is detected.
 
 The fixture PASS qualifies the gate logic only. It does not claim that the real SWAP5 repository already provides those production capabilities.
 
@@ -93,11 +121,14 @@ The fixture PASS qualifies the gate logic only. It does not claim that the real 
 
 This gate directly protects invariants 1, 2, 3, 7, 8, 9, 13, 23, 25, 26, 29 and 30: B2 must be the actual common kernel/reference path, time is generic, committed physical state is explicit, numerical policy remains separate from physics, hard mass uses unrounded accounting, and qualification may not rely on hidden legacy/file assumptions.
 
+VQ-1d1 particularly strengthens invariant 30 by making oracle/evidence synchronization an executable gate rather than a documentation convention.
+
 ## Qualification decision
 
 ```text
 B1.6 corrected-reference oracle               PASS
 VQ-1d adapter admission gate implementation   PASS
+VQ-1d1 oracle/evidence consistency gate       PASS
 B2 integrated target availability             BLOCKED
 B1.6 -> B2 numerical qualification            NOT STARTED / FAIL-CLOSED
 ```
@@ -110,6 +141,6 @@ The production integration workstream supplies an actual callable SWAP5 referenc
 
 1. pins the exact B2 commit;
 2. updates `b2-reference-candidate.json` to `READY_FOR_VQ_B1_TO_B2` without weakening any capability requirement;
-3. reruns `tools/vq/b2_reference_gate.py`;
+3. reruns `tools/vq/b2_reference_gate.py` with stored-evidence consistency enabled;
 4. only after a PASS executes the first B1.6 -> B2 control comparison;
 5. subsequently adds VQ transaction, generic-time, warm-start and unrounded hard-mass qualification gates.
