@@ -227,6 +227,13 @@ end module mp_shadow_observer
 
 
 def prepare_shadow_source(source_archive: bytes, destination: str | Path) -> Path:
+    """Create a disposable Linux/standalone shadow tree without lossy decoding.
+
+    Latin-1 is used only as a reversible one-byte-to-one-codepoint mapping so
+    untouched source bytes survive the text transformations exactly. The result
+    is a shadow build tree, not an unpacked B0 identity claim.
+    """
+
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(io.BytesIO(source_archive)) as archive:
@@ -235,12 +242,14 @@ def prepare_shadow_source(source_archive: bytes, destination: str | Path) -> Pat
             raise ValueError(f"expected 63 SWAP Fortran files, got {len(members)}")
         for member in members:
             target = destination / Path(member).name
-            source = archive.read(member).decode("utf-8", errors="replace")
+            source = archive.read(member).decode("latin-1")
             source = strip_intel_conditionals(source, defined=frozenset(), linux=True)
             if target.name.lower() == "swap_main.f90":
                 source = instrument_swap_main(source)
-            target.write_text(source, encoding="utf-8")
-    (destination / "mp_shadow_observer.f90").write_text(observer_fortran_source(), encoding="utf-8")
+            target.write_bytes(source.encode("latin-1"))
+    (destination / "mp_shadow_observer.f90").write_bytes(
+        observer_fortran_source().encode("ascii")
+    )
     return destination
 
 
