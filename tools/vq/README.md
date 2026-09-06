@@ -40,15 +40,17 @@ python tools/vq/qualify_hupselbrook.py --bal result.bal --blc result.blc
 
 BAL/BLC values are rounded to `0.01 cm`. Passing these gates is regression evidence only and does not satisfy the future hard invariant-13 mass gate.
 
-## B1 provenance gate
+## B1 identity gate
 
-The current default pin is B1.5:
+The current default pin is the provenance-repaired `B1.5p1` snapshot:
 
 ```bash
 python tools/vq/b1_snapshot_identity.py --reference-root /path/to/SWAP5-checkout
 ```
 
-The gate fails closed when a stored patch artifact is missing or its SHA-256 differs from the immutable snapshot declaration. At latest main re-read commit `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443`, B1.5 fails this gate because it inherits unresolved SWAP-005/006/007 provenance mismatches. The newly added SWAP-008 patch and B0 preimage both pass. See `docs/verification/vq-1c-b1.5-evidence.md` and GitHub issue #19.
+The gate verifies the pinned snapshot blob, canonical B0 member-manifest blob, every stored patch SHA-256 and every declared B0 target preimage. `B1.5p1` passes this identity gate. Historical `B1.2` through `B1.5` remain failed-oracle audit records and are not rewritten.
+
+This PASS admits B1.5p1 to the next gate only. Deterministic patch application, corrected-target verification and numerical B0 -> B1 comparison are still required. See `docs/verification/vq-1c-b1.5p1-evidence.md`.
 
 ## Unrounded mass accounting
 
