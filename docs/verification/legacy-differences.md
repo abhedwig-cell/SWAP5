@@ -30,14 +30,15 @@ A SWAP 5 difference from B0 is acceptable only when it is either explicitly list
 | `B1.3` | `SWAP-006` | `ADMITTED_B1` initialization/portability bug | meteo crop scan relies on an unused zero-initialized `cropstart` sentinel | iterate explicitly over loaded records `1:ifnd` | NaN-initialized reproducer exposes B0 dependence; patched build passes |
 | `B1.4` | `SWAP-007` | `ADMITTED_B1` numerical robustness bug | tiny nonzero `fi_a` can overflow `fi/fi_a` and raise `SIGFPE` | only divide when the quotient is representable; otherwise use the existing large-`lnew` restart route | strict grass case crashes B0 and completes patched; normal output unchanged after timestamp normalization |
 | `B1.5` | `SWAP-008` | `ADMITTED_B1` Fortran correctness/portability bug | fallback `bandec`/`banbks` read incoming arrays declared `INTENT(OUT)` | declare consumed-and-overwritten arrays as `INTENT(INOUT)`; solver arithmetic unchanged | issue register `FIX_TESTED`; correction compiled/tested in patch set |
+| `B1.6` | `SWAP-009` | `ADMITTED_B1` PDI constitutive code bug | four PDI conductivity routes pass `abs(h)` into the Kelvin relative-humidity term, making `Hr > 1` for unsaturated suction | pass signed negative pressure head `h` to the existing Kelvin relation | issue register `FIX_TESTED`, certainty very high; hydraulic/theory checks; independent 20 °C sign check reproduces old/corrected vapor-term ratios about 1.16, 4.26 and 1.99e6 at -1e5, -1e6 and -1e7 cm |
 
-The five intended corrections remain unchanged in `B1.5p1`.
+The first five intended corrections are preserved unchanged through the provenance-repaired `B1.5p1`; `B1.6` is the first new numerical successor and adds only SWAP-009.
 
 ## Provenance-only difference: B1.5 -> B1.5p1
 
 `B1.5p1` is a `PROVENANCE_REPAIR`. It changes no intended corrected source behaviour relative to B1.5. It replaces invalid snapshot identity metadata with the exact stored patch hashes and canonical B0 target-member hashes discovered by the independent VQ-1c gate. Historical B1.2-B1.5 files remain unchanged as audit evidence.
 
-The current manifest points to `B1.5p1`, but its exact-oracle status is `PENDING_VQ_IDENTITY_GATE`. Numerical B0 -> B1 qualification therefore remains blocked until VQ independently repins and passes the repaired snapshot.
+`B1.6` is based on the repaired B1.5p1 identities rather than on the historical mismatched snapshot metadata. The current manifest still marks exact executable-oracle use as `PENDING_VQ_IDENTITY_GATE`; therefore B0 -> B1 numerical equivalence claims remain blocked until VQ independently repins and passes the current snapshot.
 
 ## Audit findings waiting for B1 admission review
 
