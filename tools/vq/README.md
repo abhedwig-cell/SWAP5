@@ -57,13 +57,33 @@ The legacy reports expose water values at `0.01 cm` resolution. Passing this gat
 
 A `PASS` in that matrix applies only to the stated case/variant and runner capability. It must not be generalized to untested output paths or to full Intel/GNU equivalence.
 
+## VQ-1c: B1 snapshot identity
+
+Before any B0 -> B1 numerical comparison, verify that every patch artifact of the pinned B1 snapshot matches its declared SHA-256:
+
+```bash
+python tools/vq/b1_snapshot_identity.py \
+  --reference-root /path/to/SWAP5-checkout
+```
+
+The default pin is `tools/vq/cases/b1-3-reference-pin.json`.
+
+The gate fails closed when a patch is missing or its bytes differ from the immutable snapshot evidence. At the currently pinned B1.3 integration commit, SWAP-001 passes but SWAP-005 and SWAP-006 fail their declared patch-artifact hashes. See `docs/verification/vq-1c-b1-pin-evidence.md` and GitHub issue #19.
+
+A failed artifact pin blocks qualification use of B1.3 even when the correction logic itself can be reproduced. VQ does not silently rewrite an immutable B1 snapshot.
+
+## Unrounded mass-accounting contract
+
+`docs/verification/mass-accounting-contract.md` and `tools/vq/contracts/mass-accounting-record.schema.json` define the VQ normalization required for the future B2 hard mass-conservation gate. This is a verification interchange contract, not a production object layout.
+
 ## Unit tests
 
 ```bash
 python -m unittest \
   tools.vq.test_reference_identity \
   tools.vq.test_balance \
-  tools.vq.test_b0_source_runner
+  tools.vq.test_b0_source_runner \
+  tools.vq.test_b1_snapshot_identity
 ```
 
 Future adapters for B1 and B2 must keep recording the exact executable/source identity, case identity and qualification scope used for each result.
