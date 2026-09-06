@@ -16,63 +16,55 @@ The GNU runner is capability-limited verification infrastructure. It is not decl
 
 ## Qualified predecessor snapshots
 
-`B1.5p1` is the provenance-repaired five-fix predecessor. `B1.6` adds SWAP-009. Both remain immutable qualified historical predecessors of the current reference.
+`B1.5p1`, `B1.6` and `B1.7` remain immutable qualified historical predecessors. Their exact identities can be checked with the corresponding pins under `tools/vq/cases/` using `b1_snapshot_identity.py`.
 
-Their exact identities can be checked with:
+## Current B1.8 corrected reference
 
-```bash
-python tools/vq/b1_snapshot_identity.py \
-  --reference-root /path/to/SWAP5-checkout \
-  --pin tools/vq/cases/b1-5p1-reference-pin.json
-
-python tools/vq/b1_snapshot_identity.py \
-  --reference-root /path/to/SWAP5-checkout \
-  --pin tools/vq/cases/b1-6-reference-pin.json
-```
-
-## Current B1.7 corrected reference
-
-`B1.7` is the current corrected-reference oracle:
+`B1.8` is the current corrected-reference oracle:
 
 ```text
-B1.7 = B1.6 + SWAP-010
+B1.8 = B1.7 + SWAP-013
 ```
 
-SWAP-010 shares `WC_K_models_04_11.f90` with SWAP-009. The B1.7 admission therefore pins canonical B0 provenance and the exact ordered B1.6 preimage.
+SWAP-013 targets `readswap.f90`, which is unchanged by B1.1-B1.7, so its ordered B1.7 preimage is identical to canonical B0. The correction adds only the PDI model 8-11 `0 < HA < H0` validation guard after the existing magnitude conversion.
 
 Repository admission bookkeeping is checked by:
 
 ```bash
-python tools/vq/b1_7_admission_gate.py
+python tools/vq/b1_8_admission_gate.py
 ```
 
-The gate verifies the current manifest/snapshot, ordered patch identities, canonical B0 preimages, the SWAP-010 ordered B1.6 preimage and the pinned B1.7 source identity. It is a provenance/bookkeeping gate and does not replace the compiled SWAP-010 qualification evidence.
+The exact source-bound guard gate, including a strict GNU Fortran 9-case harness, is:
+
+```bash
+python reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py
+```
 
 Exact source reconstruction from canonical B0 is available through:
 
 ```bash
-python tools/vq/b1_7_reconstruct.py \
+python tools/vq/b1_8_reconstruct.py \
   --archive /path/to/SWAP_4.3.1.zip \
-  --output-dir /tmp/B1.7/SWAP
+  --output-dir /tmp/B1.8/SWAP
 ```
 
 Expected final source identity:
 
 ```text
 members          63
-source bytes      1,860,091
-manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
+source bytes      1,860,493
+manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
 ```
 
-SWAP-010 has passed the source-bound model-7 capacity-derivative consistency gate, a representative full model-7 SWAP production-path regression and a hard unrounded legacy mass gate for the corrected candidate. The strong nonlinear-route difference is qualification evidence only, not a performance benchmark.
+SWAP-013 changes only invalid-input acceptance/rejection. Valid PDI constitutive equations, non-PDI models, solver policy, time integration and water-balance equations are unchanged.
 
 ## Expected differences
 
-`docs/verification/expected-differences.json` defines the admitted B0 -> B1.7 difference envelopes. Any unregistered difference remains a qualification failure. B1 is a corrected legacy reference, not a license for approximate equivalence.
+`docs/verification/expected-differences.json` defines the admitted B0 -> B1.8 difference envelopes. Any unregistered difference remains a qualification failure. B1 is a corrected legacy reference, not a license for approximate equivalence.
 
 ## B2 reference-entrypoint admission
 
-Before a numerical B1.7 -> B2 comparison can run, the candidate checkout must pass:
+Before a numerical B1.8 -> B2 comparison can run, the candidate checkout must pass:
 
 ```bash
 python tools/vq/b2_reference_gate.py \
@@ -82,7 +74,7 @@ python tools/vq/b2_reference_gate.py \
 
 The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
-The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.7 admission changes legacy reference/tooling state only; it does not create the missing production B2 seam.
+The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.8 admission changes legacy reference/input-validation state only; it does not create the missing production B2 seam.
 
 ## Unrounded mass accounting
 
