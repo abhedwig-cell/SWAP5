@@ -43,6 +43,7 @@ jobs:
           tools/performance/mp_cpu_baseline.py
           tools/performance/mp_cpu_runner.py
           tools/performance/mp_cpu_pairs.py
+          tools/performance/mp_host_admission.py
 
       - name: Validate workload catalog
         run: python tools/performance/mp_workloads.py benchmarks/performance/workload-catalog.json --summary
@@ -68,6 +69,14 @@ jobs:
             > /tmp/mp-cpu-summary.json
           cmp /tmp/mp-cpu-summary.json \
             benchmarks/performance/evidence/mp-b01-controlled-cpu.summary.json
+
+      - name: Validate host-admission evidence
+        run: |
+          python -m tools.performance.mp_host_admission \
+            benchmarks/performance/evidence/mp-b01-host-admission.evidence.json \
+            > /tmp/mp-host-admission-summary.json
+          cmp /tmp/mp-host-admission-summary.json \
+            benchmarks/performance/evidence/mp-b01-host-admission.summary.json
 
       - name: Run measurement tests
         run: python -m unittest discover -s tests -p 'test_mp_*.py' -v
