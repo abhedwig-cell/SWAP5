@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BO",
+  "status": "PASS_EXPLICIT_COLUMN_STATE_AND_FIRST_CLASS_SOLVER_DIAGNOSTICS_LEGACY_BACKEND_SERIAL_ONLY",
+  "baseline_branch": "integration/a23bk-transactional-rebase",
+  "parent_a23bn_git_commit": "138cc919ab96f2f7484eb7e54f031ce72c87c316",
+  "oracle": {
+    "snapshot": "B1.6",
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "endpoint_bytes": 1032,
+    "mass_limit_cm": 1e-6
+  },
+  "state_layout": {
+    "active_nodes": 34,
+    "logical_payload_excludes_descriptors_and_padding": true,
+    "physical_bytes": 1136,
+    "forcing_cursor_bytes": 16,
+    "process_cursor_bytes": 36,
+    "numerical_continuation_bytes": 8,
+    "legacy_replay_cache_bytes": 272,
+    "legacy_accounting_cursor_bytes": 96,
+    "total_classified_payload_bytes": 1564
+  },
+  "gates": {
+    "a23bl_transaction_regression_o0": "PASS",
+    "a23bl_transaction_regression_o2": "PASS",
+    "physical_o0": "PASS",
+    "physical_o2": "PASS",
+    "physical_o0_o2_log_identity": "PASS",
+    "physical_gate_log_sha256": "08911dcf014adbf811d04f358bca485d9e4824e513c51df0dbd49ddeaae38e46",
+    "endpoint_identity_o0_o2_and_b16_oracle": "PASS",
+    "accepted_storage_cm": 77.011710672204643,
+    "half_mass_residual_cm": -1.7872350177583485e-7,
+    "serial_interleaved_state_identity": "PASS",
+    "serial_interleaved_diagnostic_identity": "PASS",
+    "transaction_total_internal_retries": 20,
+    "accepted_route_internal_retries": 10,
+    "jan4_internal_retries": 0,
+    "jan5_internal_retries": 10,
+    "transaction_total_nonlinear_iterations": 356,
+    "accepted_route_nonlinear_iterations": 178,
+    "component_save_statements": 0,
+    "component_file_io": false,
+    "component_subprocess_calls": false
+  },
+  "new_categories": [
+    "physical",
+    "forcing_cursor",
+    "process_cursor",
+    "numerical_continuation",
+    "legacy_replay_cache",
+    "legacy_accounting_cursor"
+  ],
+  "limitations": [
+    "B1.6 physical backend remains module-global and serialized",
+    "diagnostic hook uses transitional module lifetime because backend is singleton",
+    "physical bridge accepts integer-day boundaries only",
+    "Newton/Jacobian scratch is not yet worker-owned",
+    "selective step doubling remains excluded"
+  ],
+  "physics_changed": false,
+  "solver_policy_changed": false,
+  "top_jacobian_route_changed": false,
+  "selective_step_doubling_changed": false,
+  "next_slice": "A23BP"
+}
