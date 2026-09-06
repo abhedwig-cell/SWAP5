@@ -9,6 +9,7 @@ B1 is an ordered, immutable sequence of corrected SWAP 4.3.1 reference definitio
 | `B1.0-bootstrap` | `reference/swap-4.3.1/snapshots/B1.0-bootstrap.yml` | none | exact B0, no corrections |
 | `B1.1` | `reference/swap-4.3.1/snapshots/B1.1.yml` | `SWAP-001` | first corrected reference |
 | `B1.2` | `reference/swap-4.3.1/snapshots/B1.2.yml` | `SWAP-001`, `SWAP-005` | adds crop-calendar bounds/portability correction |
+| `B1.3` | `reference/swap-4.3.1/snapshots/B1.3.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006` | removes meteo crop-calendar sentinel/initialization dependence |
 
 ## B1.1: SWAP-001
 
@@ -22,8 +23,14 @@ SWAP-005 removes reliance on short-circuit evaluation in the crop-calendar seque
 
 The physical crop-sequence criterion is unchanged. The admission records the exact B0 `MOD_cropdevelopment.f90` identity, the isolated minimal patch identity, a preimage-checking application helper and the existing `FIX_TESTED` strict-build evidence.
 
+## B1.3: SWAP-006
+
+SWAP-006 removes an implicit sentinel based on zero-initialized unused `cropstart` elements in the dynamic-crop meteo-loading loop. B1.3 limits the loop to the actual loaded crop-record count `ifnd` and preserves the existing early-exit and crop-overlap logic.
+
+The audit register records a NaN-initialized reproducer that exposes the B0 dependency and a passing patched build. The admission also records the exact B0 `MOD_meteo.f90` identity, the isolated minimal patch SHA-256, deterministic corrected-file SHA-256 and a byte-safe verifier.
+
 ## Candidate versus admitted
 
-Candidate dossiers may be prepared before their exact patch is ready. For example, SWAP-011 is technically qualified but still has `PATCH_PAYLOAD_PENDING` provenance status. It therefore does not appear in B1.2.
+Candidate dossiers may be prepared before their exact patch is ready. For example, SWAP-011 is technically qualified but still has `PATCH_PAYLOAD_PENDING` provenance status. It therefore does not appear in B1.3.
 
 Only the ordered patch entries in `reference/swap-4.3.1/b1-manifest.yml` define the current B1 behaviour.
