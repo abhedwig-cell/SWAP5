@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "workstream": "VQ",
-  "slice": "VQ-1d",
+  "slice": "VQ-1d2",
   "observation_baseline": "5576279c915f4d4fbccf3ff182aa480306489080",
   "b1_oracle": {
     "snapshot": "B1.6",
@@ -14,6 +14,7 @@
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
+      "seam_contract_path": null,
       "reference_policy": null
     },
     "capabilities": {
@@ -30,11 +31,12 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.6 admission changes legacy reference metadata/tooling only and does not create a B2 production seam."
+    "reference_seam_contract": "tools/vq/contracts/b2-reference-seam.schema.json",
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint, canonical result contract or reference-seam declaration. B1.6 admission changes legacy reference metadata/tooling only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",
-    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned production observation commit.",
-    "next_admission_gate": "Provide an integrated callable reference entrypoint plus the required typed interval/state/forcing/config/result/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint, result contract and reference-seam declaration exist on the pinned production observation commit.",
+    "next_admission_gate": "Provide an integrated callable reference entrypoint, canonical result contract and a valid SWAP5-B2-reference-seam-v1 declaration, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
   }
 }
