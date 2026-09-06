@@ -17,8 +17,11 @@
 | HA>H0 rejected in focused compiled gate | PASS |
 | Non-PDI controls unaffected by guard | PASS |
 | Historical patch compile/hydraulic evidence retained | PASS |
-| Expected-difference scope registered | PENDING B1.8 BOOKKEEPING |
-| New immutable B1 snapshot | PENDING B1.8 BOOKKEEPING |
+| Expected-difference scope registered | PASS |
+| New immutable B1 snapshot | PASS |
+| Deterministic B1.8 source identity pinned | PASS |
 | Fail-closed B1.8 CI identity/admission gate | REQUIRED BEFORE MERGE |
 
 No physical equation, solver policy or mass tolerance is changed. The expected B1 difference is limited to earlier rejection of mathematically singular/invalid PDI input combinations.
+
+Current conclusion: **SWAP-013 is admitted as the eighth corrected-reference patch in immutable snapshot B1.8.** This conclusion becomes integrated repository state only after the B1.8 pull request passes the fail-closed CI gates and is merged to `main`.
