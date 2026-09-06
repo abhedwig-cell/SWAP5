@@ -1,23 +1,34 @@
 {
   "schema_version": 1,
   "workstream": "VQ",
-  "slice": "VQ-1d",
-  "observation_baseline": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "slice": "VQ-1d3",
+  "observation_baseline": "402f278f94eb15261289bf6c2a259e7840e9c155",
   "candidate_status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
-  "b1_snapshot": "B1.5p1",
+  "b1_snapshot": "B1.9",
   "b1_qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
-  "b2_commit": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "b1_reconstructed_manifest_sha256": "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657",
+  "b2_commit": "402f278f94eb15261289bf6c2a259e7840e9c155",
   "admissible_adapter_target": false,
   "failure": "b2_reference_entrypoint_not_ready",
   "checks": {
+    "b1_manifest_loaded": true,
     "b1_oracle_qualified": true,
+    "b1_snapshot_matches_manifest": true,
+    "b1_qualification_matches_manifest": true,
+    "b1_source_manifest_matches_manifest": true,
+    "observation_baseline_exact": true,
     "exact_b2_commit": true,
+    "observation_matches_b2_commit": true,
     "ready_status": false,
     "entrypoint_declared": false,
     "result_contract_declared": false,
+    "seam_contract_declared": false,
     "reference_policy_explicit": false,
     "entrypoint_exists": false,
     "result_contract_exists": false,
+    "seam_contract_exists": false,
+    "seam_contract_valid": false,
+    "seam_contract_matches_candidate": false,
     "required_capabilities": false
   },
   "missing_capabilities": [
@@ -29,6 +40,5 @@
     "canonical_result_output",
     "unrounded_mass_accounting",
     "transaction_diagnostics"
-  ],
-  "interpretation": "Fail-closed VQ result: the corrected B1 oracle is qualified, but no integrated SWAP5/B2 reference-mode entrypoint and canonical result contract exist on the pinned repository commit. No numerical B1-to-B2 comparison is admitted."
+  ]
 }
