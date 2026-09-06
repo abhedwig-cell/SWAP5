@@ -36,16 +36,19 @@ jobs:
       - name: Install gate dependency
         run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
 
-      - name: Check B1.7 predecessor identity
-        run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-7-reference-pin.json
+      - name: Check B1.8 predecessor identity
+        run: python tools/vq/b1_snapshot_identity.py --pin tools/vq/cases/b1-8-reference-pin.json
 
-      - name: Check B1.8 admission identity and ordered preimage
-        run: python tools/vq/b1_8_admission_gate.py
+      - name: Check B1.9 admission identity and ordered preimage
+        run: python tools/vq/b1_9_admission_gate.py
 
-      - name: Check SWAP-013 source-bound Fortran guard gate
+      - name: Recheck SWAP-013 predecessor guard
         run: |
           gfortran --version
           python reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py
+
+      - name: Check SWAP-012 actual-source evidence binding
+        run: python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
 
       - name: Check VQ gate unit tests
         run: |
@@ -53,5 +56,5 @@ jobs:
             tools.vq.test_b1_snapshot_identity \
             tools.vq.test_b2_reference_gate
 
-      - name: Check deterministic B1.8 reconstructor syntax
-        run: python -m py_compile tools/vq/b1_8_reconstruct.py
+      - name: Check deterministic B1.9 reconstructor syntax
+        run: python -m py_compile tools/vq/b1_9_reconstruct.py
