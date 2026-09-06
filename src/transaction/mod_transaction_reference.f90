@@ -19,6 +19,7 @@ module mod_transaction_reference
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
     integer :: nonlinear_iterations = 0
+    integer :: internal_retries = 0
   end type trial_outcome_t
 
   type, abstract, public :: transaction_model_t
@@ -48,6 +49,9 @@ module mod_transaction_reference
     integer :: temporal_rejections = 0
     integer :: mass_rejections = 0
     integer :: nonlinear_iterations = 0
+    integer :: accepted_nonlinear_iterations = 0
+    integer :: internal_retries = 0
+    integer :: accepted_internal_retries = 0
     real(real64) :: requested_t0 = 0.0_real64
     real(real64) :: requested_t1 = 0.0_real64
     real(real64) :: accepted_t1 = 0.0_real64
@@ -132,6 +136,7 @@ contains
       call model%advance(full_state, t0, attempt_t1, full_outcome)
       result%full_trials = result%full_trials + 1
       result%nonlinear_iterations = result%nonlinear_iterations + full_outcome%nonlinear_iterations
+      result%internal_retries = result%internal_retries + full_outcome%internal_retries
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
@@ -147,11 +152,13 @@ contains
       call model%advance(half_state, t0, midpoint, half1_outcome)
       result%half_trials = result%half_trials + 1
       result%nonlinear_iterations = result%nonlinear_iterations + half1_outcome%nonlinear_iterations
+      result%internal_retries = result%internal_retries + half1_outcome%internal_retries
 
       if (half1_outcome%solver_ok) then
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
         result%half_trials = result%half_trials + 1
         result%nonlinear_iterations = result%nonlinear_iterations + half2_outcome%nonlinear_iterations
+        result%internal_retries = result%internal_retries + half2_outcome%internal_retries
       else
         half2_outcome = trial_outcome_t()
       end if
@@ -197,6 +204,8 @@ contains
       result%accepted_route = TX_ROUTE_TWO_HALF
       result%accepted_t1 = attempt_t1
       result%accepted_dt = attempt_dt
+      result%accepted_nonlinear_iterations = half1_outcome%nonlinear_iterations + half2_outcome%nonlinear_iterations
+      result%accepted_internal_retries = half1_outcome%internal_retries + half2_outcome%internal_retries
       result%commits = result%commits + 1
       return
     end do
