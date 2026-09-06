@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1d",
+  "observation_baseline": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "b1_oracle": {
+    "snapshot": "B1.5p1",
+    "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "reconstructed_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30"
+  },
+  "b2": {
+    "status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
+    "commit": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+    "integration": {
+      "entrypoint_path": null,
+      "result_contract_path": null,
+      "reference_policy": null
+    },
+    "capabilities": {
+      "callable_reference_entrypoint": false,
+      "generic_interval_t0_t1": false,
+      "committed_state_input": false,
+      "forcing_input": false,
+      "numerical_config_separate": false,
+      "canonical_result_output": false,
+      "unrounded_mass_accounting": false,
+      "transaction_diagnostics": false
+    }
+  },
+  "evidence": {
+    "implementation_status": "docs/architecture/implementation-status.md",
+    "reference_policy": "docs/verification/reference-baselines.md",
+    "repository_observation": "Current main is documentation-led; no integrated production SWAP5 source/reference entrypoint is present at the pinned commit. Full-accuracy reference mode is documented as PARTIAL rather than an end-to-end integrated runtime capability."
+  },
+  "decision": {
+    "b1_to_b2_numerical_comparison": "BLOCKED",
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned main commit.",
+    "next_admission_gate": "Provide an integrated callable reference entrypoint plus the required typed interval/state/forcing/config/result/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
+  }
+}
