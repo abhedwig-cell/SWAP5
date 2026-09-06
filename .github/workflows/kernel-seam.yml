@@ -1,0 +1,43 @@
+name: Kernel seam contract
+
+on:
+  pull_request:
+    paths:
+      - 'src/kernel/**'
+      - 'tests/kernel/**'
+      - 'docs/architecture/reference-seam-contract.md'
+      - '.github/workflows/kernel-seam.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/kernel/**'
+      - 'tests/kernel/**'
+      - 'docs/architecture/reference-seam-contract.md'
+      - '.github/workflows/kernel-seam.yml'
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show compiler
+        run: gfortran --version
+
+      - name: Check seam source boundary
+        run: python tests/kernel/check_kernel_seam_source.py
+
+      - name: Compile typed seam and fixture
+        run: |
+          mkdir -p build/krs1
+          gfortran \
+            -std=f2018 \
+            -Wall -Wextra -Werror -pedantic \
+            -fcheck=all \
+            -J build/krs1 \
+            src/kernel/swap5_kernel_seam.f90 \
+            tests/kernel/test_kernel_seam_contract.f90 \
+            -o build/krs1/test_kernel_seam_contract
+
+      - name: Run seam contract fixture
+        run: build/krs1/test_kernel_seam_contract
