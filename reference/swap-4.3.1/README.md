@@ -21,8 +21,8 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.5p1.yml
     B1.6.yml
+    B1.7.yml
 b1-manifest.yml
 ```
 
@@ -38,7 +38,7 @@ B1 is an ordered derivation rather than a duplicated source tree:
 B1.x = B0 + patch A + patch B + ...
 ```
 
-Every admitted patch must have a stable audit ID, reproduced B0 defect, intended rule, minimal correction, exact stored patch identity, canonical B0 preimage identity and qualification evidence.
+Every admitted patch must have a stable audit ID, reproduced B0 defect, intended rule, minimal correction, exact stored patch identity, canonical B0 preimage identity and qualification evidence. When two patches touch the same source member, the later patch must additionally pin the exact ordered predecessor preimage; raw-B0 provenance alone is not sufficient.
 
 Published snapshot files are immutable audit records. A later provenance defect is repaired by a new snapshot, never by rewriting the historical one.
 
@@ -55,23 +55,24 @@ B1.4           = B1.3 + SWAP-007
 B1.5           = B1.4 + SWAP-008
 B1.5p1         = same intended corrected source as B1.5, provenance repaired
 B1.6           = B1.5p1 + SWAP-009
+B1.7           = B1.6 + SWAP-010
 ```
 
 VQ-1c found that B1.2-B1.5 contain incorrect patch-artifact identity metadata and that the SWAP-007 dossier used a non-canonical B0 preimage hash. Those historical snapshots remain untouched and must not be used as exact executable oracles.
 
-`B1.5p1` repaired those identities and subsequently passed VQ identity, deterministic reconstruction, broad control and all five predecessor correction-triggering gates. It is the qualified predecessor for B1.6.
+`B1.5p1` repaired those identities and subsequently passed VQ identity, deterministic reconstruction, broad control and all five predecessor correction-triggering gates. `B1.6` then admitted SWAP-009, the qualified PDI Kelvin-sign vapor-conductivity correction.
 
-`B1.6` adds the qualified SWAP-009 PDI Kelvin-sign vapor-conductivity correction. SWAP-009 passed exact patch/preimage/corrected-target checks, a strict compiled PDI function gate, a representative full SWAP PDI production-path regression and a predeclared hard unrounded legacy mass-balance gate.
+`B1.7` adds SWAP-010, the model-7 `C_MvG_2_s` capacity-derivative consistency correction. Because SWAP-009 and SWAP-010 both modify `WC_K_models_04_11.f90`, B1.7 explicitly pins the B1.6 ordered preimage before applying SWAP-010. The direct source-bound capacity gate gives 784/1000 inconsistent B1.6 points versus 0/1000 after correction. A representative full model-7 run completes in both variants, but the corrected trajectory uses the consistent capacity and satisfies the predeclared `1e-6 cm` unrounded legacy mass criterion at about `1.0e-8 cm`; the sensitive B1.6 predecessor run reaches about `1.58e-6 cm` and creates `result.dwb`. No tolerance is relaxed.
 
-The current manifest therefore points to `B1.6` as the qualified numerical/behavioural corrected-reference oracle. Its deterministic source-tree identity is:
+The current manifest therefore points to `B1.7` as the qualified numerical/behavioural corrected-reference oracle. Its deterministic source-tree identity is:
 
 ```text
 members          63
-source bytes      1,860,085
-manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+source bytes      1,860,091
+manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
 ```
 
-Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.6.
+Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.7.
 
 ## Boundary to SWAP 5
 

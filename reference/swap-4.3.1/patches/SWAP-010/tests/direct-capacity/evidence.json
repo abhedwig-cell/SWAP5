@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "audit_id": "SWAP-010",
+  "gate": "source_bound_model7_capacity_derivative",
+  "compiler": "GNU Fortran 14.2.0",
+  "flags": "-std=f2018 -ffree-line-length-none -O0 -fcheck=all -ffpe-trap=invalid,zero,overflow -Wall -Wextra",
+  "predecessor": {
+    "snapshot": "B1.6",
+    "target_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "points": 1000,
+    "failures_relative_error_gt_1e-3": 784,
+    "failure_fraction": 0.784,
+    "max_relative_error": 0.16041072852808533
+  },
+  "candidate": {
+    "target_sha256": "7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e",
+    "points": 1000,
+    "failures_relative_error_gt_1e-3": 0,
+    "failure_fraction": 0.0,
+    "max_relative_error": 3.3271574478919296e-08
+  },
+  "decision": "PASS"
+}
