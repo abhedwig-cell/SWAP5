@@ -17,12 +17,12 @@ EVIDENCE = Path(__file__).with_name("actual_source_start_evidence.json")
 EXPECTED_PATCH_SHA256 = "e6f501f510f0de3599cfb2ef208744862e7ef9173c9cf1bf434f2e3ea450613b"
 EXPECTED_B0_SHA256 = "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
 EXPECTED_CORRECTED_SHA256 = "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
-REQUIRED_NEW_TOKENS = (
-    "iTill = Ntill + 1",
-    "do i = 1, Ntill",
-    "if (t1900 <= Date_tillage(i)) then",
-    "iTill = i",
-    "if (iTill > 1) call Change_Tillage_Info(iTill-1)",
+REQUIRED_ADDED_LINES = (
+    "+   iTill = Ntill + 1",
+    "+   do i = 1, Ntill",
+    "+      if (t1900 <= Date_tillage(i)) then",
+    "+         iTill = i",
+    "+   if (iTill > 1) call Change_Tillage_Info(iTill-1)",
 )
 FORBIDDEN_ADMITTED_TOKENS = (
     "i_n_model=2 requires PCLAY > 0",
@@ -44,9 +44,9 @@ def main() -> int:
     if sha256(PATCH) != EXPECTED_PATCH_SHA256:
         raise SystemExit("SWAP-002 gate: stored patch SHA mismatch")
     patch_text = PATCH.read_text(encoding="utf-8")
-    positions = [patch_text.find(token) for token in REQUIRED_NEW_TOKENS]
+    positions = [patch_text.find(line) for line in REQUIRED_ADDED_LINES]
     if any(pos < 0 for pos in positions) or positions != sorted(positions):
-        raise SystemExit(f"SWAP-002 gate: required set_iTill token missing/out of order: {positions}")
+        raise SystemExit(f"SWAP-002 gate: required added set_iTill line missing/out of order: {positions}")
     if REMOVED_LEGACY_LINE not in patch_text:
         raise SystemExit("SWAP-002 gate: legacy impossible interval line is not the removed preimage")
     for token in FORBIDDEN_ADMITTED_TOKENS:
