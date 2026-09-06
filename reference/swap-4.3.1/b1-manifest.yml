@@ -11,18 +11,18 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.9"
+  snapshot: "B1.10"
   status: "CORRECTED_REFERENCE"
   oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.9.yml"
-  supersedes_snapshot: "B1.8"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.10.yml"
+  supersedes_snapshot: "B1.9"
   numerical_change_from_superseded_snapshot: true
-  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-012 prhead inverse correction to B1.8."
+  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-002 tillage start-event indexing correction to B1.9."
   source_tree:
     member_count: 63
-    source_bytes: 1863300
-    member_manifest_sha256: "5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657"
-    reconstruction: "tools/vq/b1_9_reconstruct.py"
+    source_bytes: 1863575
+    member_manifest_sha256: "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+    reconstruction: "tools/vq/b1_10_reconstruct.py"
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -73,6 +73,14 @@ b1:
       ordered_preimage_snapshot: "B1.8"
       ordered_preimage_sha256: "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
       corrected_target_sha256: "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+    - id: "SWAP-002"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-002/fix.patch"
+      patch_sha256: "80e12cd4e9f47c192bd6c7d5ee7d460c473b3a2b29a5a553e8c35cf0b90b5c13"
+      qualification: "reference/swap-4.3.1/patches/SWAP-002/qualification.md"
+      canonical_b0_target_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
+      ordered_preimage_snapshot: "B1.9"
+      ordered_preimage_sha256: "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486"
+      corrected_target_sha256: "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -107,6 +115,9 @@ history:
     exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
   - snapshot: "B1.9"
     definition: "reference/swap-4.3.1/snapshots/B1.9.yml"
+    exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  - snapshot: "B1.10"
+    definition: "reference/swap-4.3.1/snapshots/B1.10.yml"
     exact_oracle_status: "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 admission_rule:
