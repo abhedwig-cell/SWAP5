@@ -16,6 +16,7 @@ from tools.vq.b2_reference_gate import (
     check_stored_evidence,
     evidence_projection,
 )
+from tools.vq.test_b2_result_contract import valid_result_contract
 from tools.vq.test_b2_seam_contract import valid_contract
 
 CURRENT_SNAPSHOT = "B1.6"
@@ -37,7 +38,7 @@ def base_candidate() -> dict:
             "commit": OBSERVATION_COMMIT,
             "integration": {
                 "entrypoint_path": "src/reference_driver.f90",
-                "result_contract_path": "src/reference_result.schema.json",
+                "result_contract_path": "src/reference_result.contract.json",
                 "seam_contract_path": "src/reference_seam.json",
                 "reference_policy": "reference",
             },
@@ -74,14 +75,26 @@ class B2ReferenceGateTests(unittest.TestCase):
         path.write_text(json.dumps(data), encoding="utf-8")
         return path
 
-    def create_integrated_files(self, root: Path, seam: dict | None = None) -> None:
+    def create_integrated_files(
+        self,
+        root: Path,
+        seam: dict | None = None,
+        result_contract: dict | None = None,
+    ) -> None:
         (root / "src").mkdir()
         (root / "src/reference_driver.f90").write_text("! fixture\n", encoding="utf-8")
-        (root / "src/reference_result.schema.json").write_text("{}\n", encoding="utf-8")
+        (root / "src/reference_result.contract.json").write_text(
+            json.dumps(valid_result_contract() if result_contract is None else result_contract),
+            encoding="utf-8",
+        )
         (root / "src/reference_seam.json").write_text(
             json.dumps(valid_contract() if seam is None else seam),
             encoding="utf-8",
         )
+        contracts = root / "tools" / "vq" / "contracts"
+        contracts.mkdir(parents=True, exist_ok=True)
+        (contracts / "b2-reference-result-record.schema.json").write_text("{}\n", encoding="utf-8")
+        (contracts / "mass-accounting-record.schema.json").write_text("{}\n", encoding="utf-8")
 
     def prepared_root(self, root: Path) -> None:
         self.write_manifest(root)
@@ -162,7 +175,7 @@ class B2ReferenceGateTests(unittest.TestCase):
             self.prepared_root(root)
             seam = valid_contract()
             seam["implementation"]["commit"] = "d" * 40
-            self.create_integrated_files(root, seam)
+            self.create_integrated_files(root, seam=seam)
             result = assess_candidate(root, self.write_candidate(root, base_candidate()))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "reference_seam_contract_candidate_mismatch")
@@ -173,7 +186,18 @@ class B2ReferenceGateTests(unittest.TestCase):
             self.prepared_root(root)
             seam = valid_contract()
             seam["transaction"]["rejected_trial_mutates_committed_state"] = True
-            self.create_integrated_files(root, seam)
+            self.create_integrated_files(root, seam=seam)
+            result = assess_candidate(root, self.write_candidate(root, base_candidate()))
+            self.assertFalse(result["admissible_adapter_target"])
+            self.assertEqual(result["failure"], "reference_seam_contract_invalid")
+
+    def test_invalid_result_contract_fails_admission_through_seam(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.prepared_root(root)
+            result_contract = valid_result_contract()
+            result_contract["transaction"]["rejected_trials_excluded_from_committed_totals"] = False
+            self.create_integrated_files(root, result_contract=result_contract)
             result = assess_candidate(root, self.write_candidate(root, base_candidate()))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "reference_seam_contract_invalid")
