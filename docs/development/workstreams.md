@@ -57,31 +57,35 @@ The exact mapping of existing chat threads to workstream IDs is made at their ne
 
 The registry is intentionally functional. A chat title or milestone code is not itself a workstream identity.
 
-## Proposed new workstream VQ: Verification and qualification
+## Active workstream VQ: Verification and qualification
 
-**Status:** Proposed
+**Status:** Active  
+**Accepted integration baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
+**Current integration branch:** `vq/vq-1-integration`  
+**Current slices:** VQ-1a B0 identity, VQ-1b B0 runner hardening, VQ-1c B1 provenance gate
 
 ### Goal
 
 Build an independent verification layer that can increasingly serve as the acceptance gate for SWAP5 migration slices.
 
-### First scope
+### Current scope
 
-- establish executable regression cases against the exact B0 baseline and later B1 snapshots;
-- encode hard water-balance checks;
-- encode transaction checks for rollback, retry and commit;
-- add generic-time tests with non-midnight starts and non-day intervals;
-- record expected legacy differences through the difference ledger;
-- make warm-start correctness independent of the numerical initial guess;
-- provide reusable qualification outputs for other workstreams.
+- exact B0 archive identity and provisional exact-source execution;
+- case-specific B0 regression and repeatability evidence;
+- canonical legacy BAL/BLC extraction while explicitly rejecting rounded reports as the future hard mass oracle;
+- unrounded, transaction-aware mass-accounting verification contract;
+- fail-closed B1 snapshot provenance checking before B0 -> B1 numerical comparison;
+- later, transaction, warm-start and generic-time gates against integrated B2/TX interfaces.
+
+### Current integration boundary
+
+VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0 runner is capability-limited and is not declared equivalent to the packaged Intel executable. B1.4 at the accepted integration baseline fails the VQ provenance gate because several stored patch artifacts do not match snapshot-declared hashes and SWAP-007 also declares a B0 preimage hash inconsistent with canonical B0. Numerical B0 -> B1 qualification therefore remains blocked until a provenance-correct immutable B1 snapshot is available.
+
+The proposed unrounded mass-accounting record is a verification interchange contract only. TX/HY/runtime own any production result-interface implementation.
 
 ### Deliberate exclusions
 
-VQ does not redesign production physics or solver algorithms. When a discrepancy is found, VQ reproduces and classifies it, then hands it to the appropriate implementation or legacy-audit path.
-
-### Why it parallelizes well
-
-Most work is in harnesses, test cases, comparison tooling and evidence. It can proceed while TX/HY/RT change production code, and it reduces the risk that several coding streams drift without a common oracle.
+VQ does not redesign production physics or solver algorithms. When a discrepancy is found, VQ reproduces and classifies it, then hands it to the appropriate implementation or legacy-reference path.
 
 ## Active workstream MP: MultiSWAP performance and batchability
 
