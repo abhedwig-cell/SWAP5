@@ -65,31 +65,34 @@ B1.x = B0 + ordered accepted patch set
 
 This avoids maintaining a second opaque copy of the complete 4.3.1 tree. Each change remains visible as an explicit patch with audit and qualification evidence.
 
-Published B1 snapshots are immutable. Historical B1.2-B1.5 remain recorded but fail exact provenance requirements and must not be used as executable oracles. `B1.5p1` repaired the metadata without changing the intended five corrected source results and subsequently passed independent VQ identity, reconstruction, broad-control and targeted-correction gates.
+Published B1 snapshots are immutable. Historical B1.2-B1.5 remain recorded but fail exact provenance requirements and must not be used as executable oracles. `B1.5p1` repaired the metadata without changing the intended five corrected source results and subsequently passed independent VQ identity, reconstruction, broad-control and targeted-correction gates. B1.6 then admitted SWAP-009.
 
-The current corrected reference is **B1.6**:
+The current corrected reference is **B1.7**:
 
 ```text
-B1.6 = B0
+B1.7 = B0
      + SWAP-001
      + SWAP-005
      + SWAP-006
      + SWAP-007
      + SWAP-008
      + SWAP-009
+     + SWAP-010
 ```
 
-`SWAP-009` corrects the PDI Kelvin-sign vapor-conductivity caller defect. Its admission includes exact patch/preimage/corrected-target identity, strict compiled function-level verification, representative full PDI production execution and hard unrounded legacy mass-balance evidence.
+`SWAP-010` corrects the model-7 `C_MvG_2_s` capacity formula so that it is the derivative of the implemented scaled-bimodal water-retention function. Because SWAP-009 already modifies the same `WC_K_models_04_11.f90` member, B1.7 explicitly pins the exact B1.6 ordered preimage before applying SWAP-010.
 
-The deterministic B1.6 reconstructed source identity is:
+The fresh source-bound capacity gate finds 784/1000 inconsistent points in B1.6 and 0/1000 after the correction. A representative full model-7 SWAP case completes for both variants but follows materially different nonlinear routes. With `CRITDEVMASBAL = 1e-6 cm` fixed before comparison, the sensitive B1.6 predecessor reaches about `1.58e-6 cm` maximum unrounded diagnostic residual and creates `result.dwb`; the corrected candidate reaches about `1.00e-8 cm` and creates no `.dwb`. No tolerance is relaxed and no performance claim is inferred from the route difference.
+
+The deterministic B1.7 reconstructed source identity is:
 
 ```text
 members          63
-source bytes      1,860,085
-manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+source bytes      1,860,091
+manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
 ```
 
-B1.6 is the current qualified numerical/behavioural legacy-corrected oracle for future B2 regression. Its legacy mass evidence does not replace the separate unrounded transaction-aware mass-accounting gate required for SWAP5/B2.
+B1.7 is the current qualified numerical/behavioural legacy-corrected oracle for future B2 regression. Its legacy mass evidence does not replace the separate unrounded transaction-aware mass-accounting gate required for SWAP5/B2.
 
 ## B2: SWAP 5 reference mode
 
@@ -125,6 +128,8 @@ model development
     -> no B1 change
 ```
 
+When two admitted patches touch the same source member, the later correction must pin the exact ordered predecessor preimage in addition to canonical B0 provenance.
+
 ## Repository boundary
 
 Keeping B0/B1 inside the SWAP5 repository does not make legacy source part of the new kernel. Production SWAP5 code must not import or depend on the legacy reference subtree. Only reference build, regression and qualification tooling may consume it.
@@ -133,4 +138,4 @@ A later move to a dedicated `SWAP-4.3.1-reference` repository remains possible i
 
 ## Current operational status
 
-The B0 cryptographic identity, exact 63-member source manifest, archive verifier and B0/B1/B2 policy are recorded. B1.6 is the current corrected legacy reference. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.
+The B0 cryptographic identity, exact 63-member source manifest, archive verifier and B0/B1/B2 policy are recorded. B1.7 is the current corrected legacy reference. B2 comparison remains blocked until the integrated SWAP5 reference-mode seam satisfies the VQ-1d admission contract.
