@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from tools.vq.b2_seam_contract import assess_contract
+from tools.vq.test_b2_result_contract import valid_result_contract
 
 COMMIT = "a" * 40
 
@@ -19,7 +20,7 @@ def valid_contract() -> dict:
             "integrated": True,
             "entrypoint_path": "src/reference_driver.f90",
             "entrypoint_symbol": "swap_reference_interval",
-            "result_contract_path": "src/reference_result.schema.json",
+            "result_contract_path": "src/reference_result.contract.json",
         },
         "policy": {
             "reference_policy_id": "reference",
@@ -54,7 +55,9 @@ def valid_contract() -> dict:
                 "accepted",
                 "execution_class",
                 "retry_count",
+                "solver_iterations",
                 "solver_cost",
+                "fallback_used",
                 "balance_residual",
             ]
         },
@@ -68,11 +71,24 @@ def valid_contract() -> dict:
 
 
 class B2SeamContractTests(unittest.TestCase):
-    def prepare(self, root: Path, contract: dict, create_files: bool = True) -> Path:
+    def prepare(
+        self,
+        root: Path,
+        contract: dict,
+        create_files: bool = True,
+        result_contract: dict | None = None,
+    ) -> Path:
         if create_files:
             (root / "src").mkdir(parents=True, exist_ok=True)
             (root / "src/reference_driver.f90").write_text("! fixture\n", encoding="utf-8")
-            (root / "src/reference_result.schema.json").write_text("{}\n", encoding="utf-8")
+            (root / "src/reference_result.contract.json").write_text(
+                json.dumps(valid_result_contract() if result_contract is None else result_contract),
+                encoding="utf-8",
+            )
+            contracts = root / "tools" / "vq" / "contracts"
+            contracts.mkdir(parents=True, exist_ok=True)
+            (contracts / "b2-reference-result-record.schema.json").write_text("{}\n", encoding="utf-8")
+            (contracts / "mass-accounting-record.schema.json").write_text("{}\n", encoding="utf-8")
         path = root / "seam.json"
         path.write_text(json.dumps(contract), encoding="utf-8")
         return path
@@ -125,6 +141,29 @@ class B2SeamContractTests(unittest.TestCase):
             result = assess_contract(root, self.prepare(root, contract))
             self.assertFalse(result["admissible_reference_seam"])
             self.assertIn("diagnostics_required_fields", result["failed_checks"])
+
+    def test_invalid_result_contract_fails_seam(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result_contract = valid_result_contract()
+            result_contract["mass_accounting"]["rounded_acceptance_allowed"] = True
+            result = assess_contract(
+                root,
+                self.prepare(root, valid_contract(), result_contract=result_contract),
+            )
+            self.assertFalse(result["admissible_reference_seam"])
+            self.assertIn("result_contract_semantics_valid", result["failed_checks"])
+
+    def test_result_contract_commit_must_match_seam(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            result_contract = valid_result_contract("d" * 40)
+            result = assess_contract(
+                root,
+                self.prepare(root, valid_contract(), result_contract=result_contract),
+            )
+            self.assertFalse(result["admissible_reference_seam"])
+            self.assertIn("result_contract_commit_matches_seam", result["failed_checks"])
 
 
 if __name__ == "__main__":
