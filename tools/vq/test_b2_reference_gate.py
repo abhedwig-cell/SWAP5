@@ -57,7 +57,7 @@ class B2ReferenceGateTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             data = base_candidate()
-            data["b1_oracle"]["snapshot"] = "B1.6"
+            data["b1_oracle"]["snapshot"] = "B1.7"
             result = assess_candidate(root, self.write_candidate(root, data))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "b1_oracle_not_current_or_not_qualified")

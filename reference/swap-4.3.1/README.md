@@ -21,8 +21,8 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.6.yml
     B1.7.yml
+    B1.8.yml
 b1-manifest.yml
 ```
 
@@ -56,23 +56,24 @@ B1.5           = B1.4 + SWAP-008
 B1.5p1         = same intended corrected source as B1.5, provenance repaired
 B1.6           = B1.5p1 + SWAP-009
 B1.7           = B1.6 + SWAP-010
+B1.8           = B1.7 + SWAP-013
 ```
 
 VQ-1c found that B1.2-B1.5 contain incorrect patch-artifact identity metadata and that the SWAP-007 dossier used a non-canonical B0 preimage hash. Those historical snapshots remain untouched and must not be used as exact executable oracles.
 
-`B1.5p1` repaired those identities and subsequently passed VQ identity, deterministic reconstruction, broad control and all five predecessor correction-triggering gates. `B1.6` then admitted SWAP-009, the qualified PDI Kelvin-sign vapor-conductivity correction.
+`B1.5p1` repaired those identities and subsequently passed VQ identity, deterministic reconstruction, broad control and all five predecessor correction-triggering gates. `B1.6` then admitted SWAP-009, the qualified PDI Kelvin-sign vapor-conductivity correction. `B1.7` added SWAP-010, the model-7 capacity-derivative consistency correction, including an explicit ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`.
 
-`B1.7` adds SWAP-010, the model-7 `C_MvG_2_s` capacity-derivative consistency correction. Because SWAP-009 and SWAP-010 both modify `WC_K_models_04_11.f90`, B1.7 explicitly pins the B1.6 ordered preimage before applying SWAP-010. The direct source-bound capacity gate gives 784/1000 inconsistent B1.6 points versus 0/1000 after correction. A representative full model-7 run completes in both variants, but the corrected trajectory uses the consistent capacity and satisfies the predeclared `1e-6 cm` unrounded legacy mass criterion at about `1.0e-8 cm`; the sensitive B1.6 predecessor run reaches about `1.58e-6 cm` and creates `result.dwb`. No tolerance is relaxed.
+`B1.8` adds SWAP-013, the PDI `HA/H0` input-domain guard. It rejects PDI model 8-11 inputs unless `0 < HA < H0` after the existing magnitude conversion. The accepted-input constitutive equations, solver policy, time integration and water-balance equations are unchanged. A source-bound strict Fortran gate passes 9/9 valid/invalid/non-PDI cases.
 
-The current manifest therefore points to `B1.7` as the qualified numerical/behavioural corrected-reference oracle. Its deterministic source-tree identity is:
+The current manifest therefore points to `B1.8` as the qualified numerical/behavioural corrected-reference oracle. Its deterministic source-tree identity is:
 
 ```text
 members          63
-source bytes      1,860,091
-manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
+source bytes      1,860,493
+manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
 ```
 
-Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.7.
+Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.8.
 
 ## Boundary to SWAP 5
 

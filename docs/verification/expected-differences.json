@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.7",
+      "candidate": "B1.8",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -87,6 +87,17 @@
           "expected_direction_or_envelope": "For hydraulic model 7, corrected C(h) must equal the derivative of the same implemented scaled-bimodal water-retention function within the qualified numerical-derivative tolerance. Sensitive full runs may change h/theta/flux and nonlinear route because the storage derivative was previously inconsistent; only model-7 effects attributable to this capacity correction are admitted.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
           "known_unchanged_scope": ["WC_MvG_2_s water-retention formula", "model-7 conductivity formulation", "hydraulic models other than model 7", "forcing and boundary-condition definitions", "reference numerical policy", "hard mass-conservation criterion"]
+        },
+        {
+          "difference_id": "SWAP-013",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-013/qualification.md",
+          "first_admitted_tag_or_commit": "B1.8",
+          "affected_outputs": ["PDI input acceptance/rejection", "error diagnostics for invalid HA/H0 combinations"],
+          "expected_direction_or_envelope": "For PDI models 8-11, B1.8 rejects inputs after magnitude conversion unless 0 < HA < H0. Previously accepted singular combinations such as HA=0, HA=H0 or HA>H0 may therefore terminate during input validation instead of reaching PDI constitutive evaluation.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-013/qualification.md",
+          "known_unchanged_scope": ["all accepted PDI constitutive equations", "valid PDI inputs satisfying 0 < HA < H0", "non-PDI models", "solver policy", "time integration", "water-balance equations and tolerances"]
         }
       ]
     },
