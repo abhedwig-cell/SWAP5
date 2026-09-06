@@ -1,0 +1,91 @@
+{
+  "schema_version": "mp-workload-catalog-v1",
+  "reference_policy": {
+    "immutable_legacy": "B0",
+    "corrected_legacy": "B1.1",
+    "swap5_reference": "SWAP5-reference"
+  },
+  "source_evidence": {
+    "swap_4_3_1_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "staringreeks_2018_path": "data/soil/Staringreeks_2018.csv"
+  },
+  "workloads": [
+    {
+      "id": "MP-B01-HUPSEL-SINGLE",
+      "family": "MP-B01",
+      "purpose": "single-column cost decomposition",
+      "status": "shadow-executable",
+      "reference_levels": ["B0", "B1.1", "SWAP5-reference"],
+      "source_case": "cases/1.hupselbrook",
+      "scale": {"columns": 1},
+      "required_measurements": ["timing", "counters", "mass_balance"],
+      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU shadow form of this case. This is not yet SWAP5 production qualification."
+    },
+    {
+      "id": "MP-B02-HOMOGENEOUS-SCALING",
+      "family": "MP-B02",
+      "purpose": "homogeneous-template scaling and worker efficiency",
+      "status": "runtime-blocked",
+      "reference_levels": ["SWAP5-reference"],
+      "source_case": "MP-B01-HUPSEL-SINGLE",
+      "scale": {"column_counts": [64, 1024, 16384]},
+      "required_measurements": ["timing", "worker_load", "batch_divergence", "memory"],
+      "qualification_notes": "Requires stable RT template, worker and batch identifiers. Repetition must not alter per-column physics."
+    },
+    {
+      "id": "MP-B03-MIXED-TEMPLATES",
+      "family": "MP-B03",
+      "purpose": "mixed-template runtime and scheduling overhead",
+      "status": "runtime-blocked",
+      "reference_levels": ["SWAP5-reference"],
+      "scale": {"columns": 4096},
+      "required_measurements": ["runtime_batching", "worker_load", "template_distribution", "batch_divergence"],
+      "qualification_notes": "Requires at least two qualified physical templates. Different physics must remain in different templates."
+    },
+    {
+      "id": "MP-B04-B12-HYDRAULIC-STRESS",
+      "family": "MP-B04",
+      "purpose": "heavy-clay hydraulic stress profile and tail-cost tracking",
+      "status": "parameter-locked",
+      "reference_levels": ["B0", "B1.1", "SWAP5-reference"],
+      "scale": {"columns": 1},
+      "stress_profile": {
+        "profile_id": "Staringreeks-2018-B12",
+        "source_row": "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0",
+        "source_row_sha256_no_eol": "8f6b214ba7894dd49be927c9384a80168f0ad05fabeb48b2f8d1330ef916e59e",
+        "parameters": {
+          "ORES": 0.01,
+          "OSAT": 0.529749,
+          "ALFA": 0.016562,
+          "NPAR": 1.090671,
+          "KSATFIT": 2.245895,
+          "KSATEXM": 179.6716,
+          "LEXP": -4.493581,
+          "H_ENPR": 0.0
+        }
+      },
+      "required_measurements": ["newton_iterations", "jacobian_builds", "linear_solves", "backtracking_attempts", "retries", "timing", "mass_balance"],
+      "qualification_notes": "The B12 hydraulic row is source-locked, but no complete executable B12 case exists in the inspected distribution. A full fixture must define discretization, forcing, boundaries, crop/process switches and any hysteresis parameters without inventing undocumented B12 defaults."
+    },
+    {
+      "id": "MP-B05-EXECUTION-CLASS-ROUTING",
+      "family": "MP-B05",
+      "purpose": "normal/relaxed/fallback routing cost and result qualification",
+      "status": "policy-blocked",
+      "reference_levels": ["SWAP5-reference"],
+      "scale": {"columns": 4096},
+      "required_measurements": ["execution_class", "transitions", "retries", "mass_balance", "timing"],
+      "qualification_notes": "Blocked until execution classes and their VQ qualification exist. Performance work may not define physics-changing fallbacks."
+    },
+    {
+      "id": "MP-B06-OPTIONAL-PHYSICS-COST",
+      "family": "MP-B06",
+      "purpose": "incremental memory and CPU cost of optional physics",
+      "status": "template-blocked",
+      "reference_levels": ["SWAP5-reference"],
+      "scale": {"columns": 1024},
+      "required_measurements": ["persistent_state_memory", "worker_scratch_memory", "timing"],
+      "qualification_notes": "Compare only qualified templates differing by an explicitly named optional physical module."
+    }
+  ]
+}
