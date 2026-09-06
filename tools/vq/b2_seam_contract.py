@@ -14,7 +14,10 @@ import re
 from pathlib import Path
 from typing import Any
 
-from tools.vq.b2_result_contract import assess_contract as assess_result_contract
+try:
+    from tools.vq.b2_result_contract import assess_contract as assess_result_contract
+except ModuleNotFoundError:  # direct script execution from tools/vq
+    from b2_result_contract import assess_contract as assess_result_contract
 
 CONTRACT_ID = "SWAP5-B2-reference-seam-v1"
 REQUIRED_DIAGNOSTICS = {
