@@ -80,7 +80,7 @@ python tools/vq/b2_reference_gate.py \
 
 The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
-For a candidate marked `READY_FOR_VQ_B1_TO_B2`, VQ-1d2 additionally requires a machine-readable seam declaration conforming to `SWAP5-B2-reference-seam-v1`. The declaration is validated with:
+For a candidate marked `READY_FOR_VQ_B1_TO_B2`, VQ-1d2 additionally requires a machine-readable seam declaration conforming to `SWAP5-B2-reference-seam-v1`:
 
 ```bash
 python tools/vq/b2_seam_contract.py \
@@ -88,20 +88,37 @@ python tools/vq/b2_seam_contract.py \
   --contract /path/to/integrated/reference-seam.json
 ```
 
-The seam declaration binds the exact implementation commit, entrypoint and result-contract paths to reference-policy semantics, explicit parameters/state/forcing/numerical-config inputs, generic time, transaction rollback safety, unrounded hard mass accounting, runtime diagnostics and the absence of hidden kernel file/path/MODFLOW-tile/calendar dependencies. It is a verification acceptance surface, not a mandated internal object layout.
+The seam declaration binds the exact implementation commit, entrypoint and result-contract paths to reference-policy semantics, explicit parameters/state/forcing/numerical-config inputs, generic time, transaction rollback safety, unrounded hard mass accounting, runtime diagnostics and the absence of hidden kernel file/path/MODFLOW-tile/calendar dependencies.
 
-The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.6 admission changes legacy reference/tooling state only; it does not create the missing production B2 seam.
+VQ-1d3 requires the seam's result-contract path to identify a valid `SWAP5-B2-reference-result-v1` declaration on the same exact implementation commit:
+
+```bash
+python tools/vq/b2_result_contract.py \
+  --repo-root /path/to/SWAP5-checkout \
+  --contract /path/to/integrated/reference-result.contract.json
+```
+
+Accepted production results are then normalized to `SWAP5-B2-reference-result-record-v1` and checked with:
+
+```bash
+python tools/vq/b2_result_record.py \
+  --record /path/to/normalized/result.json
+```
+
+The normalized record carries the exact interval, committed endpoint state, stable physical result ids, unrounded mass accounting, transaction history, solver diagnostics and provenance. The record validator independently recomputes the mass residual but does not apply an unqualified universal mass tolerance.
+
+The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. VQ contracts do not create a synthetic production B2 seam.
 
 ## Unrounded mass accounting
 
-The future B2 normalization contract is:
+The B2 normalization contract reuses:
 
 ```text
 docs/verification/mass-accounting-contract.md
 tools/vq/contracts/mass-accounting-record.schema.json
 ```
 
-It is a verification interchange contract, not a required production object layout. Hard mass conservation may not be weakened by execution policy.
+The canonical B2 result-record schema embeds that mass record. It is a verification interchange format, not a required internal production object layout. Hard mass conservation may not be weakened by execution policy.
 
 ## Unit tests
 
@@ -112,6 +129,8 @@ python -m unittest \
   tools.vq.test_b0_source_runner \
   tools.vq.test_b1_snapshot_identity \
   tools.vq.test_b1_reconstruct \
+  tools.vq.test_b2_result_contract \
+  tools.vq.test_b2_result_record \
   tools.vq.test_b2_seam_contract \
   tools.vq.test_b2_reference_gate
 ```
