@@ -4,8 +4,8 @@
 Usage:
     python verify_source_archive.py /path/to/SWAP.ZIP
 
-The verifier checks the archive SHA-256 and every expanded source member against
-file-manifest.sha256. It deliberately hashes raw member bytes: no newline or
+The verifier checks the manifest identity, archive SHA-256 and every expanded
+source member. It deliberately hashes raw member bytes: no newline or
 text-encoding normalization is allowed for B0.
 """
 
@@ -17,6 +17,7 @@ import sys
 import zipfile
 
 ARCHIVE_SHA256 = "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+MANIFEST_SHA256 = "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f"
 MANIFEST = Path(__file__).with_name("file-manifest.sha256")
 
 
@@ -24,19 +25,29 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def fail(message: str) -> None:
+    raise SystemExit(f"B0 SOURCE VERIFICATION FAILED: {message}")
+
+
 def load_manifest() -> dict[str, tuple[str, int]]:
+    manifest_bytes = MANIFEST.read_bytes()
+    actual_manifest_sha = sha256(manifest_bytes)
+    if actual_manifest_sha != MANIFEST_SHA256:
+        fail(
+            "member-manifest SHA-256 mismatch: "
+            f"expected {MANIFEST_SHA256}, got {actual_manifest_sha}"
+        )
+
     expected: dict[str, tuple[str, int]] = {}
-    for raw in MANIFEST.read_text(encoding="utf-8").splitlines():
+    for raw in manifest_bytes.decode("utf-8").splitlines():
         line = raw.strip()
         if not line or line.startswith("#"):
             continue
         digest, size, path = line.split(maxsplit=2)
+        if path in expected:
+            fail(f"duplicate manifest path: {path}")
         expected[path] = (digest, int(size))
     return expected
-
-
-def fail(message: str) -> None:
-    raise SystemExit(f"B0 SOURCE VERIFICATION FAILED: {message}")
 
 
 def main() -> None:
@@ -47,6 +58,10 @@ def main() -> None:
     if not archive.is_file():
         fail(f"archive not found: {archive}")
 
+    expected = load_manifest()
+    if len(expected) != 63:
+        fail(f"member count mismatch in manifest: expected 63, got {len(expected)}")
+
     archive_bytes = archive.read_bytes()
     actual_archive_sha = sha256(archive_bytes)
     if actual_archive_sha != ARCHIVE_SHA256:
@@ -54,8 +69,6 @@ def main() -> None:
             "archive SHA-256 mismatch: "
             f"expected {ARCHIVE_SHA256}, got {actual_archive_sha}"
         )
-
-    expected = load_manifest()
 
     with zipfile.ZipFile(archive) as zf:
         actual_files = {
@@ -89,7 +102,8 @@ def main() -> None:
 
     print(
         f"B0 SOURCE VERIFIED: archive={ARCHIVE_SHA256}; "
-        f"members={len(expected)}; all member hashes and sizes match"
+        f"manifest={MANIFEST_SHA256}; members={len(expected)}; "
+        "all member hashes and sizes match"
     )
 
 
