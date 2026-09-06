@@ -26,6 +26,16 @@ The package `README_4.3.1.TXT` identifies version 4.3.1, release date 30 June 20
 
 The cryptographic identity above is the controlling audit identity. If a development download later changes while retaining the same version label, it is not B0 unless its hash matches.
 
+### Expanded-source integrity gate
+
+The canonical source archive contains 63 Fortran members with a total uncompressed size of 1,859,823 bytes. The reference workspace records a raw-byte SHA-256 and byte size for every member in `reference/swap-4.3.1/b0/file-manifest.sha256`.
+
+`verify_source_archive.py` checks the complete archive hash, exact member set, member sizes and all 63 member hashes. The verifier has been exercised against the canonical B0 archive and all checks passed.
+
+One member, `SWAP/MOD_RIA.f90`, contains non-UTF-8 bytes. Consequently a text-only Git import that silently re-encodes source files is not allowed to claim byte-exact B0 identity. An unpacked source mirror is accepted as B0 only when every committed raw file reproduces the member manifest. Until then, the canonical archive hash plus the per-member manifest remain authoritative.
+
+This is intentional: B0 is historical evidence, so formatting, newline and encoding conversions count as changes even when compiled model semantics would be unaffected.
+
 ### Compiler provenance supplied with B0
 
 The package compiler metadata records the Windows build as Intel Fortran Classic 2021.9.0, build 20230302_000000, with the supplied compiler option set in `tools/SWAP/compiler_settings/compiler_settings_4.3.1.txt`. The package also contains a Linux executable and a Linux compile/link script.
@@ -43,7 +53,7 @@ reference/swap-4.3.1/
     b0/                  immutable B0 identity/source material
     patches/             qualified legacy corrections only
     b1-manifest.yml      ordered definition of the current B1 snapshot
-    README.md             operating rules
+    README.md            operating rules
 ```
 
 B1 is defined conceptually as:
@@ -96,4 +106,4 @@ A later move to a dedicated `SWAP-4.3.1-reference` repository remains possible i
 
 ## Current bootstrap status
 
-The B0 cryptographic identity and B0/B1/B2 policy are recorded. The integrated `reference/swap-4.3.1/` workspace is the accepted operational home for B0/B1. At bootstrap no qualified B1 correction is implied merely by creating the workspace; B1 initially equals B0 until the first patch passes its admission gate.
+The B0 cryptographic identity, exact 63-member source manifest, archive verifier and B0/B1/B2 policy are recorded. The integrated `reference/swap-4.3.1/` workspace is the accepted operational home for B0/B1. At bootstrap no qualified B1 correction is implied merely by creating the workspace; B1 initially equals B0 until the first patch passes its admission gate.
