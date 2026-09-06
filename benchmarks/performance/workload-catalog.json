@@ -2,7 +2,7 @@
   "schema_version": "mp-workload-catalog-v1",
   "reference_policy": {
     "immutable_legacy": "B0",
-    "corrected_legacy": "B1.1",
+    "corrected_legacy": "B1.2",
     "swap5_reference": "SWAP5-reference"
   },
   "source_evidence": {
@@ -15,7 +15,7 @@
       "family": "MP-B01",
       "purpose": "single-column cost decomposition",
       "status": "shadow-executable",
-      "reference_levels": ["B0", "B1.1", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.2", "SWAP5-reference"],
       "source_case": "cases/1.hupselbrook",
       "scale": {"columns": 1},
       "required_measurements": ["timing", "counters", "mass_balance"],
@@ -47,7 +47,7 @@
       "family": "MP-B04",
       "purpose": "heavy-clay hydraulic stress profile and tail-cost tracking",
       "status": "parameter-locked",
-      "reference_levels": ["B0", "B1.1", "SWAP5-reference"],
+      "reference_levels": ["B0", "B1.2", "SWAP5-reference"],
       "scale": {"columns": 1},
       "stress_profile": {
         "profile_id": "Staringreeks-2018-B12",
