@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BP",
+  "status": "PASS_WORKER_OWNED_HEADCALC_SCRATCH_AND_DIRECT_SOLVER_DIAGNOSTICS_PHYSICAL_BACKEND_SERIAL_ONLY",
+  "oracle": {"snapshot":"B1.6","source_manifest_sha256":"aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0","endpoint_sha256":"4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9","mass_limit_cm":1e-6},
+  "worker": {"active_nodes":34,"scratch_payload_bytes":3292,"eight_workers_payload_bytes":26336,"wrong_100k_column_payload_bytes":329200000},
+  "direct_cost": {"total_headcalc_calls":162,"accepted_headcalc_calls":81,"total_newton_iterations":956,"accepted_newton_iterations":478,"total_jacobian_builds":956,"accepted_jacobian_builds":478,"total_linear_solves":956,"accepted_linear_solves":478,"total_backtracking_attempts":1350,"accepted_backtracking_attempts":675,"total_internal_retries":20,"accepted_internal_retries":10,"alternative_solver_calls":0},
+  "gates": {"physical_o0":"PASS","physical_o2":"PASS","o0_o2_log_identity":"PASS","physical_gate_log_sha256":"b19b589cb807438e5e7954acdd51ca7fd05591d7968adc84cf20aab4ae2fa58b","transaction_regression":"PASS","transaction_log_sha256":"8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548","worker_parallel_isolation":"PASS","worker_isolation_log_sha256":"1f59b55a9bb8dd8a88d1335ae796e55c3ec3454e4fae9d7e90f7c5023677dd4b","workers":8,"parallel_checks":8000,"parallel_failures":0,"accepted_storage_cm":77.011710672204643,"half_mass_residual_cm":-1.7872350177583485e-7,"jacobian_normalized_identity":"PASS","jacobian_normalized_sha256":"f522380f8340bb6915196259af191bebccd2d4feabbd7fa71a5a793e20af305e"},
+  "postimage_sha256": {"headcalc.f90":"486291e9ea7f3d5809774cf828ca5a5d31ea3e307a909b0cd5979945013a05d6","soilwater.f90":"2d23eed04fd3baaed7cc36329d84dc46514ee1c98c72d724073c66f049f4d19e","timecontrol.f90":"92c3bc5634966313fb62f14318aa7376be98080628120195678e9b659141850a","swap.f90":"7d7b65ec751bd13ab26cd94bd0b9d7bb80bd15ccd3a8a1d2ae67ab9da8133fd8"},
+  "physics_changed": false,
+  "solver_policy_changed": false,
+  "jacobian_formula_changed": false,
+  "selective_step_doubling_changed": false,
+  "limitations": ["B1.6 physical backend remains serialized and module-global","full process-state thread safety not yet qualified","alternative-solver scratch remains local","integer-day Hupsel bridge limitation remains"],
+  "next_slice": "A23BQ"
+}
