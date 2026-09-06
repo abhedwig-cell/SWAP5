@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1c",
+  "snapshot": "B1.3",
+  "integration_commit": "5c549e950df98d0cf0c0ef22ac1b682ec2d3bef1",
+  "snapshot_path": "reference/swap-4.3.1/snapshots/B1.3.yml",
+  "snapshot_git_blob_sha1": "7e0a5ea03c7ebfda97170d79200294c7f46fda52",
+  "b0": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "patches": [
+    {
+      "id": "SWAP-001",
+      "path": "reference/swap-4.3.1/patches/SWAP-001/fix.patch",
+      "expected_sha256": "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770",
+      "observed_sha256_at_integration_commit": "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770",
+      "identity_status": "PASS",
+      "b0_target": "SWAP/macropore.f90",
+      "b0_target_sha256": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b",
+      "corrected_target_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f"
+    },
+    {
+      "id": "SWAP-005",
+      "path": "reference/swap-4.3.1/patches/SWAP-005/fix.patch",
+      "expected_sha256": "9c3839ac0674d7c5c3eb2de797684c7baf83fdc3a18d64de68c9746de9878e66",
+      "observed_sha256_at_integration_commit": "243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553",
+      "identity_status": "FAIL",
+      "b0_target": "SWAP/MOD_cropdevelopment.f90",
+      "b0_target_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "corrected_target_sha256_from_published_helper": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+    },
+    {
+      "id": "SWAP-006",
+      "path": "reference/swap-4.3.1/patches/SWAP-006/fix.patch",
+      "expected_sha256": "558eb084befac713aec0b923d45182a1efcbed44d71ed00e6faf024b6540718a",
+      "observed_sha256_at_integration_commit": "4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f",
+      "identity_status": "FAIL",
+      "b0_target": "SWAP/MOD_meteo.f90",
+      "b0_target_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+      "corrected_target_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+    }
+  ],
+  "qualification": {
+    "snapshot_manifest_present": true,
+    "published_snapshot_immutable_by_policy": true,
+    "all_patch_artifact_hashes_match": false,
+    "b1_oracle_pin_qualified": false,
+    "failure": "patch_artifact_identity_mismatch"
+  }
+}
