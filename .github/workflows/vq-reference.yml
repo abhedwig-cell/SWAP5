@@ -43,6 +43,8 @@ jobs:
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
+            tools.vq.test_b2_result_contract \
+            tools.vq.test_b2_result_record \
             tools.vq.test_b2_seam_contract \
             tools.vq.test_b2_reference_gate
 
