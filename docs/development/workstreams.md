@@ -57,9 +57,12 @@ The exact mapping of existing chat threads to workstream IDs is made at their ne
 
 The registry is intentionally functional. A chat title or milestone code is not itself a workstream identity.
 
-## Proposed new workstream VQ: Verification and qualification
+## Active workstream VQ: Verification and qualification
 
-**Status:** Proposed
+**Status:** Active  
+**Initial baseline:** `40aef01c5c89dc9e02bba50d31c884dcdd2fd2d5`  
+**Current slice:** `VQ-1`  
+**Integration record:** `docs/verification/vq-1-bootstrap.md`
 
 ### Goal
 
