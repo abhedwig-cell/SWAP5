@@ -1,0 +1,18 @@
+--- B1.6/timecontrol.f90
++++ A23BO-vq/timecontrol.f90
+@@ -19,6 +19,7 @@
+    use MOD_swap_mp,     only: fldecmprat
+    use plant_interface, only: sw_inter, dt_interc_event
+    use MOD_irrigation,  only: irrigation, flheadirg, flirrigate, nirri, dt_irr_event
++   use mod_a23bo_legacy_solver_diagnostics, only: a23bo_record_internal_retry
+    
+    use variables,       only: fldecdt, flrunend, fldaystart, fldtmin, flzerointr, flzerocumu, floutput, flheader,                            &
+                               flbaloutput, nprintday, flprintdt, flprintshort, period, isteps, ioutdat,                                      &
+@@ -388,6 +389,7 @@
+ 
+       ! decrease time step in case of no convergence in headcalc
+       if (fldecdt) then
++         call a23bo_record_internal_retry()
+          if (dt > fact_dt_fldect*dtmin) then
+             dt = dt / fact_dt_fldect
+ !           force dt to equal multiple dtmin to prevent very small dt-values at end of day 
