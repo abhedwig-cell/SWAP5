@@ -140,12 +140,13 @@ def _eval_dec_condition(expr: str, *, defined: frozenset[str], linux: bool) -> b
 
 
 def instrument_swap_main(source: str) -> str:
-    use_anchor = "use MOD_swap_base, only: unit_log, unit_wrn, sw_animo\n"
+    newline = "\r\n" if "\r\n" in source else "\n"
+    use_anchor = f"use MOD_swap_base, only: unit_log, unit_wrn, sw_animo{newline}"
     dynamic_anchor = (
-        "   iTask = 2\n"
-        "   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)\n"
+        f"   iTask = 2{newline}"
+        f"   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in){newline}"
     )
-    flush_anchor = "write(*,'(a)')' Swap normal completion!'\n"
+    flush_anchor = f"write(*,'(a)')' Swap normal completion!'{newline}"
     for anchor, name in (
         (use_anchor, "module use"),
         (dynamic_anchor, "dynamic call"),
@@ -157,16 +158,16 @@ def instrument_swap_main(source: str) -> str:
     source = source.replace(
         use_anchor,
         use_anchor
-        + "use mp_shadow_observer, only: mp_dynamic_begin, mp_dynamic_end, mp_flush\n",
+        + f"use mp_shadow_observer, only: mp_dynamic_begin, mp_dynamic_end, mp_flush{newline}",
     )
     source = source.replace(
         dynamic_anchor,
-        "   iTask = 2\n"
-        "   call mp_dynamic_begin()\n"
-        "   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)\n"
-        "   call mp_dynamic_end()\n",
+        f"   iTask = 2{newline}"
+        f"   call mp_dynamic_begin(){newline}"
+        f"   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in){newline}"
+        f"   call mp_dynamic_end(){newline}",
     )
-    return source.replace(flush_anchor, "call mp_flush()\n" + flush_anchor)
+    return source.replace(flush_anchor, f"call mp_flush(){newline}" + flush_anchor)
 
 
 def observer_fortran_source() -> str:
@@ -230,8 +231,8 @@ def prepare_shadow_source(source_archive: bytes, destination: str | Path) -> Pat
     """Create a disposable Linux/standalone shadow tree without lossy decoding.
 
     Latin-1 is used only as a reversible one-byte-to-one-codepoint mapping so
-    untouched source bytes survive the text transformations exactly. The result
-    is a shadow build tree, not an unpacked B0 identity claim.
+    source bytes are not replaced during text transformation. The result is a
+    shadow build tree, not an unpacked B0 identity claim.
     """
 
     destination = Path(destination)
