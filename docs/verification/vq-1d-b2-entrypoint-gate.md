@@ -1,22 +1,15 @@
 # VQ-1d B2 reference-entrypoint admission gate
 
 **Workstream:** VQ  
-**Slice:** VQ-1d  
-**Production observation baseline:** `2d05eeab9d766d51bc7c436ea1e45f9b49940e92`  
+**Slice:** VQ-1d / VQ-1d1  
 **Current qualified B1 oracle:** `B1.7`  
 **Production code changed:** no
 
 ## Purpose
 
-The corrected-reference chain now uses `B1.7` as the legacy oracle. VQ-1d is the next edge: `B1.7 -> B2`, where B2 must be the integrated full-accuracy SWAP5 reference implementation.
+VQ-1d is the fail-closed handoff from the corrected legacy oracle to the future integrated full-accuracy SWAP5/B2 reference implementation. VQ must not infer B2 from architecture documents, prototypes, external source trees or intended APIs.
 
-VQ must not infer B2 from architecture documents, prototypes, an external/unmerged source tree or a future intended API. A numerical B1 -> B2 comparison is admitted only when the repository contains an exact, callable reference-mode entrypoint and an explicit result contract on a pinned Git commit.
-
-## B1 oracle handoff
-
-`B1.5p1` established the provenance-repaired five-fix corrected-reference oracle. `B1.6` added the separately qualified SWAP-009 PDI Kelvin-sign correction. `B1.7` adds SWAP-010, the model-7 capacity-derivative consistency correction, with the exact B1.6 ordered preimage pinned because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`.
-
-B1.7 is pinned by:
+The corrected-reference chain currently uses `B1.7`, which adds the qualified SWAP-010 model-7 capacity-derivative consistency correction to B1.6. B1.7 is identified by:
 
 ```text
 snapshot                B1.7
@@ -27,89 +20,84 @@ source manifest SHA-256 62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2c
 oracle status           QUALIFIED_NUMERICAL_BEHAVIOURAL
 ```
 
-The B2 admission gate rejects stale B1 oracles, including B1.6 after B1.7 admission.
+## VQ-1d admission boundary
 
-## Admission contract
+`tools/vq/b2_reference_gate.py` rejects numerical B1 -> B2 comparison unless a candidate supplies:
 
-`tools/vq/b2_reference_gate.py` evaluates a machine-readable candidate record and fails closed unless all of the following are true:
+1. the exact current qualified B1 oracle;
+2. matching reconstructed B1 source-manifest identity;
+3. an exact B2 observation/implementation commit;
+4. status `READY_FOR_VQ_B1_TO_B2`;
+5. integrated callable reference entrypoint;
+6. semantic result-contract path;
+7. explicit `reference` numerical policy;
+8. generic `[t0,t1]`;
+9. explicit committed-state and forcing inputs with separate numerical configuration;
+10. canonical results, unrounded mass accounting and transaction diagnostics;
+11. the VQ-1d2 reference-seam contract and VQ-1d3 result contract when READY.
 
-1. the B1 oracle is exactly the current qualified `B1.7` snapshot;
-2. B2 is pinned to an exact 40-character Git commit SHA;
-3. the candidate status is `READY_FOR_VQ_B1_TO_B2`;
-4. an integrated callable reference entrypoint path is declared and exists on that checkout;
-5. a canonical result-contract path is declared and exists;
-6. the numerical policy is explicitly identified as the reference policy;
-7. the entrypoint accepts a generic `[t0,t1]` interval;
-8. committed physical state, forcing and numerical configuration are explicit inputs rather than hidden global/file state;
-9. parameters/state/forcing/numerical policy/results remain separable at the adapter boundary;
-10. the returned result supports canonical comparison, unrounded mass accounting and transaction diagnostics.
+The gate does not prescribe internal SWAP5 object layout.
 
-The corresponding required capability flags are:
+## VQ-1d1 oracle/evidence consistency
+
+The current B1 identity is read from `reference/swap-4.3.1/b1-manifest.yml`; it is not hardcoded in the B2 gate. Candidate snapshot, qualification and reconstructed source-manifest hash must match that manifest.
+
+The declared production observation baseline and B2 commit must match. Stored gate evidence is compared with a projection of the live candidate assessment.
 
 ```text
-callable_reference_entrypoint
-generic_interval_t0_t1
-committed_state_input
-forcing_input
-numerical_config_separate
-canonical_result_output
-unrounded_mass_accounting
-transaction_diagnostics
+expected BLOCKED + candidate/evidence consistent  -> CI PASS
+oracle/evidence drift                             -> CI FAIL
+real READY candidate satisfying all contracts     -> admission PASS
 ```
 
-The gate intentionally does not prescribe the internal SWAP5 object layout. It only defines the minimum verification surface needed to exercise the architecture invariants.
+This distinction allows an honestly absent B2 implementation to remain fail-closed without treating absence as a physics failure, while preventing stale evidence from remaining green after a B1 oracle update.
 
 ## Current repository observation
 
-The production observation baseline contains no integrated production B2 entrypoint that VQ can honestly execute and pin. B1.7 admission changes legacy reference/tooling state only and does not create such a production seam.
+The pinned B2 observation commit is still a pre-B2 repository state and contains no integrated production reference entrypoint. Later B1.7 corrected-reference admission changes the legacy oracle but does not manufacture a B2 implementation.
 
-`tools/vq/cases/b2-reference-candidate.json` therefore states:
+Current state:
 
 ```text
 B1.7 corrected-reference oracle          PASS
+candidate/evidence oracle synchronization PASS
 Integrated B2 callable entrypoint        ABSENT
-B2 reference-policy selector             ABSENT
-Canonical B2 result contract             ABSENT
-Unrounded B2 mass accounting             ABSENT
-Transaction diagnostics                  ABSENT
+B2 reference seam                        ABSENT
+Semantic B2 result contract              ABSENT
 B1.7 -> B2 numerical comparison          BLOCKED
 ```
 
 No synthetic B2 result is generated and no legacy implementation is relabelled as B2.
 
-## Unit qualification
+## Relationship to VQ-1d2 and VQ-1d3
 
-`tools/vq/test_b2_reference_gate.py` covers:
+VQ-1d1 protects identity/evidence synchronization. VQ-1d2 makes the input/reference seam semantic and executable. VQ-1d3 makes the output/result semantics and canonical VQ result record executable.
 
-- an explicitly blocked candidate fails closed;
-- a stale B1.6 oracle fails after B1.7 admission;
-- a nominally ready candidate without an integrated entrypoint fails;
-- a candidate missing a required capability fails;
-- a complete integrated fixture with all required fields/files passes admission.
+A future READY chain is therefore:
 
-The fixture PASS qualifies the gate logic only. It does not claim that the real SWAP5 repository already provides those production capabilities.
+```text
+current B1 oracle
+ -> exact B2 commit
+ -> integrated reference entrypoint
+ -> SWAP5-B2-reference-seam-v1
+ -> SWAP5-B2-reference-result-v1
+ -> canonical VQ result record
+```
 
-## Relationship to architecture invariants
+## Invariant check
 
-This gate directly protects invariants 1, 2, 3, 7, 8, 9, 13, 23, 25, 26, 29 and 30: B2 must be the actual common kernel/reference path, time is generic, committed physical state is explicit, numerical policy remains separate from physics, hard mass uses unrounded accounting, and qualification may not rely on hidden legacy/file assumptions.
+VQ-1d/1d1 directly protects invariants 1, 2, 3, 7, 8, 9, 13, 23, 25, 26, 29 and 30. VQ-1d1 particularly enforces invariant 30 by making oracle/evidence synchronization executable.
 
 ## Qualification decision
 
 ```text
 B1.7 corrected-reference oracle               PASS
-VQ-1d adapter admission gate implementation   PASS
-B2 integrated target availability             BLOCKED
-B1.7 -> B2 numerical qualification            NOT STARTED / FAIL-CLOSED
+VQ-1d adapter admission implementation         PASS
+VQ-1d1 oracle/evidence consistency gate        PASS when integrated CI is green
+B2 integrated target availability              BLOCKED
+B1.7 -> B2 numerical qualification             NOT STARTED / FAIL-CLOSED
 ```
-
-This is the correct state until TX/HY/RT integrate a real reference-mode seam.
 
 ## Next safe step
 
-The production integration workstream supplies an actual callable SWAP5 reference-mode entrypoint and canonical result contract. VQ then:
-
-1. pins the exact B2 commit;
-2. updates `b2-reference-candidate.json` to `READY_FOR_VQ_B1_TO_B2` without weakening any capability requirement;
-3. reruns `tools/vq/b2_reference_gate.py`;
-4. only after a PASS executes the first B1.7 -> B2 control comparison;
-5. subsequently adds VQ transaction, generic-time, warm-start and unrounded hard-mass qualification gates.
+TX/HY/RT supplies an actual callable full-accuracy SWAP5 reference seam and semantic result contract on one exact commit. VQ then repins the candidate to READY, validates the full chain, normalizes an accepted result, independently recomputes mass and only then starts B1.7 -> B2 numerical comparison and VQ-1e.
