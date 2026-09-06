@@ -12,11 +12,13 @@ The candidate dossier may be integrated before this checklist is complete. Forma
 | Exact stored `fix.patch` SHA measured after upload | PASS |
 | Corrected target SHA pinned | PASS |
 | Existing hydraulic/theory qualification recorded | PASS |
-| Current repaired B1 base passes independent VQ identity gate | **PENDING** |
-| PDI hydraulic testbank recovered/rerun on exact candidate | **PENDING** |
+| Exact-candidate strict Fortran PDI hydraulic function-level gate | **PASS** |
+| Current repaired B1 base passes independent VQ identity/reconstruction gate | **PENDING INTEGRATION** |
 | Representative full PDI production-path regression | **PENDING** |
 | Hard water-balance evidence for production-path regression | **PENDING** |
 | Difference ledger promoted to `ADMITTED_B1` | **PENDING** |
 | New immutable B1 snapshot created | **PENDING** |
 
-Current conclusion: **technically B1-eligible, but not yet admitted**.
+The function-level PASS is supported by the reproducible assets and machine-readable evidence under `tests/`. It compiles and executes the actual PDI conductivity route from the canonical B0 module and exact corrected target. It is not a substitute for the remaining full SWAP production-path and water-balance gates.
+
+Current conclusion: **technically B1-eligible with targeted Fortran hydraulic gate passed, but not yet admitted**.
