@@ -1,10 +1,10 @@
 # SWAP-012 — hydraulic `prhead` inverse consistency
 
-Status: **QUALIFIED CANDIDATE FOR B1.9**
+Status: **PREPARED FOR B1.9 ADMISSION**
 
 B0 `prhead` uses the default unimodal Mualem-Van Genuchten analytical inverse for hydraulic models whose selected retention relation differs. Affected models are 3 and 5–12; model 4 is the unaffected standard-MvG control.
 
-The admitted candidate is deliberately isolated from SWAP-011 although the historical combined audit patch changed both routines in `MOD_MvG_functions.f90`. SWAP-012 changes only the `prhead` import/local declarations and the inverse dispatch/bisection branch.
+The admitted candidate is deliberately isolated from SWAP-011 although the historical combined audit patch changed both routines in `MOD_MvG_functions.f90`. SWAP-012 changes only the `prhead` import/local declarations and the inverse dispatch/bisection branch. No `dhconduc`/Jacobian derivative content is included.
 
 Exact identity:
 
@@ -17,6 +17,14 @@ fix.patch
 
 corrected target
 4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1
+```
+
+B1.9 source identity:
+
+```text
+members          63
+source bytes      1,863,300
+manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
 ```
 
 See `finding.md`, `qualification.md` and `ADMISSION_CHECKLIST.md`.
