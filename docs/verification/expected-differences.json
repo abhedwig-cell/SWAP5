@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.5p1",
+      "candidate": "B1.6",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -65,6 +65,17 @@
           "expected_direction_or_envelope": "No numerical solution difference is expected. B1 changes consumed-and-overwritten dummy arrays from INTENT(OUT) to INTENT(INOUT), making the incoming values defined without altering band-solver arithmetic.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
           "known_unchanged_scope": ["banded LU arithmetic", "pivoting", "forward/back substitution", "fallback trigger", "water-balance equations"]
+        },
+        {
+          "difference_id": "SWAP-009",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
+          "first_admitted_tag_or_commit": "B1.6",
+          "affected_outputs": ["PDI vapor hydraulic conductivity", "very-dry PDI pressure-head and boundary-flux trajectories when vapor conductivity is active"],
+          "expected_direction_or_envelope": "For negative unsaturated h, B1 passes signed h to the Kelvin vapor-conductivity helper instead of abs(h), so the vapor term follows relative humidity below one. The old/corrected vapor-term ratio grows strongly with dry magnitude; a representative full PDI run shows small but nonzero h/theta/flux changes while retaining the same Newton route and hard water-balance closure.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
+          "known_unchanged_scope": ["PDI water-retention result in the targeted function gate", "conductivity with vapor disabled", "Kelvin helper implementation itself", "non-PDI hydraulic models", "solver policy and nonlinear route in the representative full-production gate", "mass-conservation criterion"]
         }
       ]
     },
