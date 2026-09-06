@@ -20,7 +20,7 @@
       "source_case": "cases/1.hupselbrook",
       "scale": {"columns": 1},
       "required_measurements": ["timing", "counters", "mass_balance"],
-      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU B0 shadow form. MP-5 revalidated clean byte-safe shadow execution and quantified non-dedicated-host wall-time noise. MP-6 separated child CPU from elapsed time and exercised a 44-pair affinity-controlled protocol; all physical hashes remained equal, but the 2.57% child-CPU detection floor failed the predeclared 1% resolution target. B1.5p1 is the current corrected definition but remains unavailable as an exact executable oracle while its VQ identity gate is pending. MP-B01 therefore remains shadow-executable, not a SWAP5 production CPU baseline."
+      "qualification_notes": "MP-3A established selected BAL/BLC on/off equivalence for a GNU B0 shadow form. MP-5 revalidated clean byte-safe shadow execution. MP-6 separated child CPU from elapsed time but the shared host had a 2.57% child-CPU detection floor against a predeclared 1% target. MP-7 added deterministic CPU preflight selection: CPU3 passed the 1% preflight-CV gate and improved the final floor to 1.35%, but the 1% resolution gate still failed and cgroup throttling occurred in the broader qualification window. Therefore no MP-B01 production CPU baseline exists. B1.5p1 remains unavailable as an exact executable oracle while its VQ identity gate is pending."
     },
     {
       "id": "MP-B02-HOMOGENEOUS-SCALING",

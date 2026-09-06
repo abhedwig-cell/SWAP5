@@ -1,0 +1,34 @@
+{
+  "schema_version": "mp-host-admission-protocol-v1",
+  "purpose": "Qualify a CPU host before MP-B01 performance deltas may be treated as a CPU baseline.",
+  "target_resolution_relative": 0.01,
+  "resolution_multiplier": 2.0,
+  "preflight": {
+    "baseline_only_runs_per_visible_cpu": 4,
+    "cpu_cv_limit_relative": 0.01,
+    "selection_rule": "Select the non-throttled CPU with the lowest child-process CPU-time coefficient of variation; break ties by CPU id.",
+    "effect_information_used_for_selection": false
+  },
+  "pilot": {
+    "pairs": 10,
+    "use": "Estimate paired child-CPU standard deviation only.",
+    "pilot_effect_mean_used_as_result": false,
+    "final_pair_count_formula": "ceil((resolution_multiplier * pilot_paired_stdev / target_resolution_relative)^2)"
+  },
+  "final": {
+    "primary_metric": "child_cpu_seconds",
+    "secondary_metric": "wall_elapsed_seconds",
+    "warmup_runs_per_variant": 3,
+    "paired_order": "alternate off/on and on/off by cycle",
+    "post_hoc_outlier_deletion": false
+  },
+  "hard_gates": [
+    "deterministic CPU selection follows preflight rule",
+    "selected preflight child-CPU CV <= 1%",
+    "physical output hashes are identical across measured variants",
+    "no cgroup throttling in measured samples",
+    "no cgroup throttling anywhere in the qualification window",
+    "final child-CPU minimum detectable relative effect <= 1%"
+  ],
+  "admission_rule": "All hard gates must pass. Failure establishes no CPU baseline and must not be repaired by adding post-hoc pairs to the same experiment."
+}
