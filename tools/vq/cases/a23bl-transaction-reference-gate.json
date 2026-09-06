@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BL",
+  "status": "PASS_CANONICAL_TRANSACTION_CORE_PHYSICAL_REFERENCE_INTEGRATION_PENDING",
+  "baseline": {
+    "branch": "integration/a23bk-transactional-rebase",
+    "head_before_slice": "5d8dda1cd38ea73612b71684f539400d2167b9ec",
+    "reference_oracle": "B1.6"
+  },
+  "source_sha256": "004dcfd9d4efaf5d181f46e1626fd1accad34b0d85723cbecbe253f09d1f37b5",
+  "test_sha256": "c11c3e53f63403d7a87cc2d17ddc5f0cc171c1b5e553060ede351e427e28eefd",
+  "gate_script_sha256": "2ea10a22498592151fb748c5ce05a03fc9de9371fcc0f80669e740cbcdc72e8e",
+  "gates": {
+    "o0_strict_build_and_run": "PASS",
+    "o2_strict_build_and_run": "PASS",
+    "always_sampled_full_plus_two_half": "PASS",
+    "temporal_retry_from_checkpoint": "PASS",
+    "solver_failure_no_committed_leak": "PASS",
+    "hard_mass_balance_rejection": "PASS",
+    "generic_noncalendar_time": "PASS",
+    "repeatability": "PASS",
+    "parallel_workers": 8,
+    "parallel_transactions": 8000,
+    "parallel_failures": 0,
+    "module_save_state": 0,
+    "module_file_io": 0
+  },
+  "production_claims": {
+    "physics_changed": false,
+    "top_jacobian_changed": false,
+    "selective_step_doubling_changed": false,
+    "b1_6_hydrological_equivalence": "NOT_YET_TESTED",
+    "b12_qualified": false
+  },
+  "next_slice": "A23BM"
+}
