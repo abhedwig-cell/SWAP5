@@ -14,10 +14,11 @@
 | Fresh source-bound strict capacity derivative gate | PASS |
 | Representative full model-7 SWAP production path | PASS |
 | Hard unrounded full-run mass evidence | PASS |
-| Expected-difference scope registered | PENDING BRANCH BOOKKEEPING |
-| New immutable B1 snapshot created | PENDING BRANCH BOOKKEEPING |
-| Fail-closed B1.7 CI identity gate | PENDING CI |
+| Expected-difference scope registered | PASS |
+| New immutable B1 snapshot created | PASS |
+| Deterministic B1.7 source identity pinned | PASS |
+| Fail-closed B1.7 CI identity/admission gate | REQUIRED BEFORE MERGE |
 
 No gate permits relaxing mass conservation. The predecessor B1.6 exceeds the predeclared `1e-6 cm` ponding-balance criterion in the sensitive two-day model-7 case; the corrected candidate reduces the maximum diagnostic residual to about `1.0e-8 cm` and emits no `.dwb`.
 
-Current conclusion: **technical qualification is complete; B1.7 admission is pending repository bookkeeping and CI identity qualification.**
+Current conclusion: **SWAP-010 is admitted as the seventh corrected-reference patch in immutable snapshot B1.7.** This conclusion becomes integrated repository state only after the B1.7 pull request passes the fail-closed CI gates and is merged to `main`.
