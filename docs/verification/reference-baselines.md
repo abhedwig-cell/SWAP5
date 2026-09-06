@@ -2,7 +2,7 @@
 
 ## Purpose
 
-SWAP 5 verification uses an explicit B0 -> B1 -> B2 reference chain. Version names alone are not sufficient because the SWAP 4.3.1 development line and the audit can both evolve. Exact source identities therefore use immutable hashes and, once the corrected-reference repository exists, Git commits and tags.
+SWAP 5 verification uses an explicit B0 -> B1 -> B2 reference chain. Version names alone are not sufficient because the SWAP 4.3.1 development line and the audit can both evolve. Exact source identities therefore use immutable hashes and exact snapshot identifiers.
 
 ## B0: SWAP 4.3.1 audit baseline
 
@@ -36,25 +36,35 @@ Compiler and executable identity are useful for reproduction, but B0 source iden
 
 B1 is not a replacement version label for SWAP 4.3.1. It is a controlled corrected-reference lineage derived from B0.
 
-A change is admitted only after its bug classification, patch and qualification evidence are complete. The corrected-reference repository will use:
+The integrated reference workspace uses:
 
 ```text
-baseline/B0                    exact B0 source
-reference/4.3.1-corrected     B0 plus accepted fixes
-B1.0, B1.1, ...               immutable corrected snapshots
+reference/swap-4.3.1/
+    b0/                  immutable B0 identity/source material
+    patches/             qualified legacy corrections only
+    b1-manifest.yml      ordered definition of the current B1 snapshot
+    README.md             operating rules
 ```
 
-Each B1 tag must resolve to one exact commit. Existing tags are never moved.
+B1 is defined conceptually as:
+
+```text
+B1.x = B0 + ordered accepted patch set
+```
+
+This avoids maintaining a second opaque copy of the complete 4.3.1 tree. Each change remains visible as an explicit patch with audit and qualification evidence.
+
+Exact B1 snapshots are named `B1.0`, `B1.1`, ... . Once an identifier is used as a verification oracle, its patch list and B0 identity are immutable.
 
 ## B2: SWAP 5 reference mode
 
-B2 is the full-accuracy SWAP 5 reference implementation. Verification records must state the exact B1 tag and commit used as the legacy-corrected oracle.
+B2 is the full-accuracy SWAP 5 reference implementation. Verification records must state the exact B1 snapshot used as the legacy-corrected oracle.
 
 A SWAP 5 release must not merely claim "compatible with SWAP 4.3.1". The preferred statement is of the form:
 
 ```text
 SWAP 5 reference mode verified against
-SWAP 4.3.1 Corrected Reference B1.x (<commit>)
+SWAP 4.3.1 Corrected Reference B1.x (<exact manifest/commit>)
 ```
 
 ## Admission rule for a new legacy finding
@@ -68,8 +78,9 @@ confirmed bug
     -> minimal 4.3.1 patch
     -> focused tests
     -> regression/qualification
-    -> B1 commit
-    -> immutable B1 snapshot when appropriate
+    -> add patch and evidence
+    -> update B1 manifest
+    -> freeze a new B1 snapshot when appropriate
     -> SWAP 5 verifies against corrected behaviour
 
 model development
@@ -77,6 +88,12 @@ model development
     -> no B1 change
 ```
 
+## Repository boundary
+
+Keeping B0/B1 inside the SWAP5 repository does not make legacy source part of the new kernel. Production SWAP5 code must not import or depend on the legacy reference subtree. Only reference build, regression and qualification tooling may consume it.
+
+A later move to a dedicated `SWAP-4.3.1-reference` repository remains possible if repository size, access control or release management makes that useful. Such a move must preserve B0 hashes, B1 patch order and qualification history.
+
 ## Current bootstrap status
 
-The B0 cryptographic identity and B0/B1/B2 policy are recorded in the SWAP5 repository. The intended separate `SWAP-4.3.1-reference` repository is the home for the actual B0 source snapshot and B1 corrected history. Until that repository is created and seeded, no B1 tag is considered formally published.
+The B0 cryptographic identity and B0/B1/B2 policy are recorded. The integrated `reference/swap-4.3.1/` workspace is the accepted operational home for B0/B1. At bootstrap no qualified B1 correction is implied merely by creating the workspace; B1 initially equals B0 until the first patch passes its admission gate.
