@@ -1,6 +1,6 @@
 # SWAP-012 qualification evidence
 
-Current B1 admission status: **QUALIFIED CANDIDATE FOR B1.9**
+Current B1 admission status: **PREPARED FOR B1.9 ADMISSION**
 
 ## Exact provenance
 
@@ -46,7 +46,7 @@ model 4      machine-precision control
 max error    1.17e-10 decade
 ```
 
-This isolates the inverse repair from SWAP-011 even though both were historically carried in one broad patch.
+This isolates the inverse repair from SWAP-011 even though both were historically carried in one broad patch. The machine-readable evidence is stored under `tests/actual_source_roundtrip_evidence.json`; CI binds that evidence to the exact stored patch/preimage/corrected-target identities and explicitly rejects SWAP-011 tokens.
 
 ## Behavioural envelope
 
@@ -54,10 +54,16 @@ For affected models, values produced through `prhead` may change because B1.9 re
 
 A future faster model-specific inverse is an optimization and must reproduce this corrected inverse contract.
 
-Prospective B1.9 deterministic identity:
+## Mass-conservation interpretation
+
+SWAP-012 changes an inverse helper used to recover pressure head from water content; it does not alter the water-balance equations or any mass tolerance. The admission therefore creates no mass-conservation concession. Full B2 transaction-aware mass qualification remains a separate hard gate.
+
+B1.9 deterministic identity:
 
 ```text
 members          63
 source bytes      1,863,300
 manifest SHA-256  5e28510813e5748bae52ffd5c08027bb55b63858aa994ea90635b632826de657
 ```
+
+Formal B1.9 integration remains contingent on the fail-closed repository admission gate and merge to `main`.
