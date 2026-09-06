@@ -16,17 +16,20 @@ A published snapshot is never silently rewritten. If its provenance metadata lat
 | `B1.5` | + `SWAP-008` | **do not use as exact oracle** | same five intended corrections, but inherits the earlier provenance failures |
 | `B1.5p1` | same five patches as B1.5 | qualified predecessor oracle | provenance-repaired definition; VQ identity, reconstruction, broad controls and all five targeted gates PASS |
 | `B1.6` | B1.5p1 + `SWAP-009` | qualified predecessor oracle | adds the qualified PDI Kelvin-sign vapor-conductivity correction |
-| `B1.7` | B1.6 + `SWAP-010` | **current qualified corrected reference** | adds the qualified model-7 capacity-derivative consistency correction |
+| `B1.7` | B1.6 + `SWAP-010` | qualified predecessor oracle | adds the qualified model-7 capacity-derivative consistency correction |
+| `B1.8` | B1.7 + `SWAP-013` | **current qualified corrected reference** | adds the qualified PDI `HA/H0` relational input-domain guard |
 
 The exact definitions live under `reference/swap-4.3.1/snapshots/`.
 
-## Admitted corrections through B1.7
+## Admitted corrections through B1.8
 
-`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects the fallback band-solver dummy-argument contracts from `INTENT(OUT)` to `INTENT(INOUT` without changing solver arithmetic.
+`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects the fallback band-solver dummy-argument contracts from `INTENT(OUT)` to `INTENT(INOUT)` without changing solver arithmetic.
 
 `SWAP-009`, first admitted in `B1.6`, corrects four PDI conductivity callers that supplied `abs(h)` to a Kelvin vapor-conductivity helper whose implemented relation expects signed negative unsaturated pressure head. The correction passes signed `h`; the Kelvin helper itself is not changed.
 
 `SWAP-010`, first admitted in `B1.7`, corrects the model-7 `C_MvG_2_s` capacity formula so that it is the derivative of the implemented scaled-bimodal water-retention function. It is an algebraic implementation correction, not a new hydraulic model.
+
+`SWAP-013`, first admitted in `B1.8`, adds an input-domain guard for PDI hydraulic models 8-11 after the existing `H0`/`HA` magnitude conversion. It requires `0 < HA < H0`, preventing singular combinations such as `HA=0` or `HA=H0` from reaching logarithmic constitutive expressions. Accepted PDI equations are unchanged.
 
 ## B1.5p1 provenance repair and qualification
 
@@ -42,49 +45,41 @@ broad B0 -> B1 control edges                   PASS
 all five correction-triggering gates           PASS
 ```
 
-## B1.6: SWAP-009 admission
+## B1.6 and B1.7
 
-SWAP-009 passed exact patch/preimage/corrected-target identity, strict compiled PDI function verification, a representative full PDI production-path regression and a hard unrounded legacy mass gate. Deterministic reconstruction gives:
+SWAP-009 passed exact patch/preimage/corrected-target identity, strict compiled PDI function verification, a representative full PDI production-path regression and a hard unrounded legacy mass gate. B1.6 remains an immutable qualified predecessor.
+
+SWAP-010 then passed a source-bound capacity-derivative gate and a representative full model-7 run. B1.7 explicitly pins the ordered B1.6 preimage because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`. With the predeclared `CRITDEVMASBAL = 1e-6 cm`, the sensitive corrected model-7 run closes at about `1.00e-8 cm`; no tolerance is relaxed. B1.7 remains an immutable qualified predecessor.
+
+## B1.8: SWAP-013 admission
+
+SWAP-013 targets `SWAP/readswap.f90`, which is unchanged by B1.1-B1.7. The exact ordered B1.7 preimage therefore equals canonical B0:
+
+```text
+canonical B0 / ordered B1.7 preimage SHA-256
+3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2
+
+SWAP-013 fix.patch SHA-256
+066c1c1aba8f32cb3a9aab3d17f1900b0ba8a28f43173d80461c91fb1a8f25f3
+
+corrected B1.8 readswap.f90 SHA-256
+e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c
+```
+
+The source-bound strict GNU Fortran guard gate checks placement after magnitude conversion and before further PDI parameter intake, then exercises nine cases: four valid PDI combinations accepted, three singular/invalid PDI combinations rejected, and two non-PDI controls unaffected. Result: `SWAP-013_GUARD_HARNESS PASS 9/9`.
+
+Because the correction acts during validation before time integration, the expected difference is input rejection only. No accepted-input retention, capacity, conductivity, solver or water-balance equation changes.
+
+Deterministic reconstruction gives the B1.8 source-tree identity:
 
 ```text
 members          63
-source bytes      1,860,085
-manifest SHA-256  aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
-```
-
-B1.6 remains an immutable qualified predecessor.
-
-## B1.7: SWAP-010 admission
-
-SWAP-010 shares `WC_K_models_04_11.f90` with SWAP-009. B1.7 therefore pins both canonical B0 provenance and the exact ordered B1.6 preimage:
-
-```text
-canonical B0 target SHA-256
-1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd
-
-ordered B1.6 preimage SHA-256
-f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7
-
-corrected B1.7 target SHA-256
-7ca607b2bbf97e166a32ab8a529fc7f32af9949afb1e6eb518ddbf84e6f0169e
-```
-
-The fresh source-bound capacity gate evaluates 1000 model-7 points. B1.6 exceeds the `1e-3` relative-error threshold at 784 points with a maximum relative error of about `1.60e-1`; the corrected source has 0 failures and maximum relative error about `3.33e-8`.
-
-A deterministic two-day full SWAP model-7 case completes normally for both predecessor and candidate. The nonlinear routes differ strongly: B1.6 uses 9997 four-iteration steps plus 3 five-iteration steps, while the corrected case uses 57 two-iteration steps. This is qualification evidence only, not a performance benchmark.
-
-With `CRITDEVMASBAL = 1e-6 cm` fixed before comparison, the maximum unrounded diagnostic residual is about `1.58e-6 cm` for B1.6 and `1.00e-8 cm` for the corrected candidate. B1.6 creates `result.dwb`; the candidate does not. No tolerance or mass criterion is relaxed.
-
-Deterministic reconstruction gives the B1.7 source-tree identity:
-
-```text
-members          63
-source bytes      1,860,091
-manifest SHA-256  62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
+source bytes      1,860,493
+manifest SHA-256  e32395a6dc1c4ad0caa551739c411669f0b51117dcf68ba719cad75a82fbdcae
 ```
 
 ## Current use rule
 
-`reference/swap-4.3.1/b1-manifest.yml` points to `B1.7`. B1.7 is the corrected legacy oracle to be used for future B2 reference comparisons until a later immutable corrected snapshot supersedes it.
+`reference/swap-4.3.1/b1-manifest.yml` points to `B1.8`. B1.8 is the corrected legacy oracle to be used for future B2 reference comparisons until a later immutable corrected snapshot supersedes it.
 
-Historical B1.2-B1.5 remain audit records only. Qualified B1.5p1 and B1.6 remain immutable predecessors. Candidate dossiers under `patches/` do not affect B1 unless they are present in the ordered current manifest. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.7.
+Historical B1.2-B1.5 remain audit records only. Qualified B1.5p1, B1.6 and B1.7 remain immutable predecessors. Candidate dossiers under `patches/` do not affect B1 unless they are present in the ordered current manifest. SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.8.
