@@ -1,42 +1,45 @@
 # B1 corrected-reference snapshots
 
-B1 is an ordered, immutable sequence of corrected SWAP 4.3.1 reference definitions. Each snapshot starts from the same byte-identified B0 source and adds only admitted qualified bug fixes.
+B1 is an ordered sequence of corrected SWAP 4.3.1 reference definitions. Each snapshot starts from the same byte-identified B0 source and adds only admitted, qualified bug fixes.
+
+A published snapshot is never silently rewritten. If its provenance metadata later fail an exact identity gate, that snapshot remains in the audit history and a new provenance-repair snapshot is issued.
 
 ## Snapshot history
 
-| Snapshot | Definition | Admitted patches | Meaning |
+| Snapshot | Admitted patches | Exact-oracle status | Meaning |
 | --- | --- | --- | --- |
-| `B1.0-bootstrap` | `reference/swap-4.3.1/snapshots/B1.0-bootstrap.yml` | none | exact B0, no corrections |
-| `B1.1` | `reference/swap-4.3.1/snapshots/B1.1.yml` | `SWAP-001` | first corrected reference |
-| `B1.2` | `reference/swap-4.3.1/snapshots/B1.2.yml` | `SWAP-001`, `SWAP-005` | adds crop-calendar bounds/portability correction |
-| `B1.3` | `reference/swap-4.3.1/snapshots/B1.3.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006` | removes meteo crop-calendar sentinel/initialization dependence |
-| `B1.4` | `reference/swap-4.3.1/snapshots/B1.4.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007` | adds oxygenstress Newton-overflow guard |
-| `B1.5` | `reference/swap-4.3.1/snapshots/B1.5.yml` | `SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007`, `SWAP-008` | corrects fallback band-solver dummy-argument intent |
+| `B1.0-bootstrap` | none | historical | exact B0, no corrections |
+| `B1.1` | `SWAP-001` | historical | first corrected reference |
+| `B1.2` | `SWAP-001`, `SWAP-005` | **do not use as exact oracle** | historical patch-hash metadata mismatch found by VQ-1c |
+| `B1.3` | + `SWAP-006` | **do not use as exact oracle** | inherits SWAP-005 mismatch and adds SWAP-006 mismatch |
+| `B1.4` | + `SWAP-007` | **do not use as exact oracle** | additionally contains SWAP-007 patch-hash and B0-preimage provenance errors |
+| `B1.5` | + `SWAP-008` | **do not use as exact oracle** | same five intended corrections, but inherits the earlier provenance failures |
+| `B1.5p1` | same five patches as B1.5 | **pending independent VQ identity gate** | provenance-repaired replacement definition, no intended numerical change |
 
-## B1.1: SWAP-001
+The exact definitions live under `reference/swap-4.3.1/snapshots/`.
 
-SWAP-001 corrects a non-conformable macropore array assignment. B0 assigns a fixed-length destination array from a shorter `1:numnod` source slice. The corrected reference initializes the destination and copies only the conformable active slice.
+## Admitted corrections
 
-## B1.2: SWAP-005
+`SWAP-001` fixes the non-conformable macropore assignment. `SWAP-005` removes reliance on short-circuit evaluation in crop-calendar bounds checking. `SWAP-006` removes the implicit zero-initialization sentinel in the meteo crop loop. `SWAP-007` guards the oxygen-stress Newton update against an unrepresentable quotient while preserving the existing restart route. `SWAP-008` corrects the fallback band-solver dummy-argument contracts from `INTENT(OUT)` to `INTENT(INOUT)` without changing solver arithmetic.
 
-SWAP-005 removes reliance on short-circuit evaluation in the crop-calendar sequence check. The physical crop-sequence criterion is unchanged.
+These are still the intended five corrections in `B1.5p1`. The provenance repair does not add, remove or alter a physical/numerical correction.
 
-## B1.3: SWAP-006
+## B1.5p1 provenance repair
 
-SWAP-006 removes an implicit sentinel based on zero-initialized unused `cropstart` elements and limits the dynamic-crop meteo loop to the loaded record count `ifnd`.
+VQ-1c independently checked the canonical B0 member identities and exact stored patch bytes. It found that the immutable B1.2-B1.5 metadata did not correctly identify several stored patch artifacts. For SWAP-007, the historical dossier also pinned a non-canonical B0 `oxygenstress.f90` hash.
 
-## B1.4: SWAP-007
+`B1.5p1` therefore records:
 
-SWAP-007 prevents overflow in an oxygen-stress Newton update when `fi_a` is nonzero but too small for a representable `fi/fi_a`. The original update remains unchanged when representable.
+- the exact stored patch SHA-256 for every admitted patch;
+- canonical B0 target-member hashes;
+- deterministic corrected-target hashes;
+- a canonical-B0 verifier for SWAP-007;
+- explicit provenance-repair status without rewriting B1.2-B1.5.
 
-## B1.5: SWAP-008
+See `docs/verification/b1-5p1-provenance-repair.md` for the exact before/after identity table.
 
-SWAP-008 corrects the Fortran dummy-argument contracts of the rare fallback band solver. `bandec` consumes and overwrites `a`; `banbks` consumes and overwrites `b`. B0 declared those arrays `INTENT(OUT)`, which makes their incoming values undefined by language semantics even though the routines immediately read them. B1.5 changes only those declarations to `INTENT(INOUT)`.
+## Current use rule
 
-No solver arithmetic, pivoting, factorization, substitution or fallback-selection logic is changed. The issue register records the correction as `FIX_TESTED`, certainty very high, compiled/tested in the patch set. The exact B0 preimage, isolated patch SHA-256, deterministic corrected-file SHA-256 and byte-safe verifier are stored in the SWAP-008 patch dossier.
+`reference/swap-4.3.1/b1-manifest.yml` now points to `B1.5p1`, but it is marked `PENDING_VQ_IDENTITY_GATE`. Until the independent VQ gate reports PASS, B0 -> B1 numerical qualification remains blocked and B1.5p1 must not be described as a qualified exact executable oracle.
 
-## Candidate versus admitted
-
-Candidate dossiers may be prepared before their exact patch is ready. SWAP-011 remains technically qualified but has `PATCH_PAYLOAD_PENDING` provenance status and therefore does not appear in B1.5.
-
-Only the ordered patch entries in `reference/swap-4.3.1/b1-manifest.yml` define the current B1 behaviour.
+Candidate dossiers may still exist under `patches/` without being admitted. For example, SWAP-011 remains `PATCH_PAYLOAD_PENDING` and is not part of B1.5p1.

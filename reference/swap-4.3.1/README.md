@@ -20,54 +20,50 @@ patches/
     <audit-id>/
 snapshots/
     B1.0-bootstrap.yml
-    B1.1.yml
-    B1.2.yml
-    B1.3.yml
-    B1.4.yml
-    B1.5.yml
     ...
+    B1.5.yml
+    B1.5p1.yml
 b1-manifest.yml
 ```
 
-`b0/` is immutable after bootstrap. Do not edit a B0 payload or provenance record to represent a correction.
+`b0/` is immutable. The canonical B0 source archive contains 63 Fortran members. `file-manifest.sha256` records the raw-byte SHA-256 and size of every member. Verification must operate on raw bytes; newline or encoding normalization is not allowed for B0 identity.
 
-The canonical B0 source archive contains 63 Fortran members. `file-manifest.sha256` records the exact raw-byte SHA-256 and size of every expanded member, and `verify_source_archive.py` verifies both the complete archive and every member. The verifier must operate on raw bytes: newline or text-encoding normalization is not allowed for B0.
-
-The current Git connector is text-oriented. Inspection found that `SWAP/MOD_RIA.f90` contains non-UTF-8 bytes. Therefore the project deliberately does **not** claim that a text-normalized Git mirror is an exact B0 payload. See `b0/ENCODING_NOTES.md`. The archive hash and member manifest remain authoritative until an unpacked tree has been imported through a binary-safe path and checked byte-for-byte.
-
-A B1 correction belongs under `patches/<audit-id>/` and must contain enough material to establish:
-
-1. the reproduced B0 defect;
-2. the intended formulation or implementation rule;
-3. the minimal 4.3.1 correction;
-4. regression/qualification evidence;
-5. the expected B0-to-B1 behavioural difference.
-
-Only after that gate passes may the patch be added to `b1-manifest.yml`.
+The Git connector is text-oriented and `SWAP/MOD_RIA.f90` contains non-UTF-8 bytes. The archive hash and expanded-member manifest therefore remain the authoritative B0 identity until an unpacked tree has been imported through a binary-safe path and checked byte-for-byte.
 
 ## B1 representation
 
-B1 is intentionally not maintained as a second full copy of the 4.3.1 source tree. It is defined as an ordered derivation:
+B1 is an ordered derivation rather than a duplicated source tree:
 
 ```text
 B1.x = B0 + patch A + patch B + ...
 ```
 
-Immutable snapshot definitions are stored under `snapshots/`. `b1-manifest.yml` identifies the current corrected reference while retaining the snapshot history.
+Every admitted patch must have a stable audit ID, reproduced B0 defect, intended rule, minimal correction, exact stored patch identity, canonical B0 preimage identity and qualification evidence.
 
-Current state:
+Published snapshot files are immutable audit records. A later provenance defect is repaired by a new snapshot, never by rewriting the historical one.
+
+## Current state
+
+The intended correction lineage is:
 
 ```text
 B1.0-bootstrap = B0
 B1.1           = B0 + SWAP-001
-B1.2           = B0 + SWAP-001 + SWAP-005
-B1.3           = B0 + SWAP-001 + SWAP-005 + SWAP-006
-B1.4           = B0 + SWAP-001 + SWAP-005 + SWAP-006 + SWAP-007
-B1.5           = B0 + SWAP-001 + SWAP-005 + SWAP-006 + SWAP-007 + SWAP-008
+B1.2           = B1.1 + SWAP-005
+B1.3           = B1.2 + SWAP-006
+B1.4           = B1.3 + SWAP-007
+B1.5           = B1.4 + SWAP-008
+B1.5p1         = same intended corrected source as B1.5, provenance repaired
 ```
 
-`SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007` and `SWAP-008` are admitted corrections. Other candidate directories may exist under `patches/`, but a candidate does not affect B1 unless it is explicitly listed in the ordered manifest.
+VQ-1c found that B1.2-B1.5 contain incorrect patch-artifact identity metadata and that the SWAP-007 dossier used a non-canonical B0 preimage hash. Those historical snapshots remain untouched but must not be used as exact executable oracles.
+
+`b1-manifest.yml` now points to `B1.5p1`. This new definition records the exact stored patch hashes and canonical B0 target hashes while preserving the same five intended corrections: `SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007`, `SWAP-008`.
+
+Its status is deliberately `PENDING_VQ_IDENTITY_GATE`. It becomes the exact B1 oracle only after independent VQ repinning reports PASS. See `docs/verification/b1-5p1-provenance-repair.md`.
+
+Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.5p1.
 
 ## Boundary to SWAP 5
 
-Production kernel/runtime code must not depend on implementation structures in this subtree. Reference-build and verification tooling may use it to reproduce B0 and construct exact B1 snapshots.
+Production kernel/runtime code must not depend on implementation structures in this subtree. Reference-build and verification tooling may use it to reproduce B0 and construct qualified B1 snapshots.

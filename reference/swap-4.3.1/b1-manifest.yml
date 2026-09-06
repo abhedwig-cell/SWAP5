@@ -11,10 +11,13 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.5"
-  status: "CORRECTED_REFERENCE"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.5.yml"
-  description: "Corrected SWAP 4.3.1 reference containing five admitted qualified legacy fixes."
+  snapshot: "B1.5p1"
+  status: "CORRECTED_REFERENCE_PROVENANCE_REPAIRED"
+  oracle_status: "PENDING_VQ_IDENTITY_GATE"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.5p1.yml"
+  supersedes_snapshot: "B1.5"
+  numerical_change_from_superseded_snapshot: false
+  description: "Provenance-repaired definition of the five-fix corrected SWAP 4.3.1 reference. Historical B1.2-B1.5 metadata remain untouched; independent VQ repinning is required before use as an exact executable oracle."
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -22,16 +25,17 @@ b1:
       qualification: "reference/swap-4.3.1/patches/SWAP-001/qualification.md"
     - id: "SWAP-005"
       patch_path: "reference/swap-4.3.1/patches/SWAP-005/fix.patch"
-      patch_sha256: "9c3839ac0674d7c5c3eb2de797684c7baf83fdc3a18d64de68c9746de9878e66"
+      patch_sha256: "243720f59a0d9154fa4ba4acf1fce68096999bd0f8eafa452bfb40cef5572553"
       qualification: "reference/swap-4.3.1/patches/SWAP-005/qualification.md"
     - id: "SWAP-006"
       patch_path: "reference/swap-4.3.1/patches/SWAP-006/fix.patch"
-      patch_sha256: "558eb084befac713aec0b923d45182a1efcbed44d71ed00e6faf024b6540718a"
+      patch_sha256: "4530d489701f0356dd06d8cc3752b3cb6322cf864cea0c330ce1448f7dfa5b2f"
       qualification: "reference/swap-4.3.1/patches/SWAP-006/qualification.md"
     - id: "SWAP-007"
       patch_path: "reference/swap-4.3.1/patches/SWAP-007/fix.patch"
-      patch_sha256: "e65b703b73b530915414265c3b647a403f995adc568390ed5da4ecb55be75b96"
+      patch_sha256: "3ac9580bc162f8a4c90b83d59452e7b40bd1e0c82ba92e7a2c1ac58f154af5f0"
       qualification: "reference/swap-4.3.1/patches/SWAP-007/qualification.md"
+      canonical_b0_verifier: "reference/swap-4.3.1/patches/SWAP-007/apply_and_verify_canonical_b0.py"
     - id: "SWAP-008"
       patch_path: "reference/swap-4.3.1/patches/SWAP-008/fix.patch"
       patch_sha256: "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c"
@@ -40,16 +44,25 @@ b1:
 history:
   - snapshot: "B1.0-bootstrap"
     definition: "reference/swap-4.3.1/snapshots/B1.0-bootstrap.yml"
+    exact_oracle_status: "HISTORICAL"
   - snapshot: "B1.1"
     definition: "reference/swap-4.3.1/snapshots/B1.1.yml"
+    exact_oracle_status: "HISTORICAL"
   - snapshot: "B1.2"
     definition: "reference/swap-4.3.1/snapshots/B1.2.yml"
+    exact_oracle_status: "HISTORICAL_PROVENANCE_MISMATCH"
   - snapshot: "B1.3"
     definition: "reference/swap-4.3.1/snapshots/B1.3.yml"
+    exact_oracle_status: "HISTORICAL_PROVENANCE_MISMATCH"
   - snapshot: "B1.4"
     definition: "reference/swap-4.3.1/snapshots/B1.4.yml"
+    exact_oracle_status: "HISTORICAL_PROVENANCE_MISMATCH"
   - snapshot: "B1.5"
     definition: "reference/swap-4.3.1/snapshots/B1.5.yml"
+    exact_oracle_status: "HISTORICAL_PROVENANCE_MISMATCH"
+  - snapshot: "B1.5p1"
+    definition: "reference/swap-4.3.1/snapshots/B1.5p1.yml"
+    exact_oracle_status: "PENDING_VQ_IDENTITY_GATE"
 
 admission_rule:
   requires:
@@ -57,6 +70,8 @@ admission_rule:
     - reproduced_b0_defect
     - intended_formulation_or_rule
     - minimal_legacy_patch
+    - exact_stored_patch_identity
+    - canonical_b0_preimage_identity
     - regression_or_qualification_evidence
     - documented_expected_difference
   excludes:
@@ -68,3 +83,4 @@ admission_rule:
 immutability:
   b0: true
   published_b1_snapshots: true
+  repair_policy: "Never rewrite a published snapshot to repair provenance; publish a new provenance-correct snapshot and retain the failed identity as audit history."
