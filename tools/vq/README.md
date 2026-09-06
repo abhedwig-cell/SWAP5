@@ -71,7 +71,38 @@ The reconstruction fails closed unless:
 - all five resulting target SHA-256 values equal the B1.5p1 snapshot declarations;
 - the final 63-member reconstructed source manifest equals `c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30`.
 
-The first B0 -> B1 control edges pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. This qualifies source reconstruction and those control paths, not every defect-triggering B1 correction. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
+The first B0 -> B1 control edges pass with no numerical difference on official grass growth and the symmetric Hupselbrook balance-only GNU compatibility path. See `docs/verification/vq-1c2-b1.5p1-reconstruction.md`.
+
+## B1.5p1 targeted correction qualification
+
+The VQ-1c3 harness binds each reproducer to the exact B0 and B1.5p1 source fragment before it executes:
+
+```bash
+python tools/vq/b1_targeted_qualification.py \
+  --b0-source-root /tmp/B0/SWAP \
+  --b1-source-root /tmp/B1.5p1/SWAP \
+  --work-dir /tmp/vq-b1-targeted
+```
+
+This runs the source-bound SWAP-001, SWAP-005, SWAP-006 and SWAP-008 gates. To include the full SWAP-007 strict-FPE grass gate, also provide strict reference executables and the unchanged official grass case:
+
+```bash
+  --b0-fpe-exe /tmp/b0/swap_fpe \
+  --b1-fpe-exe /tmp/b1/swap_fpe \
+  --grass-case /path/to/cases/2.grassgrowth
+```
+
+Gate semantics match the admitted defect:
+
+- `SWAP-001`: shape-mismatch failure versus conformable copy; an additional full macropore smoke confirms B0 reject/B1 completion;
+- `SWAP-005`: signaling-NaN reproducer demonstrates why the `i < ifnd` guard must precede `i+1` access;
+- `SWAP-006`: signaling-NaN reproducer removes the unused-record sentinel dependency;
+- `SWAP-007`: strict-FPE full grass run fails in B0 and completes in B1.5p1;
+- `SWAP-008`: actual `bandec`/`banbks` arithmetic remains equal while `INOUT` restores a defined Fortran contract.
+
+All five targeted gates pass. Together with VQ-1c1/c2, VQ qualifies B1.5p1 as the numerical/behavioural corrected-reference oracle for B2 regression. This does not make legacy rounded BAL/BLC a hard mass oracle and does not claim exhaustive coverage of every SWAP 4.3.1 option combination.
+
+See `docs/verification/vq-1c3-b1.5p1-targeted-qualification.md` and `tools/vq/cases/b1-5p1-targeted-qualification-2026-09-06.json`.
 
 ## Unrounded mass accounting
 
