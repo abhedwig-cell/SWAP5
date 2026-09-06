@@ -1,0 +1,92 @@
+{
+  "baseline_branch": "integration/a23bk-transactional-rebase",
+  "jacobian": {
+    "formula_changed": false,
+    "jacobian_F_sha256": "83a0405484bb11b97a4ad6d8eed908f6a6b478a748c2b9056eba44299b0e427a"
+  },
+  "next_slice": {
+    "goal": "separate remaining process/progression singleton state that can influence physics, keeping reporting delivery outside the kernel",
+    "id": "A23BU"
+  },
+  "ownership": {
+    "integral_reads_global_reporting_reset_flags": false,
+    "legacy_initializer_globals_flzerointr_flzerocumu_retained": true,
+    "production_reporting_delivery_implemented": false,
+    "reporting_progress_in_column_continuation_state": false,
+    "reporting_progress_role": "ephemeral worker-side legacy shim during VQ transaction trials",
+    "reporting_shim_payload_bytes_per_worker": 56,
+    "solute_reads_global_reporting_reset_flags": false,
+    "tcumold_save_removed": true
+  },
+  "parent_slice": "A23BS",
+  "physical_gate": {
+    "accepted_headcalc_calls": 81,
+    "accepted_internal_retries": 10,
+    "accepted_newton_iterations": 478,
+    "accepted_storage_cm": 77.01171067220464,
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "half_mass_residual_cm": -1.7872350177583485e-07,
+    "o0_o2_byte_identical": true,
+    "o0_pass": true,
+    "o2_pass": true,
+    "physical_log_sha256": "5520a76c3ccffe3b3a03af3867a6544b0147ddedd817385b76b91359f1043e63",
+    "reporting_progression_poison_pass": true,
+    "reporting_reset_global_poison_pass": true,
+    "transaction_headcalc_calls": 162,
+    "transaction_internal_retries": 20,
+    "transaction_newton_iterations": 956
+  },
+  "physics_changed": false,
+  "postimage_sha256": {
+    "headcalc.f90": "6745443e4d45e076305a79ec1ab685980cb2005e7547a8400bb064987f743716",
+    "initialize.f90": "753132396d560981f9db82ccef1dbae9fd600c9e985a88c6df92b9e5ec27c904",
+    "integral.f90": "26a53334deef135d54e877f87a8d8ec4deb4b41af687f045cdab0334e6292071",
+    "solute.f90": "3cb65ade803553fb83150e0277141f41022f6e91ead07ea7a4bcb04c520d8987",
+    "swap.f90": "fd06177c11a795f34d19ea613ad256a1ad10e54b5372f4febc631bb4a3f926e3",
+    "timecontrol.f90": "f5d810700ccd1f41d0e30954e787a55bfc006b1216c5b6f78c0bc608d0ab66fc",
+    "variables.f90": "54844bbd6a75929f9f49a73354cfaf26158448c31c1d786387ff46618b181890"
+  },
+  "production_holds": [
+    "report delivery after commit is not implemented in the new runtime",
+    "subdaily output schedules NPRINTDAY>1 or FLPRINTDT=true are not qualified",
+    "legacy physical backend remains serialized and may still perform input-side file I/O",
+    "legacy reporting globals remain for initialization/non-worker compatibility code but are not consulted by the qualified worker physics/accounting route"
+  ],
+  "qualified_configuration": {
+    "case": "Hupsel",
+    "flprintdt": false,
+    "nprintday": 1,
+    "whole_day_legacy_adapter_intervals_only": true
+  },
+  "reference_oracle": {
+    "hard_mass_criterion_cm": 1e-06,
+    "physical_endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "snapshot": "B1.6",
+    "source_member_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"
+  },
+  "schema_version": 1,
+  "selective_step_doubling_changed": false,
+  "slice": "A23BT",
+  "solver_policy_changed": false,
+  "status": "PASS_REPORTING_STATE_SEPARATION_AND_TRIAL_OUTPUT_SUPPRESSION__PRODUCTION_REPORTING_DELIVERY_PENDING__PHYSICAL_BACKEND_SERIAL_ONLY",
+  "transaction_regression": {
+    "log_sha256": "8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548",
+    "pass": true
+  },
+  "trial_side_effects": {
+    "bal_size_unchanged_during_transaction": true,
+    "blc_size_unchanged_during_transaction": true,
+    "input_file_io_eliminated_from_legacy_adapter": false,
+    "kernel_claim": "output-side-effect-free, not fully I/O-free legacy adapter",
+    "legacy_output_dispatch_suppressed_when_worker_present": true
+  },
+  "worker_gate": {
+    "checks": 8000,
+    "failures": 0,
+    "headcalc_scratch_payload_bytes_per_worker": 3292,
+    "reporting_shim_payload_bytes_per_worker": 56,
+    "worker_log_sha256": "f646bc555af35e7ad900fcba07bfe27a1a838ed50ae553f2c60f8db5510553ef",
+    "workers": 8
+  },
+  "workstream": "TX"
+}
