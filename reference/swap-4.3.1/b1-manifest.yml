@@ -1,0 +1,31 @@
+schema_version: 1
+reference_family: SWAP-4.3.1-corrected
+
+b0:
+  model_version: "4.3.1"
+  distribution_sha256: "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
+  source_archive_sha256: "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+
+b1:
+  snapshot: "B1.0-bootstrap"
+  status: "BOOTSTRAP_NO_CORRECTIONS"
+  description: "Initial corrected-reference definition. No qualified corrections are admitted yet, therefore B1 equals B0."
+  patches: []
+
+admission_rule:
+  requires:
+    - stable_audit_id
+    - reproduced_b0_defect
+    - intended_formulation_or_rule
+    - minimal_legacy_patch
+    - regression_or_qualification_evidence
+    - documented_expected_difference
+  excludes:
+    - unqualified_fix
+    - model_development
+    - performance_change_without_confirmed_defect
+    - legacy_bug_compatibility_in_swap5
+
+immutability:
+  b0: true
+  published_b1_snapshots: true
