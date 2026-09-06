@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "audit_id": "SWAP-002",
+  "compiler": "GNU Fortran 14.2.0",
+  "source_binding": {
+    "canonical_b0_tillage_sha256": "731a873e0aa5ac25626a6d392c1668e66e57ee3fdc1d94b3eab127b8e343a486",
+    "stored_patch_sha256": "80e12cd4e9f47c192bd6c7d5ee7d460c473b3a2b29a5a553e8c35cf0b90b5c13",
+    "corrected_tillage_sha256": "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3"
+  },
+  "cases": [
+    "before_first",
+    "exact_first",
+    "between_1_2",
+    "exact_second",
+    "after_last",
+    "unsorted"
+  ],
+  "b0": {
+    "passed": 3,
+    "total": 6,
+    "failed_cases": ["between_1_2", "exact_second", "after_last"]
+  },
+  "candidate": {
+    "passed": 6,
+    "total": 6,
+    "failed_cases": []
+  },
+  "candidate_expected_state": {
+    "before_first": {"iTill": 1, "loaded_previous": 0},
+    "exact_first": {"iTill": 1, "loaded_previous": 0},
+    "between_1_2": {"iTill": 2, "loaded_previous": 1},
+    "exact_second": {"iTill": 2, "loaded_previous": 1},
+    "after_last": {"iTill": 4, "loaded_previous": 3},
+    "unsorted": {"rejected": true}
+  }
+}
