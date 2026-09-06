@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1e3",
+  "status": "BLOCKED_NO_PRODUCTION_ADAPTER_BINDING",
+  "production_adapter_candidate_path": "tools/vq/cases/b2-production-adapter-candidate.json",
+  "adapter_loader": {
+    "module_path": null,
+    "factory_symbol": null,
+    "adapter_protocol": "VQ-QualificationAdapter-v1"
+  },
+  "suite": {
+    "protocol": "VQ-TX-TIME-SUITE-v1",
+    "required_case_ids": [
+      "TX-ROLLBACK-01",
+      "TX-COMMIT-01",
+      "TX-ACCOUNT-01",
+      "TX-RERUN-01",
+      "TX-BC-REPLAY-01",
+      "TX-WARM-01",
+      "TIME-00",
+      "TIME-06",
+      "TIME-18",
+      "TIME-36",
+      "TIME-SPLIT"
+    ]
+  },
+  "pre_execution_claims": {
+    "production_execution_claimed": false,
+    "b2_physics_status": "NOT_EVALUATED",
+    "production_mass_tolerance_qualified": false
+  },
+  "decision": {
+    "production_tx_time_execution": "BLOCKED",
+    "reason": "No admitted non-synthetic production QualificationAdapter binding exists, so VQ must not load or execute production TX/TIME cases.",
+    "next_gate": "After VQ-1d admits the B2 seam and VQ-1e2 admits its exact production binding, provide the verification-side adapter loader and rerun VQ-1e3 execution admission before any production case is executed."
+  }
+}
