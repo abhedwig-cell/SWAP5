@@ -5,14 +5,19 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.vq.b2_reference_gate import READY, REQUIRED_CAPABILITIES, assess_candidate
+from tools.vq.b2_reference_gate import (
+    QUALIFIED_B1_SNAPSHOT,
+    READY,
+    REQUIRED_CAPABILITIES,
+    assess_candidate,
+)
 
 
 def base_candidate() -> dict:
     return {
         "schema_version": 1,
         "b1_oracle": {
-            "snapshot": "B1.5p1",
+            "snapshot": QUALIFIED_B1_SNAPSHOT,
             "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
         },
         "b2": {
@@ -47,6 +52,15 @@ class B2ReferenceGateTests(unittest.TestCase):
             result = assess_candidate(root, self.write_candidate(root, data))
             self.assertFalse(result["admissible_adapter_target"])
             self.assertEqual(result["failure"], "b2_reference_entrypoint_not_ready")
+
+    def test_stale_b1_oracle_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            data = base_candidate()
+            data["b1_oracle"]["snapshot"] = "B1.5p1"
+            result = assess_candidate(root, self.write_candidate(root, data))
+            self.assertFalse(result["admissible_adapter_target"])
+            self.assertEqual(result["failure"], "b1_oracle_not_current_or_not_qualified")
 
     def test_ready_candidate_without_entrypoint_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
