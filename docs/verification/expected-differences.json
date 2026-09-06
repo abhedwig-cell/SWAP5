@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "unexplained_difference": "FAIL",
+    "observed_difference_is_expected": false,
+    "b0_bug_compatibility_required_in_b2": false
+  },
+  "comparison_edges": {
+    "B0_to_B1": {
+      "oracle": "B0",
+      "candidate": "B1.5p1",
+      "authoritative_ledger": "docs/verification/legacy-differences.md",
+      "entries": [
+        {
+          "difference_id": "SWAP-001",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "docs/verification/legacy-differences.md",
+          "first_admitted_tag_or_commit": "B1.1",
+          "affected_outputs": ["macropore execution validity", "VlMpDm1Cp inactive tail"],
+          "expected_direction_or_envelope": "When macp != numnod, strict B0 may fail on the non-conformable whole-array assignment; B1 copies 1:numnod and zeroes the inactive tail. No unrelated macropore physics change is admitted.",
+          "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+          "known_unchanged_scope": ["active VlMpDm1Cp(1:numnod) values copied from the same source slice", "macropore physical equations", "solver policy"]
+        },
+        {
+          "difference_id": "SWAP-005",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "docs/verification/legacy-differences.md",
+          "first_admitted_tag_or_commit": "B1.2",
+          "affected_outputs": ["crop-calendar control flow", "portability under non-short-circuit evaluation"],
+          "expected_direction_or_envelope": "At i==ifnd B1 never evaluates cropstart(i+1). For i<ifnd the original sequence test and error condition are unchanged.",
+          "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+          "known_unchanged_scope": ["crop sequence criterion", "crop physics", "phenology", "water balance equations"]
+        },
+        {
+          "difference_id": "SWAP-006",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "docs/verification/legacy-differences.md",
+          "first_admitted_tag_or_commit": "B1.3",
+          "affected_outputs": ["meteo crop-record scan", "compiler-initialization dependence"],
+          "expected_direction_or_envelope": "B1 scans exactly loaded records 1:ifnd and cannot consume an unused sentinel entry; overlap and CROPTYPE tests on loaded records are unchanged.",
+          "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+          "known_unchanged_scope": ["meteo overlap criterion", "dynamic-crop decision for valid records", "crop and atmospheric physics"]
+        },
+        {
+          "difference_id": "SWAP-007",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "docs/verification/legacy-differences.md",
+          "first_admitted_tag_or_commit": "B1.4",
+          "affected_outputs": ["strict-FPE execution on unrepresentable oxygen-stress Newton quotient", "restart control path"],
+          "expected_direction_or_envelope": "Representable Newton updates are unchanged. Where fi/fi_a is unrepresentable, B0 can raise SIGFPE while B1 routes through the existing large-lnew restart path. Ordinary grass control output remains identical after timestamp normalization.",
+          "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+          "known_unchanged_scope": ["representable Newton formula", "oxygen-stress physical formulation", "ordinary control output"]
+        },
+        {
+          "difference_id": "SWAP-008",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "docs/verification/legacy-differences.md",
+          "first_admitted_tag_or_commit": "B1.5",
+          "affected_outputs": ["Fortran dummy-argument definedness for bandec/banbks", "compiler portability"],
+          "expected_direction_or_envelope": "No numerical solution difference is expected. B1 changes consumed-and-overwritten dummy arrays from INTENT(OUT) to INTENT(INOUT), making the incoming values defined without altering band-solver arithmetic.",
+          "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+          "known_unchanged_scope": ["banded LU arithmetic", "pivoting", "forward/back substitution", "fallback trigger", "water-balance equations"]
+        }
+      ]
+    },
+    "B1_to_B2": {
+      "oracle": "B1",
+      "candidate": "B2",
+      "entries": []
+    },
+    "B0_to_B2": {
+      "purpose": "diagnostic_only",
+      "acceptance_oracle": false,
+      "entries": []
+    }
+  },
+  "required_entry_fields": [
+    "difference_id",
+    "comparison_edge",
+    "status",
+    "source_decision_or_finding",
+    "first_admitted_tag_or_commit",
+    "affected_outputs",
+    "expected_direction_or_envelope",
+    "qualification_evidence",
+    "known_unchanged_scope"
+  ],
+  "allowed_status": [
+    "OBSERVED",
+    "BUG_CONFIRMED",
+    "FIX_TESTED",
+    "ADMITTED_B1",
+    "MODEL_CHANGE",
+    "DOC_ONLY"
+  ]
+}
