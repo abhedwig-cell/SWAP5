@@ -6,12 +6,12 @@ on:
       - main
     paths:
       - 'tools/performance/**'
-      - 'tests/test_mp_measure.py'
+      - 'tests/test_mp_*.py'
       - '.github/workflows/performance-tools.yml'
   pull_request:
     paths:
       - 'tools/performance/**'
-      - 'tests/test_mp_measure.py'
+      - 'tests/test_mp_*.py'
       - '.github/workflows/performance-tools.yml'
   workflow_dispatch:
 
@@ -32,7 +32,7 @@ jobs:
           python-version: '3.13'
 
       - name: Compile measurement tools
-        run: python -m py_compile tools/performance/mp_measure.py
+        run: python -m py_compile tools/performance/mp_measure.py tools/performance/mp_b0_shadow.py
 
       - name: Run measurement tests
-        run: python -m unittest discover -s tests -p 'test_mp_measure.py' -v
+        run: python -m unittest discover -s tests -p 'test_mp_*.py' -v
