@@ -1,6 +1,6 @@
 # SWAP-013 — PDI HA/H0 input-domain validation
 
-Status: **QUALIFIED CANDIDATE FOR B1.8**
+Status: **ADMITTED IN B1.8**
 
 ## Defect
 
@@ -45,4 +45,4 @@ e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c
 
 The correction changes accepted-input behavior for mathematically singular PDI combinations only. Valid PDI input and all non-PDI input remain in the previous domain. It changes no SWAP5 production code, no constitutive equation, no solver policy and no water-balance tolerance.
 
-See `qualification.md` and `ADMISSION_CHECKLIST.md`.
+See `qualification.md`, `ADMISSION_CHECKLIST.md`, and immutable snapshot `reference/swap-4.3.1/snapshots/B1.8.yml`.
