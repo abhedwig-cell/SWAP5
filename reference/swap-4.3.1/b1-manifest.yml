@@ -11,10 +11,21 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.0-bootstrap"
-  status: "BOOTSTRAP_NO_CORRECTIONS"
-  description: "Initial corrected-reference definition. No qualified corrections are admitted yet, therefore B1 equals B0."
-  patches: []
+  snapshot: "B1.1"
+  status: "CORRECTED_REFERENCE"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.1.yml"
+  description: "Corrected SWAP 4.3.1 reference containing the first admitted qualified legacy fix."
+  patches:
+    - id: "SWAP-001"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
+      patch_sha256: "6dd75db2603f71def58db0a0f5c77bfcd2fba2688add837436fd0d09713e5770"
+      qualification: "reference/swap-4.3.1/patches/SWAP-001/qualification.md"
+
+history:
+  - snapshot: "B1.0-bootstrap"
+    definition: "reference/swap-4.3.1/snapshots/B1.0-bootstrap.yml"
+  - snapshot: "B1.1"
+    definition: "reference/swap-4.3.1/snapshots/B1.1.yml"
 
 admission_rule:
   requires:
