@@ -107,21 +107,21 @@ def summarize(payload: Mapping[str, Any]) -> dict[str, Any]:
     cpu_mde = multiplier * float(cpu_dist["stdev"]) / math.sqrt(required)
     wall_mde = multiplier * float(wall_dist["stdev"]) / math.sqrt(required)
 
-    all_hashes: dict[str, set[str]] = {}
-    sample_throttled_events = 0
-    sample_throttled_usec = 0
-    for pair in final_pairs:
-        for variant in ("off", "on"):
-            hashes = pair.get(f"{variant}_hashes")
-            if not isinstance(hashes, Mapping) or not hashes:
-                raise ValueError("every final variant must include physical hashes")
-            for name, digest in hashes.items():
-                if not isinstance(digest, str) or len(digest) != 64:
-                    raise ValueError("physical hashes must be SHA-256 strings")
-                all_hashes.setdefault(str(name), set()).add(digest)
-            sample_throttled_events += int(pair.get(f"{variant}_throttled_events", 0))
-            sample_throttled_usec += int(pair.get(f"{variant}_throttled_usec", 0))
-    physical_equal = bool(all_hashes) and all(len(v) == 1 for v in all_hashes.values())
+    physical_hashes = final.get("physical_output_hashes")
+    distinct_counts = final.get("physical_output_distinct_counts")
+    observations = final.get("physical_output_observations")
+    if not isinstance(physical_hashes, Mapping) or not physical_hashes:
+        raise ValueError("final.physical_output_hashes must be non-empty")
+    if not isinstance(distinct_counts, Mapping) or set(distinct_counts) != set(physical_hashes):
+        raise ValueError("physical_output_distinct_counts must cover every physical output")
+    for name, digest in physical_hashes.items():
+        if not isinstance(name, str) or not isinstance(digest, str) or len(digest) != 64:
+            raise ValueError("physical output hashes must be SHA-256 strings")
+    if observations != 2 * required:
+        raise ValueError("physical_output_observations must equal two observations per final pair")
+    physical_equal = all(int(distinct_counts[name]) == 1 for name in physical_hashes)
+    sample_throttled_events = int(final.get("measured_sample_throttled_events", 0))
+    sample_throttled_usec = int(final.get("measured_sample_throttled_usec", 0))
 
     window_before = host.get("qualification_window_before")
     window_after = host.get("qualification_window_after")
@@ -154,7 +154,7 @@ def summarize(payload: Mapping[str, Any]) -> dict[str, Any]:
             "pair_count": required,
             "paired_child_cpu": {**cpu_dist, "minimum_detectable_relative_effect": cpu_mde},
             "paired_wall_elapsed": {**wall_dist, "minimum_detectable_relative_effect": wall_mde},
-            "physical_output_hashes": {k: sorted(v)[0] for k, v in sorted(all_hashes.items()) if len(v) == 1},
+            "physical_output_hashes": dict(sorted((str(k), str(v)) for k, v in physical_hashes.items())),
             "measured_sample_throttled_events": sample_throttled_events,
             "measured_sample_throttled_usec": sample_throttled_usec,
         },
