@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "workstream": "VQ",
-  "slice": "VQ-1d2",
+  "slice": "VQ-1d3",
   "observation_baseline": "5576279c915f4d4fbccf3ff182aa480306489080",
   "b1_oracle": {
     "snapshot": "B1.6",
@@ -32,11 +32,14 @@
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
     "reference_seam_contract": "tools/vq/contracts/b2-reference-seam.schema.json",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint, canonical result contract or reference-seam declaration. B1.6 admission changes legacy reference metadata/tooling only and does not create a B2 production seam."
+    "reference_result_contract": "tools/vq/contracts/b2-reference-result-contract.schema.json",
+    "canonical_result_record": "tools/vq/contracts/b2-reference-result-record.schema.json",
+    "mass_accounting_record": "tools/vq/contracts/mass-accounting-record.schema.json",
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint, semantic reference-result contract or reference-seam declaration. B1.6 admission changes legacy reference metadata/tooling only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",
-    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint, result contract and reference-seam declaration exist on the pinned production observation commit.",
-    "next_admission_gate": "Provide an integrated callable reference entrypoint, canonical result contract and a valid SWAP5-B2-reference-seam-v1 declaration, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint, semantic result contract and reference-seam declaration exist on the pinned production observation commit.",
+    "next_admission_gate": "Provide an integrated callable reference entrypoint, a valid SWAP5-B2-reference-result-v1 contract and a valid SWAP5-B2-reference-seam-v1 declaration bound to the same exact commit, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
   }
 }
