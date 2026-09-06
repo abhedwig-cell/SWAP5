@@ -6,8 +6,9 @@ It determines whether an integrated, exactly pinned B2 reference-mode entrypoint
 exists with the minimum contracts required before VQ may perform B1 -> B2 runs.
 
 VQ-1d1 binds the candidate and stored gate evidence to the current corrected-
-reference manifest. VQ-1d2 additionally requires a machine-readable reference-
-seam contract for any candidate that claims to be READY.
+reference manifest. VQ-1d2 requires a machine-readable reference-seam contract
+for any candidate that claims to be READY. VQ-1d3 binds that seam to an
+executable canonical result contract before numerical comparison is admitted.
 """
 from __future__ import annotations
 
@@ -195,7 +196,7 @@ def evidence_projection(candidate: dict[str, Any], result: dict[str, Any]) -> di
     return {
         "schema_version": 1,
         "workstream": "VQ",
-        "slice": "VQ-1d2",
+        "slice": "VQ-1d3",
         "observation_baseline": candidate.get("observation_baseline"),
         "candidate_status": result.get("candidate_status"),
         "b1_snapshot": result.get("b1_snapshot"),
