@@ -1,0 +1,38 @@
+name: Performance measurement tools
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'tools/performance/**'
+      - 'tests/test_mp_measure.py'
+      - '.github/workflows/performance-tools.yml'
+  pull_request:
+    paths:
+      - 'tools/performance/**'
+      - 'tests/test_mp_measure.py'
+      - '.github/workflows/performance-tools.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Compile measurement tools
+        run: python -m py_compile tools/performance/mp_measure.py
+
+      - name: Run measurement tests
+        run: python -m unittest discover -s tests -p 'test_mp_measure.py' -v
