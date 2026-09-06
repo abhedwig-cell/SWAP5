@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/vq/production-adapter-binding.schema.json",
+  "title": "SWAP5 VQ production adapter binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "implementation",
+    "adapter",
+    "b2_binding",
+    "semantics",
+    "non_interference"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "const": 1},
+    "contract_id": {"type": "string", "const": "SWAP5-VQ-production-adapter-binding-v1"},
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "production_target"],
+      "properties": {
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "production_target": {"type": "boolean", "const": true}
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "factory_symbol", "qualification_adapter_protocol", "synthetic_fixture"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "factory_symbol": {"type": "string", "minLength": 1},
+        "qualification_adapter_protocol": {"type": "string", "const": "VQ-QualificationAdapter-v1"},
+        "synthetic_fixture": {"type": "boolean", "const": false}
+      }
+    },
+    "b2_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entrypoint_path", "seam_contract_path", "result_contract_path", "reference_policy"],
+      "properties": {
+        "entrypoint_path": {"type": "string", "minLength": 1},
+        "seam_contract_path": {"type": "string", "minLength": 1},
+        "result_contract_path": {"type": "string", "minLength": 1},
+        "reference_policy": {"type": "string", "const": "reference"}
+      }
+    },
+    "semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generic_interval_forwarded_exactly",
+        "committed_state_forwarded_as_physical_start",
+        "forcing_replayed_exactly_on_retry",
+        "numerical_warm_start_separate",
+        "accepted_result_normalized_to_vq_record",
+        "transaction_trace_exposed",
+        "rejected_trials_excluded_from_committed_totals",
+        "commit_exactly_once"
+      ],
+      "properties": {
+        "generic_interval_forwarded_exactly": {"type": "boolean", "const": true},
+        "committed_state_forwarded_as_physical_start": {"type": "boolean", "const": true},
+        "forcing_replayed_exactly_on_retry": {"type": "boolean", "const": true},
+        "numerical_warm_start_separate": {"type": "boolean", "const": true},
+        "accepted_result_normalized_to_vq_record": {"type": "boolean", "const": true},
+        "transaction_trace_exposed": {"type": "boolean", "const": true},
+        "rejected_trials_excluded_from_committed_totals": {"type": "boolean", "const": true},
+        "commit_exactly_once": {"type": "boolean", "const": true}
+      }
+    },
+    "non_interference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changes_physics",
+        "changes_numerical_policy",
+        "changes_forcing",
+        "changes_interval",
+        "changes_mass_terms",
+        "introduces_kernel_file_io",
+        "introduces_hidden_calendar_boundary"
+      ],
+      "properties": {
+        "changes_physics": {"type": "boolean", "const": false},
+        "changes_numerical_policy": {"type": "boolean", "const": false},
+        "changes_forcing": {"type": "boolean", "const": false},
+        "changes_interval": {"type": "boolean", "const": false},
+        "changes_mass_terms": {"type": "boolean", "const": false},
+        "introduces_kernel_file_io": {"type": "boolean", "const": false},
+        "introduces_hidden_calendar_boundary": {"type": "boolean", "const": false}
+      }
+    }
+  }
+}
