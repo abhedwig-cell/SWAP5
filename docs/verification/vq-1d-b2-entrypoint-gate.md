@@ -2,38 +2,38 @@
 
 **Workstream:** VQ  
 **Slice:** VQ-1d  
-**Production observation baseline:** `5576279c915f4d4fbccf3ff182aa480306489080`  
-**Current qualified B1 oracle:** `B1.6`  
+**Production observation baseline:** `2d05eeab9d766d51bc7c436ea1e45f9b49940e92`  
+**Current qualified B1 oracle:** `B1.7`  
 **Production code changed:** no
 
 ## Purpose
 
-The corrected-reference chain now uses `B1.6` as the legacy oracle. VQ-1d is the next edge: `B1.6 -> B2`, where B2 must be the integrated full-accuracy SWAP5 reference implementation.
+The corrected-reference chain now uses `B1.7` as the legacy oracle. VQ-1d is the next edge: `B1.7 -> B2`, where B2 must be the integrated full-accuracy SWAP5 reference implementation.
 
 VQ must not infer B2 from architecture documents, prototypes, an external/unmerged source tree or a future intended API. A numerical B1 -> B2 comparison is admitted only when the repository contains an exact, callable reference-mode entrypoint and an explicit result contract on a pinned Git commit.
 
 ## B1 oracle handoff
 
-`B1.5p1` first established the provenance-repaired five-fix corrected-reference oracle. `B1.6` adds the separately qualified SWAP-009 PDI Kelvin-sign correction and is now the current corrected reference.
+`B1.5p1` established the provenance-repaired five-fix corrected-reference oracle. `B1.6` added the separately qualified SWAP-009 PDI Kelvin-sign correction. `B1.7` adds SWAP-010, the model-7 capacity-derivative consistency correction, with the exact B1.6 ordered preimage pinned because SWAP-009 and SWAP-010 share `WC_K_models_04_11.f90`.
 
-B1.6 is pinned by:
+B1.7 is pinned by:
 
 ```text
-snapshot                B1.6
-patches                 SWAP-001, -005, -006, -007, -008, -009
+snapshot                B1.7
+patches                 SWAP-001, -005, -006, -007, -008, -009, -010
 source members          63
-source bytes            1,860,085
-source manifest SHA-256 aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0
+source bytes            1,860,091
+source manifest SHA-256 62939097cfcdb59f8fe8c9161356fc703d7c54d6dd61ab3c31b19c2cfea6a5ba
 oracle status           QUALIFIED_NUMERICAL_BEHAVIOURAL
 ```
 
-The B2 admission gate rejects a stale B1 oracle such as B1.5p1.
+The B2 admission gate rejects stale B1 oracles, including B1.6 after B1.7 admission.
 
 ## Admission contract
 
 `tools/vq/b2_reference_gate.py` evaluates a machine-readable candidate record and fails closed unless all of the following are true:
 
-1. the B1 oracle is exactly the current qualified `B1.6` snapshot;
+1. the B1 oracle is exactly the current qualified `B1.7` snapshot;
 2. B2 is pinned to an exact 40-character Git commit SHA;
 3. the candidate status is `READY_FOR_VQ_B1_TO_B2`;
 4. an integrated callable reference entrypoint path is declared and exists on that checkout;
@@ -61,18 +61,18 @@ The gate intentionally does not prescribe the internal SWAP5 object layout. It o
 
 ## Current repository observation
 
-The production observation baseline contains no integrated production B2 entrypoint that VQ can honestly execute and pin. B1.6 admission changes legacy reference/tooling state only and does not create such a production seam.
+The production observation baseline contains no integrated production B2 entrypoint that VQ can honestly execute and pin. B1.7 admission changes legacy reference/tooling state only and does not create such a production seam.
 
 `tools/vq/cases/b2-reference-candidate.json` therefore states:
 
 ```text
-B1.6 corrected-reference oracle          PASS
+B1.7 corrected-reference oracle          PASS
 Integrated B2 callable entrypoint        ABSENT
 B2 reference-policy selector             ABSENT
 Canonical B2 result contract             ABSENT
 Unrounded B2 mass accounting             ABSENT
 Transaction diagnostics                  ABSENT
-B1.6 -> B2 numerical comparison          BLOCKED
+B1.7 -> B2 numerical comparison          BLOCKED
 ```
 
 No synthetic B2 result is generated and no legacy implementation is relabelled as B2.
@@ -82,7 +82,7 @@ No synthetic B2 result is generated and no legacy implementation is relabelled a
 `tools/vq/test_b2_reference_gate.py` covers:
 
 - an explicitly blocked candidate fails closed;
-- a stale B1.5p1 oracle fails after B1.6 admission;
+- a stale B1.6 oracle fails after B1.7 admission;
 - a nominally ready candidate without an integrated entrypoint fails;
 - a candidate missing a required capability fails;
 - a complete integrated fixture with all required fields/files passes admission.
@@ -96,10 +96,10 @@ This gate directly protects invariants 1, 2, 3, 7, 8, 9, 13, 23, 25, 26, 29 and 
 ## Qualification decision
 
 ```text
-B1.6 corrected-reference oracle               PASS
+B1.7 corrected-reference oracle               PASS
 VQ-1d adapter admission gate implementation   PASS
 B2 integrated target availability             BLOCKED
-B1.6 -> B2 numerical qualification            NOT STARTED / FAIL-CLOSED
+B1.7 -> B2 numerical qualification            NOT STARTED / FAIL-CLOSED
 ```
 
 This is the correct state until TX/HY/RT integrate a real reference-mode seam.
@@ -111,5 +111,5 @@ The production integration workstream supplies an actual callable SWAP5 referenc
 1. pins the exact B2 commit;
 2. updates `b2-reference-candidate.json` to `READY_FOR_VQ_B1_TO_B2` without weakening any capability requirement;
 3. reruns `tools/vq/b2_reference_gate.py`;
-4. only after a PASS executes the first B1.6 -> B2 control comparison;
+4. only after a PASS executes the first B1.7 -> B2 control comparison;
 5. subsequently adds VQ transaction, generic-time, warm-start and unrounded hard-mass qualification gates.
