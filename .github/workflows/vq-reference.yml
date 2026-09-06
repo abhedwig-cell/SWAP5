@@ -50,11 +50,37 @@ jobs:
       - name: Check SWAP-012 actual-source evidence binding
         run: python reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py
 
-      - name: Check VQ gate unit tests
+      - name: Check VQ contract and admission unit tests
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
-            tools.vq.test_b2_reference_gate
+            tools.vq.test_b2_result_contract \
+            tools.vq.test_b2_result_record \
+            tools.vq.test_b2_seam_contract \
+            tools.vq.test_b2_reference_gate \
+            tools.vq.test_tx_time_harness \
+            tools.vq.test_production_adapter_binding \
+            tools.vq.test_production_adapter_gate
+
+      - name: Check blocked B2 handoff evidence is current
+        run: |
+          python tools/vq/b2_reference_gate.py \
+            --candidate tools/vq/cases/b2-reference-candidate.json \
+            --evidence tools/vq/cases/b2-reference-gate-2026-09-06.json \
+            --allow-expected-blocked
+
+      - name: Check VQ-1e1 verifier harness evidence
+        run: |
+          python tools/vq/tx_time_harness.py \
+            --fixture-suite \
+            --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+
+      - name: Check VQ-1e2 production-adapter evidence
+        run: |
+          python tools/vq/production_adapter_gate.py \
+            --candidate tools/vq/cases/b2-production-adapter-candidate.json \
+            --evidence tools/vq/cases/vq-1e2-production-adapter-gate-2026-09-06.json \
+            --allow-expected-blocked
 
       - name: Check deterministic B1.9 reconstructor syntax
         run: python -m py_compile tools/vq/b1_9_reconstruct.py
