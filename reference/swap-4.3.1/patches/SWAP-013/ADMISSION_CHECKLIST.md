@@ -20,8 +20,10 @@
 | Expected-difference scope registered | PASS |
 | New immutable B1 snapshot | PASS |
 | Deterministic B1.8 source identity pinned | PASS |
-| Fail-closed B1.8 CI identity/admission gate | REQUIRED BEFORE MERGE |
+| Fail-closed B1.8 CI identity/admission gate | PASS |
+| Source-bound GNU Fortran guard gate in CI | PASS |
+| Strict documentation build | PASS |
 
 No physical equation, solver policy or mass tolerance is changed. The expected B1 difference is limited to earlier rejection of mathematically singular/invalid PDI input combinations.
 
-Current conclusion: **SWAP-013 is admitted as the eighth corrected-reference patch in immutable snapshot B1.8.** This conclusion becomes integrated repository state only after the B1.8 pull request passes the fail-closed CI gates and is merged to `main`.
+Current conclusion: **SWAP-013 is admitted as the eighth corrected-reference patch in immutable snapshot B1.8.** Integration to `main` is permitted only from the PR head for which these gates passed.
