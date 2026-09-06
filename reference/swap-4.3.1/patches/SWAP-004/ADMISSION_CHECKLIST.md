@@ -38,6 +38,7 @@ Status: **QUALIFIED CANDIDATE FOR B1.11; PENDING CI/MERGE**
 - [x] Human and machine-readable expected-difference ledgers updated.
 - [x] B2 handoff repinned to B1.11 while retaining fail-closed status.
 - [x] `run_mapping_gate.py` wired into VQ CI with B1.10 predecessor identity and B1.11 admission gate.
+- [x] Current `main` staging merge incorporated without changing candidate content.
 - [ ] Documentation CI PASS.
 - [ ] VQ reference qualification CI PASS.
 - [ ] Merge only after both CI gates are green.
