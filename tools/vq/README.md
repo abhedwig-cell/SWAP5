@@ -80,6 +80,16 @@ python tools/vq/b2_reference_gate.py \
 
 The fail-closed gate requires an exact B2 commit, integrated callable reference-mode entrypoint, explicit reference numerical policy, canonical result contract, generic `[t0,t1]`, committed physical state and forcing inputs, separate numerical configuration, unrounded mass accounting and transaction diagnostics.
 
+For a candidate marked `READY_FOR_VQ_B1_TO_B2`, VQ-1d2 additionally requires a machine-readable seam declaration conforming to `SWAP5-B2-reference-seam-v1`. The declaration is validated with:
+
+```bash
+python tools/vq/b2_seam_contract.py \
+  --repo-root /path/to/SWAP5-checkout \
+  --contract /path/to/integrated/reference-seam.json
+```
+
+The seam declaration binds the exact implementation commit, entrypoint and result-contract paths to reference-policy semantics, explicit parameters/state/forcing/numerical-config inputs, generic time, transaction rollback safety, unrounded hard mass accounting, runtime diagnostics and the absence of hidden kernel file/path/MODFLOW-tile/calendar dependencies. It is a verification acceptance surface, not a mandated internal object layout.
+
 The current candidate remains `BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT`. B1.6 admission changes legacy reference/tooling state only; it does not create the missing production B2 seam.
 
 ## Unrounded mass accounting
@@ -102,6 +112,7 @@ python -m unittest \
   tools.vq.test_b0_source_runner \
   tools.vq.test_b1_snapshot_identity \
   tools.vq.test_b1_reconstruct \
+  tools.vq.test_b2_seam_contract \
   tools.vq.test_b2_reference_gate
 ```
 
