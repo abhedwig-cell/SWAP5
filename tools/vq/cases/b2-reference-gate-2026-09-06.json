@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "workstream": "VQ",
-  "slice": "VQ-1d2",
+  "slice": "VQ-1d3",
   "observation_baseline": "5576279c915f4d4fbccf3ff182aa480306489080",
   "candidate_status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
   "b1_snapshot": "B1.6",
@@ -41,5 +41,5 @@
     "unrounded_mass_accounting",
     "transaction_diagnostics"
   ],
-  "interpretation": "Fail-closed VQ-1d2 result: B1.6 oracle, observation commit and stored evidence are synchronized. The candidate has no integrated SWAP5/B2 entrypoint, result contract or reference-seam declaration, so no B1.6-to-B2 numerical comparison is admitted."
+  "interpretation": "Fail-closed VQ-1d3 result: B1.6 oracle, observation commit and stored evidence are synchronized. The candidate has no integrated SWAP5/B2 entrypoint, semantic result contract or reference-seam declaration, so no B1.6-to-B2 numerical comparison is admitted."
 }
