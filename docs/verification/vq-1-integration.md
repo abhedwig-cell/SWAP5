@@ -1,7 +1,7 @@
 # VQ-1 integration record
 
 **Workstream:** VQ  
-**Current reference-line re-read:** `0fbcb17ddf93762fc256de6c38f511eadfd01eb4`  
+**Latest main re-read:** `d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5`  
 **Current B1 candidate:** `B1.5p1`  
 **Production code changed:** no
 
@@ -85,28 +85,56 @@ The identity is unchanged for reference, normal, relaxed and fallback execution.
 
 `TIME-00`, `TIME-06`, `TIME-18`, `TIME-36` and `TIME-SPLIT` test midnight control, non-midnight starts, sub-day/cross-midnight windows, non-day windows and equivalent split/unsplit intervals. The target contract is generic `[t0,t1]`.
 
-## VQ-1c: B1 provenance repair and independent repin
+## VQ-1c1: B1 provenance repair and independent repin
 
-VQ previously rejected historical B1.2-B1.5 as exact oracles because their immutable metadata did not identify all stored patch bytes and canonical B0 preimages correctly. The reference line correctly retained those snapshots and published `B1.5p1` as a new provenance-repair snapshot with no intended numerical change.
+Historical B1.2-B1.5 remain immutable failed-oracle records. The reference line published `B1.5p1` as a provenance-repair snapshot without changing the intended five corrections.
 
-VQ independently pins:
-
-```text
-B1.5p1 snapshot Git blob: 8980a975f4a8183bd216f03d868657568b5317d4
-B0 member-manifest Git blob: be8862be45415e49fc366f98d9de76c8b14b1fae
-B0 source archive SHA-256: 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
-```
-
-All five stored patch SHA-256 values match B1.5p1, and all five declared target preimages match the canonical B0 member manifest. The strengthened `tools/vq/b1_snapshot_identity.py` checks snapshot identity, B0 member-manifest identity, patch bytes and B0 preimages fail-closed.
+The strengthened `tools/vq/b1_snapshot_identity.py` pins the snapshot blob, canonical B0 member-manifest blob, every stored patch SHA-256 and every declared B0 target preimage.
 
 ```text
 B1.5p1 exact identity gate: PASS
-B0 -> B1.5p1 numerical qualification: NEXT GATE
 ```
 
 Detailed evidence is `docs/verification/vq-1c-b1.5p1-evidence.md`.
 
-This PASS does not yet claim numerical B0/B1 equivalence. The audit patch files are text artifacts whose line endings need a deterministic byte-aware application contract before corrected-target and executable comparisons are admitted.
+## VQ-1c2: deterministic reconstruction and first numerical edges
+
+`tools/vq/b1_reconstruct.py` now reconstructs B1.5p1 directly from the exact B0 distribution without editing B0 in place.
+
+All five corrected targets reproduce the snapshot-declared SHA-256 exactly:
+
+```text
+SWAP-001  PASS
+SWAP-005  PASS
+SWAP-006  PASS
+SWAP-007  PASS
+SWAP-008  PASS
+```
+
+The full reconstructed source tree has a new explicit VQ identity:
+
+```text
+members            63
+source bytes        1,860,109
+manifest SHA-256    c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30
+```
+
+Two first B0 -> B1 control edges were then executed on the same provisional GNU path:
+
+1. official `2.grassgrowth`, 1980-1984: normal completion for both; normalized `result_output.csv` is byte-identical with SHA-256 `0a7025b72abbb524760107ca1f0309d8e241a7aa2830bb983afe9245730dec7e`;
+2. Hupselbrook with the same symmetric output-only `SWCSV=0` GNU compatibility variant: normal completion for both; normalized `.BAL` and `.BLC` are byte-identical.
+
+These edges contain no unexplained difference and require no expected-difference entry. They are control-path qualification only. They do not yet exercise every admitted B1 defect.
+
+Detailed evidence is `docs/verification/vq-1c2-b1.5p1-reconstruction.md` and the machine-readable record is `tools/vq/cases/b1-5p1-reconstruction-2026-09-06.json`.
+
+```text
+B1.5p1 identity/provenance                 PASS
+B1.5p1 deterministic reconstruction        PASS
+all corrected-target hashes                PASS
+first B0 -> B1 control edges               PASS
+B1.5p1 global numerical oracle             NOT YET FULLY QUALIFIED
+```
 
 ## Expected differences
 
@@ -119,13 +147,13 @@ WORKSTREAM
 VQ
 
 BASELINE
-current reference-line re-read: 0fbcb17ddf93762fc256de6c38f511eadfd01eb4
+latest main re-read: d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5
 
 SCOPE
-Independent B0/B1/B2 verification infrastructure, B0 regression hardening, unrounded mass-accounting contract and B1.5p1 identity qualification.
+Independent B0/B1/B2 verification infrastructure, B0 regression hardening, B1.5p1 identity and deterministic reconstruction, first B0->B1 control edges, and unrounded mass-accounting contract.
 
 COMPONENTS/FILES TOUCHED
-docs/verification, tools/vq, documentation navigation and VQ workstream status only.
+docs/verification, tools/vq and verification documentation navigation only.
 
 INTERFACES CHANGED
 No production interface. Verification interchange contracts only.
@@ -134,11 +162,11 @@ INVARIANTS AFFECTED
 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 23, 24, 25, 26, 28, 29, 30.
 
 TEST/QUALIFICATION STATUS
-B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. B1.5p1 exact identity PASS. Numerical B0->B1.5p1 comparison not yet executed.
+B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. B1.5p1 exact identity PASS. Deterministic B1.5p1 reconstruction PASS. First two B0->B1 control edges PASS with no numerical difference. Defect-triggering B1 qualification remains pending.
 
 DEPENDENCIES / REQUIRED INTEGRATION
-Deterministic byte-aware B1.5p1 patch application; integrated B2 reference entry point; callable TX transaction boundary; TX/HY/runtime mapping to unrounded accounting.
+Targeted qualification cases for admitted B1 corrections; integrated B2 reference entry point; callable TX transaction boundary; TX/HY/runtime mapping to unrounded accounting.
 
 NEXT SAFE STEP
-Implement the B1.5p1 application adapter from exact B0, verify each corrected target SHA-256, then execute the first B0 -> B1 numerical comparison using the expected-difference ledger. In parallel, TX/HY/runtime may map result objects to the VQ mass-accounting contract without changing its physical identity.
+Exercise the admitted corrections intentionally in targeted B0->B1 cases, register every expected difference, and retain fail-closed accounting/reference gates. Only then promote B1.5p1 from control-qualified source oracle to broadly qualified numerical B1 oracle for B2 comparison.
 ```
