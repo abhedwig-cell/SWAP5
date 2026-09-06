@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/vq/mass-accounting-record.schema.json",
+  "title": "SWAP5 VQ normalized mass-accounting record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "component_id",
+    "column_or_tile_id",
+    "interval",
+    "amount_unit",
+    "area_basis",
+    "accounting_scope",
+    "storage",
+    "boundary_terms",
+    "execution_class",
+    "qualification_context"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "component_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "column_or_tile_id": {
+      "type": ["string", "integer"]
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["t0", "t1"],
+      "properties": {
+        "t0": {
+          "type": ["number", "string"]
+        },
+        "t1": {
+          "type": ["number", "string"]
+        },
+        "time_basis": {
+          "type": "string"
+        }
+      }
+    },
+    "amount_unit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "area_basis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accounting_scope": {
+      "type": "string",
+      "enum": ["trial", "committed"]
+    },
+    "trial_id": {
+      "type": ["string", "integer", "null"]
+    },
+    "accepted_trial_id": {
+      "type": ["string", "integer", "null"]
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start_total", "end_total"],
+      "properties": {
+        "start_total": {
+          "type": "number"
+        },
+        "end_total": {
+          "type": "number"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/storage_component"
+          }
+        }
+      }
+    },
+    "boundary_terms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/boundary_term"
+      }
+    },
+    "reported_residual": {
+      "type": ["number", "null"]
+    },
+    "execution_class": {
+      "type": "string",
+      "minLength": 1
+    },
+    "qualification_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_mode", "tolerance_qualification_id"],
+      "properties": {
+        "reference_mode": {
+          "type": "boolean"
+        },
+        "tolerance_qualification_id": {
+          "type": ["string", "null"]
+        },
+        "source_identity": {
+          "type": ["string", "null"]
+        },
+        "case_id": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "storage_component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["term_id", "start_amount", "end_amount"],
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_amount": {
+          "type": "number"
+        },
+        "end_amount": {
+          "type": "number"
+        }
+      }
+    },
+    "boundary_term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["term_id", "interface_id", "signed_amount", "classification"],
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "interface_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signed_amount": {
+          "type": "number"
+        },
+        "classification": {
+          "type": "string",
+          "enum": ["external", "internal_diagnostic"]
+        }
+      }
+    }
+  }
+}
