@@ -159,7 +159,9 @@ A production discrepancy discovered by this harness must be handed to the owning
 
 ## Next safe step
 
-`VQ-1c` should separate two concerns:
+Continue **VQ-1b hardening** without changing the numbered integration sequence:
 
-1. close the B0 runner provenance gap by obtaining a runnable native Intel environment or by cross-qualifying the exact-source runner on additional official cases;
-2. define the unrounded mass-accounting result contract that B2 must expose, without changing production code until the owning implementation workstream accepts the integration point.
+1. close the B0 runner provenance gap either with a runnable native Intel environment or by cross-qualifying the exact-source GNU runner on additional official B0 cases;
+2. draft the unrounded mass-accounting result contract that B2 must expose and hand that contract to the owning implementation workstream before any production-interface change.
+
+`VQ-1c` remains the **formal B1 pin** defined in `vq-1-bootstrap.md`. It starts only after `abhedwig-cell/SWAP-4.3.1-reference` is seeded and an immutable B1 tag and commit exist.
