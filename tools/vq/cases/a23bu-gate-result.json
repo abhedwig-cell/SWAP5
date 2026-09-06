@@ -1,0 +1,79 @@
+{
+  "a23bt_process_cursor_payload_bytes": 36,
+  "gates": {
+    "irrigation_cursor_negative_control": "PASS",
+    "process_event_workspace_poison": "PASS",
+    "process_state_source_audit": "PASS",
+    "transaction_regression_o0_o2": "PASS",
+    "trial_output_suppression": "PASS",
+    "worker_isolation_8x1000": "PASS"
+  },
+  "holds": [
+    "legacy irrigation event workspace still module-global during serialized execution",
+    "scheduled irrigation dynamic qualification pending",
+    "sub-day irrigation event boundaries pending",
+    "crop/WOFOST process continuation pending"
+  ],
+  "jacobian": {
+    "block_sha256": "9ba4ada31fe629a006d47f30d77b8c6f8a200b232a91483b31735a6b53fb38cb",
+    "unchanged": true
+  },
+  "model_configuration_fields": [
+    "irrigation_enabled",
+    "crop_calendar_enabled"
+  ],
+  "negative_control": {
+    "corrupted_nirri": 2,
+    "corrupted_storage_cm": 74.95509616593914,
+    "physically_relevant": true,
+    "reference_storage_cm": 77.01171067220464,
+    "seed_nirri": 1
+  },
+  "parent": "A23BT",
+  "persistent_process_cursor_fields": [
+    "nirri",
+    "dayfix"
+  ],
+  "physical": {
+    "accepted_storage_cm": 77.01171067220464,
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "gate_log_sha256": "416b78c4bf1a4840b4e0e0c03b198e91cab20583ca9f1054961e2f0edd4f3347",
+    "internal_retries_accepted": 10,
+    "internal_retries_total": 20,
+    "mass_limit_cm": 1e-06,
+    "mass_pass": true,
+    "mass_residual_cm": -1.7872350177583485e-07,
+    "newton_accepted": 478,
+    "newton_total": 956,
+    "o0_o2_logs_identical": true
+  },
+  "physics_changed": false,
+  "process_cursor_payload_bytes": 8,
+  "reconstructible_event_workspace": [
+    "irrigevent",
+    "gird",
+    "isua",
+    "cirr",
+    "nird",
+    "dt_irr_event",
+    "qssdi",
+    "qssdisum"
+  ],
+  "reduction_bytes_per_column": 28,
+  "reduction_fraction": 0.7777777777777778,
+  "reference": "B1.6 Hupsel Jan 4-5 2002",
+  "selective_step_doubling_changed": false,
+  "sha256": {
+    "component": "dbb2975e51bc989e11ad1d844832132538169ca02d7fa7e0a3458085597ddd1e",
+    "gate_script": "366e72aa862026f56231d7e7aa9bd5169158d6f3e326fc32df2689e748a4008a",
+    "physical_test": "3e92b174e69a3bf704d3e90a38f031e7f01e5bb3905d1736dc24aea59a9567ff",
+    "transaction_log": "8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548",
+    "transformer": "6f35f28e63a7946892d407aa5490669a82ec09060f003c8757ac56fa29db80e5",
+    "worker_context": "08217e2c7eff01c28022e06d22d89b96a3777bc5f7beca285f7dad3464fbedc2",
+    "worker_log": "3f01cf842699ad711a2d73e3c3d167dcac7adc40a8e4f4deb01e047a6bc05b37"
+  },
+  "solver_policy_changed": false,
+  "status": "PASS_IRRIGATION_CONTINUATION_MINIMIZATION_EVENT_WORKSPACE_RECONSTRUCTIBLE_LEGACY_EVENT_GLOBALS_REMAIN_SERIAL_BACKEND",
+  "top_jacobian_route_changed": false,
+  "work_unit": "A23BU"
+}
