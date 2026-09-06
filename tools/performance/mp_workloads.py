@@ -15,7 +15,6 @@ ALLOWED_STATUS = {
     "template-blocked",
     "ready",
 }
-ALLOWED_REFERENCE_LEVELS = {"B0", "B1.1", "SWAP5-reference"}
 B12_ROW = "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0"
 B12_ROW_SHA256 = "8f6b214ba7894dd49be927c9384a80168f0ad05fabeb48b2f8d1330ef916e59e"
 B12_PARAMETERS = {
@@ -30,6 +29,15 @@ B12_PARAMETERS = {
 }
 
 
+def _valid_reference_level(reference: object) -> bool:
+    if reference in {"B0", "SWAP5-reference"}:
+        return True
+    if not isinstance(reference, str) or not reference.startswith("B1."):
+        return False
+    suffix = reference[3:]
+    return suffix.isdigit() and int(suffix) >= 0
+
+
 def load_catalog(path: str | Path) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
@@ -38,6 +46,15 @@ def validate_catalog(catalog: Mapping[str, Any]) -> list[str]:
     errors: list[str] = []
     if catalog.get("schema_version") != SCHEMA_VERSION:
         errors.append("unexpected schema_version")
+
+    policy = catalog.get("reference_policy", {})
+    if policy.get("immutable_legacy") != "B0":
+        errors.append("reference_policy.immutable_legacy must be B0")
+    corrected = policy.get("corrected_legacy")
+    if not _valid_reference_level(corrected) or not str(corrected).startswith("B1."):
+        errors.append("reference_policy.corrected_legacy must be an exact B1 snapshot")
+    if policy.get("swap5_reference") != "SWAP5-reference":
+        errors.append("reference_policy.swap5_reference must be SWAP5-reference")
 
     workloads = catalog.get("workloads")
     if not isinstance(workloads, list) or not workloads:
@@ -74,7 +91,11 @@ def validate_catalog(catalog: Mapping[str, Any]) -> list[str]:
         if not isinstance(references, list) or not references:
             errors.append(f"{where}.reference_levels must be non-empty")
         else:
-            unknown = sorted(set(references) - ALLOWED_REFERENCE_LEVELS)
+            unknown = sorted(
+                reference
+                for reference in references
+                if not _valid_reference_level(reference)
+            )
             if unknown:
                 errors.append(
                     f"{where}.reference_levels contains unknown values: {unknown}"
