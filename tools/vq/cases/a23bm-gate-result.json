@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BM",
+  "status": "PASS_PHYSICAL_LEGACY_REFERENCE_BRIDGE_NATIVE_IN_MEMORY_PHYSICS_PENDING",
+  "baseline_branch": "integration/a23bk-transactional-rebase",
+  "a23bl_source_sha256": "004dcfd9d4efaf5d181f46e1626fd1accad34b0d85723cbecbe253f09d1f37b5",
+  "reference": {
+    "snapshot": "B1.6",
+    "source_member_count": 63,
+    "source_bytes": 1860085,
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "gnu_executable_sha256": "bf4414900c88f9f599ddce4631956bcef1551f746ebf59c93ba92dc45d6e82f6",
+    "fixture": "SWAP_4.3.1/cases/1.hupselbrook",
+    "hard_mass_criterion_cm": 1e-06
+  },
+  "restart_identity": {
+    "seed_2002_01_01_to_03_sha256": "3338113c655aca39e862130e01ba0ee0350125bb2323d37872c6f67168dd74da",
+    "day_2002_01_04_sha256": "32081143a66dbd36e8eea790d10f8aa187ee478beace7818035da9f020617fe5",
+    "direct_2002_01_01_to_05_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "split_run_final_equals_direct_bytes": true,
+    "full_equals_two_half_final_bytes": true,
+    "output_observer_on_off_final_bytes_equal": true
+  },
+  "physical_segment_2002_01_04_to_05": {
+    "storage_initial_cm": 75.02596,
+    "storage_final_cm": 77.01171,
+    "physical_flux_in_cm": 2.4,
+    "physical_flux_out_cm": 0.41425,
+    "legacy_balance_residual_cm": 1.78629e-07,
+    "mass_gate": "PASS"
+  },
+  "gates": {
+    "b1_6_exact_reconstruction": "PASS",
+    "gnu_reference_build": "PASS",
+    "binary_restart_split_identity": "PASS",
+    "measurement_output_non_interference": "PASS",
+    "a23bl_real_physics_normal_o0": "PASS",
+    "a23bl_real_physics_normal_o2": "PASS",
+    "a23bl_real_physics_retry_no_leak_o0": "PASS",
+    "a23bl_real_physics_retry_no_leak_o2": "PASS",
+    "hard_mass_gate": "PASS"
+  },
+  "limitations": [
+    "external file/process VQ bridge, not native in-memory production adapter",
+    "integer-day adapter windows only",
+    "retry rejection injected at adapter level, not a natural HeadCalc failure",
+    "per-Newton iteration counts not exposed",
+    "B12 not qualified",
+    "selective step-doubling not qualified"
+  ],
+  "physics_changed": false,
+  "top_jacobian_route_changed": false,
+  "selective_step_doubling_changed": false
+}
