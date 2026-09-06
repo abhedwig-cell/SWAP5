@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BK",
+  "status": "HISTORICAL_LINEAGE_INCOMPLETE_NEW_BASELINE_REQUIRED",
+  "baseline_branch": "integration/a23bk-transactional-rebase",
+  "baseline_parent_commit": "2d05eeab9d766d51bc7c436ea1e45f9b49940e92",
+  "reference_oracle": {
+    "snapshot": "B1.6",
+    "integration_commit": "5576279c915f4d4fbccf3ff182aa480306489080",
+    "oracle_status": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_6_source_member_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"
+  },
+  "historical_lineage_gaps": [
+    {"path": "mod_step_doubling.f90", "evidence": "PATCH_STAGE_EVIDENCE"},
+    {"path": "mod_time_step_decision.f90", "evidence": "PATCH_STAGE_EVIDENCE"},
+    {"path": "mod_transaction_commit_contract.f90", "evidence": "PATCH_STAGE_EVIDENCE"},
+    {"path": "mod_bare_transaction_legacy_adapter.f90", "evidence": "PATCH_STAGE_EVIDENCE_P08_P17_P18"},
+    {"path": "mod_trial_execution_status.f90", "evidence": "PATCH_STAGE_EVIDENCE"},
+    {"path": "mod_solver_retry_decision.f90", "evidence": "PATCH_STAGE_EVIDENCE_P11_P18"},
+    {"path": "mod_bare_trial_attempt_legacy_adapter.f90", "evidence": "PATCH_STAGE_EVIDENCE_P12"}
+  ],
+  "decision": {
+    "historical_reconstruction_for_production": "CLOSED",
+    "patch_stage_evidence_may_be_promoted_to_current_source": false,
+    "complete_source_postimages_required_in_git": true,
+    "exact_patch_postimage_requires_pinned_parent_and_verified_result_hash": true,
+    "mass_conservation_hard_gate": true,
+    "rejected_trials_may_mutate_committed_physical_state": false,
+    "top_jacobian_route_changed": false,
+    "physics_changed": false,
+    "solver_policy_changed": false
+  },
+  "retained_evidence_scope": [
+    "focused transaction rollback/retry qualifications",
+    "complete independently retained source files",
+    "exact postimages derived from complete patches with pinned preimages",
+    "transaction ownership and interface contracts",
+    "A23BH selective-step-doubling focused controller evidence",
+    "A23BI offline reference-screen evidence",
+    "A23BJ materialization and trace-seam evidence"
+  ],
+  "production_holds": [
+    "A23BH selective step-doubling production accuracy",
+    "integrated always-sampled step-doubling reference path",
+    "representative complete B12 difficult-column fixtures",
+    "full integrated O2 step-doubling and water-balance regression"
+  ],
+  "next_slice": {
+    "id": "A23BL",
+    "goal": "materialize the first canonical always-sampled transactional reference source set on the new Git baseline from complete provenance-qualified source only",
+    "selective_step_doubling_change_allowed": false
+  }
+}
