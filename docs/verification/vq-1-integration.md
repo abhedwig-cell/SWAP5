@@ -1,47 +1,38 @@
 # VQ-1 integration record
 
 **Workstream:** VQ  
-**Clean integration branch baseline:** `ce280e110c637a087d2a1aabd70fca5f1d494e48`  
-**Latest main re-read during integration:** `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443`  
-**Integration branch:** `vq/vq-1-integration`  
+**Current reference-line re-read:** `0fbcb17ddf93762fc256de6c38f511eadfd01eb4`  
+**Current B1 candidate:** `B1.5p1`  
 **Production code changed:** no
 
 ## Purpose
 
-VQ provides an independent verification and reference-qualification layer for the immutable SWAP 4.3.1 audit baseline (`B0`), the corrected SWAP 4.3.1 reference lineage (`B1`) and SWAP5 reference mode (`B2`).
-
-The VQ layer may build reference executables, translate legacy output and evaluate qualification gates, but it does not repair production physics and does not become a hidden production execution path.
+VQ provides an independent verification and reference-qualification layer for immutable SWAP 4.3.1 audit baseline `B0`, corrected reference `B1` and SWAP5 reference mode `B2`. Verification adapters may build legacy references and normalize output, but they do not repair production physics or become a production execution path.
 
 ## Minimum harness
 
-The integrated VQ harness separates six responsibilities:
-
 | Layer | Responsibility |
 | --- | --- |
-| Reference identity | prove exact B0/B1/B2 source or artifact identity before outputs are admitted |
-| Runner adapter | invoke a pinned reference implementation outside the SWAP5 kernel |
-| Case record | pin inputs, interval, runner capability and any explicit qualification-only variant |
-| Canonical result adapter | expose comparable state/accounting data instead of relying on arbitrary text diffs |
-| Qualification gates | evaluate reference equivalence, mass accounting and transaction properties |
-| Difference registry | require every accepted B0/B1/B2 difference to be explicitly classified |
+| Reference identity | prove exact B0/B1/B2 source or artifact identity before use |
+| Runner adapter | invoke pinned references outside the SWAP5 kernel |
+| Case record | pin inputs, interval, capability and explicit qualification variants |
+| Canonical result adapter | expose comparable state/accounting fields |
+| Qualification gates | enforce reference, mass and transactional properties |
+| Difference registry | classify every admitted B0/B1/B2 difference |
 
-An unexplained difference fails qualification. A confirmed B0 bug is not recreated in B2 merely for compatibility.
+Unexplained differences fail. Confirmed B0 defects are not recreated in B2 for compatibility.
 
 ## Reference chain
 
 ```text
 B0 exact immutable audit baseline
-  -> B1 exact provenance-qualified corrected snapshot
+  -> B1 exact corrected reference
   -> B2 exact SWAP5 reference-mode commit
 ```
 
-B0 is controlled by the documented distribution and source hashes. A B1 snapshot is usable as an oracle only when every declared patch artifact and B0 preimage passes the VQ identity gate. B2 comparisons must pin the exact qualified B1 snapshot and exact SWAP5 commit.
-
 ## VQ-1a: B0 identity
 
-`tools/vq/reference_identity.py` fails closed unless a supplied distribution matches the exact B0 size and SHA-256 in `docs/verification/reference-baseline.json`.
-
-The archive used for VQ evidence matches:
+`tools/vq/reference_identity.py` fails closed unless the candidate archive matches the documented B0 size and SHA-256.
 
 ```text
 size    8,959,314 bytes
@@ -50,34 +41,26 @@ sha256  2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360
 
 ## VQ-1b: B0 execution and regression
 
-The packaged Linux Intel executable cannot run in the current VQ environment because `libimf.so` is unavailable. VQ therefore has a provisional exact-source GNU Fortran runner. This runner is capability-limited and is **not** declared equivalent to the packaged Intel executable.
+The packaged Linux Intel executable is blocked in the current environment by missing `libimf.so`. VQ therefore has a provisional exact-source GNU Fortran runner. It is capability-limited and is not globally declared equivalent to the packaged Intel executable.
 
-Current case-specific evidence is stored in:
+Case-specific evidence is stored in `tools/vq/cases/b0-official-case-rerun-2026-09-06.json`.
 
-```text
-tools/vq/cases/b0-official-case-rerun-2026-09-06.json
-```
+Current evidence:
 
-Key results:
-
-- full official grass-growth case: repeatable PASS on the provisional GNU path;
-- Hupselbrook balance-only variant: package-published 2002 water balance reproduced at legacy report precision;
-- full official macropore case: not yet qualified within the bounded VQ execution window; no model failure inferred;
-- 31-day macropore execution-path variant: repeatable PASS;
-- salinity scenarios: provisional process-path PASS after explicit output-only workaround; official R preprocessing remains unavailable in the current environment;
-- GNU vector CSV metadata path: unqualified portability limitation, not a confirmed B0 model defect.
+- official full grass-growth case: repeatable PASS;
+- Hupselbrook balance-only variant: published 2002 water balance reproduced at legacy precision;
+- full official macropore case: not yet qualified within bounded VQ runtime, with no model failure inferred;
+- 31-day macropore process-path variant: repeatable PASS;
+- salinity process path: provisional PASS after explicit output-only workaround; official R preprocessing remains unavailable;
+- GNU vector-CSV metadata path: unqualified portability limitation, not a confirmed B0 physical defect.
 
 ## Legacy balance boundary
 
-`tools/vq/balance.py` normalizes `.BAL` and `.BLC` output for regression use. These reports expose values at only `0.01 cm` precision.
-
-They therefore provide regression/accounting evidence only. They cannot satisfy the hard SWAP5 mass-conservation gate.
+`tools/vq/balance.py` normalizes `.BAL` and `.BLC` for regression. These files expose water values at `0.01 cm` precision and therefore cannot satisfy the hard invariant-13 mass gate.
 
 ## Hard mass-accounting contract
 
-`docs/verification/mass-accounting-contract.md` and `tools/vq/contracts/mass-accounting-record.schema.json` define the VQ-side unrounded accounting contract.
-
-VQ independently recomputes:
+`docs/verification/mass-accounting-contract.md` and `tools/vq/contracts/mass-accounting-record.schema.json` define the unrounded VQ interchange record.
 
 ```text
 delta_storage = end_storage - start_storage
@@ -85,65 +68,49 @@ net_external  = sum(signed interval-integrated external water terms)
 residual      = delta_storage - net_external
 ```
 
-The same identity applies to reference, normal, relaxed and fallback execution. Performance policy may not weaken mass conservation.
+The identity is unchanged for reference, normal, relaxed and fallback execution. Performance policy may not weaken mass conservation.
 
 ## Transactional qualification set
 
-| ID | Property | Blocking condition |
-| --- | --- | --- |
-| `TX-ROLLBACK-01` | rejected trial rollback | committed state/accounting changes after rejection |
-| `TX-COMMIT-01` | accepted endpoint commit | committed endpoint differs from accepted trial endpoint outside qualified tolerance |
-| `TX-ACCOUNT-01` | exactly-once accounting | rejected-trial fluxes enter committed totals or accepted fluxes are double-counted |
-| `TX-RERUN-01` | same-state rerun | identical committed physical start and inputs yield a non-qualified physical difference |
-| `TX-BC-REPLAY-01` | changed-boundary replay | replay cannot begin from the identical committed physical state |
-| `TX-WARM-01` | warm-start independence | changing/removing numerical warm-start data changes the accepted physical result outside qualified tolerance |
-
-These gates remain specified until an integrated B2/TX interface exposes the required state and accounting data.
+| ID | Property |
+| --- | --- |
+| `TX-ROLLBACK-01` | rejected trials leave committed state/accounting unchanged |
+| `TX-COMMIT-01` | committed endpoint equals accepted trial endpoint within qualified representation tolerance |
+| `TX-ACCOUNT-01` | rejected-trial fluxes never enter committed totals and accepted terms commit exactly once |
+| `TX-RERUN-01` | identical committed state and inputs reproduce the physical result within qualification tolerance |
+| `TX-BC-REPLAY-01` | changed boundaries can replay from the identical committed physical state |
+| `TX-WARM-01` | numerical warm-start differences do not change the accepted physical result outside tolerance |
 
 ## Generic-time qualification set
 
-| ID | Interval |
-| --- | --- |
-| `TIME-00` | midnight-to-midnight control |
-| `TIME-06` | non-midnight six-hour interval |
-| `TIME-18` | eighteen-hour interval crossing midnight |
-| `TIME-36` | non-day interval crossing calendar boundaries |
-| `TIME-SPLIT` | equivalent split versus unsplit interval where no physical event changes the contract |
+`TIME-00`, `TIME-06`, `TIME-18`, `TIME-36` and `TIME-SPLIT` test midnight control, non-midnight starts, sub-day/cross-midnight windows, non-day windows and equivalent split/unsplit intervals. The target contract is generic `[t0,t1]`.
 
-The kernel qualification target is generic `[t0,t1]`; day boundaries are not assumed fundamental.
+## VQ-1c: B1 provenance repair and independent repin
 
-## VQ-1c: current B1.5 provenance gate
+VQ previously rejected historical B1.2-B1.5 as exact oracles because their immutable metadata did not identify all stored patch bytes and canonical B0 preimages correctly. The reference line correctly retained those snapshots and published `B1.5p1` as a new provenance-repair snapshot with no intended numerical change.
 
-`main` advanced during this integration from B1.4 to B1.5. VQ therefore re-read and pinned B1.5 at commit `3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443` rather than treating the earlier B1.4 conclusion as current.
-
-B1.5 adds SWAP-008 on top of B1.4. Exact stored patch bytes give:
-
-| Patch | Snapshot-declared SHA-256 | Observed stored patch | Gate |
-| --- | --- | --- | --- |
-| SWAP-001 | `6dd75db2...5770` | same | PASS |
-| SWAP-005 | `9c3839ac...8e66` | `243720f5...553` | FAIL |
-| SWAP-006 | `558eb084...718a` | `4530d489...5b2f` | FAIL |
-| SWAP-007 | `e65b703b...5b96` | `3ac9580b...f5f0` | FAIL |
-| SWAP-008 | `8f97ff20...4f4c` | same | PASS |
-
-SWAP-007 additionally declares a B0 `SWAP/oxygenstress.f90` preimage hash that does not match canonical B0. The new SWAP-008 patch and its B0 `SWAP/tridag.f90` preimage both match exactly.
-
-Therefore:
+VQ independently pins:
 
 ```text
-B1.5 exact oracle pin: FAIL
-B0 -> B1.5 numerical qualification: BLOCKED
+B1.5p1 snapshot Git blob: 8980a975f4a8183bd216f03d868657568b5317d4
+B0 member-manifest Git blob: be8862be45415e49fc366f98d9de76c8b14b1fae
+B0 source archive SHA-256: 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
 ```
 
-The failure is inherited reference provenance in SWAP-005/006/007, not the newly admitted SWAP-008 artifact. Detailed evidence is in `docs/verification/vq-1c-b1.5-evidence.md` and GitHub issue #19.
+All five stored patch SHA-256 values match B1.5p1, and all five declared target preimages match the canonical B0 member manifest. The strengthened `tools/vq/b1_snapshot_identity.py` checks snapshot identity, B0 member-manifest identity, patch bytes and B0 preimages fail-closed.
 
-Published B1 snapshots are immutable by policy, so VQ does not silently rewrite B1.3/B1.4/B1.5 to make hashes agree.
+```text
+B1.5p1 exact identity gate: PASS
+B0 -> B1.5p1 numerical qualification: NEXT GATE
+```
+
+Detailed evidence is `docs/verification/vq-1c-b1.5p1-evidence.md`.
+
+This PASS does not yet claim numerical B0/B1 equivalence. The audit patch files are text artifacts whose line endings need a deterministic byte-aware application contract before corrected-target and executable comparisons are admitted.
 
 ## Expected differences
 
-`docs/verification/expected-differences.json` defines the machine-readable comparison edges and required fields. The authoritative legacy admission history remains `docs/verification/legacy-differences.md`.
-
-`OBSERVED` alone is never an expected passing difference.
+`docs/verification/expected-differences.json` defines comparison edges and required records. `OBSERVED` alone is never an expected passing difference. The legacy admission history remains authoritative in `docs/verification/legacy-differences.md`.
 
 ## Workstream handoff
 
@@ -152,11 +119,10 @@ WORKSTREAM
 VQ
 
 BASELINE
-clean integration branch from ce280e110c637a087d2a1aabd70fca5f1d494e48
-latest main re-read: 3fe22ac2ac5c16fac015c8bee3d46cec6e7ba443
+current reference-line re-read: 0fbcb17ddf93762fc256de6c38f511eadfd01eb4
 
 SCOPE
-Independent B0/B1/B2 verification infrastructure, B0 regression hardening, unrounded mass-accounting contract and fail-closed B1 provenance gate.
+Independent B0/B1/B2 verification infrastructure, B0 regression hardening, unrounded mass-accounting contract and B1.5p1 identity qualification.
 
 COMPONENTS/FILES TOUCHED
 docs/verification, tools/vq, documentation navigation and VQ workstream status only.
@@ -168,11 +134,11 @@ INVARIANTS AFFECTED
 7, 8, 9, 10, 11, 12, 13, 17, 18, 19, 23, 24, 25, 26, 28, 29, 30.
 
 TEST/QUALIFICATION STATUS
-B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. Current B1.5 provenance gate FAIL, so numerical B0->B1 qualification is blocked.
+B0 identity PASS. Case-specific B0 regression evidence recorded. Hard mass contract defined but not yet exposed by B2. B1.5p1 exact identity PASS. Numerical B0->B1.5p1 comparison not yet executed.
 
 DEPENDENCIES / REQUIRED INTEGRATION
-Provenance-correct immutable B1 snapshot; integrated B2 reference entry point; callable TX transaction boundary; TX/HY/runtime mapping to unrounded accounting.
+Deterministic byte-aware B1.5p1 patch application; integrated B2 reference entry point; callable TX transaction boundary; TX/HY/runtime mapping to unrounded accounting.
 
 NEXT SAFE STEP
-Reference-line work resolves issue #19 by creating a provenance-correct immutable B1 snapshot. VQ then reruns the exact identity gate before any numerical B0->B1 comparison. In parallel, TX/HY/runtime may map proposed result objects to the VQ mass-accounting contract without changing the contract's physical identity.
+Implement the B1.5p1 application adapter from exact B0, verify each corrected target SHA-256, then execute the first B0 -> B1 numerical comparison using the expected-difference ledger. In parallel, TX/HY/runtime may map result objects to the VQ mass-accounting contract without changing its physical identity.
 ```
