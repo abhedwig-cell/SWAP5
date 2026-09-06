@@ -11,13 +11,18 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.5p1"
-  status: "CORRECTED_REFERENCE_PROVENANCE_REPAIRED"
-  oracle_status: "PENDING_VQ_IDENTITY_GATE"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.5p1.yml"
-  supersedes_snapshot: "B1.5"
-  numerical_change_from_superseded_snapshot: false
-  description: "Provenance-repaired definition of the five-fix corrected SWAP 4.3.1 reference. Historical B1.2-B1.5 metadata remain untouched; independent VQ repinning is required before use as an exact executable oracle."
+  snapshot: "B1.6"
+  status: "CORRECTED_REFERENCE"
+  oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.6.yml"
+  supersedes_snapshot: "B1.5p1"
+  numerical_change_from_superseded_snapshot: true
+  description: "VQ-qualified corrected SWAP 4.3.1 reference adding the admitted SWAP-009 PDI Kelvin-sign correction to the provenance-repaired B1.5p1 oracle."
+  source_tree:
+    member_count: 63
+    source_bytes: 1860085
+    member_manifest_sha256: "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"
+    reconstruction: "tools/vq/b1_6_reconstruct.py"
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -40,6 +45,10 @@ b1:
       patch_path: "reference/swap-4.3.1/patches/SWAP-008/fix.patch"
       patch_sha256: "8f97ff20e63a7765bfe8e225e2682029bafadc0eeb80ad0e4ce1564fb8c94f4c"
       qualification: "reference/swap-4.3.1/patches/SWAP-008/qualification.md"
+    - id: "SWAP-009"
+      patch_path: "reference/swap-4.3.1/patches/SWAP-009/fix.patch"
+      patch_sha256: "43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66"
+      qualification: "reference/swap-4.3.1/patches/SWAP-009/qualification.md"
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -62,7 +71,10 @@ history:
     exact_oracle_status: "HISTORICAL_PROVENANCE_MISMATCH"
   - snapshot: "B1.5p1"
     definition: "reference/swap-4.3.1/snapshots/B1.5p1.yml"
-    exact_oracle_status: "PENDING_VQ_IDENTITY_GATE"
+    exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  - snapshot: "B1.6"
+    definition: "reference/swap-4.3.1/snapshots/B1.6.yml"
+    exact_oracle_status: "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 admission_rule:
   requires:
