@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "unexplained_difference": "FAIL",
+    "observed_difference_is_expected": false,
+    "b0_bug_compatibility_required_in_b2": false
+  },
+  "comparison_edges": {
+    "B0_to_B1": {
+      "oracle": "B0",
+      "candidate": "B1",
+      "authoritative_ledger": "docs/verification/legacy-differences.md",
+      "entries": []
+    },
+    "B1_to_B2": {
+      "oracle": "B1",
+      "candidate": "B2",
+      "entries": []
+    },
+    "B0_to_B2": {
+      "purpose": "diagnostic_only",
+      "acceptance_oracle": false,
+      "entries": []
+    }
+  },
+  "required_entry_fields": [
+    "difference_id",
+    "comparison_edge",
+    "status",
+    "source_decision_or_finding",
+    "first_admitted_tag_or_commit",
+    "affected_outputs",
+    "expected_direction_or_envelope",
+    "qualification_evidence",
+    "known_unchanged_scope"
+  ],
+  "allowed_status": [
+    "OBSERVED",
+    "BUG_CONFIRMED",
+    "FIX_TESTED",
+    "ADMITTED_B1",
+    "MODEL_CHANGE",
+    "DOC_ONLY"
+  ]
+}
