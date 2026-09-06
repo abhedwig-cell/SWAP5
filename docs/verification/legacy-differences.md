@@ -32,8 +32,9 @@ Unexplained differences are verification failures until classified.
 | `B1.0-bootstrap` | _none_ | bootstrap | exact B0 | none | B0 source-integrity gate | empty ordered patch list |
 | `B1.1` | `SWAP-001` | `ADMITTED_B1` code bug | whole fixed-length `VlMpDm1Cp` assigned from active slice `VlMpDmCp(1,1:numnod)`, non-conformable when extents differ | clear destination and copy only `1:numnod` active slice | original strict case fails with 5000/112 mismatch; patched macropore smoke run completes; byte-exact B0 preimage and deterministic patched-file SHA verified | `reference/swap-4.3.1/snapshots/B1.1.yml` |
 | `B1.2` | `SWAP-005` | `ADMITTED_B1` bounds/portability bug | compound `.AND.` may evaluate `cropstart(i+1)` before the `i < ifnd` guard | enforce `i < ifnd` in outer control flow, then evaluate the unchanged crop-sequence test | issue register `FIX_TESTED`, certainty very high; strict build passes; exact B0 preimage and isolated patch recorded | `reference/swap-4.3.1/snapshots/B1.2.yml` |
+| `B1.3` | `SWAP-006` | `ADMITTED_B1` initialization/portability bug | meteo crop-calendar scan runs until an unused `cropstart` entry acts as a zero sentinel | iterate explicitly over loaded records `1:ifnd`, retaining existing date exits and crop-type logic | issue register `FIX_TESTED`, certainty high; NaN-initialized test exposes B0 dependence and patched build passes; exact B0 preimage and isolated patch recorded | `reference/swap-4.3.1/snapshots/B1.3.yml` |
 
-`B1.2` is the current corrected snapshot and contains the ordered patch set `SWAP-001`, `SWAP-005`.
+`B1.3` is the current corrected snapshot and contains the ordered patch set `SWAP-001`, `SWAP-005`, `SWAP-006`.
 
 ## Audit findings waiting for B1 admission review
 
