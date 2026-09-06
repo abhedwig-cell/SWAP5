@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "B1.6-admission",
+  "snapshot": "B1.6",
+  "status": "PASS",
+  "method": "byte-exact successor reconstruction from an independently verified B1.5p1 source tree, followed by the exact SWAP-009 transformation",
+  "predecessor": {
+    "snapshot": "B1.5p1",
+    "member_count": 63,
+    "source_bytes": 1860109,
+    "member_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30",
+    "identity_check": "PASS"
+  },
+  "swap009": {
+    "target": "SWAP/WC_K_models_04_11.f90",
+    "preimage_sha256": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+    "preimage_bytes": 18693,
+    "target_occurrences": 4,
+    "patch_sha256": "43e63c098868632da51a3dd1c2980e9af72d6ce2a3dabafadff76f2151256f66",
+    "corrected_sha256": "f728e832645ab8273e41d0d285910240565148671989de24882740e7244f15b7",
+    "corrected_bytes": 18669,
+    "identity_check": "PASS"
+  },
+  "result": {
+    "member_count": 63,
+    "source_bytes": 1860085,
+    "member_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "identity_check": "PASS"
+  },
+  "reproducer": "tools/vq/b1_6_reconstruct.py",
+  "scope": "source identity only; compiled function, full-production and hard legacy mass qualification are recorded in reference/swap-4.3.1/patches/SWAP-009/qualification.md"
+}
