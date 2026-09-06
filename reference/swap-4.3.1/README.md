@@ -23,6 +23,7 @@ snapshots/
     ...
     B1.5.yml
     B1.5p1.yml
+    B1.6.yml
 b1-manifest.yml
 ```
 
@@ -42,9 +43,7 @@ Every admitted patch must have a stable audit ID, reproduced B0 defect, intended
 
 Published snapshot files are immutable audit records. A later provenance defect is repaired by a new snapshot, never by rewriting the historical one.
 
-## Current state
-
-The intended correction lineage is:
+## Current lineage
 
 ```text
 B1.0-bootstrap = B0
@@ -54,15 +53,18 @@ B1.3           = B1.2 + SWAP-006
 B1.4           = B1.3 + SWAP-007
 B1.5           = B1.4 + SWAP-008
 B1.5p1         = same intended corrected source as B1.5, provenance repaired
+B1.6           = B1.5p1 + SWAP-009
 ```
 
-VQ-1c found that B1.2-B1.5 contain incorrect patch-artifact identity metadata and that the SWAP-007 dossier used a non-canonical B0 preimage hash. Those historical snapshots remain untouched but must not be used as exact executable oracles.
+VQ-1c found that B1.2-B1.5 contain incorrect patch-artifact identity metadata and that the historical SWAP-007 dossier used a non-canonical B0 preimage hash. Those historical snapshots remain untouched and must not be used as exact executable oracles.
 
-`b1-manifest.yml` now points to `B1.5p1`. This new definition records the exact stored patch hashes and canonical B0 target hashes while preserving the same five intended corrections: `SWAP-001`, `SWAP-005`, `SWAP-006`, `SWAP-007`, `SWAP-008`.
+`B1.5p1` repairs those identities without changing the five intended corrections. `B1.6` is the first new numerical successor to that repaired lineage and adds only SWAP-009, the PDI vapor-conductivity pressure-head sign correction.
 
-Its status is deliberately `PENDING_VQ_IDENTITY_GATE`. It becomes the exact B1 oracle only after independent VQ repinning reports PASS. See `docs/verification/b1-5p1-provenance-repair.md`.
+For SWAP-009 the isolated patch changes four calls in `WC_K_models_04_11.f90` from `Kvap_func(WC, abs(h), Temp)` to the signed `Kvap_func(WC, h, Temp)`, restoring the sign required by the existing Kelvin relative-humidity expression.
 
-Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.5p1.
+`b1-manifest.yml` now points to B1.6. Its exact executable-oracle status remains deliberately `PENDING_VQ_IDENTITY_GATE`; an independent VQ repinning PASS is still required before B1.6 may be used as an exact B2 numerical oracle.
+
+Candidate directories may exist under `patches/` without affecting B1. SWAP-011, for example, remains `PATCH_PAYLOAD_PENDING` and is not part of B1.6.
 
 ## Boundary to SWAP 5
 
