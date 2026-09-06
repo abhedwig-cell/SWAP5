@@ -49,7 +49,8 @@ jobs:
             tools.vq.test_b2_result_contract \
             tools.vq.test_b2_result_record \
             tools.vq.test_b2_seam_contract \
-            tools.vq.test_b2_reference_gate
+            tools.vq.test_b2_reference_gate \
+            tools.vq.test_tx_time_harness
 
       - name: Check blocked B2 handoff evidence is current
         run: |
@@ -57,6 +58,12 @@ jobs:
             --candidate tools/vq/cases/b2-reference-candidate.json \
             --evidence tools/vq/cases/b2-reference-gate-2026-09-06.json \
             --allow-expected-blocked
+
+      - name: Check VQ-1e1 verifier harness evidence
+        run: |
+          python tools/vq/tx_time_harness.py \
+            --fixture-suite \
+            --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
 
       - name: Check deterministic B1.7 reconstructor syntax
         run: python -m py_compile tools/vq/b1_7_reconstruct.py
