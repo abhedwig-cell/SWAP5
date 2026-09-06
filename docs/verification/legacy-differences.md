@@ -27,13 +27,12 @@ Unexplained differences are verification failures until classified.
 
 ## Published B1 differences
 
-`B1.0-bootstrap` is defined in Git and contains no corrections. It is therefore numerically identical to B0 by definition.
-
 | B1 snapshot | Audit ID | Classification | B0 behaviour | B1 correction | Qualification evidence | B1 identity |
 | --- | --- | --- | --- | --- | --- | --- |
 | `B1.0-bootstrap` | _none_ | bootstrap | exact B0 | none | B0 source-integrity gate | empty ordered patch list |
+| `B1.1` | `SWAP-001` | `ADMITTED_B1` code bug | whole fixed-length `VlMpDm1Cp` assigned from active slice `VlMpDmCp(1,1:numnod)`, non-conformable when extents differ | clear destination and copy only `1:numnod` active slice | original strict case fails with 5000/112 mismatch; patched macropore smoke run completes; byte-exact B0 preimage and deterministic patched-file SHA verified | `reference/swap-4.3.1/snapshots/B1.1.yml` |
 
-No numerical B0-to-B1 difference has yet been admitted.
+`B1.1` is the first corrected snapshot that deliberately differs from B0.
 
 ## Audit findings waiting for B1 admission review
 
