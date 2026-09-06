@@ -60,9 +60,9 @@ The registry is intentionally functional. A chat title or milestone code is not 
 ## Active workstream VQ: Verification and qualification
 
 **Status:** Active  
-**Current reference-line re-read:** `0fbcb17ddf93762fc256de6c38f511eadfd01eb4`  
-**Current B1 identity snapshot:** `B1.5p1`  
-**Current slices:** VQ-1a B0 identity, VQ-1b B0 runner hardening, VQ-1c B1 identity qualification
+**Latest source-of-truth re-read:** `d5f163534f8feb7ff7f6d1f1bcb4ce4b0d168fc5`  
+**Current draft integration PR:** `#26`  
+**Current slices:** VQ-1a B0 identity, VQ-1b B0 runner hardening, VQ-1c1 B1 provenance, VQ-1c2 B1 reconstruction/control edges
 
 ### Goal
 
@@ -74,14 +74,18 @@ Build an independent verification layer that can increasingly serve as the accep
 - case-specific B0 regression and repeatability evidence;
 - canonical legacy BAL/BLC extraction while explicitly rejecting rounded reports as the future hard mass oracle;
 - unrounded, transaction-aware mass-accounting verification contract;
-- fail-closed B1 snapshot, patch-artifact and canonical B0-preimage identity gates;
-- later, numerical B0/B1 comparison plus transaction, warm-start and generic-time gates against integrated B2/TX interfaces.
+- fail-closed B1 snapshot provenance checking;
+- deterministic B1.5p1 source reconstruction with corrected-target hash gates;
+- B0 -> B1 numerical control edges;
+- later, defect-triggering B1 cases and transaction/warm-start/generic-time gates against integrated B2/TX interfaces.
 
 ### Current integration boundary
 
-VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0 runner is capability-limited and is not declared equivalent to the packaged Intel executable.
+VQ changes no production kernel, solver, runtime or coupling physics. The GNU B0/B1 runner path is capability-limited and is not declared equivalent to the packaged Intel executable.
 
-Historical B1.2-B1.5 remain immutable failed-oracle audit records. The reference line published `B1.5p1` as a provenance-repair snapshot without changing the intended five corrections or patch payloads. Independent VQ repinning confirms the B1.5p1 snapshot identity, all five stored patch SHA-256 values and all five canonical B0 target preimages. The B1.5p1 **identity gate passes**. The next B1 gate is deterministic byte-aware patch application, corrected-target verification and numerical B0 -> B1 comparison.
+B1.5p1 now passes both exact identity/provenance and deterministic source reconstruction. All five corrected targets reproduce the snapshot-declared SHA-256 values. The reconstructed 63-member source tree has VQ manifest SHA-256 `c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30`.
+
+The first two B0 -> B1 control edges also pass with no unexplained difference: official grass growth is byte-identical after timestamp normalization and Hupselbrook `.BAL/.BLC` is byte-identical under the same explicit output-only GNU compatibility variant. B1.5p1 is not yet declared broadly numerically qualified until admitted corrections are exercised intentionally in targeted cases.
 
 The proposed unrounded mass-accounting record is a verification interchange contract only. TX/HY/runtime own any production result-interface implementation.
 
