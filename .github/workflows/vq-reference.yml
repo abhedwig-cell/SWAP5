@@ -1,0 +1,49 @@
+name: VQ reference qualification
+
+on:
+  pull_request:
+    paths:
+      - 'reference/swap-4.3.1/**'
+      - 'tools/vq/**'
+      - 'docs/verification/**'
+      - '.github/workflows/vq-reference.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'reference/swap-4.3.1/**'
+      - 'tools/vq/**'
+      - 'docs/verification/**'
+      - '.github/workflows/vq-reference.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  corrected-reference:
+    name: Verify current corrected reference
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install gate dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+
+      - name: Check B1.6 admission identity
+        run: python tools/vq/b1_6_admission_gate.py
+
+      - name: Check VQ gate unit tests
+        run: |
+          python -m unittest \
+            tools.vq.test_b1_snapshot_identity \
+            tools.vq.test_b2_reference_gate
+
+      - name: Check deterministic B1.6 reconstructor syntax
+        run: python -m py_compile tools/vq/b1_6_reconstruct.py
