@@ -2,15 +2,15 @@
   "schema_version": 1,
   "workstream": "VQ",
   "slice": "VQ-1d",
-  "observation_baseline": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+  "observation_baseline": "5576279c915f4d4fbccf3ff182aa480306489080",
   "b1_oracle": {
-    "snapshot": "B1.5p1",
+    "snapshot": "B1.6",
     "qualification": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
-    "reconstructed_manifest_sha256": "c50da618aef92f99103531390e243144403060b0066e8dc3d827b79085bd9c30"
+    "reconstructed_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0"
   },
   "b2": {
     "status": "BLOCKED_NO_INTEGRATED_B2_ENTRYPOINT",
-    "commit": "953f426db5ebd6bf52b718967b0b283fb749bc4a",
+    "commit": "5576279c915f4d4fbccf3ff182aa480306489080",
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
@@ -30,11 +30,11 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "Current main is documentation-led; no integrated production SWAP5 source/reference entrypoint is present at the pinned commit. Full-accuracy reference mode is documented as PARTIAL rather than an end-to-end integrated runtime capability."
+    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.6 admission changes legacy reference metadata/tooling only and does not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",
-    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned main commit.",
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned production observation commit.",
     "next_admission_gate": "Provide an integrated callable reference entrypoint plus the required typed interval/state/forcing/config/result/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
   }
 }
