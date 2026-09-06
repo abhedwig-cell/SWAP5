@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "TX",
+  "slice": "A23BQ",
+  "status": "PASS_WORKER_OWNED_RICHARDS_RETRY_CONTROL_PHYSICAL_BACKEND_SERIAL_ONLY",
+  "oracle": {
+    "snapshot": "B1.6",
+    "source_manifest_sha256": "aad530d2b683aa25ed8d5ec87656fb3790b8d8f8faf6bff4b03d40a4c60136a0",
+    "endpoint_sha256": "4b77a52ca7c48a59a057dec036f596a8da4ebc9ede9296f7d3b36dcff528bfb9",
+    "mass_limit_cm": 1e-6
+  },
+  "ownership_change": {
+    "removed_legacy_globals": ["variables%numbit", "variables%fldecdt"],
+    "worker_fields": ["control%last_numbit", "control%request_dt_reduction"],
+    "worker_control_raw_bytes": 8,
+    "headcalc_scratch_payload_bytes": 3292,
+    "all_63_source_files_active_control_audit": "PASS"
+  },
+  "physical_gate": {
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_log_identity": "PASS",
+    "log_sha256": "6afd017134929ca85f6edd74a6c5bd12e487e6d31962c8b5189878fa8595a1bb",
+    "accepted_storage_cm": 77.01171067220464,
+    "half_mass_residual_cm": -1.7872350177583485e-7,
+    "total_internal_retries": 20,
+    "accepted_internal_retries": 10,
+    "total_headcalc_calls": 162,
+    "accepted_headcalc_calls": 81,
+    "total_newton_iterations": 956,
+    "accepted_newton_iterations": 478,
+    "total_jacobian_builds": 956,
+    "accepted_jacobian_builds": 478,
+    "total_linear_solves": 956,
+    "accepted_linear_solves": 478,
+    "total_backtracking_attempts": 1350,
+    "accepted_backtracking_attempts": 675,
+    "alternative_solver_calls": 0
+  },
+  "regression_gates": {
+    "generic_transaction_o0_o2": "PASS",
+    "generic_transaction_log_sha256": "8364385f32219a588fa7b04d776f07732cb13de9f08e4eb6e95a1a0a5abf9548",
+    "worker_isolation_o0_o2": "PASS",
+    "worker_isolation_log_sha256": "69a31bb5f6838a5c395029326a33edba08ce6bc3c5f4fb66eea3ad7d1cf5a175",
+    "workers": 8,
+    "parallel_checks": 8000,
+    "parallel_failures": 0,
+    "jacobian_block_exact_identity": "PASS",
+    "jacobian_block_sha256": "9ba4ada31fe629a006d47f30d77b8c6f8a200b232a91483b31735a6b53fb38cb"
+  },
+  "postimage_sha256": {
+    "headcalc.f90": "c30c9c6ecfe5825f1edda59809bccfb8d03727173a0b8010e984a206c44e7ee0",
+    "soilwater.f90": "3af37d6f0bdc3d18e911936f8b41746b5cf6a3cc660ec65bdc2ac7ac17f7f6a6",
+    "timecontrol.f90": "8a3bbc213064a8047fdf81ddcf017219ffb7a232c55448521d4c48dc82b9b406",
+    "swap.f90": "42715264483af74abd155ea56ea705d1e331b2e94b735c12df041caa97732e2c",
+    "surfacewater.f90": "0cc9990687aeefbf220a543daeda280e3236b608038f81990b38059fbf8e31b9",
+    "MOD_drainage.f90": "997743f14c2c4f6045c8b04d45141bd7489acfb5df46cf0a544cc4d6ee482db6",
+    "variables.f90": "94d4194b40be1c94e5a7b97ebeed49eace5b4ea02c9b1fbe8b5bb2781d8635b8",
+    "initialize.f90": "1858aca2b18236f5099b44d764831afcad474762a08b0bad18579bb5e254f5bc"
+  },
+  "physics_changed": false,
+  "solver_policy_changed": false,
+  "jacobian_formula_changed": false,
+  "selective_step_doubling_changed": false,
+  "limitations": [
+    "B1.6 physical/process backend remains serialized",
+    "dt/fldtmin/fldtreduce and other time/process state remain global",
+    "extended SurfaceWater path is compile-qualified but not dynamically exercised by Hupsel SWDRA=1",
+    "integer-day Hupsel VQ bridge limitation remains"
+  ],
+  "next_slice": "A23BR"
+}
