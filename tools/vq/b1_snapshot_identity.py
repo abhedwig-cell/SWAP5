@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_PIN = REPO_ROOT / "tools" / "vq" / "cases" / "b1-4-reference-pin.json"
+DEFAULT_PIN = REPO_ROOT / "tools" / "vq" / "cases" / "b1-5-reference-pin.json"
 
 
 def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
