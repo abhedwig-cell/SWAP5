@@ -14,12 +14,16 @@ import re
 from pathlib import Path
 from typing import Any
 
+from tools.vq.b2_result_contract import assess_contract as assess_result_contract
+
 CONTRACT_ID = "SWAP5-B2-reference-seam-v1"
 REQUIRED_DIAGNOSTICS = {
     "accepted",
     "execution_class",
     "retry_count",
+    "solver_iterations",
     "solver_cost",
+    "fallback_used",
     "balance_residual",
 }
 
@@ -72,6 +76,23 @@ def assess_contract(repo_root: Path, contract_path: Path) -> dict[str, Any]:
         and (repo_root / str(result_contract_path)).is_file()
     )
 
+    result_contract_assessment: dict[str, Any] | None = None
+    if checks["result_contract_exists"]:
+        result_contract_assessment = assess_result_contract(
+            repo_root,
+            repo_root / str(result_contract_path),
+        )
+        checks["result_contract_semantics_valid"] = bool(
+            result_contract_assessment.get("admissible_result_contract")
+        )
+        checks["result_contract_commit_matches_seam"] = (
+            result_contract_assessment.get("implementation_commit")
+            == implementation.get("commit")
+        )
+    else:
+        checks["result_contract_semantics_valid"] = False
+        checks["result_contract_commit_matches_seam"] = False
+
     checks["reference_policy"] = policy.get("reference_policy_id") == "reference"
     checks["full_accuracy"] = policy.get("full_accuracy") is True
     checks["policy_does_not_change_physics"] = policy.get("changes_physics") is False
@@ -123,6 +144,7 @@ def assess_contract(repo_root: Path, contract_path: Path) -> dict[str, Any]:
         "entrypoint_symbol": implementation.get("entrypoint_symbol"),
         "result_contract_path": result_contract_path,
         "reference_policy": policy.get("reference_policy_id"),
+        "result_contract_assessment": result_contract_assessment,
         "admissible_reference_seam": admissible,
         "checks": checks,
     }
