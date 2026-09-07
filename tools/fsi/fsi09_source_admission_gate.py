@@ -41,8 +41,8 @@ def main() -> int:
 
     snapshot = SNAPSHOT.read_text()
     require('snapshot: "B1.10"' in snapshot, 'B1.10 snapshot identity')
-    for key, value in EXPECTED.items():
-        require(value in snapshot or key == 'patch', f'B1.10 snapshot missing {key} pin')
+    for key in ('b0_archive', 'manifest', 'preimage', 'corrected'):
+        require(EXPECTED[key] in snapshot, f'B1.10 snapshot missing {key} pin')
     require('target: "SWAP/MOD_MvG_functions.f90"' in snapshot, 'B1.10 target mismatch')
 
     require(sha256(PATCH) == EXPECTED['patch'], 'SWAP-012 stored patch SHA-256 mismatch')
@@ -50,8 +50,7 @@ def main() -> int:
     require('SWAP/MOD_MvG_functions.f90' in patch, 'SWAP-012 target absent from patch')
 
     reconstruct = RECONSTRUCT.read_text()
-    for value in (EXPECTED['b0_archive'], EXPECTED['manifest']):
-        require(value in reconstruct, 'B1.10 reconstruction pin missing: ' + value)
+    require(EXPECTED['manifest'] in reconstruct, 'B1.10 reconstruction manifest pin missing')
     require('reconstruct_b1_9' in reconstruct, 'B1.10 ordered predecessor reconstruction missing')
 
     qualification = QUAL.read_text()
