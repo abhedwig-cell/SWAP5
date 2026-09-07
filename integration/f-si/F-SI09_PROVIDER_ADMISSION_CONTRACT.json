@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "title": "Corrected B1.10 constitutive-provider source binding and qualification",
+  "basis": {
+    "fsi08_qualification_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+    "fsi08_tested_postimage": "df5f064c787be736aea4aa679ff9c260b43bdae7",
+    "oracle": "B1.10",
+    "b110_snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+    "b0_source_identity_blob": "7ceed1fc2eed28375e5f205313d4c53cf0707968",
+    "swap012_qualification_branch": "b1-swap012-admission-final",
+    "swap012_qualification_head": "05e59d29e9a13b2367523985581203bbfb025d71"
+  },
+  "goal": "Bind the admitted common reference-Richards constitutive provider to an exact corrected B1.10 source lineage without copying formulas from an unqualified historical source and without reintroducing shared mutable hydraulic module state.",
+  "exact_source_chain": {
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_mod_mvg_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "implementation_rules": {
+    "corrected_reference_source_is_immutable": true,
+    "legacy_global_arrays_are_not_provider_state": true,
+    "provider_parameter_state_must_be_explicit_and_read_only": true,
+    "provider_temporaries_are_attempt_local_or_worker_scratch": true,
+    "headcalc_common_interface_unchanged_unless_separately_contractually_admitted": true,
+    "fkt_shared_type_change": false,
+    "transaction_semantics_change": false,
+    "new_hydraulic_formula_allowed": false,
+    "broad_historical_proposed_fixes_patch_allowed": false,
+    "swkimpl1_admitted": false,
+    "macropore_admitted": false,
+    "reduced_or_coarse_richards_admitted": false
+  },
+  "phase_a_reference_source_admission": {
+    "required": [
+      "persist exact corrected B1.10 MOD_MvG_functions.f90 bytes or an equivalently immutable byte-exact Git blob",
+      "verify SHA-256 equals 4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+      "record exact B0 and SWAP-012 provenance",
+      "do not compile the legacy source as shared mutable provider state"
+    ]
+  },
+  "phase_b_provider_extraction": {
+    "admitted_early_profile": "swkimpl=0 only",
+    "required_operations": ["water_content", "conductivity", "capacity"],
+    "dconductivity_dhead": "interface output retained; production swkimpl=1 use remains blocked",
+    "method": "mechanically source-bound extraction/adaptation from exact corrected B1.10 source with executable equivalence tests",
+    "forbidden_method": "manual formula recreation from notes, old patches or memory"
+  },
+  "qualification_required": [
+    "exact corrected-source SHA gate",
+    "provider-vs-corrected-B1.10 function identity over all admitted hydraulic models and broad head grid",
+    "O0/O2 identity",
+    "heterogeneous provider A/B/A isolation",
+    "1/2/4/8 worker isolation",
+    "workspace poisoning/reuse identity",
+    "F-SI08 exact admitted fixture identity",
+    "focused unrounded equation residual unchanged",
+    "F-KT boundary regression green",
+    "no shared mutable hydraulic provider state"
+  ],
+  "holds": {
+    "production_source_sink_provider": "SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED",
+    "swkimpl1": "BLOCKED_SOURCE_BOUND_DKDH_AND_DYNAMIC_ROOT_EXTRACTION_PROVIDER",
+    "macropore": "BLOCKED_FSI_FKT_COMPOSITION",
+    "parallel_reference_backend": "NOT_ADMITTED_UNTIL_B1_10_CONSTITUTIVE_AND_REQUIRED_PROCESS_PROVIDERS_ARE_PRODUCTION_QUALIFIED",
+    "full_swap_parallel": "NOT_ADMITTED",
+    "full_swap_water_balance": "NOT_QUALIFIED_BY_SOURCE_BINDING_ALONE"
+  },
+  "invariants": ["1","3","4","5","6","7","8","13","14","16","20","21","22","23","24","25","26","27","29"]
+}
