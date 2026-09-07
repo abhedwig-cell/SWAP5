@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ21",
+  "title": "F-SI06 history isolation and F-VQ12 ownership non-conflict admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq20-fkt05-reusable-checkpoint-admission",
+    "commit": "06b45a139f649dbd92437d922fadfea9a00d660a"
+  },
+  "downstream_basis": {
+    "fsi06_qualification_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "fsi06_tested_checkpoint": "dfed799dbc0930bdf5218e713934ea0f148e3872",
+    "fsi06_final_postimage": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
+    "fsi06_qualification_blob": "f106b7488de1c7c5cfe6f2c160607e354ee94862",
+    "fsi06_status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+    "fvq12_qualification_head": "7cd06ba606429c891dab7f355a85b58ca56a3bca",
+    "fvq12_status_blob": "18a85a08003d732ea353841a089d48f5ac694305",
+    "fvq12_decision": "QUALIFIED_FKT05_FSI05_SOURCE_BOUND_NONCONFLICT_ONLY"
+  },
+  "context_not_evidence": {
+    "fmr01_head": "8c819abbad3345358efde600cc306e064d63c12b",
+    "fmr01_qualified": false
+  },
+  "coverage_before": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI06_FVQ12_OWNERSHIP_ADMISSION_CANDIDATE",
+  "scope": "Admit F-SI06 explicit HeadCalc history ownership and serial focused ABA identity plus F-VQ12 qualified F-KT05/F-SI05 contractual non-conflict, while keeping full real-HeadCalc parallel reentrancy, composed runtime, full SWAP mass identity and production MultiSWAP fail-closed."
+}
