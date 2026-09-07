@@ -20,15 +20,31 @@
     "fsi05_final_postimage_workflow_run": 34125047417,
     "fsi05_qualification_blob": "59cf837cae7bc5cd367d805d82f87280774e15bf"
   },
-  "coverage_before": {
+  "qualification": {
+    "workflow": "F-MQ19 F-SI05 production workspace admission",
+    "run_id": 34126269594,
+    "job_id": 101755563562,
+    "conclusion": "success",
+    "python_admission_tests": "PASS_8_OF_8",
+    "external_fsi05_scope_verifier": "PASS",
+    "exact_fsi05_tested_postimage_gate": "PASS",
+    "production_headcalc_workspace_seam": "PASS_SOURCE_BOUND",
+    "normal_and_forced_band_routes_O0_O2_identity": "PASS",
+    "workspace_poison_reset_main_and_band": "PASS",
+    "common_workspace_1_2_4_8_thread_isolation": "PASS"
+  },
+  "coverage": {
     "matrix_total": 35,
     "synthetic_executable": 27,
     "real_physics_executable": 0,
-    "production_runtime_qualified": 0
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "production_source_prerequisite_rows": ["P06", "P19"]
   },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI05_PRODUCTION_WORKSPACE_ADMISSION_CANDIDATE",
-  "scope": "Admit the exact qualified F-SI05 production HeadCalc workspace seam as production-source prerequisite evidence for MultiSWAP scratch ownership and solver-workspace reuse, while keeping real multi-worker HeadCalc reentrancy, full SWAP interval mass identity and production MultiSWAP runtime fail-closed."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FSI05_PRODUCTION_WORKSPACE_SEAM_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+  "scope": "Admit the exact qualified F-SI05 production HeadCalc workspace seam as production-source prerequisite evidence for MultiSWAP scratch ownership and solver-workspace reuse, while keeping real multi-worker HeadCalc reentrancy, full SWAP interval mass identity and production MultiSWAP runtime fail-closed.",
+  "next_dependency": "F-SI06 real HeadCalc order-independence and 1/2/4/8-worker reentrancy on admitted production routes is the next direct prerequisite for possible P03/P18/P19 real-physics promotion. Full P10/P11/P16 still requires a reference-derived SWAP interval with hard unrounded complete mass accounting."
 }
