@@ -24,6 +24,7 @@ program test_fsi07_adapter_binding
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract
   use mod_reference_richards_legacy_binding
+  use mod_a23bu_worker_execution_context, only: a23bu_initialize_worker
   use mod_fsi07_test_provider, only: fsi07_constitutive_t
   use MOD_grid, only: numnod, z, dz, disnod
   use MOD_swap_base, only: swmacro
@@ -55,6 +56,7 @@ program test_fsi07_adapter_binding
 
   call seed_global_sentinels()
   call capture_globals()
+  call a23bu_initialize_worker(workspace%legacy_worker,numnod,47)
   workspace%legacy_worker%history%flwarn=.false.
   workspace%legacy_worker%history%iwarn=777
   workspace%legacy_worker%history%nstep=888
