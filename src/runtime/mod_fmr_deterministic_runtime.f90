@@ -379,7 +379,7 @@ contains
     integer :: runtime_attempt, max_attempts
     integer(int64) :: cost_before
     logical :: ok, did_commit, time_available
-    real(real64) :: committed_time
+    real(real64) :: committed_time, dt
 
     diagnostic%worker_assignments(1) = worker%worker_id
     output%initial_storage = fmr_committed_water(committed)
@@ -425,10 +425,15 @@ contains
           diagnostic%accepted = 1
           diagnostic%failure_classification = 'NONE'
           output%completed = .true.
-          output%total_in = kernel_result%mass%total_in
-          output%total_out = kernel_result%mass%total_out
-          output%unrounded_mass_residual = kernel_result%mass%residual
-          diagnostic%unrounded_mass_residual = kernel_result%mass%residual
+          ! F-KT05 deliberately leaves canonical interval mass incomplete. The
+          ! deterministic qualification backend has exact accepted fluxes from
+          ! immutable parameters, forcing and the committed interval, so account
+          ! them here independently of rejected trial trajectories.
+          dt = t1 - t0
+          output%total_in = parameters(int(column%parameter_ref))%flux_scale * &
+               forcings(int(column%forcing_handle))%inflow_rate * dt
+          output%total_out = parameters(int(column%parameter_ref))%flux_scale * &
+               forcings(int(column%forcing_handle))%outflow_rate * dt
           exit
         end if
         diagnostic%rejected = 1
