@@ -31,6 +31,10 @@ def transform_headcalc(path: Path) -> None:
         "   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t\n",
         "state binding use")
     s = one(s,
+        "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror\n",
+        "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit\n",
+        "solver numbit carrier declaration")
+    s = one(s,
         "   type(a23bu_solver_history_t), target :: local_history\n   type(a23bu_solver_history_t), pointer :: hist\n!  local\n",
         "   type(a23bu_solver_history_t), target :: local_history\n"
         "   type(a23bu_solver_history_t), pointer :: hist\n"
@@ -50,6 +54,10 @@ def transform_headcalc(path: Path) -> None:
     ]
     for name in fields:
         body = re.sub(rf"(?<![%A-Za-z0-9_]){name}(?![A-Za-z0-9_])", f"st%{name}", body, flags=re.IGNORECASE)
+    body = one(body,
+        "   do st%numbit = 1, MaxIt1\n",
+        "   do solver_numbit = 1, MaxIt1\n      st%numbit = solver_numbit\n",
+        "solver numbit carrier")
 
     init = (
         "   if (present(state_binding)) then\n"
