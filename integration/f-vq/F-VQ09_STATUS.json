@@ -5,7 +5,9 @@
   "oracle": "B1.10",
   "basis": {
     "fvq08_final_head": "0be60f6da7e575eaf992eb049ce600a4a4b35b58",
-    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+    "persist_first_checkpoint": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6"
   },
   "qualification_scope": "REAL_B1_10_TEMPORAL_HARNESS_AND_EXTERNAL_ASSET_BUNDLE_CONTRACT_ONLY",
   "qualified": false,
@@ -20,7 +22,8 @@
   "mass_conservation_policy": "SEPARATE_ABSOLUTE_HARD_GATE",
   "notes": [
     "The canonical B0 distribution remains an external licensed artifact and is never fabricated or substituted by a hash-mismatching archive.",
-    "TTUTIL and the Hupsel qualification case are external inputs until an exact byte manifest is captured and separately admitted.",
+    "TTUTIL and the Hupsel qualification case remain external until exact byte manifests are independently admitted.",
+    "The physical source materializer binds the legacy path through the F-CI13 recoverable-status guard and requires the complete src tree to match qualified production-source head da5026d8.",
     "F-VQ09 may qualify harness and validation contracts without claiming that a real temporal characterization has executed."
   ]
 }

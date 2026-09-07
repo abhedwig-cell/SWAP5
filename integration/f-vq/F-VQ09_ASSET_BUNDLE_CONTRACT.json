@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
   "work_unit": "F-VQ09",
-  "purpose": "Fail-closed external asset contract for reproducible real B1.10 temporal characterization.",
+  "purpose": "Fail-closed external asset and source-lineage contract for reproducible real B1.10 temporal characterization.",
+  "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
   "source_chain": {
     "b0_distribution": {
       "external_required": true,
@@ -38,16 +39,25 @@
       },
       "source_evidence": "integration/f-ci/evidence/F-CI11_LOCAL_GENERIC_INTERVAL_GATE.json",
       "status": "EXACT_SOURCE_BOUND_MATERIALIZATION_CONTRACT"
+    },
+    "fci13_terminal_status_overlay": {
+      "source_head": "538d51df4be3780a5bb092767304749dfc800899",
+      "gate": "tools/fci/fci13_recoverable_status_gate.py",
+      "changed_legacy_file": "swap.f90",
+      "change_scope": "TERMINAL_STATUS_GUARD_ONLY",
+      "materialization_rule": "Assemble exact src/legacy/b1_10_fci13_port swap parts and require removal of the one admitted guard to reproduce the exact F-CI11 swap postimage before writing the F-CI13 swap.f90.",
+      "status": "EXACT_QUALIFIED_OVERLAY"
+    },
+    "fci14_production_adapter_runtime": {
+      "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+      "identity_rule": "The complete src tree used by F-VQ09 must have no Git diff against the qualified production-source head.",
+      "temporal_numeric_profile_used_by_fvq09": false,
+      "status": "EXACT_SOURCE_IDENTITY_REQUIRED"
     }
   },
   "ttutil": {
     "external_required": true,
-    "required_anchor_files": [
-      "ttutilprefs.f90",
-      "rdmodulettutil.f90",
-      "outdat.f90",
-      "ttutil.f90"
-    ],
+    "required_anchor_files": ["ttutilprefs.f90", "rdmodulettutil.f90", "outdat.f90", "ttutil.f90"],
     "admitted_manifest_sha256": null,
     "admitted_file_count": null,
     "status": "PENDING_EXTERNAL_CAPTURE_AND_SEPARATE_ADMISSION"
@@ -61,17 +71,18 @@
     "status": "PENDING_EXTERNAL_CAPTURE_AND_SEPARATE_ADMISSION"
   },
   "external_directory_manifest_contract": {
-    "algorithm": "For every regular file recursively: sort POSIX relative paths bytewise, record sha256, decimal byte size and relative path; SHA-256 the UTF-8 manifest bytes.",
+    "algorithm": "For every regular file recursively: sort POSIX relative paths bytewise; emit '<sha256>  <decimal-size>  <relative-path>\\n'; SHA-256 the UTF-8 manifest bytes.",
     "symlinks_allowed": false,
     "candidate_manifest_is_admission": false,
     "empty_directory_allowed": false,
     "mutation_after_validation_allowed": false
   },
-  "bundle_admission_rule": "A real F-VQ09 execution may start only when B0 matches its immutable identity and TTUTIL plus Hupsel case match separately persisted admitted directory-manifest hashes. Missing or mismatching assets fail closed.",
+  "bundle_admission_rule": "A real F-VQ09 execution may start only when B0 matches its immutable identity and TTUTIL plus Hupsel case match separately persisted admitted directory-manifest hashes; every missing or mismatching asset must fail closed before source materialization or compilation.",
   "prohibited_substitutions": [
     "No archive with a different B0 SHA-256 may be substituted.",
     "No TTUTIL tree is admitted from filenames alone.",
     "No Hupsel case is admitted from a human-readable case name alone.",
-    "A generated candidate directory manifest is evidence for later admission, not self-admission."
+    "A generated candidate directory manifest is evidence for later admission, not self-admission.",
+    "No pre-F-CI13 legacy swap path may stand in for the qualified recoverable-status production lineage."
   ]
 }

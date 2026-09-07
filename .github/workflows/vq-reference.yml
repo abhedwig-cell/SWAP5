@@ -200,3 +200,37 @@ jobs:
         run: bash tests/fci/run_fci10_gate.sh
       - name: Re-run exact F-CI11 generic interval and mass gate
         run: bash tests/fci/run_fci11_gate.sh
+
+  fvq09-real-temporal-harness-contract:
+    name: F-VQ09 real B1.10 temporal harness contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ09 harness and fail-closed asset gate
+        run: python -m tools.vq.fvq09_harness_gate
+      - name: F-VQ09 fault-injection tests
+        run: python -m unittest tools.vq.test_fvq09_harness_gate
+      - name: Check F-VQ09 runner and Python syntax without external assets
+        run: |
+          bash -n tools/vq/run_fvq09_real_temporal_probe.sh
+          python -m py_compile \
+            tools/vq/fvq09_asset_bundle.py \
+            tools/vq/fvq09_materialize_production_source.py \
+            tools/vq/fvq09_observation.py \
+            tools/vq/fvq09_harness_gate.py
+      - name: Re-run F-CI11 generic interval and mass gate
+        run: bash tests/fci/run_fci11_gate.sh
+      - name: Re-run F-CI13 recoverable-status gate
+        run: bash tests/fci/run_fci13_gate.sh
+      - name: Re-run F-CI14 temporal-policy contract gate
+        run: bash tests/fci/run_fci14_gate.sh
