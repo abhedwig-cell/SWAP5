@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT04",
+  "title": "Committed temporal provenance and contiguous continuation",
+  "baseline": "b5e7ec8564b5f6e2b53844388fbb870fa3264d07",
+  "canonical_branch": "integration/f-kt",
+  "ownership": {
+    "committed_time": "F-KT",
+    "solver_internal_time_control": "F-SI or model implementation",
+    "forcing_interval_selection": "runtime/coupler",
+    "calendar_semantics": "outside kernel unless a physical process explicitly requires them"
+  },
+  "committed_carrier": {
+    "time_field_visibility": "private",
+    "initial_time_optional_for_staged_legacy_admission": true,
+    "explicit_initial_time_must_be_finite": true,
+    "unbound_initial_state_allowed": true,
+    "first_successful_commit_binds_time": true,
+    "successful_commit_sets_time_to_candidate_t1": true,
+    "successful_commit_increments_revision_once": true
+  },
+  "continuation_rules": {
+    "bound_state_requires_next_t0_equal_committed_time": true,
+    "overlap_rejected": true,
+    "gap_rejected": true,
+    "backward_continuation_rejected": true,
+    "nonfinite_interval_rejected": true,
+    "time_origin_rejection_happens_before_model_execution": true,
+    "machine_roundoff_equivalent_time_is_accepted": true,
+    "comparison_is_representation_level_not_solver_policy": true,
+    "calendar_boundary_required": false,
+    "midnight_required": false,
+    "day_length_assumed": false
+  },
+  "candidate_rules": {
+    "candidate_retains_origin_t0_t1": true,
+    "candidate_commit_requires_matching_lineage": true,
+    "candidate_commit_requires_matching_revision": true,
+    "candidate_commit_requires_matching_bound_time_origin": true,
+    "rejected_commit_consumes_candidate": false
+  },
+  "compatibility": {
+    "existing_initialize_without_time_remains_valid": true,
+    "existing_unbound_first_trial_remains_valid": true,
+    "raw_transaction_state_entrypoint_reintroduced": false,
+    "fsi_solver_types_imported": false,
+    "numerical_acceptance_policy_changed": false,
+    "physical_model_changed": false
+  },
+  "preserved_holds": [
+    "B1.10 temporal-limit profile remains independently unqualified and reference admission remains fail-closed",
+    "F-SI03 reference binding remains outside F-KT qualification until independently qualified",
+    "full solver reentrancy and HeadCalc isolation remain F-SI ownership",
+    "production MultiSWAP scheduling/runtime remains outside F-KT",
+    "explicit reusable checkpoint carrier remains future F-KT work after temporal provenance is qualified"
+  ],
+  "invariant_assessment": {
+    "1": "PASS: one kernel transaction API remains shared",
+    "2": "PASS: no file or format semantics introduced",
+    "3": "PASS: temporal transaction metadata remains separate from physical state and forcing",
+    "4": "PASS: one scalar committed time plus one flag is compact persistent control state",
+    "5": "PASS: no solver scratch is added to column state",
+    "7": "PASS: committed state cannot be advanced from an inconsistent temporal origin",
+    "8": "PASS: repeated trials from the same committed time remain possible before commit",
+    "9": "PASS: time remains generic real-valued [t0,t1] with no day or calendar assumption",
+    "10": "PASS: arbitrary coupling-window boundaries remain representable",
+    "11": "PASS: transaction time provenance is suitable for predictor-corrector orchestration",
+    "13": "PASS: no mass-conservation criterion is relaxed",
+    "16": "PASS: temporal provenance adds O(1) scalar metadata per logical column",
+    "20": "PASS: no Richards-specific dependency is introduced",
+    "22": "PASS: no HeadCalc internals are exposed",
+    "23": "PASS: physical options and numerical policy remain unchanged",
+    "25": "PASS: reference-mode admission hold remains intact",
+    "26": "PASS: time-origin rejection is explicit in diagnostics",
+    "28": "PASS: coupling composition remains runtime/coupler ownership",
+    "29": "PASS: no midnight, day-length, file, or direct-MODFLOW assumption is introduced"
+  }
+}
