@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "overlay_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
+  "files_to_carry": [
+    ".github/workflows/fci-canonical.yml",
+    "integration/f-ci/F-CI14_QUALIFICATION.md",
+    "integration/f-ci/F-CI14_STATUS.json",
+    "integration/f-ci/F-CI15_EXIT_GATES.json",
+    "integration/f-ci/F-CI15_QUALIFICATION.md",
+    "integration/f-ci/F-CI15_STATUS.json",
+    "tests/fci/run_fci15_gate.sh",
+    "tools/fci/fci15_exit_gate_contract_gate.py"
+  ],
+  "status": "OVERLAY_FILESET_PINNED"
+}
