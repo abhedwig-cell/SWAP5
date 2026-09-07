@@ -1,5 +1,7 @@
 # F-VQ07 — final F-CI development-baseline exit handoff
 
+Status: `QUALIFIED_FINAL_FCI_DEVELOPMENT_BASELINE_HANDOFF_ONLY`.
+
 F-VQ07 is qualification-only. It consumes the exact qualified F-CI18 exit lineage without changing SWAP production source, solver physics, numerical policy or corrected-reference source.
 
 ## Exact basis
@@ -15,10 +17,14 @@ F-VQ07 is qualification-only. It consumes the exact qualified F-CI18 exit lineag
 
 The PR synthetic-merge failures remain non-authoritative CI-context observations. The source-bound push replays are the qualification evidence.
 
-## Qualification boundary
+## F-VQ07 qualification
 
-F-VQ07 may qualify the final F-CI **canonical development baseline handoff** because all ten required F-CI exit gates are `QUALIFIED` and `downstream_release_allowed=true`. This means downstream workstreams may consume the exact F-CI exit lineage as their canonical basis.
+Tested postimage: `75bf3ba1d6a94e9ead91209b3ec6adae92562dd7`.
 
-It does **not** mean downstream capabilities are qualified. Production B1.10 reference execution, numeric temporal limits, optional-process completeness, full backend reentrancy/parallel execution and overall SWAP5 production release remain separate fail-closed qualifications.
+VQ workflow `34115460378` and Documentation workflow `34115460312` both PASS. F-VQ07 job `101721091445` passes the final-exit gate, eight negative/promotion guards and exact F-CI15 through F-CI18 closeout replays. Corrected B1.10 and immutable F-VQ04, F-VQ05 and F-VQ06 replays also PASS.
+
+The final F-CI **canonical development baseline handoff** is therefore qualified for consumption by downstream qualification workstreams. All ten required F-CI exit gates are `QUALIFIED` and `downstream_release_allowed=true`.
+
+This does **not** qualify downstream capabilities. Production B1.10 reference execution, numeric temporal limits, optional-process completeness, full backend reentrancy/parallel execution and overall SWAP5 production release remain separate fail-closed qualifications.
 
 Hard mass conservation, transaction/rollback correctness and canonical provenance remain non-delegable under every later admission.
