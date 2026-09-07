@@ -21,17 +21,26 @@
     "ci_g10": "QUALIFIED",
     "downstream_release_allowed": false
   },
+  "qualification": {
+    "tested_postimage": "e4e527cf3d7b8d5be228abad7099533d7802e0be",
+    "vq_workflow_run": 34111912287,
+    "vq_job": 101709861455,
+    "corrected_reference_job": 101709861145,
+    "fvq04_replay_job": 101709861378,
+    "documentation_workflow_run": 34111912328,
+    "result": "PASS"
+  },
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "production_source_changed_since_overlay": false,
-  "contract_semantics_qualified": false,
+  "contract_semantics_qualified": true,
   "production_temporal_profile_qualified": false,
   "real_b1_10_temporal_acceptance_qualified": false,
   "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
-  "status": "PERSISTED_TEMPORAL_CONTRACT_ADMISSION_CLOSEOUT_OVERLAY_PRE_TEST",
-  "next_action": "Re-run the F-VQ05 qualification workflow on the F-CI17 formal-closeout overlay; qualify only temporal-contract semantics if every required job passes. Keep the numerical profile and real B1.10 reference execution fail-closed.",
+  "status": "QUALIFIED_FCI14_TEMPORAL_ACCEPTANCE_CONTRACT_ONLY",
+  "next_action": "Keep the numerical profile and production B1.10 reference execution blocked until independently qualified source-bound temporal limits and real execution evidence exist.",
   "blockers": [
     "No independently qualified numeric limits exist for the eight B1.10 endpoint metrics.",
     "No admitted real B1.10 execute_reference_interval route exists.",
@@ -40,10 +49,10 @@
     "Complete snow/macropore result accounting and reentrant parallel legacy-backend qualification remain open."
   ],
   "holds": [
-    "Do not infer physical tolerances from normalized threshold 1.0.",
-    "Do not promote deterministic F-CI14 testfixture limits into a production profile.",
-    "Do not reuse nonlinear solver or mass-balance tolerances as temporal-accuracy limits.",
-    "Do not silently ignore active optional-process state.",
-    "Do not consume F-CI17 closeout as temporal qualification evidence merely because it is carried as the canonical overlay."
+    "Normalized threshold 1.0 is contract arithmetic only, not a physical tolerance.",
+    "Deterministic F-CI14 fixture limits remain non-production test data.",
+    "Nonlinear solver and mass-balance tolerances remain separate from temporal-accuracy policy.",
+    "Active optional-process state may not be silently omitted from temporal qualification.",
+    "F-CI17 closeout is carried for canonical ancestry only and is not temporal qualification evidence."
   ]
 }
