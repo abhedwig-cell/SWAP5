@@ -46,7 +46,8 @@ for required in ['use variables', 'use mod_grid', 'bind_b110_serialized_legacy_c
     assert required in context, f'missing legacy context adapter token: {required}'
 assert status['backend_admission']['PARALLEL_REFERENCE_BACKEND'] == 'NOT_ADMITTED'
 assert status['scientific_admission'] is False
-assert admission['parallel_reference_backend_admitted'] is False
+assert admission['backends']['PARALLEL_REFERENCE_BACKEND']['status'] == 'NOT_ADMITTED'
+assert admission['backends']['PARALLEL_REFERENCE_BACKEND']['admitted'] is False
 print('FMR04_ARCHITECTURE_BOUNDARY PASS')
 PY
 
