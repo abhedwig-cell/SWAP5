@@ -4,21 +4,24 @@
   "title": "Exit Scope and Ownership Qualification",
   "canonical_branch": "integration/f-ci-canonical",
   "parent_head": "e17b43e3dda7d178c4c81035308308448823e38d",
-  "qualified_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+  "qualified_scope_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+  "scope_qualification_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+  "canonical_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+  "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
   "production_source_changed": false,
   "persisted_before_long_tests": true,
-  "current_exit_gate_file_changed": false,
-  "candidate": {
-    "all_ten_gates_proposed_qualified": true,
-    "downstream_release_proposed": true,
-    "gate_titles_or_required_flags_changed": false
-  },
   "qualification": {
     "focused_scope_gate": "PASS",
-    "canonical_ci": "PASS_RUN_34112588499_JOB_101712814659",
-    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI18",
+    "scope_canonical_ci": "PASS_RUN_34112588499_JOB_101712814659",
+    "scope_full_dependency_chain": "PASS_FCI03_THROUGH_FCI18",
+    "scope_evidence_commit_replay": "PASS_RUN_34112977416",
+    "gate_promotion_replay": "PASS_RUN_34114164800_JOB_101717589931",
+    "gate_promotion_full_dependency_chain": "PASS_FCI03_THROUGH_FCI18",
     "replayability_hardened": true
   },
-  "gate_promotion": "PENDING_SEPARATE_COMMIT",
-  "status": "QUALIFIED_EXIT_SCOPE_OWNERSHIP_GATE_PROMOTION_PENDING"
+  "gate_promotion": "QUALIFIED",
+  "all_required_gates": "QUALIFIED",
+  "downstream_release_allowed": true,
+  "remaining_fci_blockers": [],
+  "status": "QUALIFIED_EXIT"
 }
