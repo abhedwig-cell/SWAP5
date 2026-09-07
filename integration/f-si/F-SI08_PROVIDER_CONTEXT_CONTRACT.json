@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI08",
+  "title": "Reference provider-context isolation",
+  "basis": {
+    "fsi07_qualified_evidence_head": "762b939876ce56f155a944f4cd21febdd763f6a9",
+    "fsi07_tested_postimage": "8658ad70cfcc03d693ca5aa8c946a6d1d87554bf",
+    "fkt07_observed_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt07_status_blob": "753458e9c44a4c96da634990071d41ef94b66073",
+    "oracle": "B1.10",
+    "oracle_snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b"
+  },
+  "goal": "Remove constitutive-hydraulic and source/sink process data dependence on shared legacy module state from the admitted common reference-Richards solve path, while preserving the legacy standalone compatibility path and preserving formulas and numerical policy.",
+  "ownership": {
+    "provider_objects": "immutable/read-only per solve or shared by safe reference",
+    "provider_parameter_data": "immutable/shared by ID or per-column reference",
+    "provider_temporaries": "worker/active-solve-job scratch only",
+    "transaction_authority": false,
+    "committed_state_authority": false,
+    "runtime_batch_authority": false
+  },
+  "admitted_profile_target": {
+    "solver": "reference-richards",
+    "swkimpl": 0,
+    "macropores": false,
+    "bottom_modes": [7, -2],
+    "top_boundary": "explicit provider",
+    "constitutive_hydraulics": "explicit provider required",
+    "source_sink": "explicit provider required",
+    "root_extraction_semantics": "included in provider sink output for the fixed-within-solve swkimpl=0 profile",
+    "o0_o2": true,
+    "workers": [1, 2, 4, 8]
+  },
+  "provider_semantics": {
+    "constitutive": {
+      "interface": "hydraulic_evaluation_context_t%constitutive",
+      "required_on_common_path": true,
+      "returns": ["water_content", "conductivity", "capacity", "dconductivity_dhead"],
+      "must_not_read_or_write_shared_column_state": true,
+      "self_is_read_only": true
+    },
+    "source_sink": {
+      "interface": "hydraulic_evaluation_context_t%source_sink",
+      "required_on_common_path": true,
+      "returns": ["source", "sink"],
+      "sign_contract": "HeadCalc residual uses +sink-source; for exact legacy swkimpl=0 equivalence sink contains drainage plus root-extraction qrot and source contains qssdi irrigation source",
+      "must_not_read_or_write_shared_column_state": true,
+      "self_is_read_only": true
+    },
+    "top_boundary": {
+      "already_isolated_by": "F-SI07",
+      "required_on_common_path": true
+    }
+  },
+  "legacy_compatibility": {
+    "no_evaluation_context_path_allowed": true,
+    "direct_MOD_MvG_allowed_only_on_legacy_path": true,
+    "direct_qdra_qssdi_qrot_allowed_only_on_legacy_path": true,
+    "common_path_may_translate_through_shared_legacy_provider_state": false
+  },
+  "fkt_boundary": {
+    "shared_fkt_type_change": false,
+    "transaction_semantics_change": false,
+    "checkpoint_commit_rollback_change": false,
+    "generic_time_semantics_change": false,
+    "macropore_continuation_change": false
+  },
+  "qualification_required": [
+    "F-SI07 source/preimage identity for the admitted fixture at O0 and O2",
+    "common adapter fails closed without constitutive provider",
+    "common adapter fails closed without source_sink provider",
+    "common HeadCalc path uses provider outputs while legacy provider globals are poisoned",
+    "heterogeneous provider A/B/A order independence",
+    "heterogeneous provider parameters produce distinct expected results without cross-column leakage",
+    "1/2/4/8 worker common-route concurrency at O0 and O2",
+    "poisoned/reused workspace identity",
+    "request remains unmodified",
+    "solver route and nonlinear iteration identity against the F-SI07 fixture",
+    "focused unrounded equation residual unchanged",
+    "F-KT transaction/worker regressions remain green"
+  ],
+  "explicit_holds": {
+    "production_b1_10_constitutive_provider_admitted": false,
+    "reason_constitutive": "The current canonical source tree contains the corrected B1.10 oracle manifest but not an exact current production implementation of MOD_MvG as a provider object; F-SI08 must not recreate or copy hydraulic formulas from historical source without exact source-bound qualification.",
+    "swkimpl_1": "BLOCKED_DYNAMIC_ROOT_AND_DKDH_PROVIDER_QUALIFICATION",
+    "macropore": "BLOCKED_FSI_FKT_COMPOSITION",
+    "other_bottom_modes": "BLOCKED_SEPARATE_PROFILE_QUALIFICATION",
+    "parallel_reference_backend": "NOT_ADMITTED_UNTIL_REAL_B1_10_PROVIDER_IMPLEMENTATION_IS_SOURCE_BOUND_AND_QUALIFIED",
+    "full_swap_parallel": false,
+    "full_swap_water_balance": false
+  },
+  "non_goals": [
+    "new constitutive formula implementation",
+    "reduced-order or coarse Richards",
+    "performance fallback policy",
+    "transaction lifecycle changes",
+    "MODFLOW coupling",
+    "MultiSWAP scheduling",
+    "macropore production admission"
+  ],
+  "invariants": ["1", "3", "4", "5", "6", "7", "8", "13", "14", "16", "20", "21", "22", "23", "24", "25", "26", "27", "29"]
+}
