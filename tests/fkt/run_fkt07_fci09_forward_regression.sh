@@ -18,7 +18,9 @@ if [[ "$process_blob" != "$F_KT07_PROCESS_BLOB" ]]; then
   exit 3
 fi
 
-TMP="${TMPDIR:-/tmp}/swap5-fkt07-fci09-$$.sh"
+# Keep the temporary runner in tests/fci so the historical runner's own
+# relative repository-root resolution remains byte-semantically identical.
+TMP="$ROOT/tests/fci/.fkt07-forward-fci09-$$.sh"
 trap 'rm -f "$TMP"' EXIT
 python3 - "$ORIGINAL" "$TMP" "$HISTORICAL_PROCESS_BLOB" "$F_KT07_PROCESS_BLOB" <<'PY'
 from pathlib import Path
