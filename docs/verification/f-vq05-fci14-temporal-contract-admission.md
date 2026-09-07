@@ -10,7 +10,7 @@ Exact qualification basis:
 - F-CI14 qualified source head: `da5026d8b87ad2f3c7912360891839a120ecccb6`;
 - F-CI14 qualified canonical postimage: `c226988ae0782a7d8d0818f5d4aeaab61b696de4`;
 - canonical F-CI14 workflow: `34107845964`, job `101697462464`;
-- F-CI15 `073ccff4096a922095a5c15390a6a6dc949e99aa` is carried only as the moving-canonical overlay and is not consumed as F-VQ05 qualification evidence.
+- F-CI16 `7e87f881af937836a517e2bb957bddd941b769ab` is carried only as the moving-canonical overlay and is not consumed as F-VQ05 qualification evidence.
 
 ## What the contract means
 
