@@ -1,10 +1,7 @@
-import unittest
+import pathlib
+import subprocess
+import sys
 
-
-if __name__ == "__main__":
-    suite = unittest.defaultTestLoader.loadTestsFromName(
-        "test_fmq19_fsi05_production_workspace_admission",
-        module=None,
-    )
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    raise SystemExit(0 if result.wasSuccessful() else 1)
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+TEST = ROOT / "tests/multiswap/test_fmq19_fsi05_production_workspace_admission.py"
+raise SystemExit(subprocess.call([sys.executable, str(TEST)]))
