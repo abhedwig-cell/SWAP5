@@ -1,0 +1,77 @@
+schema_version: 1
+registry_id: F-CI-BRANCH-ROLES
+repository: abhedwig-cell/SWAP5
+last_verified: "2026-09-07T07:16:00Z"
+canonical_candidate:
+  branch: integration/f-ci-canonical
+  branch_head: ff3d8fea23312ba91da741888fb893d805630428
+  qualified_source_test_head: 970d99100a256099343d4b2072ecd543469b23b5
+  role: CANONICAL_INTEGRATION_CANDIDATE
+  production_source_authority: true
+  note: >-
+    F-CI10 closeout commits after the qualified source/test head are documentation/status/evidence only.
+    They do not change the qualified F-CI10 production source or focused test logic.
+
+branches:
+  integration/f-ci06-temp:
+    head: db3a918815b0fdc22bdd612e1ceab7b092cd1600
+    role: SUPERSEDED_WORKING_CHECKPOINT
+    production_source_authority: false
+    relation_to_canonical: ANCESTOR
+    evidence: >-
+      Current canonical head is 94 commits ahead of db3a918 with zero commits behind;
+      db3a918 is the merge base in the direct compare.
+
+  integration/f-ci06-working:
+    head: db3a918815b0fdc22bdd612e1ceab7b092cd1600
+    role: SUPERSEDED_WORKING_CHECKPOINT
+    production_source_authority: false
+    relation_to_canonical: ANCESTOR
+    evidence: >-
+      Same F-CI06 checkpoint as integration/f-ci06-temp and integration/f-ci-canonical-copy.
+
+  integration/f-ci-canonical-copy:
+    head: db3a918815b0fdc22bdd612e1ceab7b092cd1600
+    role: SUPERSEDED_CANONICAL_COPY
+    production_source_authority: false
+    relation_to_canonical: ANCESTOR
+    evidence: >-
+      Snapshot is frozen at the F-CI06 postimage and is superseded by integration/f-ci-canonical.
+
+  integration/f-ci08-working:
+    head: b2c0664816f8b34ecf9e337790767cc575c330ee
+    role: SUPERSEDED_WORKING_CHECKPOINT
+    production_source_authority: false
+    relation_to_canonical: ANCESTOR
+    evidence: >-
+      Current canonical head is 61 commits ahead of b2c066 with zero commits behind;
+      b2c066 is the merge base in the direct compare.
+
+  integration/f-ci08-safety-checkpoint:
+    head: b2c0664816f8b34ecf9e337790767cc575c330ee
+    role: HISTORICAL_SAFETY_CHECKPOINT
+    production_source_authority: false
+    relation_to_canonical: ANCESTOR
+    evidence: >-
+      Preserved rollback/safety checkpoint. It is not a competing production line.
+
+  integration/a23bk-transactional-rebase:
+    head: 763f276a96ee1722a465bacd3a710172a5f38107
+    role: HISTORICAL_QUALIFIED_FORWARD_PORT_EVIDENCE
+    production_source_authority: false
+    relation_to_canonical: HISTORICAL_SOURCE_OF_ADMITTED_CONTRACTS_AND_EVIDENCE
+    note: >-
+      A23BU remains useful evidence and lineage, but its production role is superseded by
+      controlled forward integration against B1.10 in F-CI. Direct merge remains forbidden.
+
+  regie/f-ci-exit-gates:
+    role: REGIE_ONLY_NON_PRODUCTION
+    production_source_authority: false
+    relation_to_canonical: OUT_OF_BAND_REGIE_EVIDENCE
+
+policy:
+  - Only integration/f-ci-canonical may be treated as the current F-CI production integration candidate.
+  - Qualified source/test identity must be pinned by exact commit, not inferred from the branch name.
+  - Superseded branches are retained for provenance/evidence and must not be used as downstream production baselines.
+  - No branch is deleted by this registry.
+  - Final CI-G10 qualification still requires an explicit F-CI exit baseline commit after all mandatory gates qualify.
