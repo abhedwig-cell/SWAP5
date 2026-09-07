@@ -1,0 +1,72 @@
+name: F-MQ15 common workspace isolation
+
+on:
+  push:
+    branches:
+      - qualification/f-mq15-common-workspace-isolation
+    paths:
+      - 'tests/multiswap/fmq15_*'
+      - 'tests/multiswap/test_fmq15_*'
+      - 'docs/qualification/F-MQ15_*'
+      - '.github/workflows/fmq15-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq15-gate:
+    name: F-MQ15 production common-workspace isolation
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ15 fail-closed admission checks
+        run: python3 tests/multiswap/test_fmq15_common_workspace_admission.py
+
+      - name: Fetch exact qualified F-SI02 sources
+        run: |
+          FSI02=da1d5da0d909c5ce55efa17507b805bffd6b82f9
+          git fetch --no-tags --depth=1 origin "$FSI02"
+          test "$(git rev-parse FETCH_HEAD)" = "$FSI02"
+          test "$(git rev-parse FETCH_HEAD:integration/f-si/F-SI02_QUALIFICATION.json)" = "d29e6944cb342c47ab06d61faaa4378d79719c69"
+          test "$(git rev-parse FETCH_HEAD:src/solver/mod_soil_water_solver_contract.f90)" = "57b51997d28807fbe2da1b2e5bf654fc4167adb9"
+          test "$(git rev-parse FETCH_HEAD:src/solver/mod_reference_richards_workspace.f90)" = "f35fc559aec8462313d9e9b6c95171983b3cf8ef"
+          git show FETCH_HEAD:integration/f-si/F-SI02_QUALIFICATION.json > /tmp/fsi02_qualification.json
+          git show FETCH_HEAD:src/solver/mod_soil_water_solver_contract.f90 > /tmp/mod_soil_water_solver_contract.f90
+          git show FETCH_HEAD:src/solver/mod_reference_richards_workspace.f90 > /tmp/mod_reference_richards_workspace.f90
+
+      - name: Reverify F-SI02 source-bound boundary
+        run: |
+          python3 tests/multiswap/verify_fmq14_fsi02_external.py \
+            --qualification /tmp/fsi02_qualification.json \
+            --contract-source /tmp/mod_soil_water_solver_contract.f90 \
+            --workspace-source /tmp/mod_reference_richards_workspace.f90
+
+      - name: Compile and run MultiSWAP workspace gate O0 and O2
+        run: |
+          for opt in 0 2; do
+            out="/tmp/fmq15-o${opt}"
+            mkdir -p "$out"
+            gfortran -std=f2008 -ffree-line-length-none -fopenmp -O${opt} -J"$out" -I"$out" \
+              -c /tmp/mod_soil_water_solver_contract.f90 -o "$out/contract.o"
+            gfortran -std=f2008 -ffree-line-length-none -fopenmp -O${opt} -J"$out" -I"$out" \
+              -c /tmp/mod_reference_richards_workspace.f90 -o "$out/workspace.o"
+            gfortran -std=f2008 -ffree-line-length-none -fopenmp -O${opt} -J"$out" -I"$out" \
+              -c tests/multiswap/test_fmq15_common_workspace_isolation.f90 -o "$out/test.o"
+            gfortran -fopenmp "$out/contract.o" "$out/workspace.o" "$out/test.o" -o "$out/fmq15_gate"
+            OMP_DYNAMIC=FALSE "$out/fmq15_gate" | tee "$out/output.txt"
+            grep -q '^F-MQ15_COMMON_WORKSPACE_GATE PASS$' "$out/output.txt"
+          done
+          diff -u /tmp/fmq15-o0/output.txt /tmp/fmq15-o2/output.txt
+
+      - name: Compile Python admission gate
+        run: python3 -m py_compile tests/multiswap/test_fmq15_common_workspace_admission.py
