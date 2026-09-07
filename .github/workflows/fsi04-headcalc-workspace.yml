@@ -1,0 +1,22 @@
+name: F-SI04 HeadCalc workspace
+
+on:
+  push:
+    branches:
+      - work/f-si04-headcalc-workspace
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fsi04-headcalc-workspace:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI04 source-bound real HeadCalc gate
+        run: bash tests/fsi/run_fsi04_gate.sh
