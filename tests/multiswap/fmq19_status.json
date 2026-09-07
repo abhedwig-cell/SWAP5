@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ19",
+  "title": "F-SI05 production HeadCalc workspace seam admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq18-fsi04-real-headcalc-admission",
+    "commit": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726"
+  },
+  "downstream_basis": {
+    "fsi05_branch": "work/f-si05-production-workspace-seam",
+    "fsi05_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "fsi05_status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+    "fsi05_production_materialization": "1fe1bf4790955594290ba1233d5684542799bf9e",
+    "fsi05_tested_postimage": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_documented_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "fsi05_test_workflow_run": 34124675751,
+    "fsi05_final_postimage_workflow_run": 34125047417,
+    "fsi05_qualification_blob": "59cf837cae7bc5cd367d805d82f87280774e15bf"
+  },
+  "coverage_before": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI05_PRODUCTION_WORKSPACE_ADMISSION_CANDIDATE",
+  "scope": "Admit the exact qualified F-SI05 production HeadCalc workspace seam as production-source prerequisite evidence for MultiSWAP scratch ownership and solver-workspace reuse, while keeping real multi-worker HeadCalc reentrancy, full SWAP interval mass identity and production MultiSWAP runtime fail-closed."
+}
