@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI08",
+  "title": "B1.10 process continuation whole-day rollback qualification",
+  "canonical_source_head": "88bb794ae10d998595f21347055a7a6caf4f066c",
+  "canonical_ci": {
+    "run_id": 34088797066,
+    "job_id": 101638074962,
+    "conclusion": "success",
+    "gate": "FCI08_GATE_PASS"
+  },
+  "b1_10_oracle": {
+    "source_members": 63,
+    "source_bytes": 1863575,
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "manifest_verification_failures": 0
+  },
+  "canonical_blob_pins": {
+    "src/adapter/mod_b1_10_process_checkpoint.f90": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "src/adapter/mod_b1_10_legacy_trial_capsule.f90": "46ebc5339e85f69c8a24ab99ba70987f559c817d",
+    "src/adapter/mod_b1_10_water_checkpoint.f90": "f8171d0263325b5103ac2df7cd353c443e27c925",
+    "src/transaction/mod_transaction_reference.f90": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "2a190d206200ad201c37c9a82d3e32e651d37a37"
+  },
+  "physical_replay": {
+    "profile": "HUPSEL_2002_2004_WITH_CROP_WOFOST_HEAT_SOLUTE_IRRIGATION_DRAINAGE",
+    "restore_order": [
+      "worker-local trial capsule",
+      "persistent physical process state",
+      "worker numerical scratch reset"
+    ],
+    "offsets_days_from_tstart": [499, 520, 760, 800],
+    "optimizations": ["O0", "O2"],
+    "run_count": 8,
+    "max_process_diff_all_runs": 0.0,
+    "aggregate_result": "PASS_8_OF_8_ZERO_DIFF",
+    "compared_state": [
+      "water",
+      "thermal",
+      "solute",
+      "irrigation dayfix/nirri",
+      "crop lifecycle and biomass",
+      "rdpot",
+      "root distribution arrays",
+      "WOFOST states and management"
+    ],
+    "csv_output_override": "SWCSV=0 for qualification runs only, matching F-CI06 regression setup; output suppression does not change physical process configuration"
+  },
+  "qualification_boundary": {
+    "physical_replay_transaction_type": "minimal ABI-compatible transaction/canonical type seam; transaction algorithms are not exercised by the physical replay binary",
+    "transaction_algorithm_evidence": "exact canonical transaction core independently passes GitHub CI run 34088797066",
+    "legacy_physical_build": "previously F-CI06-qualified GNU compile-equivalent representation of the exact reconstructed B1.10 controlled source port",
+    "no_claim": "generic physical sub-day continuation and final canonical physical transaction-model binding remain unqualified"
+  },
+  "harness_correction": {
+    "finding": "unparenthesized Fortran .neqv. mixed with .or. caused false comparison failures at offsets 499 and 520",
+    "action": "parenthesized each logical equivalence comparison; raw compared state was already equal",
+    "production_source_changed": false
+  },
+  "holds": [
+    "generic physical sub-day continuation remains unqualified",
+    "noddrz_old remains a sub-day continuation audit item",
+    "canonical B1.10 transaction-model binding is not yet admitted"
+  ],
+  "status": "PASS_PHYSICAL_PROCESS_CONTINUATION_HUPSEL_WHOLE_DAY_SUBDAY_BLOCKED"
+}
