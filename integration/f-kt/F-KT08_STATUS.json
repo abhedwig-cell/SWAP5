@@ -7,19 +7,38 @@
   "start_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
   "safety_branch": "integration/f-kt08-safety",
   "safety_branch_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
-  "phase": "CONTRACT_PERSISTENCE_BEFORE_PRODUCTION_CHANGE",
-  "IMPLEMENTED": false,
-  "PERSISTED": false,
+  "contract_checkpoint": "d62e7736240a50086c9950137a98439784fc1c17",
+  "source_materialization_commit": "9623841f38c075f61404457ccfe31d89df9839f7",
+  "phase": "SOURCE_PERSISTED_TESTS_PENDING",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
   "TESTED": false,
   "QUALIFIED": false,
   "inventory": "integration/f-kt/F-KT08_MASS_ACCOUNTING_INVENTORY.json",
   "contract": "integration/f-kt/F-KT08_MASS_ACCOUNTING_CONTRACT.json",
-  "production_source_changed": false,
+  "focused_test": "tests/fkt/test_fkt08_mass_accounting.f90",
+  "focused_runner": "tests/fkt/run_fkt08_gate.sh",
+  "static_gate": "tools/fkt/fkt08_mass_accounting_gate.py",
+  "production_source_changed": true,
+  "production_source_files": [
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_contracts.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/kernel/mod_kernel_transactions.f90"
+  ],
   "physics_changed": false,
   "numerical_policy_changed": false,
   "scientific_tolerance_added": false,
+  "cumulative_column_accounting_added": false,
   "authoritative_full_interval_mass_accounting_qualified": false,
   "fmr04_profile_mass_complete_capable": false,
   "known_missing_physical_contribution_owner_for_fmr04_profile": null,
-  "next_action": "persist inventory+contract checkpoint, then implement minimal transaction/canonical/kernel accounting propagation before tests"
+  "historical_fci_provenance_policy": "F-CI03/F-CI04 remain immutable and are replayed on exact F-KT07 head; current F-KT08 semantics are qualified by source-bound F-KT08 tests and compatible current F-CI gates",
+  "holds": [
+    "focused O0/O2, retry/rollback/commit/generic-time tests have not yet run on the materialized source",
+    "F-MR04 must explicitly consume the qualified F-KT08 completeness hooks before its serialized physical profile can report kernel_result.mass.complete=true",
+    "active root, snow and macropore physical accounting remain outside this F-KT08 profile and stay fail-closed",
+    "independent F-VQ scientific admission remains downstream"
+  ],
+  "next_action": "persist focused tests/workflow, then qualify the exact F-KT08 source postimage"
 }

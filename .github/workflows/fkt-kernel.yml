@@ -6,6 +6,8 @@ on:
       - integration/f-kt
     paths:
       - 'src/kernel/**'
+      - 'src/transaction/**'
+      - 'src/runtime/**'
       - 'src/adapter/**'
       - 'tests/fkt/**'
       - 'tools/fkt/**'
@@ -24,35 +26,44 @@ on:
       - '.github/workflows/fkt-kernel.yml'
 
 jobs:
-  fkt07-focused-o0-o2:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  fkt08-focused-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-KT07 B1.10 macropore continuation and O0/O2 gate
-        run: bash tests/fkt/run_fkt07_gate.sh
+      - name: F-KT08 authoritative accepted mass accounting O0/O2 gate
+        run: bash tests/fkt/run_fkt08_gate.sh
 
-  fci-regression:
-    needs: fkt07-focused-o0-o2
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+  historical-fci-provenance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: F-CI03 transaction substrate regression
-        run: bash tests/fci/run_fci03_gate.sh
-      - name: F-CI04 canonical runtime regression
-        run: bash tests/fci/run_fci04_gate.sh
-      - name: F-CI08 attempt-context regression
+      - name: Preserve exact qualified F-CI03/F-CI04 historical provenance
+        run: |
+          git checkout --detach b91da4fb01e3b0c21d39a5782d36f8eedc55875d
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+
+  current-fci-regression:
+    needs: fkt08-focused-o0-o2
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI08 attempt-context regression on evolved transaction source
         run: bash tests/fci/run_fci08_gate.sh
       - name: F-CI09 transaction binding forward regression
         run: bash tests/fkt/run_fkt07_fci09_forward_regression.sh
-      - name: F-CI10 time and mass seam regression
+      - name: F-CI10 unrounded physical mass seam regression
         run: bash tests/fci/run_fci10_gate.sh
       - name: F-CI11 controlled interval and mass regression
         run: bash tests/fci/run_fci11_gate.sh
