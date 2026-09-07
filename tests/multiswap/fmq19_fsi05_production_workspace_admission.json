@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ19",
+  "source": {
+    "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "qualification_blob": "59cf837cae7bc5cd367d805d82f87280774e15bf",
+    "production_materialization": "1fe1bf4790955594290ba1233d5684542799bf9e",
+    "tested_postimage": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "documented_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "gate_blob": "78fd05cf8c36899fb9fdd970d318fec009bdc827",
+    "headcalc_blob": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
+    "workspace_blob": "93285b2ca24669494c93c00403e3783fca6758e9",
+    "adapter_blob": "e02882bd45f67b42ede118de14a6b5b8b16fdb80",
+    "tested_workflow_run": 34124675751,
+    "final_postimage_workflow_run": 34125047417,
+    "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY"
+  },
+  "admitted_production_source_primitives": {
+    "production_headcalc_workspace_seam_committed": true,
+    "explicit_worker_or_job_owned_workspace": true,
+    "adapter_passes_existing_richards_workspace": true,
+    "legacy_one_argument_headcalc_call_preserved": true,
+    "main_newton_jacobian_scratch_worker_owned": true,
+    "band_solver_scratch_worker_owned": true,
+    "persistent_column_state_contains_solver_scratch": false,
+    "main_route_preimage_identity_O0_O2": true,
+    "forced_band_fallback_preimage_identity_O0_O2": true,
+    "workspace_poison_reset_main_and_band": true,
+    "focused_ABA_repeat_identity": true,
+    "focused_solver_route_iteration_identity": true,
+    "common_workspace_1_2_4_8_thread_isolation": true
+  },
+  "matrix_row_effect": {
+    "P06": "PRODUCTION_SOURCE_WORKSPACE_OWNERSHIP_PREREQUISITE_ADMITTED_NO_FULL_REAL_ROW_PROMOTION",
+    "P19": "PRODUCTION_SOURCE_POISON_RESET_AND_COMMON_WORKSPACE_THREAD_PREREQUISITE_ADMITTED_REAL_HEADCALC_MULTIWORKER_NOT_MET",
+    "P03": "NOT_PROMOTED_PARALLEL_REAL_HEADCALC_1_2_4_8_NOT_QUALIFIED",
+    "P18": "NOT_PROMOTED_REAL_MULTI_COLUMN_INTERLEAVING_NOT_QUALIFIED",
+    "P11": "NOT_PROMOTED_NO_FULL_REAL_SWAP_INTERVAL",
+    "P16": "NOT_PROMOTED_NO_FULL_UNROUNDED_SWAP_WATER_BALANCE"
+  },
+  "coverage": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "production_source_prerequisite_rows": ["P06", "P19"]
+  },
+  "hard_nonclaims": {
+    "full_reference_richards_reentrancy_qualified": false,
+    "parallel_real_headcalc_1_2_4_8_workers_qualified": false,
+    "real_multi_column_interleaving_qualified": false,
+    "legacy_worker_save_removed": false,
+    "cross_call_headcalc_history_ownership_resolved": false,
+    "full_real_swap_interval_executed": false,
+    "full_swap_water_balance_identity_qualified": false,
+    "interface_tangent_implemented": false,
+    "production_reference_admission": false,
+    "production_multiswap_admission": false,
+    "production_runtime_qualified": false
+  },
+  "non_consumed_context": {
+    "fvq11_head_observed": "7584f0c38d407913304eea05fd343f2f7fef31cc",
+    "fvq11_qualified": false,
+    "reason": "F-MQ19 is admitted directly from F-SI05's own qualified postimage; F-VQ11 remains pending and is not qualification evidence for this unit."
+  },
+  "next_dependencies": [
+    "F-SI06 real HeadCalc order-independence and 1/2/4/8 worker reentrancy on admitted routes",
+    "full reference-derived SWAP interval with hard unrounded mass for P10/P11/P16",
+    "F-MR production MultiSWAP runtime for production runtime qualification"
+  ]
+}
