@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ11",
+  "title": "Canonical contract binding overlay after F-CI18 qualified exit",
+  "qualification_only": true,
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "git_blob_sha1": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35
+  },
+  "lineage": {
+    "fmq10_head": "831110d0c6f1838e3583391b5e9266a2f5f95ebb",
+    "fci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fvq07_head": "4ae2fc87970d46ff2103553930e583dd05a59f0b",
+    "oracle": "B1.10"
+  },
+  "canonical_source_blob_pins": {
+    "src/transaction/mod_transaction_reference.f90": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "src/runtime/mod_canonical_contracts.f90": "55cd8a9dc529bb2d057845f212b7efff6c80c553",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f0bfb2c1359c39b4708350b756aa2211fb982be4",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+    "src/adapter/mod_b1_10_process_checkpoint.f90": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "src/adapter/mod_b1_10_mass_seam.f90": "4b205a9b7df465deffe5a34349da91f2102f3f51",
+    "src/adapter/mod_b1_10_physical_interval_executor.f90": "6097e9e338ed823fe89f5e2d854992e0d3e4b798",
+    "src/adapter/mod_b1_10_recoverable_reference_model.f90": "e4a37554359f25efb120f55eea7465559a94938d",
+    "src/adapter/mod_b1_10_reference_model.f90": "366a4df93a829413bed552b050ca723544e31ce4",
+    "src/adapter/mod_b1_10_reference_policy_candidate_model.f90": "594436176333e9fb04121dcf287b507a93723dfe"
+  },
+  "canonical_contract_observations": {
+    "explicit_state_forcing_interval_config_result": true,
+    "generic_t0_t1_interval": true,
+    "transaction_state_clone_contract": true,
+    "external_interval_commit_is_atomic": true,
+    "worker_attempt_context_is_nonpersistent": true,
+    "b1_10_process_checkpoint_has_conditional_optional_state": true,
+    "canonical_diagnostics_fields_present": true,
+    "canonical_mass_result_type_present": true,
+    "canonical_interval_runtime_sets_complete_mass": false,
+    "b1_10_reference_execution_admitted": false,
+    "production_multiswap_runtime_present_and_qualified": false
+  },
+  "contract_bindings": {
+    "MQ-KERNEL-01": {
+      "status": "BOUND_WITH_MASS_COMPLETENESS_HOLD",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/runtime/mod_canonical_interval_runtime.f90",
+        "src/transaction/mod_transaction_reference.f90"
+      ],
+      "holds": [
+        "canonical interval runtime still marks result.mass.complete=false",
+        "real B1.10 reference execution remains fail-closed"
+      ]
+    },
+    "MQ-STATE-01": {
+      "status": "BOUND_WITH_HASH_INTROSPECTION_HOLD",
+      "evidence": [
+        "src/transaction/mod_transaction_reference.f90",
+        "src/adapter/mod_b1_10_process_checkpoint.f90"
+      ],
+      "holds": [
+        "no generic canonical state hash/serialization contract",
+        "snow/macropore complete optional-state scope remains outside admitted reference route"
+      ]
+    },
+    "MQ-RUNTIME-01": {
+      "status": "WAITING_FMR",
+      "holds": ["no qualified production MultiSWAP scheduler/batch/result-addressing runtime in the F-CI exit"]
+    },
+    "MQ-DIAG-01": {
+      "status": "PER_COLUMN_FIELDS_BOUND_AGGREGATION_WAITING_FMR",
+      "evidence": ["src/runtime/mod_canonical_contracts.f90"]
+    },
+    "MQ-MASS-01": {
+      "status": "CONTRACT_PARTIAL_REFERENCE_RECORD_BLOCKED",
+      "evidence": [
+        "src/runtime/mod_canonical_contracts.f90",
+        "src/adapter/mod_b1_10_mass_seam.f90"
+      ],
+      "holds": [
+        "no F-MQ03-complete admitted event-local real mass record",
+        "canonical interval result mass is not complete"
+      ]
+    },
+    "MQ-COUPLING-01": {
+      "status": "TRANSACTION_PREREQUISITE_BOUND_PRODUCTION_COUPLER_WAITING_FMR",
+      "evidence": ["src/transaction/mod_transaction_reference.f90"]
+    }
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": []
+  },
+  "entries": [
+    {"id":"R01","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR"]},
+    {"id":"R02","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR"]},
+    {"id":"R03","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR"]},
+    {"id":"R04","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR","F-SI"]},
+    {"id":"R05","canonical_binding":"CANONICAL_FAILURE_PREREQUISITE_BOUND_WAITING_FMR","remaining_owners":["F-MR"]},
+    {"id":"R06","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR","F-SI"]},
+    {"id":"R07","canonical_binding":"PER_COLUMN_DIAGNOSTICS_BOUND_WAITING_FMR_AGGREGATION","remaining_owners":["F-MR"]},
+    {"id":"R08","canonical_binding":"TRANSACTION_REPLAY_PREREQUISITE_BOUND_WAITING_FMR","remaining_owners":["F-MR","F-VQ"]},
+    {"id":"P01","canonical_binding":"CANONICAL_KERNEL_PREREQUISITE_BOUND_REAL_AND_FMR_OPEN","remaining_owners":["F-VQ","F-MR"]},
+    {"id":"P02","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR","F-SI"]},
+    {"id":"P03","canonical_binding":"WAITING_FMR_AND_PARALLEL_BACKEND","remaining_owners":["F-MR","F-SI"]},
+    {"id":"P04","canonical_binding":"WAITING_FMR_RUNTIME","remaining_owners":["F-MR"]},
+    {"id":"P05","canonical_binding":"CANONICAL_STATE_CLONE_PREREQUISITE_BOUND","remaining_owners":["F-KT"]},
+    {"id":"P06","canonical_binding":"WORKER_CONTEXT_PRESENT_SOLVER_SCRATCH_ISOLATION_OPEN","remaining_owners":["F-SI","F-MR"]},
+    {"id":"P07","canonical_binding":"CANONICAL_TRANSACTION_ATOMICITY_BOUND_REAL_AND_FMR_OPEN","remaining_owners":["F-VQ","F-MR"]},
+    {"id":"P08","canonical_binding":"CANONICAL_RETRY_ROLLBACK_BOUND_REAL_AND_FMR_OPEN","remaining_owners":["F-VQ","F-MR"]},
+    {"id":"P09","canonical_binding":"CANONICAL_FAILURE_STATUS_PREREQUISITE_BOUND_WAITING_FMR","remaining_owners":["F-MR"]},
+    {"id":"P10","canonical_binding":"CANONICAL_CHECKPOINT_PREREQUISITE_BOUND_REAL_REFERENCE_BLOCKED","remaining_owners":["F-VQ"]},
+    {"id":"P11","canonical_binding":"CANONICAL_RECOMPUTE_PREREQUISITE_BOUND_REAL_REFERENCE_BLOCKED","remaining_owners":["F-VQ"]},
+    {"id":"P12","canonical_binding":"CANONICAL_FORCING_API_BOUND_REAL_LOCALITY_OPEN","remaining_owners":["F-VQ","F-KT"]},
+    {"id":"P13","canonical_binding":"WAITING_FMR_TEMPLATE_RUNTIME","remaining_owners":["F-MR"]},
+    {"id":"P14","canonical_binding":"OPTIONAL_STATE_CONDITIONAL_ALLOCATION_PARTIAL","remaining_owners":["F-KT","F-VQ"]},
+    {"id":"P15","canonical_binding":"CANONICAL_DIAGNOSTICS_FIELDS_BOUND_AGGREGATION_WAITING_FMR","remaining_owners":["F-MR"]},
+    {"id":"P16","canonical_binding":"CANONICAL_MASS_CONTRACT_PARTIAL_REAL_RECORD_BLOCKED","remaining_owners":["F-VQ","F-KT"]},
+    {"id":"P17","canonical_binding":"PER_COLUMN_MASS_PREREQUISITE_PARTIAL_AGGREGATION_WAITING_FMR","remaining_owners":["F-VQ","F-MR"]},
+    {"id":"P18","canonical_binding":"WORKER_CONTEXT_PRESENT_REENTRANT_INTERLEAVE_OPEN","remaining_owners":["F-SI","F-MR"]},
+    {"id":"P19","canonical_binding":"WORKER_CONTEXT_PRESENT_SOLVER_SCRATCH_POISON_OPEN","remaining_owners":["F-SI"]},
+    {"id":"P20","canonical_binding":"WAITING_FMR_TILE_AGGREGATION","remaining_owners":["F-MR"]},
+    {"id":"P21","canonical_binding":"CANONICAL_TRANSACTION_PREREQUISITE_BOUND_COUPLER_OPEN","remaining_owners":["F-MR","F-KT"]},
+    {"id":"P22","canonical_binding":"WAITING_EXPLICIT_PRODUCTION_COUPLING_FLUX_CONTRACT","remaining_owners":["F-MR","F-KT"]},
+    {"id":"D01","canonical_binding":"WAITING_FMR_SCHEDULING_AND_FSI_SOLVER_POLICY","remaining_owners":["F-MR","F-SI"]},
+    {"id":"D02","canonical_binding":"WAITING_FMR_SCHEDULING_AND_FSI_SOLVER_POLICY","remaining_owners":["F-MR","F-SI"]},
+    {"id":"S01","canonical_binding":"WAITING_FVQ_REAL_SCIENTIFIC_REFERENCE","remaining_owners":["F-VQ"]},
+    {"id":"PFX01","canonical_binding":"WAITING_PERFORMANCE_RUNTIME","remaining_owners":["F-MR","MP"]},
+    {"id":"PFX02","canonical_binding":"WAITING_PERFORMANCE_RUNTIME","remaining_owners":["F-MR","MP"]}
+  ],
+  "decision": "CANONICAL_BASELINE_BOUND_NO_REAL_OR_PRODUCTION_PROMOTION"
+}
