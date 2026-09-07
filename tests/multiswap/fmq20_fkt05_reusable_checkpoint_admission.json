@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ20",
+  "title": "F-KT05 reusable checkpoint admission",
+  "source": {
+    "status_promotion_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "qualification_blob": "95efe0016a35cce4989dfb68f021bef69c5af453",
+    "gate_blob": "8957180db3d0d6b650f09829e875e12faf819b52",
+    "qualification_run": 34125537033,
+    "qualification_status": "QUALIFIED",
+    "oracle": "B1.10"
+  },
+  "admitted_checkpoint_primitives": {
+    "canonical_production_entrypoint_is_kernel_advance_interval": true,
+    "single_production_entrypoint_preserved": true,
+    "checkpoint_owner_is_fkt": true,
+    "checkpoint_is_persistent_column_state": false,
+    "checkpoint_contains_solver_scratch": false,
+    "checkpoint_contains_warm_start": false,
+    "checkpoint_contains_physical_state_clone": true,
+    "checkpoint_contains_lineage_revision_time_provenance": true,
+    "capture_mutates_committed_state": false,
+    "stale_revision_fails_closed": true,
+    "cross_lineage_fails_closed": true,
+    "time_mismatch_fails_closed": true,
+    "rejection_precedes_physical_execution": true,
+    "same_current_checkpoint_reusable": true,
+    "same_committed_state_replay_qualified": true,
+    "checkpoint_can_restore_committed_state": false,
+    "checkpoint_can_publish_committed_state": false,
+    "failed_trial_mutates_checkpoint": false,
+    "warm_start_may_change_physical_origin": false,
+    "generic_t0_t1_preserved": true
+  },
+  "matrix_row_effect": {
+    "R08": "PRODUCTION_KERNEL_REPLAY_CHECKPOINT_PREREQUISITE_ADMITTED_RUNTIME_AND_REAL_REFERENCE_OPEN",
+    "P05": "REUSABLE_PHYSICAL_STATE_CLONE_CHECKPOINT_PREREQUISITE_ADMITTED",
+    "P10": "PRODUCTION_KERNEL_REUSABLE_CHECKPOINT_PREREQUISITE_ADMITTED_REAL_REFERENCE_FIXTURE_OPEN",
+    "P11": "SAME_COMMITTED_STATE_REPLAY_PREREQUISITE_ADMITTED_REAL_REFERENCE_FIXTURE_OPEN",
+    "P16": "NO_PROMOTION_FULL_REFERENCE_SWAP_WATER_BALANCE_NOT_QUALIFIED"
+  },
+  "coverage": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "production_kernel_checkpoint_prerequisite_rows": ["R08", "P05", "P10", "P11"]
+  },
+  "hard_nonclaims": {
+    "real_b1_10_reference_replay_executed": false,
+    "reference_derived_event_fixture_admitted": false,
+    "full_swap_water_balance_identity_qualified": false,
+    "production_multiswap_runtime_qualified": false,
+    "parallel_real_headcalc_workers_qualified": false,
+    "canonical_reference_admission": false
+  },
+  "context_not_consumed_as_evidence": {
+    "fsi06_head": "83c1171dd314a94c3f852e00c519c6ce9cb7a073",
+    "fsi06_qualified": false,
+    "fvq12_head": "29cee4d07b02b9556cfdf72fbb96ffc7421d3ea9",
+    "fvq12_qualified": false,
+    "fmr01_head": "94fa8649ae85316654933615a7b80a64888e25fd",
+    "fmr01_qualified": false
+  },
+  "next_dependencies": [
+    "F-VQ admitted reference-derived B1.10 checkpoint/event fixture for real P10/P11 execution",
+    "F-SI06 qualified real HeadCalc reentrancy for P03/P18/P19",
+    "F-MR qualified deterministic MultiSWAP runtime for runtime rows",
+    "complete unrounded SWAP interval mass record for P16/P17"
+  ]
+}
