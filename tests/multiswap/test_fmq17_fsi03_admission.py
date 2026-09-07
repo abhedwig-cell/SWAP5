@@ -56,11 +56,25 @@ class Fmq17AdmissionTests(unittest.TestCase):
         self.assertFalse(guard["real_b1_10_temporal_characterization_qualified"])
         self.assertEqual(guard["canonical_reference_admission"], "BLOCKED_FAIL_CLOSED")
 
-    def test_status_is_checkpoint_before_external_gate(self):
+    def test_status_is_consistent_pre_or_post_qualification(self):
         self.assertTrue(self.status["persisted"])
-        self.assertFalse(self.status["tested"])
-        self.assertFalse(self.status["qualified"])
-        self.assertEqual(self.status["status"], "PERSISTED_FSI03_SOURCE_BOUND_ADMISSION_CANDIDATE")
+        if self.status["qualified"]:
+            self.assertTrue(self.status["tested"])
+            self.assertEqual(
+                self.status["status"],
+                "QUALIFIED_FSI03_SOURCE_BOUND_ADAPTER_ADMITTED_NO_REAL_PHYSICS_PROMOTION",
+            )
+            q = self.status["qualification"]
+            self.assertEqual(q["conclusion"], "success")
+            self.assertEqual(q["python_admission_tests"], "PASS_6_OF_6")
+            self.assertEqual(q["external_scope_verifier"], "PASS")
+            self.assertEqual(q["exact_fsi03_tested_postimage_gate"], "PASS")
+        else:
+            self.assertFalse(self.status["tested"])
+            self.assertEqual(
+                self.status["status"],
+                "PERSISTED_FSI03_SOURCE_BOUND_ADMISSION_CANDIDATE",
+            )
 
 
 if __name__ == "__main__":
