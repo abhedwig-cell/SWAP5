@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "status": "RESOLVED_AND_CI_EXECUTABLE",
+  "canonical_branch": "work/f-si09-b110-constitutive-provider",
+  "oracle": "B1.10",
+  "prior_source_resolution": {
+    "tested_postimage": "a588ab7401b53e4da0eb10ae6cc55efec0b6a01f",
+    "workflow_run": 34145698534,
+    "workflow_job": 101817163748,
+    "conclusion": "success"
+  },
+  "exact_identity": {
+    "supplied_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_mod_mvg_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "repository_reference_binding": {
+    "payload_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "payload_git_blob": "6cfcec4e38b02343ba48e7e6fb5d595158e19653",
+    "manifest_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json",
+    "verifier_path": "tools/fsi/fsi09_verify_b110_reference_payload.py",
+    "decoded_source_bytes": 41215,
+    "decoded_source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "first_primary_lineage_payload_commit": "b77f9ac6bb68fb29f46d13472362bff3cbf83582",
+    "usage": "qualification/reference oracle only; never shared mutable kernel provider state"
+  },
+  "ci_executable_verification": {
+    "tested_postimage": "833aefd3f77c548983350aad8311e260dd428ea0",
+    "workflow_run": 34148278075,
+    "workflow_job": 101824900106,
+    "reference_payload_verification": "PASS",
+    "decoded_source_sha_reported": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "oracle_compiled_o0": true,
+    "oracle_compiled_o2": true
+  },
+  "lineage": {
+    "canonical_fsi09_branch": "work/f-si09-b110-constitutive-provider",
+    "experimental_branch": "work/f-si09-b110-provider",
+    "experimental_branch_production_eligible": false,
+    "branch_convergence_record": "integration/f-si/F-SI09_BRANCH_CONVERGENCE.json"
+  }
+}
