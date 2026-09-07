@@ -13,10 +13,13 @@
     "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
   },
   "integration_overlay": {
-    "canonical_commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
+    "canonical_commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
     "work_unit": "F-CI17",
+    "role": "FORMAL_CLOSEOUT_ONLY",
     "consumed_as_fvq05_qualification_basis": false,
-    "production_source_delta_from_previous_overlay": false
+    "production_source_delta_from_previous_overlay": false,
+    "ci_g10": "QUALIFIED",
+    "downstream_release_allowed": false
   },
   "implemented": true,
   "persisted": true,
@@ -27,8 +30,8 @@
   "production_temporal_profile_qualified": false,
   "real_b1_10_temporal_acceptance_qualified": false,
   "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
-  "status": "PERSISTED_TEMPORAL_CONTRACT_ADMISSION_PRE_TEST",
-  "next_action": "Run F-VQ05 gate and promotion guards, re-run exact F-CI14 plus carried F-CI15/F-CI16/F-CI17 gates, and qualify only temporal-contract semantics if all checks pass. Keep the numerical profile and real B1.10 reference execution fail-closed.",
+  "status": "PERSISTED_TEMPORAL_CONTRACT_ADMISSION_CLOSEOUT_OVERLAY_PRE_TEST",
+  "next_action": "Re-run the F-VQ05 qualification workflow on the F-CI17 formal-closeout overlay; qualify only temporal-contract semantics if every required job passes. Keep the numerical profile and real B1.10 reference execution fail-closed.",
   "blockers": [
     "No independently qualified numeric limits exist for the eight B1.10 endpoint metrics.",
     "No admitted real B1.10 execute_reference_interval route exists.",
@@ -41,6 +44,6 @@
     "Do not promote deterministic F-CI14 testfixture limits into a production profile.",
     "Do not reuse nonlinear solver or mass-balance tolerances as temporal-accuracy limits.",
     "Do not silently ignore active optional-process state.",
-    "Do not consume F-CI17 as temporal qualification evidence merely because it is carried as the canonical overlay."
+    "Do not consume F-CI17 closeout as temporal qualification evidence merely because it is carried as the canonical overlay."
   ]
 }
