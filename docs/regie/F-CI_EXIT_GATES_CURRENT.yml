@@ -1,0 +1,259 @@
+schema_version: 1
+assessment_id: F-CI-EXIT-GATES-CURRENT
+contract: docs/regie/F-CI_EXIT_GATES.yml
+supersedes_assessment_commit: 26ddf65adae953e78f397f59c4728e6ed944a694
+assessment_mode: fail_closed
+
+snapshot:
+  canonical_branch: integration/f-ci-canonical
+  branch_head: 441a8a82362f42234b047518d013ada9a4e52c5c
+  branch_head_message: "F-CI10: add canonical qualification evidence"
+  qualified_source_head: 970d99100a256099343d4b2072ecd543469b23b5
+  qualification_evidence_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+  canonical_workflow_run: 34093648750
+  canonical_workflow_result: PASS
+  canonical_workflow_job: 101652946866
+  reference_oracle: B1.10
+  reference_manifest_sha256: 2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+  last_verified: "2026-09-07T07:07:25Z"
+
+release_summary:
+  fci_exit_gate: BLOCKED
+  all_required_gates_qualified: false
+  downstream_release_allowed: false
+  released_workstreams: []
+  eligible_but_not_released: []
+
+status_summary:
+  CI-G01: TESTED
+  CI-G02: QUALIFIED
+  CI-G03: BLOCKED
+  CI-G04: TESTED
+  CI-G05: TESTED
+  CI-G06: BLOCKED
+  CI-G07: BLOCKED
+  CI-G08: TESTED
+  CI-G09: BLOCKED
+  CI-G10: BLOCKED
+
+gates:
+  CI-G01:
+    status: TESTED
+    required: true
+    evidence:
+      - integration/f-ci/canonical-source-manifest.json
+      - integration/f-ci/F-CI06_STATUS.json
+      - integration/f-ci/F-CI09_STATUS.json
+      - integration/f-ci/F-CI10_STATUS.json
+      - "canonical workflow 34093648750 PASS"
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - canonical-source-manifest.json still describes the F-CI02 integration root and does not yet provide one consolidated manifest of the complete current F-CI10 production postimage
+      - final downstream baseline designation is intentionally deferred to CI-G10
+    holds:
+      - blocking: true
+        item: produce/update a consolidated current-source manifest before F-CI exit
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G02:
+    status: QUALIFIED
+    required: true
+    evidence:
+      - integration/f-ci/F-CI06_QUALIFICATION.md
+      - integration/f-ci/F-CI06_STATUS.json
+      - "workflow 34084732886 PASS"
+      - integration/f-ci/F-CI09_QUALIFICATION.md
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers: []
+    holds: []
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: true
+
+  CI-G03:
+    status: BLOCKED
+    required: true
+    evidence:
+      - src/transaction/mod_transaction_reference.f90
+      - docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+      - integration/f-ci/F-CI09_QUALIFICATION.md
+      - "workflow 34091724307 PASS"
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - B1.10 generic physical advance is not admitted
+      - full-half-half reference execution cannot yet run over arbitrary physical sub-intervals
+      - physical temporal-error contract is not admitted
+      - complete physical mass callbacks required by the transaction path are not yet integrated end-to-end
+    holds:
+      - blocking: true
+        item: transaction substrate is qualified; end-to-end physical transaction semantics are not
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G04:
+    status: TESTED
+    required: true
+    evidence:
+      - docs/integration/F-CI08_PHYSICAL_PROCESS_CONTINUATION_STATE.md
+      - "workflow 34088797066 PASS"
+      - integration/f-ci/F-CI09_QUALIFICATION.md
+      - "workflow 34091724307 PASS"
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - noddrz_old remains an explicit intra-day checkpoint audit item
+      - complete continuation/storage qualification for snow and macropore configurations is not yet established
+      - remaining legacy backend globals and serialization remain behind the compatibility seam
+    holds:
+      - blocking: true
+        item: current controlled profile has strong ownership evidence, but full exit-gate breadth is not yet established
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G05:
+    status: TESTED
+    required: true
+    evidence:
+      - src/transaction/mod_transaction_reference.f90
+      - src/runtime/mod_canonical_contracts.f90
+      - docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+      - "workflow 34081431284 PASS"
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - explicit reference policy is not yet end-to-end bound to an admitted B1.10 physical reference entrypoint
+      - no release-qualified physical reference selector/binding yet proves non-reference policies cannot be selected silently
+    holds:
+      - blocking: true
+        item: policy types are explicit and tested, physical reference-policy admission remains pending
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G06:
+    status: BLOCKED
+    required: true
+    evidence:
+      - src/runtime/mod_canonical_contracts.f90
+      - docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+      - integration/f-ci/F-CI09_QUALIFICATION.md
+      - integration/f-ci/F-CI10_TIME_MASS_SEAM.json
+      - integration/f-ci/F-CI10_STATUS.json
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - B1.10 TimeControl remains fundamentally calendar-day based
+      - DLL/external exchange path still enforces legacy single-day semantics
+      - generic physical sub-day advance remains NOT_ADMITTED
+      - execute_reference_interval remains fail-closed for B1.10
+    holds:
+      - blocking: true
+        item: generic API/runtime exists, real canonical B1.10 physical entrypoint is not generic in time
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G07:
+    status: BLOCKED
+    required: true
+    evidence:
+      - src/runtime/mod_canonical_contracts.f90
+      - src/transaction/mod_transaction_reference.f90
+      - integration/f-ci/F-CI10_QUALIFICATION.md
+      - integration/f-ci/F-CI10_STATUS.json
+      - "workflow 34093648750 PASS"
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - legacy timestep trial-mass integration is NOT_YET_MATERIALIZED
+      - snow storage is NOT_ADMITTED
+      - macropore storage is NOT_ADMITTED
+      - physical temporal-error contract is NOT_ADMITTED
+      - complete accepted-interval physical mass accounting cannot yet pass through execute_reference_interval
+    holds:
+      - blocking: true
+        item: qualified-profile mass seam passes, but complete canonical physical result/mass contract is not yet admitted
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G08:
+    status: TESTED
+    required: true
+    evidence:
+      - "workflow 34081431284 PASS"
+      - "workflow 34084732886 PASS"
+      - "workflow 34088797066 PASS"
+      - "workflow 34091724307 PASS"
+      - "workflow 34093648750 PASS"
+      - tools/vq/b1_10_admission_gate.py
+      - tools/vq/b2_reference_gate.py
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - no executable B1.10-to-canonical B2 comparison has yet been demonstrated through the final canonical physical entrypoint
+      - CI-G06 and CI-G07 block final physical VQ admission
+    holds:
+      - blocking: true
+        item: focused canonical qualification is strong; final VQ/B2 physical admission remains blocked
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G09:
+    status: BLOCKED
+    required: true
+    evidence:
+      - integration/f-ci/F-CI06_QUALIFICATION.md
+      - "workflow 34091724307 PASS"
+      - integration/f-ci/F-CI10_QUALIFICATION.md
+      - integration/f-ci/F-CI10_STATUS.json
+      - "workflow 34093648750 PASS"
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - final hard mass qualification is not yet performed through an admitted canonical B1.10 transaction entrypoint with complete accepted unrounded interval accounting
+      - legacy timestep trial-mass wiring is not canonical production source
+      - generic physical interval execution remains blocked
+    holds:
+      - blocking: true
+        item: qualified focused mass evidence exists, but final end-to-end canonical reference mass gate does not
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+  CI-G10:
+    status: BLOCKED
+    required: true
+    evidence:
+      - "canonical candidate branch integration/f-ci-canonical"
+      - "historical branch integration/a23bk-transactional-rebase still exists"
+      - "temporary branches integration/f-ci06-working and integration/f-ci08-working still exist"
+      - "qualification branches qualification/f-mq* remain separate qualification lines"
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 441a8a82362f42234b047518d013ada9a4e52c5c
+    blockers:
+      - no final F-CI exit commit has been designated as the downstream canonical baseline
+      - old and temporary branches are not yet machine-readably retired/superseded as production candidates
+      - downstream workstream prompts cannot yet pin an F-CI exit baseline because multiple required gates remain unqualified
+    holds:
+      - blocking: true
+        item: preserve historical evidence while explicitly retiring its production role before downstream release
+    last_verified: "2026-09-07T07:07:25Z"
+    allows_downstream_release: false
+
+downstream_workstreams:
+  F-KT:
+    release_status: BLOCKED
+  F-SI:
+    release_status: BLOCKED
+  F-VQ:
+    release_status: BLOCKED
+
+next_regie_action:
+  owner: F-CI
+  priority: 1
+  action: >-
+    Continue the canonical integration line from the qualified F-CI10 source. The immediate
+    production-critical work is controlled integration of the unrounded trial-mass accumulator
+    into the real legacy timestep path, followed by a generic physical interval controller and
+    qualified temporal-error contract. Do not weaken full/half/half reference semantics to fit
+    the legacy day controller.
