@@ -1,0 +1,43 @@
+name: F-SI06 materialize history isolation
+
+on:
+  push:
+    branches:
+      - work/f-si06-history-isolation
+    paths:
+      - tools/fsi/fsi06_materialize_history_isolation.py
+      - .github/workflows/fsi06-materialize.yml
+
+concurrency:
+  group: fsi06-materialize-history-isolation
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact F-SI05 qualified transformation
+        run: python3 tools/fsi/fsi06_materialize_history_isolation.py
+      - name: Validate patch scope and forbidden changes
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 src/legacy/b1_10_port/soilwater.f90 "
+          ! git diff -- src/legacy/b1_10_port/headcalc.f90 | grep -E '^[+-].*(CritDev|swkimpl|swkmean|MaxIt|MaxBackTr|dtmin|watcon|hconduc|moiscap|dhconduc)' | grep -v '^[-+]   use '
+          ! grep -F 'save :: legacy_worker' src/legacy/b1_10_port/headcalc.f90
+          ! grep -F 'ctx%history%' src/legacy/b1_10_port/headcalc.f90
+          grep -F 'call headcalc(ws%legacy_worker, ws%richards, call_history)' src/adapter/mod_reference_richards_legacy_binding.f90
+          grep -F 'call headcalc(legacy_headcalc_worker, history=legacy_headcalc_history)' src/legacy/b1_10_port/soilwater.f90
+      - name: Persist source checkpoint before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 src/legacy/b1_10_port/soilwater.f90
+          git commit -m "F-SI06: materialize explicit HeadCalc history ownership"
+          git push origin HEAD:work/f-si06-history-isolation
