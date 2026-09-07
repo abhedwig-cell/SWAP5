@@ -29,9 +29,37 @@
     "real_physics_executable": 0,
     "production_runtime_qualified": 0
   },
+  "coverage_after": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "promotions": []
+  },
+  "qualification_run": {
+    "workflow": "F-MQ21 F-SI06/F-VQ12 ownership admission",
+    "run_id": 34128837991,
+    "job_id": 101763807153,
+    "conclusion": "success"
+  },
+  "qualified_checks": {
+    "fmq21_admission_tests": "PASS_8_OF_8",
+    "external_fsi06_fvq12_scope_verifier": "PASS",
+    "exact_fsi06_tested_checkpoint_gate": "PASS",
+    "fsi06_serial_history_isolation": "PASS",
+    "fsi06_common_workspace_1_2_4_8": "PASS",
+    "fsi06_real_parallel_admission": "BLOCKED_SHARED_LEGACY_GLOBAL_TRANSLATION_EXPECTED",
+    "python_compile": "PASS"
+  },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI06_FVQ12_OWNERSHIP_ADMISSION_CANDIDATE",
-  "scope": "Admit F-SI06 explicit HeadCalc history ownership and serial focused ABA identity plus F-VQ12 qualified F-KT05/F-SI05 contractual non-conflict, while keeping full real-HeadCalc parallel reentrancy, composed runtime, full SWAP mass identity and production MultiSWAP fail-closed."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FSI06_HISTORY_FVQ12_NONCONFLICT_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+  "scope": "Admit F-SI06 explicit HeadCalc history ownership and serial focused ABA identity plus F-VQ12 qualified F-KT05/F-SI05 contractual non-conflict, while keeping full real-HeadCalc parallel reentrancy, composed runtime, full SWAP mass identity and production MultiSWAP fail-closed.",
+  "holds": [
+    "Full real HeadCalc 1/2/4/8 worker reentrancy remains blocked by shared legacy module-global request/candidate translation.",
+    "F-VQ12 does not qualify one composed F-KT05 plus F-SI05 production runtime postimage.",
+    "F-MR01 remains unqualified and therefore contributes no production-runtime matrix coverage.",
+    "Full unrounded SWAP water-balance identity and production B1.10 reference execution remain fail-closed."
+  ]
 }
