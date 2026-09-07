@@ -4,7 +4,8 @@ module mod_b1_10_legacy_trial_capsule
   use variables, only: dt, dtold, t, t1900, tcum, timjan1, tstart, tend, &
        daycum, daynr, imonth, iyear, ioutdat, ioutdatint, isteps, nprintcount, cntper, outper, date, &
        fldayend, fldaystart, fldecdt, fldtmin, fldtreduce, flbaloutput, flheader, floutput, &
-       floutputshort, flrunend, flzerocumu, flzerointr
+       floutputshort, flrunend, flzerocumu, flzerointr, volini, pondini, ivolbeg, ipondbeg, issnowbeg, isicbeg, ithetabeg
+  use MOD_integral_global, only: inqpotrot_day, inqredrot_day, iqrot_day, iqreddry_day, iqredsol_day, iptra_day, ialpwet_day, ialpdry_day
   use MOD_meteo, only: meteo_rec, rain_rec, i_metdetail, fl_update_meteo
   use MOD_irrigation, only: dayfix, nirri, irrigevent, isua, cirr, dt_irr_event, gird, nird, &
        qssdi, qssdisum, flirrigate
@@ -39,6 +40,9 @@ module mod_b1_10_legacy_trial_capsule
     logical :: fldayend = .false., fldaystart = .false., flrunend = .false.
     logical :: flbaloutput = .false., flheader = .false., floutput = .false., floutputshort = .false.
     logical :: flzerocumu = .false., flzerointr = .false.
+    real(real64) :: volini = 0.0_real64, pondini = 0.0_real64
+    real(real64) :: ivolbeg = 0.0_real64, ipondbeg = 0.0_real64, issnowbeg = 0.0_real64, isicbeg = 0.0_real64
+    real(real64), allocatable :: ithetabeg(:)
 
     ! Forcing cursors. Forcing values themselves are not persisted here.
     integer :: meteo_rec = 0, rain_rec = 0, i_metdetail = 0
@@ -50,6 +54,11 @@ module mod_b1_10_legacy_trial_capsule
     real(real64) :: gird = 0.0_real64, nird = 0.0_real64, qssdisum = 0.0_real64
     logical :: flirrigate = .false.
     real(real64), allocatable :: qssdi(:)
+
+    ! Day accumulators consumed by crop/root processes. Roll back for non-calendar trial boundaries.
+    real(real64), allocatable :: inqpotrot_day(:), inqredrot_day(:)
+    real(real64) :: iqrot_day = 0.0_real64, iqreddry_day = 0.0_real64, iqredsol_day = 0.0_real64
+    real(real64) :: iptra_day = 0.0_real64, ialpwet_day = 0.0_real64, ialpdry_day = 0.0_real64
 
     ! Intermediate and cumulative water accounting. These are rollback data, not physical continuation state.
     real(real64), allocatable :: inqrot(:), inq(:), inqssdi(:), inqpotrot(:), inqredrot(:), iqdo(:), iqup(:)
@@ -86,6 +95,10 @@ contains
     c%fldayend=fldayend; c%fldaystart=fldaystart; c%flrunend=flrunend
     c%flbaloutput=flbaloutput; c%flheader=flheader; c%floutput=floutput; c%floutputshort=floutputshort
     c%flzerocumu=flzerocumu; c%flzerointr=flzerointr
+    c%volini=volini; c%pondini=pondini; c%ivolbeg=ivolbeg; c%ipondbeg=ipondbeg; c%issnowbeg=issnowbeg; c%isicbeg=isicbeg
+    c%ithetabeg=ithetabeg
+    c%inqpotrot_day=inqpotrot_day; c%inqredrot_day=inqredrot_day; c%iqrot_day=iqrot_day; c%iqreddry_day=iqreddry_day
+    c%iqredsol_day=iqredsol_day; c%iptra_day=iptra_day; c%ialpwet_day=ialpwet_day; c%ialpdry_day=ialpdry_day
     c%meteo_rec=meteo_rec; c%rain_rec=rain_rec; c%i_metdetail=i_metdetail; c%fl_update_meteo=fl_update_meteo
     c%dayfix=dayfix; c%nirri=nirri; c%irrigevent=irrigevent; c%isua=isua; c%cirr=cirr
     c%dt_irr_event=dt_irr_event; c%gird=gird; c%nird=nird; c%qssdisum=qssdisum; c%flirrigate=flirrigate
@@ -107,11 +120,13 @@ contains
   subroutine restore_b1_10_legacy_trial_capsule(c)
     type(b1_10_legacy_trial_capsule_t), intent(in) :: c
     if (.not. allocated(c%qssdi) .or. .not. allocated(c%inqrot) .or. .not. allocated(c%inq) .or. &
-        .not. allocated(c%cqdrain) .or. .not. allocated(c%inqdra)) then
+        .not. allocated(c%cqdrain) .or. .not. allocated(c%inqdra) .or. .not. allocated(c%ithetabeg) .or. &
+        .not. allocated(c%inqpotrot_day) .or. .not. allocated(c%inqredrot_day)) then
       error stop 'B1.10 legacy trial capsule: incomplete snapshot'
     end if
     if (size(c%qssdi) /= macp .or. size(c%inqrot) /= macp .or. size(c%inq) /= macp+1 .or. &
-        size(c%cqdrain) /= madr .or. size(c%inqdra,1) /= madr .or. size(c%inqdra,2) /= macp) then
+        size(c%cqdrain) /= madr .or. size(c%inqdra,1) /= madr .or. size(c%inqdra,2) /= macp .or. &
+        size(c%ithetabeg) /= macp .or. size(c%inqpotrot_day) /= macp .or. size(c%inqredrot_day) /= macp) then
       error stop 'B1.10 legacy trial capsule: shape mismatch'
     end if
     dt=c%dt; dtold=c%dtold; fldecdt=c%fldecdt; fldtmin=c%fldtmin; fldtreduce=c%fldtreduce
@@ -122,6 +137,10 @@ contains
     fldayend=c%fldayend; fldaystart=c%fldaystart; flrunend=c%flrunend
     flbaloutput=c%flbaloutput; flheader=c%flheader; floutput=c%floutput; floutputshort=c%floutputshort
     flzerocumu=c%flzerocumu; flzerointr=c%flzerointr
+    volini=c%volini; pondini=c%pondini; ivolbeg=c%ivolbeg; ipondbeg=c%ipondbeg; issnowbeg=c%issnowbeg; isicbeg=c%isicbeg
+    ithetabeg=c%ithetabeg
+    inqpotrot_day=c%inqpotrot_day; inqredrot_day=c%inqredrot_day; iqrot_day=c%iqrot_day; iqreddry_day=c%iqreddry_day
+    iqredsol_day=c%iqredsol_day; iptra_day=c%iptra_day; ialpwet_day=c%ialpwet_day; ialpdry_day=c%ialpdry_day
     meteo_rec=c%meteo_rec; rain_rec=c%rain_rec; i_metdetail=c%i_metdetail; fl_update_meteo=c%fl_update_meteo
     dayfix=c%dayfix; nirri=c%nirri; irrigevent=c%irrigevent; isua=c%isua; cirr=c%cirr
     dt_irr_event=c%dt_irr_event; gird=c%gird; nird=c%nird; qssdisum=c%qssdisum; flirrigate=c%flirrigate
