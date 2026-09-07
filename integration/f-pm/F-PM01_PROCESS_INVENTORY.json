@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM01",
   "purpose": "Source-bound ownership inventory for non-soil-water-solver SWAP processes. No production physics is changed.",
@@ -14,6 +14,11 @@
     "b1_10_source_bytes": 1863575,
     "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
     "b0_nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "dependency_refresh": {
+    "F-KT05": "QUALIFIED at f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "F-SI05": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY at 0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "shared_downstream_basis": false
   },
   "classification_vocabulary": [
     "IMMUTABLE_PARAMETER",
@@ -56,9 +61,9 @@
       ],
       "entrypoints": ["RootExtraction", "RootExtraction_MICRO", "RootExtraction_MACRO", "reset_rootextraction"],
       "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "SOLVER_INTERNAL_DEPENDENCY"],
-      "migration_readiness": "READY_AFTER_FSI04",
-      "readiness_reason": "Physics reads legacy hydraulic arrays h/theta and writes qrot sink fields used by the soil-water solve. Migration needs an admitted hydraulic_view and sink-result seam, not direct variables-module access.",
-      "notes": ["Current F-SI04 qualification is workspace replay only and therefore does not yet satisfy production admission."]
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "F-SI05 now qualifies focused production HeadCalc workspace ownership, but not the complete process-facing hydraulic_view and qrot sink seam. Production migration also requires a shared qualified F-KT/F-SI source basis.",
+      "notes": ["Do not treat F-SI05 focused workspace qualification as full reference-solver reentrancy or as a complete process hydraulic interface."]
     },
     {
       "id": "EVAPOTRANSPIRATION",
@@ -82,8 +87,8 @@
       ],
       "entrypoints": ["drain", "drainage", "drainflux_basic"],
       "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS"],
-      "migration_readiness": "READY_AFTER_FSI04",
-      "readiness_reason": "Drainage uses groundwater head and timestep directly and contributes qdra/qdrtot inside the soil-water retry loop. It must consume an explicit hydraulic view and return fluxes without owning solver transaction semantics.",
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "Drainage uses groundwater head and contributes qdra/qdrtot inside the soil-water retry loop. F-SI05 does not qualify the broader drainage-facing hydraulic interface, and production migration requires a shared F-KT/F-SI source basis.",
       "notes": []
     },
     {
@@ -92,8 +97,8 @@
       "source_files": [{"path": "SWAP/irrigation.f90", "b1_10_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"}],
       "entrypoints": ["irrigation", "read_irrigation_fixed"],
       "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
-      "migration_readiness": "READY_AFTER_FKT05",
-      "readiness_reason": "Scheduling maintains event counters, calendar windows and rates in SAVE state and reads h/theta for trigger rules. A reusable process checkpoint boundary is needed before migration of scheduling state.",
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "F-KT05 reusable checkpoint semantics are now qualified, satisfying the former transaction dependency. Irrigation still reads h/theta for trigger rules and production migration must start from a shared qualified F-KT/F-SI source basis.",
       "notes": ["SSDI qssdi is optional state and must not be allocated for inactive columns in the new architecture."]
     },
     {
@@ -148,8 +153,8 @@
       "source_files": [{"path": "SWAP/frozencond.f90", "b1_10_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"}],
       "entrypoints": ["FrozenCond", "FrozenBounds"],
       "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "SOLVER_INTERNAL_DEPENDENCY"],
-      "migration_readiness": "READY_AFTER_FSI04",
-      "readiness_reason": "FrozenCond changes conductivity-reduction fields and FrozenBounds changes solver boundary behavior, so a stable solver-facing contract is required.",
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "F-SI05 qualifies focused workspace ownership but not all frost-facing conductivity/boundary paths. Production migration needs the relevant solver interface plus a shared qualified downstream source basis.",
       "notes": []
     },
     {
@@ -195,9 +200,9 @@
   ],
   "global_holds": [
     "No production process migration on this branch.",
-    "No F-KT05 semantics consumed until qualified.",
-    "F-SI04 source-bound workspace replay evidence is informative only; no production solver seam is consumed.",
+    "F-KT05 and F-SI05 may be consumed as qualified contract/readiness evidence, but their production source is not integrated into this F-PM01 branch.",
+    "F-SI05 does not qualify full reference-solver reentrancy, complete process hydraulic views, all solver paths, or production MultiSWAP admission.",
     "No generic-duration snow scaling is inferred from B1.10 one-call/day-start behavior; subdaily and arbitrary-duration equivalence remain unqualified.",
-    "A shared qualified downstream F-KT/F-SI integration baseline is required before F-PM02 production source changes."
+    "A shared qualified downstream F-KT05/F-SI05 integration baseline is required before F-PM02 production source changes."
   ]
 }
