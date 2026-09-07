@@ -1,0 +1,27 @@
+name: F-SI09 corrected B1.10 provider
+
+on:
+  push:
+    branches:
+      - work/f-si09-b110-provider
+    paths:
+      - 'src/solver/mod_b110_constitutive_provider.f90'
+      - 'reference/swap-4.3.1/b1_10_source/**'
+      - 'tools/fsi/fsi09_verify_b110_reference_payload.py'
+      - 'tests/fsi/fsi09_b110_oracle_stubs.f90'
+      - 'tests/fsi/test_fsi09_b110_provider_oracle.f90'
+      - 'tests/fsi/run_fsi09_b110_provider_gate.sh'
+      - 'integration/f-si/F-SI09_*.json'
+      - '.github/workflows/fsi09-b110-provider.yml'
+
+jobs:
+  b110-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI09 corrected B1.10 provider gate
+        run: bash tests/fsi/run_fsi09_b110_provider_gate.sh
