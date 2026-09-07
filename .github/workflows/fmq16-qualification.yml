@@ -1,0 +1,73 @@
+name: F-MQ16 F-SI03 fail-closed admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq16-fsi03-failclosed-admission
+    paths:
+      - 'tests/multiswap/fmq16_*'
+      - 'tests/multiswap/test_fmq16_*'
+      - 'tests/multiswap/verify_fmq16_*'
+      - 'tests/multiswap/run_fmq16_gate.py'
+      - 'docs/qualification/F-MQ16_*'
+      - '.github/workflows/fmq16-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq16-gate:
+    name: F-MQ16 fail-closed F-SI03 barrier
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ16 admission tests
+        run: python3 tests/multiswap/run_fmq16_gate.py
+
+      - name: Fetch exact unqualified F-SI03 head
+        run: |
+          FSI03=5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3
+          git fetch --no-tags --depth=1 origin "$FSI03"
+          test "$(git rev-parse FETCH_HEAD)" = "$FSI03"
+          test "$(git rev-parse FETCH_HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = "84366a4b312a86806cc3aa78a7257c3a7a95d2f1"
+          test "$(git rev-parse FETCH_HEAD:tests/fsi/test_fsi03_reference_binding.f90)" = "7cb4b6d46dead75824e2ddc5814a4cdf1fbc36b2"
+          if git cat-file -e FETCH_HEAD:integration/f-si/F-SI03_QUALIFICATION.json 2>/dev/null; then
+            echo "Unexpected F-SI03 qualification postimage at pinned unqualified head"
+            exit 1
+          fi
+          git show FETCH_HEAD:src/adapter/mod_reference_richards_legacy_binding.f90 > /tmp/fsi03_adapter.f90
+          git show FETCH_HEAD:tests/fsi/test_fsi03_reference_binding.f90 > /tmp/fsi03_test.f90
+
+      - name: Verify source-bound admission barrier
+        run: |
+          python3 tests/multiswap/verify_fmq16_fsi03_external.py \
+            --adapter /tmp/fsi03_adapter.f90 \
+            --fsi03-test /tmp/fsi03_test.f90
+
+      - name: Reproduce strict F-SI03 gate blocker
+        run: |
+          git worktree add --detach /tmp/fsi03 5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3
+          set +e
+          (cd /tmp/fsi03 && bash tests/fsi/run_fsi03_gate.sh) > /tmp/fsi03-gate.log 2>&1
+          rc=$?
+          set -e
+          cat /tmp/fsi03-gate.log
+          test "$rc" -ne 0
+          grep -q 'Werror=compare-reals' /tmp/fsi03-gate.log
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq16_gate.py \
+            tests/multiswap/test_fmq16_fsi03_failclosed_admission.py \
+            tests/multiswap/verify_fmq16_fsi03_external.py
