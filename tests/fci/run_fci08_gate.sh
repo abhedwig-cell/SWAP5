@@ -35,6 +35,8 @@ checks={
  'optional_irrigation':'allocatable :: irrigation' in process and 'dayfix' in process and 'nirri' in process,
  'irrigation_config_driven':'swirfix == 1 .or. schedule == 1' in process and 'flirrigate' not in process,
  'optional_crop':'allocatable :: crop' in process and 'state%crop%cumdens' in process and 'state%crop%lrv_node' in process,
+ 'crop_rdpot_persistent':'state%crop%rdpot = rdpot' in process and 'rdpot=state%crop%rdpot' in process,
+ 'noddrz_old_not_persistent':'noddrz_old' not in process,
  'optional_wofost':'allocatable :: wofost' in process and 'croptype(icrop) == 2' in process,
  'wofost_preemergence_safe':'croptype(icrop) == 2 .and. fl_cropemergence' not in process,
  'wofost_state_not_rates':'r_act' not in process and 'r_pot' not in process,
@@ -44,6 +46,7 @@ checks={
  'process_no_accounting':all(x not in process for x in ('imdectot','imsqprec','imqsol','cgrai','cqbotdo')),
  'capsule_thermal_cursors':all(x in capsule for x in ('ipos_qtop','ipos_tetop','ipos_tebot')),
  'capsule_solute_accounting':all(x in capsule for x in ('imdectot','imsqprec','imqsol','sbaldev','samini','isqtop')),
+ 'capsule_irrigation_schedule_projection':all(x in capsule for x in ('c%schedule=schedule','schedule=c%schedule')),
  'capsule_not_persistent':not re.search(r'extends\((canonical_state_t|transaction_state_t)\)', capsule),
 }
 failed=[k for k,v in checks.items() if not v]
