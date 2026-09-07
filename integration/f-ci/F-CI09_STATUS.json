@@ -5,21 +5,27 @@
   "branch": "integration/f-ci-canonical",
   "parent_commit": "eeb180c90adba51dcb87269a4b59ce15311bf2bf",
   "materialized_commit": "468cf9ae90ffaae978fd627c19b24bead5756008",
-  "joined_checkpoint_commit": "dfaf9559d8e63e5ca948a5a179255abe398d251f",
+  "qualified_source_head": "3e10ef4c0d04d937d01b4619a72117b6aaea6889",
   "b1_oracle": "B1.10",
   "production_source_changed": true,
   "persisted_before_long_tests": true,
   "qualification": {
-    "transaction_state_binding": "MATERIALIZED",
-    "transaction_attempt_context_binding": "MATERIALIZED",
+    "transaction_state_binding": "PASS",
+    "transaction_attempt_context_binding": "PASS",
+    "source_provenance": "PASS",
     "whole_day_restore_rerun_evidence": "INHERITED_FCI08_PASS_8_OF_8_ZERO_DIFF",
     "time_seam_audit": "PASS_BLOCKER_CONFIRMED",
-    "generic_interval_advance": "BLOCKED_LEGACY_CALENDAR_SEAM",
+    "o0_binding_test": "PASS",
+    "o2_binding_test": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "blocked_advance_negative_control": "PASS",
+    "unqualified_storage_negative_control": "PASS_FAIL_CLOSED",
+    "canonical_ci": "PASS_RUN_34091724307_JOB_101646644706",
+    "generic_interval_advance": "NOT_ADMITTED",
     "unrounded_trial_mass_flux_contract": "NOT_ADMITTED",
     "mass_storage_contract": "NOT_ADMITTED",
     "temporal_error_contract": "NOT_ADMITTED",
-    "reference_transaction_execution": "FAIL_CLOSED_NOT_ADMITTED",
-    "canonical_ci": "NOT_STARTED"
+    "reference_transaction_execution": "FAIL_CLOSED_NOT_ADMITTED"
   },
   "source_pins": {
     "transaction_core": "4a573316b77252b56bcb429fd519aa57123e9a06",
@@ -35,5 +41,5 @@
     "qualified physical temporal-error metric",
     "execute_reference_interval admission for B1.10 backend"
   ],
-  "status": "MATERIALIZED_BINDING_SUBSTRATE_REFERENCE_EXECUTION_BLOCKED_GATE_PENDING"
+  "status": "PASS_TRANSACTION_BINDING_SUBSTRATE_REFERENCE_EXECUTION_BLOCKED"
 }
