@@ -147,3 +147,15 @@ jobs:
         run: gfortran --version
       - name: F-CI13 recoverable physical trial status gate
         run: bash tests/fci/run_fci13_gate.sh
+
+  fci14-reference-temporal-acceptance:
+    needs: fci13-recoverable-physical-trial-status
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI14 reference temporal acceptance contract gate
+        run: bash tests/fci/run_fci14_gate.sh
