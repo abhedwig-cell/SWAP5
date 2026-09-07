@@ -30,8 +30,9 @@
     "requires_external_source_path": true,
     "requires_ttutil_root": true,
     "requires_case_directory": true,
-    "required_environment": ["FCI07_B1_10_SOURCE", "TTUTIL_ROOT", "FCI07_CASE"],
-    "all_required_real_run_assets_self_contained_in_repository": false
+    "required_environment": ["FCI07_B1_10_SOURCE", "FCI07_TTUTIL_ROOT", "FCI07_CASE"],
+    "all_required_real_run_assets_self_contained_in_repository": false,
+    "runner_is_temporal_full_vs_two_half_probe": false
   },
   "current_admission": {
     "real_b1_10_temporal_characterization_qualified": false,
