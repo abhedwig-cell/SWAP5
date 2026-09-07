@@ -1,0 +1,60 @@
+schema_version: 1
+record_id: F-VQ-EARLY-RELEASE
+workstream: F-VQ
+name: Verification and Qualification
+release_class: QUALIFICATION_ONLY
+release_status: RELEASED
+production_write_allowed: false
+
+basis:
+  canonical_branch: integration/f-ci-canonical
+  qualified_fci11_source: 4e8894fc741d7abd711367f712e7aad29d1361eb
+  fci11_qualification_evidence: b18150cb4f5313f01fc1c775917c617b421c9ba0
+  canonical_ci_run: 34100440481
+  reference_oracle: B1.10
+  reason: >-
+    F-CI11 now provides a qualified generic physical interval seam and real unrounded trial-mass
+    wiring for the admitted profile. This is sufficient for independent verification tooling to
+    prepare and execute fail-closed canonical-source qualification work without modifying production
+    source. Final B2/reference admission remains blocked until F-CI admits the real B1.10 transaction
+    model binding, physical temporal-error policy, and execute_reference_interval path.
+
+allowed_scope:
+  - inventory and consolidate existing VQ harnesses against the current canonical F-CI source
+  - pin all tests to exact source and qualification commits
+  - exercise B1.10 reconstruction/admission gates
+  - prepare canonical B2/reference admission contracts
+  - prepare and execute transaction/time/mass/result qualification that is already supported by admitted interfaces
+  - add fail-closed tests for not-yet-admitted transaction-model binding and temporal-error policy
+  - classify expected and intentional B1.10-to-SWAP5 differences
+  - reuse qualified existing VQ evidence where source provenance is exact
+
+prohibited_scope:
+  - production kernel changes
+  - solver physics changes
+  - numerical policy changes
+  - changing F-CI source to make a VQ test pass
+  - inventing mass totals or expected physical outcomes
+  - admitting B2/reference execution before the canonical B1.10 transaction entrypoint is actually executable
+  - weakening hard mass conservation
+
+first_unit:
+  code: F-VQ01
+  goal: >-
+    Rebase and consolidate the independent verification harness onto exact qualified F-CI11 source,
+    establish the executable fail-closed admission matrix for the canonical B1.10 physical seam,
+    and enumerate precisely which final checks are blocked by F-CI12/later transaction binding and
+    physical temporal-error policy.
+
+exit_of_first_unit:
+  - exact canonical source pin
+  - B1.10 oracle pin and reconstruction/admission PASS evidence
+  - executable qualification matrix for transaction, generic time, mass and canonical results
+  - explicit fail-closed blockers for unavailable production interfaces
+  - no production source changes
+
+full_workstream_release_dependency: >-
+  Qualification-only work may run now. Any F-VQ result that declares the final canonical physical
+  reference/B2 route qualified remains blocked until the corresponding F-CI exit gates are qualified.
+
+last_verified: 2026-09-07T10:39:00+02:00
