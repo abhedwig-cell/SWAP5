@@ -12,24 +12,32 @@
     "fci13_canonical_job": 101687946143,
     "fvq03_final_head": "0956a2f4b4a3a9b2318a1254b2e972f7138c5182"
   },
+  "integration_overlay": {
+    "canonical_commit": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "work_unit": "F-CI14",
+    "consumed_as_fvq04_qualification_basis": false,
+    "reason": "F-CI14 is carried to prevent a qualification PR from reverting the moving canonical production line. F-VQ04 real-failure semantics remain pinned to qualified F-CI13."
+  },
   "scope_checkpoint_commit": "8abefd0114ef017e22e343112ab8e8e3f223240d",
-  "pre_test_checkpoint_commit": "53ddbda4a764f8c23db0e4c1229cdc6a5061d7ae",
+  "substantive_pre_overlay_checkpoint_commit": "53ddbda4a764f8c23db0e4c1229cdc6a5061d7ae",
+  "overlay_assembled_commit": "07919de5a62264ed2eb29949f18d0ea55ea0cafb",
+  "pre_test_checkpoint_commit": "bb96a5dc3dae9946c3797e2610711e8ebf4b4cf7",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "production_source_changed": false,
+  "production_source_changed_since_overlay": false,
   "real_terminal_failure_physics_qualified": false,
   "real_failure_fixture_admission": "BLOCKED_FAIL_CLOSED",
   "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
   "status": "PERSISTED_ADMISSION_GATE_PRE_TEST",
-  "next_action": "Run the F-VQ04 admission/readiness gate, promotion guards, exact F-CI13 gate, corrected B1.10 admission and carried verifier tests on this persisted qualification branch. Qualify only the admission infrastructure if green; keep real terminal-failure physics blocked until exact external B1.10, TTUTIL and Hupsel inputs plus a repeatable real failure record exist.",
+  "next_action": "Run the F-VQ04 admission/readiness gate, promotion guards, exact F-CI13 gate, corrected B1.10 admission and carried verifier tests on this overlay-aware persisted qualification branch. Qualify only the admission infrastructure if green; keep real terminal-failure physics blocked until exact external B1.10, TTUTIL and Hupsel inputs plus a repeatable real failure record exist.",
   "blockers": [
     "Exact complete B1.10 source tree is not present in canonical Git or supplied as verified external qualification input.",
     "TTUTIL source root with immutable provenance is not present in canonical Git or supplied as verified external qualification input.",
     "Hupsel 2002-2004 case files with an immutable complete manifest are not present in canonical Git or supplied as verified external qualification input.",
     "No real F-CI13 canonical-worker minimum-dt terminal-failure execution record exists.",
-    "Scalar temporal-error metric and tolerance policy remain not admitted.",
+    "F-CI14 provides a temporal-acceptance contract but no qualified numerical temporal profile/tolerances have been consumed by F-VQ04.",
     "execute_reference_interval and real end-to-end B1.10 reference execution remain not admitted.",
     "Complete snow/macropore storage and parallel legacy-backend qualification remain open."
   ],
@@ -38,6 +46,7 @@
     "Do not change production source, physical configuration, convergence tolerances or retry policy to induce failure.",
     "Do not use an unverified source archive or Hupsel case as qualification input.",
     "A metadata-only PASS/QUALIFIED record must be rejected by the executable admission gate.",
-    "Reference execution remains fail-closed independently of this work unit."
+    "Reference execution remains fail-closed independently of this work unit.",
+    "Do not infer F-CI14 numerical qualification merely because its contract is present in the carried canonical overlay."
   ]
 }
