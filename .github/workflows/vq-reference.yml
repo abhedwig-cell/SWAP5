@@ -143,3 +143,6 @@ jobs:
 
       - name: Re-run carried F-CI16 exit-gate assessment
         run: bash tests/fci/run_fci16_gate.sh
+
+      - name: Re-run carried F-CI17 canonical baseline registry
+        run: bash tests/fci/run_fci17_gate.sh
