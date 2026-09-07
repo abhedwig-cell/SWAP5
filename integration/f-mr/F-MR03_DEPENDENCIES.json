@@ -1,8 +1,8 @@
 {
-  "schema": "swap5.f-mr03.dependencies.v2",
+  "schema": "swap5.f-mr03.dependencies.v3",
   "work_unit": "F-MR03",
   "title": "Physical Reference Runtime Readiness & Admission Contract",
-  "purpose": "Define the exact fail-closed dependency and admission boundary for a future serialized physical SWAP reference-runtime path without consuming unqualified F-SI production physics.",
+  "purpose": "Define the exact fail-closed dependency and admission boundary for a future serialized physical SWAP reference-runtime path without consuming unqualified production physics or process-provider implementations.",
   "base": {
     "branch": "integration/f-mr",
     "commit": "20c01210e576320d38dc9a430f5969686a3f3bb4",
@@ -17,9 +17,6 @@
       "qualification_evidence": "64ce93df445d3092220862fe7833f3081c8944f4",
       "workflow_run": 34133107286,
       "status": "QUALIFIED",
-      "production_reference_execution": false,
-      "production_multiswap": false,
-      "full_parallel_headcalc": false,
       "source_consumed_by_f_mr03": false
     },
     "f_si08": {
@@ -32,36 +29,52 @@
       "parallel_reference_backend": false,
       "source_consumed_by_f_mr03": false
     },
-    "f_si09_active_default_mvg": {
+    "f_si09_default_mvg": {
       "branch": "work/f-si09-b110-constitutive-provider",
-      "head": "7bd3034194561e3b70d2a8cb846722b1610a37ce",
-      "head_message": "F-SI09: add B1.10 provider qualification workflow",
+      "current_tested_head": "d203eb5599fff5cb692410347df678ebdf02f8ac",
       "provider_source": "src/solver/mod_b110_default_mvg_provider.f90",
-      "qualification_workflow_run": 34147779167,
-      "qualification_workflow_job": 101823419371,
-      "workflow_conclusion": "failure",
-      "gate_observations": {
+      "workflow_run": 34147885551,
+      "workflow_job": 101823735787,
+      "workflow_conclusion": "success",
+      "tested_current_provider_postimage": true,
+      "gate_results": {
         "static_provider_contract": "PASS",
         "b110_fingerprint_o0": "PASS",
         "b110_fingerprint_o2": "PASS",
         "b110_fingerprint_o0_o2_identity": "PASS",
-        "parallel_isolation_compile": "FAIL_WERROR_COMPARE_REALS"
+        "common_parallel_isolation_gate": "PASS"
       },
-      "failure_classification": "TEST_GATE_COMPILE_FAILURE_NOT_A_DEMONSTRATED_PHYSICAL_MISMATCH",
+      "qualification_artifact_on_same_head": "integration/f-si/F-SI09_QUALIFICATION.json",
       "qualification_artifact_status": "TESTED_SOURCE_RESOLUTION_PROVIDER_HELD",
       "qualification_artifact_qualified": false,
+      "qualification_artifact_tested_postimage_is_stale": true,
+      "status": "TESTED_CURRENT_POSTIMAGE_AWAITING_FORMAL_QUALIFICATION",
       "production_b110_constitutive_provider_admitted": false,
       "production_b110_source_sink_provider_admitted": false,
       "parallel_reference_backend_admitted": false,
       "source_consumed_by_f_mr03": false
     },
-    "f_si09_sibling_general_provider": {
-      "branch": "work/f-si09-b110-provider",
-      "head": "c108130bc6d4d1e740bfd242da5e30975115bc2e",
-      "workflow_on_head_found": false,
-      "admission_contract": "integration/f-si/F-SI09_PROVIDER_ADMISSION_CONTRACT.json",
-      "production_source_sink_hold": "SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED",
-      "parallel_reference_hold": "NOT_ADMITTED_UNTIL_B1_10_CONSTITUTIVE_AND_REQUIRED_PROCESS_PROVIDERS_ARE_PRODUCTION_QUALIFIED",
+    "f_si09_process_provider_hold": {
+      "contract_branch": "work/f-si09-b110-provider",
+      "contract_head": "c108130bc6d4d1e740bfd242da5e30975115bc2e",
+      "production_source_sink_provider": "SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED",
+      "parallel_reference_backend": "NOT_ADMITTED_UNTIL_B1_10_CONSTITUTIVE_AND_REQUIRED_PROCESS_PROVIDERS_ARE_PRODUCTION_QUALIFIED"
+    },
+    "f_pm01": {
+      "branch": "work/f-pm01-process-boundary",
+      "head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
+      "status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD",
+      "ownership": "non-soil-water-solver process physics",
+      "root_water_uptake": "process-owned; qrot/hydraulic seam not yet production-migrated",
+      "drainage": "process-owned; drainage-facing hydraulic seam not yet production-migrated",
+      "source_consumed_by_f_mr03": false
+    },
+    "f_pm02": {
+      "branch": "work/f-pm02-snow-admission",
+      "head": "dac1e9df335ac3ac4082e7c7d2041d8d3c1c83a2",
+      "status": "REJECT_FAIL_CLOSED",
+      "shared_physical_production_baseline_required": true,
+      "physical_swap_use_must_be_explicitly_admitted": true,
       "source_consumed_by_f_mr03": false
     },
     "f_mq22": {
@@ -76,32 +89,26 @@
       "joint_executable_production_postimage": false,
       "production_b110_reference_execution": false,
       "production_multiswap": false
-    },
-    "f_pm02": {
-      "branch": "work/f-pm02-snow-admission",
-      "head": "dac1e9df335ac3ac4082e7c7d2041d8d3c1c83a2",
-      "status": "REJECT_FAIL_CLOSED",
-      "shared_physical_production_baseline_required": true,
-      "unblocked_by_f_mr02": false
     }
   },
-  "branch_discovery": {
+  "ownership_resolution": {
+    "f_mr": "runtime registry, batching, scheduling, routing, retries, diagnostics and aggregate accounting only",
+    "f_kt": "committed transaction/checkpoint semantics",
+    "f_si": "solver/provider interfaces, solver workspace isolation and hydraulic provider isolation",
+    "f_pm_or_process_owner": "non-soil-water-solver process equations such as root-water uptake, drainage and other sinks/sources",
+    "rule": "F-MR may compose only already-qualified process/provider implementations; it must not implement missing sink/source physics or use test fixtures as production process providers."
+  },
+  "branch_discovery_at_last_reread": {
     "f_si10_branch_found": false,
-    "dedicated_source_sink_provider_branch_found": false,
-    "provider_named_branches": [
-      "work/f-si08-provider-context",
-      "work/f-si08-provider-context-safety",
-      "work/f-si09-b110-constitutive-provider",
-      "work/f-si09-b110-provider"
-    ]
+    "dedicated_source_sink_provider_branch_found": false
   },
   "source_consumption_policy": {
-    "consume_unqualified_f_si09_source": false,
-    "duplicate_f_si_provider_logic_in_f_mr": false,
+    "consume_tested_but_not_formally_qualified_f_si09_source": false,
+    "duplicate_f_si_or_f_pm_provider_logic_in_f_mr": false,
     "change_swap_physics_in_f_mr": false,
     "change_f_kt_transaction_semantics_in_f_mr": false,
     "admit_parallel_reference_backend": false,
-    "admit_physical_reference_backend_before_executable_qualification": false
+    "admit_physical_reference_backend_before_joint_executable_qualification": false
   },
-  "verified_at_utc": "2026-09-07T17:29:30Z"
+  "verified_at_utc": "2026-09-07T17:31:30Z"
 }

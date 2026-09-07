@@ -1,5 +1,5 @@
 {
-  "schema": "swap5.f-mr03.admission-readiness.v2",
+  "schema": "swap5.f-mr03.admission-readiness.v3",
   "work_unit": "F-MR03",
   "candidate_backend": "serialized physical reference runtime",
   "target_profile": {
@@ -10,83 +10,22 @@
     "parallel_reference_execution": false
   },
   "gates": [
-    {
-      "id": "MR03-G01",
-      "name": "Qualified shared F-MR runtime postimage",
-      "status": "QUALIFIED",
-      "evidence": "F-MR02 closeout 20c01210e576320d38dc9a430f5969686a3f3bb4",
-      "required": true
-    },
-    {
-      "id": "MR03-G02",
-      "name": "Current transaction/checkpoint boundary",
-      "status": "QUALIFIED_SEPARATELY_NOT_COMPOSED",
-      "evidence": "F-KT07 head b91da4fb01e3b0c21d39a5782d36f8eedc55875d; tested postimage d24358c7074714c6d911bb60dc8cdfcfd656e8b6",
-      "required": true
-    },
-    {
-      "id": "MR03-G03",
-      "name": "Provider-context isolation",
-      "status": "QUALIFIED_FOCUSED_PROFILE",
-      "evidence": "F-SI08 qualification head 5b522c8f2767989161dae7faf382d5ee1b27c47c",
-      "required": true
-    },
-    {
-      "id": "MR03-G04",
-      "name": "Corrected B1.10 constitutive provider",
-      "status": "BLOCKED_FAILED_QUALIFICATION_GATE",
-      "evidence": "F-SI09 head 7bd3034194561e3b70d2a8cb846722b1610a37ce; workflow 34147779167 failed. Static contract and B1.10 O0/O2 fingerprints pass, but the parallel-isolation test does not compile under -Werror=compare-reals. F-SI09 qualification artifact still states qualified=false and production constitutive admission=false.",
-      "required": true
-    },
-    {
-      "id": "MR03-G05",
-      "name": "Production B1.10 source/sink and remaining physical provider closure",
-      "status": "BLOCKED_SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED",
-      "evidence": "F-SI09 provider-admission contract explicitly holds production_source_sink_provider=SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED; no F-SI10 or dedicated source/sink provider branch was found in the live branch reread.",
-      "required": true
-    },
-    {
-      "id": "MR03-G06",
-      "name": "One exact jointly executable physical postimage",
-      "status": "NOT_AVAILABLE",
-      "evidence": "F-VQ13 qualifies source/ownership alignment only and explicitly not a joint executable production postimage; F-MR02 qualifies coexistence/focused seam only.",
-      "required": true
-    },
-    {
-      "id": "MR03-G07",
-      "name": "Serialized F-MR -> F-KT -> physical solver route",
-      "status": "NOT_IMPLEMENTED",
-      "evidence": "Current F-MR production route admits deterministic backend only. F-MR will not implement the route until MR03-G04 through G06 are satisfied on qualified source.",
-      "required": true
-    },
-    {
-      "id": "MR03-G08",
-      "name": "Hard physical interval mass accounting",
-      "status": "NOT_QUALIFIED_FOR_TARGET_ROUTE",
-      "evidence": "Synthetic hard-mass qualification is preserved, but no full physical SWAP interval water-balance identity exists for the target route.",
-      "required": true
-    },
-    {
-      "id": "MR03-G09",
-      "name": "Exact corrected B1.10 replay/scientific qualification for admitted target profile",
-      "status": "NOT_QUALIFIED_FOR_JOINT_RUNTIME",
-      "evidence": "Current F-SI09 executable fingerprint evidence is constitutive-only and its qualification gate is red; matching VQ evidence for a jointly executable F-MR physical candidate does not yet exist.",
-      "required": true
-    },
-    {
-      "id": "MR03-G10",
-      "name": "Parallel reference execution",
-      "status": "NOT_REQUIRED_AND_NOT_ADMITTED",
-      "evidence": "Initial physical target remains serialized-only. Parallel HeadCalc/reference execution is a later separately qualified admission.",
-      "required": false
-    }
+    {"id":"MR03-G01","name":"Qualified shared F-MR runtime postimage","status":"QUALIFIED","evidence":"F-MR02 closeout 20c01210e576320d38dc9a430f5969686a3f3bb4","required":true},
+    {"id":"MR03-G02","name":"Current transaction/checkpoint boundary","status":"QUALIFIED_SEPARATELY_NOT_COMPOSED","evidence":"F-KT07 head b91da4fb01e3b0c21d39a5782d36f8eedc55875d; tested d24358c7074714c6d911bb60dc8cdfcfd656e8b6","required":true},
+    {"id":"MR03-G03","name":"Provider-context isolation","status":"QUALIFIED_FOCUSED_PROFILE","evidence":"F-SI08 qualification head 5b522c8f2767989161dae7faf382d5ee1b27c47c","required":true},
+    {"id":"MR03-G04","name":"Corrected B1.10 constitutive provider","status":"TESTED_CURRENT_POSTIMAGE_AWAITING_FORMAL_QUALIFICATION","evidence":"F-SI09 head d203eb5599fff5cb692410347df678ebdf02f8ac passed workflow 34147885551/job 101823735787 including static contract, O0/O2 byte-fingerprint identity and common parallel-isolation gate. F-SI09_QUALIFICATION.json on the same head still says qualified=false and points its tested_postimage to older a588ab7401b53e4da0eb10ae6cc55efec0b6a01f.","required":true},
+    {"id":"MR03-G05","name":"Production source/sink/process-provider closure","status":"BLOCKED_SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED","evidence":"F-SI09 provider-admission contract explicitly requires separate production source/sink process-provider admission. F-PM01 identifies root-water uptake and drainage as non-soil-water-solver process physics with incomplete process-facing hydraulic/qrot/drainage seams. F-MR may route but may not implement these equations.","required":true},
+    {"id":"MR03-G06","name":"One exact jointly executable physical postimage","status":"NOT_AVAILABLE","evidence":"No exact candidate jointly composes current qualified transaction boundary, formally qualified production constitutive provider, required production process providers, and F-MR runtime. F-VQ13 explicitly does not provide such a postimage.","required":true},
+    {"id":"MR03-G07","name":"Serialized F-MR -> F-KT -> physical solver route","status":"NOT_IMPLEMENTED","evidence":"Implementation remains prohibited until G04-G06 are satisfied. Current F-MR production route admits deterministic backend only.","required":true},
+    {"id":"MR03-G08","name":"Hard physical interval mass accounting","status":"NOT_QUALIFIED_FOR_TARGET_ROUTE","evidence":"Synthetic hard-mass tests are preserved; no full physical SWAP interval water-balance identity exists on the target joint runtime candidate.","required":true},
+    {"id":"MR03-G09","name":"Exact corrected B1.10 replay/scientific qualification for admitted target profile","status":"NOT_QUALIFIED_FOR_JOINT_RUNTIME","evidence":"Constitutive fingerprint evidence is not equivalent to full jointly executable B1.10 runtime qualification. Matching F-VQ/F-MQ evidence is still required on the exact candidate.","required":true},
+    {"id":"MR03-G10","name":"Parallel reference execution","status":"NOT_REQUIRED_AND_NOT_ADMITTED","evidence":"Initial physical target remains serialized-only; parallel HeadCalc/reference execution requires separate qualification.","required":false}
   ],
   "current_decision": "HOLD_FAIL_CLOSED",
   "implementation_allowed_now": false,
   "source_composition_allowed_now": false,
   "physical_backend_admission_allowed_now": false,
   "parallel_backend_admission_allowed_now": false,
-  "failure_interpretation": "The current F-SI09 failure is a test compilation failure after successful constitutive fingerprint checks; it is not evidence of a physical mismatch, but it still blocks qualification and therefore blocks F-MR source consumption.",
-  "release_condition": "Proceed only after live reread shows a production-qualified constitutive provider, production-qualified required source/sink/process providers, and one exact executable physical candidate with matching F-VQ/F-MQ mass/provenance evidence.",
-  "ownership_rule": "F-MR owns registry, batching, scheduling, routing, retry orchestration and diagnostics. F-KT owns committed transaction semantics. F-SI owns solver/provider isolation and physical provider implementations. F-VQ/F-MQ own qualification authority."
+  "release_condition": "Proceed only when G04 is formally QUALIFIED and G05-G06 provide production-qualified process/provider closure on one exact executable candidate; then qualify G07-G09 before physical admission.",
+  "ownership_rule": "F-MR owns runtime composition only; F-KT owns transaction state; F-SI owns soil-water solver/provider isolation; F-PM/process workstreams own non-soil-water-solver process equations; F-VQ/F-MQ own qualification authority."
 }
