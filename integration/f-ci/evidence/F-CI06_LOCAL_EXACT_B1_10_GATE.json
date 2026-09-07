@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-CI06",
   "evidence_type": "LOCAL_EXACT_B1_10_SOURCE_BOUND_QUALIFICATION",
   "source": {
@@ -15,28 +15,32 @@
     "changed": {
       "headcalc.f90": {
         "preimage_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
-        "postimage_sha256": "aa28f711503230e44cdfda23a3c5ae595ad8181d9a3c232df41b0f0172b98f2f"
+        "stored_postimage_crlf_sha256": "3471390c583df41f7bf7cbcbc5f97c5cb679da6e331b4cfd5ade798f2e23b863",
+        "stored_postimage_lf_sha256": "bca8022c23e90ef35e5330ac43eac0b3b096b5ad32773a10b35589a3a1e5840d"
       },
       "soilwater.f90": {
         "preimage_sha256": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8",
-        "postimage_sha256": "e776b9bef89937483753ba9df21dede01abe01f7d699e74315446314d8e8a1fe"
+        "stored_postimage_crlf_sha256": "e776b9bef89937483753ba9df21dede01abe01f7d699e74315446314d8e8a1fe",
+        "stored_postimage_lf_sha256": "34046a1cb90e11eb7e97e0c188fb6fe6193920bc38e4d246f093390cf0d88cd9"
       },
       "swap.f90": {
         "preimage_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
-        "postimage_sha256": "df8828845cb6a1f1bc48bddb02b2131542108897243fcd73d2d71d75b4ee839f"
+        "stored_postimage_crlf_sha256": "484b0b2d8aabead8efdbcfe01948b5fcc6b2a8be81980eec8b6214cff2c4a7e3",
+        "stored_postimage_lf_sha256": "50c4538c7cf965c41ce2b71db02c231138df56f3ce0280b6bae26a21e1e311c5"
       },
       "swap_main.f90": {
         "preimage_sha256": "6cb51432fb86299438e0a244939a045673574dd605f2b1125c79ca977f935be5",
-        "postimage_sha256": "f032b83b8b7b9ca6835705819a665c9a909b56d1b5c0e0d5c74bcc34f704f9e9"
+        "stored_postimage_crlf_sha256": "9922e06c085030f36527eefc3be0bbaa43e4c0cd7df1973cdb6e0a5fc214b043",
+        "stored_postimage_lf_sha256": "51aeb371ef70494bbf0e9749b2dac244f55b51f1dfff0b3200b78b2a37d76408"
       }
     },
-    "post_port_source_bytes": 1866232,
-    "post_port_manifest_sha256": "fc4a2835165c9f9964922f0ca52dd9595792222245f530155c03b47082ef076d"
+    "post_port_source_bytes": 1866170,
+    "post_port_manifest_sha256": "3c4751ebb657a2bb622c9cddd718db451fbae861530353ab83fc3c99e78d7187"
   },
   "build_and_run": {
     "preimage_b1_10_o0_full_compile_link": "PASS",
-    "fci06_o0_full_compile_link": "PASS",
-    "fci06_o2_full_compile_link": "PASS",
+    "stored_git_shape_fci06_o0_full_compile_link": "PASS",
+    "stored_git_shape_fci06_o2_full_compile_link": "PASS",
     "case": "Hupsel 2002-2004",
     "case_adjustment": "SWCSV=0 only to avoid CSV observer output in this qualification run",
     "standalone_route": "worker argument absent",
@@ -44,13 +48,14 @@
       "result.bal_normalized_sha256": "47a52bcd463d0ec576b8b0fae8f4c53319c0e47c98ce698293808de9d1f0ffb3",
       "result.blc_normalized_sha256": "2f6058f41a9691b8d70344d3f14c20b58ef4f2eea5f75f794417349e722f6617",
       "swap.wrn_normalized_sha256": "fe99c100d7a37a09c63656dba8bd0ce2b95289850da329eb4a3e00f0d2b9108e",
-      "comparison": "B1.10 O0 == F-CI06 O0 == F-CI06 O2",
+      "comparison": "B1.10 O0 == stored-Git F-CI06 O0 == stored-Git F-CI06 O2",
       "ignored_metadata": "generated run timestamp only"
     }
   },
-  "correction_to_intermediate_evidence": {
-    "note": "An earlier local seam compile/run used exact B1.10-identical seam files with the remaining files still at B0. That evidence is superseded by this full exact-B1.10 reconstruction and is not used for F-CI06 admission."
-  },
+  "provenance_corrections": [
+    "An earlier local seam compile/run used B1.10-identical seam files with the remaining files still at B0. That evidence is superseded and is not used for admission.",
+    "The first F-CI06 CI attempt exposed three byte-identity mismatches between a local postimage and the actually stored Git postimage. They were only final-newline/comment/blank-line differences. The actually stored Git shape was then reconstructed from exact B1.10, compiled at O0/O2 and rerun; its physical/reporting results remain identical to B1.10. The stored Git identities are the admitted postimages."
+  ],
   "admission_scope": "CONTROLLED_SOURCE_PORT_AND_WATER_CHECKPOINT_SUBSET_ONLY",
   "not_admitted": [
     "complete physical/process continuation state",
