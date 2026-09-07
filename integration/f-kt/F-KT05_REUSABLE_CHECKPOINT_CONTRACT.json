@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "workstream": "F-KT",
   "work_unit": "F-KT05",
   "title": "Reusable committed checkpoint carrier",
@@ -74,9 +74,13 @@
     "fsi_may_commit_or_rollback": false,
     "fsi_may_restore_checkpoint": false,
     "solver_scratch_in_checkpoint": false,
-    "fsi03_qualified_scope_observed": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
-    "fsi03_real_headcalc_numerics_consumed": false,
-    "fsi04_pretest_consumed_as_qualification": false
+    "fsi03_qualified_head": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+    "fsi03_qualified_scope": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+    "fsi04_observed_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+    "fsi04_qualified_scope": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY",
+    "fsi04_changes_production_route": false,
+    "fsi04_full_reference_solver_reentrancy_qualified": false,
+    "fsi03_or_fsi04_real_headcalc_production_route_consumed_by_fkt05": false
   },
   "multiswap_boundary": {
     "runtime_may_hold_checkpoint_per_active_trial": true,
@@ -85,8 +89,14 @@
     "fmq17_real_physics_coverage_promotion": false
   },
   "reference_policy": {
+    "fvq10_head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
+    "fvq10_decision": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+    "promotion_method_qualified": true,
+    "real_b1_10_temporal_characterization_qualified": false,
+    "production_temporal_profile_qualified": false,
+    "numeric_limits_introduced_by_fvq10": false,
     "b1_10_production_reference_admission": false,
-    "temporal_limit_profile_independently_qualified": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
     "fail_closed_hold_preserved": true
   },
   "invariant_assessment": {
@@ -108,9 +118,9 @@
     "29": "PASS"
   },
   "preserved_holds": [
-    "B1.10 temporal-limit profile remains independently unqualified and production reference admission remains fail-closed",
-    "F-SI03 qualifies source-bound adapter translation only, not real HeadCalc numerics or reentrancy",
-    "F-SI04 is observed only as a pretest checkpoint and is not consumed as qualification evidence",
+    "F-VQ10 qualifies only the temporal-profile promotion method; real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
+    "F-SI03 qualifies source-bound adapter translation only and F-SI04 qualifies source-bound main-workspace replay only; neither switches or qualifies the full production reference-solver route",
+    "full reference-solver reentrancy and remaining solver scratch isolation remain F-SI ownership",
     "production MultiSWAP scheduling/runtime remains outside F-KT",
     "optional-process temporal/storage coverage remains downstream qualification work"
   ]
