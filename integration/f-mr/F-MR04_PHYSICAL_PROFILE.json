@@ -1,0 +1,11 @@
+{
+  "schema_version":1,
+  "workstream":"F-MR","work_unit":"F-MR04",
+  "profile_id":"FMR04_B110_BARE_ROOT_INACTIVE_SERIAL_V1",
+  "physics":{"root_extraction":"INACTIVE_QROT_ZERO","macropore":false,"snow":false,"frost":false,"hysteresis":false,"elasticity":false,"tabulated_hydraulics":false,"swsophy":0,"swkimpl":0},
+  "hydraulics":{"constitutive_provider":"F-SI09 corrected B1.10 default MvG","constitutive_blob":"97d67eb373073b183be6d1bf5b756ecb5125dde2","bottom_modes":[7,-2]},
+  "source_sink":{"provider":"F-SI10 precomputed drainage/qSSDI","provider_blob":"d6c57add72387e5c0022a44319fff08046194aac","root_sink_required_zero":true},
+  "top_boundary":{"mode":"EXPLICIT_FLUX_PROVIDER","provider_semantics":"runtime forcing bridge only; no surface-process physics"},
+  "time":"generic_[t0,t1]_through_F-KT",
+  "excluded":["active root water uptake","macropore","snow","performance fallback policies","MODFLOW coupling"]
+}

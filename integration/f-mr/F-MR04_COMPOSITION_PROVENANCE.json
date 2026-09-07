@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "composition_base": "a4e044410f918e8e680a78a43fe0bda2679339ac",
+  "merge_strategy": "BLOB_LEVEL_CONTROLLED_COMPOSITION_NO_BRANCH_MERGE",
+  "qualified_sources": {
+    "F-SI09": {"qualification_head":"0f9f84e6f98e43c4ada39f1a8d9b180b0f672330","tested_postimage":"1c8c24a193565e4bfd76ee26f04db6858423a0c5"},
+    "F-SI10": {"qualification_head":"8dc05bd4133cd24f13e794d7410d408f9337cf74","tested_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b"}
+  },
+  "production_files": [
+    {"path":"src/adapter/mod_reference_richards_legacy_binding.f90","source_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b","source_blob":"eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0","prior_blob":null,"action":"ADD","role":"public F-SI solver adapter; only this layer calls HeadCalc"},
+    {"path":"src/legacy/b1_10_port/headcalc.f90","source_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b","source_blob":"be5978827095445b15de7baf607728792de6a366","prior_blob":"e22251c8f562839857cdb7a609a8148d1f2d58f8","action":"REPLACE_WITH_QUALIFIED_POSTIMAGE","role":"real reference Richards/HeadCalc with explicit provider/state binding"},
+    {"path":"src/legacy/b1_10_port/soilwater.f90","source_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b","source_blob":"470bc81a380e114d70fecd75426ec2331c1c9fcc","prior_blob":"74e2e115b735a9a8c341603fca8b01ef44710da7","action":"REPLACE_WITH_QUALIFIED_POSTIMAGE","role":"matching qualified legacy caller interfaces"},
+    {"path":"src/solver/mod_reference_richards_state_binding.f90","source_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b","source_blob":"e68d88382c6502c571713cc97fddd4e18434e271","prior_blob":null,"action":"ADD","role":"explicit per-solve candidate-state carrier"},
+    {"path":"src/solver/mod_b110_default_mvg_provider.f90","source_postimage":"1c8c24a193565e4bfd76ee26f04db6858423a0c5","source_blob":"97d67eb373073b183be6d1bf5b756ecb5125dde2","prior_blob":null,"action":"ADD","role":"F-SI09 corrected B1.10 default-MvG constitutive provider"},
+    {"path":"src/solver/mod_b110_source_sink_provider.f90","source_postimage":"b0909fb1786a4d13245c33044b4731ffb69e0b7b","source_blob":"d6c57add72387e5c0022a44319fff08046194aac","prior_blob":null,"action":"ADD","role":"F-SI10 precomputed drainage/qSSDI provider; qrot=0 only"}
+  ],
+  "unchanged_matching_dependencies": [
+    {"path":"src/solver/mod_soil_water_solver_contract.f90","blob":"57b51997d28807fbe2da1b2e5bf654fc4167adb9"},
+    {"path":"src/solver/mod_reference_richards_workspace.f90","blob":"93285b2ca24669494c93c00403e3783fca6758e9"}
+  ],
+  "reference_oracle_assets": [
+    {"path":"reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64","blob":"6cfcec4e38b02343ba48e7e6fb5d595158e19653","runtime_input":false},
+    {"path":"reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json","blob":"c64942d2964bb67c200f973b76e05222ad73067f","runtime_input":false}
+  ],
+  "corrected_b110_mod_mvg_sha256":"4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+  "conflicts": [
+    {"path":"src/legacy/b1_10_port/headcalc.f90","resolution":"take exact F-SI10 tested-postimage blob; no manual conflict editing"},
+    {"path":"src/legacy/b1_10_port/soilwater.f90","resolution":"take exact F-SI10 tested-postimage blob; no manual conflict editing"}
+  ],
+  "physics_formula_changes_authored_by_fmr04": false,
+  "numerical_policy_changes_authored_by_fmr04": false
+}

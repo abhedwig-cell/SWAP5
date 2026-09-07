@@ -6,17 +6,19 @@ module mod_reference_richards_legacy_binding
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, validate_soil_water_request
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
        reset_reference_workspace
-  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_initialize_worker, &
-       a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
+  use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
+       initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, &
+       a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
   use MOD_swap_base, only: swmacro
   use MOD_grid, only: numnod, z, dz, disnod
-  use variables, only: h, theta, pond, gwl, hm1, thetm1, pondm1, gwlm1, dt, swbotb, &
-       maxit, maxbacktr, swkimpl, swkmean, dtmin, CritDevBalCp, CritDevBalTot, &
-       critdevh2cp, critdevh1cp, critdevponddt, fldtmin, qtop, qbot, fldecdt, numbit
+  use variables, only: h, theta, pond, gwl, dt, swbotb, maxit, maxbacktr, swkimpl, swkmean, &
+       dtmin, CritDevBalCp, CritDevBalTot, critdevh2cp, critdevh1cp, critdevponddt, fldtmin, &
+       qtop, qbot, hbot
   implicit none
   private
 
-  integer, parameter, public :: FSI_LEGACY_TOP_CONTEXT = -9001
+  integer, parameter, public :: FSI_LEGACY_TOP_CONTEXT = FSI_TOP_MODE_LEGACY_CONTEXT
 
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
      type(reference_richards_workspace_t) :: richards
@@ -32,27 +34,45 @@ module mod_reference_richards_legacy_binding
   public :: build_legacy_reference_request
 
   interface
-     subroutine headcalc(worker, fsi_workspace)
-       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
+     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
+       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
+       use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
+       type(a23bu_solver_history_t), target, intent(inout), optional :: history
+       type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
+       type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
+       type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
      end subroutine headcalc
   end interface
 
 contains
 
-  subroutine build_legacy_reference_request(request, parameters, constitutive)
-    use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, constitutive_hydraulics_provider_t
+  subroutine build_legacy_reference_request(request, parameters, constitutive, top_boundary, source_sink)
+    use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, constitutive_hydraulics_provider_t, &
+         top_boundary_provider_t, source_sink_provider_t
     type(soil_water_solve_request_t), intent(out) :: request
     type(soil_water_parameter_set_t), target, intent(in) :: parameters
     class(constitutive_hydraulics_provider_t), target, intent(in) :: constitutive
+    class(top_boundary_provider_t), target, intent(in), optional :: top_boundary
+    class(source_sink_provider_t), target, intent(in), optional :: source_sink
 
     request%parameters => parameters
     request%evaluation%constitutive => constitutive
+    if (present(source_sink)) request%evaluation%source_sink => source_sink
+    if (present(top_boundary)) then
+       request%evaluation%top_boundary => top_boundary
+       request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
+    else
+       request%boundary%top_mode = FSI_TOP_MODE_LEGACY_CONTEXT
+    end if
     request%step_duration = dt
-    request%boundary%top_mode = FSI_LEGACY_TOP_CONTEXT
     request%boundary%bottom_mode = swbotb
+    request%boundary%top_flux = qtop
+    request%boundary%bottom_flux = qbot
+    request%boundary%bottom_head = hbot
     request%numerical%max_iterations = maxit
     request%numerical%max_backtracking = maxbacktr
     request%numerical%conductivity_implicit_mode = swkimpl
@@ -78,10 +98,8 @@ contains
     type(soil_water_solve_result_t), intent(out) :: result
 
     logical :: ok
-    real(real64), allocatable :: h_saved(:), theta_saved(:), hm1_saved(:), thetm1_saved(:)
-    real(real64) :: pond_saved, gwl_saved, pondm1_saved, gwlm1_saved, qtop_saved, qbot_saved
-    logical :: fldecdt_saved
-    integer :: numbit_saved
+    type(a23bu_solver_history_t) :: call_history
+    type(reference_richards_state_binding_t) :: state_binding
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
@@ -102,40 +120,22 @@ contains
        call initialize_reference_workspace(ws%richards, numnod)
        call reset_reference_workspace(ws%richards)
 
-       allocate(h_saved(numnod), theta_saved(numnod), hm1_saved(numnod), thetm1_saved(numnod))
-       h_saved = h(1:numnod)
-       theta_saved = theta(1:numnod)
-       hm1_saved = hm1(1:numnod)
-       thetm1_saved = thetm1(1:numnod)
-       pond_saved = pond
-       gwl_saved = gwl
-       pondm1_saved = pondm1
-       gwlm1_saved = gwlm1
-       qtop_saved = qtop
-       qbot_saved = qbot
-       fldecdt_saved = fldecdt
-       numbit_saved = numbit
+       ! F-KT owns the committed/base state. F-SI materializes only this solve's
+       ! explicit candidate state and lets HeadCalc rebuild reconstructible
+       ! hydraulic intermediates in worker-owned scratch/state.
+       call initialize_reference_state_binding(state_binding, request)
 
-       h(1:numnod) = request%base_state%pressure_head
-       theta(1:numnod) = request%base_state%water_content
-       hm1(1:numnod) = request%base_state%pressure_head
-       thetm1(1:numnod) = request%base_state%water_content
-       pond = request%base_state%ponding_depth
-       gwl = request%base_state%groundwater_level
-       pondm1 = request%base_state%ponding_depth
-       gwlm1 = request%base_state%groundwater_level
-       fldecdt = .false.
-
-       call headcalc(ws%legacy_worker, ws%richards)
+       call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
+            request%evaluation, request%boundary)
 
        result%candidate_state%active_nodes = numnod
        allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))
-       result%candidate_state%pressure_head = h(1:numnod)
-       result%candidate_state%water_content = theta(1:numnod)
-       result%candidate_state%ponding_depth = pond
-       result%candidate_state%groundwater_level = gwl
-       result%top_flux = qtop
-       result%bottom_flux = qbot
+       result%candidate_state%pressure_head = state_binding%h
+       result%candidate_state%water_content = state_binding%theta
+       result%candidate_state%ponding_depth = state_binding%pond
+       result%candidate_state%groundwater_level = state_binding%gwl
+       result%top_flux = state_binding%qtop
+       result%bottom_flux = state_binding%qbot
        result%diagnostics%nonlinear_iterations = ws%legacy_worker%diagnostics%nonlinear_iterations
        result%diagnostics%jacobian_builds = ws%legacy_worker%diagnostics%jacobian_builds
        result%diagnostics%linear_solves = ws%legacy_worker%diagnostics%linear_solves
@@ -143,7 +143,7 @@ contains
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
 
-       if (fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
+       if (state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
           result%status = SW_SOLVE_RETRY_ADVISED
           result%retry_advised = .true.
           result%diagnostics%route = 'legacy-reference-retry'
@@ -152,18 +152,6 @@ contains
           result%diagnostics%route = 'legacy-reference-bound'
        end if
 
-       h(1:numnod) = h_saved
-       theta(1:numnod) = theta_saved
-       hm1(1:numnod) = hm1_saved
-       thetm1(1:numnod) = thetm1_saved
-       pond = pond_saved
-       gwl = gwl_saved
-       pondm1 = pondm1_saved
-       gwlm1 = gwlm1_saved
-       qtop = qtop_saved
-       qbot = qbot_saved
-       fldecdt = fldecdt_saved
-       numbit = numbit_saved
     class default
        result%status = SW_SOLVE_FAILED
        result%diagnostics%route = 'legacy-workspace-type-error'
@@ -178,6 +166,10 @@ contains
 
     ok = .false.
     route = 'legacy-request-invalid'
+    if (.not. associated(request%evaluation%constitutive)) then
+       route = 'constitutive-provider-required'
+       return
+    end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
     if (swmacro /= 0) then
@@ -196,8 +188,16 @@ contains
        route = 'legacy-bottom-mode-deferred'
        return
     end if
-    if (request%boundary%top_mode /= FSI_LEGACY_TOP_CONTEXT) then
-       route = 'legacy-top-context-required'
+    if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) then
+       route = 'explicit-top-mode-required'
+       return
+    end if
+    if (.not. associated(request%evaluation%top_boundary)) then
+       route = 'explicit-top-provider-required'
+       return
+    end if
+    if (.not. associated(request%evaluation%source_sink)) then
+       route = 'source-sink-provider-required'
        return
     end if
     if (request%boundary%bottom_mode /= swbotb) then

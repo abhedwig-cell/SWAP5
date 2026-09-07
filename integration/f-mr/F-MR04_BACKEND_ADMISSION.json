@@ -1,0 +1,15 @@
+{
+  "schema_version":1,
+  "workstream":"F-MR","work_unit":"F-MR04",
+  "backends":{
+    "DETERMINISTIC_TEST_BACKEND":{"status":"QUALIFIED"},
+    "SERIALIZED_REFERENCE_BACKEND":{"status":"CANDIDATE_NOT_SCIENTIFICALLY_ADMITTED","runtime_parallelism":1,"scientific_admission":false},
+    "PARALLEL_REFERENCE_BACKEND":{"status":"NOT_ADMITTED","admitted":false}
+  },
+  "fail_closed":{
+    "qrot_nonzero":true,"active_root_process":true,"macropore":true,"snow":true,"unsupported_bottom_mode":true,"swkimpl_nonzero":true
+  },
+  "promotion_target":"QUALIFIED_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+  "prohibited_promotion":"PRODUCTION_PHYSICS_QUALIFIED",
+  "independent_scientific_owner":"F-VQ14"
+}
