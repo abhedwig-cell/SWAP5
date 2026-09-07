@@ -1,4 +1,5 @@
 module mod_b110_source_sink_provider
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: source_sink_provider_t
   implicit none
@@ -30,6 +31,10 @@ contains
     if (size(root_extraction_sink) /= n) error stop 'B1.10 source/sink provider: root sink shape mismatch'
     if (size(drainage_flux_by_level,2) /= n) error stop 'B1.10 source/sink provider: drainage node shape mismatch'
     if (size(drainage_flux_by_level,1) <= 0) error stop 'B1.10 source/sink provider: drainage levels must be positive'
+    if (any(.not. ieee_is_finite(root_extraction_sink))) &
+         error stop 'B1.10 source/sink provider: root sink must be finite'
+    if (any(abs(root_extraction_sink) > 0.0_real64)) &
+         error stop 'B1.10 source/sink provider: active root extraction not admitted by F-SI10'
 
     provider%active_nodes = n
     provider%drainage_levels = size(drainage_flux_by_level,1)
@@ -53,9 +58,13 @@ contains
     if (size(source) /= n .or. size(sink) /= n) error stop 'B1.10 source/sink provider: output shape mismatch'
     if (size(self%drainage_flux_by_level,1) /= self%drainage_levels .or. &
         size(self%drainage_flux_by_level,2) /= n) error stop 'B1.10 source/sink provider: drainage binding changed shape'
+    if (any(.not. ieee_is_finite(self%root_extraction_sink))) &
+         error stop 'B1.10 source/sink provider: root sink became non-finite'
+    if (any(abs(self%root_extraction_sink) > 0.0_real64)) &
+         error stop 'B1.10 source/sink provider: active root extraction not admitted by F-SI10'
 
     source = self%subsurface_irrigation_source
-    sink = self%root_extraction_sink
+    sink = 0.0_real64
     do level = 1, self%drainage_levels
        sink = sink + self%drainage_flux_by_level(level,:)
     end do
