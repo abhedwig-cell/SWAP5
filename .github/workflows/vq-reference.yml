@@ -112,10 +112,10 @@ jobs:
     name: F-VQ05 F-CI14 temporal acceptance contract admission
     runs-on: ubuntu-latest
     steps:
-      - name: Check out exact qualification head
+      - name: Check out exact qualified F-VQ05 postimage
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: f14cbc4c1a1ba0dc16a46bddc658cd4731733945
           fetch-depth: 0
 
       - name: Set up Python
@@ -146,3 +146,35 @@ jobs:
 
       - name: Re-run carried F-CI17 canonical baseline registry
         run: bash tests/fci/run_fci17_gate.sh
+
+  fvq06-fci18-handoff-readiness:
+    name: F-VQ06 F-CI18 exit handoff readiness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: F-VQ06 fail-closed F-CI18 handoff readiness gate
+        run: python -m tools.vq.fvq06_fci18_handoff_gate
+
+      - name: F-VQ06 promotion and scope guards
+        run: python -m unittest tools.vq.test_fvq06_fci18_handoff_gate
+
+      - name: Re-run qualified F-CI17 canonical baseline gate
+        run: bash tests/fci/run_fci17_gate.sh
+
+      - name: Diagnostic-only F-CI18 gate on exact source-commit context
+        run: |
+          git checkout --detach a0fdf73b67aa57456d8cbe6700ce707d672981cd
+          bash tests/fci/run_fci18_gate.sh
