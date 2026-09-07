@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "evidence_type": "corrected_source_function_identity_plus_real_headcalc_isolation",
+  "tested_postimage": "833aefd3f77c548983350aad8311e260dd428ea0",
+  "workflow_run": 34148278075,
+  "workflow_job": 101824900106,
+  "conclusion": "success",
+  "corrected_source": {
+    "snapshot": "B1.10",
+    "decoded_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "decoded_bytes": 41215,
+    "reference_payload_verification": "PASS",
+    "compiled_o0": true,
+    "compiled_o2": true
+  },
+  "provider": {
+    "source_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "source_git_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "shared_mutable_module_state": false
+  },
+  "function_level_identity": {
+    "comparison": "byte-for-byte comparison of ordered IEEE real64 bit-pattern output from compiled corrected B1.10 oracle and production provider",
+    "parameters": "4 heterogeneous default-MvG parameter profiles",
+    "step_durations": [0.25, 2.5],
+    "head_points": [0.1,0.0,-0.001,-0.005,-0.01,-0.5,-1.0,-9.9,-10.0,-10.5,-11.0,-100.0,-1000.0,-100000000.0,-1000000000000000.0],
+    "outputs": [
+      "cofgen rows 25:42",
+      "theta(h)",
+      "C(h)",
+      "K(h,theta)"
+    ],
+    "dkdh": "NOT_APPLICABLE_TO_ADMITTED_SWKIMPL0_ROUTE; output interface-shaped as zero and not qualified for swkimpl=1",
+    "inverse_pressure_head": "NOT_USED_BY_ADMITTED_REFERENCE_SOLVE_ROUTE; not qualified in F-SI09",
+    "o0": "PASS_BITWISE",
+    "o2": "PASS_BITWISE",
+    "o0_o2": "PASS_BITWISE",
+    "ordered_output_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "new_scientific_tolerance_introduced": false
+  },
+  "real_headcalc_identity_and_isolation": {
+    "common_route": "reference_richards_legacy_solver_t%solve -> real production HeadCalc using concrete B1.10 constitutive provider",
+    "profile": "default MvG, swkimpl=0, macropore off, free drainage, explicit top provider, explicit zero source/sink provider",
+    "worker_counts": [1,2,4,8],
+    "o0_1_2_4_8": "PASS",
+    "o2_1_2_4_8": "PASS",
+    "o0_o2_identity": "PASS",
+    "serial_parallel_per_logical_column_identity": "PASS",
+    "aba_order_independence": "PASS",
+    "scratch_poisoning": "PASS",
+    "different_provider_parameter_objects": "PASS",
+    "request_immutability": "PASS",
+    "legacy_process_globals_poisoned": true,
+    "solver_route": "legacy-reference-bound",
+    "nonlinear_iterations": 1,
+    "solver_route_iteration_identity": "PASS for admitted fixture",
+    "endpoint_pressure_head_identity_serial_parallel": "PASS via result fingerprint",
+    "endpoint_water_content_identity_serial_parallel": "PASS via result fingerprint",
+    "top_bottom_flux_identity_serial_parallel": "PASS via result fingerprint",
+    "focused_unrounded_equation_residual": {
+      "expression": "sum(dz*(candidate_theta-base_theta)) + qtop - qbot",
+      "criterion": "Inherited F-SI08 focused gate: finite and abs(residual) <= 16*epsilon(real64)",
+      "result": "PASS",
+      "full_swap_water_balance_claim": false
+    }
+  },
+  "regression": {
+    "full_fsi08_provider_context_gate": "PASS",
+    "headcalc_formula_change_in_fsi09": false,
+    "adapter_change_in_fsi09": false,
+    "fkt_transaction_change_in_fsi09": false,
+    "numerical_policy_change_in_fsi09": false
+  },
+  "holds": {
+    "production_b1_10_source_sink_provider_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false,
+    "swkimpl_1_admitted": false,
+    "other_hydraulic_model_families_admitted": false
+  }
+}
