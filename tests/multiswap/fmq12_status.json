@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ12",
+  "title": "F-KT01 downstream admission and ownership reclassification",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq11-canonical-baseline-binding",
+    "commit": "e581efae0b5d466709b590d1727d84835919b32d"
+  },
+  "downstream_observation": {
+    "fkt_branch": "integration/f-kt",
+    "fkt_head": "62f27672bbb74066ece202de8898597e655aed3d",
+    "fkt01_status": "QUALIFIED",
+    "fsi_branch": "work/f-si01-solver-isolation-boundary",
+    "fsi_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fmr_branch_present": false
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FKT01_CANDIDATE_ADMISSION",
+  "next_action": "Bind exact F-KT01 qualification evidence into the F-MQ matrix overlay, close only F-KT-owned prerequisites proven by F-KT01, and keep real-physics and production-runtime coverage fail-closed."
+}
