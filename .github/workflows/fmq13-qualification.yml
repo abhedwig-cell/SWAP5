@@ -1,0 +1,70 @@
+name: F-MQ13 downstream boundary qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq13-fsi01-fvq08-boundaries
+    paths:
+      - 'tests/multiswap/fmq13_*'
+      - 'tests/multiswap/test_fmq13_*'
+      - 'tests/multiswap/verify_fmq13_*'
+      - 'tests/multiswap/run_fmq13_gate.py'
+      - 'docs/qualification/F-MQ13_*'
+      - '.github/workflows/fmq13-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq13-gate:
+    name: F-MQ13 downstream boundary gate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ13 overlay gate
+        run: python3 tests/multiswap/run_fmq13_gate.py
+
+      - name: Fetch exact F-SI01 qualified boundary
+        run: |
+          git fetch --no-tags --depth=1 origin ae6da038ee7e98dfe1758f5f86b4be0fb48b4743
+          test "$(git rev-parse FETCH_HEAD)" = "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743"
+          git show FETCH_HEAD:integration/f-si/F-SI01_QUALIFICATION.json > /tmp/fsi01_qualification.json
+          git show FETCH_HEAD:integration/f-si/F-SI01_SOLVER_INTERFACE_CONTRACT.json > /tmp/fsi01_contract.json
+
+      - name: Fetch exact F-VQ08 qualified readiness boundary
+        run: |
+          git fetch --no-tags --depth=1 origin 0be60f6da7e575eaf992eb049ce600a4a4b35b58
+          test "$(git rev-parse FETCH_HEAD)" = "0be60f6da7e575eaf992eb049ce600a4a4b35b58"
+          git show FETCH_HEAD:integration/f-vq/F-VQ08_STATUS.json > /tmp/fvq08_status.json
+          git show FETCH_HEAD:integration/f-vq/F-VQ08_ADMISSION_MATRIX.json > /tmp/fvq08_matrix.json
+
+      - name: Verify exact downstream boundaries
+        run: |
+          python3 tests/multiswap/verify_fmq13_external_boundaries.py \
+            --fsi-qualification /tmp/fsi01_qualification.json \
+            --fsi-contract /tmp/fsi01_contract.json \
+            --fvq-status /tmp/fvq08_status.json \
+            --fvq-matrix /tmp/fvq08_matrix.json
+
+      - name: Verify F-KT02 has no net content delta
+        run: |
+          git fetch --no-tags --depth=1 origin cbcbfa26d413a661956a2079dc4a1e26c9e3b55c
+          test "$(git rev-parse FETCH_HEAD)" = "cbcbfa26d413a661956a2079dc4a1e26c9e3b55c"
+          test "$(git rev-parse FETCH_HEAD^{tree})" = "265029cdf0c17be2c23ce2ff4fa8775cd0cd4e61"
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq13_gate.py \
+            tests/multiswap/test_fmq13_downstream_boundaries.py \
+            tests/multiswap/verify_fmq13_external_boundaries.py
