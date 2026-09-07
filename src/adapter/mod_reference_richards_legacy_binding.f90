@@ -6,8 +6,8 @@ module mod_reference_richards_legacy_binding
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, validate_soil_water_request
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
        reset_reference_workspace
-  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_initialize_worker, &
-       a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
+  use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, &
+       a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
   use MOD_swap_base, only: swmacro
   use MOD_grid, only: numnod, z, dz, disnod
   use variables, only: h, theta, pond, gwl, hm1, thetm1, pondm1, gwlm1, dt, swbotb, &
@@ -32,11 +32,12 @@ module mod_reference_richards_legacy_binding
   public :: build_legacy_reference_request
 
   interface
-     subroutine headcalc(worker, fsi_workspace)
-       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
+     subroutine headcalc(worker, fsi_workspace, history)
+       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
+       type(a23bu_solver_history_t), target, intent(inout), optional :: history
      end subroutine headcalc
   end interface
 
@@ -78,6 +79,7 @@ contains
     type(soil_water_solve_result_t), intent(out) :: result
 
     logical :: ok
+    type(a23bu_solver_history_t) :: call_history
     real(real64), allocatable :: h_saved(:), theta_saved(:), hm1_saved(:), thetm1_saved(:)
     real(real64) :: pond_saved, gwl_saved, pondm1_saved, gwlm1_saved, qtop_saved, qbot_saved
     logical :: fldecdt_saved
@@ -126,7 +128,7 @@ contains
        gwlm1 = request%base_state%groundwater_level
        fldecdt = .false.
 
-       call headcalc(ws%legacy_worker, ws%richards)
+       call headcalc(ws%legacy_worker, ws%richards, call_history)
 
        result%candidate_state%active_nodes = numnod
        allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))

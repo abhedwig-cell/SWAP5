@@ -1,5 +1,10 @@
 module MOD_SoilWater
 
+   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
+   implicit none
+   type(a23bu_worker_context_t), save :: legacy_headcalc_worker
+   type(a23bu_solver_history_t), save :: legacy_headcalc_history
+
    private
    public :: soilwater, soilwaterstatevar
 
@@ -17,7 +22,6 @@ module MOD_SoilWater
       use MOD_sss
 !DEC$ END IF
       use MOD_swap_base, only: swmacro, swinco, swhyst, swsolve
-      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
       use MOD_arrays,    only: mabbc
       use MOD_grid,      only: z, dz, numnod
       use MOD_macropore, only: macrostatevar, macropore
@@ -39,9 +43,12 @@ module MOD_SoilWater
 
       implicit none
       interface
-         subroutine headcalc(worker)
-            use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
+         subroutine headcalc(worker, fsi_workspace, history)
+            use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
+            use mod_reference_richards_workspace, only: reference_richards_workspace_t
             type(a23bu_worker_context_t), intent(inout), optional :: worker
+            type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
+            type(a23bu_solver_history_t), target, intent(inout), optional :: history
          end subroutine headcalc
       end interface
 !     global
@@ -157,7 +164,11 @@ module MOD_SoilWater
      
 ! ---    calculate new soil water state variables
          if (swsolve == 1) then
-            call headcalc(worker)
+            if (present(worker)) then
+               call headcalc(worker, history=worker%history)
+            else
+               call headcalc(legacy_headcalc_worker, history=legacy_headcalc_history)
+            end if
          else
 !DEC$ IF DEFINED (with_sss)
             call sss_solver()

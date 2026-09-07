@@ -6,7 +6,7 @@
 !
 
 ! ----------------------------------------------------------------------
-subroutine headcalc(worker, fsi_workspace)
+subroutine headcalc(worker, fsi_workspace, history)
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
@@ -14,7 +14,7 @@ subroutine headcalc(worker, fsi_workspace)
 ! ----------------------------------------------------------------------
    ! input
    use MOD_swap_base,      only: swmacro, i_instance
-   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_initialize_worker
+   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
    use MOD_arrays,         only: macp, mabbc
    use MOD_params,         only: nihil
@@ -49,8 +49,11 @@ subroutine headcalc(worker, fsi_workspace)
    type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
    type(reference_richards_workspace_t), target :: local_fsi_workspace
    type(reference_richards_workspace_t), pointer :: fsi_ws
+   type(a23bu_solver_history_t), target, intent(inout), optional :: history
+   type(a23bu_solver_history_t), target :: local_history
+   type(a23bu_solver_history_t), pointer :: hist
 !  local
-   type(a23bu_worker_context_t), target, save :: legacy_worker
+   type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror
@@ -77,9 +80,14 @@ subroutine headcalc(worker, fsi_workspace)
    if (canonical_trial) then
       ctx => worker
    else
-      ctx => legacy_worker
+      ctx => local_worker
    end if
    if (ctx%active_nodes /= numnod) call a23bu_initialize_worker(ctx, numnod)
+   if (present(history)) then
+      hist => history
+   else
+      hist => local_history
+   end if
    if (present(fsi_workspace)) then
       fsi_ws => fsi_workspace
    else
@@ -90,8 +98,8 @@ subroutine headcalc(worker, fsi_workspace)
 
 !  reset some variables at the start of a new day
    if (fldaystart) then
-      ctx%history%flwarn = .TRUE.
-      ctx%history%iwarn  = 0
+      hist%flwarn = .TRUE.
+      hist%iwarn  = 0
    end if
  
 !  summation of fsi_ws%sink terms (constant for the current time step)
@@ -401,12 +409,12 @@ subroutine headcalc(worker, fsi_workspace)
          if (swmacro == 1) then
             FlDecMpRat = .FALSE.
             if (IDecMpRat > 0) then
-               if (ctx%history%nstep < 10) then
-                  ctx%history%nstep = ctx%history%nstep + 1
+               if (hist%nstep < 10) then
+                  hist%nstep = hist%nstep + 1
                end if
-               if (dt > dtold .OR. ctx%history%nstep >= 10) then
+               if (dt > dtold .OR. hist%nstep >= 10) then
                   dtold = dt
-                  ctx%history%nstep = 0
+                  hist%nstep = 0
                   IDecMpRat = IDecMpRat - 1
                end if
             end if
@@ -474,13 +482,13 @@ subroutine headcalc(worker, fsi_workspace)
 
    else
 !     write warning to screen and log file
-      if (ctx%history%flwarn) then
-         ctx%history%iwarn = ctx%history%iwarn + 1
+      if (hist%flwarn) then
+         hist%iwarn = hist%iwarn + 1
          call dtdpst('year-month-day,hour:minute:seconds',t1900,datetime)
          write(cval,'(I10)') i_instance
          message = cval//' No convergence was reached of Richards equation at '//datetime//' no more than 4 warnings per date - SWAP did continue!'
          if (.NOT.canonical_trial) call swap_warning ('headcalc', message)
-         if (ctx%history%iwarn > 3) ctx%history%flwarn = .FALSE.  
+         if (hist%iwarn > 3) hist%flwarn = .FALSE.  
       end if
 
 !     continue without convergence !!!
