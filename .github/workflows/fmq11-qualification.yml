@@ -1,0 +1,35 @@
+name: F-MQ11 canonical binding qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq11-canonical-baseline-binding
+    paths:
+      - 'tests/multiswap/fmq11_*'
+      - 'tests/multiswap/test_fmq11_*'
+      - 'tests/multiswap/run_fmq11_gate.py'
+      - 'docs/qualification/F-MQ11_CANONICAL_BASELINE_BINDING.md'
+      - '.github/workflows/fmq11-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq11-gate:
+    name: F-MQ11 focused gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ11 gate
+        run: python3 tests/multiswap/run_fmq11_gate.py
+
+      - name: Compile gate sources
+        run: python3 -m py_compile tests/multiswap/run_fmq11_gate.py tests/multiswap/test_fmq11_canonical_baseline_binding.py
