@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI01",
+  "status": "QUALIFIED_BOUNDARY_BASELINE_ONLY",
+  "qualified": true,
+  "qualification_scope": "exact source-bound solver ownership inventory, common solver interface contract, F-KT/F-SI boundary, historical-evidence classification, heavy-workspace scaling proof, executable source/worker gate and exact deferred solver-isolation test matrix",
+  "source_basis": {
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10"
+  },
+  "tested_postimage": "25593ca8b0270756fba8ceafa055cdf319619837",
+  "qualification_run": {
+    "workflow": "F-SI solver isolation",
+    "workflow_run": 34117976280,
+    "job": 101729139548,
+    "conclusion": "success"
+  },
+  "qualified_checks": {
+    "FSI01-T01_source_provenance_and_pinned_blob_identity": "PASS",
+    "FSI01-T02_worker_context_isolation_O0_O2_OpenMP_8_workers": "PASS",
+    "ownership_classification_vocabulary": "PASS",
+    "required_invariant_set": "PASS",
+    "F_KT_F_SI_authority_boundary": "PASS",
+    "historical_unresolved_provenance_fail_closed": "PASS"
+  },
+  "deferred_not_claimed": {
+    "FSI01-T03_repeated_solver_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T04_order_independence": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T05_1_2_4_8_worker_solver_isolation": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T06_scratch_poisoning": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T07_cloned_state_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T08_no_cross_column_leakage": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T09_reference_solver_O0_O2": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T10_unrounded_water_balance_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+    "FSI01-T11_solver_route_iteration_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE"
+  },
+  "capability_not_qualified_by_fsi01": [
+    "reference Richards solver reentrancy",
+    "parallel MultiSWAP backend",
+    "transaction semantics or temporal acceptance",
+    "coarse Richards solver",
+    "reduced-order solver",
+    "new interface-tangent algorithm",
+    "performance or fallback policy"
+  ],
+  "production_source_changed_by_fsi01": false,
+  "solver_physics_changed_by_fsi01": false,
+  "numerical_policy_changed_by_fsi01": false,
+  "acceptance": {
+    "ownership_inventory_persisted": true,
+    "common_solver_interface_persisted": true,
+    "F_KT_F_SI_boundary_explicit": true,
+    "historical_evidence_classified": true,
+    "executable_canonical_harness_exists": true,
+    "missing_interface_tests_exactly_specified": true,
+    "no_historical_patch_used_as_production_source": true,
+    "next_isolation_slices_ordered": true
+  },
+  "next_work_unit": "F-SI02",
+  "downstream_fsi02_allowed": true
+}
