@@ -21,10 +21,29 @@
     "fkt_net_tree_sha": "265029cdf0c17be2c23ce2ff4fa8775cd0cd4e61",
     "fmr_branch_present": false
   },
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI01_FVQ08_BOUNDARY_CANDIDATE",
-  "next_action": "Admit only the exact F-SI01 solver-boundary and F-VQ08 fail-closed readiness evidence, reclassify downstream ownership, and keep all real-physics and production-runtime coverage unchanged."
+  "tested": true,
+  "qualified": true,
+  "qualification": {
+    "workflow": "F-MQ13 downstream boundary qualification",
+    "run_id": 34118839935,
+    "job_id": 101731913902,
+    "conclusion": "success",
+    "checks": {
+      "overlay_gate": "PASS",
+      "exact_fsi01_fetch": "PASS",
+      "exact_fvq08_fetch": "PASS",
+      "external_boundary_verifier": "PASS",
+      "fkt02_no_net_content_delta": "PASS",
+      "python_compile": "PASS"
+    }
+  },
+  "coverage": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "status": "QUALIFIED_FSI01_FVQ08_BOUNDARIES_ADMITTED_NO_COVERAGE_PROMOTION",
+  "next_action": "Continue only when F-SI02, a later F-VQ real-reference unit, or F-MR supplies new executable evidence; do not promote coverage from boundary/readiness evidence alone."
 }
