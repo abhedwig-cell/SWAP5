@@ -1,0 +1,313 @@
+schema_version: 1
+assessment_id: F-CI-EXIT-GATES-ASSESSMENT-2026-09-07
+contract: docs/regie/F-CI_EXIT_GATES.yml
+workstream: F-CI
+assessment_mode: fail_closed
+
+snapshot:
+  canonical_branch: integration/f-ci-canonical
+  observed_head: 970d99100a256099343d4b2072ecd543469b23b5
+  observed_head_message: "F-CI10: add canonical time/mass seam CI gate"
+  observed_at: "2026-09-07T07:03:54Z"
+  reference_oracle: B1.10
+  reference_manifest_sha256: 2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+  latest_fully_qualified_fci09_source_head: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+  latest_fci09_qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+  fci09_canonical_workflow_run: 34091724307
+  fci10_head_workflow_run: 34093648750
+  fci10_head_workflow_state_at_assessment: QUEUED
+  note: >-
+    F-CI10 source and focused mass-seam artifacts are persisted on the canonical branch,
+    but the canonical qualification workflow for the observed head had not completed at
+    the assessment snapshot. No gate depending on F-CI10 final qualification is promoted.
+
+release_summary:
+  fci_exit_gate: BLOCKED
+  all_required_gates_qualified: false
+  downstream_release_allowed: false
+  immediately_releasable_workstreams: []
+  principal_blockers:
+    - generic physical sub-day interval execution is not admitted for B1.10
+    - legacy timestep wiring of unrounded trial-mass accumulation is not yet canonical production source
+    - complete physical storage accounting is not qualified for snow and macropore configurations
+    - a qualified physical temporal-error metric is absent
+    - B1.10 is not admitted through execute_reference_interval
+    - VQ/B2 qualification has not yet been demonstrated against the canonical physical entrypoint
+    - competing historical/temporary production lines have not yet been explicitly retired or superseded as production baselines
+
+gates:
+  CI-G01:
+    title: Canonical source and provenance
+    status: PERSISTED
+    required: true
+    evidence:
+      - path: integration/f-ci/canonical-source-manifest.json
+        claim: machine-readable canonical source/provenance manifest exists on the F-CI line
+      - path: integration/f-ci/F-CI06_STATUS.json
+        claim: exact B1.10 source port identity and 63-file source manifest are pinned
+      - path: integration/f-ci/F-CI09_STATUS.json
+        claim: F-CI09 pins the qualified source head and prior qualified source postimages
+      - path: integration/f-ci/F-CI10_TIME_MASS_SEAM.json
+        claim: F-CI10 pins exact timecontrol and integral source identities for the next seam
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: null
+    blockers:
+      - the observed canonical head has not yet completed its F-CI10 canonical qualification workflow
+      - final canonical-baseline designation belongs to CI-G10 and is not yet complete
+    holds:
+      - blocking: true
+        item: reverify source/provenance after the current F-CI10 postimage receives final canonical qualification evidence
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G02:
+    title: B1.10 corrected-reference completeness
+    status: QUALIFIED
+    required: true
+    evidence:
+      - path: integration/f-ci/F-CI06_QUALIFICATION.md
+        claim: exact B1.10 oracle has 63 members and 1,863,575 bytes; four controlled port files are changed and the other 59 remain byte-identical
+      - path: integration/f-ci/F-CI06_STATUS.json
+        claim: B1.10 manifest and stored post-port manifest are pinned; physics_formula_changed=false and solver_policy_changed=false
+      - workflow_run: 34084732886
+        claim: F-CI03 through F-CI06 canonical chain passed, including exact B1.10 reconstruction and O0/O2 source build
+      - path: integration/f-ci/F-CI09_QUALIFICATION.md
+        claim: later canonical F-CI03 through F-CI09 chain passed while retaining B1.10 as oracle
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers: []
+    holds:
+      - blocking: false
+        item: future intentional differences from B1.10 remain subject to separate explicit qualification
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: true
+
+  CI-G03:
+    title: Transaction semantics
+    status: BLOCKED
+    required: true
+    evidence:
+      - path: src/transaction/mod_transaction_reference.f90
+        claim: checkpoint cloning, full and two-half trials, retry, rollback, hard mass rejection and commit semantics are explicitly implemented in the reference transaction core
+      - path: docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+        claim: external committed state is atomic across the complete requested interval and failed internal transactions do not escape
+      - path: integration/f-ci/F-CI09_QUALIFICATION.md
+        claim: B1.10 process-state and worker-local attempt-context bindings pass at O0/O2 and fail closed when physical reference execution is unqualified
+      - workflow_run: 34091724307
+        claim: complete F-CI03 through F-CI09 focused chain passed
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - canonical B1.10 generic physical advance is deliberately not admitted
+      - B1.10 cannot yet execute the full/half/half reference transaction path over arbitrary physical intervals
+      - physical storage and temporal-error callbacks required by the reference transaction are incomplete
+    holds:
+      - blocking: true
+        item: transaction substrate is qualified but end-to-end physical transaction semantics on the canonical B1.10 path remain unqualified
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G04:
+    title: State and scratch ownership separation
+    status: TESTED
+    required: true
+    evidence:
+      - path: docs/integration/F-CI08_PHYSICAL_PROCESS_CONTINUATION_STATE.md
+        claim: persistent process continuation state is separated from worker-local trial context and optional state allocates only for active physics in the qualified scope
+      - workflow_run: 34088797066
+        claim: F-CI03 through F-CI08 passed with O0/O2 process/capsule replay tests
+      - path: integration/f-ci/F-CI09_QUALIFICATION.md
+        claim: process state and attempt context are bound to separate transaction types; no forcing cursors, reporting progress, solver scratch or mutable time control is inserted into persistent column state
+      - workflow_run: 34091724307
+        claim: O0/O2 state/context binding tests and fail-closed negative controls passed
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - arbitrary intra-day checkpoint safety for noddrz_old remains an explicit audit item
+      - complete continuation/storage qualification for snow and macropore configurations is not yet established
+      - remaining legacy backend globals/serialization still exist behind the compatibility seam
+    holds:
+      - blocking: true
+        item: ownership separation is strongly tested for the current controlled profile but not yet broad enough to declare the F-CI exit gate fully qualified
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G05:
+    title: Explicit reference numerical policy
+    status: TESTED
+    required: true
+    evidence:
+      - path: src/transaction/mod_transaction_reference.f90
+        claim: reference transaction policy explicitly carries temporal tolerance, mass tolerance, retry scale and maximum retries
+      - path: src/runtime/mod_canonical_contracts.f90
+        claim: numerical configuration is a separate canonical data category from physical state and forcing
+      - path: docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+        claim: reference transaction behavior is tested without changing SWAP physics, solver policy or selective step-doubling policy
+      - workflow_run: 34081431284
+        claim: canonical runtime and transaction substrate pass at O0/O2 with explicit numerical configuration
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - the physical B1.10 reference entrypoint is not yet admitted, so the explicit policy has not yet been end-to-end bound to the canonical physical execution path
+      - no production release selector/binding has yet been qualified that proves the B1.10 physical path cannot silently use a non-reference policy
+    holds:
+      - blocking: true
+        item: explicit policy types and reference transaction semantics exist, but end-to-end physical reference-policy admission remains pending
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G06:
+    title: Canonical generic t0-t1 kernel and entrypoint contract
+    status: BLOCKED
+    required: true
+    evidence:
+      - path: src/runtime/mod_canonical_contracts.f90
+        claim: canonical interval, forcing, numerical configuration, state and result contracts are separate and use real-valued t0/t1
+      - path: docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md
+        claim: generic non-calendar runtime contract passed focused tests
+      - path: integration/f-ci/F-CI09_QUALIFICATION.md
+        claim: exact audit proves the B1.10 legacy controller is still calendar-day based and therefore generic physical execution is fail-closed
+      - path: integration/f-ci/F-CI10_TIME_MASS_SEAM.json
+        claim: generic_subday_advance_admitted=false and the calendar/time seam findings are pinned
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - B1.10 TimeControl still terminates/projects execution on calendar-day semantics
+      - the legacy external exchange route still enforces the single-day convention
+      - canonical B1.10 execute_reference_interval admission remains disabled
+    holds:
+      - blocking: true
+        item: generic API/runtime contract is tested, but the real canonical B1.10 physical entrypoint is not generic in time yet
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G07:
+    title: Canonical results, unrounded mass accounting, and transaction diagnostics
+    status: BLOCKED
+    required: true
+    evidence:
+      - path: src/runtime/mod_canonical_contracts.f90
+        claim: canonical result, mass-accounting and transaction/solver diagnostic types are materialized separately from physical state
+      - path: src/transaction/mod_transaction_reference.f90
+        claim: transaction results expose attempts, retries, rollbacks, rejections, solver costs and per-trial mass residuals
+      - path: integration/f-ci/F-CI10_QUALIFICATION.md
+        claim: worker-local unrounded trial-mass and qualified-profile storage seams are materialized; source-bound Hupsel mass formulation passes 8 of 8 runs with max abs residual 1.587818254655815e-07 cm
+      - path: integration/f-ci/F-CI10_STATUS.json
+        claim: legacy timestep trial-mass integration, snow/macropore storage, temporal error and reference transaction execution remain not admitted
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: null
+    blockers:
+      - unrounded trial-mass accumulator is not yet wired into canonical production legacy timestep execution
+      - complete storage accounting is not qualified for snow and macropore configurations
+      - physical temporal-error metric is not admitted
+      - complete accepted-interval physical mass accounting cannot yet flow through execute_reference_interval
+    holds:
+      - blocking: true
+        item: F-CI10 qualifies the mass formulation candidate but explicitly does not claim the legacy integral/swap candidate as canonical production source
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G08:
+    title: Executable VQ and focused qualification against canonical source
+    status: TESTED
+    required: true
+    evidence:
+      - workflow_run: 34081431284
+        claim: F-CI03/F-CI04 canonical focused qualification passed
+      - workflow_run: 34084732886
+        claim: F-CI03 through F-CI06 canonical qualification passed including exact B1.10 source reconstruction/build
+      - workflow_run: 34088797066
+        claim: F-CI03 through F-CI08 canonical qualification passed
+      - workflow_run: 34091724307
+        claim: F-CI03 through F-CI09 canonical qualification passed
+      - path: tools/vq/b1_10_admission_gate.py
+        claim: B1.10 admission tooling exists on the canonical branch
+      - path: tools/vq/b2_reference_gate.py
+        claim: B2 gate remains available and fail-closed rather than being silently bypassed
+    source_commit: 3e10ef4c0d04d937d01b4619a72117b6aaea6889
+    qualification_commit: 8d775be7516a337a49b3e814c6421c7f01193c1b
+    blockers:
+      - no evidence yet demonstrates executable B1.10-to-canonical B2 comparison through the final canonical physical entrypoint
+      - G06 and G07 currently prevent physical reference execution and complete canonical result/mass qualification
+      - current F-CI10 head workflow has not completed at this assessment snapshot
+    holds:
+      - blocking: true
+        item: focused canonical qualification is strong, but the final VQ/B2 admission path against the real canonical physical entrypoint remains blocked
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G09:
+    title: Build, regression, and hard mass-conservation qualification
+    status: BLOCKED
+    required: true
+    evidence:
+      - path: integration/f-ci/F-CI06_QUALIFICATION.md
+        claim: exact B1.10 and F-CI06 source compiled at O0/O2 and normalized Hupsel result.bal/result.blc/swap.wrn were identical
+      - workflow_run: 34091724307
+        claim: F-CI03 through F-CI09 focused qualification chain passed
+      - path: integration/f-ci/F-CI10_QUALIFICATION.md
+        claim: source-bound Hupsel mass formulation candidate passed 8 of 8 O0/O2 runs within hard 1e-6 cm with max abs residual 1.587818254655815e-07 cm
+      - workflow_run: 34093648750
+        claim: current F-CI10 canonical workflow exists but was queued at the assessment snapshot
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: null
+    blockers:
+      - hard mass qualification is not yet performed through the final canonical B1.10 transaction entrypoint using complete accepted unrounded interval accounting
+      - F-CI10 legacy timestep trial-mass integration is not canonical production source
+      - current F-CI10 canonical qualification workflow has not completed at the assessment snapshot
+      - generic physical interval execution remains blocked
+    holds:
+      - blocking: true
+        item: existing mass evidence is strong focused evidence but is not yet the final end-to-end canonical reference mass gate
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+  CI-G10:
+    title: Single canonical development baseline and retirement of competing production lines
+    status: BLOCKED
+    required: true
+    evidence:
+      - branch: integration/f-ci-canonical
+        claim: one explicit F-CI canonical candidate branch exists
+      - branch: integration/a23bk-transactional-rebase
+        claim: historical transaction integration branch still exists and must be explicitly classified as superseded/non-production
+      - branch: integration/f-ci06-working
+        claim: temporary F-CI branch still exists and must be classified as non-production lineage
+      - branch: integration/f-ci08-working
+        claim: temporary F-CI branch still exists and must be classified as non-production lineage
+      - branch: qualification/f-mq09-single-vs-multiswap
+        claim: F-MQ remains a qualification line and must not be mistaken for a production baseline
+    source_commit: 970d99100a256099343d4b2072ecd543469b23b5
+    qualification_commit: null
+    blockers:
+      - no exact final F-CI canonical baseline commit has yet been released for downstream F-series production work
+      - old and temporary branches have not yet been machine-readably classified/retired as production candidates
+      - downstream prompts cannot yet pin a final F-CI exit commit because G03/G04/G05/G06/G07/G08/G09 are not all qualified
+    holds:
+      - blocking: true
+        item: preserve old branches as evidence/lineage, but explicitly retire or supersede their production role before release
+    last_verified: "2026-09-07T07:03:54Z"
+    allows_downstream_release: false
+
+downstream_workstreams:
+  F-KT:
+    release_status: BLOCKED
+    reason: F-CI exit gate not qualified
+  F-SI:
+    release_status: BLOCKED
+    reason: F-CI exit gate not qualified
+  F-VQ:
+    release_status: BLOCKED
+    reason: final canonical physical entrypoint and B2/VQ admission remain incomplete
+
+next_regie_action:
+  owner: F-CI
+  recommendation: >-
+    Continue F-CI on the canonical branch. The next production-critical sequence is to
+    complete and qualify F-CI10, then integrate the unrounded trial-mass accumulator into
+    the controlled legacy timestep path, and then address the generic physical interval
+    controller/temporal-error seam without weakening reference transaction semantics.
+  do_not_release_yet:
+    - F-KT
+    - F-SI
+    - F-VQ
