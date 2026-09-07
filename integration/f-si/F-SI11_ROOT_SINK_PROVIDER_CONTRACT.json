@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI11",
+  "title": "Explicit precomputed root-extraction sink channel preserving legacy residual ordering",
+  "branch": "work/f-si11-b110-root-sink-provider",
+  "basis": {
+    "fsi10_qualified_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+    "fsi10_status": "QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE",
+    "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "shared_fkt_type_change_required": false
+  },
+  "shared_contract_change": {
+    "owner": "F-SI",
+    "file": "src/solver/mod_soil_water_solver_contract.f90",
+    "minimum_change": "add root_sink_provider_t and optional hydraulic_evaluation_context_t%root_sink pointer",
+    "fkt_owned_types_changed": false,
+    "transaction_semantics_changed": false,
+    "reason": "F-SI owns the soil-water solver service/evaluation context; F-KT remains consumer of candidate/result semantics only"
+  },
+  "legacy_arithmetic_contract": {
+    "expression_order": "storage + drainage_sink - irrigation_source + root_sink + hydraulic_flux_terms",
+    "legacy_root_term": "qrot(node)",
+    "required_new_order": "fsi_ws%sink(node) - fsi_ws%source(node) + provider_root_sink(node)",
+    "fold_root_into_sink_forbidden": true,
+    "reason": "folding qrot into sink can change floating-point association and therefore violates exact reference identity"
+  },
+  "provider_contract": {
+    "type": "root_sink_provider_t",
+    "method": "evaluate(pressure_head, water_content, root_sink)",
+    "fsi11_production_binding": "precomputed qrot-style per-node root extraction sink",
+    "state_dependency_in_fsi11": false,
+    "read_only_during_solve": true,
+    "persistent_mutable_state": false,
+    "transaction_authority": false
+  },
+  "headcalc_binding": {
+    "evaluation_frequency": "once at solve entry for admitted swkimpl=0 profile",
+    "storage": "worker/job-local or automatic root-sink vector for the active solve",
+    "residual_use": "root_sink_term(node) returns the precomputed provider value at the exact legacy qrot addition site",
+    "legacy_route": "unchanged when no explicit source/sink provider is active",
+    "fsi10_root_inactive_route": "no root provider means zero root sink on explicit provider route",
+    "active_root_route": "requires explicit root_sink provider"
+  },
+  "admitted_profile": {
+    "constitutive": "qualified F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "qualified F-SI10 precomputed provider",
+    "root_extraction": "precomputed qrot-style sink, constant during the solve",
+    "top_boundary": "explicit provider",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2]
+  },
+  "qualification_required": {
+    "exact_legacy_arithmetic_identity": true,
+    "nonzero_heterogeneous_root_sink": true,
+    "serial_reference_identity": true,
+    "workers": [1,2,4,8],
+    "o0_o2": true,
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "legacy_qrot_global_poisoned": true,
+    "solver_route_iteration_identity": true,
+    "focused_unrounded_equation_residual": true,
+    "fsi10_regression": true,
+    "fkt_boundary_regression": true
+  },
+  "holds": {
+    "swkimpl1_dynamic_root_extraction": "NOT_ADMITTED_REQUIRES_ROOT_PROVIDER_REEVALUATION_AND_JACOBIAN_CONTRACT",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_module_reentrancy": "NOT_QUALIFIED_BY_PRECOMPUTED_OUTPUT_BINDING_ONLY",
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false
+  },
+  "scope_flags_before_qualification": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_precomputed_root_sink_provider_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
