@@ -115,13 +115,18 @@
       "label": "snow accumulation / melt",
       "source_files": [
         {"path": "SWAP/snow.f90", "b1_10_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2"},
-        {"path": "SWAP/readswap.f90", "role": "legacy parameter loading; B1.10 patched by SWAP-013 but snow parameter semantics unchanged"}
+        {"path": "SWAP/readswap.f90", "role": "legacy parameter loading; B1.10 patched by SWAP-013 but snow parameter semantics unchanged"},
+        {"path": "SWAP/integral.f90", "role": "evidence that snowinco is balance-period baseline/reporting state, not physical continuation state"}
       ],
       "entrypoints": ["snow"],
       "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "HIDDEN_TIME_ASSUMPTION"],
       "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
-      "readiness_reason": "The snow process body is compact, has no direct solver-internal dependency and is the best first seam. Production migration is held only by governance until a qualified shared downstream baseline exists.",
-      "notes": ["Driver currently invokes snow task 2 only at flDayStart; this is a hidden caller time assumption, not intrinsic to the snow equations."]
+      "readiness_reason": "The snow process body is compact, has no direct solver-internal dependency and is the best first seam. Production migration is held by governance until a qualified shared downstream baseline exists, and generic-duration scaling remains unqualified.",
+      "notes": [
+        "Physical continuation state is ssnow plus slw only; snowinco is DIAGNOSTIC balance-period baseline state and must not be placed in process committed state.",
+        "Driver currently invokes snow task 2 only at flDayStart; this is a hidden caller time assumption, not intrinsic calendar physics.",
+        "B1.10 consumes snowcoef and rate-like forcing in one legacy snow-evaluation call without explicit dt scaling. F-PM01 characterizes one-call behavior, including a non-midnight one-day identity, but does not authorize subdaily or arbitrary-duration scaling."
+      ]
     },
     {
       "id": "MACROPORES",
@@ -192,6 +197,7 @@
     "No production process migration on this branch.",
     "No F-KT05 semantics consumed until qualified.",
     "F-SI04 source-bound workspace replay evidence is informative only; no production solver seam is consumed.",
+    "No generic-duration snow scaling is inferred from B1.10 one-call/day-start behavior; subdaily and arbitrary-duration equivalence remain unqualified.",
     "A shared qualified downstream F-KT/F-SI integration baseline is required before F-PM02 production source changes."
   ]
 }
