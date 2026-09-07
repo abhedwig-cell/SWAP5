@@ -72,7 +72,7 @@ A future B1.10 adapter must implement `canonical_physical_model_t` and satisfy a
 
 ## Qualification
 
-The focused gate compiles and executes the runtime at `-O0` and `-O2`, while re-running the F-CI03 provenance gate. Tests cover:
+GitHub Actions run `34081431284` passed both the F-CI03 regression job and the F-CI04 canonical-runtime job. The focused F-CI04 gate compiled and executed the runtime at strict `-O0` and `-O2` and covered:
 
 - completion of a requested interval through multiple accepted internal steps;
 - atomic rollback at the requested-interval boundary;
@@ -84,6 +84,8 @@ The focused gate compiles and executes the runtime at `-O0` and `-O2`, while re-
 - refusal to fabricate complete mass accounting.
 
 ## Decision
+
+`PASS_CANONICAL_RUNTIME_PHYSICAL_ADAPTER_BLOCKED`
 
 F-CI04 admits the canonical runtime and physical seam contract, not a B1.10 physical adapter implementation.
 
