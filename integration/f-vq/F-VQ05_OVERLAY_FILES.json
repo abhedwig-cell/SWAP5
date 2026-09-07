@@ -2,16 +2,19 @@
   "schema_version": 1,
   "workstream": "F-VQ",
   "work_unit": "F-VQ05",
-  "overlay_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
-  "files_to_carry": [
+  "overlay_commit": "7e87f881af937836a517e2bb957bddd941b769ab",
+  "overlay_work_unit": "F-CI16",
+  "files_carried_from_previous_canonical_overlay": [
     ".github/workflows/fci-canonical.yml",
-    "integration/f-ci/F-CI14_QUALIFICATION.md",
-    "integration/f-ci/F-CI14_STATUS.json",
-    "integration/f-ci/F-CI15_EXIT_GATES.json",
     "integration/f-ci/F-CI15_QUALIFICATION.md",
     "integration/f-ci/F-CI15_STATUS.json",
-    "tests/fci/run_fci15_gate.sh",
-    "tools/fci/fci15_exit_gate_contract_gate.py"
+    "integration/f-ci/F-CI16_QUALIFICATION.md",
+    "integration/f-ci/F-CI16_STATUS.json",
+    "integration/f-ci/F-CI_EXIT_GATES.json",
+    "tests/fci/run_fci16_gate.sh",
+    "tools/fci/fci16_exit_gate_assessment_gate.py"
   ],
-  "status": "OVERLAY_FILESET_PINNED"
+  "production_source_files_changed_by_overlay": [],
+  "consumed_as_temporal_qualification_evidence": false,
+  "status": "F-CI16_OVERLAY_FILESET_PINNED"
 }
