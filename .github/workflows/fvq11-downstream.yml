@@ -20,10 +20,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - name: Check out exact F-VQ11 head
+      - name: Check out exact qualified F-VQ11 final head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: efdc11f35e2251eebbab888e05d74085892e05fd
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -51,7 +51,7 @@ jobs:
         run: |
           git checkout --detach 0cfbefc271447b4b53eeee50c1dfbb2acaf020df
           bash tests/fsi/run_fsi04_gate.sh
-      - name: Confirm F-KT05 remains a negative admission barrier
+      - name: Confirm historical F-KT05 negative admission barrier on F-VQ11 fixture
         run: |
           git checkout --detach ed0764126a9febdd8a14ff3f32fdba68e9be9e81
           set +e
@@ -60,9 +60,9 @@ jobs:
           set -e
           cat /tmp/fkt05-negative.log
           if [ "$rc" -eq 0 ]; then
-            echo 'F-KT05 unexpectedly passed; F-VQ11 negative admission evidence is stale.' >&2
+            echo 'Historical F-KT05 fixture unexpectedly passed; F-VQ11 negative admission evidence is stale.' >&2
             exit 1
           fi
           grep -q 'compare-reals' /tmp/fkt05-negative.log
           grep -q 'all warnings being treated as errors' /tmp/fkt05-negative.log
-          echo 'FVQ11_FKT05_NEGATIVE_ADMISSION_PASS'
+          echo 'FVQ11_FKT05_HISTORICAL_NEGATIVE_ADMISSION_PASS'
