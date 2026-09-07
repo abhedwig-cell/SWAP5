@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MQ",
   "work_unit": "F-MQ22",
   "title": "F-KT06 optional-state P14 admission",
@@ -32,15 +32,53 @@
     "real_physics_executable": 0,
     "production_runtime_qualified": 0
   },
-  "candidate_promotion": {
-    "row": "P14",
-    "kind": "SYNTHETIC_EXECUTABLE",
-    "requires_fmq22_two_column_gate": true,
-    "candidate_synthetic_executable_after": 28
+  "coverage_after": {
+    "matrix_total": 35,
+    "synthetic_executable": 28,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "promotions": ["P14:SYNTHETIC_EXECUTABLE"]
   },
+  "p14_evidence": {
+    "matrix_min_columns": 2,
+    "matrix_min_workers": 1,
+    "paired_module_off_on_layout": true,
+    "inactive_dynamic_payload_bytes": 0,
+    "active_optional_payload_objects": 1,
+    "shared_immutable_parameter_objects": 1,
+    "committed_and_checkpoint_layout_checked": true,
+    "o0_o2_identity": "PASS"
+  },
+  "qualification_run": {
+    "run_id": 34130452640,
+    "job_id": 101769045628,
+    "conclusion": "success",
+    "admission_tests": "PASS_7_OF_7",
+    "external_fkt06_verifier": "PASS",
+    "exact_fkt06_replay": "PASS",
+    "fmq22_two_column_p14_gate": "PASS_O0_O2"
+  },
+  "failure_history": [
+    {
+      "run_id": 34130320009,
+      "classification": "FMQ22_TEST_ONLY_TYPE_BOUND_PROCEDURE_SCOPE",
+      "upstream_fkt06_failure": false,
+      "production_source_failure": false,
+      "claim_scope_changed": false,
+      "correction_commit": "cd424496f3d2f2a51fa1e0d2e8ff880eac8c0207"
+    }
+  ],
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FKT06_P14_ADMISSION_CANDIDATE",
-  "scope": "Use exact qualified F-KT06 optional continuation lifecycle evidence plus a qualification-only two-column module-off/on state-layout gate to decide P14 synthetic executable promotion; keep real B1.10 physics and production MultiSWAP runtime fail-closed."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FKT06_P14_SYNTHETIC_PROMOTED",
+  "hard_nonclaims": [
+    "real B1.10 P14 physical execution",
+    "production MultiSWAP runtime",
+    "macropore production admission",
+    "full SWAP mass identity",
+    "parallel real HeadCalc reentrancy",
+    "production reference admission"
+  ],
+  "scope": "Exact qualified F-KT06 optional continuation lifecycle plus an F-MQ-specific two-column module-off/on state-layout gate qualify P14 as synthetic executable only. Real B1.10 physics and production MultiSWAP runtime remain fail-closed."
 }
