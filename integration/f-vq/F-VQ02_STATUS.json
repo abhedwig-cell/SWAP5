@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ02",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "Verifier Contract Rebase on Qualified F-CI12",
+  "baseline": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "fci12_source_head": "7098aeaa4ca38dc375a965340a35c9870a33de28",
+    "fci12_evidence_commit": "729574de00fbb1540affe2af74a7202b38d29754",
+    "fci12_workflow_run": 34102787767,
+    "oracle": "B1.10",
+    "fvq01_final_head": "7ef604c9d1135e03e1d2985e78f989b2f2e895ba",
+    "historical_verifier_head": "29e05be97493926ba451dfd53d5ed3170db47ad5"
+  },
+  "checkpoint_commit": "9638032bbb5e43a58b8f2fe34b12860a91741002",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed": false,
+  "status": "PERSISTED_VERIFIER_ASSETS_PRE_TEST",
+  "next_action": "Persist the F-VQ02 provenance/readiness/matrix gate and then run verifier self-tests plus the exact F-CI12 qualification gate.",
+  "recovery_point": "qualification/f-vq02-verifier-contracts at checkpoint 9638032bbb5e43a58b8f2fe34b12860a91741002",
+  "blockers": [
+    "Recoverable legacy solver-failure status is not admitted.",
+    "Complete optional-process temporal characterization is not admitted.",
+    "Scalar temporal-error metric and tolerance policy are not admitted.",
+    "execute_reference_interval for B1.10 is not admitted.",
+    "Real B1.10 reference-model end-to-end execution is not qualified.",
+    "Production canonical result contract is not admitted through a real reference route.",
+    "Complete snow and macropore storage accounting is absent.",
+    "Reentrant parallel legacy-backend qualification is absent."
+  ],
+  "holds": [
+    "Verifier self-tests may qualify verifier logic only.",
+    "F-CI12 deterministic-testdouble evidence may qualify binding and transaction semantics only, not hydrological regression.",
+    "No READY or PASS reference-execution status may be created while F-CI12 reference_execution_admitted remains false.",
+    "No production source changes are permitted in F-VQ02."
+  ]
+}

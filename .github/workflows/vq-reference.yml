@@ -55,7 +55,7 @@ jobs:
           gfortran --version
           python reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py
 
-      - name: Check existing VQ gate unit tests
+      - name: Check existing B1/B2 admission unit tests
         run: |
           python -m unittest \
             tools.vq.test_b1_snapshot_identity \
@@ -64,8 +64,8 @@ jobs:
       - name: Check deterministic B1.10 reconstructor syntax
         run: python -m py_compile tools/vq/b1_10_reconstruct.py
 
-  fvq01-admission:
-    name: F-VQ01 exact F-CI11 admission
+  fvq02-verifier-contracts:
+    name: F-VQ02 verifier contracts on F-CI12
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact qualification head
@@ -85,16 +85,25 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: F-VQ01 matrix and fail-closed admission
-        run: python tools/vq/fvq01_admission.py
+      - name: F-VQ02 provenance, readiness and synthetic harness gate
+        run: python tools/vq/fvq02_contract_gate.py
 
-      - name: F-VQ01 unit tests
-        run: python -m unittest tools.vq.test_fvq01_admission
+      - name: F-VQ02 scope-guard unit tests
+        run: python -m unittest tools.vq.test_fvq02_contract_gate
 
-      - name: Re-run reusable F-CI07 through F-CI11 gates
+      - name: Re-run imported semantic validators and fault-injection tests
         run: |
-          bash tests/fci/run_fci07_gate.sh
-          bash tests/fci/run_fci08_gate.sh
-          bash tests/fci/run_fci09_gate.sh
-          bash tests/fci/run_fci10_gate.sh
-          bash tests/fci/run_fci11_gate.sh
+          python -m unittest \
+            tools.vq.test_b2_seam_contract \
+            tools.vq.test_b2_result_contract \
+            tools.vq.test_b2_result_record \
+            tools.vq.test_tx_time_harness
+
+      - name: Re-run stored 11-case transaction/time verifier projection
+        run: |
+          python tools/vq/tx_time_harness.py \
+            --fixture-suite \
+            --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+
+      - name: Re-run exact F-CI12 production-binding qualification gate
+        run: bash tests/fci/run_fci12_gate.sh
