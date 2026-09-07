@@ -15,7 +15,7 @@ class Fvq11DownstreamSourceBoundGateTests(unittest.TestCase):
     def load_matrix(self):
         return json.loads((ROOT / "integration/f-vq/F-VQ11_ADMISSION_MATRIX.json").read_text(encoding="utf-8"))
 
-    def test_current_pretest_gate_passes(self):
+    def test_current_gate_passes(self):
         result = gate.validate_all()
         self.assertEqual(result["status"], "PASS", result.get("failed"))
         self.assertFalse(result["fkt05_admitted"])
@@ -52,11 +52,21 @@ class Fvq11DownstreamSourceBoundGateTests(unittest.TestCase):
 
     def test_pretest_qualifiable_claim_cannot_self_promote(self):
         status = self.load_status()
+        status["qualified"] = False
+        status["decision"] = "PENDING_FVQ11_CI"
+        status["fkt04_source_bound_admitted"] = False
+        status["fsi04_source_bound_admitted"] = False
+
         matrix = self.load_matrix()
         mutated = copy.deepcopy(matrix)
         for claim in mutated["claims"]:
+            if claim["claim_id"] in gate.QUALIFIABLE:
+                claim["claim_qualified"] = False
+                claim["blocker"] = "Pending F-VQ11 qualification."
+        for claim in mutated["claims"]:
             if claim["claim_id"] == "FVQ11-C01":
                 claim["claim_qualified"] = True
+
         self.assertFalse(gate.validate_matrix(mutated, status)["qualifiable_flags_follow_status"])
 
     def test_reference_and_multiswap_remain_blocked(self):
