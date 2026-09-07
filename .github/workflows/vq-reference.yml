@@ -68,10 +68,10 @@ jobs:
     name: F-VQ04 real B1.10 terminal-failure fixture readiness
     runs-on: ubuntu-latest
     steps:
-      - name: Check out exact qualification head
+      - name: Check out exact qualified F-VQ04 postimage
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: b406382a49f264e8f05441442a6e22eab4f0f6ac
           fetch-depth: 0
 
       - name: Set up Python
