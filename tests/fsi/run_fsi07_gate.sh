@@ -36,7 +36,7 @@ for path in \
 done
 
 # Pin the production state-binding postimage.
-[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "1701d9e9410db206dfe28e42a6ad87d02bc2f432" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "4d1a723bb4948cc611cf15df47366c968be90ebf" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" == "0cd82e409bbf8de880320981b5c8cadf6559d847" ]] || { echo 'F-SI07_PIN FAIL SoilWater' >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == "f5334041764ae0d50732a146432572a920b27472" ]] || { echo 'F-SI07_PIN FAIL adapter' >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_state_binding.f90)" == "0f7d726f1231584599b3e6838bf8cc0fb53a6814" ]] || { echo 'F-SI07_PIN FAIL state binding' >&2; exit 1; }
@@ -44,6 +44,8 @@ done
 # Contract and structural source checks.
 grep -Eq '^subroutine[[:space:]]+headcalc\(worker,[[:space:]]*fsi_workspace,[[:space:]]*history,[[:space:]]*state_binding\)' "$HEADCALC"
 grep -Fq 'state => state_binding' "$HEADCALC"
+grep -Fq 'do solver_numbit = 1, MaxIt1' "$HEADCALC"
+! grep -Fq 'do state%numbit = 1, MaxIt1' "$HEADCALC"
 grep -Fq 'call boundtop_state_bridge(2)' "$HEADCALC"
 grep -Fq 'call initialize_reference_state_binding(state_binding, request)' "$ADAPTER"
 grep -Fq 'call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding)' "$ADAPTER"
