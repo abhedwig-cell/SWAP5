@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "title": "Corrected B1.10 constitutive-provider source binding and qualification",
+  "status": "BLOCKED_SOURCE_MATERIALIZATION_REQUIRED",
+  "qualified": false,
+  "branch": "work/f-si09-b110-constitutive-provider",
+  "basis": {
+    "fsi08_qualified_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+    "fsi08_tested_postimage": "df5f064c787be736aea4aa679ff9c260b43bdae7",
+    "oracle": "B1.10",
+    "b1_10_snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+    "b1_10_reconstruct_tool_blob": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+    "swap012_patch_blob": "77f4b63689a6f72116280cbd019852b3b181e34a",
+    "swap012_qualification_blob": "77a608ea459973b1cf1c4cadc076eeada9b55800"
+  },
+  "exact_source_identity": {
+    "b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b1_10_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "target": "SWAP/MOD_MvG_functions.f90",
+    "b0_and_b1_8_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "source_resolution": {
+    "reconstruction_contract_available": true,
+    "patch_and_qualification_available": true,
+    "byte_exact_b0_archive_present_in_repository": false,
+    "byte_exact_corrected_target_present_in_current_production_tree": false,
+    "byte_exact_corrected_target_present_on_checked_swap012_admission_branches": false,
+    "uploaded_local_archive_admissible": false,
+    "uploaded_local_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "reason_uploaded_archive_rejected": "does not match canonical B0 archive SHA-256"
+  },
+  "hard_rule": "Do not implement or copy a concrete B1.10 constitutive provider until a source file is materialized from the exact canonical B0 archive plus the ordered qualified B1.1-B1.10 patch chain, or an already-materialized file is proven byte-exact to corrected_target_sha256.",
+  "allowed_now": [
+    "persist source admission contract",
+    "verify B1.10 snapshot and reconstruction provenance",
+    "verify SWAP-012 patch and qualification identities",
+    "build fail-closed source admission gate"
+  ],
+  "forbidden_now": [
+    "copy MOD_MvG formulas from historical or uploaded source",
+    "reimplement B1.10 constitutive formulas from patch prose",
+    "admit production B1.10 constitutive provider",
+    "set parallel_reference_backend_admitted true"
+  ],
+  "exit_requirements": [
+    "exact corrected MOD_MvG source bytes available",
+    "SHA-256 equals 4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "source provenance traces to canonical B0 plus qualified ordered patch chain",
+    "concrete provider preserves the corrected B1.10 constitutive functions without formula change",
+    "provider is qualified against actual corrected source over relevant hydraulic models",
+    "F-SI08 heterogeneous 1/2/4/8 concurrency remains green"
+  ],
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_b1_10_constitutive_provider_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
