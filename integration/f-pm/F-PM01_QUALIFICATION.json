@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD",
+  "qualified_boundary": true,
+  "qualified_exit": false,
+  "production_migration_allowed": false,
+  "source_basis": {
+    "repository": "abhedwig-cell/SWAP5",
+    "work_branch": "work/f-pm01-process-boundary",
+    "qualified_production_source": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "canonical_branch": "integration/f-ci-canonical",
+    "f_ci_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "oracle": "B1.10",
+    "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "artifact_checkpoints": {
+    "initial_inventory": "6a40d6e3e5b309271aa2f674a2c37df7cb54d970",
+    "first_process_contract": "4691f4a323fa27e119e4d9c569665690a978183a",
+    "focused_harness": "e1727f36948daa095b14761233762f2f50e52c44",
+    "characterization_evidence": "e1c67d1e9eb70d20942cc66d426509b629516c08",
+    "corrected_inventory": "3bf78aa1e8a1e407ece237b029fe2743cb129a97",
+    "corrected_dependency_matrix": "14bf6766ab3648e8bd87901b02f01a2c84a8c558",
+    "refreshed_dependency_pins": "78c15b8aa3476dce09617b7b346ef572262f919f",
+    "refreshed_migration_order": "f28290fc0236ddb03b456fd40e18087fcd0f9bda",
+    "invariant_assessment": "061dd793366dcc0e24f47414c4247f4ffdaa793d"
+  },
+  "qualified_dependencies": {
+    "F-KT04": "QUALIFIED",
+    "F-SI03": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+    "F-KT05": {
+      "status": "QUALIFIED",
+      "closeout_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+      "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2"
+    },
+    "F-SI05": {
+      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6"
+    }
+  },
+  "source_change_control": {
+    "compare_base": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "compare_head": "work/f-pm01-process-boundary",
+    "status": "ahead",
+    "production_src_files_changed": 0,
+    "changed_paths_scoped_to": ["integration/f-pm/", "tools/fpm/"],
+    "physics_changed": false,
+    "solver_changed": false,
+    "transaction_source_changed": false
+  },
+  "characterization": {
+    "process": "SNOW",
+    "status": "PASS",
+    "source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "compiler": "GNU Fortran 14.2.0",
+    "optimization": ["O0","O2"],
+    "o0_o2_stdout_identical": true,
+    "checks": ["same-input identity","state-clone identity","A/B/A isolation","rollback/replay","one-day non-midnight identity","inactive-option behavior","unrounded snow mass identity"],
+    "generic_duration_scaling_qualified": false
+  },
+  "exit_criteria": [
+    {"id":1,"status":"PASS","criterion":"relevant process modules fully source-bound inventoried"},
+    {"id":2,"status":"PASS","criterion":"parameters/state/forcing/results/scratch explicitly classified"},
+    {"id":3,"status":"PASS","criterion":"direct solver/internal dependencies visible"},
+    {"id":4,"status":"PASS","criterion":"hidden time/day assumptions visible"},
+    {"id":5,"status":"PASS","criterion":"optional state visible"},
+    {"id":6,"status":"PASS","criterion":"migration order persisted"},
+    {"id":7,"status":"PASS","criterion":"first process interface exactly defined"},
+    {"id":8,"status":"PASS","criterion":"current behavior executable characterized"},
+    {"id":9,"status":"PASS","criterion":"no hidden production physics change","evidence":"compare shows zero src/ changes"},
+    {"id":10,"status":"PASS","criterion":"no competing kernel or solver interface created"},
+    {"id":11,"status":"PASS","criterion":"moving F-KT/F-SI dependencies handled fail-closed and refreshed after qualification"},
+    {"id":12,"status":"HOLD","criterion":"F-PM02 can execute from a qualified shared downstream basis","reason":"Qualified F-KT05 and F-SI05 lineages remain diverged; compare merge-base is F-CI18 closeout 7f906fcc53a4133b0e410eac7cf79fbb4eb672ab. F-PM is not authorized to merge them."}
+  ],
+  "shared_downstream_baseline": {
+    "found": false,
+    "fkt05_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "fsi05_verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "lineage_relation": "diverged",
+    "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "release_decision": "BLOCK_PRODUCTION_MIGRATION"
+  },
+  "holds": [
+    "F-PM02 production migration must wait for a regie/integration-owned qualified shared F-KT05/F-SI05 downstream basis.",
+    "Snow generic-duration/subdaily numerical scaling is not qualified; structural migration must preserve characterized one-call semantics until separately qualified.",
+    "F-SI05 does not qualify full reference solver reentrancy or all solver paths.",
+    "Optional macropore and chemistry migrations remain deferred."
+  ],
+  "next_action": "When a qualified shared downstream basis is published, re-run only the F-PM01 source/dependency admission check against that exact basis. If unchanged, promote exit criterion 12 and release F-PM02 snow structural migration without reopening the characterized physics."
+}
