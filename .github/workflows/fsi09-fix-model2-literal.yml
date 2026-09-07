@@ -1,0 +1,31 @@
+name: F-SI09 exact model2 literal repair
+
+on:
+  push:
+    branches:
+      - work/f-si09-b110-provider
+    paths:
+      - 'tools/fsi/fsi09_fix_model2_literal.py'
+      - '.github/workflows/fsi09-fix-model2-literal.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact B1.10 literal-kind semantics
+        run: python3 tools/fsi/fsi09_fix_model2_literal.py
+      - name: Persist provider checkpoint before qualification
+        run: |
+          set -euo pipefail
+          [[ "$(git diff --name-only)" == "src/solver/mod_b110_constitutive_provider.f90" ]]
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/solver/mod_b110_constitutive_provider.f90
+          git commit -m 'F-SI09: preserve B1.10 model2 default-real literal semantics'
+          git push origin HEAD:work/f-si09-b110-provider
