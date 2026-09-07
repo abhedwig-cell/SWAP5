@@ -40,3 +40,13 @@ jobs:
         run: gfortran --version
       - name: F-CI04 canonical runtime and seam gate
         run: bash tests/fci/run_fci04_gate.sh
+
+  fci05-b1-10-physical-preimage:
+    needs: fci04-canonical-runtime
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI05 static B1.10 physical preimage gate
+        run: python tools/fci/fci05_b1_10_physical_preimage_gate.py
