@@ -1,56 +1,163 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI09",
-  "status": "TESTED_SOURCE_RESOLUTION_PROVIDER_HELD",
-  "qualified": false,
+  "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+  "qualified": true,
   "branch": "work/f-si09-b110-constitutive-provider",
   "basis": {
     "fsi08_qualified_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
-    "oracle": "B1.10"
+    "oracle": "B1.10",
+    "canonical_fsi09_lineage": true,
+    "experimental_branch_production_eligible": false
   },
-  "tested_postimage": {
-    "commit": "a588ab7401b53e4da0eb10ae6cc55efec0b6a01f",
-    "workflow_run": 34145698534,
-    "workflow_job": 101817163748,
+  "qualified_source": {
+    "tested_postimage": "1c8c24a193565e4bfd76ee26f04db6858423a0c5",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "corrected_reference_payload_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "corrected_reference_payload_git_blob": "6cfcec4e38b02343ba48e7e6fb5d595158e19653",
+    "provider_source_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "provider_source_git_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2"
+  },
+  "qualification_workflow": {
+    "workflow_name": "F-SI09 B1.10 constitutive provider",
+    "workflow_run": 34148619796,
+    "workflow_job": 101825927324,
     "conclusion": "success"
   },
+  "failure_recovery": {
+    "original_failed_run": 34147779167,
+    "original_failed_job": 101823419371,
+    "failed_head": "7bd3034194561e3b70d2a8cb846722b1610a37ce",
+    "failure_class": "TEST_HARNESS_COMPILE_WARNING_PROMOTED_TO_ERROR",
+    "cause": "REAL equality in the concurrency fixture was rejected by -Werror=compare-reals.",
+    "minimal_repair_commit": "d203eb5599fff5cb692410347df678ebdf02f8ac",
+    "repair": "Use bitwise IEEE real64 identity via transfer(...,int64); no production provider or solver change.",
+    "details": "integration/f-si/F-SI09_FAILURE_ANALYSIS.json"
+  },
   "source_resolution": {
-    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "supplied_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
     "b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
     "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
     "corrected_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
-    "local_byte_exact_reconstruction_passed": true,
-    "repository_materializer_added": true
+    "exact_corrected_reference_payload_persisted": true,
+    "reference_payload_ci_verified": true,
+    "source_binding_record": "integration/f-si/F-SI09_SOURCE_RESOLUTION.json"
   },
-  "gate_results": {
-    "b1_10_snapshot_provenance": "PASS",
-    "swap012_patch_identity": "PASS",
-    "swap012_qualification_binding": "PASS",
-    "source_resolution_record": "PASS",
-    "byte_safe_materializer_static_gate": "PASS",
-    "fsi08_handoff": "PASS"
+  "admitted_profile": {
+    "hydraulic_model_family": "default MvG analytical branch only",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "macropore": false,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "frost": false,
+    "conductivity_power_tail": false,
+    "saturated_extrapolation": false,
+    "bottom_modes": [7, -2],
+    "top_boundary_provider_required": true,
+    "source_sink_provider_required": true
   },
-  "holds": {
-    "corrected_source_postimage_persisted_in_production_tree": false,
-    "production_b1_10_constitutive_provider_admitted": false,
+  "function_level_identity": {
+    "method": "Compile byte-exact corrected B1.10 MOD_MvG source and production provider separately; compare ordered IEEE real64 output bit patterns byte-for-byte.",
+    "outputs": [
+      "cofgen rows 25:42",
+      "theta(h)",
+      "C(h)",
+      "K(h,theta)"
+    ],
+    "heterogeneous_parameter_profiles": 4,
+    "step_durations": [0.25, 2.5],
+    "pressure_head_points": 15,
+    "o0": "PASS_BITWISE",
+    "o2": "PASS_BITWISE",
+    "o0_o2_identity": "PASS_BITWISE",
+    "ordered_output_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "new_scientific_tolerance_introduced": false,
+    "dkdh": "NOT_QUALIFIED_SWKIMPL1_NOT_ADMITTED",
+    "inverse_pressure_head": "NOT_USED_BY_ADMITTED_SOLVE_ROUTE_NOT_QUALIFIED"
+  },
+  "real_headcalc_qualification": {
+    "common_reference_route": "PASS",
+    "real_headcalc": true,
+    "different_constitutive_parameter_objects": true,
+    "legacy_process_globals_poisoned": true,
+    "o0_workers_1_2_4_8": "PASS",
+    "o2_workers_1_2_4_8": "PASS",
+    "o0_o2_identity": "PASS",
+    "serial_parallel_identity_per_logical_column": "PASS",
+    "aba_order_independence": "PASS",
+    "scratch_poisoning": "PASS",
+    "request_immutability": "PASS",
+    "solver_route": "legacy-reference-bound",
+    "solver_route_identity": "PASS",
+    "nonlinear_iterations": 1,
+    "iteration_identity": "PASS",
+    "endpoint_head_identity": "PASS",
+    "endpoint_theta_identity": "PASS",
+    "top_bottom_flux_identity": "PASS"
+  },
+  "mass_equation_integrity": {
+    "focused_unrounded_equation_residual": "PASS",
+    "expression": "sum(dz*(candidate_theta-base_theta)) + qtop - qbot",
+    "criterion": "finite and abs(residual) <= 16*epsilon(real64), inherited from the qualified focused F-SI08 gate",
+    "full_swap_storage_flux_accounting_executed": false,
+    "full_swap_water_balance_qualified": false,
+    "mass_conservation_requirement_relaxed": false
+  },
+  "regression": {
+    "fsi08_provider_context_gate": "PASS",
+    "headcalc_changed_by_fsi09": false,
+    "reference_adapter_changed_by_fsi09": false,
+    "fkt_transaction_semantics_changed": false,
+    "physics_formula_change_admitted": false,
+    "numerical_policy_changed": false
+  },
+  "admission_flags": {
+    "production_b1_10_constitutive_provider_admitted": true,
     "production_b1_10_source_sink_provider_admitted": false,
+    "real_headcalc_constitutive_provider_reentrancy_qualified": true,
     "parallel_reference_backend_admitted": false,
     "full_swap_parallel_admitted": false,
-    "full_swap_water_balance_qualified": false
+    "full_swap_water_balance_qualified": false,
+    "swkimpl_1_admitted": false,
+    "other_hydraulic_model_families_admitted": false,
+    "coarse_richards_admitted": false,
+    "reduced_order_admitted": false
   },
-  "next_required_step": "Persist or reproducibly bind the exact corrected MOD_MvG source into the production/reference build boundary and mechanically isolate the concrete constitutive provider. Compare provider outputs executable against the byte-exact corrected B1.10 source before any parallel backend admission.",
+  "unsupported_routes": [
+    "model 2 exponential",
+    "model 3 bimodal",
+    "hydraulic model families 4-12",
+    "swkimpl=1 and production dK/dh route",
+    "hysteresis",
+    "tabulated hydraulics",
+    "elasticity",
+    "frost",
+    "macropore",
+    "active production drainage/root extraction/irrigation until separately provider-qualified",
+    "non-qualified bottom-boundary modes",
+    "full SWAP parallel backend",
+    "coarse Richards",
+    "reduced-order solver"
+  ],
+  "downstream_handoff": {
+    "consumer": "F-MR03",
+    "ready": true,
+    "contract": "integration/f-si/F-SI09_PROVIDER_CONTRACT.json",
+    "identity_evidence": "integration/f-si/F-SI09_PROVIDER_IDENTITY_EVIDENCE.json",
+    "rule": "F-MR03 may consume this exact provider/blob inside the admitted profile without reinterpreting constitutive formulas or broadening provider/parallel admission."
+  },
   "status_dimensions": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
     "TESTED": true,
-    "QUALIFIED": false
+    "QUALIFIED": true
   },
-  "scope_flags": {
-    "physics_changed": false,
-    "numerical_policy_changed": false,
-    "transaction_semantics_changed": false,
-    "parallel_reference_backend_admitted": false
+  "next_work_unit": {
+    "code": "F-SI10",
+    "scope": "Production source/sink process-provider isolation and qualification for the smallest admitted reference profile, preserving drainage/root/irrigation ownership and keeping swkimpl=1 separate until dynamic RootExtraction/dKdh is source-bound."
   }
 }
