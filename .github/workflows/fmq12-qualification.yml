@@ -34,10 +34,10 @@ jobs:
       - name: Run F-MQ12 overlay gate
         run: python3 tests/multiswap/run_fmq12_gate.py
 
-      - name: Fetch exact qualified F-KT01 evidence commit
+      - name: Fetch exact final qualified F-KT01 head
         run: |
-          git fetch --no-tags --depth=1 origin e350d84e975e9f6ab4475658566f623b0e46f9ac
-          test "$(git rev-parse FETCH_HEAD)" = "e350d84e975e9f6ab4475658566f623b0e46f9ac"
+          git fetch --no-tags --depth=1 origin 62f27672bbb74066ece202de8898597e655aed3d
+          test "$(git rev-parse FETCH_HEAD)" = "62f27672bbb74066ece202de8898597e655aed3d"
           git show FETCH_HEAD:integration/f-kt/F-KT01_STATUS.json > /tmp/fkt01_status.json
           git show FETCH_HEAD:qualification/f-kt/F-KT01_QUALIFICATION.json > /tmp/fkt01_qualification.json
           git show FETCH_HEAD:integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json > /tmp/fkt01_contract.json
