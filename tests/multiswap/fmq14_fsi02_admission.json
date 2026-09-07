@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ14",
+  "title": "F-SI02 common solver contract and workspace admission",
+  "qualification_only": true,
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "git_blob_sha1": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35
+  },
+  "lineage": {
+    "fmq13_head": "871f4062caf490fc244db5c61693dc9a7c620f83",
+    "fsi01_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fsi02_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi02_tested_postimage": "9715465216edb400cbcd125a8572a1498a6b0211",
+    "fsi02_workflow_run": 34119142333,
+    "fvq09_checkpoint_head": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "oracle": "B1.10"
+  },
+  "source_blob_pins": {
+    "integration/f-si/F-SI02_QUALIFICATION.json": "d29e6944cb342c47ab06d61faaa4378d79719c69",
+    "src/solver/mod_soil_water_solver_contract.f90": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "src/solver/mod_reference_richards_workspace.f90": "f35fc559aec8462313d9e9b6c95171983b3cf8ef"
+  },
+  "fsi02_admission": {
+    "status": "COMMON_SOLVER_LAYER_ADMITTED_REFERENCE_BINDING_OPEN",
+    "qualified": true,
+    "qualification_scope": "compileable common soil-water request/result/evaluation-context contract plus worker-owned reference Richards workspace; no reference HeadCalc binding yet",
+    "common_contract_compiles_o0_o2": true,
+    "parameter_reference_sharing_contract": "PASS_CONTRACT_LEVEL",
+    "base_state_clone_independence": "PASS",
+    "workspace_reset_and_scratch_poisoning": "PASS",
+    "workspace_isolation_threads": [1, 2, 4, 8],
+    "warm_start_reset_not_physical_state": "PASS",
+    "legacy_transaction_blobs_unchanged": "PASS",
+    "common_layer_uses_save_io_or_legacy_globals": false,
+    "workspace": {
+      "worker_owned": true,
+      "persistent_per_logical_column": false,
+      "contains_newton_jacobian_linear_and_constitutive_scratch": true,
+      "explicit_reset": true,
+      "explicit_poison": true,
+      "warm_start_separate_from_physical_state": true,
+      "payload_bytes_query_available": true
+    },
+    "result_contract": {
+      "candidate_state_separate": true,
+      "top_flux_unrounded_field": true,
+      "bottom_flux_unrounded_field": true,
+      "unrounded_mass_balance_residual_field": true,
+      "diagnostics_first_class": true,
+      "interface_sensitivity_shape_reserved": true
+    },
+    "reference_richards_binding_qualified": false,
+    "reference_richards_reentrancy_qualified": false,
+    "unrounded_physical_water_balance_identity_qualified": false,
+    "solver_route_iteration_identity_qualified": false,
+    "parallel_multiswap_backend_qualified": false,
+    "interface_tangent_algorithm_implemented": false
+  },
+  "fvq09_observation": {
+    "admitted": false,
+    "reason": "The observed F-VQ09 branch head is a checkpoint commit for a real temporal harness asset contract, not qualified evidence. F-MQ14 does not consume it as qualification evidence."
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": []
+  },
+  "common_layer_prerequisite_closures": [
+    {
+      "id": "P03",
+      "closed": ["common_solver_workspace_1_2_4_8_thread_isolation"],
+      "open": ["reference_solver_worker_count_identity", "multiswap_runtime_worker_count_identity"],
+      "remaining_owners": ["F-SI", "F-MR"]
+    },
+    {
+      "id": "P05",
+      "closed": ["common_solver_base_state_clone_independence"],
+      "open": ["real_reference_solver_clone_equivalence"],
+      "remaining_owners": ["F-SI"]
+    },
+    {
+      "id": "P06",
+      "closed": ["common_solver_workspace_reset", "common_solver_workspace_thread_isolation", "workspace_not_persistent_column_state"],
+      "open": ["reference_solver_scratch_identity", "multiswap_runtime_scratch_allocation_policy"],
+      "remaining_owners": ["F-SI", "F-MR"]
+    },
+    {
+      "id": "P16",
+      "closed": ["common_solver_unrounded_mass_residual_output_shape"],
+      "open": ["real_reference_solver_physical_mass_identity", "event_local_real_fixture_mass"],
+      "remaining_owners": ["F-SI", "F-VQ"]
+    },
+    {
+      "id": "P18",
+      "closed": ["worker_owned_workspace_1_2_4_8_thread_isolation"],
+      "open": ["reference_solver_interleave_identity", "multiswap_runtime_interleave_identity"],
+      "remaining_owners": ["F-SI", "F-MR"]
+    },
+    {
+      "id": "P19",
+      "closed": ["common_solver_workspace_poison_and_reset_gate"],
+      "open": ["reference_solver_poison_identity"],
+      "remaining_owners": ["F-SI"]
+    },
+    {
+      "id": "PFX01",
+      "closed": ["workspace_payload_size_introspection_available"],
+      "open": ["measured_multiswap_memory_scaling", "performance_baseline"],
+      "remaining_owners": ["F-MR", "MP"]
+    }
+  ],
+  "decision": "QUALIFIED_COMMON_SOLVER_LAYER_ADMISSION_NO_MATRIX_COVERAGE_PROMOTION"
+}
