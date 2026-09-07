@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI08",
+  "status": "QUALIFIED_PROVIDER_CONTEXT_ISOLATION_ADMITTED_FIXTURE",
+  "qualified": true,
+  "qualification_scope": "Common reference-Richards provider-context isolation for the admitted swkimpl=0, macropore-off, free-drainage fixture profile with explicit constitutive, source/sink and top-boundary providers. This qualifies the isolation seam and heterogeneous provider concurrency using immutable qualification providers; it does not qualify a production corrected-B1.10 constitutive provider or the general production parallel reference backend.",
+  "basis": {
+    "fsi07_qualified_evidence_head": "762b939876ce56f155a944f4cd21febdd763f6a9",
+    "fsi07_exact_tested_source_postimage": "8658ad70cfcc03d693ca5aa8c946a6d1d87554bf",
+    "fkt07_observed_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt07_status_blob": "753458e9c44a4c96da634990071d41ef94b66073",
+    "oracle": "B1.10",
+    "oracle_snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+    "corrected_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "tested_postimage": {
+    "commit": "df5f064c787be736aea4aa679ff9c260b43bdae7",
+    "branch": "work/f-si08-provider-context",
+    "workflow_run": 34142750799,
+    "workflow_job": 101808143644,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04"
+  },
+  "source_postimage": {
+    "headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "provider_context_contract_blob": "5f8d1d3a5638289f2a765fd1aa838785adac1ca2",
+    "qualification_gate_blob": "78a24112b246fb6543d96437475b74119aeaab2d",
+    "common_solver_contract_blob_unchanged": "57b51997d28807fbe2da1b2e5bf654fc4167adb9"
+  },
+  "implementation": {
+    "production_source_changed": true,
+    "production_files_changed": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "generic_time_semantics_changed": false,
+    "common_solver_contract_changed": false,
+    "reference_workspace_layout_changed": false,
+    "state_binding_layout_changed": false,
+    "change_kind": "provider-routing and ownership isolation only"
+  },
+  "qualified_capabilities": {
+    "provider_interface_isolation_qualified": true,
+    "common_headcalc_provider_route_qualified": true,
+    "explicit_constitutive_provider_required": true,
+    "explicit_source_sink_provider_required": true,
+    "explicit_top_boundary_provider_required": true,
+    "heterogeneous_provider_concurrency_qualified": true,
+    "workers_qualified": [1, 2, 4, 8],
+    "optimization_levels_qualified": ["O0", "O2"],
+    "fsi07_identity_qualified": true,
+    "fail_closed_provider_admission_qualified": true,
+    "legacy_provider_global_poisoning_qualified": true,
+    "request_immutability_qualified": true,
+    "workspace_reuse_and_poisoning_qualified": true,
+    "aba_order_independence_qualified_for_distinct_providers_when_workers_ge_2": true,
+    "focused_unrounded_equation_residual_qualified": true,
+    "fkt_boundary_regression_qualified": true
+  },
+  "test_evidence": [
+    {
+      "id": "FSI08-G01",
+      "result": "PASS",
+      "evidence": "F-SI08_STATIC_PROVIDER_BOUNDARY PASS",
+      "meaning": "Admitted common adapter route contains no direct qdra/qssdi/qrot/watcon/hconduc/moiscap/dhconduc/cofgen provider token reads and HeadCalc has explicit constitutive/source-sink provider seams."
+    },
+    {
+      "id": "FSI08-G02",
+      "result": "PASS",
+      "evidence": [
+        "F-SI08_FSI07_IDENTITY_O0_1_2_4_8 PASS",
+        "F-SI08_FSI07_IDENTITY_O2_1_2_4_8 PASS",
+        "F-SI08_IDENTITY_O0_O2 PASS"
+      ],
+      "meaning": "When explicit providers reproduce the F-SI07 fixture values, current F-SI08 outputs are identical to the exact F-SI07 tested source at O0/O2 and 1/2/4/8 workers."
+    },
+    {
+      "id": "FSI08-G03",
+      "result": "PASS",
+      "evidence": [
+        "F-SI08_HETEROGENEOUS_O0_1_2_4_8 PASS",
+        "F-SI08_HETEROGENEOUS_O2_1_2_4_8 PASS",
+        "F-SI08_HETEROGENEOUS_O0_O2 PASS"
+      ],
+      "meaning": "Distinct immutable provider instances and parameters remain isolated across serial and concurrent common-route solves while incompatible legacy qdra/qssdi/qrot globals are deliberately poisoned."
+    },
+    {
+      "id": "FSI08-G04",
+      "result": "PASS",
+      "evidence": "F-SI08_PROVIDER_FAILCLOSED_O0_O2 PASS",
+      "meaning": "Missing constitutive or source/sink provider fails before HeadCalc entry; diagnostic labels fit the existing 32-character common diagnostics field."
+    },
+    {
+      "id": "FSI08-G05",
+      "result": "PASS",
+      "evidence": "F-SI08_FKT_BOUNDARY_REGRESSION PASS",
+      "meaning": "Existing transaction and worker ownership regression remains executable and green."
+    },
+    {
+      "id": "FSI08-G06",
+      "result": "PASS_WITH_EXPLICIT_HOLDS",
+      "evidence": [
+        "F-SI08_PRODUCTION_B1_10_CONSTITUTIVE_PROVIDER BLOCKED_EXACT_SOURCE_BOUND_IMPLEMENTATION",
+        "F-SI08_SWKIMPL1 BLOCKED_DYNAMIC_ROOT_DKDH_PROVIDER",
+        "F-SI08_MACROPORE BLOCKED_FSI_FKT_COMPOSITION",
+        "F-SI08_PARALLEL_REFERENCE_BACKEND NOT_ADMITTED",
+        "F-SI08_GATE PASS"
+      ]
+    }
+  ],
+  "mass_accounting": {
+    "hard_mass_conservation_requirement_unchanged": true,
+    "focused_residual_definition": "sum(dz*(candidate_theta-base_theta))+top_flux-bottom_flux",
+    "focused_residual_tolerance": "16*epsilon(real64)",
+    "focused_residual_passed": true,
+    "full_swap_water_balance_qualified": false,
+    "reason_full_balance_not_qualified": "F-SI08 exercises the isolated reference solver/provider fixture rather than the complete SWAP water-accounting chain."
+  },
+  "holds": {
+    "production_b1_10_constitutive_provider_admitted": false,
+    "production_b1_10_source_sink_provider_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "swkimpl1_admitted": false,
+    "macropore_admitted": false,
+    "other_bottom_modes_beyond_7_and_minus2_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false,
+    "reduced_order_admitted": false,
+    "coarse_richards_admitted": false
+  },
+  "hold_reasons": {
+    "production_b1_10_constitutive_provider": "The corrected B1.10 oracle manifest pins MOD_MvG_functions.f90, but the current production source tree does not yet contain an exact source-bound concrete B1.10 provider object. F-SI08 does not recreate historical formulas.",
+    "production_b1_10_source_sink_provider": "F-SI08 qualifies the source/sink interface and ownership seam using deterministic providers. Full production process composition for drainage, irrigation and root extraction remains to be source-bound without moving physics ownership into the solver.",
+    "parallel_reference_backend": "Provider-object isolation is proven, but the actual corrected B1.10 constitutive and process providers are not yet production-materialized and qualified.",
+    "swkimpl1": "Requires dynamic RootExtraction and dK/dh provider behavior through the explicit context without changing numerical policy.",
+    "macropore": "Requires composition with the separately owned F-KT optional continuation state contract and explicit macropore provider qualification."
+  },
+  "invariant_assessment": {
+    "1_one_kernel": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS",
+    "5_scratch_per_worker": "PASS",
+    "6_scalable_memory_layout": "PASS",
+    "7_transactional_steps": "UNCHANGED_AND_REGRESSION_PASS",
+    "8_cheap_recomputation": "PASS_WITHIN_SOLVER_SEAM",
+    "13_mass_conservation": "PASS_FOCUSED_UNROUNDED_RESIDUAL_FULL_SWAP_HELD",
+    "14_interface_sensitivities": "UNCHANGED_RESERVED_OUTPUT",
+    "16_multiswap_primary": "PASS_PROVIDER_INSTANCES_CAN_BE_PER_COLUMN_OR_SHARED_IMMUTABLY",
+    "20_alternative_solvers": "PASS_COMMON_PROVIDER_INTERFACE_UNCHANGED",
+    "21_reuse_swap_physics": "PASS_NO_NEW_PHYSICS_FORMULAS",
+    "22_no_headcalc_internal_coupling": "PASS_COMMON_ROUTE_USES_EVALUATION_CONTEXT",
+    "23_physics_solver_policy_separation": "PASS",
+    "24_predictable_cost": "NO_POLICY_CHANGE",
+    "25_reference_mode": "PASS_LEGACY_REFERENCE_COMPATIBILITY_RETAINED",
+    "26_diagnostics": "PASS_FAIL_CLOSED_ROUTES_EXPLICIT",
+    "27_optional_scales_with_use": "PASS_PROVIDER_OBJECTS_AND_SOLVE_LOCAL_SCRATCH",
+    "29_no_silent_dependencies": "PASS_EXPLICIT_PROVIDER_REQUIREMENTS"
+  },
+  "next": {
+    "work_unit": "F-SI09",
+    "title": "Corrected B1.10 constitutive-provider source binding and qualification",
+    "required_first_step": "Resolve an exact, auditable current production source for the corrected B1.10 MOD_MvG constitutive functions against the pinned oracle before materializing a concrete provider. Do not copy formulas from an unqualified historical source.",
+    "downstream_fsi09_allowed": true
+  }
+}
