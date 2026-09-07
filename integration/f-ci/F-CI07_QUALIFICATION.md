@@ -1,6 +1,8 @@
 # F-CI07 Qualification — Worker-local legacy trial capsule and state classification
 
-## Scope
+## Outcome
+
+**PASS_WORKER_LOCAL_LEGACY_ROLLBACK_CAPSULE_PHYSICAL_CONTINUATION_BLOCKED**
 
 F-CI07 closes one specific rollback gap left by F-CI06: legacy time/control, forcing cursors, irrigation event workspace and water-accounting accumulators may mutate during a physical trial even though they are not canonical physical continuation state.
 
@@ -17,7 +19,7 @@ The capsule captures/restores:
 - irrigation event workspace and the current `dayfix`/`nirri` continuation cursors;
 - all intermediate and cumulative water-accounting accumulators from `MOD_integral`, including drainage arrays.
 
-Large arrays are allocatable and therefore cost memory only for active capsules/workers.
+Large arrays are allocatable and therefore cost memory only for active capsules/workers. For the legacy standalone maxima the broad rollback payload can be several MiB, which is acceptable only because it is worker-local rather than multiplied by all logical columns; a MultiSWAP execution class has much smaller compile-time array maxima.
 
 `dayfix` and `nirri` are copied into the capsule for rollback, but this does not settle their final ownership: when irrigation is active they remain candidates for optional persistent process-continuation state.
 
@@ -32,6 +34,18 @@ A poison/restore test set representative numerical, calendar, reporting, forcing
 The `-O0` and `-O2` gate logs were identical.
 
 This proves that the new adapter compiles against the real B1.10/F-CI06 module declarations and that the qualified categories can be restored exactly. It is stronger than a stub-only compile, but it is **not** yet a full rejected-SWAP-trial qualification because crop/WOFOST, thermal and solute physical continuation state are not yet fully captured.
+
+## Canonical CI evidence
+
+Canonical workflow run `34085527859` completed the chained qualification successfully:
+
+- F-CI03 transaction substrate — PASS
+- F-CI04 canonical runtime — PASS
+- F-CI05 B1.10 physical preimage — PASS
+- F-CI06 controlled source port/checkpoint — PASS
+- F-CI07 worker-local legacy trial capsule — PASS
+
+The F-CI07 CI job compiled and ran the architecture + poison/restore gate at `-O0` and `-O2` and required identical gate logs.
 
 ## Repository gate
 
