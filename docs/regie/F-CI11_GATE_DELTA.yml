@@ -1,0 +1,79 @@
+schema_version: 1
+record_id: F-CI11-GATE-DELTA
+workstream: F-CI
+work_unit: F-CI11
+assessment_mode: fail_closed
+
+canonical:
+  branch: integration/f-ci-canonical
+  qualified_source_head: 4e8894fc741d7abd711367f712e7aad29d1361eb
+  qualification_evidence_head: b18150cb4f5313f01fc1c775917c617b421c9ba0
+  workflow_run: 34100440481
+  workflow_job: 101673819067
+  workflow_result: PASS
+  reference_oracle: B1.10
+
+qualified_in_fci11:
+  - controlled legacy postimages
+  - legacy trial-mass wiring
+  - generic interval seam
+  - day-start full versus two-half qualification for the admitted profile
+  - non-midnight and cross-day interval qualification for the admitted profile
+  - hard mass-conservation qualification for the admitted profile
+  - O0/O2 identity for the admitted profile
+
+remaining_blockers:
+  - bind qualified-profile generic advance and mass seam into b1_10_transaction_model_t
+  - qualify a physical temporal-error metric and tolerances
+  - admit execute_reference_interval for the real B1.10 backend
+  - complete snow/macropore storage accounting before those configurations can claim complete mass accounting
+  - reentrant/parallel legacy backend qualification remains pending
+
+gate_delta:
+  CI-G03:
+    previous: BLOCKED
+    current: BLOCKED
+    reason: >-
+      The transaction substrate is qualified and F-CI11 now qualifies real generic physical
+      interval execution plus trial-mass wiring for the admitted profile, but the real B1.10
+      transaction-model advance binding and physical temporal-error policy remain unadmitted.
+
+  CI-G06:
+    previous: BLOCKED
+    current: TESTED
+    reason: >-
+      F-CI11 qualifies the generic physical interval seam, including non-midnight and cross-day
+      intervals, against exact source. Final qualification still depends on binding that seam into
+      the canonical B1.10 transaction model and reference entrypoint.
+
+  CI-G07:
+    previous: BLOCKED
+    current: BLOCKED
+    reason: >-
+      Real legacy trial-mass wiring now passes and hard mass evidence exists for the admitted
+      profile. Complete canonical transaction-result mass accounting through execute_reference_interval
+      is still blocked by the model binding and temporal-error work.
+
+  CI-G09:
+    previous: BLOCKED
+    current: BLOCKED
+    reason: >-
+      The focused hard-mass and O0/O2 gates pass, but the final end-to-end canonical reference mass
+      gate cannot run until the admitted B1.10 transaction entrypoint exists.
+
+release_effect:
+  full_fci_exit: BLOCKED
+  production_downstream_release: BLOCKED
+  qualification_only_release_review:
+    F-VQ: ELIGIBLE
+    F-MQ: ALREADY_ACTIVE
+  still_blocked:
+    F-KT: true
+    F-SI: true
+    F-PM: true
+    F-MR: true
+    F-GC: true
+    F-PE: true
+    F-RR: true
+
+last_verified: 2026-09-07T10:38:00+02:00
