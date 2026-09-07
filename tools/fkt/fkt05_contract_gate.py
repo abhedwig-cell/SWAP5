@@ -111,10 +111,30 @@ if fsi.get("fkt_imports_fsi_solver_types") is not False:
     errors.append("F-KT imports F-SI solver types")
 if fsi.get("fsi_may_commit_or_rollback") is not False:
     errors.append("F-SI gained transaction authority")
+if fsi.get("fsi03_qualified_scope") != "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY":
+    errors.append("F-SI03 scope is not pinned exactly")
+if fsi.get("fsi04_qualified_scope") != "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY":
+    errors.append("F-SI04 scope is not pinned exactly")
+if fsi.get("fsi04_changes_production_route") is not False:
+    errors.append("F-SI04 was incorrectly treated as production route")
+if fsi.get("fsi04_full_reference_solver_reentrancy_qualified") is not False:
+    errors.append("F-SI04 was incorrectly treated as full reentrancy qualification")
 
 reference = contract.get("reference_policy", {})
-if reference.get("b1_10_production_reference_admission") is not False:
-    errors.append("B1.10 production reference was silently admitted")
+if reference.get("fvq10_decision") != "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY":
+    errors.append("F-VQ10 decision not pinned exactly")
+if reference.get("promotion_method_qualified") is not True:
+    errors.append("qualified F-VQ10 promotion method not recognized")
+for key in [
+    "real_b1_10_temporal_characterization_qualified",
+    "production_temporal_profile_qualified",
+    "numeric_limits_introduced_by_fvq10",
+    "b1_10_production_reference_admission",
+]:
+    if reference.get(key) is not False:
+        errors.append(f"reference hold incorrectly promoted: {key}")
+if reference.get("canonical_reference_admission") != "BLOCKED_FAIL_CLOSED":
+    errors.append("canonical reference is not fail-closed")
 if reference.get("fail_closed_hold_preserved") is not True:
     errors.append("reference fail-closed hold missing")
 
