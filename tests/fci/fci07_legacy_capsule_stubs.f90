@@ -47,7 +47,7 @@ module MOD_irrigation
   use iso_fortran_env, only: real64
   use MOD_arrays, only: macp
   implicit none
-  integer :: dayfix=0,nirri=0,irrigevent=0,isua=0
+  integer :: schedule=0,dayfix=0,nirri=0,irrigevent=0,isua=0
   real(real64) :: cirr=0,dt_irr_event=0,gird=0,nird=0,qssdisum=0
   real(real64) :: qssdi(macp)=0
   logical :: flirrigate=.false.
