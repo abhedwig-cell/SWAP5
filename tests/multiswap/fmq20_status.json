@@ -18,6 +18,18 @@
     "fkt05_status": "QUALIFIED",
     "fkt05_scope": "opaque reusable checkpoint carrier bound to current committed lineage, revision and temporal provenance"
   },
+  "qualification": {
+    "workflow": "F-MQ20 F-KT05 reusable checkpoint admission",
+    "run_id": 34127784374,
+    "job_id": 101760427771,
+    "conclusion": "success",
+    "python_admission_tests": "PASS_8_OF_8",
+    "external_fkt05_scope_verifier": "PASS",
+    "exact_fkt05_tested_postimage_gate": "PASS",
+    "reusable_checkpoint_O0_O2": "PASS",
+    "lineage_revision_time_fail_closed": "PASS",
+    "same_committed_state_replay": "PASS_SOURCE_BOUND"
+  },
   "context_not_evidence": {
     "fsi06_head": "83c1171dd314a94c3f852e00c519c6ce9cb7a073",
     "fsi06_qualified": false,
@@ -26,15 +38,18 @@
     "fmr01_head": "94fa8649ae85316654933615a7b80a64888e25fd",
     "fmr01_qualified": false
   },
-  "coverage_before": {
+  "coverage": {
     "matrix_total": 35,
     "synthetic_executable": 27,
     "real_physics_executable": 0,
-    "production_runtime_qualified": 0
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "production_kernel_checkpoint_prerequisite_rows": ["R08", "P05", "P10", "P11"]
   },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FKT05_REUSABLE_CHECKPOINT_ADMISSION_CANDIDATE",
-  "scope": "Admit the exact qualified F-KT05 reusable checkpoint and same-committed-state replay contract as production-kernel prerequisite evidence for P10/P11 and replay-related runtime requirements, while keeping real B1.10 reference replay, full SWAP mass identity and production MultiSWAP runtime fail-closed."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FKT05_REUSABLE_CHECKPOINT_ADMITTED_NO_REAL_OR_RUNTIME_PROMOTION",
+  "scope": "Admit the exact qualified F-KT05 reusable checkpoint and same-committed-state replay contract as production-kernel prerequisite evidence for P10/P11 and replay-related runtime requirements, while keeping real B1.10 reference replay, full SWAP mass identity and production MultiSWAP runtime fail-closed.",
+  "next_dependency": "A reference-derived B1.10 checkpoint/event fixture and executable production reference route are required for real P10/P11 promotion. F-SI06 qualification is required for real P03/P18/P19, and a qualified F-MR runtime is required for production-runtime rows."
 }
