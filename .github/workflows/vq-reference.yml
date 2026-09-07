@@ -140,3 +140,6 @@ jobs:
 
       - name: Re-run carried F-CI15 exit-gate contract
         run: bash tests/fci/run_fci15_gate.sh
+
+      - name: Re-run carried F-CI16 exit-gate assessment
+        run: bash tests/fci/run_fci16_gate.sh
