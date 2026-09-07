@@ -1,0 +1,65 @@
+{
+  "schema_version": "mq-reference-candidate-v1",
+  "work_unit": "F-MQ04b",
+  "candidate_id": "b1.10-quiet-soil-water",
+  "status": "BLOCKED_REFERENCE_RUN_CHECKPOINT_MISSING",
+  "admission_allowed": false,
+  "source_identity": {
+    "repository": "abhedwig-cell/SWAP5",
+    "snapshot": "B1.10",
+    "source_commit": "0e5c58134b225014426c75e240f0b668affbb4a1",
+    "source_tree_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "vq_reference_pin": "tools/vq/cases/b1-10-reference-pin.json",
+    "vq_reference_pin_git_blob_sha1": "2422c3ec518afb1d9b7fbd55e869a806842161c9"
+  },
+  "evidence_inventory": [
+    {
+      "path": "tools/vq/cases/b1-10-reference-pin.json",
+      "git_blob_sha1": "2422c3ec518afb1d9b7fbd55e869a806842161c9",
+      "role": "qualified source identity only",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    },
+    {
+      "path": "tools/vq/qualify_hupselbrook.py",
+      "git_blob_sha1": "b08cd71eb8c97805ea9c2c4a1a28983d95361212",
+      "role": "B0 Hupselbrook legacy-report-precision qualification",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    }
+  ],
+  "repository_evidence": {
+    "main_commit_inspected": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+    "main_recursive_tree_complete": true,
+    "tools_vq_cases_tree_sha1": "9fa4c892499a4fa88982b569b46736063f5912d4",
+    "b1_10_case_items_found": [
+      "tools/vq/cases/b1-10-reference-pin.json"
+    ],
+    "event_checkpoint_artifact_found": false
+  },
+  "required_for_admission": [
+    "reference_run_id",
+    "committed_state_at_t0",
+    "short_interval_forcing",
+    "numerical_reference_config",
+    "expected_endpoint_state",
+    "unrounded_internal_mass_accounting",
+    "extractor_identity_and_output_hash"
+  ],
+  "missing": [
+    "reference_run_id",
+    "committed_state_at_t0",
+    "short_interval_forcing",
+    "numerical_reference_config",
+    "expected_endpoint_state",
+    "unrounded_internal_mass_accounting",
+    "extractor_identity_and_output_hash"
+  ],
+  "forbidden_substitutes": [
+    "hand-constructed physical state",
+    "B1.6 A23BU endpoint constants",
+    "rounded BAL/BLC values as hard mass oracle",
+    "branch name instead of exact source commit"
+  ],
+  "next_dependency": "VQ reference-run extraction plus canonical continuation-state/mass seam from F-CI/F-KT"
+}
