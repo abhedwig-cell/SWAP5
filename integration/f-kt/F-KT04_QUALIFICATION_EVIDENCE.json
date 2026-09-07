@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT04",
+  "qualified_source_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+  "qualification_workflow": {
+    "name": "F-KT kernel qualification",
+    "run_id": 34121637946,
+    "conclusion": "success",
+    "focused_job": {
+      "job_id": 101740791304,
+      "conclusion": "success",
+      "checks": {
+        "fkt03_contract_gate": "PASS",
+        "fkt03_fsi_boundary_gate": "PASS",
+        "fkt03_o0_o2": "PASS",
+        "fkt04_contract_gate": "PASS",
+        "fkt04_temporal_provenance_o0": "PASS",
+        "fkt04_temporal_provenance_o2": "PASS"
+      }
+    },
+    "fci_regression_job": {
+      "job_id": 101740841325,
+      "conclusion": "success",
+      "checks": {
+        "F-CI03": "PASS",
+        "F-CI04": "PASS",
+        "F-CI08": "PASS",
+        "F-CI09": "PASS",
+        "F-CI10": "PASS",
+        "F-CI11": "PASS",
+        "F-CI13": "PASS",
+        "F-CI14": "PASS"
+      }
+    }
+  },
+  "qualified_claims": [
+    "an explicitly time-bound committed state rejects overlap, gap and backward continuation before model execution",
+    "a successful commit advances committed temporal provenance to candidate t1 and increments revision once",
+    "an initially unbound legacy-compatible carrier becomes time-bound on its first successful commit",
+    "machine-roundoff-equivalent representations of the same time coordinate are accepted without introducing a user numerical policy",
+    "non-finite initial or interval time fails closed",
+    "F-KT03 opaque lineage/revision protections remain qualified on the F-KT04 postimage"
+  ],
+  "not_qualified": [
+    "B1.10 temporal-limit capability profile",
+    "F-SI03 legacy reference binding",
+    "full solver reentrancy or HeadCalc isolation",
+    "production MultiSWAP scheduling/runtime",
+    "explicit reusable checkpoint carrier"
+  ],
+  "downstream_recheck": {
+    "fmq16_head": "94010b5ee7f52637fd6507156a01724ebf5a7525",
+    "fmq16_status": "QUALIFIED_FSI03_FAIL_CLOSED_BARRIER_NO_COVERAGE_PROMOTION",
+    "fsi03_observed_head_by_fmq16": "5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3",
+    "fsi03_workflow_conclusion": "failure",
+    "ownership_conflict": false
+  },
+  "qualification_status": "QUALIFIED"
+}
