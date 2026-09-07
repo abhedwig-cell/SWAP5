@@ -30,6 +30,19 @@ module MOD_meteo
   logical :: fl_update_meteo=.false.
 end module MOD_meteo
 
+module MOD_SoilTemperature
+  implicit none
+  integer :: ipos_qtop=0,ipos_tetop=0,ipos_tebot=0
+end module MOD_SoilTemperature
+
+module MOD_Solute
+  use iso_fortran_env, only: real64
+  use MOD_arrays, only: macp
+  implicit none
+  real(real64) :: imdectot=0,imrottot=0,imsqbot=0,imsqdra=0,imsqirrig=0,imsqprec=0,imqsol(macp+1)=0
+  real(real64) :: sbaldev=0,sdstor=0,sampro=0,rottot=0,sqdra=0,isqbot=0,dectot=0,sqprec=0,sqirrig=0,sqbot=0,samini=0,isqtop=0
+end module MOD_Solute
+
 module MOD_irrigation
   use iso_fortran_env, only: real64
   use MOD_arrays, only: macp
