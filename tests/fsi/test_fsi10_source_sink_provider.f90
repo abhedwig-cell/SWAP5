@@ -5,7 +5,7 @@ program test_fsi10_source_sink_provider
   implicit none
 
   integer, parameter :: n = 4, levels = 3
-  type(b110_source_sink_provider_t) :: provider
+  type(b110_source_sink_provider_t), target :: provider
   real(real64), target :: qdra(levels,n), qssdi(n), qrot(n)
   real(real64) :: h(n), theta(n), source(n), sink(n), expected_sink(n)
   class(source_sink_provider_t), pointer :: base
