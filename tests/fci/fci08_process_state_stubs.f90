@@ -108,7 +108,7 @@ module MOD_cropdevelopment
   implicit none
   logical :: fl_cropcalendar=.true.,fl_readcropfile=.true.,fl_prep=.false.,fl_sow=.false.,fl_germ=.false.
   integer :: delay_prep=0,delay_sow=0
-  real(real64) :: tsumgerm=0
+  real(real64) :: tsumgerm=0,rdpot=0
   real(real64) :: cumdens(2*(macp+1))=0,cumdens_top(macp+1)=0,lrv_node(macp)=0,wroot_node(macp)=0,wroot_node_top(macp)=0
 end module MOD_cropdevelopment
 
