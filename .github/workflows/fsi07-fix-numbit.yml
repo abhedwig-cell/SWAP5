@@ -1,0 +1,38 @@
+name: F-SI07 fix numbit carrier
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - tools/fsi/fsi07_fix_numbit_carrier.py
+      - .github/workflows/fsi07-fix-numbit.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize minimal F-SI07 compile repair
+        run: python3 tools/fsi/fsi07_fix_numbit_carrier.py
+      - name: Validate repair scope
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/legacy/b1_10_port/headcalc.f90 tests/fsi/test_fsi07_state_binding.F90 "
+          grep -F 'do solver_numbit = 1, MaxIt1' src/legacy/b1_10_port/headcalc.f90
+          grep -F 'state%numbit = solver_numbit' src/legacy/b1_10_port/headcalc.f90
+          ! grep -F 'do state%numbit = 1, MaxIt1' src/legacy/b1_10_port/headcalc.f90
+          git diff -- src/legacy/b1_10_port/headcalc.f90
+      - name: Persist repaired postimage before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/legacy/b1_10_port/headcalc.f90 tests/fsi/test_fsi07_state_binding.F90
+          git commit -m "F-SI07: repair explicit numbit loop carrier"
+          git push origin HEAD:work/f-si07-state-binding
