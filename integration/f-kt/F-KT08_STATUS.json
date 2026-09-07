@@ -38,6 +38,13 @@
       "result": "FAILED_HISTORICAL_FKT06_PROVENANCE_GATE_BEFORE_FKT08_EXECUTION",
       "finding": "F-KT03/F-KT04/F-KT05 passed on evolved source; F-KT06 contract gate intentionally rejected the changed F-KT08 kernel blob before F-KT06 executable test or F-KT08 test ran.",
       "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34160278825,
+      "head": "91511f9c4625af0eadde221c08c5ff9a089a001b",
+      "result": "FAILED_TEST_HARNESS_STATIC_REGEX_ONLY",
+      "finding": "Historical F-KT01..07 and F-CI03/F-CI04 replays passed; current-head F-KT03..05 and F-KT06/F-KT07 forward O0/O2 semantics passed. The F-KT08 static Python gate stopped on an over-escaped regular expression before the F-KT08 Fortran test compiled.",
+      "production_semantics_changed_by_fix": false
     }
   ],
   "historical_fci_provenance_policy": "F-CI03/F-CI04 remain immutable and are replayed on exact F-KT07 head; current F-KT08 semantics are qualified by source-bound F-KT08 tests and compatible current F-CI gates",
@@ -46,10 +53,10 @@
   "fmr04_profile_mass_complete_capable": false,
   "known_missing_physical_contribution_owner_for_fmr04_profile": null,
   "holds": [
-    "focused F-KT08 O0/O2 and current-head F-KT06/F-KT07 forward semantic regression still must pass",
+    "focused F-KT08 O0/O2 still must compile and pass after the static-gate-only correction",
     "F-MR04 must explicitly consume the qualified F-KT08 completeness hooks before its serialized physical profile can report kernel_result.mass.complete=true",
     "active root, snow and macropore physical accounting remain outside this F-KT08 profile and stay fail-closed",
     "independent F-VQ scientific admission remains downstream"
   ],
-  "next_action": "run corrected source-bound qualification workflow without rewriting immutable F-KT06/F-KT07 provenance gates"
+  "next_action": "rerun the unchanged F-KT08 production source through the corrected static gate and full qualification workflow"
 }

@@ -53,7 +53,7 @@ checks.update({
     "commit_publishes_mass_after_validation": kernel.find("accepted_mass = candidate_state%mass") > kernel.find("origin_revision_value /= committed_state%revision"),
     "candidate_clear_drops_mass": "candidate_state%mass = canonical_mass_accounting_t()" in kernel,
     "no_cumulative_mass_in_committed_state": "type(canonical_mass_accounting_t) :: mass" not in kernel.split("end type kernel_committed_state_t")[0],
-    "no_file_io_added": not any(re.search(rf"\\b{word}\\s*\\(", text.lower()) for text in (tx, contracts, runtime, kernel) for word in ("open", "read", "write")),
+    "no_file_io_added": not any(re.search(rf"\b{word}\s*\(", text.lower()) for text in (tx, contracts, runtime, kernel) for word in ("open", "read", "write")),
     "no_solver_internal_leak": not any(token in contracts.lower() for token in ("headcalc", "jacobian", "newton", "workspace")),
     "no_mass_disable_switch": "mass conservation off" not in (tx + contracts + runtime + kernel).lower(),
     "contract_no_second_mass_model": contract["no_second_mass_model"] is True,
