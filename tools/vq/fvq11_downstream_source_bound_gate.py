@@ -35,6 +35,7 @@ ALLOWED_HEAD_PATHS = (
     "tools/vq/",
     "docs/verification/",
     ".github/workflows/vq-reference.yml",
+    ".github/workflows/fvq11-downstream.yml",
 )
 
 
