@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI10",
+  "title": "B1.10 source/sink process-output provider isolation",
+  "branch": "work/f-si10-b110-source-sink-provider",
+  "basis": {
+    "fsi09_qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+    "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "shared_fkt_type_change_required": false
+  },
+  "legacy_semantics": {
+    "source": "qssdi(node)",
+    "sink": "sum(qdra(level,node), level=1..nrlevs) + qrot(node)",
+    "headcalc_mapping": "When source_sink provider is active, HeadCalc consumes provider source/sink and root_sink_term returns zero, so the provider sink must include qrot exactly once.",
+    "physics_recomputed_by_provider": false,
+    "provider_role": "bind already-computed drainage, subsurface-irrigation and root-extraction outputs into explicit per-solve read-only arrays"
+  },
+  "ownership": {
+    "drainage_physics": "outside F-SI",
+    "root_extraction_physics": "outside F-SI",
+    "irrigation_physics": "outside F-SI",
+    "provider_binding": "F-SI",
+    "committed_candidate_checkpoint_rollback": "F-KT",
+    "newton_jacobian_scratch": "F-SI worker/job workspace",
+    "persistent_mutable_global_state": false,
+    "transaction_authority": false
+  },
+  "provider_interface": {
+    "base_type": "source_sink_provider_t",
+    "method": "evaluate(pressure_head, water_content, source, sink)",
+    "input_payload": ["drainage_flux_by_level", "subsurface_irrigation_source", "root_extraction_sink"],
+    "pressure_head_dependency": false,
+    "water_content_dependency": false,
+    "reason": "F-SI10 binds outputs already computed by existing process physics for the solve interval; it does not move dynamic process evaluation into the provider."
+  },
+  "admitted_profile": {
+    "hydraulic_provider": "qualified F-SI09 B1.10 default-MvG provider",
+    "top_boundary": "explicit provider",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2],
+    "drainage": "precomputed qdra-style fluxes admitted",
+    "subsurface_irrigation": "precomputed qssdi-style source admitted",
+    "root_extraction": "precomputed qrot-style sink admitted"
+  },
+  "qualification_required": {
+    "function_level_legacy_mapping_identity": true,
+    "serial_common_route_identity": true,
+    "heterogeneous_columns": true,
+    "workers": [1,2,4,8],
+    "o0_o2": true,
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "legacy_process_globals_poisoned": true,
+    "focused_unrounded_equation_residual": true,
+    "fsi09_regression": true,
+    "fkt_boundary_regression": true
+  },
+  "holds": {
+    "dynamic_root_extraction_inside_newton_swkimpl1": "NOT_ADMITTED",
+    "macropore_process_composition": "NOT_ADMITTED",
+    "full_production_drainage_module_reentrancy": "NOT_QUALIFIED_BY_THIS_BINDING_ONLY",
+    "full_production_irrigation_module_reentrancy": "NOT_QUALIFIED_BY_THIS_BINDING_ONLY",
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false
+  },
+  "scope_flags_before_qualification": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_b1_10_source_sink_provider_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
