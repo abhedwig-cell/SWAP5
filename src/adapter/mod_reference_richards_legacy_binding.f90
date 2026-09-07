@@ -50,16 +50,18 @@ module mod_reference_richards_legacy_binding
 
 contains
 
-  subroutine build_legacy_reference_request(request, parameters, constitutive, top_boundary)
+  subroutine build_legacy_reference_request(request, parameters, constitutive, top_boundary, source_sink)
     use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, constitutive_hydraulics_provider_t, &
-         top_boundary_provider_t
+         top_boundary_provider_t, source_sink_provider_t
     type(soil_water_solve_request_t), intent(out) :: request
     type(soil_water_parameter_set_t), target, intent(in) :: parameters
     class(constitutive_hydraulics_provider_t), target, intent(in) :: constitutive
     class(top_boundary_provider_t), target, intent(in), optional :: top_boundary
+    class(source_sink_provider_t), target, intent(in), optional :: source_sink
 
     request%parameters => parameters
     request%evaluation%constitutive => constitutive
+    if (present(source_sink)) request%evaluation%source_sink => source_sink
     if (present(top_boundary)) then
        request%evaluation%top_boundary => top_boundary
        request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -164,6 +166,10 @@ contains
 
     ok = .false.
     route = 'legacy-request-invalid'
+    if (.not. associated(request%evaluation%constitutive)) then
+       route = 'explicit-constitutive-provider-required'
+       return
+    end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
     if (swmacro /= 0) then
@@ -188,6 +194,10 @@ contains
     end if
     if (.not. associated(request%evaluation%top_boundary)) then
        route = 'explicit-top-provider-required'
+       return
+    end if
+    if (.not. associated(request%evaluation%source_sink)) then
+       route = 'explicit-source-sink-provider-required'
        return
     end if
     if (request%boundary%bottom_mode /= swbotb) then
