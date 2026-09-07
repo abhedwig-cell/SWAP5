@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "Real B1.10 Terminal-Failure Fixture Readiness",
+  "baseline": {
+    "oracle": "B1.10",
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_canonical_workflow_run": 34104845258,
+    "fci13_canonical_job": 101687946143,
+    "fvq03_final_head": "0956a2f4b4a3a9b2318a1254b2e972f7138c5182"
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed": false,
+  "real_terminal_failure_physics_qualified": false,
+  "status": "PERSISTED_SCOPE_PRE_IMPLEMENTATION",
+  "next_action": "Materialize an executable fail-closed admission contract for a real B1.10 minimum-dt terminal-failure fixture. Do not claim real failure qualification unless exact B1.10 source, TTUTIL, Hupsel input identity and observed canonical F-CI13 failure semantics are all present.",
+  "holds": [
+    "Do not substitute the deterministic F-CI13 failure testdouble for a real hydrological failure fixture.",
+    "Do not change production source, physical configuration, convergence tolerances or retry policy to induce failure.",
+    "Do not use an unverified source archive or Hupsel case as qualification input.",
+    "Reference execution remains fail-closed independently of this work unit."
+  ]
+}
