@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ14",
+  "title": "F-SI02 common solver contract and workspace admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq13-fsi01-fvq08-boundaries",
+    "commit": "871f4062caf490fc244db5c61693dc9a7c620f83"
+  },
+  "downstream_observation": {
+    "fsi_branch": "work/f-si02-reference-solver-interface",
+    "fsi_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi02_status": "QUALIFIED_CONTRACT_AND_WORKSPACE_ONLY",
+    "fsi02_tested_postimage": "9715465216edb400cbcd125a8572a1498a6b0211",
+    "fvq09_branch_present": true,
+    "fvq09_head": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "fvq09_qualified": false,
+    "fmr_branch_present": false
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI02_COMMON_SOLVER_ADMISSION_CANDIDATE",
+  "next_action": "Admit the exact F-SI02 common solver contract/workspace evidence, close only common-layer scratch and workspace prerequisites, and keep reference-Richards physics and MultiSWAP runtime qualification fail-closed."
+}
