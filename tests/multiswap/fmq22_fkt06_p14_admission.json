@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ22",
+  "qualification_only": true,
+  "matrix_blob": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+  "matrix_rows": 35,
+  "oracle": "B1.10",
+  "fkt06": {
+    "qualification_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
+    "tested_postimage": "80a68dea3bfa45d7e8d533ec5a67fc89bdb786db",
+    "qualification_blob": "75cc6d399facdb6bb8303ca905ac8056aeda3b2c",
+    "contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492",
+    "gate_blob": "7c19f062efae19fb3d1c73b7f9a104bc013bd982",
+    "test_blob": "eea1103195021a1243f220a16c357aa7dfb538b1",
+    "decision": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE",
+    "production_source_changed": false,
+    "inactive_optional_state_unallocated_through_lifecycle": true,
+    "active_optional_continuation_checkpoint_clone_replay_commit": true,
+    "mass_rejection_preserves_optional_continuation": true,
+    "stale_checkpoint_rejected_before_physics": true
+  },
+  "p14_matrix_requirement": {
+    "property": "inactive optional modules allocate no unnecessary persistent state",
+    "layer": "MQ-T0",
+    "min_columns": 2,
+    "min_workers": 1,
+    "kernel": "both",
+    "fixture": "paired-module-off-on-layout",
+    "expected_result": "module-off state excludes module-specific continuation payload; immutable parameters remain referenced/shared",
+    "mass_gate": "none unless a real interval is executed",
+    "determinism": "exact byte/accounting metadata"
+  },
+  "fmq22_executable_gate": {
+    "source": "tests/multiswap/test_fmq22_p14_optional_state.f90",
+    "columns": 2,
+    "workers": 1,
+    "paired_module_off_on": true,
+    "inactive_dynamic_payload_bytes_expected": 0,
+    "active_dynamic_payload_count": 1,
+    "shared_immutable_parameter_objects_expected": 1,
+    "committed_and_checkpoint_layout_checked": true,
+    "o0_o2_required": true
+  },
+  "requirement_effects": {
+    "P14": "PROMOTE_SYNTHETIC_EXECUTABLE_FKT06_LIFECYCLE_PLUS_TWO_COLUMN_LAYOUT_GATE",
+    "P10": "OPTIONAL_CONTINUATION_CHECKPOINT_REPLAY_PREREQUISITE_STRENGTHENED_REAL_REFERENCE_STILL_OPEN",
+    "P11": "OPTIONAL_CONTINUATION_SAME_ORIGIN_REPLAY_PREREQUISITE_STRENGTHENED_REAL_REFERENCE_STILL_OPEN",
+    "P16": "MASS_REJECTION_PRESERVES_OPTIONAL_STATE_PREREQUISITE_ONLY_FULL_REAL_SWAP_MASS_STILL_OPEN"
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 28,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": ["P14:SYNTHETIC_EXECUTABLE"]
+  },
+  "context_not_evidence": {
+    "fsi07_head": "efac45df112351757b6f5e28484bec460d42f69b",
+    "fsi07_qualified": false,
+    "fmr01_head": "7fa6ecdf5b0c8bffbffe3a5326e47499cb59459d",
+    "fmr01_qualified": false,
+    "fvq13_head": "4b077ec7709c90d0438ff21e1a439dc5cdb5dced",
+    "fvq13_qualified": false
+  },
+  "hard_nonclaims": [
+    "real B1.10 P14 physical execution",
+    "production MultiSWAP runtime",
+    "macropore production admission",
+    "full SWAP mass identity",
+    "parallel real HeadCalc reentrancy",
+    "production reference admission"
+  ],
+  "decision": "PROMOTE_P14_SYNTHETIC_ONLY_IF_FMQ22_GATE_AND_EXACT_FKT06_REPLAY_PASS"
+}
