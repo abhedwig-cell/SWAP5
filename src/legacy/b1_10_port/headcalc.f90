@@ -61,7 +61,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_runoff_resolved
-   logical :: provider_constitutive_active, provider_source_sink_active
+   logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
@@ -71,6 +71,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    real(8)                          :: provider_theta(numnod), provider_k(numnod)
    real(8)                          :: provider_capacity(numnod), provider_dkdh(numnod)
+   real(8)                          :: provider_root_sink(numnod)
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
    character(len=200)               :: message
@@ -112,11 +113,15 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    provider_top_active = .false.
    provider_constitutive_active = .false.
    provider_source_sink_active = .false.
+   provider_root_sink_active = .false.
    if (.not. legacy_state_binding .and. present(evaluation_context)) then
       provider_constitutive_active = associated(evaluation_context%constitutive)
       provider_source_sink_active = associated(evaluation_context%source_sink)
+      provider_root_sink_active = associated(evaluation_context%root_sink)
       if (.not. provider_constitutive_active) error stop 'HeadCalc: explicit constitutive provider required'
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
+      if (provider_root_sink_active .and. SwKimpl /= 0) &
+           error stop 'HeadCalc: root-sink provider requires swkimpl=0 in F-SI11'
    end if
    if (.not. legacy_state_binding .and. present(evaluation_context) .and. present(boundary_conditions)) then
       provider_top_active = associated(evaluation_context%top_boundary) .and. &
@@ -151,6 +156,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          end do
       end do
       fsi_ws%source(1:numnod) = qssdi(1:numnod)
+   end if
+   provider_root_sink = 0.0d0
+   if (provider_root_sink_active) then
+      call evaluation_context%root_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
+           provider_root_sink(1:numnod))
    end if
 
 !  special case: groundwater level specified
@@ -568,7 +578,11 @@ contains
 real(8) function root_sink_term(node)
    integer, intent(in) :: node
    if (provider_source_sink_active) then
-      root_sink_term = 0.0d0
+      if (provider_root_sink_active) then
+         root_sink_term = provider_root_sink(node)
+      else
+         root_sink_term = 0.0d0
+      end if
    else
       root_sink_term = qrot(node)
    end if
