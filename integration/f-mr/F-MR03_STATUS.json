@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.f-mr03.status.v1",
+  "work_unit": "F-MR03",
+  "title": "Physical Reference Runtime Readiness & Admission Contract",
+  "branch": "integration/f-mr",
+  "safety_branch": "integration/f-mr03-safety",
+  "base_commit": "20c01210e576320d38dc9a430f5969686a3f3bb4",
+  "phase": "READINESS_CONTRACT_BLOCKED",
+  "status": "BLOCKED_ON_QUALIFIED_PHYSICAL_PROVIDER_STACK_AND_JOINT_EXECUTABLE_POSTIMAGE",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "source_changes": false,
+  "production_source_consumed": [],
+  "current_blockers": [
+    "F-SI09 concrete corrected-B1.10 default-MvG provider postimage 0e57feabdaa68bcde5f1fcae904d34f9186c4e28 is not yet TESTED/QUALIFIED.",
+    "Production B1.10 source/sink and any remaining physical provider closure required for full physical HeadCalc execution are not yet qualified.",
+    "No exact jointly executable F-MR + current F-KT + qualified physical F-SI provider-stack postimage exists yet.",
+    "No hard full physical interval water-balance qualification exists for the target F-MR reference-runtime route.",
+    "No exact source-bound scientific qualification exists yet for that same joint runtime candidate."
+  ],
+  "hard_holds": [
+    "serialized physical reference backend NOT_ADMITTED",
+    "parallel reference backend NOT_ADMITTED",
+    "real HeadCalc parallel admission false",
+    "macropore physical runtime NOT_ADMITTED",
+    "F-MR must not implement missing F-SI provider physics",
+    "F-MR must not alter F-KT transaction semantics"
+  ],
+  "ready_components": [
+    "F-MR02 qualified deterministic runtime and focused shared postimage",
+    "F-KT07 separately qualified transaction/checkpoint boundary",
+    "F-SI08 separately qualified focused provider-context isolation"
+  ],
+  "next_action": "Wait for and re-read qualified F-SI production provider closure and matching VQ/MQ evidence; then build the smallest serialized physical reference route on one exact candidate and qualify mass/provenance before any admission.",
+  "allows_downstream_release": false,
+  "verified_date": "2026-09-07"
+}

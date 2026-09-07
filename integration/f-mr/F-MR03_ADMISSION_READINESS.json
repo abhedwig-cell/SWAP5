@@ -1,0 +1,91 @@
+{
+  "schema": "swap5.f-mr03.admission-readiness.v1",
+  "work_unit": "F-MR03",
+  "candidate_backend": "serialized physical reference runtime",
+  "target_profile": {
+    "soil_water_solver": "reference Richards through common solver/provider interfaces",
+    "constitutive_profile": "corrected B1.10 default MvG",
+    "swkimpl": 0,
+    "macropore": false,
+    "parallel_reference_execution": false
+  },
+  "gates": [
+    {
+      "id": "MR03-G01",
+      "name": "Qualified shared F-MR runtime postimage",
+      "status": "QUALIFIED",
+      "evidence": "F-MR02 closeout 20c01210e576320d38dc9a430f5969686a3f3bb4",
+      "required": true
+    },
+    {
+      "id": "MR03-G02",
+      "name": "Current transaction/checkpoint boundary",
+      "status": "QUALIFIED_SEPARATELY_NOT_COMPOSED",
+      "evidence": "F-KT07 head b91da4fb01e3b0c21d39a5782d36f8eedc55875d; tested postimage d24358c7074714c6d911bb60dc8cdfcfd656e8b6",
+      "required": true
+    },
+    {
+      "id": "MR03-G03",
+      "name": "Provider-context isolation",
+      "status": "QUALIFIED_FOCUSED_PROFILE",
+      "evidence": "F-SI08 qualification head 5b522c8f2767989161dae7faf382d5ee1b27c47c",
+      "required": true
+    },
+    {
+      "id": "MR03-G04",
+      "name": "Corrected B1.10 constitutive provider",
+      "status": "BLOCKED_UNQUALIFIED_CURRENT_POSTIMAGE",
+      "evidence": "F-SI09 source exists at 0e57feabdaa68bcde5f1fcae904d34f9186c4e28, but no workflow run or qualification status for that provider postimage was found during the live reread.",
+      "required": true
+    },
+    {
+      "id": "MR03-G05",
+      "name": "Production B1.10 source/sink and remaining physical provider closure",
+      "status": "BLOCKED_NOT_QUALIFIED",
+      "evidence": "F-SI08 explicitly leaves production B1.10 source/sink provider admission false. F-MR must not replace this missing F-SI ownership with runtime-local physics.",
+      "required": true
+    },
+    {
+      "id": "MR03-G06",
+      "name": "One exact jointly executable physical postimage",
+      "status": "NOT_AVAILABLE",
+      "evidence": "F-VQ13 qualifies source/ownership alignment only and explicitly not a joint executable production postimage; F-MR02 qualifies coexistence/focused seam only.",
+      "required": true
+    },
+    {
+      "id": "MR03-G07",
+      "name": "Serialized F-MR -> F-KT -> physical solver route",
+      "status": "NOT_IMPLEMENTED",
+      "evidence": "Current F-MR production route admits deterministic backend only; F-MR02 keeps physical reference runtime NOT_ADMITTED.",
+      "required": true
+    },
+    {
+      "id": "MR03-G08",
+      "name": "Hard physical interval mass accounting",
+      "status": "NOT_QUALIFIED_FOR_TARGET_ROUTE",
+      "evidence": "Synthetic hard-mass qualification is preserved, but no new full physical SWAP water-balance identity may be inferred from F-MR02/F-SI08/F-SI09 source presence.",
+      "required": true
+    },
+    {
+      "id": "MR03-G09",
+      "name": "Exact corrected B1.10 replay/scientific qualification for admitted target profile",
+      "status": "NOT_QUALIFIED_FOR_JOINT_RUNTIME",
+      "evidence": "Must be supplied by exact source-bound VQ/F-SI evidence on the same executable candidate before physical admission.",
+      "required": true
+    },
+    {
+      "id": "MR03-G10",
+      "name": "Parallel reference execution",
+      "status": "NOT_REQUIRED_AND_NOT_ADMITTED",
+      "evidence": "Initial physical target, when dependencies become qualified, is serialized-only. Parallel HeadCalc remains separately blocked.",
+      "required": false
+    }
+  ],
+  "current_decision": "HOLD_FAIL_CLOSED",
+  "implementation_allowed_now": false,
+  "source_composition_allowed_now": false,
+  "physical_backend_admission_allowed_now": false,
+  "parallel_backend_admission_allowed_now": false,
+  "release_condition": "Re-read live F-KT/F-SI/F-VQ/F-MQ/F-PM lineages. Only proceed when the complete production provider stack and exact executable physical candidate needed by MR03-G04 through MR03-G09 are qualified with matching provenance.",
+  "ownership_rule": "F-MR owns registry, batching, scheduling, routing, retry orchestration and diagnostics. F-KT owns committed transaction semantics. F-SI owns solver/provider isolation and physical provider implementations. F-VQ/F-MQ own qualification authority."
+}
