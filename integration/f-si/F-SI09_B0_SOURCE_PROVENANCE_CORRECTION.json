@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "title": "B0 distribution and nested source archive provenance correction",
+  "status": "PERSISTED_SOURCE_PROVENANCE_CORRECTION",
+  "reason": "An earlier F-SI01 note compared the SHA-256 of the uploaded outer SWAP distribution ZIP against the SHA-256 of the nested Fortran source ZIP. Those hashes identify two different archive levels and therefore could not be used to exclude the uploaded distribution.",
+  "canonical_repository_evidence": {
+    "source_identity_path": "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md",
+    "source_identity_blob": "7ceed1fc2eed28375e5f205313d4c53cf0707968",
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_fortran_archive_path": "tools/SWAP/source/SWAP.ZIP",
+    "nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "nested_source_member_count": 63
+  },
+  "observed_uploaded_distribution": {
+    "local_path": "/mnt/data/SWAP_4.3.1(6).zip",
+    "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_member_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "admission": "MATCHES_CANONICAL_B0_DISTRIBUTION_AND_NESTED_SOURCE_ARCHIVE"
+  },
+  "swap012_target_chain": {
+    "target": "SWAP/MOD_MvG_functions.f90",
+    "extracted_b0_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "b110_manifest_ordered_preimage_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_b110_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "locally_reconstructed_corrected_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "reconstruction_method": "Repository-pinned SWAP-012 byte-safe replacement contract from reference/swap-4.3.1/patches/SWAP-012/apply_and_verify.py applied to the exact extracted B0 target."
+  },
+  "effect_on_prior_work": {
+    "fsi01_production_source_changed": false,
+    "fsi01_qualification_invalidated": false,
+    "fsi01_source_exclusion_statement_superseded": true,
+    "meaning": "F-SI01 did not use the uploaded source as a production postimage, so its solver-isolation qualification remains valid. Only the archive-level exclusion statement is corrected for future source-bound work."
+  },
+  "rules": {
+    "historical_broad_proposed_fixes_patch_is_production_source": false,
+    "swap012_only_repository_patch_is_qualified_source_transform": true,
+    "byte_exact_target_required_before_provider_materialization": true
+  }
+}
