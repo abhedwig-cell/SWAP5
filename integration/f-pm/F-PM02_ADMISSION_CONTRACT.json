@@ -1,9 +1,9 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "status": "BLOCKED_PRE_ADMISSION",
-  "purpose": "Fail-closed admission gate for the first production process migration (SNOW). This unit does not itself admit or modify production source until one shared downstream candidate is both structurally complete and itself tested/qualified.",
+  "purpose": "Fail-closed admission gate for the first production process migration (SNOW). F-PM does not merge lineages or modify production process source before one shared downstream production basis is explicitly qualified for physical SWAP use.",
   "parent_closeout": {
     "f_pm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
     "f_pm01_status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD"
@@ -14,32 +14,58 @@
     "shared_downstream_qualification": {
       "owner": "F-MR/canonical integration",
       "status_file": "integration/f-mr/F-MR01_STATUS.json",
+      "qualification_file": "integration/f-mr/F-MR01_QUALIFICATION_EVIDENCE.json",
       "required_tested": true,
       "required_qualified": true,
-      "reason": "Exact F-KT/F-SI blobs are necessary but not sufficient. The composed downstream candidate must itself have passed its focused/regression qualification before F-PM production migration may consume it."
+      "required_physical_swap_runtime": true,
+      "required_physical_swap_admission": true,
+      "reason": "Generic runtime qualification is insufficient. The composed candidate must explicitly admit physical SWAP use; F-MR01 currently qualifies only the deterministic test backend."
     },
-    "fkt05": {
+    "transaction_minimum": {
+      "work_unit": "F-KT05",
       "status_file": "integration/f-kt/F-KT05_STATUS.json",
       "qualified": true,
       "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
       "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
       "kernel_source": "src/kernel/mod_kernel_transactions.f90",
       "kernel_blob": "e8605e73a191e863374a26b096e0d597cb70cadd",
-      "authority": "transaction semantics"
+      "successor_policy": "F-KT06/F-KT07 may be present as qualified successors because they retain the F-KT05 generic transaction kernel; moving/unqualified successors are not consumed."
     },
-    "fsi05": {
-      "qualification_file": "integration/f-si/F-SI05_QUALIFICATION.json",
-      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
-      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
-      "materialization_commit": "1fe1bf4790955594290ba1233d5684542799bf9e",
-      "tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
-      "verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
-      "required_blobs": {
-        "src/legacy/b1_10_port/headcalc.f90": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
-        "src/solver/mod_reference_richards_workspace.f90": "93285b2ca24669494c93c00403e3783fca6758e9",
-        "src/adapter/mod_reference_richards_legacy_binding.f90": "e02882bd45f67b42ede118de14a6b5b8b16fdb80"
-      },
-      "authority": "reference Richards solver workspace only"
+    "solver_lineages": {
+      "accepted": [
+        {
+          "id": "F-SI05",
+          "qualification_file": "integration/f-si/F-SI05_QUALIFICATION.json",
+          "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+          "required_final_complete": true,
+          "required_blobs": {
+            "src/legacy/b1_10_port/headcalc.f90": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
+            "src/solver/mod_reference_richards_workspace.f90": "93285b2ca24669494c93c00403e3783fca6758e9",
+            "src/adapter/mod_reference_richards_legacy_binding.f90": "e02882bd45f67b42ede118de14a6b5b8b16fdb80"
+          }
+        },
+        {
+          "id": "F-SI06",
+          "qualification_file": "integration/f-si/F-SI06_QUALIFICATION.json",
+          "status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+          "required_final_complete": true,
+          "required_final_verified_head": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
+          "required_blobs": {
+            "src/legacy/b1_10_port/headcalc.f90": "38de52dd9f13b70a61f418c29a5c2e4bc9a449a9",
+            "src/legacy/b1_10_port/soilwater.f90": "aa072804768b7a982b275d3a7d6988bfed6b9faa",
+            "src/solver/mod_reference_richards_workspace.f90": "93285b2ca24669494c93c00403e3783fca6758e9",
+            "src/adapter/mod_reference_richards_legacy_binding.f90": "f60f7ef2d60ccb8cc78e80d56ef88a739e50ab2e"
+          }
+        }
+      ],
+      "observed_not_admitted": [
+        {
+          "id": "F-SI07",
+          "status": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED",
+          "reason": "Qualification record still states final_postimage_verification_required=true and full real parallel/process-provider reentrancy remains blocked. Do not consume as a final shared production basis."
+        }
+      ],
+      "rule": "Candidate must match at least one accepted qualified solver lineage exactly. Unknown/newer solver postimages fail closed until F-PM re-reads their qualification evidence and adds an explicit accepted lineage."
     },
     "oracle_identity": {
       "snapshot": "B1.10",
@@ -52,14 +78,13 @@
     }
   },
   "admission_rules": [
-    "Candidate ref must resolve to one exact commit.",
-    "F-CI18 must be an ancestor of the candidate.",
-    "The composed downstream candidate must itself report TESTED=true and QUALIFIED=true in the designated F-MR status artifact.",
-    "Candidate must contain the exact qualified F-KT05 status pins and exact kernel transaction blob.",
-    "Candidate must contain the exact qualified F-SI05 qualification pins and exact three production workspace-seam blobs.",
-    "B1.10 snapshot and reconstruction blobs must remain byte-identical to the canonical qualified oracle infrastructure.",
-    "The gate does not infer that F-SI05 qualifies full solver reentrancy, all boundary modes, macropores, full SWAP mass accounting or production MultiSWAP.",
-    "No production process source may be created or modified when any required check fails."
+    "Candidate ref resolves to one exact commit and descends from F-CI18.",
+    "Composed downstream candidate is itself TESTED and QUALIFIED.",
+    "Composed downstream candidate explicitly admits physical SWAP runtime/source use; deterministic-test-backend qualification alone is insufficient.",
+    "Candidate contains the exact F-KT05 minimum transaction boundary; qualified successors may coexist.",
+    "Candidate matches at least one explicitly accepted, source-bound qualified F-SI lineage.",
+    "B1.10 snapshot/reconstruction identities remain byte-identical.",
+    "No F-PM production process source changes are allowed on any failed or unknown check."
   ],
   "snow_migration_scope_after_admission": {
     "allowed": [
@@ -67,20 +92,22 @@
       "Move the characterized B1.10 snow process body behind a kernel-facing process interface without changing equations.",
       "Keep physical continuation state limited to ssnow and slw.",
       "Keep snowinco outside physical continuation state.",
-      "Preserve inactive-option zero-state allocation semantics at runtime/template level.",
-      "Add source-bound O0/O2 regression and transaction tests."
+      "Preserve inactive-option zero-state allocation semantics.",
+      "Add source-bound O0/O2 regression, transaction and mass-identity tests."
     ],
     "not_allowed": [
       "Infer subdaily or generic-duration snow scaling from daily legacy coefficients.",
       "Change precipitation partitioning, snowcoef semantics, melt/sublimation equations or mass tolerance.",
       "Move I/O or calendar-day orchestration into the kernel process.",
-      "Merge F-KT/F-SI lineages inside F-PM."
+      "Merge F-KT/F-SI/F-MR lineages inside F-PM."
     ]
   },
   "current_observation": {
-    "integration_f_mr_head": "8c819abbad3345358efde600cc306e064d63c12b",
-    "fmr01_tested": false,
-    "fmr01_qualified": false,
+    "integration_f_mr_head": "646ecf188129e705caae2a52f8c184878406e801",
+    "fmr01_tested": true,
+    "fmr01_qualified": true,
+    "fmr01_physical_swap_runtime": false,
+    "fmr01_physical_swap_admission": false,
     "shared_baseline_proven": false,
     "production_migration_allowed": false
   }
