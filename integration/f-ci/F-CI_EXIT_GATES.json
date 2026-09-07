@@ -1,233 +1,138 @@
 {
   "schema_version": 1,
-  "work_unit": "F-CI16",
-  "title": "Canonical F-CI Exit-Gate Assessment",
+  "work_unit": "F-CI17",
+  "title": "Canonical F-CI Exit-Gate Assessment after F-CI17",
   "canonical_branch": "integration/f-ci-canonical",
-  "assessment_head": "b4419aba48806f77a656c5543877746bca44d5dc",
-  "qualified_product_postimage": "073ccff4096a922095a5c15390a6a6dc949e99aa",
-  "production_source_unchanged_since_qualified_postimage": true,
+  "assessment_head": "4ec5ce2a638047a2468967944902bc7d92f37339",
+  "qualified_canonical_postimage": "4ec5ce2a638047a2468967944902bc7d92f37339",
+  "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "production_source_changed_by_fci17": false,
   "b1_oracle": "B1.10",
-  "status_values": [
-    "NOT_ASSESSED",
-    "BLOCKED",
-    "IMPLEMENTED",
-    "PERSISTED",
-    "TESTED",
-    "QUALIFIED"
-  ],
+  "status_values": ["NOT_ASSESSED", "BLOCKED", "IMPLEMENTED", "PERSISTED", "TESTED", "QUALIFIED"],
   "release_rule": "Downstream release is allowed only when every required gate is QUALIFIED and explicitly allows_downstream_release=true.",
   "downstream_release_allowed": false,
-  "assessment_summary": {
-    "qualified": 2,
-    "tested": 5,
-    "blocked": 3,
-    "implemented": 0,
-    "persisted": 0,
-    "not_assessed": 0
-  },
-  "gate_order": [
-    "CI-G01",
-    "CI-G02",
-    "CI-G03",
-    "CI-G04",
-    "CI-G05",
-    "CI-G06",
-    "CI-G07",
-    "CI-G08",
-    "CI-G09",
-    "CI-G10"
-  ],
+  "assessment_summary": {"qualified": 3, "tested": 5, "blocked": 2, "implemented": 0, "persisted": 0, "not_assessed": 0},
+  "gate_order": ["CI-G01", "CI-G02", "CI-G03", "CI-G04", "CI-G05", "CI-G06", "CI-G07", "CI-G08", "CI-G09", "CI-G10"],
   "gates": {
     "CI-G01": {
       "title": "Canonical source/provenance",
       "status": "QUALIFIED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI03_STATUS.json: source_provenance_gate=PASS and B1.10 manifest pinned",
-        "integration/f-ci/F-CI05_STATUS.json: nested_source_archive_identity=PASS and B1.10 patch-chain seam preservation=PASS",
-        "integration/f-ci/F-CI09_STATUS.json: source_provenance=PASS",
-        "workflow_run:34108760793: F-CI03 through F-CI15 all PASS on qualified_product_postimage"
-      ],
+      "evidence": ["F-CI03 provenance gate PASS", "F-CI05 B1.10 source/preimage identity PASS", "F-CI09 source provenance PASS", "canonical dependency chain remains PASS through F-CI17"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "blockers": [],
       "holds": [],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": true
     },
     "CI-G02": {
       "title": "B1.10 corrected-reference completeness",
       "status": "BLOCKED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI06_STATUS.json: complete physical continuation state and full physical transaction adapter not admitted",
-        "integration/f-ci/F-CI12_STATUS.json: real_b1_10_reference_model_end_to_end=NOT_YET_QUALIFIED",
-        "integration/f-ci/F-CI14_STATUS.json: qualified_numeric_profile=NOT_AVAILABLE and optional-process temporal characterization incomplete"
-      ],
+      "evidence": ["F-CI06 full physical transaction adapter not admitted", "F-CI12 real B1.10 reference-model end-to-end NOT_YET_QUALIFIED", "F-CI14 optional-process temporal characterization incomplete"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": null,
-      "blockers": [
-        "Source-bound end-to-end B1.10 reference-model transaction qualification is not complete.",
-        "Optional thermal/solute/irrigation/crop/WOFOST temporal characterization is incomplete.",
-        "Snow/macropore complete persistent-storage accounting and qualification are not complete."
-      ],
-      "holds": [
-        "Do not infer corrected-reference completeness from the controlled source port or focused Hupsel evidence alone."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "blockers": ["Source-bound end-to-end B1.10 reference-model transaction qualification is not complete.", "Optional-process temporal characterization is incomplete.", "Snow/macropore complete persistent-storage accounting and qualification are not complete."],
+      "holds": ["Do not infer corrected-reference completeness from controlled source-port or focused Hupsel evidence alone."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G03": {
       "title": "Transaction semantics",
       "status": "QUALIFIED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI03_STATUS.json: transaction O0/O2 and worker isolation gates PASS",
-        "integration/f-ci/F-CI07_STATUS.json: worker-local legacy rollback capsule and restore/rerun zero-difference evidence PASS",
-        "integration/f-ci/F-CI08_STATUS.json: attempt-context lifecycle, optional-process state ownership and failed-trial isolation evidence PASS",
-        "integration/f-ci/F-CI09_STATUS.json: canonical transaction state and attempt-context binding PASS",
-        "integration/f-ci/F-CI13_STATUS.json: retryable trial-state isolation and recoverable trial-status contract PASS",
-        "workflow_run:34108760793: dependency chain requalified on qualified_product_postimage"
-      ],
+      "evidence": ["F-CI03 transaction O0/O2 and worker isolation PASS", "F-CI07 rollback capsule PASS", "F-CI08 attempt-context and failed-trial isolation PASS", "F-CI09 transaction binding PASS", "F-CI13 recoverable trial-status PASS", "canonical dependency chain remains PASS through F-CI17"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "blockers": [],
       "holds": [],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": true
     },
     "CI-G04": {
       "title": "State/scratch ownership separation",
       "status": "TESTED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI03_STATUS.json: worker execution context and static no-I/O/no-SAVE gate PASS",
-        "integration/f-ci/F-CI07_STATUS.json: worker-local legacy trial capsule admitted",
-        "integration/f-ci/F-CI08_STATUS.json: state classification and worker-local trial-capsule boundary PASS; HeadCalc/Newton scratch excluded from persistent state"
-      ],
+      "evidence": ["F-CI03 worker execution context and no-I/O/no-SAVE gate PASS", "F-CI07 worker-local trial capsule admitted", "F-CI08 state classification PASS; HeadCalc/Newton scratch excluded from persistent state"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": null,
       "blockers": [],
-      "holds": [
-        "Complete HeadCalc/Newton scratch ownership across the full legacy physical backend has not been independently qualified as a reentrant implementation.",
-        "Parallel/reentrant legacy-backend qualification remains pending."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "holds": ["Full legacy-backend solver scratch reentrancy remains unqualified.", "Parallel/reentrant legacy-backend qualification remains pending."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G05": {
       "title": "Explicit reference numerical policy",
       "status": "BLOCKED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI14_STATUS.json: temporal acceptance contract qualified but qualified_numeric_profile=NOT_AVAILABLE",
-        "integration/f-ci/F-CI14_STATUS.json: numerical_defaults=NONE and production_execute_reference_interval=FAIL_CLOSED_NOT_ADMITTED"
-      ],
+      "evidence": ["F-CI14 temporal acceptance contract qualified", "F-CI14 qualified_numeric_profile=NOT_AVAILABLE", "F-CI14 production execute_reference_interval is fail-closed"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": null,
-      "blockers": [
-        "No independently qualified B1.10 numerical temporal-limit profile is available in canonical VQ evidence.",
-        "Reference execution cannot be admitted by borrowing solver-convergence or mass-balance tolerances as temporal-accuracy policy."
-      ],
-      "holds": [
-        "Keep the production reference execution route fail-closed until source-bound numerical policy evidence is accepted."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "blockers": ["No independently qualified B1.10 numerical temporal-limit profile is available.", "Solver-convergence and mass-balance tolerances may not be reused as temporal-accuracy policy."],
+      "holds": ["Production reference execution remains fail-closed until source-bound numerical-policy evidence is accepted."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G06": {
       "title": "Canonical generic [t0,t1] kernel/entrypoint contract",
       "status": "TESTED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI11_STATUS.json: generic_interval_seam=PASS and non-midnight/cross-day intervals PASS",
-        "integration/f-ci/F-CI12_STATUS.json: physical_interval_executor=TESTED and reference-model advance binding tested with deterministic legacy testdouble"
-      ],
+      "evidence": ["F-CI11 generic interval seam and non-midnight/cross-day intervals PASS", "F-CI12 physical interval executor and reference-model advance binding tested with deterministic legacy testdouble"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": null,
       "blockers": [],
-      "holds": [
-        "Real B1.10 reference-model end-to-end generic interval execution is not yet qualified.",
-        "Production execute_reference_interval remains fail-closed pending CI-G05 and complete active-process qualification."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "holds": ["Real B1.10 reference-model end-to-end generic interval execution is not yet qualified.", "Production execute_reference_interval remains fail-closed pending qualified numerical policy and admitted-process qualification."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G07": {
       "title": "Canonical results, unrounded mass accounting and transaction diagnostics",
       "status": "TESTED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI10_STATUS.json: worker-local trial mass contract, qualified-profile storage seam and canonical mass-accounting adapter PASS",
-        "integration/f-ci/F-CI11_STATUS.json: controlled legacy trial-mass wiring PASS and hard mass conservation PASS for source-bound Hupsel evidence",
-        "integration/f-ci/F-CI12_STATUS.json: worker_diagnostics_projection=PASS and failed-trial isolation=PASS"
-      ],
+      "evidence": ["F-CI10 trial mass contract, storage seam and canonical mass adapter PASS", "F-CI11 controlled trial-mass wiring and hard mass conservation PASS", "F-CI12 worker diagnostics and failed-trial isolation PASS"],
       "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
       "qualification_commit": null,
       "blockers": [],
-      "holds": [
-        "Complete result/storage coverage for all active optional physics, especially snow and macropores, is not qualified.",
-        "The canonical result contract has not yet been qualified end-to-end through the real B1.10 reference execution route."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "holds": ["Complete result/storage coverage for optional physics, especially snow and macropores, is not qualified.", "End-to-end real B1.10 reference result execution remains unqualified."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G08": {
       "title": "Executable VQ/focused qualification against the canonical source",
       "status": "TESTED",
       "required": true,
-      "evidence": [
-        "workflow_run:34108760793: executable canonical focused chain F-CI03 through F-CI15 PASS",
-        "integration/f-ci/F-CI15_QUALIFICATION.md: qualified postimage and exact workflow/job evidence persisted"
-      ],
-      "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
+      "evidence": ["Canonical focused chain F-CI03 through F-CI17 PASS in workflow 34110319677", "Exact F-CI17 source postimage is 4ec5ce2a638047a2468967944902bc7d92f37339"],
+      "source_commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
       "qualification_commit": null,
       "blockers": [],
-      "holds": [
-        "Independent F-VQ qualification evidence is not yet source-bound to the current qualified_product_postimage; existing F-VQ release basis is the earlier F-CI11 source head."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "holds": ["Independent F-VQ qualification is not yet source-bound to the current F-CI17 canonical postimage."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G09": {
       "title": "Build, regression and hard mass-conservation qualification",
       "status": "TESTED",
       "required": true,
-      "evidence": [
-        "integration/f-ci/F-CI10_STATUS.json: source-bound Hupsel mass residual maximum 1.587818254655815e-7 cm and O0/O2 identity PASS",
-        "integration/f-ci/F-CI11_STATUS.json: hard mass conservation maximum absolute residual 1.8590012175467852e-7 cm and O0/O2 identity PASS",
-        "workflow_run:34108760793: complete focused canonical dependency chain builds and passes"
-      ],
-      "source_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
+      "evidence": ["F-CI10 source-bound Hupsel mass residual maximum 1.587818254655815e-7 cm and O0/O2 identity PASS", "F-CI11 hard mass-conservation maximum absolute residual 1.8590012175467852e-7 cm and O0/O2 identity PASS", "Canonical focused chain F-CI03 through F-CI17 builds and passes"],
+      "source_commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
       "qualification_commit": null,
       "blockers": [],
-      "holds": [
-        "A full source-bound B1.10/SWAP5 reference regression matrix covering admitted active physics is not yet qualified.",
-        "Independent VQ qualification must confirm hard mass conservation beyond the focused Hupsel/reference-profile evidence."
-      ],
-      "last_verified": "2026-09-07T11:59:02+02:00",
+      "holds": ["Full independent source-bound B1.10/SWAP5 reference regression matrix remains for VQ.", "Hard mass conservation remains non-negotiable in every downstream qualification."],
+      "last_verified": "2026-09-07T10:16:51Z",
       "allows_downstream_release": false
     },
     "CI-G10": {
       "title": "Single canonical development baseline with competing production lines retired/superseded",
-      "status": "BLOCKED",
+      "status": "QUALIFIED",
       "required": true,
-      "evidence": [
-        "github_branch_audit: integration/a23bk-transactional-rebase, integration/f-ci06-temp, integration/f-ci06-working, integration/f-ci08-safety-checkpoint, integration/f-ci08-working, integration/f-ci-canonical and integration/f-ci-canonical-copy all still exist",
-        "github_commit_search: no retirement commit matching 'retire' found",
-        "github_commit_search: no supersession commit matching 'superseded' found"
-      ],
-      "source_commit": "b4419aba48806f77a656c5543877746bca44d5dc",
-      "qualification_commit": null,
-      "blockers": [
-        "No machine-readable retirement/supersession registry currently proves that competing integration branches are historical-only and cannot be mistaken for production development baselines.",
-        "integration/f-ci-canonical-copy is still present and is especially ambiguous without an explicit superseded marker."
-      ],
-      "holds": [
-        "Branch existence alone is not treated as proof that a branch is active; the gate remains blocked because formal retirement/supersession evidence is absent."
-      ],
-      "last_verified": "2026-09-07T12:00:37+02:00",
-      "allows_downstream_release": false
+      "evidence": ["integration/f-ci/F-CI17_BASELINE_REGISTRY.json pins exactly one ACTIVE_CANONICAL branch and marks every audited competing integration line SUPERSEDED_HISTORICAL_ONLY", "integration/f-ci-canonical-copy is explicitly not a fallback canonical baseline", "workflow 34110319677 job 101705702221 PASS", "full canonical dependency chain F-CI03 through F-CI17 PASS"],
+      "source_commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
+      "qualification_commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
+      "blockers": [],
+      "holds": ["Superseded branches are retained only for immutable provenance and recovery; branch presence does not grant development authority."],
+      "last_verified": "2026-09-07T10:16:51Z",
+      "allows_downstream_release": true
     }
   }
 }

@@ -189,3 +189,13 @@ jobs:
           fetch-depth: 0
       - name: F-CI17 canonical baseline and supersession registry gate
         run: bash tests/fci/run_fci17_gate.sh
+
+  fci18-exit-scope-ownership:
+    needs: fci17-canonical-baseline-registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI18 exit scope and ownership gate
+        run: bash tests/fci/run_fci18_gate.sh
