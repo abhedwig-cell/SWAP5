@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "title": "Serialized Physical Reference Runtime Candidate",
+  "audit_time": "2026-09-07T18:25:48Z",
+  "repository": "abhedwig-cell/SWAP5",
+  "start_branch": "integration/f-mr",
+  "start_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
+  "safety_branch": "integration/f-mr04-safety",
+  "safety_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
+  "dependencies": {
+    "F-KT07": {
+      "branch": "integration/f-kt",
+      "head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+      "status": "QUALIFIED",
+      "consume": true,
+      "ownership": ["committed_state","candidate_state","checkpoint","reusable_checkpoint","temporal_provenance","retry","commit","rollback","generic_[t0,t1]"]
+    },
+    "F-SI09": {
+      "branch": "work/f-si09-b110-constitutive-provider",
+      "qualification_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+      "tested_postimage": "1c8c24a193565e4bfd76ee26f04db6858423a0c5",
+      "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+      "provider_path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+      "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+      "consume": true
+    },
+    "F-SI10": {
+      "branch": "work/f-si10-b110-source-sink-provider",
+      "qualification_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+      "tested_postimage": "b0909fb1786a4d13245c33044b4731ffb69e0b7b",
+      "status": "QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE",
+      "provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "consume": true,
+      "root_extraction": "INACTIVE_QROT_ZERO_ONLY"
+    },
+    "F-PM02": {
+      "branch": "work/f-pm02-snow-admission",
+      "head": "dac1e9df335ac3ac4082e7c7d2041d8d3c1c83a2",
+      "status": "BLOCKED_PRE_ADMISSION",
+      "consume": false,
+      "snow_in_fmr04": false
+    },
+    "F-VQ13": {
+      "branch": "qualification/f-vq13-fkt06-fsi06-admission",
+      "head": "b816070e880a0f9b2e7ddce1322368ef02cd1fb5",
+      "status": "QUALIFIED_FKT06_FSI06_SOURCE_BOUND_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
+      "consume_as_production_source": false,
+      "fmr04_handoff_target": "F-VQ14"
+    },
+    "F-MQ22": {
+      "branch": "qualification/f-mq22-fkt06-p14-optional-state",
+      "head": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+      "status": "QUALIFIED_FKT06_P14_SYNTHETIC_PROMOTED",
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "consume_as_production_source": false,
+      "future_handoff_target": "F-MQ23"
+    }
+  },
+  "hard_scope": {
+    "bare_root_inactive": true,
+    "qrot_zero": true,
+    "macropore": false,
+    "snow": false,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "frost": false,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "bottom_modes": [7,-2],
+    "parallel_reference_backend_admitted": false,
+    "scientific_physics_admission": false,
+    "performance_policy_changes": false,
+    "modflow_coupling": false
+  }
+}

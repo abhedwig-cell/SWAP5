@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "branch": "integration/f-mr",
+  "start_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
+  "phase": "DEPENDENCY_AUDIT_AND_SCOPE_PERSISTED",
+  "status": "IN_PROGRESS_SERIALIZED_PHYSICAL_RUNTIME_CANDIDATE",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "backend_admission": {
+    "DETERMINISTIC_TEST_BACKEND": "QUALIFIED",
+    "SERIALIZED_REFERENCE_BACKEND": "CANDIDATE_NOT_SCIENTIFICALLY_ADMITTED",
+    "PARALLEL_REFERENCE_BACKEND": "NOT_ADMITTED"
+  },
+  "scientific_admission": false,
+  "full_physical_swap_water_balance_qualified": false,
+  "hard_holds": [
+    "active root extraction qrot != 0 is NOT_ADMITTED",
+    "macropore physical runtime is NOT_ADMITTED",
+    "snow physical runtime is NOT_ADMITTED",
+    "parallel physical backend is NOT_ADMITTED",
+    "scientific B1.10 equivalence requires independent F-VQ14",
+    "no relaxed, balanced, throughput or fallback policy in F-MR04",
+    "no MODFLOW coupling in F-MR04"
+  ],
+  "next_step": "Compose only exact qualified F-KT07, F-SI09 and F-SI10 production changes into one F-MR04 postimage with blob-level provenance; do not merge entire work branches."
+}
