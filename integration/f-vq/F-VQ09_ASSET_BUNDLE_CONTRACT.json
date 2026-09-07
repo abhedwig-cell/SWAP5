@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ09",
+  "purpose": "Fail-closed external asset contract for reproducible real B1.10 temporal characterization.",
+  "source_chain": {
+    "b0_distribution": {
+      "external_required": true,
+      "name": "SWAP_4.3.1.zip",
+      "size_bytes": 8959314,
+      "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+      "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+      "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "verification_tool": "tools/vq/reference_identity.py",
+      "status": "EXACT_IDENTITY_DEFINED_EXTERNAL_ARTIFACT"
+    },
+    "b1_10": {
+      "materializer": "tools/vq/b1_10_reconstruct.py",
+      "member_count": 63,
+      "source_bytes": 1863575,
+      "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+      "status": "DETERMINISTICALLY_RECONSTRUCTIBLE_FROM_EXACT_B0"
+    },
+    "fci06_controlled_port": {
+      "materializer": "tools/fci/fci06_apply_controlled_source_port.py",
+      "changed_files": 4,
+      "post_port_source_bytes": 1866170,
+      "post_port_manifest_sha256": "3c4751ebb657a2bb622c9cddd718db451fbae861530353ab83fc3c99e78d7187",
+      "source_evidence": "integration/f-ci/evidence/F-CI06_LOCAL_EXACT_B1_10_GATE.json",
+      "status": "EXACT_SOURCE_BOUND_MATERIALIZATION_CONTRACT"
+    },
+    "fci11_interval_mass_port": {
+      "materializer": "tools/fci/fci11_apply_controlled_interval_mass_port.py",
+      "postimage_sha256": {
+        "integral.f90": "ba5edbde07a478ca4ea5454d9dcc7243f0f06d3f3de59ddc51acfcc2949ac36e",
+        "timecontrol.f90": "7f1a34348d758db2c095491bcb55df756ae78ab2b7269e313a2d9b90e600f619",
+        "swap.f90": "ec5d44d871c8e5a65e76ead8c698fcc27cef643c9c0f806ab0a9bfd7a938a7a0",
+        "swap_main.f90": "100aa651a2c1b13094cc56781404601b2c7efdf3934aa6d280b719874095c76a"
+      },
+      "source_evidence": "integration/f-ci/evidence/F-CI11_LOCAL_GENERIC_INTERVAL_GATE.json",
+      "status": "EXACT_SOURCE_BOUND_MATERIALIZATION_CONTRACT"
+    }
+  },
+  "ttutil": {
+    "external_required": true,
+    "required_anchor_files": [
+      "ttutilprefs.f90",
+      "rdmodulettutil.f90",
+      "outdat.f90",
+      "ttutil.f90"
+    ],
+    "admitted_manifest_sha256": null,
+    "admitted_file_count": null,
+    "status": "PENDING_EXTERNAL_CAPTURE_AND_SEPARATE_ADMISSION"
+  },
+  "hupsel_case": {
+    "external_required": true,
+    "profile": "HUPSEL_2002_2004_WITH_CROP_WOFOST_HEAT_SOLUTE_IRRIGATION_DRAINAGE",
+    "required_anchor_files": ["swap.swp"],
+    "admitted_manifest_sha256": null,
+    "admitted_file_count": null,
+    "status": "PENDING_EXTERNAL_CAPTURE_AND_SEPARATE_ADMISSION"
+  },
+  "external_directory_manifest_contract": {
+    "algorithm": "For every regular file recursively: sort POSIX relative paths bytewise, record sha256, decimal byte size and relative path; SHA-256 the UTF-8 manifest bytes.",
+    "symlinks_allowed": false,
+    "candidate_manifest_is_admission": false,
+    "empty_directory_allowed": false,
+    "mutation_after_validation_allowed": false
+  },
+  "bundle_admission_rule": "A real F-VQ09 execution may start only when B0 matches its immutable identity and TTUTIL plus Hupsel case match separately persisted admitted directory-manifest hashes. Missing or mismatching assets fail closed.",
+  "prohibited_substitutions": [
+    "No archive with a different B0 SHA-256 may be substituted.",
+    "No TTUTIL tree is admitted from filenames alone.",
+    "No Hupsel case is admitted from a human-readable case name alone.",
+    "A generated candidate directory manifest is evidence for later admission, not self-admission."
+  ]
+}

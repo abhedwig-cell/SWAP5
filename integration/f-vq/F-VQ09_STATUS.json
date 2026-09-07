@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ09",
+  "oracle": "B1.10",
+  "basis": {
+    "fvq08_final_head": "0be60f6da7e575eaf992eb049ce600a4a4b35b58",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+  },
+  "qualification_scope": "REAL_B1_10_TEMPORAL_HARNESS_AND_EXTERNAL_ASSET_BUNDLE_CONTRACT_ONLY",
+  "qualified": false,
+  "decision": "PENDING_FVQ09_CI",
+  "persisted_before_long_tests": true,
+  "production_source_changed_by_fvq09": false,
+  "external_asset_bundle_status": "BLOCKED_PENDING_EXACT_TTUTIL_AND_HUPSEL_CASE_ADMISSION",
+  "real_b1_10_temporal_characterization_qualified": false,
+  "production_temporal_profile_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "complete_optional_process_scope_qualified": false,
+  "mass_conservation_policy": "SEPARATE_ABSOLUTE_HARD_GATE",
+  "notes": [
+    "The canonical B0 distribution remains an external licensed artifact and is never fabricated or substituted by a hash-mismatching archive.",
+    "TTUTIL and the Hupsel qualification case are external inputs until an exact byte manifest is captured and separately admitted.",
+    "F-VQ09 may qualify harness and validation contracts without claiming that a real temporal characterization has executed."
+  ]
+}
