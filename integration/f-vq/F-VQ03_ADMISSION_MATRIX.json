@@ -21,8 +21,8 @@
       "contract_exists": true,
       "production_implementation_exists": false,
       "test_executable": true,
-      "test_pass": "PENDING_FVQ03_CI",
-      "claim_qualified": false,
+      "test_pass": "PASS_FVQ03_CI",
+      "claim_qualified": true,
       "hard_mass_gate": false,
       "blocker": null
     },
@@ -130,5 +130,11 @@
       "hard_mass_gate": true,
       "blocker": "Reentrant/parallel legacy-backend qualification remains absent."
     }
-  ]
+  ],
+  "qualification_observation": {
+    "tested_postimage": "32f015c29f75e7d6cc4171b8c49d4ea0e1208a72",
+    "workflow_run": 34106539643,
+    "job_id": 101692747939,
+    "result": "PASS_FCI13_SOURCE_BOUND_STATUS_AND_TRANSACTION_SEMANTICS"
+  }
 }
