@@ -4,6 +4,7 @@
   "title": "Canonical F-CI Exit-Gate Contract",
   "canonical_branch": "integration/f-ci-canonical",
   "parent_head": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+  "qualified_postimage": "073ccff4096a922095a5c15390a6a6dc949e99aa",
   "production_source_changed": false,
   "persisted_before_long_tests": true,
   "contract": {
@@ -13,8 +14,10 @@
     "release_semantics_fail_closed": true
   },
   "qualification": {
-    "static_schema_gate": "PENDING",
-    "canonical_ci": "PENDING"
+    "static_schema_gate": "PASS",
+    "canonical_ci": "PASS_RUN_34108760793_JOB_101700562852",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI15"
   },
-  "status": "PERSISTED_CI_PENDING"
+  "downstream_release_allowed": false,
+  "status": "QUALIFIED_EXIT_GATE_CONTRACT_NEUTRAL_ASSESSMENT"
 }

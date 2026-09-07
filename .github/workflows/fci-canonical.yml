@@ -169,3 +169,13 @@ jobs:
           fetch-depth: 0
       - name: F-CI15 machine-readable exit-gate contract gate
         run: bash tests/fci/run_fci15_gate.sh
+
+  fci16-exit-gate-assessment:
+    needs: fci15-exit-gate-contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI16 evidence-bound exit-gate assessment gate
+        run: bash tests/fci/run_fci16_gate.sh
