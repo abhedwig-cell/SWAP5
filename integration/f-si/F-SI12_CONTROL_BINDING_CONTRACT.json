@@ -3,7 +3,7 @@
   "workstream": "F-SI",
   "work_unit": "F-SI12",
   "title": "Explicit per-solve step-duration and numerical-control binding into HeadCalc",
-  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "status": "IMPLEMENTED_PRETEST",
   "branch": "work/f-si12-explicit-solver-controls",
   "basis": {
     "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
@@ -40,7 +40,7 @@
       "critdevh1cp",
       "critdevponddt"
     ],
-    "architectural_issue": "the explicit common request is validated against legacy globals, but HeadCalc still consumes those globals instead of the already-explicit per-solve request controls"
+    "architectural_issue": "the explicit common request was validated against legacy globals, while HeadCalc consumed those globals instead of the already-explicit per-solve request controls"
   },
   "ownership": {
     "external_policy_selection": "NOT_FSI",
@@ -50,7 +50,7 @@
     "transaction_semantics": "F-KT"
   },
   "implementation_contract": {
-    "headcalc_signature": "add optional soil_water_numerical_config_t plus optional explicit_step_duration",
+    "headcalc_signature": "optional soil_water_numerical_config_t plus optional explicit_step_duration",
     "explicit_route": "when an explicit state binding is used, numerical config and positive explicit_step_duration are required and become the values used by HeadCalc",
     "legacy_route": "when no explicit state binding is used, retain the current legacy globals as the effective control values",
     "adapter": "passes request%numerical and request%step_duration to HeadCalc; it does not choose policy",
@@ -58,6 +58,13 @@
     "formula_change": false,
     "policy_change": false,
     "calendar_semantics_added": false
+  },
+  "materialized_postimage": {
+    "commit": "c5d9fcee85f5c6b4049a54042cc06cf8ddcf9e88",
+    "materialization_workflow_run": 34151590559,
+    "materialization_workflow_job": 101834826285,
+    "headcalc_blob": "9d19b389c139140de1ec7f880797ebb4edc128e2",
+    "reference_adapter_blob": "15c05cfd288247ac4a1487ae5156e80a0ca430b0"
   },
   "admitted_profile_held_constant": {
     "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
@@ -90,7 +97,7 @@
     "generic_time_semantics_owner": "F-KT"
   },
   "scope_flags_before_qualification": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
     "TESTED": false,
     "QUALIFIED": false,
