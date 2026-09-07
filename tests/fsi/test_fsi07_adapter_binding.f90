@@ -26,6 +26,7 @@ program test_fsi07_adapter_binding
   use mod_reference_richards_legacy_binding
   use mod_a23bu_worker_execution_context, only: a23bu_initialize_worker
   use mod_fsi07_test_provider, only: fsi07_constitutive_t
+  use mod_fsi07_top_provider, only: fsi07_flux_top_provider_t
   use MOD_grid, only: numnod, z, dz, disnod
   use MOD_swap_base, only: swmacro
   use MOD_top, only: q0, flrunoff, ftoph, hsurf
@@ -35,8 +36,9 @@ program test_fsi07_adapter_binding
 
   type(soil_water_parameter_set_t), target :: params
   type(fsi07_constitutive_t), target :: provider
-  type(soil_water_solve_request_t) :: request_a, request_b
-  type(soil_water_solve_result_t) :: result_a1, result_a2, result_b, result_retry, result_reject
+  type(fsi07_flux_top_provider_t), target :: top_provider
+  type(soil_water_solve_request_t) :: request_a, request_b, request_no_top
+  type(soil_water_solve_result_t) :: result_a1, result_a2, result_b, result_retry, result_reject, result_no_top
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   real(real64) :: sh(numnod), st(numnod), shm1(numnod), stm1(numnod), sk(numnod), skm(numnod+1), sdm(numnod)
@@ -47,12 +49,22 @@ program test_fsi07_adapter_binding
   failures=0
   call configure_parameters(params)
   call seed_request_origin()
-  call build_legacy_reference_request(request_a, params, provider)
+  top_provider%fixed_flux=-1.0_real64
+  top_provider%surface_tracks_head=.false.
+  call build_legacy_reference_request(request_a, params, provider, top_provider)
   request_b=request_a
   request_b%base_state%pressure_head=request_a%base_state%pressure_head-20.0_real64
   request_b%base_state%water_content=request_a%base_state%water_content+0.05_real64
   request_b%base_state%ponding_depth=request_a%base_state%ponding_depth+0.10_real64
   request_b%base_state%groundwater_level=request_a%base_state%groundwater_level-0.50_real64
+
+  ! Missing explicit top provider must fail before HeadCalc is entered.
+  call build_legacy_reference_request(request_no_top, params, provider)
+  calls_before=headcalc_calls
+  call solver%solve(request_no_top, workspace, result_no_top)
+  call expect(result_no_top%status==SW_SOLVE_FAILED, failures)
+  call expect(trim(result_no_top%diagnostics%route)=='explicit-top-mode-required', failures)
+  call expect(headcalc_calls==calls_before, failures)
 
   call seed_global_sentinels()
   call capture_globals()
@@ -82,6 +94,7 @@ program test_fsi07_adapter_binding
   call expect(.not.workspace%legacy_worker%history%flwarn, failures)
   call expect(workspace%legacy_worker%history%iwarn==777, failures)
   call expect(workspace%legacy_worker%history%nstep==888, failures)
+  call expect(near_vector(request_a%base_state%pressure_head,[-1.0_real64,-2.0_real64,-3.0_real64,-4.0_real64]),failures)
 
   call solver%solve(request_a, workspace, result_a2)
   call expect_same_candidate(result_a1,result_a2,failures)
