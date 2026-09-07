@@ -6,7 +6,8 @@
 !
 
 ! ----------------------------------------------------------------------
-subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
+subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
+                    numerical_config, explicit_step_duration)
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
@@ -18,7 +19,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX
-   use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
+   use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
+        soil_water_numerical_config_t
    use MOD_arrays,         only: macp, mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: numnod, z, dz, disnod
@@ -32,10 +34,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_top,            only: boundtop, pondrunoff, hsurf
    use MOD_drain,          only: qdra, nrlevs
    use MOD_irrigation,     only: qssdi, nird
-   use variables,          only: fldaystart, swbotb, runon, epd, reva, pondm1, dt, runots, t1900, thetm1, qrot,      &
-                                 swkimpl, swkmean, hplate, swbotb3impl, swbotb3resvert, deepgw, rimlay,              &
-                                 sw4, qbotab, fldtmin, maxit, maxbacktr, critdevh2cp, critdevh1cp, critdevponddt,    &
-                                 dtmin, nodgwl, gwlm1, hm1, CritDevBalCp, CritDevBalTot
+   use variables,          only: fldaystart, swbotb, runon, epd, reva, pondm1, legacy_dt => dt, runots, t1900, thetm1, qrot,      &
+                                 legacy_swkimpl => swkimpl, legacy_swkmean => swkmean, hplate, swbotb3impl, swbotb3resvert, deepgw, rimlay,              &
+                                 sw4, qbotab, fldtmin, legacy_maxit => maxit, legacy_maxbacktr => maxbacktr, legacy_critdevh2cp => critdevh2cp, legacy_critdevh1cp => critdevh1cp, legacy_critdevponddt => critdevponddt,    &
+                                 legacy_dtmin => dtmin, nodgwl, gwlm1, hm1, legacy_CritDevBalCp => CritDevBalCp, legacy_CritDevBalTot => CritDevBalTot
    ! inout
    use variables,          only: h, theta, kmean, gwlinp, pond, dtold, qtop, qbot, hbot, itnumb
    ! output
@@ -60,12 +62,17 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+   type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+   real(8), intent(in), optional :: explicit_step_duration
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_runoff_resolved
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
+   integer                          :: swkimpl, swkmean, maxit, maxbacktr
+   real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
+   real(8)                          :: CritDevBalCp, CritDevBalTot
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
@@ -109,6 +116,33 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    else
       state => local_state_binding
       call capture_legacy_state(state)
+   end if
+   dt = legacy_dt
+   swkimpl = legacy_swkimpl
+   swkmean = legacy_swkmean
+   maxit = legacy_maxit
+   maxbacktr = legacy_maxbacktr
+   dtmin = legacy_dtmin
+   critdevh2cp = legacy_critdevh2cp
+   critdevh1cp = legacy_critdevh1cp
+   critdevponddt = legacy_critdevponddt
+   CritDevBalCp = legacy_CritDevBalCp
+   CritDevBalTot = legacy_CritDevBalTot
+   if (.not. legacy_state_binding) then
+      if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
+      if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
+      if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
+      dt = explicit_step_duration
+      swkimpl = numerical_config%conductivity_implicit_mode
+      swkmean = numerical_config%conductivity_mean_method
+      maxit = numerical_config%max_iterations
+      maxbacktr = numerical_config%max_backtracking
+      dtmin = numerical_config%min_step_duration
+      CritDevBalCp = numerical_config%compartment_balance_tolerance
+      CritDevBalTot = numerical_config%total_balance_tolerance
+      critdevh2cp = numerical_config%head_abs_tolerance
+      critdevh1cp = numerical_config%head_rel_tolerance
+      critdevponddt = numerical_config%ponding_tolerance
    end if
    provider_top_active = .false.
    provider_constitutive_active = .false.

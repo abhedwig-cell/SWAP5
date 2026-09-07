@@ -34,17 +34,21 @@ module mod_reference_richards_legacy_binding
   public :: build_legacy_reference_request
 
   interface
-     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
+     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
+                         numerical_config, explicit_step_duration)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
-       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
+       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
+            soil_water_numerical_config_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
        type(a23bu_solver_history_t), target, intent(inout), optional :: history
        type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
        type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
        type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+       type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+       real(8), intent(in), optional :: explicit_step_duration
      end subroutine headcalc
   end interface
 
@@ -126,7 +130,7 @@ contains
        call initialize_reference_state_binding(state_binding, request)
 
        call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
-            request%evaluation, request%boundary)
+            request%evaluation, request%boundary, request%numerical, request%step_duration)
 
        result%candidate_state%active_nodes = numnod
        allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))
@@ -176,7 +180,7 @@ contains
        route = 'legacy-macropore-deferred'
        return
     end if
-    if (swkimpl /= 0) then
+    if (request%numerical%conductivity_implicit_mode /= 0) then
        route = 'legacy-implicit-k-deferred'
        return
     end if
@@ -208,17 +212,6 @@ contains
     if (maxval(abs(request%parameters%z-z(1:numnod))) > 0.0_real64) return
     if (maxval(abs(request%parameters%dz-dz(1:numnod))) > 0.0_real64) return
     if (maxval(abs(request%parameters%node_distance-disnod(1:numnod))) > 0.0_real64) return
-    if (.not. same_real(request%step_duration, dt)) return
-    if (request%numerical%max_iterations /= maxit) return
-    if (request%numerical%max_backtracking /= maxbacktr) return
-    if (request%numerical%conductivity_implicit_mode /= swkimpl) return
-    if (request%numerical%conductivity_mean_method /= swkmean) return
-    if (.not. same_real(request%numerical%min_step_duration, dtmin)) return
-    if (.not. same_real(request%numerical%compartment_balance_tolerance, CritDevBalCp)) return
-    if (.not. same_real(request%numerical%total_balance_tolerance, CritDevBalTot)) return
-    if (.not. same_real(request%numerical%head_abs_tolerance, critdevh2cp)) return
-    if (.not. same_real(request%numerical%head_rel_tolerance, critdevh1cp)) return
-    if (.not. same_real(request%numerical%ponding_tolerance, critdevponddt)) return
     ok = .true.
     route = 'legacy-request-bound'
   end subroutine validate_legacy_request
