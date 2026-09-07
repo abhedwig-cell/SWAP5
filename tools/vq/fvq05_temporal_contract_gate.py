@@ -102,7 +102,7 @@ def main() -> int:
     policy = read("src/adapter/mod_b1_10_reference_temporal_policy.f90")
     candidate = read("src/adapter/mod_b1_10_reference_policy_candidate_model.f90")
     test = read("tests/fci/test_fci14_reference_temporal_policy.f90")
-    gate = read("tools/fci/fci14_reference_temporal_policy_gate.py")
+    fci_gate = read("tools/fci/fci14_reference_temporal_policy_gate.py")
     docs = read("docs/integration/F-CI14_REFERENCE_TEMPORAL_ACCEPTANCE.md")
     paths = changed_paths()
 
@@ -138,9 +138,10 @@ def main() -> int:
         "fixture_asserts_profile_unqualified": "numeric profile must remain unqualified" in test,
         "fixture_mass_tolerance_is_separate": "tx_policy%mass_tolerance=1.0e-12_real64" in test,
         "fixture_temporal_threshold_is_normalized": "tx_policy%temporal_tolerance=1.0_real64" in test,
-        "fci_gate_requires_profile_nulls": "profile_numeric_limits_absent" in gate,
-        "docs_no_numerical_profile_claim": "does **not** supply a numerical profile" in docs,
-        "docs_independent_limits_required": "independently qualified" in docs,
+        "fci_gate_requires_no_numeric_defaults": "checks[\"no_numeric_defaults\"]" in fci_gate,
+        "fci_gate_keeps_candidate_unqualified": "checks[\"candidate_profile_unqualified\"]" in fci_gate,
+        "docs_contract_test_not_numeric_qualification": "This is a contract test, not numerical qualification of a B1.10 temporal tolerance profile." in docs,
+        "docs_independent_limits_required": "independent calibration/qualification of the eight endpoint limits" in docs,
     }
     sections["canonical_overlay"] = {
         "overlay_record_exact": overlay.get("integration_overlay_base") == OVERLAY,
