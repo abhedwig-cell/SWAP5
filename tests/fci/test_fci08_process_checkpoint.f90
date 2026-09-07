@@ -25,7 +25,7 @@ program test_fci08_process_checkpoint
     lrv_node(i)=80+i; wroot_node(i)=90+i; wroot_node_top(i)=100+i
   end do
   pond=1; pondm1=2; gwl=3; gwlm1=4; volact=5; ldwet=6; spev=7; saev=8
-  dayfix=9; nirri=10; rd=11; dvs=12; lai=13; tsum=14; sicact=15
+  dayfix=9; nirri=10; rd=11; dvs=12; lai=13; tsum=14; sicact=15; rdpot=16
   cumdens=1; cumdens_top=2
   s_act%marker=21; s_pot%marker=22; m_act%marker=23; m_pot%marker=24; vern=25; atmin7=26
 
@@ -34,7 +34,7 @@ program test_fci08_process_checkpoint
   call s%clone(copy)
 
   h=-9; theta=-9; hm1=-9; thetm1=-9; tsoil=-9; cml=-9; cmsy=-9; ageml=-9
-  dayfix=-9; nirri=-9; rd=-9; dvs=-9; lai=-9; tsum=-9; sicact=-9
+  dayfix=-9; nirri=-9; rd=-9; dvs=-9; lai=-9; tsum=-9; sicact=-9; rdpot=-9
   cumdens=-9; cumdens_top=-9; lrv_node=-9; wroot_node=-9; wroot_node_top=-9
   s_act%marker=-9; s_pot%marker=-9; m_act%marker=-9; m_pot%marker=-9; vern=-9; atmin7=-9
 
@@ -45,7 +45,7 @@ program test_fci08_process_checkpoint
   call chk(cmsy(numnod),60.0_real64+numnod,'cmsy')
   call chk(ageml(numnod),70.0_real64+numnod,'ageml')
   if(dayfix/=9 .or. nirri/=10) error stop 'irrigation process state'
-  call chk(rd,11.0_real64,'rd'); call chk(s_act%marker,21.0_real64,'wofost')
+  call chk(rd,11.0_real64,'rd'); call chk(rdpot,16.0_real64,'rdpot'); call chk(s_act%marker,21.0_real64,'wofost')
   call chk(atmin7(7),26.0_real64,'atmin7')
 
   select type(c=>copy)
@@ -53,6 +53,7 @@ program test_fci08_process_checkpoint
     if(.not.allocated(c%thermal) .or. .not.allocated(c%solute) .or. .not.allocated(c%irrigation) .or. &
        .not.allocated(c%crop) .or. .not.allocated(c%wofost)) error stop 'clone optional state'
     call chk(c%thermal%tsoil(numnod),40.0_real64+numnod,'clone thermal')
+    call chk(c%crop%rdpot,16.0_real64,'clone rdpot')
     call chk(c%wofost%s_act%marker,21.0_real64,'clone wofost')
   class default
     error stop 'clone dynamic type'
