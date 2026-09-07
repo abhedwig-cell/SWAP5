@@ -107,3 +107,36 @@ jobs:
           python tools/vq/tx_time_harness.py \
             --fixture-suite \
             --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
+
+  fvq05-temporal-contract:
+    name: F-VQ05 F-CI14 temporal acceptance contract admission
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install gate dependency
+        run: python -m pip install --disable-pip-version-check PyYAML==6.0.2
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: F-VQ05 temporal contract admission gate
+        run: python -m tools.vq.fvq05_temporal_contract_gate
+
+      - name: F-VQ05 profile-promotion guards
+        run: python -m unittest tools.vq.test_fvq05_temporal_contract_gate
+
+      - name: Re-run exact F-CI14 temporal acceptance gate
+        run: bash tests/fci/run_fci14_gate.sh
+
+      - name: Re-run carried F-CI15 exit-gate contract
+        run: bash tests/fci/run_fci15_gate.sh
