@@ -1,0 +1,39 @@
+name: F-SI07 finalize qualification gate
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'tools/fsi/fsi07_finalize_qualification_gate.py'
+      - '.github/workflows/fsi07-finalize-qualification-gate.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize final qualification gate
+        run: python3 tools/fsi/fsi07_finalize_qualification_gate.py
+      - name: Validate final gate patch
+        run: |
+          git diff --check
+          grep -Fq 'F-SI07_FINAL_GATE PASS' tests/fsi/run_fsi07_gate.sh
+          grep -Fq 'run_fsi07_common_route_gate.sh' tests/fsi/run_fsi07_gate.sh
+          grep -Fq 'run_fsi07_provider_concurrency_gate.sh' tests/fsi/run_fsi07_gate.sh
+      - name: Persist final gate
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tests/fsi/run_fsi07_gate.sh
+          if git diff --cached --quiet; then
+            echo 'No materialized changes'
+          else
+            git commit -m 'F-SI07: materialize final qualification gate'
+            git push origin HEAD:work/f-si07-state-binding
+          fi
