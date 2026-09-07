@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "purpose": "Source-bound ownership inventory for non-soil-water-solver SWAP processes. No production physics is changed.",
+  "source_basis": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "qualified_production_source": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "f_ci_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "legacy_oracle": "B1.10",
+    "b1_10_source_members": 63,
+    "b1_10_source_bytes": 1863575,
+    "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "b0_nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "classification_vocabulary": [
+    "IMMUTABLE_PARAMETER",
+    "COMMITTED_STATE",
+    "FORCING",
+    "NUMERICAL_CONFIG",
+    "RESULT",
+    "DIAGNOSTIC",
+    "RECONSTRUCTIBLE_WORKSPACE",
+    "WORKER_SCRATCH",
+    "LEGACY_GLOBAL",
+    "LEGACY_IO",
+    "SOLVER_INTERNAL_DEPENDENCY",
+    "CALENDAR_PHYSICS",
+    "HIDDEN_TIME_ASSUMPTION",
+    "UNRESOLVED"
+  ],
+  "processes": [
+    {
+      "id": "CROP",
+      "label": "crop / crop development",
+      "source_files": [
+        {"path": "SWAP/MOD_cropdevelopment.f90", "b1_10_sha256": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210", "patch": "SWAP-005"},
+        {"path": "SWAP/interface_plant.f90", "b1_10_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df"},
+        {"path": "SWAP/wofost.f90", "b1_10_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"}
+      ],
+      "entrypoints": ["croprotation", "cropdevelopment", "reset_crop"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "REQUIRES_VQ_FIXTURE",
+      "readiness_reason": "Large crop/calendar/WOFOST state surface, direct file readers and day-end growth/harvest sequencing require dedicated source-bound fixtures before structural migration.",
+      "notes": ["No direct HeadCalc access found in cropdevelopment; coupling occurs through plant globals and driver sequencing."]
+    },
+    {
+      "id": "ROOT_WATER_UPTAKE",
+      "label": "root water uptake",
+      "source_files": [
+        {"path": "SWAP/rootextraction.f90", "b1_10_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5"},
+        {"path": "SWAP/RWU_micro.f90", "b1_10_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477"},
+        {"path": "SWAP/oxygenstress.f90", "b1_10_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87", "patch": "SWAP-007"}
+      ],
+      "entrypoints": ["RootExtraction", "RootExtraction_MICRO", "RootExtraction_MACRO", "reset_rootextraction"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "SOLVER_INTERNAL_DEPENDENCY"],
+      "migration_readiness": "READY_AFTER_FSI04",
+      "readiness_reason": "Physics reads legacy hydraulic arrays h/theta and writes qrot sink fields used by the soil-water solve. Migration needs an admitted hydraulic_view and sink-result seam, not direct variables-module access.",
+      "notes": ["Current F-SI04 qualification is workspace replay only and therefore does not yet satisfy production admission."]
+    },
+    {
+      "id": "EVAPOTRANSPIRATION",
+      "label": "evapotranspiration / interception / meteo",
+      "source_files": [
+        {"path": "SWAP/MOD_meteo.f90", "b1_10_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f", "patch": "SWAP-006"},
+        {"path": "SWAP/interface_atmosphere.f90", "b1_10_sha256": "4d902666dda8d9fe8fdc65e6751fb85b7948f68d7e3d9c78181a515a7e35124f"}
+      ],
+      "entrypoints": ["meteo", "ProcessMeteoDay", "ProcessMeteoDT", "ETpot", "reduceva", "interception_daily"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "REQUIRES_VQ_FIXTURE",
+      "readiness_reason": "ET and interception combine daily and sub-daily forcing, crop/snow/irrigation globals and file-backed record cursors. Reference fixtures must split forcing acquisition from process physics first.",
+      "notes": []
+    },
+    {
+      "id": "DRAINAGE",
+      "label": "subsurface drainage",
+      "source_files": [
+        {"path": "SWAP/drainage.f90", "b1_10_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"},
+        {"path": "SWAP/MOD_drainage.f90", "b1_10_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"}
+      ],
+      "entrypoints": ["drain", "drainage", "drainflux_basic"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS"],
+      "migration_readiness": "READY_AFTER_FSI04",
+      "readiness_reason": "Drainage uses groundwater head and timestep directly and contributes qdra/qdrtot inside the soil-water retry loop. It must consume an explicit hydraulic view and return fluxes without owning solver transaction semantics.",
+      "notes": []
+    },
+    {
+      "id": "IRRIGATION",
+      "label": "irrigation / SSDI",
+      "source_files": [{"path": "SWAP/irrigation.f90", "b1_10_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"}],
+      "entrypoints": ["irrigation", "read_irrigation_fixed"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "READY_AFTER_FKT05",
+      "readiness_reason": "Scheduling maintains event counters, calendar windows and rates in SAVE state and reads h/theta for trigger rules. A reusable process checkpoint boundary is needed before migration of scheduling state.",
+      "notes": ["SSDI qssdi is optional state and must not be allocated for inactive columns in the new architecture."]
+    },
+    {
+      "id": "SURFACE_WATER",
+      "label": "surface water / ponding / runoff / runon",
+      "source_files": [
+        {"path": "SWAP/surfacewater.f90", "b1_10_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"},
+        {"path": "SWAP/MOD_runon.f90", "b1_10_sha256": "9787ac6707019edc1b69612f511f54233eae94268718bff95145c1deec2e1437"},
+        {"path": "SWAP/boundtop.f90", "role": "solver-facing legacy boundary, not F-PM-owned"}
+      ],
+      "entrypoints": ["SurfaceWater", "drainflux_extended", "read_runon", "load_runon_data"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "Surface storage, runoff/runon and extended drainage are interleaved with solver boundary/retry behavior. Production migration must wait for a shared transaction plus solver seam.",
+      "notes": []
+    },
+    {
+      "id": "SNOW",
+      "label": "snow accumulation / melt",
+      "source_files": [
+        {"path": "SWAP/snow.f90", "b1_10_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2"},
+        {"path": "SWAP/readswap.f90", "role": "legacy parameter loading; B1.10 patched by SWAP-013 but snow parameter semantics unchanged"}
+      ],
+      "entrypoints": ["snow"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "REQUIRES_SHARED_DOWNSTREAM_BASELINE",
+      "readiness_reason": "The snow process body is compact, has no direct solver-internal dependency and is the best first seam. Production migration is held only by governance until a qualified shared downstream baseline exists.",
+      "notes": ["Driver currently invokes snow task 2 only at flDayStart; this is a hidden caller time assumption, not intrinsic to the snow equations."]
+    },
+    {
+      "id": "MACROPORES",
+      "label": "macropore flow",
+      "source_files": [
+        {"path": "SWAP/macropore.f90", "b1_10_sha256": "f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f", "patch": "SWAP-001"},
+        {"path": "SWAP/macrorate.f90", "b1_10_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7"},
+        {"path": "SWAP/macroporeoutput.f90", "b1_10_sha256": "39a0497cfff82540a7323cecceafc3a17d389eb4708014bbf99f6256b65a8b0a"}
+      ],
+      "entrypoints": ["MacroPore", "MacroStateVar", "MACRORATE"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "WORKER_SCRATCH", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY"],
+      "migration_readiness": "DEFER_OPTIONAL_PHYSICS",
+      "readiness_reason": "Macropores are optional and deeply embedded in SoilWater retry/state restoration. Preserve reference physics, but defer migration until the reference soil-water isolation seam covers this path.",
+      "notes": ["No macropore persistent state may exist for columns with swmacro=0 in the target architecture."]
+    },
+    {
+      "id": "FROST",
+      "label": "frozen-soil conductivity/boundary",
+      "source_files": [{"path": "SWAP/frozencond.f90", "b1_10_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf"}],
+      "entrypoints": ["FrozenCond", "FrozenBounds"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "SOLVER_INTERNAL_DEPENDENCY"],
+      "migration_readiness": "READY_AFTER_FSI04",
+      "readiness_reason": "FrozenCond changes conductivity-reduction fields and FrozenBounds changes solver boundary behavior, so a stable solver-facing contract is required.",
+      "notes": []
+    },
+    {
+      "id": "SOIL_TEMPERATURE",
+      "label": "soil temperature",
+      "source_files": [{"path": "SWAP/temperature.f90", "b1_10_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338"}],
+      "entrypoints": ["SoilTemperature"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO"],
+      "migration_readiness": "REQUIRES_VQ_FIXTURE",
+      "readiness_reason": "Persistent temperature profile is physically meaningful and couples to snow, frost, oxygen stress and crop logic. A dedicated fixture is needed before extraction.",
+      "notes": []
+    },
+    {
+      "id": "TILLAGE",
+      "label": "tillage / hydraulic-property event",
+      "source_files": [{"path": "SWAP/tillage.f90", "b1_10_sha256": "eaf1976238f7c659c1acb02f54685a7aafdf03d50d0978bbcc788b6ada441ca3", "patch": "SWAP-002"}],
+      "entrypoints": ["DoTillage"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION", "UNRESOLVED"],
+      "migration_readiness": "BLOCKED_BY_UNKNOWN_STATE",
+      "readiness_reason": "Legacy tillage mutates hydraulic parameters plus h/theta/pond and performs redistribution. Ownership between immutable parameters, committed state and event-generated parameter state must be resolved explicitly before migration.",
+      "notes": []
+    },
+    {
+      "id": "SOLUTE",
+      "label": "solute transport / age tracer",
+      "source_files": [{"path": "SWAP/solute.f90", "b1_10_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2"}],
+      "entrypoints": ["Solute"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "SOLVER_INTERNAL_DEPENDENCY", "CALENDAR_PHYSICS"],
+      "migration_readiness": "DEFER_OPTIONAL_PHYSICS",
+      "readiness_reason": "Optional solute transport is substantial and consumes q/qtop/qbot/qrot/qdra. Defer until water-process seams and optional state ownership are stable.",
+      "notes": []
+    },
+    {
+      "id": "SOIL_NUTRIENT_MANAGEMENT",
+      "label": "soil nutrient management / WOFOST soil",
+      "source_files": [{"path": "SWAP/management_soil.f90", "b1_10_sha256": "0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b"}],
+      "entrypoints": ["SoilManagement"],
+      "dependency_classes": ["IMMUTABLE_PARAMETER", "COMMITTED_STATE", "FORCING", "RESULT", "DIAGNOSTIC", "RECONSTRUCTIBLE_WORKSPACE", "LEGACY_GLOBAL", "LEGACY_IO", "CALENDAR_PHYSICS", "HIDDEN_TIME_ASSUMPTION"],
+      "migration_readiness": "DEFER_OPTIONAL_PHYSICS",
+      "readiness_reason": "Optional nutrient/soil-management stack has broad I/O and WOFOST dependencies and is outside the first water-process migration tranche.",
+      "notes": []
+    }
+  ],
+  "global_holds": [
+    "No production process migration on this branch.",
+    "No F-KT05 semantics consumed until qualified.",
+    "F-SI04 source-bound workspace replay evidence is informative only; no production solver seam is consumed.",
+    "A shared qualified downstream F-KT/F-SI integration baseline is required before F-PM02 production source changes."
+  ]
+}
