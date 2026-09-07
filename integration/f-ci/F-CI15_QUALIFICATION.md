@@ -1,11 +1,13 @@
 # F-CI15 qualification record
 
-Status at materialization: `PERSISTED_CI_PENDING`.
+Status: `QUALIFIED_EXIT_GATE_CONTRACT_NEUTRAL_ASSESSMENT`.
 
-F-CI15 persists the machine-readable F-CI exit-gate contract before any further automatic downstream release decision. It deliberately makes no factual assessment of whether a gate is currently met. Every gate starts at `NOT_ASSESSED` with downstream release disabled.
+Qualified postimage: `073ccff4096a922095a5c15390a6a6dc949e99aa`.
+Canonical workflow: `34108760793`, job `101700562852`, PASS on 2026-09-07.
+Full canonical dependency chain: F-CI03 through F-CI15 PASS.
 
-The contract defines CI-G01 through CI-G10 and requires, per gate, `status`, `required`, `evidence`, `source_commit`, `qualification_commit`, `blockers`, `holds`, `last_verified` and `allows_downstream_release`.
+F-CI15 qualifies the machine-readable exit-gate contract, its schema validation and its fail-closed downstream-release semantics. It does not qualify any factual CI-G01 through CI-G10 assessment. Every gate remains deliberately `NOT_ASSESSED` with `allows_downstream_release=false` until a separate evidence-bound assessment is performed.
 
-The focused gate validates the exact gate set, status vocabulary, required fields, commit-SHA syntax when populated, fail-closed release semantics and consistency of the top-level downstream release flag.
+The contract requires, per gate, `status`, `required`, `evidence`, `source_commit`, `qualification_commit`, `blockers`, `holds`, `last_verified` and `allows_downstream_release`. Commit values, when present, must be exact lowercase 40-character Git SHAs.
 
-F-CI15 changes no production source, physics, solver policy, mass tolerance or reference numerical values.
+No production source, physics, solver policy, mass tolerance or numerical reference profile was changed by F-CI15. In particular, F-CI14's hold remains in force: the B1.10 production `execute_reference_interval` route is not admitted without independently qualified temporal numerical limits and complete active-process characterization.
