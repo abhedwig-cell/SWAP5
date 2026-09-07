@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI02",
+  "status": "QUALIFIED_CONTRACT_AND_WORKSPACE_ONLY",
+  "qualified": true,
+  "qualification_scope": "compileable F-SI-owned common soil-water request/result/evaluation-context contract plus worker-owned reference Richards workspace; no reference HeadCalc binding yet",
+  "source_basis": {
+    "fsi01_qualified_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10",
+    "fkt_boundary_head_observed": "62f27672bbb74066ece202de8898597e655aed3d",
+    "fkt_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "tested_postimage": "9715465216edb400cbcd125a8572a1498a6b0211",
+  "qualification_run": {
+    "workflow": "F-SI solver isolation",
+    "workflow_run": 34119142333,
+    "fsi01_regression_job": 101732873504,
+    "fsi02_job": 101732927427,
+    "conclusion": "success"
+  },
+  "qualified_checks": {
+    "FSI02-T01_common_contract_O0_compile": "PASS",
+    "FSI02-T02_common_contract_O2_compile": "PASS",
+    "FSI02-T03_immutable_parameter_reference_sharing": "PASS_CONTRACT_LEVEL",
+    "FSI02-T04_base_state_clone_independence": "PASS",
+    "FSI02-T05_workspace_reset_and_scratch_poisoning": "PASS",
+    "FSI02-T06_workspace_isolation_1_2_4_8_threads": "PASS",
+    "FSI02-T07_warm_start_reset_not_physical_state": "PASS",
+    "FSI02-T08_protected_legacy_runtime_transaction_blobs_unchanged": "PASS",
+    "FSI02-T09_no_SAVE_IO_or_legacy_global_use_in_common_solver_layer": "PASS",
+    "FSI02-T10_FSI01_boundary_regression": "PASS"
+  },
+  "constness_note": {
+    "shared_parameter_target_contract": "read_only",
+    "compiler_enforced_deep_const": false,
+    "reason": "Fortran pointer-target mutability is not fully constrained by INTENT(IN) on the containing request",
+    "required_followup": "solver implementations and qualification gates must prove no mutation; harden the handle boundary if necessary"
+  },
+  "deferred_not_claimed": {
+    "reference_Richards_solver_reentrancy": "NOT_YET_BOUND",
+    "repeated_full_solver_identity": "DEFERRED_TO_REFERENCE_BINDING",
+    "full_solver_order_independence": "DEFERRED_TO_REFERENCE_BINDING",
+    "full_solver_1_2_4_8_worker_identity": "DEFERRED_TO_REFERENCE_BINDING",
+    "full_solver_poison_identity": "DEFERRED_TO_REFERENCE_BINDING",
+    "unrounded_physical_water_balance_identity": "DEFERRED_TO_REFERENCE_BINDING",
+    "solver_route_iteration_identity": "DEFERRED_TO_REFERENCE_BINDING",
+    "interface_tangent_algorithm": "NOT_IMPLEMENTED",
+    "parallel_MultiSWAP_backend": "NOT_QUALIFIED",
+    "performance_or_fallback_policy": "NOT_IN_SCOPE"
+  },
+  "change_control": {
+    "existing_headcalc_modified": false,
+    "existing_soilwater_modified": false,
+    "existing_worker_context_modified": false,
+    "transaction_source_modified": false,
+    "solver_physics_changed": false,
+    "numerical_policy_selection_changed": false,
+    "shared_FKT_kernel_type_changed": false
+  },
+  "invariants_assessed": ["1", "3", "4", "5", "6", "13", "14", "16", "20", "21", "22", "23", "24", "25", "26", "27"],
+  "next_work_unit": "F-SI03",
+  "next_scope": "source-bound binding of the existing B1.10 reference Richards route to the F-SI-owned request/result/workspace seam without formula or policy change",
+  "downstream_fsi03_allowed": true
+}
