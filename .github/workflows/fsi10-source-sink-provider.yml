@@ -1,0 +1,27 @@
+name: F-SI10 B1.10 source/sink provider
+
+on:
+  push:
+    branches:
+      - work/f-si10-b110-source-sink-provider
+    paths:
+      - 'src/solver/mod_b110_source_sink_provider.f90'
+      - 'integration/f-si/F-SI10_SOURCE_SINK_PROVIDER_CONTRACT.json'
+      - 'integration/f-si/F-SI10_QUALIFICATION.json'
+      - 'tests/fsi/test_fsi10_source_sink_provider.f90'
+      - 'tests/fsi/run_fsi10_source_sink_provider_gate.sh'
+      - '.github/workflows/fsi10-source-sink-provider.yml'
+
+jobs:
+  fsi10-source-sink-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI10 source/sink provider qualification gate
+        run: bash tests/fsi/run_fsi10_source_sink_provider_gate.sh
