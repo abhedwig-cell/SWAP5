@@ -13,8 +13,9 @@
     "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
   },
   "moving_canonical_overlay": {
-    "commit": "4ec5ce2a638047a2468967944902bc7d92f37339",
+    "commit": "927b7fb831ac91f77da11eb375e71b1975e1749f",
     "work_unit": "F-CI17",
+    "role": "FORMAL_CLOSEOUT_ONLY",
     "consumed_as_fvq05_qualification_basis": false
   },
   "qualification_targets": [
@@ -31,7 +32,8 @@
     "qualifying the example limits used by the deterministic F-CI14 test backend",
     "admitting execute_reference_interval for production B1.10",
     "changing production source or numerical policy",
-    "qualifying optional thermal, solute, irrigation, crop or WOFOST temporal behavior"
+    "qualifying optional thermal, solute, irrigation, crop or WOFOST temporal behavior",
+    "promoting any F-CI exit gate other than recording the carried F-CI17 closeout state"
   ],
-  "status": "PERSISTED_SCOPE_PRE_IMPLEMENTATION"
+  "status": "PERSISTED_SCOPE_PRE_QUALIFICATION_RERUN"
 }
