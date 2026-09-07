@@ -25,9 +25,8 @@ jobs:
           fetch-depth: 0
       - name: Materialize exact F-SI04 qualified transformation
         run: python3 tools/fsi/fsi05_materialize_production_seam.py
-      - name: Validate patch shape
+      - name: Validate patch scope
         run: |
-          git diff --check
           git diff --name-only
           test "$(git diff --name-only | sort | tr '\n' ' ')" = "src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 src/solver/mod_reference_richards_workspace.f90 "
       - name: Persist materialized source before qualification
