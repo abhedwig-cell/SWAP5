@@ -1,0 +1,21 @@
+name: F-MR01 qualification
+
+on:
+  push:
+    branches:
+      - 'integration/f-mr'
+  workflow_dispatch:
+
+jobs:
+  fmr01:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-MR01 qualification gate
+        run: bash tests/fmr/run_fmr01_gate.sh
