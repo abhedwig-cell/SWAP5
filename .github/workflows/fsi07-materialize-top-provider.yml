@@ -1,0 +1,38 @@
+name: F-SI07 materialize top-provider seam
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - tools/fsi/fsi07_materialize_top_provider_seam.py
+      - .github/workflows/fsi07-materialize-top-provider.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize explicit top-provider seam
+        run: python3 tools/fsi/fsi07_materialize_top_provider_seam.py
+      - name: Validate source scope and no formula-policy drift
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/legacy/b1_10_port/headcalc.f90 src/solver/mod_reference_richards_state_binding.f90 "
+          grep -F 'FSI_TOP_MODE_EXPLICIT_FLUX' src/solver/mod_reference_richards_state_binding.f90
+          grep -F 'evaluation_context%top_boundary%evaluate' src/legacy/b1_10_port/headcalc.f90
+          grep -F 'provider_runoff_resolved' src/legacy/b1_10_port/headcalc.f90
+          ! git diff -- src/legacy/b1_10_port/headcalc.f90 | grep -E '^[+-].*(CritDev|MaxIt1 = MaxIt|swkimpl|swkmean|moiscap|hconduc|dhconduc)' | grep -v '^[-+]   use '
+      - name: Persist provider seam before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/legacy/b1_10_port/headcalc.f90 src/solver/mod_reference_richards_state_binding.f90
+          git commit -m "F-SI07: materialize explicit top-boundary provider seam"
+          git push origin HEAD:work/f-si07-state-binding
