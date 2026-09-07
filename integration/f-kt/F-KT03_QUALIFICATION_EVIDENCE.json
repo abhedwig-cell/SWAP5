@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT03",
+  "tested_source_postimage": "6179da7a5adf9495de6734fe036e1e28f93d8497",
+  "baseline": "b9e0486a3e9dd6bf50f889acb842ec85f0351a25",
+  "qualification_run": {
+    "workflow": "F-KT kernel qualification",
+    "run_id": 34120290560,
+    "head_sha": "6179da7a5adf9495de6734fe036e1e28f93d8497",
+    "conclusion": "success",
+    "focused_job": {
+      "name": "fkt03-focused-o0-o2",
+      "job_id": 101736552474,
+      "conclusion": "success",
+      "checks": [
+        "FKT03_CONTRACT_GATE PASS",
+        "FKT03_FSI_BOUNDARY_GATE PASS",
+        "FKT03_OPAQUE_TRANSACTION_GATE PASS at O0",
+        "FKT03_OPAQUE_TRANSACTION_GATE PASS at O2",
+        "FKT03_FOCUSED_O0_O2_GATE PASS"
+      ]
+    },
+    "fci_regression_job": {
+      "job_id": 101736601258,
+      "conclusion": "success",
+      "checks": {
+        "F-CI03 transaction substrate": "PASS",
+        "F-CI04 canonical runtime": "PASS",
+        "F-CI08 attempt context": "PASS",
+        "F-CI09 B1.10 transaction binding": "PASS",
+        "F-CI10 time and mass seam": "PASS",
+        "F-CI11 controlled interval and mass": "PASS",
+        "F-CI13 recoverable trial status": "PASS",
+        "F-CI14 temporal acceptance contract": "PASS"
+      }
+    }
+  },
+  "qualified_claims": {
+    "canonical_advance_requires_fkt_committed_carrier": true,
+    "canonical_commit_requires_fkt_committed_carrier": true,
+    "committed_physical_state_is_opaque": true,
+    "candidate_physical_state_and_provenance_are_opaque": true,
+    "committed_snapshot_is_clone_isolated": true,
+    "candidate_snapshot_is_clone_isolated": true,
+    "stale_candidate_commit_rejected": true,
+    "cross_lineage_commit_rejected": true,
+    "rejected_commit_does_not_mutate_committed": true,
+    "rejected_commit_does_not_consume_candidate": true,
+    "successful_commit_increments_revision_once": true,
+    "rollback_preserves_committed_state_and_revision": true,
+    "same_committed_state_replay_preserved": true,
+    "generic_t0_t1_preserved": true,
+    "hard_mass_rejection_preserved": true,
+    "missing_reference_policy_evidence_remains_fail_closed": true,
+    "fkt_imports_fsi_solver_types": false
+  },
+  "downstream_recheck_after_test": {
+    "fsi02_consumed_qualified_boundary": {
+      "head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+      "role": "exact qualified common solver contract/workspace boundary used by focused F-KT03 ownership gate"
+    },
+    "fsi03_observed": {
+      "branch": "work/f-si03-reference-binding",
+      "head": "654ffca9c1facda42d7797687bed88af86528312",
+      "parent": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+      "delta": "one added F-SI-owned file src/solver/mod_reference_richards_legacy_binding.f90; shared F-SI01/F-SI02 contract files unchanged",
+      "ownership_conflict_with_fkt03": false,
+      "consumed_as_qualification_dependency": false,
+      "reference_admission_promoted_by_fkt03": false
+    },
+    "fmq14_observed": {
+      "head": "eebf665d0123feb1e0c6fd694b58ec6635cd7cc2",
+      "status": "QUALIFIED_FSI02_COMMON_SOLVER_LAYER_ADMITTED_NO_MATRIX_COVERAGE_PROMOTION",
+      "production_source_changed": false,
+      "real_physics_executable": "0/35",
+      "production_runtime_qualified": "0/35",
+      "ownership_conflict_with_fkt03": false
+    },
+    "fmq15_observed": {
+      "head": "39579bc039cc26cb37cc686cb9720c967337ce68",
+      "status": "PERSISTED_COMMON_WORKSPACE_ISOLATION_CANDIDATE",
+      "tested": false,
+      "qualified": false,
+      "production_source_changed": false,
+      "ownership_conflict_with_fkt03": false
+    }
+  },
+  "holds": [
+    "B1.10 temporal-limit profile remains independently unqualified; F-KT production reference admission remains fail-closed",
+    "F-SI03 reference binding is not consumed by F-KT03 as qualified reference execution",
+    "full solver reentrancy and HeadCalc isolation remain F-SI ownership",
+    "production MultiSWAP scheduling/runtime remains outside F-KT",
+    "optional-process temporal/storage coverage remains downstream qualification work"
+  ],
+  "qualification_status": "QUALIFIED"
+}
