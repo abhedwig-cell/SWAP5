@@ -1,0 +1,59 @@
+name: F-MQ12 F-KT01 admission qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq12-fkt01-admission
+    paths:
+      - 'tests/multiswap/fmq12_*'
+      - 'tests/multiswap/test_fmq12_*'
+      - 'tests/multiswap/verify_fmq12_*'
+      - 'tests/multiswap/run_fmq12_gate.py'
+      - 'docs/qualification/F-MQ12_*'
+      - '.github/workflows/fmq12-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq12-gate:
+    name: F-MQ12 downstream admission gate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ12 overlay gate
+        run: python3 tests/multiswap/run_fmq12_gate.py
+
+      - name: Fetch exact qualified F-KT01 evidence commit
+        run: |
+          git fetch --no-tags --depth=1 origin e350d84e975e9f6ab4475658566f623b0e46f9ac
+          test "$(git rev-parse FETCH_HEAD)" = "e350d84e975e9f6ab4475658566f623b0e46f9ac"
+          git show FETCH_HEAD:integration/f-kt/F-KT01_STATUS.json > /tmp/fkt01_status.json
+          git show FETCH_HEAD:qualification/f-kt/F-KT01_QUALIFICATION.json > /tmp/fkt01_qualification.json
+          git show FETCH_HEAD:integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json > /tmp/fkt01_contract.json
+          git show FETCH_HEAD:src/kernel/mod_kernel_transactions.f90 > /tmp/mod_kernel_transactions.f90
+
+      - name: Verify source-bound F-KT01 admission evidence
+        run: |
+          python3 tests/multiswap/verify_fmq12_fkt01_external.py \
+            --status /tmp/fkt01_status.json \
+            --qualification /tmp/fkt01_qualification.json \
+            --contract /tmp/fkt01_contract.json \
+            --source /tmp/mod_kernel_transactions.f90
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq12_gate.py \
+            tests/multiswap/test_fmq12_fkt01_admission.py \
+            tests/multiswap/verify_fmq12_fkt01_external.py
