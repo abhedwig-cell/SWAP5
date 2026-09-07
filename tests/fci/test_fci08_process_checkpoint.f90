@@ -1,23 +1,24 @@
 program test_fci08_process_checkpoint
   use, intrinsic :: iso_fortran_env, only: real64
   use MOD_grid, only: numnod
-  use MOD_swap_base, only: swhea,swsolu,swcrop
+  use MOD_swap_base, only: swhea, swsolu, swcrop, swirfix
   use variables
   use MOD_SoilTemperature, only: tsoil
-  use MOD_solute_global, only: cml,ageml
+  use MOD_solute_global, only: cml, ageml
   use MOD_Solute, only: cmsy
-  use MOD_irrigation, only: flirrigate,dayfix,nirri
+  use MOD_irrigation, only: schedule, flirrigate, dayfix, nirri
   use plant_interface
   use MOD_cropdevelopment
   use MOD_wofost
   use mod_transaction_reference, only: transaction_state_t
   use mod_b1_10_process_checkpoint
   implicit none
-  type(b1_10_process_state_t) :: s
+  type(b1_10_process_state_t) :: s, probe
   class(transaction_state_t), allocatable :: copy
   integer :: i
 
-  swhea=1; swsolu=2; swcrop=1; flirrigate=.true.; croptype(1)=2; icrop=1; fl_cropemergence=.true.
+  swhea=1; swsolu=2; swcrop=1; swirfix=1; schedule=0; flirrigate=.false.
+  croptype(1)=2; icrop=1; fl_cropemergence=.true.
   do i=1,numnod
     h(i)=i; theta(i)=10+i; hm1(i)=20+i; thetm1(i)=30+i
     tsoil(i)=40+i; cml(i)=50+i; cmsy(i)=60+i; ageml(i)=70+i
@@ -29,6 +30,7 @@ program test_fci08_process_checkpoint
   s_act%marker=21; s_pot%marker=22; m_act%marker=23; m_pot%marker=24; vern=25; atmin7=26
 
   call capture_b1_10_process_state(s)
+  if (.not. allocated(s%irrigation)) error stop 'fixed irrigation config must allocate state even when flirrigate=false'
   call s%clone(copy)
 
   h=-9; theta=-9; hm1=-9; thetm1=-9; tsoil=-9; cml=-9; cmsy=-9; ageml=-9
@@ -55,6 +57,25 @@ program test_fci08_process_checkpoint
   class default
     error stop 'clone dynamic type'
   end select
+
+  ! WOFOST state must exist before emergence too; a rejected trial may cross emergence.
+  fl_cropemergence=.false.; croptype(1)=2; icrop=1
+  call capture_b1_10_process_state(probe)
+  if (.not. allocated(probe%wofost)) error stop 'pre-emergence WOFOST continuation missing'
+
+  ! Irrigation ownership follows configured capability, not today's event flag.
+  swirfix=0; schedule=1; flirrigate=.false.
+  call capture_b1_10_process_state(probe)
+  if (.not. allocated(probe%irrigation)) error stop 'scheduled irrigation continuation missing'
+  swirfix=0; schedule=0
+  call capture_b1_10_process_state(probe)
+  if (allocated(probe%irrigation)) error stop 'inactive irrigation must not consume persistent state'
+
+  ! Optional process state must disappear when its physics is inactive.
+  swhea=0; swsolu=0; swcrop=0
+  call capture_b1_10_process_state(probe)
+  if (allocated(probe%thermal) .or. allocated(probe%solute) .or. allocated(probe%crop) .or. &
+      allocated(probe%wofost)) error stop 'inactive optional physics consumed persistent state'
 
   print *, 'FCI08_PROCESS_CHECKPOINT PASS'
 contains
