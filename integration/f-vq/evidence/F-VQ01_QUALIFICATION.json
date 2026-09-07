@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ01",
+  "qualification_scope": "FCI11_VERIFICATION_ADMISSION",
+  "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+  "fci11_qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+  "qualified_fvq_postimage": "dc2fe8087749ad3e08510f353ca8c4c95d23ad55",
+  "workflow_run": 34103657080,
+  "workflow_name": "VQ reference qualification",
+  "workflow_conclusion": "success",
+  "jobs": {
+    "corrected_reference": {
+      "job_id": 101683623732,
+      "name": "Verify current corrected reference",
+      "conclusion": "success"
+    },
+    "fvq01_admission": {
+      "job_id": 101683624001,
+      "name": "F-VQ01 exact F-CI11 admission",
+      "conclusion": "success"
+    }
+  },
+  "compiler": "GNU Fortran 13.3.0",
+  "oracle": {
+    "snapshot": "B1.10",
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "admission": "PASS"
+  },
+  "fvq01_gate": {
+    "status": "PASS",
+    "failed": [],
+    "production_source_changed": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+    "source_provenance": "PASS",
+    "asset_inventory": "PASS",
+    "admission_matrix": "PASS",
+    "b1_snapshot": "PASS",
+    "existing_b1_b2_gates": "PASS_WITH_EXPECTED_B2_BLOCK",
+    "fci11_scope": "PASS"
+  },
+  "unit_tests": {
+    "count": 8,
+    "result": "PASS"
+  },
+  "reusable_fci_gates": {
+    "F-CI07": "PASS",
+    "F-CI08": "PASS",
+    "F-CI09": "PASS_EXPECTED_LOCKS_PRESENT",
+    "F-CI10": "PASS_EXPECTED_SNOW_MACROPORE_FAIL_CLOSED",
+    "F-CI11": "PASS_TEMPORAL_ERROR_NOT_CLAIMED"
+  },
+  "physical_evidence_scope": {
+    "generic_non_midnight": "QUALIFIED_FOR_ADMITTED_FCI11_PROFILE",
+    "generic_cross_day": "QUALIFIED_FOR_ADMITTED_FCI11_PROFILE",
+    "unrounded_mass": "QUALIFIED_FOR_ADMITTED_NON_SNOW_NON_MACROPORE_PROFILE",
+    "hard_mass_limit_cm": 1e-6,
+    "max_observed_abs_residual_cm": 1.8590012175467852e-7,
+    "o0_o2_identity": "QUALIFIED_FOR_RECORDED_FCI11_CASES",
+    "same_committed_state_whole_day_rerun": "QUALIFIED_FOR_ADMITTED_FCI07_HUPSEL_CASES"
+  },
+  "blocked_claims": {
+    "transaction_model_generic_binding": "BLOCKED_BY_FCI12",
+    "production_warm_start_independence": "BLOCKED_BY_FCI12",
+    "real_execute_reference_interval": "BLOCKED_BY_FCI12",
+    "physical_temporal_error_metric": "BLOCKED_BY_TEMPORAL_ERROR",
+    "canonical_result_diagnostic_contract": "BLOCKED_BY_RESULT_CONTRACT",
+    "complete_snow_storage_accounting": "BLOCKED_BY_RESULT_CONTRACT",
+    "complete_macropore_storage_accounting": "BLOCKED_BY_RESULT_CONTRACT",
+    "legacy_backend_reentrant_parallel": "BLOCKED"
+  },
+  "qualification_decision": "QUALIFIED_FVQ01_ADMISSION_ONLY",
+  "non_claims": [
+    "No B2/canonical-reference physics PASS is claimed.",
+    "No testdouble PASS is used to qualify real SWAP5 physics.",
+    "No temporal-error tolerance is invented.",
+    "No snow or macropore storage total is constructed.",
+    "No production source was changed by F-VQ01."
+  ]
+}
