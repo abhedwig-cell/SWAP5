@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT07",
+  "decision": "QUALIFIED",
+  "qualified_postimage": "d24358c7074714c6d911bb60dc8cdfcfd656e8b6",
+  "production_source_commit": "c68e4300aa83bcccfdc24f84be2992abda206090",
+  "production_source_blob": {
+    "src/adapter/mod_b1_10_process_checkpoint.f90": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae"
+  },
+  "qualification_run": {
+    "run_id": 34133107286,
+    "conclusion": "success",
+    "focused_job_id": 101777713534,
+    "regression_job_id": 101777790423,
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "focused_evidence": {
+    "FKT03_CONTRACT_GATE": "PASS",
+    "FKT03_FSI_BOUNDARY_GATE": "PASS",
+    "FKT03_FOCUSED_O0_O2_GATE": "PASS",
+    "FKT04_CONTRACT_GATE": "PASS",
+    "FKT04_FOCUSED_O0_O2_GATE": "PASS",
+    "FKT05_CONTRACT_GATE": "PASS",
+    "FKT05_FOCUSED_O0_O2_GATE": "PASS",
+    "FKT06_CONTRACT_GATE": "PASS",
+    "FKT06_FOCUSED_O0_O2_GATE": "PASS",
+    "FKT07_CONTRACT_GATE": "PASS",
+    "FKT07_MACROPORE_CONTINUATION_GATE_O0": "PASS",
+    "FKT07_MACROPORE_CONTINUATION_GATE_O2": "PASS",
+    "FKT07_FOCUSED_O0_O2_GATE": "PASS"
+  },
+  "regression_evidence": {
+    "F-CI03": "PASS",
+    "F-CI04": "PASS",
+    "F-CI08": "PASS",
+    "F-CI09_forward_semantics": "PASS",
+    "FKT07_FCI09_FORWARD_REGRESSION": "PASS",
+    "F-CI10": "PASS",
+    "F-CI11": "PASS",
+    "F-CI13": "PASS",
+    "F-CI14": "PASS"
+  },
+  "fci09_forward_evolution_provenance": {
+    "canonical_historical_runner_modified": false,
+    "canonical_historical_process_pin_modified": false,
+    "historical_runner_blob": "4811a4653cb98d9d9c3630ed303c2fe0cc8975f7",
+    "historical_process_blob": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "qualified_fkt07_process_blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae",
+    "controlled_substitution_count": 1,
+    "semantic_test_logic_changed": false,
+    "result": "FCI09_GATE_PASS"
+  },
+  "defect_resolution": {
+    "real_defect_found_during_qualification": true,
+    "defect": "b1_10_process_clone was unsafe for sparse process state because unallocated allocatable components were assigned intrinsically",
+    "resolution": "copy water allocatables and optional process components only when allocated; explicitly allocate/copy macropore nstep",
+    "post_fix_sparse_clone_tested": true,
+    "physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "generic_kernel_changed": false
+  },
+  "qualified_claims": [
+    "B1.10 adapter-specific nstep continuation is materialized as compact optional transaction state",
+    "inactive macropore continuation remains unallocated",
+    "full and sparse b1_10_process_state_t clones are transaction-safe for the tested continuation lifecycle",
+    "checkpoint, replay, rollback, commit, stale-checkpoint rejection and hard-mass rejection preserve the required continuation semantics",
+    "generic F-KT remains unaware of nstep and F-SI history internals",
+    "historical F-CI09 provenance evidence remains unchanged while its semantic transaction-binding regression passes against the forward-evolved process-state source"
+  ],
+  "nonclaims": [
+    "macropore production execution is not admitted",
+    "F-SI solver/process provider bridge is not qualified here",
+    "real parallel HeadCalc is not admitted here",
+    "B1.10 production reference execution is not admitted",
+    "production MultiSWAP runtime is not admitted",
+    "full SWAP mass identity with active macropores is not qualified"
+  ],
+  "holds": [
+    "Macropore production remains fail-closed until an F-SI-owned adapter explicitly transfers nstep between solver/process execution and this transaction state and the composed route is independently qualified.",
+    "Reference execution remains fail-closed.",
+    "Production MultiSWAP remains outside F-KT."
+  ]
+}
