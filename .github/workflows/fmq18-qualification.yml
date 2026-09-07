@@ -1,0 +1,65 @@
+name: F-MQ18 F-SI04 real HeadCalc admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq18-fsi04-real-headcalc-admission
+    paths:
+      - 'tests/multiswap/fmq18_*'
+      - 'tests/multiswap/test_fmq18_*'
+      - 'tests/multiswap/verify_fmq18_*'
+      - 'tests/multiswap/run_fmq18_gate.py'
+      - 'docs/qualification/F-MQ18_*'
+      - '.github/workflows/fmq18-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq18-gate:
+    name: F-MQ18 focused real HeadCalc admission
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ18 admission tests
+        run: python3 tests/multiswap/run_fmq18_gate.py
+
+      - name: Fetch exact F-SI04 qualification and tested postimage
+        run: |
+          FSI04_QUAL=c76f794b93522bea3a80a6880bc95ef5671cb914
+          FSI04_TESTED=0cfbefc271447b4b53eeee50c1dfbb2acaf020df
+          git fetch --no-tags origin "$FSI04_QUAL" "$FSI04_TESTED"
+          test "$(git rev-parse "$FSI04_QUAL:integration/f-si/F-SI04_QUALIFICATION.json")" = "fdfc028191a347fc2bdcec2d136788c4f9a84177"
+          test "$(git rev-parse "$FSI04_TESTED:tests/fsi/run_fsi04_gate.sh")" = "b8bbe5d6c2eb86bda995d77ec44e813ffbe84d85"
+          test "$(git rev-parse "$FSI04_TESTED:src/legacy/b1_10_port/headcalc.f90")" = "225b9f2cc1ecff01414b5691799103b92bc068c5"
+          git show "$FSI04_QUAL:integration/f-si/F-SI04_QUALIFICATION.json" > /tmp/fsi04_qualification.json
+          git show "$FSI04_TESTED:tests/fsi/run_fsi04_gate.sh" > /tmp/fsi04_gate.sh
+
+      - name: Verify external F-SI04 qualification scope
+        run: |
+          python3 tests/multiswap/verify_fmq18_fsi04_external.py \
+            --qualification /tmp/fsi04_qualification.json \
+            --gate-source /tmp/fsi04_gate.sh
+
+      - name: Re-run exact F-SI04 tested postimage gate
+        run: |
+          git worktree add --detach /tmp/fsi04-tested 0cfbefc271447b4b53eeee50c1dfbb2acaf020df
+          (cd /tmp/fsi04-tested && bash tests/fsi/run_fsi04_gate.sh) | tee /tmp/fsi04-gate.out
+          grep -q '^F-SI04_GATE PASS$' /tmp/fsi04-gate.out
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq18_gate.py \
+            tests/multiswap/test_fmq18_fsi04_real_headcalc_admission.py \
+            tests/multiswap/verify_fmq18_fsi04_external.py
