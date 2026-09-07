@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ01",
+  "mode": "QUALIFICATION_ONLY",
+  "baseline": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "canonical_workflow_run": 34100440481,
+    "oracle": "B1.10"
+  },
+  "checkpoint_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed": false,
+  "status": "PERSISTED",
+  "next_action": "Complete exact-provenance VQ asset inventory and executable admission matrix before rerunning reusable qualification gates.",
+  "recovery_point": "qualification/f-vq01-admission, starting from F-CI11 qualification evidence commit b18150cb4f5313f01fc1c775917c617b421c9ba0",
+  "blockers": [
+    "F-CI12: bind qualified generic advance and mass seam in b1_10_transaction_model_t",
+    "Qualified physical temporal-error metric and tolerances are absent",
+    "Real B1.10 execution through execute_reference_interval is not yet admitted",
+    "Complete snow storage accounting is absent",
+    "Complete macropore storage accounting is absent",
+    "Full reentrant/parallel qualification of the legacy backend is absent"
+  ],
+  "holds": [
+    "No production source changes are permitted in F-VQ.",
+    "A testdouble PASS cannot qualify real SWAP5 physics.",
+    "Focused physical qualification does not qualify optional physics outside the exercised profile.",
+    "B2/canonical-reference admission remains fail-closed until the real canonical physical entrypoint and result contract are executable."
+  ]
+}
