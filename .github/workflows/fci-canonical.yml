@@ -135,3 +135,15 @@ jobs:
         run: gfortran --version
       - name: F-CI12 physical advance and temporal characterization gate
         run: bash tests/fci/run_fci12_gate.sh
+
+  fci13-recoverable-physical-trial-status:
+    needs: fci12-physical-transaction-advance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI13 recoverable physical trial status gate
+        run: bash tests/fci/run_fci13_gate.sh

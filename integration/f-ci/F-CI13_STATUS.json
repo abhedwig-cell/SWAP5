@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI13",
+  "title": "Recoverable Physical Trial Status Contract",
+  "branch": "integration/f-ci-canonical",
+  "parent_head": "729574de00fbb1540affe2af74a7202b38d29754",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "legacy_failure_inventory": "IMPLEMENTED",
+    "trial_status_contract": "IMPLEMENTED",
+    "terminal_richards_nonconvergence_mapping": "IMPLEMENTED_CANONICAL_ONLY",
+    "internal_dt_retry_semantics": "PRESERVED",
+    "fatal_configuration_semantics": "PRESERVED_FAIL_FAST",
+    "standalone_terminal_nonconvergence_semantics": "PRESERVED_LEGACY_CONTINUE",
+    "retryable_trial_state_isolation": "GATE_PENDING",
+    "o0_o2": "GATE_PENDING",
+    "canonical_ci": "PENDING",
+    "scalar_temporal_error_policy": "NOT_ADMITTED",
+    "execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED"
+  },
+  "holds": [
+    "qualify scalar temporal-error acceptance policy",
+    "complete optional thermal/solute/irrigation/crop/WOFOST temporal characterization",
+    "legacy swap_error paths remain fatal rather than recoverably returned",
+    "snow/macropore storage and failure qualification",
+    "reentrant/parallel legacy backend qualification"
+  ],
+  "status": "MATERIALIZED_CI_PENDING"
+}

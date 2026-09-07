@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI13",
+  "source_audit": {
+    "headcalc_blob": "225b9f2cc1ecff01414b5691799103b92bc068c5",
+    "fci11_swap_part05_preimage_blob": "beb729ff8b399c5522c9e54a7a8429bb0a1504e5",
+    "fci13_swap_part05_postimage_blob": "48fcc9d6f8cb95ef3ef773b27077c8368fdf72f9",
+    "fci11_timecontrol_part05_blob": "fe351d7c1c9dfd7edbd831acb527049cb8e4a9b5"
+  },
+  "classification": [
+    {
+      "path": "HeadCalc TRIDAG singularity",
+      "class": "INTERNAL_ALTERNATIVE_SOLVER",
+      "outer_trial_status": "NONE_IF_ALTERNATIVE_SOLVER_RETURNS",
+      "reason": "legacy immediately invokes alternative_solver and continues"
+    },
+    {
+      "path": "HeadCalc nonconvergence above dtmin",
+      "class": "INTERNAL_RETRY",
+      "outer_trial_status": "NONE",
+      "reason": "state reset, fldecdt set, TimeControl(5) reduces internal dt"
+    },
+    {
+      "path": "HeadCalc persistent nonconvergence at minimum dt",
+      "class": "RETRYABLE_NUMERICAL",
+      "outer_trial_status": "B1_10_TRIAL_STATUS_RETRYABLE_NUMERICAL",
+      "reason": "legacy terminal branch increments worker history iwarn; F-CI13 canonical postimage restores step water state and returns before postprocessing"
+    },
+    {
+      "path": "unsupported or invalid configuration via swap_error",
+      "class": "FATAL_CONTRACT",
+      "outer_trial_status": "FAIL_FAST_NOT_RETRYABLE",
+      "reason": "configuration/input errors are not numerical convergence failures"
+    }
+  ],
+  "scope": {
+    "canonical_worker_path_only": true,
+    "standalone_legacy_behavior_unchanged": true,
+    "physics_formulas_changed": false,
+    "solver_tolerances_changed": false,
+    "retry_policy_changed": false,
+    "mass_tolerance_changed": false,
+    "calendar_rules_changed": false
+  },
+  "qualification": {
+    "focused_o0_o2": "PENDING",
+    "canonical_ci": "PENDING"
+  }
+}
