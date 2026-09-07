@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "workstream": "VQ",
-  "slice": "VQ-1d",
+  "slice": "VQ-1d3",
   "observation_baseline": "0e5c58134b225014426c75e240f0b668affbb4a1",
   "b1_oracle": {
     "snapshot": "B1.10",
@@ -14,6 +14,7 @@
     "integration": {
       "entrypoint_path": null,
       "result_contract_path": null,
+      "seam_contract_path": null,
       "reference_policy": null
     },
     "capabilities": {
@@ -30,11 +31,11 @@
   "evidence": {
     "implementation_status": "docs/architecture/implementation-status.md",
     "reference_policy": "docs/verification/reference-baselines.md",
-    "repository_observation": "The pinned production observation baseline contains no integrated callable SWAP5/B2 reference entrypoint or canonical result contract. B1.10 admission changes corrected-reference tillage start-state semantics/tooling only and does not create a B2 production seam."
+    "repository_observation": "The pinned production observation commit contains no integrated callable SWAP5/B2 reference entrypoint, semantic seam declaration or canonical result contract. B1.10 and the staged SWAP-004 candidate affect corrected-reference verification only and do not create a B2 production seam."
   },
   "decision": {
     "b1_to_b2_numerical_comparison": "BLOCKED",
-    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint and result contract exist on the pinned production observation commit.",
-    "next_admission_gate": "Provide an integrated callable reference entrypoint plus the required typed interval/state/forcing/config/result/accounting/diagnostic capabilities, then change status to READY_FOR_VQ_B1_TO_B2 and rerun tools/vq/b2_reference_gate.py."
+    "reason": "No integrated exact SWAP5/B2 reference-mode entrypoint, seam contract and result contract exist on the pinned production observation commit.",
+    "next_admission_gate": "Provide one integrated full-accuracy reference seam on an exact commit and rerun the fail-closed VQ-1d admission chain."
   }
 }

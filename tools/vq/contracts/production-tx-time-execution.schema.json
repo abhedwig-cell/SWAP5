@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SWAP5-VQ-production-tx-time-execution-v1",
+  "title": "SWAP5 VQ production TX/TIME execution admission candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "workstream",
+    "slice",
+    "status",
+    "production_adapter_candidate_path",
+    "adapter_loader",
+    "suite",
+    "pre_execution_claims",
+    "decision"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "workstream": {"const": "VQ"},
+    "slice": {"const": "VQ-1e3"},
+    "status": {
+      "enum": [
+        "BLOCKED_NO_PRODUCTION_ADAPTER_BINDING",
+        "READY_FOR_PRODUCTION_TX_TIME_EXECUTION"
+      ]
+    },
+    "production_adapter_candidate_path": {"type": "string", "minLength": 1},
+    "adapter_loader": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["module_path", "factory_symbol", "adapter_protocol"],
+      "properties": {
+        "module_path": {"type": ["string", "null"]},
+        "factory_symbol": {"type": ["string", "null"]},
+        "adapter_protocol": {"const": "VQ-QualificationAdapter-v1"}
+      }
+    },
+    "suite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "required_case_ids"],
+      "properties": {
+        "protocol": {"const": "VQ-TX-TIME-SUITE-v1"},
+        "required_case_ids": {
+          "type": "array",
+          "minItems": 11,
+          "maxItems": 11,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "TX-ROLLBACK-01",
+              "TX-COMMIT-01",
+              "TX-ACCOUNT-01",
+              "TX-RERUN-01",
+              "TX-BC-REPLAY-01",
+              "TX-WARM-01",
+              "TIME-00",
+              "TIME-06",
+              "TIME-18",
+              "TIME-36",
+              "TIME-SPLIT"
+            ]
+          }
+        }
+      }
+    },
+    "pre_execution_claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "production_execution_claimed",
+        "b2_physics_status",
+        "production_mass_tolerance_qualified"
+      ],
+      "properties": {
+        "production_execution_claimed": {"const": false},
+        "b2_physics_status": {"const": "NOT_EVALUATED"},
+        "production_mass_tolerance_qualified": {"const": false}
+      }
+    },
+    "decision": {"type": "object"}
+  }
+}

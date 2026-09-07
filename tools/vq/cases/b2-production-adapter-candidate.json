@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "workstream": "VQ",
+  "slice": "VQ-1e2",
+  "status": "BLOCKED_NO_ADMITTED_B2_SEAM",
+  "b2_candidate_path": "tools/vq/cases/b2-reference-candidate.json",
+  "binding_contract_path": null,
+  "decision": {
+    "production_tx_time_qualification": "BLOCKED",
+    "reason": "The current B2 reference target is not admitted, so no production QualificationAdapter binding may be accepted yet.",
+    "next_gate": "After the B2 reference target passes VQ-1d admission, provide one non-synthetic SWAP5-VQ-production-adapter-binding-v1 declaration bound to the same exact commit, entrypoint, seam, result contract and reference policy."
+  }
+}
