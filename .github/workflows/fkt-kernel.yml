@@ -23,7 +23,7 @@ on:
       - '.github/workflows/fkt-kernel.yml'
 
 jobs:
-  fkt03-focused-o0-o2:
+  fkt04-focused-o0-o2:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -32,11 +32,11 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-KT03 opaque carrier, F-SI boundary and O0/O2 gate
-        run: bash tests/fkt/run_fkt03_gate.sh
+      - name: F-KT04 committed temporal provenance and O0/O2 gate
+        run: bash tests/fkt/run_fkt04_gate.sh
 
   fci-regression:
-    needs: fkt03-focused-o0-o2
+    needs: fkt04-focused-o0-o2
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
