@@ -4,6 +4,9 @@ module mod_reference_richards_state_binding
   implicit none
   private
 
+  integer, parameter, public :: FSI_TOP_MODE_LEGACY_CONTEXT = -9001
+  integer, parameter, public :: FSI_TOP_MODE_EXPLICIT_FLUX = -9002
+
   type, public :: reference_richards_state_binding_t
      integer :: active_nodes = 0
      real(real64), allocatable :: h(:)
