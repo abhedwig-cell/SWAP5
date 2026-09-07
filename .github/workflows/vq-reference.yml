@@ -64,8 +64,8 @@ jobs:
       - name: Check deterministic B1.10 reconstructor syntax
         run: python -m py_compile tools/vq/b1_10_reconstruct.py
 
-  fvq03-fci13-status:
-    name: F-VQ03 qualified F-CI13 status admission
+  fvq04-real-failure-fixture:
+    name: F-VQ04 real B1.10 terminal-failure fixture readiness
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact qualification head
@@ -85,11 +85,14 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: F-VQ03 exact F-CI13 admission and fail-closed readiness gate
-        run: python -m tools.vq.fvq03_admission
+      - name: F-VQ04 fail-closed real failure fixture admission gate
+        run: python -m tools.vq.fvq04_failure_fixture_gate
 
-      - name: F-VQ03 unit tests
-        run: python -m unittest tools.vq.test_fvq03_admission
+      - name: F-VQ04 promotion and scope guard tests
+        run: python -m unittest tools.vq.test_fvq04_failure_fixture_gate
+
+      - name: Re-run exact F-CI13 recoverable-status qualification gate
+        run: bash tests/fci/run_fci13_gate.sh
 
       - name: Re-run qualified verifier semantic and fault-injection tests
         run: |
@@ -104,6 +107,3 @@ jobs:
           python tools/vq/tx_time_harness.py \
             --fixture-suite \
             --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
-
-      - name: Re-run exact F-CI13 recoverable-status qualification gate
-        run: bash tests/fci/run_fci13_gate.sh
