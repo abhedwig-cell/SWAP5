@@ -234,3 +234,32 @@ jobs:
         run: bash tests/fci/run_fci13_gate.sh
       - name: Re-run F-CI14 temporal-policy contract gate
         run: bash tests/fci/run_fci14_gate.sh
+
+  fvq10-temporal-profile-promotion-contract:
+    name: F-VQ10 temporal profile qualification and promotion contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualification head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ10 promotion contract gate
+        run: python -m tools.vq.fvq10_profile_promotion_gate
+      - name: F-VQ10 partition, freeze, mass and promotion guards
+        run: python -m unittest tools.vq.test_fvq10_profile_promotion
+      - name: Check F-VQ10 Python syntax
+        run: |
+          python -m py_compile \
+            tools/vq/fvq10_profile_promotion.py \
+            tools/vq/fvq10_profile_promotion_gate.py
+      - name: Re-run exact qualified F-VQ09 harness contract
+        run: python -m tools.vq.fvq09_harness_gate
+      - name: Re-run exact F-CI14 temporal-policy contract gate
+        run: bash tests/fci/run_fci14_gate.sh
