@@ -43,7 +43,7 @@ done
 [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_state_binding.f90)" == "e68d88382c6502c571713cc97fddd4e18434e271" ]] || { echo 'F-SI07_PIN FAIL state binding' >&2; exit 1; }
 
 # Contract and structural source checks.
-grep -Eq '^subroutine[[:space:]]+headcalc\(worker,[[:space:]]*fsi_workspace,[[:space:]]*history,[[:space:]]*state_binding\)' "$HEADCALC"
+grep -Fq 'subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)' "$HEADCALC"
 grep -Fq 'state => state_binding' "$HEADCALC"
 grep -Fq 'do solver_numbit = 1, MaxIt1' "$HEADCALC"
 ! grep -Fq 'do state%numbit = 1, MaxIt1' "$HEADCALC"
@@ -56,7 +56,9 @@ contract=json.loads(pathlib.Path(sys.argv[1]).read_text())
 assert contract['ownership']['persistent_column_owner'] is False
 assert contract['ownership']['transaction_authority'] is False
 assert contract['fkt_boundary']['shared_fkt_type_change'] is False
-assert contract['provider_boundary']['real_parallel_headcalc_admission_expected_after_fsi07'] is False
+assert contract['provider_boundary']['real_headcalc_parallel_reentrancy_qualified'] is True
+assert contract['provider_boundary']['parallel_reference_backend_admitted'] is False
+assert contract['provider_boundary']['full_swap_parallel_admitted'] is False
 text=pathlib.Path(sys.argv[2]).read_text()
 a=text.index('  subroutine reference_richards_legacy_solve')
 b=text.index('  end subroutine reference_richards_legacy_solve',a)
@@ -207,11 +209,17 @@ echo 'F-SI07_WORKSPACE_1_2_4_8 PASS'
 bash "$ROOT/tests/fci/run_fci03_gate.sh" >/dev/null
 echo 'F-SI07_FKT_BOUNDARY_REGRESSION PASS'
 
-# Full real HeadCalc parallel admission still fails closed. Mutable whole-solve
-# state is isolated now, but direct legacy process/provider calls remain shared.
+# The real common reference route is qualified for the exact admitted fixture.
+# General heterogeneous-provider backend admission remains fail closed because
+# constitutive and source/sink process providers are still legacy shared inputs.
 grep -Fq 'call boundtop_state_bridge(2)' "$HEADCALC"
 grep -Fq 'use MOD_MvG' "$HEADCALC"
 grep -Fq 'use MOD_drain' "$HEADCALC"
 grep -Fq 'use MOD_irrigation' "$HEADCALC"
-echo 'F-SI07_REAL_PARALLEL_ADMISSION BLOCKED_LEGACY_PROVIDER_GLOBALS'
-echo 'F-SI07_GATE PASS'
+
+bash "$ROOT/tests/fsi/run_fsi07_common_route_gate.sh"
+bash "$ROOT/tests/fsi/run_fsi07_provider_concurrency_gate.sh"
+
+echo 'F-SI07_REAL_HEADCALC_PARALLEL_REENTRANCY QUALIFIED_ADMITTED_FIXTURE'
+echo 'F-SI07_PARALLEL_REFERENCE_BACKEND BLOCKED_HETEROGENEOUS_LEGACY_PROVIDERS'
+echo 'F-SI07_FINAL_GATE PASS'
