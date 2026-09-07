@@ -42,26 +42,30 @@ new='''module fsi07_concurrency_control
 end module fsi07_concurrency_control
 
 module MOD_top
+  use, intrinsic :: iso_c_binding, only: c_int
   use fsi07_concurrency_control, only: parallel_probe
   implicit none
   real(8) :: q0 = 0.0d0
   logical :: flrunoff = .false., ftoph = .false.
   real(8) :: hsurf = 0.0d0
+  interface
+    function usleep(usec) bind(C, name='usleep') result(rc)
+      import :: c_int
+      integer(c_int), value :: usec
+      integer(c_int) :: rc
+    end function usleep
+  end interface
 contains
   subroutine boundtop(task)
     use variables, only: h, qtop
     integer, intent(in) :: task
+    integer(c_int) :: rc
     if (task < 0) error stop 'invalid boundtop task'
-    if (parallel_probe) then
-!$omp barrier
-    end if
+    if (parallel_probe) rc = usleep(20000_c_int)
     ftoph = .false.
     qtop = -1.0d0
     ! State-sensitive but equation-neutral probe: hsurf is not used when ftoph=.false.
     hsurf = h(1)
-    if (parallel_probe) then
-!$omp barrier
-    end if
   end subroutine boundtop
   subroutine pondrunoff()
   end subroutine pondrunoff
@@ -86,7 +90,7 @@ for opt in 0 2; do
     "$out/contract.o" "$out/worker.o" "$out/stubs.o" -o "$out/probe"
 
   for threads in 1 2 4 8; do
-    OMP_NUM_THREADS="$threads" OMP_DYNAMIC=false "$out/probe" > "$out/t${threads}.txt"
+    timeout 30s env OMP_NUM_THREADS="$threads" OMP_DYNAMIC=false "$out/probe" > "$out/t${threads}.txt"
     if [[ "$threads" == 1 ]]; then
       grep -Fq 'F-SI07_REAL_HEADCALC_1 PASS' "$out/t${threads}.txt"
     else
