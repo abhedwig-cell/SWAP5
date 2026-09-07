@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT05",
+  "evidence_type": "CURRENT_DOWNSTREAM_BOUNDARY_CHECK",
+  "fkt05_green_tested_postimage_before_boundary_refresh": {
+    "commit": "bfb5bd7dca2b71232e1f0a329e81ac121ac894ba",
+    "workflow_run": 34124593953,
+    "focused_job": 101750179016,
+    "fci_regression_job": 101750239593,
+    "focused_o0_o2": "PASS",
+    "selected_fci_regressions": "PASS"
+  },
+  "fsi05": {
+    "branch": "work/f-si05-production-workspace-seam",
+    "head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "workflow_run": 34124675751,
+    "job": 101750448325,
+    "conclusion": "success",
+    "production_seam": "optional worker/job-owned reference_richards_workspace_t passed into HeadCalc",
+    "protected_sources_unchanged_from_fsi04": [
+      "src/legacy/b1_10_port/soilwater.f90",
+      "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "src/solver/mod_soil_water_solver_contract.f90"
+    ],
+    "fkt_owned_kernel_or_transaction_files_changed": false,
+    "checkpoint_commit_rollback_authority_transferred_to_fsi": false,
+    "focused_replay_o0_o2_identity": "PASS",
+    "adapter_regression": "PASS",
+    "workspace_1_2_4_8_workers": "PASS",
+    "full_reference_solver_reentrancy_qualified": false
+  },
+  "fmq18": {
+    "branch": "qualification/f-mq18-fsi04-real-headcalc-admission",
+    "head": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726",
+    "qualified": true,
+    "status": "QUALIFIED_FSI04_REAL_HEADCALC_FOCUSED_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": 0
+  },
+  "fvq11": {
+    "branch": "qualification/f-vq11-downstream-source-bound-admission",
+    "head": "e1c8ca7a94b4718169ec44abaf8fca297133d233",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "decision": "PENDING_FVQ11_CI",
+    "contains_outdated_fkt05_failure_reference": true,
+    "consumed_as_fkt05_qualification_evidence": false,
+    "production_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "decision": "COMPATIBLE_WITH_FKT05_SCOPE_NO_DOWNSTREAM_SCOPE_PROMOTION",
+  "requires_fkt05_retest_after_contract_refresh": true,
+  "notes": [
+    "F-SI05 changes solver-owned production workspace plumbing but leaves F-KT checkpoint and transaction authority untouched.",
+    "F-MQ18 does not promote MultiSWAP real-physics or production-runtime coverage.",
+    "F-VQ11 is observed only as pending evidence and cannot override current F-KT05 qualification state.",
+    "Canonical B1.10 reference execution remains fail-closed because the production temporal profile is still unqualified."
+  ]
+}

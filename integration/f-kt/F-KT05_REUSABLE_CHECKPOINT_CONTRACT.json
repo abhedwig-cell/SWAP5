@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "workstream": "F-KT",
   "work_unit": "F-KT05",
   "title": "Reusable committed checkpoint carrier",
@@ -76,17 +76,27 @@
     "solver_scratch_in_checkpoint": false,
     "fsi03_qualified_head": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
     "fsi03_qualified_scope": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
-    "fsi04_observed_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+    "fsi04_qualified_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
     "fsi04_qualified_scope": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY",
-    "fsi04_changes_production_route": false,
-    "fsi04_full_reference_solver_reentrancy_qualified": false,
-    "fsi03_or_fsi04_real_headcalc_production_route_consumed_by_fkt05": false
+    "fsi05_observed_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_workflow_run": 34124675751,
+    "fsi05_workflow_job": 101750448325,
+    "fsi05_gate_conclusion": "success",
+    "fsi05_production_workspace_seam_present": true,
+    "fsi05_protected_transaction_source_unchanged": true,
+    "fsi05_changes_fkt_checkpoint_or_commit_authority": false,
+    "fsi05_full_reference_solver_reentrancy_qualified": false,
+    "fsi05_consumed_by_fkt05_as_boundary_evidence_only": true
   },
   "multiswap_boundary": {
     "runtime_may_hold_checkpoint_per_active_trial": true,
     "checkpoint_is_not_scheduler_or_batch_state": true,
     "production_multiswap_runtime_qualified_by_fkt05": false,
-    "fmq17_real_physics_coverage_promotion": false
+    "fmq18_qualified_head": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726",
+    "fmq18_status": "QUALIFIED_FSI04_REAL_HEADCALC_FOCUSED_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+    "fmq18_matrix_promotions": 0,
+    "fmq18_real_physics_executable_rows": 0,
+    "fmq18_production_runtime_qualified_rows": 0
   },
   "reference_policy": {
     "fvq10_head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
@@ -95,6 +105,10 @@
     "real_b1_10_temporal_characterization_qualified": false,
     "production_temporal_profile_qualified": false,
     "numeric_limits_introduced_by_fvq10": false,
+    "fvq11_observed_head": "e1c8ca7a94b4718169ec44abaf8fca297133d233",
+    "fvq11_decision": "PENDING_FVQ11_CI",
+    "fvq11_qualified": false,
+    "fvq11_consumed_as_fkt05_qualification_evidence": false,
     "b1_10_production_reference_admission": false,
     "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
     "fail_closed_hold_preserved": true
@@ -119,8 +133,9 @@
   },
   "preserved_holds": [
     "F-VQ10 qualifies only the temporal-profile promotion method; real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
-    "F-SI03 qualifies source-bound adapter translation only and F-SI04 qualifies source-bound main-workspace replay only; neither switches or qualifies the full production reference-solver route",
-    "full reference-solver reentrancy and remaining solver scratch isolation remain F-SI ownership",
+    "F-SI05 qualifies a focused production HeadCalc workspace seam but does not qualify full reference-solver reentrancy or transfer F-KT transaction authority to F-SI",
+    "F-MQ18 admits focused real HeadCalc evidence without promoting any real-physics or production-runtime MultiSWAP matrix row",
+    "F-VQ11 remains pending and is not consumed as F-KT05 qualification evidence",
     "production MultiSWAP scheduling/runtime remains outside F-KT",
     "optional-process temporal/storage coverage remains downstream qualification work"
   ]
