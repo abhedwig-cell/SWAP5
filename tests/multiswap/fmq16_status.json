@@ -21,9 +21,25 @@
     "fvq09_qualified": false,
     "fmr_branch_present": false
   },
+  "qualification_evidence": {
+    "fmq16_workflow_run": 34121434215,
+    "conclusion": "success",
+    "admission_tests": "PASS_6_OF_6",
+    "exact_fsi03_head_and_blob_verification": "PASS",
+    "formal_fsi03_qualification_absence_check": "PASS",
+    "source_bound_barrier_verifier": "PASS",
+    "strict_fsi03_compare_reals_blocker_reproduced": "PASS_EXPECTED_FAILURE",
+    "python_gate_compile": "PASS"
+  },
+  "coverage": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "promotions": []
+  },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI03_FAIL_CLOSED_ADMISSION_BARRIER",
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FSI03_FAIL_CLOSED_BARRIER_NO_COVERAGE_PROMOTION",
   "decision": "Do not consume the F-SI03 adapter as qualification evidence until F-SI03 itself has a green source-bound gate and a formal qualification postimage."
 }
