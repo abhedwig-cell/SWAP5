@@ -10,7 +10,8 @@ Exact qualification basis:
 - F-CI14 qualified source head: `da5026d8b87ad2f3c7912360891839a120ecccb6`;
 - F-CI14 qualified canonical postimage: `c226988ae0782a7d8d0818f5d4aeaab61b696de4`;
 - canonical F-CI14 workflow: `34107845964`, job `101697462464`;
-- F-CI17 `4ec5ce2a638047a2468967944902bc7d92f37339` is carried only as the moving-canonical overlay and is not consumed as F-VQ05 qualification evidence.
+- F-CI17 formal-closeout head `927b7fb831ac91f77da11eb375e71b1975e1749f` is carried only as the moving-canonical overlay and is not consumed as F-VQ05 temporal qualification evidence;
+- that F-CI17 closeout records the already-qualified registry postimage `4ec5ce2a638047a2468967944902bc7d92f37339`, workflow `34110319677`, job `101705702221`, and promotes CI-G10 only; overall downstream release remains blocked.
 
 ## What the contract means
 
@@ -45,5 +46,7 @@ Its successful result can qualify only `FCI14_TEMPORAL_ACCEPTANCE_CONTRACT_ONLY`
 - `production_temporal_profile_qualified=false`;
 - `real_b1_10_temporal_acceptance_qualified=false`;
 - `canonical_reference_admission=BLOCKED_FAIL_CLOSED`.
+
+The VQ workflow replays historical F-VQ04 on its own qualified postimage rather than evaluating the historical change-scope guard against later canonical overlays. This preserves the meaning of the earlier evidence without weakening its gate.
 
 This preserves the separation between a correct acceptance mechanism and the still-missing scientific/numerical evidence needed to choose its production limits.
