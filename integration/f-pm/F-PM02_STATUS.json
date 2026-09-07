@@ -19,10 +19,12 @@
     "tool": "tools/fpm/fpm02_admission_gate.py",
     "current_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
     "current_candidate_ref": "integration/f-mr",
-    "current_candidate_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "current_candidate_commit": "8c819abbad3345358efde600cc306e064d63c12b",
     "current_decision": "REJECT_FAIL_CLOSED"
   },
   "current_candidate_summary": {
+    "fmr01_phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+    "fmr01_qualified": false,
     "fci18_ancestry": "PASS",
     "fkt05_qualified_status_and_kernel_blob": "PASS",
     "b1_10_oracle_infrastructure": "PASS",
@@ -32,7 +34,7 @@
     "shared_fkt05_fsi05_baseline": false
   },
   "test_status": "EXECUTABLE_GATE_PERSISTED_BUT_NOT_RUN_AGAINST_REMOTE_REF_IN_LOCAL_NETWORKLESS_RUNNER",
-  "source_bound_assessment": "CURRENT_CANDIDATE_REJECTION_VERIFIED_DIRECTLY_FROM_GITHUB",
+  "source_bound_assessment": "LATEST_FMR01_CANDIDATE_REJECTION_VERIFIED_DIRECTLY_FROM_GITHUB",
   "source_change_control": {
     "production_src_files_changed_in_f_pm02": 0,
     "physics_changed": false,
@@ -43,13 +45,14 @@
   "blocker": {
     "id": "FPM02-G01-SHARED-BASELINE",
     "owner": "F-MR/canonical integration, not F-PM",
-    "condition_to_clear": "Publish one exact candidate containing the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam while retaining the pinned B1.10 oracle infrastructure."
+    "condition_to_clear": "Publish one exact tested and qualified candidate containing the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam while retaining the pinned B1.10 oracle infrastructure."
   },
   "holds": [
     "Do not create or modify production snow process source before admission PASS.",
     "Do not merge F-KT/F-SI lineages in F-PM.",
+    "Do not consume F-SI06 while it is moving or unqualified.",
     "Do not infer generic-duration or subdaily snow scaling.",
     "Do not interpret F-SI05 focused workspace qualification as full reference-solver reentrancy or full SWAP mass qualification."
   ],
-  "next_action": "When integration/f-mr advances, rerun F-PM02 admission against the new exact commit. Start structural SNOW migration only after PASS."
+  "next_action": "Wait for F-MR/canonical integration to publish an exact tested and qualified shared candidate. Then rerun F-PM02 admission. Start structural SNOW migration only after PASS."
 }
