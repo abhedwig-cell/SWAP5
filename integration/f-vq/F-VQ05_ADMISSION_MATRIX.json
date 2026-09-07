@@ -10,113 +10,17 @@
     "canonical_job": 101697462464
   },
   "claims": [
-    {
-      "claim_id": "FVQ05-C01",
-      "claim": "F-CI14 temporal acceptance contract provenance and canonical CI are exact and qualified.",
-      "scope": "SOURCE_BOUND_CONTRACT_PROVENANCE",
-      "classification": "DIRECTLY_REUSABLE",
-      "test_executable": true,
-      "claim_qualified": true,
-      "blocker": null
-    },
-    {
-      "claim_id": "FVQ05-C02",
-      "claim": "Temporal acceptance compares compatible full-step and two-half-step endpoint state at the same t1; lagged continuation state is diagnostic only.",
-      "scope": "TEMPORAL_CONTRACT_SEMANTICS",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C03",
-      "claim": "The supported temporal contract normalizes eight unit-specific endpoint metrics by independently supplied per-metric limits and takes the maximum ratio.",
-      "scope": "TEMPORAL_CONTRACT_NORMALIZATION",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C04",
-      "claim": "A zero temporal limit means exact equality is required for that metric.",
-      "scope": "TEMPORAL_CONTRACT_ZERO_LIMIT",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C05",
-      "claim": "Unsupported optional process classes fail closed until their temporal behavior is independently characterized.",
-      "scope": "TEMPORAL_OPTIONAL_PROCESS_ADMISSION",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C06",
-      "claim": "Temporal accuracy policy remains separate from nonlinear solver convergence policy and hard mass-conservation qualification.",
-      "scope": "NUMERICAL_POLICY_SEPARATION",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C07",
-      "claim": "The dimensionless acceptance threshold of 1.0 is qualified only as normalized contract arithmetic, not as a physical B1.10 tolerance.",
-      "scope": "CONTRACT_THRESHOLD_ONLY",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    },
-    {
-      "claim_id": "FVQ05-C08",
-      "claim": "A complete eight-metric numerical B1.10 production temporal-limit profile is independently qualified.",
-      "scope": "PRODUCTION_TEMPORAL_NUMERIC_PROFILE",
-      "classification": "BLOCKED_BY_TEMPORAL_ERROR_PROFILE",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "All eight canonical production profile values remain null/unqualified."
-    },
-    {
-      "claim_id": "FVQ05-C09",
-      "claim": "Numeric limits embedded in the deterministic F-CI14 contract test are production temporal tolerances.",
-      "scope": "TEST_FIXTURE_NUMERICS",
-      "classification": "TEST_FIXTURE_ONLY",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Fixture values exercise contract branches only and have no production qualification provenance."
-    },
-    {
-      "claim_id": "FVQ05-C10",
-      "claim": "Real B1.10 full-step versus two-half-step temporal acceptance is qualified for production reference execution.",
-      "scope": "PRODUCTION_B1_10_TEMPORAL_ACCEPTANCE",
-      "classification": "BLOCKED_BY_TEMPORAL_ERROR_PROFILE",
-      "test_executable": false,
-      "claim_qualified": false,
-      "blocker": "No independently qualified numeric profile and no admitted real reference route."
-    },
-    {
-      "claim_id": "FVQ05-C11",
-      "claim": "Production B1.10 execute_reference_interval is admitted.",
-      "scope": "PRODUCTION_REFERENCE_EXECUTION",
-      "classification": "BLOCKED_BY_RESULT_CONTRACT",
-      "test_executable": false,
-      "claim_qualified": false,
-      "blocker": "F-CI14 explicitly leaves production execute_reference_interval fail-closed."
-    },
-    {
-      "claim_id": "FVQ05-C12",
-      "claim": "F-CI15 is carried only as a moving-canonical overlay and F-VQ05 introduces no production-source delta relative to that overlay.",
-      "scope": "QUALIFICATION_CHANGE_SCOPE",
-      "classification": "QUALIFICATION_TARGET",
-      "test_executable": true,
-      "claim_qualified": false,
-      "blocker": "Pending F-VQ05 CI."
-    }
+    {"claim_id":"FVQ05-C01","claim":"F-CI14 temporal acceptance contract provenance and canonical CI are exact and qualified.","scope":"SOURCE_BOUND_CONTRACT_PROVENANCE","classification":"DIRECTLY_REUSABLE","test_executable":true,"claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ05-C02","claim":"Temporal acceptance compares compatible full-step and two-half-step endpoint state at the same t1; lagged continuation state is diagnostic only.","scope":"TEMPORAL_CONTRACT_SEMANTICS","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C03","claim":"The supported temporal contract normalizes eight unit-specific endpoint metrics by independently supplied per-metric limits and takes the maximum ratio.","scope":"TEMPORAL_CONTRACT_NORMALIZATION","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C04","claim":"A zero temporal limit means exact equality is required for that metric.","scope":"TEMPORAL_CONTRACT_ZERO_LIMIT","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C05","claim":"Unsupported optional process classes fail closed until their temporal behavior is independently characterized.","scope":"TEMPORAL_OPTIONAL_PROCESS_ADMISSION","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C06","claim":"Temporal accuracy policy remains separate from nonlinear solver convergence policy and hard mass-conservation qualification.","scope":"NUMERICAL_POLICY_SEPARATION","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C07","claim":"The dimensionless acceptance threshold of 1.0 is qualified only as normalized contract arithmetic, not as a physical B1.10 tolerance.","scope":"CONTRACT_THRESHOLD_ONLY","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."},
+    {"claim_id":"FVQ05-C08","claim":"A complete eight-metric numerical B1.10 production temporal-limit profile is independently qualified.","scope":"PRODUCTION_TEMPORAL_NUMERIC_PROFILE","classification":"BLOCKED_BY_TEMPORAL_ERROR_PROFILE","test_executable":true,"claim_qualified":false,"blocker":"All eight canonical production profile values remain null/unqualified."},
+    {"claim_id":"FVQ05-C09","claim":"Numeric limits embedded in the deterministic F-CI14 contract test are production temporal tolerances.","scope":"TEST_FIXTURE_NUMERICS","classification":"TEST_FIXTURE_ONLY","test_executable":true,"claim_qualified":false,"blocker":"Fixture values exercise contract branches only and have no production qualification provenance."},
+    {"claim_id":"FVQ05-C10","claim":"Real B1.10 full-step versus two-half-step temporal acceptance is qualified for production reference execution.","scope":"PRODUCTION_B1_10_TEMPORAL_ACCEPTANCE","classification":"BLOCKED_BY_TEMPORAL_ERROR_PROFILE","test_executable":false,"claim_qualified":false,"blocker":"No independently qualified numeric profile and no admitted real reference route."},
+    {"claim_id":"FVQ05-C11","claim":"Production B1.10 execute_reference_interval is admitted.","scope":"PRODUCTION_REFERENCE_EXECUTION","classification":"BLOCKED_BY_RESULT_CONTRACT","test_executable":false,"claim_qualified":false,"blocker":"F-CI14 explicitly leaves production execute_reference_interval fail-closed."},
+    {"claim_id":"FVQ05-C12","claim":"F-CI17 is carried only as a moving-canonical overlay and F-VQ05 introduces no production-source delta relative to that overlay.","scope":"QUALIFICATION_CHANGE_SCOPE","classification":"QUALIFICATION_TARGET","test_executable":true,"claim_qualified":false,"blocker":"Pending F-VQ05 CI."}
   ]
 }
