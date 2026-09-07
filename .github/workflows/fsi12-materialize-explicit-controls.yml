@@ -1,0 +1,42 @@
+name: F-SI12 materialize explicit solver controls
+
+on:
+  push:
+    branches:
+      - work/f-si12-explicit-solver-controls
+    paths:
+      - 'integration/f-si/F-SI12_CONTROL_BINDING_CONTRACT.json'
+      - 'tools/fsi/fsi12_materialize_explicit_controls.py'
+      - '.github/workflows/fsi12-materialize-explicit-controls.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi12-materialize-explicit-controls
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si12-explicit-solver-controls
+      - name: Materialize source-bound explicit controls
+        run: python3 tools/fsi/fsi12_materialize_explicit_controls.py
+      - name: Commit only HeadCalc and reference adapter
+        run: |
+          changed="$(git diff --name-only | sort)"
+          expected=$'src/adapter/mod_reference_richards_legacy_binding.f90\nsrc/legacy/b1_10_port/headcalc.f90'
+          if [ "$changed" != "$expected" ]; then
+            echo 'F-SI12 materializer changed unexpected paths:' >&2
+            printf '%s\n' "$changed" >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90
+          git commit -m 'F-SI12: materialize explicit per-solve controls'
+          git push origin HEAD:work/f-si12-explicit-solver-controls
