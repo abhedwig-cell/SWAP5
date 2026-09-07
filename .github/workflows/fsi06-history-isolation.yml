@@ -1,0 +1,29 @@
+name: F-SI06 history isolation
+
+on:
+  push:
+    branches:
+      - work/f-si06-history-isolation
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fsi/test_fsi06_history_isolation.F90'
+      - 'tests/fsi/fsi06_soilwater_compile_stubs.f90'
+      - 'tests/fsi/run_fsi06_gate.sh'
+      - 'integration/f-si/F-SI06_HISTORY_OWNERSHIP_CONTRACT.json'
+      - 'integration/f-si/F-SI06_QUALIFICATION.json'
+      - 'docs/integration/F-SI06_HISTORY_ISOLATION.md'
+      - '.github/workflows/fsi06-history-isolation.yml'
+
+jobs:
+  fsi06-history-isolation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI06 history isolation gate
+        run: bash tests/fsi/run_fsi06_gate.sh
