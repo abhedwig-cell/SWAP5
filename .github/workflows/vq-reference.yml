@@ -148,7 +148,39 @@ jobs:
         run: bash tests/fci/run_fci17_gate.sh
 
   fvq06-fci18-handoff-readiness:
-    name: F-VQ06 F-CI18 exit handoff readiness
+    name: F-VQ06 qualified F-CI18 scope/ownership handoff replay
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact qualified F-VQ06 postimage
+        uses: actions/checkout@v4
+        with:
+          ref: f7d68248a22d0912fe91e2277ac51f64293e449c
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: F-VQ06 qualified handoff gate
+        run: python -m tools.vq.fvq06_fci18_handoff_gate
+
+      - name: F-VQ06 promotion and scope guards
+        run: python -m unittest tools.vq.test_fvq06_fci18_handoff_gate
+
+      - name: Re-run qualified F-CI17 canonical baseline gate
+        run: bash tests/fci/run_fci17_gate.sh
+
+      - name: Diagnostic-only F-CI18 gate on exact source-commit context
+        run: |
+          git checkout --detach a0fdf73b67aa57456d8cbe6700ce707d672981cd
+          bash tests/fci/run_fci18_gate.sh
+
+  fvq07-final-fci-exit:
+    name: F-VQ07 final F-CI development-baseline exit handoff
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact qualification head
@@ -165,16 +197,16 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: F-VQ06 fail-closed F-CI18 handoff readiness gate
-        run: python -m tools.vq.fvq06_fci18_handoff_gate
+      - name: F-VQ07 final F-CI exit handoff gate
+        run: python -m tools.vq.fvq07_final_fci_exit_gate
 
-      - name: F-VQ06 promotion and scope guards
-        run: python -m unittest tools.vq.test_fvq06_fci18_handoff_gate
+      - name: F-VQ07 promotion and negative capability guards
+        run: python -m unittest tools.vq.test_fvq07_final_fci_exit_gate
 
-      - name: Re-run qualified F-CI17 canonical baseline gate
-        run: bash tests/fci/run_fci17_gate.sh
-
-      - name: Diagnostic-only F-CI18 gate on exact source-commit context
+      - name: Re-run exact canonical closeout exit gates
         run: |
-          git checkout --detach a0fdf73b67aa57456d8cbe6700ce707d672981cd
+          git checkout --detach 7f906fcc53a4133b0e410eac7cf79fbb4eb672ab
+          bash tests/fci/run_fci15_gate.sh
+          bash tests/fci/run_fci16_gate.sh
+          bash tests/fci/run_fci17_gate.sh
           bash tests/fci/run_fci18_gate.sh
