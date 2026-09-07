@@ -13,6 +13,8 @@ on:
       - 'tests/fsi/fsi07_adapter_stubs.f90'
       - 'tests/fsi/test_fsi07_adapter_binding.f90'
       - 'tests/fsi/run_fsi07_gate.sh'
+      - 'tools/fsi/fsi07_fix_numbit_carrier.py'
+      - 'tools/fsi/fsi07_repin_gate.py'
       - 'integration/f-si/F-SI07_STATE_BINDING_CONTRACT.json'
       - 'integration/f-si/F-SI07_QUALIFICATION.json'
       - 'docs/integration/F-SI07_STATE_BINDING.md'
