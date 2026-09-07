@@ -50,20 +50,27 @@ module fsi07_stub_control
   real(real64) :: observed_pond=0.0_real64, observed_gwl=0.0_real64
 end module fsi07_stub_control
 
-subroutine headcalc(worker, fsi_workspace, history, state_binding)
+subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
   use mod_reference_richards_workspace, only: reference_richards_workspace_t
-  use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+  use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
   use fsi07_stub_control, only: headcalc_calls, request_retry, observed_head, observed_theta, observed_pond, observed_gwl
   implicit none
   type(a23bu_worker_context_t), intent(inout), optional :: worker
   type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
   type(a23bu_solver_history_t), target, intent(inout), optional :: history
   type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
+  type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
+  type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
 
   headcalc_calls = headcalc_calls + 1
   if (.not. present(state_binding)) error stop 'F-SI07 adapter stub requires explicit state binding'
+  if (.not. present(evaluation_context)) error stop 'F-SI07 adapter stub requires evaluation context'
+  if (.not. present(boundary_conditions)) error stop 'F-SI07 adapter stub requires boundary conditions'
+  if (.not. associated(evaluation_context%top_boundary)) error stop 'F-SI07 adapter stub requires top-boundary provider'
+  if (boundary_conditions%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) error stop 'F-SI07 adapter stub requires explicit flux top mode'
   observed_head = state_binding%h
   observed_theta = state_binding%theta
   observed_pond = state_binding%pond
