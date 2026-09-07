@@ -13,10 +13,10 @@ CHECKPOINT = ROOT / "src" / "adapter" / "mod_b1_10_water_checkpoint.f90"
 B1_MANIFEST = "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
 
 EXPECTED_NORMALIZED = {
-    "headcalc.f90": "f8abd197d3a0fb73d1a3dded921e2d8788f05ad9ec9f648809bf16c71749ebe0",
+    "headcalc.f90": "bca8022c23e90ef35e5330ac43eac0b3b096b5ad32773a10b35589a3a1e5840d",
     "soilwater.f90": "34046a1cb90e11eb7e97e0c188fb6fe6193920bc38e4d246f093390cf0d88cd9",
-    "swap.f90": "d86377eb317013be79fb3b73a33a3b636bcdde1fdeb582e63e7b22b1eccdf5ee",
-    "swap_main.f90": "60725e8471d9de758260c2ca8088523a83e2ddded60e327405584a324b472610",
+    "swap.f90": "50c4538c7cf965c41ce2b71db02c231138df56f3ce0280b6bae26a21e1e311c5",
+    "swap_main.f90": "51aeb371ef70494bbf0e9749b2dac244f55b51f1dfff0b3200b78b2a37d76408",
 }
 
 
