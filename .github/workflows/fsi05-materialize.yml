@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: fsi05-production-seam-materialize
+  cancel-in-progress: true
+
 jobs:
   materialize:
     if: github.actor != 'github-actions[bot]'
