@@ -1,45 +1,34 @@
 {
-  "schema": "swap5.f-mr03.status.v4",
+  "schema": "swap5.f-mr03.status.v5",
   "work_unit": "F-MR03",
   "title": "Physical Reference Runtime Readiness & Admission Contract",
   "qualified_object": "fail-closed readiness/admission decision, not a physical runtime backend",
   "branch": "integration/f-mr",
   "safety_branch": "integration/f-mr03-safety",
   "base_commit": "20c01210e576320d38dc9a430f5969686a3f3bb4",
-  "phase": "READINESS_GATE_IMPLEMENTED_PERSISTED_NOT_TESTED",
-  "status": "IMPLEMENTED_FAIL_CLOSED_READINESS_GATE",
+  "tested_source_commit": "73d72ae8c1b4dd0326ed332fa8d5ea0c87903085",
+  "workflow_run": 34148428600,
+  "workflow_job": 101825354265,
+  "workflow_conclusion": "success",
+  "phase": "TESTED_FAIL_CLOSED_READINESS_READY_FOR_QUALIFICATION",
+  "status": "TESTED_FAIL_CLOSED_READINESS_GATE",
   "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": false,
+  "TESTED": true,
   "QUALIFIED": false,
   "source_changes": false,
-  "production_source_consumed": [],
   "physical_backend_implemented": false,
   "physical_backend_admitted": false,
   "parallel_backend_admitted": false,
-  "readiness_gate": {
-    "tool": "tools/fmr/fmr03_readiness_gate.py",
-    "runner": "tests/fmr/run_fmr03_readiness_gate.sh",
-    "workflow": ".github/workflows/fmr03-readiness.yml",
-    "preserves_fmr02_gate": true,
-    "tested": false
-  },
-  "current_blockers": [
-    "F-SI09 current branch has advanced beyond the last green tested provider postimage; formal F-SI09 qualification remains false and the new oracle-test head must itself be tested/closed before consumption.",
-    "Production source/sink and required process-provider closure remains separately unqualified; non-soil-water-solver process equations remain owned by F-PM/process workstreams, not F-MR.",
-    "No exact jointly executable physical F-MR + current F-KT + formally qualified F-SI/provider/process stack exists.",
-    "No hard physical interval water-balance plus matching exact source-bound VQ/MQ qualification exists on such a joint candidate."
+  "readiness_decision": "HOLD_FAIL_CLOSED",
+  "qualification_scope": "The readiness/admission decision may be qualified. No physical, serialized-reference or parallel-reference execution is admitted by this status.",
+  "remaining_physical_blockers": [
+    "Formal production qualification of the current F-SI09 B1.10 constitutive provider remains absent on the latest reread.",
+    "Production-qualified source/sink/process-provider closure remains absent and is owned by F-PM/process workstreams plus F-SI interfaces, not by F-MR.",
+    "No exact jointly executable physical runtime candidate with hard physical mass balance and matching VQ/MQ evidence exists."
   ],
-  "hard_holds": [
-    "serialized physical reference backend NOT_ADMITTED",
-    "parallel reference backend NOT_ADMITTED",
-    "real HeadCalc parallel admission false",
-    "macropore physical runtime NOT_ADMITTED",
-    "F-MR must not implement missing F-SI provider isolation or F-PM process physics",
-    "F-MR must not treat fixture providers as production process-provider admission",
-    "F-MR must not alter F-KT transaction semantics"
-  ],
-  "next_action_after_gate": "If the readiness gate passes, qualify only this fail-closed admission decision. Then re-read live F-SI/F-PM/F-VQ/F-MQ dependencies before choosing the next F-MR unit; do not infer physical backend admission from readiness qualification.",
   "allows_downstream_release": false,
-  "verified_at_utc": "2026-09-07T17:36:00Z"
+  "allows_readiness_contract_consumption": true,
+  "allows_physical_runtime_release": false,
+  "last_verified": "2026-09-07T17:38:51Z"
 }

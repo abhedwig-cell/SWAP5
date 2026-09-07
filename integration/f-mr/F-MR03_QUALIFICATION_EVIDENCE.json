@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.f-mr03.qualification-evidence.v1",
+  "work_unit": "F-MR03",
+  "qualified_object": "fail-closed physical reference runtime readiness/admission decision",
+  "explicit_non_claims": [
+    "no serialized physical reference backend qualification",
+    "no parallel reference backend qualification",
+    "no production B1.10 constitutive provider admission by F-MR",
+    "no production source/sink process-provider admission",
+    "no full SWAP water-balance qualification"
+  ],
+  "tested_source_commit": "73d72ae8c1b4dd0326ed332fa8d5ea0c87903085",
+  "base_qualified_fmr02_commit": "20c01210e576320d38dc9a430f5969686a3f3bb4",
+  "workflow": ".github/workflows/fmr03-readiness.yml",
+  "workflow_run": 34148428600,
+  "workflow_job": 101825354265,
+  "workflow_conclusion": "success",
+  "runner": {
+    "os": "Ubuntu 24.04.4 LTS",
+    "runner_image": "ubuntu-24.04",
+    "gfortran": "13.2.0"
+  },
+  "gate_results": {
+    "fmr02_exact_blob_provenance": "PASS",
+    "fmr02_admission_and_ownership_contract": "PASS",
+    "fmr02_runtime_to_fkt_boundary": "PASS",
+    "fmr02_fsi05_seam_contract": "PASS",
+    "fkt03_contract_and_opaque_transaction_o0_o2": "PASS",
+    "fkt04_temporal_provenance_o0_o2": "PASS",
+    "fkt05_reusable_checkpoint_o0_o2": "PASS",
+    "fmr01_contract_and_checkpoint": "PASS",
+    "fmr01_o0_o2": "PASS",
+    "fsi05_real_replay_o0_o2_identity": "PASS",
+    "fsi05_adapter_regression": "PASS",
+    "fsi05_workspace_1_2_4_8": "PASS",
+    "fmr03_readiness_gate": "PASS"
+  },
+  "fmr01_preserved_runtime_matrix": {
+    "batch_sizes": [1,2,8,17,31,32,64],
+    "worker_counts": [1,2,4,8],
+    "memory_bytes": {
+      "logical_column_metadata_per_column": 48,
+      "committed_physical_state_per_column": 8,
+      "shared_immutable_parameters": 16,
+      "unused_optional_state_overhead": 0,
+      "worker_scratch_per_worker": 112
+    },
+    "difficult_tail_observation": [896,3,8]
+  },
+  "admission_output": {
+    "physical_backend_admitted": false,
+    "parallel_backend_admitted": false,
+    "decision": "HOLD_FAIL_CLOSED"
+  },
+  "source_change_proof": {
+    "compare_base": "20c01210e576320d38dc9a430f5969686a3f3bb4",
+    "compare_head": "73d72ae8c1b4dd0326ed332fa8d5ea0c87903085",
+    "ahead_by": 4,
+    "behind_by": 0,
+    "production_src_files_changed": 0,
+    "changed_paths": [
+      ".github/workflows/fmr03-readiness.yml",
+      "integration/f-mr/F-MR03_ADMISSION_READINESS.json",
+      "integration/f-mr/F-MR03_DEPENDENCIES.json",
+      "integration/f-mr/F-MR03_STATUS.json",
+      "tests/fmr/run_fmr03_readiness_gate.sh",
+      "tools/fmr/fmr03_readiness_gate.py"
+    ]
+  },
+  "external_dependency_reread_after_test": {
+    "f_kt": "integration/f-kt remained b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "f_si09_latest_observed_head": "b1dd9753c64a7246f93556701917467dee926073",
+    "f_si09_latest_observed_qualification": false,
+    "f_si09_source_resolution": "RESOLVED_AND_CI_EXECUTABLE",
+    "f_si09_formal_production_admission": false,
+    "f_pm03_branch_found": false,
+    "f_vq14_branch_found": false,
+    "f_mq23_branch_found": false
+  },
+  "legacy_warning_note": "The preserved F-SI05 gate emits compiler warnings from unchanged legacy/preimage fixtures; those warnings did not fail the previously qualified focused gate and no warning suppression or production source change was introduced by F-MR03.",
+  "result": "PASS_FAIL_CLOSED_READINESS_ONLY"
+}
