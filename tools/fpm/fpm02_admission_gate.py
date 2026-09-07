@@ -2,22 +2,24 @@
 """Fail-closed F-PM02 admission gate for the first SNOW production migration.
 
 The gate inspects one candidate Git ref. It does not merge branches and it does
-not modify production source. Exit code 0 means the exact currently qualified
+not modify production source. Exit code 0 means the composed downstream
+candidate itself is TESTED and QUALIFIED, and the exact currently qualified
 F-KT05 and F-SI05 boundaries plus the canonical B1.10 oracle infrastructure are
-present in the candidate. Any missing or changed pin rejects admission.
+present. Any missing or changed pin rejects admission.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import subprocess
-import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
 
 CANONICAL_FCI18 = "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
 QUALIFIED_PRODUCTION_SOURCE = "da5026d8b87ad2f3c7912360891839a120ecccb6"
+
+FMR_STATUS_PATH = "integration/f-mr/F-MR01_STATUS.json"
 
 FKT_STATUS_PATH = "integration/f-kt/F-KT05_STATUS.json"
 FKT_TESTED_POSTIMAGE = "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a"
@@ -120,6 +122,11 @@ def evaluate_candidate(ref: str) -> dict[str, Any]:
         CANONICAL_FCI18,
     ))
 
+    fmr = show_json(candidate, FMR_STATUS_PATH)
+    checks.append(Check("shared_downstream_status_present_and_json", fmr is not None, fmr is not None, True))
+    add(checks, "shared_downstream_tested", nested(fmr, "status", "TESTED"), True)
+    add(checks, "shared_downstream_qualified", nested(fmr, "status", "QUALIFIED"), True)
+
     fkt = show_json(candidate, FKT_STATUS_PATH)
     checks.append(Check("fkt05_status_present_and_json", fkt is not None, fkt is not None, True))
     add(checks, "fkt05_qualified", nested(fkt, "qualified"), True)
@@ -142,9 +149,6 @@ def evaluate_candidate(ref: str) -> dict[str, Any]:
     add(checks, "b1_10_snapshot_blob", blob(candidate, B110_SNAPSHOT_PATH), B110_SNAPSHOT_BLOB)
     add(checks, "b1_10_reconstruction_blob", blob(candidate, B110_RECONSTRUCT_PATH), B110_RECONSTRUCT_BLOB)
 
-    # The source manifest and snow-member hash are F-PM01 oracle pins. They are
-    # reported here so a downstream qualification record cannot silently replace
-    # them with a different reference identity.
     checks.append(Check("b1_10_manifest_pin", True, B110_MANIFEST_SHA256, B110_MANIFEST_SHA256))
     checks.append(Check("snow_source_pin", True, SNOW_SOURCE_SHA256, SNOW_SOURCE_SHA256))
     checks.append(Check("qualified_production_source_pin", True, QUALIFIED_PRODUCTION_SOURCE, QUALIFIED_PRODUCTION_SOURCE))
@@ -165,6 +169,7 @@ def result(ref: str, candidate: str | None, checks: list[Check]) -> dict[str, An
         "holds_if_rejected": [
             "Do not modify production process source.",
             "Do not merge F-KT/F-SI lineages inside F-PM.",
+            "Do not consume a composed downstream candidate before it is itself TESTED and QUALIFIED.",
             "Do not infer generic-duration/subdaily snow scaling from B1.10 daily-call semantics.",
         ] if not admitted else [],
         "scope_if_admitted": "SNOW structural migration only; preserve B1.10 equations and F-PM01 characterized one-call semantics.",
