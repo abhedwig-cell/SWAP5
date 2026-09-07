@@ -1,6 +1,7 @@
 program test_fmq22_p14_optional_state
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t
+  use mod_canonical_contracts, only: canonical_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t
   implicit none
 
@@ -8,7 +9,7 @@ program test_fmq22_p14_optional_state
     integer :: continuation_counter = 0
   end type optional_payload_t
 
-  type, extends(transaction_state_t) :: p14_state_t
+  type, extends(canonical_state_t) :: p14_state_t
     real(real64) :: water = 0.0_real64
     type(optional_payload_t), allocatable :: optional_payload
   contains
