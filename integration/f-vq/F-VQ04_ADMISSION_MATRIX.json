@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ04",
+  "oracle": "B1.10",
+  "basis": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fvq03_final_head": "0956a2f4b4a3a9b2318a1254b2e972f7138c5182"
+  },
+  "claims": [
+    {
+      "claim_id": "FVQ04-C01",
+      "claim": "The F-CI13 recoverable physical-trial status seam remains qualified on its exact source-bound deterministic-testdouble scope.",
+      "scope": "FCI13_SOURCE_BOUND_STATUS_AND_TRANSACTION_SEMANTICS",
+      "classification": "DIRECTLY_REUSABLE",
+      "test_executable": true,
+      "claim_qualified": true,
+      "blocker": null
+    },
+    {
+      "claim_id": "FVQ04-C02",
+      "claim": "A real full-B1.10 Hupsel build route is defined and its external execution prerequisites are machine-checkable.",
+      "scope": "FIXTURE_ADMISSION_INFRASTRUCTURE",
+      "classification": "QUALIFICATION_TARGET",
+      "test_executable": true,
+      "claim_qualified": false,
+      "blocker": "Pending F-VQ04 CI."
+    },
+    {
+      "claim_id": "FVQ04-C03",
+      "claim": "All exact external inputs needed for a reproducible real B1.10 minimum-dt terminal-failure fixture are currently available to canonical CI.",
+      "scope": "REAL_PHYSICS_FIXTURE_READINESS",
+      "classification": "BLOCKED_BY_EXTERNAL_FIXTURE",
+      "test_executable": true,
+      "claim_qualified": false,
+      "blocker": "Exact B1.10 source tree, TTUTIL source root and Hupsel case files are not present in canonical Git or F-CI workflow artifacts."
+    },
+    {
+      "claim_id": "FVQ04-C04",
+      "claim": "A real B1.10 hydrological execution has naturally reached persistent Richards nonconvergence at minimum dt through the F-CI13 canonical worker path.",
+      "scope": "PRODUCTION_PHYSICS",
+      "classification": "BLOCKED_BY_EXTERNAL_FIXTURE",
+      "test_executable": false,
+      "claim_qualified": false,
+      "blocker": "F-CI13 explicitly records NOT_YET_EXECUTED for a real forced terminal nonconvergence fixture."
+    },
+    {
+      "claim_id": "FVQ04-C05",
+      "claim": "State rollback, invalid trial mass and exclusion from committed accounting have been observed after a real B1.10 terminal minimum-dt failure.",
+      "scope": "PRODUCTION_PHYSICS_TRANSACTION",
+      "classification": "BLOCKED_BY_EXTERNAL_FIXTURE",
+      "test_executable": false,
+      "claim_qualified": false,
+      "blocker": "No real terminal-failure execution record exists; only deterministic-testdouble semantics are qualified."
+    },
+    {
+      "claim_id": "FVQ04-C06",
+      "claim": "Full-versus-split physical trajectories have a qualified temporal acceptance policy.",
+      "scope": "PRODUCTION_NUMERICAL_POLICY",
+      "classification": "BLOCKED_BY_TEMPORAL_ERROR",
+      "test_executable": false,
+      "claim_qualified": false,
+      "blocker": "Scalar temporal-error metric and tolerance policy remain not admitted."
+    },
+    {
+      "claim_id": "FVQ04-C07",
+      "claim": "B1.10 executes through an admitted canonical execute_reference_interval route.",
+      "scope": "PRODUCTION_REFERENCE_EXECUTION",
+      "classification": "BLOCKED_BY_RESULT_CONTRACT",
+      "test_executable": false,
+      "claim_qualified": false,
+      "blocker": "execute_reference_interval remains fail-closed and not admitted."
+    },
+    {
+      "claim_id": "FVQ04-C08",
+      "claim": "Complete active storage and canonical result diagnostics are qualified for snow/macropore and real reference execution.",
+      "scope": "PRODUCTION_RESULTS_AND_OPTIONAL_PHYSICS",
+      "classification": "BLOCKED_BY_RESULT_CONTRACT",
+      "test_executable": false,
+      "claim_qualified": false,
+      "blocker": "Snow/macropore storage completeness and real production result routing remain open."
+    }
+  ]
+}
