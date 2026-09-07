@@ -1,0 +1,33 @@
+name: F-MR04 serialized physical runtime candidate
+
+on:
+  push:
+    branches:
+      - integration/f-mr
+    paths:
+      - 'integration/f-mr/F-MR04_*.json'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/adapter/mod_b110_serialized_context_binding.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'src/solver/mod_b110_source_sink_provider.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'tests/fmr/test_fmr04_serialized_physical.F90'
+      - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
+      - 'tests/fmr/run_fmr04_gate.sh'
+      - '.github/workflows/fmr04-serialized-physical.yml'
+  workflow_dispatch:
+
+jobs:
+  fmr04-serialized-physical:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-MR04 serialized physical composition gate
+        run: bash tests/fmr/run_fmr04_gate.sh
