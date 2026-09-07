@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ09",
+  "production_code_change_allowed": false,
+  "base_coverage_snapshot": {
+    "path": "tests/multiswap/qualification_coverage_snapshot.json",
+    "blob_sha": "93bfa291b19cae705de126fc9b7441a55593e7f9",
+    "work_unit": "F-MQ08",
+    "synthetic_executable": 26,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "promotions": [
+    {
+      "id": "P01",
+      "from_class": "WAITING_CANONICAL_PHYSICS_AND_FMR",
+      "to_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable_before": false,
+      "synthetic_executable_after": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "evidence": [
+        "tests/multiswap/test_single_vs_multiswap_equivalence.py",
+        "F-MQ09"
+      ],
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "note": "The deterministic test kernel called directly as standalone produces exactly the same status, committed endpoint, counters and synthetic mass record as the same logical column executed through the MultiSWAP test harness, including when embedded among other columns and under different batch/worker/order/scratch configurations. Real B1.10 equivalence and production runtime equivalence remain open."
+    }
+  ],
+  "effective_summary_after_delta": {
+    "requirements_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "nonclaims": [
+    "No real B1.10 or SWAP5 physical equivalence is claimed.",
+    "No production MultiSWAP runtime equivalence is claimed.",
+    "No scientific regression or mass qualification is upgraded by this delta."
+  ],
+  "status": "PASS_SYNTHETIC_P01_COVERAGE_DELTA / REAL_AND_PRODUCTION_OPEN"
+}
