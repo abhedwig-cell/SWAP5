@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.0",
+  "schema_version": "2.1",
   "workstream": "F-KT",
   "work_unit": "F-KT07",
   "baseline": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
@@ -7,15 +7,17 @@
   "safety_branch": "integration/f-kt07-safety",
   "safety_branch_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
   "contract_checkpoint": "34bbe3c27dfb74f8c3545f5e3081fff08e2eb384",
-  "source_materialization_commit": "f7c6d007d92c1d5b6d1bf402325bd5e1ecafe4db",
-  "scope": "B1.10 adapter-specific macropore nstep continuation materialization",
+  "initial_source_materialization_commit": "f7c6d007d92c1d5b6d1bf402325bd5e1ecafe4db",
+  "clone_hardening_materializer_checkpoint": "3974d6254a27e9f500b4b306eed27b101ef6f392",
+  "clone_hardening_source_commit": "c68e4300aa83bcccfdc24f84be2992abda206090",
+  "scope": "B1.10 adapter-specific macropore nstep continuation materialization and transaction-safe sparse clone",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "implementation_status": "IMPLEMENTED",
   "persistence_status": "PERSISTED",
-  "test_status": "NOT_TESTED",
+  "test_status": "NOT_TESTED_AFTER_CLONE_FIX",
   "qualification_status": "NOT_QUALIFIED",
   "production_source_changed": true,
   "production_source_files": ["src/adapter/mod_b1_10_process_checkpoint.f90"],
@@ -26,6 +28,37 @@
   "focused_test": "tests/fkt/test_fkt07_macropore_continuation.f90",
   "focused_runner": "tests/fkt/run_fkt07_gate.sh",
   "static_gate": "tools/fkt/fkt07_contract_gate.py",
+  "qualification_attempts": [
+    {
+      "run_id": 34129477886,
+      "head": "7ecaf6c3098e0922b1fc46132518550ec4e4fc6a",
+      "result": "FAILED_TEST_HARNESS_COMPILE_POLICY",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34129581815,
+      "head": "1fdfb01f4152165aa29502f07261adeea0f5179f",
+      "result": "FAILED_TESTDOUBLE_UNUSED_ARGUMENT",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34130003273,
+      "head": "1a400e0d7655404277b32a649d8ae88ec53d3745",
+      "result": "FAILED_REAL_TRANSACTION_CLONE_DEFECT",
+      "defect": "b1_10_process_clone intrinsically assigned unallocated allocatable components and segfaulted for compact sparse state",
+      "production_fix_required": true
+    }
+  ],
+  "implemented_behavior": {
+    "carrier": "allocatable b1_10_process_state_t%macropore",
+    "fields": ["nstep"],
+    "inactive_state_cost": "no allocated macropore payload",
+    "legacy_history_implicit_capture": false,
+    "explicit_bind_read_clear_complete_seam": true,
+    "clone_copies_only_allocated_optional_components": true,
+    "clone_copies_water_allocatables_only_when_allocated": true,
+    "clone_preserves_sparse_state_without_implicit_allocation": true
+  },
   "external_boundaries": {
     "fsi06_final_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
     "fsi06_status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
@@ -33,14 +66,6 @@
     "fmq20_consumed_as_qualification_evidence": false,
     "fvq12_consumed_as_qualification_evidence": false,
     "fmr01_consumed_as_qualification_evidence": false
-  },
-  "implemented_behavior": {
-    "carrier": "allocatable b1_10_process_state_t%macropore",
-    "fields": ["nstep"],
-    "inactive_state_cost": "no allocated macropore payload",
-    "legacy_history_implicit_capture": false,
-    "clone_copies_continuation": true,
-    "explicit_bind_read_clear_complete_seam": true
   },
   "admission": {
     "macropore_production": false,
@@ -50,9 +75,9 @@
   },
   "blockers": [],
   "holds": [
-    "focused O0/O2 and selected F-CI regressions must pass before qualification",
+    "focused O0/O2 and selected F-CI regressions must pass on the clone-hardened source before qualification",
     "composed F-SI macropore binding is not part of F-KT07 and macropore production remains fail-closed",
     "reference execution remains fail-closed"
   ],
-  "next_action": "run exact complete postimage through F-KT07 focused gate and selected F-CI regression chain"
+  "next_action": "qualify exact clone-hardened postimage through F-KT07 focused gate and selected F-CI regression chain"
 }
