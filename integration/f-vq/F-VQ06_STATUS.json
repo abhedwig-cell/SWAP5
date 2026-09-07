@@ -5,7 +5,7 @@
   "mode": "QUALIFICATION_ONLY",
   "title": "F-CI18 Exit Scope/Ownership Handoff Readiness",
   "candidate_overlay": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
@@ -14,7 +14,7 @@
   "handoff_admission": "BLOCKED_FCI18_NOT_QUALIFIED",
   "downstream_release_admitted": false,
   "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
-  "status": "PERSISTED_FCI18_HANDOFF_READINESS_PRE_TEST",
+  "status": "IMPLEMENTED_AND_PERSISTED_PRE_TEST",
   "blockers": [
     "F-CI18 canonical workflow is not green on either observed candidate head.",
     "F-CI18_STATUS still records focused_scope_gate=PENDING and canonical_ci=PENDING.",
