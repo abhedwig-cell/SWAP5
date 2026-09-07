@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ15",
+  "qualification_only": true,
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "git_blob_sha1": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35
+  },
+  "lineage": {
+    "fmq14_head": "eebf665d0123feb1e0c6fd694b58ec6635cd7cc2",
+    "fsi02_qualified_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi02_tested_postimage": "9715465216edb400cbcd125a8572a1498a6b0211",
+    "oracle": "B1.10"
+  },
+  "source_blob_pins": {
+    "integration/f-si/F-SI02_QUALIFICATION.json": "d29e6944cb342c47ab06d61faaa4378d79719c69",
+    "src/solver/mod_soil_water_solver_contract.f90": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "src/solver/mod_reference_richards_workspace.f90": "f35fc559aec8462313d9e9b6c95171983b3cf8ef"
+  },
+  "executable_gate": {
+    "logical_columns": 256,
+    "active_nodes_per_column": 12,
+    "worker_counts": [1, 2, 4, 8],
+    "column_orders": ["forward", "reverse"],
+    "poison_before_every_column": true,
+    "reset_before_every_column": true,
+    "workspace_reused_across_columns": true,
+    "column_signature_must_be_worker_count_independent": true,
+    "column_signature_must_be_order_independent": true,
+    "workspace_payload_must_scale_with_workers_not_columns": true,
+    "compile_modes": ["O0", "O2"],
+    "openmp": true
+  },
+  "qualified_scope_if_gate_passes": {
+    "P06": "COMMON_SOLVER_WORKSPACE_REUSE_EXECUTABLE_ON_PRODUCTION_INTERFACE",
+    "P19": "COMMON_SOLVER_SCRATCH_POISON_RESET_EXECUTABLE_ON_PRODUCTION_INTERFACE"
+  },
+  "explicit_nonclaims": {
+    "reference_richards_solver_bound": false,
+    "reference_richards_reentrancy_qualified": false,
+    "real_b1_10_physics_executed": false,
+    "real_physics_mass_identity_qualified": false,
+    "solver_route_iteration_identity_qualified": false,
+    "production_multiswap_runtime_qualified": false,
+    "parallel_multiswap_backend_qualified": false,
+    "interface_tangent_algorithm_qualified": false
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "matrix_promotions": [],
+    "common_layer_executable_rows_before": [],
+    "common_layer_executable_rows_after": ["P06", "P19"]
+  },
+  "architecture_invariants_checked": [5, 6, 8, 13, 16, 23, 26, 27, 30],
+  "decision": "COMMON_LAYER_EXECUTABLE_CANDIDATE_NO_PHYSICS_PROMOTION"
+}
