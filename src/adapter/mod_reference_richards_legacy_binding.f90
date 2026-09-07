@@ -32,9 +32,11 @@ module mod_reference_richards_legacy_binding
   public :: build_legacy_reference_request
 
   interface
-     subroutine headcalc(worker)
+     subroutine headcalc(worker, fsi_workspace)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
+       use mod_reference_richards_workspace, only: reference_richards_workspace_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
+       type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
      end subroutine headcalc
   end interface
 
@@ -124,7 +126,7 @@ contains
        gwlm1 = request%base_state%groundwater_level
        fldecdt = .false.
 
-       call headcalc(ws%legacy_worker)
+       call headcalc(ws%legacy_worker, ws%richards)
 
        result%candidate_state%active_nodes = numnod
        allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))

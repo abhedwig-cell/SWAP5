@@ -20,6 +20,10 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: old_head(:)
      real(real64), allocatable :: vertical_flux(:)
      real(real64), allocatable :: head_gradient(:)
+     real(real64), allocatable :: band_matrix(:,:)
+     real(real64), allocatable :: band_aux(:,:)
+     real(real64), allocatable :: band_rhs(:)
+     integer, allocatable :: band_pivots(:)
      logical, allocatable :: nonconverged_balance(:)
      logical, allocatable :: nonconverged_head(:)
      logical :: unsaturated_flags(3) = .false.
@@ -48,6 +52,8 @@ contains
        allocate(workspace%sink(active_nodes), workspace%source(active_nodes))
        allocate(workspace%dconductivity_dhead(active_nodes), workspace%old_head(active_nodes))
        allocate(workspace%vertical_flux(active_nodes+1), workspace%head_gradient(active_nodes+1))
+       allocate(workspace%band_matrix(active_nodes,3), workspace%band_aux(active_nodes,1))
+       allocate(workspace%band_rhs(active_nodes), workspace%band_pivots(active_nodes))
        allocate(workspace%nonconverged_balance(active_nodes), workspace%nonconverged_head(active_nodes))
        allocate(workspace%warm_start_head(active_nodes))
        workspace%active_nodes = active_nodes
@@ -72,6 +78,10 @@ contains
     workspace%old_head = 0.0_real64
     workspace%vertical_flux = 0.0_real64
     workspace%head_gradient = 0.0_real64
+    workspace%band_matrix = 0.0_real64
+    workspace%band_aux = 0.0_real64
+    workspace%band_rhs = 0.0_real64
+    workspace%band_pivots = 0
     workspace%nonconverged_balance = .false.
     workspace%nonconverged_head = .false.
     workspace%unsaturated_flags = .false.
@@ -99,6 +109,10 @@ contains
     workspace%old_head = qnan
     workspace%vertical_flux = qnan
     workspace%head_gradient = qnan
+    workspace%band_matrix = qnan
+    workspace%band_aux = qnan
+    workspace%band_rhs = qnan
+    workspace%band_pivots = -huge(0)
     workspace%nonconverged_balance = .true.
     workspace%nonconverged_head = .true.
     workspace%unsaturated_flags = .true.
@@ -122,6 +136,10 @@ contains
     if (allocated(workspace%old_head)) deallocate(workspace%old_head)
     if (allocated(workspace%vertical_flux)) deallocate(workspace%vertical_flux)
     if (allocated(workspace%head_gradient)) deallocate(workspace%head_gradient)
+    if (allocated(workspace%band_matrix)) deallocate(workspace%band_matrix)
+    if (allocated(workspace%band_aux)) deallocate(workspace%band_aux)
+    if (allocated(workspace%band_rhs)) deallocate(workspace%band_rhs)
+    if (allocated(workspace%band_pivots)) deallocate(workspace%band_pivots)
     if (allocated(workspace%nonconverged_balance)) deallocate(workspace%nonconverged_balance)
     if (allocated(workspace%nonconverged_head)) deallocate(workspace%nonconverged_head)
     if (allocated(workspace%warm_start_head)) deallocate(workspace%warm_start_head)
@@ -135,10 +153,11 @@ contains
   function reference_workspace_payload_bytes(workspace) result(nbytes)
     type(reference_richards_workspace_t), intent(in) :: workspace
     integer(int64) :: nbytes
-    integer(int64) :: nreal, nlogical
+    integer(int64) :: nreal, nlogical, ninteger
 
     nreal = 0_int64
     nlogical = 0_int64
+    ninteger = 0_int64
     if (allocated(workspace%dfdh_lower)) nreal = nreal + size(workspace%dfdh_lower, kind=int64)
     if (allocated(workspace%dfdh_main)) nreal = nreal + size(workspace%dfdh_main, kind=int64)
     if (allocated(workspace%dfdh_upper)) nreal = nreal + size(workspace%dfdh_upper, kind=int64)
@@ -151,11 +170,16 @@ contains
     if (allocated(workspace%vertical_flux)) nreal = nreal + size(workspace%vertical_flux, kind=int64)
     if (allocated(workspace%head_gradient)) nreal = nreal + size(workspace%head_gradient, kind=int64)
     if (allocated(workspace%warm_start_head)) nreal = nreal + size(workspace%warm_start_head, kind=int64)
+    if (allocated(workspace%band_matrix)) nreal = nreal + size(workspace%band_matrix, kind=int64)
+    if (allocated(workspace%band_aux)) nreal = nreal + size(workspace%band_aux, kind=int64)
+    if (allocated(workspace%band_rhs)) nreal = nreal + size(workspace%band_rhs, kind=int64)
+    if (allocated(workspace%band_pivots)) ninteger = ninteger + size(workspace%band_pivots, kind=int64)
     if (allocated(workspace%nonconverged_balance)) nlogical = nlogical + size(workspace%nonconverged_balance, kind=int64)
     if (allocated(workspace%nonconverged_head)) nlogical = nlogical + size(workspace%nonconverged_head, kind=int64)
     nlogical = nlogical + 3_int64
     nbytes = nreal * int(storage_size(0.0_real64)/8, int64) + &
-             nlogical * int(storage_size(.false.)/8, int64)
+             nlogical * int(storage_size(.false.)/8, int64) + &
+             ninteger * int(storage_size(0)/8, int64)
   end function reference_workspace_payload_bytes
 
 end module mod_reference_richards_workspace
