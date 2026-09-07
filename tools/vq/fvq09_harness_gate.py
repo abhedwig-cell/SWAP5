@@ -11,6 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 FVQ08_FINAL = "0be60f6da7e575eaf992eb049ce600a4a4b35b58"
 QUALIFIED_PRODUCTION_SOURCE_HEAD = "da5026d8b87ad2f3c7912360891839a120ecccb6"
+QUALIFIED_CANONICAL_POSTIMAGE = "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
+QUALIFIED_CANONICAL_CANDIDATE_PATH = "src/adapter/mod_b1_10_reference_policy_candidate_model.f90"
+QUALIFIED_CANONICAL_CANDIDATE_BLOB = "594436176333e9fb04121dcf287b507a93723dfe"
 B0_SHA = "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360"
 B0_SOURCE_SHA = "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
 B1_10_MANIFEST = "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
@@ -41,8 +44,16 @@ def changed(base: str, head: str = "HEAD") -> list[str]:
     return [p for p in out.splitlines() if p]
 
 
-def src_matches_qualified_production() -> bool:
-    return subprocess.run(["git", "diff", "--quiet", QUALIFIED_PRODUCTION_SOURCE_HEAD, "--", "src"], cwd=ROOT).returncode == 0
+def src_lineage_matches_qualified_canonical() -> bool:
+    try:
+        src_delta = [p for p in changed(QUALIFIED_PRODUCTION_SOURCE_HEAD) if p.startswith("src/")]
+        if src_delta != [QUALIFIED_CANONICAL_CANDIDATE_PATH]:
+            return False
+        head_blob = git("rev-parse", f"HEAD:{QUALIFIED_CANONICAL_CANDIDATE_PATH}")
+        canonical_blob = git("rev-parse", f"{QUALIFIED_CANONICAL_POSTIMAGE}:{QUALIFIED_CANONICAL_CANDIDATE_PATH}")
+        return head_blob == QUALIFIED_CANONICAL_CANDIDATE_BLOB and canonical_blob == QUALIFIED_CANONICAL_CANDIDATE_BLOB
+    except subprocess.CalledProcessError:
+        return False
 
 
 def validate_contract(data: dict) -> dict[str, bool]:
@@ -132,7 +143,10 @@ def validate_materializer(text: str) -> dict[str, bool]:
     low = text.lower()
     return {
         "production_head_pin": QUALIFIED_PRODUCTION_SOURCE_HEAD in text,
-        "src_identity_check": '"git", "diff", "--quiet", qualified_production_source_head, "--", "src"' in low,
+        "canonical_postimage_pin": QUALIFIED_CANONICAL_POSTIMAGE in text,
+        "canonical_candidate_blob_pin": QUALIFIED_CANONICAL_CANDIDATE_BLOB in text,
+        "src_lineage_delta_guard": "src_delta != [qualified_canonical_candidate_path]" in low,
+        "src_lineage_blob_guard": "head_blob != qualified_canonical_candidate_blob" in low and "canonical_blob != qualified_canonical_candidate_blob" in low,
         "uses_b1_10_reconstructor": "tools/vq/b1_10_reconstruct.py" in text,
         "uses_fci06": "tools/fci/fci06_apply_controlled_source_port.py" in text,
         "uses_fci11": "tools/fci/fci11_apply_controlled_interval_mass_port.py" in text,
@@ -219,7 +233,7 @@ def main() -> int:
             "fci18_qualified_exit": fci18.get("status") == "QUALIFIED_EXIT",
             "fci18_production_source_exact": fci18.get("qualified_production_source_head") == QUALIFIED_PRODUCTION_SOURCE_HEAD,
             "qualified_production_is_ancestor": is_ancestor(QUALIFIED_PRODUCTION_SOURCE_HEAD),
-            "src_tree_matches_qualified_production": src_matches_qualified_production(),
+            "production_src_plus_qualified_candidate_exact": src_lineage_matches_qualified_canonical(),
         },
         "provenance": {
             "fvq08_exact_ancestor": is_ancestor(FVQ08_FINAL),
