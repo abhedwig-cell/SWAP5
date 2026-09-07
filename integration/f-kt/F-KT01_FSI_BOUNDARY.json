@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT01",
+  "boundary": "F-KT to F-SI",
+  "owner_of_boundary_contract": "F-KT",
+  "consumer": "F-SI",
+  "current_binding_status": "STRUCTURAL_BOUNDARY_DEFINED_PRODUCTION_SOLVER_BINDING_PENDING",
+  "fkt_owned_symbols": [
+    "kernel_executor_t",
+    "kernel_parameters_t",
+    "kernel_candidate_state_t",
+    "kernel_result_t",
+    "kernel_diagnostics_t",
+    "kernel_model_t",
+    "canonical_numerical_config_t",
+    "canonical_forcing_t",
+    "transaction_state_t"
+  ],
+  "fkt_owned_semantics": [
+    "generic [t0,t1] execution",
+    "committed state is physical trial origin",
+    "candidate state publication",
+    "commit and rollback lifecycle",
+    "same committed state replay",
+    "warm start is numerical only",
+    "kernel result and transaction diagnostics",
+    "reference capability admission is fail-closed"
+  ],
+  "fsi_owned_implementation": [
+    "soil-water solver implementation",
+    "Richards/HeadCalc internals",
+    "Newton vectors and nonlinear iteration internals",
+    "Jacobian construction and factorization",
+    "constitutive temporary values",
+    "solver reentrancy",
+    "solver-local scratch and performance"
+  ],
+  "integration_rule": {
+    "kernel_side": "kernel_model_t remains the F-KT model seam used by the transaction substrate",
+    "solver_side": "a production kernel_model_t implementation may delegate soil-water work to an F-SI-owned service",
+    "new_shared_soil_solver_type_required_by_fkt01": false,
+    "reason": "F-KT01 does not need to prescribe Richards internals; defining a soil-solver service type now would pre-empt F-SI ownership"
+  },
+  "fsi_must_not": [
+    "change advance_interval semantics",
+    "change checkpoint, committed, candidate, commit or rollback meaning",
+    "replace generic t0,t1 with calendar-day semantics",
+    "insert worker scratch into persistent column state",
+    "expose HeadCalc, Newton or Jacobian arrays through the kernel contract",
+    "invent reference temporal tolerances",
+    "create a competing canonical kernel entrypoint"
+  ],
+  "fkt_must_not": [
+    "inspect or depend on HeadCalc internal arrays",
+    "own Newton or Jacobian scratch",
+    "select a specific Richards implementation as a kernel invariant",
+    "change solver physics to satisfy transaction tests"
+  ],
+  "minimum_solver_facing_behavior_visible_to_fkt": {
+    "physical_trial": "advance dynamic trial state over an arbitrary t0,t1 and return trial outcome/accounting through the existing generic transaction model seam",
+    "storage": "return unrounded physical storage required by transaction mass accounting",
+    "temporal_comparison": "return temporal error according to an independently qualified numerical policy",
+    "attempt_context": "capture/restore worker-local attempt context without placing it in column state"
+  },
+  "persistent_state_contains_solver_scratch": false,
+  "kernel_contract_contains_solver_internal_arrays": false,
+  "shared_contract_change_protocol": [
+    "define the minimum shared contract first",
+    "record one explicit owner",
+    "other workstream consumes it",
+    "do not create parallel competing definitions"
+  ]
+}

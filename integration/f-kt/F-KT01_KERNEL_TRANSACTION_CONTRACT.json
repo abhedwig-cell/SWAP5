@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT01",
+  "title": "Canonical kernel and transaction boundary",
+  "baseline": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "fci_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "fci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "corrected_legacy_oracle": "B1.10",
+    "fci18_status": "QUALIFIED_EXIT",
+    "downstream_release_allowed": true
+  },
+  "canonical_api": {
+    "owner": "F-KT",
+    "production_execution_entrypoint": "kernel_executor_t%advance_interval",
+    "conceptual_signature": "advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1) -> result + candidate_state + diagnostics",
+    "transaction_lifecycle": [
+      "kernel_executor_t%advance_interval",
+      "kernel_executor_t%commit_candidate",
+      "kernel_executor_t%rollback_candidate"
+    ],
+    "fci_runtime_substrate": {
+      "symbol": "run_canonical_interval",
+      "status": "qualified_internal_substrate",
+      "architectural_role": "implementation substrate, not a second canonical production entrypoint"
+    }
+  },
+  "data_categories": {
+    "parameters": {
+      "type_root": "kernel_parameters_t",
+      "mutability_during_advance": "immutable",
+      "sharing": "may be shared by id/reference outside persistent column state"
+    },
+    "committed_dynamic_state": {
+      "type_root": "transaction_state_t",
+      "advance_intent": "in",
+      "mutation_rule": "never mutated by advance_interval"
+    },
+    "candidate_state": {
+      "type": "kernel_candidate_state_t",
+      "creation": "only after complete accepted requested interval",
+      "publication": "only by explicit commit_candidate"
+    },
+    "forcing": {
+      "type_root": "canonical_forcing_t",
+      "advance_intent": "in"
+    },
+    "numerical_configuration": {
+      "type": "canonical_numerical_config_t",
+      "advance_intent": "in",
+      "separation_rule": "numerical execution policy is not physical configuration"
+    },
+    "results": {
+      "type": "kernel_result_t",
+      "contains_diagnostics": false
+    },
+    "diagnostics": {
+      "type": "kernel_diagnostics_t",
+      "scope": "transaction lifecycle and admission diagnostics owned by F-KT"
+    },
+    "worker_scratch": {
+      "location": "worker/job-bound model and downstream solver implementation",
+      "persistent_column_state": false,
+      "kernel_result": false
+    }
+  },
+  "transaction_semantics": {
+    "physical_trial_origin": "clone of caller supplied committed_state",
+    "rejected_trial_mutates_committed": false,
+    "incomplete_interval_creates_candidate": false,
+    "commit_is_explicit": true,
+    "rollback_discards_candidate_only": true,
+    "same_committed_state_replay_required": true,
+    "warm_start_rule": "worker-local numerical start information may be retained but may not replace the committed physical origin"
+  },
+  "time_semantics": {
+    "interval": "[t0,t1]",
+    "requires_t1_greater_than_t0": true,
+    "calendar_day_fundamental": false,
+    "midnight_assumption": false,
+    "day_month_year_in_kernel_contract": false
+  },
+  "io_semantics": {
+    "files": false,
+    "paths": false,
+    "file_units": false,
+    "parsing": false,
+    "formats": false
+  },
+  "mass_semantics": {
+    "hard_mass_conservation": true,
+    "source": "qualified F-CI transaction substrate",
+    "rounding_allowed_for_acceptance": false,
+    "fabricate_incomplete_interval_mass": false,
+    "kernel_mapping": "pass through canonical unrounded mass record without recomputation"
+  },
+  "reference_admission": {
+    "mode": "fail_closed",
+    "b1_10_temporal_limit_profile_independently_qualified": false,
+    "kernel_may_invent_temporal_tolerances": false,
+    "production_reference_execution_admitted_without_required_vq_evidence": false,
+    "admission_seam": "kernel_model_t%execution_admitted(parameters,numerical_config)"
+  },
+  "owned_by_other_workstreams": {
+    "F-SI": [
+      "Richards/HeadCalc internal refactor",
+      "Jacobian/Newton/constitutive scratch isolation",
+      "solver reentrancy",
+      "soil-water solver implementation"
+    ],
+    "F-VQ": [
+      "independent numerical temporal tolerance qualification",
+      "reference capability qualification"
+    ]
+  },
+  "fsi_boundary_contract": "integration/f-kt/F-KT01_FSI_BOUNDARY.json",
+  "invariant_assessment": {
+    "1": "PASS: one kernel executor contract fronts standalone, MultiSWAP and future coupling use",
+    "2": "PASS: no file/path/unit/parsing contract",
+    "3": "PASS: parameters, state, forcing, numerical config, result and diagnostics are distinct",
+    "4": "PASS: parameters are outside dynamic state and candidate contains only dynamic state",
+    "5": "PASS: worker model/scratch is outside persistent state",
+    "7": "PASS: candidate lifecycle makes trial, commit and rollback explicit",
+    "8": "PASS: repeated advance starts from the same committed input; warm start is numerical only",
+    "9": "PASS: generic t0,t1, no calendar-day primitive",
+    "11": "PASS: candidate and rollback semantics are coupling-ready without adding coupling ownership",
+    "13": "PASS: existing unrounded hard mass gate is preserved",
+    "20": "PASS: kernel_model_t is solver-implementation agnostic",
+    "22": "PASS: no HeadCalc internal arrays are in the kernel contract",
+    "23": "PASS: numerical config is an explicit independent input",
+    "25": "PASS_WITH_HOLD: structural reference route exists; actual B1.10 admission remains fail-closed pending VQ profile evidence",
+    "26": "PASS: transaction and admission diagnostics are first-class outputs",
+    "29": "PASS: no midnight, one-day, .swp, file or MODFLOW assumption"
+  }
+}
