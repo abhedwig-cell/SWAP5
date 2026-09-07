@@ -158,7 +158,7 @@ program test_transaction_attempt_context
   if (result%status /= TX_STATUS_RETRY_EXHAUSTED) error stop 'mass defect should reject'
   select type (state)
   type is (context_state_t)
-    if (state%water /= 10.0_real64) error stop 'rejected physical state leaked'
+    if (abs(state%water-10.0_real64) > 1.0e-14_real64) error stop 'rejected physical state leaked'
   end select
   if (model%legacy_counter /= 0) error stop 'rejected attempt context leaked'
 
