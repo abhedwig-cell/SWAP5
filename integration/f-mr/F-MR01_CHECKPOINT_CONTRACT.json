@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "transaction_authority": "F-KT05",
+  "checkpoint_type": "mod_kernel_transactions::kernel_checkpoint_t",
+  "checkpoint_owner": "F-KT",
+  "f_mr_checkpoint_type_defined": false,
+  "capture": "kernel_committed_state_t%capture_checkpoint",
+  "trial": "kernel_executor_t%advance_interval(..., checkpoint=checkpoint)",
+  "commit": "kernel_executor_t%commit_candidate",
+  "discard": "kernel_executor_t%rollback_candidate",
+  "required_provenance": ["committed_lineage_id", "committed_revision", "committed_time_when_bound"],
+  "runtime_rules": [
+    "capture never mutates committed state",
+    "every runtime retry starts physically from the same valid F-KT checkpoint",
+    "multiple trials may reuse one checkpoint while its committed revision remains current",
+    "checkpoint lineage, revision and bound-time mismatch fail closed inside F-KT before physical execution",
+    "a successful commit advances the committed revision and makes the old checkpoint stale",
+    "candidate replay does not mutate committed state before F-KT commit",
+    "worker-local warm-start data is not checkpoint physical state",
+    "checkpoint is a temporary trial object and is not persistent logical-column state"
+  ],
+  "generic_time": "F-MR passes [t0,t1] unchanged; no midnight, day, month or year assumption",
+  "mass_rule": "F-KT hard unrounded trial mass gate remains authoritative; F-MR additionally aggregates unrounded deterministic-backend accounting",
+  "fail_closed_cases": [
+    "stale_revision",
+    "wrong_lineage_or_column",
+    "bound_committed_time_mismatch",
+    "unready_checkpoint"
+  ],
+  "qualified_dependency": {
+    "F-KT05_closeout": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "tested_source_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "qualification_evidence": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2"
+  }
+}
