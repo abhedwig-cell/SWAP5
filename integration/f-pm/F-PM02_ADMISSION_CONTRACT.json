@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "status": "BLOCKED_PRE_ADMISSION",
-  "purpose": "Fail-closed admission gate for the first production process migration (SNOW). This unit does not itself admit or modify production source until a shared qualified downstream baseline is proven.",
+  "purpose": "Fail-closed admission gate for the first production process migration (SNOW). This unit does not itself admit or modify production source until one shared downstream candidate is both structurally complete and itself tested/qualified.",
   "parent_closeout": {
     "f_pm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
     "f_pm01_status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD"
@@ -11,6 +11,13 @@
   "required_candidate_properties": {
     "canonical_ancestor": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
     "qualified_production_source_origin": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "shared_downstream_qualification": {
+      "owner": "F-MR/canonical integration",
+      "status_file": "integration/f-mr/F-MR01_STATUS.json",
+      "required_tested": true,
+      "required_qualified": true,
+      "reason": "Exact F-KT/F-SI blobs are necessary but not sufficient. The composed downstream candidate must itself have passed its focused/regression qualification before F-PM production migration may consume it."
+    },
     "fkt05": {
       "status_file": "integration/f-kt/F-KT05_STATUS.json",
       "qualified": true,
@@ -47,6 +54,7 @@
   "admission_rules": [
     "Candidate ref must resolve to one exact commit.",
     "F-CI18 must be an ancestor of the candidate.",
+    "The composed downstream candidate must itself report TESTED=true and QUALIFIED=true in the designated F-MR status artifact.",
     "Candidate must contain the exact qualified F-KT05 status pins and exact kernel transaction blob.",
     "Candidate must contain the exact qualified F-SI05 qualification pins and exact three production workspace-seam blobs.",
     "B1.10 snapshot and reconstruction blobs must remain byte-identical to the canonical qualified oracle infrastructure.",
@@ -70,7 +78,9 @@
     ]
   },
   "current_observation": {
-    "integration_f_mr_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "integration_f_mr_head": "8c819abbad3345358efde600cc306e064d63c12b",
+    "fmr01_tested": false,
+    "fmr01_qualified": false,
     "shared_baseline_proven": false,
     "production_migration_allowed": false
   }
