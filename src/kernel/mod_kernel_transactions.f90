@@ -1,4 +1,5 @@
 module mod_kernel_transactions
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
@@ -11,24 +12,30 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_STATUS_NOT_BOUND = 100
   integer, parameter, public :: KERNEL_STATUS_NOT_ADMITTED = 101
   integer, parameter, public :: KERNEL_STATUS_UNGUARDED_STATE = 102
+  integer, parameter, public :: KERNEL_STATUS_TIME_MISMATCH = 103
 
   integer, parameter, public :: KERNEL_COMMIT_STATUS_COMMITTED = 0
   integer, parameter, public :: KERNEL_COMMIT_STATUS_INVALID_CANDIDATE = 1
   integer, parameter, public :: KERNEL_COMMIT_STATUS_UNGUARDED_STATE = 2
   integer, parameter, public :: KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH = 3
   integer, parameter, public :: KERNEL_COMMIT_STATUS_STALE_REVISION = 4
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_TIME_MISMATCH = 5
 
   type, abstract, public :: kernel_parameters_t
   end type kernel_parameters_t
 
   ! Canonical F-KT-owned committed carrier. Physical continuation state is
   ! private. Runtime/coupler code supplies a stable positive lineage id; F-KT
-  ! owns revision changes and never generates global column identities.
+  ! owns revision and committed-time changes and never generates global column
+  ! identities. Initial time is optional for staged legacy admission; once the
+  ! timeline is bound, every continuation must start at the committed time.
   type, extends(transaction_state_t), public :: kernel_committed_state_t
     private
     class(transaction_state_t), allocatable :: physical_state
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: revision = 0_int64
+    real(real64) :: committed_time_value = 0.0_real64
+    logical :: time_bound = .false.
     logical :: initialized = .false.
   contains
     procedure :: clone => kernel_committed_clone
@@ -37,6 +44,8 @@ module mod_kernel_transactions
     procedure, public :: ready => kernel_committed_ready
     procedure, public :: current_lineage_id => kernel_current_lineage_id
     procedure, public :: current_revision => kernel_current_revision
+    procedure, public :: current_time => kernel_current_time
+    procedure, public :: time_is_bound => kernel_time_is_bound
   end type kernel_committed_state_t
 
   ! Candidate provenance and physical state are opaque outside F-KT. Callers
@@ -85,6 +94,7 @@ module mod_kernel_transactions
     integer :: unguarded_state_rejections = 0
     integer :: lineage_mismatch_rejections = 0
     integer :: stale_revision_rejections = 0
+    integer :: time_origin_rejections = 0
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
   end type kernel_diagnostics_t
 
@@ -137,25 +147,37 @@ contains
     type is (kernel_committed_state_t)
       typed_copy%lineage_id = self%lineage_id
       typed_copy%revision = self%revision
+      typed_copy%committed_time_value = self%committed_time_value
+      typed_copy%time_bound = self%time_bound
       typed_copy%initialized = self%initialized
       if (allocated(self%physical_state)) call self%physical_state%clone(typed_copy%physical_state)
     end select
   end subroutine kernel_committed_clone
 
-  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize)
+  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize, initial_time)
     class(kernel_committed_state_t), intent(inout) :: self
     integer(int64), intent(in) :: lineage_id
     class(transaction_state_t), allocatable, intent(in) :: initial_state
     logical, intent(out) :: did_initialize
+    real(real64), intent(in), optional :: initial_time
     class(transaction_state_t), allocatable :: copy
 
     did_initialize = .false.
     if (self%initialized .or. lineage_id <= 0_int64 .or. .not. allocated(initial_state)) return
+    if (present(initial_time)) then
+      if (.not. ieee_is_finite(initial_time)) return
+    end if
 
     call initial_state%clone(copy)
     call move_alloc(copy, self%physical_state)
     self%lineage_id = lineage_id
     self%revision = 0_int64
+    self%committed_time_value = 0.0_real64
+    self%time_bound = .false.
+    if (present(initial_time)) then
+      self%committed_time_value = initial_time
+      self%time_bound = .true.
+    end if
     self%initialized = .true.
     did_initialize = .true.
   end subroutine kernel_initialize_committed
@@ -173,7 +195,8 @@ contains
   logical function kernel_committed_ready(self) result(is_ready)
     class(kernel_committed_state_t), intent(in) :: self
     is_ready = self%initialized .and. self%lineage_id > 0_int64 .and. &
-         self%revision >= 0_int64 .and. allocated(self%physical_state)
+         self%revision >= 0_int64 .and. allocated(self%physical_state) .and. &
+         (.not. self%time_bound .or. ieee_is_finite(self%committed_time_value))
   end function kernel_committed_ready
 
   integer(int64) function kernel_current_lineage_id(self) result(value)
@@ -186,10 +209,29 @@ contains
     value = self%revision
   end function kernel_current_revision
 
+  subroutine kernel_current_time(self, value, available)
+    class(kernel_committed_state_t), intent(in) :: self
+    real(real64), intent(out) :: value
+    logical, intent(out) :: available
+
+    available = self%ready() .and. self%time_bound
+    if (available) then
+      value = self%committed_time_value
+    else
+      value = 0.0_real64
+    end if
+  end subroutine kernel_current_time
+
+  logical function kernel_time_is_bound(self) result(is_bound)
+    class(kernel_committed_state_t), intent(in) :: self
+    is_bound = self%ready() .and. self%time_bound
+  end function kernel_time_is_bound
+
   logical function kernel_candidate_ready(self) result(is_ready)
     class(kernel_candidate_state_t), intent(in) :: self
     is_ready = self%valid .and. allocated(self%state) .and. &
          self%origin_lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
+         ieee_is_finite(self%origin_t0) .and. ieee_is_finite(self%origin_t1) .and. &
          self%origin_t1 > self%origin_t0
   end function kernel_candidate_ready
 
@@ -257,14 +299,21 @@ contains
     candidate_state = kernel_candidate_state_t()
     diagnostics = kernel_diagnostics_t()
 
-    if (.not. committed_state%ready() .or. t1 <= t0 .or. &
+    if (.not. committed_state%ready()) then
+      result%status = KERNEL_STATUS_UNGUARDED_STATE
+      diagnostics%unguarded_state_rejections = 1
+      return
+    end if
+
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0 .or. &
         numerical_config%max_committed_substeps <= 0 .or. numerical_config%progress_tolerance < 0.0_real64) then
-      if (.not. committed_state%ready()) then
-        result%status = KERNEL_STATUS_UNGUARDED_STATE
-        diagnostics%unguarded_state_rejections = 1
-      else
-        result%status = CANONICAL_STATUS_INVALID_REQUEST
-      end if
+      result%status = CANONICAL_STATUS_INVALID_REQUEST
+      return
+    end if
+
+    if (committed_state%time_bound .and. .not. same_time_value(t0, committed_state%committed_time_value)) then
+      result%status = KERNEL_STATUS_TIME_MISMATCH
+      diagnostics%time_origin_rejections = 1
       return
     end if
 
@@ -284,8 +333,8 @@ contains
 
     call self%model%configure_parameters(parameters)
 
-    ! Clone only the physical continuation state. Lineage/revision metadata is
-    ! transaction control and never enters solver or persistent physical state.
+    ! Clone only the physical continuation state. Lineage/revision/time are
+    ! transaction control and never enter solver or persistent physical state.
     call committed_state%physical_state%clone(working)
 
     interval%t0 = t0
@@ -345,8 +394,18 @@ contains
       return
     end if
 
+    if (committed_state%time_bound .and. &
+        .not. same_time_value(candidate_state%origin_t0, committed_state%committed_time_value)) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%time_origin_rejections = diagnostics%time_origin_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_TIME_MISMATCH
+      return
+    end if
+
     call move_alloc(candidate_state%state, committed_state%physical_state)
     committed_state%revision = committed_state%revision + 1_int64
+    committed_state%committed_time_value = candidate_state%origin_t1
+    committed_state%time_bound = .true.
 
     call clear_candidate(candidate_state)
     diagnostics%committed_state_mutations = diagnostics%committed_state_mutations + 1
@@ -374,6 +433,18 @@ contains
     candidate_state%origin_lineage_id_value = 0_int64
     candidate_state%origin_revision_value = -1_int64
   end subroutine clear_candidate
+
+  logical function same_time_value(a, b) result(matches)
+    real(real64), intent(in) :: a, b
+    real(real64) :: scale
+
+    if (.not. ieee_is_finite(a) .or. .not. ieee_is_finite(b)) then
+      matches = .false.
+      return
+    end if
+    scale = max(1.0_real64, abs(a), abs(b))
+    matches = abs(a-b) <= 64.0_real64*epsilon(1.0_real64)*scale
+  end function same_time_value
 
   subroutine map_runtime_result(runtime_result, result)
     type(canonical_result_t), intent(in) :: runtime_result
