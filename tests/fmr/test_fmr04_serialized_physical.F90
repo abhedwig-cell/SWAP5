@@ -130,7 +130,9 @@ program test_fmr04_serialized_physical
   call require(available .and. same_real(committed_time,t1), 'commit advances committed time to t1')
   call require(committed_fingerprint(committed) == candidate_fp2, 'committed endpoint equals replay candidate')
 
-  call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
+  ! Start from the current committed time so the stale-revision guard is tested directly,
+  ! without the earlier committed-time-origin guard masking the checkpoint mismatch.
+  call backend%run_trial(column, template, parameters, committed, forcing, config, t1, t1+(t1-t0), checkpoint, &
        rejected_result, rejected_candidate, rejected_diagnostics)
   call require(rejected_result%status == KERNEL_STATUS_CHECKPOINT_MISMATCH, 'stale checkpoint rejected')
   call require(.not. rejected_candidate%ready(), 'stale checkpoint produces no candidate')
