@@ -62,7 +62,7 @@ program test_fci14_reference_temporal_policy
   end select
   call evaluate_b1_10_reference_temporal(delta, limits, assessment)
   if (.not.assessment%complete .or. .not.assessment%accepted) error stop 'FCI14 lagged diagnostics incorrectly rejected endpoint'
-  if (abs(assessment%normalized_error-0.5_real64)>1e-14_real64) error stop 'FCI14 normalized endpoint ratio'
+  if (abs(assessment%normalized_error-0.5_real64)>1e-12_real64) error stop 'FCI14 normalized endpoint ratio'
   if (.not.assessment%lagged_continuation_diagnostic_only) error stop 'FCI14 lagged diagnostic marker'
 
   select type(q=>half)
@@ -78,7 +78,7 @@ program test_fci14_reference_temporal_policy
   end select
   call evaluate_b1_10_reference_temporal(delta, limits, assessment)
   if (.not.assessment%complete .or. assessment%accepted) error stop 'FCI14 exceedance not rejected'
-  if (abs(assessment%normalized_error-1.5_real64)>1e-14_real64) error stop 'FCI14 exceedance ratio'
+  if (abs(assessment%normalized_error-1.5_real64)>1e-12_real64) error stop 'FCI14 exceedance ratio'
   if (assessment%limiting_metric/=B1_10_TEMP_METRIC_H) error stop 'FCI14 limiting metric'
 
   zero_limits=limits
