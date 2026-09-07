@@ -1,5 +1,5 @@
 module mod_kernel_transactions
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
@@ -10,15 +10,43 @@ module mod_kernel_transactions
 
   integer, parameter, public :: KERNEL_STATUS_NOT_BOUND = 100
   integer, parameter, public :: KERNEL_STATUS_NOT_ADMITTED = 101
+  integer, parameter, public :: KERNEL_STATUS_UNGUARDED_STATE = 102
+
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_COMMITTED = 0
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_INVALID_CANDIDATE = 1
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_UNGUARDED_STATE = 2
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH = 3
+  integer, parameter, public :: KERNEL_COMMIT_STATUS_STALE_REVISION = 4
 
   type, abstract, public :: kernel_parameters_t
   end type kernel_parameters_t
+
+  ! Canonical committed-state carrier. The physical continuation state remains
+  ! a transaction_state_t, while F-KT-owned lineage/revision metadata protects
+  ! candidate publication. Runtime/coupler code supplies a stable positive
+  ! lineage_id; the kernel never generates global column identities.
+  type, extends(transaction_state_t), public :: kernel_committed_state_t
+    private
+    class(transaction_state_t), allocatable :: physical_state
+    integer(int64) :: lineage_id = 0_int64
+    integer(int64) :: revision = 0_int64
+    logical :: initialized = .false.
+  contains
+    procedure :: clone => kernel_committed_clone
+    procedure, public :: initialize => kernel_initialize_committed
+    procedure, public :: snapshot => kernel_snapshot_committed
+    procedure, public :: ready => kernel_committed_ready
+    procedure, public :: current_lineage_id => kernel_current_lineage_id
+    procedure, public :: current_revision => kernel_current_revision
+  end type kernel_committed_state_t
 
   type, public :: kernel_candidate_state_t
     class(transaction_state_t), allocatable :: state
     logical :: valid = .false.
     real(real64) :: origin_t0 = 0.0_real64
     real(real64) :: origin_t1 = 0.0_real64
+    integer(int64) :: origin_lineage_id = 0_int64
+    integer(int64) :: origin_revision = -1_int64
   end type kernel_candidate_state_t
 
   type, public :: kernel_result_t
@@ -43,6 +71,11 @@ module mod_kernel_transactions
     integer :: candidate_rollbacks = 0
     integer :: committed_state_mutations = 0
     integer :: admission_rejections = 0
+    integer :: commit_rejections = 0
+    integer :: invalid_candidate_rejections = 0
+    integer :: unguarded_state_rejections = 0
+    integer :: lineage_mismatch_rejections = 0
+    integer :: stale_revision_rejections = 0
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
   end type kernel_diagnostics_t
 
@@ -58,7 +91,7 @@ module mod_kernel_transactions
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
   ! warm-start data, but every physical trial still originates from the
-  ! committed state passed to advance_interval.
+  ! committed physical state carried by kernel_committed_state_t.
   type, public :: kernel_executor_t
     private
     class(kernel_model_t), pointer :: model => null()
@@ -86,6 +119,64 @@ module mod_kernel_transactions
 
 contains
 
+  subroutine kernel_committed_clone(self, copy)
+    class(kernel_committed_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+
+    allocate(kernel_committed_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (kernel_committed_state_t)
+      typed_copy%lineage_id = self%lineage_id
+      typed_copy%revision = self%revision
+      typed_copy%initialized = self%initialized
+      if (allocated(self%physical_state)) call self%physical_state%clone(typed_copy%physical_state)
+    end select
+  end subroutine kernel_committed_clone
+
+  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize)
+    class(kernel_committed_state_t), intent(inout) :: self
+    integer(int64), intent(in) :: lineage_id
+    class(transaction_state_t), allocatable, intent(in) :: initial_state
+    logical, intent(out) :: did_initialize
+    class(transaction_state_t), allocatable :: copy
+
+    did_initialize = .false.
+    if (self%initialized .or. lineage_id <= 0_int64 .or. .not. allocated(initial_state)) return
+
+    call initial_state%clone(copy)
+    call move_alloc(copy, self%physical_state)
+    self%lineage_id = lineage_id
+    self%revision = 0_int64
+    self%initialized = .true.
+    did_initialize = .true.
+  end subroutine kernel_initialize_committed
+
+  subroutine kernel_snapshot_committed(self, copy, available)
+    class(kernel_committed_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical, intent(out) :: available
+
+    available = self%ready()
+    if (.not. available) return
+    call self%physical_state%clone(copy)
+  end subroutine kernel_snapshot_committed
+
+  logical function kernel_committed_ready(self) result(is_ready)
+    class(kernel_committed_state_t), intent(in) :: self
+    is_ready = self%initialized .and. self%lineage_id > 0_int64 .and. &
+         self%revision >= 0_int64 .and. allocated(self%physical_state)
+  end function kernel_committed_ready
+
+  integer(int64) function kernel_current_lineage_id(self) result(value)
+    class(kernel_committed_state_t), intent(in) :: self
+    value = self%lineage_id
+  end function kernel_current_lineage_id
+
+  integer(int64) function kernel_current_revision(self) result(value)
+    class(kernel_committed_state_t), intent(in) :: self
+    value = self%revision
+  end function kernel_current_revision
+
   subroutine kernel_bind_model(self, model)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_model_t), target, intent(inout) :: model
@@ -107,6 +198,7 @@ contains
     class(transaction_state_t), allocatable :: working
     type(canonical_interval_t) :: interval
     type(canonical_result_t) :: runtime_result
+    integer(int64) :: origin_lineage_id, origin_revision
 
     result = kernel_result_t()
     result%requested_t0 = t0
@@ -120,6 +212,24 @@ contains
       result%status = CANONICAL_STATUS_INVALID_REQUEST
       return
     end if
+
+    select type (committed => committed_state)
+    type is (kernel_committed_state_t)
+      if (.not. committed%ready()) then
+        result%status = KERNEL_STATUS_UNGUARDED_STATE
+        diagnostics%unguarded_state_rejections = 1
+        return
+      end if
+      origin_lineage_id = committed%lineage_id
+      origin_revision = committed%revision
+    class default
+      ! Raw transaction_state_t values cannot carry enough provenance to reject
+      ! stale or cross-column candidate publication. Production use therefore
+      ! fails closed instead of silently accepting an unguarded state.
+      result%status = KERNEL_STATUS_UNGUARDED_STATE
+      diagnostics%unguarded_state_rejections = 1
+      return
+    end select
 
     if (.not. associated(self%model)) then
       result%status = KERNEL_STATUS_NOT_BOUND
@@ -137,9 +247,15 @@ contains
 
     call self%model%configure_parameters(parameters)
 
-    ! The caller-owned committed state is input-only. The F-CI runtime receives
-    ! a private clone and may commit only inside that private working lineage.
-    call committed_state%clone(working)
+    ! Clone only the physical continuation state. Lineage/revision metadata is
+    ! transaction control and never enters solver or persistent physical state.
+    select type (committed => committed_state)
+    type is (kernel_committed_state_t)
+      call committed%physical_state%clone(working)
+    class default
+      error stop 'FKT02 guarded-state dispatch invariant violated'
+    end select
+
     interval%t0 = t0
     interval%t1 = t1
     call run_canonical_interval(self%model, working, forcing, interval, numerical_config, runtime_result)
@@ -152,25 +268,77 @@ contains
       candidate_state%valid = .true.
       candidate_state%origin_t0 = t0
       candidate_state%origin_t1 = t1
+      candidate_state%origin_lineage_id = origin_lineage_id
+      candidate_state%origin_revision = origin_revision
       diagnostics%candidate_materializations = 1
     end if
   end subroutine kernel_advance_interval
 
-  subroutine kernel_commit_candidate(self, committed_state, candidate_state, diagnostics, did_commit)
+  subroutine kernel_commit_candidate(self, committed_state, candidate_state, diagnostics, did_commit, commit_status)
     class(kernel_executor_t), intent(inout) :: self
     class(transaction_state_t), allocatable, intent(inout) :: committed_state
     type(kernel_candidate_state_t), intent(inout) :: candidate_state
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
     logical, intent(out) :: did_commit
+    integer, intent(out), optional :: commit_status
 
     did_commit = .false.
-    if (.not. associated(self%model)) return
-    if (.not. candidate_state%valid .or. .not. allocated(candidate_state%state)) return
+    if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_INVALID_CANDIDATE
+    if (.not. same_type_as(self, self)) error stop 'unreachable kernel executor type'
 
-    call move_alloc(candidate_state%state, committed_state)
+    if (.not. candidate_state%valid .or. .not. allocated(candidate_state%state)) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%invalid_candidate_rejections = diagnostics%invalid_candidate_rejections + 1
+      return
+    end if
+
+    if (.not. allocated(committed_state)) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
+      return
+    end if
+
+    select type (committed => committed_state)
+    type is (kernel_committed_state_t)
+      if (.not. committed%ready()) then
+        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+        diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
+        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
+        return
+      end if
+
+      if (candidate_state%origin_lineage_id /= committed%lineage_id) then
+        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+        diagnostics%lineage_mismatch_rejections = diagnostics%lineage_mismatch_rejections + 1
+        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH
+        return
+      end if
+
+      if (candidate_state%origin_revision /= committed%revision) then
+        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+        diagnostics%stale_revision_rejections = diagnostics%stale_revision_rejections + 1
+        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_STALE_REVISION
+        return
+      end if
+
+      call move_alloc(candidate_state%state, committed%physical_state)
+      committed%revision = committed%revision + 1_int64
+    class default
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
+      return
+    end select
+
     candidate_state%valid = .false.
+    candidate_state%origin_t0 = 0.0_real64
+    candidate_state%origin_t1 = 0.0_real64
+    candidate_state%origin_lineage_id = 0_int64
+    candidate_state%origin_revision = -1_int64
     diagnostics%committed_state_mutations = diagnostics%committed_state_mutations + 1
     did_commit = .true.
+    if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_COMMITTED
   end subroutine kernel_commit_candidate
 
   subroutine kernel_rollback_candidate(self, candidate_state, diagnostics)
@@ -178,12 +346,14 @@ contains
     type(kernel_candidate_state_t), intent(inout) :: candidate_state
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
 
-    if (.not. associated(self%model)) return
+    if (.not. same_type_as(self, self)) error stop 'unreachable kernel executor type'
     if (allocated(candidate_state%state)) deallocate(candidate_state%state)
     if (candidate_state%valid) diagnostics%candidate_rollbacks = diagnostics%candidate_rollbacks + 1
     candidate_state%valid = .false.
     candidate_state%origin_t0 = 0.0_real64
     candidate_state%origin_t1 = 0.0_real64
+    candidate_state%origin_lineage_id = 0_int64
+    candidate_state%origin_revision = -1_int64
   end subroutine kernel_rollback_candidate
 
   subroutine map_runtime_result(runtime_result, result)
