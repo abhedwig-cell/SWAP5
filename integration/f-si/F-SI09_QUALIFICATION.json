@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "status": "TESTED_SOURCE_RESOLUTION_PROVIDER_HELD",
+  "qualified": false,
+  "branch": "work/f-si09-b110-constitutive-provider",
+  "basis": {
+    "fsi08_qualified_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+    "oracle": "B1.10"
+  },
+  "tested_postimage": {
+    "commit": "a588ab7401b53e4da0eb10ae6cc55efec0b6a01f",
+    "workflow_run": 34145698534,
+    "workflow_job": 101817163748,
+    "conclusion": "success"
+  },
+  "source_resolution": {
+    "outer_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "local_byte_exact_reconstruction_passed": true,
+    "repository_materializer_added": true
+  },
+  "gate_results": {
+    "b1_10_snapshot_provenance": "PASS",
+    "swap012_patch_identity": "PASS",
+    "swap012_qualification_binding": "PASS",
+    "source_resolution_record": "PASS",
+    "byte_safe_materializer_static_gate": "PASS",
+    "fsi08_handoff": "PASS"
+  },
+  "holds": {
+    "corrected_source_postimage_persisted_in_production_tree": false,
+    "production_b1_10_constitutive_provider_admitted": false,
+    "production_b1_10_source_sink_provider_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false
+  },
+  "next_required_step": "Persist or reproducibly bind the exact corrected MOD_MvG source into the production/reference build boundary and mechanically isolate the concrete constitutive provider. Compare provider outputs executable against the byte-exact corrected B1.10 source before any parallel backend admission.",
+  "status_dimensions": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": false
+  },
+  "scope_flags": {
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "parallel_reference_backend_admitted": false
+  }
+}
