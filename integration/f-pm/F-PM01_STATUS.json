@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "branch": "work/f-pm01-process-boundary",
+  "status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified_boundary": true,
+  "qualified_exit": false,
+  "production_migration_allowed": false,
+  "source_basis": {
+    "qualified_production_source": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "canonical_branch": "integration/f-ci-canonical",
+    "f_ci_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "oracle": "B1.10"
+  },
+  "current_qualified_dependencies": {
+    "F-KT05": {
+      "head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+      "status": "QUALIFIED"
+    },
+    "F-SI05": {
+      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY"
+    }
+  },
+  "first_process": "SNOW",
+  "first_process_contract": "integration/f-pm/F-PM01_FIRST_PROCESS_CONTRACT.json",
+  "characterization_evidence": "integration/f-pm/F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json",
+  "qualification_evidence": "integration/f-pm/F-PM01_QUALIFICATION.json",
+  "invariant_assessment": "integration/f-pm/F-PM01_INVARIANT_ASSESSMENT.json",
+  "source_change_control": {
+    "production_src_files_changed": 0,
+    "production_physics_changed": false,
+    "solver_changed": false,
+    "transaction_source_changed": false
+  },
+  "achieved": [
+    "source-bound inventory of 13 process groups",
+    "machine-readable dependency classification",
+    "current migration-readiness classification",
+    "migration order with SNOW first",
+    "explicit snow parameters/state/forcing/results/workspace contract",
+    "snowinco separated from physical continuation state",
+    "source-bound B1.10 snow characterization at O0/O2",
+    "same-input/state-clone/A-B-A/rollback-replay/inactive-option checks",
+    "one-day non-midnight identity",
+    "unrounded snow mass identity",
+    "architecture invariant assessment",
+    "current F-KT05/F-SI05 qualification refresh",
+    "hard proof of zero production src changes"
+  ],
+  "blockers": [
+    {
+      "id": "FPM01-G12-SHARED-DOWNSTREAM-BASELINE",
+      "status": "HOLD",
+      "reason": "F-KT05 and F-SI05 are independently qualified but their qualified lineages remain diverged from F-CI18. F-PM is not the owner of the integration merge and may not create that production baseline itself."
+    }
+  ],
+  "holds": [
+    "No F-PM02 production source migration until a qualified shared F-KT05/F-SI05 basis is published.",
+    "No generic-duration/subdaily snow numerical scaling inferred from B1.10 one-call semantics.",
+    "F-SI05 focused qualification does not imply full solver reentrancy, all boundary modes, macropores or production MultiSWAP admission."
+  ],
+  "next_scope": "F-PM02: structurally migrate SNOW first, preserving B1.10 equations and characterized one-call semantics, only from the future exact shared qualified downstream basis.",
+  "resume_rule": "On publication of a shared qualified basis, verify exact F-KT05/F-SI05 provenance and unchanged snow source/contract dependencies. If those admission checks pass, promote exit criterion 12; otherwise reopen only the affected boundary classifications."
+}
