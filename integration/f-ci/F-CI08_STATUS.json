@@ -3,30 +3,41 @@
   "work_unit": "F-CI08",
   "title": "Physical Process Continuation State",
   "branch": "integration/f-ci-canonical",
-  "parent_commit": "b2c0664816f8b34ecf9e337790767cc575c330ee",
+  "qualified_source_head": "88bb794ae10d998595f21347055a7a6caf4f066c",
   "b1_oracle": "B1.10",
-  "production_source_changed": false,
+  "production_source_changed": true,
   "persisted_before_long_tests": true,
-  "scope": [
-    "thermal continuation state",
-    "solute continuation and replay state",
-    "irrigation process continuation state",
-    "crop/WOFOST continuation state",
-    "full physical reject-restore-rerun qualification"
-  ],
-  "hard_rules": [
-    "only physical/process continuation state may become persistent per column",
-    "forcing, reporting, accounting and numerical scratch remain separate",
-    "optional process state must scale only with active physics",
-    "no physics formula or solver policy change",
-    "no full physical transaction admission before source-bound reject-restore-rerun passes"
-  ],
   "qualification": {
-    "exact_b1_10_source_audit": "IN_PROGRESS",
-    "state_classification": "IN_PROGRESS",
-    "source_bound_compile": "NOT_STARTED",
-    "reject_restore_rerun": "NOT_STARTED",
-    "canonical_ci": "NOT_STARTED"
+    "state_classification": "PASS",
+    "attempt_context_lifecycle": "PASS",
+    "optional_process_state_ownership": "PASS",
+    "worker_local_trial_capsule_boundary": "PASS",
+    "canonical_ci": "PASS_RUN_34088797066",
+    "source_bound_whole_day_reject_restore_rerun": "PASS_8_OF_8_ZERO_DIFF",
+    "generic_physical_subday": "NOT_QUALIFIED"
   },
-  "status": "MATERIALIZED_INVENTORY_IN_PROGRESS"
+  "admitted_persistent_process_state": [
+    "water checkpoint",
+    "thermal tsoil when active",
+    "solute cml/cmsy and age tracer when active",
+    "irrigation dayfix/nirri when configured",
+    "crop lifecycle/biomass/root state including rdpot",
+    "WOFOST state/management when active"
+  ],
+  "excluded_from_persistent_state": [
+    "forcing cursors",
+    "time and numerical timestep control",
+    "reporting/output progress",
+    "balance/accounting accumulators",
+    "irrigation event workspace and mutable schedule projection",
+    "HeadCalc/Newton scratch",
+    "WOFOST rates"
+  ],
+  "holds": [
+    "generic physical sub-day continuation",
+    "noddrz_old sub-day continuation audit",
+    "canonical B1.10 transaction-model binding",
+    "canonical unrounded interval mass-result binding"
+  ],
+  "status": "PASS_PHYSICAL_PROCESS_CONTINUATION_HUPSEL_WHOLE_DAY_SUBDAY_BLOCKED"
 }
