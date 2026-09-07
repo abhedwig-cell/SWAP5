@@ -302,13 +302,23 @@ contains
 
     type(fmr_deterministic_worker_t), allocatable, target :: workers(:)
     integer, allocatable :: order(:)
-    integer :: i, batch_start, batch_end, pos, idx, worker_id, batches
+    logical, allocatable :: state_claimed(:)
+    integer :: i, batch_start, batch_end, pos, idx, worker_id, batches, state_index
     logical :: poison
 
     if (worker_count <= 0 .or. batch_size <= 0) error stop 'F-MR invalid worker or batch size'
-    if (size(states) < size(columns) .or. size(controls) < size(columns)) then
-      error stop 'F-MR state/control registry too small'
-    end if
+    if (size(controls) < size(columns)) error stop 'F-MR control registry too small'
+    allocate(state_claimed(size(states)))
+    state_claimed = .false.
+    do i = 1, size(columns)
+      if (columns(i)%state_handle < 1_int64 .or. &
+          columns(i)%state_handle > int(size(states), int64)) then
+        error stop 'F-MR state handle outside committed-state registry'
+      end if
+      state_index = int(columns(i)%state_handle)
+      if (state_claimed(state_index)) error stop 'F-MR duplicate committed-state handle in one dispatch'
+      state_claimed(state_index) = .true.
+    end do
 
     poison = .false.
     if (present(poison_worker_scratch)) poison = poison_worker_scratch
@@ -333,12 +343,13 @@ contains
     batches = (size(columns) + batch_size - 1) / batch_size
     do batch_start = 1, size(columns), batch_size
       batch_end = min(size(columns), batch_start + batch_size - 1)
-!$omp parallel do schedule(dynamic,1) num_threads(worker_count) private(pos,idx,worker_id)
+!$omp parallel do schedule(dynamic,1) num_threads(worker_count) private(pos,idx,worker_id,state_index)
       do pos = batch_start, batch_end
         idx = order(pos)
         worker_id = omp_get_thread_num() + 1
+        state_index = int(columns(idx)%state_handle)
         call execute_column(workers(worker_id), columns(idx), templates, parameters, forcings, &
-             states(idx), controls(idx), numerical_config, t0, t1, results(idx), diagnostics(idx))
+             states(state_index), controls(idx), numerical_config, t0, t1, results(idx), diagnostics(idx))
       end do
 !$omp end parallel do
     end do
