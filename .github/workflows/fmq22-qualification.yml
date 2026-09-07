@@ -1,0 +1,95 @@
+name: F-MQ22 F-KT06 P14 optional-state admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq22-fkt06-p14-optional-state
+    paths:
+      - 'tests/multiswap/fmq22_*'
+      - 'tests/multiswap/test_fmq22_*'
+      - 'tests/multiswap/verify_fmq22_*'
+      - 'tests/multiswap/run_fmq22_gate.py'
+      - 'docs/qualification/F-MQ22_*'
+      - '.github/workflows/fmq22-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq22-gate:
+    name: F-MQ22 P14 optional-state qualification
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ22 admission tests
+        run: python3 tests/multiswap/run_fmq22_gate.py
+
+      - name: Fetch exact F-KT06 qualification and tested postimage
+        run: |
+          FKT06_QUAL=42872c266bc6f4fbf6815b1facbc3ed5d64df19a
+          FKT06_TESTED=80a68dea3bfa45d7e8d533ec5a67fc89bdb786db
+          git fetch --no-tags origin "$FKT06_QUAL" "$FKT06_TESTED"
+          test "$(git rev-parse "$FKT06_QUAL:qualification/f-kt/F-KT06_QUALIFICATION.json")" = "75cc6d399facdb6bb8303ca905ac8056aeda3b2c"
+          test "$(git rev-parse "$FKT06_QUAL:integration/f-kt/F-KT06_OPTIONAL_CONTINUATION_CONTRACT.json")" = "64f285ac6ae89297ca221048c2ff55cc580e3492"
+          test "$(git rev-parse "$FKT06_TESTED:tests/fkt/run_fkt06_gate.sh")" = "7c19f062efae19fb3d1c73b7f9a104bc013bd982"
+          test "$(git rev-parse "$FKT06_TESTED:tests/fkt/test_fkt06_optional_continuation.f90")" = "eea1103195021a1243f220a16c357aa7dfb538b1"
+          git show "$FKT06_QUAL:qualification/f-kt/F-KT06_QUALIFICATION.json" > /tmp/fkt06_qualification.json
+          git show "$FKT06_QUAL:integration/f-kt/F-KT06_OPTIONAL_CONTINUATION_CONTRACT.json" > /tmp/fkt06_contract.json
+          git show "$FKT06_TESTED:tests/fkt/run_fkt06_gate.sh" > /tmp/fkt06_gate.sh
+          git show "$FKT06_TESTED:tests/fkt/test_fkt06_optional_continuation.f90" > /tmp/fkt06_test.f90
+
+      - name: Verify external F-KT06 qualification scope
+        run: |
+          python3 tests/multiswap/verify_fmq22_fkt06_external.py \
+            --qualification /tmp/fkt06_qualification.json \
+            --contract /tmp/fkt06_contract.json \
+            --gate-source /tmp/fkt06_gate.sh \
+            --test-source /tmp/fkt06_test.f90
+
+      - name: Re-run exact F-KT06 tested postimage gate
+        run: |
+          git worktree add --detach /tmp/fkt06-tested 80a68dea3bfa45d7e8d533ec5a67fc89bdb786db
+          (cd /tmp/fkt06-tested && bash tests/fkt/run_fkt06_gate.sh) | tee /tmp/fkt06-gate.out
+          grep -q '^FKT06_FOCUSED_O0_O2_GATE PASS$' /tmp/fkt06-gate.out
+
+      - name: Compile and run F-MQ22 two-column P14 gate on exact F-KT06 postimage
+        run: |
+          ROOT=/tmp/fkt06-tested
+          TEST="$GITHUB_WORKSPACE/tests/multiswap/test_fmq22_p14_optional_state.f90"
+          BUILD=/tmp/fmq22-p14
+          mkdir -p "$BUILD/o0" "$BUILD/o2"
+          COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -fopenmp)
+          for opt in 0 2; do
+            out="$BUILD/o$opt"
+            gfortran "${COMMON[@]}" -O"$opt" -J "$out" \
+              "$ROOT/src/transaction/mod_transaction_reference.f90" \
+              "$ROOT/src/runtime/mod_canonical_contracts.f90" \
+              "$ROOT/src/runtime/mod_canonical_interval_runtime.f90" \
+              "$ROOT/src/kernel/mod_kernel_transactions.f90" \
+              "$TEST" -o "$out/fmq22_p14"
+            "$out/fmq22_p14" | tee "$out/output.txt"
+            grep -q '^P14_COLUMNS 2$' "$out/output.txt"
+            grep -q '^P14_WORKERS 1$' "$out/output.txt"
+            grep -q '^P14_OFF_DYNAMIC_BYTES 0$' "$out/output.txt"
+            grep -q '^P14_SHARED_PARAMETER_OBJECTS 1$' "$out/output.txt"
+            grep -q '^F-MQ22_P14_TWO_COLUMN_GATE PASS$' "$out/output.txt"
+          done
+          cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+          echo 'F-MQ22_P14_O0_O2_IDENTITY PASS'
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq22_gate.py \
+            tests/multiswap/test_fmq22_fkt06_p14_admission.py \
+            tests/multiswap/verify_fmq22_fkt06_external.py
