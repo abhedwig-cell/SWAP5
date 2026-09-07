@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI03",
+  "title": "B1.10 Transactional Core Forward Integration",
+  "branch": "integration/f-ci-canonical",
+  "a23_source_commit": "763f276a96ee1722a465bacd3a710172a5f38107",
+  "b1_oracle": "B1.10",
+  "b1_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+  "materialized": {
+    "transaction_reference_core": true,
+    "worker_execution_context": true,
+    "qualified_transaction_tests": true,
+    "qualified_worker_isolation_test": true,
+    "wholesale_a23bu_physical_adapter": false
+  },
+  "qualification": {
+    "source_provenance_gate": "MATERIALIZED",
+    "transaction_o0_o2_gate": "WORKFLOW_QUEUED",
+    "worker_o0_o2_isolation_gate": "WORKFLOW_QUEUED",
+    "github_actions_run_id": 34081057982
+  },
+  "holds": [
+    "B1.10 physical adapter not yet implemented",
+    "generic physical sub-day execution not yet qualified",
+    "scheduled irrigation and crop continuation qualification pending",
+    "canonical unrounded physical mass result contract pending",
+    "full-plus-two-half transaction route is reference-only and not throughput policy"
+  ],
+  "status": "MATERIALIZED_QUALIFICATION_RUNNING"
+}
