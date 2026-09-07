@@ -2,7 +2,9 @@ program test_fci07_legacy_trial_capsule
   use, intrinsic :: iso_fortran_env, only: real64
   use MOD_arrays, only: macp, madr
   use variables, only: dt, dtold, t, t1900, tcum, daycum, daynr, iyear, date, &
-       fldaystart, fldayend, fldecdt, fldtmin, fldtreduce, floutput, flzerointr
+       fldaystart, fldayend, fldecdt, fldtmin, fldtreduce, floutput, flzerointr, &
+       volini, pondini, ivolbeg, ipondbeg, issnowbeg, isicbeg, ithetabeg
+  use MOD_integral_global, only: inqpotrot_day, inqredrot_day, iqrot_day, iptra_day, ialpwet_day, ialpdry_day
   use MOD_meteo, only: meteo_rec, rain_rec, i_metdetail, fl_update_meteo
   use MOD_irrigation, only: dayfix, nirri, irrigevent, isua, cirr, dt_irr_event, gird, nird, qssdi, qssdisum, flirrigate
   use MOD_integral, only: inqrot, inq, inqdra, iqrot, igrai, cgrai, cqbotdo, crunoff, cevap, cqdra, cqdrain, cgsnow
@@ -15,6 +17,9 @@ program test_fci07_legacy_trial_capsule
   dt=0.125_real64; dtold=0.25_real64; t=3.5_real64; t1900=40000.5_real64; tcum=9.25_real64
   daycum=17; daynr=123; iyear=2003; date='2003-05-03'
   fldaystart=.true.; fldayend=.false.; fldecdt=.true.; fldtmin=.false.; fldtreduce=.true.; floutput=.true.; flzerointr=.true.
+  volini=2.1_real64; pondini=2.2_real64; ivolbeg=2.3_real64; ipondbeg=2.4_real64; issnowbeg=2.5_real64; isicbeg=2.6_real64
+  do i=1,macp; ithetabeg(i)=real(i,real64)*4.0e-5_real64; inqpotrot_day(i)=real(i,real64)*5.0e-5_real64; inqredrot_day(i)=real(i,real64)*6.0e-5_real64; end do
+  iqrot_day=2.7_real64; iptra_day=2.8_real64; ialpwet_day=2.9_real64; ialpdry_day=3.0_real64
   meteo_rec=31; rain_rec=7; i_metdetail=4; fl_update_meteo=.true.
   dayfix=6; nirri=2; irrigevent=1; isua=1; cirr=0.44_real64; dt_irr_event=0.2_real64
   gird=0.7_real64; nird=0.6_real64; qssdisum=0.3_real64; flirrigate=.true.
@@ -28,6 +33,8 @@ program test_fci07_legacy_trial_capsule
 
   dt=-9; dtold=-9; t=-9; t1900=-9; tcum=-9; daycum=-9; daynr=-9; iyear=-9; date='POISONED   '
   fldaystart=.false.; fldayend=.true.; fldecdt=.false.; fldtmin=.true.; fldtreduce=.false.; floutput=.false.; flzerointr=.false.
+  volini=-9; pondini=-9; ivolbeg=-9; ipondbeg=-9; issnowbeg=-9; isicbeg=-9; ithetabeg=-9
+  inqpotrot_day=-9; inqredrot_day=-9; iqrot_day=-9; iptra_day=-9; ialpwet_day=-9; ialpdry_day=-9
   meteo_rec=-9; rain_rec=-9; i_metdetail=-9; fl_update_meteo=.false.
   dayfix=-9; nirri=-9; irrigevent=-9; isua=-9; cirr=-9; dt_irr_event=-9; gird=-9; nird=-9; qssdisum=-9; flirrigate=.false.
   qssdi=-9; inqrot=-9; inq=-9; inqdra=-9; iqrot=-9; igrai=-9
@@ -40,6 +47,13 @@ program test_fci07_legacy_trial_capsule
   if (daycum/=17 .or. daynr/=123 .or. iyear/=2003 .or. date/='2003-05-03') error stop 'time projection restore'
   if (.not.fldaystart .or. fldayend .or. .not.fldecdt .or. fldtmin .or. .not.fldtreduce) error stop 'control flags restore'
   if (.not.floutput .or. .not.flzerointr) error stop 'reporting flags restore'
+  call assert_close(volini,2.1_real64,'volini'); call assert_close(pondini,2.2_real64,'pondini')
+  call assert_close(ivolbeg,2.3_real64,'ivolbeg'); call assert_close(ipondbeg,2.4_real64,'ipondbeg')
+  call assert_close(ithetabeg(macp),real(macp,real64)*4.0e-5_real64,'ithetabeg')
+  call assert_close(inqpotrot_day(macp),real(macp,real64)*5.0e-5_real64,'inqpotrot_day')
+  call assert_close(inqredrot_day(macp),real(macp,real64)*6.0e-5_real64,'inqredrot_day')
+  call assert_close(iqrot_day,2.7_real64,'iqrot_day'); call assert_close(iptra_day,2.8_real64,'iptra_day')
+  call assert_close(ialpwet_day,2.9_real64,'ialpwet_day'); call assert_close(ialpdry_day,3.0_real64,'ialpdry_day')
   if (meteo_rec/=31 .or. rain_rec/=7 .or. i_metdetail/=4 .or. .not.fl_update_meteo) error stop 'forcing cursor restore'
   if (dayfix/=6 .or. nirri/=2 .or. irrigevent/=1 .or. isua/=1 .or. .not.flirrigate) error stop 'irrigation cursor restore'
   call assert_close(cirr,0.44_real64,'cirr'); call assert_close(dt_irr_event,0.2_real64,'dt_irr_event')
