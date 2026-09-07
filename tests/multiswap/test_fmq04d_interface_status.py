@@ -7,6 +7,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 STATUS_PATH = HERE / "fmq04d_canonical_interface_status.json"
+EXPECTED_CANONICAL_COMMIT = "539b8c1b942d5c2dc8f97b8b7f400b2c3a1da0aa"
 
 CRITICAL_REAL_PHYSICAL_CAPABILITIES = (
     "concrete_b1_10_physical_adapter",
@@ -23,6 +24,7 @@ ALREADY_MATERIALIZED_CONTRACT_CAPABILITIES = (
     "private_working_state_for_internal_substeps",
     "separate_forcing_numerical_config_result_contracts",
     "worker_scratch_excluded_from_persistent_state_contract",
+    "exact_b1_10_physical_preimage_qualified",
 )
 
 
@@ -39,10 +41,13 @@ class TestFMQ04dCanonicalInterfaceStatus(unittest.TestCase):
     def test_exact_canonical_source_pin(self) -> None:
         source = self.status["canonical_source"]
         self.assertEqual(source["branch"], "integration/f-ci-canonical")
+        self.assertEqual(source["commit"], EXPECTED_CANONICAL_COMMIT)
         self.assertEqual(source["reference_snapshot"], "B1.10")
         self.assertRegex(source["commit"], r"^[0-9a-f]{40}$")
         self.assertRegex(source["source_manifest_sha256"], r"^[0-9a-f]{64}$")
         self.assertTrue(source["evidence"])
+        self.assertIn("integration/f-ci/F-CI05_STATUS.json", source["evidence"])
+        self.assertIn("integration/f-ci/F-CI05_B1_10_PHYSICAL_SEAM.json", source["evidence"])
         for digest in source["evidence"].values():
             self.assertRegex(digest, r"^[0-9a-f]{40}$")
 
