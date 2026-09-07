@@ -26,10 +26,37 @@
     "canonical_development_baseline_admitted_for_downstream_qualification": true,
     "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
   },
-  "implemented": false,
+  "binding_overlay": {
+    "path": "tests/multiswap/fmq11_canonical_binding.json",
+    "git_blob_sha1": "84b3fe1bf18fed5eb51a0307720853517444f195",
+    "requirements_preserved": 35,
+    "fci_remaining_blocker_count": 0,
+    "coverage_promotions": 0
+  },
+  "coverage": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "qualification": {
+    "workflow": ".github/workflows/fmq11-qualification.yml",
+    "first_qualified_run": 34117244555,
+    "first_qualified_job": 101726823162,
+    "tests_passed": 9,
+    "tests_failed": 0,
+    "python_compile_gate": "PASS",
+    "result": "PASS"
+  },
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_CANONICAL_EXIT_PINNED",
-  "next_action": "Bind F-MQ interface requirements to exact canonical source blobs and add a fail-closed qualification gate without promoting real-physics or production-runtime coverage."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_CANONICAL_BASELINE_BOUND_REAL_AND_PRODUCTION_FAIL_CLOSED",
+  "holds": [
+    "No real-physics row is promoted until F-VQ supplies admitted executable physical evidence.",
+    "No production-runtime row is promoted until F-MR supplies a qualified MultiSWAP runtime seam.",
+    "P06/P18/P19 real solver-scratch and reentrancy qualification remain with F-SI.",
+    "Canonical interval mass completeness remains fail-closed for P16/P17 until an admitted complete record exists."
+  ],
+  "next_action": "Start F-MQ12 only when F-VQ, F-SI, F-KT or F-MR supplies a new executable downstream seam; bind that seam to the existing matrix without weakening the hard mass or provenance gates."
 }
