@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ13",
+  "title": "Downstream boundary admission after F-SI01 and F-VQ08",
+  "qualification_only": true,
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "git_blob_sha1": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35
+  },
+  "lineage": {
+    "fmq12_head": "e7248ef1813acf942fcae0f8d66c1b4409af4914",
+    "fsi01_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fsi01_tested_postimage": "25593ca8b0270756fba8ceafa055cdf319619837",
+    "fvq08_head": "0be60f6da7e575eaf992eb049ce600a4a4b35b58",
+    "fvq08_tested_postimage": "b097203be56b9891c8e73ecdcc84f76c94b33656",
+    "fkt_current_head": "cbcbfa26d413a661956a2079dc4a1e26c9e3b55c",
+    "fkt_current_tree": "265029cdf0c17be2c23ce2ff4fa8775cd0cd4e61",
+    "fkt01_qualified_tree": "265029cdf0c17be2c23ce2ff4fa8775cd0cd4e61",
+    "oracle": "B1.10"
+  },
+  "source_blob_pins": {
+    "integration/f-si/F-SI01_BASELINE.json": "dd49e3536b56c6b4f331612408a8c63ed39e1fe2",
+    "integration/f-si/F-SI01_QUALIFICATION.json": "e2d103d6107c92a9e18df1ab8af98833ef2e4587",
+    "integration/f-si/F-SI01_SOLVER_INTERFACE_CONTRACT.json": "65b1d539837bc6cc2b14f59d5b5a3d225dbad610",
+    "integration/f-vq/F-VQ08_STATUS.json": "68ddf65fcdb7e32bd3d4d02a281924e84b490341",
+    "integration/f-vq/F-VQ08_ADMISSION_MATRIX.json": "1cacd4889f2ede622a6b9a8868a17c35c9796484"
+  },
+  "fsi01_admission": {
+    "status": "BOUNDARY_CONTRACT_ADMITTED_IMPLEMENTATION_OPEN",
+    "qualified_boundary_baseline": true,
+    "common_solver_interface_persisted": true,
+    "common_solver_interface_implemented_in_fsi01": false,
+    "worker_context_isolation_o0_o2_openmp_8_workers": "PASS",
+    "reference_richards_reentrancy_qualified": false,
+    "parallel_multiswap_backend_qualified": false,
+    "workspace_contract": {
+      "worker_or_active_solve_job_owned": true,
+      "persistent_per_logical_column": false,
+      "poisoning_required": true,
+      "committed_state_forbidden_in_workspace": true,
+      "commit_or_rollback_authority_forbidden_in_solver": true
+    },
+    "deferred_solver_tests": {
+      "FSI01-T03_repeated_solver_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T04_order_independence": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T05_1_2_4_8_worker_solver_isolation": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T06_scratch_poisoning": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T07_cloned_state_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T08_no_cross_column_leakage": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T09_reference_solver_O0_O2": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T10_unrounded_water_balance_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE",
+      "FSI01-T11_solver_route_iteration_identity": "BLOCKED_BY_COMMON_SOLVER_INTERFACE"
+    }
+  },
+  "fvq08_admission": {
+    "status": "READINESS_BOUNDARY_ADMITTED_REAL_REFERENCE_FAIL_CLOSED",
+    "qualified_readiness_boundary": true,
+    "real_b1_10_temporal_characterization_qualified": false,
+    "production_temporal_profile_qualified": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+    "complete_optional_process_scope_qualified": false,
+    "hard_mass_separate_absolute_gate": true,
+    "blocked_claims": ["FVQ08-C05", "FVQ08-C06", "FVQ08-C07", "FVQ08-C08"],
+    "prohibited_claim": "FVQ08-C09"
+  },
+  "fkt02_observation": {
+    "net_capability_delta_from_fkt01": false,
+    "reason": "Current F-KT head has the same tree as the qualified F-KT01 final tree; temporary F-KT02 marker was removed with no persisted net content change."
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": []
+  },
+  "ownership_reclassification": [
+    {"id":"P03","new_binding":"FSI_BOUNDARY_CONTRACT_PRESENT_WORKER_SOLVER_ISOLATION_OPEN","remaining_owners":["F-SI","F-MR"]},
+    {"id":"P06","new_binding":"SOLVER_WORKSPACE_OWNERSHIP_CONTRACT_BOUND_ISOLATION_EXECUTION_OPEN","remaining_owners":["F-SI","F-MR"]},
+    {"id":"P10","new_binding":"FVQ_TEMPORAL_READINESS_BOUND_REAL_REPLAY_FIXTURE_STILL_BLOCKED","remaining_owners":["F-VQ"]},
+    {"id":"P11","new_binding":"FVQ_TEMPORAL_READINESS_BOUND_REAL_RECOMPUTE_FIXTURE_STILL_BLOCKED","remaining_owners":["F-VQ"]},
+    {"id":"P14","new_binding":"OPTIONAL_PROCESS_SCOPE_EXPLICITLY_NOT_COMPLETE","remaining_owners":["F-VQ"]},
+    {"id":"P16","new_binding":"HARD_MASS_REMAINS_ABSOLUTE_REAL_EVENT_RECORD_STILL_BLOCKED","remaining_owners":["F-VQ"]},
+    {"id":"P18","new_binding":"WORKER_CONTEXT_GATE_BOUND_REFERENCE_SOLVER_INTERLEAVE_OPEN","remaining_owners":["F-SI","F-MR"]},
+    {"id":"P19","new_binding":"SCRATCH_POISONING_REQUIREMENT_BOUND_EXECUTABLE_SOLVER_GATE_OPEN","remaining_owners":["F-SI"]},
+    {"id":"D01","new_binding":"DIFFICULT_COLUMN_SOLVER_POLICY_STILL_OPEN_AFTER_BOUNDARY_ONLY_FSI01","remaining_owners":["F-SI","F-MR"]},
+    {"id":"D02","new_binding":"BOUNDED_COST_FALLBACK_STILL_OPEN_AFTER_BOUNDARY_ONLY_FSI01","remaining_owners":["F-SI","F-MR"]},
+    {"id":"S01","new_binding":"REAL_SCIENTIFIC_REFERENCE_STILL_BLOCKED_BY_FVQ08_FAIL_CLOSED_BOUNDARY","remaining_owners":["F-VQ"]}
+  ],
+  "decision": "QUALIFIED_BOUNDARY_ADMISSION_NO_COVERAGE_PROMOTION"
+}
