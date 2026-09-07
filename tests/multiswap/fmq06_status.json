@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ06",
+  "title": "Difficult-column scheduling qualification",
+  "production_code_change_allowed": false,
+  "base_qualification_commit": "f69b6f87f3b97197841d22ccbefbb05e744e5e5c",
+  "scope": {
+    "D01_15_normal_plus_1_difficult": {
+      "testdouble_status": "EXECUTABLE",
+      "real_swap_status": "BLOCKED_QUALIFIED_DIFFICULT_FIXTURE",
+      "workers_exercised": [1, 2, 4, 8],
+      "semantics": [
+        "retry-sensitive difficult column",
+        "normal-column endpoint isolation",
+        "exact retry and rollback attribution",
+        "worker/order/batch independence",
+        "scratch poison independence"
+      ]
+    },
+    "D02_31_normal_plus_1_difficult": {
+      "testdouble_status": "EXECUTABLE",
+      "real_swap_status": "BLOCKED_QUALIFIED_DIFFICULT_FIXTURE",
+      "workers_exercised": [1, 2, 3, 4, 8],
+      "semantics": [
+        "retry-sensitive difficult column",
+        "terminal failure isolation",
+        "bounded synthetic attempt cost",
+        "normal-column endpoint isolation",
+        "worker/order/batch independence",
+        "scratch poison independence"
+      ]
+    }
+  },
+  "hard_gates": {
+    "normal_columns_match_clean_baseline_exactly": true,
+    "difficult_extra_cost_fully_attributed": true,
+    "rejected_trial_mass_not_committed": true,
+    "terminal_failure_keeps_difficult_committed_state": true,
+    "terminal_failure_committed_mass_is_zero_change": true,
+    "canonical_result_independent_of_worker_order_batch": true,
+    "wall_clock_is_gate": false
+  },
+  "construction_evidence": {
+    "equivalent_local_scenario_tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "github_actions_claimed": false
+  },
+  "not_qualified": [
+    "real B12 or heavy-clay physical behaviour",
+    "production MultiSWAP scheduler or thread safety",
+    "production normal/relaxed/fallback execution-class routing",
+    "bounded wall-clock runtime",
+    "reference-mode deviation bounds",
+    "real SWAP hard mass accounting for a difficult fixture"
+  ],
+  "dependencies": {
+    "real_difficult_fixture": "F-CI/F-KT physical continuation seam plus F-MQ04b/c fixture admission",
+    "production_scheduler": "F-MR",
+    "execution_classes": "later F-MR qualification against reference mode"
+  },
+  "status": "PASS_SYNTHETIC_DIFFICULT_COLUMN_SCHEDULING_REAL_PHYSICS_BLOCKED"
+}
