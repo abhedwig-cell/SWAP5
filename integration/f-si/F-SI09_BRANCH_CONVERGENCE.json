@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "canonical_branch": "work/f-si09-b110-constitutive-provider",
+  "canonical_basis": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+  "experimental_branch": "work/f-si09-b110-provider",
+  "experimental_head_observed": "c108130bc6d4d1e740bfd242da5e30975115bc2e",
+  "merge_base": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+  "relationship_when_compared": "diverged",
+  "integration_policy": "NO_BLIND_CHERRY_PICK_OR_BRANCH_MERGE",
+  "selected_reusable_evidence": [
+    {
+      "artifact": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+      "reason": "Byte-exact corrected B1.10 reference payload, independently hash-verifiable against corrected SHA256 4bb79730...",
+      "integration_method": "Reuse exact existing Git blob 6cfcec4e38b02343ba48e7e6fb5d595158e19653 on canonical branch."
+    },
+    {
+      "artifact": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json and verifier concept",
+      "reason": "Makes the exact corrected source self-verifying inside CI.",
+      "integration_method": "Recreated source-bound manifest/verifier on canonical branch and requalified there."
+    }
+  ],
+  "not_integrated": [
+    {
+      "artifact": "src/solver/mod_b110_constitutive_provider.f90",
+      "reason": "Experimental provider admits models 1-3 and is broader than the canonical F-SI09 default-MvG profile; its provider workflow was not qualified."
+    },
+    {
+      "artifact": "model-2 literal repair",
+      "reason": "Relevant to B1.10 model 2 exact default-real semantics, but model 2 is outside the canonical admitted F-SI09 default-MvG profile. Preserve as future evidence, do not silently broaden admission."
+    }
+  ],
+  "lineage_decision": "Only work/f-si09-b110-constitutive-provider is the continuation eligible for F-SI09 qualification and downstream F-MR03 handoff. work/f-si09-b110-provider is historical/experimental evidence and is not production lineage.",
+  "parallel_experimental_branch_production_eligible": false
+}
