@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ08",
+  "title": "Current qualification coverage derived from immutable F-MQ01 requirements",
+  "production_code_change_allowed": false,
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "blob_sha": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35,
+    "policy": "F-MQ01 is immutable requirements history; F-MQ08 is a derived current-status view."
+  },
+  "fmq_head_at_consolidation": {
+    "branch": "qualification/f-mq07-coupling-contracts",
+    "commit": "eaaad532ddab92c359c44996940db295e50212a3"
+  },
+  "canonical_observation": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "4c99d9c583c2f82a542e8d8408e39411e23597aa",
+    "latest_work_unit_observed": "F-CI06",
+    "b1_10_water_checkpoint_postimage_present": true,
+    "real_event_fixture_admitted_by_fmq": false,
+    "reason_real_fixture_still_blocked": [
+      "No F-MQ-admitted short generic B1.10 physical continuation record.",
+      "No complete unrounded accepted-interval physical mass accounting admitted to F-MQ.",
+      "No production MultiSWAP runtime qualification seam."
+    ]
+  },
+  "coverage_semantics": {
+    "synthetic_executable": "An F-MQ qualification-only deterministic test/testdouble directly exercises the property or required primitive.",
+    "real_physics_executable": "A current canonical B1.10/SWAP5 reference-derived physical fixture can execute the property with hard mass accounting.",
+    "production_runtime_qualified": "The current production MultiSWAP/coupling runtime itself has passed the property.",
+    "historical_evidence": "Historical A23/MP/VQ evidence may support design but never upgrades current production qualification by itself."
+  },
+  "summary": {
+    "requirements_total": 35,
+    "synthetic_executable": 26,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "performance_lane_entries": 2,
+    "long_scientific_regression_entries": 1
+  },
+  "entries": [
+    {
+      "id": "R01",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R02",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R03",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R04",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R05",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R06",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R07",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "R08",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Cheap runtime contract is executable in the deterministic test-only harness; production runtime still unqualified."
+    },
+    {
+      "id": "P01",
+      "current_class": "WAITING_CANONICAL_PHYSICS_AND_FMR",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["A23BU-historical", "F-MQ03", "F-MQ04"],
+      "note": "No current B1.10 event-local fixture or production MultiSWAP runtime seam."
+    },
+    {
+      "id": "P02",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02", "F-MQ05"],
+      "note": "Synthetic scheduler/runtime property executable; final production MultiSWAP qualification still waits for F-MR."
+    },
+    {
+      "id": "P03",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02", "F-MQ05"],
+      "note": "Synthetic scheduler/runtime property executable; final production MultiSWAP qualification still waits for F-MR."
+    },
+    {
+      "id": "P04",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Synthetic scheduler/runtime property executable; final production MultiSWAP qualification still waits for F-MR."
+    },
+    {
+      "id": "P05",
+      "current_class": "SYNTHETIC_EXECUTABLE_CANONICAL_STATE_PREREQUISITE_AVAILABLE",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT"],
+      "evidence": ["F-MQ02", "F-CI06-candidate"],
+      "note": "F-MQ clone property is executable synthetically; F-CI06 adds a B1.10 water checkpoint/clone postimage, but F-MQ has not yet admitted it as a real-physics fixture."
+    },
+    {
+      "id": "P06",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ02", "F-MQ05"],
+      "note": "Transactional/isolation primitive is executable synthetically; current B1.10 production runtime claim remains open."
+    },
+    {
+      "id": "P07",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ05"],
+      "note": "Transactional/isolation primitive is executable synthetically; current B1.10 production runtime claim remains open."
+    },
+    {
+      "id": "P08",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ05"],
+      "note": "Transactional/isolation primitive is executable synthetically; current B1.10 production runtime claim remains open."
+    },
+    {
+      "id": "P09",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02", "F-MQ05"],
+      "note": "Transactional/isolation primitive is executable synthetically; current B1.10 production runtime claim remains open."
+    },
+    {
+      "id": "P10",
+      "current_class": "WAITING_CANONICAL_PHYSICAL_CONTINUATION",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ/F-MQ fixture extraction"],
+      "evidence": ["F-MQ03", "F-MQ04", "F-CI06-candidate"],
+      "note": "B1.10 checkpoint postimage exists in F-CI06, but short generic physical continuation plus complete accepted mass evidence is not yet admitted."
+    },
+    {
+      "id": "P11",
+      "current_class": "WAITING_CANONICAL_PHYSICAL_CONTINUATION",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ/F-MQ fixture extraction"],
+      "evidence": ["F-MQ03", "F-MQ04", "F-CI06-candidate"],
+      "note": "B1.10 checkpoint postimage exists in F-CI06, but short generic physical continuation plus complete accepted mass evidence is not yet admitted."
+    },
+    {
+      "id": "P12",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Forcing locality is executable synthetically; real canonical forcing ownership and production runtime remain open."
+    },
+    {
+      "id": "P13",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ05"],
+      "note": "Template/grouping invariance has a synthetic isolation gate; real physical equivalence and production batching remain open."
+    },
+    {
+      "id": "P14",
+      "current_class": "WAITING_STATE_LAYOUT_INTERFACE",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-KT/F-CI"],
+      "evidence": ["F-MQ01"],
+      "note": "No current qualified state-layout/introspection seam for optional-module persistent-state accounting."
+    },
+    {
+      "id": "P15",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-MR"],
+      "evidence": ["F-MQ02"],
+      "note": "Exact diagnostics aggregation is executable synthetically; production diagnostic aggregation remains open."
+    },
+    {
+      "id": "P16",
+      "current_class": "WAITING_UNROUNDED_REAL_MASS",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ/F-MQ fixture extraction"],
+      "evidence": ["F-MQ03", "F-MQ04", "F-CI04/F-CI05/F-CI06"],
+      "note": "Hard per-column real mass gate cannot run until complete unrounded accepted-interval accounting is exposed."
+    },
+    {
+      "id": "P17",
+      "current_class": "WAITING_UNROUNDED_REAL_MASS_AND_FMR",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ03", "F-MQ04"],
+      "note": "Aggregate real mass needs admitted per-column unrounded mass records plus deterministic production aggregation."
+    },
+    {
+      "id": "P18",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ05", "A23BU-historical"],
+      "note": "Interleaving/scratch property is executable synthetically and has historical A23 evidence; current B1.10 production qualification remains open."
+    },
+    {
+      "id": "P19",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_REAL_AND_FMR",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "F-MR"],
+      "evidence": ["F-MQ05", "A23BU-historical"],
+      "note": "Interleaving/scratch property is executable synthetically and has historical A23 evidence; current B1.10 production qualification remains open."
+    },
+    {
+      "id": "P20",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_COUPLING_RUNTIME",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-SI", "F-MR", "F-CI/F-KT"],
+      "evidence": ["F-MQ07"],
+      "note": "Synthetic coupling contract is executable; real SWAP/MODFLOW production coupling is not qualified."
+    },
+    {
+      "id": "P21",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_COUPLING_RUNTIME",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-SI", "F-MR", "F-CI/F-KT"],
+      "evidence": ["F-MQ07"],
+      "note": "Synthetic coupling contract is executable; real SWAP/MODFLOW production coupling is not qualified."
+    },
+    {
+      "id": "P22",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_COUPLING_RUNTIME",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-SI", "F-MR", "F-CI/F-KT"],
+      "evidence": ["F-MQ07"],
+      "note": "Synthetic coupling contract is executable; real SWAP/MODFLOW production coupling is not qualified."
+    },
+    {
+      "id": "D01",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_DIFFICULT_REAL_FIXTURE",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ/F-MQ fixture extraction", "F-MR"],
+      "evidence": ["F-MQ06"],
+      "note": "Difficult-column scheduling is executable synthetically; qualified short B12/heavy-clay fixture and production execution-class behavior remain open."
+    },
+    {
+      "id": "D02",
+      "current_class": "SYNTHETIC_EXECUTABLE_WAITING_DIFFICULT_REAL_FIXTURE",
+      "synthetic_executable": true,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ/F-MQ fixture extraction", "F-MR"],
+      "evidence": ["F-MQ06"],
+      "note": "Difficult-column scheduling is executable synthetically; qualified short B12/heavy-clay fixture and production execution-class behavior remain open."
+    },
+    {
+      "id": "S01",
+      "current_class": "LONG_REAL_REGRESSION_NOT_YET_ADMITTED",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["F-CI/F-KT", "VQ"],
+      "evidence": ["F-MQ01", "VQ-background"],
+      "note": "Long scientific regression remains a nightly/release lane; no SWAP5 canonical long-run oracle is admitted by F-MQ."
+    },
+    {
+      "id": "PFX01",
+      "current_class": "PERFORMANCE_LANE_NOT_EXECUTED",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["MP/F-MR"],
+      "evidence": ["MP-measurement-infrastructure"],
+      "note": "Cache-scale qualification remains separate from correctness; deterministic counters may be used, timing only on controlled runner."
+    },
+    {
+      "id": "PFX02",
+      "current_class": "PERFORMANCE_LANE_NOT_EXECUTED",
+      "synthetic_executable": false,
+      "real_physics_executable": false,
+      "production_runtime_qualified": false,
+      "blocking_owners": ["MP/F-MR"],
+      "evidence": ["MP-isolated-runner-contract"],
+      "note": "100k throughput qualification is release/controlled-runner work, not a correctness gate."
+    }
+  ],
+  "status": "PASS_COVERAGE_CONSOLIDATED / NO_REAL_PHYSICS_OR_PRODUCTION_RUNTIME_CLAIM"
+}
