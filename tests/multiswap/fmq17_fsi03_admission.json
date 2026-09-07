@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ17",
+  "admission": "FSI03_SOURCE_BOUND_ADAPTER_CONTRACT",
+  "source": {
+    "qualification_head": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+    "tested_postimage": "79e3e9052a4f68306b8c826b063497247fd339d6",
+    "qualification_blob": "c51e97a347127acaaf7d5e9db86f15a6200d500d",
+    "adapter_blob": "84366a4b312a86806cc3aa78a7257c3a7a95d2f1",
+    "test_blob": "fbeefb6c84624d87a7c77ef59f7558b92a81e4e2",
+    "gate_blob": "cd2b9faf33f819c775d3047236f4e5a087c6c404",
+    "workflow_run": 34121073167,
+    "workflow_conclusion": "success"
+  },
+  "admitted_fsi03_scope": {
+    "source_bound_external_signature": true,
+    "request_base_state_translation": true,
+    "candidate_state_translation": true,
+    "top_bottom_flux_translation": true,
+    "covered_legacy_state_restoration": true,
+    "retry_advice_without_transaction_authority": true,
+    "repeat_same_request": true,
+    "aba_order": true,
+    "workspace_poison_independence": true,
+    "unsupported_physics_fail_closed": true,
+    "common_solver_contract_regression": true
+  },
+  "mq_row_prerequisite_effect": {
+    "P05_clone": "SOURCE_BOUND_ADAPTER_PREREQUISITE_ADMITTED_TESTDOUBLE_ONLY",
+    "P08_retry_isolation": "SOURCE_BOUND_ADAPTER_PREREQUISITE_ADMITTED_TESTDOUBLE_ONLY",
+    "P19_scratch_poison": "SOURCE_BOUND_ADAPTER_PREREQUISITE_ADMITTED_TESTDOUBLE_ONLY",
+    "P03_worker_count": "NOT_PROMOTED_PARALLEL_REFERENCE_SOLVER_NOT_QUALIFIED",
+    "P18_worker_interleave": "NOT_PROMOTED_FULL_REFERENCE_REENTRANCY_NOT_QUALIFIED",
+    "P16_per_column_mass": "NOT_PROMOTED_UNROUNDED_PHYSICAL_MASS_IDENTITY_NOT_QUALIFIED"
+  },
+  "hard_nonclaims": {
+    "real_headcalc_executed_by_fsi03_harness": false,
+    "real_headcalc_numerical_identity": false,
+    "full_reference_richards_reentrancy": false,
+    "full_legacy_side_effect_rollback": false,
+    "parallel_reference_solver_execution": false,
+    "finite_unrounded_mass_balance_residual": false,
+    "interface_tangent": false,
+    "production_reference_admission": false,
+    "production_multiswap_admission": false,
+    "real_b1_10_physics_qualified_by_fmq17": false
+  },
+  "coverage": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "source_bound_adapter_prerequisite_rows": ["P05", "P08", "P19"],
+    "matrix_promotions": []
+  },
+  "fvq09_guard": {
+    "head": "7af5b30ec1707ac064a93f3af84bff403a203a6d",
+    "qualified": true,
+    "decision": "QUALIFIED_REAL_TEMPORAL_HARNESS_CONTRACT_ONLY",
+    "real_b1_10_temporal_characterization_qualified": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+    "external_asset_bundle_status": "BLOCKED_PENDING_EXACT_TTUTIL_AND_HUPSEL_CASE_ADMISSION"
+  }
+}
