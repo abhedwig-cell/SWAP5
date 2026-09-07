@@ -7,43 +7,63 @@
   "safety_branch": "integration/f-kt04-safety",
   "safety_branch_head": "b5e7ec8564b5f6e2b53844388fbb870fa3264d07",
   "source_checkpoint_commit": "842c59fc6bdbb059ca5d14ebfdda88d0f0c52c54",
-  "test_checkpoint_commit": "fd44e922d2b2bf536f88b64d95709cbb70ca5f6a",
-  "contract_checkpoint_commit": "e8ce9f14764617e142c54a254ef01cbb559a7f9b",
-  "contract_gate_checkpoint_commit": "04ce2ba9d002ad3ee878c7de39bd7e18dc37e121",
-  "gate_checkpoint_commit": "a0ab6410946c3881b477ff2c0b8ccdc25bd5c0ee",
-  "workflow_checkpoint_commit": "0be08d87f6be244e18df0fcc3e9725fced50e71e",
+  "complete_pretest_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+  "tested_source_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+  "qualification_evidence_commit": "acd55ecee8802a0a9fb5d854380622f2d20a7503",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "implementation_status": "IMPLEMENTED",
   "persistence_status": "PERSISTED",
-  "test_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
-  "qualification_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
+  "test_status": "TESTED",
+  "qualification_status": "QUALIFIED",
   "scope": "committed temporal provenance, contiguous continuation and fail-closed time-origin validation",
+  "qualification_run": {
+    "run_id": 34121637946,
+    "head_sha": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+    "conclusion": "success",
+    "focused_o0_o2": "PASS",
+    "fkt03_preservation": "PASS",
+    "fci03_04_08_09_10_11_13_14": "PASS"
+  },
+  "qualified_behavior": {
+    "explicit_initial_time": "finite and read-only through accessor",
+    "bound_continuation": "next t0 must match committed time within representation-level roundoff",
+    "overlap_gap_backward": "fail-closed before model execution",
+    "first_commit_from_unbound_state": "binds committed time to candidate t1",
+    "successful_commit": "updates physical state, increments revision once and advances committed time to candidate t1",
+    "nonfinite_time": "rejected",
+    "calendar_or_day_assumption": false,
+    "numerical_acceptance_policy_changed": false
+  },
   "files_artifacts_persisted": [
     "src/kernel/mod_kernel_transactions.f90",
     "tests/fkt/test_fkt04_temporal_provenance.f90",
     "tests/fkt/run_fkt04_gate.sh",
     "tools/fkt/fkt04_contract_gate.py",
     "integration/f-kt/F-KT04_TEMPORAL_PROVENANCE_CONTRACT.json",
+    "integration/f-kt/F-KT04_QUALIFICATION_EVIDENCE.json",
     ".github/workflows/fkt-kernel.yml",
     "integration/f-kt/F-KT04_STATUS.json"
   ],
   "external_boundaries": {
     "fsi02_consumed_qualified_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
-    "fsi03_observed_unconsumed_head": "654ffca9c1facda42d7797687bed88af86528312",
+    "fsi03_observed_unconsumed_head": "5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3",
+    "fsi03_observed_workflow_conclusion": "failure",
     "fvq09_observed_contract_head": "4f979e87449c9cb18e436c4bb3fc5adbb25733f3",
-    "fmq14_qualified_head": "eebf665d0123feb1e0c6fd694b58ec6635cd7cc2",
-    "fmq15_observed_persisted_unqualified_head": "39579bc039cc26cb37cc686cb9720c967337ce68"
+    "fmq16_qualified_barrier_head": "94010b5ee7f52637fd6507156a01724ebf5a7525",
+    "fmq16_status": "QUALIFIED_FSI03_FAIL_CLOSED_BARRIER_NO_COVERAGE_PROMOTION"
   },
-  "next_action": "run F-KT04 focused O0/O2 gate and selected F-CI transaction/time/mass/reference regressions on this complete postimage",
+  "downstream_recheck": "PASS_NO_OWNERSHIP_CONFLICT",
+  "next_action": "start F-KT05 from this qualified temporal-provenance head; explicit reusable checkpoint carrier is the next kernel-owned gap",
+  "recovery_point": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
   "blockers": [],
   "holds": [
     "B1.10 temporal-limit profile remains independently unqualified and F-KT reference admission remains fail-closed",
-    "F-SI03 reference binding remains unconsumed until independently qualified",
+    "F-SI03 reference binding remains unconsumed until its source-bound gate and formal qualification are green",
     "full solver reentrancy and HeadCalc isolation remain F-SI ownership",
     "production MultiSWAP scheduling/runtime remains outside F-KT",
-    "explicit reusable checkpoint carrier remains future F-KT work after temporal provenance is qualified"
+    "explicit reusable checkpoint carrier remains future F-KT work"
   ]
 }
