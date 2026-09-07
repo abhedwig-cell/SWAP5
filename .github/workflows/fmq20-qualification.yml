@@ -1,0 +1,66 @@
+name: F-MQ20 F-KT05 reusable checkpoint admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq20-fkt05-reusable-checkpoint-admission
+    paths:
+      - 'tests/multiswap/fmq20_*'
+      - 'tests/multiswap/test_fmq20_*'
+      - 'tests/multiswap/verify_fmq20_*'
+      - 'tests/multiswap/run_fmq20_gate.py'
+      - 'docs/qualification/F-MQ20_*'
+      - '.github/workflows/fmq20-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq20-gate:
+    name: F-MQ20 reusable checkpoint admission
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ20 admission tests
+        run: python3 tests/multiswap/run_fmq20_gate.py
+
+      - name: Fetch exact F-KT05 qualification and tested postimage
+        run: |
+          FKT05_QUAL=6911549acbcb62ef8af9ae2d96d5b4f938daf1e2
+          FKT05_TESTED=f7d2ee5e81f1d6686c96114984239e97ba6a8a8a
+          FKT05_STATUS=f50b8cd20221fac27a2059b6c6192ed0b7384be8
+          git fetch --no-tags origin "$FKT05_QUAL" "$FKT05_TESTED" "$FKT05_STATUS"
+          test "$(git rev-parse "$FKT05_QUAL:qualification/f-kt/F-KT05_QUALIFICATION.json")" = "95efe0016a35cce4989dfb68f021bef69c5af453"
+          test "$(git rev-parse "$FKT05_TESTED:tests/fkt/run_fkt05_gate.sh")" = "8957180db3d0d6b650f09829e875e12faf819b52"
+          test "$(git rev-parse "$FKT05_STATUS:integration/f-kt/F-KT05_STATUS.json")" = "1accd7b65b0ec5a6f76a0c31b82f20710c3befe8"
+          git show "$FKT05_QUAL:qualification/f-kt/F-KT05_QUALIFICATION.json" > /tmp/fkt05_qualification.json
+          git show "$FKT05_TESTED:tests/fkt/run_fkt05_gate.sh" > /tmp/fkt05_gate.sh
+
+      - name: Verify external F-KT05 qualification scope
+        run: |
+          python3 tests/multiswap/verify_fmq20_fkt05_external.py \
+            --qualification /tmp/fkt05_qualification.json \
+            --gate-source /tmp/fkt05_gate.sh
+
+      - name: Re-run exact F-KT05 tested postimage gate
+        run: |
+          git worktree add --detach /tmp/fkt05-tested f7d2ee5e81f1d6686c96114984239e97ba6a8a8a
+          (cd /tmp/fkt05-tested && bash tests/fkt/run_fkt05_gate.sh) | tee /tmp/fkt05-gate.out
+          grep -q '^FKT05_FOCUSED_O0_O2_GATE PASS$' /tmp/fkt05-gate.out
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq20_gate.py \
+            tests/multiswap/test_fmq20_fkt05_reusable_checkpoint_admission.py \
+            tests/multiswap/verify_fmq20_fkt05_external.py
