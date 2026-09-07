@@ -39,6 +39,10 @@ Every raw observation admitted into either calibration or validation must indepe
 
 A water-only candidate cannot claim complete temporal coverage when active crop, irrigation, heat, solute or WOFOST state is not explicitly compared. Such configurations remain fail-closed until their temporal state coverage is separately implemented and qualified.
 
-## Current boundary
+## Qualification result
 
-F-VQ10 can qualify the promotion method and its negative guards only. It cannot qualify real calibration/validation datasets, numeric limits, a production profile, complete optional-process scope or production `execute_reference_interval` admission. Those remain blocked until exact real evidence exists and the owning production workstream integrates a separately qualified profile.
+The pre-test postimage `95bccf47dfaf40fa725e376708b8597429ad3656` passed VQ reference qualification run `34123210957`, F-VQ10 job `101745783626`, with GNU Fortran 13.3.0 and 10/10 F-VQ10 unit tests passing. Documentation run `34123210944` also passed.
+
+The qualified decision is `QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY`. Claims FVQ10-C01 through FVQ10-C05 are qualified. Claims C06 through C10 remain blocked fail-closed.
+
+No physical temporal limits were introduced, the F-CI14 production profile remains unchanged with all eight values `null`, no real B1.10 temporal characterization dataset was admitted, and production reference execution remains `BLOCKED_FAIL_CLOSED`.

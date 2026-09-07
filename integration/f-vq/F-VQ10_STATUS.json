@@ -1,16 +1,31 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ10",
   "oracle": "B1.10",
   "basis": {
     "fvq09_final_head": "7af5b30ec1707ac064a93f3af84bff403a203a6d",
+    "persist_first_checkpoint": "889afc20af2210216c8bac788c437d9fcbaee85a",
+    "tested_postimage": "95bccf47dfaf40fa725e376708b8597429ad3656",
     "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
     "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
   },
   "qualification_scope": "TEMPORAL_PROFILE_QUALIFICATION_AND_PROMOTION_CONTRACT_ONLY",
-  "qualified": false,
-  "decision": "PENDING_FVQ10_CI",
+  "qualified": true,
+  "decision": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+  "tested_postimage": "95bccf47dfaf40fa725e376708b8597429ad3656",
+  "qualification_run": {
+    "workflow": "VQ reference qualification",
+    "run_id": 34123210957,
+    "job_id": 101745783626,
+    "compiler": "GNU Fortran 13.3.0",
+    "unit_tests": 10,
+    "conclusion": "success"
+  },
+  "documentation_run": {
+    "run_id": 34123210944,
+    "conclusion": "success"
+  },
   "persisted_before_long_tests": true,
   "production_source_changed_by_fvq10": false,
   "real_b1_10_temporal_characterization_qualified": false,
@@ -19,11 +34,18 @@
   "complete_optional_process_scope_qualified": false,
   "mass_conservation_policy": "SEPARATE_ABSOLUTE_HARD_GATE",
   "numeric_limits_introduced_by_fvq10": false,
+  "qualified_contracts": {
+    "exact_metric_unit_and_fci14_norm_contract": true,
+    "disjoint_calibration_validation_and_profile_freeze": true,
+    "separate_hard_mass_and_tolerance_non_substitution": true,
+    "held_out_validation_without_retuning": true,
+    "optional_process_scope_fail_closed": true
+  },
   "notes": [
-    "F-VQ10 qualifies only the method and machine-readable promotion boundary for a future temporal profile; it supplies no physical temporal limits.",
-    "Calibration and validation observation sets must be disjoint, and a candidate profile must be frozen before validation.",
-    "Validation data may not be used to retune limits without invalidating that validation evidence.",
-    "Solver-convergence and hard mass-balance tolerances are forbidden as substitutes for temporal-accuracy limits.",
-    "Hard mass conservation remains a separate absolute gate for every admitted observation and execution path."
+    "F-VQ10 qualifies the promotion method only and supplies no physical temporal limits.",
+    "All synthetic values used by unit tests are TEST_FIXTURE_ONLY and are not production evidence.",
+    "A candidate profile must be frozen before held-out validation; changing any limit or declared scope invalidates prior validation evidence.",
+    "A green validation result cannot self-promote a production profile or admit canonical reference execution.",
+    "Solver-convergence and hard mass-balance tolerances remain forbidden as temporal-accuracy limits."
   ]
 }
