@@ -13,9 +13,15 @@ The two work units remain independently qualified. F-VQ11 does not infer that th
 
 ## F-KT04 boundary
 
-F-KT04 qualified tested postimage `dfe9ac831428a65703e63e9f66673c6288ecc6fc` under workflow `34121637946`. Its evidence commit is `acd55ecee8802a0a9fb5d854380622f2d20a7503` and adds evidence only after the tested postimage. The admitted scope is committed temporal provenance, contiguous continuation, revision/time advancement on commit and fail-closed rejection of overlap, gap, backward or non-finite time.
+F-KT04 qualified tested postimage `dfe9ac831428a65703e63e9f66673c6288ecc6fc` under workflow `34121637946`. Its qualification sequence is explicit:
 
-F-VQ11 does not consume F-KT05. Current F-KT05 head `ed0764126a9febdd8a14ff3f32fdba68e9be9e81` remains unqualified and workflow `34123331837` fails in the focused test compilation under `-Werror=compare-reals`. That failure is a negative-admission barrier, not something to bypass in VQ.
+1. tested postimage `dfe9ac831428a65703e63e9f66673c6288ecc6fc`;
+2. evidence-only commit `acd55ecee8802a0a9fb5d854380622f2d20a7503`;
+3. status-only promotion commit `65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c`, which records F-KT04 as `QUALIFIED`.
+
+The admitted scope is committed temporal provenance, contiguous continuation, revision/time advancement on commit and fail-closed rejection of overlap, gap, backward or non-finite time.
+
+F-VQ11 does not consume F-KT05. Current observed F-KT05 head `ed0764126a9febdd8a14ff3f32fdba68e9be9e81` remains unqualified and workflow `34123331837` fails in the focused test compilation under `-Werror=compare-reals`. That failure is a negative-admission barrier, not something to bypass in VQ.
 
 ## F-SI04 boundary
 
