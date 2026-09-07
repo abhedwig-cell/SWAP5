@@ -56,7 +56,11 @@ jobs:
 
       - name: Reproduce strict F-SI03 gate blocker
         run: |
-          git worktree add --detach /tmp/fsi03 5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3
+          FSI02=da1d5da0d909c5ce55efa17507b805bffd6b82f9
+          FSI03=5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3
+          git fetch --no-tags --depth=1 origin "$FSI02"
+          git fetch --no-tags --depth=1 origin "$FSI03"
+          git worktree add --detach /tmp/fsi03 "$FSI03"
           set +e
           (cd /tmp/fsi03 && bash tests/fsi/run_fsi03_gate.sh) > /tmp/fsi03-gate.log 2>&1
           rc=$?
