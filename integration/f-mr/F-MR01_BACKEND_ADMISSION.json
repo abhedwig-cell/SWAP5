@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "backends": {
+    "DETERMINISTIC_TEST_BACKEND": {
+      "status": "ADMITTED_RUNTIME_QUALIFICATION",
+      "physical_swap_admission": false,
+      "purpose": ["runtime correctness", "checkpoint orchestration", "scheduling", "worker isolation", "hard synthetic mass accounting"]
+    },
+    "SERIALIZED_REFERENCE_BACKEND": {
+      "status": "FAIL_CLOSED_OR_SERIALIZED_ONLY",
+      "physical_swap_admission": false,
+      "interface_preparation_allowed": true,
+      "required_before_physical_admission": ["exact applicable F-VQ evidence", "exact applicable F-MQ evidence", "kernel/process route qualification"]
+    },
+    "PARALLEL_REFERENCE_BACKEND": {
+      "status": "NOT_ADMITTED",
+      "parallel_reference_backend_admitted": false,
+      "required_before_promotion": [
+        "F-SI qualification of full reference Richards reentrancy",
+        "F-SI qualification of real HeadCalc execution at 1/2/4/8 workers",
+        "qualified full legacy cross-call history isolation for admitted routes",
+        "qualified water-balance identity for the admitted physical route",
+        "applicable F-VQ physical/reference qualification",
+        "applicable F-MQ production runtime qualification"
+      ]
+    },
+    "BALANCED": {"status": "NOT_ADMITTED", "policy_owner": "F-PE"},
+    "THROUGHPUT": {"status": "NOT_ADMITTED", "policy_owner": "F-PE"},
+    "FALLBACK": {"status": "NOT_ADMITTED", "policy_owner": "F-PE"}
+  },
+  "routing_boundary": "F-MR -> F-KT kernel_executor_t%advance_interval -> process/solver interfaces -> F-SI",
+  "forbidden_shortcut": "F-MR -> HeadCalc/F-SI",
+  "f_si05_observation": {
+    "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "production_multiswap_admission": false,
+    "real_headcalc_parallel_admission": false
+  }
+}

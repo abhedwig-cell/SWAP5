@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-MR",
+  "work_unit": "F-MR01",
+  "name": "Runtime Core, Templates & Checkpoint-Aware Scheduling",
+  "verified_at": "2026-09-07T15:16:00+02:00",
+  "start_basis": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "f_ci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "corrected_legacy_oracle": "B1.10",
+    "ci_gates": "CI-G01..CI-G10 QUALIFIED"
+  },
+  "consumed_production_dependency": {
+    "work_unit": "F-KT05",
+    "branch": "integration/f-kt",
+    "closeout_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "tested_source_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "qualification_workflow": "34125537033",
+    "status": "QUALIFIED",
+    "contract": "integration/f-kt/F-KT05_REUSABLE_CHECKPOINT_CONTRACT.json",
+    "canonical_kernel_entrypoint": "kernel_executor_t%advance_interval",
+    "consumption_rule": "F-MR consumes F-KT checkpoint and transaction semantics without redefining them"
+  },
+  "live_dependency_reread": {
+    "integration_f_kt_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "integration_f_kt06_safety_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "newer_qualified_f_kt_consumed": false,
+    "reason": "No newer qualified F-KT production postimage was present at F-MR01 start"
+  },
+  "observed_admission_dependency": {
+    "work_unit": "F-SI05",
+    "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "production_materialization_commit": "1fe1bf4790955594290ba1233d5684542799bf9e",
+    "tested_implementation": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+    "source_consumed": false,
+    "production_multiswap_admission": false,
+    "real_headcalc_parallel_admission": false,
+    "full_reference_richards_reentrancy_qualified": false,
+    "full_swap_water_balance_identity_qualified": false
+  },
+  "qualification_inputs": {
+    "F-MQ": "independent runtime qualification authority; test doubles are not production runtime",
+    "F-VQ": "required for later physical/reference admission where exact evidence applies",
+    "F-PM": "not a production source dependency of F-MR01",
+    "F-GC": "coupling/composition remains outside F-MR kernel responsibilities",
+    "F-PE": "future performance and fallback policy owner"
+  },
+  "branches": {
+    "development": "integration/f-mr",
+    "safety": "integration/f-mr01-safety",
+    "safety_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8"
+  }
+}

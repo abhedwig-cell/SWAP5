@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "owner": "F-MR",
+  "owns": [
+    "logical_column_registry",
+    "template_registry",
+    "state_handle_registry",
+    "batching",
+    "worker_pool",
+    "scheduling",
+    "execution_routing",
+    "retry_orchestration",
+    "failure_isolation",
+    "runtime_diagnostics",
+    "aggregate_runtime_accounting"
+  ],
+  "does_not_own": {
+    "F-KT": ["transaction_semantics", "checkpoint_semantics", "candidate_commit_and_discard_semantics"],
+    "F-SI": ["solver_equations", "solver_workspace_implementation", "HeadCalc_internals"],
+    "F-PM": ["process_physics"],
+    "F-MQ": ["independent_MultiSWAP_qualification_authority"],
+    "F-VQ": ["scientific_reference_and_regression_qualification"],
+    "F-GC": ["coupling_physics", "MODFLOW_cell_tile_composition"],
+    "F-PE": ["performance_policy", "fallback_accuracy_policy", "balanced_or_throughput_physical_admission"],
+    "temporal_reference_authority": ["reference_tolerances", "calendar_assumptions"]
+  },
+  "hard_boundaries": [
+    "F-MR calls the F-KT kernel boundary, never HeadCalc directly",
+    "No F-SI source is merged or cherry-picked by F-MR01",
+    "No SWAP physics or numerical policy is modified by F-MR01",
+    "Logical columns are runtime tiles/components and are not MODFLOW cells",
+    "Deep-vadose transfer physics remains an external optional component"
+  ],
+  "transaction_authority": "F-KT05",
+  "scheduler_authority": "F-MR",
+  "physical_parallel_admission_authority": "qualification evidence, fail closed by default"
+}

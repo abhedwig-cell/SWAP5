@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "name": "Runtime Core, Templates & Checkpoint-Aware Scheduling",
+  "status": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  },
+  "phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+  "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "blockers": [],
+  "holds": [
+    "parallel reference backend remains NOT_ADMITTED",
+    "physical production backend remains fail closed pending exact qualification evidence"
+  ],
+  "next_required": ["column/template model", "F-KT05 checkpoint integration", "deterministic runtime", "focused qualification"]
+}
