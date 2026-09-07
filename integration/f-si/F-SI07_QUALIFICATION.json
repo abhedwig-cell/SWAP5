@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI07",
+  "status": "QUALIFIED_EXPLICIT_STATE_BINDING_ADMITTED_REFERENCE_PROFILE",
+  "qualified": true,
+  "oracle": "B1.10",
+  "branch": "work/f-si07-state-binding",
+  "start_head": "a01b7e5db6504318e805284a9990c58bfd2de842",
+  "fsi06": {
+    "status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+    "qualification_evidence_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "qualified_source_preimage": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29"
+  },
+  "tested_postimage": "8658ad70cfcc03d693ca5aa8c946a6d1d87554bf",
+  "qualification_evidence_commit_resolution": "the Git commit that first adds this F-SI07_QUALIFICATION.json document",
+  "production_source_blobs": {
+    "src/legacy/b1_10_port/headcalc.f90": "d4b2a4f45d757263a482d5891286c2cff08a85a0",
+    "src/legacy/b1_10_port/soilwater.f90": "470bc81a380e114d70fecd75426ec2331c1c9fcc",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "22a3347e793505163a71e2e9ffa737bd2318e147",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271"
+  },
+  "earlier_compile_failure": {
+    "workflow_run": 34129909097,
+    "cause": "Fortran DO control variable was a component reference: do state%numbit = 1, MaxIt1",
+    "structural_fix": "Use local integer solver_numbit as the DO control variable and explicitly synchronize state%numbit at the points where legacy numbit is observable.",
+    "max_iterations_changed": false,
+    "newton_logic_changed": false,
+    "convergence_semantics_changed": false,
+    "tolerances_changed": false
+  },
+  "checkpoints": [
+    {
+      "head": "d7a454dc98db966c202bddd537e8c26a606c2ce4",
+      "purpose": "compile carrier repair"
+    },
+    {
+      "head": "fa7461f9b76ba9a30545e2cbbd04424823bd6a35",
+      "purpose": "explicit top-boundary provider seam materialized in real HeadCalc"
+    },
+    {
+      "head": "b0099adfa2033a33a4c5ed0ca1bbfccdd25f419f",
+      "purpose": "common adapter bound to request-owned physical state and explicit top provider"
+    },
+    {
+      "head": "1d17dbe7f0a14fc90b3bc9b23df8496fff9e3ff0",
+      "purpose": "six-argument HeadCalc caller interfaces materialized"
+    },
+    {
+      "head": "055c6b6b2436223159b454a50e398f7062670d5e",
+      "purpose": "final combined qualification gate materialized"
+    }
+  ],
+  "workflow_evidence": [
+    {
+      "run": 34136791098,
+      "result": "PASS",
+      "scope": "compile repair, serial real replay, O0/O2 identity, adapter binding, SoilWater compile, workspace isolation, F-KT regression"
+    },
+    {
+      "run": 34137636452,
+      "result": "PASS_BLOCKER_CONFIRMED",
+      "scope": "bounded O0/O2 probe proved legacy top-boundary state bridge leaked at 2/4/8 while 1 worker was clean"
+    },
+    {
+      "run": 34138316977,
+      "result": "PASS",
+      "scope": "direct production HeadCalc with explicit top provider, O0/O2, 1/2/4/8"
+    },
+    {
+      "run": 34139809391,
+      "result": "PASS",
+      "scope": "real common adapter route, exact F-SI06 serial identity plus O0/O2 1/2/4/8"
+    },
+    {
+      "run": 34140357108,
+      "job": 101800726456,
+      "tested_head": "8658ad70cfcc03d693ca5aa8c946a6d1d87554bf",
+      "result": "PASS",
+      "scope": "final combined F-SI07 Gate 1-5 qualification"
+    }
+  ],
+  "gate_results": {
+    "gate_1_compile_source_correctness": {
+      "passed": true,
+      "o0": true,
+      "o2": true,
+      "whole_solve_shared_global_overlay_on_admitted_common_route": false,
+      "common_solve_physical_or_reconstructible_global_reads": false,
+      "source_bound_static_gate": true
+    },
+    "gate_2_serial_physical_identity": {
+      "passed": true,
+      "fsi06_exact_identity_o0": true,
+      "fsi06_exact_identity_o2": true,
+      "main_route": true,
+      "forced_band_route": true,
+      "solver_route_identity": true,
+      "iteration_count_identity": true,
+      "endpoint_h_identity": true,
+      "endpoint_theta_identity": true,
+      "flux_identity": true,
+      "focused_unrounded_equation_residual_identity": true
+    },
+    "gate_3_state_isolation": {
+      "passed": true,
+      "a_b_a_identity": true,
+      "scratch_poison": true,
+      "state_and_legacy_global_sentinel_poison": true,
+      "two_distinct_explicit_states": true,
+      "request_input_unmodified": true,
+      "other_solve_input_unmodified": true,
+      "candidate_only_mutation_contract": true
+    },
+    "gate_4_concurrent_real_headcalc": {
+      "passed_for_admitted_fixture": true,
+      "workers": [1, 2, 4, 8],
+      "o0": true,
+      "o2": true,
+      "main_route": true,
+      "forced_band_route": true,
+      "comparison_key": "logical solve/column",
+      "deterministic_identity_with_serial_reference": true
+    },
+    "gate_5_mass_equation_integrity": {
+      "passed": true,
+      "focused_unrounded_equation_residual": "bitwise identical between serial and parallel and within 16*epsilon of zero for the admitted fixture",
+      "new_mass_mismatch_detected": false,
+      "hidden_physical_state_loss_detected": false,
+      "full_swap_water_balance_claimed": false
+    }
+  },
+  "admitted_reference_profile": {
+    "solver": "reference Richards / real HeadCalc",
+    "top_boundary": "explicit flux top provider",
+    "bottom_boundary": "free drainage, swbotb=7 or -2 contract; executable focused fixture uses 7",
+    "macropore": false,
+    "implicit_conductivity": false,
+    "minimum_timestep_edge_route": false,
+    "provider_parameterization": "fixed shared legacy constitutive/source-sink fixture for current parallel proof",
+    "routes_qualified": ["main", "forced band fallback"],
+    "optimizations_qualified": ["O0", "O2"],
+    "worker_counts_qualified": [1, 2, 4, 8]
+  },
+  "remaining_shared_dependencies": [
+    {
+      "owner": "MOD_MvG constitutive hydraulics and its legacy parameter context",
+      "impact": "heterogeneous per-column constitutive parameterization not yet source-bound as reentrant"
+    },
+    {
+      "owner": "legacy source/sink, drainage and irrigation process inputs",
+      "impact": "heterogeneous per-column process-provider state not yet source-bound as reentrant"
+    },
+    {
+      "owner": "macropore and deferred bottom/implicit/min-dt routes",
+      "impact": "remain explicitly fail closed outside the admitted F-SI07 profile"
+    }
+  ],
+  "scope_flags": {
+    "real_headcalc_parallel_reentrancy_qualified": true,
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false,
+    "physics_changed": false,
+    "richards_formulas_changed": false,
+    "numerical_policy_changed": false,
+    "convergence_criteria_changed": false,
+    "tolerances_changed": false,
+    "fkt_transaction_semantics_changed": false
+  },
+  "status_dimensions": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true
+  },
+  "invariant_assessment": {
+    "1_single_kernel": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS",
+    "5_worker_scratch": "PASS",
+    "6_scalable_memory_layout": "PASS",
+    "7_transactional_steps": "UNCHANGED_FKT_OWNED",
+    "8_recompute_warm_start": "UNCHANGED_FKT_OWNED",
+    "13_mass_conservation": "PASS_FOCUSED_EQUATION_INTEGRITY_ONLY_NO_FULL_SWAP_CLAIM",
+    "14_interface_sensitivities": "UNCHANGED_RESERVED_OUTPUT",
+    "16_multiswap_primary": "PASS_ARCHITECTURAL_STATE_ISOLATION",
+    "20_alternative_solvers": "PASS_COMMON_INTERFACE_UNCHANGED",
+    "21_physics_reuse": "PASS",
+    "22_no_headcalc_internal_coupling": "PASS_FOR_COMMON_ADAPTER_BOUNDARY",
+    "23_physics_solver_policy_separation": "PASS",
+    "24_predictable_cost": "UNCHANGED_OUT_OF_SCOPE",
+    "25_reference_mode": "PASS_EXACT_FSI06_IDENTITY",
+    "26_diagnostics": "PASS_ROUTE_ITERATION_DIAGNOSTICS_PRESERVED",
+    "27_optional_functionality": "PASS_FAIL_CLOSED_DEFERRED_ROUTES",
+    "29_no_silent_dependencies": "PASS_FOR_EXPLICIT_STATE_AND_TOP_PROVIDER"
+  },
+  "fsi08_scope": {
+    "title": "Reference provider-context isolation",
+    "goal": "Remove or explicitly bind the remaining legacy constitutive and source/sink/drainage/irrigation provider context so heterogeneous columns can be qualified for the parallel reference backend without shared mutable provider state.",
+    "must_preserve": [
+      "F-SI07 explicit per-solve physical-state binding",
+      "F-KT transaction ownership",
+      "reference Richards formulas",
+      "mass conservation",
+      "exact reference numerical policy"
+    ]
+  },
+  "last_verified_utc": "2026-09-07T15:51:07Z"
+}
