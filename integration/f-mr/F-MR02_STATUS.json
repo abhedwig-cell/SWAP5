@@ -6,28 +6,40 @@
   "safety_branch": "integration/f-mr02-safety",
   "base_commit": "646ecf188129e705caae2a52f8c184878406e801",
   "tested_source_commit": "b3bbd357c357001b825003ad6a12c1980a38a650",
+  "qualification_evidence_commit": "557b416d5a8e3eb9895895bf73503e7175e69c50",
   "workflow_run": 34145726907,
-  "phase": "TESTED_READY_FOR_QUALIFICATION",
-  "status": "TESTED",
+  "workflow_conclusion": "success",
+  "phase": "QUALIFIED_SHARED_POSTIMAGE_CLOSEOUT",
+  "status": "QUALIFIED_SHARED_FKT05_FSI05_FOCUSED_POSTIMAGE",
   "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": true,
-  "QUALIFIED": false,
-  "findings": {
-    "f_kt05_exact_in_shared_postimage": true,
-    "b1_10_exact_in_shared_postimage": true,
-    "f_si05_exact_in_shared_postimage": true,
-    "fmr01_deterministic_lane_preserved": true,
-    "combined_gate": "PASS"
+  "QUALIFIED": true,
+  "qualified_scope": {
+    "exact_f_kt05_transaction_kernel_spine": true,
+    "corrected_b1_10_oracle": true,
+    "exact_f_si05_focused_production_workspace_seam": true,
+    "f_mr01_deterministic_runtime_lane_preserved": true,
+    "production_reference_runtime_route": false,
+    "parallel_reference_runtime": false
   },
   "test_scope": {
-    "fkt05_transaction_checkpoint_chain": "PASS",
+    "combined_fmr02_gate": "PASS",
+    "fkt03_fkt04_fkt05_chain": "PASS",
     "fmr01_o0_o2": "PASS",
     "fsi05_o0_o2": "PASS",
     "fsi05_worker_counts": [1, 2, 4, 8],
     "fmr01_batch_sizes": [1, 2, 8, 17, 31, 32, 64],
     "fmr01_worker_counts": [1, 2, 4, 8],
-    "hard_mass_rejection": "PASS"
+    "hard_mass_rejection": "PASS",
+    "architecture_invariants": "SATISFIED_IN_SCOPE"
+  },
+  "backend_readiness": {
+    "deterministic_test_backend": "QUALIFIED_PRESERVED",
+    "fsi05_focused_workspace_seam": "QUALIFIED_IN_SHARED_POSTIMAGE",
+    "serialized_reference_runtime_backend": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "physical_multiswap_reference_backend": "NOT_ADMITTED"
   },
   "holds": [
     "No real HeadCalc parallel admission.",
@@ -35,9 +47,8 @@
     "No full reference Richards reentrancy claim.",
     "No new full SWAP water-balance identity claim beyond separately qualified evidence."
   ],
-  "blockers": [
-    "Qualification evidence and architecture-invariant assessment must be persisted and then closed out in a separate qualification state transition."
-  ],
-  "allows_downstream_release": false,
+  "blockers": [],
+  "allows_downstream_release": true,
+  "downstream_release_scope": "Downstream work may consume this exact shared F-KT05 + B1.10 + F-SI05 focused postimage as a qualified composition dependency. Every downstream workstream must reread its own live gates; this flag does not admit a physical or parallel reference runtime backend.",
   "last_verified": "2026-09-07T17:00:33Z"
 }
