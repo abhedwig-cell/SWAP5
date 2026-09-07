@@ -17,7 +17,7 @@ FCI14_SOURCE = "da5026d8b87ad2f3c7912360891839a120ecccb6"
 FCI14_POSTIMAGE = "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
 FCI14_RUN = 34107845964
 FCI14_JOB = 101697462464
-OVERLAY = "073ccff4096a922095a5c15390a6a6dc949e99aa"
+OVERLAY = "7e87f881af937836a517e2bb957bddd941b769ab"
 METRICS = ("h_cm", "theta", "pond_cm", "gwl_cm", "volact_cm", "ldwet_cm", "spev_cm", "saev_cm")
 LAGGED = ("hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm")
 
@@ -145,7 +145,7 @@ def main() -> int:
     }
     sections["canonical_overlay"] = {
         "overlay_record_exact": overlay.get("integration_overlay_base") == OVERLAY,
-        "fci15_not_consumed": overlay.get("consumed_as_fvq05_qualification_basis") is False,
+        "fci16_not_consumed": overlay.get("consumed_as_fvq05_qualification_basis") is False,
         "qualification_basis_still_fci14": overlay.get("qualification_basis_remains", {}).get("fci14_qualified_postimage") == FCI14_POSTIMAGE,
         "overlay_is_ancestor": overlay_is_ancestor(),
     }
