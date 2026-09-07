@@ -1,16 +1,22 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-VQ09",
   "claims": [
-    {"claim_id":"FVQ09-C01","claim":"The exact B0 -> B1.10 -> F-CI06 -> F-CI11 source materialization chain is pinned and fail-closed.","target":"QUALIFIABLE","claim_qualified":false,"blocker":"Pending F-VQ09 executable gate and CI."},
-    {"claim_id":"FVQ09-C02","claim":"External TTUTIL and Hupsel directories have a deterministic byte-manifest generation and validation contract that cannot self-admit candidate assets.","target":"QUALIFIABLE","claim_qualified":false,"blocker":"Pending F-VQ09 executable gate and fault-injection tests."},
-    {"claim_id":"FVQ09-C03","claim":"The real temporal probe contract starts full-step and two-half-step trajectories from byte-equivalent logical copies of one captured committed B1.10 process state and compares them at the same t1.","target":"QUALIFIABLE","claim_qualified":false,"blocker":"Pending F-VQ09 probe-source gate and CI."},
-    {"claim_id":"FVQ09-C04","claim":"Full and split paths each have a separate absolute hard water-mass residual gate of 1e-6 cm; the mass gate is never normalized into a temporal score.","target":"QUALIFIABLE","claim_qualified":false,"blocker":"Pending F-VQ09 harness gate and tests."},
-    {"claim_id":"FVQ09-C05","claim":"Raw temporal observations have an immutable schema that records exact asset/source provenance, interval definition, endpoint differences, per-path mass residuals and process-scope flags without inventing acceptance limits.","target":"QUALIFIABLE","claim_qualified":false,"blocker":"Pending F-VQ09 schema and gate."},
+    {"claim_id":"FVQ09-C01","claim":"The exact B0 -> B1.10 -> F-CI06 -> F-CI11 source materialization chain is pinned and fail-closed.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ09-C02","claim":"External TTUTIL and Hupsel directories have a deterministic byte-manifest generation and validation contract that cannot self-admit candidate assets.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ09-C03","claim":"The real temporal probe contract starts full-step and two-half-step trajectories from byte-equivalent logical copies of one captured committed B1.10 process state and compares them at the same t1.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ09-C04","claim":"Full and split paths each have a separate absolute hard water-mass residual gate of 1e-6 cm; the mass gate is never normalized into a temporal score.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
+    {"claim_id":"FVQ09-C05","claim":"Raw temporal observations have an immutable schema that records exact asset/source provenance, interval definition, endpoint differences, per-path mass residuals and process-scope flags without inventing acceptance limits.","target":"QUALIFIABLE","claim_qualified":true,"blocker":null},
     {"claim_id":"FVQ09-C06","claim":"Exact TTUTIL and Hupsel case byte identities are admitted for production qualification.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"No separately admitted TTUTIL or Hupsel directory-manifest hashes are currently persisted."},
     {"claim_id":"FVQ09-C07","claim":"A real source-bound B1.10 full-step versus two-half-step temporal characterization has executed under F-VQ09.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Exact externally licensed B0 distribution plus separately admitted TTUTIL and Hupsel assets are not available in ordinary CI."},
     {"claim_id":"FVQ09-C08","claim":"A production temporal numerical profile or per-metric physical acceptance limits are qualified.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"F-VQ05 numeric limits remain null and F-VQ09 does not derive limits from one characterization harness."},
     {"claim_id":"FVQ09-C09","claim":"Production execute_reference_interval/reference execution is admitted.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"Production reference execution remains outside this qualification-only harness scope."},
     {"claim_id":"FVQ09-C10","claim":"Temporal characterization is complete for active crop, irrigation, heat, solute and WOFOST process state.","target":"BLOCKED_FAIL_CLOSED","claim_qualified":false,"blocker":"The current canonical temporal characterization comparator reports water/lagged-water metrics and only flags optional-process presence; it does not compare all optional-process state."}
-  ]
+  ],
+  "qualification_evidence": {
+    "tested_postimage": "fb9a272c409ee5577a24d4353db41ced90d631d5",
+    "workflow_run": 34121158005,
+    "job_id": 101739243357,
+    "conclusion": "success"
+  }
 }

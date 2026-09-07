@@ -11,11 +11,13 @@ This work unit separates two questions that must not be conflated:
 1. Is the harness, source materialization and external-asset validation contract exact and fail-closed?
 2. Have the exact externally licensed B0 distribution, TTUTIL tree and Hupsel qualification case actually been admitted and used in a real characterization run?
 
-F-VQ09 may qualify the first question while the second remains blocked.
+F-VQ09 qualifies the first question only. The second remains blocked.
 
 ## Qualified production-source lineage
 
-F-CI18 identifies `da5026d8b87ad2f3c7912360891839a120ecccb6` as the qualified production-source head. F-VQ09 therefore refuses to run its real materializer if the current `src/` tree differs from that head.
+F-CI18 identifies `da5026d8b87ad2f3c7912360891839a120ecccb6` as the qualified production-source head. F-CI14's qualified canonical postimage `c226988ae0782a7d8d0818f5d4aeaab61b696de4` legitimately adds one later `src/` file, `src/adapter/mod_b1_10_reference_policy_candidate_model.f90`, at blob `594436176333e9fb04121dcf287b507a93723dfe`. That model remains fail-closed because no numerical temporal profile is qualified.
+
+F-VQ09 therefore requires `da5026d8` to remain an ancestor, allows exactly that one qualified canonical candidate-model delta, pins its blob identity to `c226988`, and rejects every other `src/` difference. Relative to F-VQ08, F-VQ09 itself changes no `src/` path.
 
 The legacy physical source is reconstructed deterministically as:
 
@@ -24,7 +26,7 @@ The legacy physical source is reconstructed deterministically as:
 - exact F-CI06 -> exact F-CI11 generic-interval/unrounded-mass port via `tools/fci/fci11_apply_controlled_interval_mass_port.py`;
 - exact F-CI11 `swap.f90` -> exact F-CI13 canonical-trial terminal-status postimage by adding only the previously qualified minimum-dt terminal-status guard.
 
-The F-CI13 overlay is accepted only if removing that one exact guard reproduces the F-CI11 `swap.f90` byte content after line-ending normalization. F-CI14 adds the temporal policy contract in the qualified production source, but F-VQ09 deliberately does not use an F-CI14 numerical profile because no real B1.10 limits are qualified.
+The F-CI13 overlay is accepted only if removing that one exact guard reproduces the F-CI11 `swap.f90` byte content after line-ending normalization. F-CI14 adds the temporal policy contract in the qualified production lineage, but F-VQ09 deliberately does not use an F-CI14 numerical profile because no real B1.10 limits are qualified.
 
 ## External TTUTIL and Hupsel assets
 
@@ -61,7 +63,17 @@ and `abs(residual) <= 1e-6 cm` is a separate absolute gate. It is never normaliz
 
 The qualified Hupsel profile has crop, fixed irrigation, heat and solute active. The current canonical temporal comparator records the eight water endpoint metrics plus four lagged water diagnostics and flags optional-process presence/allocation compatibility. It does **not** compare every active crop, WOFOST, irrigation, heat or solute state variable. F-VQ09 therefore requires `optional_process_state_present=true` and keeps `process_scope_complete=false`; it must not promote water-domain observations to complete optional-process qualification.
 
-## Current admission boundary
+## Qualification result
+
+Tested postimage: `fb9a272c409ee5577a24d4353db41ced90d631d5`.
+
+VQ workflow `34121158005`, F-VQ09 job `101739243357`, GNU Fortran 13.3.0: PASS. Documentation workflow `34121157896`: PASS.
+
+The first CI run (`34120644191`, job `101737649561`) failed only because the initial lineage gate incorrectly required the whole current `src/` tree to equal production-source commit `da5026d8`, thereby rejecting the exact qualified F-CI14 candidate-model postimage. Commits `958d7a6da9b60d5b28db65fa9e21b271de4eb4d2` and `fb9a272c409ee5577a24d4353db41ced90d631d5` corrected that qualification rule without changing production source or physics.
+
+Formal decision: `QUALIFIED_REAL_TEMPORAL_HARNESS_CONTRACT_ONLY`.
+
+## Remaining fail-closed boundary
 
 Until exact TTUTIL and Hupsel directory manifests are independently admitted and the exact licensed B0 distribution is supplied to the run:
 
@@ -70,4 +82,4 @@ Until exact TTUTIL and Hupsel directory manifests are independently admitted and
 - production reference execution remains fail-closed;
 - complete optional-process temporal scope remains unqualified.
 
-A green F-VQ09 CI run can qualify the **harness and fail-closed external-asset contract only**. It cannot by itself qualify any real temporal observation or production temporal acceptance profile.
+The qualification therefore covers the **harness and fail-closed external-asset contract only**. It does not qualify any real temporal observation or production temporal acceptance profile.
