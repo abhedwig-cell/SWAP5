@@ -1,0 +1,36 @@
+name: F-SI07 correct numbit carrier
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding-isolation
+    paths:
+      - tools/fsi/fsi07_correct_numbit_carrier.py
+      - .github/workflows/fsi07-correct-numbit.yml
+
+permissions:
+  contents: write
+
+jobs:
+  correct:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Correct explicit loop carrier and source materializer
+        run: python3 tools/fsi/fsi07_correct_numbit_carrier.py
+      - name: Validate correction scope
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/legacy/b1_10_port/headcalc.f90 tools/fsi/fsi07_materialize_state_binding.py "
+          grep -F 'do solver_numbit = 1, MaxIt1' src/legacy/b1_10_port/headcalc.f90
+          grep -F 'st%numbit = solver_numbit' src/legacy/b1_10_port/headcalc.f90
+      - name: Persist corrected source before qualification retry
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/legacy/b1_10_port/headcalc.f90 tools/fsi/fsi07_materialize_state_binding.py
+          git commit -m "F-SI07: correct explicit numbit loop carrier"
+          git push origin HEAD:work/f-si07-state-binding-isolation
