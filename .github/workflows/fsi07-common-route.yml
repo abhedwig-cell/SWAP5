@@ -1,0 +1,27 @@
+name: F-SI07 common route
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'tests/fsi/test_fsi07_common_route_serial.F90'
+      - 'tests/fsi/test_fsi07_common_route_parallel.F90'
+      - 'tests/fsi/run_fsi07_common_route_gate.sh'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - '.github/workflows/fsi07-common-route.yml'
+
+jobs:
+  qualify-common-route:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI07 admitted common-route gate
+        run: bash tests/fsi/run_fsi07_common_route_gate.sh
