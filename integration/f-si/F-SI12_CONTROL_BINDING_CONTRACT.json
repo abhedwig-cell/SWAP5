@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI12",
+  "title": "Explicit per-solve step-duration and numerical-control binding into HeadCalc",
+  "status": "STAGED_ON_FSI11_LINEAGE_DO_NOT_IMPLEMENT_HERE",
+  "intended_branch": "work/f-si12-explicit-solver-controls",
+  "basis": {
+    "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+    "fsi11_closeout_head_parent": "ae94803accdfd3dcdc66bcd712392ea91c696de8",
+    "fsi11_status": "QUALIFIED_PRECOMPUTED_ROOT_SINK_SWKIMPL0",
+    "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "problem": {
+    "existing_request_already_contains": [
+      "step_duration",
+      "max_iterations",
+      "max_backtracking",
+      "conductivity_implicit_mode",
+      "conductivity_mean_method",
+      "min_step_duration",
+      "compartment_balance_tolerance",
+      "total_balance_tolerance",
+      "head_abs_tolerance",
+      "head_rel_tolerance",
+      "ponding_tolerance"
+    ],
+    "remaining_headcalc_global_reads_on_solver_control_path": [
+      "dt",
+      "maxit",
+      "maxbacktr",
+      "swkimpl",
+      "swkmean",
+      "dtmin",
+      "CritDevBalCp",
+      "CritDevBalTot",
+      "critdevh2cp",
+      "critdevh1cp",
+      "critdevponddt"
+    ],
+    "architectural_issue": "the explicit common request is validated against legacy globals, but HeadCalc still consumes those globals instead of the already-explicit per-solve request controls"
+  },
+  "ownership": {
+    "external_policy_selection": "NOT_FSI",
+    "generic_t0_t1_semantics": "F-KT",
+    "step_duration_consumption_inside_solver": "F-SI",
+    "numerical_control_consumption_inside_solver": "F-SI",
+    "transaction_semantics": "F-KT",
+    "shared_fkt_type_change_required": false
+  },
+  "required_behavior": {
+    "explicit_common_route": "HeadCalc consumes request step_duration and numerical config supplied by the adapter/service call",
+    "legacy_route": "when explicit controls are absent, preserve current legacy-global behavior exactly",
+    "policy_change": false,
+    "formula_change": false,
+    "calendar_semantics_added": false,
+    "swkimpl1_admitted": false,
+    "macropore_admitted": false
+  },
+  "qualification_strategy": {
+    "reference_profile": "carry forward F-SI11 admitted swkimpl=0, swmacro=0, explicit top, F-SI09 constitutive, F-SI10 drainage/irrigation, F-SI11 precomputed root sink",
+    "authoritative_request_test": "construct a valid request, then poison only the legacy numerical-control globals that F-SI12 removes from the explicit HeadCalc path; the common solve must remain bit-identical while the legacy direct route remains unchanged when explicit controls are omitted",
+    "workers": [1, 2, 4, 8],
+    "optimization_levels": ["O0", "O2"],
+    "required_regressions": ["F-SI11 exact qualification gate", "F-KT boundary gate"],
+    "mass_rule": "no rounded proxy; focused unrounded residual and existing hard accounting gates remain mandatory"
+  },
+  "holds": {
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED"
+  }
+}
