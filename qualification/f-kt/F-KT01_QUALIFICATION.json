@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT01",
+  "qualification_status": "QUALIFIED",
+  "scope": "canonical kernel and transaction boundary only",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "integration/f-kt",
+  "baseline": {
+    "fci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fci_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "corrected_legacy_oracle": "B1.10"
+  },
+  "implementation_checkpoint": "6499374a349945505568ea384912019bd9344b78",
+  "pretest_status_commit": "c32477512a1948612e35dea3c082ebf4aa6ee17d",
+  "tested_head": "4c2264ed4425cfdd8e73fdf458223f568e3f7d6f",
+  "workflow": {
+    "name": "F-KT kernel qualification",
+    "path": ".github/workflows/fkt-kernel.yml",
+    "run_id": 34117279573,
+    "run_number": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-09-07T11:34:06Z",
+    "completed_at": "2026-09-07T11:34:37Z",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "focused_gate": {
+    "job_id": 101726939208,
+    "conclusion": "success",
+    "checks": {
+      "FKT01_CONTRACT_GATE": "PASS",
+      "FKT01_KERNEL_TRANSACTION_GATE_O0": "PASS",
+      "FKT01_KERNEL_TRANSACTION_GATE_O2": "PASS",
+      "FKT01_FOCUSED_O0_O2_GATE": "PASS"
+    }
+  },
+  "fci_regression_gate": {
+    "job_id": 101726984705,
+    "conclusion": "success",
+    "checks": {
+      "F-CI03_transaction_substrate": "PASS",
+      "F-CI04_canonical_runtime": "PASS",
+      "F-CI08_attempt_context": "PASS",
+      "F-CI09_B1.10_transaction_binding": "PASS",
+      "F-CI10_time_and_mass_seam": "PASS",
+      "F-CI11_controlled_interval_and_mass": "PASS",
+      "F-CI13_recoverable_trial_status": "PASS",
+      "F-CI14_temporal_acceptance_contract": "PASS"
+    }
+  },
+  "acceptance": {
+    "single_canonical_kernel_transaction_api": "PASS",
+    "no_new_competing_production_entrypoint": "PASS",
+    "rejected_trials_never_mutate_committed_state": "PASS",
+    "same_committed_state_retry_and_replay_reproducible": "PASS",
+    "generic_t0_t1_preserved": "PASS",
+    "numerical_configuration_separate_from_physics": "PASS",
+    "worker_scratch_excluded_from_persistent_column_state": "PASS",
+    "unrounded_transaction_mass_accounting_preserved": "PASS",
+    "missing_reference_policy_evidence_fails_closed": "PASS",
+    "fsi_boundary_exactly_persisted": "PASS",
+    "focused_o0_o2_green": "PASS",
+    "relevant_fci_regressions_green": "PASS"
+  },
+  "reference_policy_hold": {
+    "b1_10_temporal_limit_profile_independently_qualified": false,
+    "production_reference_execution_admitted": false,
+    "fci14_no_numeric_defaults": true,
+    "fci14_candidate_profile_unqualified": true,
+    "fci14_candidate_reference_blocked": true,
+    "fkt_temporal_tolerances_introduced": false,
+    "effect_on_fkt01_qualification": "none; structural boundary is qualified while reference execution remains fail-closed"
+  },
+  "mass_evidence": {
+    "fkt01_injected_mass_defect_rejected": true,
+    "fkt01_failed_interval_candidate_absent": true,
+    "fkt01_failed_interval_committed_state_unchanged": true,
+    "fci10_canonical_residual_unrounded": true,
+    "fci10_hard_mass_bound": true,
+    "fci11_trial_mass_wired": true,
+    "fci11_local_hard_mass": true,
+    "aggregate_mass_fabricated_when_incomplete": false
+  },
+  "transaction_evidence": {
+    "advance_committed_state_intent": "in",
+    "candidate_materialized_only_after_completed_interval": true,
+    "explicit_commit_required": true,
+    "explicit_candidate_rollback": true,
+    "replay_from_same_committed_state_exact": true,
+    "warm_start_test_backend_mutates_numerical_seed_without_changing_replay_endpoint": true
+  },
+  "fsi_boundary": "integration/f-kt/F-KT01_FSI_BOUNDARY.json",
+  "kernel_contract": "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json",
+  "invariants_assessed": [1, 2, 3, 4, 5, 7, 8, 9, 11, 13, 20, 22, 23, 25, 26, 29],
+  "holds": [
+    "B1.10 temporal-limit profile remains independently unqualified",
+    "optional-process temporal/storage coverage remains incomplete downstream work",
+    "full solver reentrancy and parallelization remain F-SI ownership"
+  ],
+  "qualification_does_not_claim": [
+    "B1.10 production reference execution admission",
+    "complete optional-process migration",
+    "solver reentrancy",
+    "MultiSWAP runtime qualification",
+    "MODFLOW coupling qualification"
+  ]
+}
