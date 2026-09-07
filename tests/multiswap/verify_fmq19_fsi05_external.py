@@ -77,8 +77,8 @@ def main():
     require(deferred["production_multiswap_admission"] is False, "production MultiSWAP unexpectedly admitted")
 
     for token in (
-        "F-SI05_REAL_REPLAY_O0 PASS",
-        "F-SI05_REAL_REPLAY_O2 PASS",
+        "for opt in 0 2; do",
+        'echo "F-SI05_REAL_REPLAY_O$opt PASS"',
         "F-SI05_O0_O2_IDENTITY PASS",
         "F-SI05_WORKSPACE_1_2_4_8 PASS",
         "F-SI05_GATE PASS",
