@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ12",
+  "title": "Admission of qualified F-KT01 kernel/transaction boundary into F-MQ ownership overlay",
+  "qualification_only": true,
+  "parent_overlay": {
+    "path": "tests/multiswap/fmq11_canonical_binding.json",
+    "git_blob_sha1": "84b3fe1bf18fed5eb51a0307720853517444f195",
+    "requirements_row_count": 35
+  },
+  "fkt01_evidence": {
+    "branch": "integration/f-kt",
+    "head": "62f27672bbb74066ece202de8898597e655aed3d",
+    "qualification_evidence_commit": "e350d84e975e9f6ab4475658566f623b0e46f9ac",
+    "workflow_run": 34117279573,
+    "qualification_status": "QUALIFIED",
+    "scope": "canonical kernel and transaction boundary only",
+    "blob_pins": {
+      "integration/f-kt/F-KT01_STATUS.json": "c2659d35321e51800a7d579ca36cea974a46a486",
+      "qualification/f-kt/F-KT01_QUALIFICATION.json": "8803b1711e0cf4a5a40e22de522be05c7d98b42f",
+      "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json": "db4ddfc681d1bec65041a8dff79b835d4f416fb5",
+      "src/kernel/mod_kernel_transactions.f90": "ca384ea8690a00e118463659216ddc091adbb91a"
+    }
+  },
+  "admitted_fkt01_properties": {
+    "single_canonical_kernel_transaction_api": true,
+    "committed_state_is_input_only_during_advance": true,
+    "candidate_created_only_after_complete_accepted_interval": true,
+    "explicit_candidate_commit": true,
+    "explicit_candidate_rollback": true,
+    "rejected_trials_do_not_mutate_committed_state": true,
+    "same_committed_state_replay_exact_on_fkt01_backend": true,
+    "generic_t0_t1_preserved": true,
+    "forcing_is_explicit_input": true,
+    "numerical_config_separate_from_physics": true,
+    "worker_scratch_excluded_from_persistent_column_state": true,
+    "unrounded_transaction_mass_preserved_without_fabrication": true,
+    "mass_defect_rejection_preserves_committed_state": true,
+    "reference_execution_admission_remains_fail_closed": true
+  },
+  "not_admitted_by_fkt01": {
+    "real_b1_10_reference_execution": true,
+    "complete_optional_process_qualification": true,
+    "solver_reentrancy": true,
+    "production_multiswap_runtime": true,
+    "modflow_coupling": true,
+    "complete_real_event_mass_fixture": true
+  },
+  "ownership_deltas": [
+    {
+      "id": "P05",
+      "before": {
+        "canonical_binding": "CANONICAL_STATE_CLONE_PREREQUISITE_BOUND",
+        "remaining_owners": ["F-KT"]
+      },
+      "after": {
+        "canonical_binding": "CANONICAL_KERNEL_STATE_TRANSACTION_BOUNDARY_QUALIFIED",
+        "remaining_owners": []
+      },
+      "reason": "F-KT01 qualifies input-only committed state, private clone lineage, exact replay and explicit candidate publication/rollback."
+    },
+    {
+      "id": "P12",
+      "before": {
+        "canonical_binding": "CANONICAL_FORCING_API_BOUND_REAL_LOCALITY_OPEN",
+        "remaining_owners": ["F-VQ", "F-KT"]
+      },
+      "after": {
+        "canonical_binding": "CANONICAL_FORCING_INPUT_OWNERSHIP_QUALIFIED_REAL_LOCALITY_WAITING_FVQ",
+        "remaining_owners": ["F-VQ"]
+      },
+      "reason": "F-KT01 qualifies forcing as an explicit immutable advance input; real B1.10 forcing-locality evidence remains F-VQ work."
+    },
+    {
+      "id": "P14",
+      "before": {
+        "canonical_binding": "OPTIONAL_STATE_CONDITIONAL_ALLOCATION_PARTIAL",
+        "remaining_owners": ["F-KT", "F-VQ"]
+      },
+      "after": {
+        "canonical_binding": "KERNEL_STATE_BOUNDARY_QUALIFIED_OPTIONAL_SCOPE_WAITING_FVQ",
+        "remaining_owners": ["F-VQ"]
+      },
+      "reason": "F-KT01 qualifies parameters/scratch outside persistent dynamic state; complete optional-process state qualification remains downstream."
+    },
+    {
+      "id": "P16",
+      "before": {
+        "canonical_binding": "CANONICAL_MASS_CONTRACT_PARTIAL_REAL_RECORD_BLOCKED",
+        "remaining_owners": ["F-VQ", "F-KT"]
+      },
+      "after": {
+        "canonical_binding": "KERNEL_UNROUNDED_MASS_PASS_THROUGH_QUALIFIED_REAL_RECORD_WAITING_FVQ",
+        "remaining_owners": ["F-VQ"]
+      },
+      "reason": "F-KT01 preserves unrounded mass accounting, rejects an injected defect and does not fabricate incomplete aggregate mass; a real event-local mass record remains absent."
+    },
+    {
+      "id": "P21",
+      "before": {
+        "canonical_binding": "CANONICAL_TRANSACTION_PREREQUISITE_BOUND_COUPLER_OPEN",
+        "remaining_owners": ["F-MR", "F-KT"]
+      },
+      "after": {
+        "canonical_binding": "KERNEL_CANDIDATE_TRANSACTION_PREREQUISITE_QUALIFIED_COUPLER_WAITING_FMR",
+        "remaining_owners": ["F-MR"]
+      },
+      "reason": "F-KT01 qualifies explicit candidate commit/rollback semantics needed by a predictor-corrector coupler; the production coupler remains F-MR scope."
+    },
+    {
+      "id": "P22",
+      "before": {
+        "canonical_binding": "WAITING_EXPLICIT_PRODUCTION_COUPLING_FLUX_CONTRACT",
+        "remaining_owners": ["F-MR", "F-KT"]
+      },
+      "after": {
+        "canonical_binding": "KERNEL_TRANSACTION_PREREQUISITE_QUALIFIED_FLUX_CONTRACT_WAITING_FMR",
+        "remaining_owners": ["F-MR"]
+      },
+      "reason": "F-KT01 establishes the transaction boundary but explicitly does not claim MODFLOW coupling or interface-flux qualification."
+    }
+  ],
+  "confirmed_without_ownership_change": [
+    "R08",
+    "P07",
+    "P08"
+  ],
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "coverage_promotions": []
+  },
+  "downstream_state": {
+    "fsi_head_observed": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fsi_has_post_fci18_implementation_evidence": false,
+    "fmr_branch_present": false
+  },
+  "decision": "ADMIT_FKT01_KERNEL_BOUNDARY_RECLASSIFY_OWNERSHIP_NO_COVERAGE_PROMOTION"
+}
