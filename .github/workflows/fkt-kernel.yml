@@ -6,6 +6,7 @@ on:
       - integration/f-kt
     paths:
       - 'src/kernel/**'
+      - 'src/adapter/**'
       - 'tests/fkt/**'
       - 'tools/fkt/**'
       - 'integration/f-kt/**'
@@ -23,7 +24,7 @@ on:
       - '.github/workflows/fkt-kernel.yml'
 
 jobs:
-  fkt06-focused-o0-o2:
+  fkt07-focused-o0-o2:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -32,11 +33,11 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-KT06 optional continuation and O0/O2 gate
-        run: bash tests/fkt/run_fkt06_gate.sh
+      - name: F-KT07 B1.10 macropore continuation and O0/O2 gate
+        run: bash tests/fkt/run_fkt07_gate.sh
 
   fci-regression:
-    needs: fkt06-focused-o0-o2
+    needs: fkt07-focused-o0-o2
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

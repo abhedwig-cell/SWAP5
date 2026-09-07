@@ -1,30 +1,46 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "workstream": "F-KT",
   "work_unit": "F-KT07",
   "baseline": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
   "branch": "integration/f-kt",
   "safety_branch": "integration/f-kt07-safety",
   "safety_branch_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
+  "contract_checkpoint": "34bbe3c27dfb74f8c3545f5e3081fff08e2eb384",
+  "source_materialization_commit": "f7c6d007d92c1d5b6d1bf402325bd5e1ecafe4db",
   "scope": "B1.10 adapter-specific macropore nstep continuation materialization",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "implementation_status": "NOT_IMPLEMENTED",
+  "implementation_status": "IMPLEMENTED",
   "persistence_status": "PERSISTED",
   "test_status": "NOT_TESTED",
   "qualification_status": "NOT_QUALIFIED",
-  "production_source_changed": false,
+  "production_source_changed": true,
+  "production_source_files": ["src/adapter/mod_b1_10_process_checkpoint.f90"],
+  "generic_kernel_source_changed": false,
+  "physics_formula_changed": false,
+  "numerical_policy_changed": false,
   "contract": "integration/f-kt/F-KT07_MACROPORE_CONTINUATION_CONTRACT.json",
-  "materializer": "tools/fkt/fkt07_materialize_macropore_continuation.py",
-  "materialization_workflow": ".github/workflows/fkt07-materialize.yml",
+  "focused_test": "tests/fkt/test_fkt07_macropore_continuation.f90",
+  "focused_runner": "tests/fkt/run_fkt07_gate.sh",
+  "static_gate": "tools/fkt/fkt07_contract_gate.py",
   "external_boundaries": {
     "fsi06_final_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
     "fsi06_status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
-    "fmq20_qualified_at_start": false,
-    "fvq12_qualified_at_start": false,
-    "fmr01_implemented_at_start": false
+    "fsi06_consumed_as_ownership_evidence_only": true,
+    "fmq20_consumed_as_qualification_evidence": false,
+    "fvq12_consumed_as_qualification_evidence": false,
+    "fmr01_consumed_as_qualification_evidence": false
+  },
+  "implemented_behavior": {
+    "carrier": "allocatable b1_10_process_state_t%macropore",
+    "fields": ["nstep"],
+    "inactive_state_cost": "no allocated macropore payload",
+    "legacy_history_implicit_capture": false,
+    "clone_copies_continuation": true,
+    "explicit_bind_read_clear_complete_seam": true
   },
   "admission": {
     "macropore_production": false,
@@ -34,9 +50,9 @@
   },
   "blockers": [],
   "holds": [
-    "source materialization must be persisted before executable qualification",
-    "composed F-SI macropore binding is not part of F-KT07",
+    "focused O0/O2 and selected F-CI regressions must pass before qualification",
+    "composed F-SI macropore binding is not part of F-KT07 and macropore production remains fail-closed",
     "reference execution remains fail-closed"
   ],
-  "next_action": "materialize the exact adapter-state change, persist the source checkpoint, then add focused O0/O2 and regression gates"
+  "next_action": "run exact complete postimage through F-KT07 focused gate and selected F-CI regression chain"
 }
