@@ -62,6 +62,8 @@ This is **not** yet the complete physical continuation state for SWAP. Crop, irr
 
 The repository stores complete postimages for `headcalc.f90`, `soilwater.f90` and `swap_main.f90`. `swap.f90` is stored as four ordered include chunks only to keep individual repository writes bounded; the applicator concatenates them to the exact full postimage before qualification/use.
 
+The byte identity admitted by F-CI06 is the source **as actually stored in Git**. The first CI execution detected that three locally pinned postimages differed from the stored form only by final-newline bytes and two non-executable comment/blank lines in `swap.f90`. The gate correctly failed. The stored Git form was then reconstructed again from exact B1.10 and rerun before its hashes were admitted.
+
 ## Qualification
 
 The exact local B1.10 reconstruction has:
@@ -70,19 +72,20 @@ The exact local B1.10 reconstruction has:
 - 1,863,575 source bytes;
 - manifest SHA-256 `2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1`.
 
-The controlled port changes exactly four files. The resulting complete 63-file source tree has manifest SHA-256:
+The controlled port changes exactly four files. The resulting exact stored-Git 63-file source tree has:
 
-`fc4a2835165c9f9964922f0ca52dd9595792222245f530155c03b47082ef076d`
+- 1,866,170 source bytes;
+- manifest SHA-256 `3c4751ebb657a2bb622c9cddd718db451fbae861530353ab83fc3c99e78d7187`.
 
 Full GNU compilation/link was performed for:
 
 - exact B1.10 preimage at `-O0`;
-- F-CI06 postimage at `-O0`;
-- F-CI06 postimage at `-O2`.
+- exact stored-Git F-CI06 postimage at `-O0`;
+- exact stored-Git F-CI06 postimage at `-O2`.
 
 All passed.
 
-For the Hupsel 2002–2004 standalone route (`worker` absent), B1.10 `-O0`, F-CI06 `-O0` and F-CI06 `-O2` produced identical normalized `.bal`, `.blc` and warning outputs. Only generated run-time metadata is excluded from the textual comparison. This is a focused preservation result, not yet the full B1.10 scientific regression suite.
+For the Hupsel 2002–2004 standalone route (`worker` absent), B1.10 `-O0`, stored-Git F-CI06 `-O0` and stored-Git F-CI06 `-O2` produced identical normalized `.bal`, `.blc` and warning outputs. Only generated run-time metadata is excluded from the textual comparison. This is a focused preservation result, not yet the full B1.10 scientific regression suite.
 
 CI additionally executes the static source/provenance gate and an `-O0`/`-O2` capture/restore/clone test for the water checkpoint type.
 
