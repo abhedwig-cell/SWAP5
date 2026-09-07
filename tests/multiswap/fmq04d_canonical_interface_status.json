@@ -5,12 +5,13 @@
   "production_code_change_allowed": false,
   "canonical_source": {
     "branch": "integration/f-ci-canonical",
-    "commit": "376b78e975b6d4130b9ffabd223c3f87d50a9251",
+    "commit": "539b8c1b942d5c2dc8f97b8b7f400b2c3a1da0aa",
     "reference_snapshot": "B1.10",
     "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
     "evidence": {
       "integration/f-ci/F-CI04_PHYSICAL_SEAM_CONTRACT.json": "75fb1191f7ef17f4f8789d6ed421261b779752d1",
-      "integration/f-ci/F-CI04_STATUS.json": "6dac4f68845429a16ea70c1e3a768fbc24d67b48",
+      "integration/f-ci/F-CI05_B1_10_PHYSICAL_SEAM.json": "b4ee7698a89e7cfe897403ce340d48eec7bff625",
+      "integration/f-ci/F-CI05_STATUS.json": "657439291c7b0889612fceda321602f6070939bf",
       "src/runtime/mod_canonical_contracts.f90": "55cd8a9dc529bb2d057845f212b7efff6c80c553",
       "src/runtime/mod_canonical_interval_runtime.f90": "f0bfb2c1359c39b4708350b756aa2211fb982be4"
     }
@@ -21,6 +22,7 @@
     "private_working_state_for_internal_substeps": true,
     "separate_forcing_numerical_config_result_contracts": true,
     "worker_scratch_excluded_from_persistent_state_contract": true,
+    "exact_b1_10_physical_preimage_qualified": true,
     "concrete_b1_10_physical_adapter": false,
     "b1_10_committed_continuation_state_capture": false,
     "real_b1_10_short_interval_continuation": false,
@@ -38,8 +40,8 @@
     "time": "The real physical path must accept generic non-midnight, non-day [t0,t1] intervals."
   },
   "unblock_conditions": [
-    "F-CI/F-KT materializes and qualifies a concrete B1.10 physical adapter on the canonical integration line.",
-    "A qualified real B1.10 committed continuation checkpoint can be captured without persisting worker scratch.",
+    "F-CI/F-KT performs the controlled source port from the F-CI05 qualified B1.10 physical preimage and materializes a concrete canonical physical adapter.",
+    "A qualified real B1.10 committed continuation checkpoint can be captured without persisting worker scratch or HeadCalc numerical workspace.",
     "A short generic physical continuation can be run from that checkpoint and deterministically replayed.",
     "The accepted interval returns complete unrounded mass accounting sufficient for the F-MQ hard mass gate.",
     "F-MQ04b can generate a reference-run record from the exact canonical commit and F-MQ04c admits it into the F-MQ03 fixture builder."
