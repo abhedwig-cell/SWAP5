@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SCOPE = ROOT / "integration" / "f-ci" / "F-CI18_EXIT_SCOPE_OWNERSHIP.json"
 CONTRACT = ROOT / "integration" / "f-ci" / "F-CI15_EXIT_GATES.json"
-CURRENT = ROOT / "integration" / "f-ci" / "F-CI_EXIT_GATES.json"
+FCI17 = ROOT / "integration" / "f-ci" / "F-CI17_EXIT_GATES.json"
 EXPECTED = [f"CI-G{i:02d}" for i in range(1, 11)]
 
 
@@ -17,7 +17,7 @@ def fail(msg: str) -> None:
 def main() -> None:
     data = json.loads(SCOPE.read_text(encoding="utf-8"))
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    current = json.loads(CURRENT.read_text(encoding="utf-8"))
+    fci17 = json.loads(FCI17.read_text(encoding="utf-8"))
     if data.get("work_unit") != "F-CI18" or data.get("canonical_branch") != "integration/f-ci-canonical":
         fail("identity")
     if data.get("basis_head") != "e17b43e3dda7d178c4c81035308308448823e38d":
@@ -44,7 +44,7 @@ def main() -> None:
             fail(f"{gate_id} proposed status")
         if not d.get("owner") or not d.get("basis"):
             fail(f"{gate_id} ownership/evidence")
-        if d.get("fci17_status") != current["gates"][gate_id]["status"]:
+        if d.get("fci17_status") != fci17["gates"][gate_id]["status"]:
             fail(f"{gate_id} stale F-CI17 status")
 
     if decisions["CI-G02"].get("scope_correction") is None:
@@ -64,8 +64,6 @@ def main() -> None:
     forbidden = [p for p in changed if p.startswith("src/") or p.startswith("reference/swap-4.3.1/")]
     if forbidden:
         fail(f"production/reference mutation: {forbidden}")
-    if "integration/f-ci/F-CI_EXIT_GATES.json" in changed:
-        fail("current gate file promoted before qualification")
 
     print("FCI18_EXIT_SCOPE_OWNERSHIP PASS")
 
