@@ -1,0 +1,21 @@
+name: F-SI05 production workspace seam
+
+on:
+  push:
+    branches:
+      - work/f-si05-production-workspace-seam
+
+permissions:
+  contents: read
+
+jobs:
+  fsi05-production-workspace-seam:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI05 production HeadCalc seam gate
+        run: bash tests/fsi/run_fsi05_gate.sh
