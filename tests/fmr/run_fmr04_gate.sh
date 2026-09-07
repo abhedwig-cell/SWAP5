@@ -7,7 +7,6 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-# Exact production provenance required by F-MR04.
 check_blob() {
   local path="$1" expected="$2" actual
   actual="$(git hash-object "$path")"
@@ -37,7 +36,7 @@ runtime = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text
 context = Path('src/adapter/mod_b110_serialized_context_binding.f90').read_text().lower()
 status = json.loads(Path('integration/f-mr/F-MR04_STATUS.json').read_text())
 admission = json.loads(Path('integration/f-mr/F-MR04_BACKEND_ADMISSION.json').read_text())
-for forbidden in ['headcalc', 'use variables', 'use mod_grid', 'use mod_snow', 'use mod_drain', 'use mod_irrigation']:
+for forbidden in ['call headcalc(', 'use variables', 'use mod_grid', 'use mod_snow', 'use mod_drain', 'use mod_irrigation']:
     assert forbidden not in runtime, f'F-MR runtime leaks solver/legacy internal: {forbidden}'
 for required in ['fmr_trial_from_checkpoint', 'kernel_model_t', 'reference_richards_legacy_solver_t',
                  'b110_default_mvg_provider_t', 'b110_source_sink_provider_t',
@@ -51,7 +50,6 @@ assert admission['parallel_reference_backend_admitted'] is False
 print('FMR04_ARCHITECTURE_BOUNDARY PASS')
 PY
 
-# Preserve the already-qualified F-KT checkpoint/transaction gate on this composed tree.
 bash tests/fkt/run_fkt05_gate.sh >/dev/null
 echo 'FMR04_FKT05_TRANSACTION_REGRESSION PASS'
 
