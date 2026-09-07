@@ -21,10 +21,9 @@ module mod_kernel_transactions
   type, abstract, public :: kernel_parameters_t
   end type kernel_parameters_t
 
-  ! Canonical committed-state carrier. The physical continuation state remains
-  ! a transaction_state_t, while F-KT-owned lineage/revision metadata protects
-  ! candidate publication. Runtime/coupler code supplies a stable positive
-  ! lineage_id; the kernel never generates global column identities.
+  ! Canonical F-KT-owned committed carrier. Physical continuation state is
+  ! private. Runtime/coupler code supplies a stable positive lineage id; F-KT
+  ! owns revision changes and never generates global column identities.
   type, extends(transaction_state_t), public :: kernel_committed_state_t
     private
     class(transaction_state_t), allocatable :: physical_state
@@ -40,13 +39,23 @@ module mod_kernel_transactions
     procedure, public :: current_revision => kernel_current_revision
   end type kernel_committed_state_t
 
+  ! Candidate provenance and physical state are opaque outside F-KT. Callers
+  ! may inspect cloned snapshots and origin metadata but cannot forge the
+  ! lineage/revision that authorizes publication.
   type, public :: kernel_candidate_state_t
+    private
     class(transaction_state_t), allocatable :: state
     logical :: valid = .false.
     real(real64) :: origin_t0 = 0.0_real64
     real(real64) :: origin_t1 = 0.0_real64
-    integer(int64) :: origin_lineage_id = 0_int64
-    integer(int64) :: origin_revision = -1_int64
+    integer(int64) :: origin_lineage_id_value = 0_int64
+    integer(int64) :: origin_revision_value = -1_int64
+  contains
+    procedure, public :: ready => kernel_candidate_ready
+    procedure, public :: snapshot => kernel_snapshot_candidate
+    procedure, public :: current_lineage_id => kernel_candidate_lineage_id
+    procedure, public :: origin_revision => kernel_candidate_origin_revision
+    procedure, public :: origin_interval => kernel_candidate_origin_interval
   end type kernel_candidate_state_t
 
   type, public :: kernel_result_t
@@ -90,8 +99,8 @@ module mod_kernel_transactions
   end type kernel_model_t
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
-  ! warm-start data, but every physical trial still originates from the
-  ! committed physical state carried by kernel_committed_state_t.
+  ! warm-start data, but every physical trial originates from the committed
+  ! physical state carried by kernel_committed_state_t.
   type, public :: kernel_executor_t
     private
     class(kernel_model_t), pointer :: model => null()
@@ -177,6 +186,48 @@ contains
     value = self%revision
   end function kernel_current_revision
 
+  logical function kernel_candidate_ready(self) result(is_ready)
+    class(kernel_candidate_state_t), intent(in) :: self
+    is_ready = self%valid .and. allocated(self%state) .and. &
+         self%origin_lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
+         self%origin_t1 > self%origin_t0
+  end function kernel_candidate_ready
+
+  subroutine kernel_snapshot_candidate(self, copy, available)
+    class(kernel_candidate_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+    logical, intent(out) :: available
+
+    available = self%ready()
+    if (.not. available) return
+    call self%state%clone(copy)
+  end subroutine kernel_snapshot_candidate
+
+  integer(int64) function kernel_candidate_lineage_id(self) result(value)
+    class(kernel_candidate_state_t), intent(in) :: self
+    value = self%origin_lineage_id_value
+  end function kernel_candidate_lineage_id
+
+  integer(int64) function kernel_candidate_origin_revision(self) result(value)
+    class(kernel_candidate_state_t), intent(in) :: self
+    value = self%origin_revision_value
+  end function kernel_candidate_origin_revision
+
+  subroutine kernel_candidate_origin_interval(self, t0, t1, available)
+    class(kernel_candidate_state_t), intent(in) :: self
+    real(real64), intent(out) :: t0, t1
+    logical, intent(out) :: available
+
+    available = self%ready()
+    if (available) then
+      t0 = self%origin_t0
+      t1 = self%origin_t1
+    else
+      t0 = 0.0_real64
+      t1 = 0.0_real64
+    end if
+  end subroutine kernel_candidate_origin_interval
+
   subroutine kernel_bind_model(self, model)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_model_t), target, intent(inout) :: model
@@ -187,7 +238,7 @@ contains
                                      result, candidate_state, diagnostics)
     class(kernel_executor_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
-    class(transaction_state_t), allocatable, intent(in) :: committed_state
+    type(kernel_committed_state_t), intent(in) :: committed_state
     class(canonical_forcing_t), intent(in) :: forcing
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     real(real64), intent(in) :: t0, t1
@@ -198,7 +249,6 @@ contains
     class(transaction_state_t), allocatable :: working
     type(canonical_interval_t) :: interval
     type(canonical_result_t) :: runtime_result
-    integer(int64) :: origin_lineage_id, origin_revision
 
     result = kernel_result_t()
     result%requested_t0 = t0
@@ -207,29 +257,16 @@ contains
     candidate_state = kernel_candidate_state_t()
     diagnostics = kernel_diagnostics_t()
 
-    if (.not. allocated(committed_state) .or. t1 <= t0 .or. &
+    if (.not. committed_state%ready() .or. t1 <= t0 .or. &
         numerical_config%max_committed_substeps <= 0 .or. numerical_config%progress_tolerance < 0.0_real64) then
-      result%status = CANONICAL_STATUS_INVALID_REQUEST
-      return
-    end if
-
-    select type (committed => committed_state)
-    type is (kernel_committed_state_t)
-      if (.not. committed%ready()) then
+      if (.not. committed_state%ready()) then
         result%status = KERNEL_STATUS_UNGUARDED_STATE
         diagnostics%unguarded_state_rejections = 1
-        return
+      else
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
       end if
-      origin_lineage_id = committed%lineage_id
-      origin_revision = committed%revision
-    class default
-      ! Raw transaction_state_t values cannot carry enough provenance to reject
-      ! stale or cross-column candidate publication. Production use therefore
-      ! fails closed instead of silently accepting an unguarded state.
-      result%status = KERNEL_STATUS_UNGUARDED_STATE
-      diagnostics%unguarded_state_rejections = 1
       return
-    end select
+    end if
 
     if (.not. associated(self%model)) then
       result%status = KERNEL_STATUS_NOT_BOUND
@@ -249,12 +286,7 @@ contains
 
     ! Clone only the physical continuation state. Lineage/revision metadata is
     ! transaction control and never enters solver or persistent physical state.
-    select type (committed => committed_state)
-    type is (kernel_committed_state_t)
-      call committed%physical_state%clone(working)
-    class default
-      error stop 'FKT02 guarded-state dispatch invariant violated'
-    end select
+    call committed_state%physical_state%clone(working)
 
     interval%t0 = t0
     interval%t1 = t1
@@ -268,15 +300,15 @@ contains
       candidate_state%valid = .true.
       candidate_state%origin_t0 = t0
       candidate_state%origin_t1 = t1
-      candidate_state%origin_lineage_id = origin_lineage_id
-      candidate_state%origin_revision = origin_revision
+      candidate_state%origin_lineage_id_value = committed_state%lineage_id
+      candidate_state%origin_revision_value = committed_state%revision
       diagnostics%candidate_materializations = 1
     end if
   end subroutine kernel_advance_interval
 
   subroutine kernel_commit_candidate(self, committed_state, candidate_state, diagnostics, did_commit, commit_status)
     class(kernel_executor_t), intent(inout) :: self
-    class(transaction_state_t), allocatable, intent(inout) :: committed_state
+    type(kernel_committed_state_t), intent(inout) :: committed_state
     type(kernel_candidate_state_t), intent(inout) :: candidate_state
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
     logical, intent(out) :: did_commit
@@ -286,56 +318,37 @@ contains
     if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_INVALID_CANDIDATE
     if (.not. same_type_as(self, self)) error stop 'unreachable kernel executor type'
 
-    if (.not. candidate_state%valid .or. .not. allocated(candidate_state%state)) then
+    if (.not. candidate_state%ready()) then
       diagnostics%commit_rejections = diagnostics%commit_rejections + 1
       diagnostics%invalid_candidate_rejections = diagnostics%invalid_candidate_rejections + 1
       return
     end if
 
-    if (.not. allocated(committed_state)) then
+    if (.not. committed_state%ready()) then
       diagnostics%commit_rejections = diagnostics%commit_rejections + 1
       diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
       if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
       return
     end if
 
-    select type (committed => committed_state)
-    type is (kernel_committed_state_t)
-      if (.not. committed%ready()) then
-        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
-        diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
-        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
-        return
-      end if
-
-      if (candidate_state%origin_lineage_id /= committed%lineage_id) then
-        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
-        diagnostics%lineage_mismatch_rejections = diagnostics%lineage_mismatch_rejections + 1
-        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH
-        return
-      end if
-
-      if (candidate_state%origin_revision /= committed%revision) then
-        diagnostics%commit_rejections = diagnostics%commit_rejections + 1
-        diagnostics%stale_revision_rejections = diagnostics%stale_revision_rejections + 1
-        if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_STALE_REVISION
-        return
-      end if
-
-      call move_alloc(candidate_state%state, committed%physical_state)
-      committed%revision = committed%revision + 1_int64
-    class default
+    if (candidate_state%origin_lineage_id_value /= committed_state%lineage_id) then
       diagnostics%commit_rejections = diagnostics%commit_rejections + 1
-      diagnostics%unguarded_state_rejections = diagnostics%unguarded_state_rejections + 1
-      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_UNGUARDED_STATE
+      diagnostics%lineage_mismatch_rejections = diagnostics%lineage_mismatch_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH
       return
-    end select
+    end if
 
-    candidate_state%valid = .false.
-    candidate_state%origin_t0 = 0.0_real64
-    candidate_state%origin_t1 = 0.0_real64
-    candidate_state%origin_lineage_id = 0_int64
-    candidate_state%origin_revision = -1_int64
+    if (candidate_state%origin_revision_value /= committed_state%revision) then
+      diagnostics%commit_rejections = diagnostics%commit_rejections + 1
+      diagnostics%stale_revision_rejections = diagnostics%stale_revision_rejections + 1
+      if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_STALE_REVISION
+      return
+    end if
+
+    call move_alloc(candidate_state%state, committed_state%physical_state)
+    committed_state%revision = committed_state%revision + 1_int64
+
+    call clear_candidate(candidate_state)
     diagnostics%committed_state_mutations = diagnostics%committed_state_mutations + 1
     did_commit = .true.
     if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_COMMITTED
@@ -347,14 +360,20 @@ contains
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
 
     if (.not. same_type_as(self, self)) error stop 'unreachable kernel executor type'
+    if (candidate_state%ready()) diagnostics%candidate_rollbacks = diagnostics%candidate_rollbacks + 1
+    call clear_candidate(candidate_state)
+  end subroutine kernel_rollback_candidate
+
+  subroutine clear_candidate(candidate_state)
+    type(kernel_candidate_state_t), intent(inout) :: candidate_state
+
     if (allocated(candidate_state%state)) deallocate(candidate_state%state)
-    if (candidate_state%valid) diagnostics%candidate_rollbacks = diagnostics%candidate_rollbacks + 1
     candidate_state%valid = .false.
     candidate_state%origin_t0 = 0.0_real64
     candidate_state%origin_t1 = 0.0_real64
-    candidate_state%origin_lineage_id = 0_int64
-    candidate_state%origin_revision = -1_int64
-  end subroutine kernel_rollback_candidate
+    candidate_state%origin_lineage_id_value = 0_int64
+    candidate_state%origin_revision_value = -1_int64
+  end subroutine clear_candidate
 
   subroutine map_runtime_result(runtime_result, result)
     type(canonical_result_t), intent(in) :: runtime_result
