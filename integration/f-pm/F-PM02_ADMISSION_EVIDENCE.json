@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "assessment": "CURRENT_SHARED_BASELINE_ADMISSION",
@@ -9,10 +9,20 @@
   "production_migration_allowed": false,
   "checks": {
     "candidate_resolves": "PASS",
-    "fmr01_status": {
-      "status": "PERSISTED_NOT_TESTED_NOT_QUALIFIED",
+    "fmr01_status_artifact": {
+      "status": "PASS_PRESENT",
       "phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
       "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8"
+    },
+    "shared_downstream_tested": {
+      "status": "FAIL_FALSE",
+      "observed": false,
+      "required": true
+    },
+    "shared_downstream_qualified": {
+      "status": "FAIL_FALSE",
+      "observed": false,
+      "required": true
     },
     "canonical_fci18_ancestor": {
       "status": "PASS",
@@ -44,12 +54,12 @@
       "observed": "8d768f00d47224a663941f79bb2d35eacc66d16b"
     }
   },
-  "interpretation": "F-MR advanced beyond the raw F-KT05 head and now persists F-MR01 runtime/checkpoint orchestration work, but it still does not carry the qualified F-SI05 production workspace seam. Therefore the candidate remains inadmissible as a shared F-KT05/F-SI05 production baseline for F-PM02.",
-  "runner_note": "The executable gate remains persisted for a checkout-based run. This observation is established directly against the exact GitHub candidate ref because the local runner has no GitHub network access; no local execution claim is made.",
+  "interpretation": "The current F-MR01 candidate fails admission independently on composition qualification and on F-SI05 materialization. It is PERSISTED but not TESTED/QUALIFIED, and it still lacks the qualified F-SI05 workspace seam. F-PM02 therefore remains prohibited from starting production SNOW migration.",
+  "runner_note": "Gate v2 is persisted for checkout-based execution. This current observation is established directly against the exact GitHub candidate because the local runner cannot reach GitHub; no local executable PASS/FAIL claim is made.",
   "holds": [
     "No production snow source migration.",
     "No F-PM-owned merge of F-KT and F-SI.",
-    "Re-run admission only after F-MR materializes and qualifies the shared F-SI05 seam.",
+    "Do not admit a composed baseline before its own TESTED and QUALIFIED flags are true.",
     "Do not consume unqualified F-SI06 work.",
     "Do not broaden F-SI05 focused qualification claims."
   ]
