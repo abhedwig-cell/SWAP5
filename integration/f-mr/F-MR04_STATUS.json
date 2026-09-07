@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR04",
   "branch": "integration/f-mr",
   "start_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
-  "phase": "DEPENDENCY_AUDIT_AND_SCOPE_PERSISTED",
+  "phase": "SERIALIZED_BACKEND_AND_PHYSICAL_FIXTURE_PERSISTED_TESTING_PENDING",
   "status": "IN_PROGRESS_SERIALIZED_PHYSICAL_RUNTIME_CANDIDATE",
-  "IMPLEMENTED": false,
+  "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": false,
   "QUALIFIED": false,
@@ -14,6 +14,19 @@
     "DETERMINISTIC_TEST_BACKEND": "QUALIFIED",
     "SERIALIZED_REFERENCE_BACKEND": "CANDIDATE_NOT_SCIENTIFICALLY_ADMITTED",
     "PARALLEL_REFERENCE_BACKEND": "NOT_ADMITTED"
+  },
+  "composition": {
+    "fsi09_constitutive_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "fsi10_source_sink_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "fsi10_real_headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "fsi10_legacy_solver_adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "fkt07_process_checkpoint_blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae"
+  },
+  "implementation": {
+    "serialized_context_binding": "src/adapter/mod_b110_serialized_context_binding.f90",
+    "serialized_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "physical_transaction_fixture": "tests/fmr/test_fmr04_serialized_physical.F90",
+    "explicit_top_provider_fixture": "tests/fmr/mod_fmr04_fixed_top_provider.f90"
   },
   "scientific_admission": false,
   "full_physical_swap_water_balance_qualified": false,
@@ -23,8 +36,10 @@
     "snow physical runtime is NOT_ADMITTED",
     "parallel physical backend is NOT_ADMITTED",
     "scientific B1.10 equivalence requires independent F-VQ14",
+    "focused O0/O2 physical gate has not yet been executed on the exact composed postimage",
+    "full unrounded physical interval mass evidence has not yet been persisted from a successful run",
     "no relaxed, balanced, throughput or fallback policy in F-MR04",
     "no MODFLOW coupling in F-MR04"
   ],
-  "next_step": "Compose only exact qualified F-KT07, F-SI09 and F-SI10 production changes into one F-MR04 postimage with blob-level provenance; do not merge entire work branches."
+  "next_step": "Build focused F-MR04 gate against exact composed source, execute real physical fixture at O0/O2, inspect full interval mass accounting and transaction evidence, then persist immutable run/qualification evidence."
 }
