@@ -1,23 +1,34 @@
 {
-  "schema": "swap5.f-mr03.status.v3",
+  "schema": "swap5.f-mr03.status.v4",
   "work_unit": "F-MR03",
   "title": "Physical Reference Runtime Readiness & Admission Contract",
+  "qualified_object": "fail-closed readiness/admission decision, not a physical runtime backend",
   "branch": "integration/f-mr",
   "safety_branch": "integration/f-mr03-safety",
   "base_commit": "20c01210e576320d38dc9a430f5969686a3f3bb4",
-  "phase": "READINESS_CONTRACT_BLOCKED",
-  "status": "BLOCKED_ON_FORMAL_FSI09_QUALIFICATION_PROCESS_PROVIDER_CLOSURE_AND_JOINT_EXECUTABLE_POSTIMAGE",
-  "IMPLEMENTED": false,
+  "phase": "READINESS_GATE_IMPLEMENTED_PERSISTED_NOT_TESTED",
+  "status": "IMPLEMENTED_FAIL_CLOSED_READINESS_GATE",
+  "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": false,
   "QUALIFIED": false,
   "source_changes": false,
   "production_source_consumed": [],
+  "physical_backend_implemented": false,
+  "physical_backend_admitted": false,
+  "parallel_backend_admitted": false,
+  "readiness_gate": {
+    "tool": "tools/fmr/fmr03_readiness_gate.py",
+    "runner": "tests/fmr/run_fmr03_readiness_gate.sh",
+    "workflow": ".github/workflows/fmr03-readiness.yml",
+    "preserves_fmr02_gate": true,
+    "tested": false
+  },
   "current_blockers": [
-    "F-SI09 default-MvG provider postimage d203eb5599fff5cb692410347df678ebdf02f8ac is TESTED by successful workflow 34147885551, but its formal F-SI09 qualification artifact still says qualified=false and points to an older tested postimage.",
-    "Production source/sink and required process-provider closure remains separately unqualified; F-PM01 shows root-water uptake/drainage process physics and their process-facing hydraulic seams are not yet production-migrated.",
-    "No exact jointly executable F-MR + current F-KT + formally qualified F-SI constitutive + required production process-provider postimage exists yet.",
-    "No hard full physical interval water-balance qualification or exact source-bound VQ/MQ qualification exists for that target joint runtime candidate."
+    "F-SI09 current branch has advanced beyond the last green tested provider postimage; formal F-SI09 qualification remains false and the new oracle-test head must itself be tested/closed before consumption.",
+    "Production source/sink and required process-provider closure remains separately unqualified; non-soil-water-solver process equations remain owned by F-PM/process workstreams, not F-MR.",
+    "No exact jointly executable physical F-MR + current F-KT + formally qualified F-SI/provider/process stack exists.",
+    "No hard physical interval water-balance plus matching exact source-bound VQ/MQ qualification exists on such a joint candidate."
   ],
   "hard_holds": [
     "serialized physical reference backend NOT_ADMITTED",
@@ -28,13 +39,7 @@
     "F-MR must not treat fixture providers as production process-provider admission",
     "F-MR must not alter F-KT transaction semantics"
   ],
-  "ready_components": [
-    "F-MR02 qualified deterministic runtime and focused shared postimage",
-    "F-KT07 separately qualified transaction/checkpoint boundary",
-    "F-SI08 separately qualified focused provider-context isolation",
-    "F-SI09 corrected-B1.10 default-MvG constitutive provider TESTED at d203eb5599fff5cb692410347df678ebdf02f8ac via workflow 34147885551; formal qualification pending"
-  ],
-  "next_action": "Re-read F-SI09 for formal qualification closeout, then identify and require the rightful production process-provider closure from F-PM/F-SI. Compose the smallest serialized physical route only after those dependencies are qualified on exact source.",
+  "next_action_after_gate": "If the readiness gate passes, qualify only this fail-closed admission decision. Then re-read live F-SI/F-PM/F-VQ/F-MQ dependencies before choosing the next F-MR unit; do not infer physical backend admission from readiness qualification.",
   "allows_downstream_release": false,
-  "verified_at_utc": "2026-09-07T17:31:30Z"
+  "verified_at_utc": "2026-09-07T17:36:00Z"
 }

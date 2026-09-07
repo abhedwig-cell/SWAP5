@@ -1,0 +1,25 @@
+name: F-MR03 fail-closed physical readiness
+
+on:
+  push:
+    branches:
+      - integration/f-mr
+    paths:
+      - 'integration/f-mr/F-MR03_*.json'
+      - 'tools/fmr/fmr03_readiness_gate.py'
+      - 'tests/fmr/run_fmr03_readiness_gate.sh'
+      - '.github/workflows/fmr03-readiness.yml'
+      - 'src/runtime/mod_fmr_*.f90'
+  workflow_dispatch:
+
+jobs:
+  fmr03-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-MR03 fail-closed readiness gate
+        run: bash tests/fmr/run_fmr03_readiness_gate.sh
