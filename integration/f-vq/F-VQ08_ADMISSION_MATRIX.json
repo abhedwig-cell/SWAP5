@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ08",
+  "claims": [
+    {"id":"C01","claim":"F-VQ05 defines the exact endpoint/lagged metric contract and contains no production numeric limits.","target":"QUALIFIABLE"},
+    {"id":"C02","claim":"Existing F-CI10/F-CI11 Hupsel evidence is real source-bound evidence but does not qualify a temporal error metric or production temporal profile.","target":"QUALIFIABLE"},
+    {"id":"C03","claim":"The qualified Hupsel profile has active crop, irrigation, heat and solute processes, so current water-focused temporal checkpoint coverage is not complete process-scope coverage.","target":"QUALIFIABLE"},
+    {"id":"C04","claim":"The existing real F-CI07 full-run route requires source, TTUTIL and case assets supplied outside the checked-in qualification path.","target":"QUALIFIABLE"},
+    {"id":"C05","claim":"A reproducible real B1.10 temporal-characterization route is not yet admitted as self-contained qualification infrastructure.","target":"BLOCKED_FAIL_CLOSED"},
+    {"id":"C06","claim":"A production temporal numerical profile is qualified.","target":"BLOCKED_FAIL_CLOSED"},
+    {"id":"C07","claim":"Production execute_reference_interval is admitted.","target":"BLOCKED_FAIL_CLOSED"},
+    {"id":"C08","claim":"Optional-process temporal scope is completely qualified.","target":"BLOCKED_FAIL_CLOSED"},
+    {"id":"C09","claim":"Hard mass conservation may be normalized into or relaxed by temporal acceptance.","target":"PROHIBITED"}
+  ]
+}
