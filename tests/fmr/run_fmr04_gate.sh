@@ -87,7 +87,11 @@ for opt in 0 2; do
     objects+=("$obj")
   done
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/fmr04_serialized_physical"
-  "$OUT/fmr04_serialized_physical" > "$OUT/output.txt"
+  if ! "$OUT/fmr04_serialized_physical" > "$OUT/output.txt" 2>&1; then
+    cat "$OUT/output.txt" >&2
+    echo "FMR04_O${opt}_EXECUTION FAIL" >&2
+    exit 1
+  fi
   grep -Fq 'FMR04_SERIALIZED_PHYSICAL_COMPOSITION_TEST PASS' "$OUT/output.txt"
   grep -Fq 'FMR04_REAL_HEADCALC_EXECUTED=TRUE' "$OUT/output.txt"
   grep -Fq 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=F' "$OUT/output.txt"
