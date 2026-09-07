@@ -17,7 +17,7 @@ FCI14_SOURCE = "da5026d8b87ad2f3c7912360891839a120ecccb6"
 FCI14_POSTIMAGE = "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
 FCI14_RUN = 34107845964
 FCI14_JOB = 101697462464
-OVERLAY = "4ec5ce2a638047a2468967944902bc7d92f37339"
+OVERLAY = "927b7fb831ac91f77da11eb375e71b1975e1749f"
 METRICS = ("h_cm", "theta", "pond_cm", "gwl_cm", "volact_cm", "ldwet_cm", "spev_cm", "saev_cm")
 LAGGED = ("hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm")
 
