@@ -12,6 +12,7 @@ on:
       - 'integration/f-si/F-SI11_QUALIFICATION.json'
       - 'tests/fsi/test_fsi11_root_sink_provider.f90'
       - 'tests/fsi/run_fsi11_root_sink_provider_gate.sh'
+      - 'tests/fsi/run_fsi11_swkimpl1_reject_gate.sh'
       - '.github/workflows/fsi11-root-sink-provider.yml'
 
 jobs:
@@ -27,3 +28,5 @@ jobs:
           sudo apt-get install -y gfortran
       - name: F-SI11 root-sink provider qualification gate
         run: bash tests/fsi/run_fsi11_root_sink_provider_gate.sh
+      - name: F-SI11 swkimpl1 root-sink fail-closed gate
+        run: bash tests/fsi/run_fsi11_swkimpl1_reject_gate.sh
