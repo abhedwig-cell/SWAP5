@@ -21,8 +21,31 @@
   },
   "implemented": false,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI02_COMMON_SOLVER_ADMISSION_CANDIDATE",
-  "next_action": "Admit the exact F-SI02 common solver contract/workspace evidence, close only common-layer scratch and workspace prerequisites, and keep reference-Richards physics and MultiSWAP runtime qualification fail-closed."
+  "tested": true,
+  "qualified": true,
+  "qualification_run": {
+    "workflow": "F-MQ14 F-SI02 common solver admission",
+    "run_id": 34119945201,
+    "job_id": 101735461078,
+    "conclusion": "success",
+    "checks": {
+      "overlay_gate": "PASS",
+      "exact_fsi02_provenance_and_blob_identity": "PASS",
+      "source_bound_external_verifier": "PASS",
+      "exact_common_solver_sources_O0_O2_compile": "PASS",
+      "python_gate_compile": "PASS"
+    }
+  },
+  "coverage_after": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "status": "QUALIFIED_FSI02_COMMON_SOLVER_LAYER_ADMITTED_NO_MATRIX_COVERAGE_PROMOTION",
+  "holds": [
+    "B1.10 reference Richards binding and full solver identity remain F-SI03 work",
+    "real event-local reference fixture and temporal profile remain F-VQ work",
+    "parallel MultiSWAP runtime remains unqualified and F-MR is not present"
+  ],
+  "next_action": "Re-read F-SI/F-VQ/F-MR before F-MQ15; promote matrix coverage only when reference solver or real reference/runtime execution is independently qualified."
 }
