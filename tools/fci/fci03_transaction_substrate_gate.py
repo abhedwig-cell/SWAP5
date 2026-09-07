@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Fail-closed provenance/architecture gate for F-CI03.
+"""Fail-closed provenance/architecture gate for the F-CI03 substrate.
 
-F-CI03 imports only source that was already qualified on the A23 transactional
-line.  This gate proves byte identity for that imported source and rejects the
-legacy A23BU physical adapter, which is B1.6-bound and does not satisfy the
-canonical data-separation/time contract.
+F-CI03 originally imported byte-identical qualified A23 transaction/worker
+sources. Later canonical work units may evolve the transaction source, but only
+through an explicitly pinned forward-evolution provenance record. The worker
+source and retained A23 regression artifacts remain byte-identical here.
 """
 from __future__ import annotations
 
@@ -22,6 +22,8 @@ EXPECTED_GIT_BLOBS = {
     "tests/transaction/run_a23bl_gate.sh": "de4d7c23e4c3cee47fb160204a5e332bd42763c6",
 }
 
+TX_PATH = "src/transaction/mod_transaction_reference.f90"
+FORWARD_PROVENANCE = ROOT / "integration/f-ci/F-CI08_TRANSACTION_CONTEXT_PROVENANCE.json"
 B1_10_MANIFEST = "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
 FORBIDDEN_WHOLESALE_ADAPTER = ROOT / "src/adapter/mod_a23bu_hupsel_worker_component.f90"
 
@@ -32,9 +34,32 @@ def git_blob(path: Path) -> str:
     ).strip()
 
 
+def admitted_tx_evolution(actual: str) -> tuple[bool, dict]:
+    if actual == EXPECTED_GIT_BLOBS[TX_PATH]:
+        return True, {"mode": "BYTE_IDENTICAL_A23"}
+    if not FORWARD_PROVENANCE.is_file():
+        return False, {"mode": "UNPINNED_FORWARD_EVOLUTION"}
+    try:
+        record = json.loads(FORWARD_PROVENANCE.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return False, {"mode": "INVALID_FORWARD_PROVENANCE", "error": str(exc)}
+    ok = (
+        record.get("work_unit") == "F-CI08"
+        and record.get("source_path") == TX_PATH
+        and record.get("fci03_parent_git_blob") == EXPECTED_GIT_BLOBS[TX_PATH]
+        and record.get("fci08_candidate_git_blob") == actual
+        and record.get("physics_formula_changed") is False
+        and record.get("numerical_policy_changed") is False
+        and record.get("persistent_column_state_expanded_with_attempt_context") is False
+        and record.get("file_io_added") is False
+    )
+    return ok, record
+
+
 def main() -> int:
     checks: dict[str, bool] = {}
     actual_blobs: dict[str, str] = {}
+    evolution: dict = {}
 
     for relative, expected in EXPECTED_GIT_BLOBS.items():
         path = ROOT / relative
@@ -44,11 +69,15 @@ def main() -> int:
             continue
         actual = git_blob(path)
         actual_blobs[relative] = actual
-        checks[f"byte_identical_to_a23:{relative}"] = actual == expected
+        if relative == TX_PATH:
+            admitted, evolution = admitted_tx_evolution(actual)
+            checks[f"qualified_provenance:{relative}"] = admitted
+        else:
+            checks[f"byte_identical_to_a23:{relative}"] = actual == expected
 
     checks["a23bu_wholesale_adapter_absent"] = not FORBIDDEN_WHOLESALE_ADAPTER.exists()
 
-    tx = (ROOT / "src/transaction/mod_transaction_reference.f90").read_text(encoding="utf-8")
+    tx = (ROOT / TX_PATH).read_text(encoding="utf-8")
     checks["transaction_has_explicit_checkpoint"] = "allocatable :: checkpoint" in tx
     checks["transaction_commit_is_move_alloc"] = "move_alloc(half_state, committed)" in tx
     checks["transaction_generic_t0_t1"] = "real(real64), intent(in) :: t0, t1" in tx
@@ -75,9 +104,9 @@ def main() -> int:
         "b1_manifest_sha256": B1_10_MANIFEST,
         "checks": checks,
         "actual_git_blobs": actual_blobs,
+        "transaction_source_provenance": evolution,
         "failed": failed,
         "holds": [
-            "B1.10 physical adapter not yet integrated",
             "generic physical sub-day execution not yet qualified",
             "mandatory full-plus-two-half transaction route remains reference-only",
         ],
