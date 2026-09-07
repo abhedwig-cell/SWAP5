@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = "538d51df4be3780a5bb092767304749dfc800899"
 QUAL = "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4"
+OVERLAY_BASE = "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
 B1_MANIFEST = "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
 B0_ARCHIVE = "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
 RETRYABLE = "B1_10_TRIAL_STATUS_RETRYABLE_NUMERICAL"
@@ -35,9 +36,17 @@ def git_parent(commit: str) -> str:
     ).strip()
 
 
+def is_ancestor(commit: str) -> bool:
+    return subprocess.run(
+        ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+        cwd=ROOT,
+        check=False,
+    ).returncode == 0
+
+
 def changed_paths() -> list[str]:
     out = subprocess.check_output(
-        ["git", "diff", "--name-only", QUAL, "HEAD"], cwd=ROOT, text=True
+        ["git", "diff", "--name-only", OVERLAY_BASE, "HEAD"], cwd=ROOT, text=True
     )
     return [x for x in out.splitlines() if x]
 
@@ -115,6 +124,7 @@ def main() -> int:
     args = ap.parse_args()
 
     requirements = load_json(ROOT / "integration/f-vq/F-VQ04_REAL_FAILURE_FIXTURE_REQUIREMENTS.json")
+    overlay = load_json(ROOT / "integration/f-vq/F-VQ04_CANONICAL_OVERLAY.json")
     candidate = load_json(ROOT / args.candidate)
     fci13_status = load_json(ROOT / "integration/f-ci/F-CI13_STATUS.json")
     failure = load_json(ROOT / "integration/f-ci/evidence/F-CI13_FAILURE_CLASSIFICATION.json")
@@ -130,6 +140,12 @@ def main() -> int:
         "fci13_real_fixture_not_executed": fci13_status.get("qualification", {}).get("real_b1_10_forced_terminal_nonconvergence_fixture") == "NOT_YET_EXECUTED",
         "failure_evidence_source_exact": failure.get("qualified_source_head") == SOURCE,
         "failure_evidence_testdouble_limit_explicit": "deterministic legacy testdouble" in failure.get("qualification_limit", ""),
+    }
+    sections["canonical_overlay"] = {
+        "overlay_base_is_ancestor": is_ancestor(OVERLAY_BASE),
+        "overlay_record_exact": overlay.get("integration_overlay_base") == OVERLAY_BASE,
+        "overlay_fci14_not_consumed": overlay.get("overlay_work_unit") == "F-CI14" and overlay.get("consumed_as_fvq04_qualification_basis") is False,
+        "failure_basis_still_fci13": overlay.get("qualification_basis_remains", {}).get("fci13_source_head") == SOURCE and overlay.get("qualification_basis_remains", {}).get("fci13_qualification_commit") == QUAL,
     }
     sections["known_real_route"] = {
         "fci06_b1_manifest_exact": fci06.get("source", {}).get("source_manifest_sha256") == B1_MANIFEST,
@@ -151,8 +167,8 @@ def main() -> int:
     sections["candidate"] = validate_candidate(candidate)
     sections["change_scope"] = {
         "diff_readable": True,
-        "no_src_changes": not any(p.startswith("src/") for p in paths),
-        "qualification_paths_only": all(
+        "no_src_changes_since_overlay": not any(p.startswith("src/") for p in paths),
+        "qualification_paths_only_since_overlay": all(
             p.startswith(("integration/f-vq/", "tools/vq/", "docs/verification/"))
             or p == ".github/workflows/vq-reference.yml"
             for p in paths
@@ -166,13 +182,14 @@ def main() -> int:
         "work_unit": "F-VQ04",
         "oracle": "B1.10",
         "source_head": SOURCE,
+        "integration_overlay_base": OVERLAY_BASE,
         "status": "PASS" if not failed else "FAIL",
         "failed": failed,
         "qualification_scope": "REAL_FAILURE_FIXTURE_ADMISSION_AND_READINESS_ONLY",
         "real_terminal_failure_physics_qualified": current_claimed and not failed,
         "real_failure_fixture_admission": "QUALIFIED" if current_claimed and not failed else "BLOCKED_FAIL_CLOSED",
         "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
-        "production_source_changed": any(p.startswith("src/") for p in paths),
+        "production_source_changed_since_overlay": any(p.startswith("src/") for p in paths),
         "sections": sections,
     }
     print(json.dumps(result, indent=2, sort_keys=True))
