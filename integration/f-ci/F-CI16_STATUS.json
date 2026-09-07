@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI16",
+  "title": "Evidence-Bound Canonical Exit-Gate Assessment",
+  "canonical_branch": "integration/f-ci-canonical",
+  "parent_head": "b4419aba48806f77a656c5543877746bca44d5dc",
+  "production_source_changed": false,
+  "persisted_before_long_tests": true,
+  "assessment": {
+    "CI-G01": "QUALIFIED",
+    "CI-G02": "BLOCKED",
+    "CI-G03": "QUALIFIED",
+    "CI-G04": "TESTED",
+    "CI-G05": "BLOCKED",
+    "CI-G06": "TESTED",
+    "CI-G07": "TESTED",
+    "CI-G08": "TESTED",
+    "CI-G09": "TESTED",
+    "CI-G10": "BLOCKED"
+  },
+  "downstream_release_allowed": false,
+  "qualification": {
+    "assessment_gate": "PENDING",
+    "canonical_ci": "PENDING"
+  },
+  "status": "PERSISTED_EXIT_GATE_ASSESSMENT_CI_PENDING"
+}
