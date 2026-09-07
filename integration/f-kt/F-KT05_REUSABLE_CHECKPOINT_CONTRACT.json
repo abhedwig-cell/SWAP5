@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT05",
+  "title": "Reusable committed checkpoint carrier",
+  "baseline": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
+  "canonical_api": {
+    "production_entrypoint": "kernel_executor_t%advance_interval",
+    "second_production_entrypoint_created": false,
+    "checkpoint_argument": "type(kernel_checkpoint_t), intent(in), optional",
+    "direct_committed_path_preserved": true,
+    "checkpoint_capture": "kernel_committed_state_t%capture_checkpoint"
+  },
+  "checkpoint_carrier": {
+    "owner": "F-KT",
+    "lifetime": "temporary runtime/replay object",
+    "persistent_column_state": false,
+    "fields_private": true,
+    "contains": [
+      "deep-cloned physical continuation state",
+      "lineage_id",
+      "committed revision",
+      "committed time provenance"
+    ],
+    "contains_solver_scratch": false,
+    "contains_warm_start": false,
+    "contains_parameters": false,
+    "contains_forcing": false,
+    "contains_numerical_config": false,
+    "restore_committed_operation_exists": false,
+    "publish_operation_exists": false
+  },
+  "transaction_rules": {
+    "capture_never_mutates_committed": true,
+    "checkpoint_snapshot_is_clone": true,
+    "checkpoint_reusable_while_committed_revision_is_current": true,
+    "checkpoint_must_match_lineage": true,
+    "checkpoint_must_match_revision": true,
+    "checkpoint_must_match_time_binding_and_value": true,
+    "stale_checkpoint_fails_closed": true,
+    "cross_lineage_checkpoint_fails_closed": true,
+    "checkpoint_time_mismatch_fails_closed": true,
+    "checkpoint_rejection_precedes_physical_model_execution": true,
+    "rejected_checkpoint_is_not_consumed": true,
+    "checkpoint_cannot_restore_old_revision": true,
+    "candidate_provenance_remains_current_committed_lineage_revision": true,
+    "candidate_commit_rules_unchanged": true,
+    "rollback_remains_candidate_discard_not_committed_restore": true
+  },
+  "replay_rules": {
+    "same_checkpoint_and_same_committed_revision_can_be_reused": true,
+    "physical_trial_origin_is_checkpoint_clone_when_supplied": true,
+    "warm_start_may_evolve_worker_locally": true,
+    "warm_start_may_change_physical_origin": false,
+    "direct_advance_without_checkpoint_remains_supported": true
+  },
+  "time_semantics": {
+    "generic_t0_t1": true,
+    "day_is_fundamental_unit": false,
+    "calendar_boundary_assumption": false,
+    "checkpoint_adds_user_configurable_time_tolerance": false,
+    "comparison_reuses_F_KT04_machine_precision_time_equivalence": true,
+    "untimed_legacy_initial_checkpoint_allowed_until_first_commit": true
+  },
+  "mass_semantics": {
+    "hard_unrounded_trial_mass_gate_preserved": true,
+    "checkpoint_does_not_modify_mass_accounting": true,
+    "failed_mass_trial_mutates_committed": false,
+    "failed_mass_trial_mutates_checkpoint": false
+  },
+  "fsi_boundary": {
+    "checkpoint_owned_by": "F-KT",
+    "fkt_imports_fsi_solver_types": false,
+    "fsi_may_commit_or_rollback": false,
+    "fsi_may_restore_checkpoint": false,
+    "solver_scratch_in_checkpoint": false,
+    "fsi03_qualified_scope_observed": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+    "fsi03_real_headcalc_numerics_consumed": false,
+    "fsi04_pretest_consumed_as_qualification": false
+  },
+  "multiswap_boundary": {
+    "runtime_may_hold_checkpoint_per_active_trial": true,
+    "checkpoint_is_not_scheduler_or_batch_state": true,
+    "production_multiswap_runtime_qualified_by_fkt05": false,
+    "fmq17_real_physics_coverage_promotion": false
+  },
+  "reference_policy": {
+    "b1_10_production_reference_admission": false,
+    "temporal_limit_profile_independently_qualified": false,
+    "fail_closed_hold_preserved": true
+  },
+  "invariant_assessment": {
+    "1": "PASS",
+    "2": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS",
+    "8": "PASS",
+    "9": "PASS",
+    "11": "PASS",
+    "13": "PASS",
+    "20": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS_WITH_HOLD",
+    "26": "PASS",
+    "29": "PASS"
+  },
+  "preserved_holds": [
+    "B1.10 temporal-limit profile remains independently unqualified and production reference admission remains fail-closed",
+    "F-SI03 qualifies source-bound adapter translation only, not real HeadCalc numerics or reentrancy",
+    "F-SI04 is observed only as a pretest checkpoint and is not consumed as qualification evidence",
+    "production MultiSWAP scheduling/runtime remains outside F-KT",
+    "optional-process temporal/storage coverage remains downstream qualification work"
+  ]
+}
