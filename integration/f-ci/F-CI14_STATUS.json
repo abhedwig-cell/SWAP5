@@ -1,9 +1,12 @@
 {
+  "schema_version": 1,
   "work_unit": "F-CI14",
   "title": "Reference Temporal Acceptance Contract",
-  "status": "MATERIALIZED_CI_PENDING",
   "canonical_branch": "integration/f-ci-canonical",
   "source_head_before_fci14": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+  "qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+  "b1_oracle": "B1.10",
   "scope": {
     "production_physics_changed": false,
     "solver_convergence_policy_changed": false,
@@ -20,15 +23,20 @@
     "acceptance_threshold": 1.0,
     "numerical_defaults": "NONE"
   },
+  "qualification": {
+    "contract_static_gate": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI14",
+    "canonical_ci": "PASS_RUN_34107845964_JOB_101697462464",
+    "compiler": "GNU_FORTRAN_13.3.0",
+    "qualified_numeric_profile": "NOT_AVAILABLE",
+    "production_execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED"
+  },
   "holds": [
     "No independently qualified B1.10 numerical temporal-limit profile exists in canonical VQ evidence.",
     "Optional thermal/solute/irrigation/crop/WOFOST temporal characterization is incomplete.",
-    "Production B1.10 execute_reference_interval remains not admitted."
+    "Production B1.10 execute_reference_interval remains not admitted until qualification evidence is source-bound and accepted."
   ],
-  "qualification": {
-    "static_gate": "PENDING",
-    "o0": "PENDING",
-    "o2": "PENDING",
-    "full_chain": "PENDING"
-  }
+  "status": "QUALIFIED_CONTRACT_IMPLEMENTATION_REFERENCE_NUMERIC_PROFILE_BLOCKED"
 }

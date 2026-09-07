@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI15",
+  "title": "Canonical F-CI Exit-Gate Contract",
+  "canonical_branch": "integration/f-ci-canonical",
+  "parent_head": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+  "production_source_changed": false,
+  "persisted_before_long_tests": true,
+  "contract": {
+    "gate_count": 10,
+    "initial_assessment": "NEUTRAL_NOT_ASSESSED",
+    "status_vocabulary_locked": true,
+    "release_semantics_fail_closed": true
+  },
+  "qualification": {
+    "static_schema_gate": "PENDING",
+    "canonical_ci": "PENDING"
+  },
+  "status": "PERSISTED_CI_PENDING"
+}

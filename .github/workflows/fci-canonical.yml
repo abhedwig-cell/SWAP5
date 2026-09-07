@@ -159,3 +159,13 @@ jobs:
         run: gfortran --version
       - name: F-CI14 reference temporal acceptance contract gate
         run: bash tests/fci/run_fci14_gate.sh
+
+  fci15-exit-gate-contract:
+    needs: fci14-reference-temporal-acceptance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI15 machine-readable exit-gate contract gate
+        run: bash tests/fci/run_fci15_gate.sh
