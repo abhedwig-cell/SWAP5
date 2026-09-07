@@ -1,0 +1,44 @@
+name: F-KT07 materialize macropore continuation
+
+on:
+  push:
+    branches:
+      - integration/f-kt
+    paths:
+      - tools/fkt/fkt07_materialize_macropore_continuation.py
+      - .github/workflows/fkt07-materialize.yml
+
+concurrency:
+  group: fkt07-materialize-macropore-continuation
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize adapter-specific macropore continuation carrier
+        run: python3 tools/fkt/fkt07_materialize_macropore_continuation.py
+      - name: Validate exact source scope and ownership boundary
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/adapter/mod_b1_10_process_checkpoint.f90 "
+          grep -F 'type, public :: b1_10_macropore_continuation_t' src/adapter/mod_b1_10_process_checkpoint.f90
+          grep -F 'type(b1_10_macropore_continuation_t), allocatable :: macropore' src/adapter/mod_b1_10_process_checkpoint.f90
+          grep -F 'target%macropore = self%macropore' src/adapter/mod_b1_10_process_checkpoint.f90
+          ! grep -F 'nstep' src/kernel/mod_kernel_transactions.f90
+          ! grep -F 'mod_a23bu_worker_execution_context' src/adapter/mod_b1_10_process_checkpoint.f90
+          ! grep -F 'headcalc' src/adapter/mod_b1_10_process_checkpoint.f90
+      - name: Persist production-source checkpoint before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/adapter/mod_b1_10_process_checkpoint.f90
+          git commit -m "F-KT07: materialize B1.10 macropore continuation state"
+          git push origin HEAD:integration/f-kt

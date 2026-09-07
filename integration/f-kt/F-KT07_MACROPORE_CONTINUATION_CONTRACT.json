@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT07",
+  "title": "B1.10 macropore continuation state materialization",
+  "baseline": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
+  "canonical_entrypoint": "kernel_executor_t%advance_interval",
+  "scope": "Materialize the F-SI06-classified physics-affecting nstep continuation as compact optional B1.10 adapter-specific transaction state without changing generic F-KT types, HeadCalc formulas, solver policy or macropore production admission.",
+  "ownership": {
+    "nstep": "B1.10 adapter-specific per-column committed/candidate continuation",
+    "flwarn_iwarn": "reporting-only history outside committed physical continuation",
+    "newton_jacobian_linear_solve_state": "worker_or_active_job_scratch",
+    "generic_kernel_knows_nstep": false,
+    "fkt_imports_fsi_history_type": false
+  },
+  "materialization": {
+    "target": "src/adapter/mod_b1_10_process_checkpoint.f90",
+    "carrier": "b1_10_macropore_continuation_t",
+    "carrier_component": "allocatable b1_10_process_state_t%macropore",
+    "fields": ["nstep"],
+    "inactive_route": "component remains unallocated",
+    "clone_requirement": "deep copy through b1_10_process_clone",
+    "implicit_capture_from_legacy_history": false,
+    "explicit_seams": [
+      "bind_b1_10_macropore_continuation",
+      "read_b1_10_macropore_continuation",
+      "clear_b1_10_macropore_continuation",
+      "b1_10_macropore_continuation_complete"
+    ]
+  },
+  "validation": {
+    "negative_nstep": "rejected by explicit bind seam",
+    "upper_limit_invented": false,
+    "reason": "F-KT carries exact continuation state and does not invent a numerical or physical policy beyond nonnegative source-domain state."
+  },
+  "transaction_requirements": {
+    "checkpoint_clones_nstep": true,
+    "trial_mutation_cannot_change_committed_nstep": true,
+    "rollback_preserves_committed_nstep": true,
+    "commit_publishes_candidate_nstep": true,
+    "stale_checkpoint_cannot_restore_nstep": true,
+    "mass_rejected_trial_cannot_publish_nstep": true,
+    "inactive_route_remains_unallocated": true
+  },
+  "external_basis": {
+    "fsi06_branch": "work/f-si06-history-isolation",
+    "fsi06_final_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "fsi06_status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+    "fsi06_nstep_classification": "column_dependent_solver_process_continuation_not_worker_scratch",
+    "fsi06_consumed_as_ownership_evidence": true,
+    "fsi06_consumed_as_fkt07_implementation_or_qualification_evidence": false,
+    "fmq20_status_at_start": "PERSISTED_FKT05_REUSABLE_CHECKPOINT_ADMISSION_CANDIDATE",
+    "fmq20_consumed_as_qualification_evidence": false,
+    "fvq12_decision_at_start": "PENDING_FVQ12_CI",
+    "fvq12_consumed_as_qualification_evidence": false,
+    "fmr01_phase_at_start": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+    "fmr01_consumed_as_qualification_evidence": false
+  },
+  "admission_boundaries": {
+    "macropore_production_admitted_by_fkt07": false,
+    "fsi07_reentrancy_claimed_by_fkt07": false,
+    "reference_execution_admitted_by_fkt07": false,
+    "production_multiswap_admitted_by_fkt07": false,
+    "full_swap_mass_identity_qualified_by_fkt07": false
+  },
+  "invariant_assessment": {
+    "1": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS",
+    "8": "PASS",
+    "13": "PASS",
+    "16": "PASS",
+    "20": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS_WITH_HOLD",
+    "26": "PASS",
+    "27": "PASS",
+    "29": "PASS"
+  },
+  "qualification_requirements": [
+    "materialized carrier is present only in B1.10 adapter process state",
+    "inactive route remains unallocated",
+    "bind/read/clear/completeness seam is executable",
+    "concrete b1_10_process_state_t clone preserves allocation and nstep",
+    "generic kernel contains no nstep/F-SI history dependency",
+    "F-KT06 gate remains green",
+    "O0 and O2 focused lifecycle tests pass",
+    "selected F-CI03/04/08/09/10/11/13/14 regressions remain green"
+  ],
+  "holds": [
+    "Macropore production remains fail-closed until an F-SI-owned adapter explicitly transfers nstep between the solver history/process route and this transaction state and that composed route is independently qualified.",
+    "F-SI07 shared-global request/candidate isolation remains F-SI ownership and is not implemented here.",
+    "Real B1.10 production reference execution remains fail-closed.",
+    "Production MultiSWAP runtime remains outside F-KT."
+  ]
+}
