@@ -6,22 +6,25 @@
   "b1_oracle": "B1.10",
   "production_source_changed": true,
   "persisted_before_long_tests": true,
+  "qualified_source_head": "7098aeaa4ca38dc375a965340a35c9870a33de28",
   "qualification": {
     "fci11_generic_interval_dependency": "QUALIFIED_SOURCE_PINNED",
     "fci11_unrounded_trial_mass_dependency": "QUALIFIED_SOURCE_PINNED",
     "fci09_transaction_binding_dependency": "QUALIFIED_SOURCE_PINNED_UNCHANGED",
-    "physical_interval_executor": "MATERIALIZED",
-    "reference_model_advance_binding": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
-    "qualified_profile_storage_binding": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
-    "failed_trial_state_isolation": "PASS_LOCAL_TESTDOUBLE",
-    "worker_diagnostics_projection": "PASS_LOCAL_TESTDOUBLE",
-    "water_temporal_characterization": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
+    "physical_interval_executor": "TESTED",
+    "reference_model_advance_binding": "TESTED_DETERMINISTIC_LEGACY_TESTDOUBLE",
+    "qualified_profile_storage_binding": "TESTED_DETERMINISTIC_LEGACY_TESTDOUBLE",
+    "failed_trial_state_isolation": "PASS",
+    "worker_diagnostics_projection": "PASS",
+    "water_temporal_characterization": "PASS_UNIT_EXPLICIT",
     "optional_process_temporal_scope": "INCOMPLETE_FAIL_CLOSED",
     "recoverable_solver_failure_status": "NOT_ADMITTED",
     "scalar_temporal_error_metric_and_tolerance": "NOT_ADMITTED",
     "execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED",
     "real_b1_10_reference_model_end_to_end": "NOT_YET_QUALIFIED",
-    "canonical_ci": "PENDING"
+    "canonical_ci": "PASS_RUN_34102787767_JOB_101681229677",
+    "compiler": "GNU_FORTRAN_13.3.0",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI12"
   },
   "holds": [
     "qualify recoverable solver failure/status propagation from legacy physical execution",
@@ -31,5 +34,5 @@
     "snow/macropore complete storage accounting",
     "reentrant/parallel legacy backend qualification"
   ],
-  "status": "MATERIALIZED_ADVANCE_BINDING_CI_PENDING_REFERENCE_EXECUTION_BLOCKED"
+  "status": "PASS_PHYSICAL_ADVANCE_BINDING_AND_TEMPORAL_CHARACTERIZATION_REFERENCE_EXECUTION_BLOCKED"
 }
