@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "evidence_type": "byte_exact_corrected_source_vs_provider_bitpattern_fingerprint",
+  "oracle": "B1.10",
+  "source_provenance": {
+    "supplied_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_mod_mvg_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
+    "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "compiler": "GNU Fortran 14.2.0",
+  "profile": {
+    "model": "default MvG analytical branch",
+    "nodes": 4,
+    "heterogeneous_parameter_sets": 4,
+    "step_durations": [0.25, 2.5],
+    "pressure_head_points": [0.1,0.0,-0.001,-0.005,-0.01,-0.5,-1.0,-9.9,-10.0,-10.5,-11.0,-100.0,-1000.0,-100000000.0,-1000000000000000.0],
+    "flags": {
+      "swsophy": 0,
+      "fl_use_tables": false,
+      "swhyst": 0,
+      "sw_use_elas": 0,
+      "swfrost": 0,
+      "swmacro": 0,
+      "fl_use_kh_power": false,
+      "fluseksatexm": false,
+      "indeks": -1
+    }
+  },
+  "compared_outputs": [
+    "cofgen rows 25:42 from calc_cofgen_extra",
+    "watcon/theta",
+    "moiscap/capacity",
+    "hconduc/conductivity"
+  ],
+  "fingerprint_format": "ordered hexadecimal IEEE real64 bit patterns for all derived values and all theta/capacity/conductivity samples",
+  "o0": {
+    "oracle_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "provider_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "byte_identical": true
+  },
+  "o2": {
+    "oracle_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "provider_sha256": "1b61a61589c42c64d820b38c2071886dc7fde22595528159643080230f0fe8c1",
+    "byte_identical": true
+  },
+  "o0_o2_identity": true,
+  "scope_limit": "This evidence qualifies only the explicitly contracted default-MvG, no-hysteresis, no-table, no-frost, no-macropore, swkimpl=0 profile. It does not qualify dhconduc or other hydraulic model families.",
+  "result": "PASS"
+}
