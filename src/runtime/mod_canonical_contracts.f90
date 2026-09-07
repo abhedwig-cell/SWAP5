@@ -1,6 +1,7 @@
 module mod_canonical_contracts
-  use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t
+  use, intrinsic :: iso_fortran_env, only: real64, int64
+  use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t, &
+       TX_MASS_MISSING_UNSPECIFIED
   implicit none
   private
 
@@ -29,8 +30,15 @@ module mod_canonical_contracts
 
   type, public :: canonical_mass_accounting_t
     logical :: complete = .false.
+    real(real64) :: interval_t0 = 0.0_real64
+    real(real64) :: interval_t1 = 0.0_real64
+    integer(int64) :: origin_lineage_id = 0_int64
+    integer(int64) :: origin_revision = -1_int64
+    integer :: accepted_transaction_count = 0
+    integer(int64) :: missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     real(real64) :: storage_start = 0.0_real64
     real(real64) :: storage_end = 0.0_real64
+    real(real64) :: storage_change = 0.0_real64
     real(real64) :: total_in = 0.0_real64
     real(real64) :: total_out = 0.0_real64
     real(real64) :: residual = 0.0_real64

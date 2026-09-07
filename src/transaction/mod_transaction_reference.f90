@@ -1,5 +1,5 @@
 module mod_transaction_reference
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   implicit none
   private
 
@@ -8,6 +8,14 @@ module mod_transaction_reference
   integer, parameter, public :: TX_STATUS_INVALID_INTERVAL = 2
   integer, parameter, public :: TX_ROUTE_NONE = 0
   integer, parameter, public :: TX_ROUTE_TWO_HALF = 2
+
+  integer(int64), parameter, public :: TX_MASS_MISSING_NONE = 0_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_START = 1_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_END = 2_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_EXTERNAL_FLUX = 4_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_ACTIVE_CONTRIBUTION = 8_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_NONFINITE = 16_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_UNSPECIFIED = 32_int64
 
   type, abstract, public :: transaction_state_t
   contains
@@ -24,6 +32,8 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: mass_accounting_complete = .false.
+    integer(int64) :: missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     integer :: nonlinear_iterations = 0
     integer :: internal_retries = 0
     integer :: headcalc_calls = 0
@@ -38,6 +48,7 @@ module mod_transaction_reference
     procedure(advance_iface), deferred :: advance
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
+    procedure :: storage_accounting_status => default_storage_accounting_status
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
   end type transaction_model_t
@@ -75,6 +86,14 @@ module mod_transaction_reference
     integer :: accepted_backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     integer :: accepted_alternative_solver_calls = 0
+    logical :: accepted_mass_complete = .false.
+    integer(int64) :: accepted_missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    real(real64) :: accepted_storage_start = 0.0_real64
+    real(real64) :: accepted_storage_end = 0.0_real64
+    real(real64) :: accepted_storage_change = 0.0_real64
+    real(real64) :: accepted_total_in = 0.0_real64
+    real(real64) :: accepted_total_out = 0.0_real64
+    real(real64) :: accepted_mass_residual = huge(0.0_real64)
     real(real64) :: requested_t0 = 0.0_real64
     real(real64) :: requested_t1 = 0.0_real64
     real(real64) :: accepted_t1 = 0.0_real64
@@ -134,6 +153,19 @@ contains
     end if
   end subroutine default_restore_attempt_context
 
+  subroutine default_storage_accounting_status(self, state, complete, missing_mask)
+    class(transaction_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    if (.not. same_type_as(self, self) .or. .not. same_type_as(state, state)) then
+      error stop 'unreachable transaction mass-accounting type'
+    end if
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+  end subroutine default_storage_accounting_status
+
   subroutine execute_reference_interval(model, committed, t0, t1, policy, result)
     class(transaction_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
@@ -151,6 +183,8 @@ contains
     real(real64) :: storage0, storage_full, storage_half
     real(real64) :: full_mass_residual, half_mass_residual, terr
     logical :: solver_ok, mass_ok, temporal_ok
+    logical :: storage_start_complete, storage_end_complete
+    integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer :: retry_index
 
     result = transaction_result_t()
@@ -166,6 +200,7 @@ contains
     call committed%clone(checkpoint)
     call model%capture_attempt_context(checkpoint_context)
     storage0 = model%storage(checkpoint)
+    call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -240,6 +275,7 @@ contains
       end if
 
       storage_half = model%storage(half_state)
+      call model%storage_accounting_status(half_state, storage_end_complete, end_missing_mask)
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
@@ -268,6 +304,28 @@ contains
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
+
+      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half1_outcome%missing_mass_contribution_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half2_outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. storage_end_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. half1_outcome%mass_accounting_complete .or. &
+          .not. half2_outcome%mass_accounting_complete) then
+        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      end if
+      result%accepted_storage_start = storage0
+      result%accepted_storage_end = storage_half
+      result%accepted_storage_change = storage_half - storage0
+      result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
+      result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%accepted_mass_residual = half_mass_residual
+      result%accepted_missing_contribution_mask = accepted_missing_mask
+      result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
+           half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete .and. &
+           accepted_missing_mask == TX_MASS_MISSING_NONE
 
       ! Physical state and worker/job-local context commit together. The context
       ! is restored into the backend, but is never inserted into column state.
