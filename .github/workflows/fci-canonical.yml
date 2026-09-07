@@ -1,0 +1,29 @@
+name: F-CI canonical qualification
+
+on:
+  push:
+    branches:
+      - integration/f-ci-canonical
+  pull_request:
+    paths:
+      - 'src/transaction/**'
+      - 'src/runtime/**'
+      - 'tests/transaction/**'
+      - 'tests/runtime/**'
+      - 'tests/fci/**'
+      - 'tools/fci/**'
+      - 'integration/f-ci/**'
+      - 'reference/swap-4.3.1/**'
+      - '.github/workflows/fci-canonical.yml'
+
+jobs:
+  fci03-transaction-substrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI03 transaction and worker gate
+        run: bash tests/fci/run_fci03_gate.sh
