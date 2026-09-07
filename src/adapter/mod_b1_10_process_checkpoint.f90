@@ -311,16 +311,31 @@ contains
   subroutine b1_10_process_clone(self, copy)
     class(b1_10_process_state_t), intent(in) :: self
     class(transaction_state_t), allocatable, intent(out) :: copy
+
     allocate(b1_10_process_state_t :: copy)
     select type (target => copy)
     type is (b1_10_process_state_t)
-      target%b1_10_water_state_t = self%b1_10_water_state_t
-      target%thermal = self%thermal
-      target%solute = self%solute
-      target%irrigation = self%irrigation
-      target%crop = self%crop
-      target%wofost = self%wofost
-      target%macropore = self%macropore
+      if (allocated(self%h)) target%h = self%h
+      if (allocated(self%theta)) target%theta = self%theta
+      if (allocated(self%hm1)) target%hm1 = self%hm1
+      if (allocated(self%thetm1)) target%thetm1 = self%thetm1
+      target%pond = self%pond
+      target%pondm1 = self%pondm1
+      target%gwl = self%gwl
+      target%gwlm1 = self%gwlm1
+      target%volact = self%volact
+      target%ldwet = self%ldwet
+      target%spev = self%spev
+      target%saev = self%saev
+      if (allocated(self%thermal)) target%thermal = self%thermal
+      if (allocated(self%solute)) target%solute = self%solute
+      if (allocated(self%irrigation)) target%irrigation = self%irrigation
+      if (allocated(self%crop)) target%crop = self%crop
+      if (allocated(self%wofost)) target%wofost = self%wofost
+      if (allocated(self%macropore)) then
+        allocate(target%macropore)
+        target%macropore%nstep = self%macropore%nstep
+      end if
     class default
       error stop 'B1.10 process state: clone allocation failure'
     end select
