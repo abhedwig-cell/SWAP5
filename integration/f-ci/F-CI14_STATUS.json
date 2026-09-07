@@ -1,0 +1,34 @@
+{
+  "work_unit": "F-CI14",
+  "title": "Reference Temporal Acceptance Contract",
+  "status": "MATERIALIZED_CI_PENDING",
+  "canonical_branch": "integration/f-ci-canonical",
+  "source_head_before_fci14": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+  "scope": {
+    "production_physics_changed": false,
+    "solver_convergence_policy_changed": false,
+    "mass_tolerance_changed": false,
+    "calendar_event_rules_changed": false,
+    "temporal_acceptance_contract_added": true,
+    "qualified_numeric_profile_added": false
+  },
+  "semantic_decisions": {
+    "endpoint_acceptance_metrics": ["h", "theta", "pond", "gwl", "volact", "ldwet", "spev", "saev"],
+    "diagnostic_only_lagged_state": ["hm1", "thetm1", "pondm1", "gwlm1"],
+    "optional_process_state": "FAIL_CLOSED_UNTIL_CHARACTERIZED",
+    "normalization": "MAX_OF_PER_METRIC_SAME_UNIT_RATIOS",
+    "acceptance_threshold": 1.0,
+    "numerical_defaults": "NONE"
+  },
+  "holds": [
+    "No independently qualified B1.10 numerical temporal-limit profile exists in canonical VQ evidence.",
+    "Optional thermal/solute/irrigation/crop/WOFOST temporal characterization is incomplete.",
+    "Production B1.10 execute_reference_interval remains not admitted."
+  ],
+  "qualification": {
+    "static_gate": "PENDING",
+    "o0": "PENDING",
+    "o2": "PENDING",
+    "full_chain": "PENDING"
+  }
+}

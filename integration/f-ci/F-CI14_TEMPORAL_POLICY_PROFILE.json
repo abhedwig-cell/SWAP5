@@ -1,0 +1,26 @@
+{
+  "work_unit": "F-CI14",
+  "profile_status": "UNQUALIFIED_NO_NUMERIC_LIMITS",
+  "comparison": "full_vs_two_half_endpoint",
+  "acceptance_metrics": {
+    "h_cm": null,
+    "theta": null,
+    "pond_cm": null,
+    "gwl_cm": null,
+    "volact_cm": null,
+    "ldwet_cm": null,
+    "spev_cm": null,
+    "saev_cm": null
+  },
+  "diagnostic_only_lagged_metrics": [
+    "hm1_cm",
+    "thetm1",
+    "pondm1_cm",
+    "gwlm1_cm"
+  ],
+  "normalization": "max(delta_i / limit_i)",
+  "acceptance": "normalized_error <= 1",
+  "zero_limit_semantics": "exact_equality_required",
+  "optional_process_scope": "blocked_until_characterized",
+  "provenance": "No qualified numeric profile found in canonical VQ evidence as of F-CI14 materialization."
+}
