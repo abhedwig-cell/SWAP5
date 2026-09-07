@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-PATH = ROOT / "integration" / "f-ci" / "F-CI_EXIT_GATES.json"
+PATH = ROOT / "integration" / "f-ci" / "F-CI16_EXIT_GATES.json"
 EXPECTED_GATES = [f"CI-G{i:02d}" for i in range(1, 11)]
 EXPECTED_STATUS = {
     "CI-G01": "QUALIFIED",

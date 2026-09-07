@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI17",
+  "title": "Canonical Development Baseline and Supersession Registry",
+  "canonical_branch": "integration/f-ci-canonical",
+  "registry_parent_head": "7e87f881af937836a517e2bb957bddd941b769ab",
+  "production_source_changed": false,
+  "policy": {
+    "sole_active_development_baseline": "integration/f-ci-canonical",
+    "new_production_work_must_start_from_canonical": true,
+    "historical_branches_may_remain_for_provenance": true,
+    "historical_branches_allow_new_production_work": false,
+    "branch_presence_does_not_imply_active_baseline": true,
+    "canonical_copy_is_not_a_fallback_baseline": true
+  },
+  "audited_branches": {
+    "integration/f-ci-canonical": {
+      "status": "ACTIVE_CANONICAL",
+      "observed_head_before_registry": "7e87f881af937836a517e2bb957bddd941b769ab",
+      "successor": null,
+      "allows_new_production_work": true,
+      "retained_for": ["canonical development", "qualification provenance"]
+    },
+    "integration/a23bk-transactional-rebase": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "763f276a96ee1722a465bacd3a710172a5f38107",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical lineage", "qualified artefact provenance"]
+    },
+    "integration/f-ci06-temp": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "db3a918815b0fdc22bdd612e1ceab7b092cd1600",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical F-CI06 materialization provenance"]
+    },
+    "integration/f-ci06-working": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "db3a918815b0fdc22bdd612e1ceab7b092cd1600",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical F-CI06 working-line provenance"]
+    },
+    "integration/f-ci08-safety-checkpoint": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "b2c0664816f8b34ecf9e337790767cc575c330ee",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical safety checkpoint", "rollback provenance"]
+    },
+    "integration/f-ci08-working": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "b2c0664816f8b34ecf9e337790767cc575c330ee",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical F-CI08 working-line provenance"]
+    },
+    "integration/f-ci-canonical-copy": {
+      "status": "SUPERSEDED_HISTORICAL_ONLY",
+      "observed_head": "db3a918815b0fdc22bdd612e1ceab7b092cd1600",
+      "successor": "integration/f-ci-canonical",
+      "allows_new_production_work": false,
+      "retained_for": ["historical copy provenance"],
+      "explicit_note": "This branch is not canonical, not a fallback canonical line, and not an allowed production-development baseline."
+    }
+  }
+}

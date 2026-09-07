@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI17",
+  "title": "Canonical Baseline Supersession Registry",
+  "canonical_branch": "integration/f-ci-canonical",
+  "parent_head": "7e87f881af937836a517e2bb957bddd941b769ab",
+  "production_source_changed": false,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "baseline_registry_gate": "PENDING",
+    "historical_fci16_replayability": "PENDING",
+    "canonical_ci": "PENDING"
+  },
+  "exit_gate_effect_if_qualified": {
+    "CI-G10": "QUALIFIED",
+    "downstream_release_allowed": false
+  },
+  "status": "PERSISTED_CANONICAL_BASELINE_REGISTRY_CI_PENDING"
+}

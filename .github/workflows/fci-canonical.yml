@@ -179,3 +179,13 @@ jobs:
           fetch-depth: 0
       - name: F-CI16 evidence-bound exit-gate assessment gate
         run: bash tests/fci/run_fci16_gate.sh
+
+  fci17-canonical-baseline-registry:
+    needs: fci16-exit-gate-assessment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI17 canonical baseline and supersession registry gate
+        run: bash tests/fci/run_fci17_gate.sh
