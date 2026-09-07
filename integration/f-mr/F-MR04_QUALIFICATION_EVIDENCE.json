@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "evidence_class": "FOCUSED_RUNTIME_COMPOSITION_TEST_WITH_QUALIFICATION_HOLD",
+  "tested_source_commit": "0809b05a5bc26bd25be4f3d7b32abb9cfb43635f",
+  "branch": "integration/f-mr",
+  "workflow": {
+    "name": "F-MR04 serialized physical runtime candidate",
+    "run_id": 34155494610,
+    "run_number": 5,
+    "job_id": 101846345284,
+    "conclusion": "success",
+    "runner_os": "Ubuntu 24.04.4 LTS",
+    "runner_image": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.2.0"
+  },
+  "source_provenance": {
+    "fkt_live_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt05_transaction_regression": "PASS",
+    "fsi_constitutive_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "fsi_source_sink_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "real_headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "legacy_solver_adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "exact_production_blob_gate": "PASS",
+    "architecture_boundary_gate": "PASS"
+  },
+  "build_matrix": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_stdout_identity": "PASS",
+    "O0_executable_sha256": "89a8a0326e92440f0cf316a49af36674d53556d08b5fe3744c7bb42fd05e3d73",
+    "O2_executable_sha256": "6998aa9dbc149dd382642d5ae7d47eff4b74fa75a131972c26c01cf8ba134d66",
+    "stdout_sha256": "e06f4a8b60c291add165668d70b944fdfd879d208aaa1cb20a728accd7b9da9c"
+  },
+  "physical_fixture": {
+    "column_id": 40401,
+    "template_id": 404,
+    "t0": 1000.125,
+    "t1": 1000.625,
+    "initial_revision": 0,
+    "final_revision": 1,
+    "solver_route": "legacy-reference-bound",
+    "real_headcalc_executed": true,
+    "solver_iterations": 1,
+    "candidate_fingerprint": -3142087914492722297
+  },
+  "transaction_evidence": {
+    "trial_does_not_mutate_committed_state": "PASS",
+    "rollback": "PASS",
+    "checkpoint_replay_candidate_identity": "PASS",
+    "commit": "PASS",
+    "commit_revision_increment_once": "PASS",
+    "stale_checkpoint_revision_rejection": "PASS",
+    "retry_subgate": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION"
+  },
+  "admission_evidence": {
+    "active_root_extraction": "FAIL_CLOSED_PASS",
+    "nonzero_qrot_forcing": "FAIL_CLOSED_PASS",
+    "macropore": "FAIL_CLOSED_PASS",
+    "snow": "FAIL_CLOSED_PASS",
+    "swkimpl_nonzero": "FAIL_CLOSED_PASS",
+    "parallel_reference_backend_admitted": false,
+    "scientific_reference_backend_admitted": false
+  },
+  "mass_evidence": {
+    "diagnostic_storage_start": 1.037734689938008,
+    "diagnostic_storage_end": 1.037734689938008,
+    "diagnostic_total_in": 0.08136960321065731,
+    "diagnostic_total_out": 0.08136960321065731,
+    "diagnostic_profile_mass_residual": 0.0,
+    "max_abs_step_mass_residual": 0.0,
+    "kernel_full_interval_mass_complete": false,
+    "authoritative_full_interval_mass_admission": "BLOCKED_FKT_RESULT_BOUNDARY_INCOMPLETE",
+    "diagnostic_profile_accounting_is_qualification_substitute": false
+  },
+  "architecture_invariant_assessment": {
+    "kernel_io_separation": "PASS_NO_NEW_KERNEL_IO",
+    "state_scratch_separation": "PASS_NO_COLUMN_SOLVER_SCRATCH_ADDED",
+    "transactional_timesteps": "PASS_TRIAL_REPLAY_ROLLBACK_COMMIT",
+    "generic_time_interval": "PASS_NON_MIDNIGHT_NON_DAY_INTERVAL",
+    "mass_conservation": "HOLD_AUTHORITATIVE_FULL_INTERVAL_ACCOUNTING_NOT_EXPOSED_BY_FKT",
+    "multiswap_runtime_composition": "PASS_SERIALIZED_SINGLE_WORKER_CANDIDATE_ONLY",
+    "physics_solver_policy_separation": "PASS_UNSUPPORTED_PHYSICS_FAIL_CLOSED",
+    "runtime_diagnostics": "PASS_FOCUSED_EVIDENCE",
+    "no_silent_dependencies": "PASS_EXACT_SOURCE_BLOBS_AND_EXPLICIT_HOLDS"
+  },
+  "formal_outcome": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": false,
+    "status": "TESTED_WITH_FULL_INTERVAL_MASS_HOLD",
+    "production_physics_qualified": false,
+    "ready_for_independent_scientific_qualification": false
+  },
+  "blockers": [
+    "F-KT canonical result boundary does not yet expose complete accepted full-interval physical mass accounting (kernel_result.mass.complete=false).",
+    "No safe physical retry/failure fixture has yet qualified runtime retry orchestration on this real serialized backend.",
+    "Independent F-VQ scientific equivalence/admission remains required before any physical reference backend promotion.",
+    "Parallel real-reference execution remains NOT_ADMITTED."
+  ]
+}
