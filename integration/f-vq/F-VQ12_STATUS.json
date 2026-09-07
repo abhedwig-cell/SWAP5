@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ12",
+  "oracle": "B1.10",
+  "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT05_FSI05_ADMISSION_WITH_CONTRACTUAL_NONCONFLICT_ONLY",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "decision": "PENDING_FVQ12_CI",
+  "fkt05_source_bound_admitted": false,
+  "fsi05_source_bound_admitted": false,
+  "fkt05_fsi05_contractual_nonconflict_qualified": false,
+  "fkt05_fsi05_composed_runtime_qualified": false,
+  "full_reference_solver_reentrancy_qualified": false,
+  "parallel_real_headcalc_workers_qualified": false,
+  "full_unrounded_swap_mass_identity_qualified": false,
+  "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_multiswap_admission": false,
+  "optional_workspace_paths_complete": false,
+  "production_source_changed_by_fvq12": false,
+  "reference_source_changed_by_fvq12": false,
+  "basis": {
+    "fvq11_final_head": "efdc11f35e2251eebbab888e05d74085892e05fd",
+    "fkt05_tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "fkt05_qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "fkt05_status_promotion_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "fsi05_tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_documented_postimage_head": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+    "fsi05_final_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11"
+  },
+  "holds": [
+    "F-KT05 and F-SI05 are not yet admitted by F-VQ12 until the exact replay gate is green.",
+    "A joint F-KT05 plus F-SI05 executable production postimage has not been qualified.",
+    "Full reference solver reentrancy and parallel real HeadCalc worker qualification remain deferred.",
+    "F-SI05 focused equation residual identity is not the full SWAP water balance.",
+    "Production B1.10 reference execution remains fail-closed.",
+    "Production MultiSWAP runtime remains outside this admission.",
+    "Macropore, implicit conductivity, minimum-timestep and non-free-drainage bottom paths remain incomplete."
+  ]
+}
