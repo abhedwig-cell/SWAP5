@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI07",
+  "title": "B1.10 transaction-state classification and worker-local rollback capsule",
+  "principle": "rollback coverage does not imply persistent column-state ownership",
+  "persistent_physical_state": {
+    "qualified_existing_water_subset": [
+      "h", "theta", "hm1", "thetm1", "pond", "pondm1", "gwl", "gwlm1", "volact", "ldwet", "spev", "saev"
+    ],
+    "candidates_not_yet_admitted": {
+      "thermal": ["tsoil"],
+      "solute": ["cml", "cmsy"],
+      "irrigation_process_continuation": ["dayfix", "nirri"],
+      "crop_wofost": "UNRESOLVED_FULL_CONTINUATION_SET"
+    }
+  },
+  "worker_local_legacy_trial_capsule": {
+    "numerical_retry": ["dt", "dtold", "fldecdt", "fldtmin", "fldtreduce"],
+    "legacy_time_projection": ["t", "t1900", "tcum", "timjan1", "tstart", "tend", "daycum", "daynr", "imonth", "iyear", "date", "fldaystart", "fldayend", "flrunend"],
+    "reporting_progress": ["ioutdat", "ioutdatint", "isteps", "nprintcount", "cntper", "outper", "flbaloutput", "flheader", "floutput", "floutputshort", "flzerocumu", "flzerointr"],
+    "forcing_cursors": ["meteo_rec", "rain_rec", "i_metdetail", "fl_update_meteo"],
+    "irrigation_trial_workspace": ["irrigevent", "isua", "cirr", "dt_irr_event", "gird", "nird", "qssdi", "qssdisum", "flirrigate"],
+    "temporary_rollback_copy_of_process_cursors": ["dayfix", "nirri"],
+    "water_accounting": "ALL_INTERMEDIATE_AND_CUMULATIVE_MOD_integral_WATER_ACCUMULATORS"
+  },
+  "ownership_rules": [
+    "The capsule does not extend canonical_state_t or transaction_state_t.",
+    "Large capsule arrays are allocatable and exist only for active worker trials.",
+    "Forcing values are not persistent physical state.",
+    "Accounting values are rollback/reporting data and are not physical continuation state.",
+    "dayfix and nirri are included in the capsule for rollback but remain candidates for optional persistent irrigation-process state.",
+    "No full physical transaction adapter may be admitted until crop/WOFOST, thermal and solute continuation state are qualified."
+  ],
+  "qualification_profile": "HUPSEL_CROP_IRRIGATION_HEAT_SOLUTE_DRAINAGE",
+  "status": "PARTIAL_STATE_OWNERSHIP_QUALIFIED_FULL_PHYSICAL_CONTINUATION_BLOCKED"
+}
