@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""F-VQ06 fail-closed admission gate for the unqualified F-CI18 handoff candidate."""
+"""F-VQ06 admission gate for qualified F-CI18 scope/ownership evidence.
+
+The gate admits only the F-CI18 scope/ownership qualification. It must keep final
+F-CI gate promotion, downstream release and downstream physics/reference claims
+fail-closed until their separate evidence exists.
+"""
 from __future__ import annotations
 
 import json
@@ -9,12 +14,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 FCI17_BASIS = "e17b43e3dda7d178c4c81035308308448823e38d"
-FCI18_FIRST = "9d35702452808ff849ae285bca5c4377ea2b87b4"
-FCI18_CANDIDATE = "a0fdf73b67aa57456d8cbe6700ce707d672981cd"
-FCI18_RUN_FIRST = 34112080253
-FCI18_RUN_REPLAY = 34112593384
-FCI18_JOB_REPLAY = 101712984493
-EXPECTED_CLAIMS = {f"FVQ06-C{i:02d}" for i in range(1, 9)}
+FCI18_SOURCE = "a0fdf73b67aa57456d8cbe6700ce707d672981cd"
+FCI18_QUALIFICATION = "2989ff626bef3206119213be7776ed4a11059db6"
+FCI18_QUAL_RUN = 34112588499
+FCI18_QUAL_JOB = 101712814659
+FCI18_PR_FAILURE_RUN = 34112593384
+FCI18_PR_FAILURE_JOB = 101712984493
+PR_MERGE = "bebb886fd215d89234d52b08a95503e45ad972f8"
+EXPECTED_CLAIMS = {f"FVQ06-C{i:02d}" for i in range(1, 10)}
 
 
 def load_json(rel: str) -> dict:
@@ -39,28 +46,35 @@ def changed(base: str, head: str = "HEAD") -> list[str]:
 
 
 def validate_readiness(data: dict) -> dict[str, bool]:
-    observed = data.get("observed_ci", [])
-    by_head = {item.get("head"): item for item in observed}
-    first = by_head.get(FCI18_FIRST, {})
-    replay = by_head.get(FCI18_CANDIDATE, {})
-    ctx = data.get("context_failure_evidence", {})
+    q = data.get("qualification_handoff", {})
+    failures = data.get("superseded_or_non_authoritative_failure_observations", [])
+    by_run = {x.get("workflow_run"): x for x in failures}
+    pr = by_run.get(FCI18_PR_FAILURE_RUN, {})
+    ctx = data.get("ci_context_evidence", {})
     current = data.get("current_exit_state", {})
-    review = data.get("fci18_candidate_scope_review", {})
+    boundary = data.get("fci18_scope_ownership_boundary", {})
     return {
-        "candidate_head_exact": data.get("candidate", {}).get("fci18_replayability_head") == FCI18_CANDIDATE,
-        "candidate_status_pending": data.get("candidate", {}).get("status_record") == "PERSISTED_EXIT_SCOPE_CANDIDATE_CI_PENDING",
-        "first_run_failed": first.get("workflow_run") == FCI18_RUN_FIRST and first.get("result") == "FAIL" and first.get("fci18_qualified") is False,
-        "replay_run_failed": replay.get("workflow_run") == FCI18_RUN_REPLAY and replay.get("fci18_job") == FCI18_JOB_REPLAY and replay.get("result") == "FAIL" and replay.get("fci18_qualified") is False,
-        "failure_class_exact": first.get("failure_class") == "PR_SYNTHETIC_MERGE_DIFF_CONTEXT" and replay.get("failure_class") == "PR_SYNTHETIC_MERGE_DIFF_CONTEXT",
-        "pr_merge_checkout_recorded": ctx.get("workflow_has_pull_request_trigger") is True and ctx.get("checkout_uses_default_pr_merge_ref") is True and ctx.get("observed_checkout_commit") == "bebb886fd215d89234d52b08a95503e45ad972f8",
+        "source_postimage_exact": q.get("fci18_source_postimage") == FCI18_SOURCE,
+        "qualification_commit_exact": q.get("fci18_qualification_commit") == FCI18_QUALIFICATION,
+        "canonical_push_exact": q.get("canonical_push_workflow") == FCI18_QUAL_RUN and q.get("fci18_job") == FCI18_QUAL_JOB and q.get("workflow_result") == "SUCCESS",
+        "full_chain_pass": q.get("full_dependency_chain") == "PASS_FCI03_THROUGH_FCI18",
+        "scope_qualified_by_fci": q.get("scope_ownership_qualified_by_fci") is True,
+        "gate_promotion_pending": q.get("gate_promotion") == "PENDING_SEPARATE_COMMIT" and q.get("final_exit_handoff_qualified") is False,
+        "pr_failure_exact": pr.get("fci18_job") == FCI18_PR_FAILURE_JOB and pr.get("result") == "FAIL" and pr.get("authoritative_for_fci18_qualification") is False,
+        "pr_failure_class_exact": pr.get("failure_class") == "PR_SYNTHETIC_MERGE_DIFF_CONTEXT",
+        "valid_event_push": ctx.get("valid_qualification_event") == "push" and ctx.get("valid_qualification_head") == FCI18_SOURCE,
+        "pr_merge_recorded": ctx.get("pr_failure_checkout_commit") == PR_MERGE,
         "head_parent_diff_recorded": ctx.get("gate_uses_head_parent_diff") is True and ctx.get("gate_diff_expression") == "git diff --name-only HEAD^ HEAD",
-        "actual_candidate_no_production_delta_recorded": ctx.get("actual_fci18_candidate_commit_has_production_or_reference_delta") is False,
-        "fci17_exit_still_authoritative": current.get("work_unit") == "F-CI17" and current.get("downstream_release_allowed") is False and current.get("must_remain_authoritative_until_fci18_qualified_promotion") is True,
-        "proposal_not_qualification": review.get("proposal_is_not_qualification") is True,
-        "mass_non_delegable": review.get("hard_mass_remains_non_delegable") is True,
-        "transaction_non_delegable": review.get("transaction_correctness_remains_non_delegable") is True,
-        "provenance_non_delegable": review.get("provenance_remains_non_delegable") is True,
-        "handoff_blocked": data.get("handoff_admission") == "BLOCKED_FCI18_NOT_QUALIFIED" and data.get("fci18_handoff_qualified") is False,
+        "candidate_no_production_delta_recorded": ctx.get("source_bound_fci18_candidate_has_production_or_reference_delta") is False,
+        "fci17_exit_still_authoritative": current.get("work_unit") == "F-CI17" and current.get("downstream_release_allowed") is False and current.get("must_remain_authoritative_until_fci18_gate_promotion") is True,
+        "boundary_not_promotion": boundary.get("proposal_and_qualified_scope_do_not_equal_gate_promotion") is True,
+        "mass_non_delegable": boundary.get("hard_mass_remains_non_delegable") is True,
+        "transaction_non_delegable": boundary.get("transaction_correctness_remains_non_delegable") is True,
+        "provenance_non_delegable": boundary.get("provenance_remains_non_delegable") is True,
+        "fvq_numeric_downstream": boundary.get("independent_fvq_numeric_profile_qualification_remains_downstream") is True,
+        "fvq_release_downstream": boundary.get("independent_fvq_release_qualification_remains_downstream") is True,
+        "scope_ready_not_yet_admitted": data.get("scope_ownership_admission") == "READY_FOR_FVQ06_QUALIFICATION" and data.get("fci18_scope_ownership_admitted_by_fvq06") is False,
+        "final_exit_blocked": data.get("final_exit_handoff_admission") == "BLOCKED_FCI18_GATE_PROMOTION_PENDING" and data.get("fci18_final_exit_handoff_qualified") is False,
         "no_fvq_release": data.get("downstream_release_admitted_by_fvq06") is False,
         "reference_execution_blocked": data.get("production_reference_execution_admitted") is False,
         "numeric_profile_blocked": data.get("production_temporal_profile_qualified") is False,
@@ -71,9 +85,10 @@ def validate_matrix(data: dict) -> dict[str, bool]:
     claims = {c.get("claim_id"): c for c in data.get("claims", [])}
     return {
         "claim_set_exact": set(claims) == EXPECTED_CLAIMS,
-        "fci18_handoff_not_promoted": claims.get("FVQ06-C04", {}).get("claim_qualified") is False,
-        "proposal_not_physics_evidence": claims.get("FVQ06-C07", {}).get("claim_qualified") is False,
+        "final_promotion_not_claimed": claims.get("FVQ06-C06", {}).get("claim_qualified") is False,
+        "scope_not_capability_evidence": claims.get("FVQ06-C07", {}).get("claim_qualified") is False,
         "downstream_release_not_promoted": claims.get("FVQ06-C08", {}).get("claim_qualified") is False,
+        "fvq05_blocks_not_lifted": claims.get("FVQ06-C09", {}).get("claim_qualified") is False,
     }
 
 
@@ -88,38 +103,42 @@ def main() -> int:
     fci_workflow = read(".github/workflows/fci-canonical.yml")
     fci18_qualification = read("integration/f-ci/F-CI18_QUALIFICATION.md")
 
-    candidate_paths = changed(FCI17_BASIS, FCI18_CANDIDATE)
-    overlay_paths = changed(FCI18_CANDIDATE)
+    source_paths = changed(FCI17_BASIS, FCI18_SOURCE)
+    fvq_paths = changed(FCI18_QUALIFICATION)
 
     sections: dict[str, dict[str, bool]] = {}
     sections["readiness"] = validate_readiness(readiness)
     sections["matrix"] = validate_matrix(matrix)
-    sections["source_bound_candidate"] = {
-        "candidate_is_ancestor": is_ancestor(FCI18_CANDIDATE),
-        "no_src_candidate_delta": not any(p.startswith("src/") for p in candidate_paths),
-        "no_reference_candidate_delta": not any(p.startswith("reference/swap-4.3.1/") for p in candidate_paths),
-        "fci18_status_pending": fci18_status.get("status") == "PERSISTED_EXIT_SCOPE_CANDIDATE_CI_PENDING",
-        "focused_gate_pending": fci18_status.get("qualification", {}).get("focused_scope_gate") == "PENDING",
-        "canonical_ci_pending": fci18_status.get("qualification", {}).get("canonical_ci") == "PENDING",
-        "status_says_no_production_change": fci18_status.get("production_source_changed") is False,
-        "status_says_current_exit_not_changed": fci18_status.get("current_exit_gate_file_changed") is False,
+    sections["qualified_fci18"] = {
+        "qualification_commit_is_ancestor": is_ancestor(FCI18_QUALIFICATION),
+        "source_is_ancestor": is_ancestor(FCI18_SOURCE),
+        "no_src_source_delta": not any(p.startswith("src/") for p in source_paths),
+        "no_reference_source_delta": not any(p.startswith("reference/swap-4.3.1/") for p in source_paths),
+        "status_qualified_scope": fci18_status.get("status") == "QUALIFIED_EXIT_SCOPE_OWNERSHIP_GATE_PROMOTION_PENDING",
+        "qualified_postimage_exact": fci18_status.get("qualified_postimage") == FCI18_SOURCE,
+        "focused_gate_pass": fci18_status.get("qualification", {}).get("focused_scope_gate") == "PASS",
+        "canonical_ci_exact": fci18_status.get("qualification", {}).get("canonical_ci") == f"PASS_RUN_{FCI18_QUAL_RUN}_JOB_{FCI18_QUAL_JOB}",
+        "full_chain_exact": fci18_status.get("qualification", {}).get("full_dependency_chain") == "PASS_FCI03_THROUGH_FCI18",
+        "gate_promotion_pending": fci18_status.get("gate_promotion") == "PENDING_SEPARATE_COMMIT",
+        "no_production_change": fci18_status.get("production_source_changed") is False,
     }
-    sections["ci_context_diagnosis"] = {
+    sections["ci_context"] = {
+        "workflow_has_push": "push:" in fci_workflow,
         "workflow_has_pull_request": "pull_request:" in fci_workflow,
-        "fci18_job_default_checkout": "fci18-exit-scope-ownership:" in fci_workflow and "uses: actions/checkout@v4" in fci_workflow,
         "gate_uses_head_parent_diff": '"HEAD^", "HEAD"' in fci18_gate,
-        "qualification_text_not_promotion": "This is not yet a gate promotion." in fci18_qualification,
+        "qualification_records_push_run": str(FCI18_QUAL_RUN) in fci18_qualification and str(FCI18_QUAL_JOB) in fci18_qualification,
+        "qualification_precedes_promotion": "This qualification evidence precedes gate promotion." in fci18_qualification,
     }
     non_del = proposal.get("non_delegable", [])
-    sections["proposal_boundary"] = {
-        "proposal_all_gates_only_proposed": proposal.get("proposed_exit", {}).get("all_required_gates") == "QUALIFIED",
-        "proposal_release_only_proposed": proposal.get("proposed_exit", {}).get("downstream_release_allowed") is True,
+    sections["scope_boundary"] = {
+        "proposal_all_gates": proposal.get("proposed_exit", {}).get("all_required_gates") == "QUALIFIED",
+        "proposal_release_true": proposal.get("proposed_exit", {}).get("downstream_release_allowed") is True,
         "holds_do_not_mean_admission": proposal.get("downstream_holds_do_not_mean_admission") is True,
         "mass_non_delegable": any("mass" in s.lower() for s in non_del),
         "transaction_non_delegable": any("transaction" in s.lower() for s in non_del),
         "provenance_non_delegable": any("provenance" in s.lower() for s in non_del),
-        "g05_keeps_fvq_numeric_ownership": "F-VQ" in proposal.get("decisions", {}).get("CI-G05", {}).get("owner", ""),
-        "g08_keeps_fvq_release_qualification": "F-VQ" in proposal.get("decisions", {}).get("CI-G08", {}).get("owner", ""),
+        "g05_fvq_numeric_owner": "F-VQ" in proposal.get("decisions", {}).get("CI-G05", {}).get("owner", ""),
+        "g08_fvq_release_owner": "F-VQ" in proposal.get("decisions", {}).get("CI-G08", {}).get("owner", ""),
         "g09_no_mass_relaxation": "No fallback" in json.dumps(proposal.get("decisions", {}).get("CI-G09", {})),
     }
     sections["authoritative_exit"] = {
@@ -134,11 +153,11 @@ def main() -> int:
         "reference_execution_still_blocked": fvq05.get("canonical_reference_admission") == "BLOCKED_FAIL_CLOSED",
     }
     sections["change_scope"] = {
-        "no_src_changes_since_candidate": not any(p.startswith("src/") for p in overlay_paths),
-        "qualification_paths_only_since_candidate": all(
+        "no_src_changes_since_fci18_qualification": not any(p.startswith("src/") for p in fvq_paths),
+        "qualification_paths_only_since_fci18_qualification": all(
             p.startswith(("integration/f-vq/", "tools/vq/", "docs/verification/"))
             or p == ".github/workflows/vq-reference.yml"
-            for p in overlay_paths
+            for p in fvq_paths
         ),
     }
 
@@ -147,15 +166,18 @@ def main() -> int:
         "workstream": "F-VQ",
         "work_unit": "F-VQ06",
         "oracle": "B1.10",
-        "fci18_candidate": FCI18_CANDIDATE,
+        "fci18_source_postimage": FCI18_SOURCE,
+        "fci18_qualification_commit": FCI18_QUALIFICATION,
         "status": "PASS" if not failed else "FAIL",
         "failed": failed,
-        "qualification_scope": "FCI18_HANDOFF_READINESS_AND_BLOCKING_ONLY",
-        "fci18_handoff_qualified": False,
-        "handoff_admission": "BLOCKED_FCI18_NOT_QUALIFIED",
+        "qualification_scope": "FCI18_SCOPE_OWNERSHIP_HANDOFF_ONLY",
+        "fci18_scope_ownership_qualifiable": not failed,
+        "fci18_final_exit_handoff_qualified": False,
+        "final_exit_handoff_admission": "BLOCKED_FCI18_GATE_PROMOTION_PENDING",
         "downstream_release_admitted": False,
-        "production_source_changed_by_fvq06": any(p.startswith("src/") for p in overlay_paths),
+        "production_source_changed_by_fvq06": any(p.startswith("src/") for p in fvq_paths),
         "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+        "production_temporal_profile_qualified": False,
         "sections": sections,
     }
     print(json.dumps(result, indent=2, sort_keys=True))

@@ -3,30 +3,33 @@
   "workstream": "F-VQ",
   "work_unit": "F-VQ06",
   "mode": "QUALIFICATION_ONLY",
-  "title": "F-CI18 Exit Scope/Ownership Handoff Readiness",
+  "title": "F-CI18 Exit Scope/Ownership Handoff Qualification",
   "oracle": "B1.10",
   "previous_fvq_head": "f14cbc4c1a1ba0dc16a46bddc658cd4731733945",
-  "moving_canonical_candidate": {
-    "work_unit": "F-CI18",
-    "candidate_head": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
-    "candidate_parent": "9d35702452808ff849ae285bca5c4377ea2b87b4",
-    "consumed_as_qualified_handoff": false
+  "fci18_handoff": {
+    "qualified_source_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "qualification_evidence_commit": "2989ff626bef3206119213be7776ed4a11059db6",
+    "canonical_push_workflow": 34112588499,
+    "fci18_job": 101712814659,
+    "scope_ownership_qualified": true,
+    "gate_promotion": "PENDING_SEPARATE_COMMIT",
+    "consumed_as_final_exit_release": false
   },
   "qualification_targets": [
-    "exact F-CI18 candidate provenance",
-    "fail-closed handoff admission while F-CI18 canonical CI is non-green or qualification status is pending",
-    "independent detection of the PR synthetic-merge HEAD^ diff-context failure",
-    "preservation of F-CI17 current exit-gate state until an exact qualified F-CI18 promotion is persisted",
-    "review of F-CI18 ownership/scope proposal without converting proposal into release evidence",
-    "continued separation of F-CI baseline exit from downstream F-VQ physics/reference qualification"
+    "exact F-CI18 source and qualification provenance",
+    "independent admission of the qualified F-CI18 scope/ownership boundary",
+    "preservation of non-delegable provenance, transaction and hard-mass constraints",
+    "preservation of downstream F-VQ ownership for numerical temporal limits and release-level physics/reference qualification",
+    "independent diagnosis of the non-authoritative PR synthetic-merge failure without overriding the successful canonical push run",
+    "continued fail-closed final exit/release state until F-CI persists the separate gate-promotion commit"
   ],
   "explicit_non_targets": [
-    "changing F-CI18 production or governance source",
-    "repairing the F-CI18 gate inside F-VQ",
-    "promoting any F-CI exit gate on behalf of F-CI",
+    "changing or repairing F-CI production/governance source",
+    "promoting F-CI exit gates on behalf of F-CI",
+    "admitting downstream release before the separate F-CI gate-status commit",
     "admitting real B1.10 execute_reference_interval",
     "qualifying numerical temporal limits",
     "qualifying full legacy-backend reentrancy, optional-process completeness, MultiSWAP or coupling"
   ],
-  "status": "PERSISTED_SCOPE_PRE_TEST"
+  "status": "UPDATED_FOR_QUALIFIED_SCOPE_PRE_TEST"
 }
