@@ -1,0 +1,43 @@
+name: F-SI07 materialize state binding
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding-isolation
+    paths:
+      - tools/fsi/fsi07_materialize_state_binding.py
+      - .github/workflows/fsi07-materialize.yml
+
+concurrency:
+  group: fsi07-materialize-state-binding
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact F-SI06 qualified state-binding transformation
+        run: python3 tools/fsi/fsi07_materialize_state_binding.py
+      - name: Validate patch scope and ownership boundary
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 "
+          grep -F 'state_binding' src/legacy/b1_10_port/headcalc.f90
+          grep -F 'ws%state%h = request%base_state%pressure_head' src/adapter/mod_reference_richards_legacy_binding.f90
+          ! grep -F 'h(1:numnod) = request%base_state%pressure_head' src/adapter/mod_reference_richards_legacy_binding.f90
+          ! grep -F 'theta(1:numnod) = request%base_state%water_content' src/adapter/mod_reference_richards_legacy_binding.f90
+          git diff --exit-code -- src/transaction src/runtime src/solver/mod_soil_water_solver_contract.f90 src/solver/mod_reference_richards_workspace.f90
+      - name: Persist source checkpoint before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90
+          git commit -m "F-SI07: materialize explicit reference attempt-state binding"
+          git push origin HEAD:work/f-si07-state-binding-isolation
