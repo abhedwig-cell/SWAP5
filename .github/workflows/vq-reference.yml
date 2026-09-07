@@ -86,7 +86,7 @@ jobs:
         run: gfortran --version
 
       - name: F-VQ02 provenance, readiness and synthetic harness gate
-        run: python tools/vq/fvq02_contract_gate.py
+        run: python -m tools.vq.fvq02_contract_gate
 
       - name: F-VQ02 scope-guard unit tests
         run: python -m unittest tools.vq.test_fvq02_contract_gate
