@@ -1,39 +1,64 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM01",
-  "qualified_dependencies": {
+  "source_branch": "work/f-pm01-process-boundary",
+  "source_branch_basis": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "qualified_dependencies_at_start": {
     "F-KT04": {
       "tested_source_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
       "qualification_evidence": "acd55ecee8802a0a9fb5d854380622f2d20a7503",
       "status": "QUALIFIED",
-      "consumed": true
+      "consumed_for_boundary_design": true
     },
     "F-SI03": {
       "tested_postimage": "79e3e9052a4f68306b8c826b063497247fd339d6",
       "qualification_closeout": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
       "status": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
-      "consumed": true
+      "consumed_for_boundary_design": true
     }
   },
-  "moving_dependencies": {
+  "newly_verified_qualified_dependencies": {
     "F-KT05": {
-      "observed_branch_head": "0ed2c7204cedc249ae07ef5f1deec98adf32f49d",
-      "earlier_contract_commit": "28d67cd25fc9d30e7176450bbe8e4f034960f9ce",
-      "observed_status": "PERSISTED_NOT_TESTED_NOT_QUALIFIED",
-      "consumed": false
+      "closeout_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+      "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+      "workflow_run": 34125537033,
+      "status": "QUALIFIED",
+      "scope": "opaque reusable checkpoint carrier bound to committed lineage, revision and temporal provenance",
+      "consumed_for_contract_readiness": true,
+      "production_source_integrated_into_f_pm_branch": false,
+      "reference_execution_admitted": false
     },
-    "F-SI04": {
-      "observed_branch_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
-      "tested_source_postimage": "0cfbefc271447b4b53eeee50c1dfbb2acaf020df",
-      "observed_status": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY",
-      "production_seam_qualified": false,
-      "consumed": false
+    "F-SI05": {
+      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "production_materialization_commit": "1fe1bf4790955594290ba1233d5684542799bf9e",
+      "tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+      "documented_postimage_verification_head": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+      "scope": "HeadCalc workspace and band-solver scratch ownership for focused matrix-flow/free-drainage routes",
+      "consumed_for_contract_readiness": true,
+      "production_source_integrated_into_f_pm_branch": false,
+      "full_reference_solver_reentrancy_qualified": false,
+      "production_multiswap_admission": false
     }
   },
   "shared_downstream_baseline": {
     "found": false,
     "production_migration_allowed": false,
-    "reason": "No exact Git branch/commit was found that qualifies the required F-KT and F-SI production contracts together. F-VQ downstream branch is qualification-only and does not constitute such a merge."
+    "evidence": {
+      "fkt05_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+      "fsi05_verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+      "compare_status": "diverged",
+      "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "fkt_ahead_by": 51,
+      "fkt_behind_by": 43
+    },
+    "reason": "F-KT05 and F-SI05 are independently qualified but their current qualified lineages diverge from the F-CI18 closeout. F-PM must not manufacture a shared production baseline by merging them itself."
+  },
+  "fail_closed_decision": {
+    "f_pm01_boundary_qualification_allowed": true,
+    "f_pm02_production_migration_allowed": false,
+    "required_release_dependency": "an exact, reproducible and qualified downstream integration basis containing the required F-KT05 and F-SI05 production contracts together"
   }
 }
