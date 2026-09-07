@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.3",
+  "schema_version": "2.0",
   "workstream": "F-KT",
   "work_unit": "F-KT05",
   "baseline": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
@@ -8,6 +8,29 @@
   "safety_branch_head": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
   "source_checkpoint_commit": "278e1b0bf44a391059fdcdd72576e24e966e95f1",
   "initial_complete_pretest_postimage": "0ed2c7204cedc249ae07ef5f1deec98adf32f49d",
+  "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+  "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+  "qualification_evidence": "qualification/f-kt/F-KT05_QUALIFICATION.json",
+  "qualification_run": {
+    "run_id": 34125537033,
+    "focused_job_id": 101753225852,
+    "fci_regression_job_id": 101753290988,
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success",
+    "focused_o0_o2": "PASS",
+    "selected_fci_regressions": "PASS"
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "implementation_status": "IMPLEMENTED",
+  "persistence_status": "PERSISTED",
+  "test_status": "TESTED",
+  "qualification_status": "QUALIFIED",
+  "scope": "opaque reusable checkpoint carrier bound to current committed lineage, revision and temporal provenance",
+  "canonical_entrypoint": "kernel_executor_t%advance_interval",
+  "reference_execution_admitted": false,
   "failure_history": [
     {
       "run_id": 34123083336,
@@ -21,67 +44,38 @@
     },
     {
       "run_id": 34125204931,
-      "focused_job_id": 101752164560,
       "classification": "CONTRACT_METADATA_REGRESSION_MISSING_HISTORICAL_FSI04_SCOPE_LOCKS",
       "production_source_failure": false,
-      "fortran_runtime_failure": false,
-      "fkt03_regression": "PASS",
-      "fkt04_regression": "PASS",
-      "failure_stage": "F-KT05 static contract gate before F-KT05 compile/run",
-      "fix": "restore fsi04_changes_production_route=false and fsi04_full_reference_solver_reentrancy_qualified=false alongside F-SI05 boundary evidence"
+      "fortran_runtime_failure": false
     }
   ],
-  "test_warning_fix_commits": [
-    "ed0764126a9febdd8a14ff3f32fdba68e9be9e81",
-    "bfb5bd7dca2b71232e1f0a329e81ac121ac894ba"
-  ],
-  "latest_green_tested_postimage_before_boundary_refresh": "bfb5bd7dca2b71232e1f0a329e81ac121ac894ba",
-  "latest_green_run_before_boundary_refresh": {
-    "run_id": 34124593953,
-    "focused_job_id": 101750179016,
-    "fci_regression_job_id": 101750239593,
-    "compiler": "GNU Fortran 13.3.0",
-    "focused_o0_o2": "PASS",
-    "selected_fci_regressions": "PASS"
-  },
-  "failed_boundary_refresh_postimage": "eee1c765afcc69ae6fedd95933356062222bb9f3",
-  "implemented": true,
-  "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "implementation_status": "IMPLEMENTED",
-  "persistence_status": "PERSISTED",
-  "test_status": "RETEST_REQUIRED_AFTER_CONTRACT_METADATA_FIX",
-  "qualification_status": "NOT_YET_QUALIFIED",
-  "scope": "opaque reusable checkpoint carrier bound to current committed lineage, revision and temporal provenance",
-  "external_boundaries": {
-    "fsi05_observed_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
-    "fsi05_workflow_run": 34124675751,
-    "fsi05_gate": "PASS",
-    "fsi05_transaction_source_protected_unchanged": true,
-    "fsi05_transfers_fkt_transaction_authority": false,
+  "closeout_external_boundaries": {
+    "fsi05_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "fsi05_tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "fsi05_status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+    "fsi05_transaction_semantics_changed": false,
     "fsi05_full_reference_solver_reentrancy_qualified": false,
-    "fmq18_qualified_head": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726",
+    "fmq18_head": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726",
     "fmq18_status": "QUALIFIED_FSI04_REAL_HEADCALC_FOCUSED_ADMITTED_NO_MATRIX_ROW_PROMOTION",
     "fmq18_real_physics_executable": 0,
     "fmq18_production_runtime_qualified": 0,
-    "fvq10_qualified_head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
-    "fvq10_decision": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
-    "fvq11_observed_head": "e1c8ca7a94b4718169ec44abaf8fca297133d233",
+    "fvq10_head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
+    "fvq10_status": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+    "fvq11_observed_head": "7584f0c38d407913304eea05fd343f2f7fef31cc",
     "fvq11_decision": "PENDING_FVQ11_CI",
     "fvq11_qualified": false,
-    "fvq11_consumed_as_qualification_evidence": false,
+    "fvq11_consumed_as_fkt05_qualification_evidence": false,
     "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
   },
-  "boundary_evidence": "integration/f-kt/F-KT05_BOUNDARY_EVIDENCE.json",
-  "next_action": "run F-KT05 focused O0/O2 gate and selected F-CI regressions on the metadata-fixed complete postimage; promote only after both jobs pass",
   "blockers": [],
   "holds": [
-    "F-VQ10 qualifies only the temporal-profile promotion method; real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
-    "F-SI05 establishes a production HeadCalc workspace seam but full reference-solver reentrancy remains unqualified",
+    "Real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
+    "F-SI05 qualifies focused production HeadCalc workspace routes, not full reference-solver reentrancy or full SWAP water-balance identity",
     "F-MQ18 promotes no real-physics or production-runtime MultiSWAP matrix row",
-    "F-VQ11 remains pending and is not F-KT05 qualification evidence",
+    "F-VQ11 remains pending and is not consumed as F-KT05 qualification evidence",
     "production MultiSWAP scheduling/runtime remains outside F-KT",
     "optional-process temporal/storage coverage remains downstream qualification work"
-  ]
+  ],
+  "next_action": "F-KT05 complete; begin F-KT06 only after rereading the current integration/f-kt head and current downstream ownership boundaries",
+  "downstream_fkt06_allowed": true
 }
