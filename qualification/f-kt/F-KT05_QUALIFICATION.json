@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT05",
+  "status": "QUALIFIED",
+  "qualified": true,
+  "qualification_scope": "Reusable opaque committed checkpoint carrier and same-committed-state replay contract on the canonical kernel transaction entrypoint, including lineage/revision/time fail-closed validation and preservation of F-KT/F-SI ownership boundaries.",
+  "basis": {
+    "fkt04_qualified_head": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10",
+    "source_checkpoint_commit": "278e1b0bf44a391059fdcdd72576e24e966e95f1",
+    "initial_complete_pretest_postimage": "0ed2c7204cedc249ae07ef5f1deec98adf32f49d",
+    "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a"
+  },
+  "qualification_run": {
+    "workflow": "F-KT kernel qualification",
+    "run_id": 34125537033,
+    "focused_job_id": 101753225852,
+    "fci_regression_job_id": 101753290988,
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "qualified_checks": {
+    "FKT03_CONTRACT_GATE": "PASS",
+    "FKT03_FSI_BOUNDARY_GATE": "PASS",
+    "FKT03_OPAQUE_TRANSACTION_O0": "PASS",
+    "FKT03_OPAQUE_TRANSACTION_O2": "PASS",
+    "FKT04_CONTRACT_GATE": "PASS",
+    "FKT04_TEMPORAL_PROVENANCE_O0": "PASS",
+    "FKT04_TEMPORAL_PROVENANCE_O2": "PASS",
+    "FKT05_CONTRACT_GATE": "PASS",
+    "FKT05_REUSABLE_CHECKPOINT_O0": "PASS",
+    "FKT05_REUSABLE_CHECKPOINT_O2": "PASS",
+    "FCI03": "PASS",
+    "FCI04": "PASS",
+    "FCI08": "PASS",
+    "FCI09": "PASS",
+    "FCI10": "PASS",
+    "FCI11": "PASS",
+    "FCI13": "PASS",
+    "FCI14": "PASS"
+  },
+  "checkpoint_contract": {
+    "canonical_production_entrypoint": "kernel_executor_t%advance_interval",
+    "second_production_entrypoint_created": false,
+    "checkpoint_owner": "F-KT",
+    "checkpoint_is_persistent_column_state": false,
+    "checkpoint_contains_solver_scratch": false,
+    "checkpoint_contains_warm_start": false,
+    "checkpoint_contains_physical_state_clone": true,
+    "checkpoint_contains_lineage_revision_time_provenance": true,
+    "capture_mutates_committed_state": false,
+    "stale_revision_fails_closed": true,
+    "cross_lineage_fails_closed": true,
+    "time_mismatch_fails_closed": true,
+    "rejection_precedes_physical_execution": true,
+    "same_current_checkpoint_reusable": true,
+    "checkpoint_can_restore_committed_state": false,
+    "checkpoint_can_publish_committed_state": false,
+    "candidate_commit_rules_changed": false,
+    "rollback_semantics_changed": false
+  },
+  "time_and_replay": {
+    "generic_t0_t1_preserved": true,
+    "day_or_midnight_assumption_introduced": false,
+    "new_user_configurable_time_tolerance_introduced": false,
+    "warm_start_may_evolve_worker_locally": true,
+    "warm_start_may_change_physical_origin": false,
+    "same_committed_state_replay_qualified": true
+  },
+  "mass_conservation": {
+    "hard_requirement_preserved": true,
+    "unrounded_trial_mass_gate_preserved": true,
+    "checkpoint_changes_mass_accounting": false,
+    "failed_trial_mutates_committed_state": false,
+    "failed_trial_mutates_checkpoint": false,
+    "full_reference_swap_water_balance_newly_qualified_by_fkt05": false
+  },
+  "failure_history": [
+    {
+      "run_id": 34123083336,
+      "classification": "TEST_ONLY_O2_IMPURE_FUNCTION_ELIMINATION_WARNING",
+      "production_source_failure": false
+    },
+    {
+      "run_id": 34124379386,
+      "classification": "TEST_ONLY_COMPARE_REALS_WARNING",
+      "production_source_failure": false
+    },
+    {
+      "run_id": 34125204931,
+      "classification": "CONTRACT_METADATA_REGRESSION_MISSING_HISTORICAL_FSI04_SCOPE_LOCKS",
+      "production_source_failure": false,
+      "fortran_runtime_failure": false
+    }
+  ],
+  "closeout_external_boundaries": {
+    "fsi05": {
+      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+      "transaction_semantics_changed": false,
+      "generic_time_semantics_changed": false,
+      "shared_fkt_type_changed": false,
+      "full_reference_richards_reentrancy": "NOT_QUALIFIED",
+      "full_swap_water_balance_identity": "NOT_QUALIFIED"
+    },
+    "fmq18": {
+      "head": "4ce1b84051ce8b7e1a0e10d2b4ba5dbea61fc726",
+      "status": "QUALIFIED_FSI04_REAL_HEADCALC_FOCUSED_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+      "real_physics_executable_rows": 0,
+      "production_runtime_qualified_rows": 0
+    },
+    "fvq10": {
+      "head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
+      "status": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+      "production_temporal_profile_qualified": false
+    },
+    "fvq11": {
+      "observed_head": "7584f0c38d407913304eea05fd343f2f7fef31cc",
+      "decision": "PENDING_FVQ11_CI",
+      "tested": false,
+      "qualified": false,
+      "consumed_as_fkt05_qualification_evidence": false
+    }
+  },
+  "reference_policy": {
+    "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+    "real_b1_10_temporal_characterization_qualified": false,
+    "production_temporal_profile_qualified": false,
+    "numeric_temporal_limits_introduced_by_fkt05": false
+  },
+  "invariant_assessment": {
+    "1": "PASS",
+    "2": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS",
+    "8": "PASS",
+    "9": "PASS",
+    "11": "PASS",
+    "13": "PASS",
+    "20": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS_WITH_HOLD",
+    "26": "PASS",
+    "29": "PASS"
+  },
+  "not_claimed": [
+    "B1.10 production reference admission",
+    "production temporal profile qualification",
+    "full reference Richards reentrancy",
+    "full parallel real HeadCalc worker qualification",
+    "full SWAP water-balance identity from F-SI05 focused fixtures",
+    "production MultiSWAP scheduling/runtime qualification",
+    "optional-process temporal/storage completeness",
+    "MODFLOW coupling qualification"
+  ],
+  "downstream": {
+    "fkt05_complete": true,
+    "fkt06_may_start_from_tested_and_qualified_fkt05_lineage": true
+  }
+}
