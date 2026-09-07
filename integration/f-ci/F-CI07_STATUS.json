@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI07",
+  "title": "Worker-local legacy trial capsule and transaction-state classification",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "admitted": {
+    "worker_local_legacy_trial_capsule": true,
+    "numerical_time_reporting_forcing_rollback_categories": true,
+    "irrigation_trial_workspace_rollback": true,
+    "intermediate_and_cumulative_water_accounting_rollback": true,
+    "real_b1_10_fci06_module_compile_o0": true,
+    "real_b1_10_fci06_module_compile_o2": true,
+    "real_module_poison_restore_o0_o2": true
+  },
+  "not_admitted": {
+    "full_physical_transaction_adapter": false,
+    "complete_crop_wofost_continuation_state": false,
+    "complete_thermal_continuation_state": false,
+    "complete_solute_continuation_state": false,
+    "final_irrigation_process_state_ownership": false,
+    "full_rejected_trial_restore_rerun": false,
+    "generic_subday_physical_execution": false,
+    "complete_unrounded_interval_mass_output": false,
+    "parallel_reentrant_legacy_backend": false,
+    "b2_reference_admission": false
+  },
+  "qualification": {
+    "local_real_module_capsule_compile_o0": "PASS",
+    "local_real_module_capsule_compile_o2": "PASS",
+    "local_real_module_poison_restore": "PASS",
+    "canonical_ci": "PENDING"
+  },
+  "status": "MATERIALIZED_LOCAL_SOURCE_BOUND_PASS_CI_PENDING"
+}
