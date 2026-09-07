@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-fkt07-gate-$$"
 mkdir -p "$BUILD/o0" "$BUILD/o2"
 trap 'rm -rf "$BUILD"' EXIT
-COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -fopenmp)
+COMMON=(-std=f2008 -Wall -Wextra -Werror -ffree-line-length-none -fcheck=all -fbacktrace -fopenmp)
 TX="$ROOT/src/transaction/mod_transaction_reference.f90"
 CONTRACTS="$ROOT/src/runtime/mod_canonical_contracts.f90"
 RUNTIME="$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
