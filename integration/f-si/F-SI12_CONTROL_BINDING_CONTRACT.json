@@ -3,14 +3,15 @@
   "workstream": "F-SI",
   "work_unit": "F-SI12",
   "title": "Explicit per-solve step-duration and numerical-control binding into HeadCalc",
-  "status": "STAGED_ON_FSI11_LINEAGE_DO_NOT_IMPLEMENT_HERE",
-  "intended_branch": "work/f-si12-explicit-solver-controls",
+  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "branch": "work/f-si12-explicit-solver-controls",
   "basis": {
     "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
-    "fsi11_closeout_head_parent": "ae94803accdfd3dcdc66bcd712392ea91c696de8",
     "fsi11_status": "QUALIFIED_PRECOMPUTED_ROOT_SINK_SWKIMPL0",
+    "fsi12_branch_point": "8f2f3114cc3d89b0f7f2415a6a231bc272ae58ef",
     "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
-    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "shared_fkt_type_change_required": false
   },
   "problem": {
     "existing_request_already_contains": [
@@ -46,30 +47,55 @@
     "generic_t0_t1_semantics": "F-KT",
     "step_duration_consumption_inside_solver": "F-SI",
     "numerical_control_consumption_inside_solver": "F-SI",
-    "transaction_semantics": "F-KT",
-    "shared_fkt_type_change_required": false
+    "transaction_semantics": "F-KT"
   },
-  "required_behavior": {
-    "explicit_common_route": "HeadCalc consumes request step_duration and numerical config supplied by the adapter/service call",
-    "legacy_route": "when explicit controls are absent, preserve current legacy-global behavior exactly",
-    "policy_change": false,
+  "implementation_contract": {
+    "headcalc_signature": "add optional soil_water_numerical_config_t plus optional explicit_step_duration",
+    "explicit_route": "when an explicit state binding is used, numerical config and positive explicit_step_duration are required and become the values used by HeadCalc",
+    "legacy_route": "when no explicit state binding is used, retain the current legacy globals as the effective control values",
+    "adapter": "passes request%numerical and request%step_duration to HeadCalc; it does not choose policy",
+    "legacy_global_poisoning_target": "after request construction and before the common solve, poisoning the replaced numerical globals must not affect the admitted common result",
     "formula_change": false,
-    "calendar_semantics_added": false,
-    "swkimpl1_admitted": false,
-    "macropore_admitted": false
+    "policy_change": false,
+    "calendar_semantics_added": false
   },
-  "qualification_strategy": {
-    "reference_profile": "carry forward F-SI11 admitted swkimpl=0, swmacro=0, explicit top, F-SI09 constitutive, F-SI10 drainage/irrigation, F-SI11 precomputed root sink",
-    "authoritative_request_test": "construct a valid request, then poison only the legacy numerical-control globals that F-SI12 removes from the explicit HeadCalc path; the common solve must remain bit-identical while the legacy direct route remains unchanged when explicit controls are omitted",
+  "admitted_profile_held_constant": {
+    "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "F-SI10 precomputed provider",
+    "root_sink": "F-SI11 precomputed provider",
+    "top_boundary": "explicit provider",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2]
+  },
+  "qualification_required": {
+    "legacy_reference_identity": true,
+    "explicit_request_controls_authoritative": true,
+    "poisoned_legacy_controls_no_leak": true,
     "workers": [1, 2, 4, 8],
-    "optimization_levels": ["O0", "O2"],
-    "required_regressions": ["F-SI11 exact qualification gate", "F-KT boundary gate"],
-    "mass_rule": "no rounded proxy; focused unrounded residual and existing hard accounting gates remain mandatory"
+    "o0_o2_identity": true,
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "solver_route_iteration_identity": true,
+    "focused_unrounded_equation_residual": true,
+    "fsi11_pinned_regression": true,
+    "fkt_boundary_regression": true
   },
   "holds": {
     "swkimpl1": "NOT_ADMITTED",
     "macropore": "NOT_ADMITTED",
     "full_rootextraction_reentrancy": "NOT_ADMITTED",
-    "parallel_reference_backend": "NOT_ADMITTED"
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "generic_time_semantics_owner": "F-KT"
+  },
+  "scope_flags_before_qualification": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
   }
 }
