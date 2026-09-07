@@ -14,6 +14,12 @@ module mod_transaction_reference
     procedure(clone_state_iface), deferred :: clone
   end type transaction_state_t
 
+  ! Worker/job-local rollback context that accompanies a physical trial but is
+  ! deliberately not persistent column state. Legacy adapters may extend this
+  ! type with forcing/time/accounting cursors or other trial-only bookkeeping.
+  type, public :: transaction_attempt_context_t
+  end type transaction_attempt_context_t
+
   type, public :: trial_outcome_t
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
@@ -32,6 +38,8 @@ module mod_transaction_reference
     procedure(advance_iface), deferred :: advance
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
+    procedure :: capture_attempt_context => default_capture_attempt_context
+    procedure :: restore_attempt_context => default_restore_attempt_context
   end type transaction_model_t
 
   type, public :: transaction_policy_t
@@ -111,6 +119,21 @@ module mod_transaction_reference
 
 contains
 
+  subroutine default_capture_attempt_context(self, context)
+    class(transaction_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), allocatable, intent(out) :: context
+    if (.not. same_type_as(self, self)) error stop 'unreachable transaction model type'
+    allocate(transaction_attempt_context_t :: context)
+  end subroutine default_capture_attempt_context
+
+  subroutine default_restore_attempt_context(self, context)
+    class(transaction_model_t), intent(inout) :: self
+    class(transaction_attempt_context_t), intent(in) :: context
+    if (.not. same_type_as(self, self) .or. .not. same_type_as(context, context)) then
+      error stop 'unreachable transaction attempt context type'
+    end if
+  end subroutine default_restore_attempt_context
+
   subroutine execute_reference_interval(model, committed, t0, t1, policy, result)
     class(transaction_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
@@ -121,6 +144,8 @@ contains
     class(transaction_state_t), allocatable :: checkpoint
     class(transaction_state_t), allocatable :: full_state
     class(transaction_state_t), allocatable :: half_state
+    class(transaction_attempt_context_t), allocatable :: checkpoint_context
+    class(transaction_attempt_context_t), allocatable :: half_context
     type(trial_outcome_t) :: full_outcome, half1_outcome, half2_outcome
     real(real64) :: attempt_dt, attempt_t1, midpoint
     real(real64) :: storage0, storage_full, storage_half
@@ -139,6 +164,7 @@ contains
     end if
 
     call committed%clone(checkpoint)
+    call model%capture_attempt_context(checkpoint_context)
     storage0 = model%storage(checkpoint)
     attempt_dt = t1 - t0
 
@@ -147,6 +173,9 @@ contains
       attempt_t1 = t0 + attempt_dt
       midpoint = t0 + 0.5_real64 * attempt_dt
 
+      ! Every independent full trial starts from exactly the same physical
+      ! checkpoint and the same worker/job-local attempt context.
+      call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(full_state)
       call model%advance(full_state, t0, attempt_t1, full_outcome)
       result%full_trials = result%full_trials + 1
@@ -160,6 +189,7 @@ contains
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -168,6 +198,8 @@ contains
       storage_full = model%storage(full_state)
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
 
+      ! The two-half route is a second branch from the same checkpoint context.
+      call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(half_state)
       call model%advance(half_state, t0, midpoint, half1_outcome)
       result%half_trials = result%half_trials + 1
@@ -180,6 +212,10 @@ contains
       result%alternative_solver_calls = result%alternative_solver_calls + half1_outcome%alternative_solver_calls
 
       if (half1_outcome%solver_ok) then
+        ! Capture midpoint non-persistent context so half two continues the
+        ! accepted half-one branch rather than whichever trial ran before it.
+        call model%capture_attempt_context(half_context)
+        call model%restore_attempt_context(half_context)
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
         result%half_trials = result%half_trials + 1
         result%nonlinear_iterations = result%nonlinear_iterations + half2_outcome%nonlinear_iterations
@@ -189,6 +225,7 @@ contains
         result%linear_solves = result%linear_solves + half2_outcome%linear_solves
         result%backtracking_attempts = result%backtracking_attempts + half2_outcome%backtracking_attempts
         result%alternative_solver_calls = result%alternative_solver_calls + half2_outcome%alternative_solver_calls
+        call model%capture_attempt_context(half_context)
       else
         half2_outcome = trial_outcome_t()
       end if
@@ -196,6 +233,7 @@ contains
       solver_ok = half1_outcome%solver_ok .and. half2_outcome%solver_ok
       if (.not. solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -217,6 +255,7 @@ contains
 
       if (.not. mass_ok) then
         result%mass_rejections = result%mass_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -224,11 +263,15 @@ contains
 
       if (.not. temporal_ok) then
         result%temporal_rejections = result%temporal_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
 
+      ! Physical state and worker/job-local context commit together. The context
+      ! is restored into the backend, but is never inserted into column state.
+      call model%restore_attempt_context(half_context)
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_TWO_HALF
@@ -245,6 +288,7 @@ contains
       return
     end do
 
+    call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_reference_interval
 
