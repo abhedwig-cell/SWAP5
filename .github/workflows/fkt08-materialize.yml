@@ -1,0 +1,45 @@
+name: F-KT08 materialize authoritative mass accounting
+
+on:
+  push:
+    branches:
+      - integration/f-kt
+    paths:
+      - tools/fkt/fkt08_materialize_mass_accounting.py
+      - .github/workflows/fkt08-materialize.yml
+
+concurrency:
+  group: fkt08-materialize-mass-accounting
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize authoritative accepted interval mass accounting
+        run: python3 tools/fkt/fkt08_materialize_mass_accounting.py
+      - name: Validate exact source scope
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "src/kernel/mod_kernel_transactions.f90 src/runtime/mod_canonical_contracts.f90 src/runtime/mod_canonical_interval_runtime.f90 src/transaction/mod_transaction_reference.f90 "
+          grep -F 'accepted_mass_complete' src/transaction/mod_transaction_reference.f90
+          grep -F 'missing_contribution_mask' src/runtime/mod_canonical_contracts.f90
+          grep -F 'call finalize_interval_mass' src/runtime/mod_canonical_interval_runtime.f90
+          grep -F 'accepted_mass = candidate_state%mass' src/kernel/mod_kernel_transactions.f90
+      - name: Persist production-source checkpoint before qualification
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/transaction/mod_transaction_reference.f90 \
+                  src/runtime/mod_canonical_contracts.f90 \
+                  src/runtime/mod_canonical_interval_runtime.f90 \
+                  src/kernel/mod_kernel_transactions.f90
+          git commit -m "F-KT08: materialize authoritative accepted interval mass accounting"
+          git push origin HEAD:integration/f-kt
