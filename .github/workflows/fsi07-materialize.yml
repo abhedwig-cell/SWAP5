@@ -1,0 +1,50 @@
+name: F-SI07 materialize state binding
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'tools/fsi/fsi07_materialize_state_binding.py'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'integration/f-si/F-SI07_STATE_BINDING_CONTRACT.json'
+      - '.github/workflows/fsi07-materialize.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi07-materialize-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact F-SI06 qualified transformation
+        run: python3 tools/fsi/fsi07_materialize_state_binding.py
+      - name: Validate source scope
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only)
+          printf '%s\n' "${changed[@]}"
+          [[ ${#changed[@]} -eq 3 ]]
+          for p in "${changed[@]}"; do
+            case "$p" in
+              src/legacy/b1_10_port/headcalc.f90|src/legacy/b1_10_port/soilwater.f90|src/adapter/mod_reference_richards_legacy_binding.f90) ;;
+              *) echo "F-SI07 unexpected materialized path: $p" >&2; exit 1 ;;
+            esac
+          done
+          git diff -- src/transaction src/runtime || true
+          [[ -z "$(git diff --name-only -- src/transaction src/runtime)" ]]
+      - name: Persist source checkpoint before qualification
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/headcalc.f90 src/legacy/b1_10_port/soilwater.f90 src/adapter/mod_reference_richards_legacy_binding.f90
+          git commit -m 'F-SI07: materialize explicit per-solve state binding'
+          git push origin HEAD:work/f-si07-state-binding
