@@ -22,9 +22,32 @@
     "fvq09_scope": "REAL_B1_10_TEMPORAL_HARNESS_AND_EXTERNAL_ASSET_BUNDLE_CONTRACT_ONLY",
     "fvq09_real_temporal_characterization_qualified": false
   },
+  "qualification": {
+    "workflow": "F-MQ17 F-SI03 source-bound admission",
+    "run_id": 34122115688,
+    "job_id": 101742311847,
+    "conclusion": "success",
+    "python_admission_tests": "PASS_6_OF_6",
+    "external_scope_verifier": "PASS",
+    "exact_fsi03_tested_postimage_gate": "PASS",
+    "fsi03_reference_binding_O0_O2": "PASS_TESTDOUBLE",
+    "fsi03_headcalc_stub_calls_per_run": 5,
+    "fsi03_parameter_set_id": 4301,
+    "fsi02_common_contract_regression": "PASS_O0_O2_1_2_4_8_THREADS",
+    "fsi02_workspace_payload_bytes": 1276
+  },
+  "coverage": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "source_bound_adapter_prerequisite_rows": ["P05", "P08", "P19"]
+  },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI03_SOURCE_BOUND_ADMISSION_CANDIDATE",
-  "scope": "Admit the qualified F-SI03 source-bound adapter contract and verify its exact tested postimage without claiming real HeadCalc numerics, real B1.10 physics, physical mass identity, reentrant reference execution, or production MultiSWAP runtime qualification."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FSI03_SOURCE_BOUND_ADAPTER_ADMITTED_NO_REAL_PHYSICS_PROMOTION",
+  "scope": "Admit the qualified F-SI03 source-bound adapter contract and verify its exact tested postimage without claiming real HeadCalc numerics, real B1.10 physics, physical mass identity, reentrant reference execution, or production MultiSWAP runtime qualification.",
+  "next_dependency": "F-SI04 real HeadCalc replay/workspace migration and/or F-VQ real B1.10 asset admission are required before any real-physics or production-runtime MQ promotion."
 }
