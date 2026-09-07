@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "qualified_dependencies": {
+    "F-KT04": {
+      "tested_source_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+      "qualification_evidence": "acd55ecee8802a0a9fb5d854380622f2d20a7503",
+      "status": "QUALIFIED",
+      "consumed": true
+    },
+    "F-SI03": {
+      "tested_postimage": "79e3e9052a4f68306b8c826b063497247fd339d6",
+      "qualification_closeout": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+      "status": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+      "consumed": true
+    }
+  },
+  "moving_dependencies": {
+    "F-KT05": {
+      "observed_branch_head": "0ed2c7204cedc249ae07ef5f1deec98adf32f49d",
+      "earlier_contract_commit": "28d67cd25fc9d30e7176450bbe8e4f034960f9ce",
+      "observed_status": "PERSISTED_NOT_TESTED_NOT_QUALIFIED",
+      "consumed": false
+    },
+    "F-SI04": {
+      "observed_branch_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+      "tested_source_postimage": "0cfbefc271447b4b53eeee50c1dfbb2acaf020df",
+      "observed_status": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY",
+      "production_seam_qualified": false,
+      "consumed": false
+    }
+  },
+  "shared_downstream_baseline": {
+    "found": false,
+    "production_migration_allowed": false,
+    "reason": "No exact Git branch/commit was found that qualifies the required F-KT and F-SI production contracts together. F-VQ downstream branch is qualification-only and does not constitute such a merge."
+  }
+}
