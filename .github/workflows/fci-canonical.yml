@@ -99,3 +99,15 @@ jobs:
         run: gfortran --version
       - name: F-CI09 B1.10 transaction binding gate
         run: bash tests/fci/run_fci09_gate.sh
+
+  fci10-time-mass-seam:
+    needs: fci09-b1-10-transaction-binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI10 time and mass seam gate
+        run: bash tests/fci/run_fci10_gate.sh
