@@ -1,0 +1,27 @@
+name: F-SI12 explicit solver controls
+
+on:
+  push:
+    branches:
+      - work/f-si12-explicit-solver-controls
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'integration/f-si/F-SI12_CONTROL_BINDING_CONTRACT.json'
+      - 'integration/f-si/F-SI12_QUALIFICATION.json'
+      - 'tests/fsi/run_fsi12_explicit_controls_gate.sh'
+      - '.github/workflows/fsi12-explicit-controls.yml'
+
+jobs:
+  fsi12-explicit-controls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI12 explicit solver-control qualification gate
+        run: bash tests/fsi/run_fsi12_explicit_controls_gate.sh
