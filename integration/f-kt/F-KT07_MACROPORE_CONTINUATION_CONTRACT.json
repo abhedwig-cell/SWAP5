@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "workstream": "F-KT",
   "work_unit": "F-KT07",
   "title": "B1.10 macropore continuation state materialization",
@@ -19,7 +19,7 @@
     "carrier_component": "allocatable b1_10_process_state_t%macropore",
     "fields": ["nstep"],
     "inactive_route": "component remains unallocated",
-    "clone_requirement": "deep copy through b1_10_process_clone",
+    "clone_requirement": "deep copy through b1_10_process_clone including sparse states with unallocated optional components",
     "implicit_capture_from_legacy_history": false,
     "explicit_seams": [
       "bind_b1_10_macropore_continuation",
@@ -41,6 +41,17 @@
     "stale_checkpoint_cannot_restore_nstep": true,
     "mass_rejected_trial_cannot_publish_nstep": true,
     "inactive_route_remains_unallocated": true
+  },
+  "forward_evolution_regression": {
+    "canonical_fci09_runner_modified": false,
+    "canonical_fci09_historical_process_pin_modified": false,
+    "historical_fci09_runner_blob": "4811a4653cb98d9d9c3630ed303c2fe0cc8975f7",
+    "historical_process_blob": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "fkt07_process_blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae",
+    "runner": "tests/fkt/run_fkt07_fci09_forward_regression.sh",
+    "allowed_substitution": "exactly one process-state provenance pin in a temporary copy of the byte-pinned historical F-CI09 runner",
+    "semantic_test_logic_changed": false,
+    "purpose": "Run the original F-CI09 transaction-binding O0/O2 semantics against the legitimate F-KT07 process-state forward evolution without rewriting historical canonical provenance evidence."
   },
   "external_basis": {
     "fsi06_branch": "work/f-si06-history-isolation",
@@ -84,15 +95,16 @@
     "materialized carrier is present only in B1.10 adapter process state",
     "inactive route remains unallocated",
     "bind/read/clear/completeness seam is executable",
-    "concrete b1_10_process_state_t clone preserves allocation and nstep",
+    "concrete b1_10_process_state_t clone preserves allocation and nstep for full and sparse states",
     "generic kernel contains no nstep/F-SI history dependency",
     "F-KT06 gate remains green",
     "O0 and O2 focused lifecycle tests pass",
-    "selected F-CI03/04/08/09/10/11/13/14 regressions remain green"
+    "F-CI03/04/08/10/11/13/14 historical regressions remain green",
+    "F-CI09 historical runner and non-process dependencies remain byte-pinned while its original O0/O2 transaction-binding semantics pass through the source-bound F-KT07 forward-evolution regression"
   ],
   "holds": [
     "Macropore production remains fail-closed until an F-SI-owned adapter explicitly transfers nstep between the solver history/process route and this transaction state and that composed route is independently qualified.",
-    "F-SI07 shared-global request/candidate isolation remains F-SI ownership and is not implemented here.",
+    "F-SI08 process/evaluation-provider isolation remains F-SI ownership and is not implemented here.",
     "Real B1.10 production reference execution remains fail-closed.",
     "Production MultiSWAP runtime remains outside F-KT."
   ]
