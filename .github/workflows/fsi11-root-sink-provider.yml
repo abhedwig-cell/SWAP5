@@ -1,0 +1,29 @@
+name: F-SI11 B1.10 root-sink provider
+
+on:
+  push:
+    branches:
+      - work/f-si11-b110-root-sink-provider
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_b110_root_sink_provider.f90'
+      - 'integration/f-si/F-SI11_ROOT_SINK_PROVIDER_CONTRACT.json'
+      - 'integration/f-si/F-SI11_QUALIFICATION.json'
+      - 'tests/fsi/test_fsi11_root_sink_provider.f90'
+      - 'tests/fsi/run_fsi11_root_sink_provider_gate.sh'
+      - '.github/workflows/fsi11-root-sink-provider.yml'
+
+jobs:
+  fsi11-root-sink-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI11 root-sink provider qualification gate
+        run: bash tests/fsi/run_fsi11_root_sink_provider_gate.sh
