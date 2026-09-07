@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI11",
+  "status": "QUALIFIED_PRECOMPUTED_ROOT_SINK_SWKIMPL0",
+  "qualified": true,
+  "branch": "work/f-si11-b110-root-sink-provider",
+  "basis": {
+    "fsi10_qualified_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+    "fsi10_status": "QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE",
+    "oracle": "B1.10",
+    "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "shared_fkt_type_change": false
+  },
+  "tested_postimage": {
+    "commit": "6291cb550e1a9e81592cdac2471edb76d3e56706",
+    "workflow_run": 34150914944,
+    "workflow_job": 101832828326,
+    "conclusion": "success",
+    "common_solver_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "root_sink_provider_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "headcalc_blob": "420fe2996199e6d3f162b7669957e1a95919f353"
+  },
+  "admitted_profile": {
+    "constitutive_provider": "qualified F-SI09 corrected B1.10 default-MvG provider",
+    "top_boundary": "explicit provider",
+    "drainage_irrigation_provider": "qualified F-SI10 precomputed drainage and subsurface-irrigation binding",
+    "root_sink_provider": "F-SI11 explicit precomputed qrot-style per-node root-extraction sink",
+    "root_sink_evaluation": "once at solve entry and constant during admitted solve",
+    "residual_order": "storage + drainage_sink - subsurface_irrigation_source + root_sink + hydraulic_flux_terms",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2],
+    "workers": [1, 2, 4, 8],
+    "optimization_levels": ["O0", "O2"]
+  },
+  "gate_results": {
+    "static_root_sink_seam": "PASS",
+    "root_sink_mapping_o0": "PASS",
+    "root_sink_mapping_o2": "PASS",
+    "root_sink_mapping_o0_o2_identity": "PASS",
+    "arithmetic_order_sentinel_o0": "PASS",
+    "arithmetic_order_sentinel_o2": "PASS",
+    "arithmetic_order_o0_o2_identity": "PASS",
+    "common_route_o0_1_2_4_8": "PASS",
+    "common_route_o2_1_2_4_8": "PASS",
+    "common_route_o0_o2_identity": "PASS",
+    "nonzero_heterogeneous_root_sink": "PASS",
+    "active_vs_root_inactive_reference_o0": "PASS",
+    "active_vs_root_inactive_reference_o2": "PASS",
+    "serial_repeated_identity": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "aba_order_independence": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "scratch_poisoning": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "request_immutability": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "legacy_qrot_global_poisoning": "PASS",
+    "solver_route_iteration_identity": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "focused_unrounded_equation_residual": "PASS",
+    "swkimpl1_failclosed_o0": "PASS",
+    "swkimpl1_failclosed_o2": "PASS",
+    "swkimpl1_failclosed_o0_o2_identity": "PASS",
+    "swkimpl1_rejected_before_headcalc": "PASS_ROUTE_LEGACY_IMPLICIT_K_DEFERRED_HEADCALC_CALLS_ZERO",
+    "fsi10_pinned_exact_regression": "PASS",
+    "fkt_boundary_regression": "PASS"
+  },
+  "source_and_arithmetic_proof": {
+    "legacy_qrot_addition_site_preserved": true,
+    "root_folded_into_drainage_sink": false,
+    "headcalc_root_provider_evaluation_count_per_solve": 1,
+    "legacy_global_qrot_used_on_admitted_explicit_route": false,
+    "root_extraction_physics_moved_into_solver": false,
+    "provider_binds_precomputed_output_only": true
+  },
+  "failure_recovery": {
+    "first_swkimpl1_negative_workflow_run": 34150694661,
+    "first_swkimpl1_negative_failure": "test expected the HeadCalc guard message, while the already-qualified adapter rejected swkimpl=1 earlier with route legacy-implicit-k-deferred",
+    "production_source_implicated": false,
+    "repair_commit": "ef84454899ae2418f7cdedfe50f04111b6653e28",
+    "repair": "negative gate now verifies SW_SOLVE_FAILED, route legacy-implicit-k-deferred, and headcalc_calls=0 under O0 and O2"
+  },
+  "physics_and_policy": {
+    "richards_formulas_changed": false,
+    "root_extraction_physics_changed": false,
+    "drainage_physics_changed": false,
+    "irrigation_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_conservation_relaxed": false
+  },
+  "holds": {
+    "swkimpl1_dynamic_root_extraction": "NOT_ADMITTED_REQUIRES_ROOT_PROVIDER_REEVALUATION_AND_JACOBIAN_CONTRACT_AND_REFERENCE_IMPLICIT_K_ROUTE_ADMISSION",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_module_reentrancy": "NOT_QUALIFIED_BY_PRECOMPUTED_OUTPUT_BINDING_ONLY",
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "production_precomputed_root_sink_provider_admitted": true,
+    "production_precomputed_root_sink_provider_admission_scope": "precomputed qrot-style root sink, constant during solve, swkimpl=0, swmacro=0, bottom mode 7/-2",
+    "real_headcalc_parallel_reentrancy_qualified_for_admitted_profile": true,
+    "parallel_reference_backend_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "downstream_fsi12_allowed": true,
+  "next_work_unit": {
+    "code": "F-SI12",
+    "scope": "Assess the next remaining solver-isolation dependency source-bound before implementation. Do not automatically admit swkimpl=1, macropores, or full RootExtraction physics; select the smallest reference-preserving seam that removes a real HeadCalc/global dependency."
+  }
+}
