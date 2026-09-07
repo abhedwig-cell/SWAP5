@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "failure_run": 34147779167,
+  "failure_job": 101823419371,
+  "failed_head": "7bd3034194561e3b70d2a8cb846722b1610a37ce",
+  "failed_step": "F-SI09 B1.10 provider qualification gate",
+  "failure_class": "TEST_HARNESS_COMPILE_WARNING_PROMOTED_TO_ERROR",
+  "exact_failure": {
+    "file": "tests/fsi/test_fsi09_b110_common_parallel.F90",
+    "expression": "all(kval == kval(1))",
+    "compiler_diagnostic": "Equality comparison for REAL(8) [-Werror=compare-reals]",
+    "provider_compilation_before_failure": "PASS",
+    "provider_fingerprint_o0_before_failure": "PASS",
+    "provider_fingerprint_o2_before_failure": "PASS",
+    "headcalc_or_adapter_semantic_failure_observed": false,
+    "link_failure_observed": false,
+    "source_provenance_failure_observed": false
+  },
+  "root_cause": "The F-SI09 concurrency fixture used a REAL equality solely to assert that identical within-column node parameters produced identical conductivity. The test was compiled with -Werror and compare-reals is correctly diagnosed. This was a test-source correctness defect, not a constitutive formula or source-binding defect.",
+  "minimal_repair": {
+    "commit": "d203eb5599fff5cb692410347df678ebdf02f8ac",
+    "change": "Replace REAL == comparison with IEEE real64 bit-pattern comparison through transfer(...,int64).",
+    "production_provider_changed": false,
+    "headcalc_changed": false,
+    "adapter_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false
+  },
+  "repair_validation": {
+    "workflow_run": 34147885551,
+    "workflow_job": 101823735787,
+    "conclusion": "success",
+    "scope": "Provider fingerprint O0/O2, real-HeadCalc common-route 1/2/4/8 concurrency, O0/O2 identity and F-SI08 regression before exact-source CI oracle strengthening."
+  }
+}
