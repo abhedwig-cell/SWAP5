@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ10",
+  "title": "F-CI11 physical fixture admission assessment",
+  "production_code_change_allowed": false,
+  "fmq_base": {
+    "branch": "qualification/f-mq09-single-vs-multiswap",
+    "commit": "96cacecb7c0dba4795d475044eb09727a3ce61c8"
+  },
+  "canonical_basis": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "canonical_workflow_run": 34100440481,
+    "oracle": "B1.10",
+    "source_tree_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
+  },
+  "fci11_capabilities_admitted_as_evidence": {
+    "generic_interval_seam": true,
+    "non_midnight_and_cross_calendar_day_intervals": true,
+    "worker_local_unrounded_trial_mass_wiring": true,
+    "hard_mass_conservation_for_exercised_hupsel_profile": true,
+    "o0_o2_identity": true
+  },
+  "fmq03_reference_record_requirements": {
+    "reference_run_id": false,
+    "committed_state_at_t0": false,
+    "short_interval_forcing": false,
+    "numerical_reference_config": false,
+    "expected_endpoint_state": false,
+    "unrounded_internal_mass_accounting": false,
+    "extractor_identity_and_output_hash": false
+  },
+  "why_mass_record_is_still_false": "F-CI10/F-CI11 prove unrounded mass formulation and residual bounds, but canonical evidence does not contain the F-MQ03 event record with storage_start, storage_end and identified signed boundary terms for one pinned interval.",
+  "f_vq_observation": {
+    "branch": "qualification/f-vq01-admission",
+    "head_inspected": "4bf00d23fc35944df30cc17fc5dd4544e813c29d",
+    "mode": "QUALIFICATION_ONLY",
+    "execute_reference_interval_real_b1_10_admitted": false,
+    "fci12_named_as_blocker": true
+  },
+  "fixture_admission_allowed": false,
+  "physical_fixture_materialized": false,
+  "coverage_effect": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "promotions": []
+  },
+  "gate_evidence": {
+    "authored_repository_tests": 7,
+    "repository_test_run_claimed": false,
+    "equivalent_candidate_contract_check": "PASS"
+  },
+  "blockers": [
+    "F-CI12 must admit the qualified generic B1.10 advance/mass seam on the real reference execution path as required by F-VQ01.",
+    "F-VQ must emit a pinned reference_run_checkpoint record containing committed state, forcing slice, numerical config, endpoint state and F-MQ03-complete unrounded mass accounting.",
+    "The reference-run extractor identity and exact output hash must be persisted."
+  ],
+  "next_action": "When F-CI12/F-VQ emits the complete pinned reference record, rerun the existing F-MQ04c admission bridge and F-MQ03 fixture builder without changing the fixture contract.",
+  "status": "BLOCKED_FCI11_CAPABILITY_READY_REFERENCE_RUN_RECORD_NOT_ADMITTED"
+}
