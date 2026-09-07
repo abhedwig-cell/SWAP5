@@ -22,7 +22,6 @@ HET_DRIVER="$ROOT/tests/fsi/test_fsi08_provider_context_parallel.F90"
 FAIL_STUBS="$ROOT/tests/fsi/fsi07_adapter_stubs.f90"
 FAIL_DRIVER="$ROOT/tests/fsi/test_fsi08_provider_failclosed.f90"
 OWNER="$ROOT/integration/f-si/F-SI08_PROVIDER_CONTEXT_CONTRACT.json"
-ORACLE="$ROOT/reference/swap-4.3.1/snapshots/B1.10.yml"
 
 # Protect F-KT, common solver API and the qualified workspace/state layout.
 for path in \
@@ -43,6 +42,10 @@ grep -Fq "provider_constitutive_active = associated(evaluation_context%constitut
 grep -Fq "provider_source_sink_active = associated(evaluation_context%source_sink)" "$HEADCALC"
 grep -Fq "evaluation_context%constitutive%evaluate" "$HEADCALC"
 grep -Fq "evaluation_context%source_sink%evaluate" "$HEADCALC"
+grep -Fq "state%k(1:numnod) = provider_k(1:numnod)" "$HEADCALC"
+grep -Fq "state%dimoca(1:NN) = provider_capacity(1:NN)" "$HEADCALC"
+grep -Fq "state%theta(1:NN) = provider_theta(1:NN)" "$HEADCALC"
+grep -Fq "state%kmean(numnod+1) = provider_k(numnod)" "$HEADCALC"
 grep -Fq "root_sink_term = 0.0d0" "$HEADCALC"
 grep -Fq "root_sink_term = qrot(node)" "$HEADCALC"
 grep -Fq "route = 'explicit-constitutive-provider-required'" "$ADAPTER"
@@ -61,8 +64,12 @@ for name in ['qdra','qssdi','qrot','watcon','hconduc','moiscap','dhconduc','cofg
     if re.search(r'\b'+name+r'\b',solve,re.I):
         raise SystemExit(f'F-SI08 adapter solve leaks legacy provider token: {name}')
 h=pathlib.Path(sys.argv[3]).read_text()
-assert h.count('evaluation_context%constitutive%evaluate') >= 4
+# Three constitutive evaluations are intentional in the admitted swkimpl=0 profile:
+# initial K, per-Newton capacity, and post-step theta/K refresh. Free drainage reuses
+# the refreshed provider_k, matching the legacy use of the current bottom-node K.
+assert h.count('evaluation_context%constitutive%evaluate') == 3
 assert h.count('evaluation_context%source_sink%evaluate') == 1
+assert 'state%kmean(numnod+1) = provider_k(numnod)' in h
 print('F-SI08_STATIC_PROVIDER_BOUNDARY PASS')
 PY
 
