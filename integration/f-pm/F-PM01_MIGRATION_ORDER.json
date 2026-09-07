@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM01",
   "source_basis": {
@@ -14,6 +14,11 @@
     "b1_10_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
     "b0_nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
   },
+  "current_dependency_context": {
+    "F-KT05": "QUALIFIED",
+    "F-SI05": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+    "shared_FKT05_FSI05_downstream_baseline": false
+  },
   "selection_criteria": [
     "small state footprint",
     "few solver internals",
@@ -24,20 +29,21 @@
     "reference evidence"
   ],
   "recommended_order": [
-    {"rank":1,"process_id":"SNOW","decision":"FIRST_PROCESS_SEAM","reason":"Very small persistent state, one compact process routine, no direct solver arrays or I/O in the routine, clean candidate for explicit parameters/state/forcing/results split. The legacy day-start gate is externally visible and can be removed from the process contract without changing equations."},
-    {"rank":2,"process_id":"IRRIGATION","decision":"AFTER_FKT05_AND_SHARED_BASELINE","reason":"High MultiSWAP value and no HeadCalc call, but calendar/event counters and h/theta trigger dependencies require reusable process checkpoint semantics and a hydraulic view."},
-    {"rank":3,"process_id":"ROOT_WATER_UPTAKE","decision":"AFTER_SOLVER_HYDRAULIC_VIEW","reason":"High architectural value and no I/O, but directly consumes h/theta and produces qrot used by the solver."},
+    {"rank":1,"process_id":"SNOW","decision":"FIRST_PROCESS_SEAM_AFTER_SHARED_BASELINE","reason":"Very small physical continuation state (ssnow, slw), one compact process routine, no direct solver arrays or process-local I/O, and strong source-bound characterization. snowinco is reporting/balance state, not physical continuation state. The legacy flDayStart gate is external to the process contract, but generic-duration/subdaily numerical scaling remains explicitly unqualified."},
+    {"rank":2,"process_id":"IRRIGATION","decision":"AFTER_SHARED_BASELINE_AND_HYDRAULIC_VIEW","reason":"F-KT05 reusable checkpoint semantics are now qualified, removing the former transaction-contract dependency. Production migration still needs a shared downstream source basis and an admitted hydraulic view for h/theta trigger rules."},
+    {"rank":3,"process_id":"ROOT_WATER_UPTAKE","decision":"AFTER_SHARED_BASELINE_AND_HYDRAULIC_VIEW","reason":"High architectural value and no I/O, but directly consumes h/theta and produces qrot used by the solver. F-SI05 isolates focused HeadCalc workspace but does not itself define the complete process-facing hydraulic view/sink seam."},
     {"rank":4,"process_id":"EVAPOTRANSPIRATION","decision":"AFTER_VQ_FIXTURE","reason":"Central surface flux process but currently mixes forcing acquisition, daily/sub-daily clocks, crop/interception/snow state and global outputs."},
     {"rank":5,"process_id":"SOIL_TEMPERATURE","decision":"AFTER_VQ_FIXTURE","reason":"Moderate state, physically separate, but coupled to snow/frost/root oxygen and needs dedicated reference cases."},
-    {"rank":6,"process_id":"DRAINAGE","decision":"AFTER_SOLVER_HYDRAULIC_VIEW","reason":"Tightly ordered inside soil-water retry and returns solver source/sink fluxes."},
+    {"rank":6,"process_id":"DRAINAGE","decision":"AFTER_SHARED_BASELINE_AND_HYDRAULIC_VIEW","reason":"Tightly ordered inside soil-water retry and returns solver source/sink fluxes. F-SI05 does not qualify the required broader drainage-facing hydraulic interface."},
     {"rank":7,"process_id":"SURFACE_WATER","decision":"AFTER_SHARED_DOWNSTREAM_BASELINE","reason":"Combines drainage, surface storage and solver boundary semantics."},
-    {"rank":8,"process_id":"FROST","decision":"AFTER_SOLVER_HYDRAULIC_VIEW","reason":"Changes conductivity and boundary behavior and therefore belongs after solver-facing interfaces stabilize."},
+    {"rank":8,"process_id":"FROST","decision":"AFTER_SHARED_BASELINE_AND_SOLVER_INTERFACE","reason":"Changes conductivity and boundary behavior. F-SI05 covers focused solver workspace ownership, not the complete frost-facing production boundary contract."},
     {"rank":9,"process_id":"CROP","decision":"AFTER_VQ_FIXTURE","reason":"Large calendar/state/I/O/WOFOST surface with high hidden-semantic risk."},
     {"rank":10,"process_id":"TILLAGE","decision":"BLOCKED_OWNERSHIP","reason":"Mutates constitutive parameters and hydraulic state; state/parameter ownership is unresolved."},
-    {"rank":11,"process_id":"MACROPORES","decision":"DEFER_OPTIONAL_PHYSICS","reason":"Optional and deeply entangled with soil-water retry/state restoration."},
+    {"rank":11,"process_id":"MACROPORES","decision":"DEFER_OPTIONAL_PHYSICS","reason":"Optional and deeply entangled with soil-water retry/state restoration. F-SI05 explicitly leaves macropore solver paths deferred."},
     {"rank":12,"process_id":"SOLUTE","decision":"DEFER_OPTIONAL_PHYSICS","reason":"Optional process consuming many water fluxes; migrate after water-process contracts."},
     {"rank":13,"process_id":"SOIL_NUTRIENT_MANAGEMENT","decision":"DEFER_OPTIONAL_PHYSICS","reason":"Optional WOFOST/management stack outside the first water-process tranche."}
   ],
   "first_process": "SNOW",
-  "f_pm02_candidate": "Migrate the snow process body to an explicit process interface without changing equations, only after a qualified shared F-KT/F-SI downstream baseline exists."
+  "f_pm02_candidate": "Migrate the snow process body to an explicit process interface without changing equations, after an exact qualified shared F-KT05/F-SI05 downstream production basis exists. Preserve one-call B1.10 numerical semantics initially; do not infer generic-duration scaling inside the structural migration.",
+  "production_release_hold": "No F-PM02 production source change from this branch because the independently qualified F-KT05 and F-SI05 lineages are still diverged."
 }
