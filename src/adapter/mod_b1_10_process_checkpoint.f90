@@ -14,7 +14,7 @@ module mod_b1_10_process_checkpoint
        laipot, wrtpot, wstpot, wlvpot, wsopot, dwrtpot, dwstpot, dwlvpot, &
        dmhrv, dmloss, icut, tcut, dmhrvpot, dmlosspot, icutpot, tcutpot
   use MOD_cropdevelopment, only: fl_cropcalendar, fl_readcropfile, fl_prep, fl_sow, fl_germ, &
-       delay_prep, delay_sow, tsumgerm, cumdens, cumdens_top, lrv_node, wroot_node, wroot_node_top
+       delay_prep, delay_sow, tsumgerm, rdpot, cumdens, cumdens_top, lrv_node, wroot_node, wroot_node_top
   use MOD_wofost, only: wofost_states, agro_management, s_act, s_pot, m_act, m_pot, &
        vern, fl_anthesis, fl_vernalised, t_tsumcum, nofd, atmin7
   implicit none
@@ -52,6 +52,7 @@ module mod_b1_10_process_checkpoint
     integer :: delay_prep = 0
     integer :: delay_sow = 0
     real(real64) :: tsumgerm = 0.0_real64
+    real(real64) :: rdpot = 0.0_real64
     integer :: noddrz = 0
     real(real64) :: rd = 0.0_real64
     real(real64) :: dvs = 0.0_real64
@@ -95,7 +96,7 @@ module mod_b1_10_process_checkpoint
     type(b1_10_thermal_state_t), allocatable :: thermal
     type(b1_10_solute_state_t), allocatable :: solute
     type(b1_10_irrigation_state_t), allocatable :: irrigation
-    type(b1_10_crop_common_state_t), alllocatable :: crop
+    type(b1_10_crop_common_state_t), allocatable :: crop
     type(b1_10_wofost_state_t), allocatable :: wofost
   contains
     procedure :: clone => b1_10_process_clone
@@ -147,7 +148,7 @@ contains
       state%crop%fl_cropemergence = fl_cropemergence
       state%crop%fl_cropharvest = fl_cropharvest
       state%crop%fl_cropharvestday = fl_cropharvestday
-      state%crop%fl_start_cropisreset = fl_cropisreset
+      state%crop%fl_cropisreset = fl_cropisreset
       state%crop%fl_cropcalendar = fl_cropcalendar
       state%crop%fl_readcropfile = fl_readcropfile
       state%crop%fl_prep = fl_prep
@@ -156,37 +157,38 @@ contains
       state%crop%delay_prep = delay_prep
       state%crop%delay_sow = delay_sow
       state%crop%tsumgerm = tsumgerm
-      state%crop%noddrz=noddrz
-      state%crop%rd=rd; state%crop%dvs=dvs; state%crop%lai=lai; state%crop%tsum=tsum
-      state%crop%cf=cf; state%crop%ch=ch; state%crop%vcover=vcover
-      state%crop%siccap=siccap; state%crop%sicact=sicact; state%crop%siccaploss=siccaploss
+      state%crop%rdpot = rdpot
+      state%crop%noddrz = noddrz
+      state%crop%rd = rd; state%crop%dvs = dvs; state%crop%lai = lai; state%crop%tsum = tsum
+      state%crop%cf = cf; state%crop%ch = ch; state%crop%vcover = vcover
+      state%crop%siccap = siccap; state%crop%sicact = sicact; state%crop%siccaploss = siccaploss
       state%crop%wrt=wrt; state%crop%wst=wst; state%crop%wlv=wlv; state%crop%wso=wso
       state%crop%dwrt=dwrt; state%crop%dwst=dwst; state%crop%dwlv=dwlv
       state%crop%laipot=laipot; state%crop%wrtpot=wrtpot; state%crop%wstpot=wstpot; state%crop%wlvpot=wlvpot; state%crop%wsopot=wsopot
       state%crop%dwrtpot=dwrtpot; state%crop%dwstpot=dwstpot; state%crop%dwlvpot=dwlvpot
       state%crop%dmhrv=dmhrv; state%crop%dmloss=dmloss; state%crop%icut=icut; state%crop%tcut=tcut
       state%crop%dmhrvpot=dmhrvpot; state%crop%dmlosspot=dmlosspot; state%crop%icutpot=icutpot; state%crop%tcutpot=tcutpot
-      nc=min(size(cumdens),2*(numnod+1))
-      nt=min(size(cumdens_top),numnod+1)
-      state%crop%cumdens=cumdens(1:nc)
-      state%crop%cumdens_top=cumdens_top(1:nt)
-      state%crop%lrv_node=lrv_node(1:numnod)
-      state%crop%wroot_node=wroot_node(1:numnod)
-      state%crop%wroot_node_top=wroot_node_top(1:numnod)
+      nc = min(size(cumdens), 2*(numnod+1))
+      nt = min(size(cumdens_top), numnod+1)
+      state%crop%cumdens = cumdens(1:nc)
+      state%crop%cumdens_top = cumdens_top(1:nt)
+      state%crop%lrv_node = lrv_node(1:numnod)
+      state%crop%wroot_node = wroot_node(1:numnod)
+      state%crop%wroot_node_top = wroot_node_top(1:numnod)
 
       if (icrop >= 1 .and. icrop <= size(croptype) .and. croptype(icrop) == 2) then
-      if (.not. allocated(state%wofost)) allocate(state%wofost)
-      state%wofost%s_act=s_act; state%wofost%s_pot=s_pot
-      state%wofost%m_act=m_act; state%wofost%m_pot=m_pot
-      state%wofost%vern=vern; state%wofost%fl_anthesis=fl_anthesis; state%wofost%fl_vernalised=fl_vernalised
-      state%wofost%t_tsumcum=t_tsumcum; state%wofost%nofd=nofd; state%wofost%atmin7=atmin7
-    else if (allocated(state%wofost)) then
-      deallocate(state%wofost)
+        if (.not. allocated(state%wofost)) allocate(state%wofost)
+        state%wofost%s_act=s_act; state%wofost%s_pot=s_pot
+        state%wofost%m_act=m_act; state%wofost%m_pot=m_pot
+        state%wofost%vern=vern; state%wofost%fl_anthesis=fl_anthesis; state%wofost%fl_vernalised=fl_vernalised
+        state%wofost%t_tsumcum=t_tsumcum; state%wofost%nofd=nofd; state%wofost%atmin7=atmin7
+      else if (allocated(state%wofost)) then
+        deallocate(state%wofost)
+      end if
+    else
+      if (allocated(state%crop)) deallocate(state%crop)
+      if (allocated(state%wofost)) deallocate(state%wofost)
     end if
-  else
-    if (allocated(state%crop)) deallocate(state%crop)
-    if (allocated(state%wofost)) deallocate(state%wofost)
-  end if
   end subroutine
 
   subroutine restore_b1_10_process_state(state)
@@ -204,7 +206,7 @@ contains
     end if
 
     if (allocated(state%thermal)) then
-      if (size(state%thermal% tsoil) /= numnod) error stop 'B1.10 process state: thermal shape mismatch'
+      if (size(state%thermal%tsoil) /= numnod) error stop 'B1.10 process state: thermal shape mismatch'
       tsoil(1:numnod)=state%thermal%tsoil
     end if
     if (allocated(state%solute)) then
@@ -230,7 +232,7 @@ contains
       fl_readcropfile=state%crop%fl_readcropfile
       fl_prep=state%crop%fl_prep; fl_sow=state%crop%fl_sow; fl_germ=state%crop%fl_germ
       delay_prep=state%crop%delay_prep; delay_sow=state%crop%delay_sow; tsumgerm=state%crop%tsumgerm
-      noddrz=state%crop%noddrz; rd=state%crop%rd; dvs=state%crop%dvs; lai=state%crop%lai; tsum=state%crop%tsum
+      rdpot=state%crop%rdpot; noddrz=state%crop%noddrz; rd=state%crop%rd; dvs=state%crop%dvs; lai=state%crop%lai; tsum=state%crop%tsum
       cf=state%crop%cf; ch=state%crop%ch; vcover=state%crop%vcover
       siccap=state%crop%siccap; sicact=state%crop%sicact; siccaploss=state%crop%siccaploss
       wrt=state%crop%wrt; wst=state%crop%wst; wlv=state%crop%wlv; wso=state%crop%wso
