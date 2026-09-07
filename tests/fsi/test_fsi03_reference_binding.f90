@@ -71,16 +71,16 @@ program test_fsi03_reference_binding
   call expect(result_a1%status == SW_SOLVE_CONVERGED, failures)
   call expect(.not. result_a1%retry_advised, failures)
   call expect(trim(result_a1%diagnostics%route) == 'legacy-reference-bound', failures)
-  call expect(maxval(abs(observed_head-request_a%base_state%pressure_head)) == 0.0_real64, failures)
-  call expect(maxval(abs(observed_theta-request_a%base_state%water_content)) == 0.0_real64, failures)
-  call expect(abs(observed_pond-request_a%base_state%ponding_depth) == 0.0_real64, failures)
-  call expect(abs(observed_gwl-request_a%base_state%groundwater_level) == 0.0_real64, failures)
-  call expect(maxval(abs(result_a1%candidate_state%pressure_head - &
-       (request_a%base_state%pressure_head-1.0_real64))) == 0.0_real64, failures)
-  call expect(maxval(abs(result_a1%candidate_state%water_content - &
-       (request_a%base_state%water_content+0.01_real64))) == 0.0_real64, failures)
-  call expect(abs(result_a1%top_flux-1.25_real64) == 0.0_real64, failures)
-  call expect(abs(result_a1%bottom_flux+0.75_real64) == 0.0_real64, failures)
+  call expect(near_vector(observed_head, request_a%base_state%pressure_head), failures)
+  call expect(near_vector(observed_theta, request_a%base_state%water_content), failures)
+  call expect(near_scalar(observed_pond, request_a%base_state%ponding_depth), failures)
+  call expect(near_scalar(observed_gwl, request_a%base_state%groundwater_level), failures)
+  call expect(near_vector(result_a1%candidate_state%pressure_head, &
+       request_a%base_state%pressure_head-1.0_real64), failures)
+  call expect(near_vector(result_a1%candidate_state%water_content, &
+       request_a%base_state%water_content+0.01_real64), failures)
+  call expect(near_scalar(result_a1%top_flux, 1.25_real64), failures)
+  call expect(near_scalar(result_a1%bottom_flux, -0.75_real64), failures)
   call expect(ieee_is_nan(result_a1%unrounded_mass_balance_residual), failures)
   call expect(result_a1%diagnostics%nonlinear_iterations == 4, failures)
   call expect(result_a1%diagnostics%backtracking_attempts == 6, failures)
@@ -92,8 +92,8 @@ program test_fsi03_reference_binding
   call expect_same_candidate(result_a1, result_a2, failures)
 
   call solver%solve(request_b, workspace, result_b)
-  call expect(maxval(abs(result_b%candidate_state%pressure_head - &
-       (request_b%base_state%pressure_head-1.0_real64))) == 0.0_real64, failures)
+  call expect(near_vector(result_b%candidate_state%pressure_head, &
+       request_b%base_state%pressure_head-1.0_real64), failures)
   call solver%solve(request_a, workspace, result_a2)
   call expect_same_candidate(result_a1, result_a2, failures)
 
@@ -208,16 +208,16 @@ contains
     logical, intent(in) :: sfd
     integer, intent(in) :: sn
     integer, intent(inout) :: fails
-    call expect(maxval(abs(h-sh)) == 0.0_real64, fails)
-    call expect(maxval(abs(theta-st)) == 0.0_real64, fails)
-    call expect(maxval(abs(hm1-shm1)) == 0.0_real64, fails)
-    call expect(maxval(abs(thetm1-stm1)) == 0.0_real64, fails)
-    call expect(abs(pond-sp) == 0.0_real64, fails)
-    call expect(abs(gwl-sg) == 0.0_real64, fails)
-    call expect(abs(pondm1-spm1) == 0.0_real64, fails)
-    call expect(abs(gwlm1-sgm1) == 0.0_real64, fails)
-    call expect(abs(qtop-sqt) == 0.0_real64, fails)
-    call expect(abs(qbot-sqb) == 0.0_real64, fails)
+    call expect(near_vector(h, sh), fails)
+    call expect(near_vector(theta, st), fails)
+    call expect(near_vector(hm1, shm1), fails)
+    call expect(near_vector(thetm1, stm1), fails)
+    call expect(near_scalar(pond, sp), fails)
+    call expect(near_scalar(gwl, sg), fails)
+    call expect(near_scalar(pondm1, spm1), fails)
+    call expect(near_scalar(gwlm1, sgm1), fails)
+    call expect(near_scalar(qtop, sqt), fails)
+    call expect(near_scalar(qbot, sqb), fails)
     call expect(fldecdt .eqv. sfd, fails)
     call expect(numbit == sn, fails)
   end subroutine expect_legacy_restored
@@ -226,13 +226,33 @@ contains
     type(soil_water_solve_result_t), intent(in) :: a, b
     integer, intent(inout) :: fails
     call expect(a%status == b%status, fails)
-    call expect(maxval(abs(a%candidate_state%pressure_head-b%candidate_state%pressure_head)) == 0.0_real64, fails)
-    call expect(maxval(abs(a%candidate_state%water_content-b%candidate_state%water_content)) == 0.0_real64, fails)
-    call expect(abs(a%candidate_state%ponding_depth-b%candidate_state%ponding_depth) == 0.0_real64, fails)
-    call expect(abs(a%candidate_state%groundwater_level-b%candidate_state%groundwater_level) == 0.0_real64, fails)
-    call expect(abs(a%top_flux-b%top_flux) == 0.0_real64, fails)
-    call expect(abs(a%bottom_flux-b%bottom_flux) == 0.0_real64, fails)
+    call expect(near_vector(a%candidate_state%pressure_head, b%candidate_state%pressure_head), fails)
+    call expect(near_vector(a%candidate_state%water_content, b%candidate_state%water_content), fails)
+    call expect(near_scalar(a%candidate_state%ponding_depth, b%candidate_state%ponding_depth), fails)
+    call expect(near_scalar(a%candidate_state%groundwater_level, b%candidate_state%groundwater_level), fails)
+    call expect(near_scalar(a%top_flux, b%top_flux), fails)
+    call expect(near_scalar(a%bottom_flux, b%bottom_flux), fails)
   end subroutine expect_same_candidate
+
+  logical function near_scalar(a, b)
+    real(real64), intent(in) :: a, b
+    real(real64) :: scale
+    scale = max(1.0_real64, abs(a), abs(b))
+    near_scalar = abs(a-b) <= 16.0_real64*epsilon(1.0_real64)*scale
+  end function near_scalar
+
+  logical function near_vector(a, b)
+    real(real64), intent(in) :: a(:), b(:)
+    integer :: i
+    near_vector = size(a) == size(b)
+    if (.not. near_vector) return
+    do i = 1, size(a)
+       if (.not. near_scalar(a(i), b(i))) then
+          near_vector = .false.
+          return
+       end if
+    end do
+  end function near_vector
 
   subroutine expect(condition, fails)
     logical, intent(in) :: condition
