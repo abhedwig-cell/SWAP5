@@ -121,13 +121,17 @@ contains
   subroutine make_request(request, column)
     type(soil_water_solve_request_t), intent(out) :: request
     integer, intent(in) :: column
+    integer :: node
     real(real64) :: head_value
     real(real64) :: heads(numnod), water(numnod), kval(numnod), capacity(numnod), dkdh(numnod)
 
     head_value = -50.0_real64 - 25.0_real64*real(column,real64)
     heads = head_value
     call constitutive(column)%evaluate(heads, water, kval, capacity, dkdh)
-    if (.not. all(kval == kval(1))) error stop 'F-SI09 fixture requires uniform within-column K'
+    do node = 2, numnod
+       if (transfer(kval(node),0_int64) /= transfer(kval(1),0_int64)) &
+            error stop 'F-SI09 fixture requires bitwise uniform within-column K'
+    end do
 
     top_provider(column)%fixed_flux = -kval(1)
     request%parameters => kernel_params
