@@ -14,8 +14,11 @@
   },
   "qualification": {
     "workflow_run_id": 34081431284,
-    "fci03_regression": "RUNNING",
-    "fci04_runtime_gate": "WAITING_FOR_FCI03"
+    "fci03_job_id": 101617309302,
+    "fci04_job_id": 101617332887,
+    "fci03_regression": "PASS",
+    "fci04_runtime_gate": "PASS",
+    "optimization_levels": ["O0", "O2"]
   },
   "holds": [
     "B1.10 physical adapter implementation pending",
@@ -23,5 +26,5 @@
     "generic physical sub-day execution pending",
     "scheduled irrigation and crop continuation qualification pending"
   ],
-  "status": "MATERIALIZED_QUALIFICATION_RUNNING"
+  "status": "PASS_CANONICAL_RUNTIME_PHYSICAL_ADAPTER_BLOCKED"
 }
