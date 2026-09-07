@@ -1,5 +1,5 @@
 {
-  "schema_version": "2.1",
+  "schema_version": "2.2",
   "workstream": "F-KT",
   "work_unit": "F-KT07",
   "baseline": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
@@ -10,17 +10,26 @@
   "initial_source_materialization_commit": "f7c6d007d92c1d5b6d1bf402325bd5e1ecafe4db",
   "clone_hardening_materializer_checkpoint": "3974d6254a27e9f500b4b306eed27b101ef6f392",
   "clone_hardening_source_commit": "c68e4300aa83bcccfdc24f84be2992abda206090",
+  "tested_postimage": "d24358c7074714c6d911bb60dc8cdfcfd656e8b6",
+  "qualification_evidence_commit": "64ce93df445d3092220862fe7833f3081c8944f4",
+  "qualification_evidence": "integration/f-kt/F-KT07_QUALIFICATION_EVIDENCE.json",
+  "qualification_run_id": 34133107286,
+  "qualification_jobs": {
+    "focused_o0_o2": 101777713534,
+    "fci_regression": 101777790423
+  },
   "scope": "B1.10 adapter-specific macropore nstep continuation materialization and transaction-safe sparse clone",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "implementation_status": "IMPLEMENTED",
   "persistence_status": "PERSISTED",
-  "test_status": "NOT_TESTED_AFTER_CLONE_FIX",
-  "qualification_status": "NOT_QUALIFIED",
+  "test_status": "TESTED",
+  "qualification_status": "QUALIFIED",
   "production_source_changed": true,
   "production_source_files": ["src/adapter/mod_b1_10_process_checkpoint.f90"],
+  "production_source_blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae",
   "generic_kernel_source_changed": false,
   "physics_formula_changed": false,
   "numerical_policy_changed": false,
@@ -28,6 +37,7 @@
   "focused_test": "tests/fkt/test_fkt07_macropore_continuation.f90",
   "focused_runner": "tests/fkt/run_fkt07_gate.sh",
   "static_gate": "tools/fkt/fkt07_contract_gate.py",
+  "fci09_forward_regression": "tests/fkt/run_fkt07_fci09_forward_regression.sh",
   "qualification_attempts": [
     {
       "run_id": 34129477886,
@@ -47,6 +57,25 @@
       "result": "FAILED_REAL_TRANSACTION_CLONE_DEFECT",
       "defect": "b1_10_process_clone intrinsically assigned unallocated allocatable components and segfaulted for compact sparse state",
       "production_fix_required": true
+    },
+    {
+      "run_id": 34132377598,
+      "head": "e6095ef3f14efc4f8d3cb85847a22c172694a49c",
+      "result": "FOCUSED_PASS_HISTORICAL_FCI09_PROVENANCE_PIN_BLOCKED_FORWARD_EVOLUTION",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34132828250,
+      "head": "5e10a6bb88127c9096732f1f8e305b80169246e3",
+      "result": "FAILED_FORWARD_RUNNER_RELATIVE_ROOT",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34133107286,
+      "head": "d24358c7074714c6d911bb60dc8cdfcfd656e8b6",
+      "result": "SUCCESS",
+      "focused_o0_o2": "PASS",
+      "selected_fci_regressions": "PASS"
     }
   ],
   "implemented_behavior": {
@@ -57,27 +86,42 @@
     "explicit_bind_read_clear_complete_seam": true,
     "clone_copies_only_allocated_optional_components": true,
     "clone_copies_water_allocatables_only_when_allocated": true,
-    "clone_preserves_sparse_state_without_implicit_allocation": true
+    "clone_preserves_sparse_state_without_implicit_allocation": true,
+    "checkpoint_trial_replay_rollback_commit_lifecycle": "QUALIFIED",
+    "mass_rejected_trial_isolation": "QUALIFIED",
+    "stale_checkpoint_rejection_before_model": "QUALIFIED"
+  },
+  "historical_provenance_policy": {
+    "canonical_fci09_runner_modified": false,
+    "canonical_fci09_process_pin_modified": false,
+    "forward_evolution_uses_exact_one_pin_temporary_substitution": true,
+    "historical_runner_blob": "4811a4653cb98d9d9c3630ed303c2fe0cc8975f7",
+    "historical_process_blob": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "qualified_forward_process_blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae"
   },
   "external_boundaries": {
     "fsi06_final_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
     "fsi06_status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
     "fsi06_consumed_as_ownership_evidence_only": true,
-    "fmq20_consumed_as_qualification_evidence": false,
-    "fvq12_consumed_as_qualification_evidence": false,
+    "fsi07_status": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED",
+    "fsi07_checkpoint_commit_rollback_authority": false,
+    "fmq22_status": "QUALIFIED_FKT06_P14_SYNTHETIC_PROMOTED",
+    "fmq22_real_macropore_admission": false,
     "fmr01_consumed_as_qualification_evidence": false
   },
   "admission": {
     "macropore_production": false,
     "reference_execution": false,
     "production_multiswap": false,
-    "fsi07_parallel_reentrancy": false
+    "full_parallel_headcalc": false
   },
   "blockers": [],
   "holds": [
-    "focused O0/O2 and selected F-CI regressions must pass on the clone-hardened source before qualification",
     "composed F-SI macropore binding is not part of F-KT07 and macropore production remains fail-closed",
-    "reference execution remains fail-closed"
+    "F-SI08 provider/process isolation remains F-SI ownership",
+    "reference execution remains fail-closed",
+    "production MultiSWAP remains outside F-KT"
   ],
-  "next_action": "qualify exact clone-hardened postimage through F-KT07 focused gate and selected F-CI regression chain"
+  "recovery_point": "64ce93df445d3092220862fe7833f3081c8944f4",
+  "next_action": "start F-KT08 only after re-reading the latest F-SI08, F-VQ13, F-MQ and coordination evidence; do not duplicate solver/provider ownership"
 }
