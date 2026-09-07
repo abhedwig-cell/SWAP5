@@ -1,15 +1,16 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI07",
-  "title": "Explicit per-solve reference Richards state binding",
+  "title": "Explicit per-solve reference Richards physical-state binding",
   "basis": {
-    "fsi06_qualified_head": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
+    "fsi06_qualification_evidence_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "fsi06_qualified_source_preimage": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
     "fkt06_qualified_head_observed": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
     "fkt06_optional_continuation_contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492",
     "oracle": "B1.10"
   },
-  "goal": "Remove whole-solve request/candidate physical-state translation through shared legacy module globals from the common reference solver path while preserving the legacy standalone compatibility path and all Richards formulas.",
+  "goal": "Remove whole-solve request/candidate physical-state translation through shared legacy module globals from the admitted common reference solver path while preserving the legacy standalone compatibility path and all qualified Richards formulas and numerical semantics.",
   "ownership": {
     "state_binding_owner": "active solve job / solver call",
     "persistent_column_owner": false,
@@ -18,36 +19,60 @@
     "contains_worker_scratch": false,
     "contains_candidate_physical_state": true,
     "contains_reference_hydraulic_result_arrays": true,
-    "warm_start_is_separate": true
+    "warm_start_is_separate": true,
+    "fkt_committed_base_state_remains_read_only": true
   },
   "state_binding_fields": {
     "base_physical": ["hm1", "thetm1", "pondm1", "gwlm1"],
     "candidate_physical": ["h", "theta", "pond", "gwl"],
-    "hydraulic_results": ["k", "kmean", "dimoca", "qtop", "qbot", "hbot", "fllowgwl"],
-    "legacy_compatibility_only": ["gwlinp", "dtold", "itnumb", "numbit", "fldecdt"]
+    "hydraulic_results_or_reconstructible": ["k", "kmean", "dimoca", "qtop", "qbot", "hbot", "fllowgwl"],
+    "solver_control_or_retry_result": ["numbit", "fldecdt", "dtold"],
+    "reporting_only": ["itnumb"],
+    "legacy_compatibility_support": ["gwlinp", "q0", "hsurf", "runots", "flrunoff", "ftoph"]
   },
   "headcalc_contract": {
-    "signature_target": "headcalc(worker, fsi_workspace, history, state_binding)",
+    "signature_target": "headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)",
     "explicit_state_binding_on_common_path": true,
+    "explicit_evaluation_context_on_common_path": true,
+    "explicit_boundary_conditions_on_common_path": true,
     "legacy_no_state_argument_allowed": true,
     "legacy_no_state_argument_behavior": "capture legacy mutable state into call-local binding, run identical HeadCalc formulas, publish binding back before return",
-    "hidden_save_state_allowed": false
+    "hidden_save_state_allowed": false,
+    "newton_iteration_carrier": "local solver_numbit synchronized to state%numbit without changing MaxIt1 or convergence semantics"
   },
   "common_adapter_contract": {
-    "may_write_legacy_h_theta_checkpoint_globals_before_headcalc": false,
-    "may_restore_legacy_h_theta_checkpoint_globals_after_headcalc": false,
+    "may_write_legacy_physical_state_before_headcalc": false,
+    "may_restore_legacy_physical_state_after_headcalc": false,
+    "may_read_legacy_physical_or_reconstructible_state_inside_solve": false,
     "builds_state_binding_from_request": true,
+    "passes_request_evaluation_context_to_headcalc": true,
+    "passes_request_boundary_conditions_to_headcalc": true,
+    "requires_explicit_top_provider": true,
+    "missing_explicit_top_provider_behavior": "fail closed before HeadCalc",
     "returns_candidate_from_state_binding": true,
     "transaction_commit_or_rollback": false
   },
   "provider_boundary": {
-    "legacy_top_boundary_provider_still_global": true,
-    "legacy_constitutive_provider_still_global": true,
-    "legacy_source_sink_provider_still_global": true,
+    "explicit_top_boundary_provider_on_admitted_common_route": true,
+    "legacy_top_boundary_globals_used_on_admitted_common_route": false,
+    "legacy_top_boundary_globals_retained_for_compatibility_path": true,
+    "legacy_constitutive_hydraulics_still_direct": true,
+    "legacy_source_sink_drainage_irrigation_inputs_still_direct": true,
     "macropore_still_fail_closed": true,
-    "real_parallel_headcalc_admission_expected_after_fsi07": false,
-    "reason": "F-SI07 isolates mutable request/candidate state only. Direct legacy process-provider calls remain a separate reentrancy blocker and must be isolated behind the existing hydraulic evaluation context before full real 1/2/4/8 HeadCalc admission."
+    "real_headcalc_parallel_reentrancy_qualified": true,
+    "real_headcalc_parallel_reentrancy_scope": "focused admitted reference fixture: swmacro=0, swkimpl=0, fldtmin=false, free-drainage bottom mode, explicit flux top provider, fixed shared legacy constitutive/source-sink fixture; main and forced-band routes; O0/O2; 1/2/4/8 workers",
+    "parallel_reference_backend_admitted": false,
+    "parallel_reference_backend_hold_reason": "The F-SI07 tests prove per-solve physical-state and explicit top-boundary isolation, including real common-route 1/2/4/8 identity, but production constitutive hydraulics and source/sink/drainage/irrigation providers still read legacy shared module data. Heterogeneous per-column provider parameterization is therefore not yet source-bound as reentrant, so general parallel backend admission remains fail closed.",
+    "full_swap_parallel_admitted": false
   },
+  "fail_closed_routes": [
+    "macropore",
+    "implicit conductivity",
+    "minimum timestep edge route",
+    "non-free-drainage bottom modes",
+    "heterogeneous legacy constitutive parameterization",
+    "heterogeneous source/sink/drainage/irrigation provider state"
+  ],
   "fkt_boundary": {
     "shared_fkt_type_change": false,
     "transaction_semantics_change": false,
@@ -56,25 +81,38 @@
     "fsi_state_binding_is_not_transaction_state": true
   },
   "qualification_required": [
-    "exact F-SI06 preimage versus F-SI07 serial real HeadCalc identity at O0 and O2",
+    "explicit-state HeadCalc compiles at O0 and O2",
+    "exact F-SI06 preimage versus F-SI07 serial real common-route identity at O0 and O2",
     "main and forced band fallback identity",
     "explicit state binding A/B/A order independence on focused fixture",
+    "scratch poisoning and state/global sentinel isolation",
+    "request objects remain unmodified by solve",
     "legacy no-state compatibility identity",
-    "common adapter contains no whole-solve assignments to shared h theta hm1 thetm1 pond gwl pondm1 gwlm1 qtop qbot fldecdt numbit",
+    "common adapter contains no whole-solve physical-state global overlay or physical/reconstructible global reads in solve",
     "common adapter result is sourced from explicit state binding",
+    "missing explicit top provider fails closed before HeadCalc",
+    "real admitted common route is deterministic against serial reference for 1, 2, 4 and 8 workers at O0 and O2",
     "changed SoilWater HeadCalc interface compiles at O0 and O2",
     "F-KT transaction and worker boundary regressions remain green",
     "focused unrounded equation residual unchanged"
   ],
+  "qualified_scope_if_all_required_gates_pass": {
+    "reference_richards_physical_state_binding": true,
+    "explicit_top_provider_binding": true,
+    "focused_real_headcalc_parallel_reentrancy": true,
+    "general_parallel_reference_backend": false,
+    "full_swap_parallel": false,
+    "full_swap_water_balance": false
+  },
   "non_goals": [
-    "top-boundary physics refactor",
-    "constitutive hydraulics refactor",
-    "source/sink provider refactor",
+    "constitutive hydraulics provider isolation",
+    "source/sink/drainage/irrigation provider isolation",
     "macropore continuation materialization",
-    "full real HeadCalc parallel admission",
+    "general heterogeneous-provider parallel backend admission",
+    "full SWAP parallel admission",
     "full SWAP water balance qualification",
     "interface tangent algorithm",
     "reduced-order or coarse Richards"
   ],
-  "invariants": ["1", "3", "4", "5", "6", "7", "8", "13", "14", "16", "20", "21", "22", "23", "25", "26", "27", "29"]
+  "invariants": ["1", "3", "4", "5", "6", "7", "8", "13", "14", "16", "20", "21", "22", "23", "24", "25", "26", "27", "29"]
 }
