@@ -13,6 +13,7 @@ on:
       - 'tests/fsi/test_fsi11_root_sink_provider.f90'
       - 'tests/fsi/run_fsi11_root_sink_provider_gate.sh'
       - 'tests/fsi/run_fsi11_swkimpl1_reject_gate.sh'
+      - 'tests/fsi/run_fsi11_fsi10_pinned_regression_gate.sh'
       - '.github/workflows/fsi11-root-sink-provider.yml'
 
 jobs:
@@ -30,3 +31,5 @@ jobs:
         run: bash tests/fsi/run_fsi11_root_sink_provider_gate.sh
       - name: F-SI11 swkimpl1 root-sink fail-closed gate
         run: bash tests/fsi/run_fsi11_swkimpl1_reject_gate.sh
+      - name: F-SI11 exact pinned F-SI10 regression gate
+        run: bash tests/fsi/run_fsi11_fsi10_pinned_regression_gate.sh
