@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI01",
+  "title": "Canonical solver-isolation boundary and source-bound ownership inventory",
+  "status": "PERSISTED_NOT_YET_QUALIFIED",
+  "scope": "reference_richards_boundary_inventory_only",
+  "source_binding": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_branch": "integration/f-ci-canonical",
+    "work_branch": "work/f-si01-solver-isolation-boundary",
+    "fci_canonical_development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10",
+    "fci18_status": "QUALIFIED_EXIT",
+    "ci_gates": {
+      "CI-G01": "QUALIFIED",
+      "CI-G02": "QUALIFIED",
+      "CI-G03": "QUALIFIED",
+      "CI-G04": "QUALIFIED",
+      "CI-G05": "QUALIFIED",
+      "CI-G06": "QUALIFIED",
+      "CI-G07": "QUALIFIED",
+      "CI-G08": "QUALIFIED",
+      "CI-G09": "QUALIFIED",
+      "CI-G10": "QUALIFIED"
+    },
+    "fvq07": {
+      "branch": "qualification/f-vq07-final-fci-exit",
+      "status": "QUALIFIED_FINAL_FCI_DEVELOPMENT_BASELINE_HANDOFF_ONLY",
+      "status_blob": "dd183360ce43c2cf8795e6b343a986ee5298aee4",
+      "handoff_blob": "9241d185a34edc0482f43a6199a4020cde982b86",
+      "canonical_development_baseline_admitted_for_downstream_qualification": true,
+      "production_source_changed_by_fvq07": false,
+      "parallel_backend_qualified": false,
+      "overall_swap5_release_qualified": false
+    },
+    "pinned_current_files": [
+      {"path": "src/legacy/b1_10_port/headcalc.f90", "blob": "225b9f2cc1ecff01414b5691799103b92bc068c5"},
+      {"path": "src/legacy/b1_10_port/soilwater.f90", "blob": "74e2e115b735a9a8c341603fca8b01ef44710da7"},
+      {"path": "src/runtime/mod_a23bu_worker_execution_context.f90", "blob": "2a190d206200ad201c37c9a82d3e32e651d37a37"},
+      {"path": "tests/runtime/test_a23bu_worker_context.f90", "blob": "774c2c4b36f479da302eb1574bbc3a9536cf291d"},
+      {"path": "docs/decisions/ADR-0003-worker-owned-scratch.md", "blob": "1f90b5f7d341fea8a083fe46bc0801d0c064c62d"},
+      {"path": "docs/architecture/data-ownership.md", "blob": "31e4be1e91c4d164a08becf343b963ab81f295f2"},
+      {"path": "docs/architecture/legacy-migration-hydraulic.md", "blob": "bb87a7eee770fdca0d13f5028aa295f0e6fe1be8"}
+    ],
+    "excluded_non_authoritative_inputs": [
+      {
+        "artifact": "/mnt/data/SWAP_4.3.1(6).zip",
+        "reason": "local archive SHA-256 does not equal the repository-pinned B0 source archive SHA-256; it is not used as oracle or production postimage",
+        "observed_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+        "repository_pinned_b0_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+      }
+    ],
+    "production_source_modified_by_fsi01": false
+  },
+  "classification_vocabulary": [
+    "immutable/shared parameter",
+    "committed physical state",
+    "worker scratch",
+    "reconstructible intermediate",
+    "legacy compatibility state",
+    "unresolved"
+  ],
+  "ownership_inventory": [
+    {
+      "id": "SI-OWN-001",
+      "items": ["macp", "numnod", "z", "dz", "disnod"],
+      "current_location": "legacy module globals imported by headcalc",
+      "classification": "immutable/shared parameter",
+      "target_owner": "shared read-only model/grid parameter view",
+      "notes": "Topology and geometry are read by the reference solver. Mutation during solve is not part of the F-SI contract."
+    },
+    {
+      "id": "SI-OWN-002",
+      "items": ["hplate", "swkimpl", "swkmean", "swbotb3impl", "swbotb3resvert", "CritDevBalCp", "CritDevBalTot", "critdevh2cp", "critdevh1cp", "critdevponddt", "maxit", "maxbacktr", "fldtmin", "dtmin"],
+      "current_location": "legacy variables module imported by headcalc",
+      "classification": "immutable/shared parameter",
+      "target_owner": "read-only solver numerical configuration",
+      "notes": "These are configuration inputs for a solve attempt. F-SI does not change reference values or policy selection."
+    },
+    {
+      "id": "SI-OWN-003",
+      "items": ["h", "theta", "gwl", "pond"],
+      "current_location": "legacy variables module, mutated by headcalc",
+      "classification": "committed physical state",
+      "target_owner": "F-KT-owned base state plus F-SI candidate-state result",
+      "notes": "Current mutation is a legacy seam. The common solver contract must not grant F-SI authority to commit or roll back this state."
+    },
+    {
+      "id": "SI-OWN-004",
+      "items": ["hm1", "thetm1", "gwlm1", "pondm1"],
+      "current_location": "legacy checkpoint arrays/scalars read by headcalc and SoilWaterStateVar",
+      "classification": "committed physical state",
+      "target_owner": "F-KT transaction/checkpoint boundary",
+      "notes": "Classified by physical meaning, but ownership is explicitly outside F-SI. F-SI must not redefine their checkpoint semantics."
+    },
+    {
+      "id": "SI-OWN-005",
+      "items": ["q0", "qtop", "qbot", "hbot", "gwlinp", "runon", "epd", "reva", "melt", "qdra", "qrot", "qssdi", "deepgw", "rimlay", "qbotab", "rfcp"],
+      "current_location": "legacy module globals and headcalc arguments/results",
+      "classification": "reconstructible intermediate",
+      "target_owner": "solver request boundary conditions/forcing and solver result flux outputs",
+      "notes": "Direction is item-dependent in legacy code. F-SI01 records the seam; F-SI02 must make request versus result direction explicit without changing formulas."
+    },
+    {
+      "id": "SI-OWN-006",
+      "items": ["k", "dimoca", "kmean", "hgrad", "sink", "source"],
+      "current_location": "headcalc locals or legacy result arrays",
+      "classification": "reconstructible intermediate",
+      "target_owner": "hydraulic evaluation output or worker workspace",
+      "notes": "Values are derived during evaluation. Persistence per logical column is not required solely for Newton execution."
+    },
+    {
+      "id": "SI-OWN-007",
+      "items": ["dFdhL", "dFdhM", "dFdhU", "difh", "F", "hold", "qv", "flnonconv1", "flnonconv2", "flunsatok"],
+      "current_location": "automatic local arrays in headcalc",
+      "classification": "worker scratch",
+      "target_owner": "worker-owned solver workspace",
+      "notes": "Storage lifetime is per active solve attempt and must be reusable/poisonable independently of logical-column state."
+    },
+    {
+      "id": "SI-OWN-008",
+      "items": ["a", "a1", "b", "indx"],
+      "current_location": "automatic arrays in nested alternative_solver linear solve",
+      "classification": "worker scratch",
+      "target_owner": "worker-owned linear solve workspace",
+      "notes": "Band-system factorization/solve scratch must not become persistent column state."
+    },
+    {
+      "id": "SI-OWN-009",
+      "items": ["ctx%headcalc%dkdh", "ctx%headcalc%dfdhl", "ctx%headcalc%dfdhm", "ctx%headcalc%dfdhu", "ctx%headcalc%difh", "ctx%headcalc%residual", "ctx%headcalc%sink", "ctx%headcalc%source", "ctx%headcalc%hold", "ctx%headcalc%qv", "ctx%headcalc%hgrad", "ctx%headcalc%flnonconv1", "ctx%headcalc%flnonconv2", "ctx%headcalc%flunsatok"],
+      "current_location": "a23bu worker execution context",
+      "classification": "worker scratch",
+      "target_owner": "worker-owned solver workspace",
+      "notes": "The runtime type already contains most heavy HeadCalc scratch, but current headcalc uses only dkdh directly. F-SI03 should connect the remaining arrays without formula changes."
+    },
+    {
+      "id": "SI-OWN-010",
+      "items": ["legacy_worker"],
+      "current_location": "headcalc SAVE singleton used when optional worker argument is absent",
+      "classification": "legacy compatibility state",
+      "target_owner": "remove from reentrant production path; retain only behind an explicit legacy adapter if still required",
+      "notes": "This is incompatible with strong reentrancy and must not remain on the common solver path."
+    },
+    {
+      "id": "SI-OWN-011",
+      "items": ["ctx%history%flwarn", "ctx%history%iwarn", "ctx%history%nstep"],
+      "current_location": "a23bu worker execution context",
+      "classification": "unresolved",
+      "target_owner": "must be resolved before columns can safely share a worker",
+      "notes": "These values survive calls and may affect legacy numerical/macropore behavior. Worker ownership alone is insufficient if semantics are column-history dependent."
+    },
+    {
+      "id": "SI-OWN-012",
+      "items": ["ctx%diagnostics%headcalc_calls", "ctx%diagnostics%nonlinear_iterations", "ctx%diagnostics%jacobian_builds", "ctx%diagnostics%linear_solves", "ctx%diagnostics%backtracking_attempts", "ctx%diagnostics%alternative_solver_calls", "ctx%diagnostics%internal_retries"],
+      "current_location": "a23bu worker execution context",
+      "classification": "legacy compatibility state",
+      "target_owner": "worker/job diagnostics or solver result diagnostics",
+      "notes": "Diagnostics must not affect physics. Per-attempt reset and aggregation policy belongs to runtime/diagnostics contracts, not physical state."
+    },
+    {
+      "id": "SI-OWN-013",
+      "items": ["ctx%control%last_numbit", "ctx%control%request_dt_reduction", "ctx%control%at_min_dt"],
+      "current_location": "a23bu worker execution context",
+      "classification": "legacy compatibility state",
+      "target_owner": "solver result retry advice plus F-KT/F-PM-owned attempt control",
+      "notes": "F-SI may report convergence/retry advice but does not own temporal acceptance or transaction lifecycle."
+    },
+    {
+      "id": "SI-OWN-014",
+      "items": ["armpss", "frarmtrx", "qexcmpmtx", "dfdhmp", "ictopmp", "qmplatss", "idecmprat", "fldecmprat", "fldecMPmbf"],
+      "current_location": "macropore module state imported by headcalc",
+      "classification": "unresolved",
+      "target_owner": "macropore physics owner with explicit evaluation/provider interface into the solver",
+      "notes": "F-SI must not silently reclassify or change macropore physics. Cross-call semantics require exact follow-up isolation."
+    },
+    {
+      "id": "SI-OWN-015",
+      "items": ["watcon", "hconduc", "moiscap", "dhconduc", "cofgen"],
+      "current_location": "MOD_MvG procedures called by headcalc",
+      "classification": "reconstructible intermediate",
+      "target_owner": "read-only constitutive/hydraulic evaluation provider",
+      "notes": "The procedures may hide shared parameter dependencies. F-SI04 must expose an evaluation context without copying immutable parameter data per column."
+    }
+  ],
+  "cross_module_dependencies": {
+    "direct_headcalc_caller": [
+      {"path": "src/legacy/b1_10_port/soilwater.f90", "dependency": "call headcalc(worker)", "role": "legacy solver orchestration seam"}
+    ],
+    "headcalc_direct_process_dependencies": [
+      {"module": "MOD_MvG", "symbols": ["watcon", "hconduc", "moiscap", "dhconduc", "cofgen"], "kind": "constitutive evaluation"},
+      {"module": "MOD_rootextraction", "symbols": ["RootExtraction"], "kind": "root uptake evaluation"},
+      {"module": "MOD_top", "symbols": ["boundtop", "pondrunoff", "q0", "flrunoff", "ftoph", "hsurf"], "kind": "top boundary and runoff"},
+      {"module": "MOD_macropore", "symbols": ["MACROPORE"], "kind": "macropore process/evaluation"},
+      {"module": "MOD_drain", "symbols": ["qdra", "nrlevs"], "kind": "drainage inputs"},
+      {"module": "MOD_irrigation", "symbols": ["qssdi", "nird"], "kind": "irrigation inputs"},
+      {"module": "MOD_snow", "symbols": ["melt"], "kind": "snow forcing/input"},
+      {"module": "MOD_frost", "symbols": ["rfcp"], "kind": "frost input"}
+    ],
+    "headcalc_internal_storage_visibility": {
+      "current_observation": "headcalc is an external subroutine; its automatic local arrays are not directly addressable by other modules",
+      "static_gate": "scan all src/**/*.f90 for call headcalc, ctx%headcalc and legacy_worker references; unexpected files fail F-SI01 gate"
+    }
+  },
+  "worker_workspace_proof": {
+    "current_worker_scratch_real_elements": "11*n + 2",
+    "current_worker_scratch_logical_elements": "2*n + 3",
+    "linear_solver_local_additional": "5*n real elements + n integer elements",
+    "derivation": "a23bu_headcalc_scratch_t contains 9 arrays of length n, two arrays of length n+1, two logical arrays of length n and flunsatok(3); nested band solve adds a(n,3), a1(n,1), b(n), indx(n)",
+    "scaling_conclusion": "heavy Newton/Jacobian/hydraulic scratch scales with active workers/jobs and active nodes, O(W*n), rather than logical columns, O(C*n), provided cross-call column history is kept out of reusable worker scratch",
+    "qualification_limit": "this is an ownership/layout proof, not a performance benchmark and not a parallel-backend qualification"
+  },
+  "historical_evidence": [
+    {"name": "HeadCalc workspace isolation", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test/contract concept only until provenance bound"},
+    {"name": "reentrancy tests", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test concept only until provenance bound"},
+    {"name": "evaluation context", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "contract concept only until provenance bound"},
+    {"name": "result API", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "contract concept only until provenance bound"},
+    {"name": "RootExtraction isolation", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test/contract concept only until provenance bound"},
+    {"name": "oxygen provider", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test/contract concept only until provenance bound"},
+    {"name": "transaction accounting", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test concept only; F-KT owns semantics"},
+    {"name": "serial/parallel comparisons", "provenance": "handoff-asserted historical S13b evidence", "exact_git_provenance": "unresolved", "production_source_eligible": false, "reuse": "test concept only until provenance bound"},
+    {"name": "ADR-0003 worker-owned scratch", "provenance": "canonical current source", "exact_git_provenance": "1f90b5f7d341fea8a083fe46bc0801d0c064c62d", "production_source_eligible": false, "reuse": "direct design evidence"},
+    {"name": "A23BU worker-context OpenMP test", "provenance": "canonical current source", "exact_git_provenance": "774c2c4b36f479da302eb1574bbc3a9536cf291d", "production_source_eligible": false, "reuse": "direct executable evidence"}
+  ],
+  "test_matrix": [
+    {"id": "FSI01-T01", "name": "source provenance and pinned blob identity", "status": "EXECUTABLE_NOW", "expected": "exact"},
+    {"id": "FSI01-T02", "name": "current worker-context isolation O0/O2 OpenMP 8-worker gate", "status": "EXECUTABLE_NOW", "expected": "PASS existing qualified test"},
+    {"id": "FSI01-T03", "name": "serial versus repeated-call solver identity", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "candidate state, unrounded flux/accounting, route and iteration diagnostics identical for same build"},
+    {"id": "FSI01-T04", "name": "order independence", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "A then B equals B then A per-column results"},
+    {"id": "FSI01-T05", "name": "1/2/4/8 worker solver isolation", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "same per-column result as serial; unsupported worker counts must be explicit, never silently passed"},
+    {"id": "FSI01-T06", "name": "scratch poisoning", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "poisoned reusable workspace does not alter accepted physical result, accounting, route or iteration diagnostics"},
+    {"id": "FSI01-T07", "name": "cloned-state identity", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "cloned base state plus identical request yields identical candidate result"},
+    {"id": "FSI01-T08", "name": "no cross-column leakage", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "column B result independent of prior workspace use by column A"},
+    {"id": "FSI01-T09", "name": "reference solver O0/O2", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "use existing qualified reference acceptance profile; F-SI introduces no new tolerance"},
+    {"id": "FSI01-T10", "name": "unrounded water balance unchanged", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "hard conservation gate on unrounded accounting; no rounded-output proxy"},
+    {"id": "FSI01-T11", "name": "solver route and iteration behavior unchanged", "status": "SPECIFIED_BLOCKED_BY_COMMON_SOLVER_INTERFACE", "expected": "exact same route/iteration diagnostics for structural-isolation changes unless a difference is separately explained and qualified"}
+  ],
+  "fkt_boundary": {
+    "fkt_owns": ["checkpoint", "commit", "rollback", "transaction lifecycle", "committed-state ownership", "generic [t0,t1] kernel semantics", "reference temporal acceptance"],
+    "fsi_owns": ["reentrant soil-water solver interface", "reference Richards solver isolation", "hydraulic evaluation context", "worker solver workspace", "solver result and diagnostics"],
+    "hard_rule": "F-SI solve returns a candidate result and retry/convergence information; it never commits, rolls back or redefines temporal acceptance",
+    "shared_type_change_policy": "No shared kernel type is changed in F-SI01. Any later required extension is first recorded as a minimal interface contract and coordinated with F-KT."
+  },
+  "invariant_assessment": {
+    "1": "PASS boundary preserves one kernel and one solver interface",
+    "3": "PASS request/state/config/result/scratch categories are explicit",
+    "4": "PASS persistent physical state is separated from solver scratch",
+    "5": "PASS heavy Newton/Jacobian/linear scratch is worker-owned target",
+    "6": "PASS workspace scales with workers and active nodes, not logical columns",
+    "13": "PASS no mass-accounting semantics changed; unrounded conservation retained as qualification gate",
+    "14": "PASS interface reserves optional bottom-head/flux sensitivity output",
+    "16": "PASS design avoids one heavy solver workspace per logical column",
+    "20": "PASS common interface is solver-implementation neutral; only reference Richards is admitted now",
+    "21": "PASS physics providers remain shared; no duplicated crop/ET/drainage/macropore physics introduced",
+    "22": "PASS target boundary prevents other modules from depending on HeadCalc local arrays",
+    "23": "PASS structural isolation does not alter physical options or numerical policy values",
+    "24": "PASS no fallback or bounded-cost policy introduced by F-SI01",
+    "25": "PASS full reference Richards remains first qualification path",
+    "26": "PASS diagnostics are explicit solver outputs/runtime data, not hidden physical state",
+    "27": "PASS workspace allocation is per active worker/use rather than unconditional per column"
+  },
+  "next_slices": [
+    {"id": "F-SI02", "purpose": "introduce reference-solver request/result/evaluation-context types behind the F-KT boundary, without formula changes"},
+    {"id": "F-SI03", "purpose": "route HeadCalc Newton, Jacobian and linear-solve scratch through explicit worker workspace; add poison/reuse tests"},
+    {"id": "F-SI04", "purpose": "isolate constitutive hydraulic evaluation behind a read-only evaluation context/provider"},
+    {"id": "F-SI05", "purpose": "isolate RootExtraction, top-boundary and optional macropore solver callbacks without changing their physics"},
+    {"id": "F-SI06", "purpose": "remove legacy_worker from the reentrant production path and resolve cross-call history ownership"},
+    {"id": "F-SI07", "purpose": "return candidate state, unrounded accounting, diagnostics and optional interface sensitivity without transaction side effects; coordinate any shared type change with F-KT"},
+    {"id": "F-SI08", "purpose": "run full canonical reentrancy matrix: repeated, order, clone, poison, no-leakage, 1/2/4/8 workers, O0/O2, mass and route identity"},
+    {"id": "F-SI09", "purpose": "qualify the common soil-water interface for reference Richards and document readiness for later coarse/reduced implementations without implementing them"}
+  ],
+  "acceptance": {
+    "inventory_persisted": true,
+    "common_solver_interface_exactly_defined": true,
+    "fkt_fsi_boundary_explicit": true,
+    "historical_s13b_evidence_classified": true,
+    "source_bound_executable_harness_persisted": true,
+    "dynamic_solver_isolation_tests": "specified; blocked until F-SI02/F-SI03 production interface exists",
+    "historical_patch_used_as_production_source": false,
+    "solver_physics_changed": false,
+    "numerical_policy_changed": false,
+    "next_slices_ordered": true
+  }
+}
