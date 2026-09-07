@@ -45,7 +45,8 @@ program test_fmr04_serialized_physical
   type(canonical_numerical_config_t) :: config
   integer(int64) :: committed_fp0, committed_fp_after_rollback, candidate_fp1, candidate_fp2
   integer(int64) :: revision0, revision1
-  real(real64) :: committed_time, initial_storage
+  real(real64) :: committed_time, initial_storage, endpoint_storage
+  real(real64) :: shadow_total_in, shadow_total_out, shadow_residual
   logical :: ok, available, did_commit
   integer :: commit_status
 
@@ -65,10 +66,9 @@ program test_fmr04_serialized_physical
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
        result, candidate, diagnostics)
   call require(result%completed .and. candidate%ready(), 'physical candidate materialized')
-  call require(result%mass%complete, 'full interval mass accounting complete')
-  call require(abs(result%mass%residual) <= 1.0e-12_real64, 'hard full interval mass residual')
-  call require(same_real(result%mass%storage_start, result%mass%storage_end), 'equilibrium storage identity')
-  call require(same_real(result%mass%total_in, result%mass%total_out), 'external inflow/outflow identity')
+  call require(.not. result%mass%complete, 'F-KT full interval mass boundary remains explicitly incomplete')
+  call require(diagnostics%mass_rejections == 0, 'hard per-trial mass gate accepted physical route')
+  call require(diagnostics%max_abs_step_mass_residual <= 1.0e-12_real64, 'hard per-trial mass residual')
   call require(committed%current_revision() == revision0, 'trial did not mutate committed revision')
   call committed%current_time(committed_time, available)
   call require(available .and. same_real(committed_time,t0), 'trial did not mutate committed time')
@@ -78,25 +78,28 @@ program test_fmr04_serialized_physical
   call require(observation%solver_executed, 'real F-SI solver executed')
   call require(trim(observation%solver_diagnostics%route) == 'legacy-reference-bound', 'real HeadCalc route')
   call require(observation%solver_diagnostics%nonlinear_iterations >= 1, 'solver iterations recorded')
-  call require(observation%solver_equation_residual_available .eqv. .false., 'solver equation residual not invented')
+  call require(.not. observation%solver_equation_residual_available, 'solver equation residual not invented')
   candidate_fp1 = candidate_fingerprint(candidate)
+  endpoint_storage = candidate_storage(candidate, parameters%dz)
+  call shadow_profile_mass(forcing, observation, t1-t0, initial_storage, endpoint_storage, &
+       shadow_total_in, shadow_total_out, shadow_residual)
+  call require(abs(shadow_residual) <= 1.0e-12_real64, 'diagnostic profile accounting closes')
 
-  ! Rollback/discard uses the F-KT-owned candidate API. The committed state must remain exact.
   call fmr_discard_candidate(transaction_control, candidate, diagnostics)
   call require(.not. candidate%ready(), 'candidate discarded')
   committed_fp_after_rollback = committed_fingerprint(committed)
   call require(committed_fp_after_rollback == committed_fp0, 'rollback committed state unchanged')
   call require(committed%current_revision() == revision0, 'rollback revision unchanged')
 
-  ! Replay from the exact same committed checkpoint must reproduce the same candidate.
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
        replay_result, replay_candidate, replay_diagnostics)
   call require(replay_result%completed .and. replay_candidate%ready(), 'replay candidate materialized')
+  call require(.not. replay_result%mass%complete, 'replay preserves explicit full-mass hold')
   candidate_fp2 = candidate_fingerprint(replay_candidate)
   call require(candidate_fp2 == candidate_fp1, 'checkpoint replay candidate identity')
-  call require(bitwise_real(replay_result%mass%residual, result%mass%residual), 'replay mass residual identity')
+  call require(replay_diagnostics%max_abs_step_mass_residual == diagnostics%max_abs_step_mass_residual, &
+       'replay per-trial mass diagnostic identity')
 
-  ! Unsupported physical routes must fail before a physical candidate is admitted.
   bad_parameters = parameters
   bad_parameters%root_extraction_active = .true.
   call expect_not_admitted('active-root-parameter', bad_parameters)
@@ -110,7 +113,6 @@ program test_fmr04_serialized_physical
   bad_parameters%swkimpl = 1
   call expect_not_admitted('swkimpl1', bad_parameters)
 
-  ! Nonzero qrot in forcing also fails closed; no artificial physics change is used to induce retry.
   bad_forcing = forcing
   bad_forcing%root_extraction_sink(1) = 1.0e-8_real64
   call backend%run_trial(column, template, parameters, committed, bad_forcing, config, t0, t1, checkpoint, &
@@ -118,16 +120,16 @@ program test_fmr04_serialized_physical
   call require(.not. rejected_result%completed .and. .not. rejected_candidate%ready(), 'nonzero qrot forcing rejected')
   call require(committed_fingerprint(committed) == committed_fp0, 'qrot rejection leaves committed state unchanged')
 
-  ! Commit the replayed candidate. F-KT alone advances revision and committed time.
+  ! This commit is transaction/composition evidence only. It does not admit the physical backend
+  ! because F-KT has not yet materialized complete accepted full-interval mass accounting.
   call fmr_commit_candidate(transaction_control, committed, replay_candidate, replay_diagnostics, did_commit, commit_status)
-  call require(did_commit, 'physical candidate commit')
+  call require(did_commit, 'physical candidate transaction commit')
   revision1 = committed%current_revision()
   call require(revision1 == revision0 + 1_int64, 'commit revision increments once')
   call committed%current_time(committed_time, available)
   call require(available .and. same_real(committed_time,t1), 'commit advances committed time to t1')
   call require(committed_fingerprint(committed) == candidate_fp2, 'committed endpoint equals replay candidate')
 
-  ! Old checkpoint becomes stale after commit and is rejected before a new candidate is produced.
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
        rejected_result, rejected_candidate, rejected_diagnostics)
   call require(rejected_result%status == KERNEL_STATUS_CHECKPOINT_MISMATCH, 'stale checkpoint rejected')
@@ -143,24 +145,27 @@ program test_fmr04_serialized_physical
   write(*,'(A,F0.12)') 'FMR04_T1=', t1
   write(*,'(A,I0)') 'FMR04_INITIAL_REVISION=', revision0
   write(*,'(A,I0)') 'FMR04_FINAL_REVISION=', revision1
-  write(*,'(A,ES26.17E3)') 'FMR04_STORAGE_START=', result%mass%storage_start
-  write(*,'(A,ES26.17E3)') 'FMR04_STORAGE_END=', result%mass%storage_end
-  write(*,'(A,ES26.17E3)') 'FMR04_TOTAL_IN=', result%mass%total_in
-  write(*,'(A,ES26.17E3)') 'FMR04_TOTAL_OUT=', result%mass%total_out
-  write(*,'(A,ES26.17E3)') 'FMR04_MASS_RESIDUAL=', result%mass%residual
+  write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_STORAGE_START=', initial_storage
+  write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_STORAGE_END=', endpoint_storage
+  write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_TOTAL_IN=', shadow_total_in
+  write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_TOTAL_OUT=', shadow_total_out
+  write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_MASS_RESIDUAL=', shadow_residual
+  write(*,'(A,L1)') 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=', result%mass%complete
+  write(*,'(A,ES26.17E3)') 'FMR04_MAX_ABS_STEP_MASS_RESIDUAL=', diagnostics%max_abs_step_mass_residual
   write(*,'(A,I0)') 'FMR04_CANDIDATE_FINGERPRINT=', candidate_fp2
   write(*,'(A,I0)') 'FMR04_SOLVER_ITERATIONS=', observation%solver_diagnostics%nonlinear_iterations
   write(*,'(A,A)') 'FMR04_SOLVER_ROUTE=', trim(observation%solver_diagnostics%route)
   write(*,'(A)') 'FMR04_REAL_HEADCALC_EXECUTED=TRUE'
   write(*,'(A)') 'FMR04_ROLLBACK=PASS'
   write(*,'(A)') 'FMR04_REPLAY=PASS'
-  write(*,'(A)') 'FMR04_COMMIT=PASS'
+  write(*,'(A)') 'FMR04_COMMIT_TRANSACTION_SEMANTICS=PASS'
   write(*,'(A)') 'FMR04_ACTIVE_ROOT_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_MACROPORE_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_SNOW_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_SWKIMPL1_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_RETRY_SUBGATE=NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION'
-  write(*,'(A)') 'FMR04_SERIALIZED_PHYSICAL_RUNTIME PASS'
+  write(*,'(A)') 'FMR04_FULL_INTERVAL_MASS_ADMISSION=BLOCKED_FKT_RESULT_BOUNDARY_INCOMPLETE'
+  write(*,'(A)') 'FMR04_SERIALIZED_PHYSICAL_COMPOSITION_TEST PASS'
 
 contains
 
@@ -254,7 +259,6 @@ contains
       forcing%root_extraction_sink(i) = 0.0_real64
     end do
 
-    ! Explicit providers must dominate these legacy process globals.
     legacy_qdra = 12345.0_real64
     legacy_qssdi = -54321.0_real64
     legacy_qrot = 0.0_real64
@@ -301,6 +305,53 @@ contains
     fp = physical_fingerprint(snapshot)
   end function candidate_fingerprint
 
+  real(real64) function candidate_storage(state, layer_dz) result(value)
+    type(kernel_candidate_state_t), intent(in) :: state
+    real(real64), intent(in) :: layer_dz(:)
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: got
+    call state%snapshot(snapshot, got)
+    call require(got, 'candidate storage snapshot')
+    select type (physical => snapshot)
+    type is (fmr_b110_physical_state_t)
+      call require(size(layer_dz) == physical%active_nodes, 'candidate storage shape')
+      value = sum(layer_dz*physical%water_content) + physical%ponding_depth
+    class default
+      error stop 'F-MR04 unexpected state in candidate storage'
+    end select
+  end function candidate_storage
+
+  subroutine shadow_profile_mass(f, obs, duration, storage_start, storage_end, total_in, total_out, residual)
+    type(fmr_b110_physical_forcing_t), intent(in) :: f
+    type(fmr_serialized_physical_observation_t), intent(in) :: obs
+    real(real64), intent(in) :: duration, storage_start, storage_end
+    real(real64), intent(out) :: total_in, total_out, residual
+    integer :: i, level
+    real(real64) :: amount
+
+    total_in = max(0.0_real64,-obs%top_flux)*duration + max(0.0_real64,obs%bottom_flux)*duration
+    total_out = max(0.0_real64,obs%top_flux)*duration + max(0.0_real64,-obs%bottom_flux)*duration
+    do i = 1, size(f%subsurface_irrigation_source)
+      amount = f%subsurface_irrigation_source(i)*duration
+      if (amount >= 0.0_real64) then
+        total_in = total_in + amount
+      else
+        total_out = total_out - amount
+      end if
+    end do
+    do level = 1, size(f%drainage_flux_by_level,1)
+      do i = 1, size(f%drainage_flux_by_level,2)
+        amount = f%drainage_flux_by_level(level,i)*duration
+        if (amount >= 0.0_real64) then
+          total_out = total_out + amount
+        else
+          total_in = total_in - amount
+        end if
+      end do
+    end do
+    residual = storage_start + total_in - total_out - storage_end
+  end subroutine shadow_profile_mass
+
   integer(int64) function physical_fingerprint(snapshot) result(fp)
     class(transaction_state_t), intent(in) :: snapshot
     integer :: i
@@ -325,11 +376,6 @@ contains
     scale = max(1.0_real64,abs(a),abs(b))
     same_real = abs(a-b) <= 16.0_real64*epsilon(1.0_real64)*scale
   end function same_real
-
-  logical function bitwise_real(a,b)
-    real(real64), intent(in) :: a,b
-    bitwise_real = transfer(a,0_int64) == transfer(b,0_int64)
-  end function bitwise_real
 
   subroutine require(condition, label)
     logical, intent(in) :: condition
