@@ -1,0 +1,73 @@
+name: F-MQ17 F-SI03 source-bound admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq17-fsi03-source-bound-admission
+    paths:
+      - 'tests/multiswap/fmq17_*'
+      - 'tests/multiswap/test_fmq17_*'
+      - 'tests/multiswap/verify_fmq17_*'
+      - 'tests/multiswap/run_fmq17_gate.py'
+      - 'docs/qualification/F-MQ17_*'
+      - '.github/workflows/fmq17-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq17-gate:
+    name: F-MQ17 source-bound adapter admission
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ17 admission tests
+        run: python3 tests/multiswap/run_fmq17_gate.py
+
+      - name: Fetch exact F-SI03 and F-VQ09 evidence
+        run: |
+          FSI03_QUAL=c14ad3e032dd0285825051d8cf0e7d11ade01cd6
+          FSI03_TESTED=79e3e9052a4f68306b8c826b063497247fd339d6
+          FSI02=da1d5da0d909c5ce55efa17507b805bffd6b82f9
+          FVQ09=7af5b30ec1707ac064a93f3af84bff403a203a6d
+          git fetch --no-tags origin "$FSI03_QUAL" "$FSI03_TESTED" "$FSI02" "$FVQ09"
+          test "$(git rev-parse "$FSI03_QUAL:integration/f-si/F-SI03_QUALIFICATION.json")" = "c51e97a347127acaaf7d5e9db86f15a6200d500d"
+          test "$(git rev-parse "$FSI03_TESTED:src/adapter/mod_reference_richards_legacy_binding.f90")" = "84366a4b312a86806cc3aa78a7257c3a7a95d2f1"
+          test "$(git rev-parse "$FSI03_TESTED:tests/fsi/test_fsi03_reference_binding.f90")" = "fbeefb6c84624d87a7c77ef59f7558b92a81e4e2"
+          test "$(git rev-parse "$FSI03_TESTED:tests/fsi/run_fsi03_gate.sh")" = "cd2b9faf33f819c775d3047236f4e5a087c6c404"
+          test "$(git rev-parse "$FVQ09:integration/f-vq/F-VQ09_STATUS.json")" = "1c67a9336da15fcfaef0dbe4cd1ec41db2cf448d"
+          git show "$FSI03_QUAL:integration/f-si/F-SI03_QUALIFICATION.json" > /tmp/fsi03_qualification.json
+          git show "$FSI03_TESTED:src/adapter/mod_reference_richards_legacy_binding.f90" > /tmp/fsi03_adapter.f90
+          git show "$FSI03_TESTED:tests/fsi/test_fsi03_reference_binding.f90" > /tmp/fsi03_test.f90
+          git show "$FVQ09:integration/f-vq/F-VQ09_STATUS.json" > /tmp/fvq09_status.json
+
+      - name: Verify external qualification scope
+        run: |
+          python3 tests/multiswap/verify_fmq17_fsi03_external.py \
+            --qualification /tmp/fsi03_qualification.json \
+            --adapter /tmp/fsi03_adapter.f90 \
+            --test-source /tmp/fsi03_test.f90 \
+            --fvq09-status /tmp/fvq09_status.json
+
+      - name: Re-run exact F-SI03 tested postimage gate
+        run: |
+          git worktree add --detach /tmp/fsi03-tested 79e3e9052a4f68306b8c826b063497247fd339d6
+          (cd /tmp/fsi03-tested && bash tests/fsi/run_fsi03_gate.sh) | tee /tmp/fsi03-gate.out
+          grep -q '^F-SI03_GATE PASS$' /tmp/fsi03-gate.out
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq17_gate.py \
+            tests/multiswap/test_fmq17_fsi03_admission.py \
+            tests/multiswap/verify_fmq17_fsi03_external.py
