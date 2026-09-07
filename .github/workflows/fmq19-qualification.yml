@@ -1,0 +1,68 @@
+name: F-MQ19 F-SI05 production workspace admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq19-fsi05-production-workspace-admission
+    paths:
+      - 'tests/multiswap/fmq19_*'
+      - 'tests/multiswap/test_fmq19_*'
+      - 'tests/multiswap/verify_fmq19_*'
+      - 'tests/multiswap/run_fmq19_gate.py'
+      - 'docs/qualification/F-MQ19_*'
+      - '.github/workflows/fmq19-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq19-gate:
+    name: F-MQ19 production workspace seam admission
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ19 admission tests
+        run: python3 tests/multiswap/run_fmq19_gate.py
+
+      - name: Fetch exact F-SI05 qualification and tested postimage
+        run: |
+          FSI05_QUAL=0227ae94edc3364b013f831f1efa6aaccac29b11
+          FSI05_TESTED=56c21448a2a0be716d497ac34db8c5eec60dd246
+          FSI05_DOCUMENTED=11b3138e05b1a5c59033134e870f6ffb58e6a9f6
+          git fetch --no-tags origin "$FSI05_QUAL" "$FSI05_TESTED" "$FSI05_DOCUMENTED"
+          test "$(git rev-parse "$FSI05_QUAL:integration/f-si/F-SI05_QUALIFICATION.json")" = "59cf837cae7bc5cd367d805d82f87280774e15bf"
+          test "$(git rev-parse "$FSI05_TESTED:tests/fsi/run_fsi05_gate.sh")" = "78fd05cf8c36899fb9fdd970d318fec009bdc827"
+          test "$(git rev-parse "$FSI05_TESTED:src/legacy/b1_10_port/headcalc.f90")" = "e22251c8f562839857cdb7a609a8148d1f2d58f8"
+          test "$(git rev-parse "$FSI05_TESTED:src/solver/mod_reference_richards_workspace.f90")" = "93285b2ca24669494c93c00403e3783fca6758e9"
+          test "$(git rev-parse "$FSI05_TESTED:src/adapter/mod_reference_richards_legacy_binding.f90")" = "e02882bd45f67b42ede118de14a6b5b8b16fdb80"
+          git show "$FSI05_QUAL:integration/f-si/F-SI05_QUALIFICATION.json" > /tmp/fsi05_qualification.json
+          git show "$FSI05_TESTED:tests/fsi/run_fsi05_gate.sh" > /tmp/fsi05_gate.sh
+
+      - name: Verify external F-SI05 qualification scope
+        run: |
+          python3 tests/multiswap/verify_fmq19_fsi05_external.py \
+            --qualification /tmp/fsi05_qualification.json \
+            --gate-source /tmp/fsi05_gate.sh
+
+      - name: Re-run exact F-SI05 tested postimage gate
+        run: |
+          git worktree add --detach /tmp/fsi05-tested 56c21448a2a0be716d497ac34db8c5eec60dd246
+          (cd /tmp/fsi05-tested && bash tests/fsi/run_fsi05_gate.sh) | tee /tmp/fsi05-gate.out
+          grep -q '^F-SI05_GATE PASS$' /tmp/fsi05-gate.out
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq19_gate.py \
+            tests/multiswap/test_fmq19_fsi05_production_workspace_admission.py \
+            tests/multiswap/verify_fmq19_fsi05_external.py
