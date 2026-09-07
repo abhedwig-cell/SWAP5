@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI10",
+  "status": "QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE",
+  "qualified": true,
+  "branch": "work/f-si10-b110-source-sink-provider",
+  "basis": {
+    "fsi09_qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+    "oracle": "B1.10",
+    "fkt_integration_head_observed": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "shared_fkt_type_change": false
+  },
+  "tested_postimage": {
+    "commit": "b0909fb1786a4d13245c33044b4731ffb69e0b7b",
+    "workflow_run": 34149640511,
+    "workflow_job": 101828999657,
+    "conclusion": "success",
+    "provider_blob": "d6c57add72387e5c0022a44319fff08046194aac"
+  },
+  "admitted_profile": {
+    "constitutive_provider": "qualified F-SI09 corrected B1.10 default-MvG provider",
+    "top_boundary": "explicit provider",
+    "source_sink_provider": "F-SI10 explicit precomputed drainage and subsurface-irrigation binding",
+    "drainage": "precomputed qdra-style level fluxes",
+    "subsurface_irrigation": "precomputed qssdi-style source",
+    "root_extraction": "inactive only, qrot=0",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2],
+    "workers": [1, 2, 4, 8],
+    "optimization_levels": ["O0", "O2"]
+  },
+  "gate_results": {
+    "static_source_sink_contract": "PASS",
+    "source_mapping_o0": "PASS",
+    "source_mapping_o2": "PASS",
+    "source_mapping_o0_o2_identity": "PASS",
+    "root_extraction_failclosed_o0": "PASS",
+    "root_extraction_failclosed_o2": "PASS",
+    "common_route_o0_1_2_4_8": "PASS",
+    "common_route_o2_1_2_4_8": "PASS",
+    "common_route_o0_o2_identity": "PASS",
+    "heterogeneous_drainage_irrigation_columns": "PASS",
+    "legacy_qdra_qssdi_poisoning": "PASS",
+    "aba_order_independence": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "scratch_poisoning": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "request_immutability": "PASS_VIA_COMMON_ROUTE_FIXTURE",
+    "solver_route_iteration_identity": "PASS_VIA_FSI09_REGRESSION_AND_COMMON_ROUTE",
+    "focused_unrounded_equation_residual": "PASS",
+    "fsi09_regression": "PASS",
+    "fsi08_regression": "PASS_TRANSITIVE_VIA_FSI09",
+    "fkt_worker_boundary_regression": "PASS_TRANSITIVE_VIA_FSI09"
+  },
+  "failure_recovery": {
+    "first_workflow_run": 34149270905,
+    "first_failure": "test harness polymorphic pointer target missing TARGET attribute",
+    "production_source_implicated": false,
+    "repair_commit": "09a9db0ff70c39d86721f222e3bbaac2dde3b86b",
+    "repair": "added TARGET to test-local provider variable only",
+    "later_scope_hardening_commit": "0fbcfc50724f66c55a7933e866242590d014b52b",
+    "scope_hardening": "production binding now fails closed on any nonzero or non-finite root-extraction sink until a separate arithmetic-order-preserving seam is qualified"
+  },
+  "physics_and_policy": {
+    "richards_formulas_changed": false,
+    "drainage_physics_changed": false,
+    "irrigation_physics_changed": false,
+    "root_extraction_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_conservation_relaxed": false
+  },
+  "holds": {
+    "active_root_extraction_qrot": "NOT_ADMITTED_REQUIRES_FSI11_EXPLICIT_ROOT_SINK_SEAM_PRESERVING_LEGACY_ARITHMETIC_ORDER",
+    "dynamic_root_extraction_inside_newton_swkimpl1": "NOT_ADMITTED",
+    "macropore_process_composition": "NOT_ADMITTED",
+    "full_production_drainage_module_reentrancy": "NOT_QUALIFIED_BY_PRECOMPUTED_OUTPUT_BINDING_ONLY",
+    "full_production_irrigation_module_reentrancy": "NOT_QUALIFIED_BY_PRECOMPUTED_OUTPUT_BINDING_ONLY",
+    "parallel_reference_backend_admitted": false,
+    "full_swap_parallel_admitted": false,
+    "full_swap_water_balance_qualified": false
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "production_b1_10_source_sink_provider_admitted": true,
+    "production_b1_10_source_sink_provider_admission_scope": "precomputed drainage plus subsurface irrigation with root extraction inactive",
+    "real_headcalc_parallel_reentrancy_qualified_for_admitted_profile": true,
+    "parallel_reference_backend_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "next_work_unit": {
+    "code": "F-SI11",
+    "scope": "Introduce an explicit root-extraction sink channel/provider at the same residual operation position as legacy qrot so active root extraction can be isolated without changing floating-point association. Dynamic RootExtraction for swkimpl=1 remains separately held."
+  }
+}
