@@ -25,10 +25,10 @@ PREIMAGE_SHA256 = {
 }
 
 POSTIMAGE_SHA256 = {
-    "headcalc.f90": "aa28f711503230e44cdfda23a3c5ae595ad8181d9a3c232df41b0f0172b98f2f",
+    "headcalc.f90": "3471390c583df41f7bf7cbcbc5f97c5cb679da6e331b4cfd5ade798f2e23b863",
     "soilwater.f90": "e776b9bef89937483753ba9df21dede01abe01f7d699e74315446314d8e8a1fe",
-    "swap.f90": "df8828845cb6a1f1bc48bddb02b2131542108897243fcd73d2d71d75b4ee839f",
-    "swap_main.f90": "f032b83b8b7b9ca6835705819a665c9a909b56d1b5c0e0d5c74bcc34f704f9e9",
+    "swap.f90": "484b0b2d8aabead8efdbcfe01948b5fcc6b2a8be81980eec8b6214cff2c4a7e3",
+    "swap_main.f90": "9922e06c085030f36527eefc3be0bbaa43e4c0cd7df1973cdb6e0a5fc214b043",
 }
 
 SWAP_PARTS = tuple(PORT / f"swap_part0{i}.inc" for i in range(1, 5))
