@@ -1,0 +1,39 @@
+name: F-SI09 B1.10 source admission
+
+on:
+  push:
+    branches:
+      - work/f-si09-b110-provider
+    paths:
+      - 'reference/swap-4.3.1/b1_10_source/**'
+      - 'reference/swap-4.3.1/snapshots/B1.10.yml'
+      - 'reference/swap-4.3.1/patches/SWAP-012/**'
+      - 'integration/f-si/F-SI09_B0_SOURCE_PROVENANCE_CORRECTION.json'
+      - 'integration/f-si/F-SI09_PROVIDER_ADMISSION_CONTRACT.json'
+      - 'tools/fsi/fsi09_verify_b110_reference_payload.py'
+      - '.github/workflows/fsi09-source-admission.yml'
+
+jobs:
+  source-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify byte-exact corrected B1.10 source payload
+        run: python3 tools/fsi/fsi09_verify_b110_reference_payload.py
+      - name: Protect F-SI08 production postimage during source admission
+        run: |
+          set -euo pipefail
+          BASE=5b522c8f2767989161dae7faf382d5ee1b27c47c
+          for path in \
+            src/legacy/b1_10_port/headcalc.f90 \
+            src/adapter/mod_reference_richards_legacy_binding.f90 \
+            src/solver/mod_soil_water_solver_contract.f90 \
+            src/solver/mod_reference_richards_state_binding.f90 \
+            src/solver/mod_reference_richards_workspace.f90 \
+            src/runtime/mod_a23bu_worker_execution_context.f90 \
+            src/transaction/mod_transaction_reference.f90; do
+            [[ "$(git rev-parse "$BASE:$path")" == "$(git rev-parse "HEAD:$path")" ]]
+          done
+          echo 'F-SI09_FSI08_PRODUCTION_POSTIMAGE_PROTECTED PASS'
