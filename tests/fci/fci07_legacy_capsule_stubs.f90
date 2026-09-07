@@ -5,14 +5,24 @@ end module MOD_arrays
 
 module variables
   use iso_fortran_env, only: real64
+  use MOD_arrays, only: macp
   implicit none
   real(real64) :: dt=0,dtold=0,t=0,t1900=0,tcum=0,timjan1=0,tstart=0,tend=0,outper=0
+  real(real64) :: volini=0,pondini=0,ivolbeg=0,ipondbeg=0,issnowbeg=0,isicbeg=0,ithetabeg(macp)=0
   integer :: daycum=0,daynr=0,imonth=0,iyear=0,ioutdat=0,ioutdatint=0,isteps=0,nprintcount=0,cntper=0
   character(len=11) :: date=''
   logical :: fldayend=.false.,fldaystart=.false.,fldecdt=.false.,fldtmin=.false.,fldtreduce=.false.
   logical :: flbaloutput=.false.,flheader=.false.,floutput=.false.,floutputshort=.false.,flrunend=.false.
   logical :: flzerocumu=.false.,flzerointr=.false.
 end module variables
+
+module MOD_integral_global
+  use iso_fortran_env, only: real64
+  use MOD_arrays, only: macp
+  implicit none
+  real(real64) :: inqpotrot_day(macp)=0,inqredrot_day(macp)=0
+  real(real64) :: iqrot_day=0,iqreddry_day=0,iqredsol_day=0,iptra_day=0,ialpwet_day=0,ialpdry_day=0
+end module MOD_integral_global
 
 module MOD_meteo
   implicit none
