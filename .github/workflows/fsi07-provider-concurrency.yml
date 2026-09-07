@@ -1,0 +1,25 @@
+name: F-SI07 provider-bound concurrency
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'tests/fsi/mod_fsi07_top_provider.f90'
+      - 'tests/fsi/test_fsi07_real_concurrency_provider.F90'
+      - 'tests/fsi/run_fsi07_provider_concurrency_gate.sh'
+      - '.github/workflows/fsi07-provider-concurrency.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Real HeadCalc 1-2-4-8 provider-bound gate
+        run: bash tests/fsi/run_fsi07_provider_concurrency_gate.sh
