@@ -1,8 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI10",
-  "title": "B1.10 source/sink process-output provider isolation",
+  "title": "B1.10 precomputed drainage and subsurface-irrigation provider isolation",
   "branch": "work/f-si10-b110-source-sink-provider",
   "basis": {
     "fsi09_qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
@@ -11,11 +11,12 @@
     "shared_fkt_type_change_required": false
   },
   "legacy_semantics": {
-    "source": "qssdi(node)",
-    "sink": "sum(qdra(level,node), level=1..nrlevs) + qrot(node)",
-    "headcalc_mapping": "When source_sink provider is active, HeadCalc consumes provider source/sink and root_sink_term returns zero, so the provider sink must include qrot exactly once.",
+    "drainage_sink": "sink(node)=sum(qdra(level,node), level=1..nrlevs)",
+    "subsurface_irrigation_source": "source(node)=qssdi(node)",
+    "root_sink": "HeadCalc adds qrot(node) after sink-source in the residual expression",
+    "fsi10_rule": "Do not fold nonzero qrot into sink for qualification because that changes floating-point association relative to the legacy expression.",
     "physics_recomputed_by_provider": false,
-    "provider_role": "bind already-computed drainage, subsurface-irrigation and root-extraction outputs into explicit per-solve read-only arrays"
+    "provider_role": "bind already-computed drainage and subsurface-irrigation outputs into explicit per-solve read-only arrays"
   },
   "ownership": {
     "drainage_physics": "outside F-SI",
@@ -31,9 +32,10 @@
     "base_type": "source_sink_provider_t",
     "method": "evaluate(pressure_head, water_content, source, sink)",
     "input_payload": ["drainage_flux_by_level", "subsurface_irrigation_source", "root_extraction_sink"],
+    "fsi10_admitted_use": "root_extraction_sink must be physically inactive/zero in the qualified F-SI10 profile",
     "pressure_head_dependency": false,
     "water_content_dependency": false,
-    "reason": "F-SI10 binds outputs already computed by existing process physics for the solve interval; it does not move dynamic process evaluation into the provider."
+    "reason": "F-SI10 binds outputs already computed by existing process physics for the solve interval; it does not move process physics into the provider."
   },
   "admitted_profile": {
     "hydraulic_provider": "qualified F-SI09 B1.10 default-MvG provider",
@@ -43,7 +45,7 @@
     "bottom_modes": [7, -2],
     "drainage": "precomputed qdra-style fluxes admitted",
     "subsurface_irrigation": "precomputed qssdi-style source admitted",
-    "root_extraction": "precomputed qrot-style sink admitted"
+    "root_extraction": "inactive, qrot=0 only"
   },
   "qualification_required": {
     "function_level_legacy_mapping_identity": true,
@@ -54,12 +56,13 @@
     "aba_order_independence": true,
     "scratch_poisoning": true,
     "request_immutability": true,
-    "legacy_process_globals_poisoned": true,
+    "legacy_qdra_qssdi_globals_poisoned": true,
     "focused_unrounded_equation_residual": true,
     "fsi09_regression": true,
     "fkt_boundary_regression": true
   },
   "holds": {
+    "active_root_extraction_qrot": "NOT_ADMITTED_REQUIRES_EXPLICIT_ROOT_SINK_SEAM_TO_PRESERVE_LEGACY_ARITHMETIC_ORDER",
     "dynamic_root_extraction_inside_newton_swkimpl1": "NOT_ADMITTED",
     "macropore_process_composition": "NOT_ADMITTED",
     "full_production_drainage_module_reentrancy": "NOT_QUALIFIED_BY_THIS_BINDING_ONLY",
@@ -68,8 +71,12 @@
     "full_swap_parallel_admitted": false,
     "full_swap_water_balance_qualified": false
   },
+  "next_interface_need": {
+    "code": "F-SI11",
+    "scope": "Explicit root-extraction sink channel/provider that preserves the legacy residual operation ordering; swkimpl=1 dynamic RootExtraction remains separate."
+  },
   "scope_flags_before_qualification": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
     "TESTED": false,
     "QUALIFIED": false,
