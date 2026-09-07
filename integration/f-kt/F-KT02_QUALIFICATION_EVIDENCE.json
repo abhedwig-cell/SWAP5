@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT02",
+  "baseline": "62f27672bbb74066ece202de8898597e655aed3d",
+  "persisted_pretest_checkpoint": "4e2bcb568899f64c7d88c4d33eeda72ce784baa9",
+  "tested_postimage": "3bf91bbd6a554257c287af7d23ef2f94d1fc31f0",
+  "qualification_workflow": "F-KT kernel qualification",
+  "qualification_run_id": 34118920692,
+  "qualification_run_conclusion": "success",
+  "focused_gate": {
+    "job": "fkt02-focused-o0-o2",
+    "conclusion": "success",
+    "contract_gate": "FKT02_CONTRACT_GATE PASS",
+    "o0": "FKT02_CANDIDATE_LINEAGE_GATE PASS",
+    "o2": "FKT02_CANDIDATE_LINEAGE_GATE PASS",
+    "aggregate": "FKT02_FOCUSED_O0_O2_GATE PASS"
+  },
+  "regressions": {
+    "F-CI03_transaction_substrate": "PASS",
+    "F-CI04_canonical_runtime": "PASS",
+    "F-CI08_attempt_context": "PASS",
+    "F-CI09_B1_10_transaction_binding": "PASS",
+    "F-CI10_time_mass_seam": "PASS",
+    "F-CI11_controlled_interval_mass": "PASS",
+    "F-CI13_recoverable_trial_status": "PASS",
+    "F-CI14_temporal_acceptance_contract": "PASS"
+  },
+  "qualified_behaviour": {
+    "candidate_bound_to_origin_lineage": true,
+    "candidate_bound_to_origin_revision": true,
+    "successful_commit_increments_revision_exactly_once": true,
+    "stale_candidate_commit_rejected_without_committed_mutation": true,
+    "cross_lineage_commit_rejected_without_committed_mutation": true,
+    "rejected_commit_preserves_candidate_for_explicit_rollback_or_diagnosis": true,
+    "rollback_preserves_committed_revision_and_physical_state": true,
+    "same_committed_revision_replay_reproducible": true,
+    "raw_unguarded_state_fails_closed": true,
+    "hard_unrounded_mass_rejection_preserved": true,
+    "generic_noncalendar_t0_t1_preserved": true
+  },
+  "qualification_scope_limits": {
+    "b1_10_reference_temporal_limit_profile_independently_qualified": false,
+    "reference_execution_newly_admitted": false,
+    "new_temporal_tolerances_introduced": false,
+    "optional_process_temporal_storage_coverage_completed": false,
+    "solver_reentrancy_qualified_by_fkt02": false,
+    "fsi_boundary_changed": false
+  },
+  "first_failed_attempt": {
+    "run_id": 34118733578,
+    "classification": "TEST_HARNESS_FORMATTING_ONLY",
+    "contract_gate_passed": true,
+    "failure": "Fortran test source exceeded the 132-character free-form line limit under -Werror=line-truncation",
+    "production_semantics_changed_by_fix": false,
+    "fix_commit": "3bf91bbd6a554257c287af7d23ef2f94d1fc31f0"
+  },
+  "result": "QUALIFIED"
+}
