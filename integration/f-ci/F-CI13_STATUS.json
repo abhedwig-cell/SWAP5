@@ -4,28 +4,33 @@
   "title": "Recoverable Physical Trial Status Contract",
   "branch": "integration/f-ci-canonical",
   "parent_head": "729574de00fbb1540affe2af74a7202b38d29754",
+  "qualified_source_head": "538d51df4be3780a5bb092767304749dfc800899",
   "b1_oracle": "B1.10",
   "production_source_changed": true,
   "persisted_before_long_tests": true,
   "qualification": {
-    "legacy_failure_inventory": "IMPLEMENTED",
-    "trial_status_contract": "IMPLEMENTED",
-    "terminal_richards_nonconvergence_mapping": "IMPLEMENTED_CANONICAL_ONLY",
+    "legacy_failure_inventory": "PASS_SOURCE_BOUND",
+    "trial_status_contract": "PASS",
+    "terminal_richards_nonconvergence_mapping": "PASS_SOURCE_BOUND_CANONICAL_ONLY",
     "internal_dt_retry_semantics": "PRESERVED",
     "fatal_configuration_semantics": "PRESERVED_FAIL_FAST",
     "standalone_terminal_nonconvergence_semantics": "PRESERVED_LEGACY_CONTINUE",
-    "retryable_trial_state_isolation": "GATE_PENDING",
-    "o0_o2": "GATE_PENDING",
-    "canonical_ci": "PENDING",
+    "retryable_trial_state_isolation": "PASS_DETERMINISTIC_FAILURE_TESTDOUBLE",
+    "o0_o2": "PASS",
+    "canonical_ci": "PASS_RUN_34104845258_JOB_101687946143",
+    "compiler": "GNU_FORTRAN_13.3.0",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI13",
+    "real_b1_10_forced_terminal_nonconvergence_fixture": "NOT_YET_EXECUTED",
     "scalar_temporal_error_policy": "NOT_ADMITTED",
     "execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED"
   },
   "holds": [
+    "force and qualify at least one real B1.10 terminal minimum-dt nonconvergence case if a stable fixture can be constructed without changing physics",
     "qualify scalar temporal-error acceptance policy",
     "complete optional thermal/solute/irrigation/crop/WOFOST temporal characterization",
     "legacy swap_error paths remain fatal rather than recoverably returned",
     "snow/macropore storage and failure qualification",
     "reentrant/parallel legacy backend qualification"
   ],
-  "status": "MATERIALIZED_CI_PENDING"
+  "status": "PASS_RECOVERABLE_TRIAL_STATUS_CONTRACT_REFERENCE_TEMPORAL_POLICY_BLOCKED"
 }
