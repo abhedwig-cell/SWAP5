@@ -1,0 +1,28 @@
+name: F-SI09 B1.10 constitutive provider
+
+on:
+  push:
+    branches:
+      - work/f-si09-b110-constitutive-provider
+    paths:
+      - 'src/solver/mod_b110_default_mvg_provider.f90'
+      - 'integration/f-si/F-SI09_PROVIDER_ISOLATION_CONTRACT.json'
+      - 'integration/f-si/F-SI09_QUALIFICATION.json'
+      - 'tests/fsi/F-SI09_B110_ACTUAL_SOURCE_EVIDENCE.json'
+      - 'tests/fsi/test_fsi09_b110_provider_fingerprint.f90'
+      - 'tests/fsi/test_fsi09_b110_common_parallel.F90'
+      - 'tests/fsi/run_fsi09_b110_provider_gate.sh'
+      - 'tests/fsi/run_fsi08_provider_context_gate.sh'
+      - '.github/workflows/fsi09-b110-provider.yml'
+
+jobs:
+  fsi09-b110-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-SI09 B1.10 provider qualification gate
+        run: bash tests/fsi/run_fsi09_b110_provider_gate.sh
