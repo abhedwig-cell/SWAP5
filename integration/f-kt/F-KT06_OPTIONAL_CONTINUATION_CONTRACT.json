@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT06",
+  "title": "Optional process continuation lifecycle",
+  "baseline": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "canonical_entrypoint": "kernel_executor_t%advance_interval",
+  "production_source_changed": false,
+  "decision": "EXISTING_OPAQUE_TRANSACTION_STATE_LIFECYCLE_IS_THE_CANONICAL_CARRIER",
+  "scope": "Qualify cross-call optional process continuation that can influence later accepted physics as part of the opaque per-column transaction state, without importing F-SI types or hard-coding macropore fields into F-KT.",
+  "external_basis": {
+    "fsi06_branch": "work/f-si06-history-isolation",
+    "fsi06_observed_head": "c1fd1fb35e322dff06412ad4d8e7bad48b4b267b",
+    "fsi06_contract_blob": "2ebe3f99d24e3149bf1890c2296291f89f168bd8",
+    "fsi06_status": "PERSISTED_CONTRACT_BEFORE_SOURCE_CHANGE",
+    "fsi06_consumed_as_qualification_evidence": false,
+    "fsi06_nstep_classification": "column_dependent_solver_process_continuation",
+    "fmq19_branch": "qualification/f-mq19-fsi05-production-workspace-admission",
+    "fmq19_observed_head": "fd07f5fc356ad708eb969fa893a3695d4db3e971",
+    "fmq19_status": "PERSISTED_FSI05_PRODUCTION_WORKSPACE_ADMISSION_CANDIDATE",
+    "fmq19_tested": false,
+    "fmq19_qualified": false,
+    "fvq11_observed_head": "7584f0c38d407913304eea05fd343f2f7fef31cc",
+    "fvq11_decision": "PENDING_FVQ11_CI",
+    "fvq11_consumed_as_qualification_evidence": false
+  },
+  "classification_contract": {
+    "state_that_can_change_future_accepted_physics": "committed_per_column_continuation_state",
+    "solver_newton_jacobian_linear_solve_temporaries": "worker_or_active_job_scratch",
+    "reporting_only_history": "outside_physical_continuation_state",
+    "fsi06_flwarn_iwarn": "reporting_only_history_not_FKT_committed_state",
+    "fsi06_nstep": "must_be_in_adapter_specific_transaction_state_before_macropore_admission",
+    "fkt_hardcodes_nstep": false,
+    "fkt_imports_fsi_types": false
+  },
+  "existing_lifecycle_contract": {
+    "committed_state_is_opaque_transaction_state_subtype": true,
+    "checkpoint_deep_clones_committed_continuation": true,
+    "trial_from_checkpoint_deep_clones_checkpoint_continuation": true,
+    "trial_without_checkpoint_deep_clones_committed_continuation": true,
+    "accepted_runtime_state_becomes_candidate_only": true,
+    "candidate_commit_publishes_continuation_exactly_once": true,
+    "candidate_rollback_discards_trial_continuation": true,
+    "failed_trial_cannot_mutate_committed_continuation": true,
+    "stale_checkpoint_cannot_restore_old_continuation": true,
+    "stale_candidate_cannot_publish_old_continuation": true,
+    "warm_start_is_not_part_of_committed_continuation": true
+  },
+  "optional_state_scaling": {
+    "kernel_allocates_optional_process_state_for_inactive_columns": false,
+    "adapter_state_may_keep_optional_component_unallocated_when_inactive": true,
+    "inactive_route_must_not_allocate_process_continuation_during_trial_or_commit": true,
+    "persistent_cost_scales_with_active_option": true
+  },
+  "admission_boundaries": {
+    "macropore_production_admitted_by_fkt06": false,
+    "reference_execution_admitted_by_fkt06": false,
+    "multiswap_production_runtime_admitted_by_fkt06": false,
+    "full_reference_solver_reentrancy_qualified_by_fkt06": false,
+    "full_swap_mass_identity_qualified_by_fkt06": false,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "focused_qualification_requirements": [
+    "active optional process continuation survives candidate commit",
+    "candidate rollback leaves committed optional continuation unchanged",
+    "replay from the same checkpoint reproduces the same optional continuation",
+    "mass-rejected trial leaves committed and checkpoint continuation unchanged",
+    "stale checkpoint is rejected before model execution",
+    "inactive optional process remains unallocated through checkpoint trial candidate and commit",
+    "O0 and O2 focused executions both pass",
+    "all previously qualified F-KT05 and selected F-CI transaction/time/mass/reference gates remain green"
+  ],
+  "invariant_assessment": {
+    "1": "PASS",
+    "3": "PASS",
+    "4": "PASS",
+    "5": "PASS",
+    "7": "PASS",
+    "8": "PASS",
+    "11": "PASS",
+    "13": "PASS",
+    "16": "PASS",
+    "20": "PASS",
+    "22": "PASS",
+    "23": "PASS",
+    "25": "PASS_WITH_HOLD",
+    "26": "PASS",
+    "27": "PASS",
+    "29": "PASS"
+  },
+  "holds": [
+    "F-SI06 is only a persisted ownership contract at the observed head and is not consumed as qualification evidence",
+    "macropore remains fail-closed until its adapter-specific continuation state is actually materialized and independently qualified",
+    "real B1.10 production reference admission remains fail-closed",
+    "production MultiSWAP runtime remains outside F-KT"
+  ]
+}

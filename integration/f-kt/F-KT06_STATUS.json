@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT06",
+  "baseline": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "branch": "integration/f-kt",
+  "safety_branch": "integration/f-kt06-safety",
+  "safety_branch_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "scope": "optional process continuation lifecycle qualification on the existing opaque transaction-state carrier",
+  "production_source_changed": false,
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implementation_status": "IMPLEMENTED_CONTRACT_AND_EXECUTABLE_GATE",
+  "persistence_status": "PERSISTED_PRETEST",
+  "test_status": "NOT_YET_TESTED_ON_FKT06_POSTIMAGE",
+  "qualification_status": "NOT_YET_QUALIFIED",
+  "external_boundaries": {
+    "fsi06_observed_head": "c1fd1fb35e322dff06412ad4d8e7bad48b4b267b",
+    "fsi06_status": "PERSISTED_CONTRACT_BEFORE_SOURCE_CHANGE",
+    "fsi06_qualified": false,
+    "fmq19_observed_head": "fd07f5fc356ad708eb969fa893a3695d4db3e971",
+    "fmq19_status": "PERSISTED_FSI05_PRODUCTION_WORKSPACE_ADMISSION_CANDIDATE",
+    "fmq19_tested": false,
+    "fmq19_qualified": false,
+    "fvq11_observed_head": "7584f0c38d407913304eea05fd343f2f7fef31cc",
+    "fvq11_decision": "PENDING_FVQ11_CI",
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "files_artifacts_persisted": [
+    "tests/fkt/test_fkt06_optional_continuation.f90",
+    "tests/fkt/run_fkt06_gate.sh",
+    "tools/fkt/fkt06_contract_gate.py",
+    "integration/f-kt/F-KT06_OPTIONAL_CONTINUATION_CONTRACT.json",
+    "integration/f-kt/F-KT06_STATUS.json",
+    ".github/workflows/fkt-kernel.yml"
+  ],
+  "holds": [
+    "F-SI06 ownership contract is not yet qualification evidence",
+    "macropore remains unadmitted until adapter-specific continuation materialization and qualification",
+    "real B1.10 production reference admission remains fail-closed",
+    "production MultiSWAP runtime remains outside F-KT"
+  ],
+  "next_action": "run F-KT06 focused O0/O2 gate and selected F-CI regressions on this persisted postimage before any qualification promotion"
+}
