@@ -69,14 +69,14 @@
       "action": "replace_with_exact_blob"
     },
     {
-      "path": "tests/legacy/snapshots/b1_10",
+      "path": "reference/swap-4.3.1/snapshots/B1.10.yml",
       "sha": "8d768f00d47224a663941f79bb2d35eacc66d16b",
       "authority": "corrected B1.10 oracle",
       "base_matches": true,
       "action": "retain"
     },
     {
-      "path": "tests/legacy/b1-10-reference-pin.json",
+      "path": "tools/vq/cases/b1-10-reference-pin.json",
       "sha": "2422c3ec518afb1d9b7fbd55e869a806842161c9",
       "authority": "corrected B1.10 oracle pin",
       "base_matches": true,
