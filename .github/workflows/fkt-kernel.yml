@@ -1,0 +1,61 @@
+name: F-KT kernel qualification
+
+on:
+  push:
+    branches:
+      - integration/f-kt
+    paths:
+      - 'src/kernel/**'
+      - 'tests/fkt/**'
+      - 'tools/fkt/**'
+      - 'integration/f-kt/**'
+      - '.github/workflows/fkt-kernel.yml'
+  pull_request:
+    paths:
+      - 'src/kernel/**'
+      - 'src/transaction/**'
+      - 'src/runtime/**'
+      - 'src/adapter/**'
+      - 'tests/fkt/**'
+      - 'tests/fci/**'
+      - 'tools/fkt/**'
+      - 'integration/f-kt/**'
+      - '.github/workflows/fkt-kernel.yml'
+
+jobs:
+  fkt01-focused-o0-o2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-KT01 focused contract and O0/O2 gate
+        run: bash tests/fkt/run_fkt01_gate.sh
+
+  fci-regression:
+    needs: fkt01-focused-o0-o2
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-CI03 transaction substrate regression
+        run: bash tests/fci/run_fci03_gate.sh
+      - name: F-CI04 canonical runtime regression
+        run: bash tests/fci/run_fci04_gate.sh
+      - name: F-CI08 attempt-context regression
+        run: bash tests/fci/run_fci08_gate.sh
+      - name: F-CI09 B1.10 transaction binding regression
+        run: bash tests/fci/run_fci09_gate.sh
+      - name: F-CI10 time and mass seam regression
+        run: bash tests/fci/run_fci10_gate.sh
+      - name: F-CI11 controlled interval and mass regression
+        run: bash tests/fci/run_fci11_gate.sh
+      - name: F-CI13 recoverable trial-status regression
+        run: bash tests/fci/run_fci13_gate.sh
+      - name: F-CI14 temporal-acceptance contract regression
+        run: bash tests/fci/run_fci14_gate.sh
