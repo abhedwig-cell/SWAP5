@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM02",
+  "status": "BLOCKED_PRE_ADMISSION",
+  "purpose": "Fail-closed admission gate for the first production process migration (SNOW). This unit does not itself admit or modify production source until a shared qualified downstream baseline is proven.",
+  "parent_closeout": {
+    "f_pm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
+    "f_pm01_status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD"
+  },
+  "required_candidate_properties": {
+    "canonical_ancestor": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_origin": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fkt05": {
+      "status_file": "integration/f-kt/F-KT05_STATUS.json",
+      "qualified": true,
+      "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+      "kernel_source": "src/kernel/mod_kernel_transactions.f90",
+      "kernel_blob": "e8605e73a191e863374a26b096e0d597cb70cadd",
+      "authority": "transaction semantics"
+    },
+    "fsi05": {
+      "qualification_file": "integration/f-si/F-SI05_QUALIFICATION.json",
+      "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "status": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+      "materialization_commit": "1fe1bf4790955594290ba1233d5684542799bf9e",
+      "tested_implementation_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+      "verified_postimage": "11b3138e05b1a5c59033134e870f6ffb58e6a9f6",
+      "required_blobs": {
+        "src/legacy/b1_10_port/headcalc.f90": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
+        "src/solver/mod_reference_richards_workspace.f90": "93285b2ca24669494c93c00403e3783fca6758e9",
+        "src/adapter/mod_reference_richards_legacy_binding.f90": "e02882bd45f67b42ede118de14a6b5b8b16fdb80"
+      },
+      "authority": "reference Richards solver workspace only"
+    },
+    "oracle_identity": {
+      "snapshot": "B1.10",
+      "snapshot_path": "reference/swap-4.3.1/snapshots/B1.10.yml",
+      "snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "reconstruction_path": "tools/vq/b1_10_reconstruct.py",
+      "reconstruction_blob": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+      "snow_source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2"
+    }
+  },
+  "admission_rules": [
+    "Candidate ref must resolve to one exact commit.",
+    "F-CI18 must be an ancestor of the candidate.",
+    "Candidate must contain the exact qualified F-KT05 status pins and exact kernel transaction blob.",
+    "Candidate must contain the exact qualified F-SI05 qualification pins and exact three production workspace-seam blobs.",
+    "B1.10 snapshot and reconstruction blobs must remain byte-identical to the canonical qualified oracle infrastructure.",
+    "The gate does not infer that F-SI05 qualifies full solver reentrancy, all boundary modes, macropores, full SWAP mass accounting or production MultiSWAP.",
+    "No production process source may be created or modified when any required check fails."
+  ],
+  "snow_migration_scope_after_admission": {
+    "allowed": [
+      "Introduce explicit snow parameter/state/forcing/result types.",
+      "Move the characterized B1.10 snow process body behind a kernel-facing process interface without changing equations.",
+      "Keep physical continuation state limited to ssnow and slw.",
+      "Keep snowinco outside physical continuation state.",
+      "Preserve inactive-option zero-state allocation semantics at runtime/template level.",
+      "Add source-bound O0/O2 regression and transaction tests."
+    ],
+    "not_allowed": [
+      "Infer subdaily or generic-duration snow scaling from daily legacy coefficients.",
+      "Change precipitation partitioning, snowcoef semantics, melt/sublimation equations or mass tolerance.",
+      "Move I/O or calendar-day orchestration into the kernel process.",
+      "Merge F-KT/F-SI lineages inside F-PM."
+    ]
+  },
+  "current_observation": {
+    "integration_f_mr_head": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "shared_baseline_proven": false,
+    "production_migration_allowed": false
+  }
+}
