@@ -1,0 +1,36 @@
+name: F-SI07 repin corrected postimage gate
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - tools/fsi/fsi07_repin_gate.py
+      - .github/workflows/fsi07-repin-gate.yml
+
+permissions:
+  contents: write
+
+jobs:
+  repin:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Repin corrected F-SI07 postimage
+        run: python3 tools/fsi/fsi07_repin_gate.py
+      - name: Validate gate-only repair
+        run: |
+          changed="$(git diff --name-only | sort | tr '\n' ' ')"
+          test "$changed" = "tests/fsi/run_fsi07_gate.sh "
+          grep -F '4d1a723bb4948cc611cf15df47366c968be90ebf' tests/fsi/run_fsi07_gate.sh
+          grep -F 'do solver_numbit = 1, MaxIt1' tests/fsi/run_fsi07_gate.sh
+      - name: Persist gate checkpoint
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add tests/fsi/run_fsi07_gate.sh
+          git commit -m "F-SI07: repin qualification gate to repaired carrier"
+          git push origin HEAD:work/f-si07-state-binding
