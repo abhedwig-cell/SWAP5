@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI18",
+  "title": "Exit Scope and Ownership Qualification",
+  "canonical_branch": "integration/f-ci-canonical",
+  "parent_head": "e17b43e3dda7d178c4c81035308308448823e38d",
+  "production_source_changed": false,
+  "persisted_before_long_tests": true,
+  "current_exit_gate_file_changed": false,
+  "candidate": {
+    "all_ten_gates_proposed_qualified": true,
+    "downstream_release_proposed": true,
+    "gate_titles_or_required_flags_changed": false
+  },
+  "qualification": {
+    "focused_scope_gate": "PENDING",
+    "canonical_ci": "PENDING"
+  },
+  "status": "PERSISTED_EXIT_SCOPE_CANDIDATE_CI_PENDING"
+}
