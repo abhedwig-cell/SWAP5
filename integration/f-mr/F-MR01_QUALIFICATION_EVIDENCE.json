@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "name": "Runtime Core, Templates & Checkpoint-Aware Scheduling",
+  "qualification_status": "QUALIFIED",
+  "qualified_source_head": "6ed341437ebcfc6bd19c281f1064a789e90fbd05",
+  "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "consumed_transaction_authority": "F-KT05",
+  "qualification_execution": {
+    "workflow_name": "F-MR01 qualification",
+    "workflow_run_id": 34132574984,
+    "workflow_job_id": 101775971175,
+    "head_sha": "6ed341437ebcfc6bd19c281f1064a789e90fbd05",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.2.0",
+    "optimization_modes": ["-O0", "-O2"]
+  },
+  "gates": {
+    "F-KT05_regression_boundary": "PASS",
+    "FMR01_CONTRACT_GATE": "PASS",
+    "FMR01_CHECKPOINT_GATE_O0": "PASS",
+    "FMR01_CHECKPOINT_GATE_O2": "PASS",
+    "FMR01_RUNTIME_GATE_O0": "PASS",
+    "FMR01_RUNTIME_GATE_O2": "PASS",
+    "FMR01_FOCUSED_O0_O2_GATE": "PASS"
+  },
+  "runtime_matrix": {
+    "batch_sizes_passed": [1, 2, 8, 17, 31, 32, 64],
+    "worker_counts_passed": [1, 2, 4, 8],
+    "order_independence": "PASS",
+    "partition_independence": "PASS",
+    "worker_migration_identity": "PASS",
+    "poisoned_worker_scratch_identity": "PASS"
+  },
+  "transaction_and_failure_isolation": {
+    "checkpoint_capture_and_replay": "PASS",
+    "wrong_lineage_checkpoint_rejected_before_model": "PASS",
+    "wrong_time_checkpoint_rejected_before_model": "PASS",
+    "stale_revision_checkpoint_rejected_before_model": "PASS",
+    "terminal_failure_leaves_committed_state_unchanged": "PASS",
+    "neighbor_columns_survive_terminal_failure": "PASS"
+  },
+  "difficult_tail": {
+    "status": "PASS",
+    "columns": 32,
+    "easy_columns_accepted": 31,
+    "difficult_column_accepted": true,
+    "difficult_synthetic_cost": 896,
+    "max_easy_synthetic_cost": 3,
+    "diagnosed_retries": 8,
+    "interpretation": "bounded deterministic retry/failure-isolation qualification only; not a production solver-cost claim"
+  },
+  "mass_conservation": {
+    "status": "PASS",
+    "accepted_per_column_unrounded_residual_tolerance": 1e-12,
+    "accepted_aggregate_unrounded_residual_tolerance": 1e-11,
+    "injected_mass_defect_rejected": true,
+    "injected_mass_defect_commit_allowed": false,
+    "accounting_note": "F-KT05 canonical interval mass is deliberately incomplete. The deterministic qualification backend derives accepted flux accounting independently from immutable test parameters, forcing and the committed interval. This is not physical SWAP production accounting."
+  },
+  "memory_probe": {
+    "logical_runtime_metadata_bytes_per_column": 48,
+    "deterministic_physical_state_bytes_per_column": 8,
+    "shared_immutable_parameter_bytes_for_two_test_parameter_records": 16,
+    "unused_optional_state_overhead_bytes": 0,
+    "worker_scratch_bytes_per_worker": 112,
+    "scope_note": "compiler/ABI-specific qualification observation, not a production memory guarantee"
+  },
+  "negative_evidence_and_correction": {
+    "failed_workflow_run_id": 34132268666,
+    "failed_head": "1f765f920046d5da624d3464a203f2d6ba31da33",
+    "failure": "F-MR incorrectly projected incomplete canonical interval mass fields into deterministic runtime accounting",
+    "correction_head": "6ed341437ebcfc6bd19c281f1064a789e90fbd05",
+    "correction": "derive deterministic accepted flux accounting explicitly; no tolerance relaxation"
+  },
+  "admission_scope": {
+    "DETERMINISTIC_TEST_BACKEND": "QUALIFIED_RUNTIME_ONLY",
+    "physical_swap_admission": false,
+    "serialized_reference_backend": "NOT_PHYSICALLY_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "balanced_policy": "NOT_ADMITTED",
+    "throughput_policy": "NOT_ADMITTED",
+    "fallback_policy": "NOT_ADMITTED"
+  },
+  "closeout_condition": "F-MR01 may close as a deterministic MultiSWAP-runtime qualification postimage. No physical SWAP or parallel reference admission is implied."
+}

@@ -1,19 +1,35 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "work_unit": "F-MR01",
   "name": "Runtime Core, Templates & Checkpoint-Aware Scheduling",
   "status": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false
+    "TESTED": true,
+    "QUALIFIED": true
   },
-  "phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+  "phase": "QUALIFIED_DETERMINISTIC_RUNTIME_EXIT",
   "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "qualified_source_head": "6ed341437ebcfc6bd19c281f1064a789e90fbd05",
+  "qualification_workflow_run_id": 34132574984,
+  "qualification_workflow_job_id": 101775971175,
+  "qualification_evidence": "integration/f-mr/F-MR01_QUALIFICATION_EVIDENCE.json",
+  "invariant_audit": "integration/f-mr/F-MR01_INVARIANT_AUDIT.json",
   "blockers": [],
   "holds": [
     "parallel reference backend remains NOT_ADMITTED",
-    "physical production backend remains fail closed pending exact qualification evidence"
+    "physical SWAP production backend remains fail closed",
+    "balanced, throughput and fallback physical policies remain owned by F-PE and NOT_ADMITTED",
+    "production-scale performance qualification is not implied by deterministic semantic qualification"
   ],
-  "next_required": ["column/template model", "F-KT05 checkpoint integration", "deterministic runtime", "focused qualification"]
+  "downstream_release": {
+    "deterministic_multiswap_runtime_harness": true,
+    "physical_swap_runtime": false,
+    "parallel_reference_runtime": false
+  },
+  "next_required": [
+    "re-check live F-KT, F-SI, F-PM, F-MQ and F-VQ heads before defining F-MR02",
+    "consume only newly qualified dependencies with exact source provenance",
+    "do not infer physical backend admission from F-MR01"
+  ]
 }
