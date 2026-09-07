@@ -1,41 +1,45 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-CI07",
-  "title": "Worker-local legacy trial capsule and transaction-state classification",
+  "title": "Worker-local legacy trial capsule and whole-day physical rollback qualification",
   "branch": "integration/f-ci-canonical",
   "b1_oracle": "B1.10",
+  "b1_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
   "production_source_changed": true,
   "admitted": {
     "worker_local_legacy_trial_capsule": true,
     "numerical_time_reporting_forcing_rollback_categories": true,
     "irrigation_trial_workspace_rollback": true,
+    "day_crop_accumulator_rollback": true,
+    "balance_baseline_rollback": true,
     "intermediate_and_cumulative_water_accounting_rollback": true,
     "real_b1_10_fci06_module_compile_o0": true,
     "real_b1_10_fci06_module_compile_o2": true,
-    "real_module_poison_restore_o0_o2": true
+    "local_hupsel_whole_day_restore_rerun": true
+  },
+  "local_full_b1_10_evidence": {
+    "irrigation_probe_date": "2002-01-05",
+    "crop_probe_date": "2003-05-15",
+    "max_abs_difference_h": 0.0,
+    "max_abs_difference_theta": 0.0,
+    "max_abs_difference_tsoil": 0.0,
+    "max_abs_difference_cml": 0.0,
+    "max_abs_difference_cmsy": 0.0,
+    "max_abs_difference_selected_water_accounting": 0.0
   },
   "not_admitted": {
-    "full_physical_transaction_adapter": false,
-    "complete_crop_wofost_continuation_state": false,
-    "complete_thermal_continuation_state": false,
-    "complete_solute_continuation_state": false,
-    "final_irrigation_process_state_ownership": false,
-    "full_rejected_trial_restore_rerun": false,
     "generic_subday_physical_execution": false,
-    "complete_unrounded_interval_mass_output": false,
+    "complete_all_option_process_state": false,
     "parallel_reentrant_legacy_backend": false,
+    "complete_unrounded_interval_mass_output": false,
     "b2_reference_admission": false
   },
   "qualification": {
     "local_real_module_capsule_compile_o0": "PASS",
     "local_real_module_capsule_compile_o2": "PASS",
-    "local_real_module_poison_restore": "PASS",
-    "canonical_ci_run": 34085527859,
-    "fci03": "PASS",
-    "fci04": "PASS",
-    "fci05": "PASS",
-    "fci06": "PASS",
-    "fci07": "PASS"
+    "local_hupsel_irrigation_day_rerun": "PASS",
+    "local_hupsel_detailed_crop_day_rerun": "PASS",
+    "canonical_ci": "PENDING_FOR_CURRENT_POSTIMAGE"
   },
-  "status": "PASS_WORKER_LOCAL_LEGACY_ROLLBACK_CAPSULE_PHYSICAL_CONTINUATION_BLOCKED"
+  "status": "MATERIALIZED_CI_PENDING"
 }
