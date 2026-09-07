@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI11",
+  "status": "QUALIFIED_EXIT",
+  "qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+  "qualification_workflow_run": 34151127847,
+  "qualification_workflow_job": 101833469204,
+  "qualification_head_self_verified": true,
+  "conclusion": "success",
+  "downstream_fsi12_allowed": true,
+  "holds_carried_forward": [
+    "swkimpl=1 dynamic root extraction not admitted",
+    "macropore not admitted",
+    "full RootExtraction module reentrancy not qualified",
+    "parallel reference backend not admitted",
+    "full SWAP parallel not admitted",
+    "full SWAP water balance not qualified by this focused slice"
+  ]
+}
