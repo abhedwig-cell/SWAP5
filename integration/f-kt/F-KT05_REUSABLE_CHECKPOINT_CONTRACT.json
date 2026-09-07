@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "workstream": "F-KT",
   "work_unit": "F-KT05",
   "title": "Reusable committed checkpoint carrier",
@@ -78,6 +78,8 @@
     "fsi03_qualified_scope": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
     "fsi04_qualified_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
     "fsi04_qualified_scope": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY",
+    "fsi04_changes_production_route": false,
+    "fsi04_full_reference_solver_reentrancy_qualified": false,
     "fsi05_observed_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
     "fsi05_workflow_run": 34124675751,
     "fsi05_workflow_job": 101750448325,
@@ -133,7 +135,7 @@
   },
   "preserved_holds": [
     "F-VQ10 qualifies only the temporal-profile promotion method; real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
-    "F-SI05 qualifies a focused production HeadCalc workspace seam but does not qualify full reference-solver reentrancy or transfer F-KT transaction authority to F-SI",
+    "F-SI04 remains historical source-bound replay evidence only; F-SI05 establishes the production workspace seam without transferring F-KT transaction authority or qualifying full solver reentrancy",
     "F-MQ18 admits focused real HeadCalc evidence without promoting any real-physics or production-runtime MultiSWAP matrix row",
     "F-VQ11 remains pending and is not consumed as F-KT05 qualification evidence",
     "production MultiSWAP scheduling/runtime remains outside F-KT",

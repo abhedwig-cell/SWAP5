@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "workstream": "F-KT",
   "work_unit": "F-KT05",
   "baseline": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
@@ -8,7 +8,7 @@
   "safety_branch_head": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
   "source_checkpoint_commit": "278e1b0bf44a391059fdcdd72576e24e966e95f1",
   "initial_complete_pretest_postimage": "0ed2c7204cedc249ae07ef5f1deec98adf32f49d",
-  "test_only_failure_history": [
+  "failure_history": [
     {
       "run_id": 34123083336,
       "classification": "TEST_ONLY_O2_IMPURE_FUNCTION_ELIMINATION_WARNING",
@@ -18,6 +18,17 @@
       "run_id": 34124379386,
       "classification": "TEST_ONLY_COMPARE_REALS_WARNING",
       "production_source_failure": false
+    },
+    {
+      "run_id": 34125204931,
+      "focused_job_id": 101752164560,
+      "classification": "CONTRACT_METADATA_REGRESSION_MISSING_HISTORICAL_FSI04_SCOPE_LOCKS",
+      "production_source_failure": false,
+      "fortran_runtime_failure": false,
+      "fkt03_regression": "PASS",
+      "fkt04_regression": "PASS",
+      "failure_stage": "F-KT05 static contract gate before F-KT05 compile/run",
+      "fix": "restore fsi04_changes_production_route=false and fsi04_full_reference_solver_reentrancy_qualified=false alongside F-SI05 boundary evidence"
     }
   ],
   "test_warning_fix_commits": [
@@ -33,14 +44,15 @@
     "focused_o0_o2": "PASS",
     "selected_fci_regressions": "PASS"
   },
+  "failed_boundary_refresh_postimage": "eee1c765afcc69ae6fedd95933356062222bb9f3",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "implementation_status": "IMPLEMENTED",
   "persistence_status": "PERSISTED",
-  "test_status": "REQUALIFICATION_REQUIRED_AFTER_CURRENT_BOUNDARY_REFRESH",
-  "qualification_status": "NOT_YET_QUALIFIED_ON_BOUNDARY_REFRESH_POSTIMAGE",
+  "test_status": "RETEST_REQUIRED_AFTER_CONTRACT_METADATA_FIX",
+  "qualification_status": "NOT_YET_QUALIFIED",
   "scope": "opaque reusable checkpoint carrier bound to current committed lineage, revision and temporal provenance",
   "external_boundaries": {
     "fsi05_observed_head": "56c21448a2a0be716d497ac34db8c5eec60dd246",
@@ -62,7 +74,7 @@
     "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
   },
   "boundary_evidence": "integration/f-kt/F-KT05_BOUNDARY_EVIDENCE.json",
-  "next_action": "run F-KT05 focused O0/O2 gate and selected F-CI regressions on the complete boundary-refresh postimage; promote only after both jobs pass",
+  "next_action": "run F-KT05 focused O0/O2 gate and selected F-CI regressions on the metadata-fixed complete postimage; promote only after both jobs pass",
   "blockers": [],
   "holds": [
     "F-VQ10 qualifies only the temporal-profile promotion method; real B1.10 temporal characterization and the production temporal profile remain unqualified, so canonical reference admission remains fail-closed",
