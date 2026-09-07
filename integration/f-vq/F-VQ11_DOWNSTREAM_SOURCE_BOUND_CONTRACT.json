@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ11",
+  "record_type": "DOWNSTREAM_SOURCE_BOUND_ADMISSION_CONTRACT",
+  "canonical_basis": {
+    "fci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "oracle": "B1.10"
+  },
+  "admitted_candidates": {
+    "F-KT04": {
+      "tested_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
+      "qualification_evidence_commit": "acd55ecee8802a0a9fb5d854380622f2d20a7503",
+      "workflow_run": 34121637946,
+      "focused_job": 101740791304,
+      "fci_regression_job": 101740841325,
+      "scope": "committed temporal provenance, contiguous continuation and fail-closed time-origin validation"
+    },
+    "F-SI04": {
+      "tested_postimage": "0cfbefc271447b4b53eeee50c1dfbb2acaf020df",
+      "qualification_record_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+      "workflow_run": 34122972659,
+      "job": 101745034729,
+      "scope": "source-bound generated replay of exact canonical B1.10 HeadCalc main Newton/Jacobian/residual/linear-solve/hydraulic scratch redirected to F-SI reference workspace on the focused admitted route"
+    }
+  },
+  "authority_contract": {
+    "F-KT": [
+      "owns committed physical state carrier semantics",
+      "owns state revision",
+      "owns committed temporal provenance and continuation validation",
+      "owns commit and rollback authority"
+    ],
+    "F-SI": [
+      "owns solver interface/workspace/scratch isolation",
+      "may return solver result/retry advice within its admitted contract",
+      "does not gain commit authority",
+      "does not gain rollback authority"
+    ]
+  },
+  "required_replay": {
+    "F-KT04": ["F-KT04 contract gate", "F-KT04 focused O0/O2 temporal provenance gate", "selected F-CI03/04/08/09/10/11/13/14 regressions"],
+    "F-SI04": ["exact canonical HeadCalc blob guard", "generated workspace transformation gate", "original-vs-workspace O0/O2 replay", "workspace poison reset", "ABA repeat identity", "F-SI03/F-SI02 regressions"]
+  },
+  "negative_admission": {
+    "F-KT05": {
+      "observed_head": "ed0764126a9febdd8a14ff3f32fdba68e9be9e81",
+      "status_must_remain_unqualified_for_this_assessment": true,
+      "observed_failed_run": 34123331837,
+      "observed_failed_job": 101746158356,
+      "failure_class": "FOCUSED_TEST_COMPILE_FAILURE_WERROR_COMPARE_REALS",
+      "may_be_admitted_by_fvq11": false
+    }
+  },
+  "not_implied_by_admission": [
+    "composed F-KT04 + F-SI04 runtime qualification",
+    "production workspace-aware HeadCalc seam",
+    "full real-solver reentrancy",
+    "parallel real HeadCalc worker qualification",
+    "alternative banded-solver workspace ownership",
+    "macropore or implicit-conductivity path qualification",
+    "full unrounded SWAP water-balance identity",
+    "production reference admission",
+    "production MultiSWAP admission"
+  ],
+  "mass_conservation_rule": "ABSOLUTE_HARD_REQUIREMENT_UNCHANGED; focused equation residual evidence from F-SI04 is not promoted to full SWAP accounting evidence",
+  "production_changes_by_fvq11": false
+}
