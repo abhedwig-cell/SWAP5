@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ11",
+  "title": "Canonical baseline binding after qualified F-CI exit",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq10-fci11-fixture-admission",
+    "commit": "831110d0c6f1838e3583391b5e9266a2f5f95ebb"
+  },
+  "canonical_exit": {
+    "branch": "integration/f-ci-canonical",
+    "closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "development_baseline_exit_head": "1eceed967b12396b8bbc832f897376378463adce",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10",
+    "fci18_status": "QUALIFIED_EXIT",
+    "all_required_gates": "QUALIFIED",
+    "downstream_release_allowed": true
+  },
+  "fvq_handoff": {
+    "branch": "qualification/f-vq07-final-fci-exit",
+    "head": "4ae2fc87970d46ff2103553930e583dd05a59f0b",
+    "qualified": true,
+    "canonical_development_baseline_admitted_for_downstream_qualification": true,
+    "canonical_reference_admission": "BLOCKED_FAIL_CLOSED"
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_CANONICAL_EXIT_PINNED",
+  "next_action": "Bind F-MQ interface requirements to exact canonical source blobs and add a fail-closed qualification gate without promoting real-physics or production-runtime coverage."
+}
