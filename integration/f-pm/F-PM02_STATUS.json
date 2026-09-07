@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "branch": "work/f-pm02-snow-admission",
@@ -16,6 +16,7 @@
   },
   "admission_gate": {
     "contract": "integration/f-pm/F-PM02_ADMISSION_CONTRACT.json",
+    "contract_schema": 2,
     "tool": "tools/fpm/fpm02_admission_gate.py",
     "current_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
     "current_candidate_ref": "integration/f-mr",
@@ -24,6 +25,7 @@
   },
   "current_candidate_summary": {
     "fmr01_phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+    "fmr01_tested": false,
     "fmr01_qualified": false,
     "fci18_ancestry": "PASS",
     "fkt05_qualified_status_and_kernel_blob": "PASS",
@@ -33,7 +35,7 @@
     "fsi05_workspace_production_blob": "MISSING",
     "shared_fkt05_fsi05_baseline": false
   },
-  "test_status": "EXECUTABLE_GATE_PERSISTED_BUT_NOT_RUN_AGAINST_REMOTE_REF_IN_LOCAL_NETWORKLESS_RUNNER",
+  "test_status": "EXECUTABLE_GATE_V2_PERSISTED_NOT_EXECUTED_AGAINST_REMOTE_REF_IN_LOCAL_NETWORKLESS_RUNNER",
   "source_bound_assessment": "LATEST_FMR01_CANDIDATE_REJECTION_VERIFIED_DIRECTLY_FROM_GITHUB",
   "source_change_control": {
     "production_src_files_changed_in_f_pm02": 0,
@@ -43,9 +45,9 @@
     "solver_semantics_changed": false
   },
   "blocker": {
-    "id": "FPM02-G01-SHARED-BASELINE",
+    "id": "FPM02-G01-SHARED-QUALIFIED-BASELINE",
     "owner": "F-MR/canonical integration, not F-PM",
-    "condition_to_clear": "Publish one exact tested and qualified candidate containing the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam while retaining the pinned B1.10 oracle infrastructure."
+    "condition_to_clear": "Publish one exact candidate that is itself TESTED and QUALIFIED, contains the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam, and retains the pinned B1.10 oracle infrastructure."
   },
   "holds": [
     "Do not create or modify production snow process source before admission PASS.",
@@ -54,5 +56,5 @@
     "Do not infer generic-duration or subdaily snow scaling.",
     "Do not interpret F-SI05 focused workspace qualification as full reference-solver reentrancy or full SWAP mass qualification."
   ],
-  "next_action": "Wait for F-MR/canonical integration to publish an exact tested and qualified shared candidate. Then rerun F-PM02 admission. Start structural SNOW migration only after PASS."
+  "next_action": "No further F-PM production work is admissible. Re-evaluate integration/f-mr only after F-MR/canonical integration publishes a new tested and qualified shared candidate; start structural SNOW migration only after gate PASS."
 }
