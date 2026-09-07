@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT02",
+  "title": "Candidate lineage and stale-commit protection",
+  "baseline": {
+    "fkt01_qualified_head": "62f27672bbb74066ece202de8898597e655aed3d",
+    "fci18_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_provenance": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "corrected_legacy_oracle": "B1.10"
+  },
+  "identified_gap": {
+    "fkt01_candidate_single_use": true,
+    "fkt01_candidate_bound_to_specific_committed_lineage": false,
+    "risk": "a candidate could be offered after its origin state was superseded or to another logical column because origin_t0/origin_t1 alone do not identify committed-state provenance"
+  },
+  "canonical_api": {
+    "production_execution_entrypoint": "kernel_executor_t%advance_interval",
+    "conceptual_signature_unchanged": "advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1) -> result + candidate_state + diagnostics",
+    "committed_state_carrier": "kernel_committed_state_t",
+    "committed_state_type_root": "transaction_state_t",
+    "no_second_execution_entrypoint": true
+  },
+  "lineage_contract": {
+    "lineage_id_type": "integer(int64)",
+    "lineage_id_owner": "runtime/coupler/standalone orchestration outside the kernel",
+    "lineage_id_requirement": "stable positive identifier unique among concurrently addressable logical committed states",
+    "kernel_generates_global_lineage_ids": false,
+    "revision_owner": "F-KT kernel transaction layer",
+    "initial_revision": 0,
+    "revision_increment": "exactly once on successful explicit candidate commit",
+    "advance_changes_revision": false,
+    "rollback_changes_revision": false,
+    "rejected_trial_changes_revision": false
+  },
+  "candidate_provenance": {
+    "records_origin_lineage_id": true,
+    "records_origin_revision": true,
+    "records_origin_interval": true,
+    "successful_commit_requires_lineage_match": true,
+    "successful_commit_requires_revision_match": true,
+    "cross_lineage_commit": "fail_closed_without_committed_mutation",
+    "stale_revision_commit": "fail_closed_without_committed_mutation",
+    "rejected_commit_consumes_candidate": false,
+    "successful_commit_consumes_candidate": true
+  },
+  "unguarded_state_policy": {
+    "raw_transaction_state_as_canonical_committed_state": "not_admitted",
+    "behavior": "fail_closed",
+    "reason": "raw state lacks F-KT lineage/revision provenance required to prove commit origin"
+  },
+  "data_ownership": {
+    "physical_continuation_state": "kernel_committed_state_t private physical_state; remains a transaction_state_t and is the only state passed into physical trial execution",
+    "transaction_lineage_metadata": "F-KT committed-state carrier, not solver state",
+    "parameters": "separate immutable/shared input",
+    "forcing": "separate interval input",
+    "numerical_config": "separate numerical-policy input",
+    "worker_scratch": "worker/job model and F-SI implementation; never inserted in committed or candidate physical state",
+    "results": "kernel_result_t",
+    "diagnostics": "kernel_diagnostics_t"
+  },
+  "diagnostics": {
+    "commit_rejections": true,
+    "invalid_candidate_rejections": true,
+    "unguarded_state_rejections": true,
+    "lineage_mismatch_rejections": true,
+    "stale_revision_rejections": true
+  },
+  "time_and_mass": {
+    "generic_t0_t1_unchanged": true,
+    "calendar_day_fundamental": false,
+    "hard_unrounded_mass_gate_unchanged": true,
+    "new_temporal_tolerances_introduced": false
+  },
+  "reference_admission": {
+    "b1_10_reference_execution_newly_admitted": false,
+    "missing_vq_temporal_profile_still_fail_closed": true,
+    "kernel_invents_temporal_limits": false
+  },
+  "fsi_boundary": {
+    "changed": false,
+    "contract": "integration/f-kt/F-KT01_FSI_BOUNDARY.json",
+    "solver_internal_arrays_added_to_kernel_state": false,
+    "headcalc_newton_jacobian_ownership": "F-SI"
+  },
+  "invariant_assessment": {
+    "1": "PASS: the existing single advance_interval symbol remains canonical",
+    "2": "PASS: no file, path, unit, parsing or format semantics added",
+    "3": "PASS: transaction provenance is separated from parameters, forcing, numerical policy, results and solver scratch",
+    "4": "PASS: only physical continuation state plus minimal transaction provenance is retained per committed handle; immutable parameters remain external",
+    "5": "PASS: worker scratch remains outside committed and candidate physical state",
+    "7": "PASS: candidate publication now requires exact lineage and revision match; stale trials cannot mutate committed state",
+    "8": "PASS: replay from unchanged lineage/revision remains valid; commit is the only revision-changing operation",
+    "9": "PASS: lineage protection is independent of calendar boundaries and generic t0/t1 remains intact",
+    "11": "PASS: multiple outstanding predictor/corrector candidates can be distinguished from superseded committed revisions",
+    "13": "PASS: F-CI hard unrounded mass rejection remains unchanged and precedes candidate materialization",
+    "16": "PASS: lineage identifiers are caller/runtime supplied and require no per-column solver instance",
+    "20": "PASS: committed provenance carrier is solver-implementation agnostic",
+    "22": "PASS: no HeadCalc/Newton/Jacobian internals enter the kernel contract",
+    "23": "PASS: no physical option is moved into numerical configuration and no numerical tolerance is invented",
+    "25": "PASS_WITH_HOLD: reference admission remains fail-closed pending independent VQ temporal-profile evidence",
+    "26": "PASS: stale, cross-lineage, invalid and unguarded publication attempts are explicit diagnostics",
+    "28": "PASS: runtime supplies logical lineage identity; the kernel does not infer MODFLOW/tile composition",
+    "29": "PASS: no midnight, one-day, file or direct-coupling assumption added"
+  }
+}
