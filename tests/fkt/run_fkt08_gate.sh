@@ -11,8 +11,10 @@ RUNTIME="$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
 KERNEL="$ROOT/src/kernel/mod_kernel_transactions.f90"
 TEST="$ROOT/tests/fkt/test_fkt08_mass_accounting.f90"
 
-# Preserve the full previously-qualified F-KT01..07 transaction/checkpoint boundary.
-bash "$ROOT/tests/fkt/run_fkt07_gate.sh"
+# F-KT03..05 have no historical kernel-blob pin and must stay green on the evolved source.
+bash "$ROOT/tests/fkt/run_fkt05_gate.sh"
+# F-KT06/07 retain immutable source-provenance gates. Replay their executable semantics on the evolved source.
+bash "$ROOT/tests/fkt/run_fkt08_fkt06_fkt07_forward_regression.sh"
 python3 "$ROOT/tools/fkt/fkt08_mass_accounting_gate.py"
 
 for OPT in o0 o2; do

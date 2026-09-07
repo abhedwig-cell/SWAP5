@@ -9,7 +9,7 @@
   "safety_branch_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
   "contract_checkpoint": "d62e7736240a50086c9950137a98439784fc1c17",
   "source_materialization_commit": "9623841f38c075f61404457ccfe31d89df9839f7",
-  "phase": "SOURCE_PERSISTED_TESTS_PENDING",
+  "phase": "SOURCE_PERSISTED_QUALIFICATION_RETRY",
   "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": false,
@@ -18,6 +18,7 @@
   "contract": "integration/f-kt/F-KT08_MASS_ACCOUNTING_CONTRACT.json",
   "focused_test": "tests/fkt/test_fkt08_mass_accounting.f90",
   "focused_runner": "tests/fkt/run_fkt08_gate.sh",
+  "forward_regression": "tests/fkt/run_fkt08_fkt06_fkt07_forward_regression.sh",
   "static_gate": "tools/fkt/fkt08_mass_accounting_gate.py",
   "production_source_changed": true,
   "production_source_files": [
@@ -30,15 +31,25 @@
   "numerical_policy_changed": false,
   "scientific_tolerance_added": false,
   "cumulative_column_accounting_added": false,
+  "qualification_attempts": [
+    {
+      "run_id": 34160132290,
+      "head": "921e50084f4dd808703d16ab885c422453fbf4ec",
+      "result": "FAILED_HISTORICAL_FKT06_PROVENANCE_GATE_BEFORE_FKT08_EXECUTION",
+      "finding": "F-KT03/F-KT04/F-KT05 passed on evolved source; F-KT06 contract gate intentionally rejected the changed F-KT08 kernel blob before F-KT06 executable test or F-KT08 test ran.",
+      "production_semantics_changed_by_fix": false
+    }
+  ],
+  "historical_fci_provenance_policy": "F-CI03/F-CI04 remain immutable and are replayed on exact F-KT07 head; current F-KT08 semantics are qualified by source-bound F-KT08 tests and compatible current F-CI gates",
+  "historical_fkt_provenance_policy": "F-KT01..07 immutable gates are replayed on exact qualified F-KT07 head; F-KT06/F-KT07 executable tests are separately replayed O0/O2 against the evolved F-KT08 source without altering their historical blob pins",
   "authoritative_full_interval_mass_accounting_qualified": false,
   "fmr04_profile_mass_complete_capable": false,
   "known_missing_physical_contribution_owner_for_fmr04_profile": null,
-  "historical_fci_provenance_policy": "F-CI03/F-CI04 remain immutable and are replayed on exact F-KT07 head; current F-KT08 semantics are qualified by source-bound F-KT08 tests and compatible current F-CI gates",
   "holds": [
-    "focused O0/O2, retry/rollback/commit/generic-time tests have not yet run on the materialized source",
+    "focused F-KT08 O0/O2 and current-head F-KT06/F-KT07 forward semantic regression still must pass",
     "F-MR04 must explicitly consume the qualified F-KT08 completeness hooks before its serialized physical profile can report kernel_result.mass.complete=true",
     "active root, snow and macropore physical accounting remain outside this F-KT08 profile and stay fail-closed",
     "independent F-VQ scientific admission remains downstream"
   ],
-  "next_action": "persist focused tests/workflow, then qualify the exact F-KT08 source postimage"
+  "next_action": "run corrected source-bound qualification workflow without rewriting immutable F-KT06/F-KT07 provenance gates"
 }

@@ -38,6 +38,18 @@ jobs:
       - name: F-KT08 authoritative accepted mass accounting O0/O2 gate
         run: bash tests/fkt/run_fkt08_gate.sh
 
+  historical-fkt-provenance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve exact qualified F-KT01..07 historical gates
+        run: |
+          git checkout --detach b91da4fb01e3b0c21d39a5782d36f8eedc55875d
+          bash tests/fkt/run_fkt07_gate.sh
+
   historical-fci-provenance:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
