@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT02",
+  "baseline": "62f27672bbb74066ece202de8898597e655aed3d",
+  "fci18_provenance": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "qualified_production_source_provenance": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "branch": "integration/f-kt",
+  "checkpoint_commit": "7a427c104ea709d0a21b69038d8d5e0ae11c7ace",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implementation_status": "PERSISTED_UNTESTED",
+  "test_status": "NOT_RUN",
+  "qualification_status": "NOT_RUN",
+  "scope": "candidate lineage, committed revision and stale/cross-lineage commit protection",
+  "files_artifacts_persisted": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "tests/fkt/test_fkt02_candidate_lineage.f90",
+    "tests/fkt/run_fkt02_gate.sh",
+    "tools/fkt/fkt02_contract_gate.py",
+    "integration/f-kt/F-KT02_CANDIDATE_LINEAGE_CONTRACT.json",
+    ".github/workflows/fkt-kernel.yml"
+  ],
+  "next_action": "run F-KT02 focused O0/O2 qualification followed by selected F-CI transaction/time/mass/reference regressions",
+  "recovery_point": "7a427c104ea709d0a21b69038d8d5e0ae11c7ace",
+  "blockers": [],
+  "holds": [
+    "B1.10 temporal-limit profile remains independently unqualified and reference admission remains fail-closed",
+    "optional-process temporal/storage coverage remains downstream qualification work",
+    "solver reentrancy, HeadCalc isolation and solver scratch remain F-SI ownership"
+  ]
+}
