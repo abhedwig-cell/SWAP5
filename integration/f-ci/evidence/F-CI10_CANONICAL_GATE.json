@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI10",
+  "classification": "QUALIFIED_TEST_OR_CONTRACT",
+  "qualified_source_head": "970d99100a256099343d4b2072ecd543469b23b5",
+  "workflow_run": 34093648750,
+  "job": 101652946866,
+  "compiler": "GNU Fortran 13.3.0",
+  "gate": "FCI10_GATE_PASS",
+  "checks": {
+    "trial_mass_worker_local_type": true,
+    "trial_mass_not_persistent": true,
+    "trial_mass_no_save": true,
+    "trial_mass_no_io": true,
+    "qualified_storage_soil_pond_interception": true,
+    "snow_fail_closed": true,
+    "macropore_fail_closed": true,
+    "canonical_complete_requires_complete_trial_flux": true,
+    "canonical_unrounded_residual_contract": true,
+    "fci09_reference_execution_lock_preserved": true,
+    "exact_timecontrol_hash_pinned": true,
+    "exact_integral_hash_pinned": true,
+    "generic_subday_not_admitted": true,
+    "candidate_legacy_wiring_not_production": true,
+    "source_bound_candidate_mass_pass": true,
+    "hard_mass_bound_pass": true,
+    "o0_o2_identity": true
+  },
+  "source_bound_hupsel_mass": {
+    "profiles": 4,
+    "optimization_modes": ["O0", "O2"],
+    "runs": 8,
+    "max_abs_residual_cm": 1.587818254655815e-07,
+    "hard_limit_cm": 1e-06
+  },
+  "non_admissions": [
+    "generic physical sub-day/interval execution",
+    "canonical legacy timestep wiring of trial mass",
+    "snow complete storage",
+    "macropore complete storage",
+    "physical temporal-error metric",
+    "B1.10 execute_reference_interval execution"
+  ]
+}
