@@ -1,0 +1,100 @@
+{
+  "schema_version": "mq-reference-candidate-v1",
+  "work_unit": "F-MQ10",
+  "candidate_id": "b1.10-fci11-generic-interval-hupsel",
+  "status": "BLOCKED_REFERENCE_RUN_CHECKPOINT_MISSING",
+  "admission_allowed": false,
+  "source_identity": {
+    "repository": "abhedwig-cell/SWAP5",
+    "snapshot": "B1.10",
+    "source_commit": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "source_tree_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "canonical_workflow_run": 34100440481
+  },
+  "evidence_inventory": [
+    {
+      "path": "integration/f-ci/F-CI11_STATUS.json",
+      "git_blob_sha1": "18d38b9e94584e3b5757f17c83d69e37eb42c78f",
+      "role": "canonical F-CI11 qualification status; generic interval and legacy trial-mass wiring PASS",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    },
+    {
+      "path": "integration/f-ci/F-CI11_QUALIFICATION.md",
+      "git_blob_sha1": "42dd72ded40bca6f2beaad8dcccc27a356fec014",
+      "role": "source-bound non-midnight/cross-day generic-interval qualification and hard-mass evidence",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    },
+    {
+      "path": "integration/f-ci/evidence/F-CI11_LOCAL_GENERIC_INTERVAL_GATE.json",
+      "git_blob_sha1": "e75ec40baa689ea0a2ee3d64dfdfa8dfeb646ab6",
+      "role": "qualified generic-interval summary; raw local run matrix explicitly remains outside canonical Git",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    },
+    {
+      "path": "integration/f-ci/evidence/F-CI10_LOCAL_HUPSEL_MASS_CANDIDATE.json",
+      "git_blob_sha1": "cdc8fb5bcee6aa527c0df1fc6b816f4522b263c8",
+      "role": "unrounded mass formulation evidence with totals/residuals; not an F-MQ03 event mass record with storage endpoints and identified boundary terms",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    },
+    {
+      "path": "integration/f-vq/F-VQ01_STATUS.json",
+      "git_blob_sha1": "67306722f2cfc0c4544a4a47066fc6cfeb428ba9",
+      "role": "qualification-only downstream baseline; execute_reference_interval for real B1.10 remains not admitted and F-CI12 is a blocker",
+      "provides_event_checkpoint": false,
+      "provides_unrounded_mass": false
+    }
+  ],
+  "capability_progress": {
+    "generic_interval_seam": true,
+    "non_midnight_and_cross_day_qualified": true,
+    "worker_local_unrounded_trial_mass": true,
+    "hard_mass_bound_qualified_for_exercised_profile": true,
+    "committed_state_serialized_as_reference_record": false,
+    "forcing_slice_serialized_as_reference_record": false,
+    "numerical_config_serialized_as_reference_record": false,
+    "endpoint_state_serialized_as_reference_record": false,
+    "fmq03_complete_mass_record_serialized": false,
+    "reference_run_extractor_and_output_hash_present": false,
+    "execute_reference_interval_real_b1_10_admitted": false
+  },
+  "repository_evidence": {
+    "qualified_source_head": "4e8894fc741d7abd711367f712e7aad29d1361eb",
+    "qualification_evidence_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
+    "f_vq01_head_inspected": "4bf00d23fc35944df30cc17fc5dd4544e813c29d",
+    "event_checkpoint_artifact_found": false,
+    "raw_fci11_run_matrix_canonical_git": false,
+    "execute_reference_interval_real_b1_10_admitted": false
+  },
+  "required_for_admission": [
+    "reference_run_id",
+    "committed_state_at_t0",
+    "short_interval_forcing",
+    "numerical_reference_config",
+    "expected_endpoint_state",
+    "unrounded_internal_mass_accounting",
+    "extractor_identity_and_output_hash"
+  ],
+  "missing": [
+    "reference_run_id",
+    "committed_state_at_t0",
+    "short_interval_forcing",
+    "numerical_reference_config",
+    "expected_endpoint_state",
+    "unrounded_internal_mass_accounting",
+    "extractor_identity_and_output_hash"
+  ],
+  "forbidden_substitutes": [
+    "reconstructing committed state from F-CI summary metrics",
+    "using total_in/total_out/residual without F-MQ03 storage endpoints and boundary-term identities",
+    "using GitHub Actions workflow run id as the physical reference_run_id",
+    "hand-slicing forcing from legacy files without a qualified extractor",
+    "calling non-admitted execute_reference_interval to manufacture an oracle",
+    "treating source-bound capability qualification as an admitted event fixture"
+  ],
+  "next_dependency": "F-CI12/F-VQ: admit the real B1.10 reference execution path and emit a pinned reference_run_checkpoint record; then rerun the existing F-MQ04c admission bridge into the F-MQ03 fixture builder"
+}
