@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "contract_id": "F-PM-SNOW-V0",
+  "status": "DESIGN_AND_CHARACTERIZATION_CONTRACT_ONLY",
+  "process": "SNOW",
+  "source_reference": {
+    "oracle": "B1.10",
+    "source_file": "SWAP/snow.f90",
+    "source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6"
+  },
+  "fortran_shape": "evaluate_snow(parameters, committed_state, forcing, t0, t1, candidate_state, fluxes, results, diagnostics)",
+  "authority": {
+    "transaction_authority": "F-KT",
+    "solver_authority": "F-SI",
+    "f_pm_role": "process data ownership and deterministic process evaluation only"
+  },
+  "data": {
+    "parameters": [
+      {"name":"swsublim","type":"integer/logical policy flag","legacy_source":"MOD_snow%swsublim","meaning":"0 enables sublimation from snowpack; 1 suppresses it"},
+      {"name":"snowcoef","type":"real64","legacy_source":"MOD_snow%snowcoef","meaning":"temperature-index snow melt coefficient","time_semantics":"legacy comments and equations assume daily evaluation; generic scaling is not authorized by F-PM01"}
+    ],
+    "committed_state": [
+      {"name":"snow_water_storage","type":"real64","legacy_source":"ssnow","meaning":"total snowpack water equivalent after evaluation, including retained liquid water"},
+      {"name":"liquid_water_storage","type":"real64","legacy_source":"slw","meaning":"retained liquid water in the snowpack"}
+    ],
+    "forcing": [
+      {"name":"snowfall_input","legacy_source":"gsnow"},
+      {"name":"rain_on_snow_input","legacy_source":"snrai"},
+      {"name":"soil_surface_temperature","legacy_argument":"tsoil1"},
+      {"name":"mean_air_temperature","legacy_argument":"tav"},
+      {"name":"potential_soil_evaporation","legacy_argument":"peva"},
+      {"name":"reduced_soil_evaporation","legacy_argument":"empreva"},
+      {"name":"ponding_evaporation","legacy_argument":"epond"}
+    ],
+    "hydraulic_view": {"required":false,"reason":"B1.10 snow() does not read HeadCalc, h, theta, q, Jacobian or solver scratch."},
+    "numerical_config": [],
+    "candidate_state": ["snow_water_storage","liquid_water_storage"],
+    "fluxes": ["melt","sublimation","updated potential/reduced/ponding evaporation values"],
+    "results": ["snow_water_storage","liquid_water_storage","melt","sublimation"],
+    "diagnostics": ["unrounded_mass_residual","snow_deficit_clamped","reference_call_semantics"],
+    "reconstructible_workspace": ["smelt","smeltr","SnDefit","SnLoss","slw_max","qlw"],
+    "excluded_from_process_state": [
+      {"name":"snowinco","classification":"DIAGNOSTIC","reason":"integral.f90 resets snowinco=ssnow at balance-period reset; it is a water-balance/reference baseline, not physical continuation state"},
+      {"name":"snw","classification":"LEGACY_IO","reason":"output-file bookkeeping only"},
+      {"name":"TePrRain/TePrSnow","classification":"IMMUTABLE_PARAMETER_OF_PRECIPITATION_PARTITION","reason":"used by MOD_meteo to form gsnow/snrai, not by snow() task 2 itself"}
+    ]
+  },
+  "transaction_semantics": {
+    "input_state": "read-only committed state",
+    "candidate_rule": "evaluation writes only candidate_state/results/diagnostics",
+    "commit": "F-KT copies accepted candidate state into committed state",
+    "rollback": "discard candidate; committed state remains byte-identical",
+    "replay": "same committed state plus same forcing must reproduce candidate and diagnostics",
+    "warm_start": "not applicable to this algebraic process; no hidden solver iteration state"
+  },
+  "time_contract": {
+    "arguments": ["t0","t1"],
+    "target": "generic interval identity is explicit and must never be inferred from midnight/day number",
+    "reference_characterization_domain": "one legacy snow evaluation call",
+    "known_hidden_assumption": "B1.10 driver calls Snow(2) only when flDayStart, and snowcoef/flux variables are consumed without explicit dt multiplication",
+    "fail_closed_rule": "F-PM01 does not authorize duration scaling or subdaily reinterpretation. Production migration must obtain a qualified time-semantics decision/fixture before claiming generic-interval numerical equivalence.",
+    "non_midnight_contract_test": "contract data model permits non-midnight t0/t1 and does not branch on calendar fields, but numerical equivalence outside the legacy call domain is not claimed."
+  },
+  "mass_accounting": {
+    "reference_identity": "candidate_snow_water_storage - committed_snow_water_storage = snowfall_input + rain_on_snow_input - sublimation - melt, up to floating-point roundoff",
+    "rounding": "none before diagnostic comparison",
+    "hard_requirement": "mass residual must remain bounded at floating-point roundoff for characterized cases"
+  },
+  "optional_state": {
+    "inactive_snow": "no snow process persistent state allocation in target kernel/runtime",
+    "legacy_behavior": "driver skips Snow calls when swsnow != 1"
+  },
+  "holds": [
+    "No production source implementation in F-PM01.",
+    "No generic-time scaling inferred from daily legacy behavior.",
+    "No F-KT05 dependency until qualified.",
+    "No F-SI04 production dependency until an admitted production seam exists.",
+    "No F-PM02 production migration until a shared qualified downstream baseline exists."
+  ]
+}
