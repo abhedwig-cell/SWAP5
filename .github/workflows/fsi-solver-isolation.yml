@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - work/f-si01-solver-isolation-boundary
+      - work/f-si02-reference-solver-interface
     paths:
       - 'integration/f-si/**'
       - 'docs/integration/F-SI01_SOLVER_ISOLATION_BOUNDARY.md'
       - 'tools/fsi/**'
       - 'tests/fsi/**'
+      - 'src/solver/**'
       - 'src/legacy/b1_10_port/headcalc.f90'
       - 'src/legacy/b1_10_port/soilwater.f90'
       - 'src/runtime/mod_a23bu_worker_execution_context.f90'
@@ -26,3 +28,16 @@ jobs:
         run: gfortran --version
       - name: F-SI01 source-bound inventory and worker isolation gate
         run: bash tests/fsi/run_fsi01_gate.sh
+
+  fsi02-reference-interface:
+    if: github.ref_name == 'work/f-si02-reference-solver-interface'
+    needs: fsi01-source-boundary
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI02 common solver contract and worker workspace gate
+        run: bash tests/fsi/run_fsi02_gate.sh
