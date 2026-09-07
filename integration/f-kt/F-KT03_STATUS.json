@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT03",
+  "baseline": "b9e0486a3e9dd6bf50f889acb842ec85f0351a25",
+  "fci18_provenance": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "qualified_production_source_provenance": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+  "branch": "integration/f-kt",
+  "safety_branch": "integration/f-kt03-safety",
+  "safety_branch_head": "b9e0486a3e9dd6bf50f889acb842ec85f0351a25",
+  "source_checkpoint_commit": "0c24fa5fba4012918e58667dd10e0defdcd1eba5",
+  "pretest_checkpoint_commit": "4281b4f5773b2f0516e45745c3622921c93255b9",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implementation_status": "PERSISTED_UNTESTED",
+  "test_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
+  "qualification_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
+  "scope": "opaque committed/candidate transaction carriers, explicit typed committed-state API and read-only physical snapshot boundary",
+  "files_artifacts_persisted": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "tests/fkt/test_fkt03_opaque_transaction_carriers.f90",
+    "tests/fkt/run_fkt03_gate.sh",
+    "tools/fkt/fkt03_contract_gate.py",
+    "integration/f-kt/F-KT03_OPAQUE_TRANSACTION_CARRIER_CONTRACT.json",
+    ".github/workflows/fkt-kernel.yml"
+  ],
+  "external_boundaries_pinned": {
+    "fsi01_qualified_boundary_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fsi02_observed_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fmq13_qualified_boundary_head": "871f4062caf490fc244db5c61693dc9a7c620f83"
+  },
+  "next_action": "run F-KT03 contract, F-SI boundary and focused O0/O2 gate, then selected F-CI transaction/time/mass/reference regressions",
+  "recovery_point": "4281b4f5773b2f0516e45745c3622921c93255b9",
+  "blockers": [],
+  "holds": [
+    "B1.10 temporal-limit profile remains independently unqualified and reference admission remains fail-closed",
+    "F-SI02 does not yet route B1.10 reference Richards through the common solver contract",
+    "full solver reentrancy and HeadCalc isolation remain F-SI ownership",
+    "production MultiSWAP scheduling/runtime remains outside F-KT",
+    "optional-process temporal/storage coverage remains downstream qualification work"
+  ]
+}
