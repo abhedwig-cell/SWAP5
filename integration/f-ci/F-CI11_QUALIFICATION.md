@@ -12,7 +12,7 @@ The new interval boundary is independent of the calendar day boundary. Calendar-
 
 The trial-mass accumulator remains explicit worker/job-local input. The generic interval object is likewise explicit call context and is not persistent column state.
 
-## Qualification
+## Source-bound qualification
 
 Source-bound Hupsel qualification used the exact B1.10/F-CI06 physical basis. Standalone F-CI11 is numerically identical to the qualified F-CI10 mass-wiring candidate at O0 and O2 for `result.bal`, `result.blc` and `swap.wrn` after generated metadata is excluded. An earlier comparison against an incomplete header-only F-CI06 run is explicitly not used as qualification evidence.
 
@@ -21,8 +21,16 @@ Two full-versus-two-half suites were executed at O0 and O2:
 - four day-start profiles (offsets 499, 520, 760, 800): 8/8 PASS;
 - four arbitrary interval profiles, including non-midnight starts and intervals crossing a calendar-day boundary: 8/8 PASS.
 
-All trajectories preserve continuation/cursor semantics and satisfy the hard `1e-6 cm` mass bound. O0/O2 results are identical. Full-versus-two-half physical state differences are expected numerical-path differences; F-CI11 does not convert them into a qualified temporal-error metric.
+All trajectories preserve continuation/cursor semantics and satisfy the hard `1e-6 cm` mass bound. Maximum observed absolute residual was `1.8590012175467852e-07 cm`. O0/O2 results are identical. Full-versus-two-half physical state differences are expected numerical-path differences; F-CI11 does not convert them into a qualified temporal-error metric.
+
+## Canonical CI qualification
+
+The materialized source/test head `4e8894fc741d7abd711367f712e7aad29d1361eb` passed canonical workflow run `34100440481`. F-CI11 job `101673819067` ran with GNU Fortran 13.3.0 and reported `FCI11_GATE_PASS`. The complete sequential dependency chain F-CI03 through F-CI11 passed on the same source head.
+
+The focused gate verifies explicit interval ownership, no I/O in the interval seam, independent interval termination, preserved legacy day boundaries/run-end semantics, exact F-CI06 preimage pins, exact F-CI11 postimage pins, unrounded timestep/crop interception mass wiring, legacy DLL guard retention, source-bound local generic-time/mass evidence, and non-admission of a temporal-error policy.
 
 ## Non-admissions
 
 F-CI11 does **not** yet admit `b1_10_transaction_model_t%advance`, a physical temporal-error policy, `execute_reference_interval` for B1.10, snow/macropore complete storage accounting, or a reentrant parallel legacy backend.
+
+Formal status: `PASS_CONTROLLED_GENERIC_INTERVAL_AND_TRIAL_MASS_PORT_REFERENCE_TEMPORAL_POLICY_BLOCKED`.
