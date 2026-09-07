@@ -17,10 +17,32 @@
     "fsi_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
     "fmr_branch_present": false
   },
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FKT01_CANDIDATE_ADMISSION",
-  "next_action": "Bind exact F-KT01 qualification evidence into the F-MQ matrix overlay, close only F-KT-owned prerequisites proven by F-KT01, and keep real-physics and production-runtime coverage fail-closed."
+  "tested": true,
+  "qualified": true,
+  "qualification": {
+    "workflow": ".github/workflows/fmq12-qualification.yml",
+    "successful_run": 34118020865,
+    "overlay_tests": 7,
+    "overlay_gate": "PASS",
+    "external_fkt01_gate": "PASS",
+    "python_compile_gate": "PASS",
+    "exact_fkt01_final_head_verified": "62f27672bbb74066ece202de8898597e655aed3d",
+    "qualification_evidence_commit_verified_via_final_status": "e350d84e975e9f6ab4475658566f623b0e46f9ac"
+  },
+  "coverage": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "promotions": []
+  },
+  "ownership_reclassified": ["P05", "P12", "P14", "P16", "P21", "P22"],
+  "holds": [
+    "real B1.10 reference execution remains F-VQ fail-closed work",
+    "solver reentrancy and scratch isolation remain F-SI work",
+    "production MultiSWAP runtime and coupling remain F-MR work"
+  ],
+  "status": "QUALIFIED_FKT01_BOUNDARY_ADMITTED_OWNERSHIP_RECLASSIFIED_NO_COVERAGE_PROMOTION",
+  "next_action": "Re-read F-KT, F-SI, F-VQ and F-MR heads before F-MQ13; only start another admission unit if new executable downstream evidence changes a requirement or coverage class."
 }
