@@ -4,26 +4,25 @@
   "work_unit": "F-PM02",
   "assessment": "CURRENT_SHARED_BASELINE_ADMISSION",
   "candidate_ref": "integration/f-mr",
-  "candidate_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+  "candidate_commit": "8c819abbad3345358efde600cc306e064d63c12b",
   "decision": "REJECT_FAIL_CLOSED",
   "production_migration_allowed": false,
   "checks": {
     "candidate_resolves": "PASS",
+    "fmr01_status": {
+      "status": "PERSISTED_NOT_TESTED_NOT_QUALIFIED",
+      "phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
+      "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8"
+    },
     "canonical_fci18_ancestor": {
       "status": "PASS",
-      "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
-      "candidate_ahead_by": 51
+      "ancestor": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
     },
-    "fkt05_status": {
+    "fkt05_status_and_kernel": {
       "status": "PASS",
       "qualified": true,
-      "tested_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
-      "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2"
-    },
-    "fkt05_kernel_blob": {
-      "status": "PASS",
-      "observed": "e8605e73a191e863374a26b096e0d597cb70cadd",
-      "expected": "e8605e73a191e863374a26b096e0d597cb70cadd"
+      "kernel_blob_observed": "e8605e73a191e863374a26b096e0d597cb70cadd",
+      "kernel_blob_expected": "e8605e73a191e863374a26b096e0d597cb70cadd"
     },
     "fsi05_qualification_artifact": {
       "status": "FAIL_MISSING",
@@ -37,23 +36,21 @@
     },
     "fsi05_workspace_blob": {
       "status": "FAIL_MISSING",
-      "path": "src/solver/mod_reference_richards_workspace.f90"
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "required": "93285b2ca24669494c93c00403e3783fca6758e9"
     },
     "b1_10_snapshot_blob": {
       "status": "PASS",
       "observed": "8d768f00d47224a663941f79bb2d35eacc66d16b"
-    },
-    "b1_10_reconstruction_blob": {
-      "status": "PASS",
-      "observed": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401"
     }
   },
-  "interpretation": "The current F-MR branch is an exact qualified F-KT05 descendant of F-CI18 and retains the canonical B1.10 oracle infrastructure, but it has not yet materialized or carried the qualified F-SI05 production workspace seam. Therefore it is not a shared F-KT05/F-SI05 production baseline and F-PM02 production source work remains forbidden.",
-  "runner_note": "The persisted gate is intended for execution in a Git checkout with the candidate ref fetched. The current environment could not clone GitHub because container DNS/network access is unavailable; current rejection is instead established directly from GitHub source/ref evidence and is not reported as an executed local gate run.",
+  "interpretation": "F-MR advanced beyond the raw F-KT05 head and now persists F-MR01 runtime/checkpoint orchestration work, but it still does not carry the qualified F-SI05 production workspace seam. Therefore the candidate remains inadmissible as a shared F-KT05/F-SI05 production baseline for F-PM02.",
+  "runner_note": "The executable gate remains persisted for a checkout-based run. This observation is established directly against the exact GitHub candidate ref because the local runner has no GitHub network access; no local execution claim is made.",
   "holds": [
     "No production snow source migration.",
     "No F-PM-owned merge of F-KT and F-SI.",
-    "Re-run the executable admission gate after F-MR publishes a candidate containing the qualified F-SI05 seam.",
+    "Re-run admission only after F-MR materializes and qualifies the shared F-SI05 seam.",
+    "Do not consume unqualified F-SI06 work.",
     "Do not broaden F-SI05 focused qualification claims."
   ]
 }
