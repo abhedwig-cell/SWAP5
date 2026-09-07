@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ15",
+  "title": "Production common-workspace MultiSWAP isolation",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq14-fsi02-common-solver-admission",
+    "commit": "eebf665d0123feb1e0c6fd694b58ec6635cd7cc2"
+  },
+  "downstream_basis": {
+    "fsi02_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi02_status": "QUALIFIED_CONTRACT_AND_WORKSPACE_ONLY",
+    "fsi03_branch_head_observed": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi03_new_evidence_present": false,
+    "fvq09_head_observed": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "fvq09_qualified": false,
+    "fmr_branch_present": false
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_COMMON_WORKSPACE_ISOLATION_CANDIDATE",
+  "scope": "Exercise the exact F-SI02 production workspace implementation under MultiSWAP-style worker reuse and column scheduling without claiming reference-Richards physics, real B1.10 execution, or production MultiSWAP runtime qualification."
+}
