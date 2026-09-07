@@ -1,81 +1,40 @@
-# F-CI07 Qualification — Worker-local legacy trial capsule and state classification
+# F-CI07 Qualification — Worker-local legacy trial capsule and whole-day physical rollback
 
-## Outcome
+## Current outcome
 
-**PASS_WORKER_LOCAL_LEGACY_ROLLBACK_CAPSULE_PHYSICAL_CONTINUATION_BLOCKED**
+**MATERIALIZED_CI_PENDING** for the strengthened postimage.
 
-F-CI07 closes one specific rollback gap left by F-CI06: legacy time/control, forcing cursors, irrigation event workspace and water-accounting accumulators may mutate during a physical trial even though they are not canonical physical continuation state.
+The earlier F-CI07 capsule already qualified worker-local rollback of legacy time/control, forcing cursors, irrigation workspace and water accounting. The strengthened postimage adds two classes that matter when a rejected trial crosses reporting or crop-process boundaries:
 
-The solution is deliberately **not** to add these values to every persistent MultiSWAP column. `b1_10_legacy_trial_capsule_t` is adapter-owned, worker/job-local rollback storage and does not extend `canonical_state_t` or `transaction_state_t`.
+- water-balance baseline state (`volini`, `pondini`, intermediate-period baselines and `ithetabeg`);
+- day accumulators used by crop/root processes (`inqpotrot_day`, `inqredrot_day`, `iqrot_day`, `iptra_day`, `ialpwet_day`, `ialpdry_day`).
 
-## Capsule coverage
+These values remain adapter/worker rollback data. They are not added to persistent `canonical_state_t` or `transaction_state_t`.
 
-The capsule captures/restores:
+## Local qualification
 
-- numerical/retry state: `dt`, `dtold`, `fldecdt`, `fldtmin`, `fldtreduce`;
-- legacy calendar/time projection and day-event flags;
-- reporting progress/reset flags;
-- meteo/rain forcing cursors;
-- irrigation event workspace and the current `dayfix`/`nirri` continuation cursors;
-- all intermediate and cumulative water-accounting accumulators from `MOD_integral`, including drainage arrays.
+The strengthened capsule passed static and poison/restore unit gates under GNU Fortran at both `-O0` and `-O2`. It also compiled against the exact B1.10/F-CI06 module interfaces at both optimization levels.
 
-Large arrays are allocatable and therefore cost memory only for active capsules/workers. For the legacy standalone maxima the broad rollback payload can be several MiB, which is acceptable only because it is worker-local rather than multiplied by all logical columns; a MultiSWAP execution class has much smaller compile-time array maxima.
+A source-bound physical rerun probe was then executed on exact reconstructed B1.10 plus the F-CI06 four-file source port. Two whole-day Hupsel cases were used:
 
-`dayfix` and `nirri` are copied into the capsule for rollback, but this does not settle their final ownership: when irrigation is active they remain candidates for optional persistent process-continuation state.
+1. **2002-01-05** — configured fixed-irrigation event day;
+2. **2003-05-15** — detailed potato crop active, five days after emergence.
 
-## Source-bound local qualification
+For each case: advance to the committed state immediately before the probe day -> capture physical state and worker-local capsule -> run -> restore -> reset worker scratch -> rerun. The measured maximum absolute differences between the two accepted outcomes were all zero for:
 
-The module was compiled directly against the exact F-CI06 post-port source built from the qualified B1.10 tree under both GNU `-O0` and `-O2`.
+- `h`;
+- `theta`;
+- `tsoil`;
+- `cml`;
+- `cmsy`;
+- selected water-accounting totals.
 
-A poison/restore test set representative numerical, calendar, reporting, forcing, irrigation, intermediate-accounting, cumulative-accounting and array values; captured the capsule; deliberately corrupted the backing legacy globals; restored the capsule; and verified the original values. Both optimization levels produced:
+The test source and a full-source runner are retained in `tests/fci/` so this evidence is reproducible wherever the exact B1.10 tree, TTUTIL and Hupsel qualification case are available.
 
-`FCI07_LEGACY_TRIAL_CAPSULE PASS`
+## Admission boundary
 
-The `-O0` and `-O2` gate logs were identical.
+If current canonical CI passes, F-CI07 admits the worker-local legacy rollback capsule and the **whole-day Hupsel physical restore/rerun path**. It does not admit generic subday physical execution, every optional process configuration, complete unrounded interval mass output, parallel reentrancy of the legacy backend, or B2 reference status.
 
-This proves that the new adapter compiles against the real B1.10/F-CI06 module declarations and that the qualified categories can be restored exactly. It is stronger than a stub-only compile, but it is **not** yet a full rejected-SWAP-trial qualification because crop/WOFOST, thermal and solute physical continuation state are not yet fully captured.
+## Invariants
 
-## Canonical CI evidence
-
-Canonical workflow run `34085527859` completed the chained qualification successfully:
-
-- F-CI03 transaction substrate — PASS
-- F-CI04 canonical runtime — PASS
-- F-CI05 B1.10 physical preimage — PASS
-- F-CI06 controlled source port/checkpoint — PASS
-- F-CI07 worker-local legacy trial capsule — PASS
-
-The F-CI07 CI job compiled and ran the architecture + poison/restore gate at `-O0` and `-O2` and required identical gate logs.
-
-## Repository gate
-
-`tools/fci/fci07_legacy_trial_capsule_gate.py` is fail-closed on the architecture boundary. It verifies, among other things, that the capsule:
-
-- is neither canonical persistent state nor transaction state;
-- performs no file I/O;
-- contains forcing/time/numerical/irrigation/accounting rollback categories;
-- uses allocatable storage for large arrays;
-- does not silently absorb `h`, `theta`, `tsoil`, `cml` or `cmsy` as capsule payload.
-
-`tests/fci/run_fci07_gate.sh` compiles and runs the poison/restore contract at `-O0` and `-O2` using deterministic legacy-module stubs. The canonical workflow chains this after F-CI03 through F-CI06.
-
-## Invariant assessment
-
-F-CI07 strengthens invariants 3, 4, 5, 7, 16 and 27 by separating rollback-only legacy bookkeeping from compact persistent column state and allocating the broad rollback payload per active worker rather than per logical column. It also protects invariant 13 by including both intermediate and cumulative water-accounting state in rollback coverage.
-
-No physical formula, solver policy, mass tolerance or time discretization policy is changed.
-
-## Explicit holds
-
-F-CI07 does **not** admit the full physical transaction adapter. Remaining blockers are:
-
-- complete crop/WOFOST continuation state;
-- thermal continuation (`tsoil`) ownership;
-- solute continuation (`cml`, `cmsy`) ownership and replay semantics;
-- final optional persistent irrigation process state (`dayfix`, `nirri`);
-- source-bound rejected-trial -> restore -> rerun qualification with all active Hupsel physics;
-- generic physical sub-day execution;
-- complete accepted unrounded interval mass output;
-- reentrant/parallel legacy backend removal or containment.
-
-The next state-integration step must resolve these physical/process categories rather than expanding the worker capsule indiscriminately.
+The change advances explicit data ownership and compact persistent state (3–5), rejected-trial isolation (7), MultiSWAP scaling (16) and pay-for-use optional storage (27). No physical formula or numerical policy changes (23) and mass conservation remains a hard requirement (13). Generic time remains a canonical requirement, but the current legacy physical bridge is still explicitly whole-day limited (9, 29).
