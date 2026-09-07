@@ -1,66 +1,93 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
-  "assessment": "CURRENT_SHARED_BASELINE_ADMISSION",
+  "assessment": "CURRENT_SHARED_PRODUCTION_ADMISSION",
   "candidate_ref": "integration/f-mr",
-  "candidate_commit": "8c819abbad3345358efde600cc306e064d63c12b",
+  "candidate_commit": "646ecf188129e705caae2a52f8c184878406e801",
   "decision": "REJECT_FAIL_CLOSED",
   "production_migration_allowed": false,
+  "gate": {
+    "contract_schema": 3,
+    "tool": "tools/fpm/fpm02_admission_gate.py",
+    "python_syntax": "PASS",
+    "remote_ref_execution": "NOT_RUN_LOCAL_RUNNER_HAS_NO_GITHUB_NETWORK",
+    "source_bound_candidate_assessment": "VERIFIED_DIRECTLY_FROM_GITHUB"
+  },
   "checks": {
     "candidate_resolves": "PASS",
-    "fmr01_status_artifact": {
-      "status": "PASS_PRESENT",
-      "phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
-      "source_base": "f50b8cd20221fac27a2059b6c6192ed0b7384be8"
-    },
-    "shared_downstream_tested": {
-      "status": "FAIL_FALSE",
-      "observed": false,
-      "required": true
-    },
-    "shared_downstream_qualified": {
-      "status": "FAIL_FALSE",
-      "observed": false,
-      "required": true
-    },
-    "canonical_fci18_ancestor": {
-      "status": "PASS",
-      "ancestor": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
-    },
-    "fkt05_status_and_kernel": {
-      "status": "PASS",
+    "fmr01_composed_qualification": {
+      "tested": true,
       "qualified": true,
+      "phase": "QUALIFIED_DETERMINISTIC_RUNTIME_EXIT",
+      "status": "PASS_GENERAL_RUNTIME_ONLY"
+    },
+    "physical_swap_runtime": {
+      "observed": false,
+      "required": true,
+      "status": "FAIL_EXPLICITLY_NOT_ADMITTED"
+    },
+    "physical_swap_admission": {
+      "observed": false,
+      "required": true,
+      "status": "FAIL_EXPLICITLY_NOT_ADMITTED"
+    },
+    "fkt05_minimum_transaction_boundary": {
+      "status": "PASS",
       "kernel_blob_observed": "e8605e73a191e863374a26b096e0d597cb70cadd",
       "kernel_blob_expected": "e8605e73a191e863374a26b096e0d597cb70cadd"
     },
-    "fsi05_qualification_artifact": {
-      "status": "FAIL_MISSING",
-      "path": "integration/f-si/F-SI05_QUALIFICATION.json",
-      "candidate_lookup": "404_NOT_FOUND"
+    "accepted_solver_lineage": {
+      "status": "FAIL_NONE_PRESENT",
+      "accepted_variants": [
+        "F-SI05",
+        "F-SI06"
+      ],
+      "fsi05_qualification_lookup": "404_NOT_FOUND",
+      "fsi06_qualification_lookup": "404_NOT_FOUND"
     },
-    "fsi05_headcalc_blob": {
-      "status": "FAIL_PREIMAGE_ONLY",
-      "observed": "225b9f2cc1ecff01414b5691799103b92bc068c5",
-      "required": "e22251c8f562839857cdb7a609a8148d1f2d58f8"
-    },
-    "fsi05_workspace_blob": {
-      "status": "FAIL_MISSING",
-      "path": "src/solver/mod_reference_richards_workspace.f90",
-      "required": "93285b2ca24669494c93c00403e3783fca6758e9"
-    },
-    "b1_10_snapshot_blob": {
-      "status": "PASS",
-      "observed": "8d768f00d47224a663941f79bb2d35eacc66d16b"
+    "b1_10_oracle": {
+      "snapshot_blob_observed": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "snapshot_blob_expected": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "reconstruction_blob_observed": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "reconstruction_blob_expected": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "status": "PASS"
     }
   },
-  "interpretation": "The current F-MR01 candidate fails admission independently on composition qualification and on F-SI05 materialization. It is PERSISTED but not TESTED/QUALIFIED, and it still lacks the qualified F-SI05 workspace seam. F-PM02 therefore remains prohibited from starting production SNOW migration.",
-  "runner_note": "Gate v2 is persisted for checkout-based execution. This current observation is established directly against the exact GitHub candidate because the local runner cannot reach GitHub; no local executable PASS/FAIL claim is made.",
+  "live_successor_observations_not_consumed": {
+    "F-KT06": {
+      "qualified": true,
+      "decision": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE",
+      "generic_kernel_source_changed": false
+    },
+    "F-KT07": {
+      "qualified": true,
+      "scope": "B1.10 adapter-specific macropore nstep continuation materialization and transaction-safe sparse clone",
+      "generic_kernel_source_changed": false,
+      "reference_execution_admitted": false,
+      "production_multiswap_admitted": false
+    },
+    "F-SI06": {
+      "qualified": true,
+      "status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+      "final_postimage_verified": true,
+      "accepted_by_gate_if_integrated_exactly": true,
+      "production_multiswap_admission": false
+    },
+    "F-SI07": {
+      "qualified": true,
+      "status": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED",
+      "final_postimage_verification_required": true,
+      "accepted_by_gate": false,
+      "reason": "Process/evaluation bridge through shared globals and final-postimage verification remain open."
+    }
+  },
+  "interpretation": "F-MR01 is now genuinely tested and qualified, but only for the deterministic runtime backend. Its own status and qualification evidence explicitly deny physical SWAP admission. The exact candidate also contains no accepted F-SI05/F-SI06 qualification artifact. Therefore the shared physical production basis required by F-PM02 is still not present.",
   "holds": [
-    "No production snow source migration.",
-    "No F-PM-owned merge of F-KT and F-SI.",
-    "Do not admit a composed baseline before its own TESTED and QUALIFIED flags are true.",
-    "Do not consume unqualified F-SI06 work.",
-    "Do not broaden F-SI05 focused qualification claims."
+    "No production SNOW source migration.",
+    "No F-PM-owned merge of F-KT/F-SI/F-MR lineages.",
+    "Do not treat generic deterministic runtime qualification as physical SWAP admission.",
+    "Do not consume F-SI07 as a final shared production basis while final-postimage verification/process-provider isolation remain open.",
+    "Do not infer generic-duration or subdaily snow scaling."
   ]
 }
