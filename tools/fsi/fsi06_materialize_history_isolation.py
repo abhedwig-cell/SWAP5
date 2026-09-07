@@ -76,9 +76,9 @@ def transform_soilwater(path: Path) -> None:
     )
     text = replace_exact(
         text,
-        '      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t\n',
-        '',
-        'soilwater duplicate worker use',
+        '      use MOD_swap_base, only: swmacro, swinco, swhyst, swsolve\n      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t\n      use MOD_arrays,    only: mabbc',
+        '      use MOD_swap_base, only: swmacro, swinco, swhyst, swsolve\n      use MOD_arrays,    only: mabbc',
+        'soilwater subroutine worker import',
     )
     text = replace_exact(
         text,
