@@ -1,5 +1,6 @@
 name: F-SI08 provider context
 
+# The gate is rerun on the persisted <=32-character provider admission labels.
 on:
   push:
     branches:
