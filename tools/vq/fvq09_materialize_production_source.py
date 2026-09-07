@@ -3,8 +3,10 @@
 
 The chain is B0 -> B1.10 -> F-CI06 -> F-CI11, followed only by the qualified
 F-CI13 canonical-trial terminal-status guard in swap.f90. Adapter/runtime source
-is required to remain byte-identical to the qualified F-CI14 production-source
-head; it is not copied into the legacy tree.
+must preserve the qualified F-CI14 production-source head; the only later src/
+delta admitted here is the exact candidate-model file from the qualified F-CI14
+canonical postimage. That candidate model remains fail-closed for production
+execution and is not copied into the legacy physical tree.
 """
 from __future__ import annotations
 
@@ -22,6 +24,9 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[2]
 QUALIFIED_PRODUCTION_SOURCE_HEAD = "da5026d8b87ad2f3c7912360891839a120ecccb6"
+QUALIFIED_CANONICAL_POSTIMAGE = "c226988ae0782a7d8d0818f5d4aeaab61b696de4"
+QUALIFIED_CANONICAL_CANDIDATE_PATH = "src/adapter/mod_b1_10_reference_policy_candidate_model.f90"
+QUALIFIED_CANONICAL_CANDIDATE_BLOB = "594436176333e9fb04121dcf287b507a93723dfe"
 FCI13_PORT = ROOT / "src/legacy/b1_10_fci13_port"
 
 FCI13_INSERT = """
@@ -51,12 +56,29 @@ def legacy_crlf(data: bytes) -> bytes:
 
 
 def ensure_qualified_src_identity() -> None:
-    proc = subprocess.run(
-        ["git", "diff", "--quiet", QUALIFIED_PRODUCTION_SOURCE_HEAD, "--", "src"],
+    ancestry = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", QUALIFIED_PRODUCTION_SOURCE_HEAD, "HEAD"],
         cwd=ROOT,
     )
-    if proc.returncode != 0:
-        raise ValueError("current src tree differs from qualified F-CI14 production-source head")
+    if ancestry.returncode != 0:
+        raise ValueError("qualified F-CI14 production-source head is not an ancestor of current harness head")
+
+    src_delta = [
+        line for line in run([
+            "git", "diff", "--name-only", QUALIFIED_PRODUCTION_SOURCE_HEAD, "HEAD", "--", "src"
+        ]).stdout.splitlines() if line
+    ]
+    if src_delta != [QUALIFIED_CANONICAL_CANDIDATE_PATH]:
+        raise ValueError(
+            "current src lineage differs from qualified production source beyond the exact qualified canonical candidate-model postimage"
+        )
+
+    head_blob = run(["git", "rev-parse", f"HEAD:{QUALIFIED_CANONICAL_CANDIDATE_PATH}"]).stdout.strip()
+    canonical_blob = run([
+        "git", "rev-parse", f"{QUALIFIED_CANONICAL_POSTIMAGE}:{QUALIFIED_CANONICAL_CANDIDATE_PATH}"
+    ]).stdout.strip()
+    if head_blob != QUALIFIED_CANONICAL_CANDIDATE_BLOB or canonical_blob != QUALIFIED_CANONICAL_CANDIDATE_BLOB:
+        raise ValueError("qualified F-CI14 canonical candidate-model blob identity mismatch")
 
 
 def assemble_fci13_swap(fci11_source: Path) -> bytes:
@@ -96,6 +118,8 @@ def materialize(b0_archive: Path, output: Path) -> dict:
             "work_unit": "F-VQ09",
             "status": "PASS_MATERIALIZED_QUALIFIED_PHYSICAL_SOURCE",
             "qualified_production_source_head": QUALIFIED_PRODUCTION_SOURCE_HEAD,
+            "qualified_canonical_postimage": QUALIFIED_CANONICAL_POSTIMAGE,
+            "qualified_canonical_candidate_blob": QUALIFIED_CANONICAL_CANDIDATE_BLOB,
             "legacy_chain": ["B1.10", "F-CI06", "F-CI11", "F-CI13_TERMINAL_STATUS_GUARD"],
             "materialized_source_manifest_sha256": manifest["manifest_sha256"],
             "materialized_source_file_count": manifest["file_count"],
