@@ -1,0 +1,59 @@
+name: F-VQ12 F-KT05 F-SI05 admission
+
+on:
+  pull_request:
+    paths:
+      - 'integration/f-vq/**'
+      - 'tools/vq/**'
+      - 'docs/verification/**'
+      - '.github/workflows/fvq12-downstream.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fvq12-fkt05-fsi05-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out exact F-VQ12 head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ12 source-bound admission gate
+        run: python -m tools.vq.fvq12_fkt05_fsi05_gate
+      - name: F-VQ12 negative-promotion guards
+        run: python -m unittest tools.vq.test_fvq12_fkt05_fsi05_gate
+      - name: Re-run exact qualified F-KT05 focused gate and selected F-CI regressions
+        run: |
+          git checkout --detach f7d2ee5e81f1d6686c96114984239e97ba6a8a8a
+          bash tests/fkt/run_fkt05_gate.sh
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+          bash tests/fci/run_fci08_gate.sh
+          bash tests/fci/run_fci09_gate.sh
+          bash tests/fci/run_fci10_gate.sh
+          bash tests/fci/run_fci11_gate.sh
+          bash tests/fci/run_fci13_gate.sh
+          bash tests/fci/run_fci14_gate.sh
+      - name: Re-run exact F-SI05 tested implementation gate
+        run: |
+          git checkout --detach 56c21448a2a0be716d497ac34db8c5eec60dd246
+          bash tests/fsi/run_fsi05_gate.sh
+      - name: Re-run documented F-SI05 closeout postimage gate
+        run: |
+          git checkout --detach 11b3138e05b1a5c59033134e870f6ffb58e6a9f6
+          bash tests/fsi/run_fsi05_gate.sh
+      - name: Re-run exact qualified F-VQ11 admission gate
+        run: |
+          git checkout --detach efdc11f35e2251eebbab888e05d74085892e05fd
+          python -m tools.vq.fvq11_downstream_source_bound_gate
+          python -m unittest tools.vq.test_fvq11_downstream_source_bound_gate
