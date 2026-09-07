@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI03",
+  "status": "TESTED_SOURCE_BOUND_ADAPTER_CONTRACT",
+  "purpose": "Bind the F-SI02 soil-water request/result/workspace seam to the existing B1.10 HeadCalc symbol through an explicit legacy adapter without changing solver formulas, numerical policy, F-KT transaction semantics or the production SoilWater route.",
+  "source_basis": {
+    "fsi02_qualified_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "oracle": "B1.10",
+    "fkt_current_head_observed": "b5e7ec8564b5f6e2b53844388fbb870fa3264d07",
+    "fkt_current_work_unit_observed": "F-KT03",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "fkt03_mapping_owner": "F-SI adapter or model implementation"
+  },
+  "implementation": {
+    "common_solver_contract_changed": false,
+    "adapter_path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "bound_external_symbol": "headcalc(worker)",
+    "production_soilwater_route_changed": false,
+    "fsi_owns_commit_or_rollback": false,
+    "legacy_globals_allowed_in_common_solver_layer": false
+  },
+  "admitted_subset": {
+    "macropores": false,
+    "swkimpl": 0,
+    "fldtmin": false,
+    "bottom_modes": [7, -2],
+    "top_boundary": "legacy-managed explicit sentinel FSI_LEGACY_TOP_CONTEXT"
+  },
+  "fail_closed_routes": [
+    "legacy-macropore-deferred",
+    "legacy-implicit-k-deferred",
+    "legacy-min-dt-deferred",
+    "legacy-bottom-mode-deferred",
+    "legacy-top-context-required",
+    "legacy-bottom-mode-mismatch",
+    "legacy-workspace-type-error"
+  ],
+  "result_mapping": {
+    "candidate_pressure_head": true,
+    "candidate_water_content": true,
+    "candidate_ponding_depth": true,
+    "candidate_groundwater_level": true,
+    "top_flux": true,
+    "bottom_flux": true,
+    "solver_diagnostics": true,
+    "retry_advice": true,
+    "unrounded_mass_balance_residual": "NaN_NOT_YET_QUALIFIED",
+    "interface_tangent": "NOT_IMPLEMENTED"
+  },
+  "protected_source_preimage": {
+    "headcalc_blob": "225b9f2cc1ecff01414b5691799103b92bc068c5",
+    "headcalc_modified": false,
+    "soilwater_modified": false,
+    "worker_context_modified": false,
+    "transaction_source_modified": false,
+    "common_solver_contract_modified": false,
+    "reference_workspace_modified": false
+  },
+  "tested_postimage": "79e3e9052a4f68306b8c826b063497247fd339d6",
+  "qualification_run": {
+    "workflow": "F-SI03 reference binding",
+    "workflow_run": 34121073167,
+    "job": 101738972331,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "test_matrix": {
+    "FSI03-T01_source_guard": "PASS",
+    "FSI03-T02_common_solver_legacy_global_guard": "PASS",
+    "FSI03-T03_exact_HeadCalc_caller_set": "PASS",
+    "FSI03-T04_adapter_O0_compile_execute": "PASS",
+    "FSI03-T05_adapter_O2_compile_execute": "PASS",
+    "FSI03-T06_request_to_bound_symbol_state_mapping": "PASS_TEST_DOUBLE",
+    "FSI03-T07_candidate_and_flux_result_mapping": "PASS_TEST_DOUBLE",
+    "FSI03-T08_covered_legacy_state_restore": "PASS_TEST_DOUBLE",
+    "FSI03-T09_repeat_and_ABA_identity": "PASS_TEST_DOUBLE",
+    "FSI03-T10_workspace_poison_independence": "PASS_TEST_DOUBLE",
+    "FSI03-T11_retry_status_mapping": "PASS_TEST_DOUBLE",
+    "FSI03-T12_unsupported_route_fail_closed": "PASS",
+    "FSI03-T13_FSI02_common_contract_O0_O2": "PASS",
+    "FSI03-T14_FSI02_workspace_1_2_4_8_threads": "PASS"
+  },
+  "explicit_holds": {
+    "real_HeadCalc_execution_in_FSI03_qualification": false,
+    "real_HeadCalc_numerical_identity": "NOT_QUALIFIED",
+    "full_legacy_side_effect_rollback": "NOT_QUALIFIED",
+    "reference_Richards_reentrancy": "NOT_QUALIFIED",
+    "parallel_reference_solver_execution": "NOT_QUALIFIED",
+    "actual_HeadCalc_Newton_arrays_use_FSI_workspace": false,
+    "macropore_isolation": "DEFERRED",
+    "implicit_K_isolation": "DEFERRED",
+    "top_boundary_provider_extraction": "DEFERRED",
+    "complex_bottom_boundaries": "DEFERRED",
+    "mass_balance_identity": "NOT_QUALIFIED",
+    "production_reference_admission": false
+  },
+  "invariants_assessed": ["1", "2", "3", "4", "5", "7", "8", "9", "13", "16", "20", "21", "22", "23", "25", "26", "27", "29"],
+  "next_work_unit": "F-SI04",
+  "next_scope": "Bind remaining actual HeadCalc Newton/Jacobian scratch to F-SI-owned worker workspace on the source-bound reference path, without formula or numerical-policy change, then qualify real HeadCalc replay/poison behavior before broader provider extraction."
+}
