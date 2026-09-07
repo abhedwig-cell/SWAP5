@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "branch": "work/f-pm02-snow-admission",
@@ -16,27 +16,40 @@
   },
   "admission_gate": {
     "contract": "integration/f-pm/F-PM02_ADMISSION_CONTRACT.json",
-    "contract_schema": 2,
+    "contract_schema": 3,
     "tool": "tools/fpm/fpm02_admission_gate.py",
     "current_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
     "current_candidate_ref": "integration/f-mr",
-    "current_candidate_commit": "8c819abbad3345358efde600cc306e064d63c12b",
-    "current_decision": "REJECT_FAIL_CLOSED"
+    "current_candidate_commit": "646ecf188129e705caae2a52f8c184878406e801",
+    "current_decision": "REJECT_FAIL_CLOSED",
+    "static_python_syntax": "PASS",
+    "remote_candidate_execution": "NOT_RUN_LOCAL_RUNNER_HAS_NO_GITHUB_NETWORK"
   },
   "current_candidate_summary": {
-    "fmr01_phase": "OWNERSHIP_AND_ADMISSION_CONTRACTS_PERSISTED",
-    "fmr01_tested": false,
-    "fmr01_qualified": false,
-    "fci18_ancestry": "PASS",
-    "fkt05_qualified_status_and_kernel_blob": "PASS",
+    "fci18_ancestry": "PASS_61_COMMITS_AHEAD_ZERO_BEHIND",
+    "fmr01_phase": "QUALIFIED_DETERMINISTIC_RUNTIME_EXIT",
+    "fmr01_tested": true,
+    "fmr01_qualified": true,
+    "fmr01_physical_swap_runtime": false,
+    "fmr01_physical_swap_admission": false,
+    "fkt05_minimum_transaction_boundary": "PASS",
     "b1_10_oracle_infrastructure": "PASS",
     "fsi05_qualification_artifact": "MISSING",
-    "fsi05_headcalc_production_blob": "NOT_PRESENT_PREIMAGE_ONLY",
-    "fsi05_workspace_production_blob": "MISSING",
-    "shared_fkt05_fsi05_baseline": false
+    "fsi06_qualification_artifact": "MISSING",
+    "accepted_solver_lineage": null,
+    "shared_physical_production_baseline": false
   },
-  "test_status": "EXECUTABLE_GATE_V2_PERSISTED_NOT_EXECUTED_AGAINST_REMOTE_REF_IN_LOCAL_NETWORKLESS_RUNNER",
-  "source_bound_assessment": "LATEST_FMR01_CANDIDATE_REJECTION_VERIFIED_DIRECTLY_FROM_GITHUB",
+  "qualified_successors_observed_outside_candidate": {
+    "F-KT06": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE",
+    "F-KT07": "QUALIFIED_MACROPORE_CONTINUATION_BUT_REFERENCE_EXECUTION_AND_PRODUCTION_MULTISWAP_NOT_ADMITTED",
+    "F-SI06": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED_FINAL_POSTIMAGE_VERIFIED",
+    "F-SI07": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED_FINAL_POSTIMAGE_VERIFICATION_STILL_REQUIRED"
+  },
+  "test_status": {
+    "gate_python_syntax": "TESTED_PASS",
+    "admission_against_remote_candidate": "SOURCE_BOUND_VERIFIED_NOT_LOCALLY_EXECUTED",
+    "overall_tested_flag_reason": "Keep tested=false because the persisted executable gate has not executed against a local checkout of the exact candidate ref."
+  },
   "source_change_control": {
     "production_src_files_changed_in_f_pm02": 0,
     "physics_changed": false,
@@ -45,16 +58,17 @@
     "solver_semantics_changed": false
   },
   "blocker": {
-    "id": "FPM02-G01-SHARED-QUALIFIED-BASELINE",
+    "id": "FPM02-G01-SHARED-PHYSICAL-PRODUCTION-BASELINE",
     "owner": "F-MR/canonical integration, not F-PM",
-    "condition_to_clear": "Publish one exact candidate that is itself TESTED and QUALIFIED, contains the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam, and retains the pinned B1.10 oracle infrastructure."
+    "condition_to_clear": "Publish one exact candidate that descends from F-CI18, is itself TESTED and QUALIFIED, explicitly admits physical SWAP use, contains the qualified F-KT05 minimum transaction boundary and one explicitly accepted qualified F-SI lineage, and retains the pinned B1.10 oracle infrastructure."
   },
   "holds": [
-    "Do not create or modify production snow process source before admission PASS.",
-    "Do not merge F-KT/F-SI lineages in F-PM.",
-    "Do not consume F-SI06 while it is moving or unqualified.",
+    "Do not create or modify production SNOW process source before admission PASS.",
+    "Do not merge F-KT/F-SI/F-MR lineages in F-PM.",
+    "Do not treat F-MR01 deterministic-runtime qualification as physical SWAP admission.",
+    "Do not consume F-SI07 as a final shared production basis while final-postimage verification/process-provider isolation remain open.",
     "Do not infer generic-duration or subdaily snow scaling.",
-    "Do not interpret F-SI05 focused workspace qualification as full reference-solver reentrancy or full SWAP mass qualification."
+    "Do not broaden focused F-SI qualifications into full reference solver, mass-balance or MultiSWAP claims."
   ],
-  "next_action": "No further F-PM production work is admissible. Re-evaluate integration/f-mr only after F-MR/canonical integration publishes a new tested and qualified shared candidate; start structural SNOW migration only after gate PASS."
+  "next_action": "No further F-PM production work is admissible. Re-read the live shared integration candidate when it advances; run gate v3 and begin structural SNOW migration only after PASS."
 }
