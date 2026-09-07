@@ -93,6 +93,33 @@ def main() -> int:
         "workspace initialization",
     )
 
+    # hgrad is a HeadCalc scratch array but was also passed as a formal argument
+    # to the internal vector_F routine. On the workspace path vector_F accesses
+    # the same storage through host association. No residual expression changes.
+    text, counts["vector_f_signature"] = replace_once(
+        text,
+        r"^subroutine\s+vector_F\s*\(iTask,\s*hgrad\)\s*$",
+        "subroutine vector_F(iTask)",
+        "vector_F signature",
+    )
+    text, counts["vector_f_hgrad_declaration"] = replace_once(
+        text,
+        r"^\s*real\(8\),\s*dimension\(macp\+1\)\s*::\s*hgrad\s*$",
+        "",
+        "vector_F hgrad declaration",
+    )
+    for task in (1, 2):
+        text, count = re.subn(
+            rf"call\s+vector_F\s*\(\s*{task}\s*,\s*hgrad\s*\)",
+            f"call vector_F({task})",
+            text,
+            count=1,
+            flags=re.IGNORECASE,
+        )
+        if count != 1:
+            raise SystemExit(f"F-SI04 vector_F call task {task}: expected 1, got {count}")
+        counts[f"vector_f_call_{task}"] = count
+
     # Replace only Fortran identifier tokens. Comments may change too; executable
     # expressions are otherwise preserved character-for-character.
     for pattern, replacement in TOKEN_MAP:
