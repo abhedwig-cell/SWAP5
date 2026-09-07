@@ -31,7 +31,9 @@ jobs:
           test "$changed" = "src/adapter/mod_b1_10_process_checkpoint.f90 "
           grep -F 'type, public :: b1_10_macropore_continuation_t' src/adapter/mod_b1_10_process_checkpoint.f90
           grep -F 'type(b1_10_macropore_continuation_t), allocatable :: macropore' src/adapter/mod_b1_10_process_checkpoint.f90
-          grep -F 'target%macropore = self%macropore' src/adapter/mod_b1_10_process_checkpoint.f90
+          grep -F 'if (allocated(self%macropore)) then' src/adapter/mod_b1_10_process_checkpoint.f90
+          grep -F 'target%macropore%nstep = self%macropore%nstep' src/adapter/mod_b1_10_process_checkpoint.f90
+          ! grep -F 'target%macropore = self%macropore' src/adapter/mod_b1_10_process_checkpoint.f90
           ! grep -F 'nstep' src/kernel/mod_kernel_transactions.f90
           ! grep -F 'mod_a23bu_worker_execution_context' src/adapter/mod_b1_10_process_checkpoint.f90
           ! grep -F 'headcalc' src/adapter/mod_b1_10_process_checkpoint.f90
@@ -40,5 +42,5 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add src/adapter/mod_b1_10_process_checkpoint.f90
-          git commit -m "F-KT07: materialize B1.10 macropore continuation state"
+          git commit -m "F-KT07: harden sparse B1.10 process-state clone"
           git push origin HEAD:integration/f-kt

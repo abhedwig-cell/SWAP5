@@ -15,7 +15,8 @@ required = [
     'read_b1_10_macropore_continuation',
     'clear_b1_10_macropore_continuation',
     'b1_10_macropore_continuation_complete',
-    'target%macropore = self%macropore',
+    'if (allocated(self%macropore)) then',
+    'target%macropore%nstep = self%macropore%nstep',
 ]
 for token in required:
     if token not in source:
@@ -24,6 +25,9 @@ for token in required:
 for forbidden in ['mod_a23bu_worker_execution_context', 'headcalc', 'flwarn', 'iwarn']:
     if forbidden.lower() in source.lower():
         raise SystemExit(f'FKT07_CONTRACT_GATE forbidden adapter dependency: {forbidden}')
+
+if 'target%macropore = self%macropore' in source:
+    raise SystemExit('FKT07_CONTRACT_GATE unsafe unallocated macropore clone assignment remains')
 
 for forbidden in ['nstep', 'a23bu_solver_history', 'mod_a23bu_worker_execution_context']:
     if forbidden in kernel:
