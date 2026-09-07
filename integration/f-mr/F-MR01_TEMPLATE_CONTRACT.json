@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "template_is_first_class": true,
+  "template_fields": [
+    "template_id:int64",
+    "physics_topology_id:int64",
+    "vertical_layout_id:int64",
+    "state_layout_id:int64",
+    "solver_interface_id:int64",
+    "optional_state_layout_id:int64",
+    "compatible_backend_id:int32"
+  ],
+  "shared_by_template": [
+    "active physics topology",
+    "vertical discretization structure",
+    "state layout",
+    "solver interface contract",
+    "optional-state layout",
+    "compatible execution backend"
+  ],
+  "may_differ_within_template": [
+    "soil parameter reference",
+    "crop parameter reference",
+    "forcing handle",
+    "committed state",
+    "boundary condition data"
+  ],
+  "compatibility": {
+    "state_layout_mismatch": "REJECT",
+    "physics_topology_mismatch": "REJECT",
+    "backend_mismatch": "REJECT",
+    "homogenization_may_change_physics": false
+  },
+  "grouping": {
+    "deterministic_key": ["template_id", "column_id"],
+    "input_order_must_not_change_physics_parameters_or_state": true,
+    "batch_partition_must_not_change_result": true
+  },
+  "optional_functionality_rule": "Optional state/storage is present only for templates that require it."
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-MR01",
+  "logical_column": {
+    "persistent_runtime_fields": [
+      "column_id:int64",
+      "template_id:int64",
+      "parameter_ref:int64",
+      "state_handle:int64",
+      "forcing_handle:int64",
+      "execution_class:int32",
+      "backend_id:int32"
+    ],
+    "persistent_physical_state": "stored once in the state-handle registry as F-KT-owned committed state",
+    "diagnostics": "stored per column in the runtime diagnostics registry, separate from physical state",
+    "forbidden_per_column": [
+      "Newton vectors",
+      "Jacobian",
+      "linear solver workspace",
+      "constitutive scratch",
+      "large solver object",
+      "numerical warm-start buffers",
+      "F-KT reusable checkpoint as persistent column state"
+    ]
+  },
+  "registries": {
+    "parameters": "immutable/shared by reference id",
+    "states": "one committed F-KT state carrier per active logical column",
+    "forcing": "referenced by handle and independently assignable per column",
+    "templates": "shared immutable execution topology metadata",
+    "diagnostics": "runtime-owned accounting keyed by column id"
+  },
+  "scratch_ownership": {
+    "scope": "worker/job",
+    "may_contain": ["deterministic backend scratch", "scheduler-local temporary indices"],
+    "must_not_become": "persistent column state"
+  },
+  "memory_reporting": [
+    "logical_runtime_metadata_bytes_per_column",
+    "committed_physical_state_bytes_per_column",
+    "shared_immutable_parameter_bytes",
+    "optional_state_overhead_bytes",
+    "worker_scratch_bytes_per_worker"
+  ],
+  "composition_rule": "A logical column is a tile/component. It is not defined as one MODFLOW cell."
+}
