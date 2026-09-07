@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ17",
+  "title": "F-SI03 source-bound adapter admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq16-fsi03-failclosed-admission",
+    "commit": "94010b5ee7f52637fd6507156a01724ebf5a7525"
+  },
+  "downstream_basis": {
+    "fsi03_branch": "work/f-si03-reference-binding",
+    "fsi03_qualification_head": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+    "fsi03_tested_postimage": "79e3e9052a4f68306b8c826b063497247fd339d6",
+    "fsi03_qualification_blob": "c51e97a347127acaaf7d5e9db86f15a6200d500d",
+    "fsi03_workflow_run": 34121073167,
+    "fsi03_workflow_conclusion": "success",
+    "fsi03_status": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+    "fvq09_head_observed": "7af5b30ec1707ac064a93f3af84bff403a203a6d",
+    "fvq09_qualified": true,
+    "fvq09_scope": "REAL_B1_10_TEMPORAL_HARNESS_AND_EXTERNAL_ASSET_BUNDLE_CONTRACT_ONLY",
+    "fvq09_real_temporal_characterization_qualified": false
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI03_SOURCE_BOUND_ADMISSION_CANDIDATE",
+  "scope": "Admit the qualified F-SI03 source-bound adapter contract and verify its exact tested postimage without claiming real HeadCalc numerics, real B1.10 physics, physical mass identity, reentrant reference execution, or production MultiSWAP runtime qualification."
+}
