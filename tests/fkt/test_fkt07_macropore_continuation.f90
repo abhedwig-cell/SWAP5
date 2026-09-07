@@ -58,7 +58,8 @@ contains
     class default
       parameter_ok = .false.
     end select
-    execution_admitted = parameter_ok .and. numerical_config%max_committed_substeps > 0
+    execution_admitted = self%rate >= 0.0_real64 .and. parameter_ok .and. &
+         numerical_config%max_committed_substeps > 0
   end function execution_admitted
 
   subroutine prepare_interval(self, forcing, interval, config)
@@ -127,9 +128,8 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     real(real64) :: value
 
-    if (self%rate < -huge(0.0_real64)) error stop 'unreachable'
     if (.not. same_type_as(full_state, half_state)) error stop 'FKT07 state mismatch'
-    value = 0.0_real64
+    value = 0.0_real64 * abs(self%rate)
   end function temporal_error
 
 end module mod_fkt07_test_model
@@ -263,6 +263,7 @@ contains
   subroutine test_explicit_adapter_seam(failures)
     integer, intent(inout) :: failures
     type(b1_10_process_state_t) :: state
+    class(transaction_state_t), allocatable :: cloned
     integer :: nstep
     logical :: accepted, available
 
@@ -278,8 +279,14 @@ contains
          'negative nstep rejected without allocation', failures)
     call bind_b1_10_macropore_continuation(state, 4, accepted)
     call expect_true(accepted, 'valid nstep accepted', failures)
-    call read_b1_10_macropore_continuation(state, nstep, available)
-    call expect_true(available .and. nstep == 4, 'bound nstep readable exactly', failures)
+    call state%clone(cloned)
+    select type (copy => cloned)
+    type is (b1_10_process_state_t)
+      call read_b1_10_macropore_continuation(copy, nstep, available)
+      call expect_true(available .and. nstep == 4, 'clone preserves exact nstep', failures)
+    class default
+      call expect_true(.false., 'clone preserves dynamic process-state type', failures)
+    end select
     call expect_true(b1_10_macropore_continuation_complete(state, .true.), &
          'active bound state is complete', failures)
     call expect_true(.not. b1_10_macropore_continuation_complete(state, .false.), &
@@ -364,6 +371,7 @@ contains
 
     call new_committed(committed, 702_int64, 1.0_real64, .true., 7, 8.0_real64)
     call committed%capture_checkpoint(checkpoint, ok)
+    call expect_true(ok, 'mass-failure checkpoint capture', failures)
     call setup(parameters, forcing, config)
     model%inject_mass_defect = .true.
     call kernel%bind_model(model)
@@ -398,6 +406,7 @@ contains
 
     call new_committed(committed, 703_int64, 1.0_real64, .false., 0, 9.0_real64)
     call committed%capture_checkpoint(checkpoint, ok)
+    call expect_true(ok, 'inactive checkpoint capture', failures)
     call checkpoint_process(checkpoint, active, nstep)
     call expect_true(.not. active, 'inactive checkpoint stays unallocated', failures)
     call setup(parameters, forcing, config)
