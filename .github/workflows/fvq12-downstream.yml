@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
-      - name: Check out exact F-VQ12 head
+      - name: Check out exact qualified F-VQ12 final head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: 7cd06ba606429c891dab7f355a85b58ca56a3bca
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
