@@ -49,8 +49,9 @@ for token in [
     'type, extends(source_sink_provider_t), public :: b110_source_sink_provider_t',
     'procedure :: evaluate => b110_source_sink_evaluate',
     'source = self%subsurface_irrigation_source',
-    'sink = self%root_extraction_sink',
-    'sink = sink + self%drainage_flux_by_level(level,:)']:
+    'sink = 0.0_real64',
+    'sink = sink + self%drainage_flux_by_level(level,:)',
+    'active root extraction not admitted by f-si10']:
     assert token in src, token
 for forbidden in ['use mod_drain','use mod_irrigation','use mod_rootextraction','use variables','save ::']:
     assert forbidden not in src, forbidden
@@ -70,6 +71,37 @@ for opt in 0 2; do
 done
 cmp "$BUILD/map-o0/output.txt" "$BUILD/map-o2/output.txt"
 echo 'F-SI10_SOURCE_SINK_MAPPING_O0_O2_IDENTITY PASS'
+
+# The admitted F-SI10 provider must fail closed when active root extraction is supplied.
+ROOT_REJECT="$BUILD/test_root_reject.f90"
+cat > "$ROOT_REJECT" <<'F90'
+program test_root_reject
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  implicit none
+  type(b110_source_sink_provider_t) :: provider
+  real(real64), target :: drainage(1,2), irrigation(2), root_sink(2)
+  drainage = 0.0_real64
+  irrigation = 0.0_real64
+  root_sink = [1.0e-8_real64, 0.0_real64]
+  call bind_b110_source_sink_provider(provider, drainage, irrigation, root_sink)
+  error stop 'F-SI10 negative test: active root extraction was not rejected'
+end program test_root_reject
+F90
+for opt in 0 2; do
+  out="$BUILD/reject-o$opt"; mkdir -p "$out"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$out" -I "$out" -c "$CONTRACT_SRC" -o "$out/contract.o"
+  gfortran "${COMMON[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c "$SOURCE_SINK" -o "$out/provider.o"
+  gfortran "${COMMON[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c "$ROOT_REJECT" -o "$out/driver.o"
+  gfortran -O"$opt" "$out/driver.o" "$out/provider.o" "$out/contract.o" -o "$out/test"
+  if "$out/test" > "$out/output.txt" 2>&1; then
+    echo "F-SI10_ROOT_EXTRACTION_FAILCLOSED_O${opt} FAIL accepted nonzero root sink" >&2
+    exit 1
+  fi
+  grep -Fqi 'active root extraction not admitted by F-SI10' "$out/output.txt"
+  echo "F-SI10_ROOT_EXTRACTION_FAILCLOSED_O${opt} PASS"
+done
+echo 'F-SI10_ROOT_EXTRACTION_FAILCLOSED PASS'
 
 # Reuse the qualified F-SI09 real-HeadCalc fixture, replacing only the synthetic
 # source/sink provider by the production F-SI10 binding. Drainage and subsurface
