@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM02",
+  "branch": "work/f-pm02-snow-admission",
+  "status": "BLOCKED_PRE_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_migration_started": false,
+  "production_migration_allowed": false,
+  "parent_f_pm01": {
+    "head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
+    "status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD"
+  },
+  "admission_gate": {
+    "contract": "integration/f-pm/F-PM02_ADMISSION_CONTRACT.json",
+    "tool": "tools/fpm/fpm02_admission_gate.py",
+    "current_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
+    "current_candidate_ref": "integration/f-mr",
+    "current_candidate_commit": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "current_decision": "REJECT_FAIL_CLOSED"
+  },
+  "current_candidate_summary": {
+    "fci18_ancestry": "PASS",
+    "fkt05_qualified_status_and_kernel_blob": "PASS",
+    "b1_10_oracle_infrastructure": "PASS",
+    "fsi05_qualification_artifact": "MISSING",
+    "fsi05_headcalc_production_blob": "NOT_PRESENT_PREIMAGE_ONLY",
+    "fsi05_workspace_production_blob": "MISSING",
+    "shared_fkt05_fsi05_baseline": false
+  },
+  "test_status": "EXECUTABLE_GATE_PERSISTED_BUT_NOT_RUN_AGAINST_REMOTE_REF_IN_LOCAL_NETWORKLESS_RUNNER",
+  "source_bound_assessment": "CURRENT_CANDIDATE_REJECTION_VERIFIED_DIRECTLY_FROM_GITHUB",
+  "source_change_control": {
+    "production_src_files_changed_in_f_pm02": 0,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "solver_semantics_changed": false
+  },
+  "blocker": {
+    "id": "FPM02-G01-SHARED-BASELINE",
+    "owner": "F-MR/canonical integration, not F-PM",
+    "condition_to_clear": "Publish one exact candidate containing the qualified F-KT05 transaction boundary and qualified F-SI05 production workspace seam while retaining the pinned B1.10 oracle infrastructure."
+  },
+  "holds": [
+    "Do not create or modify production snow process source before admission PASS.",
+    "Do not merge F-KT/F-SI lineages in F-PM.",
+    "Do not infer generic-duration or subdaily snow scaling.",
+    "Do not interpret F-SI05 focused workspace qualification as full reference-solver reentrancy or full SWAP mass qualification."
+  ],
+  "next_action": "When integration/f-mr advances, rerun F-PM02 admission against the new exact commit. Start structural SNOW migration only after PASS."
+}
