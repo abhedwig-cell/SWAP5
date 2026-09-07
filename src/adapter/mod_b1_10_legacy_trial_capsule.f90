@@ -7,6 +7,9 @@ module mod_b1_10_legacy_trial_capsule
        floutputshort, flrunend, flzerocumu, flzerointr, volini, pondini, ivolbeg, ipondbeg, issnowbeg, isicbeg, ithetabeg
   use MOD_integral_global, only: inqpotrot_day, inqredrot_day, iqrot_day, iqreddry_day, iqredsol_day, iptra_day, ialpwet_day, ialpdry_day
   use MOD_meteo, only: meteo_rec, rain_rec, i_metdetail, fl_update_meteo
+  use MOD_SoilTemperature, only: ipos_qtop, ipos_tetop, ipos_tebot
+  use MOD_Solute, only: imdectot, imrottot, imsqbot, imsqdra, imsqirrig, imsqprec, imqsol, &
+       sbaldev, sdstor, sampro, rottot, sqdra, isqbot, dectot, sqprec, sqirrig, sqbot, samini, isqtop
   use MOD_irrigation, only: dayfix, nirri, irrigevent, isua, cirr, dt_irr_event, gird, nird, &
        qssdi, qssdisum, flirrigate
   use MOD_integral, only: inqrot, inq, inqssdi, inqpotrot, inqredrot, iqdo, iqup, &
@@ -19,20 +22,13 @@ module mod_b1_10_legacy_trial_capsule
   private
 
   type, public :: b1_10_legacy_trial_capsule_t
-    ! Numerical / retry state: worker-local snapshot only, never persistent column physics.
     real(real64) :: dt = 0.0_real64
     real(real64) :: dtold = 0.0_real64
     logical :: fldecdt = .false.
     logical :: fldtmin = .false.
     logical :: fldtreduce = .false.
-
-    ! Legacy calendar projection and reporting progress.
-    real(real64) :: t = 0.0_real64
-    real(real64) :: t1900 = 0.0_real64
-    real(real64) :: tcum = 0.0_real64
-    real(real64) :: timjan1 = 0.0_real64
-    real(real64) :: tstart = 0.0_real64
-    real(real64) :: tend = 0.0_real64
+    real(real64) :: t = 0.0_real64, t1900 = 0.0_real64, tcum = 0.0_real64, timjan1 = 0.0_real64
+    real(real64) :: tstart = 0.0_real64, tend = 0.0_real64
     integer :: daycum = 0, daynr = 0, imonth = 0, iyear = 0
     integer :: ioutdat = 0, ioutdatint = 0, isteps = 0, nprintcount = 0, cntper = 0
     real(real64) :: outper = 0.0_real64
@@ -43,56 +39,49 @@ module mod_b1_10_legacy_trial_capsule
     real(real64) :: volini = 0.0_real64, pondini = 0.0_real64
     real(real64) :: ivolbeg = 0.0_real64, ipondbeg = 0.0_real64, issnowbeg = 0.0_real64, isicbeg = 0.0_real64
     real(real64), allocatable :: ithetabeg(:)
-
-    ! Forcing cursors. Forcing values themselves are not persisted here.
     integer :: meteo_rec = 0, rain_rec = 0, i_metdetail = 0
     logical :: fl_update_meteo = .false.
-
-    ! Irrigation continuation + event workspace required to make trial replay deterministic.
+    integer :: ipos_qtop = 0, ipos_tetop = 0, ipos_tebot = 0
     integer :: dayfix = 0, nirri = 0, irrigevent = 0, isua = 0
-    real(real64) :: cirr = 0.0_real64, dt_irr_event = 0.0_real64
-    real(real64) :: gird = 0.0_real64, nird = 0.0_real64, qssdisum = 0.0_real64
+    real(real64) :: cirr = 0.0_real64, dt_irr_event = 0.0_real64, gird = 0.0_real64, nird = 0.0_real64, qssdisum = 0.0_real64
     logical :: flirrigate = .false.
     real(real64), allocatable :: qssdi(:)
-
-    ! Day accumulators consumed by crop/root processes. Roll back for non-calendar trial boundaries.
     real(real64), allocatable :: inqpotrot_day(:), inqredrot_day(:)
     real(real64) :: iqrot_day = 0.0_real64, iqreddry_day = 0.0_real64, iqredsol_day = 0.0_real64
     real(real64) :: iptra_day = 0.0_real64, ialpwet_day = 0.0_real64, ialpdry_day = 0.0_real64
-
-    ! Intermediate and cumulative water accounting. These are rollback data, not physical continuation state.
     real(real64), allocatable :: inqrot(:), inq(:), inqssdi(:), inqpotrot(:), inqredrot(:), iqdo(:), iqup(:)
     real(real64), allocatable :: cqdrain(:), cqdrainin(:), cqdrainout(:)
     real(real64), allocatable :: inqdra(:,:), inqdra_in(:,:), inqdra_out(:,:)
-    real(real64) :: iqrot = 0.0_real64, iqssdi = 0.0_real64
-    real(real64) :: iqredwet = 0.0_real64, iqreddry = 0.0_real64, iqredsol = 0.0_real64, iqredfrs = 0.0_real64
-    real(real64) :: iintc = 0.0_real64, isintc = 0.0_real64, iepd = 0.0_real64
-    real(real64) :: ipeva = 0.0_real64, iptra = 0.0_real64, ievap = 0.0_real64
-    real(real64) :: iruno = 0.0_real64, irunon = 0.0_real64, iqbot = 0.0_real64
-    real(real64) :: iqbdo = 0.0_real64, iqbup = 0.0_real64, iqtdo = 0.0_real64, iqtup = 0.0_real64
+    real(real64) :: iqrot = 0.0_real64, iqssdi = 0.0_real64, iqredwet = 0.0_real64, iqreddry = 0.0_real64
+    real(real64) :: iqredsol = 0.0_real64, iqredfrs = 0.0_real64, iintc = 0.0_real64, isintc = 0.0_real64
+    real(real64) :: iepd = 0.0_real64, ipeva = 0.0_real64, iptra = 0.0_real64, ievap = 0.0_real64
+    real(real64) :: iruno = 0.0_real64, irunon = 0.0_real64, iqbot = 0.0_real64, iqbdo = 0.0_real64
+    real(real64) :: iqbup = 0.0_real64, iqtdo = 0.0_real64, iqtup = 0.0_real64
     real(real64) :: igrai = 0.0_real64, inrai = 0.0_real64, igird = 0.0_real64, inird = 0.0_real64
     real(real64) :: cgrai = 0.0_real64, cnrai = 0.0_real64, caintc = 0.0_real64, cqrot = 0.0_real64
     real(real64) :: cqbot = 0.0_real64, cqbotdo = 0.0_real64, cqbotup = 0.0_real64, cqssdi = 0.0_real64
     real(real64) :: cqtdo = 0.0_real64, cqtup = 0.0_real64, crunoff = 0.0_real64, crunon = 0.0_real64
     real(real64) :: cevap = 0.0_real64, cepd = 0.0_real64, cpeva = 0.0_real64, cptra = 0.0_real64
     real(real64) :: cinund = 0.0_real64, cqprai = 0.0_real64, cgird = 0.0_real64, cnird = 0.0_real64
-    real(real64) :: cqdra = 0.0_real64, iqdra = 0.0_real64
-    real(real64) :: cgsnow = 0.0_real64, cmelt = 0.0_real64, csnrai = 0.0_real64, csubl = 0.0_real64
-    real(real64) :: isnrai = 0.0_real64, igsnow = 0.0_real64, isubl = 0.0_real64
+    real(real64) :: cqdra = 0.0_real64, iqdra = 0.0_real64, cgsnow = 0.0_real64, cmelt = 0.0_real64
+    real(real64) :: csnrai = 0.0_real64, csubl = 0.0_real64, isnrai = 0.0_real64, igsnow = 0.0_real64, isubl = 0.0_real64
+    real(real64) :: imdectot = 0.0_real64, imrottot = 0.0_real64, imsqbot = 0.0_real64
+    real(real64) :: imsqdra = 0.0_real64, imsqirrig = 0.0_real64, imsqprec = 0.0_real64
+    real(real64), allocatable :: imqsol(:)
+    real(real64) :: sbaldev = 0.0_real64, sdstor = 0.0_real64, sampro = 0.0_real64
+    real(real64) :: rottot = 0.0_real64, sqdra = 0.0_real64, isqbot = 0.0_real64, dectot = 0.0_real64
+    real(real64) :: sqprec = 0.0_real64, sqirrig = 0.0_real64, sqbot = 0.0_real64, samini = 0.0_real64, isqtop = 0.0_real64
   end type b1_10_legacy_trial_capsule_t
 
   public :: capture_b1_10_legacy_trial_capsule, restore_b1_10_legacy_trial_capsule
-
 contains
-
   subroutine capture_b1_10_legacy_trial_capsule(c)
     type(b1_10_legacy_trial_capsule_t), intent(inout) :: c
     c%dt=dt; c%dtold=dtold; c%fldecdt=fldecdt; c%fldtmin=fldtmin; c%fldtreduce=fldtreduce
     c%t=t; c%t1900=t1900; c%tcum=tcum; c%timjan1=timjan1; c%tstart=tstart; c%tend=tend
     c%daycum=daycum; c%daynr=daynr; c%imonth=imonth; c%iyear=iyear
     c%ioutdat=ioutdat; c%ioutdatint=ioutdatint; c%isteps=isteps; c%nprintcount=nprintcount; c%cntper=cntper
-    c%outper=outper; c%date=date
-    c%fldayend=fldayend; c%fldaystart=fldaystart; c%flrunend=flrunend
+    c%outper=outper; c%date=date; c%fldayend=fldayend; c%fldaystart=fldaystart; c%flrunend=flrunend
     c%flbaloutput=flbaloutput; c%flheader=flheader; c%floutput=floutput; c%floutputshort=floutputshort
     c%flzerocumu=flzerocumu; c%flzerointr=flzerointr
     c%volini=volini; c%pondini=pondini; c%ivolbeg=ivolbeg; c%ipondbeg=ipondbeg; c%issnowbeg=issnowbeg; c%isicbeg=isicbeg
@@ -100,11 +89,10 @@ contains
     c%inqpotrot_day=inqpotrot_day; c%inqredrot_day=inqredrot_day; c%iqrot_day=iqrot_day; c%iqreddry_day=iqreddry_day
     c%iqredsol_day=iqredsol_day; c%iptra_day=iptra_day; c%ialpwet_day=ialpwet_day; c%ialpdry_day=ialpdry_day
     c%meteo_rec=meteo_rec; c%rain_rec=rain_rec; c%i_metdetail=i_metdetail; c%fl_update_meteo=fl_update_meteo
+    c%ipos_qtop=ipos_qtop; c%ipos_tetop=ipos_tetop; c%ipos_tebot=ipos_tebot
     c%dayfix=dayfix; c%nirri=nirri; c%irrigevent=irrigevent; c%isua=isua; c%cirr=cirr
-    c%dt_irr_event=dt_irr_event; c%gird=gird; c%nird=nird; c%qssdisum=qssdisum; c%flirrigate=flirrigate
-    c%qssdi = qssdi
-    c%inqrot=inqrot; c%inq=inq; c%inqssdi=inqssdi; c%inqpotrot=inqpotrot; c%inqredrot=inqredrot
-    c%iqdo=iqdo; c%iqup=iqup
+    c%dt_irr_event=dt_irr_event; c%gird=gird; c%nird=nird; c%qssdisum=qssdisum; c%flirrigate=flirrigate; c%qssdi=qssdi
+    c%inqrot=inqrot; c%inq=inq; c%inqssdi=inqssdi; c%inqpotrot=inqpotrot; c%inqredrot=inqredrot; c%iqdo=iqdo; c%iqup=iqup
     c%iqrot=iqrot; c%iqssdi=iqssdi; c%iqredwet=iqredwet; c%iqreddry=iqreddry; c%iqredsol=iqredsol; c%iqredfrs=iqredfrs
     c%iintc=iintc; c%isintc=isintc; c%iepd=iepd; c%ipeva=ipeva; c%iptra=iptra; c%ievap=ievap
     c%iruno=iruno; c%irunon=irunon; c%iqbot=iqbot; c%iqbdo=iqbdo; c%iqbup=iqbup; c%iqtdo=iqtdo; c%iqtup=iqtup
@@ -115,26 +103,27 @@ contains
     c%cqdra=cqdra; c%cqdrain=cqdrain; c%cqdrainin=cqdrainin; c%cqdrainout=cqdrainout
     c%inqdra=inqdra; c%inqdra_in=inqdra_in; c%inqdra_out=inqdra_out; c%iqdra=iqdra
     c%cgsnow=cgsnow; c%cmelt=cmelt; c%csnrai=csnrai; c%csubl=csubl; c%isnrai=isnrai; c%igsnow=igsnow; c%isubl=isubl
+    c%imdectot=imdectot; c%imrottot=imrottot; c%imsqbot=imsqbot; c%imsqdra=imsqdra; c%imsqirrig=imsqirrig; c%imsqprec=imsqprec
+    c%imqsol=imqsol; c%sbaldev=sbaldev; c%sdstor=sdstor; c%sampro=sampro; c%rottot=rottot; c%sqdra=sqdra
+    c%isqbot=isqbot; c%dectot=dectot; c%sqprec=sqprec; c%sqirrig=sqirrig; c%sqbot=sqbot; c%samini=samini; c%isqtop=isqtop
   end subroutine capture_b1_10_legacy_trial_capsule
 
   subroutine restore_b1_10_legacy_trial_capsule(c)
     type(b1_10_legacy_trial_capsule_t), intent(in) :: c
     if (.not. allocated(c%qssdi) .or. .not. allocated(c%inqrot) .or. .not. allocated(c%inq) .or. &
         .not. allocated(c%cqdrain) .or. .not. allocated(c%inqdra) .or. .not. allocated(c%ithetabeg) .or. &
-        .not. allocated(c%inqpotrot_day) .or. .not. allocated(c%inqredrot_day)) then
+        .not. allocated(c%inqpotrot_day) .or. .not. allocated(c%inqredrot_day) .or. .not. allocated(c%imqsol)) then
       error stop 'B1.10 legacy trial capsule: incomplete snapshot'
     end if
     if (size(c%qssdi) /= macp .or. size(c%inqrot) /= macp .or. size(c%inq) /= macp+1 .or. &
         size(c%cqdrain) /= madr .or. size(c%inqdra,1) /= madr .or. size(c%inqdra,2) /= macp .or. &
-        size(c%ithetabeg) /= macp .or. size(c%inqpotrot_day) /= macp .or. size(c%inqredrot_day) /= macp) then
-      error stop 'B1.10 legacy trial capsule: shape mismatch'
-    end if
+        size(c%ithetabeg) /= macp .or. size(c%inqpotrot_day) /= macp .or. size(c%inqredrot_day) /= macp .or. &
+        size(c%imqsol) /= macp+1) error stop 'B1.10 legacy trial capsule: shape mismatch'
     dt=c%dt; dtold=c%dtold; fldecdt=c%fldecdt; fldtmin=c%fldtmin; fldtreduce=c%fldtreduce
     t=c%t; t1900=c%t1900; tcum=c%tcum; timjan1=c%timjan1; tstart=c%tstart; tend=c%tend
     daycum=c%daycum; daynr=c%daynr; imonth=c%imonth; iyear=c%iyear
     ioutdat=c%ioutdat; ioutdatint=c%ioutdatint; isteps=c%isteps; nprintcount=c%nprintcount; cntper=c%cntper
-    outper=c%outper; date=c%date
-    fldayend=c%fldayend; fldaystart=c%fldaystart; flrunend=c%flrunend
+    outper=c%outper; date=c%date; fldayend=c%fldayend; fldaystart=c%fldaystart; flrunend=c%flrunend
     flbaloutput=c%flbaloutput; flheader=c%flheader; floutput=c%floutput; floutputshort=c%floutputshort
     flzerocumu=c%flzerocumu; flzerointr=c%flzerointr
     volini=c%volini; pondini=c%pondini; ivolbeg=c%ivolbeg; ipondbeg=c%ipondbeg; issnowbeg=c%issnowbeg; isicbeg=c%isicbeg
@@ -142,9 +131,9 @@ contains
     inqpotrot_day=c%inqpotrot_day; inqredrot_day=c%inqredrot_day; iqrot_day=c%iqrot_day; iqreddry_day=c%iqreddry_day
     iqredsol_day=c%iqredsol_day; iptra_day=c%iptra_day; ialpwet_day=c%ialpwet_day; ialpdry_day=c%ialpdry_day
     meteo_rec=c%meteo_rec; rain_rec=c%rain_rec; i_metdetail=c%i_metdetail; fl_update_meteo=c%fl_update_meteo
+    ipos_qtop=c%ipos_qtop; ipos_tetop=c%ipos_tetop; ipos_tebot=c%ipos_tebot
     dayfix=c%dayfix; nirri=c%nirri; irrigevent=c%irrigevent; isua=c%isua; cirr=c%cirr
-    dt_irr_event=c%dt_irr_event; gird=c%gird; nird=c%nird; qssdisum=c%qssdisum; flirrigate=c%flirrigate
-    qssdi=c%qssdi
+    dt_irr_event=c%dt_irr_event; gird=c%gird; nird=c%nird; qssdisum=c%qssdisum; flirrigate=c%flirrigate; qssdi=c%qssdi
     inqrot=c%inqrot; inq=c%inq; inqssdi=c%inqssdi; inqpotrot=c%inqpotrot; inqredrot=c%inqredrot; iqdo=c%iqdo; iqup=c%iqup
     iqrot=c%iqrot; iqssdi=c%iqssdi; iqredwet=c%iqredwet; iqreddry=c%iqreddry; iqredsol=c%iqredsol; iqredfrs=c%iqredfrs
     iintc=c%iintc; isintc=c%isintc; iepd=c%iepd; ipeva=c%ipeva; iptra=c%iptra; ievap=c%ievap
@@ -156,6 +145,8 @@ contains
     cqdra=c%cqdra; cqdrain=c%cqdrain; cqdrainin=c%cqdrainin; cqdrainout=c%cqdrainout
     inqdra=c%inqdra; inqdra_in=c%inqdra_in; inqdra_out=c%inqdra_out; iqdra=c%iqdra
     cgsnow=c%cgsnow; cmelt=c%cmelt; csnrai=c%csnrai; csubl=c%csubl; isnrai=c%isnrai; igsnow=c%igsnow; isubl=c%isubl
+    imdectot=c%imdectot; imrottot=c%imrottot; imsqbot=c%imsqbot; imsqdra=c%imsqdra; imsqirrig=c%imsqirrig; imsqprec=c%imsqprec
+    imqsol=c%imqsol; sbaldev=c%sbaldev; sdstor=c%sdstor; sampro=c%sampro; rottot=c%rottot; sqdra=c%sqdra
+    isqbot=c%isqbot; dectot=c%dectot; sqprec=c%sqprec; sqirrig=c%sqirrig; sqbot=c%sqbot; samini=c%samini; isqtop=c%isqtop
   end subroutine restore_b1_10_legacy_trial_capsule
-
 end module mod_b1_10_legacy_trial_capsule
