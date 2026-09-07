@@ -4,6 +4,7 @@
   "title": "Exit Scope and Ownership Qualification",
   "canonical_branch": "integration/f-ci-canonical",
   "parent_head": "e17b43e3dda7d178c4c81035308308448823e38d",
+  "qualified_postimage": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
   "production_source_changed": false,
   "persisted_before_long_tests": true,
   "current_exit_gate_file_changed": false,
@@ -13,8 +14,11 @@
     "gate_titles_or_required_flags_changed": false
   },
   "qualification": {
-    "focused_scope_gate": "PENDING",
-    "canonical_ci": "PENDING"
+    "focused_scope_gate": "PASS",
+    "canonical_ci": "PASS_RUN_34112588499_JOB_101712814659",
+    "full_dependency_chain": "PASS_FCI03_THROUGH_FCI18",
+    "replayability_hardened": true
   },
-  "status": "PERSISTED_EXIT_SCOPE_CANDIDATE_CI_PENDING"
+  "gate_promotion": "PENDING_SEPARATE_COMMIT",
+  "status": "QUALIFIED_EXIT_SCOPE_OWNERSHIP_GATE_PROMOTION_PENDING"
 }
