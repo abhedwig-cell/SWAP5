@@ -1,0 +1,72 @@
+name: F-MQ21 F-SI06/F-VQ12 ownership admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq21-fsi06-history-isolation-admission
+    paths:
+      - 'tests/multiswap/fmq21_*'
+      - 'tests/multiswap/test_fmq21_*'
+      - 'tests/multiswap/verify_fmq21_*'
+      - 'tests/multiswap/run_fmq21_gate.py'
+      - 'docs/qualification/F-MQ21_*'
+      - '.github/workflows/fmq21-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fmq21-gate:
+    name: F-MQ21 ownership/isolation admission
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run F-MQ21 admission tests
+        run: python3 tests/multiswap/run_fmq21_gate.py
+
+      - name: Fetch exact F-SI06 and F-VQ12 evidence
+        run: |
+          FSI06_QUAL=d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8
+          FSI06_TESTED=dfed799dbc0930bdf5218e713934ea0f148e3872
+          FSI06_FINAL=2fa63c41a4d7248ab7f4b5af46f72caddfda4f29
+          FVQ12_HEAD=7cd06ba606429c891dab7f355a85b58ca56a3bca
+          git fetch --no-tags origin "$FSI06_QUAL" "$FSI06_TESTED" "$FSI06_FINAL" "$FVQ12_HEAD"
+          test "$(git rev-parse "$FSI06_QUAL:integration/f-si/F-SI06_QUALIFICATION.json")" = "f106b7488de1c7c5cfe6f2c160607e354ee94862"
+          test "$(git rev-parse "$FSI06_TESTED:tests/fsi/run_fsi06_gate.sh")" = "de414e128c939785da64135804e02889d083e153"
+          test "$(git rev-parse "$FVQ12_HEAD:integration/f-vq/F-VQ12_STATUS.json")" = "18a85a08003d732ea353841a089d48f5ac694305"
+          git show "$FSI06_QUAL:integration/f-si/F-SI06_QUALIFICATION.json" > /tmp/fsi06_qualification.json
+          git show "$FSI06_TESTED:tests/fsi/run_fsi06_gate.sh" > /tmp/fsi06_gate.sh
+          git show "$FVQ12_HEAD:integration/f-vq/F-VQ12_STATUS.json" > /tmp/fvq12_status.json
+
+      - name: Verify exact downstream scope and nonclaims
+        run: |
+          python3 tests/multiswap/verify_fmq21_external_boundaries.py \
+            --fsi06 /tmp/fsi06_qualification.json \
+            --fvq12 /tmp/fvq12_status.json \
+            --fsi06-gate-source /tmp/fsi06_gate.sh
+
+      - name: Re-run exact F-SI06 tested checkpoint gate
+        run: |
+          git worktree add --detach /tmp/fsi06-tested dfed799dbc0930bdf5218e713934ea0f148e3872
+          (cd /tmp/fsi06-tested && bash tests/fsi/run_fsi06_gate.sh) | tee /tmp/fsi06-gate.out
+          grep -q '^F-SI06_ADAPTER_HISTORY_ISOLATION PASS$' /tmp/fsi06-gate.out
+          grep -q '^F-SI06_WORKSPACE_1_2_4_8 PASS$' /tmp/fsi06-gate.out
+          grep -q '^F-SI06_REAL_PARALLEL_ADMISSION BLOCKED_SHARED_LEGACY_GLOBAL_TRANSLATION$' /tmp/fsi06-gate.out
+          grep -q '^F-SI06_GATE PASS$' /tmp/fsi06-gate.out
+
+      - name: Compile Python gate sources
+        run: |
+          python3 -m py_compile \
+            tests/multiswap/run_fmq21_gate.py \
+            tests/multiswap/test_fmq21_fsi06_fvq12_ownership_admission.py \
+            tests/multiswap/verify_fmq21_external_boundaries.py
