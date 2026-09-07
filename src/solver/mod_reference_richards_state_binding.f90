@@ -22,10 +22,15 @@ module mod_reference_richards_state_binding
      real(real64) :: qtop = 0.0_real64
      real(real64) :: qbot = 0.0_real64
      real(real64) :: hbot = 0.0_real64
+     real(real64) :: q0 = 0.0_real64
+     real(real64) :: hsurf = 0.0_real64
+     real(real64) :: runots = 0.0_real64
      integer, allocatable :: itnumb(:,:)
      integer :: numbit = 0
      logical :: fllowgwl = .false.
      logical :: fldecdt = .false.
+     logical :: flrunoff = .false.
+     logical :: ftoph = .false.
   end type reference_richards_state_binding_t
 
   public :: initialize_reference_state_binding
@@ -99,6 +104,11 @@ contains
     state%numbit = 0
     state%fllowgwl = .false.
     state%fldecdt = .false.
+    state%q0 = 0.0_real64
+    state%hsurf = request%boundary%top_head
+    state%runots = 0.0_real64
+    state%flrunoff = .false.
+    state%ftoph = .false.
   end subroutine initialize_reference_state_binding
 
   subroutine validate_reference_state_binding(state, ok)
