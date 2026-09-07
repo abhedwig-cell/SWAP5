@@ -1,0 +1,52 @@
+{
+  "schema": "swap5.f-mr02.dependencies.v1",
+  "work_unit": "F-MR02",
+  "purpose": "Converge the qualified F-KT05 runtime spine and the qualified F-SI05 focused production workspace seam into one exact shared F-MR postimage without changing physics or numerical policy.",
+  "base": {
+    "branch": "integration/f-mr",
+    "commit": "646ecf188129e705caae2a52f8c184878406e801",
+    "safety_branch": "integration/f-mr02-safety"
+  },
+  "canonical": {
+    "branch": "integration/f-ci-canonical",
+    "development_baseline_exit": "1eceed967b12396b8bbc832f897376378463adce",
+    "f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "corrected_legacy_oracle": "B1.10"
+  },
+  "f_kt05": {
+    "branch": "integration/f-kt",
+    "closeout": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "tested_source_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "qualification_evidence": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "workflow_run": "34125537033",
+    "canonical_entrypoint": "kernel_executor_t%advance_interval",
+    "source_already_exact_in_base": true
+  },
+  "f_si05": {
+    "production_materialization": "1fe1bf4790955594290ba1233d5684542799bf9e",
+    "tested_implementation": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "qualified_scope": "QUALIFIED_PRODUCTION_WORKSPACE_SEAM_FOCUSED_ROUTES_ONLY",
+    "source_already_exact_in_base": false,
+    "production_multiswap_admission": false,
+    "real_headcalc_parallel_admission": false,
+    "full_reference_richards_reentrancy_qualified": false,
+    "full_swap_water_balance_identity_qualified": false
+  },
+  "composition_policy": {
+    "wholesale_branch_merge_allowed": false,
+    "exact_blob_materialization_only": true,
+    "physics_change_allowed": false,
+    "numerical_policy_change_allowed": false,
+    "f_kt_transaction_semantics_change_allowed": false,
+    "parallel_reference_admission_allowed": false,
+    "physical_multiswap_admission_allowed": false
+  },
+  "dependency_readout": {
+    "f_kt05_and_b1_10_exact_in_f_mr01": true,
+    "f_si05_source_composition_required": true,
+    "reason": "F-MR01 carries the qualified F-KT05 and B1.10 blobs but has the pre-F-SI05 HeadCalc blob and lacks the F-SI05 solver contract/workspace/legacy binding closure."
+  },
+  "last_verified": "2026-09-07T16:44:50Z"
+}

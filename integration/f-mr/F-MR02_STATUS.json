@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.f-mr02.status.v1",
+  "work_unit": "F-MR02",
+  "title": "Shared F-KT05 + F-SI05 Postimage Convergence",
+  "branch": "integration/f-mr",
+  "safety_branch": "integration/f-mr02-safety",
+  "base_commit": "646ecf188129e705caae2a52f8c184878406e801",
+  "phase": "SOURCE_COMPOSITION_REQUIRED",
+  "status": "IMPLEMENTED_NOT_YET",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "findings": {
+    "f_kt05_exact_in_base": true,
+    "b1_10_exact_in_base": true,
+    "f_si05_exact_in_base": false,
+    "source_composition_required": true
+  },
+  "holds": [
+    "No real HeadCalc parallel admission.",
+    "No physical MultiSWAP/reference-backend admission from source coexistence alone.",
+    "No full reference Richards reentrancy claim.",
+    "No full SWAP water-balance identity claim beyond separately qualified evidence."
+  ],
+  "blockers": [
+    "Exact F-SI05 source closure has not yet been materialized into integration/f-mr.",
+    "Shared-postimage qualification gate has not yet run."
+  ],
+  "allows_downstream_release": false,
+  "last_verified": "2026-09-07T16:44:50Z"
+}

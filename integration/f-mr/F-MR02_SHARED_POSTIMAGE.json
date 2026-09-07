@@ -1,0 +1,101 @@
+{
+  "schema": "swap5.f-mr02.shared-postimage.v1",
+  "work_unit": "F-MR02",
+  "base_commit": "646ecf188129e705caae2a52f8c184878406e801",
+  "target": "one exact source postimage containing qualified F-KT05, corrected B1.10 and the qualified F-SI05 focused production workspace seam",
+  "exact_blob_requirements": [
+    {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "sha": "e8605e73a191e863374a26b096e0d597cb70cadd",
+      "authority": "F-KT05",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "sha": "4a573316b77252b56bcb429fd519aa57123e9a06",
+      "authority": "F-KT05",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "sha": "55cd8a9dc529bb2d057845f212b7efff6c80c553",
+      "authority": "F-KT05",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "sha": "f0bfb2c1359c39b4708350b756aa2211fb982be4",
+      "authority": "F-KT05",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "sha": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+      "authority": "shared F-KT05/F-SI05 dependency",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "sha": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+      "authority": "F-SI05 production source closure",
+      "base_matches": false,
+      "action": "materialize_exact_blob"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "sha": "93285b2ca24669494c93c00403e3783fca6758e9",
+      "authority": "F-SI05 production materialization",
+      "base_matches": false,
+      "action": "materialize_exact_blob"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "sha": "e02882bd45f67b42ede118de14a6b5b8b16fdb80",
+      "authority": "F-SI05 production materialization",
+      "base_matches": false,
+      "action": "materialize_exact_blob"
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "sha": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
+      "authority": "F-SI05 production materialization",
+      "base_matches": false,
+      "base_sha": "225b9f2cc1ecff01414b5691799103b92bc068c5",
+      "action": "replace_with_exact_blob"
+    },
+    {
+      "path": "tests/legacy/snapshots/b1_10",
+      "sha": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "authority": "corrected B1.10 oracle",
+      "base_matches": true,
+      "action": "retain"
+    },
+    {
+      "path": "tests/legacy/b1-10-reference-pin.json",
+      "sha": "2422c3ec518afb1d9b7fbd55e869a806842161c9",
+      "authority": "corrected B1.10 oracle pin",
+      "base_matches": true,
+      "action": "retain"
+    }
+  ],
+  "routing_invariants": {
+    "multiswap_runtime_entry": "F-MR -> F-KT kernel_executor_t%advance_interval",
+    "f_mr_direct_headcalc_call_allowed": false,
+    "f_mr_direct_f_si_internal_array_access_allowed": false,
+    "fsi_workspace_persistent_per_column": false,
+    "fsi_workspace_owner": "worker_or_job",
+    "committed_state_owner": "F-KT transaction/kernel layer"
+  },
+  "admission_after_source_composition": {
+    "deterministic_test_backend": "retains F-MR01 qualification",
+    "serialized_reference_backend": "NOT_YET_QUALIFIED_IN_SHARED_POSTIMAGE",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "physical_multiswap_reference_backend": "NOT_ADMITTED"
+  },
+  "qualification_rule": "Blob coexistence is not qualification. The shared postimage must pass exact-provenance gates plus preserved F-KT05, preserved F-MR01, and focused F-SI05 seam tests before F-MR02 may be QUALIFIED."
+}
