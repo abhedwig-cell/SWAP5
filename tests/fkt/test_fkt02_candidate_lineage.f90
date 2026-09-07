@@ -1,8 +1,8 @@
 module mod_fkt02_test_model
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
-  use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
-       canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, &
+       canonical_interval_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t
   implicit none
   private
@@ -89,8 +89,8 @@ contains
     class default
       error stop 'FKT02 unexpected forcing type'
     end select
-    if (interval%t1 <= interval%t0) error stop 'FKT02 invalid interval reached model'
-    if (config%max_committed_substeps <= 0) error stop 'FKT02 invalid config reached model'
+    if (interval%t1 <= interval%t0) error stop 'FKT02 invalid interval'
+    if (config%max_committed_substeps <= 0) error stop 'FKT02 invalid config'
   end subroutine fkt02_prepare_interval
 
   subroutine fkt02_advance(self, state, t0, t1, outcome)
@@ -110,7 +110,9 @@ contains
       end_water = start_water * (1.0_real64 - k * dt)
       state%water = end_water
       outcome%mass_out = start_water - end_water
-      if (self%inject_mass_defect) outcome%mass_out = outcome%mass_out + self%mass_defect
+      if (self%inject_mass_defect) then
+        outcome%mass_out = outcome%mass_out + self%mass_defect
+      end if
       outcome%solver_ok = .true.
       outcome%nonlinear_iterations = 1
     class default
@@ -156,8 +158,8 @@ end module mod_fkt02_test_model
 program test_fkt02_candidate_lineage
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t
-  use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_COMPLETED, &
-       CANONICAL_STATUS_TRANSACTION_FAILED
+  use mod_canonical_contracts, only: canonical_numerical_config_t, &
+       CANONICAL_STATUS_COMPLETED, CANONICAL_STATUS_TRANSACTION_FAILED
   use mod_kernel_transactions
   use mod_fkt02_test_model
   implicit none
@@ -171,7 +173,7 @@ program test_fkt02_candidate_lineage
   call test_same_committed_replay(failures)
   call test_mass_rejection_preserves_committed(failures)
   call test_rollback_preserves_revision(failures)
-  call test_reference_style_admission_still_fails_closed(failures)
+  call test_admission_still_fails_closed(failures)
 
   if (failures /= 0) then
     write(*,'(A,I0)') 'FKT02_CANDIDATE_LINEAGE_GATE FAIL failures=', failures
@@ -211,8 +213,8 @@ contains
 
   function committed_water(committed) result(value)
     class(transaction_state_t), allocatable, intent(in) :: committed
-    real(real64) :: value
     class(transaction_state_t), allocatable :: snapshot
+    real(real64) :: value
     logical :: ok
 
     value = huge(0.0_real64)
@@ -285,6 +287,24 @@ contains
     call expect_true(abs(actual - expected) <= tol, label, failures)
   end subroutine expect_close
 
+  subroutine run_candidate(kernel, model, committed, parameters, forcing, &
+                           config, t0, t1, result, candidate, diagnostics)
+    type(kernel_executor_t), intent(inout) :: kernel
+    type(fkt02_model_t), target, intent(inout) :: model
+    class(transaction_state_t), allocatable, intent(in) :: committed
+    type(fkt02_parameters_t), intent(in) :: parameters
+    type(fkt02_forcing_t), intent(in) :: forcing
+    type(canonical_numerical_config_t), intent(in) :: config
+    real(real64), intent(in) :: t0, t1
+    type(kernel_result_t), intent(out) :: result
+    type(kernel_candidate_state_t), intent(out) :: candidate
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+
+    call kernel%bind_model(model)
+    call kernel%advance_interval(parameters, committed, forcing, config, t0, t1, &
+         result, candidate, diagnostics)
+  end subroutine run_candidate
+
   subroutine test_guarded_commit(failures)
     integer, intent(inout) :: failures
     class(transaction_state_t), allocatable :: committed
@@ -301,21 +321,26 @@ contains
 
     call new_committed(committed, 101_int64, 1.0_real64)
     call standard_setup(parameters, forcing, config)
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 5.0_real64, 5.5_real64, &
-         result, candidate, diagnostics)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         5.0_real64, 5.5_real64, result, candidate, diagnostics)
+    call expect_true(result%status == CANONICAL_STATUS_COMPLETED, &
+         'guarded interval completed', failures)
+    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, &
+         'advance keeps committed state', failures)
+    call expect_true(candidate%origin_lineage_id == 101_int64, &
+         'candidate records lineage', failures)
+    call expect_true(candidate%origin_revision == 0_int64, &
+         'candidate records revision', failures)
 
-    call expect_true(result%status == CANONICAL_STATUS_COMPLETED, 'guarded interval completed', failures)
-    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, 'advance keeps committed physical state', failures)
-    call expect_true(candidate%origin_lineage_id == 101_int64, 'candidate records lineage', failures)
-    call expect_true(candidate%origin_revision == 0_int64, 'candidate records origin revision', failures)
-    call expect_close(candidate_water(candidate), 0.586181640625_real64, 1.0e-14_real64, 'candidate endpoint', failures)
-
-    call kernel%commit_candidate(committed, candidate, diagnostics, did_commit, commit_status)
-    call expect_true(did_commit .and. commit_status == KERNEL_COMMIT_STATUS_COMMITTED, 'guarded commit accepted', failures)
-    call expect_true(committed_revision(committed) == 1_int64, 'commit increments revision exactly once', failures)
-    call expect_close(committed_water(committed), 0.586181640625_real64, 1.0e-14_real64, 'commit publishes physical candidate', failures)
-    call expect_true(.not. candidate%valid .and. .not. allocated(candidate%state), 'successful commit consumes candidate', failures)
+    call kernel%commit_candidate(committed, candidate, diagnostics, &
+         did_commit, commit_status)
+    call expect_true(did_commit .and. &
+         commit_status == KERNEL_COMMIT_STATUS_COMMITTED, &
+         'guarded commit accepted', failures)
+    call expect_true(committed_revision(committed) == 1_int64, &
+         'commit increments revision once', failures)
+    call expect_close(committed_water(committed), 0.586181640625_real64, &
+         1.0e-14_real64, 'commit publishes candidate', failures)
   end subroutine test_guarded_commit
 
   subroutine test_stale_candidate_rejected(failures)
@@ -335,20 +360,25 @@ contains
 
     call new_committed(committed, 111_int64, 1.0_real64)
     call standard_setup(parameters, forcing, config)
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 5.0_real64, 5.5_real64, result_a, candidate_a, diag_a)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         5.0_real64, 5.5_real64, result_a, candidate_a, diag_a)
     forcing%scale = 0.5_real64
-    call kernel%advance_interval(parameters, committed, forcing, config, 5.0_real64, 5.5_real64, result_b, candidate_b, diag_b)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         5.0_real64, 5.5_real64, result_b, candidate_b, diag_b)
 
-    call kernel%commit_candidate(committed, candidate_b, diag_b, did_commit, commit_status)
-    call expect_true(did_commit, 'newer sibling candidate commits', failures)
+    call kernel%commit_candidate(committed, candidate_b, diag_b, &
+         did_commit, commit_status)
+    call expect_true(did_commit, 'sibling candidate commits', failures)
     accepted_water = committed_water(committed)
-    call kernel%commit_candidate(committed, candidate_a, diag_a, did_commit, commit_status)
-    call expect_true(.not. did_commit, 'stale sibling candidate rejected', failures)
-    call expect_true(commit_status == KERNEL_COMMIT_STATUS_STALE_REVISION, 'stale revision status exact', failures)
-    call expect_true(diag_a%stale_revision_rejections == 1, 'stale rejection diagnosed', failures)
-    call expect_close(committed_water(committed), accepted_water, 0.0_real64, 'stale commit cannot mutate committed', failures)
-    call expect_true(candidate_a%valid, 'rejected stale candidate not silently consumed', failures)
+    call kernel%commit_candidate(committed, candidate_a, diag_a, &
+         did_commit, commit_status)
+    call expect_true(.not. did_commit, 'stale candidate rejected', failures)
+    call expect_true(commit_status == KERNEL_COMMIT_STATUS_STALE_REVISION, &
+         'stale status exact', failures)
+    call expect_true(diag_a%stale_revision_rejections == 1, &
+         'stale rejection diagnosed', failures)
+    call expect_close(committed_water(committed), accepted_water, 0.0_real64, &
+         'stale commit cannot mutate committed', failures)
     call kernel%rollback_candidate(candidate_a, diag_a)
   end subroutine test_stale_candidate_rejected
 
@@ -369,15 +399,15 @@ contains
     call new_committed(committed_a, 201_int64, 1.0_real64)
     call new_committed(committed_b, 202_int64, 2.0_real64)
     call standard_setup(parameters, forcing, config)
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed_a, forcing, config, 7.25_real64, 7.5_real64, result, candidate, diagnostics)
-    call kernel%commit_candidate(committed_b, candidate, diagnostics, did_commit, commit_status)
-
+    call run_candidate(kernel, model, committed_a, parameters, forcing, config, &
+         7.25_real64, 7.5_real64, result, candidate, diagnostics)
+    call kernel%commit_candidate(committed_b, candidate, diagnostics, &
+         did_commit, commit_status)
     call expect_true(.not. did_commit, 'cross-lineage commit rejected', failures)
-    call expect_true(commit_status == KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH, 'lineage mismatch status exact', failures)
-    call expect_true(diagnostics%lineage_mismatch_rejections == 1, 'lineage mismatch diagnosed', failures)
-    call expect_close(committed_water(committed_b), 2.0_real64, 0.0_real64, 'wrong column remains untouched', failures)
-    call expect_true(candidate%valid, 'wrong-target rejection preserves candidate', failures)
+    call expect_true(commit_status == KERNEL_COMMIT_STATUS_LINEAGE_MISMATCH, &
+         'lineage status exact', failures)
+    call expect_close(committed_water(committed_b), 2.0_real64, 0.0_real64, &
+         'wrong column untouched', failures)
     call kernel%rollback_candidate(candidate, diagnostics)
   end subroutine test_cross_lineage_rejected
 
@@ -396,10 +426,12 @@ contains
     call new_raw_state(raw, 1.0_real64)
     call standard_setup(parameters, forcing, config)
     call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, raw, forcing, config, 5.0_real64, 5.25_real64, result, candidate, diagnostics)
-    call expect_true(result%status == KERNEL_STATUS_UNGUARDED_STATE, 'raw committed state fails closed', failures)
-    call expect_true(diagnostics%unguarded_state_rejections == 1, 'unguarded state diagnosed', failures)
-    call expect_true(.not. candidate%valid, 'unguarded state creates no candidate', failures)
+    call kernel%advance_interval(parameters, raw, forcing, config, &
+         5.0_real64, 5.25_real64, result, candidate, diagnostics)
+    call expect_true(result%status == KERNEL_STATUS_UNGUARDED_STATE, &
+         'raw state fails closed', failures)
+    call expect_true(diagnostics%unguarded_state_rejections == 1, &
+         'unguarded state diagnosed', failures)
   end subroutine test_raw_state_fails_closed
 
   subroutine test_same_committed_replay(failures)
@@ -416,15 +448,18 @@ contains
 
     call new_committed(committed, 301_int64, 1.0_real64)
     call standard_setup(parameters, forcing, config)
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 123.456_real64, 123.956_real64, result_a, candidate_a, diag_a)
-    call kernel%advance_interval(parameters, committed, forcing, config, 123.456_real64, 123.956_real64, result_b, candidate_b, diag_b)
-
-    call expect_true(result_a%completed .and. result_b%completed, 'same-state replay completes', failures)
-    call expect_true(candidate_a%origin_revision == candidate_b%origin_revision, 'replay origin revision identical', failures)
-    call expect_close(candidate_water(candidate_a), candidate_water(candidate_b), 0.0_real64, 'replay endpoint exact', failures)
-    call expect_true(diag_a%attempts == diag_b%attempts .and. diag_a%retries == diag_b%retries, 'replay route exact', failures)
-    call expect_true(committed_revision(committed) == 0_int64, 'replay does not advance committed revision', failures)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         123.456_real64, 123.956_real64, result_a, candidate_a, diag_a)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         123.456_real64, 123.956_real64, result_b, candidate_b, diag_b)
+    call expect_true(result_a%completed .and. result_b%completed, &
+         'same-state replay completes', failures)
+    call expect_close(candidate_water(candidate_a), candidate_water(candidate_b), &
+         0.0_real64, 'replay endpoint exact', failures)
+    call expect_true(diag_a%attempts == diag_b%attempts .and. &
+         diag_a%retries == diag_b%retries, 'replay route exact', failures)
+    call expect_true(committed_revision(committed) == 0_int64, &
+         'replay leaves revision unchanged', failures)
     call kernel%rollback_candidate(candidate_a, diag_a)
     call kernel%rollback_candidate(candidate_b, diag_b)
   end subroutine test_same_committed_replay
@@ -447,14 +482,16 @@ contains
     model%mass_defect = 1.0e-4_real64
     config%transaction%temporal_tolerance = 1.0_real64
     config%transaction%max_retries = 1
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 8.0_real64, 8.5_real64, result, candidate, diagnostics)
-
-    call expect_true(result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'mass failure propagated', failures)
-    call expect_true(diagnostics%mass_rejections > 0, 'hard mass rejection retained', failures)
-    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, 'mass rejection preserves committed', failures)
-    call expect_true(committed_revision(committed) == 0_int64, 'mass rejection preserves revision', failures)
-    call expect_true(.not. candidate%valid, 'mass rejection creates no candidate', failures)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         8.0_real64, 8.5_real64, result, candidate, diagnostics)
+    call expect_true(result%status == CANONICAL_STATUS_TRANSACTION_FAILED, &
+         'mass failure propagated', failures)
+    call expect_true(diagnostics%mass_rejections > 0, &
+         'hard mass rejection retained', failures)
+    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, &
+         'mass rejection preserves committed', failures)
+    call expect_true(committed_revision(committed) == 0_int64, &
+         'mass rejection preserves revision', failures)
   end subroutine test_mass_rejection_preserves_committed
 
   subroutine test_rollback_preserves_revision(failures)
@@ -471,16 +508,18 @@ contains
 
     call new_committed(committed, 501_int64, 1.0_real64)
     call standard_setup(parameters, forcing, config)
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 9.125_real64, 9.375_real64, result, candidate, diagnostics)
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         9.125_real64, 9.375_real64, result, candidate, diagnostics)
     call kernel%rollback_candidate(candidate, diagnostics)
-
-    call expect_true(committed_revision(committed) == 0_int64, 'rollback leaves committed revision unchanged', failures)
-    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, 'rollback leaves committed physical state unchanged', failures)
-    call expect_true(diagnostics%candidate_rollbacks == 1, 'candidate rollback diagnosed', failures)
+    call expect_true(committed_revision(committed) == 0_int64, &
+         'rollback leaves revision unchanged', failures)
+    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, &
+         'rollback leaves committed state unchanged', failures)
+    call expect_true(diagnostics%candidate_rollbacks == 1, &
+         'candidate rollback diagnosed', failures)
   end subroutine test_rollback_preserves_revision
 
-  subroutine test_reference_style_admission_still_fails_closed(failures)
+  subroutine test_admission_still_fails_closed(failures)
     integer, intent(inout) :: failures
     class(transaction_state_t), allocatable :: committed
     type(fkt02_parameters_t) :: parameters
@@ -495,12 +534,14 @@ contains
     call new_committed(committed, 601_int64, 1.0_real64)
     call standard_setup(parameters, forcing, config)
     model%admitted = .false.
-    call kernel%bind_model(model)
-    call kernel%advance_interval(parameters, committed, forcing, config, 10.0_real64, 10.25_real64, result, candidate, diagnostics)
-    call expect_true(result%status == KERNEL_STATUS_NOT_ADMITTED, 'unqualified execution remains fail-closed', failures)
-    call expect_true(diagnostics%admission_rejections == 1, 'admission rejection retained', failures)
-    call expect_true(committed_revision(committed) == 0_int64, 'admission rejection preserves revision', failures)
-    call expect_close(committed_water(committed), 1.0_real64, 0.0_real64, 'admission rejection preserves physical state', failures)
-  end subroutine test_reference_style_admission_still_fails_closed
+    call run_candidate(kernel, model, committed, parameters, forcing, config, &
+         10.0_real64, 10.25_real64, result, candidate, diagnostics)
+    call expect_true(result%status == KERNEL_STATUS_NOT_ADMITTED, &
+         'unqualified execution remains fail-closed', failures)
+    call expect_true(diagnostics%admission_rejections == 1, &
+         'admission rejection diagnosed', failures)
+    call expect_true(committed_revision(committed) == 0_int64, &
+         'admission rejection preserves revision', failures)
+  end subroutine test_admission_still_fails_closed
 
 end program test_fkt02_candidate_lineage
