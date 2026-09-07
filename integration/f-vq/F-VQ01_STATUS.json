@@ -11,15 +11,23 @@
     "canonical_workflow_run": 34100440481,
     "oracle": "B1.10"
   },
-  "checkpoint_commit": "b18150cb4f5313f01fc1c775917c617b421c9ba0",
-  "implemented": false,
+  "checkpoint_commit": "18fddd8f6ce5926972b1a4bc89f0d351fd76398c",
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_source_changed": false,
   "status": "PERSISTED",
-  "next_action": "Complete exact-provenance VQ asset inventory and executable admission matrix before rerunning reusable qualification gates.",
-  "recovery_point": "qualification/f-vq01-admission, starting from F-CI11 qualification evidence commit b18150cb4f5313f01fc1c775917c617b421c9ba0",
+  "persisted_artifacts": [
+    "integration/f-vq/F-VQ01_ASSET_INVENTORY.json",
+    "integration/f-vq/F-VQ01_ADMISSION_MATRIX.json",
+    "tools/vq/fvq01_admission.py",
+    "tools/vq/test_fvq01_admission.py",
+    "docs/verification/f-vq01-fci11-admission.md",
+    ".github/workflows/vq-reference.yml"
+  ],
+  "next_action": "Run pull-request CI against the persisted F-VQ01 qualification postimage and record exact workflow/job evidence.",
+  "recovery_point": "qualification/f-vq01-admission at checkpoint commit 18fddd8f6ce5926972b1a4bc89f0d351fd76398c; no qualification claim depends on unpersisted work.",
   "blockers": [
     "F-CI12: bind qualified generic advance and mass seam in b1_10_transaction_model_t",
     "Qualified physical temporal-error metric and tolerances are absent",
