@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT05",
+  "baseline": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
+  "branch": "integration/f-kt",
+  "safety_branch": "integration/f-kt05-safety",
+  "safety_branch_head": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
+  "source_checkpoint_commit": "278e1b0bf44a391059fdcdd72576e24e966e95f1",
+  "test_checkpoint_commit": "7dd5ae24e40ed5eec063a237b60a165a18754e66",
+  "contract_checkpoint_commit": "28d67cd25fc9d30e7176450bbe8e4f034960f9ce",
+  "contract_gate_checkpoint_commit": "ae95478992e2a5929e56a73b0c494cb40ce6328d",
+  "gate_checkpoint_commit": "07641bf09c45433883e6d00664fcf8d01e49f4c9",
+  "workflow_checkpoint_commit": "5d4bce4324d72ae4f5cb573ed0399d5b71fc9f8a",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implementation_status": "IMPLEMENTED",
+  "persistence_status": "PERSISTED",
+  "test_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
+  "qualification_status": "NOT_RUN_ON_COMPLETE_PRETEST_POSTIMAGE",
+  "scope": "opaque reusable checkpoint carrier bound to current committed lineage, revision and temporal provenance",
+  "files_artifacts_persisted": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "tests/fkt/test_fkt05_reusable_checkpoint.f90",
+    "tests/fkt/run_fkt05_gate.sh",
+    "tools/fkt/fkt05_contract_gate.py",
+    "integration/f-kt/F-KT05_REUSABLE_CHECKPOINT_CONTRACT.json",
+    ".github/workflows/fkt-kernel.yml",
+    "integration/f-kt/F-KT05_STATUS.json"
+  ],
+  "external_boundaries": {
+    "fsi03_qualified_head": "c14ad3e032dd0285825051d8cf0e7d11ade01cd6",
+    "fsi03_status": "QUALIFIED_SOURCE_BOUND_ADAPTER_CONTRACT_ONLY",
+    "fsi04_observed_pretest_head": "5d892790152d6541f0378ba7dc2d288e68cea702",
+    "fsi04_consumed_as_qualification": false,
+    "fmq17_observed_head": "cd63058f19623b71c6a904ad85b9b14ebe1a990c",
+    "fmq17_real_physics_executable": 0,
+    "fmq17_production_runtime_qualified": 0
+  },
+  "next_action": "run F-KT05 focused O0/O2 gate and selected F-CI regressions on this complete pretest postimage",
+  "blockers": [],
+  "holds": [
+    "B1.10 temporal-limit profile remains independently unqualified and production reference admission remains fail-closed",
+    "F-SI03 qualifies adapter translation only, not real HeadCalc numerics or reentrancy",
+    "F-SI04 remains pretest and is not consumed by F-KT05",
+    "production MultiSWAP scheduling/runtime remains outside F-KT",
+    "optional-process temporal/storage coverage remains downstream qualification work"
+  ]
+}
