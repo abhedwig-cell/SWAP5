@@ -111,3 +111,15 @@ jobs:
         run: gfortran --version
       - name: F-CI10 time and mass seam gate
         run: bash tests/fci/run_fci10_gate.sh
+
+  fci11-controlled-interval-mass-port:
+    needs: fci10-time-mass-seam
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI11 controlled interval and mass source-port gate
+        run: bash tests/fci/run_fci11_gate.sh
