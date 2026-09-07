@@ -1,0 +1,81 @@
+schema_version: 1
+directive_id: F-CI11-RELEASE
+workstream: F-CI
+work_unit: F-CI11
+release_status: RELEASED_WITHIN_ACTIVE_F_CI
+production_write_allowed: true
+repository: abhedwig-cell/SWAP5
+canonical_branch: integration/f-ci-canonical
+start_from_branch_head: ff3d8fea23312ba91da741888fb893d805630428
+qualified_input_source_test_head: 970d99100a256099343d4b2072ecd543469b23b5
+reference_oracle: B1.10
+reference_manifest_sha256: 2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1
+
+purpose: >-
+  Materialize the controlled production wiring of the already-qualified F-CI10
+  worker/job-local unrounded trial-mass accumulator into the real B1.10 legacy
+  timestep path, without changing physics, reference numerical policy, time
+  semantics, mass tolerance, or transaction full/half/half semantics.
+
+primary_gate_targets:
+  - CI-G03
+  - CI-G07
+  - CI-G09
+
+required_changes:
+  - Wire b1_10_trial_mass_t to the actual unrounded timestep mass terms used by the controlled B1.10 MOD_integral/SWAP path.
+  - Preserve the accumulator as worker/job-local trial data, not persistent column state and not module-global committed accounting.
+  - Define deterministic trial initialization/reset and ensure each independent full or half trial starts from the correct accounting context.
+  - Expose unrounded trial mass_in and mass_out through the admitted B1.10 transaction binding for the currently qualified physical profile.
+  - Keep accepted and rejected trial accounting separable so rejected trials cannot contaminate committed interval accounting.
+  - Persist exact source postimages and provenance before running long qualification.
+
+required_tests:
+  - Compile and run focused F-CI11 gates at O0 and O2 against the exact same persisted source postimage.
+  - Verify O0/O2 identity for the trial-mass route where deterministic identity is expected.
+  - Re-run source-bound Hupsel mass cases on the currently admitted SWSNOW=0, SWMACRO=0 profile.
+  - Enforce the existing hard 1e-6 cm water-balance qualification threshold; do not relax it.
+  - Add a negative/retry test proving rejected trial mass accumulation does not leak into a subsequent retry or committed result.
+  - Add a full-versus-independent-replay accounting check from the same committed physical state and forcing.
+  - Fail closed if complete storage/flux accounting is requested for snow or macropore configurations not yet admitted.
+
+forbidden_changes:
+  - Do not modify B1.10 physical formulas, constitutive relations, Jacobians, solver tolerances, solver selection, or reference numerical policy.
+  - Do not change transaction mass tolerance.
+  - Do not change generic transaction full/half/half semantics to fit the legacy controller.
+  - Do not solve the generic-time/day-controller blocker in this work unit unless it is separable and independently qualified; default is to leave it explicit.
+  - Do not admit snow or macropore storage by assumption.
+  - Do not move forcing cursors, output/reporting state, or numerical scratch into persistent column state.
+  - Do not use historical A23 production source as an implicit current postimage.
+
+persist_early_test_second:
+  required: true
+  sequence:
+    - materialize exact controlled source postimage
+    - write/update status as PERSISTED
+    - run focused compile/tests
+    - run source-bound physical qualification
+    - record TESTED/QUALIFIED evidence only after exact results exist
+
+exit_evidence:
+  - exact canonical source commit containing controlled MOD_integral/SWAP trial-mass wiring
+  - source provenance showing derivation from the F-CI10 qualified mass formulation and B1.10 controlled port
+  - focused O0/O2 gate command and CI run identity
+  - unrounded mass_in/mass_out extraction evidence from actual timestep terms
+  - hard Hupsel mass-balance evidence for the admitted profile
+  - rejected-trial accounting isolation evidence
+  - updated capability record showing what is admitted and what remains fail-closed
+  - explicit remaining blockers for generic physical sub-day time, temporal-error metric, snow/macropore storage, and execute_reference_interval if still unresolved
+
+success_condition: >-
+  F-CI11 is successful when the real controlled B1.10 timestep path supplies
+  qualified unrounded per-trial mass totals through worker/job-local accounting
+  with no rejected-trial leakage and with the hard water-balance gate passing,
+  while all unrelated generic-time and optional-storage capabilities remain
+  fail-closed unless independently qualified.
+
+next_after_success: >-
+  Reassess CI-G03, CI-G07 and CI-G09. If trial-mass wiring qualifies, the next
+  production-critical unit should address the generic physical [t0,t1] interval
+  controller and then the physical temporal-error contract. Do not pre-release
+  F-KT, F-SI or F-VQ solely on F-CI11 success.
