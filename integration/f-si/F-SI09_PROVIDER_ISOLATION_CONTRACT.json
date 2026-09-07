@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "title": "Corrected B1.10 default-MvG constitutive provider isolation",
+  "basis": {
+    "fsi08_qualified_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
+    "source_resolution_evidence_head": "f90aefdfa24e133047ffcb53151114e60b860bae",
+    "oracle": "B1.10",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "admitted_profile": {
+    "hydraulic_model_family": "default MvG analytical branch, models whose MOD_MvG imod falls through the default branch",
+    "swsophy": 0,
+    "fl_use_tables": false,
+    "swhyst": 0,
+    "sw_use_elas": 0,
+    "swfrost": 0,
+    "swmacro": 0,
+    "swkimpl": 0,
+    "fl_use_kh_power": false,
+    "fluseksatexm": false,
+    "bottom_modes": [7, -2],
+    "top_boundary": "explicit provider",
+    "source_sink": "explicit provider"
+  },
+  "explicit_holds": {
+    "model_2_exponential": "DEFERRED_SEPARATE_PROVIDER_PROFILE",
+    "model_3_bimodal": "DEFERRED_SEPARATE_PROVIDER_PROFILE",
+    "models_5_11_WC_K_helpers": "DEFERRED_UNTIL_WC_K_PROVIDER_CONTEXT_SOURCE_BOUND",
+    "model_12_RIA": "DEFERRED_UNTIL_RIA_PROVIDER_CONTEXT_SOURCE_BOUND",
+    "hysteresis": "DEFERRED_DYNAMIC_PER_COLUMN_CONTEXT",
+    "tabulated_hydraulics": "DEFERRED_TABLE_PROVIDER_CONTEXT",
+    "elastic_saturation": "DEFERRED_PROFILE",
+    "frost": "DEFERRED_PROCESS_COMPOSITION",
+    "macropore": "DEFERRED_FSI_FKT_COMPOSITION",
+    "swkimpl_1_dkdh": "DEFERRED_DYNAMIC_ROOT_AND_DKDH_PROVIDER_QUALIFICATION"
+  },
+  "ownership": {
+    "provider_object": "read-only during solve; one per hydraulic parameter set or safely shared among columns with identical immutable parameters",
+    "immutable_parameter_data": [
+      "wcr", "wcs", "ksatfit", "alfamg", "lambda", "n", "m", "alfamgwet", "h_enpr",
+      "ksatexm", "relsatthr", "ksatthr", "elas", "wcsMINwcr", "wc_crit", "c_crit", "s_enpr",
+      "alfanm", "nMIN1", "mPLUS1", "oneOVERm", "n2mlambda", "h_power", "k_power",
+      "term_105_a", "term_105_ab"
+    ],
+    "solve_dynamic_input": ["pressure_head", "water_content", "step_duration"],
+    "worker_temporaries": "automatic/local within provider evaluate or solver workspace; never persistent per logical column",
+    "committed_state": "F-KT owned, not provider owned",
+    "transaction_authority": false
+  },
+  "formula_provenance": {
+    "source": "byte-exact corrected B1.10 MOD_MvG_functions.f90",
+    "source_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "relevant_functions": ["calc_cofgen_extra", "watcon", "moiscap", "hconduc"],
+    "transformation_rule": "mechanical parameter-context extraction only; arithmetic expressions and branch ordering for the admitted default-MvG profile must remain equivalent to the exact corrected source",
+    "formula_reinterpretation_allowed": false
+  },
+  "common_interface": {
+    "type": "constitutive_hydraulics_provider_t",
+    "method": "evaluate(pressure_head, water_content, conductivity, capacity, dconductivity_dhead)",
+    "common_contract_change_required": false,
+    "dkdh_for_swkimpl0": "output remains interface-shaped but does not qualify swkimpl=1; F-SI09 must not promote implicit-conductivity admission"
+  },
+  "qualification": {
+    "exact_source_oracle": true,
+    "o0_o2": true,
+    "required_comparisons": ["theta", "capacity", "conductivity"],
+    "pressure_head_grid": "must cover saturated, near-saturated, h_crit/h_enpr neighborhoods, ordinary unsaturated and very dry states represented by admitted fixture parameters",
+    "heterogeneous_parameter_sets": true,
+    "worker_counts": [1,2,4,8],
+    "aba_order_independence": true,
+    "workspace_poisoning": true,
+    "request_immutability": true,
+    "focused_unrounded_residual": true,
+    "fsi08_regression": true
+  },
+  "admission_flags_before_qualification": {
+    "production_b1_10_constitutive_provider_admitted": false,
+    "parallel_reference_backend_admitted": false
+  }
+}
