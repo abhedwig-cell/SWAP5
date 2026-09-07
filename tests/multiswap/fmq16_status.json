@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ16",
+  "title": "F-SI03 fail-closed admission barrier",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq15-common-workspace-isolation",
+    "commit": "b687bb434c35112ef8e9721452ff7dacb4b66b43"
+  },
+  "upstream_observation": {
+    "fsi03_branch": "work/f-si03-reference-binding",
+    "fsi03_head": "5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3",
+    "adapter_blob": "84366a4b312a86806cc3aa78a7257c3a7a95d2f1",
+    "workflow_run": 34120806552,
+    "workflow_conclusion": "failure",
+    "failure_classification": "TEST_COMPILE_GATE_COMPARE_REALS_WERROR",
+    "formal_fsi03_qualification_present": false,
+    "fvq09_head_observed": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "fvq09_qualified": false,
+    "fmr_branch_present": false
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI03_FAIL_CLOSED_ADMISSION_BARRIER",
+  "decision": "Do not consume the F-SI03 adapter as qualification evidence until F-SI03 itself has a green source-bound gate and a formal qualification postimage."
+}
