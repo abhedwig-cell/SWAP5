@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import unittest
+import pathlib
+import subprocess
+import sys
 
-suite = unittest.defaultTestLoader.loadTestsFromName('tests.multiswap.test_fmq21_fsi06_fvq12_ownership_admission')
-result = unittest.TextTestRunner(verbosity=2).run(suite)
-raise SystemExit(0 if result.wasSuccessful() else 1)
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+TEST = ROOT / "tests/multiswap/test_fmq21_fsi06_fvq12_ownership_admission.py"
+raise SystemExit(subprocess.call([sys.executable, str(TEST)]))
