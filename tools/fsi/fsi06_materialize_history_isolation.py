@@ -58,8 +58,8 @@ def transform_headcalc(path: Path) -> None:
         'headcalc explicit worker/history selection',
     )
     history_count = text.count('ctx%history%')
-    if history_count != 6:
-        raise SystemExit(f'F-SI06_MATERIALIZE FAIL history references: expected 6, found {history_count}')
+    if history_count != 12:
+        raise SystemExit(f'F-SI06_MATERIALIZE FAIL history references: expected 12, found {history_count}')
     text = text.replace('ctx%history%', 'hist%')
     if 'save :: legacy_worker' in text or 'ctx%history%' in text:
         raise SystemExit('F-SI06_MATERIALIZE FAIL hidden HeadCalc history/singleton remains')
