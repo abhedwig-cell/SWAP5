@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ18",
+  "source": {
+    "qualification_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
+    "tested_postimage": "0cfbefc271447b4b53eeee50c1dfbb2acaf020df",
+    "qualification_blob": "fdfc028191a347fc2bdcec2d136788c4f9a84177",
+    "gate_blob": "b8bbe5d6c2eb86bda995d77ec44e813ffbe84d85",
+    "canonical_headcalc_blob": "225b9f2cc1ecff01414b5691799103b92bc068c5",
+    "workflow_run": 34122972659,
+    "workflow_conclusion": "success",
+    "status": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY"
+  },
+  "admitted_real_headcalc_primitives": {
+    "exact_canonical_headcalc_source_bound": true,
+    "original_real_headcalc_O0_executed": true,
+    "workspace_real_headcalc_O0_executed": true,
+    "original_vs_workspace_O0_byte_identity": true,
+    "original_real_headcalc_O2_executed": true,
+    "workspace_real_headcalc_O2_executed": true,
+    "original_vs_workspace_O2_byte_identity": true,
+    "O0_vs_O2_output_identity": true,
+    "workspace_scratch_poison_reset": true,
+    "ABA_repeated_call_identity_focused_fixture": true,
+    "solver_route_iteration_identity_focused_fixture": true,
+    "focused_unrounded_equation_residual_identity": true
+  },
+  "focused_fixture": {
+    "active_nodes": 4,
+    "swmacro": 0,
+    "swkimpl": 0,
+    "fldtmin": false,
+    "bottom_mode": 7,
+    "top_flux": -1.0,
+    "bottom_flux": -1.0,
+    "expected_nonlinear_iterations": 1,
+    "expected_jacobian_builds": 1,
+    "expected_linear_solves": 1
+  },
+  "matrix_row_effect": {
+    "P06": "REAL_HEADCALC_SINGLE_FIXTURE_SCRATCH_PRIMITIVE_ONLY_NO_ROW_PROMOTION",
+    "P11": "REAL_HEADCALC_ABA_REPLAY_PRIMITIVE_ONLY_NO_REAL_SWAP_INTERVAL_OR_HARD_FULL_MASS",
+    "P16": "FOCUSED_EQUATION_RESIDUAL_IDENTITY_ONLY_NOT_FULL_SWAP_WATER_BALANCE",
+    "P19": "REAL_HEADCALC_POISON_RESET_PRIMITIVE_ONLY_MIN_2_COLUMNS_2_WORKERS_NOT_MET",
+    "P03": "NOT_PROMOTED_PARALLEL_REAL_HEADCALC_NOT_QUALIFIED",
+    "P18": "NOT_PROMOTED_REAL_MULTI_COLUMN_INTERLEAVING_NOT_QUALIFIED"
+  },
+  "coverage": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "focused_real_headcalc_prerequisite_rows": ["P06", "P11", "P16", "P19"]
+  },
+  "hard_nonclaims": {
+    "full_real_swap_interval_executed": false,
+    "full_swap_water_balance_identity_qualified": false,
+    "parallel_real_headcalc_1_2_4_8_workers_qualified": false,
+    "real_multi_column_interleaving_qualified": false,
+    "production_workspace_aware_headcalc_seam_committed": false,
+    "production_reference_admission": false,
+    "production_multiswap_admission": false,
+    "production_runtime_qualified": false
+  },
+  "next_dependencies": [
+    "F-SI05 committed workspace-aware HeadCalc production seam",
+    "real multi-column/worker execution evidence for P06/P19/P18",
+    "full reference-derived SWAP interval with hard unrounded mass for P10/P11/P16",
+    "F-MR production MultiSWAP runtime for final runtime qualification"
+  ]
+}
