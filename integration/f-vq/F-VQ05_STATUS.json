@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ05",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI14 Temporal Acceptance Contract Admission",
+  "basis": {
+    "oracle": "B1.10",
+    "fci14_qualified_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "fci14_qualified_postimage": "c226988ae0782a7d8d0818f5d4aeaab61b696de4",
+    "fci14_canonical_workflow_run": 34107845964,
+    "fci14_canonical_job": 101697462464,
+    "fvq04_final_head": "b406382a49f264e8f05441442a6e22eab4f0f6ac"
+  },
+  "integration_overlay": {
+    "canonical_commit": "073ccff4096a922095a5c15390a6a6dc949e99aa",
+    "work_unit": "F-CI15",
+    "consumed_as_fvq05_qualification_basis": false
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed_since_overlay": false,
+  "contract_semantics_qualified": false,
+  "production_temporal_profile_qualified": false,
+  "real_b1_10_temporal_acceptance_qualified": false,
+  "canonical_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "status": "PERSISTED_TEMPORAL_CONTRACT_ADMISSION_PRE_TEST",
+  "next_action": "Run F-VQ05 gate and promotion guards, re-run exact F-CI14 and carried F-CI15 gates, and qualify only temporal-contract semantics if all checks pass. Keep the numerical profile and real B1.10 reference execution fail-closed.",
+  "blockers": [
+    "No independently qualified numeric limits exist for the eight B1.10 endpoint metrics.",
+    "No admitted real B1.10 execute_reference_interval route exists.",
+    "Thermal, solute, irrigation, crop and WOFOST temporal state remain uncharacterized for this contract.",
+    "Real B1.10 full-versus-two-half production temporal acceptance has not been qualified.",
+    "Complete snow/macropore result accounting and reentrant parallel legacy-backend qualification remain open."
+  ],
+  "holds": [
+    "Do not infer physical tolerances from normalized threshold 1.0.",
+    "Do not promote deterministic F-CI14 testfixture limits into a production profile.",
+    "Do not reuse nonlinear solver or mass-balance tolerances as temporal-accuracy limits.",
+    "Do not silently ignore active optional-process state.",
+    "Do not consume F-CI15 as temporal qualification evidence merely because it is carried as the canonical overlay."
+  ]
+}
