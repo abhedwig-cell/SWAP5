@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ03",
+  "fci13_basis": {
+    "qualified_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "workflow_run": 34104845258,
+    "job_id": 101687946143,
+    "oracle": "B1.10"
+  },
+  "carried_forward_fvq02": {
+    "final_head": "0a042426a83fc8bfbc31f36b67c0d8e49447724c",
+    "tested_postimage": "390bb2595c4cc33b8bb1198f6ff091fbf473068e",
+    "qualification_scope": "VERIFIER_CONTRACTS_AND_HARNESS_ONLY",
+    "overlay_checkpoint": "e5e608b6e6a47e7c12d277f32604adcef01b9ff6",
+    "subtree_pins": {
+      "integration/f-vq": "eb69a83c9974a9e4f8613ceaaa413bc123ceb292",
+      "docs/verification": "2c7f89a16957af7078122f4fa9fa6f4e2e3e3ab0",
+      "tools/vq": "d423811ea0288dcd685d8ccdd4e2c54a1a00558c",
+      ".github/workflows/vq-reference.yml": "69e67f4da3ac1bc8fe8a93664eb108a4a5a7e04b"
+    }
+  },
+  "scope": {
+    "production_source_changes": false,
+    "admit_fci13_status_contract_only": true,
+    "hydrological_terminal_failure_regression": false,
+    "reference_execution_admitted": false
+  }
+}

@@ -64,8 +64,8 @@ jobs:
       - name: Check deterministic B1.10 reconstructor syntax
         run: python -m py_compile tools/vq/b1_10_reconstruct.py
 
-  fvq02-verifier-contracts:
-    name: F-VQ02 verifier contracts on F-CI12
+  fvq03-fci13-status:
+    name: F-VQ03 qualified F-CI13 status admission
     runs-on: ubuntu-latest
     steps:
       - name: Check out exact qualification head
@@ -85,13 +85,13 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
 
-      - name: F-VQ02 provenance, readiness and synthetic harness gate
-        run: python -m tools.vq.fvq02_contract_gate
+      - name: F-VQ03 exact F-CI13 admission and fail-closed readiness gate
+        run: python -m tools.vq.fvq03_admission
 
-      - name: F-VQ02 scope-guard unit tests
-        run: python -m unittest tools.vq.test_fvq02_contract_gate
+      - name: F-VQ03 unit tests
+        run: python -m unittest tools.vq.test_fvq03_admission
 
-      - name: Re-run imported semantic validators and fault-injection tests
+      - name: Re-run qualified verifier semantic and fault-injection tests
         run: |
           python -m unittest \
             tools.vq.test_b2_seam_contract \
@@ -105,5 +105,5 @@ jobs:
             --fixture-suite \
             --evidence tools/vq/cases/vq-1e1-tx-time-harness-2026-09-06.json
 
-      - name: Re-run exact F-CI12 production-binding qualification gate
-        run: bash tests/fci/run_fci12_gate.sh
+      - name: Re-run exact F-CI13 recoverable-status qualification gate
+        run: bash tests/fci/run_fci13_gate.sh

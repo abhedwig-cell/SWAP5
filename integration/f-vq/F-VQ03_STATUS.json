@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ03",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI13 Recoverable Status Admission",
+  "baseline": {
+    "fci13_source_head": "538d51df4be3780a5bb092767304749dfc800899",
+    "fci13_qualification_commit": "f56c5fe7cdbca36c3403fcd027c5998b0c7578f4",
+    "fci13_workflow_run": 34104845258,
+    "fci13_job_id": 101687946143,
+    "oracle": "B1.10",
+    "fvq02_final_head": "0a042426a83fc8bfbc31f36b67c0d8e49447724c"
+  },
+  "pre_test_checkpoint_commit": "e5e608b6e6a47e7c12d277f32604adcef01b9ff6",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed": false,
+  "production_physics_qualified": false,
+  "status": "PERSISTED_FCI13_STATUS_ADMISSION_PRE_TEST",
+  "next_action": "Run the F-VQ03 admission gate, imported verifier tests, synthetic transaction/time harness and exact F-CI13 gate. Persist qualification evidence only after the exact postimage passes.",
+  "blockers": [
+    "No real B1.10 terminal minimum-dt nonconvergence qualification fixture has been executed.",
+    "Scalar temporal-error metric and tolerance policy are not admitted.",
+    "execute_reference_interval for B1.10 is not admitted.",
+    "Real B1.10 reference-model end-to-end execution is not qualified.",
+    "Production canonical result route is not admitted through real reference execution.",
+    "Complete snow/macropore storage accounting is absent.",
+    "Reentrant parallel legacy-backend qualification is absent."
+  ],
+  "holds": [
+    "F-CI13 deterministic failure forcing qualifies status and transaction semantics, not a naturally occurring hydrological failure trajectory.",
+    "Verifier self-tests remain verifier-only.",
+    "No READY reference-execution state may be created while execute_reference_interval remains false.",
+    "No production source changes are permitted in F-VQ03."
+  ]
+}
