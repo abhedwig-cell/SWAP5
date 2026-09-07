@@ -1,0 +1,29 @@
+name: F-SI03 reference binding
+
+on:
+  push:
+    branches:
+      - work/f-si03-reference-binding
+    paths:
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/**'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'tests/fsi/**'
+      - 'integration/f-si/**'
+      - 'docs/integration/**'
+      - '.github/workflows/fsi03-reference-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  fsi03-reference-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI03 source-bound adapter gate
+        run: bash tests/fsi/run_fsi03_gate.sh
