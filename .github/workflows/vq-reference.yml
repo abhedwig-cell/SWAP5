@@ -179,10 +179,10 @@ jobs:
     name: F-VQ08 real B1.10 temporal-characterization readiness
     runs-on: ubuntu-latest
     steps:
-      - name: Check out exact qualification head
+      - name: Check out exact qualified F-VQ08 postimage
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: 0be60f6da7e575eaf992eb049ce600a4a4b35b58
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -205,10 +205,10 @@ jobs:
     name: F-VQ09 real B1.10 temporal harness contract
     runs-on: ubuntu-latest
     steps:
-      - name: Check out exact qualification head
+      - name: Check out exact qualified F-VQ09 postimage
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: 7af5b30ec1707ac064a93f3af84bff403a203a6d
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -239,10 +239,10 @@ jobs:
     name: F-VQ10 temporal profile qualification and promotion contract
     runs-on: ubuntu-latest
     steps:
-      - name: Check out exact qualification head
+      - name: Check out exact qualified F-VQ10 postimage
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: 82e9ec4ec4a3489dec771b8f53caf2c14a5eef20
           fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@v5
