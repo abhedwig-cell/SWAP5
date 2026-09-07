@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI12",
+  "title": "Physical Transaction Advance Binding and Temporal Difference Characterization",
+  "branch": "integration/f-ci-canonical",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "fci11_generic_interval_dependency": "QUALIFIED_SOURCE_PINNED",
+    "fci11_unrounded_trial_mass_dependency": "QUALIFIED_SOURCE_PINNED",
+    "fci09_transaction_binding_dependency": "QUALIFIED_SOURCE_PINNED_UNCHANGED",
+    "physical_interval_executor": "MATERIALIZED",
+    "reference_model_advance_binding": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
+    "qualified_profile_storage_binding": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
+    "failed_trial_state_isolation": "PASS_LOCAL_TESTDOUBLE",
+    "worker_diagnostics_projection": "PASS_LOCAL_TESTDOUBLE",
+    "water_temporal_characterization": "MATERIALIZED_LOCAL_TESTDOUBLE_PASS",
+    "optional_process_temporal_scope": "INCOMPLETE_FAIL_CLOSED",
+    "recoverable_solver_failure_status": "NOT_ADMITTED",
+    "scalar_temporal_error_metric_and_tolerance": "NOT_ADMITTED",
+    "execute_reference_interval": "FAIL_CLOSED_NOT_ADMITTED",
+    "real_b1_10_reference_model_end_to_end": "NOT_YET_QUALIFIED",
+    "canonical_ci": "PENDING"
+  },
+  "holds": [
+    "qualify recoverable solver failure/status propagation from legacy physical execution",
+    "complete temporal characterization for active optional process state",
+    "define and qualify reference temporal acceptance metric/tolerances or redesign the acceptance interface",
+    "run source-bound end-to-end B1.10 reference-model transaction qualification",
+    "snow/macropore complete storage accounting",
+    "reentrant/parallel legacy backend qualification"
+  ],
+  "status": "MATERIALIZED_ADVANCE_BINDING_CI_PENDING_REFERENCE_EXECUTION_BLOCKED"
+}

@@ -123,3 +123,15 @@ jobs:
         run: gfortran --version
       - name: F-CI11 controlled interval and mass source-port gate
         run: bash tests/fci/run_fci11_gate.sh
+
+  fci12-physical-transaction-advance:
+    needs: fci11-controlled-interval-mass-port
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI12 physical advance and temporal characterization gate
+        run: bash tests/fci/run_fci12_gate.sh
