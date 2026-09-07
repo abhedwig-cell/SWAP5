@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "mode": "QUALIFICATION_ONLY",
+  "title": "F-CI18 Exit Scope/Ownership Handoff Readiness",
+  "oracle": "B1.10",
+  "previous_fvq_head": "f14cbc4c1a1ba0dc16a46bddc658cd4731733945",
+  "moving_canonical_candidate": {
+    "work_unit": "F-CI18",
+    "candidate_head": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "candidate_parent": "9d35702452808ff849ae285bca5c4377ea2b87b4",
+    "consumed_as_qualified_handoff": false
+  },
+  "qualification_targets": [
+    "exact F-CI18 candidate provenance",
+    "fail-closed handoff admission while F-CI18 canonical CI is non-green or qualification status is pending",
+    "independent detection of the PR synthetic-merge HEAD^ diff-context failure",
+    "preservation of F-CI17 current exit-gate state until an exact qualified F-CI18 promotion is persisted",
+    "review of F-CI18 ownership/scope proposal without converting proposal into release evidence",
+    "continued separation of F-CI baseline exit from downstream F-VQ physics/reference qualification"
+  ],
+  "explicit_non_targets": [
+    "changing F-CI18 production or governance source",
+    "repairing the F-CI18 gate inside F-VQ",
+    "promoting any F-CI exit gate on behalf of F-CI",
+    "admitting real B1.10 execute_reference_interval",
+    "qualifying numerical temporal limits",
+    "qualifying full legacy-backend reentrancy, optional-process completeness, MultiSWAP or coupling"
+  ],
+  "status": "PERSISTED_SCOPE_PRE_TEST"
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "oracle": "B1.10",
+  "candidate": {
+    "fci18_first_candidate_head": "9d35702452808ff849ae285bca5c4377ea2b87b4",
+    "fci18_replayability_head": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+    "production_source_changed": false,
+    "status_record": "PERSISTED_EXIT_SCOPE_CANDIDATE_CI_PENDING",
+    "focused_scope_gate_record": "PENDING",
+    "canonical_ci_record": "PENDING"
+  },
+  "observed_ci": [
+    {
+      "head": "9d35702452808ff849ae285bca5c4377ea2b87b4",
+      "workflow_run": 34112080253,
+      "result": "FAIL",
+      "failure_class": "PR_SYNTHETIC_MERGE_DIFF_CONTEXT",
+      "fci18_qualified": false
+    },
+    {
+      "head": "a0fdf73b67aa57456d8cbe6700ce707d672981cd",
+      "workflow_run": 34112593384,
+      "fci18_job": 101712984493,
+      "result": "FAIL",
+      "failure_class": "PR_SYNTHETIC_MERGE_DIFF_CONTEXT",
+      "fci03_through_fci17": "PASS",
+      "fci18_qualified": false
+    }
+  ],
+  "context_failure_evidence": {
+    "workflow_has_pull_request_trigger": true,
+    "checkout_uses_default_pr_merge_ref": true,
+    "observed_checkout_commit": "bebb886fd215d89234d52b08a95503e45ad972f8",
+    "observed_checkout_description": "Merge a0fdf73b67aa57456d8cbe6700ce707d672981cd into fafeebdece209abcc320b24a3c8c2757800b2e0e",
+    "gate_uses_head_parent_diff": true,
+    "gate_diff_expression": "git diff --name-only HEAD^ HEAD",
+    "actual_fci18_candidate_commit_has_production_or_reference_delta": false
+  },
+  "current_exit_state": {
+    "work_unit": "F-CI17",
+    "downstream_release_allowed": false,
+    "must_remain_authoritative_until_fci18_qualified_promotion": true
+  },
+  "fci18_candidate_scope_review": {
+    "all_ten_gates_proposed_qualified": true,
+    "downstream_release_proposed": true,
+    "proposal_is_not_qualification": true,
+    "hard_mass_remains_non_delegable": true,
+    "transaction_correctness_remains_non_delegable": true,
+    "provenance_remains_non_delegable": true,
+    "unavailable_reference_or_optional_process_capability_must_fail_closed": true,
+    "independent_fvq_release_qualification_remains_downstream": true
+  },
+  "handoff_admission": "BLOCKED_FCI18_NOT_QUALIFIED",
+  "fci18_handoff_qualified": false,
+  "downstream_release_admitted_by_fvq06": false,
+  "production_reference_execution_admitted": false,
+  "production_temporal_profile_qualified": false
+}

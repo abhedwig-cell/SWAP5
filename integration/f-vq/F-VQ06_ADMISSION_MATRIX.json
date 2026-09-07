@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ06",
+  "claims": [
+    {"claim_id":"FVQ06-C01","claim":"The F-CI18 candidate lineage and observed canonical CI outcomes are exact and source-bound.","classification":"QUALIFICATION_TARGET","claim_qualified":false,"blocker":"Pending F-VQ06 CI."},
+    {"claim_id":"FVQ06-C02","claim":"The F-CI18 candidate commits themselves introduce no src/ or corrected-reference source mutation.","classification":"QUALIFICATION_TARGET","claim_qualified":false,"blocker":"Pending F-VQ06 CI."},
+    {"claim_id":"FVQ06-C03","claim":"The observed F-CI18 canonical failures are attributable to evaluating HEAD^..HEAD on the PR synthetic merge checkout rather than on the F-CI18 source commit delta.","classification":"QUALIFICATION_TARGET","claim_qualified":false,"blocker":"Pending F-VQ06 CI."},
+    {"claim_id":"FVQ06-C04","claim":"F-CI18 is a qualified F-CI exit handoff.","classification":"BLOCKED_BY_FCI18_CANONICAL_CI","claim_qualified":false,"blocker":"Both observed F-CI18 canonical workflows are non-green and F-CI18_STATUS remains CI_PENDING."},
+    {"claim_id":"FVQ06-C05","claim":"F-CI17 current exit-gate state remains authoritative until F-CI persists an exact qualified F-CI18 promotion.","classification":"QUALIFICATION_TARGET","claim_qualified":false,"blocker":"Pending F-VQ06 CI."},
+    {"claim_id":"FVQ06-C06","claim":"The F-CI18 ownership proposal preserves provenance, transaction correctness and hard mass conservation as non-delegable and leaves independent release qualification downstream to F-VQ.","classification":"QUALIFICATION_TARGET","claim_qualified":false,"blocker":"Pending F-VQ06 CI."},
+    {"claim_id":"FVQ06-C07","claim":"F-CI18 proposal text itself proves real B1.10 production reference execution, numerical temporal limits, optional-process completeness or backend reentrancy.","classification":"PROPOSAL_ONLY_NOT_EVIDENCE","claim_qualified":false,"blocker":"Those capabilities remain explicitly downstream/fail-closed and require separate evidence."},
+    {"claim_id":"FVQ06-C08","claim":"F-VQ06 admits downstream release of the canonical baseline.","classification":"BLOCKED_BY_FCI18_HANDOFF","claim_qualified":false,"blocker":"F-CI18 handoff is not qualified; F-CI17 downstream_release_allowed remains false."}
+  ]
+}
