@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI06",
+  "status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
+  "qualified": true,
+  "qualification_scope": "HeadCalc hidden SAVE ownership removed; warning/reporting history is explicit; the admitted swmacro=0 common reference route uses call-local history; serial real-HeadCalc behavior remains identical to the qualified F-SI05 postimage on focused main and forced-band routes. Full real-HeadCalc parallel reentrancy is explicitly not admitted because the legacy adapter still translates request/candidate state through shared module globals.",
+  "source_basis": {
+    "fsi05_qualified_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "oracle": "B1.10",
+    "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6"
+  },
+  "production_materialization": {
+    "commit": "8decd3520b34f1f53e1c8001ca33dde9150f5e09",
+    "headcalc_blob": "38de52dd9f13b70a61f418c29a5c2e4bc9a449a9",
+    "soilwater_blob": "aa072804768b7a982b275d3a7d6988bfed6b9faa",
+    "adapter_blob": "f60f7ef2d60ccb8cc78e80d56ef88a739e50ab2e",
+    "worker_context_changed": false,
+    "transaction_source_changed": false,
+    "common_solver_contract_changed": false,
+    "reference_workspace_layout_changed": false,
+    "shared_fkt_type_changed": false
+  },
+  "tested_checkpoint": {
+    "head": "dfed799dbc0930bdf5218e713934ea0f148e3872",
+    "workflow": "F-SI06 history isolation",
+    "workflow_run": 34127234890,
+    "job": 101758660973,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "qualified_checks": {
+    "FSI06_T01_ownership_contract": "PASS",
+    "FSI06_T02_protected_FKT_worker_contract_workspace_identity": "PASS",
+    "FSI06_T03_materialized_source_blob_identity": "PASS",
+    "FSI06_T04_no_hidden_headcalc_saved_worker": "PASS",
+    "FSI06_T05_explicit_history_carrier": "PASS",
+    "FSI06_T06_main_route_fsi05_preimage_identity_O0": "PASS",
+    "FSI06_T07_main_route_fsi05_preimage_identity_O2": "PASS",
+    "FSI06_T08_forced_band_route_fsi05_preimage_identity_O0": "PASS",
+    "FSI06_T09_forced_band_route_fsi05_preimage_identity_O2": "PASS",
+    "FSI06_T10_serial_ABA_identity": "PASS_FOCUSED_FIXTURE",
+    "FSI06_T11_explicit_history_event_does_not_mutate_worker_history": "PASS",
+    "FSI06_T12_common_adapter_call_local_history_with_mutating_testdouble_O0_O2": "PASS",
+    "FSI06_T13_soilwater_changed_interface_compile_O0_O2": "PASS",
+    "FSI06_T14_common_workspace_1_2_4_8_thread_isolation_O0_O2": "PASS",
+    "FSI06_T15_focused_unrounded_equation_residual_identity": "PASS_ZERO_WITHIN_MACHINE_PRECISION",
+    "FSI06_T16_FKT_transaction_worker_boundary_regression": "PASS",
+    "FSI06_T17_real_headcalc_parallel_admission": "BLOCKED_SHARED_LEGACY_GLOBAL_TRANSLATION"
+  },
+  "history_ownership": {
+    "flwarn": "reporting_only_history",
+    "iwarn": "reporting_only_history",
+    "nstep": "column_dependent_solver_process_continuation_not_worker_scratch",
+    "headcalc_hidden_save_removed": true,
+    "legacy_standalone_history_owner": "MOD_SoilWater explicit compatibility state",
+    "legacy_worker_call_history_owner": "explicit worker%history compatibility route",
+    "common_reference_history_owner": "call_local a23bu_solver_history_t",
+    "common_reference_swmacro_admitted": false
+  },
+  "fkt06_alignment": {
+    "observed_head": "80a68dea3bfa45d7e8d533ec5a67fc89bdb786db",
+    "optional_continuation_contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492",
+    "status_blob": "2c55a795d7aabd150d9a618920b6ce0476cf47cd",
+    "observed_fkt06_tested": false,
+    "observed_fkt06_qualified": false,
+    "decision_alignment": "MATCH: physics-affecting optional continuation uses existing opaque per-column transaction-state lifecycle; reporting-only history stays outside committed physical continuation; nstep requires adapter-specific transaction-state materialization before macropore admission.",
+    "consumed_as_qualification_evidence": false
+  },
+  "parallel_admission": {
+    "full_real_headcalc_reentrancy_qualified": false,
+    "common_workspace_parallel_isolation_qualified": true,
+    "blocker": "reference_richards_legacy_solve writes request state into shared legacy module variables h/theta/hm1/thetm1/pond/gwl/pondm1/gwlm1/qtop/qbot/fldecdt/numbit before HeadCalc and restores them afterward; concurrent calls can therefore interfere despite isolated worker/workspace/history objects.",
+    "required_next_isolation": "replace shared process-global request/candidate translation on the common solver path with an explicit per-solve state/evaluation binding before real 1/2/4/8 HeadCalc admission"
+  },
+  "mass_conservation_statement": {
+    "hard_requirement_preserved": true,
+    "focused_unrounded_equation_residual_identity_qualified": true,
+    "full_swap_water_balance_identity_qualified": false,
+    "reason": "F-SI06 changes ownership/routing only and retains F-SI05 focused real-HeadCalc equation identity; the full SWAP accounting chain is not exercised by this slice."
+  },
+  "physics_and_policy": {
+    "solver_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "generic_time_semantics_changed": false,
+    "fallback_policy_changed": false
+  },
+  "deferred_not_claimed": {
+    "full_reference_richards_parallel_reentrancy": "NOT_QUALIFIED",
+    "real_headcalc_1_2_4_8_workers": "BLOCKED",
+    "macropore_path": "DEFERRED_FAIL_CLOSED",
+    "macropore_nstep_transaction_materialization": "DEFERRED_TO_FKT_ALIGNED_ADAPTER_STATE_SLICE",
+    "implicit_conductivity_path": "DEFERRED",
+    "minimum_timestep_path": "DEFERRED",
+    "non_free_drainage_bottom_modes": "DEFERRED",
+    "full_unrounded_swap_mass_balance": "NOT_QUALIFIED",
+    "interface_tangent": "NOT_IMPLEMENTED",
+    "production_multiswap_admission": false
+  },
+  "legacy_warning_holds": [
+    "guarded i-1 compiler warnings remain pre-existing in HeadCalc and SoilWater",
+    "sum1 may be used uninitialized remains a separate source/numerical audit item",
+    "dkmean may be uninitialized for unsupported swkmean remains a separate validation/policy audit item"
+  ],
+  "invariants_assessed": ["1", "3", "4", "5", "6", "7", "8", "13", "14", "16", "20", "21", "22", "23", "24", "25", "26", "27", "29"],
+  "final_postimage_verification_required": true,
+  "next_work_unit": "F-SI07",
+  "next_scope": "Isolate common reference request/candidate physical-state binding from shared legacy module globals so real HeadCalc can be tested for deterministic 1/2/4/8 worker reentrancy without changing Richards formulas or external numerical policy.",
+  "downstream_fsi07_allowed": true
+}
