@@ -146,7 +146,7 @@ contains
     real(real64) :: relsat, expterm
 
     expterm = exp(p%alpha(i)*head)
-    theta = max(1.0000001_real64*p%wcr(i), p%wcr(i) + p%wcs_min_wcr(i)*expterm)
+    theta = max(1.0000001*p%wcr(i), p%wcr(i) + p%wcs_min_wcr(i)*expterm)
     c = p%alpha(i)*p%wcs_min_wcr(i)*expterm
     relsat = (theta-p%wcr(i))/p%wcs_min_wcr(i)
     k = p%ksat(i)*relsat
