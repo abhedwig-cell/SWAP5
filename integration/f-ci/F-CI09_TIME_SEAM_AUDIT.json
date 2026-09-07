@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI09",
+  "title": "B1.10 physical interval seam audit",
+  "oracle": "B1.10",
+  "evidence": {
+    "qualified_b0_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b0_source_member": "SWAP/timecontrol.f90",
+    "b1_10_patch_chain_changes_timecontrol": false,
+    "canonical_swap_part03_blob": "14482290cfa4ef1daeb03813c1290b2c793b27a9"
+  },
+  "observations": [
+    {
+      "source": "SWAP/timecontrol.f90",
+      "line": 365,
+      "fact": "run termination is based on nint(tend) and nint(t1900), therefore calendar-day projection is intrinsic to the legacy controller"
+    },
+    {
+      "source": "SWAP/timecontrol.f90",
+      "line": 370,
+      "fact": "t1900 is normalized to dble(nint(t1900)) at the day boundary"
+    },
+    {
+      "source": "SWAP/timecontrol.f90",
+      "line": 433,
+      "fact": "the event limiter uses 1.0 - tcum as the end-of-day boundary"
+    },
+    {
+      "source": "src/legacy/b1_10_port/swap_part03.inc",
+      "fact": "the external exchange route explicitly rejects TEND different from TSTART with 'Only single day allowed'"
+    },
+    {
+      "source": "src/transaction/mod_transaction_reference.f90",
+      "fact": "reference execution requires one full trial and two half trials from the same checkpoint"
+    }
+  ],
+  "conclusion": "BLOCK_REFERENCE_TRANSACTION_EXECUTION_UNTIL_GENERIC_PHYSICAL_INTERVAL_SEAM_IS_QUALIFIED",
+  "forbidden_shortcut": "Do not map a half trial onto a legacy whole calendar day or change reference step-doubling policy to make the adapter fit.",
+  "production_physics_changed": false
+}

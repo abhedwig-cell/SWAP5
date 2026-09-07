@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI09",
+  "title": "Canonical B1.10 Transaction Model Binding",
+  "branch": "integration/f-ci-canonical",
+  "parent_commit": "eeb180c90adba51dcb87269a4b59ce15311bf2bf",
+  "b1_oracle": "B1.10",
+  "production_source_changed": true,
+  "persisted_before_long_tests": true,
+  "qualification": {
+    "transaction_state_binding": "MATERIALIZED",
+    "transaction_attempt_context_binding": "MATERIALIZED",
+    "whole_day_restore_rerun_evidence": "INHERITED_FCI08_PASS_8_OF_8_ZERO_DIFF",
+    "time_seam_audit": "PASS_BLOCKER_CONFIRMED",
+    "generic_interval_advance": "BLOCKED_LEGACY_CALENDAR_SEAM",
+    "unrounded_trial_mass_flux_contract": "NOT_ADMITTED",
+    "mass_storage_contract": "NOT_ADMITTED",
+    "temporal_error_contract": "NOT_ADMITTED",
+    "reference_transaction_execution": "FAIL_CLOSED_NOT_ADMITTED",
+    "canonical_ci": "NOT_STARTED"
+  },
+  "source_pins": {
+    "transaction_core": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "water_checkpoint": "f8171d0263325b5103ac2df7cd353c443e27c925",
+    "process_checkpoint": "4084f979d86e0a97d2b7b570af38ad44d85dca6c",
+    "legacy_trial_capsule": "46ebc5339e85f69c8a24ab99ba70987f559c817d",
+    "canonical_swap_part03": "14482290cfa4ef1daeb03813c1290b2c793b27a9"
+  },
+  "holds": [
+    "generic physical interval/sub-day seam",
+    "unrounded trial mass input/output extraction",
+    "complete physical storage accounting for active optional physics",
+    "qualified physical temporal-error metric",
+    "execute_reference_interval admission for B1.10 backend"
+  ],
+  "status": "MATERIALIZED_BINDING_SUBSTRATE_REFERENCE_EXECUTION_BLOCKED_GATE_PENDING"
+}
