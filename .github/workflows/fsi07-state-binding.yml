@@ -1,0 +1,31 @@
+name: F-SI07 state binding
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'tests/fsi/test_fsi07_state_binding.F90'
+      - 'tests/fsi/fsi07_adapter_stubs.f90'
+      - 'tests/fsi/test_fsi07_adapter_binding.f90'
+      - 'tests/fsi/run_fsi07_gate.sh'
+      - 'integration/f-si/F-SI07_STATE_BINDING_CONTRACT.json'
+      - 'integration/f-si/F-SI07_QUALIFICATION.json'
+      - 'docs/integration/F-SI07_STATE_BINDING.md'
+      - '.github/workflows/fsi07-state-binding.yml'
+
+jobs:
+  fsi07-state-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI07 explicit state binding gate
+        run: bash tests/fsi/run_fsi07_gate.sh
