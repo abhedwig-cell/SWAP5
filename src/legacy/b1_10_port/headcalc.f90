@@ -61,7 +61,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding)
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
-   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror
+   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    logical                          :: flnonconv, flnonconv3
@@ -225,7 +225,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding)
    MaxIt1 = MaxIt
    if (fldtmin .OR. fldecmprat) MaxIt1 = 2*MaxIt
    sump = 0.d0
-   do state%numbit = 1, MaxIt1
+   do solver_numbit = 1, MaxIt1
+      state%numbit = solver_numbit
       ctx%diagnostics%nonlinear_iterations = ctx%diagnostics%nonlinear_iterations + 1
 
 !     store fsi_ws%old_head and get moiscap
@@ -462,8 +463,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding)
          if (legacy_state_binding) call publish_legacy_state(state)
          return
       end if
-   ! end do state%numbit = 1, MaxIt1
+   ! end do solver_numbit = 1, MaxIt1
    end do
+   ! Preserve the legacy DO-variable value after normal loop exhaustion.
+   state%numbit = solver_numbit
 
 !  Convergence could not been reached
    if (.NOT.fldtmin) then

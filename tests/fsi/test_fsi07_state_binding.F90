@@ -73,8 +73,12 @@ contains
     integer(int64), intent(out) :: fingerprint
     integer, intent(inout) :: fails
     real(real64) :: residual, out_qtop, out_qbot
+#ifndef FSI07_PREIMAGE
+#ifndef FSI07_COMPAT_CALL
     real(real64) :: global_h(numnod), global_theta(numnod), global_hm1(numnod), global_thetm1(numnod)
     real(real64) :: global_pond, global_pondm1, global_gwl, global_gwlm1, global_qtop, global_qbot
+#endif
+#endif
     integer :: i, expected_alternative, out_numbit
 
     call seed_case(head_value)
