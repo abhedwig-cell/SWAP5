@@ -1,0 +1,283 @@
+schema_version: 1
+contract_id: F-CI-EXIT-GATES
+workstream: F-CI
+purpose: >-
+  Fail-closed machine-readable exit-gate contract for Canonical Integration.
+  This contract defines what must be demonstrated before downstream SWAP5
+  production workstreams may be released. Gate status is evidence-based and
+  must be traceable to exact Git source and qualification commits.
+
+reference_oracle:
+  id: B1.10
+  role: current_corrected_legacy_reference
+
+contract_origin:
+  based_on_branch: integration/f-ci08-safety-checkpoint
+  based_on_commit: b2c0664816f8b34ecf9e337790767cc575c330ee
+  note: >-
+    The origin commit is only the repository state from which this contract was
+    created. It does not imply that any gate is satisfied.
+
+status_values:
+  - NOT_ASSESSED
+  - BLOCKED
+  - IMPLEMENTED
+  - PERSISTED
+  - TESTED
+  - QUALIFIED
+
+status_semantics:
+  NOT_ASSESSED: No evidence-based assessment has yet been completed.
+  BLOCKED: A required condition cannot currently progress or qualify; blockers must be explicit.
+  IMPLEMENTED: Required implementation exists, but persistence/test/qualification is not yet established.
+  PERSISTED: Required implementation/evidence is reproducibly present in Git, but qualification is incomplete.
+  TESTED: Relevant executable tests have run against the exact source commit, but final qualification is incomplete.
+  QUALIFIED: All acceptance criteria are satisfied with exact source and qualification provenance.
+
+qualification_rules:
+  - A gate may be QUALIFIED only when source_commit and qualification_commit are exact 40-character Git SHAs.
+  - Evidence must identify repository paths and/or executable test or CI evidence tied to those commits.
+  - Historical chat output, design intent, patch fragments, or unpinned reports are insufficient for qualification.
+  - A later source change affecting a gate invalidates its qualification until reverified.
+  - A hold must state whether it is blocking. Any blocking hold forces status BLOCKED.
+  - Mass conservation is never waivable by a hold.
+  - Production physics or numerical-policy changes may not be hidden inside a qualification-only change.
+  - Gate criteria may not be weakened merely to admit the current implementation.
+
+release_policy:
+  mode: fail_closed
+  required_gates:
+    - CI-G01
+    - CI-G02
+    - CI-G03
+    - CI-G04
+    - CI-G05
+    - CI-G06
+    - CI-G07
+    - CI-G08
+    - CI-G09
+    - CI-G10
+  downstream_release_condition: >-
+    Every required gate is QUALIFIED, every gate has allows_downstream_release=true,
+    and no blocking hold remains. Satisfying prerequisites makes a downstream
+    workstream eligible for release review; it does not by itself start that workstream.
+
+required_gate_fields:
+  - status
+  - required
+  - evidence
+  - source_commit
+  - qualification_commit
+  - blockers
+  - holds
+  - last_verified
+  - allows_downstream_release
+
+gates:
+  CI-G01:
+    title: Canonical source and provenance
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [1, 2, 29, 30]
+    acceptance_criteria:
+      - Exactly one candidate canonical SWAP5 development source commit is identified.
+      - The complete production source postimage is present in Git and reproducible from that commit.
+      - Source lineage to the current corrected legacy reference and admitted forward ports is explicit.
+      - No required production source depends on an unmaterialized historical patch or assumed parent image.
+      - A machine-readable canonical source manifest identifies the files and provenance relevant to F-CI.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G02:
+    title: B1.10 corrected-reference completeness
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [13, 25, 30]
+    acceptance_criteria:
+      - B1.10 is pinned by exact snapshot/reference identity and is reconstructible by the admitted reference tooling.
+      - Every corrected-reference change admitted into B1.10 is represented in the canonical F-CI source where applicable.
+      - The canonical source does not silently regress to an older B1 reference behavior.
+      - Any intentional difference from B1.10 is explicitly classified and separately qualified rather than hidden in integration.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G03:
+    title: Transaction semantics
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [7, 8, 11, 24, 25, 26]
+    acceptance_criteria:
+      - The canonical calculation path supports checkpoint, trial, retry, commit, and rollback semantics.
+      - A rejected or failed trial cannot mutate committed physical state.
+      - Retry starts physically from the correct committed state.
+      - Recalculation from the same committed state and forcing is deterministic under reference numerical policy.
+      - Warm-start information, when used, cannot replace the required committed physical starting state.
+      - Transaction diagnostics identify accepted/rejected trials and retry activity sufficiently for qualification.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G04:
+    title: State and scratch ownership separation
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [3, 4, 5, 6, 16, 27]
+    acceptance_criteria:
+      - Persistent physical continuation state is distinguished from reconstructible temporary solver state.
+      - Newton vectors, Jacobians, constitutive intermediates, and equivalent heavy temporary data are worker/job-owned scratch rather than per-column persistent state.
+      - Immutable parameter data is not needlessly duplicated into dynamic column state.
+      - Reporting/output progression is not treated as physical continuation state unless a documented physical dependency requires it.
+      - Optional inactive physics does not require persistent state solely because another column uses that physics.
+      - Existing legacy globals that remain behind an adapter or serialized seam are explicitly identified as holds rather than misclassified as isolated state.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G05:
+    title: Explicit reference numerical policy
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [23, 24, 25]
+    acceptance_criteria:
+      - A reference/full-accuracy numerical policy is explicitly selectable or explicitly bound by the canonical reference entrypoint.
+      - Physics configuration and numerical solver policy are represented as separate concepts.
+      - Reference qualification does not silently use relaxed, bounded-cost, reduced-order, or fallback behavior.
+      - Any future performance policy can be compared against the explicit reference policy without changing physical configuration.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G06:
+    title: Canonical generic t0-t1 kernel and entrypoint contract
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [1, 2, 3, 7, 9, 10, 11, 29]
+    acceptance_criteria:
+      - A canonical callable calculation entrypoint advances an interval [t0,t1] without a fundamental one-day or midnight assumption.
+      - Parameters, committed state, forcing, and numerical configuration enter through explicit interfaces or data objects rather than file parsing inside the kernel contract.
+      - Results and candidate/committed-state effects are returned through explicit interfaces.
+      - The entrypoint is suitable as the common calculation seam for standalone, MultiSWAP, and future coupled execution.
+      - Calendar boundaries are not imposed unless a specific physical process explicitly requires them.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G07:
+    title: Canonical results, unrounded mass accounting, and transaction diagnostics
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [3, 12, 13, 14, 26]
+    acceptance_criteria:
+      - The canonical entrypoint exposes a canonical result contract distinct from mutable physical state.
+      - Water-balance accounting used for qualification is available at unrounded numerical precision.
+      - Storage change, boundary/process flux contributions, and residual are represented sufficiently to close the qualified balance.
+      - Transaction diagnostics expose accepted/rejected trials, retries, and relevant solver cost/status information.
+      - Reporting-format rounding is not used as the source for hard mass-conservation qualification.
+      - The result contract can later carry interface residuals and sensitivities without exposing HeadCalc internals.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G08:
+    title: Executable VQ and focused qualification against canonical source
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [25, 30]
+    acceptance_criteria:
+      - Verification tooling invokes the exact canonical source commit rather than a stale or parallel reference branch.
+      - B1.10 admission/reference identity is executable and fail-closed.
+      - Focused transaction, time, state/scratch, and canonical result gates execute against the canonical source where applicable.
+      - Qualification evidence records the exact source commit, test/qualification commit, command or CI identity, and result.
+      - Stale B1 oracles or unpinned B2 candidates are rejected rather than silently accepted.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G09:
+    title: Build, regression, and hard mass-conservation qualification
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [7, 13, 23, 24, 25, 26, 30]
+    acceptance_criteria:
+      - The canonical source builds reproducibly in the supported reference build configuration.
+      - Required focused and regression suites pass against the same exact source commit.
+      - Hard water-balance qualification passes using unrounded accounting and documented tolerances appropriate to the reference mode.
+      - O0/O2 or other compiler-configuration reproducibility checks required by the current qualification policy are satisfied or explicitly blocked.
+      - No performance optimization or fallback is accepted as a substitute for a failing reference-mode mass gate.
+      - Qualification failures remain visible and block downstream release.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+  CI-G10:
+    title: Single canonical development baseline and retirement of competing production lines
+    status: NOT_ASSESSED
+    required: true
+    architecture_invariants: [1, 28, 29, 30]
+    acceptance_criteria:
+      - One exact Git commit is designated as the canonical SWAP5 development baseline for downstream F-series work.
+      - Older A23, S13b, M3, VQ, MP, temporary F-CI, and equivalent branches are explicitly classified as evidence, historical lineage, superseded, or non-production where applicable.
+      - No competing branch is implicitly presented as a newer production source of truth.
+      - Downstream workstream start prompts and qualification tooling pin the canonical baseline rather than selecting a branch by convention.
+      - The retirement/supersession decision preserves useful tests, evidence, and provenance without continuing old lines as independent product development.
+    evidence: []
+    source_commit: null
+    qualification_commit: null
+    blockers: []
+    holds: []
+    last_verified: null
+    allows_downstream_release: false
+
+downstream_workstreams:
+  F-KT:
+    initial_dependency: F-CI exit gates qualified
+    release_status: BLOCKED
+  F-SI:
+    initial_dependency: F-CI exit gates qualified
+    release_status: BLOCKED
+  F-VQ:
+    initial_dependency: F-CI exit gates qualified
+    release_status: BLOCKED
+
+notes:
+  - This file defines the gate contract, not the current gate assessment.
+  - All ten gates intentionally start as NOT_ASSESSED.
+  - A separate evidence-based assessment must populate commit SHAs, evidence, blockers, holds, verification timestamps, and release booleans.
