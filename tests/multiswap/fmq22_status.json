@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ22",
+  "title": "F-KT06 optional-state P14 admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq21-fsi06-history-isolation-admission",
+    "commit": "ae843506cd0d5ed54a550ef75aaf9c322959d1d3"
+  },
+  "downstream_basis": {
+    "fkt06_qualification_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
+    "fkt06_tested_postimage": "80a68dea3bfa45d7e8d533ec5a67fc89bdb786db",
+    "fkt06_qualification_blob": "75cc6d399facdb6bb8303ca905ac8056aeda3b2c",
+    "fkt06_contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492",
+    "fkt06_gate_blob": "7c19f062efae19fb3d1c73b7f9a104bc013bd982",
+    "fkt06_test_blob": "eea1103195021a1243f220a16c357aa7dfb538b1",
+    "decision": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE"
+  },
+  "context_not_evidence": {
+    "fsi07_materialized_head": "efac45df112351757b6f5e28484bec460d42f69b",
+    "fsi07_qualified": false,
+    "fmr01_head": "7fa6ecdf5b0c8bffbffe3a5326e47499cb59459d",
+    "fmr01_qualified": false,
+    "fvq13_head": "4b077ec7709c90d0438ff21e1a439dc5cdb5dced",
+    "fvq13_qualified": false
+  },
+  "coverage_before": {
+    "matrix_total": 35,
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0
+  },
+  "candidate_promotion": {
+    "row": "P14",
+    "kind": "SYNTHETIC_EXECUTABLE",
+    "requires_fmq22_two_column_gate": true,
+    "candidate_synthetic_executable_after": 28
+  },
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FKT06_P14_ADMISSION_CANDIDATE",
+  "scope": "Use exact qualified F-KT06 optional continuation lifecycle evidence plus a qualification-only two-column module-off/on state-layout gate to decide P14 synthetic executable promotion; keep real B1.10 physics and production MultiSWAP runtime fail-closed."
+}
