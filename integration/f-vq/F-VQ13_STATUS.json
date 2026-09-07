@@ -6,13 +6,34 @@
   "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT06_FSI06_ADMISSION_WITH_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "decision": "PENDING_FVQ13_CI",
-  "tested_postimage": null,
-  "fkt06_source_bound_admitted": false,
-  "fsi06_source_bound_admitted": false,
-  "fkt06_fsi06_history_continuation_alignment_qualified": false,
+  "tested": true,
+  "qualified": true,
+  "decision": "QUALIFIED_FKT06_FSI06_SOURCE_BOUND_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
+  "tested_postimage": "adec037bc206e30cbd12d08aa2c2ba9b85328b8e",
+  "qualification_run": {
+    "workflow": "F-VQ13 F-KT06 F-SI06 admission",
+    "run_id": 34129643680,
+    "job_id": 101766409437,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "fvq12_replay": {
+    "run_id": 34129643459,
+    "job_id": 101766408878,
+    "conclusion": "success",
+    "mode": "IMMUTABLE_EXACT_FVQ12_FINAL_HEAD"
+  },
+  "vq_reference_run": {
+    "run_id": 34129643451,
+    "conclusion": "success"
+  },
+  "documentation_run": {
+    "run_id": 34129643466,
+    "conclusion": "success"
+  },
+  "fkt06_source_bound_admitted": true,
+  "fsi06_source_bound_admitted": true,
+  "fkt06_fsi06_history_continuation_alignment_qualified": true,
   "fkt06_fsi06_composed_runtime_qualified": false,
   "real_headcalc_parallel_reentrancy_qualified": false,
   "macropore_production_admitted": false,
@@ -31,8 +52,20 @@
     "fkt06_final_qualification_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
     "fsi06_tested_head": "dfed799dbc0930bdf5218e713934ea0f148e3872",
     "fsi06_documented_postimage_head": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
-    "fsi06_final_qualification_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8"
+    "fsi06_final_qualification_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "fkt06_optional_continuation_contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492"
   },
+  "qualification_corrections": [
+    {
+      "run_id": 34129443776,
+      "job_id": 101765762577,
+      "result": "FAIL_FVQ13_GATE_PYTHON_BOOLEAN_LITERAL_ONLY",
+      "finding": "The new F-VQ13 result-report dictionary used JSON-style false literals instead of Python False.",
+      "correction_commit": "adec037bc206e30cbd12d08aa2c2ba9b85328b8e",
+      "claim_scope_changed": false,
+      "production_source_failure": false
+    }
+  ],
   "holds": [
     "No one composed F-KT06 plus F-SI06 executable production postimage is qualified by F-VQ13.",
     "F-SI06 explicitly blocks real HeadCalc parallel reentrancy because request/candidate translation still uses shared legacy module globals.",

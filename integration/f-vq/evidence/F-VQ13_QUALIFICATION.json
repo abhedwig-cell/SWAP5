@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ13",
+  "decision": "QUALIFIED_FKT06_FSI06_SOURCE_BOUND_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
+  "tested_postimage": "adec037bc206e30cbd12d08aa2c2ba9b85328b8e",
+  "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT06_FSI06_ADMISSION_WITH_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
+  "qualification_run": {
+    "workflow": "F-VQ13 F-KT06 F-SI06 admission",
+    "run_id": 34129643680,
+    "job_id": 101766409437,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "checks": {
+      "fvq13_gate": "PASS",
+      "fvq13_negative_promotion_guards": "PASS",
+      "fkt06_exact_replay_and_selected_fci_regressions": "PASS",
+      "fsi06_tested_history_isolation_replay": "PASS",
+      "fsi06_documented_postimage_replay": "PASS",
+      "fvq12_exact_final_replay": "PASS"
+    }
+  },
+  "supporting_runs": {
+    "fvq12_immutable_replay": {
+      "run_id": 34129643459,
+      "job_id": 101766408878,
+      "conclusion": "success"
+    },
+    "vq_reference": {
+      "run_id": 34129643451,
+      "conclusion": "success"
+    },
+    "documentation": {
+      "run_id": 34129643466,
+      "conclusion": "success"
+    },
+    "fvq11_immutable_replay": {
+      "run_id": 34129643558,
+      "conclusion": "success"
+    }
+  },
+  "source_bound_admissions": {
+    "fkt06": {
+      "tested_postimage": "80a68dea3bfa45d7e8d533ec5a67fc89bdb786db",
+      "final_qualification_head": "42872c266bc6f4fbf6815b1facbc3ed5d64df19a",
+      "optional_continuation_contract_blob": "64f285ac6ae89297ca221048c2ff55cc580e3492",
+      "admitted": true
+    },
+    "fsi06": {
+      "tested_head": "dfed799dbc0930bdf5218e713934ea0f148e3872",
+      "documented_postimage_head": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
+      "final_qualification_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+      "admitted": true,
+      "serial_common_reference_route_only": true
+    }
+  },
+  "history_continuation_alignment": {
+    "qualified": true,
+    "fkt06_contract_blob_stable_and_observed_by_fsi06": true,
+    "future_physics_continuation_is_per_column_transaction_state": true,
+    "reporting_only_history_outside_committed_physical_state": true,
+    "solver_scratch_remains_worker_or_job_owned": true,
+    "nstep_requires_adapter_specific_transactional_materialization_before_macropore_admission": true
+  },
+  "fkt06_fsi06_composed_runtime_qualified": false,
+  "real_headcalc_parallel_reentrancy_qualified": false,
+  "macropore_production_admitted": false,
+  "macropore_nstep_transaction_materialized": false,
+  "full_unrounded_swap_mass_identity_qualified": false,
+  "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+  "production_multiswap_admission": false,
+  "optional_workspace_paths_complete": false,
+  "interface_tangent_qualified": false,
+  "production_source_changed_by_fvq13": false,
+  "reference_source_changed_by_fvq13": false,
+  "mass_conservation": {
+    "hard_requirement_preserved": true,
+    "fkt06_mass_rejection_preserves_committed_and_checkpoint_optional_continuation": true,
+    "fsi06_focused_unrounded_equation_residual_identity_admitted": true,
+    "full_swap_water_balance_identity_not_promoted": true
+  },
+  "superseded_attempts": [
+    {
+      "run_id": 34129443776,
+      "job_id": 101765762577,
+      "result": "FAIL_FVQ13_GATE_PYTHON_BOOLEAN_LITERAL_ONLY",
+      "production_source_failure": false,
+      "claim_scope_changed": false,
+      "correction_commit": "adec037bc206e30cbd12d08aa2c2ba9b85328b8e"
+    }
+  ]
+}
