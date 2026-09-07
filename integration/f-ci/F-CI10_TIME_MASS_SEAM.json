@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI10",
+  "title": "Generic Physical Interval and Mass Seam Qualification",
+  "b1_oracle": "B1.10",
+  "source_identity": {
+    "official_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "timecontrol_f90_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+    "integral_f90_sha256": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174"
+  },
+  "time_seam_findings": {
+    "day_end_uses_tcum_one_day": true,
+    "next_event_limits_to_one_minus_tcum": true,
+    "run_end_uses_rounded_calendar_day": true,
+    "restart_task_sets_day_start_true": true,
+    "dll_exchange_requires_single_day": true,
+    "generic_subday_advance_admitted": false
+  },
+  "mass_seam_findings": {
+    "canonical_storage_terms_for_current_qualified_profile": [
+      "soil water storage volact",
+      "surface pond storage pond",
+      "canopy interception storage sicact"
+    ],
+    "snow_storage_supported": false,
+    "macropore_storage_supported": false,
+    "worker_local_trial_mass_contract_materialized": true,
+    "legacy_timestep_trial_mass_integration_materialized": false
+  },
+  "holds": [
+    "controlled legacy integration of the trial-mass accumulator",
+    "generic physical sub-day interval controller",
+    "snow persistent storage qualification",
+    "macropore persistent storage qualification",
+    "qualified temporal-error metric"
+  ]
+}
