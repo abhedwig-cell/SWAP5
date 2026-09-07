@@ -45,7 +45,7 @@ The focused gate compiles and executes the new mass contracts at `-O0` and `-O2`
 
 Qualified source/test head: `970d99100a256099343d4b2072ecd543469b23b5`.
 
-Canonical workflow run `34093648750`, job `101652946866`, completed successfully with GNU Fortran 13.3.0 and `FCI10_GATE_PASS`. The complete F-CI03 through F-CI10 dependency chain passed on the same source/test head.
+Canonical workflow run `34093648750`, job `101652946866`, completed successfully with GNU Fortran 13.3.0 and `FCI10_GATE_PASS`. The complete F-CI03 through F-CI10 dependency chain passed on the same source/test head. Later commits in this work unit contain only qualification/status/evidence documentation; they do not change the F-CI10 production source or focused test logic.
 
 ## Non-admissions
 
