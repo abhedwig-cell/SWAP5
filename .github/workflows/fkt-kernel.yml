@@ -23,7 +23,7 @@ on:
       - '.github/workflows/fkt-kernel.yml'
 
 jobs:
-  fkt01-focused-o0-o2:
+  fkt02-focused-o0-o2:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -32,11 +32,11 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-KT01 focused contract and O0/O2 gate
-        run: bash tests/fkt/run_fkt01_gate.sh
+      - name: F-KT02 candidate-lineage contract and O0/O2 gate
+        run: bash tests/fkt/run_fkt02_gate.sh
 
   fci-regression:
-    needs: fkt01-focused-o0-o2
+    needs: fkt02-focused-o0-o2
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
