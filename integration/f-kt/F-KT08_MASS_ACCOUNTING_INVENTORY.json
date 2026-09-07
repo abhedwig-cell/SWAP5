@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT08",
+  "title": "Authoritative Accepted Full-Interval Mass Accounting",
+  "inventory_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+  "branch": "integration/f-kt",
+  "safety_branch": "integration/f-kt08-safety",
+  "safety_branch_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+  "canonical_mass_type": {
+    "path": "src/runtime/mod_canonical_contracts.f90",
+    "git_blob": "55cd8a9dc529bb2d057845f212b7efff6c80c553",
+    "type": "canonical_mass_accounting_t",
+    "existing_fields": [
+      "complete",
+      "storage_start",
+      "storage_end",
+      "total_in",
+      "total_out",
+      "residual"
+    ],
+    "finding": "Existing type already represents aggregate full-interval storage and external-flow totals, but lacks explicit storage_change, compact missing-contribution diagnostics, interval/provenance fields, and accepted-transaction provenance."
+  },
+  "canonical_result_flow": {
+    "path": "src/runtime/mod_canonical_interval_runtime.f90",
+    "git_blob": "f0bfb2c1359c39b4708350b756aa2211fb982be4",
+    "finding": "run_canonical_interval accumulates transaction diagnostics and commits only a completed private working state, but on full [t0,t1] completion explicitly forces result%mass%complete=.false. and does not aggregate accepted storage/flux terms."
+  },
+  "transaction_flow": {
+    "path": "src/transaction/mod_transaction_reference.f90",
+    "git_blob": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "trial_outcome": {
+      "available": ["mass_in", "mass_out"],
+      "missing": ["authoritative completeness", "missing-contribution diagnostics"]
+    },
+    "storage": "model%storage(state) returns one scalar persistent physical storage value",
+    "accepted_route": "TX_ROUTE_TWO_HALF",
+    "already_computed_but_not_persisted_to_result": [
+      "storage0",
+      "storage_half",
+      "half1_outcome%mass_in",
+      "half1_outcome%mass_out",
+      "half2_outcome%mass_in",
+      "half2_outcome%mass_out",
+      "half_mass_residual"
+    ],
+    "finding": "Only the final accepted two-half branch should feed authoritative accounting; rejected full/half trials and retry attempts are already rolled back but their accepted mass terms are not exposed in transaction_result_t."
+  },
+  "b1_10_existing_physical_accounting": {
+    "mass_seam": {
+      "path": "src/adapter/mod_b1_10_mass_seam.f90",
+      "git_blob": "4b205a9b7df465deffe5a34349da91f2102f3f51",
+      "storage": "volact + pond + optional crop interception storage",
+      "fail_closed": ["swsnow != 0", "swmacro != 0", "crop-state mismatch"],
+      "residual_sign": "storage_end - storage_start - (total_in - total_out)"
+    },
+    "trial_mass": {
+      "path": "src/adapter/mod_b1_10_trial_mass.f90",
+      "git_blob": "b1a4bb35f6bd2050c72b49203630287df78e0021",
+      "has_active_flag": true,
+      "has_complete_flag": true,
+      "external_inflow_terms": [
+        "rain",
+        "irrigation",
+        "runon",
+        "ssdi",
+        "bottom_in",
+        "drainage_in",
+        "inundation"
+      ],
+      "external_outflow_terms": [
+        "interception",
+        "runoff",
+        "root_uptake",
+        "pond_evaporation",
+        "soil_evaporation",
+        "drainage_out",
+        "bottom_out"
+      ],
+      "internal_transfer_counted_in_total": false
+    }
+  },
+  "kernel_boundary": {
+    "path": "src/kernel/mod_kernel_transactions.f90",
+    "git_blob": "e8605e73a191e863374a26b096e0d597cb70cadd",
+    "finding": "kernel_result_t maps canonical_result_t%mass unchanged. Candidate provenance already carries lineage, revision and [t0,t1], but mass accounting is not bound to that provenance and commit_candidate does not expose accepted mass accounting."
+  },
+  "fmr04_evidence": {
+    "branch": "integration/f-mr",
+    "status_head": "38d76ec63bb39d2ea4ed0a04ec15531b846d8b6b",
+    "tested_source_commit": "0809b05a5bc26bd25be4f3d7b32abb9cfb43635f",
+    "workflow_run_id": 34155494610,
+    "status": "TESTED_WITH_FULL_INTERVAL_MASS_HOLD",
+    "kernel_full_interval_mass_complete": false,
+    "diagnostic_profile_mass_residual": 0.0,
+    "max_abs_step_mass_residual": 0.0,
+    "serialized_backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "git_blob": "9bc9e195ae6a8816cea96608527c34e636501274",
+      "storage": "sum(dz*water_content) + ponding_depth",
+      "external_fluxes": ["top_flux", "bottom_flux", "subsurface_irrigation_source", "drainage_flux_by_level"],
+      "root_extraction_active": false,
+      "macropore_active": false,
+      "snow_active": false,
+      "finding": "For the admitted F-MR04 profile the physical bridge already calculates the required aggregate storage and external flux totals; the upstream contract cannot currently mark or transport them as authoritative complete accepted interval accounting."
+    }
+  },
+  "root_cause": "The authoritative accepted mass terms are computed locally during accepted transaction execution but are discarded before transaction_result/canonical_result/kernel_result publication; canonical runtime therefore intentionally leaves mass.complete=false.",
+  "physical_term_owner_blocker_for_fmr04_profile": false,
+  "production_changes_before_inventory": false
+}

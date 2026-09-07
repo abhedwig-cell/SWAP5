@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT08",
+  "contract": "AUTHORITATIVE_ACCEPTED_FULL_INTERVAL_MASS_ACCOUNTING",
+  "extends_existing_type": "canonical_mass_accounting_t",
+  "no_second_mass_model": true,
+  "authoritative_scope": "one accepted canonical [t0,t1] candidate interval; downstream cumulative reporting is outside persistent column state",
+  "residual_sign_convention": "storage_end - storage_start - (total_in - total_out)",
+  "equivalent_zero_balance_statement": "storage_start + total_in - total_out - storage_end = 0",
+  "required_canonical_terms": [
+    "interval_t0",
+    "interval_t1",
+    "origin_lineage_id",
+    "origin_revision",
+    "storage_start",
+    "storage_end",
+    "storage_change",
+    "total_in",
+    "total_out",
+    "residual",
+    "accepted_transaction_count",
+    "missing_contribution_mask",
+    "complete"
+  ],
+  "completeness": {
+    "default": false,
+    "true_only_when": [
+      "accepted transaction route explicitly marks external flux accounting authoritative for every accepted segment",
+      "accepted transaction route explicitly marks start and end persistent physical storage authoritative",
+      "all active physical water stores and external water fluxes required by the concrete model are included exactly once",
+      "all published aggregate terms are finite",
+      "the full requested interval completed",
+      "kernel result provenance is bound to the originating committed lineage/revision and requested interval"
+    ],
+    "inactive_optional_physics": "does not create a missing contribution merely by being absent/inactive",
+    "active_unaccounted_physics": "must set complete=false and a nonzero compact missing-contribution mask",
+    "implicit_zero_for_active_unaccounted_physics": false
+  },
+  "missing_contribution_mask": {
+    "representation": "integer(int64) bit mask",
+    "production_state_overhead": "none; carried only in per-result accounting",
+    "reserved_generic_bits": {
+      "1": "start storage not authoritative",
+      "2": "end storage not authoritative",
+      "4": "accepted external flux accounting not authoritative",
+      "8": "active physical contribution missing or model reports incomplete accounting",
+      "16": "non-finite accounting term",
+      "32": "unspecified/incompatible accounting provenance"
+    },
+    "future_extension": "additional model-specific bits may be registered without changing kernel aggregation; kernel treats mask opaquely except for generic reserved bits"
+  },
+  "storage_ownership": {
+    "included": "persistent physical water storage that survives accepted interval boundaries",
+    "examples": ["soil water", "surface/pond water", "snow when active and accounted", "macropore water when active and accounted", "other persistent water stores"],
+    "excluded": ["Newton scratch", "Jacobian", "solver workspace", "temporary residuals", "diagnostics", "reconstructible intermediates"],
+    "default_storage_accounting": "fail-closed until the concrete transaction model explicitly certifies storage completeness"
+  },
+  "flux_ownership": {
+    "canonical_boundary": "aggregate external inflow and external outflow totals",
+    "detailed_terms": "may remain adapter/model-specific; aggregate totals must include every active external contribution exactly once",
+    "internal_transfer_rule": "internal component-to-component transfers are not added to canonical external totals",
+    "physics_flux_signs_changed": false,
+    "normalization": "model/adapter may normalize existing physical sign conventions into non-negative total_in and total_out; mapping must be source-bound and tested"
+  },
+  "transaction_semantics": {
+    "trial": "may produce candidate mass accounting only",
+    "rejected_trial": "must not populate accepted mass fields or mutate committed state/accounting",
+    "retry": "accepted mass terms are taken only from the finally accepted route; rejected-attempt terms are discarded and never accumulated",
+    "canonical_substep_commit": "transaction_result exposes authoritative accounting only for TX_STATUS_ACCEPTED",
+    "kernel_candidate": "stores the same full-interval mass accounting as kernel_result together with lineage/revision/[t0,t1] provenance",
+    "kernel_commit": "successful explicit commit may return exactly the candidate accounting once; failed/stale commit returns no accepted accounting",
+    "rollback": "discarding a candidate does not mutate committed state and does not create cumulative accounting",
+    "cumulative_history_in_column_state": false
+  },
+  "generic_time": {
+    "calendar_assumptions": false,
+    "definition": "mass accounting belongs exactly to requested [t0,t1] and remains unchanged for subdaily, non-midnight and cross-midnight intervals"
+  },
+  "scientific_policy": {
+    "new_tolerance": false,
+    "mass_conservation_disable_switch": false,
+    "qualification_authority": "F-VQ",
+    "hard_failure": "structurally incomplete or non-finite authoritative accounting remains complete=false"
+  },
+  "fmr04_target": {
+    "profile": "corrected B1.10 default MvG, swkimpl=0, swmacro=0, root extraction inactive, snow inactive, admitted top provider/source-sink/bottom boundary",
+    "known_physical_terms_available": true,
+    "expected_downstream_change_after_fkt08": "F-MR04 bridge explicitly marks its already calculated storage and external flux contributions authoritative; then the same physical fixture can require kernel_result.mass.complete=true",
+    "fkt08_does_not_merge_fmr_runtime": true
+  },
+  "invariants": {
+    "1": "PASS_BY_DESIGN",
+    "3": "PASS_BY_DESIGN",
+    "4": "PASS_BY_DESIGN",
+    "5": "PASS_BY_DESIGN",
+    "7": "PASS_BY_DESIGN",
+    "8": "PASS_BY_DESIGN",
+    "9": "PASS_BY_DESIGN",
+    "13": "PASS_BY_DESIGN",
+    "16": "PASS_BY_DESIGN",
+    "23": "PASS_BY_DESIGN",
+    "25": "PASS_BY_DESIGN",
+    "26": "PASS_BY_DESIGN",
+    "27": "PASS_BY_DESIGN",
+    "29": "PASS_BY_DESIGN"
+  }
+}
