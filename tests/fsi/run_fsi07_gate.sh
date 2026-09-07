@@ -31,7 +31,7 @@ for path in \
     echo "F-SI07_PROTECTED_SOURCE FAIL changed $path" >&2; exit 1; }
 done
 
-[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "3cd34bff45b57c38ef9b41f1b8b8f0865154f99d" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "9ba77a52cd88f3cfe838d342d04092990e59ce3a" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == "33bed56161dbc278febe869df0fa2079ad378914" ]] || { echo 'F-SI07_PIN FAIL adapter' >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_state_binding.f90)" == "7de02815e7c554077bcd41f973f15b99d32b7d09" ]] || { echo 'F-SI07_PIN FAIL state binding' >&2; exit 1; }
 
@@ -47,6 +47,8 @@ assert 'subroutine headcalc(worker, fsi_workspace, history, state_binding)' in h
 assert 'st => state_binding' in h
 assert 'call fsi07_publish_state_to_legacy()' in h
 assert 'call fsi07_absorb_state_from_legacy()' in h
+assert 'do solver_numbit = 1, MaxIt1' in h
+assert 'st%numbit = solver_numbit' in h
 assert 'ws%state%h = request%base_state%pressure_head' in a
 assert 'ws%state%theta = request%base_state%water_content' in a
 assert 'result%candidate_state%pressure_head = ws%state%h' in a
