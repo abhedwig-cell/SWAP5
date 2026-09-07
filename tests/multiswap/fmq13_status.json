@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ13",
+  "title": "F-SI01 and F-VQ08 downstream boundary admission",
+  "mode": "QUALIFICATION_ONLY",
+  "production_source_changed": false,
+  "fmq_parent": {
+    "branch": "qualification/f-mq12-fkt01-admission",
+    "commit": "e7248ef1813acf942fcae0f8d66c1b4409af4914"
+  },
+  "downstream_observation": {
+    "fsi_branch": "work/f-si01-solver-isolation-boundary",
+    "fsi_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fsi01_status": "QUALIFIED_BOUNDARY_BASELINE_ONLY",
+    "fvq_branch": "qualification/f-vq08-temporal-characterization-readiness",
+    "fvq_head": "0be60f6da7e575eaf992eb049ce600a4a4b35b58",
+    "fvq08_status": "QUALIFIED_READINESS_BOUNDARY_ONLY",
+    "fkt_branch": "integration/f-kt",
+    "fkt_head": "cbcbfa26d413a661956a2079dc4a1e26c9e3b55c",
+    "fkt_net_tree_sha": "265029cdf0c17be2c23ce2ff4fa8775cd0cd4e61",
+    "fmr_branch_present": false
+  },
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "status": "PERSISTED_FSI01_FVQ08_BOUNDARY_CANDIDATE",
+  "next_action": "Admit only the exact F-SI01 solver-boundary and F-VQ08 fail-closed readiness evidence, reclassify downstream ownership, and keep all real-physics and production-runtime coverage unchanged."
+}
