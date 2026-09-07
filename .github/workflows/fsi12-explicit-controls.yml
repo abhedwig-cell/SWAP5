@@ -10,6 +10,8 @@ on:
       - 'integration/f-si/F-SI12_CONTROL_BINDING_CONTRACT.json'
       - 'integration/f-si/F-SI12_QUALIFICATION.json'
       - 'tests/fsi/run_fsi12_explicit_controls_gate.sh'
+      - 'tests/fsi/run_fsi12_legacy_direct_identity_gate.sh'
+      - 'tests/fsi/run_fsi12_qualification_gate.sh'
       - '.github/workflows/fsi12-explicit-controls.yml'
 
 jobs:
@@ -23,5 +25,5 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
-      - name: F-SI12 explicit solver-control qualification gate
-        run: bash tests/fsi/run_fsi12_explicit_controls_gate.sh
+      - name: F-SI12 composite qualification gate
+        run: bash tests/fsi/run_fsi12_qualification_gate.sh
