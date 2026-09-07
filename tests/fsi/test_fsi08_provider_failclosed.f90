@@ -63,7 +63,7 @@ program test_fsi08_provider_failclosed
   before_calls=headcalc_calls
   call solver%solve(no_constitutive,ws,result)
   call expect(result%status==SW_SOLVE_FAILED,failures)
-  call expect(trim(result%diagnostics%route)=='explicit-constitutive-provider-required',failures)
+  call expect(trim(result%diagnostics%route)=='constitutive-provider-required',failures)
   call expect(headcalc_calls==before_calls,failures)
 
   no_source_sink=good
@@ -71,7 +71,7 @@ program test_fsi08_provider_failclosed
   before_calls=headcalc_calls
   call solver%solve(no_source_sink,ws,result)
   call expect(result%status==SW_SOLVE_FAILED,failures)
-  call expect(trim(result%diagnostics%route)=='explicit-source-sink-provider-required',failures)
+  call expect(trim(result%diagnostics%route)=='source-sink-provider-required',failures)
   call expect(headcalc_calls==before_calls,failures)
 
   before_calls=headcalc_calls

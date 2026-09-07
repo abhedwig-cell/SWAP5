@@ -167,7 +167,7 @@ contains
     ok = .false.
     route = 'legacy-request-invalid'
     if (.not. associated(request%evaluation%constitutive)) then
-       route = 'explicit-constitutive-provider-required'
+       route = 'constitutive-provider-required'
        return
     end if
     call validate_soil_water_request(request, common_ok)
@@ -197,7 +197,7 @@ contains
        return
     end if
     if (.not. associated(request%evaluation%source_sink)) then
-       route = 'explicit-source-sink-provider-required'
+       route = 'source-sink-provider-required'
        return
     end if
     if (request%boundary%bottom_mode /= swbotb) then

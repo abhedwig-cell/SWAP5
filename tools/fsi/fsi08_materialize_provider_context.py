@@ -95,14 +95,14 @@ a = replace_once(
     'builder source/sink binding')
 
 old = '''    ok = .false.\n    route = 'legacy-request-invalid'\n    call validate_soil_water_request(request, common_ok)\n    if (.not. common_ok) return\n'''
-new = '''    ok = .false.\n    route = 'legacy-request-invalid'\n    if (.not. associated(request%evaluation%constitutive)) then\n       route = 'explicit-constitutive-provider-required'\n       return\n    end if\n    call validate_soil_water_request(request, common_ok)\n    if (.not. common_ok) return\n'''
+new = '''    ok = .false.\n    route = 'legacy-request-invalid'\n    if (.not. associated(request%evaluation%constitutive)) then\n       route = 'constitutive-provider-required'\n       return\n    end if\n    call validate_soil_water_request(request, common_ok)\n    if (.not. common_ok) return\n'''
 a = replace_once(a, old, new, 'constitutive fail-closed route')
 
 a = replace_once(
     a,
     "    if (.not. associated(request%evaluation%top_boundary)) then\n       route = 'explicit-top-provider-required'\n       return\n    end if\n",
     "    if (.not. associated(request%evaluation%top_boundary)) then\n       route = 'explicit-top-provider-required'\n       return\n    end if\n"
-    "    if (.not. associated(request%evaluation%source_sink)) then\n       route = 'explicit-source-sink-provider-required'\n       return\n    end if\n",
+    "    if (.not. associated(request%evaluation%source_sink)) then\n       route = 'source-sink-provider-required'\n       return\n    end if\n",
     'source/sink fail-closed route')
 
 ADAPTER.write_text(a)

@@ -48,8 +48,8 @@ grep -Fq "state%theta(1:NN) = provider_theta(1:NN)" "$HEADCALC"
 grep -Fq "state%kmean(numnod+1) = provider_k(numnod)" "$HEADCALC"
 grep -Fq "root_sink_term = 0.0d0" "$HEADCALC"
 grep -Fq "root_sink_term = qrot(node)" "$HEADCALC"
-grep -Fq "route = 'explicit-constitutive-provider-required'" "$ADAPTER"
-grep -Fq "route = 'explicit-source-sink-provider-required'" "$ADAPTER"
+grep -Fq "route = 'constitutive-provider-required'" "$ADAPTER"
+grep -Fq "route = 'source-sink-provider-required'" "$ADAPTER"
 python3 - "$OWNER" "$ADAPTER" "$HEADCALC" <<'PY'
 import json,pathlib,re,sys
 contract=json.loads(pathlib.Path(sys.argv[1]).read_text())
