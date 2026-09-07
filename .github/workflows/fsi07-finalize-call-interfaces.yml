@@ -1,0 +1,37 @@
+name: F-SI07 finalize call interfaces
+
+on:
+  push:
+    branches:
+      - work/f-si07-state-binding
+    paths:
+      - 'tools/fsi/fsi07_finalize_call_interfaces.py'
+      - '.github/workflows/fsi07-finalize-call-interfaces.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact HeadCalc caller interfaces and repin gate
+        run: python3 tools/fsi/fsi07_finalize_call_interfaces.py
+      - name: Validate changed scope
+        run: |
+          git diff --check
+          git diff -- src/legacy/b1_10_port/soilwater.f90 tests/fsi/test_fsi07_state_binding.F90 tests/fsi/run_fsi07_gate.sh
+      - name: Persist interface finalization
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/soilwater.f90 tests/fsi/test_fsi07_state_binding.F90 tests/fsi/run_fsi07_gate.sh
+          if git diff --cached --quiet; then
+            echo 'No materialized changes'
+          else
+            git commit -m 'F-SI07: finalize explicit HeadCalc caller interfaces'
+            git push origin HEAD:work/f-si07-state-binding
+          fi
