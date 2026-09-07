@@ -20,6 +20,7 @@ DRIVER="$ROOT/tests/fsi/test_fsi07_state_binding.F90"
 FSI04_STUBS="$ROOT/tests/fsi/fsi04_real_headcalc_stubs.f90"
 ADAPTER_STUBS="$ROOT/tests/fsi/fsi07_adapter_stubs.f90"
 ADAPTER_TEST="$ROOT/tests/fsi/test_fsi07_adapter_binding.f90"
+TOP_PROVIDER="$ROOT/tests/fsi/mod_fsi07_top_provider.f90"
 FSI02_TEST="$ROOT/tests/fsi/test_fsi02_solver_contract.f90"
 SOILWATER_STUBS="$ROOT/tests/fsi/fsi06_soilwater_compile_stubs.f90"
 OWNERSHIP="$ROOT/integration/f-si/F-SI07_STATE_BINDING_CONTRACT.json"
@@ -36,10 +37,10 @@ for path in \
 done
 
 # Pin the production state-binding postimage.
-[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "4d1a723bb4948cc611cf15df47366c968be90ebf" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
-[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" == "0cd82e409bbf8de880320981b5c8cadf6559d847" ]] || { echo 'F-SI07_PIN FAIL SoilWater' >&2; exit 1; }
-[[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == "f5334041764ae0d50732a146432572a920b27472" ]] || { echo 'F-SI07_PIN FAIL adapter' >&2; exit 1; }
-[[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_state_binding.f90)" == "0f7d726f1231584599b3e6838bf8cc0fb53a6814" ]] || { echo 'F-SI07_PIN FAIL state binding' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "d4b2a4f45d757263a482d5891286c2cff08a85a0" ]] || { echo 'F-SI07_PIN FAIL HeadCalc' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" == "470bc81a380e114d70fecd75426ec2331c1c9fcc" ]] || { echo 'F-SI07_PIN FAIL SoilWater' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" == "22a3347e793505163a71e2e9ffa737bd2318e147" ]] || { echo 'F-SI07_PIN FAIL adapter' >&2; exit 1; }
+[[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_state_binding.f90)" == "e68d88382c6502c571713cc97fddd4e18434e271" ]] || { echo 'F-SI07_PIN FAIL state binding' >&2; exit 1; }
 
 # Contract and structural source checks.
 grep -Eq '^subroutine[[:space:]]+headcalc\(worker,[[:space:]]*fsi_workspace,[[:space:]]*history,[[:space:]]*state_binding\)' "$HEADCALC"
@@ -48,7 +49,7 @@ grep -Fq 'do solver_numbit = 1, MaxIt1' "$HEADCALC"
 ! grep -Fq 'do state%numbit = 1, MaxIt1' "$HEADCALC"
 grep -Fq 'call boundtop_state_bridge(2)' "$HEADCALC"
 grep -Fq 'call initialize_reference_state_binding(state_binding, request)' "$ADAPTER"
-grep -Fq 'call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding)' "$ADAPTER"
+grep -Fq 'request%evaluation, request%boundary)' "$ADAPTER"
 python3 - "$OWNERSHIP" "$ADAPTER" <<'PY'
 import json, pathlib, re, sys
 contract=json.loads(pathlib.Path(sys.argv[1]).read_text())
@@ -69,7 +70,12 @@ for p in patterns:
     assert re.search(p,solve,re.M) is None, p
 assert 'result%candidate_state%pressure_head = state_binding%h' in solve
 assert 'result%top_flux = state_binding%qtop' in solve
-print('F-SI07_ADAPTER_NO_WHOLE_SOLVE_GLOBAL_OVERLAY PASS')
+assert 'request%evaluation, request%boundary' in solve
+assert 'call initialize_reference_state_binding(state_binding, request)' in solve
+for name in ['gwlinp','dtold','itnumb','kmean','dimoca','fllowgwl','q0','hsurf','runots','flrunoff','ftoph']:
+    assert re.search(r'\b'+name+r'\b', solve, re.I) is None, name
+assert "explicit-top-provider-required" in text
+print('F-SI07_ADAPTER_EXPLICIT_PHYSICAL_STATE_ONLY PASS')
 PY
 
 # Real HeadCalc fixture with a switch for the rare banded fallback.
@@ -163,11 +169,12 @@ for opt in 0 2; do
   gfortran "${FLAGS[@]}" -c "$CONTRACT" -o "$out/contract.o"
   gfortran "${FLAGS[@]}" -c "$WORKSPACE" -o "$out/workspace.o"
   gfortran "${FLAGS[@]}" -c "$STATE" -o "$out/state.o"
+  gfortran "${FLAGS[@]}" -c "$TOP_PROVIDER" -o "$out/top_provider.o"
   gfortran "${FLAGS[@]}" -c "$ADAPTER_STUBS" -o "$out/stubs.o"
   gfortran "${FLAGS[@]}" -c "$ADAPTER" -o "$out/adapter.o"
   gfortran "${FLAGS[@]}" -c "$ADAPTER_TEST" -o "$out/test.o"
   gfortran -O"$opt" "$out/test.o" "$out/adapter.o" "$out/stubs.o" "$out/state.o" "$out/workspace.o" \
-    "$out/contract.o" "$out/worker.o" -o "$out/test"
+    "$out/top_provider.o" "$out/contract.o" "$out/worker.o" -o "$out/test"
   "$out/test" > "$out/output.txt"
   grep -Fq 'F-SI07_ADAPTER_BINDING PASS' "$out/output.txt"
 done

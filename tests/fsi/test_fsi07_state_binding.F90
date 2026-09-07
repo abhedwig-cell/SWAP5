@@ -33,14 +33,17 @@ program test_fsi07_state_binding
       type(a23bu_solver_history_t), target, intent(inout), optional :: history
     end subroutine headcalc
 #else
-    subroutine headcalc(worker, fsi_workspace, history, state_binding)
+    subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
       use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
       use mod_reference_richards_workspace, only: reference_richards_workspace_t
       use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
+      use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
       type(a23bu_worker_context_t), target, intent(inout), optional :: worker
       type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
       type(a23bu_solver_history_t), target, intent(inout), optional :: history
       type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
+      type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
+      type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
     end subroutine headcalc
 #endif
   end interface
