@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "scope": "source-bound process ownership inventory, first-process contract and executable characterization; no production process migration",
+  "assessment_status": "PASS_FOR_BOUNDARY_SCOPE",
+  "invariants": [
+    {"id":1,"status":"PASS","evidence":["F-PM01_DEPENDENCY_PINS.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"No alternate SWAP kernel is introduced. The snow contract is a process seam owned below the single canonical kernel architecture."},
+    {"id":2,"status":"PASS","evidence":["F-PM01_DEPENDENCY_MATRIX.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Legacy file readers are classified LEGACY_IO and excluded from the target process evaluator. Parameters and forcing are already-parsed inputs."},
+    {"id":3,"status":"PASS","evidence":["F-PM01_DEPENDENCY_MATRIX.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Parameters, committed state, forcing, results, diagnostics and reconstructible workspace are explicit. snowinco is corrected to DIAGNOSTIC, not physical state."},
+    {"id":4,"status":"PASS","evidence":["F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Snow physical continuation state is only ssnow plus slw. Reporting baseline snowinco is excluded; inactive snow allocates no process state in the target contract."},
+    {"id":5,"status":"PASS","evidence":["F-PM01_DEPENDENCY_MATRIX.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Process-local reconstructible snow temporaries are separated from persistent state; solver/Newton scratch remains F-SI-owned worker/job state."},
+    {"id":7,"status":"PASS","evidence":["F-PM01_FIRST_PROCESS_CONTRACT.json","F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json"],"assessment":"Contract uses committed input to candidate output with commit/rollback authority explicitly retained by F-KT. Rollback/replay identity is characterized."},
+    {"id":8,"status":"PASS","evidence":["F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json"],"assessment":"Same committed state plus same forcing reproduces candidate output. No hidden snow solver warm-start state exists in the characterized algebraic process."},
+    {"id":9,"status":"PASS_WITH_HOLD","evidence":["F-PM01_FIRST_PROCESS_CONTRACT.json","F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json"],"assessment":"The process API carries t0/t1 and does not require midnight. A non-midnight one-day identity is characterized. Generic-duration/subdaily numerical scaling is deliberately not inferred from B1.10 and remains a hold."},
+    {"id":13,"status":"PASS","evidence":["F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json"],"assessment":"Unrounded snow water-storage identity is checked for normal, warm-fresh-snow and deficit-clamp cases with residuals at floating-point roundoff. No mass-tolerance relaxation is introduced."},
+    {"id":16,"status":"PASS_FOR_BOUNDARY_SCOPE","evidence":["F-PM01_PROCESS_INVENTORY.json","F-PM01_MIGRATION_ORDER.json"],"assessment":"Inventory explicitly flags module globals, optional state and MultiSWAP-relevant seams. No per-column heavy solver instance or new runtime design is introduced by F-PM01."},
+    {"id":20,"status":"PASS","evidence":["F-PM01_DEPENDENCY_PINS.json","F-PM01_PROCESS_INVENTORY.json"],"assessment":"Process contracts do not depend on one Richards implementation. Solver-facing processes are held behind abstract hydraulic/solver interfaces owned by F-SI."},
+    {"id":21,"status":"PASS","evidence":["F-PM01_FIRST_PROCESS_CONTRACT.json","F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json"],"assessment":"The first seam preserves exact B1.10 snow equations and characterizes them source-bound. No physics formula is rewritten in F-PM01."},
+    {"id":22,"status":"PASS","evidence":["F-PM01_DEPENDENCY_MATRIX.json","F-PM01_MIGRATION_ORDER.json"],"assessment":"Direct HeadCalc use was not found in inspected F-PM processes. Legacy h/theta/qrot/gwl and boundary accesses are exposed as solver-internal dependencies requiring a future hydraulic view rather than being copied into new interfaces."},
+    {"id":23,"status":"PASS","evidence":["F-PM01_DEPENDENCY_MATRIX.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Physical process configuration is classified separately from numerical policy. Snow has no process numerical policy configuration in the first contract."},
+    {"id":25,"status":"PASS","evidence":["F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json","F-PM01_DEPENDENCY_PINS.json"],"assessment":"B1.10 remains the explicit reference oracle. No alternative process behavior is promoted without characterization against it."},
+    {"id":26,"status":"PASS_FOR_BOUNDARY_SCOPE","evidence":["F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json","F-PM01_STATUS.json"],"assessment":"The characterization records source identity, compiler/optimization, mass residuals and scope holds. Runtime normal/relaxed/fallback diagnostics remain outside this non-production slice."},
+    {"id":27,"status":"PASS","evidence":["F-PM01_PROCESS_INVENTORY.json","F-PM01_FIRST_PROCESS_CONTRACT.json"],"assessment":"Optional macropore, snow, solute and nutrient states are explicitly identified. The target snow contract requires no snow state allocation when snow physics is inactive."},
+    {"id":29,"status":"PASS","evidence":["F-PM01_PROCESS_INVENTORY.json","F-PM01_FIRST_PROCESS_CONTRACT.json","F-PM01_DEPENDENCY_PINS.json"],"assessment":"No new .swp, midnight, one-day, MODFLOW or direct-HeadCalc assumption is introduced. Existing B1.10 day-call behavior is recorded as characterization scope, not silently generalized."}
+  ],
+  "holds": [
+    "Invariant 9 is not a claim of arbitrary-duration snow numerical equivalence; only explicit generic-time interface shape and one-day non-midnight characterization are qualified.",
+    "Production process migration remains blocked until an exact shared qualified F-KT05/F-SI05 downstream source basis exists."
+  ]
+}
