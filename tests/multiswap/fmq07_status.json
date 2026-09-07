@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ07",
+  "title": "Synthetic coupling contracts qualification",
+  "production_code_change_allowed": false,
+  "scope": "qualification-only synthetic coupling semantics",
+  "properties": {
+    "P20": {
+      "name": "tile aggregation conserves area-weighted fluxes",
+      "synthetic_executable": true,
+      "production_qualified": false,
+      "hard_gates": [
+        "tile fractions sum exactly to one",
+        "every tile closes its synthetic water balance",
+        "cell aggregate closes exactly",
+        "tile ordering cannot change canonical aggregate"
+      ],
+      "dependency": "F-MR/coupler production tile aggregation contract plus real physical mass records"
+    },
+    "P21": {
+      "name": "predictor/corrector rollback restores committed physical state",
+      "synthetic_executable": true,
+      "production_qualified": false,
+      "hard_gates": [
+        "predictor never externally commits physical state",
+        "corrector starts physically from the same committed checkpoint",
+        "rejected corrector leaves committed state unchanged",
+        "accepted corrector commits exactly once",
+        "rejected trial flux never enters committed mass accounting"
+      ],
+      "dependency": "F-SI/F-MR production coupling transaction API and canonical physical continuation seam"
+    },
+    "P22": {
+      "name": "coupling interface flux conservation",
+      "synthetic_executable": true,
+      "production_qualified": false,
+      "hard_gates": [
+        "q_SWAP + q_MF equals zero exactly in the synthetic contract",
+        "head residual is evaluated separately",
+        "head tolerance cannot relax or mask a flux defect"
+      ],
+      "dependency": "F-SI production interface contract plus real SWAP/MODFLOW coupling evidence"
+    }
+  },
+  "numerical_design": {
+    "tile_fractions": "exact rational arithmetic",
+    "water_accounting": "exact integer synthetic units",
+    "flux_conservation": "exact integer sign contract",
+    "head_residual": "integer units with explicit qualified tolerance"
+  },
+  "local_gate_evidence": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "ci_claim": false
+  },
+  "status": "PASS_SYNTHETIC_COUPLING_CONTRACTS / REAL_COUPLING_NOT_QUALIFIED"
+}
