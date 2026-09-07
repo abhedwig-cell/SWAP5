@@ -12,9 +12,17 @@ on:
       - 'tests/fsi/test_fsi07_state_binding.F90'
       - 'tests/fsi/fsi07_adapter_stubs.f90'
       - 'tests/fsi/test_fsi07_adapter_binding.f90'
+      - 'tests/fsi/mod_fsi07_top_provider.f90'
+      - 'tests/fsi/test_fsi07_real_concurrency_provider.F90'
+      - 'tests/fsi/run_fsi07_provider_concurrency_gate.sh'
+      - 'tests/fsi/test_fsi07_common_route_serial.F90'
+      - 'tests/fsi/test_fsi07_common_route_parallel.F90'
+      - 'tests/fsi/run_fsi07_common_route_gate.sh'
       - 'tests/fsi/run_fsi07_gate.sh'
       - 'tools/fsi/fsi07_fix_numbit_carrier.py'
       - 'tools/fsi/fsi07_repin_gate.py'
+      - 'tools/fsi/fsi07_finalize_call_interfaces.py'
+      - 'tools/fsi/fsi07_finalize_qualification_gate.py'
       - 'integration/f-si/F-SI07_STATE_BINDING_CONTRACT.json'
       - 'integration/f-si/F-SI07_QUALIFICATION.json'
       - 'docs/integration/F-SI07_STATE_BINDING.md'
@@ -29,5 +37,5 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-SI07 explicit state binding gate
+      - name: F-SI07 final explicit state binding qualification gate
         run: bash tests/fsi/run_fsi07_gate.sh
