@@ -1,5 +1,5 @@
 {
-  "schema": "swap5.f-mr03.admission-readiness.v1",
+  "schema": "swap5.f-mr03.admission-readiness.v2",
   "work_unit": "F-MR03",
   "candidate_backend": "serialized physical reference runtime",
   "target_profile": {
@@ -34,15 +34,15 @@
     {
       "id": "MR03-G04",
       "name": "Corrected B1.10 constitutive provider",
-      "status": "BLOCKED_UNQUALIFIED_CURRENT_POSTIMAGE",
-      "evidence": "F-SI09 source exists at 0e57feabdaa68bcde5f1fcae904d34f9186c4e28, but no workflow run or qualification status for that provider postimage was found during the live reread.",
+      "status": "BLOCKED_FAILED_QUALIFICATION_GATE",
+      "evidence": "F-SI09 head 7bd3034194561e3b70d2a8cb846722b1610a37ce; workflow 34147779167 failed. Static contract and B1.10 O0/O2 fingerprints pass, but the parallel-isolation test does not compile under -Werror=compare-reals. F-SI09 qualification artifact still states qualified=false and production constitutive admission=false.",
       "required": true
     },
     {
       "id": "MR03-G05",
       "name": "Production B1.10 source/sink and remaining physical provider closure",
-      "status": "BLOCKED_NOT_QUALIFIED",
-      "evidence": "F-SI08 explicitly leaves production B1.10 source/sink provider admission false. F-MR must not replace this missing F-SI ownership with runtime-local physics.",
+      "status": "BLOCKED_SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED",
+      "evidence": "F-SI09 provider-admission contract explicitly holds production_source_sink_provider=SEPARATE_PROCESS_PROVIDER_ADMISSION_REQUIRED; no F-SI10 or dedicated source/sink provider branch was found in the live branch reread.",
       "required": true
     },
     {
@@ -56,28 +56,28 @@
       "id": "MR03-G07",
       "name": "Serialized F-MR -> F-KT -> physical solver route",
       "status": "NOT_IMPLEMENTED",
-      "evidence": "Current F-MR production route admits deterministic backend only; F-MR02 keeps physical reference runtime NOT_ADMITTED.",
+      "evidence": "Current F-MR production route admits deterministic backend only. F-MR will not implement the route until MR03-G04 through G06 are satisfied on qualified source.",
       "required": true
     },
     {
       "id": "MR03-G08",
       "name": "Hard physical interval mass accounting",
       "status": "NOT_QUALIFIED_FOR_TARGET_ROUTE",
-      "evidence": "Synthetic hard-mass qualification is preserved, but no new full physical SWAP water-balance identity may be inferred from F-MR02/F-SI08/F-SI09 source presence.",
+      "evidence": "Synthetic hard-mass qualification is preserved, but no full physical SWAP interval water-balance identity exists for the target route.",
       "required": true
     },
     {
       "id": "MR03-G09",
       "name": "Exact corrected B1.10 replay/scientific qualification for admitted target profile",
       "status": "NOT_QUALIFIED_FOR_JOINT_RUNTIME",
-      "evidence": "Must be supplied by exact source-bound VQ/F-SI evidence on the same executable candidate before physical admission.",
+      "evidence": "Current F-SI09 executable fingerprint evidence is constitutive-only and its qualification gate is red; matching VQ evidence for a jointly executable F-MR physical candidate does not yet exist.",
       "required": true
     },
     {
       "id": "MR03-G10",
       "name": "Parallel reference execution",
       "status": "NOT_REQUIRED_AND_NOT_ADMITTED",
-      "evidence": "Initial physical target, when dependencies become qualified, is serialized-only. Parallel HeadCalc remains separately blocked.",
+      "evidence": "Initial physical target remains serialized-only. Parallel HeadCalc/reference execution is a later separately qualified admission.",
       "required": false
     }
   ],
@@ -86,6 +86,7 @@
   "source_composition_allowed_now": false,
   "physical_backend_admission_allowed_now": false,
   "parallel_backend_admission_allowed_now": false,
-  "release_condition": "Re-read live F-KT/F-SI/F-VQ/F-MQ/F-PM lineages. Only proceed when the complete production provider stack and exact executable physical candidate needed by MR03-G04 through MR03-G09 are qualified with matching provenance.",
+  "failure_interpretation": "The current F-SI09 failure is a test compilation failure after successful constitutive fingerprint checks; it is not evidence of a physical mismatch, but it still blocks qualification and therefore blocks F-MR source consumption.",
+  "release_condition": "Proceed only after live reread shows a production-qualified constitutive provider, production-qualified required source/sink/process providers, and one exact executable physical candidate with matching F-VQ/F-MQ mass/provenance evidence.",
   "ownership_rule": "F-MR owns registry, batching, scheduling, routing, retry orchestration and diagnostics. F-KT owns committed transaction semantics. F-SI owns solver/provider isolation and physical provider implementations. F-VQ/F-MQ own qualification authority."
 }
