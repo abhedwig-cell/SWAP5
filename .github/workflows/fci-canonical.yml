@@ -9,6 +9,7 @@ on:
       - 'src/transaction/**'
       - 'src/runtime/**'
       - 'src/adapter/**'
+      - 'src/legacy/**'
       - 'tests/transaction/**'
       - 'tests/runtime/**'
       - 'tests/fci/**'
@@ -50,3 +51,15 @@ jobs:
           fetch-depth: 0
       - name: F-CI05 static B1.10 physical preimage gate
         run: python tools/fci/fci05_b1_10_physical_preimage_gate.py
+
+  fci06-controlled-source-port:
+    needs: fci05-b1-10-physical-preimage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI06 controlled source-port and checkpoint gate
+        run: bash tests/fci/run_fci06_gate.sh
