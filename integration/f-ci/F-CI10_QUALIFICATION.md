@@ -43,6 +43,10 @@ Therefore a reference full/half/half trial over arbitrary physical sub-intervals
 
 The focused gate compiles and executes the new mass contracts at `-O0` and `-O2`, verifies identical output, verifies fail-closed snow/macropore and incomplete-flux behavior, pins the B1.10 time/integral source identities, and verifies that the F-CI09 reference execution lock remains active.
 
+Qualified source/test head: `970d99100a256099343d4b2072ecd543469b23b5`.
+
+Canonical workflow run `34093648750`, job `101652946866`, completed successfully with GNU Fortran 13.3.0 and `FCI10_GATE_PASS`. The complete F-CI03 through F-CI10 dependency chain passed on the same source/test head.
+
 ## Non-admissions
 
 F-CI10 does not admit:
