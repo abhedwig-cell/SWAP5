@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ21",
+  "qualification_only": true,
+  "matrix_blob": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+  "matrix_rows": 35,
+  "oracle": "B1.10",
+  "fsi06": {
+    "qualification_head": "d0f0cc0817f2e2b8ca55dd90752cfda2f7b0e6e8",
+    "tested_checkpoint": "dfed799dbc0930bdf5218e713934ea0f148e3872",
+    "final_postimage": "2fa63c41a4d7248ab7f4b5af46f72caddfda4f29",
+    "materialized_source_commit": "8decd3520b34f1f53e1c8001ca33dde9150f5e09",
+    "qualification_blob": "f106b7488de1c7c5cfe6f2c160607e354ee94862",
+    "gate_blob": "de414e128c939785da64135804e02889d083e153",
+    "admission": "QUALIFIED_HISTORY_OWNERSHIP_AND_SERIAL_FOCUSED_ORDER_PREREQUISITE",
+    "headcalc_hidden_save_removed": true,
+    "reporting_history_explicit": true,
+    "common_reference_history_call_local": true,
+    "serial_focused_aba_identity": true,
+    "common_workspace_parallel_isolation": true,
+    "full_real_headcalc_parallel_reentrancy": false,
+    "parallel_blocker": "SHARED_LEGACY_GLOBAL_TRANSLATION"
+  },
+  "fvq12": {
+    "qualification_head": "7cd06ba606429c891dab7f355a85b58ca56a3bca",
+    "status_blob": "18a85a08003d732ea353841a089d48f5ac694305",
+    "admission": "QUALIFIED_FKT05_FSI05_CONTRACTUAL_NONCONFLICT_ONLY",
+    "fkt05_source_bound_admitted": true,
+    "fsi05_source_bound_admitted": true,
+    "contractual_nonconflict_qualified": true,
+    "composed_runtime_qualified": false,
+    "production_reference_admission": "BLOCKED_FAIL_CLOSED",
+    "production_multiswap_admission": false
+  },
+  "requirement_effects": {
+    "R06": "FSI06_SERIAL_ORDER_PREREQUISITE_ADMITTED_FMR_SCHEDULER_STILL_REQUIRED",
+    "P02": "FOCUSED_SERIAL_ABA_PREREQUISITE_ADMITTED_MATRIX_MINIMUM_8_COLUMNS_4_WORKERS_STILL_OPEN",
+    "P03": "BLOCKED_REAL_HEADCALC_PARALLEL_REENTRANCY",
+    "P06": "HISTORY_OWNERSHIP_RISK_REDUCED_COMMON_WORKSPACE_ISOLATION_ALREADY_QUALIFIED_FINAL_REAL_RUNTIME_OPEN",
+    "P18": "BLOCKED_SHARED_LEGACY_GLOBAL_TRANSLATION_AND_FMR_INTERLEAVE_RUNTIME",
+    "P19": "HISTORY_SEPARATION_AND_WORKSPACE_POISON_PREREQUISITES_ADMITTED_REAL_PARALLEL_ROUTE_OPEN",
+    "P10": "FQV12_CONFIRMS_FKT05_FSI05_OWNERSHIP_NONCONFLICT_NO_COMPOSED_RUNTIME_PROMOTION",
+    "P11": "FQV12_CONFIRMS_FKT05_FSI05_OWNERSHIP_NONCONFLICT_NO_REAL_REFERENCE_PROMOTION"
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": []
+  },
+  "hard_nonclaims": [
+    "full real HeadCalc 1/2/4/8 worker reentrancy",
+    "production MultiSWAP scheduler or runtime",
+    "composed F-KT05 plus F-SI05 production runtime execution",
+    "full unrounded SWAP water-balance identity",
+    "production B1.10 reference execution",
+    "macropore production admission"
+  ],
+  "decision": "ADMIT_OWNERSHIP_AND_NONCONFLICT_PREREQUISITES_NO_MATRIX_ROW_PROMOTION"
+}
