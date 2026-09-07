@@ -5,28 +5,39 @@
   "branch": "integration/f-mr",
   "safety_branch": "integration/f-mr02-safety",
   "base_commit": "646ecf188129e705caae2a52f8c184878406e801",
-  "phase": "SOURCE_COMPOSITION_REQUIRED",
-  "status": "IMPLEMENTED_NOT_YET",
-  "IMPLEMENTED": false,
+  "tested_source_commit": "b3bbd357c357001b825003ad6a12c1980a38a650",
+  "workflow_run": 34145726907,
+  "phase": "TESTED_READY_FOR_QUALIFICATION",
+  "status": "TESTED",
+  "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": false,
+  "TESTED": true,
   "QUALIFIED": false,
   "findings": {
-    "f_kt05_exact_in_base": true,
-    "b1_10_exact_in_base": true,
-    "f_si05_exact_in_base": false,
-    "source_composition_required": true
+    "f_kt05_exact_in_shared_postimage": true,
+    "b1_10_exact_in_shared_postimage": true,
+    "f_si05_exact_in_shared_postimage": true,
+    "fmr01_deterministic_lane_preserved": true,
+    "combined_gate": "PASS"
+  },
+  "test_scope": {
+    "fkt05_transaction_checkpoint_chain": "PASS",
+    "fmr01_o0_o2": "PASS",
+    "fsi05_o0_o2": "PASS",
+    "fsi05_worker_counts": [1, 2, 4, 8],
+    "fmr01_batch_sizes": [1, 2, 8, 17, 31, 32, 64],
+    "fmr01_worker_counts": [1, 2, 4, 8],
+    "hard_mass_rejection": "PASS"
   },
   "holds": [
     "No real HeadCalc parallel admission.",
-    "No physical MultiSWAP/reference-backend admission from source coexistence alone.",
+    "No serialized or parallel physical MultiSWAP reference-runtime admission from F-MR02.",
     "No full reference Richards reentrancy claim.",
-    "No full SWAP water-balance identity claim beyond separately qualified evidence."
+    "No new full SWAP water-balance identity claim beyond separately qualified evidence."
   ],
   "blockers": [
-    "Exact F-SI05 source closure has not yet been materialized into integration/f-mr.",
-    "Shared-postimage qualification gate has not yet run."
+    "Qualification evidence and architecture-invariant assessment must be persisted and then closed out in a separate qualification state transition."
   ],
   "allows_downstream_release": false,
-  "last_verified": "2026-09-07T16:44:50Z"
+  "last_verified": "2026-09-07T17:00:33Z"
 }

@@ -1,0 +1,111 @@
+{
+  "schema": "swap5.f-mr02.qualification-evidence.v1",
+  "work_unit": "F-MR02",
+  "scope": "Exact shared postimage qualification for F-KT05 + corrected B1.10 + F-SI05 focused production workspace seam, while preserving the qualified F-MR01 deterministic runtime lane.",
+  "tested_source_commit": "b3bbd357c357001b825003ad6a12c1980a38a650",
+  "branch": "integration/f-mr",
+  "safety_branch": "integration/f-mr02-safety",
+  "workflow": {
+    "name": "F-MR02 shared F-KT05 + F-SI05 postimage qualification",
+    "run_id": 34145726907,
+    "job_id": 101817249970,
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "tested_head_sha": "b3bbd357c357001b825003ad6a12c1980a38a650",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.2.0"
+  },
+  "provenance": {
+    "f_kt05_closeout": "f50b8cd20221fac27a2059b6c6192ed0b7384be8",
+    "f_kt05_tested_source_postimage": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+    "f_kt05_qualification_evidence": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
+    "f_si05_production_materialization": "1fe1bf4790955594290ba1233d5684542799bf9e",
+    "f_si05_tested_implementation": "56c21448a2a0be716d497ac34db8c5eec60dd246",
+    "f_si05_qualification_head": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+    "f_mr01_closeout": "646ecf188129e705caae2a52f8c184878406e801",
+    "corrected_legacy_oracle": "B1.10"
+  },
+  "gates": {
+    "exact_blob_provenance": "PASS",
+    "admission_and_ownership_contract": "PASS",
+    "runtime_to_fkt_boundary": "PASS",
+    "fsi05_seam_contract": "PASS",
+    "fkt03_preservation": "PASS",
+    "fkt04_preservation_o0_o2": "PASS",
+    "fkt05_reusable_checkpoint_o0_o2": "PASS",
+    "fmr01_contract": "PASS",
+    "fmr01_checkpoint_o0_o2": "PASS",
+    "fmr01_runtime_o0_o2": "PASS",
+    "fsi05_real_replay_o0_o2": "PASS",
+    "fsi05_o0_o2_identity": "PASS",
+    "fsi05_adapter_regression": "PASS",
+    "fsi05_workspace_workers_1_2_4_8": "PASS",
+    "combined_fmr02_gate": "PASS"
+  },
+  "fmr01_preserved_results": {
+    "batch_sizes": {
+      "1": "PASS",
+      "2": "PASS",
+      "8": "PASS",
+      "17": "PASS",
+      "31": "PASS",
+      "32": "PASS",
+      "64": "PASS"
+    },
+    "worker_counts": {
+      "1": "PASS",
+      "2": "PASS",
+      "4": "PASS",
+      "8": "PASS"
+    },
+    "order_partition_independence": "PASS",
+    "scratch_poison_worker_migration": "PASS",
+    "difficult_tail": {
+      "status": "PASS",
+      "difficult_synthetic_cost": 896,
+      "max_easy_synthetic_cost": 3,
+      "diagnosed_retries": 8,
+      "easy_columns_surviving": 31
+    },
+    "hard_mass_rejection": "PASS",
+    "per_column_unrounded_mass_residual_limit": 1e-12,
+    "aggregate_unrounded_mass_residual_limit": 1e-11,
+    "memory_bytes": {
+      "logical_runtime_metadata_per_column": 48,
+      "committed_physical_state_per_column": 8,
+      "shared_immutable_parameters": 16,
+      "unused_optional_state_overhead": 0,
+      "worker_scratch_per_worker": 112
+    }
+  },
+  "exact_source_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "e8605e73a191e863374a26b096e0d597cb70cadd",
+    "src/transaction/mod_transaction_reference.f90": "4a573316b77252b56bcb429fd519aa57123e9a06",
+    "src/runtime/mod_canonical_contracts.f90": "55cd8a9dc529bb2d057845f212b7efff6c80c553",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f0bfb2c1359c39b4708350b756aa2211fb982be4",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+    "src/solver/mod_soil_water_solver_contract.f90": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "src/solver/mod_reference_richards_workspace.f90": "93285b2ca24669494c93c00403e3783fca6758e9",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "e02882bd45f67b42ede118de14a6b5b8b16fdb80",
+    "src/legacy/b1_10_port/headcalc.f90": "e22251c8f562839857cdb7a609a8148d1f2d58f8",
+    "reference/swap-4.3.1/snapshots/B1.10.yml": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+    "tools/vq/cases/b1-10-reference-pin.json": "2422c3ec518afb1d9b7fbd55e869a806842161c9"
+  },
+  "admission": {
+    "deterministic_test_backend": "QUALIFIED_PRESERVED",
+    "fsi05_focused_production_workspace_seam": "QUALIFIED_IN_SHARED_POSTIMAGE",
+    "serialized_reference_runtime_backend": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "real_headcalc_parallel_admission": false,
+    "physical_multiswap_reference_backend": "NOT_ADMITTED",
+    "full_reference_richards_reentrancy_qualified": false,
+    "full_swap_water_balance_identity_qualified": false
+  },
+  "observations": [
+    "The exact F-SI05 legacy/preimage compilation emits compiler warnings already present on the separately qualified F-SI05 route; the F-SI05 gate does not treat these warnings as errors.",
+    "F-MR02 introduced no physics formula, numerical policy, F-KT transaction-semantic, or parallel-admission change.",
+    "A green shared-postimage gate qualifies coexistence and the focused seam only; it does not qualify a production F-MR -> real reference Richards execution route."
+  ],
+  "verified_at": "2026-09-07T17:00:33Z"
+}
