@@ -1,73 +1,48 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-SI",
   "work_unit": "F-SI09",
-  "title": "Corrected B1.10 constitutive-provider source binding and qualification",
-  "status": "SOURCE_RESOLVED_PROVIDER_NOT_MATERIALIZED",
-  "qualified": false,
+  "title": "Corrected B1.10 constitutive-provider source binding",
+  "status": "SOURCE_RESOLVED_PROVIDER_MATERIALIZED",
+  "qualified": true,
+  "qualification_scope": "source resolution and exact corrected reference payload only; provider qualification is recorded separately",
   "branch": "work/f-si09-b110-constitutive-provider",
   "basis": {
     "fsi08_qualified_head": "5b522c8f2767989161dae7faf382d5ee1b27c47c",
-    "fsi08_tested_postimage": "df5f064c787be736aea4aa679ff9c260b43bdae7",
-    "oracle": "B1.10",
-    "b1_10_snapshot_blob": "8d768f00d47224a663941f79bb2d35eacc66d16b",
-    "b1_10_reconstruct_tool_blob": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
-    "swap012_patch_blob": "77f4b63689a6f72116280cbd019852b3b181e34a",
-    "swap012_qualification_blob": "77a608ea459973b1cf1c4cadc076eeada9b55800"
+    "oracle": "B1.10"
   },
   "exact_source_identity": {
     "supplied_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
     "b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
-    "b1_10_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
     "target": "SWAP/MOD_MvG_functions.f90",
-    "b0_and_b1_8_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
     "swap012_patch_sha256": "263e515b7c80059c13e71fcbc3dc1f187b6d0673e07c0c265bbc140fea0df131",
     "corrected_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
   },
-  "source_resolution": {
-    "reconstruction_contract_available": true,
-    "patch_and_qualification_available": true,
-    "byte_exact_b0_archive_present_in_repository": false,
-    "byte_exact_corrected_target_present_in_current_production_tree": false,
-    "byte_exact_corrected_target_present_on_checked_swap012_admission_branches": false,
-    "uploaded_distribution_admissible": true,
-    "uploaded_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
-    "nested_b0_archive_verified": true,
-    "nested_b0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
-    "b0_target_verified": true,
-    "b0_target_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
-    "swap012_applied_byte_safely": true,
-    "corrected_target_verified": true,
-    "corrected_target_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
-    "previous_rejection_corrected": "The outer supplied distribution was previously compared against the nested B0 source-archive hash. SOURCE_IDENTITY.md defines 2b48353d... for the outer distribution and 1a2d7989... for the nested SWAP.ZIP; both now verify exactly."
+  "repository_reference_binding": {
+    "payload_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "payload_git_blob": "6cfcec4e38b02343ba48e7e6fb5d595158e19653",
+    "manifest_path": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json",
+    "verifier_path": "tools/fsi/fsi09_verify_b110_reference_payload.py",
+    "corrected_target_present_as_immutable_reference_payload": true,
+    "production_provider_source_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "production_provider_git_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2"
   },
-  "hard_rule": "A concrete provider may now be implemented only from the byte-exact corrected target resolved above. Formula semantics must remain source-bound to corrected B1.10 and any transformation from module-global context to explicit provider context must be executable-identity qualified.",
-  "allowed_now": [
-    "persist source-resolution evidence",
-    "materialize byte-exact corrected MOD_MvG source as controlled reference input",
-    "build a concrete provider by source-bound mechanical isolation",
-    "qualify provider outputs against the corrected source"
-  ],
-  "still_forbidden": [
-    "reimplement formulas from prose or memory",
-    "change retention or conductivity formulas",
-    "change numerical policy or tolerances",
-    "admit parallel reference backend before heterogeneous real-provider qualification"
-  ],
-  "remaining_exit_requirements": [
-    "corrected source postimage persisted or reproducibly materialized by repository tooling",
-    "concrete provider preserves corrected B1.10 constitutive functions without formula change",
-    "provider is qualified against actual corrected source over relevant hydraulic models",
-    "F-SI08 heterogeneous 1/2/4/8 concurrency remains green with the concrete provider"
-  ],
+  "source_resolution_evidence": {
+    "initial_tested_postimage": "a588ab7401b53e4da0eb10ae6cc55efec0b6a01f",
+    "initial_workflow_run": 34145698534,
+    "initial_workflow_job": 101817163748,
+    "corrected_payload_ci_execution_postimage": "833aefd3f77c548983350aad8311e260dd428ea0",
+    "corrected_payload_ci_run": 34148278075,
+    "corrected_payload_ci_job": 101824900106,
+    "conclusion": "success"
+  },
+  "hard_rule": "Provider qualification must remain executable against this exact corrected source; source admission alone never implies broader hydraulic-model or parallel-backend admission.",
   "scope_flags": {
-    "IMPLEMENTED": false,
-    "PERSISTED": true,
-    "TESTED_SOURCE_RESOLUTION": true,
-    "QUALIFIED": false,
-    "production_b1_10_constitutive_provider_admitted": false,
-    "parallel_reference_backend_admitted": false,
+    "SOURCE_RESOLVED": true,
+    "REFERENCE_PAYLOAD_PERSISTED": true,
+    "REFERENCE_PAYLOAD_TESTED": true,
+    "SOURCE_BINDING_QUALIFIED": true,
     "physics_changed": false,
     "numerical_policy_changed": false,
     "transaction_semantics_changed": false
