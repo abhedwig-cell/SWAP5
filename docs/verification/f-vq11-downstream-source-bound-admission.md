@@ -21,7 +21,7 @@ F-KT04 qualified tested postimage `dfe9ac831428a65703e63e9f66673c6288ecc6fc` und
 
 The admitted scope is committed temporal provenance, contiguous continuation, revision/time advancement on commit and fail-closed rejection of overlap, gap, backward or non-finite time.
 
-F-VQ11 does not consume F-KT05. Current observed F-KT05 head `ed0764126a9febdd8a14ff3f32fdba68e9be9e81` remains unqualified and workflow `34123331837` fails in the focused test compilation under `-Werror=compare-reals`. That failure is a negative-admission barrier, not something to bypass in VQ.
+F-VQ11 does not consume F-KT05. The observed F-KT05 postimage `ed0764126a9febdd8a14ff3f32fdba68e9be9e81` remains a negative admission fixture: its focused gate fails under `-Werror=compare-reals`. F-VQ11 confirms that failure is still reproduced and refuses to promote F-KT05.
 
 ## F-SI04 boundary
 
@@ -42,8 +42,23 @@ F-VQ11 checks this boundary rather than composing the two implementations into a
 
 ## Mass conservation
 
-Mass conservation remains an absolute requirement. F-SI04 has a qualified focused unrounded equation-residual identity, but explicitly does not execute the complete SWAP water-accounting chain. F-VQ11 must never promote that focused residual into full SWAP mass-balance qualification.
+Mass conservation remains an absolute requirement. F-SI04 has a qualified focused unrounded equation-residual identity, but explicitly does not execute the complete SWAP water-accounting chain. F-VQ11 does not promote that focused residual into full SWAP mass-balance qualification.
+
+## Qualification result
+
+F-VQ11 is qualified as `QUALIFIED_FKT04_FSI04_SOURCE_BOUND_ADMISSION_ONLY` on tested postimage `98c9ede6e993c08a364a2148ed0aa6ff428f6d98`.
+
+The qualifying runs are:
+
+- dedicated F-VQ11 workflow `34125646655`, job `101753579651`: success;
+- immutable VQ reference replay `34125646535`: success;
+- documentation `34125646611`: success;
+- compiler identity: GNU Fortran 13.3.0.
+
+The dedicated replay reruns the exact F-KT04 focused gate and selected F-CI regressions, the exact F-SI04 focused real HeadCalc workspace gate, and the F-KT05 expected negative gate. All admission guards pass.
+
+Two orchestration corrections were made without changing claim scope. First, the dedicated F-VQ11 workflow path was added to F-VQ11's own qualification-only allowlist. Second, F-VQ08–F-VQ10 were changed from later-head replay to immutable replay on their exact qualified final heads. Their historical gates were not weakened or edited.
 
 ## Fail-closed holds
 
-A green F-VQ11 run may qualify the two source-bound downstream admission contracts and the F-KT05 negative-admission barrier only. It must not qualify production reference execution, production MultiSWAP routing, a production workspace-aware HeadCalc seam, combined F-KT/F-SI runtime execution, complete optional-process coverage or full solver reentrancy.
+F-VQ11 does **not** qualify production reference execution, production MultiSWAP routing, a production workspace-aware HeadCalc seam, combined F-KT/F-SI runtime execution, complete optional-process coverage, full solver reentrancy or the full SWAP water-balance identity. Those capabilities remain separately gated.

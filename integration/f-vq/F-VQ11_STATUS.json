@@ -1,33 +1,46 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ11",
   "oracle": "B1.10",
   "basis": {
     "fvq10_final_head": "82e9ec4ec4a3489dec771b8f53caf2c14a5eef20",
     "fci18_canonical_closeout_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "persist_first_checkpoint": "59179eab2eac82b05cac21fd0a68f499ac0f6b10",
+    "initial_pretest_postimage": "2a7ba7a39fc0e3f45d744ac91ba94c8e9cd3008f",
+    "tested_postimage": "98c9ede6e993c08a364a2148ed0aa6ff428f6d98",
     "fkt04_tested_postimage": "dfe9ac831428a65703e63e9f66673c6288ecc6fc",
     "fkt04_qualification_evidence_commit": "acd55ecee8802a0a9fb5d854380622f2d20a7503",
     "fkt04_status_promotion_commit": "65cfa7c855499cf2dba8ecb8ef4ab17548cc5a1c",
-    "fkt04_workflow_run": 34121637946,
-    "fkt04_focused_job": 101740791304,
-    "fkt04_fci_regression_job": 101740841325,
     "fsi04_tested_postimage": "0cfbefc271447b4b53eeee50c1dfbb2acaf020df",
     "fsi04_qualification_record_head": "c76f794b93522bea3a80a6880bc95ef5671cb914",
-    "fsi04_workflow_run": 34122972659,
-    "fsi04_job": 101745034729,
-    "fkt05_observed_head": "ed0764126a9febdd8a14ff3f32fdba68e9be9e81",
-    "fkt05_failed_workflow_run": 34123331837,
-    "fkt05_failed_job": 101746158356
+    "fkt05_observed_head": "ed0764126a9febdd8a14ff3f32fdba68e9be9e81"
   },
   "qualification_scope": "DOWNSTREAM_SOURCE_BOUND_FKT04_FSI04_ADMISSION_ONLY",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "decision": "PENDING_FVQ11_CI",
-  "fkt04_source_bound_admitted": false,
-  "fsi04_source_bound_admitted": false,
+  "tested": true,
+  "qualified": true,
+  "decision": "QUALIFIED_FKT04_FSI04_SOURCE_BOUND_ADMISSION_ONLY",
+  "tested_postimage": "98c9ede6e993c08a364a2148ed0aa6ff428f6d98",
+  "qualification_run": {
+    "workflow": "F-VQ11 downstream source-bound admission",
+    "run_id": 34125646655,
+    "job_id": 101753579651,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "vq_reference_run": {
+    "run_id": 34125646535,
+    "conclusion": "success",
+    "replay_mode": "IMMUTABLE_EXACT_QUALIFIED_POSTIMAGES_FVQ04_THROUGH_FVQ10"
+  },
+  "documentation_run": {
+    "run_id": 34125646611,
+    "conclusion": "success"
+  },
+  "fkt04_source_bound_admitted": true,
+  "fsi04_source_bound_admitted": true,
   "fkt05_admitted": false,
   "fkt04_fsi04_composed_runtime_qualified": false,
   "production_workspace_headcalc_seam_qualified": false,
@@ -36,11 +49,30 @@
   "production_reference_admission": "BLOCKED_FAIL_CLOSED",
   "production_multiswap_admission": false,
   "production_source_changed_by_fvq11": false,
+  "qualification_corrections": [
+    {
+      "run_id": 34125160747,
+      "job_id": 101752021510,
+      "result": "FAIL_GATE_ALLOWLIST_ONLY",
+      "finding": "The F-VQ11 gate omitted its own dedicated workflow path from the qualification-only allowlist.",
+      "correction_commit": "7584f0c38d407913304eea05fd343f2f7fef31cc",
+      "claim_scope_changed": false
+    },
+    {
+      "run_id": 34125440594,
+      "result": "FAIL_HISTORICAL_REPLAY_CONTEXT_ONLY",
+      "finding": "F-VQ08 through F-VQ10 were replayed on the later F-VQ11 head, causing their historical qualification-path guards to reject later qualification files.",
+      "correction_commit": "98c9ede6e993c08a364a2148ed0aa6ff428f6d98",
+      "correction": "Replay F-VQ08, F-VQ09 and F-VQ10 on their exact immutable qualified final heads; historical gates were not modified.",
+      "claim_scope_changed": false
+    }
+  ],
   "holds": [
-    "F-KT05 remains unqualified; its observed head fails the focused qualification workflow at test compile under -Werror=compare-reals.",
+    "F-KT05 is not admitted; the exact observed F-KT05 postimage remains an expected negative replay barrier for this qualification.",
     "F-SI04 qualifies a generated source-bound focused HeadCalc workspace replay, not a committed production workspace-aware HeadCalc seam.",
-    "F-KT04 and F-SI04 are admitted independently; their composed runtime execution is not qualified by F-VQ11.",
-    "F-SI04 does not qualify the full SWAP water-balance accounting chain, full real-solver reentrancy, parallel real HeadCalc workers or alternative solver paths.",
-    "B1.10 production temporal profile and production reference execution remain independently fail-closed."
+    "F-KT04 and F-SI04 remain independently admitted; their composed runtime execution is not qualified by F-VQ11.",
+    "F-SI04 focused equation-residual identity is not full SWAP water-balance qualification.",
+    "Full real solver reentrancy, parallel real HeadCalc workers and alternative solver workspace paths remain outside this admission.",
+    "Production reference execution and production MultiSWAP admission remain fail-closed."
   ]
 }
