@@ -42,11 +42,16 @@ old='swmacro = 0; swbotb = 7; swkimpl = 0; swkmean = 1;'
 new='swmacro = 0; swbotb = 7; swkimpl = 1; swkmean = 1;'
 if old not in s: raise SystemExit('F-SI11 swkimpl1 fixture marker missing')
 s=s.replace(old,new,1)
+marker='  call run_serial_baseline(failures)'
+check='''  call prepare_workspace(serial_ws(1), 1)\n  call serial_solvers(1)%solve(requests(1), serial_ws(1), serial_results(1))\n  if (serial_results(1)%status /= SW_SOLVE_FAILED) error stop 'F-SI11 swkimpl1 was accepted'\n  if (trim(serial_results(1)%diagnostics%route) /= 'legacy-implicit-k-deferred') &\n       error stop 'F-SI11 wrong swkimpl1 rejection route'\n  if (serial_ws(1)%legacy_worker%diagnostics%headcalc_calls /= 0) &\n       error stop 'F-SI11 swkimpl1 reached HeadCalc despite adapter rejection'\n  print *, 'F-SI11_SWKIMPL1_FAILCLOSED PASS'\n  stop\n\n  call run_serial_baseline(failures)'''
+if marker not in s: raise SystemExit('F-SI11 swkimpl1 execution marker missing')
+s=s.replace(marker,check,1)
 Path(sys.argv[2]).write_text(s)
 PY
 
 grep -Fq 'request%evaluation%root_sink => root_sink(column)' "$DRIVER"
 grep -Fq 'swkimpl = 1' "$DRIVER"
+grep -Fq "legacy-implicit-k-deferred" "$DRIVER"
 
 OMP=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
 for opt in 0 2; do
@@ -66,12 +71,10 @@ for opt in 0 2; do
   gfortran "${OMP[@]}" -O"$opt" "$out/driver.o" "$out/adapter.o" "$out/headcalc.o" "$out/root.o" \
     "$out/process.o" "$out/mvg.o" "$out/top.o" "$out/state.o" "$out/workspace.o" "$out/contract.o" \
     "$out/worker.o" "$out/stubs.o" -o "$out/test"
-  if timeout 30s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test" > "$out/output.txt" 2>&1; then
-    echo "F-SI11_SWKIMPL1_FAILCLOSED_O${opt} FAIL accepted root-sink provider" >&2
-    exit 1
-  fi
-  grep -Fqi 'root-sink provider requires swkimpl=0 in F-SI11' "$out/output.txt"
+  timeout 30s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test" > "$out/output.txt"
+  grep -Fq 'F-SI11_SWKIMPL1_FAILCLOSED PASS' "$out/output.txt"
   echo "F-SI11_SWKIMPL1_FAILCLOSED_O${opt} PASS"
 done
-
+cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+echo 'F-SI11_SWKIMPL1_FAILCLOSED_O0_O2_IDENTITY PASS'
 echo 'F-SI11_SWKIMPL1_FAILCLOSED PASS'
