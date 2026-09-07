@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "workstream": "F-KT",
+  "work_unit": "F-KT03",
+  "title": "Opaque transaction carriers and explicit committed-state API",
+  "baseline": "b9e0486a3e9dd6bf50f889acb842ec85f0351a25",
+  "canonical_branch": "integration/f-kt",
+  "purpose": "Make the canonical F-KT API accept only the F-KT-owned committed carrier and prevent caller mutation or forgery of candidate provenance while preserving a read-only physical snapshot seam for downstream solver adapters.",
+  "canonical_api": {
+    "advance_committed_argument": "type(kernel_committed_state_t), intent(in)",
+    "commit_committed_argument": "type(kernel_committed_state_t), intent(inout)",
+    "raw_transaction_state_accepted_by_canonical_entrypoint": false,
+    "second_production_entrypoint_created": false
+  },
+  "carrier_visibility": {
+    "committed_physical_state": "private",
+    "committed_lineage_id": "private",
+    "committed_revision": "private",
+    "candidate_physical_state": "private",
+    "candidate_validity": "private",
+    "candidate_origin_interval": "private",
+    "candidate_origin_lineage_id": "private",
+    "candidate_origin_revision": "private"
+  },
+  "read_only_views": {
+    "committed_snapshot": "kernel_committed_state_t%snapshot -> cloned transaction_state_t physical snapshot",
+    "candidate_snapshot": "kernel_candidate_state_t%snapshot -> cloned transaction_state_t physical snapshot",
+    "candidate_metadata": [
+      "ready",
+      "current_lineage_id",
+      "origin_revision",
+      "origin_interval"
+    ],
+    "snapshot_rule": "returned snapshots are copies; mutating them cannot mutate committed or candidate state"
+  },
+  "transaction_rules": {
+    "candidate_provenance_written_only_by_fkt": true,
+    "caller_can_forge_candidate_lineage_or_revision": false,
+    "stale_commit_rejected": true,
+    "cross_lineage_commit_rejected": true,
+    "rejected_commit_consumes_candidate": false,
+    "successful_commit_increments_revision_once": true,
+    "rollback_changes_committed_revision": false,
+    "physical_trial_origin_is_committed_snapshot": true
+  },
+  "fsi_boundary": {
+    "fsi01_contract_head": "ae6da038ee7e98dfe1758f5f86b4be0fb48b4743",
+    "fsi02_head_observed": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi01_contract_blob": "65b1d539837bc6cc2b14f59d5b5a3d225dbad610",
+    "fkt_imports_fsi_solver_types": false,
+    "mapping_owner": "F-SI adapter or model implementation",
+    "rule": "F-KT exposes a generic cloned physical snapshot; conversion to soil_water_physical_state_t is not owned by the kernel transaction layer",
+    "solver_may_commit_or_rollback": false
+  },
+  "fmq_observation": {
+    "latest_qualified_boundary_head_observed": "871f4062caf490fc244db5c61693dc9a7c620f83",
+    "capability_promotion_from_fkt03": false,
+    "reason": "F-MQ remains qualification-only and owns neither F-KT transaction semantics nor production scheduling"
+  },
+  "preserved_holds": [
+    "B1.10 temporal-limit profile remains independently unqualified; production reference admission stays fail-closed",
+    "full reference Richards reentrancy remains F-SI work",
+    "production MultiSWAP runtime and scheduling remain outside F-KT",
+    "optional-process temporal/storage completeness remains downstream qualification work"
+  ],
+  "invariant_assessment": {
+    "1": "PASS: one canonical kernel entrypoint is retained",
+    "2": "PASS: no I/O semantics are added",
+    "3": "PASS: transaction metadata remains separated from physical state and inputs",
+    "4": "PASS: carrier adds only minimal lineage/revision transaction metadata",
+    "5": "PASS: no worker scratch enters persistent state",
+    "7": "PASS: opaque candidate provenance strengthens transaction lifecycle integrity",
+    "8": "PASS: physical replay remains rooted in committed state; snapshots are clones",
+    "9": "PASS: origin interval remains generic t0,t1 metadata",
+    "11": "PASS: stale and cross-lineage protection is suitable for future coupling transactions",
+    "13": "PASS: mass acceptance remains delegated unchanged to qualified F-CI substrate",
+    "20": "PASS: no soil solver implementation type is imported into F-KT",
+    "22": "PASS: no HeadCalc/Newton/Jacobian internals cross the boundary",
+    "23": "PASS: numerical configuration remains a distinct argument",
+    "25": "PASS_WITH_HOLD: reference admission remains fail-closed pending VQ evidence",
+    "26": "PASS: transaction rejection diagnostics remain explicit",
+    "29": "PASS: no midnight, daily, file or MODFLOW assumptions are introduced"
+  }
+}
