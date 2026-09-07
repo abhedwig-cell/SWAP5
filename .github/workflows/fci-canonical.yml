@@ -63,3 +63,15 @@ jobs:
         run: gfortran --version
       - name: F-CI06 controlled source-port and checkpoint gate
         run: bash tests/fci/run_fci06_gate.sh
+
+  fci07-legacy-trial-capsule:
+    needs: fci06-controlled-source-port
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI07 worker-local legacy trial capsule gate
+        run: bash tests/fci/run_fci07_gate.sh
