@@ -1,0 +1,44 @@
+name: F-SI11 materialize root-sink seam
+
+on:
+  push:
+    branches:
+      - work/f-si11-b110-root-sink-provider
+    paths:
+      - 'integration/f-si/F-SI11_ROOT_SINK_PROVIDER_CONTRACT.json'
+      - 'tools/fsi/fsi11_materialize_root_sink_seam.py'
+      - '.github/workflows/fsi11-materialize-root-sink.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi11-materialize-root-sink
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si11-b110-root-sink-provider
+      - name: Materialize source-bound root-sink seam
+        run: python3 tools/fsi/fsi11_materialize_root_sink_seam.py
+      - name: Commit materialized HeadCalc only
+        run: |
+          git diff --exit-code -- src/solver/mod_soil_water_solver_contract.f90 src/solver/mod_b110_root_sink_provider.f90 tools/fsi/fsi11_materialize_root_sink_seam.py integration/f-si/F-SI11_ROOT_SINK_PROVIDER_CONTRACT.json || {
+            echo 'F-SI11 materializer changed protected non-HeadCalc source' >&2
+            exit 1
+          }
+          if git diff --quiet -- src/legacy/b1_10_port/headcalc.f90; then
+            echo 'F-SI11 root-sink seam already materialized'
+            exit 0
+          fi
+          test "$(git diff --name-only | tr '\n' ' ')" = "src/legacy/b1_10_port/headcalc.f90 "
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/headcalc.f90
+          git commit -m 'F-SI11: materialize root-sink provider seam in HeadCalc'
+          git push origin HEAD:work/f-si11-b110-root-sink-provider
