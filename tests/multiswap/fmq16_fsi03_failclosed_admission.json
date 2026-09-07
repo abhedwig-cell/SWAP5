@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ16",
+  "requirements_baseline": {
+    "path": "tests/multiswap/qualification_matrix.json",
+    "git_blob_sha1": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "row_count": 35
+  },
+  "lineage": {
+    "fmq15_head": "b687bb434c35112ef8e9721452ff7dacb4b66b43",
+    "fsi02_qualified_head": "da1d5da0d909c5ce55efa17507b805bffd6b82f9",
+    "fsi03_unqualified_head": "5bb86d267b8f80ce40e33e78b4d29a35ea3d83d3",
+    "fsi03_failed_workflow_run": 34120806552,
+    "fvq09_checkpoint_head": "5445fc6f5bd1d1df9ae0e8ca1ef02c7a2a61a55b",
+    "oracle": "B1.10"
+  },
+  "fsi03_observed_capability": {
+    "legacy_reference_adapter_present": true,
+    "adapter_path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "adapter_blob": "84366a4b312a86806cc3aa78a7257c3a7a95d2f1",
+    "common_solver_interface_implementation": true,
+    "worker_context_embedded_in_solver_workspace": true,
+    "input_base_state_copied_into_legacy_globals_for_trial": true,
+    "legacy_globals_restored_after_trial": true,
+    "candidate_state_returned_separately": true,
+    "retry_status_projected": true,
+    "diagnostics_projected": true,
+    "unrounded_mass_balance_residual_available": false,
+    "macropore_supported": false,
+    "implicit_conductivity_mode_supported": false,
+    "all_bottom_boundary_modes_supported": false,
+    "parallel_multiswap_backend_qualified": false
+  },
+  "fsi03_admission": {
+    "allowed": false,
+    "reason": "The source-bound F-SI03 workflow failed before executable qualification because the strict warning-as-error compile gate rejects direct REAL equality comparisons in the qualification test.",
+    "workflow_run": 34120806552,
+    "workflow_conclusion": "failure",
+    "failed_step": "F-SI03 source-bound adapter gate",
+    "compiler": "GNU Fortran 13.3.0",
+    "failure_signature": "Error: Equality comparison for REAL(8) ... [-Werror=compare-reals]",
+    "formal_qualification_postimage_present": false
+  },
+  "coverage_effect": {
+    "synthetic_executable_before": 27,
+    "synthetic_executable_after": 27,
+    "real_physics_executable_before": 0,
+    "real_physics_executable_after": 0,
+    "production_runtime_qualified_before": 0,
+    "production_runtime_qualified_after": 0,
+    "promotions": []
+  },
+  "protected_rows": [
+    {
+      "id": "P03",
+      "decision": "NO_PROMOTION",
+      "reason": "reference solver worker-count identity not yet qualified"
+    },
+    {
+      "id": "P10",
+      "decision": "NO_PROMOTION",
+      "reason": "no admitted real reference replay fixture"
+    },
+    {
+      "id": "P11",
+      "decision": "NO_PROMOTION",
+      "reason": "no admitted real reference recomputation fixture"
+    },
+    {
+      "id": "P16",
+      "decision": "NO_PROMOTION",
+      "reason": "F-SI03 result mass residual is deliberately NaN and physical mass identity remains unqualified"
+    },
+    {
+      "id": "P18",
+      "decision": "NO_PROMOTION",
+      "reason": "reference solver interleave/isolation not yet qualified"
+    },
+    {
+      "id": "P19",
+      "decision": "COMMON_LAYER_ONLY",
+      "reason": "F-MQ15 already qualified common workspace poisoning; F-SI03 reference solver poisoning identity is not admitted"
+    },
+    {
+      "id": "S01",
+      "decision": "NO_PROMOTION",
+      "reason": "real scientific reference remains fail-closed"
+    }
+  ],
+  "required_upstream_exit_for_next_admission": {
+    "fsi03_green_source_bound_gate": true,
+    "fsi03_formal_qualification_postimage": true,
+    "exact_qualified_source_head": true,
+    "no_relaxation_of_hard_mass_conservation": true
+  },
+  "decision": "BLOCK_FSI03_CONSUMPTION_UNTIL_QUALIFIED"
+}
