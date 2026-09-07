@@ -1,28 +1,83 @@
-program test_fmq22_p14_optional_state
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+module mod_fmq22_p14_state
+  use, intrinsic :: iso_fortran_env, only: real64
   use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_state_t
-  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t
   implicit none
+  private
 
-  type :: optional_payload_t
+  type, public :: optional_payload_t
     integer :: continuation_counter = 0
   end type optional_payload_t
 
-  type, extends(canonical_state_t) :: p14_state_t
+  type, extends(canonical_state_t), public :: p14_state_t
     real(real64) :: water = 0.0_real64
     type(optional_payload_t), allocatable :: optional_payload
   contains
     procedure :: clone => clone_p14_state
   end type p14_state_t
 
-  type :: immutable_parameters_t
+  type, public :: immutable_parameters_t
     integer :: parameter_id = 0
   end type immutable_parameters_t
 
-  type :: parameter_ref_t
+  type, public :: parameter_ref_t
     type(immutable_parameters_t), pointer :: ptr => null()
   end type parameter_ref_t
+
+  public :: make_seed, dynamic_payload_bytes
+
+contains
+
+  subroutine clone_p14_state(self, copy)
+    class(p14_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+
+    allocate(p14_state_t :: copy)
+    select type (copy)
+    type is (p14_state_t)
+      copy%water = self%water
+      if (allocated(self%optional_payload)) then
+        allocate(copy%optional_payload)
+        copy%optional_payload%continuation_counter = self%optional_payload%continuation_counter
+      end if
+    end select
+  end subroutine clone_p14_state
+
+  subroutine make_seed(state, active, counter)
+    class(transaction_state_t), allocatable, intent(out) :: state
+    logical, intent(in) :: active
+    integer, intent(in) :: counter
+
+    allocate(p14_state_t :: state)
+    select type (state)
+    type is (p14_state_t)
+      state%water = 1.0_real64
+      if (active) then
+        allocate(state%optional_payload)
+        state%optional_payload%continuation_counter = counter
+      end if
+    end select
+  end subroutine make_seed
+
+  integer function dynamic_payload_bytes(state) result(bytes)
+    class(transaction_state_t), allocatable, intent(in) :: state
+    bytes = 0
+    select type (state)
+    type is (p14_state_t)
+      if (allocated(state%optional_payload)) bytes = storage_size(state%optional_payload)/8
+    class default
+      bytes = -1
+    end select
+  end function dynamic_payload_bytes
+
+end module mod_fmq22_p14_state
+
+program test_fmq22_p14_optional_state
+  use, intrinsic :: iso_fortran_env, only: int64
+  use mod_transaction_reference, only: transaction_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t
+  use mod_fmq22_p14_state
+  implicit none
 
   type(kernel_committed_state_t) :: columns(2)
   type(kernel_checkpoint_t) :: checkpoints(2)
@@ -38,12 +93,12 @@ program test_fmq22_p14_optional_state
   parameter_refs(2)%ptr => shared_parameters
 
   call make_seed(seed, .false., 0)
-  call columns(1)%initialize(14001_int64, seed, ok, 1.25_real64)
+  call columns(1)%initialize(14001_int64, seed, ok, 1.25d0)
   call expect(ok, 'inactive column initializes', failures)
   deallocate(seed)
 
   call make_seed(seed, .true., 17)
-  call columns(2)%initialize(14002_int64, seed, ok, 1.25_real64)
+  call columns(2)%initialize(14002_int64, seed, ok, 1.25d0)
   call expect(ok, 'active column initializes', failures)
   deallocate(seed)
 
@@ -102,37 +157,6 @@ program test_fmq22_p14_optional_state
 
 contains
 
-  subroutine clone_p14_state(self, copy)
-    class(p14_state_t), intent(in) :: self
-    class(transaction_state_t), allocatable, intent(out) :: copy
-
-    allocate(p14_state_t :: copy)
-    select type (copy)
-    type is (p14_state_t)
-      copy%water = self%water
-      if (allocated(self%optional_payload)) then
-        allocate(copy%optional_payload)
-        copy%optional_payload%continuation_counter = self%optional_payload%continuation_counter
-      end if
-    end select
-  end subroutine clone_p14_state
-
-  subroutine make_seed(state, active, counter)
-    class(transaction_state_t), allocatable, intent(out) :: state
-    logical, intent(in) :: active
-    integer, intent(in) :: counter
-
-    allocate(p14_state_t :: state)
-    select type (state)
-    type is (p14_state_t)
-      state%water = 1.0_real64
-      if (active) then
-        allocate(state%optional_payload)
-        state%optional_payload%continuation_counter = counter
-      end if
-    end select
-  end subroutine make_seed
-
   subroutine inspect_state(state, expect_active, expect_counter, failures)
     class(transaction_state_t), allocatable, intent(in) :: state
     logical, intent(in) :: expect_active
@@ -150,17 +174,6 @@ contains
       call expect(.false., 'unexpected state type', failures)
     end select
   end subroutine inspect_state
-
-  integer function dynamic_payload_bytes(state) result(bytes)
-    class(transaction_state_t), allocatable, intent(in) :: state
-    bytes = 0
-    select type (state)
-    type is (p14_state_t)
-      if (allocated(state%optional_payload)) bytes = storage_size(state%optional_payload)/8
-    class default
-      bytes = -1
-    end select
-  end function dynamic_payload_bytes
 
   subroutine expect(condition, label, failures)
     logical, intent(in) :: condition
