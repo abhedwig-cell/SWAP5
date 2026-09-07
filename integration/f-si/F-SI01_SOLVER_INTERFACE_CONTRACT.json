@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI01",
+  "contract": "soil_water_solver_v1_boundary",
+  "reference_implementation": "reference_richards",
+  "implemented_in_fsi01": false,
+  "purpose": "exact logical interface contract only; production implementation starts in F-SI02",
+  "solve_signature": "solve(request, workspace) -> result",
+  "request": {
+    "immutable_soil_hydraulic_parameters": {"mutability": "read_only", "persistence": "shared_by_id_or_reference", "required": true},
+    "base_physical_state": {"mutability": "read_only", "ownership": "F-KT committed/candidate state view", "required": true},
+    "boundary_forcing": {"mutability": "read_only", "required": true},
+    "numerical_configuration": {"mutability": "read_only", "ownership": "selected outside solver internals", "required": true},
+    "hydraulic_evaluation_context": {
+      "mutability": "read_only",
+      "required": true,
+      "providers": ["constitutive_hydraulics", "root_extraction", "top_boundary", "optional_macropore_interaction", "other existing shared SWAP physics only where reference Richards requires it"],
+      "rule": "providers expose required hydraulic/process evaluations without exposing HeadCalc internal arrays"
+    }
+  },
+  "workspace": {
+    "ownership": "worker_or_active_solve_job",
+    "persistent_per_logical_column": false,
+    "may_contain": ["newton_vectors", "jacobian_bands", "linear_solve_storage", "constitutive_temporaries", "evaluation_temporaries", "numerical_warm_start_guess"],
+    "must_not_contain": ["committed physical state", "transaction checkpoint authority", "commit flag", "rollback authority", "file or path state"],
+    "reuse_rule": "may be reused between columns only if all column-dependent continuation/history state is reset or separately owned",
+    "poisoning_required": true
+  },
+  "result": {
+    "candidate_physical_state": {"ownership": "returned to F-KT; not committed by solver"},
+    "boundary_fluxes": {"accounting": "unrounded"},
+    "hydraulic_outputs": {"examples": ["head", "theta", "conductivity/capacity outputs required by caller"]},
+    "convergence": {"fields": ["status", "iterations", "route", "retry_advice"], "rule": "retry advice is informational; temporal acceptance is not owned by F-SI"},
+    "diagnostics": {"must_not_affect_physics": true},
+    "mass_accounting": {"precision": "unrounded", "hard_conservation_required": true},
+    "interface_sensitivity": {
+      "optional": true,
+      "reserved_fields": ["dh_bottom_dq_bottom", "available", "method"],
+      "fsi01_requirement": "shape reserved only; no new tangent algorithm implemented"
+    }
+  },
+  "transaction_boundary": {
+    "solver_may_mutate_committed_input": false,
+    "solver_may_commit": false,
+    "solver_may_rollback": false,
+    "solver_may_define_t0_t1_semantics": false,
+    "solver_may_select_external_numerical_policy": false
+  },
+  "implementation_variants": {
+    "reference_richards": {"admitted_now": true},
+    "coarse_richards": {"admitted_now": false, "interface_shape_reserved": true},
+    "reduced_order": {"admitted_now": false, "interface_shape_reserved": true}
+  },
+  "compatibility": {
+    "legacy_headcalc_adapter_allowed": true,
+    "legacy_headcalc_adapter_rule": "adapter may translate legacy globals into request/result during migration but must not become the common interface",
+    "legacy_worker_singleton_allowed_on_reentrant_common_path": false
+  }
+}
