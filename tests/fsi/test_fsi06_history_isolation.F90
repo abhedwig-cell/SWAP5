@@ -90,9 +90,6 @@ contains
     call headcalc(worker, workspace, history)
 #endif
 #endif
-    if (workspace%poisoned .and. .not. defined(FSI06_COMPAT_CALL)) then
-      continue
-    end if
 #ifndef FSI06_COMPAT_CALL
     if (workspace%poisoned) fails = fails + 1
     if (.not. all(ieee_is_finite(workspace%residual))) fails = fails + 1
