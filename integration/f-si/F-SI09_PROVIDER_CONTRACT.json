@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI09",
+  "title": "Corrected B1.10 default-MvG constitutive provider contract",
+  "canonical_branch": "work/f-si09-b110-constitutive-provider",
+  "provider": {
+    "module": "mod_b110_default_mvg_provider",
+    "source_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "source_git_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "interface": "constitutive_hydraulics_provider_t%evaluate",
+    "persistent_mutable_global_state": false,
+    "transaction_authority": false,
+    "owns_committed_state": false
+  },
+  "corrected_source_binding": {
+    "oracle": "B1.10",
+    "corrected_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "reference_payload": "reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64",
+    "binding_method": "Exact corrected source is hash-verified, decoded and compiled in qualification CI. Provider and oracle execute the same admitted parameter/head/dt matrix and their ordered IEEE real64 output bit patterns are compared byte-for-byte under O0 and O2.",
+    "provider_text_claimed_mechanically_generated_from_legacy_source": false,
+    "provider_semantics_mechanically_source_bound_by_executable_bit_identity": true,
+    "formula_reinterpretation_allowed": false
+  },
+  "formula_mapping": [
+    {
+      "provider": "initialize_b110_default_mvg_parameters",
+      "oracle": "MOD_MvG::calc_cofgen_extra",
+      "qualified_outputs": "cofgen rows 25:42 for admitted default-MvG profiles"
+    },
+    {
+      "provider": "b110_watcon",
+      "oracle": "MOD_MvG::watcon default analytical branch",
+      "qualified_outputs": "theta(h)"
+    },
+    {
+      "provider": "b110_moiscap",
+      "oracle": "MOD_MvG::moiscap default analytical branch",
+      "qualified_outputs": "C(h), including dt-dependent near-saturation minimum capacity"
+    },
+    {
+      "provider": "b110_hconduc",
+      "oracle": "MOD_MvG::hconduc default analytical branch",
+      "qualified_outputs": "K(h,theta)"
+    }
+  ],
+  "admitted_hydraulic_profile": {
+    "model_family": "default MvG analytical branch only",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "frost": false,
+    "macropore": false,
+    "conductivity_power_tail": false,
+    "saturated_extrapolation": false,
+    "bottom_modes": [7, -2],
+    "top_boundary": "explicit provider",
+    "source_sink": "explicit provider required"
+  },
+  "required_peer_providers": [
+    "top_boundary provider",
+    "source_sink provider"
+  ],
+  "ownership": {
+    "immutable_hydraulic_parameter_data": "shared by reference/pointer and read-only during solve",
+    "step_duration": "per-solve evaluator binding",
+    "newton_jacobian_scratch": "worker/job-owned F-SI workspace, not provider",
+    "committed_candidate_checkpoint_rollback": "F-KT owned",
+    "drainage_root_irrigation_snow_macropore_physics": "not owned by this provider"
+  },
+  "unsupported_fail_closed": [
+    "swkimpl=1 and dK/dh production path",
+    "model 2 exponential",
+    "model 3 bimodal",
+    "models 4-12 and other hydraulic helper families",
+    "hysteresis",
+    "tabulated hydraulics",
+    "elasticity",
+    "frost",
+    "macropore",
+    "active production drainage/root extraction/irrigation not separately provider-qualified",
+    "non-qualified bottom-boundary modes",
+    "coarse Richards",
+    "reduced-order solver"
+  ],
+  "qualification_scope": {
+    "function_level_exact_source_identity": "required bitwise O0/O2",
+    "real_headcalc_common_route": "required",
+    "workers": [1,2,4,8],
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "focused_unrounded_equation_residual": true,
+    "full_swap_water_balance": false
+  },
+  "downstream_consumption": {
+    "consumer": "F-MR03",
+    "may_consume_without_formula_reinterpretation": true,
+    "must_respect_admitted_profile_and_holds": true,
+    "parallel_reference_backend_is_not_implied": true
+  }
+}
