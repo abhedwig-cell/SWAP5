@@ -8,6 +8,7 @@ on:
       - 'integration/f-si/F-SI09_SOURCE_ADMISSION.json'
       - 'integration/f-si/F-SI09_QUALIFICATION.json'
       - 'tools/fsi/fsi09_source_admission_gate.py'
+      - 'tools/fsi/fsi09_materialize_b110_mvg.py'
       - 'tests/fsi/run_fsi09_source_admission_gate.sh'
       - 'reference/swap-4.3.1/snapshots/B1.10.yml'
       - 'reference/swap-4.3.1/patches/SWAP-012/**'
