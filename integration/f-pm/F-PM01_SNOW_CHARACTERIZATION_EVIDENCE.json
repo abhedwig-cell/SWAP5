@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM01",
+  "process": "SNOW",
+  "status": "PASS",
+  "source_identity": {
+    "snow.f90": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "swap.f90": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "integral.f90": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174"
+  },
+  "source_assertions": {
+    "legacy_snow_task2_daystart_gate": true,
+    "snowinco_is_balance_reference_assignment": true
+  },
+  "compiler": "GNU Fortran (Debian 14.2.0-19) 14.2.0",
+  "optimization": ["O0", "O2"],
+  "o0_o2_stdout_identical": true,
+  "stdout_sha256": "e39f60d6f0f28dfd43730a6bc866a48c58a34ecc70d8af6218099075ac70dae2",
+  "checks": [
+    "same input -> same output (bitwise)",
+    "state clone identity (bitwise)",
+    "A/B/A no cross-call leakage",
+    "rollback/replay identity",
+    "one-day non-midnight interval identity at seam wrapper",
+    "inactive option leaves state/results unchanged",
+    "unrounded mass identity in normal, warm-fresh-snow and deficit-clamp cases"
+  ],
+  "mass_residuals_observed": {
+    "normal": -3.3306690738754696e-16,
+    "warm_fresh_snow": 0.0,
+    "deficit_clamp": 2.7755575615628914e-17
+  },
+  "time_scope": "No duration scaling is inferred. Non-midnight check keeps a one-day interval; generic subdaily snow scaling remains HOLD.",
+  "production_source_modified": false,
+  "execution_note": "Characterization was executed after the inventory and first-process contract had already been persisted. The exact tested source members are untouched by the B1.10 patch sequence and match the pinned B1.10 member identities used by this harness."
+}
