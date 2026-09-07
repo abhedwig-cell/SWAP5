@@ -50,8 +50,8 @@ jobs:
         run: bash tests/fci/run_fci04_gate.sh
       - name: F-CI08 attempt-context regression
         run: bash tests/fci/run_fci08_gate.sh
-      - name: F-CI09 B1.10 transaction binding regression
-        run: bash tests/fci/run_fci09_gate.sh
+      - name: F-CI09 transaction binding forward regression
+        run: bash tests/fkt/run_fkt07_fci09_forward_regression.sh
       - name: F-CI10 time and mass seam regression
         run: bash tests/fci/run_fci10_gate.sh
       - name: F-CI11 controlled interval and mass regression
