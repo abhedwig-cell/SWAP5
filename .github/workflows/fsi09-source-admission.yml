@@ -1,0 +1,25 @@
+name: F-SI09 source admission
+
+on:
+  push:
+    branches:
+      - work/f-si09-b110-constitutive-provider
+    paths:
+      - 'integration/f-si/F-SI09_SOURCE_ADMISSION.json'
+      - 'integration/f-si/F-SI09_QUALIFICATION.json'
+      - 'tools/fsi/fsi09_source_admission_gate.py'
+      - 'tests/fsi/run_fsi09_source_admission_gate.sh'
+      - 'reference/swap-4.3.1/snapshots/B1.10.yml'
+      - 'reference/swap-4.3.1/patches/SWAP-012/**'
+      - 'tools/vq/b1_10_reconstruct.py'
+      - '.github/workflows/fsi09-source-admission.yml'
+
+jobs:
+  fsi09-source-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-SI09 source-admission gate
+        run: bash tests/fsi/run_fsi09_source_admission_gate.sh
