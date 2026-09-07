@@ -182,7 +182,7 @@ contains
     real(real64), intent(in) :: actual, expected
     character(len=*), intent(in) :: label
     integer, intent(inout) :: failures
-    call expect_true(actual == expected, label, failures)
+    call expect_true(transfer(actual, 0_int64) == transfer(expected, 0_int64), label, failures)
   end subroutine expect_close
 
   subroutine new_physical(state, water)
