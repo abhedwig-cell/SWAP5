@@ -19,8 +19,44 @@
     "fmr_branch_present": false
   },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_COMMON_WORKSPACE_ISOLATION_CANDIDATE",
-  "scope": "Exercise the exact F-SI02 production workspace implementation under MultiSWAP-style worker reuse and column scheduling without claiming reference-Richards physics, real B1.10 execution, or production MultiSWAP runtime qualification."
+  "tested": true,
+  "qualified": true,
+  "qualification_run": {
+    "workflow": "F-MQ15 common workspace isolation",
+    "workflow_run": 34120681686,
+    "job": 101737762839,
+    "conclusion": "success"
+  },
+  "qualified_checks": {
+    "fail_closed_admission_tests": "PASS_5_OF_5",
+    "exact_fsi02_provenance": "PASS",
+    "fsi02_boundary_reverification": "PASS",
+    "logical_columns": 256,
+    "worker_counts": [1, 2, 4, 8],
+    "column_orders": ["forward", "reverse"],
+    "poison_reset_before_each_column": "PASS",
+    "worker_count_independent_column_signature": "PASS",
+    "order_independent_column_signature": "PASS",
+    "workspace_payload_scales_with_workers_not_columns": "PASS",
+    "workspace_payload_bytes_per_worker": 1276,
+    "column_signature_total": 394752,
+    "o0_o2_output_identity": "PASS"
+  },
+  "qualified_common_layer_rows": ["P06", "P19"],
+  "matrix_coverage": {
+    "synthetic_executable": 27,
+    "real_physics_executable": 0,
+    "production_runtime_qualified": 0,
+    "matrix_promotions": []
+  },
+  "explicit_nonclaims": [
+    "reference Richards solver binding or reentrancy",
+    "real B1.10 physics execution",
+    "physical water-balance identity",
+    "solver-route or iteration identity",
+    "production MultiSWAP runtime or parallel backend",
+    "interface tangent algorithm"
+  ],
+  "status": "QUALIFIED_COMMON_LAYER_P06_P19_EXECUTABLE_NO_PHYSICS_PROMOTION",
+  "scope": "Exact F-SI02 production workspace implementation exercised under MultiSWAP-style worker reuse and scheduling; qualification is restricted to common-layer scratch/workspace isolation and poisoning semantics."
 }
