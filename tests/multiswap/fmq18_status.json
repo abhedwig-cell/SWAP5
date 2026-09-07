@@ -19,15 +19,32 @@
     "fsi04_workflow_conclusion": "success",
     "fsi04_status": "QUALIFIED_SOURCE_BOUND_MAIN_WORKSPACE_REPLAY_ONLY"
   },
-  "coverage_before": {
+  "qualification": {
+    "workflow": "F-MQ18 F-SI04 real HeadCalc admission",
+    "run_id": 34124178015,
+    "job_id": 101748837962,
+    "conclusion": "success",
+    "python_admission_tests": "PASS_6_OF_6",
+    "external_fsi04_scope_verifier": "PASS",
+    "exact_fsi04_tested_postimage_gate": "PASS",
+    "real_headcalc_replay_O0": "PASS_ORIGINAL_AND_WORKSPACE_BYTE_IDENTICAL",
+    "real_headcalc_replay_O2": "PASS_ORIGINAL_AND_WORKSPACE_BYTE_IDENTICAL",
+    "O0_O2_output_identity": "PASS",
+    "fsi03_adapter_regression": "PASS",
+    "fsi02_workspace_regression": "PASS"
+  },
+  "coverage": {
     "matrix_total": 35,
     "synthetic_executable": 27,
     "real_physics_executable": 0,
-    "production_runtime_qualified": 0
+    "production_runtime_qualified": 0,
+    "matrix_promotions": [],
+    "focused_real_headcalc_prerequisite_rows": ["P06", "P11", "P16", "P19"]
   },
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "status": "PERSISTED_FSI04_REAL_HEADCALC_FOCUSED_ADMISSION_CANDIDATE",
-  "scope": "Admit exact F-SI04 source-bound real HeadCalc focused replay as solver-level qualification evidence while keeping full 35-row real-SWAP and production-runtime coverage fail-closed unless each row's minimum columns, workers, transaction and hard full-mass requirements are actually met."
+  "tested": true,
+  "qualified": true,
+  "status": "QUALIFIED_FSI04_REAL_HEADCALC_FOCUSED_ADMITTED_NO_MATRIX_ROW_PROMOTION",
+  "scope": "Admit exact F-SI04 source-bound real HeadCalc focused replay as solver-level qualification evidence while keeping full 35-row real-SWAP and production-runtime coverage fail-closed unless each row's minimum columns, workers, transaction and hard full-mass requirements are actually met.",
+  "next_dependency": "F-SI05 production workspace-aware HeadCalc seam and/or real multi-column worker execution plus a full reference-derived SWAP interval with hard unrounded mass accounting are required before a complete F-MQ matrix row may be promoted to real physics."
 }
