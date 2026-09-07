@@ -6,43 +6,49 @@
   "fci12_source_commit": "7098aeaa4ca38dc375a965340a35c9870a33de28",
   "fci12_evidence_commit": "729574de00fbb1540affe2af74a7202b38d29754",
   "historical_verifier_head": "29e05be97493926ba451dfd53d5ed3170db47ad5",
+  "qualification_observation": {
+    "tested_postimage": "390bb2595c4cc33b8bb1198f6ff091fbf473068e",
+    "workflow_run": 34105250843,
+    "job_id": 101688663253,
+    "result": "PASS_VERIFIER_CONTRACTS_ONLY"
+  },
   "claims": [
     {
       "claim_id": "FVQ02-C01",
-      "claim": "Reference seam semantic validator is executable as verifier infrastructure.",
+      "claim": "Reference seam semantic validator is executable and qualified as verifier infrastructure.",
       "architecture_invariants": [1,2,3,7,8,9,13,23,25,26,29,30],
       "scope": "VERIFIER_ONLY",
       "contract_exists": true,
       "production_implementation_exists": false,
       "test_executable": true,
-      "test_pass": "PENDING_FVQ02_CI",
-      "claim_qualified": false,
+      "test_pass": "PASS_FVQ02_CI",
+      "claim_qualified": true,
       "hard_mass_gate": false,
       "blocker": null
     },
     {
       "claim_id": "FVQ02-C02",
-      "claim": "Canonical result semantic validator is executable as verifier infrastructure.",
+      "claim": "Canonical result semantic validator is executable and qualified as verifier infrastructure.",
       "architecture_invariants": [3,7,8,9,13,23,25,26,29,30],
       "scope": "VERIFIER_ONLY",
       "contract_exists": true,
       "production_implementation_exists": false,
       "test_executable": true,
-      "test_pass": "PENDING_FVQ02_CI",
-      "claim_qualified": false,
+      "test_pass": "PASS_FVQ02_CI",
+      "claim_qualified": true,
       "hard_mass_gate": false,
       "blocker": null
     },
     {
       "claim_id": "FVQ02-C03",
-      "claim": "Normalized result-record validator independently recomputes unrounded mass residual and transaction consistency.",
+      "claim": "Normalized result-record validator independently recomputes unrounded mass residual and transaction consistency and is qualified as verifier infrastructure.",
       "architecture_invariants": [7,13,23,25,26,30],
       "scope": "VERIFIER_ONLY",
       "contract_exists": true,
       "production_implementation_exists": false,
       "test_executable": true,
-      "test_pass": "PENDING_FVQ02_CI",
-      "claim_qualified": false,
+      "test_pass": "PASS_FVQ02_CI",
+      "claim_qualified": true,
       "hard_mass_gate": false,
       "blocker": null
     },
@@ -54,8 +60,10 @@
       "contract_exists": true,
       "production_implementation_exists": false,
       "test_executable": true,
-      "test_pass": "PENDING_FVQ02_CI",
+      "test_pass": "PASS_FVQ02_CI_11_OF_11",
       "claim_qualified": false,
+      "verifier_harness_qualified": true,
+      "production_physics_qualified": false,
       "hard_mass_gate": false,
       "blocker": null
     },
@@ -67,7 +75,7 @@
       "contract_exists": true,
       "production_implementation_exists": true,
       "test_executable": true,
-      "test_pass": "PASS_FCI12_CANONICAL",
+      "test_pass": "PASS_FCI12_CANONICAL_AND_FVQ02_RERUN",
       "claim_qualified": true,
       "hard_mass_gate": false,
       "blocker": null
@@ -80,10 +88,10 @@
       "contract_exists": false,
       "production_implementation_exists": false,
       "test_executable": false,
-      "test_pass": "NOT_RUN",
+      "test_pass": "NOT_RUN_ON_FCI12_BASIS",
       "claim_qualified": false,
       "hard_mass_gate": false,
-      "blocker": "Recoverable legacy solver-failure status is not admitted by F-CI12."
+      "blocker": "Recoverable legacy solver-failure status is not admitted by the exact F-CI12 qualification basis."
     },
     {
       "claim_id": "FVQ02-C07",
