@@ -12,8 +12,10 @@ SNAPSHOT = ROOT / 'reference/swap-4.3.1/snapshots/B1.10.yml'
 RECONSTRUCT = ROOT / 'tools/vq/b1_10_reconstruct.py'
 PATCH = ROOT / 'reference/swap-4.3.1/patches/SWAP-012/fix.patch'
 QUAL = ROOT / 'reference/swap-4.3.1/patches/SWAP-012/qualification.md'
+MATERIALIZER = ROOT / 'tools/fsi/fsi09_materialize_b110_mvg.py'
 
 EXPECTED = {
+    'outer': '2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360',
     'b0_archive': '1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151',
     'manifest': '2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1',
     'preimage': 'a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390',
@@ -33,9 +35,15 @@ def require(condition: bool, message: str) -> None:
 
 def main() -> int:
     data = json.loads(CONTRACT.read_text())
-    require(data['status'] == 'BLOCKED_SOURCE_MATERIALIZATION_REQUIRED', 'unexpected status')
-    require(data['qualified'] is False, 'blocked source admission must not be qualified')
-    require(data['exact_source_identity']['corrected_target_sha256'] == EXPECTED['corrected'], 'contract corrected target pin')
+    require(data['status'] == 'SOURCE_RESOLVED_PROVIDER_NOT_MATERIALIZED', 'unexpected status')
+    require(data['qualified'] is False, 'provider is not yet qualified')
+    require(data['exact_source_identity']['supplied_distribution_sha256'] == EXPECTED['outer'], 'outer distribution pin')
+    require(data['exact_source_identity']['b0_archive_sha256'] == EXPECTED['b0_archive'], 'nested B0 pin')
+    require(data['exact_source_identity']['corrected_target_sha256'] == EXPECTED['corrected'], 'corrected target pin')
+    require(data['source_resolution']['uploaded_distribution_admissible'] is True, 'exact supplied distribution should be admitted')
+    require(data['source_resolution']['nested_b0_archive_verified'] is True, 'nested B0 verification missing')
+    require(data['source_resolution']['b0_target_verified'] is True, 'B0 target verification missing')
+    require(data['source_resolution']['corrected_target_verified'] is True, 'corrected target verification missing')
     require(data['scope_flags']['production_b1_10_constitutive_provider_admitted'] is False, 'provider must remain not admitted')
     require(data['scope_flags']['parallel_reference_backend_admitted'] is False, 'parallel reference backend must remain not admitted')
 
@@ -58,6 +66,11 @@ def main() -> int:
         require(value in qualification, 'SWAP-012 qualification pin missing: ' + value)
     require('0/600 fail' in qualification, 'SWAP-012 actual-source roundtrip evidence missing')
 
+    materializer = MATERIALIZER.read_text()
+    for value in (EXPECTED['outer'], EXPECTED['b0_archive'], EXPECTED['preimage'], EXPECTED['corrected']):
+        require(value in materializer, 'materializer pin missing: ' + value)
+    require('apply_and_verify.py' in materializer, 'materializer must consume exact SWAP-012 helper')
+
     production_hits = []
     for path in (ROOT / 'src').rglob('*'):
         if not path.is_file():
@@ -65,15 +78,16 @@ def main() -> int:
         lower = path.name.lower()
         if lower == 'mod_mvg_functions.f90' or re.search(r'b1.?10.*constitutive.*provider', lower):
             production_hits.append(str(path.relative_to(ROOT)))
-    require(not production_hits, 'concrete B1.10 constitutive source/provider appeared before source admission: ' + ', '.join(production_hits))
+    require(not production_hits, 'concrete B1.10 constitutive source/provider appeared before provider qualification: ' + ', '.join(production_hits))
 
     print('F-SI09_B110_SNAPSHOT_PROVENANCE PASS')
     print('F-SI09_SWAP012_PATCH_IDENTITY PASS')
     print('F-SI09_SWAP012_QUALIFICATION_BINDING PASS')
-    print('F-SI09_CORRECTED_SOURCE_MATERIALIZATION BLOCKED')
-    print('F-SI09_PRODUCTION_B110_PROVIDER NOT_ADMITTED')
+    print('F-SI09_EXACT_SOURCE_RESOLUTION PASS_RECORDED')
+    print('F-SI09_BYTE_SAFE_MATERIALIZER PASS_STATIC')
+    print('F-SI09_PRODUCTION_B110_PROVIDER NOT_MATERIALIZED')
     print('F-SI09_PARALLEL_REFERENCE_BACKEND NOT_ADMITTED')
-    print('F-SI09_SOURCE_ADMISSION_GATE PASS_BLOCKED_AS_DESIGNED')
+    print('F-SI09_SOURCE_ADMISSION_GATE PASS_SOURCE_RESOLVED_PROVIDER_HELD')
     return 0
 
 
