@@ -1,0 +1,39 @@
+name: F-MR14 interval cost diagnostics owner qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr14-interval-cost-diagnostics-recomposition
+    paths:
+      - src/kernel/mod_kernel_transactions.f90
+      - src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+      - tests/fmr/run_fmr14_interval_cost_diagnostics_gate.sh
+      - integration/f-mr/F-MR14_STATUS.json
+      - .github/workflows/fmr14-interval-cost-diagnostics-qualification.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-MR14 observer-only diagnostics owner gate
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr14_interval_cost_diagnostics_gate.sh | tee fmr14.log
+      - name: Preserve F-MR14 diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmr14-interval-cost-diagnostics
+          path: fmr14.log
