@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "status": "BINARY_LOW_COST_OR_FULL_RETRY_TRANSITION_REFINED_NO_INTERMEDIATE_COST_ROUTE",
+  "reference_only": true,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "solver_controls_changed": false,
+  "scientific_admission_expanded": false,
+  "candidate_head": "b7e8120a909557a4540e84a026747757fcfcc8f0",
+  "workflow_run": 34247636936,
+  "workflow_job": 102133624778,
+  "conclusion": "success",
+  "artifact": {
+    "id": 10064663732,
+    "name": "fpe03-flux-refinement-evidence",
+    "digest": "sha256:685118a9ee1b6561ef49de00d7608f22a8197c6e1bbad59bc52abfb535401360"
+  },
+  "determinism": {
+    "repeat_identity": true,
+    "o0_o2_output_identity": true
+  },
+  "tested_relative_flux_levels": [1e-10, 3e-11, 1e-11, 3e-12, 1e-12],
+  "plus": {
+    "accepted_levels": [3e-12, 1e-12],
+    "rejected_levels": [1e-10, 3e-11, 1e-11],
+    "largest_accepted": 3e-12,
+    "smallest_rejected": 1e-11
+  },
+  "minus": {
+    "accepted_levels": [3e-12, 1e-12],
+    "rejected_levels": [1e-10, 3e-11, 1e-11],
+    "largest_accepted": 3e-12,
+    "smallest_rejected": 1e-11
+  },
+  "accepted_nonzero_cases": 4,
+  "accepted_higher_cost_cases": 0,
+  "accepted_cost_vector": {
+    "nonlinear_iterations": 3,
+    "internal_retries": 0,
+    "headcalc_calls": 3,
+    "jacobian_builds": 3,
+    "linear_solves": 3,
+    "backtracking_attempts": 3,
+    "alternative_solver_calls": 0
+  },
+  "rejected_cost_vector": {
+    "nonlinear_iterations": 24,
+    "internal_retries": 3,
+    "headcalc_calls": 3,
+    "jacobian_builds": 24,
+    "linear_solves": 24,
+    "backtracking_attempts": 96,
+    "alternative_solver_calls": 0
+  },
+  "refined_transition": {
+    "both_signs_symmetric_at_tested_levels": true,
+    "largest_tested_accepted_relative_perturbation": 3e-12,
+    "smallest_tested_rejected_relative_perturbation": 1e-11,
+    "transition_bracket": [3e-12, 1e-11],
+    "accepted_intermediate_cost_route_observed": false,
+    "characterization": "The tested route remains binary: admitted-like low cost when converged, otherwise immediate full-trial Newton exhaustion followed by the existing retry ladder."
+  },
+  "claim_limits": {
+    "perturbations_scientifically_admitted": false,
+    "accepted_difficult_fixture_observed": false,
+    "representative_tail_distribution": false,
+    "bounded_cost_threshold_justified": false,
+    "production_solver_defect_established": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "fallback_policy_admitted": false
+  },
+  "decision": "STOP_FPE03_BOUNDARY_BISECTION",
+  "reason_to_stop": "Further numerical bisection would refine a solver convergence discontinuity but would not supply the missing accepted higher-cost workload required for F-PE difficult-tail characterization.",
+  "next_owner_boundary": "Solver convergence investigation belongs to the solver-owning workstream such as F-SI, while any perturbed real-physics production fixture requires independent F-VQ/F-MR admission before F-PE can use it as physical tail evidence."
+}
