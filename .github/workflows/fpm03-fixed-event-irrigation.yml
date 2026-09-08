@@ -8,6 +8,7 @@ on:
       - 'integration/f-pm/F-PM03_*'
       - 'src/process/mod_irrigation_process.f90'
       - 'tests/fpm/test_fpm03_fixed_event_process.f90'
+      - 'tests/fpm/test_fpm03_time_tolerance.f90'
       - 'tests/fpm/test_fpm03_ssdi_runtime_mass.f90'
       - 'tests/fpm/run_fpm03_fixed_event_gate.sh'
       - 'tools/fpm/fpm03_fixed_event_gate.py'
