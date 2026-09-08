@@ -52,8 +52,10 @@ expected_blobs = {
 for path, expected in expected_blobs.items():
     candidate_blob = git("rev-parse", f"{CANDIDATE}:{path}")
     fmr06_blob = git("rev-parse", f"{FMR06_CANDIDATE}:{path}")
+    head_blob = git("hash-object", path)
     require(candidate_blob == expected, f"candidate blob mismatch for {path}: {candidate_blob}")
     require(fmr06_blob == expected, f"F-MR06 blob mismatch for {path}: {fmr06_blob}")
+    require(head_blob == expected, f"F-VQ19 working-tree evidence blob mismatch for {path}: {head_blob}")
 
 smoke = SMOKE.read_text()
 backend = BACKEND.read_text()
@@ -99,6 +101,7 @@ for field in ["snow_water_storage", "liquid_water_storage", "event_applied", "ev
     require(field in comparator, f"active SNOW field absent from exact temporal comparator: {field}")
 
 print("FVQ19_CANDIDATE_TREE_LOCK=PASS")
+print("FVQ19_CURRENT_EVIDENCE_BLOB_LOCK=PASS")
 print("FVQ19_PREEXISTING_FMR06_FILES_UNCHANGED=PASS")
 print("FVQ19_NON_MIDNIGHT_ONE_CALL_DAILY_INTERVAL=PASS")
 print(f"FVQ19_INITIAL_SNOW={initial_snow}")
