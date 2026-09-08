@@ -1,0 +1,21 @@
+name: F-WOF21 SWRD2 root-history state
+
+on:
+  push:
+    branches:
+      - work/f-wof21-swrd2-root-history-state
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF21 SWRD2 root-history state gate
+        run: bash tests/fwof/run_fwof21_swrd2_root_history_state_gate.sh
