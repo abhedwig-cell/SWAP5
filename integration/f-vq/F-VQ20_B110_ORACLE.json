@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ20",
+  "oracle_class": "INDEPENDENT_SOURCE_BOUND_B1_10_ORACLE",
+  "derivation": {
+    "source": "canonical supplied SWAP 4.3.1 nested Fortran archive, independently re-read for F-VQ20",
+    "nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "B1_10_changes_relevant_members": false,
+    "members": {
+      "SWAP/functions.f90": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+      "SWAP/irrigation.f90": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "SWAP/swap.f90": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "SWAP/timecontrol.f90": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8"
+    }
+  },
+  "legacy_input_translation": {
+    "TCS7": {
+      "source_lines": "SWAP/irrigation.f90:261-267",
+      "DVS_knots": "dvs_tc7 read with allowed range 0..2 and maximum 7 values",
+      "pressure_head_values": "value_tc7 read with allowed range -1e6..100",
+      "table_layout": "alternating DVS,value pairs in hcritab"
+    },
+    "sensor": {
+      "source_lines": "SWAP/irrigation.f90:280-290",
+      "mapping": "legacy dcrit is translated once to nodsen; F-VQ20 tests the already-pretranslated node-index contract"
+    },
+    "DCS2": {
+      "source_lines": "SWAP/irrigation.f90:329-336",
+      "DVS_knots": "dvs_dc2 read with allowed range 0..2 and maximum 7 values",
+      "fid_values_mm": "fid read with allowed range 0..400",
+      "table_layout": "alternating DVS,fid pairs in fidtab"
+    },
+    "rate": {
+      "source_lines": "SWAP/irrigation.f90:161-165",
+      "supplied_input_mm_per_hour": "0.1..100",
+      "internal_conversion": "irr_rate_cm_per_day = 0.1*24*input_mm_per_hour",
+      "absent_input": "irr_rate=0, excluded from F-VQ20"
+    }
+  },
+  "AFGEN": {
+    "source_lines": "SWAP/functions.f90:66-108",
+    "below_or_equal_first_x": "return first y",
+    "between_knots": "linear interpolation between surrounding alternating x,y pairs",
+    "full_table_above_last_x": "return final y",
+    "legacy_partial_table_sentinel": "a decreasing next x terminates a partially filled legacy table and returns the preceding y",
+    "qualification_restriction": "because legacy TCS7/DCS2 SAVE-array unused tails are not explicitly cleared after partial reads, F-VQ20 does not claim equivalence above the last explicitly supplied knot for partial tables; target fail-closed behavior is qualified as a restriction"
+  },
+  "outer_selection_gate": {
+    "source_lines": "SWAP/irrigation.f90:451-452",
+    "legacy_expression": "sw_irrig==1 AND schedule==1 AND irrigevent==0 AND fl_cropemergence AND flIrriTime",
+    "target_mapping": [
+      "irrigation_enabled",
+      "schedule_enabled",
+      "fixed_event_already_selected=false",
+      "crop_emerged",
+      "irrigation_window_open"
+    ]
+  },
+  "TCS7_equation": {
+    "source_lines": "SWAP/irrigation.f90:533-540",
+    "threshold": "phcrit = afgen(hcritab,14,dvs)",
+    "trigger": "h(nodsen) <= phcrit"
+  },
+  "DCS2_equation": {
+    "source_lines": "SWAP/irrigation.f90:577-581",
+    "legacy": "dps2 = afgen(fidtab,14,dvs); irr_depth_cm = 0.1*dps2",
+    "target_translation": "DCS2 table values are stored in the process parameter object as depth_cm after the 0.1 conversion"
+  },
+  "regular_positive_rate_single_node_SSDI": {
+    "source_lines": "SWAP/irrigation.f90:596-615",
+    "precondition": "irr_rate > 0 and irr_depth/irr_rate <= 1",
+    "source": "qssdi(nod_ssdi(1):nod_ssdi(2)) = irr_rate",
+    "duration": "dt_irr_event = irr_depth/irr_rate",
+    "single_node_consequence": "for nod_ssdi(1)==nod_ssdi(2), full-event external input equals irr_rate*duration = irr_depth",
+    "multi_node_hold": "for more than one selected node, legacy scheduled total input scales with node count; F-VQ20 excludes this case"
+  },
+  "selection_cadence": {
+    "standalone_source_lines": "SWAP/swap.f90:359-390",
+    "standalone": "Irrigation(3) scheduled selection is called under flDayStart when sw_multi_swap==0",
+    "multiswap_source_lines": "SWAP/swap.f90:532-541",
+    "multiswap": "Irrigation(3) scheduled selection is called under flDayEnd when sw_multi_swap==1, while Irrigation(4) availability application occurs under flDayStart",
+    "event_end_reset_source_lines": "SWAP/timecontrol.f90:313-314 and SWAP/irrigation.f90 task 9",
+    "target_abstraction": "selection_opportunity is an explicit management/runtime event; the process kernel must not infer midnight, day number or one-day interval duration"
+  },
+  "scientific_equivalence_boundary": {
+    "equivalent_when": [
+      "selection_opportunity corresponds to a legacy scheduled-selection call",
+      "all admitted outer management gates map true",
+      "TCS7 and DCS2 parameters are within canonical parser domains",
+      "partial-table runtime DVS does not exceed the last explicitly supplied knot, unless all seven knots are supplied",
+      "SSDI node range contains exactly one node",
+      "regular positive-rate path applies and duration <= 1 day",
+      "excluded overlays are inactive"
+    ],
+    "not_claimed": [
+      "legacy stale SAVE-tail behavior for partial tables above their explicit last knot",
+      "multi-node scheduled SSDI mass semantics",
+      "calendar reconstruction",
+      "task4 availability scaling"
+    ]
+  }
+}
