@@ -1,0 +1,24 @@
+name: F-LMFP09 C1 MFP Asymptotic Refinement
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  mfp-c1-refinement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: C1 MFP asymptotic refinement gate
+        run: bash experiments/lmfp/run_lmfp09_mfp_c1_refinement_gate.sh
+      - name: Upload C1 refinement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-mfp-c1-refinement-evidence
+          path: lmfp09-mfp-c1-refinement-artifacts/
