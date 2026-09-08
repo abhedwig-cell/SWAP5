@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "producer_workstream": "F-MR",
+  "producer_work_unit": "F-MR05",
+  "consumer_workstream": "F-VQ",
+  "consumer_work_unit": "F-VQ15",
+  "handoff_kind": "IMMUTABLE_STRICT_SERIALIZED_MULTICOLUMN_PHYSICAL_COMPOSITION_CANDIDATE",
+  "candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "production_source_commit": "7490d5f8589f87e77ba4843c33dc7c58d6dac7c0",
+  "production_runtime": {
+    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "entrypoint": "fmr_run_serialized_physical_multiswap"
+  },
+  "runtime_qualification": {
+    "workflow": "F-MR05 serialized real-physics MultiSWAP runtime",
+    "run_id": 34197457690,
+    "job_id": 101968270598,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "single_column_fmr04_route_identity": "PASS",
+    "single_column_fmr04_mass_bitwise_identity": "PASS",
+    "single_column_fmr04_committed_state_identity": "PASS",
+    "two_column_A_B": "PASS",
+    "reverse_B_A_id_binding": "PASS",
+    "A_B_A_repeatability": "PASS",
+    "batch_17": "PASS",
+    "batch_31": "PASS",
+    "cross_column_checkpoint_rejection": "PASS",
+    "stale_checkpoint_rejection": "PASS",
+    "max_simultaneous_real_physical_solves": 1,
+    "generic_interval": {"t0": 1000.125, "t1": 1000.625},
+    "max_abs_column_mass_residual": 2.77555756156289135e-17,
+    "baseline_aggregate_unrounded_mass_residual": 0.0
+  },
+  "scientific_basis": {
+    "fmr04_qualified_physical_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "fvq14_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+    "active_profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY"
+  },
+  "required_fvq15_checks": [
+    "lock exact candidate_source_commit and tree before execution",
+    "confirm production and reference source unchanged by F-VQ15",
+    "confirm F-VQ14 single-column scientific identity remains exact through the new entrypoint",
+    "independently compare A/B and B/A composition by column_id",
+    "independently verify A/B/A repeatability",
+    "independently verify per-column authoritative mass completeness and missing mask zero",
+    "independently verify unrounded aggregate authoritative mass from accepted columns only",
+    "independently verify transaction and checkpoint isolation including cross-column misuse rejection",
+    "independently verify generic non-midnight subdaily interval",
+    "confirm unsupported root extraction, macropore, snow and swkimpl != 0 remain fail-closed",
+    "confirm measured maximum simultaneous real physical solves remains one",
+    "run O0 and O2 without introducing a scientific tolerance"
+  ],
+  "qualification_boundary": {
+    "scientific_multicolumn_admission_at_handoff": false,
+    "production_serialized_multicolumn_admission_at_handoff": false,
+    "parallel_reference_backend_admitted": false,
+    "general_multiswap_release": false,
+    "fmq23_resume_allowed": false,
+    "source_modification_by_fvq15_permitted": false
+  },
+  "existing_fvq15_rebind": {
+    "branch": "qualification/f-vq15-fmr05-serialized-multiswap",
+    "previous_head": "7d804fec497fa82ce8f59ded072389bff8a412eb",
+    "previous_candidate": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
+    "previous_status": "NOT_ASSESSED",
+    "action": "REUSE_FVQ15_AND_REBIND_TO_NEW_STRICT_CANDIDATE; DO_NOT_START_FVQ16"
+  },
+  "downstream": {
+    "fmq_work_unit": "F-MQ23",
+    "blocker": "FMQ23-B01",
+    "blocker_capability_addressed_by_fmr05": true,
+    "blocker_release_to_fmq23": "HELD_UNTIL_FVQ15_PASS"
+  }
+}
