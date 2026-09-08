@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF20",
+  "title": "Qualification Evidence: Common Transactional Crop Lifecycle State Carrier",
+  "branch": "work/f-wof20-common-crop-lifecycle-state",
+  "base_commit": "de5a1757edf863ebfc8bdf1c45e5c4eebafe9b11",
+  "tested_candidate": "2f5885efb04c1f6d898f9f2e43cd7b05de247182",
+  "github_actions": {
+    "successful_run_id": 34279113217,
+    "successful_conclusion": "success",
+    "prior_failed_run_id": 34278912159,
+    "prior_failure_classification": "TEST_HARNESS_OPTIMIZER_WARNING_ONLY",
+    "prior_failure_detail": "O0 passed; O2 rejected test expressions that combined impure function calls with .and. under -Werror=function-elimination. Assertions were split into sequential checks. Production crop state source was unchanged by the fix."
+  },
+  "production": {
+    "file": "src/crop/mod_crop_lifecycle_state.f90",
+    "blob": "c1fbb2c615254cfda0b26a7aff20447fb9960502",
+    "only_src_delta": true,
+    "fields": ["crop_emerged", "development_stage", "leaf_area_index"],
+    "extends": "transaction_state_t",
+    "owns_transaction_authority": false
+  },
+  "contract": {
+    "file": "integration/f-wof/F-WOF20_COMMON_CROP_LIFECYCLE_STATE_CONTRACT.json",
+    "blob": "e74cfd6f0df0b2bc5de70cdfa9abcd23753ea41f"
+  },
+  "F_WOF19_reconciliation": {
+    "file": "integration/f-wof/F-WOF20_FWO19_LEGACY_CHECKPOINT_RECONCILIATION.json",
+    "blob": "09c3bc1dc2c0fbd2d999a979ae8da92f515b79b8",
+    "finding": "The legacy B1.10 adapter already checkpointed crop globals transactionally; F-WOF20 adds a compact new-architecture crop-owned carrier and does not replace or expose the legacy checkpoint representation."
+  },
+  "protected_source_locks": {
+    "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "src/adapter/mod_b1_10_process_checkpoint.f90": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae",
+    "src/crop/mod_crop_root_geometry_snapshot_producer.f90": "56c3e10ccd25e6790882a649d472bd67a31d0f7b",
+    "src/crop/mod_nonadaptive_crop_root_view_producer.f90": "32e827c70f733b5451328ac7a95a1001a0d711f7",
+    "src/process/mod_reference_et_transpiration_process.f90": "497b42f2450a003a070dbc4020573866d1ef93b0"
+  },
+  "gate_results": {
+    "single_crop_state_production_delta": "PASS",
+    "FKT_legacy_adapter_and_upstream_locks": "PASS",
+    "scope_state_minimization_and_reconciliation": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "direct_clone_identity_and_independence": "PASS",
+    "invalid_state_fail_closed": "PASS",
+    "FKT_committed_initialization_clones_state": "PASS",
+    "FKT_checkpoint_exact_snapshot": "PASS",
+    "trial_discard_leaves_committed_unchanged": "PASS",
+    "checkpoint_replay_bitwise_identity": "PASS",
+    "no_calendar_or_evolution_physics_in_carrier": "PASS",
+    "output_sha256": "293ffdeef52f481be1cf1e6f577a5e53758f5ad544fcf2bc4c3052306553fd1f"
+  },
+  "qualification_scope": "COMMON_CROP_STATE_CARRIER_AND_FKT_TRANSACTION_COMPATIBILITY",
+  "nonclaims": [
+    "No crop-development evolution physics is qualified.",
+    "No emergence, harvest or calendar scheduling is qualified.",
+    "No SWRD=2 root-history state is qualified.",
+    "No WRT or broader crop-biomass state is qualified.",
+    "No crop-owner view feeding F-WOF17 or F-WOF18 is yet qualified.",
+    "The legacy B1.10 crop checkpoint remains unchanged and independently necessary for the admitted legacy backend."
+  ]
+}
