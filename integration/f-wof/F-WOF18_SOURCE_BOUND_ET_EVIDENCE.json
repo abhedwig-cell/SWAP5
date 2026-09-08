@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF18",
+  "title": "Source-Bound Evidence for Restricted Reference-ET Potential Transpiration",
+  "source_provenance": {
+    "uploaded_archive": "SWAP_4.3.1(6).zip",
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "swap_f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "weather_235_met_sha256": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+    "andelst_meteo_998_sha256": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9"
+  },
+  "driver_order": {
+    "source": "SWAP/swap.f90:413-428",
+    "sequence": ["Meteo(3)", "TimeControl(4)", "RootExtraction(2) when SWCROP=1"],
+    "consequence": "potential transpiration is a current meteorology/ET result prepared immediately before root uptake, not committed crop state"
+  },
+  "SWETR_1_configuration": {
+    "source": "SWAP/MOD_meteo.f90:224-240",
+    "SWMETDETAIL_forced_or_required": 0,
+    "SWDIVIDE_forced_or_required": 0,
+    "crop_factor_requirement_source": "SWAP/MOD_cropdevelopment.f90:1137-1146",
+    "crop_factor_requirement": "SWETR=1 rejects SWCF=2, so crop factor CF is part of this route"
+  },
+  "no_interception_reduction": {
+    "source": "SWAP/MOD_meteo.f90:2055-2092 and 1380-1392",
+    "SWINTER": 0,
+    "daily_interception": "aintc is set to zero",
+    "wet_fraction": "ETpot resets wfrac to zero and ProcessMeteoDT does not replace it for SWINTER=0",
+    "final_relation": "ptra = ptra_dry"
+  },
+  "ETpot_reduction": {
+    "source": "SWAP/MOD_meteo.f90:1411-1479",
+    "active_crop": [
+      "et0 = etr * vcover * cf",
+      "ptra_dry = max(et0 * 0.1, 0)",
+      "ptra_dry = fco2tra * ptra_dry"
+    ],
+    "inactive_crop": [
+      "et0 = 0",
+      "ew0 = 0",
+      "ptra_dry = 0"
+    ],
+    "final_no_interception_formula": "max(reference_et_mm_per_day * vcover * cf * 0.1, 0) * fco2tra"
+  },
+  "unit_reconciliation": {
+    "weather_fixture_evidence": [
+      "235.met header: ETref = Reference evapotranspiration; Makkink (mm)",
+      "andelst_meteo.998 header: ETref column unit = mm"
+    ],
+    "execution_evidence": "ETpot describes et0/ew0/es0 as mm/d and multiplies et0 by 0.1 when constructing ptra_dry",
+    "conflicting_code_comment": "MOD_meteo.f90 declaration comment for etr says cm d-1",
+    "classification": "THEORY_CODE_COMMENT_DISCREPANCY_NONEXECUTING_COMMENT",
+    "resolution_for_F_WOF18": "Treat selected SWETR=1 ETref forcing as mm/day and the 0.1 factor as the source-bound mm-to-cm conversion. Do not propagate the conflicting global comment into the SWAP5 API."
+  },
+  "ownership": {
+    "reference_et_mm_per_day": "forcing",
+    "crop_emerged": "read-only committed crop lifecycle view",
+    "vegetation_cover_fraction": "read-only current crop/canopy view",
+    "crop_factor": "read-only current crop factor view/derived crop quantity",
+    "CO2_transpiration_factor": "read-only crop response factor",
+    "potential_transpiration": "current ET process result",
+    "persistent_ET_state_required_for_this_route": false
+  },
+  "current_SWAP5_inventory": {
+    "src_process_on_F_WOF17": [
+      "src/process/mod_irrigation_process.f90",
+      "src/process/mod_root_water_uptake_process.f90",
+      "src/process/mod_snow_process.f90"
+    ],
+    "src_crop_on_F_WOF17": [
+      "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+      "src/crop/mod_crop_root_uptake_input_assembly.f90",
+      "src/crop/mod_crop_root_uptake_input_contract.f90",
+      "src/crop/mod_nonadaptive_crop_root_view_producer.f90"
+    ],
+    "explicit_ET_process_present_before_F_WOF18": false,
+    "root_uptake_ET_result_DTO_present": true
+  },
+  "important_nonclaims": [
+    "This evidence does not qualify Penman-Monteith.",
+    "This evidence does not qualify interception modes SWINTER=1,2,3.",
+    "This evidence does not migrate weather-file I/O or daily-record selection.",
+    "This evidence does not qualify crop-factor, vegetation-cover or CO2-factor production by a complete crop host.",
+    "This evidence does not make a day the numerical timestep; it source-binds a rate-forming route whose legacy forcing record is daily."
+  ]
+}
