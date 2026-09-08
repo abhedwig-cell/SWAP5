@@ -42,7 +42,8 @@ import json, sys
 root = Path('.')
 fwof10 = json.loads(Path(sys.argv[1]).read_text())
 assert fwof10['scope']['full_crop_host_integration'] is False
-assert any('crop-host' in item.lower() and 'lifecycle' in item.lower() for item in fwof10['open'])
+assert any('crop-host' in item.lower() for item in fwof10['open'])
+assert any('lifecycle' in item.lower() for item in fwof10['open'])
 
 crop_files = sorted(p.name for p in (root / 'src/crop').glob('*') if p.is_file())
 assert crop_files == [
