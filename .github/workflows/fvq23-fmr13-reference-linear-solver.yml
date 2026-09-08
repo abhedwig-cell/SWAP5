@@ -1,0 +1,43 @@
+name: F-VQ23 F-MR13 reference linear solver scientific no-change admission
+
+on:
+  push:
+    branches:
+      - qualification/f-vq23-fmr13-reference-linear-solver
+    paths:
+      - 'src/**'
+      - 'tests/fvq/run_fvq23_fmr13_reference_linear_solver_gate.sh'
+      - 'tests/fmr/**'
+      - 'integration/f-mr/F-MR13_STATUS.json'
+      - 'integration/f-vq/F-VQ23_STATUS.json'
+      - '.github/workflows/fvq23-fmr13-reference-linear-solver.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+
+      - name: F-VQ23 independent scientific no-change gate
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq23_fmr13_reference_linear_solver_gate.sh | tee fvq23.log
+
+      - name: Preserve F-VQ23 diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq23-fmr13-reference-linear-solver-diagnostic
+          path: fvq23.log
+          if-no-files-found: warn
