@@ -1,15 +1,16 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-MR",
   "work_unit": "F-MR06",
   "branch": "integration/f-mr06-snow",
   "start_head": "5787d0463294515b308b66f6e10998339013524e",
-  "phase": "TESTED_RUNTIME_CANDIDATE_AWAITING_INDEPENDENT_FVQ",
-  "status": "TESTED_SERIALIZED_SNOW_MULTISWAP_RUNTIME_CANDIDATE_READY_FOR_FVQ17",
+  "phase": "QUALIFIED_RUNTIME_EXIT",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_RUNTIME",
+  "decision": "EXACT_FMR06_CANDIDATE_EXTERNALLY_QUALIFIED_BY_FVQ17_AND_FMQ24",
   "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": true,
-  "QUALIFIED": false,
+  "QUALIFIED": true,
   "qualified_serialized_multiswap_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
   "scientifically_admitted_snow_source": "2becebfe747663ea3b896d7d19f4381c32df77db",
   "scientific_snow_admission_head": "98712959d811c788c77842eede4c6f558cca1c11",
@@ -20,35 +21,46 @@
     "snow_runtime_seam": "630ad6993a4c8b681e12285daba0cef047aa39a9",
     "canonical_order_aggregate_runtime": "0c24657d1ce85e3379752f9eb50e4604493a32dc"
   },
-  "test_evidence": {
+  "engineering_test_evidence": {
     "path": "integration/f-mr/F-MR06_TEST_EVIDENCE.json",
     "workflow_run": 34217119576,
     "job": 102031389280,
     "conclusion": "success"
   },
+  "downstream_qualification_evidence": "integration/f-mr/F-MR06_DOWNSTREAM_QUALIFICATION.json",
   "invariant_audit": "integration/f-mr/F-MR06_INVARIANT_AUDIT.json",
-  "independent_handoff": "integration/f-mr/F-MR06_FVQ17_HANDOFF.json",
-  "scientific_admission_of_composed_candidate": false,
-  "multiswap_snow_admission": false,
-  "fmq24_blocker": "FMQ24-B01",
+  "f_vq17": {
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "qualified": true
+  },
+  "f_mq24": {
+    "closeout_head": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_RUNTIME",
+    "qualified": true,
+    "post_closeout_health_run": 34222232273
+  },
+  "scientific_admission_of_composed_candidate": true,
+  "multiswap_snow_admission": true,
+  "fmq24_blocker": "FMQ24-B01_RESOLVED",
   "fmq24_implementation_blocker_addressed_by_candidate": true,
-  "fmq24_resume_allowed": false,
+  "fmq24_resume_allowed": true,
   "parallel_reference_backend_admitted": false,
   "max_simultaneous_real_physical_solves_tested": 1,
   "subdaily_snow_admitted": false,
+  "multiday_snow_admitted": false,
   "arbitrary_duration_snow_admitted": false,
   "general_richards_scope_expanded": false,
   "performance_scale_fully_qualified": false,
+  "qualified_scope": "EXACT_FMR06_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_WITH_FVQ16_ONE_CALL_DAILY_SNOW_AND_RESTRICTED_EQUILIBRIUM_RICHARDS",
   "hard_holds": [
-    "Do not alter SNOW formulas or reinterpret the B1.10 daily process as subdaily or arbitrary-duration physics.",
+    "Do not alter SNOW formulas or reinterpret the B1.10 daily process as subdaily, multiday or arbitrary-duration physics.",
     "Do not execute the SNOW event once per F-KT trial/half-step; it remains one outer-interval event whose candidate publishes only on accepted commit.",
     "Do not double-count melt in authoritative interval mass accounting; it is an internal transfer to the receiving surface/soil component.",
-    "Do not treat F-MR06 engineering TESTED status as scientific or production SNOW MultiSWAP admission.",
-    "F-VQ17 must independently assess the exact candidate without production-source modification.",
-    "F-MQ24 must remain held until an independent F-VQ17 PASS on this exact candidate.",
     "Parallel real-physics execution remains NOT_ADMITTED.",
-    "Existing restricted Richards scientific scope is not broadened by F-MR06.",
-    "Pre-existing F-MR execution-order sorting scalability remains outside F-MR06 production-scale qualification."
+    "Existing restricted equilibrium Richards scientific scope is not broadened.",
+    "Balanced, throughput and fallback execution policies remain NOT_ADMITTED by this work unit.",
+    "Production-scale 100k-column performance remains unqualified."
   ],
-  "next_step": "Create an independent F-VQ17 qualification branch from this persisted closeout lineage, lock the exact tested source candidate ffab7d705928170db3e76a5d346caafeb560e605 and its production blobs, and run qualification-only scientific composition checks."
+  "next_step": "Downstream integration may consume exact candidate ffab7d705928170db3e76a5d346caafeb560e605 within the qualified restricted serialized one-call-daily SNOW MultiSWAP scope, preserving every hold."
 }
