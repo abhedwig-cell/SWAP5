@@ -375,7 +375,9 @@ contains
     forcing%top_flux = conductivity_reference
     forcing%top_head = heads(1)
     forcing%bottom_flux = -777.0_real64
-    forcing%bottom_head = heads(numnod) + 2.0_real64*disnod(numnod+1)
+    ! Explicit HeadCalc geometry owns the lower face distance as 0.5*dz(n),
+    ! so extending the -1 Darcy gradient requires hbot-h(n)=2*0.5*dz(n)=dz(n).
+    forcing%bottom_head = heads(numnod) + p%dz(numnod)
     call allocate_zero_forcing(forcing)
   end subroutine configure_upward_case
 
