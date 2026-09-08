@@ -1,0 +1,34 @@
+name: F-PE03 B04 F-VQ26 mode-5 cost screen
+
+on:
+  push:
+    branches:
+      - work/f-pe03-b04-admitted-runtime-screen
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Characterize exact F-VQ26 admitted mode-5 runtime with F-MR14 observers
+        run: |
+          set -o pipefail
+          bash tests/fpe/run_fpe03_b04_fvq26_mode5_cost_screen.sh | tee fpe03-fvq26-mode5-cost-screen.log
+      - name: Preserve F-VQ26 screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-b04-fvq26-mode5-cost-screen
+          path: fpe03-fvq26-mode5-cost-screen.log
+          if-no-files-found: warn
