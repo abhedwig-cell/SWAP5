@@ -24,9 +24,15 @@ jobs:
         run: |
           set -o pipefail
           bash tests/fvq/run_fvq26_upward_trial_diagnostic.sh | tee fvq26-upward-diagnostic.log
+      - name: Diagnose HeadCalc initial residual
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq26_headcalc_initial_residual_diagnostic.sh | tee fvq26-headcalc-residual.log
       - name: Preserve diagnostic
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: fvq26-upward-trial-diagnostic
-          path: fvq26-upward-diagnostic.log
+          path: |
+            fvq26-upward-diagnostic.log
+            fvq26-headcalc-residual.log
