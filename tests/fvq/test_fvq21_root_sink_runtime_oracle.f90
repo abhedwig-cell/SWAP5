@@ -97,7 +97,7 @@ program test_fvq21_root_sink_runtime_oracle
   out_delta = result_pair(1)%mass%total_out-result_control(1)%mass%total_out
   call require(abs(in_delta-expected_amount) <= tolerance, 'independent qssdi total_in equation')
   call require(abs(out_delta-expected_amount) <= tolerance, 'independent qrot total_out equation')
-  call require(abs(aggregate_pair%mass_residual) <= hard_mass_gate, 'aggregate hard mass residual')
+  call require(abs(aggregate_pair%aggregate_unrounded_mass_residual) <= hard_mass_gate, 'aggregate hard mass residual')
   call require(abs(run_pair%authoritative_aggregate_mass%total_in-result_pair(1)%mass%total_in) <= tolerance, &
        'aggregate total_in exactly once')
   call require(abs(run_pair%authoritative_aggregate_mass%total_out-result_pair(1)%mass%total_out) <= tolerance, &
@@ -111,7 +111,6 @@ program test_fvq21_root_sink_runtime_oracle
   write(*,'(A)') 'FVQ21_QSSDI_AUTHORITATIVE_TOTAL_IN_EXACTLY_ONCE=PASS'
   write(*,'(A)') 'FVQ21_HARD_MASS_CONSERVATION=PASS'
 
-  ! Independent transaction replay from one committed physical state.
   column = columns(1)
   template = templates(1)
   tx_parameters = parameters(1)
