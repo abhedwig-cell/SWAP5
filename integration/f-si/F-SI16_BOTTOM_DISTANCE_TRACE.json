@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "title": "Source-bound lower-face distance characterization for SWBOTB=5",
+  "branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "observed_branch_head_before_trace": "6c99a42b1130409d55086750fea4ae95ed9629db",
+  "canonical_source_identity": {
+    "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "github_b0_identity_match": true,
+    "b1_10_patch_targets_include_swap_base": false
+  },
+  "source_bound_geometry": {
+    "source_member": "SWAP/swap_base.f90",
+    "b0_line_semantics": "disnod(numnod+1) = 0.5d0*dz(numnod)",
+    "b1_10_semantics_unchanged": true,
+    "lower_face_distance_is_independent_parameter": false,
+    "lower_face_distance_is_reconstructible_from_existing_grid_parameters": true,
+    "units": "cm"
+  },
+  "architecture_decision": {
+    "retain_fsi14_node_distance_shape": "active_nodes",
+    "do_not_persist_reconstructible_n_plus_1_distance": true,
+    "explicit_common_route_lower_face_distance": "0.5d0 * request%parameters%dz(active_nodes)",
+    "legacy_direct_route": "unchanged legacy_disnod(active_nodes+1)",
+    "mode5_bottom_head_semantics": "unchanged B1.10",
+    "physics_changed": false,
+    "discretization_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "required_repair": [
+    "restore common solver contract node_distance shape to active_nodes",
+    "restore HeadCalc explicit geometry validation to active_nodes",
+    "derive grid_disnod(active_nodes+1) from 0.5d0*dz(active_nodes) only on explicit common route",
+    "remove adapter requirement for an explicit active_nodes+1 node_distance",
+    "update focused tests to prove derived lower-face geometry and preserve F-SI14 compatibility"
+  ],
+  "invariant_assessment": {
+    "explicit_data_separation": "preserved",
+    "compact_persistent_parameter_data": "improved relative to superseded n+1 candidate",
+    "scratch_per_worker": "unchanged",
+    "mass_conservation": "unchanged by geometry representation repair",
+    "reference_mode": "preserves exact B1.10 lower-face arithmetic",
+    "no_silent_legacy_geometry_authority": true
+  },
+  "decision": "REPLACE_N_PLUS_1_PARAMETER_EXPANSION_WITH_EXACT_B110_DERIVED_LOWER_FACE_DISTANCE"
+}
