@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install gfortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Verify F-PE04 scope lock
+      - name: Verify F-PE04 persisted contracts
         run: |
           python3 - <<'PY'
           import json
@@ -25,6 +25,10 @@ jobs:
           d=json.loads(Path('integration/f-pe/F-PE04_DEPENDENCIES.json').read_text())
           c=json.loads(Path('integration/f-pe/F-PE04_REFERENCE_FAILURE_CONTRACT.json').read_text())
           m=json.loads(Path('integration/f-pe/F-PE04_PERTURBATION_MATRIX.json').read_text())
+          ce=json.loads(Path('integration/f-pe/F-PE04_COST_ENVELOPE.json').read_text())
+          tx=json.loads(Path('integration/f-pe/F-PE04_TRANSACTION_EVIDENCE.json').read_text())
+          qe=json.loads(Path('integration/f-pe/F-PE04_QUALIFICATION_EVIDENCE.json').read_text())
+          st=json.loads(Path('integration/f-pe/F-PE04_STATUS.json').read_text())
           assert d['start_head']=='8f7bab11fd856d7cb2f7bacb8c299cf2b0517061'
           assert d['lineage_constraints']['reference_only'] is True
           assert d['lineage_constraints']['production_source_change_allowed'] is False
@@ -33,12 +37,27 @@ jobs:
           for k in ['production_source_change','physics_change','numerical_controls_change','solver_tolerance_change','timestep_policy_change','retry_limit_change','fallback_change','policy_admission']:
               assert c['scope'][k] is False
           assert c['mass']['performance_mass_concession_allowed'] is False
-          assert c['claim_limits']['bounded_cost_policy_admitted'] is False
-          assert c['claim_limits']['balanced_admitted'] is False
-          assert c['claim_limits']['throughput_admitted'] is False
-          assert c['claim_limits']['fallback_admitted'] is False
-          assert any(x['family']=='PRE_SOLVER_VALIDATION' for x in m['sweeps'])
-          print('FPE04_SCOPE_LOCK=PASS')
+          assert len(m['runs'])==51
+          assert m['summary']=={'total':51,'accepted_normal':20,'accepted_higher_cost':0,'rejected_after_retry':30,'fail_closed_pre_solver':1}
+          classes=[r[4] for r in m['runs']]
+          assert classes.count('ACCEPTED_NORMAL')==20
+          assert classes.count('ACCEPTED_HIGHER_COST')==0
+          assert classes.count('REJECTED_AFTER_RETRY')==30
+          assert classes.count('FAIL_CLOSED_PRE_SOLVER')==1
+          assert m['qualification_run']['o0_o2_output_identity'] is True
+          assert m['qualification_run']['all_replays_deterministic'] is True
+          assert ce['accepted_higher_cost_found'] is False
+          assert ce['accepted_nonstationary_higher_cost_fixture_found'] is False
+          assert ce['max_abs_mass_residual_among_accepted'] <= ce['hard_mass_gate']
+          assert tx['status']=='PASS'
+          assert all(tx['checks'].values())
+          assert qe['matrix_summary']['accepted_higher_cost']==0
+          assert qe['scientific_result']['failure_retry_envelope_characterized'] is True
+          assert st['reference_only'] is True
+          assert st['BALANCED']=='DEFINED_NOT_ADMITTED'
+          assert st['THROUGHPUT']=='DEFINED_NOT_ADMITTED'
+          assert st['FALLBACK']=='DEFINED_NOT_ADMITTED'
+          print('FPE04_PERSISTED_EVIDENCE_SELF_CHECK=PASS')
           PY
       - name: Run O0/O2 REFERENCE failure envelope
         run: bash tests/fpe/run_fpe04_reference_failure_envelope_gate.sh

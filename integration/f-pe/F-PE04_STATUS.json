@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE04",
+  "status": "EVIDENCE_PERSISTED_AWAITING_CLOSEOUT_SELF_VERIFICATION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "reference_only": true,
+  "production_source_changed": false,
+  "failure_retry_envelope_characterized": true,
+  "accepted_higher_cost_found": false,
+  "fpe03_b01_candidate": "NOT_OBSERVED",
+  "transaction_safety": "PASS",
+  "mass_safety": "PASS",
+  "o0_o2": "PASS_IDENTICAL_OUTPUT",
+  "BALANCED": "DEFINED_NOT_ADMITTED",
+  "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+  "FALLBACK": "DEFINED_NOT_ADMITTED",
+  "next_step": "Self-verify persisted evidence on the evidence commit, then close out without changing F-PE03 history or admitting a non-reference policy."
+}

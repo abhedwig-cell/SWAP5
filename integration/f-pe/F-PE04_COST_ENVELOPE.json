@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE04",
+  "status": "REFERENCE_FAILURE_ENVELOPE_CHARACTERIZED",
+  "reference_cost_profiles": {
+    "accepted_normal": {"accepted_substeps":1,"transaction_retries":0,"internal_retries":0,"headcalc_calls":3,"nonlinear_iterations":3,"jacobian_builds":3,"linear_solves":3,"backtracking_attempts":3},
+    "rejected_after_retry": {"accepted_substeps":0,"transaction_retries":2,"internal_retries":3,"headcalc_calls":3,"nonlinear_iterations":24,"jacobian_builds":24,"linear_solves":24,"backtracking_attempts":96},
+    "fail_closed_pre_solver": {"accepted_substeps":0,"transaction_retries":0,"internal_retries":0,"headcalc_calls":0,"nonlinear_iterations":0,"jacobian_builds":0,"linear_solves":0,"backtracking_attempts":0}
+  },
+  "observed_brackets": {
+    "initial_node2_head_increment_cm": {"last_tested_accepted_requested":9.9999999999999998e-13,"last_tested_accepted_applied":9.9475983006414026e-13,"first_tested_rejected_requested":9.9999999999999994e-12,"first_tested_rejected_applied":1.0004441719502211e-11},
+    "top_flux_relative_plus": {"last_tested_accepted":9.9999999999999998e-13,"first_tested_rejected":9.9999999999999994e-12},
+    "top_flux_relative_minus_absolute": {"last_tested_accepted":9.9999999999999998e-13,"first_tested_rejected":9.9999999999999994e-12},
+    "subsurface_irrigation_source_relative_plus": {"last_tested_accepted":1.0000000000000000e-8,"first_tested_rejected":9.9999999999999995e-8}
+  },
+  "uniform_state_controls": {"uniform_h_cm_tested":[-5.0,-75.0,-5000.0],"all_classification":"ACCEPTED_NORMAL","all_cost_equal_to_baseline":true},
+  "bottom_mode7_control": {"bottom_flux_relative_delta":0.01,"classification":"ACCEPTED_NORMAL","cost_equal_to_baseline":true,"prescribed_head_evidence":false,"interpretation":"Mode-7 control/inertness probe only. This does not qualify bottom_flux or bottom_head as a controlling prescribed lower boundary."},
+  "accepted_higher_cost_found": false,
+  "accepted_nonstationary_higher_cost_fixture_found": false,
+  "all_accepted_committed_payloads_equal_their_initial_payloads": true,
+  "fpe03_b01_candidate": "NOT_OBSERVED",
+  "max_abs_mass_residual_among_accepted": 3.6003144909813045e-13,
+  "hard_mass_gate": 1e-12,
+  "interpretation": "Within the tested perturbation grid the transition is a cliff, not a smooth accepted-cost ramp: accepted cases retain the baseline 3/3 cost vector and the next tested magnitude in each active family falls directly onto the 24-iteration/96-backtracking rejected retry route.",
+  "claim_limit": "Each transition is only a source-bound bracket on the tested fixture and binary64 inputs. It is not a universal physical threshold, production limit, fallback trigger, representative tail quantile or tolerance recommendation."
+}

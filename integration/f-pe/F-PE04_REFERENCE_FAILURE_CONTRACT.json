@@ -3,7 +3,7 @@
   "workstream": "F-PE",
   "work_unit": "F-PE04",
   "title": "REFERENCE failure, retry and cost-cliff envelope",
-  "status": "CONTRACT_PERSISTED_AWAITING_HARNESS",
+  "status": "CHARACTERIZATION_EXECUTED",
   "question": "Under which already-admitted input/state perturbations does REFERENCE remain accepted, where does retry/backtracking cost rise, and where does interval execution fail closed?",
   "scope": {
     "execution_class": "REFERENCE",
@@ -26,27 +26,8 @@
     "interval_t0": 1000.125,
     "interval_t1": 1000.625
   },
-  "classification": [
-    "ACCEPTED_NORMAL",
-    "ACCEPTED_HIGHER_COST",
-    "REJECTED_AFTER_RETRY",
-    "FAIL_CLOSED_PRE_SOLVER"
-  ],
-  "required_per_run_evidence": [
-    "exact_input_delta",
-    "accepted_or_rejected",
-    "accepted_substeps",
-    "internal_retries",
-    "nonlinear_iterations",
-    "headcalc_calls",
-    "jacobian_builds",
-    "linear_solves",
-    "backtracking_attempts",
-    "mass_status",
-    "committed_state_mutation_status",
-    "deterministic_replay_status",
-    "O0_O2_status"
-  ],
+  "classification": ["ACCEPTED_NORMAL","ACCEPTED_HIGHER_COST","REJECTED_AFTER_RETRY","FAIL_CLOSED_PRE_SOLVER"],
+  "required_per_run_evidence": ["exact_input_delta","accepted_or_rejected","accepted_substeps","transaction_retries","internal_retries","nonlinear_iterations","headcalc_calls","jacobian_builds","linear_solves","backtracking_attempts","mass_status","committed_state_mutation_status","deterministic_replay_status","O0_O2_status"],
   "transaction_safety": {
     "rejected_checkpoint_must_remain_unchanged": true,
     "rejected_revision_must_remain_unchanged": true,
@@ -62,7 +43,7 @@
     "performance_mass_concession_allowed": false
   },
   "bottom_boundary_lineage_limit": {
-    "admitted_modes": [7, -2],
+    "admitted_modes": [7,-2],
     "prescribed_bottom_head_route_admitted": false,
     "rule": "Do not characterize bottom_head as a controlling prescribed-head perturbation on this lineage. Mode-7 bottom forcing may only be used as a source-bound control/inertness probe."
   },

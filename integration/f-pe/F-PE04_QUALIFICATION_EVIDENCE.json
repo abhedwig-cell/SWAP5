@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE04",
+  "status": "EVIDENCE_PERSISTED_AWAITING_CLOSEOUT_SELF_VERIFICATION",
+  "tested_head": "5f74c4e9331d6cd6a90152899fd3dc7ee775b701",
+  "github_actions": {"workflow":"F-PE04 reference failure envelope","run_id":34224022171,"job_id":102053637790,"conclusion":"success","scope_lock":"PASS","exact_reference_source_preimage":"PASS","reference_failure_envelope_gate":"PASS_CHARACTERIZATION_ONLY"},
+  "compiler": {"name":"GNU Fortran","version":"13.2.0","optimization_levels":["O0","O2"],"o0_executable_sha256":"a68b7b008f925fb6b9b319d6f595464dfae1405a8cfa794e5567fed21d0e75aa","o2_executable_sha256":"4c8bfa8ef38e36c036ee42efafdeb3d1b35a12a5b1f4eed0e57c12b057aec580","o0_output_sha256":"085d0e11e39969cd804efdf4976247438fed1149c787e98630585f83f465c5db","o2_output_sha256":"085d0e11e39969cd804efdf4976247438fed1149c787e98630585f83f465c5db","output_identity":"PASS"},
+  "matrix_summary": {"total_cases":51,"accepted_normal":20,"accepted_higher_cost":0,"rejected_after_retry":30,"fail_closed_pre_solver":1,"replay_determinism":"PASS","transaction_mass_safety":"PASS"},
+  "scientific_result": {"accepted_higher_cost_found":false,"accepted_nonstationary_higher_cost_fixture_found":false,"fpe03_b01_candidate":"NOT_OBSERVED","failure_retry_envelope_characterized":true},
+  "non_reference_policy": {"BALANCED":"DEFINED_NOT_ADMITTED","THROUGHPUT":"DEFINED_NOT_ADMITTED","FALLBACK":"DEFINED_NOT_ADMITTED"},
+  "source_change": {"production_source_changed":false,"numerical_controls_changed":false,"physics_changed":false,"timestep_policy_changed":false,"retry_limits_changed":false,"fallback_changed":false},
+  "legacy_compile_warnings": {"observed":true,"qualification_effect":"NONE_FOR_THIS_GATE","scope_note":"Warnings originate in pinned legacy/reference source and include existing static bounds-analysis and O2 maybe-uninitialized diagnostics. F-PE04 neither clears nor suppresses them and makes no safety claim about them; the instrumented reference executions themselves passed runtime checks and O0/O2 output identity."}
+}
