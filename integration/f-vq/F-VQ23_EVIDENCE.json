@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ23",
+  "candidate": {
+    "commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "tree": "310b0b419181456b7c0af029e42de742fa96f19d",
+    "production_source_immutable": true
+  },
+  "qualification_candidate": {
+    "head": "976bc4294d13aa88d9f936aab1e2d0fed2aaaa84",
+    "workflow_run": 34264735616,
+    "workflow_job": 102191143266,
+    "conclusion": "success",
+    "artifact_id": 10071341394,
+    "artifact_digest": "sha256:6b19a27fb47a156378551b3bedf771beec1423221bda6f9cee594c7c6ee8ea2a"
+  },
+  "direct_linear_solver_oracle": {
+    "source_bound_legacy_oracle_commit": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "oracle_blob": "bf8c9d85c98157d128086d2c2fb20f6129b98e63",
+    "O0": "PASS_BITWISE",
+    "O2": "PASS_BITWISE",
+    "O0_O2_identity": "PASS",
+    "tridag_success": "PASS_BITWISE",
+    "tridag_failure_1000": "PASS",
+    "tridag_failure_1002": "PASS",
+    "band_fallback_pivot": "PASS_BITWISE",
+    "output_sha256": "144d7d547dd01cb5542ec9eae0e30d0502defb2d7c5fcb499009e8cd2a7151ee"
+  },
+  "real_physics_runtime_evidence": {
+    "fmr13_gate": "PASS",
+    "fmr13_gate_output_sha256": "a76eb558423f03a25837a918bc5a33cb07535c798de6b1bebf12742dbda8b406",
+    "fmr09_root_sink_exactly_once": "PASS",
+    "fmr09_hard_mass_balance": "PASS",
+    "fpm03_ssdi_authoritative_mass_exactly_once": "PASS",
+    "snow_rollback": "PASS",
+    "snow_replay_bitwise": "PASS",
+    "snow_authoritative_mass_complete": "PASS",
+    "fvq20_scheduled_irrigation_rollback_replay": "PASS",
+    "fvq18_fixed_irrigation_transaction_replay": "PASS",
+    "fmr12_wrapper_bitwise_equivalent_to_direct_fmr10": "PASS",
+    "fmr12_O0_O2_output_identity": "PASS",
+    "historical_fmr09_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "historical_fmr12_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29"
+  },
+  "scientific_interpretation": {
+    "no_detected_scientific_change_in_existing_qualified_scope": true,
+    "new_physics_admitted": false,
+    "new_numerical_policy_admitted": false,
+    "bounded_cost_admitted": false,
+    "balanced_admitted": false,
+    "throughput_admitted": false,
+    "fallback_admitted": false,
+    "parallel_real_physics_admitted": false,
+    "higher_cost_fpe_workload_admitted": false
+  }
+}
