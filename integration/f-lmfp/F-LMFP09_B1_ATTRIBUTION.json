@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "B1_ATTRIBUTION",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "basis": {
+    "gate_A_decision": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED",
+    "coarse_first_run": 34279861219,
+    "coarse_first_head": "226b73919c880a586ad6693544819f8d989639f1",
+    "coarse_first_artifact": 10077292519,
+    "coarse_first_artifact_digest": "sha256:1d236064d7ae9ea372820b54085875d113d69c729c389197018174718c70bd47",
+    "near_saturation_diagnostic_run": 34280620500,
+    "near_saturation_diagnostic_head": "eac11fc1af4914b4ca28760eaf1975207fbb1896",
+    "near_saturation_diagnostic_artifact": 10077442784,
+    "near_saturation_diagnostic_artifact_digest": "sha256:2f5aba091ccc19911610aea8283733f0e8dea829e4189f57cef9931129154df6"
+  },
+  "findings": {
+    "ratio_head_nodes_17_pass": false,
+    "ratio_head_nodes_33_pass": false,
+    "density_independent_continuity_failure": true,
+    "identity_equal_head_preserved_to_roundoff": true,
+    "identity_hydrostatic_preserved_to_roundoff": true,
+    "sign_mismatches": 0,
+    "corrected_flux_materially_better_than_mfp": true,
+    "near_saturation_attribution": {
+      "direct_darcy_oracle_rows_over_generic_0p35_refinement_gate": 5,
+      "mfp_baseline_rows_over_generic_0p35_refinement_gate": 33,
+      "max_oracle_equal_head_identity_abs_error": 3.725290298461914e-08,
+      "interpretation": "The continuity failure is mixed. A small subset of clay probes reflects a real constitutive near-saturation regime switch, but the current 1D MFP table introduces additional non-smooth response in states where the direct Darcy oracle is smooth, especially reference sand around h near zero."
+    }
+  },
+  "decision": "DO_NOT_ESCALATE_R_TABLE_DENSITY_BEFORE_MFP_BASELINE_CONTINUITY_IS_FIXED",
+  "next_experiment": "Compare C1 MFP potential representations on the qualified asinh coordinate, starting with cubic Hermite Phi(x) using nodal dPhi/dx = K(h) dh/dx, while retaining direct-Darcy regime-switch diagnostics and without changing production code.",
+  "production_admission": false,
+  "thresholds_relaxed": false
+}
