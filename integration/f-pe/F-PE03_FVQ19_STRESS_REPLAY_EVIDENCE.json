@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03_RESUME_AFTER_FVQ19",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "tested_head": "6a4ff464cb2314288090f361e936c085f6b70adc",
+  "workflow_run": 34244701300,
+  "workflow_job": 102123583605,
+  "conclusion": "success",
+  "artifact": {
+    "id": 10063474964,
+    "name": "fpe03-fvq19-reference-tail-resume-evidence",
+    "size_bytes": 6037,
+    "digest": "sha256:917e1980aed36937ebfc2952eeb453875f6eddb9ae4722ebcaf8813bb2548c84"
+  },
+  "source_binding": {
+    "fpe05_closeout": "54e10f990c36c6be9cdc54b4b2a430435585b04e",
+    "production_source_changed_after_fpe05": false,
+    "historical_fpe03_closeout": "e67d624967f53184904e689333594015e9658683",
+    "immutable_historical_stress_harness_blob": "6623613a3526c119bf1fada5540eed93346592e1"
+  },
+  "current_lineage_results": {
+    "number_cases": 24,
+    "accepted_cases": 6,
+    "rejected_cases": 18,
+    "accepted_higher_cost_cases": 0,
+    "accepted_cost_vector": {
+      "accepted_substeps": 1,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "internal_retries": 0,
+      "alternative_solver_calls": 0
+    },
+    "rejected_stress_cost_vector": {
+      "accepted_substeps": 0,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 24,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "internal_retries": 3,
+      "alternative_solver_calls": 0
+    },
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": true,
+    "historical_key_metrics_identity": true,
+    "rejected_cases_committed": false
+  },
+  "interpretation": {
+    "historical_reference_cost_cliff_persists_on_fpe05_lineage": true,
+    "accepted_difficult_case_found": false,
+    "scientific_admission_expanded": false,
+    "representative_tail_distribution_claimed": false,
+    "bounded_cost_policy_admitted": false,
+    "production_solver_defect_claimed": false
+  },
+  "next_step": "Derive the smallest diagnostic nonstationary SNOW stress overlay around the already admitted FMR06/FVQ17 active-SNOW baseline. Perturbed cases remain diagnostic extrapolations until independently admitted."
+}
