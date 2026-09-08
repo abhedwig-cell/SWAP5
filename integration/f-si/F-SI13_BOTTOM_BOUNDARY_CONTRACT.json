@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI13",
+  "title": "Explicit bottom-boundary mode binding for admitted free-drainage modes",
+  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "branch": "work/f-si13-explicit-bottom-boundary",
+  "basis": {
+    "fsi12_qualification_artifact_head": "3dacdb03503a5ac5f6ce3fe86a55612e9b08a46d",
+    "fsi12_status": "QUALIFIED_EXPLICIT_PER_SOLVE_CONTROLS_SWKIMPL0",
+    "canonical_branch_head_observed": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt_integration_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "shared_fkt_type_change_required": false
+  },
+  "source_bound_problem": {
+    "request_field_already_exists": "soil_water_solve_request_t%boundary%bottom_mode",
+    "current_adapter_dependency": "validate_legacy_request requires global swbotb to be 7/-2 and requires request%boundary%bottom_mode == global swbotb",
+    "current_headcalc_dependency": "HeadCalc residual and Jacobian bottom-boundary routing use global swbotb even on the explicit common route",
+    "architectural_issue": "an explicit per-solve boundary mode exists but is not authoritative; this creates avoidable cross-column/global coupling on the admitted common path"
+  },
+  "ownership": {
+    "bottom_boundary_physics": "existing B1.10 reference physics, unchanged",
+    "common_request_boundary_mode": "F-SI solver-facing request consumption",
+    "transaction_semantics": "F-KT",
+    "generic_time_semantics": "F-KT",
+    "external_numerical_policy": "NOT_FSI",
+    "new_shared_type_required": false
+  },
+  "implementation_contract": {
+    "headcalc_explicit_route": "when explicit state binding is present, boundary_conditions is required and its bottom_mode becomes the local HeadCalc bottom-mode selector",
+    "headcalc_legacy_route": "when explicit state binding is absent, preserve legacy global swbotb exactly",
+    "adapter_explicit_route": "validate request bottom_mode directly; do not require equality to legacy global swbotb",
+    "legacy_request_builder": "may continue copying legacy global swbotb into a newly built compatibility request",
+    "admitted_bottom_modes": [7, -2],
+    "new_bottom_mode_physics_admitted": false,
+    "formula_change": false,
+    "policy_change": false,
+    "transaction_change": false
+  },
+  "qualification_required": {
+    "global_swbotb_poison_after_request_build": true,
+    "request_mode_7_authoritative": true,
+    "request_mode_minus2_authoritative": true,
+    "unsupported_request_mode_fail_closed_before_headcalc": true,
+    "workers": [1, 2, 4, 8],
+    "optimization_levels": ["O0", "O2"],
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "solver_route_iteration_identity": true,
+    "focused_unrounded_equation_residual": true,
+    "legacy_direct_identity_against_fsi12": true,
+    "fsi12_pinned_regression": true,
+    "fkt_boundary_regression": true
+  },
+  "holds": {
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_5_prescribed_head": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED"
+  },
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
