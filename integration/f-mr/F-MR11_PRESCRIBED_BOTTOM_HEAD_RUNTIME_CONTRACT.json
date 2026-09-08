@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR11",
+  "title": "Restricted Serialized Runtime Admission of Explicit Prescribed Bottom-Head Boundary",
+  "branch": "work/f-mr11-prescribed-bottom-head-runtime",
+  "owner_scope": "Compose the already F-SI16-qualified SWBOTB=5 prescribed lower pressure-head route into the restricted serialized physical runtime profile.",
+  "source_handoff_reconciliation": {
+    "original_fsi16_target": "F-MR10",
+    "original_target_now_occupied": true,
+    "occupied_by": "F-MR10 Explicit Committed Root-Uptake Process Runtime Binding",
+    "occupied_closeout_head": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "first_live_free_fmr_unit": "F-MR11",
+    "retarget_action": "Consume the F-SI16 capability in F-MR11 without reopening or rewriting the closed F-SI16 production postimage."
+  },
+  "runtime_base": {
+    "work_unit": "F-MR10",
+    "head": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "tree": "49025c65b4420b452917fa2f2a7b66b6233e3c4e",
+    "decision": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING"
+  },
+  "fsi16_source": {
+    "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+    "production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+    "qualified_tested_head": "e1f8e810a4b3018ef2901b9f35137e4381a0970e",
+    "adapter_blob": "db432cac3f1156a179c636435a25f52cdececffc",
+    "headcalc_blob": "d92f77963329d61ab3feb988f912252c0161436c",
+    "workspace_blob": "a09ba3457a8ce3685df446bfacbf5220cd401507",
+    "solver_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6"
+  },
+  "precomposition_source_lock": {
+    "fmr10_adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "fmr10_headcalc_blob": "420fe2996199e6d3f162b7669957e1a95919f353",
+    "fmr10_workspace_blob": "93285b2ca24669494c93c00403e3783fca6758e9",
+    "fmr10_solver_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "fmr10_serialized_context_binding_blob": "1818338d088ee61a3a1dd5220542e6650ba673ac",
+    "fmr10_serialized_reference_backend_blob": "fe1c1cf19d3702114cf7598e227d56f7dbc1e267",
+    "fmr10_serialized_multiswap_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "fmr10_root_uptake_binding_blob": "2fc348f18e8561096fa34dd3c11c64b359583f11"
+  },
+  "source_bound_trace": {
+    "bottom_head_already_runtime_forcing": "fmr_b110_physical_forcing_t%bottom_head",
+    "request_binding_already_present": "request%boundary%bottom_head = self%bottom_head",
+    "authoritative_flux_already_observed": "last_observation%bottom_flux = solve_result%bottom_flux",
+    "mass_accounting_already_present": "positive bottom_flux contributes once to total_in; negative bottom_flux contributes once to total_out",
+    "transaction_origin": "F-KT full and two-half trials both originate from the same checkpoint; rejected trials are not committed"
+  },
+  "minimal_production_seam": {
+    "byte_exact_fsi16_overlays": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_reference_richards_workspace.f90",
+      "src/solver/mod_soil_water_solver_contract.f90"
+    ],
+    "runtime_allowlist_changes": [
+      "src/adapter/mod_b110_serialized_context_binding.f90: admit bottom_mode 5 alongside 7/-2",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90 execution_admitted: admit bottom_mode 5 alongside 7/-2",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90 temporal_error: permit bottom_mode 5 through the existing exact full-vs-two-half comparator"
+    ],
+    "new_prescribed_head_formula_allowed": false,
+    "new_qbot_formula_allowed": false,
+    "fkt_change_allowed": false,
+    "numerical_tolerance_change_allowed": false,
+    "mass_semantics_change_allowed": false,
+    "groundwater_coupling_code_allowed": false
+  },
+  "required_proofs": [
+    "mode 5 reaches the exact F-SI16 production solver postimage",
+    "runtime bottom_head authority survives legacy-global hbot poisoning after request/forcing capture",
+    "authoritative solve_result bottom_flux is propagated to observation and external interval mass exactly once",
+    "positive and negative qbot cases preserve the F-SI16 sign convention",
+    "full and two-half trials preserve the existing exact temporal comparator semantics without a new tolerance",
+    "rejected trial and rollback do not leak state or mass",
+    "bottom modes 1,3,8,9 remain fail-closed",
+    "swkimpl=1 and active macropores remain fail-closed",
+    "serialized-only scope remains explicit; no parallel real-physics admission",
+    "F-MR10 root-uptake binding and prior F-MR09/F-MR07/F-MR06 capabilities regress unchanged"
+  ],
+  "qualification_boundary": {
+    "fmr_owner_qualification_only": true,
+    "independent_fvq_required_after_pass": true,
+    "gc02_resume_allowed_now": false,
+    "gc02_resume_allowed_only_after_fmr11_and_independent_fvq": true,
+    "resume_same_existing_gc02_unit": true
+  }
+}

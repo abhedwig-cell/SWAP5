@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR11",
+  "title": "Restricted Serialized Runtime Admission of Explicit Prescribed Bottom-Head Boundary",
+  "branch": "work/f-mr11-prescribed-bottom-head-runtime",
+  "status": "IN_PROGRESS_SOURCE_LOCKED_FSI16_RUNTIME_COMPOSITION",
+  "phase": "CONTRACT_PERSISTED_BEFORE_PRODUCTION_COMPOSITION",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "owner_qualified": false,
+    "independently_scientifically_qualified": false
+  },
+  "start_checkpoint": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+  "source_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+  "source_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+  "retarget": {
+    "original_handoff_unit": "F-MR10",
+    "reason": "F-MR10 was already occupied and qualified by the root-uptake process runtime binding when downstream work started.",
+    "selected_unit": "F-MR11"
+  },
+  "current_findings": {
+    "bottom_head_request_binding_already_present": true,
+    "authoritative_bottom_flux_observation_already_present": true,
+    "authoritative_bottom_flux_mass_booking_already_present": true,
+    "legacy_context_mode5_guard_found": true,
+    "runtime_execution_mode5_guard_found": true,
+    "runtime_temporal_mode5_guard_found": true,
+    "fkt_change_required": false,
+    "physics_change_required": false,
+    "numerical_policy_change_required": false
+  },
+  "holds": {
+    "groundwater_coupling": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "bottom_modes_1_3_8_9": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "active_macropores": "NOT_ADMITTED"
+  },
+  "next_gate": "MATERIALIZE_EXACT_FSI16_SOLVER_POSTIMAGE_AND_MINIMAL_MODE5_RUNTIME_ALLOWLIST"
+}
