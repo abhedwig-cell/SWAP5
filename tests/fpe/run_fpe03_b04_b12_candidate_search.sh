@@ -14,7 +14,6 @@ OLD_TEST_BLOB=6623613a3526c119bf1fada5540eed93346592e1
 KERNEL_BLOB=af42c7d51ef545e20c76d3000f1ed1493690d68e
 RUNTIME_BLOB=7a60f8b8d18672098fed1c6890a95aac738ed21d
 MVG_PROVIDER_BLOB=97d67eb373073b183be6d1bf5b756ecb5125dde2
-B12_STATUS_BLOB=db51ec7f247837b224698506c66088be7e53ab1a
 B12_ROW='B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0'
 B12_ROW_SHA256_NO_EOL=8f6b214ba7894dd49be927c9384a80168f0ad05fabeb48b2f8d1330ef916e59e
 B12_ROW_SHA256_LF=ffe20ab48aa426fe20e57dd1ef9ef1a90efa3cf99fa9da24eb09d1c2eb148dfb
@@ -46,8 +45,8 @@ echo 'FPE03_B12_PRODUCTION_SOURCE_IMMUTABILITY=PASS'
 
 # Source-bound B12 provenance copied from the exact user-supplied SWAP 4.3.1
 # Staringreeks_2018.csv. The original CSV uses CRLF; Git normalizes the small
-# repository fixture to LF. Record and check these as distinct representations.
-[[ "$(git rev-parse HEAD:integration/f-pe/F-PE03_B04_B12_STATUS.json)" == "$B12_STATUS_BLOB" ]]
+# repository fixture to LF. Source hashes and semantic mapping are fixed;
+# the governance status file itself may advance during evidence/closeout.
 [[ "$(head -n 1 tests/fpe/fixtures/staringreeks_2018_b12.csv)" == 'sfu,ORES,OSAT,ALFA,NPAR,KSATFIT,KSATEXM,LEXP,H_ENPR' ]]
 [[ "$(sed -n '2p' tests/fpe/fixtures/staringreeks_2018_b12.csv)" == "$B12_ROW" ]]
 printf '%s' "$B12_ROW" > "$BUILD/b12-row-no-eol.txt"
