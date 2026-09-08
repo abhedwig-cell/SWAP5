@@ -3,17 +3,13 @@
   "workstream": "F-SI",
   "work_unit": "F-SI14",
   "title": "Explicit grid-geometry binding on admitted reference common path",
-  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "status": "QUALIFIED_REQUEST_GRID_GEOMETRY_AUTHORITY",
   "branch": "work/f-si14-grid-geometry-binding",
   "basis": {
     "fsi13_final_qualification_head": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
     "fsi13_decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
-    "fsi13_source_postimage": "9463324c2d823deb32acb883f8f2bd245768ea21",
-    "headcalc_blob": "355bf276e3564bdf9128c23077dbe03da712a17c",
-    "reference_adapter_blob": "9e9d21ff7ae2b62c95b1b93c016ae95abb447137",
-    "soil_water_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
-    "state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
-    "fkt_integration_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "canonical_branch_head_observed_at_start_and_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
     "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
     "shared_fkt_type_change_required": false
   },
@@ -24,29 +20,47 @@
       "soil_water_parameter_set_t%dz",
       "soil_water_parameter_set_t%node_distance"
     ],
-    "current_adapter_dependency": "validate_legacy_request still requires request geometry to equal global MOD_grid numnod/z/dz/disnod",
-    "current_headcalc_dependency": "HeadCalc sizes worker/workspace and evaluates storage/gradients/conductance using global MOD_grid numnod/z/dz/disnod even when an explicit request/state binding is present",
-    "architectural_issue": "the admitted common path therefore still has a grid-global cross-column dependency incompatible with independent logical columns and heterogeneous model templates"
+    "former_adapter_dependency": "the explicit reference adapter still validated request geometry against global MOD_grid",
+    "former_headcalc_dependency": "HeadCalc still sized/evaluated the explicit common route from MOD_grid numnod/z/dz/disnod",
+    "resolved_architectural_issue": "the admitted common reference route now consumes grid geometry from the existing request parameter set while legacy-direct retains MOD_grid authority"
   },
   "ownership": {
     "grid_geometry_parameter_data": "immutable/shared request parameter data",
     "solver_consumption_of_geometry": "F-SI",
+    "solver_provider_temporaries": "worker-owned F-SI workspace",
     "committed_state_and_transaction": "F-KT",
     "generic_time_semantics": "F-KT",
     "discretization_policy_selection": "outside F-SI",
     "physical_process_formulas": "unchanged B1.10 reference physics"
   },
   "implementation_contract": {
-    "explicit_common_route": "HeadCalc derives active node count and z/dz/node-distance values from request%parameters supplied by the reference adapter",
-    "legacy_direct_route": "HeadCalc continues to derive numnod/z/dz/disnod from MOD_grid when no explicit state/request parameter binding is present",
-    "adapter_validation": "validate request geometry intrinsically and against state/provider shapes, not by equality to MOD_grid on the explicit route",
+    "explicit_common_route": "HeadCalc derives active node count and z/dz/node-distance from request%parameters supplied by the reference adapter",
+    "legacy_direct_route": "HeadCalc derives numnod/z/dz/disnod from MOD_grid when no explicit state/request parameter binding is present",
+    "adapter_validation": "request geometry is validated intrinsically and by request/state/provider shape rather than equality to MOD_grid",
+    "node_distance_shape_for_admitted_modes": "active_nodes",
+    "artificial_n_plus_1_bottom_distance_requirement_added": false,
+    "bottom_mode_8_control_flow_guard": "grid_disnod(NN+1) is evaluated only inside the non-admitted swbotb=8 branch; this prevents Fortran non-short-circuit evaluation on admitted modes 7/-2",
+    "bottom_mode_8_admitted": false,
     "no_parameter_copy_per_column": true,
-    "scratch_scaling": "temporary solver geometry access must remain worker/job local; immutable request geometry remains shared",
+    "provider_temporaries_worker_owned": true,
+    "scratch_scaling": "O(active workers * active nodes), not O(logical columns * active nodes)",
     "formula_change": false,
     "new_discretization": false,
     "policy_change": false,
     "transaction_change": false,
     "shared_type_change": false
+  },
+  "materialized_postimage": {
+    "initial_source_postimage": "8b3bcca5a02ca33ca0111d002e00b508cfe4a225",
+    "bottom_distance_guard_repair_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4",
+    "headcalc_blob": "c46756412df7527d6298246570b2aa31bd983823",
+    "reference_adapter_blob": "b17b65563fef826772923afe9c32ca7e0463ec14",
+    "reference_workspace_blob": "a09ba3457a8ce3685df446bfacbf5220cd401507",
+    "production_files_changed_relative_to_fsi13": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_reference_richards_workspace.f90"
+    ]
   },
   "admitted_profile_held_fixed": {
     "reference_solver": "B1.10 Richards reference route",
@@ -60,38 +74,104 @@
     "solver_controls": "F-SI12 explicit request controls",
     "bottom_mode_authority": "F-SI13 explicit request bottom mode"
   },
-  "qualification_required": {
-    "global_grid_poison_after_request_build": true,
-    "request_geometry_authoritative": true,
-    "same_geometry_identity_against_fsi13": true,
-    "different_request_geometry_not_rejected_by_global_equality_guard": true,
-    "workers": [1, 2, 4, 8],
-    "optimization_levels": ["O0", "O2"],
-    "aba_order_independence": true,
-    "scratch_poisoning": true,
-    "request_immutability": true,
-    "solver_route_iteration_identity": true,
-    "focused_unrounded_equation_residual": true,
-    "legacy_direct_identity_against_fsi13": true,
-    "fsi13_pinned_regression": true,
-    "fkt_boundary_regression": true
+  "qualification_evidence": {
+    "grid_authority_candidate": {
+      "head": "c0eb2ba5591161a5c087bd505f2bb07043c3eece",
+      "run": 34208158735,
+      "job": 102002517467,
+      "conclusion": "success"
+    },
+    "same_geometry_identity_candidate": {
+      "head": "82f90dec30bf13161eab2178f3220b8249a9c288",
+      "run": 34209105848,
+      "job": 102005588623,
+      "conclusion": "success"
+    },
+    "qualification_artifact_self_verification": {
+      "head": "c2bd174ea46568b87d1ae13d8063c47da5a63cc9",
+      "run": 34209357787,
+      "job": 102006397530,
+      "conclusion": "success"
+    },
+    "explicit_closeout_regressions": {
+      "head": "01eb57447f75e01c0bd146ff863d81d034213caf",
+      "run": 34209708249,
+      "job": 102007522734,
+      "conclusion": "success",
+      "fsi13_pinned_regression": "PASS",
+      "fkt_boundary_regression": "PASS"
+    },
+    "checks": {
+      "global_grid_poison_after_request_build": "PASS",
+      "request_geometry_authoritative": "PASS",
+      "different_request_geometry_not_rejected_by_global_equality_guard": "PASS_VIA_MUTATED_LEGACY_GRID_AFTER_REQUEST_BUILD",
+      "same_geometry_identity_against_fsi13_bottom_mode_7_o0_o2_workers_1_2_4_8": "PASS",
+      "same_geometry_identity_against_fsi13_bottom_mode_minus2_o0_o2_workers_1_2_4_8": "PASS",
+      "aba_order_independence": "PASS",
+      "scratch_poisoning": "PASS",
+      "request_immutability": "PASS",
+      "solver_route_iteration_identity": "PASS",
+      "focused_unrounded_equation_residual": "PASS",
+      "legacy_direct_identity_against_fsi13_o0_o2": "PASS",
+      "fsi13_pinned_regression": "PASS",
+      "fkt_boundary_regression": "PASS"
+    }
+  },
+  "source_bound_repair_audit": {
+    "failure_run": 34207337215,
+    "failure_job": 101999830477,
+    "failure_class": "FORTRAN_NON_SHORT_CIRCUIT_BOTTOM_DISTANCE_EVALUATION",
+    "failure": "parameter_set%node_distance(NN+1) could be evaluated in an swbotb=8 compound condition while executing admitted free-drainage modes where the value is physically unused",
+    "repair": "nest swbotb==8 before evaluating the lysimeter bottom-distance expression",
+    "repair_scope": "one HeadCalc control-flow guard",
+    "physics_formula_changed": false,
+    "request_contract_expanded": false,
+    "bottom_mode_8_admitted": false
   },
   "holds": {
     "bottom_modes_1_3_5_8_9": "NOT_ADMITTED",
     "swkimpl1": "NOT_ADMITTED",
     "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
     "parallel_reference_backend": "NOT_ADMITTED",
     "runtime_batching": "NOT_IN_SCOPE",
+    "fallback_policy": "NOT_IN_SCOPE",
     "coarse_or_reduced_solver": "NOT_IN_SCOPE"
   },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "guarded i-1 references can produce compiler -Wdo-subscript warnings in pinned legacy sources",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning",
+    "corrected B1.10 hydraulic oracle has existing maybe-uninitialized warnings"
+  ],
+  "invariant_assessment": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_GRID_GEOMETRY",
+    "compact_persistent_state": "PRESERVED_NO_GRID_OR_PROVIDER_SCRATCH_COPIED_PER_COLUMN",
+    "scratch_per_worker": "IMPROVED_PROVIDER_TEMPORARIES_WORKER_OWNED",
+    "scalable_memory_layout": "PRESERVED",
+    "transactional_time_step_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_AND_TESTED_WITH_UNROUNDED_FOCUSED_RESIDUAL_AND_EXACT_FSI13_IDENTITY",
+    "multiswap_scalability": "REDUCED_GLOBAL_MOD_GRID_DEPENDENCY_ON_ADMITTED_COMMON_ROUTE",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "optional_functionality_scaling": "PRESERVED",
+    "no_silent_time_or_io_assumptions_added": true
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "QUALIFIED": true,
     "physics_changed": false,
     "discretization_changed": false,
     "numerical_policy_changed": false,
-    "transaction_semantics_changed": false
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false,
+    "downstream_fsi15_allowed": true
   }
 }
