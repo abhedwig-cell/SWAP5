@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR12",
+  "title": "Shared Crop Root-Uptake Input to Qualified Runtime Binding Adapter",
+  "branch": "work/f-mr12-crop-root-uptake-input-adapter",
+  "base": {
+    "fwof11_closeout_commit": "b6a667035d5e900a7e2209e76491c1817ffd2043",
+    "fwof11_closeout_tree": "d61ad8f161631721314afabda72bba73c0699cd7",
+    "fwof11_status": "QUALIFIED_RUNTIME_SOLVER_INDEPENDENT_ROOT_UPTAKE_CROP_INPUT_PROVIDER_CONTRACT",
+    "fmr10_status": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING"
+  },
+  "numbering_resolution": {
+    "F_MR11_not_used": true,
+    "reason": "work/f-mr11-prescribed-bottom-head-runtime already exists live",
+    "selected_work_unit": "F-MR12"
+  },
+  "ownership": {
+    "crop_input_semantics": "F-WOF11",
+    "root_uptake_physics": "F-PM05 with F-VQ22 scientific qualification",
+    "committed_hydraulic_binding": "F-MR10/F-MR07",
+    "shared_to_runtime_mapping": "F-MR12",
+    "authoritative_mass_accounting": "F-KT/F-MR runtime",
+    "concrete_crop_provider": "future F-WOF owner unit"
+  },
+  "production_scope": {
+    "allowed_new_source": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+    "existing_production_source_modification_allowed": false,
+    "crop_source_modification_allowed": false,
+    "root_uptake_physics_modification_allowed": false,
+    "solver_modification_allowed": false,
+    "kernel_modification_allowed": false,
+    "mass_accounting_modification_allowed": false
+  },
+  "adapter_contract": {
+    "input": "crop_root_uptake_input_t",
+    "validation_owner": "validate_crop_root_uptake_input from F-WOF11",
+    "runtime_target": "fmr_root_uptake_crop_input_t from F-MR10",
+    "mapping": {
+      "crop_emerged": "exact copy",
+      "potential_transpiration": "exact copy",
+      "rooted_nodes": "exact copy",
+      "cumulative_root_fraction": "exact allocation shape and value copy when allocated"
+    },
+    "invalid_shared_input": "fail closed before F-MR10 binding is called",
+    "canonicalization_inside_adapter": false,
+    "reason_no_canonicalization": "the shared crop-owner contract already defines canonical form; runtime must not silently repair crop-owner data",
+    "binding_wrapper": "after successful validation/adaptation, call the already-qualified fmr_evaluate_committed_root_uptake unchanged",
+    "mass_booking": false,
+    "state_mutation": false
+  },
+  "dependency_rules": {
+    "runtime_adapter_may_depend_on_crop_contract": true,
+    "runtime_adapter_may_depend_on_FMR10_binding": true,
+    "crop_contract_may_depend_on_runtime": false,
+    "HeadCalc_or_reference_Richards_access": false,
+    "solver_internal_access": false,
+    "legacy_global_access": false,
+    "file_IO": false,
+    "calendar_assumption": false
+  },
+  "required_gates": [
+    "only one new production source under src",
+    "F-WOF11 contract blob unchanged",
+    "F-MR10 binding blob unchanged",
+    "F-PM05 root uptake process blob unchanged",
+    "F-MR/F-KT protected runtime and transaction blobs unchanged",
+    "canonical inactive shared DTO maps exactly and preserves the F-MR10 dependency-free route",
+    "canonical active zero-root DTO maps exactly",
+    "canonical active rooted DTO maps exact ptra, node count and distribution",
+    "invalid or noncanonical shared DTO fails before F-MR10 call",
+    "adapter output equals direct F-MR10 input field-for-field",
+    "wrapper fluxes and process diagnostics equal direct F-MR10 evaluation",
+    "committed state remains read-only",
+    "shared crop DTO remains read-only",
+    "adapter performs no mass accounting",
+    "A/B/A deterministic mapping and evaluation",
+    "O0/O2 output identity",
+    "F-MR09 cross-process regression remains green"
+  ],
+  "qualification_scope": {
+    "structural_runtime_adapter_only": true,
+    "scientific_requalification_of_root_uptake": false,
+    "concrete_WOFOST_provider": false,
+    "crop_host_lifecycle": false,
+    "crop_cadence": false,
+    "potential_transpiration_computation": false,
+    "root_growth_or_distribution_evolution": false
+  },
+  "affected_invariants": [1, 3, 7, 9, 13, 21, 22, 28, 29, 30],
+  "downstream_if_qualified": {
+    "next_owner": "F-WOF",
+    "purpose": "source-bind a concrete crop-state provider only after crop-host cadence and state-currentness at the requested kernel evaluation point are explicitly qualified"
+  }
+}
