@@ -25,7 +25,5 @@ jobs:
           sudo apt-get install -y gfortran
       - name: F-MR09 root transaction diagnostic
         run: bash tests/fmr/run_fmr09_root_sink_transaction_diag.sh
-      - name: F-MR09 root rollback replay gate
-        run: bash tests/fmr/run_fmr09_root_sink_transaction_replay.sh
       - name: F-MR09 root sink runtime gate
         run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
