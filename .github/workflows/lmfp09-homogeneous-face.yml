@@ -1,0 +1,26 @@
+name: F-LMFP09 Expanded Homogeneous Face
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  homogeneous-face:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+      - name: Expanded homogeneous Darcian-ratio gate
+        run: bash experiments/lmfp/run_lmfp09_homogeneous_gate.sh
+      - name: Upload F-LMFP09 homogeneous evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-homogeneous-evidence
+          path: |
+            lmfp09-homogeneous-artifacts/
