@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ17",
+  "candidate_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "qualification_head_reviewed": "6377e0e932bc5258ed6105253360ec887257de3b",
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "audit": [
+    {"invariant":1,"status":"PASS","finding":"F-VQ17 qualifies composition through the existing shared SWAP kernel/runtime path; no use-case-specific kernel is introduced."},
+    {"invariant":2,"status":"PASS","finding":"No kernel I/O or legacy file parsing is introduced; F-VQ17 adds qualification-only tests, runner, workflow and evidence."},
+    {"invariant":3,"status":"PASS","finding":"The exercised runtime keeps parameters, forcing, committed state, numerical configuration, results and diagnostics explicitly separated."},
+    {"invariant":4,"status":"PASS","finding":"SNOW continuation state is allocated only for active SNOW columns; inactive columns retain no SNOW persistent state."},
+    {"invariant":5,"status":"PASS","finding":"Solver and algebraic workspaces remain execution-local; F-VQ17 introduces no persistent per-column scratch."},
+    {"invariant":6,"status":"PASS_WITH_HOLD","finding":"Qualification covers deterministic batching and canonical aggregation without adding a second aggregate sort, but it does not qualify 100k-column scaling or the pre-existing execution-order insertion sort."},
+    {"invariant":7,"status":"PASS","finding":"Checkpoint, trial, rollback, replay and commit are executed; rejected trials leave committed state unchanged and replay is bitwise exact."},
+    {"invariant":8,"status":"PASS","finding":"A/B/A and checkpoint replay are exact for the admitted scope; no hidden physical warm-start state is introduced."},
+    {"invariant":9,"status":"PASS_WITH_HOLD","finding":"A non-midnight exact one-day interval is admitted. Subdaily and multiday SNOW paths fail closed; arbitrary-duration SNOW physics remains unqualified."},
+    {"invariant":10,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No coupling-window duration is hard-coded by F-VQ17; the one-day restriction belongs only to the currently qualified SNOW process event semantics."},
+    {"invariant":11,"status":"PASS_NO_NEW_CONSTRAINT","finding":"Coupling transaction semantics are not modified and remain compatible with rollback/retry requirements."},
+    {"invariant":12,"status":"PASS_NOT_APPLICABLE","finding":"The groundwater head/flux interface contract is not changed by this qualification."},
+    {"invariant":13,"status":"PASS","finding":"Per-column and authoritative aggregate mass are complete with zero missing-contribution mask; melt is retained as an internal transfer and no tolerance is relaxed."},
+    {"invariant":14,"status":"PASS_NOT_APPLICABLE","finding":"No groundwater response tangent is introduced or modified."},
+    {"invariant":15,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No extra production coupling runs or finite-difference tangent policy is introduced."},
+    {"invariant":16,"status":"PASS_SCOPED","finding":"Real-physics MultiSWAP is independently verified for 1, 2, 17 and 31 columns and multiple batch partitions, but performance at 100k columns and real-physics parallelism are explicitly outside admission."},
+    {"invariant":17,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No 1:1 SWAP-to-MODFLOW mapping assumption is introduced."},
+    {"invariant":18,"status":"PASS_NOT_APPLICABLE","finding":"Deep-vadose transfer-zone behavior is not part of F-VQ17."},
+    {"invariant":19,"status":"PASS_NOT_APPLICABLE","finding":"No deep-vadose/direct-coupling transition is modified."},
+    {"invariant":20,"status":"PASS_WITH_HOLD","finding":"Architecture remains open to alternative soil-water solvers; scientific admission here is deliberately restricted to the exercised equilibrium Richards profile."},
+    {"invariant":21,"status":"PASS","finding":"The qualified F-VQ16 B1.10 SNOW process is reused through the runtime composition; no duplicate SNOW physics path is introduced."},
+    {"invariant":22,"status":"PASS","finding":"SNOW qualification uses the public process/runtime seams and does not couple process code to HeadCalc internals."},
+    {"invariant":23,"status":"PASS","finding":"Physics configuration and numerical execution policy remain separate; F-VQ17 admits no balanced, throughput or fallback physics modification."},
+    {"invariant":24,"status":"PASS_WITH_HOLD","finding":"No bounded-cost fallback is admitted. Predictable-cost/performance qualification remains F-PE owned."},
+    {"invariant":25,"status":"PASS","finding":"Reference accuracy remains available; the exact F-VQ16/B1.10 SNOW oracle is replayed and no reduced-accuracy substitute is admitted."},
+    {"invariant":26,"status":"PASS","finding":"Per-column completion, solver execution, commit provenance, aggregate mass, serialization and failure diagnostics are exercised and persisted in qualification evidence."},
+    {"invariant":27,"status":"PASS","finding":"All-inactive cases verify zero SNOW optional state; SNOW state is paid only by active columns."},
+    {"invariant":28,"status":"PASS","finding":"Tile fractions, transfer zones and MODFLOW system composition remain outside the SWAP kernel/runtime candidate assessed here."},
+    {"invariant":29,"status":"PASS","finding":"The admitted run starts at non-midnight t0=2300.375 and depends on no .swp path or MODFLOW presence; the one-day SNOW restriction is explicit rather than hidden."},
+    {"invariant":30,"status":"PASS","finding":"All architecture invariants are explicitly reassessed for the F-MR06 SNOW MultiSWAP scientific admission."}
+  ],
+  "decision_relevance": {
+    "blocking_invariant_failures": 0,
+    "qualified_holds": [
+      "Subdaily, multiday and arbitrary-duration SNOW remain unqualified.",
+      "General non-equilibrium Richards behavior remains unqualified by F-VQ17.",
+      "Real-physics parallel execution remains unqualified.",
+      "100k-column performance and asymptotic scaling remain unqualified.",
+      "Balanced, throughput and fallback execution policies remain F-PE owned and unqualified here.",
+      "Final MultiSWAP production admission remains F-MQ24 owned."
+    ]
+  }
+}
