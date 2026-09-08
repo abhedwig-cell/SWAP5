@@ -9,6 +9,7 @@ on:
       - 'integration/f-pe/F-PE03_REFERENCE_STRESS_CONTRACT.json'
       - 'integration/f-pe/F-PE03_CHARACTERIZATION_EVIDENCE.json'
       - 'integration/f-pe/F-PE03_STATUS.json'
+      - 'integration/f-pe/F-PE03_CLOSEOUT.json'
       - '.github/workflows/fpe03-reference-stress.yml'
   workflow_dispatch:
 
@@ -62,6 +63,7 @@ jobs:
           from pathlib import Path
           e=json.loads(Path('integration/f-pe/F-PE03_CHARACTERIZATION_EVIDENCE.json').read_text())
           s=json.loads(Path('integration/f-pe/F-PE03_STATUS.json').read_text())
+          c=json.loads(Path('integration/f-pe/F-PE03_CLOSEOUT.json').read_text())
           expected='PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING'
           assert e['status']==expected
           assert s['status']==expected
@@ -83,5 +85,17 @@ jobs:
           assert s['scope_flags']['fallback_policy_admitted'] is False
           assert s['fixture_gap']['accepted_nonstationary_current_lineage_fixture_found'] is False
           assert s['blocker']['code']=='FPE03-B01'
+          assert c['closeout_classification']=='PARTIAL_EXIT_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED'
+          assert c['self_verification']['workflow_run']==34212856397
+          assert c['self_verification']['workflow_job']==102017672830
+          assert c['self_verification']['head_sha']=='8f7bab11fd856d7cb2f7bacb8c299cf2b0517061'
+          assert c['self_verification']['conclusion']=='success'
+          assert c['qualified_scope']['reference_cost_cliff_characterization_verified'] is True
+          assert c['qualified_scope']['physical_tail_distribution_qualified'] is False
+          assert c['qualified_scope']['bounded_cost_policy_admitted'] is False
+          assert c['blocker']['code']=='FPE03-B01'
+          assert c['blocker']['status']=='BLOCKED_FAIL_CLOSED'
+          assert c['disposition']=='PARK_FPE03_UNTIL_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS'
           print('FPE03_PARTIAL_EXIT_SELF_VERIFICATION=PASS')
+          print('FPE03_CLOSEOUT_ARTIFACT=PASS')
           PY
