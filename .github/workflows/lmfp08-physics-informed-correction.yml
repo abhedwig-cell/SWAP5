@@ -1,0 +1,28 @@
+name: F-LMFP08 Physics-Informed Darcian Correction
+
+on:
+  push:
+    branches:
+      - work/f-lmfp08-physics-informed-darcian-correction
+  workflow_dispatch:
+
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          python3 --version
+      - name: Physics-informed correction qualification gate
+        run: bash experiments/lmfp/run_lmfp08_gate.sh
+      - name: Upload F-LMFP08 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp08-evidence
+          path: |
+            lmfp08-artifacts/
+            lmfp04-artifacts/
