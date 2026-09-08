@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR10",
+  "title": "Explicit Committed Root-Uptake Process Runtime Binding",
+  "branch": "work/f-mr10-root-uptake-process-binding",
+  "status": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_QUALIFIED",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "production_binding_added": true,
+    "process_physics_changed": false,
+    "solver_changed": false,
+    "kernel_changed": false,
+    "authoritative_mass_accounting_changed": false,
+    "crop_host_integrated": false
+  },
+  "lineage": {
+    "fvq22_closeout_commit": "1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+    "fvq22_closeout_tree": "7e412ee0126b93e301bf7c268c6dbd5dc00f2b66",
+    "tested_candidate_head": "c7a7f43c655ef281a081529d7e2b6e7950884ae9",
+    "tested_candidate_tree": "87902a0100cdb6fe3486634d87095edd628b3f52",
+    "runtime_binding_blob": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+    "decisive_workflow_run": 34258306780,
+    "decisive_workflow_job": 102169592841,
+    "fmr10_output_sha256": "3dbe3698bd2432bd2bf08052c83d937b3ee36aa1d65449fbc661b96d37a5c703",
+    "fvq22_scientific_output_sha256": "482f0e09bacaeb9428c322734a540ece0738f0c636e3b2db018df344cfff8c5a",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "qualified_binding": {
+    "production_source": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "input_contract": [
+      "crop_emerged",
+      "potential_transpiration",
+      "rooted_nodes",
+      "normalized cumulative_root_fraction"
+    ],
+    "inactive_crop": "zero root sink without committed hydraulic view or root-distribution dependency",
+    "active_crop": "build committed process hydraulic view and invoke exact qualified F-PM05 process",
+    "output_contract": "return process root sink and diagnostics without changing committed state, solver forcing or mass accounting",
+    "persistent_state": false
+  },
+  "qualified_semantics": {
+    "inactive_crop_dependency_free_zero_route": true,
+    "active_direct_process_bitwise_identity": true,
+    "dynamic_root_distribution_pass_through": true,
+    "committed_state_read_only": true,
+    "invalid_active_input_fail_closed": true,
+    "A_B_A_determinism": true,
+    "runtime_root_sink_route_compatibility": true,
+    "authoritative_root_mass_exactly_once": true,
+    "hard_mass_conservation": true,
+    "FVQ22_scientific_result_preserved_exactly": true,
+    "O0_O2_identity": true
+  },
+  "regressions": {
+    "F_MR09_root_sink_runtime": "PASS",
+    "F_VQ18_fixed_irrigation": "PASS",
+    "F_VQ20_scheduled_irrigation": "PASS",
+    "F_MR07_committed_hydraulic_view": "PASS",
+    "F_MR06_snow": "PASS"
+  },
+  "production_scope": {
+    "only_src_delta_from_FVQ22": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "FPM05_process_blob_unchanged": true,
+    "FMR09_solver_runtime_blobs_unchanged": true,
+    "F_WOF_merge_performed": false
+  },
+  "explicit_hold": {
+    "status": "BLOCKED_REAL_CROP_HOST_BINDING_REQUIRES_COMMON_QUALIFIED_CROP_INPUT_PROVIDER",
+    "reason": "the current F-MR lineage contains no src/crop, while F-WOF10 explicitly does not qualify a full crop-host lifecycle and its lineage is divergent",
+    "not_allowed": [
+      "blind merge of F-WOF lineage",
+      "implicit reading of MOD_meteo, plant_interface or MOD_cropdevelopment globals",
+      "claiming a production WOFOST root-uptake integration",
+      "broadening root-uptake physics"
+    ]
+  },
+  "downstream": {
+    "recommended_owner": "crop owner / F-WOF",
+    "recommended_next_workunit": "F-WOF11",
+    "suggested_title": "Explicit Root-Uptake Crop Input Provider Contract and Owner Resolution",
+    "instruction": "Define and qualify the smallest crop-owner provider that supplies crop_emerged, ptra, rooted_nodes and normalized cumulative_root_fraction to the already qualified F-MR10 binding. Do not compose the existing divergent F-WOF reallocation lineage blindly, do not add full crop lifecycle physics, and fail closed if source-bound ownership or cadence cannot yet be represented."
+  }
+}
