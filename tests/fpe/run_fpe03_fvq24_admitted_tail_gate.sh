@@ -16,7 +16,7 @@ FSI18_CLOSEOUT=8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2
 FSI18_PROBE_BLOB=1a0898cfd927455d9219db0f59ac238943cd1435
 OLD_FPE03=e67d624967f53184904e689333594015e9658683
 OLD_FPE03_BLOB=6623613a3526c119bf1fada5540eed93346592e1
-GENERATOR_BLOB=424f531a9efa318d6a68d82f2fdb5e5724b4f724
+GENERATOR_BLOB=e08f3224afef41b16b52fd966b0f72544f266e26
 KERNEL_BLOB=af42c7d51ef545e20c76d3000f1ed1493690d68e
 RUNTIME_BLOB=7a60f8b8d18672098fed1c6890a95aac738ed21d
 LINEAR_SOLVER_BLOB=b292d284e5549049eac1c80df4cc30008154eb96
@@ -24,8 +24,6 @@ HEADCALC_BLOB=1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b
 WORKSPACE_BLOB=178d3289e09583c256b1aa400407d468d9c18e68
 SOLVER_CONTRACT_BLOB=0a57b07712f93538cbfaf9130838682307cede09
 
-# The characterization branch may add tests/governance only. Production must
-# remain the exact F-VQ25/F-MR14 observer-only postimage.
 git diff --quiet "$FVQ25" -- src || {
   echo 'FPE03_FVQ24_PRODUCTION_SOURCE_IMMUTABILITY=FAIL' >&2
   git diff --name-only "$FVQ25" -- src >&2
@@ -46,7 +44,6 @@ done
 echo 'FPE03_FVQ24_PRODUCTION_SOURCE_IMMUTABILITY=PASS'
 echo 'FPE03_FVQ24_FVQ25_SOURCE_LOCKS=PASS'
 
-# Independently pin the scientific owner record and its immutable originating probe.
 [[ "$(git rev-parse "$FVQ24_CLOSEOUT:integration/f-vq/F-VQ24_STATUS.json")" == "$FVQ24_STATUS_BLOB" ]]
 [[ "$(git rev-parse "$FSI18_CLOSEOUT:tests/fsi/test_fsi18_reference_convergence_cliff.F90")" == "$FSI18_PROBE_BLOB" ]]
 git show "$FVQ24_CLOSEOUT:integration/f-vq/F-VQ24_STATUS.json" > "$BUILD/fvq24-status.json"
@@ -68,8 +65,6 @@ assert s['release']['fpe_may_use_this_exact_nonzero_workload_for_reference_chara
 print('FPE03_FVQ24_SCIENTIFIC_OWNER_LOCK=PASS')
 PY
 
-# F-VQ25 independently admitted the observer-only F-MR14 postimage with no
-# scientific change in the existing real-physics scope.
 python3 - <<'PY'
 import json
 from pathlib import Path
@@ -83,7 +78,6 @@ assert s['mass_requirement_relaxed'] is False
 print('FPE03_FVQ24_FVQ25_OBSERVER_ONLY_LINEAGE_LOCK=PASS')
 PY
 
-# Pin the runtime harness base and the local mechanical transformer.
 [[ "$(git rev-parse "$OLD_FPE03:tests/fpe/test_fpe03_reference_stress.f90")" == "$OLD_FPE03_BLOB" ]]
 [[ "$(git rev-parse HEAD:tests/fpe/fpe03_make_fvq24_runtime_probe.py)" == "$GENERATOR_BLOB" ]]
 git show "$OLD_FPE03:tests/fpe/test_fpe03_reference_stress.f90" > "$BUILD/base.f90"
@@ -163,10 +157,8 @@ names=['baseline','plus_3e-12','minus_3e-12','plus_1e-11','minus_1e-11']
 rows=[]
 for i,name in enumerate(names,1):
     p=f'FPE03_CASE_{i:02d}_'
-    row={
-      'case':i,'name':name,'accepted':bv(p,'ACCEPTED'),'status':iv(p,'KERNEL_STATUS'),
-      'substeps':iv(p,'ACCEPTED_SUBSTEPS'),'mass':abs(fv(p,'MASS_RESIDUAL')),'cost':vector(p)
-    }
+    row={'case':i,'name':name,'accepted':bv(p,'ACCEPTED'),'status':iv(p,'KERNEL_STATUS'),
+         'substeps':iv(p,'ACCEPTED_SUBSTEPS'),'mass':abs(fv(p,'MASS_RESIDUAL')),'cost':vector(p)}
     if row['accepted']:
         assert row['status']==0, row
         assert row['substeps']>=1, row
