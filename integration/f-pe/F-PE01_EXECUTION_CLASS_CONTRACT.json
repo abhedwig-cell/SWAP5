@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "contract": "EXECUTION_CLASS_CONTRACT",
+  "reference_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "global_invariants": {
+    "physics_must_not_change_with_execution_class": true,
+    "fixed_across_classes": [
+      "active_process_modules",
+      "soil_hydraulic_parameterization",
+      "forcing",
+      "physical_initial_state",
+      "mass_conservation_requirement"
+    ],
+    "numerical_controls_are_explicit_policy": true,
+    "rejected_attempts_may_not_commit_state": true,
+    "rejected_attempts_may_not_commit_mass": true,
+    "reroute_origin": "CORRECT_COMMITTED_PHYSICAL_STATE",
+    "mass_gate": "HARD"
+  },
+  "classes": {
+    "REFERENCE": {
+      "admission": "ADMITTED_EXISTING_QUALIFIED_ROUTE",
+      "definition": "Existing full-accuracy source-bound serialized real-physics MultiSWAP route.",
+      "source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "physical_execution": "SERIALIZED",
+      "physical_worker_count": 1,
+      "parallel_real_physics": false,
+      "physics_delta_allowed": false,
+      "numerical_delta_from_qualified_reference": false,
+      "mass_concession_allowed": false
+    },
+    "BALANCED": {
+      "admission": "DEFINED_NOT_ADMITTED",
+      "physics_delta_allowed": false,
+      "candidate_numerical_changes": "EXPLICITLY_ENUMERATED_SOLVER_CONTROLS_ONLY_AFTER_SEPARATE_WORKUNIT",
+      "qualification_required_against_reference": true,
+      "allowable_deviation_threshold": null,
+      "threshold_status": "MEASURE_FIRST_DO_NOT_INVENT",
+      "mass_gate": "HARD",
+      "fallback_origin": "COMMITTED_STATE",
+      "request_behavior_before_admission": "FAIL_CLOSED"
+    },
+    "THROUGHPUT": {
+      "admission": "DEFINED_NOT_ADMITTED",
+      "physics_delta_allowed": false,
+      "candidate_numerical_changes": "EXPLICITLY_ENUMERATED_SOLVER_CONTROLS_ONLY_AFTER_SEPARATE_WORKUNIT",
+      "qualification_required_against_reference": true,
+      "allowable_deviation_threshold": null,
+      "threshold_status": "MEASURE_FIRST_DO_NOT_INVENT",
+      "mass_gate": "HARD",
+      "fallback_origin": "COMMITTED_STATE",
+      "request_behavior_before_admission": "FAIL_CLOSED"
+    },
+    "FALLBACK": {
+      "admission": "DEFINED_NOT_ADMITTED",
+      "physics_delta_allowed": false,
+      "candidate_numerical_changes": "ONLY_EXPLICIT_SEPARATELY_QUALIFIED_FALLBACK_NUMERICS",
+      "qualification_required_against_reference": true,
+      "allowable_deviation_threshold": null,
+      "threshold_status": "MEASURE_FIRST_DO_NOT_INVENT",
+      "mass_gate": "HARD",
+      "fallback_origin": "COMMITTED_STATE",
+      "request_behavior_before_admission": "FAIL_CLOSED"
+    }
+  },
+  "future_routing_model": [
+    "REFERENCE_OR_NORMAL_ATTEMPT",
+    "OPTIONAL_ADMITTED_BALANCED_OR_RELAXED_ROUTE",
+    "OPTIONAL_ADMITTED_FALLBACK_ROUTE"
+  ],
+  "routing_rules": {
+    "route_escalation_requires_diagnostics": true,
+    "trial_or_warm_start_data_may_be_reused_numerically": true,
+    "physical_corrector_origin_must_remain_committed_state": true,
+    "no_unadmitted_class_alias_to_reference": true,
+    "no_unadmitted_class_execution": true
+  },
+  "non_admission_statement": "F-PE01 defines qualification architecture only. It does not production-admit BALANCED, THROUGHPUT, FALLBACK, relaxed numerics, reduced physics or parallel real-physics execution."
+}

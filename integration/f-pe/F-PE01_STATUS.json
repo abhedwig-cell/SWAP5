@@ -4,7 +4,7 @@
   "work_unit": "F-PE01",
   "branch": "work/f-pe01-performance-qualification",
   "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
-  "phase": "DEPENDENCIES_PINNED",
+  "phase": "CONTRACTS_PERSISTED",
   "status": "IN_PROGRESS",
   "IMPLEMENTED": false,
   "PERSISTED": true,
@@ -17,11 +17,13 @@
   "parallel_real_physics_admitted": false,
   "execution_classes": {
     "REFERENCE": "ADMITTED_EXISTING_QUALIFIED_ROUTE",
-    "BALANCED": "DEFINED_NOT_ADMITTED_PENDING_CONTRACT",
-    "THROUGHPUT": "DEFINED_NOT_ADMITTED_PENDING_CONTRACT",
-    "FALLBACK": "DEFINED_NOT_ADMITTED_PENDING_CONTRACT"
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
   },
   "physics_changed_by_fpe01": false,
   "mass_requirement": "HARD_NO_PERFORMANCE_CONCESSION",
-  "next_stage": "DEFINE_COST_DIAGNOSTICS_AND_EXECUTION_CLASS_CONTRACTS"
+  "cost_contract_persisted": true,
+  "execution_class_contract_persisted": true,
+  "next_stage": "ADD_FOCUSED_BENCHMARK_AND_QUALIFICATION_HARNESS"
 }
