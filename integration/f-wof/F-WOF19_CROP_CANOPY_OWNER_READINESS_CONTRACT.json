@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF19",
+  "title": "Crop/Canopy Owner-State Readiness and Minimal Lifecycle Boundary",
+  "branch": "work/f-wof19-crop-canopy-owner-readiness",
+  "base": {
+    "commit": "828350c4f48e7004993af90b3b9e2f3874babec3",
+    "status": "QUALIFIED_RESTRICTED_SWETR1_NOINTERCEPTION_POTENTIAL_TRANSPIRATION_PRODUCER"
+  },
+  "purpose": "Determine the minimal authoritative crop-owned state needed to feed the qualified F-WOF17 root-geometry producer and F-WOF18 reference-ET transpiration producer, classify reconstructible values so they do not become duplicate persistent state, and fail closed if the current admitted lineage does not yet contain a transactional crop lifecycle host.",
+  "source_provenance": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_interface_plant_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "legacy_meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "legacy_regions": {
+      "crop_lifecycle_and_emergence": "SWAP/MOD_cropdevelopment.f90:260-343,375-447",
+      "cropdevelopment_task_order": "SWAP/MOD_cropdevelopment.f90:923-1036",
+      "crop_state_fields": "SWAP/interface_plant.f90:16-40,75-100",
+      "crop_factor_update": "SWAP/MOD_cropdevelopment.f90:1208-1244",
+      "root_depth_update": "SWAP/MOD_cropdevelopment.f90:1785-1950",
+      "co2_transpiration_factor": "SWAP/MOD_cropdevelopment.f90:885-909",
+      "reference_et_consumption": "SWAP/MOD_meteo.f90:1403-1479"
+    }
+  },
+  "owner_classification": {
+    "committed_crop_lifecycle_state": [
+      "crop_emerged",
+      "development_stage_DVS",
+      "leaf_area_index_LAI"
+    ],
+    "option_dependent_committed_root_state": {
+      "SWRD_1": [],
+      "SWRD_2": ["actual_root_depth", "potential_root_depth"],
+      "SWRD_3": ["actual_root_biomass_WRT"],
+      "note": "WRT may also be needed by the crop model independently of root-depth mode; F-WOF19 only classifies the dependency required by the qualified root-geometry path."
+    },
+    "reconstructible_not_commit_authority": {
+      "vegetation_cover_fraction": "1 - exp(-kdir * kdif * LAI)",
+      "crop_factor_CF_for_SWCF1": "AFGEN(CFTB,DVS)",
+      "rooted_nodes": "derived by F-WOF16 from current root depth and immutable grid geometry",
+      "cumulative_root_fraction_nonadaptive": "derived by F-WOF16 from current root depth and immutable root-profile parameters",
+      "potential_transpiration": "current ET process result produced by F-WOF18, not crop state"
+    },
+    "current_nonpersistent_inputs": {
+      "fco2tra": "current crop-response factor; B1.10 co2_effect(2) sets 1 when CO2 correction is inactive or derives it from selected CO2 concentration and CO2TRATB when active",
+      "selected_reference_ET": "forcing owned outside crop state and consumed by F-WOF18"
+    }
+  },
+  "transaction_requirements": [
+    "crop emergence/harvest/lifecycle transitions must be trial-safe; rejected trials may not advance the committed lifecycle",
+    "DVS, LAI and any option-dependent committed root state used by a trial must originate from the correct committed checkpoint",
+    "reconstructible vcover, CF, rooted_nodes, cumulative root fraction and ptra must never become independent commit authorities",
+    "replay from the same committed crop state and forcing must reproduce the same owner views",
+    "no calendar-derived lifecycle mutation may be hidden inside F-WOF17, F-WOF18 or runtime adapters"
+  ],
+  "current_lineage_admission_gate": {
+    "requires_concrete_crop_lifecycle_host": true,
+    "requires_transaction_binding_for_crop_state": true,
+    "requires_source_bound_update_order": true,
+    "requires_generic_interval_contract_or_explicit_calendar_event_contract": true,
+    "blind_merge_of_F_WOF04_through_F_WOF10": false
+  },
+  "allowed_result_of_this_workunit": [
+    "qualified owner/state classification",
+    "qualified zero-production readiness evidence",
+    "blocked status with an explicit crop-host release condition"
+  ],
+  "forbidden": [
+    "inventing committed crop state in runtime",
+    "persisting vcover, CF, rooted_nodes, cumulative root fraction or ptra merely because legacy globals saved them",
+    "blindly merging the diverged F-WOF04 through F-WOF10 lineage",
+    "implementing daily crop lifecycle scheduling in this readiness unit",
+    "assuming one kernel interval equals one day",
+    "making F-WOF17 or F-WOF18 own crop lifecycle state",
+    "moving legacy crop-file I/O into the kernel"
+  ],
+  "release_condition": "A subsequent F-WOF owner unit must provide a source-bound transactional crop lifecycle host or committed read-only crop-state authority for crop_emerged, DVS, LAI and the option-dependent root state required by the selected root-depth mode. Only then may these values be composed into F-WOF17/F-WOF18 and downstream F-WOF13.",
+  "affected_invariants": [2,3,4,6,7,8,9,16,21,23,27,29,30]
+}
