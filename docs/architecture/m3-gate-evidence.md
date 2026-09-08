@@ -4,7 +4,7 @@
 **Snapshot:** 2026-09-04  
 **Slice:** M3 - Transactional interval execution
 
-This page evaluates the current transactional refactoring against the [M3 exit gate](migration-slices.md#m3---transactional-interval-execution). It is an evidence dossier, not a design target. A criterion is marked complete only when explicit implementation and qualification evidence exists for that criterion.
+This page evaluates the current transactional refactoring against the [M3 exit gate](migration-slices.md#m3-transactional-interval-execution). It is an evidence dossier, not a design target. A criterion is marked complete only when explicit implementation and qualification evidence exists for that criterion.
 
 !!! warning "Repository evidence versus active refactoring"
     The `SWAP5` repository is currently documentation-led. The active transactional refactoring is being developed and qualified in the SWAP 4.3.1 audit/refactoring workstream and is not yet mirrored here as the production source tree. D3e therefore distinguishes **implemented/refactored structure**, **supporting qualification evidence**, and **still-missing M3 exit evidence**.

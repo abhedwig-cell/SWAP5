@@ -1,0 +1,1933 @@
+{
+  "schema_version": "doc-q01-registry-v1",
+  "registry_id": "DOC-Q01-CANONICAL-DOCUMENTATION-REGISTRY",
+  "generated_from": {
+    "repository": "abhedwig-cell/SWAP5",
+    "canonical_source_branch": "integration/f-ci-canonical",
+    "canonical_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "documentation_governance_input_commit": "a6b991b4702e061accd1b16f9450f99e18aba032",
+    "corrected_legacy_reference": "B1.10",
+    "inventory_base_commit": "a6b991b4702e061accd1b16f9450f99e18aba032"
+  },
+  "policy": {
+    "online_visibility_is_canonical_publication": false,
+    "publication_implies_qualification": false,
+    "unknown_provenance_is_fail_closed": true
+  },
+  "documents": [
+    {
+      "document_id": "DOC-GITHUB-WORKFLOWS-DOCS-YML",
+      "path": ".github/workflows/docs.yml",
+      "title": "docs.yml",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": ".github/workflows/docs.yml",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-COMPONENT-MAP-MD",
+      "path": "docs/architecture/component-map.md",
+      "title": "Target component ownership map",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/component-map.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-DATA-OWNERSHIP-MD",
+      "path": "docs/architecture/data-ownership.md",
+      "title": "Data ownership",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/data-ownership.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-IMPLEMENTATION-STATUS-MD",
+      "path": "docs/architecture/implementation-status.md",
+      "title": "Implementation status map",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/implementation-status.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-INVARIANTS-MD",
+      "path": "docs/architecture/invariants.md",
+      "title": "Core architecture invariants",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/invariants.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-LEGACY-MIGRATION-BIOPHYSICS-MD",
+      "path": "docs/architecture/legacy-migration-biophysics.md",
+      "title": "Crop, uptake, stress, solute and WOFOST-soil",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/legacy-migration-biophysics.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-LEGACY-MIGRATION-CONTROL-MD",
+      "path": "docs/architecture/legacy-migration-control.md",
+      "title": "Control, I/O and accounting",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/legacy-migration-control.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-LEGACY-MIGRATION-HYDRAULIC-MD",
+      "path": "docs/architecture/legacy-migration-hydraulic.md",
+      "title": "State, solver and hydraulic core",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/legacy-migration-hydraulic.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-LEGACY-MIGRATION-PROCESSES-MD",
+      "path": "docs/architecture/legacy-migration-processes.md",
+      "title": "Surface, drainage, management and optional flow physics",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/legacy-migration-processes.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-LEGACY-MIGRATION-MD",
+      "path": "docs/architecture/legacy-migration.md",
+      "title": "Legacy-to-target migration map",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/legacy-migration.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-M3-GATE-EVIDENCE-MD",
+      "path": "docs/architecture/m3-gate-evidence.md",
+      "title": "M3 gate evidence: transactional interval execution",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/m3-gate-evidence.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-MIGRATION-SLICES-MD",
+      "path": "docs/architecture/migration-slices.md",
+      "title": "Migration slices and qualification gates",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/migration-slices.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-ARCHITECTURE-OVERVIEW-MD",
+      "path": "docs/architecture/overview.md",
+      "title": "Target architecture overview",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/architecture/overview.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-ADR-0001-ONE-KERNEL-IO-OUTSIDE-MD",
+      "path": "docs/decisions/ADR-0001-one-kernel-io-outside.md",
+      "title": "ADR-0001: One kernel, I/O outside",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/ADR-0001-one-kernel-io-outside.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-ADR-0002-TRANSACTIONAL-TIME-STEPPING-MD",
+      "path": "docs/decisions/ADR-0002-transactional-time-stepping.md",
+      "title": "ADR-0002: Transactional time stepping",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/ADR-0002-transactional-time-stepping.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-ADR-0003-WORKER-OWNED-SCRATCH-MD",
+      "path": "docs/decisions/ADR-0003-worker-owned-scratch.md",
+      "title": "ADR-0003: Worker-owned scratch",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/ADR-0003-worker-owned-scratch.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-ADR-0004-MULTISWAP-EXECUTION-TEMPLATES-MD",
+      "path": "docs/decisions/ADR-0004-multiswap-execution-templates.md",
+      "title": "ADR-0004: MultiSWAP execution templates",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/ADR-0004-multiswap-execution-templates.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-ADR-0005-REFERENCE-BASELINE-CHAIN-MD",
+      "path": "docs/decisions/ADR-0005-reference-baseline-chain.md",
+      "title": "ADR-0005: Reference baseline chain for SWAP 5",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/ADR-0005-reference-baseline-chain.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DECISIONS-INDEX-MD",
+      "path": "docs/decisions/index.md",
+      "title": "Architecture Decision Records",
+      "category": "TECHNICAL_ARCHITECTURE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/decisions/index.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-DOCUMENTATION-MD",
+      "path": "docs/development/documentation.md",
+      "title": "Documentation workflow",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/documentation.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-LESSONS-REGISTER-MD",
+      "path": "docs/development/lessons-register.md",
+      "title": "SWAP5 lessons register",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/lessons-register.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-PUBLICATION-MD",
+      "path": "docs/development/publication.md",
+      "title": "Online publication",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/publication.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-QUALITY-GOVERNANCE-A-AA-MD",
+      "path": "docs/development/quality-governance-a-aa.md",
+      "title": "Quality governance: Status A to Status AA",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/quality-governance-a-aa.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-STATUS-A-AA-GAP-REGISTER-MD",
+      "path": "docs/development/status-a-aa-gap-register.md",
+      "title": "Status A to Status AA gap register",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/status-a-aa-gap-register.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-WORKSTREAM-EXECUTION-PROTOCOL-MD",
+      "path": "docs/development/workstream-execution-protocol.md",
+      "title": "Workstream execution and recovery protocol",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/workstream-execution-protocol.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-DEVELOPMENT-WORKSTREAMS-MD",
+      "path": "docs/development/workstreams.md",
+      "title": "Parallel development workstreams",
+      "category": "DEVELOPMENT_AND_VERSION_HISTORY",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/development/workstreams.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-GOVERNANCE-DOC-Q01-DISCREPANCIES-AND-BLOCKERS-MD",
+      "path": "docs/governance/doc-q01-discrepancies-and-blockers.md",
+      "title": "DOC-Q01 discrepancies and blockers",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/governance/doc-q01-discrepancies-and-blockers.md",
+      "publication_status": "DEVELOPMENT",
+      "quality_status": "DOCUMENTED",
+      "online_navigation_candidate": true,
+      "related_component": "documentation-governance",
+      "related_workstream": "DOC-Q01",
+      "related_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "theory_reference": "NOT_APPLICABLE",
+      "implementation_reference": "NOT_APPLICABLE",
+      "test_or_evidence_reference": "tools/docs/documentation_registry.py",
+      "known_discrepancies": [],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-GOVERNANCE-DOC-Q01-GOVERNANCE-BASELINE-MD",
+      "path": "docs/governance/doc-q01-governance-baseline.md",
+      "title": "DOC-Q01 canonical documentation governance baseline",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/governance/doc-q01-governance-baseline.md",
+      "publication_status": "DEVELOPMENT",
+      "quality_status": "DOCUMENTED",
+      "online_navigation_candidate": true,
+      "related_component": "documentation-governance",
+      "related_workstream": "DOC-Q01",
+      "related_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "theory_reference": "NOT_APPLICABLE",
+      "implementation_reference": "NOT_APPLICABLE",
+      "test_or_evidence_reference": "tools/docs/documentation_registry.py",
+      "known_discrepancies": [],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-GOVERNANCE-DOC-Q01-STATUS-A-AA-GAP-BASELINE-MD",
+      "path": "docs/governance/doc-q01-status-a-aa-gap-baseline.md",
+      "title": "DOC-Q01 Status A to Status AA documentation gap baseline",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/governance/doc-q01-status-a-aa-gap-baseline.md",
+      "publication_status": "DEVELOPMENT",
+      "quality_status": "DOCUMENTED",
+      "online_navigation_candidate": true,
+      "related_component": "documentation-governance",
+      "related_workstream": "DOC-Q01",
+      "related_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "theory_reference": "NOT_APPLICABLE",
+      "implementation_reference": "NOT_APPLICABLE",
+      "test_or_evidence_reference": "tools/docs/documentation_registry.py",
+      "known_discrepancies": [],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-GOVERNANCE-DOC-Q01-STATUS-JSON",
+      "path": "docs/governance/doc-q01-status.json",
+      "title": "doc-q01-status.json",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/governance/doc-q01-status.json",
+      "publication_status": "DEVELOPMENT",
+      "quality_status": "DOCUMENTED",
+      "online_navigation_candidate": false,
+      "related_component": "documentation-governance",
+      "related_workstream": "DOC-Q01",
+      "related_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "theory_reference": "NOT_APPLICABLE",
+      "implementation_reference": "NOT_APPLICABLE",
+      "test_or_evidence_reference": "tools/docs/documentation_registry.py",
+      "known_discrepancies": [],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-GOVERNANCE-DOCUMENTATION-REGISTRY-JSON",
+      "path": "docs/governance/documentation-registry.json",
+      "title": "documentation-registry.json",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/governance/documentation-registry.json",
+      "publication_status": "DEVELOPMENT",
+      "quality_status": "DOCUMENTED",
+      "online_navigation_candidate": false,
+      "related_component": "documentation-governance",
+      "related_workstream": "DOC-Q01",
+      "related_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "theory_reference": "NOT_APPLICABLE",
+      "implementation_reference": "NOT_APPLICABLE",
+      "test_or_evidence_reference": "tools/docs/documentation_registry.py",
+      "known_discrepancies": [],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INDEX-MD",
+      "path": "docs/index.md",
+      "title": "SWAP technical documentation",
+      "category": "USER_DOCUMENTATION",
+      "intended_audience": [
+        "users",
+        "developers"
+      ],
+      "source_of_truth": "docs/index.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI02-CANONICAL-REFERENCE-ROOT-MD",
+      "path": "docs/integration/F-CI02_CANONICAL_REFERENCE_ROOT.md",
+      "title": "F-CI02 Canonical reference root",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI02_CANONICAL_REFERENCE_ROOT.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI03-TRANSACTIONAL-FORWARD-PORT-MD",
+      "path": "docs/integration/F-CI03_TRANSACTIONAL_FORWARD_PORT.md",
+      "title": "F-CI03 B1.10 transactional forward integration",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI03_TRANSACTIONAL_FORWARD_PORT.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI04-CANONICAL-RUNTIME-AND-PHYSICAL-SEAM-MD",
+      "path": "docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md",
+      "title": "F-CI04 Canonical Runtime and B1.10 Physical Seam",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI05-B1-10-PHYSICAL-ADAPTER-PREIMAGE-MD",
+      "path": "docs/integration/F-CI05_B1_10_PHYSICAL_ADAPTER_PREIMAGE.md",
+      "title": "F-CI05 B1.10 Physical Adapter Preimage",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI05_B1_10_PHYSICAL_ADAPTER_PREIMAGE.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI06-CONTROLLED-B1-10-SOURCE-PORT-MD",
+      "path": "docs/integration/F-CI06_CONTROLLED_B1_10_SOURCE_PORT.md",
+      "title": "F-CI06 \u2014 Controlled B1.10 Physical Source Port",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI06_CONTROLLED_B1_10_SOURCE_PORT.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI07-PHYSICAL-TRANSACTION-STATE-MD",
+      "path": "docs/integration/F-CI07_PHYSICAL_TRANSACTION_STATE.md",
+      "title": "F-CI07 \u2014 B1.10 legacy trial capsule and physical rollback layer",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI07_PHYSICAL_TRANSACTION_STATE.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI08-PHYSICAL-PROCESS-CONTINUATION-STATE-MD",
+      "path": "docs/integration/F-CI08_PHYSICAL_PROCESS_CONTINUATION_STATE.md",
+      "title": "F-CI08 \u2014 Physical Process Continuation State",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI08_PHYSICAL_PROCESS_CONTINUATION_STATE.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI09-TRANSACTION-MODEL-BINDING-MD",
+      "path": "docs/integration/F-CI09_TRANSACTION_MODEL_BINDING.md",
+      "title": "F-CI09 \u2014 Canonical B1.10 Transaction Model Binding",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI09_TRANSACTION_MODEL_BINDING.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI11-GENERIC-INTERVAL-MASS-PORT-MD",
+      "path": "docs/integration/F-CI11_GENERIC_INTERVAL_MASS_PORT.md",
+      "title": "F-CI11 generic physical interval and mass port",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI11_GENERIC_INTERVAL_MASS_PORT.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI12-PHYSICAL-ADVANCE-AND-TEMPORAL-CHARACTERIZATION-MD",
+      "path": "docs/integration/F-CI12_PHYSICAL_ADVANCE_AND_TEMPORAL_CHARACTERIZATION.md",
+      "title": "F-CI12 \u2014 Physical Transaction Advance Binding and Temporal Difference Characterization",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI12_PHYSICAL_ADVANCE_AND_TEMPORAL_CHARACTERIZATION.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI13-RECOVERABLE-TRIAL-STATUS-MD",
+      "path": "docs/integration/F-CI13_RECOVERABLE_TRIAL_STATUS.md",
+      "title": "F-CI13 \u2014 Recoverable Physical Trial Status Contract",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI13_RECOVERABLE_TRIAL_STATUS.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-INTEGRATION-F-CI14-REFERENCE-TEMPORAL-ACCEPTANCE-MD",
+      "path": "docs/integration/F-CI14_REFERENCE_TEMPORAL_ACCEPTANCE.md",
+      "title": "F-CI14 \u2014 Reference Temporal Acceptance Contract",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/integration/F-CI14_REFERENCE_TEMPORAL_ACCEPTANCE.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-LEGACY-SWAP-4-3-1-BASELINE-MD",
+      "path": "docs/legacy/swap-4.3.1-baseline.md",
+      "title": "SWAP 4.3.1 baseline",
+      "category": "LEGACY_AND_REFERENCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/legacy/swap-4.3.1-baseline.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-BENCHMARK-RECORD-SCHEMA-JSON",
+      "path": "docs/performance/benchmark-record.schema.json",
+      "title": "SWAP5 MultiSWAP benchmark interval record",
+      "category": "PARAMETERS_AND_VARIABLES",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "docs/performance/benchmark-record.schema.json",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-2-MEASUREMENT-COLLECTOR-MD",
+      "path": "docs/performance/mp-2-measurement-collector.md",
+      "title": "MP-2 measurement collector",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-2-measurement-collector.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-3-B0-SHADOW-OBSERVATION-MD",
+      "path": "docs/performance/mp-3-b0-shadow-observation.md",
+      "title": "MP-3A B0 shadow observation seam",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-3-b0-shadow-observation.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-4-WORKLOAD-CATALOG-MD",
+      "path": "docs/performance/mp-4-workload-catalog.md",
+      "title": "MP-4 MultiSWAP workload and benchmark catalog",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-4-workload-catalog.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-5-REPEATABILITY-OVERHEAD-MD",
+      "path": "docs/performance/mp-5-repeatability-overhead.md",
+      "title": "MP-5 MP-B01 repeatability and observer-overhead qualification",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-5-repeatability-overhead.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-6-CONTROLLED-CPU-BASELINE-MD",
+      "path": "docs/performance/mp-6-controlled-cpu-baseline.md",
+      "title": "MP-6 controlled-host CPU baseline protocol",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-6-controlled-cpu-baseline.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-7-HOST-ADMISSION-MD",
+      "path": "docs/performance/mp-7-host-admission.md",
+      "title": "MP-7 host admission for a 1% CPU baseline",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-7-host-admission.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MP-8-ISOLATED-RUNNER-CONTRACT-MD",
+      "path": "docs/performance/mp-8-isolated-runner-contract.md",
+      "title": "MP-8 isolated performance-runner contract",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/mp-8-isolated-runner-contract.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-PERFORMANCE-MULTISWAP-MEASUREMENT-ARCHITECTURE-MD",
+      "path": "docs/performance/multiswap-measurement-architecture.md",
+      "title": "MultiSWAP measurement and benchmark architecture",
+      "category": "MODEL_QUALITY_AND_UNCERTAINTY",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/performance/multiswap-measurement-architecture.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-B0-SOURCE-INTEGRITY-MD",
+      "path": "docs/verification/b0-source-integrity.md",
+      "title": "B0 source integrity",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/b0-source-integrity.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-B1-5P1-PROVENANCE-REPAIR-MD",
+      "path": "docs/verification/b1-5p1-provenance-repair.md",
+      "title": "B1.5p1 provenance repair",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/b1-5p1-provenance-repair.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-B1-SNAPSHOTS-MD",
+      "path": "docs/verification/b1-snapshots.md",
+      "title": "B1 corrected-reference snapshots",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/b1-snapshots.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-EXPECTED-DIFFERENCES-JSON",
+      "path": "docs/verification/expected-differences.json",
+      "title": "expected-differences.json",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/expected-differences.json",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-LEGACY-DIFFERENCES-MD",
+      "path": "docs/verification/legacy-differences.md",
+      "title": "Legacy difference ledger",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/legacy-differences.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-MASS-ACCOUNTING-CONTRACT-MD",
+      "path": "docs/verification/mass-accounting-contract.md",
+      "title": "VQ mass-accounting contract",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/mass-accounting-contract.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-PRINCIPLES-MD",
+      "path": "docs/verification/principles.md",
+      "title": "Verification principles",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/principles.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-REFERENCE-BASELINE-JSON",
+      "path": "docs/verification/reference-baseline.json",
+      "title": "reference-baseline.json",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/reference-baseline.json",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-REFERENCE-BASELINES-MD",
+      "path": "docs/verification/reference-baselines.md",
+      "title": "Reference baselines",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/reference-baselines.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-SWAP-009-B1-CANDIDATE-MD",
+      "path": "docs/verification/swap-009-b1-candidate.md",
+      "title": "SWAP-009 B1 candidate",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/swap-009-b1-candidate.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-SWAP-011-B1-CANDIDATE-MD",
+      "path": "docs/verification/swap-011-b1-candidate.md",
+      "title": "SWAP-011 B1 candidate",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/swap-011-b1-candidate.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-THEORY-CODE-DISCREPANCY-REGISTER-MD",
+      "path": "docs/verification/theory-code-discrepancy-register.md",
+      "title": "Theory-code discrepancy register",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/theory-code-discrepancy-register.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1-INTEGRATION-MD",
+      "path": "docs/verification/vq-1-integration.md",
+      "title": "VQ-1 integration record",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1-integration.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1B-RERUN-EVIDENCE-MD",
+      "path": "docs/verification/vq-1b-rerun-evidence.md",
+      "title": "VQ-1b B0 hardening rerun evidence",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1b-rerun-evidence.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1C-B1-5P1-EVIDENCE-MD",
+      "path": "docs/verification/vq-1c-b1.5p1-evidence.md",
+      "title": "VQ-1c B1.5p1 independent identity evidence",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1c-b1.5p1-evidence.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1C2-B1-5P1-RECONSTRUCTION-MD",
+      "path": "docs/verification/vq-1c2-b1.5p1-reconstruction.md",
+      "title": "VQ-1c2 B1.5p1 reconstruction and first numerical edges",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1c2-b1.5p1-reconstruction.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1C3-B1-5P1-TARGETED-QUALIFICATION-MD",
+      "path": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+      "title": "VQ-1c3 B1.5p1 targeted correction qualification",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-DOCS-VERIFICATION-VQ-1D-B2-ENTRYPOINT-GATE-MD",
+      "path": "docs/verification/vq-1d-b2-entrypoint-gate.md",
+      "title": "VQ-1d B2 reference-entrypoint admission gate",
+      "category": "VERIFICATION_AND_QUALIFICATION",
+      "intended_audience": [
+        "reviewers",
+        "scientists",
+        "developers"
+      ],
+      "source_of_truth": "docs/verification/vq-1d-b2-entrypoint-gate.md",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": true,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-MKDOCS-YML",
+      "path": "mkdocs.yml",
+      "title": "mkdocs.yml",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "mkdocs.yml",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-REQUIREMENTS-DOCS-TXT",
+      "path": "requirements-docs.txt",
+      "title": "requirements-docs.txt",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "requirements-docs.txt",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-TOOLS-DOCS-CHECK-DOCS-PY",
+      "path": "tools/docs/check_docs.py",
+      "title": "check_docs.py",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "tools/docs/check_docs.py",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-TOOLS-DOCS-DOCUMENTATION-REGISTRY-PY",
+      "path": "tools/docs/documentation_registry.py",
+      "title": "documentation_registry.py",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "tools/docs/documentation_registry.py",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "document_id": "DOC-TOOLS-DOCS-VERIFY-PUBLICATION-PY",
+      "path": "tools/docs/verify_publication.py",
+      "title": "verify_publication.py",
+      "category": "OPERATIONS_AND_MAINTENANCE",
+      "intended_audience": [
+        "maintainers",
+        "developers",
+        "reviewers"
+      ],
+      "source_of_truth": "tools/docs/verify_publication.py",
+      "publication_status": "REVIEWED",
+      "quality_status": "NOT_ASSESSED",
+      "online_navigation_candidate": false,
+      "related_component": "UNKNOWN",
+      "related_workstream": "UNKNOWN",
+      "related_source_commit": "UNKNOWN",
+      "theory_reference": "UNKNOWN",
+      "implementation_reference": "UNKNOWN",
+      "test_or_evidence_reference": "UNKNOWN",
+      "known_discrepancies": [
+        "DOC-Q01 provenance and content assessment pending"
+      ],
+      "status": "ACTIVE"
+    }
+  ]
+}

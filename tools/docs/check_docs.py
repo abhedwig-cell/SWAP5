@@ -115,11 +115,23 @@ def check_generated_site_not_tracked() -> None:
         fail("generated site/ directory is present; remove it before packaging or commit")
 
 
+def check_documentation_registry() -> None:
+    from documentation_registry import main as registry_main
+
+    original_argv = sys.argv
+    try:
+        sys.argv = ["documentation_registry.py"]
+        registry_main()
+    finally:
+        sys.argv = original_argv
+
+
 def main() -> None:
     config = load_config()
     check_nav(config)
     check_markdown_links()
     check_invariants()
+    check_documentation_registry()
     check_generated_site_not_tracked()
     print("Documentation source checks passed.")
 

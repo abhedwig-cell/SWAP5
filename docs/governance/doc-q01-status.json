@@ -1,0 +1,31 @@
+{
+  "work_unit": "DOC-Q01",
+  "branch": "docs/doc-q01-canonical-governance",
+  "baseline": {
+    "canonical_source_branch": "integration/f-ci-canonical",
+    "canonical_source_commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "documentation_governance_input_commit": "a6b991b4702e061accd1b16f9450f99e18aba032",
+    "corrected_legacy_reference": "B1.10"
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "publication_status": "DEVELOPMENT",
+  "qualification_status": "NOT_ASSESSED",
+  "blockers": [
+    "No exact canonical publication manifest binds the live site to a qualified source and documentation baseline.",
+    "Most existing pages lack complete theory, implementation and test-evidence traceability.",
+    "Status A scientific model, validation, applicability and limitations documentation is incomplete."
+  ],
+  "test_results": {
+    "registry_validation": "PASS: all documentation content and control-plane artifacts inventoried",
+    "repository_documentation_checks": "PASS",
+    "mkdocs_strict_build": "PASS",
+    "relative_link_and_navigation_checks": "PASS",
+    "production_source_change_check": "PASS: no changes under src/, integration/, reference/ or tests/",
+    "published_site_verification": "NOT_RUN_TO_COMPLETION: network reachability must be checked independently; no publication was attempted"
+  },
+  "next_action": "DOC-Q02 should assess and trace the highest-priority scientific and user-facing document sets against exact source and qualification evidence.",
+  "recovery_point": "66db14205d7d2633aef4cb135c3e1b1053363105"
+}
