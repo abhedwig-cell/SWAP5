@@ -3,73 +3,54 @@
   "workstream": "F-SI",
   "work_unit": "F-SI16",
   "title": "Explicit prescribed bottom-head boundary admission",
-  "status": "IMPLEMENTED_PERSISTED_AWAITING_CI_AFTER_BOTTOM_DISTANCE_REPAIR",
+  "status": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+  "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
   "branch": "work/f-si16-explicit-prescribed-bottom-head",
   "basis": {
     "fsi15_final_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
     "fsi15_decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
-    "fsi13_bottom_boundary_contract_blob": "e416a13e9cb1f78f3b8149e9d452c2985f067750",
-    "gc02_blocker": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED"
+    "gc02_blocker_resolved_for_fsi_ownership": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED"
+  },
+  "production_postimage": {
+    "commit": "d4c3cb5982b423de23b9b4bd2f815cfe895aca4f",
+    "production_files_changed_relative_to_fsi15": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90"
+    ],
+    "production_frozen_after_postimage": true
   },
   "source_characterization": {
-    "legacy_route": "B1.10 HeadCalc SWBOTB=5 followed by SoilWater(3)/fluxes/integral(3)",
+    "legacy_route": "B1.10 HeadCalc SWBOTB=5",
     "input_field": "soil_water_solve_request_t%boundary%bottom_head",
-    "input_semantics": "lower-boundary pressure head",
+    "input_semantics": "lower-boundary face pressure head",
     "input_units": "cm",
     "state_binding": [
       "reference_richards_state_binding_t%gwlinp = request%boundary%bottom_head",
       "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
     ],
-    "legacy_newton_equation": "HNEW(NN) - HBOT = 0",
+    "mode5_semantics": "hbot is used in the lower-face Darcy gradient; SWBOTB=5 does not impose h(NN)=hbot",
     "mode5_bottom_gradient": "head_gradient(NN+1)=(h(NN)-hbot)/disnod(NN+1)+1",
     "mode5_headcalc_darcy_term": "kmean(NN+1)*head_gradient(NN+1)",
-    "returned_qbot_legacy_arithmetic_macropore_inactive": "qbot=qtop+qrosum+qdrtot+(volact-volm1)/dt-qssdisum",
-    "mass_sign_contract": "bottom_flux>=0 is external inflow; bottom_flux<0 is external outflow"
+    "bottom_face_distance": "derived from existing F-SI14 NN-sized geometry using dz(NN)",
+    "authoritative_qbot": "materialized after successful HeadCalc using the existing vertical continuity recurrence in HeadCalc operation order",
+    "qbot_units": "cm d-1",
+    "qbot_sign": "positive enters the soil profile through the lower boundary; negative leaves the profile"
   },
-  "implemented_candidate": {
-    "candidate_head_before_status_checkpoint": "22a931efdb24ec525608d2269368b56c8e463529",
-    "production_files_changed_relative_to_fsi15": [
-      "src/adapter/mod_reference_richards_legacy_binding.f90",
-      "src/legacy/b1_10_port/headcalc.f90",
-      "src/solver/mod_soil_water_solver_contract.f90"
-    ],
-    "bottom_mode_guard": "request bottom mode 5 is accepted in addition to existing 7/-2; other unowned modes remain fail closed",
-    "qbot_materialization": "after a successful mode-5 HeadCalc solve, bottom_flux is reconstructed from explicit qtop, storage change, source/sink and root-sink terms using the existing B1.10 continuity recurrence",
-    "legacy_fluxes_called_from_common_solver": false,
-    "legacy_lower_boundary_globals_authoritative_after_request_build": false,
-    "node_distance_generic_shape": "active_nodes or active_nodes+1",
-    "mode5_node_distance_requirement": "active_nodes+1 so the lower face distance used by the prescribed-head Darcy gradient is explicit",
-    "existing_modes_7_minus2_geometry_compatibility": "active_nodes remains valid",
-    "headcalc_geometry_validation": "accepts node_distance active_nodes or active_nodes+1 on explicit geometry route",
-    "mode5_short_geometry_behavior": "adapter rejects before HeadCalc with route bottom-distance-required",
-    "new_prescribed_head_physics_formula": false,
-    "transaction_change": false,
-    "numerical_policy_change": false
-  },
-  "ci_repair_history": {
-    "focused_run_before_headcalc_shape_repair": {
-      "run": 34238207242,
-      "job": 102101315015,
-      "head": "4455822020599a2ed9047977cd70b739114aa4f3",
-      "conclusion": "failure",
-      "failure": "HeadCalc explicit geometry validation still required node_distance size active_nodes and rejected the mode-5 active_nodes+1 lower-face geometry"
-    },
-    "repair_commit": "22a931efdb24ec525608d2269368b56c8e463529",
-    "repair_scope": "one HeadCalc geometry shape guard plus focused gate pin/update",
-    "repair_test_status": "NOT_YET_EVIDENCED_BY_NORMAL_FSI16_CI"
-  },
-  "focused_gate_intent": {
-    "bottom_flux_seed_independence": true,
-    "legacy_swbotb_hbot_gwlinp_qbot_poison_after_request_build": true,
-    "continuity_qbot_bit_identity": true,
-    "unowned_bottom_modes_fail_closed_before_headcalc": true,
-    "mode5_missing_bottom_face_distance_fail_closed_before_headcalc": true,
-    "short_geometry_negative_fixture_isolated_from_shared_parameter_set": true,
-    "o0_o2_identity": true,
-    "legacy_direct_identity_regression": true
+  "qualification": {
+    "artifact": "integration/f-si/F-SI16_QUALIFICATION.json",
+    "artifact_commit": "b81665d540d05f2cec5863fe9a2fe15bc8459f6e",
+    "tested_head": "9cae1bc9966a83976de8897ff9d7bca7d2f7deda",
+    "workflow_run": 34247069481,
+    "workflow_job": 102131676234,
+    "workflow_conclusion": "success",
+    "focused_gate": "PASS",
+    "qualification_matrix": "PASS",
+    "exact_b110_numerical_oracle": "PASS_BITWISE_O0_O2_WITHOUT_SCIENTIFIC_TOLERANCE",
+    "fsi15_pinned_regression": "PASS",
+    "fkt_boundary_regression": "PASS"
   },
   "ownership": {
-    "prescribed_head_physics": "existing B1.10 reference physics, unchanged",
+    "prescribed_head_physics": "existing B1.10 reference physics unchanged",
     "common_request_boundary_authority": "F-SI",
     "transaction_semantics": "F-KT_UNCHANGED",
     "physical_runtime_profile_admission": "F-MR_DOWNSTREAM",
@@ -79,11 +60,10 @@
   "scope_flags": {
     "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
-    "bottom_mode_5_admitted": false,
-    "mode5_candidate_materialized": true,
-    "authoritative_bottom_flux_candidate_available": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "bottom_mode_5_admitted": true,
+    "authoritative_bottom_flux_available": true,
     "groundwater_coupling_admitted": false,
     "parallel_reference_backend_admitted": false,
     "physics_changed": false,
@@ -99,5 +79,14 @@
     "active_macropores": "NOT_ADMITTED",
     "parallel_reference_backend": "NOT_ADMITTED"
   },
-  "next_gate": "RUN_NORMAL_FSI16_FOCUSED_CI_THEN_CLOSEOUT_REGRESSIONS_BEFORE_QUALIFICATION"
+  "downstream_handoff": {
+    "next_owner": "F-MR",
+    "next_action": "admit the F-SI-qualified SWBOTB=5 prescribed-head boundary into the restricted serialized physical runtime profile",
+    "work_unit": "NEXT_FREE_FMR_UNIT",
+    "then": "independent F-VQ qualification",
+    "gc02_resume_condition": "only after F-MR and independent F-VQ pass",
+    "gc02_resume_target": "same existing GC02 unit",
+    "new_fgc_unit_required": false
+  },
+  "next_gate": "HANDOFF_TO_FMR_NEW_UNIT_THEN_INDEPENDENT_FVQ_BEFORE_RESUMING_EXISTING_GC02"
 }
