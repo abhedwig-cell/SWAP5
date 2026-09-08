@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR08",
+  "title": "Source-bound Path A evidence for existing exact temporal identity on nonstationary admitted SNOW state",
+  "branch": "work/f-mr08-nonstationary-temporal-acceptance",
+  "evidence_checkpoint_base": "fb1875aea5d0738fa0440f11fbc197623bde6b6c",
+  "decision_contract": "integration/f-mr/F-MR08_DECISION_CONTRACT.json",
+  "path": "A",
+  "production_change_required": false,
+  "transaction_change_required": false,
+  "numeric_tolerance_change_required": false,
+  "existing_fixture": {
+    "path": "tests/fmr/test_fmr06_snow_smoke.f90",
+    "blob_on_fmr08_base": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "blob_on_exact_fmr06_candidate": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "exact_fmr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "interval_t0": 1400.25,
+    "interval_t1": 1401.25,
+    "interval_duration": 1.0,
+    "non_midnight_start": true,
+    "temporal_tolerance": 0.0,
+    "initial_snow_water_storage": 0.10,
+    "snowfall_external_in": 0.02,
+    "source_derived_expected_committed_snow_water_storage": 0.12,
+    "source_derived_snow_storage_change": 0.02,
+    "event_applied_initial": false,
+    "event_applied_candidate": true,
+    "event_t0_candidate": 1400.25,
+    "candidate_assertion": "candidate_snow_state(candidate, initial_snow + snowfall, .true., t0)",
+    "commit_assertion": "committed_snow_state(committed, initial_snow + snowfall, .true., t0)",
+    "trial_nonmutation_assertion": "committed_fingerprint(committed) == committed_before",
+    "rollback_assertion": "discard invalidates candidate and leaves committed fingerprint unchanged",
+    "replay_assertion": "replay candidate fingerprint and authoritative mass are identical",
+    "mass_assertions": [
+      "authoritative mass complete",
+      "missing contribution mask is TX_MASS_MISSING_NONE",
+      "absolute authoritative mass residual <= 1.0e-12",
+      "absolute SNOW component unrounded residual <= 1.0e-12"
+    ]
+  },
+  "exact_temporal_identity_binding": {
+    "production_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "production_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "model_temporal_error_binding": "fmr_serialized_temporal_identity",
+    "active_snow_fields_compared": [
+      "snow_water_storage",
+      "liquid_water_storage",
+      "event_applied",
+      "event_t0"
+    ],
+    "interpretation": "At temporal_tolerance=0, accepted full-step versus two-half-step identity includes allocated active SNOW state. The admitted smoke fixture therefore cannot pass merely because the restricted Richards hydraulic endpoint is stationary while SNOW changes."
+  },
+  "fvq17_source_lock_revalidated_on_fmr08_base": {
+    "src/process/mod_snow_process.f90": "54702d71b4c84dce2842813549bd14c57301a383",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "tests/fmr/test_fmr06_snow_smoke.f90": "4f45bb0623fef3fb6d091579e8f435563c858a69"
+  },
+  "lineage_delta_from_exact_fmr06_candidate": {
+    "base": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "head_checked": "fb1875aea5d0738fa0440f11fbc197623bde6b6c",
+    "relationship": "ahead_by_12",
+    "existing_files_modified": false,
+    "existing_files_deleted": false,
+    "only_additions": true,
+    "production_additions": [
+      "src/solver/mod_process_hydraulic_view.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+    ],
+    "snow_or_serialized_runtime_source_modified": false,
+    "fmr06_fixture_modified": false
+  },
+  "independent_prior_admission": {
+    "work_unit": "F-VQ17",
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "decisive_qualification_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "fmr06_engineering_gate_replayed": true,
+    "same_smoke_fixture_compiled_and_run_at_o0_and_o2": true,
+    "qualification_scope_hold": "This prior F-VQ17 admission supports the already admitted F-MR06 SNOW scope only. It is not a substitute for a new independent F-VQ closeout of F-MR08 governance and downstream handoff."
+  },
+  "path_a_conclusion": {
+    "existing_admitted_nonstationary_fixture_found": true,
+    "nonstationary_dimension": "active SNOW persistent process state",
+    "exact_temporal_identity_preserved": true,
+    "mass_conservation_preserved_as_separate_hard_gate": true,
+    "arbitrary_new_tolerance_introduced": false,
+    "path_b_needed_for_immediate_fpe_blocker": false,
+    "owner_exit": "QUALIFIED_EXISTING_TEMPORAL_IDENTITY_WITH_ADMITTED_NONSTATIONARY_FIXTURE_READY_FOR_FVQ",
+    "independent_new_fvq_required": true,
+    "fpe_consumption_before_new_fvq": false
+  },
+  "invariant_checks": {
+    "transactional_time_steps": "PASS_BY_EXISTING_FIXTURE_ROLLBACK_REPLAY_COMMIT",
+    "generic_time": "PASS_WITH_NON_MIDNIGHT_T0_1400_25_WITHIN_CURRENT_ONE_CALL_DAILY_SNOW_SCOPE",
+    "mass_conservation_absolute": "PASS_AS_SEPARATE_HARD_GATE",
+    "physics_solver_policy_separation": "PASS_NO_PHYSICS_OR_TOLERANCE_CHANGE",
+    "reference_mode_available": "UNCHANGED",
+    "diagnostics": "UNCHANGED_EXISTING_FMR06_FVQ17_SCOPE",
+    "no_silent_dependencies": "NO_NEW_DEPENDENCY_INTRODUCED",
+    "architecture_change_audit": "PASS_NO_ARCHITECTURE_CHANGE_REQUIRED"
+  }
+}
