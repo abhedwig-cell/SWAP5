@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM02",
+  "handoff": "INDEPENDENT_FVQ_SNOW_SCIENTIFIC_ADMISSION",
+  "status": "READY_FOR_INDEPENDENT_REVIEW",
+  "exact_source_candidate": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "production_source": "src/process/mod_snow_process.f90",
+    "production_source_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "production_source_sha256": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293"
+  },
+  "reference_binding": {
+    "oracle": "B1.10",
+    "legacy_source": "SWAP/snow.f90",
+    "legacy_source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "admitted_physical_baseline": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "structural_qualification_evidence": "integration/f-pm/F-PM02_QUALIFICATION_EVIDENCE.json",
+    "tested_workflow_run_id": 34206366345
+  },
+  "requested_independent_checks": [
+    "Confirm that the exact production source preserves the characterized B1.10 Snow(2) equations and branch semantics.",
+    "Confirm that no broader subdaily or arbitrary-duration scientific validity is implied by the generic t0/t1 interface.",
+    "Independently review source-bound expected values for the normal, warm-fresh-snow, deficit-clamp and continuation cases.",
+    "Review the component mass identity and the classification of melt as an internal transfer rather than an external loss.",
+    "Confirm that F-PM02 structural qualification does not itself constitute scientific production admission."
+  ],
+  "candidate_immutability": {
+    "vq_must_assess_exact_commit": true,
+    "vq_must_not_modify_candidate": true,
+    "modified_source_requires_new_fpm_candidate": true
+  },
+  "holds_after_handoff": [
+    "No production scientific SNOW admission until independent F-VQ passes this exact candidate.",
+    "No SNOW MultiSWAP qualification until independent F-VQ passes.",
+    "No arbitrary-duration or subdaily SNOW physics is admitted.",
+    "Downstream composition must preserve the one-call daily event semantics across F-KT trial/retry paths.",
+    "Downstream composition must map SNOW storage and external fluxes into authoritative F-KT mass accounting without double counting melt."
+  ]
+}
