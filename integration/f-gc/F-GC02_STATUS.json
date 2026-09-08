@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "branch": "work/f-gc02-physical-coupling-seam",
+  "start_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
+  "contract_commit": "7031174da0da44142cac3a0a3b118b6aba88589e",
+  "status": "IN_PROGRESS_SOURCE_BOUND_PHYSICAL_SEAM_ADMITTED",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "findings": [
+    "The qualified kernel layer already exposes opaque kernel_checkpoint_t and kernel_candidate_state_t carriers.",
+    "kernel_executor_t%advance_interval materializes a physical candidate without mutating committed state.",
+    "F-MR already exposes fmr_trial_from_checkpoint plus explicit commit/discard wrappers.",
+    "Therefore F-GC02 does not currently require an opportunistic F-KT or F-MR owner-code change."
+  ],
+  "hard_scope": "single admitted restricted physical column, serialized execution, deterministic groundwater test component, predictor/corrector from one T0 checkpoint",
+  "next_action": "Add the smallest F-GC-owned physical coupling harness and tests; prove predictor non-commit, corrector replay from the same checkpoint, single accepted commit, rollback, complete authoritative mass and generic coupling windows.",
+  "not_claimed": [
+    "physical coupling qualification",
+    "MODFLOW production integration",
+    "parallel physical coupling",
+    "production response tangent",
+    "deep-vadose physics"
+  ]
+}
