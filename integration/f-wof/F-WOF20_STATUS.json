@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF20",
+  "title": "Common Transactional Crop Lifecycle State Carrier",
+  "branch": "work/f-wof20-common-crop-lifecycle-state",
+  "status": "QUALIFIED_COMMON_TRANSACTIONAL_CROP_LIFECYCLE_STATE_CARRIER",
+  "decision": "QUALIFY_COMMON_CROP_STATE_CARRIER_KEEP_EVOLUTION_AND_OPTIONAL_ROOT_HISTORY_SEPARATE",
+  "base": {
+    "commit": "de5a1757edf863ebfc8bdf1c45e5c4eebafe9b11",
+    "status": "QUALIFIED_OWNER_CLASSIFICATION_BLOCKED_TRANSACTIONAL_CROP_LIFECYCLE_HOST_REQUIRED"
+  },
+  "tested_candidate": "2f5885efb04c1f6d898f9f2e43cd7b05de247182",
+  "github_actions": {
+    "run_id": 34279113217,
+    "conclusion": "success"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "production_admitted": true
+  },
+  "production_scope": {
+    "production_file": "src/crop/mod_crop_lifecycle_state.f90",
+    "production_blob": "c1fbb2c615254cfda0b26a7aff20447fb9960502",
+    "fields": ["crop_emerged", "development_stage", "leaf_area_index"],
+    "transaction_base": "transaction_state_t",
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "legacy_adapter_source_changed": false,
+    "root_ET_producer_source_changed": false,
+    "physics_evolution_changed": false,
+    "numerical_policy_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_transaction_semantics": {
+    "clone_is_independent": true,
+    "FKT_committed_initialization_clones_state": true,
+    "FKT_checkpoint_exact_snapshot": true,
+    "discarded_trial_cannot_mutate_committed_state": true,
+    "same_checkpoint_replay_bitwise_deterministic": true,
+    "O0_O2_output_identical": true
+  },
+  "state_minimization": {
+    "common_persistent_fields_only": ["crop_emerged", "development_stage", "leaf_area_index"],
+    "not_persisted_here": [
+      "vcover",
+      "CF",
+      "fco2tra",
+      "potential_transpiration",
+      "rooted_nodes",
+      "cumulative_root_fraction",
+      "SWRD=2 actual_root_depth",
+      "SWRD=2 potential_root_depth",
+      "WRT",
+      "calendar cursors"
+    ]
+  },
+  "F_WOF19_reconciliation": {
+    "legacy_adapter_crop_checkpoint_exists": true,
+    "legacy_adapter_checkpoint_is_new_architecture_crop_owner": false,
+    "legacy_checkpoint_replaced": false,
+    "F_WOF19_blocker_partially_released": true,
+    "remaining_reason": "The common transactional carrier now exists, but source-bound crop evolution and option-dependent committed root/biomass history are not yet qualified, and no authoritative owner view feeds F-WOF17/F-WOF18 yet."
+  },
+  "not_qualified": [
+    "crop emergence/harvest evolution",
+    "daily or generic-interval DVS/LAI evolution",
+    "calendar event scheduling",
+    "SWRD=2 root-depth history carrier",
+    "WRT or general crop biomass carrier",
+    "vcover/CF/fco2tra production from committed crop state",
+    "authoritative composition into F-WOF17/F-WOF18/F-WOF13"
+  ],
+  "recommended_next": "F-WOF21 source-bound option-dependent root/biomass state readiness. Resolve SWRD=2 rd/rdpot as optional committed root history and determine whether WRT must be introduced as part of a broader crop biomass state rather than as an SWRD=3-only field. Do not add duplicate WRT state solely for root geometry.",
+  "affected_invariants": [2,3,4,6,7,8,9,16,21,27,29,30]
+}
