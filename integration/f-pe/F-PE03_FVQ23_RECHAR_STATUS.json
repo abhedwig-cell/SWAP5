@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03-FVQ23-RECHAR",
   "title": "REFERENCE tail re-characterization on F-MR13/F-VQ23 production solver lineage",
   "branch": "work/f-pe03-reference-tail-recharacterization-fvq23",
-  "status": "IMPLEMENTED_PERSISTED_PENDING_TEST",
-  "phase": "IMPLEMENTED_PERSISTED_NOT_YET_TESTED",
+  "status": "PARTIAL_EXIT_OWNER_QUALIFIED_INTERVAL_DIAGNOSTICS_RECOMPOSITION_REQUIRED",
+  "phase": "PARTIAL_EXIT_OWNER_DEPENDENCY",
   "reference_only": true,
   "candidate_lineage": {
     "fmr13_closeout": "985058c0261d284424432a65bded16b7fc9107cb",
@@ -16,16 +16,42 @@
     "fpe03_handoff": "c9aa2219ddf69555b0cae77c89628fe355d0a4eb",
     "old_fixture_commit": "e67d624967f53184904e689333594015e9658683",
     "old_fixture_blob": "6623613a3526c119bf1fada5540eed93346592e1",
-    "purpose": "re-run the same diagnostic relative top-flux perturbations with the production reference linear solver now admitted through F-SI19/F-MR13/F-VQ23"
+    "perturbations": ["+/-1e-10", "+/-3e-11", "+/-1e-11", "+/-3e-12", "+/-1e-12"]
   },
-  "required_outcomes": {
-    "production_source_immutable_vs_fmr13": true,
-    "baseline_reference_acceptance": true,
-    "hard_mass_gate_for_every_accepted_case": true,
-    "rollback_no_commit_for_rejected_cases": true,
-    "deterministic_replay": true,
-    "O0_O2_identity": true,
-    "classify_any_accepted_higher_cost_route": true
+  "attempted_recharacterization": {
+    "latest_head": "581e17f7eeeaaba273465ed2ca8997d261bb577a",
+    "workflow_run": 34265975427,
+    "workflow_job": 102195318389,
+    "gate_conclusion": "FAIL_HARNESS_EXPECTATION_AFTER_DIAGNOSTIC_OUTPUT",
+    "production_source_immutable": true,
+    "scientific_reference_lineage_lock": true,
+    "historical_workload_reproduced_exactly": true,
+    "baseline_accepted": true,
+    "baseline_final_solver_observation_iterations": 1,
+    "baseline_mass_residual": 1.1102230246251565e-16,
+    "all_ten_nonzero_perturbations_transaction_failed": true,
+    "all_ten_nonzero_perturbations_committed": false,
+    "nonzero_kernel_status": 2,
+    "nonzero_transaction_retries": 2,
+    "last_solver_observation_iterations_range": [1,3],
+    "o0_o2_full_gate_completed": false
+  },
+  "diagnostic_interpretation": {
+    "kernel_status_2": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "current_fmr13_solver_iterations_surface": "LATEST_SOLVER_OBSERVATION_ONLY_NOT_AGGREGATE_INTERVAL_COST",
+    "aggregate_interval_cost_available_in_canonical_runtime": true,
+    "aggregate_interval_cost_propagated_to_fmr13_column_result": false,
+    "rejection_class_counts_available_in_kernel_diagnostics": true,
+    "rejection_class_counts_propagated_to_fmr13_column_result": false,
+    "fpe02_diagnostics_subgate_already_qualified": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
+    "fpe02_qualified_kernel_pre_blob_matches_fmr13_kernel": true,
+    "decision": "DO_NOT_INFER_ACCEPTED_OR_REJECTED_TAIL_COST_FROM_LAST_SOLVER_OBSERVATION; OWNER_RECOMPOSE_ALREADY_QUALIFIED_OBSERVER_DIAGNOSTICS_FIRST"
+  },
+  "blocker": {
+    "code": "FPE03-B03",
+    "status": "BLOCKED_OWNER_QUALIFIED_INTERVAL_DIAGNOSTICS_RECOMPOSITION_REQUIRED",
+    "owner": "F-MR followed by independent F-VQ",
+    "required_action": "Compose the already F-PE02-qualified observer-only interval cost diagnostics into exact F-MR13 without changing physics, numerical controls, acceptance, mass or transaction decisions; rerun authoritative F-MR regressions and obtain independent F-VQ no-change admission before resuming F-PE03."
   },
   "state": {
     "implemented": true,
@@ -36,10 +62,10 @@
   "scientific_admission_expanded": false,
   "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
   "execution_classes": {
-    "REFERENCE": "ADMITTED_LINEAGE_RECHARACTERIZATION_ONLY",
+    "REFERENCE": "ADMITTED_LINEAGE_RECHARACTERIZATION_PAUSED_FOR_DIAGNOSTICS_OWNER",
     "BALANCED": "DEFINED_NOT_ADMITTED",
     "THROUGHPUT": "DEFINED_NOT_ADMITTED",
     "FALLBACK": "DEFINED_NOT_ADMITTED"
   },
-  "claim_limit": "Finding an accepted higher-cost route here is characterization only. The perturbed workload itself remains diagnostic until independently admitted by F-VQ. No bounded-cost threshold or non-REFERENCE execution class may be inferred from this work unit."
+  "claim_limit": "No accepted higher-cost production-tail workload is established by this partial run. No bounded-cost threshold, detailed cost vector, BALANCED, THROUGHPUT or FALLBACK admission is granted."
 }
