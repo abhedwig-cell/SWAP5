@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ17",
+  "title": "Independent F-MR06 Serialized SNOW MultiSWAP Scientific Admission",
+  "branch": "qualification/f-vq17-fmr06-snow-runtime",
+  "safety_branch": "qualification/f-vq17-fmr06-snow-runtime-safety",
+  "qualification_only": true,
+  "source_modification_permitted": false,
+  "candidate_source_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "candidate_source_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+  "fmr06_closeout_head": "dbea2d326cc0d2cfae3bbfd85945813b22490782",
+  "candidate_production_sources": [
+    {"path":"src/process/mod_snow_process.f90","blob":"54702d71b4c84dce2842813549bd14c57301a383"},
+    {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"202ab846cbd30d149d0d450249b3d517e333994f"},
+    {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"1bb0c6d4683db2729d48de31babcea72bc1a6caf"}
+  ],
+  "scientific_basis": {
+    "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "fvq16_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fmr05_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fmq23_closeout": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90"
+  },
+  "scientific_criterion": "EXACT_BITWISE_IDENTITY_WHERE_IDENTITY_IS_DEFINED_NO_NEW_SCIENTIFIC_TOLERANCE",
+  "required_checks": [
+    "Lock exact candidate commit, tree and all three F-MR06 production blobs before execution.",
+    "Qualification branch must have zero changes under src/ and reference/ relative to the exact candidate.",
+    "Replay the exact candidate engineering gate as supporting evidence, not as independent qualification by itself.",
+    "Independently replay the exact F-VQ16 direct one-call-daily SNOW scientific oracle against the candidate process blob.",
+    "Independently verify runtime snow-active committed state against direct evaluate_snow_reference_call output for identical state and forcing.",
+    "Cover all-snow-inactive, all-snow-active and mixed active/inactive profiles for 1, 2, 17 and 31 logical columns where meaningful.",
+    "Verify canonical versus reversed input order per-column identity and authoritative aggregate mass identity.",
+    "Verify A/B/A exact repeatability and cross-column isolation.",
+    "Verify checkpoint, rejected trial, rollback, replay and commit semantics for snow state; rejected trials must not consume the daily event.",
+    "Verify snow-inactive F-MR05 route/mass/committed-state identity remains unchanged.",
+    "Verify authoritative whole-system mass is complete with missing mask zero for accepted composed cases; melt must be internal and counted once.",
+    "Verify non-midnight exact-one-day interval support and fail-closed subdaily/multiday behavior.",
+    "Keep Richards execution within the already-qualified restricted equilibrium profile; do not extend scientific Richards scope.",
+    "Verify max simultaneous real physical solves remains one; parallel real physics stays not admitted.",
+    "Run O0 and O2 and require qualification-output identity."
+  ],
+  "minimum_matrix": {
+    "column_counts": [1,2,17,31],
+    "profiles": ["all_snow_inactive","all_snow_active","mixed_active_inactive"],
+    "orders": ["canonical","reversed"],
+    "repeatability": "A_B_A_EXACT",
+    "time": "non_midnight_exact_one_day_only",
+    "compiler_modes": ["O0","O2"]
+  },
+  "hard_holds": [
+    "No production or reference source modification in F-VQ17.",
+    "No subdaily or arbitrary-duration SNOW admission.",
+    "No general non-equilibrium Richards admission.",
+    "No parallel real-physics admission.",
+    "No performance/fallback/relaxed solver policy admission.",
+    "F-MQ24 remains held until F-VQ17 is actually QUALIFIED on this exact candidate."
+  ],
+  "downstream_on_pass": {
+    "workstream": "F-MQ",
+    "work_unit": "F-MQ24",
+    "blocker": "FMQ24-B01",
+    "action": "resume qualification-only SNOW MultiSWAP assessment against the exact F-VQ17-admitted candidate"
+  }
+}
