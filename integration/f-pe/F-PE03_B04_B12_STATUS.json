@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-B04-B12",
+  "title": "B12 accepted higher-cost REFERENCE workload candidate search",
+  "branch": "work/f-pe03-b04-b12-accepted-tail-candidate",
+  "status": "PERSISTED_DIAGNOSTIC_CANDIDATE_SEARCH_NOT_YET_TESTED",
+  "phase": "PERSISTED_BEFORE_TEST",
+  "reference_only": true,
+  "base": {
+    "fpe03_fvq25_negative_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "fpe03_b04": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED"
+  },
+  "source_fixture": {
+    "origin": "user-supplied SWAP 4.3.1 distribution",
+    "archive_name": "SWAP_4.3.1(6).zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_path": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "source_file_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "source_header": "sfu,ORES,OSAT,ALFA,NPAR,KSATFIT,KSATEXM,LEXP,H_ENPR",
+    "b12_row": "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0",
+    "b12_row_sha256_with_lf": "20958231bf61dce00c024c6b8eeca30d0478ae17814d8d16688da6ea0b2d2a53"
+  },
+  "search_contract": {
+    "purpose": "Determine whether source-bound B12 hydraulic parameters yield at least one accepted REFERENCE case with aggregate interval cost above the admitted baseline without changing production source or numerical policy.",
+    "baseline_cost_vector": [3, 0, 3, 3, 3, 3, 0],
+    "production_source_immutable": true,
+    "mass_tolerance_unchanged": true,
+    "temporal_acceptance_unchanged": true,
+    "retry_policy_unchanged": true,
+    "solver_controls_unchanged": true,
+    "physics_options_unchanged_except_hydraulic_parameter_set": true,
+    "candidate_matrix_scientific_admission": "DIAGNOSTIC_ONLY_UNTIL_INDEPENDENT_FVQ",
+    "acceptance_requirement": "completed + committed + complete authoritative mass + hard mass residual <= 1e-12",
+    "higher_cost_requirement": "at least one aggregate interval cost counter strictly above the admitted baseline vector"
+  },
+  "mapping_hypothesis_to_verify": {
+    "COFGEN_1": "ORES",
+    "COFGEN_2": "OSAT",
+    "COFGEN_3": "KSATFIT",
+    "COFGEN_4": "ALFA",
+    "COFGEN_5": "LEXP",
+    "COFGEN_6": "NPAR",
+    "COFGEN_7": "1 - 1/NPAR",
+    "COFGEN_8": "ALFA for no-hysteresis compatibility",
+    "COFGEN_9": "H_ENPR",
+    "COFGEN_10": "KSATEXM",
+    "note": "The candidate gate must source-lock or independently justify this mapping before interpreting results."
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "scientific_admission_expanded": false,
+  "production_source_changed": false,
+  "bounded_cost_threshold_established": false,
+  "execution_class_admission": "REFERENCE_CHARACTERIZATION_ONLY",
+  "claim_limit": "This subunit is a source-bound diagnostic search for an accepted difficult REFERENCE candidate. A positive candidate is not scientifically admitted until an independent F-VQ gate qualifies the exact workload and provenance. A negative result does not justify relaxing mass conservation, temporal acceptance, physics or numerical policy."
+}
