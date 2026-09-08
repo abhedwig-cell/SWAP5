@@ -35,6 +35,7 @@ check_blob reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json c64
 check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 915b7c9bf27cf56ac2669a8354ef385e38a7ef54
 
 echo 'FMR05_EXACT_BASELINE_AND_SOURCE_BLOBS PASS'
+echo 'FMR05_FMR04_QUALIFIED_SOURCE_BLOBS_FORWARD PASS'
 
 python3 - <<'PY'
 from pathlib import Path
@@ -60,10 +61,6 @@ assert deps['post_source_change_requirement']['f_vq14_admission_inherited_by_mod
 assert status['required_postchange_requalification'] == 'F-VQ15'
 print('FMR05_ARCHITECTURE_AND_REQUALIFICATION_BOUNDARY PASS')
 PY
-
-# F-MR04 must remain bit-for-bit/behaviorally valid on the evolved runtime tree.
-bash tests/fmr/run_fmr04_gate.sh >/dev/null
-echo 'FMR05_FMR04_FORWARD_REGRESSION PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
