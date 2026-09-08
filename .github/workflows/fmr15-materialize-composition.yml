@@ -1,0 +1,45 @@
+name: F-MR15 materialize composition
+
+on:
+  push:
+    branches:
+      - work/f-mr15-prescribed-head-interval-diagnostics-composition
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify read-only composition probe
+        run: bash tests/fmr/run_fmr15_three_way_composition_probe.sh
+      - name: Materialize exact postimage
+        run: bash tools/fmr15_materialize.sh
+      - name: Commit declared production delta
+        run: |
+          set -euo pipefail
+          paths=(
+            src/adapter/mod_b110_serialized_context_binding.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_soil_water_solver_contract.f90
+          )
+          if git diff --quiet -- "${paths[@]}"; then
+            echo 'FMR15_MATERIALIZE_NOOP=PASS'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "${paths[@]}"
+          mapfile -t staged < <(git diff --cached --name-only | sort)
+          mapfile -t expected < <(printf '%s\n' "${paths[@]}" | sort)
+          [[ "$(printf '%s\n' "${staged[@]}")" == "$(printf '%s\n' "${expected[@]}")" ]]
+          git commit -m 'compose(F-MR15): materialize prescribed-head diagnostics runtime'
+          git push origin HEAD:work/f-mr15-prescribed-head-interval-diagnostics-composition
