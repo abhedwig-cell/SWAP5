@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 FSI15_HEAD="fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
 BUILD="${TMPDIR:-/tmp}/swap5-fsi16-prescribed-head-$$"
+RESPONSE_STUB="$BUILD/fsi16_response_headcalc_stubs.f90"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
@@ -45,11 +46,85 @@ fi
 
 echo 'F-SI16_STATIC_MINIMAL_PRODUCTION_SEAM PASS'
 
+# F-SI04 deliberately used a zero-update TRIDAG stub because its admitted
+# fixtures started at exact equilibrium. That stub cannot qualify a genuine
+# prescribed-head perturbation. Derive a runner-local copy with the standard
+# tridiagonal elimination/back-substitution while leaving the predecessor stub
+# byte-identical for all pinned historical gates.
+python3 - tests/fsi/fsi04_real_headcalc_stubs.f90 "$RESPONSE_STUB" <<'PY'
+from pathlib import Path
+import sys
+src=Path(sys.argv[1]).read_text()
+old='''subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
+  implicit none
+  integer, intent(in) :: n
+  real(8), intent(in) :: upper(*), main(*), lower(*), rhs(*)
+  real(8), intent(out) :: solution(*)
+  integer, intent(out) :: ierror
+  integer :: i
+  if (n <= 0 .or. upper(1) > huge(upper(1)) .or. main(1) > huge(main(1)) .or. &
+      lower(1) > huge(lower(1)) .or. rhs(1) > huge(rhs(1))) error stop 'invalid tridag arguments'
+  do i = 1, n
+    solution(i) = 0.0d0
+  end do
+  ierror = 0
+end subroutine tridag
+'''
+new='''subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
+  implicit none
+  integer, intent(in) :: n
+  real(8), intent(in) :: upper(*), main(*), lower(*), rhs(*)
+  real(8), intent(out) :: solution(*)
+  integer, intent(out) :: ierror
+  integer :: i
+  real(8) :: beta, gamma(n)
+
+  ierror = 0
+  if (n <= 0) then
+    ierror = 1
+    return
+  end if
+  beta = main(1)
+  if (abs(beta) <= tiny(1.0d0)) then
+    ierror = 1
+    do i = 1, n
+      solution(i) = 0.0d0
+    end do
+    return
+  end if
+  gamma(1) = 0.0d0
+  solution(1) = rhs(1)/beta
+  do i = 2, n
+    gamma(i) = lower(i-1)/beta
+    beta = main(i) - upper(i)*gamma(i)
+    if (abs(beta) <= tiny(1.0d0)) then
+      ierror = 1
+      do i = 1, n
+        solution(i) = 0.0d0
+      end do
+      return
+    end if
+    solution(i) = (rhs(i) - upper(i)*solution(i-1))/beta
+  end do
+  do i = n-1, 1, -1
+    solution(i) = solution(i) - gamma(i+1)*solution(i+1)
+  end do
+end subroutine tridag
+'''
+if src.count(old) != 1:
+    raise SystemExit(f'F-SI16 TRIDAG stub marker count={src.count(old)}')
+Path(sys.argv[2]).write_text(src.replace(old,new,1))
+PY
+
+grep -Fq 'gamma(i) = lower(i-1)/beta' "$RESPONSE_STUB"
+grep -Fq 'solution(i) = solution(i) - gamma(i+1)*solution(i+1)' "$RESPONSE_STUB"
+echo 'F-SI16_RESPONSE_CAPABLE_TRIDAG_FIXTURE PASS'
+
 FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
 compile_gate() {
   local opt="$1" out="$2"
   mkdir -p "$out"
-  gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c tests/fsi/fsi04_real_headcalc_stubs.f90 -o "$out/stubs.o"
+  gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c "$RESPONSE_STUB" -o "$out/stubs.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c src/runtime/mod_a23bu_worker_execution_context.f90 -o "$out/worker.o"
   gfortran "${FLAGS[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c src/solver/mod_soil_water_solver_contract.f90 -o "$out/contract.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c src/solver/mod_reference_richards_workspace.f90 -o "$out/workspace.o"
@@ -69,7 +144,10 @@ compile_gate() {
 for opt in 0 2; do
   out="$BUILD/o$opt"
   compile_gate "$opt" "$out"
-  timeout 30s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test" > "$out/output.txt"
+  if ! timeout 30s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test" > "$out/output.txt"; then
+    cat "$out/output.txt" >&2
+    exit 1
+  fi
   grep -Fq 'F-SI16_BOTTOM_FLUX_SEED_INDEPENDENCE PASS' "$out/output.txt"
   grep -Fq 'F-SI16_BOTTOM_HEAD_RESPONSE PASS' "$out/output.txt"
   grep -Fq 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS' "$out/output.txt"
