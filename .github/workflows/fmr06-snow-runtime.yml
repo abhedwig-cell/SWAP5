@@ -1,0 +1,29 @@
+name: F-MR06 serialized snow MultiSWAP runtime
+
+on:
+  push:
+    branches:
+      - integration/f-mr06-snow
+    paths:
+      - 'integration/f-mr/F-MR06_*.json'
+      - 'src/process/mod_snow_process.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'tests/fmr/test_fmr06_snow_smoke.f90'
+      - 'tests/fmr/test_fmr06_snow_multiswap.f90'
+      - 'tests/fmr/run_fmr06_smoke_gate.sh'
+      - 'tests/fmr/run_fmr06_gate.sh'
+      - '.github/workflows/fmr06-snow-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  fmr06-snow-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-MR06 source-bound snow MultiSWAP gate
+        run: bash tests/fmr/run_fmr06_gate.sh
