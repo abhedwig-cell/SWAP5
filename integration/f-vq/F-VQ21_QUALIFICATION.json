@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ21",
+  "qualification": "INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+  "decision": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+  "candidate": {
+    "fmr09_closeout_commit": "17a70b7e21b18ba847e5882037577b27aa8afd87",
+    "fmr09_closeout_tree": "59f420b898fda6fcce2bfee7c5c93ae22aa23932",
+    "production_source_modified_by_fvq21": false,
+    "candidate_source_immutability": "PASS"
+  },
+  "independent_legacy_oracle": {
+    "source": "user-supplied canonical SWAP 4.3.1 source archive",
+    "headcalc_f90_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "fluxes_f90_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+    "variables_f90_sha256": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+    "swapoutput_f90_sha256": "9fe6d939bd5213777a8a63a9b99ce154cd1aaa0e15b74895e41a33c2acac05ee",
+    "source_semantics": {
+      "qrot_dimension": "L/T per compartment",
+      "positive_qrot_role": "root-water extraction sink",
+      "richards_residual_sign": "+qrot(i)",
+      "reconstructed_vertical_flux_sign": "-qrot(i)",
+      "legacy_integral_balance_side": "outgoing"
+    },
+    "owner_expected_values_used_as_scientific_oracle": false
+  },
+  "independent_verifier": {
+    "branch": "qualification/f-vq21-fmr09-root-sink-runtime",
+    "decisive_verifier_head": "954d95a1607f372e3ee0bb228a693a0471a2ae81",
+    "decisive_verifier_tree": "416408528d97658b0fec9bb5ab9b5e5493b58284",
+    "workflow": ".github/workflows/fvq21-fmr09-root-sink-runtime.yml",
+    "workflow_blob": "08e9cb807bc000d66f717ab8cb88e3e7c4860dd0",
+    "workflow_run_id": 34253933554,
+    "workflow_job_id": 102154840992,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.2.0",
+    "runner_script": "tests/fvq/run_fvq21_root_sink_runtime_gate.sh",
+    "runner_blob": "8e557af31fd94c37ebbeb50893dd356fefb3f35a",
+    "oracle_test": "tests/fvq/test_fvq21_root_sink_runtime_oracle.f90",
+    "oracle_test_blob": "ecbe077da9241fb47b36a7f3c5ec54fb8aa18b6b",
+    "qualification_plan_blob": "e0914f15ca7c9f9acbe14de4e5d2c1eff4d08a36",
+    "oracle_output_sha256": "42a4655dd8883028852896925ca111c02ef9562b2283b526b455e836291c120b"
+  },
+  "source_locks": {
+    "solver_contract": "0a57b07712f93538cbfaf9130838682307cede09",
+    "headcalc": "420fe2996199e6d3f162b7669957e1a95919f353",
+    "root_sink_provider": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "source_sink_provider": "d6c57add72387e5c0022a44319fff08046194aac",
+    "serialized_reference_backend": "fe1c1cf19d3702114cf7598e227d56f7dbc1e267",
+    "serialized_context_binding": "1818338d088ee61a3a1dd5220542e6650ba673ac",
+    "kernel_transactions": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "irrigation_process": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+    "snow_process": "54702d71b4c84dce2842813549bd14c57301a383",
+    "process_hydraulic_view": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "runtime_hydraulic_view_binding": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+    "serialized_multiswap_runtime": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "independent_scientific_evidence": {
+    "heterogeneous_nodewise_root_fixture": "PASS",
+    "nodewise_root_qssdi_hydraulic_cancellation": "PASS",
+    "expected_root_amount": 0.027000000000000003,
+    "observed_authoritative_total_out_delta": 0.02700000000000001,
+    "observed_authoritative_total_in_delta": 0.02700000000000001,
+    "root_authoritative_total_out_exactly_once": "PASS",
+    "qssdi_authoritative_total_in_exactly_once": "PASS",
+    "committed_hydraulic_state_identity_against_zero_root_control": "PASS",
+    "hard_mass_tolerance": 1e-12,
+    "hard_mass_conservation": "PASS",
+    "root_active_checkpoint_discard_replay": "PASS",
+    "root_active_a_b_a_identity": "PASS",
+    "inactive_nonzero_root_fail_closed_before_solver": "PASS",
+    "negative_root_fail_closed_before_solver": "PASS",
+    "legacy_global_qrot_not_authority_on_explicit_route": "PASS_VIA_POISONED_GLOBAL_FIXTURE",
+    "o0_o2_oracle_output_identity": "PASS"
+  },
+  "regression_evidence": {
+    "fmr09_owner_transaction_regression": "PASS",
+    "fmr09_owner_cross_process_gate": "PASS",
+    "fvq20_scheduled_irrigation_scientific_oracle_replay": "PASS",
+    "fvq18_fixed_irrigation_scientific_oracle_replay": "PASS",
+    "fmr07_committed_process_hydraulic_view": "PASS",
+    "fmr06_snow_rollback_replay_and_mass": "PASS",
+    "fpm03_ssdi_authoritative_mass": "PASS",
+    "fmr09_full_o0_o2_output_identity": "PASS",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "scope_admitted": [
+    "explicit precomputed finite nonnegative nodewise root-extraction sink",
+    "heterogeneous precomputed qrot mapping",
+    "root sink constant during an admitted solve",
+    "swkimpl=0",
+    "swmacro=0",
+    "bottom modes 7 and -2 within the inherited F-SI11/F-MR09 restriction",
+    "serialized reference runtime composition",
+    "authoritative root-extraction external-outflow accounting exactly once",
+    "checkpoint/discard/replay and A/B/A for the restricted root route",
+    "coexistence with qualified irrigation, snow and committed hydraulic-view paths"
+  ],
+  "scope_not_admitted": [
+    "dynamic Feddes or drought-stress root extraction calculation",
+    "root-sink reevaluation inside Newton",
+    "swkimpl=1 root uptake",
+    "macropore root uptake",
+    "negative qrot as an admitted source convention",
+    "full RootExtraction process migration",
+    "parallel reference backend",
+    "broader crop/root-water-uptake physics beyond precomputed qrot"
+  ],
+  "architecture_invariants": {
+    "kernel_io_separation_preserved": true,
+    "parameters_state_forcing_separation_preserved": true,
+    "transactional_time_steps_preserved": true,
+    "mass_conservation_remains_hard": true,
+    "processes_do_not_depend_on_headcalc_internals": true,
+    "runtime_owns_composition": true,
+    "physical_option_and_numerical_policy_separated": true,
+    "reference_mode_preserved": true
+  },
+  "known_nonblocking_observations": [
+    "Compilation emits pre-existing conservative static HeadCalc warnings and real-equality warnings in already-qualified diagnostic code; F-VQ21 does not modify or qualify those warnings away.",
+    "This qualification is deliberately narrower than full RootExtraction or dynamic Feddes scientific admission."
+  ],
+  "downstream_release": {
+    "fpm05_resume_allowed": true,
+    "next_owner": "F-PM",
+    "next_work_unit": "F-PM05",
+    "instruction": "Resume only the restricted root-water-uptake process path that produces precomputed nonnegative qrot compatible with this exact F-MR09/F-VQ21 runtime admission. Do not broaden to swkimpl=1, macropores, Newton-internal root reevaluation or unqualified RootExtraction physics."
+  }
+}
