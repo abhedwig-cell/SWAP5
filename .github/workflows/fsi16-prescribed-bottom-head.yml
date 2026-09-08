@@ -1,0 +1,28 @@
+name: F-SI16 prescribed bottom head
+
+on:
+  push:
+    branches:
+      - work/f-si16-explicit-prescribed-bottom-head
+    paths:
+      - 'integration/f-si/F-SI16_*'
+      - 'tests/fsi/test_fsi16_prescribed_bottom_head.F90'
+      - 'tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/**'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - '.github/workflows/fsi16-prescribed-bottom-head.yml'
+  workflow_dispatch:
+
+jobs:
+  fsi16-prescribed-bottom-head:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI16 prescribed bottom-head gate
+        run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
