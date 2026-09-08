@@ -1,0 +1,24 @@
+name: F-LMFP09 Homogeneous B1 with C1 MFP Baseline
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  homogeneous-c1-coarse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: C1-baseline hierarchical coarse B1 gate
+        run: bash experiments/lmfp/run_lmfp09_homogeneous_c1_coarse_gate.sh
+      - name: Upload C1-baseline coarse B1 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-homogeneous-c1-coarse-evidence
+          path: lmfp09-homogeneous-c1-coarse-artifacts/
