@@ -1,0 +1,33 @@
+name: F-PE03 B04 F-VQ15 multicolumn cost screen
+
+on:
+  push:
+    branches:
+      - work/f-pe03-b04-admitted-runtime-screen-fvq27
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Screen independently admitted F-VQ15 runtime family
+        run: |
+          set -o pipefail
+          bash tests/fpe/run_fpe03_b04_fvq15_multicolumn_cost_screen.sh | tee fpe03-fvq15-screen.log
+      - name: Preserve screening evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-b04-fvq15-multicolumn-cost-screen
+          path: fpe03-fvq15-screen.log
+          if-no-files-found: error
