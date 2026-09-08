@@ -1,0 +1,40 @@
+name: F-PE05 reference nonstationary temporal cost characterization
+
+on:
+  push:
+    branches:
+      - work/f-pe05-reference-temporal-acceptance-fvq19
+    paths:
+      - 'integration/f-pe/F-PE05_*.json'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/process/mod_snow_process.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'tests/fmr/test_fmr06_snow_multiswap.f90'
+      - 'tests/fpe/fpe05_make_cost_probe.py'
+      - 'tests/fpe/run_fpe05_fvq19_reference_temporal_gate.sh'
+      - '.github/workflows/fpe05-reference-temporal-cost.yml'
+  workflow_dispatch:
+
+jobs:
+  fpe05-reference-temporal-cost:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run source-bound F-PE05 characterization gate
+        env:
+          FPE05_EVIDENCE_DIR: ${{ github.workspace }}/fpe05-evidence
+        run: bash tests/fpe/run_fpe05_fvq19_reference_temporal_gate.sh
+      - name: Upload immutable characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe05-reference-nonstationary-temporal-cost-evidence
+          path: fpe05-evidence
+          if-no-files-found: error
