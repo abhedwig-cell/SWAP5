@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI18",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "diagnostic_head": "8a784855f82bb3ef9475663b2815d0751a2101c8",
+  "production_source_changed": false,
+  "workflow": {
+    "run_id": 34249667002,
+    "artifact_id": 10065462365,
+    "artifact_digest": "sha256:901c441daecce1d189d9933019b880b807f4ef2f1ea3fb0b45486396934d927e",
+    "o0_o2_identity": true
+  },
+  "final_iteration_evidence": {
+    "plus_3e_12": {
+      "converged": true,
+      "balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_residual": 4.87915263747140671e-13,
+      "abs_total_residual": 4.87915263747140671e-13
+    },
+    "minus_3e_12": {
+      "converged": true,
+      "balance_flag_count": 0,
+      "head_flag_count": 0,
+      "max_abs_residual": 4.87915263747140671e-13,
+      "abs_total_residual": 4.87915263747140671e-13
+    },
+    "plus_1e_11": {
+      "converged": false,
+      "balance_flag_count": 1,
+      "head_flag_count": 0,
+      "max_abs_residual": 1.62639346434900744e-12,
+      "abs_total_residual": 1.62639346434900744e-12,
+      "nonlinear_iterations": 8,
+      "backtracking_attempts": 32
+    },
+    "minus_1e_11": {
+      "converged": false,
+      "balance_flag_count": 1,
+      "head_flag_count": 0,
+      "max_abs_residual": 1.62639346434900744e-12,
+      "abs_total_residual": 1.62639346434900744e-12,
+      "nonlinear_iterations": 8,
+      "backtracking_attempts": 32
+    }
+  },
+  "fixture_linear_solver": {
+    "file": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "blob": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+    "tridag_behavior": "For every row the test stub assigns solution(i)=0 and ierror=0.",
+    "consequence": "HeadCalc receives a zero Newton correction. A nonzero equilibrium residual therefore cannot be reduced by Newton iterations in this fixture."
+  },
+  "fpe_linkage": {
+    "fpe03_flux_boundary_gate": "tests/fpe/run_fpe03_flux_boundary_probe_gate.sh",
+    "same_stub_linked": true,
+    "implication": "The F-PE03 binary low-cost/full-retry cliff was measured with the same zero-correction TRIDAG test double and cannot by itself characterize production Richards tail cost."
+  },
+  "scale_check": {
+    "equilibrium_conductivity": 0.162639206421314603,
+    "compartment_balance_tolerance": 1e-12,
+    "predicted_relative_transition_if_newton_correction_is_zero": 6.1485789731126e-12,
+    "observed_accept_reject_bracket": [3e-12, 1e-11],
+    "interpretation": "Observed transition is quantitatively consistent with the balance tolerance divided by equilibrium conductivity."
+  },
+  "reference_source_check": {
+    "source": "User-provided SWAP 4.3.1 source package, tools/SWAP/source/SWAP.ZIP, SWAP/tridag.f90",
+    "version_id": "$Id: tridag.f90 341 2017-09-29 18:12:25Z kroes006 $",
+    "behavior": "The reference routine performs tridiagonal decomposition, forward substitution and back substitution; it does not return a zero correction except where the solved system implies one."
+  },
+  "diagnosis": "TEST_FIXTURE_LINEAR_SOLVER_STUB_EXPLAINS_OBSERVED_BINARY_COST_CLIFF",
+  "production_solver_defect_established": false,
+  "production_change_authorized": false,
+  "next_step": "Run the identical direct F-SI18 probe with a test-only Thomas/TRIDAG implementation matching the SWAP 4.3.1 reference operation order. If the cliff disappears, supersede the F-PE03 cost-cliff interpretation as fixture-limited and require a real linear-solver harness for future tail characterization."
+}
