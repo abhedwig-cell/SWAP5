@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-FVQ24-ADMITTED-TAIL",
+  "title": "Scientifically admitted F-VQ24 nonzero REFERENCE workload on F-VQ25 diagnostics postimage",
+  "branch": "work/f-pe03-fvq24-admitted-tail-characterization",
+  "status": "PERSISTED_PENDING_FVQ24_ADMITTED_WORKLOAD_RUNTIME_CHARACTERIZATION",
+  "phase": "PERSISTED_NOT_YET_IMPLEMENTED",
+  "base": {
+    "fpe03_fvq25_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
+    "fpe03_status": "PARTIAL_EXIT_QUALIFIED_REFERENCE_REJECTION_COST_CHARACTERIZED_ACCEPTED_HIGHER_COST_FIXTURE_STILL_MISSING",
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398"
+  },
+  "incoming_scientific_workload": {
+    "owner": "F-VQ24",
+    "status": "QUALIFIED_INDEPENDENT_FMR12_FMR13_NONZERO_HEADCALC_SOLVER_SEAM_EQUIVALENCE",
+    "scientific_admission": true,
+    "fpe_use_explicitly_allowed": true,
+    "fsi18_probe_commit": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+    "fsi18_probe_blob": "1a0898cfd927455d9219db0f59ac238943cd1435",
+    "head0": -75.0,
+    "step_duration": 1.0,
+    "relative_top_flux_perturbations": [0.0, 3e-12, -3e-12, 1e-11, -1e-11],
+    "bottom_mode": 7,
+    "bottom_flux": "-K0",
+    "root_sink": "ZERO",
+    "source_sink": "NONZERO_NODEWISE_QDRA_WITH_MATCHING_QSSDI",
+    "macropore": "INACTIVE",
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "hydraulic_and_mass_tolerances": 1e-12
+  },
+  "characterization_rule": "Preserve the exact F-VQ24 physical stimulus and numerical settings while routing it through the unchanged F-VQ25/F-MR14 production REFERENCE runtime solely to observe transaction acceptance and aggregate interval cost. No acceptance, physics, numerical-control or mass setting may be relaxed to obtain a desired outcome.",
+  "required_evidence": {
+    "production_source_immutable": true,
+    "fvq24_source_and_stimulus_pinned": true,
+    "baseline_accepted": true,
+    "all_case_transaction_outcomes_reported": true,
+    "aggregate_interval_cost_vectors_reported": true,
+    "hard_mass_gate_for_accepted_cases": true,
+    "rejected_cases_no_commit": true,
+    "deterministic_replay": true,
+    "o0_o2_identity": true
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "mass_requirement_relaxed": false,
+  "scientific_admission_expanded": false,
+  "fpe03_b04": "OPEN_PENDING_EXACT_FVQ24_WORKLOAD_RUNTIME_CHARACTERIZATION",
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "claim_limit": "This unit may determine whether the already scientifically admitted F-VQ24 five-case physical workload is also accepted by the unchanged production transaction path and, if so, characterize aggregate REFERENCE interval cost. It cannot broaden F-VQ24 admission or admit any non-REFERENCE execution class."
+}
