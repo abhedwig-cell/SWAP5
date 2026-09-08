@@ -1,0 +1,49 @@
+{
+  "workunit": "F-WOF10",
+  "title": "Leaf-cohort applied-transfer structural seam",
+  "baseline": {
+    "branch": "work/f-wof09-reallocation-request-apply-seam",
+    "commit": "abd7d0cccccb76f0d2fdf7e0927446a47f7a8f2b",
+    "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_STRUCTURAL_SEAM"
+  },
+  "branch": "work/f-wof10-leaf-cohort-apply-seam",
+  "status": "ADMITTED_FOR_MINIMAL_LEAF_COHORT_APPLY_IMPLEMENTATION",
+  "qualification_scope": "SURVIVING_OLD_LEAF_COHORT_WEIGHT_TRANSFORM_ONLY",
+  "owner": "Crop physics",
+  "source_basis": {
+    "legacy_swap431_wofost_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "legacy_order": "lvdth -> lvshft(age + new growth) -> lvwgli",
+    "pcse_reference_semantics": "after old-leaf death and ageing, uniformly scale all surviving old cohorts before adding new growth"
+  },
+  "scope": {
+    "consume_already_qualified_applied_leaf_amount": true,
+    "compute_reallocation_request": false,
+    "update_cumulative_reallocation_state": false,
+    "update_storage_receiver": false,
+    "modify_only_cohort_biomass_weights": true,
+    "modify_sla": false,
+    "modify_cohort_age": false,
+    "hardcode_legacy_366_layout": false,
+    "admit_full_depletion_equality_edge": true,
+    "full_crop_host_integration": false,
+    "wofost81_nitrogen_in_scope": false
+  },
+  "required_gates": [
+    "interior proportional scaling matches pinned PCSE semantics",
+    "zero applied transfer is identity",
+    "full depletion produces zero surviving cohort biomass",
+    "applied transfer above surviving biomass fails closed",
+    "negative cohort biomass fails closed",
+    "zero-size cohort set accepts only zero applied transfer",
+    "cohort order and relative proportions are preserved in the interior",
+    "mass residual remains within explicit floating-point closure tolerance",
+    "O0 and O2 outputs are identical"
+  ],
+  "affected_invariants": [3, 4, 6, 7, 13, 21, 27, 30],
+  "production_migration_allowed": true,
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "next": "Implement a pure assumed-shape cohort-weight transform without legacy layout or I/O dependencies."
+}
