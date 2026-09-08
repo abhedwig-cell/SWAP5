@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR15",
+  "contract": "MINIMAL_TWO_PARENT_RUNTIME_COMPOSITION",
+  "base_parent": {
+    "qualification": "F-VQ25",
+    "commit": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "capability": "F-MR14 interval cost diagnostics on F-MR13 real-physics lineage"
+  },
+  "incoming_parent": {
+    "qualification": "F-VQ26",
+    "closeout": "a1d5ad9147e18301f68183822577b1ba8fca3de2",
+    "production_delta_owner": "F-MR11",
+    "production_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+    "capability": "restricted serialized SWBOTB=5 prescribed bottom-head runtime"
+  },
+  "composition_rules": {
+    "base_is_authoritative_for_all_paths_except_declared_incoming_delta": true,
+    "incoming_delta_is_authoritative_only_for_fmr11_semantics": true,
+    "whole_file_replacement_for_overlapping_later_changes": false,
+    "merge_conflicts_must_be_resolved_semantically_and_documented": true,
+    "observer_diagnostics_may_not_influence_solver_or_transaction_decisions": true,
+    "no_new_physics": true,
+    "no_new_numerical_policy": true,
+    "no_acceptance_change": true,
+    "no_mass_relaxation": true,
+    "no_transaction_change": true,
+    "no_parallel_reference_admission": true
+  },
+  "incoming_production_paths": {
+    "exact_nonoverlap_postimage": [
+      "src/adapter/mod_b110_serialized_context_binding.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_soil_water_solver_contract.f90"
+    ],
+    "three_way_delta_merge": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_reference_richards_workspace.f90"
+    ]
+  },
+  "base_observer_paths_locked": {
+    "src/kernel/mod_kernel_transactions.f90": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
+  },
+  "qualification_boundary": {
+    "owner_gate": "F-MR15",
+    "independent_gate_required_after_owner_pass": "F-VQ27",
+    "fpe03_b04_may_consume_only_after_fvq27": true
+  },
+  "architecture_invariant_checks": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "UNCHANGED",
+    "scratch_per_worker": "UNCHANGED",
+    "transactional_timesteps": "MUST_REPLAY",
+    "generic_time": "UNCHANGED",
+    "mass_conservation": "HARD_GATE",
+    "physics_solver_policy_separation": "HARD_GATE",
+    "reference_mode": "MUST_REMAIN_AVAILABLE",
+    "diagnostics_runtime_owned": "PRESERVED",
+    "no_silent_dependencies": "MUST_REPLAY"
+  }
+}
