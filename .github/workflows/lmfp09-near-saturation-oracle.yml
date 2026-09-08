@@ -1,0 +1,24 @@
+name: F-LMFP09 Near-Saturation Oracle Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  near-saturation-oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Near-saturation oracle attribution diagnostic
+        run: bash experiments/lmfp/run_lmfp09_near_saturation_diagnostic_gate.sh
+      - name: Upload near-saturation diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-near-saturation-oracle-evidence
+          path: lmfp09-near-saturation-artifacts/
