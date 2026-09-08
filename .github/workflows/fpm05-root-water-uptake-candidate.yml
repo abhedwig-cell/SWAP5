@@ -1,0 +1,31 @@
+name: F-PM05 restricted root water uptake candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm05-root-water-uptake-candidate
+    paths-ignore:
+      - integration/f-pm/F-PM05_CANDIDATE_EVIDENCE.json
+      - integration/f-pm/F-PM05_CANDIDATE_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-PM05 restricted Feddes process candidate
+        run: bash tests/fpm/run_fpm05_root_water_uptake_candidate_gate.sh
+      - name: F-VQ21 qualified root sink runtime regression
+        run: bash tests/fvq/run_fvq21_root_sink_runtime_gate.sh
+      - name: F-MR09 irrigation snow hydraulic-view regression
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
