@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the F-TA01 register from explicit suite metadata and repository discovery."""
+"""Build the F-TA register from suite metadata, repository discovery and explicit gate-fidelity metadata."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "test-architecture" / "test-register.json"
+FIDELITY = ROOT / "test-architecture" / "gate-fidelity-metadata.json"
 
 
 SUITES = {
@@ -187,9 +188,29 @@ def discover() -> list[tuple[str, str, str]]:
     return sorted(set(found))
 
 
+def load_fidelity() -> dict[str, dict]:
+    if not FIDELITY.exists():
+        return {}
+    payload = json.loads(FIDELITY.read_text(encoding="utf-8"))
+    records = payload.get("records", [])
+    by_path: dict[str, dict] = {}
+    for record in records:
+        path = record["artifact_path"]
+        if path in by_path:
+            raise SystemExit(f"duplicate fidelity metadata for {path}")
+        by_path[path] = {k: v for k, v in record.items() if k != "artifact_path"}
+    return by_path
+
+
 def main() -> None:
     records = []
     seen_ids: set[str] = set()
+    fidelity = load_fidelity()
+    discovered_paths = {path for path, _, _ in discover()}
+    unknown_fidelity = sorted(set(fidelity) - discovered_paths)
+    if unknown_fidelity:
+        raise SystemExit(f"fidelity metadata references undiscovered artifacts: {unknown_fidelity}")
+
     for path, suite, artifact_role in discover():
         meta = SUITES[suite]
         category = "QG" if artifact_role == "workflow" else category_for(path, suite)
@@ -197,8 +218,7 @@ def main() -> None:
         if test_id in seen_ids:
             raise SystemExit(f"duplicate test_id: {test_id}")
         seen_ids.add(test_id)
-        directly_executable = command_for(path) != "NOT_DIRECTLY_EXECUTABLE"
-        records.append({
+        record = {
             "test_id": test_id,
             "name": Path(path).stem.replace("_", " "),
             "category": category,
@@ -214,26 +234,30 @@ def main() -> None:
             "execution_command": command_for(path),
             "cost_class": "QUALIFICATION" if artifact_role == "workflow" else meta["cost"],
             "qualification_role": "formal source-bound gate" if category == "QG" else "supporting evidence only; does not promote itself",
-            "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+            "current_status": "DISCOVERED_NOT_REEXECUTED_FTA03",
             "artifact_path": path,
             "artifact_role": artifact_role,
             "traceable_alias": Path(path).stem.upper().replace("RUN_", "").replace("TEST_", "").replace("_GATE", "").replace("_", "-"),
-        })
+        }
+        if path in fidelity:
+            record["gate_fidelity"] = fidelity[path]
+        records.append(record)
+
     payload = {
-        "schema_version": 1,
-        "work_unit": "F-TA01",
+        "schema_version": 2,
+        "work_unit": "F-TA03",
         "baseline_qualification_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
         "qualified_candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
         "qualified_candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
         "reference": "B1.10 corrected legacy reference",
-        "status_semantics": "Discovery does not inherit PASS or qualification from historical evidence.",
+        "status_semantics": "Discovery and fidelity metadata do not inherit PASS or qualification from historical evidence.",
         "categories": {"UT": "unit", "CT": "contract/component", "IT": "integration", "INV": "invariant", "RR": "reference regression", "QG": "qualification gate"},
         "cost_classes": ["FAST", "FOCUSED", "BROAD", "QUALIFICATION"],
         "tests": records,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {OUT.relative_to(ROOT)} with {len(records)} records")
+    print(f"wrote {OUT.relative_to(ROOT)} with {len(records)} records fidelity={len(fidelity)}")
 
 
 if __name__ == "__main__":
