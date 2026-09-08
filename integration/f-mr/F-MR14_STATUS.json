@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR14",
+  "title": "F-PE02 Qualified Interval Cost Diagnostics into F-MR13 Runtime Lineage",
+  "branch": "work/f-mr14-interval-cost-diagnostics-recomposition",
+  "status": "PERSISTED_PENDING_OBSERVER_ONLY_DIAGNOSTICS_COMPOSITION",
+  "phase": "PERSISTED_NOT_YET_IMPLEMENTED",
+  "base": {
+    "work_unit": "F-MR13",
+    "closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "status": "QUALIFIED_FSI19_REFERENCE_LINEAR_SOLVER_SEAM_IN_FMR_REAL_PHYSICS_LINEAGE"
+  },
+  "incoming_observer_delta": {
+    "owner_work_unit": "F-PE02",
+    "closeout_commit": "2c28a4366440885faedbe2fbe3ce56104d82692e",
+    "qualified_subgate": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
+    "qualification_scope": "OBSERVATIONAL_DIAGNOSTICS_PROPAGATION_ONLY",
+    "kernel_pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "kernel_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "historical_runtime_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
+    "required_fields": [
+      "accepted_substeps",
+      "solver_nonlinear_iterations",
+      "solver_internal_retries",
+      "solver_headcalc_calls",
+      "solver_jacobian_builds",
+      "solver_linear_solves",
+      "solver_backtracking_attempts",
+      "solver_alternative_solver_calls"
+    ]
+  },
+  "composition_rule": "Kernel preimage is still exact F-PE02 pre-blob and may be advanced to the exact qualified post-blob. The F-MR13 runtime file has legitimate later runtime changes, so only the already-qualified observer field declarations and assignments may be replayed onto that current postimage. No decision logic may change.",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "retry_policy_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "fpe02_b01": "NOT_RESOLVED_BY_FMR14_DIAGNOSTICS_ONLY",
+  "next_owner_action_if_qualified": "Obtain independent F-VQ scientific no-change admission of the exact F-MR14 observer-only postimage, then resume F-PE03 tail characterization using the propagated aggregate interval cost counters."
+}
