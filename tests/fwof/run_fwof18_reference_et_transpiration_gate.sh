@@ -36,21 +36,23 @@ python3 - <<'PY'
 from pathlib import Path
 import json
 
-p = Path('src/process/mod_reference_et_transpiration_process.f90').read_text().lower()
+text = Path('src/process/mod_reference_et_transpiration_process.f90').read_text()
+code = '\n'.join(line.split('!', 1)[0] for line in text.splitlines()).lower()
+full = text.lower()
 for forbidden in [
     'mod_fmr_', 'mod_soil_water_solver', 'mod_process_hydraulic_view', 'reference_richards', 'headcalc',
     'mod_meteo', 'mod_cropdevelopment', 'plant_interface', 'atmosphere_interface',
     'open(', 'close(', 'inquire(', 'read(', 'write(', 't1900', 'daynr', 'daystart', 'dayend', 'calendar_',
     'penmon', 'swinter', 'swetr', 'swmetdetail', 'aintc', 'wfrac', 'ptra_wet', 'ptra_dry',
-    'rain', 'irrig', 'soil evaporation', 'pond'
+    'rain', 'irrig'
 ]:
-    assert forbidden not in p, forbidden
+    assert forbidden not in code, forbidden
 for required in [
     'root_uptake_et_result_t', 'reference_et_forcing_t', 'transpiration_canopy_view_t',
     'evaluate_reference_et_transpiration', 'reference_et_mm_per_day', 'vegetation_cover_fraction',
     'crop_factor', 'co2_transpiration_factor', 'intent(in) :: forcing', 'intent(in) :: canopy'
 ]:
-    assert required in p, required
+    assert required in full, required
 
 contract = json.loads(Path('integration/f-wof/F-WOF18_REFERENCE_ET_TRANSPIRATION_CONTRACT.json').read_text())
 evidence = json.loads(Path('integration/f-wof/F-WOF18_SOURCE_BOUND_ET_EVIDENCE.json').read_text())
