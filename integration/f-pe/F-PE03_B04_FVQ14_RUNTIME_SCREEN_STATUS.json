@@ -4,8 +4,8 @@
   "work_unit": "F-PE03-B04-FVQ14-RUNTIME-SCREEN",
   "title": "F-VQ14 restricted real-physics runtime cost screening on F-VQ27 postimage",
   "branch": "work/f-pe03-b04-fvq14-runtime-screen-fvq27",
-  "status": "IN_PROGRESS_SOURCE_BOUND_FVQ14_RUNTIME_COST_SCREEN",
-  "phase": "PLAN_PERSISTED_PRE_TEST",
+  "status": "QUALIFIED_NEGATIVE_SOURCE_BOUND_FVQ14_RUNTIME_BASELINE_COST",
+  "phase": "CLOSED_TESTED_NEGATIVE_SCREEN",
   "base": {
     "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
     "fmr15_closeout": "6d915141d42f3db469c2da689aabd4ca4836c23c",
@@ -13,24 +13,54 @@
     "fvq14_status": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
     "fpe03_b04": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED"
   },
+  "tested_candidate": {
+    "commit": "21ebe0eb015b7b01ca9e1b700f5dc76b024b5b08",
+    "workflow_run": 34281888503,
+    "workflow_job": 102248351858,
+    "conclusion": "success",
+    "artifact_id": 10077933446,
+    "artifact_digest": "sha256:bbdbebce958141711f7faef235284557bb4e6cd732ece36767e5f3c3bde4ee70"
+  },
   "workload": {
     "name": "F-VQ14 F-MR04 restricted real-HeadCalc generic-time interval",
     "interval": [1000.125,1000.625],
     "initial_head": -75.0,
     "scientific_test_blob": "629c0a0405dbf5a39c71e496d879406f88a4cf6d",
+    "positive_workload_semantics_preserved": true,
+    "superseded_fvq14_negative_scope_assertions_omitted_test_only": true,
     "mass_complete": true,
     "authoritative_mass_residual": 0.0,
-    "rollback_replay_commit": true,
-    "generic_time": true
+    "independent_balance_residual": 0.0,
+    "mass_exact_zero_asserted_inside_immutable_workload": true,
+    "rollback": "PASS",
+    "replay": "PASS",
+    "commit": "PASS",
+    "stale_checkpoint_fail_closed": "PASS",
+    "generic_time_nonmidnight_subdaily": "PASS",
+    "real_headcalc_executed": true,
+    "o0_o2_identity": true
   },
-  "baseline_cost_vector_without_accepted_substeps": [3,0,3,3,3,3,0],
-  "candidate_rule": "The source-bound F-VQ14 workload must remain transactionally accepted with hard mass conservation on the exact F-VQ27 postimage and have at least one aggregate interval cost counter strictly above [3,0,3,3,3,3,0].",
+  "cost": {
+    "field_order": [
+      "accepted_substeps",
+      "solver_nonlinear_iterations",
+      "solver_internal_retries",
+      "solver_headcalc_calls",
+      "solver_jacobian_builds",
+      "solver_linear_solves",
+      "solver_backtracking_attempts",
+      "solver_alternative_solver_calls"
+    ],
+    "observed_vector": [1,3,0,3,3,3,3,0],
+    "historical_reference_baseline_vector": [1,3,0,3,3,3,3,0],
+    "higher_than_baseline": false
+  },
   "state": {
     "plan_persisted": true,
     "production_source_changed": false,
     "workload_semantics_changed": false,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "physics_changed": false,
   "numerical_controls_changed": false,
@@ -38,7 +68,9 @@
   "retry_policy_changed": false,
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
+  "scientific_admission_expanded": false,
   "fpe03_b04_resolved": false,
-  "claim_limit": "No higher-cost claim is made until the exact F-VQ14 admitted workload is replayed source-bound against the F-VQ27 postimage. Test-only cost observation may not alter forcing, state, physics, solver controls, mass or transaction semantics.",
-  "next_action": "Run O0/O2 source-bound replay of the immutable F-VQ14 scientific workload with observation-only aggregate interval cost output."
+  "fpe03_b04_status": "NOT_RESOLVED_FVQ14_ACCEPTED_RUNTIME_EQUALS_REFERENCE_BASELINE_COST",
+  "claim_limit": "This qualification is only a negative F-PE cost-screen result. It does not create or expand scientific admission. The exact admitted F-VQ14 positive runtime remains accepted, mass-conserving, deterministic and generic-time on the F-VQ27 production postimage, but its aggregate REFERENCE interval cost equals the baseline and therefore cannot satisfy FPE03-B04.",
+  "next_action": "Consume this negative result in the F-VQ27 admitted-runtime consolidation. Evaluate F-VQ15 only per logical column; do not manufacture a higher-cost tail by multiplying baseline per-column work by batch size. If no existing admitted runtime family exceeds baseline per accepted column/interval, keep FPE03-B04 blocked pending a newly independently admitted physically meaningful difficult REFERENCE workload."
 }
