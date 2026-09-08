@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "qualification": "STRUCTURAL_FIXED_EVENT_IRRIGATION_SEAM",
+  "decision": "QUALIFIED_STRUCTURAL_FIXED_EVENT_IRRIGATION_SEAM_REQUIRES_INDEPENDENT_FVQ",
+  "qualified_source": {
+    "branch": "work/f-pm03-irrigation-fixed-event-seam",
+    "commit": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+    "base_fmr07": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "ahead_by": 17,
+    "production_source_changes_from_base": [
+      "src/process/mod_irrigation_process.f90"
+    ],
+    "irrigation_process_blob": "af8dc3b3e16d261af573c9b626704638d5ee70c9"
+  },
+  "source_oracle": {
+    "path": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "project_archive_verified": true,
+    "scope": "B1.10 task=3 fixed-event activation plus task=9-equivalent completion semantics"
+  },
+  "owner_dependencies": {
+    "fsi17": {
+      "commit": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+      "status": "QUALIFIED_EXPLICIT_PROCESS_HYDRAULIC_VIEW_READY_FOR_RUNTIME_BINDING"
+    },
+    "fmr07": {
+      "commit": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+      "status": "QUALIFIED_COMMITTED_PROCESS_HYDRAULIC_VIEW_BINDING_READY_FOR_FPM03"
+    },
+    "fixed_event_route_requires_hydraulic_view": false,
+    "scheduled_tcs_dcs_routes_require_later_hydraulic_view_use": true
+  },
+  "qualification_run": {
+    "workflow": "F-PM03 fixed-event irrigation",
+    "workflow_run_id": 34231439122,
+    "job_id": 102078300868,
+    "head_sha": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "combined_output_sha256": "fb809db3fa84546849e66e23545f9023a09a0eab970e17b7af79cd5cd76a2c93"
+  },
+  "qualified_evidence": {
+    "exact_production_source_scope": "PASS",
+    "static_architecture": "PASS",
+    "b110_oracle_binding": "PASS",
+    "generic_time_policy": "PASS",
+    "production_no_direct_real_compare_warning": "PASS_BY_WERROR_COMPARE_REALS",
+    "inactive": "PASS",
+    "no_trigger": "PASS",
+    "surface_type_0_and_1": "PASS",
+    "ssdi": "PASS",
+    "continuation": "PASS",
+    "split_no_mutation": "PASS",
+    "rollback_replay": "PASS",
+    "a_b_a": "PASS",
+    "b110_equation_identity": "PASS",
+    "near_event_end_clamp": "PASS",
+    "far_event_end_split": "PASS",
+    "persisted_event_end_ulp_tolerance": "PASS",
+    "ssdi_authoritative_mass_exactly_once": "PASS",
+    "ssdi_real_physics_state_identity": "PASS",
+    "fmr06_snow_rollback": "PASS",
+    "fmr06_snow_replay_bitwise": "PASS",
+    "fmr06_snow_commit": "PASS",
+    "fmr06_snow_authoritative_mass_complete": "PASS",
+    "o0_o2_full_output_identity": "PASS"
+  },
+  "mass_evidence": {
+    "process_external_inflow_reconciliation_amount": 0.125,
+    "authoritative_total_in_delta": 0.12499999999999999,
+    "interpretation": "difference is floating representation only; gate comparison uses machine-level tolerance and confirms the F-MR/F-KT accepted accounting owns the positive SSDI inflow exactly once",
+    "process_mass_is_authoritative": false,
+    "double_counting_admitted": false
+  },
+  "time_policy": {
+    "legacy_management_match_tolerance": 0.001,
+    "numerical_event_end_tolerance": "64 * epsilon(real64) * max(1, abs(a), abs(b))",
+    "boundary_clamp_preserves_mass": true,
+    "material_crossing_requires_split": true,
+    "midnight_assumption": false,
+    "one_day_kernel_interval_assumption": false
+  },
+  "scope_limits": {
+    "scheduled_tcs_1_to_8": "NOT_MIGRATED",
+    "scheduled_dcs_1_to_2": "NOT_MIGRATED",
+    "rainfall_reduction": "NOT_MIGRATED",
+    "solute_threshold_over_irrigation": "NOT_MIGRATED",
+    "multiswap_task4_availability_scaling": "NOT_MIGRATED",
+    "legacy_irrigation_file_io": "ADAPTER_SCOPE_NOT_MIGRATED",
+    "surface_gird_to_nird_interception_meteo_route": "NOT_MIGRATED"
+  },
+  "admission": {
+    "structural_process_migration": "QUALIFIED",
+    "scientific_production_admission": "NOT_YET_QUALIFIED",
+    "required_next_gate": "INDEPENDENT_FVQ"
+  }
+}
