@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03-B04-RUNTIME-SCREEN",
   "title": "Scientifically admitted runtime workload tail screening",
   "branch": "work/f-pe03-b04-admitted-runtime-screen",
-  "status": "PERSISTED_ADMITTED_RUNTIME_SCREEN_PENDING_EXECUTION",
-  "phase": "PERSISTED_BEFORE_TEST",
+  "status": "PARTIAL_NEGATIVE_TRANCHE1_QUALIFIED_TRANCHE2_PENDING",
+  "phase": "TRANCHE_1_TESTED_NEGATIVE_TRANCHE_2_PENDING",
   "base": {
     "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
     "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
@@ -18,15 +18,44 @@
         "owner": "F-VQ17/F-MR06",
         "name": "one-call-daily snow runtime smoke fixture",
         "scientific_status": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
-        "source_test_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69"
+        "source_test_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+        "accepted": true,
+        "accepted_substeps": 1,
+        "cost_vector": [3,0,3,3,3,3,0],
+        "higher_than_baseline": false
       },
       {
         "owner": "F-VQ21/F-MR09",
-        "name": "precomputed root-sink serialized runtime control/balanced fixtures",
+        "name": "precomputed root-sink serialized runtime control fixture",
         "scientific_status": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
-        "source_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1"
+        "source_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1",
+        "accepted": true,
+        "accepted_substeps": 1,
+        "cost_vector": [3,0,3,3,3,3,0],
+        "higher_than_baseline": false
+      },
+      {
+        "owner": "F-VQ21/F-MR09",
+        "name": "precomputed balanced root-sink plus SSDI serialized runtime fixture",
+        "scientific_status": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+        "source_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1",
+        "accepted": true,
+        "accepted_substeps": 1,
+        "cost_vector": [3,0,3,3,3,3,0],
+        "higher_than_baseline": false
       }
     ],
+    "accepted_count": 3,
+    "accepted_higher_cost_count": 0,
+    "classification": "NEGATIVE_NO_HIGHER_COST_CASE_IN_TRANCHE_1",
+    "o0_o2_identity": true,
+    "hard_mass_gate_preserved": true,
+    "workflow_run": 34278226419,
+    "workflow_job": 102236412117,
+    "conclusion": "success",
+    "artifact_id": 10076568308,
+    "artifact_digest": "sha256:dd36364ae2d7c6e772840778a5da8be52cd3263d083c806ff3116554e9563401",
+    "tested_head": "387326ebb228f475a2237585ae5aca01e9cd3c8b",
     "observation_only": true,
     "production_source_changed": false,
     "physics_changed": false,
@@ -36,12 +65,22 @@
     "mass_requirement_relaxed": false,
     "transaction_semantics_changed": false
   },
+  "tranche_2": {
+    "status": "PENDING",
+    "priority": [
+      "F-VQ19 exact nonstationary snow fixture explicitly released for F-PE use",
+      "F-MR12/F-MR10 root-uptake-derived sink only if it can be executed through an already qualified interval runtime route without inventing new workload semantics"
+    ],
+    "raw_fvq20_process_oracle_not_sufficient_for_runtime_tail_claim": true,
+    "raw_fvq22_process_oracle_not_sufficient_for_runtime_tail_claim": true
+  },
   "candidate_rule": "A B04 candidate requires a scientifically admitted runtime workload that completes, commits, has complete authoritative mass within the unchanged hard mass gate, and has at least one aggregate interval cost counter strictly above [3,0,3,3,3,3,0].",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false
   },
-  "claim_limit": "This workunit only screens already scientifically admitted REFERENCE runtime workloads using the independently admitted F-VQ25 observer surface. It grants no new scientific workload admission and cannot relax mass, temporal acceptance, solver controls, physics or transaction semantics. Any positive workload remains subject to independent F-VQ confirmation before F-PE03 may treat it as a production tail anchor."
+  "fpe03_b04_resolved": false,
+  "claim_limit": "Tranche 1 is a qualified negative screening result only. It grants no new scientific workload admission and cannot relax mass, temporal acceptance, solver controls, physics or transaction semantics. FPE03-B04 remains open until an accepted scientifically admitted higher-cost REFERENCE workload is independently confirmed."
 }
