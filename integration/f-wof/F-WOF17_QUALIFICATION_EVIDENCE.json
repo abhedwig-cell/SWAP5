@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF17",
+  "title": "Option-Aware Crop-Root Geometry Snapshot Producer Qualification Evidence",
+  "branch": "work/f-wof17-option-aware-root-geometry",
+  "base_commit": "df29eb9111d98a466cfdfc30f8a0a2546dc63d74",
+  "qualified_candidate": {
+    "commit": "14e10c7d1cbe90398112cbdb2b3f17fc8c6bdfce",
+    "production_source_blob": "56c3e10ccd25e6790882a649d472bd67a31d0f7b",
+    "contract_blob": "3169ba527572594d9b51c74bf622283af335a16c",
+    "oracle_test_blob": "47ccc895db8e82f460350db9c668d2e2f84bcbbd",
+    "gate_blob": "3e192a4c2b93223034e436419abe0ba5adab5d57",
+    "workflow_blob": "087afbb28582eb9f83bc9a917e78670aaf7f31ac"
+  },
+  "github_actions": {
+    "run_id": 34268386309,
+    "job_id": 102203466990,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04"
+  },
+  "verified_results": {
+    "single_crop_geometry_production_delta": "PASS",
+    "upstream_source_locks": "PASS",
+    "scope_ownership_architecture_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_all_modes_dependency_free": "PASS",
+    "SWRD1_AFGEN_B1_10_identity": "PASS",
+    "SWRD2_committed_depth_bitwise_passthrough": "PASS",
+    "SWRD3_AFGEN_B1_10_identity": "PASS",
+    "input_tables_read_only": "PASS",
+    "invalid_active_inputs_fail_closed": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "F_WOF16_nonadaptive_view_composition": "PASS",
+    "F_WOF13_view_validation": "PASS",
+    "composed_root_depth_cm": 40.0,
+    "composed_rooted_nodes": 3,
+    "output_sha256": "66cbd4b2c8eefb237b9fa8a20b9bf582e01334456256dca7dc70834ae3bd169a"
+  },
+  "qualified_scope": {
+    "SWRD_1": "derive current root depth read-only from committed DVS plus immutable RDTB/RDM",
+    "SWRD_2": "read current root depth bitwise from committed actual root-depth history",
+    "SWRD_3": "derive current root depth read-only from committed WRT plus immutable RLWTB/RDM",
+    "crop_emerged": "explicit committed input flag",
+    "root_growth_evolution": false,
+    "crop_lifecycle_scheduling": false,
+    "potential_transpiration_production": false,
+    "persistent_derived_geometry_state_added": false,
+    "runtime_integration": false
+  },
+  "nonclaims": [
+    "a complete committed SWAP5 crop host is qualified",
+    "crop emergence timing or lifecycle transition logic is qualified",
+    "SWRD=2 rd/rdpot evolution is qualified",
+    "daily or arbitrary-subdaily root-growth evolution is qualified",
+    "potential transpiration production is qualified",
+    "SWRDC=1 adaptive root redistribution is qualified",
+    "the F-WOF14 end-to-end root-uptake input producer blocker is fully released"
+  ]
+}
