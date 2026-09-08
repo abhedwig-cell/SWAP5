@@ -51,8 +51,9 @@ assert status['parallel_reference_backend_admitted'] is False
 assert status['subdaily_snow_admitted'] is False
 assert evidence['candidate_source']['commit'] == status['candidate_source_commit']
 assert evidence['candidate_source']['tree'] == '06bd92b2cf96b7bc6eb6978250017cd054547a56'
-assert evidence['decisive_qualification']['qualification_harness_head'] == '6377e0e932bc5258ed6105253360ec887257de3b'
-assert evidence['upstream_scientific_oracle']['fvq16_closeout_head'] == '98712959d811c788c77842eede4c6f558cca1c11'
+assert evidence['qualification_harness']['head'] == '6377e0e932bc5258ed6105253360ec887257de3b'
+assert evidence['independent_scientific_basis']['f_vq16_closeout'] == '98712959d811c788c77842eede4c6f558cca1c11'
+assert evidence['scientific_result']['release_to_f_mq24'] is True
 print('FMQ24_FVQ17_CLOSEOUT_LOCK=PASS')
 PY
 
