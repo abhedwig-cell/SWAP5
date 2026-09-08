@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF13",
+  "title": "Explicit Crop-Root State Snapshot and Root-Uptake Input Assembly Seam",
+  "branch": "work/f-wof13-crop-root-snapshot-assembly",
+  "base": {
+    "commit": "9d4ce9336be3f4e6bc316bd580b359486d57fac6",
+    "status": "BLOCKED_CONCRETE_ROOT_UPTAKE_PROVIDER_REQUIRES_EXPLICIT_CROP_ET_SNAPSHOT_OWNERSHIP"
+  },
+  "purpose": "Resolve the F-WOF12 data-ownership blocker structurally by separating current crop-root state/view data from current ET potential-transpiration data and assembling the already-qualified F-WOF11 root-uptake DTO explicitly.",
+  "ownership": {
+    "crop_root_state_semantics": "Crop, ET and root-uptake physics",
+    "potential_transpiration_semantics": "ET physics result for the current evaluation interval/timestep",
+    "assembled_root_uptake_DTO": "F-WOF11 shared contract",
+    "runtime_mapping": "F-MR12",
+    "root_uptake_physics": "F-PM05/F-VQ22",
+    "committed_hydraulic_binding": "F-MR10"
+  },
+  "production_scope": {
+    "allowed_new_source": "src/crop/mod_crop_root_uptake_input_assembly.f90",
+    "existing_production_source_modification_allowed": false,
+    "concrete_WOFOST_provider_allowed": false,
+    "legacy_global_adapter_allowed": false,
+    "crop_evolution_allowed": false,
+    "ET_equations_allowed": false,
+    "runtime_source_modification_allowed": false,
+    "solver_or_kernel_modification_allowed": false
+  },
+  "types": {
+    "crop_root_state_view_t": {
+      "category": "READ_ONLY_PHYSICAL_VIEW_OVER_CURRENT_CROP_ROOT_STATE",
+      "fields": [
+        "crop_emerged",
+        "rooted_nodes",
+        "cumulative_root_fraction"
+      ],
+      "persistent_storage_claim": false,
+      "note": "rooted_nodes and cumulative_root_fraction may be derived by a future crop host from more compact committed root state; this seam does not require them to be persisted"
+    },
+    "root_uptake_et_result_t": {
+      "category": "DYNAMIC_ET_PROCESS_RESULT",
+      "fields": [
+        "potential_transpiration"
+      ],
+      "persistent_crop_state": false
+    }
+  },
+  "assembly_contract": {
+    "output": "crop_root_uptake_input_t",
+    "active_nodes_argument": "explicit immutable/grid context required only for contract validation",
+    "snapshot_must_be_canonical": true,
+    "runtime_or_solver_dependency": false,
+    "inactive_crop": "requires canonical inactive snapshot, ignores ET value, emits canonical zero/unallocated F-WOF11 DTO",
+    "active_zero_root": "requires finite nonnegative ptra and no distribution allocation",
+    "active_rooted": "requires current valid cumulative distribution and finite nonnegative ptra",
+    "validation_reuses": "F-WOF11 validate_crop_root_uptake_input",
+    "silent_repair_of_active_invalid_data": false,
+    "mass_accounting": false,
+    "state_mutation": false
+  },
+  "time_and_ordering": {
+    "generic_time_preserved": true,
+    "assembler_has_no_calendar_or_day_logic": true,
+    "legacy_B110_ordering_not_reimplemented_here": true,
+    "future_host_requirement": "the crop-root view and ET result supplied to this assembler must be current at the intended root-uptake evaluation point",
+    "B110_reference_constraint": "for the admitted reference route, current-day root extension/distribution must not be advanced before current-day root extraction"
+  },
+  "required_gates": [
+    "only one new production crop source",
+    "F-WOF11/F-MR12/F-MR10/F-PM05 protected blobs unchanged",
+    "new module has no runtime, solver, HeadCalc, legacy-global, file-I/O or calendar dependency",
+    "canonical inactive view plus invalid/stale ET still produces canonical inactive DTO without reading ET",
+    "noncanonical inactive snapshot fails closed",
+    "active zero-root mapping exact",
+    "active rooted mapping exact",
+    "active invalid ptra fails closed",
+    "active invalid root distribution fails closed",
+    "assembled DTO passes F-WOF11 validation",
+    "assembled DTO through F-MR12 is bitwise identical to direct F-MR10 path",
+    "snapshot and ET input are read-only",
+    "A/B/A deterministic assembly and downstream evaluation",
+    "O0/O2 output identity",
+    "F-MR09 cross-process regression remains green"
+  ],
+  "qualification_boundary": {
+    "this_can_qualify": "pure data-category separation and assembly seam",
+    "this_cannot_qualify": [
+      "a concrete crop host",
+      "a concrete WOFOST provider",
+      "ET calculation",
+      "root growth",
+      "root distribution evolution",
+      "daily crop lifecycle ordering implementation",
+      "arbitrary subdaily crop evolution"
+    ]
+  },
+  "affected_invariants": [1, 2, 3, 4, 7, 9, 21, 22, 27, 29, 30]
+}
