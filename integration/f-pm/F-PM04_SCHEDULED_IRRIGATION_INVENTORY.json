@@ -106,18 +106,17 @@
     "calendar_logic_migration_status": "NOT_INCLUDED_IN_SMALLEST_TCS7_DCS2_SEAM"
   },
   "selected_smallest_seam": {
-    "name": "TCS7_DCS2_SURFACE_REGULAR_RATE",
-    "why": "TCS7 exercises the admitted process hydraulic view directly with one pressure-head sample and no HeadCalc/constitutive internals; DCS2 supplies irrigation depth without root-zone integration; regular-rate surface application avoids SSDI mapping and legacy rate fallback branches.",
+    "name": "TCS7_DCS2_SSDI_REGULAR_RATE",
+    "why": "TCS7 exercises the admitted process hydraulic view directly with one pressure-head sample and no HeadCalc/constitutive internals; DCS2 supplies irrigation depth without root-zone integration; SSDI reuses the already-qualified F-SI10/F-VQ18 node-source and authoritative mass path, whereas scheduled surface irrigation would depend on the still-unadmitted gird-to-nird interception/meteo composition.",
     "included": [
       "outer explicit management gates: irrigation enabled, schedule enabled, crop emerged, irrigation window open, no fixed event already selected",
       "TCS7 DVS-dependent pressure-head threshold",
       "pretranslated immutable sensor node index",
       "DCS2 DVS-dependent fixed irrigation depth",
-      "surface application only",
+      "SSDI application only with pretranslated immutable first/last source nodes",
       "irr_rate>0 and irr_depth/irr_rate<=1",
-      "scheduled irrigation concentration metadata",
-      "transaction-safe active event continuation/completion",
-      "explicit external inflow result"
+      "transaction-safe active scheduled-event continuation/completion",
+      "explicit node source and reconciliation external inflow result"
     ],
     "excluded": [
       "TCS1-TCS4, TCS6, TCS8",
@@ -127,7 +126,7 @@
       "rainfall reduction",
       "depth limits",
       "solute-threshold over-irrigation",
-      "SSDI scheduled application",
+      "surface scheduled application and gird-to-nird composition",
       "irr_rate<=0",
       "irr_depth/irr_rate>1 temporary rate adaptation",
       "task4 f_irr_avail scaling",
@@ -136,17 +135,18 @@
     ]
   },
   "data_categories_for_selected_seam": {
-    "immutable_parameters": ["TCS7 DVS/pressure-head threshold table", "DCS2 DVS/fixed-depth table", "sensor_node", "surface application", "irr_rate", "cirrs"],
+    "immutable_parameters": ["TCS7 DVS/pressure-head threshold table", "DCS2 DVS/fixed-depth table", "sensor_node", "SSDI first/last node", "irr_rate"],
     "persistent_process_state": ["only active scheduled-event continuation/timing when an event spans multiple solver intervals"],
     "management_forcing": ["t0", "t1", "DVS", "irrigation_enabled", "schedule_enabled", "crop_emerged", "irrigation_window_open", "fixed_event_already_selected"],
     "hydraulic_view": ["pressure_head(sensor_node)"],
-    "physical_result": ["gross surface irrigation rate", "event duration", "external inflow amount", "concentration metadata"],
+    "physical_result": ["SSDI node source", "event duration", "external inflow amount"],
     "temporary_workspace": ["interpolated TCS7 threshold", "interpolated DCS2 depth", "trigger boolean"]
   },
   "mass_ownership": {
     "irrigation_is_external_inflow": true,
     "process_amount_is_reconciliation_evidence": true,
-    "authoritative_runtime_accounting": "accepted F-KT/F-MR accounting through the eventual top-boundary composition",
+    "authoritative_runtime_accounting": "accepted F-KT/F-MR accounting through the already-qualified SSDI source route",
+    "existing_scientific_evidence": "F-VQ18 independently verified a positive SSDI process source through real F-MR/F-KT with authoritative total_in exactly once",
     "double_booking_forbidden": true
   }
 }
