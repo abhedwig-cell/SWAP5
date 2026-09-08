@@ -1,0 +1,28 @@
+name: F-MR07 F-SI19 runtime recomposition
+
+on:
+  push:
+    branches:
+      - work/f-mr07-fsi19-runtime-recomposition
+    paths:
+      - 'integration/f-mr/F-MR07_*.json'
+      - 'src/solver/**'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/legacy/b1_10_port/soilwater.f90'
+      - 'tests/fsi/test_fsi19_reference_linear_solver.f90'
+      - 'tests/fmr/run_fmr07_fsi19_recomposition_gate.sh'
+      - '.github/workflows/fmr07-fsi19-recomposition.yml'
+  workflow_dispatch:
+
+jobs:
+  fmr07-fsi19-recomposition:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-MR07 source-bound runtime recomposition gate
+        run: bash tests/fmr/run_fmr07_fsi19_recomposition_gate.sh
