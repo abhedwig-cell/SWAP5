@@ -1,15 +1,29 @@
 {
-  "schema_version":1,
-  "workstream":"F-MR","work_unit":"F-MR04",
-  "backends":{
-    "DETERMINISTIC_TEST_BACKEND":{"status":"QUALIFIED"},
-    "SERIALIZED_REFERENCE_BACKEND":{"status":"CANDIDATE_NOT_SCIENTIFICALLY_ADMITTED","runtime_parallelism":1,"scientific_admission":false},
-    "PARALLEL_REFERENCE_BACKEND":{"status":"NOT_ADMITTED","admitted":false}
+  "schema_version": 2,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "qualified_source_candidate": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "backends": {
+    "DETERMINISTIC_TEST_BACKEND": {"status": "QUALIFIED"},
+    "SERIALIZED_REFERENCE_BACKEND": {
+      "status": "QUALIFIED_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+      "runtime_parallelism": 1,
+      "composition_qualified": true,
+      "authoritative_full_interval_mass": true,
+      "scientific_admission": false,
+      "production_physics_qualified": false
+    },
+    "PARALLEL_REFERENCE_BACKEND": {"status": "NOT_ADMITTED", "admitted": false}
   },
-  "fail_closed":{
-    "qrot_nonzero":true,"active_root_process":true,"macropore":true,"snow":true,"unsupported_bottom_mode":true,"swkimpl_nonzero":true
+  "fail_closed": {
+    "qrot_nonzero": true,
+    "active_root_process": true,
+    "macropore": true,
+    "snow": true,
+    "unsupported_bottom_mode": true,
+    "swkimpl_nonzero": true
   },
-  "promotion_target":"QUALIFIED_RUNTIME_CANDIDATE_READY_FOR_FVQ",
-  "prohibited_promotion":"PRODUCTION_PHYSICS_QUALIFIED",
-  "independent_scientific_owner":"F-VQ14"
+  "retry_subgate": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION",
+  "prohibited_promotion": "PRODUCTION_PHYSICS_QUALIFIED",
+  "independent_scientific_owner": "F-VQ14"
 }

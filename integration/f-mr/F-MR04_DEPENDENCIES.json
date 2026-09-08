@@ -1,76 +1,51 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR04",
   "title": "Serialized Physical Reference Runtime Candidate",
-  "audit_time": "2026-09-07T18:25:48Z",
   "repository": "abhedwig-cell/SWAP5",
-  "start_branch": "integration/f-mr",
   "start_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
   "safety_branch": "integration/f-mr04-safety",
-  "safety_head": "c56a13071304ae38f737d0a1004c83eee10d661a",
+  "qualified_source_candidate": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
   "dependencies": {
-    "F-KT07": {
+    "F-KT08": {
       "branch": "integration/f-kt",
-      "head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
-      "status": "QUALIFIED",
+      "qualified_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "qualification_workflow_run": 34187095449,
+      "status": "QUALIFIED_AUTHORITATIVE_FULL_INTERVAL_MASS_ACCOUNTING",
       "consume": true,
-      "ownership": ["committed_state","candidate_state","checkpoint","reusable_checkpoint","temporal_provenance","retry","commit","rollback","generic_[t0,t1]"]
+      "production_blobs": {
+        "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+        "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+        "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+        "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f"
+      },
+      "ownership": ["committed_state","candidate_state","checkpoint","retry","commit","rollback","generic_[t0,t1]","authoritative_accepted_full_interval_mass"]
     },
     "F-SI09": {
-      "branch": "work/f-si09-b110-constitutive-provider",
       "qualification_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
       "tested_postimage": "1c8c24a193565e4bfd76ee26f04db6858423a0c5",
       "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
-      "provider_path": "src/solver/mod_b110_default_mvg_provider.f90",
       "provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
-      "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
-      "consume": true
+      "corrected_b110_mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
     },
     "F-SI10": {
-      "branch": "work/f-si10-b110-source-sink-provider",
       "qualification_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
       "tested_postimage": "b0909fb1786a4d13245c33044b4731ffb69e0b7b",
       "status": "QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE",
       "provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
-      "consume": true,
       "root_extraction": "INACTIVE_QROT_ZERO_ONLY"
     },
-    "F-PM02": {
-      "branch": "work/f-pm02-snow-admission",
-      "head": "dac1e9df335ac3ac4082e7c7d2041d8d3c1c83a2",
-      "status": "BLOCKED_PRE_ADMISSION",
-      "consume": false,
-      "snow_in_fmr04": false
-    },
-    "F-VQ13": {
-      "branch": "qualification/f-vq13-fkt06-fsi06-admission",
-      "head": "b816070e880a0f9b2e7ddce1322368ef02cd1fb5",
-      "status": "QUALIFIED_FKT06_FSI06_SOURCE_BOUND_HISTORY_CONTINUATION_ALIGNMENT_ONLY",
-      "consume_as_production_source": false,
-      "fmr04_handoff_target": "F-VQ14"
-    },
-    "F-MQ22": {
-      "branch": "qualification/f-mq22-fkt06-p14-optional-state",
-      "head": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
-      "status": "QUALIFIED_FKT06_P14_SYNTHETIC_PROMOTED",
-      "real_physics_executable": false,
-      "production_runtime_qualified": false,
-      "consume_as_production_source": false,
-      "future_handoff_target": "F-MQ23"
-    }
+    "F-VQ": {"handoff_target": "F-VQ14", "scientific_admission_owner": true},
+    "F-MQ": {"future_handoff_target": "F-MQ23", "eligible_after_fvq14": true}
   },
   "hard_scope": {
-    "bare_root_inactive": true,
+    "root_extraction_active": false,
     "qrot_zero": true,
     "macropore": false,
     "snow": false,
     "swkimpl": 0,
     "swsophy": 0,
-    "frost": false,
-    "hysteresis": false,
-    "tabulated_hydraulics": false,
-    "elasticity": false,
     "bottom_modes": [7,-2],
     "parallel_reference_backend_admitted": false,
     "scientific_physics_admission": false,

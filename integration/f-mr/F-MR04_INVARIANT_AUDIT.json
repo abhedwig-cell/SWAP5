@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "qualified_source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "assessment": {
+    "1": "PASS: one F-KT kernel path; no separate runtime kernel",
+    "3": "PASS: parameters/state/forcing/config/results remain distinct types",
+    "4": "PASS: persistent physical state contains only continuation state for the restricted profile",
+    "5": "PASS: Richards workspace remains solver/worker-local, not per logical column",
+    "6": "PASS: logical runtime types do not constrain scalable internal layout",
+    "7": "PASS: physical trial/candidate, discard, replay and commit use F-KT transaction semantics",
+    "8": "PASS: replay from the same committed checkpoint is deterministic",
+    "9": "PASS: fixture uses generic non-midnight [1000.125,1000.625]",
+    "13": "PASS: F-KT08 authoritative full-interval mass complete=true, missing mask=0, residual=0",
+    "16": "PASS_WITH_SCOPE: serialized physical candidate is one runtime backend; MultiSWAP parallel physical admission is intentionally deferred",
+    "20": "PASS: runtime uses the common soil-water solver interface, not a hardwired new Richards implementation",
+    "21": "PASS: corrected B1.10 reference physics/provider blobs are reused; no F-MR physics formulas introduced",
+    "22": "PASS: F-MR does not call HeadCalc or import HeadCalc internal legacy modules directly",
+    "23": "PASS: no relaxed/balanced/throughput/fallback policy introduced; physics admission flags are separate",
+    "25": "PASS: corrected B1.10 reference provenance remains explicit and independent F-VQ comparison is required",
+    "26": "PASS: transaction and solver diagnostics are emitted in executable evidence",
+    "27": "PASS: root/macropore/snow optional physics remain inactive and are not allocated as admitted persistent process state",
+    "29": "PASS: no midnight/day/file-format/MODFLOW assumption introduced"
+  },
+  "additional_invariants": {
+    "2": "PASS: kernel/runtime route contains no file I/O",
+    "10": "PASS_BY_DESIGN: no fixed coupling-window assumption introduced",
+    "11": "NOT_EXERCISED: MODFLOW coupling outside F-MR04 scope; transaction foundations preserved",
+    "12": "NOT_EXERCISED: groundwater interface contract outside scope",
+    "14": "NOT_EXERCISED: response tangents outside scope",
+    "15": "NOT_EXERCISED: coupling-cost policy outside scope",
+    "17": "PASS_BY_DESIGN: runtime column/template model does not impose 1:1 MODFLOW relation",
+    "18": "NOT_EXERCISED: deep-vadose outside scope",
+    "19": "NOT_EXERCISED: component transition outside scope",
+    "24": "NOT_EXERCISED: bounded-cost physical performance policy remains F-PE-owned",
+    "28": "PASS: composition remains runtime-owned; SWAP physics does not know tile/system composition",
+    "30": "PASS: this audit records explicit invariant assessment for the F-MR04 change"
+  },
+  "hard_holds_preserved": ["active_root","macropore","snow","parallel_reference_backend","scientific_physics_admission","MODFLOW_coupling","performance_policy_changes"]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR04",
+  "source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "git_tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+  "workflow_run_id": 34187700639,
+  "workflow_job_id": 101939262051,
+  "compiler": "GNU Fortran 13.2.0",
+  "runner": "Ubuntu 24.04",
+  "fixture": {
+    "column_id": 40401,
+    "template_id": 404,
+    "t0": 1000.125,
+    "t1": 1000.625,
+    "profile_id": "FMR04_B110_BARE_ROOT_INACTIVE_SERIAL_V1",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "root_extraction_active": false,
+    "qrot_zero": true,
+    "macropore": false,
+    "snow": false
+  },
+  "route": "F-MR -> F-KT08 kernel boundary -> F-SI solver/provider interfaces -> real HeadCalc/reference Richards",
+  "real_headcalc_executed": true,
+  "solver_route": "legacy-reference-bound",
+  "solver_iterations": 1,
+  "transaction": {
+    "initial_revision": 0,
+    "final_revision": 1,
+    "rollback": "PASS",
+    "replay": "PASS",
+    "commit": "PASS",
+    "stale_checkpoint_revision_rejection": "PASS",
+    "retry_subgate": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION"
+  },
+  "mass": {
+    "kernel_result_mass_complete": true,
+    "missing_contribution_mask": 0,
+    "accepted_transaction_count": 1,
+    "storage_start": 1.03773468993800799,
+    "storage_end": 1.03773468993800799,
+    "total_in": 0.0813696032106573097,
+    "total_out": 0.0813696032106573097,
+    "residual": 0.0,
+    "max_abs_step_mass_residual": 0.0
+  },
+  "optimization": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "stdout_identity": "PASS",
+    "O0_executable_sha256": "69f8ac4b2875d25dbc80e10892ca2f1b5ac540471c86ddd17e003d74f0672298",
+    "O2_executable_sha256": "cf6d5031f43fffaaa0be118b625c3c21a474de5ebfc88933a62a5f52d8ab5613",
+    "output_sha256": "afc9e25380e2c5c0638aead97dccb8b1b91df8181b21e0228d74dc4d08bd0eed"
+  },
+  "unsupported_physics": {
+    "active_root": "PASS_FAIL_CLOSED",
+    "nonzero_qrot": "PASS_FAIL_CLOSED",
+    "macropore": "PASS_FAIL_CLOSED",
+    "snow": "PASS_FAIL_CLOSED",
+    "swkimpl_nonzero": "PASS_FAIL_CLOSED"
+  }
+}
