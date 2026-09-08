@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ15",
+  "title": "Independent scientific qualification evidence for exact F-MR05 serialized real-physics MultiSWAP candidate",
+  "qualification_only": true,
+  "candidate_source": {
+    "commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9"
+  },
+  "scientific_basis": {
+    "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "fvq14_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+    "fmr04_candidate": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "fmr05_handoff_commit": "286e339f836b151c5a4f8907c5b26654bbd018fa",
+    "criterion": "EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE"
+  },
+  "decisive_qualification": {
+    "qualification_harness_head": "25d9ed1768da7e470d283a85a1683243fe23c18c",
+    "workflow_run": 34198628912,
+    "workflow_job": 101972045606,
+    "conclusion": "success",
+    "artifact_id": 10044899956,
+    "artifact_digest": "sha256:f222713457213000f5b4d8c011da7cc58a207b648411ab374b06610dffd8c135",
+    "artifact_size_bytes": 1050165,
+    "o0_executable_sha256": "2ba186aa38d4a9b56434b9cf7e282759d34f1f3a8a595719960423b713e40178",
+    "o2_executable_sha256": "39bd56a119e990a106fbd92a5dc9478bb7e4141ab76e735f45107965a8ff8c78",
+    "output_sha256": "d1912bb4e9e991a82556a8ad84f0ea13c2effc3ad0851a89116cb8ff84716e37"
+  },
+  "closeout_compatible_replay": {
+    "qualification_head": "c384cad8898cc9025c85208e4f489f35dd5cb489",
+    "workflow_run": 34199041934,
+    "workflow_job": 101973359248,
+    "conclusion": "success",
+    "artifact_id": 10045056682,
+    "artifact_digest": "sha256:13bc8d1090b039c20f096a98b4143cb161fbc97319cb50ee12f714c03f467a9b",
+    "artifact_size_bytes": 1050172
+  },
+  "gates": {
+    "exact_candidate_lock": "PASS",
+    "qualification_only_source_unchanged": "PASS",
+    "fvq14_scientific_basis": "PASS",
+    "fmr05_engineering_replay": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "direct_reference_columns_1": "PASS",
+    "direct_reference_columns_2": "PASS",
+    "direct_reference_columns_17": "PASS",
+    "direct_reference_columns_31": "PASS",
+    "reverse_order_columns_1": "PASS",
+    "reverse_order_columns_2": "PASS",
+    "reverse_order_columns_17": "PASS",
+    "reverse_order_columns_31": "PASS",
+    "a_b_a_exact_repeatability": "PASS",
+    "generic_time_1000_125_to_1000_625": "PASS",
+    "authoritative_mass_complete": "PASS",
+    "missing_mass_contribution_mask_zero": "PASS",
+    "existing_fkt_hard_mass_gate": "PASS",
+    "serialized_real_physics_only": "PASS",
+    "parallel_reference_backend_not_admitted": "PASS"
+  },
+  "scientific_result": {
+    "maximum_observed_scientific_difference": 0.0,
+    "new_scientific_tolerance_introduced": false,
+    "direct_reference_comparison": "BITWISE_IDENTICAL_COMMITTED_PHYSICAL_STATE_AND_CANONICAL_MASS",
+    "production_serialized_real_physics_multiswap_admitted": true,
+    "admitted_scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "parallel_reference_backend_admitted": false,
+    "active_root_admitted": false,
+    "macropore_admitted": false,
+    "snow_admitted": false,
+    "implicit_conductivity_admitted": false,
+    "general_swap5_production_release": false,
+    "release_to_fmq23": true
+  },
+  "compiler_observations": {
+    "compiler": "GNU Fortran 13.2.0",
+    "platform": "Ubuntu 24.04",
+    "warnings_observed": true,
+    "warning_scope": "existing legacy/reference warning classes and exact-comparison warnings; no production-source modification or broadened admission was made in F-VQ15",
+    "warnings_block_restricted_admission": false
+  },
+  "decision": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+  "blockers": [],
+  "holds": [
+    "Parallel HeadCalc/reference execution remains NOT_ADMITTED.",
+    "Physics outside EXACT_FVQ14_RESTRICTED_PROFILE_ONLY remains NOT_ADMITTED.",
+    "No general SWAP5 production release is implied.",
+    "No new scientific tolerance is admitted."
+  ],
+  "last_verified": "2026-09-08T07:23:35Z"
+}
