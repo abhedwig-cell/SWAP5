@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "title": "Scheduled Irrigation TCS7+DCS2 Single-Node SSDI Structural Readiness",
+  "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness",
+  "status": "ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SINGLE_NODE_SSDI_MIGRATION",
+  "phase": "READINESS_ADMITTED_PRODUCTION_CANDIDATE_NOT_YET_IMPLEMENTED",
+  "state": {
+    "source_bound_inventory": true,
+    "readiness_contract_persisted": true,
+    "source_evidence_persisted": true,
+    "readiness_gate_persisted": true,
+    "readiness_gate_tested": true,
+    "production_candidate_implemented": false,
+    "production_candidate_tested": false,
+    "scientifically_qualified": false
+  },
+  "exact_readiness_lineage": {
+    "base": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+    "decisive_gate_head": "4ded5f1d4052212c102207d14e1afb49551b0f16",
+    "decisive_workflow_run": 34238878148,
+    "decisive_workflow_job": 102103605167
+  },
+  "admitted_profile": {
+    "timing": "TCS7",
+    "depth": "DCS2",
+    "application": "SINGLE_NODE_SSDI",
+    "rate_policy": "positive regular rate; depth/rate <= 1 day",
+    "table_policy": "2..7 finite strictly increasing DVS knots with explicit actual knot count and fail-closed partial-table above-last behavior",
+    "hydraulic_source": "F-MR07 committed process hydraulic view",
+    "event_precedence_and_calendar": "explicit management inputs",
+    "runtime_backend_edit_allowed": false
+  },
+  "not_admitted": [
+    "scientific equivalence of scheduled TCS7/DCS2 to full B1.10 runtime",
+    "scheduled multi-node SSDI",
+    "surface scheduled irrigation",
+    "TCS1-TCS4, TCS6, TCS8",
+    "tcsfix/dayfix",
+    "DCS1",
+    "legacy broad tcs>1 watcon/root-zone prelude",
+    "rainfall reduction",
+    "depth limits",
+    "solute-threshold over-irrigation",
+    "zero-rate or >1-day rate fallback",
+    "task=4 availability scaling",
+    "calendar parsing and legacy I/O"
+  ],
+  "hard_invariants": {
+    "mass_conservation_absolute": true,
+    "external_inflow_exactly_once": true,
+    "transactional_candidate_only_until_commit": true,
+    "committed_hydraulic_view_only": true,
+    "headcalc_internals_forbidden": true,
+    "kernel_file_io_forbidden": true,
+    "midnight_or_one_day_kernel_assumption_forbidden": true,
+    "fmr08_backend_overlap_forbidden": true
+  },
+  "artifacts": [
+    "integration/f-pm/F-PM04_SCHEDULED_IRRIGATION_INVENTORY.json",
+    "integration/f-pm/F-PM04_B110_SOURCE_EVIDENCE.json",
+    "integration/f-pm/F-PM04_READINESS_CONTRACT.json",
+    "integration/f-pm/F-PM04_READINESS_EVIDENCE.json",
+    "integration/f-pm/F-PM04_STATUS.json",
+    "tools/fpm/fpm04_scheduled_irrigation_readiness_gate.py",
+    "tests/fpm/run_fpm04_scheduled_irrigation_readiness_gate.sh",
+    ".github/workflows/fpm04-scheduled-irrigation-readiness.yml"
+  ],
+  "downstream": {
+    "production_migration_allowed": true,
+    "scope": "pure process-facing TCS7+DCS2 single-node SSDI seam only",
+    "recommended_candidate_branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-candidate",
+    "independent_fvq_required_after_structural_candidate": true,
+    "multi_node_scheduled_ssdi_requires_separate_source_theory_resolution": true
+  }
+}
