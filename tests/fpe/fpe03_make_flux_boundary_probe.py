@@ -18,8 +18,8 @@ def replace_once(old: str, new: str, label: str) -> None:
     text = text.replace(old, new, 1)
 
 replace_once(
-    'program test_fpe03_nonstationary_snow_overlay\n',
-    'program test_fpe03_flux_boundary_probe\n',
+    'program test_fpe03_nonstationary_snow_overlay\n  use, intrinsic :: iso_fortran_env',
+    'program test_fpe03_flux_boundary_probe\n  use, intrinsic :: iso_fortran_env',
     'program name',
 )
 replace_once(
