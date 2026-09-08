@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI17",
+  "title": "Explicit Process-Facing Hydraulic View",
+  "branch": "work/f-si17-process-hydraulic-view",
+  "source_basis": {
+    "qualified_fsi15_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "fpm03_blocked_head": "0179429bfdcac046b7fe333459bd4eab03d50d72",
+    "fpm03_blocker": "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_EXPLICIT_HYDRAULIC_VIEW",
+    "concurrent_fsi16_checkpoint_observed": "f2f3d24f6e5aaaadf04a9714fc91881370f5f0a7"
+  },
+  "purpose": "Qualify the smallest read-only process-facing hydraulic snapshot required by irrigation and later process migration without exposing HeadCalc, reference-Richards state bindings, Newton vectors, Jacobians or worker workspace.",
+  "scope": {
+    "new_module": "src/solver/mod_process_hydraulic_view.f90",
+    "allowed_source_input": "soil_water_physical_state_t",
+    "view_fields": [
+      "active_nodes",
+      "pressure_head",
+      "water_content",
+      "ponding_depth",
+      "groundwater_level"
+    ],
+    "semantics": "Snapshot of one physical soil-water state supplied by the caller. F-SI17 does not decide whether that state is committed, candidate or trial; downstream runtime ownership must bind the view to committed state when process decisions require committed semantics.",
+    "copy_semantics": "The view owns copied arrays. No pointer alias to solver/runtime state is exposed.",
+    "persistent_state": false,
+    "worker_workspace": false,
+    "io_dependency": false,
+    "calendar_dependency": false
+  },
+  "forbidden_surface": [
+    "reference_richards_state_binding_t",
+    "reference_richards_legacy_workspace_t",
+    "HeadCalc arrays",
+    "hm1/thetm1",
+    "conductivity workspace",
+    "Newton vectors",
+    "Jacobian",
+    "iteration history",
+    "solver retry flags"
+  ],
+  "ownership_boundary": {
+    "F_SI": "Own and qualify the process-facing view type, construction and validation from solver-neutral soil_water_physical_state_t.",
+    "F_MR": "Later bind the view to the exact committed physical state on an admitted runtime lineage and expose it to process orchestration.",
+    "F_PM": "Consume only the qualified view. Irrigation must not read HeadCalc/reference-Richards internals directly.",
+    "F_KT": "Retains ownership of committed/candidate/trial identity and transaction publication semantics."
+  },
+  "non_goals": [
+    "No irrigation equations or production irrigation source.",
+    "No F-MR runtime composition.",
+    "No F-KT transaction changes.",
+    "No prescribed bottom-head work and no modification of F-SI16 source files.",
+    "No change to soil-water solver physics or numerical policy."
+  ],
+  "qualification_requirements": [
+    "valid state snapshots exactly",
+    "missing or shape-invalid state fails closed",
+    "snapshot does not alias source arrays",
+    "A/B/A repeatability",
+    "O0 and O2 identical output",
+    "static forbidden-dependency gate",
+    "existing common solver contract still compiles unchanged"
+  ],
+  "intended_exit": "QUALIFIED_EXPLICIT_PROCESS_HYDRAULIC_VIEW_READY_FOR_RUNTIME_BINDING"
+}
