@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA03",
+  "authority": "TEST_REGISTER_FIDELITY_OVERLAY_ONLY",
+  "join_key": "artifact_path",
+  "canonical_test_discovery": "test-architecture/test-register.json",
+  "overlay_semantics": "This file adds reviewed fixture and numerical-fidelity facts to existing registered executable gates. It does not discover tests, grant qualification, or replace owner evidence.",
+  "numerical_solver_fidelity_classes": [
+    "PRODUCTION_REFERENCE",
+    "QUALIFIED_REFERENCE_SUBSTITUTE",
+    "SYNTHETIC_FUNCTIONAL",
+    "SYNTHETIC_STUB",
+    "ZERO_STEP_STUB",
+    "NOT_ASSESSED"
+  ],
+  "state_update_capability_classes": ["CAPABLE", "INERT", "NOT_ASSESSED"],
+  "physical_fixture_fidelity_classes": [
+    "OWNER_QUALIFIED_SOURCE_BOUND",
+    "SOURCE_BOUND_RESTRICTED_PHYSICAL",
+    "SYNTHETIC_CONTRACT",
+    "EXTERNAL_FIXTURE",
+    "NOT_ASSESSED"
+  ],
+  "solver_tolerance_provenance_classes": [
+    "EXPLICIT_SOURCE_BOUND",
+    "RUNNER_LOCAL_EXPLICIT",
+    "OWNER_EVIDENCE_EXTERNAL",
+    "NOT_APPLICABLE_TO_CLAIMS",
+    "NOT_ASSESSED"
+  ],
+  "numerical_control_provenance_classes": [
+    "EXPLICIT_SOURCE_BOUND",
+    "RUNNER_LOCAL_EXPLICIT",
+    "OWNER_EVIDENCE_EXTERNAL",
+    "NOT_APPLICABLE_TO_CLAIMS",
+    "NOT_ASSESSED"
+  ],
+  "claim_classes": [
+    "SOURCE_BINDING",
+    "INTERFACE_SEMANTICS",
+    "WORKSPACE_ISOLATION",
+    "DETERMINISTIC_REPLAY",
+    "NUMERICAL_CONTROL_BINDING",
+    "MASS_IDENTITY",
+    "MULTICOLUMN_ISOLATION",
+    "CONVERGENCE_BEHAVIOR",
+    "SOLVER_COST",
+    "PERFORMANCE_TAIL",
+    "SCIENTIFIC_ADMISSION"
+  ],
+  "numerical_behavior_claims": ["CONVERGENCE_BEHAVIOR", "SOLVER_COST", "PERFORMANCE_TAIL"],
+  "records": [
+    {
+      "artifact_path": "tests/fsi/run_fsi05_gate.sh",
+      "physical_fixture_fidelity": "SYNTHETIC_CONTRACT",
+      "numerical_solver_fidelity": "ZERO_STEP_STUB",
+      "state_update_capability": "INERT",
+      "solver_tolerance_provenance": "NOT_APPLICABLE_TO_CLAIMS",
+      "numerical_control_provenance": "NOT_APPLICABLE_TO_CLAIMS",
+      "claim_classes": ["SOURCE_BINDING", "WORKSPACE_ISOLATION", "DETERMINISTIC_REPLAY"],
+      "owner_qualification_status": "SUPPORTING_EVIDENCE_ONLY",
+      "numerical_fidelity_evidence": [
+        {
+          "path": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+          "required_tokens": ["solution(i) = 0.0d0", "ierror = 0"]
+        },
+        {
+          "path": "tests/fsi/run_fsi05_gate.sh",
+          "required_tokens": ["FSI04_STUBS=", "Build F-SI05 test stubs from the exact F-SI04 fixture"]
+        }
+      ],
+      "claim_boundary": "The gate may support workspace/scratch, source binding and deterministic replay claims. Its primary TRIDAG fixture cannot support convergence, solver-cost or performance-tail claims."
+    },
+    {
+      "artifact_path": "tests/fvq/run_fvq15_gate.sh",
+      "physical_fixture_fidelity": "OWNER_QUALIFIED_SOURCE_BOUND",
+      "numerical_solver_fidelity": "ZERO_STEP_STUB",
+      "state_update_capability": "INERT",
+      "solver_tolerance_provenance": "NOT_ASSESSED",
+      "numerical_control_provenance": "NOT_ASSESSED",
+      "claim_classes": ["SOURCE_BINDING", "DETERMINISTIC_REPLAY", "MASS_IDENTITY", "MULTICOLUMN_ISOLATION", "SCIENTIFIC_ADMISSION"],
+      "owner_qualification_status": "OWNER_SOURCE_BOUND_INDEPENDENT_ADMISSION_FTA_DOES_NOT_REQUALIFY",
+      "numerical_fidelity_evidence": [
+        {
+          "path": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+          "required_tokens": ["solution(i) = 0.0d0", "ierror = 0"]
+        },
+        {
+          "path": "tests/fvq/run_fvq15_gate.sh",
+          "required_tokens": ["$CANDIDATE/tests/fsi/fsi04_real_headcalc_stubs.f90", "EXPECTED_HEAD=", "FVQ15_GATE PASS_INDEPENDENT_SERIALIZED_MULTICOLUMN_SCIENTIFIC_ADMISSION"]
+        }
+      ],
+      "claim_boundary": "F-TA records that FVQ15 is source-bound owner qualification while its isolated numerical path uses the zero-step TRIDAG fixture. F-TA03 neither revokes nor broadens FVQ15 scientific admission. In particular FVQ15 does not become evidence for nonlinear convergence, solver cost or performance-tail behavior."
+    }
+  ],
+  "normalization_rule": "Unknown metadata stays unknown. A reviewed gate can support only claim classes compatible with its numerical fidelity. F-TA metadata never inherits scientific qualification from another lineage."
+}
