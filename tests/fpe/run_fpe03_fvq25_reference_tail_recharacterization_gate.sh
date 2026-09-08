@@ -114,7 +114,7 @@ cmp "$BUILD/o0/probe-a.txt" "$BUILD/o2/probe-a.txt"
 echo 'FPE03_FVQ25_O0_O2_IDENTITY=PASS'
 
 python3 - "$BUILD/o0/probe-a.txt" <<'PY'
-import math, sys
+import sys
 from pathlib import Path
 vals={}
 for line in Path(sys.argv[1]).read_text().splitlines():
@@ -130,8 +130,11 @@ def vector(p):
         iv(p,'JACOBIAN_BUILDS'), iv(p,'LINEAR_SOLVES'), iv(p,'BACKTRACKING_ATTEMPTS'),
         iv(p,'ALTERNATIVE_SOLVER_CALLS'))
 
+# The historical probe's ACCEPTED flag is defined from completed+committed+complete mass,
+# and run_case itself asserts revision==1 for accepted and no commit/revision change for rejected.
+# There is intentionally no separately printed COMMITTED key.
 basep='FPE03_CASE_01_'
-assert bv(basep,'ACCEPTED') and bv(basep,'COMMITTED')
+assert bv(basep,'ACCEPTED')
 assert iv(basep,'KERNEL_STATUS')==0
 assert iv(basep,'ACCEPTED_SUBSTEPS')==1
 assert abs(fv(basep,'MASS_RESIDUAL')) <= 1e-12
@@ -143,19 +146,17 @@ accepted=[]; rejected=[]; higher=[]
 for j,level in enumerate(levels):
     for offset,sign in ((0,'plus'),(1,'minus')):
         i=2+2*j+offset; p=f'FPE03_CASE_{i:02d}_'
-        acc=bv(p,'ACCEPTED'); committed=bv(p,'COMMITTED'); vec=vector(p)
+        acc=bv(p,'ACCEPTED'); vec=vector(p)
         residual=abs(fv(p,'MASS_RESIDUAL'))
         row={'case':i,'sign':sign,'level':level,'vector':vec,'kernel_status':iv(p,'KERNEL_STATUS'),
              'accepted_substeps':iv(p,'ACCEPTED_SUBSTEPS'),'mass_residual':residual}
         if acc:
-            assert committed, row
             assert row['kernel_status']==0, row
             assert residual <= 1e-12, row
             assert row['accepted_substeps'] >= 1, row
             accepted.append(row)
             if vec != baseline: higher.append(row)
         else:
-            assert not committed, row
             assert row['accepted_substeps']==0, row
             rejected.append(row)
 
@@ -181,5 +182,5 @@ print('FPE03_FVQ25_EXECUTION_CLASS_ADMISSION=REFERENCE_ONLY')
 PY
 
 echo 'FPE03_FVQ25_HARD_MASS_GATE_FOR_ACCEPTED_CASES=PASS'
-echo 'FPE03_FVQ25_REJECTED_CASES_NO_COMMIT=PASS'
+echo 'FPE03_FVQ25_REJECTED_CASES_NO_COMMIT_ASSERTED_IN_PROBE=PASS'
 echo 'FPE03_FVQ25_REFERENCE_TAIL_RECHARACTERIZATION_GATE PASS'
