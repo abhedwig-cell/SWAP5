@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "phase": "RESUMED_CHARACTERIZATION_PARTIAL_EXIT",
+  "status": "CURRENT_LINEAGE_COST_CLIFF_CONFIRMED_ACCEPTED_DIFFICULT_FIXTURE_STILL_MISSING",
+  "reference_only": true,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "scientific_admission_expanded": false,
+  "fpe05_closeout_head": "54e10f990c36c6be9cdc54b4b2a430435585b04e",
+  "fpe03_resume": {
+    "workflow_run": 34244701300,
+    "workflow_job": 102123583605,
+    "artifact_id": 10063474964,
+    "artifact_digest": "sha256:917e1980aed36937ebfc2952eeb453875f6eddb9ae4722ebcaf8813bb2548c84",
+    "historical_harness_blob": "6623613a3526c119bf1fada5540eed93346592e1",
+    "o0_o2_output_identity": true,
+    "accepted_cases": 6,
+    "rejected_cases": 18,
+    "accepted_higher_cost_cases": 0,
+    "accepted_cost_vector": {
+      "accepted_substeps": 1,
+      "nonlinear_iterations": 3,
+      "internal_retries": 0,
+      "headcalc_calls": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "alternative_solver_calls": 0
+    },
+    "rejected_stress_cost_vector": {
+      "accepted_substeps": 0,
+      "nonlinear_iterations": 24,
+      "internal_retries": 3,
+      "headcalc_calls": 3,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "alternative_solver_calls": 0
+    },
+    "historical_key_metrics_identity": true
+  },
+  "nonstationary_snow_overlay": {
+    "candidate_head": "d1fb887368dd64e100f9d9b6c68d04bbff2491a0",
+    "workflow_run": 34245629574,
+    "workflow_job": 102126743263,
+    "artifact_id": 10063853770,
+    "artifact_digest": "sha256:d728bfa671e8f7e525c400a20014c53f3c52a98d8a8f484dca9556a1da76235b",
+    "o0_o2_output_identity": true,
+    "baseline": "FMR06_FVQ17_ACTIVE_SNOW_CASE_1",
+    "baseline_cost_identity_with_fpe05": true,
+    "diagnostic_perturbations": [
+      "tiny_vertical_head_gradient",
+      "top_flux_plus_0p01_percent",
+      "top_flux_minus_0p01_percent"
+    ],
+    "perturbed_accepted": 0,
+    "perturbed_rejected": 3,
+    "perturbed_accepted_higher_cost": 0,
+    "classification": "DIAGNOSTIC_COST_CLIFF_PERSISTS_NO_ACCEPTED_DIFFICULT_CASE"
+  },
+  "interpretation": {
+    "fpe03_b01_from_original_partial_exit": "RESOLVED_BY_FPE05_NONSTATIONARY_ADMISSION",
+    "current_limit": "NO_ACCEPTED_HIGHER_COST_REFERENCE_FIXTURE_OBSERVED",
+    "representative_tail_distribution_available": false,
+    "bounded_cost_threshold_justified": false,
+    "production_solver_defect_established": false,
+    "reason": "The admitted nonstationary baseline remains low cost, while the smallest diagnostic hydraulic perturbations fail closed. These perturbations are not scientifically admitted production fixtures, so they establish a deterministic cost cliff but not a representative production tail or defect."
+  },
+  "policy_state": {
+    "REFERENCE": "ADMITTED_EXISTING_ROUTE_CHARACTERIZATION_CONTINUES",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED",
+    "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION"
+  },
+  "next_useful_action": "Localize the deterministic fail-closed cliff on the REFERENCE route and determine whether the first divergence is Newton convergence, transaction retry, mass acceptance or temporal acceptance. Do not expand the stress matrix merely to collect more non-admitted failures."
+}
