@@ -6,34 +6,53 @@
   "safety_branch": "qualification/f-vq17-fmr06-snow-runtime-safety",
   "candidate_source_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
   "candidate_source_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
-  "phase": "CONTRACTED_PRE_QUALIFICATION",
-  "status": "PERSISTED_PRE_TEST",
-  "decision": "NOT_ASSESSED",
-  "IMPLEMENTED": false,
+  "phase": "QUALIFIED_SCIENTIFIC_ADMISSION_READY_FOR_FMQ24",
+  "status": "QUALIFIED",
+  "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+  "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": false,
-  "QUALIFIED": false,
+  "TESTED": true,
+  "QUALIFIED": true,
   "qualification_only": true,
   "production_source_changed_by_fvq17": false,
   "reference_source_changed_by_fvq17": false,
-  "scientific_admission": false,
+  "scientific_admission": true,
+  "scientific_admitted_scope": "EXACT_FMR06_SERIALIZED_REAL_PHYSICS_MULTISWAP_WITH_FVQ16_ONE_CALL_DAILY_SNOW_AND_RESTRICTED_EQUILIBRIUM_RICHARDS",
   "snow_multiswap_production_admission": false,
   "parallel_reference_backend_admitted": false,
   "subdaily_snow_admitted": false,
+  "multiday_snow_admitted": false,
+  "arbitrary_duration_snow_admitted": false,
   "general_richards_scope_expanded": false,
-  "fmq24_release": false,
-  "blockers": [
-    {
-      "id": "FVQ17-G01",
-      "classification": "QUALIFICATION_NOT_YET_EXECUTED",
-      "release_condition": "Independent source-bound O0/O2 qualification harness must pass on exact candidate ffab7d705928170db3e76a5d346caafeb560e605."
-    }
-  ],
+  "performance_policy_admitted": false,
+  "fmq24_release": true,
+  "decisive_qualification": {
+    "qualification_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "workflow_job": 102043008867,
+    "artifact_id": 10053642012,
+    "artifact_digest": "sha256:d565092033efcc2616da814bf8fd7decb2132f3f697f3e20531406eff4933270",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "conclusion": "success",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "evidence": {
+    "qualification": "integration/f-vq/F-VQ17_QUALIFICATION_EVIDENCE.json",
+    "invariant_audit": "integration/f-vq/F-VQ17_INVARIANT_AUDIT.json",
+    "fmq24_handoff": "integration/f-vq/F-VQ17_FMQ24_HANDOFF.json"
+  },
+  "blockers": [],
   "holds": [
-    "Production/reference source is immutable in F-VQ17.",
-    "F-MR06 TESTED status is supporting evidence only and does not imply F-VQ17 PASS.",
-    "Exact F-VQ16 one-call-daily SNOW scope is the maximum candidate SNOW scope.",
-    "F-MQ24 remains held until F-VQ17 PASS."
+    "F-VQ17 grants scientific admission only; final SNOW MultiSWAP production admission remains F-MQ24 owned.",
+    "Production/reference source remains immutable in F-VQ17.",
+    "Exact F-VQ16 one-call-daily SNOW scope is the maximum admitted SNOW scope.",
+    "Subdaily, multiday and arbitrary-duration SNOW remain not admitted.",
+    "Only the restricted equilibrium Richards profile exercised by F-MR06 is included.",
+    "Real physical execution remains serialized; no parallel real-physics admission is implied.",
+    "Balanced, throughput and fallback execution policies remain outside this qualification.",
+    "No 100k-column performance or asymptotic runtime qualification is implied."
   ],
-  "next_step": "Implement and persist the independent F-VQ17 source-bound qualification harness before executing qualification."
+  "next_step": "Resume F-MQ24 on its existing qualification branch, source-bound to exact candidate ffab7d705928170db3e76a5d346caafeb560e605, and independently reassess blocker FMQ24-B01 and final MultiSWAP admission."
 }
