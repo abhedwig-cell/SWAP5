@@ -1,0 +1,21 @@
+name: F-WOF24 WOFOST crop-owner composite state
+
+on:
+  push:
+    branches:
+      - work/f-wof24-crop-owner-composite-state
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF24 WOFOST crop-owner composite state gate
+        run: bash tests/fwof/run_fwof24_crop_owner_composite_state_gate.sh
