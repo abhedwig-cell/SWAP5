@@ -28,7 +28,7 @@ program test_fsi16_prescribed_bottom_head
   real(real64), target :: drainage(2,numnod), irrigation(numnod), zero_root(numnod), roots(numnod)
   real(real64) :: head_value, expected_qbot, qnan
   integer(int64) :: request_a_before, request_b_before
-  integer :: node, mode, failures, calls_before
+  integer :: mode, failures, calls_before
 
   failures = 0
   call seed_fixture()
