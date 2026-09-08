@@ -1,0 +1,30 @@
+name: F-VQ16 snow scientific admission
+
+on:
+  push:
+    branches: [qualification/f-vq16-snow-scientific-admission]
+    paths:
+      - src/process/mod_snow_process.f90
+      - tests/vq/fvq16/**
+      - integration/f-vq/F-VQ16_*.json
+      - .github/workflows/fvq16-snow-scientific-admission.yml
+  workflow_dispatch:
+
+jobs:
+  independent-snow-scientific-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run exact B1.10 independent qualification gate
+        run: bash tests/vq/fvq16/run_fvq16_gate.sh
+      - name: Upload immutable run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq16-snow-scientific-evidence
+          path: .fvq16-artifacts/
+          if-no-files-found: error
