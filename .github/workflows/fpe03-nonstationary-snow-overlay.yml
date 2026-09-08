@@ -1,0 +1,34 @@
+name: F-PE03 nonstationary SNOW stress overlay
+
+on:
+  push:
+    branches:
+      - work/f-pe03-reference-tail-characterization-fvq19
+    paths:
+      - 'integration/f-pe/F-PE03_FVQ19_*.json'
+      - 'integration/f-pe/F-PE05_*.json'
+      - 'tests/fpe/fpe03_make_nonstationary_snow_overlay.py'
+      - 'tests/fpe/run_fpe03_nonstationary_snow_overlay_gate.sh'
+      - '.github/workflows/fpe03-nonstationary-snow-overlay.yml'
+  workflow_dispatch:
+
+jobs:
+  fpe03-nonstationary-snow-overlay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run current-lineage nonstationary SNOW overlay
+        env:
+          FPE03_OVERLAY_EVIDENCE_DIR: ${{ github.workspace }}/fpe03-snow-overlay-evidence
+        run: bash tests/fpe/run_fpe03_nonstationary_snow_overlay_gate.sh
+      - name: Upload overlay characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-nonstationary-snow-overlay-evidence
+          path: fpe03-snow-overlay-evidence
+          if-no-files-found: error
