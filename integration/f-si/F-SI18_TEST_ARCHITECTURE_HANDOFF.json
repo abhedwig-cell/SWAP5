@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI18",
+  "handoff_to": ["F-TA03", "F-PE", "F-VQ"],
+  "production_source_changed": false,
+  "problem_reframed": "The earlier F-PE03 binary REFERENCE cost cliff was created by a zero-correction TRIDAG test stub. A test-only SWAP 4.3.1 Thomas/TRIDAG control removes the cliff and exposes accepted higher-cost nonlinear routes.",
+  "f_ta03_required_actions": [
+    "Make executable-gate fixture metadata distinguish physical realism from numerical-solver fidelity.",
+    "Record whether the linear solver is production/reference, qualified substitute, synthetic stub, or zero-step stub.",
+    "Fail closed for solver-cost or convergence-tail qualification when the linked linear solver cannot update the nonlinear state.",
+    "Keep isolation/unit tests that intentionally use zero-step stubs, but label their admissible claims as interface/state/control semantics only.",
+    "Add provenance for tolerance values and numerical-control ownership at gate level, consistent with the existing F-TA03 direction from F-TA02."
+  ],
+  "f_pe_required_actions": [
+    "Do not use the existing F-PE03 zero-step-TRIDAG perturbation cost vectors as reference-solver tail evidence.",
+    "Re-run any tail/cost characterization with a numerically functional reference linear solve while preserving physics, solver controls, temporal tolerances and mass gates.",
+    "Treat the F-SI18 reference-TRIDAG control as diagnostic evidence that an accepted higher-cost route exists, not yet as a production performance qualification."
+  ],
+  "f_vq_required_actions": [
+    "Independently assess scientific admissibility of the nonzero perturbation workload before it can support production cost-envelope, fallback or bounded-cost claims.",
+    "Keep diagnostic numerical reproducibility separate from scientific fixture admission."
+  ],
+  "do_not_do": [
+    "Do not patch HeadCalc convergence tolerances to make the stubbed harness pass.",
+    "Do not promote the test-only copied Thomas routine to production merely because it resolves this diagnostic case.",
+    "Do not reinterpret the old 24-Newton/96-backtracking vector as a difficult physical column distribution.",
+    "Do not weaken mass conservation or reference accuracy."
+  ],
+  "reference_control_observation": {
+    "plus_minus_3e12": "accepted at 3 Newton iterations and 4 backtracking attempts per solve",
+    "plus_minus_1e11": "accepted at 6 Newton iterations and 8 backtracking attempts per solve",
+    "internal_retries": 0,
+    "balance_flags_at_exit": 0,
+    "head_flags_at_exit": 0,
+    "o0_o2_identity": true
+  },
+  "recommended_next_work_unit": "F-TA03_NUMERICAL_FIXTURE_FIDELITY_AND_TOLERANCE_METADATA",
+  "status": "HANDOFF_READY"
+}
