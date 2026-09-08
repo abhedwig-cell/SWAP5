@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF21",
+  "title": "SWRD=2 Optional Transactional Root-History State",
+  "branch": "work/f-wof21-swrd2-root-history-state",
+  "status": "QUALIFIED_OPTIONAL_SWRD2_TRANSACTIONAL_ROOT_HISTORY_STATE",
+  "decision": "QUALIFY_SWRD2_RD_RDPOT_HISTORY_KEEP_SWRD1_COMPACT_BLOCK_STANDALONE_SWRD3_WRT_DUPLICATION",
+  "base": {
+    "commit": "c201e393834b260401edcd7ceb2a4864ec65684f",
+    "status": "QUALIFIED_COMMON_TRANSACTIONAL_CROP_LIFECYCLE_STATE_CARRIER"
+  },
+  "tested_candidate": "0b431ea9d8892af1d9f18ec10a7d44a04c83a5cd",
+  "github_actions": {
+    "run_id": 34279783355,
+    "conclusion": "success"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "production_admitted": true
+  },
+  "production_scope": {
+    "production_file": "src/crop/mod_swrd2_crop_lifecycle_state.f90",
+    "production_blob": "206a2b472119c459b884ee360bd19c7a2ac7077b",
+    "base_type_unchanged": true,
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "legacy_adapter_source_changed": false,
+    "root_growth_physics_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_mode_state": {
+    "SWRD_1": {
+      "state_type": "crop_lifecycle_state_t",
+      "extra_root_history": false
+    },
+    "SWRD_2": {
+      "state_type": "swrd2_crop_lifecycle_state_t",
+      "extra_fields": ["actual_root_depth", "potential_root_depth"],
+      "dynamic_subtype_preserved_by_FKT": true
+    },
+    "SWRD_3": {
+      "extra_root_depth_history": false,
+      "requires_WRT": true,
+      "WRT_owned_here": false,
+      "status": "BLOCKED_BROADER_CROP_BIOMASS_OWNER_REQUIRED"
+    }
+  },
+  "qualified_validation": {
+    "common_crop_state_validation_reused": true,
+    "actual_root_depth_finite_nonnegative": true,
+    "potential_root_depth_finite_nonnegative": true,
+    "actual_not_greater_than_potential": true,
+    "RDM_check_in_dynamic_state": false
+  },
+  "transaction_semantics": {
+    "clone_preserves_dynamic_subtype": true,
+    "committed_clone_preserves_rd_rdpot": true,
+    "checkpoint_preserves_rd_rdpot": true,
+    "discarded_trial_cannot_mutate_committed_history": true,
+    "same_checkpoint_replay_bitwise_deterministic": true,
+    "O0_O2_output_identical": true
+  },
+  "state_scaling": {
+    "SWRD1_columns_pay_for_SWRD2_history": false,
+    "SWRD2_extra_state": "two real64 values",
+    "SWRD3_columns_pay_for_SWRD2_history": false,
+    "standalone_WRT_duplicate_added": false
+  },
+  "remaining_blockers": [
+    "SWRD=2 root-growth evolution and its stress/assimilation/oxygen controls are not yet source-bound into the new architecture.",
+    "SWRD=3 needs an authoritative broader crop-biomass owner/view supplying WRT without duplication.",
+    "The common/optional crop state is not yet composed into the full production column physical state/runtime.",
+    "Authoritative crop-owner views feeding F-WOF17/F-WOF18 are not yet production-admitted."
+  ],
+  "recommended_next": "F-WOF22 crop-biomass ownership/readiness for WRT and WRTPOT across fixed-crop and WOFOST routes. Determine the smallest non-duplicating biomass state boundary before any SWRD=3 production composition. Keep crop evolution and calendar semantics separate unless explicitly qualified.",
+  "affected_invariants": [3,4,6,7,8,16,21,27,29,30]
+}
