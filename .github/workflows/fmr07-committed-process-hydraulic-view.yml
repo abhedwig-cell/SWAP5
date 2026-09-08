@@ -1,0 +1,27 @@
+name: F-MR07 committed process hydraulic view
+
+on:
+  push:
+    branches:
+      - work/f-mr07-committed-process-hydraulic-view
+    paths:
+      - 'integration/f-mr/F-MR07_*'
+      - 'src/solver/mod_process_hydraulic_view.f90'
+      - 'src/runtime/mod_fmr_process_hydraulic_view_binding.f90'
+      - 'tests/fmr/test_fmr07_committed_process_hydraulic_view.f90'
+      - 'tests/fmr/run_fmr07_gate.sh'
+      - 'tools/fmr/fmr07_committed_process_hydraulic_view_gate.py'
+      - '.github/workflows/fmr07-committed-process-hydraulic-view.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR07 source-bound qualification gate
+        run: bash tests/fmr/run_fmr07_gate.sh
