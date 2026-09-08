@@ -9,51 +9,166 @@
     "commit": "3d703041bac16ac20fb32085f5e4ccb70cee40eb",
     "decision": "QUALIFIED_STANDALONE_GENERIC_TIME_COLUMN_READY_FOR_FULLRICHARDS_AB"
   },
+  "decision": "QUALIFIED_INITIAL_FULLRICHARDS_AB_READY_FOR_FLUX_CLOSURE_ATTRIBUTION",
+  "qualification_scope": "hydraulic-only initial A/B against SWAP5 reference_richards_legacy_solver_t; no production or application-envelope admission",
   "scope": {
     "production_implementation": false,
     "layeredmfp_standalone_only": true,
-    "fullrichards_oracle": "SWAP5 reference_richards_legacy_solver_t",
+    "fullrichards_oracle": "SWAP5 reference_richards_legacy_solver_t with current HeadCalc and B1.10 provider",
     "bottom_mode": 7,
     "top_boundary": "explicit flux only",
-    "sources_sinks": "zero for hydraulic core cases",
+    "sources_sinks": "zero",
     "crop": false,
     "drainage_process": false,
     "ponding": false,
     "groundwater": false,
     "modflow": false
   },
-  "required_cases": [
-    "hydrostatic equilibrium",
-    "free drainage from uniform head",
-    "redistribution from nonuniform head",
-    "moderate infiltration homogeneous sand-like material",
-    "moderate infiltration clay-like material",
-    "heterogeneous contrast profile"
-  ],
-  "comparison_outputs": [
-    "water_content profile",
-    "pressure_head profile",
-    "top flux",
-    "bottom flux",
-    "storage change",
-    "mass residual",
-    "step refinement",
-    "solver cost diagnostics"
-  ],
-  "hard_rules": {
-    "independent_custom_richards_oracle_allowed_as_primary_reference": false,
-    "mass_conservation_required": true,
-    "no_post_update_clipping": true,
-    "no_production_src_change": true,
-    "no_application_envelope_claim_before_results": true
+  "ci_evidence": {
+    "initial_qualified_run_id": 34257257191,
+    "job_id": 102166075347,
+    "tested_head": "5f6b08af49d32a959066ec035b5b130679a8309a",
+    "conclusion": "success",
+    "artifact_id": 10068369275,
+    "artifact_zip_sha256": "20c2fc09583b2c1d25657a10af5b13246d96eab7a03e66c2c554040da465f4d8",
+    "gate_markers": [
+      "F-LMFP04_REAL_TRIDIAG_FIXTURE PASS",
+      "F-LMFP04_FULLRICHARDS_REFERENCE_PASS",
+      "F-LMFP04_AB_STRUCTURAL_GATE PASS"
+    ]
   },
-  "provenance_note": "The supplied SWAP 4.3.1 archive HeadCalc is not byte-identical to the current SWAP5 pinned reference HeadCalc, so the archive is not used as the authoritative F-LMFP04 Richards oracle.",
-  "status": "AB_HARNESS_IN_PREPARATION",
+  "oracle_fidelity": {
+    "custom_richards_primary_oracle": false,
+    "current_swap5_headcalc": true,
+    "current_reference_adapter": true,
+    "current_b110_constitutive_provider": true,
+    "fsi_zero_correction_tridag_used": false,
+    "real_thomas_tridiag_fixture": true,
+    "banded_fallback_allowed": false,
+    "swkmean": 1,
+    "swkmean_1_fixture_matches_supplied_swap431_arithmetic_mean": true,
+    "supplied_swap431_headcalc_byte_identical_to_current_swap5_headcalc": false
+  },
+  "structural_findings": {
+    "all_12_layeredmfp_trajectories_accepted": true,
+    "layeredmfp_retries": 0,
+    "fullrichards_mass_gate_pass": true,
+    "layeredmfp_mass_gate_pass": true,
+    "steady_uniform_cross_model_identity": true,
+    "fullrichards_banded_fallback_used": false,
+    "layeredmfp_post_update_clipping_used": false
+  },
+  "fine_step_cross_model": {
+    "steady_sand": {
+      "theta_max_abs": 8.881784197001252e-16,
+      "head_max_abs_cm": 1.000159954855917e-10,
+      "storage_abs_cm": 7.105427357601002e-15,
+      "bottom_flux_rel": 3.7702411677301485e-12
+    },
+    "infiltration_sand": {
+      "theta_max_abs": 4.6322834813816716e-07,
+      "head_max_abs_cm": 0.0016418484770213126,
+      "storage_abs_cm": 7.717018135622311e-10,
+      "bottom_flux_rel": 8.97114055548542e-06,
+      "direction_match": "4/4"
+    },
+    "infiltration_clay": {
+      "theta_max_abs": 1.5145329657073603e-07,
+      "head_max_abs_cm": 0.00044820551073598836,
+      "storage_abs_cm": 1.0878160594529618e-09,
+      "bottom_flux_rel": 4.704470431705333e-06,
+      "direction_match": "4/4"
+    },
+    "redistribution_sand": {
+      "theta_max_abs": 0.0008938895141326897,
+      "head_max_abs_cm": 1.2820877048657309,
+      "storage_abs_cm": 0.0010696532479865795,
+      "bottom_flux_rel": 0.012043122985778608,
+      "direction_match": "4/4"
+    },
+    "sand_over_clay": {
+      "theta_max_abs": 0.00012232176562040897,
+      "head_max_abs_cm": 0.26056414067940636,
+      "storage_abs_cm": 1.431170097987433e-07,
+      "bottom_flux_rel": 6.262577259034559e-05,
+      "direction_match": "4/4"
+    },
+    "clay_over_sand": {
+      "theta_max_abs": 0.0002849534822136901,
+      "head_max_abs_cm": 0.5300242016078158,
+      "storage_abs_cm": 1.652219441439229e-05,
+      "bottom_flux_rel": 0.0005093306403660923,
+      "direction_match": "4/4"
+    }
+  },
+  "refinement_attribution": {
+    "redistribution_sand_cross_over_fullrichards_self_theta": 109.32851378057305,
+    "redistribution_sand_cross_over_layeredmfp_self_theta": 94.38728802619816,
+    "sand_over_clay_cross_over_fullrichards_self_theta": 643.8693127663503,
+    "sand_over_clay_cross_over_layeredmfp_self_theta": 1028.1109769439265,
+    "clay_over_sand_cross_over_fullrichards_self_theta": 514.810489310986,
+    "clay_over_sand_cross_over_layeredmfp_self_theta": 508.85912254847483,
+    "interpretation": "The persistent redistribution and material-interface profile offsets are much larger than either solver's own dt-refinement signal; temporal error is not the primary explanation."
+  },
+  "leading_hypothesis": {
+    "status": "REQUIRES_DIRECT_ATTRIBUTION",
+    "statement": "LayeredMFP uses MFP-secant face conductivity while FullRichards SWKMEAN=1 uses unweighted arithmetic endpoint conductivity; nonlinear K(h) makes these spatial flux closures differ.",
+    "heterogeneous_caution": "A four-layer coarse FullRichards material interface is not automatically a grid-converged physical oracle; spatial refinement is required before forcing LayeredMFP to match it."
+  },
+  "cost_observations": {
+    "wall_clock_speedup_qualified": false,
+    "fullrichards_base_max_newton_iterations_per_step": {
+      "steady_sand": 1,
+      "infiltration_sand": 3,
+      "infiltration_clay": 2,
+      "redistribution_sand": 5,
+      "sand_over_clay": 3,
+      "clay_over_sand": 4
+    },
+    "layeredmfp_homogeneous_local_face_iterations": 0,
+    "layeredmfp_heterogeneous_max_local_face_iterations": 31,
+    "bounded_local_work_hypothesis_supported": true
+  },
+  "holds": {
+    "production_solver": "NOT_ADMITTED",
+    "application_envelope": "NOT_DEFINED",
+    "face_closure_discrepancy": "MUST_BE_ATTRIBUTED",
+    "grid_converged_heterogeneous_richards_reference": "NOT_YET_AVAILABLE",
+    "ponding": "NOT_TESTED",
+    "strong_wetting_fronts": "NOT_TESTED",
+    "root_uptake": "NOT_TESTED",
+    "drainage": "NOT_TESTED",
+    "bottom_head": "NOT_TESTED",
+    "groundwater": "NOT_TESTED",
+    "modflow": "NOT_TESTED",
+    "bottom_response_tangent": "NOT_TESTED",
+    "b12_heavy_clay": "NOT_TESTED",
+    "other_hydraulic_models": "NOT_TESTED",
+    "production_mfp_table_resolution": "NOT_SELECTED",
+    "wall_clock_performance": "NOT_MEASURED"
+  },
+  "next_work_unit": {
+    "id": "F-LMFP05",
+    "title": "Flux Closure Attribution & Refined Richards Reference",
+    "minimum_scope": [
+      "frozen-state face-flux comparison of arithmetic-K Darcy and MFP-secant Darcy closures",
+      "separate spatial closure error from temporal integration error",
+      "homogeneous redistribution spatial refinement",
+      "FullRichards refinement around sand-clay and clay-sand interfaces",
+      "compare LayeredMFP against refined Richards behaviour before modifying the candidate closure"
+    ]
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
+    "implementation_scope": "experimental A/B harness only",
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
-    "production_src_changed": false
+    "TESTED": true,
+    "test_scope": "GitHub Actions hydraulic-core A/B",
+    "QUALIFIED": true,
+    "qualification_scope_flag": "initial_hydraulic_ab_only_not_physical_solver_admission",
+    "production_implemented": false,
+    "production_src_changed": false,
+    "transaction_semantics_changed": false,
+    "numerical_policy_changed": false
   }
 }
