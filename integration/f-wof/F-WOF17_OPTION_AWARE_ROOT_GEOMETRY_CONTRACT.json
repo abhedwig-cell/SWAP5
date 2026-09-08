@@ -63,7 +63,7 @@
     "legacy_IO_dependency": false
   },
   "validation": [
-    "active maximum root depth must be finite and nonnegative",
+    "active maximum root depth must be finite and strictly positive",
     "SWRD=1 active DVS must be finite and RDTB x/y arrays must be finite, same-sized and strictly increasing in x",
     "SWRD=2 committed actual root depth must be finite, nonnegative and no greater than maximum root depth",
     "SWRD=3 active WRT must be finite and nonnegative and RLWTB x/y arrays must be finite, same-sized and strictly increasing in x",
