@@ -1,0 +1,30 @@
+name: F-LMFP04 FullRichards A-B
+
+on:
+  push:
+    branches:
+      - work/f-lmfp04-fullrichards-ab1
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/F-LMFP04_STATUS.json'
+      - '.github/workflows/lmfp04-ab.yml'
+  workflow_dispatch:
+
+jobs:
+  hydraulic-ab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: FullRichards versus LayeredMFP hydraulic A-B gate
+        run: bash experiments/lmfp/run_lmfp04_ab_gate.sh
+      - name: Upload A-B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp04-ab-evidence
+          path: lmfp04-artifacts/
+          if-no-files-found: warn
