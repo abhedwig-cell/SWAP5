@@ -1,11 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-MR",
   "work_unit": "F-MR14",
   "title": "F-PE02 Qualified Interval Cost Diagnostics into F-MR13 Runtime Lineage",
   "branch": "work/f-mr14-interval-cost-diagnostics-recomposition",
-  "status": "IMPLEMENTED_PERSISTED_PENDING_OWNER_QUALIFICATION",
-  "phase": "IMPLEMENTED_PERSISTED_NOT_YET_TESTED",
+  "status": "QUALIFIED_FPE02_INTERVAL_COST_DIAGNOSTICS_IN_FMR13_REAL_PHYSICS_LINEAGE",
+  "phase": "CLOSED_OWNER_QUALIFIED_OBSERVER_ONLY_DIAGNOSTICS_COMPOSITION",
   "base": {
     "work_unit": "F-MR13",
     "closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
@@ -18,18 +18,7 @@
     "qualification_scope": "OBSERVATIONAL_DIAGNOSTICS_PROPAGATION_ONLY",
     "kernel_pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
     "kernel_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
-    "historical_runtime_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
-    "fmr14_runtime_post_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
-    "required_fields": [
-      "accepted_substeps",
-      "solver_nonlinear_iterations",
-      "solver_internal_retries",
-      "solver_headcalc_calls",
-      "solver_jacobian_builds",
-      "solver_linear_solves",
-      "solver_backtracking_attempts",
-      "solver_alternative_solver_calls"
-    ]
+    "fmr14_runtime_post_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
   },
   "owner_materialization": {
     "commit": "4d4ecc58e1e16048d0bb6b58611a60d1b0d79105",
@@ -38,24 +27,39 @@
       "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
     ],
     "kernel_exact_fpe02_qualified_postimage": true,
-    "runtime_delta": "EXACT_QUALIFIED_OBSERVER_FIELDS_AND_ASSIGNMENTS_REPLAYED_ON_FMR13_POSTIMAGE",
-    "decision_logic_changed": false
+    "runtime_normalizes_exactly_to_fmr13_after_observer_delta_removal": true,
+    "observer_assignments_exactly_once": true,
+    "observer_counters_used_in_decisions": false
   },
-  "qualification_requirements": {
-    "source_delta_exactly_two_observer_paths": true,
-    "runtime_normalizes_exactly_to_fmr13_after_removing_observer_delta": true,
-    "fmr09_authoritative_mass_transaction_replay": true,
-    "fmr09_historical_output_hash_preserved": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
-    "fmr12_fmr10_runtime_regression": true,
-    "fmr12_historical_output_hash_preserved": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
-    "runtime_interval_cost_surface_populated": true,
-    "o0_o2_identity": true
+  "qualification": {
+    "candidate_commit": "3917aeadd7e9d214651a237bfe562fc85792da92",
+    "workflow_run": 34267067579,
+    "workflow_job": 102198978911,
+    "conclusion": "success",
+    "artifact_id": 10072259042,
+    "artifact_digest": "sha256:32f6e0c25de416a7c852e9eaa97e1c1412e82373d45b1c05b174afa27b9173e3",
+    "source_delta_exactly_two_observer_paths": "PASS",
+    "fmr09_authoritative_mass_transaction_replay": "PASS",
+    "fmr09_historical_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "fmr12_fmr10_runtime_regression": "PASS",
+    "fmr12_historical_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "diagnostics_surface_o0_o2_identity": "PASS",
+    "observed_interval_cost_vector": {
+      "accepted_substeps": 1,
+      "nonlinear_iterations": 3,
+      "internal_retries": 0,
+      "headcalc_calls": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "alternative_solver_calls": 0
+    }
   },
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "physics_changed": false,
   "numerical_controls_changed": false,
@@ -67,10 +71,11 @@
   "scientific_admission_expanded": false,
   "fpe02_b01": "NOT_RESOLVED_BY_FMR14_DIAGNOSTICS_ONLY",
   "execution_classes": {
-    "REFERENCE": "UNCHANGED",
+    "REFERENCE": "UNCHANGED_OWNER_QUALIFIED_DIAGNOSTICS_SURFACE",
     "BALANCED": "DEFINED_NOT_ADMITTED",
     "THROUGHPUT": "DEFINED_NOT_ADMITTED",
     "FALLBACK": "DEFINED_NOT_ADMITTED"
   },
-  "next_owner_action_if_qualified": "Obtain independent F-VQ scientific no-change admission of the exact F-MR14 observer-only postimage, then resume F-PE03 tail characterization using the propagated aggregate interval cost counters."
+  "claim_limit": "F-MR14 qualifies only the already F-PE02-qualified observer-only interval cost diagnostics in the F-MR13 real-physics runtime lineage. It does not change or admit physics, solver controls, temporal acceptance, mass tolerance, transaction decisions, performance thresholds, BALANCED, THROUGHPUT or FALLBACK.",
+  "next_owner_action": "Obtain independent F-VQ scientific no-change admission of this exact F-MR14 closeout postimage, then resume F-PE03 tail characterization using aggregate interval cost counters."
 }
