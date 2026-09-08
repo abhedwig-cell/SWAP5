@@ -1,11 +1,11 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-PE",
   "work_unit": "F-PE03-B04-RUNTIME-SCREEN-FVQ27",
   "title": "Scientifically admitted REFERENCE runtime tail screening on F-VQ27 lineage",
   "branch": "work/f-pe03-b04-admitted-runtime-screen-fvq27",
-  "status": "CLOSED_PARTIAL_NEGATIVE_OWNER_BLOCKED_ACCEPTED_NONTRIVIAL_RICHARDS_RUNTIME_REQUIRED",
-  "phase": "SCREENING_EXHAUSTED_WITHIN_CURRENT_ADMITTED_FIXTURE_CATALOG",
+  "status": "CLOSED_QUALIFIED_NEGATIVE_KNOWN_ADMITTED_RUNTIME_CATALOG_OWNER_BLOCKED_ACCEPTED_NONTRIVIAL_RICHARDS_RUNTIME_REQUIRED",
+  "phase": "SCREENING_EXHAUSTED_WITHIN_CURRENT_IDENTIFIED_ADMITTED_FIXTURE_CATALOG",
   "base": {
     "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
     "fvq27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
@@ -27,12 +27,15 @@
     "tranche1": {
       "branch": "work/f-pe03-b04-admitted-runtime-screen",
       "head": "040ffa0617f4ff1c9fe10e66d8d1c5871f01c4e5",
+      "workflow_run": 34278226419,
+      "workflow_job": 102236412117,
       "result": "NO_HIGHER_COST_CASE",
       "accepted_baseline_cases": [
         "F-VQ17/F-MR06 one-call-daily snow",
         "F-VQ21/F-MR09 precomputed root-sink control",
-        "F-VQ21/F-MR09 balanced root-sink plus SSDI"
-      ]
+        "F-VQ21/F-MR09 historical balanced-labelled root-sink plus SSDI scenario"
+      ],
+      "note": "The historical test label balanced is not admission of the F-PE BALANCED execution class."
     },
     "b12": {
       "branch": "work/f-pe03-b04-b12-accepted-tail-candidate",
@@ -61,6 +64,7 @@
       "result": "BASELINE"
     },
     "fvq27_mode5": {
+      "closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
       "down_cost_with_accepted_substeps": [1,3,0,3,3,3,3,0],
       "up_cost_with_accepted_substeps": [1,3,0,3,3,3,3,0],
       "result": "BOTH_ACCEPTED_SIGNS_EQUAL_BASELINE"
@@ -68,14 +72,41 @@
     "fvq14_current_lineage": {
       "branch": "work/f-pe03-b04-fvq14-runtime-screen-fvq27",
       "tested_head": "21ebe0eb015b7b01ca9e1b700f5dc76b024b5b08",
-      "workflow_run": 34281888503,
-      "workflow_job": 102248351858,
-      "artifact_id": 10077933446,
+      "screen_closeout": "0037c51afc72e5de1e66dcf4da581c3d1c880c9a",
+      "candidate_workflow_run": 34281888503,
+      "candidate_workflow_job": 102248351858,
+      "candidate_artifact_id": 10077933446,
+      "candidate_artifact_digest": "sha256:bbdbebce958141711f7faef235284557bb4e6cd732ece36767e5f3c3bde4ee70",
+      "closeout_self_verification_run": 34282046445,
+      "closeout_self_verification_job": 102248865525,
+      "closeout_artifact_id": 10077996276,
+      "closeout_artifact_digest": "sha256:8ac1e4232527b941930575709875ce95dbedba6634290a668ebf43334ab2c58b",
       "result": "PASS_ACCEPTED_BASELINE_COST",
       "cost_with_accepted_substeps": [1,3,0,3,3,3,3,0],
       "hard_mass": "EXACT_ZERO",
       "rollback_replay_commit": "PASS",
       "o0_o2_identity": "PASS"
+    },
+    "fvq15_current_lineage": {
+      "source_admission_branch": "qualification/f-vq15-fmr05-serialized-multiswap",
+      "source_fixture_blob": "00652f1dc23c05f465ed0f2f044e423baccadd47",
+      "current_lineage_screen_head": "1321081476a5642bfce56dde15c750066149073d",
+      "workflow_run": 34282313303,
+      "workflow_job": 102249740541,
+      "artifact_id": 10078096638,
+      "artifact_digest": "sha256:0b046072616c623c3f645c01360fdae3c00bc6b4596df13b9de078e3cdff507e",
+      "matrix_columns": [1,2,17,31],
+      "input_orders": ["canonical","reversed"],
+      "accepted_column_observations": 102,
+      "higher_cost_column_observations": 0,
+      "per_column_cost_vector": [3,0,3,3,3,3,0],
+      "accepted_substeps_per_column": 1,
+      "o0_o2_full_output_identity": "PASS",
+      "a_b_a_exact": "PASS",
+      "generic_time": "PASS",
+      "hard_mass_contract": "PRESERVED",
+      "aggregate_mass_identity": "BITWISE_PASS_IN_CURRENT_DETERMINISTIC_DISPATCH_ORDER",
+      "result": "NEGATIVE_ALL_ACCEPTED_COLUMNS_EQUAL_BASELINE"
     }
   },
   "screening_findings": {
@@ -87,17 +118,14 @@
       "interval": "1400.25 -> 1401.25",
       "temporal_tolerance": 0.0
     },
-    "fvq15_multicolumn_replay": {
-      "workflow_run": 34281903947,
-      "workflow_job": 102248399520,
-      "artifact_id": 10077934729,
-      "result": "NOT_ADMISSIBLE_AS_UNCHANGED_FVQ15_REPLAY_ON_FVQ27_LINEAGE",
-      "failure_point": "reversed 17-column run",
-      "failed_assertion": "aggregate authoritative unrounded terms exact",
-      "partial_accepted_cost_rows_before_failure": 23,
-      "partial_cost_rows": "ALL_BASELINE",
-      "use_for_b04_evidence": false,
-      "interpretation": "Historical F-VQ15 admission must not be silently inherited across the later runtime lineage. Any current-lineage multicolumn admission requires its owner and independent qualification path."
+    "fvq15_aggregation_order_reconciliation": {
+      "historical_first_replay_run": 34281903947,
+      "historical_first_replay_failure": "aggregate authoritative unrounded terms exact on reversed n=17",
+      "root_cause": "The historical F-VQ15 expected aggregate summed result-array/input order, while the current qualified runtime intentionally accumulates authoritative aggregate mass in deterministic dispatch order. Floating-point summation order therefore differed bitwise without any water loss.",
+      "resolution": "The temporary current-lineage replay oracle was rebound only to dispatch_ordinal summation order, exactly matching the current runtime. Complete/missing-mask/hard-residual checks and the bitwise aggregate authoritative-mass identity were retained.",
+      "mass_requirement_relaxed": false,
+      "production_source_changed": false,
+      "scientific_admission_expanded": false
     },
     "fmr10_root_uptake_derived_sink": {
       "use_for_b04_evidence": false,
@@ -114,7 +142,7 @@
     "resolved": false,
     "classification": "BLOCKED_OWNER_QUALIFIED_ACCEPTED_NONTRIVIAL_RICHARDS_RUNTIME_REQUIRED",
     "missing_evidence": "An independently scientifically admitted REFERENCE runtime workload with nontrivial Richards evolution that completes, passes the unchanged hard mass contract, is transactionally accepted and committed, and has at least one interval cost counter strictly above [3,0,3,3,3,3,0].",
-    "important_negative_boundary": "Higher-cost Richards trajectories are already demonstrated at solver level, but the currently admitted nonzero F-VQ24 trajectories are rejected by the production transaction path and therefore cannot support B04."
+    "important_negative_boundary": "Higher-cost Richards trajectories are already demonstrated at solver level, but the currently characterized nonzero F-VQ24 trajectories are rejected by the production transaction path and therefore cannot support B04."
   },
   "state": {
     "implemented": true,
@@ -129,7 +157,9 @@
   "retry_policy_changed": false,
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
+  "scientific_admission_expanded": false,
   "fpe03_b04_resolved": false,
-  "claim_limit": "This closeout qualifies only exhaustion of the currently identified independently admitted runtime screening paths on the F-VQ27 lineage. It does not prove that accepted higher-cost REFERENCE workloads are impossible. It explicitly forbids converting rejected expensive cases, owner-only regressions, historical admissions that fail current-lineage replay, synthetic difficult columns, or relaxed mass/acceptance criteria into B04 evidence.",
+  "fpe02_b01": "NOT_RESOLVED_AND_SEPARATE_FSI12_NUMERICAL_CONTROL_LINEAGE_BLOCKER",
+  "claim_limit": "This closeout qualifies only the negative screening result for the currently identified independently admitted runtime fixture catalog on the F-VQ27 production lineage. It does not prove that accepted higher-cost REFERENCE workloads are impossible. It explicitly forbids converting rejected expensive cases, owner-only regressions, synthetic difficult columns, batch-size multiplication, or relaxed mass/acceptance criteria into B04 evidence.",
   "next_owner_action": "Open an owner workunit for a scientifically qualified nontrivial Richards temporal-acceptance/runtime path. Prefer reuse of an already scientifically characterized nonzero workload such as F-VQ24, but require checkpoint/trial/retry/commit correctness, unchanged hard mass conservation, deterministic replay and independent F-VQ admission before returning to F-PE03 B04."
 }
