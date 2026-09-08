@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI19",
+  "decision": "PATH_B_EXPLICIT_REFERENCE_LINEAR_SOLVER_SEAM",
+  "decision_status": "SOURCE_BOUND_PRODUCTION_IMPLEMENTATION_AUTHORIZED",
+  "production_source_changed": false,
+  "basis": [
+    "Current HeadCalc treats TRIDAG as the normal primary Newton linear solve and enters the banded solver only when TRIDAG returns nonzero ierror.",
+    "Official SWAP 4.3.1 SWAP/tridag.f90 contains TRIDAG, bandec and banbks; the official Linux compile script explicitly compiles tridag.f90 and headcalc.f90.",
+    "The current SWAP5 src/legacy/b1_10_port postimage contains no production tridag.f90. Existing isolated linksets obtain TRIDAG/bandec/banbks from test fixtures.",
+    "The legacy TRIDAG arithmetic depends on MOD_arrays only to dimension local gamma scratch. No physical state or I/O dependency is required by the algorithm.",
+    "The current Reference workspace is worker-owned and already contains band fallback scratch, so the linear solve can be made explicit without per-column persistent scratch.",
+    "Current HeadCalc fallback calls pass legacy np=macp while fsi_ws%band_matrix is allocated (active_nodes,3). This inherited leading-dimension contract is not safe to assume for compact worker storage when active_nodes differs from macp."
+  ],
+  "rejected_paths": {
+    "A_exact_legacy_file_as_is": "REJECTED_AS_PRODUCTION_ARCHITECTURE because it retains MOD_arrays/macp scratch sizing and an implicit external-symbol dependency instead of the worker-owned Reference solver seam.",
+    "C_band_fallback_as_primary": "REJECTED_WITHOUT_SEPARATE_POLICY_QUALIFICATION because HeadCalc and legacy theory explicitly define it as rare-case fallback after TRIDAG failure."
+  },
+  "selected_minimal_design": {
+    "new_component": "src/solver/mod_reference_linear_solver.f90",
+    "primary_entry": "reference_tridag",
+    "fallback_entry": "reference_band_solve",
+    "headcalc_policy": "HeadCalc retains primary-then-fallback choice, warning semantics and alternative_solver_calls diagnostics.",
+    "workspace_change": "Add one worker-owned tridag_gamma(active_nodes) scratch vector; keep existing band_matrix, band_aux, band_rhs and band_pivots worker-owned.",
+    "primary_arithmetic": "Preserve legacy TRIDAG operation order, small=0.3d-37 threshold and ierror codes 1000 / 1000+i.",
+    "fallback_arithmetic": "Preserve legacy bandec/banbks algorithm and pivoting semantics while deriving actual workspace leading dimensions from array shapes rather than legacy macp.",
+    "dependency_rule": "No MOD_arrays/macp, filesystem, calendar, physical-state or global runtime dependency inside the new linear solver module."
+  },
+  "qualification_requirements": [
+    "Direct differential oracle: new reference_tridag versus archived SWAP 4.3.1 TRIDAG for successful matrices and both failure classes.",
+    "Direct differential oracle: new reference_band_solve versus archived bandec+banbks on deterministic tridiagonal matrices including active_nodes values different from legacy macp assumptions.",
+    "F-SI18 convergence-control regression must use the production candidate linear solver, not zero-step fixture routines.",
+    "Existing F-SI solver-isolation/workspace/state/boundary/provider regressions remain green.",
+    "O0/O2 deterministic replay.",
+    "No production/reference changes outside the smallest solver/workspace/HeadCalc seam.",
+    "Independent F-VQ admission is required before PE may treat higher-cost accepted routes as physical Reference tail evidence."
+  ],
+  "claim_boundary": "This owner decision authorizes a candidate implementation. It does not yet qualify the new linear-solver postimage or admit any F-PE performance fixture."
+}
