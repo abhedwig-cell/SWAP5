@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF23",
+  "title": "Compact Primary Actual-WOFOST Biomass State and Actual-WRT View Carrier",
+  "branch": "work/f-wof23-primary-biomass-state-boundary",
+  "status": "QUALIFIED_COMPACT_PRIMARY_ACTUAL_WOFOST_BIOMASS_STATE_AND_WRT_VIEW_CARRIER",
+  "decision": "QUALIFY_PRIMARY_BIOMASS_CARRIER_KEEP_EVOLUTION_AND_COMPOSITION_SEPARATE",
+  "base": {
+    "commit": "6a8a1bba3f817de9b7db16b0cbe8d87bb892041b",
+    "status": "QUALIFIED_WRT_BIOMASS_OWNER_READINESS_SWRD3_PRODUCTION_BLOCKED"
+  },
+  "tested_candidate": "6cbcea6e3dc634ed2f846efd4db9d610dd912f11",
+  "github_actions": {
+    "run_id": 34281760455,
+    "conclusion": "success"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "carrier_production_admitted": true,
+    "WOFOST_evolution_admitted": false,
+    "SWRD3_end_to_end_admitted": false
+  },
+  "production_scope": {
+    "production_file": "src/crop/mod_wofost_actual_biomass_state.f90",
+    "production_blob": "feab0672b38e1c9668ac418cbe9d800f032cf4d8",
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "process_source_changed": false,
+    "legacy_adapter_source_changed": false,
+    "root_geometry_source_changed": false,
+    "physics_evolution_changed": false,
+    "numerical_policy_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_primary_state": {
+    "scalar_fields": [
+      "root_biomass_WRT",
+      "stem_biomass_WST",
+      "storage_biomass_WSO",
+      "exponential_leaf_area_index_LAIEXP"
+    ],
+    "active_leaf_cohort_history": [
+      "leaf_biomass_LV",
+      "specific_leaf_area_SLA",
+      "leaf_age_LVAGE"
+    ],
+    "cohort_count": "derived from active equal-length array size",
+    "fixed_366_allocation": false
+  },
+  "qualified_reconstructible_views": {
+    "WLV": "ordered sum of active leaf biomass",
+    "LASUM": "ordered sum of leaf_biomass*specific_leaf_area",
+    "LAI": "LASUM + immutable SSA*WST + immutable SPA*WSO; parameter-dependent final view not implemented in this carrier",
+    "actual_WRT": "read-only root_biomass accessor"
+  },
+  "qualified_transaction_semantics": {
+    "deep_clone_allocatable_cohorts": true,
+    "FKT_committed_initialization": true,
+    "FKT_checkpoint_exact_state": true,
+    "trial_discard_preserves_committed_state": true,
+    "same_checkpoint_replay_bitwise_deterministic": true,
+    "O0_O2_output_identity": true,
+    "invalid_nonfinite_state_rejected_without_IEEE_trap": true
+  },
+  "optional_or_separate_state": {
+    "DWRT": "not core actual-biomass continuation; legacy output/restart accumulator",
+    "DWST_DWLV": "optional physical continuation only for routes such as grass management or relevant nutrient physics",
+    "DVS_TSUM_vernalization": "separate crop lifecycle/phenology state",
+    "WRTPOT_potential_biomass": "separate optional transactional shadow trajectory",
+    "rates": "trial workspace/results",
+    "calendar_management": "separate management state"
+  },
+  "time_semantics": {
+    "carrier_time_neutral": true,
+    "legacy_update_call_cohort_shift_exists": true,
+    "generic_subdaily_WOFOST_evolution_qualified": false
+  },
+  "SWRD3": {
+    "authoritative_actual_WRT_available_from_carrier": true,
+    "existing_F_WOF17_consumer_ready": true,
+    "composition_performed": false,
+    "production_admitted": false,
+    "remaining_reason": "The authoritative lifecycle state and primary biomass state are still separate transaction_state_t carriers. A single crop-owner transaction/composition boundary must be established before a production column can advance and expose them atomically."
+  },
+  "not_qualified": [
+    "biomass growth/death/allocation evolution",
+    "leaf cohort create/age/shift process",
+    "phenology integration",
+    "arbitrary subdaily crop-process cadence",
+    "potential WOFOST shadow state",
+    "grass/nutrient optional dead biomass",
+    "full crop-owner composite state",
+    "runtime/MultiSWAP crop-owner composition",
+    "end-to-end SWRD=3"
+  ],
+  "recommended_next": "F-WOF24 Crop Owner Composite Transaction State & Read-Only View Composition. Establish one crop-owned transaction_state_t that atomically contains lifecycle state plus the selected route-specific biomass/root-history state without duplicating F-KT authority. Compose actual WRT into the existing F-WOF17 SWRD=3 geometry consumer only after that atomic owner boundary is qualified.",
+  "affected_invariants": [3,4,5,6,7,8,9,16,21,25,27,29,30]
+}
