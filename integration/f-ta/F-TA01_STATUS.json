@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-TA",
+  "work_unit": "F-TA01",
+  "branch": "work/f-ta01-test-architecture",
+  "baseline_qualification_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+  "qualified_candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "qualified_candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "corrected_legacy_reference": "B1.10",
+  "scope": "TEST_ARCHITECTURE_AND_QUALIFICATION_TOOLING_ONLY",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_source_changed": false,
+  "reference_results_changed": false,
+  "qualification_claim": "NOT_QUALIFIED_ARCHITECTURE_REGISTER_ONLY",
+  "blockers": [
+    "FTA01-B01 process-level legacy source mapping is incomplete",
+    "FTA01-B02 precision-policy ownership is not machine-readable",
+    "FTA01-B03 some test artifacts lack standalone execution and explicit fixture/tolerance metadata",
+    "FTA01-B04 F-MQ harnesses/evidence are off the selected baseline lineage",
+    "FTA01-B05 impact selector completeness has not been qualified",
+    "FTA01-B06 differential observation surfaces are not uniform"
+  ],
+  "test_results": {
+    "registry_generation_deterministic": "PASS_SHA256_7d31d4160d08bf8c791e9e3a88d1116cee6356cd34c13127b72ffb6d5ab4d686",
+    "structural_validator": "PASS_110_RECORDS_92_TRACKED_TEST_AND_WORKFLOW_ARTIFACTS",
+    "documentation_source_check": "PASS",
+    "production_and_reference_diff_guard": "PASS",
+    "json_schema_runtime_validation": "NOT_RUN_DEPENDENCY_UNAVAILABLE",
+    "broad_or_qualification_replay": "NOT_RUN_NOT_JUSTIFIED_BY_TOOLING_ONLY_CHANGE"
+  },
+  "next_action": "F-TA02: qualify conservative impact selection on representative historical changes, refine process-level ownership, and add explicit fixture/tolerance metadata without modifying production interfaces.",
+  "recovery_point": "9810bdbd17e25895677a0e898cafe92f73e36f31",
+  "governance_backport_source_head": "a6b991b4702e061accd1b16f9450f99e18aba032"
+}

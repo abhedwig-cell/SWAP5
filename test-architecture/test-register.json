@@ -1,0 +1,4100 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA01",
+  "baseline_qualification_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+  "qualified_candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "qualified_candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "reference": "B1.10 corrected legacy reference",
+  "status_semantics": "Discovery does not inherit PASS or qualification from historical evidence.",
+  "categories": {
+    "UT": "unit",
+    "CT": "contract/component",
+    "IT": "integration",
+    "INV": "invariant",
+    "RR": "reference regression",
+    "QG": "qualification gate"
+  },
+  "cost_classes": [
+    "FAST",
+    "FOCUSED",
+    "BROAD",
+    "QUALIFICATION"
+  ],
+  "tests": [
+    {
+      "test_id": "QG-WF-DOCS",
+      "name": "docs",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/docs.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "DOCS"
+    },
+    {
+      "test_id": "QG-WF-FCI-CANONICAL",
+      "name": "fci-canonical",
+      "category": "QG",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fci-canonical.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FCI-CANONICAL"
+    },
+    {
+      "test_id": "QG-WF-FKT-KERNEL",
+      "name": "fkt-kernel",
+      "category": "QG",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fkt-kernel.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FKT-KERNEL"
+    },
+    {
+      "test_id": "QG-WF-FMR01-QUALIFICATION",
+      "name": "fmr01-qualification",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fmr01-qualification.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FMR01-QUALIFICATION"
+    },
+    {
+      "test_id": "QG-WF-FMR02-SHARED-POSTIMAGE",
+      "name": "fmr02-shared-postimage",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fmr02-shared-postimage.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FMR02-SHARED-POSTIMAGE"
+    },
+    {
+      "test_id": "QG-WF-FMR03-READINESS",
+      "name": "fmr03-readiness",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fmr03-readiness.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FMR03-READINESS"
+    },
+    {
+      "test_id": "QG-WF-FMR04-SERIALIZED-PHYSICAL",
+      "name": "fmr04-serialized-physical",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fmr04-serialized-physical.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FMR04-SERIALIZED-PHYSICAL"
+    },
+    {
+      "test_id": "QG-WF-FMR05-SERIALIZED-MULTISWAP",
+      "name": "fmr05-serialized-multiswap",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fmr05-serialized-multiswap.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FMR05-SERIALIZED-MULTISWAP"
+    },
+    {
+      "test_id": "QG-WF-FVQ15-FMR05-SERIALIZED-MULTICOLUMN",
+      "name": "fvq15-fmr05-serialized-multicolumn",
+      "category": "QG",
+      "component": "independent-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "exact source-bound independent scientific admission",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-16",
+        "INV-25",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "candidate checkout at pinned commit",
+        "integration/f-vq/**"
+      ],
+      "dependencies": [
+        "exact candidate checkout",
+        "qualified immutable reference package",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "QUALIFIED_GOLDEN_CASE",
+      "tolerance_policy": "bitwise state/mass identity plus hard mass residual <= 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/fvq15-fmr05-serialized-multicolumn.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "FVQ15-FMR05-SERIALIZED-MULTICOLUMN"
+    },
+    {
+      "test_id": "QG-WF-PERFORMANCE-ISOLATED-READINESS",
+      "name": "performance-isolated-readiness",
+      "category": "QG",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/performance-isolated-readiness.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "PERFORMANCE-ISOLATED-READINESS"
+    },
+    {
+      "test_id": "QG-WF-PERFORMANCE-TOOLS",
+      "name": "performance-tools",
+      "category": "QG",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/performance-tools.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "PERFORMANCE-TOOLS"
+    },
+    {
+      "test_id": "QG-WF-VQ-REFERENCE",
+      "name": "vq-reference",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": ".github/workflows/vq-reference.yml",
+      "artifact_role": "workflow",
+      "traceable_alias": "VQ-REFERENCE"
+    },
+    {
+      "test_id": "RR-REFERENCE-SWAP-4.3.1-B0-VERIFY-SOURCE-ARCHIVE",
+      "name": "verify source archive",
+      "category": "RR",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 reference/swap-4.3.1/b0/verify_source_archive.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/b0/verify_source_archive.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "VERIFY-SOURCE-ARCHIVE"
+    },
+    {
+      "test_id": "RR-SWAP-002-TILLAGE-START-GATE",
+      "name": "run tillage start gate",
+      "category": "RR",
+      "component": "corrected-reference-patches",
+      "workstream_owner": "VQ/reference",
+      "scientific_process_or_contract": "individual corrected legacy findings and admissions",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "reference/swap-4.3.1/patches/**"
+      ],
+      "dependencies": [
+        "exact B0/B1 preimage",
+        "patch-specific compiler and fixture"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "patch-owned; UNKNOWN where no executable gate declares it",
+      "execution_command": "python3 reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/patches/SWAP-002/tests/run_tillage_start_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "TILLAGE-START"
+    },
+    {
+      "test_id": "RR-SWAP-004-MAPPING-GATE",
+      "name": "run mapping gate",
+      "category": "RR",
+      "component": "corrected-reference-patches",
+      "workstream_owner": "VQ/reference",
+      "scientific_process_or_contract": "individual corrected legacy findings and admissions",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "reference/swap-4.3.1/patches/**"
+      ],
+      "dependencies": [
+        "exact B0/B1 preimage",
+        "patch-specific compiler and fixture"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "patch-owned; UNKNOWN where no executable gate declares it",
+      "execution_command": "python3 reference/swap-4.3.1/patches/SWAP-004/tests/run_mapping_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/patches/SWAP-004/tests/run_mapping_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "MAPPING"
+    },
+    {
+      "test_id": "RR-SWAP-009-HYDRAULIC-GATE",
+      "name": "run hydraulic gate",
+      "category": "RR",
+      "component": "corrected-reference-patches",
+      "workstream_owner": "VQ/reference",
+      "scientific_process_or_contract": "individual corrected legacy findings and admissions",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "reference/swap-4.3.1/patches/**"
+      ],
+      "dependencies": [
+        "exact B0/B1 preimage",
+        "patch-specific compiler and fixture"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "patch-owned; UNKNOWN where no executable gate declares it",
+      "execution_command": "python3 reference/swap-4.3.1/patches/SWAP-009/tests/run_hydraulic_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/patches/SWAP-009/tests/run_hydraulic_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "HYDRAULIC"
+    },
+    {
+      "test_id": "RR-SWAP-012-INVERSE-EVIDENCE-GATE",
+      "name": "run inverse evidence gate",
+      "category": "RR",
+      "component": "corrected-reference-patches",
+      "workstream_owner": "VQ/reference",
+      "scientific_process_or_contract": "individual corrected legacy findings and admissions",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "reference/swap-4.3.1/patches/**"
+      ],
+      "dependencies": [
+        "exact B0/B1 preimage",
+        "patch-specific compiler and fixture"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "patch-owned; UNKNOWN where no executable gate declares it",
+      "execution_command": "python3 reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/patches/SWAP-012/tests/run_inverse_evidence_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "INVERSE-EVIDENCE"
+    },
+    {
+      "test_id": "RR-SWAP-013-GUARD-GATE",
+      "name": "run guard gate",
+      "category": "RR",
+      "component": "corrected-reference-patches",
+      "workstream_owner": "VQ/reference",
+      "scientific_process_or_contract": "individual corrected legacy findings and admissions",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "reference/swap-4.3.1/patches/**"
+      ],
+      "dependencies": [
+        "exact B0/B1 preimage",
+        "patch-specific compiler and fixture"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "patch-owned; UNKNOWN where no executable gate declares it",
+      "execution_command": "python3 reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "reference/swap-4.3.1/patches/SWAP-013/tests/run_guard_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "GUARD"
+    },
+    {
+      "test_id": "CT-FCI-FCI06-LEGACY-STATE-STUBS",
+      "name": "fci06 legacy state stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci06_legacy_state_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI06-LEGACY-STATE-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI07-LEGACY-CAPSULE-STUBS",
+      "name": "fci07 legacy capsule stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci07_legacy_capsule_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI07-LEGACY-CAPSULE-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI08-PROCESS-STATE-STUBS",
+      "name": "fci08 process state stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci08_process_state_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI08-PROCESS-STATE-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI10-MASS-STATE-STUBS",
+      "name": "fci10 mass state stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci10_mass_state_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI10-MASS-STATE-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI12-REFERENCE-MODEL-STUBS",
+      "name": "fci12 reference model stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci12_reference_model_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI12-REFERENCE-MODEL-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI13-RECOVERABLE-STATUS-STUBS",
+      "name": "fci13 recoverable status stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci13_recoverable_status_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI13-RECOVERABLE-STATUS-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI14-REFERENCE-POLICY-STUBS",
+      "name": "fci14 reference policy stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/fci14_reference_policy_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FCI14-REFERENCE-POLICY-STUBS"
+    },
+    {
+      "test_id": "IT-FCI-FCI03-GATE",
+      "name": "run fci03 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci03_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci03_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI03"
+    },
+    {
+      "test_id": "IT-FCI-FCI04-GATE",
+      "name": "run fci04 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci04_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci04_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI04"
+    },
+    {
+      "test_id": "IT-FCI-FCI06-GATE",
+      "name": "run fci06 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci06_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci06_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI06"
+    },
+    {
+      "test_id": "IT-FCI-FCI07-FULL-B1-10-GATE",
+      "name": "run fci07 full b1 10 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci07_full_b1_10_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci07_full_b1_10_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI07-FULL-B1-10"
+    },
+    {
+      "test_id": "IT-FCI-FCI07-GATE",
+      "name": "run fci07 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci07_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci07_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI07"
+    },
+    {
+      "test_id": "IT-FCI-FCI08-GATE",
+      "name": "run fci08 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci08_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci08_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI08"
+    },
+    {
+      "test_id": "IT-FCI-FCI09-GATE",
+      "name": "run fci09 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci09_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci09_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI09"
+    },
+    {
+      "test_id": "IT-FCI-FCI10-GATE",
+      "name": "run fci10 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci10_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci10_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI10"
+    },
+    {
+      "test_id": "IT-FCI-FCI11-GATE",
+      "name": "run fci11 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci11_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci11_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI11"
+    },
+    {
+      "test_id": "IT-FCI-FCI12-GATE",
+      "name": "run fci12 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci12_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci12_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI12"
+    },
+    {
+      "test_id": "IT-FCI-FCI13-GATE",
+      "name": "run fci13 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci13_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci13_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI13"
+    },
+    {
+      "test_id": "IT-FCI-FCI14-GATE",
+      "name": "run fci14 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci14_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci14_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI14"
+    },
+    {
+      "test_id": "IT-FCI-FCI15-GATE",
+      "name": "run fci15 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci15_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci15_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI15"
+    },
+    {
+      "test_id": "IT-FCI-FCI16-GATE",
+      "name": "run fci16 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci16_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci16_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI16"
+    },
+    {
+      "test_id": "IT-FCI-FCI17-GATE",
+      "name": "run fci17 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci17_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci17_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI17"
+    },
+    {
+      "test_id": "IT-FCI-FCI18-GATE",
+      "name": "run fci18 gate",
+      "category": "IT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "bash tests/fci/run_fci18_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/run_fci18_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FCI18"
+    },
+    {
+      "test_id": "CT-FCI-B1-10-WATER-CHECKPOINT",
+      "name": "test b1 10 water checkpoint",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_b1_10_water_checkpoint.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "B1-10-WATER-CHECKPOINT"
+    },
+    {
+      "test_id": "CT-FCI-B1-10-WATER-CHECKPOINT-LEGACY-STUBS",
+      "name": "test b1 10 water checkpoint legacy stubs",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_b1_10_water_checkpoint_legacy_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "B1-10-WATER-CHECKPOINT-LEGACY-STUBS"
+    },
+    {
+      "test_id": "CT-FCI-FCI04-INTERVAL-RUNTIME",
+      "name": "test fci04 interval runtime",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci04_interval_runtime.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI04-INTERVAL-RUNTIME"
+    },
+    {
+      "test_id": "CT-FCI-FCI06-WATER-CHECKPOINT",
+      "name": "test fci06 water checkpoint",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci06_water_checkpoint.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI06-WATER-CHECKPOINT"
+    },
+    {
+      "test_id": "CT-FCI-FCI07-B1-10-PHYSICAL-RERUN",
+      "name": "test fci07 b1 10 physical rerun",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci07_b1_10_physical_rerun.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI07-B1-10-PHYSICAL-RERUN"
+    },
+    {
+      "test_id": "CT-FCI-FCI07-LEGACY-TRIAL-CAPSULE",
+      "name": "test fci07 legacy trial capsule",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci07_legacy_trial_capsule.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI07-LEGACY-TRIAL-CAPSULE"
+    },
+    {
+      "test_id": "CT-FCI-FCI08-LEGACY-TRIAL-CAPSULE",
+      "name": "test fci08 legacy trial capsule",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci08_legacy_trial_capsule.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI08-LEGACY-TRIAL-CAPSULE"
+    },
+    {
+      "test_id": "CT-FCI-FCI08-PROCESS-CHECKPOINT",
+      "name": "test fci08 process checkpoint",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci08_process_checkpoint.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI08-PROCESS-CHECKPOINT"
+    },
+    {
+      "test_id": "CT-FCI-FCI09-TRANSACTION-BINDING",
+      "name": "test fci09 transaction binding",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci09_transaction_binding.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI09-TRANSACTION-BINDING"
+    },
+    {
+      "test_id": "CT-FCI-FCI10-MASS-SEAM",
+      "name": "test fci10 mass seam",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci10_mass_seam.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI10-MASS-SEAM"
+    },
+    {
+      "test_id": "CT-FCI-FCI11-INTERVAL-SEAM",
+      "name": "test fci11 interval seam",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci11_interval_seam.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI11-INTERVAL-SEAM"
+    },
+    {
+      "test_id": "CT-FCI-FCI12-REFERENCE-MODEL",
+      "name": "test fci12 reference model",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci12_reference_model.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI12-REFERENCE-MODEL"
+    },
+    {
+      "test_id": "CT-FCI-FCI13-RECOVERABLE-STATUS",
+      "name": "test fci13 recoverable status",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci13_recoverable_status.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI13-RECOVERABLE-STATUS"
+    },
+    {
+      "test_id": "CT-FCI-FCI14-REFERENCE-TEMPORAL-POLICY",
+      "name": "test fci14 reference temporal policy",
+      "category": "CT",
+      "component": "canonical-integration",
+      "workstream_owner": "F-CI",
+      "scientific_process_or_contract": "canonical source, transaction, interval, mass and exit-gate contracts",
+      "requirement_or_invariant": [
+        "INV-01",
+        "INV-02",
+        "INV-03",
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-23",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/adapter/**",
+        "src/runtime/**",
+        "src/transaction/**",
+        "integration/f-ci/**"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran",
+        "Python 3"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "test-owned; UNKNOWN where the runner does not expose it",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fci/test_fci14_reference_temporal_policy.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FCI14-REFERENCE-TEMPORAL-POLICY"
+    },
+    {
+      "test_id": "IT-FKT-FKT01-GATE",
+      "name": "run fkt01 gate",
+      "category": "IT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "bash tests/fkt/run_fkt01_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/run_fkt01_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FKT01"
+    },
+    {
+      "test_id": "IT-FKT-FKT02-GATE",
+      "name": "run fkt02 gate",
+      "category": "IT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "bash tests/fkt/run_fkt02_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/run_fkt02_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FKT02"
+    },
+    {
+      "test_id": "IT-FKT-FKT03-GATE",
+      "name": "run fkt03 gate",
+      "category": "IT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "bash tests/fkt/run_fkt03_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/run_fkt03_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FKT03"
+    },
+    {
+      "test_id": "IT-FKT-FKT04-GATE",
+      "name": "run fkt04 gate",
+      "category": "IT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "bash tests/fkt/run_fkt04_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/run_fkt04_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FKT04"
+    },
+    {
+      "test_id": "IT-FKT-FKT05-GATE",
+      "name": "run fkt05 gate",
+      "category": "IT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "bash tests/fkt/run_fkt05_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/run_fkt05_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FKT05"
+    },
+    {
+      "test_id": "CT-FKT-FKT01-KERNEL-TRANSACTIONS",
+      "name": "test fkt01 kernel transactions",
+      "category": "CT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/test_fkt01_kernel_transactions.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FKT01-KERNEL-TRANSACTIONS"
+    },
+    {
+      "test_id": "CT-FKT-FKT02-CANDIDATE-LINEAGE",
+      "name": "test fkt02 candidate lineage",
+      "category": "CT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/test_fkt02_candidate_lineage.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FKT02-CANDIDATE-LINEAGE"
+    },
+    {
+      "test_id": "CT-FKT-FKT03-OPAQUE-TRANSACTION-CARRIERS",
+      "name": "test fkt03 opaque transaction carriers",
+      "category": "CT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/test_fkt03_opaque_transaction_carriers.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FKT03-OPAQUE-TRANSACTION-CARRIERS"
+    },
+    {
+      "test_id": "CT-FKT-FKT04-TEMPORAL-PROVENANCE",
+      "name": "test fkt04 temporal provenance",
+      "category": "CT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/test_fkt04_temporal_provenance.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FKT04-TEMPORAL-PROVENANCE"
+    },
+    {
+      "test_id": "CT-FKT-FKT05-REUSABLE-CHECKPOINT",
+      "name": "test fkt05 reusable checkpoint",
+      "category": "CT",
+      "component": "kernel-transactions",
+      "workstream_owner": "F-KT",
+      "scientific_process_or_contract": "checkpoint, trial, retry, commit, rollback and temporal provenance",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-07",
+        "INV-08",
+        "INV-09",
+        "INV-13",
+        "INV-29",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/kernel/**",
+        "src/transaction/**",
+        "src/runtime/mod_canonical_*"
+      ],
+      "dependencies": [
+        "gfortran",
+        "canonical contracts"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions; mass tolerance remains runner-owned",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fkt/test_fkt05_reusable_checkpoint.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FKT05-REUSABLE-CHECKPOINT"
+    },
+    {
+      "test_id": "CT-FMR-MOD-FMR04-FIXED-TOP-PROVIDER",
+      "name": "mod fmr04 fixed top provider",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/mod_fmr04_fixed_top_provider.f90",
+      "artifact_role": "support",
+      "traceable_alias": "MOD-FMR04-FIXED-TOP-PROVIDER"
+    },
+    {
+      "test_id": "IT-FMR-FMR01-GATE",
+      "name": "run fmr01 gate",
+      "category": "IT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "bash tests/fmr/run_fmr01_gate.sh",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/run_fmr01_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FMR01"
+    },
+    {
+      "test_id": "IT-FMR-FMR02-GATE",
+      "name": "run fmr02 gate",
+      "category": "IT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "bash tests/fmr/run_fmr02_gate.sh",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/run_fmr02_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FMR02"
+    },
+    {
+      "test_id": "IT-FMR-FMR03-READINESS-GATE",
+      "name": "run fmr03 readiness gate",
+      "category": "IT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "bash tests/fmr/run_fmr03_readiness_gate.sh",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/run_fmr03_readiness_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FMR03-READINESS"
+    },
+    {
+      "test_id": "IT-FMR-FMR04-GATE",
+      "name": "run fmr04 gate",
+      "category": "IT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "bash tests/fmr/run_fmr04_gate.sh",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/run_fmr04_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FMR04"
+    },
+    {
+      "test_id": "IT-FMR-FMR05-GATE",
+      "name": "run fmr05 gate",
+      "category": "IT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "bash tests/fmr/run_fmr05_gate.sh",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/run_fmr05_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FMR05"
+    },
+    {
+      "test_id": "CT-FMR-FMR01-CHECKPOINT-INTEGRATION",
+      "name": "test fmr01 checkpoint integration",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr01_checkpoint_integration.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR01-CHECKPOINT-INTEGRATION"
+    },
+    {
+      "test_id": "CT-FMR-FMR01-RUNTIME",
+      "name": "test fmr01 runtime",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr01_runtime.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR01-RUNTIME"
+    },
+    {
+      "test_id": "CT-FMR-FMR04-SERIALIZED-PHYSICAL",
+      "name": "test fmr04 serialized physical",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr04_serialized_physical.F90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR04-SERIALIZED-PHYSICAL"
+    },
+    {
+      "test_id": "CT-FMR-FMR05-SERIALIZED-MULTISWAP",
+      "name": "test fmr05 serialized multiswap",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr05_serialized_multiswap.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR05-SERIALIZED-MULTISWAP"
+    },
+    {
+      "test_id": "CT-FMR-FMR05-SINGLE-FMR04-IDENTITY",
+      "name": "test fmr05 single fmr04 identity",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr05_single_fmr04_identity.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR05-SINGLE-FMR04-IDENTITY"
+    },
+    {
+      "test_id": "CT-FMR-FMR05-STRICT-ACCEPTANCE",
+      "name": "test fmr05 strict acceptance",
+      "category": "CT",
+      "component": "multiswap-runtime",
+      "workstream_owner": "F-MR",
+      "scientific_process_or_contract": "runtime composition, isolation and serialized physical dispatch",
+      "requirement_or_invariant": [
+        "INV-04",
+        "INV-05",
+        "INV-06",
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-16",
+        "INV-23",
+        "INV-24",
+        "INV-26",
+        "INV-27",
+        "INV-28",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/**",
+        "src/kernel/**",
+        "src/adapter/**",
+        "integration/f-mr/**"
+      ],
+      "dependencies": [
+        "F-KT",
+        "F-SI",
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "runner-owned; F-MR04/F-MR05 authoritative mass gate 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "BROAD",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fmr/test_fmr05_strict_acceptance.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FMR05-STRICT-ACCEPTANCE"
+    },
+    {
+      "test_id": "CT-FSI-FSI03-LEGACY-BINDING-STUBS",
+      "name": "fsi03 legacy binding stubs",
+      "category": "CT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/fsi03_legacy_binding_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FSI03-LEGACY-BINDING-STUBS"
+    },
+    {
+      "test_id": "CT-FSI-FSI04-REAL-HEADCALC-STUBS",
+      "name": "fsi04 real headcalc stubs",
+      "category": "CT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+      "artifact_role": "support",
+      "traceable_alias": "FSI04-REAL-HEADCALC-STUBS"
+    },
+    {
+      "test_id": "IT-FSI-FSI05-GATE",
+      "name": "run fsi05 gate",
+      "category": "IT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "bash tests/fsi/run_fsi05_gate.sh",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/run_fsi05_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FSI05"
+    },
+    {
+      "test_id": "CT-FSI-FSI02-SOLVER-CONTRACT",
+      "name": "test fsi02 solver contract",
+      "category": "CT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/test_fsi02_solver_contract.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FSI02-SOLVER-CONTRACT"
+    },
+    {
+      "test_id": "CT-FSI-FSI03-REFERENCE-BINDING",
+      "name": "test fsi03 reference binding",
+      "category": "CT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/test_fsi03_reference_binding.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FSI03-REFERENCE-BINDING"
+    },
+    {
+      "test_id": "CT-FSI-FSI05-PRODUCTION-HEADCALC",
+      "name": "test fsi05 production headcalc",
+      "category": "CT",
+      "component": "solver-isolation",
+      "workstream_owner": "F-SI",
+      "scientific_process_or_contract": "solver interface, binding and workspace isolation",
+      "requirement_or_invariant": [
+        "INV-03",
+        "INV-05",
+        "INV-20",
+        "INV-21",
+        "INV-22",
+        "INV-23",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/solver/**",
+        "src/legacy/b1_10_port/**",
+        "src/adapter/mod_reference_richards_*"
+      ],
+      "dependencies": [
+        "corrected B1.10 reference",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "UNKNOWN unless stated by the owning F-SI evidence",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fsi/test_fsi05_production_headcalc.F90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FSI05-PRODUCTION-HEADCALC"
+    },
+    {
+      "test_id": "QG-FVQ-FVQ15-GATE",
+      "name": "run fvq15 gate",
+      "category": "QG",
+      "component": "independent-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "exact source-bound independent scientific admission",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-16",
+        "INV-25",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "candidate checkout at pinned commit",
+        "integration/f-vq/**"
+      ],
+      "dependencies": [
+        "exact candidate checkout",
+        "qualified immutable reference package",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "QUALIFIED_GOLDEN_CASE",
+      "tolerance_policy": "bitwise state/mass identity plus hard mass residual <= 1e-12",
+      "execution_command": "bash tests/fvq/run_fvq15_gate.sh",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fvq/run_fvq15_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "FVQ15"
+    },
+    {
+      "test_id": "QG-FVQ-FVQ15-MULTICOLUMN-REFERENCE",
+      "name": "test fvq15 multicolumn reference",
+      "category": "QG",
+      "component": "independent-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "exact source-bound independent scientific admission",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-09",
+        "INV-13",
+        "INV-16",
+        "INV-25",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "candidate checkout at pinned commit",
+        "integration/f-vq/**"
+      ],
+      "dependencies": [
+        "exact candidate checkout",
+        "qualified immutable reference package",
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "QUALIFIED_GOLDEN_CASE",
+      "tolerance_policy": "bitwise state/mass identity plus hard mass residual <= 1e-12",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "QUALIFICATION",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/fvq/test_fvq15_multicolumn_reference.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "FVQ15-MULTICOLUMN-REFERENCE"
+    },
+    {
+      "test_id": "CT-RUNTIME-A23BU-WORKER-CONTEXT",
+      "name": "test a23bu worker context",
+      "category": "CT",
+      "component": "worker-runtime",
+      "workstream_owner": "A23BU",
+      "scientific_process_or_contract": "worker-owned execution context",
+      "requirement_or_invariant": [
+        "INV-05",
+        "INV-06",
+        "INV-16",
+        "INV-26",
+        "INV-27",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/runtime/mod_a23bu_worker_execution_context.f90"
+      ],
+      "dependencies": [
+        "gfortran"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/runtime/test_a23bu_worker_context.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "A23BU-WORKER-CONTEXT"
+    },
+    {
+      "test_id": "UT-TEST-MP-B0-SHADOW",
+      "name": "test mp b0 shadow",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_b0_shadow",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_b0_shadow.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-B0-SHADOW"
+    },
+    {
+      "test_id": "UT-TEST-MP-CPU-BASELINE",
+      "name": "test mp cpu baseline",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_cpu_baseline",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_cpu_baseline.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-CPU-BASELINE"
+    },
+    {
+      "test_id": "UT-TEST-MP-CPU-PAIRS",
+      "name": "test mp cpu pairs",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_cpu_pairs",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_cpu_pairs.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-CPU-PAIRS"
+    },
+    {
+      "test_id": "UT-TEST-MP-CPU-RUNNER",
+      "name": "test mp cpu runner",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_cpu_runner",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_cpu_runner.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-CPU-RUNNER"
+    },
+    {
+      "test_id": "UT-TEST-MP-HOST-ADMISSION",
+      "name": "test mp host admission",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_host_admission",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_host_admission.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-HOST-ADMISSION"
+    },
+    {
+      "test_id": "UT-TEST-MP-ISOLATED-RUNNER",
+      "name": "test mp isolated runner",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_isolated_runner",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_isolated_runner.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-ISOLATED-RUNNER"
+    },
+    {
+      "test_id": "UT-TEST-MP-MEASURE",
+      "name": "test mp measure",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_measure",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_measure.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-MEASURE"
+    },
+    {
+      "test_id": "UT-TEST-MP-REPEATABILITY",
+      "name": "test mp repeatability",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_repeatability",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_repeatability.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-REPEATABILITY"
+    },
+    {
+      "test_id": "UT-TEST-MP-WORKLOADS",
+      "name": "test mp workloads",
+      "category": "UT",
+      "component": "performance-tooling",
+      "workstream_owner": "MP",
+      "scientific_process_or_contract": "measurement, repeatability, workload and host-admission tooling",
+      "requirement_or_invariant": [
+        "INV-06",
+        "INV-16",
+        "INV-24",
+        "INV-26",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/performance/**",
+        "benchmarks/performance/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "host-dependent optional measurement inputs"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "INVARIANT",
+      "tolerance_policy": "protocol-owned; performance observations are not scientific tolerances",
+      "execution_command": "python3 -m unittest tests.test_mp_workloads",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/test_mp_workloads.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "MP-WORKLOADS"
+    },
+    {
+      "test_id": "IT-TRANSACTION-A23BL-GATE",
+      "name": "run a23bl gate",
+      "category": "IT",
+      "component": "transaction-reference",
+      "workstream_owner": "A23BL",
+      "scientific_process_or_contract": "transaction attempt context and reference semantics",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/transaction/**"
+      ],
+      "dependencies": [
+        "gfortran",
+        "OpenMP runtime"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions",
+      "execution_command": "bash tests/transaction/run_a23bl_gate.sh",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/transaction/run_a23bl_gate.sh",
+      "artifact_role": "runner",
+      "traceable_alias": "A23BL"
+    },
+    {
+      "test_id": "CT-TRANSACTION-TRANSACTION-ATTEMPT-CONTEXT",
+      "name": "test transaction attempt context",
+      "category": "CT",
+      "component": "transaction-reference",
+      "workstream_owner": "A23BL",
+      "scientific_process_or_contract": "transaction attempt context and reference semantics",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/transaction/**"
+      ],
+      "dependencies": [
+        "gfortran",
+        "OpenMP runtime"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/transaction/test_transaction_attempt_context.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "TRANSACTION-ATTEMPT-CONTEXT"
+    },
+    {
+      "test_id": "CT-TRANSACTION-TRANSACTION-REFERENCE",
+      "name": "test transaction reference",
+      "category": "CT",
+      "component": "transaction-reference",
+      "workstream_owner": "A23BL",
+      "scientific_process_or_contract": "transaction attempt context and reference semantics",
+      "requirement_or_invariant": [
+        "INV-07",
+        "INV-08",
+        "INV-13",
+        "INV-30"
+      ],
+      "source_surface": [
+        "src/transaction/**"
+      ],
+      "dependencies": [
+        "gfortran",
+        "OpenMP runtime"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "exact contract assertions",
+      "execution_command": "NOT_DIRECTLY_EXECUTABLE",
+      "cost_class": "FAST",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tests/transaction/test_transaction_reference.f90",
+      "artifact_role": "test_source",
+      "traceable_alias": "TRANSACTION-REFERENCE"
+    },
+    {
+      "test_id": "QG-VQ-B1-10-ADMISSION-GATE",
+      "name": "b1 10 admission gate",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b1_10_admission_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b1_10_admission_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B1-10-ADMISSION"
+    },
+    {
+      "test_id": "QG-VQ-B1-6-ADMISSION-GATE",
+      "name": "b1 6 admission gate",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b1_6_admission_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b1_6_admission_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B1-6-ADMISSION"
+    },
+    {
+      "test_id": "QG-VQ-B1-7-ADMISSION-GATE",
+      "name": "b1 7 admission gate",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b1_7_admission_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b1_7_admission_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B1-7-ADMISSION"
+    },
+    {
+      "test_id": "QG-VQ-B1-8-ADMISSION-GATE",
+      "name": "b1 8 admission gate",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b1_8_admission_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b1_8_admission_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B1-8-ADMISSION"
+    },
+    {
+      "test_id": "QG-VQ-B1-9-ADMISSION-GATE",
+      "name": "b1 9 admission gate",
+      "category": "QG",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b1_9_admission_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "formal source-bound gate",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b1_9_admission_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B1-9-ADMISSION"
+    },
+    {
+      "test_id": "RR-VQ-B2-REFERENCE-GATE",
+      "name": "b2 reference gate",
+      "category": "RR",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 tools/vq/b2_reference_gate.py",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/b2_reference_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B2-REFERENCE"
+    },
+    {
+      "test_id": "UT-VQ-B0-SOURCE-RUNNER",
+      "name": "test b0 source runner",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_b0_source_runner",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_b0_source_runner.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "B0-SOURCE-RUNNER"
+    },
+    {
+      "test_id": "UT-VQ-B1-RECONSTRUCT",
+      "name": "test b1 reconstruct",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_b1_reconstruct",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_b1_reconstruct.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "B1-RECONSTRUCT"
+    },
+    {
+      "test_id": "UT-VQ-B1-SNAPSHOT-IDENTITY",
+      "name": "test b1 snapshot identity",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_b1_snapshot_identity",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_b1_snapshot_identity.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "B1-SNAPSHOT-IDENTITY"
+    },
+    {
+      "test_id": "UT-VQ-B2-REFERENCE-GATE",
+      "name": "test b2 reference gate",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_b2_reference_gate",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_b2_reference_gate.py",
+      "artifact_role": "runner",
+      "traceable_alias": "B2-REFERENCE"
+    },
+    {
+      "test_id": "UT-VQ-BALANCE",
+      "name": "test balance",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_balance",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_balance.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "BALANCE"
+    },
+    {
+      "test_id": "UT-VQ-REFERENCE-IDENTITY",
+      "name": "test reference identity",
+      "category": "UT",
+      "component": "corrected-reference-qualification",
+      "workstream_owner": "F-VQ",
+      "scientific_process_or_contract": "reference identity, reconstruction and water-balance qualification",
+      "requirement_or_invariant": [
+        "INV-13",
+        "INV-25",
+        "INV-30"
+      ],
+      "source_surface": [
+        "tools/vq/**",
+        "reference/swap-4.3.1/**"
+      ],
+      "dependencies": [
+        "Python 3",
+        "corrected reference snapshots",
+        "external compiler/case where requested"
+      ],
+      "fixture": "declared inside owning runner or UNKNOWN",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; UNKNOWN unless pinned in the case or gate",
+      "execution_command": "python3 -m unittest tools.vq.test_reference_identity",
+      "cost_class": "FOCUSED",
+      "qualification_role": "supporting evidence only; does not promote itself",
+      "current_status": "DISCOVERED_NOT_REEXECUTED_FTA01",
+      "artifact_path": "tools/vq/test_reference_identity.py",
+      "artifact_role": "test_source",
+      "traceable_alias": "REFERENCE-IDENTITY"
+    }
+  ]
+}

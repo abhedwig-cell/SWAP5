@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.example/schemas/test-register.schema.json",
+  "title": "SWAP5 test register",
+  "type": "object",
+  "required": ["schema_version", "work_unit", "baseline_qualification_head", "qualified_candidate_source_commit", "tests"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "work_unit": {"type": "string"},
+    "baseline_qualification_head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "qualified_candidate_source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["test_id", "name", "category", "component", "workstream_owner", "scientific_process_or_contract", "requirement_or_invariant", "source_surface", "dependencies", "fixture", "expected_value_source", "tolerance_policy", "execution_command", "cost_class", "qualification_role", "current_status", "artifact_path"],
+        "properties": {
+          "test_id": {"type": "string", "pattern": "^(UT|CT|IT|INV|RR|QG)-"},
+          "category": {"enum": ["UT", "CT", "IT", "INV", "RR", "QG"]},
+          "cost_class": {"enum": ["FAST", "FOCUSED", "BROAD", "QUALIFICATION"]},
+          "expected_value_source": {"enum": ["ANALYTICAL", "THEORY", "CORRECTED_LEGACY_REFERENCE", "QUALIFIED_GOLDEN_CASE", "ARCHITECTURE_CONTRACT", "INVARIANT", "UNKNOWN", "NOT_ASSESSED"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

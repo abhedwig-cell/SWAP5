@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "work_unit": "REQUIRED",
+  "baseline": {
+    "branch": "REQUIRED",
+    "commit": "REQUIRED_FULL_SHA",
+    "tree": "REQUIRED_FULL_SHA",
+    "qualification_evidence": []
+  },
+  "intended_change": "REQUIRED",
+  "physics_change": "REQUIRED_TRUE_FALSE_OR_NOT_ASSESSED",
+  "numerical_policy_change": "REQUIRED_TRUE_FALSE_OR_NOT_ASSESSED",
+  "transaction_semantics_change": "REQUIRED_TRUE_FALSE_OR_NOT_ASSESSED",
+  "state_layout_change": "REQUIRED_TRUE_FALSE_OR_NOT_ASSESSED",
+  "precision_policy_change": "REQUIRED_TRUE_FALSE_OR_NOT_ASSESSED",
+  "expected_output_difference": "REQUIRED_NONE_OR_DESCRIPTION",
+  "affected_components": [],
+  "affected_invariants": [],
+  "dependency_types": [],
+  "required_fast_tests": [],
+  "required_focused_tests": [],
+  "required_broad_tests": [],
+  "required_qualification_gates": [],
+  "expected_differences": [],
+  "unexpected_difference_action": "FAIL_CLOSED",
+  "checkpoint_commit": "REQUIRED_BEFORE_BROAD_OR_QUALIFICATION",
+  "checkpoint_tree": "REQUIRED_BEFORE_BROAD_OR_QUALIFICATION",
+  "evidence_output": "REQUIRED_FOR_TESTED_OR_QUALIFIED_STATUS",
+  "review": {
+    "impact_analysis_status": "NOT_ASSESSED",
+    "testability_dependencies": [],
+    "proof_boundary": "REQUIRED"
+  }
+}

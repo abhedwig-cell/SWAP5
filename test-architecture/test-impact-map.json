@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA01",
+  "automation_status": "ADVISORY_ONLY_FAIL_CLOSED",
+  "dependency_types": [
+    "READ_ONLY",
+    "STATE_MUTATING",
+    "SHARED_CONTRACT",
+    "NUMERICAL_POLICY",
+    "PHYSICS",
+    "QUALIFICATION_ONLY"
+  ],
+  "rules": [
+    {
+      "source_surface": "src/transaction/**",
+      "component": "transaction-reference",
+      "dependency_type": "STATE_MUTATING",
+      "direct_test_selectors": ["*-TRANSACTION-*", "*-FKT-*", "*-FCI03-*"],
+      "dependent_components": ["kernel-transactions", "canonical-integration", "multiswap-runtime"],
+      "required_layers": ["FAST", "FOCUSED"],
+      "broad_trigger": "transaction semantics or externally visible checkpoint contract changes"
+    },
+    {
+      "source_surface": "src/kernel/**",
+      "component": "kernel-transactions",
+      "dependency_type": "STATE_MUTATING",
+      "direct_test_selectors": ["*-FKT-*"],
+      "dependent_components": ["canonical-integration", "multiswap-runtime"],
+      "required_layers": ["FAST", "FOCUSED"],
+      "broad_trigger": "commit/rollback, mass, time or public kernel contract changes"
+    },
+    {
+      "source_surface": "src/solver/**",
+      "component": "solver-isolation",
+      "dependency_type": "SHARED_CONTRACT",
+      "direct_test_selectors": ["*-FSI-*"],
+      "dependent_components": ["physical-adapter", "multiswap-runtime"],
+      "required_layers": ["FAST", "FOCUSED"],
+      "broad_trigger": "physics, numerical policy, convergence status, precision or solver contract changes"
+    },
+    {
+      "source_surface": "src/adapter/**",
+      "component": "physical-adapter",
+      "dependency_type": "PHYSICS",
+      "direct_test_selectors": ["*-FCI-*", "*-FMR04-*", "*-FVQ-*"],
+      "dependent_components": ["kernel-transactions", "multiswap-runtime", "independent-qualification"],
+      "required_layers": ["FOCUSED"],
+      "broad_trigger": "state, flux, mass, physics or corrected-reference behavior can change"
+    },
+    {
+      "source_surface": "src/runtime/**",
+      "component": "multiswap-runtime",
+      "dependency_type": "SHARED_CONTRACT",
+      "direct_test_selectors": ["*-RUNTIME-*", "*-FMR-*"],
+      "dependent_components": ["independent-qualification"],
+      "required_layers": ["FAST", "FOCUSED"],
+      "broad_trigger": "dispatch, isolation, result binding, concurrency or externally visible runtime contract changes"
+    },
+    {
+      "source_surface": "reference/swap-4.3.1/**",
+      "component": "corrected-reference",
+      "dependency_type": "QUALIFICATION_ONLY",
+      "direct_test_selectors": ["RR-*", "QG-*VQ*"],
+      "dependent_components": ["canonical-integration", "solver-isolation", "physical-adapter", "independent-qualification"],
+      "required_layers": ["FOCUSED", "QUALIFICATION"],
+      "broad_trigger": "always when a reference blob, snapshot, manifest or oracle definition changes"
+    },
+    {
+      "source_surface": "docs/**|integration/**|test-architecture/**",
+      "component": "evidence-and-governance",
+      "dependency_type": "READ_ONLY",
+      "direct_test_selectors": ["QG-WF-DOCS", "FTA01 structural validator"],
+      "dependent_components": [],
+      "required_layers": ["FAST"],
+      "broad_trigger": "only when an executable contract, provenance lock or qualification decision is changed"
+    }
+  ],
+  "unmapped_surfaces": [
+    "src/legacy/b1_10_port/** requires finer process-level ownership mapping",
+    "precision-policy surfaces are not yet explicitly declared in repository metadata",
+    "F-MQ qualification harnesses exist on non-baseline branches and are not executable from this checkout"
+  ],
+  "selection_contract": [
+    "A selector is advisory until a focused F-TA qualification proves its completeness.",
+    "Unknown or overlapping ownership expands the test cone; it never suppresses a test.",
+    "A physics, numerical-policy, precision, state-layout or transaction-semantics change requires explicit human declaration.",
+    "Qualification tests require their own exact source binding and cannot inherit the F-TA branch HEAD."
+  ]
+}
