@@ -1,21 +1,28 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR06",
   "evidence_kind": "ENGINEERING_TEST_EVIDENCE_NOT_INDEPENDENT_SCIENTIFIC_QUALIFICATION",
   "decision": "TESTED_SERIALIZED_SNOW_MULTISWAP_RUNTIME_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
   "start_head": "5787d0463294515b308b66f6e10998339013524e",
-  "tested_source_commit": "88f74a0bd30f808c3b7cc12508f30a34b91b8b66",
-  "tested_source_tree": "45d73db0a0cbdd0149cf82e1a65f5d3e98e7b210",
+  "tested_source_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "tested_source_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+  "supersedes_tested_candidate": "88f74a0bd30f808c3b7cc12508f30a34b91b8b66",
+  "supersession_reason": "Reuse the already-computed canonical execution-order vector for aggregate accounting instead of adding a second insertion sort; output evidence remains identical.",
   "production_composition": {
     "snow_composition_checkpoint": "630ad6993a4c8b681e12285daba0cef047aa39a9",
-    "deterministic_aggregate_fix_commit": "53d9af64b9c36ecabfc98651bf6016bbd7e9be38",
+    "initial_deterministic_aggregate_fix_commit": "53d9af64b9c36ecabfc98651bf6016bbd7e9be38",
+    "canonical_order_reuse_commit": "0c24657d1ce85e3379752f9eb50e4604493a32dc",
     "sources": [
       {"path":"src/process/mod_snow_process.f90","blob":"54702d71b4c84dce2842813549bd14c57301a383","authority":"exact F-VQ16-admitted source"},
       {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"202ab846cbd30d149d0d450249b3d517e333994f","authority":"F-MR06 runtime composition"},
-      {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"296353619916d7277352fd0ce26ce0894080b97f","authority":"F-MR serialized dispatcher plus deterministic aggregate ordering"}
+      {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"1bb0c6d4683db2729d48de31babcea72bc1a6caf","authority":"F-MR serialized dispatcher with canonical-order aggregate accounting"}
     ],
-    "other_src_changes_relative_to_fmr05_qualified_source": false,
+    "src_delta_relative_to_fmr05_qualified_source": [
+      "src/process/mod_snow_process.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
     "fmr05_qualified_source": "c28e7a2810b4a3678c577335a6a3086b173eb976"
   },
   "scientific_basis": {
@@ -28,9 +35,9 @@
   },
   "decisive_test_run": {
     "workflow": "F-MR06 serialized snow MultiSWAP runtime",
-    "run_id": 34216459796,
-    "job_id": 102029251107,
-    "head_sha": "88f74a0bd30f808c3b7cc12508f30a34b91b8b66",
+    "run_id": 34217119576,
+    "job_id": 102031389280,
+    "head_sha": "ffab7d705928170db3e76a5d346caafeb560e605",
     "conclusion": "success",
     "os": "Ubuntu 24.04.4",
     "compiler": "GNU Fortran 13.2.0"
@@ -57,6 +64,8 @@
     "optional_snow_state_scaling": true,
     "authoritative_aggregate_mass": true,
     "deterministic_aggregate_mass_under_reverse_order": true,
+    "canonical_execution_order_reused_for_aggregate_accounting": true,
+    "second_fmr06_aggregate_sort_added": false,
     "max_simultaneous_real_physical_solves": 1
   },
   "mass": {
@@ -71,19 +80,21 @@
     "accepted_missing_contribution_mask_required": 0
   },
   "reproducibility": {
-    "o0_snow_smoke_executable_sha256": "db0f9cccf04aaa7e3c9905af0b7f3756d8dfcf7a745020dfd6a0bb18fba1927c",
-    "o0_snow_inactive_executable_sha256": "7948a358fedf1d6071372979985bb9c8b569467be40dba4ac9f9928a74a384d2",
-    "o2_snow_smoke_executable_sha256": "ebc8877f3744a4a4b4909208ba9f6ddc80cf833c8cd4e9cf26f1657cb41712cb",
-    "o2_snow_inactive_executable_sha256": "388b96bf403f4a5bd787fc30556c0dda445911d59620a5395d96db73dce91336",
+    "o0_snow_smoke_executable_sha256": "dbc107b589db6c7bcf47d7e2c0ea0be13423a41bcc0e6647333bc83d3919ea4a",
+    "o0_snow_inactive_executable_sha256": "b1446486f3c74a852ee333f046752eae9cd6175bbcc33c1439f8f4affb33d91d",
+    "o2_snow_smoke_executable_sha256": "51006dab6ba20747b1071f7622dd0bf6be169c6f460eced8e63ba48ae8d23dc7",
+    "o2_snow_inactive_executable_sha256": "7f81f283865cb4fd90e4f214f2e19cd3ab50987b07f7aa3b51bcdb8672285448",
     "smoke_output_sha256": "669db61cd11f1c1312f3a3544a4afdc5907490410b92efcdcc37d96f6eeea3ab",
-    "o0_multiswap_executable_sha256": "5833afea878c9c71427f60005dec4e1694d99f4c6a605867156d47892a1a7551",
-    "o2_multiswap_executable_sha256": "2afb6a895b9fd52acd38b1afb7addee6a3b7aae19858d5810f75ca19662c48f4",
-    "multiswap_output_sha256": "d3026a14822f3afaea5b11b6471bd695aa37c229573af7a9863e5aad241eb4cf"
+    "o0_multiswap_executable_sha256": "973217ce4bb9ac4da5a0231a76d24c86b386879f38dc89d2e7988590b636e32a",
+    "o2_multiswap_executable_sha256": "11dd15cbfb93d970e0bc6c95dbdf4690d40a7c43bb3ba4f2b0b666b80a183744",
+    "multiswap_output_sha256": "d3026a14822f3afaea5b11b6471bd695aa37c229573af7a9863e5aad241eb4cf",
+    "output_hashes_identical_to_superseded_green_candidate": true
   },
   "engineering_corrections": [
     {"run_id":34214540403,"classification":"TEST_REFERENCED_NONEXISTENT_RESULT_PROVENANCE_FIELDS","production_source_changed":false,"scientific_failure":false},
     {"run_id":34214780687,"classification":"TEST_FIXTURE_EXCEEDED_EXISTING_RESTRICTED_RICHARDS_ADMISSION","production_source_changed":false,"scientific_failure":false,"resolution":"fixture retained exact F-VQ16 nonzero melt while balancing base top forcing to remain inside the already-admitted Richards equilibrium slice"},
-    {"run_id":34215330243,"classification":"INPUT_ORDER_DEPENDENT_FLOATING_POINT_AGGREGATE_MASS","production_source_changed":true,"scientific_failure":false,"resolution_commit":"53d9af64b9c36ecabfc98651bf6016bbd7e9be38","resolution":"aggregate diagnostics and authoritative aggregate mass now use canonical column ordering; no physics or tolerance changed"}
+    {"run_id":34215330243,"classification":"INPUT_ORDER_DEPENDENT_FLOATING_POINT_AGGREGATE_MASS","production_source_changed":true,"scientific_failure":false,"resolution_commit":"53d9af64b9c36ecabfc98651bf6016bbd7e9be38","resolution":"aggregate diagnostics and authoritative aggregate mass use deterministic canonical ordering; no physics or tolerance changed"},
+    {"classification":"FMR06_FIX_ADDED_REDUNDANT_SECOND_INSERTION_SORT","production_source_changed":true,"scientific_failure":false,"resolution_commit":"0c24657d1ce85e3379752f9eb50e4604493a32dc","resolution":"reuse dispatcher canonical execution-order vector for both aggregate passes; no additional F-MR06 sort"}
   ],
   "scope_holds": {
     "FMR06_QUALIFIED": false,
