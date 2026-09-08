@@ -14,6 +14,7 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: dfdh_upper(:)
      real(real64), allocatable :: residual(:)
      real(real64), allocatable :: delta_head(:)
+     real(real64), allocatable :: tridag_gamma(:)
      real(real64), allocatable :: sink(:)
      real(real64), allocatable :: source(:)
      real(real64), allocatable :: dconductivity_dhead(:)
@@ -48,7 +49,7 @@ contains
     if (workspace%active_nodes /= active_nodes .or. .not. allocated(workspace%residual)) then
        call release_reference_workspace(workspace)
        allocate(workspace%dfdh_lower(active_nodes), workspace%dfdh_main(active_nodes), workspace%dfdh_upper(active_nodes))
-       allocate(workspace%residual(active_nodes), workspace%delta_head(active_nodes))
+       allocate(workspace%residual(active_nodes), workspace%delta_head(active_nodes), workspace%tridag_gamma(active_nodes))
        allocate(workspace%sink(active_nodes), workspace%source(active_nodes))
        allocate(workspace%dconductivity_dhead(active_nodes), workspace%old_head(active_nodes))
        allocate(workspace%vertical_flux(active_nodes+1), workspace%head_gradient(active_nodes+1))
@@ -72,6 +73,7 @@ contains
     workspace%dfdh_upper = 0.0_real64
     workspace%residual = 0.0_real64
     workspace%delta_head = 0.0_real64
+    workspace%tridag_gamma = 0.0_real64
     workspace%sink = 0.0_real64
     workspace%source = 0.0_real64
     workspace%dconductivity_dhead = 0.0_real64
@@ -103,6 +105,7 @@ contains
     workspace%dfdh_upper = qnan
     workspace%residual = qnan
     workspace%delta_head = qnan
+    workspace%tridag_gamma = qnan
     workspace%sink = qnan
     workspace%source = qnan
     workspace%dconductivity_dhead = qnan
@@ -130,6 +133,7 @@ contains
     if (allocated(workspace%dfdh_upper)) deallocate(workspace%dfdh_upper)
     if (allocated(workspace%residual)) deallocate(workspace%residual)
     if (allocated(workspace%delta_head)) deallocate(workspace%delta_head)
+    if (allocated(workspace%tridag_gamma)) deallocate(workspace%tridag_gamma)
     if (allocated(workspace%sink)) deallocate(workspace%sink)
     if (allocated(workspace%source)) deallocate(workspace%source)
     if (allocated(workspace%dconductivity_dhead)) deallocate(workspace%dconductivity_dhead)
@@ -163,6 +167,7 @@ contains
     if (allocated(workspace%dfdh_upper)) nreal = nreal + size(workspace%dfdh_upper, kind=int64)
     if (allocated(workspace%residual)) nreal = nreal + size(workspace%residual, kind=int64)
     if (allocated(workspace%delta_head)) nreal = nreal + size(workspace%delta_head, kind=int64)
+    if (allocated(workspace%tridag_gamma)) nreal = nreal + size(workspace%tridag_gamma, kind=int64)
     if (allocated(workspace%sink)) nreal = nreal + size(workspace%sink, kind=int64)
     if (allocated(workspace%source)) nreal = nreal + size(workspace%source, kind=int64)
     if (allocated(workspace%dconductivity_dhead)) nreal = nreal + size(workspace%dconductivity_dhead, kind=int64)
