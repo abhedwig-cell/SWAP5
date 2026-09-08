@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "title": "Restricted MACRO Feddes Drought-Only Root Water Uptake Candidate",
+  "branch": "work/f-pm05-root-water-uptake-candidate",
+  "status": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_SCIENTIFICALLY_QUALIFIED",
+  "state": {
+    "readiness_unblocked": true,
+    "production_candidate_implemented": true,
+    "production_candidate_persisted": true,
+    "production_candidate_tested": true,
+    "structurally_qualified": true,
+    "scientifically_qualified": false,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_source_modified": false
+  },
+  "lineage": {
+    "readiness_closeout": "8149e5521485ede0b6750b3af8dbf7da40b926cd",
+    "owner_runtime_composition": "17a70b7e21b18ba847e5882037577b27aa8afd87",
+    "independent_runtime_qualification_closeout": "f7cdccf11d21c31494b328251b001d474170c0c7",
+    "candidate_base": "f7cdccf11d21c31494b328251b001d474170c0c7",
+    "tested_candidate_head": "1e5c3942925e67bb7faf4081658a6e3fa961adbb",
+    "tested_candidate_tree": "1e966b8e746fa5c27cca8eb4db17ef008879211b",
+    "production_source_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "decisive_workflow_run": 34256332937,
+    "decisive_workflow_job": 102162981404,
+    "decisive_output_sha256": "91422023864963513e84bdffd404e9dcc71eefd448eeb2413f3c2c869abdda0f"
+  },
+  "implemented_profile": {
+    "name": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "legacy_entry": "RootExtraction_MACRO task 2",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "persistent_process_state": false,
+    "immutable_parameters": [
+      "active_nodes/model topology",
+      "hlim3l",
+      "hlim3h",
+      "hlim4",
+      "adcrl",
+      "adcrh"
+    ],
+    "dynamic_crop_inputs": [
+      "potential_transpiration",
+      "rooted_nodes",
+      "normalized cumulative_root_fraction"
+    ],
+    "hydraulic_input": "qualified committed pressure_head view only on active evaluation",
+    "output": "precomputed nonnegative per-node root_extraction_sink"
+  },
+  "structural_evidence": {
+    "legacy_Feddes_equations": "PASS",
+    "dynamic_root_distribution_classification": "PASS",
+    "no_root_dependency_free_zero_route": "PASS",
+    "negligible_ptra_dependency_free_zero_route": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "stateless_A_B_A": "PASS",
+    "committed_hydraulic_view_binding": "PASS",
+    "real_FMR09_root_sink_bridge": "PASS",
+    "authoritative_mass_exactly_once": "PASS",
+    "hard_mass_balance": "PASS",
+    "F_VQ21_runtime_regression": "PASS",
+    "fixed_irrigation_regression": "PASS",
+    "scheduled_irrigation_regression": "PASS",
+    "snow_regression": "PASS",
+    "O0_O2_identity": "PASS",
+    "protected_owner_blobs_unchanged": "PASS"
+  },
+  "production_scope": {
+    "added_source": [
+      "src/process/mod_root_water_uptake_process.f90"
+    ],
+    "runtime_composition_in_production_added": false,
+    "solver_internal_modified": false,
+    "legacy_IO_modified": false,
+    "authoritative_mass_owner_modified": false
+  },
+  "explicit_holds": [
+    "independent scientific equivalence of the new process module to canonical B1.10 RootExtraction_MACRO task 2",
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated uptake",
+    "drought-dependent root extension feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore root uptake",
+    "full legacy RootExtraction module reentrancy",
+    "production crop-owner composition into this process module"
+  ],
+  "artifacts": [
+    "integration/f-pm/F-PM05_CANDIDATE_CONTRACT.json",
+    "integration/f-pm/F-PM05_ROOT_DISTRIBUTION_CLASSIFICATION_CORRECTION.json",
+    "integration/f-pm/F-PM05_CANDIDATE_EVIDENCE.json",
+    "integration/f-pm/F-PM05_CANDIDATE_STATUS.json",
+    "src/process/mod_root_water_uptake_process.f90",
+    "tests/fpm/test_fpm05_macro_feddes_root_uptake.f90",
+    "tests/fpm/test_fpm05_root_uptake_runtime_bridge.f90",
+    "tests/fpm/run_fpm05_root_water_uptake_candidate_gate.sh",
+    "tests/fpm/run_fpm05_fvq21_runtime_regression.sh",
+    ".github/workflows/fpm05-root-water-uptake-candidate.yml"
+  ],
+  "downstream": {
+    "owner": "F-VQ",
+    "recommended_next_unit": "F-VQ22",
+    "suggested_branch": "qualification/f-vq22-fpm05-root-water-uptake",
+    "instruction": "Independently verify the exact F-PM05 production source blob against canonical SWAP 4.3.1 B1.10 RootExtraction_MACRO task-2 semantics for the restricted drought-only profile. Independently verify current crop-derived root distribution, the two dependency-free zero routes, Feddes boundaries, qrot sign and node allocation, real runtime exactly-once mass, rollback/replay implications of the stateless process, and O0/O2 identity. Do not modify the candidate production source and do not broaden physics scope."
+  }
+}
