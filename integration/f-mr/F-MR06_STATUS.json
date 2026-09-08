@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR06",
+  "branch": "integration/f-mr06-snow",
+  "start_head": "5787d0463294515b308b66f6e10998339013524e",
+  "phase": "CONTRACTED_PRE_COMPOSITION",
+  "status": "PERSISTED_PRE_IMPLEMENTATION",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "qualified_serialized_multiswap_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "scientifically_admitted_snow_source": "2becebfe747663ea3b896d7d19f4381c32df77db",
+  "scientific_snow_admission_head": "98712959d811c788c77842eede4c6f558cca1c11",
+  "snow_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+  "fmq24_blocker": "FMQ24-B01",
+  "production_composed_candidate": null,
+  "scientific_admission_of_composed_candidate": false,
+  "multiswap_snow_admission": false,
+  "parallel_reference_backend_admitted": false,
+  "hard_holds": [
+    "Do not alter SNOW formulas or reinterpret the B1.10 daily process as subdaily physics.",
+    "Do not execute the SNOW event once per F-KT trial/half-step; it is one outer-interval event.",
+    "Do not double-count melt in authoritative interval mass accounting.",
+    "Do not release F-MQ24 until a newly composed source has independent F-VQ admission."
+  ],
+  "next_step": "Perform exact blob-level composition of the F-VQ16-admitted snow source into the qualified serialized runtime and implement the minimal optional-state/event seam without changing F-KT, F-SI or physics formulas."
+}
