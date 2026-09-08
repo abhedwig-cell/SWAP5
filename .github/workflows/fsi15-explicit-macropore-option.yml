@@ -1,0 +1,30 @@
+name: F-SI15 explicit macropore option
+
+on:
+  push:
+    branches:
+      - work/f-si15-explicit-macropore-option
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fsi/run_fsi15_*.sh'
+      - 'integration/f-si/F-SI15_*.json'
+      - '.github/workflows/fsi15-explicit-macropore-option.yml'
+  workflow_dispatch:
+
+jobs:
+  fsi15-physical-option:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI15 explicit physical option authority and poison gate
+        run: bash tests/fsi/run_fsi15_physical_option_authority_gate.sh
+      - name: F-SI15 exact F-SI14 common and legacy-direct identity gate
+        run: bash tests/fsi/run_fsi15_fsi14_identity_gate.sh
