@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR09",
+  "title": "Qualified Precomputed Root Sink Runtime Composition",
+  "branch": "work/f-mr09-root-sink-runtime-composition",
+  "exact_base": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "trigger": "F-PM05_BLOCKED_ROOT_WATER_UPTAKE_MIGRATION_REQUIRES_QUALIFIED_COMPOSED_ROOT_SINK_ROUTE",
+  "scope": "compose the already-qualified F-SI11 precomputed qrot/root-sink solver seam into the current F-PM04 runtime lineage and add authoritative exactly-once root-extraction mass accounting; do not implement RootExtraction physics",
+  "source_binding": {
+    "fsi10_current_solver_contract_blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "fsi10_current_headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "fsi10_current_source_sink_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "fsi11_qualified_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+    "fsi11_solver_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "fsi11_headcalc_blob": "420fe2996199e6d3f162b7669957e1a95919f353",
+    "fsi11_root_sink_provider_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "fsi11_source_sink_provider_unchanged": true,
+    "blind_merge_forbidden": true,
+    "exact_blob_materialization_required": true
+  },
+  "runtime_changes_allowed": [
+    "bind an explicit b110_root_sink_provider_t in the serialized reference backend",
+    "allow parameters%root_extraction_active only for the existing swkimpl=0 admitted profile",
+    "allow finite nonnegative precomputed root_extraction_sink forcing only when root_extraction_active=true",
+    "preserve root-inactive forcing as exactly zero and preserve prior route",
+    "book positive root_extraction_sink as authoritative total_out exactly once"
+  ],
+  "runtime_changes_forbidden": [
+    "RootExtraction/Feddes equation implementation",
+    "dynamic root-sink reevaluation inside Newton",
+    "swkimpl=1 root uptake",
+    "folding root sink into drainage sink",
+    "changing irrigation, snow, drainage or Richards equations",
+    "changing transaction acceptance semantics",
+    "relaxing hard mass balance",
+    "legacy I/O changes"
+  ],
+  "qualification_requirements": [
+    "exact F-SI11 source blobs materialized without conflict",
+    "nonzero heterogeneous precomputed root sink reaches the exact legacy qrot residual position",
+    "root inactive route remains source-identical in outputs",
+    "root extraction is booked in authoritative total_out exactly once",
+    "accepted water balance closes under the existing hard tolerance",
+    "rollback/replay and A/B/A identity",
+    "O0/O2 identity",
+    "F-MR07 committed hydraulic-view semantics preserved",
+    "F-VQ20 scheduled irrigation scientific oracle replay preserved",
+    "F-VQ18 fixed irrigation scientific oracle replay preserved",
+    "F-MR06 snow semantics preserved"
+  ],
+  "downstream_if_qualified": {
+    "owner": "F-PM",
+    "resume_unit": "F-PM05",
+    "allowed_next_scope": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "scientific_FVQ_required_after_process_candidate": true
+  }
+}
