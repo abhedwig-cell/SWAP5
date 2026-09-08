@@ -1,0 +1,33 @@
+name: F-VQ25 F-MR14 interval diagnostics scientific no-change admission
+
+on:
+  push:
+    branches:
+      - qualification/f-vq25-fmr14-interval-diagnostics
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-VQ25 independent no-change gate
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq25_fmr14_interval_diagnostics_gate.sh | tee fvq25.log
+      - name: Preserve F-VQ25 diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq25-fmr14-interval-diagnostics
+          path: fvq25.log
