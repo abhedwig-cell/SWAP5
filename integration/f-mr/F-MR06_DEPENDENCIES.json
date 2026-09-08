@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR06",
+  "branch": "integration/f-mr06-snow",
+  "start_head": "5787d0463294515b308b66f6e10998339013524e",
+  "qualified_serialized_multiswap_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "qualified_serialized_multiswap_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "fmr05_closeout": "60781db05c44c73b62011aa1cb4f1511652f6b2c",
+  "fvq15_scientific_admission_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+  "fmq23_closeout_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+  "snow_source_candidate": "2becebfe747663ea3b896d7d19f4381c32df77db",
+  "snow_source_tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+  "snow_production_source": {
+    "path": "src/process/mod_snow_process.f90",
+    "blob": "54702d71b4c84dce2842813549bd14c57301a383"
+  },
+  "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
+  "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+  "fvq16_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+  "fmq24_blocked_head": "ef647f12d4d7d429d9136d91784b6405374dac68",
+  "fmq24_blocker": "FMQ24-B01",
+  "fkt_authority": "Consume current already-qualified F-KT transaction/mass semantics only; F-MR06 must not create a parallel transaction model.",
+  "compatibility_holds": [
+    "No subdaily or arbitrary-duration SNOW physics is admitted.",
+    "No parallel real-physics extension is admitted.",
+    "No active-root, macropore or other physics expansion is implied by F-MR06.",
+    "Scientific admission of the new composed F-MR06 source must be repeated independently downstream before F-MQ24 resumes."
+  ]
+}
