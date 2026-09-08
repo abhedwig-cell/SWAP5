@@ -1,0 +1,20 @@
+name: F-PM05 root water uptake readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm05-root-water-uptake-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-PM05 source-bound readiness gate
+        run: python3 tools/fpm/fpm05_root_water_uptake_readiness_gate.py
