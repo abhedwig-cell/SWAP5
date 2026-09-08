@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR08",
+  "title": "Owner qualification evidence for existing exact temporal identity with admitted nonstationary SNOW fixture",
+  "branch": "work/f-mr08-nonstationary-temporal-acceptance",
+  "tested_source_head": "49ddb20933b1ba73a15c3343f5566185e904ec74",
+  "tested_source_tree": "338c15d5dd0dbd0dae2a6c0f0cd5514221bef580",
+  "path_a_evidence_checkpoint": "428d32b1cc6304cde2a9e610fd1a0a04487b119d",
+  "gate_fix_commit": "49ddb20933b1ba73a15c3343f5566185e904ec74",
+  "production_source_changed_by_fmr08": false,
+  "transaction_source_changed_by_fmr08": false,
+  "scientific_tolerance_changed_by_fmr08": false,
+  "fixture_source_changed_by_fmr08": false,
+  "decisive_gate": {
+    "workflow_run": 34238749505,
+    "workflow_job": 102103168369,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "markers": {
+      "fmr06_source_lock": "PASS",
+      "only_additions_since_exact_fmr06_candidate": "PASS",
+      "source_derived_initial_snow": 0.10,
+      "source_derived_committed_snow": 0.12,
+      "source_derived_snow_delta": 0.02,
+      "nonstationary_snow_state_source_audit": "PASS",
+      "fmr06_engineering_replay": "PASS",
+      "path_a_gate": "PASS_OWNER_CANDIDATE_REQUIRES_INDEPENDENT_FVQ"
+    }
+  },
+  "initial_failed_wrapper_run": {
+    "workflow_run": 34238567871,
+    "workflow_job": 102102557589,
+    "head": "e7fa01baa6271bcc1407d5425c146940d1f937ec",
+    "conclusion": "failure",
+    "classification": "HARNESS_LINEAGE_SCOPE_MISMATCH",
+    "physical_or_numeric_failure": false,
+    "details": "The new F-MR08 source audit passed. The wrapper then invoked the historical F-MR06 gate directly on a later additive lineage. That gate intentionally requires the F-MR06 production diff to contain exactly three historical files, so the two additive F-MR07 production modules caused the historical scope assertion to fail. The correction replays the immutable exact F-MR06 candidate in a detached worktree after proving that every pre-existing candidate file is unchanged on F-MR08."
+  },
+  "source_bound_proof": {
+    "exact_fmr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "existing_smoke_fixture_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_reference_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_multiswap_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "preexisting_candidate_files_modified_or_deleted_on_fmr08": false,
+    "fmr07_additive_production_files": [
+      "src/solver/mod_process_hydraulic_view.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+    ]
+  },
+  "nonstationarity_proof": {
+    "active_process": "SNOW",
+    "interval": [1400.25, 1401.25],
+    "non_midnight_start": true,
+    "temporal_tolerance": 0.0,
+    "initial_snow_water_storage": 0.10,
+    "snowfall_external_in": 0.02,
+    "committed_snow_water_storage": 0.12,
+    "committed_state_changed": true,
+    "candidate_event_applied": true,
+    "candidate_event_t0": 1400.25,
+    "temporal_comparator_includes_active_snow_state": true,
+    "compared_snow_fields": [
+      "snow_water_storage",
+      "liquid_water_storage",
+      "event_applied",
+      "event_t0"
+    ]
+  },
+  "transaction_and_mass": {
+    "uncommitted_trial_mutates_committed_state": false,
+    "discard_restores_external_committed_state": true,
+    "replay_candidate_bitwise_identity": true,
+    "commit_advances_once": true,
+    "authoritative_mass_complete": true,
+    "missing_contribution_mask_zero": true,
+    "hard_mass_gate": 1.0e-12,
+    "mass_is_not_normalized_or_relaxed": true
+  },
+  "prior_independent_scientific_admission": {
+    "work_unit": "F-VQ17",
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "decisive_qualification_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "same_exact_smoke_fixture": true,
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "owner_conclusion": {
+    "path_a": "PROVEN",
+    "path_b": "NOT_REQUIRED_FOR_IMMEDIATE_BLOCKER_AND_REMAINS_BLOCKED_WITHOUT_QUALIFIED_NUMERIC_LIMITS",
+    "decision": "QUALIFIED_EXISTING_TEMPORAL_IDENTITY_WITH_ADMITTED_NONSTATIONARY_FIXTURE_READY_FOR_FVQ",
+    "independent_fvq_of_fmr08_candidate_still_required": true,
+    "fpe_may_consume_before_new_fvq": false
+  }
+}
