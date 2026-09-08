@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "record_kind": "EXTERNAL_INDEPENDENT_ADMISSION_BINDING",
+  "candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "production_runtime": {
+    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "entrypoint": "fmr_run_serialized_physical_multiswap"
+  },
+  "fmr_authority": {
+    "scope": "RUNTIME_COMPOSITION_ONLY",
+    "runtime_qualification_closeout": "60781db05c44c73b62011aa1cb4f1511652f6b2c",
+    "scientific_admission_authority": false,
+    "multiswap_qualification_authority": false
+  },
+  "independent_scientific_admission": {
+    "authority": "F-VQ15",
+    "branch": "qualification/f-vq15-fmr05-serialized-multiswap",
+    "qualified_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "workflow_run": 34200068260,
+    "job_id": 101976584970,
+    "conclusion": "success",
+    "artifact_id": 10045451643,
+    "artifact_digest": "sha256:aa56fee5b7d9626217633b566ec811d6f71e8acb50fe212c7d110df563fcab96",
+    "scientific_multicolumn_admission": true,
+    "production_serialized_multicolumn_admission": true,
+    "max_scientific_difference": 0.0,
+    "parallel_reference_backend_admitted": false,
+    "physics_scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY"
+  },
+  "independent_multiswap_qualification": {
+    "authority": "F-MQ23",
+    "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+    "qualification_closeout_commit": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "closeout_replay_run": 34201388987,
+    "closeout_replay_job": 101980733370,
+    "conclusion": "success",
+    "artifact_id": 10045957412,
+    "artifact_digest": "sha256:fc084c63ad9a12a85762412ef02b1fe6f5dc76cf72a74ffea543050ac640022d",
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "gates": "G01_G20_PASS",
+    "production_source_changed_by_fmq23": false,
+    "reference_source_changed_by_fmq23": false,
+    "parallel_real_physics_admitted": false,
+    "max_simultaneous_real_physical_solves": 1,
+    "physics_scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY"
+  },
+  "effective_admission": {
+    "restricted_serialized_real_physics_multicolumn_runtime": true,
+    "scientific_multicolumn_admission": true,
+    "production_serialized_multicolumn_admission": true,
+    "general_multiswap_release": false,
+    "parallel_real_physics_admission": false,
+    "active_root_extraction_admitted": false,
+    "macropore_admitted": false,
+    "snow_admitted": false,
+    "swkimpl_nonzero_admitted": false,
+    "performance_policy_admitted": false,
+    "fallback_policy_admitted": false
+  },
+  "governance": {
+    "production_source_modified_by_this_binding": false,
+    "reference_source_modified_by_this_binding": false,
+    "qualification_authority_preserved": true,
+    "no_new_fmr_work_unit_implied": true,
+    "note": "This record binds independent downstream qualification to the immutable F-MR05 source. It does not retroactively turn F-MR into scientific or MultiSWAP qualification authority."
+  }
+}
