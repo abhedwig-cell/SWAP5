@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF23",
+  "title": "Compact Primary Actual-WOFOST Biomass State and Actual-WRT View",
+  "branch": "work/f-wof23-primary-biomass-state-boundary",
+  "base": {
+    "commit": "6a8a1bba3f817de9b7db16b0cbe8d87bb892041b",
+    "status": "QUALIFIED_WRT_BIOMASS_OWNER_READINESS_SWRD3_PRODUCTION_BLOCKED"
+  },
+  "purpose": "Define and, if the source-bound gate remains clean, implement the smallest primary actual-WOFOST biomass continuation carrier that owns WRT without duplicating root-geometry state. Keep crop evolution, phenology, optional dead-biomass capabilities and potential shadow state out of this workunit.",
+  "admitted_route_scope": {
+    "crop_route": "actual WOFOST biomass state",
+    "simple_crop_SWRD3": false,
+    "grassland_management_dead_biomass": false,
+    "crop_nutrient_optional_state": false,
+    "potential_reference_trajectory": false,
+    "arbitrary_crop_evolution_cadence": false
+  },
+  "core_committed_biomass_state": [
+    "root_biomass_WRT",
+    "stem_biomass_WST",
+    "storage_biomass_WSO",
+    "active_leaf_cohort_biomass_LV",
+    "active_leaf_cohort_specific_leaf_area_SLA",
+    "active_leaf_cohort_age_LVAGE",
+    "exponential_leaf_area_index_LAIEXP"
+  ],
+  "representation": {
+    "leaf_cohort_count": "derived from equal allocatable cohort-array lengths rather than persisted as a second independent count",
+    "leaf_arrays": "store active cohorts only; do not allocate legacy fixed 366 entries per column",
+    "actual_WRT_view": "read-only scalar accessor from the primary biomass carrier",
+    "SoA_pool_batch_future_layout": "permitted; logical type does not prescribe final MultiSWAP storage layout"
+  },
+  "reconstructible_not_independent_state": {
+    "WLV": "ordered sum of active LV cohort biomass",
+    "LASUM": "ordered sum of LV*SLA across active cohorts",
+    "LAI": "LASUM + SSA*WST + SPA*WSO using immutable crop parameters",
+    "ILV": "active cohort-array length in the compact representation"
+  },
+  "excluded_from_core_state": {
+    "fl_potential": "trajectory/configuration identity, not dynamic biomass state",
+    "DWRT": "legacy dead-root accumulator used for output/restart but not by core WOFOST biomass evolution",
+    "DWST_DWLV": "optional physical continuation for grassland management and/or nutrient routes; add only when those capabilities are active",
+    "DVS_TSUM_vernalization": "crop lifecycle/phenology state owned outside this biomass carrier",
+    "WRTPOT_and_potential_biomass": "optional potential/shadow trajectory owned separately",
+    "rates": "worker/trial results, not committed state",
+    "calendar_management_cursors": "separate management state"
+  },
+  "validation": [
+    "WRT/WST/WSO/LAIEXP finite and nonnegative",
+    "LV/SLA/LVAGE arrays all allocated together or all zero-length",
+    "cohort arrays have identical lengths",
+    "all LV/SLA/LVAGE values finite and nonnegative",
+    "empty cohort state is allowed only when no active leaf biomass is represented",
+    "no fixed 366-element persistent allocation is required"
+  ],
+  "transaction_semantics": [
+    "carrier extends transaction_state_t and deep-clones allocatable cohorts",
+    "F-KT committed initialization/checkpoint must preserve all core biomass and cohort history",
+    "trial mutation/discard must not mutate committed biomass",
+    "same-checkpoint replay must be bitwise deterministic"
+  ],
+  "read_only_view": {
+    "field": "actual_root_biomass",
+    "source": "root_biomass_WRT in the primary committed biomass carrier",
+    "consumer": "F-WOF17 build_swrd3_root_geometry_snapshot",
+    "duplicate_state": false
+  },
+  "forbidden": [
+    "WRT-only helper state",
+    "mandatory WRTPOT/potential state",
+    "fixed 366-element cohort arrays per inactive/short-lived column",
+    "crop evolution implementation in this workunit",
+    "implicit daily timestep assumption",
+    "runtime or solver ownership of crop biomass",
+    "blind import of historical F-WOF04-F-WOF10 production"
+  ],
+  "qualification_target": "QUALIFIED_COMPACT_PRIMARY_ACTUAL_WOFOST_BIOMASS_STATE_AND_WRT_VIEW_CARRIER",
+  "affected_invariants": [3,4,5,6,7,8,9,16,21,25,27,29,30]
+}
