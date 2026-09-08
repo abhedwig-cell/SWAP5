@@ -82,6 +82,7 @@ module mod_kernel_transactions
     real(real64) :: origin_t1 = 0.0_real64
     integer(int64) :: origin_lineage_id_value = 0_int64
     integer(int64) :: origin_revision_value = -1_int64
+    type(canonical_mass_accounting_t) :: mass
   contains
     procedure, public :: ready => kernel_candidate_ready
     procedure, public :: snapshot => kernel_snapshot_candidate
@@ -448,6 +449,8 @@ contains
 
     call map_runtime_result(runtime_result, result)
     call map_transaction_diagnostics(runtime_result%diagnostics, diagnostics)
+    result%mass%origin_lineage_id = committed_state%lineage_id
+    result%mass%origin_revision = committed_state%revision
     if (present(checkpoint)) diagnostics%checkpoint_uses = 1
 
     if (runtime_result%completed) then
@@ -457,6 +460,7 @@ contains
       candidate_state%origin_t1 = t1
       candidate_state%origin_lineage_id_value = committed_state%lineage_id
       candidate_state%origin_revision_value = committed_state%revision
+      candidate_state%mass = result%mass
       diagnostics%candidate_materializations = 1
     end if
   end subroutine kernel_advance_interval
@@ -502,16 +506,19 @@ contains
     matches = .true.
   end function validate_checkpoint
 
-  subroutine kernel_commit_candidate(self, committed_state, candidate_state, diagnostics, did_commit, commit_status)
+  subroutine kernel_commit_candidate(self, committed_state, candidate_state, diagnostics, did_commit, commit_status, &
+                                     accepted_mass)
     class(kernel_executor_t), intent(inout) :: self
     type(kernel_committed_state_t), intent(inout) :: committed_state
     type(kernel_candidate_state_t), intent(inout) :: candidate_state
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
     logical, intent(out) :: did_commit
     integer, intent(out), optional :: commit_status
+    type(canonical_mass_accounting_t), intent(out), optional :: accepted_mass
 
     did_commit = .false.
     if (present(commit_status)) commit_status = KERNEL_COMMIT_STATUS_INVALID_CANDIDATE
+    if (present(accepted_mass)) accepted_mass = canonical_mass_accounting_t()
     if (.not. same_type_as(self, self)) error stop 'unreachable kernel executor type'
 
     if (.not. candidate_state%ready()) then
@@ -550,6 +557,7 @@ contains
     end if
 
     call move_alloc(candidate_state%state, committed_state%physical_state)
+    if (present(accepted_mass)) accepted_mass = candidate_state%mass
     committed_state%revision = committed_state%revision + 1_int64
     committed_state%committed_time_value = candidate_state%origin_t1
     committed_state%time_bound = .true.
@@ -579,6 +587,7 @@ contains
     candidate_state%origin_t1 = 0.0_real64
     candidate_state%origin_lineage_id_value = 0_int64
     candidate_state%origin_revision_value = -1_int64
+    candidate_state%mass = canonical_mass_accounting_t()
   end subroutine clear_candidate
 
   logical function same_time_value(a, b) result(matches)
