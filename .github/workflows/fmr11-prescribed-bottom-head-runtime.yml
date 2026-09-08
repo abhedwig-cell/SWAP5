@@ -1,0 +1,37 @@
+name: F-MR11 prescribed bottom-head runtime admission
+
+on:
+  push:
+    branches:
+      - work/f-mr11-prescribed-bottom-head-runtime
+    paths:
+      - 'integration/f-mr/F-MR11_*'
+      - 'tests/fmr/test_fmr11_prescribed_bottom_head_runtime.f90'
+      - 'tests/fmr/run_fmr11_prescribed_bottom_head_runtime_gate.sh'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/adapter/mod_b110_serialized_context_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - '.github/workflows/fmr11-prescribed-bottom-head-runtime.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-MR11 prescribed bottom-head runtime owner gate
+        run: bash tests/fmr/run_fmr11_prescribed_bottom_head_runtime_gate.sh
+      - name: F-SI16 focused solver regression
+        run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
