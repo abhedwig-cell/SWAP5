@@ -9,7 +9,8 @@
     "commit": "f53ac0cc6291bf006fd490155bd857f1a38d72f5",
     "decision": "QUALIFIED_DARCIAN_REFERENCE_AND_LOOKUP_FEASIBILITY_READY_FOR_TRANSIENT_CANDIDATE_AB"
   },
-  "objective": "Compare transient, generic-time, mass-conservative LayeredMFP trajectories using the existing MFP closure and an immutable oracle-derived Darcian lookup closure against admitted FullRichards reference before adding other SWAP processes.",
+  "candidate_head_before_closeout": "2b535f0fe59604270769990422d89a054c2ab97f",
+  "objective": "Determine whether the F-LMFP06 steady-Darcian face signal remains useful in generic-time mass-conservative transient LayeredMFP trajectories and whether an immutable lookup can represent it without weakening exact physical identities.",
   "scope": {
     "production_implementation": false,
     "production_src_changed": false,
@@ -23,42 +24,112 @@
     "groundwater": false,
     "modflow": false
   },
-  "candidate_paths": [
-    "LayeredMFP current MFP face closure",
-    "LayeredMFP immutable Darcian lookup face closure",
-    "FullRichards admitted reference"
-  ],
-  "required_cases": [
-    "F-LMFP04 steady homogeneous control",
-    "F-LMFP04 homogeneous redistribution",
-    "F-LMFP04 moderate sand infiltration",
-    "F-LMFP04 moderate clay infiltration",
-    "F-LMFP04 sand-over-clay",
-    "F-LMFP04 clay-over-sand",
-    "F-LMFP06 strong homogeneous vertical-gradient controls"
-  ],
-  "required_outputs": [
-    "theta and reconstructed head trajectory",
-    "top and bottom flux",
-    "storage and full water-balance residual",
-    "timestep sensitivity",
-    "trial rejection and retry counts",
-    "lookup coverage and interpolation diagnostics",
-    "operation/cost proxies"
-  ],
-  "hard_rules": {
-    "mass_conservation_required": true,
-    "no_post_update_clipping": true,
-    "no_production_path_change": true,
-    "no_silent_solver_switch_by_execution_policy": true,
-    "reference_mode_unchanged": true,
-    "lookup_is_immutable_shared_parameter_data_not_column_state": true
-  },
-  "status": "TRANSIENT_ABC_HARNESS_IN_PREPARATION",
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
+    "PRODUCTION_IMPLEMENTED": false,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false
-  }
+    "TESTED": true,
+    "QUALIFIED": true
+  },
+  "decisive_evidence": {
+    "transient_abc_gate": {
+      "run": 34265720812,
+      "head": "43f1d1404e8b69915a27e80fb144d16fc82b4a87",
+      "job": 102194453577,
+      "conclusion": "SUCCESS",
+      "artifact": 10071855363,
+      "artifact_digest": "sha256:e2bf62e07fbafbe3c8e05acca57340d3c6d1c5a93998ba92a9b56fcc2189873"
+    },
+    "lookup_density_gate": {
+      "run": 34265736467,
+      "head": "62d5f3d57abba074b53f01206849f20ad6aed580",
+      "job": 102194505630,
+      "conclusion": "SUCCESS",
+      "artifact": 10071882325,
+      "artifact_digest": "sha256:6352987e3115dbe4b6ec47c9c3e86d890f96840438eac33ab4158509bd6a8bb5"
+    },
+    "mass": {
+      "principal_candidate_max_residual_cm": 4.619880324650827e-15,
+      "direct_darcian_control_max_residual_cm": 4.764441743692824e-15,
+      "structural_threshold_cm": 2.0e-10
+    },
+    "lookup_coverage": {
+      "principal_calls": 1980,
+      "principal_misses": 0,
+      "stress_calls": 150,
+      "stress_misses": 0,
+      "head_envelope_cm": [-500.0, -1.0]
+    },
+    "strong_gradient_theta_improvement_mfp_over_lookup": {
+      "clay_down": 2.321859625706845,
+      "clay_up": 1.6187057056845873,
+      "sand_1": 14.432855665765032,
+      "sand_2": 22.691850459953194,
+      "sand_3": 5.095983515834353
+    },
+    "ordinary_direct_darcian_control": {
+      "mfp_closer_than_lookup16_cases": 5,
+      "lookup16_closer_than_mfp_cases": 1,
+      "cases": 6,
+      "interpretation": "The coarse lookup does not faithfully represent the Darcian closure in ordinary trajectories; this does not invalidate the Darcian closure itself."
+    },
+    "density": {
+      "sand_sand_p90_rel_error_16": 0.15133904547551275,
+      "sand_sand_p90_rel_error_32": 0.03943721747929057,
+      "sand_clay_p90_rel_error_16": 0.05992926621909763,
+      "sand_clay_p90_rel_error_32": 0.012836630129881533,
+      "bytes_per_32x32_face_class_before_metadata": 8192,
+      "raw_sand_sand_equal_head_max_rel_error_32": 0.06767861120742368
+    },
+    "cost_proxies": {
+      "fullrichards_nonlinear_iterations_total_principal_matrix": 1968,
+      "mfp_max_local_interface_iterations": 31,
+      "lookup_runtime_complexity": "O(1) interpolation per face after immutable preprocessing",
+      "lookup_generation_classified_as": "OFFLINE_OR_TEMPLATE_PREPARATION_COST"
+    }
+  },
+  "claims": {
+    "darcian_face_signal_survives_transient_testing": "ESTABLISHED_WITHIN_TESTED_HYDRAULIC_SCOPE",
+    "strong_homogeneous_gradient_improvement": "ESTABLISHED_AGAINST_DIRECT_DARCIAN_FACE_CONTROL",
+    "lookup_density_improves_oracle_accuracy": "ESTABLISHED",
+    "absolute_kdar_lookup16_final_representation": "REJECTED",
+    "absolute_kdar_lookup32_production_density": "NOT_QUALIFIED",
+    "historical_swkmean7_table_reproduced": "NO",
+    "fullrichards_reference_replaced": "NO",
+    "production_layeredmfp_admission": "NOT_GRANTED",
+    "broader_process_physics_admission": "NOT_GRANTED"
+  },
+  "architecture_invariants": {
+    "1_one_kernel": "PRESERVED",
+    "2_kernel_io_separation": "PRESERVED_NO_FILE_IO_IN_CANDIDATE",
+    "3_explicit_data_separation": "PRESERVED_LOOKUP_IS_IMMUTABLE_PARAMETER_DATA",
+    "4_compact_state": "NO_NEW_COLUMN_STATE",
+    "5_worker_scratch": "PRESERVED",
+    "6_scalable_layout": "SHARED_FACE_CLASS_TABLES_COMPATIBLE",
+    "7_transactional_steps": "PRESERVED_NO_MUTATION_ON_REJECT",
+    "8_cheap_recompute": "PRESERVED_FOR_FIXED_MODEL_CLASS",
+    "9_generic_time": "TESTED",
+    "11_coupling_core": "NOT_EXERCISED_NO_CONFLICT_INTRODUCED",
+    "12_groundwater_interface": "NOT_YET_QUALIFIED",
+    "13_mass_conservation": "SATISFIED_TO_ROUNDOFF",
+    "14_interface_sensitivities": "OPEN_REPRESENTATION_MUST_SUPPORT_STABLE_LOCAL_DERIVATIVES",
+    "15_coupling_cost": "UNCHANGED",
+    "16_multiswap": "O1_LOOKUP_AND_SHARED_TABLES_PROMISING_CLASS_CARDINALITY_OPEN",
+    "18_deep_vadose": "UNCHANGED_EXTERNAL",
+    "20_alternative_solvers": "PRESERVED_LAYEREDMFP_EXPLICIT_MODEL",
+    "21_shared_swap_physics": "SAME_CONSTITUTIVE_HYDRAULICS_USED",
+    "22_no_headcalc_internals": "PRESERVED",
+    "23_physics_policy_separation": "PRESERVED_NO_SILENT_SOLVER_SWITCH",
+    "24_predictable_cost": "LOOKUP_RUNTIME_BOUNDED_PREPROCESSING_COST_OPEN",
+    "25_reference_mode": "PRESERVED_AND_RERUN",
+    "26_diagnostics": "COVERAGE_MEMORY_CALLS_ITERATIONS_AND_MASS_REPORTED",
+    "27_optional_cost": "LOOKUP_DATA_ONLY_FOR_LAYEREDMFP_CONFIGURATION",
+    "28_runtime_composition": "UNCHANGED",
+    "29_no_silent_dependencies": "PRESERVED",
+    "30_explicit_invariant_check": "RECORDED_IN_REPORT"
+  },
+  "report": "integration/f-lmfp/F-LMFP07_REPORT.md",
+  "next_action": "F-LMFP08 should develop and qualify a physics-informed Darcian correction representation around the current MFP closure that preserves equal-head gravity flow and hydrostatic zero flux by construction, with fail-closed coverage, continuity/tangent diagnostics, density/memory qualification, and reruns of both ordinary and strong-gradient transient matrices before adding broader SWAP processes.",
+  "valid_exit": "QUALIFIED_TRANSIENT_DARCIAN_SIGNAL_READY_FOR_PHYSICS_INFORMED_LOOKUP_REFINEMENT",
+  "status": "QUALIFIED_TRANSIENT_DARCIAN_SIGNAL_READY_FOR_PHYSICS_INFORMED_LOOKUP_REFINEMENT"
 }
