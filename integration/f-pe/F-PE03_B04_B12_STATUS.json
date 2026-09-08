@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03-B04-B12",
   "title": "B12 accepted higher-cost REFERENCE workload candidate search",
   "branch": "work/f-pe03-b04-b12-accepted-tail-candidate",
-  "status": "PERSISTED_DIAGNOSTIC_CANDIDATE_SEARCH_NOT_YET_TESTED",
-  "phase": "PERSISTED_BEFORE_TEST",
+  "status": "PERSISTED_DIAGNOSTIC_CANDIDATE_SEARCH_HARNESS_REPAIRED_PENDING_RETEST",
+  "phase": "PERSISTED_BEFORE_RETEST",
   "reference_only": true,
   "base": {
     "fpe03_fvq25_negative_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
@@ -21,7 +21,36 @@
     "source_file_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
     "source_header": "sfu,ORES,OSAT,ALFA,NPAR,KSATFIT,KSATEXM,LEXP,H_ENPR",
     "b12_row": "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0",
-    "b12_row_sha256_with_lf": "20958231bf61dce00c024c6b8eeca30d0478ae17814d8d16688da6ea0b2d2a53"
+    "original_b12_row_line_ending": "CRLF",
+    "original_b12_row_sha256_with_crlf": "20958231bf61dce00c024c6b8eeca30d0478ae17814d8d16688da6ea0b2d2a53",
+    "b12_row_sha256_without_line_ending": "8f6b214ba7894dd49be927c9384a80168f0ad05fabeb48b2f8d1330ef916e59e",
+    "repository_fixture_line_ending": "LF",
+    "repository_fixture_b12_row_sha256_with_lf": "ffe20ab48aa426fe20e57dd1ef9ef1a90efa3cf99fa9da24eb09d1c2eb148dfb",
+    "prior_failure_run": 34269414610,
+    "prior_failure_class": "TEST_HARNESS_PROVENANCE_LINE_ENDING_MISMATCH_BEFORE_COMPILE"
+  },
+  "source_mapping_resolution": {
+    "status": "RESOLVED_FROM_EXACT_USER_SUPPLIED_SWAP_4_3_1_SOURCE",
+    "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_readswap_source": "SWAP/readswap.f90",
+    "legacy_mvg_source": "SWAP/MOD_MvG_functions.f90",
+    "cofgen_mapping": {
+      "1": "ORES",
+      "2": "OSAT",
+      "3": "KSATFIT",
+      "4": "ALFA",
+      "5": "LEXP",
+      "6": "NPAR",
+      "7": "1 - 1/NPAR",
+      "8": "ALFA when hysteresis is disabled",
+      "9": "H_ENPR",
+      "10": "KSATEXM when supplied and greater than KSATFIT"
+    },
+    "current_provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+    "fsi09_provider_semantics": "BITWISE_SOURCE_BOUND_TO_CORRECTED_B1_10_MVG_ORACLE",
+    "note": "The active F-SI09 default-MvG admitted provider does not activate a separate saturated-extrapolation route; COFGEN(10) is retained as source-bound input provenance and is not used by the admitted b110_hconduc branch."
   },
   "search_contract": {
     "purpose": "Determine whether source-bound B12 hydraulic parameters yield at least one accepted REFERENCE case with aggregate interval cost above the admitted baseline without changing production source or numerical policy.",
@@ -36,21 +65,8 @@
     "acceptance_requirement": "completed + committed + complete authoritative mass + hard mass residual <= 1e-12",
     "higher_cost_requirement": "at least one aggregate interval cost counter strictly above the admitted baseline vector"
   },
-  "mapping_hypothesis_to_verify": {
-    "COFGEN_1": "ORES",
-    "COFGEN_2": "OSAT",
-    "COFGEN_3": "KSATFIT",
-    "COFGEN_4": "ALFA",
-    "COFGEN_5": "LEXP",
-    "COFGEN_6": "NPAR",
-    "COFGEN_7": "1 - 1/NPAR",
-    "COFGEN_8": "ALFA for no-hysteresis compatibility",
-    "COFGEN_9": "H_ENPR",
-    "COFGEN_10": "KSATEXM",
-    "note": "The candidate gate must source-lock or independently justify this mapping before interpreting results."
-  },
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false
