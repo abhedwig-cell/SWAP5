@@ -49,6 +49,9 @@ gfortran -O0 "${objects[@]}" "$OUT/diag.o" -o "$OUT/diag"
 grep -Fq 'FMR09_DIAG_RESULT= 0 T' "$OUT/output.txt"
 grep -Fq 'FMR09_DIAG_TX= 1 1 0 0 0 0' "$OUT/output.txt"
 grep -Fq 'FMR09_DIAG_OBS= T 1 legacy-reference-bound 1' "$OUT/output.txt"
+grep -Fq 'FMR09_EXPLICIT_ROOT_LEGACY_QROT_POISON_IMMUNITY=PASS' "$OUT/output.txt"
+grep -Fq 'FMR09_INACTIVE_NONZERO_ROOT_FAIL_CLOSED=PASS' "$OUT/output.txt"
+grep -Fq 'FMR09_NEGATIVE_ROOT_FAIL_CLOSED=PASS' "$OUT/output.txt"
 grep -Fq 'FMR09_ROOT_TRANSACTION_DIAGNOSTIC COMPLETE' "$OUT/output.txt"
 
 echo 'FMR09_ROOT_TRANSACTION_DIAGNOSTIC_RUN PASS'
