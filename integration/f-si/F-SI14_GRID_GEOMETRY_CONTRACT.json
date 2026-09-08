@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI14",
+  "title": "Explicit grid-geometry binding on admitted reference common path",
+  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "branch": "work/f-si14-grid-geometry-binding",
+  "basis": {
+    "fsi13_final_qualification_head": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+    "fsi13_decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+    "fsi13_source_postimage": "9463324c2d823deb32acb883f8f2bd245768ea21",
+    "headcalc_blob": "355bf276e3564bdf9128c23077dbe03da712a17c",
+    "reference_adapter_blob": "9e9d21ff7ae2b62c95b1b93c016ae95abb447137",
+    "soil_water_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "fkt_integration_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
+    "shared_fkt_type_change_required": false
+  },
+  "source_bound_problem": {
+    "request_geometry_already_exists": [
+      "soil_water_parameter_set_t%active_nodes",
+      "soil_water_parameter_set_t%z",
+      "soil_water_parameter_set_t%dz",
+      "soil_water_parameter_set_t%node_distance"
+    ],
+    "current_adapter_dependency": "validate_legacy_request still requires request geometry to equal global MOD_grid numnod/z/dz/disnod",
+    "current_headcalc_dependency": "HeadCalc sizes worker/workspace and evaluates storage/gradients/conductance using global MOD_grid numnod/z/dz/disnod even when an explicit request/state binding is present",
+    "architectural_issue": "the admitted common path therefore still has a grid-global cross-column dependency incompatible with independent logical columns and heterogeneous model templates"
+  },
+  "ownership": {
+    "grid_geometry_parameter_data": "immutable/shared request parameter data",
+    "solver_consumption_of_geometry": "F-SI",
+    "committed_state_and_transaction": "F-KT",
+    "generic_time_semantics": "F-KT",
+    "discretization_policy_selection": "outside F-SI",
+    "physical_process_formulas": "unchanged B1.10 reference physics"
+  },
+  "implementation_contract": {
+    "explicit_common_route": "HeadCalc derives active node count and z/dz/node-distance values from request%parameters supplied by the reference adapter",
+    "legacy_direct_route": "HeadCalc continues to derive numnod/z/dz/disnod from MOD_grid when no explicit state/request parameter binding is present",
+    "adapter_validation": "validate request geometry intrinsically and against state/provider shapes, not by equality to MOD_grid on the explicit route",
+    "no_parameter_copy_per_column": true,
+    "scratch_scaling": "temporary solver geometry access must remain worker/job local; immutable request geometry remains shared",
+    "formula_change": false,
+    "new_discretization": false,
+    "policy_change": false,
+    "transaction_change": false,
+    "shared_type_change": false
+  },
+  "admitted_profile_held_fixed": {
+    "reference_solver": "B1.10 Richards reference route",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2],
+    "top_boundary": "explicit top provider",
+    "constitutive": "F-SI09 corrected B1.10 provider",
+    "source_sink": "F-SI10 precomputed provider",
+    "root_sink": "F-SI11 precomputed provider",
+    "solver_controls": "F-SI12 explicit request controls",
+    "bottom_mode_authority": "F-SI13 explicit request bottom mode"
+  },
+  "qualification_required": {
+    "global_grid_poison_after_request_build": true,
+    "request_geometry_authoritative": true,
+    "same_geometry_identity_against_fsi13": true,
+    "different_request_geometry_not_rejected_by_global_equality_guard": true,
+    "workers": [1, 2, 4, 8],
+    "optimization_levels": ["O0", "O2"],
+    "aba_order_independence": true,
+    "scratch_poisoning": true,
+    "request_immutability": true,
+    "solver_route_iteration_identity": true,
+    "focused_unrounded_equation_residual": true,
+    "legacy_direct_identity_against_fsi13": true,
+    "fsi13_pinned_regression": true,
+    "fkt_boundary_regression": true
+  },
+  "holds": {
+    "bottom_modes_1_3_5_8_9": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "runtime_batching": "NOT_IN_SCOPE",
+    "coarse_or_reduced_solver": "NOT_IN_SCOPE"
+  },
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "physics_changed": false,
+    "discretization_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
