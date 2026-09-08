@@ -138,6 +138,17 @@ contains
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
+       ! B1.10 SWBOTB=5 prescribes head, so qbot is an output rather than an
+       ! input boundary condition. HeadCalc already uses this same continuity
+       ! recurrence for its saturated prescribed-groundwater special case.
+       ! Reuse those explicit post-solve terms here rather than publishing the
+       ! request-seeded qbot or calling legacy fluxes(), which mutates global
+       ! integration state outside the focused solver service.
+       if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
+       end if
+
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
        result%candidate_state%pressure_head = state_binding%h
@@ -168,6 +179,24 @@ contains
     end select
   end subroutine reference_richards_legacy_solve
 
+  subroutine materialize_prescribed_head_bottom_flux(request, richards, state)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(reference_richards_workspace_t), intent(in) :: richards
+    type(reference_richards_state_binding_t), intent(inout) :: state
+    integer :: node
+
+    ! Exact operation order of HeadCalc's existing vertical-flux recurrence:
+    ! q(i+1)=q(i)+storage(i)+sink(i)-source(i)+root_sink(i).
+    ! The F-SI16 admitted profile has explicit inactive macropores, therefore
+    ! matrix_fraction is exactly one and no macropore exchange term is present.
+    state%qbot = state%qtop
+    do node = 1, state%active_nodes
+       state%qbot = state%qbot + request%parameters%dz(node) * &
+            (state%theta(node)-state%thetm1(node)) / request%step_duration + &
+            richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)
+    end do
+  end subroutine materialize_prescribed_head_bottom_flux
+
   subroutine validate_legacy_request(request, ok, route)
     type(soil_water_solve_request_t), intent(in) :: request
     logical, intent(out) :: ok
@@ -194,7 +223,8 @@ contains
        route = 'legacy-min-dt-deferred'
        return
     end if
-    if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2) then
+    if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
+        request%boundary%bottom_mode /= 5) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if
