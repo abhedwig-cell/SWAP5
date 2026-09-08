@@ -9,36 +9,80 @@
     "commit": "6672f4ac10d7ddd79fbe6b0b1080b45b6467b09f",
     "decision": "GO_PROTOTYPE"
   },
+  "decision": "QUALIFIED_STANDALONE_MFP_PRIMITIVES_READY_FOR_COLUMN_PROTOTYPE",
+  "qualification_scope": "standalone reconstruction and numerical primitive testbench only",
   "scope": {
     "production_implementation": false,
     "production_solver_registration": false,
     "standalone_prototype": true,
-    "lineage_reference_mode": true,
-    "swap_hydraulics_test_mode": true,
+    "lineage_reference_reconstruction": true,
+    "swap_b110_equation_aligned_test_mode": true,
     "full_richards_ab_qualification": false,
+    "groundwater_qualification": false,
     "modflow_admission": false
   },
-  "hard_rules": {
-    "mass_conservation": "required",
-    "generic_time_candidate": "required",
-    "lineage_daily_assumptions_must_be_explicit": true,
-    "silent_model_switch_forbidden": true,
-    "commit_rollback_owned_by_solver": false,
-    "production_src_changes_allowed": false
+  "artifacts": {
+    "prototype_source": "experiments/lmfp/run_lmfp02_testbench.py",
+    "prototype_source_commit": "1b64f14773efc8810e9284fce558d546396d9d84",
+    "evidence": "experiments/lmfp/F-LMFP02_TESTBENCH_EVIDENCE.json",
+    "evidence_commit": "4bda23d50f7358e170ef76357a1c7743e2a1761f",
+    "report": "integration/f-lmfp/F-LMFP02_REPORT.md",
+    "report_commit": "283a91c490b92c2e7d75eed5e28f9d1ca9e12e4c",
+    "local_deterministic_output_sha256": "757c9ce179a6057e8b8d06303d8d2808bb91ee160259b6d36e665fe0e7ae5402"
   },
-  "initial_hypotheses": [
-    "MFP can be derived from the same K(h) constitutive relation used by the qualified B1.10 provider",
-    "homogeneous interface dry transfer is algebraic",
-    "heterogeneous interface transfer can be solved with bounded scalar iteration on continuous pressure head",
-    "a conservative face-flux storage update can close mass to floating-point precision",
-    "the historical per-step UpwardFlowLimit=0.50 is not invariant under arbitrary step subdivision and therefore cannot be imported as generic-time physics without reformulation"
-  ],
-  "status": "PROTOTYPE_STARTED",
+  "qualified_findings": {
+    "mfp_derivative_matches_k": true,
+    "homogeneous_face_reconstructed": true,
+    "heterogeneous_equal_head_equal_flux_face_reconstructed": true,
+    "bounded_local_interface_iteration_observed": true,
+    "max_local_iterations_in_20_case_matrix": 34,
+    "mass_conservative_face_update_residual": 1.6653345369377348e-16,
+    "historical_upward_flow_limit_0_50_step_subdivision_invariant": false,
+    "historical_upward_flow_limit_0_50_generic_time_admissible_as_is": false,
+    "shared_mfp_table_runtime_quadrature_required": false,
+    "shared_mfp_table_513_point_max_relative_face_flux_error_in_initial_matrix": 0.0001571719889648642,
+    "current_pcse_inverse_lookup_semantics_discrepancy": true
+  },
+  "hard_rules_preserved": {
+    "mass_conservation": true,
+    "generic_time_requirement": true,
+    "lineage_daily_assumptions_explicit": true,
+    "silent_model_switch_forbidden": true,
+    "solver_commit_rollback_ownership_added": false,
+    "production_src_changed": false
+  },
+  "holds": {
+    "complete_multilayer_trial_advance": "NOT_YET_QUALIFIED",
+    "full_richards_physical_equivalence": "NOT_TESTED",
+    "application_envelope": "NOT_DEFINED",
+    "field_capacity_gating": "LINEAGE_ONLY_NOT_ADMITTED",
+    "max_dry_wet_closure": "LINEAGE_ONLY_NOT_ADMITTED",
+    "upward_relaxation_law": "REQUIRES_GENERIC_TIME_REFORMULATION_AND_QUALIFICATION",
+    "groundwater": "NOT_QUALIFIED",
+    "prescribed_bottom_head": "NOT_QUALIFIED",
+    "bottom_response_tangent": "NOT_IMPLEMENTED",
+    "root_uptake": "NOT_INTEGRATED",
+    "drainage": "NOT_INTEGRATED",
+    "ponding_surface_switching": "NOT_INTEGRATED",
+    "macropore": "NOT_IN_SCOPE",
+    "b12_heavy_clay": "NOT_TESTED",
+    "all_swap_hydraulic_models": "NOT_TESTED",
+    "production_mfp_table_resolution": "NOT_SELECTED"
+  },
+  "next_work_unit": {
+    "id": "F-LMFP03",
+    "title": "Conservative Generic-Time Column Advance Prototype",
+    "reason": "A complete conservative multi-layer trial advance and temporal qualification must exist before broad FullRichards A/B testing is scientifically meaningful."
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
+    "implementation_scope": "standalone_prototype_only",
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "test_scope": "standalone_local_deterministic_testbench",
+    "QUALIFIED": true,
+    "qualification_scope_flag": "primitive_testbench_only_not_physical_solver_admission",
+    "production_implemented": false,
     "production_physics_changed": false,
     "numerical_policy_changed": false,
     "transaction_semantics_changed": false
