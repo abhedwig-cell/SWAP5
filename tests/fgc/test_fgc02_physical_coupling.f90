@@ -90,8 +90,8 @@ program test_fgc02_physical_coupling
   q_gw_pred = -q_swap_pred
   predictor_head_residual = h_swap_pred_m - h_gw_m
   predictor_flux_residual = q_swap_pred + q_gw_pred
-  call require(predictor_head_residual /= 0.0_real64, 'predictor requires corrector')
-  call require(predictor_flux_residual == 0.0_real64, 'predictor action reaction exact')
+  call require(.not. same_bits(predictor_head_residual, 0.0_real64), 'predictor requires corrector')
+  call require(same_bits(predictor_flux_residual, 0.0_real64), 'predictor action reaction exact')
 
   discard_diag = predictor_diag
   call fmr_discard_candidate(transaction_executor, candidate, discard_diag)
@@ -123,9 +123,9 @@ program test_fgc02_physical_coupling
   corrector_flux_residual = q_swap_corr + q_gw_corr
   dt_seconds = (t1-t0) * day_to_s
   interface_mass_residual = corrector_flux_residual * dt_seconds
-  call require(corrector_head_residual == 0.0_real64, 'corrector head residual exact')
-  call require(corrector_flux_residual == 0.0_real64, 'corrector action reaction exact')
-  call require(interface_mass_residual == 0.0_real64, 'corrector interface mass cancels exact')
+  call require(same_bits(corrector_head_residual, 0.0_real64), 'corrector head residual exact')
+  call require(same_bits(corrector_flux_residual, 0.0_real64), 'corrector action reaction exact')
+  call require(same_bits(interface_mass_residual, 0.0_real64), 'corrector interface mass cancels exact')
 
   ! Coupling ledger remains empty for rejected predictor and receives only the
   ! accepted corrector transfer after all hard gates pass.
