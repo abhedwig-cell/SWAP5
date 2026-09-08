@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF21",
+  "title": "Qualification Evidence: SWRD=2 Optional Transactional Root-History State",
+  "branch": "work/f-wof21-swrd2-root-history-state",
+  "base_commit": "c201e393834b260401edcd7ceb2a4864ec65684f",
+  "tested_candidate": "0b431ea9d8892af1d9f18ec10a7d44a04c83a5cd",
+  "github_actions": {
+    "run_id": 34279783355,
+    "conclusion": "success"
+  },
+  "production": {
+    "file": "src/crop/mod_swrd2_crop_lifecycle_state.f90",
+    "blob": "206a2b472119c459b884ee360bd19c7a2ac7077b",
+    "only_src_delta": true,
+    "type": "swrd2_crop_lifecycle_state_t",
+    "extends": "crop_lifecycle_state_t",
+    "added_fields": ["actual_root_depth", "potential_root_depth"]
+  },
+  "contract": {
+    "file": "integration/f-wof/F-WOF21_SWRD2_ROOT_HISTORY_STATE_CONTRACT.json",
+    "blob": "505a0c861cb59e74a875a4fbbee231f30c26578e"
+  },
+  "source_evidence": {
+    "file": "integration/f-wof/F-WOF21_SOURCE_BOUND_ROOT_HISTORY_EVIDENCE.json",
+    "blob": "8d3f0f365f65320518b9254f823a59429d07bc38"
+  },
+  "source_bound_decision": {
+    "SWRD_1": "NO_EXTRA_ROOT_HISTORY",
+    "SWRD_2": "RD_AND_RDPOT_ARE_IRREDUCIBLE_OPTIONAL_COMMITTED_HISTORY",
+    "SWRD_3": "NO_ROOT_DEPTH_HISTORY_BUT_WRT_REQUIRED_FROM_BROADER_BIOMASS_OWNER",
+    "standalone_WRT_duplicate_permitted": false
+  },
+  "gate_results": {
+    "single_SWRD2_state_subtype_production_delta": "PASS",
+    "F_WOF20_FKT_legacy_and_geometry_locks": "PASS",
+    "optional_state_and_WRT_ownership_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "SWRD1_common_state_without_root_history": "PASS",
+    "clone_preserves_SWRD2_dynamic_subtype": "PASS",
+    "invalid_root_history_fails_closed": "PASS",
+    "FKT_committed_state_preserves_SWRD2_subtype": "PASS",
+    "FKT_checkpoint_preserves_root_history": "PASS",
+    "trial_discard_leaves_SWRD2_history_unchanged": "PASS",
+    "checkpoint_replay_bitwise_identity": "PASS",
+    "WRT_not_duplicated": "PASS",
+    "output_sha256": "61873757ff6b51ab0cb9367db1497d869a3a101cafd2bb190976652dd26a4a81"
+  },
+  "state_scaling": {
+    "SWRD1_uses_smaller_common_type": true,
+    "SWRD2_allocates_two_extra_reals": true,
+    "SWRD3_does_not_allocate_SWRD2_history": true,
+    "WRT_duplicate_added": false
+  },
+  "nonclaims": [
+    "No SWRD=2 root-growth evolution is qualified.",
+    "No stress/assimilation/oxygen control of root extension is qualified.",
+    "No RDM parameter-bound check is owned by this state carrier.",
+    "No WRT or broader crop-biomass carrier is qualified.",
+    "No authoritative SWRD=3 geometry path is released.",
+    "No runtime composition into a full column physical state is qualified."
+  ]
+}
