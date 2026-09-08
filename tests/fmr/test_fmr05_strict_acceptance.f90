@@ -28,6 +28,7 @@ program test_fmr05_strict_acceptance
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
 
   type(fmr_serialized_column_result_t), allocatable :: ab(:), ba(:), a_after(:), bad(:)
+  type(fmr_serialized_column_result_t) :: ra, rb
   type(fmr_column_diagnostics_t), allocatable :: diag(:)
   type(fmr_aggregate_diagnostics_t) :: aggregate
   type(fmr_serialized_batch_diagnostics_t) :: batchdiag
@@ -37,31 +38,40 @@ program test_fmr05_strict_acceptance
   call run_case(2, .false., 0, ab, diag, aggregate, batchdiag, states, status)
   call require(status == FMR_SERIAL_DISPATCH_OK, 'A/B dispatch')
   call validate_success_batch(ab, batchdiag, 2)
-  call require(result_for_id(ab,505001_int64)%dispatch_ordinal == 1, 'A dispatch ordinal')
-  call require(result_for_id(ab,505002_int64)%dispatch_ordinal == 2, 'B dispatch ordinal')
+  ra = result_for_id(ab,505001_int64)
+  rb = result_for_id(ab,505002_int64)
+  call require(ra%dispatch_ordinal == 1, 'A dispatch ordinal')
+  call require(rb%dispatch_ordinal == 2, 'B dispatch ordinal')
   write(*,'(A)') 'FMR05_TWO_COLUMN_A_B=PASS'
 
   call run_case(2, .true., 0, ba, diag, aggregate, batchdiag, states, status)
   call require(status == FMR_SERIAL_DISPATCH_OK, 'B/A dispatch')
   call validate_success_batch(ba, batchdiag, 2)
-  call require(column_physics_identical(result_for_id(ab,505001_int64),result_for_id(ba,505001_int64)), 'A identity B/A')
-  call require(column_physics_identical(result_for_id(ab,505002_int64),result_for_id(ba,505002_int64)), 'B identity B/A')
+  ra = result_for_id(ab,505001_int64)
+  rb = result_for_id(ba,505001_int64)
+  call require(column_physics_identical(ra,rb), 'A identity B/A')
+  ra = result_for_id(ab,505002_int64)
+  rb = result_for_id(ba,505002_int64)
+  call require(column_physics_identical(ra,rb), 'B identity B/A')
   write(*,'(A)') 'FMR05_B_A_COLUMN_ID_BINDING=PASS'
 
   call run_case(1, .false., 0, a_after, diag, aggregate, batchdiag, states, status)
   call require(status == FMR_SERIAL_DISPATCH_OK, 'A after B dispatch')
   call validate_success_batch(a_after, batchdiag, 1)
-  call require(column_physics_identical(result_for_id(ab,505001_int64),a_after(1)), 'A/B/A repeatability')
+  ra = result_for_id(ab,505001_int64)
+  call require(column_physics_identical(ra,a_after(1)), 'A/B/A repeatability')
   write(*,'(A)') 'FMR05_A_B_A_REPEATABILITY=PASS'
   write(*,'(A)') 'FMR05_IMMUTABLE_PARAMETER_SHARING=PASS'
 
   do kind = 1, 4
     call run_case(2, .false., kind, bad, diag, aggregate, batchdiag, states, status)
     call require(status == FMR_SERIAL_DISPATCH_OK, 'unsupported dispatch remains per-column')
-    call require(result_for_id(bad,505001_int64)%committed, 'valid neighbor committed')
-    call require(.not. result_for_id(bad,505002_int64)%admitted, 'unsupported column not admitted')
-    call require(.not. result_for_id(bad,505002_int64)%solver_executed, 'unsupported no physical solve')
-    call require(.not. result_for_id(bad,505002_int64)%committed, 'unsupported no commit')
+    ra = result_for_id(bad,505001_int64)
+    rb = result_for_id(bad,505002_int64)
+    call require(ra%committed, 'valid neighbor committed')
+    call require(.not. rb%admitted, 'unsupported column not admitted')
+    call require(.not. rb%solver_executed, 'unsupported no physical solve')
+    call require(.not. rb%committed, 'unsupported no commit')
     call require(batchdiag%number_requested == 2 .and. batchdiag%number_admitted == 1, 'unsupported admission counts')
     call require(batchdiag%number_executed == 1 .and. batchdiag%number_committed == 1 .and. &
          batchdiag%number_rejected == 1, 'unsupported execution counts')
