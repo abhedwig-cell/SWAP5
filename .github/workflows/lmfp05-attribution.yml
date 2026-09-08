@@ -20,7 +20,7 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: Flux closure attribution and refined FullRichards gate
-        run: bash experiments/lmfp/run_lmfp05_attribution_gate.sh
+        run: bash experiments/lmfp/run_lmfp05_attribution_gate_v2.sh
       - name: Upload attribution evidence
         if: always()
         uses: actions/upload-artifact@v4
