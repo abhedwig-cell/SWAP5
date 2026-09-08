@@ -76,7 +76,7 @@ new='''subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
   real(8), intent(in) :: upper(*), main(*), lower(*), rhs(*)
   real(8), intent(out) :: solution(*)
   integer, intent(out) :: ierror
-  integer :: i
+  integer :: i, j
   real(8) :: beta, gamma(n)
 
   ierror = 0
@@ -87,8 +87,8 @@ new='''subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
   beta = main(1)
   if (abs(beta) <= tiny(1.0d0)) then
     ierror = 1
-    do i = 1, n
-      solution(i) = 0.0d0
+    do j = 1, n
+      solution(j) = 0.0d0
     end do
     return
   end if
@@ -99,8 +99,8 @@ new='''subroutine tridag(n, upper, main, lower, rhs, solution, ierror)
     beta = main(i) - upper(i)*gamma(i)
     if (abs(beta) <= tiny(1.0d0)) then
       ierror = 1
-      do i = 1, n
-        solution(i) = 0.0d0
+      do j = 1, n
+        solution(j) = 0.0d0
       end do
       return
     end if
