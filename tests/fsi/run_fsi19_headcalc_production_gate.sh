@@ -10,7 +10,7 @@ cd "$ROOT"
 
 [[ "$(git rev-parse HEAD:src/solver/mod_reference_linear_solver.f90)" == 'b292d284e5549049eac1c80df4cc30008154eb96' ]] || {
   echo 'FSI19_LINEAR_SOLVER_SOURCE_LOCK=FAIL' >&2; exit 1; }
-[[ "$(git hash-object tests/fsi/fsi04_real_headcalc_stubs.f90)" == '23c00e4a188e88bc36ef95cbe4faaacdd6aad639' ]] || {
+[[ "$(git rev-parse HEAD:tests/fsi/fsi04_real_headcalc_stubs.f90)" == '23c00e4a188e88bc36ef95cbe4faaacdd6aad639' ]] || {
   echo 'FSI19_SUPPORT_FIXTURE_SOURCE_LOCK=FAIL' >&2; exit 1; }
 
 echo 'FSI19_REFERENCE_CONTROL_BEGIN'
