@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF22",
+  "title": "WRT/WRTPOT Biomass Ownership Reconciliation and SWRD=3 Readiness",
+  "branch": "work/f-wof22-wrt-biomass-owner-readiness",
+  "status": "QUALIFIED_WRT_BIOMASS_OWNER_READINESS_SWRD3_PRODUCTION_BLOCKED",
+  "decision": "QUALIFY_OWNER_RECONCILIATION_BLOCK_SWRD3_UNTIL_PRIMARY_BIOMASS_OWNER_VIEW_EXISTS",
+  "base": {
+    "commit": "530c36b8e9e6b6e9c7b6f179bc0edf199a40d1bf",
+    "status": "QUALIFIED_OPTIONAL_SWRD2_TRANSACTIONAL_ROOT_HISTORY_STATE"
+  },
+  "tested_candidate": "300ab8d515e98a7c96571262a32c240fcfa864ac",
+  "github_actions": {
+    "run_id": 34280794282,
+    "conclusion": "success"
+  },
+  "state": {
+    "readiness_assessed": true,
+    "production_implemented": false,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "production_admitted": false
+  },
+  "production_scope": {
+    "production_source_changed": false,
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "process_source_changed": false,
+    "crop_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_ownership": {
+    "actual_WRT": "READ_ONLY_VIEW_FIELD_FROM_PRIMARY_COMMITTED_CROP_BIOMASS_OWNER",
+    "WRTPOT": "OPTIONAL_TRANSACTIONAL_SHADOW_FIELD_ONLY_WHEN_POTENTIAL_REFERENCE_TRAJECTORY_ENABLED",
+    "standalone_WRT_root_geometry_helper": "FORBIDDEN",
+    "immutable_RLWTB_WRTMAX": "PARAMETER_DATA_NOT_STATE"
+  },
+  "route_admission": {
+    "SWRD1": "UNCHANGED_QUALIFIED_PATH",
+    "SWRD2": "UNCHANGED_QUALIFIED_OPTIONAL_ROOT_HISTORY_PATH",
+    "SWRD3_simple_crop_CROPTYPE1": "FORBIDDEN_BY_B110_SOURCE",
+    "SWRD3_current_geometry_consumer": "STRUCTURALLY_READY_FOR_ACTUAL_WRT_VIEW",
+    "SWRD3_production": "BLOCKED_PRIMARY_BIOMASS_OWNER_VIEW_REQUIRED",
+    "SWRD3_potential_root_extension": "BLOCKED_OPTIONAL_TRANSACTIONAL_POTENTIAL_BIOMASS_SHADOW_REQUIRED"
+  },
+  "existing_consumer_seam": {
+    "module": "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+    "entrypoint": "build_swrd3_root_geometry_snapshot",
+    "input": "actual_root_biomass",
+    "WRTPOT_required_for_current_geometry": false,
+    "geometry_API_change_required_after_owner_release": false
+  },
+  "historical_F_WOF06": {
+    "semantic_decision_reused": "ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW",
+    "production_code_reused": false,
+    "branch_diverged": true,
+    "blind_merge_permitted": false
+  },
+  "primary_blocker": {
+    "owner": "F-WOF",
+    "condition": "No current-lineage primary crop biomass state/view supplies authoritative actual WRT.",
+    "release": [
+      "define the minimum scientifically complete primary crop biomass state boundary for the admitted crop route rather than introducing WRT alone",
+      "prove transaction-state clone/checkpoint/discard/replay semantics for that biomass state",
+      "expose actual WRT through a read-only biomass view",
+      "keep potential biomass state optional and separately transactional when enabled",
+      "then compose the actual-WRT view into the existing F-WOF17 SWRD=3 consumer without modifying its geometry physics"
+    ]
+  },
+  "recommended_next": "F-WOF23 Primary Crop Biomass State Boundary & Actual-WRT View Readiness. Source-bind the minimum scientifically complete actual biomass continuation needed by the intended WOFOST/SWRD=3 route before implementing a new state carrier. Do not assume WRT alone is sufficient and do not import the historical F-WOF04-F-WOF10 host wholesale.",
+  "affected_invariants": [3,4,6,7,8,16,21,25,27,29,30]
+}
