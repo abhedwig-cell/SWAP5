@@ -8,6 +8,7 @@ CANDIDATE_CLOSEOUT = '46ef693672dda13261a966cc9904e72437c7bcfb'
 CANDIDATE_TREE = 'a3d06ea93395bfc9c5eb1cf01c2369f91c98c5c6'
 PRODUCTION_PATH = 'src/process/mod_irrigation_process.f90'
 PRODUCTION_BLOB = 'c0755c1e0d0b7ca1a35e73cf26158c29e9940aec'
+FVQ18_QUALIFIED_COMMIT = '973d2b9d38917a4a459f51b6b46dd51cfd9690c4'
 FVQ18_ORACLE_BLOB = '15989f375b557237eb36590f75361c02d19bb871'
 
 contract = json.loads((ROOT / 'integration/f-vq/F-VQ20_CONTRACT.json').read_text(encoding='utf-8'))
@@ -40,7 +41,7 @@ expected_members = {
 assert oracle['derivation']['nested_archive_sha256'] == '1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151'
 for path, sha in expected_members.items():
     assert oracle['derivation']['members'][path] == sha
-    assert f'{sha}' in manifest and path in manifest, f'canonical B0 manifest missing {path}'
+    assert sha in manifest and path in manifest, f'canonical B0 manifest missing {path}'
 print('FVQ20_CANONICAL_B110_SOURCE_LOCK PASS')
 
 assert oracle['TCS7_equation']['threshold'] == 'phcrit = afgen(hcritab,14,dvs)'
@@ -53,10 +54,10 @@ assert 'partial tables above their explicit last knot' in oracle['scientific_equ
 print('FVQ20_INDEPENDENT_EQUATION_ORACLE PASS')
 
 fvq18_blob = subprocess.check_output([
-    'git','rev-parse','qualification/f-vq18-fpm03-fixed-irrigation:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90'
+    'git','rev-parse',f'{FVQ18_QUALIFIED_COMMIT}:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90'
 ], text=True).strip()
 assert fvq18_blob == FVQ18_ORACLE_BLOB, f'F-VQ18 oracle blob mismatch: {fvq18_blob}'
-print('FVQ20_FVQ18_REGRESSION_ORACLE_LOCK PASS')
+print('FVQ20_FVQ18_QUALIFIED_COMMIT_ORACLE_LOCK PASS')
 
 candidate_source = (ROOT / PRODUCTION_PATH).read_text(encoding='utf-8').lower()
 for forbidden in ['fldaystart','fldayend','t1900','dayfix','tcsfix','headcalc','open(','read(','write(']:
