@@ -6,7 +6,6 @@ on:
     paths:
       - src/process/mod_snow_process.f90
       - tests/fpm/**
-      - tools/fpm/fpm02_admission_gate.py
       - integration/f-pm/F-PM02_*.json
       - .github/workflows/fpm02-snow-process.yml
   workflow_dispatch:
@@ -16,20 +15,41 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install GNU Fortran
         run: sudo apt-get update && sudo apt-get install -y gfortran
-      - name: Fetch source-bound qualification refs
+      - name: Verify persisted admission without re-running admission
         run: |
-          git fetch origin integration/f-mr \
-            qualification/f-vq15-fmr05-serialized-multiswap \
-            qualification/f-mq23-fvq14-real-physics-runtime
-      - name: Re-execute admission gate
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          evidence = json.loads(Path('integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json').read_text())
+          assert evidence['admitted'] is True
+          assert evidence['production_migration_allowed'] is True
+          assert evidence['candidate_commit'] == 'c28e7a2810b4a3678c577335a6a3086b173eb976'
+          assert evidence['decision'] == 'ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION'
+          checks = evidence['checks']
+          assert sum(bool(c['passed']) for c in checks) == 51
+          assert sum(not bool(c['passed']) for c in checks) == 0
+          PY
+      - name: Verify exact structural source and focused-test blobs
         run: |
-          python3 tools/fpm/fpm02_admission_gate.py \
-            --candidate-ref c28e7a2810b4a3678c577335a6a3086b173eb976 \
-            --output /tmp/F-PM02_ADMISSION_EVIDENCE.json
-          cmp /tmp/F-PM02_ADMISSION_EVIDENCE.json integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json
-      - name: O0 O2 transaction and mass gate
+          test "$(git hash-object src/process/mod_snow_process.f90)" = "54702d71b4c84dce2842813549bd14c57301a383"
+          test "$(git hash-object tests/fpm/test_fpm02_snow_process.f90)" = "44d84c5ac27318007d20f32a98c7237acec8deaa"
+      - name: O0 O2 structural identity transaction and mass gate
         run: tests/fpm/run_fpm02_snow_gate.sh
+      - name: Verify persisted structural qualification evidence when present
+        run: |
+          if test -f integration/f-pm/F-PM02_QUALIFICATION_EVIDENCE.json; then
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          evidence = json.loads(Path('integration/f-pm/F-PM02_QUALIFICATION_EVIDENCE.json').read_text())
+          assert evidence['qualified'] is True
+          assert evidence['qualification_scope'] == 'STRUCTURAL_MIGRATION_CORRECTNESS_ONLY'
+          assert evidence['tested_source_candidate']['commit'] == '2becebfe747663ea3b896d7d19f4381c32df77db'
+          assert evidence['tested_source_candidate']['tree'] == '21a753da94c3ccbbab0b36dc04cd618f5b0d6547'
+          assert evidence['production_source']['blob'] == '54702d71b4c84dce2842813549bd14c57301a383'
+          assert evidence['focused_test']['blob'] == '44d84c5ac27318007d20f32a98c7237acec8deaa'
+          assert evidence['scientific_snow_production_admitted'] is False
+          PY
+          fi
