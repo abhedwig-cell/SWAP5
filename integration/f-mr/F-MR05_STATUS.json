@@ -1,24 +1,40 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-MR",
   "work_unit": "F-MR05",
   "branch": "integration/f-mr",
   "start_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
-  "phase": "QUALIFIED_RUNTIME_COMPOSITION_CANDIDATE_READY_FOR_INDEPENDENT_FVQ15",
-  "status": "QUALIFIED_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_RUNTIME_CANDIDATE_READY_FOR_FVQ",
-  "qualification_scope": "F-MR_RUNTIME_COMPOSITION_ONLY",
+  "phase": "EXTERNALLY_ADMITTED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_RUNTIME",
+  "status": "QUALIFIED_SOURCE_EXTERNALLY_ADMITTED_BY_FVQ15_AND_FMQ23",
+  "qualification_scope": "F-MR_RUNTIME_COMPOSITION_WITH_INDEPENDENT_EXTERNAL_ADMISSION_BINDING",
   "qualified_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
   "qualified_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
   "production_source_commit": "7490d5f8589f87e77ba4843c33dc7c58d6dac7c0",
   "qualification_evidence_commit": "2872ce1c442c35f798cb8f2719dd4d31bf438a11",
   "invariant_audit_commit": "16637e81dab7516dbcfe91617813c8023f23a8aa",
   "fvq15_handoff_commit": "286e339f836b151c5a4f8907c5b26654bbd018fa",
+  "downstream_admission_binding_commit": "1fdfd0c03a3e3333f2efaaf9c418600921a2ea4d",
   "workflow": {
     "name": "F-MR05 serialized real-physics MultiSWAP runtime",
     "run_id": 34197457690,
     "job_id": 101968270598,
     "head_sha": "c28e7a2810b4a3678c577335a6a3086b173eb976",
     "conclusion": "success"
+  },
+  "external_admission": {
+    "scientific_authority": "F-VQ15",
+    "fvq15_qualified_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fvq15_closeout_replay_run": 34200068260,
+    "fvq15_closeout_replay_job": 101976584970,
+    "fvq15_artifact_id": 10045451643,
+    "fvq15_artifact_digest": "sha256:aa56fee5b7d9626217633b566ec811d6f71e8acb50fe212c7d110df563fcab96",
+    "multiswap_authority": "F-MQ23",
+    "fmq23_closeout_commit": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "fmq23_closeout_replay_run": 34201388987,
+    "fmq23_closeout_replay_job": 101980733370,
+    "fmq23_artifact_id": 10045957412,
+    "fmq23_artifact_digest": "sha256:fc084c63ad9a12a85762412ef02b1fe6f5dc76cf72a74ffea543050ac640022d",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME"
   },
   "IMPLEMENTED": true,
   "PERSISTED": true,
@@ -28,16 +44,21 @@
   "multi_column_entrypoint": "fmr_run_serialized_physical_multiswap",
   "serialized_real_physics_multicolumn_runtime_implemented": true,
   "serialized_real_physics_multicolumn_runtime_tested": true,
-  "scientific_multicolumn_admission": false,
+  "scientific_multicolumn_admission": true,
+  "production_serialized_multicolumn_admission": true,
   "parallel_reference_backend_admitted": false,
+  "parallel_real_physics_admitted": false,
   "general_multiswap_release": false,
   "fvq15_ready": true,
-  "fmq23_resume_allowed": false,
+  "fvq15_complete": true,
+  "fmq23_resume_allowed": true,
+  "fmq23_complete": true,
   "active_profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
   "production_source": {
     "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
     "blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
-    "other_production_source_changed_by_fmr05": false
+    "other_production_source_changed_by_fmr05": false,
+    "production_source_changed_by_external_qualification": false
   },
   "test_result": {
     "single_column_fmr04_route_identity": "PASS",
@@ -69,24 +90,27 @@
     "max_simultaneous_real_physical_solves": 1,
     "parallel_reference_backend": "NOT_ADMITTED"
   },
-  "previous_runtime_qualification": {
-    "source_commit": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
-    "evidence_commit": "ef47f4c0c523fe736e109634715185983fab72f8",
-    "closeout_commit": "678ff55fb5e701e2bdda75cb32e3c809dc71c1db",
-    "classification": "VALID_FOR_EARLIER_NARROWER_RUNTIME_SCOPE_SUPERSEDED_BY_STRICT_FMR05_CANDIDATE"
+  "independent_scientific_result": {
+    "max_scientific_difference": 0.0,
+    "direct_reference_columns": [1,2,17,31],
+    "reverse_order": "PASS",
+    "A_B_A": "PASS",
+    "generic_time": "PASS",
+    "O0_O2_output_identity": "PASS"
   },
   "fmq23_blocker": {
     "id": "FMQ23-B01",
     "production_capability_missing": false,
     "capability_addressed_by_fmr05": true,
-    "qualification_blocker_release": "HELD_PENDING_FVQ15_PASS"
+    "qualification_blocker_release": "RESOLVED_AND_QUALIFIED_BY_FMQ23"
   },
   "hard_holds": [
-    "F-MR05 qualification is runtime/composition qualification only and is not scientific admission of the modified source postimage.",
-    "F-VQ15 must independently qualify exact source commit c28e7a2810b4a3678c577335a6a3086b173eb976 before F-MQ23 resumes.",
-    "Parallel real-physics/reference execution remains NOT_ADMITTED.",
-    "Active root extraction, macropore, snow and swkimpl != 0 remain outside the admitted physical profile.",
-    "No performance, fallback, relaxed numerical policy or scientific tolerance is introduced or admitted by F-MR05."
+    "F-MR remains runtime/composition authority only; scientific admission is owned by F-VQ15 and MultiSWAP qualification by F-MQ23.",
+    "The admitted production scope is restricted to EXACT_FVQ14_RESTRICTED_PROFILE_ONLY.",
+    "Parallel real-physics/reference execution remains NOT_ADMITTED; maximum simultaneous real physical solves is one.",
+    "Active root extraction, macropore, snow and swkimpl != 0 remain outside this admitted physical profile unless separately qualified by their owning workstreams.",
+    "No performance, fallback, relaxed numerical policy or scientific tolerance is introduced or admitted by this status binding.",
+    "General SWAP5 MultiSWAP release is not implied by this restricted serialized admission."
   ],
-  "next_step": "Rebind existing qualification-only F-VQ15 to exact candidate c28e7a2810b4a3678c577335a6a3086b173eb976; after F-VQ15 PASS resume the existing F-MQ23 unit, not a new F-MQ unit."
+  "next_step": "F-MR05 is complete for the restricted serialized real-physics MultiSWAP scope. Do not start a new F-MR work unit solely to restate F-VQ15/F-MQ23 qualification; downstream workstreams may consume the exact admitted source/profile under their own ownership and gates."
 }
