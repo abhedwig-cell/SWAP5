@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ24",
+  "assessment": "SOURCE_BOUND_PREQUALIFICATION_CAPABILITY_CHECK",
+  "runtime_source": {
+    "qualified_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "qualified_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "runtime_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  },
+  "scientific_snow_candidate": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "path": "src/process/mod_snow_process.f90",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION"
+  },
+  "checks": [
+    {
+      "name": "qualified_runtime_contains_admitted_snow_process_source",
+      "expected": true,
+      "observed": false,
+      "passed": false,
+      "evidence": "Fetching src/process/mod_snow_process.f90 at c28e7a2810b4a3678c577335a6a3086b173eb976 returns Not Found."
+    },
+    {
+      "name": "qualified_runtime_has_snow_profile_flag",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "fmr_b110_physical_parameters_t declares logical snow_active."
+    },
+    {
+      "name": "qualified_runtime_admits_snow_active_profile",
+      "expected": true,
+      "observed": false,
+      "passed": false,
+      "evidence": "fmr_serialized_execution_admitted requires .not. parameters%snow_active."
+    },
+    {
+      "name": "fmr05_existing_qualification_explicitly_keeps_snow_outside_profile",
+      "expected": false,
+      "observed": false,
+      "passed": true,
+      "evidence": "F-MR05_STATUS records unsupported_snow=PASS_FAIL_CLOSED and hard-holds snow outside EXACT_FVQ14_RESTRICTED_PROFILE_ONLY."
+    },
+    {
+      "name": "fmq24_can_qualify_without_production_change",
+      "expected": true,
+      "observed": false,
+      "passed": false,
+      "evidence": "There is no production route to execute the admitted SNOW process in the qualified MultiSWAP runtime candidate."
+    }
+  ],
+  "result": {
+    "production_capability_missing": true,
+    "qualification_may_proceed": false,
+    "decision": "BLOCKED_PRE_IMPLEMENTATION",
+    "required_owner": "F-MR runtime/composition implementation",
+    "proposed_next_unit": "F-MR06",
+    "production_modification_by_fmq24": false
+  },
+  "reasoning": "This is not a scientific SNOW failure. F-VQ16 qualified the isolated B1.10 process. The blocker is a missing production composition capability between that process and the already-qualified serialized MultiSWAP runtime. Qualification cannot manufacture that capability without violating ownership and qualification-only rules."
+}
