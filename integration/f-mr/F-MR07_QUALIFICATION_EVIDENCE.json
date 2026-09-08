@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR07",
+  "title": "Qualification evidence for committed process hydraulic-view runtime binding",
+  "source_under_test": {
+    "commit": "b773b876873027873af125b1b71748f760b0e330",
+    "tree": "8f09b0816ac007c0210858ca4c0b72893578d5d6",
+    "fmr06_base": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fsi17_qualified_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "fsi17_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "runtime_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf"
+  },
+  "decisive_run": {
+    "workflow": "F-MR07 committed process hydraulic view",
+    "run_id": 34228098547,
+    "job_id": 102067107920,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "observed_gate_output": [
+    "FMR07_EXACT_SOURCE_SCOPE PASS",
+    "FMR07_STATIC_COMMITTED_VIEW_BINDING PASS",
+    "FMR07_O0=PASS",
+    "FMR07_O2=PASS",
+    "FMR07_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FMR07_FMR06_REPLAY_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FMR07_COMMITTED_PROCESS_HYDRAULIC_VIEW PASS",
+    "FMR07_FMR06_FULL_SNOW_REPLAY=PASS",
+    "FMR07_GATE PASS"
+  ],
+  "qualification_results": {
+    "uninitialized_committed_state_fail_closed": "PASS",
+    "committed_hydraulic_snapshot_identity": "PASS",
+    "detached_snapshot_mutation_does_not_change_committed_view": "PASS",
+    "returned_view_mutation_does_not_alias_committed_state": "PASS",
+    "snow_active_hydraulic_view_coexistence": "PASS",
+    "A_B_A_repeatability": "PASS",
+    "candidate_input_surface_absent": "PASS",
+    "checkpoint_input_surface_absent": "PASS",
+    "solver_workspace_surface_absent": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "exact_fmr06_production_blobs_unchanged": "PASS",
+    "exact_fmr06_snow_multiswap_replay": "PASS",
+    "fmr06_replay_O0_O2_output_identity": "PASS"
+  },
+  "source_delta": {
+    "existing_production_files_modified": 0,
+    "new_production_files": [
+      "src/solver/mod_process_hydraulic_view.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+    ],
+    "exact_fsi17_module_materialized": true,
+    "blind_merge": false,
+    "snow_source_changed": false,
+    "kernel_source_changed": false,
+    "transaction_source_changed": false,
+    "solver_reference_source_changed": false
+  },
+  "attempt_history": [
+    {
+      "run_id": 34228016432,
+      "result": "FAILED_STATIC_HARNESS_FALSE_POSITIVE",
+      "finding": "The forbidden substring 'call commit' matched the required call committed%snapshot. Only the static test was narrowed to explicit commit_candidate/rollback_candidate tokens.",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34228098547,
+      "result": "SUCCESS_COMPLETE_QUALIFICATION"
+    }
+  ],
+  "scope": {
+    "runtime_observation_only": true,
+    "physics_changed": false,
+    "mass_changed": false,
+    "transaction_semantics_changed": false,
+    "snow_semantics_changed": false,
+    "irrigation_physics_admitted": false,
+    "independent_scientific_irrigation_admission": false
+  },
+  "decision": "QUALIFIED_COMMITTED_PROCESS_HYDRAULIC_VIEW_BINDING_READY_FOR_FPM03"
+}
