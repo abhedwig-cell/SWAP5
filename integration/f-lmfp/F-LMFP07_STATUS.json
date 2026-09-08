@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP07",
+  "title": "Transient Darcian Lookup Candidate A/B/C",
+  "branch": "work/f-lmfp07-transient-darcian-ab",
+  "base": {
+    "work_unit": "F-LMFP06",
+    "commit": "f53ac0cc6291bf006fd490155bd857f1a38d72f5",
+    "decision": "QUALIFIED_DARCIAN_REFERENCE_AND_LOOKUP_FEASIBILITY_READY_FOR_TRANSIENT_CANDIDATE_AB",
+    "closeout_ci_run": 34264332814,
+    "closeout_ci_conclusion": "SUCCESS"
+  },
+  "objective": "Test whether an immutable oracle-derived Darcian face lookup improves transient LayeredMFP hydraulic trajectories relative to the current MFP-secant closure when both are compared with the admitted FullRichards reference on identical initial states, forcing, generic timestep grids and hard mass-conservation rules.",
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "physics_changed": false,
+    "hydraulic_only": true,
+    "generic_time": true,
+    "explicit_top_flux": true,
+    "free_drainage_bottom": true,
+    "crop": false,
+    "root_uptake": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "candidate_paths": [
+    "current LayeredMFP MFP-secant face closure",
+    "oracle-derived immutable bilinear Darcian lookup face closure",
+    "admitted FullRichards reference"
+  ],
+  "qualification_questions": [
+    "Does the Darcian lookup preserve the exact telescoping transient water balance without post-update clipping?",
+    "Does it improve the six existing F-LMFP04 trajectories against FullRichards without degrading steady uniform identity?",
+    "Does improvement persist when the reduced-order timestep is refined?",
+    "Do strong homogeneous vertical-gradient cases exposed by F-LMFP06 improve rather than merely move the error?",
+    "Can lookup coverage, interpolation class and fallback needs be diagnosed explicitly without adding committed per-column state?"
+  ],
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "transactional_trial_semantics_required": true,
+    "no_post_update_clipping": true,
+    "no_production_face_law_change": true,
+    "fullrichards_reference_unchanged": true,
+    "lookup_is_immutable_parameter_data_not_dynamic_state": true,
+    "no_silent_out_of_envelope_extrapolation_in_qualified_results": true,
+    "physical_similarity_thresholds_must_not_be_invented_after_results": true
+  },
+  "planned_outputs": [
+    "test-only transient Darcian lookup provider",
+    "A/B/C trajectory evidence for six F-LMFP04 fixtures",
+    "strong-gradient transient probe evidence",
+    "mass and timestep-refinement diagnostics",
+    "lookup coverage and cost diagnostics",
+    "qualification decision for process-expansion or further face-closure work"
+  ],
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  },
+  "status": "TRANSIENT_DARCIAN_AB_IN_PREPARATION"
+}
