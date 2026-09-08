@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR09",
+  "title": "Owner qualification evidence for explicit precomputed root-sink runtime composition",
+  "branch": "work/f-mr09-root-sink-runtime-composition",
+  "start_checkpoint": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "fsi11_qualified_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+  "tested_source_head": "81b5c8e7ec52cf1516da4e84b4812e2bf6c0adb0",
+  "tested_source_tree": "cfc106a13db636967013246c54dfaabccc991c0e",
+  "scope": "Compose the already-qualified F-SI11 precomputed qrot/root-sink seam into the serialized F-MR runtime, remove the obsolete legacy-global qrot admission dependency on the explicit-provider route, and book root extraction as authoritative external outflow exactly once. No RootExtraction/Feddes physics is implemented here.",
+  "change_classification": {
+    "production_source_changed": true,
+    "new_root_uptake_physics_formula_added_by_fmr09": false,
+    "runtime_composition_changed": true,
+    "legacy_adapter_admission_changed": true,
+    "authoritative_mass_semantics_changed": true,
+    "kernel_transaction_acceptance_changed": false,
+    "irrigation_process_changed": false,
+    "snow_process_changed": false,
+    "multiswap_runtime_changed": false
+  },
+  "production_delta_from_start_checkpoint": {
+    "expected_changed_files_only": true,
+    "changed_files": [
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_b110_root_sink_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/adapter/mod_b110_serialized_context_binding.f90"
+    ],
+    "fsi11_exact_materialization": {
+      "src/solver/mod_soil_water_solver_contract.f90": "0a57b07712f93538cbfaf9130838682307cede09",
+      "src/legacy/b1_10_port/headcalc.f90": "420fe2996199e6d3f162b7669957e1a95919f353",
+      "src/solver/mod_b110_root_sink_provider.f90": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    "fmr09_owner_files": {
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "fe1c1cf19d3702114cf7598e227d56f7dbc1e267",
+      "src/adapter/mod_b110_serialized_context_binding.f90": "1818338d088ee61a3a1dd5220542e6650ba673ac"
+    },
+    "protected_unchanged_source": {
+      "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+      "src/process/mod_irrigation_process.f90": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+      "src/process/mod_snow_process.f90": "54702d71b4c84dce2842813549bd14c57301a383",
+      "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+      "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f"
+    }
+  },
+  "runtime_contract_proof": {
+    "root_provider_is_separate_from_fsi10_source_sink": true,
+    "fsi10_source_sink_receives_zero_root_component_when_explicit_root_is_active": true,
+    "explicit_root_provider_receives_precomputed_qrot": true,
+    "finite_nonnegative_root_forcing_required": true,
+    "root_inactive_nonzero_forcing_rejected": true,
+    "legacy_global_qrot_is_not_authority_when_explicit_root_provider_is_bound": true,
+    "legacy_global_qrot_guard_preserved_when_explicit_root_provider_is_absent": true,
+    "root_extraction_booked_as_authoritative_total_out_exactly_once": true
+  },
+  "decisive_gate": {
+    "workflow": ".github/workflows/fmr09-root-sink-runtime.yml",
+    "workflow_run_id": 34250935461,
+    "workflow_job_id": 102144878533,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.2.0",
+    "gate": "tests/fmr/run_fmr09_root_sink_runtime_gate.sh",
+    "gate_blob": "84019b7540cd66100ad2cf8de2e3abf16d447e58",
+    "transaction_precheck": "tests/fmr/run_fmr09_root_sink_transaction_diag.sh",
+    "transaction_precheck_blob": "64f6f06fc4886070714c853938dbcd926cc4f9c1",
+    "transaction_test_blob": "41accffa258d1ea852017c1840ce7dbc23fa747c",
+    "output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "positive_root_route_evidence": {
+    "heterogeneous_precomputed_qrot": true,
+    "legacy_qrot_poisoned": true,
+    "transaction_calls": 1,
+    "attempts": 1,
+    "retries": 0,
+    "solver_rejections": 0,
+    "temporal_rejections": 0,
+    "mass_rejections": 0,
+    "solver_route": "legacy-reference-bound",
+    "markers": [
+      "FMR09_HETEROGENEOUS_ROOT_ROUTE=PASS",
+      "FMR09_EXPLICIT_ROOT_LEGACY_QROT_POISON_IMMUNITY=PASS",
+      "FMR09_ROOT_ROLLBACK=PASS",
+      "FMR09_ROOT_REPLAY_BITWISE=PASS",
+      "FMR09_ROOT_A_B_A=PASS"
+    ]
+  },
+  "fail_closed_evidence": {
+    "root_inactive_nonzero_qrot_rejected_before_solver": true,
+    "negative_active_root_qrot_rejected_before_solver": true,
+    "markers": [
+      "FMR09_INACTIVE_NONZERO_ROOT_FAIL_CLOSED=PASS",
+      "FMR09_NEGATIVE_ROOT_FAIL_CLOSED=PASS"
+    ]
+  },
+  "authoritative_mass_evidence": {
+    "hard_mass_tolerance": 1.0e-12,
+    "control_mass_residual": 0.0,
+    "balanced_root_mass_residual": 0.0,
+    "expected_root_external_out_amount": 0.080000000000000002,
+    "observed_authoritative_total_out_delta": 0.080000000000000002,
+    "balanced_qssdi_external_in_matches_root_out": true,
+    "balanced_root_qssdi_physical_state_identity": true,
+    "markers": [
+      "FMR09_ROOT_SINK_EXACTLY_ONCE=PASS",
+      "FMR09_BALANCED_ROOT_SSDI_STATE_IDENTITY=PASS",
+      "FMR09_HARD_MASS_BALANCE=PASS"
+    ]
+  },
+  "regression_evidence": {
+    "fpm03_fixed_ssdi_runtime_mass": "PASS",
+    "fmr07_committed_process_hydraulic_view": "PASS",
+    "fmr06_snow_rollback_replay_and_mass": "PASS",
+    "fvq20_scheduled_irrigation_scientific_oracle_replay": "PASS",
+    "fvq18_fixed_irrigation_scientific_oracle_replay": "PASS",
+    "o0_o2_full_output_identity": "PASS",
+    "independent_oracle_sources": {
+      "fvq20_decisive_verifier_head": "631c0daf04d34640450fd87002d895a2eb7b6c93",
+      "fvq20_oracle_blob": "c932f83a77300b511c145f0ed87fdfbc7ecfe342",
+      "fvq18_oracle_commit": "973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+      "fvq18_oracle_blob": "15989f375b557237eb36590f75361c02d19bb871"
+    },
+    "markers": [
+      "FMR09_FVQ20_SCHEDULED_IRRIGATION_ORACLE_REPLAY=PASS",
+      "FMR09_FVQ18_FIXED_IRRIGATION_ORACLE_REPLAY=PASS",
+      "FMR09_FULL_O0_O2_OUTPUT_IDENTITY=PASS"
+    ]
+  },
+  "harness_failure_classification": {
+    "initial_nonzero_root_failure_was_a_production_failure": false,
+    "classification": "HARNESS_ALLOCATABLE_SHAPE_REALLOCATION",
+    "finding": "Intrinsic assignment of a length-3 array constructor to an allocatable numnod=4 forcing component automatically reallocated qrot and qssdi to length 3. prepare_interval correctly rejected that malformed forcing shape.",
+    "correction": "Preserve the allocated numnod shape by scalar or element-wise assignment. The subsequently qualified heterogeneous fixture uses element-wise assignment.",
+    "production_change_required_for_this_failure": false
+  },
+  "architecture_invariant_checks": {
+    "kernel_io_separation_preserved": true,
+    "parameters_state_forcing_separation_preserved": true,
+    "transactional_checkpoint_trial_rollback_preserved": true,
+    "mass_conservation_hard": true,
+    "solver_internals_not_exposed_to_other_processes": true,
+    "runtime_owns_composition": true,
+    "no_silent_legacy_qrot_authority_on_explicit_route": true,
+    "physics_option_separate_from_numerical_policy": true
+  },
+  "known_nonblocking_observations": [
+    "The legacy HeadCalc compilation still emits pre-existing static warnings, including conservative array-bound and maybe-uninitialized diagnostics. F-MR09 does not claim to resolve those warnings.",
+    "The admitted root route remains restricted to precomputed nonnegative qrot with swkimpl=0. Dynamic Feddes/root-stress reevaluation inside Newton remains outside this work unit."
+  ],
+  "owner_conclusion": {
+    "decision": "QUALIFIED_OWNER_CANDIDATE_EXPLICIT_PRECOMPUTED_ROOT_SINK_RUNTIME_COMPOSITION",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "owner_qualified": true,
+    "independent_fvq_required": true,
+    "fpm05_may_consume_before_independent_fvq": false,
+    "next_owner": "F-VQ"
+  }
+}
