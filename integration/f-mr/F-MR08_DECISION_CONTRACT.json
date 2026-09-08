@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR08",
+  "title": "Nonstationary Temporal Acceptance Owner Resolution and Minimal Admitted Path",
+  "branch": "work/f-mr08-nonstationary-temporal-acceptance",
+  "owner_resolution": {
+    "primary_owner": "F-MR",
+    "generic_transaction_owner": "F-KT",
+    "fkt_change_required": false,
+    "reason": "The generic transaction contract already delegates temporal_error to the model and independently gates temporal_error <= temporal_tolerance, while mass conservation is a separate hard gate. The blocker is therefore the serialized F-MR model-specific temporal_error binding, not checkpoint/trial/retry/commit/rollback semantics."
+  },
+  "lineage": {
+    "production_source_base": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "production_source_base_role": "F-MR07 committed process hydraulic-view source postimage",
+    "qualified_fmr06_composed_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fmr06_qualification_closeout_head": "99d96d8a0b4d2752d254fd0f4f3fc1a0f4181dc3",
+    "lineage_relation": "F-MR07 and F-MR06 closeout diverge after exact composed candidate ffab7d705928170db3e76a5d346caafeb560e605; F-MR08 does not silently treat either governance branch as containing the other.",
+    "fpe05_owner_handoff_head": "929660d8d5da6d3b503b7179d3020b6c1332a154"
+  },
+  "numbering": {
+    "selected_code": "F-MR08",
+    "basis": [
+      "F-MR07 is already used for committed process hydraulic-view binding.",
+      "No live F-MR08 branch existed at reservation time.",
+      "F-SI16 currently reserves only generic F-MR_DOWNSTREAM ownership and no F-MR code or handoff artifact.",
+      "A later prescribed-bottom-head runtime-admission unit must therefore use F-MR09 or the next free governance-consistent code."
+    ]
+  },
+  "source_theory_audit": {
+    "exact_identity_long_term_intent": "NOT_LONG_TERM_METRIC",
+    "exact_identity_role": "restricted qualification/admission criterion currently used by serialized physical REFERENCE route; retained until a better route is independently qualified",
+    "legacy_swap431_full_vs_two_half_metric_available": false,
+    "legacy_note": "SWAP 4.3.1 reduces dt on nonlinear/convergence and process-event conditions; CritDevh and CritDevPondDt are solver/process convergence criteria, not a full-step versus two-half-step temporal accuracy metric.",
+    "modern_temporal_metric_intent": {
+      "comparison": "full_vs_two_half_endpoint",
+      "acceptance_metrics": ["h_cm", "theta", "pond_cm", "gwl_cm", "volact_cm", "ldwet_cm", "spev_cm", "saev_cm"],
+      "diagnostic_only_lagged_metrics": ["hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm"],
+      "normalization": "max(delta_i / limit_i)",
+      "acceptance": "normalized_error <= 1",
+      "zero_limit_semantics": "exact_equality_required",
+      "single_raw_tolerance_for_mixed_units_meaningful": false,
+      "mass_relation": "SEPARATE_ABSOLUTE_HARD_GATE_NEVER_NORMALIZED_OR_RELAXED"
+    },
+    "numeric_profile_state": {
+      "production_limits_qualified": false,
+      "fci14_profile_status": "UNQUALIFIED_NO_NUMERIC_LIMITS",
+      "fvq10_decision": "QUALIFIED_TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY",
+      "fvq10_produces_numeric_limits": false,
+      "fvq10_promotes_production_profile": false,
+      "solver_convergence_tolerance_reuse_allowed": false,
+      "mass_tolerance_reuse_allowed": false,
+      "benchmark_tuning_allowed": false
+    },
+    "optional_state_policy": "Only state belonging to the declared active process scope may enter the metric; uncovered optional process configurations remain fail-closed. Current serialized exact identity additionally compares allocated SNOW state when active.",
+    "alternative_solver_compatibility": "The intended metric is expressed in physical endpoint observables rather than HeadCalc/Newton/Jacobian internals, so the contract can in principle remain common across alternative soil-water solvers. No solver-specific production limits are inferred here."
+  },
+  "current_admission_evidence": {
+    "fvq14": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION with EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+    "fvq15": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION with EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+    "fvq17": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "irrigation": "NOT_YET_INDEPENDENTLY_ADMITTED_AT_DECISION_CHECKPOINT; live F-VQ18 branch contains contract only"
+  },
+  "decision": {
+    "path_a": "SEARCH_FIRST",
+    "path_b": "ARCHITECTURALLY_JUSTIFIED_BUT_PRODUCTION_IMPLEMENTATION_BLOCKED_PENDING_INDEPENDENTLY_QUALIFIED_PER_METRIC_LIMITS_AND_SCOPE",
+    "exact_identity_rule_changed_by_this_checkpoint": false,
+    "production_source_changed_by_this_checkpoint": false,
+    "fkt_source_changed_by_this_checkpoint": false,
+    "reason": "A graded metric is an intended architecture but no production numeric profile exists. Introducing arbitrary scales would violate F-VQ05/F-VQ10 and would tune acceptance without scientific basis. An already-admitted exact-identity nonstationary fixture can still resolve the immediate F-PE blocker without changing the metric."
+  },
+  "path_a_search_scope": [
+    "current restricted admitted Richards physical route",
+    "independently admitted F-MR06/F-VQ17 one-call-daily SNOW route"
+  ],
+  "path_a_exclusions": [
+    "unadmitted irrigation",
+    "BALANCED",
+    "THROUGHPUT",
+    "FALLBACK",
+    "parallel real-physics execution",
+    "manufactured expected values"
+  ],
+  "hard_holds": [
+    "Mass conservation remains a separate absolute hard gate with complete authoritative contributions and zero missing mask wherever complete composition is claimed.",
+    "Rejected temporal trials never mutate externally committed state.",
+    "No tolerance is tuned to obtain a desired performance fixture.",
+    "No F-KT production edit is allowed unless new source evidence proves the generic transaction contract inadequate.",
+    "No new physical-tail fixture may be consumed by F-PE before independent F-VQ scientific admission."
+  ],
+  "allowed_exit_after_evidence": [
+    "QUALIFIED_EXISTING_TEMPORAL_IDENTITY_WITH_ADMITTED_NONSTATIONARY_FIXTURE_READY_FOR_FVQ",
+    "QUALIFIED_NONSTATIONARY_TEMPORAL_ERROR_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+    "BLOCKED_TEMPORAL_ACCEPTANCE_REQUIRES_OWNER_OR_THEORY_DECISION"
+  ],
+  "checkpoint_status": "OWNER_RESOLVED_PATH_A_SEARCH_AUTHORIZED_PATH_B_LIMITS_BLOCKED"
+}
