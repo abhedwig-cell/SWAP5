@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ16",
+  "title": "Independent scientific qualification evidence for the exact F-PM02 structural B1.10 SNOW candidate",
+  "qualification_only": true,
+  "candidate_source": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "production_path": "src/process/mod_snow_process.f90",
+    "production_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "production_sha256": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293"
+  },
+  "independent_reference": {
+    "oracle": "B1.10",
+    "legacy_path": "SWAP/snow.f90",
+    "legacy_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "reference_fixture": "tests/vq/fvq16/B1.10_snow_reference.f90",
+    "reference_fixture_git_blob": "1f239cf235d3704415fdfa5163461677f067d13a",
+    "fixture_identity": "BYTE_IDENTICAL_TO_SUPPLIED_SWAP_4_3_1_DISTRIBUTION_AND_B1_10_PIN",
+    "oracle_method": "The exact legacy routine and candidate routine are compiled into one isolated qualification executable and executed independently for identical process inputs. F-PM02 expected-value constants are not the scientific oracle."
+  },
+  "decisive_qualification": {
+    "qualification_harness_head": "177d782bd901f05d7204e6659b1f7479d232121a",
+    "workflow_run": 34208331487,
+    "workflow_job": 102003082315,
+    "conclusion": "success",
+    "artifact_id": 10048706978,
+    "artifact_digest": "sha256:c387239a41d39b516e9f0f1c9060d5fcfbd8c28a1c288cbef5b6c54dbd4b3fbe",
+    "artifact_size_bytes": 1617,
+    "o0_executable_sha256": "08af5280293de5557657c4ac79aa83c6918dcdeb24c71b88850a86e13c45ebbd",
+    "o2_executable_sha256": "458a75212151667cd71c73db0b29ece9076f1ba4de5f6e4892307f1871b1d9dd",
+    "output_sha256": "bb623e34064f7a55987f7152d68a70fcf3c2c0838a16a74db3dbde4cfc89b300",
+    "output": "FVQ16_SNOW_SCIENTIFIC_PASS"
+  },
+  "reference_cases": {
+    "normal_existing_snowpack": "BITWISE_PASS",
+    "warm_fresh_snowfall": "BITWISE_PASS",
+    "snow_deficit_clamp": "BITWISE_PASS",
+    "sublimation_suppressed": "BITWISE_PASS",
+    "accepted_candidate_continuation_two_calls": "BITWISE_PASS"
+  },
+  "gates": {
+    "exact_candidate_commit_tree_blob_lock": "PASS",
+    "candidate_production_source_unchanged_on_qualification_branch": "PASS",
+    "exact_b110_legacy_fixture_sha256": "PASS",
+    "compiled_legacy_vs_candidate_snow_water_storage": "BITWISE_PASS",
+    "compiled_legacy_vs_candidate_liquid_water_storage": "BITWISE_PASS",
+    "compiled_legacy_vs_candidate_melt": "BITWISE_PASS",
+    "compiled_legacy_vs_candidate_sublimation": "BITWISE_PASS",
+    "compiled_legacy_vs_candidate_evaporation_side_effect_outputs": "BITWISE_PASS",
+    "immutable_parameters_unchanged": "PASS",
+    "forcing_unchanged": "PASS",
+    "committed_input_state_unchanged": "PASS",
+    "replay_exact": "PASS",
+    "non_midnight_one_day_interval": "PASS",
+    "zero_duration_fail_closed": "PASS",
+    "negative_duration_fail_closed": "PASS",
+    "subdaily_fail_closed": "PASS",
+    "multiday_fail_closed": "PASS",
+    "rejected_candidate_state_unchanged": "PASS",
+    "component_mass_storage_start_end_change": "BITWISE_PASS",
+    "component_mass_snowfall_rain_inputs": "BITWISE_PASS",
+    "component_mass_sublimation_external_out": "BITWISE_PASS",
+    "component_mass_melt_internal_transfer": "BITWISE_PASS",
+    "component_mass_unrounded_residual": "BITWISE_PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "new_scientific_tolerance": "NONE"
+  },
+  "mass_review": {
+    "snow_storage_owner": "snow_water_storage/legacy ssnow",
+    "liquid_water_substate": "legacy slw is contained within ssnow after each admitted Snow(2) call and must not be added a second time to total snow storage",
+    "external_inputs": ["snowfall_input/gsnow", "rain_on_snow_input/snrai"],
+    "external_output_from_whole_model": ["sublimation/subl"],
+    "internal_transfer": "melt leaves snow storage but is not an external whole-system loss if it is received by the surface/soil component",
+    "qualification_boundary": "F-VQ16 qualifies the component contribution and classification. It does not set or qualify whole-system F-KT mass completeness; downstream composition must connect melt exactly once and include all active component contributions."
+  },
+  "time_review": {
+    "scientifically_admitted_semantics": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "exact_duration": 1.0,
+    "midnight_required": false,
+    "subdaily_admitted": false,
+    "multiday_admitted": false,
+    "arbitrary_duration_scaling_admitted": false,
+    "discrepancy": "The API is generic in t0/t1 while the scientific oracle is one legacy Snow(2) call with no dt factor. F-VQ16 preserves that discrepancy explicitly rather than inferring new time scaling."
+  },
+  "scientific_result": {
+    "maximum_observed_scientific_difference": 0.0,
+    "comparison_criterion": "BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+    "scientific_snow_process_admitted": true,
+    "admitted_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "release_to_separate_snow_multiswap_qualification": true,
+    "runtime_composition_admitted": false,
+    "multiswap_snow_admitted": false,
+    "subdaily_admitted": false,
+    "arbitrary_duration_admitted": false,
+    "general_swap5_production_release": false
+  },
+  "decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+  "blockers": [],
+  "holds": [
+    "No subdaily or arbitrary-duration SNOW physics is admitted.",
+    "No SNOW MultiSWAP runtime execution is admitted by F-VQ16.",
+    "Downstream runtime composition must preserve the one-call daily event semantics across checkpoint/trial/retry paths.",
+    "Downstream F-KT accounting must include SNOW storage and external flux contributions without double counting melt or retained liquid water.",
+    "No general SWAP5 production release is implied."
+  ]
+}
