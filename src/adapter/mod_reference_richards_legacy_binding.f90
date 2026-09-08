@@ -34,17 +34,23 @@ module mod_reference_richards_legacy_binding
   public :: build_legacy_reference_request
 
   interface
-     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions)
+     subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
+                         numerical_config, physical_config, explicit_step_duration, parameter_set)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
-       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t
+       use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
+            soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
        type(a23bu_solver_history_t), target, intent(inout), optional :: history
        type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
        type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
        type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
+       type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+       type(soil_water_physical_config_t), intent(in), optional :: physical_config
+       real(8), intent(in), optional :: explicit_step_duration
+       type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
      end subroutine headcalc
   end interface
 
@@ -60,6 +66,7 @@ contains
     class(source_sink_provider_t), target, intent(in), optional :: source_sink
 
     request%parameters => parameters
+    request%physical%macropore_active = (swmacro /= 0)
     request%evaluation%constitutive => constitutive
     if (present(source_sink)) request%evaluation%source_sink => source_sink
     if (present(top_boundary)) then
@@ -100,6 +107,7 @@ contains
     logical :: ok
     type(a23bu_solver_history_t) :: call_history
     type(reference_richards_state_binding_t) :: state_binding
+    integer :: n
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
@@ -109,15 +117,16 @@ contains
        result%status = SW_SOLVE_FAILED
        return
     end if
+    n = request%parameters%active_nodes
 
     select type (ws => workspace)
     type is (reference_richards_legacy_workspace_t)
-       if (ws%legacy_worker%active_nodes /= numnod) then
-          call a23bu_initialize_worker(ws%legacy_worker, numnod)
+       if (ws%legacy_worker%active_nodes /= n) then
+          call a23bu_initialize_worker(ws%legacy_worker, n)
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
        call a23bu_reset_attempt_control(ws%legacy_worker)
-       call initialize_reference_workspace(ws%richards, numnod)
+       call initialize_reference_workspace(ws%richards, n)
        call reset_reference_workspace(ws%richards)
 
        ! F-KT owns the committed/base state. F-SI materializes only this solve's
@@ -126,10 +135,23 @@ contains
        call initialize_reference_state_binding(state_binding, request)
 
        call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
-            request%evaluation, request%boundary)
+            request%evaluation, request%boundary, request%numerical, request%physical, &
+            request%step_duration, request%parameters)
 
-       result%candidate_state%active_nodes = numnod
-       allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))
+       ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
+       ! an output rather than an input boundary condition. HeadCalc already
+       ! leaves the exact unrounded compartment residual vector in worker scratch.
+       ! Reuse the existing continuity recurrence and HeadCalc's own SUM order;
+       ! do not call legacy fluxes(), which mutates integration globals outside
+       ! the focused solver service.
+       if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+       end if
+
+       result%candidate_state%active_nodes = n
+       allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
        result%candidate_state%pressure_head = state_binding%h
        result%candidate_state%water_content = state_binding%theta
        result%candidate_state%ponding_depth = state_binding%pond
@@ -158,6 +180,24 @@ contains
     end select
   end subroutine reference_richards_legacy_solve
 
+  subroutine materialize_prescribed_head_bottom_flux(request, richards, state)
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(reference_richards_workspace_t), intent(in) :: richards
+    type(reference_richards_state_binding_t), intent(inout) :: state
+    integer :: node
+
+    ! Exact operation order of HeadCalc's existing vertical-flux recurrence:
+    ! q(i+1)=q(i)+storage(i)+sink(i)-source(i)+root_sink(i).
+    ! The F-SI16 admitted profile has explicit inactive macropores, therefore
+    ! matrix_fraction is exactly one and no macropore exchange term is present.
+    state%qbot = state%qtop
+    do node = 1, state%active_nodes
+       state%qbot = state%qbot + request%parameters%dz(node) * &
+            (state%theta(node)-state%thetm1(node)) / request%step_duration + &
+            richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)
+    end do
+  end subroutine materialize_prescribed_head_bottom_flux
+
   subroutine validate_legacy_request(request, ok, route)
     type(soil_water_solve_request_t), intent(in) :: request
     logical, intent(out) :: ok
@@ -172,11 +212,11 @@ contains
     end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
-    if (swmacro /= 0) then
-       route = 'legacy-macropore-deferred'
+    if (request%physical%macropore_active) then
+       route = 'explicit-macropore-deferred'
        return
     end if
-    if (swkimpl /= 0) then
+    if (request%numerical%conductivity_implicit_mode /= 0) then
        route = 'legacy-implicit-k-deferred'
        return
     end if
@@ -184,7 +224,8 @@ contains
        route = 'legacy-min-dt-deferred'
        return
     end if
-    if (swbotb /= 7 .and. swbotb /= -2) then
+    if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
+        request%boundary%bottom_mode /= 5) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if
@@ -200,25 +241,6 @@ contains
        route = 'source-sink-provider-required'
        return
     end if
-    if (request%boundary%bottom_mode /= swbotb) then
-       route = 'legacy-bottom-mode-mismatch'
-       return
-    end if
-    if (request%parameters%active_nodes /= numnod) return
-    if (maxval(abs(request%parameters%z-z(1:numnod))) > 0.0_real64) return
-    if (maxval(abs(request%parameters%dz-dz(1:numnod))) > 0.0_real64) return
-    if (maxval(abs(request%parameters%node_distance-disnod(1:numnod))) > 0.0_real64) return
-    if (.not. same_real(request%step_duration, dt)) return
-    if (request%numerical%max_iterations /= maxit) return
-    if (request%numerical%max_backtracking /= maxbacktr) return
-    if (request%numerical%conductivity_implicit_mode /= swkimpl) return
-    if (request%numerical%conductivity_mean_method /= swkmean) return
-    if (.not. same_real(request%numerical%min_step_duration, dtmin)) return
-    if (.not. same_real(request%numerical%compartment_balance_tolerance, CritDevBalCp)) return
-    if (.not. same_real(request%numerical%total_balance_tolerance, CritDevBalTot)) return
-    if (.not. same_real(request%numerical%head_abs_tolerance, critdevh2cp)) return
-    if (.not. same_real(request%numerical%head_rel_tolerance, critdevh1cp)) return
-    if (.not. same_real(request%numerical%ponding_tolerance, critdevponddt)) return
     ok = .true.
     route = 'legacy-request-bound'
   end subroutine validate_legacy_request

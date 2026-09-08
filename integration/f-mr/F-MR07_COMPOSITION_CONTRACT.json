@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR07",
+  "branch": "work/f-mr07-fsi19-runtime-recomposition",
+  "purpose": "Recompose the qualified F-MR06 restricted serialized real-physics MultiSWAP runtime with the qualified F-SI19 reference solver source closure without changing F-MR06 runtime policy, SNOW physics, mass acceptance or transaction semantics.",
+  "base": {
+    "fmr06_closeout_head": "99d96d8a0b4d2752d254fd0f4f3fc1a0f4181dc3",
+    "fmr06_production_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fmr06_status": "QUALIFIED_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_RUNTIME"
+  },
+  "incoming": {
+    "fsi19_closeout_head": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "fsi19_qualification_candidate": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+    "fsi19_status": "QUALIFIED_REFERENCE_LINEAR_SOLVER_SEAM_SOURCE_BOUND_LEGACY_EQUIVALENT"
+  },
+  "composition_probe": {
+    "pull_request": 74,
+    "automatic_mergeable": false,
+    "commits": 341,
+    "changed_files": 216,
+    "decision": "DO_NOT_MERGE_WHOLE_FSI_HISTORY; MATERIALIZE_MINIMAL_PRODUCTION_CLOSURE"
+  },
+  "production_closure": {
+    "src/solver/mod_soil_water_solver_contract.f90": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "src/solver/mod_reference_richards_workspace.f90": "59ef9d037c1875610d45ac83387ebab9e917e0fe",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "src/solver/mod_b110_default_mvg_provider.f90": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac",
+    "src/solver/mod_b110_root_sink_provider.f90": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "src/solver/mod_reference_linear_solver.f90": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c",
+    "src/legacy/b1_10_port/headcalc.f90": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "src/legacy/b1_10_port/soilwater.f90": "470bc81a380e114d70fecd75426ec2331c1c9fcc"
+  },
+  "fmr06_runtime_pins": {
+    "src/process/mod_snow_process.f90": "54702d71b4c84dce2842813549bd14c57301a383",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d"
+  },
+  "hard_constraints": {
+    "mass_conservation_remains_hard": true,
+    "transaction_semantics_may_change": false,
+    "snow_formulas_may_change": false,
+    "snow_time_scope_may_expand": false,
+    "parallel_real_physics_may_be_admitted": false,
+    "balanced_throughput_fallback_may_be_admitted": false,
+    "reference_solver_controls_may_change": false,
+    "general_richards_scope_may_expand": false
+  },
+  "qualification_required": [
+    "exact production closure blob locks",
+    "F-MR06 runtime blob identity",
+    "restricted serialized snow MultiSWAP regression at O0 and O2",
+    "rollback/replay/commit regression",
+    "authoritative aggregate mass regression",
+    "source-bound F-SI19 linear solver oracle",
+    "F-KT transaction boundary preservation"
+  ]
+}
