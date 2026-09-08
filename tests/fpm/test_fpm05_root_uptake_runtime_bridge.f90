@@ -48,7 +48,7 @@ program test_fpm05_root_uptake_runtime_bridge
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
   type(canonical_numerical_config_t) :: config
   real(real64) :: conductivity0, expected_amount, in_delta, out_delta, tolerance
-  integer :: dispatch_control, dispatch_bridge, i
+  integer :: dispatch_control, dispatch_bridge
   logical :: ok
 
   call configure_physical_parameters(physical_parameters(1),initial_state,conductivity0)
@@ -66,7 +66,7 @@ program test_fpm05_root_uptake_runtime_bridge
   call fmr_build_committed_process_hydraulic_view(state_bridge(1),committed_view,ok)
   call require(ok,'qualified committed hydraulic view available')
   call configure_process_parameters(process_parameters)
-  process_request%potential_transpiration=0.08_real64
+  call configure_process_request(process_request)
   call evaluate_macro_feddes_drought_uptake(process_parameters,committed_view,process_request, &
        process_fluxes,process_diagnostics)
   call require(process_diagnostics%status==ROOT_UPTAKE_OK .and. process_diagnostics%evaluated, &
@@ -112,6 +112,7 @@ program test_fpm05_root_uptake_runtime_bridge
   write(*,'(A,1X,ES24.16)') 'FPM05_PROCESS_EXPECTED_ROOT_AMOUNT=',expected_amount
   write(*,'(A,1X,ES24.16)') 'FPM05_PROCESS_OBSERVED_TOTAL_OUT_DELTA=',out_delta
   write(*,'(A)') 'FPM05_COMMITTED_HYDRAULIC_VIEW_PROCESS_READ=PASS'
+  write(*,'(A)') 'FPM05_DYNAMIC_ROOT_DISTRIBUTION_RUNTIME_INPUT=PASS'
   write(*,'(A)') 'FPM05_PROCESS_QROT_RUNTIME_BRIDGE=PASS'
   write(*,'(A)') 'FPM05_PROCESS_ROOT_MASS_EXACTLY_ONCE=PASS'
   write(*,'(A)') 'FPM05_PROCESS_BRIDGE_HARD_MASS=PASS'
@@ -140,17 +141,23 @@ contains
   subroutine configure_process_parameters(p)
     type(root_water_uptake_parameters_t), intent(out) :: p
     p%active_nodes=numnod
-    p%rooted_nodes=numnod
     p%hlim3l=-800.0_real64
     p%hlim3h=-500.0_real64
     p%hlim4=-16000.0_real64
     p%adcrl=0.1_real64
     p%adcrh=0.5_real64
-    allocate(p%cumulative_root_fraction(numnod+1))
-    do i=1,numnod+1
-      p%cumulative_root_fraction(i)=real(i-1,real64)/real(numnod,real64)
-    end do
   end subroutine configure_process_parameters
+
+  subroutine configure_process_request(r)
+    type(root_water_uptake_request_t), intent(out) :: r
+    integer :: k
+    r%potential_transpiration=0.08_real64
+    r%rooted_nodes=numnod
+    allocate(r%cumulative_root_fraction(numnod+1))
+    do k=1,numnod+1
+      r%cumulative_root_fraction(k)=real(k-1,real64)/real(numnod,real64)
+    end do
+  end subroutine configure_process_request
 
   subroutine configure_physical_parameters(p,state,k0)
     type(fmr_b110_physical_parameters_t), intent(out) :: p
