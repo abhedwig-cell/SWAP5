@@ -17,11 +17,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
+   use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
-   use MOD_arrays,         only: macp, mabbc
+   use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
    use MOD_MvG,            only: watcon, hconduc, moiscap, dhconduc, cofgen
@@ -363,7 +364,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
-      call tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, fsi_ws%residual, fsi_ws%delta_head, ierror)
+      call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
+           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror)
 
 !     in the rare case that TRIDAG fails, use alternative solution
       if (ierror /= 0) then
@@ -825,16 +827,15 @@ end subroutine pondrunoff_state_bridge
    subroutine alternative_solver()
    ! local
    integer                    :: i
-   real(8)                    :: d
 
    do i = 1, NN
       fsi_ws%band_matrix(i,1) = fsi_ws%dfdh_upper(i)
       fsi_ws%band_matrix(i,2) = fsi_ws%dfdh_main(i)
       fsi_ws%band_matrix(i,3) = fsi_ws%dfdh_lower(i)
    end do
-   call bandec(fsi_ws%band_matrix, NN, 1, 1, macp, 3, fsi_ws%band_aux, 1, fsi_ws%band_pivots, d)
    fsi_ws%band_rhs(1:NN) = fsi_ws%residual(1:NN)
-   call banbks(fsi_ws%band_matrix,nn,1,1,macp,3,fsi_ws%band_aux,1,fsi_ws%band_pivots,fsi_ws%band_rhs)
+   call reference_band_solve(fsi_ws%band_matrix, fsi_ws%band_aux, fsi_ws%band_pivots(1:NN), &
+        fsi_ws%band_rhs(1:NN))
    fsi_ws%delta_head(1:NN) = fsi_ws%band_rhs(1:NN)
    return
    end subroutine alternative_solver
