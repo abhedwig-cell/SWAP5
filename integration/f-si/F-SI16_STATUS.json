@@ -3,18 +3,26 @@
   "workstream": "F-SI",
   "work_unit": "F-SI16",
   "title": "Explicit prescribed bottom-head boundary admission",
-  "status": "IN_PROGRESS_QUALIFICATION_INVALIDATED_AUTHORITATIVE_QBOT_ARITHMETIC_ORDER",
-  "decision": "NOT_QUALIFIED_PENDING_EXACT_B110_AUTHORITATIVE_QBOT_REPAIR",
+  "status": "QUALIFIED",
+  "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
   "branch": "work/f-si16-explicit-prescribed-bottom-head",
   "basis": {
     "fsi15_final_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
     "fsi15_decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
-    "gc02_blocker": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
-    "invalidated_closeout": "a6470b90f100b7ed9837c5e092b39d011fd28476",
-    "invalidation_artifact": "integration/f-si/F-SI16_QUALIFICATION_INVALIDATION.json"
+    "gc02_blocker_resolved_for_solver_owner": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+    "previous_invalidated_closeout": "a6470b90f100b7ed9837c5e092b39d011fd28476",
+    "invalidation_artifact": "integration/f-si/F-SI16_QUALIFICATION_INVALIDATION.json",
+    "invalidation_disposition": "SUPERSEDED_BY_REPAIRED_AND_INDEPENDENTLY_REQUALIFIED_FSI16"
+  },
+  "production_postimage": {
+    "commit": "f143062051107c35162f5a28d7e87a88baab30bf",
+    "adapter_blob": "db432cac3f1156a179c636435a25f52cdececffc",
+    "headcalc_blob": "d92f77963329d61ab3feb988f912252c0161436c",
+    "production_frozen_after_postimage": true,
+    "repair": "mode-5 qbot materialization now follows exact B1.10 watstor()+fluxes() aggregate arithmetic grouping"
   },
   "source_characterization": {
-    "legacy_route": "B1.10 HeadCalc SWBOTB=5 followed by accepted-step watstor()+fluxes() qbot publication",
+    "legacy_route": "B1.10 HeadCalc SWBOTB=5 followed by authoritative accepted-step qbot materialization",
     "input_field": "soil_water_solve_request_t%boundary%bottom_head",
     "input_semantics": "lower-boundary face pressure head",
     "input_units": "cm",
@@ -23,48 +31,31 @@
       "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
     ],
     "mode5_bottom_gradient": "head_gradient(NN+1)=(h(NN)-hbot)/disnod(NN+1)+1",
-    "mode5_headcalc_darcy_term": "kmean(NN+1)*head_gradient(NN+1)",
-    "bottom_face_distance": "disnod(NN+1)=0.5*dz(NN), reconstructed from existing F-SI14 NN-sized geometry",
+    "bottom_face_distance": "disnod(NN+1)=0.5*dz(NN)",
     "qbot_units": "cm d-1",
     "qbot_sign": "positive enters the soil profile through the lower boundary; negative leaves the profile",
     "exact_b110_qbot_arithmetic": "qbot=qtop+qrosum+qdrtot+(volact-volm1)/dt-qssdisum for inactive macropores, with volact and volm1 formed as aggregate SUM(theta*dz) storages"
   },
-  "candidate": {
-    "previous_production_postimage": "d4c3cb5982b423de23b9b4bd2f815cfe895aca4f",
-    "adapter_blob": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c",
-    "headcalc_blob": "d92f77963329d61ab3feb988f912252c0161436c",
-    "known_defect": "mode-5 common qbot materialization uses node-by-node storage accumulation rather than exact B1.10 watstor()+fluxes() aggregate arithmetic order",
-    "common_qbot_bits_in_strengthened_oracle": "BFEF7FA6C612CEED",
-    "exact_b110_qbot_bits_in_strengthened_oracle": "BFEF7FA6C612CEE8",
-    "difference_ulp": 5
-  },
   "test_evidence": {
-    "existing_focused_gate": "PASS",
-    "existing_qualification_matrix": "PASS",
-    "existing_o0_o2_common_candidate_identity": "PASS",
-    "existing_positive_negative_qbot_cases": "PASS",
-    "existing_worker_isolation_1_2_4_8": "PASS",
-    "existing_aba_scratch_request_legacy_global_poisoning": "PASS",
-    "existing_fsi15_regression": "PASS",
-    "existing_fkt_boundary_regression": "PASS",
-    "previous_direct_oracle_claim": "INVALIDATED_FALSE_POSITIVE_NOT_AUTHORITATIVE_B110_FLUXES_COMPARISON",
-    "strengthened_exact_b110_authoritative_qbot_comparison": "FAIL_5_ULP_ARITHMETIC_ORDER"
-  },
-  "ownership": {
-    "prescribed_head_physics": "existing B1.10 reference physics unchanged",
-    "common_request_boundary_authority": "F-SI",
-    "transaction_semantics": "F-KT_UNCHANGED",
-    "physical_runtime_profile_admission": "F-MR_DOWNSTREAM_BLOCKED_UNTIL_REQUALIFIED",
-    "scientific_admission": "F-VQ_DOWNSTREAM_BLOCKED_UNTIL_REQUALIFIED",
-    "groundwater_coupling_orchestration": "F-GC_NOT_IN_SCOPE"
+    "tested_head": "e1f8e810a4b3018ef2901b9f35137e4381a0970e",
+    "workflow_run": 34256811255,
+    "workflow_job": 102164583595,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "focused_gate": "PASS",
+    "qualification_matrix": "PASS",
+    "independent_exact_b110_oracle": "PASS",
+    "fsi15_pinned_regression": "PASS",
+    "fkt_boundary_regression": "PASS",
+    "closeout_regression_gate": "PASS"
   },
   "scope_flags": {
     "IMPLEMENTED": true,
     "PERSISTED": true,
     "TESTED": true,
-    "QUALIFIED": false,
-    "bottom_mode_5_admitted": false,
-    "authoritative_bottom_flux_available": false,
+    "QUALIFIED": true,
+    "bottom_mode_5_admitted": true,
+    "authoritative_bottom_flux_available": true,
     "groundwater_coupling_admitted": false,
     "parallel_reference_backend_admitted": false,
     "physics_changed": false,
@@ -81,10 +72,14 @@
     "parallel_reference_backend": "NOT_ADMITTED"
   },
   "downstream_handoff": {
-    "fmr_allowed": false,
-    "fvq_allowed": false,
-    "gc02_resume_allowed": false,
-    "resume_same_existing_gc02_unit_after_future_fmr_and_fvq": true
+    "next_owner": "F-MR",
+    "next_work_unit": "F-MR10",
+    "fmr_allowed": true,
+    "independent_fvq_required_after_fmr": true,
+    "gc02_resume_allowed_now": false,
+    "gc02_resume_allowed_only_after_fmr10_and_independent_fvq": true,
+    "resume_same_existing_gc02_unit": true,
+    "new_fgc_unit_required": false
   },
-  "next_gate": "REPAIR_QBOT_ARITHMETIC_ORDER_AND_RUN_INDEPENDENT_EXACT_B110_HEADCALC_WATSTOR_FLUXES_ORACLE"
+  "next_gate": "F-MR10_RESTRICTED_SERIALIZED_PHYSICAL_RUNTIME_ADMISSION"
 }

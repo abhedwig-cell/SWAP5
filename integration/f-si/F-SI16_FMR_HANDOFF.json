@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "handoff_from": "F-SI16",
+  "handoff_to": "F-MR",
+  "target_work_unit": "F-MR10",
+  "suggested_title": "Restricted serialized runtime admission of explicit prescribed bottom-head boundary",
+  "source_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+  "source_branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+  "qualified_tested_head": "e1f8e810a4b3018ef2901b9f35137e4381a0970e",
+  "qualified_workflow": {
+    "run": 34256811255,
+    "job": 102164583595,
+    "conclusion": "success"
+  },
+  "admitted_solver_contract": {
+    "bottom_mode": 5,
+    "boundary_input": "request%boundary%bottom_head",
+    "input_semantics": "lower-boundary face pressure head in cm",
+    "authoritative_output": "result%bottom_flux",
+    "qbot_units": "cm d-1",
+    "qbot_sign": "positive into the soil profile through the lower boundary; negative out",
+    "authoritative_qbot_available": true
+  },
+  "runtime_scope": {
+    "requested_action": "admit the already F-SI-qualified SWBOTB=5 route into the restricted serialized physical runtime profile",
+    "serialized_only": true,
+    "parallel_reference_backend_admitted": false,
+    "groundwater_coupling_admitted": false,
+    "physics_change_allowed": false,
+    "qbot_sign_change_allowed": false,
+    "authoritative_flux_semantics_change_allowed": false,
+    "transaction_semantics_change_allowed": false,
+    "numerical_policy_change_allowed": false
+  },
+  "required_runtime_proofs": [
+    "runtime request preserves prescribed bottom_head authority",
+    "runtime returns and accounts authoritative solver qbot exactly once",
+    "restricted serialized physical profile remains deterministic",
+    "existing transaction checkpoint/trial/commit/rollback semantics remain unchanged",
+    "existing unsupported bottom modes remain fail-closed",
+    "F-SI16 production postimage remains source-bound"
+  ],
+  "downstream_sequence": {
+    "fmr10_allowed": true,
+    "independent_fvq_required_after_fmr10": true,
+    "gc02_resume_allowed_now": false,
+    "gc02_resume_allowed_only_after_fmr10_and_independent_fvq": true,
+    "resume_same_existing_gc02_unit": true,
+    "new_fgc_unit_required": false
+  }
+}
