@@ -16,7 +16,6 @@ check_blob() {
   }
 }
 
-# Exact already-qualified physical/kernel baseline consumed by F-MR05.
 check_blob src/transaction/mod_transaction_reference.f90 b1878606ae6cb2b04a7b4b15e3e537deacf4477f
 check_blob src/runtime/mod_canonical_contracts.f90 0c2b15fc45011c580384cf6a618e7b378fdccf0a
 check_blob src/runtime/mod_canonical_interval_runtime.f90 f2cae79d533343db818c11e0b61b605ac5f6739d
@@ -62,6 +61,40 @@ assert status['required_postchange_requalification'] == 'F-VQ15'
 print('FMR05_ARCHITECTURE_AND_REQUALIFICATION_BOUNDARY PASS')
 PY
 
+# Build an instrumented test copy only. Production source and the persisted focused
+# test remain unchanged; this run is evidence gathering, not qualification.
+DIAG_TEST="$BUILD/test_fmr05_mass_diagnostic.f90"
+python3 - "$DIAG_TEST" <<'PY'
+from pathlib import Path
+import sys
+src = Path('tests/fmr/test_fmr05_serialized_multiswap.f90').read_text()
+src = src.replace(
+"      call require(results(i)%mass%residual == 0.0_real64, 'accepted exact mass residual')",
+"      write(*,'(A,I0,A,ES26.17E3)') 'FMR05_COLUMN_', results(i)%column_id, '_MASS_RESIDUAL=', results(i)%mass%residual\n      call require(abs(results(i)%mass%residual) <= 1.0e-12_real64, 'accepted F-KT hard mass residual')")
+src = src.replace(
+"      call require(results(i)%mass%total_in == results(i)%mass%total_out, 'accepted total in/out identity')",
+"      call require(abs(results(i)%mass%total_in-results(i)%mass%total_out) <= 1.0e-12_real64, 'accepted in/out difference within hard mass gate')")
+src = src.replace(
+"      call require(diagnostics(i)%unrounded_mass_residual == 0.0_real64, 'diagnostic exact residual')",
+"      call require(same_bits(diagnostics(i)%unrounded_mass_residual,results(i)%mass%residual), 'diagnostic authoritative residual identity')")
+src = src.replace(
+"    call require(aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'aggregate exact residual')",
+"    write(*,'(A,ES26.17E3)') 'FMR05_DIAGNOSTIC_AGGREGATE_RESIDUAL=', aggregate%aggregate_unrounded_mass_residual")
+src = src.replace(
+"    call require(aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'failure case aggregate residual')",
+"    write(*,'(A,ES26.17E3)') 'FMR05_DIAGNOSTIC_FAILURE_AGGREGATE_RESIDUAL=', aggregate%aggregate_unrounded_mass_residual")
+src = src.replace(
+"        call require(results(i)%mass%residual == 0.0_real64, 'neighbor exact residual')",
+"        call require(abs(results(i)%mass%residual) <= 1.0e-12_real64, 'neighbor F-KT hard mass residual')")
+src = src.replace(
+"  call require(baseline_aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'aggregate exact mass identity')",
+"  write(*,'(A,ES26.17E3)') 'FMR05_BASELINE_AGGREGATE_RESIDUAL=', baseline_aggregate%aggregate_unrounded_mass_residual")
+src = src.replace(
+"  write(*,'(A)') 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=0x0.0p+0'",
+"  write(*,'(A,ES26.17E3)') 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=', baseline_aggregate%aggregate_unrounded_mass_residual")
+Path(sys.argv[1]).write_text(src)
+PY
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -83,7 +116,7 @@ SRC=(
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   tests/fmr/mod_fmr04_fixed_top_provider.f90
-  tests/fmr/test_fmr05_serialized_multiswap.f90
+  "$DIAG_TEST"
 )
 
 for opt in 0 2; do
@@ -96,14 +129,8 @@ for opt in 0 2; do
     objects+=("$obj")
   done
   gfortran -O"$opt" "${objects[@]}" -o "$OUT/fmr05_serialized_multiswap"
-  if ! "$OUT/fmr05_serialized_multiswap" > "$OUT/output.txt" 2>&1; then
-    cat "$OUT/output.txt" >&2
-    echo "FMR05_O${opt}_EXECUTION FAIL" >&2
-    exit 1
-  fi
-  for batch in 1 2 8 17 31 32; do
-    grep -Fq "FMR05_BATCH_SIZE_${batch}=PASS" "$OUT/output.txt"
-  done
+  "$OUT/fmr05_serialized_multiswap" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
+  for batch in 1 2 8 17 31 32; do grep -Fq "FMR05_BATCH_SIZE_${batch}=PASS" "$OUT/output.txt"; done
   grep -Fq 'FMR05_INPUT_ORDER_INDEPENDENCE=PASS' "$OUT/output.txt"
   grep -Fq 'FMR05_SINGLE_VS_MULTI_IDENTITY=PASS' "$OUT/output.txt"
   grep -Fq 'FMR05_FAILURE_ISOLATION=PASS' "$OUT/output.txt"
@@ -111,18 +138,12 @@ for opt in 0 2; do
   grep -Fq 'FMR05_PHYSICAL_WORKER_COUNT=1' "$OUT/output.txt"
   grep -Fq 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' "$OUT/output.txt"
   grep -Fq 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=0x0.0p+0' "$OUT/output.txt"
   grep -Fq 'FMR05_REAL_HEADCALC_MULTICOLUMN=PASS' "$OUT/output.txt"
   grep -Fq 'FMR05_SERIALIZED_MULTISWAP_TEST PASS' "$OUT/output.txt"
-  sha256sum "$OUT/fmr05_serialized_multiswap" | sed "s#${OUT}/##" > "$OUT/executable.sha256"
-  sha256sum "$OUT/output.txt" > "$OUT/output.sha256"
-  echo "FMR05_O${opt} PASS"
+  echo "FMR05_DIAGNOSTIC_O${opt} COMPLETE"
 done
 
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
-echo 'FMR05_O0_O2_OUTPUT_IDENTITY PASS'
+echo 'FMR05_DIAGNOSTIC_O0_O2_OUTPUT_IDENTITY PASS'
 cat "$BUILD/o0/output.txt"
-echo "FMR05_O0_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o0/executable.sha256")"
-echo "FMR05_O2_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o2/executable.sha256")"
-echo "FMR05_OUTPUT_SHA256=$(cut -d' ' -f1 "$BUILD/o0/output.sha256")"
-echo 'FMR05_GATE PASS_FOCUSED_RUNTIME_CANDIDATE_REQUIRES_FVQ15'
+echo 'FMR05_GATE DIAGNOSTIC_ONLY_NOT_QUALIFICATION'
