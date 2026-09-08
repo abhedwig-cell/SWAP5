@@ -402,7 +402,8 @@ contains
     type(fmr_column_diagnostics_t), intent(in) :: diagnostics(:)
     integer, intent(in) :: batches
     type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
-    integer :: i
+    integer, allocatable :: order(:)
+    integer :: pos, i
 
     aggregate = fmr_aggregate_diagnostics_t()
     aggregate%columns = size(columns)
@@ -412,7 +413,9 @@ contains
     allocate(aggregate%work_distribution(1))
     aggregate%work_distribution = 0_int64
 
-    do i = 1, size(columns)
+    call fmr_build_execution_order(columns, order)
+    do pos = 1, size(order)
+      i = order(pos)
       aggregate%attempts = aggregate%attempts + diagnostics(i)%attempts
       aggregate%retries = aggregate%retries + diagnostics(i)%retries
       if (diagnostics(i)%accepted == 0) aggregate%failures = aggregate%failures + 1
@@ -427,7 +430,8 @@ contains
   subroutine finalize_runtime_diagnostics(results, runtime)
     type(fmr_serialized_column_result_t), intent(in) :: results(:)
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
-    integer :: i
+    integer, allocatable :: order(:)
+    integer :: pos, i, j, held
     logical :: aggregate_complete
 
     runtime%number_admitted = 0
@@ -446,9 +450,25 @@ contains
     runtime%authoritative_aggregate_mass%total_in = 0.0_real64
     runtime%authoritative_aggregate_mass%total_out = 0.0_real64
     runtime%authoritative_aggregate_mass%residual = 0.0_real64
-    aggregate_complete = .false.
+    aggregate_complete = .true.
 
+    allocate(order(size(results)))
     do i = 1, size(results)
+      order(i) = i
+    end do
+    do i = 2, size(order)
+      held = order(i)
+      j = i - 1
+      do while (j >= 1)
+        if (results(order(j))%column_id <= results(held)%column_id) exit
+        order(j + 1) = order(j)
+        j = j - 1
+      end do
+      order(j + 1) = held
+    end do
+
+    do pos = 1, size(order)
+      i = order(pos)
       if (results(i)%admitted) runtime%number_admitted = runtime%number_admitted + 1
       if (results(i)%solver_executed) then
         runtime%number_executed = runtime%number_executed + 1
@@ -456,7 +476,6 @@ contains
       end if
       if (results(i)%committed) then
         runtime%number_committed = runtime%number_committed + 1
-        aggregate_complete = .true.
         aggregate_complete = aggregate_complete .and. results(i)%mass%complete .and. &
              results(i)%mass%missing_contribution_mask == TX_MASS_MISSING_NONE
         runtime%authoritative_aggregate_mass%accepted_transaction_count = &
