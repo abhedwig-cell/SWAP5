@@ -9,11 +9,14 @@
     "commit": "d53719b31202f73b621afce71b107699a0000737",
     "decision": "QUALIFIED_FACE_CLOSURE_ATTRIBUTION_READY_FOR_INTERFACE_PHYSICS_QUALIFICATION"
   },
-  "objective": "Establish an independent, interface-consistent steady-Darcian reference for heterogeneous soil faces and use it to compare arithmetic, harmonic, LayeredMFP equal-flux and reconstructable SWKMEAN=7 Darcian-mean behaviour before any candidate solver face-law change.",
+  "candidate_head_before_closeout": "756ad0fd0ad9f6870f871e4472f2d552e4be4c76",
+  "objective": "Establish an independent, interface-consistent steady-Darcian reference for heterogeneous soil faces, diagnose the remaining vertical face-closure error, and test whether precomputed Darcian lookup is a credible reduced-order route before any production solver change.",
   "scope": {
     "production_implementation": false,
     "production_src_changed": false,
     "physics_changed": false,
+    "solver_controls_changed": false,
+    "mass_or_temporal_tolerances_changed": false,
     "hydraulic_only": true,
     "steady_local_interface_reference": true,
     "transient_column_admission": false,
@@ -24,53 +27,95 @@
     "groundwater": false,
     "modflow": false
   },
-  "reference_hierarchy": [
-    "Independent steady local Darcy boundary-value solution with continuous pressure head and conservative flux across the material interface",
-    "Direct LayeredMFP equal-flux interface construction using SWAP-compatible K(h)",
-    "Simple arithmetic and harmonic endpoint-conductivity controls",
-    "Historical SWAP SWKMEAN=7 lineage only after its table-generation mathematics is reconstructed from source/literature or equivalent independent equations"
-  ],
+  "decisive_evidence": {
+    "qualified_gate_run": 34264011259,
+    "qualified_gate_job": 102188715767,
+    "qualified_gate_conclusion": "SUCCESS",
+    "artifact": 10071079217,
+    "artifact_digest": "sha256:31b5f980b8630e774d61de4cdcea8cf3f7b3fb92c91ccb3c5749b0c8aa13c0f8",
+    "independent_oracle": {
+      "method": "steady one-dimensional Darcy BVP, shooting on conservative q with adaptive RK4 material-segment integration",
+      "calls_layeredmfp_face_solver_internally": false,
+      "tolerance_reproducibility_max_abs_flux_difference_cm_per_day": 6.366462912410498e-11
+    },
+    "heterogeneous_local_limit": {
+      "sand_to_clay_mfp_relative_error": 0.0025951388623757636,
+      "sand_to_clay_harmonic_relative_error": 0.002265069860702584,
+      "sand_to_clay_arithmetic_relative_error": 0.5778963768596845,
+      "clay_to_sand_mfp_relative_error": 0.002447212588511877,
+      "clay_to_sand_harmonic_relative_error": 0.0022998404126171974,
+      "clay_to_sand_arithmetic_relative_error": 0.6074486247227925
+    },
+    "broad_240_case_face_matrix": {
+      "failures": 0,
+      "mfp_sign_mismatches": 0,
+      "mfp_error": {"median": 0.026395394777377325, "p90": 0.2019968902339813, "maximum": 0.728630705366669},
+      "arithmetic_error": {"median": 2.5761517192960115, "p90": 89.9600216804884, "maximum": 950.0699373846344},
+      "harmonic_error": {"median": 0.5347912537467567, "p90": 0.9821728075774339, "maximum": 1.4344613307605085}
+    },
+    "szymkiewicz_2009_homogeneous_control": {
+      "swkmean7_reproduced": false,
+      "cases": 260,
+      "fraction_better_than_current_mfp": 0.7615384615384615,
+      "current_mfp_error": {"median": 0.05316806986911231, "p90": 0.32526421408170125, "maximum": 2.0907533986515414},
+      "szym2009_error": {"median": 0.03233819098852083, "p90": 0.18284305669000725, "maximum": 0.4530398614794704},
+      "downward_wet_regime_not_uniformly_improved": true,
+      "targeted_strong_gradient_cases_better_than_mfp": 6
+    },
+    "oracle_derived_bilinear_lookup": {
+      "legacy_swkmean7_table_reproduced": false,
+      "head_axis_points": 16,
+      "values_per_face_class": 256,
+      "bytes_per_face_class_before_metadata": 2048,
+      "sand_sand_error": {"median": 0.033400880402723244, "p90": 0.11142759306630826, "maximum": 0.267363087370523},
+      "sand_clay_error": {"median": 0.021394445432470415, "p90": 0.0703244295349204, "maximum": 0.20791407555370237},
+      "direction_mismatches": 0
+    }
+  },
+  "claims": {
+    "independent_steady_darcy_reference_established": "YES_FOR_QUALIFICATION_SCOPE",
+    "heterogeneous_mfp_equal_flux_local_series_resistance_confirmed": "YES_FOR_TESTED_LIMIT",
+    "remaining_large_mfp_error_is_only_material_interface_problem": "REJECTED",
+    "strong_vertical_gravity_capillary_interaction_requires_better_darcian_closure": "SUPPORTED",
+    "szymkiewicz_2009_formula_is_universal_replacement": "REJECTED",
+    "oracle_derived_darcian_lookup_feasible": "SUPPORTED_FOR_TRANSIENT_PROTOTYPING",
+    "historical_swkmean7_binary_tables_reproduced": "NO",
+    "production_table_density_selected": "NO",
+    "transient_scientific_admission": "NOT_GRANTED",
+    "production_admission": "NOT_GRANTED",
+    "multiswap_speedup": "NOT_ESTABLISHED"
+  },
   "source_provenance": {
     "swap_4_3_1_module": "MOD_Kavg_Szym.f90",
     "swap_4_3_1_entry": "functions.f90 hcomean SWKMEAN=7",
-    "observed_behaviour": "Runtime mode 7 bilinearly interpolates a precomputed K_Szym(boundary, htop, hbot) table and validates profile, compartment count, material-layer mapping and dz against the table metadata.",
+    "observed_runtime_shape": "K_Szym(boundary, htop, hbot) with bilinear interpolation",
     "required_table_pattern": "Kavg_Szymkiewicz_<profile>_<numnod>.unf",
-    "tables_available_in_supplied_source_archive": false,
-    "literature_lineage": [
-      "Warrick 1991 Numerical approximations of darcian flow through unsaturated soil",
-      "Szymkiewicz 2009 Approximation of internodal conductivities in numerical simulation of one-dimensional infiltration, drainage, and capillary rise in unsaturated soils",
-      "Szymkiewicz and Helmig 2011 Comparison of conductivity averaging methods for one-dimensional unsaturated flow in layered soils"
-    ]
+    "table_generator_found_in_supplied_archive": false,
+    "tables_found_in_supplied_archive": false,
+    "qualification_effect": "Historical SWKMEAN=7 lineage is source-supported, but no byte-identical numerical reconstruction is claimed."
   },
-  "qualification_questions": [
-    "Can a numerically independent steady-Darcy BVP reproduce known homogeneous limiting cases without relying on any SWKMEAN implementation?",
-    "At heterogeneous interfaces, how close is LayeredMFP equal-flux to the independent BVP across gradients, grid lengths, orientations and conductivity contrasts?",
-    "Where do arithmetic and harmonic endpoint means fail relative to the steady-Darcian reference?",
-    "Does the LayeredMFP MFP construction remain conservative and directionally correct across strong contrasts?",
-    "Can the mathematical content behind SWKMEAN=7 be reconstructed independently despite missing .unf tables, without reverse-engineering undocumented binary values?"
-  ],
-  "hard_rules": {
-    "mass_conservation_required": true,
-    "flux_continuity_at_interface_required": true,
-    "no_post_update_clipping": true,
-    "no_production_face_law_change": true,
-    "no_tuning_to_swkmean1": true,
-    "no_claimed_swkmean7_numeric_results_without_reconstructed_or_source_table_evidence": true,
-    "independent_reference_must_not_call_layeredmfp_face_solver_internally": true
+  "architecture_invariants": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "PRESERVED_BY_REQUIRING_TABLE_GENERATION_OR_LOADING_OUTSIDE_KERNEL",
+    "explicit_data_separation": "LOOKUP_CLASSIFIED_AS_IMMUTABLE_HYDRAULIC_PARAMETER_DATA",
+    "compact_persistent_state": "NO_NEW_DYNAMIC_STATE",
+    "scratch_per_worker": "UNCHANGED",
+    "scalable_memory_layout": "LOOKUP_TO_BE_SHARED_BY_COMPATIBLE_FACE_OR_TEMPLATE_CLASS_NOT_DUPLICATED_PER_COLUMN",
+    "transactional_timesteps": "UNCHANGED",
+    "mass_conservation": "UNCHANGED_HARD",
+    "reference_mode": "UNCHANGED",
+    "alternative_soil_water_solvers": "SUPPORTED",
+    "physics_solver_policy_separation": "PRESERVED",
+    "diagnostic_truthfulness": "PRESERVED_BY_SEPARATING_SZYMKIEWICZ_2009_CONTROL_FROM_UNRECONSTRUCTED_SWKMEAN7"
   },
-  "planned_outputs": [
-    "steady heterogeneous interface oracle",
-    "homogeneous analytic sanity tests",
-    "heterogeneous orientation/contrast/gradient matrix",
-    "arithmetic/harmonic/MFP error maps against oracle",
-    "SWKMEAN=7 provenance and reconstruction note",
-    "qualification decision for the next transient-column workunit"
-  ],
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false
+    "TESTED": true,
+    "QUALIFIED": true
   },
-  "status": "INTERFACE_PHYSICS_REFERENCE_IN_PREPARATION"
+  "report": "integration/f-lmfp/F-LMFP06_REPORT.md",
+  "next_work_unit": "F-LMFP07",
+  "next_action": "Run a transient generic-time A/B/C using the existing LayeredMFP column with current MFP closure, an immutable oracle-derived Darcian lookup closure, and admitted FullRichards reference. Include both F-LMFP04 fixtures and strong homogeneous gradient cases before adding other SWAP processes.",
+  "status": "QUALIFIED_DARCIAN_REFERENCE_AND_LOOKUP_FEASIBILITY_READY_FOR_TRANSIENT_CANDIDATE_AB"
 }
