@@ -1,0 +1,21 @@
+name: F-WOF18 reference-ET transpiration
+
+on:
+  push:
+    branches:
+      - work/f-wof18-reference-et-transpiration-producer
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF18 reference-ET transpiration gate
+        run: bash tests/fwof/run_fwof18_reference_et_transpiration_gate.sh
