@@ -26,5 +26,5 @@ jobs:
           sudo apt-get install -y gfortran
       - name: F-SI14 request grid-geometry authority gate
         run: bash tests/fsi/run_fsi14_grid_authority_gate.sh
-      - name: F-SI14 exact F-SI13 same-geometry identity gate
-        run: bash tests/fsi/run_fsi14_fsi13_same_geometry_identity_gate.sh
+      - name: F-SI14 exact F-SI13 same-geometry and legacy-direct identity gate
+        run: bash tests/fsi/run_fsi14_qualification_identity_gate.sh
