@@ -33,7 +33,8 @@ forbidden_binding = [
     'kmean',
     'itnumb',
     'snow%',
-    'call commit',
+    'commit_candidate',
+    'rollback_candidate',
 ]
 for token in forbidden_binding:
     assert token not in binding, f'forbidden runtime dependency or mutation surface: {token}'
