@@ -8,6 +8,8 @@ on:
       - 'integration/f-vq/F-VQ26_*'
       - 'tests/fvq/test_fvq26_prescribed_bottom_head_runtime.f90'
       - 'tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate.sh'
+      - 'tests/fvq/test_fvq26_prescribed_bottom_head_runtime_v2.f90'
+      - 'tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate_v2.sh'
       - '.github/workflows/fvq26-fmr11-prescribed-bottom-head-runtime.yml'
   workflow_dispatch:
 
@@ -22,5 +24,5 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gfortran
-      - name: F-VQ26 independent prescribed bottom-head runtime gate
-        run: bash tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate.sh
+      - name: F-VQ26 independent accepted two-sign prescribed bottom-head runtime gate
+        run: bash tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate_v2.sh
