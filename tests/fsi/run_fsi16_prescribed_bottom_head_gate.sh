@@ -37,8 +37,12 @@ grep -Fq 'fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_d
 grep -Fq 'request%boundary%bottom_mode /= 5' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
-grep -Fq 'state%qbot = state%qtop' src/adapter/mod_reference_richards_legacy_binding.f90
-grep -Fq 'richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'volm1 = sum(state%thetm1(1:n) * request%parameters%dz(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'volact = sum(state%theta(1:n) * request%parameters%dz(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'qrosum = sum(richards%provider_root_sink(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'qdrtot = sum(richards%sink(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'qssdisum = sum(richards%source(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'state%qbot = state%qtop + qrosum + qdrtot +' src/adapter/mod_reference_richards_legacy_binding.f90
 if grep -Fqi 'call fluxes' src/adapter/mod_reference_richards_legacy_binding.f90; then
   echo 'F-SI16_PRESCRIBED_HEAD FAIL common adapter calls legacy fluxes' >&2
   exit 1
