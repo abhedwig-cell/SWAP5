@@ -3,21 +3,22 @@
   "workstream": "F-SI",
   "work_unit": "F-SI13",
   "title": "Explicit bottom-boundary mode binding for admitted free-drainage modes",
-  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "status": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
   "branch": "work/f-si13-explicit-bottom-boundary",
   "basis": {
     "fsi12_qualification_artifact_head": "3dacdb03503a5ac5f6ce3fe86a55612e9b08a46d",
     "fsi12_status": "QUALIFIED_EXPLICIT_PER_SOLVE_CONTROLS_SWKIMPL0",
     "canonical_branch_head_observed": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
-    "fkt_integration_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_integration_head_observed_at_start": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_integration_head_reverified_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
     "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
     "shared_fkt_type_change_required": false
   },
   "source_bound_problem": {
     "request_field_already_exists": "soil_water_solve_request_t%boundary%bottom_mode",
-    "current_adapter_dependency": "validate_legacy_request requires global swbotb to be 7/-2 and requires request%boundary%bottom_mode == global swbotb",
-    "current_headcalc_dependency": "HeadCalc residual and Jacobian bottom-boundary routing use global swbotb even on the explicit common route",
-    "architectural_issue": "an explicit per-solve boundary mode exists but is not authoritative; this creates avoidable cross-column/global coupling on the admitted common path"
+    "former_adapter_dependency": "validate_legacy_request required global swbotb to be 7/-2 and required request%boundary%bottom_mode == global swbotb",
+    "former_headcalc_dependency": "HeadCalc residual and Jacobian bottom-boundary routing used global swbotb even on the explicit common route",
+    "resolved_architectural_issue": "for admitted free-drainage modes the explicit per-solve request boundary mode is now authoritative on the common route, removing the corresponding legacy-global selector dependency"
   },
   "ownership": {
     "bottom_boundary_physics": "existing B1.10 reference physics, unchanged",
@@ -28,32 +29,85 @@
     "new_shared_type_required": false
   },
   "implementation_contract": {
-    "headcalc_explicit_route": "when explicit state binding is present, boundary_conditions is required and its bottom_mode becomes the local HeadCalc bottom-mode selector",
-    "headcalc_legacy_route": "when explicit state binding is absent, preserve legacy global swbotb exactly",
-    "adapter_explicit_route": "validate request bottom_mode directly; do not require equality to legacy global swbotb",
-    "legacy_request_builder": "may continue copying legacy global swbotb into a newly built compatibility request",
+    "headcalc_explicit_route": "when explicit state binding is present, boundary_conditions is required and boundary_conditions%bottom_mode becomes the local HeadCalc bottom-mode selector",
+    "headcalc_legacy_route": "when explicit state binding is absent, legacy global swbotb remains the effective selector",
+    "adapter_explicit_route": "validates request bottom_mode directly and does not require equality to legacy global swbotb",
+    "legacy_request_builder": "continues copying legacy global swbotb into a newly built compatibility request",
     "admitted_bottom_modes": [7, -2],
     "new_bottom_mode_physics_admitted": false,
     "formula_change": false,
     "policy_change": false,
     "transaction_change": false
   },
-  "qualification_required": {
-    "global_swbotb_poison_after_request_build": true,
-    "request_mode_7_authoritative": true,
-    "request_mode_minus2_authoritative": true,
-    "unsupported_request_mode_fail_closed_before_headcalc": true,
-    "workers": [1, 2, 4, 8],
-    "optimization_levels": ["O0", "O2"],
-    "aba_order_independence": true,
-    "scratch_poisoning": true,
-    "request_immutability": true,
-    "solver_route_iteration_identity": true,
-    "focused_unrounded_equation_residual": true,
-    "legacy_direct_identity_against_fsi12": true,
-    "fsi12_pinned_regression": true,
-    "fkt_boundary_regression": true
+  "materialized_postimage": {
+    "commit": "9463324c2d823deb32acb883f8f2bd245768ea21",
+    "materialization_run": 34203585396,
+    "materialization_job": 101987876817,
+    "headcalc_blob": "355bf276b3db4815adadfa4a190d96f8875dca07",
+    "reference_adapter_blob": "9e9d21ff5715558b4524062dc8fd008dce628a0a",
+    "production_files_changed": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "automatic_materialization_trigger": "RETIRED_TO_WORKFLOW_DISPATCH"
   },
+  "qualification_evidence": {
+    "tested_head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
+    "workflow_run": 34204400057,
+    "workflow_job": 101990395062,
+    "workflow_conclusion": "success",
+    "gate_conclusion": "F-SI13_QUALIFICATION_GATE PASS",
+    "checks": {
+      "static_bottom_mode_binding": "PASS",
+      "request_mode_7_authoritative_with_global_swbotb_poison": "PASS",
+      "request_mode_minus2_authoritative_with_global_swbotb_poison": "PASS",
+      "workers_1_2_4_8": "PASS",
+      "o0_o2_identity": "PASS",
+      "aba_order_independence": "PASS_VIA_COMMON_ROUTE_GATE",
+      "scratch_poisoning": "PASS_VIA_COMMON_ROUTE_GATE",
+      "request_immutability": "PASS_VIA_COMMON_ROUTE_GATE",
+      "solver_route_iteration_identity": "PASS_VIA_COMMON_ROUTE_FINGERPRINTS",
+      "focused_unrounded_equation_residual": "PASS_VIA_COMMON_ROUTE_GATE",
+      "unsupported_bottom_mode_5_fail_closed_o0_o2": "PASS",
+      "unsupported_bottom_mode_rejected_before_headcalc": "PASS",
+      "legacy_direct_identity_against_fsi12_o0_o2": "PASS",
+      "fsi12_pinned_regression": "PASS",
+      "swkimpl1_hold_preserved": "PASS",
+      "fkt_boundary_regression": "PASS"
+    }
+  },
+  "qualification_audit_trail": {
+    "attempt_1": {
+      "head": "b663948b2ee02221b5b5e45f614d30489a3af7f2",
+      "run": 34204163267,
+      "job": 101989642976,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_TRANSFORM_ERROR",
+      "cause": "authority harness searched actual newlines while the copied F-SI12 embedded Python used escaped newline literals",
+      "production_source_changed_to_fix": false
+    },
+    "attempt_2": {
+      "head": "cc48e0363ffacf29037aae67a387fca76d115be4",
+      "run": 34204308509,
+      "job": 101990106517,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_PATH_ERROR",
+      "cause": "copied F-SI12 script under temporary directory derived a non-repository ROOT",
+      "production_source_changed_to_fix": false
+    },
+    "attempt_3": {
+      "head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
+      "run": 34204400057,
+      "job": 101990395062,
+      "conclusion": "success"
+    }
+  },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "guarded i-1 references produce compiler -Wdo-subscript warnings",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning",
+    "corrected B1.10 hydraulic oracle compilation emits existing maybe-uninitialized warnings"
+  ],
   "holds": {
     "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
     "bottom_mode_3_cauchy": "NOT_ADMITTED",
@@ -65,13 +119,30 @@
     "full_rootextraction_reentrancy": "NOT_ADMITTED",
     "parallel_reference_backend": "NOT_ADMITTED"
   },
+  "invariant_assessment": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_BOTTOM_BOUNDARY_MODE",
+    "scratch_per_worker": "PRESERVED",
+    "transaction_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_FOR_ADMITTED_GATE_PROFILE_WITH_UNROUNDED_FOCUSED_RESIDUAL",
+    "multiswap_scalability": "REDUCES_COMMON_PATH_GLOBAL_SELECTOR_DEPENDENCY_AND_ADDS_NO_PER_COLUMN_HEAVY_SCRATCH",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "no_silent_time_or_io_assumptions_added": true
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "QUALIFIED": true,
     "physics_changed": false,
     "numerical_policy_changed": false,
-    "transaction_semantics_changed": false
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false,
+    "downstream_fsi14_allowed": true
   }
 }
