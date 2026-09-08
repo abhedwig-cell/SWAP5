@@ -21,13 +21,13 @@ program test_fsi16_prescribed_bottom_head
   type(b110_source_sink_provider_t), target :: source_sink
   type(b110_root_sink_provider_t), target :: root_sink
   type(fsi07_flux_top_provider_t), target :: top_provider
-  type(soil_water_solve_request_t) :: request_a, request_b, rejected
-  type(soil_water_solve_result_t) :: result_a, result_b, reject_result
+  type(soil_water_solve_request_t) :: request_a, request_b, request_c, rejected
+  type(soil_water_solve_result_t) :: result_a, result_b, result_c, reject_result
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   real(real64), target :: drainage(2,numnod), irrigation(numnod), zero_root(numnod), roots(numnod)
-  real(real64) :: head_value, expected_qbot, qnan
-  integer(int64) :: request_a_before, request_b_before
+  real(real64) :: head_value, expected_qbot, qnan, head_tolerance
+  integer(int64) :: request_a_before, request_b_before, request_c_before
   integer :: mode, failures, calls_before
 
   failures = 0
@@ -36,8 +36,12 @@ program test_fsi16_prescribed_bottom_head
   call configure_providers(head_value)
   call make_request(request_a, head_value, 123.456_real64)
   call make_request(request_b, head_value, -987.654_real64)
+  request_c = request_a
+  request_c%boundary%bottom_head = head_value + 0.01_real64
+  request_c%boundary%bottom_flux = 314.159_real64
   request_a_before = request_fingerprint(request_a)
   request_b_before = request_fingerprint(request_b)
+  request_c_before = request_fingerprint(request_c)
 
   ! After request construction these legacy lower-boundary duplicates are poison.
   ! The explicit common route must not recover authority from them.
@@ -62,8 +66,26 @@ program test_fsi16_prescribed_bottom_head
   if (.not. all(bitwise_same(result_b%candidate_state%pressure_head, result_a%candidate_state%pressure_head))) failures = failures + 1
   if (.not. all(bitwise_same(result_b%candidate_state%water_content, result_a%candidate_state%water_content))) failures = failures + 1
 
+  ! A nontrivial prescribed-head perturbation must control the solved lower node.
+  ! It starts from the same base state as request_a, so this checks boundary
+  ! authority rather than merely replaying an already-satisfied boundary value.
+  call prepare_workspace(workspace)
+  call solver%solve(request_c, workspace, result_c)
+  if (result_c%status /= SW_SOLVE_CONVERGED) failures = failures + 1
+  if (trim(result_c%diagnostics%route) /= 'legacy-reference-bound') failures = failures + 1
+  head_tolerance = max(1.0e-10_real64, 64.0_real64*epsilon(1.0_real64) * &
+       max(1.0_real64, abs(request_c%boundary%bottom_head)))
+  if (abs(result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) > head_tolerance) &
+       failures = failures + 1
+  if (transfer(result_c%candidate_state%pressure_head(numnod),0_int64) == &
+      transfer(result_a%candidate_state%pressure_head(numnod),0_int64)) failures = failures + 1
+  expected_qbot = continuity_qbot(request_c, result_c)
+  if (transfer(result_c%bottom_flux,0_int64) /= transfer(expected_qbot,0_int64)) failures = failures + 1
+  if (transfer(result_c%bottom_flux,0_int64) == transfer(request_c%boundary%bottom_flux,0_int64)) failures = failures + 1
+
   if (request_fingerprint(request_a) /= request_a_before) failures = failures + 1
   if (request_fingerprint(request_b) /= request_b_before) failures = failures + 1
+  if (request_fingerprint(request_c) /= request_c_before) failures = failures + 1
   if (swbotb /= 3) failures = failures + 1
   if (.not. ieee_is_nan(hbot)) failures = failures + 1
   if (.not. ieee_is_nan(gwlinp)) failures = failures + 1
@@ -83,7 +105,7 @@ program test_fsi16_prescribed_bottom_head
   end do
 
   ! Prescribed head must fail closed before HeadCalc if the lower face distance
-  ! was not supplied. Keep this negative fixture separate so request_a/request_b
+  ! was not supplied. Keep this negative fixture separate so positive requests
   ! retain their shared immutable NN+1 parameter set throughout the gate.
   call configure_short_parameters()
   rejected = request_a
@@ -96,6 +118,7 @@ program test_fsi16_prescribed_bottom_head
   if (workspace%legacy_worker%diagnostics%headcalc_calls /= calls_before) failures = failures + 1
   if (size(request_a%parameters%node_distance) /= numnod+1) failures = failures + 1
   if (size(request_b%parameters%node_distance) /= numnod+1) failures = failures + 1
+  if (size(request_c%parameters%node_distance) /= numnod+1) failures = failures + 1
 
   if (failures /= 0) then
      write(*,'(A,I0)') 'F-SI16_PRESCRIBED_BOTTOM_HEAD FAIL failures=', failures
@@ -104,7 +127,9 @@ program test_fsi16_prescribed_bottom_head
 
   write(*,'(A,Z16.16)') 'F-SI16_QBOT_BITS ', transfer(result_a%bottom_flux,0_int64)
   write(*,'(A,Z16.16)') 'F-SI16_HEAD_BITS ', transfer(result_a%candidate_state%pressure_head(numnod),0_int64)
+  write(*,'(A,Z16.16)') 'F-SI16_PERTURBED_HEAD_BITS ', transfer(result_c%candidate_state%pressure_head(numnod),0_int64)
   print *, 'F-SI16_BOTTOM_FLUX_SEED_INDEPENDENCE PASS'
+  print *, 'F-SI16_BOTTOM_HEAD_RESPONSE PASS'
   print *, 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS'
   print *, 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS'
   print *, 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS'
