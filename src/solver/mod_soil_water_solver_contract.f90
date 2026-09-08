@@ -166,9 +166,8 @@ module mod_soil_water_solver_contract
        real(real64), intent(in) :: water_content_top
        type(soil_water_boundary_conditions_t), intent(in) :: requested
        real(real64), intent(out) :: actual_top_flux
-       real(real64), intent(out) :: surface_head, runoff_flux
-
-       ! Interface only; implementation supplied by the selected provider.
+       real(real64), intent(out) :: surface_head
+       real(real64), intent(out) :: runoff_flux
      end subroutine top_boundary_evaluate_ifc
 
      subroutine macropore_evaluate_ifc(self, pressure_head, exchange_flux, active)
