@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "status": "PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING",
+  "branch": "work/f-pe03-reference-tail-characterization",
+  "basis": {
+    "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
+    "reference_only": true,
+    "production_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "numerical_controls_changed": false
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": false,
+    "reference_stress_characterization_harness_available": true,
+    "reference_cost_cliff_characterized": true,
+    "accepted_higher_cost_physical_fixture_found": false,
+    "physical_tail_distribution_qualified": false,
+    "bounded_cost_policy_admitted": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "fallback_policy_admitted": false,
+    "parallel_reference_backend_admitted": false
+  },
+  "observed_reference_costs": {
+    "accepted_stationary_uniform_cases": 6,
+    "accepted_higher_cost_cases": 0,
+    "accepted_cost_vector": {
+      "accepted_substeps": 1,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "internal_retries": 0
+    },
+    "rejected_perturbed_cost_vector": {
+      "accepted_substeps": 0,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 24,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "internal_retries": 3
+    },
+    "accepted_max_abs_unrounded_mass_residual": 2.77555756156289135e-17,
+    "hard_mass_gate": 1e-12
+  },
+  "fixture_gap": {
+    "current_fmr05_fvq15_fixture": "STATIONARY_UNIFORM_STATE_WITH_BALANCED_BOUNDARY_AND_SOURCE_SINK_FLUXES",
+    "fvq14": "STATIONARY_INITIAL_EQUALS_FINAL_STATE",
+    "fvq15": "STATIONARY_MULTICOLUMN_REPLAY_BITWISE_BOUND_TO_FVQ14",
+    "fsi09": "UNIFORM_HEAD_PER_COLUMN_WITH_EQUAL_TOP_BOTTOM_FLUX_AND_ZERO_SOURCE_SINK",
+    "fsi10": "HETEROGENEOUS_NONZERO_DRAINAGE_IRRIGATION_BUT_EXACT_PER_NODE_NET_BALANCE",
+    "fvq09": "REAL_TEMPORAL_HARNESS_CONTRACT_ONLY_NO_REAL_CHARACTERIZATION_EXECUTED",
+    "fvq10": "TEMPORAL_PROFILE_PROMOTION_CONTRACT_ONLY_NO_REAL_CHARACTERIZATION_EXECUTED",
+    "accepted_nonstationary_current_lineage_fixture_found": false
+  },
+  "blocker": {
+    "code": "FPE03-B01",
+    "status": "BLOCKED_FAIL_CLOSED",
+    "description": "Physical difficult-tail qualification requires at least one accepted nonstationary real-physics fixture on the current source lineage, with complete authoritative mass accounting and deterministic interval cost diagnostics.",
+    "owner_boundary": "Fixture admission or porting that changes physical qualification coverage belongs to F-VQ/F-MR or the owning physical workstream, not to F-PE policy code."
+  },
+  "claim_limits": {
+    "B12_or_heavy_clay_covered": false,
+    "representative_p50_p95_p99": false,
+    "synthetic_fmq23_difficult_tail_is_physical_evidence": false,
+    "production_bug_claimed_from_cost_cliff": false
+  },
+  "next_dependency": "ADMIT_OR_PORT_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_ON_CURRENT_FMR05_LINEAGE_BEFORE_PHYSICAL_TAIL_OR_BOUNDED_COST_POLICY_QUALIFICATION"
+}
