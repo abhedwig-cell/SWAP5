@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "title": "Restricted MACRO Feddes Drought-Only Precomputed Root-Uptake Candidate",
+  "branch": "work/f-pm05-root-water-uptake-candidate",
+  "lineage": {
+    "readiness_closeout_branch": "work/f-pm05-root-water-uptake-readiness",
+    "readiness_closeout_commit": "8149e5521485ede0b6750b3af8dbf7da40b926cd",
+    "readiness_decision": "BLOCKED_ROOT_WATER_UPTAKE_MIGRATION_REQUIRES_QUALIFIED_COMPOSED_ROOT_SINK_ROUTE",
+    "owner_composition_closeout": "17a70b7e21b18ba847e5882037577b27aa8afd87",
+    "owner_composition_tree": "59f420b898fda6fcce2bfee7c5c93ae22aa23932",
+    "independent_runtime_qualification": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+    "fvq21_closeout": "f7cdccf11d21c31494b328251b001d474170c0c7",
+    "candidate_branch_base": "f7cdccf11d21c31494b328251b001d474170c0c7"
+  },
+  "selected_profile": {
+    "name": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "legacy_entry": "RootExtraction_MACRO task 2",
+    "sw_drought": 1,
+    "sw_oxygen": 0,
+    "sw_salinity": 0,
+    "swfrost": 0,
+    "sw_compensate": 0,
+    "swwrtnonox": 0,
+    "swdmi2rd_equals_2": false,
+    "microscopic_root_uptake": false,
+    "swkimpl": 0,
+    "swmacro": 0,
+    "persistent_process_state_required": false
+  },
+  "legacy_source_lock": {
+    "canonical_nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "rootextraction_path": "SWAP/rootextraction.f90",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "cropdevelopment_path": "SWAP/MOD_cropdevelopment.f90",
+    "root_distribution_semantics": "cumdens_top(1)=0; cumulative root density is normalized; node fraction is cumdens_top(node+1)-cumdens_top(node); final rooted cumulative fraction is 1 for the admitted profile"
+  },
+  "process_contract": {
+    "read_side": "read-only committed process_hydraulic_view_t pressure_head and active_nodes",
+    "immutable_parameters": [
+      "active_nodes",
+      "rooted_nodes",
+      "hlim3l",
+      "hlim3h",
+      "hlim4",
+      "adcrl",
+      "adcrh",
+      "normalized cumulative root fractions"
+    ],
+    "forcing_or_process_input": [
+      "potential transpiration ptra"
+    ],
+    "physical_result": [
+      "precomputed nonnegative per-node root_extraction_sink",
+      "actual root uptake total"
+    ],
+    "diagnostics": [
+      "potential root sink",
+      "per-node drought reduction",
+      "potential uptake total",
+      "drought reduction total",
+      "effective hlim3"
+    ],
+    "solver_internal_access": false,
+    "legacy_global_access": false,
+    "io_access": false,
+    "calendar_dependency": false,
+    "persistent_state": false
+  },
+  "source_equations": {
+    "early_exit_no_roots": "rooted_nodes=0 corresponds to legacy rd < 1e-14 and yields zero root sink",
+    "early_exit_negligible_transpiration": "ptra < 1e-10 yields zero root sink",
+    "potential_node_uptake": "qpot(node)=(cumfrac(node+1)-cumfrac(node))*ptra",
+    "hlim3_low": "ptra < adcrl => hlim3=hlim3l",
+    "hlim3_interpolated": "adcrl <= ptra <= adcrh => hlim3=hlim3h+((adcrh-ptra)/(adcrh-adcrl))*(hlim3l-hlim3h)",
+    "hlim3_high": "ptra > adcrh => hlim3=hlim3h",
+    "dry_below_hlim4": "h(node) < hlim4 => alpdry=0",
+    "dry_transition": "hlim4 <= h(node) <= hlim3 => alpdry=(hlim4-h(node))/(hlim4-hlim3)",
+    "dry_above_hlim3": "h(node) > hlim3 => alpdry=1",
+    "actual_node_uptake": "qrot(node)=qpot(node)*alpdry(node)"
+  },
+  "fail_closed_parameter_domain": {
+    "finite_inputs_required": true,
+    "potential_transpiration_nonnegative": true,
+    "adcrh_strictly_greater_than_adcrl": true,
+    "hlim4_strictly_below_both_hlim3_endpoints": true,
+    "rooted_nodes_within_active_nodes": true,
+    "cumulative_root_fraction_size": "rooted_nodes+1",
+    "cumulative_root_fraction_first": 0.0,
+    "cumulative_root_fraction_last": 1.0,
+    "cumulative_root_fraction_nondecreasing": true
+  },
+  "runtime_bridge": {
+    "consumer": "exact F-MR09/F-VQ21 explicit precomputed root-sink route",
+    "binding": "candidate root_extraction_sink is copied into fmr_b110_physical_forcing_t%root_extraction_sink by runtime/coupler composition, not by the process module",
+    "authoritative_mass": "F-MR/F-KT books accepted root extraction exactly once as total_out; process diagnostics are reconciliation only",
+    "transaction": "the restricted process has no persistent state; any trial output is reconstructible from committed hydraulic view and request"
+  },
+  "required_owner_candidate_gates": [
+    "canonical source-equation fixtures for potential uptake, hlim3 and drought reduction",
+    "no-root and negligible-transpiration zero routes",
+    "invalid parameters and hydraulic-view mismatch fail closed",
+    "A/B/A deterministic process output",
+    "process result bridges unchanged into the exact F-MR09/F-VQ21 root-sink forcing field",
+    "real serialized runtime books process-computed root extraction exactly once",
+    "hard accepted mass balance remains satisfied on a balanced root/qssdi bridge fixture",
+    "F-VQ21 source locks remain unchanged",
+    "F-VQ18 fixed irrigation, F-VQ20 scheduled irrigation, F-MR07 hydraulic view and F-MR06 snow regressions remain green",
+    "O0/O2 output identity"
+  ],
+  "held_scope": [
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated uptake",
+    "drought-dependent root extension feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore root uptake",
+    "full legacy RootExtraction module reentrancy"
+  ],
+  "qualification_boundary": {
+    "owner_candidate_may_be_structurally_qualified": true,
+    "independent_scientific_fvq_required_after_owner_candidate": true,
+    "no_scope_broadening_without_new_source_bound_workunit": true
+  }
+}
