@@ -42,6 +42,19 @@ assert 'total_out = total_out + value' in p
 print('FMR09_FAIL_CLOSED_SOURCE_POLICY PASS')
 PY
 
+# Reuse the immutable independent scientific oracle sources, but compile and run
+# them against the current F-MR09 source tree. This is regression evidence only;
+# F-MR09 does not modify either independent verifier.
+FVQ20_VERIFIER_HEAD=631c0daf04d34640450fd87002d895a2eb7b6c93
+FVQ18_ORACLE_COMMIT=973d2b9d38917a4a459f51b6b46dd51cfd9690c4
+FVQ20_ORACLE_BLOB=c932f83a77300b511c145f0ed87fdfbc7ecfe342
+FVQ18_ORACLE_BLOB=15989f375b557237eb36590f75361c02d19bb871
+[[ "$(git rev-parse "$FVQ20_VERIFIER_HEAD:tests/fvq/test_fvq20_scheduled_irrigation_oracle.f90")" == "$FVQ20_ORACLE_BLOB" ]]
+[[ "$(git rev-parse "$FVQ18_ORACLE_COMMIT:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90")" == "$FVQ18_ORACLE_BLOB" ]]
+git show "$FVQ20_VERIFIER_HEAD:tests/fvq/test_fvq20_scheduled_irrigation_oracle.f90" > "$BUILD/test_fvq20_scheduled_irrigation_oracle.f90"
+git show "$FVQ18_ORACLE_COMMIT:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90" > "$BUILD/test_fvq18_fixed_irrigation_oracle.f90"
+echo 'FMR09_INDEPENDENT_IRRIGATION_ORACLE_SOURCE_LOCKS PASS'
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -91,6 +104,16 @@ for opt in 0 2; do
       "$OUT/$name" > "$OUT/$name.txt" 2>&1 || { cat "$OUT/$name.txt" >&2; exit 1; }
   done
 
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    "$BUILD/test_fvq20_scheduled_irrigation_oracle.f90" -o "$OUT/fvq20_oracle.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/fvq20_oracle.o" -o "$OUT/fvq20_oracle"
+  "$OUT/fvq20_oracle" > "$OUT/fvq20_oracle.txt" 2>&1 || { cat "$OUT/fvq20_oracle.txt" >&2; exit 1; }
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    "$BUILD/test_fvq18_fixed_irrigation_oracle.f90" -o "$OUT/fvq18_oracle.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/fvq18_oracle.o" -o "$OUT/fvq18_oracle"
+  "$OUT/fvq18_oracle" > "$OUT/fvq18_oracle.txt" 2>&1 || { cat "$OUT/fvq18_oracle.txt" >&2; exit 1; }
+
   grep -Fq 'FMR09_ROOT_SINK_EXACTLY_ONCE=PASS' "$OUT/test_fmr09_root_sink_runtime.txt"
   grep -Fq 'FMR09_BALANCED_ROOT_SSDI_STATE_IDENTITY=PASS' "$OUT/test_fmr09_root_sink_runtime.txt"
   grep -Fq 'FMR09_HARD_MASS_BALANCE=PASS' "$OUT/test_fmr09_root_sink_runtime.txt"
@@ -100,11 +123,19 @@ for opt in 0 2; do
   grep -Fq 'FMR06_SNOW_ROLLBACK=PASS' "$OUT/test_fmr06_snow_smoke.txt"
   grep -Fq 'FMR06_SNOW_REPLAY_BITWISE=PASS' "$OUT/test_fmr06_snow_smoke.txt"
   grep -Fq 'FMR06_SNOW_AUTHORITATIVE_MASS_COMPLETE=PASS' "$OUT/test_fmr06_snow_smoke.txt"
+  grep -Fq 'FVQ20_ROLLBACK_REPLAY=PASS' "$OUT/fvq20_oracle.txt"
+  grep -Fq 'FVQ20_A_B_A=PASS' "$OUT/fvq20_oracle.txt"
+  grep -Fq 'FVQ20_SCHEDULED_IRRIGATION_SCIENTIFIC_ORACLE PASS' "$OUT/fvq20_oracle.txt"
+  grep -Fq 'FVQ18_FIXED_TRANSACTION_REPLAY=PASS' "$OUT/fvq18_oracle.txt"
+  grep -Fq 'FVQ18_FIXED_A_B_A=PASS' "$OUT/fvq18_oracle.txt"
+  grep -Fq 'FVQ18_FIXED_IRRIGATION_SCIENTIFIC_ORACLE PASS' "$OUT/fvq18_oracle.txt"
 
   cat "$OUT/test_fmr09_root_sink_runtime.txt" \
       "$OUT/test_fpm03_ssdi_runtime_mass.txt" \
       "$OUT/test_fmr07_committed_process_hydraulic_view.txt" \
-      "$OUT/test_fmr06_snow_smoke.txt" > "$OUT/output.txt"
+      "$OUT/test_fmr06_snow_smoke.txt" \
+      "$OUT/fvq20_oracle.txt" \
+      "$OUT/fvq18_oracle.txt" > "$OUT/output.txt"
   echo "FMR09_O${opt}=PASS"
 done
 
@@ -112,12 +143,16 @@ cmp "$BUILD/o0/test_fmr09_root_sink_runtime.txt" "$BUILD/o2/test_fmr09_root_sink
 cmp "$BUILD/o0/test_fpm03_ssdi_runtime_mass.txt" "$BUILD/o2/test_fpm03_ssdi_runtime_mass.txt"
 cmp "$BUILD/o0/test_fmr07_committed_process_hydraulic_view.txt" "$BUILD/o2/test_fmr07_committed_process_hydraulic_view.txt"
 cmp "$BUILD/o0/test_fmr06_snow_smoke.txt" "$BUILD/o2/test_fmr06_snow_smoke.txt"
+cmp "$BUILD/o0/fvq20_oracle.txt" "$BUILD/o2/fvq20_oracle.txt"
+cmp "$BUILD/o0/fvq18_oracle.txt" "$BUILD/o2/fvq18_oracle.txt"
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 
 echo 'FMR09_ROOT_O0_O2_OUTPUT_IDENTITY=PASS'
 echo 'FMR09_FIXED_IRRIGATION_REGRESSION=PASS'
 echo 'FMR09_COMMITTED_HYDRAULIC_VIEW_REGRESSION=PASS'
 echo 'FMR09_SNOW_REGRESSION=PASS'
+echo 'FMR09_FVQ20_SCHEDULED_IRRIGATION_ORACLE_REPLAY=PASS'
+echo 'FMR09_FVQ18_FIXED_IRRIGATION_ORACLE_REPLAY=PASS'
 echo 'FMR09_FULL_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
 echo "FMR09_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | cut -d' ' -f1)"
