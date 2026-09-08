@@ -1,0 +1,70 @@
+name: F-PE02 diagnostics propagation candidate
+
+on:
+  push:
+    branches:
+      - work/f-pe02-diagnostics-policy-separation
+    paths:
+      - 'integration/f-pe/F-PE02_*.json'
+      - 'tools/fpe/fpe02_diagnostics_candidate.py'
+      - '.github/workflows/fpe02-diagnostics-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostics-candidate:
+    name: Exact-preimage diagnostics propagation qualification
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify qualified F-PE01 reference preimage
+        run: |
+          test "$(git hash-object src/kernel/mod_kernel_transactions.f90)" = '9f7c16e71cfb93b57f796ba759bae73824318a2f'
+          test "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = 'e4f5bc0bf47e2721d689e62107b5224196a093d9'
+          test "$(git hash-object src/adapter/mod_reference_richards_legacy_binding.f90)" = 'eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0'
+      - name: Replay qualified serialized real-physics baseline before candidate
+        run: bash tests/fmr/run_fmr05_gate.sh > /tmp/fpe02-preimage.log
+      - name: Materialize diagnostics candidate in qualification checkout
+        run: python3 tools/fpe/fpe02_diagnostics_candidate.py materialize | tee /tmp/fpe02-materialize.log
+      - name: Instrument existing F-MR05 acceptance test for propagated counters
+        run: python3 tools/fpe/fpe02_diagnostics_candidate.py instrument-test
+      - name: Validate exact source scope and no physics files changed
+        run: |
+          changed="$(git diff --name-only -- src | sort)"
+          expected=$'src/kernel/mod_kernel_transactions.f90\nsrc/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+          test "$changed" = "$expected"
+          test -z "$(git diff --name-only -- src/legacy src/solver src/adapter src/transaction)"
+          git diff --check
+      - name: Rebind F-MR05 source checks to exact diagnostic postimage in checkout
+        run: |
+          kernel_post="$(git hash-object src/kernel/mod_kernel_transactions.f90)"
+          runtime_post="$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+          sed -i "s/9f7c16e71cfb93b57f796ba759bae73824318a2f/$kernel_post/" tests/fmr/run_fmr05_gate.sh
+          sed -i "s/e4f5bc0bf47e2721d689e62107b5224196a093d9/$runtime_post/" tests/fmr/run_fmr05_gate.sh
+          grep -F "$kernel_post" tests/fmr/run_fmr05_gate.sh
+          grep -F "$runtime_post" tests/fmr/run_fmr05_gate.sh
+      - name: Execute O0 O2 real-physics regression with diagnostic postimage
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr05_gate.sh | tee /tmp/fpe02-postimage.log
+          grep -F 'FPE02_DIAGNOSTICS_PROPAGATION=PASS' /tmp/fpe02-postimage.log
+          grep -F 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' /tmp/fpe02-postimage.log
+          grep -F 'FMR05_O0_O2_OUTPUT_IDENTITY PASS' /tmp/fpe02-postimage.log
+          grep -F 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' /tmp/fpe02-postimage.log
+      - name: Report source-bound candidate evidence
+        run: |
+          echo "FPE02_KERNEL_PRE=9f7c16e71cfb93b57f796ba759bae73824318a2f"
+          echo "FPE02_KERNEL_POST=$(git hash-object src/kernel/mod_kernel_transactions.f90)"
+          echo "FPE02_RUNTIME_PRE=e4f5bc0bf47e2721d689e62107b5224196a093d9"
+          echo "FPE02_RUNTIME_POST=$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+          grep '^FPE02_' /tmp/fpe02-postimage.log | head -20
+          echo 'FPE02_PHYSICS_CHANGED=FALSE'
+          echo 'FPE02_NON_REFERENCE_POLICY_ADMITTED=FALSE'
+          echo 'FPE02_DIAGNOSTICS_CANDIDATE_GATE=PASS'
