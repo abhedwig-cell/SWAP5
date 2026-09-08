@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF24",
+  "title": "Atomic Actual-WOFOST Crop-Owner State and Read-Only View Composition",
+  "branch": "work/f-wof24-crop-owner-composite-state",
+  "base": {
+    "commit": "b34c541dbc781ab25d73f6cdf2a86c8a17be6f64",
+    "status": "QUALIFIED_COMPACT_PRIMARY_ACTUAL_WOFOST_BIOMASS_STATE_AND_WRT_VIEW_CARRIER"
+  },
+  "purpose": "Create the smallest route-specific transaction state that atomically owns current WOFOST crop lifecycle identity and primary actual biomass, without duplicating LAI or introducing WOFOST evolution. Expose read-only current-state views for downstream root/canopy composition.",
+  "route_scope": {
+    "execution_class": "actual WOFOST crop",
+    "simple_crop": false,
+    "SWRD1_or_SWRD2_state_replacement": false,
+    "potential_WOFOST_shadow": false,
+    "grass_or_nutrient_optional_dead_biomass": false,
+    "crop_evolution": false
+  },
+  "atomic_owner_state": {
+    "fields": [
+      "crop_emerged",
+      "development_stage_DVS",
+      "optional_primary_actual_WOFOST_biomass"
+    ],
+    "biomass_presence_rule": "allocated exactly when the WOFOST crop is emerged in this admitted state shape",
+    "extends": "transaction_state_t",
+    "single_FKT_authority": true
+  },
+  "LAI_reconciliation": {
+    "F_WOF20_common_carrier": "stores leaf_area_index for the previously admitted common route",
+    "WOFOST_source_semantics": "actual WOFOST LAI is recalculated from LASUM + SSA*WST + SPA*WSO",
+    "WOFOST_composite_decision": "do not embed crop_lifecycle_state_t because that would create a second independent LAI value beside the authoritative biomass-derived WOFOST LAI",
+    "WOFOST_lifecycle_fields_retained": ["crop_emerged", "development_stage_DVS"],
+    "leaf_area_index": "read-only derived view from primary biomass plus immutable SSA/SPA parameters"
+  },
+  "optional_state_scaling": {
+    "inactive_or_pre_emergence_WOFOST_column": "no biomass allocation",
+    "emerged_WOFOST_column": "allocate only the compact F-WOF23 primary biomass carrier",
+    "fixed_366_leaf_arrays": false,
+    "potential_shadow_mandatory": false
+  },
+  "read_only_views": {
+    "actual_root_biomass": "returns authoritative F-WOF23 root_biomass when emerged; unavailable otherwise",
+    "actual_leaf_area_index": "LASUM + SSA*WST + SPA*WSO, with SSA and SPA supplied as immutable parameters",
+    "crop_emerged": "owner field",
+    "development_stage": "owner field"
+  },
+  "transaction_semantics": [
+    "deep clone must isolate allocatable biomass/cohort history",
+    "F-KT checkpoint must capture lifecycle and biomass atomically",
+    "discarded trial must not mutate either lifecycle or biomass",
+    "same-checkpoint replay must be bitwise deterministic",
+    "biomass allocation/deallocation is part of candidate physical state and only becomes committed through F-KT"
+  ],
+  "downstream_composition": {
+    "F_WOF17_SWRD3": "feed actual_root_biomass into existing build_swrd3_root_geometry_snapshot without changing geometry physics",
+    "canopy_ET": "future canopy producer may consume derived actual_leaf_area_index; F-WOF24 does not implement CF, vcover or ET physics"
+  },
+  "forbidden": [
+    "nested F-WOF20 leaf_area_index as a second WOFOST LAI authority",
+    "WRT-only helper state",
+    "WRTPOT or potential biomass in the primary owner",
+    "crop growth/death/allocation evolution",
+    "leaf cohort ageing/creation cadence",
+    "calendar scheduling",
+    "runtime or solver crop-state ownership",
+    "second checkpoint/commit mechanism"
+  ],
+  "qualification_target": "QUALIFIED_ATOMIC_ACTUAL_WOFOST_CROP_OWNER_STATE_AND_WRT_LAI_VIEWS",
+  "affected_invariants": [3,4,6,7,8,9,16,21,22,25,27,29,30]
+}
