@@ -1,0 +1,24 @@
+name: F-VQ18 fixed-event irrigation scientific admission
+
+on:
+  push:
+    branches:
+      - qualification/f-vq18-fpm03-fixed-irrigation
+    paths:
+      - 'integration/f-vq/F-VQ18_*'
+      - 'tests/fvq/**'
+      - 'tools/fvq/fvq18_fixed_irrigation_gate.py'
+      - '.github/workflows/fvq18-fixed-irrigation.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ18 independent scientific admission gate
+        run: bash tests/fvq/run_fvq18_fixed_irrigation_gate.sh
