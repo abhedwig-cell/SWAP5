@@ -1,0 +1,37 @@
+name: F-VQ27 independent F-MR15 admission
+
+on:
+  push:
+    branches:
+      - qualification/f-vq27-fmr15-prescribed-head-interval-diagnostics
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+
+      - name: Independent scientific admission gate
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq27_fmr15_independent_gate.sh | tee fvq27.log
+
+      - name: Preserve qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq27-fmr15-independent-admission
+          path: fvq27.log
+          if-no-files-found: error
