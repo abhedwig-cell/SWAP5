@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP01",
+  "title": "Reduced-Order Layered MFP Soil-Water Solver Feasibility",
+  "branch": "work/f-lmfp01-layered-mfp-feasibility",
+  "base": {
+    "branch": "work/f-si17-process-hydraulic-view",
+    "commit": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "reason": "Use the qualified common solver contract and explicit process hydraulic view without inheriting the reopened F-SI16 prescribed-bottom-head work or later experimental solver work."
+  },
+  "scope": {
+    "production_implementation": false,
+    "prototype_allowed": true,
+    "purpose": "Determine whether a WOFOST-lineage layered matric-flux-potential soil-water solver can become an explicitly selected alternative SWAP5 soil-water solver for a qualified physical envelope.",
+    "working_name": "LayeredMFP"
+  },
+  "architecture_rules": {
+    "alternative_solver_invariant": 20,
+    "solver_model_is_not_execution_policy": true,
+    "silent_richards_to_layeredmfp_fallback_forbidden": true,
+    "full_richards_remains_reference": true,
+    "mass_conservation_is_hard_gate": true,
+    "generic_time_required": true,
+    "transactional_trial_semantics_required": true
+  },
+  "status": "FEASIBILITY_STUDY_STARTED",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
