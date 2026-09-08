@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ22",
+  "title": "F-PM05 Restricted Root Water Uptake Scientific Admission",
+  "branch": "qualification/f-vq22-fpm05-root-water-uptake",
+  "status": "QUALIFIED_INDEPENDENT_FPM05_MACRO_FEDDES_DROUGHT_ONLY_ROOT_WATER_UPTAKE_SCIENTIFIC_ADMISSION",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_QUALIFIED",
+  "state": {
+    "qualification_plan_persisted": true,
+    "independent_direct_scientific_oracle_implemented": true,
+    "independent_real_runtime_oracle_implemented": true,
+    "production_source_modified": false,
+    "candidate_source_immutable": true,
+    "tested": true,
+    "qualified": true
+  },
+  "candidate": {
+    "fpm05_closeout_commit": "591363019aa4b2324bec55354b45093b3b189819",
+    "fpm05_closeout_tree": "dd07ad0d16783e43b951b218904e7e2d1f409af4",
+    "process_source_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+  },
+  "decisive_evidence": {
+    "tested_head": "031f18de2e6a9be7f7844e616bfdbafb62cf3001",
+    "tested_tree": "ef6688072d30a2787171089de19c25bb7d335d54",
+    "workflow_run": 34257264867,
+    "workflow_job": 102166101792,
+    "workflow_conclusion": "success",
+    "oracle_output_sha256": "482f0e09bacaeb9428c322734a540ece0738f0c636e3b2db018df344cfff8c5a",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "qualified_profile": {
+    "name": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "legacy_source": "SWAP 4.3.1 RootExtraction_MACRO task 2",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "persistent_process_state": false,
+    "dynamic_crop_inputs": [
+      "potential_transpiration",
+      "rooted_nodes",
+      "normalized cumulative_root_fraction"
+    ],
+    "hydraulic_input": "committed pressure_head view on active evaluation",
+    "physical_output": "precomputed nonnegative per-node root_extraction_sink"
+  },
+  "qualified_semantics": {
+    "no_root_zero_route_before_hydraulic_or_distribution_dependency": true,
+    "ptra_below_1e_10_zero_route_before_hydraulic_or_distribution_dependency": true,
+    "ptra_exactly_1e_10_active": true,
+    "potential_node_uptake_from_dynamic_root_fraction": true,
+    "Feddes_hlim3_three_branch_rule": true,
+    "Feddes_drought_pressure_reduction": true,
+    "nodewise_qrot_equivalence": true,
+    "qrosum_equivalence": true,
+    "runtime_qrot_sign_and_node_order": true,
+    "authoritative_root_mass_exactly_once": true,
+    "hard_mass_conservation": true,
+    "O0_O2_identity": true
+  },
+  "regressions": {
+    "F_MR09_root_sink_runtime": "PASS",
+    "F_VQ18_fixed_irrigation": "PASS",
+    "F_VQ20_scheduled_irrigation": "PASS",
+    "F_MR07_committed_hydraulic_view": "PASS",
+    "F_MR06_snow": "PASS"
+  },
+  "held_scope": [
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated root uptake",
+    "drought-dependent root extension feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore root uptake",
+    "full legacy RootExtraction module reentrancy",
+    "production crop-owner composition beyond the explicit request contract"
+  ],
+  "downstream": {
+    "F_PM05_scientific_blocker_cleared": true,
+    "next_action_must_not_broaden_physics_implicitly": true,
+    "recommended_owner": "F-MR or crop/runtime composition owner",
+    "recommended_next_scope": "compose the already qualified restricted F-PM05 process into an admitted production crop/runtime path using explicit current crop-derived ptra/rooted_nodes/cumulative_root_fraction, then independently qualify that composition without changing the process physics"
+  }
+}
