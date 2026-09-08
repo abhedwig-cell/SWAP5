@@ -1,0 +1,27 @@
+name: F-VQ23 independent F-MR13 reference linear solver qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq23-fmr13-reference-linear-solver-runtime
+    paths-ignore:
+      - integration/f-vq/F-VQ23_QUALIFICATION.json
+      - integration/f-vq/F-VQ23_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ23 independent F-MR13 scientific verifier
+        run: bash tests/fvq/run_fvq23_fmr13_reference_linear_solver_runtime_gate.sh
