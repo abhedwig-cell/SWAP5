@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-B04-FVQ14-RUNTIME-SCREEN",
+  "title": "F-VQ14 restricted real-physics runtime cost screening on F-VQ27 postimage",
+  "branch": "work/f-pe03-b04-fvq14-runtime-screen-fvq27",
+  "status": "IN_PROGRESS_SOURCE_BOUND_FVQ14_RUNTIME_COST_SCREEN",
+  "phase": "PLAN_PERSISTED_PRE_TEST",
+  "base": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fmr15_closeout": "6d915141d42f3db469c2da689aabd4ca4836c23c",
+    "fvq14_closeout": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "fvq14_status": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+    "fpe03_b04": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED"
+  },
+  "workload": {
+    "name": "F-VQ14 F-MR04 restricted real-HeadCalc generic-time interval",
+    "interval": [1000.125,1000.625],
+    "initial_head": -75.0,
+    "scientific_test_blob": "629c0a0405dbf5a39c71e496d879406f88a4cf6d",
+    "mass_complete": true,
+    "authoritative_mass_residual": 0.0,
+    "rollback_replay_commit": true,
+    "generic_time": true
+  },
+  "baseline_cost_vector_without_accepted_substeps": [3,0,3,3,3,3,0],
+  "candidate_rule": "The source-bound F-VQ14 workload must remain transactionally accepted with hard mass conservation on the exact F-VQ27 postimage and have at least one aggregate interval cost counter strictly above [3,0,3,3,3,3,0].",
+  "state": {
+    "plan_persisted": true,
+    "production_source_changed": false,
+    "workload_semantics_changed": false,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "retry_policy_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "fpe03_b04_resolved": false,
+  "claim_limit": "No higher-cost claim is made until the exact F-VQ14 admitted workload is replayed source-bound against the F-VQ27 postimage. Test-only cost observation may not alter forcing, state, physics, solver controls, mass or transaction semantics.",
+  "next_action": "Run O0/O2 source-bound replay of the immutable F-VQ14 scientific workload with observation-only aggregate interval cost output."
+}
