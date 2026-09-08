@@ -228,6 +228,12 @@ contains
        route = 'legacy-bottom-mode-deferred'
        return
     end if
+    if (request%boundary%bottom_mode == 5) then
+       if (size(request%parameters%node_distance) /= request%parameters%active_nodes+1) then
+          route = 'bottom-distance-required'
+          return
+       end if
+    end if
     if (request%boundary%top_mode /= FSI_TOP_MODE_EXPLICIT_FLUX) then
        route = 'explicit-top-mode-required'
        return
