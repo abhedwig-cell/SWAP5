@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ25",
+  "title": "F-MR14 Interval Cost Diagnostics Independent Scientific No-Change Admission",
+  "branch": "qualification/f-vq25-fmr14-interval-diagnostics",
+  "status": "PERSISTED_PENDING_INDEPENDENT_SCIENTIFIC_NO_CHANGE_QUALIFICATION",
+  "phase": "PERSISTED_NOT_YET_TESTED",
+  "qualification_scope": "INDEPENDENT_SCIENTIFIC_NO_CHANGE_ADMISSION",
+  "candidate": {
+    "fmr14_closeout_commit": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fmr14_status": "QUALIFIED_FPE02_INTERVAL_COST_DIAGNOSTICS_IN_FMR13_REAL_PHYSICS_LINEAGE",
+    "fmr13_base_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "kernel_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "runtime_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
+  },
+  "required_evidence": {
+    "candidate_production_immutability": true,
+    "exact_two_path_observer_delta_vs_fmr13": true,
+    "kernel_exact_fpe02_qualified_postimage": true,
+    "runtime_normalizes_exactly_to_fmr13_after_observer_delta_removal": true,
+    "observer_fields_not_used_in_decisions": true,
+    "fmr09_authoritative_mass_transaction_replay": true,
+    "fmr09_historical_output_hash_preserved": true,
+    "fmr12_fmr10_runtime_regression": true,
+    "fmr12_historical_output_hash_preserved": true,
+    "interval_diagnostics_surface_o0_o2_identity": true
+  },
+  "state": {
+    "qualification_plan_persisted": true,
+    "production_source_modified": false,
+    "candidate_source_immutable": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "scientific_claim_limit": "F-VQ25 may admit only that F-MR14 exposes already-qualified aggregate interval diagnostics without detected scientific change in the existing admitted real-physics scope. It does not admit new physics, new solver controls, perturbed F-PE workloads, performance thresholds, BALANCED, THROUGHPUT or FALLBACK.",
+  "downstream_if_qualified": {
+    "fmr14_independent_scientific_no_change_admission": true,
+    "fpe03_b03_cleared_for_recharacterization_resume": true,
+    "fpe02_b01_automatically_resolved": false,
+    "perturbed_workload_scientifically_admitted": false,
+    "performance_policy_admission": false
+  }
+}
