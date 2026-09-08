@@ -1,0 +1,30 @@
+name: F-LMFP06 Darcian Interface Reference
+
+on:
+  push:
+    branches:
+      - work/f-lmfp06-interface-physics-darcian-reference
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/**'
+      - '.github/workflows/lmfp06-darcian-reference.yml'
+  workflow_dispatch:
+
+jobs:
+  darcian-reference:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python identity
+        run: python3 --version
+      - name: Independent steady Darcy interface qualification
+        run: bash experiments/lmfp/run_lmfp06_darcian_reference_gate.sh
+      - name: Upload Darcian reference evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp06-darcian-reference-evidence
+          path: lmfp06-artifacts/
+          if-no-files-found: warn
