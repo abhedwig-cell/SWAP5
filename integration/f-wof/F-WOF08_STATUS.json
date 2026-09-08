@@ -1,0 +1,61 @@
+{
+  "workunit": "F-WOF08",
+  "title": "Mass-conserving reallocation request versus applied-transfer contract",
+  "baseline": {
+    "branch": "work/f-wof07-leaf-reallocation-reference",
+    "commit": "8cfe0eb24ec4d289a58bb6707f2e0133997ccc34",
+    "status": "BLOCKED_LEAF_REALLOCATION_AVAILABILITY_CONTRACT_REQUIRED"
+  },
+  "branch": "work/f-wof08-reallocation-request-apply-contract",
+  "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_CONTRACT",
+  "qualification_scope": "ARCHITECTURE_AND_PHYSICAL_BOOKKEEPING_CONTRACT_ONLY",
+  "contract": {
+    "request_updates_cumulative_transfer": false,
+    "applied_transfer_rule": "APPLIED_o = min(REQUESTED_o, AVAILABLE_o)",
+    "cumulative_transfer_updates_from": "APPLIED_ONLY",
+    "storage_in_rule": "(APPLIED_LV + APPLIED_ST) * EFFICIENCY",
+    "conversion_loss_rule": "APPLIED_LV + APPLIED_ST - STORAGE_IN",
+    "limited_transfer_is_solver_failure": false,
+    "unfulfilled_request_consumes_cap": false,
+    "trial_commit_atomicity_required": true
+  },
+  "leaf_ordering": [
+    "same-day death on old living cohorts",
+    "age surviving cohorts",
+    "determine surviving donor availability",
+    "apply proportional reallocation to survivors",
+    "add same-day new leaf growth"
+  ],
+  "leaf_boundary_resolution": {
+    "applied_equals_surviving_mass_allowed": true,
+    "proportional_factor_at_full_depletion": 0.0,
+    "historical_strict_less_than_edge_adopted": false
+  },
+  "numerical_contract_evidence": {
+    "deterministic_random_cases": 100000,
+    "invariant_violations": 0,
+    "max_abs_reallocation_balance_residual": 0.0,
+    "availability_limited_cases": 72432,
+    "full_depletion_edge_safe": true
+  },
+  "relationship_to_existing_seams": {
+    "fwof04_reference_call_remains_valid": true,
+    "fwof04_valid_domain_note": "Reference characterization and full-application cases where REQUESTED == APPLIED",
+    "fwof05_stem_only_remains_qualified": true,
+    "silent_fwof04_api_rewrite_allowed": false
+  },
+  "affected_invariants": [3, 7, 13, 21, 23, 26, 27, 30],
+  "production_code_changed": false,
+  "persisted": true,
+  "implemented": false,
+  "tested": true,
+  "qualified": true,
+  "production_leaf_reallocation_allowed": false,
+  "open": [
+    "implement an explicit production request/apply seam without mutating F-WOF04 reference semantics",
+    "qualify donor availability and cumulative applied-transfer state under retries",
+    "qualify leaf-cohort application against the new applied-transfer seam",
+    "compose receiving storage and conversion-loss bookkeeping atomically"
+  ],
+  "next": "Implement the smallest pure request/apply production seam with applied-only cumulative bookkeeping, availability diagnostics, hard dry-matter balance and transactional retry tests."
+}
