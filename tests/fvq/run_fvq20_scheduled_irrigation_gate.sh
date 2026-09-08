@@ -36,9 +36,9 @@ RUNTIME_MODULES=(
   tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
 
-# F-VQ18 is a separate qualification lineage. Read its exact independently locked oracle
-# through git rather than copying F-PM04 expected values into this qualification.
-git show qualification/f-vq18-fpm03-fixed-irrigation:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90 \
+FVQ18_QUALIFIED_COMMIT=973d2b9d38917a4a459f51b6b46dd51cfd9690c4
+# Replay the independently qualified F-VQ18 oracle from its immutable closeout commit.
+git show "${FVQ18_QUALIFIED_COMMIT}:tests/fvq/test_fvq18_fixed_irrigation_oracle.f90" \
   > "$BUILD/test_fvq18_fixed_irrigation_oracle.f90"
 
 for opt in 0 2; do
