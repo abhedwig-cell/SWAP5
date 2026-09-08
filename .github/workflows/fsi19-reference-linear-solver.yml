@@ -1,0 +1,44 @@
+name: F-SI19 reference linear solver qualification
+
+on:
+  push:
+    branches:
+      - work/f-si19-reference-linear-solver-seam
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          gfortran --version
+          python3 --version
+
+      - name: Direct legacy linear solver oracle
+        run: bash tests/fsi/run_fsi19_reference_linear_solver_gate.sh
+
+      - name: Production HeadCalc versus F-SI18 reference control
+        run: bash tests/fsi/run_fsi19_headcalc_production_gate.sh
+
+      - name: Pinned predecessor and F-KT boundary regression
+        run: bash tests/fsi/run_fsi16_closeout_regression_gate.sh
+
+      - name: Architectural seam guards
+        run: |
+          grep -Fq 'use mod_reference_linear_solver, only: reference_tridag, reference_band_solve' src/legacy/b1_10_port/headcalc.f90
+          grep -Fq 'call reference_tridag(' src/legacy/b1_10_port/headcalc.f90
+          grep -Fq 'call reference_band_solve(' src/legacy/b1_10_port/headcalc.f90
+          ! grep -Eq '\bcall[[:space:]]+(tridag|bandec|banbks)\b' src/legacy/b1_10_port/headcalc.f90
+          ! grep -Eq '\bmacp\b' src/legacy/b1_10_port/headcalc.f90
+          grep -Fq 'real(real64), allocatable :: tridag_gamma(:)' src/solver/mod_reference_richards_workspace.f90
+          grep -Fq 'allocate(workspace%tridag_gamma(active_nodes))' src/solver/mod_reference_richards_workspace.f90
+          grep -Fq 'if (allocated(workspace%tridag_gamma)) nreal = nreal + size(workspace%tridag_gamma, kind=int64)' src/solver/mod_reference_richards_workspace.f90
+          echo 'FSI19_ARCHITECTURAL_SEAM_GUARDS=PASS'
