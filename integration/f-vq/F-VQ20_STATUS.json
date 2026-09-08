@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ20",
+  "scope": "RESTRICTED_B110_TCS7_DCS2_SINGLE_NODE_SSDI_SCIENTIFIC_ADMISSION",
+  "status": "QUALIFIED_INDEPENDENT_RESTRICTED_TCS7_DCS2_SINGLE_NODE_SSDI_SCIENTIFIC_ADMISSION",
+  "branch": "qualification/f-vq20-fpm04-scheduled-irrigation",
+  "state": {
+    "candidate_source_modified": false,
+    "reference_source_modified": false,
+    "independent_verifier_implemented": true,
+    "persisted": true,
+    "tested": true,
+    "scientifically_qualified": true
+  },
+  "fpm04_closeout_commit": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "fpm04_closeout_tree": "a3d06ea93395bfc9c5eb1cf01c2369f91c98c5c6",
+  "production_source": "src/process/mod_irrigation_process.f90",
+  "production_source_blob": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+  "contract_path": "integration/f-vq/F-VQ20_CONTRACT.json",
+  "oracle_path": "integration/f-vq/F-VQ20_B110_ORACLE.json",
+  "qualification_evidence_path": "integration/f-vq/F-VQ20_QUALIFICATION.json",
+  "qualification_evidence_commit": "1678afc64eb713156af9677131022f2fb0f176e2",
+  "decisive_verifier_head": "631c0daf04d34640450fd87002d895a2eb7b6c93",
+  "decisive_verifier_tree": "d0b4d2274e7e85406f3cfb4e086802673e50dffc",
+  "decisive_workflow_run_id": 34244184754,
+  "decisive_job_id": 102121786766,
+  "decisive_output_sha256": "5cb7ad8dc9f361a6ce9dcae7ec0f006643368de9f15a51e5f7cda949aea70c94",
+  "scientifically_admitted_capabilities": [
+    "TCS7 h(sensor_node) <= AFGEN(DVS) trigger from committed process hydraulic view",
+    "DCS2 DVS-dependent depth with adapter-side legacy mm-to-cm translation",
+    "restricted explicit-knot AFGEN interpolation/clamping semantics",
+    "single-node SSDI scheduled source at positive regular rate with duration <= 1 day",
+    "explicit selection opportunity without kernel day-start, day-end or midnight inference",
+    "scheduled event continuation without repeated hydraulic selection",
+    "no implicit retrigger after completion without a new selection opportunity",
+    "transaction-safe split, rollback/replay and completion",
+    "authoritative scheduled SSDI external-inflow accounting exactly once",
+    "O0/O2 identity within the independent verifier",
+    "preservation of independently qualified F-VQ18 fixed-event irrigation semantics"
+  ],
+  "not_admitted": [
+    "scheduled multi-node SSDI",
+    "surface scheduled irrigation",
+    "TCS1-TCS4, TCS6, TCS8",
+    "tcsfix/dayfix",
+    "DCS1",
+    "rainfall reduction",
+    "depth limits",
+    "solute-threshold over-irrigation",
+    "zero-rate or >1-day rate adaptation",
+    "MultiSWAP task=4 availability scaling",
+    "calendar parsing and legacy irrigation I/O",
+    "partial legacy AFGEN tables above the final supplied knot where stale SAVE-tail state may affect B1.10 behavior"
+  ],
+  "downstream": {
+    "fpm04_scheduled_tcs7_dcs2_single_node_ssdi_scientific_admission_complete": true,
+    "runtime_composition_not_implied": true,
+    "broader_irrigation_migration_must_remain_separate": true,
+    "next_owner_action": "F-MR may later consume this admitted process result through an owner-qualified runtime composition seam after checking current F-MR lineage overlap; F-PM should not silently add runtime/backend composition or broaden to held irrigation variants."
+  }
+}
