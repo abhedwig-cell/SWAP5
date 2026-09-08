@@ -1,0 +1,26 @@
+name: F-LMFP09 Density Extension
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  density-extension:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+      - name: Unchanged-threshold density extension gate
+        run: bash experiments/lmfp/run_lmfp09_density_gate.sh
+      - name: Upload F-LMFP09 density evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-density-evidence
+          path: |
+            lmfp09-density-artifacts/
