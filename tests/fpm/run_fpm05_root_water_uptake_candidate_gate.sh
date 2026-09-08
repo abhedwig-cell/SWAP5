@@ -46,9 +46,18 @@ for forbidden in ['HeadCalc', 'headcalc', 'open(', 'read(', 'write(unit', 'MOD_r
 assert 'process_hydraulic_view_t' in p
 assert 'root_extraction_sink' in p
 assert 'potential_transpiration' in p
+assert 'integer :: rooted_nodes = 0' in p
+assert 'real(real64), allocatable :: cumulative_root_fraction(:)' in p
+params=p.split('type, public :: root_water_uptake_parameters_t',1)[1].split('end type root_water_uptake_parameters_t',1)[0]
+request=p.split('type, public :: root_water_uptake_request_t',1)[1].split('end type root_water_uptake_request_t',1)[0]
+assert 'rooted_nodes' not in params
+assert 'cumulative_root_fraction' not in params
+assert 'rooted_nodes' in request
+assert 'cumulative_root_fraction' in request
 assert 'hlim3 = parameters%hlim3h +' in p
 assert 'alpdry = (hlim4 - pressure_head) / (hlim4 - hlim3)' in p
 print('FPM05_PROCESS_BOUNDARY_STATIC=PASS')
+print('FPM05_DYNAMIC_ROOT_DISTRIBUTION_API_STATIC=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -102,12 +111,14 @@ for opt in 0 2; do
     'FPM05_LEGACY_EARLY_EXIT_ZERO_ROUTES=PASS' \
     'FPM05_INVALID_DOMAIN_FAIL_CLOSED=PASS' \
     'FPM05_STATELESS_A_B_A_IDENTITY=PASS' \
+    'FPM05_DYNAMIC_ROOT_DISTRIBUTION_INPUT=PASS' \
     'FPM05_MACRO_FEDDES_ROOT_UPTAKE_TEST PASS'; do
       grep -Fq "$marker" "$OUT/test_fpm05_macro_feddes_root_uptake.txt"
   done
 
   for marker in \
     'FPM05_COMMITTED_HYDRAULIC_VIEW_PROCESS_READ=PASS' \
+    'FPM05_DYNAMIC_ROOT_DISTRIBUTION_RUNTIME_INPUT=PASS' \
     'FPM05_PROCESS_QROT_RUNTIME_BRIDGE=PASS' \
     'FPM05_PROCESS_ROOT_MASS_EXACTLY_ONCE=PASS' \
     'FPM05_PROCESS_BRIDGE_HARD_MASS=PASS' \
