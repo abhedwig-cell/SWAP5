@@ -7,6 +7,8 @@ on:
     paths:
       - 'tests/fpe/**'
       - 'integration/f-pe/F-PE03_REFERENCE_STRESS_CONTRACT.json'
+      - 'integration/f-pe/F-PE03_CHARACTERIZATION_EVIDENCE.json'
+      - 'integration/f-pe/F-PE03_STATUS.json'
       - '.github/workflows/fpe03-reference-stress.yml'
   workflow_dispatch:
 
@@ -31,10 +33,55 @@ jobs:
           assert c['hard_scope']['execution_policy']=='REFERENCE_ONLY'
           assert c['hard_scope']['physics_change_allowed'] is False
           assert c['hard_scope']['solver_policy_change_allowed'] is False
+          assert c['hard_scope']['numerical_control_change_allowed'] is False
           assert c['hard_scope']['production_source_change_allowed'] is False
           assert c['claim_limits']['bounded_cost_policy_admission'] is False
           assert c['synthetic_tail_boundary']['fmq23_synthetic_difficult_tail_may_be_used_as_physical_tail_evidence'] is False
           print('FPE03_SCOPE_LOCK=PASS')
           PY
       - name: Run O0 O2 real-physics stress characterization
-        run: bash tests/fpe/run_fpe03_reference_stress_gate.sh
+        run: |
+          set -o pipefail
+          bash tests/fpe/run_fpe03_reference_stress_gate.sh | tee /tmp/fpe03.log
+          grep -F 'FPE03_ACCEPTED_CASES=6' /tmp/fpe03.log
+          grep -F 'FPE03_REJECTED_CASES=18' /tmp/fpe03.log
+          grep -F 'FPE03_HIGHER_COST_ACCEPTED_CASES=0' /tmp/fpe03.log
+          grep -F 'FPE03_BASELINE_HEADCALC_CALLS=3' /tmp/fpe03.log
+          grep -F 'FPE03_BASELINE_NONLINEAR_ITERATIONS=3' /tmp/fpe03.log
+          grep -F 'FPE03_BASELINE_BACKTRACKING_ATTEMPTS=3' /tmp/fpe03.log
+          grep -F 'FPE03_MAX_ALL_NONLINEAR_ITERATIONS=24' /tmp/fpe03.log
+          grep -F 'FPE03_MAX_ALL_BACKTRACKING_ATTEMPTS=96' /tmp/fpe03.log
+          grep -F 'FPE03_MAX_ALL_INTERNAL_RETRIES=3' /tmp/fpe03.log
+          grep -F 'FPE03_ACCEPTED_HIGHER_COST_PHYSICAL_STRESS_FIXTURE=NOT_OBSERVED' /tmp/fpe03.log
+          grep -F 'FPE03_O0_O2_OUTPUT_IDENTITY=PASS' /tmp/fpe03.log
+          grep -F 'FPE03_REFERENCE_STRESS_GATE=PASS_CHARACTERIZATION_ONLY' /tmp/fpe03.log
+      - name: Verify partial-exit evidence and blocker
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          e=json.loads(Path('integration/f-pe/F-PE03_CHARACTERIZATION_EVIDENCE.json').read_text())
+          s=json.loads(Path('integration/f-pe/F-PE03_STATUS.json').read_text())
+          expected='PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING'
+          assert e['status']==expected
+          assert s['status']==expected
+          assert e['qualified_physical_tail'] is False
+          assert e['refined_matrix_results']['accepted_cases']==6
+          assert e['refined_matrix_results']['rejected_cases']==18
+          assert e['refined_matrix_results']['accepted_higher_cost_cases']==0
+          assert e['refined_matrix_results']['all_accepted_mass_complete'] is True
+          assert e['refined_matrix_results']['all_accepted_missing_mass_mask_zero'] is True
+          assert e['refined_matrix_results']['accepted_max_abs_unrounded_mass_residual'] <= e['refined_matrix_results']['accepted_mass_gate']
+          assert e['qualified_lineage_fixture_audit']['accepted_nonstationary_current_lineage_fixture_found'] is False
+          assert e['blocker']['code']=='FPE03-B01'
+          assert e['blocker']['status']=='BLOCKED_FAIL_CLOSED'
+          for k in ['physical_tail_percentiles_qualified','representative_p50_p95_p99','B12_or_heavy_clay_covered','bounded_cost_policy_admitted','fallback_policy_admitted','balanced_policy_admitted','throughput_policy_admitted','parallel_real_physics_admitted','synthetic_fmq23_tail_promoted_to_physical_evidence']:
+              assert e['claim_limits'][k] is False
+          assert s['scope_flags']['QUALIFIED'] is False
+          assert s['scope_flags']['accepted_higher_cost_physical_fixture_found'] is False
+          assert s['scope_flags']['bounded_cost_policy_admitted'] is False
+          assert s['scope_flags']['fallback_policy_admitted'] is False
+          assert s['fixture_gap']['accepted_nonstationary_current_lineage_fixture_found'] is False
+          assert s['blocker']['code']=='FPE03-B01'
+          print('FPE03_PARTIAL_EXIT_SELF_VERIFICATION=PASS')
+          PY
