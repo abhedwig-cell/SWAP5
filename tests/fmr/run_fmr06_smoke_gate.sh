@@ -37,12 +37,14 @@ expected = [
 ]
 assert changed == expected, f'unexpected F-MR06 production source changes: {changed}'
 backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text().lower()
+process = Path('src/process/mod_snow_process.f90').read_text().lower()
 for forbidden in ['call headcalc(', 'use variables', 'use mod_grid', '!$omp', 'omp_lib', 'parallel do']:
     assert forbidden not in backend, f'F-MR06 runtime boundary leak: {forbidden}'
 for token in ['prepare_snow_outer_event', 'evaluate_snow_reference_call', 'snow_event_prepared',
               'snow_event_applied_this_call', 'snowfall_external_in', 'sublimation_external_out',
-              'melt_internal_transfer', 'fmr_trial_from_checkpoint']:
+              'fmr_trial_from_checkpoint']:
     assert token in backend, f'missing F-MR06 snow seam token: {token}'
+assert 'melt_internal_transfer' in process, 'admitted snow process missing melt internal-transfer mass term'
 print('FMR06_SOURCE_SCOPE_AND_ARCHITECTURE PASS')
 PY
 
