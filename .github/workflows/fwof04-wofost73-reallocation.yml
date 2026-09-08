@@ -29,4 +29,4 @@ jobs:
           assert status['production_migration_allowed'] is True
           PY
       - name: O0 O2 reallocation parity transaction and dry-matter gate
-        run: tests/fwof/run_fwof04_reallocation_gate.sh
+        run: bash tests/fwof/run_fwof04_reallocation_gate.sh
