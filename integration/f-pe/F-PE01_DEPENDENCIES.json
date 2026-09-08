@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "purpose": "Pin the exact qualified reference baseline and adjacent contracts before performance qualification infrastructure is added.",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "work/f-pe01-performance-qualification",
+  "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+  "reference_authority": {
+    "candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "runtime_entrypoint": "fmr_run_serialized_physical_multiswap",
+    "fmq23_status_path": "integration/f-mq/F-MQ23_STATUS.json",
+    "fmq23_status_blob": "d5bbb73896a76b69b2dba70d5fa4710201f03a76",
+    "fmq23_evidence_path": "integration/f-mq/F-MQ23_QUALIFICATION_EVIDENCE.json",
+    "fmq23_evidence_blob": "4b5f6373850a7c701eb5c56961c37b219a3a6e36",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "fvq15_qualification_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fvq15_decision": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+    "fmr05_evidence_path": "integration/f-mr/F-MR05_QUALIFICATION_EVIDENCE.json",
+    "fmr05_evidence_blob": "b6d9c10f148aa574d3421f4d6e72eccc93ab4994",
+    "note": "The F-MR05 evidence is a pre-FVQ15 qualification snapshot. Final reference admission authority is F-VQ15 plus F-MQ23, source-bound to the exact candidate commit above."
+  },
+  "reference_scope": {
+    "qualified_physics_scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "real_physics_multiswap_admitted": true,
+    "physical_execution": "SERIALIZED",
+    "physical_worker_count": 1,
+    "parallel_real_physics_admitted": false,
+    "generic_worker_count_evidence_is_parallel_physics_admission": false,
+    "general_swap5_multiswap_release": false
+  },
+  "mass_and_transaction_authority": {
+    "fkt_transaction_contract_path": "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json",
+    "fkt_transaction_contract_blob": "db4ddfc681d1bec65041a8dff79b835d4f416fb5",
+    "fkt_temporal_status_path": "integration/f-kt/F-KT04_STATUS.json",
+    "fkt_temporal_status_blob": "340a2aa37fb60d8721534fac1df1e3a365b7b623",
+    "fmr05_canonical_mass_owner": "F-KT08 kernel_result.mass",
+    "mass_complete_required_for_commit": true,
+    "missing_mass_contribution_mask_required": 0,
+    "mass_requirement_is_hard": true
+  },
+  "solver_isolation_observation": {
+    "live_observed_branch": "work/f-si14-grid-geometry-binding",
+    "live_observed_head": "5a632f9ed86459f234f7b60326cc88431db58113",
+    "latest_observed_contract": "integration/f-si/F-SI14_GRID_GEOMETRY_CONTRACT.json",
+    "baseline_contains_integration_f_si_directory": false,
+    "dependency_role": "OBSERVED_ADJACENT_WORKSTREAM_NOT_REBOUND_INTO_FPE01_REFERENCE_BASELINE",
+    "rule": "F-PE01 may consume diagnostics that are present on its pinned reference source, but must not silently import unqualified F-SI source changes."
+  },
+  "holds": [
+    "BALANCED is not production admitted.",
+    "THROUGHPUT is not production admitted.",
+    "FALLBACK is not production admitted.",
+    "Parallel real-physics execution is not admitted.",
+    "Synthetic difficult-tail evidence is not a bounded-cost physical production claim.",
+    "Compiler/ABI memory observations are evidence, not universal byte contracts."
+  ]
+}
