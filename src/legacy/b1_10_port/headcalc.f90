@@ -7,7 +7,7 @@
 
 ! ----------------------------------------------------------------------
 subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                    numerical_config, explicit_step_duration)
+                    numerical_config, explicit_step_duration, parameter_set)
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
@@ -20,10 +20,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-        soil_water_numerical_config_t
+        soil_water_numerical_config_t, soil_water_parameter_set_t
    use MOD_arrays,         only: macp, mabbc
    use MOD_params,         only: nihil
-   use MOD_grid,           only: numnod, z, dz, disnod
+   use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
    use MOD_MvG,            only: watcon, hconduc, moiscap, dhconduc, cofgen
    use MOD_top,            only: q0, flrunoff, ftoph
    use MOD_meteo,          only: nraidt
@@ -64,21 +64,21 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
    real(8), intent(in), optional :: explicit_step_duration
+   type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_runoff_resolved
+   logical :: explicit_geometry
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
+   integer                          :: numnod
    integer                          :: swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
    real(8)                          :: CritDevBalCp, CritDevBalTot
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
-   real(8)                          :: provider_theta(numnod), provider_k(numnod)
-   real(8)                          :: provider_capacity(numnod), provider_dkdh(numnod)
-   real(8)                          :: provider_root_sink(numnod)
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
    character(len=200)               :: message
@@ -96,6 +96,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !---------------------------------------------------------------------
 
+   legacy_state_binding = .not. present(state_binding)
+   explicit_geometry = .not. legacy_state_binding
+   if (explicit_geometry) then
+      if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
+      numnod = parameter_set%active_nodes
+      if (numnod <= 0) error stop 'HeadCalc: explicit active_nodes must be positive'
+      if (.not. allocated(parameter_set%z) .or. .not. allocated(parameter_set%dz) .or. &
+          .not. allocated(parameter_set%node_distance)) error stop 'HeadCalc: incomplete explicit grid geometry'
+      if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &
+          size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'
+   else
+      numnod = legacy_numnod
+   end if
    canonical_trial = present(worker)
    if (canonical_trial) then
       ctx => worker
@@ -108,7 +121,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    else
       hist => local_history
    end if
-   legacy_state_binding = .not. present(state_binding)
    if (present(state_binding)) then
       state => state_binding
       call validate_reference_state_binding(state, state_ok)
@@ -194,16 +206,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
       fsi_ws%source(1:numnod) = qssdi(1:numnod)
    end if
-   provider_root_sink = 0.0d0
+   fsi_ws%provider_root_sink = 0.0d0
    if (provider_root_sink_active) then
       call evaluation_context%root_sink%evaluate(state%h(1:numnod), state%theta(1:numnod), &
-           provider_root_sink(1:numnod))
+           fsi_ws%provider_root_sink(1:numnod))
    end if
 
 !  special case: groundwater level specified
    if (swbotb == 1) then
       state%fllowgwl = .FALSE.
-      if (state%gwlinp >= z(1)-1.0d-4) then
+      if (state%gwlinp >= grid_z(1)-1.0d-4) then
 
          state%q0 = (nraidt+nird+melt)*(1.0d0-ArMpSs) + runon - reva - epd
          call pondrunoff_state_bridge()
@@ -215,12 +227,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
          fsi_ws%vertical_flux(1) = q1
          do i = 1, numnod
-            fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) 
+            fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) 
          end do
          state%qbot = fsi_ws%vertical_flux(numnod+1)
-         state%h(1) = state%gwlinp + disnod(1)*(fsi_ws%vertical_flux(1)/state%kmean(1) + 1.0d0)
+         state%h(1) = state%gwlinp + grid_disnod(1)*(fsi_ws%vertical_flux(1)/state%kmean(1) + 1.0d0)
          do i = 2, numnod
-            state%h(i) = state%h(i-1) + disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)    ! gaat dit goed: immers state%kmean(i) nog behorend bij oude tijd???, maar state%k(1) werd wel eerst opnieuw berekend
+            state%h(i) = state%h(i-1) + grid_disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)    ! gaat dit goed: immers state%kmean(i) nog behorend bij oude tijd???, maar state%k(1) werd wel eerst opnieuw berekend
          end do
 
 !        special case: SwKimpl = 1
@@ -229,7 +241,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
                if (swmacro == 1)  state%k(i) = FrArMtrx(i) * state%k(i)
                if (i > 1) then
-                  state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),dz(i-1),dz(i), i, state%h(i-1), state%h(i))
+                  state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
                end if
             end do
             state%kmean(numnod+1) = state%k(numnod)                  
@@ -240,20 +252,20 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          return
       else
          NN = 0
-         do while (z(NN+1) > state%gwlinp .AND. NN < numnod)
+         do while (grid_z(NN+1) > state%gwlinp .AND. NN < numnod)
             NN = NN + 1
          end do
-         if (z(NN+1) < (state%gwlinp+nihil)) then
+         if (grid_z(NN+1) < (state%gwlinp+nihil)) then
 !           groundwater within soil profile
-            if ((z(NN)-state%gwlinp) < 1.0d-4 .AND. (NN > 0)) then
+            if ((grid_z(NN)-state%gwlinp) < 1.0d-4 .AND. (NN > 0)) then
 !              difference state%gwlinp with node to small to calculate gradient properly
-               state%gwlinp = z(NN)
+               state%gwlinp = grid_z(NN)
                NN     = NN-1
             end if
          else
 !           groundwater below soil profile
             state%fllowgwl = .TRUE.
-            state%hbot     = state%gwlinp - z(numnod) + 0.5d0*dz(numnod)
+            state%hbot     = state%gwlinp - grid_z(numnod) + 0.5d0*grid_dz(numnod)
          end if
       end if
 
@@ -265,9 +277,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  reset conductivities (state%k, state%kmean) to time level t
    if (provider_constitutive_active) then
-      call evaluation_context%constitutive%evaluate(state%h(1:numnod), provider_theta, provider_k, &
-           provider_capacity, provider_dkdh)
-      state%k(1:numnod) = provider_k(1:numnod)
+      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+           fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+      state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
    else
       do i = 1, numnod
          state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
@@ -275,7 +287,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
    do i = 1, numnod
       if (swmacro == 1)  state%k(i)     = FrArMtrx(i) * state%k(i)
-      if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),dz(i-1),dz(i), i, state%h(i-1), state%h(i))
+      if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
    end do
    state%kmean(numnod+1) = state%k(numnod)
 
@@ -284,14 +296,14 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       fsi_ws%dfdh_upper = 0.0d0
       fsi_ws%dfdh_lower = 0.0d0
       do i = 2, numnod
-         fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /disnod(i)
+         fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /grid_disnod(i)
          fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
       end do
    end if
 
 !  gradient in state%h
    do i = 2, NN
-      fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/disnod(i) + 1.0d0
+      fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
    end do
 
 !  calculate vector fsi_ws%residual (first time)
@@ -314,9 +326,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          fsi_ws%old_head(i) = state%h(i)
       end do
       if (provider_constitutive_active) then
-         call evaluation_context%constitutive%evaluate(state%h(1:numnod), provider_theta, provider_k, &
-              provider_capacity, provider_dkdh)
-         state%dimoca(1:NN) = provider_capacity(1:NN)
+         call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+              fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+         state%dimoca(1:NN) = fsi_ws%provider_capacity(1:NN)
       else
          do i = 1, NN
             state%dimoca(i) = moiscap(i, state%h(i))
@@ -330,7 +342,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             if (swmacro == 1) fsi_ws%dconductivity_dhead(i) = FrArMtrx(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
-            fsi_ws%dfdh_upper(i)   = - state%kmean(i) / disnod(i)
+            fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
             fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
          end do
       end if
@@ -382,9 +394,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        update state%theta
          if (provider_constitutive_active) then
-            call evaluation_context%constitutive%evaluate(state%h(1:numnod), provider_theta, provider_k, &
-                 provider_capacity, provider_dkdh)
-            state%theta(1:NN) = provider_theta(1:NN)
+            call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
+                 fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+            state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
          else
             do i = 1, NN
                state%theta(i) = watcon(i,state%h(i))
@@ -393,7 +405,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        update gradient in state%h
          do i = 2, NN
-            fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/disnod(i) + 1.0d0
+            fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
          end do
 
 !        special case: update state%k and state%kmean if SwKimpl = 1
@@ -403,7 +415,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
                if (swmacro == 1) state%k(i) = FrArMtrx(i) * state%k(i)
                if (i > 1) then
-                  state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), dz(i-1), dz(i), i, state%h(i-1), state%h(i))
+                  state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
                end if
             end do
             state%kmean(NN+1) = state%k(NN)
@@ -461,7 +473,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !     test for waterbalance of ponding layer
       if (state%ftoph) then
-         state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/disnod(1) + 1.0d0)
+         state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
          if (.NOT.flnonconv .AND. (swmacro == 0 .OR. IcTopMp > 1)) then
             deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
             if (abs(deviat) > CritDevPondDt) then
@@ -537,12 +549,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                state%theta(i) = cofgen(2,i)
             end do
             do i = 1, numnod
-              fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
+              fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
             end do
             state%qbot = fsi_ws%vertical_flux(numnod+1)
 !           state%h in saturated zone
             do i = NN+1, numnod
-               state%h(i) = state%h(i-1) + disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)
+               state%h(i) = state%h(i-1) + grid_disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)
             end do
          end if
    
@@ -611,12 +623,39 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 contains
 
+real(8) function grid_z(node)
+   integer, intent(in) :: node
+   if (explicit_geometry) then
+      grid_z = parameter_set%z(node)
+   else
+      grid_z = legacy_z(node)
+   end if
+end function grid_z
+
+real(8) function grid_dz(node)
+   integer, intent(in) :: node
+   if (explicit_geometry) then
+      grid_dz = parameter_set%dz(node)
+   else
+      grid_dz = legacy_dz(node)
+   end if
+end function grid_dz
+
+real(8) function grid_disnod(node)
+   integer, intent(in) :: node
+   if (explicit_geometry) then
+      grid_disnod = parameter_set%node_distance(node)
+   else
+      grid_disnod = legacy_disnod(node)
+   end if
+end function grid_disnod
+
 
 real(8) function root_sink_term(node)
    integer, intent(in) :: node
    if (provider_source_sink_active) then
       if (provider_root_sink_active) then
-         root_sink_term = provider_root_sink(node)
+         root_sink_term = fsi_ws%provider_root_sink(node)
       else
          root_sink_term = 0.0d0
       end if
@@ -764,7 +803,7 @@ subroutine vector_F(iTask)
    real(8)                    :: afgen
 
 !  top layer
-   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * FrArMtrx(1) * dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * FrArMtrx(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
 
 !  depending on iTask
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
@@ -786,7 +825,7 @@ subroutine vector_F(iTask)
 
 !  first layer, continued
    if (state%ftoph) then
-      fsi_ws%head_gradient(1) = (state%hsurf-state%h(1))/disnod(1) + 1.d0
+      fsi_ws%head_gradient(1) = (state%hsurf-state%h(1))/grid_disnod(1) + 1.d0
       fsi_ws%residual(1)     = fsi_ws%residual(1) - state%kmean(1) * fsi_ws%head_gradient(1)
    else
       fsi_ws%residual(1) = fsi_ws%residual(1) + state%qtop
@@ -794,29 +833,29 @@ subroutine vector_F(iTask)
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * FrArMtrx(i) * dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
+      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * FrArMtrx(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
    end do
 
 !  for bottom BC
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      fsi_ws%head_gradient(NN+1) = state%h(NN)/(z(nn)-state%gwlinp) + 1.0d0
+      fsi_ws%head_gradient(NN+1) = state%h(NN)/(grid_z(nn)-state%gwlinp) + 1.0d0
    else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl)) then
-      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%hbot) / disnod(NN+1) + 1.0d0
+      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%hbot) / grid_disnod(NN+1) + 1.0d0
    else if (swbotb == 9) then
-      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%h(NN+1)) / disnod(NN+1) + 1.0d0
+      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%h(NN+1)) / grid_disnod(NN+1) + 1.0d0
    end if
 
 !  for swbotb = 8, depending on iTask
    if (iTask == 1) then
-      if (swbotb == 8 .AND. state%h(NN) >  Critdz - disnod(NN+1) + hplate) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / disnod(NN+1) + 1.0d0
+      if (swbotb == 8 .AND. state%h(NN) >  Critdz - grid_disnod(NN+1) + hplate) then
+         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
          flboth = .TRUE.
       else
          flboth = .FALSE.
       end if
    else
       if (swbotb == 8 .AND. flboth) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / disnod(NN+1) + 1.0d0
+         fsi_ws%head_gradient(NN+1) = (state%h(NN) - hplate) / grid_disnod(NN+1) + 1.0d0
       end if
    end if
 
@@ -826,17 +865,17 @@ subroutine vector_F(iTask)
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
       ! in case of static macropores FrArMtrx < 1
       if (swmacro == 1) state%k(NN) = FrArMtrx(NN) * state%k(NN)
-      state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), dz(NN), dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
+      state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
+      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
-      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
+      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
       if (swbotb == 3 .AND. swbotb3Impl == 1) then
          
          ! Cauchy-relation, implemented as head boundary
          if (SwBotb3ResVert == 0) then
-            state%qbot = - (state%h(NN)+z(NN)-deepgw) / (disnod(NN+1)/state%kmean(NN+1)+rimlay)
+            state%qbot = - (state%h(NN)+grid_z(NN)-deepgw) / (grid_disnod(NN+1)/state%kmean(NN+1)+rimlay)
          else if (SwBotb3ResVert == 1) then
-            state%qbot = - (state%h(NN)+z(NN)-deepgw) / rimlay
+            state%qbot = - (state%h(NN)+grid_z(NN)-deepgw) / rimlay
          end if
          
          ! extra groundwater flux might be added
@@ -858,7 +897,7 @@ subroutine vector_F(iTask)
          
          ! free drainage option
          if (provider_constitutive_active) then
-            state%kmean(numnod+1) = provider_k(numnod)
+            state%kmean(numnod+1) = fsi_ws%provider_k(numnod)
          else
             state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
          end if
@@ -892,50 +931,50 @@ end subroutine vector_F
 subroutine jacobian_F()
 
 !  first layer
-   fsi_ws%dfdh_main(1) = state%dimoca(1)*FrArMtrx(1)*dz(1)/dt - fsi_ws%dfdh_lower(1)
+   fsi_ws%dfdh_main(1) = state%dimoca(1)*FrArMtrx(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
  
 !  if the head boundary condition applies: add the k1/(0.5*dz1) term to the first element of the main diagonal 
-   if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/disnod(1)  
+   if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)  
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%dfdh_main(i) = state%dimoca(i)*FrArMtrx(i)*dz(i)/dt - fsi_ws%dfdh_upper(i) - fsi_ws%dfdh_lower(i) 
+      fsi_ws%dfdh_main(i) = state%dimoca(i)*FrArMtrx(i)*grid_dz(i)/dt - fsi_ws%dfdh_upper(i) - fsi_ws%dfdh_lower(i) 
    end do
 
 !  last layer: handle bottom BC
-   fsi_ws%dfdh_main(NN) = state%dimoca(NN)*FrArMtrx(NN)*dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
+   fsi_ws%dfdh_main(NN) = state%dimoca(NN)*FrArMtrx(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(z(NN)-state%gwlinp) 
+      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
    else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy
       if (SwBotb3ResVert == 0) then
-         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / (disnod(NN+1)/state%kmean(NN+1) + rimlay)   
+         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / (grid_disnod(NN+1)/state%kmean(NN+1) + rimlay)   
       else if (SwBotb3ResVert == 1) then
          fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / rimlay
       end if
    else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl) .OR. swbotb == 9) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/disnod(NN+1)         
+      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)         
    else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: state%kmean(NN+1)
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
    else if (swbotb == 8 .AND. flboth) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/disnod(NN+1)
+      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)
    end if
 
 !  special case when SwKimpl = 1
    if (SwKimpl == 1) then
       if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')
 !     first layer
-      fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(1),state%k(2),dz(1),dz(2))
+      fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(1),state%k(2),grid_dz(1),grid_dz(2))
       if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) - fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(1) * 0.5d0
-      fsi_ws%dfdh_lower(1) = fsi_ws%dfdh_lower(1) + fsi_ws%dconductivity_dhead(2) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(2),state%k(1),dz(2),dz(1)) 
+      fsi_ws%dfdh_lower(1) = fsi_ws%dfdh_lower(1) + fsi_ws%dconductivity_dhead(2) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(2),state%k(1),grid_dz(2),grid_dz(1)) 
 !     layers 2 to (NN-1)
       do i = 2, NN-1
-         fsi_ws%dfdh_upper(i) = fsi_ws%dfdh_upper(i) - fsi_ws%dconductivity_dhead(i-1) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i-1),state%k(i),dz(i-1),dz(i)) 
-         fsi_ws%dfdh_main(i) = fsi_ws%dfdh_main(i) - fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i),state%k(i-1),dz(i),dz(i-1)) + fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i),state%k(i+1),dz(i),dz(i+1))
-         fsi_ws%dfdh_lower(i) = fsi_ws%dfdh_lower(i) + fsi_ws%dconductivity_dhead(i+1) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i+1),state%k(i),dz(i+1),dz(i)) 
+         fsi_ws%dfdh_upper(i) = fsi_ws%dfdh_upper(i) - fsi_ws%dconductivity_dhead(i-1) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i)) 
+         fsi_ws%dfdh_main(i) = fsi_ws%dfdh_main(i) - fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i),state%k(i-1),grid_dz(i),grid_dz(i-1)) + fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i),state%k(i+1),grid_dz(i),grid_dz(i+1))
+         fsi_ws%dfdh_lower(i) = fsi_ws%dfdh_lower(i) + fsi_ws%dconductivity_dhead(i+1) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i+1),state%k(i),grid_dz(i+1),grid_dz(i)) 
       end do
 !     last layer
-      fsi_ws%dfdh_upper(NN) = fsi_ws%dfdh_upper(NN) - fsi_ws%dconductivity_dhead(NN-1) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN-1),state%k(NN),dz(NN-1),dz(NN)) 
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) - fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN),state%k(NN-1),dz(NN),dz(NN-1))
+      fsi_ws%dfdh_upper(NN) = fsi_ws%dfdh_upper(NN) - fsi_ws%dconductivity_dhead(NN-1) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN-1),state%k(NN),grid_dz(NN-1),grid_dz(NN)) 
+      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) - fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN),state%k(NN-1),grid_dz(NN),grid_dz(NN-1))
 
       if (swbotb == 1 .OR. swbotb == 5 .OR. swbotb == 8 .AND. flboth) then
          fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 0.5d0 * fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN+1)

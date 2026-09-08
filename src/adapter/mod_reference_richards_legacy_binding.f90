@@ -35,12 +35,12 @@ module mod_reference_richards_legacy_binding
 
   interface
      subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                         numerical_config, explicit_step_duration)
+                         numerical_config, explicit_step_duration, parameter_set)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
        use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-            soil_water_numerical_config_t
+            soil_water_numerical_config_t, soil_water_parameter_set_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
        type(a23bu_solver_history_t), target, intent(inout), optional :: history
@@ -49,6 +49,7 @@ module mod_reference_richards_legacy_binding
        type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
        type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
        real(8), intent(in), optional :: explicit_step_duration
+       type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
      end subroutine headcalc
   end interface
 
@@ -104,6 +105,7 @@ contains
     logical :: ok
     type(a23bu_solver_history_t) :: call_history
     type(reference_richards_state_binding_t) :: state_binding
+    integer :: n
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
@@ -113,15 +115,16 @@ contains
        result%status = SW_SOLVE_FAILED
        return
     end if
+    n = request%parameters%active_nodes
 
     select type (ws => workspace)
     type is (reference_richards_legacy_workspace_t)
-       if (ws%legacy_worker%active_nodes /= numnod) then
-          call a23bu_initialize_worker(ws%legacy_worker, numnod)
+       if (ws%legacy_worker%active_nodes /= n) then
+          call a23bu_initialize_worker(ws%legacy_worker, n)
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
        call a23bu_reset_attempt_control(ws%legacy_worker)
-       call initialize_reference_workspace(ws%richards, numnod)
+       call initialize_reference_workspace(ws%richards, n)
        call reset_reference_workspace(ws%richards)
 
        ! F-KT owns the committed/base state. F-SI materializes only this solve's
@@ -130,10 +133,10 @@ contains
        call initialize_reference_state_binding(state_binding, request)
 
        call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
-            request%evaluation, request%boundary, request%numerical, request%step_duration)
+            request%evaluation, request%boundary, request%numerical, request%step_duration, request%parameters)
 
-       result%candidate_state%active_nodes = numnod
-       allocate(result%candidate_state%pressure_head(numnod), result%candidate_state%water_content(numnod))
+       result%candidate_state%active_nodes = n
+       allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
        result%candidate_state%pressure_head = state_binding%h
        result%candidate_state%water_content = state_binding%theta
        result%candidate_state%ponding_depth = state_binding%pond
@@ -204,10 +207,6 @@ contains
        route = 'source-sink-provider-required'
        return
     end if
-    if (request%parameters%active_nodes /= numnod) return
-    if (maxval(abs(request%parameters%z-z(1:numnod))) > 0.0_real64) return
-    if (maxval(abs(request%parameters%dz-dz(1:numnod))) > 0.0_real64) return
-    if (maxval(abs(request%parameters%node_distance-disnod(1:numnod))) > 0.0_real64) return
     ok = .true.
     route = 'legacy-request-bound'
   end subroutine validate_legacy_request
