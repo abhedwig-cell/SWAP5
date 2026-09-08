@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF16",
+  "title": "Restricted Non-Adaptive Crop-Root View Producer",
+  "branch": "work/f-wof16-nonadaptive-root-view-producer",
+  "base": {
+    "commit": "f23883eea13aef7c70a235acf0eccfeca772f41e",
+    "status": "QUALIFIED_OPTION_DEPENDENT_CROP_ROOT_STATE_OWNERSHIP"
+  },
+  "purpose": "Implement the smallest crop-owned read-only producer for crop_root_state_view_t on the non-adaptive root-distribution route, using an explicit current root-depth snapshot plus immutable grid/root-density parameters. Root-growth evolution and ET remain outside scope.",
+  "admitted_physics": {
+    "root_distribution": "SWRDC != 1 only",
+    "root_depth_source": "explicit current physical root depth supplied by the owning crop/root state path",
+    "root_growth_update": "not performed",
+    "potential_transpiration": "not consumed",
+    "crop_activity": "explicit crop_emerged snapshot"
+  },
+  "source_provenance": {
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_functions_source": "SWAP/functions.f90:66-108 AFGEN",
+    "legacy_root_extension_source": "SWAP/MOD_cropdevelopment.f90:1785-1825 and 1941-1948",
+    "legacy_distribution_source": "SWAP/MOD_cropdevelopment.f90:2103-2156 and 2279-2301",
+    "prior_source_binding": "integration/f-wof/F-WOF12_SOURCE_BOUND_PROVIDER_INVENTORY.json",
+    "ownership_basis": "integration/f-wof/F-WOF15_STATUS.json"
+  },
+  "target_api": {
+    "output": "crop_root_state_view_t",
+    "output_fields": ["crop_emerged", "rooted_nodes", "cumulative_root_fraction"],
+    "runtime_dependency": false,
+    "solver_dependency": false,
+    "HeadCalc_dependency": false,
+    "legacy_IO_dependency": false,
+    "ET_dependency": false
+  },
+  "input_contract": {
+    "geometry_snapshot": ["crop_emerged", "current_root_depth"],
+    "immutable_parameters": [
+      "maximum_root_depth",
+      "positive-down node_bottom_depth array",
+      "relative_root_depth table x values",
+      "relative_root_density table y values"
+    ],
+    "table_translation": "The adapter-facing representation is structured x/y arrays rather than legacy packed RDCTB storage. Linear interpolation and end clamping must remain source-equivalent to AFGEN."
+  },
+  "legacy_equivalence_rules": [
+    "For an emerged crop with current_root_depth < 1e-14 cm, emit an emerged zero-root canonical view without requiring a root-density table.",
+    "For active roots, rooted_nodes is the first node whose bottom lies deeper than the current root depth according to the source-bound B1.10 node-boundary rule.",
+    "For non-adaptive distribution, reconstruct the normalized cumulative maximum-root-zone distribution by trapezoidal integration of RDCTB values sampled at node-bottom relative depths.",
+    "Sample that normalized cumulative distribution at each active rooted-node bottom divided by the bottom depth of rooted_nodes to reproduce cumdens_top.",
+    "Output cumulative_root_fraction has rooted_nodes+1 values, starts at exactly 0 and ends at exactly 1 after qualified canonicalization."
+  ],
+  "boundary_ambiguity_policy": {
+    "legacy_initial_tolerance_cm": 1e-8,
+    "legacy_update_tolerance_cm": 1e-10,
+    "qualified_production_policy": "FAIL_CLOSED_WITHIN_1E_MINUS_8_CM_OF_A_NODE_BOTTOM_WHEN_ROOT_DEPTH_IS_POSITIVE",
+    "reason": "F-WOF16 has no lifecycle-phase input and therefore must not silently choose between the two legacy node-boundary tolerances in the only region where they can disagree."
+  },
+  "validation": [
+    "active node count and node-bottom-depth shape must be valid",
+    "positive-down node bottoms must be finite, positive and strictly increasing",
+    "maximum root depth must be finite, positive and contained by the grid",
+    "active current root depth must be finite, nonnegative and no greater than maximum root depth",
+    "RDCTB x/y arrays must be finite, same-sized, contain at least two points, start at relative depth 0, end at relative depth 1, have strictly increasing x values and nonnegative density values",
+    "the trapezoidal root-density integral must be strictly positive",
+    "ambiguous node-boundary cases fail closed"
+  ],
+  "transaction_and_state": {
+    "producer_mutates_input_state": false,
+    "producer_owns_committed_state": false,
+    "producer_allocates_persistent_per_node_state": false,
+    "all cumulative arrays": "local/reconstructible output or scratch only"
+  },
+  "qualification_tests": [
+    "inactive crop dependency-free route",
+    "emerged zero-root route",
+    "one-node rooted profile",
+    "multi-node nonuniform RDCTB profile against independent B1.10 oracle",
+    "AFGEN endpoint and interpolation behavior",
+    "rooted-node mapping against independent negative-zbotcp B1.10 oracle",
+    "boundary ambiguity fail-closed",
+    "invalid grid/table/depth fail-closed",
+    "A/B/A determinism",
+    "input read-only",
+    "F-WOF13 validation acceptance",
+    "O0/O2 output identity"
+  ],
+  "forbidden": [
+    "SWRDC=1 adaptive redistribution",
+    "root-growth evolution",
+    "persistent noddrz/cumdens/cumdens_top state",
+    "ET or potential-transpiration calculation",
+    "calendar/day-end logic",
+    "runtime or solver dependencies",
+    "legacy packed-table or file I/O inside the producer"
+  ],
+  "affected_invariants": [2, 3, 4, 6, 7, 9, 16, 21, 22, 27, 29, 30]
+}
