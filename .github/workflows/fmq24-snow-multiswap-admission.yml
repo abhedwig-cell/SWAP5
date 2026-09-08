@@ -1,0 +1,30 @@
+name: F-MQ24 snow MultiSWAP production admission
+
+on:
+  push:
+    branches: [qualification/f-mq24-snow-multiswap-admission]
+    paths:
+      - tests/multiswap/run_fmq24_gate.sh
+      - integration/f-mq/F-MQ24_*.json
+      - .github/workflows/fmq24-snow-multiswap-admission.yml
+  workflow_dispatch:
+
+jobs:
+  source-bound-snow-multiswap-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run independent source-bound F-MQ24 gate
+        run: bash tests/multiswap/run_fmq24_gate.sh
+      - name: Upload immutable F-MQ24 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmq24-snow-multiswap-qualification-evidence
+          path: .fmq24-artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
