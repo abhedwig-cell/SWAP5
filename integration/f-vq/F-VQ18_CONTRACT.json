@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ18",
+  "title": "Independent F-PM03 Restricted Fixed-Event Irrigation Scientific Admission",
+  "branch": "qualification/f-vq18-fpm03-fixed-irrigation",
+  "qualification_only": true,
+  "source_modification_permitted": false,
+  "candidate_source_commit": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+  "candidate_source_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+  "candidate_process_blob": "af8dc3b3e16d261af573c9b626704638d5ee70c9",
+  "candidate_process_path": "src/process/mod_irrigation_process.f90",
+  "fpm03_status": "QUALIFIED_STRUCTURAL_FIXED_EVENT_IRRIGATION_SEAM_REQUIRES_INDEPENDENT_FVQ",
+  "legacy_oracle": {
+    "path": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "scope": "task=3 fixed-event activation, translated fixed-event units/distribution, and task=9-equivalent completion"
+  },
+  "scientific_criterion": "SOURCE_BOUND_EQUATION_AND_EVENT_IDENTITY_WITH_EXACT_IDENTITY_WHERE_DEFINED_AND_NO_NEW_PHYSICS_TOLERANCE",
+  "required_independent_checks": [
+    "Lock exact candidate commit, tree and irrigation process blob before execution.",
+    "Qualification branch must have zero changes under src/ and reference/ relative to the exact candidate.",
+    "Do not call the F-PM03 engineering qualification script as the scientific verifier.",
+    "Reconstruct the B1.10 fixed-event oracle independently from persisted source-bound oracle rules.",
+    "Verify fixed-event selection at the legacy 1e-3 management-date boundary, including just-inside and exact-boundary no-match behavior.",
+    "Verify application type 0 and 1 output identity for gird-equivalent rate and cirr-equivalent concentration.",
+    "Verify application type 2 output identity for per-node qssdi, zero cirr-equivalent concentration and translated total-water identity.",
+    "Verify event duration depth/rate and cursor increment identity.",
+    "Verify transaction isolation: rejected/split trials do not consume cursor or active-event history; replay from the same committed state is exact.",
+    "Verify active-event continuation and completion are independent of caller floating-point ulps within the admitted numerical event-end policy, while material crossings still fail closed.",
+    "Independently compose positive SSDI through the qualified real F-MR/F-KT route and verify authoritative total_in owns the irrigation inflow exactly once with complete mass accounting.",
+    "Verify an equal balancing drainage sink can isolate identical committed Richards physics while preserving the independent mass ownership assertion.",
+    "Verify fixed-event inactive/no-event columns allocate no SSDI source array.",
+    "Verify F-MR06 SNOW regression behavior remains source-identical and qualification output remains unchanged.",
+    "Run O0 and O2 and require verifier-output identity."
+  ],
+  "hard_holds": [
+    "No src/ or reference/ modifications in F-VQ18.",
+    "No admission of scheduled TCS1-TCS8 irrigation.",
+    "No admission of DCS1-DCS2 depth logic.",
+    "No admission of rainfall reduction or solute-threshold over-irrigation.",
+    "No admission of MultiSWAP task=4 availability scaling.",
+    "No admission of legacy irrigation I/O into the kernel.",
+    "No admission of surface gird-to-nird interception/meteo composition.",
+    "No broad Richards scientific admission beyond the already-qualified restricted real-physics route."
+  ],
+  "pass_decision": "QUALIFIED_FPM03_RESTRICTED_FIXED_EVENT_IRRIGATION_SCIENTIFIC_ADMISSION",
+  "downstream_on_pass": {
+    "workstream": "F-PM",
+    "action": "fixed-event seam may be treated as scientifically admitted within its exact restricted scope; broader scheduled irrigation remains a separate migration and qualification problem"
+  }
+}
