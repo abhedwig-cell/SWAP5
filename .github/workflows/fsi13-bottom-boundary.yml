@@ -1,0 +1,30 @@
+name: F-SI13 explicit bottom-boundary mode
+
+on:
+  push:
+    branches:
+      - work/f-si13-explicit-bottom-boundary
+    paths:
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'integration/f-si/F-SI13_BOTTOM_BOUNDARY_CONTRACT.json'
+      - 'integration/f-si/F-SI13_QUALIFICATION.json'
+      - 'tests/fsi/run_fsi13_bottom_mode_authority_gate.sh'
+      - 'tests/fsi/run_fsi13_bottom_mode_reject_gate.sh'
+      - 'tests/fsi/run_fsi13_legacy_direct_identity_gate.sh'
+      - 'tests/fsi/run_fsi13_qualification_gate.sh'
+      - '.github/workflows/fsi13-bottom-boundary.yml'
+
+jobs:
+  fsi13-bottom-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI13 composite qualification gate
+        run: bash tests/fsi/run_fsi13_qualification_gate.sh
