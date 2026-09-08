@@ -1,0 +1,47 @@
+{
+  "workunit": "F-WOF05",
+  "title": "Stem-only WOFOST reallocation composition",
+  "baseline": {
+    "branch": "work/f-wof04-crop-owner-host",
+    "commit": "027ca03bdd3079a3d213da578d1b7ae3e01b933f",
+    "status": "QUALIFIED_WOFOST73_REALLOCATION_OWNER_HOST_STRUCTURAL_SEAM"
+  },
+  "branch": "work/f-wof05-stem-reallocation-composition",
+  "status": "ADMITTED_STEM_ONLY_REALLOCATION_COMPOSITION_LEAF_FAIL_CLOSED",
+  "owner": "Crop, ET and root-uptake physics",
+  "scope": {
+    "stem_reallocation_allowed": true,
+    "leaf_reallocation_allowed": false,
+    "potential_actual_separate_state_required": true,
+    "one_day_crop_process_admission": true,
+    "full_wofost_integration": false,
+    "wofost81_nitrogen_in_scope": false
+  },
+  "reference_basis": {
+    "pcse_release_commit": "0d51ae84f405fd9b061222f2a0130e5351f460df",
+    "wofost73_parameter_commit": "ceb71e72f3a27e94a658b5509979924a2e5d12f9",
+    "wofost81_parameter_commit": "472c260930371ab7b87b194ca97eebfbc46ba251",
+    "leaf_reallocation_history_commit": "3648114b11900222adcec8ae8349503f5c346b05",
+    "wofost73_reallocation_alignment_commit": "ea9b2c806c7f1c67c2fc7fa7a407608ddcef0d98",
+    "leaf_reallocation_bugfix_commit": "70e731d00fd0f4837852b458844e8042bd3343ca"
+  },
+  "official_wofost81_winterwheat_vector": {
+    "activation_dvs": 1.5,
+    "stem_fraction": 0.2,
+    "leaf_fraction": 0.0,
+    "stem_rate_per_day": 0.0415,
+    "leaf_rate_per_day": 0.0,
+    "efficiency": 0.95
+  },
+  "reference_discrepancy": {
+    "classification": "LEAF_REALLOCATION_NOT_ADMITTED",
+    "finding": "PCSE Wofost73 imports WOFOST_Leaf_Dynamics, while proportional REALLOC_LV cohort reduction is present in the N-aware leaf implementation used by Wofost81; standard WOFOST73 crop parameter examples keep leaf reallocation disabled.",
+    "policy": "Fail closed whenever leaf_fraction > 0 or leaf_rate > 0 until leaf-cohort semantics and edge cases are independently qualified."
+  },
+  "production_migration_allowed": true,
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "next": "Implement a pure two-track stem-only composition layer around the qualified F-WOF04 reallocation subcomponent, with fail-atomic trials and hard dry-matter balance."
+}
