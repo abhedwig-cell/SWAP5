@@ -13,8 +13,11 @@
     "fsi17_process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
     "fmr07_committed_view_binding_ancestor": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
     "fpm01_dependency_matrix_blob": "d372d642e521842b13b9eccd17925859667a8982",
+    "legacy_functions_path": "SWAP/functions.f90",
+    "legacy_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
     "legacy_oracle_path": "SWAP/irrigation.f90",
-    "legacy_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"
+    "legacy_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "b110_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1"
   },
   "legacy_scheduled_gate": {
     "outer_requirements": [
@@ -61,17 +64,23 @@
       "hidden_call_as_day_semantics": true
     },
     "TCS7": {
-      "rule": "phcrit = afgen(hcritab,DVS); trigger when h(sensor_node) <= phcrit",
+      "rule": "phcrit = afgen(hcritab,14,DVS); trigger when h(sensor_node) <= phcrit",
       "inputs": ["DVS", "sensor node", "pressure head at sensor node"],
       "hydraulic_view": true,
-      "additional_constitutive_evaluation": false
+      "additional_constitutive_evaluation_for_selected_equation": false
     },
     "TCS8": {
-      "rule": "thetacrit = afgen(tcritab,DVS); trigger when theta(sensor_node) <= thetacrit",
+      "rule": "thetacrit = afgen(tcritab,14,DVS); trigger when theta(sensor_node) <= thetacrit",
       "inputs": ["DVS", "sensor node", "water content at sensor node"],
       "hydraulic_view": true,
-      "additional_constitutive_evaluation": false
+      "additional_constitutive_evaluation_for_selected_equation": false
     }
+  },
+  "legacy_tcs_gt_1_prelude": {
+    "finding": "B1.10 performs root-zone capacity, deficit and watcon calculations before every tcs>1 branch, including TCS7, although TCS7+DCS2 does not consume those calculated values.",
+    "selected_seam_dependency": false,
+    "target_action": "do not copy this broad legacy prelude into the restricted TCS7+DCS2 seam",
+    "scientific_caveat": "watcon and related legacy routines can touch global/model context, so removal of incidental side effects is not declared scientifically equivalent by F-PM04; later independent F-VQ must test observable full-runtime behavior"
   },
   "minimum_interval_overlay": {
     "tcsfix": "if enabled, event is admitted only when dayfix >= irgdayfix; accepted event resets dayfix to 1, otherwise dayfix increments while below interval",
@@ -85,20 +94,49 @@
       "hydraulic_or_geometry_dependencies": true
     },
     "DCS2": {
-      "rule": "irr_depth=afgen(fidtab,DVS)*0.1",
-      "inputs": ["DVS", "fixed-depth table"],
+      "legacy_rule": "irr_depth_cm=afgen(fidtab,14,DVS)*0.1",
+      "target_translation": "adapter converts immutable FID table values from legacy mm to cm before process evaluation",
+      "inputs": ["DVS", "translated fixed-depth table in cm"],
       "hydraulic_or_geometry_dependencies": false
     },
     "depth_limit_overlay": "optional clamp to irgdepmin/irgdepmax",
     "solute_overirrigation_overlay": "optional percentage increase when cml(sensor_node)>cirrthres"
   },
+  "afgen_table_semantics": {
+    "legacy_layout": "alternating x,y values in a 14-element array",
+    "legacy_behavior": [
+      "x <= first knot returns first y",
+      "interior values use piecewise linear interpolation",
+      "decreasing next x acts as partial-table sentinel and returns previous y",
+      "fully populated table clamps values above the final knot to final y"
+    ],
+    "source_read_behavior": "RDADOR/RDDATA may fill fewer than seven x,y pairs and does not define unused caller-array tail elements",
+    "selected_target_contract": [
+      "represent actual knot count explicitly",
+      "allow 2..7 finite pairs",
+      "require strictly increasing DVS knots",
+      "preserve below-first first-y clamp",
+      "for partial tables fail closed if runtime DVS exceeds the final supplied knot",
+      "do not preserve or depend on stale SAVE-array tail state"
+    ]
+  },
   "rate_and_application_rules": {
     "normal_positive_rate": "if irr_rate>0 and irr_depth/irr_rate<=1: surface gird=irr_rate or SSDI qssdi(node range)=irr_rate; dt_irr_event=irr_depth/irr_rate",
     "positive_rate_too_slow": "if irr_depth/irr_rate>1: temporarily adapt applied rate to irr_depth and use dt_irr_event=1 day",
     "zero_rate": "spread irr_depth evenly over the whole day and use dt_irr_event=1 day",
+    "legacy_rate_unit": "mm/h",
+    "target_rate_unit": "cm/day after adapter translation",
     "application_types": ["surface/sprinkler isuas<2", "SSDI isuas==2"],
     "surface_concentration": "scheduled cirr=cirrs before trigger evaluation",
     "task4_external_scaling": "legacy MultiSWAP may later scale gird and event duration by f_irr_avail; excluded from smallest seam"
+  },
+  "scheduled_ssdi_source_semantics": {
+    "legacy_regular_rate": "qssdi(nod_ssdi(1):nod_ssdi(2)) = irr_rate and dt_irr_event=irr_depth/irr_rate",
+    "multi_node_finding": "scheduled DCS2 depth is not divided by selected SSDI node count before assigning the same source rate to every node",
+    "fixed_event_contrast": "fixed-event SSDI divides fixed-event depth by node count before execution",
+    "first_structural_seam": "single node only",
+    "required_condition": "ssdi_first_node == ssdi_last_node",
+    "multi_node_status": "HELD_UNRESOLVED_SOURCE_SEMANTIC_DIFFERENCE"
   },
   "calendar_and_management": {
     "start_end_window": "annual startirr/endirr with cross-year crop handling in legacy initialization/runtime",
@@ -106,15 +144,15 @@
     "calendar_logic_migration_status": "NOT_INCLUDED_IN_SMALLEST_TCS7_DCS2_SEAM"
   },
   "selected_smallest_seam": {
-    "name": "TCS7_DCS2_SSDI_REGULAR_RATE",
-    "why": "TCS7 exercises the admitted process hydraulic view directly with one pressure-head sample and no HeadCalc/constitutive internals; DCS2 supplies irrigation depth without root-zone integration; SSDI reuses the already-qualified F-SI10/F-VQ18 node-source and authoritative mass path, whereas scheduled surface irrigation would depend on the still-unadmitted gird-to-nird interception/meteo composition.",
+    "name": "TCS7_DCS2_SINGLE_NODE_SSDI_REGULAR_RATE",
+    "why": "TCS7 consumes one committed pressure-head sample through the qualified process hydraulic view; DCS2 needs only DVS and an immutable translated depth table; single-node SSDI reuses the existing admitted node-source and mass route while avoiding both unadmitted surface gird-to-nird composition and unresolved scheduled multi-node mass semantics.",
     "included": [
       "outer explicit management gates: irrigation enabled, schedule enabled, crop emerged, irrigation window open, no fixed event already selected",
       "TCS7 DVS-dependent pressure-head threshold",
       "pretranslated immutable sensor node index",
-      "DCS2 DVS-dependent fixed irrigation depth",
-      "SSDI application only with pretranslated immutable first/last source nodes",
-      "irr_rate>0 and irr_depth/irr_rate<=1",
+      "DCS2 DVS-dependent fixed irrigation depth in cm after adapter translation",
+      "SSDI application at exactly one pretranslated immutable node",
+      "irr_rate_cm_per_day>0 and irr_depth_cm/irr_rate_cm_per_day<=1",
       "transaction-safe active scheduled-event continuation/completion",
       "explicit node source and reconciliation external inflow result"
     ],
@@ -122,11 +160,12 @@
       "TCS1-TCS4, TCS6, TCS8",
       "tcsfix/dayfix",
       "DCS1",
-      "root-zone depletion and watcon evaluation",
+      "legacy broad root-zone depletion and watcon prelude",
       "rainfall reduction",
       "depth limits",
       "solute-threshold over-irrigation",
       "surface scheduled application and gird-to-nird composition",
+      "multi-node scheduled SSDI",
       "irr_rate<=0",
       "irr_depth/irr_rate>1 temporary rate adaptation",
       "task4 f_irr_avail scaling",
@@ -135,18 +174,20 @@
     ]
   },
   "data_categories_for_selected_seam": {
-    "immutable_parameters": ["TCS7 DVS/pressure-head threshold table", "DCS2 DVS/fixed-depth table", "sensor_node", "SSDI first/last node", "irr_rate"],
+    "immutable_parameters": ["TCS7 explicit-knot DVS/pressure-head table", "DCS2 explicit-knot DVS/depth table in cm", "sensor_node", "single_ssdi_node", "irr_rate_cm_per_day"],
     "persistent_process_state": ["only active scheduled-event continuation/timing when an event spans multiple solver intervals"],
     "management_forcing": ["t0", "t1", "DVS", "irrigation_enabled", "schedule_enabled", "crop_emerged", "irrigation_window_open", "fixed_event_already_selected"],
-    "hydraulic_view": ["pressure_head(sensor_node)"],
-    "physical_result": ["SSDI node source", "event duration", "external inflow amount"],
+    "hydraulic_view": ["pressure_head(sensor_node) from committed view"],
+    "physical_result": ["single-node SSDI source", "event duration", "active duration", "external inflow amount"],
     "temporary_workspace": ["interpolated TCS7 threshold", "interpolated DCS2 depth", "trigger boolean"]
   },
   "mass_ownership": {
     "irrigation_is_external_inflow": true,
     "process_amount_is_reconciliation_evidence": true,
+    "single_node_full_event_identity": "irr_rate * (irr_depth/irr_rate) = irr_depth",
     "authoritative_runtime_accounting": "accepted F-KT/F-MR accounting through the already-qualified SSDI source route",
-    "existing_scientific_evidence": "F-VQ18 independently verified a positive SSDI process source through real F-MR/F-KT with authoritative total_in exactly once",
-    "double_booking_forbidden": true
+    "existing_scientific_evidence": "F-VQ18 independently verified the existing positive SSDI source route through real F-MR/F-KT with authoritative total_in exactly once; it does not admit scheduled TCS/DCS equations",
+    "double_booking_forbidden": true,
+    "multi_node_scheduled_mass_admitted": false
   }
 }
