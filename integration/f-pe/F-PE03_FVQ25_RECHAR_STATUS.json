@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-FVQ25-RECHAR",
+  "title": "REFERENCE tail re-characterization with admitted aggregate interval diagnostics",
+  "branch": "work/f-pe03-reference-tail-recharacterization-fvq25",
+  "status": "PERSISTED_PENDING_AGGREGATE_REFERENCE_TAIL_RECHARACTERIZATION",
+  "phase": "PERSISTED_NOT_YET_TESTED",
+  "reference_only": true,
+  "candidate_lineage": {
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "fvq25_status": "QUALIFIED_INDEPENDENT_FMR14_INTERVAL_DIAGNOSTICS_SCIENTIFIC_NO_CHANGE_ADMISSION",
+    "fpe03_b03": "CLEARED_FOR_RECHARACTERIZATION_RESUME"
+  },
+  "historical_workload": {
+    "old_fixture_commit": "e67d624967f53184904e689333594015e9658683",
+    "old_fixture_blob": "6623613a3526c119bf1fada5540eed93346592e1",
+    "historical_fpe03_handoff": "c9aa2219ddf69555b0cae77c89628fe355d0a4eb",
+    "perturbation_levels_relative_top_flux": [1e-10, 3e-11, 1e-11, 3e-12, 1e-12],
+    "both_signs": true,
+    "total_cases": 11,
+    "scientific_admission": "DIAGNOSTIC_ONLY"
+  },
+  "required_evidence": {
+    "production_source_immutable": true,
+    "historical_workload_reproduced_exactly": true,
+    "baseline_accepted": true,
+    "aggregate_interval_cost_vector_available": true,
+    "hard_mass_gate_for_every_accepted_case": true,
+    "no_commit_for_rejected_cases": true,
+    "deterministic_replay": true,
+    "o0_o2_identity": true,
+    "accepted_higher_cost_route_classified_without_policy_inference": true
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "scientific_admission_expanded": false,
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "execution_classes": {
+    "REFERENCE": "ADMITTED_CHARACTERIZATION_ONLY",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "This work unit may characterize aggregate REFERENCE interval cost only. Any non-baseline perturbation remains diagnostic until separately admitted by F-VQ. No representative tail distribution, bounded-cost threshold, BALANCED, THROUGHPUT or FALLBACK admission may be inferred."
+}
