@@ -1,0 +1,33 @@
+name: F-PE03 FVQ19 reference-tail resume characterization
+
+on:
+  push:
+    branches:
+      - work/f-pe03-reference-tail-characterization-fvq19
+    paths:
+      - 'integration/f-pe/F-PE03_FVQ19_*.json'
+      - 'integration/f-pe/F-PE05_*.json'
+      - 'tests/fpe/run_fpe03_fvq19_resume_gate.sh'
+      - '.github/workflows/fpe03-fvq19-tail-resume.yml'
+  workflow_dispatch:
+
+jobs:
+  fpe03-fvq19-tail-resume:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Replay historical stress harness on admitted F-PE05 lineage
+        env:
+          FPE03_EVIDENCE_DIR: ${{ github.workspace }}/fpe03-fvq19-evidence
+        run: bash tests/fpe/run_fpe03_fvq19_resume_gate.sh
+      - name: Upload characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-fvq19-reference-tail-resume-evidence
+          path: fpe03-fvq19-evidence
+          if-no-files-found: error
