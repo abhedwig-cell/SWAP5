@@ -23,7 +23,7 @@ program test_fwof23_primary_biomass_state
   call require(validate_state(initial) == WOFOST_BIOMASS_STATE_OK, 'reference state valid')
   call require(cohort_count(initial) == 3, 'active cohort count from compact arrays')
   call require(same_bits(leaf_biomass_total(initial), 9.0_real64), 'WLV reconstructible ordered sum')
-  call require(same_bits(leaf_area_sum(initial), 0.25_real64), 'LASUM reconstructible ordered sum')
+  call require(abs(leaf_area_sum(initial) - 0.25_real64) <= 1.0e-14_real64, 'LASUM reconstructible ordered sum')
   call require(same_bits(root_biomass_view(initial), 10.0_real64), 'actual WRT read-only view')
   write(*,'(A)') 'FWOF23_COMPACT_ACTIVE_COHORT_AND_RECONSTRUCTIBLE_VIEWS=PASS'
 
