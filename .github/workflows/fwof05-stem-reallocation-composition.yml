@@ -1,0 +1,35 @@
+name: F-WOF05 stem reallocation composition
+
+on:
+  push:
+    branches: [work/f-wof05-stem-reallocation-composition]
+    paths:
+      - src/crop/mod_wofost73_reallocation.f90
+      - src/crop/mod_wofost_stem_reallocation_composition.f90
+      - tests/fwof/**
+      - integration/f-wof/F-WOF05_*.json
+      - integration/f-wof/F-WOF05_*.md
+      - .github/workflows/fwof05-stem-reallocation-composition.yml
+  workflow_dispatch:
+
+jobs:
+  focused-stem-composition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify persisted scope admission
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path('integration/f-wof/F-WOF05_STATUS.json').read_text())
+          assert status['baseline']['commit'] == '027ca03bdd3079a3d213da578d1b7ae3e01b933f'
+          assert status['scope']['stem_reallocation_allowed'] is True
+          assert status['scope']['leaf_reallocation_allowed'] is False
+          assert status['scope']['potential_actual_separate_state_required'] is True
+          assert status['scope']['one_day_crop_process_admission'] is True
+          PY
+      - name: O0 O2 stem composition transaction and dry-matter gate
+        run: bash tests/fwof/run_fwof05_stem_reallocation_gate.sh
