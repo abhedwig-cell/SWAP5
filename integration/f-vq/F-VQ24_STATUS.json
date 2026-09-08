@@ -3,19 +3,21 @@
   "workstream": "F-VQ",
   "work_unit": "F-VQ24",
   "scope": "INDEPENDENT_FMR13_NONZERO_HEADCALC_REFERENCE_EQUIVALENCE",
-  "phase": "PERSISTED_PENDING_VERIFIER_IMPLEMENTATION",
+  "phase": "VERIFIER_IMPLEMENTED_AWAITING_QUALIFICATION",
   "status": "IN_PROGRESS_VERIFIER_ONLY",
   "branch": "qualification/f-vq24-fmr13-nonzero-headcalc-equivalence",
   "base_admission": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
   "candidate": "985058c0261d284424432a65bded16b7fc9107cb",
   "contract": "integration/f-vq/F-VQ24_CONTRACT.json",
+  "verifier": "tests/fvq/run_fvq24_fmr13_nonzero_headcalc_equivalence_gate.sh",
+  "workflow": ".github/workflows/fvq24-fmr13-nonzero-headcalc-equivalence.yml",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false,
     "candidate_production_source_changed": false
   },
   "scientific_admission": false,
-  "next_gate": "Persist and run the independent F-SI18 five-case production-bound HeadCalc reference-equivalence verifier at O0 and O2."
+  "next_gate": "Require bitwise equality with the exact F-SI18 five-case reference-TRIDAG HeadCalc output at O0 and O2, with all nonzero cases converged and repeat-run identity."
 }
