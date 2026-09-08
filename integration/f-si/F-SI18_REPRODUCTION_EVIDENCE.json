@@ -1,32 +1,57 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-SI18",
   "branch": "work/f-si18-reference-convergence-cliff",
-  "reproduction_head": "6b178bf02427849302c165f9d5261b4657e7aedf",
   "production_base": "a6470b90f100b7ed9837c5e092b39d011fd28476",
   "production_source_changed": false,
   "source_locks": {
     "headcalc": "d92f77963329d61ab3feb988f912252c0161436c",
-    "reference_adapter": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c"
+    "reference_adapter": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c",
+    "legacy_test_stubs": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639"
   },
-  "workflow": {
-    "run_id": 34249397344,
-    "artifact_id": 10065353445,
-    "artifact_digest": "sha256:c34497219dbc423ee3ec3a6f719d881473fd30823abe8cab072572126685ac5e",
-    "o0": "PASS",
-    "o2": "PASS",
+  "supersedes_interpretation": "Schema version 1 described the binary boundary as reproduced directly in the F-SI REFERENCE Richards solver. That wording was too broad because the isolated linkset supplied a zero-correction TRIDAG test stub. The observations remain valid for that harness, but not as production numerical-solver evidence.",
+  "zero_step_harness_reproduction": {
+    "latest_diagnostic_run_id": 34249667002,
+    "artifact_id": 10065462365,
+    "artifact_digest": "sha256:901c441daecce1d189d9933019b880b807f4ef2f1ea3fb0b45486396934d927e",
     "o0_o2_identity": true,
-    "deterministic_replay": true
+    "deterministic_replay": true,
+    "linear_solver": "tests/fsi/fsi04_real_headcalc_stubs.f90::tridag",
+    "linear_solver_behavior": "returns an exact zero Newton correction vector and ierror=0",
+    "cases": [
+      {"delta": 0.0, "converged": true, "nonlinear_iterations": 1, "backtracking_attempts": 1, "final_max_abs_residual": 0.0},
+      {"delta": 3e-12, "converged": true, "nonlinear_iterations": 1, "backtracking_attempts": 1, "final_max_abs_residual": 4.879152637471407e-13},
+      {"delta": -3e-12, "converged": true, "nonlinear_iterations": 1, "backtracking_attempts": 1, "final_max_abs_residual": 4.879152637471407e-13},
+      {"delta": 1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "backtracking_attempts": 32, "final_balance_flag_count": 1, "final_head_flag_count": 0, "final_max_abs_residual": 1.6263934643490074e-12},
+      {"delta": -1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "backtracking_attempts": 32, "final_balance_flag_count": 1, "final_head_flag_count": 0, "final_max_abs_residual": 1.6263934643490074e-12}
+    ],
+    "classification": "BINARY_BOUNDARY_REPRODUCED_ONLY_IN_ZERO_CORRECTION_LINEAR_SOLVER_HARNESS"
   },
-  "cases": [
-    {"delta": 0.0, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
-    {"delta": 3e-12, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
-    {"delta": -3e-12, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
-    {"delta": 1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "internal_retries": 1, "jacobian_builds": 8, "linear_solves": 8, "backtracking_attempts": 32},
-    {"delta": -1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "internal_retries": 1, "jacobian_builds": 8, "linear_solves": 8, "backtracking_attempts": 32}
-  ],
-  "finding": "The F-PE03 3e-12/1e-11 binary convergence boundary reproduces directly in the F-SI REFERENCE Richards solver on the latest qualified F-SI16 lineage. SNOW, MultiSWAP, transaction two-half comparison, mass acceptance and temporal acceptance are not required to produce the cliff.",
-  "sign_symmetry": true,
+  "reference_tridag_control": {
+    "run_id": 34250595697,
+    "job_id": 102143741264,
+    "artifact_id": 10065825829,
+    "artifact_digest": "sha256:66f4a91c90333162535b136bc1c25bdc330181c71c43d4e3f0256b789b82f81a",
+    "control_type": "TEST_ONLY",
+    "operation_order": "SWAP_4_3_1_THOMAS_TRIDAG",
+    "production_source_changed": false,
+    "o0_o2_identity": true,
+    "all_nonzero_perturbations_converged": true,
+    "cases": [
+      {"delta": 0.0, "converged": true, "nonlinear_iterations": 1, "backtracking_attempts": 1, "final_max_abs_residual": 0.0},
+      {"delta": 3e-12, "converged": true, "nonlinear_iterations": 3, "backtracking_attempts": 4, "final_max_abs_residual": 1.8068879725774423e-13},
+      {"delta": -3e-12, "converged": true, "nonlinear_iterations": 3, "backtracking_attempts": 4, "final_max_abs_residual": 1.8071655283335986e-13},
+      {"delta": 1e-11, "converged": true, "nonlinear_iterations": 6, "backtracking_attempts": 8, "final_max_abs_residual": 2.2676305277968822e-13},
+      {"delta": -1e-11, "converged": true, "nonlinear_iterations": 6, "backtracking_attempts": 8, "final_max_abs_residual": 2.2354340600827527e-13}
+    ],
+    "classification": "ZERO_CORRECTION_TRIDAG_STUB_CONFIRMED_AS_BINARY_CLIFF_CAUSE"
+  },
+  "corrected_finding": "The 3e-12/1e-11 binary boundary is caused by the isolated zero-correction TRIDAG stub, not by an established production Richards convergence defect. With a test-only Thomas solve following the SWAP 4.3.1 TRIDAG operation order, every tested nonzero perturbation converges and the expected accepted higher-cost nonlinear route appears.",
+  "production_richards_cost_cliff_established": false,
+  "production_headcalc_defect_established": false,
+  "test_harness_limitation_established": true,
+  "accepted_higher_cost_route_demonstrated_in_reference_tridag_control": true,
+  "scientific_admission_of_perturbed_fixture": false,
   "production_change_authorized": false,
-  "next_step": "Use existing worker-owned Richards scratch to identify which final-iteration convergence criterion remains active at the rejected 1e-11 cases before considering any production change."
+  "next_step": "Return the finding to performance and qualification architecture. Any reference-tail cost qualification must use a numerically functional reference linear solver and then independently admit the perturbed workload scientifically before production cost or fallback claims are made."
 }
