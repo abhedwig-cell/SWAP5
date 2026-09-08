@@ -25,6 +25,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
       - name: F-SI15 explicit physical option authority and poison gate
-        run: bash tests/fsi/run_fsi15_physical_option_authority_gate.sh
+        run: bash tests/fsi/run_fsi15_physical_option_authority_gate_v2.sh
       - name: F-SI15 exact F-SI14 common and legacy-direct identity gate
         run: bash tests/fsi/run_fsi15_fsi14_identity_gate.sh
