@@ -31,14 +31,27 @@ jobs:
           import json
           from pathlib import Path
           c=json.loads(Path('integration/f-pe/F-PE03_REFERENCE_STRESS_CONTRACT.json').read_text())
+          assert c['status']=='PARTIAL_EXIT_DIAGNOSTIC_CHARACTERIZATION_COMPLETE_SCIENTIFIC_ADMISSION_NOT_EXPANDED'
           assert c['hard_scope']['execution_policy']=='REFERENCE_ONLY'
           assert c['hard_scope']['physics_change_allowed'] is False
           assert c['hard_scope']['solver_policy_change_allowed'] is False
           assert c['hard_scope']['numerical_control_change_allowed'] is False
+          assert c['hard_scope']['admission_profile_expansion_allowed'] is False
           assert c['hard_scope']['production_source_change_allowed'] is False
+          a=c['scientific_admission_boundary']
+          assert a['fvq14_admission_scope']=='EXACT_RESTRICTED_STATIONARY_FIXTURE_ONLY'
+          assert a['fvq14_initial_pressure_head']==-75.0
+          assert a['fvq14_interval']==[1000.125,1000.625]
+          assert a['fvq14_retry_subgate']=='NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION'
+          assert a['transactional_acceptance_equals_scientific_admission'] is False
+          assert a['stress_matrix_expands_scientific_admission'] is False
+          assert a['stress_cases_classification']=='DIAGNOSTIC_EXTRAPOLATION_ON_SAME_PHYSICAL_TOPOLOGY'
           assert c['claim_limits']['bounded_cost_policy_admission'] is False
+          assert c['claim_limits']['scientific_admission_expansion'] is False
+          assert c['claim_limits']['production_solver_defect_claim_from_diagnostic_rejections'] is False
           assert c['synthetic_tail_boundary']['fmq23_synthetic_difficult_tail_may_be_used_as_physical_tail_evidence'] is False
           print('FPE03_SCOPE_LOCK=PASS')
+          print('FPE03_SCIENTIFIC_ADMISSION_BOUNDARY=PASS')
           PY
       - name: Run O0 O2 real-physics stress characterization
         run: |
@@ -56,7 +69,7 @@ jobs:
           grep -F 'FPE03_ACCEPTED_HIGHER_COST_PHYSICAL_STRESS_FIXTURE=NOT_OBSERVED' /tmp/fpe03.log
           grep -F 'FPE03_O0_O2_OUTPUT_IDENTITY=PASS' /tmp/fpe03.log
           grep -F 'FPE03_REFERENCE_STRESS_GATE=PASS_CHARACTERIZATION_ONLY' /tmp/fpe03.log
-      - name: Verify partial-exit evidence and blocker
+      - name: Verify partial-exit evidence blocker and root-cause boundary
         run: |
           python3 - <<'PY'
           import json
@@ -68,34 +81,74 @@ jobs:
           assert e['status']==expected
           assert s['status']==expected
           assert e['qualified_physical_tail'] is False
-          assert e['refined_matrix_results']['accepted_cases']==6
-          assert e['refined_matrix_results']['rejected_cases']==18
-          assert e['refined_matrix_results']['accepted_higher_cost_cases']==0
-          assert e['refined_matrix_results']['all_accepted_mass_complete'] is True
-          assert e['refined_matrix_results']['all_accepted_missing_mass_mask_zero'] is True
-          assert e['refined_matrix_results']['accepted_max_abs_unrounded_mass_residual'] <= e['refined_matrix_results']['accepted_mass_gate']
+          assert e['scientific_admission_boundary']['fvq14_scope']=='EXACT_RESTRICTED_STATIONARY_FOUR_NODE_FIXTURE_ONLY'
+          assert e['scientific_admission_boundary']['stress_matrix_scientifically_admitted'] is False
+          assert e['scientific_admission_boundary']['transactional_acceptance_is_scientific_admission'] is False
+          assert e['scientific_admission_boundary']['admission_profile_expanded_by_fpe03'] is False
+          r=e['refined_matrix_results']
+          assert r['accepted_cases']==6
+          assert r['rejected_cases']==18
+          assert r['accepted_higher_cost_cases']==0
+          assert r['accepted_semantics']=='TRANSACTIONALLY_ACCEPTED_DIAGNOSTIC_CASES_NOT_SCIENTIFIC_ADMISSION'
+          assert r['scientifically_admitted_uniform_pressure_heads_from_fvq14']==[-75.0]
+          assert r['all_accepted_mass_complete'] is True
+          assert r['all_accepted_missing_mass_mask_zero'] is True
+          assert r['accepted_max_abs_unrounded_mass_residual'] <= r['accepted_mass_gate']
+          root=e['root_cause_audit']
+          assert root['kernel_status_2']=='CANONICAL_STATUS_TRANSACTION_FAILED'
+          assert root['transaction_policy_max_retries']==2
+          assert root['attempts_implied_by_retry_policy']==3
+          assert root['observed_headcalc_calls_per_rejected_case']==3
+          assert root['observed_nonlinear_iterations_per_rejected_case']==24
+          assert root['observed_backtracking_attempts_per_rejected_case']==96
+          assert root['solver_max_iterations_per_attempt']==8
+          assert root['solver_max_backtracking_per_iteration']==4
+          assert root['source_derived_failure_stage']=='EACH_FULL_TRIAL_EXHAUSTS_EIGHT_NEWTON_ITERATIONS_AND_RETURNS_SW_SOLVE_RETRY_ADVISED_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE_CHECKS'
+          assert root['mass_rejection_inferred_as_cause'] is False
+          assert root['temporal_rejection_inferred_as_cause'] is False
+          assert root['production_solver_defect_established'] is False
           assert e['qualified_lineage_fixture_audit']['accepted_nonstationary_current_lineage_fixture_found'] is False
+          assert e['qualified_lineage_fixture_audit']['fsi12']['result']=='CONTROL_BINDING_ONLY_NOT_NUMERICAL_POLICY_ADMISSION'
           assert e['blocker']['code']=='FPE03-B01'
           assert e['blocker']['status']=='BLOCKED_FAIL_CLOSED'
-          for k in ['physical_tail_percentiles_qualified','representative_p50_p95_p99','B12_or_heavy_clay_covered','bounded_cost_policy_admitted','fallback_policy_admitted','balanced_policy_admitted','throughput_policy_admitted','parallel_real_physics_admitted','synthetic_fmq23_tail_promoted_to_physical_evidence']:
+          for k in ['physical_tail_percentiles_qualified','representative_p50_p95_p99','B12_or_heavy_clay_covered','bounded_cost_policy_admitted','fallback_policy_admitted','balanced_policy_admitted','throughput_policy_admitted','parallel_real_physics_admitted','synthetic_fmq23_tail_promoted_to_physical_evidence','diagnostic_stress_matrix_promoted_to_scientific_admission']:
               assert e['claim_limits'][k] is False
+          assert s['scientific_admission_boundary']['stress_matrix_scientifically_admitted'] is False
+          assert s['scientific_admission_boundary']['transactional_acceptance_equals_scientific_admission'] is False
           assert s['scope_flags']['QUALIFIED'] is False
-          assert s['scope_flags']['accepted_higher_cost_physical_fixture_found'] is False
+          assert s['scope_flags']['diagnostic_reference_route_cost_cliff_characterized'] is True
+          assert s['scope_flags']['scientifically_qualified_reference_cost_cliff'] is False
+          assert s['scope_flags']['admitted_higher_cost_physical_fixture_found'] is False
           assert s['scope_flags']['bounded_cost_policy_admitted'] is False
           assert s['scope_flags']['fallback_policy_admitted'] is False
-          assert s['fixture_gap']['accepted_nonstationary_current_lineage_fixture_found'] is False
+          assert s['fixture_gap']['admitted_nonstationary_current_lineage_fixture_found'] is False
+          assert s['failure_envelope']['two_half_route_reached'] is False
+          assert s['failure_envelope']['mass_acceptance_check_reached'] is False
+          assert s['failure_envelope']['temporal_acceptance_check_reached'] is False
+          assert s['failure_envelope']['production_solver_defect_established'] is False
           assert s['blocker']['code']=='FPE03-B01'
-          assert c['closeout_classification']=='PARTIAL_EXIT_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED'
-          assert c['self_verification']['workflow_run']==34212856397
-          assert c['self_verification']['workflow_job']==102017672830
-          assert c['self_verification']['head_sha']=='8f7bab11fd856d7cb2f7bacb8c299cf2b0517061'
-          assert c['self_verification']['conclusion']=='success'
-          assert c['qualified_scope']['reference_cost_cliff_characterization_verified'] is True
+          assert c['closeout_classification']=='PARTIAL_EXIT_DIAGNOSTIC_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED'
+          assert c['last_green_pre_audit_self_verification']['workflow_run']==34213123950
+          assert c['last_green_pre_audit_self_verification']['workflow_job']==102018529741
+          assert c['last_green_pre_audit_self_verification']['head_sha']=='9bb3d60063065a59b779c9c166f1a67b16a1bc5d'
+          assert c['last_green_pre_audit_self_verification']['conclusion']=='success'
+          assert c['scientific_admission_boundary']['stress_matrix_scientifically_admitted'] is False
+          assert c['scientific_admission_boundary']['transactional_acceptance_equals_scientific_admission'] is False
+          assert c['failure_envelope']['two_half_route_reached'] is False
+          assert c['failure_envelope']['mass_acceptance_check_reached'] is False
+          assert c['failure_envelope']['temporal_acceptance_check_reached'] is False
+          assert c['failure_envelope']['production_solver_defect_established'] is False
+          assert c['qualified_scope']['diagnostic_reference_route_cost_cliff_characterization_verified'] is True
+          assert c['qualified_scope']['scientifically_qualified_reference_cost_cliff'] is False
+          assert c['qualified_scope']['stress_cases_scientifically_admitted'] is False
+          assert c['qualified_scope']['scientific_admission_expanded'] is False
           assert c['qualified_scope']['physical_tail_distribution_qualified'] is False
           assert c['qualified_scope']['bounded_cost_policy_admitted'] is False
           assert c['blocker']['code']=='FPE03-B01'
           assert c['blocker']['status']=='BLOCKED_FAIL_CLOSED'
-          assert c['disposition']=='PARK_FPE03_UNTIL_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS'
+          assert c['disposition']=='PARK_FPE03_UNTIL_INDEPENDENTLY_ADMITTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS'
           print('FPE03_PARTIAL_EXIT_SELF_VERIFICATION=PASS')
+          print('FPE03_DIAGNOSTIC_SCIENTIFIC_BOUNDARY=PASS')
+          print('FPE03_ROOT_CAUSE_BOUNDARY=PASS')
           print('FPE03_CLOSEOUT_ARTIFACT=PASS')
           PY
