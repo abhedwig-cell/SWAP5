@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ19",
+  "title": "Independent F-MR08 Nonstationary Exact Temporal Acceptance Qualification Evidence",
+  "branch": "qualification/f-vq19-fmr08-nonstationary-temporal",
+  "candidate_source_commit": "439432ad91d64353e70afda4ff0837f69521a9e5",
+  "candidate_source_tree": "6fb99c994ab88435a3eaf675d6d9e945cc3a9d79",
+  "tested_qualification_head": "f845ca34c1b29a0697f1a92e4f464e4d082213d6",
+  "workflow_run": 34240292741,
+  "workflow_job": 102108407969,
+  "conclusion": "success",
+  "compiler": "GNU Fortran 13.3.0",
+  "artifact": {
+    "id": 10061662125,
+    "name": "fvq19-fmr08-nonstationary-temporal-evidence",
+    "size_bytes": 3592,
+    "digest": "sha256:662655b14451b780c9a3dc1a409c74a5fa1b8a7604c72cd1a1a690597be9569e"
+  },
+  "independent_source_audit": {
+    "qualification_source_immutability": "PASS",
+    "candidate_tree_lock": "PASS",
+    "current_evidence_blob_lock": "PASS",
+    "preexisting_fmr06_files_unchanged": "PASS",
+    "non_midnight_one_call_daily_interval": "PASS",
+    "initial_snow": "0.10",
+    "derived_committed_snow": "0.12",
+    "derived_snow_delta": "0.02",
+    "nonstationary_persistent_snow_state": "PASS",
+    "zero_temporal_tolerance": "PASS",
+    "active_snow_in_exact_temporal_comparator": "PASS",
+    "exact_comparator_fail_closed": "PASS",
+    "hard_mass_and_transaction_contract": "PASS"
+  },
+  "direct_scientific_replay": {
+    "source": "F-VQ17",
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "result": "PASS",
+    "required_final_marker": "FVQ17_GATE PASS_INDEPENDENT_FMR06_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS"
+  },
+  "qualification_result": "PASS_INDEPENDENT_NONSTATIONARY_EXACT_TEMPORAL_ACCEPTANCE",
+  "scope": "EXISTING_EXACT_IDENTITY_TEMPORAL_METRIC_WITH_INDEPENDENTLY_ADMITTED_ONE_CALL_DAILY_SERIALIZED_REFERENCE_SNOW_FIXTURE",
+  "owner_gate_used_as_acceptance_oracle": false,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "new_numeric_tolerance_introduced": false,
+  "graded_temporal_profile_admitted": false,
+  "mass_gate_relaxed": false,
+  "scope_promotions": {
+    "subdaily_snow": false,
+    "multiday_snow": false,
+    "arbitrary_duration_snow": false,
+    "balanced": false,
+    "throughput": false,
+    "fallback": false,
+    "parallel_real_physics": false
+  },
+  "qualification_history": [
+    {
+      "run": 34240014805,
+      "head": "0c59b9f2ab7822fc6634f5f326668d1dbd71ebc3",
+      "result": "FAIL_TEST_TOOLING_ONLY",
+      "reason": "Verifier incorrectly assumed the temporal comparator was a logical function; no scientific or production failure occurred."
+    },
+    {
+      "run": 34240134576,
+      "head": "5644138fa5bd63f18407f0ae578e2df91e4c1adf",
+      "result": "PASS",
+      "note": "Full qualification passed before artifact upload support was added."
+    },
+    {
+      "run": 34240292741,
+      "head": "f845ca34c1b29a0697f1a92e4f464e4d082213d6",
+      "result": "DECISIVE_PASS_WITH_IMMUTABLE_ARTIFACT"
+    }
+  ]
+}
