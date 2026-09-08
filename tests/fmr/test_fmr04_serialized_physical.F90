@@ -6,7 +6,7 @@ program test_fmr04_serialized_physical
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot
-  use mod_transaction_reference, only: transaction_state_t
+  use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED, &
@@ -66,7 +66,13 @@ program test_fmr04_serialized_physical
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
        result, candidate, diagnostics)
   call require(result%completed .and. candidate%ready(), 'physical candidate materialized')
-  call require(.not. result%mass%complete, 'F-KT full interval mass boundary remains explicitly incomplete')
+  call require(result%mass%complete, 'F-KT08 authoritative full interval mass complete')
+  call require(result%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'F-KT08 no missing mass contribution')
+  call require(same_real(result%mass%interval_t0,t0) .and. same_real(result%mass%interval_t1,t1), &
+       'F-KT08 mass interval provenance')
+  call require(result%mass%origin_lineage_id == lineage_id .and. result%mass%origin_revision == revision0, &
+       'F-KT08 mass committed provenance')
+  call require(result%mass%accepted_transaction_count > 0, 'F-KT08 accepted transaction accounting')
   call require(diagnostics%mass_rejections == 0, 'hard per-trial mass gate accepted physical route')
   call require(diagnostics%max_abs_step_mass_residual <= 1.0e-12_real64, 'hard per-trial mass residual')
   call require(committed%current_revision() == revision0, 'trial did not mutate committed revision')
@@ -84,6 +90,13 @@ program test_fmr04_serialized_physical
   call shadow_profile_mass(forcing, observation, t1-t0, initial_storage, endpoint_storage, &
        shadow_total_in, shadow_total_out, shadow_residual)
   call require(abs(shadow_residual) <= 1.0e-12_real64, 'diagnostic profile accounting closes')
+  call require(same_real(result%mass%storage_start,initial_storage), 'authoritative storage start identity')
+  call require(same_real(result%mass%storage_end,endpoint_storage), 'authoritative storage end identity')
+  call require(same_real(result%mass%storage_change,endpoint_storage-initial_storage), &
+       'authoritative storage change identity')
+  call require(same_real(result%mass%total_in,shadow_total_in), 'authoritative total inflow identity')
+  call require(same_real(result%mass%total_out,shadow_total_out), 'authoritative total outflow identity')
+  call require(abs(result%mass%residual) <= 1.0e-12_real64, 'authoritative full interval mass residual')
 
   call fmr_discard_candidate(transaction_control, candidate, diagnostics)
   call require(.not. candidate%ready(), 'candidate discarded')
@@ -94,7 +107,9 @@ program test_fmr04_serialized_physical
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
        replay_result, replay_candidate, replay_diagnostics)
   call require(replay_result%completed .and. replay_candidate%ready(), 'replay candidate materialized')
-  call require(.not. replay_result%mass%complete, 'replay preserves explicit full-mass hold')
+  call require(replay_result%mass%complete, 'replay preserves authoritative full mass')
+  call require(replay_result%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'replay no missing contribution')
+  call require(same_real(replay_result%mass%residual,result%mass%residual), 'replay authoritative mass identity')
   candidate_fp2 = candidate_fingerprint(replay_candidate)
   call require(candidate_fp2 == candidate_fp1, 'checkpoint replay candidate identity')
   call require(replay_diagnostics%max_abs_step_mass_residual == diagnostics%max_abs_step_mass_residual, &
@@ -120,8 +135,6 @@ program test_fmr04_serialized_physical
   call require(.not. rejected_result%completed .and. .not. rejected_candidate%ready(), 'nonzero qrot forcing rejected')
   call require(committed_fingerprint(committed) == committed_fp0, 'qrot rejection leaves committed state unchanged')
 
-  ! This commit is transaction/composition evidence only. It does not admit the physical backend
-  ! because F-KT has not yet materialized complete accepted full-interval mass accounting.
   call fmr_commit_candidate(transaction_control, committed, replay_candidate, replay_diagnostics, did_commit, commit_status)
   call require(did_commit, 'physical candidate transaction commit')
   revision1 = committed%current_revision()
@@ -152,6 +165,13 @@ program test_fmr04_serialized_physical
   write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_TOTAL_IN=', shadow_total_in
   write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_TOTAL_OUT=', shadow_total_out
   write(*,'(A,ES26.17E3)') 'FMR04_DIAGNOSTIC_MASS_RESIDUAL=', shadow_residual
+  write(*,'(A,ES26.17E3)') 'FMR04_AUTHORITATIVE_STORAGE_START=', result%mass%storage_start
+  write(*,'(A,ES26.17E3)') 'FMR04_AUTHORITATIVE_STORAGE_END=', result%mass%storage_end
+  write(*,'(A,ES26.17E3)') 'FMR04_AUTHORITATIVE_TOTAL_IN=', result%mass%total_in
+  write(*,'(A,ES26.17E3)') 'FMR04_AUTHORITATIVE_TOTAL_OUT=', result%mass%total_out
+  write(*,'(A,ES26.17E3)') 'FMR04_AUTHORITATIVE_MASS_RESIDUAL=', result%mass%residual
+  write(*,'(A,I0)') 'FMR04_AUTHORITATIVE_MISSING_MASK=', result%mass%missing_contribution_mask
+  write(*,'(A,I0)') 'FMR04_AUTHORITATIVE_ACCEPTED_TRANSACTIONS=', result%mass%accepted_transaction_count
   write(*,'(A,L1)') 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=', result%mass%complete
   write(*,'(A,ES26.17E3)') 'FMR04_MAX_ABS_STEP_MASS_RESIDUAL=', diagnostics%max_abs_step_mass_residual
   write(*,'(A,I0)') 'FMR04_CANDIDATE_FINGERPRINT=', candidate_fp2
@@ -166,7 +186,7 @@ program test_fmr04_serialized_physical
   write(*,'(A)') 'FMR04_SNOW_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_SWKIMPL1_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR04_RETRY_SUBGATE=NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION'
-  write(*,'(A)') 'FMR04_FULL_INTERVAL_MASS_ADMISSION=BLOCKED_FKT_RESULT_BOUNDARY_INCOMPLETE'
+  write(*,'(A)') 'FMR04_FULL_INTERVAL_MASS_ADMISSION=PASS_FKT08_AUTHORITATIVE'
   write(*,'(A)') 'FMR04_SERIALIZED_PHYSICAL_COMPOSITION_TEST PASS'
 
 contains
