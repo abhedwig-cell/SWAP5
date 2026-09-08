@@ -4,8 +4,8 @@
   "work_unit": "F-MR15",
   "title": "Compose Independently Admitted Prescribed Bottom-Head Runtime with Interval Cost Diagnostics",
   "branch": "work/f-mr15-prescribed-head-interval-diagnostics-composition",
-  "status": "IN_PROGRESS_OWNER_COMPOSITION_PLAN_PERSISTED",
-  "phase": "PLAN_PERSISTED_BEFORE_PRODUCTION_MATERIALIZATION",
+  "status": "IN_PROGRESS_COMPOSITION_PROBE_QUALIFIED_FOR_MATERIALIZATION",
+  "phase": "PROBE_PERSISTED_BEFORE_PRODUCTION_MATERIALIZATION",
   "base": {
     "work_unit": "F-VQ25/F-MR14",
     "closeout_commit": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
@@ -22,20 +22,30 @@
   "composition": {
     "production_source_modified": false,
     "materialization_started": false,
-    "nonoverlap_exact_postimages": [
-      "src/adapter/mod_b110_serialized_context_binding.f90",
-      "src/adapter/mod_reference_richards_legacy_binding.f90",
-      "src/runtime/mod_fmr_serialized_reference_backend.f90",
-      "src/solver/mod_soil_water_solver_contract.f90"
-    ],
-    "three_way_reconciliation_required": [
-      "src/legacy/b1_10_port/headcalc.f90",
-      "src/solver/mod_reference_richards_workspace.f90"
-    ],
-    "preserve_fmr14_observer_paths_exactly": [
-      "src/kernel/mod_kernel_transactions.f90",
-      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
-    ]
+    "generic_three_way_probe_run": 34278795618,
+    "generic_three_way_result": "EXPECTED_CONFLICT_IN_HEADCALC_USE_SECTION",
+    "semantic_probe_run": 34278935283,
+    "semantic_probe_job": 102238731593,
+    "semantic_probe_result": "PASS",
+    "nonoverlap_exact_postimages": {
+      "src/adapter/mod_b110_serialized_context_binding.f90": "e21c964eac48d5feb91388cfd06a646c4002a497",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "db432cac3f1156a179c636435a25f52cdececffc",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+      "src/solver/mod_soil_water_solver_contract.f90": "4271372085d800fd5da969a2ed073b00422d79c6"
+    },
+    "resolved_overlap_postimages": {
+      "src/legacy/b1_10_port/headcalc.f90": "55893f1f5ccba2052ad681743aa155b69f351246",
+      "src/solver/mod_reference_richards_workspace.f90": "59ef9d037c1875610d45ac83387ebab9e917e0fe"
+    },
+    "overlap_resolution": "EXACT_FMR11_POSTIMAGE_PLUS_ONLY_FMR13_LINEAR_SOLVER_SEAM_WITH_ONE_OCCURRENCE_ASSERTIONS",
+    "fmr13_linear_solver_seam_preserved": true,
+    "fmr11_prescribed_head_seam_preserved": true,
+    "overlap_cardinality_gate": "PASS",
+    "observer_path_separation": "PASS",
+    "preserve_fmr14_observer_paths_exactly": {
+      "src/kernel/mod_kernel_transactions.f90": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
+    }
   },
   "source_locks": {
     "base_context_binding": "1818338d088ee61a3a1dd5220542e6650ba673ac",
@@ -50,11 +60,12 @@
     "incoming_workspace": "a09ba3457a8ce3685df446bfacbf5220cd401507",
     "base_solver_contract": "0a57b07712f93538cbfaf9130838682307cede09",
     "incoming_solver_contract": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "fmr13_linear_solver": "b292d284e5549049eac1c80df4cc30008154eb96",
     "fmr14_kernel_post": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
     "fmr14_multiswap_runtime_post": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
   },
   "required_gates": [
-    "three-way composition must preserve all F-MR12/F-MR13 changes on overlapping files while adding only F-MR11/F-VQ26 semantics",
+    "materialized production delta equals exactly the six probe-derived postimages",
     "F-MR14 interval diagnostics observer paths remain exact and decision-neutral",
     "full F-VQ26 accepted two-sign prescribed-head gate passes on composed postimage",
     "F-VQ25/F-MR14 diagnostics regression passes",
@@ -68,7 +79,8 @@
   "state": {
     "implemented": false,
     "persisted": true,
-    "tested": false,
+    "probe_tested": true,
+    "production_tested": false,
     "owner_qualified": false,
     "independently_scientifically_qualified": false
   },
@@ -80,5 +92,5 @@
   "transaction_semantics_changed": false,
   "scientific_admission_expanded": false,
   "claim_limit": "F-MR15 is only a composition work unit. Until owner qualification and subsequent independent F-VQ qualification pass, it does not admit the composed runtime for production or F-PE characterization.",
-  "next_action": "Materialize the exact non-overlap F-MR11 postimages and perform source-auditable three-way reconciliation for HeadCalc and the reference workspace, then run owner composition gates."
+  "next_action": "Materialize exactly the six probe-derived production blobs with a path-restricted write gate, then run the owner composition regression matrix."
 }
