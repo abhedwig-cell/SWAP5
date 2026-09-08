@@ -235,11 +235,11 @@ contains
     fluxes%applied = .true.
     fluxes%event_index = event_index
     fluxes%application_type = event%application_type
-    fluxes%concentration = event%concentration
     fluxes%event_duration = event_duration
     fluxes%active_duration = active_duration
 
     if (event%application_type < IRRIGATION_APPLICATION_SSDI) then
+      fluxes%concentration = event%concentration
       fluxes%surface_gross_rate = event%rate
       fluxes%external_inflow_amount = event%rate * active_duration
     else
