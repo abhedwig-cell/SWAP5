@@ -1,11 +1,12 @@
 name: F-LMFP08 Constrained Delta-q Candidate
 
 on:
-  push:
-    branches:
-      - work/f-lmfp08-physics-informed-darcian-correction
   workflow_dispatch:
 
+# Retained as negative-evidence harness. The delta-q candidate already failed the
+# face/sign and transient-stress gates, so it must not make every later F-LMFP08
+# branch checkpoint red. Re-run only explicitly when that rejected candidate is
+# being investigated.
 jobs:
   deltaq:
     runs-on: ubuntu-latest

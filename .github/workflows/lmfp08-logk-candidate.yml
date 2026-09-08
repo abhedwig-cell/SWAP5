@@ -1,0 +1,28 @@
+name: F-LMFP08 Positive Log K_DAR Candidate
+
+on:
+  push:
+    branches:
+      - work/f-lmfp08-physics-informed-darcian-correction
+  workflow_dispatch:
+
+jobs:
+  logk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          python3 --version
+      - name: Positive log K_DAR qualification gate
+        run: bash experiments/lmfp/run_lmfp08_logk_gate.sh
+      - name: Upload log K_DAR evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp08-logk-evidence
+          path: |
+            lmfp08-logk-artifacts/
+            lmfp04-artifacts/
