@@ -56,9 +56,15 @@ contains
 
     status = WOFOST_BIOMASS_STATE_OK
 
-    if (.not. valid_nonnegative(self%root_biomass) .or. &
-        .not. valid_nonnegative(self%stem_biomass) .or. &
-        .not. valid_nonnegative(self%storage_biomass)) then
+    if (.not. valid_nonnegative(self%root_biomass)) then
+      status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
+      return
+    end if
+    if (.not. valid_nonnegative(self%stem_biomass)) then
+      status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
+      return
+    end if
+    if (.not. valid_nonnegative(self%storage_biomass)) then
       status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
       return
     end if
@@ -71,25 +77,47 @@ contains
     has_leaf = allocated(self%leaf_biomass)
     has_sla = allocated(self%specific_leaf_area)
     has_age = allocated(self%leaf_age)
-    if ((has_leaf .neqv. has_sla) .or. (has_leaf .neqv. has_age)) then
+    if (has_leaf .neqv. has_sla) then
+      status = WOFOST_BIOMASS_STATE_COHORT_ALLOCATION_MISMATCH
+      return
+    end if
+    if (has_leaf .neqv. has_age) then
       status = WOFOST_BIOMASS_STATE_COHORT_ALLOCATION_MISMATCH
       return
     end if
 
     if (.not. has_leaf) return
 
-    if (size(self%leaf_biomass) /= size(self%specific_leaf_area) .or. &
-        size(self%leaf_biomass) /= size(self%leaf_age)) then
+    if (size(self%leaf_biomass) /= size(self%specific_leaf_area)) then
+      status = WOFOST_BIOMASS_STATE_COHORT_SHAPE_MISMATCH
+      return
+    end if
+    if (size(self%leaf_biomass) /= size(self%leaf_age)) then
       status = WOFOST_BIOMASS_STATE_COHORT_SHAPE_MISMATCH
       return
     end if
 
-    if (.not. all(ieee_is_finite(self%leaf_biomass)) .or. &
-        .not. all(ieee_is_finite(self%specific_leaf_area)) .or. &
-        .not. all(ieee_is_finite(self%leaf_age)) .or. &
-        any(self%leaf_biomass < 0.0_real64) .or. &
-        any(self%specific_leaf_area < 0.0_real64) .or. &
-        any(self%leaf_age < 0.0_real64)) then
+    if (.not. all(ieee_is_finite(self%leaf_biomass))) then
+      status = WOFOST_BIOMASS_STATE_INVALID_COHORT
+      return
+    end if
+    if (.not. all(ieee_is_finite(self%specific_leaf_area))) then
+      status = WOFOST_BIOMASS_STATE_INVALID_COHORT
+      return
+    end if
+    if (.not. all(ieee_is_finite(self%leaf_age))) then
+      status = WOFOST_BIOMASS_STATE_INVALID_COHORT
+      return
+    end if
+    if (any(self%leaf_biomass < 0.0_real64)) then
+      status = WOFOST_BIOMASS_STATE_INVALID_COHORT
+      return
+    end if
+    if (any(self%specific_leaf_area < 0.0_real64)) then
+      status = WOFOST_BIOMASS_STATE_INVALID_COHORT
+      return
+    end if
+    if (any(self%leaf_age < 0.0_real64)) then
       status = WOFOST_BIOMASS_STATE_INVALID_COHORT
       return
     end if
@@ -120,7 +148,8 @@ contains
     integer :: i
 
     value = 0.0_real64
-    if (.not. allocated(self%leaf_biomass) .or. .not. allocated(self%specific_leaf_area)) return
+    if (.not. allocated(self%leaf_biomass)) return
+    if (.not. allocated(self%specific_leaf_area)) return
     if (size(self%leaf_biomass) /= size(self%specific_leaf_area)) return
     do i = 1, size(self%leaf_biomass)
       value = value + self%leaf_biomass(i) * self%specific_leaf_area(i)
@@ -134,7 +163,9 @@ contains
 
   pure logical function valid_nonnegative(value) result(valid)
     real(real64), intent(in) :: value
-    valid = ieee_is_finite(value) .and. value >= 0.0_real64
+    valid = .false.
+    if (.not. ieee_is_finite(value)) return
+    valid = value >= 0.0_real64
   end function valid_nonnegative
 
 end module mod_wofost_actual_biomass_state
