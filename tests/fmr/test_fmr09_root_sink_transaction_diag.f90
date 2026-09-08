@@ -6,9 +6,11 @@ program test_fmr09_root_sink_transaction_diag
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot
+  use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_TRANSACTION_FAILED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
-       kernel_candidate_state_t, kernel_diagnostics_t
+       kernel_candidate_state_t, kernel_diagnostics_t, kernel_executor_t
+  use mod_fmr_checkpoint_orchestrator, only: fmr_discard_candidate
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
        fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
@@ -22,36 +24,44 @@ program test_fmr09_root_sink_transaction_diag
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
   type(fmr_b110_physical_parameters_t) :: parameters, inactive_parameters
-  type(fmr_b110_physical_forcing_t) :: forcing, inactive_forcing, negative_forcing
+  type(fmr_b110_physical_forcing_t) :: forcing, forcing_b, inactive_forcing, negative_forcing
   type(fmr_b110_physical_state_t) :: initial_state
   type(kernel_committed_state_t) :: committed
   type(kernel_checkpoint_t) :: checkpoint
-  type(kernel_result_t) :: result
-  type(kernel_candidate_state_t) :: candidate
-  type(kernel_diagnostics_t) :: diag
+  type(kernel_result_t) :: result, result_b, replay_result
+  type(kernel_candidate_state_t) :: candidate, candidate_b, replay_candidate
+  type(kernel_diagnostics_t) :: diag, diag_b, replay_diag
+  type(kernel_executor_t) :: transaction_control
   type(fmr_serialized_reference_backend_t) :: backend
   type(fmr_serialized_physical_observation_t) :: obs
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
   type(canonical_numerical_config_t) :: config
+  class(transaction_state_t), allocatable :: snapshot_a, snapshot_replay
   real(real64) :: conductivity0
+  integer(int64) :: revision0
+  integer :: i
   logical :: ok
 
   call configure_parameters(parameters, initial_state, conductivity0)
   parameters%root_extraction_active = .true.
   call configure_column(column, template)
   call configure_forcing(forcing, conductivity0)
-  ! Preserve the allocated numnod shape. A shorter array constructor would
-  ! reallocate the allocatable component and exercise shape rejection instead.
-  forcing%root_extraction_sink = 0.04_real64
+  ! Heterogeneous precomputed qrot while preserving the already allocated numnod shape.
+  do i = 1, numnod
+    forcing%root_extraction_sink(i) = 0.01_real64 * real(i, real64)
+  end do
   forcing%subsurface_irrigation_source = forcing%root_extraction_sink
+  if (maxval(forcing%root_extraction_sink) <= minval(forcing%root_extraction_sink)) &
+       error stop 'FMR09_DIAG root fixture is not heterogeneous'
   call configure_transaction(config)
   call fmr_new_b110_committed_state(committed, column%column_id, initial_state, t0, ok)
   if (.not. ok) error stop 'FMR09_DIAG committed init'
   call committed%capture_checkpoint(checkpoint, ok)
   if (.not. ok) error stop 'FMR09_DIAG checkpoint'
+  revision0 = committed%current_revision()
 
-  ! Positive route with poisoned legacy globals. The explicit provider must be
-  ! authoritative and the first transaction must complete without retry.
+  ! A1: positive heterogeneous route with poisoned legacy globals. The explicit
+  ! provider must be authoritative and the first transaction must complete.
   call reset_globals()
   call backend%initialize(top_provider)
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
@@ -66,7 +76,48 @@ program test_fmr09_root_sink_transaction_diag
        trim(obs%solver_diagnostics%route), obs%solver_diagnostics%nonlinear_iterations
   if (.not. result%completed .or. diag%solver_rejections /= 0 .or. .not. obs%solver_executed) &
        error stop 'FMR09_DIAG positive explicit root route failed'
+  if (.not. candidate%ready()) error stop 'FMR09_DIAG A1 candidate not ready'
+  call candidate%snapshot(snapshot_a, ok)
+  if (.not. ok) error stop 'FMR09_DIAG A1 snapshot unavailable'
+  write(*,'(A)') 'FMR09_HETEROGENEOUS_ROOT_ROUTE=PASS'
   write(*,'(A)') 'FMR09_EXPLICIT_ROOT_LEGACY_QROT_POISON_IMMUNITY=PASS'
+
+  ! Discard A1 and prove the externally committed revision is untouched.
+  call fmr_discard_candidate(transaction_control, candidate, diag)
+  if (candidate%ready() .or. committed%current_revision() /= revision0) &
+       error stop 'FMR09_DIAG root rollback mutated committed state'
+  write(*,'(A)') 'FMR09_ROOT_ROLLBACK=PASS'
+
+  ! B: a distinct heterogeneous balanced root/source pattern. It must execute
+  ! successfully but have a different authoritative water amount from A.
+  forcing_b = forcing
+  do i = 1, numnod
+    forcing_b%root_extraction_sink(i) = 0.02_real64 * real(i, real64)
+  end do
+  forcing_b%subsurface_irrigation_source = forcing_b%root_extraction_sink
+  call reset_globals()
+  call backend%run_trial(column, template, parameters, committed, forcing_b, config, t0, t1, checkpoint, &
+       result_b, candidate_b, diag_b)
+  if (.not. result_b%completed .or. .not. candidate_b%ready()) error stop 'FMR09_DIAG B trial failed'
+  if (same_bits(result_b%mass%total_out, result%mass%total_out)) error stop 'FMR09_DIAG B not distinct from A'
+  call fmr_discard_candidate(transaction_control, candidate_b, diag_b)
+  if (committed%current_revision() /= revision0) error stop 'FMR09_DIAG B mutated committed state'
+
+  ! A2: exact replay from the original checkpoint after B. Candidate and
+  ! authoritative mass must reproduce A1 bitwise.
+  call reset_globals()
+  call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
+       replay_result, replay_candidate, replay_diag)
+  if (.not. replay_result%completed .or. .not. replay_candidate%ready()) error stop 'FMR09_DIAG A2 replay failed'
+  call replay_candidate%snapshot(snapshot_replay, ok)
+  if (.not. ok) error stop 'FMR09_DIAG A2 snapshot unavailable'
+  if (.not. physical_snapshot_identical(snapshot_a, snapshot_replay)) &
+       error stop 'FMR09_DIAG A1/A2 candidate mismatch'
+  if (.not. result_mass_identical(result, replay_result)) error stop 'FMR09_DIAG A1/A2 mass mismatch'
+  call fmr_discard_candidate(transaction_control, replay_candidate, replay_diag)
+  if (committed%current_revision() /= revision0) error stop 'FMR09_DIAG replay mutated committed state'
+  write(*,'(A)') 'FMR09_ROOT_REPLAY_BITWISE=PASS'
+  write(*,'(A)') 'FMR09_ROOT_A_B_A=PASS'
 
   ! Fail closed if nonzero root forcing is supplied while the physical option is inactive.
   inactive_parameters = parameters
@@ -157,4 +208,47 @@ contains
     legacy_qdra=12345.0_real64; legacy_qssdi=-54321.0_real64; legacy_qrot=-99999.0_real64
     swmacro=0; legacy_melt=0.0_real64
   end subroutine reset_globals
+
+  logical function physical_snapshot_identical(a,b) result(equal)
+    class(transaction_state_t), intent(in) :: a,b
+    integer :: k
+    equal = .false.
+    select type (pa => a)
+    type is (fmr_b110_physical_state_t)
+      select type (pb => b)
+      type is (fmr_b110_physical_state_t)
+        if (pa%active_nodes /= pb%active_nodes) return
+        if (.not. allocated(pa%pressure_head) .or. .not. allocated(pb%pressure_head)) return
+        if (.not. allocated(pa%water_content) .or. .not. allocated(pb%water_content)) return
+        if (size(pa%pressure_head) /= size(pb%pressure_head) .or. size(pa%water_content) /= size(pb%water_content)) return
+        do k = 1, pa%active_nodes
+          if (.not. same_bits(pa%pressure_head(k),pb%pressure_head(k))) return
+          if (.not. same_bits(pa%water_content(k),pb%water_content(k))) return
+        end do
+        if (.not. same_bits(pa%ponding_depth,pb%ponding_depth)) return
+        if (.not. same_bits(pa%groundwater_level,pb%groundwater_level)) return
+        equal = .true.
+      end select
+    end select
+  end function physical_snapshot_identical
+
+  logical function result_mass_identical(a,b) result(equal)
+    type(kernel_result_t), intent(in) :: a,b
+    equal = a%status == b%status .and. a%completed .eqv. b%completed .and. &
+         a%mass%complete .eqv. b%mass%complete .and. &
+         a%mass%missing_contribution_mask == b%mass%missing_contribution_mask .and. &
+         a%mass%accepted_transaction_count == b%mass%accepted_transaction_count .and. &
+         same_bits(a%mass%storage_start,b%mass%storage_start) .and. &
+         same_bits(a%mass%storage_end,b%mass%storage_end) .and. &
+         same_bits(a%mass%storage_change,b%mass%storage_change) .and. &
+         same_bits(a%mass%total_in,b%mass%total_in) .and. &
+         same_bits(a%mass%total_out,b%mass%total_out) .and. &
+         same_bits(a%mass%residual,b%mass%residual)
+  end function result_mass_identical
+
+  logical function same_bits(a,b)
+    real(real64), intent(in) :: a,b
+    integer(int64) :: ia,ib
+    ia=transfer(a,ia); ib=transfer(b,ib); same_bits=ia==ib
+  end function same_bits
 end program test_fmr09_root_sink_transaction_diag
