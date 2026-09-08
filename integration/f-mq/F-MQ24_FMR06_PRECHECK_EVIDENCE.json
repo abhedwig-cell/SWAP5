@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ24",
+  "assessment": "SOURCE_BOUND_FMR06_CAPABILITY_REASSESSMENT",
+  "historical_precheck": "integration/f-mq/F-MQ24_PRECHECK_EVIDENCE.json",
+  "historical_result": "BLOCKED_PRE_IMPLEMENTATION",
+  "candidate": {
+    "commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "snow_process_path": "src/process/mod_snow_process.f90",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "serialized_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_runtime_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "serialized_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "upstream_qualification": {
+    "f_vq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "f_vq17_decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "decisive_f_vq17_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "workflow_job": 102043008867,
+    "artifact_id": 10053642012,
+    "artifact_digest": "sha256:d565092033efcc2616da814bf8fd7decb2132f3f697f3e20531406eff4933270",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f"
+  },
+  "checks": [
+    {
+      "name": "candidate_contains_exact_f_vq16_snow_process_blob",
+      "expected": "54702d71b4c84dce2842813549bd14c57301a383",
+      "observed": "54702d71b4c84dce2842813549bd14c57301a383",
+      "passed": true
+    },
+    {
+      "name": "snow_active_no_longer_unconditionally_rejected",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "fmr_serialized_execution_admitted accepts snow_active when snow parameters are allocated and prepare_snow_outer_event has produced an admitted event."
+    },
+    {
+      "name": "optional_snow_state_is_column_local_and_allocatable",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "fmr_b110_physical_state_t owns allocatable snow state; clone copies it only when allocated; snow-inactive state is rejected if snow is allocated."
+    },
+    {
+      "name": "snow_event_is_prepared_from_committed_snapshot",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "prepare_snow_outer_event snapshots committed state before evaluate_snow_reference_call and binds the prepared event to outer t0/t1."
+    },
+    {
+      "name": "trial_uses_fkt_checkpoint_orchestration",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "fmr_serialized_backend_run_trial calls fmr_trial_from_checkpoint after event preparation; no competing F-MQ/F-MR transaction engine is introduced."
+    },
+    {
+      "name": "snow_event_apply_once_per_trial_state",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "advance applies snow_candidate only when event_applied/event_t0 does not already match outer t0, then marks event_applied and event_t0 on candidate state."
+    },
+    {
+      "name": "melt_is_internal_transfer_not_external_loss",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "solver top flux includes melt rate while account_external_fluxes restores base_top_flux for external accounting; snowfall/rain/sublimation are added explicitly and melt is not externally double-counted."
+    },
+    {
+      "name": "snow_storage_in_authoritative_storage",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "fmr_serialized_storage adds snow_water_storage exactly once for snow-active state and storage_accounting_status requires matching optional-state allocation."
+    },
+    {
+      "name": "subdaily_and_multiday_scientific_scope_remains_fail_closed",
+      "expected": true,
+      "observed": true,
+      "passed": true,
+      "evidence": "prepare_snow_outer_event requires SNOW_OK from the exact F-VQ16 process; F-VQ17 independently verified subdaily and multiday runtime rejection on this candidate."
+    }
+  ],
+  "result": {
+    "historical_blocker_id": "FMQ24-B01",
+    "historical_blocker_status": "UPSTREAM_CAPABILITY_SUPPLIED_PENDING_FMQ24_QUALIFICATION",
+    "production_capability_missing": false,
+    "qualification_may_proceed": true,
+    "decision": "READY_FOR_SOURCE_BOUND_FMQ24_QUALIFICATION",
+    "production_modification_by_fmq24": false
+  },
+  "holds": [
+    "This precheck does not itself close FMQ24-B01 or grant production admission.",
+    "F-MQ24 must independently run its qualification matrix on exact candidate ffab7d705928170db3e76a5d346caafeb560e605.",
+    "No subdaily, multiday or arbitrary-duration SNOW physics is admitted.",
+    "No parallel real-physics, general Richards, performance-policy or general SWAP5 release is implied."
+  ]
+}
