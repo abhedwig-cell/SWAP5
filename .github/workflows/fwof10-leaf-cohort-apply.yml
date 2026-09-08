@@ -1,0 +1,36 @@
+name: F-WOF10 leaf cohort apply
+
+on:
+  push:
+    branches: [work/f-wof10-leaf-cohort-apply-seam]
+    paths:
+      - src/crop/mod_wofost73_reallocation.f90
+      - src/crop/mod_wofost_reallocation_request_apply.f90
+      - src/crop/mod_wofost_leaf_cohort_reallocation.f90
+      - tests/fwof/**
+      - integration/f-wof/F-WOF10_STATUS.json
+      - .github/workflows/fwof10-leaf-cohort-apply.yml
+  workflow_dispatch:
+
+jobs:
+  focused-leaf-cohort-apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify persisted scope admission
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path('integration/f-wof/F-WOF10_STATUS.json').read_text())
+          assert status['baseline']['commit'] == 'abd7d0cccccb76f0d2fdf7e0927446a47f7a8f2b'
+          assert status['scope']['consume_already_qualified_applied_leaf_amount'] is True
+          assert status['scope']['modify_only_cohort_biomass_weights'] is True
+          assert status['scope']['hardcode_legacy_366_layout'] is False
+          assert status['scope']['admit_full_depletion_equality_edge'] is True
+          assert status['scope']['full_crop_host_integration'] is False
+          PY
+      - name: O0 O2 cohort proportionality composition and mass gate
+        run: bash tests/fwof/run_fwof10_leaf_cohort_apply_gate.sh
