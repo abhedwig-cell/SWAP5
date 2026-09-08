@@ -1,0 +1,29 @@
+name: F-WOF13 crop root snapshot assembly
+
+on:
+  push:
+    branches:
+      - work/f-wof13-crop-root-snapshot-assembly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: F-WOF13 crop root snapshot assembly gate
+        run: bash tests/fwof/run_fwof13_crop_root_snapshot_assembly_gate.sh
+
+      - name: F-MR09 cross-process regression
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
