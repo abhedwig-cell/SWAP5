@@ -7,8 +7,8 @@ program test_fpm05_macro_feddes_root_uptake
        ROOT_UPTAKE_INVALID_REQUEST
   implicit none
 
-  type(root_water_uptake_parameters_t) :: parameters, variant
-  type(root_water_uptake_request_t) :: request
+  type(root_water_uptake_parameters_t) :: parameters, parameter_variant
+  type(root_water_uptake_request_t) :: request, request_variant
   type(root_water_uptake_flux_result_t) :: flux_a1, flux_b, flux_a2, flux
   type(root_water_uptake_diagnostics_t) :: diag_a1, diag_b, diag_a2, diag
   type(process_hydraulic_view_t) :: view_a, view_b, bad_view
@@ -19,8 +19,8 @@ program test_fpm05_macro_feddes_root_uptake
   real(real64), parameter :: expected_alpha(5) = [0.0_real64, 0.0_real64, 0.5_real64, 1.0_real64, 1.0_real64]
 
   call configure_parameters(parameters)
+  call configure_request(request)
   call configure_view(view_a)
-  request%potential_transpiration = 0.3_real64
 
   call evaluate_macro_feddes_drought_uptake(parameters, view_a, request, flux_a1, diag_a1)
   call require(diag_a1%status == ROOT_UPTAKE_OK, 'canonical status')
@@ -36,64 +36,65 @@ program test_fpm05_macro_feddes_root_uptake
        diag_a1%potential_uptake_total), 'potential equals actual plus drought reduction')
   write(*,'(A)') 'FPM05_MACRO_FEDDES_SOURCE_EQUATIONS=PASS'
 
-  request%potential_transpiration = 0.05_real64
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant = request
+  request_variant%potential_transpiration = 0.05_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_OK .and. close(diag%critical_pressure_head,parameters%hlim3l), &
        'hlim3 low branch')
-  request%potential_transpiration = parameters%adcrl
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant%potential_transpiration = parameters%adcrl
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(close(diag%critical_pressure_head,parameters%hlim3l), 'hlim3 adcrl equality')
-  request%potential_transpiration = parameters%adcrh
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant%potential_transpiration = parameters%adcrh
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(close(diag%critical_pressure_head,parameters%hlim3h), 'hlim3 adcrh equality')
-  request%potential_transpiration = 0.8_real64
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant%potential_transpiration = 0.8_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(close(diag%critical_pressure_head,parameters%hlim3h), 'hlim3 high branch')
   write(*,'(A)') 'FPM05_HLIM3_BRANCH_BOUNDARIES=PASS'
 
-  variant = parameters
-  variant%rooted_nodes = 0
-  if (allocated(variant%cumulative_root_fraction)) deallocate(variant%cumulative_root_fraction)
-  request%potential_transpiration = 0.3_real64
-  call evaluate_macro_feddes_drought_uptake(variant,view_a,request,flux,diag)
+  request_variant = request
+  request_variant%rooted_nodes = 0
+  ! A stale crop-owned distribution is intentionally left allocated: the
+  ! explicit no-root route must ignore it and produce no uptake.
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_OK .and. diag%no_roots, 'no-root early exit')
-  call require(allocated(flux%root_extraction_sink) .and. all(flux%root_extraction_sink == 0.0_real64), &
+  call require(allocated(flux%root_extraction_sink) .and. maxval(abs(flux%root_extraction_sink)) == 0.0_real64, &
        'no-root zero sink')
 
-  request%potential_transpiration = 1.0e-12_real64
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant = request
+  request_variant%potential_transpiration = 1.0e-12_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_OK .and. diag%negligible_transpiration, &
        'negligible transpiration early exit')
-  call require(all(flux%root_extraction_sink == 0.0_real64), 'negligible transpiration zero sink')
+  call require(maxval(abs(flux%root_extraction_sink)) == 0.0_real64, 'negligible transpiration zero sink')
   write(*,'(A)') 'FPM05_LEGACY_EARLY_EXIT_ZERO_ROUTES=PASS'
 
-  variant = parameters
-  variant%adcrh = variant%adcrl
-  request%potential_transpiration = 0.3_real64
-  call evaluate_macro_feddes_drought_uptake(variant,view_a,request,flux,diag)
+  parameter_variant = parameters
+  parameter_variant%adcrh = parameter_variant%adcrl
+  call evaluate_macro_feddes_drought_uptake(parameter_variant,view_a,request,flux,diag)
   call require(diag%status == ROOT_UPTAKE_INVALID_PARAMETERS, 'invalid ptra threshold interval')
 
-  variant = parameters
-  variant%cumulative_root_fraction(3) = variant%cumulative_root_fraction(2)-0.01_real64
-  call evaluate_macro_feddes_drought_uptake(variant,view_a,request,flux,diag)
-  call require(diag%status == ROOT_UPTAKE_INVALID_PARAMETERS, 'nonmonotonic root fractions')
+  request_variant = request
+  request_variant%cumulative_root_fraction(3) = request_variant%cumulative_root_fraction(2)-0.01_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
+  call require(diag%status == ROOT_UPTAKE_INVALID_REQUEST, 'nonmonotonic dynamic root fractions')
 
-  variant = parameters
-  variant%cumulative_root_fraction(variant%rooted_nodes+1)=0.99_real64
-  call evaluate_macro_feddes_drought_uptake(variant,view_a,request,flux,diag)
-  call require(diag%status == ROOT_UPTAKE_INVALID_PARAMETERS, 'unnormalized root fractions')
+  request_variant = request
+  request_variant%cumulative_root_fraction(request_variant%rooted_nodes+1)=0.99_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
+  call require(diag%status == ROOT_UPTAKE_INVALID_REQUEST, 'unnormalized dynamic root fractions')
 
   bad_view = view_a
   bad_view%active_nodes = view_a%active_nodes-1
   call evaluate_macro_feddes_drought_uptake(parameters,bad_view,request,flux,diag)
   call require(diag%status == ROOT_UPTAKE_INVALID_HYDRAULIC_VIEW, 'view active-node mismatch')
 
-  request%potential_transpiration = -0.1_real64
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request,flux,diag)
+  request_variant = request
+  request_variant%potential_transpiration = -0.1_real64
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_INVALID_REQUEST, 'negative ptra fail closed')
   write(*,'(A)') 'FPM05_INVALID_DOMAIN_FAIL_CLOSED=PASS'
 
-  request%potential_transpiration = 0.3_real64
   view_b = view_a
   view_b%pressure_head(3) = -12000.0_real64
   call evaluate_macro_feddes_drought_uptake(parameters,view_b,request,flux_b,diag_b)
@@ -109,6 +110,19 @@ program test_fpm05_macro_feddes_root_uptake
   call require(same_bits(flux_a1%actual_uptake_total,flux_a2%actual_uptake_total), &
        'A/B/A total identity')
   write(*,'(A)') 'FPM05_STATELESS_A_B_A_IDENTITY=PASS'
+
+  request_variant = request
+  request_variant%rooted_nodes = 3
+  deallocate(request_variant%cumulative_root_fraction)
+  allocate(request_variant%cumulative_root_fraction(4))
+  request_variant%cumulative_root_fraction = [0.0_real64,0.2_real64,0.55_real64,1.0_real64]
+  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
+  call require(diag%status == ROOT_UPTAKE_OK, 'updated crop distribution accepted')
+  call require(close(diag%potential_uptake_total,request_variant%potential_transpiration), &
+       'updated crop distribution normalized')
+  call require(maxval(abs(flux%root_extraction_sink(4:5))) == 0.0_real64, &
+       'updated rooted node count limits process output')
+  write(*,'(A)') 'FPM05_DYNAMIC_ROOT_DISTRIBUTION_INPUT=PASS'
   write(*,'(A)') 'FPM05_MACRO_FEDDES_ROOT_UPTAKE_TEST PASS'
 
 contains
@@ -116,15 +130,20 @@ contains
   subroutine configure_parameters(p)
     type(root_water_uptake_parameters_t), intent(out) :: p
     p%active_nodes = 5
-    p%rooted_nodes = 4
     p%hlim3l = -800.0_real64
     p%hlim3h = -500.0_real64
     p%hlim4 = -16000.0_real64
     p%adcrl = 0.1_real64
     p%adcrh = 0.5_real64
-    allocate(p%cumulative_root_fraction(5))
-    p%cumulative_root_fraction = [0.0_real64,0.1_real64,0.3_real64,0.6_real64,1.0_real64]
   end subroutine configure_parameters
+
+  subroutine configure_request(r)
+    type(root_water_uptake_request_t), intent(out) :: r
+    r%potential_transpiration = 0.3_real64
+    r%rooted_nodes = 4
+    allocate(r%cumulative_root_fraction(5))
+    r%cumulative_root_fraction = [0.0_real64,0.1_real64,0.3_real64,0.6_real64,1.0_real64]
+  end subroutine configure_request
 
   subroutine configure_view(view)
     type(process_hydraulic_view_t), intent(out) :: view
