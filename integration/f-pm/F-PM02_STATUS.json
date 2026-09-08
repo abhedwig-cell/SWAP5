@@ -1,74 +1,42 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "branch": "work/f-pm02-snow-admission",
-  "status": "BLOCKED_PRE_ADMISSION",
-  "implemented": true,
+  "status": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+  "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "production_migration_started": false,
-  "production_migration_allowed": false,
-  "parent_f_pm01": {
-    "head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
-    "status": "QUALIFIED_BOUNDARY_WITH_EXIT_HOLD"
-  },
-  "admission_gate": {
+  "production_migration_allowed": true,
+  "admission": {
+    "decision": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+    "candidate_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "candidate_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "checks_passed": 51,
+    "checks_failed": 0,
     "contract": "integration/f-pm/F-PM02_ADMISSION_CONTRACT.json",
-    "contract_schema": 3,
-    "tool": "tools/fpm/fpm02_admission_gate.py",
-    "current_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
-    "current_candidate_ref": "integration/f-mr",
-    "current_candidate_commit": "646ecf188129e705caae2a52f8c184878406e801",
-    "current_decision": "REJECT_FAIL_CLOSED",
-    "static_python_syntax": "PASS",
-    "remote_candidate_execution": "NOT_RUN_LOCAL_RUNNER_HAS_NO_GITHUB_NETWORK"
+    "evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
+    "tooling_commits": ["b08a1cd8e1d56cac85b6713584834884c746db74", "a81520e"]
   },
-  "current_candidate_summary": {
-    "fci18_ancestry": "PASS_61_COMMITS_AHEAD_ZERO_BEHIND",
-    "fmr01_phase": "QUALIFIED_DETERMINISTIC_RUNTIME_EXIT",
-    "fmr01_tested": true,
-    "fmr01_qualified": true,
-    "fmr01_physical_swap_runtime": false,
-    "fmr01_physical_swap_admission": false,
-    "fkt05_minimum_transaction_boundary": "PASS",
-    "b1_10_oracle_infrastructure": "PASS",
-    "fsi05_qualification_artifact": "MISSING",
-    "fsi06_qualification_artifact": "MISSING",
-    "accepted_solver_lineage": null,
-    "shared_physical_production_baseline": false
-  },
-  "qualified_successors_observed_outside_candidate": {
-    "F-KT06": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE",
-    "F-KT07": "QUALIFIED_MACROPORE_CONTINUATION_BUT_REFERENCE_EXECUTION_AND_PRODUCTION_MULTISWAP_NOT_ADMITTED",
-    "F-SI06": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED_FINAL_POSTIMAGE_VERIFIED",
-    "F-SI07": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED_FINAL_POSTIMAGE_VERIFICATION_STILL_REQUIRED"
-  },
-  "test_status": {
-    "gate_python_syntax": "TESTED_PASS",
-    "admission_against_remote_candidate": "SOURCE_BOUND_VERIFIED_NOT_LOCALLY_EXECUTED",
-    "overall_tested_flag_reason": "Keep tested=false because the persisted executable gate has not executed against a local checkout of the exact candidate ref."
-  },
+  "migration_profile": "SMALLEST_STRUCTURAL_B110_SNOW_ONE_CALL_PROFILE",
+  "contracts": [
+    "integration/f-pm/F-PM02_SNOW_STATE_CONTRACT.json",
+    "integration/f-pm/F-PM02_SNOW_TIME_SEMANTICS.json",
+    "integration/f-pm/F-PM02_SNOW_MASS_CONTRACT.json"
+  ],
   "source_change_control": {
-    "production_src_files_changed_in_f_pm02": 0,
-    "physics_changed": false,
-    "numerical_policy_changed": false,
-    "transaction_semantics_changed": false,
-    "solver_semantics_changed": false
-  },
-  "blocker": {
-    "id": "FPM02-G01-SHARED-PHYSICAL-PRODUCTION-BASELINE",
-    "owner": "F-MR/canonical integration, not F-PM",
-    "condition_to_clear": "Publish one exact candidate that descends from F-CI18, is itself TESTED and QUALIFIED, explicitly admits physical SWAP use, contains the qualified F-KT05 minimum transaction boundary and one explicitly accepted qualified F-SI lineage, and retains the pinned B1.10 oracle infrastructure."
+    "production_src_files_changed_so_far": 0,
+    "physics_formulas_changed": false,
+    "solver_or_numerical_policy_changed": false,
+    "runtime_scheduler_changed": false
   },
   "holds": [
-    "Do not create or modify production SNOW process source before admission PASS.",
-    "Do not merge F-KT/F-SI/F-MR lineages in F-PM.",
-    "Do not treat F-MR01 deterministic-runtime qualification as physical SWAP admission.",
-    "Do not consume F-SI07 as a final shared production basis while final-postimage verification/process-provider isolation remain open.",
-    "Do not infer generic-duration or subdaily snow scaling.",
-    "Do not broaden focused F-SI qualifications into full reference solver, mass-balance or MultiSWAP claims."
+    "F-VQ15 and F-MQ23 do not admit SNOW physics; they admit the physical basis on which structural migration may start.",
+    "Preserve B1.10 one-call daily semantics; arbitrary-duration scaling is not admitted.",
+    "Parallel real physics remains NOT_ADMITTED.",
+    "F-PM cannot independently grant scientific SNOW admission."
   ],
-  "next_action": "No further F-PM production work is admissible. Re-read the live shared integration candidate when it advances; run gate v3 and begin structural SNOW migration only after PASS."
+  "next_action": "Commit contracts, then implement the smallest explicit-state SNOW process seam without changing equations."
 }

@@ -1,93 +1,394 @@
 {
-  "schema_version": 3,
-  "workstream": "F-PM",
-  "work_unit": "F-PM02",
-  "assessment": "CURRENT_SHARED_PRODUCTION_ADMISSION",
-  "candidate_ref": "integration/f-mr",
-  "candidate_commit": "646ecf188129e705caae2a52f8c184878406e801",
-  "decision": "REJECT_FAIL_CLOSED",
-  "production_migration_allowed": false,
-  "gate": {
-    "contract_schema": 3,
-    "tool": "tools/fpm/fpm02_admission_gate.py",
-    "python_syntax": "PASS",
-    "remote_ref_execution": "NOT_RUN_LOCAL_RUNNER_HAS_NO_GITHUB_NETWORK",
-    "source_bound_candidate_assessment": "VERIFIED_DIRECTLY_FROM_GITHUB"
-  },
-  "checks": {
-    "candidate_resolves": "PASS",
-    "fmr01_composed_qualification": {
-      "tested": true,
-      "qualified": true,
-      "phase": "QUALIFIED_DETERMINISTIC_RUNTIME_EXIT",
-      "status": "PASS_GENERAL_RUNTIME_ONLY"
+  "admitted": true,
+  "candidate_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "candidate_ref": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "checks": [
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "candidate_exact_commit",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
     },
-    "physical_swap_runtime": {
-      "observed": false,
-      "required": true,
-      "status": "FAIL_EXPLICITLY_NOT_ADMITTED"
+    {
+      "detail": null,
+      "expected": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "name": "candidate_tree",
+      "observed": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "passed": true
     },
-    "physical_swap_admission": {
-      "observed": false,
-      "required": true,
-      "status": "FAIL_EXPLICITLY_NOT_ADMITTED"
+    {
+      "detail": null,
+      "expected": true,
+      "name": "canonical_fci18_ancestor",
+      "observed": true,
+      "passed": true
     },
-    "fkt05_minimum_transaction_boundary": {
-      "status": "PASS",
-      "kernel_blob_observed": "e8605e73a191e863374a26b096e0d597cb70cadd",
-      "kernel_blob_expected": "e8605e73a191e863374a26b096e0d597cb70cadd"
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mr05_status_present",
+      "observed": true,
+      "passed": true
     },
-    "accepted_solver_lineage": {
-      "status": "FAIL_NONE_PRESENT",
-      "accepted_variants": [
-        "F-SI05",
-        "F-SI06"
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "mr05_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "name": "mr05_tree",
+      "observed": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mr05_tested",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mr05_qualified",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "fmr_run_serialized_physical_multiswap",
+      "name": "mr05_entrypoint",
+      "observed": "fmr_run_serialized_physical_multiswap",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "success",
+      "name": "mr05_workflow",
+      "observed": "success",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "mr05_evidence_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "name": "mr05_evidence_tree",
+      "observed": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "vq15_status_present",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "vq15_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "name": "vq15_tree",
+      "observed": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "vq15_tested",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "vq15_qualified",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "vq15_scientific_admission",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "vq15_production_serial_admission",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+      "name": "vq15_scope",
+      "observed": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "vq15_evidence_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+      "name": "vq15_decision",
+      "observed": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mq23_status_present",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "mq23_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "name": "mq23_tree",
+      "observed": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mq23_tested",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mq23_qualified",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mq23_real_physics_admitted",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "fmr_run_serialized_physical_multiswap",
+      "name": "mq23_entrypoint",
+      "observed": "fmr_run_serialized_physical_multiswap",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": [
+        1,
+        2,
+        8,
+        17,
+        31,
+        32
       ],
-      "fsi05_qualification_lookup": "404_NOT_FOUND",
-      "fsi06_qualification_lookup": "404_NOT_FOUND"
+      "name": "mq23_batches",
+      "observed": [
+        1,
+        2,
+        8,
+        17,
+        31,
+        32
+      ],
+      "passed": true
     },
-    "b1_10_oracle": {
-      "snapshot_blob_observed": "8d768f00d47224a663941f79bb2d35eacc66d16b",
-      "snapshot_blob_expected": "8d768f00d47224a663941f79bb2d35eacc66d16b",
-      "reconstruction_blob_observed": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
-      "reconstruction_blob_expected": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
-      "status": "PASS"
+    {
+      "detail": null,
+      "expected": false,
+      "name": "mq23_parallel_not_admitted",
+      "observed": false,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "name": "mq23_evidence_source",
+      "observed": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "mr02_qualified",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "accepted_fsi05_lineage",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "fkt05_minimum",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "name": "fsi05_qualification_head",
+      "observed": "0227ae94edc3364b013f831f1efa6aaccac29b11",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "name": "fkt05_tested_postimage",
+      "observed": "f7d2ee5e81f1d6686c96114984239e97ba6a8a8a",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": true,
+      "name": "fkt05_status_qualified",
+      "observed": true,
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "name": "fkt08_qualified_successor",
+      "observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+      "name": "fkt08_blob:src/transaction/mod_transaction_reference.f90",
+      "observed": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+      "name": "fkt08_blob:src/runtime/mod_canonical_contracts.f90",
+      "observed": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+      "name": "fkt08_blob:src/runtime/mod_canonical_interval_runtime.f90",
+      "observed": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+      "name": "fkt08_blob:src/kernel/mod_kernel_transactions.f90",
+      "observed": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "PASS",
+      "name": "fkt05_forward_transaction_regression",
+      "observed": "PASS",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "PASS",
+      "name": "checkpoint_trial_candidate",
+      "observed": "PASS",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "PASS",
+      "name": "rollback_committed_state_unchanged",
+      "observed": "PASS",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "PASS",
+      "name": "replay_candidate_identity",
+      "observed": "PASS",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "name": "b110_snapshot_blob",
+      "observed": "8d768f00d47224a663941f79bb2d35eacc66d16b",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "name": "b110_reconstruct_blob",
+      "observed": "b6d3c78c8a84a82e5c02320c83e87d250a3ad401",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "expected": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+      "name": "b110_manifest_sha256",
+      "observed": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+      "passed": true
+    },
+    {
+      "detail": "B1.10 leaves snow.f90 byte-identical to the canonical B0 member pinned by the source manifest.",
+      "expected": true,
+      "name": "legacy_snow_manifest_record",
+      "observed": true,
+      "passed": true
     }
+  ],
+  "decision": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+  "evidence_refs": {
+    "F-MQ23": "origin/qualification/f-mq23-fvq14-real-physics-runtime",
+    "F-MR05": "origin/integration/f-mr",
+    "F-VQ15": "origin/qualification/f-vq15-fmr05-serialized-multiswap"
   },
-  "live_successor_observations_not_consumed": {
-    "F-KT06": {
-      "qualified": true,
-      "decision": "QUALIFIED_OPTIONAL_PROCESS_CONTINUATION_LIFECYCLE_ON_OPAQUE_TRANSACTION_STATE",
-      "generic_kernel_source_changed": false
-    },
-    "F-KT07": {
-      "qualified": true,
-      "scope": "B1.10 adapter-specific macropore nstep continuation materialization and transaction-safe sparse clone",
-      "generic_kernel_source_changed": false,
-      "reference_execution_admitted": false,
-      "production_multiswap_admitted": false
-    },
-    "F-SI06": {
-      "qualified": true,
-      "status": "QUALIFIED_HISTORY_ISOLATION_PARALLEL_BINDING_BLOCKED",
-      "final_postimage_verified": true,
-      "accepted_by_gate_if_integrated_exactly": true,
-      "production_multiswap_admission": false
-    },
-    "F-SI07": {
-      "qualified": true,
-      "status": "QUALIFIED_EXPLICIT_ATTEMPT_STATE_BINDING_PROCESS_BRIDGE_BLOCKED",
-      "final_postimage_verification_required": true,
-      "accepted_by_gate": false,
-      "reason": "Process/evaluation bridge through shared globals and final-postimage verification remain open."
-    }
-  },
-  "interpretation": "F-MR01 is now genuinely tested and qualified, but only for the deterministic runtime backend. Its own status and qualification evidence explicitly deny physical SWAP admission. The exact candidate also contains no accepted F-SI05/F-SI06 qualification artifact. Therefore the shared physical production basis required by F-PM02 is still not present.",
-  "holds": [
-    "No production SNOW source migration.",
-    "No F-PM-owned merge of F-KT/F-SI/F-MR lineages.",
-    "Do not treat generic deterministic runtime qualification as physical SWAP admission.",
-    "Do not consume F-SI07 as a final shared production basis while final-postimage verification/process-provider isolation remain open.",
-    "Do not infer generic-duration or subdaily snow scaling."
-  ]
+  "holds_if_admitted": [
+    "SNOW is not scientifically admitted by F-VQ15/F-MQ23.",
+    "Parallel real physics remains NOT_ADMITTED.",
+    "Preserve legacy SNOW equations and one-call time semantics."
+  ],
+  "holds_if_rejected": [],
+  "production_migration_allowed": true,
+  "schema_version": 4,
+  "work_unit": "F-PM02",
+  "workstream": "F-PM"
 }

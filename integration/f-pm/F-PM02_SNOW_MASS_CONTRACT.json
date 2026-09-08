@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM02",
+  "component": "SNOW water storage",
+  "authoritative_identity": "candidate_ssnow - committed_ssnow = gsnow + snrai - subl - melt",
+  "storage": {"initial": "committed ssnow", "final": "candidate ssnow", "liquid_substate": "slw is contained within ssnow and must not be added as separate total storage"},
+  "transfers": {
+    "external_in": ["gsnow", "snrai"],
+    "external_out": ["subl"],
+    "internal_to_surface_soil_system": ["melt"],
+    "double_count_prohibited": ["precipitation plus gsnow/snrai", "ssnow plus slw", "melt as external loss and soil/surface inflow"]
+  },
+  "acceptance": {"unrounded": true, "hard": true, "missing_contribution_mask_must_be_zero_when_active": true, "new_tolerance_introduced": false},
+  "inactive": {"storage_contribution": 0.0, "missing_contribution": false, "completeness_penalty": false},
+  "ownership": "F-PM supplies exact component contributions; F-KT remains authoritative for interval-level mass acceptance."
+}

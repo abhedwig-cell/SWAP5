@@ -1,8 +1,8 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
-  "status": "BLOCKED_PRE_ADMISSION",
+  "status": "REFRESH_TOOLING_PERSISTED_PENDING_EXECUTION",
   "purpose": "Fail-closed admission gate for the first production process migration (SNOW). F-PM does not merge lineages or modify production process source before one shared downstream production basis is explicitly qualified for physical SWAP use.",
   "parent_closeout": {
     "f_pm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
@@ -13,13 +13,19 @@
     "qualified_production_source_origin": "da5026d8b87ad2f3c7912360891839a120ecccb6",
     "shared_downstream_qualification": {
       "owner": "F-MR/canonical integration",
-      "status_file": "integration/f-mr/F-MR01_STATUS.json",
-      "qualification_file": "integration/f-mr/F-MR01_QUALIFICATION_EVIDENCE.json",
+      "candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "candidate_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+      "runtime_status_file": "integration/f-mr/F-MR05_STATUS.json",
+      "runtime_qualification_file": "integration/f-mr/F-MR05_QUALIFICATION_EVIDENCE.json",
+      "scientific_status_file": "integration/f-vq/F-VQ15_STATUS.json",
+      "scientific_qualification_file": "integration/f-vq/F-VQ15_QUALIFICATION_EVIDENCE.json",
+      "multiswap_status_file": "integration/f-mq/F-MQ23_STATUS.json",
+      "multiswap_qualification_file": "integration/f-mq/F-MQ23_QUALIFICATION_EVIDENCE.json",
       "required_tested": true,
       "required_qualified": true,
       "required_physical_swap_runtime": true,
       "required_physical_swap_admission": true,
-      "reason": "Generic runtime qualification is insufficient. The composed candidate must explicitly admit physical SWAP use; F-MR01 currently qualifies only the deterministic test backend."
+      "reason": "F-MR05 runtime qualification, independent F-VQ15 scientific admission and F-MQ23 real-physics MultiSWAP qualification must all bind to the same exact source candidate."
     },
     "transaction_minimum": {
       "work_unit": "F-KT05",
@@ -29,7 +35,7 @@
       "qualification_evidence_commit": "6911549acbcb62ef8af9ae2d96d5b4f938daf1e2",
       "kernel_source": "src/kernel/mod_kernel_transactions.f90",
       "kernel_blob": "e8605e73a191e863374a26b096e0d597cb70cadd",
-      "successor_policy": "F-KT06/F-KT07 may be present as qualified successors because they retain the F-KT05 generic transaction kernel; moving/unqualified successors are not consumed."
+      "successor_policy": "A qualified successor may replace F-KT05 blobs only when exact successor blobs and the forward F-KT05 transaction regression are source-bound. F-KT08 is consumed through qualified F-MR04 composition evidence."
     },
     "solver_lineages": {
       "accepted": [
@@ -65,7 +71,8 @@
           "reason": "Qualification record still states final_postimage_verification_required=true and full real parallel/process-provider reentrancy remains blocked. Do not consume as a final shared production basis."
         }
       ],
-      "rule": "Candidate must match at least one accepted qualified solver lineage exactly. Unknown/newer solver postimages fail closed until F-PM re-reads their qualification evidence and adds an explicit accepted lineage."
+      "shared_postimage_evidence": "integration/f-mr/F-MR02_QUALIFICATION_EVIDENCE.json",
+      "rule": "Candidate must retain an explicitly qualified accepted solver lineage. F-MR02 source-bound qualification of the F-SI05 seam is admissible evidence; unknown lineages fail closed."
     },
     "oracle_identity": {
       "snapshot": "B1.10",
@@ -103,12 +110,8 @@
     ]
   },
   "current_observation": {
-    "integration_f_mr_head": "646ecf188129e705caae2a52f8c184878406e801",
-    "fmr01_tested": true,
-    "fmr01_qualified": true,
-    "fmr01_physical_swap_runtime": false,
-    "fmr01_physical_swap_admission": false,
-    "shared_baseline_proven": false,
+    "candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "assessment": "PENDING_EXECUTABLE_GATE_REFRESH",
     "production_migration_allowed": false
   }
 }

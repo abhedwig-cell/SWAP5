@@ -1,0 +1,35 @@
+name: F-PM02 structural snow process
+
+on:
+  push:
+    branches: [work/f-pm02-snow-admission]
+    paths:
+      - src/process/mod_snow_process.f90
+      - tests/fpm/**
+      - tools/fpm/fpm02_admission_gate.py
+      - integration/f-pm/F-PM02_*.json
+      - .github/workflows/fpm02-snow-process.yml
+  workflow_dispatch:
+
+jobs:
+  focused-snow:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Fetch source-bound qualification refs
+        run: |
+          git fetch origin integration/f-mr \
+            qualification/f-vq15-fmr05-serialized-multiswap \
+            qualification/f-mq23-fvq14-real-physics-runtime
+      - name: Re-execute admission gate
+        run: |
+          python3 tools/fpm/fpm02_admission_gate.py \
+            --candidate-ref c28e7a2810b4a3678c577335a6a3086b173eb976 \
+            --output /tmp/F-PM02_ADMISSION_EVIDENCE.json
+          cmp /tmp/F-PM02_ADMISSION_EVIDENCE.json integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json
+      - name: O0 O2 transaction and mass gate
+        run: tests/fpm/run_fpm02_snow_gate.sh

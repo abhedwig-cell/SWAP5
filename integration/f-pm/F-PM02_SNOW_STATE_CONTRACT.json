@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM02",
+  "process": "SNOW",
+  "admission_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "classification": {
+    "immutable_parameter": ["swsublim", "snowcoef"],
+    "physical_persistent_state": ["ssnow", "slw"],
+    "forcing_input": ["gsnow", "snrai", "tsoil1", "tav", "epond", "peva", "empreva"],
+    "result_output": ["candidate_ssnow", "candidate_slw", "melt", "subl", "candidate_epond", "candidate_peva", "candidate_empreva"],
+    "temporary_workspace": ["smelt", "smeltr", "SnDefit", "SnLoss", "slw_max", "qlw"],
+    "reporting_only_history": ["snowinco", "cgsnow", "cmelt", "csnrai", "csubl", "isnrai", "igsnow", "isubl", "issnowbeg"]
+  },
+  "transaction": {
+    "authority": "F-KT08 successor retaining the qualified F-KT05 minimum boundary",
+    "flow": ["checkpoint", "trial", "candidate", "commit_or_rollback"],
+    "evaluation_reads_committed_state_only": true,
+    "evaluation_writes_candidate_only": true,
+    "rejected_trial_mutates_committed_state": false,
+    "rollback_restores_ssnow_slw_exactly": true,
+    "replay_requirement": "same committed state plus forcing produces bitwise-identical candidate under the same build"
+  },
+  "allocation": {
+    "active": "allocate exactly ssnow and slw per column",
+    "inactive": "allocate no SNOW state and invoke no SNOW evaluation",
+    "worker_scratch": "only reconstructible process locals; no solver scratch per column"
+  },
+  "holds": ["snowinco is not physical continuation state", "no legacy module singleton is admitted as the target state owner"]
+}

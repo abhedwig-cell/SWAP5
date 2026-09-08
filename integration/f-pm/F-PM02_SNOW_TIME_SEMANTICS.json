@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM02",
+  "reference": "B1.10 snow.f90 plus swap driver",
+  "observed": {
+    "driver_gate": "Snow(2) is called only when swsnow == 1 and flDayStart",
+    "explicit_dt_argument": false,
+    "explicit_dt_multiplication_in_snow_task2": false,
+    "snowcoef_comment_unit": "cm per degree Celsius per day",
+    "daily_forcing_inputs": ["gsnow", "snrai", "tav"],
+    "calendar_midnight_required_by_formula": false,
+    "calendar_day_start_required_by_legacy_orchestration": true,
+    "daily_accumulation_external_to_process": true
+  },
+  "admitted_profile": {
+    "interface": "generic t0,t1 carried explicitly",
+    "numerical_semantics": "exactly one characterized legacy evaluation call",
+    "non_midnight": "allowed only for an interval of the same one-day duration already characterized by F-PM01",
+    "arbitrary_delta_t_scaling": false
+  },
+  "discrepancy": "The target kernel time contract is generic, while B1.10 SNOW coefficients and invocation are daily. No theory/reference evidence currently authorizes rescaling to arbitrary duration.",
+  "hold": "Preserve one-call reference behavior; do not multiply or divide equations by t1-t0."
+}
