@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "workstream": "F-MQ",
+  "current_work_unit": "F-MQ23",
+  "purpose": "Layered MultiSWAP qualification coverage without conflating synthetic, real-physics, production-runtime or parallel-physics evidence.",
+  "production_code_change_allowed": false,
+  "inherited_matrix": {
+    "work_unit": "F-MQ22",
+    "commit": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+    "blob_sha": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "rows": 35,
+    "synthetic_executable": 28
+  },
+  "coverage": {
+    "synthetic_executable": {"before":28,"after":28,"promotion":0},
+    "real_physics_executable": {"before":0,"after":0,"promotion":0},
+    "production_runtime_qualified": {"before":0,"after":0,"promotion":0},
+    "parallel_real_physics_qualified": {"before":0,"after":0,"promotion":0}
+  },
+  "fmq23_real_physics_rows": [
+    {"id":"RP01","claim":"single logical column through production MultiSWAP composition equals F-VQ14 oracle","status":"BLOCKED","gate":"MQ23-G03","dependency":"production serialized multi-column runtime entrypoint"},
+    {"id":"RP02","claim":"A/B isolation and A/B/A replay exact","status":"BLOCKED","gate":"MQ23-G04","dependency":"RP01"},
+    {"id":"RP03","claim":"order and partition independence for 8/17/31/32","status":"BLOCKED","gate":"MQ23-G05-G08","dependency":"RP01"},
+    {"id":"RP04","claim":"per-column transaction and checkpoint isolation","status":"BLOCKED","gate":"MQ23-G09-G10","dependency":"RP01"},
+    {"id":"RP05","claim":"real-physics scratch isolation and immutable parameter sharing","status":"BLOCKED","gate":"MQ23-G11-G12","dependency":"RP01"},
+    {"id":"RP06","claim":"per-column authoritative and aggregate mass exact","status":"BLOCKED","gate":"MQ23-G14-G15","dependency":"RP01"},
+    {"id":"RP07","claim":"generic non-integer/subdaily interval survives MultiSWAP orchestration","status":"BLOCKED","gate":"MQ23-G18","dependency":"RP01"},
+    {"id":"RP08","claim":"repeatability for 1/2/17/31","status":"BLOCKED","gate":"MQ23-G19","dependency":"RP01"}
+  ],
+  "parallel_real_physics": {
+    "backend":"PARALLEL_REFERENCE_BACKEND",
+    "status":"NOT_ADMITTED",
+    "rows_promoted":0
+  },
+  "no_combined_coverage_percentage": true
+}
