@@ -1,0 +1,40 @@
+name: F-PE03 reference physical stress characterization
+
+on:
+  push:
+    branches:
+      - work/f-pe03-reference-tail-characterization
+    paths:
+      - 'tests/fpe/**'
+      - 'integration/f-pe/F-PE03_REFERENCE_STRESS_CONTRACT.json'
+      - '.github/workflows/fpe03-reference-stress.yml'
+  workflow_dispatch:
+
+jobs:
+  reference-stress-characterization:
+    name: Source-bound reference physical stress characterization
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify F-PE03 is qualification-only
+        run: |
+          test -z "$(git diff --name-only 2c28a4366440885faedbe2fbe3ce56104d82692e HEAD -- src)"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.loads(Path('integration/f-pe/F-PE03_REFERENCE_STRESS_CONTRACT.json').read_text())
+          assert c['hard_scope']['execution_policy']=='REFERENCE_ONLY'
+          assert c['hard_scope']['physics_change_allowed'] is False
+          assert c['hard_scope']['solver_policy_change_allowed'] is False
+          assert c['hard_scope']['production_source_change_allowed'] is False
+          assert c['claim_limits']['bounded_cost_policy_admission'] is False
+          assert c['synthetic_tail_boundary']['fmq23_synthetic_difficult_tail_may_be_used_as_physical_tail_evidence'] is False
+          print('FPE03_SCOPE_LOCK=PASS')
+          PY
+      - name: Run O0 O2 real-physics stress characterization
+        run: bash tests/fpe/run_fpe03_reference_stress_gate.sh
