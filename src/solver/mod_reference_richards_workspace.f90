@@ -17,6 +17,11 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: tridag_gamma(:)
      real(real64), allocatable :: sink(:)
      real(real64), allocatable :: source(:)
+     real(real64), allocatable :: provider_theta(:)
+     real(real64), allocatable :: provider_k(:)
+     real(real64), allocatable :: provider_capacity(:)
+     real(real64), allocatable :: provider_dkdh(:)
+     real(real64), allocatable :: provider_root_sink(:)
      real(real64), allocatable :: dconductivity_dhead(:)
      real(real64), allocatable :: old_head(:)
      real(real64), allocatable :: vertical_flux(:)
@@ -51,6 +56,9 @@ contains
        allocate(workspace%dfdh_lower(active_nodes), workspace%dfdh_main(active_nodes), workspace%dfdh_upper(active_nodes))
        allocate(workspace%residual(active_nodes), workspace%delta_head(active_nodes), workspace%tridag_gamma(active_nodes))
        allocate(workspace%sink(active_nodes), workspace%source(active_nodes))
+       allocate(workspace%provider_theta(active_nodes), workspace%provider_k(active_nodes))
+       allocate(workspace%provider_capacity(active_nodes), workspace%provider_dkdh(active_nodes))
+       allocate(workspace%provider_root_sink(active_nodes))
        allocate(workspace%dconductivity_dhead(active_nodes), workspace%old_head(active_nodes))
        allocate(workspace%vertical_flux(active_nodes+1), workspace%head_gradient(active_nodes+1))
        allocate(workspace%band_matrix(active_nodes,3), workspace%band_aux(active_nodes,1))
@@ -76,6 +84,11 @@ contains
     workspace%tridag_gamma = 0.0_real64
     workspace%sink = 0.0_real64
     workspace%source = 0.0_real64
+    workspace%provider_theta = 0.0_real64
+    workspace%provider_k = 0.0_real64
+    workspace%provider_capacity = 0.0_real64
+    workspace%provider_dkdh = 0.0_real64
+    workspace%provider_root_sink = 0.0_real64
     workspace%dconductivity_dhead = 0.0_real64
     workspace%old_head = 0.0_real64
     workspace%vertical_flux = 0.0_real64
@@ -108,6 +121,11 @@ contains
     workspace%tridag_gamma = qnan
     workspace%sink = qnan
     workspace%source = qnan
+    workspace%provider_theta = qnan
+    workspace%provider_k = qnan
+    workspace%provider_capacity = qnan
+    workspace%provider_dkdh = qnan
+    workspace%provider_root_sink = qnan
     workspace%dconductivity_dhead = qnan
     workspace%old_head = qnan
     workspace%vertical_flux = qnan
@@ -136,6 +154,11 @@ contains
     if (allocated(workspace%tridag_gamma)) deallocate(workspace%tridag_gamma)
     if (allocated(workspace%sink)) deallocate(workspace%sink)
     if (allocated(workspace%source)) deallocate(workspace%source)
+    if (allocated(workspace%provider_theta)) deallocate(workspace%provider_theta)
+    if (allocated(workspace%provider_k)) deallocate(workspace%provider_k)
+    if (allocated(workspace%provider_capacity)) deallocate(workspace%provider_capacity)
+    if (allocated(workspace%provider_dkdh)) deallocate(workspace%provider_dkdh)
+    if (allocated(workspace%provider_root_sink)) deallocate(workspace%provider_root_sink)
     if (allocated(workspace%dconductivity_dhead)) deallocate(workspace%dconductivity_dhead)
     if (allocated(workspace%old_head)) deallocate(workspace%old_head)
     if (allocated(workspace%vertical_flux)) deallocate(workspace%vertical_flux)
@@ -170,6 +193,11 @@ contains
     if (allocated(workspace%tridag_gamma)) nreal = nreal + size(workspace%tridag_gamma, kind=int64)
     if (allocated(workspace%sink)) nreal = nreal + size(workspace%sink, kind=int64)
     if (allocated(workspace%source)) nreal = nreal + size(workspace%source, kind=int64)
+    if (allocated(workspace%provider_theta)) nreal = nreal + size(workspace%provider_theta, kind=int64)
+    if (allocated(workspace%provider_k)) nreal = nreal + size(workspace%provider_k, kind=int64)
+    if (allocated(workspace%provider_capacity)) nreal = nreal + size(workspace%provider_capacity, kind=int64)
+    if (allocated(workspace%provider_dkdh)) nreal = nreal + size(workspace%provider_dkdh, kind=int64)
+    if (allocated(workspace%provider_root_sink)) nreal = nreal + size(workspace%provider_root_sink, kind=int64)
     if (allocated(workspace%dconductivity_dhead)) nreal = nreal + size(workspace%dconductivity_dhead, kind=int64)
     if (allocated(workspace%old_head)) nreal = nreal + size(workspace%old_head, kind=int64)
     if (allocated(workspace%vertical_flux)) nreal = nreal + size(workspace%vertical_flux, kind=int64)
