@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF24",
+  "title": "Atomic Actual-WOFOST Crop-Owner State and WRT/LAI View Qualification Evidence",
+  "base": "b34c541dbc781ab25d73f6cdf2a86c8a17be6f64",
+  "tested_candidate": "44bb8c3f9a73f9ae185e94c4de6223620f2bc64d",
+  "github_actions": {
+    "run_id": 34282390437,
+    "job_id": 102249988979,
+    "conclusion": "success"
+  },
+  "candidate_delta": {
+    "ahead_by": 6,
+    "behind_by": 0,
+    "production_files_added": [
+      "src/crop/mod_wofost_crop_owner_state.f90"
+    ],
+    "other_files": [
+      ".github/workflows/fwof24-crop-owner-composite-state.yml",
+      "integration/f-wof/F-WOF24_STATE_RECONCILIATION_EVIDENCE.json",
+      "integration/f-wof/F-WOF24_WOFOST_CROP_OWNER_COMPOSITE_CONTRACT.json",
+      "tests/fwof/run_fwof24_crop_owner_composite_state_gate.sh",
+      "tests/fwof/test_fwof24_crop_owner_composite_state.f90"
+    ],
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "process_source_changed": false,
+    "legacy_adapter_source_changed": false,
+    "F_WOF17_geometry_source_changed": false
+  },
+  "production_artifact": {
+    "module": "src/crop/mod_wofost_crop_owner_state.f90",
+    "blob": "2cb513b17fff9095ae42c166f12aac01dfdb294d",
+    "type": "wofost_crop_owner_state_t",
+    "extends": "transaction_state_t"
+  },
+  "gate_markers": [
+    "FWOF24_PRODUCTION_DELTA_SINGLE_WOFOST_OWNER_STATE=PASS",
+    "FWOF24_FKT_PRIOR_STATE_AND_FWO17_LOCKS=PASS",
+    "FWOF24_ROUTE_SPECIFIC_STATE_MINIMIZATION=PASS",
+    "FWOF24_DUPLICATE_WOFOST_LAI_AUTHORITY_FORBIDDEN=PASS",
+    "FWOF24_INACTIVE_BIOMASS_ALLOCATION_FORBIDDEN=PASS",
+    "FWOF24_FWO17_SWRD3_CONSUMER_REUSE_STATIC=PASS",
+    "FWOF24_EVOLUTION_AND_POTENTIAL_SHADOW_EXCLUDED=PASS",
+    "FWOF24_O0=PASS",
+    "FWOF24_O2=PASS",
+    "FWOF24_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF24_INACTIVE_WOFOST_HAS_NO_BIOMASS_OR_ACTIVE_PARAMETER_DEPENDENCY=PASS",
+    "FWOF24_AUTHORITATIVE_WRT_AND_DERIVED_LAI_VIEWS=PASS",
+    "FWOF24_DEEP_CLONE_ATOMIC_LIFECYCLE_AND_BIOMASS=PASS",
+    "FWOF24_OWNER_PRESENCE_AND_NONFINITE_VALIDATION_FAILS_CLOSED=PASS",
+    "FWOF24_FKT_COMMITTED_INITIALIZATION_CLONES_ATOMIC_OWNER=PASS",
+    "FWOF24_FKT_CHECKPOINT_ATOMIC_LIFECYCLE_BIOMASS=PASS",
+    "FWOF24_TRIAL_BIOMASS_DEALLOCATION_DISCARD_ISOLATED=PASS",
+    "FWOF24_CHECKPOINT_A_B_A_REPLAY_BITWISE_IDENTITY=PASS",
+    "FWOF24_ACTUAL_WRT_VIEW_COMPOSES_WITH_UNCHANGED_FWO17_SWRD3_GEOMETRY=PASS",
+    "FWOF24_NO_DUPLICATE_WOFOST_LAI_STATE=PASS",
+    "FWOF24_NO_WOFOST_EVOLUTION_OR_CALENDAR_SEMANTICS=PASS",
+    "FWOF24_CROP_OWNER_COMPOSITE_STATE_TEST PASS",
+    "FWOF24_CROP_OWNER_COMPOSITE_STATE_GATE PASS"
+  ],
+  "output_sha256": "247372a4e5556ec3ac90f1c589ce4539337082b7ef0df8b5a1d7e5ca022824ee",
+  "qualified_semantics": {
+    "route_specific_owner": "actual WOFOST execution class",
+    "atomic_fields": ["crop_emerged", "development_stage_DVS", "optional_primary_actual_WOFOST_biomass"],
+    "inactive_biomass_allocated": false,
+    "emerged_biomass_required": true,
+    "duplicate_WOFOST_LAI_state": false,
+    "actual_WRT_view": "authoritative read-only view from primary biomass",
+    "actual_LAI_view": "derived from LASUM + immutable SSA*WST + immutable SPA*WSO",
+    "F_WOF17_SWRD3_geometry_composition": "qualified at owner/view-to-existing-consumer boundary without source change",
+    "FKT_atomic_checkpoint": true,
+    "discard_safe_allocation_change": true,
+    "same_checkpoint_replay_bitwise_deterministic": true,
+    "O0_O2_output_identity": true
+  },
+  "not_qualified": [
+    "complete phenology continuation including TSUM/vernalization/anthesis",
+    "WOFOST biomass growth/death/allocation evolution",
+    "leaf cohort creation/ageing cadence",
+    "arbitrary subdaily crop evolution",
+    "potential WOFOST shadow trajectory",
+    "grass-management or nutrient optional dead-biomass state",
+    "runtime/MultiSWAP crop-owner integration",
+    "full end-to-end WOFOST/SWRD3 production evolution"
+  ]
+}
