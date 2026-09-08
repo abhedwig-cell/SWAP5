@@ -1,0 +1,27 @@
+name: F-GC02 physical boundary blocker
+
+on:
+  push:
+    branches: [work/f-gc02-physical-coupling-seam]
+  pull_request:
+    paths:
+      - 'integration/f-gc/F-GC02_*'
+      - 'tests/fgc/run_fgc02_blocker_gate.sh'
+      - 'tools/fgc/fgc02_boundary_blocker_gate.py'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_checkpoint_orchestrator.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_reference_richards_state_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - '.github/workflows/fgc02-physical-boundary-blocker.yml'
+
+jobs:
+  source-bound-blocker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fgc/run_fgc02_blocker_gate.sh
