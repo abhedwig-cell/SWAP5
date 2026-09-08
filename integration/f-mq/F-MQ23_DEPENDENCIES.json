@@ -1,0 +1,45 @@
+{
+  "schema_version": 3,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "qualification_only": true,
+  "rebound_source": {
+    "candidate_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "candidate_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "serialized_multiswap_runtime_blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9"
+  },
+  "upstream_qualification": {
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fvq15_decision": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+    "fvq15_closeout_replay_run": 34200068260,
+    "fvq15_closeout_replay_job": 101976584970,
+    "fvq15_closeout_replay_artifact_id": 10045451643,
+    "fvq15_closeout_replay_artifact_digest": "sha256:aa56fee5b7d9626217633b566ec811d6f71e8acb50fe212c7d110df563fcab96",
+    "fvq14_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "fvq14_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION"
+  },
+  "retained_bases": {
+    "fmq22_head": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+    "fkt08_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fsi09_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "fsi10_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+    "corrected_legacy_oracle": "B1.10"
+  },
+  "resolved_blocker": {
+    "id": "FMQ23-B01",
+    "previous_status": "CONFIRMED_PRODUCTION_SERIALIZED_MULTICOLUMN_ENTRYPOINT_MISSING",
+    "current_status": "RESOLVED_UPSTREAM_BY_FMR05_AND_FVQ15",
+    "resolved_by_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "qualified_by": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "qualification_fix_allowed": false,
+    "production_source_modified_by_fmq23": false
+  },
+  "hard_holds": {
+    "parallel_reference_backend_admitted": false,
+    "active_root_admitted": false,
+    "macropore_admitted": false,
+    "snow_admitted": false,
+    "implicit_conductivity_admitted": false,
+    "general_swap5_multiswap_release": false
+  }
+}

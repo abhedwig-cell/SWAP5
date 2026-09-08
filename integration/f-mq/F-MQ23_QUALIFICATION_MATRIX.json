@@ -1,0 +1,49 @@
+{
+  "schema_version": 3,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "coverage_model": {
+    "synthetic_runtime_infrastructure": "SEPARATE",
+    "serialized_real_physics_multicolumn": "SEPARATE",
+    "parallel_real_physics": "SEPARATE_NOT_ADMITTED",
+    "combined_percentage_forbidden": true
+  },
+  "locks": {
+    "MQ23-G01": "PASS_EXACT_REBOUND_SOURCE",
+    "MQ23-G02": "PASS_FVQ15_IMMUTABLE_ADMISSION",
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "source_candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976"
+  },
+  "gates": [
+    {"id":"MQ23-G01","status":"PASS_EXACT_REBOUND_SOURCE"},
+    {"id":"MQ23-G02","status":"PASS_FVQ15_SOURCE_BOUND_ADMISSION"},
+    {"id":"MQ23-G03","status":"PENDING_EXECUTION_PRODUCTION_MULTICOLUMN_ENTRYPOINT"},
+    {"id":"MQ23-G04","status":"PENDING_EXECUTION_TRANSACTION_CHECKPOINT_COMMIT_ROLLBACK"},
+    {"id":"MQ23-G05","status":"PENDING_EXECUTION_FAILURE_ISOLATION"},
+    {"id":"MQ23-G06","status":"PENDING_EXECUTION_SCRATCH_ISOLATION"},
+    {"id":"MQ23-G07","status":"PENDING_EXECUTION_SHARED_IMMUTABLE_PARAMETER_INTEGRITY"},
+    {"id":"MQ23-G08","status":"PENDING_EXECUTION_ORDER_PARTITION_INDEPENDENCE"},
+    {"id":"MQ23-G09","status":"PENDING_EXECUTION_SINGLE_VS_MULTI_IDENTITY"},
+    {"id":"MQ23-G10","status":"PENDING_EXECUTION_BATCH_MATRIX_1_2_8_17_31_32"},
+    {"id":"MQ23-G11","status":"PENDING_EXECUTION_A_B_A_REPEATABILITY"},
+    {"id":"MQ23-G12","status":"PENDING_EXECUTION_RUNTIME_DIAGNOSTICS"},
+    {"id":"MQ23-G13","status":"PENDING_EXECUTION_DIFFICULT_OR_REJECTED_TAIL_ISOLATION"},
+    {"id":"MQ23-G14","status":"PENDING_EXECUTION_AUTHORITATIVE_HARD_MASS"},
+    {"id":"MQ23-G15","status":"PENDING_EXECUTION_GENERIC_RUNTIME_WORKER_MATRIX_1_2_4_8_NONPHYSICAL"},
+    {"id":"MQ23-G16","status":"PENDING_EXECUTION_MEMORY_LAYOUT_OBSERVATION_NONPHYSICAL"},
+    {"id":"MQ23-G17","status":"PENDING_EXECUTION_O0_O2_IDENTITY"},
+    {"id":"MQ23-G18","status":"PENDING_EXECUTION_GENERIC_TIME"},
+    {"id":"MQ23-G19","status":"PENDING_EXECUTION_SOURCE_BOUNDARY_AND_SCOPE_HOLDS"},
+    {"id":"MQ23-G20","status":"PASS_SCOPE_LOCK_NO_PARALLEL_OR_PHYSICS_PROMOTION"}
+  ],
+  "required_real_physics_batch_matrix": [1,2,8,17,31,32],
+  "required_generic_runtime_worker_matrix": [1,2,4,8],
+  "worker_matrix_semantics": "GENERIC_RUNTIME_INFRASTRUCTURE_ONLY; DOES_NOT_ADMIT_PARALLEL_REAL_PHYSICS",
+  "resolved_blocker": {
+    "id": "FMQ23-B01",
+    "status": "RESOLVED_UPSTREAM_NOT_BY_QUALIFICATION_PATCH",
+    "source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "scientific_admission": "65efc66cc76fa9005eac46e5779439c5ada574d1"
+  },
+  "promotion": "NONE_UNTIL_MQ23_G03_G19_EXECUTED_AND_PASS"
+}
