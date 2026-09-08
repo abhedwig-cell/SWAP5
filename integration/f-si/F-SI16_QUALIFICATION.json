@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "title": "Explicit prescribed bottom-head boundary admission",
+  "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+  "status": "QUALIFIED",
+  "branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "basis": {
+    "fsi15_final_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "fsi15_decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
+    "gc02_blocker": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED"
+  },
+  "production_postimage": {
+    "commit": "d4c3cb5982b423de23b9b4bd2f815cfe895aca4f",
+    "adapter_blob": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c",
+    "headcalc_blob": "d92f7bd8a8b9016e7a72834dff897069f676d15e",
+    "production_files_changed_relative_to_fsi15": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90"
+    ],
+    "production_frozen_after_postimage": true,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "source_characterization": {
+    "legacy_route": "B1.10 HeadCalc SWBOTB=5",
+    "request_field": "soil_water_solve_request_t%boundary%bottom_head",
+    "input_semantics": "lower-boundary face pressure head",
+    "input_units": "cm",
+    "state_binding": [
+      "reference_richards_state_binding_t%gwlinp = request%boundary%bottom_head",
+      "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
+    ],
+    "prescribed_head_semantics": "hbot is used in the lower-face Darcy gradient; SWBOTB=5 does not impose h(NN)=hbot",
+    "bottom_gradient": "head_gradient(NN+1)=(h(NN)-hbot)/disnod(NN+1)+1",
+    "bottom_face_distance": "derived from the existing F-SI14 NN-sized geometry using dz(NN)",
+    "mode5_darcy_term": "kmean(NN+1)*head_gradient(NN+1)",
+    "authoritative_qbot_materialization": "after successful mode-5 HeadCalc, use the existing vertical water-continuity recurrence in HeadCalc operation order",
+    "qbot_units": "cm d-1",
+    "qbot_sign": "positive qbot enters the simulated soil profile through the lower boundary; negative qbot leaves the profile"
+  },
+  "qualification_evidence": {
+    "tested_head": "9cae1bc9966a83976de8897ff9d7bca7d2f7deda",
+    "workflow_run": 34247069481,
+    "workflow_job": 102131676234,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "checks": {
+      "minimal_production_seam": "PASS",
+      "meaningful_bottom_head_gradient": "PASS",
+      "multiple_prescribed_heads": "PASS",
+      "positive_and_negative_bottom_flux": "PASS",
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_identity": "PASS",
+      "serialized_worker_isolation_1_2_4_8": "PASS",
+      "aba_replay": "PASS",
+      "scratch_poisoning": "PASS",
+      "request_immutability": "PASS",
+      "legacy_bottom_global_poisoning_after_request_build": "PASS",
+      "solver_route_iteration_identity": "PASS",
+      "unrounded_equation_residual": "PASS",
+      "bottom_flux_seed_independence": "PASS",
+      "authoritative_qbot_continuity_bit_identity": "PASS",
+      "unsupported_bottom_modes_fail_closed_before_headcalc": "PASS",
+      "exact_b110_source_provenance": "PASS",
+      "exact_b110_direct_numeric_identity_o0": "PASS",
+      "exact_b110_direct_numeric_identity_o2": "PASS",
+      "exact_b110_direct_o0_o2_identity": "PASS",
+      "fsi15_pinned_qualification_regression": "PASS",
+      "fkt_boundary_regression": "PASS",
+      "closeout_regression_gate": "PASS"
+    },
+    "observed_qbot_cases_cm_per_day": {
+      "low_head_case": -0.17332487238720509,
+      "mid_head_case": -0.16253203177765788,
+      "high_head_case": 0.06414146631357029
+    },
+    "direct_b110_oracle": {
+      "oracle_vector": "reference/swap-4.3.1/b1_10_oracles/F-SI16_SWBOTB5_MODE5_ORACLE.txt",
+      "provenance": "reference/swap-4.3.1/b1_10_oracles/F-SI16_SWBOTB5_MODE5_ORACLE.json",
+      "nested_canonical_source_sha256": "1a2d7989287cd5ffcd46959ca43e1cfc354ad1642de26245feca9b0572445151",
+      "headcalc_b110_sha256": "db6675984fbaf37290acaf96553ba0165c55caf45983411f62f30be309c113f5",
+      "tridag_b110_sha256": "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a",
+      "comparison": "bitwise no scientific tolerance",
+      "matched_outputs": [
+        "candidate pressure head",
+        "candidate water content",
+        "authoritative bottom flux",
+        "nonlinear iteration count"
+      ],
+      "precomparison_oracle_checkpoint_note": "the provenance file intentionally records the pre-comparison checkpoint; workflow 34247069481 subsequently qualifies its common-route identity"
+    }
+  },
+  "mass_contract": {
+    "prescribed_bottom_head_is_external_boundary": true,
+    "qbot_is_authoritative_solver_boundary_flux": true,
+    "qbot_sign": "positive into soil profile through lower boundary; negative out",
+    "no_double_count": true,
+    "existing_interval_accounting_unchanged": true,
+    "whole_interval_mass_and_transaction_ownership": "F-KT/composed runtime unchanged"
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "bottom_mode_5_admitted": true,
+    "authoritative_bottom_flux_available": true,
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "holds": {
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "active_macropores": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED"
+  },
+  "invariant_assessment": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "PRESERVED",
+    "explicit_data_separation": "IMPROVED_FOR_PRESCRIBED_BOTTOM_HEAD_AUTHORITY",
+    "scratch_per_worker": "PRESERVED_AND_TESTED",
+    "transactional_time_steps": "PRESERVED_FKT_UNCHANGED",
+    "generic_time": "PRESERVED",
+    "groundwater_interface_readiness": "IMPROVED_BY_EXPLICIT_CONTROLLABLE_LOWER_HEAD_AND_AUTHORITATIVE_QBOT_WITHOUT_ADMITTING_COUPLING",
+    "mass_conservation": "PRESERVED_WITH_AUTHORITATIVE_QBOT_AND_EXISTING_EXACT_ONCE_ACCOUNTING",
+    "multiswap_scalability": "PRESERVED; NO_PARALLEL_REFERENCE_BACKEND_ADMISSION",
+    "alternative_solver_interface": "PRESERVED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "no_hidden_io_time_or_modflow_dependency_added": true
+  },
+  "downstream_handoff": {
+    "next_owner": "F-MR",
+    "action": "admit this F-SI-qualified SWBOTB=5 prescribed-head boundary into the restricted serialized physical runtime profile",
+    "work_unit": "NEXT_FREE_FMR_UNIT",
+    "independent_fvq_required_after_fmr": true,
+    "gc02_resume_allowed_only_after_fmr_and_fvq": true,
+    "resume_same_existing_gc02_unit": true,
+    "new_fgc_unit_required": false
+  }
+}
