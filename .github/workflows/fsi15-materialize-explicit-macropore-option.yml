@@ -1,0 +1,43 @@
+name: F-SI15 materialize explicit macropore option
+
+on:
+  push:
+    branches:
+      - work/f-si15-explicit-macropore-option
+    paths:
+      - '.github/workflows/fsi15-materialize-explicit-macropore-option.yml'
+      - 'tools/fsi/fsi15_materialize_explicit_macropore_option.py'
+      - 'integration/f-si/F-SI15_EXPLICIT_PHYSICAL_OPTION_CONTRACT.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi15-materialize-explicit-macropore-option
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si15-explicit-macropore-option
+      - name: Materialize source-bound explicit physical option
+        run: python3 tools/fsi/fsi15_materialize_explicit_macropore_option.py
+      - name: Commit only common contract, reference adapter and HeadCalc
+        run: |
+          changed="$(git diff --name-only | sort)"
+          expected=$'src/adapter/mod_reference_richards_legacy_binding.f90\nsrc/legacy/b1_10_port/headcalc.f90\nsrc/solver/mod_soil_water_solver_contract.f90'
+          if [ "$changed" != "$expected" ]; then
+            echo 'F-SI15 materializer changed unexpected paths:' >&2
+            printf '%s\n' "$changed" >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 src/solver/mod_soil_water_solver_contract.f90
+          git commit -m 'F-SI15: materialize explicit macropore option authority'
+          git push origin HEAD:work/f-si15-explicit-macropore-option
