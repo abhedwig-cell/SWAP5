@@ -2,9 +2,8 @@
 """Create a qualification-only instrumented copy of the exact F-MR04 test driver.
 
 The production candidate tree is never modified. This script requires the exact
-known test-driver blob and injects read-only dumps of candidate state/result
-bit patterns so F-VQ14 can compare them independently with the B1.10-bound
-reference route.
+known test-driver blob and injects read-only dumps plus additional F-VQ14
+fail-closed checks into a temporary qualification driver.
 """
 from pathlib import Path
 import subprocess
@@ -21,11 +20,31 @@ blob = subprocess.check_output(["git", "-C", str(root), "hash-object", str(src)]
 if blob != EXPECTED_BLOB:
     raise SystemExit(f"F-VQ14 fail closed: F-MR04 driver blob mismatch expected={EXPECTED_BLOB} actual={blob}")
 text = src.read_text()
+
 needle = "  endpoint_storage = candidate_storage(candidate, parameters%dz)\n"
 insert = needle + "  call fvq14_dump_candidate(candidate, observation, result, diagnostics, forcing, endpoint_storage)\n"
 if text.count(needle) != 1:
     raise SystemExit("F-VQ14 fail closed: candidate instrumentation anchor not unique")
 text = text.replace(needle, insert, 1)
+
+unsupported_anchor = "  bad_parameters%swkimpl = 1\n  call expect_not_admitted('swkimpl1', bad_parameters)\n"
+unsupported_insert = unsupported_anchor + "  bad_parameters = parameters\n  bad_parameters%bottom_mode = 1\n  call expect_not_admitted('unqualified-bottom-mode', bad_parameters)\n"
+if text.count(unsupported_anchor) != 1:
+    raise SystemExit("F-VQ14 fail closed: unsupported-scope anchor not unique")
+text = text.replace(unsupported_anchor, unsupported_insert, 1)
+
+qrot_anchor = "  call require(committed_fingerprint(committed) == committed_fp0, 'qrot rejection leaves committed state unchanged')\n"
+qrot_insert = qrot_anchor + "  write(*,'(A)') 'VQ14_CAND_QROT_FAIL_CLOSED=PASS'\n"
+if text.count(qrot_anchor) != 1:
+    raise SystemExit("F-VQ14 fail closed: qrot anchor not unique")
+text = text.replace(qrot_anchor, qrot_insert, 1)
+
+stale_anchor = "  call require(rejected_diagnostics%checkpoint_revision_rejections == 1, 'stale revision diagnosed')\n"
+stale_insert = stale_anchor + "  write(*,'(A)') 'VQ14_CAND_STALE_CHECKPOINT=PASS'\n"
+if text.count(stale_anchor) != 1:
+    raise SystemExit("F-VQ14 fail closed: stale-checkpoint anchor not unique")
+text = text.replace(stale_anchor, stale_insert, 1)
+
 anchor = "  subroutine configure_fixture(column, template, parameters, forcing, state, storage0)\n"
 helper = r'''  subroutine fvq14_dump_candidate(state, obs, kres, kdiag, f, endpoint_store)
     type(kernel_candidate_state_t), intent(in) :: state
@@ -82,6 +101,8 @@ helper = r'''  subroutine fvq14_dump_candidate(state, obs, kres, kdiag, f, endpo
              transfer(f%drainage_flux_by_level(level,i),0_int64)
       end do
     end do
+    write(*,'(A,F0.12)') 'VQ14_CAND_T0=', t0
+    write(*,'(A,F0.12)') 'VQ14_CAND_T1=', t1
   end subroutine fvq14_dump_candidate
 
 '''
