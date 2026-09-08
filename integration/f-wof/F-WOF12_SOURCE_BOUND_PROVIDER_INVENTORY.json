@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF12",
+  "title": "Source-Bound Root-Uptake Provider Inventory",
+  "source_provenance": {
+    "uploaded_archive": "SWAP_4.3.1(6).zip",
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "files": {
+      "SWAP/swap.f90": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "SWAP/rootextraction.f90": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "SWAP/MOD_cropdevelopment.f90": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "SWAP/MOD_meteo.f90": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+      "SWAP/interface_plant.f90": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df"
+    }
+  },
+  "legacy_driver_order": [
+    {
+      "order": 1,
+      "source": "SWAP/swap.f90:362-376",
+      "condition": "flDayStart",
+      "action": "TimeControl(2), Meteo(2), then croprotation(2)",
+      "meaning": "crop calendar/emergence is resolved at day start after daily weather has been selected"
+    },
+    {
+      "order": 2,
+      "source": "SWAP/swap.f90:393-399",
+      "condition": "flDayStart",
+      "action": "daily interception and optional WOFOST assimilation",
+      "meaning": "canopy/day state is prepared before timestep ET"
+    },
+    {
+      "order": 3,
+      "source": "SWAP/swap.f90:413-419 and MOD_meteo.f90:1278-1392",
+      "condition": "every soil-water timestep",
+      "action": "Meteo(3) -> ProcessMeteoDT -> ETpot when required -> ptra from wet/dry canopy fractions",
+      "meaning": "potential_transpiration is a current timestep ET result, not a once-daily committed crop state"
+    },
+    {
+      "order": 4,
+      "source": "SWAP/swap.f90:427-428",
+      "condition": "every soil-water timestep when swcrop == 1",
+      "action": "RootExtraction(2)",
+      "meaning": "root uptake consumes the ptra just prepared for this timestep"
+    },
+    {
+      "order": 5,
+      "source": "SWAP/swap.f90:474-491",
+      "condition": "flDayEnd",
+      "action": "cropdevelopment(3)",
+      "meaning": "crop growth and root-state update occur only after all root-extraction calls for the day"
+    },
+    {
+      "order": 6,
+      "source": "MOD_cropdevelopment.f90:1001-1015",
+      "condition": "cropdevelopment task 3",
+      "action": "crop model update, then update_rootextension(), then update_rootdistribution()",
+      "meaning": "next-day root geometry/distribution incorporates the completed current-day crop and stress history"
+    }
+  ],
+  "provider_fields": {
+    "crop_emerged": {
+      "legacy_owner": "plant_interface%fl_cropemergence",
+      "source_declaration": "interface_plant.f90:23-27",
+      "update_point": "croprotation(2) -> cropemergence() at day start",
+      "source": "MOD_cropdevelopment.f90:276-340 and 375-442",
+      "classification": "COMMITTED_CROP_STATE / calendar-management state",
+      "fresh_at_root_extraction": true,
+      "important_ordering": "emergence is established before the first RootExtraction call of that day"
+    },
+    "potential_transpiration": {
+      "legacy_owner": "MOD_meteo%ptra",
+      "source_declaration": "MOD_meteo.f90:31",
+      "update_point": "Meteo(3) -> ProcessMeteoDT immediately before RootExtraction(2)",
+      "source": "MOD_meteo.f90:1292-1310 and 1380-1392; swap.f90:413-428",
+      "classification": "DYNAMIC_ET_PROCESS_RESULT / interval input to root uptake",
+      "fresh_at_root_extraction": true,
+      "persistent_crop_state": false,
+      "can_change_within_day": true
+    },
+    "rooted_nodes": {
+      "legacy_owner": "plant_interface%noddrz",
+      "source_declaration": "interface_plant.f90:82",
+      "initialization": "initialize_rootextension determines node from initial rooting depth",
+      "initialization_source": "MOD_cropdevelopment.f90:1801-1822",
+      "update": "update_rootextension computes new rd and then noddrz",
+      "update_source": "MOD_cropdevelopment.f90:1907-1948",
+      "classification": "DERIVED_CROP_ROOT_GEOMETRY",
+      "fresh_at_root_extraction": true,
+      "legacy_cadence": "updated at cropdevelopment(3), after the day's root uptake, then used by the following day"
+    },
+    "cumulative_root_fraction": {
+      "legacy_owner": "MOD_cropdevelopment%cumdens_top",
+      "initialization": "initialize_rootdistribution -> update_cumdens_top",
+      "initialization_source": "MOD_cropdevelopment.f90:2039-2070",
+      "update": "update_rootdistribution -> update_cumdens_top after update_rootextension",
+      "update_source": "MOD_cropdevelopment.f90:2076-2097 and 2279-2299",
+      "classification": "DERIVED_CURRENT_ROOT_DISTRIBUTION",
+      "fresh_at_root_extraction": true,
+      "legacy_cadence": "updated at cropdevelopment(3), after the day's root uptake, then used by the following day"
+    }
+  },
+  "root_extraction_consumption": {
+    "source": "SWAP/rootextraction.f90:290-372",
+    "direct_imports": [
+      "MOD_meteo%ptra",
+      "plant_interface%noddrz",
+      "MOD_cropdevelopment%cumdens_top"
+    ],
+    "zero_routes": {
+      "no_roots": "rd < 1e-14",
+      "negligible_transpiration": "ptra < 1e-10"
+    },
+    "potential_profile": "qrot(node) = (cumdens_top(node+1)-cumdens_top(node))*ptra",
+    "ordering_requirement": "do not update root extension/distribution with current-day growth/stress before current-day root extraction; that would change B1.10 physics"
+  },
+  "target_data_classification": {
+    "crop_emerged": "committed crop state",
+    "root_depth_or_equivalent_root_geometry": "committed crop state where physically required",
+    "rooted_nodes": "prefer derived from committed root geometry plus immutable grid",
+    "cumulative_root_fraction": "prefer derived/read-only current crop-root distribution; persist only irreducible physical distribution state",
+    "potential_transpiration": "ET process result for the current interval/timestep, not persistent crop state"
+  },
+  "current_SWAP5_lineage": {
+    "src_crop": [
+      "src/crop/mod_crop_root_uptake_input_contract.f90"
+    ],
+    "other_migrated_processes": [
+      "src/process/mod_irrigation_process.f90",
+      "src/process/mod_root_water_uptake_process.f90",
+      "src/process/mod_snow_process.f90"
+    ],
+    "explicit_crop_host_present": false,
+    "explicit_ET_process_present": false,
+    "concrete_source_for_current_crop_emergence_present": false,
+    "concrete_source_for_current_root_geometry_present": false,
+    "concrete_source_for_current_root_distribution_present": false,
+    "concrete_source_for_current_potential_transpiration_present": false
+  }
+}
