@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "title": "Explicit prescribed bottom-head boundary admission",
+  "status": "IN_PROGRESS_SOURCE_BOUND_PRESCRIBED_BOTTOM_HEAD_ADMISSION",
+  "branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "basis": {
+    "fsi15_final_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "fsi15_decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
+    "fsi15_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "fsi15_state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "fsi13_bottom_boundary_contract_blob": "e416a13e9cb1f78f3b8149e9d452c2985f067750",
+    "gc02_blocker": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED"
+  },
+  "source_characterization": {
+    "legacy_route": "B1.10 HeadCalc SWBOTB=5",
+    "input_field": "soil_water_solve_request_t%boundary%bottom_head",
+    "input_semantics": "lower-boundary pressure head",
+    "input_units": "cm",
+    "state_binding": [
+      "reference_richards_state_binding_t%gwlinp = request%boundary%bottom_head",
+      "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
+    ],
+    "legacy_newton_equation": "HNEW(NN) - HBOT = 0",
+    "legacy_newton_row": "B_MAT(NN)=-1; D_MAT(NN)=HNEW(NN)-HBOT",
+    "returned_qbot_trace": "PENDING_SOURCE_BOUND_VERIFICATION",
+    "mass_accounting_trace": "PENDING_SOURCE_BOUND_VERIFICATION",
+    "legacy_global_poison_surface": "PENDING_SOURCE_BOUND_VERIFICATION"
+  },
+  "ownership": {
+    "prescribed_head_physics": "existing B1.10 reference physics, unchanged",
+    "common_request_boundary_authority": "F-SI",
+    "transaction_semantics": "F-KT_UNCHANGED",
+    "physical_runtime_profile_admission": "F-MR_DOWNSTREAM",
+    "scientific_admission": "F-VQ_DOWNSTREAM",
+    "groundwater_coupling_orchestration": "F-GC_NOT_IN_SCOPE"
+  },
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "bottom_mode_5_admitted": false,
+    "authoritative_bottom_flux_available": false,
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  },
+  "holds": {
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "active_macropores": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED"
+  },
+  "next_gate": "TRACE_AUTHORITATIVE_QBOT_AND_IMPLEMENT_MINIMAL_MODE5_COMMON_ROUTE_BINDING"
+}
