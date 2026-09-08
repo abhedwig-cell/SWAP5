@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "branch": "integration/f-mr",
+  "start_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+  "phase": "CONTRACT_PERSISTING_BEFORE_PRODUCTION_SOURCE_CHANGE",
+  "status": "IN_PROGRESS_PRODUCTION_SERIALIZED_MULTISWAP_DISPATCH",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "scientific_baseline": {
+    "source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION"
+  },
+  "downstream_blocker_target": {
+    "workstream": "F-MQ23",
+    "blocker": "FMQ23-B01",
+    "goal": "materialize production multi-column serialized-reference dispatch/orchestration entrypoint"
+  },
+  "production_source_changed_in_fmr05": false,
+  "parallel_reference_backend_admitted": false,
+  "physical_worker_count": 1,
+  "physical_profile_broadened": false,
+  "scientific_admission_of_modified_source": false,
+  "required_postchange_requalification": "F-VQ15",
+  "holds": [
+    "Do not inherit F-VQ14 scientific admission onto any F-MR05 modified production source SHA.",
+    "Do not execute real HeadCalc concurrently.",
+    "Do not broaden root, snow, macropore, implicit conductivity or other physical scope.",
+    "Do not introduce new mass-balance tolerances or a second mass-accounting model.",
+    "Do not release F-MQ23 real-physics MultiSWAP until F-MR05 exact postimage has independent F-VQ admission."
+  ],
+  "next_step": "Implement the production serialized multi-column dispatcher as a new runtime composition layer over the already-qualified F-MR04 backend, persist source before focused tests, then run focused F-MR05 gates."
+}

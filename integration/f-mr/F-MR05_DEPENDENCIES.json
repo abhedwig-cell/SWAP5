@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "title": "Production Serialized Real-Physics MultiSWAP Composition/Dispatch",
+  "repository": "abhedwig-cell/SWAP5",
+  "branch": "integration/f-mr",
+  "start_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+  "safety_branch": "integration/f-mr05-safety",
+  "safety_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+  "dependencies": {
+    "F-MR04": {
+      "qualified_source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+      "closeout_commit": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+      "status": "QUALIFIED_SERIALIZED_PHYSICAL_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+      "profile": "FMR04_B110_BARE_ROOT_INACTIVE_SERIAL_V1",
+      "consume": true
+    },
+    "F-VQ14": {
+      "branch": "qualification/f-vq14-fmr04-physical-runtime",
+      "qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+      "decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+      "qualified_source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+      "scientific_criterion": "EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+      "production_physics_qualified_scope": "EXACT_FMR04_RESTRICTED_PROFILE_ONLY",
+      "consume_as_scientific_baseline": true,
+      "does_not_admit_fmr05_modified_source": true
+    },
+    "F-KT08": {
+      "qualified_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "ownership": ["transaction_semantics", "checkpoint", "candidate", "commit", "rollback", "authoritative_full_interval_mass_accounting"],
+      "consume_via_fmr04_postimage": true,
+      "modify": false
+    },
+    "F-MQ23": {
+      "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+      "head": "feb1a285c8d4d4fe03f78e57828b10a24574b420",
+      "decision": "BLOCKED_PRODUCTION_SERIALIZED_MULTICOLUMN_RUNTIME_ENTRYPOINT_MISSING",
+      "blocker": "FMQ23-B01",
+      "github_issue": 73,
+      "owner": "F-MR",
+      "resume_after_fmr05_and_independent_fvq": true
+    }
+  },
+  "post_source_change_requirement": {
+    "independent_owner": "F-VQ",
+    "required_next_unit": "F-VQ15",
+    "rule": "Any F-MR05 production source postimage is NOT scientifically or production admitted until independent F-VQ qualification binds that exact source SHA.",
+    "f_vq14_admission_inherited_by_modified_source": false
+  }
+}

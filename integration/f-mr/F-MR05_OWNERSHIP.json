@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "PRODUCTION_SERIALIZED_REAL_PHYSICS_MULTISWAP_OWNERSHIP",
+  "runtime_owns": [
+    "logical column registry traversal",
+    "template lookup and compatibility checks",
+    "parameter_ref resolution",
+    "forcing_handle resolution",
+    "state_handle resolution",
+    "duplicate committed-state handle rejection",
+    "deterministic template/column execution ordering",
+    "batch partitioning for dispatch bookkeeping",
+    "strict one-physical-solve-at-a-time serialized execution",
+    "per-column checkpoint capture and candidate orchestration through F-KT",
+    "per-column commit or fail-closed non-commit",
+    "per-column runtime diagnostics",
+    "aggregate accepted mass accounting",
+    "failure isolation so one rejected column does not mutate or prevent independent valid columns"
+  ],
+  "runtime_does_not_own": [
+    "Richards equations",
+    "HeadCalc numerics",
+    "soil constitutive physics",
+    "drainage/source-sink physics",
+    "F-KT transaction semantics",
+    "mass-balance definitions or tolerances",
+    "surface process physics",
+    "root extraction physics",
+    "snow physics",
+    "macropore physics",
+    "parallel HeadCalc reentrancy",
+    "scientific admission",
+    "MODFLOW coupling"
+  ],
+  "serialization": {
+    "physical_worker_count": 1,
+    "parallel_reference_backend_admitted": false,
+    "reason": "legacy reference process/evaluation globals remain non-reentrant; F-MR05 composes many logical columns but invokes the admitted physical backend serially",
+    "future_parallelization_requires_new_upstream_qualification": true
+  },
+  "physics_scope": {
+    "profile": "FMR04_B110_BARE_ROOT_INACTIVE_SERIAL_V1",
+    "root_extraction_active": false,
+    "qrot_nonzero": false,
+    "macropore": false,
+    "snow": false,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "frost": false,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "bottom_modes": [7, -2],
+    "broadening_allowed_in_fmr05": false
+  },
+  "architecture_invariants_emphasized": [1,2,3,4,5,6,7,8,9,13,16,21,22,23,24,25,26,27,28,29,30]
+}

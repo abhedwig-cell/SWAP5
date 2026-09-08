@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "PRODUCTION_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_DISPATCH",
+  "target_module": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+  "target_entrypoint": "fmr_run_serialized_physical_multiswap",
+  "backend": "FMR_BACKEND_SERIALIZED_REFERENCE",
+  "physical_parallelism": 1,
+  "logical_multicolumn": true,
+  "inputs": [
+    "fmr_logical_column_t columns(:)",
+    "fmr_template_t templates(:)",
+    "fmr_b110_physical_parameters_t parameter_registry(:)",
+    "fmr_b110_physical_forcing_t forcing_registry(:)",
+    "kernel_committed_state_t state_registry(:)",
+    "canonical_numerical_config_t numerical_config",
+    "top_boundary_provider_t top_boundary",
+    "generic t0,t1",
+    "positive batch_size"
+  ],
+  "registry_rules": {
+    "column_id_positive": true,
+    "template_id_positive": true,
+    "parameter_ref_positive_and_in_range": true,
+    "forcing_handle_positive_and_in_range": true,
+    "state_handle_positive_and_in_range": true,
+    "state_handle_unique_within_one_dispatch": true,
+    "backend_must_equal_serialized_reference": true,
+    "template_backend_must_equal_serialized_reference": true,
+    "column_template_pair_must_exist_and_match": true
+  },
+  "execution_order": "Reuse fmr_build_execution_order: deterministic template_id then column_id. Batch boundaries do not change physical results.",
+  "per_column_transaction": [
+    "resolve immutable parameters/forcing and mutable committed state by stable handles",
+    "capture F-KT checkpoint",
+    "run the F-MR04 serialized reference backend from that checkpoint",
+    "require completed candidate with kernel_result.mass.complete=true and missing_contribution_mask=0",
+    "commit exactly once through fmr_commit_candidate when accepted",
+    "otherwise discard/no-commit and classify the column failure",
+    "continue dispatch of independent columns after a per-column rejection"
+  ],
+  "mass_accounting": {
+    "canonical_source": "kernel_result.mass from F-KT08",
+    "shadow_or_second_mass_model_forbidden": true,
+    "accepted_column_complete_required": true,
+    "accepted_column_missing_mask_required": 0,
+    "aggregate_residual": "sum of accepted canonical unrounded residuals",
+    "failed_or_uncommitted_column_contributes_to_aggregate": false,
+    "mass_conservation_disable_switch": false
+  },
+  "top_boundary": {
+    "provider_is_passed_by_caller": true,
+    "test_fixture_provider_is_not_promoted_to_production": true,
+    "runtime_does_not_implement_surface_process_physics": true
+  },
+  "required_qualification": {
+    "focused_FMR05": [
+      "multi-column real HeadCalc execution",
+      "single-column versus multi-column identity",
+      "input-order independence",
+      "batch-partition independence",
+      "shared immutable parameter_ref reuse",
+      "distinct forcing_handle resolution",
+      "stable unique state_handle routing",
+      "per-column rollback/non-mutation on rejection",
+      "neighbor survival after rejected column",
+      "per-column complete authoritative mass accounting",
+      "aggregate unrounded mass accounting",
+      "O0/O2 output identity",
+      "parallel reference backend remains fail-closed"
+    ],
+    "independent_scientific_requalification_after_source_change": "F-VQ15",
+    "downstream_multiswap_qualification_after_FVQ": "resume F-MQ23"
+  }
+}
