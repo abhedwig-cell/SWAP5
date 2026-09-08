@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ19",
+  "title": "Independent F-MR08 Nonstationary Exact Temporal Acceptance Qualification",
+  "branch": "qualification/f-vq19-fmr08-nonstationary-temporal",
+  "candidate_source_commit": "439432ad91d64353e70afda4ff0837f69521a9e5",
+  "candidate_source_tree": "6fb99c994ab88435a3eaf675d6d9e945cc3a9d79",
+  "phase": "CONTRACTED_PRE_QUALIFICATION",
+  "status": "PERSISTED_PRE_TEST",
+  "decision": "NOT_ASSESSED",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "qualification_only": true,
+  "production_source_changed_by_fvq19": false,
+  "reference_source_changed_by_fvq19": false,
+  "candidate_owner_decision": "QUALIFIED_EXISTING_TEMPORAL_IDENTITY_WITH_ADMITTED_NONSTATIONARY_FIXTURE_READY_FOR_FVQ",
+  "independence_contract": {
+    "owner_gate_result_not_used_as_acceptance_oracle": true,
+    "candidate_source_and_owner_artifacts_are_read_only_evidence": true,
+    "source_lock_rederived_independently": true,
+    "nonstationarity_rederived_from_locked_fixture_source": true,
+    "exact_temporal_comparator_scope_rederived_from_locked_backend_source": true,
+    "prior_fvq17_scientific_gate_replayed_directly_from_its_own_closeout_lineage": true,
+    "new_numeric_tolerance_may_be_introduced": false
+  },
+  "required_checks": [
+    "exact F-MR08 candidate tree lock",
+    "no src or reference changes on F-VQ19",
+    "F-MR06 candidate ancestry and unchanged pre-existing candidate files",
+    "active SNOW persistent state changes from 0.10 to 0.12 in locked fixture",
+    "temporal_tolerance remains exactly zero",
+    "serialized temporal comparator includes all active SNOW state fields",
+    "hard authoritative mass and rollback/replay/commit evidence remains intact",
+    "direct replay of independently qualified F-VQ17 gate at its closeout lineage",
+    "no scope promotion beyond admitted one-call-daily serialized REFERENCE SNOW route"
+  ],
+  "holds": [
+    "F-VQ19 performs no production or reference-source edit.",
+    "No graded temporal profile or numeric limit is admitted here.",
+    "Mass conservation remains a separate absolute hard gate.",
+    "Subdaily, multiday and arbitrary-duration SNOW remain outside scope.",
+    "BALANCED, THROUGHPUT, FALLBACK and parallel real-physics execution remain outside scope.",
+    "F-PE remains blocked until F-VQ19 reaches an independent PASS on the exact immutable candidate."
+  ],
+  "next_step": "Persist an independent source-bound verifier gate and execute it before changing this status to QUALIFIED."
+}
