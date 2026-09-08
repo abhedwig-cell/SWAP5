@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP02",
+  "title": "Standalone Lineage Reconstruction & Constitutive Testbench",
+  "branch": "work/f-lmfp02-lineage-testbench",
+  "base": {
+    "work_unit": "F-LMFP01",
+    "commit": "6672f4ac10d7ddd79fbe6b0b1080b45b6467b09f",
+    "decision": "GO_PROTOTYPE"
+  },
+  "scope": {
+    "production_implementation": false,
+    "production_solver_registration": false,
+    "standalone_prototype": true,
+    "lineage_reference_mode": true,
+    "swap_hydraulics_test_mode": true,
+    "full_richards_ab_qualification": false,
+    "modflow_admission": false
+  },
+  "hard_rules": {
+    "mass_conservation": "required",
+    "generic_time_candidate": "required",
+    "lineage_daily_assumptions_must_be_explicit": true,
+    "silent_model_switch_forbidden": true,
+    "commit_rollback_owned_by_solver": false,
+    "production_src_changes_allowed": false
+  },
+  "initial_hypotheses": [
+    "MFP can be derived from the same K(h) constitutive relation used by the qualified B1.10 provider",
+    "homogeneous interface dry transfer is algebraic",
+    "heterogeneous interface transfer can be solved with bounded scalar iteration on continuous pressure head",
+    "a conservative face-flux storage update can close mass to floating-point precision",
+    "the historical per-step UpwardFlowLimit=0.50 is not invariant under arbitrary step subdivision and therefore cannot be imported as generic-time physics without reformulation"
+  ],
+  "status": "PROTOTYPE_STARTED",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
