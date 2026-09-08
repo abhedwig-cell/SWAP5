@@ -9,6 +9,15 @@
     "commit": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
     "reason": "Use the qualified common solver contract and explicit process hydraulic view without inheriting the reopened F-SI16 prescribed-bottom-head work or later experimental solver work."
   },
+  "source_basis": {
+    "swap_4_3_1_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "wofost_primary_technical_reference": "Rappoldt et al. 2012, Extension of the WOFOST soil water submodel; Comparison with SWAP and technical documentation",
+    "wofost_reference_routine": "WATFDGW",
+    "historical_lineage": ["WATFD", "WATGW", "SUBSOL", "WATFDGW"],
+    "current_reference_line": "PCSE/WOFOST WaterBalanceLayered",
+    "pcse_groundwater_currently_implemented": false,
+    "license_caution": "Do not directly copy Appendix C WATFDGW source into SWAP5 without separate license/provenance clearance; prefer clean reimplementation from documented equations and regression behavior."
+  },
   "scope": {
     "production_implementation": false,
     "prototype_allowed": true,
@@ -22,16 +31,34 @@
     "full_richards_remains_reference": true,
     "mass_conservation_is_hard_gate": true,
     "generic_time_required": true,
-    "transactional_trial_semantics_required": true
+    "transactional_trial_semantics_required": true,
+    "commit_rollback_owner": "F-KT/runtime, not SoilWaterSolver"
   },
-  "status": "FEASIBILITY_STUDY_STARTED",
+  "deliverables": {
+    "feasibility_report": "integration/f-lmfp/F-LMFP01_FEASIBILITY_REPORT.md",
+    "prototype_recommended": true,
+    "prototype_modes": ["WOFOST lineage reference", "SWAP5 LayeredMFP candidate"]
+  },
+  "decision": "GO_PROTOTYPE",
+  "decision_reason": "Source reconstruction and SWAP5 architectural fit are sufficient to justify an isolated prototype, while physical equivalence, groundwater behavior, generic-time limiter reformulation, response tangents and production qualification envelope remain empirical questions for comparison against FullRichards.",
+  "important_holds": {
+    "production_solver_admission": "NOT_ADMITTED",
+    "production_envelope": "NOT_ESTABLISHED",
+    "prescribed_bottom_head_common_route": "DEPENDENCY_NOT_STABLE; F-SI16 currently reopened after qbot oracle mismatch",
+    "direct_modflow_layeredmfp": "NOT_QUALIFIED",
+    "interface_tangent": "FEASIBLE_HYPOTHESIS_ONLY",
+    "speedup_factor": "NOT_MEASURED",
+    "difficult_regime_exclusions": "NOT_PREDECLARED; MUST_TEST"
+  },
   "scope_flags": {
     "IMPLEMENTED": false,
     "PERSISTED": true,
     "TESTED": false,
     "QUALIFIED": false,
+    "FEASIBILITY_COMPLETE": true,
     "production_physics_changed": false,
     "numerical_policy_changed": false,
     "transaction_semantics_changed": false
-  }
+  },
+  "status": "FEASIBILITY_COMPLETE_GO_PROTOTYPE"
 }
