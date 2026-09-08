@@ -11,24 +11,17 @@
     "closeout_ci_run": 34266530313,
     "closeout_ci_conclusion": "SUCCESS"
   },
-  "objective": "Test a constrained residual representation around the current MFP homogeneous face closure so known Darcy identities are exact by construction while the strong-gradient Darcian correction is retained at bounded O(1) runtime cost.",
-  "candidate_hypothesis": {
-    "heterogeneous_faces": "retain current LayeredMFP equal-flux interface closure in this workunit",
-    "homogeneous_faces": "q_candidate = q_MFP + interpolated_Delta_q(h_upper, gradient), where Delta_q is generated offline from q_Darcy_oracle - q_MFP",
-    "coordinates": "upper pressure head and dimensionless pressure-head gradient g=(h_lower-h_upper)/face_distance",
-    "constraint_columns": [
-      "g=0 -> Delta_q=0, preserving equal-head gravity flow q=K(h)",
-      "g=1 -> Delta_q=0, preserving hydrostatic q=0"
-    ],
-    "runtime_fallback": "none; coverage miss is explicit failure"
-  },
+  "candidate_head_before_closeout": "4ecc84210f6af4cbc4528b8b4a23b8c63093fbd8",
+  "objective": "Qualify a bounded-cost physics-informed homogeneous-face Darcian correction around the experimental MFP closure while preserving exact physical identities, mass conservation, fail-closed coverage, continuity and explicit solver semantics.",
   "scope": {
     "production_implementation": false,
     "production_src_changed": false,
+    "experimental_harness_only": true,
     "hydraulic_only": true,
     "generic_time": true,
     "fullrichards_reference": true,
     "direct_darcian_face_control": true,
+    "heterogeneous_interface_changed": false,
     "crop": false,
     "root_uptake": false,
     "drainage_process": false,
@@ -36,30 +29,144 @@
     "groundwater": false,
     "modflow": false
   },
-  "required_tests": [
-    "exact homogeneous equal-head gravity-flow identity",
-    "exact hydrostatic zero-flux identity",
-    "face-level direct-Darcy validation across sand and clay and multiple geometry classes",
-    "F-LMFP04 six-case transient matrix",
-    "F-LMFP07 strong-gradient transient matrix",
-    "mass conservation and fail-closed coverage",
-    "table memory and class-cardinality diagnostics",
-    "continuity and finite-difference local response diagnostics"
-  ],
-  "hard_rules": {
-    "mass_conservation_required": true,
-    "no_post_update_clipping": true,
-    "no_silent_extrapolation": true,
-    "no_silent_solver_switch": true,
-    "reference_mode_unchanged": true,
-    "representation_is_immutable_shared_parameter_data": true,
-    "heterogeneous_interface_physics_not_changed_without_separate_evidence": true
-  },
-  "status": "PHYSICS_INFORMED_CORRECTION_HARNESS_IN_PREPARATION",
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
+    "PRODUCTION_IMPLEMENTED": false,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false
-  }
+    "TESTED": true,
+    "QUALIFIED": true
+  },
+  "qualified_candidate": {
+    "name": "CONSTRAINED_CONTINUOUS_MFP_LOG_DARCIAN_RATIO",
+    "formula": "q = q_MFPtable_continuous * exp(R_constrained)",
+    "raw_correction": "R = log(K_DAR / K_MFPtable_secant)",
+    "equal_head_reconciliation": "replace only the g=0 interpolation-row contribution with analytic log(K_exact/K_MFPtable_limit)",
+    "gradient": "g=(h_lower-h_upper)/face_distance",
+    "equal_head_identity": "q=K(h) to roundoff",
+    "hydrostatic_identity": "g=1 -> q=0",
+    "runtime_extrapolation": false,
+    "coverage_miss": "EXPLICIT_FAILURE",
+    "lookup_ownership": "IMMUTABLE_SHARED_HYDRAULIC_PARAMETER_DATA"
+  },
+  "decisive_evidence": {
+    "final_gate": {
+      "run": 34271007976,
+      "head": "4ecc84210f6af4cbc4528b8b4a23b8c63093fbd8",
+      "job": 102212291377,
+      "conclusion": "SUCCESS",
+      "artifact": 10073946916,
+      "artifact_digest": "sha256:055c7b80a37043f29852bd75f2e45f0fb0a54edad6ed484e3a71c6c4615622ed"
+    },
+    "exact_identities": {
+      "max_equal_head_abs_error": 2.220446049250313e-16,
+      "max_hydrostatic_abs_flux": 0.0
+    },
+    "face_oracle": {
+      "cases": 192,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "fraction_corrected_better_than_mfp": 0.9791666666666666,
+      "mfp_median_rel_error": 0.040418708748571494,
+      "corrected_median_rel_error": 0.0005582149424760037,
+      "mfp_p90_rel_error": 0.3074619430431289,
+      "corrected_p90_rel_error": 0.008187294249629357,
+      "mfp_max_rel_error": 0.9534946772479598,
+      "corrected_max_rel_error": 0.13516851986332382
+    },
+    "strong_gradient_faces": {
+      "cases": 71,
+      "mfp_p90_rel_error": 0.3561958436069287,
+      "corrected_p90_rel_error": 0.0017354638377739542,
+      "mfp_max_rel_error": 0.6287081587917802,
+      "corrected_max_rel_error": 0.10898099510314349
+    },
+    "strict_response_continuity": {
+      "epsilon_ratio": 0.2,
+      "maximum_small_over_large": 0.2000326399282258,
+      "threshold": 0.35,
+      "finite": true,
+      "response_tangent_admitted": false
+    },
+    "transient": {
+      "all_steps_accepted": true,
+      "maximum_mass_residual_cm": 4.322852975103056e-15,
+      "stress_corrected_closer_to_direct_darcian": "5/5",
+      "ordinary_corrected_closer_to_direct_darcian": "5/6",
+      "coverage_misses": 0
+    },
+    "representation_cost": {
+      "values_per_material_geometry_class": 432,
+      "bytes_per_class_before_metadata": 3456,
+      "runtime_complexity": "BOUNDED_O1_INTERPOLATION_PER_HOMOGENEOUS_FACE",
+      "preparation_cost": "OFFLINE_OR_TEMPLATE_PREPARATION_COST"
+    }
+  },
+  "rejected_or_superseded_candidates": {
+    "factored_residual": "REJECTED_TRANSIENT_STRESS_3_OF_5",
+    "direct_delta_q": {
+      "status": "REJECTED_SIGN_OR_OVERSHOOT_AND_TRANSIENT_STRESS_3_OF_5",
+      "run": 34269295714
+    },
+    "positive_log_kdar": {
+      "status": "REJECTED_TRANSIENT_STRESS_4_OF_5",
+      "run": 34269953671
+    },
+    "first_multiplicative_log_ratio": {
+      "status": "SUPERSEDED_AFTER_MANUAL_REVIEW_FOUND_EQUAL_HEAD_POINT_DISCONTINUITY_NOT_CAUGHT_BY_OLD_GATE",
+      "run": 34269295636
+    },
+    "upstream_k_ratio": {
+      "status": "REJECTED_TRANSIENT_STRESS_4_OF_5_DESPITE_CONTINUITY_PASS",
+      "run": 34270377026
+    }
+  },
+  "claims": {
+    "physics_informed_homogeneous_face_representation": "QUALIFIED_WITHIN_TESTED_EXPERIMENTAL_HYDRAULIC_SCOPE",
+    "exact_equal_head_identity": "ESTABLISHED_WITHIN_TESTED_SCOPE",
+    "exact_hydrostatic_identity": "ESTABLISHED_WITHIN_TESTED_SCOPE",
+    "flow_direction_preserved": "ESTABLISHED_WITHIN_TESTED_FACE_MATRIX",
+    "strong_gradient_transient_improvement": "ESTABLISHED_AGAINST_DIRECT_DARCIAN_CONTROL_FOR_5_OF_5_STRESS_CASES",
+    "mass_conservation": "ESTABLISHED_TO_ROUNDOFF_IN_TESTED_TRANSIENT_MATRIX",
+    "response_continuity": "ESTABLISHED_FOR_TESTED_FINITE_DIFFERENCE_REFINEMENT_PROBES",
+    "response_tangent": "NOT_ADMITTED",
+    "heterogeneous_interface_continuity": "NOT_QUALIFIED",
+    "near_saturation_or_positive_head_envelope": "NOT_QUALIFIED",
+    "dry_tail_envelope": "NOT_QUALIFIED",
+    "production_layeredmfp_admission": "NOT_GRANTED",
+    "broader_process_physics_admission": "NOT_GRANTED",
+    "groundwater_or_modflow_admission": "NOT_GRANTED"
+  },
+  "architecture_invariants": {
+    "1_one_kernel": "PRESERVED_NO_PRODUCTION_FORK",
+    "2_kernel_io_separation": "PRESERVED",
+    "3_explicit_data_separation": "PRESERVED_LOOKUP_IS_IMMUTABLE_SHARED_PARAMETER_DATA",
+    "4_compact_state": "NO_NEW_COLUMN_STATE",
+    "5_worker_scratch": "PRESERVED",
+    "6_scalable_layout": "O1_SHARED_TABLE_LOOKUP_PROMISING_CLASS_CARDINALITY_OPEN",
+    "7_transactional_steps": "PRESERVED_NO_COMMITTED_STATE_MUTATION_ON_REJECT",
+    "8_cheap_recompute": "PRESERVED_FOR_FIXED_EXPERIMENTAL_MODEL_CLASS",
+    "9_generic_time": "TESTED",
+    "11_coupling_core": "NOT_EXERCISED_NO_CONFLICT_INTRODUCED",
+    "12_groundwater_interface": "NOT_QUALIFIED",
+    "13_mass_conservation": "SATISFIED_TO_ROUNDOFF",
+    "14_interface_sensitivities": "OPEN_RESPONSE_TANGENT_NOT_ADMITTED",
+    "15_coupling_cost": "UNCHANGED",
+    "16_multiswap": "SHARED_IMMUTABLE_TABLES_COMPATIBLE_GEOMETRY_CLASS_CARDINALITY_OPEN",
+    "18_deep_vadose": "UNCHANGED_EXTERNAL",
+    "20_alternative_solvers": "PRESERVED_LAYEREDMFP_EXPLICIT_MODEL",
+    "21_shared_swap_physics": "SAME_CONSTITUTIVE_FIXTURE_HYDRAULICS_USED",
+    "22_no_headcalc_internals": "PRESERVED",
+    "23_physics_policy_separation": "PRESERVED_NO_SILENT_SOLVER_SWITCH",
+    "24_predictable_cost": "BOUNDED_LOOKUP_RUNTIME_ESTABLISHED_PREPARATION_AND_CLASS_COUNT_OPEN",
+    "25_reference_mode": "PRESERVED_AND_RERUN",
+    "26_diagnostics": "COVERAGE_MEMORY_CALLS_MASS_AND_CONTINUITY_REPORTED",
+    "27_optional_cost": "TABLE_DATA_ONLY_FOR_EXPERIMENTAL_LAYEREDMFP_CONFIGURATION",
+    "28_runtime_composition": "UNCHANGED",
+    "29_no_silent_dependencies": "PRESERVED",
+    "30_explicit_invariant_check": "RECORDED_IN_REPORT"
+  },
+  "report": "integration/f-lmfp/F-LMFP08_REPORT.md",
+  "next_action": "F-LMFP09 should qualify the hydraulic lookup envelope and representation geometry: near saturation and positive heads, dry tail, a head coordinate regular through h=0, more hydraulic materials and face lengths, material/geometry-class cardinality, heterogeneous-interface continuity and fail-closed boundary behaviour, while rerunning exact identities, mass and F-LMFP07/F-LMFP08 transient stress gates.",
+  "valid_exit": "QUALIFIED_CONSTRAINED_CONTINUOUS_MFP_DARCIAN_RATIO_REPRESENTATION",
+  "status": "QUALIFIED_CONSTRAINED_CONTINUOUS_MFP_DARCIAN_RATIO_REPRESENTATION"
 }
