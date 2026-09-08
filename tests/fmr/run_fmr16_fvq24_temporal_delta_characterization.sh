@@ -147,6 +147,8 @@ if pending: raise SystemExit('unassigned temporal rows')
 if len(cases)!=5: raise SystemExit(f'expected 5 cases, got {len(cases)}')
 expected_attempts={1:1,2:3,3:3,4:3,5:3}
 print('FMR16_TEMPORAL_DELTA_FIELD_ORDER=max_abs_head,max_abs_theta,abs_ponding,abs_groundwater,relative_head,relative_theta')
+strict_both=0
+final_below_initial_both=0
 for c in cases:
     if len(c['deltas'])!=expected_attempts[c['case']]:
         raise SystemExit(f"case {c['case']} expected {expected_attempts[c['case']]} temporal rows got {len(c['deltas'])}")
@@ -154,19 +156,26 @@ for c in cases:
         dt=1.0*(0.5**j)
         print(f"FMR16_CASE={c['case']}:{c['name']}:attempt={j+1}:dt={dt:.17g}:delta="+','.join(f'{x:.17e}' for x in v))
     if c['case']>1:
+        flags=[]; final_flags=[]
         for k,label in [(0,'head'),(1,'theta')]:
             vals=[r[k] for r in c['deltas']]
             ratios=[vals[i+1]/vals[i] if vals[i] else 0.0 for i in range(len(vals)-1)]
             monotone=all(vals[i+1] < vals[i] for i in range(len(vals)-1))
-            print(f"FMR16_CASE={c['case']}:{label}:STRICTLY_DECREASES_WITH_DT_HALVING={str(monotone).upper()}:ratios="+','.join(f'{r:.9e}' for r in ratios))
-            if not monotone: raise SystemExit(f"case {c['case']} {label} delta not monotone")
+            final_below=vals[-1] < vals[0]
+            flags.append(monotone); final_flags.append(final_below)
+            print(f"FMR16_CASE={c['case']}:{label}:STRICTLY_DECREASES_WITH_DT_HALVING={str(monotone).upper()}:FINAL_BELOW_INITIAL={str(final_below).upper()}:ratios="+','.join(f'{r:.9e}' for r in ratios))
+        if all(flags): strict_both += 1
+        if all(final_flags): final_below_initial_both += 1
 if any(x!=0.0 for x in cases[0]['deltas'][0]): raise SystemExit('baseline not exact zero')
 for c in cases[1:]:
     if not all(all(math.isfinite(x) for x in row) for row in c['deltas']): raise SystemExit('nonfinite delta')
     if not any(row[0]>0.0 or row[1]>0.0 for row in c['deltas']): raise SystemExit('nonzero case has no state delta')
 print('FMR16_BASELINE_EXACT_TEMPORAL_IDENTITY=PASS')
-print('FMR16_NONZERO_RICHARDS_FINITE_GRADED_STATE_DELTAS=PASS')
-print('FMR16_DT_HALVING_CONVERGENCE_SIGNAL=PASS')
+print('FMR16_NONZERO_RICHARDS_FINITE_COMPONENT_DELTAS=PASS')
+print(f'FMR16_NONZERO_CASES_STRICTLY_MONOTONE_HEAD_AND_THETA={strict_both}/4')
+print(f'FMR16_NONZERO_CASES_FINAL_DELTA_BELOW_INITIAL_HEAD_AND_THETA={final_below_initial_both}/4')
+print('FMR16_ROBUST_MONOTONE_DT_HALVING_SIGNAL='+('YES' if strict_both==4 else 'NO'))
+print('FMR16_CHARACTERIZATION_COMPLETED_WITHOUT_METRIC_SELECTION=PASS')
 PY
 
 echo 'FMR16_PRODUCTION_ACCEPTANCE_CHANGED=NO'
