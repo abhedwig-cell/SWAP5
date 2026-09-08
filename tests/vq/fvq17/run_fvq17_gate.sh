@@ -48,13 +48,10 @@ git rev-parse "${CANDIDATE}:src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 echo 'FVQ17_SOURCE_IMMUTABILITY=PASS'
 echo 'FVQ17_CANDIDATE_LOCK=PASS'
 
-# Supporting evidence only: replay the exact engineering gate on the immutable candidate postimage.
 bash tests/fmr/run_fmr06_gate.sh > "$ARTIFACTS/fmr06-engineering-gate.out" 2>&1
 grep -Fq 'FMR06_GATE PASS_RUNTIME_CANDIDATE_REQUIRES_INDEPENDENT_FVQ' "$ARTIFACTS/fmr06-engineering-gate.out"
 echo 'FVQ17_FMR06_ENGINEERING_REPLAY=PASS'
 
-# Independent scientific process oracle: execute the exact F-VQ16 closeout in a detached worktree.
-# Candidate relevance is guaranteed by the already-locked identical process blob above.
 FVQ16_WORKTREE="$BUILD/fvq16-worktree"
 git worktree add --detach "$FVQ16_WORKTREE" "$FVQ16_CLOSEOUT" > "$ARTIFACTS/fvq16-worktree-add.out" 2>&1
 (
@@ -65,6 +62,14 @@ mkdir -p "$ARTIFACTS/fvq16"
 cp -a "$FVQ16_WORKTREE/.fvq16-artifacts/." "$ARTIFACTS/fvq16/"
 git worktree remove --force "$FVQ16_WORKTREE" > "$ARTIFACTS/fvq16-worktree-remove.out" 2>&1
 echo 'FVQ17_DIRECT_FVQ16_ORACLE_REPLAY=PASS'
+
+# The checked-in verifier predates compilation and used PROFILE_ACTIVE together with
+# profile_active; Fortran identifiers are case-insensitive. Build an exact temporary
+# qualification copy with only that helper symbol disambiguated. Production source is untouched.
+FVQ17_TEST_SRC="$BUILD/test_fvq17_snow_multiswap_reference.f90"
+sed -e 's/profile_active(/snow_profile_active(/g' \
+    -e 's/end function profile_active/end function snow_profile_active/' \
+    tests/vq/fvq17/test_fvq17_snow_multiswap_reference.f90 > "$FVQ17_TEST_SRC"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
@@ -101,7 +106,7 @@ for opt in 0 2; do
   done
 
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/vq/fvq17/test_fvq17_snow_multiswap_reference.f90 -o "$OUT/fvq17_multiswap.o"
+    -c "$FVQ17_TEST_SRC" -o "$OUT/fvq17_multiswap.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/fvq17_multiswap.o" -o "$OUT/fvq17_multiswap"
   "$OUT/fvq17_multiswap" > "$OUT/multiswap.out" 2>&1 || { cat "$OUT/multiswap.out" >&2; exit 1; }
 
@@ -123,7 +128,6 @@ for opt in 0 2; do
       grep -Fq "$marker" "$OUT/multiswap.out"
   done
 
-  # Independently execute the transaction/checkpoint regression against this exact source postimage.
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/fmr/test_fmr06_snow_smoke.f90 -o "$OUT/transactional.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/transactional.o" -o "$OUT/transactional"
@@ -136,7 +140,6 @@ for opt in 0 2; do
   grep -Fq 'FMR06_SNOW_SUBDAILY_FAIL_CLOSED=PASS' "$OUT/transactional.out"
   grep -Fq 'FMR06_SNOW_MULTIDAY_FAIL_CLOSED=PASS' "$OUT/transactional.out"
 
-  # Independently preserve the exact F-MR05 snow-inactive route/mass/state identity gate.
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c tests/fmr/test_fmr05_single_fmr04_identity.f90 -o "$OUT/inactive.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/inactive.o" -o "$OUT/inactive"
@@ -161,7 +164,6 @@ cmp "$BUILD/o0/inactive.out" "$BUILD/o2/inactive.out"
 cmp "$BUILD/o0/qualification.out" "$BUILD/o2/qualification.out"
 echo 'FVQ17_O0_O2_OUTPUT_IDENTITY=PASS'
 
-# Reassert immutability after all executable checks.
 git diff --exit-code "$CANDIDATE"..HEAD -- src reference
 sha256sum "$ARTIFACTS/o0-qualification.out" > "$ARTIFACTS/qualification-output.sha256"
 cat "$BUILD/o0/qualification.out"
