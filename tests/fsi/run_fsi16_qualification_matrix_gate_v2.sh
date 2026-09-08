@@ -14,7 +14,17 @@ old="new=f'request_c%boundary%bottom_head = head_value + ({offset})_real64'"
 new="new=f'request_c%boundary%bottom_head = head_value + ({offset}_real64)'"
 if s.count(old) != 1:
     raise SystemExit(f'F-SI16_MATRIX_V2 literal marker count={s.count(old)}')
-p.write_text(s.replace(old,new,1))
+s=s.replace(old,new,1)
+# The first characterized sweep showed qbot remained negative through -74 cm.
+# Use one fixed high lower-face pressure head (-55 cm, +20 cm from reference)
+# to exercise the supported inflow direction. This is a fixed qualification
+# case, not an adaptive search and introduces no new scientific tolerance.
+old="  run_case \"$opt\" high '1.0'  \"$out\""
+new="  run_case \"$opt\" high '20.0' \"$out\""
+if s.count(old) != 1:
+    raise SystemExit(f'F-SI16_MATRIX_V2 high-head marker count={s.count(old)}')
+s=s.replace(old,new,1)
+p.write_text(s)
 PY
 chmod +x "$TMP"
 bash "$TMP"
