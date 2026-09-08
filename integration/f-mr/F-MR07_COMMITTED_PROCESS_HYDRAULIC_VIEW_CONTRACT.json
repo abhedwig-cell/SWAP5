@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR07",
+  "title": "Committed Process Hydraulic View Runtime Binding",
+  "branch": "work/f-mr07-committed-process-hydraulic-view",
+  "source_basis": {
+    "fmr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fmr06_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "fsi17_qualified_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "fsi17_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "fpm03_blocked_head": "0179429bfdcac046b7fe333459bd4eab03d50d72"
+  },
+  "purpose": "Source-bind the exact qualified F-SI17 process hydraulic view onto the exact qualified F-MR06 physical runtime so process orchestration can obtain hydraulic information from F-KT committed state without exposing candidate, checkpoint or solver-internal state.",
+  "materialization_policy": {
+    "blind_merge": false,
+    "materialize_exact_fsi17_view_blob_only": true,
+    "existing_fmr06_production_blobs_must_remain_exact": true,
+    "snow_semantics_must_remain_exact_fmr06": true
+  },
+  "new_runtime_surface": {
+    "module": "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+    "procedure": "fmr_build_committed_process_hydraulic_view",
+    "accepted_input_type": "kernel_committed_state_t",
+    "output_type": "process_hydraulic_view_t",
+    "committed_binding": "The runtime obtains an opaque F-KT snapshot from kernel_committed_state_t, admits only fmr_b110_physical_state_t, maps its hydraulic fields through the exact F-SI17 builder and returns a detached view snapshot.",
+    "candidate_input_allowed": false,
+    "checkpoint_input_allowed": false,
+    "solver_workspace_input_allowed": false,
+    "persistent_view_state": false
+  },
+  "required_properties": [
+    "Uninitialized committed state fails closed.",
+    "Valid committed B1.10 physical state yields exact pressure head, water content, ponding depth and groundwater level.",
+    "Returned arrays do not alias committed state.",
+    "Mutation of an uncommitted clone cannot affect a subsequently rebuilt committed view.",
+    "Snow-active and snow-inactive committed states expose the same hydraulic contract without reading or changing snow state.",
+    "A/B/A committed-state view construction is deterministic.",
+    "O0/O2 output is identical.",
+    "Exact F-MR06 snow/physical regression remains green with every original production blob unchanged."
+  ],
+  "non_goals": [
+    "No irrigation process implementation.",
+    "No irrigation state or event counters.",
+    "No F-KT transaction changes.",
+    "No solver changes.",
+    "No F-SI16 prescribed bottom-head composition.",
+    "No parallel real-physics admission.",
+    "No change to SNOW, mass accounting or physical solver results."
+  ],
+  "intended_exit": "QUALIFIED_COMMITTED_PROCESS_HYDRAULIC_VIEW_BINDING_READY_FOR_FPM03"
+}
