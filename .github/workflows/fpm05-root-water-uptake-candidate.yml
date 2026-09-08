@@ -26,6 +26,6 @@ jobs:
       - name: F-PM05 restricted Feddes process candidate
         run: bash tests/fpm/run_fpm05_root_water_uptake_candidate_gate.sh
       - name: F-VQ21 qualified root sink runtime regression
-        run: bash tests/fvq/run_fvq21_root_sink_runtime_gate.sh
+        run: bash tests/fpm/run_fpm05_fvq21_runtime_regression.sh
       - name: F-MR09 irrigation snow hydraulic-view regression
         run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
