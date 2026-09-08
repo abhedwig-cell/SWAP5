@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-TA",
+  "work_unit": "F-TA03",
+  "branch": "work/f-ta03-fixture-fidelity-metadata",
+  "baseline_commit": "f90d3d79c7bd3e608ce284c1a092662d3a18976d",
+  "scope": "EXECUTABLE_GATE_FIXTURE_NUMERICAL_FIDELITY_AND_TOLERANCE_METADATA",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_source_changed": false,
+  "reference_results_changed": false,
+  "claims": {
+    "gate_fidelity_overlay": "PASS_VERTICAL_SLICE_2_REVIEWED_GATES",
+    "claim_compatibility_validator": "PASS_2_POSITIVE_4_NEGATIVE_FAIL_CLOSED",
+    "zero_step_numerical_behavior_claims": "BLOCKED_FAIL_CLOSED",
+    "scientific_admission_authority": "EXTERNAL_OWNER_ONLY",
+    "registry_merge": "PASS_110_RECORDS_2_FIDELITY_RECORDS",
+    "selector_regression": "PASS_FTA02_6_POSITIVE_2_NEGATIVE",
+    "automatic_test_suppression": "NOT_ALLOWED",
+    "qualification_authority": "NONE"
+  },
+  "reviewed_gates": [
+    {
+      "path": "tests/fsi/run_fsi05_gate.sh",
+      "numerical_solver_fidelity": "ZERO_STEP_STUB",
+      "allowed_claim_boundary": "source binding, workspace isolation and deterministic replay only; no convergence, solver-cost or performance-tail claim"
+    },
+    {
+      "path": "tests/fvq/run_fvq15_gate.sh",
+      "numerical_solver_fidelity": "ZERO_STEP_STUB",
+      "allowed_claim_boundary": "owner source-binding, deterministic replay, mass identity, multicolumn isolation and existing owner scientific admission; no convergence, solver-cost or performance-tail claim"
+    }
+  ],
+  "blockers": [
+    "FTA03-B01 only two executable gates have reviewed normalized fidelity metadata; repository-wide coverage is not claimed",
+    "FTA03-B02 unknown or unreviewed fixture/tolerance provenance remains outside the vertical slice and must fail closed for numerical-behavior claims",
+    "FTA03-B03 F-TA03 does not requalify owner scientific evidence or off-lineage diagnostic findings",
+    "FTA03-B04 automated test suppression remains prohibited; fidelity metadata is claim-scoping evidence, not permission to skip tests"
+  ],
+  "test_results": {
+    "gate_fidelity_overlay": "PASS",
+    "claim_corpus": "PASS",
+    "fta_structure": "PASS",
+    "fta02_impact_regression": "PASS",
+    "python_syntax": "PASS",
+    "documentation_source_check": "PASS",
+    "production_reference_diff_guard": "PASS"
+  },
+  "test_evidence": "integration/f-ta/F-TA03_TEST_EVIDENCE.json",
+  "next_action": "Expand normalized fidelity/tolerance metadata only where a concrete gate is expected to support convergence, solver-cost, performance-tail or other numerically sensitive claims. Do not broaden metadata mechanically and do not introduce automated test suppression.",
+  "recovery_point": "3f7e0136c4bebaf97741955aaf24a3ecf02cb867"
+}
