@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "title": "Scheduled Irrigation TCS7+DCS2 SSDI Readiness Contract",
+  "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness",
+  "readiness_only_until_gate_pass": true,
+  "production_source_change_allowed_before_gate_pass": false,
+  "lineage": {
+    "exact_branch_base": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+    "exact_branch_base_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+    "fsi17_hydraulic_view_qualified_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "fmr07_committed_view_binding_qualified_head": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "fpm03_fixed_event_qualified_source": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+    "fvq18_fixed_event_scientific_admission": "973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+    "fvq18_lineage_merged": false,
+    "fmr08_parallel_owner_work": "work/f-mr08-nonstationary-temporal-acceptance",
+    "fmr08_backend_source_overlap_allowed": false
+  },
+  "selected_restricted_profile": {
+    "timing_criterion": "TCS7",
+    "depth_criterion": "DCS2",
+    "application": "SSDI",
+    "minimum_interval_overlay": false,
+    "solute_overirrigation": false,
+    "depth_limits": false,
+    "rainfall_reduction": false,
+    "external_availability_scaling": false,
+    "rate_policy": "irr_rate > 0 and irr_depth/irr_rate <= 1",
+    "calendar_policy": "window membership supplied explicitly as management input; no hidden midnight/day-start assumption"
+  },
+  "required_equation_identity": {
+    "trigger_threshold": "phcrit = afgen(hcritab, DVS)",
+    "trigger": "pressure_head(sensor_node) <= phcrit",
+    "depth": "irr_depth = afgen(fidtab, DVS) * 0.1",
+    "ssdi_source": "qssdi(ssdi_first:ssdi_last) = irr_rate",
+    "duration": "dt_irr_event = irr_depth / irr_rate",
+    "outer_order": "scheduled trigger evaluated only after fixed-event precedence and only when explicit irrigation/schedule/crop/window gates are true"
+  },
+  "required_interfaces": {
+    "hydraulic_read": {
+      "owner": "F-SI/F-MR",
+      "requirement": "read-only committed process_hydraulic_view_t pressure_head with validated active_nodes and sensor-node bounds",
+      "status": "EXPECTED_AVAILABLE_FROM_FSI17_FMR07"
+    },
+    "ssdi_source": {
+      "owner": "F-SI/F-MR",
+      "requirement": "precomputed positive node source accepted without direct HeadCalc mutation",
+      "status": "EXPECTED_AVAILABLE_FROM_FSI10_AND_EXISTING_RUNTIME"
+    },
+    "transaction": {
+      "owner": "F-KT",
+      "requirement": "active scheduled-event state changes are candidate-only until commit; rejected/split trials leave committed state unchanged",
+      "status": "EXPECTED_AVAILABLE_GENERIC_CONTRACT"
+    },
+    "mass": {
+      "owner": "F-KT/F-MR",
+      "requirement": "positive SSDI irrigation is external inflow exactly once in accepted authoritative interval accounting",
+      "status": "EXPECTED_AVAILABLE_AND_INDEPENDENTLY_DEMONSTRATED_BY_FVQ18"
+    }
+  },
+  "process_owned_data_separation": {
+    "immutable_parameters": [
+      "TCS7 threshold table",
+      "DCS2 fixed-depth table",
+      "sensor_node",
+      "ssdi_first_node",
+      "ssdi_last_node",
+      "irr_rate"
+    ],
+    "persistent_dynamic_state": [
+      "active scheduled-event flag",
+      "active scheduled-event start/end only while continuation is required"
+    ],
+    "management_request": [
+      "t0",
+      "t1",
+      "DVS",
+      "irrigation_enabled",
+      "schedule_enabled",
+      "crop_emerged",
+      "irrigation_window_open",
+      "fixed_event_already_selected"
+    ],
+    "physical_result": [
+      "optional SSDI source array",
+      "event duration",
+      "active duration",
+      "external inflow reconciliation amount"
+    ],
+    "temporary_workspace": [
+      "interpolated threshold",
+      "interpolated depth",
+      "trigger boolean"
+    ]
+  },
+  "time_semantics": {
+    "DVS_interpolation_is_process_semantics": true,
+    "irrigation_calendar_window_is_management_semantics": true,
+    "kernel_one_day_interval_required": false,
+    "midnight_required": false,
+    "cross_event_end_interval": "FAIL_CLOSED_WITH_SPLIT_REQUIRED",
+    "tcsfix_day_counter_not_in_scope": true,
+    "TCS6_weekly_counter_not_in_scope": true
+  },
+  "optional_scaling": {
+    "inactive_column_persistent_scheduled_state_required": false,
+    "no_trigger_ssdi_array_required": false,
+    "ssdi_array_allocated_only_for_active_ssdi_event": true
+  },
+  "readiness_gate_must_prove": [
+    "exact FSI17 process hydraulic view blob is present",
+    "exact FMR07 committed view binding is present and candidate/checkpoint view access remains absent",
+    "existing SSDI source path remains present",
+    "F-KT committed/candidate semantics remain present",
+    "F-VQ18 status independently admits restricted SSDI mass exactly once without requiring merge",
+    "no unqualified surface gird-to-nird route is required by selected seam",
+    "no HeadCalc/Newton/Jacobian/workspace dependency is required by selected seam",
+    "all TCS7+DCS2 inputs can be assigned to parameters, management forcing, committed hydraulic view or compact process state",
+    "no calendar or day counter is silently inferred from generic solver interval duration"
+  ],
+  "readiness_pass_decision": "ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SSDI_MIGRATION",
+  "readiness_fail_decision": "BLOCKED_SCHEDULED_IRRIGATION_TCS7_DCS2_SSDI_REQUIRES_OWNER_ADMISSION",
+  "after_pass": {
+    "production_scope": "smallest pure process seam only; do not modify F-MR backend or F-MR08 lineage",
+    "minimum_tests": [
+      "inactive",
+      "outer-gate false",
+      "TCS7 no-trigger",
+      "TCS7 trigger boundary",
+      "DCS2 interpolation identity",
+      "one SSDI event",
+      "active-event continuation",
+      "split-required no mutation",
+      "rollback/replay",
+      "A/B/A",
+      "optional allocation scaling",
+      "external inflow identity",
+      "O0/O2",
+      "source-bound B1.10 identity"
+    ],
+    "independent_scientific_admission": "required in a later F-VQ unit"
+  }
+}
