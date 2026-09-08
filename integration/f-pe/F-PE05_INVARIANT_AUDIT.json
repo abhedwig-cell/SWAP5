@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "audit": "SWAP_CORE_ARCHITECTURE_INVARIANTS",
+  "candidate_head": "aff1c7324a2f5289792830fe5d25af667d9d8aa0",
+  "result": "PASS_WITH_SCOPE_LIMITS",
+  "checks": {
+    "7_transactional_time_steps": "PASS: current-lineage replay verifies fail-closed rejected intervals do not change committed state; transaction source is unchanged.",
+    "8_cheap_recomputation_and_warm_start": "PASS_NO_CHANGE: F-PE05 adds only observer diagnostics and does not alter checkpoint, trial, replay or committed-state semantics.",
+    "9_generic_time": "PASS: qualified accepted interval is non-midnight; no midnight dependency was introduced.",
+    "13_mass_conservation_absolute": "PASS: immutable FMR06 fixture retains complete authoritative mass accounting and hard mass gate; no tolerance relaxation was introduced.",
+    "16_multiswap_primary_use_case": "PASS_WITH_RESTRICTED_SERIAL_EXECUTION: N1/N2/N17/N31 MultiSWAP matrices are exercised; parallel real physics is not admitted.",
+    "23_physics_and_solver_policy_separated": "PASS_FOR_REFERENCE_CHARACTERIZATION: diagnostics composition changes no physics or numerical controls. FPE02-B01 remains blocked before non-REFERENCE policy implementation.",
+    "24_predictable_compute_time": "PARTIAL_CHARACTERIZATION_ONLY: deterministic interval cost diagnostics are now available for the admitted nonstationary fixture, but no representative difficult-tail distribution or bounded-cost fallback policy is qualified.",
+    "25_reference_mode_available": "PASS: work is REFERENCE-only and introduces no replacement policy.",
+    "26_runtime_diagnostics": "PASS: accepted substeps, nonlinear iterations, retries, HeadCalc calls, Jacobian builds, linear solves, backtracking and alternative-solver calls are materialized per column.",
+    "27_optional_functionality_scales_with_use": "PASS_NO_CHANGE: active/inactive SNOW profiles remain distinct; F-PE05 adds scalar observer fields only and does not allocate optional physics state.",
+    "29_no_silent_dependencies": "PASS_WITH_QUALIFIED_SCOPE: non-midnight interval is tested. One-call daily SNOW remains an explicit scientific admission limit rather than a hidden generic-time assumption.",
+    "30_every_architecture_change_audited": "PASS: the only production change is the two-file observer diagnostics composition, source-locked and regression-qualified."
+  },
+  "non_claims": [
+    "No BALANCED admission",
+    "No THROUGHPUT admission",
+    "No FALLBACK admission",
+    "No parallel real-physics admission",
+    "No subdaily, multiday or arbitrary-duration SNOW admission",
+    "No graded temporal-error metric",
+    "No bounded-cost threshold",
+    "No representative p50/p95/p99 physical-tail distribution"
+  ],
+  "remaining_governance_blocker": {
+    "id": "FPE02-B01",
+    "status": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+    "effect": "F-PE may resume REFERENCE-tail characterization, but may not implement or admit BALANCED/THROUGHPUT numerical-policy behavior on this basis."
+  }
+}

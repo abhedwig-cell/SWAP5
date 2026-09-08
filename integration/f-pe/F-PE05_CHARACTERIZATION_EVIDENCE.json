@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "title": "REFERENCE Nonstationary Temporal Acceptance and Cost Characterization Evidence",
+  "branch": "work/f-pe05-reference-temporal-acceptance-fvq19",
+  "qualification_candidate_head": "aff1c7324a2f5289792830fe5d25af667d9d8aa0",
+  "qualification_run": 34243891933,
+  "qualification_job": 102120773488,
+  "qualification_conclusion": "success",
+  "artifact": {
+    "id": 10063147378,
+    "name": "fpe05-reference-nonstationary-temporal-cost-evidence",
+    "size_bytes": 5502,
+    "digest": "sha256:62ffd6dbb3109bdd3168d10bdcd4a33e4b69155defd2b7ae5be9be1766f01d34"
+  },
+  "upstream_scientific_admission": {
+    "work_unit": "F-VQ19",
+    "candidate_source_commit": "439432ad91d64353e70afda4ff0837f69521a9e5",
+    "closeout_head": "7b35af8049c7b2185d0fbe87189c1791bfa5d532",
+    "result": "PASS_INDEPENDENT_NONSTATIONARY_EXACT_TEMPORAL_ACCEPTANCE",
+    "non_midnight_one_call_daily_interval": true,
+    "initial_snow": 0.10,
+    "committed_snow": 0.12,
+    "zero_temporal_tolerance": true,
+    "active_snow_in_exact_temporal_comparator": true,
+    "hard_mass_and_transaction_contract": true
+  },
+  "composed_source_bindings": {
+    "kernel_transactions": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "serialized_multiswap_runtime": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
+    "serialized_reference_backend": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "snow_process": "54702d71b4c84dce2842813549bd14c57301a383",
+    "transaction_reference": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_interval_runtime": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "immutable_fmr06_multiswap_fixture": "ed4b742b76e97ff0ad27b386850c1d093e4f03d1",
+    "immutable_fvq17_verifier_replayed": "2465fcc504839d3677b28299ca0a5af5bfbe825e"
+  },
+  "composition_scope": {
+    "production_source_delta_since_fvq19_closeout": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "kernel_postimage_reuses_qualified_fpe02_diagnostics_blob": true,
+    "changes_are_observer_only_diagnostics_fields_and_mappings": true,
+    "physics_changed": false,
+    "transaction_decision_logic_changed": false,
+    "temporal_acceptance_changed": false,
+    "mass_semantics_changed": false,
+    "numerical_controls_changed": false
+  },
+  "qualified_checks": {
+    "exact_two_observer_file_production_scope": "PASS",
+    "snow_outer_event_two_half_compatibility_source_audit": "PASS",
+    "zero_temporal_tolerance_nonmidnight_daily_fixture": "PASS",
+    "original_immutable_fmr06_fixture_o0": "PASS",
+    "original_immutable_fmr06_fixture_o2": "PASS",
+    "original_fixture_o0_o2_output_identity": "PASS",
+    "cost_probe_repeat_identity": "PASS",
+    "cost_probe_o0_o2_output_identity": "PASS",
+    "cost_record_count": 51,
+    "mass_and_commit_assertions": "PASS",
+    "current_lineage_failure_rollback_no_leakage_replay": "PASS",
+    "current_lineage_fvq17_replay_o0_o2_identity": "PASS"
+  },
+  "observed_reference_cost_vector": {
+    "accepted_substeps": 1,
+    "nonlinear_iterations": 3,
+    "internal_retries": 0,
+    "headcalc_calls": 3,
+    "jacobian_builds": 3,
+    "linear_solves": 3,
+    "backtracking_attempts": 3,
+    "alternative_solver_calls": 0
+  },
+  "cost_vector_scope": "All 51 recorded N1/N2/N17/N31 columns in the immutable FMR06 MultiSWAP fixture produced this exact vector under both O0 and O2 and repeated execution. This is characterization evidence for this admitted fixture, not a general p50/p95/p99 performance distribution.",
+  "owner_handoff_resolution": {
+    "fpe05_owner_gate": "SATISFIED_PATH_A",
+    "fpe03_b01": "RESOLVED_FOR_REFERENCE_CHARACTERIZATION_RESUME",
+    "fpe02_b01": "REMAINS_BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION"
+  },
+  "scope_limits": {
+    "reference_only": true,
+    "subdaily_snow_admitted": false,
+    "multiday_snow_admitted": false,
+    "arbitrary_duration_snow_admitted": false,
+    "balanced_admitted": false,
+    "throughput_admitted": false,
+    "fallback_admitted": false,
+    "parallel_real_physics_admitted": false,
+    "bounded_cost_threshold_defined": false,
+    "representative_tail_distribution_qualified": false
+  },
+  "compiler_observation": "The qualification passed with runtime checks enabled. Pre-existing compiler warnings in legacy HeadCalc and exact-real-comparison warnings in the admitted backend remain visible and are not claimed resolved by F-PE05."
+}
