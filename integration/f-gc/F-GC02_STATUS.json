@@ -4,25 +4,42 @@
   "work_unit": "F-GC02",
   "branch": "work/f-gc02-physical-coupling-seam",
   "start_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
-  "contract_commit": "7031174da0da44142cac3a0a3b118b6aba88589e",
-  "status": "IN_PROGRESS_SOURCE_BOUND_PHYSICAL_SEAM_ADMITTED",
-  "implemented": false,
+  "physical_seam_contract_commit": "7031174da0da44142cac3a0a3b118b6aba88589e",
+  "blocker_commit": "d92545ffede668cdd508796fe079007df02021ab",
+  "blocker_gate_commit": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
+  "status": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+  "physical_coupling_implemented": false,
   "persisted": true,
-  "tested": false,
+  "blocker_reproduction_tested": true,
+  "physical_coupling_tested": false,
   "qualified": false,
+  "ci_evidence": {
+    "workflow": "F-GC02 physical boundary blocker",
+    "run_id": 34207546465,
+    "job_id": 102000535832,
+    "head_sha": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
+    "conclusion": "success"
+  },
   "findings": [
-    "The qualified kernel layer already exposes opaque kernel_checkpoint_t and kernel_candidate_state_t carriers.",
-    "kernel_executor_t%advance_interval materializes a physical candidate without mutating committed state.",
-    "F-MR already exposes fmr_trial_from_checkpoint plus explicit commit/discard wrappers.",
-    "Therefore F-GC02 does not currently require an opportunistic F-KT or F-MR owner-code change."
+    "The qualified F-KT/F-MR checkpoint and candidate seam already supports candidate-only trial, explicit commit and explicit discard without committed-state mutation.",
+    "No F-KT transaction algorithm change is required for F-GC02.",
+    "The current F-MR restricted real-physics admission accepts only bottom modes 7 and -2.",
+    "HeadCalc implements bottom modes 7 and -2 as free drainage, so forcing%bottom_head is not a controllable groundwater coupling boundary on the admitted physical route.",
+    "HeadCalc already contains a specified lower pressure-head route for SWBOTB 5 and explicit state binding already carries request%boundary%bottom_head into state%hbot, but that route is not currently admitted by F-SI/F-MR.",
+    "Enabling that route inside F-GC would cross the F-SI/F-MR ownership boundary and would invalidate the scientific-admission constraint."
   ],
-  "hard_scope": "single admitted restricted physical column, serialized execution, deterministic groundwater test component, predictor/corrector from one T0 checkpoint",
-  "next_action": "Add the smallest F-GC-owned physical coupling harness and tests; prove predictor non-commit, corrector replay from the same checkpoint, single accepted commit, rollback, complete authoritative mass and generic coupling windows.",
+  "required_upstream_owner_work": {
+    "F-SI": "Qualify an explicit lower pressure-head boundary through the existing soil-water boundary interface for the same restricted real-physics route, with authoritative returned bottom flux and complete mass accounting.",
+    "F-MR": "After F-SI qualification, admit that exact capability in the restricted serialized physical profile while preserving the existing candidate-only checkpoint orchestration seam.",
+    "F-KT": "NONE"
+  },
+  "resume_condition": "Resume this same F-GC02 branch only after exact qualified F-SI/F-MR provenance exists for a controllable groundwater lower boundary. Then implement predictor trial, discard, groundwater response, corrector from the same T0 checkpoint, exact interface flux pairing, authoritative mass gate and single accepted commit.",
   "not_claimed": [
-    "physical coupling qualification",
+    "qualified single-column physical coupling",
     "MODFLOW production integration",
     "parallel physical coupling",
     "production response tangent",
-    "deep-vadose physics"
+    "deep-vadose physics",
+    "two-tile physical coupling"
   ]
 }
