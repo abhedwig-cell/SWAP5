@@ -92,13 +92,16 @@ for token in required_smoke_tokens:
     require(token in smoke, f"missing locked fixture contract token: {token}")
 
 lower_backend = backend.lower()
-start = lower_backend.find("logical function fmr_serialized_temporal_identity")
-require(start >= 0, "missing fmr_serialized_temporal_identity")
+start = lower_backend.find("function fmr_serialized_temporal_identity(")
+require(start >= 0, "missing fmr_serialized_temporal_identity definition")
 end = lower_backend.find("end function fmr_serialized_temporal_identity", start)
 require(end > start, "unterminated fmr_serialized_temporal_identity")
 comparator = lower_backend[start:end]
+require("real(real64)" in lower_backend[max(0, start - 32):start], "unexpected temporal comparator result type")
 for field in ["snow_water_storage", "liquid_water_storage", "event_applied", "event_t0"]:
     require(field in comparator, f"active SNOW field absent from exact temporal comparator: {field}")
+require("value = 0.0_real64" in comparator, "exact temporal comparator missing zero acceptance value")
+require("value = huge(0.0_real64)" in comparator, "exact temporal comparator missing fail-closed mismatch value")
 
 print("FVQ19_CANDIDATE_TREE_LOCK=PASS")
 print("FVQ19_CURRENT_EVIDENCE_BLOB_LOCK=PASS")
@@ -110,5 +113,6 @@ print(f"FVQ19_DERIVED_SNOW_DELTA={snowfall}")
 print("FVQ19_NONSTATIONARY_PERSISTENT_SNOW_STATE=PASS")
 print("FVQ19_ZERO_TEMPORAL_TOLERANCE=PASS")
 print("FVQ19_ACTIVE_SNOW_IN_EXACT_TEMPORAL_COMPARATOR=PASS")
+print("FVQ19_EXACT_COMPARATOR_FAIL_CLOSED=PASS")
 print("FVQ19_HARD_MASS_AND_TRANSACTION_CONTRACT=PASS")
 print("FVQ19_INDEPENDENT_SOURCE_AUDIT PASS")
