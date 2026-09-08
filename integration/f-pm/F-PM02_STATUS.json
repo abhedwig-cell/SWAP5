@@ -1,33 +1,26 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "branch": "work/f-pm02-snow-admission",
-  "status": "STRUCTURAL_SNOW_IMPLEMENTATION_PRESENT_TEST_RECONCILIATION_REQUIRED",
-  "implemented": false,
+  "status": "QUALIFIED_STRUCTURAL_SNOW_MIGRATION_READY_FOR_INDEPENDENT_FVQ",
+  "qualification_scope": "STRUCTURAL_MIGRATION_CORRECTNESS_ONLY",
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
+  "scientific_snow_production_admitted": false,
   "production_migration_started": true,
   "production_migration_allowed": true,
   "reconciliation": {
-    "observed_branch_head": "caf931883f2ef79b5b9b9db318cebd7759ad9972",
-    "observed_head_message": "F-PM02: admit baseline and extract structural snow process",
-    "implementation_present": true,
-    "production_source_present": "src/process/mod_snow_process.f90",
-    "focused_test_present": "tests/fpm/test_fpm02_snow_process.f90",
-    "gate_runner_present": "tests/fpm/run_fpm02_snow_gate.sh",
-    "workflow_present": ".github/workflows/fpm02-snow-process.yml",
-    "status_was_stale": true,
-    "remaining_test_gaps": [
-      "explicit snow-inactive identity",
-      "source-bound B1.10 structural reference identity cases",
-      "state continuation and accepted-candidate commit",
-      "explicit rollback from rejected candidate",
-      "immutable parameter non-mutation",
-      "complete mass cases without inventing a new scientific tolerance",
-      "fail-closed invalid and unadmitted duration coverage"
-    ]
+    "start_head": "caf931883f2ef79b5b9b9db318cebd7759ad9972",
+    "start_head_message": "F-PM02: admit baseline and extract structural snow process",
+    "implementation_already_present_at_start": true,
+    "status_was_stale_at_start": true,
+    "start_head_workflow_run_id": 34203826900,
+    "start_head_workflow_conclusion": "failure",
+    "start_failure": "Direct REAL duration comparison triggered -Werror=compare-reals before the focused test could compile.",
+    "admission_was_not_reopened": true
   },
   "admission": {
     "decision": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
@@ -36,34 +29,114 @@
     "checks_passed": 51,
     "checks_failed": 0,
     "contract": "integration/f-pm/F-PM02_ADMISSION_CONTRACT.json",
-    "evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
-    "tooling_commits": ["b08a1cd8e1d56cac85b6713584834884c746db74", "a81520e"]
+    "evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json"
   },
   "migration_profile": "SMALLEST_STRUCTURAL_B110_SNOW_ONE_CALL_PROFILE",
-  "contracts": [
-    "integration/f-pm/F-PM02_SNOW_STATE_CONTRACT.json",
-    "integration/f-pm/F-PM02_SNOW_TIME_SEMANTICS.json",
-    "integration/f-pm/F-PM02_SNOW_MASS_CONTRACT.json"
-  ],
-  "source_change_control": {
-    "production_src_files_changed_so_far": 1,
+  "tested_source_candidate": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "workflow_run_id": 34206366345,
+    "workflow_conclusion": "success",
+    "production_source_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "focused_test_blob": "44d84c5ac27318007d20f32a98c7237acec8deaa"
+  },
+  "qualification": {
+    "decision": "QUALIFIED_STRUCTURAL_SNOW_MIGRATION_READY_FOR_INDEPENDENT_FVQ",
+    "evidence_file": "integration/f-pm/F-PM02_QUALIFICATION_EVIDENCE.json",
+    "evidence_commit": "ac594278a1f6291fb0401e6c30eddd5d857481d4",
+    "evidence_workflow_run_id": 34206861680,
+    "evidence_workflow_conclusion": "success",
+    "workflow_reexecutes_admission": false,
+    "workflow_verifies_persisted_admission": true
+  },
+  "production_source_change_control": {
+    "production_src_files_changed": 1,
     "production_src_files": ["src/process/mod_snow_process.f90"],
-    "physics_formulas_changed": false,
+    "physics_formulas_changed_from_b110": false,
+    "richards_or_headcalc_changed": false,
     "solver_or_numerical_policy_changed": false,
-    "runtime_scheduler_changed": false
+    "transaction_implementation_changed": false,
+    "runtime_scheduler_changed": false,
+    "modflow_coupling_changed": false,
+    "performance_or_fallback_policy_changed": false
+  },
+  "data_separation": {
+    "immutable_parameters": "snow_parameters_t: suppress_sublimation/swsublim and melt_coefficient/snowcoef",
+    "persistent_dynamic_state": "snow_state_t: ssnow and slw only",
+    "forcing": "snow_forcing_t: gsnow, snrai, tsoil1, tav, peva, empreva, epond",
+    "flux_result": "snow_flux_result_t: melt, sublimation and updated evaporation flux values",
+    "mass_diagnostics": "snow_mass_contribution_t plus snow_diagnostics_t",
+    "temporary_workspace": "automatic local scalars only; no permanent per-column scratch",
+    "inactive_state": "no SNOW state allocation and no process invocation"
+  },
+  "b110_identity": {
+    "legacy_source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "normal_case": "PASS_BIT_EXACT",
+    "warm_fresh_snow_case": "PASS_BIT_EXACT",
+    "deficit_clamp_case": "PASS_BIT_EXACT",
+    "continuation_case": "PASS_BIT_EXACT",
+    "unrounded_mass_residuals": "PASS_BIT_EXACT_TO_FPM01_CHARACTERIZATION",
+    "new_scientific_tolerance_introduced": false
+  },
+  "time_semantics": {
+    "status": "QUALIFIED_ONLY_FOR_ONE_CHARACTERIZED_B110_CALL",
+    "interface_carries_generic_t0_t1": true,
+    "admitted_duration": "bit-exact 1.0 legacy day",
+    "non_midnight_one_day": "PASS",
+    "invalid_interval": "FAIL_CLOSED",
+    "subdaily": "NOT_ADMITTED_FAIL_CLOSED",
+    "multiday": "NOT_ADMITTED_FAIL_CLOSED",
+    "arbitrary_duration_scaling": false,
+    "discrepancy_recorded": "The process interface is time-generic, but the B1.10 daily formula is not reinterpreted as a generic transaction-substep formula."
+  },
+  "transaction_tests": {
+    "committed_state_read_only": "PASS",
+    "candidate_separate": "PASS",
+    "rejected_trial_committed_state_unchanged": "PASS",
+    "rollback_checkpoint_exact": "PASS",
+    "replay_bit_exact": "PASS",
+    "commit_only_accepted_candidate": "PASS",
+    "continuation_from_committed_candidate": "PASS",
+    "transaction_authority": "F-KT unchanged",
+    "scope_note": "F-PM02 verifies the process-side checkpoint/trial/candidate contract. Downstream F-KT/runtime composition must preserve the one-call event semantics and must not reinterpret the daily formula on half-step trials."
+  },
+  "mass_accounting": {
+    "component_identity": "candidate_ssnow - committed_ssnow = gsnow + snrai - subl - melt",
+    "component_identity_test": "PASS_BIT_EXACT",
+    "storage": "ssnow only; slw is contained within ssnow",
+    "external_in": ["gsnow", "snrai"],
+    "external_out": ["sublimation"],
+    "internal_transfer": ["melt to surface/soil"],
+    "melt_double_counted_as_external": false,
+    "fpm_forces_interval_complete_true": false,
+    "fkt_boundary_can_receive_required_terms": true,
+    "authoritative_interval_completeness_owner": "composed physical model plus F-KT"
+  },
+  "optimization": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_stdout_identical": true
+  },
+  "fvq_handoff": {
+    "file": "integration/f-pm/F-PM02_FVQ_HANDOFF.json",
+    "handoff_commit": "fc50b9b03f068928bab6a1f8ec315c6bdaf3dd05",
+    "exact_candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "exact_candidate_tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "status": "READY_FOR_INDEPENDENT_REVIEW"
   },
   "lineage_note": {
     "admitted_physical_baseline": "c28e7a2810b4a3678c577335a6a3086b173eb976",
-    "fpm02_head_is_descendant_of_admitted_baseline": false,
+    "fpm02_lineage_is_descendant_of_admitted_baseline": false,
     "merge_base": "da5026d8b87ad2f3c7912360891839a120ecccb6",
-    "interpretation": "F-MR05/F-VQ15/F-MQ23 provide source-bound admission provenance; F-PM02 does not merge qualified owner lineages inside F-PM."
+    "interpretation": "F-MR05/F-VQ15/F-MQ23 are consumed as source-bound admission provenance. F-PM02 does not merge qualified owner lineages inside F-PM."
   },
-  "holds": [
-    "F-VQ15 and F-MQ23 do not admit SNOW physics; they admit the physical basis on which structural migration may proceed.",
-    "Preserve B1.10 one-call daily semantics; arbitrary-duration scaling is not admitted.",
-    "Parallel real physics remains NOT_ADMITTED.",
-    "F-PM cannot independently grant scientific SNOW admission.",
-    "Do not mark IMPLEMENTED/TESTED/QUALIFIED until the focused migration tests and source-bound qualification evidence are complete."
+  "remaining_holds": [
+    "Independent F-VQ scientific admission of exact candidate 2becebfe747663ea3b896d7d19f4381c32df77db is required before SNOW production scientific admission.",
+    "SNOW MultiSWAP qualification remains blocked until independent F-VQ admission.",
+    "Arbitrary-duration and subdaily SNOW physics remain NOT_ADMITTED.",
+    "Downstream runtime/physical-model composition must preserve one-call daily event semantics across F-KT trial, retry and half-step routes.",
+    "Downstream composition must include SNOW storage and external mass terms in authoritative F-KT accounting before claiming complete interval mass accounting.",
+    "Parallel real physics remains NOT_ADMITTED by the inherited physical baseline."
   ],
-  "next_action": "Complete source-bound focused SNOW identity, continuation, transaction, mass and O0/O2 tests against the already-present structural process seam; then persist exact candidate/evidence and hand off to independent F-VQ."
+  "next_action": "Independent F-VQ assesses exact source candidate 2becebfe747663ea3b896d7d19f4381c32df77db without modifying it; only after PASS may a subsequent MultiSWAP SNOW qualification be opened."
 }
