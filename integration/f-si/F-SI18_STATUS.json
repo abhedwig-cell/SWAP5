@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI18",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "candidate_head_before_closeout": "895b04dcb76dd3728168c31638d03f93cb00475a",
+  "base_head": "a6470b90f100b7ed9837c5e092b39d011fd28476",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "solver_controls_changed": false,
+  "mass_or_temporal_tolerances_changed": false,
+  "production_solver_patch_required": false,
+  "valid_exit": "QUALIFIED_REFERENCE_CONVERGENCE_CLIFF_REPRODUCED_AND_DIAGNOSED_NO_PRODUCTION_CHANGE_REQUIRED",
+  "exit_semantics": "The reported binary cliff was reproduced under the exact source-locked isolated harness and then diagnosed as an artifact of its zero-correction TRIDAG stub. The cliff is not established for production/reference numerical Richards solving. A test-only SWAP 4.3.1 Thomas/TRIDAG control makes all tested perturbations converge and exposes accepted higher-cost nonlinear routes.",
+  "decisive_evidence": {
+    "corrected_zero_stub_gate_run": 34250684771,
+    "corrected_zero_stub_gate_conclusion": "SUCCESS",
+    "reference_tridag_control_run": 34250595697,
+    "reference_tridag_control_job": 102143741264,
+    "reference_tridag_control_artifact": 10065825829,
+    "reference_tridag_control_artifact_digest": "sha256:66f4a91c90333162535b136bc1c25bdc330181c71c43d4e3f0256b789b82f81a",
+    "o0_o2_identity": true,
+    "all_nonzero_cases_converged_with_reference_tridag_control": true,
+    "accepted_higher_cost_route_observed": true
+  },
+  "reference_tridag_control_costs": {
+    "baseline": {"nonlinear_iterations": 1, "backtracking_attempts": 1},
+    "plus_minus_3e12": {"nonlinear_iterations": 3, "backtracking_attempts": 4},
+    "plus_minus_1e11": {"nonlinear_iterations": 6, "backtracking_attempts": 8},
+    "internal_retries_all_cases": 0
+  },
+  "claims": {
+    "production_richards_convergence_cliff": "NOT_ESTABLISHED",
+    "production_headcalc_defect": "NOT_ESTABLISHED",
+    "zero_step_tridag_harness_limitation": "ESTABLISHED",
+    "reference_tridag_control_higher_cost_acceptance": "ESTABLISHED_DIAGNOSTIC_ONLY",
+    "perturbed_fixture_scientific_admission": "NOT_GRANTED",
+    "bounded_cost_policy_or_fallback_admission": "NOT_GRANTED"
+  },
+  "architecture_invariants": {
+    "mass_conservation": "UNCHANGED_HARD",
+    "reference_mode": "NOT_WEAKENED",
+    "transactional_timesteps": "UNCHANGED",
+    "physical_solver_policy_separation": "PRESERVED",
+    "worker_scratch": "UNCHANGED",
+    "diagnostic_truthfulness": "IMPROVED_BY_HARNESS_FIDELITY_CLASSIFICATION"
+  },
+  "handoff": "integration/f-si/F-SI18_TEST_ARCHITECTURE_HANDOFF.json",
+  "next_action": "F-TA03 should make numerical-solver fidelity explicit at executable-gate level. F-PE may then re-characterize the REFERENCE tail with a numerically functional solve, followed by independent F-VQ scientific admission of any perturbed workload before production performance claims.",
+  "status": "QUALIFIED_REFERENCE_CONVERGENCE_CLIFF_REPRODUCED_AND_DIAGNOSED_NO_PRODUCTION_CHANGE_REQUIRED"
+}
