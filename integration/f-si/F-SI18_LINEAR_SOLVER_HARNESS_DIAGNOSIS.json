@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI18",
+  "title": "REFERENCE Richards convergence-cliff linear-solver harness diagnosis",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "production_source_changed": false,
+  "production_change_authorized": false,
+  "finding_class": "TEST_HARNESS_NUMERICAL_NONREPRESENTATIVENESS",
+  "observations": {
+    "fsi18_solver_level_probe_reproduced_binary_boundary": true,
+    "fpe03_flux_boundary_probe_uses_same_linear_solver_stub": true,
+    "fpe03_flux_refinement_probe_uses_same_linear_solver_stub": true,
+    "head_convergence_flag_active_at_rejected_boundary": false,
+    "balance_convergence_flag_active_at_rejected_boundary": true,
+    "rejected_case_final_abs_residual": 1.6263934643490074e-12,
+    "accepted_3e12_case_final_abs_residual": 4.879152637471407e-13,
+    "configured_compartment_balance_tolerance": 1e-12,
+    "configured_total_balance_tolerance": 1e-12
+  },
+  "decisive_harness_fact": {
+    "file": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "routine": "tridag",
+    "behavior": "The test stub sets every element of the returned Newton correction vector to exactly zero and returns ierror=0.",
+    "consequence": "For the F-SI18 and F-PE03 perturbation probes, Newton iterations cannot change pressure head through the tridiagonal solve. An initial residual below the configured convergence threshold can pass immediately; an initial residual above that threshold cannot be reduced by Newton and therefore deterministically exhausts MaxIt and backtracking.",
+    "production_numerics_represented": false
+  },
+  "fpe03_confirmation": {
+    "boundary_gate": "tests/fpe/run_fpe03_flux_boundary_probe_gate.sh",
+    "refinement_gate": "tests/fpe/run_fpe03_flux_refinement_probe_gate.sh",
+    "both_compile_test_stub_before_headcalc": true,
+    "compiled_stub": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "interpretation": "The previously reported 3e-12 to 1e-11 cost cliff is a valid characterization of the current isolated harness contract, but it is not evidence of a production Richards nonlinear convergence cliff."
+  },
+  "canonical_swap431_crosscheck": {
+    "source_archive": "SWAP_4.3.1(6).zip -> tools/SWAP/source/SWAP.ZIP",
+    "real_linear_solver_file": "SWAP/tridag.f90",
+    "headcalc_calls_real_tridag": true,
+    "real_tridag_behavior": "Performs tridiagonal decomposition, forward substitution and back substitution; returns nonzero solution corrections when the linear system requires them, or ierror on near-singular pivots.",
+    "compile_script_includes_tridag": true,
+    "compile_script": "tools/SWAP/compiler_settings/compile_link_431_linux.sh"
+  },
+  "source_bound_conclusion": {
+    "production_headcalc_defect_established": false,
+    "production_reference_solver_cost_cliff_established": false,
+    "legacy_convergence_threshold_bug_established": false,
+    "test_harness_limitation_established": true,
+    "mass_conservation_issue_established": false,
+    "transaction_issue_established": false
+  },
+  "owner_implication": {
+    "fsi_production_patch": "NOT_JUSTIFIED",
+    "next_required_capability": "A solver-tail qualification harness must link a numerically functional tridiagonal solver equivalent to the qualified/reference implementation, while retaining the existing explicit F-SI state, provider, solver-control and transaction boundaries.",
+    "likely_owner": "F-TA/F-VQ test and qualification architecture, with F-SI supplying the solver contract and source locks",
+    "fpe03_tail_blocker_reframed": "REPRESENTATIVE_NUMERICALLY_FUNCTIONAL_REFERENCE_SOLVER_HARNESS_REQUIRED_BEFORE_REFERENCE_TAIL_COST_CLAIMS"
+  },
+  "architecture_invariant_checks": {
+    "mass_conservation_absolute": "UNCHANGED",
+    "reference_mode_full_accuracy": "PRESERVED_BY_NOT_PATCHING_SOLVER_TO_FIT_TEST",
+    "physical_and_solver_policy_separation": "PRESERVED",
+    "scratch_per_worker": "UNCHANGED",
+    "transactional_timesteps": "UNCHANGED",
+    "diagnostics_first_class": "IMPROVED_BY_EXPLICIT_HARNESS_CLASSIFICATION"
+  },
+  "status": "QUALIFIED_HARNESS_INDUCED_CLIFF_DIAGNOSIS_NO_PRODUCTION_SOLVER_CHANGE_JUSTIFIED"
+}
