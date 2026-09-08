@@ -1,36 +1,42 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03",
-  "closeout_classification": "PARTIAL_EXIT_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED",
+  "closeout_classification": "PARTIAL_EXIT_DIAGNOSTIC_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED",
   "branch": "work/f-pe03-reference-tail-characterization",
   "source_basis": {
     "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
-    "fpe03_self_verification_head": "8f7bab11fd856d7cb2f7bacb8c299cf2b0517061",
+    "last_green_pre_audit_head": "9bb3d60063065a59b779c9c166f1a67b16a1bc5d",
     "production_source_changed": false,
     "physics_changed": false,
     "numerical_policy_changed": false,
-    "numerical_controls_changed": false
+    "numerical_controls_changed": false,
+    "scientific_admission_expanded": false
   },
-  "self_verification": {
+  "last_green_pre_audit_self_verification": {
     "workflow": "F-PE03 reference physical stress characterization",
-    "workflow_run": 34212856397,
-    "workflow_job": 102017672830,
-    "head_sha": "8f7bab11fd856d7cb2f7bacb8c299cf2b0517061",
+    "workflow_run": 34213123950,
+    "workflow_job": 102018529741,
+    "head_sha": "9bb3d60063065a59b779c9c166f1a67b16a1bc5d",
     "conclusion": "success",
     "platform": "Ubuntu 24.04.4",
     "compiler": "GNU Fortran 13.2.0",
-    "scope_lock": "PASS",
-    "o0": "PASS",
-    "o2": "PASS",
-    "o0_o2_output_identity": true,
-    "partial_exit_self_verification": "PASS"
+    "o0_o2_output_identity": true
+  },
+  "scientific_admission_boundary": {
+    "scientifically_admitted_reference": "F-VQ14 exact restricted stationary four-node fixture",
+    "scientifically_admitted_initial_pressure_head": -75.0,
+    "scientifically_admitted_interval": [1000.125, 1000.625],
+    "stress_matrix_scientifically_admitted": false,
+    "transactional_acceptance_equals_scientific_admission": false,
+    "diagnostic_extrapolation_only": true
   },
   "characterization": {
     "cases": 24,
-    "accepted_stationary_cases": 6,
-    "rejected_perturbed_cases": 18,
-    "accepted_higher_cost_cases": 0,
+    "transactionally_accepted_stationary_diagnostic_cases": 6,
+    "scientifically_admitted_cases_in_matrix": 1,
+    "rejected_perturbed_diagnostic_cases": 18,
+    "transactionally_accepted_higher_cost_cases": 0,
     "accepted_cost_vector": {
       "headcalc_calls": 3,
       "nonlinear_iterations": 3,
@@ -52,12 +58,27 @@
     "hard_mass_gate": 1e-12,
     "rejected_cases_committed": false
   },
+  "failure_envelope": {
+    "classification": "DIAGNOSTIC_FULL_TRIAL_SOLVER_RETRY_ENVELOPE",
+    "kernel_status": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "attempts": 3,
+    "solver_max_iterations_per_attempt": 8,
+    "solver_max_backtracking_per_iteration": 4,
+    "observed_solver_route": "legacy-reference-retry",
+    "two_half_route_reached": false,
+    "mass_acceptance_check_reached": false,
+    "temporal_acceptance_check_reached": false,
+    "production_solver_defect_established": false
+  },
   "qualified_scope": {
-    "reference_cost_cliff_characterization_verified": true,
+    "diagnostic_reference_route_cost_cliff_characterization_verified": true,
+    "scientifically_qualified_reference_cost_cliff": false,
     "transactional_rollback_behavior_verified": true,
-    "accepted_case_mass_accounting_verified": true,
+    "transactionally_accepted_case_mass_accounting_verified": true,
+    "stress_cases_scientifically_admitted": false,
+    "scientific_admission_expanded": false,
     "physical_tail_distribution_qualified": false,
-    "accepted_difficult_physical_fixture_found": false,
+    "admitted_difficult_physical_fixture_found": false,
     "bounded_cost_policy_admitted": false,
     "balanced_policy_admitted": false,
     "throughput_policy_admitted": false,
@@ -67,8 +88,8 @@
   "blocker": {
     "code": "FPE03-B01",
     "status": "BLOCKED_FAIL_CLOSED",
-    "description": "At least one accepted nonstationary real-physics fixture must be admitted or ported on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
+    "description": "At least one independently admitted nonstationary real-physics fixture must exist on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
     "owner_boundary": "F-VQ/F-MR or the owning physical workstream"
   },
-  "disposition": "PARK_FPE03_UNTIL_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS"
+  "disposition": "PARK_FPE03_UNTIL_INDEPENDENTLY_ADMITTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS"
 }
