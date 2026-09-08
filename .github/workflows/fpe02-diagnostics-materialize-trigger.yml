@@ -1,0 +1,52 @@
+name: F-PE02 diagnostics materialization trigger
+
+on:
+  push:
+    branches:
+      - work/f-pe02-diagnostics-materialize-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    name: Materialize previously qualified diagnostics postimage
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out trigger branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify exact trigger base
+        run: |
+          test "$(git rev-parse HEAD^)" = 'e4d1ce5172726cec82c711c7c0aa2f6f0abddb23'
+          test "$(git hash-object src/kernel/mod_kernel_transactions.f90)" = '9f7c16e71cfb93b57f796ba759bae73824318a2f'
+          test "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = 'e4f5bc0bf47e2721d689e62107b5224196a093d9'
+      - name: Materialize exact qualified candidate
+        run: |
+          python3 tools/fpe/fpe02_diagnostics_candidate.py materialize
+          test "$(git hash-object src/kernel/mod_kernel_transactions.f90)" = 'af42c7d51ef545e20c76d3000f1ed1493690d68e'
+          test "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = '940fa6deb461443dd7b5993038a9a2fbbb434e36'
+      - name: Re-run real-physics regression on exact postimage
+        run: |
+          kernel_post="$(git hash-object src/kernel/mod_kernel_transactions.f90)"
+          runtime_post="$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+          sed -i "s/9f7c16e71cfb93b57f796ba759bae73824318a2f/$kernel_post/" tests/fmr/run_fmr05_gate.sh
+          sed -i "s/e4f5bc0bf47e2721d689e62107b5224196a093d9/$runtime_post/" tests/fmr/run_fmr05_gate.sh
+          bash tests/fmr/run_fmr05_gate.sh > /tmp/fpe02-materialized-regression.log
+          grep -F 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' /tmp/fpe02-materialized-regression.log
+          grep -F 'FMR05_O0_O2_OUTPUT_IDENTITY PASS' /tmp/fpe02-materialized-regression.log
+          grep -F 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' /tmp/fpe02-materialized-regression.log
+      - name: Build clean candidate commit on auxiliary branch
+        run: |
+          git restore tests/fmr/run_fmr05_gate.sh
+          git rm .github/workflows/fpe02-diagnostics-materialize-trigger.yml
+          changed="$(git status --short)"
+          echo "$changed"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/kernel/mod_kernel_transactions.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m 'candidate(F-PE02): materialize qualified diagnostics propagation postimage'
+          git push --force-with-lease origin HEAD:work/f-pe02-diagnostics-materialization-candidate
