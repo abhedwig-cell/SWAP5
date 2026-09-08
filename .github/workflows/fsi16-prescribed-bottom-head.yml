@@ -9,6 +9,7 @@ on:
       - 'tests/fsi/test_fsi16_prescribed_bottom_head.F90'
       - 'tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
       - 'tests/fsi/run_fsi16_qualification_matrix_gate.sh'
+      - 'tests/fsi/run_fsi16_qualification_matrix_gate_v2.sh'
       - 'tests/fsi/run_fsi16_closeout_regression_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/**'
@@ -29,6 +30,6 @@ jobs:
       - name: F-SI16 prescribed bottom-head gate
         run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
       - name: F-SI16 qualification matrix
-        run: bash tests/fsi/run_fsi16_qualification_matrix_gate.sh
+        run: bash tests/fsi/run_fsi16_qualification_matrix_gate_v2.sh
       - name: F-SI16 pinned predecessor and F-KT closeout regressions
         run: bash tests/fsi/run_fsi16_closeout_regression_gate.sh
