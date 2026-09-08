@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ14",
+  "qualification_only": true,
+  "production_source_changes_allowed": false,
+  "source_under_test": {
+    "commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+    "source_lock_status": "PASS",
+    "substitution_allowed": false
+  },
+  "provenance_bindings": {
+    "handoff_artifact_commit": "8ccf2fd7e882f2d0b7d709fb396806cb05f8cb82",
+    "fmr04_closeout_commit": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+    "fmr04_evidence_commit": "21864207ed1731292620f0e523d7081eadd12acc",
+    "fmr04_workflow_run": 34187700639,
+    "fmr04_workflow_job": 101939262051,
+    "fkt08_qualified_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fsi09_qualification_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "fsi10_qualification_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74"
+  },
+  "corrected_oracle": {
+    "id": "B1.10",
+    "oracle_status_required": "QUALIFIED_NUMERICAL_BEHAVIOURAL",
+    "mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1",
+    "unqualified_or_historical_substitution_allowed": false
+  },
+  "admitted_physical_profile": {
+    "hydraulics": "corrected B1.10 default-MvG analytical",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "root_extraction": "inactive",
+    "qrot": 0.0,
+    "snow": "inactive",
+    "macropore": "inactive",
+    "top_boundary": "explicit admitted provider",
+    "source_sink_binding": "F-SI10 admitted binding",
+    "bottom_boundary": "admitted restricted mode",
+    "optional_unqualified_physics": "forbidden"
+  },
+  "required_route": [
+    "F-MR serialized reference runtime",
+    "F-KT canonical advance_interval",
+    "F-SI provider/reference solver",
+    "real HeadCalc"
+  ],
+  "comparison_policy": {
+    "primary_criterion": "EXACT_OR_BITWISE_IDENTITY",
+    "fallback_tolerance_policy": "ONLY_AN_ALREADY_QUALIFIED_TOLERANCE_EXACTLY_APPLICABLE_TO_THE_QUANTITY_AND_ROUTE",
+    "invent_new_tolerance": false,
+    "rounded_report_values_as_primary_oracle": false,
+    "missing_tolerance_when_exact_identity_fails": "FAIL_CLOSED_OR_HOLD"
+  },
+  "mass_contract": {
+    "authoritative_source": "F-KT08 accepted full-interval mass accounting",
+    "complete_required": true,
+    "missing_contribution_mask_required": 0,
+    "rounding_allowed": false,
+    "missing_term_may_be_assumed_zero": false,
+    "independent_recompute_required": true,
+    "formula": "initial_storage + total_inflow - total_outflow - final_storage",
+    "authoritative_residual_agreement_required": true
+  },
+  "transaction_contract": {
+    "real_physics_required": true,
+    "rollback_committed_state_unchanged": true,
+    "replay_deterministic": true,
+    "commit_revision_and_t1_required": true,
+    "stale_checkpoint_fail_closed": true
+  },
+  "generic_time_contract": {
+    "non_midnight_or_subdaily_physical_interval_required": true,
+    "implicit_24h_duration_forbidden": true,
+    "legacy_reference_equivalence_may_not_be_invented": true
+  },
+  "unsupported_routes_must_remain_not_admitted": [
+    "active root extraction",
+    "qrot != 0",
+    "macropore",
+    "snow",
+    "swkimpl != 0",
+    "unqualified hydraulic model families",
+    "unqualified bottom boundaries",
+    "relaxed numerical policy",
+    "balanced numerical policy",
+    "throughput numerical policy",
+    "fallback numerical policy",
+    "MODFLOW coupling",
+    "parallel reference backend"
+  ],
+  "retry_subgate": {
+    "entry_status": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION",
+    "artificial_solver_degradation_allowed": false,
+    "use_only_already_qualified_safe_fixture_if_available": true
+  },
+  "gates": {
+    "VQ14-G01": "PROVENANCE_ASSESSMENT_REQUIRED_SOURCE_LOCK_ALREADY_PASS",
+    "VQ14-G02": "NOT_ASSESSED",
+    "VQ14-G03": "NOT_ASSESSED_INDEPENDENTLY",
+    "VQ14-G04": "NOT_ASSESSED",
+    "VQ14-G05": "NOT_ASSESSED",
+    "VQ14-G06": "NOT_ASSESSED",
+    "VQ14-G07": "NOT_ASSESSED_INDEPENDENTLY",
+    "VQ14-G08": "NOT_ASSESSED_INDEPENDENTLY",
+    "VQ14-G09": "NOT_ASSESSED",
+    "VQ14-G10": "NOT_ASSESSED",
+    "VQ14-G11": "NOT_ASSESSED_INDEPENDENTLY",
+    "VQ14-G12": "OPEN_ENTRY_HOLD"
+  },
+  "required_invariants": [1, 3, 7, 8, 9, 13, 16, 21, 23, 25, 26, 29],
+  "fail_closed_conditions": [
+    "source commit mismatch",
+    "source tree mismatch",
+    "corrected B1.10 provenance mismatch",
+    "production source modification during qualification",
+    "real HeadCalc route not demonstrated",
+    "scientific mismatch without an exactly applicable qualified tolerance",
+    "incomplete authoritative mass accounting",
+    "nonzero missing mass contribution mask",
+    "transaction semantic failure",
+    "unsupported physics silently admitted"
+  ],
+  "success_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+  "success_scope": "exact admitted restricted profile only",
+  "fmq23_release_on_success": true,
+  "fmq23_release_on_failure": false
+}
