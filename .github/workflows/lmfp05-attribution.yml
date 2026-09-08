@@ -1,0 +1,30 @@
+name: F-LMFP05 Flux Closure Attribution
+
+on:
+  push:
+    branches:
+      - work/f-lmfp05-flux-closure-attribution
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/**'
+      - '.github/workflows/lmfp05-attribution.yml'
+  workflow_dispatch:
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Flux closure attribution and refined FullRichards gate
+        run: bash experiments/lmfp/run_lmfp05_attribution_gate.sh
+      - name: Upload attribution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp05-attribution-evidence
+          path: lmfp05-artifacts/
+          if-no-files-found: warn
