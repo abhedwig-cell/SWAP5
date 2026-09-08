@@ -1,11 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-MR",
   "work_unit": "F-MR15",
   "title": "Compose Independently Admitted Prescribed Bottom-Head Runtime with Interval Cost Diagnostics",
   "branch": "work/f-mr15-prescribed-head-interval-diagnostics-composition",
-  "status": "MATERIALIZED_EXACT_COMPOSED_POSTIMAGE_PENDING_OWNER_QUALIFICATION",
-  "phase": "PERSISTED_BEFORE_OWNER_QUALIFICATION",
+  "status": "QUALIFIED_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_OWNER_COMPOSITION",
+  "phase": "CLOSED_IMPLEMENTED_PERSISTED_TESTED_OWNER_QUALIFIED",
   "base": {
     "work_unit": "F-VQ25/F-MR14",
     "closeout_commit": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
@@ -24,10 +24,8 @@
     "materialized_postimage_commit": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
     "materialized_postimage_tree": "26e2c3c83f4db75ec4f31d3da0780b060063c82a",
     "materialization_workflow_run": 34279275147,
-    "materialization_result": "SUCCESS",
     "semantic_probe_run": 34278935283,
     "semantic_probe_job": 102238731593,
-    "semantic_probe_result": "PASS",
     "exact_production_postimages": {
       "src/adapter/mod_b110_serialized_context_binding.f90": "e21c964eac48d5feb91388cfd06a646c4002a497",
       "src/adapter/mod_reference_richards_legacy_binding.f90": "db432cac3f1156a179c636435a25f52cdececffc",
@@ -37,33 +35,66 @@
       "src/solver/mod_reference_richards_workspace.f90": "59ef9d037c1875610d45ac83387ebab9e917e0fe"
     },
     "overlap_resolution": "EXACT_FMR11_POSTIMAGE_PLUS_ONLY_FMR13_LINEAR_SOLVER_SEAM_WITH_ONE_OCCURRENCE_ASSERTIONS",
-    "fmr13_linear_solver_seam_preserved": true,
-    "fmr11_prescribed_head_seam_preserved": true,
-    "observer_path_separation": "PASS",
+    "fmr13_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
     "preserved_fmr14_observer_paths": {
       "src/kernel/mod_kernel_transactions.f90": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
       "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
-    },
-    "fmr13_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96"
+    }
   },
-  "required_owner_gates": [
-    "materialized production delta equals exactly the six probe-derived postimages",
-    "F-MR14 interval diagnostics observer paths remain exact and decision-neutral",
-    "full F-VQ26 accepted two-sign prescribed-head gate passes on composed postimage",
-    "F-VQ25/F-MR14 diagnostics regression passes",
-    "F-SI16 canonical prescribed-head solver replay passes",
-    "F-MR06/F-MR07/F-MR09/F-MR10/F-MR12/F-MR13 relevant regressions pass",
-    "accepted positive and negative stationary mode-5 cases expose interval cost diagnostics",
-    "hard mass conservation and exact zero-tolerance stationary temporal acceptance remain unchanged",
-    "O0/O2 output and diagnostic identity",
-    "serialized-only restriction and fail-closed unsupported routes remain unchanged"
-  ],
+  "owner_qualification": {
+    "tested_candidate_commit": "ee34be5346865e28fa71df6ddd48f8cc482fac78",
+    "production_candidate_commit": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+    "workflow_run": 34279929486,
+    "workflow_job": 102241975006,
+    "conclusion": "success",
+    "exact_composed_source_locks": "PASS",
+    "fmr14_observer_assignments_exactly_once": "PASS",
+    "diagnostics_decision_neutral_by_independent_blob_lock": "PASS",
+    "fvq26_corrected_v2_oracle_lock": "PASS",
+    "accepted_negative_qbot": "PASS",
+    "accepted_positive_qbot": "PASS",
+    "bottom_head_authority": "PASS",
+    "bottom_flux_seed_irrelevance": "PASS",
+    "qbot_mass_exactly_once": "PASS",
+    "transaction_discard_isolation": "PASS",
+    "a_b_a_replay": "PASS",
+    "zero_tolerance_temporal_acceptance": "PASS",
+    "fail_closed_profile": "PASS",
+    "serialized_only": "PASS",
+    "fmr09_regression": "PASS",
+    "fmr10_regression": "PASS",
+    "fmr07_regression": "PASS",
+    "fmr06_regression": "PASS",
+    "fvq22_regression": "PASS",
+    "fmr12_regression": "PASS",
+    "fsi16_parent_replay": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_and_diagnostic_identity": "PASS",
+    "composed_output_sha256": "ffb264dd8cb6be9ee677f30c48b92b295089d5e100bcfdc45297b4aed0631f81"
+  },
+  "measured_stationary_mode5_cost": {
+    "field_order": [
+      "accepted_substeps",
+      "solver_nonlinear_iterations",
+      "solver_internal_retries",
+      "solver_headcalc_calls",
+      "solver_jacobian_builds",
+      "solver_linear_solves",
+      "solver_backtracking_attempts",
+      "solver_alternative_solver_calls"
+    ],
+    "accepted_negative_qbot_vector": [1, 3, 0, 3, 3, 3, 3, 0],
+    "accepted_positive_qbot_vector": [1, 3, 0, 3, 3, 3, 3, 0],
+    "historical_fpe03_baseline_vector": [1, 3, 0, 3, 3, 3, 3, 0],
+    "higher_cost_than_baseline": false,
+    "interpretation": "The independently admitted stationary prescribed-head cases are valid accepted diagnostic workloads, but their measured interval cost is exactly the historical accepted REFERENCE baseline. They therefore do not satisfy the F-PE03 B04 accepted-higher-cost requirement."
+  },
   "state": {
     "implemented": true,
     "persisted": true,
-    "probe_tested": true,
-    "production_tested": false,
-    "owner_qualified": false,
+    "tested": true,
+    "owner_qualified": true,
     "independently_scientifically_qualified": false
   },
   "physics_changed": false,
@@ -73,7 +104,9 @@
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
   "scientific_admission_expanded": false,
+  "parallel_reference_admitted": false,
   "fpe03_b04_resolved": false,
-  "claim_limit": "The exact composed production postimage is materialized but not yet owner-qualified. It is not admitted for production or F-PE tail characterization until the F-MR15 owner gate and a subsequent independent F-VQ admission both pass.",
-  "next_action": "Run the fail-closed F-MR15 owner composition regression matrix on the exact materialized postimage, including the independently admitted two-sign mode-5 workload with aggregate interval diagnostics."
+  "fpe03_b04_status": "NOT_RESOLVED_STATIONARY_MODE5_COST_EQUALS_BASELINE",
+  "claim_limit": "F-MR15 owner-qualifies only the composition of the already admitted restricted serialized prescribed-bottom-head runtime with the already admitted decision-neutral interval-cost diagnostics and F-MR13 linear-solver seam. Independent F-VQ scientific admission is still required. The measured stationary mode-5 workloads are not higher-cost than the existing F-PE03 baseline and cannot close B04.",
+  "next_action": "Run independent F-VQ27 on the exact F-MR15 composed postimage. In parallel, F-PE may inspect already existing admitted-runtime screening branches for a genuinely accepted higher-cost workload, but may not treat F-MR15 stationary mode-5 cases as B04 evidence."
 }
