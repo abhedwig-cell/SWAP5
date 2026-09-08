@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF19",
+  "title": "Crop/Canopy Owner-State Readiness and Minimal Lifecycle Boundary",
+  "branch": "work/f-wof19-crop-canopy-owner-readiness",
+  "status": "QUALIFIED_OWNER_CLASSIFICATION_BLOCKED_TRANSACTIONAL_CROP_LIFECYCLE_HOST_REQUIRED",
+  "decision": "BLOCK_FULL_OWNER_COMPOSITION_UNTIL_TRANSACTIONAL_CROP_LIFECYCLE_HOST_EXISTS",
+  "qualification_scope": "OWNER_STATE_CLASSIFICATION_AND_READINESS_ONLY",
+  "base": {
+    "commit": "828350c4f48e7004993af90b3b9e2f3874babec3",
+    "status": "QUALIFIED_RESTRICTED_SWETR1_NOINTERCEPTION_POTENTIAL_TRANSPIRATION_PRODUCER"
+  },
+  "tested_candidate": "24116e72b4282d8016eadf90cc321024a7f232fb",
+  "github_actions": {
+    "run_id": 34278317058,
+    "conclusion": "success"
+  },
+  "state": {
+    "readiness_assessed": true,
+    "owner_classification_resolved": true,
+    "implemented": false,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "production_admitted": false
+  },
+  "scope": {
+    "production_source_changed": false,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_classification": {
+    "committed_common_crop_state": ["crop_emerged", "DVS", "LAI"],
+    "SWRD_2_optional_committed_state": ["actual_root_depth", "potential_root_depth"],
+    "SWRD_3_required_root_geometry_input": "WRT",
+    "reconstructible_not_commit_authority": ["vcover", "CF", "rooted_nodes", "cumulative_root_fraction", "potential_transpiration"],
+    "current_nonpersistent_inputs": ["fco2tra", "selected_reference_ET"]
+  },
+  "blocking_gap": {
+    "owner": "F-WOF",
+    "missing": "source-bound transactional crop lifecycle host or committed crop-state authority",
+    "required_fields": ["crop_emerged", "DVS", "LAI", "option-dependent root state"],
+    "required_semantics": [
+      "checkpoint from committed crop state",
+      "trial-local crop evolution",
+      "rollback without lifecycle advancement",
+      "replay determinism",
+      "explicit crop calendar/event handling without a hidden one-day kernel assumption"
+    ]
+  },
+  "admitted_upstream_results": {
+    "F_WOF15": "QUALIFIED_OPTION_DEPENDENT_CROP_ROOT_STATE_OWNERSHIP",
+    "F_WOF16": "QUALIFIED_RESTRICTED_NONADAPTIVE_CROP_ROOT_VIEW_PRODUCER",
+    "F_WOF17": "QUALIFIED_OPTION_AWARE_CROP_ROOT_GEOMETRY_SNAPSHOT_PRODUCER",
+    "F_WOF18": "QUALIFIED_RESTRICTED_SWETR1_NOINTERCEPTION_POTENTIAL_TRANSPIRATION_PRODUCER"
+  },
+  "historical_lineage_policy": {
+    "F_WOF10_head": "98a26f0294aafac6d1ed46ace2d6bcc05914d9f0",
+    "comparison": "diverged",
+    "F_WOF10_only_commits": 35,
+    "current_lineage_only_commits_at_base": 331,
+    "blind_merge_forbidden": true
+  },
+  "release_condition": "Start an F-WOF owner workunit that introduces or qualifies the minimal transactional crop lifecycle state on the current lineage. It must source-bind crop emergence, DVS and LAI, add only option-dependent root history where physically required, keep vcover/CF/root-distribution/ptra reconstructible, and demonstrate checkpoint-trial-rollback-replay before F-WOF17/F-WOF18 are composed as authoritative production inputs.",
+  "recommended_next": "F-WOF20 minimal transactional crop lifecycle state carrier and checkpoint semantics, with no daily evolution physics unless separately source-bound and qualified.",
+  "affected_invariants": [2,3,4,6,7,8,9,16,21,23,27,29,30]
+}
