@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "audit": "LIVE_UPSTREAM_BOTTOM_BOUNDARY_OWNER_STATE",
+  "fgc02_pre_audit_head": "95ce7b5f21bac066ca3455aa46cb561f29128533",
+  "finding": "The F-GC02 blocker is specifically the absence of a qualified controllable prescribed lower-head boundary on the admitted real-physics route. It is not an absence of checkpoint/candidate semantics and not an absence of explicit bottom-mode authority in general.",
+  "fsi13": {
+    "branch": "work/f-si13-explicit-bottom-boundary",
+    "observed_head": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+    "qualification_decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+    "qualified_candidate_head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
+    "status_head": "36c2540033585f396f8c456b1af47e236cdcd00a",
+    "admitted_bottom_modes": [7, -2],
+    "bottom_mode_5_prescribed_head": "NOT_ADMITTED",
+    "interpretation": "F-SI13 successfully established explicit request authority for the admitted free-drainage modes while deliberately preserving prescribed-head mode 5 as a fail-closed hold. F-GC02 therefore must not reinterpret F-SI13 as groundwater-head coupling admission."
+  },
+  "fsi14": {
+    "branch": "work/f-si14-grid-geometry-binding",
+    "observed_head": "7a829241ad2f02793e84c23e7044c07b77bf4f29",
+    "observed_latest_commit": "F-SI14: persist source-bound unadmitted bottom-distance guard repair",
+    "observed_contract": "integration/f-si/F-SI14_GRID_GEOMETRY_CONTRACT.json",
+    "qualification_record_observed": false,
+    "interpretation": "F-SI14 is active owner work around explicit grid geometry. At the observed head it does not provide a qualification record admitting prescribed lower-head mode 5. F-GC must not assume an in-progress geometry unit has removed the groundwater-boundary hold."
+  },
+  "branch_search": {
+    "f_si15": "NONE_OBSERVED",
+    "bottom_head": "NONE_OBSERVED",
+    "prescribed": "NONE_OBSERVED"
+  },
+  "minimum_next_owner_unit": {
+    "owner": "F-SI",
+    "concept": "Qualify a controllable prescribed lower pressure-head boundary, preferably through the existing explicit soil-water boundary request and existing HeadCalc SWBOTB=5 semantics, without exposing HeadCalc internals to F-GC.",
+    "must_prove": [
+      "request bottom_head is authoritative and independent of poisoned legacy globals",
+      "prescribed-head route is physically identical to the intended reference HeadCalc boundary formula",
+      "returned q_bottom is authoritative for the candidate interval",
+      "canonical interval mass accounting is complete with no mass tolerance",
+      "generic interval and candidate-only replay semantics remain unchanged",
+      "unsupported modes continue to fail closed"
+    ],
+    "must_not_claim": [
+      "general groundwater coupling qualification",
+      "MODFLOW qualification",
+      "new process physics",
+      "parallel coupling qualification"
+    ]
+  },
+  "required_follow_on": {
+    "owner": "F-MR",
+    "action": "Admit only the exact F-SI-qualified prescribed-head capability into the restricted serialized real-physics profile while retaining the existing F-MR candidate-only checkpoint orchestrator unchanged.",
+    "then": "Resume the existing work/f-gc02-physical-coupling-seam branch for the first real predictor/corrector coupling qualification."
+  },
+  "fkt_change_required": false,
+  "fgc02_state": "FAIL_CLOSED_UNTIL_EXACT_FSI_AND_FMR_PRESCRIBED_HEAD_PROVENANCE_EXISTS"
+}
