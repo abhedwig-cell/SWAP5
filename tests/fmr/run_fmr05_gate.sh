@@ -160,7 +160,7 @@ for opt in 0 2; do
   grep -Fq 'FMR05_SINGLE_COLUMN_FMR04_MASS_BITWISE_IDENTITY=PASS' "$OUT/single_identity.txt"
   grep -Fq 'FMR05_SINGLE_COLUMN_FMR04_COMMITTED_STATE_IDENTITY=PASS' "$OUT/single_identity.txt"
   grep -Fq 'FMR05_SINGLE_FMR04_IDENTITY_TEST PASS' "$OUT/single_identity.txt"
-  sha256sum "$OUT/fmr04_serialized_physical" "$OUT/fmr05_serialized_multiswap" "$OUT/fmr05_strict_acceptance" &
+  sha256sum "$OUT/fmr04_serialized_physical" "$OUT/fmr05_serialized_multiswap" "$OUT/fmr05_strict_acceptance" \
        "$OUT/fmr05_single_fmr04_identity" > "$OUT/executables.sha256"
   sha256sum "$OUT/output.txt" > "$OUT/output.sha256"
   echo "FMR05_O${opt} PASS"
