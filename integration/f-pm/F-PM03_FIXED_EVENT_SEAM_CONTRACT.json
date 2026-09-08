@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "title": "Smallest Structural Irrigation Seam: Fixed Events",
+  "branch": "work/f-pm03-irrigation-fixed-event-seam",
+  "source_basis": {
+    "fmr07_qualified_head": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "fpm03_readiness_head": "0179429bfdcac046b7fe333459bd4eab03d50d72",
+    "fsi17_qualified_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "b110_irrigation_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "readiness_branch_merged": false
+  },
+  "readiness_transition": {
+    "prior_decision": "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_EXPLICIT_HYDRAULIC_VIEW",
+    "fsi_blocker": "RESOLVED_BY_FSI17",
+    "fmr_committed_binding_blocker": "RESOLVED_BY_FMR07",
+    "fkt_transaction_and_mass_framework": "ALREADY_QUALIFIED",
+    "production_migration_allowed": true
+  },
+  "selected_smallest_seam": {
+    "legacy_scope": "B1.10 irrigation(task=3) fixed irrigation event path plus task=9-equivalent event completion semantics",
+    "includes": [
+      "fixed event cursor equivalent to nirri",
+      "date-match tolerance abs(irdate(nirri)-t0) < 1e-3",
+      "application type 0/1 surface gross irrigation rate",
+      "application type 2 node-distributed SSDI source",
+      "event duration irdepth/irrate",
+      "irrigation concentration metadata",
+      "transaction-safe active-event continuation and completion"
+    ],
+    "excludes": [
+      "scheduled irrigation TCS1-TCS8 trigger equations",
+      "DCS1/DCS2 scheduled depth equations",
+      "rainfall reduction",
+      "solute-threshold over-irrigation",
+      "external MultiSWAP task=4 availability scaling",
+      "legacy file parsing/read_irrigation_fixed",
+      "meteo/interception conversion from gird to nird"
+    ],
+    "reason": "The fixed-event route is the smallest physical irrigation seam with real persistent event history and both surface and SSDI outputs, while avoiding premature migration of the larger hydraulic/crop trigger surface."
+  },
+  "data_separation": {
+    "immutable_parameters": "translated fixed event table plus optional SSDI node range; legacy I/O remains outside the process",
+    "persistent_state": "next fixed-event index and only the active-event identity/timing needed for continuation",
+    "management_request": "explicit t0/t1 interval",
+    "physical_result": "surface gross irrigation rate or optional SSDI node source, application type, concentration and applied external inflow amount",
+    "temporary_workspace": "locals only; no persistent solver scratch"
+  },
+  "time_semantics": {
+    "fixed_dates_are_management_calendar_semantics": true,
+    "midnight_required": false,
+    "one_day_kernel_interval_required": false,
+    "legacy_event_match_tolerance": 0.001,
+    "event_duration_max_days": 1.0,
+    "cross_event_end_interval": "FAIL_CLOSED_WITH_SPLIT_REQUIRED",
+    "event_end": "candidate state clears the active event when t1 reaches the event end, representing task=9 completion without global mutation"
+  },
+  "transaction_contract": {
+    "committed_state_is_intent_in": true,
+    "trial_returns_candidate_state": true,
+    "cursor_advances_only_in_candidate": true,
+    "split_required_returns_original_state": true,
+    "rejected_trial_can_be_discarded_without_quota_or_cursor_consumption": true,
+    "same_committed_state_replay_must_be_identical": true
+  },
+  "mass_contract": {
+    "irrigation_is_external_inflow": true,
+    "process_result_external_inflow_amount_is_reconciliation_evidence": true,
+    "authoritative_owner_after_solver_composition": "F-KT/F-MR accepted interval accounting",
+    "double_count_process_and_solver_mass": false,
+    "ssdi_sign": "positive source into soil",
+    "surface_process_rate_sign": "positive gross irrigation amount; downstream top-boundary adapter owns solver sign conversion"
+  },
+  "hydraulic_view": {
+    "available_for_later_scheduled_routes": true,
+    "fixed_event_seam_consumes_hydraulic_view": false,
+    "reason": "B1.10 fixed-event selection depends on date/cursor and event parameters, not h/theta; adding an unused hydraulic dependency would violate smallest-seam design."
+  },
+  "optional_scaling": {
+    "inactive_columns_need_irrigation_state": false,
+    "surface_events_allocate_ssdi_array": false,
+    "no_event_allocates_ssdi_array": false,
+    "ssdi_array_only_when_ssdi_flux_is_active": true
+  },
+  "qualification_requirements": [
+    "inactive",
+    "one fixed surface event",
+    "one fixed SSDI event",
+    "no-trigger",
+    "state continuation across an event boundary split",
+    "A/B/A",
+    "rollback/replay",
+    "cursor/event-history protection",
+    "split-required no mutation",
+    "external-inflow mass identity",
+    "O0/O2 output identity",
+    "source-bound B1.10 equation identity",
+    "exact F-MR07/F-MR06/SNOW source preservation"
+  ],
+  "scientific_admission": "Independent F-VQ remains required after structural qualification."
+}
