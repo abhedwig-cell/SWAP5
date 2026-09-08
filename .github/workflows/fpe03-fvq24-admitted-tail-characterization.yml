@@ -1,0 +1,36 @@
+name: F-PE03 F-VQ24 admitted tail characterization
+
+on:
+  push:
+    branches:
+      - work/f-pe03-fvq24-admitted-tail-characterization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+
+      - name: F-PE03 exact F-VQ24 admitted workload runtime characterization
+        run: |
+          set -o pipefail
+          bash tests/fpe/run_fpe03_fvq24_admitted_tail_gate.sh | tee fpe03-fvq24-admitted-tail.log
+
+      - name: Preserve F-PE03 F-VQ24 admitted-tail evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-fvq24-admitted-tail-characterization
+          path: fpe03-fvq24-admitted-tail.log
