@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI18",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "reproduction_head": "6b178bf02427849302c165f9d5261b4657e7aedf",
+  "production_base": "a6470b90f100b7ed9837c5e092b39d011fd28476",
+  "production_source_changed": false,
+  "source_locks": {
+    "headcalc": "d92f77963329d61ab3feb988f912252c0161436c",
+    "reference_adapter": "18c59ab9c63d206bf2af3678dacadfc3fd6de94c"
+  },
+  "workflow": {
+    "run_id": 34249397344,
+    "artifact_id": 10065353445,
+    "artifact_digest": "sha256:c34497219dbc423ee3ec3a6f719d881473fd30823abe8cab072572126685ac5e",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identity": true,
+    "deterministic_replay": true
+  },
+  "cases": [
+    {"delta": 0.0, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
+    {"delta": 3e-12, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
+    {"delta": -3e-12, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "jacobian_builds": 1, "linear_solves": 1, "backtracking_attempts": 1},
+    {"delta": 1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "internal_retries": 1, "jacobian_builds": 8, "linear_solves": 8, "backtracking_attempts": 32},
+    {"delta": -1e-11, "converged": false, "retry_advised": true, "nonlinear_iterations": 8, "internal_retries": 1, "jacobian_builds": 8, "linear_solves": 8, "backtracking_attempts": 32}
+  ],
+  "finding": "The F-PE03 3e-12/1e-11 binary convergence boundary reproduces directly in the F-SI REFERENCE Richards solver on the latest qualified F-SI16 lineage. SNOW, MultiSWAP, transaction two-half comparison, mass acceptance and temporal acceptance are not required to produce the cliff.",
+  "sign_symmetry": true,
+  "production_change_authorized": false,
+  "next_step": "Use existing worker-owned Richards scratch to identify which final-iteration convergence criterion remains active at the rejected 1e-11 cases before considering any production change."
+}
