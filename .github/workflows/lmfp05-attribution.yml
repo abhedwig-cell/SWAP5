@@ -19,8 +19,8 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Flux closure attribution and refined FullRichards gate
-        run: bash experiments/lmfp/run_lmfp05_attribution_gate_v2.sh
+      - name: Same-grid and frozen spatial closure attribution
+        run: bash experiments/lmfp/run_lmfp05_qualification_gate.sh
       - name: Upload attribution evidence
         if: always()
         uses: actions/upload-artifact@v4
