@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ15",
+  "title": "Independent Admission of Serialized Multi-Column Physical Composition",
+  "qualification_only": true,
+  "source_modification_permitted": false,
+  "candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "candidate_production_source": {
+    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "entrypoint": "fmr_run_serialized_physical_multiswap"
+  },
+  "producer_handoff": {
+    "artifact": "integration/f-mr/F-MR05_FVQ15_HANDOFF.json",
+    "artifact_commit": "286e339f836b151c5a4f8907c5b26654bbd018fa",
+    "fmr05_runtime_qualification_run": 34197457690,
+    "fmr05_runtime_qualification_job": 101968270598
+  },
+  "scientific_reference": {
+    "fmr04_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "fvq14_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+    "profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "reference_path": "direct one-column fmr_serialized_reference_backend_t through F-KT08 checkpoint/candidate/commit",
+    "comparison_criterion": "bitwise identity of per-column committed physical state and authoritative canonical accepted mass accounting for identical inputs"
+  },
+  "qualification_matrix": {
+    "required_column_counts": [1,2,17,31],
+    "additional_engineering_counts_allowed": [8,32],
+    "input_orders": ["A_B","B_A"],
+    "repeatability": "A_B_A",
+    "time_interval": [1000.125,1000.625],
+    "mass_complete_required": true,
+    "missing_contribution_mask_required": 0,
+    "existing_fkt_mass_gate": 1e-12,
+    "new_scientific_tolerance": false,
+    "aggregate_mass": "exact unrounded sum of accepted authoritative canonical storage/flux terms only",
+    "transaction_isolation": ["cross-column checkpoint rejection","stale checkpoint rejection","rollback A leaves B unchanged","commit A leaves B unchanged"],
+    "unsupported_physics": ["root extraction","macropore","snow","swkimpl != 0"],
+    "physical_parallelism_required_max": 1
+  },
+  "required_gates": [
+    "exact candidate SHA/tree and F-MR05 production blob lock",
+    "production/reference source unchanged by F-VQ15",
+    "exact F-VQ14/F-MR04/F-KT08 baseline blobs retained",
+    "one-column new entrypoint versus direct F-MR04 bitwise state identity",
+    "one-column new entrypoint versus direct F-MR04 bitwise authoritative mass identity",
+    "A/B and B/A per-column physical identity by column_id",
+    "A/B/A exact repeatability",
+    "17-column and 31-column real-physics composition against independent direct references",
+    "per-column authoritative mass complete and missing mask zero",
+    "aggregate authoritative mass exact and unrounded",
+    "cross-column/stale checkpoint misuse fail-closed and transaction isolation",
+    "generic non-midnight subdaily interval 1000.125 to 1000.625",
+    "unsupported physical routes remain fail-closed",
+    "measured maximum simultaneous real physical solves equals one",
+    "O0/O2 output identity",
+    "parallel reference backend remains NOT_ADMITTED"
+  ],
+  "admission_if_pass": {
+    "scientific_multicolumn_admission": true,
+    "production_serialized_real_physics_multicolumn": true,
+    "scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "parallel_reference_backend": false,
+    "active_root": false,
+    "macropore": false,
+    "snow": false,
+    "implicit_conductivity": false,
+    "release_to_existing_fmq23": true
+  },
+  "superseded_unassessed_lock": {
+    "previous_candidate": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
+    "previous_contract_head": "7d804fec497fa82ce8f59ded072389bff8a412eb",
+    "previous_status": "NOT_ASSESSED",
+    "preserved_by_safety_branch": "qualification/f-vq15-fmr05-serialized-multiswap-safety"
+  }
+}

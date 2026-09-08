@@ -1,0 +1,36 @@
+{
+  "schema_version": 2,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ15",
+  "branch": "qualification/f-vq15-fmr05-serialized-multiswap",
+  "safety_branch": "qualification/f-vq15-fmr05-serialized-multiswap-safety",
+  "candidate_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "candidate_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "phase": "REBIND_CONTRACT_PERSISTING_TESTING_PENDING",
+  "status": "NOT_ASSESSED_REBOUND_STRICT_CANDIDATE",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "production_source_changed_by_fvq15": false,
+  "reference_source_changed_by_fvq15": false,
+  "scientific_admission": false,
+  "production_serialized_multicolumn_admission": false,
+  "parallel_reference_backend_admitted": false,
+  "release_to_fmq23": false,
+  "rebind": {
+    "previous_head": "7d804fec497fa82ce8f59ded072389bff8a412eb",
+    "previous_candidate": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
+    "previous_status": "NOT_ASSESSED",
+    "reason": "F-MR05 strict acceptance superseded the earlier narrower unassessed candidate"
+  },
+  "holds": [
+    "No F-MR05 modified-source scientific admission until all F-VQ15 gates pass on exact candidate c28e7a2810b4a3678c577335a6a3086b173eb976.",
+    "No production or reference source modification is permitted in F-VQ15.",
+    "No new scientific tolerance may be introduced.",
+    "Parallel HeadCalc/reference execution remains NOT_ADMITTED regardless of serialized admission outcome.",
+    "Physics scope may not broaden beyond EXACT_FVQ14_RESTRICTED_PROFILE_ONLY.",
+    "F-MQ23 remains held until F-VQ15 PASS."
+  ],
+  "next_step": "Build independent F-VQ15 executable qualification against exact candidate c28e7a2810b4a3678c577335a6a3086b173eb976 without source modification."
+}
