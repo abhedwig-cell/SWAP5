@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-FVQ25-RECHAR",
+  "scope": "REFERENCE_ONLY_DIAGNOSTIC_TAIL_RECHARACTERIZATION",
+  "lineage": {
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "tested_candidate": "d691e730fdf260c0e98496a12aaf2d02caa1f036"
+  },
+  "qualification_run": {
+    "workflow_run": 34268338921,
+    "workflow_job": 102203311221,
+    "conclusion": "success",
+    "artifact_id": 10072756693,
+    "artifact_digest": "sha256:a5c466217b7149315932c67d974a5c2a223597f35cf1012832421fe1de18e47e"
+  },
+  "gates": {
+    "production_source_immutability": "PASS",
+    "source_locks": "PASS",
+    "historical_workload_reproduced_exactly": "PASS",
+    "deterministic_replay_o0": "PASS",
+    "deterministic_replay_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_gate_for_accepted_cases": "PASS",
+    "rejected_cases_no_commit_asserted_in_probe": "PASS"
+  },
+  "baseline": {
+    "accepted": true,
+    "accepted_substeps": 1,
+    "aggregate_cost_vector_order": [
+      "nonlinear_iterations",
+      "internal_retries",
+      "headcalc_calls",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "alternative_solver_calls"
+    ],
+    "aggregate_cost_vector": [3, 0, 3, 3, 3, 3, 0]
+  },
+  "nonzero_perturbations": {
+    "scientific_admission": "DIAGNOSTIC_ONLY_NOT_GRANTED",
+    "accepted_count": 0,
+    "rejected_count": 10,
+    "accepted_higher_cost_count": 0,
+    "cases": [
+      {"relative_top_flux": 1e-10, "sign": "plus",  "kernel_status": 2, "accepted_substeps": 0, "cost": [33,2,6,33,33,36,0]},
+      {"relative_top_flux": 1e-10, "sign": "minus", "kernel_status": 2, "accepted_substeps": 0, "cost": [33,2,6,33,33,36,0]},
+      {"relative_top_flux": 3e-11, "sign": "plus",  "kernel_status": 2, "accepted_substeps": 0, "cost": [27,2,6,27,27,29,0]},
+      {"relative_top_flux": 3e-11, "sign": "minus", "kernel_status": 2, "accepted_substeps": 0, "cost": [27,2,6,27,27,29,0]},
+      {"relative_top_flux": 1e-11, "sign": "plus",  "kernel_status": 2, "accepted_substeps": 0, "cost": [32,0,9,32,32,34,0]},
+      {"relative_top_flux": 1e-11, "sign": "minus", "kernel_status": 2, "accepted_substeps": 0, "cost": [32,0,9,32,32,34,0]},
+      {"relative_top_flux": 3e-12, "sign": "plus",  "kernel_status": 2, "accepted_substeps": 0, "cost": [13,0,9,13,13,14,0]},
+      {"relative_top_flux": 3e-12, "sign": "minus", "kernel_status": 2, "accepted_substeps": 0, "cost": [13,0,9,13,13,14,0]},
+      {"relative_top_flux": 1e-12, "sign": "plus",  "kernel_status": 2, "accepted_substeps": 0, "cost": [9,0,9,9,9,9,0]},
+      {"relative_top_flux": 1e-12, "sign": "minus", "kernel_status": 2, "accepted_substeps": 0, "cost": [9,0,9,9,9,9,0]}
+    ]
+  },
+  "findings": {
+    "accepted_higher_cost_reference_route_observed": false,
+    "rejected_trials_can_be_materially_more_expensive_than_baseline": true,
+    "max_observed_rejected_nonlinear_iterations": 33,
+    "max_observed_rejected_backtracking_attempts": 36,
+    "representative_tail_distribution_established": false,
+    "bounded_cost_threshold_established": false,
+    "performance_policy_admitted": false,
+    "physics_changed": false,
+    "numerical_controls_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_requirement_relaxed": false
+  },
+  "claim_limit": "This evidence characterizes only the exact historical diagnostic perturbation set on the independently admitted F-VQ25 REFERENCE postimage. It establishes no representative p50/p95/p99 tail, no accepted difficult production workload, no bounded-cost threshold, and no BALANCED, THROUGHPUT or FALLBACK admission."
+}
