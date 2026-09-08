@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ22",
+  "title": "Independent Scientific Qualification of F-PM05 Restricted Root Water Uptake",
+  "decision": "QUALIFIED_INDEPENDENT_FPM05_MACRO_FEDDES_DROUGHT_ONLY_ROOT_WATER_UPTAKE_SCIENTIFIC_ADMISSION",
+  "branch": "qualification/f-vq22-fpm05-root-water-uptake",
+  "candidate": {
+    "fpm05_closeout_commit": "591363019aa4b2324bec55354b45093b3b189819",
+    "fpm05_closeout_tree": "dd07ad0d16783e43b951b218904e7e2d1f409af4",
+    "process_source_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "production_source_changed_by_fvq22": false
+  },
+  "tested_qualification": {
+    "head": "031f18de2e6a9be7f7844e616bfdbafb62cf3001",
+    "tree": "ef6688072d30a2787171089de19c25bb7d335d54",
+    "workflow_run_id": 34257264867,
+    "workflow_job_id": 102166101792,
+    "workflow_conclusion": "success",
+    "oracle_output_sha256": "482f0e09bacaeb9428c322734a540ece0738f0c636e3b2db018df344cfff8c5a",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "canonical_source_provenance": {
+    "source_archive": "user-supplied canonical SWAP 4.3.1 source archive",
+    "rootextraction_path": "SWAP/rootextraction.f90",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "cropdevelopment_path": "SWAP/MOD_cropdevelopment.f90",
+    "cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_thresholds": {
+      "no_roots_rd_below": 1e-14,
+      "negligible_transpiration_ptra_below": 1e-10,
+      "ptra_exactly_1e-10_is_active": true
+    }
+  },
+  "independent_scientific_oracle": {
+    "owner_expected_literals_used_as_oracle": false,
+    "hlim3_recomputed_from_canonical_equation": true,
+    "potential_node_uptake_recomputed_from_dynamic_cumulative_root_fraction": true,
+    "Feddes_drought_factor_recomputed_from_pressure_head_hlim4_hlim3": true,
+    "qrot_recomputed_nodewise": true,
+    "qrosum_recomputed_as_sum_qrot": true,
+    "tested_ptra_regions": [
+      "below adcrl",
+      "exactly adcrl",
+      "inside interpolation interval",
+      "exactly adcrh",
+      "above adcrh"
+    ],
+    "tested_pressure_regions": [
+      "below hlim4",
+      "exactly hlim4",
+      "inside hlim4-hlim3 transition",
+      "exactly hlim3",
+      "above hlim3"
+    ]
+  },
+  "scientific_gate_results": {
+    "candidate_production_immutability": "PASS",
+    "candidate_and_owner_source_locks": "PASS",
+    "canonical_source_provenance_lock": "PASS",
+    "ptra_and_hlim3_boundary_oracle": "PASS",
+    "Feddes_pressure_boundary_oracle": "PASS",
+    "dynamic_root_distribution_oracle": "PASS",
+    "no_root_dependency_free_oracle": "PASS",
+    "below_nihil_dependency_free_oracle": "PASS",
+    "exact_nihil_active_evaluation": "PASS",
+    "active_invalid_domain_fail_closed": "PASS",
+    "direct_process_A_B_A_identity": "PASS",
+    "candidate_nodewise_qrot_equals_independent_oracle": "PASS",
+    "runtime_node_order_and_sign_preserved": "PASS",
+    "runtime_authoritative_root_out_exactly_once": "PASS",
+    "runtime_authoritative_qssdi_in_exactly_once": "PASS",
+    "runtime_hydraulic_cancellation": "PASS",
+    "runtime_hard_mass_conservation": "PASS",
+    "O0_O2_qualification_output_identity": "PASS",
+    "F_MR09_cross_process_regression": "PASS",
+    "F_VQ18_fixed_irrigation_regression": "PASS",
+    "F_VQ20_scheduled_irrigation_regression": "PASS",
+    "F_MR07_hydraulic_view_regression": "PASS",
+    "F_MR06_snow_regression": "PASS"
+  },
+  "runtime_numeric_evidence": {
+    "interval_t0": 2700.125,
+    "interval_t1": 2700.875,
+    "interval_duration": 0.75,
+    "potential_transpiration_rate": 0.12,
+    "independent_hlim3": -39.5,
+    "independent_Feddes_alpha": 0.9630400832899532,
+    "independent_qrot_rate_sum": 0.11556480999479436,
+    "expected_root_amount": 0.08667360749609578,
+    "observed_authoritative_total_in_delta": 0.08667360749609579,
+    "observed_authoritative_total_out_delta": 0.08667360749609579,
+    "hard_mass_tolerance": 1e-12
+  },
+  "admitted_profile": {
+    "name": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "oxygen_stress": false,
+    "salinity_stress": false,
+    "frost_stress": false,
+    "compensated_uptake": false,
+    "microscopic_root_uptake": false,
+    "macropore_root_uptake": false,
+    "persistent_process_state": false,
+    "dynamic_crop_inputs": [
+      "potential_transpiration",
+      "rooted_nodes",
+      "normalized cumulative_root_fraction"
+    ],
+    "hydraulic_input": "qualified committed pressure_head view only on active evaluation",
+    "solver_output_contract": "precomputed nonnegative per-node root_extraction_sink consumed through the qualified F-MR09 root-sink route"
+  },
+  "architectural_qualification": {
+    "kernel_io_separation_preserved": true,
+    "parameters_state_forcing_results_separation_preserved": true,
+    "compact_persistent_state_preserved": true,
+    "transactional_semantics_preserved": true,
+    "mass_conservation_preserved": true,
+    "process_does_not_access_HeadCalc_internals": true,
+    "physical_process_and_numerical_policy_remain_separate": true,
+    "runtime_coupler_owns_process_to_solver_composition": true,
+    "optional_process_state_cost_for_this_profile": "none"
+  },
+  "not_admitted": [
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated root uptake",
+    "drought-dependent root extension feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore root uptake",
+    "full legacy RootExtraction module reentrancy",
+    "production crop-owner composition beyond the explicit request contract"
+  ],
+  "conclusion": "The exact immutable F-PM05 process source is independently scientifically equivalent to canonical SWAP 4.3.1 RootExtraction_MACRO task-2 semantics for the explicitly restricted drought-only precomputed-qrot profile, including source-bound early exits, dynamic root distribution, Feddes boundaries, runtime sign/order, exactly-once authoritative mass accounting and hard mass conservation."
+}
