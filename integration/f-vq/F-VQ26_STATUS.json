@@ -1,12 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ26",
   "title": "Independent Scientific Admission of Restricted Serialized Prescribed Bottom-Head Runtime",
   "branch": "qualification/f-vq26-fmr11-prescribed-bottom-head-runtime",
-  "status": "IN_PROGRESS_INDEPENDENT_FMR11_PRESCRIBED_BOTTOM_HEAD_RUNTIME_VERIFICATION",
-  "phase": "QUALIFICATION_PLAN_PERSISTED_BEFORE_TEST_IMPLEMENTATION",
-  "qualification_scope": "INDEPENDENT_SCIENTIFIC_ADMISSION_OF_EXACT_FMR11_CANDIDATE",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME_SCIENTIFIC_ADMISSION",
+  "phase": "CLOSED_IMPLEMENTED_PERSISTED_TESTED_QUALIFIED",
+  "qualification_scope": "INDEPENDENT_SCIENTIFIC_ADMISSION_OF_EXACT_FMR11_RESTRICTED_MODE5_RUNTIME",
   "candidate": {
     "fmr11_closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
     "fmr11_owner_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME",
@@ -16,33 +16,76 @@
     "fmr11_closeout_replay_run": 34268199919,
     "fsi16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f"
   },
+  "qualification": {
+    "tested_candidate_commit": "9b967d033be7c95690de621b2cb1768ba9224c7f",
+    "workflow_run": 34277883448,
+    "workflow_job": 102235297691,
+    "conclusion": "success",
+    "production_immutability": "PASS",
+    "source_locks": "PASS",
+    "independent_static_audit": "PASS",
+    "accepted_negative_qbot": "PASS",
+    "accepted_positive_qbot": "PASS",
+    "negative_qbot_bits": "BFC4D15C8C503F8D",
+    "expected_negative_qbot_bits": "BFC4D15C8C503F8D",
+    "positive_qbot_bits": "4013000000000000",
+    "expected_positive_qbot_bits": "4013000000000000",
+    "bottom_head_authority": "PASS",
+    "bottom_flux_seed_irrelevance": "PASS",
+    "qbot_mass_exactly_once": "PASS",
+    "transaction_discard_isolation": "PASS",
+    "a_b_a_replay": "PASS",
+    "zero_tolerance_temporal_acceptance": "PASS",
+    "fail_closed_profile": "PASS",
+    "serialized_only": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "runtime_output_sha256": "9f8549f8086d4ff6fc949aec5002bd18b24eca98bec8e267a2e0aeb2ee1c270f",
+    "fsi16_canonical_b110_replay": "PASS",
+    "fsi16_oracle_sha256": "104618b0aac58180ca9acd76d39a9fede52cba534e9de9cba8392323d9169e3e",
+    "fmr09_regression": "PASS",
+    "fmr10_regression": "PASS",
+    "fmr07_regression": "PASS",
+    "fmr06_regression": "PASS",
+    "fvq22_regression": "PASS"
+  },
+  "qualification_correction": {
+    "initial_v2_failure_classification": "QUALIFICATION_FIXTURE_GEOMETRY_DEFECT",
+    "production_defect_found": false,
+    "diagnostic_branch": "qualification/f-vq26-upward-trial-diagnostic",
+    "diagnostic_finding": "The initial upward oracle used legacy disnod(n+1) to construct bottom_head, while the explicit production HeadCalc geometry defines the lower face distance as 0.5*dz(n). The resulting last-equation residual was -9.5. The qualification fixture was corrected to bottom_head=head(n)+dz(n); production source was not changed.",
+    "owner_positive_sign_evidence": "OWNER_CLAIM_WAS_NOT_DECISIVE_BECAUSE_THE_POSITIVE_QBOT_OBSERVATION_DID_NOT_REQUIRE_AN_ACCEPTED_COMPLETED_TRIAL",
+    "independent_resolution": "SUPERSEDED_BY_ACCEPTED_POSITIVE_AND_NEGATIVE_QBOT_ORACLE"
+  },
   "state": {
     "qualification_plan_persisted": true,
     "production_source_modified": false,
     "candidate_source_immutable": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
-  "independent_requirements": [
-    "source-lock exact immutable F-MR11 production candidate",
-    "do not modify production source",
-    "independently establish bottom_head authority and bottom_flux seed irrelevance",
-    "independently establish authoritative qbot sign and exactly-once mass accounting",
-    "exercise both supported qbot signs",
-    "independently verify checkpoint/discard and A/B/A state isolation",
-    "verify exact zero-tolerance temporal acceptance on the admitted stationary mode-5 fixture",
-    "verify unsupported physical routes remain fail closed",
-    "verify serialized-only execution and O0/O2 identity",
-    "replay canonical B1.10 prescribed-head solver evidence from the qualified F-SI16 source chain",
-    "replay relevant F-MR10/F-MR09/F-MR07/F-MR06 regressions"
-  ],
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "admitted": {
+    "serialized_reference_backend": true,
+    "bottom_mode_5_prescribed_head": true,
+    "bottom_head_authoritative": true,
+    "bottom_flux_is_output_for_mode5": true,
+    "positive_and_negative_qbot_on_accepted_trials": true,
+    "zero_tolerance_stationary_temporal_acceptance": true
+  },
   "holds": {
-    "groundwater_coupling": "NOT_ADMITTED_UNTIL_FVQ26_PASS",
     "parallel_reference_backend": "NOT_ADMITTED",
     "bottom_modes_1_3_8_9": "NOT_ADMITTED",
     "swkimpl1": "NOT_ADMITTED",
     "active_macropores": "NOT_ADMITTED",
-    "production_change_in_FVQ26": "FORBIDDEN"
+    "nonstationary_mode5_temporal_behavior": "NOT_ADMITTED_BY_FVQ26",
+    "general_groundwater_coupling": "NOT_ADMITTED_BY_FVQ26_ALONE"
   },
-  "next_gate": "BUILD_INDEPENDENT_RUNTIME_ORACLE_AND_REPLAY_FSI16_CANONICAL_B110_REFERENCE"
+  "scientific_claim_limit": "F-VQ26 independently admits only the restricted serialized F-MR11 prescribed-bottom-head mode-5 runtime on the qualified B1.10 lineage. It proves bottom-head authority, bottom-flux seed irrelevance, accepted qbot of both signs, exactly-once mass accounting, transaction isolation and exact stationary temporal acceptance. It does not admit other lower-boundary modes, active macropores, swkimpl=1, parallel REFERENCE execution, arbitrary nonstationary mode-5 workloads or groundwater coupling as a whole.",
+  "next_action": "F-GC may consume the independently admitted restricted mode-5 boundary as its qualified lower-head primitive. F-PE may use this exact admitted stationary workload as a candidate for post-FMR14 interval-cost characterization, but any new perturbed workload remains separately qualification-bound."
 }
