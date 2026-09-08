@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP08",
+  "title": "Physics-Informed Darcian Correction Representation",
+  "branch": "work/f-lmfp08-physics-informed-darcian-correction",
+  "base": {
+    "work_unit": "F-LMFP07",
+    "commit": "d2070b95d86d69bcb092bc3278d7366499ec5f8d",
+    "decision": "QUALIFIED_TRANSIENT_DARCIAN_SIGNAL_READY_FOR_PHYSICS_INFORMED_LOOKUP_REFINEMENT",
+    "closeout_ci_run": 34266530313,
+    "closeout_ci_conclusion": "SUCCESS"
+  },
+  "objective": "Test a constrained residual representation around the current MFP homogeneous face closure so known Darcy identities are exact by construction while the strong-gradient Darcian correction is retained at bounded O(1) runtime cost.",
+  "candidate_hypothesis": {
+    "heterogeneous_faces": "retain current LayeredMFP equal-flux interface closure in this workunit",
+    "homogeneous_faces": "q_candidate = q_MFP + interpolated_Delta_q(h_upper, gradient), where Delta_q is generated offline from q_Darcy_oracle - q_MFP",
+    "coordinates": "upper pressure head and dimensionless pressure-head gradient g=(h_lower-h_upper)/face_distance",
+    "constraint_columns": [
+      "g=0 -> Delta_q=0, preserving equal-head gravity flow q=K(h)",
+      "g=1 -> Delta_q=0, preserving hydrostatic q=0"
+    ],
+    "runtime_fallback": "none; coverage miss is explicit failure"
+  },
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "hydraulic_only": true,
+    "generic_time": true,
+    "fullrichards_reference": true,
+    "direct_darcian_face_control": true,
+    "crop": false,
+    "root_uptake": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "required_tests": [
+    "exact homogeneous equal-head gravity-flow identity",
+    "exact hydrostatic zero-flux identity",
+    "face-level direct-Darcy validation across sand and clay and multiple geometry classes",
+    "F-LMFP04 six-case transient matrix",
+    "F-LMFP07 strong-gradient transient matrix",
+    "mass conservation and fail-closed coverage",
+    "table memory and class-cardinality diagnostics",
+    "continuity and finite-difference local response diagnostics"
+  ],
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "no_post_update_clipping": true,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true,
+    "reference_mode_unchanged": true,
+    "representation_is_immutable_shared_parameter_data": true,
+    "heterogeneous_interface_physics_not_changed_without_separate_evidence": true
+  },
+  "status": "PHYSICS_INFORMED_CORRECTION_HARNESS_IN_PREPARATION",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  }
+}
