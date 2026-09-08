@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR14",
   "title": "F-PE02 Qualified Interval Cost Diagnostics into F-MR13 Runtime Lineage",
   "branch": "work/f-mr14-interval-cost-diagnostics-recomposition",
-  "status": "PERSISTED_PENDING_OBSERVER_ONLY_DIAGNOSTICS_COMPOSITION",
-  "phase": "PERSISTED_NOT_YET_IMPLEMENTED",
+  "status": "IMPLEMENTED_PERSISTED_PENDING_OWNER_QUALIFICATION",
+  "phase": "IMPLEMENTED_PERSISTED_NOT_YET_TESTED",
   "base": {
     "work_unit": "F-MR13",
     "closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
@@ -19,6 +19,7 @@
     "kernel_pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
     "kernel_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
     "historical_runtime_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
+    "fmr14_runtime_post_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
     "required_fields": [
       "accepted_substeps",
       "solver_nonlinear_iterations",
@@ -30,9 +31,28 @@
       "solver_alternative_solver_calls"
     ]
   },
-  "composition_rule": "Kernel preimage is still exact F-PE02 pre-blob and may be advanced to the exact qualified post-blob. The F-MR13 runtime file has legitimate later runtime changes, so only the already-qualified observer field declarations and assignments may be replayed onto that current postimage. No decision logic may change.",
+  "owner_materialization": {
+    "commit": "4d4ecc58e1e16048d0bb6b58611a60d1b0d79105",
+    "production_paths": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "kernel_exact_fpe02_qualified_postimage": true,
+    "runtime_delta": "EXACT_QUALIFIED_OBSERVER_FIELDS_AND_ASSIGNMENTS_REPLAYED_ON_FMR13_POSTIMAGE",
+    "decision_logic_changed": false
+  },
+  "qualification_requirements": {
+    "source_delta_exactly_two_observer_paths": true,
+    "runtime_normalizes_exactly_to_fmr13_after_removing_observer_delta": true,
+    "fmr09_authoritative_mass_transaction_replay": true,
+    "fmr09_historical_output_hash_preserved": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "fmr12_fmr10_runtime_regression": true,
+    "fmr12_historical_output_hash_preserved": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "runtime_interval_cost_surface_populated": true,
+    "o0_o2_identity": true
+  },
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false
@@ -43,6 +63,14 @@
   "retry_policy_changed": false,
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
+  "reference_mode_preserved": true,
+  "scientific_admission_expanded": false,
   "fpe02_b01": "NOT_RESOLVED_BY_FMR14_DIAGNOSTICS_ONLY",
+  "execution_classes": {
+    "REFERENCE": "UNCHANGED",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
   "next_owner_action_if_qualified": "Obtain independent F-VQ scientific no-change admission of the exact F-MR14 observer-only postimage, then resume F-PE03 tail characterization using the propagated aggregate interval cost counters."
 }
