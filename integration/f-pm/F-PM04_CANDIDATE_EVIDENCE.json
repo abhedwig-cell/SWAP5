@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "evidence_class": "STRUCTURAL_PRODUCTION_CANDIDATE_EVIDENCE",
+  "candidate_branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-candidate",
+  "readiness_head": "ad42be53e75ecc6375fcbb832492b203303f7855",
+  "tested_candidate_head": "55f1694b4f0978c2ddccce941718c8f9de3faa1f",
+  "tested_candidate_tree": "009ccf9a5c0e93e76eccafd619dfdafbe868dcda",
+  "production_source": "src/process/mod_irrigation_process.f90",
+  "production_source_blob": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+  "production_scope": {
+    "changed_src_files_from_readiness_head": [
+      "src/process/mod_irrigation_process.f90"
+    ],
+    "fmr_backend_modified": false,
+    "fmr08_lineage_modified": false,
+    "headcalc_or_solver_internal_modified": false,
+    "legacy_io_added": false
+  },
+  "decisive_ci": {
+    "workflow": ".github/workflows/fpm04-scheduled-irrigation-candidate.yml",
+    "run_id": 34241407374,
+    "job_id": 102112216983,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.2.0",
+    "runner": "ubuntu-24.04",
+    "combined_output_sha256": "ac2981e50bd619e5af9447368bc32e9103453cdb4b66c6224fd3a8c875a0f110"
+  },
+  "static_gates": {
+    "exact_production_scope": "PASS",
+    "qualified_owner_blobs_unchanged": "PASS",
+    "source_contract_binding": "PASS",
+    "event_origin_state_separation": "PASS",
+    "generic_selection_time_semantics": "PASS",
+    "single_node_ssdi_lock": "PASS"
+  },
+  "process_tests": {
+    "inactive": "PASS",
+    "explicit_selection_opportunity": "PASS",
+    "TCS7_trigger_and_equality_boundary": "PASS",
+    "DCS2_interpolation": "PASS",
+    "restricted_AFGEN_semantics": "PASS",
+    "invalid_tables_and_hydraulic_view_fail_closed": "PASS",
+    "single_node_ssdi_mass": "PASS",
+    "active_event_continuation_without_new_selection": "PASS",
+    "completion_without_implicit_retrigger": "PASS",
+    "split_required_no_mutation": "PASS",
+    "rollback_replay": "PASS",
+    "A_B_A": "PASS"
+  },
+  "fixed_event_regression": {
+    "FPM03_fixed_process_regression": "PASS",
+    "FPM03_time_tolerance_regression": "PASS",
+    "fixed_event_cursor_semantics_preserved": true,
+    "active_event_origin_is_explicit": true
+  },
+  "ssdi_route_bridge": {
+    "scheduled_vs_equivalent_fixed_single_node_source_vector": "BITWISE_IDENTICAL",
+    "event_duration": "IDENTICAL",
+    "active_duration": "IDENTICAL",
+    "process_external_inflow_amount": "IDENTICAL",
+    "scheduled_fixed_cursor_unchanged": true,
+    "status": "PASS"
+  },
+  "real_runtime_mass_reuse": {
+    "harness": "tests/fpm/test_fpm03_ssdi_runtime_mass.f90",
+    "real_fmr_fkt_route_exercised": true,
+    "authoritative_mass_exactly_once": "PASS",
+    "real_physics_state_identity_with_balancing_sink": "PASS",
+    "process_evidence_amount": 0.125,
+    "authoritative_total_in_delta_observed": 0.12499999999999999,
+    "interpretation": "the modified process module preserves the existing qualified SSDI source route and authoritative F-MR/F-KT mass accounting; the scheduled single-node source is separately proven bitwise identical to the equivalent fixed-event single-node source"
+  },
+  "optimization_identity": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "fixed_regression_output_identity": "PASS",
+    "time_regression_output_identity": "PASS",
+    "scheduled_process_output_identity": "PASS",
+    "route_bridge_output_identity": "PASS",
+    "runtime_mass_output_identity": "PASS",
+    "full_output_identity": "PASS"
+  },
+  "compiler_observations": {
+    "modified_irrigation_process_compiled_with_Werror_compare_reals": true,
+    "modified_irrigation_process_warning_failure": false,
+    "inherited_nonfatal_warnings_observed": true,
+    "inherited_warning_scope": [
+      "historical F-PM03 test direct REAL equality checks",
+      "legacy B1.10 HeadCalc static bounds/maybe-uninitialized warnings",
+      "existing serialized reference backend exact REAL equality diagnostics"
+    ],
+    "candidate_interpretation": "these warnings are outside the changed production source and were not suppressed or repaired by F-PM04"
+  },
+  "architecture_invariant_audit": {
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS_WITH_ONE_EVENT_ORIGIN_DISCRIMINATOR",
+    "transactional_trial_safety": "PASS_AT_PROCESS_BOUNDARY",
+    "generic_time": "PASS_EXPLICIT_SELECTION_OPPORTUNITY_NO_MIDNIGHT_INFERENCE",
+    "mass_conservation": "PASS_FOR_RESTRICTED_SINGLE_NODE_SOURCE_ROUTE",
+    "optional_allocation_scaling": "PASS_NO_SOURCE_ARRAY_WHEN_INACTIVE_OR_NO_TRIGGER",
+    "solver_internal_isolation": "PASS_COMMITTED_PROCESS_HYDRAULIC_VIEW_ONLY",
+    "physical_vs_solver_policy_separation": "PASS",
+    "no_silent_dependencies": "PASS"
+  },
+  "limits": {
+    "scientifically_qualified": false,
+    "full_B1_10_runtime_equivalence_claimed": false,
+    "scheduled_multi_node_ssdi_admitted": false,
+    "surface_scheduled_irrigation_admitted": false,
+    "other_TCS_or_DCS_variants_admitted": false,
+    "legacy_calendar_or_task4_scaling_admitted": false,
+    "independent_fvq_required": true
+  },
+  "decision": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ"
+}
