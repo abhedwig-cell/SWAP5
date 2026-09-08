@@ -92,7 +92,7 @@ s=s.replace("expected_src=$'src/adapter/mod_reference_richards_legacy_binding.f9
             "expected_src=$'src/adapter/mod_reference_richards_legacy_binding.f90\\nsrc/legacy/b1_10_port/headcalc.f90\\nsrc/solver/mod_reference_richards_workspace.f90'",1)
 s=s.replace('  src/solver/mod_reference_richards_workspace.f90 \\\n','',1)
 marker="grep -Fq 'request%evaluation%root_sink => root_sink(column)' \"$CONTROL_DRIVER\"\n"
-post=r'''python3 - "$CONTROL_DRIVER" "$POISON_DRIVER" <<'PY2'
+post=r"""python3 - "$CONTROL_DRIVER" "$POISON_DRIVER" <<'PY2'
 from pathlib import Path
 import sys
 for filename in sys.argv[1:]:
@@ -127,7 +127,7 @@ if x.count(needle)!=1: raise SystemExit('F-SI14 grid persistence marker mismatch
 x=x.replace(needle,checks,1)
 p.write_text(x)
 PY2
-'''
+"""
 if marker not in s: raise SystemExit('F-SI14 generated-driver postprocess marker missing')
 s=s.replace(marker,post+marker,1)
 p.write_text(s)
