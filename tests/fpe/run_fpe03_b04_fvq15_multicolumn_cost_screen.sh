@@ -82,7 +82,11 @@ print('FPE03_FVQ15_INDEPENDENT_SCIENTIFIC_ADMISSION_LOCK=PASS')
 PY
 
 # Observer-only transform. Workload inputs, physical configuration, acceptance,
-# transaction and mass assertions remain byte-for-byte from the locked F-VQ15 fixture.
+# transaction and mass gates remain unchanged. The historical F-VQ15 aggregate
+# oracle is adapted only to the later qualified deterministic execution-order
+# aggregation: expected mass terms are summed by dispatch_ordinal, exactly as the
+# current runtime does. This preserves bitwise authoritative-mass checking while
+# avoiding an obsolete input-order summation expectation.
 python3 - "$BUILD/fvq15_screen.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -93,12 +97,16 @@ old2="""    call validate_runtime_batch(reverse_results, runtime_diag, n)\n    c
 new2="""    call validate_runtime_batch(reverse_results, runtime_diag, n)\n    call verify_all_against_direct(reverse_results, states, n)\n    call print_screen_costs('reversed', n, reverse_results)\n    call require(result_sets_identical(canonical_results, reverse_results), 'canonical/reverse result identity')\n"""
 anchor="""contains\n\n  subroutine run_multi_case(n, reverse_order, batch_size, results, diag, agg, rdiag, states_out, dispatch_status)\n"""
 insert="""contains\n\n  subroutine print_screen_costs(order, n, results)\n    character(len=*), intent(in) :: order\n    integer, intent(in) :: n\n    type(fmr_serialized_column_result_t), intent(in) :: results(:)\n    integer :: i\n    do i = 1, size(results)\n      write(*,'(A,1X,A,1X,I0,1X,I0,8(1X,I0))') 'FPE03_FVQ15_COST', trim(order), n, i, &\n           results(i)%accepted_substeps, results(i)%solver_nonlinear_iterations, &\n           results(i)%solver_internal_retries, results(i)%solver_headcalc_calls, &\n           results(i)%solver_jacobian_builds, results(i)%solver_linear_solves, &\n           results(i)%solver_backtracking_attempts, results(i)%solver_alternative_solver_calls\n    end do\n  end subroutine print_screen_costs\n\n  subroutine run_multi_case(n, reverse_order, batch_size, results, diag, agg, rdiag, states_out, dispatch_status)\n"""
+oldagg="""    integer :: i\n\n    mass = canonical_mass_accounting_t()\n    mass%complete = .true.\n    mass%interval_t0 = t0\n    mass%interval_t1 = t1\n    mass%missing_contribution_mask = TX_MASS_MISSING_NONE\n    do i = 1, size(results)\n      if (.not. results(i)%committed) cycle\n      mass%accepted_transaction_count = mass%accepted_transaction_count + results(i)%mass%accepted_transaction_count\n      mass%storage_start = mass%storage_start + results(i)%mass%storage_start\n      mass%storage_end = mass%storage_end + results(i)%mass%storage_end\n      mass%storage_change = mass%storage_change + results(i)%mass%storage_change\n      mass%total_in = mass%total_in + results(i)%mass%total_in\n      mass%total_out = mass%total_out + results(i)%mass%total_out\n      mass%residual = mass%residual + results(i)%mass%residual\n    end do\n"""
+newagg="""    integer :: i, pos, idx\n\n    mass = canonical_mass_accounting_t()\n    mass%complete = .true.\n    mass%interval_t0 = t0\n    mass%interval_t1 = t1\n    mass%missing_contribution_mask = TX_MASS_MISSING_NONE\n    do pos = 1, size(results)\n      idx = 0\n      do i = 1, size(results)\n        if (results(i)%dispatch_ordinal == pos) then\n          idx = i\n          exit\n        end if\n      end do\n      call require(idx > 0, 'expected aggregate dispatch ordinal')\n      if (.not. results(idx)%committed) cycle\n      mass%accepted_transaction_count = mass%accepted_transaction_count + results(idx)%mass%accepted_transaction_count\n      mass%storage_start = mass%storage_start + results(idx)%mass%storage_start\n      mass%storage_end = mass%storage_end + results(idx)%mass%storage_end\n      mass%storage_change = mass%storage_change + results(idx)%mass%storage_change\n      mass%total_in = mass%total_in + results(idx)%mass%total_in\n      mass%total_out = mass%total_out + results(idx)%mass%total_out\n      mass%residual = mass%residual + results(idx)%mass%residual\n    end do\n"""
 assert src.count(old1)==1, 'canonical transform anchor drift'
 assert src.count(old2)==1, 'reverse transform anchor drift'
 assert src.count(anchor)==1, 'contains transform anchor drift'
-src=src.replace(old1,new1,1).replace(old2,new2,1).replace(anchor,insert,1)
+assert src.count(oldagg)==1, 'aggregate oracle anchor drift'
+src=src.replace(old1,new1,1).replace(old2,new2,1).replace(anchor,insert,1).replace(oldagg,newagg,1)
 p.write_text(src)
 print('FPE03_FVQ15_OBSERVER_ONLY_TRANSFORM=PASS')
+print('FPE03_FVQ15_AGGREGATE_ORACLE_REBOUND_TO_DISPATCH_ORDER=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -163,7 +171,6 @@ rows=[]
 for line in Path(sys.argv[1]).read_text().splitlines():
     if not line.startswith('FPE03_FVQ15_COST '): continue
     p=line.split()
-    # marker, order, n, index, accepted_substeps, then seven cost counters
     order=p[1]; n=int(p[2]); idx=int(p[3]); accepted_substeps=int(p[4]); c=tuple(map(int,p[5:12]))
     if len(c)!=7: raise SystemExit(f'bad cost row: {line}')
     higher=any(x>b for x,b in zip(c,baseline))
