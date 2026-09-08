@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ14",
+  "handoff_from": "F-MR04",
+  "repository": "abhedwig-cell/SWAP5",
+  "candidate_source_commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "candidate_source_tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+  "source_branch_at_handoff": "qualification/f-vq14-fmr04-physical-runtime-safety",
+  "fmr04_closeout_commit": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+  "fmr04_evidence_commit": "21864207ed1731292620f0e523d7081eadd12acc",
+  "fmr04_workflow_run": 34187700639,
+  "fmr04_workflow_job": 101939262051,
+  "fmr04_status": "QUALIFIED_SERIALIZED_PHYSICAL_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+  "consumed_dependencies": {
+    "F-KT08_qualified_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "F-SI09_qualification_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "F-SI10_qualification_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74"
+  },
+  "corrected_legacy_oracle": {
+    "id": "B1.10",
+    "mod_mvg_sha256": "4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1"
+  },
+  "runtime_evidence": {
+    "real_headcalc_executed": true,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "rollback": "PASS",
+    "replay": "PASS",
+    "commit": "PASS",
+    "kernel_result_mass_complete": true,
+    "missing_mass_contribution_mask": 0,
+    "authoritative_mass_residual": 0.0
+  },
+  "independent_fvq14_scope": [
+    "verify exact candidate source provenance",
+    "independently compare the admitted restricted physical profile against corrected B1.10 reference behaviour",
+    "verify scientific/reference identity without modifying production source",
+    "verify authoritative unrounded interval mass evidence",
+    "preserve transaction semantics and generic [t0,t1] behaviour"
+  ],
+  "holds_at_entry": {
+    "physical_scientific_admission": false,
+    "production_physics_qualified": false,
+    "parallel_reference_backend_admitted": false,
+    "active_root_extraction_admitted": false,
+    "macropore_admitted": false,
+    "snow_admitted": false,
+    "fmq23_release": false
+  },
+  "production_source_changes_allowed_in_fvq14": false,
+  "required_vq_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272"
+}
