@@ -11,13 +11,16 @@ bash experiments/lmfp/run_lmfp04_ab_gate.sh
 
 python3 -m py_compile \
   experiments/lmfp/run_lmfp08_physics_informed_correction.py \
+  experiments/lmfp/run_lmfp08_shared_cache.py \
   experiments/lmfp/run_lmfp07_transient_abc.py \
   experiments/lmfp/run_lmfp06_darcian_reference.py \
   experiments/lmfp/run_lmfp04_ab.py \
   experiments/lmfp/run_lmfp03_column.py \
   experiments/lmfp/run_lmfp02_testbench.py
 
-python3 experiments/lmfp/run_lmfp08_physics_informed_correction.py \
+# The wrapper shares immutable tables across all qualification probes. Numerical
+# table contents and transient face equations are unchanged.
+python3 experiments/lmfp/run_lmfp08_shared_cache.py \
   lmfp04-artifacts/F-LMFP04_FULLRICHARDS_REFERENCE.txt \
   "$OUTDIR/F-LMFP08_EVIDENCE.json" \
   | tee "$OUTDIR/F-LMFP08_EVIDENCE.stdout.json"
