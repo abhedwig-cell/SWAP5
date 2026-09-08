@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF20",
+  "title": "Common Transactional Crop Lifecycle State Carrier",
+  "branch": "work/f-wof20-common-crop-lifecycle-state",
+  "base": {
+    "commit": "de5a1757edf863ebfc8bdf1c45e5c4eebafe9b11",
+    "status": "QUALIFIED_OWNER_CLASSIFICATION_BLOCKED_TRANSACTIONAL_CROP_LIFECYCLE_HOST_REQUIRED"
+  },
+  "purpose": "Introduce the smallest source-bound crop-owned physical state carrier needed by the qualified root/ET path and make it compatible with the existing generic F-KT transaction layer, without implementing crop evolution, calendar scheduling or option-dependent root history.",
+  "source_basis": {
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_interface_plant_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "owner_classification": "integration/f-wof/F-WOF19_STATUS.json",
+    "transaction_contract": "src/transaction/mod_transaction_reference.f90 and src/kernel/mod_kernel_transactions.f90"
+  },
+  "production_type": {
+    "module": "src/crop/mod_crop_lifecycle_state.f90",
+    "type": "crop_lifecycle_state_t",
+    "extends": "transaction_state_t",
+    "fields": [
+      "crop_emerged",
+      "development_stage",
+      "leaf_area_index"
+    ],
+    "clone_required": true,
+    "calendar_fields": false,
+    "forcing_fields": false,
+    "ET_result_fields": false,
+    "root_distribution_fields": false,
+    "solver_fields": false
+  },
+  "state_semantics": {
+    "crop_emerged": "committed crop lifecycle state visible to root/ET views",
+    "development_stage": "committed crop development state; finite but otherwise not range-restricted by this carrier",
+    "leaf_area_index": "committed crop structural state; finite and nonnegative",
+    "inactive_state": "still remains a valid committed state; downstream inactive routes may ignore DVS/LAI but the carrier itself remains finite and deterministic"
+  },
+  "transaction_semantics": [
+    "clone must produce an independent physical copy",
+    "F-KT committed initialization must accept the carrier through transaction_state_t",
+    "F-KT checkpoint capture must preserve exact crop state and provenance",
+    "trial mutation of a checkpoint snapshot must never mutate committed state",
+    "discarding a trial must leave committed state bitwise unchanged",
+    "replaying the same trial transformation from the same checkpoint must reproduce the same crop state bitwise"
+  ],
+  "validation": [
+    "development_stage must be finite",
+    "leaf_area_index must be finite and nonnegative",
+    "no implicit day, date, year or crop-calendar validation belongs in this carrier"
+  ],
+  "explicitly_not_in_this_state": [
+    "vcover",
+    "CF",
+    "fco2tra",
+    "potential_transpiration",
+    "rooted_nodes",
+    "cumulative_root_fraction",
+    "SWRD=2 actual_root_depth",
+    "SWRD=2 potential_root_depth",
+    "WRT",
+    "crop dates or calendar cursors",
+    "solver scratch"
+  ],
+  "qualification_tests": [
+    "valid/invalid state validation",
+    "direct clone bitwise identity",
+    "clone independence after mutation",
+    "F-KT committed initialization",
+    "F-KT checkpoint exact snapshot",
+    "trial mutation then discard leaves committed state unchanged",
+    "A/B/A replay from the same checkpoint is bitwise deterministic",
+    "O0/O2 output identity",
+    "single production delta under src/crop",
+    "no runtime/solver/kernel production changes"
+  ],
+  "forbidden": [
+    "daily cropdevelopment implementation",
+    "emergence or harvest scheduling",
+    "root-growth evolution",
+    "ET calculation",
+    "legacy crop-file I/O",
+    "runtime-owned crop state",
+    "parallel duplicate transaction authority",
+    "blind import from F-WOF04 through F-WOF10"
+  ],
+  "downstream_if_qualified": "Add option-dependent root-history carriers separately, then create a crop-owner read-only view/composition layer feeding F-WOF17 and F-WOF18.",
+  "affected_invariants": [2,3,4,6,7,8,9,16,21,27,29,30]
+}
