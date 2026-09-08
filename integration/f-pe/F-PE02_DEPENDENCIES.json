@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE02",
+  "title": "Diagnostics propagation and numerical policy separation dependencies",
+  "branch": "work/f-pe02-diagnostics-policy-separation",
+  "start_head": "4c62c7a7080a247a57d73893b2f2ed3a15bd7fd0",
+  "fpe01_decision": "QUALIFIED_PERFORMANCE_AND_EXECUTION_POLICY_QUALIFICATION_ARCHITECTURE",
+  "fpe01_final_validation": {
+    "workflow_run": 34208063805,
+    "workflow_job": 102002207144,
+    "conclusion": "success"
+  },
+  "qualified_reference_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "reference_execution": "SERIALIZED_REAL_PHYSICS_WORKER_COUNT_1",
+  "parallel_real_physics_admitted": false,
+  "mass_owner": "F-KT08",
+  "hard_rules": [
+    "REFERENCE semantics and physics remain unchanged",
+    "BALANCED THROUGHPUT and FALLBACK remain DEFINED_NOT_ADMITTED",
+    "diagnostic propagation must not mutate committed state or solver decisions",
+    "numerical policy must not change active physics modules forcing initial physical state or mass requirement"
+  ]
+}

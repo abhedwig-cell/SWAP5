@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE02",
+  "purpose": "Propagate already existing solver and transaction cost diagnostics to the physical MultiSWAP per-column result surface without changing numerical decisions.",
+  "source_chain": [
+    "HeadCalc worker diagnostics",
+    "soil_water_solver_diagnostics_t",
+    "trial_outcome_t",
+    "transaction_result_t",
+    "canonical_run_diagnostics_t",
+    "kernel_diagnostics_t",
+    "F-MR serialized per-column diagnostics"
+  ],
+  "required_propagated_counters": [
+    "accepted_substeps",
+    "nonlinear_iterations",
+    "internal_retries",
+    "headcalc_calls",
+    "jacobian_builds",
+    "linear_solves",
+    "backtracking_attempts",
+    "alternative_solver_calls"
+  ],
+  "not_yet_source_available": ["constitutive_evaluations","minimum_step_hits"],
+  "semantic_rule": "Counters are observational only and cannot participate in acceptance commit rollback mass or physics decisions in F-PE02."
+}

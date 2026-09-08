@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE02",
+  "branch": "work/f-pe02-diagnostics-policy-separation",
+  "start_head": "4c62c7a7080a247a57d73893b2f2ed3a15bd7fd0",
+  "phase": "IMPLEMENTATION",
+  "status": "IN_PROGRESS",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "physics_change_allowed": false,
+  "non_reference_policy_admission_allowed": false,
+  "reference_identity_required": true,
+  "open": [
+    "propagate existing solver counters through kernel and F-MR surfaces",
+    "separate numerical solver-control ownership from physical parameter ownership",
+    "add source-bound reference identity and fail-closed tests",
+    "qualify no physics no mass and no admission change"
+  ]
+}

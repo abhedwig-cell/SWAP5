@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE02",
+  "problem": "The pinned restricted B1.10 parameter carrier co-locates immutable physical parameter data and solver-control fields.",
+  "fields_to_separate_from_physical_parameter_ownership": [
+    "swkimpl",
+    "swkmean",
+    "max_iterations",
+    "max_backtracking",
+    "min_step_duration",
+    "compartment_balance_tolerance",
+    "total_balance_tolerance",
+    "head_abs_tolerance",
+    "head_rel_tolerance",
+    "ponding_tolerance"
+  ],
+  "physical_fields_that_must_not_be_changed_by_execution_policy": [
+    "active process flags",
+    "soil hydraulic parameterization cofgen",
+    "grid geometry",
+    "bottom physical boundary mode",
+    "forcing",
+    "initial physical state"
+  ],
+  "fpe02_admission_rule": "F-PE02 may make numerical ownership explicit but may not admit a non-REFERENCE execution class or choose new numerical values.",
+  "reference_identity_requirement": "The explicit REFERENCE numerical policy must reproduce the exact currently qualified reference values and outputs."
+}
