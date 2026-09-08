@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI18",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "control_head": "c441319bf0479dee30cff545b7060f87c09157c1",
+  "production_source_changed": false,
+  "workflow": {
+    "run_id": 34250194364,
+    "artifact_id": 10065661442,
+    "artifact_digest": "sha256:a5c24066c328c1f8babdc44dec795ee97e7f131bc45007f80828af1955f3cf71",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identity": true,
+    "deterministic_replay": true
+  },
+  "control": {
+    "type": "TEST_ONLY_REFERENCE_TRIDAG",
+    "reference": "SWAP 4.3.1 tridag.f90 Thomas operation order",
+    "only_test_dependency_changed": "TRIDAG implementation",
+    "physics_changed": false,
+    "solver_controls_changed": false,
+    "forcing_changed": false,
+    "initial_state_changed": false
+  },
+  "results": [
+    {"delta": 0.0, "converged": true, "nonlinear_iterations": 1, "internal_retries": 0, "backtracking_attempts": 1, "max_abs_residual": 0.0},
+    {"delta": 3e-12, "converged": true, "nonlinear_iterations": 3, "internal_retries": 0, "backtracking_attempts": 4, "max_abs_residual": 1.80688797257744227e-13},
+    {"delta": -3e-12, "converged": true, "nonlinear_iterations": 3, "internal_retries": 0, "backtracking_attempts": 4, "max_abs_residual": 1.80716552833359856e-13},
+    {"delta": 1e-11, "converged": true, "nonlinear_iterations": 6, "internal_retries": 0, "backtracking_attempts": 8, "max_abs_residual": 2.26763052779688223e-13},
+    {"delta": -1e-11, "converged": true, "nonlinear_iterations": 6, "internal_retries": 0, "backtracking_attempts": 8, "max_abs_residual": 2.23543406008275269e-13}
+  ],
+  "comparison_to_zero_correction_stub": {
+    "stub_3e_12": "accepted_1_newton",
+    "reference_tridag_3e_12": "accepted_3_newton",
+    "stub_1e_11": "retry_after_8_newton_32_backtracking",
+    "reference_tridag_1e_11": "accepted_6_newton_8_backtracking",
+    "binary_cliff_persists": false,
+    "accepted_higher_cost_cases_observed_with_reference_tridag": true
+  },
+  "finding": "Replacing only the zero-correction TRIDAG test double with the SWAP 4.3.1 Thomas operation order removes the binary rejection cliff and exposes deterministic accepted higher-cost Newton routes. The F-PE03 24/96 cliff is therefore a test-fixture artifact, not evidence of a production Richards convergence defect.",
+  "production_solver_patch_justified": false,
+  "scientific_admission_expanded": false,
+  "fpe_implication": "Existing F-PE03 cost-cliff/tail evidence produced with fsi04_real_headcalc_stubs.f90 must not be used for production p50/p95/p99 or bounded-cost policy decisions. Future performance characterization needs a harness with production-equivalent TRIDAG/linear algebra and independently admitted physical workloads."
+}
