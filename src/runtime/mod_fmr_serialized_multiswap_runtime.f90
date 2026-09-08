@@ -127,8 +127,8 @@ contains
     end do
 
     local_runtime%deterministic_collection = .true.
-    call build_aggregate(columns, diagnostics, batches, aggregate)
-    call finalize_runtime_diagnostics(results, local_runtime)
+    call build_aggregate(columns, diagnostics, batches, aggregate, order)
+    call finalize_runtime_diagnostics(results, local_runtime, order)
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap
 
@@ -397,12 +397,13 @@ contains
     end do
   end subroutine mark_all_rejected
 
-  subroutine build_aggregate(columns, diagnostics, batches, aggregate)
+  subroutine build_aggregate(columns, diagnostics, batches, aggregate, execution_order)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_column_diagnostics_t), intent(in) :: diagnostics(:)
     integer, intent(in) :: batches
     type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
-    integer, allocatable :: order(:)
+    integer, intent(in), optional :: execution_order(:)
+    integer, allocatable :: local_order(:)
     integer :: pos, i
 
     aggregate = fmr_aggregate_diagnostics_t()
@@ -413,9 +414,17 @@ contains
     allocate(aggregate%work_distribution(1))
     aggregate%work_distribution = 0_int64
 
-    call fmr_build_execution_order(columns, order)
-    do pos = 1, size(order)
-      i = order(pos)
+    allocate(local_order(size(columns)))
+    if (present(execution_order)) then
+      local_order = execution_order
+    else
+      do i = 1, size(columns)
+        local_order(i) = i
+      end do
+    end if
+
+    do pos = 1, size(local_order)
+      i = local_order(pos)
       aggregate%attempts = aggregate%attempts + diagnostics(i)%attempts
       aggregate%retries = aggregate%retries + diagnostics(i)%retries
       if (diagnostics(i)%accepted == 0) aggregate%failures = aggregate%failures + 1
@@ -427,11 +436,12 @@ contains
     aggregate%work_distribution(1) = int(aggregate%attempts, int64)
   end subroutine build_aggregate
 
-  subroutine finalize_runtime_diagnostics(results, runtime)
+  subroutine finalize_runtime_diagnostics(results, runtime, execution_order)
     type(fmr_serialized_column_result_t), intent(in) :: results(:)
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
-    integer, allocatable :: order(:)
-    integer :: pos, i, j, held
+    integer, intent(in), optional :: execution_order(:)
+    integer, allocatable :: local_order(:)
+    integer :: pos, i
     logical :: aggregate_complete
 
     runtime%number_admitted = 0
@@ -452,23 +462,17 @@ contains
     runtime%authoritative_aggregate_mass%residual = 0.0_real64
     aggregate_complete = .true.
 
-    allocate(order(size(results)))
-    do i = 1, size(results)
-      order(i) = i
-    end do
-    do i = 2, size(order)
-      held = order(i)
-      j = i - 1
-      do while (j >= 1)
-        if (results(order(j))%column_id <= results(held)%column_id) exit
-        order(j + 1) = order(j)
-        j = j - 1
+    allocate(local_order(size(results)))
+    if (present(execution_order)) then
+      local_order = execution_order
+    else
+      do i = 1, size(results)
+        local_order(i) = i
       end do
-      order(j + 1) = held
-    end do
+    end if
 
-    do pos = 1, size(order)
-      i = order(pos)
+    do pos = 1, size(local_order)
+      i = local_order(pos)
       if (results(i)%admitted) runtime%number_admitted = runtime%number_admitted + 1
       if (results(i)%solver_executed) then
         runtime%number_executed = runtime%number_executed + 1
