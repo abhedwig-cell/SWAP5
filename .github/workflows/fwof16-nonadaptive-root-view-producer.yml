@@ -1,0 +1,21 @@
+name: F-WOF16 nonadaptive root view producer
+
+on:
+  push:
+    branches:
+      - work/f-wof16-nonadaptive-root-view-producer
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF16 nonadaptive root view producer gate
+        run: bash tests/fwof/run_fwof16_nonadaptive_root_view_producer_gate.sh
