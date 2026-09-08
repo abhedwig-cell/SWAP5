@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ16",
+  "title": "Independent Scientific Admission of the Structural B1.10 Snow Process",
+  "branch": "qualification/f-vq16-snow-scientific-admission",
+  "qualification_only": true,
+  "source_modification_permitted": false,
+  "candidate_source": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "path": "src/process/mod_snow_process.f90",
+    "blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "sha256": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293"
+  },
+  "producer_handoff": {
+    "artifact": "integration/f-pm/F-PM02_FVQ_HANDOFF.json",
+    "handoff_head": "89a834f56317b516acca33b73ab94238ae30204d",
+    "structural_qualification_evidence": "integration/f-pm/F-PM02_QUALIFICATION_EVIDENCE.json",
+    "producer_decision_scope": "STRUCTURAL_MIGRATION_CORRECTNESS_ONLY"
+  },
+  "scientific_reference": {
+    "oracle": "B1.10",
+    "legacy_path": "SWAP/snow.f90",
+    "legacy_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "snapshot_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "independent_oracle_rule": "Compile and execute an exact byte-identity reference copy of B1.10 SWAP/snow.f90 against the candidate for identical process inputs; do not reuse F-PM02 expected output constants as the scientific oracle."
+  },
+  "admitted_time_domain": {
+    "semantic_unit": "one legacy Snow(2) call",
+    "duration": 1.0,
+    "calendar_anchor_required": false,
+    "non_midnight_start_allowed": true,
+    "subdaily_admitted": false,
+    "multiday_admitted": false,
+    "arbitrary_duration_scaling_admitted": false,
+    "rule": "The candidate may expose t0/t1, but scientific admission is limited to exact one-call daily B1.10 semantics with no dt rescaling."
+  },
+  "required_reference_cases": [
+    "normal existing snowpack with sublimation, melt and rain-on-snow retention/drainage",
+    "warm fresh snowfall branch",
+    "snow deficit clamp branch",
+    "sublimation suppressed branch",
+    "two-call continuation from an explicitly accepted first candidate"
+  ],
+  "required_gates": [
+    "exact candidate SHA/tree/blob lock",
+    "qualification branch does not modify candidate production source",
+    "exact legacy reference fixture SHA256 equals B1.10 pin",
+    "candidate versus compiled B1.10 legacy outputs bitwise identical for all admitted reference cases",
+    "candidate immutable parameters and forcing remain unchanged",
+    "candidate committed input state remains unchanged during evaluation",
+    "replay from the same committed state is bitwise exact",
+    "one-call interval may start at non-midnight fractional time",
+    "zero, negative, subdaily and multiday durations fail closed without candidate-state mutation",
+    "snow component mass identity uses unrounded values",
+    "melt is classified as internal transfer out of snow storage, not as external whole-system loss",
+    "liquid snow storage is contained in total snow storage and is not double counted",
+    "O0/O2 qualification output identity",
+    "no new scientific tolerance"
+  ],
+  "explicit_nonclaims": [
+    "No subdaily SNOW physics admission.",
+    "No arbitrary-duration SNOW scaling admission.",
+    "No standalone admission of composed F-KT mass completeness.",
+    "No SNOW MultiSWAP runtime admission.",
+    "No parallel execution admission.",
+    "No modification of Richards, HeadCalc, F-SI, F-KT, F-MR, coupling or performance policy."
+  ],
+  "admission_if_pass": {
+    "scientific_snow_process_admitted": true,
+    "scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "release_to_multiswap_qualification": true,
+    "runtime_composition_admitted": false,
+    "subdaily_admitted": false,
+    "arbitrary_duration_admitted": false
+  }
+}
