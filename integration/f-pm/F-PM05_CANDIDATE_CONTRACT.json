@@ -44,7 +44,7 @@
     "applied_to_candidate_api": true
   },
   "process_contract": {
-    "read_side": "read-only committed process_hydraulic_view_t pressure_head and active_nodes",
+    "read_side": "read-only committed process_hydraulic_view_t pressure_head and active_nodes only on the active Feddes evaluation route",
     "immutable_parameters": [
       "active_nodes/model topology",
       "hlim3l",
@@ -56,7 +56,7 @@
     "dynamic_crop_or_process_input": [
       "potential transpiration ptra",
       "current rooted_nodes",
-      "current normalized cumulative root fractions"
+      "current normalized cumulative root fractions when active evaluation is required"
     ],
     "physical_result": [
       "precomputed nonnegative per-node root_extraction_sink",
@@ -88,18 +88,25 @@
     "dry_above_hlim3": "h(node) > hlim3 => alpdry=1",
     "actual_node_uptake": "qrot(node)=qpot(node)*alpdry(node)"
   },
+  "zero_route_dependency_policy": {
+    "legacy_order_preserved": true,
+    "no_root_route_requires_hydraulic_view": false,
+    "no_root_route_requires_root_distribution": false,
+    "negligible_transpiration_route_requires_hydraulic_view": false,
+    "negligible_transpiration_route_requires_root_distribution": false,
+    "reason": "B1.10 exits before consuming pressure head or root distribution on these zero-uptake routes; SWAP5 must not introduce silent dependencies or unnecessary per-column data requirements"
+  },
   "fail_closed_domain": {
     "finite_threshold_parameters_required": true,
     "potential_transpiration_finite_nonnegative": true,
     "adcrh_strictly_greater_than_adcrl": true,
     "hlim4_strictly_below_both_hlim3_endpoints": true,
     "rooted_nodes_within_active_nodes": true,
-    "root_distribution_required_only_when_rooted_nodes_positive": true,
-    "cumulative_root_fraction_size_when_rooted": "rooted_nodes+1",
-    "cumulative_root_fraction_first_when_rooted": 0.0,
-    "cumulative_root_fraction_last_when_rooted": 1.0,
-    "cumulative_root_fraction_nondecreasing_when_rooted": true,
-    "stale_root_distribution_ignored_when_rooted_nodes_zero": true
+    "root_distribution_required_only_for_active_evaluation": "rooted_nodes > 0 and ptra >= 1e-10",
+    "cumulative_root_fraction_size_when_required": "rooted_nodes+1",
+    "cumulative_root_fraction_first_when_required": 0.0,
+    "cumulative_root_fraction_last_when_required": 1.0,
+    "cumulative_root_fraction_nondecreasing_when_required": true
   },
   "runtime_bridge": {
     "consumer": "exact F-MR09/F-VQ21 explicit precomputed root-sink route",
@@ -109,9 +116,9 @@
   },
   "required_owner_candidate_gates": [
     "canonical source-equation fixtures for potential uptake, hlim3 and drought reduction",
-    "no-root and negligible-transpiration zero routes",
+    "no-root and negligible-transpiration zero routes with no hydraulic-view or root-distribution dependency",
     "dynamic crop-derived root-distribution replacement without process state",
-    "invalid parameters, request distribution and hydraulic-view mismatch fail closed",
+    "invalid parameters, active request distribution and hydraulic-view mismatch fail closed",
     "A/B/A deterministic process output",
     "process result bridges unchanged into the exact F-MR09/F-VQ21 root-sink forcing field",
     "real serialized runtime books process-computed root extraction exactly once",
