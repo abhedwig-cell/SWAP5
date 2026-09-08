@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR06",
+  "goal": "Compose the exact F-VQ16-admitted B1.10 one-call-daily SNOW process into the transactional serialized physical MultiSWAP runtime.",
+  "ownership": {
+    "snow_physics_owner": "F-PM/F-VQ admission only; F-MR06 reuses exact admitted source without formula changes",
+    "transaction_owner": "F-KT",
+    "runtime_composition_owner": "F-MR",
+    "scientific_readmission_owner": "F-VQ",
+    "multiswap_admission_owner": "F-MQ24"
+  },
+  "event_semantics": {
+    "admitted_duration": 1.0,
+    "duration_unit": "legacy B1.10 day",
+    "non_midnight_exact_one_day_allowed": true,
+    "subdaily_allowed": false,
+    "multiday_allowed": false,
+    "one_call_per_outer_runtime_interval": true,
+    "snow_event_must_not_repeat_for_fkt_halfstep_or_retry_trials": true,
+    "snow_candidate_derived_from_committed_snow_state_once_per_outer_interval": true,
+    "snow_candidate_committed_only_if_corresponding_fkt_physical_candidate_is_accepted": true,
+    "rollback_restores_original_snow_and_soil_committed_state": true
+  },
+  "state_contract": {
+    "optional_snow_state_only_when_active": true,
+    "persistent_snow_state": ["ssnow", "slw"],
+    "immutable_snow_parameters": ["suppress_sublimation", "melt_coefficient"],
+    "snow_forcing": ["gsnow", "snrai", "tsoil1", "tav", "peva", "empreva", "epond"],
+    "no_solver_scratch_per_column": true
+  },
+  "mass_contract": {
+    "snow_storage": "ssnow only; slw is contained within ssnow",
+    "external_in": ["gsnow", "snrai"],
+    "external_out": ["sublimation"],
+    "internal_transfer": ["melt to receiving surface/soil component"],
+    "melt_must_not_be_double_counted_as_external_out": true,
+    "authoritative_whole_interval_completeness_owner": "composed physical model plus F-KT",
+    "mass_may_not_be_relaxed": true
+  },
+  "runtime_holds": {
+    "max_simultaneous_real_physical_solves": 1,
+    "parallel_reference_backend_admitted": false,
+    "performance_policy_changes_allowed": false,
+    "headcalc_direct_call_from_multiswap_runtime_allowed": false
+  },
+  "downstream": {
+    "new_composed_source_requires_independent_fvq": true,
+    "fmq24_resume_only_after_independent_fvq_pass": true,
+    "fmq24_blocker": "FMQ24-B01"
+  }
+}
