@@ -1,0 +1,43 @@
+{
+  "workunit": "F-WOF07",
+  "title": "Leaf reallocation reference reconciliation",
+  "baseline": {
+    "branch": "work/f-wof06-potential-shadow-state",
+    "commit": "28e127b1555f05a1862652ee6f33abe1619bbbec",
+    "status": "QUALIFIED_ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW_STATE_OWNERSHIP"
+  },
+  "branch": "work/f-wof07-leaf-reallocation-reference",
+  "status": "BLOCKED_LEAF_REALLOCATION_AVAILABILITY_CONTRACT_REQUIRED",
+  "qualification_scope": "REFERENCE_RECONCILIATION_ONLY",
+  "pinned_pcse_commit": "0d51ae84f405fd9b061222f2a0130e5351f460df",
+  "findings": {
+    "interior_leaf_cohort_semantics_resolved": true,
+    "source_bound_order": "death -> ageing -> proportional surviving-cohort reduction -> new growth",
+    "wofost73_imports_reallocation_capable_leaf_class": false,
+    "wofost81_imports_reallocation_capable_n_leaf_class": true,
+    "equality_edge_mass_safe": false,
+    "excess_edge_mass_safe": false,
+    "simple_less_than_to_less_equal_fix_sufficient": false
+  },
+  "oracle": {
+    "random_interior_cases": 10000,
+    "max_abs_mass_identity_error": 4.547473508864641e-13,
+    "max_abs_leaf_area_scaling_error": 1.7763568394002505e-15,
+    "max_abs_cohort_factor_error": 1.1102230246251565e-16
+  },
+  "required_owner_resolution": [
+    "define surviving-leaf availability limiter",
+    "define requested versus actually applied leaf transfer",
+    "update cumulative reallocation from applied transfer only",
+    "recompute storage inflow and conversion loss from applied transfers",
+    "prove equality and excess cases conserve dry matter",
+    "qualify ordering with leaf death, growth and nutrient bookkeeping"
+  ],
+  "production_code_changed": false,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_leaf_reallocation_allowed": false,
+  "stem_only_fwof05_remains_qualified": true,
+  "next": "Resolve the availability-aware applied-transfer contract before any leaf-reallocation production seam."
+}
