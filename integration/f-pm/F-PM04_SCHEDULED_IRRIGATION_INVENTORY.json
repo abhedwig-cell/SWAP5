@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "title": "Source-bound scheduled irrigation inventory and smallest hydraulic-view seam",
+  "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness",
+  "source_basis": {
+    "branch_base_commit": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+    "branch_base_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+    "fpm03_qualified_source_commit": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+    "fpm03_fixed_event_scientific_admission_head": "973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+    "fpm03_scientific_admission_merged": false,
+    "fsi17_process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "fmr07_committed_view_binding_ancestor": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "fpm01_dependency_matrix_blob": "d372d642e521842b13b9eccd17925859667a8982",
+    "legacy_oracle_path": "SWAP/irrigation.f90",
+    "legacy_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1"
+  },
+  "legacy_scheduled_gate": {
+    "outer_requirements": [
+      "sw_irrig == 1",
+      "schedule == 1",
+      "no fixed irrigation event already selected",
+      "crop emerged",
+      "inside admitted irrigation calendar window"
+    ],
+    "event_ordering": "fixed event selection precedes scheduled selection; scheduled irrigation is considered only when no fixed event has already been selected"
+  },
+  "timing_trigger_variants": {
+    "TCS1": {
+      "rule": "interpolate allowable actual/potential transpiration ratio from treltab at DVS; trigger when 1-(iqreddry_day+iqredsol_day)/iptra_day is below threshold",
+      "inputs": ["DVS", "daily potential transpiration", "daily drought reduction", "daily salinity reduction"],
+      "hydraulic_view": false
+    },
+    "TCS2": {
+      "rule": "trigger from depletion of readily available root-zone water",
+      "inputs": ["DVS", "root depth", "root-zone node geometry", "layer mapping", "watcon at current pressure head", "precomputed field/stress water contents"],
+      "hydraulic_view": true,
+      "additional_constitutive_evaluation": true
+    },
+    "TCS3": {
+      "rule": "trigger from depletion of totally available root-zone water",
+      "inputs": ["DVS", "root depth", "root-zone node geometry", "layer mapping", "watcon at current pressure head", "precomputed field/stress water contents"],
+      "hydraulic_view": true,
+      "additional_constitutive_evaluation": true
+    },
+    "TCS4": {
+      "rule": "trigger when root-zone depletion exceeds DVS-dependent allowed amount",
+      "inputs": ["DVS", "root depth", "root-zone node geometry", "layer mapping", "watcon at current pressure head", "precomputed field-capacity water content"],
+      "hydraulic_view": true,
+      "additional_constitutive_evaluation": true
+    },
+    "TCS5": {
+      "status": "OBSOLETE_AND_REJECTED_BY_B1_10",
+      "replacement": ["TCS7", "TCS8"]
+    },
+    "TCS6": {
+      "rule": "increment dayfix once per legacy Irrigation(3) daily call; every seventh count test root-zone deficit against irgthreshold",
+      "inputs": ["root-zone depletion", "dayfix"],
+      "persistent_state": ["dayfix"],
+      "hidden_call_as_day_semantics": true
+    },
+    "TCS7": {
+      "rule": "phcrit = afgen(hcritab,DVS); trigger when h(sensor_node) <= phcrit",
+      "inputs": ["DVS", "sensor node", "pressure head at sensor node"],
+      "hydraulic_view": true,
+      "additional_constitutive_evaluation": false
+    },
+    "TCS8": {
+      "rule": "thetacrit = afgen(tcritab,DVS); trigger when theta(sensor_node) <= thetacrit",
+      "inputs": ["DVS", "sensor node", "water content at sensor node"],
+      "hydraulic_view": true,
+      "additional_constitutive_evaluation": false
+    }
+  },
+  "minimum_interval_overlay": {
+    "tcsfix": "if enabled, event is admitted only when dayfix >= irgdayfix; accepted event resets dayfix to 1, otherwise dayfix increments while below interval",
+    "persistent_state": ["dayfix"],
+    "legacy_time_semantics": "one increment per Irrigation(3) call, which is invoked at flDayStart; therefore this is day-count management semantics, not a generic elapsed-time counter"
+  },
+  "depth_variants": {
+    "DCS1": {
+      "rule": "irr_depth=max(0,cdef + afgen(ditab,DVS)*0.1 - grai_red), with grai_red=grai when grai>raithreshold",
+      "inputs": ["root-zone deficit cdef", "DVS", "daily rain", "rain threshold"],
+      "hydraulic_or_geometry_dependencies": true
+    },
+    "DCS2": {
+      "rule": "irr_depth=afgen(fidtab,DVS)*0.1",
+      "inputs": ["DVS", "fixed-depth table"],
+      "hydraulic_or_geometry_dependencies": false
+    },
+    "depth_limit_overlay": "optional clamp to irgdepmin/irgdepmax",
+    "solute_overirrigation_overlay": "optional percentage increase when cml(sensor_node)>cirrthres"
+  },
+  "rate_and_application_rules": {
+    "normal_positive_rate": "if irr_rate>0 and irr_depth/irr_rate<=1: surface gird=irr_rate or SSDI qssdi(node range)=irr_rate; dt_irr_event=irr_depth/irr_rate",
+    "positive_rate_too_slow": "if irr_depth/irr_rate>1: temporarily adapt applied rate to irr_depth and use dt_irr_event=1 day",
+    "zero_rate": "spread irr_depth evenly over the whole day and use dt_irr_event=1 day",
+    "application_types": ["surface/sprinkler isuas<2", "SSDI isuas==2"],
+    "surface_concentration": "scheduled cirr=cirrs before trigger evaluation",
+    "task4_external_scaling": "legacy MultiSWAP may later scale gird and event duration by f_irr_avail; excluded from smallest seam"
+  },
+  "calendar_and_management": {
+    "start_end_window": "annual startirr/endirr with cross-year crop handling in legacy initialization/runtime",
+    "smallest_seam_contract": "calendar-window membership and crop-emergence are explicit management inputs to the process-facing request; hidden midnight or one-day kernel assumptions are prohibited",
+    "calendar_logic_migration_status": "NOT_INCLUDED_IN_SMALLEST_TCS7_DCS2_SEAM"
+  },
+  "selected_smallest_seam": {
+    "name": "TCS7_DCS2_SURFACE_REGULAR_RATE",
+    "why": "TCS7 exercises the admitted process hydraulic view directly with one pressure-head sample and no HeadCalc/constitutive internals; DCS2 supplies irrigation depth without root-zone integration; regular-rate surface application avoids SSDI mapping and legacy rate fallback branches.",
+    "included": [
+      "outer explicit management gates: irrigation enabled, schedule enabled, crop emerged, irrigation window open, no fixed event already selected",
+      "TCS7 DVS-dependent pressure-head threshold",
+      "pretranslated immutable sensor node index",
+      "DCS2 DVS-dependent fixed irrigation depth",
+      "surface application only",
+      "irr_rate>0 and irr_depth/irr_rate<=1",
+      "scheduled irrigation concentration metadata",
+      "transaction-safe active event continuation/completion",
+      "explicit external inflow result"
+    ],
+    "excluded": [
+      "TCS1-TCS4, TCS6, TCS8",
+      "tcsfix/dayfix",
+      "DCS1",
+      "root-zone depletion and watcon evaluation",
+      "rainfall reduction",
+      "depth limits",
+      "solute-threshold over-irrigation",
+      "SSDI scheduled application",
+      "irr_rate<=0",
+      "irr_depth/irr_rate>1 temporary rate adaptation",
+      "task4 f_irr_avail scaling",
+      "calendar parsing/window reconstruction",
+      "legacy I/O"
+    ]
+  },
+  "data_categories_for_selected_seam": {
+    "immutable_parameters": ["TCS7 DVS/pressure-head threshold table", "DCS2 DVS/fixed-depth table", "sensor_node", "surface application", "irr_rate", "cirrs"],
+    "persistent_process_state": ["only active scheduled-event continuation/timing when an event spans multiple solver intervals"],
+    "management_forcing": ["t0", "t1", "DVS", "irrigation_enabled", "schedule_enabled", "crop_emerged", "irrigation_window_open", "fixed_event_already_selected"],
+    "hydraulic_view": ["pressure_head(sensor_node)"],
+    "physical_result": ["gross surface irrigation rate", "event duration", "external inflow amount", "concentration metadata"],
+    "temporary_workspace": ["interpolated TCS7 threshold", "interpolated DCS2 depth", "trigger boolean"]
+  },
+  "mass_ownership": {
+    "irrigation_is_external_inflow": true,
+    "process_amount_is_reconciliation_evidence": true,
+    "authoritative_runtime_accounting": "accepted F-KT/F-MR accounting through the eventual top-boundary composition",
+    "double_booking_forbidden": true
+  }
+}
