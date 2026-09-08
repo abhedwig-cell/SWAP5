@@ -26,7 +26,7 @@ program test_fsi16_prescribed_bottom_head
   type(reference_richards_legacy_solver_t) :: solver
   type(reference_richards_legacy_workspace_t) :: workspace
   real(real64), target :: drainage(2,numnod), irrigation(numnod), zero_root(numnod), roots(numnod)
-  real(real64) :: head_value, expected_qbot, qnan, head_tolerance
+  real(real64) :: head_value, expected_qbot, expected_gradient, expected_residual, qnan
   integer(int64) :: request_a_before, request_b_before, request_c_before
   integer :: mode, failures, calls_before
 
@@ -58,6 +58,9 @@ program test_fsi16_prescribed_bottom_head
   expected_qbot = continuity_qbot(request_a, result_a)
   if (transfer(result_a%bottom_flux,0_int64) /= transfer(expected_qbot,0_int64)) failures = failures + 1
   if (transfer(result_a%bottom_flux,0_int64) == transfer(request_a%boundary%bottom_flux,0_int64)) failures = failures + 1
+  expected_residual = sum(workspace%richards%residual(1:numnod))
+  if (transfer(result_a%unrounded_mass_balance_residual,0_int64) /= transfer(expected_residual,0_int64)) &
+       failures = failures + 1
 
   call prepare_workspace(workspace)
   call solver%solve(request_b, workspace, result_b)
@@ -65,23 +68,29 @@ program test_fsi16_prescribed_bottom_head
   if (transfer(result_b%bottom_flux,0_int64) /= transfer(result_a%bottom_flux,0_int64)) failures = failures + 1
   if (.not. all(bitwise_same(result_b%candidate_state%pressure_head, result_a%candidate_state%pressure_head))) failures = failures + 1
   if (.not. all(bitwise_same(result_b%candidate_state%water_content, result_a%candidate_state%water_content))) failures = failures + 1
+  if (transfer(result_b%unrounded_mass_balance_residual,0_int64) /= &
+      transfer(result_a%unrounded_mass_balance_residual,0_int64)) failures = failures + 1
 
-  ! A nontrivial prescribed-head perturbation must control the solved lower node.
-  ! It starts from the same base state as request_a, so this checks boundary
-  ! authority rather than merely replaying an already-satisfied boundary value.
+  ! A nontrivial prescribed face-head perturbation starts from the same base
+  ! state as request_a. The last soil node is NOT the boundary face. Prove the
+  ! exact B1.10 face gradient instead:
+  !   head_gradient(NN+1)=(h(NN)-hbot)/(0.5*dz(NN))+1.
   call prepare_workspace(workspace)
   call solver%solve(request_c, workspace, result_c)
   if (result_c%status /= SW_SOLVE_CONVERGED) failures = failures + 1
   if (trim(result_c%diagnostics%route) /= 'legacy-reference-bound') failures = failures + 1
-  head_tolerance = max(1.0e-10_real64, 64.0_real64*epsilon(1.0_real64) * &
-       max(1.0_real64, abs(request_c%boundary%bottom_head)))
-  if (abs(result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) > head_tolerance) &
-       failures = failures + 1
   if (transfer(result_c%candidate_state%pressure_head(numnod),0_int64) == &
       transfer(result_a%candidate_state%pressure_head(numnod),0_int64)) failures = failures + 1
+  expected_gradient = (result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) / &
+       (0.5_real64*request_c%parameters%dz(numnod)) + 1.0_real64
+  if (transfer(workspace%richards%head_gradient(numnod+1),0_int64) /= transfer(expected_gradient,0_int64)) &
+       failures = failures + 1
   expected_qbot = continuity_qbot(request_c, result_c)
   if (transfer(result_c%bottom_flux,0_int64) /= transfer(expected_qbot,0_int64)) failures = failures + 1
   if (transfer(result_c%bottom_flux,0_int64) == transfer(request_c%boundary%bottom_flux,0_int64)) failures = failures + 1
+  expected_residual = sum(workspace%richards%residual(1:numnod))
+  if (transfer(result_c%unrounded_mass_balance_residual,0_int64) /= transfer(expected_residual,0_int64)) &
+       failures = failures + 1
 
   if (request_fingerprint(request_a) /= request_a_before) failures = failures + 1
   if (request_fingerprint(request_b) /= request_b_before) failures = failures + 1
@@ -117,8 +126,12 @@ program test_fsi16_prescribed_bottom_head
   write(*,'(A,Z16.16)') 'F-SI16_QBOT_BITS ', transfer(result_a%bottom_flux,0_int64)
   write(*,'(A,Z16.16)') 'F-SI16_HEAD_BITS ', transfer(result_a%candidate_state%pressure_head(numnod),0_int64)
   write(*,'(A,Z16.16)') 'F-SI16_PERTURBED_HEAD_BITS ', transfer(result_c%candidate_state%pressure_head(numnod),0_int64)
+  write(*,'(A,Z16.16)') 'F-SI16_FACE_GRADIENT_BITS ', transfer(expected_gradient,0_int64)
+  write(*,'(A,Z16.16)') 'F-SI16_UNROUNDED_RESIDUAL_BITS ', transfer(result_c%unrounded_mass_balance_residual,0_int64)
   print *, 'F-SI16_BOTTOM_FLUX_SEED_INDEPENDENCE PASS'
   print *, 'F-SI16_BOTTOM_HEAD_RESPONSE PASS'
+  print *, 'F-SI16_BOTTOM_FACE_GRADIENT_IDENTITY PASS'
+  print *, 'F-SI16_UNROUNDED_RESIDUAL_IDENTITY PASS'
   print *, 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS'
   print *, 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS'
   print *, 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS'
