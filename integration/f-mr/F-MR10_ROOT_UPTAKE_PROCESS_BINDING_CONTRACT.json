@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR10",
+  "title": "Explicit Committed-State Root-Uptake Process Runtime Binding",
+  "branch": "work/f-mr10-root-uptake-process-binding",
+  "base": {
+    "fvq22_closeout": "1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+    "fvq22_status": "QUALIFIED_INDEPENDENT_FPM05_MACRO_FEDDES_DROUGHT_ONLY_ROOT_WATER_UPTAKE_SCIENTIFIC_ADMISSION",
+    "fpm05_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+  },
+  "owner_resolution": {
+    "runtime_owner": "F-MR",
+    "crop_ET_root_input_owner": "crop/ET owner through an explicit runtime DTO",
+    "authoritative_mass_owner": "F-KT/F-MR accepted-step accounting",
+    "solver_root_sink_owner": "qualified F-MR09 route",
+    "F_WOF_merge_permitted": false
+  },
+  "cross_lineage_facts": {
+    "current_runtime_lineage_has_src_crop": false,
+    "F_WOF04_owner": "Crop, ET and root-uptake physics",
+    "F_WOF04_scope": "OWNER_QUALIFIED_STANDALONE_CROP_SUBCOMPONENT_ONLY",
+    "F_WOF10_full_crop_host_integration": false,
+    "F_WOF10_head": "98a26f0294aafac6d1ed46ace2d6bcc05914d9f0",
+    "F_WOF10_and_current_runtime_merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "lineages_diverged": true,
+    "blind_merge_forbidden": true
+  },
+  "legacy_source_bound_input_ownership": {
+    "RootExtraction_MACRO_ptra": "MOD_meteo%ptra",
+    "RootExtraction_MACRO_rooted_nodes": "plant_interface%noddrz",
+    "RootExtraction_MACRO_root_depth_zero_gate": "plant_interface%rd",
+    "RootExtraction_MACRO_root_distribution": "MOD_cropdevelopment%cumdens_top",
+    "outer_RootExtraction_crop_gate": "plant_interface%fl_cropemergence",
+    "cropdevelopment_update": "update_cumdens_top recomputes current cumulative root fractions from noddrz and current root-density distribution"
+  },
+  "selected_smallest_seam": {
+    "production_module": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "input_contract": [
+      "crop_emerged",
+      "potential_transpiration",
+      "current rooted_nodes",
+      "current normalized cumulative_root_fraction"
+    ],
+    "parameter_contract": "qualified root_water_uptake_parameters_t only",
+    "hydraulic_contract": "build read-only view from kernel_committed_state_t through qualified F-MR07 binding only for active crop evaluation",
+    "output_contract": "return qualified root_water_uptake_flux_result_t and process diagnostics without mutating forcing or committed state",
+    "inactive_crop_contract": "crop_emerged=false returns zero root sink without hydraulic-view or root-distribution dependency",
+    "mass_contract": "binding never books mass; accepted runtime root-sink accounting remains solely F-MR/F-KT",
+    "transaction_contract": "binding reads committed state only and has no persistent state or side effect"
+  },
+  "explicit_non_goals": [
+    "binding to a real WOFOST crop host",
+    "merging F-WOF04 through F-WOF10 lineage",
+    "computing ptra",
+    "computing root depth or root distribution",
+    "changing F-PM05 Feddes physics",
+    "changing solver or root-sink provider",
+    "booking root uptake mass",
+    "adding oxygen, salinity, frost, compensated, MICRO, swkimpl=1 or macropore uptake"
+  ],
+  "required_gates": [
+    "only the F-MR10 runtime binding is added under src",
+    "F-PM05 process and all solver/kernel/runtime owner blobs remain locked except the new binding",
+    "inactive crop yields zero without requiring committed hydraulic view or distribution",
+    "active crop builds the committed hydraulic view and reproduces direct F-PM05 process output bitwise",
+    "dynamic root-distribution input is passed through without reinterpretation",
+    "invalid active crop input fails closed",
+    "binding leaves committed state revision and physical snapshot unchanged",
+    "A/B/A binding evaluation is deterministic",
+    "binding output can enter unchanged F-MR09 root forcing with exactly-once accepted mass",
+    "F-VQ22 source-locked scientific oracle remains green as downstream regression",
+    "F-MR09 cross-process regressions remain green",
+    "O0/O2 output identity"
+  ],
+  "downstream_hold": {
+    "real_crop_host_binding": "BLOCKED_UNTIL_A_COMMON_QUALIFIED_CROP_HOST_LINEAGE_OR_EXPLICIT_OWNER_PROVIDER_EXISTS",
+    "reason": "current runtime lineage contains no src/crop and F-WOF10 explicitly does not qualify full crop-host lifecycle integration"
+  }
+}
