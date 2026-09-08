@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ20",
+  "qualification": "INDEPENDENT_FPM04_RESTRICTED_TCS7_DCS2_SINGLE_NODE_SSDI_SCIENTIFIC_ADMISSION",
+  "decision": "QUALIFIED_INDEPENDENT_RESTRICTED_TCS7_DCS2_SINGLE_NODE_SSDI_SCIENTIFIC_ADMISSION",
+  "candidate": {
+    "fpm04_closeout_commit": "46ef693672dda13261a966cc9904e72437c7bcfb",
+    "fpm04_closeout_tree": "a3d06ea93395bfc9c5eb1cf01c2369f91c98c5c6",
+    "tested_structural_source_commit": "55f1694b4f0978c2ddccce941718c8f9de3faa1f",
+    "production_source": "src/process/mod_irrigation_process.f90",
+    "production_source_blob": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+    "production_source_modified_by_fvq20": false,
+    "reference_source_modified_by_fvq20": false
+  },
+  "legacy_oracle": {
+    "canonical_nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "irrigation_f90_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "swap_f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "timecontrol_f90_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+    "tcs7_threshold": "phcrit = afgen(hcritab,14,dvs)",
+    "tcs7_trigger": "h(nodsen) <= phcrit",
+    "dcs2_depth": "dps2 = afgen(fidtab,14,dvs); irr_depth_cm = 0.1*dps2",
+    "scheduled_ssdi_source": "qssdi(nod_ssdi(1):nod_ssdi(2)) = irr_rate",
+    "scheduled_duration": "dt_irr_event = irr_depth/irr_rate",
+    "selection_semantics": "legacy scheduled selection is evaluated at an explicit Irrigation(3) management call; target selection_opportunity represents that call without embedding day-start, day-end or midnight semantics in the process/kernel"
+  },
+  "independent_verifier": {
+    "branch": "qualification/f-vq20-fpm04-scheduled-irrigation",
+    "decisive_verifier_head": "631c0daf04d34640450fd87002d895a2eb7b6c93",
+    "decisive_verifier_tree": "d0b4d2274e7e85406f3cfb4e086802673e50dffc",
+    "decisive_workflow_run_id": 34244184754,
+    "decisive_job_id": 102121786766,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler_package": "gfortran 13.2.0",
+    "output_sha256": "5cb7ad8dc9f361a6ce9dcae7ec0f006643368de9f15a51e5f7cda949aea70c94",
+    "fpm04_engineering_gate_used_as_scientific_oracle": false,
+    "fpm04_test_expected_values_used_as_scientific_oracle": false,
+    "fvq18_regression_oracle_commit": "973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+    "fvq18_regression_oracle_blob": "15989f375b557237eb36590f75361c02d19bb871"
+  },
+  "independent_scientific_evidence": {
+    "candidate_source_immutability": "PASS",
+    "canonical_b110_source_lock": "PASS",
+    "independent_equation_oracle": "PASS",
+    "architecture_source_lock": "PASS",
+    "explicit_selection_nonmidnight": "PASS",
+    "tcs7_trigger_equality_and_no_trigger": "PASS",
+    "dcs2_translated_cm_interpolation": "PASS",
+    "single_node_ssdi_source": "PASS",
+    "afgen_below_first_and_full_table_above_last": "PASS",
+    "partial_table_above_last_fail_closed": "PASS",
+    "continuation_without_new_selection_or_hydraulic_read": "PASS",
+    "completion_without_implicit_retrigger": "PASS",
+    "split_trial_no_state_or_water_mutation": "PASS",
+    "rollback_replay_exact": "PASS",
+    "a_b_a_exact": "PASS",
+    "fvq18_fixed_event_scientific_regression": "PASS",
+    "committed_fmr07_hydraulic_view_binding": "PASS",
+    "direct_scheduled_ssdi_real_fmr_fkt_composition": "PASS",
+    "authoritative_scheduled_ssdi_mass_exactly_once": "PASS",
+    "balanced_richards_committed_state_identity": "PASS",
+    "mass_complete_and_hard_residual": "PASS",
+    "o0_o2_oracle_output_identity": "PASS",
+    "o0_o2_fvq18_regression_output_identity": "PASS",
+    "o0_o2_runtime_mass_output_identity": "PASS",
+    "o0_o2_full_output_identity": "PASS"
+  },
+  "independent_mass_evidence": {
+    "application": "single-node SSDI",
+    "process_external_inflow": 0.12,
+    "authoritative_total_in_delta": 0.12,
+    "interpretation": "the scheduled process source is consumed by the existing F-MR/F-KT source route and authoritative accepted interval accounting records the external irrigation inflow exactly once"
+  },
+  "pre_decisive_attempts": [
+    {
+      "workflow_run_id": 34243463531,
+      "classification": "VERIFIER_HARNESS_REF_RESOLUTION_ONLY",
+      "finding": "initial source-lock helper referred to the independent F-VQ18 branch as a local ref in Actions checkout",
+      "candidate_source_changed": false
+    },
+    {
+      "workflow_run_id": 34243590654,
+      "classification": "VERIFIER_HARNESS_REF_RESOLUTION_ONLY",
+      "finding": "runner still used the local F-VQ18 branch name after the static helper was corrected",
+      "resolution": "replay F-VQ18 from exact qualified commit 973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+      "candidate_source_changed": false
+    },
+    {
+      "workflow_run_id": 34243643393,
+      "classification": "VERIFIER_NUMERICAL_EXPECTATION_TOO_STRICT",
+      "finding": "calculated linear interpolation was compared bitwise with a decimal literal despite equivalent source equation semantics",
+      "resolution": "machine-epsilon numerical tolerance for independently computed equation expectations only; replay identity remains bitwise",
+      "candidate_source_changed": false
+    },
+    {
+      "workflow_run_id": 34243879181,
+      "classification": "VERIFIER_TEMPORAL_CANCELLATION_TOLERANCE_TOO_STRICT",
+      "finding": "derived active duration from subtraction of absolute times near 1700 days was compared with a tolerance scaled only to the small duration",
+      "resolution": "duration oracle tolerance scaled to the absolute timestamp magnitude; production temporal behavior unchanged",
+      "candidate_source_changed": false
+    }
+  ],
+  "scope_admitted": [
+    "TCS7 pressure-head trigger using committed process hydraulic view and explicit validated sensor node",
+    "DCS2 DVS-dependent irrigation depth after adapter-side mm-to-cm translation",
+    "restricted deterministic AFGEN semantics over explicit finite strictly increasing knots",
+    "single-node scheduled SSDI with positive regular rate and event duration <= 1 day",
+    "explicit management selection opportunity independent of kernel midnight/day assumptions",
+    "transaction-safe scheduled event continuation, split, rollback/replay and completion",
+    "no implicit retrigger after completion without a new explicit selection opportunity",
+    "authoritative accepted scheduled SSDI external-inflow accounting exactly once through F-MR/F-KT",
+    "preservation of independently admitted fixed-event irrigation behavior"
+  ],
+  "scope_not_admitted": [
+    "scheduled multi-node SSDI",
+    "surface scheduled irrigation and gird-to-nird interception/meteo composition",
+    "TCS1-TCS4, TCS6 and TCS8",
+    "tcsfix/dayfix and TCS6 counters",
+    "DCS1",
+    "rainfall reduction",
+    "depth limits",
+    "solute-threshold over-irrigation",
+    "zero-rate or event-duration-greater-than-one-day fallback/adaptation",
+    "MultiSWAP task=4 availability scaling",
+    "legacy calendar parsing or irrigation file I/O",
+    "legacy partial-table stale SAVE-tail behavior above the final supplied knot"
+  ]
+}
