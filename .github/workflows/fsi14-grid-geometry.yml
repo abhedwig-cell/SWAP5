@@ -1,0 +1,28 @@
+name: F-SI14 explicit grid geometry
+
+on:
+  push:
+    branches:
+      - work/f-si14-grid-geometry-binding
+    paths:
+      - 'src/adapter/**'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/**'
+      - 'tests/fsi/run_fsi14_*.sh'
+      - 'integration/f-si/F-SI14_*.json'
+      - '.github/workflows/fsi14-grid-geometry.yml'
+  workflow_dispatch:
+
+jobs:
+  fsi14-grid-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-SI14 request grid-geometry authority gate
+        run: bash tests/fsi/run_fsi14_grid_authority_gate.sh
