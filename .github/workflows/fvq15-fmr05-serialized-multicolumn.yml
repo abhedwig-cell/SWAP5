@@ -85,10 +85,15 @@ jobs:
               assert status['QUALIFIED'] is True
               assert status['production_serialized_multicolumn_admission'] is True
               assert status['release_to_fmq23'] is True
-              assert status['qualification_run'] == admitted_run
-              assert status['qualification_job'] == admitted_job
-              assert status['qualification_execution_commit'] == admitted_execution_head
-              assert status['decision'] == 'QUALIFIED_FMR05_SERIALIZED_MULTICOLUMN_PHYSICAL_SCIENTIFIC_ADMISSION'
+              q = status['qualification_execution']
+              assert q['decisive_workflow_run'] == admitted_run
+              assert q['decisive_workflow_job'] == admitted_job
+              assert q['decisive_harness_head'] == admitted_execution_head
+              assert status['decision'] == 'QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION'
+              assert status['scientific_criterion'] == 'EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE'
+              assert status['maximum_observed_scientific_difference'] == 0.0
+              assert status['mass_complete'] is True
+              assert status['missing_mass_contribution_mask'] == 0
           else:
               assert status['release_to_fmq23'] is False
 
