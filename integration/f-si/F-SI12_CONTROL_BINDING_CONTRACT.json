@@ -3,7 +3,7 @@
   "workstream": "F-SI",
   "work_unit": "F-SI12",
   "title": "Explicit per-solve step-duration and numerical-control binding into HeadCalc",
-  "status": "IMPLEMENTED_PRETEST",
+  "status": "QUALIFIED_EXPLICIT_PER_SOLVE_CONTROLS_SWKIMPL0",
   "branch": "work/f-si12-explicit-solver-controls",
   "basis": {
     "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
@@ -27,7 +27,7 @@
       "head_rel_tolerance",
       "ponding_tolerance"
     ],
-    "remaining_headcalc_global_reads_on_solver_control_path": [
+    "removed_explicit_route_dependency_on_legacy_solver_control_globals": [
       "dt",
       "maxit",
       "maxbacktr",
@@ -40,7 +40,7 @@
       "critdevh1cp",
       "critdevponddt"
     ],
-    "architectural_issue": "the explicit common request was validated against legacy globals, while HeadCalc consumed those globals instead of the already-explicit per-solve request controls"
+    "resolved_architectural_issue": "the explicit common route now consumes the already-explicit per-solve request controls instead of requiring equality with and then consuming legacy numerical-control globals"
   },
   "ownership": {
     "external_policy_selection": "NOT_FSI",
@@ -54,7 +54,7 @@
     "explicit_route": "when an explicit state binding is used, numerical config and positive explicit_step_duration are required and become the values used by HeadCalc",
     "legacy_route": "when no explicit state binding is used, retain the current legacy globals as the effective control values",
     "adapter": "passes request%numerical and request%step_duration to HeadCalc; it does not choose policy",
-    "legacy_global_poisoning_target": "after request construction and before the common solve, poisoning the replaced numerical globals must not affect the admitted common result",
+    "legacy_global_poisoning_result": "after request construction, contradictory legacy numerical-control globals do not alter the admitted common-route result",
     "formula_change": false,
     "policy_change": false,
     "calendar_semantics_added": false
@@ -64,9 +64,10 @@
     "materialization_workflow_run": 34151590559,
     "materialization_workflow_job": 101834826285,
     "headcalc_blob": "9d19b389c139140de1ec7f880797ebb4edc128e2",
-    "reference_adapter_blob": "15c05cfd288247ac4a1487ae5156e80a0ca430b0"
+    "reference_adapter_blob": "15c05cfd288247ac4a1487ae5156e80a0ca430b0",
+    "automatic_materialization_trigger_retired_at": "38358f62b4d9990f19abbe7e0889aaf842b4cf2d"
   },
-  "admitted_profile_held_constant": {
+  "admitted_profile": {
     "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
     "drainage_irrigation": "F-SI10 precomputed provider",
     "root_sink": "F-SI11 precomputed provider",
@@ -75,20 +76,37 @@
     "swmacro": 0,
     "bottom_modes": [7, -2]
   },
-  "qualification_required": {
-    "legacy_reference_identity": true,
-    "explicit_request_controls_authoritative": true,
-    "poisoned_legacy_controls_no_leak": true,
-    "workers": [1, 2, 4, 8],
-    "o0_o2_identity": true,
-    "aba_order_independence": true,
-    "scratch_poisoning": true,
-    "request_immutability": true,
-    "solver_route_iteration_identity": true,
-    "focused_unrounded_equation_residual": true,
-    "fsi11_pinned_regression": true,
-    "fkt_boundary_regression": true
+  "qualification_evidence": {
+    "tested_head": "31f10286bb73b365cf83236a768dec49673d7f67",
+    "workflow_run": 34152115944,
+    "workflow_job": 101836370323,
+    "workflow_conclusion": "success",
+    "gate_conclusion": "F-SI12_QUALIFICATION_GATE PASS",
+    "checks": {
+      "static_control_binding": "PASS",
+      "request_controls_authoritative_o0_workers_1_2_4_8": "PASS",
+      "request_controls_authoritative_o2_workers_1_2_4_8": "PASS",
+      "poisoned_legacy_control_identity": "PASS",
+      "common_route_o0_o2_identity": "PASS",
+      "legacy_direct_identity_o0": "PASS",
+      "legacy_direct_identity_o2": "PASS",
+      "legacy_direct_o0_o2_identity": "PASS",
+      "fsi11_pinned_regression": "PASS",
+      "swkimpl1_hold_preserved": "PASS",
+      "fkt_boundary_regression": "PASS",
+      "aba_order_independence": "PASS_VIA_COMMON_ROUTE_GATE",
+      "scratch_poisoning": "PASS_VIA_COMMON_ROUTE_GATE",
+      "request_immutability": "PASS_VIA_COMMON_ROUTE_GATE",
+      "solver_route_iteration_identity": "PASS_VIA_FINGERPRINT_IDENTITY",
+      "focused_unrounded_equation_residual": "PASS_VIA_COMMON_ROUTE_GATE"
+    }
   },
+  "compiler_warnings_observed_not_resolved_by_fsi12": [
+    "HeadCalc static -Wdo-subscript warnings on guarded i-1 references",
+    "HeadCalc possible uninitialized sum1 warning on legacy paths",
+    "HeadCalc dkmean possible uninitialized result warning on legacy paths",
+    "corrected B1.10 hydraulic oracle compilation emits existing maybe-uninitialized warnings in legacy functions"
+  ],
   "holds": {
     "swkimpl1": "NOT_ADMITTED",
     "macropore": "NOT_ADMITTED",
@@ -96,13 +114,15 @@
     "parallel_reference_backend": "NOT_ADMITTED",
     "generic_time_semantics_owner": "F-KT"
   },
-  "scope_flags_before_qualification": {
+  "scope_flags": {
     "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "QUALIFIED": true,
     "physics_changed": false,
     "numerical_policy_changed": false,
-    "transaction_semantics_changed": false
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false,
+    "downstream_fsi13_allowed": true
   }
 }
