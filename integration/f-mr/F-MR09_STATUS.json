@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR09",
+  "scope": "EXPLICIT_PRECOMPUTED_ROOT_SINK_SERIALIZED_RUNTIME_COMPOSITION",
+  "phase": "OWNER_QUALIFIED_READY_FOR_INDEPENDENT_FVQ",
+  "status": "QUALIFIED_OWNER_CANDIDATE_EXPLICIT_PRECOMPUTED_ROOT_SINK_RUNTIME_COMPOSITION",
+  "branch": "work/f-mr09-root-sink-runtime-composition",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "owner_qualified": true,
+    "independently_scientifically_qualified": false
+  },
+  "start_checkpoint": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "tested_source_head": "81b5c8e7ec52cf1516da4e84b4812e2bf6c0adb0",
+  "tested_source_tree": "cfc106a13db636967013246c54dfaabccc991c0e",
+  "qualification_evidence_path": "integration/f-mr/F-MR09_QUALIFICATION_EVIDENCE.json",
+  "qualification_evidence_commit": "72ba6d895e05de25da305dfc5937b03450a94f17",
+  "contract_path": "integration/f-mr/F-MR09_ROOT_SINK_COMPOSITION_CONTRACT.json",
+  "decisive_workflow_run_id": 34250935461,
+  "decisive_workflow_job_id": 102144878533,
+  "decisive_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+  "compiler": "GNU Fortran 13.2.0",
+  "production_source_changed": true,
+  "new_root_uptake_physics_formula_changed_by_fmr09": false,
+  "runtime_composition_changed": true,
+  "authoritative_mass_semantics_changed": true,
+  "source_lock": {
+    "fsi11_qualified_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+    "solver_contract": "0a57b07712f93538cbfaf9130838682307cede09",
+    "headcalc": "420fe2996199e6d3f162b7669957e1a95919f353",
+    "root_sink_provider": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "source_sink_provider_unchanged": "d6c57add72387e5c0022a44319fff08046194aac",
+    "serialized_reference_backend": "fe1c1cf19d3702114cf7598e227d56f7dbc1e267",
+    "serialized_context_binding": "1818338d088ee61a3a1dd5220542e6650ba673ac",
+    "kernel_transactions_unchanged": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "irrigation_process_unchanged": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+    "snow_process_unchanged": "54702d71b4c84dce2842813549bd14c57301a383",
+    "multiswap_runtime_unchanged": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "qualified_owner_capabilities": [
+    "explicit separate F-SI11 root-sink provider composed into the serialized reference runtime",
+    "finite nonnegative precomputed qrot for the restricted swkimpl=0 route",
+    "heterogeneous nodewise precomputed qrot",
+    "legacy global qrot poison immunity when the explicit root provider is bound",
+    "root-inactive nonzero qrot fail-closed rejection",
+    "negative active qrot fail-closed rejection",
+    "checkpoint trial discard and bitwise replay for the root route",
+    "root-route A/B/A repeatability",
+    "authoritative root extraction total_out accounting exactly once",
+    "hard accepted water-balance residual of zero in the decisive balanced fixture",
+    "preservation of F-MR07 committed hydraulic view semantics",
+    "preservation of F-MR06 snow rollback/replay/mass behavior",
+    "replay preservation of the independently qualified F-VQ18 fixed irrigation oracle",
+    "replay preservation of the independently qualified F-VQ20 scheduled TCS7/DCS2 irrigation oracle",
+    "O0/O2 output identity"
+  ],
+  "not_admitted": [
+    "dynamic Feddes or drought-stress root extraction calculation",
+    "root-sink reevaluation inside Newton",
+    "swkimpl=1 root uptake",
+    "macropore root uptake",
+    "negative qrot as an admitted source convention",
+    "broader root-water-uptake process migration",
+    "independent scientific admission of the F-MR09 composed runtime candidate"
+  ],
+  "harness_finding": {
+    "classification": "HARNESS_ALLOCATABLE_SHAPE_REALLOCATION",
+    "production_defect": false,
+    "resolved": true,
+    "note": "The earlier length-3 qrot fixture silently reallocated an allocatable numnod=4 forcing component. The runtime correctly rejected the malformed shape. The qualified heterogeneous fixture preserves numnod."
+  },
+  "architecture_holds": [
+    "F-KT transaction semantics are unchanged.",
+    "F-SI11 production solver changes are exact blob materializations, not a second implementation.",
+    "The explicit root route does not depend on legacy global qrot as authority.",
+    "Root extraction mass is booked exactly once and mass conservation remains a hard acceptance property.",
+    "Irrigation, snow and MultiSWAP production sources remain unchanged.",
+    "The runtime owns the solver/process composition and does not broaden F-PM physics scope."
+  ],
+  "qualification_boundary": {
+    "owner_gate_complete": true,
+    "independent_fvq_required": true,
+    "fpm05_resume_allowed_now": false,
+    "reason": "F-PM05 may consume the composed route only after independent F-VQ admission of this exact immutable F-MR09 candidate."
+  },
+  "next_step": {
+    "owner": "F-VQ",
+    "recommended_work_unit": "F-VQ21",
+    "instruction": "Independently qualify the exact F-MR09 closeout candidate without modifying its production source. Verify source locks, heterogeneous root mapping, fail-closed cases, transaction replay/A-B-A, exactly-once authoritative mass, hard mass balance, and relevant irrigation/snow/hydraulic-view regressions. If qualified, hand back to F-PM05 for the restricted MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT process candidate."
+  }
+}
