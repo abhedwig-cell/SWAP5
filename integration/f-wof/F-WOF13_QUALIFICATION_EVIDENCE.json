@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF13",
+  "title": "Explicit Crop-Root State Snapshot and Root-Uptake Input Assembly Seam",
+  "branch": "work/f-wof13-crop-root-snapshot-assembly",
+  "base_commit": "9d4ce9336be3f4e6bc316bd580b359486d57fac6",
+  "tested_candidate": "372e5039baa8c7287ee8cd7390f37cb153f5038a",
+  "production_blob": {
+    "src/crop/mod_crop_root_uptake_input_assembly.f90": "71f1e237c41af56ee85dcadfaae330f5d50ae0f7"
+  },
+  "test_and_gate_blobs": {
+    "tests/fwof/test_fwof13_crop_root_snapshot_assembly.f90": "dc8a832d15e1998fbeabd8e17a1df6b9bada6dae",
+    "tests/fwof/run_fwof13_crop_root_snapshot_assembly_gate.sh": "43b538335df5d7abc20e806be2b1d8df7b54019f",
+    ".github/workflows/fwof13-crop-root-snapshot-assembly.yml": "4a32f919652cfadb9a9aeaf4e8716947cb80ca06"
+  },
+  "github_actions": {
+    "successful_run": 34265003920,
+    "conclusion": "success",
+    "first_run": 34264860633,
+    "first_run_conclusion": "failure",
+    "first_run_classification": "STATIC_GATE_FALSE_POSITIVE_BROAD_DATE_SUBSTRING_MATCHED_VALIDATE",
+    "first_run_production_or_physics_failure": false
+  },
+  "focused_gate": {
+    "production_delta_single_crop_assembly": "PASS",
+    "FWO11_FMR12_FMR10_protected_source_locks": "PASS",
+    "crop_ET_data_separation_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_view_ignores_invalid_ET_and_emits_canonical_DTO": "PASS",
+    "noncanonical_inactive_snapshot_fails_closed": "PASS",
+    "active_zero_root_exact_assembly": "PASS",
+    "active_rooted_exact_assembly": "PASS",
+    "snapshot_and_ET_result_read_only": "PASS",
+    "active_invalid_ET_fails_closed": "PASS",
+    "invalid_root_snapshot_fails_before_ET": "PASS",
+    "A_B_A_assembly_identity": "PASS",
+    "FMR12_to_FMR10_bitwise_identity": "PASS",
+    "downstream_committed_snapshot_ET_read_only": "PASS",
+    "actual_uptake_total_fixture": 0.20454545454545453,
+    "output_sha256": "bcfc6e0a3ab197f9a4d5307e8754517b795efb5eda2fc34c72feaef023c3fe9e"
+  },
+  "downstream_regression": {
+    "FMR09_cross_process_regression": "PASS",
+    "FMR09_O0_O2_output_identity": "PASS",
+    "FMR09_root_sink_exactly_once": "PASS",
+    "FMR09_hard_mass_balance": "PASS",
+    "FMR09_fixed_irrigation_regression": "PASS",
+    "FMR09_snow_regression": "PASS",
+    "FMR09_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "qualified_claims": [
+    "crop-root state/view data are structurally separate from current ET potential-transpiration data",
+    "the two categories can be assembled into the qualified F-WOF11 root-uptake DTO without runtime or solver dependencies",
+    "inactive crop assembly is dependency-free with respect to ET while still requiring a canonical inactive crop-root snapshot",
+    "active invalid ET or crop-root input fails closed",
+    "the assembled DTO is bitwise equivalent downstream to the direct F-MR10 route for the qualified fixture",
+    "assembly is read-only and deterministic under A/B/A replay"
+  ],
+  "claims_not_made": [
+    "a concrete WOFOST crop provider is qualified",
+    "a legacy global crop adapter is admitted",
+    "crop evolution or ET physics are migrated",
+    "daily crop lifecycle ordering is implemented in SWAP5",
+    "arbitrary subdaily crop evolution is qualified"
+  ]
+}
