@@ -3,13 +3,11 @@
   "workstream": "F-SI",
   "work_unit": "F-SI16",
   "title": "Explicit prescribed bottom-head boundary admission",
-  "status": "IN_PROGRESS_QBOT_MASS_AUTHORITY_TRACED",
+  "status": "IMPLEMENTED_PERSISTED_AWAITING_CI_AFTER_BOTTOM_DISTANCE_REPAIR",
   "branch": "work/f-si16-explicit-prescribed-bottom-head",
   "basis": {
     "fsi15_final_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
     "fsi15_decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
-    "fsi15_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
-    "fsi15_state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
     "fsi13_bottom_boundary_contract_blob": "e416a13e9cb1f78f3b8149e9d452c2985f067750",
     "gc02_blocker": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED"
   },
@@ -23,56 +21,52 @@
       "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
     ],
     "legacy_newton_equation": "HNEW(NN) - HBOT = 0",
-    "legacy_newton_row": "B_MAT(NN)=-1; D_MAT(NN)=HNEW(NN)-HBOT",
     "mode5_bottom_gradient": "head_gradient(NN+1)=(h(NN)-hbot)/disnod(NN+1)+1",
     "mode5_headcalc_darcy_term": "kmean(NN+1)*head_gradient(NN+1)",
-    "returned_qbot_trace": {
-      "legacy_authoritative_publication_stage": "SoilWater(3) calls fluxes() after accepted HeadCalc",
-      "legacy_arithmetic_macropore_inactive": "qbot=qtop+qrosum+qdrtot+(volact-volm1)/dt-qssdisum",
-      "legacy_arithmetic_macropore_active_extra_term": "qbot=qbot-QMaPo; active macropores remain outside F-SI16 admission",
-      "legacy_units": "cm/d",
-      "legacy_source_identity": {
-        "file": "SWAP/fluxes.f90",
-        "b0_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
-        "github_b0_manifest_match": true,
-        "b1_patch_search_fluxes_target": "NO_HIT"
-      },
-      "current_common_route_gap": "initialize_reference_state_binding seeds state%qbot from request%boundary%bottom_flux; reference_richards_legacy_solve publishes result%bottom_flux=state_binding%qbot immediately after HeadCalc; HeadCalc mode 5 does not overwrite state%qbot and common solve does not call SoilWater(3)/fluxes",
-      "current_mode5_common_qbot_authoritative": false
-    },
-    "mass_accounting_trace": {
-      "physical_step_order": "HeadCalc via SoilWater(2) -> SoilWater(3) -> integral(3,trial_mass)",
-      "integration_arithmetic": "qbotts=qbot*dt",
-      "trial_mass_recording": "record_b1_10_trial_mass_step receives qbotts exactly once per completed physical timestep",
-      "sign_contract": "bottom_flux>=0 is external inflow; bottom_flux<0 is external outflow",
-      "trial_units": "cm per timestep after qbot[cm/d]*dt[d]",
-      "transaction_boundary": "recoverable reference model exposes trial_mass%total_in and total_out as trial_outcome mass_in/mass_out",
-      "rejected_trial_semantics": "recoverable executor invalidates retryable/incomplete trial mass; transaction reference restores checkpoint/context and never commits rejected trial state",
-      "accepted_semantics": "transaction reference commits only the accepted two-half state/context after mass and temporal gates",
-      "whole_interval_completeness_owner": "F-KT/composed runtime; unchanged by F-SI16"
-    },
-    "legacy_global_poison_surface": {
-      "explicit_bottom_mode_selector": "request%boundary%bottom_mode overrides legacy swbotb inside explicit HeadCalc route",
-      "explicit_bottom_head": "request%boundary%bottom_head binds state%gwlinp and state%hbot before HeadCalc",
-      "known_unqualified_mode_specific_globals": "hplate/swbotb3impl/swbotb3resvert/deepgw/rimlay/sw4/qbotab and related selectors are control-flow outside SWBOTB=5",
-      "legacy_qbot_duplicate": "must not be authoritative for mode 5; current common route would leak request-seeded bottom_flux unless production gap is repaired",
-      "required_poison_tests": [
-        "legacy swbotb after request build",
-        "legacy hbot and gwlinp after request build",
-        "legacy qbot after request build",
-        "request bottom_flux independence for prescribed-head mode"
-      ]
-    }
+    "returned_qbot_legacy_arithmetic_macropore_inactive": "qbot=qtop+qrosum+qdrtot+(volact-volm1)/dt-qssdisum",
+    "mass_sign_contract": "bottom_flux>=0 is external inflow; bottom_flux<0 is external outflow"
   },
-  "implementation_seam": {
-    "required": true,
-    "bottom_mode_guard_change": "admit only request%boundary%bottom_mode==5 in addition to existing 7/-2",
-    "qbot_output_requirement": "materialize existing B1.10 mode-5 post-solve water-balance qbot from explicit state/provider data without calling legacy fluxes() and without using legacy qbot/hbot duplicates as authority",
-    "must_not_call_fluxes_from_common_solver": "fluxes() also mutates legacy q/inq integration state and would violate focused solver isolation",
+  "implemented_candidate": {
+    "candidate_head_before_status_checkpoint": "22a931efdb24ec525608d2269368b56c8e463529",
+    "production_files_changed_relative_to_fsi15": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_soil_water_solver_contract.f90"
+    ],
+    "bottom_mode_guard": "request bottom mode 5 is accepted in addition to existing 7/-2; other unowned modes remain fail closed",
+    "qbot_materialization": "after a successful mode-5 HeadCalc solve, bottom_flux is reconstructed from explicit qtop, storage change, source/sink and root-sink terms using the existing B1.10 continuity recurrence",
+    "legacy_fluxes_called_from_common_solver": false,
+    "legacy_lower_boundary_globals_authoritative_after_request_build": false,
+    "node_distance_generic_shape": "active_nodes or active_nodes+1",
+    "mode5_node_distance_requirement": "active_nodes+1 so the lower face distance used by the prescribed-head Darcy gradient is explicit",
+    "existing_modes_7_minus2_geometry_compatibility": "active_nodes remains valid",
+    "headcalc_geometry_validation": "accepts node_distance active_nodes or active_nodes+1 on explicit geometry route",
+    "mode5_short_geometry_behavior": "adapter rejects before HeadCalc with route bottom-distance-required",
     "new_prescribed_head_physics_formula": false,
-    "groundwater_code": false,
     "transaction_change": false,
     "numerical_policy_change": false
+  },
+  "ci_repair_history": {
+    "focused_run_before_headcalc_shape_repair": {
+      "run": 34238207242,
+      "job": 102101315015,
+      "head": "4455822020599a2ed9047977cd70b739114aa4f3",
+      "conclusion": "failure",
+      "failure": "HeadCalc explicit geometry validation still required node_distance size active_nodes and rejected the mode-5 active_nodes+1 lower-face geometry"
+    },
+    "repair_commit": "22a931efdb24ec525608d2269368b56c8e463529",
+    "repair_scope": "one HeadCalc geometry shape guard plus focused gate pin/update",
+    "repair_test_status": "NOT_YET_EVIDENCED_BY_NORMAL_FSI16_CI"
+  },
+  "focused_gate_intent": {
+    "bottom_flux_seed_independence": true,
+    "legacy_swbotb_hbot_gwlinp_qbot_poison_after_request_build": true,
+    "continuity_qbot_bit_identity": true,
+    "unowned_bottom_modes_fail_closed_before_headcalc": true,
+    "mode5_missing_bottom_face_distance_fail_closed_before_headcalc": true,
+    "short_geometry_negative_fixture_isolated_from_shared_parameter_set": true,
+    "o0_o2_identity": true,
+    "legacy_direct_identity_regression": true
   },
   "ownership": {
     "prescribed_head_physics": "existing B1.10 reference physics, unchanged",
@@ -83,12 +77,13 @@
     "groundwater_coupling_orchestration": "F-GC_NOT_IN_SCOPE"
   },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
     "TESTED": false,
     "QUALIFIED": false,
     "bottom_mode_5_admitted": false,
-    "authoritative_bottom_flux_available": false,
+    "mode5_candidate_materialized": true,
+    "authoritative_bottom_flux_candidate_available": true,
     "groundwater_coupling_admitted": false,
     "parallel_reference_backend_admitted": false,
     "physics_changed": false,
@@ -104,5 +99,5 @@
     "active_macropores": "NOT_ADMITTED",
     "parallel_reference_backend": "NOT_ADMITTED"
   },
-  "next_gate": "IMPLEMENT_MINIMAL_MODE5_COMMON_ROUTE_AND_AUTHORITATIVE_QBOT_BINDING"
+  "next_gate": "RUN_NORMAL_FSI16_FOCUSED_CI_THEN_CLOSEOUT_REGRESSIONS_BEFORE_QUALIFICATION"
 }
