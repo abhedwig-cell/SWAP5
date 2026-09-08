@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF17",
+  "title": "Option-Aware Crop-Root Geometry Snapshot Producer",
+  "branch": "work/f-wof17-option-aware-root-geometry",
+  "base": {
+    "commit": "df29eb9111d98a466cfdfc30f8a0a2546dc63d74",
+    "status": "QUALIFIED_RESTRICTED_NONADAPTIVE_CROP_ROOT_VIEW_PRODUCER"
+  },
+  "purpose": "Produce the explicit read-only crop_root_geometry_snapshot_t consumed by F-WOF16 from option-appropriate committed crop state and immutable root-depth parameters, without creating a universal duplicate root-depth state or implementing root-growth evolution.",
+  "source_provenance": {
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "legacy_interface_plant_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "legacy_regions": {
+      "initialize_rootextension": "SWAP/MOD_cropdevelopment.f90:1785-1825",
+      "update_rootextension": "SWAP/MOD_cropdevelopment.f90:1829-1950",
+      "afgen": "SWAP/functions.f90:66-108",
+      "crop_emergence_flag": "SWAP/interface_plant.f90:23-26",
+      "root_state_fields": "SWAP/interface_plant.f90:75-90"
+    },
+    "ownership_basis": "integration/f-wof/F-WOF15_STATUS.json",
+    "downstream_view_producer": "integration/f-wof/F-WOF16_STATUS.json"
+  },
+  "mode_contracts": {
+    "SWRD_1": {
+      "committed_inputs": ["crop_emerged", "DVS"],
+      "immutable_inputs": ["RDTB structured x/y table", "RDM maximum root depth"],
+      "current_root_depth": "min(AFGEN(RDTB,DVS),RDM)",
+      "independent_root_depth_state_required": false
+    },
+    "SWRD_2": {
+      "committed_inputs": ["crop_emerged", "actual_root_depth"],
+      "immutable_inputs": ["RDM maximum root depth"],
+      "current_root_depth": "exact committed actual_root_depth pass-through after validation",
+      "independent_root_depth_state_required": true,
+      "potential_root_depth": "not consumed by the current-root geometry view"
+    },
+    "SWRD_3": {
+      "committed_inputs": ["crop_emerged", "actual root biomass WRT"],
+      "immutable_inputs": ["RLWTB structured x/y table", "RDM maximum root depth"],
+      "current_root_depth": "min(AFGEN(RLWTB,WRT),RDM)",
+      "independent_root_depth_state_required": false
+    }
+  },
+  "inactive_route": {
+    "rule": "crop_emerged=false produces the canonical inactive geometry snapshot without consulting stale DVS, WRT, root-depth or interpolation-table values",
+    "reason": "legacy crop fields can retain stale values outside the active crop route and F-WOF11/F-WOF13 already qualify dependency-free inactive semantics"
+  },
+  "target_api": {
+    "output_type": "crop_root_geometry_snapshot_t",
+    "defined_by": "src/crop/mod_nonadaptive_crop_root_view_producer.f90",
+    "fields": ["crop_emerged", "current_root_depth"],
+    "mutates_committed_state": false,
+    "owns_committed_state": false,
+    "runtime_dependency": false,
+    "solver_dependency": false,
+    "ET_dependency": false,
+    "calendar_dependency": false,
+    "legacy_IO_dependency": false
+  },
+  "validation": [
+    "active maximum root depth must be finite and nonnegative",
+    "SWRD=1 active DVS must be finite and RDTB x/y arrays must be finite, same-sized and strictly increasing in x",
+    "SWRD=2 committed actual root depth must be finite, nonnegative and no greater than maximum root depth",
+    "SWRD=3 active WRT must be finite and nonnegative and RLWTB x/y arrays must be finite, same-sized and strictly increasing in x",
+    "interpolated root depth must be finite and nonnegative before clipping",
+    "structured table interpolation must reproduce AFGEN endpoint clamping and linear interpolation semantics"
+  ],
+  "state_and_memory_rules": [
+    "Do not persist a duplicate current_root_depth for SWRD=1 or SWRD=3 solely to feed root uptake.",
+    "Do not create any per-node state in this workunit.",
+    "SWRD=2 actual_root_depth remains committed physical history owned by the crop/root evolution path and is only read here.",
+    "The geometry snapshot is reconstructible/read-only output, not an independent transaction authority."
+  ],
+  "qualification_tests": [
+    "inactive dependency-free route for all three modes",
+    "SWRD=1 AFGEN interior and endpoint cases against independent legacy oracle",
+    "SWRD=2 exact bitwise pass-through",
+    "SWRD=3 AFGEN interior and endpoint cases against independent legacy oracle",
+    "invalid active DVS/WRT/root-depth/table fail closed",
+    "A/B/A determinism",
+    "input read-only",
+    "composition with F-WOF16 nonadaptive root-view producer",
+    "O0/O2 output identity"
+  ],
+  "forbidden": [
+    "root-growth evolution or daily cropdevelopment(3) scheduling",
+    "SWRD=2 rd/rdpot update logic",
+    "persistent noddrz or cumulative root-distribution fields",
+    "ET or potential-transpiration calculation",
+    "calendar or emergence-date calculation",
+    "legacy packed-table representation in the production API",
+    "runtime, solver, HeadCalc or file-I/O dependencies"
+  ],
+  "affected_invariants": [2, 3, 4, 6, 7, 9, 16, 21, 22, 27, 29, 30]
+}
