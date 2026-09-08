@@ -1,0 +1,32 @@
+name: F-LMFP07 Transient Darcian A-B-C
+
+on:
+  push:
+    branches:
+      - work/f-lmfp07-transient-darcian-ab
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/**'
+      - '.github/workflows/lmfp07-transient-ab.yml'
+  workflow_dispatch:
+
+jobs:
+  transient-ab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Toolchain identity
+        run: |
+          python3 --version
+          gfortran --version
+      - name: Transient Darcian lookup A-B-C gate
+        run: bash experiments/lmfp/run_lmfp07_transient_ab_gate.sh
+      - name: Upload transient evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp07-transient-ab-evidence
+          path: lmfp07-artifacts/
+          if-no-files-found: warn
