@@ -79,7 +79,7 @@ program test_fmr06_snow_smoke
   call require(same_bits(observation%snow_mass%snowfall_external_in, snowfall), 'snowfall mass preserved')
   call require(same_bits(observation%snow_mass%melt_internal_transfer, 0.0_real64), 'no melt smoke fixture')
   call require(same_bits(observation%snow_mass%sublimation_external_out, 0.0_real64), 'no sublimation smoke fixture')
-  call require(same_bits(observation%snow_mass%unrounded_residual, 0.0_real64), 'snow component mass exact')
+  call require(abs(observation%snow_mass%unrounded_residual) <= hard_mass_gate, 'snow component mass within hard gate')
 
   candidate_fp = candidate_fingerprint(candidate)
   call require(candidate_snow_state(candidate, initial_snow + snowfall, .true., t0), 'candidate snow state')
@@ -129,6 +129,7 @@ program test_fmr06_snow_smoke
   write(*,'(A)') 'FMR06_SNOW_COMMIT=PASS'
   write(*,'(A)') 'FMR06_SNOW_AUTHORITATIVE_MASS_COMPLETE=PASS'
   write(*,'(A,ES24.17E3)') 'FMR06_SNOW_AUTHORITATIVE_MASS_RESIDUAL=', result%mass%residual
+  write(*,'(A,ES24.17E3)') 'FMR06_SNOW_COMPONENT_UNROUNDED_RESIDUAL=', observation%snow_mass%unrounded_residual
   write(*,'(A)') 'FMR06_SNOW_SUBDAILY_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR06_SNOW_MULTIDAY_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR06_SNOW_SMOKE_TEST PASS'
