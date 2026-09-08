@@ -63,6 +63,9 @@ jobs:
           candidate = 'c28e7a2810b4a3678c577335a6a3086b173eb976'
           tree = 'a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6'
           runtime_blob = 'e4f5bc0bf47e2721d689e62107b5224196a093d9'
+          admitted_run = 34198628912
+          admitted_job = 101972045606
+          admitted_execution_head = '25d9ed1768da7e470d283a85a1683243fe23c18c'
 
           assert contract['qualification_only'] is True
           assert contract['source_modification_permitted'] is False
@@ -70,10 +73,24 @@ jobs:
           assert contract['candidate_source_tree'] == tree
           assert contract['candidate_production_source']['blob'] == runtime_blob
           assert status['candidate_source_commit'] == candidate
+          assert status['candidate_source_tree'] == tree
           assert status['production_source_changed_by_fvq15'] is False
           assert status['reference_source_changed_by_fvq15'] is False
-          assert status['scientific_admission'] is False
-          assert status['release_to_fmq23'] is False
+          assert status['parallel_reference_backend_admitted'] is False
+
+          if status['scientific_admission']:
+              assert status['IMPLEMENTED'] is True
+              assert status['PERSISTED'] is True
+              assert status['TESTED'] is True
+              assert status['QUALIFIED'] is True
+              assert status['production_serialized_multicolumn_admission'] is True
+              assert status['release_to_fmq23'] is True
+              assert status['qualification_run'] == admitted_run
+              assert status['qualification_job'] == admitted_job
+              assert status['qualification_execution_commit'] == admitted_execution_head
+              assert status['decision'] == 'QUALIFIED_FMR05_SERIALIZED_MULTICOLUMN_PHYSICAL_SCIENTIFIC_ADMISSION'
+          else:
+              assert status['release_to_fmq23'] is False
 
           assert handoff['candidate_source_commit'] == candidate
           assert handoff['candidate_source_tree'] == tree
@@ -101,6 +118,7 @@ jobs:
           print('FVQ15_PROVENANCE_LOCK PASS')
           print('FVQ15_FVQ14_SCIENTIFIC_BASIS PASS')
           print('FVQ15_QUALIFICATION_ONLY_SOURCE_UNCHANGED PASS')
+          print('FVQ15_STATUS_PROVENANCE PASS')
           PY
           printf 'qualification_head=%s\n' "$(git rev-parse HEAD)" > qualification-results/context.txt
           printf 'candidate_head=%s\n' "$(git -C candidate rev-parse HEAD)" >> qualification-results/context.txt
