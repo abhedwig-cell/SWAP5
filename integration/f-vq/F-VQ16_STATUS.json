@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ16",
+  "branch": "qualification/f-vq16-snow-scientific-admission",
+  "candidate_source_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+  "candidate_source_tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+  "phase": "INDEPENDENT_SCIENTIFIC_QUALIFICATION_HARNESS_PREPARATION",
+  "status": "IN_PROGRESS",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "qualification_only": true,
+  "production_source_changed_by_fvq16": false,
+  "reference_source_changed_by_fvq16": false,
+  "scientific_snow_process_admitted": false,
+  "admitted_scope": null,
+  "subdaily_admitted": false,
+  "arbitrary_duration_admitted": false,
+  "runtime_composition_admitted": false,
+  "multiswap_snow_admitted": false,
+  "reference": {
+    "oracle": "B1.10",
+    "legacy_source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "exact_legacy_source_independently_verified_from_distribution": true
+  },
+  "completed": [
+    "Exact F-PM02 source candidate and tree verified live.",
+    "Independent F-VQ16 branch created directly from the exact source candidate.",
+    "B1.10 legacy SWAP/snow.f90 independently recovered from the supplied SWAP 4.3.1 distribution and SHA256 verified against the repository B1.10 pin.",
+    "Qualification contract persisted before harness execution."
+  ],
+  "open": [
+    "Persist exact B1.10 legacy source fixture and independent comparison harness.",
+    "Run source-lock and legacy-fixture identity gates.",
+    "Run admitted branch matrix and fail-closed time tests under O0 and O2.",
+    "Review mass-transfer classification independently.",
+    "Persist immutable qualification evidence and final decision."
+  ],
+  "holds": [
+    "F-PM02 structural qualification is not scientific admission.",
+    "No SNOW MultiSWAP qualification before F-VQ16 PASS.",
+    "No subdaily or arbitrary-duration snow physics is admitted.",
+    "No candidate production-source modification is permitted on this qualification unit."
+  ]
+}
