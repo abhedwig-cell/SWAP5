@@ -33,6 +33,10 @@ module mod_soil_water_solver_contract
      real(real64) :: bottom_head = 0.0_real64
   end type soil_water_boundary_conditions_t
 
+  type, public :: soil_water_physical_config_t
+     logical :: macropore_active = .false.
+  end type soil_water_physical_config_t
+
   type, public :: soil_water_numerical_config_t
      integer :: max_iterations = 0
      integer :: max_backtracking = 0
@@ -83,6 +87,7 @@ module mod_soil_water_solver_contract
      type(soil_water_parameter_set_t), pointer :: parameters => null()
      type(soil_water_physical_state_t) :: base_state
      type(soil_water_boundary_conditions_t) :: boundary
+     type(soil_water_physical_config_t) :: physical
      type(soil_water_numerical_config_t) :: numerical
      type(hydraulic_evaluation_context_t) :: evaluation
      real(real64) :: step_duration = 0.0_real64
