@@ -12,6 +12,10 @@
     "fsi14_bottom_distance_guard_repair_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4",
     "fsi14_unqualified_candidate_checkpoint": "c0eb2ba5591161a5c087bd505f2bb07043c3eece",
     "fsi14_qualified_candidate_head": "82f90dec30bf13161eab2178f3220b8249a9c288",
+    "fsi14_qualification_record_head_verified": "c2bd174ea46568b87d1ae13d8063c47da5a63cc9",
+    "fsi14_closeout_regression_head_verified": "01eb57447f75e01c0bd146ff863d81d034213caf",
+    "fsi14_status_promotion_head_verified": "b27006037c2c3f14b2f422c837f3f7d5eb25d4d6",
+    "fsi14_materializer_retirement_head": "7df6d71bdb673a5d4bbf27c09403da27d1aab0a0",
     "headcalc_blob": "c46756412df7527d6298246570b2aa31bd983823",
     "reference_adapter_blob": "b17b65563fef826772923afe9c32ca7e0463ec14",
     "reference_workspace_blob": "a09ba3457a8ce3685df446bfacbf5220cd401507",
@@ -32,7 +36,27 @@
       "head": "82f90dec30bf13161eab2178f3220b8249a9c288",
       "conclusion": "success"
     },
-    "qualification_record_self_verification_required": true
+    "qualification_record_self_verification": {
+      "run": 34209357787,
+      "job": 102006397530,
+      "head": "c2bd174ea46568b87d1ae13d8063c47da5a63cc9",
+      "conclusion": "success"
+    },
+    "closeout_regression_gate": {
+      "run": 34209708249,
+      "job": 102007522734,
+      "head": "01eb57447f75e01c0bd146ff863d81d034213caf",
+      "conclusion": "success",
+      "fsi13_pinned_regression": "PASS",
+      "fkt_boundary_regression": "PASS"
+    },
+    "qualified_status_contract_self_verification": {
+      "run": 34210017053,
+      "job": 102008515309,
+      "head": "b27006037c2c3f14b2f422c837f3f7d5eb25d4d6",
+      "conclusion": "success"
+    },
+    "final_qualification_artifact_self_verification_required": true
   },
   "admitted_semantics": {
     "explicit_common_route_grid_geometry_source": "soil_water_solve_request_t%parameters",
@@ -93,7 +117,11 @@
     "FSI14_T17_FOCUSED_UNROUNDED_EQUATION_RESIDUAL": "PASS",
     "FSI14_T18_FSI13_LEGACY_DIRECT_IDENTITY_O0": "PASS",
     "FSI14_T19_FSI13_LEGACY_DIRECT_IDENTITY_O2": "PASS",
-    "FSI14_T20_FSI13_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS"
+    "FSI14_T20_FSI13_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS",
+    "FSI14_T21_FSI13_PINNED_REGRESSION": "PASS",
+    "FSI14_T22_FKT_BOUNDARY_REGRESSION": "PASS",
+    "FSI14_T23_QUALIFICATION_RECORD_SELF_VERIFICATION": "PASS",
+    "FSI14_T24_QUALIFIED_STATUS_CONTRACT_SELF_VERIFICATION": "PASS"
   },
   "negative_and_hold_contracts": {
     "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
@@ -142,6 +170,19 @@
       "failure_class": "TEST_HARNESS_EXPLICIT_INTERFACE_ABI_MISMATCH",
       "common_route_same_geometry_results_before_failure": "PASS_FOR_MODES_7_AND_MINUS2_O0_O2_1_2_4_8",
       "production_source_changed_to_fix_failure": false
+    },
+    "post_qualification_materializer_attempt": {
+      "run": 34210017094,
+      "job": 102008515803,
+      "head": "b27006037c2c3f14b2f422c837f3f7d5eb25d4d6",
+      "conclusion": "failure",
+      "failure_class": "EXPECTED_FAIL_CLOSED_STALE_PREIMAGE_AFTER_SOURCE_ALREADY_MATERIALIZED",
+      "observed_preimage": "c46756412df7527d6298246570b2aa31bd983823",
+      "expected_old_preimage": "355bf276e3564bdf9128c23077dbe03da712a17c",
+      "commit_step_skipped": true,
+      "production_source_changed": false,
+      "governance_action": "automatic materialization push trigger retired",
+      "governance_commit": "7df6d71bdb673a5d4bbf27c09403da27d1aab0a0"
     }
   },
   "legacy_warnings_observed_not_claimed_resolved": [
@@ -166,5 +207,17 @@
     "diagnostics": "PRESERVED",
     "optional_functionality_scaling": "PRESERVED",
     "no_silent_time_or_io_assumptions_added": true
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "physics_changed": false,
+    "grid_discretization_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false,
+    "production_source_unchanged_since_repair_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4"
   }
 }
