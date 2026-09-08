@@ -125,6 +125,13 @@ module mod_kernel_transactions
     integer :: checkpoint_lineage_rejections = 0
     integer :: checkpoint_revision_rejections = 0
     integer :: checkpoint_time_rejections = 0
+    integer :: nonlinear_iterations = 0
+    integer :: internal_retries = 0
+    integer :: headcalc_calls = 0
+    integer :: jacobian_builds = 0
+    integer :: linear_solves = 0
+    integer :: backtracking_attempts = 0
+    integer :: alternative_solver_calls = 0
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
   end type kernel_diagnostics_t
 
@@ -627,6 +634,13 @@ contains
     diagnostics%solver_rejections = runtime_diagnostics%solver_rejections
     diagnostics%temporal_rejections = runtime_diagnostics%temporal_rejections
     diagnostics%mass_rejections = runtime_diagnostics%mass_rejections
+    diagnostics%nonlinear_iterations = runtime_diagnostics%nonlinear_iterations
+    diagnostics%internal_retries = runtime_diagnostics%internal_retries
+    diagnostics%headcalc_calls = runtime_diagnostics%headcalc_calls
+    diagnostics%jacobian_builds = runtime_diagnostics%jacobian_builds
+    diagnostics%linear_solves = runtime_diagnostics%linear_solves
+    diagnostics%backtracking_attempts = runtime_diagnostics%backtracking_attempts
+    diagnostics%alternative_solver_calls = runtime_diagnostics%alternative_solver_calls
     diagnostics%max_abs_step_mass_residual = runtime_diagnostics%max_abs_step_mass_residual
   end subroutine map_transaction_diagnostics
 

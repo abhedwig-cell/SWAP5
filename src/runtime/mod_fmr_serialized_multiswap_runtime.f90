@@ -34,6 +34,14 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: solver_executed = .false.
     character(len=32) :: solver_route = 'not-run'
     integer :: solver_iterations = 0
+    integer :: accepted_substeps = 0
+    integer :: solver_nonlinear_iterations = 0
+    integer :: solver_internal_retries = 0
+    integer :: solver_headcalc_calls = 0
+    integer :: solver_jacobian_builds = 0
+    integer :: solver_linear_solves = 0
+    integer :: solver_backtracking_attempts = 0
+    integer :: solver_alternative_solver_calls = 0
     integer(int64) :: initial_revision = -1_int64
     integer(int64) :: final_revision = -1_int64
     real(real64) :: final_committed_time = 0.0_real64
@@ -262,6 +270,14 @@ contains
     output%mass = kernel_result%mass
     diagnostic%attempts = kernel_diag%attempts
     diagnostic%retries = kernel_diag%retries
+    output%accepted_substeps = kernel_diag%accepted_substeps
+    output%solver_nonlinear_iterations = kernel_diag%nonlinear_iterations
+    output%solver_internal_retries = kernel_diag%internal_retries
+    output%solver_headcalc_calls = kernel_diag%headcalc_calls
+    output%solver_jacobian_builds = kernel_diag%jacobian_builds
+    output%solver_linear_solves = kernel_diag%linear_solves
+    output%solver_backtracking_attempts = kernel_diag%backtracking_attempts
+    output%solver_alternative_solver_calls = kernel_diag%alternative_solver_calls
     candidate_ready = candidate%ready()
 
     if (kernel_diag%admission_rejections > 0 .or. kernel_result%status == KERNEL_STATUS_NOT_ADMITTED) then
