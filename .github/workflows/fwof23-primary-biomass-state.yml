@@ -1,0 +1,21 @@
+name: F-WOF23 primary biomass state
+
+on:
+  push:
+    branches:
+      - work/f-wof23-primary-biomass-state-boundary
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF23 primary biomass state gate
+        run: bash tests/fwof/run_fwof23_primary_biomass_state_gate.sh
