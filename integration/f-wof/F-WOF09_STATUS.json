@@ -1,0 +1,44 @@
+{
+  "workunit": "F-WOF09",
+  "title": "Production reallocation request/apply structural seam",
+  "baseline": {
+    "branch": "work/f-wof08-reallocation-request-apply-contract",
+    "commit": "31957266a3c8ef06c16fcf2d4322ae7937c0fdcc",
+    "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_CONTRACT"
+  },
+  "branch": "work/f-wof09-reallocation-request-apply-seam",
+  "status": "ADMITTED_FOR_MINIMAL_REQUEST_APPLY_SEAM_IMPLEMENTATION",
+  "qualification_scope": "PURE_REALLOCATION_POLICY_AND_SCALAR_DONOR_AVAILABILITY_ONLY",
+  "owner": "Crop physics",
+  "scope": {
+    "preserve_fwof04_reference_api_unchanged": true,
+    "request_phase_separate_from_apply_phase": true,
+    "cumulative_state_updates_from_applied_only": true,
+    "leaf_scalar_availability_allowed": true,
+    "leaf_cohort_integration_allowed": false,
+    "stem_scalar_availability_allowed": true,
+    "storage_receiver_bookkeeping_allowed": true,
+    "one_day_crop_process_admission": true,
+    "full_crop_host_integration": false,
+    "wofost81_nitrogen_in_scope": false
+  },
+  "required_gates": [
+    "full-availability parity with qualified F-WOF04 reference call",
+    "availability-limited transfer preserves unused cap",
+    "cumulative state advances from applied transfer only",
+    "zero-availability identity",
+    "leaf equality/full-depletion scalar edge is mass safe",
+    "combined leaf and stem dry-matter balance",
+    "repeat trial from same committed state is deterministic",
+    "invalid request/cap/state fails closed",
+    "non-one-day duration fails closed",
+    "O0 and O2 outputs are identical"
+  ],
+  "affected_invariants": [3, 7, 9, 13, 21, 23, 26, 27, 30],
+  "production_migration_allowed": true,
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "next": "Implement a pure request phase and pure availability-aware apply phase without modifying the F-WOF04 reference seam."
+}
