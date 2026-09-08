@@ -1,8 +1,8 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03",
-  "status": "CHARACTERIZED_REFERENCE_COST_CLIFF_NO_ACCEPTED_DIFFICULT_FIXTURE",
+  "status": "PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING",
   "qualified_physical_tail": false,
   "basis": {
     "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
@@ -82,13 +82,40 @@
     "smallest_tested_flux_perturbation_fraction": 0.0001,
     "smallest_tested_flux_perturbations_rejected": true
   },
+  "qualified_lineage_fixture_audit": {
+    "fvq14": {
+      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "evidence": "reference package has storage_start equal storage_end and identical initial/final pressure head and water content"
+    },
+    "fvq15": {
+      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "evidence": "multicolumn reference qualification is bitwise bound to F-VQ14 and balances top/bottom and per-node source/sink forcing"
+    },
+    "fsi09": {
+      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "evidence": "uniform head per column, equal top and bottom flux, zero source/sink; qualification requires unchanged water content and one nonlinear iteration"
+    },
+    "fsi10": {
+      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "evidence": "heterogeneous nonzero drainage and irrigation are constructed with exact per-node net balance, preserving the zero focused residual"
+    },
+    "fvq09": {
+      "result": "HARNESS_CONTRACT_ONLY",
+      "evidence": "real source-bound B1.10 temporal characterization did not execute; external TTUTIL and Hupsel asset admission remained blocked"
+    },
+    "fvq10": {
+      "result": "PROMOTION_CONTRACT_ONLY",
+      "evidence": "real B1.10 temporal characterization and production temporal profile both remain unqualified; synthetic unit-test values are not production evidence"
+    },
+    "accepted_nonstationary_current_lineage_fixture_found": false
+  },
   "interpretation": {
     "accepted_reference_cost_variation_observed": false,
     "accepted_difficult_physical_fixture_observed": false,
     "sharp_reference_cost_cliff_observed": true,
     "cost_cliff_description": "stationary uniform accepted states use the low reference cost vector; tested nonstationary or flux-perturbed cases enter the bounded existing retry/rollback path and do not commit",
     "production_bug_claimed": false,
-    "reason_no_bug_claim": "the current qualification fixture and strict control profile may be too narrow; accepted nonstationary evidence must be sought before attributing the cliff to production physics or solver defects"
+    "reason_no_bug_claim": "the current qualification coverage contains no accepted nonstationary real-physics fixture on the current F-MR05 lineage, so the observed cliff cannot yet distinguish fixture narrowness, solver-control interaction, or a production solver defect"
   },
   "claim_limits": {
     "physical_tail_percentiles_qualified": false,
@@ -101,5 +128,11 @@
     "parallel_real_physics_admitted": false,
     "synthetic_fmq23_tail_promoted_to_physical_evidence": false
   },
-  "next_gate": "SEARCH_CURRENT_QUALIFIED_LINEAGE_FOR_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE"
+  "blocker": {
+    "code": "FPE03-B01",
+    "status": "BLOCKED_FAIL_CLOSED",
+    "description": "Admit or port at least one accepted nonstationary real-physics fixture on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
+    "owner_boundary": "F-VQ/F-MR or the owning physical workstream"
+  },
+  "next_gate": "ADMIT_OR_PORT_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_ON_CURRENT_FMR05_LINEAGE"
 }
