@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF21",
+  "title": "SWRD=2 Optional Transactional Root-History State",
+  "branch": "work/f-wof21-swrd2-root-history-state",
+  "base": {
+    "commit": "c201e393834b260401edcd7ceb2a4864ec65684f",
+    "status": "QUALIFIED_COMMON_TRANSACTIONAL_CROP_LIFECYCLE_STATE_CARRIER"
+  },
+  "purpose": "Add only the irreducible SWRD=2 root-depth history to the common crop lifecycle carrier while keeping SWRD=1 state-free for root depth and refusing to duplicate WRT as an SWRD=3-only helper state.",
+  "source_basis": {
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_fixed_crop_source": "SWAP/fixed.f90",
+    "legacy_wofost_source": "SWAP/wofost.f90",
+    "ownership_evidence": "integration/f-wof/F-WOF15_SOURCE_BOUND_OWNERSHIP_EVIDENCE.json",
+    "common_state": "integration/f-wof/F-WOF20_STATUS.json"
+  },
+  "mode_decision": {
+    "SWRD_1": {
+      "extra_committed_root_history": [],
+      "root_depth": "reconstructible from committed DVS and immutable RDTB/RDM"
+    },
+    "SWRD_2": {
+      "extra_committed_root_history": ["actual_root_depth", "potential_root_depth"],
+      "reason": "both values are incrementally updated from their prior committed values and actual depth may lag potential depth under stress/assimilation limits"
+    },
+    "SWRD_3": {
+      "extra_committed_root_history_in_this_workunit": [],
+      "required_input": "WRT",
+      "decision": "BLOCK_STANDALONE_WRT_DUPLICATION",
+      "reason": "WRT is broader crop biomass state: fixed-crop derives/updates root biomass as crop state when active physics needs it, while WOFOST evolves s%wrt together with other organ biomass and publishes it to plant_interface. It must be owned by a broader biomass host/view, not duplicated solely for root geometry."
+    }
+  },
+  "production_type": {
+    "module": "src/crop/mod_swrd2_crop_lifecycle_state.f90",
+    "type": "swrd2_crop_lifecycle_state_t",
+    "extends": "crop_lifecycle_state_t",
+    "added_fields": ["actual_root_depth", "potential_root_depth"],
+    "clone_must_preserve_dynamic_subtype": true,
+    "allocated_only_for_SWRD2_execution_class": true
+  },
+  "validation": [
+    "common crop lifecycle validation must pass",
+    "actual_root_depth must be finite and nonnegative",
+    "potential_root_depth must be finite and nonnegative",
+    "actual_root_depth must not exceed potential_root_depth",
+    "maximum-root-depth RDM validation remains parameter/view-composition responsibility because RDM is immutable parameter data, not state"
+  ],
+  "transaction_semantics": [
+    "F-KT clone/checkpoint must retain the SWRD=2 dynamic subtype and both root-history values",
+    "trial mutation must not mutate committed state",
+    "same-checkpoint replay must be bitwise deterministic",
+    "SWRD=1 columns retain the smaller common crop lifecycle type and do not pay for SWRD=2 state"
+  ],
+  "forbidden": [
+    "root-growth update physics",
+    "daily cadence assumptions",
+    "adding noddrz as persistent state",
+    "adding WRT solely for SWRD=3",
+    "adding RDM to dynamic state",
+    "runtime or solver ownership of crop root history",
+    "modifying F-KT transaction authority",
+    "modifying legacy B1.10 checkpoint representation"
+  ],
+  "downstream_if_qualified": "SWRD=1 and SWRD=2 can then obtain authoritative geometry inputs from new crop-owned state. SWRD=3 remains blocked on a broader crop biomass owner/view for WRT.",
+  "affected_invariants": [3,4,6,7,8,16,21,27,29,30]
+}
