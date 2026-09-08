@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "oracle": "B1.10 fixed irrigation event path",
+  "source": {
+    "archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "path": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "verified_from_project_archive": true,
+    "verification_date": "2026-09-08"
+  },
+  "runtime_equations_and_rules": {
+    "task3_reset": "gird=0, cirr=0, qssdi=0, dt_irr_event=1 before fixed-event decision",
+    "event_match": "abs(irdate(nirri)-t1900) < 1e-3",
+    "application_type": "isua=irtype(nirri)",
+    "surface_rate": "for isua<2, gird=irrate(nirri)",
+    "surface_concentration": "for isua<2, cirr=irconc(nirri)",
+    "ssdi_rate": "for isua==2, qssdi(nod_ssdi(1):nod_ssdi(2))=irrate(nirri)",
+    "ssdi_sum": "qssdisum increases by the sum over the SSDI node range",
+    "duration": "dt_irr_event=irdepth(nirri)/irrate(nirri)",
+    "cursor": "nirri increments by one after event activation",
+    "event_flag": "irrigevent=1 after event activation"
+  },
+  "translation_rules": {
+    "surface_units": "irdepth converted mm to cm; irrate converted mm/hour to cm/day",
+    "ssdi_depth_distribution": "before unit conversion, irdepth for type 2 is divided by the number of SSDI nodes",
+    "ssdi_rate_distribution": "irrate is not divided by the number of SSDI nodes and is applied at every SSDI node",
+    "duration_limit": "irdepth/irrate must not exceed one day",
+    "ssdi_total_water_identity": "node_count * per_node_rate * duration equals original total irrigation depth"
+  },
+  "legacy_line_anchors": {
+    "task3_fixed_event_block": "407-434",
+    "fixed_event_read_and_translation": "685-740"
+  }
+}
