@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "status": "SOURCE_BOUND_COST_CLIFF_LOCALIZED_TO_FULL_TRIAL_RICHARDS_NONCONVERGENCE",
+  "production_source_changed": false,
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "basis": {
+    "overlay_candidate_head": "d1fb887368dd64e100f9d9b6c68d04bbff2491a0",
+    "overlay_workflow_run": 34245629574,
+    "overlay_workflow_job": 102126743263,
+    "overlay_artifact_id": 10063853770,
+    "overlay_artifact_digest": "sha256:d728bfa671e8f7e525c400a20014c53f3c52a98d8a8f484dca9556a1da76235b",
+    "adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "transaction_blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "serialized_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "canonical_interval_blob": "f2cae79d533343db818c11e0b61b605ac5f6739d"
+  },
+  "observed_perturbed_route": {
+    "cases": 3,
+    "accepted": 0,
+    "kernel_status": 2,
+    "solver_route": "legacy-reference-retry",
+    "accepted_substeps": 0,
+    "headcalc_calls": 3,
+    "nonlinear_iterations": 24,
+    "jacobian_builds": 24,
+    "linear_solves": 24,
+    "backtracking_attempts": 96,
+    "internal_retries": 3,
+    "alternative_solver_calls": 0
+  },
+  "causal_chain": [
+    "Each perturbed transaction starts a full trial from the same committed/checkpoint state.",
+    "HeadCalc exhausts the configured eight Newton iterations without satisfying convergence.",
+    "On normal loop exhaustion HeadCalc resets trial soil state, sets fldecdt and request_dt_reduction, and increments the worker internal-retry diagnostic.",
+    "The F-SI legacy binding maps fldecdt or request_dt_reduction to SW_SOLVE_RETRY_ADVISED with route legacy-reference-retry.",
+    "The serialized reference backend returns from advance before setting outcome.solver_ok when the solve status is not SW_SOLVE_CONVERGED.",
+    "execute_reference_interval sees full_outcome.solver_ok=false, increments solver_rejections and immediately reject-and-retries the transaction.",
+    "Because rejection occurs on the full trial, the two-half branch, transaction mass acceptance and temporal acceptance are not reached for these attempts.",
+    "With max_retries=2 there are three full-trial attempts. Three times eight Newton iterations gives 24 nonlinear iterations; four maximum backtracking attempts per Newton iteration gives 96 backtracking attempts."
+  ],
+  "first_divergence_stage": "FULL_TRIAL_RICHARDS_SOLVER_NONCONVERGENCE_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE",
+  "not_established": [
+    "No mass-balance rejection is established as the cause.",
+    "No temporal-comparator rejection is established as the cause.",
+    "No production solver defect is established because the perturbations are diagnostic extrapolations outside the scientifically admitted fixture.",
+    "No representative difficult-tail distribution is established.",
+    "No bounded-cost threshold or fallback policy is admitted."
+  ],
+  "next_useful_action": "Characterize the nonlinear convergence boundary itself using observer-only diagnostics or a source-bound diagnostic probe. Vary perturbation magnitude around the admitted baseline without changing production solver controls, and stop once the transition between converged and full-trial retry is localized. Any perturbed fixture still requires independent scientific admission before production claims."
+}
