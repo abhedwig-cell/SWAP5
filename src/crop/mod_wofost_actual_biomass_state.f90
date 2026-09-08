@@ -132,7 +132,7 @@ contains
     value = self%root_biomass
   end function wofost_actual_root_biomass
 
-  logical function valid_nonnegative(value) result(valid)
+  pure logical function valid_nonnegative(value) result(valid)
     real(real64), intent(in) :: value
     valid = ieee_is_finite(value) .and. value >= 0.0_real64
   end function valid_nonnegative
