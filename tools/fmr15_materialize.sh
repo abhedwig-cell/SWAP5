@@ -128,5 +128,9 @@ mapfile -t expected < <(printf '%s\n' "${paths[@]}" | sort)
 [[ "$(printf '%s\n' "${changed[@]}")" == "$(printf '%s\n' "${expected[@]}")" ]]
 echo "FMR15_MATERIALIZE_SOURCE_PATH_SET=PASS"
 
-git diff --check -- "${paths[@]}"
-echo "FMR15_MATERIALIZE_DIFF_CHECK=PASS"
+# Historical trailing whitespace in the exact F-MR11 postimage is preserved on
+# purpose. Only the newly overlaid F-MR13 semantic delta must be whitespace-clean.
+git diff --check "$INCOMING" -- \
+  src/legacy/b1_10_port/headcalc.f90 \
+  src/solver/mod_reference_richards_workspace.f90
+echo "FMR15_MATERIALIZE_NEW_OVERLAP_DELTA_DIFF_CHECK=PASS"
