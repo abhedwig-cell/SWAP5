@@ -23,8 +23,9 @@ def require(condition: bool, message: str) -> None:
 
 
 def parameter(text: str, name: str) -> Decimal:
+    number = r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?"
     match = re.search(
-        rf"real\(real64\),\s*parameter\s*::\s*{re.escape(name)}\s*=\s*([+-]?[0-9]+(?:\.[0-9]+)?)_real64",
+        rf"real\(real64\),\s*parameter\s*::\s*{re.escape(name)}\s*=\s*({number})_real64",
         text,
         flags=re.IGNORECASE,
     )
