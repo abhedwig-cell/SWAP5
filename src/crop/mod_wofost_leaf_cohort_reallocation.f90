@@ -57,12 +57,12 @@ contains
       return
     end if
 
-    if (available == 0.0_real64) then
+    if (available <= 0.0_real64) then
       diagnostics%scale = 1.0_real64
       return
     end if
 
-    if (applied_leaf == available) then
+    if (applied_leaf >= available) then
       candidate_weights = 0.0_real64
       diagnostics%scale = 0.0_real64
       diagnostics%removed = available
