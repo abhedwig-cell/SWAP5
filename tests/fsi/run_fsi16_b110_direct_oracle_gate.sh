@@ -22,13 +22,10 @@ decode_b64_gzip() {
   base64 --decode "$encoded" | gzip -dc > "$output"
 }
 
-# The exact B1.10 HeadCalc payload is intentionally split because the original
-# source is large. Base64 ignores the newline boundaries between persisted parts.
-cat "$SOURCE"/headcalc.f90.gz.b64.part00 \
-    "$SOURCE"/headcalc.f90.gz.b64.part01 \
-    "$SOURCE"/headcalc.f90.gz.b64.part02 \
-    "$SOURCE"/headcalc.f90.gz.b64.part03 > "$BUILD/headcalc.f90.gz.b64"
-decode_b64_gzip "$BUILD/headcalc.f90.gz.b64" "$BUILD/headcalc_exact.f90"
+# Deterministic complete source payloads reconstructed from the canonical
+# SWAP 4.3.1 distribution. The historical split HeadCalc preview remains for
+# audit history; this gate uses the complete deterministic payload below.
+decode_b64_gzip "$SOURCE/headcalc_exact.f90.gz.b64" "$BUILD/headcalc_exact.f90"
 decode_b64_gzip "$SOURCE/watstor.f90.gz.b64" "$BUILD/watstor_exact.f90"
 decode_b64_gzip "$SOURCE/fluxes.f90.gz.b64" "$BUILD/fluxes_exact.f90"
 decode_b64_gzip "$SOURCE/tridag_b15.f90.gz.b64" "$BUILD/tridag_exact.f90"
