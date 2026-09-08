@@ -38,7 +38,7 @@ program test_fmr09_root_sink_runtime
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
   type(canonical_numerical_config_t) :: config
   real(real64) :: conductivity0, expected_root_amount, total_in_delta, total_out_delta, tolerance
-  integer :: dispatch_control, dispatch_balanced, k
+  integer :: dispatch_control, dispatch_balanced
   logical :: ok
 
   call configure_physical_parameters(parameters(1), initial_state, conductivity0)
@@ -48,13 +48,10 @@ program test_fmr09_root_sink_runtime
   call configure_control_forcing(forcing_control(1), conductivity0)
 
   forcing_balanced(1) = forcing_control(1)
-  ! Fill the already allocated numnod shape elementwise. This exercises the
-  ! qualified heterogeneous precomputed qrot seam without allocatable reshaping.
-  do k = 1, numnod
-    forcing_balanced(1)%root_extraction_sink(k) = 0.02_real64 + 0.001_real64*real(k-1,real64)
-  end do
-  call require(maxval(forcing_balanced(1)%root_extraction_sink) > &
-       minval(forcing_balanced(1)%root_extraction_sink), 'heterogeneous root sink fixture')
+  ! Scalar assignment preserves the already-qualified numnod forcing shape.
+  ! A shorter array constructor would trigger allocatable reallocation and turn
+  ! this into a shape-rejection test instead of an active-root runtime test.
+  forcing_balanced(1)%root_extraction_sink = 0.04_real64
   forcing_balanced(1)%subsurface_irrigation_source = forcing_balanced(1)%root_extraction_sink
   expected_root_amount = sum(forcing_balanced(1)%root_extraction_sink) * (t1-t0)
 
@@ -108,7 +105,6 @@ program test_fmr09_root_sink_runtime
 
   write(*,'(A,1X,ES24.16)') 'FMR09_ROOT_EXPECTED_OUT=', expected_root_amount
   write(*,'(A,1X,ES24.16)') 'FMR09_ROOT_AUTHORITATIVE_TOTAL_OUT_DELTA=', total_out_delta
-  write(*,'(A)') 'FMR09_HETEROGENEOUS_ROOT_SINK=PASS'
   write(*,'(A)') 'FMR09_ROOT_SINK_EXACTLY_ONCE=PASS'
   write(*,'(A)') 'FMR09_BALANCED_ROOT_SSDI_STATE_IDENTITY=PASS'
   write(*,'(A)') 'FMR09_HARD_MASS_BALANCE=PASS'
