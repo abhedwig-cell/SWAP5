@@ -4,7 +4,7 @@
   "work_unit": "F-MR13",
   "title": "F-SI19 Reference Linear Solver Seam into Qualified F-MR Runtime Lineage",
   "branch": "work/f-mr13-reference-linear-solver-runtime",
-  "status": "PERSISTED_PENDING_MATERIALIZATION_AND_QUALIFICATION",
+  "status": "MATERIALIZED_PERSISTED_PENDING_QUALIFICATION",
   "qualification_scope": "OWNER_COMPOSITION_ONLY",
   "base": {
     "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
@@ -18,11 +18,15 @@
     "materialization_commit": "50b3c785b3074debf3dcc76b8bee46565511d9e4",
     "linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96"
   },
-  "allowed_production_delta_from_fmr12": [
-    "src/legacy/b1_10_port/headcalc.f90",
-    "src/solver/mod_reference_linear_solver.f90",
-    "src/solver/mod_reference_richards_workspace.f90"
-  ],
+  "owner_materialization": {
+    "commit": "e4ae5cb11f6e10d471e5cebfd33ab35e98047b64",
+    "production_delta_verified": true,
+    "production_paths": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_reference_linear_solver.f90",
+      "src/solver/mod_reference_richards_workspace.f90"
+    ]
+  },
   "required_qualification": {
     "exact_fsi19_module_blob": true,
     "exact_base_plus_qualified_seam_delta": true,
@@ -34,7 +38,7 @@
     "o0_o2_output_identity": true
   },
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false
