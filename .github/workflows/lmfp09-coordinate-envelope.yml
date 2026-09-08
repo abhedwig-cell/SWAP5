@@ -1,0 +1,26 @@
+name: F-LMFP09 Coordinate Envelope
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  coordinate-envelope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+      - name: Coordinate and hydraulic envelope gate
+        run: bash experiments/lmfp/run_lmfp09_coordinate_gate.sh
+      - name: Upload F-LMFP09 coordinate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-coordinate-evidence
+          path: |
+            lmfp09-coordinate-artifacts/
