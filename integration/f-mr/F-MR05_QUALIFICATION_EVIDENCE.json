@@ -1,29 +1,34 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR05",
-  "qualification_scope": "PRODUCTION_SERIALIZED_REAL_PHYSICS_MULTISWAP_COMPOSITION_DISPATCH_RUNTIME_ONLY",
-  "qualified_source_commit": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
-  "qualified_source_tree": "c0b2eaf00865ed3649a169a15e8d3dcf188e8dea",
-  "production_source_commit": "860583e2cc86cdc66414407689abd913dd60589c",
+  "qualification_scope": "PRODUCTION_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_RUNTIME_COMPOSITION_ONLY",
+  "decision": "QUALIFIED_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+  "start_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
+  "qualified_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "qualified_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "production_source_commit": "7490d5f8589f87e77ba4843c33dc7c58d6dac7c0",
   "production_source": {
     "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
-    "blob": "915b7c9bf27cf56ac2669a8354ef385e38a7ef54",
+    "blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "entrypoint": "fmr_run_serialized_physical_multiswap",
     "other_production_source_changed_by_fmr05": false
   },
   "basis": {
     "fmr04_qualified_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "fmr04_source_tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
     "fmr04_closeout": "d27af923a1522440323ca61d4f50a90914ce5b6b",
     "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
     "fvq14_decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
     "fkt08_qualified_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
-    "fmq23_blocker": "FMQ23-B01"
+    "fmq23_blocker": "FMQ23-B01",
+    "fmq23_blocker_statement": "No production multi-column serialized-reference dispatch/orchestration entrypoint exists on the locked source."
   },
   "qualification_run": {
     "workflow": "F-MR05 serialized real-physics MultiSWAP runtime",
-    "run_id": 34193626846,
-    "job_id": 101956574184,
-    "head_sha": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
+    "run_id": 34197457690,
+    "job_id": 101968270598,
+    "head_sha": "c28e7a2810b4a3678c577335a6a3086b173eb976",
     "conclusion": "success",
     "os": "Ubuntu 24.04.4",
     "compiler": "GNU Fortran 13.2.0"
@@ -31,19 +36,66 @@
   "passed": {
     "exact_baseline_and_source_blobs": true,
     "fmr04_qualified_source_blobs_forward": true,
+    "production_source_scope_only_runtime_module": true,
     "architecture_and_requalification_boundary": true,
     "O0": true,
     "O2": true,
     "O0_O2_output_identity": true,
-    "batch_sizes": [1,2,8,17,31,32],
+    "fmr04_single_column_regression_O0_O2_identity": true,
+    "batch_sizes": [1, 2, 8, 17, 31, 32],
+    "two_column_A_B": true,
+    "reverse_B_A_column_id_binding": true,
+    "A_B_A_repeatability": true,
     "input_order_independence": true,
     "single_vs_multi_identity": true,
+    "single_column_fmr04_route_identity": true,
+    "single_column_fmr04_mass_bitwise_identity": true,
+    "single_column_fmr04_committed_state_identity": true,
+    "immutable_parameter_sharing_without_mutation": true,
     "failure_isolation": true,
     "duplicate_state_handle_fail_closed": true,
+    "cross_column_checkpoint_rejection": true,
+    "stale_checkpoint_rejection": true,
+    "rollback_A_leaves_A_and_B_committed_state_unchanged": true,
+    "commit_A_leaves_B_unchanged": true,
+    "generic_time_1000_125_to_1000_625": true,
+    "unsupported_root_extraction_fail_closed": true,
+    "unsupported_macropore_fail_closed": true,
+    "unsupported_snow_fail_closed": true,
+    "unsupported_swkimpl_nonzero_fail_closed": true,
+    "real_headcalc_multicolumn": true,
     "physical_worker_count": 1,
+    "max_simultaneous_real_physical_solves": 1,
     "parallel_reference_backend_admitted": false,
     "authoritative_mass_complete_all_accepted": true,
-    "real_headcalc_multicolumn": true
+    "authoritative_missing_contribution_mask_all_accepted": 0,
+    "deterministic_collection": true
+  },
+  "runtime_diagnostics": {
+    "per_column": [
+      "column_id",
+      "template_id",
+      "backend",
+      "dispatch_ordinal",
+      "requested_t0",
+      "requested_t1",
+      "admission_status",
+      "transaction revision",
+      "solver route",
+      "solver iterations",
+      "authoritative mass"
+    ],
+    "batch": [
+      "number_requested",
+      "number_admitted",
+      "number_executed",
+      "number_committed",
+      "number_rejected",
+      "physical_solve_count",
+      "max_simultaneous_real_physical_solves",
+      "authoritative_aggregate_mass",
+      "deterministic_collection"
+    ]
   },
   "mass": {
     "canonical_owner": "F-KT08 kernel_result.mass",
@@ -52,57 +104,50 @@
     "hard_gate_used": 1e-12,
     "max_abs_column_mass_residual": 2.77555756156289135e-17,
     "baseline_aggregate_unrounded_mass_residual": 0.0,
-    "aggregate_definition": "sum of accepted canonical unrounded column residuals",
-    "aggregate_verified_bitwise_against_accepted_sum": true,
+    "aggregate_definition": "unrounded sum of accepted canonical storage and flux terms; rejected trials, rollback candidates and rejected columns excluded",
+    "aggregate_full_terms_verified": true,
     "mass_complete_required_for_commit": true,
     "missing_contribution_mask_required": 0
   },
   "reproducibility": {
-    "o0_executable_sha256": "53743f654019f47faa27de3216c313bb6ce943ce0e25e5df958efe202f68146e",
-    "o2_executable_sha256": "9b6243464e79303e463adfa9a15bae42154a5b7997f8b7d0dd3d8b2688b12665",
-    "output_sha256": "e4d926c1e759edc14ee53635d4bd99afe9d7be0e5907ef7e34b3a18f36895872"
-  },
-  "related_regressions": {
-    "fmr01": {
-      "run_id": 34193626851,
-      "conclusion": "success",
-      "classification": "CURRENT_EVOLVED_SOURCE_REGRESSION_PASS"
-    },
-    "fmr02": {
-      "run_id": 34193626975,
-      "job_id": 101956574585,
-      "conclusion": "failure",
-      "classification": "EXPECTED_IMMUTABLE_HISTORICAL_PROVENANCE_PIN_MISMATCH_BEFORE_EXECUTION",
-      "expected_kernel_blob": "e8605e73a191e863374a26b096e0d597cb70cadd",
-      "actual_qualified_fkt08_kernel_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
-      "semantic_failure_observed": false,
-      "historical_evidence_rewritten": false
-    }
+    "o0_fmr04_executable_sha256": "4a3d6b9cb704502c26b7e3da4c4199ae4b1103065e0d9afaf06c917bbb9d3b94",
+    "o0_base_executable_sha256": "312609fcb1ae4990c2211c475f72a82e7335e3e2c766ded452395acddfe209b8",
+    "o0_strict_executable_sha256": "dab67b0936c561c31aecaca8596e8ea224e85ed28d39683c7d15327d2dd14ada",
+    "o0_single_identity_executable_sha256": "efb266cf4a7934f95cd20b2f2da869d0a810424afcd857ff33c91f65e1b798a8",
+    "o2_fmr04_executable_sha256": "bdbf53ddd3bdd176909a31439eac9d0584b47f6faaf393e426ac2dd2fb3ec4fc",
+    "o2_base_executable_sha256": "5699b8c0623dc94f07ac9c29057cd75950341c223421e011cc3a8b216ae23b87",
+    "o2_strict_executable_sha256": "af748d3883f318bbfa966859a374e79318598c17fef4370f52eb1387a5c4df8f",
+    "o2_single_identity_executable_sha256": "dd5beeaa04d405a9da96ea37987317094b7d05955f8d9b15320ae9230abc5963",
+    "combined_output_sha256": "0354b7cce19ff288342fea86ae2cea8be1131ce03a74466a08cfec0e75e5f4b4"
   },
   "qualification_corrections": [
     {
-      "run_id": 34193080300,
+      "run_id": 34195793694,
       "classification": "STALE_FMR04_STATUS_SCHEMA_IN_FORWARD_HARNESS",
       "production_source_changed": false,
-      "claim_scope_changed": false
+      "scientific_failure": false
     },
     {
-      "run_id": 34193167967,
-      "classification": "OVERSTRONG_TEST_ASSUMPTION_BITWISE_ZERO_MASS_RESIDUAL",
+      "run_id": 34195932822,
+      "classification": "STRICT_TEST_FORTRAN_RESULT_COMPONENT_SYNTAX",
       "production_source_changed": false,
-      "claim_scope_changed": false
+      "scientific_failure": false
     },
     {
-      "run_id": 34193375364,
-      "classification": "DIAGNOSTIC_ONLY_MASS_CHARACTERIZATION",
-      "conclusion": "success",
-      "qualification_run": false,
-      "finding": "dispatch-independent floating-point residuals <= 2.77555756156289135e-17; no water-loss signal and no basis for physics or F-KT tolerance change"
+      "run_id": 34197335387,
+      "classification": "TESTS_PASS_BUT_EXECUTABLE_HASH_CAPTURE_MALFORMED",
+      "production_source_changed": false,
+      "scientific_failure": false,
+      "superseded_by_final_run": 34197457690
     }
   ],
-  "scientific_admission": false,
-  "production_physics_qualified_for_fmr05_postimage": false,
-  "independent_requalification_required": "F-VQ15",
-  "ready_for_fvq15": true,
-  "ready_for_fmq23": false
+  "scope_holds": {
+    "scientific_multicolumn_admission": false,
+    "production_physics_scientifically_admitted_for_fmr05_postimage": false,
+    "parallel_reference_backend_admitted": false,
+    "general_multiswap_release": false,
+    "independent_requalification_required": "F-VQ15",
+    "fvq15_ready": true,
+    "fmq23_resume_allowed": false
+  }
 }
