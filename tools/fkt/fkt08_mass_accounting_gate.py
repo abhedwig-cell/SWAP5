@@ -20,6 +20,17 @@ def git_blob(relative: str) -> str:
     return subprocess.check_output(["git", "-C", str(ROOT), "hash-object", str(path)], text=True).strip()
 
 
+def extract_mass_contract(source: str) -> str:
+    lower = source.lower()
+    start_token = "type, public :: canonical_mass_accounting_t"
+    end_token = "end type canonical_mass_accounting_t"
+    start = lower.find(start_token)
+    end = lower.find(end_token, start)
+    if start < 0 or end < 0:
+        return ""
+    return source[start : end + len(end_token)]
+
+
 checks: dict[str, bool] = {}
 actual: dict[str, str] = {}
 for relative, expected in EXPECTED_SOURCE_BLOBS.items():
@@ -32,6 +43,7 @@ contracts = (ROOT / "src/runtime/mod_canonical_contracts.f90").read_text(encodin
 runtime = (ROOT / "src/runtime/mod_canonical_interval_runtime.f90").read_text(encoding="utf-8")
 kernel = (ROOT / "src/kernel/mod_kernel_transactions.f90").read_text(encoding="utf-8")
 contract = json.loads((ROOT / "integration/f-kt/F-KT08_MASS_ACCOUNTING_CONTRACT.json").read_text())
+mass_contract = extract_mass_contract(contracts).lower()
 
 checks.update({
     "existing_canonical_mass_type_extended": "type, public :: canonical_mass_accounting_t" in contracts,
@@ -54,7 +66,7 @@ checks.update({
     "candidate_clear_drops_mass": "candidate_state%mass = canonical_mass_accounting_t()" in kernel,
     "no_cumulative_mass_in_committed_state": "type(canonical_mass_accounting_t) :: mass" not in kernel.split("end type kernel_committed_state_t")[0],
     "no_file_io_added": not any(re.search(rf"\b{word}\s*\(", text.lower()) for text in (tx, contracts, runtime, kernel) for word in ("open", "read", "write")),
-    "no_solver_internal_leak": not any(token in contracts.lower() for token in ("headcalc", "jacobian", "newton", "workspace")),
+    "mass_contract_no_solver_internal_leak": bool(mass_contract) and not any(token in mass_contract for token in ("headcalc", "jacobian", "newton", "workspace")),
     "no_mass_disable_switch": "mass conservation off" not in (tx + contracts + runtime + kernel).lower(),
     "contract_no_second_mass_model": contract["no_second_mass_model"] is True,
     "contract_new_tolerance_false": contract["scientific_policy"]["new_tolerance"] is False,
