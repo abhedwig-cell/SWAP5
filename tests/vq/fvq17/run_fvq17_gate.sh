@@ -63,14 +63,7 @@ cp -a "$FVQ16_WORKTREE/.fvq16-artifacts/." "$ARTIFACTS/fvq16/"
 git worktree remove --force "$FVQ16_WORKTREE" > "$ARTIFACTS/fvq16-worktree-remove.out" 2>&1
 echo 'FVQ17_DIRECT_FVQ16_ORACLE_REPLAY=PASS'
 
-# The checked-in verifier predates compilation and used PROFILE_ACTIVE together with
-# profile_active; Fortran identifiers are case-insensitive. Build an exact temporary
-# qualification copy with only that helper symbol disambiguated. Production source is untouched.
-FVQ17_TEST_SRC="$BUILD/test_fvq17_snow_multiswap_reference.f90"
-sed -e 's/profile_active(/snow_profile_active(/g' \
-    -e 's/end function profile_active/end function snow_profile_active/' \
-    tests/vq/fvq17/test_fvq17_snow_multiswap_reference.f90 > "$FVQ17_TEST_SRC"
-
+FVQ17_TEST_SRC="tests/vq/fvq17/test_fvq17_snow_multiswap_reference.f90"
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -105,8 +98,7 @@ for opt in 0 2; do
     objects+=("$obj")
   done
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c "$FVQ17_TEST_SRC" -o "$OUT/fvq17_multiswap.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$FVQ17_TEST_SRC" -o "$OUT/fvq17_multiswap.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/fvq17_multiswap.o" -o "$OUT/fvq17_multiswap"
   "$OUT/fvq17_multiswap" > "$OUT/multiswap.out" 2>&1 || { cat "$OUT/multiswap.out" >&2; exit 1; }
 
@@ -128,8 +120,7 @@ for opt in 0 2; do
       grep -Fq "$marker" "$OUT/multiswap.out"
   done
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/fmr/test_fmr06_snow_smoke.f90 -o "$OUT/transactional.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr06_snow_smoke.f90 -o "$OUT/transactional.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/transactional.o" -o "$OUT/transactional"
   "$OUT/transactional" > "$OUT/transactional.out" 2>&1 || { cat "$OUT/transactional.out" >&2; exit 1; }
   grep -Fq 'FMR06_SNOW_ONE_CALL_DAILY_TRIAL=PASS' "$OUT/transactional.out"
@@ -140,8 +131,7 @@ for opt in 0 2; do
   grep -Fq 'FMR06_SNOW_SUBDAILY_FAIL_CLOSED=PASS' "$OUT/transactional.out"
   grep -Fq 'FMR06_SNOW_MULTIDAY_FAIL_CLOSED=PASS' "$OUT/transactional.out"
 
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
-    -c tests/fmr/test_fmr05_single_fmr04_identity.f90 -o "$OUT/inactive.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr05_single_fmr04_identity.f90 -o "$OUT/inactive.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/inactive.o" -o "$OUT/inactive"
   "$OUT/inactive" > "$OUT/inactive.out" 2>&1 || { cat "$OUT/inactive.out" >&2; exit 1; }
   grep -Fq 'FMR05_SINGLE_COLUMN_FMR04_ROUTE_IDENTITY=PASS' "$OUT/inactive.out"
