@@ -268,7 +268,7 @@ contains
     allocate(columns(n),parameters(n),forcings(n),states(n),expected_snow(n),expected_flux(n),active(n))
     call configure_template(templates(1))
     do i = 1, n
-      active(i) = profile_active(profile,i)
+      active(i) = snow_profile_active(profile,i)
       call configure_parameters(parameters(i),initial_state,conductivity0,active(i),i)
       call configure_forcing(forcings(i),conductivity0,active(i),i)
       if (active(i)) then
@@ -303,7 +303,7 @@ contains
     allocate(columns(n),parameters(n),forcings(n),states_a(n),states_b(n),expected_snow(n),expected_flux(n),active(n))
     call configure_template(templates(1))
     do i = 1, n
-      active(i) = profile_active(profile,i)
+      active(i) = snow_profile_active(profile,i)
       call configure_parameters(parameters(i),initial_state,conductivity0,active(i),i)
       call configure_forcing(forcings(i),conductivity0,active(i),i)
       if (active(i)) then
@@ -320,7 +320,7 @@ contains
     end do
   end subroutine setup_case_pair
 
-  logical function profile_active(profile,i) result(active)
+  logical function snow_profile_active(profile,i) result(active)
     integer, intent(in) :: profile, i
     select case(profile)
     case(PROFILE_INACTIVE)
@@ -332,7 +332,7 @@ contains
     case default
       active = .false.
     end select
-  end function profile_active
+  end function snow_profile_active
 
   integer(int64) function column_id_for(i) result(id)
     integer, intent(in) :: i
