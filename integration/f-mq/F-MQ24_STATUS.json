@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ24",
+  "branch": "qualification/f-mq24-snow-multiswap-admission",
+  "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+  "phase": "PREQUALIFICATION_RUNTIME_CAPABILITY_GATE",
+  "status": "BLOCKED_PRE_IMPLEMENTATION",
+  "decision": "BLOCKED_PRE_IMPLEMENTATION_MISSING_SNOW_RUNTIME_COMPOSITION",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "qualification_only": true,
+  "production_source_changed_by_fmq24": false,
+  "runtime_source": {
+    "qualified_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "qualified_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "fmq23_closeout_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME"
+  },
+  "scientific_snow_source": {
+    "candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "candidate_tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "admitted_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY"
+  },
+  "precheck": {
+    "evidence": "integration/f-mq/F-MQ24_PRECHECK_EVIDENCE.json",
+    "qualified_runtime_contains_mod_snow_process": false,
+    "qualified_runtime_has_snow_active_flag": true,
+    "qualified_runtime_admits_snow_active": false,
+    "existing_fmr05_snow_behavior": "PASS_FAIL_CLOSED",
+    "production_capability_missing": true
+  },
+  "blockers": [
+    {
+      "id": "FMQ24-B01",
+      "owner": "F-MR",
+      "classification": "MISSING_PRODUCTION_RUNTIME_COMPOSITION",
+      "description": "The qualified serialized MultiSWAP runtime cannot route a snow-active column through the exact F-VQ16-admitted process. The admitted process source is absent from the runtime candidate and snow_active is explicitly rejected by the current backend admission contract.",
+      "release_condition": "A separate runtime implementation unit must compose the exact F-VQ16 process into per-column transactional state, forcing/event handling and F-KT mass accounting, then provide an exact source candidate back to F-MQ24 for qualification."
+    }
+  ],
+  "hard_holds": [
+    "F-MQ24 must not modify production source to remove this blocker.",
+    "F-VQ16 scientific SNOW admission remains valid and is not invalidated by this runtime blocker.",
+    "No SNOW MultiSWAP runtime is admitted yet.",
+    "No subdaily or arbitrary-duration SNOW physics is admitted.",
+    "No parallel real-physics admission extension is implied."
+  ],
+  "handoff": {
+    "required_workstream": "F-MR",
+    "proposed_unit": "F-MR06",
+    "proposed_scope": "Compose exact F-VQ16 B1.10 one-call-daily SNOW process into the serialized physical MultiSWAP runtime while preserving F-KT transaction/mass authority and optional-state semantics.",
+    "minimum_source_pins": [
+      "c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "2becebfe747663ea3b896d7d19f4381c32df77db",
+      "98712959d811c788c77842eede4c6f558cca1c11"
+    ],
+    "return_to_fmq24_after_implementation": true
+  },
+  "next_step": "Do not attempt F-MQ24 runtime qualification until F-MR supplies a production candidate that implements the missing snow-aware runtime composition."
+}
