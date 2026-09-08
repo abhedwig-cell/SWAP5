@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "C1_MFP_BASELINE_ATTRIBUTION",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "run": 34280922435,
+  "head": "e32681eb5595a61be52717f3546fa80a2793a942",
+  "artifact": 10077561148,
+  "artifact_digest": "sha256:5c9222228f4e4c355668c7ddefa0756c4d9dea83abdfb584095dbc8cf1aff9b4",
+  "candidates": {
+    "EXACT_SLOPE_HERMITE_PHI_X": {
+      "formal_initial_gate": "FAILURE",
+      "mfp_secant_p90_rel_error": 1.2543348225363274e-05,
+      "mfp_secant_p99_rel_error": 0.0005192839403241635,
+      "mfp_secant_max_rel_error": 0.001094155516117847,
+      "limit_k_p90_rel_error": 0.00013638195289355183,
+      "limit_k_max_rel_error": 0.020614802952776828,
+      "nonpositive_conductance_samples": 0,
+      "saturated_endpoint_slope_rel_error": 0.0,
+      "oracle_rows_over_initial_0p35_finite_scale_gate": 5,
+      "candidate_rows_over_initial_0p35_finite_scale_gate": 6,
+      "candidate_rows_labelled_spurious_by_initial_gate": 4
+    },
+    "MONOTONICITY_LIMITED_HERMITE_PHI_X": {
+      "formal_initial_gate": "FAILURE",
+      "metrics_identical_to_exact_slope_candidate": true,
+      "interpretation": "The monotonicity limiter did not activate for the tested five material fixtures."
+    }
+  },
+  "attribution": "The one-scale continuity proxy confounds non-smoothness with strong finite-scale curvature near saturation. A g perturbation of 1e-3 spans 0.01-0.02 cm in pressure head for the tested face lengths. This is not an appropriate proof of C1 failure. The Hermite representation itself has shared nodal derivatives, positive sampled conductivity, exact saturated endpoint slope and substantially better secant/point-derivative accuracy than the prior linear-Phi-in-asinh representation.",
+  "decision": "RETEST_EXACT_SLOPE_HERMITE_WITH_ASYMPTOTIC_REFINEMENT_LADDER_AND_EXPLICIT_KNOT_DERIVATIVE_CONTINUITY",
+  "thresholds_relaxed": false,
+  "production_admission": false
+}
