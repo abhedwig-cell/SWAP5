@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ23",
+  "title": "F-MR13 Reference Linear Solver Runtime Scientific No-Change Admission",
+  "branch": "qualification/f-vq23-fmr13-reference-linear-solver",
+  "status": "PERSISTED_PENDING_INDEPENDENT_SCIENTIFIC_NO_CHANGE_QUALIFICATION",
+  "phase": "PERSISTED_NOT_YET_TESTED",
+  "qualification_scope": "INDEPENDENT_SCIENTIFIC_NO_CHANGE_ADMISSION",
+  "candidate": {
+    "fmr13_closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "fmr13_closeout_tree": "310b0b419181456b7c0af029e42de742fa96f19d",
+    "fmr13_status": "QUALIFIED_FSI19_REFERENCE_LINEAR_SOLVER_SEAM_IN_FMR_REAL_PHYSICS_LINEAGE",
+    "fsi19_closeout_commit": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "reference_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "headcalc_blob": "1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b",
+    "reference_workspace_blob": "178d3289e09583c256b1aa400407d468d9c18e68"
+  },
+  "required_evidence": {
+    "candidate_production_immutability": true,
+    "independent_reexecution_of_source_bound_legacy_linear_solver_oracle": true,
+    "tridag_success_and_failure_semantics": true,
+    "band_fallback_pivot_semantics": true,
+    "O0_O2_bitwise_identity": true,
+    "composed_real_physics_runtime_regression": true,
+    "authoritative_mass_exactly_once": true,
+    "hard_mass_conservation": true,
+    "rollback_replay": true,
+    "existing_process_scientific_oracles_preserved": true
+  },
+  "state": {
+    "qualification_plan_persisted": true,
+    "production_source_modified": false,
+    "candidate_source_immutable": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "retry_policy_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "reference_mode_preserved": true,
+  "scientific_claim_limit": "F-VQ23 may admit only that the already owner-qualified F-SI19 linear-solver seam, as composed in exact F-MR13, produces no detected scientific change in the existing qualified real-physics scope. It does not admit new physics, new solver tolerances, bounded-cost behavior, BALANCED, THROUGHPUT, FALLBACK, parallel real-physics execution, or a higher-cost F-PE workload.",
+  "downstream_if_qualified": {
+    "fmr13_independent_scientific_admission": true,
+    "fpe_may_consume_this_exact_postimage_as_scientifically_admitted_reference_lineage": true,
+    "fpe02_b01_automatically_resolved": false,
+    "performance_policy_admission": false
+  }
+}
