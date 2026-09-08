@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR12",
+  "title": "Shared Crop Root-Uptake Input to Qualified Runtime Binding Adapter",
+  "branch": "work/f-mr12-crop-root-uptake-input-adapter",
+  "status": "QUALIFIED_SHARED_CROP_ROOT_UPTAKE_INPUT_RUNTIME_ADAPTER",
+  "qualification_scope": "STRUCTURAL_RUNTIME_ADAPTER_ONLY",
+  "base": {
+    "commit": "b6a667035d5e900a7e2209e76491c1817ffd2043",
+    "status": "QUALIFIED_RUNTIME_SOLVER_INDEPENDENT_ROOT_UPTAKE_CROP_INPUT_PROVIDER_CONTRACT"
+  },
+  "qualified_candidate": {
+    "tested_commit": "1821dead05bd056e983fd37bca5fae43e57efdef",
+    "tested_tree": "79e62dab7bf81616241db43122131414ad776fcc",
+    "production_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "focused_test_blob": "a9effbc2506311f94eac65c1e73dbe9df16ce9e5",
+    "gate_runner_blob": "3227d1245f2ffbaa9239f136e72c4e64b0d23bba",
+    "workflow_blob": "73f6e36af4b6ce4048081798a81e794f160a54f0"
+  },
+  "verification": {
+    "github_actions_run": 34260134252,
+    "github_actions_conclusion": "success",
+    "fmr12_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "FMR09_cross_process_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "warning_clean_new_seam": "PASS",
+    "direct_FMR10_bitwise_identity": "PASS",
+    "protected_lineage": "PASS"
+  },
+  "contract": {
+    "shared_input": "crop_root_uptake_input_t",
+    "runtime_target": "fmr_root_uptake_crop_input_t",
+    "validation": "F-WOF11 validate_crop_root_uptake_input",
+    "mapping_is_exact": true,
+    "runtime_recanonicalization": false,
+    "invalid_input_fails_before_FMR10": true,
+    "wrapper_calls_qualified_FMR10_unchanged": true,
+    "mass_booking": false,
+    "committed_state_mutation": false,
+    "shared_crop_input_mutation": false
+  },
+  "scope": {
+    "production_migration_allowed": true,
+    "only_runtime_adapter_admitted": true,
+    "concrete_crop_provider_allowed": false,
+    "crop_host_integration_allowed": false,
+    "new_root_uptake_physics_allowed": false,
+    "solver_or_kernel_changes_allowed": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "affected_invariants": [1, 3, 7, 9, 13, 21, 22, 28, 29, 30],
+  "scientific_claims_not_made": [
+    "a concrete WOFOST crop provider is qualified",
+    "legacy crop globals are admitted in SWAP5",
+    "potential transpiration generation is migrated",
+    "root growth or root distribution evolution is migrated",
+    "crop-host lifecycle ordering or cadence is qualified"
+  ],
+  "next": "Return to F-WOF ownership for source-bound readiness of a concrete crop-state provider. The next unit must resolve current-state timing/cadence for crop_emerged, ptra, rooted_nodes and cumulative_root_fraction before any WOFOST or legacy provider is admitted."
+}
