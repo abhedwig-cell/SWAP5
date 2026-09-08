@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI16",
+  "title": "Authoritative Prescribed Bottom-Head qbot and Mass Trace",
+  "branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "trace_parent_head": "f2f3d24f6e5aaaadf04a9714fc91881370f5f0a7",
+  "b1_oracle": "B1.10",
+  "gate_scope": [
+    "SI16-G01",
+    "SI16-G02"
+  ],
+  "prescribed_bottom_head": {
+    "legacy_mode": 5,
+    "explicit_request_field": "soil_water_solve_request_t%boundary%bottom_head",
+    "semantics": "lower-boundary pressure head",
+    "units": "cm",
+    "state_binding": [
+      "reference_richards_state_binding_t%gwlinp = request%boundary%bottom_head",
+      "reference_richards_state_binding_t%hbot = request%boundary%bottom_head"
+    ],
+    "legacy_newton_equation": "HNEW(NN) - HBOT = 0",
+    "legacy_newton_row": [
+      "B_MAT(NN) = -1",
+      "D_MAT(NN) = HNEW(NN) - HBOT"
+    ]
+  },
+  "authoritative_qbot_trace": {
+    "headcalc_mode5_materializes_qbot": false,
+    "headcalc_mode5_residual_term": "state%kmean(NN+1) * head_gradient(NN+1)",
+    "current_common_route_hazard": "initialize_reference_state_binding initializes state_binding%qbot from request%boundary%bottom_flux; reference_richards_legacy_solve later publishes result%bottom_flux = state_binding%qbot. Because HeadCalc mode 5 does not overwrite state%qbot, admitting mode 5 without a post-HeadCalc binding would publish the initialized request value rather than the B1.10 authoritative mode-5 qbot.",
+    "legacy_publication_stage": "accepted HeadCalc step -> SoilWater(3) -> fluxes() -> integral(3)",
+    "legacy_arithmetic_source": "B1.10 fluxes.f90",
+    "legacy_mode5_formula": "qbot = qtop + qrosum + qdrtot + (volact-volm1)/dt - qssdisum; if swmacro == 1 then qbot = qbot - QMaPo",
+    "legacy_publication": [
+      "q(numnod+1) = qbot",
+      "inq(numnod+1) = inq(numnod+1) + qbot*dt"
+    ],
+    "rate_units": "cm d-1",
+    "sign": "positive qbot is water entering the simulated soil profile through the lower boundary; negative qbot is water leaving the profile",
+    "timing": "qbot is materialized only after the Richards step has been accepted by the internal HeadCalc retry path; terminal canonical nonconvergence returns before this stage",
+    "common_result_field": "soil_water_solve_result_t%bottom_flux",
+    "current_common_publication": "result%bottom_flux = state_binding%qbot",
+    "admission_requirement": "the mode-5 common route must reproduce the existing B1.10 post-HeadCalc qbot materialization before result%bottom_flux can be authoritative; simply enabling the validator is not admissible"
+  },
+  "mass_accounting_trace": {
+    "authoritative_interval_integrator": "F-CI11 controlled B1.10 integral(3, trial_mass) postimage",
+    "per_internal_timestep_conversion": "qbotts = qbot * dt",
+    "rate_units": "cm d-1",
+    "time_units": "d",
+    "integrated_amount_units": "cm",
+    "trial_mass_recording": "record_b1_10_trial_mass_step(..., qbotts, ...)",
+    "sign_split": {
+      "qbotts_greater_or_equal_zero": "trial_mass%bottom_in += qbotts",
+      "qbotts_less_than_zero": "trial_mass%bottom_out += -qbotts"
+    },
+    "exact_once_chain": [
+      "B1.10 fluxes() materializes qbot for the accepted internal soil-water step",
+      "F-CI11 integral(3, trial_mass) forms qbotts = qbot*dt exactly once for that timestep",
+      "record_b1_10_trial_mass_step adds qbotts to either bottom_in or bottom_out exactly once",
+      "mod_b1_10_mass_seam copies trial_mass%total_in and trial_mass%total_out into canonical mass accounting and does not add bottom flux separately",
+      "the recoverable reference model forwards those total_in/total_out values to the transaction outcome without re-adding qbot"
+    ],
+    "rejected_trial_semantics": "F-CI13 canonical terminal Richards nonconvergence returns before SoilWater(3), integral(3), process-state updates and time advancement, so that failed step does not enter trial mass accounting.",
+    "rollback_semantics": "F-KT restores the committed checkpoint and attempt context on rejection. The B1.10 legacy attempt capsule captures/restores qbot-related integration globals including iqbot, iqbdo, iqbup, cqbot, cqbotdo and cqbotup, preventing rejected-attempt accounting leakage.",
+    "ownership_boundary": "F-SI16 qualifies the focused solver/boundary qbot semantics and their compatibility with the existing external-flux mass seam. Whole-interval mass completeness and composed runtime acceptance remain F-KT/composed-runtime ownership."
+  },
+  "source_evidence": [
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob_sha": "7ce94a4cfc4634b946f41b01f54d2d7f6efc798f",
+      "supports": "mode-5 residual/Newton boundary semantics and absence of a mode-5 state%qbot assignment"
+    },
+    {
+      "path": "src/legacy/b1_10_port/soilwater.f90",
+      "blob_sha": "470bc81a380e114d70fecd75426ec2331c1c9fcc",
+      "supports": "HeadCalc in SoilWater(2), followed by post-acceptance watstor()/fluxes() in SoilWater(3)"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob_sha": "e68d88382c6502c571713cc97fddd4e18434e271",
+      "supports": "bottom_head binding and current qbot initialization from request%boundary%bottom_flux"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob_sha": "9bfa182aff7f7a7ab853fe00151a1f14ed9a8492",
+      "supports": "current common result publication result%bottom_flux = state_binding%qbot and current fail-closed mode selector"
+    },
+    {
+      "path": "src/legacy/b1_10_fci11_port/integral_part05.inc",
+      "blob_sha": "c15bd080190cda45b9e2374578225acad2de3c41",
+      "supports": "qbotts=qbot*dt and exact trial-mass recording call"
+    },
+    {
+      "path": "src/adapter/mod_b1_10_trial_mass.f90",
+      "blob_sha": "b1a4bb35a578c68c36db0c514a482a40b5cc29be",
+      "supports": "bottom_in/bottom_out sign split and total mass accounting"
+    },
+    {
+      "path": "src/adapter/mod_b1_10_mass_seam.f90",
+      "blob_sha": "4b205a91d3232b8ba91b7d97af7ce164ec906429",
+      "supports": "canonical mass seam consumes trial total_in/total_out without a second bottom-flux addition"
+    },
+    {
+      "path": "src/adapter/mod_b1_10_legacy_trial_capsule.f90",
+      "blob_sha": "46ebc53304687739efed9059f457862168b19fa8",
+      "supports": "rollback capture/restore of qbot-related legacy integration state"
+    },
+    {
+      "path": "integration/f-ci/F-CI11_QUALIFICATION.md",
+      "blob_sha": "42dd72ded40bca6f2beaad8dcccc27a356fec014",
+      "supports": "controlled complete B1.10 interval/mass postimage and qualification boundary"
+    },
+    {
+      "path": "integration/f-ci/F-CI10_TIME_MASS_SEAM.json",
+      "blob_sha": "a6cf30fd86cf9cf41cee63640106b50842197717",
+      "supports": "official B1.10 source identity and exact integral source identity"
+    }
+  ],
+  "source_identity_note": "The authoritative fluxes() arithmetic is taken from the exact B1.10 source oracle whose official source archive identity is pinned by F-CI10. F-SI16 does not invent or substitute a new prescribed-head flux formula.",
+  "gate_status": {
+    "SI16-G01": "TRACE_COMPLETE_COMMON_OUTPUT_BINDING_BLOCKER_CONFIRMED",
+    "SI16-G02": "TRACE_COMPLETE_FOCUSED_MASS_SEMANTICS",
+    "SI16-G03": "PENDING_LEGACY_AUTHORITY_POISON_AUDIT",
+    "SI16-G04": "PENDING_MINIMAL_PRODUCTION_SEAM"
+  },
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "status": "TRACE_PERSISTED_PRODUCTION_BINDING_PENDING"
+}
