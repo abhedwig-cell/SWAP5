@@ -10,7 +10,8 @@ python3 -m py_compile \
   run_lmfp02_testbench.py \
   run_lmfp03_column.py \
   run_lmfp06_darcian_reference.py \
-  run_lmfp06_szym2009_control.py
+  run_lmfp06_szym2009_control.py \
+  run_lmfp06_lookup_surrogate.py
 
 python3 run_lmfp06_darcian_reference.py \
   > "$OUTDIR/F-LMFP06_DARCIAN_REFERENCE_EVIDENCE.json"
@@ -73,5 +74,32 @@ print(json.dumps({
     'szym2009_error': m['szym2009_error'],
     'by_regime': m['by_regime'],
   }
+}, indent=2, sort_keys=True))
+PY
+
+python3 run_lmfp06_lookup_surrogate.py \
+  > "$OUTDIR/F-LMFP06_DARCIAN_LOOKUP_SURROGATE.json"
+
+python3 - "$OUTDIR/F-LMFP06_DARCIAN_LOOKUP_SURROGATE.json" <<'PY'
+import json, pathlib, sys
+p = pathlib.Path(sys.argv[1])
+e = json.loads(p.read_text())
+assert e['structural_pass'] is True
+assert e['legacy_swkmean7_table_reproduced'] is False
+for name, face in e['faces'].items():
+    assert face['pass'] is True, name
+    assert face['failures'] == 0
+    assert face['sign_mismatch'] == 0
+print(json.dumps({
+  'structural_pass': e['structural_pass'],
+  'surrogate': e['surrogate'],
+  'legacy_swkmean7_table_reproduced': e['legacy_swkmean7_table_reproduced'],
+  'head_axis_points': len(e['head_axis']),
+  'faces': {k:{
+    'table_shape':v['table_shape'],
+    'validation_cases':v['validation_cases'],
+    'error':v['error'],
+    'sign_mismatch':v['sign_mismatch'],
+  } for k,v in e['faces'].items()},
 }, indent=2, sort_keys=True))
 PY
