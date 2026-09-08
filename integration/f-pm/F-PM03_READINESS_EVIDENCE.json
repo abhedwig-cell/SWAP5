@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "title": "Executed source-bound irrigation migration readiness evidence",
+  "assessment_basis_commit": "1383f160aeedb30ba297d1307d5a66f009e751c0",
+  "production_source_under_assessment": {
+    "commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "qualified_by_fvq17": true,
+    "qualified_by_fmq24": true
+  },
+  "live_ownerlineage_reads": {
+    "fpm01": {
+      "head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
+      "finding": "IRRIGATION is priority 2 and waits for shared baseline plus hydraulic view; source-bound oracle SHA-256 is 65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1."
+    },
+    "fsi10": {
+      "head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+      "finding": "Precomputed qssdi is admitted through the B1.10 source/sink provider; full production irrigation module reentrancy is explicitly outside F-SI10 scope."
+    },
+    "fsi15_latest_completed_ownerlineage_checked": {
+      "head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+      "common_solver_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
+      "finding": "The common solver contract exposes soil_water_physical_state_t and solver evaluation providers, but no qualified process-facing hydraulic view or process hydraulic read interface is present. The physical-state carrier is a solver request/result type, not an admitted irrigation-facing contract."
+    },
+    "fkt08": {
+      "integration_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+      "kernel_transaction_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+      "finding": "Opaque checkpoint/candidate/commit transaction semantics and accepted-only authoritative full-interval mass accounting are qualified; the composed candidate contains the same kernel transaction blob."
+    }
+  },
+  "legacy_oracle_verification": {
+    "archive_path": "SWAP/irrigation.f90",
+    "observed_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "matches_fpm01_pin": true,
+    "decisive_runtime_hydraulic_reads": [
+      "watcon(node,h(node)) across root-zone nodes for TCS2/TCS3/TCS4 and DCS1 water-deficit logic",
+      "h(sensor_node) for TCS7 pressure-head trigger",
+      "theta(sensor_node) for TCS8 water-content trigger"
+    ],
+    "decisive_state_mutations": [
+      "nirri advances when a fixed event is consumed",
+      "dayfix advances/resets for weekly and minimum-interval scheduling",
+      "irrigevent and event-rate/duration fields change around active events"
+    ],
+    "decisive_time_semantics": [
+      "Irrigation(3) is invoked at legacy flDayStart",
+      "fixed-event matching uses calendar date t1900",
+      "start/end windows are calendar reconstructed",
+      "weekly/minimum interval rules count daily process calls",
+      "event duration is represented as a fraction of a day and fixed-input durations greater than one day are rejected"
+    ],
+    "legacy_io_present": true
+  },
+  "gate_results": [
+    {
+      "gate": "QUALIFIED_COMPOSED_BASELINE",
+      "status": "PASS",
+      "evidence": "F-VQ17 and F-MQ24 both bind their qualification to exact candidate ffab7d705928170db3e76a5d346caafeb560e605 and tree 06bd92b2cf96b7bc6eb6978250017cd054547a56."
+    },
+    {
+      "gate": "B110_IRRIGATION_ORACLE_IDENTITY",
+      "status": "PASS",
+      "evidence": "Live project archive irrigation.f90 SHA-256 equals the F-PM01 source-bound pin."
+    },
+    {
+      "gate": "EXPLICIT_PROCESS_FACING_HYDRAULIC_VIEW",
+      "status": "FAIL",
+      "evidence": "B1.10 irrigation requires committed h/theta semantics. The composed candidate has no process hydraulic-view module; latest completed F-SI15 common interfaces still only expose solver-facing state/request/result and evaluation-provider types. Direct use of reference_richards_state_binding_t or HeadCalc arrays would violate the process isolation invariant."
+    },
+    {
+      "gate": "PRECOMPUTED_SSDI_SOLVER_SOURCE_SEAM",
+      "status": "PASS",
+      "evidence": "F-SI10 and the composed source/sink provider admit precomputed subsurface irrigation source qssdi into the solver source term."
+    },
+    {
+      "gate": "TRANSACTION_FRAMEWORK",
+      "status": "PASS_CONTRACT_AVAILABLE",
+      "evidence": "F-KT opaque physical-state cloning, checkpoint, candidate, rollback and commit are qualified and present on the composed candidate. An irrigation implementation must place only continuation-critical management state inside that carrier and prove rollback/replay in F-PM tests."
+    },
+    {
+      "gate": "IRRIGATION_SPECIFIC_TRANSACTION_TESTS",
+      "status": "NOT_RUN_PRIMARY_BLOCKER",
+      "evidence": "No production irrigation state was added because the hydraulic-view gate failed first."
+    },
+    {
+      "gate": "AUTHORITATIVE_MASS_FRAMEWORK",
+      "status": "PASS_CONTRACT_AVAILABLE",
+      "evidence": "F-KT08 accepted-only mass is qualified. The F-MR06 backend counts accepted positive qssdi once as external inflow and counts accepted top-boundary flux once."
+    },
+    {
+      "gate": "IRRIGATION_SPECIFIC_MASS_QUALIFICATION",
+      "status": "NOT_RUN_PRIMARY_BLOCKER",
+      "evidence": "No migrated irrigation result exists to qualify; process reporting must remain non-authoritative and must not duplicate solver/runtime mass."
+    },
+    {
+      "gate": "LEGACY_IO_REMOVABLE_FROM_PROCESS_SEAM",
+      "status": "PASS_ARCHITECTURAL",
+      "evidence": "Parameter and fixed-event parsing can be translated into immutable parameters and management requests outside the kernel; no reason was found to retain file units or paths in a future irrigation process module."
+    },
+    {
+      "gate": "TIME_SEMANTICS_CHARACTERIZED",
+      "status": "PASS_READINESS_ONLY",
+      "evidence": "Calendar schedules and day-count rules are explicit, while the legacy flDayStart invocation is identified as a caller assumption that must not be hidden in a generic kernel interval."
+    },
+    {
+      "gate": "SNOW_COEXISTENCE",
+      "status": "PASS_NO_CHANGE",
+      "evidence": "F-PM03 branch starts from exact qualified F-MR06 source candidate and makes no SNOW source or qualification change."
+    }
+  ],
+  "decision": "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_EXPLICIT_HYDRAULIC_VIEW",
+  "primary_blocker": {
+    "owner": "F-SI",
+    "required_owner_change": "Define and qualify a small read-only process-facing hydraulic view, independent of reference-Richards/HeadCalc internals, with source-bound committed pressure-head and water-content semantics sufficient for irrigation TCS2/TCS3/TCS4/TCS7/TCS8 and DCS1 decisions.",
+    "minimum_release_evidence": [
+      "view type/contract is solver-implementation-independent",
+      "committed-state mapping for pressure_head and water_content is explicit",
+      "sensor/root-zone indexing semantics are explicit or supplied separately as immutable geometry/mapping parameters",
+      "no Newton/Jacobian/workspace arrays are visible",
+      "B1.10-equivalent h/theta observations are characterized and qualified"
+    ]
+  },
+  "secondary_composition_owner": {
+    "owner": "F-MR",
+    "required_after_fsi_release": "Compose the qualified hydraulic view onto the exact physical runtime lineage without blind merging, then expose the committed view to the process before irrigation decision evaluation."
+  },
+  "fkt_owner_blocker": false,
+  "fkt_followup_after_unblock": "F-PM03 must prove irrigation-specific rollback/replay, fixed-event cursor protection, dayfix protection and exactly-once mass before structural qualification.",
+  "production_changes_made": false,
+  "focused_migration_tests_required_now": false,
+  "reason_tests_not_run": "The readiness gate failed before production irrigation source existed; the requested inactive/event/A-B-A/rollback/mass/O0/O2/B1.10 migration suite applies only after readiness PASS and smallest-seam implementation.",
+  "next_allowed_step": "Owner F-SI creates and qualifies the explicit process-facing hydraulic view. F-PM03 then re-enters from this exact blocker evidence and may implement the smallest irrigation seam only after the qualified view is source-bound onto an admitted runtime lineage."
+}
