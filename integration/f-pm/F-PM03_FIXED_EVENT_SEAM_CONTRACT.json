@@ -26,7 +26,7 @@
       "application type 0/1 surface gross irrigation rate",
       "application type 2 node-distributed SSDI source",
       "event duration irdepth/irrate",
-      "irrigation concentration metadata",
+      "irrigation concentration metadata for application types 0/1",
       "transaction-safe active-event continuation and completion"
     ],
     "excludes": [
@@ -39,6 +39,16 @@
       "meteo/interception conversion from gird to nird"
     ],
     "reason": "The fixed-event route is the smallest physical irrigation seam with real persistent event history and both surface and SSDI outputs, while avoiding premature migration of the larger hydraulic/crop trigger surface."
+  },
+  "translation_contract": {
+    "adapter_owns_legacy_units_and_file_io": true,
+    "event_time": "already translated to the runtime time coordinate used for t0/t1",
+    "surface_depth": "legacy post-read internal irdepth in cm",
+    "surface_rate": "legacy post-read internal irrate in cm/day",
+    "ssdi_depth": "legacy post-read internal irdepth after division by the number of SSDI nodes; therefore this is per-active-node event depth",
+    "ssdi_rate": "legacy post-read internal irrate in cm/day, applied to every node from ssdi_first_node through ssdi_last_node",
+    "ssdi_total_identity": "number_of_ssdi_nodes * rate * (per_node_depth/rate) equals total original irrigation depth",
+    "concentration": "legacy cirr is assigned from irconc only for application_type < 2; SSDI leaves cirr at the task-3 reset value zero"
   },
   "data_separation": {
     "immutable_parameters": "translated fixed event table plus optional SSDI node range; legacy I/O remains outside the process",
