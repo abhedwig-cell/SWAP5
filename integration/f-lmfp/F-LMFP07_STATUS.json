@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP07",
+  "title": "Transient Darcian-Lookup Candidate A/B/C",
+  "branch": "work/f-lmfp07-transient-darcian-candidate-ab",
+  "base": {
+    "work_unit": "F-LMFP06",
+    "commit": "f53ac0cc6291bf006fd490155bd857f1a38d72f5",
+    "decision": "QUALIFIED_DARCIAN_REFERENCE_AND_LOOKUP_FEASIBILITY_READY_FOR_TRANSIENT_CANDIDATE_AB"
+  },
+  "objective": "Compare transient, generic-time, mass-conservative LayeredMFP trajectories using the existing MFP closure and an immutable oracle-derived Darcian lookup closure against admitted FullRichards reference before adding other SWAP processes.",
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "hydraulic_only": true,
+    "generic_time": true,
+    "fullrichards_reference": true,
+    "crop": false,
+    "root_uptake": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "candidate_paths": [
+    "LayeredMFP current MFP face closure",
+    "LayeredMFP immutable Darcian lookup face closure",
+    "FullRichards admitted reference"
+  ],
+  "required_cases": [
+    "F-LMFP04 steady homogeneous control",
+    "F-LMFP04 homogeneous redistribution",
+    "F-LMFP04 moderate sand infiltration",
+    "F-LMFP04 moderate clay infiltration",
+    "F-LMFP04 sand-over-clay",
+    "F-LMFP04 clay-over-sand",
+    "F-LMFP06 strong homogeneous vertical-gradient controls"
+  ],
+  "required_outputs": [
+    "theta and reconstructed head trajectory",
+    "top and bottom flux",
+    "storage and full water-balance residual",
+    "timestep sensitivity",
+    "trial rejection and retry counts",
+    "lookup coverage and interpolation diagnostics",
+    "operation/cost proxies"
+  ],
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "no_post_update_clipping": true,
+    "no_production_path_change": true,
+    "no_silent_solver_switch_by_execution_policy": true,
+    "reference_mode_unchanged": true,
+    "lookup_is_immutable_shared_parameter_data_not_column_state": true
+  },
+  "status": "TRANSIENT_ABC_HARNESS_IN_PREPARATION",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  }
+}
