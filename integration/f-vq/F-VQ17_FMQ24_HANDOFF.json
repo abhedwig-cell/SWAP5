@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ17",
+  "downstream_workstream": "F-MQ",
+  "downstream_work_unit": "F-MQ24",
+  "title": "Independent scientific handoff of exact F-MR06 serialized SNOW MultiSWAP candidate to F-MQ24",
+  "source_candidate": {
+    "commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_multiswap_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "scientific_admission": {
+    "f_vq17_decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "f_vq16_closeout": "98712959d811c788c77842eede4c6f558cca1c11",
+    "snow_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "richards_scope": "RESTRICTED_EQUILIBRIUM_PROFILE_EXERCISED_BY_FMR06",
+    "real_physics_execution": "SERIALIZED_ONLY"
+  },
+  "decisive_f_vq17_run": {
+    "qualification_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "workflow_job": 102043008867,
+    "artifact_id": 10053642012,
+    "artifact_digest": "sha256:d565092033efcc2616da814bf8fd7decb2132f3f697f3e20531406eff4933270",
+    "qualification_output_sha256": "09b159c83a4ecc42592267471edc3399f794c1d072a286ab23d7aebabc275f1f",
+    "conclusion": "success"
+  },
+  "relation_to_live_f_mq24_blocker": {
+    "observed_f_mq24_head_before_handoff": "ef647f12d4d7d429d9136d91784b6405374dac68",
+    "observed_status": "BLOCKED_PRE_IMPLEMENTATION",
+    "observed_blocker": "FMQ24-B01",
+    "blocker_owner": "F-MR",
+    "blocker_classification": "MISSING_PRODUCTION_RUNTIME_COMPOSITION",
+    "f_mr06_implementation_available": true,
+    "independent_f_vq17_scientific_admission_available": true,
+    "release_condition_candidate_supplied": true,
+    "blocker_may_be_reassessed_by_f_mq24": true,
+    "blocker_declared_closed_by_f_vq17": false
+  },
+  "required_f_mq24_actions": [
+    "Read the exact F-MR06 candidate and F-VQ17 evidence live; do not rely on old F-MR05/F-VQ16-only precheck state.",
+    "Re-run F-MQ24 source-bound admission against commit ffab7d705928170db3e76a5d346caafeb560e605.",
+    "Verify that production source is unchanged by F-MQ24.",
+    "Verify all-inactive, all-active and mixed SNOW MultiSWAP behavior with 1/2/17/31 columns, order independence, transaction rollback/replay and complete mass accounting.",
+    "Retain the F-VQ16/F-VQ17 one-call-daily time restriction and serialized real-physics restriction.",
+    "Issue final MultiSWAP admission only if F-MQ24's own independent gate passes."
+  ],
+  "hard_holds": [
+    "No subdaily, multiday or arbitrary-duration SNOW admission.",
+    "No general non-equilibrium Richards admission.",
+    "No parallel real-physics admission.",
+    "No F-PE balanced/throughput/fallback admission.",
+    "No 100k-column performance qualification.",
+    "F-VQ17 does not itself grant final MultiSWAP production admission."
+  ],
+  "release_to_f_mq24": true
+}
