@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "evidence_class": "STRUCTURAL_READINESS_ADMISSION",
+  "scope": "TCS7_DCS2_SINGLE_NODE_SSDI_REGULAR_RATE",
+  "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness",
+  "decisive_gate_head": "4ded5f1d4052212c102207d14e1afb49551b0f16",
+  "decisive_workflow": {
+    "name": "F-PM04 scheduled irrigation readiness",
+    "run_id": 34238878148,
+    "job_id": 102103605167,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "python": "3.12.3"
+  },
+  "gate_markers": {
+    "exact_commit_provenance": "PASS",
+    "no_production_source_change": "PASS",
+    "qualified_interface_blobs": "PASS",
+    "restricted_profile_lock": "PASS",
+    "b110_source_identity": "PASS",
+    "afgen_deterministic_subset": "PASS",
+    "owner_qualification_locks": "PASS",
+    "existing_ssdi_source_seam": "PASS",
+    "architecture_invariants": "PASS",
+    "final": "PASS_ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SINGLE_NODE_SSDI_MIGRATION"
+  },
+  "source_provenance": {
+    "branch_base": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+    "branch_base_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+    "b0_distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "b0_nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "b110_source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "irrigation_f90_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "b110_modifies_functions_or_irrigation": false
+  },
+  "qualified_owner_dependencies": {
+    "fsi17_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "fsi17_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "fmr07_head": "afb450bed0d53d20af2157d0b164d16a9e0a04cd",
+    "fmr07_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+    "committed_only_hydraulic_view": true,
+    "candidate_or_checkpoint_view_admitted": false,
+    "source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "kernel_transactions_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "fvq18_head": "973d2b9d38917a4a459f51b6b46dd51cfd9690c4",
+    "fvq18_use_here": "evidence that the existing SSDI source/mass route can be authoritative exactly once; not evidence that scheduled TCS/DCS equations are scientifically admitted"
+  },
+  "admitted_structural_contract": {
+    "timing": "TCS7 only",
+    "depth": "DCS2 only",
+    "application": "single-node SSDI only",
+    "rate": "positive regular rate with depth/rate <= 1 day",
+    "tables": "2..7 finite strictly increasing DVS knots with explicit actual knot count; partial tables fail closed above final supplied knot",
+    "sensor": "pretranslated immutable validated node",
+    "ssdi_node": "pretranslated immutable validated single node",
+    "calendar": "explicit management window boolean outside the kernel process",
+    "fixed_event_precedence": "explicit management boolean",
+    "persistent_state": "only active scheduled-event continuation state when required"
+  },
+  "hard_holds": [
+    "scheduled multi-node SSDI",
+    "surface scheduled irrigation and gird-to-nird interception/meteo composition",
+    "TCS1-TCS4, TCS6 and TCS8",
+    "tcsfix/dayfix",
+    "DCS1",
+    "legacy broad tcs>1 root-zone/watcon prelude",
+    "rainfall reduction",
+    "depth limits",
+    "solute-threshold over-irrigation",
+    "zero-rate and >1-day rate fallback branches",
+    "task=4 availability scaling",
+    "calendar parsing and legacy I/O"
+  ],
+  "legacy_side_effect_caveat": {
+    "structural_dependency_cut_admitted": true,
+    "scientific_equivalence_of_removed_incidental_legacy_side_effects": false,
+    "reason": "legacy performs broad tcs>1 watcon/root-zone work before TCS7 even though TCS7+DCS2 does not consume those outputs; later independent full-runtime verification must detect any observable effect of not reproducing that incidental path"
+  },
+  "mass_contract": {
+    "single_node_full_event_identity": "rate * duration = depth",
+    "external_inflow_exactly_once_required": true,
+    "multi_node_scheduled_mass_admitted": false,
+    "mass_conservation_relaxation_allowed": false
+  },
+  "state": {
+    "production_candidate_implemented": false,
+    "readiness_artifacts_persisted": true,
+    "readiness_gate_tested": true,
+    "structurally_admitted_for_implementation": true,
+    "scientifically_qualified": false
+  },
+  "next_allowed_action": "implement only the pure process-facing TCS7+DCS2 single-node SSDI seam on a descendant candidate lineage without modifying the F-MR backend; require process tests, transaction replay, O0/O2 and exactly-once mass evidence before handing off to independent F-VQ"
+}
