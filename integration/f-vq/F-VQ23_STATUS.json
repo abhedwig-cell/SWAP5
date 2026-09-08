@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ23",
+  "scope": "INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_RUNTIME_SCIENTIFIC_ADMISSION",
+  "phase": "VERIFIER_IMPLEMENTATION_AUTHORIZED",
+  "status": "IN_PROGRESS_VERIFIER_ONLY",
+  "branch": "qualification/f-vq23-fmr13-reference-linear-solver-runtime",
+  "start_candidate": "985058c0261d284424432a65bded16b7fc9107cb",
+  "contract": "integration/f-vq/F-VQ23_CONTRACT.json",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "candidate_production_source_changed": false
+  },
+  "scientific_admission": false,
+  "next_gate": "Persist independent F-SI18 nonzero HeadCalc reference comparison and F-VQ21-derived mass/transaction oracle, then require O0/O2 deterministic success before qualification."
+}
