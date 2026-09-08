@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ17",
+  "branch": "qualification/f-vq17-fmr06-snow-runtime",
+  "safety_branch": "qualification/f-vq17-fmr06-snow-runtime-safety",
+  "candidate_source_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "candidate_source_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+  "phase": "CONTRACTED_PRE_QUALIFICATION",
+  "status": "PERSISTED_PRE_TEST",
+  "decision": "NOT_ASSESSED",
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "qualification_only": true,
+  "production_source_changed_by_fvq17": false,
+  "reference_source_changed_by_fvq17": false,
+  "scientific_admission": false,
+  "snow_multiswap_production_admission": false,
+  "parallel_reference_backend_admitted": false,
+  "subdaily_snow_admitted": false,
+  "general_richards_scope_expanded": false,
+  "fmq24_release": false,
+  "blockers": [
+    {
+      "id": "FVQ17-G01",
+      "classification": "QUALIFICATION_NOT_YET_EXECUTED",
+      "release_condition": "Independent source-bound O0/O2 qualification harness must pass on exact candidate ffab7d705928170db3e76a5d346caafeb560e605."
+    }
+  ],
+  "holds": [
+    "Production/reference source is immutable in F-VQ17.",
+    "F-MR06 TESTED status is supporting evidence only and does not imply F-VQ17 PASS.",
+    "Exact F-VQ16 one-call-daily SNOW scope is the maximum candidate SNOW scope.",
+    "F-MQ24 remains held until F-VQ17 PASS."
+  ],
+  "next_step": "Implement and persist the independent F-VQ17 source-bound qualification harness before executing qualification."
+}
