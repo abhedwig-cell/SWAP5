@@ -48,8 +48,47 @@
     "saturated_or_positive_head_support_must_be_explicitly_qualified_not_inferred": true,
     "heterogeneous_interface_changes_require_separate_evidence": true
   },
+  "gate_A_coordinate_envelope": {
+    "candidate_family": "x=asinh(h/hscale)",
+    "head_envelope_cm": [-100000000.0, 100.0],
+    "materials": 5,
+    "material_status": "SYNTHETIC_HYDRAULIC_STRESS_FIXTURES_NOT_PRODUCTION_CATALOG",
+    "pair_cases_per_material": 198,
+    "initial_candidates": 12,
+    "initial_hscale_cm": [0.01, 0.1, 1.0, 10.0],
+    "initial_negative_head_nodes": [48, 64, 96],
+    "initial_run": {
+      "run": 34278440087,
+      "head": "cfe57ba6ff00a177832113b146bf76d2e7275e8d",
+      "job": 102237111372,
+      "conclusion": "FAILURE",
+      "artifact": 10076633415,
+      "artifact_digest": "sha256:f85aad17542355bfbdae7c52b798c5a9cf2967224856f775d591dd13d0104974"
+    },
+    "failure_interpretation": "The asinh family is regular through h=0 and passes refinement behaviour there, but 48-96 negative-head nodes are too sparse over the eight-decade dry envelope to meet the predeclared MFP secant and limiting-conductivity error gates.",
+    "best_initial_examples": {
+      "hscale_0p1_nodes96": {
+        "mfp_secant_p90_rel_error": 0.013406361398702268,
+        "mfp_secant_p99_rel_error": 0.0886458538129999,
+        "mfp_secant_max_rel_error": 0.16450329068593245,
+        "limit_k_p90_rel_error": 0.16156900532106927,
+        "zero_refinement_max_ratio": 0.20031904062340203,
+        "projected_R_bytes_per_class": 20736
+      },
+      "hscale_0p01_nodes96": {
+        "mfp_secant_p90_rel_error": 0.01494060272792125,
+        "mfp_secant_p99_rel_error": 0.0988681372506339,
+        "mfp_secant_max_rel_error": 0.13098227315907313,
+        "limit_k_p90_rel_error": 0.12982356919058421,
+        "zero_refinement_max_ratio": 0.20076084284961207,
+        "projected_R_bytes_per_class": 20736
+      }
+    },
+    "thresholds_unchanged_after_failure": true,
+    "next_experiment": "Increase density only for hscale 0.01 and 0.1 cm; do not relax thresholds. Test 128, 160 and 192 negative-head nodes and quantify memory consequence."
+  },
   "candidate_questions": [
-    "Can a signed/asinh-like or piecewise linear-log pressure-head coordinate remove the h=0 singularity without degrading dry-tail resolution?",
+    "Can the asinh coordinate meet the fixed error gate by density alone, or is a piecewise/adaptive head grid required?",
     "Can saturated and near-saturated face behaviour be represented without a special discontinuous branch?",
     "How dry can the table extend before interpolation density or constitutive dynamic range becomes impractical?",
     "Can the homogeneous correction be reused across a bounded set of face-length classes or normalized to reduce geometry cardinality?",
@@ -57,11 +96,11 @@
     "What envelope boundary should fail closed rather than extrapolate?"
   ],
   "scope_flags": {
-    "EXPERIMENTAL_HARNESS_IMPLEMENTED": false,
+    "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
     "PRODUCTION_IMPLEMENTED": false,
     "PERSISTED": true,
-    "TESTED": false,
+    "TESTED": true,
     "QUALIFIED": false
   },
-  "status": "HYDRAULIC_ENVELOPE_QUALIFICATION_IN_PREPARATION"
+  "status": "GATE_A1_FAILED_DENSITY_INSUFFICIENT_CONTINUATION_ADMITTED_WITH_UNCHANGED_THRESHOLDS"
 }
