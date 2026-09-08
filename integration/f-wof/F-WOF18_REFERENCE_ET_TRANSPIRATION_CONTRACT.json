@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF18",
+  "title": "Restricted Reference-ET No-Interception Potential-Transpiration Producer",
+  "branch": "work/f-wof18-reference-et-transpiration-producer",
+  "base": {
+    "commit": "c54e0bf1fff5c986ee64bf8fdb4248e5f4b15172",
+    "status": "QUALIFIED_OPTION_AWARE_CROP_ROOT_GEOMETRY_SNAPSHOT_PRODUCER"
+  },
+  "purpose": "Produce the current root-uptake ET result for the source-bound B1.10 SWETR=1, SWMETDETAIL=0, SWINTER=0 route without migrating Penman-Monteith, interception, weather-file I/O, calendar scheduling or persistent meteo globals.",
+  "source_provenance": {
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "legacy_driver_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "weather_fixture_sha256": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+    "legacy_regions": {
+      "driver_current_timestep_meteo_before_root_uptake": "SWAP/swap.f90:413-428",
+      "ProcessMeteoDT": "SWAP/MOD_meteo.f90:1278-1395",
+      "ETpot": "SWAP/MOD_meteo.f90:1399-1489",
+      "no_interception_daily_route": "SWAP/MOD_meteo.f90:2055-2092",
+      "SWETR_requires_crop_factor": "SWAP/MOD_cropdevelopment.f90:1137-1146",
+      "weather_ETref_units": "SWAP_4.3.1/cases/4.salinitystress/tools/template/weather/235.met header: ETref reference evapotranspiration in mm"
+    }
+  },
+  "admitted_legacy_route": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "reference_et_source": "explicit current forcing value in mm per day",
+    "canopy_inputs": ["crop_emerged", "vegetation_cover_fraction", "crop_factor", "CO2_transpiration_factor"]
+  },
+  "source_reduction": {
+    "active_crop_ET0_mm_per_day": "reference_et_mm_per_day * vegetation_cover_fraction * crop_factor",
+    "dry_canopy_potential_transpiration_cm_per_day": "max(ET0_mm_per_day * 0.1, 0) * CO2_transpiration_factor",
+    "no_interception_wet_fraction": 0.0,
+    "final_potential_transpiration": "dry_canopy_potential_transpiration_cm_per_day",
+    "inactive_crop": "0 exactly, without consulting stale ET/canopy factors"
+  },
+  "target_api": {
+    "output_type": "root_uptake_et_result_t",
+    "defined_by": "src/crop/mod_crop_root_uptake_input_assembly.f90",
+    "field": "potential_transpiration",
+    "classification": "CURRENT_INTERVAL_ET_PROCESS_RESULT_NOT_PERSISTENT_CROP_STATE",
+    "mutates_input_state": false,
+    "owns_committed_state": false,
+    "persistent_state_required": false
+  },
+  "time_contract": {
+    "producer_operates_on_rate_inputs": true,
+    "producer_requires_day_start_or_midnight": false,
+    "producer_integrates_over_timestep": false,
+    "forcing_resampling_or_daily_record_selection": "runtime/forcing responsibility outside this producer",
+    "qualified_source_route": "B1.10 SWETR=1 supplies daily ETref, but this producer consumes the selected rate and does not encode a one-day timestep"
+  },
+  "validation": [
+    "active reference_et_mm_per_day must be finite and nonnegative",
+    "active vegetation_cover_fraction must be finite and within [0,1]",
+    "active crop_factor must be finite and nonnegative",
+    "active CO2_transpiration_factor must be finite and nonnegative",
+    "derived potential_transpiration must be finite and nonnegative",
+    "inactive crop returns canonical zero without consulting stale active-route values"
+  ],
+  "forbidden": [
+    "Penman-Monteith or SWETR=0",
+    "SWMETDETAIL=1",
+    "SWINTER=1, SWINTER=2 or SWINTER=3 interception physics",
+    "soil evaporation, pond evaporation or precipitation processing",
+    "weather-file parsing, record cursors or calendar lookup",
+    "persistent ptra, ptra_dry, ptra_wet, wfrac or aintc state",
+    "moving potential_transpiration into committed crop-root state",
+    "runtime, solver or HeadCalc dependencies"
+  ],
+  "qualification_tests": [
+    "inactive dependency-free route",
+    "active source-bound formula against independent B1.10 oracle",
+    "cover=0 and crop_factor=0 zero routes",
+    "CO2 factor application",
+    "invalid active inputs fail closed",
+    "read-only inputs",
+    "A/B/A bitwise determinism",
+    "F-WOF13 assembly consumption",
+    "O0/O2 output identity"
+  ],
+  "affected_invariants": [2, 3, 4, 7, 9, 16, 21, 23, 27, 29, 30]
+}
