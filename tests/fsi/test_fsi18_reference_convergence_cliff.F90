@@ -149,5 +149,14 @@ contains
     write(*,'(A,I0,A,I0)') 'FSI18_CASE_', case_id, '_LINEAR_SOLVES=', result%diagnostics%linear_solves
     write(*,'(A,I0,A,I0)') 'FSI18_CASE_', case_id, '_BACKTRACKING_ATTEMPTS=', result%diagnostics%backtracking_attempts
     write(*,'(A,I0,A,A)') 'FSI18_CASE_', case_id, '_ROUTE=', trim(result%diagnostics%route)
+    write(*,'(A,I0,A,I0)') 'FSI18_CASE_', case_id, '_FINAL_BALANCE_FLAG_COUNT=', &
+         count(workspace%richards%nonconverged_balance)
+    write(*,'(A,I0,A,I0)') 'FSI18_CASE_', case_id, '_FINAL_HEAD_FLAG_COUNT=', &
+         count(workspace%richards%nonconverged_head)
+    write(*,'(A,I0,A,ES26.17E3)') 'FSI18_CASE_', case_id, '_FINAL_MAX_ABS_RESIDUAL=', &
+         maxval(abs(workspace%richards%residual))
+    write(*,'(A,I0,A,ES26.17E3)') 'FSI18_CASE_', case_id, '_FINAL_ABS_TOTAL_RESIDUAL=', &
+         abs(sum(workspace%richards%residual))
+    write(*,'(A,I0,A,I0)') 'FSI18_CASE_', case_id, '_LAST_NUMBIT=', workspace%legacy_worker%control%last_numbit
   end subroutine run_case
 end program test_fsi18_reference_convergence_cliff
