@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF15",
+  "title": "Physical-Option-Dependent Crop-Root State Ownership",
+  "branch": "work/f-wof15-root-state-ownership",
+  "status": "QUALIFIED_OPTION_DEPENDENT_CROP_ROOT_STATE_OWNERSHIP",
+  "qualification_scope": "STATE_OWNERSHIP_AND_RECONSTRUCTIBILITY_ONLY",
+  "base": {
+    "commit": "24eee52efc0ce68c879632bb6fa42cce6289f901",
+    "status": "BLOCKED_BOTH_OWNER_INPUTS_NOT_YET_AVAILABLE"
+  },
+  "tested_candidate": "b51cf899417fc1940465ec35129daae4d5444cb9",
+  "verification": {
+    "github_actions_run": 34266618453,
+    "github_actions_conclusion": "success",
+    "zero_production_delta": "PASS",
+    "source_hash_reconciliation": "PASS",
+    "option_dependent_depth_state": "PASS",
+    "option_dependent_distribution_state": "PASS",
+    "derived_fields_not_commit_authorities": "PASS",
+    "optional_state_memory_scaling": "PASS",
+    "ET_separation": "PASS"
+  },
+  "decision": "OPTION_DEPENDENT_MINIMAL_ROOT_STATE_WITH_DERIVED_VIEW",
+  "ownership": {
+    "common_persistent_root_array": "FORBIDDEN",
+    "SWRD_1_independent_actual_root_depth_state": false,
+    "SWRD_2_optional_committed_state": ["actual_root_depth", "potential_root_depth"],
+    "SWRD_3_independent_actual_root_depth_state": false,
+    "SWRDC_nonadaptive_per_node_state": false,
+    "SWRDC_1_optional_committed_state": ["per_node_root_biomass_distribution_or_semantic_equivalent"],
+    "derived_view_fields": ["rooted_nodes", "cumulative_root_fraction"],
+    "potential_transpiration_owner": "ET_PROCESS_RESULT_NOT_CROP_ROOT_STATE"
+  },
+  "transaction_contract": {
+    "SWRD_2_state_transactional": true,
+    "SWRDC_1_state_transactional": true,
+    "derived_view_transactional_authority": false,
+    "rejected_trial_may_advance_root_state": false
+  },
+  "scope": {
+    "production_source_changed": false,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "crop_physics_changed": false,
+    "root_growth_implemented": false,
+    "view_producer_implemented": false,
+    "ET_producer_implemented": false,
+    "cross_lineage_merge_performed": false
+  },
+  "state": {
+    "ownership_resolved": true,
+    "implemented": false,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "affected_invariants": [3, 4, 6, 7, 9, 16, 21, 27, 29, 30],
+  "remaining_FWO14_crop_side_blocker": "No concrete crop-owned producer yet maps qualified crop/root state to crop_root_state_view_t.",
+  "remaining_FWO14_ET_side_blocker": "No qualified current potential-transpiration result producer yet exists.",
+  "next": "Start F-WOF16 as a restricted source-bound crop-root view producer. Prefer a non-adaptive root-distribution route first, derive rooted_nodes and cumulative_root_fraction using exact B1.10 grid/distribution semantics, and keep root-growth evolution outside that workunit."
+}
