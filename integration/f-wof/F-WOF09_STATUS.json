@@ -7,7 +7,7 @@
     "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_CONTRACT"
   },
   "branch": "work/f-wof09-reallocation-request-apply-seam",
-  "status": "ADMITTED_FOR_MINIMAL_REQUEST_APPLY_SEAM_IMPLEMENTATION",
+  "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_STRUCTURAL_SEAM",
   "qualification_scope": "PURE_REALLOCATION_POLICY_AND_SCALAR_DONOR_AVAILABILITY_ONLY",
   "owner": "Crop physics",
   "scope": {
@@ -22,23 +22,50 @@
     "full_crop_host_integration": false,
     "wofost81_nitrogen_in_scope": false
   },
-  "required_gates": [
-    "full-availability parity with qualified F-WOF04 reference call",
-    "availability-limited transfer preserves unused cap",
-    "cumulative state advances from applied transfer only",
-    "zero-availability identity",
-    "leaf equality/full-depletion scalar edge is mass safe",
-    "combined leaf and stem dry-matter balance",
-    "repeat trial from same committed state is deterministic",
-    "invalid request/cap/state fails closed",
-    "non-one-day duration fails closed",
-    "O0 and O2 outputs are identical"
-  ],
+  "qualified_candidate": {
+    "commit": "72ab8e6369abf52b702a4baa434f33a3ec7d8e74",
+    "fwof04_reference_blob_unchanged": "49d358a851f52a8e8bd3d1c171fd832d3f03cbdf",
+    "request_apply_source_blob": "758bd4e297088592c08739390dd6fd4184b41be8",
+    "focused_test_blob": "7ca9bdb937cfb64d34119f2645c622423971740f",
+    "gate_runner_blob": "0340f3e13f5f48dfaf174cbe7a34383af970fd24",
+    "workflow_blob": "0d5797bf9ee0f3709343e2b99418008ed108e630"
+  },
+  "verification": {
+    "github_actions_run": 34242863547,
+    "github_actions_conclusion": "success",
+    "scope_gate": "PASS",
+    "o0_o2_compile_and_output_gate": "PASS",
+    "full_availability_fwof04_parity": "PASS",
+    "availability_limited_unused_cap": "PASS",
+    "applied_only_cumulative_bookkeeping": "PASS",
+    "zero_availability_no_cap_consumption": "PASS",
+    "leaf_scalar_full_depletion_edge": "PASS",
+    "combined_leaf_stem_dry_matter_balance": "PASS",
+    "repeat_trial_determinism": "PASS",
+    "invalid_availability_trial_atomicity": "PASS",
+    "invalid_request_fail_closed": "PASS",
+    "non_one_day_fail_closed": "PASS"
+  },
+  "behavioral_contract": {
+    "activation_cap_can_commit_with_zero_applied_transfer": true,
+    "unfulfilled_request_consumes_cap": false,
+    "availability_limiter_is_physical_not_solver_failure": true,
+    "trial_wrapper_returns_committed_state_on_apply_failure": true,
+    "full_availability_matches_fwof04": true
+  },
   "affected_invariants": [3, 7, 9, 13, 21, 23, 26, 27, 30],
   "production_migration_allowed": true,
+  "production_leaf_reallocation_allowed": false,
   "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
-  "next": "Implement a pure request phase and pure availability-aware apply phase without modifying the F-WOF04 reference seam."
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "scientific_claims_not_made": [
+    "full WOFOST73 crop-host integration is qualified",
+    "leaf cohort mutation is qualified",
+    "arbitrary subdaily reallocation is qualified",
+    "WOFOST81 nitrogen physiology is admitted",
+    "legacy SWAP nitrogen may be removed"
+  ],
+  "next": "Qualify the smallest leaf-cohort apply seam that consumes an already-qualified APPLIED_LV amount after same-day old-leaf death and before new-leaf growth, without broadening into full crop-host migration."
 }
