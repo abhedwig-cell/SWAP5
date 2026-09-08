@@ -1,0 +1,30 @@
+{
+  "workunit": "F-WOF07",
+  "oracle": "uniform surviving-leaf cohort scaling",
+  "seed": 43173,
+  "random_interior_cases": 10000,
+  "max_abs_mass_identity_error": 4.547473508864641e-13,
+  "max_abs_leaf_area_scaling_error": 1.7763568394002505e-15,
+  "max_abs_cohort_factor_error": 1.1102230246251565e-16,
+  "reference_order": [
+    "leaf death",
+    "physiological ageing",
+    "proportional reallocation of surviving cohorts",
+    "new leaf growth"
+  ],
+  "equality_edge": {
+    "surviving_leaf_mass": 123.456,
+    "requested_leaf_transfer": 123.456,
+    "historical_reference_leaf_removed": 0.0,
+    "unbacked_transfer_if_top_level_flux_is_committed": 123.456
+  },
+  "excess_edge": {
+    "surviving_leaf_mass": 100.0,
+    "requested_leaf_transfer": 110.0,
+    "historical_reference_leaf_removed": 0.0,
+    "unbacked_transfer_if_top_level_flux_is_committed": 110.0
+  },
+  "interior_semantics_qualified": true,
+  "production_leaf_reallocation_qualified": false,
+  "blocker": "Availability-aware applied-transfer and cumulative-bookkeeping contract required to preserve dry-matter mass."
+}
