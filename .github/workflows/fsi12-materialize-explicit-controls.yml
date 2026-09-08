@@ -1,13 +1,7 @@
 name: F-SI12 materialize explicit solver controls
 
 on:
-  push:
-    branches:
-      - work/f-si12-explicit-solver-controls
-    paths:
-      - 'integration/f-si/F-SI12_CONTROL_BINDING_CONTRACT.json'
-      - 'tools/fsi/fsi12_materialize_explicit_controls.py'
-      - '.github/workflows/fsi12-materialize-explicit-controls.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
