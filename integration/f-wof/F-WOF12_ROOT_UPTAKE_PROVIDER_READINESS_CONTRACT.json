@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF12",
+  "title": "Concrete Root-Uptake Crop-State Provider Readiness",
+  "branch": "work/f-wof12-root-uptake-provider-readiness",
+  "base": {
+    "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+    "tree": "41effb81893efdca9bad42687ffb4655e68e6fb5",
+    "status": "QUALIFIED_SHARED_CROP_ROOT_UPTAKE_INPUT_RUNTIME_ADAPTER"
+  },
+  "purpose": "Determine whether a source-bound concrete provider can expose the current crop state required by F-WOF11 at the physically correct evaluation point without importing legacy globals, daily driver assumptions or runtime dependencies into crop physics.",
+  "qualified_dependencies": {
+    "shared_crop_input_contract": "F-WOF11",
+    "shared_to_runtime_adapter": "F-MR12",
+    "runtime_root_uptake_binding": "F-MR10",
+    "root_uptake_science": "F-PM05/F-VQ22"
+  },
+  "required_provider_values": [
+    "crop_emerged",
+    "potential_transpiration",
+    "rooted_nodes",
+    "cumulative_root_fraction"
+  ],
+  "legacy_source_questions": [
+    "where and when fl_cropemergence becomes authoritative",
+    "where and when ptra is computed relative to root extraction",
+    "where and when noddrz is updated relative to root-depth growth",
+    "where and when cumdens_top is recomputed relative to root extraction",
+    "whether these four values are all current at one well-defined process evaluation point",
+    "whether their validity depends on flDayStart, one-call-per-day or another hidden driver cadence",
+    "whether provider extraction can be state/forcing based rather than direct module-global reads"
+  ],
+  "source_identity_requirements": {
+    "canonical_SW4_3_1_archive": true,
+    "record_SHA256_for_each_decisive_legacy_source": true,
+    "no_semantics_inferred_from_variable_name_only": true,
+    "driver_call_order_must_be_source_bound": true
+  },
+  "readiness_gates": {
+    "G1_owner_contract": "F-WOF11 and target architecture keep crop semantics outside runtime",
+    "G2_current_state_point": "prove a single source-bound evaluation point where all four provider values are current",
+    "G3_time_semantics": "separate genuine crop calendar/day physics from accidental legacy driver cadence",
+    "G4_transactional_semantics": "provider must read trial-consistent crop/ET state and must not mutate committed state",
+    "G5_no_legacy_global_dependency": "production provider may not expose MOD_meteo/MOD_cropdevelopment/plant_interface globals directly",
+    "G6_no_runtime_dependency_in_crop": "crop provider implementation may implement F-WOF11 but may not use F-MR modules",
+    "G7_optional_state": "inactive crop must not require allocation of root-distribution state",
+    "G8_smallest_seam": "identify the minimum new crop-state/ET contract needed; do not migrate full WOFOST implicitly"
+  },
+  "fail_closed_policy": {
+    "if_single_current_evaluation_point_not_proven": "BLOCK concrete provider admission",
+    "if_ptra_owner_or_timing_is_ambiguous": "BLOCK concrete provider admission",
+    "if_root_distribution_freshness_is_ambiguous": "BLOCK concrete provider admission",
+    "if_only_legacy_global_reads_can_supply_values": "BLOCK and hand off to crop-host state owner",
+    "if_hidden_daily_cadence_is_required": "qualify only that cadence explicitly; do not generalize to arbitrary [t0,t1]"
+  },
+  "production_change_allowed_in_this_readiness_unit": false,
+  "cross_workstream_merge_allowed": false,
+  "affected_invariants": [2, 3, 4, 7, 9, 21, 22, 27, 29, 30],
+  "required_outputs": [
+    "source-bound provider inventory",
+    "call-order and freshness evidence",
+    "time/cadence classification",
+    "owner-resolution decision",
+    "smallest admitted next seam or fail-closed blocker",
+    "F-WOF12 status"
+  ]
+}
