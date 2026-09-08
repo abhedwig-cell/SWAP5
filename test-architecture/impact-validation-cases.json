@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA02",
+  "claim_boundary": "Representative historical replay tests minimum conservative inclusion, not selector completeness.",
+  "cases": [
+    {
+      "case_id": "FTA02-H01-KERNEL-CHECKPOINT",
+      "historical_commit": "278e1b0bf44a391059fdcdd72576e24e966e95f1",
+      "changed_paths": ["src/kernel/mod_kernel_transactions.f90"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": false, "transaction_semantics_change": true, "state_layout_change": true, "precision_policy_change": false},
+      "required_cost_classes": ["FAST", "FOCUSED", "BROAD"],
+      "required_test_id_tokens": ["FKT", "FMR"]
+    },
+    {
+      "case_id": "FTA02-H02-SOLVER-CONTROLS",
+      "historical_commit": "c5d9fcee85f5c6b4049a54042cc06cf8ddcf9e88",
+      "changed_paths": ["src/adapter/mod_reference_richards_legacy_binding.f90", "src/legacy/b1_10_port/headcalc.f90"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": true, "transaction_semantics_change": false, "state_layout_change": false, "precision_policy_change": false},
+      "required_cost_classes": ["FAST", "FOCUSED", "BROAD"],
+      "required_test_id_tokens": ["FSI", "FMR"]
+    },
+    {
+      "case_id": "FTA02-H03-RUNTIME-DIAGNOSTICS",
+      "historical_commit": "7490d5f8589f87e77ba4843c33dc7c58d6dac7c0",
+      "changed_paths": ["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": false, "transaction_semantics_change": false, "state_layout_change": false, "precision_policy_change": false},
+      "required_cost_classes": ["FAST", "FOCUSED"],
+      "required_test_id_tokens": ["FMR", "FVQ"]
+    },
+    {
+      "case_id": "FTA02-H04-MASS-CONTRACT",
+      "historical_commit": "9623841f38c075f61404457ccfe31d89df9839f7",
+      "changed_paths": ["src/kernel/mod_kernel_transactions.f90", "src/runtime/mod_canonical_contracts.f90", "src/runtime/mod_canonical_interval_runtime.f90", "src/transaction/mod_transaction_reference.f90"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": false, "transaction_semantics_change": true, "state_layout_change": true, "precision_policy_change": false},
+      "required_cost_classes": ["FAST", "FOCUSED", "BROAD"],
+      "required_test_id_tokens": ["TRANSACTION", "FKT", "FMR"]
+    },
+    {
+      "case_id": "FTA02-H05-REFERENCE-MANIFEST",
+      "historical_commit": "cd7772880e51e8a4eb5af0e248304a90dabf0ec2",
+      "changed_paths": ["reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": false, "transaction_semantics_change": false, "state_layout_change": false, "precision_policy_change": false},
+      "required_cost_classes": ["FAST", "FOCUSED", "QUALIFICATION"],
+      "required_test_id_tokens": ["VQ"]
+    },
+    {
+      "case_id": "FTA02-H06-GOVERNANCE-ONLY",
+      "historical_commit": "a00e59906fe4bf933670fb2e813d4475335928bc",
+      "changed_paths": ["docs/development/quality-governance-a-aa.md"],
+      "semantic_declarations": {"physics_change": false, "numerical_policy_change": false, "transaction_semantics_change": false, "state_layout_change": false, "precision_policy_change": false},
+      "required_cost_classes": ["FAST"],
+      "required_test_id_tokens": ["DOCS"]
+    }
+  ]
+}

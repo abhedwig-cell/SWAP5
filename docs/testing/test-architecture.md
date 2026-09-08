@@ -72,3 +72,11 @@ F-MQ evidence exists on qualification branches outside this baseline. F-TA01 rec
 - `tools/test_architecture/validate_test_architecture.py`: cheap fail-closed coverage and field validation.
 
 Run `python3 tools/test_architecture/build_registry.py` followed by `python3 tools/test_architecture/validate_test_architecture.py`. Regeneration is reviewable: a new tracked test or workflow must appear in the register, while the validator rejects unregistered artifacts.
+
+## F-TA02 impact-selection validation
+
+F-TA02 adds an executable advisory selector and a pinned historical replay corpus. The corpus covers a kernel checkpoint change, explicit solver controls, runtime diagnostics, the authoritative mass contract, a corrected-reference manifest, and a governance-only change. It verifies that the selector includes minimum expected test families and cost classes. Two negative cases verify fail-closed behavior for an unmapped production path and for missing semantic declarations.
+
+This is deliberately a limited claim. Six retrospective cases do not prove that the dependency map is complete, and the selector has no authority to waive a test or grant qualification. Its output is `SELECTION_PROPOSED_NOT_QUALIFICATION` or `BLOCKED`.
+
+`test-architecture/legacy-process-ownership.json` now maps every file in the current `src/legacy/b1_10_port` directory at file level. The four assembled `swap_part*.inc` files remain `NOT_ASSESSED_FINE_GRAIN`, because their internal process boundaries have not been qualified. `test-architecture/fixture-tolerance-audit.json` records explicit, partial, unknown, external and off-lineage provenance without filling gaps by inference.

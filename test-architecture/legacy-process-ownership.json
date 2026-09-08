@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA02",
+  "authority": "TEST_IMPACT_CLASSIFICATION_ONLY",
+  "files": [
+    {"path": "src/legacy/b1_10_port/headcalc.f90", "process": "Richards soil-water solve and numerical controls", "owner": "F-SI", "dependency_types": ["PHYSICS", "NUMERICAL_POLICY", "STATE_MUTATING"], "tests": ["*-FSI-*", "*-FMR04-*", "*-FVQ-*"], "status": "PARTIALLY_MAPPED"},
+    {"path": "src/legacy/b1_10_port/soilwater.f90", "process": "soil-water orchestration and source/sink assembly", "owner": "F-SI/F-CI", "dependency_types": ["PHYSICS", "STATE_MUTATING", "SHARED_CONTRACT"], "tests": ["*-FSI-*", "*-FCI-*", "*-FMR04-*", "*-FVQ-*"], "status": "PARTIALLY_MAPPED"},
+    {"path": "src/legacy/b1_10_port/swap.f90", "process": "legacy program orchestration", "owner": "F-CI", "dependency_types": ["SHARED_CONTRACT", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "PARTIALLY_MAPPED"},
+    {"path": "src/legacy/b1_10_port/swap_main.f90", "process": "legacy entrypoint", "owner": "F-CI", "dependency_types": ["SHARED_CONTRACT", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "PARTIALLY_MAPPED"},
+    {"path": "src/legacy/b1_10_port/swap_part01.inc", "process": "legacy assembled program segment; finer process boundary not proven", "owner": "F-CI", "dependency_types": ["PHYSICS", "STATE_MUTATING", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "NOT_ASSESSED_FINE_GRAIN"},
+    {"path": "src/legacy/b1_10_port/swap_part02.inc", "process": "legacy assembled program segment; finer process boundary not proven", "owner": "F-CI", "dependency_types": ["PHYSICS", "STATE_MUTATING", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "NOT_ASSESSED_FINE_GRAIN"},
+    {"path": "src/legacy/b1_10_port/swap_part03.inc", "process": "legacy assembled program segment; finer process boundary not proven", "owner": "F-CI", "dependency_types": ["PHYSICS", "STATE_MUTATING", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "NOT_ASSESSED_FINE_GRAIN"},
+    {"path": "src/legacy/b1_10_port/swap_part04.inc", "process": "legacy assembled program segment; finer process boundary not proven", "owner": "F-CI", "dependency_types": ["PHYSICS", "STATE_MUTATING", "QUALIFICATION_ONLY"], "tests": ["*-FCI-*", "RR-*", "QG-*VQ*"], "status": "NOT_ASSESSED_FINE_GRAIN"}
+  ],
+  "claim_boundary": "This map selects tests conservatively. It does not establish scientific ownership or qualify the legacy process decomposition."
+}

@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
-  "work_unit": "F-TA01",
-  "automation_status": "ADVISORY_ONLY_FAIL_CLOSED",
+  "schema_version": 2,
+  "work_unit": "F-TA02",
+  "automation_status": "REPRESENTATIVE_REPLAY_VALIDATED_ADVISORY_FAIL_CLOSED",
   "dependency_types": [
     "READ_ONLY",
     "STATE_MUTATING",
@@ -37,6 +37,15 @@
       "dependent_components": ["physical-adapter", "multiswap-runtime"],
       "required_layers": ["FAST", "FOCUSED"],
       "broad_trigger": "physics, numerical policy, convergence status, precision or solver contract changes"
+    },
+    {
+      "source_surface": "src/legacy/b1_10_port/**",
+      "component": "legacy-physical-processes",
+      "dependency_type": "PHYSICS",
+      "direct_test_selectors": ["*-FSI-*", "*-FCI-*", "*-FMR04-*", "*-FVQ-*"],
+      "dependent_components": ["solver-isolation", "canonical-integration", "physical-adapter", "multiswap-runtime", "independent-qualification"],
+      "required_layers": ["FOCUSED"],
+      "broad_trigger": "always pending qualified fine-grained process ownership; numerical, physics, state, precision and mass effects require explicit declaration"
     },
     {
       "source_surface": "src/adapter/**",
@@ -76,12 +85,12 @@
     }
   ],
   "unmapped_surfaces": [
-    "src/legacy/b1_10_port/** requires finer process-level ownership mapping",
+    "src/legacy/b1_10_port/swap_part*.inc requires finer process-level ownership than file granularity",
     "precision-policy surfaces are not yet explicitly declared in repository metadata",
     "F-MQ qualification harnesses exist on non-baseline branches and are not executable from this checkout"
   ],
   "selection_contract": [
-    "A selector is advisory until a focused F-TA qualification proves its completeness.",
+    "The selector is advisory; six historical replays prove minimum inclusion only, not completeness.",
     "Unknown or overlapping ownership expands the test cone; it never suppresses a test.",
     "A physics, numerical-policy, precision, state-layout or transaction-semantics change requires explicit human declaration.",
     "Qualification tests require their own exact source binding and cannot inherit the F-TA branch HEAD."

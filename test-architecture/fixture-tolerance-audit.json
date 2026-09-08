@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA02",
+  "assessment_scope": "High-risk and externally dependent gates on the F-TA01 baseline",
+  "records": [
+    {
+      "test_family": "F-VQ15",
+      "fixture_source": "immutable F-VQ14 scientific reference-run package plus exact candidate checkout c28e7a2810b4a3678c577335a6a3086b173eb976",
+      "expected_value_source": "QUALIFIED_GOLDEN_CASE",
+      "tolerance_policy": "bitwise committed state and canonical mass identity; authoritative mass residual <= 1e-12",
+      "provenance_status": "EXPLICIT_SOURCE_BOUND",
+      "evidence": "integration/f-vq/F-VQ15_QUALIFICATION_EVIDENCE.json"
+    },
+    {
+      "test_family": "F-MR04/F-MR05",
+      "fixture_source": "restricted fixed-top physical profile and B1.10-bound serialized backend",
+      "expected_value_source": "ARCHITECTURE_CONTRACT_AND_QUALIFIED_GOLDEN_CASE",
+      "tolerance_policy": "runner-owned identity assertions; authoritative mass residual <= 1e-12",
+      "provenance_status": "EXPLICIT_RESTRICTED_SCOPE",
+      "evidence": "integration/f-mr/F-MR05_QUALIFICATION_EVIDENCE.json"
+    },
+    {
+      "test_family": "F-CI07 full B1.10",
+      "fixture_source": "environment-provided exact reconstructed B1.10 tree, TTUTIL root and Hupsel case",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "runner/evidence-owned",
+      "provenance_status": "EXTERNAL_FIXTURE_REQUIRED_NOT_SELF_CONTAINED",
+      "evidence": "tests/fci/run_fci07_full_b1_10_gate.sh"
+    },
+    {
+      "test_family": "VQ B1.6-B1.10 and B2 gates",
+      "fixture_source": "tools/vq/cases reference pins and repository snapshots",
+      "expected_value_source": "CORRECTED_LEGACY_REFERENCE",
+      "tolerance_policy": "case-owned; not normalized into the F-TA01 register",
+      "provenance_status": "PINNED_BUT_NOT_NORMALIZED",
+      "evidence": "tools/vq/cases/**"
+    },
+    {
+      "test_family": "F-SI05 production HeadCalc",
+      "fixture_source": "production B1.10 port plus test-local stubs and compile-time base lock",
+      "expected_value_source": "ARCHITECTURE_CONTRACT",
+      "tolerance_policy": "not exposed as common machine-readable policy",
+      "provenance_status": "PARTIAL",
+      "evidence": "tests/fsi/run_fsi05_gate.sh"
+    },
+    {
+      "test_family": "standalone Fortran test/support sources without runner",
+      "fixture_source": "UNKNOWN or runner-transitive",
+      "expected_value_source": "NOT_ASSESSED",
+      "tolerance_policy": "UNKNOWN",
+      "provenance_status": "BLOCKED_NOT_DIRECTLY_EXECUTABLE",
+      "evidence": "test-architecture/test-register.json"
+    },
+    {
+      "test_family": "F-MQ",
+      "fixture_source": "off-lineage qualification branches",
+      "expected_value_source": "NOT_ASSESSED_ON_FTA_BASELINE",
+      "tolerance_policy": "NOT_ASSESSED_ON_FTA_BASELINE",
+      "provenance_status": "OFF_LINEAGE",
+      "evidence": "qualification/f-mq23-fvq14-real-physics-runtime at feb1a28a"
+    }
+  ],
+  "normalization_rule": "UNKNOWN and partial metadata remain blockers. Registration never converts them into inherited qualified evidence."
+}

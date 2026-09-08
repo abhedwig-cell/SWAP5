@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-TA",
+  "work_unit": "F-TA02",
+  "branch": "work/f-ta02-impact-selection",
+  "baseline_commit": "7abde2dd05724dd8df62869547a70a24c5e71773",
+  "scope": "TEST_IMPACT_SELECTION_AND_PROVENANCE_TOOLING_ONLY",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_source_changed": false,
+  "reference_results_changed": false,
+  "claims": {
+    "historical_replay": "NOT_YET_PERSISTED",
+    "selector_completeness": "NOT_CLAIMED",
+    "automatic_test_suppression": "NOT_ALLOWED",
+    "qualification_authority": "NONE"
+  },
+  "blockers": [
+    "FTA02-B01 representative historical cases do not prove selector completeness",
+    "FTA02-B02 swap_part include files lack finer process-level ownership",
+    "FTA02-B03 precision-policy ownership remains non-machine-readable in production contracts",
+    "FTA02-B04 fixture and tolerance metadata remain partial for several existing test families",
+    "FTA02-B05 F-MQ evidence remains off the selected baseline lineage"
+  ],
+  "next_action": "Persist the F-TA02 postimage, execute positive and negative impact checks, and record exact recovery provenance.",
+  "recovery_point": "PENDING"
+}
