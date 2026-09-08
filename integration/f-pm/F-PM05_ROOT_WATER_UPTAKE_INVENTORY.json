@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "title": "Root Water Uptake Migration Readiness",
+  "branch": "work/f-pm05-root-water-uptake-readiness",
+  "exact_base": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "source_basis": {
+    "legacy_oracle": "SWAP 4.3.1 B1.10",
+    "canonical_nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "rootextraction_path": "SWAP/rootextraction.f90",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "oxygenstress_path": "SWAP/oxygenstress.f90",
+    "oxygenstress_sha256": "2db206bf28e883a22a1419d4729e03c1bb6b1ec777f544511ffe95bdbf9e5735",
+    "fpm01_migration_rank": 3,
+    "fpm01_decision": "AFTER_SHARED_BASELINE_AND_HYDRAULIC_VIEW"
+  },
+  "process_classification": {
+    "immutable_parameters": [
+      "Feddes drought thresholds hlim3l, hlim3h, hlim4",
+      "transpiration-rate thresholds adcrl, adcrh",
+      "root-density cumulative fractions cumdens_top",
+      "validated rooted node count noddrz"
+    ],
+    "persistent_dynamic_state_full_legacy": [
+      "oxygen/root-development memory where oxygen/root-growth options are enabled",
+      "MICRO/Jong-van-Lier state where microscopic uptake is enabled"
+    ],
+    "persistent_dynamic_state_smallest_selected_seam": [],
+    "forcing_or_process_input": [
+      "potential transpiration ptra",
+      "root depth/root-active indicator",
+      "committed pressure head profile",
+      "root distribution/profile"
+    ],
+    "hydraulic_information_consumed": [
+      "pressure_head(node) for Feddes drought reduction"
+    ],
+    "physical_result": [
+      "precomputed per-node root-extraction sink qrot",
+      "actual root uptake sum qrosum"
+    ],
+    "diagnostic_or_reporting_result": [
+      "potential root uptake qpotrot",
+      "drought stress reduction qreddry and qreddrysum",
+      "other stress attribution arrays only when corresponding physics is active"
+    ],
+    "temporary_workspace": [
+      "hlim3",
+      "per-node alpdry",
+      "potential per-node uptake",
+      "stress-reduction temporaries"
+    ],
+    "io_dependencies": [],
+    "calendar_or_time_dependencies_smallest_selected_seam": [],
+    "solver_interaction": "process computes qrot-style sink; solver consumes it through an explicit root-sink/source-sink interface; process must not mutate HeadCalc arrays"
+  },
+  "legacy_macro_feddes_source_identity": {
+    "entry": "RootExtraction_MACRO task 2",
+    "source_ranges": [
+      "SWAP/rootextraction.f90:332-372",
+      "SWAP/rootextraction.f90:377-486"
+    ],
+    "early_exit_no_roots": "if (rd < 1e-14) return",
+    "early_exit_no_transpiration": "if (ptra < 1e-10) return",
+    "potential_uptake": "qrot(node) = (cumdens_top(node+1)-cumdens_top(node))*ptra for node=1..noddrz",
+    "critical_hlim3": [
+      "ptra < adcrl => hlim3=hlim3l",
+      "adcrl <= ptra <= adcrh => hlim3=hlim3h + ((adcrh-ptra)/(adcrh-adcrl))*(hlim3l-hlim3h)",
+      "ptra > adcrh => hlim3=hlim3h"
+    ],
+    "feddes_drought_reduction": [
+      "h(node) < hlim4 => alpdry=0",
+      "hlim4 <= h(node) <= hlim3 => alpdry=(hlim4-h(node))/(hlim4-hlim3)",
+      "h(node) > hlim3 => alpdry=1"
+    ],
+    "restricted_result": "qrot(node)=potential_uptake(node)*alpdry(node) when all other stressors are held at 1"
+  },
+  "smallest_structural_candidate_if_owner_route_exists": {
+    "profile": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "sw_drought": 1,
+    "sw_oxygen": 0,
+    "sw_salinity": 0,
+    "swfrost": 0,
+    "sw_compensate": 0,
+    "swwrtnonox": 0,
+    "swdmi2rd_equals_2": false,
+    "microscopic_root_uptake": false,
+    "oxygenstress_calls": false,
+    "solute_dependency": false,
+    "soil_temperature_dependency": false,
+    "persistent_process_state_required": false,
+    "hydraulic_view_fields_required": ["active_nodes", "pressure_head"],
+    "result_sink_constant_during_admitted_swkimpl0_solve": true
+  },
+  "held_physics": [
+    "oxygen stress including OxygenStress/OxygenReproFunction",
+    "salinity stress",
+    "frost stress",
+    "compensated root uptake",
+    "drought-dependent root extension",
+    "microscopic/Jong-van-Lier root uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore interactions",
+    "full RootExtraction module reentrancy"
+  ],
+  "current_owner_interfaces": {
+    "hydraulic_view": {
+      "fsi17_status": "QUALIFIED_EXPLICIT_PROCESS_HYDRAULIC_VIEW_READY_FOR_RUNTIME_BINDING",
+      "fsi17_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+      "fmr07_status": "QUALIFIED_COMMITTED_PROCESS_HYDRAULIC_VIEW_BINDING_READY_FOR_FPM03",
+      "fmr07_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+      "readiness_for_selected_root_process_read": "SUFFICIENT"
+    },
+    "root_sink_consumer": {
+      "current_base_solver_contract_blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+      "current_base_source_sink_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "current_behavior": "F-SI10-era provider explicitly rejects any nonzero root_extraction_sink and does not add root extraction to the sink result",
+      "fsi11_status": "QUALIFIED_PRECOMPUTED_ROOT_SINK_SWKIMPL0",
+      "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+      "fsi11_solver_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+      "fsi11_root_sink_provider_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "fsi11_composed_into_current_fpm05_base": false
+    }
+  }
+}
