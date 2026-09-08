@@ -1,0 +1,27 @@
+name: F-MR09 root sink runtime qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr09-root-sink-runtime-composition
+    paths-ignore:
+      - integration/f-mr/F-MR09_QUALIFICATION_EVIDENCE.json
+      - integration/f-mr/F-MR09_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-MR09 root sink runtime gate
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
