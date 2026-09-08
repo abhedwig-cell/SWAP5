@@ -62,6 +62,44 @@ git show "$FSI18_CLOSEOUT:tests/fsi/test_fsi18_reference_convergence_cliff.F90" 
 git show "$FSI18_CLOSEOUT:tests/fsi/mod_fsi07_top_provider.f90" \
   > "$BUILD/mod_fsi07_top_provider.f90"
 
+# F-SI18 was written after the explicit physical-config request field existed.
+# The exact F-MR13 runtime lineage predates that field and still represents the
+# admitted inactive macropore route through swmacro=0. The historical probe sets
+# swmacro=0 explicitly before any solve, so its one false physical-config write
+# is redundant for this candidate. Remove exactly that obsolete API write from
+# the temporary copy, while source-locking every physical/numerical stimulus we
+# need for the equivalence claim.
+python3 - "$BUILD/test_fsi18_reference_convergence_cliff.F90" <<'PY'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text(encoding='utf-8')
+needle = '    request%physical%macropore_active = .false.\n'
+if s.count(needle) != 1:
+    raise SystemExit(f'FVQ24 expected exactly one obsolete inactive macropore write, found {s.count(needle)}')
+required = [
+    'swmacro = 0',
+    'real(real64), parameter :: perturbation(ncases) = [0.0_real64, 3.0e-12_real64, -3.0e-12_real64, &',
+    '1.0e-11_real64, -1.0e-11_real64]',
+    'request%boundary%bottom_mode = 7',
+    'request%numerical%max_iterations = 8',
+    'request%numerical%max_backtracking = 4',
+    'request%numerical%conductivity_implicit_mode = 0',
+    'request%numerical%conductivity_mean_method = 1',
+    'request%numerical%compartment_balance_tolerance = 1.0e-12_real64',
+    'request%numerical%total_balance_tolerance = 1.0e-12_real64',
+    'request%numerical%head_abs_tolerance = 1.0e-12_real64',
+    'request%numerical%head_rel_tolerance = 1.0e-12_real64',
+    'request%numerical%ponding_tolerance = 1.0e-12_real64',
+]
+for token in required:
+    if token not in s:
+        raise SystemExit(f'FVQ24 historical probe stimulus lock missing: {token}')
+s = s.replace(needle, '', 1)
+p.write_text(s, encoding='utf-8')
+print('FVQ24_FSI18_TO_FMR13_REQUEST_COMPATIBILITY_ADAPTER=PASS_SINGLE_REDUNDANT_FALSE_WRITE_REMOVED')
+PY
+
 # Remove the three legacy external linear-solver stubs from the otherwise exact
 # support fixture so the current production HeadCalc is forced through the
 # F-MR13 reference-linear-solver seam. This transformation is implemented here,
