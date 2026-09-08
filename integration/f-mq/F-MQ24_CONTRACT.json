@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ24",
+  "title": "SNOW MultiSWAP Runtime Qualification",
+  "branch": "qualification/f-mq24-snow-multiswap-admission",
+  "qualification_only": true,
+  "production_source_modification_permitted": false,
+  "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+  "qualified_runtime_source": {
+    "commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME"
+  },
+  "snow_scientific_source": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "process_path": "src/process/mod_snow_process.f90",
+    "process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "admitted_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "handoff": "integration/f-vq/F-VQ16_FMQ24_HANDOFF.json"
+  },
+  "prequalification_rule": "F-MQ24 may proceed to runtime qualification only if a production runtime candidate already composes the exact admitted SNOW process while retaining F-KT transaction and mass authority. If that production capability is missing, F-MQ24 stops BLOCKED_PRE_IMPLEMENTATION and hands the requirement to the runtime implementation owner.",
+  "required_runtime_capabilities": [
+    "SNOW-active profile is admitted by a production runtime route rather than explicitly rejected.",
+    "Exact F-VQ16 process implementation is present or source-identically composed.",
+    "Persistent snow state is included in per-column transactional continuation state only for snow-active columns.",
+    "Daily SNOW event is applied exactly once per accepted one-call interval and is not consumed by rejected trials.",
+    "SNOW candidate state participates in checkpoint, rollback, replay and commit through F-KT-owned transaction semantics.",
+    "Authoritative mass composition accounts for snow storage and external precipitation/sublimation terms and transfers melt exactly once internally.",
+    "Snow-inactive columns retain zero snow allocation/processing overhead beyond lightweight routing metadata.",
+    "Per-column results remain bitwise identical to direct F-VQ16 reference calls within the admitted time domain."
+  ],
+  "qualification_matrix_if_admitted": {
+    "columns": [1,2,17,31],
+    "profiles": ["all_snow_inactive","all_snow_active","mixed_active_inactive"],
+    "orders": ["canonical","reversed"],
+    "repeatability": "A_B_A_EXACT",
+    "time": "non-midnight exact one-day Snow event only",
+    "transaction": ["checkpoint","rejected trial","rollback","replay","commit","cross-column isolation"],
+    "mass": "authoritative complete with missing contribution mask zero where the composed boundary is complete",
+    "compiler_modes": ["O0","O2"],
+    "new_scientific_tolerance": false
+  },
+  "hard_holds": [
+    "No production-source implementation inside F-MQ24.",
+    "No subdaily or arbitrary-duration SNOW admission.",
+    "No parallel real-physics admission extension.",
+    "No silent change to Richards physics, F-SI, F-KT, numerical policy, coupling or fallback behavior."
+  ]
+}
