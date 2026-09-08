@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR06",
+  "evidence_kind": "ENGINEERING_TEST_EVIDENCE_NOT_INDEPENDENT_SCIENTIFIC_QUALIFICATION",
+  "decision": "TESTED_SERIALIZED_SNOW_MULTISWAP_RUNTIME_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "start_head": "5787d0463294515b308b66f6e10998339013524e",
+  "tested_source_commit": "88f74a0bd30f808c3b7cc12508f30a34b91b8b66",
+  "tested_source_tree": "45d73db0a0cbdd0149cf82e1a65f5d3e98e7b210",
+  "production_composition": {
+    "snow_composition_checkpoint": "630ad6993a4c8b681e12285daba0cef047aa39a9",
+    "deterministic_aggregate_fix_commit": "53d9af64b9c36ecabfc98651bf6016bbd7e9be38",
+    "sources": [
+      {"path":"src/process/mod_snow_process.f90","blob":"54702d71b4c84dce2842813549bd14c57301a383","authority":"exact F-VQ16-admitted source"},
+      {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"202ab846cbd30d149d0d450249b3d517e333994f","authority":"F-MR06 runtime composition"},
+      {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"296353619916d7277352fd0ce26ce0894080b97f","authority":"F-MR serialized dispatcher plus deterministic aggregate ordering"}
+    ],
+    "other_src_changes_relative_to_fmr05_qualified_source": false,
+    "fmr05_qualified_source": "c28e7a2810b4a3678c577335a6a3086b173eb976"
+  },
+  "scientific_basis": {
+    "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "fvq16_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "fmr05_runtime_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fvq15_scientific_admission_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fmq23_closeout_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90"
+  },
+  "decisive_test_run": {
+    "workflow": "F-MR06 serialized snow MultiSWAP runtime",
+    "run_id": 34216459796,
+    "job_id": 102029251107,
+    "head_sha": "88f74a0bd30f808c3b7cc12508f30a34b91b8b66",
+    "conclusion": "success",
+    "os": "Ubuntu 24.04.4",
+    "compiler": "GNU Fortran 13.2.0"
+  },
+  "passed": {
+    "source_scope_and_architecture_gate": true,
+    "O0": true,
+    "O2": true,
+    "O0_O2_output_identity": true,
+    "smoke_O0_O2_output_identity": true,
+    "snow_inactive_fmr05_O0_O2_identity": true,
+    "one_call_daily_snow_trial": true,
+    "rollback": true,
+    "replay_bitwise": true,
+    "commit": true,
+    "subdaily_fail_closed": true,
+    "multiday_fail_closed": true,
+    "batch_sizes": [1,2,17,31],
+    "mixed_snow_active_inactive": true,
+    "warm_nonzero_melt_internal_transfer": true,
+    "richards_scope_remains_restricted_equilibrium": true,
+    "reverse_order_per_column_identity": true,
+    "A_B_A_repeatability": true,
+    "optional_snow_state_scaling": true,
+    "authoritative_aggregate_mass": true,
+    "deterministic_aggregate_mass_under_reverse_order": true,
+    "max_simultaneous_real_physical_solves": 1
+  },
+  "mass": {
+    "authority": "existing F-KT canonical transaction mass accounting",
+    "new_mass_model_added": false,
+    "new_mass_tolerance_added": false,
+    "hard_gate": 1.0e-12,
+    "smoke_authoritative_mass_residual": 0.0,
+    "smoke_component_snow_unrounded_residual": 3.46944695195361419e-18,
+    "melt_semantics": "internal transfer from snow storage to receiving surface/soil water; not an external whole-system loss",
+    "accepted_mass_complete_required": true,
+    "accepted_missing_contribution_mask_required": 0
+  },
+  "reproducibility": {
+    "o0_snow_smoke_executable_sha256": "db0f9cccf04aaa7e3c9905af0b7f3756d8dfcf7a745020dfd6a0bb18fba1927c",
+    "o0_snow_inactive_executable_sha256": "7948a358fedf1d6071372979985bb9c8b569467be40dba4ac9f9928a74a384d2",
+    "o2_snow_smoke_executable_sha256": "ebc8877f3744a4a4b4909208ba9f6ddc80cf833c8cd4e9cf26f1657cb41712cb",
+    "o2_snow_inactive_executable_sha256": "388b96bf403f4a5bd787fc30556c0dda445911d59620a5395d96db73dce91336",
+    "smoke_output_sha256": "669db61cd11f1c1312f3a3544a4afdc5907490410b92efcdcc37d96f6eeea3ab",
+    "o0_multiswap_executable_sha256": "5833afea878c9c71427f60005dec4e1694d99f4c6a605867156d47892a1a7551",
+    "o2_multiswap_executable_sha256": "2afb6a895b9fd52acd38b1afb7addee6a3b7aae19858d5810f75ca19662c48f4",
+    "multiswap_output_sha256": "d3026a14822f3afaea5b11b6471bd695aa37c229573af7a9863e5aad241eb4cf"
+  },
+  "engineering_corrections": [
+    {"run_id":34214540403,"classification":"TEST_REFERENCED_NONEXISTENT_RESULT_PROVENANCE_FIELDS","production_source_changed":false,"scientific_failure":false},
+    {"run_id":34214780687,"classification":"TEST_FIXTURE_EXCEEDED_EXISTING_RESTRICTED_RICHARDS_ADMISSION","production_source_changed":false,"scientific_failure":false,"resolution":"fixture retained exact F-VQ16 nonzero melt while balancing base top forcing to remain inside the already-admitted Richards equilibrium slice"},
+    {"run_id":34215330243,"classification":"INPUT_ORDER_DEPENDENT_FLOATING_POINT_AGGREGATE_MASS","production_source_changed":true,"scientific_failure":false,"resolution_commit":"53d9af64b9c36ecabfc98651bf6016bbd7e9be38","resolution":"aggregate diagnostics and authoritative aggregate mass now use canonical column ordering; no physics or tolerance changed"}
+  ],
+  "scope_holds": {
+    "FMR06_QUALIFIED": false,
+    "independent_scientific_requalification_required": true,
+    "proposed_independent_unit": "F-VQ17",
+    "fmq24_resume_before_independent_fvq_pass": false,
+    "snow_multiswap_production_admitted": false,
+    "subdaily_snow_admitted": false,
+    "arbitrary_duration_snow_admitted": false,
+    "parallel_real_physics_admitted": false,
+    "general_richards_scope_expanded": false,
+    "performance_or_fallback_policy_changed": false
+  }
+}
