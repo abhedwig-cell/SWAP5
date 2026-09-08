@@ -1,0 +1,27 @@
+name: F-PM03 fixed-event irrigation
+
+on:
+  push:
+    branches:
+      - work/f-pm03-irrigation-fixed-event-seam
+    paths:
+      - 'integration/f-pm/F-PM03_*'
+      - 'src/process/mod_irrigation_process.f90'
+      - 'tests/fpm/test_fpm03_fixed_event_process.f90'
+      - 'tests/fpm/test_fpm03_ssdi_runtime_mass.f90'
+      - 'tests/fpm/run_fpm03_fixed_event_gate.sh'
+      - 'tools/fpm/fpm03_fixed_event_gate.py'
+      - '.github/workflows/fpm03-fixed-event-irrigation.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PM03 source-bound fixed-event qualification gate
+        run: bash tests/fpm/run_fpm03_fixed_event_gate.sh
