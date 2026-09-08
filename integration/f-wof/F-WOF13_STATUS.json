@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF13",
+  "title": "Explicit Crop-Root State Snapshot and Root-Uptake Input Assembly Seam",
+  "branch": "work/f-wof13-crop-root-snapshot-assembly",
+  "status": "QUALIFIED_EXPLICIT_CROP_ROOT_SNAPSHOT_AND_ET_ASSEMBLY_SEAM",
+  "qualification_scope": "STRUCTURAL_DATA_CATEGORY_SEPARATION_AND_ASSEMBLY_ONLY",
+  "base": {
+    "commit": "9d4ce9336be3f4e6bc316bd580b359486d57fac6",
+    "status": "BLOCKED_CONCRETE_ROOT_UPTAKE_PROVIDER_REQUIRES_EXPLICIT_CROP_ET_SNAPSHOT_OWNERSHIP"
+  },
+  "qualified_candidate": {
+    "tested_commit": "372e5039baa8c7287ee8cd7390f37cb153f5038a",
+    "production_blob": "71f1e237c41af56ee85dcadfaae330f5d50ae0f7",
+    "gate_blob": "43b538335df5d7abc20e806be2b1d8df7b54019f",
+    "workflow_blob": "4a32f919652cfadb9a9aeaf4e8716947cb80ca06"
+  },
+  "verification": {
+    "github_actions_run": 34265003920,
+    "github_actions_conclusion": "success",
+    "FWO13_output_sha256": "bcfc6e0a3ab197f9a4d5307e8754517b795efb5eda2fc34c72feaef023c3fe9e",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "warning_clean_new_seam_Werror": "PASS",
+    "protected_source_locks": "PASS",
+    "FMR12_to_FMR10_bitwise_identity": "PASS",
+    "FMR09_cross_process_regression": "PASS",
+    "FMR09_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "first_ci_attempt": {
+      "run": 34264860633,
+      "conclusion": "failure",
+      "classification": "STATIC_GATE_FALSE_POSITIVE_BROAD_DATE_SUBSTRING_MATCHED_VALIDATE",
+      "production_or_physics_failure": false
+    }
+  },
+  "contract": {
+    "crop_root_state_view": [
+      "crop_emerged",
+      "rooted_nodes",
+      "cumulative_root_fraction"
+    ],
+    "ET_result": [
+      "potential_transpiration"
+    ],
+    "assembled_output": "crop_root_uptake_input_t",
+    "runtime_dependency": false,
+    "solver_dependency": false,
+    "HeadCalc_dependency": false,
+    "legacy_IO_dependency": false,
+    "calendar_dependency": false,
+    "state_mutation": false,
+    "mass_accounting": false
+  },
+  "scope": {
+    "production_source_added": true,
+    "existing_production_source_modified": false,
+    "runtime_source_modified": false,
+    "solver_source_modified": false,
+    "kernel_source_modified": false,
+    "crop_or_ET_physics_changed": false,
+    "concrete_WOFOST_provider_qualified": false,
+    "legacy_global_adapter_qualified": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "affected_invariants": [1, 2, 3, 4, 7, 9, 21, 22, 27, 29, 30],
+  "scientific_claims_not_made": [
+    "WOFOST crop state is already hosted by the new SWAP5 crop architecture",
+    "potential transpiration calculation has been migrated",
+    "root growth or root distribution evolution has been migrated",
+    "legacy daily crop lifecycle ordering has been reimplemented",
+    "arbitrary subdaily crop evolution is qualified"
+  ],
+  "next": "Start an owner-specific concrete crop-root view/ET-result producer workunit from the qualified F-WOF13 seam. Keep the producer source-bound to the admitted crop-host lineage and do not read legacy globals from runtime or solver code."
+}
