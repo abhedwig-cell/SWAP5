@@ -1,0 +1,32 @@
+name: F-WOF04 WOFOST73 reallocation seam
+
+on:
+  push:
+    branches: [work/f-wof04-crop-owner-host]
+    paths:
+      - src/crop/mod_wofost73_reallocation.f90
+      - tests/fwof/**
+      - integration/f-wof/F-WOF04_*.json
+      - integration/f-wof/F-WOF04_*.md
+      - .github/workflows/fwof04-wofost73-reallocation.yml
+  workflow_dispatch:
+
+jobs:
+  focused-reallocation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify owner admission checkpoint
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path('integration/f-wof/F-WOF04_STATUS.json').read_text())
+          assert status['baseline']['commit'] == '7f906fcc53a4133b0e410eac7cf79fbb4eb672ab'
+          assert status['owner'] == 'Crop, ET and root-uptake physics'
+          assert status['production_migration_allowed'] is True
+          PY
+      - name: O0 O2 reallocation parity transaction and dry-matter gate
+        run: tests/fwof/run_fwof04_reallocation_gate.sh
