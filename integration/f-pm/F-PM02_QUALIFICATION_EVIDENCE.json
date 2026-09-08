@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM02",
+  "qualification_scope": "STRUCTURAL_MIGRATION_CORRECTNESS_ONLY",
+  "decision": "QUALIFIED_STRUCTURAL_SNOW_MIGRATION_READY_FOR_INDEPENDENT_FVQ",
+  "qualified": true,
+  "scientific_snow_production_admitted": false,
+  "admission_binding": {
+    "decision": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+    "physical_baseline_candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "physical_baseline_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "admission_checks_passed": 51,
+    "admission_checks_failed": 0,
+    "evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json"
+  },
+  "legacy_reference": {
+    "oracle": "B1.10",
+    "source_member": "SWAP/snow.f90",
+    "source_sha256": "02f36d30448b94dfdf386bc43424f1fe0feff9eafd24a768a8c702843a0bf9b2",
+    "characterization_evidence": "integration/f-pm/F-PM01_SNOW_CHARACTERIZATION_EVIDENCE.json",
+    "migration_profile": "SMALLEST_STRUCTURAL_B110_SNOW_ONE_CALL_PROFILE"
+  },
+  "tested_source_candidate": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "workflow": "F-PM02 structural snow process",
+    "workflow_run_id": 34206366345,
+    "workflow_conclusion": "success"
+  },
+  "production_source": {
+    "path": "src/process/mod_snow_process.f90",
+    "blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "sha256": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293",
+    "production_source_files_changed": 1,
+    "physics_formulas_changed_from_b110": false
+  },
+  "focused_test": {
+    "path": "tests/fpm/test_fpm02_snow_process.f90",
+    "blob": "44d84c5ac27318007d20f32a98c7237acec8deaa",
+    "sha256": "1e3749a5ad5f8f55447ed4094eb44ee54e90c4f0945c4eae19d231972dd4e4ec",
+    "runner": "tests/fpm/run_fpm02_snow_gate.sh",
+    "optimization_profiles": ["O0", "O2"],
+    "stdout_identical": true,
+    "new_scientific_tolerance_introduced": false,
+    "expected_values": "bit-exact source-bound B1.10 outputs and F-PM01 unrounded mass residuals"
+  },
+  "checks": {
+    "snow_inactive_zero_state_allocation": "PASS",
+    "active_structural_reference_identity_case_a": "PASS",
+    "warm_fresh_snow_reference_identity_case_b": "PASS",
+    "deficit_clamp_reference_identity_case_c": "PASS",
+    "state_continuation_two_calls": "PASS",
+    "committed_state_not_mutated_by_trial": "PASS",
+    "rollback_discards_candidate_and_preserves_checkpoint": "PASS",
+    "replay_candidate_flux_and_diagnostics_identity": "PASS",
+    "commit_publishes_only_accepted_candidate": "PASS",
+    "immutable_parameter_nonmutation": "PASS",
+    "forcing_nonmutation": "PASS",
+    "invalid_interval_fail_closed": "PASS",
+    "subdaily_duration_fail_closed": "PASS",
+    "multiday_duration_fail_closed": "PASS",
+    "component_mass_identity_unrounded": "PASS",
+    "o0_o2": "PASS"
+  },
+  "data_separation": {
+    "immutable_parameters": "snow_parameters_t",
+    "persistent_dynamic_state": "snow_state_t",
+    "forcing": "snow_forcing_t",
+    "flux_result": "snow_flux_result_t",
+    "mass_diagnostics": ["snow_mass_contribution_t", "snow_diagnostics_t"],
+    "temporary_workspace": "automatic local variables only; no persistent per-column workspace"
+  },
+  "time_semantics": {
+    "status": "QUALIFIED_ONLY_FOR_ONE_CHARACTERIZED_B110_CALL",
+    "generic_interface": ["t0", "t1"],
+    "admitted_duration": "bit-exact 1.0 legacy day",
+    "non_midnight_one_day_interval": "PASS",
+    "arbitrary_duration_scaling": "NOT_ADMITTED",
+    "subdaily_snow_physics": "NOT_ADMITTED"
+  },
+  "transaction_semantics": {
+    "authority": "F-KT; no F-PM transaction implementation introduced",
+    "focused_process_compatibility": "PASS",
+    "committed_input_is_read_only": true,
+    "candidate_is_separate": true,
+    "rollback_is_candidate_discard": true,
+    "replay_is_bit_exact_under_same_build": true,
+    "runtime_composition_note": "The focused F-PM02 test verifies the process-side checkpoint/candidate invariants. Actual F-KT executor composition remains owned outside F-PM and must preserve the one-call event semantics rather than reinterpret SNOW on transaction half-steps."
+  },
+  "mass_accounting": {
+    "component_identity": "candidate_ssnow - committed_ssnow = gsnow + snrai - subl - melt",
+    "snow_state_storage": "ssnow only; slw is contained within ssnow",
+    "external_in": ["gsnow", "snrai"],
+    "external_out": ["sublimation"],
+    "internal_transfer": ["melt to surface/soil"],
+    "component_reports_complete_interval_balance": false,
+    "reason_complete_not_claimed": "F-PM reports component terms only. The composed physical model and F-KT remain authoritative for complete interval accounting.",
+    "fkt_boundary_capability": {
+      "transaction_blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+      "canonical_contract_blob": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+      "mass_in_out_fields_available": true,
+      "mass_completeness_and_missing_mask_available": true,
+      "required_composition_mapping": "storage includes snow ssnow; gsnow+snrai contribute to external mass_in; sublimation contributes to external mass_out; melt remains internal and is not double-counted"
+    }
+  },
+  "architecture_invariant_assessment": {
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_optional_state": "PASS",
+    "scratch_per_worker_or_call": "PASS",
+    "transactional_candidate_semantics": "PASS_WITH_DOWNSTREAM_COMPOSITION_HOLD",
+    "generic_time_without_unqualified_rescaling": "PASS",
+    "mass_conservation_contract": "PASS_WITH_FKT_AUTHORITY_RETAINED",
+    "optional_functionality_scales_with_use": "PASS"
+  },
+  "holds": [
+    "Independent F-VQ scientific admission of this exact SNOW source candidate is still required before production scientific admission.",
+    "Further MultiSWAP SNOW qualification is not allowed before independent F-VQ admission.",
+    "Arbitrary-duration and subdaily SNOW physics remain NOT_ADMITTED.",
+    "The downstream runtime/physical-model composition must schedule the legacy one-call SNOW event transactionally and must not call the daily formula as if it were a generic F-KT half-step process.",
+    "The composed physical model must map SNOW storage and external flux contributions into authoritative F-KT accounting before claiming interval mass completeness."
+  ]
+}
