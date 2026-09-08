@@ -1,0 +1,29 @@
+name: F-LMFP07 Darcian Lookup Density
+
+on:
+  push:
+    branches:
+      - work/f-lmfp07-transient-darcian-candidate-ab
+    paths:
+      - 'experiments/lmfp/run_lmfp07_lookup_density.py'
+      - '.github/workflows/lmfp07-lookup-density.yml'
+  workflow_dispatch:
+
+jobs:
+  density:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lookup density attribution
+        run: |
+          mkdir -p lmfp07-density-artifacts
+          python3 experiments/lmfp/run_lmfp07_lookup_density.py \
+            lmfp07-density-artifacts/F-LMFP07_LOOKUP_DENSITY.json \
+            | tee lmfp07-density-artifacts/F-LMFP07_LOOKUP_DENSITY.stdout.json
+      - name: Upload density evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp07-lookup-density-evidence
+          path: lmfp07-density-artifacts/
+          if-no-files-found: warn
