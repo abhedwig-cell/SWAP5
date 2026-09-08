@@ -4,18 +4,27 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 CANDIDATE="$(realpath "${1:?candidate checkout required}")"
 FVQ15="$(realpath "${2:?F-VQ15 checkout required}")"
-RESULTS="$(realpath -m "${3:-$ROOT/fmq23-results}")"
+FMR01="$(realpath "${3:?F-MR01 qualified checkout required}")"
+RESULTS="$(realpath -m "${4:-$ROOT/fmq23-results}")"
 mkdir -p "$RESULTS" "$RESULTS/fvq15"
 
 EXPECTED_CANDIDATE=c28e7a2810b4a3678c577335a6a3086b173eb976
 EXPECTED_TREE=a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6
 EXPECTED_RUNTIME_BLOB=e4f5bc0bf47e2721d689e62107b5224196a093d9
 EXPECTED_FVQ15=65efc66cc76fa9005eac46e5779439c5ada574d1
+EXPECTED_FMR01=6ed341437ebcfc6bd19c281f1064a789e90fbd05
+EXPECTED_CORE_BLOB=543af573b34bfccd8fbdecf719af22994c5236b2
+EXPECTED_DETERMINISTIC_BLOB=6f567600e42bc4e37e0e175ef4a3edc97a945592
 
 [[ "$(git -C "$CANDIDATE" rev-parse HEAD)" == "$EXPECTED_CANDIDATE" ]]
 [[ "$(git -C "$CANDIDATE" rev-parse HEAD^{tree})" == "$EXPECTED_TREE" ]]
 [[ "$(git -C "$CANDIDATE" hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" == "$EXPECTED_RUNTIME_BLOB" ]]
 [[ "$(git -C "$FVQ15" rev-parse HEAD)" == "$EXPECTED_FVQ15" ]]
+[[ "$(git -C "$FMR01" rev-parse HEAD)" == "$EXPECTED_FMR01" ]]
+for repo in "$CANDIDATE" "$FMR01"; do
+  [[ "$(git -C "$repo" hash-object src/runtime/mod_fmr_runtime_core.f90)" == "$EXPECTED_CORE_BLOB" ]]
+  [[ "$(git -C "$repo" hash-object src/runtime/mod_fmr_deterministic_runtime.f90)" == "$EXPECTED_DETERMINISTIC_BLOB" ]]
+done
 
 python3 - "$ROOT" "$CANDIDATE" "$FVQ15" <<'PY' | tee "$RESULTS/provenance.log"
 import json, subprocess, sys
@@ -48,7 +57,7 @@ PY
 echo 'FMQ23-G03 PASS_PRODUCTION_SERIALIZED_MULTICOLUMN_ENTRYPOINT'
 
 (
-  cd "$CANDIDATE"
+  cd "$FMR01"
   bash tests/fmr/run_fmr01_gate.sh
 ) | tee "$RESULTS/fmr01_runtime_infrastructure.log"
 
