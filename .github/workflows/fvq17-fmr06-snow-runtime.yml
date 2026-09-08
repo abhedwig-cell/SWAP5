@@ -1,0 +1,37 @@
+name: F-VQ17 independent F-MR06 snow MultiSWAP admission
+
+on:
+  push:
+    branches: [qualification/f-vq17-fmr06-snow-runtime]
+    paths:
+      - src/**
+      - reference/**
+      - tests/vq/fvq17/**
+      - tests/fmr/run_fmr06_gate.sh
+      - tests/fmr/run_fmr06_smoke_gate.sh
+      - tests/fmr/test_fmr06_snow_smoke.f90
+      - tests/fmr/test_fmr05_single_fmr04_identity.f90
+      - tests/vq/fvq16/**
+      - integration/f-vq/F-VQ17_*.json
+      - .github/workflows/fvq17-fmr06-snow-runtime.yml
+  workflow_dispatch:
+
+jobs:
+  independent-fmr06-snow-multiswap-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run source-bound independent F-VQ17 qualification
+        run: bash tests/vq/fvq17/run_fvq17_gate.sh
+      - name: Upload immutable F-VQ17 run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq17-fmr06-snow-multiswap-evidence
+          path: .fvq17-artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
