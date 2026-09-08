@@ -1,0 +1,58 @@
+name: F-PE01 performance qualification architecture
+
+on:
+  push:
+    branches:
+      - work/f-pe01-performance-qualification
+    paths:
+      - 'integration/f-pe/**'
+      - 'tools/fpe/**'
+      - '.github/workflows/fpe01-performance-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    name: Source-bound reference and synthetic qualification harness
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Validate fail-closed F-PE01 contracts
+        run: python3 tools/fpe/fpe01_reference_probe.py validate-contracts
+
+      - name: Instrument qualification-only F-MR05 test checkout
+        run: python3 tools/fpe/fpe01_reference_probe.py instrument tests/fmr/test_fmr05_serialized_multiswap.f90
+
+      - name: Execute source-bound serialized real-physics reference gate
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr05_gate.sh | tee /tmp/fpe01-fmr05.log
+
+      - name: Summarize real-physics reference cost matrix
+        run: >-
+          python3 tools/fpe/fpe01_reference_probe.py summarize
+          /tmp/fpe01-fmr05.log
+          --output /tmp/fpe01-reference-cost.json
+
+      - name: Build synthetic difficult-tail and scale evidence
+        run: >-
+          python3 tools/fpe/fpe01_reference_probe.py synthetic
+          --output /tmp/fpe01-synthetic.json
+
+      - name: Upload F-PE01 measurement evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe01-performance-qualification-evidence
+          path: |
+            /tmp/fpe01-reference-cost.json
+            /tmp/fpe01-synthetic.json
+          if-no-files-found: error

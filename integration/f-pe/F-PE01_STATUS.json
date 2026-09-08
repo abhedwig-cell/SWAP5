@@ -4,7 +4,7 @@
   "work_unit": "F-PE01",
   "branch": "work/f-pe01-performance-qualification",
   "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
-  "phase": "CONTRACTS_PERSISTED",
+  "phase": "HARNESS_PERSISTED",
   "status": "IN_PROGRESS",
   "IMPLEMENTED": false,
   "PERSISTED": true,
@@ -25,5 +25,7 @@
   "mass_requirement": "HARD_NO_PERFORMANCE_CONCESSION",
   "cost_contract_persisted": true,
   "execution_class_contract_persisted": true,
-  "next_stage": "ADD_FOCUSED_BENCHMARK_AND_QUALIFICATION_HARNESS"
+  "benchmark_matrix_persisted": true,
+  "focused_workflow_persisted": true,
+  "next_stage": "EXECUTE_REFERENCE_AND_SYNTHETIC_QUALIFICATION_HARNESS"
 }

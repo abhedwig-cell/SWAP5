@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "reference_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "policy": "MEASURE_FIRST_NO_PRODUCTION_THRESHOLDS",
+  "tiers": {
+    "micro": {
+      "purpose": "solver/provider/kernel primitive cost visibility",
+      "current_scope": [
+        "source-bound solver diagnostic surface",
+        "kernel transaction diagnostic surface",
+        "deterministic percentile and cost-record aggregation"
+      ],
+      "production_threshold": null,
+      "note": "F-PE01 establishes the measurement contract. Later F-PE units may add timed primitive microbenchmarks without changing physics."
+    },
+    "single_physical_column": {
+      "logical_columns": [1],
+      "execution_class": "REFERENCE",
+      "runtime": "fmr_run_serialized_physical_multiswap",
+      "generic_interval": [1000.125,1000.625],
+      "physical_worker_count": 1,
+      "measurement_fields": ["attempts","retries","newton_iterations","authoritative_mass_residual"]
+    },
+    "real_multiswap": {
+      "logical_column_counts": [1,2,8,17,31,32],
+      "execution_class": "REFERENCE",
+      "physical_execution": "SERIALIZED",
+      "physical_worker_count": 1,
+      "parallel_real_physics_admitted": false,
+      "harness": "tools/fpe/fpe01_reference_probe.py",
+      "statistics": ["median","p95","p99","maximum","sum_retries","sum_newton_iterations"],
+      "mass_gate": "HARD"
+    },
+    "synthetic_scale": {
+      "logical_column_counts": [1000,10000,100000],
+      "full_real_physics_solves_required": false,
+      "harness": "tools/fpe/fpe01_reference_probe.py synthetic",
+      "purpose": "exercise scale arithmetic, runtime-layout evidence projections and qualification schema without pretending to have solved 100k physical columns",
+      "production_memory_guarantee": false
+    },
+    "difficult_tail": {
+      "structure": "31_easy_plus_1_difficult",
+      "synthetic_evidence_source": "F-MQ23 generic runtime infrastructure evidence",
+      "real_physical_difficult_column_required_for_future_bounded_cost_claim": true,
+      "production_bounded_cost_claim_in_fpe01": false,
+      "required_statistics": ["median","p95","p99","maximum","difficult_tail_amplification","retries"]
+    }
+  },
+  "availability_limits": {
+    "currently_measured_through_real_multiswap_surface": ["attempts","retries","newton_iterations","mass_residual"],
+    "defined_but_not_yet_exposed_at_real_multiswap_surface": ["accepted_substeps","jacobian_assemblies","linear_solves","constitutive_evaluations","minimum_step_hits"],
+    "wall_clock": "OPTIONAL_SECONDARY_OBSERVATION_NOT_SCIENTIFIC_CONTRACT"
+  },
+  "threshold_policy": {
+    "production_thresholds_defined": false,
+    "required_before_threshold_selection": ["median","p95","p99","maximum","retries","newton_work","difficult_tail_amplification"]
+  }
+}
