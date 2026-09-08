@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP05",
+  "title": "Flux Closure Attribution & Refined Richards Reference",
+  "branch": "work/f-lmfp05-flux-closure-attribution",
+  "base": {
+    "work_unit": "F-LMFP04",
+    "commit": "7fd36497ba071ddb7d6fe59677f5f2aa8fdda557",
+    "decision": "QUALIFIED_INITIAL_FULLRICHARDS_AB_READY_FOR_FLUX_CLOSURE_ATTRIBUTION"
+  },
+  "objective": "Attribute the persistent LayeredMFP versus FullRichards redistribution/interface offsets to face-flux closure versus time integration and determine their behaviour under spatial refinement before changing the candidate solver.",
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "hydraulic_only": true,
+    "fullrichards_oracle": "current SWAP5 reference_richards_legacy_solver_t",
+    "bottom_mode": 7,
+    "top_boundary": "explicit flux",
+    "crop": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "attribution_questions": [
+    "How different are arithmetic endpoint-K and MFP-secant face fluxes on identical frozen states?",
+    "Does substituting arithmetic-K into the reduced-order update collapse the small-dt homogeneous redistribution difference to FullRichards?",
+    "Do LayeredMFP and FullRichards approach each other under spatial refinement for the same continuous homogeneous profile?",
+    "At material interfaces, does coarse LayeredMFP agree better with a refined Richards reference than with the coarse four-layer Richards discretisation?",
+    "Does the historical SWAP SWKMEAN=7 Darcian-mean option indicate an existing alternative face-discretisation lineage that must be accounted for?"
+  ],
+  "new_provenance_finding": {
+    "source": "/mnt/data/SWAP_4.3.1(6).zip nested tools/SWAP/source/SWAP.ZIP",
+    "finding": "functions.f90 defines SWKMEAN=1..7; mode 7 delegates to MOD_Kavg_Szym and is described as a Darcian mean after Szymkiewicz/Warrick, using precomputed profile/grid-specific tables.",
+    "qualification_effect": "SWKMEAN=7 is a diagnostic lineage/control to investigate, not an admitted replacement reference in F-LMFP05 unless independently reconstructed and verified."
+  },
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "no_post_update_clipping": true,
+    "no_production_path_change": true,
+    "do_not_tune_layeredmfp_to_coarse_richards_before_spatial_attribution": true,
+    "do_not_claim_swkmean7_behaviour_without_source_or table evidence": true
+  },
+  "status": "ATTRIBUTION_HARNESS_IN_PREPARATION",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  }
+}
