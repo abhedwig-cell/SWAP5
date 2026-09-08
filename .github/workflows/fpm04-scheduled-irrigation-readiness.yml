@@ -1,0 +1,22 @@
+name: F-PM04 scheduled irrigation readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Python identity
+        run: python3 --version
+      - name: F-PM04 source-bound readiness gate
+        run: bash tests/fpm/run_fpm04_scheduled_irrigation_readiness_gate.sh
