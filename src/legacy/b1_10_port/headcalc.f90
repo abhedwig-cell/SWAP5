@@ -484,7 +484,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     test for waterbalance of ponding layer
       if (state%ftoph) then
          state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. (swmacro == 0 .OR. IcTopMp > 1)) then
+         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
             deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
             if (abs(deviat) > CritDevPondDt) then
                flnonconv3 = .TRUE.
@@ -604,7 +604,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (legacy_state_binding) call publish_legacy_state(state)
 
       return
-   else if (swmacro == 1 .AND. IDecMpRat < 3) then
+   else if (macropore_exchange_retry_available()) then
 !     in case of macropores, retry with reduction of exchange fluxes with matrix
       IDecMpRat  = IDecMpRat + 1
       ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
@@ -632,6 +632,22 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+logical function pond_balance_option_allows()
+   if (swmacro == 0) then
+      pond_balance_option_allows = .true.
+   else
+      pond_balance_option_allows = IcTopMp > 1
+   end if
+end function pond_balance_option_allows
+
+logical function macropore_exchange_retry_available()
+   if (swmacro /= 1) then
+      macropore_exchange_retry_available = .false.
+   else
+      macropore_exchange_retry_available = IDecMpRat < 3
+   end if
+end function macropore_exchange_retry_available
 
 real(8) function matrix_fraction(node)
    integer, intent(in) :: node
