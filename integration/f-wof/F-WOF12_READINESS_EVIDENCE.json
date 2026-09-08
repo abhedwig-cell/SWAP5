@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF12",
+  "title": "Concrete Root-Uptake Crop-State Provider Readiness Evidence",
+  "base": {
+    "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+    "tree": "41effb81893efdca9bad42687ffb4655e68e6fb5",
+    "status": "QUALIFIED_SHARED_CROP_ROOT_UPTAKE_INPUT_RUNTIME_ADAPTER"
+  },
+  "source_audit": {
+    "canonical_swap431_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "swap_driver_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "meteo_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "plant_interface_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "source_identity": "PASS",
+    "call_order_characterized": "PASS"
+  },
+  "legacy_evaluation_point": {
+    "day_start": [
+      "Meteo(2) selects daily weather",
+      "croprotation(2) resolves crop calendar and emergence",
+      "newly active crop initializes root extension and root distribution"
+    ],
+    "each_soil_water_step": [
+      "Meteo(3) computes current timestep ET quantities including ptra",
+      "RootExtraction(2) consumes current ptra plus current noddrz/cumdens_top"
+    ],
+    "day_end": [
+      "cropdevelopment(3) advances crop",
+      "update_rootextension updates rooting depth and noddrz",
+      "update_rootdistribution updates cumdens_top for subsequent root extraction"
+    ],
+    "single_legacy_root_extraction_evaluation_point_proven": true,
+    "all_four_values_current_at_that_point": true,
+    "important_physics_constraint": "current-day root extension/distribution update occurs after current-day root extraction; moving it earlier changes B1.10 physics"
+  },
+  "data_category_resolution": {
+    "crop_emerged": {
+      "category": "COMMITTED_CROP_STATE",
+      "legacy_refresh": "day-start crop calendar/emergence",
+      "persistent_or_derived": "persistent logical crop lifecycle state"
+    },
+    "rooted_nodes": {
+      "category": "DERIVED_CROP_ROOT_GEOMETRY",
+      "legacy_refresh": "cropdevelopment day-end after root extension",
+      "preferred_target_semantics": "derive from physically owned root geometry plus immutable grid where practical"
+    },
+    "cumulative_root_fraction": {
+      "category": "DERIVED_CURRENT_ROOT_DISTRIBUTION",
+      "legacy_refresh": "cropdevelopment day-end after root distribution update",
+      "preferred_target_semantics": "read-only derived view over current root-distribution state; persist only irreducible physical distribution state"
+    },
+    "potential_transpiration": {
+      "category": "DYNAMIC_ET_PROCESS_RESULT",
+      "legacy_refresh": "every soil-water timestep immediately before root extraction",
+      "persistent_crop_state": false,
+      "can_change_within_day": true,
+      "preferred_target_semantics": "explicit current-interval ET result supplied to root uptake"
+    }
+  },
+  "current_swap5_capabilities": {
+    "shared_crop_root_uptake_DTO": "PASS_F_WOF11",
+    "shared_DTO_to_runtime_adapter": "PASS_F_MR12",
+    "committed_hydraulic_view_and_root_uptake_binding": "PASS_F_MR10",
+    "qualified_root_uptake_physics": "PASS_F_PM05_F_VQ22",
+    "explicit_crop_host": "MISSING",
+    "explicit_ET_process_result_owner": "MISSING",
+    "concrete_crop_emergence_state_source": "MISSING",
+    "concrete_root_geometry_state_source": "MISSING",
+    "concrete_root_distribution_state_source": "MISSING",
+    "concrete_current_ptra_source": "MISSING"
+  },
+  "readiness_gates": {
+    "G1_owner_contract": "PASS",
+    "G2_single_legacy_current_state_point": "PASS",
+    "G3_time_and_cadence_characterized": "PASS_READINESS_ONLY",
+    "G4_transactional_target_requirement": "PASS_CONTRACT_IDENTIFIED_NOT_IMPLEMENTED",
+    "G5_no_legacy_global_dependency": "FAIL_FOR_DIRECT_LEGACY_PROVIDER",
+    "G6_no_runtime_dependency_in_crop": "PASS_ARCHITECTURAL",
+    "G7_optional_inactive_crop_state": "PASS_CONTRACT",
+    "G8_smallest_safe_seam_identified": "PASS",
+    "explicit_production_crop_host_available": "FAIL_MISSING",
+    "explicit_current_ET_result_available": "FAIL_MISSING",
+    "concrete_provider_admission": "FAIL_CLOSED"
+  },
+  "why_a_single_hidden_provider_is_rejected": [
+    "it would mix committed crop/root state with a dynamic ET process result",
+    "it would tend to capture MOD_meteo, MOD_cropdevelopment or plant_interface globals rather than explicit data",
+    "it would reintroduce hidden temporal ordering into an apparently timeless provider API",
+    "it would obscure the fact that ptra may vary within the day while root geometry/distribution follows the qualified legacy daily update order",
+    "it would make later alternative crop or ET implementations harder to compose cleanly"
+  ],
+  "smallest_next_seam": {
+    "owner": "F-WOF / Crop, ET and root-uptake physics",
+    "recommended_shape": "explicit crop-root state snapshot/view plus explicit current potential-transpiration input assembled into crop_root_uptake_input_t",
+    "crop_root_snapshot_minimum": [
+      "crop_emerged",
+      "root geometry sufficient to determine rooted_nodes",
+      "current root-distribution physical state or current cumulative root-fraction view"
+    ],
+    "separate_dynamic_input": "potential_transpiration",
+    "must_be_explicit": true,
+    "must_not_capture_legacy_globals": true,
+    "must_not_depend_on_FMR": true,
+    "must_preserve_inactive_no_allocation": true,
+    "must_preserve_B110_ordering": true
+  },
+  "production_changes": {
+    "src_changed": false,
+    "crop_source_changed": false,
+    "runtime_source_changed": false,
+    "process_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "cross_workstream_merge_performed": false
+  },
+  "tests": {
+    "new_executable_test_required": false,
+    "reason": "readiness decision is source-ownership and call-order characterization; production implementation is explicitly forbidden until the missing crop/ET ownership seam exists"
+  }
+}
