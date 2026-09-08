@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI12",
+  "decision": "QUALIFIED_EXPLICIT_PER_SOLVE_CONTROLS_SWKIMPL0",
+  "qualified": true,
+  "downstream_fsi13_allowed": true,
+  "branch": "work/f-si12-explicit-solver-controls",
+  "provenance": {
+    "fsi11_qualification_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+    "fsi12_materialized_source_postimage": "c5d9fcee85f5c6b4049a54042cc06cf8ddcf9e88",
+    "fsi12_qualified_candidate_head": "31f10286bb73b365cf83236a768dec49673d7f67",
+    "fsi12_status_head": "256df74da514c0b9db52a2a4604cecacaa1e08f1",
+    "headcalc_blob": "9d19b389c139140de1ec7f880797ebb4edc128e2",
+    "reference_adapter_blob": "15c05cfd288247ac4a1487ae5156e80a0ca430b0",
+    "fkt_integration_head_observed_at_start": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "qualification_runs": {
+    "candidate": {
+      "run": 34152115944,
+      "job": 101836370323,
+      "head": "31f10286bb73b365cf83236a768dec49673d7f67",
+      "conclusion": "success"
+    },
+    "status_self_verification": {
+      "run": 34202872260,
+      "job": 101985482719,
+      "head": "256df74da514c0b9db52a2a4604cecacaa1e08f1",
+      "conclusion": "success"
+    },
+    "qualification_record_self_verification_required": true
+  },
+  "admitted_semantics": {
+    "explicit_common_route_step_duration_source": "soil_water_solve_request_t%step_duration",
+    "explicit_common_route_numerical_control_source": "soil_water_solve_request_t%numerical",
+    "legacy_direct_route": "unchanged legacy-global control semantics when explicit state binding is absent",
+    "policy_selection_owner": "outside F-SI",
+    "transaction_owner": "F-KT",
+    "generic_time_owner": "F-KT",
+    "physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false
+  },
+  "admitted_profile": {
+    "reference_solver": "B1.10 reference Richards path",
+    "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "F-SI10 precomputed source/sink provider",
+    "root_sink": "F-SI11 precomputed root-sink provider",
+    "top_boundary": "explicit top provider",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2]
+  },
+  "qualification_matrix": {
+    "FSI12_T01_STATIC_CONTROL_BINDING": "PASS",
+    "FSI12_T02_REQUEST_CONTROLS_AUTHORITATIVE_O0_1_2_4_8": "PASS",
+    "FSI12_T03_REQUEST_CONTROLS_AUTHORITATIVE_O2_1_2_4_8": "PASS",
+    "FSI12_T04_POISONED_LEGACY_CONTROLS_NO_LEAK": "PASS",
+    "FSI12_T05_COMMON_ROUTE_O0_O2_IDENTITY": "PASS",
+    "FSI12_T06_ABA_ORDER_INDEPENDENCE": "PASS",
+    "FSI12_T07_SCRATCH_POISONING": "PASS",
+    "FSI12_T08_REQUEST_IMMUTABILITY": "PASS",
+    "FSI12_T09_ROUTE_ITERATION_FINGERPRINT_IDENTITY": "PASS",
+    "FSI12_T10_FOCUSED_UNROUNDED_EQUATION_RESIDUAL": "PASS",
+    "FSI12_T11_LEGACY_DIRECT_IDENTITY_O0": "PASS",
+    "FSI12_T12_LEGACY_DIRECT_IDENTITY_O2": "PASS",
+    "FSI12_T13_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS",
+    "FSI12_T14_FSI11_PINNED_REGRESSION": "PASS",
+    "FSI12_T15_SWKIMPL1_HOLD_PRESERVED": "PASS",
+    "FSI12_T16_FKT_BOUNDARY_REGRESSION": "PASS"
+  },
+  "negative_and_hold_contracts": {
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "fallback_policy": "NOT_IN_SCOPE",
+    "coarse_or_reduced_solver": "NOT_IN_SCOPE"
+  },
+  "audit_trail": {
+    "initial_composite_attempt": {
+      "run": 34151942883,
+      "job": 101835862616,
+      "conclusion": "failure",
+      "production_control_poison_core_before_failure": "PASS",
+      "failure_class": "TEST_HARNESS_ABI_ERROR",
+      "cause": "historical shortened explicit Fortran interface for direct HeadCalc replay did not match the evolved optional-argument routine signature and caused SIGSEGV",
+      "production_source_changed_to_fix_failure": false,
+      "correction": "version-correct full explicit interface used while still invoking headcalc(worker) only"
+    },
+    "automatic_materialization_trigger_retired_at": "38358f62b4d9990f19abbe7e0889aaf842b4cf2d"
+  },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "guarded i-1 references produce compiler -Wdo-subscript warnings",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning",
+    "corrected B1.10 hydraulic oracle compilation emits existing maybe-uninitialized warnings"
+  ],
+  "invariant_assessment": {
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_SOLVER_CONTROLS",
+    "scratch_per_worker": "PRESERVED",
+    "transactional_time_step_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_AND_TESTED_WITH_UNROUNDED_FOCUSED_RESIDUAL",
+    "multiswap_scalability": "NO_NEW_PER_COLUMN_SOLVER_SCRATCH",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "IMPROVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "no_silent_time_or_io_assumptions_added": true
+  }
+}
