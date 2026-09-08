@@ -1,22 +1,37 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE02",
   "branch": "work/f-pe02-diagnostics-policy-separation",
   "start_head": "4c62c7a7080a247a57d73893b2f2ed3a15bd7fd0",
-  "phase": "IMPLEMENTATION",
-  "status": "IN_PROGRESS",
-  "IMPLEMENTED": false,
+  "current_source_checkpoint": "599d60ccaf839ffb34325e45ca35226bf47ba080",
+  "phase": "PARTIAL_QUALIFICATION",
+  "status": "PERSISTED_DIAGNOSTICS_CANDIDATE_NUMERICAL_POLICY_LINEAGE_BLOCKED",
+  "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": false,
+  "TESTED": true,
   "QUALIFIED": false,
-  "physics_change_allowed": false,
-  "non_reference_policy_admission_allowed": false,
-  "reference_identity_required": true,
-  "open": [
-    "propagate existing solver counters through kernel and F-MR surfaces",
-    "separate numerical solver-control ownership from physical parameter ownership",
-    "add source-bound reference identity and fail-closed tests",
-    "qualify no physics no mass and no admission change"
-  ]
+  "diagnostics_subgate": {
+    "implemented": true,
+    "persisted": true,
+    "candidate_tested": true,
+    "final_self_verification_pending": true,
+    "candidate_workflow_run": 34209492653,
+    "materialization_workflow_run": 34209749802
+  },
+  "numerical_policy_separation": {
+    "contract_defined": true,
+    "source_integration_performed_by_fpe": false,
+    "status": "BLOCKED_FPE02_B01",
+    "blocker_artifact": "integration/f-pe/F-PE02_NUMERICAL_POLICY_LINEAGE_BLOCKER.json"
+  },
+  "reference_execution_class": "REFERENCE",
+  "reference_remains_full_accuracy": true,
+  "balanced_status": "DEFINED_NOT_ADMITTED",
+  "throughput_status": "DEFINED_NOT_ADMITTED",
+  "fallback_status": "DEFINED_NOT_ADMITTED",
+  "physics_changed": false,
+  "mass_requirement_relaxed": false,
+  "parallel_real_physics_admitted": false,
+  "next_gate": "Persisted diagnostic postimage self-verification, then hand off FPE02-B01 to F-MR/F-VQ lineage integration."
 }

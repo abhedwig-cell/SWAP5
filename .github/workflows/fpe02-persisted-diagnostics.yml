@@ -1,0 +1,100 @@
+name: F-PE02 persisted diagnostics qualification
+
+on:
+  push:
+    branches:
+      - work/f-pe02-diagnostics-policy-separation
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'integration/f-pe/F-PE02_*.json'
+      - 'tools/fpe/fpe02_diagnostics_candidate.py'
+      - '.github/workflows/fpe02-persisted-diagnostics.yml'
+      - '.github/workflows/fpe02-diagnostics-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  persisted-diagnostics:
+    name: Persisted source-bound diagnostics qualification
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify persisted diagnostic postimage and protected physics blobs
+        run: |
+          test "$(git hash-object src/kernel/mod_kernel_transactions.f90)" = 'af42c7d51ef545e20c76d3000f1ed1493690d68e'
+          test "$(git hash-object src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = '940fa6deb461443dd7b5993038a9a2fbbb434e36'
+          test "$(git hash-object src/legacy/b1_10_port/headcalc.f90)" = 'be5978827095445b15de7baf607728792de6a366'
+          test "$(git hash-object src/adapter/mod_reference_richards_legacy_binding.f90)" = 'eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0'
+          test "$(git hash-object src/solver/mod_soil_water_solver_contract.f90)" = '57b51997d28807fbe2da1b2e5bf654fc4167adb9'
+          test "$(git hash-object src/transaction/mod_transaction_reference.f90)" = 'b1878606ae6cb2b04a7b4b15e3e537deacf4477f'
+      - name: Verify production source scope from candidate-infrastructure head
+        run: |
+          mapfile -t changed < <(git diff --name-only e4d1ce5172726cec82c711c7c0aa2f6f0abddb23 HEAD -- src | sort)
+          printf '%s\n' "${changed[@]}"
+          test "${#changed[@]}" -eq 2
+          test "${changed[0]}" = 'src/kernel/mod_kernel_transactions.f90'
+          test "${changed[1]}" = 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+          test -z "$(git diff --name-only e4d1ce5172726cec82c711c7c0aa2f6f0abddb23 HEAD -- src/legacy src/solver src/adapter src/transaction)"
+      - name: Instrument existing acceptance test for propagated interval counters
+        run: python3 tools/fpe/fpe02_diagnostics_candidate.py instrument-test
+      - name: Rebind historical F-MR05 source assertions for compatibility replay only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tests/fmr/run_fmr05_gate.sh')
+          s=p.read_text()
+          replacements={
+            'check_blob src/kernel/mod_kernel_transactions.f90 9f7c16e71cfb93b57f796ba759bae73824318a2f':
+            'check_blob src/kernel/mod_kernel_transactions.f90 af42c7d51ef545e20c76d3000f1ed1493690d68e',
+            'check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 e4f5bc0bf47e2721d689e62107b5224196a093d9':
+            'check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 940fa6deb461443dd7b5993038a9a2fbbb434e36',
+            "assert changed == ['src/runtime/mod_fmr_serialized_multiswap_runtime.f90'], f'unexpected F-MR05 production source changes: {changed}'":
+            "assert changed == ['src/kernel/mod_kernel_transactions.f90', 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'], f'unexpected F-PE02 compatibility source changes: {changed}'"
+          }
+          for old,new in replacements.items():
+            if s.count(old) != 1:
+              raise SystemExit('FPE02 historical gate marker mismatch: '+old)
+            s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+          echo 'FPE02_FMR05_COMPATIBILITY_REPLAY_ONLY'
+      - name: Execute persisted O0 O2 real-physics compatibility replay
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr05_gate.sh | tee /tmp/fpe02-persisted.log
+          grep -F 'FPE02_DIAGNOSTICS_PROPAGATION=PASS' /tmp/fpe02-persisted.log
+          grep -F 'FPE02_ACCEPTED_SUBSTEPS=1' /tmp/fpe02-persisted.log
+          grep -F 'FPE02_NONLINEAR_ITERATIONS=3' /tmp/fpe02-persisted.log
+          grep -F 'FPE02_HEADCALC_CALLS=3' /tmp/fpe02-persisted.log
+          grep -F 'FPE02_JACOBIAN_BUILDS=3' /tmp/fpe02-persisted.log
+          grep -F 'FPE02_LINEAR_SOLVES=3' /tmp/fpe02-persisted.log
+          grep -F 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' /tmp/fpe02-persisted.log
+          grep -F 'FMR05_O0_O2_OUTPUT_IDENTITY PASS' /tmp/fpe02-persisted.log
+          grep -F 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' /tmp/fpe02-persisted.log
+      - name: Verify fail-closed F-PE02 policy status
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('integration/f-pe/F-PE02_STATUS.json').read_text())
+          b=json.loads(Path('integration/f-pe/F-PE02_NUMERICAL_POLICY_LINEAGE_BLOCKER.json').read_text())
+          assert s['reference_execution_class']=='REFERENCE'
+          assert s['balanced_status']=='DEFINED_NOT_ADMITTED'
+          assert s['throughput_status']=='DEFINED_NOT_ADMITTED'
+          assert s['fallback_status']=='DEFINED_NOT_ADMITTED'
+          assert not s['physics_changed']
+          assert not s['mass_requirement_relaxed']
+          assert not s['parallel_real_physics_admitted']
+          assert b['status']=='BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION'
+          assert not b['physics_change_by_fpe02']
+          assert not b['non_reference_policy_admission']
+          print('FPE02_FAIL_CLOSED_POLICY_GATE PASS')
+          PY

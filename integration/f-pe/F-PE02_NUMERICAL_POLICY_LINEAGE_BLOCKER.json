@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE02",
+  "blocker_id": "FPE02-B01",
+  "status": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "subject": "Explicit numerical policy ownership on the admitted real-physics MultiSWAP lineage",
+  "current_admitted_lineage": {
+    "qualified_real_physics_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "reference_adapter_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "integrated_solver_isolation_scope": "F-SI09/F-SI10 physical solver postimage via F-MR04",
+    "fmr_composition_commit": "d645d1ab07ce65e09defa04d42f8f3df333a21aa"
+  },
+  "qualified_fsi12_lineage": {
+    "decision": "QUALIFIED_EXPLICIT_PER_SOLVE_CONTROLS_SWKIMPL0",
+    "fsi12_materialized_source_postimage": "c5d9fcee85f5c6b4049a54042cc06cf8ddcf9e88",
+    "fsi12_qualified_candidate_head": "31f10286bb73b365cf83236a768dec49673d7f67",
+    "headcalc_blob": "9d19b389c139140de1ec7f880797ebb4edc128e2",
+    "reference_adapter_blob": "15c05cfd288247ac4a1487ae5156e80a0ca430b0",
+    "headcalc_materializer_preimage": "420fe2996199e6d3f162b7669957e1a95919f353",
+    "policy_selection_owner": "outside F-SI"
+  },
+  "mismatch": "The F-SI12 adapter prehistory intersects the current physical lineage, but F-SI12 depends on the F-SI11 HeadCalc lineage. The admitted F-MR05/F-VQ15/F-MQ23 source instead contains the earlier F-SI09/F-SI10 HeadCalc postimage. Applying F-SI12 inside F-PE would bypass source-bound physical integration and independent scientific requalification.",
+  "fail_closed_rule": "F-PE02 does not cherry-pick, reconstruct or independently reinterpret F-SI11/F-SI12 HeadCalc changes.",
+  "required_handoff": [
+    "Reconcile F-SI11/F-SI12 with the current F-MR physical source lineage under F-MR ownership.",
+    "Run source-bound physical runtime regression including authoritative mass and transaction gates.",
+    "Obtain independent F-VQ scientific admission of the integrated postimage.",
+    "Only then bind REFERENCE numerical policy ownership in F-PE and evaluate future non-reference policies."
+  ],
+  "physics_change_by_fpe02": false,
+  "non_reference_policy_admission": false
+}
