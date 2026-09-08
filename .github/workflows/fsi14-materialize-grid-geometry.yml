@@ -1,13 +1,6 @@
 name: F-SI14 materialize explicit grid geometry
 
 on:
-  push:
-    branches:
-      - work/f-si14-grid-geometry-binding
-    paths:
-      - 'integration/f-si/F-SI14_GRID_GEOMETRY_CONTRACT.json'
-      - 'tools/fsi/fsi14_materialize_grid_geometry.py'
-      - '.github/workflows/fsi14-materialize-grid-geometry.yml'
   workflow_dispatch:
 
 permissions:
