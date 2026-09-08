@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "status": "NOT_EXECUTED_BLOCKED_FMQ23_B01",
+  "authoritative_mass_oracle": {
+    "commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+    "path": "integration/f-vq/F-VQ14_REFERENCE_RUN_PACKAGE.json",
+    "complete": true,
+    "missing_contribution_mask": 0,
+    "authoritative_residual_exact_zero": true,
+    "independent_residual_exact_zero": true,
+    "role": "upstream admitted reference only; values are consumed from the immutable package and are not reconstructed as an F-MQ oracle"
+  },
+  "per_column_multiswap_mass": {
+    "status":"NOT_EXECUTED",
+    "independent_fkt08_recompute":"NOT_EXECUTED",
+    "unrounded_values_required":true
+  },
+  "aggregate_mass": {
+    "status":"NOT_EXECUTED",
+    "column_sum_identity":"NOT_EXECUTED",
+    "rollback_exclusion":"NOT_EXECUTED",
+    "rejected_entry_exclusion":"NOT_EXECUTED",
+    "weighting":"NOT_APPLICABLE_NOT_REACHED"
+  },
+  "mass_conservation_claim_for_multiswap": "NOT_MADE",
+  "reason": "Aggregate and per-column MultiSWAP mass cannot be qualified without an existing production serialized multi-column runtime composition route."
+}

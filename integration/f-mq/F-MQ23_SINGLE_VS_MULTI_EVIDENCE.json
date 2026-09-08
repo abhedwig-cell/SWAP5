@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "gate": "MQ23-G03",
+  "oracle": {
+    "commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+    "path": "integration/f-vq/F-VQ14_REFERENCE_RUN_PACKAGE.json",
+    "blob_sha": "a7935b2871cb88a8f854ac6b54797b81c3b40c5d",
+    "scientific_expected_values_copied_into_fmq_oracle": false
+  },
+  "standalone_reference_available": true,
+  "production_multiswap_serialized_execution_available": false,
+  "status": "NOT_EXECUTED_BLOCKED_FMQ23_B01",
+  "single_vs_multiswap_differences": null,
+  "comparison_tolerance": null,
+  "reason": "No existing production multi-column serialized-reference dispatch/orchestration entrypoint is available on the locked source. A qualification-only replacement dispatcher would not constitute production-runtime evidence.",
+  "batch_matrix": {
+    "1":"NOT_EXECUTED_BLOCKED",
+    "2":"NOT_EXECUTED_BLOCKED",
+    "8":"NOT_EXECUTED_BLOCKED",
+    "17":"NOT_EXECUTED_BLOCKED",
+    "31":"NOT_EXECUTED_BLOCKED",
+    "32":"NOT_EXECUTED_BLOCKED"
+  },
+  "scientific_scope_drift": false
+}

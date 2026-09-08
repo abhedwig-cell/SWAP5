@@ -1,62 +1,59 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MQ",
   "work_unit": "F-MQ23",
   "coverage_model": {
-    "synthetic_executable": "separate",
-    "real_physics_executable": "separate",
-    "production_runtime_coverage": "separate",
-    "parallel_real_physics_coverage": "separate",
-    "combined_percentage_forbidden": true
+    "synthetic_executable":"separate",
+    "real_physics_executable":"separate",
+    "production_runtime_coverage":"separate",
+    "parallel_real_physics_coverage":"separate",
+    "combined_percentage_forbidden":true
   },
   "inherited_fmq22": {
-    "commit": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
-    "matrix_blob": "4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
-    "matrix_total": 35,
-    "synthetic_executable": 28,
-    "real_physics_executable": 0,
-    "production_runtime_qualified": 0
+    "commit":"893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+    "matrix_blob":"4b53b71375833ae94e788da8b6eab0dc2e6c1dad",
+    "matrix_total":35,
+    "synthetic_executable":28,
+    "real_physics_executable":0,
+    "production_runtime_qualified":0
   },
-  "entry_condition": {
-    "fvq14_physical_scientific_admission": "PASS",
-    "serialized_reference_backend_scientifically_admitted_restricted_profile": true,
-    "parallel_reference_backend_admitted": false
+  "locks": {
+    "MQ23-G01":"PASS_EXACT",
+    "MQ23-G02":"PASS_IMMUTABLE_PACKAGE_CONSUMPTION_PRECONDITION",
+    "workflow_run":34191761979,
+    "artifact_digest":"sha256:e7a87d7eb3a92f8c505d13dd1f724215760bf70006e01c38d9baf9a248539536"
   },
   "gates": [
-    {"id":"MQ23-G01","name":"Exact provenance","status":"PASS_LIVE_REREAD","blocking":true},
-    {"id":"MQ23-G02","name":"Consume immutable F-VQ14 package","status":"PASS_PACKAGE_IDENTIFIED_PENDING_EXECUTABLE_PARSER","blocking":true},
-    {"id":"MQ23-G03","name":"Single-column runtime equivalence","status":"BLOCKED_PENDING_PRODUCTION_SERIALIZED_MULTICOLUMN_RUNTIME_ENTRYPOINT","blocking":true},
-    {"id":"MQ23-G04","name":"Two-column isolation","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G05","name":"Column identity vs execution order","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G06","name":"Batch sizes 1,2,8,17,31,32","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G07","name":"Partition independence","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G08","name":"Serialized scheduling independence","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G09","name":"Transaction isolation","status":"NOT_ASSESSED_MULTICOLUMN","blocking":true},
-    {"id":"MQ23-G10","name":"Failure isolation","status":"NOT_ASSESSED_MULTICOLUMN","blocking":true},
-    {"id":"MQ23-G11","name":"Scratch isolation","status":"NOT_ASSESSED_REAL_MULTICOLUMN","blocking":true},
-    {"id":"MQ23-G12","name":"Immutable parameter sharing","status":"NOT_ASSESSED_REAL_MULTICOLUMN","blocking":true},
-    {"id":"MQ23-G13","name":"Template integrity","status":"PARTIAL_STATIC_SINGLE_TRIAL_ADMISSION_PRESENT_NOT_PROMOTED","blocking":true},
-    {"id":"MQ23-G14","name":"Per-column authoritative mass","status":"UPSTREAM_FVQ14_PASS_NOT_YET_MULTISWAP_EXECUTED","blocking":true},
-    {"id":"MQ23-G15","name":"Aggregate mass","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G16","name":"Difficult-column structure","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G17","name":"Deterministic diagnostics","status":"BLOCKED_REAL_MULTICOLUMN_DIAGNOSTICS","blocking":true},
-    {"id":"MQ23-G18","name":"Generic time in MultiSWAP","status":"UPSTREAM_FVQ14_PASS_NOT_YET_MULTISWAP_EXECUTED","blocking":true},
-    {"id":"MQ23-G19","name":"Repeatability","status":"BLOCKED_BY_G03","blocking":true},
-    {"id":"MQ23-G20","name":"No scientific scope drift","status":"PASS_SCOPE_LOCKED","blocking":true}
+    {"id":"MQ23-G01","status":"PASS_EXACT"},
+    {"id":"MQ23-G02","status":"PASS_PACKAGE_LOCK_AND_PARSE"},
+    {"id":"MQ23-G03","status":"BLOCKED_FMQ23_B01_PRODUCTION_SERIALIZED_MULTICOLUMN_ENTRYPOINT_MISSING"},
+    {"id":"MQ23-G04","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G05","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G06","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G07","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G08","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G09","status":"NOT_EXECUTED_MULTICOLUMN"},
+    {"id":"MQ23-G10","status":"NOT_EXECUTED_MULTICOLUMN"},
+    {"id":"MQ23-G11","status":"NOT_EXECUTED_REAL_MULTICOLUMN"},
+    {"id":"MQ23-G12","status":"NOT_EXECUTED_REAL_MULTICOLUMN"},
+    {"id":"MQ23-G13","status":"UPSTREAM_SINGLE_TRIAL_FAIL_CLOSED_PRESENT_NOT_PROMOTED_TO_MULTISWAP"},
+    {"id":"MQ23-G14","status":"UPSTREAM_FVQ14_AUTHORITATIVE_MASS_PASS_NOT_EXECUTED_MULTISWAP"},
+    {"id":"MQ23-G15","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G16","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G17","status":"NOT_EXECUTED_REAL_MULTICOLUMN"},
+    {"id":"MQ23-G18","status":"UPSTREAM_FVQ14_GENERIC_TIME_PASS_NOT_EXECUTED_MULTISWAP"},
+    {"id":"MQ23-G19","status":"NOT_EXECUTED_BLOCKED_BY_G03"},
+    {"id":"MQ23-G20","status":"PASS_SCOPE_LOCK_NO_PROMOTION"}
   ],
-  "required_batch_matrix": {
-    "1":"NOT_EXECUTED_BLOCKED",
-    "2":"NOT_EXECUTED_BLOCKED",
-    "8":"NOT_EXECUTED_BLOCKED",
-    "17":"NOT_EXECUTED_BLOCKED",
-    "31":"NOT_EXECUTED_BLOCKED",
-    "32":"NOT_EXECUTED_BLOCKED"
-  },
-  "blocker_hypothesis_to_verify": {
+  "required_batch_matrix": {"1":"NOT_EXECUTED","2":"NOT_EXECUTED","8":"NOT_EXECUTED","17":"NOT_EXECUTED","31":"NOT_EXECUTED","32":"NOT_EXECUTED"},
+  "blocker": {
     "id":"FMQ23-B01",
-    "statement":"The production serialized reference backend exposes per-column run_trial but no production multi-column dispatch/orchestration entrypoint equivalent to fmr_run_deterministic.",
+    "status":"CONFIRMED",
     "owner":"F-MR",
+    "github_issue":73,
     "qualification_fix_allowed":false
   },
-  "promotion_rule":"No real-physics MultiSWAP row is promoted until FMQ23-B01 is disproved by an existing qualified production entrypoint or resolved by its production owner and independently re-admitted."
+  "coverage_before":{"synthetic_executable":28,"real_physics_executable":0,"production_runtime_qualified":0,"parallel_real_physics_qualified":0},
+  "coverage_after":{"synthetic_executable":28,"real_physics_executable":0,"production_runtime_qualified":0,"parallel_real_physics_qualified":0},
+  "promotion":"NONE_FAIL_CLOSED"
 }

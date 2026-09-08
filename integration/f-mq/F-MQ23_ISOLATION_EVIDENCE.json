@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "blocker": "FMQ23-B01",
+  "status": "NOT_EXECUTED_BLOCKED",
+  "tests": {
+    "A_alone":"NOT_EXECUTED",
+    "B_alone":"NOT_EXECUTED",
+    "A_B":"NOT_EXECUTED",
+    "B_A":"NOT_EXECUTED",
+    "A_B_A":"NOT_EXECUTED",
+    "original_reversed_shuffle":"NOT_EXECUTED",
+    "partition_independence_17":"NOT_EXECUTED",
+    "partition_independence_31":"NOT_EXECUTED",
+    "rollback_isolation":"NOT_EXECUTED_MULTICOLUMN",
+    "cross_column_checkpoint_misuse":"NOT_EXECUTED_MULTICOLUMN",
+    "failure_isolation":"NOT_EXECUTED_MULTICOLUMN",
+    "scratch_poison_A_B_A":"NOT_EXECUTED_REAL_PHYSICS",
+    "immutable_parameter_sharing":"NOT_EXECUTED_REAL_PHYSICS"
+  },
+  "upstream_evidence_not_promoted": {
+    "fvq14_single_column_transaction_semantics":"PASS",
+    "fvq14_repeatability":"PASS_A_B_A_EXACT",
+    "reason":"These are F-VQ14 restricted single-candidate/reference semantics, not MultiSWAP cross-column evidence."
+  },
+  "state_leakage_claim": "NOT_ASSESSED_REAL_MULTICOLUMN",
+  "scratch_leakage_claim": "NOT_ASSESSED_REAL_MULTICOLUMN"
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "qualification_only": true,
+  "decision": "BLOCKED_PRODUCTION_SERIALIZED_MULTICOLUMN_RUNTIME_ENTRYPOINT_MISSING",
+  "exact_inputs": {
+    "fmq22_baseline":"893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+    "fvq14_qualification_head":"69e581000bfcf15c74f2c4be5fa089502f794821",
+    "physical_source":"11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "physical_tree":"04afa5d5a90671a7791174708ae6bf48b272c83f",
+    "fvq14_evidence_commit":"c056d3280e81fa54ad55f11daeab686590efe77b",
+    "reference_package_commit":"06f878c123903f8fe45602f521ec06e9baa1ca5e",
+    "reference_package_blob":"a7935b2871cb88a8f854ac6b54797b81c3b40c5d"
+  },
+  "live_reread": {
+    "fmq22_head":"PASS_EXACT",
+    "fvq14_head":"PASS_EXACT",
+    "physical_source_sha_tree":"PASS_EXACT",
+    "immutable_reference_package":"PASS_EXACT",
+    "production_source_changed":false
+  },
+  "qualification_control_run": {
+    "checkpoint":"5efcd95abec3a2baa734896caa092ff69874094a",
+    "workflow_run":34191761979,
+    "job":101951099100,
+    "conclusion":"success",
+    "artifact_id":10042444512,
+    "artifact_digest":"sha256:e7a87d7eb3a92f8c505d13dd1f724215760bf70006e01c38d9baf9a248539536"
+  },
+  "qualification_tooling_history": [{
+    "workflow_run":34191674200,
+    "conclusion":"failure",
+    "classification":"FMQ23_QUALIFICATION_DETECTOR_FALSE_POSITIVE_RUNTIME_CORE_HELPER",
+    "production_failure":false,
+    "correction_commit":"5efcd95abec3a2baa734896caa092ff69874094a",
+    "scope_changed":false
+  }],
+  "capability_finding": {
+    "serialized_per_column_real_physics_backend":"PRESENT",
+    "production_serialized_multicolumn_dispatch":"ABSENT",
+    "synthetic_multicolumn_dispatch":"PRESENT_BACKEND_SPECIFIC",
+    "blocker_id":"FMQ23-B01",
+    "owner":"F-MR",
+    "github_issue":73
+  },
+  "physical_execution": {
+    "started":false,
+    "stop_point":"BEFORE_MQ23_G03",
+    "reason":"fail-closed capability precondition",
+    "scientific_values_reconstructed_by_fmq":false
+  },
+  "required_size_matrix": {"1":"NOT_EXECUTED","2":"NOT_EXECUTED","8":"NOT_EXECUTED","17":"NOT_EXECUTED","31":"NOT_EXECUTED","32":"NOT_EXECUTED"},
+  "single_vs_multi":"NOT_EXECUTED",
+  "order_partition":"NOT_EXECUTED",
+  "A_B_A":"NOT_EXECUTED",
+  "transaction_isolation":"NOT_EXECUTED_MULTICOLUMN",
+  "scratch_isolation":"NOT_EXECUTED_REAL_MULTICOLUMN",
+  "per_column_mass":"NOT_EXECUTED_MULTISWAP",
+  "aggregate_mass":"NOT_EXECUTED",
+  "generic_time_multiswap":"NOT_EXECUTED",
+  "difficult_tail":"NOT_EXECUTED",
+  "unsupported_physics_remain_not_admitted":true,
+  "parallel_reference_backend_remains_not_admitted":true,
+  "promotion": {
+    "real_physics_multiswap_admitted":false,
+    "general_swap5_multiswap_release":false
+  },
+  "qualification_result":"FAIL_CLOSED_BLOCKED_NOT_QUALIFIED"
+}

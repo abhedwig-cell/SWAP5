@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "required_invariants": [1,3,4,5,6,7,8,9,13,16,17,23,24,25,26,27,28,29],
+  "assessment": [
+    {"invariant":1,"status":"PASS_NO_PRODUCTION_CHANGE","finding":"One admitted SWAP kernel lineage remains the source under qualification."},
+    {"invariant":3,"status":"PASS_CONTRACT_PRESENT_NOT_MULTISWAP_PROMOTED","finding":"Runtime core retains separate logical references for parameters, state and forcing."},
+    {"invariant":4,"status":"NOT_ASSESSED_REAL_MULTICOLUMN","finding":"Compact committed physical state exists upstream, but per-column real MultiSWAP ownership cannot be executed without the missing dispatcher."},
+    {"invariant":5,"status":"NOT_ASSESSED_REAL_MULTICOLUMN","finding":"Serialized backend owns solver workspace inside backend/model rather than logical-column metadata, but A-B-A real scratch poisoning is not executable through production MultiSWAP composition."},
+    {"invariant":6,"status":"BLOCKED_FMR_RUNTIME_COMPOSITION","finding":"Logical column/template layout exists; the real serialized multi-column production dispatch path is missing."},
+    {"invariant":7,"status":"UPSTREAM_SINGLE_PASS_MULTICOLUMN_NOT_ASSESSED","finding":"F-VQ14 transaction semantics remain valid; cross-column transaction isolation is not promoted."},
+    {"invariant":8,"status":"UPSTREAM_SINGLE_PASS_MULTICOLUMN_NOT_ASSESSED","finding":"Replay is admitted upstream, not yet through production MultiSWAP orchestration."},
+    {"invariant":9,"status":"UPSTREAM_GENERIC_TIME_PASS_MULTICOLUMN_NOT_ASSESSED","finding":"F-VQ14 t0=1000.125, t1=1000.625 is admitted; batching cannot yet be checked for hidden calendar assumptions."},
+    {"invariant":13,"status":"BLOCKED_AGGREGATE_MASS","finding":"Authoritative per-run mass is admitted upstream; aggregate MultiSWAP mass is not executable."},
+    {"invariant":16,"status":"BLOCKED_PRIMARY_USE_CASE_REAL_PHYSICS","finding":"Synthetic MultiSWAP dispatch exists, but the first real-physics production MultiSWAP dispatch capability is absent."},
+    {"invariant":17,"status":"NOT_IN_SCOPE_NO_CLAIM","finding":"No MODFLOW-cell tile composition or weighting is introduced."},
+    {"invariant":23,"status":"PASS_NO_POLICY_OR_PHYSICS_CHANGE","finding":"F-MQ23 does not change physics or numerical policy to obtain coverage."},
+    {"invariant":24,"status":"NOT_IN_SCOPE_NO_BOUNDED_COST_CLAIM","finding":"Difficult-tail qualification is not executed and no bounded-cost production policy is claimed."},
+    {"invariant":25,"status":"PASS_REFERENCE_PRESERVED","finding":"Serialized full-reference physical route and F-VQ14 immutable oracle remain unchanged."},
+    {"invariant":26,"status":"BLOCKED_REAL_MULTICOLUMN_DIAGNOSTICS","finding":"Core diagnostic types exist; real MultiSWAP per-column/aggregate diagnostics cannot yet be qualified."},
+    {"invariant":27,"status":"NOT_ASSESSED_REAL_MULTICOLUMN","finding":"Optional feature scaling is not broadened or claimed."},
+    {"invariant":28,"status":"PASS_OWNER_IDENTIFIED","finding":"The missing system-composition capability is correctly assigned to runtime owner F-MR, not repaired in F-MQ."},
+    {"invariant":29,"status":"UPSTREAM_PASS_MULTICOLUMN_HOLD","finding":"No new time/file/MODFLOW assumptions are introduced; hidden MultiSWAP time assumptions remain untested until production composition exists."}
+  ],
+  "overall":"FAIL_CLOSED_BLOCKED_BY_FMQ23_B01",
+  "production_source_changed":false
+}

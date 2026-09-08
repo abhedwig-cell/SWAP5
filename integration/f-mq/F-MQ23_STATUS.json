@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "decision": "BLOCKED_PRODUCTION_SERIALIZED_MULTICOLUMN_RUNTIME_ENTRYPOINT_MISSING",
+  "lifecycle": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  },
+  "tested_scope": {
+    "qualification_capability_audit": true,
+    "exact_source_and_package_locks": true,
+    "real_physics_multiswap_execution": false
+  },
+  "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+  "fmq22_baseline": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+  "fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+  "locked_physical_source": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "locked_physical_tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+  "reference_run_package_commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+  "production_source_changed": false,
+  "workflow": {
+    "validated_checkpoint": "5efcd95abec3a2baa734896caa092ff69874094a",
+    "run": 34191761979,
+    "job": 101951099100,
+    "conclusion": "success",
+    "artifact_id": 10042444512,
+    "artifact_digest": "sha256:e7a87d7eb3a92f8c505d13dd1f724215760bf70006e01c38d9baf9a248539536"
+  },
+  "blockers": [{
+    "id":"FMQ23-B01",
+    "owner":"F-MR",
+    "github_issue":73,
+    "statement":"No production multi-column serialized-reference dispatch/orchestration entrypoint exists on the locked source."
+  }],
+  "holds": ["MQ23-G03 through MQ23-G19 remain unqualified where they require real MultiSWAP execution"],
+  "coverage": {
+    "before":{"synthetic_executable":28,"real_physics_executable":0,"production_runtime_qualified":0,"parallel_real_physics_qualified":0},
+    "after":{"synthetic_executable":28,"real_physics_executable":0,"production_runtime_qualified":0,"parallel_real_physics_qualified":0}
+  },
+  "admission": {
+    "real_physics_multiswap_admitted": false,
+    "admitted_profile_if_unblocked": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "serialized_reference_backend_scientifically_admitted_upstream": true,
+    "serialized_reference_backend_multiswap_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "active_root_extraction_admitted": false,
+    "macropore_admitted": false,
+    "snow_admitted": false,
+    "general_swap5_multiswap_release": false
+  },
+  "recommended_next_workunit": {
+    "owner":"F-MR",
+    "suggested_code":"F-MR05",
+    "purpose":"Provide production serialized real-physics multi-column composition/dispatch while retaining one physical solve at a time; then obtain required independent F-VQ admission before resuming F-MQ23."
+  }
+}
