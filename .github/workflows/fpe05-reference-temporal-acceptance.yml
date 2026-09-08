@@ -1,0 +1,18 @@
+name: F-PE05 reference temporal acceptance
+
+on:
+  push:
+    branches:
+      - work/f-pe05-reference-temporal-acceptance
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-reference-temporal-acceptance-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run F-PE05 source-bound owner gate
+        run: bash tests/fpe/run_fpe05_reference_temporal_acceptance_source_gate.sh
