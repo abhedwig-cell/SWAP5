@@ -1,0 +1,21 @@
+name: F-WOF20 common crop lifecycle state
+
+on:
+  push:
+    branches:
+      - work/f-wof20-common-crop-lifecycle-state
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF20 common crop lifecycle state gate
+        run: bash tests/fwof/run_fwof20_common_crop_lifecycle_state_gate.sh
