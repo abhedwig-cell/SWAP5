@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "B0_MFP_BASELINE_C1_QUALIFICATION",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "candidate": "EXACT_SLOPE_HERMITE_PHI_X",
+  "coordinate": "x=asinh(h/0.01 cm)",
+  "head_envelope_cm": [-100000000.0, 100.0],
+  "nodes": 128,
+  "initial_candidate_run": {
+    "run": 34280922435,
+    "head": "e32681eb5595a61be52717f3546fa80a2793a942",
+    "artifact": 10077561148,
+    "artifact_digest": "sha256:5c9222228f4e4c355668c7ddefa0756c4d9dea83abdfb584095dbc8cf1aff9b4",
+    "formal_result": "FAILURE_DUE_TO_NONASYMPTOTIC_ONE_SCALE_CONTINUITY_PROXY"
+  },
+  "decisive_refinement_run": {
+    "run": 34281172665,
+    "head": "36c3606efd6fe91542fda4d393f35b7e730528e1",
+    "artifact": 10077649077,
+    "artifact_digest": "sha256:9066441ca22b58d418b6f709af2b05960d5af4effe99287549c578710d87f448",
+    "conclusion": "SUCCESS"
+  },
+  "metrics": {
+    "mfp_secant_p90_rel_error": 1.2543348225363274e-05,
+    "mfp_secant_p99_rel_error": 0.0005192839403241635,
+    "mfp_secant_max_rel_error": 0.001094155516117847,
+    "limit_k_p90_rel_error": 0.00013638195289355183,
+    "limit_k_max_rel_error": 0.020614802952776828,
+    "nonpositive_conductance_samples": 0,
+    "shared_internal_nodal_slope_max_abs_jump": 0.0,
+    "saturated_join_slope_max_rel_error": 0.0,
+    "oracle_nonsmooth_rows_at_original_scale": 5,
+    "spurious_candidate_rows_at_original_scale": 4,
+    "spurious_candidate_rows_at_final_refinement_scale": 0,
+    "max_final_refinement_ratio_on_oracle_smooth_rows": 0.2039171557536219,
+    "expected_linear_refinement_ratio": 0.2
+  },
+  "interpretation": "Linear interpolation of Phi in the asinh coordinate was the dominant source of the near-saturation response artifact. Cubic Hermite Phi(x) using dPhi/dx=K(h)dh/dx removes the representation-induced non-smoothness asymptotically while keeping positive conductance and exact saturated endpoint slope. Direct-Darcy regime-switch rows remain diagnostics and do not grant a tangent through a constitutive switch.",
+  "decision": "QUALIFIED_C1_HERMITE_MFP_BASELINE_FOR_FURTHER_LAYEREDMFP_EXPERIMENTS",
+  "production_admission": false,
+  "response_tangent_admission": false,
+  "thresholds_relaxed": false
+}
