@@ -1,0 +1,26 @@
+name: F-LMFP09 Homogeneous Coarse-First B1
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  homogeneous-coarse-first:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+      - name: Hierarchical coarse-first B1 gate
+        run: bash experiments/lmfp/run_lmfp09_homogeneous_coarse_gate.sh
+      - name: Upload F-LMFP09 coarse-first evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-homogeneous-coarse-evidence
+          path: |
+            lmfp09-homogeneous-coarse-artifacts/
