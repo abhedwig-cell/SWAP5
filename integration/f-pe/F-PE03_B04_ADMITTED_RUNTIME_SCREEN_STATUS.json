@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-B04-RUNTIME-SCREEN",
+  "title": "Scientifically admitted runtime workload tail screening",
+  "branch": "work/f-pe03-b04-admitted-runtime-screen",
+  "status": "PERSISTED_ADMITTED_RUNTIME_SCREEN_PENDING_EXECUTION",
+  "phase": "PERSISTED_BEFORE_TEST",
+  "base": {
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fpe03_b04": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED"
+  },
+  "baseline_cost_vector": [3, 0, 3, 3, 3, 3, 0],
+  "tranche_1": {
+    "workloads": [
+      {
+        "owner": "F-VQ17/F-MR06",
+        "name": "one-call-daily snow runtime smoke fixture",
+        "scientific_status": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+        "source_test_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69"
+      },
+      {
+        "owner": "F-VQ21/F-MR09",
+        "name": "precomputed root-sink serialized runtime control/balanced fixtures",
+        "scientific_status": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+        "source_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1"
+      }
+    ],
+    "observation_only": true,
+    "production_source_changed": false,
+    "physics_changed": false,
+    "numerical_controls_changed": false,
+    "acceptance_changed": false,
+    "retry_policy_changed": false,
+    "mass_requirement_relaxed": false,
+    "transaction_semantics_changed": false
+  },
+  "candidate_rule": "A B04 candidate requires a scientifically admitted runtime workload that completes, commits, has complete authoritative mass within the unchanged hard mass gate, and has at least one aggregate interval cost counter strictly above [3,0,3,3,3,3,0].",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "claim_limit": "This workunit only screens already scientifically admitted REFERENCE runtime workloads using the independently admitted F-VQ25 observer surface. It grants no new scientific workload admission and cannot relax mass, temporal acceptance, solver controls, physics or transaction semantics. Any positive workload remains subject to independent F-VQ confirmation before F-PE03 may treat it as a production tail anchor."
+}
