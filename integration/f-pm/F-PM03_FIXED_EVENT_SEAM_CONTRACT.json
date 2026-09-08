@@ -62,9 +62,13 @@
     "midnight_required": false,
     "one_day_kernel_interval_required": false,
     "legacy_event_match_tolerance": 0.001,
+    "legacy_event_match_tolerance_role": "management event selection only; it is not reused as a numerical solver/runtime time tolerance",
     "event_duration_max_days": 1.0,
-    "cross_event_end_interval": "FAIL_CLOSED_WITH_SPLIT_REQUIRED",
-    "event_end": "candidate state clears the active event when t1 reaches the event end, representing task=9 completion without global mutation"
+    "numerical_event_end_tolerance": "64 * epsilon(real64) * max(1, abs(a), abs(b))",
+    "numerical_event_end_policy": "times within numerical tolerance are treated as the same boundary and effective duration is clamped to the reconstructed exact event end",
+    "persisted_event_end_policy": "active_event_end is validated against active_event_start + depth/rate with the same numerical tolerance",
+    "cross_event_end_interval": "FAIL_CLOSED_WITH_SPLIT_REQUIRED when t1 is materially later than event_end",
+    "event_end": "candidate state clears the active event when t1 is numerically equal to event_end, representing task=9 completion without global mutation"
   },
   "transaction_contract": {
     "committed_state_is_intent_in": true,
@@ -99,6 +103,9 @@
     "one fixed SSDI event",
     "no-trigger",
     "state continuation across an event boundary split",
+    "numerically near event-end clamp",
+    "materially late event-end split",
+    "persisted active-event-end ulp tolerance",
     "A/B/A",
     "rollback/replay",
     "cursor/event-history protection",
