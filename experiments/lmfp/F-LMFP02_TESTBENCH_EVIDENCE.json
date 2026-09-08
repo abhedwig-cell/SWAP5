@@ -1,0 +1,46 @@
+{
+  "interpretation": {
+    "exponential_relaxation_demo": "A dt-aware exponential fraction composes across substeps, but tau is not physically qualified here.",
+    "lineage_daily_upward_fraction": "The fixed 0.50 factor is per step. It fails step-subdivision invariance and is not generic-time physics.",
+    "mfp_table": "Pretabulation removes numerical K(h) quadrature from the runtime face solve; table resolution and interpolation remain qualification choices.",
+    "scope": "Standalone reconstruction only. No FullRichards physical equivalence and no production admission are claimed."
+  },
+  "metrics": {
+    "interface_iteration_rows": [
+      {"hl": -20, "hu": -2, "iterations": 29, "q": 1.813833720363872},
+      {"hl": -20, "hu": -2, "iterations": 27, "q": 3.4253035865252395},
+      {"hl": -20, "hu": -2, "iterations": 30, "q": 2.308451828205654},
+      {"hl": -20, "hu": -2, "iterations": 31, "q": 6.093118828064972},
+      {"hl": -80, "hu": -5, "iterations": 29, "q": 2.3785530104604238},
+      {"hl": -80, "hu": -5, "iterations": 26, "q": 4.242071778348625},
+      {"hl": -80, "hu": -5, "iterations": 32, "q": 3.221306813747477},
+      {"hl": -80, "hu": -5, "iterations": 30, "q": 9.19506366280857},
+      {"hl": -5, "hu": -20, "iterations": 28, "q": -1.32178854241383},
+      {"hl": -5, "hu": -20, "iterations": 29, "q": -2.176812358547397},
+      {"hl": -5, "hu": -20, "iterations": 27, "q": -1.9225101985784554},
+      {"hl": -5, "hu": -20, "iterations": 30, "q": -5.013118827226464},
+      {"hl": -1, "hu": -100, "iterations": 30, "q": -3.1411098532631527},
+      {"hl": -1, "hu": -100, "iterations": 32, "q": -4.863186628777074},
+      {"hl": -1, "hu": -100, "iterations": 29, "q": -4.392487145009487},
+      {"hl": -1, "hu": -100, "iterations": 31, "q": -10.84021237384352},
+      {"hl": -300, "hu": -1, "iterations": 33, "q": 3.2639473719278733},
+      {"hl": -300, "hu": -1, "iterations": 31, "q": 5.750876091218638},
+      {"hl": -300, "hu": -1, "iterations": 33, "q": 4.143203508969165},
+      {"hl": -300, "hu": -1, "iterations": 34, "q": 11.157056269591784}
+    ]
+  },
+  "overall_pass": true,
+  "tests": {
+    "bounded_local_interface_iteration": {"cases": 20, "max_iterations": 34, "pass": true},
+    "equal_potential_transfer": {"head_lower_final": -36.59711257236742, "head_residual": -5.551115123125783e-08, "head_upper_final": -36.59711262787857, "iterations": 29, "pass": true, "transfer": -1.6905088293578907},
+    "exponential_relaxation_step_composition": {"fraction_1d": 0.5, "fraction_half": 0.2928932188134524, "one_step_upper_storage": 6.504103821556817, "pass": true, "storage_difference": 0.0, "tau_days": 1.4426950408889634, "two_half_upper_storage": 6.504103821556817},
+    "face_flux_mass_conservation": {"W_new": [3.1147, 5.0962, 6.9186], "mass_residual": 1.6653345369377348e-16, "pass": true},
+    "fixed_half_step_noninvariance": {"difference": -0.4226272073394728, "interpretation": "same per-step 0.50 rule produces a different 1-day endpoint after step subdivision", "one_step_transfer": -0.8452544146789454, "pass": true, "two_half_steps_transfer": -1.2678816220184181},
+    "heterogeneous_equal_flux": {"interface_head": -28.86004514992237, "iterations": 26, "pass": true, "q": 4.242071778348625, "q_lower_half": 4.242071774365655, "q_upper_half": 4.242071782331594, "quadrature_evals": 10562, "residual": 7.965939019527468e-09},
+    "homogeneous_split_identity": {"abs_error": 3.8558045645231687e-10, "interface_head": -14.16325538419187, "iterations": 29, "pass": true, "q_direct": 2.3785530100748433, "q_split": 2.3785530104604238},
+    "mfp_derivative_equals_K": {"max_rel_error": 2.051365256737673e-10, "pass": true},
+    "shared_mfp_table_against_integration_oracle": {"approx_double_storage_bytes_per_material_for_pf_plus_phi": 8208, "cases": 28, "max_abs_flux_error": 0.0008016623351512209, "max_interface_iterations": 35, "max_rel_flux_error": 0.0001571719889648642, "nodes_per_material": 513, "pass": true, "pf_range": [-4.0, 6.0], "precompute_constitutive_evals_two_materials": 6726, "runtime_quadrature_evals_per_mfp_lookup": 0},
+    "theta_head_inverse": {"max_abs_head_error": 8.626670933153946e-09, "pass": true},
+    "wet_harmonic_bounds": {"Kl": 0.3501024331297755, "Ku": 3.5705038297623, "pass": true, "qwet": 0.5477011692861624}
+  }
+}
