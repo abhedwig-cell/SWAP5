@@ -40,7 +40,9 @@ program test_fmr09_root_sink_transaction_diag
   parameters%root_extraction_active = .true.
   call configure_column(column, template)
   call configure_forcing(forcing, conductivity0)
-  forcing%root_extraction_sink = [0.04_real64, 0.08_real64, 0.12_real64]
+  ! Preserve the allocated numnod shape. A shorter array constructor would
+  ! reallocate the allocatable component and exercise shape rejection instead.
+  forcing%root_extraction_sink = 0.04_real64
   forcing%subsurface_irrigation_source = forcing%root_extraction_sink
   call configure_transaction(config)
   call fmr_new_b110_committed_state(committed, column%column_id, initial_state, t0, ok)
