@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "producer_workstream": "F-MR",
+  "producer_work_unit": "F-MR06",
+  "consumer_workstream": "F-VQ",
+  "consumer_work_unit": "F-VQ17",
+  "handoff_kind": "IMMUTABLE_TESTED_SERIALIZED_SNOW_MULTISWAP_COMPOSITION_CANDIDATE",
+  "candidate_source_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "candidate_source_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+  "candidate_production_sources": [
+    {"path":"src/process/mod_snow_process.f90","blob":"54702d71b4c84dce2842813549bd14c57301a383","basis":"exact F-VQ16-admitted B1.10 one-call-daily SNOW source"},
+    {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"202ab846cbd30d149d0d450249b3d517e333994f","basis":"F-MR06 transactional SNOW composition seam"},
+    {"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"1bb0c6d4683db2729d48de31babcea72bc1a6caf","basis":"serialized MultiSWAP dispatch plus deterministic canonical-order aggregate accounting"}
+  ],
+  "runtime_engineering_test": {
+    "evidence": "integration/f-mr/F-MR06_TEST_EVIDENCE.json",
+    "invariant_audit": "integration/f-mr/F-MR06_INVARIANT_AUDIT.json",
+    "workflow": "F-MR06 serialized snow MultiSWAP runtime",
+    "run_id": 34217119576,
+    "job_id": 102031389280,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "column_counts": [1,2,17,31],
+    "mixed_active_inactive": "PASS",
+    "warm_nonzero_melt_internal_transfer": "PASS",
+    "reverse_order_column_identity": "PASS",
+    "A_B_A_repeatability": "PASS",
+    "optional_state_scaling": "PASS",
+    "authoritative_aggregate_mass": "PASS",
+    "max_simultaneous_real_physical_solves": 1
+  },
+  "scientific_basis": {
+    "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
+    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "snow_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY",
+    "fvq15_scientific_admission_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fmr05_qualified_runtime_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fmq23_closeout_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90"
+  },
+  "required_fvq17_checks": [
+    "Lock candidate_source_commit ffab7d705928170db3e76a5d346caafeb560e605 and candidate source tree/blobs before execution.",
+    "Do not modify production source during F-VQ17; any production change invalidates the candidate and returns ownership to F-MR.",
+    "Independently confirm the SNOW process blob is exactly the F-VQ16-admitted source and retains exact B1.10 one-call-daily state/flux identity.",
+    "Independently confirm composed per-column SNOW state equals direct F-VQ16 process output for identical committed state and forcing within the admitted one-day time domain.",
+    "Verify the daily SNOW event is prepared once per outer interval and is not consumed or double-applied by F-KT full/half/retry/rejected trials.",
+    "Verify checkpoint, rejected trial, rollback, replay and accepted commit preserve exact snow and soil committed-state isolation.",
+    "Verify snow-inactive columns retain exact F-MR05 route/mass/committed-state identity and allocate no persistent snow state.",
+    "Verify snow-active columns carry only admitted persistent SNOW continuation state and immutable snow parameters remain parameter data.",
+    "Independently verify authoritative whole-system mass completeness with missing contribution mask zero for accepted composed cases.",
+    "Verify snowfall and rain are external input, sublimation is external output, retained liquid water is not double-counted, and melt is transferred exactly once internally to the receiving surface/soil component.",
+    "Verify canonical and reversed 1/2/17/31-column runs give per-column and authoritative aggregate identity, including heterogeneous mixed active/inactive columns.",
+    "Verify A/B/A exact repeatability and cross-column isolation.",
+    "Verify non-midnight exact-one-day SNOW is admitted while subdaily and arbitrary/multiday SNOW fail closed.",
+    "Verify the Richards route remains within the already-admitted restricted equilibrium scientific slice; do not infer general non-equilibrium Richards admission from F-MR06 fixtures.",
+    "Verify measured maximum simultaneous real physical solves remains one and no parallel real-physics admission is introduced.",
+    "Run O0 and O2 and require output identity without introducing a new scientific tolerance."
+  ],
+  "qualification_boundary": {
+    "FMR06_IMPLEMENTED": true,
+    "FMR06_PERSISTED": true,
+    "FMR06_TESTED": true,
+    "FMR06_QUALIFIED": false,
+    "scientific_composed_candidate_admitted_at_handoff": false,
+    "snow_multiswap_production_admitted_at_handoff": false,
+    "parallel_reference_backend_admitted": false,
+    "subdaily_snow_admitted": false,
+    "general_richards_scope_expanded": false,
+    "source_modification_by_fvq17_permitted": false
+  },
+  "downstream_after_fvq17": {
+    "consumer_workstream": "F-MQ",
+    "consumer_work_unit": "F-MQ24",
+    "blocker": "FMQ24-B01",
+    "resume_condition": "Only an independent F-VQ17 PASS on this exact candidate may release F-MQ24 to resume its qualification-only SNOW MultiSWAP assessment."
+  }
+}
