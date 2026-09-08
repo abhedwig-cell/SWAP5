@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "status": "CHARACTERIZED_REFERENCE_COST_CLIFF_NO_ACCEPTED_DIFFICULT_FIXTURE",
+  "qualified_physical_tail": false,
+  "basis": {
+    "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
+    "fpe02_diagnostics_status": "QUALIFIED_INTERVAL_SOLVER_COST_DIAGNOSTICS",
+    "fmr05_fvq15_fmq23_profile": "RESTRICTED_SERIALIZED_REAL_PHYSICS_REFERENCE_PROFILE",
+    "production_source_changed_by_fpe03": false
+  },
+  "characterization_runs": {
+    "coarse_search": {
+      "head": "bc6a432ae81ad6dbe5ea15d2a24142299b73cf6e",
+      "workflow_run": 34211795534,
+      "workflow_job": 102014269414,
+      "conclusion": "failure",
+      "classification": "SEARCH_MATRIX_TOO_COARSE_NOT_PRODUCTION_FAILURE",
+      "scope_lock_passed": true,
+      "compiled_real_reference_stack": true,
+      "baseline_accepted": true,
+      "nonbaseline_cases_accepted": 0,
+      "rejected_case_cost": {
+        "headcalc_calls": 3,
+        "nonlinear_iterations": 24,
+        "jacobian_builds": 24,
+        "linear_solves": 24,
+        "backtracking_attempts": 96,
+        "internal_retries": 3
+      },
+      "rejected_cases_committed": false,
+      "committed_state_mutation_on_rejected_cases": false,
+      "production_source_implicated": false,
+      "repair": "refined characterization matrix around the admitted reference basin; no production source or numerical control change"
+    },
+    "refined_search": {
+      "head": "675981580b2741e3979bdc84d90bacdcd2e416e8",
+      "workflow_run": 34212011548,
+      "workflow_job": 102014960711,
+      "conclusion": "success",
+      "o0": "PASS",
+      "o2": "PASS",
+      "o0_o2_output_identity": true,
+      "o0_executable_sha256": "c8680aa828e17d63cfe8bdcdd19668f7a34f86c09ff7769b60631b1d00ab7048",
+      "o2_executable_sha256": "4f6079d79c9d67849b8dc2b599ed0c309e0eb70a038521d69e0e44918db996fc",
+      "output_sha256": "a83d68b2bee28573b7caf5724678bd94973f5558a8528d9d9689c89b9dd9f4e2"
+    }
+  },
+  "refined_matrix_results": {
+    "number_cases": 24,
+    "accepted_cases": 6,
+    "rejected_cases": 18,
+    "accepted_higher_cost_cases": 0,
+    "accepted_uniform_pressure_heads": [-5.0, -50.0, -75.0, -100.0, -500.0, -5000.0],
+    "accepted_cost_vector": {
+      "accepted_substeps": 1,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "internal_retries": 0,
+      "alternative_solver_calls": 0
+    },
+    "accepted_max_abs_unrounded_mass_residual": 2.77555756156289135e-17,
+    "accepted_mass_gate": 1e-12,
+    "all_accepted_mass_complete": true,
+    "all_accepted_missing_mass_mask_zero": true,
+    "rejected_stress_cost_vector": {
+      "accepted_substeps": 0,
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 24,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "internal_retries": 3,
+      "alternative_solver_calls": 0
+    },
+    "rejected_stress_committed": false,
+    "smallest_tested_state_perturbations_rejected": true,
+    "smallest_tested_flux_perturbation_fraction": 0.0001,
+    "smallest_tested_flux_perturbations_rejected": true
+  },
+  "interpretation": {
+    "accepted_reference_cost_variation_observed": false,
+    "accepted_difficult_physical_fixture_observed": false,
+    "sharp_reference_cost_cliff_observed": true,
+    "cost_cliff_description": "stationary uniform accepted states use the low reference cost vector; tested nonstationary or flux-perturbed cases enter the bounded existing retry/rollback path and do not commit",
+    "production_bug_claimed": false,
+    "reason_no_bug_claim": "the current qualification fixture and strict control profile may be too narrow; accepted nonstationary evidence must be sought before attributing the cliff to production physics or solver defects"
+  },
+  "claim_limits": {
+    "physical_tail_percentiles_qualified": false,
+    "representative_p50_p95_p99": false,
+    "B12_or_heavy_clay_covered": false,
+    "bounded_cost_policy_admitted": false,
+    "fallback_policy_admitted": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "parallel_real_physics_admitted": false,
+    "synthetic_fmq23_tail_promoted_to_physical_evidence": false
+  },
+  "next_gate": "SEARCH_CURRENT_QUALIFIED_LINEAGE_FOR_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE"
+}
