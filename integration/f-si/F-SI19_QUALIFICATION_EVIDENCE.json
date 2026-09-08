@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI19",
+  "qualification_candidate_head": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+  "qualification_run": 34258568803,
+  "qualification_job": 102170485378,
+  "result": "PASS",
+  "direct_legacy_oracle": {
+    "result": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_identity": true,
+    "tridag_success_sizes": [1, 2, 4, 7],
+    "tridag_error_paths": [1000, 1002],
+    "band_cases": [
+      "N2_NO_PIVOT",
+      "N4_NO_PIVOT",
+      "N4_FORCED_PIVOT",
+      "N5_FORCED_PIVOT"
+    ],
+    "artifact_id": 10068886795,
+    "artifact_digest": "sha256:597850709f5565538bec1ca949adec67f2879ac9b3cc862ad7e3270192ea7e22"
+  },
+  "headcalc_reference_control": {
+    "result": "PASS_BITWISE_FSI18_REFERENCE_CONTROL",
+    "o0": "PASS_BITWISE",
+    "o2": "PASS_BITWISE",
+    "o0_o2_identity": true,
+    "all_five_cases_converged": true,
+    "cost_vectors": {
+      "baseline": {
+        "nonlinear_iterations": 1,
+        "jacobian_builds": 1,
+        "linear_solves": 1,
+        "backtracking_attempts": 1,
+        "internal_retries": 0
+      },
+      "plus_minus_3e12_relative_flux": {
+        "nonlinear_iterations": 3,
+        "jacobian_builds": 3,
+        "linear_solves": 3,
+        "backtracking_attempts": 4,
+        "internal_retries": 0
+      },
+      "plus_minus_1e11_relative_flux": {
+        "nonlinear_iterations": 6,
+        "jacobian_builds": 6,
+        "linear_solves": 6,
+        "backtracking_attempts": 8,
+        "internal_retries": 0
+      }
+    },
+    "artifact_id": 10068893299,
+    "artifact_digest": "sha256:a21fad45d826be8a83a9c6c94c3a451455a3c828ca9fcd2236a9437c66dc897f"
+  },
+  "regressions": {
+    "fsi15_pinned_predecessor": "PASS",
+    "fkt_transaction_boundary": "PASS",
+    "fsi16_closeout_regression_gate": "PASS"
+  },
+  "architectural_seam_guards": "PASS",
+  "production_source_changed": true,
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "mass_or_temporal_acceptance_changed": false,
+  "transaction_semantics_changed": false,
+  "known_nonblocking_technical_debt": [
+    "Existing HeadCalc compiler warnings involving sum1 and dkmean remain outside F-SI19 scope and are not hidden by production-source edits."
+  ],
+  "claim_limit": "F-SI19 qualifies source-bound numerical fidelity of the reference linear-solver seam. It does not scientifically admit the diagnostic flux perturbations, does not integrate the seam into the current F-MR production lineage, and does not admit any non-REFERENCE execution policy."
+}

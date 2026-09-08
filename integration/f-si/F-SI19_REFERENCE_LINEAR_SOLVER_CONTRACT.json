@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI19",
+  "contract": "REFERENCE_LINEAR_SOLVER_SEAM",
+  "purpose": "Make reference linear-solver fidelity explicit behind a source-bound interface without changing REFERENCE physics, numerical controls, mass conservation or transaction semantics.",
+  "requirements": {
+    "headcalc_must_not_call_legacy_tridag_bandec_banbks_directly": true,
+    "reference_tridag_must_be_legacy_equivalent_on_direct_oracle": true,
+    "reference_band_solver_must_be_legacy_equivalent_on_direct_oracle": true,
+    "headcalc_must_match_fsi18_reference_tridag_control_bitwise": true,
+    "o0_o2_deterministic_identity_required": true,
+    "tridag_scratch_must_be_worker_or_job_local": true,
+    "scratch_memory_must_be_counted_in_workspace_payload": true,
+    "pinned_predecessor_regression_required": true,
+    "fkt_transaction_boundary_regression_required": true,
+    "mass_conservation_remains_hard": true,
+    "physics_change_allowed": false,
+    "solver_tolerance_change_allowed": false,
+    "retry_policy_change_allowed": false
+  },
+  "admission_limits": {
+    "perturbed_workload_scientific_admission": false,
+    "fmr_runtime_lineage_admission": false,
+    "balanced_policy_admission": false,
+    "throughput_policy_admission": false,
+    "fallback_policy_admission": false,
+    "bounded_cost_threshold_admission": false
+  },
+  "architecture_invariants": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "UNCHANGED",
+    "compact_persistent_state": "PRESERVED",
+    "scratch_per_worker": "SATISFIED_TRIDAG_GAMMA_IN_REFERENCE_RICHARDS_WORKSPACE",
+    "transactional_timesteps": "UNCHANGED",
+    "mass_conservation": "UNCHANGED_HARD",
+    "reference_mode": "PRESERVED_FULL_ACCURACY",
+    "physics_solver_policy_separation": "PRESERVED",
+    "alternative_soil_water_solvers": "NOT_RESTRICTED"
+  }
+}

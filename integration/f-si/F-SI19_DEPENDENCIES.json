@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI19",
+  "branch": "work/f-si19-reference-linear-solver-seam",
+  "qualification_candidate_head": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+  "materialization_commit": "50b3c785b3074debf3dcc76b8bee46565511d9e4",
+  "upstream_reference": {
+    "fsi18_closeout_head": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+    "fsi18_status": "QUALIFIED_REFERENCE_CONVERGENCE_CLIFF_REPRODUCED_AND_DIAGNOSED_NO_PRODUCTION_CHANGE_REQUIRED",
+    "fsi15_pinned_head": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b",
+    "fkt_pinned_head": "510d1f29d40225c68f3a8d3e789071279941e87b"
+  },
+  "source_blobs": {
+    "reference_linear_solver": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "headcalc": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "reference_richards_workspace": "59ef9d037c1875610d45ac83387ebab9e917e0fe",
+    "direct_oracle": "bf8c9d85c98157d128086d2c2fb20f6129b98e63",
+    "support_fixture": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+    "qualification_workflow": "1f45a960c93f078b5ed54bb09546297ee63b8979"
+  },
+  "source_boundary": {
+    "production_scope": [
+      "explicit reference linear solver module",
+      "HeadCalc routing through reference_tridag/reference_band_solve",
+      "worker-local Richards workspace tridag_gamma scratch and memory accounting"
+    ],
+    "physics_changed": false,
+    "solver_controls_changed": false,
+    "mass_or_temporal_acceptance_changed": false,
+    "retry_policy_changed": false
+  }
+}
