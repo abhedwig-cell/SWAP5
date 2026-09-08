@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "title": "Prescribed Bottom-Head Lower Face Distance Resolution",
+  "branch": "work/f-si16-explicit-prescribed-bottom-head",
+  "failure_evidence": {
+    "head": "bbf4399976167d60b6df1fa43c8fc48671b754f9",
+    "workflow_run": 34237079355,
+    "job": 102097450742,
+    "compiler": "GNU Fortran 13.3.0",
+    "failure": "HeadCalc mode 5 evaluates grid_disnod(NN+1), while the F-SI14 admitted request geometry carried node_distance(1:NN). Bounds checking therefore failed at parameter_set%node_distance(NN+1)."
+  },
+  "source_bound_interpretation": {
+    "fsi14_contract": "F-SI14 intentionally qualified node_distance shape active_nodes for admitted modes 7/-2 and explicitly did not add an artificial NN+1 requirement because modes needing the lower face distance were not admitted.",
+    "fsi16_change_in_physical_requirement": "SWBOTB=5 computes the lower hydraulic gradient using the distance between the last node and prescribed lower boundary, so NN+1 node-distance geometry becomes physically required.",
+    "legacy_global_fallback_allowed": false
+  },
+  "minimal_resolution": {
+    "generic_parameter_shape": "accept node_distance size active_nodes or active_nodes+1",
+    "existing_modes_7_minus2": "remain valid with active_nodes entries",
+    "mode5": "requires active_nodes+1 entries before HeadCalc",
+    "headcalc_change_required": false,
+    "state_shape_change_required": false,
+    "fkt_change_required": false,
+    "physics_formula_change": false,
+    "discretization_policy_change": false
+  },
+  "reasoning": "Conditional NN+1 support preserves every already-qualified F-SI14 request while supplying the explicit lower-face geometry that prescribed-head physics actually consumes. Falling back to MOD_grid%disnod(NN+1) would reintroduce a silent legacy geometry authority and is rejected.",
+  "status": "PERSISTED_BEFORE_CONTRACT_REPAIR"
+}
