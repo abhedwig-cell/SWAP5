@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ16",
+  "candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+  "qualification_head_reviewed": "177d782bd901f05d7204e6659b1f7479d232121a",
+  "production_source_changed": false,
+  "audit": [
+    {"invariant":1,"status":"PASS","finding":"One shared process seam is assessed; no alternate SWAP kernel or use-case-specific SNOW implementation is introduced."},
+    {"invariant":2,"status":"PASS","finding":"Candidate SNOW process has no file/path/parsing I/O; F-VQ adds only qualification fixtures and tooling."},
+    {"invariant":3,"status":"PASS","finding":"Parameters, persistent state, forcing, result/flux and diagnostics are explicit separate types."},
+    {"invariant":4,"status":"PASS","finding":"Persistent SNOW continuation state is limited to total snow water storage and retained liquid-water substate; reporting history is excluded."},
+    {"invariant":5,"status":"PASS","finding":"Legacy algebraic intermediates remain local workspace and are not persisted per column."},
+    {"invariant":6,"status":"PASS_NO_NEW_CONSTRAINT","finding":"F-VQ16 introduces no storage-layout restriction that prevents SoA/pools/batches."},
+    {"invariant":7,"status":"PASS_SCOPED","finding":"Evaluation leaves committed input state unchanged, replay is bit-exact, and accepted continuation is reproducible. F-KT remains transaction authority; no separate transaction engine is introduced."},
+    {"invariant":8,"status":"PASS","finding":"Same committed state plus forcing replays bit-exactly; no hidden process warm-start state exists."},
+    {"invariant":9,"status":"PASS_WITH_HOLD","finding":"Interface exposes generic t0/t1 and accepts a non-midnight one-day interval, but scientific validity is deliberately restricted to one legacy Snow(2) call of exact duration 1.0. No arbitrary-duration claim is made."},
+    {"invariant":10,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No coupling-window policy is changed; downstream composition must schedule the admitted daily SNOW event without redefining its physics."},
+    {"invariant":11,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No coupling contract is modified."},
+    {"invariant":12,"status":"PASS_NOT_APPLICABLE","finding":"Groundwater interface contract is not touched by this process-only qualification."},
+    {"invariant":13,"status":"PASS_SCOPED","finding":"For every admitted reference call the unrounded snow-component identity closes exactly to the same floating-point result as B1.10. Melt is a snow-storage outflow but must be booked as an internal transfer when received by surface/soil; F-VQ16 does not claim whole-system F-KT completeness."},
+    {"invariant":14,"status":"PASS_NOT_APPLICABLE","finding":"No groundwater response tangent is involved."},
+    {"invariant":15,"status":"PASS_NOT_APPLICABLE","finding":"No coupling-run cost policy is changed."},
+    {"invariant":16,"status":"PASS_WITH_HOLD","finding":"Process data ownership is compatible with MultiSWAP, but F-VQ16 does not admit any SNOW MultiSWAP runtime composition."},
+    {"invariant":17,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No tile-to-MODFLOW cardinality assumption is introduced."},
+    {"invariant":18,"status":"PASS_NOT_APPLICABLE","finding":"Deep-vadose transfer is unaffected."},
+    {"invariant":19,"status":"PASS_NOT_APPLICABLE","finding":"No component-transition storage transfer is changed."},
+    {"invariant":20,"status":"PASS_NO_NEW_CONSTRAINT","finding":"SNOW process is independent of a specific soil-water solver implementation."},
+    {"invariant":21,"status":"PASS","finding":"B1.10 SNOW physics is reused without introducing a duplicate alternative physics path."},
+    {"invariant":22,"status":"PASS","finding":"SNOW process does not access HeadCalc internals."},
+    {"invariant":23,"status":"PASS","finding":"No numerical execution policy changes or silently modifies SNOW physics."},
+    {"invariant":24,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No fallback or bounded-cost policy is introduced."},
+    {"invariant":25,"status":"PASS","finding":"Exact compiled B1.10 source is the reference oracle; no reduced-accuracy replacement is admitted."},
+    {"invariant":26,"status":"PASS","finding":"Candidate exposes explicit status and snow mass diagnostics; F-VQ evidence records the exact tested route and holds."},
+    {"invariant":27,"status":"PASS_SCOPED","finding":"Candidate defines only compact SNOW state; inactive allocation remains runtime-owned and was not scientifically broadened here."},
+    {"invariant":28,"status":"PASS","finding":"No tile, transfer-zone or system-composition ownership is moved into the SNOW process."},
+    {"invariant":29,"status":"PASS","finding":"No midnight, file-format or MODFLOW dependency is introduced. The only retained temporal restriction is explicitly source-qualified one-call B1.10 duration semantics."},
+    {"invariant":30,"status":"PASS","finding":"This audit explicitly records the invariant assessment for the scientific admission change."}
+  ],
+  "decision_relevance": {
+    "blocking_invariant_failures": 0,
+    "qualified_holds": [
+      "Arbitrary-duration and subdaily SNOW remain not admitted.",
+      "Whole-system F-KT mass completeness remains a downstream composition obligation.",
+      "SNOW MultiSWAP runtime execution remains unqualified until a separate qualification unit passes."
+    ]
+  }
+}
