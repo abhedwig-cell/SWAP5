@@ -1,0 +1,43 @@
+name: F-SI14 materialize explicit grid geometry
+
+on:
+  push:
+    branches:
+      - work/f-si14-grid-geometry-binding
+    paths:
+      - 'integration/f-si/F-SI14_GRID_GEOMETRY_CONTRACT.json'
+      - 'tools/fsi/fsi14_materialize_grid_geometry.py'
+      - '.github/workflows/fsi14-materialize-grid-geometry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi14-materialize-grid-geometry
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si14-grid-geometry-binding
+      - name: Materialize source-bound explicit grid geometry
+        run: python3 tools/fsi/fsi14_materialize_grid_geometry.py
+      - name: Commit only HeadCalc, reference adapter and worker workspace
+        run: |
+          changed="$(git diff --name-only | sort)"
+          expected=$'src/adapter/mod_reference_richards_legacy_binding.f90\nsrc/legacy/b1_10_port/headcalc.f90\nsrc/solver/mod_reference_richards_workspace.f90'
+          if [ "$changed" != "$expected" ]; then
+            echo 'F-SI14 materializer changed unexpected paths:' >&2
+            printf '%s\n' "$changed" >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90 src/solver/mod_reference_richards_workspace.f90
+          git commit -m 'F-SI14: materialize explicit grid geometry binding'
+          git push origin HEAD:work/f-si14-grid-geometry-binding
