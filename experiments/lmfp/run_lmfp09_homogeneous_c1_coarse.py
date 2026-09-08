@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import bisect
 import math
 import sys
 from pathlib import Path
@@ -19,6 +20,30 @@ core.MASTER_NX = 33
 core.VIEW_NX = (17, 33)
 
 EPS = (1.0e-3, 2.0e-4, 4.0e-5, 8.0e-6, 1.6e-6)
+
+
+def tolerant_bracket(axis, x):
+    """Clamp only floating-point endpoint roundoff, never physical extrapolation."""
+    lo, hi = axis[0], axis[-1]
+    tol_lo = 8.0 * math.ulp(lo)
+    tol_hi = 8.0 * math.ulp(hi)
+    if x < lo:
+        if lo - x <= tol_lo:
+            x = lo
+        else:
+            raise ValueError(("axis_out_of_range", x, lo, hi))
+    elif x > hi:
+        if x - hi <= tol_hi:
+            x = hi
+        else:
+            raise ValueError(("axis_out_of_range", x, lo, hi))
+    if x >= hi:
+        return len(axis)-2, len(axis)-1
+    i = bisect.bisect_right(axis, x)-1
+    return max(0, i), min(len(axis)-1, i+1)
+
+
+core.bracket = tolerant_bracket
 
 
 def asymptotic_continuity_test(view):
