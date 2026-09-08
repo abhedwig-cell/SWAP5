@@ -34,22 +34,29 @@
     "rootextraction_path": "SWAP/rootextraction.f90",
     "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
     "cropdevelopment_path": "SWAP/MOD_cropdevelopment.f90",
-    "root_distribution_semantics": "cumdens_top(1)=0; cumulative root density is normalized; node fraction is cumdens_top(node+1)-cumdens_top(node); final rooted cumulative fraction is 1 for the admitted profile"
+    "cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "root_distribution_semantics": "cumdens_top(1)=0; current cumulative root density is normalized; node fraction is cumdens_top(node+1)-cumdens_top(node); final rooted cumulative fraction is 1",
+    "root_distribution_lifecycle": "crop development can recompute noddrz and cumdens_top during root development, so these values are dynamic crop-derived process inputs rather than immutable root-uptake parameters"
+  },
+  "classification_correction": {
+    "artifact": "integration/f-pm/F-PM05_ROOT_DISTRIBUTION_CLASSIFICATION_CORRECTION.json",
+    "finding": "CUMDENS_TOP_IS_DYNAMIC_CROP_DERIVED_INPUT_NOT_IMMUTABLE_PROCESS_PARAMETER",
+    "applied_to_candidate_api": true
   },
   "process_contract": {
     "read_side": "read-only committed process_hydraulic_view_t pressure_head and active_nodes",
     "immutable_parameters": [
-      "active_nodes",
-      "rooted_nodes",
+      "active_nodes/model topology",
       "hlim3l",
       "hlim3h",
       "hlim4",
       "adcrl",
-      "adcrh",
-      "normalized cumulative root fractions"
+      "adcrh"
     ],
-    "forcing_or_process_input": [
-      "potential transpiration ptra"
+    "dynamic_crop_or_process_input": [
+      "potential transpiration ptra",
+      "current rooted_nodes",
+      "current normalized cumulative root fractions"
     ],
     "physical_result": [
       "precomputed nonnegative per-node root_extraction_sink",
@@ -66,7 +73,8 @@
     "legacy_global_access": false,
     "io_access": false,
     "calendar_dependency": false,
-    "persistent_state": false
+    "persistent_state": false,
+    "root_distribution_state_owner": "crop/runtime composition, not the root-water-uptake process"
   },
   "source_equations": {
     "early_exit_no_roots": "rooted_nodes=0 corresponds to legacy rd < 1e-14 and yields zero root sink",
@@ -80,32 +88,35 @@
     "dry_above_hlim3": "h(node) > hlim3 => alpdry=1",
     "actual_node_uptake": "qrot(node)=qpot(node)*alpdry(node)"
   },
-  "fail_closed_parameter_domain": {
-    "finite_inputs_required": true,
-    "potential_transpiration_nonnegative": true,
+  "fail_closed_domain": {
+    "finite_threshold_parameters_required": true,
+    "potential_transpiration_finite_nonnegative": true,
     "adcrh_strictly_greater_than_adcrl": true,
     "hlim4_strictly_below_both_hlim3_endpoints": true,
     "rooted_nodes_within_active_nodes": true,
-    "cumulative_root_fraction_size": "rooted_nodes+1",
-    "cumulative_root_fraction_first": 0.0,
-    "cumulative_root_fraction_last": 1.0,
-    "cumulative_root_fraction_nondecreasing": true
+    "root_distribution_required_only_when_rooted_nodes_positive": true,
+    "cumulative_root_fraction_size_when_rooted": "rooted_nodes+1",
+    "cumulative_root_fraction_first_when_rooted": 0.0,
+    "cumulative_root_fraction_last_when_rooted": 1.0,
+    "cumulative_root_fraction_nondecreasing_when_rooted": true,
+    "stale_root_distribution_ignored_when_rooted_nodes_zero": true
   },
   "runtime_bridge": {
     "consumer": "exact F-MR09/F-VQ21 explicit precomputed root-sink route",
     "binding": "candidate root_extraction_sink is copied into fmr_b110_physical_forcing_t%root_extraction_sink by runtime/coupler composition, not by the process module",
     "authoritative_mass": "F-MR/F-KT books accepted root extraction exactly once as total_out; process diagnostics are reconciliation only",
-    "transaction": "the restricted process has no persistent state; any trial output is reconstructible from committed hydraulic view and request"
+    "transaction": "the restricted process has no persistent state; any trial output is reconstructible from committed hydraulic view plus current crop/process request"
   },
   "required_owner_candidate_gates": [
     "canonical source-equation fixtures for potential uptake, hlim3 and drought reduction",
     "no-root and negligible-transpiration zero routes",
-    "invalid parameters and hydraulic-view mismatch fail closed",
+    "dynamic crop-derived root-distribution replacement without process state",
+    "invalid parameters, request distribution and hydraulic-view mismatch fail closed",
     "A/B/A deterministic process output",
     "process result bridges unchanged into the exact F-MR09/F-VQ21 root-sink forcing field",
     "real serialized runtime books process-computed root extraction exactly once",
     "hard accepted mass balance remains satisfied on a balanced root/qssdi bridge fixture",
-    "F-VQ21 source locks remain unchanged",
+    "F-VQ21 runtime source locks remain unchanged",
     "F-VQ18 fixed irrigation, F-VQ20 scheduled irrigation, F-MR07 hydraulic view and F-MR06 snow regressions remain green",
     "O0/O2 output identity"
   ],
