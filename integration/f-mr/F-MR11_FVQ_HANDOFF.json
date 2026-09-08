@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "handoff_from": "F-MR11",
+  "handoff_to": "F-VQ26",
+  "title": "Independent Scientific Admission of Restricted Serialized Prescribed Bottom-Head Runtime",
+  "source_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME",
+  "source_branch": "work/f-mr11-prescribed-bottom-head-runtime",
+  "production_candidate_head": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+  "tested_owner_head": "3c6d0f774d6131d9817727b60d49cca97f4d217b",
+  "owner_workflow": {
+    "run": 34267888294,
+    "job": 102201768150,
+    "output_sha256": "384f69e61fc1870b4ca0fee114a644d85f40bf505b28ce8e73ab2b49165da432"
+  },
+  "independent_verifier_requirements": [
+    "do not modify F-MR11 production source",
+    "independently verify exact F-SI16 source locks embedded in F-MR11",
+    "independently verify bottom_head controls mode-5 lower boundary and bottom_flux seed does not",
+    "independently verify authoritative qbot sign and exactly-once interval mass accounting",
+    "exercise accepted negative qbot and supported positive qbot",
+    "verify checkpoint trial discard and A/B/A replay do not mutate committed state",
+    "verify exact temporal acceptance at configured zero tolerance on the admitted stationary mode-5 fixture",
+    "verify unsupported bottom modes, swkimpl1 and active macropores remain fail closed",
+    "verify serialized-only execution and O0/O2 identity",
+    "replay relevant F-MR10/F-MR09/F-MR07/F-MR06 regressions"
+  ],
+  "holds": {
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "GC02_resume_allowed_before_FVQ26_PASS": false,
+    "same_existing_GC02_unit_must_resume_after_PASS": true
+  }
+}

@@ -4,40 +4,77 @@
   "work_unit": "F-MR11",
   "title": "Restricted Serialized Runtime Admission of Explicit Prescribed Bottom-Head Boundary",
   "branch": "work/f-mr11-prescribed-bottom-head-runtime",
-  "status": "IN_PROGRESS_SOURCE_LOCKED_FSI16_RUNTIME_COMPOSITION",
-  "phase": "CONTRACT_PERSISTED_BEFORE_PRODUCTION_COMPOSITION",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_OWNER_QUALIFIED_READY_FOR_INDEPENDENT_FVQ",
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
-    "tested": false,
-    "owner_qualified": false,
-    "independently_scientifically_qualified": false
+    "tested": true,
+    "owner_qualified": true,
+    "independently_scientifically_qualified": false,
+    "bottom_mode_5_runtime_admitted": true,
+    "serialized_only": true,
+    "parallel_reference_backend_admitted": false,
+    "groundwater_coupling_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "temporal_tolerance_changed": false
   },
-  "start_checkpoint": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
-  "source_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
-  "source_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
-  "retarget": {
-    "original_handoff_unit": "F-MR10",
-    "reason": "F-MR10 was already occupied and qualified by the root-uptake process runtime binding when downstream work started.",
-    "selected_unit": "F-MR11"
+  "lineage": {
+    "runtime_base_work_unit": "F-MR10",
+    "runtime_base_closeout": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "fsi16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f",
+    "fsi16_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+    "production_candidate_head": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+    "tested_owner_head": "3c6d0f774d6131d9817727b60d49cca97f4d217b",
+    "decisive_workflow_run": 34267888294,
+    "decisive_workflow_job": 102201768150,
+    "decisive_output_sha256": "384f69e61fc1870b4ca0fee114a644d85f40bf505b28ce8e73ab2b49165da432"
   },
-  "current_findings": {
-    "bottom_head_request_binding_already_present": true,
-    "authoritative_bottom_flux_observation_already_present": true,
-    "authoritative_bottom_flux_mass_booking_already_present": true,
-    "legacy_context_mode5_guard_found": true,
-    "runtime_execution_mode5_guard_found": true,
-    "runtime_temporal_mode5_guard_found": true,
-    "fkt_change_required": false,
-    "physics_change_required": false,
-    "numerical_policy_change_required": false
+  "source_lock": {
+    "fsi16_reference_adapter": "db432cac3f1156a179c636435a25f52cdececffc",
+    "fsi16_headcalc": "d92f77963329d61ab3feb988f912252c0161436c",
+    "fsi16_workspace": "a09ba3457a8ce3685df446bfacbf5220cd401507",
+    "fsi16_solver_contract": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "serialized_context_binding": "e21c964eac48d5feb91388cfd06a646c4002a497",
+    "serialized_reference_backend": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "serialized_multiswap_runtime_unchanged": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "kernel_transactions_unchanged": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "checkpoint_orchestrator_unchanged": "232875e7192f995930c102609cee08dc8938c86a",
+    "fmr10_root_uptake_binding_unchanged": "2fc348f18e8561096fa34dd3c11c64b359583f11"
+  },
+  "qualified_runtime_semantics": {
+    "bottom_head_authoritative": true,
+    "authoritative_solver_qbot_observed": true,
+    "positive_and_negative_qbot_exercised": true,
+    "bottom_flux_seed_irrelevant_for_mode5": true,
+    "qbot_mass_accounted_exactly_once": true,
+    "trial_discard_does_not_commit": true,
+    "A_B_A_replay_bitwise": true,
+    "exact_temporal_zero_tolerance_stationary_mode5_acceptance": true,
+    "hard_mass_conservation": true,
+    "O0_O2_output_identity": true,
+    "max_simultaneous_real_physical_solves": 1
+  },
+  "regressions": {
+    "F_MR09_root_sink_runtime": "PASS",
+    "F_MR10_root_uptake_binding": "PASS",
+    "F_MR07_committed_hydraulic_view": "PASS",
+    "F_MR06_snow": "PASS",
+    "F_VQ22_root_uptake_oracles": "PASS"
   },
   "holds": {
     "groundwater_coupling": "NOT_ADMITTED",
     "parallel_reference_backend": "NOT_ADMITTED",
     "bottom_modes_1_3_8_9": "NOT_ADMITTED",
     "swkimpl1": "NOT_ADMITTED",
-    "active_macropores": "NOT_ADMITTED"
+    "active_macropores": "NOT_ADMITTED",
+    "fmr10_crop_owner_hold": "UNCHANGED_AND_OUT_OF_SCOPE"
   },
-  "next_gate": "MATERIALIZE_EXACT_FSI16_SOLVER_POSTIMAGE_AND_MINIMAL_MODE5_RUNTIME_ALLOWLIST"
+  "next_step": {
+    "owner": "F-VQ",
+    "work_unit": "F-VQ26",
+    "instruction": "Independently qualify the exact immutable F-MR11 prescribed bottom-head runtime candidate without modifying production source. Only after independent PASS may the same existing GC02 work unit resume."
+  }
 }

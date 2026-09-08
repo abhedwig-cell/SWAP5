@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR11",
+  "decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME",
+  "qualification_scope": "F-MR OWNER QUALIFICATION ONLY; INDEPENDENT F-VQ REQUIRED",
+  "production_candidate_head": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+  "tested_owner_head": "3c6d0f774d6131d9817727b60d49cca97f4d217b",
+  "workflow": {
+    "path": ".github/workflows/fmr11-prescribed-bottom-head-runtime.yml",
+    "run": 34267888294,
+    "job": 102201768150,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.2.0",
+    "output_sha256": "384f69e61fc1870b4ca0fee114a644d85f40bf505b28ce8e73ab2b49165da432"
+  },
+  "production_delta": {
+    "fsi16_exact_solver_postimage_materialized": true,
+    "runtime_mode5_allowlist_added": true,
+    "serialized_context_mode5_allowlist_added": true,
+    "exact_state_temporal_comparator_mode5_applicability_added": true,
+    "new_temporal_tolerance_added": false,
+    "kernel_transaction_source_changed": false,
+    "multiswap_dispatch_source_changed": false,
+    "physics_formula_changed": false
+  },
+  "proofs": {
+    "bottom_head_request_authority": "PASS",
+    "authoritative_qbot_solver_observation": "PASS",
+    "negative_qbot_case": "PASS",
+    "positive_qbot_case": "PASS",
+    "bottom_flux_seed_independence": "PASS",
+    "qbot_mass_exactly_once": "PASS",
+    "hard_mass_balance": "PASS",
+    "trial_discard_no_commit": "PASS",
+    "A_B_A_replay": "PASS",
+    "exact_temporal_zero_tolerance_stationary_mode5_acceptance": "PASS",
+    "unsupported_modes_1_3_8_9_fail_closed": "PASS",
+    "swkimpl1_fail_closed": "PASS",
+    "active_macropores_fail_closed": "PASS",
+    "serialized_max_simultaneous_real_physical_solves_one": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_MR09_regression": "PASS",
+    "F_MR10_regression": "PASS",
+    "F_MR07_regression": "PASS",
+    "F_MR06_regression": "PASS",
+    "F_VQ22_regression": "PASS"
+  },
+  "observed_bits": {
+    "negative_qbot": "BFC4D15C8C503F8D",
+    "positive_qbot": "4073A28B43958106",
+    "runtime_mass_in": "3FA4D15C8C503F8D",
+    "runtime_mass_out": "3FA4D15C8C503F8D"
+  },
+  "owner_boundary": {
+    "independent_scientific_admission": false,
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_admitted": false,
+    "GC02_resume_allowed_now": false
+  }
+}
