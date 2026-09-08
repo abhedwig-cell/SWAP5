@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "B1_C1_EXPANDED_HOMOGENEOUS_FACE_RESULT",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "run": 34281854127,
+  "head": "81ca491dee02d32db4638aa2991254d21064ff1c",
+  "artifact": 10077993931,
+  "artifact_digest": "sha256:d482ac11fbe9a80d058bd9d4da11ca717e45fcf0939852a6604cef82ec94e5dc",
+  "baseline": "QUALIFIED_C1_HERMITE_MFP_BASELINE_FOR_FURTHER_LAYEREDMFP_EXPERIMENTS",
+  "ratio_density_results": {
+    "17_head_nodes": {
+      "bytes_per_material_geometry_class": 3672,
+      "all_classes_pass": false
+    },
+    "33_head_nodes": {
+      "bytes_per_material_geometry_class": 7128,
+      "all_classes_pass": false,
+      "passing_classes": [
+        "reference_sand:10cm",
+        "reference_clay:10cm",
+        "reference_clay:20cm"
+      ],
+      "failing_classes": [
+        "reference_sand:20cm"
+      ]
+    }
+  },
+  "failing_class_33": {
+    "material": "reference_sand",
+    "face_length_cm": 20.0,
+    "corrected_p90_rel_error": 0.012189,
+    "corrected_p99_rel_error": 0.083522,
+    "corrected_max_rel_error": 0.45162180968031085,
+    "strong_gradient_p90_rel_error": 0.009655,
+    "near_saturation_p90_rel_error": 0.010083,
+    "fraction_corrected_better_on_informative_cases": 0.9758,
+    "sign_mismatches": 0,
+    "identity_and_asymptotic_continuity": "PASS",
+    "dominant_outliers": [
+      {
+        "h_upper_cm": -68.62559681419931,
+        "h_lower_cm": -3.8581341097305284,
+        "g": 3.238373135223439,
+        "q_ref_cm_d": -1.7736368172941934,
+        "q_corrected_cm_d": -2.574649886436224,
+        "corrected_rel_error": 0.45162180968031085
+      },
+      {
+        "h_upper_cm": -100.0,
+        "h_lower_cm": 0.0,
+        "g": 5.0,
+        "q_ref_cm_d": -2.6820255210623145,
+        "q_corrected_cm_d": -3.8252784596498897,
+        "corrected_rel_error": 0.4262647501336035
+      }
+    ],
+    "shared_33_node_head_interval_cm": [-115.30715360110095, -46.56309852748798],
+    "uniform_65_midpoint_head_cm": -73.27385874960311
+  },
+  "decision": "TEST_ALGORITHMIC_SINGLE_INTERVAL_ADAPTIVE_REFINEMENT_BEFORE_GLOBAL_65_NODE_TABLE",
+  "adaptive_rule": "From the 33-node table only, score every adjacent upper-head interval by max_j abs(R[i+1,j]-R[i,j]) across the fixed 27 gradient nodes, split exactly the highest-scoring interval at the midpoint in x=asinh(h/0.01cm), compute one new oracle row, and rerun the unchanged reference_sand/20cm matrix.",
+  "adaptive_selection_uses_validation_error": false,
+  "thresholds_relaxed": false,
+  "production_admission": false
+}
