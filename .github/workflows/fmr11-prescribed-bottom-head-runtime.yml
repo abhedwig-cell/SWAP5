@@ -1,0 +1,24 @@
+name: F-MR11 prescribed bottom-head runtime admission
+
+on:
+  push:
+    branches:
+      - work/f-mr11-prescribed-bottom-head-runtime-admission
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-MR11 pre-admission composition gate
+        run: bash tests/fmr/run_fmr11_pre_admission_gate.sh
