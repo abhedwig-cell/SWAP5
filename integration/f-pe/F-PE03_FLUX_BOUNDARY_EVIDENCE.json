@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "status": "DETERMINISTIC_REFERENCE_FLUX_CONVERGENCE_BOUNDARY_BRACKETED_NO_HIGHER_COST_ACCEPTANCE",
+  "reference_only": true,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "solver_controls_changed": false,
+  "scientific_admission_expanded": false,
+  "candidate_head": "1d1c60ec4910755f5803a92c4f384608972528c6",
+  "workflow_run": 34247197590,
+  "workflow_job": 102132115583,
+  "conclusion": "success",
+  "artifact": {
+    "id": 10064482232,
+    "name": "fpe03-flux-boundary-evidence",
+    "digest": "sha256:e60b411f9916e3b8609f79c1d2ebcd79ffe9b25943c5a5223fbfcb9efa6ac2c0"
+  },
+  "determinism": {
+    "repeat_identity": true,
+    "o0_o2_output_identity": true
+  },
+  "baseline": {
+    "fixture": "FMR06_FVQ17_ACTIVE_SNOW_CASE_1",
+    "accepted": true,
+    "cost_vector": {
+      "accepted_substeps": 1,
+      "nonlinear_iterations": 3,
+      "internal_retries": 0,
+      "headcalc_calls": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "alternative_solver_calls": 0
+    }
+  },
+  "diagnostic_flux_scan": {
+    "relative_levels_tested": [1e-4, 1e-6, 1e-8, 1e-10, 1e-12, 1e-14],
+    "plus": {
+      "accepted_levels": [1e-12, 1e-14],
+      "rejected_levels": [1e-4, 1e-6, 1e-8, 1e-10]
+    },
+    "minus": {
+      "accepted_levels": [1e-12, 1e-14],
+      "rejected_levels": [1e-4, 1e-6, 1e-8, 1e-10]
+    },
+    "accepted_nonzero_cases": 4,
+    "accepted_higher_cost_cases": 0,
+    "rejected_cost_vector": {
+      "nonlinear_iterations": 24,
+      "internal_retries": 3,
+      "headcalc_calls": 3,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "alternative_solver_calls": 0
+    }
+  },
+  "boundary_interpretation": {
+    "both_signs_symmetric_at_tested_levels": true,
+    "largest_tested_accepted_relative_perturbation": 1e-12,
+    "smallest_tested_rejected_relative_perturbation": 1e-10,
+    "transition_bracket": [1e-12, 1e-10],
+    "accepted_intermediate_cost_route_observed": false,
+    "classification": "SHARP_LOW_COST_TO_FULL_RETRY_CLIFF_WITH_TRANSITION_BETWEEN_1E-12_AND_1E-10"
+  },
+  "claim_limits": {
+    "perturbations_scientifically_admitted": false,
+    "representative_tail_distribution": false,
+    "accepted_difficult_fixture_observed": false,
+    "bounded_cost_threshold_justified": false,
+    "fallback_policy_admitted": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "production_solver_defect_established": false
+  },
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "next_useful_action": "Perform one narrow diagnostic bracket refinement between relative flux perturbations 1e-12 and 1e-10 in both directions. If no accepted higher-cost route appears, stop F-PE03 boundary bisection and hand the discontinuity to the solver-owning workstream for numerical investigation while retaining REFERENCE qualification boundaries."
+}
