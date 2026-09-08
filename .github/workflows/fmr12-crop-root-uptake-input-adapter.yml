@@ -1,0 +1,29 @@
+name: F-MR12 crop root uptake input adapter
+
+on:
+  push:
+    branches:
+      - work/f-mr12-crop-root-uptake-input-adapter
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: F-MR12 shared crop input adapter gate
+        run: bash tests/fmr/run_fmr12_crop_root_uptake_input_adapter_gate.sh
+
+      - name: F-MR09 cross-process regression
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
