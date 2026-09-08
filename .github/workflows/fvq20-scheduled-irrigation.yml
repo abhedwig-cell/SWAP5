@@ -1,0 +1,24 @@
+name: F-VQ20 scheduled irrigation qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq20-fpm04-scheduled-irrigation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ20 independent scheduled irrigation gate
+        run: bash tests/fvq/run_fvq20_scheduled_irrigation_gate.sh
