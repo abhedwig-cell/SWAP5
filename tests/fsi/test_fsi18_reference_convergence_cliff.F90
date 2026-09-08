@@ -1,5 +1,5 @@
 program test_fsi18_reference_convergence_cliff
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
   use MOD_swap_base, only: swmacro
   use variables, only: fldtmin
@@ -67,7 +67,8 @@ program test_fsi18_reference_convergence_cliff
   call constitutive%evaluate(heads, water0, conductivity, capacity, dkdh)
   k0 = conductivity(1)
   do node = 2, numnod
-    if (conductivity(node) /= k0) error stop 'F-SI18 requires uniform equilibrium conductivity'
+    if (transfer(conductivity(node),0_int64) /= transfer(k0,0_int64)) &
+         error stop 'F-SI18 requires bitwise uniform equilibrium conductivity'
   end do
 
   do node = 1, numnod
