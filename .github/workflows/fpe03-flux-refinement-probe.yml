@@ -1,0 +1,36 @@
+name: F-PE03 final narrow flux refinement probe
+
+on:
+  push:
+    branches:
+      - work/f-pe03-reference-tail-characterization-fvq19
+    paths:
+      - 'integration/f-pe/F-PE03_FLUX_BOUNDARY_EVIDENCE.json'
+      - 'integration/f-pe/F-PE03_COST_CLIFF_ROOT_CAUSE.json'
+      - 'integration/f-pe/F-PE05_STATUS.json'
+      - 'tests/fpe/fpe03_make_nonstationary_snow_overlay.py'
+      - 'tests/fpe/fpe03_make_flux_refinement_probe.py'
+      - 'tests/fpe/run_fpe03_flux_refinement_probe_gate.sh'
+      - '.github/workflows/fpe03-flux-refinement-probe.yml'
+  workflow_dispatch:
+
+jobs:
+  fpe03-flux-refinement-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run final narrow flux refinement probe
+        env:
+          FPE03_FLUX_REFINEMENT_EVIDENCE_DIR: ${{ github.workspace }}/fpe03-flux-refinement-evidence
+        run: bash tests/fpe/run_fpe03_flux_refinement_probe_gate.sh
+      - name: Upload final flux-refinement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-flux-refinement-evidence
+          path: fpe03-flux-refinement-evidence
+          if-no-files-found: error
