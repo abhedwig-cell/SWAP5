@@ -6,7 +6,7 @@ program test_fmr09_root_sink_transaction_diag
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot
-  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_canonical_contracts, only: canonical_numerical_config_t, CANONICAL_STATUS_TRANSACTION_FAILED
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_result_t, &
        kernel_candidate_state_t, kernel_diagnostics_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE
@@ -21,8 +21,8 @@ program test_fmr09_root_sink_transaction_diag
   real(real64), parameter :: t0 = 2100.375_real64, t1 = 2100.875_real64, head0 = -75.0_real64
   type(fmr_logical_column_t) :: column
   type(fmr_template_t) :: template
-  type(fmr_b110_physical_parameters_t) :: parameters
-  type(fmr_b110_physical_forcing_t) :: forcing
+  type(fmr_b110_physical_parameters_t) :: parameters, inactive_parameters
+  type(fmr_b110_physical_forcing_t) :: forcing, inactive_forcing, negative_forcing
   type(fmr_b110_physical_state_t) :: initial_state
   type(kernel_committed_state_t) :: committed
   type(kernel_checkpoint_t) :: checkpoint
@@ -50,6 +50,8 @@ program test_fmr09_root_sink_transaction_diag
   call committed%capture_checkpoint(checkpoint, ok)
   if (.not. ok) error stop 'FMR09_DIAG checkpoint'
 
+  ! Positive route with poisoned legacy globals. The explicit provider must be
+  ! authoritative and the first transaction must complete without retry.
   call reset_globals()
   call backend%initialize(top_provider)
   call backend%run_trial(column, template, parameters, committed, forcing, config, t0, t1, checkpoint, &
@@ -62,6 +64,37 @@ program test_fmr09_root_sink_transaction_diag
   write(*,'(A,1X,ES24.16)') 'FMR09_DIAG_MAX_MASS_RESIDUAL=', diag%max_abs_step_mass_residual
   write(*,'(A,1X,L1,1X,I0,1X,A,1X,I0)') 'FMR09_DIAG_OBS=', obs%solver_executed, obs%solver_status, &
        trim(obs%solver_diagnostics%route), obs%solver_diagnostics%nonlinear_iterations
+  if (.not. result%completed .or. diag%solver_rejections /= 0 .or. .not. obs%solver_executed) &
+       error stop 'FMR09_DIAG positive explicit root route failed'
+  write(*,'(A)') 'FMR09_EXPLICIT_ROOT_LEGACY_QROT_POISON_IMMUNITY=PASS'
+
+  ! Fail closed if nonzero root forcing is supplied while the physical option is inactive.
+  inactive_parameters = parameters
+  inactive_parameters%root_extraction_active = .false.
+  inactive_forcing = forcing
+  inactive_forcing%root_extraction_sink = 0.01_real64
+  inactive_forcing%subsurface_irrigation_source = 0.0_real64
+  call reset_globals()
+  call backend%run_trial(column, template, inactive_parameters, committed, inactive_forcing, config, t0, t1, checkpoint, &
+       result, candidate, diag)
+  obs = backend%observation()
+  if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED .or. result%completed .or. &
+      diag%solver_rejections /= 1 .or. obs%solver_executed) &
+       error stop 'FMR09_DIAG inactive nonzero root did not fail closed'
+  write(*,'(A)') 'FMR09_INACTIVE_NONZERO_ROOT_FAIL_CLOSED=PASS'
+
+  ! The admitted root-extraction sign convention is nonnegative extraction.
+  negative_forcing = forcing
+  negative_forcing%root_extraction_sink = -0.01_real64
+  negative_forcing%subsurface_irrigation_source = 0.0_real64
+  call reset_globals()
+  call backend%run_trial(column, template, parameters, committed, negative_forcing, config, t0, t1, checkpoint, &
+       result, candidate, diag)
+  obs = backend%observation()
+  if (result%status /= CANONICAL_STATUS_TRANSACTION_FAILED .or. result%completed .or. &
+      diag%solver_rejections /= 1 .or. obs%solver_executed) &
+       error stop 'FMR09_DIAG negative root did not fail closed'
+  write(*,'(A)') 'FMR09_NEGATIVE_ROOT_FAIL_CLOSED=PASS'
   write(*,'(A)') 'FMR09_ROOT_TRANSACTION_DIAGNOSTIC COMPLETE'
 
 contains
