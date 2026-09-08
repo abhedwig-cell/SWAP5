@@ -69,6 +69,7 @@ for opt in 0 2; do
   compile_gate "$opt" "$out"
   timeout 30s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test" > "$out/output.txt"
   grep -Fq 'F-SI16_BOTTOM_FLUX_SEED_INDEPENDENCE PASS' "$out/output.txt"
+  grep -Fq 'F-SI16_BOTTOM_HEAD_RESPONSE PASS' "$out/output.txt"
   grep -Fq 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS' "$out/output.txt"
   grep -Fq 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS' "$out/output.txt"
   grep -Fq 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS' "$out/output.txt"
