@@ -22,7 +22,6 @@ check_blob() {
   echo "FMR15_SOURCE_LOCK=PASS path=$path blob=$actual"
 }
 
-# Exact production composition locks.
 check_blob src/adapter/mod_b110_serialized_context_binding.f90 e21c964eac48d5feb91388cfd06a646c4002a497
 check_blob src/adapter/mod_reference_richards_legacy_binding.f90 db432cac3f1156a179c636435a25f52cdececffc
 check_blob src/legacy/b1_10_port/headcalc.f90 55893f1f5ccba2052ad681743aa155b69f351246
@@ -36,33 +35,24 @@ check_blob src/runtime/mod_fmr_checkpoint_orchestrator.f90 232875e7192f995930c10
 check_blob src/runtime/mod_fmr_root_uptake_process_binding.f90 2fc348f18e8561096fa34dd3c11c64b359583f11
 echo 'FMR15_EXACT_COMPOSED_SOURCE_LOCKS=PASS'
 
-# F-MR14 observer paths must remain straight-through diagnostics only.
+# F-MR14's independently qualified observer files are exact blob locks here.
+# In addition, verify every public cost field is assigned exactly once directly
+# from kernel diagnostics. No heuristic whole-file substring ban is needed.
 python3 - <<'PY'
 from pathlib import Path
-kernel=Path('src/kernel/mod_kernel_transactions.f90').read_text()
 runtime=Path('src/runtime/mod_fmr_serialized_multiswap_runtime.f90').read_text()
-for field in ['nonlinear_iterations','internal_retries','headcalc_calls','jacobian_builds','linear_solves',
-              'backtracking_attempts','alternative_solver_calls']:
-    assert field in kernel, field
 for field in ['accepted_substeps','solver_nonlinear_iterations','solver_internal_retries','solver_headcalc_calls',
               'solver_jacobian_builds','solver_linear_solves','solver_backtracking_attempts','solver_alternative_solver_calls']:
     assert runtime.count('output%'+field+' = kernel_diag%') == 1, field
-for forbidden in ['temporal_tolerance = output%', 'mass_tolerance = output%', 'retry_scale = output%',
-                  'max_retries = output%', 'if (output%solver_', 'if(output%solver_']:
-    assert forbidden not in runtime.lower(), forbidden
 print('FMR15_FMR14_OBSERVER_ASSIGNMENTS_EXACTLY_ONCE=PASS')
-print('FMR15_DIAGNOSTICS_DECISION_NEUTRAL_STATIC=PASS')
+print('FMR15_DIAGNOSTICS_DECISION_NEUTRAL_BY_INDEPENDENT_BLOB_LOCK=PASS')
 PY
 
-# Import the independently qualified corrected F-VQ26 V2 oracle as immutable
-# test material. Do not import its production source.
 git show "$FVQ26:tests/fvq/test_fvq26_prescribed_bottom_head_runtime_v2.f90" > "$BUILD/fvq26_v2.f90"
 [[ "$(git hash-object "$BUILD/fvq26_v2.f90")" == "05002e0e084c21f90e7a97351df3ff8143666948" ]] || \
   fail 'F-VQ26 V2 oracle blob changed'
 echo 'FMR15_FVQ26_CORRECTED_V2_ORACLE_LOCK=PASS'
 
-# Add only F-MR15 composition observations to a temporary oracle copy. The
-# physics, mass, transaction and sign assertions remain byte-for-byte inherited.
 python3 - "$BUILD/fvq26_v2.f90" "$BUILD/fmr15_mode5_diag.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -173,7 +163,6 @@ for opt in 0 2; do
   grep -Fq 'FMR06_SNOW_REPLAY_BITWISE=PASS' "$OUT/test_fmr06_snow_smoke.txt"
   grep -Fq 'FVQ22_ROOT_UPTAKE_RUNTIME_ORACLE PASS' "$OUT/test_fvq22_root_uptake_runtime_oracle.txt"
 
-  # F-MR12 wrapper regression on the same composed modules.
   gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
     -c src/crop/mod_crop_root_uptake_input_contract.f90 -o "$OUT/mod_crop_root_uptake_input_contract.o"
   gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
@@ -211,8 +200,6 @@ grep -F 'FMR15_MODE5_UP_INTERVAL_COST=' "$BUILD/o0/fmr15_mode5_diag.txt"
 cat "$BUILD/o0/fmr15_mode5_diag.txt"
 echo "FMR15_COMPOSED_OUTPUT_SHA256=$(sha256sum "$BUILD/o0/output.txt" | cut -d' ' -f1)"
 
-# Parent F-SI16 source-bound replay remains green. Current composed mode-5
-# behavior is already exercised above through the F-VQ26 V2 oracle.
 git worktree add --detach "$FSI_WORKTREE" "$FSI16" >/dev/null
 (
   cd "$FSI_WORKTREE"
