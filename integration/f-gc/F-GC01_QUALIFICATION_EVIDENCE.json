@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC01",
+  "decision": "QUALIFIED_GROUNDWATER_COUPLING_CONTRACT_AND_DETERMINISTIC_HARNESS",
+  "qualified_contract_source_head": "ab14cf03bfba1679ac17831f1f448a877e95a1f1",
+  "qualified_physical_baseline": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "runner": "tests/fgc/run_fgc01_gate.sh",
+  "workflow": ".github/workflows/fgc01-coupling-contract.yml",
+  "execution": {
+    "platform": "local Linux",
+    "python": "3.12",
+    "runs": 2,
+    "outputs_identical": true,
+    "output_sha256": "d31070c0863770d06d4fe8f1156e5ea529824eecdd978329f457429bbb854ad2"
+  },
+  "gates": {
+    "GC01-G01": "PASS_SINGLE_COLUMN_DUMMY_AQUIFER",
+    "GC01-G02": "PASS_ROLLBACK_COMMITTED_STATE_UNCHANGED",
+    "GC01-G03": "PASS_PREDICTOR_CORRECTOR_SAME_T0_ORIGIN",
+    "GC01-G04": "PASS_EXPLICIT_DIAGNOSTIC_HEAD_RESIDUAL",
+    "GC01-G05": "PASS_EXACT_OPPOSITE_INTERFACE_FLUX",
+    "GC01-G06": "PASS_SUBDAILY_NON_MIDNIGHT_AND_MULTIDAY",
+    "GC01-G07": "PASS_TWO_TILE_AREA_WEIGHTED_AGGREGATION",
+    "GC01-G08": "PASS_MISSING_FRACTION_FAIL_CLOSED",
+    "GC01-G09": "PASS_DEEP_VADOSE_STORAGE_CONTINUITY_DOUBLE"
+  },
+  "observed_diagnostics": {
+    "predictor_count": 1,
+    "corrector_count": 1,
+    "swap_origin_revision": 4,
+    "candidate_revision": 5,
+    "commit_revision": 5,
+    "head_residual_m": "0E-7",
+    "flux_residual_m_per_s": "0E-7",
+    "interface_mass_residual_m": "0E-10",
+    "accepted": true
+  },
+  "invariant_audit": {
+    "1": "PASS_ONE_KERNEL_BOUNDARY_NO_ALTERNATE_PHYSICS",
+    "7": "PASS_CANDIDATE_ONLY_UNTIL_ACCEPT",
+    "8": "PASS_SAME_CHECKPOINT_WITH_NUMERICAL_WARM_START_RESERVED",
+    "9": "PASS_GENERIC_T0_T1",
+    "10": "PASS_FLEXIBLE_WINDOW_SHAPES",
+    "11": "PASS_COUPLING_TRANSACTION_PROTOCOL_FIRST_CLASS",
+    "12": "PASS_HEAD_AND_OPPOSITE_FLUX_CONTRACT",
+    "13": "PASS_EXACT_INTERFACE_MASS_AND_AUTHORITATIVE_SWAP_MASS_REQUIRED",
+    "14": "PASS_RESPONSE_TANGENT_API_RESERVED",
+    "15": "PASS_ONE_PREDICTOR_ONE_CORRECTOR_ARCHITECTURE",
+    "17": "PASS_MANY_TILES_PER_CELL",
+    "18": "PASS_EXTERNAL_OPTIONAL_TRANSFER_MODE_RESERVED",
+    "19": "PASS_ATOMIC_STORAGE_CONTINUITY_CONTRACT",
+    "26": "PASS_PER_WINDOW_DIAGNOSTICS",
+    "28": "PASS_COMPOSITION_OWNED_OUTSIDE_SWAP",
+    "29": "PASS_NO_CALENDAR_OR_MODFLOW_GLOBAL_ASSUMPTIONS"
+  },
+  "scope": {
+    "production_modflow_coupling_qualified": false,
+    "physical_predictor_corrector_qualified": false,
+    "production_predictor_corrector_performance_qualified": false,
+    "physical_deep_vadose_component_qualified": false,
+    "richards_or_process_physics_changed": false,
+    "qualification_meaning": "Architecture, signs, transaction origins, generic windows, exact interface mass pairing and tile composition are executable and ready for a later physical coupling unit."
+  },
+  "open_dependencies": [
+    "F-MR/F-KT must expose candidate-only physical interval execution plus explicit later commit for physical coupling.",
+    "F-SI must later provide or qualify a production response tangent without making repeated full runs structural.",
+    "A later F-GC unit must bind the contract to an actual admitted groundwater boundary and physical SWAP runtime."
+  ],
+  "last_verified": "2026-09-08T08:28:00Z"
+}

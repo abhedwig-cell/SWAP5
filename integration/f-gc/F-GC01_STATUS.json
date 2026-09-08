@@ -4,16 +4,25 @@
   "work_unit": "F-GC01",
   "branch": "work/f-gc01-groundwater-coupling",
   "start_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
-  "phase": "CONTRACT_PERSISTED_PRE_HARNESS",
-  "status": "IMPLEMENTED_CONTRACT_PRETEST",
+  "phase": "QUALIFIED_CONTRACT_AND_DETERMINISTIC_HARNESS",
+  "status": "QUALIFIED_GROUNDWATER_COUPLING_CONTRACT_AND_DETERMINISTIC_HARNESS",
   "IMPLEMENTED": true,
-  "PERSISTED": false,
-  "TESTED": false,
-  "QUALIFIED": false,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": true,
+  "contract_checkpoint": "bb7ef38a3208fd4201fc5dffcd02d5bdf89a9539",
+  "dummy_harness_checkpoint": "06b21f799c3cb68995aae1d67fe1cefbb55bd1cb",
+  "orchestration_tested_head": "ab14cf03bfba1679ac17831f1f448a877e95a1f1",
+  "qualification_evidence_commit": null,
   "production_physics_changed": false,
   "richards_physics_changed": false,
   "process_physics_changed": false,
   "numerical_policy_changed": false,
   "blockers": [],
-  "holds": ["Deterministic harness and executable gates not yet persisted.", "No physical MODFLOW coupling is implied."]
+  "holds": [
+    "No physical MODFLOW coupling is implied.",
+    "No production predictor-corrector performance is qualified.",
+    "No physical deep-vadose transfer component is qualified.",
+    "Physical coupling awaits a candidate-only F-MR/F-KT interval seam; F-GC01 did not alter its owner algorithms."
+  ]
 }
