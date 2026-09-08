@@ -1,19 +1,56 @@
-program test_fwof11_root_uptake_crop_input_contract
+module mod_fwof11_mock_provider
   use, intrinsic :: iso_fortran_env, only: real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, crop_root_uptake_input_provider_t, &
-       canonicalize_crop_root_uptake_input, validate_crop_root_uptake_input, evaluate_crop_root_uptake_input, &
-       CROP_ROOT_INPUT_OK, CROP_ROOT_INPUT_INVALID_ACTIVE_NODES, CROP_ROOT_INPUT_NONFINITE_PTRA, &
-       CROP_ROOT_INPUT_NEGATIVE_PTRA, CROP_ROOT_INPUT_ROOTED_NODES_RANGE, CROP_ROOT_INPUT_DISTRIBUTION_MISSING, &
-       CROP_ROOT_INPUT_DISTRIBUTION_SIZE, CROP_ROOT_INPUT_DISTRIBUTION_INVALID, &
-       CROP_ROOT_INPUT_PROVIDER_REJECTED, CROP_ROOT_INPUT_NOT_CANONICAL
+       CROP_ROOT_INPUT_OK
   implicit none
+  private
 
-  type, extends(crop_root_uptake_input_provider_t) :: mock_provider_t
+  type, extends(crop_root_uptake_input_provider_t), public :: mock_provider_t
     integer :: mode = 0
   contains
     procedure :: evaluate => mock_evaluate
   end type mock_provider_t
+
+contains
+
+  subroutine mock_evaluate(self, raw_input, provider_status)
+    class(mock_provider_t), intent(in) :: self
+    type(crop_root_uptake_input_t), intent(out) :: raw_input
+    integer, intent(out) :: provider_status
+
+    raw_input = crop_root_uptake_input_t()
+    provider_status = CROP_ROOT_INPUT_OK
+
+    select case (self%mode)
+    case (1)
+      raw_input%crop_emerged = .true.
+      raw_input%potential_transpiration = 0.18_real64
+      raw_input%rooted_nodes = 2
+      allocate(raw_input%cumulative_root_fraction(3))
+      raw_input%cumulative_root_fraction = [0.0_real64, 0.4_real64, 1.0_real64]
+    case (2)
+      raw_input%crop_emerged = .false.
+      raw_input%potential_transpiration = -999.0_real64
+      raw_input%rooted_nodes = 99
+      allocate(raw_input%cumulative_root_fraction(2))
+      raw_input%cumulative_root_fraction = [-1.0_real64, 9.0_real64]
+    case default
+      provider_status = 73
+    end select
+  end subroutine mock_evaluate
+
+end module mod_fwof11_mock_provider
+
+program test_fwof11_root_uptake_crop_input_contract
+  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
+  use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, canonicalize_crop_root_uptake_input, &
+       validate_crop_root_uptake_input, evaluate_crop_root_uptake_input, CROP_ROOT_INPUT_OK, &
+       CROP_ROOT_INPUT_INVALID_ACTIVE_NODES, CROP_ROOT_INPUT_NONFINITE_PTRA, CROP_ROOT_INPUT_NEGATIVE_PTRA, &
+       CROP_ROOT_INPUT_ROOTED_NODES_RANGE, CROP_ROOT_INPUT_DISTRIBUTION_MISSING, CROP_ROOT_INPUT_DISTRIBUTION_SIZE, &
+       CROP_ROOT_INPUT_DISTRIBUTION_INVALID, CROP_ROOT_INPUT_PROVIDER_REJECTED, CROP_ROOT_INPUT_NOT_CANONICAL
+  use mod_fwof11_mock_provider, only: mock_provider_t
+  implicit none
 
   type(crop_root_uptake_input_t) :: raw, got
   type(mock_provider_t) :: provider
@@ -114,7 +151,10 @@ program test_fwof11_root_uptake_crop_input_contract
   call canonicalize_crop_root_uptake_input(raw, 5, got, status)
   call require(status == CROP_ROOT_INPUT_DISTRIBUTION_INVALID, 'nonunit last cumulative fraction fails closed')
 
-  raw%cumulative_root_fraction = [0.0_real64, 0.7_real64, 0.6_real64]
+  deallocate(raw%cumulative_root_fraction)
+  raw%rooted_nodes = 3
+  allocate(raw%cumulative_root_fraction(4))
+  raw%cumulative_root_fraction = [0.0_real64, 0.7_real64, 0.6_real64, 1.0_real64]
   call canonicalize_crop_root_uptake_input(raw, 5, got, status)
   call require(status == CROP_ROOT_INPUT_DISTRIBUTION_INVALID, 'nonmonotone distribution fails closed')
   print '(a)', 'FWOF11_INVALID_INPUTS_FAIL_CLOSED=PASS'
@@ -145,32 +185,6 @@ program test_fwof11_root_uptake_crop_input_contract
   print '(a)', 'FWOF11_ROOT_UPTAKE_CROP_INPUT_CONTRACT_TEST PASS'
 
 contains
-
-  subroutine mock_evaluate(self, raw_input, provider_status)
-    class(mock_provider_t), intent(in) :: self
-    type(crop_root_uptake_input_t), intent(out) :: raw_input
-    integer, intent(out) :: provider_status
-
-    raw_input = crop_root_uptake_input_t()
-    provider_status = CROP_ROOT_INPUT_OK
-
-    select case (self%mode)
-    case (1)
-      raw_input%crop_emerged = .true.
-      raw_input%potential_transpiration = 0.18_real64
-      raw_input%rooted_nodes = 2
-      allocate(raw_input%cumulative_root_fraction(3))
-      raw_input%cumulative_root_fraction = [0.0_real64, 0.4_real64, 1.0_real64]
-    case (2)
-      raw_input%crop_emerged = .false.
-      raw_input%potential_transpiration = -999.0_real64
-      raw_input%rooted_nodes = 99
-      allocate(raw_input%cumulative_root_fraction(2))
-      raw_input%cumulative_root_fraction = [-1.0_real64, 9.0_real64]
-    case default
-      provider_status = 73
-    end select
-  end subroutine mock_evaluate
 
   subroutine require(condition, message)
     logical, intent(in) :: condition
