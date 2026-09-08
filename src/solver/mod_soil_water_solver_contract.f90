@@ -204,11 +204,7 @@ contains
     if (.not. allocated(request%parameters%node_distance)) return
     if (size(request%parameters%z) /= n) return
     if (size(request%parameters%dz) /= n) return
-    ! Existing common routes consume NN node distances. Boundary modes that
-    ! physically require the lower face may supply NN+1; their solver-specific
-    ! validator owns that stricter requirement.
-    if (size(request%parameters%node_distance) /= n .and. &
-        size(request%parameters%node_distance) /= n+1) return
+    if (size(request%parameters%node_distance) /= n) return
     if (request%base_state%active_nodes /= n) return
     if (.not. allocated(request%base_state%pressure_head)) return
     if (.not. allocated(request%base_state%water_content)) return

@@ -106,8 +106,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (.not. allocated(parameter_set%z) .or. .not. allocated(parameter_set%dz) .or. &
           .not. allocated(parameter_set%node_distance)) error stop 'HeadCalc: incomplete explicit grid geometry'
       if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &
-          (size(parameter_set%node_distance) /= numnod .and. &
-           size(parameter_set%node_distance) /= numnod+1)) error stop 'HeadCalc: explicit grid geometry shape mismatch'
+          size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'
    else
       numnod = legacy_numnod
    end if
@@ -688,7 +687,12 @@ end function grid_dz
 real(8) function grid_disnod(node)
    integer, intent(in) :: node
    if (explicit_geometry) then
-      grid_disnod = parameter_set%node_distance(node)
+      if (node == numnod+1) then
+         ! Exact B1.10 swap_base geometry: lower face is half the last compartment thickness.
+         grid_disnod = 0.5d0*parameter_set%dz(numnod)
+      else
+         grid_disnod = parameter_set%node_distance(node)
+      end if
    else
       grid_disnod = legacy_disnod(node)
    end if
