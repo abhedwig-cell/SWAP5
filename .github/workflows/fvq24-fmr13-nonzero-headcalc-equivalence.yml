@@ -1,0 +1,36 @@
+name: F-VQ24 F-MR13 nonzero HeadCalc reference equivalence
+
+on:
+  push:
+    branches:
+      - qualification/f-vq24-fmr13-nonzero-headcalc-equivalence
+    paths-ignore:
+      - integration/f-vq/F-VQ24_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: F-VQ24 independent nonzero HeadCalc verifier
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq24_fmr13_nonzero_headcalc_equivalence_gate.sh | tee fvq24.log
+      - name: Preserve F-VQ24 diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq24-fmr13-nonzero-headcalc-diagnostic
+          path: fvq24.log
+          if-no-files-found: warn
