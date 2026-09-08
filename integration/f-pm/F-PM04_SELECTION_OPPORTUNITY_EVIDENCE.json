@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "evidence_class": "SOURCE_BOUND_CANDIDATE_SEQUENCING_EVIDENCE",
+  "candidate_branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-candidate",
+  "exact_candidate_base": "ad42be53e75ecc6375fcbb832492b203303f7855",
+  "canonical_source_identity": {
+    "nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "swap_f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "irrigation_f90_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "timecontrol_f90_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+    "b110_changes_any_of_these_members": false
+  },
+  "legacy_call_sequence": {
+    "standalone": {
+      "source": "SWAP/swap.f90:359-391",
+      "finding": "inside the soil-water loop Irrigation(3) is called only under flDayStart when sw_multi_swap == 0; TimeControl(9) follows and may constrain the step to the irrigation event end",
+      "selection_meaning": "scheduled trigger evaluation is a management opportunity attached to the standalone day-start orchestration, not a test on every soil-water solver interval"
+    },
+    "multiswap": {
+      "day_start_source": "SWAP/swap.f90:362-391",
+      "day_end_source": "SWAP/swap.f90:532-543",
+      "finding": "when sw_multi_swap == 1, Irrigation(4) is called at day start while Irrigation(3) is called at day end",
+      "selection_meaning": "legacy MultiSWAP separates scheduled selection from subsequent availability scaling; the kernel cannot infer this ordering from interval duration or midnight"
+    },
+    "active_event_reset": {
+      "timecontrol_source": "SWAP/timecontrol.f90:313-314",
+      "irrigation_source": "SWAP/irrigation.f90:638-644",
+      "finding": "TimeControl calls Irrigation(9) when the irrigation event end is reached; task 9 clears irrigevent, gird, qssdi, dt_irr_event and qssdisum"
+    }
+  },
+  "target_semantic_consequence": {
+    "explicit_input": "selection_opportunity",
+    "owner": "management/runtime composition outside the kernel process equation",
+    "must_not_be_inferred_from": [
+      "midnight",
+      "calendar day boundary",
+      "t0 integer value",
+      "t1-t0 == 1 day",
+      "solver-step count",
+      "coupling-window length"
+    ],
+    "new_event_start_rule": "a scheduled event may start only when selection_opportunity is true and all admitted outer management gates pass",
+    "continuation_rule": "an already committed scheduled event continues independently of selection_opportunity until its stored event end",
+    "post_completion_rule": "completion clears active scheduled state; no immediate retrigger is allowed unless a later request explicitly supplies a new selection_opportunity",
+    "fixed_event_precedence": "a new scheduled event is forbidden when fixed_event_already_selected is true",
+    "generic_time_contract": "selection cadence is management semantics; event continuation and split handling remain generic over [t0,t1]"
+  },
+  "architectural_effect": {
+    "kernel_day_counter_added": false,
+    "calendar_state_added_to_process": false,
+    "runtime_backend_change_required": false,
+    "fmr08_overlap_required": false,
+    "persistent_state_growth": "only an explicit active-event origin discriminator is needed to share the existing compact irrigation continuation state safely between fixed and scheduled events"
+  }
+}
