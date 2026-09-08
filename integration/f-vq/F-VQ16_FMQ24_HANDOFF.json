@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ16",
+  "handoff": "SEPARATE_SNOW_MULTISWAP_QUALIFICATION",
+  "status": "READY_FOR_FMQ24_QUALIFICATION_ONLY_REVIEW",
+  "proposed_downstream_unit": "F-MQ24",
+  "exact_scientific_source_candidate": {
+    "commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
+    "tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
+    "production_path": "src/process/mod_snow_process.f90",
+    "production_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "scientific_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
+    "scientific_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY"
+  },
+  "fvq16_evidence": {
+    "qualification_evidence": "integration/f-vq/F-VQ16_QUALIFICATION_EVIDENCE.json",
+    "invariant_audit": "integration/f-vq/F-VQ16_INVARIANT_AUDIT.json",
+    "decisive_run": 34208331487,
+    "decisive_job": 102003082315,
+    "decisive_artifact": 10048706978,
+    "post_evidence_replay_run": 34208566323,
+    "post_evidence_replay_job": 102003835368,
+    "post_evidence_replay_artifact": 10048807205,
+    "post_evidence_replay_artifact_digest": "sha256:2f81f9bf1db7f74dddeb62258f00f4be0ec5b8a7f1b069eae738b6b06ba2c416"
+  },
+  "qualification_only_rule": {
+    "production_source_modification_permitted": false,
+    "missing_runtime_composition_behavior": "FAIL_CLOSED_AND_HAND_BACK_TO_IMPLEMENTATION_WORKSTREAM",
+    "candidate_change_requires_new_scientific_admission": true
+  },
+  "required_multiswap_checks": [
+    "Verify whether the current MultiSWAP runtime has a real production composition seam capable of invoking the exact admitted SNOW process without modifying its equations or time semantics.",
+    "Snow-inactive columns allocate no persistent snow state and incur no persistent snow workspace allocation.",
+    "Snow-active columns own only the admitted persistent ssnow/slw-equivalent state; immutable snow parameters are referenced/shared rather than copied as mutable continuation state.",
+    "Per-column one-call-daily SNOW results are bitwise identical to direct F-VQ16 process calls for identical committed state and forcing.",
+    "Mixed active/inactive column batches preserve inactive identity and cross-column state isolation.",
+    "Checkpoint, rejected trial, rollback, replay and accepted commit preserve exact snow state independently per column.",
+    "A rejected or retried trial never publishes snow state or consumes the daily SNOW event twice.",
+    "Authoritative F-KT mass accounting includes snow storage change, snowfall/rain inputs and sublimation exactly once when SNOW is active.",
+    "Melt is transferred exactly once from snow to the receiving surface/soil component and is not double counted as an external whole-system loss.",
+    "Retained liquid water is not double counted on top of total snow water storage.",
+    "Mass completeness remains fail-closed if any required receiving-component contribution is unavailable.",
+    "One-call-daily event semantics are preserved for non-midnight intervals; subdaily and arbitrary-duration SNOW remain fail-closed.",
+    "Order reversal, A/B/A replay and multi-column counts demonstrate deterministic per-column identity.",
+    "O0/O2 qualification output identity.",
+    "No new scientific tolerance and no silent change of execution policy, Richards physics, HeadCalc, solver policy, coupling or fallback semantics."
+  ],
+  "minimum_matrix": {
+    "column_counts": [1,2,17,31],
+    "profiles": ["all_snow_inactive","all_snow_active","mixed_active_inactive"],
+    "orders": ["canonical","reversed"],
+    "repeatability": "A_B_A_EXACT",
+    "time": "non_midnight exact one-day Snow event only",
+    "mass_complete_required_when_composed_boundary_is_complete": true,
+    "missing_contribution_mask_required_when_complete": 0
+  },
+  "explicit_holds": [
+    "F-VQ16 does not admit any SNOW MultiSWAP runtime by itself.",
+    "F-MQ24 must not implement a missing runtime seam under the guise of qualification.",
+    "Subdaily and arbitrary-duration SNOW physics remain not admitted.",
+    "Parallel real-physics execution remains governed by its existing independent admission state.",
+    "General SWAP5 production release is outside this handoff."
+  ]
+}
