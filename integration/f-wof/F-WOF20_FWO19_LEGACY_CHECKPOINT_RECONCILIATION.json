@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF20",
+  "title": "Reconciliation of F-WOF19 Owner-Host Gap with Existing Legacy Adapter Checkpoint",
+  "finding": "The admitted lineage already contains a transactional B1.10 adapter checkpoint that captures and restores legacy crop globals, including emergence flags, DVS, LAI, root depth, WRT and additional WOFOST state. This does not constitute the explicit crop-owner state/interface that F-WOF19 requires for the new architecture.",
+  "legacy_adapter_evidence": {
+    "module": "src/adapter/mod_b1_10_process_checkpoint.f90",
+    "blob": "bbb9f0fbfdb9624a426d75735e8b93fe3b68b3ae",
+    "crop_checkpoint_type": "b1_10_crop_common_state_t",
+    "transaction_state_type": "b1_10_process_state_t",
+    "captured_examples": ["fl_cropemergence", "dvs", "lai", "rd", "rdpot", "wrt", "cf", "vcover", "cumdens_top"],
+    "clone_operation": "b1_10_process_clone",
+    "restore_operation": "restore_b1_10_process_state"
+  },
+  "scope_correction": {
+    "too_broad_F_WOF19_phrase": "current lineage has no crop lifecycle state binding",
+    "correct_interpretation": "current lineage has no explicit new-architecture crop-owner lifecycle state authority/view binding; a legacy adapter checkpoint exists and keeps the admitted legacy backend transaction-safe",
+    "production_blocker_unchanged": true,
+    "reason": "F-WOF17/F-WOF18 must not depend on legacy globals or on the B1.10 adapter checkpoint representation. A compact crop-owned state carrier/view seam is still required."
+  },
+  "architectural_consequence": [
+    "do not delete or bypass the B1.10 crop checkpoint while the legacy backend depends on it",
+    "do not expose b1_10_crop_common_state_t as the new crop API",
+    "reuse the generic transaction_state_t/F-KT mechanism rather than implementing another transaction authority",
+    "introduce only the minimal common crop-owned state needed by the new root/ET path"
+  ],
+  "classification": "THEORY_CODE_EVIDENCE_RECONCILIATION_WITHOUT_PRODUCTION_CHANGE"
+}
