@@ -1,0 +1,29 @@
+name: F-MR10 root uptake process binding
+
+on:
+  push:
+    branches:
+      - work/f-mr10-root-uptake-process-binding
+    paths-ignore:
+      - integration/f-mr/F-MR10_QUALIFICATION_EVIDENCE.json
+      - integration/f-mr/F-MR10_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-MR10 explicit root uptake process binding gate
+        run: bash tests/fmr/run_fmr10_root_uptake_binding_gate.sh
+      - name: F-MR09 cross-process regression
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
