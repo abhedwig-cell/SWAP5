@@ -56,20 +56,41 @@ contains
     diagnostics%forcing_consumed = .true.
     diagnostics%canopy_consumed = .true.
 
-    if (.not. ieee_is_finite(forcing%reference_et_mm_per_day) .or. forcing%reference_et_mm_per_day < 0.0_real64) then
+    ! Keep finiteness checks separate from ordered comparisons. Fortran does not
+    ! guarantee short-circuit evaluation of .or., so combining these guards could
+    ! evaluate an ordered comparison on NaN under trapping arithmetic.
+    if (.not. ieee_is_finite(forcing%reference_et_mm_per_day)) then
       diagnostics%status = REF_ET_TRA_INVALID_REFERENCE_ET
       return
     end if
-    if (.not. ieee_is_finite(canopy%vegetation_cover_fraction) .or. canopy%vegetation_cover_fraction < 0.0_real64 .or. &
-        canopy%vegetation_cover_fraction > 1.0_real64) then
+    if (forcing%reference_et_mm_per_day < 0.0_real64) then
+      diagnostics%status = REF_ET_TRA_INVALID_REFERENCE_ET
+      return
+    end if
+
+    if (.not. ieee_is_finite(canopy%vegetation_cover_fraction)) then
       diagnostics%status = REF_ET_TRA_INVALID_COVER
       return
     end if
-    if (.not. ieee_is_finite(canopy%crop_factor) .or. canopy%crop_factor < 0.0_real64) then
+    if (canopy%vegetation_cover_fraction < 0.0_real64 .or. canopy%vegetation_cover_fraction > 1.0_real64) then
+      diagnostics%status = REF_ET_TRA_INVALID_COVER
+      return
+    end if
+
+    if (.not. ieee_is_finite(canopy%crop_factor)) then
       diagnostics%status = REF_ET_TRA_INVALID_CROP_FACTOR
       return
     end if
-    if (.not. ieee_is_finite(canopy%co2_transpiration_factor) .or. canopy%co2_transpiration_factor < 0.0_real64) then
+    if (canopy%crop_factor < 0.0_real64) then
+      diagnostics%status = REF_ET_TRA_INVALID_CROP_FACTOR
+      return
+    end if
+
+    if (.not. ieee_is_finite(canopy%co2_transpiration_factor)) then
+      diagnostics%status = REF_ET_TRA_INVALID_CO2_FACTOR
+      return
+    end if
+    if (canopy%co2_transpiration_factor < 0.0_real64) then
       diagnostics%status = REF_ET_TRA_INVALID_CO2_FACTOR
       return
     end if
@@ -81,7 +102,11 @@ contains
     et0_mm_per_day = forcing%reference_et_mm_per_day * canopy%vegetation_cover_fraction * canopy%crop_factor
     ptra_cm_per_day = max(et0_mm_per_day * 0.1_real64, 0.0_real64) * canopy%co2_transpiration_factor
 
-    if (.not. ieee_is_finite(ptra_cm_per_day) .or. ptra_cm_per_day < 0.0_real64) then
+    if (.not. ieee_is_finite(ptra_cm_per_day)) then
+      diagnostics%status = REF_ET_TRA_INVALID_RESULT
+      return
+    end if
+    if (ptra_cm_per_day < 0.0_real64) then
       diagnostics%status = REF_ET_TRA_INVALID_RESULT
       return
     end if
