@@ -6,6 +6,7 @@ cd "$ROOT"
 
 CANDIDATE="ffab7d705928170db3e76a5d346caafeb560e605"
 EXPECTED_TREE="06bd92b2cf96b7bc6eb6978250017cd054547a56"
+FVQ16_CLOSEOUT="98712959d811c788c77842eede4c6f558cca1c11"
 ARTIFACTS=".fvq17-artifacts"
 BUILD="${TMPDIR:-/tmp}/swap5-fvq17-$$"
 rm -rf "$ARTIFACTS" "$BUILD"
@@ -39,6 +40,7 @@ check_candidate_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 1bb0c6
 git diff --exit-code "$CANDIDATE"..HEAD -- src reference
 printf '%s\n' "$CANDIDATE" > "$ARTIFACTS/candidate.txt"
 printf '%s\n' "$EXPECTED_TREE" > "$ARTIFACTS/candidate-tree.txt"
+printf '%s\n' "$FVQ16_CLOSEOUT" > "$ARTIFACTS/fvq16-closeout.txt"
 git rev-parse "${CANDIDATE}:src/process/mod_snow_process.f90" > "$ARTIFACTS/process-blob.txt"
 git rev-parse "${CANDIDATE}:src/runtime/mod_fmr_serialized_reference_backend.f90" > "$ARTIFACTS/backend-blob.txt"
 git rev-parse "${CANDIDATE}:src/runtime/mod_fmr_serialized_multiswap_runtime.f90" > "$ARTIFACTS/runtime-blob.txt"
@@ -48,13 +50,20 @@ echo 'FVQ17_CANDIDATE_LOCK=PASS'
 
 # Supporting evidence only: replay the exact engineering gate on the immutable candidate postimage.
 bash tests/fmr/run_fmr06_gate.sh > "$ARTIFACTS/fmr06-engineering-gate.out" 2>&1
- grep -Fq 'FMR06_GATE PASS_RUNTIME_CANDIDATE_REQUIRES_INDEPENDENT_FVQ' "$ARTIFACTS/fmr06-engineering-gate.out"
+grep -Fq 'FMR06_GATE PASS_RUNTIME_CANDIDATE_REQUIRES_INDEPENDENT_FVQ' "$ARTIFACTS/fmr06-engineering-gate.out"
 echo 'FVQ17_FMR06_ENGINEERING_REPLAY=PASS'
 
-# Independent scientific process oracle: replay the exact F-VQ16 B1.10 one-call-daily qualification.
-bash tests/vq/fvq16/run_fvq16_gate.sh > "$ARTIFACTS/fvq16-scientific-gate.out" 2>&1
+# Independent scientific process oracle: execute the exact F-VQ16 closeout in a detached worktree.
+# Candidate relevance is guaranteed by the already-locked identical process blob above.
+FVQ16_WORKTREE="$BUILD/fvq16-worktree"
+git worktree add --detach "$FVQ16_WORKTREE" "$FVQ16_CLOSEOUT" > "$ARTIFACTS/fvq16-worktree-add.out" 2>&1
+(
+  cd "$FVQ16_WORKTREE"
+  bash tests/vq/fvq16/run_fvq16_gate.sh
+) > "$ARTIFACTS/fvq16-scientific-gate.out" 2>&1
 mkdir -p "$ARTIFACTS/fvq16"
-cp -a .fvq16-artifacts/. "$ARTIFACTS/fvq16/"
+cp -a "$FVQ16_WORKTREE/.fvq16-artifacts/." "$ARTIFACTS/fvq16/"
+git worktree remove --force "$FVQ16_WORKTREE" > "$ARTIFACTS/fvq16-worktree-remove.out" 2>&1
 echo 'FVQ17_DIRECT_FVQ16_ORACLE_REPLAY=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
