@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-B04-B12",
+  "scope": "SOURCE_BOUND_B12_DIAGNOSTIC_ACCEPTED_TAIL_CANDIDATE_SEARCH",
+  "lineage": {
+    "fpe03_fvq25_negative_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
+    "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
+    "tested_candidate": "addf102920f7576ab273638caefc29e552cf4d0e"
+  },
+  "qualification_run": {
+    "workflow_run": 34270106403,
+    "workflow_job": 102209250992,
+    "conclusion": "success",
+    "artifact_id": 10073455503,
+    "artifact_digest": "sha256:26abfdb495b44a9ec68154ef0e432fd32c0285d486ea434b6f60fa04c6ee3018"
+  },
+  "source_provenance": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "source_csv_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "b12_row": "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0",
+    "original_crlf_row_sha256": "20958231bf61dce00c024c6b8eeca30d0478ae17814d8d16688da6ea0b2d2a53",
+    "repository_lf_row_sha256": "ffe20ab48aa426fe20e57dd1ef9ef1a90efa3cf99fa9da24eb09d1c2eb148dfb",
+    "mapping": "SOURCE_BOUND_FROM_EXACT_SWAP_4_3_1_READSWAP_AND_MOD_MVG_SOURCE",
+    "provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2"
+  },
+  "gates": {
+    "fvq25_lineage_lock": "PASS",
+    "production_source_immutability": "PASS",
+    "source_mapping_record": "PASS",
+    "source_fixture_lock": "PASS",
+    "historical_24_case_matrix_reused": "PASS",
+    "only_hydraulic_parameter_set_changed": "PASS",
+    "numerical_and_transaction_policy_changed": "NO",
+    "deterministic_replay_o0": "PASS",
+    "deterministic_replay_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_gate_for_accepted_cases": "PASS",
+    "rejected_cases_zero_accepted_substeps": "PASS"
+  },
+  "baseline": {
+    "aggregate_cost_vector_order": [
+      "nonlinear_iterations",
+      "internal_retries",
+      "headcalc_calls",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "alternative_solver_calls"
+    ],
+    "admitted_reference_vector": [3, 0, 3, 3, 3, 3, 0]
+  },
+  "results": {
+    "cases_total": 24,
+    "accepted_count": 6,
+    "rejected_count": 18,
+    "accepted_higher_cost_count": 0,
+    "accepted_cases": [
+      {"case": 1, "name": "easy_uniform_m75", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0},
+      {"case": 2, "name": "wet_uniform_m5", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0},
+      {"case": 3, "name": "uniform_m50", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0},
+      {"case": 4, "name": "uniform_m100", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0},
+      {"case": 5, "name": "dry_uniform_m500", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0},
+      {"case": 6, "name": "very_dry_uniform_m5000", "cost": [3,0,3,3,3,3,0], "accepted_substeps": 1, "kernel_status": 0}
+    ],
+    "accepted_higher_cost_cases": [],
+    "classification": "NEGATIVE_NO_ACCEPTED_HIGHER_COST_CASE_IN_HISTORICAL_MATRIX"
+  },
+  "findings": {
+    "b12_resolves_fpe03_b04": false,
+    "accepted_b12_cases_exceed_admitted_baseline": false,
+    "candidate_scientific_admission_granted": false,
+    "representative_tail_distribution_established": false,
+    "bounded_cost_threshold_established": false,
+    "performance_policy_admitted": false,
+    "physics_changed": false,
+    "numerical_controls_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_requirement_relaxed": false
+  },
+  "claim_limit": "This evidence qualifies only the negative source-bound B12 candidate-search result for the inherited historical 24-case diagnostic matrix. It does not scientifically admit that matrix as a production workload, does not establish representative tail statistics, and does not admit any bounded-cost or non-REFERENCE execution policy."
+}
