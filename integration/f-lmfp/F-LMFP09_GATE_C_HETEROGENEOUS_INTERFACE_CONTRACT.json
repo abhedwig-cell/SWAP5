@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C_HETEROGENEOUS_INTERFACE",
+  "status": "CONTRACT_ONLY_NOT_EXECUTED",
+  "dependency": "B1 expanded homogeneous-face outcome must be known before Gate C implementation is admitted",
+  "physical_contract": {
+    "interface_pressure_head": "single continuous h_interface shared by both materials",
+    "flux_conservation": "q_upper_half = q_lower_half; one realized face flux is used once as upper-cell outflow and once as lower-cell inflow",
+    "no_material_mfp_averaging": true,
+    "each_half_uses_own_material_hydraulics": true,
+    "identical_material_reduction": "heterogeneous route must reduce to the qualified homogeneous-face result within tolerance when both material references are identical",
+    "mass_conservation": "absolute requirement; interface solve tolerance may affect head residual but may not create a second inconsistent face flux"
+  },
+  "required_regimes": [
+    "sand-over-clay and clay-over-sand",
+    "additional fast/intermediate/slow synthetic stress-material permutations",
+    "near-saturated interface heads crossing h=0",
+    "both cells unsaturated over wet, intermediate and dry states",
+    "upward and downward flow",
+    "near-hydrostatic states",
+    "strong head gradients",
+    "multiple upper/lower half-face lengths and asymmetric geometry",
+    "approach to dry fail-closed boundary"
+  ],
+  "required_oracles": {
+    "primary": "independent steady Darcy two-material shooting BVP with continuous pressure head and conservative q",
+    "secondary": "homogeneous-limit identity when material references become equal",
+    "no_reference_to_headcalc_internals": true
+  },
+  "acceptance_metrics_predeclared": {
+    "equal_flux_residual": "report absolute and scaled residual; realized face flux must be single-valued",
+    "interface_head_error_vs_darcy_oracle": "report median, p90, p99 and maximum",
+    "face_flux_error_vs_darcy_oracle": "report active relative error and dormant absolute/Ks-scaled error",
+    "root_iterations": "report p50, p90, p99 and maximum, including bracket expansions",
+    "continuity": "refinement test under decreasing perturbations of each adjacent cell head and geometry; left/right agreement alone is insufficient",
+    "homogeneous_reduction": "test exact same-material substitution separately from merely similar materials",
+    "fail_closed": "no extrapolation outside admitted material/head/geometry envelope"
+  },
+  "bounded_cost_rule": {
+    "current_bisection_cap_is_not_qualification": true,
+    "problem_faces_must_not_have_unbounded_iteration_growth": true,
+    "fallback_or_rejection_must_be_explicit_and_mass_conserving": true,
+    "no_silent_switch_to_full_richards": true
+  },
+  "architecture": {
+    "production_src_change": false,
+    "persistent_column_state_added": false,
+    "scratch": "interface bracket/root work remains worker scratch",
+    "shared_data": "material MFP and any qualified correction tables remain immutable shared parameter/template data",
+    "solver_policy": "LayeredMFP remains explicit physical solver configuration, not a performance policy",
+    "response_tangent": "not admitted by Gate C unless separately demonstrated"
+  }
+}
