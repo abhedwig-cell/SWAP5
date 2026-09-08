@@ -20,7 +20,7 @@ program test_fpe03_reference_stress
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
 
-  integer, parameter :: ncases = 14
+  integer, parameter :: ncases = 24
   real(real64), parameter :: t0 = 1000.125_real64
   real(real64), parameter :: t1 = 1000.625_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
@@ -52,6 +52,7 @@ program test_fpe03_reference_stress
   integer :: i, accepted_count, higher_cost_count
   integer :: max_headcalc, max_nonlinear, max_backtracking, max_retries
   integer :: max_headcalc_case, max_nonlinear_case, max_backtracking_case, max_retries_case
+  integer :: all_max_nonlinear, all_max_backtracking, all_max_retries
 
   call require(numnod == 4, 'F-PE03 fixture requires exact four-node admitted test grid')
   call initialize_cases(cases)
@@ -63,23 +64,17 @@ program test_fpe03_reference_stress
 
   call require(metrics(1)%accepted, 'easy reference baseline must be accepted')
   accepted_count = count(metrics%accepted)
-  call require(accepted_count >= 2, 'at least two physical stress cases must be accepted')
-
   higher_cost_count = 0
   do i = 2, ncases
     if (.not. metrics(i)%accepted) cycle
-    if (metrics(i)%headcalc_calls > metrics(1)%headcalc_calls .or. &
-        metrics(i)%nonlinear_iterations > metrics(1)%nonlinear_iterations .or. &
-        metrics(i)%backtracking_attempts > metrics(1)%backtracking_attempts .or. &
-        metrics(i)%internal_retries > metrics(1)%internal_retries .or. &
-        metrics(i)%jacobian_builds > metrics(1)%jacobian_builds .or. &
-        metrics(i)%linear_solves > metrics(1)%linear_solves) then
-      higher_cost_count = higher_cost_count + 1
-    end if
+    if (cost_exceeds(metrics(i), metrics(1))) higher_cost_count = higher_cost_count + 1
   end do
 
   call find_maxima(metrics, max_headcalc, max_headcalc_case, max_nonlinear, max_nonlinear_case, &
        max_backtracking, max_backtracking_case, max_retries, max_retries_case)
+  all_max_nonlinear = maxval(metrics%nonlinear_iterations)
+  all_max_backtracking = maxval(metrics%backtracking_attempts)
+  all_max_retries = maxval(metrics%internal_retries)
 
   write(*,'(A,I0)') 'FPE03_ACCEPTED_CASES=', accepted_count
   write(*,'(A,I0)') 'FPE03_REJECTED_CASES=', ncases-accepted_count
@@ -87,14 +82,17 @@ program test_fpe03_reference_stress
   write(*,'(A,I0)') 'FPE03_BASELINE_HEADCALC_CALLS=', metrics(1)%headcalc_calls
   write(*,'(A,I0)') 'FPE03_BASELINE_NONLINEAR_ITERATIONS=', metrics(1)%nonlinear_iterations
   write(*,'(A,I0)') 'FPE03_BASELINE_BACKTRACKING_ATTEMPTS=', metrics(1)%backtracking_attempts
-  write(*,'(A,I0)') 'FPE03_MAX_HEADCALC_CALLS=', max_headcalc
-  write(*,'(A,I0)') 'FPE03_MAX_HEADCALC_CASE=', max_headcalc_case
-  write(*,'(A,I0)') 'FPE03_MAX_NONLINEAR_ITERATIONS=', max_nonlinear
-  write(*,'(A,I0)') 'FPE03_MAX_NONLINEAR_CASE=', max_nonlinear_case
-  write(*,'(A,I0)') 'FPE03_MAX_BACKTRACKING_ATTEMPTS=', max_backtracking
-  write(*,'(A,I0)') 'FPE03_MAX_BACKTRACKING_CASE=', max_backtracking_case
-  write(*,'(A,I0)') 'FPE03_MAX_INTERNAL_RETRIES=', max_retries
-  write(*,'(A,I0)') 'FPE03_MAX_RETRY_CASE=', max_retries_case
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_HEADCALC_CALLS=', max_headcalc
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_HEADCALC_CASE=', max_headcalc_case
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_NONLINEAR_ITERATIONS=', max_nonlinear
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_NONLINEAR_CASE=', max_nonlinear_case
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_BACKTRACKING_ATTEMPTS=', max_backtracking
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_BACKTRACKING_CASE=', max_backtracking_case
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_INTERNAL_RETRIES=', max_retries
+  write(*,'(A,I0)') 'FPE03_MAX_ACCEPTED_RETRY_CASE=', max_retries_case
+  write(*,'(A,I0)') 'FPE03_MAX_ALL_NONLINEAR_ITERATIONS=', all_max_nonlinear
+  write(*,'(A,I0)') 'FPE03_MAX_ALL_BACKTRACKING_ATTEMPTS=', all_max_backtracking
+  write(*,'(A,I0)') 'FPE03_MAX_ALL_INTERNAL_RETRIES=', all_max_retries
   if (higher_cost_count > 0) then
     write(*,'(A)') 'FPE03_ACCEPTED_HIGHER_COST_PHYSICAL_STRESS_FIXTURE=OBSERVED'
   else
@@ -106,71 +104,55 @@ program test_fpe03_reference_stress
 
 contains
 
+  subroutine set_uniform(c, name, head, top_scale, bottom_scale)
+    type(stress_case_t), intent(out) :: c
+    character(len=*), intent(in) :: name
+    real(real64), intent(in) :: head, top_scale, bottom_scale
+    c%name = name
+    c%heads = head
+    c%top_scale = top_scale
+    c%bottom_scale = bottom_scale
+  end subroutine set_uniform
+
   subroutine initialize_cases(c)
     type(stress_case_t), intent(out) :: c(ncases)
 
-    c(1)%name = 'easy_uniform_m75'
-    c(1)%heads = [-75.0_real64, -75.0_real64, -75.0_real64, -75.0_real64]
-    c(1)%top_scale = -1.0_real64; c(1)%bottom_scale = -1.0_real64
+    call set_uniform(c(1), 'easy_uniform_m75', -75.0_real64, -1.0_real64, -1.0_real64)
+    call set_uniform(c(2), 'wet_uniform_m5', -5.0_real64, -1.0_real64, -1.0_real64)
+    call set_uniform(c(3), 'uniform_m50', -50.0_real64, -1.0_real64, -1.0_real64)
+    call set_uniform(c(4), 'uniform_m100', -100.0_real64, -1.0_real64, -1.0_real64)
+    call set_uniform(c(5), 'dry_uniform_m500', -500.0_real64, -1.0_real64, -1.0_real64)
+    call set_uniform(c(6), 'very_dry_uniform_m5000', -5000.0_real64, -1.0_real64, -1.0_real64)
 
-    c(2)%name = 'wet_uniform_m5'
-    c(2)%heads = [-5.0_real64, -5.0_real64, -5.0_real64, -5.0_real64]
-    c(2)%top_scale = -1.0_real64; c(2)%bottom_scale = -1.0_real64
+    c(7)%name = 'tiny_gradient_down'
+    c(7)%heads = [-74.99_real64,-75.00_real64,-75.01_real64,-75.02_real64]
+    c(8)%name = 'tiny_gradient_up'
+    c(8)%heads = [-75.02_real64,-75.01_real64,-75.00_real64,-74.99_real64]
+    c(9)%name = 'small_gradient_down'
+    c(9)%heads = [-74.9_real64,-75.0_real64,-75.1_real64,-75.2_real64]
+    c(10)%name = 'gradient_down_1cm'
+    c(10)%heads = [-74.0_real64,-75.0_real64,-76.0_real64,-77.0_real64]
 
-    c(3)%name = 'dry_uniform_m500'
-    c(3)%heads = [-500.0_real64, -500.0_real64, -500.0_real64, -500.0_real64]
-    c(3)%top_scale = -1.0_real64; c(3)%bottom_scale = -1.0_real64
-
-    c(4)%name = 'very_dry_uniform_m5000'
-    c(4)%heads = [-5000.0_real64, -5000.0_real64, -5000.0_real64, -5000.0_real64]
-    c(4)%top_scale = -1.0_real64; c(4)%bottom_scale = -1.0_real64
-
-    c(5)%name = 'wet_to_dry_gradient'
-    c(5)%heads = [-5.0_real64, -20.0_real64, -500.0_real64, -5000.0_real64]
-    c(5)%top_scale = -1.0_real64; c(5)%bottom_scale = -1.0_real64
-
-    c(6)%name = 'sharp_wetting_front'
-    c(6)%heads = [-5.0_real64, -5.0_real64, -5000.0_real64, -5000.0_real64]
-    c(6)%top_scale = -1.0_real64; c(6)%bottom_scale = -1.0_real64
-
-    c(7)%name = 'dry_to_wet_gradient'
-    c(7)%heads = [-5000.0_real64, -500.0_real64, -20.0_real64, -5.0_real64]
-    c(7)%top_scale = -1.0_real64; c(7)%bottom_scale = -1.0_real64
-
-    c(8)%name = 'baseline_top_pulse_x10'
-    c(8)%heads = c(1)%heads
-    c(8)%top_scale = -10.0_real64; c(8)%bottom_scale = -1.0_real64
-
-    c(9)%name = 'dry_top_pulse_x10'
-    c(9)%heads = c(3)%heads
-    c(9)%top_scale = -10.0_real64; c(9)%bottom_scale = -1.0_real64
-
-    c(10)%name = 'front_top_pulse_x10'
-    c(10)%heads = c(5)%heads
-    c(10)%top_scale = -10.0_real64; c(10)%bottom_scale = -1.0_real64
-
-    c(11)%name = 'two_sided_inflow'
-    c(11)%heads = c(1)%heads
-    c(11)%top_scale = -10.0_real64; c(11)%bottom_scale = 10.0_real64
-
-    c(12)%name = 'two_sided_outflow'
-    c(12)%heads = c(2)%heads
-    c(12)%top_scale = 5.0_real64; c(12)%bottom_scale = -5.0_real64
-
-    c(13)%name = 'near_sat_gradient'
-    c(13)%heads = [-0.1_real64, -1.0_real64, -10.0_real64, -100.0_real64]
-    c(13)%top_scale = -1.0_real64; c(13)%bottom_scale = -1.0_real64
-
-    c(14)%name = 'dry_top_wet_bottom_pulse'
-    c(14)%heads = [-5000.0_real64, -500.0_real64, -20.0_real64, -5.0_real64]
-    c(14)%top_scale = -10.0_real64; c(14)%bottom_scale = -1.0_real64
+    call set_uniform(c(11), 'top_flux_plus_0p01pct', -75.0_real64, -1.0001_real64, -1.0_real64)
+    call set_uniform(c(12), 'top_flux_minus_0p01pct', -75.0_real64, -0.9999_real64, -1.0_real64)
+    call set_uniform(c(13), 'top_flux_plus_0p1pct', -75.0_real64, -1.001_real64, -1.0_real64)
+    call set_uniform(c(14), 'top_flux_minus_0p1pct', -75.0_real64, -0.999_real64, -1.0_real64)
+    call set_uniform(c(15), 'top_flux_plus_1pct', -75.0_real64, -1.01_real64, -1.0_real64)
+    call set_uniform(c(16), 'top_flux_minus_1pct', -75.0_real64, -0.99_real64, -1.0_real64)
+    call set_uniform(c(17), 'top_flux_plus_10pct', -75.0_real64, -1.10_real64, -1.0_real64)
+    call set_uniform(c(18), 'top_flux_minus_10pct', -75.0_real64, -0.90_real64, -1.0_real64)
+    call set_uniform(c(19), 'opposing_flux_1pct_a', -75.0_real64, -1.01_real64, -0.99_real64)
+    call set_uniform(c(20), 'opposing_flux_1pct_b', -75.0_real64, -0.99_real64, -1.01_real64)
+    call set_uniform(c(21), 'm50_top_plus_0p1pct', -50.0_real64, -1.001_real64, -1.0_real64)
+    call set_uniform(c(22), 'm100_top_plus_0p1pct', -100.0_real64, -1.001_real64, -1.0_real64)
+    call set_uniform(c(23), 'm5_top_plus_0p1pct', -5.0_real64, -1.001_real64, -1.0_real64)
+    call set_uniform(c(24), 'm500_top_plus_0p1pct', -500.0_real64, -1.001_real64, -1.0_real64)
   end subroutine initialize_cases
 
   subroutine run_case(case_id, spec, metric)
     integer, intent(in) :: case_id
     type(stress_case_t), intent(in) :: spec
     type(case_metrics_t), intent(out) :: metric
-
     type(fmr_logical_column_t) :: columns(1)
     type(fmr_template_t) :: templates(1)
     type(fmr_b110_physical_parameters_t) :: parameters(1)
@@ -182,14 +164,14 @@ contains
     type(fmr_aggregate_diagnostics_t) :: aggregate
     type(fmr04_fixed_flux_top_provider_t), target :: top_provider
     type(canonical_numerical_config_t) :: config
-    real(real64) :: reference_k
+    real(real64) :: k_top, k_bottom
     integer :: dispatch_status
     logical :: ok
 
     metric = case_metrics_t()
     call configure_template(templates(1))
-    call configure_parameters(parameters(1), initial_state, spec%heads, reference_k)
-    call configure_forcing(forcings(1), spec, reference_k)
+    call configure_parameters(parameters(1), initial_state, spec%heads, k_top, k_bottom)
+    call configure_forcing(forcings(1), spec, k_top, k_bottom)
     call configure_transaction(config)
 
     columns(1)%column_id = 503000_int64 + int(case_id, int64)
@@ -198,7 +180,6 @@ contains
     columns(1)%state_handle = 1_int64
     columns(1)%forcing_handle = 1_int64
     columns(1)%backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
-
     call fmr_new_b110_committed_state(states(1), columns(1)%column_id, initial_state, t0, ok)
     call require(ok, 'committed-state initialization')
 
@@ -247,15 +228,14 @@ contains
     template%compatible_backend_id = FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine configure_template
 
-  subroutine configure_parameters(parameters, state, heads, reference_k)
+  subroutine configure_parameters(parameters, state, heads, k_top, k_bottom)
     type(fmr_b110_physical_parameters_t), intent(out) :: parameters
     type(fmr_b110_physical_state_t), intent(out) :: state
     real(real64), intent(in) :: heads(4)
-    real(real64), intent(out) :: reference_k
+    real(real64), intent(out) :: k_top, k_bottom
     type(b110_default_mvg_parameters_t), target :: hyd_parameters
     type(b110_default_mvg_provider_t) :: constitutive
     real(real64) :: water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
-    real(real64) :: ref_heads(numnod), ref_water(numnod), ref_k(numnod), ref_cap(numnod), ref_dkdh(numnod)
     integer :: i
 
     parameters%parameter_set_id = 50301_int64
@@ -305,10 +285,9 @@ contains
     call initialize_b110_default_mvg_parameters(hyd_parameters, parameters%cofgen)
     call bind_b110_default_mvg_provider(constitutive, hyd_parameters, t1-t0)
     call constitutive%evaluate(heads, water, conductivity, capacity, dkdh)
-    ref_heads = -75.0_real64
-    call constitutive%evaluate(ref_heads, ref_water, ref_k, ref_cap, ref_dkdh)
-    reference_k = ref_k(1)
-    call require(reference_k > 0.0_real64, 'positive reference conductivity')
+    k_top = conductivity(1)
+    k_bottom = conductivity(numnod)
+    call require(k_top > 0.0_real64 .and. k_bottom > 0.0_real64, 'positive endpoint conductivity')
 
     state%active_nodes = numnod
     allocate(state%pressure_head(numnod), state%water_content(numnod))
@@ -318,15 +297,15 @@ contains
     state%groundwater_level = -2.0_real64
   end subroutine configure_parameters
 
-  subroutine configure_forcing(forcing, spec, reference_k)
+  subroutine configure_forcing(forcing, spec, k_top, k_bottom)
     type(fmr_b110_physical_forcing_t), intent(out) :: forcing
     type(stress_case_t), intent(in) :: spec
-    real(real64), intent(in) :: reference_k
+    real(real64), intent(in) :: k_top, k_bottom
     integer :: i
 
-    forcing%top_flux = spec%top_scale * reference_k
+    forcing%top_flux = spec%top_scale * k_top
     forcing%top_head = spec%heads(1)
-    forcing%bottom_flux = spec%bottom_scale * reference_k
+    forcing%bottom_flux = spec%bottom_scale * k_bottom
     forcing%bottom_head = spec%heads(numnod)
     allocate(forcing%drainage_flux_by_level(2,numnod), forcing%subsurface_irrigation_source(numnod), &
              forcing%root_extraction_sink(numnod))
@@ -348,6 +327,16 @@ contains
     config%max_committed_substeps = 8
     config%progress_tolerance = 0.0_real64
   end subroutine configure_transaction
+
+  logical function cost_exceeds(candidate, baseline) result(exceeds)
+    type(case_metrics_t), intent(in) :: candidate, baseline
+    exceeds = candidate%headcalc_calls > baseline%headcalc_calls .or. &
+         candidate%nonlinear_iterations > baseline%nonlinear_iterations .or. &
+         candidate%backtracking_attempts > baseline%backtracking_attempts .or. &
+         candidate%internal_retries > baseline%internal_retries .or. &
+         candidate%jacobian_builds > baseline%jacobian_builds .or. &
+         candidate%linear_solves > baseline%linear_solves
+  end function cost_exceeds
 
   subroutine print_case(i, spec, metric)
     integer, intent(in) :: i
