@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "title": "F-VQ19-lineage additive cost diagnostics composition evidence",
+  "branch": "work/f-pe05-reference-temporal-acceptance-fvq19",
+  "composition_base": "7b35af8049c7b2185d0fbe87189c1791bfa5d532",
+  "materialized_candidate": "c5756182d8aeadf799bfd8087e60ec0cd3a6d514",
+  "materialized_candidate_tree": "4241064e793a919403e5c83824bbdeaca76ef527",
+  "composition_commit_message": "compose(F-PE05): add qualified cost diagnostics to F-VQ19 lineage",
+  "production_delta": {
+    "src/kernel/mod_kernel_transactions.f90": {
+      "pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+      "post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+      "qualified_fpe02_post_reused_exactly": true,
+      "additions": 14,
+      "deletions": 0,
+      "role": "copy already-existing canonical runtime cost counters into kernel diagnostics"
+    },
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": {
+      "pre_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+      "post_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
+      "additions": 16,
+      "deletions": 0,
+      "role": "materialize kernel diagnostics on serialized per-column runtime result"
+    }
+  },
+  "protected_source_locks": {
+    "src/process/mod_snow_process.f90": "54702d71b4c84dce2842813549bd14c57301a383",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "tests/fmr/test_fmr06_snow_smoke.f90": "4f45bb0623fef3fb6d091579e8f435563c858a69"
+  },
+  "source_scope_result": "PASS_EXACTLY_TWO_PRODUCTION_FILES_WITH_ADDITIVE_DIAGNOSTICS_ONLY",
+  "physics_changed": false,
+  "temporal_acceptance_logic_changed": false,
+  "transaction_decision_logic_changed": false,
+  "mass_semantics_changed": false,
+  "snow_semantics_changed": false,
+  "numerical_policy_changed": false,
+  "qualification_state": "MATERIALIZED_NOT_YET_QUALIFIED",
+  "next_gate": "Verify the internal full-step/two-half temporal route is compatible with the externally admitted one-call-daily SNOW fixture, then qualify deterministic cost diagnostics on the composed source."
+}
