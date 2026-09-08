@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI18",
+  "title": "REFERENCE Richards Convergence-Cliff Owner Audit",
+  "branch": "work/f-si18-reference-convergence-cliff",
+  "base_head": "a6470b90f100b7ed9837c5e092b39d011fd28476",
+  "base_status": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+  "source_owner": "F-SI",
+  "trigger": {
+    "workstream": "F-PE",
+    "source_branch": "work/f-pe03-reference-tail-characterization-fvq19",
+    "source_closeout_head": "6c3c392853f178b0542e8b243c3a051ee5eff750",
+    "blocker": "FPE03-B02",
+    "characterization": "Diagnostic REFERENCE perturbations show a deterministic binary transition from accepted low cost to full-trial Newton exhaustion and transaction retry failure, with no accepted intermediate-cost route."
+  },
+  "fpe03_observation": {
+    "admitted_nonstationary_baseline_cost_vector": [3, 0, 3, 3, 3, 3, 0],
+    "rejected_full_retry_cost_vector": [24, 3, 3, 24, 24, 96, 0],
+    "refined_relative_top_flux_transition_bracket": [3e-12, 1e-11],
+    "both_signs_symmetric_at_tested_levels": true,
+    "accepted_higher_cost_route_observed": false,
+    "rejected_path": "FULL_TRIAL_RICHARDS_NONCONVERGENCE_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE"
+  },
+  "lineage_reconciliation": {
+    "fpe03_headcalc_blob": "be5978827095445b15de7baf607728792de6a366",
+    "fsi16_headcalc_blob": "d92f77963329d61ab3feb988f912252c0161436c",
+    "fsi17_headcalc_blob": "7ce94a4cfc4634b946f41b01f54d2d7f6efc798f",
+    "fsi16_changed_relevant_files": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90"
+    ],
+    "fsi17_existing_production_source_modified": false,
+    "decision": "BASE_FSI18_ON_FSI16_QUALIFIED_POSTIMAGE_AND_REPRODUCE_BEFORE_ANY_PRODUCTION_EDIT",
+    "reason": "F-SI16 owns the newest qualified modifications to the same HeadCalc/legacy-binding files implicated by the F-PE03 cliff. F-SI17 only added a separate process-facing hydraulic-view module."
+  },
+  "source_audit_findings_before_start": {
+    "fsi16_fsi17_nonconvergence_semantics": "Newton-loop exhaustion still sets fldecdt, request_dt_reduction and increments internal_retries before returning.",
+    "solver_binding_semantics": "request_dt_reduction maps to SW_SOLVE_RETRY_ADVISED; the serialized transaction model therefore returns solver_ok=false.",
+    "transaction_semantics": "A full-trial solver rejection enters the retry ladder before the two-half branch, mass acceptance gate or temporal acceptance gate.",
+    "production_solver_defect_established": false
+  },
+  "questions": [
+    "Does the F-PE03 binary convergence cliff reproduce on the exact F-SI16 qualified solver lineage?",
+    "Which exact convergence flag or criterion remains active at Newton-loop exhaustion on the first rejected full trial?",
+    "Is the transition caused by the legacy convergence contract itself, the explicit numerical controls, or an implementation defect?",
+    "Does the same qualitative transition occur for both positive and negative small top-flux perturbations without changing physical configuration?",
+    "Can diagnostics expose the deciding convergence criterion without adding persistent per-column state or changing solver semantics?"
+  ],
+  "hard_constraints": {
+    "production_edit_before_reproduction": false,
+    "change_physics_to_make_case_converge": false,
+    "change_temporal_tolerance": false,
+    "change_mass_tolerance": false,
+    "change_reference_solver_controls_to_manufacture_tail": false,
+    "claim_solver_bug_from_fpe_diagnostics_alone": false,
+    "mass_conservation_remains_hard": true,
+    "transaction_semantics_unchanged": true,
+    "reference_mode_remains_full_accuracy": true
+  },
+  "allowed_initial_work": [
+    "Read-only source audit",
+    "Test-only reproduction harness on the F-SI16 qualified postimage",
+    "Worker-local or test-only diagnostics sufficient to identify the convergence criterion",
+    "O0/O2 and deterministic replay"
+  ],
+  "production_change_gate": "Only after exact F-SI16-lineage reproduction and a source-bound diagnosis showing that a production solver change is justified independently of F-PE benchmark needs.",
+  "valid_exits": [
+    "QUALIFIED_REFERENCE_CONVERGENCE_CLIFF_REPRODUCED_AND_DIAGNOSED_NO_PRODUCTION_CHANGE_REQUIRED",
+    "QUALIFIED_REFERENCE_CONVERGENCE_CLIFF_SOLVER_CANDIDATE_READY_FOR_INDEPENDENT_VQ",
+    "BLOCKED_REFERENCE_CONVERGENCE_CLIFF_NOT_REPRODUCIBLE_ON_CURRENT_FSI_LINEAGE",
+    "BLOCKED_REFERENCE_CONVERGENCE_CLIFF_REQUIRES_THEORY_OR_OWNER_DECISION"
+  ],
+  "status": "AUDIT_AND_REPRODUCTION_AUTHORIZED_PRODUCTION_EDITS_BLOCKED"
+}
