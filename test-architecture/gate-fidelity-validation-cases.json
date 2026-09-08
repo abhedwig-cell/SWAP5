@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-TA03",
+  "claim_boundary": "Synthetic cases validate fail-closed claim compatibility only. They do not qualify a physical fixture or numerical solver.",
+  "cases": [
+    {
+      "case_id": "FTA03-P01-ZERO-STEP-CONTRACT-CLAIMS",
+      "record": {
+        "physical_fixture_fidelity": "SYNTHETIC_CONTRACT",
+        "numerical_solver_fidelity": "ZERO_STEP_STUB",
+        "state_update_capability": "INERT",
+        "solver_tolerance_provenance": "NOT_APPLICABLE_TO_CLAIMS",
+        "numerical_control_provenance": "NOT_APPLICABLE_TO_CLAIMS",
+        "claim_classes": ["SOURCE_BINDING", "WORKSPACE_ISOLATION", "DETERMINISTIC_REPLAY"],
+        "owner_qualification_status": "SUPPORTING_EVIDENCE_ONLY"
+      },
+      "expected_decision": "CLAIMS_COMPATIBLE"
+    },
+    {
+      "case_id": "FTA03-P02-FUNCTIONAL-CONVERGENCE-COST",
+      "record": {
+        "physical_fixture_fidelity": "SOURCE_BOUND_RESTRICTED_PHYSICAL",
+        "numerical_solver_fidelity": "SYNTHETIC_FUNCTIONAL",
+        "state_update_capability": "CAPABLE",
+        "solver_tolerance_provenance": "RUNNER_LOCAL_EXPLICIT",
+        "numerical_control_provenance": "RUNNER_LOCAL_EXPLICIT",
+        "claim_classes": ["CONVERGENCE_BEHAVIOR", "SOLVER_COST"],
+        "owner_qualification_status": "DIAGNOSTIC_ONLY"
+      },
+      "expected_decision": "CLAIMS_COMPATIBLE"
+    },
+    {
+      "case_id": "FTA03-N01-ZERO-STEP-CONVERGENCE",
+      "record": {
+        "physical_fixture_fidelity": "SYNTHETIC_CONTRACT",
+        "numerical_solver_fidelity": "ZERO_STEP_STUB",
+        "state_update_capability": "INERT",
+        "solver_tolerance_provenance": "RUNNER_LOCAL_EXPLICIT",
+        "numerical_control_provenance": "RUNNER_LOCAL_EXPLICIT",
+        "claim_classes": ["CONVERGENCE_BEHAVIOR"],
+        "owner_qualification_status": "DIAGNOSTIC_ONLY"
+      },
+      "expected_decision": "BLOCKED",
+      "required_blockers": ["NUMERICAL_STATE_UPDATE_NOT_CAPABLE", "NUMERICAL_SOLVER_FIDELITY_INCOMPATIBLE"]
+    },
+    {
+      "case_id": "FTA03-N02-UNKNOWN-SOLVER-COST",
+      "record": {
+        "physical_fixture_fidelity": "NOT_ASSESSED",
+        "numerical_solver_fidelity": "NOT_ASSESSED",
+        "state_update_capability": "NOT_ASSESSED",
+        "solver_tolerance_provenance": "NOT_ASSESSED",
+        "numerical_control_provenance": "NOT_ASSESSED",
+        "claim_classes": ["SOLVER_COST"],
+        "owner_qualification_status": "DIAGNOSTIC_ONLY"
+      },
+      "expected_decision": "BLOCKED",
+      "required_blockers": ["NUMERICAL_STATE_UPDATE_NOT_CAPABLE", "NUMERICAL_SOLVER_FIDELITY_INCOMPATIBLE", "SOLVER_TOLERANCE_PROVENANCE_INCOMPLETE", "NUMERICAL_CONTROL_PROVENANCE_INCOMPLETE"]
+    },
+    {
+      "case_id": "FTA03-N03-FUNCTIONAL-BUT-TOLERANCE-UNKNOWN",
+      "record": {
+        "physical_fixture_fidelity": "SOURCE_BOUND_RESTRICTED_PHYSICAL",
+        "numerical_solver_fidelity": "QUALIFIED_REFERENCE_SUBSTITUTE",
+        "state_update_capability": "CAPABLE",
+        "solver_tolerance_provenance": "NOT_ASSESSED",
+        "numerical_control_provenance": "EXPLICIT_SOURCE_BOUND",
+        "claim_classes": ["PERFORMANCE_TAIL"],
+        "owner_qualification_status": "DIAGNOSTIC_ONLY"
+      },
+      "expected_decision": "BLOCKED",
+      "required_blockers": ["SOLVER_TOLERANCE_PROVENANCE_INCOMPLETE"]
+    },
+    {
+      "case_id": "FTA03-N04-FTA-SELF-SCIENTIFIC-ADMISSION",
+      "record": {
+        "physical_fixture_fidelity": "OWNER_QUALIFIED_SOURCE_BOUND",
+        "numerical_solver_fidelity": "PRODUCTION_REFERENCE",
+        "state_update_capability": "CAPABLE",
+        "solver_tolerance_provenance": "EXPLICIT_SOURCE_BOUND",
+        "numerical_control_provenance": "EXPLICIT_SOURCE_BOUND",
+        "claim_classes": ["SCIENTIFIC_ADMISSION"],
+        "owner_qualification_status": "FTA_SELF_QUALIFIED"
+      },
+      "expected_decision": "BLOCKED",
+      "required_blockers": ["SCIENTIFIC_ADMISSION_REQUIRES_EXTERNAL_OWNER_AUTHORITY"]
+    }
+  ]
+}
