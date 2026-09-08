@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ26",
+  "title": "Independent Scientific Admission of Restricted Serialized Prescribed Bottom-Head Runtime",
+  "branch": "qualification/f-vq26-fmr11-prescribed-bottom-head-runtime",
+  "status": "IN_PROGRESS_INDEPENDENT_FMR11_PRESCRIBED_BOTTOM_HEAD_RUNTIME_VERIFICATION",
+  "phase": "QUALIFICATION_PLAN_PERSISTED_BEFORE_TEST_IMPLEMENTATION",
+  "qualification_scope": "INDEPENDENT_SCIENTIFIC_ADMISSION_OF_EXACT_FMR11_CANDIDATE",
+  "candidate": {
+    "fmr11_closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
+    "fmr11_owner_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME",
+    "fmr11_production_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+    "fmr11_owner_tested_head": "3c6d0f774d6131d9817727b60d49cca97f4d217b",
+    "fmr11_owner_workflow_run": 34267888294,
+    "fmr11_closeout_replay_run": 34268199919,
+    "fsi16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f"
+  },
+  "state": {
+    "qualification_plan_persisted": true,
+    "production_source_modified": false,
+    "candidate_source_immutable": true,
+    "tested": false,
+    "qualified": false
+  },
+  "independent_requirements": [
+    "source-lock exact immutable F-MR11 production candidate",
+    "do not modify production source",
+    "independently establish bottom_head authority and bottom_flux seed irrelevance",
+    "independently establish authoritative qbot sign and exactly-once mass accounting",
+    "exercise both supported qbot signs",
+    "independently verify checkpoint/discard and A/B/A state isolation",
+    "verify exact zero-tolerance temporal acceptance on the admitted stationary mode-5 fixture",
+    "verify unsupported physical routes remain fail closed",
+    "verify serialized-only execution and O0/O2 identity",
+    "replay canonical B1.10 prescribed-head solver evidence from the qualified F-SI16 source chain",
+    "replay relevant F-MR10/F-MR09/F-MR07/F-MR06 regressions"
+  ],
+  "holds": {
+    "groundwater_coupling": "NOT_ADMITTED_UNTIL_FVQ26_PASS",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "bottom_modes_1_3_8_9": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "active_macropores": "NOT_ADMITTED",
+    "production_change_in_FVQ26": "FORBIDDEN"
+  },
+  "next_gate": "BUILD_INDEPENDENT_RUNTIME_ORACLE_AND_REPLAY_FSI16_CANONICAL_B110_REFERENCE"
+}
