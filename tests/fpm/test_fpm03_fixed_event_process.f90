@@ -110,7 +110,7 @@ contains
     type(irrigation_flux_result_t) :: flux
     type(irrigation_diagnostics_t) :: diag
 
-    call one_event_parameters(p, 30.0_real64, IRRIGATION_APPLICATION_SSDI, 0.2_real64, 0.4_real64, 99.0_real64)
+    call one_event_parameters(p, 30.0_real64, IRRIGATION_APPLICATION_SSDI, 0.125_real64, 0.25_real64, 99.0_real64)
     p%active_nodes = 5; p%ssdi_first_node = 2; p%ssdi_last_node = 4
     req%t0 = 30.0_real64; req%t1 = 30.5_real64
     call evaluate_fixed_irrigation_interval(p, committed, req, candidate, flux, diag)
@@ -118,10 +118,10 @@ contains
     call require(flux%applied .and. flux%event_started .and. flux%event_finished, 'ssdi flags')
     call require(allocated(flux%subsurface_source) .and. size(flux%subsurface_source) == 5, 'ssdi allocation')
     call require(same_bits(flux%subsurface_source(1),0.0_real64) .and. &
-                 all_bits(flux%subsurface_source(2:4),0.4_real64) .and. &
+                 all_bits(flux%subsurface_source(2:4),0.25_real64) .and. &
                  same_bits(flux%subsurface_source(5),0.0_real64), 'ssdi legacy qssdi range=irrate')
     call require(same_bits(flux%event_duration,0.5_real64), 'ssdi duration=per-node-depth/rate')
-    call require(same_bits(flux%external_inflow_amount,0.6_real64), 'ssdi total source identity')
+    call require(same_bits(flux%external_inflow_amount,0.375_real64), 'ssdi total source identity')
     call require(same_bits(flux%concentration,0.0_real64), 'ssdi legacy cirr remains reset')
     call require(candidate%next_fixed_event_index == 2 .and. .not. candidate%active_event, 'ssdi cursor')
   end subroutine case_ssdi_full_event
