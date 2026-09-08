@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR14",
+  "qualification_candidate": "3917aeadd7e9d214651a237bfe562fc85792da92",
+  "workflow_run": 34267067579,
+  "workflow_job": 102198978911,
+  "conclusion": "success",
+  "artifact": {
+    "id": 10072259042,
+    "name": "fmr14-interval-cost-diagnostics",
+    "digest": "sha256:32f6e0c25de416a7c852e9eaa97e1c1412e82373d45b1c05b174afa27b9173e3"
+  },
+  "source_composition": {
+    "base": "985058c0261d284424432a65bded16b7fc9107cb",
+    "delta_paths": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "kernel_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "runtime_post_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
+    "runtime_normalizes_exactly_to_fmr13_after_observer_delta_removal": true,
+    "observer_assignments_exactly_once": true,
+    "observer_counters_used_in_decisions": false
+  },
+  "runtime_diagnostics_observation": {
+    "accepted_substeps": 1,
+    "solver_nonlinear_iterations": 3,
+    "solver_internal_retries": 0,
+    "solver_headcalc_calls": 3,
+    "solver_jacobian_builds": 3,
+    "solver_linear_solves": 3,
+    "solver_backtracking_attempts": 3,
+    "solver_alternative_solver_calls": 0,
+    "o0_o2_identity": true
+  },
+  "regressions": {
+    "fmr09_authoritative_mass_transaction_replay": "PASS",
+    "fmr09_historical_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "fmr12_fmr10_runtime_regression": "PASS",
+    "fmr12_historical_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "hard_mass_conservation": "PASS",
+    "rollback_replay": "PASS",
+    "fixed_irrigation_scientific_oracle": "PASS",
+    "scheduled_irrigation_scientific_oracle": "PASS",
+    "snow_regression": "PASS"
+  },
+  "negative_claims": {
+    "physics_changed": false,
+    "numerical_controls_changed": false,
+    "acceptance_changed": false,
+    "transaction_decision_changed": false,
+    "mass_requirement_relaxed": false,
+    "fpe02_b01_resolved": false,
+    "performance_policy_admitted": false
+  }
+}
