@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ25",
   "title": "F-MR14 Interval Cost Diagnostics Independent Scientific No-Change Admission",
   "branch": "qualification/f-vq25-fmr14-interval-diagnostics",
-  "status": "PERSISTED_PENDING_INDEPENDENT_SCIENTIFIC_NO_CHANGE_QUALIFICATION",
-  "phase": "PERSISTED_NOT_YET_TESTED",
+  "status": "QUALIFIED_INDEPENDENT_FMR14_INTERVAL_DIAGNOSTICS_SCIENTIFIC_NO_CHANGE_ADMISSION",
+  "phase": "CLOSED_IMPLEMENTED_PERSISTED_TESTED_QUALIFIED",
   "qualification_scope": "INDEPENDENT_SCIENTIFIC_NO_CHANGE_ADMISSION",
   "candidate": {
     "fmr14_closeout_commit": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
@@ -14,36 +14,45 @@
     "kernel_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
     "runtime_blob": "7a60f8b8d18672098fed1c6890a95aac738ed21d"
   },
-  "required_evidence": {
-    "candidate_production_immutability": true,
-    "exact_two_path_observer_delta_vs_fmr13": true,
-    "kernel_exact_fpe02_qualified_postimage": true,
-    "runtime_normalizes_exactly_to_fmr13_after_observer_delta_removal": true,
-    "observer_fields_not_used_in_decisions": true,
-    "fmr09_authoritative_mass_transaction_replay": true,
-    "fmr09_historical_output_hash_preserved": true,
-    "fmr12_fmr10_runtime_regression": true,
-    "fmr12_historical_output_hash_preserved": true,
-    "interval_diagnostics_surface_o0_o2_identity": true
+  "qualification": {
+    "tested_candidate_commit": "9e990e3a37febd4af955bb93d61201671051a56a",
+    "workflow_run": 34267420273,
+    "workflow_job": 102200182945,
+    "conclusion": "success",
+    "artifact_id": 10072405701,
+    "artifact_digest": "sha256:689c759902629ad9f7f4f24a0e3c9cd03ec377c5847383b1badb52da09fc2d06",
+    "fmr14_gate_sha256": "191b9e47ddfa0762d9922c2fe41c2bda37820244a752b0a9138cf4611ed129cb",
+    "candidate_production_immutability": "PASS",
+    "exact_two_path_observer_delta_vs_fmr13": "PASS",
+    "runtime_normalizes_exactly_to_fmr13_after_observer_delta_removal": "PASS",
+    "owner_gate_reexecution": "PASS",
+    "existing_scientific_runtime_outputs_preserved": "PASS",
+    "authoritative_mass_and_transaction_semantics": "PASS",
+    "fmr09_historical_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "fmr12_historical_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "interval_diagnostics_vector_o0_o2": [1, 3, 0, 3, 3, 3, 3, 0]
   },
   "state": {
     "qualification_plan_persisted": true,
     "production_source_modified": false,
     "candidate_source_immutable": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "physics_changed": false,
   "numerical_controls_changed": false,
   "acceptance_changed": false,
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
-  "scientific_claim_limit": "F-VQ25 may admit only that F-MR14 exposes already-qualified aggregate interval diagnostics without detected scientific change in the existing admitted real-physics scope. It does not admit new physics, new solver controls, perturbed F-PE workloads, performance thresholds, BALANCED, THROUGHPUT or FALLBACK.",
-  "downstream_if_qualified": {
-    "fmr14_independent_scientific_no_change_admission": true,
-    "fpe03_b03_cleared_for_recharacterization_resume": true,
-    "fpe02_b01_automatically_resolved": false,
-    "perturbed_workload_scientifically_admitted": false,
-    "performance_policy_admission": false
-  }
+  "fpe03_b03": "CLEARED_FOR_RECHARACTERIZATION_RESUME",
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "perturbed_workload_scientifically_admitted": false,
+  "execution_classes": {
+    "REFERENCE": "UNCHANGED_WITH_INDEPENDENTLY_ADMITTED_DIAGNOSTICS_SURFACE",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "scientific_claim_limit": "F-VQ25 admits only that F-MR14 exposes already-qualified aggregate interval diagnostics without detected scientific change in the existing admitted real-physics scope. It does not admit new physics, new solver controls, perturbed F-PE workloads, performance thresholds, BALANCED, THROUGHPUT or FALLBACK.",
+  "next_action": "Resume F-PE03 REFERENCE tail re-characterization on this exact admitted postimage using the propagated aggregate interval cost counters. Any perturbed workload remains diagnostic until separately admitted by F-VQ."
 }
