@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF17",
+  "title": "Option-Aware Crop-Root Geometry Snapshot Producer",
+  "branch": "work/f-wof17-option-aware-root-geometry",
+  "status": "QUALIFIED_OPTION_AWARE_CROP_ROOT_GEOMETRY_SNAPSHOT_PRODUCER",
+  "qualification_scope": "SWRD1_DVS_DERIVED_SWRD2_COMMITTED_DEPTH_SWRD3_WRT_DERIVED",
+  "base": {
+    "commit": "df29eb9111d98a466cfdfc30f8a0a2546dc63d74",
+    "status": "QUALIFIED_RESTRICTED_NONADAPTIVE_CROP_ROOT_VIEW_PRODUCER"
+  },
+  "qualified_candidate": {
+    "commit": "14e10c7d1cbe90398112cbdb2b3f17fc8c6bdfce",
+    "production_source": "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+    "production_source_blob": "56c3e10ccd25e6790882a649d472bd67a31d0f7b",
+    "contract_blob": "3169ba527572594d9b51c74bf622283af335a16c",
+    "oracle_test_blob": "47ccc895db8e82f460350db9c668d2e2f84bcbbd",
+    "gate_blob": "3e192a4c2b93223034e436419abe0ba5adab5d57",
+    "workflow_blob": "087afbb28582eb9f83bc9a917e78670aaf7f31ac"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "production_scope": {
+    "production_source_changed": true,
+    "production_source_delta_count": 1,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "process_source_changed": false,
+    "legacy_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_workstream_merge_performed": false
+  },
+  "admission": {
+    "SWRD_1_DVS_to_current_root_depth": true,
+    "SWRD_2_committed_actual_root_depth_readthrough": true,
+    "SWRD_3_WRT_to_current_root_depth": true,
+    "inactive_crop_dependency_free": true,
+    "root_growth_evolution": false,
+    "crop_lifecycle_scheduling": false,
+    "ET_production": false,
+    "runtime_binding": false,
+    "persistent_duplicate_root_depth_for_SWRD_1_or_3": false,
+    "persistent_per_node_state_added": false
+  },
+  "verification": {
+    "github_actions_run": 34268386309,
+    "github_actions_conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "SWRD_1_independent_B1_10_AFGEN_oracle": "PASS",
+    "SWRD_2_bitwise_passthrough": "PASS",
+    "SWRD_3_independent_B1_10_AFGEN_oracle": "PASS",
+    "F_WOF16_composition": "PASS",
+    "F_WOF13_validation": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "input_read_only": "PASS",
+    "fail_closed_validation": "PASS",
+    "output_sha256": "66cbd4b2c8eefb237b9fa8a20b9bf582e01334456256dca7dc70834ae3bd169a"
+  },
+  "fwof14_blocker_effect": {
+    "nonadaptive_root_view_algorithm": "RESOLVED",
+    "option_aware_root_geometry_derivation": "RESOLVED",
+    "binding_to_complete_committed_crop_owner_lifecycle": "OPEN",
+    "potential_transpiration_producer": "OPEN",
+    "end_to_end_root_uptake_input_producer": "BLOCKED"
+  },
+  "open": [
+    "qualify ownership/binding of crop_emerged, DVS, WRT and SWRD=2 actual root-depth history in a complete transactional crop host",
+    "qualify current-interval potential-transpiration production as an ET process result",
+    "qualify root-growth evolution and lifecycle ordering separately",
+    "cover SWRDC=1 adaptive root distribution separately if required"
+  ],
+  "next": "Start a source-bound ET producer readiness workunit for current-interval potential_transpiration; do not move ET into persistent crop-root state."
+}
