@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ21",
+  "scope": "INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+  "phase": "INDEPENDENTLY_QUALIFIED_RELEASED_TO_FPM05",
+  "status": "QUALIFIED_INDEPENDENT_FMR09_PRECOMPUTED_ROOT_SINK_RUNTIME_SCIENTIFIC_ADMISSION",
+  "branch": "qualification/f-vq21-fmr09-root-sink-runtime",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "candidate_production_source_changed": false
+  },
+  "candidate": {
+    "fmr09_closeout_commit": "17a70b7e21b18ba847e5882037577b27aa8afd87",
+    "fmr09_closeout_tree": "59f420b898fda6fcce2bfee7c5c93ae22aa23932"
+  },
+  "decisive_verifier": {
+    "tested_head": "954d95a1607f372e3ee0bb228a693a0471a2ae81",
+    "tested_tree": "416408528d97658b0fec9bb5ab9b5e5493b58284",
+    "workflow_run_id": 34253933554,
+    "workflow_job_id": 102154840992,
+    "conclusion": "success",
+    "oracle_output_sha256": "42a4655dd8883028852896925ca111c02ef9562b2283b526b455e836291c120b"
+  },
+  "qualification_evidence_path": "integration/f-vq/F-VQ21_QUALIFICATION.json",
+  "qualification_evidence_commit": "9dd7625654406c6ecc6212a2e66abcfe4e52ec89",
+  "qualified_capabilities": [
+    "heterogeneous precomputed nonnegative nodewise qrot on the restricted serialized reference route",
+    "nodewise root-sink and matching qssdi hydraulic cancellation",
+    "authoritative root extraction total_out exactly once",
+    "hard accepted mass conservation",
+    "root-route checkpoint discard replay and A/B/A identity",
+    "inactive nonzero and negative root forcing fail closed before solver",
+    "O0/O2 verifier identity",
+    "preservation of fixed irrigation, scheduled irrigation, committed hydraulic view and snow regressions"
+  ],
+  "not_admitted": [
+    "dynamic Feddes or drought-stress root extraction calculation",
+    "root-sink reevaluation inside Newton",
+    "swkimpl=1 root uptake",
+    "macropore root uptake",
+    "negative root sink as source convention",
+    "full RootExtraction process migration",
+    "parallel reference backend"
+  ],
+  "release": {
+    "fpm05_resume_allowed": true,
+    "next_owner": "F-PM",
+    "next_work_unit": "F-PM05",
+    "restriction": "Only consume the exact independently qualified precomputed nonnegative qrot runtime route. Any broader RootExtraction/Feddes/macropore/swkimpl=1 behavior requires separate source-bound qualification."
+  }
+}
