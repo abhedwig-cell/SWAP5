@@ -1,0 +1,26 @@
+name: F-VQ26 independent F-MR11 prescribed bottom-head runtime
+
+on:
+  push:
+    branches:
+      - qualification/f-vq26-fmr11-prescribed-bottom-head-runtime
+    paths:
+      - 'integration/f-vq/F-VQ26_*'
+      - 'tests/fvq/test_fvq26_prescribed_bottom_head_runtime.f90'
+      - 'tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate.sh'
+      - '.github/workflows/fvq26-fmr11-prescribed-bottom-head-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ26 independent prescribed bottom-head runtime gate
+        run: bash tests/fvq/run_fvq26_prescribed_bottom_head_runtime_gate.sh
