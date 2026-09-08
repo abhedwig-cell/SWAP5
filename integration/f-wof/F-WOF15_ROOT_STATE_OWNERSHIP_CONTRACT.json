@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF15",
+  "title": "Physical-Option-Dependent Crop-Root State Ownership",
+  "branch": "work/f-wof15-root-state-ownership",
+  "base": {
+    "commit": "24eee52efc0ce68c879632bb6fa42cce6289f901",
+    "status": "BLOCKED_BOTH_OWNER_INPUTS_NOT_YET_AVAILABLE"
+  },
+  "purpose": "Resolve the minimum persistent crop-root state needed to produce the F-WOF13 crop_root_state_view_t without copying legacy global layout or allocating adaptive root arrays for columns that do not use adaptive root distribution.",
+  "source_provenance": {
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "prior_source_binding": "integration/f-wof/F-WOF12_SOURCE_BOUND_PROVIDER_INVENTORY.json"
+  },
+  "legacy_source_regions": {
+    "initialize_rootextension": "MOD_cropdevelopment.f90:1785-1825",
+    "update_rootextension": "MOD_cropdevelopment.f90:1829-1950",
+    "initialize_rootdistribution": "MOD_cropdevelopment.f90:2039-2072",
+    "initialize_cumdens": "MOD_cropdevelopment.f90:2103-2156",
+    "update_wroot_node": "MOD_cropdevelopment.f90:2160-2235",
+    "update_cumdens": "MOD_cropdevelopment.f90:2239-2275",
+    "update_cumdens_top": "MOD_cropdevelopment.f90:2279-2301"
+  },
+  "ownership_classes": {
+    "immutable_shared_parameters": [
+      "SWRD root-extension mode",
+      "SWRDC root-distribution mode",
+      "RDM maximum rooting depth",
+      "RDI initial rooting depth where applicable",
+      "RRI maximum root extension rate where applicable",
+      "RDTB DVS-to-root-depth table for SWRD=1",
+      "RLWTB root-biomass-to-root-depth table for SWRD=3",
+      "RDCTB relative-root-density table for non-adaptive distribution",
+      "root growth/death weighting parameters such as FGWRT and FDWRT where their option is active",
+      "immutable vertical grid geometry through shared references/IDs"
+    ],
+    "existing_crop_state_dependencies": [
+      "crop emergence/activity state",
+      "DVS for SWRD=1",
+      "actual root biomass WRT for SWRD=3 and adaptive distribution updates",
+      "potential root biomass WRTPOT only when the configured crop/reference capability actually requires the potential root-depth trajectory",
+      "crop root growth/death increments and daily stress/uptake aggregates only as inputs/results of the crop update in which they are consumed"
+    ],
+    "optional_persistent_root_state": {
+      "SWRD_1": {
+        "required_independent_root_depth_state": false,
+        "reason": "current actual root depth is derivable from committed DVS plus immutable RDTB/RDM"
+      },
+      "SWRD_2": {
+        "required": ["actual_root_depth", "potential_root_depth"],
+        "reason": "both trajectories are incrementally history-dependent; actual extension can lag potential extension under stress"
+      },
+      "SWRD_3": {
+        "required_independent_root_depth_state": false,
+        "reason": "current actual root depth is derivable from committed actual root biomass plus immutable RLWTB/RDM"
+      },
+      "SWRDC_1": {
+        "required": ["per_node_root_biomass_distribution_or_semantic_equivalent"],
+        "reason": "adaptive distribution updates each node from its previous root biomass plus root growth/death and daily uptake/stress"
+      },
+      "SWRDC_nonadaptive": {
+        "required_per_node_dynamic_distribution_state": false,
+        "reason": "normalized cumulative distribution is reconstructible from immutable RDCTB, RDM and grid geometry"
+      }
+    },
+    "reconstructible_or_intra_update_workspace": [
+      "noddrz/current lowest rooted node from current root depth and grid",
+      "mxnoddrz from RDM and grid",
+      "cumdens for non-adaptive distribution from RDCTB/RDM/grid",
+      "cumdens_top from normalized cumulative distribution and current rooted geometry",
+      "rootdist integration workspace",
+      "noddrz_old as pre-update geometry inside a crop update",
+      "rr/actual same-update root extension increment",
+      "rrpot/potential same-update root extension increment",
+      "wroot_node_top and lrv_node when they can be reconstructed from committed root distribution state and current crop/root totals"
+    ]
+  },
+  "view_production_contract": {
+    "target": "crop_root_state_view_t",
+    "crop_emerged": "read from committed crop lifecycle state",
+    "rooted_nodes": "derive from current physical root depth plus immutable grid",
+    "cumulative_root_fraction": "derive from non-adaptive immutable distribution or from optional adaptive per-node root state",
+    "potential_transpiration": "explicitly excluded from this ownership unit and remains an ET process result"
+  },
+  "memory_scaling_rules": [
+    "Do not persist noddrz merely because legacy code stored it globally.",
+    "Do not persist cumdens_top when it is reconstructible.",
+    "Do not allocate per-node adaptive root state for SWRDC != 1.",
+    "Do not persist an independent actual root depth for SWRD=1 or SWRD=3 solely for convenience when the configured committed crop state already determines it.",
+    "SWRD=2 and SWRDC=1 optional state must be enabled only for columns/templates using those physical options."
+  ],
+  "transaction_rules": [
+    "Any enabled SWRD=2 root-depth history is committed physical state and must checkpoint/trial/commit/rollback with the crop state.",
+    "Any enabled SWRDC=1 per-node adaptive root state is committed physical state and must checkpoint/trial/commit/rollback atomically with crop evolution.",
+    "Derived root views are read-only and are never an independent commit authority.",
+    "Rejected trials may not advance root depth, potential root depth or adaptive per-node root state."
+  ],
+  "time_scope": {
+    "legacy_update_cadence": "root extension and root distribution are updated by cropdevelopment(3) at legacy day end after the day's root-extraction calls",
+    "qualified_here": "ownership and reconstructibility only",
+    "not_qualified_here": "arbitrary subdaily root-growth evolution or genericization of the legacy daily crop update"
+  },
+  "forbidden": [
+    "copying MOD_cropdevelopment saved arrays into a universal SWAP5 per-column state object",
+    "making noddrz or cumdens_top persistent without a physical irreducibility argument",
+    "allocating wroot_node-equivalent arrays for non-adaptive columns",
+    "moving ET potential transpiration into crop-root persistent state",
+    "changing SWRD/SWRDC physics in this ownership workunit"
+  ],
+  "decision": "OPTION_DEPENDENT_MINIMAL_ROOT_STATE_WITH_DERIVED_VIEW",
+  "affected_invariants": [3, 4, 6, 7, 9, 16, 21, 27, 29, 30]
+}
