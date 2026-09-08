@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "title": "Irrigation Process Migration Readiness and Smallest Structural Seam",
+  "branch": "work/f-pm03-irrigation-readiness",
+  "start_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "start_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+  "readiness_contract_commit": "e3892bad756d70232fa54e0ff495fef69f02278c",
+  "inventory_commit": "1383f160aeedb30ba297d1307d5a66f009e751c0",
+  "readiness_evidence_commit": "fa3de8d57ffc24c94548308cf501362523dc544c",
+  "phase": "READINESS_BLOCKED_FAIL_CLOSED",
+  "status": "BLOCKED",
+  "decision": "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_EXPLICIT_HYDRAULIC_VIEW",
+  "READINESS_ASSESSED": true,
+  "IMPLEMENTED": false,
+  "PERSISTED": true,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "production_irrigation_source_changed": false,
+  "production_runtime_changed": false,
+  "solver_source_changed": false,
+  "kernel_source_changed": false,
+  "snow_source_changed": false,
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "cross_workstream_merge_performed": false,
+  "oracle": {
+    "path": "SWAP/irrigation.f90",
+    "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "reverified": true
+  },
+  "baseline": {
+    "fmr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fvq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "fmq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f"
+  },
+  "gate_summary": {
+    "qualified_composed_baseline": "PASS",
+    "b110_irrigation_oracle_identity": "PASS",
+    "process_facing_hydraulic_view": "FAIL",
+    "precomputed_ssdi_solver_source_seam": "PASS",
+    "transaction_framework": "PASS_CONTRACT_AVAILABLE",
+    "irrigation_specific_transaction_tests": "NOT_RUN_PRIMARY_BLOCKER",
+    "authoritative_mass_framework": "PASS_CONTRACT_AVAILABLE",
+    "irrigation_specific_mass_qualification": "NOT_RUN_PRIMARY_BLOCKER",
+    "legacy_io_separation": "PASS_ARCHITECTURAL",
+    "time_semantics_characterized": "PASS_READINESS_ONLY",
+    "snow_coexistence": "PASS_NO_CHANGE"
+  },
+  "primary_blocker": {
+    "owner": "F-SI",
+    "release_condition": "Qualify an explicit process-facing read-only hydraulic view with committed pressure-head and water-content semantics sufficient for B1.10 irrigation trigger/depth decisions, without exposing HeadCalc/reference-Richards internals."
+  },
+  "secondary_owner_after_release": {
+    "owner": "F-MR",
+    "release_condition": "Source-bind the qualified view onto an admitted physical runtime lineage so F-PM03 can consume committed hydraulic state without blind lineage merging."
+  },
+  "fkt_blocker": false,
+  "fkt_handoff_after_unblock": "Use existing opaque transaction and accepted-only authoritative mass contracts; prove irrigation-specific cursor/counter rollback, replay and exactly-once external inflow in the F-PM03 focused suite.",
+  "focused_migration_suite": {
+    "required_after_readiness_pass": [
+      "inactive irrigation",
+      "one event",
+      "no trigger",
+      "state continuation",
+      "A/B/A",
+      "rollback/replay",
+      "quota/event-history protection",
+      "mass",
+      "O0/O2",
+      "B1.10 identity"
+    ],
+    "executed": false,
+    "reason": "No production migration was allowed after hydraulic-view readiness failed."
+  },
+  "artifacts": [
+    "integration/f-pm/F-PM03_READINESS_CONTRACT.json",
+    "integration/f-pm/F-PM03_IRRIGATION_INVENTORY.json",
+    "integration/f-pm/F-PM03_READINESS_EVIDENCE.json",
+    "integration/f-pm/F-PM03_STATUS.json"
+  ],
+  "next_step": "Start an F-SI-owned explicit process hydraulic-view unit. After that view is independently qualified and source-bound into the physical runtime, resume this same F-PM03 branch/evidence lineage and only then implement the smallest structural irrigation seam."
+}
