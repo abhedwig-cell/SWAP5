@@ -1,0 +1,24 @@
+name: F-VQ19 F-MR08 nonstationary temporal qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq19-fmr08-nonstationary-temporal
+    paths:
+      - 'integration/f-vq/F-VQ19_*'
+      - 'tools/vq/fvq19_fmr08_nonstationary_audit.py'
+      - 'tests/vq/fvq19/**'
+      - '.github/workflows/fvq19-fmr08-nonstationary-temporal.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ19 independent source-bound qualification
+        run: bash tests/vq/fvq19/run_fvq19_gate.sh
