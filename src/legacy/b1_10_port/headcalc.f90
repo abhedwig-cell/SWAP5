@@ -106,7 +106,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (.not. allocated(parameter_set%z) .or. .not. allocated(parameter_set%dz) .or. &
           .not. allocated(parameter_set%node_distance)) error stop 'HeadCalc: incomplete explicit grid geometry'
       if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &
-          size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'
+          (size(parameter_set%node_distance) /= numnod .and. &
+           size(parameter_set%node_distance) /= numnod+1)) error stop 'HeadCalc: explicit grid geometry shape mismatch'
    else
       numnod = legacy_numnod
    end if
