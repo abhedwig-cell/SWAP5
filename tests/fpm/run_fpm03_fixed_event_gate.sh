@@ -18,7 +18,7 @@ check_blob() {
   }
 }
 
-check_blob src/process/mod_irrigation_process.f90 bbce5e21eb8e02775e68163a453cf0d88832bc3d
+check_blob src/process/mod_irrigation_process.f90 af8dc3b3e16d261af573c9b626704638d5ee70c9
 check_blob src/solver/mod_process_hydraulic_view.f90 d7d85fe71ced0d94b29c8d9395859ae1834f7dd6
 check_blob src/runtime/mod_fmr_process_hydraulic_view_binding.f90 37f5968ffe00b1ff56f824f77ab94d3825171acf
 check_blob src/process/mod_snow_process.f90 54702d71b4c84dce2842813549bd14c57301a383
@@ -69,8 +69,13 @@ for opt in 0 2; do
   OUT="$BUILD/o$opt"
   mkdir -p "$OUT/process" "$OUT/runtime"
 
+  # The migrated process itself must compile without direct REAL comparison
+  # warnings. Tests may intentionally use exact-binary fixture comparisons.
+  gfortran "${COMMON[@]}" -Werror=compare-reals -O"$opt" -J "$OUT/process" -I "$OUT/process" \
+    -c src/process/mod_irrigation_process.f90 -o "$OUT/process/mod_irrigation_process.o"
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT/process" -I "$OUT/process" \
-    src/process/mod_irrigation_process.f90 tests/fpm/test_fpm03_fixed_event_process.f90 \
+    tests/fpm/test_fpm03_fixed_event_process.f90 "$OUT/process/mod_irrigation_process.o" \
     -o "$OUT/process/fpm03_process"
   "$OUT/process/fpm03_process" > "$OUT/process.txt" 2>&1 || { cat "$OUT/process.txt" >&2; exit 1; }
   for marker in \
@@ -86,6 +91,15 @@ for opt in 0 2; do
     'FPM03_FIXED_EVENT_PROCESS_TEST PASS'; do
       grep -Fq "$marker" "$OUT/process.txt"
   done
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT/process" -I "$OUT/process" \
+    tests/fpm/test_fpm03_time_tolerance.f90 "$OUT/process/mod_irrigation_process.o" \
+    -o "$OUT/process/fpm03_time_tolerance"
+  "$OUT/process/fpm03_time_tolerance" > "$OUT/time.txt" 2>&1 || { cat "$OUT/time.txt" >&2; exit 1; }
+  grep -Fq 'FPM03_TIME_NEAR_END_CLAMP=PASS' "$OUT/time.txt"
+  grep -Fq 'FPM03_TIME_FAR_END_SPLIT=PASS' "$OUT/time.txt"
+  grep -Fq 'FPM03_TIME_PERSISTED_END_ULP_TOLERANCE=PASS' "$OUT/time.txt"
+  grep -Fq 'FPM03_TIME_TOLERANCE_TEST PASS' "$OUT/time.txt"
 
   objects=()
   for src in "${RUNTIME_MODULES[@]}"; do
@@ -114,13 +128,15 @@ for opt in 0 2; do
   grep -Fq 'FMR06_SNOW_AUTHORITATIVE_MASS_COMPLETE=PASS' "$OUT/snow.txt"
   grep -Fq 'FMR06_SNOW_SMOKE_TEST PASS' "$OUT/snow.txt"
 
-  cat "$OUT/process.txt" "$OUT/runtime.txt" "$OUT/snow.txt" > "$OUT/output.txt"
+  cat "$OUT/process.txt" "$OUT/time.txt" "$OUT/runtime.txt" "$OUT/snow.txt" > "$OUT/output.txt"
   sha256sum "$OUT/output.txt" > "$OUT/output.sha256"
   echo "FPM03_FIXED_O${opt}=PASS"
 done
 
 cmp "$BUILD/o0/process.txt" "$BUILD/o2/process.txt"
 echo 'FPM03_FIXED_PROCESS_O0_O2_OUTPUT_IDENTITY=PASS'
+cmp "$BUILD/o0/time.txt" "$BUILD/o2/time.txt"
+echo 'FPM03_FIXED_TIME_O0_O2_OUTPUT_IDENTITY=PASS'
 cmp "$BUILD/o0/runtime.txt" "$BUILD/o2/runtime.txt"
 echo 'FPM03_FIXED_SSDI_RUNTIME_O0_O2_OUTPUT_IDENTITY=PASS'
 cmp "$BUILD/o0/snow.txt" "$BUILD/o2/snow.txt"
@@ -128,6 +144,7 @@ echo 'FPM03_FIXED_FMR06_SNOW_O0_O2_OUTPUT_IDENTITY=PASS'
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'FPM03_FIXED_FULL_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/process.txt"
+cat "$BUILD/o0/time.txt"
 cat "$BUILD/o0/runtime.txt"
 cat "$BUILD/o0/snow.txt"
 echo "FPM03_FIXED_OUTPUT_SHA256=$(cut -d' ' -f1 "$BUILD/o0/output.sha256")"
