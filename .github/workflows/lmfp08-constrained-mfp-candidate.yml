@@ -1,0 +1,28 @@
+name: F-LMFP08 Constrained Continuous MFP Darcian Ratio
+
+on:
+  push:
+    branches:
+      - work/f-lmfp08-physics-informed-darcian-correction
+  workflow_dispatch:
+
+jobs:
+  constrained-mfp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          python3 --version
+      - name: Constrained continuous MFP ratio qualification gate
+        run: bash experiments/lmfp/run_lmfp08_constrained_mfp_gate.sh
+      - name: Upload constrained MFP evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp08-constrained-mfp-evidence
+          path: |
+            lmfp08-constrained-mfp-artifacts/
+            lmfp04-artifacts/

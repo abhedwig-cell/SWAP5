@@ -1,11 +1,10 @@
 name: F-LMFP08 Upstream-K Darcian Ratio Candidate
 
 on:
-  push:
-    branches:
-      - work/f-lmfp08-physics-informed-darcian-correction
   workflow_dispatch:
 
+# Retained as negative/comparative evidence. This representation passed the
+# strengthened continuity test but missed one strong-gradient transient case.
 jobs:
   upstreamk:
     runs-on: ubuntu-latest
