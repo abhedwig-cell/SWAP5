@@ -7,20 +7,20 @@
 
 ! ----------------------------------------------------------------------
 subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                    numerical_config, explicit_step_duration, parameter_set)
+                    numerical_config, physical_config, explicit_step_duration, parameter_set)
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
 !                          and conductivities for next time step
 ! ----------------------------------------------------------------------
    ! input
-   use MOD_swap_base,      only: swmacro, i_instance
+   use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-        soil_water_numerical_config_t, soil_water_parameter_set_t
+        soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
    use MOD_arrays,         only: macp, mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -44,7 +44,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use variables,          only: fllowgwl, k, dimoca, numbit, fldecdt, gwl     ! note: K not always up-to-date at t+Dt
 
    ! macropore
-   use MOD_swap_mp,        only: armpss, frarmtrx, qexcmpmtx, dfdhmp, ictopmp                        ! all input
+   use MOD_swap_mp,        only: legacy_armpss => armpss, legacy_frarmtrx => frarmtrx, qexcmpmtx, dfdhmp, ictopmp ! all input
    use MOD_swap_mp,        only: qmplatss, idecmprat                                                 ! input + output
    use MOD_swap_mp,        only: fldecmprat, fldecMPmbf                                              ! output
    implicit none
@@ -63,6 +63,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+   type(soil_water_physical_config_t), intent(in), optional :: physical_config
    real(8), intent(in), optional :: explicit_step_duration
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_runoff_resolved
@@ -73,7 +74,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
    integer                          :: numnod
-   integer                          :: swbotb, swkimpl, swkmean, maxit, maxbacktr
+   integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
    real(8)                          :: CritDevBalCp, CritDevBalTot
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
@@ -129,6 +130,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
+   swmacro = legacy_swmacro
    swbotb = legacy_swbotb
    dt = legacy_dt
    swkimpl = legacy_swkimpl
@@ -142,6 +144,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    CritDevBalCp = legacy_CritDevBalCp
    CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
+      if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
+      if (physical_config%macropore_active) error stop 'HeadCalc: active explicit macropore route not admitted'
+      swmacro = 0
       if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
       swbotb = boundary_conditions%bottom_mode
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
@@ -217,17 +222,17 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state%fllowgwl = .FALSE.
       if (state%gwlinp >= grid_z(1)-1.0d-4) then
 
-         state%q0 = (nraidt+nird+melt)*(1.0d0-ArMpSs) + runon - reva - epd
+         state%q0 = (nraidt+nird+melt)*(1.0d0-macropore_surface_fraction()) + runon - reva - epd
          call pondrunoff_state_bridge()
          q1 = - state%q0 + (state%pond - state%pondm1)/dt + state%runots/dt
          state%theta(1) = watcon(1,state%gwlinp)
          state%kmean(1) = hconduc(1,state%gwlinp,state%theta(1),rfcp(1))
 !        in case of static macropores FrArMtrx < 1
-         if (swmacro == 1) state%kmean(1) = FrArMtrx(1) * state%kmean(1)
+         if (swmacro == 1) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
 
          fsi_ws%vertical_flux(1) = q1
          do i = 1, numnod
-            fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) 
+            fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) 
          end do
          state%qbot = fsi_ws%vertical_flux(numnod+1)
          state%h(1) = state%gwlinp + grid_disnod(1)*(fsi_ws%vertical_flux(1)/state%kmean(1) + 1.0d0)
@@ -239,7 +244,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (SwKimpl == 1) then
             do i = 1, numnod
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1)  state%k(i) = FrArMtrx(i) * state%k(i)
+               if (swmacro == 1)  state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -286,7 +291,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
    end if
    do i = 1, numnod
-      if (swmacro == 1)  state%k(i)     = FrArMtrx(i) * state%k(i)
+      if (swmacro == 1)  state%k(i)     = matrix_fraction(i) * state%k(i)
       if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
    end do
    state%kmean(numnod+1) = state%k(numnod)
@@ -315,7 +320,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  start iteration loop, MaxIt specified in the input
    MaxIt1 = MaxIt
-   if (fldtmin .OR. fldecmprat) MaxIt1 = 2*MaxIt
+   if (fldtmin) MaxIt1 = 2*MaxIt
+   if (legacy_state_binding) then
+      if (fldecmprat) MaxIt1 = 2*MaxIt
+   else if (swmacro == 1) then
+      if (fldecmprat) MaxIt1 = 2*MaxIt
+   end if
    sump = 0.d0
    do solver_numbit = 1, MaxIt1
       state%numbit = solver_numbit
@@ -339,7 +349,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (SwKimpl == 1) then
          do i = 1, NN
             fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
-            if (swmacro == 1) fsi_ws%dconductivity_dhead(i) = FrArMtrx(i) * fsi_ws%dconductivity_dhead(i)
+            if (swmacro == 1) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
             fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
@@ -413,7 +423,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             call Rootextraction(2)
             do i = 1, NN
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (swmacro == 1) state%k(i) = FrArMtrx(i) * state%k(i)
+               if (swmacro == 1) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -484,15 +494,15 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end if
 
 !     in case of macropores
-      if (swmacro == 1 .AND. IcTopMp == 1) then
-         deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt + ArMpSs * (nraidt+nird+Melt)*dt + QMpLatSs
-         if (abs(deviat) > CritDevPondDt) then
-            flnonconv3 = .TRUE.
-            flnonconv  = .TRUE.
+      if (swmacro == 1) then
+         if (IcTopMp == 1) then
+            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt + macropore_surface_fraction() * (nraidt+nird+Melt)*dt + QMpLatSs
+            if (abs(deviat) > CritDevPondDt) then
+               flnonconv3 = .TRUE.
+               flnonconv  = .TRUE.
+            end if
          end if
-      end if
-      if (swmacro == 1 .AND. fldecMPmbf) then
-         flnonconv = .TRUE.
+         if (fldecMPmbf) flnonconv = .TRUE.
       end if
       
 
@@ -549,7 +559,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                state%theta(i) = cofgen(2,i)
             end do
             do i = 1, numnod
-              fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*FrArMtrx(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
+              fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
             end do
             state%qbot = fsi_ws%vertical_flux(numnod+1)
 !           state%h in saturated zone
@@ -622,6 +632,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+real(8) function matrix_fraction(node)
+   integer, intent(in) :: node
+   if (legacy_state_binding .or. swmacro == 1) then
+      matrix_fraction = legacy_frarmtrx(node)
+   else
+      matrix_fraction = 1.0d0
+   end if
+end function matrix_fraction
+
+real(8) function macropore_surface_fraction()
+   if (legacy_state_binding .or. swmacro == 1) then
+      macropore_surface_fraction = legacy_armpss
+   else
+      macropore_surface_fraction = 0.0d0
+   end if
+end function macropore_surface_fraction
 
 real(8) function grid_z(node)
    integer, intent(in) :: node
@@ -803,7 +830,7 @@ subroutine vector_F(iTask)
    real(8)                    :: afgen
 
 !  top layer
-   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * FrArMtrx(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+   fsi_ws%residual(1) = (state%theta(1) - state%thetm1(1)) * matrix_fraction(1) * grid_dz(1) / dt + fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
 
 !  depending on iTask
    if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
@@ -821,7 +848,9 @@ subroutine vector_F(iTask)
    end if
 
 !  take care of top BC: ponding, runoff
-   if ((state%flrunoff .OR. ArMpSs > 0.0d0) .AND. .NOT. provider_runoff_resolved) call pondrunoff_state_bridge()
+   if (.NOT. provider_runoff_resolved) then
+      if (state%flrunoff .OR. macropore_surface_fraction() > 0.0d0) call pondrunoff_state_bridge()
+   end if
 
 !  first layer, continued
    if (state%ftoph) then
@@ -833,7 +862,7 @@ subroutine vector_F(iTask)
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * FrArMtrx(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
+      fsi_ws%residual(i) = (state%theta(i) - state%thetm1(i)) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
    end do
 
 !  for bottom BC
@@ -868,11 +897,11 @@ subroutine vector_F(iTask)
       state%theta(NN) = watcon(NN,state%h(NN))
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
       ! in case of static macropores FrArMtrx < 1
-      if (swmacro == 1) state%k(NN) = FrArMtrx(NN) * state%k(NN)
+      if (swmacro == 1) state%k(NN) = matrix_fraction(NN) * state%k(NN)
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
+      fsi_ws%residual(NN)       = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
-      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*FrArMtrx(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
+      fsi_ws%residual(NN) = (state%theta(NN) - state%thetm1(NN))*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
       if (swbotb == 3 .AND. swbotb3Impl == 1) then
          
          ! Cauchy-relation, implemented as head boundary
@@ -905,7 +934,7 @@ subroutine vector_F(iTask)
          else
             state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
          end if
-         if (swmacro == 1) state%kmean(numnod+1) = FrArMtrx(numnod) * state%kmean(numnod+1)
+         if (swmacro == 1) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
@@ -935,18 +964,18 @@ end subroutine vector_F
 subroutine jacobian_F()
 
 !  first layer
-   fsi_ws%dfdh_main(1) = state%dimoca(1)*FrArMtrx(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
+   fsi_ws%dfdh_main(1) = state%dimoca(1)*matrix_fraction(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
  
 !  if the head boundary condition applies: add the k1/(0.5*dz1) term to the first element of the main diagonal 
    if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)  
 
 !  layers 2 to (NN-1)
    do i = 2, NN-1
-      fsi_ws%dfdh_main(i) = state%dimoca(i)*FrArMtrx(i)*grid_dz(i)/dt - fsi_ws%dfdh_upper(i) - fsi_ws%dfdh_lower(i) 
+      fsi_ws%dfdh_main(i) = state%dimoca(i)*matrix_fraction(i)*grid_dz(i)/dt - fsi_ws%dfdh_upper(i) - fsi_ws%dfdh_lower(i) 
    end do
 
 !  last layer: handle bottom BC
-   fsi_ws%dfdh_main(NN) = state%dimoca(NN)*FrArMtrx(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
+   fsi_ws%dfdh_main(NN) = state%dimoca(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
    else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy

@@ -35,12 +35,12 @@ module mod_reference_richards_legacy_binding
 
   interface
      subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                         numerical_config, explicit_step_duration, parameter_set)
+                         numerical_config, physical_config, explicit_step_duration, parameter_set)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
        use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-            soil_water_numerical_config_t, soil_water_parameter_set_t
+            soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
        type(a23bu_solver_history_t), target, intent(inout), optional :: history
@@ -48,6 +48,7 @@ module mod_reference_richards_legacy_binding
        type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
        type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
        type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
+       type(soil_water_physical_config_t), intent(in), optional :: physical_config
        real(8), intent(in), optional :: explicit_step_duration
        type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
      end subroutine headcalc
@@ -65,6 +66,7 @@ contains
     class(source_sink_provider_t), target, intent(in), optional :: source_sink
 
     request%parameters => parameters
+    request%physical%macropore_active = (swmacro /= 0)
     request%evaluation%constitutive => constitutive
     if (present(source_sink)) request%evaluation%source_sink => source_sink
     if (present(top_boundary)) then
@@ -133,7 +135,8 @@ contains
        call initialize_reference_state_binding(state_binding, request)
 
        call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
-            request%evaluation, request%boundary, request%numerical, request%step_duration, request%parameters)
+            request%evaluation, request%boundary, request%numerical, request%physical, &
+            request%step_duration, request%parameters)
 
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
@@ -179,8 +182,8 @@ contains
     end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
-    if (swmacro /= 0) then
-       route = 'legacy-macropore-deferred'
+    if (request%physical%macropore_active) then
+       route = 'explicit-macropore-deferred'
        return
     end if
     if (request%numerical%conductivity_implicit_mode /= 0) then
