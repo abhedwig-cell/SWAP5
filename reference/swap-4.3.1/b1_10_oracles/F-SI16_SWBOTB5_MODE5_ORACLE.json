@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "oracle": "exact_B1.10_SWBOTB5_mode5_direct_headcalc",
+  "source_provenance": {
+    "distribution_file": "SWAP_4.3.1(6).zip",
+    "nested_canonical_source_member": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_swap_zip_sha256": "1a2d7989287cd5ffcd46959ca43e1cfc354ad1642de26245feca9b0572445151",
+    "headcalc_b110_sha256": "db6675984fbaf37290acaf96553ba0165c55caf45983411f62f30be309c113f5",
+    "tridag_b0_sha256": "6aa6bb86573efa88afd3414c57ed36a75825b2535a4b8e72d7e1c5fe23d96651",
+    "tridag_b110_sha256": "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a",
+    "tridag_b110_correction": "qualified SWAP-008 byte patch"
+  },
+  "fixture": {
+    "active_nodes": 4,
+    "z_cm": [-0.25, -0.75, -1.50, -2.50],
+    "dz_cm": [0.50, 0.50, 1.00, 1.00],
+    "face_distance_cm": [1.00, 1.00, 1.00, 1.00, 0.50],
+    "initial_pressure_head_cm": [-75.0, -75.0, -75.0, -75.0],
+    "initial_water_content": [0.30, 0.30, 0.30, 0.30],
+    "prescribed_bottom_head_cm": -74.0,
+    "top_flux": -1.0,
+    "step_duration": 0.25,
+    "conductivity": 1.0,
+    "capacity": 0.001,
+    "water_content_law": "theta=0.30+0.001*(h+75)",
+    "source": 0.0,
+    "sink": 0.0,
+    "root_sink": 0.0,
+    "swbotb": 5,
+    "swkimpl": 0,
+    "swkmean": 1
+  },
+  "execution": {
+    "compiler": "GNU Fortran 14.2.0",
+    "o0_o2_byte_identical": true,
+    "oracle_vector_sha256": "ea60f9b5e5651dc79cf27aee14612aa310e3cbaf71204770f8ba7441f2a24510",
+    "comparison_policy": "bitwise_no_scientific_tolerance"
+  },
+  "authoritative_bottom_flux_semantics": "qbot reconstructed from exact B1.10 accepted state by the same water-continuity recurrence and sign convention used by the common F-SI16 result contract",
+  "result": "SOURCE_BOUND_ORACLE_PERSISTED_NOT_YET_COMMON_ROUTE_QUALIFIED"
+}
