@@ -1,49 +1,61 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-MQ",
   "work_unit": "F-MQ23",
   "coverage_model": {
-    "synthetic_runtime_infrastructure": "SEPARATE",
-    "serialized_real_physics_multicolumn": "SEPARATE",
-    "parallel_real_physics": "SEPARATE_NOT_ADMITTED",
+    "synthetic_runtime_infrastructure": "QUALIFIED_SEPARATELY",
+    "serialized_real_physics_multicolumn": "QUALIFIED_RESTRICTED",
+    "parallel_real_physics": "NOT_ADMITTED",
     "combined_percentage_forbidden": true
   },
-  "locks": {
-    "MQ23-G01": "PASS_EXACT_REBOUND_SOURCE",
-    "MQ23-G02": "PASS_FVQ15_IMMUTABLE_ADMISSION",
+  "source_lock": {
+    "candidate_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "candidate_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
     "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
-    "source_candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976"
+    "fmr01_qualified_source": "6ed341437ebcfc6bd19c281f1064a789e90fbd05"
   },
   "gates": [
-    {"id":"MQ23-G01","status":"PASS_EXACT_REBOUND_SOURCE"},
-    {"id":"MQ23-G02","status":"PASS_FVQ15_SOURCE_BOUND_ADMISSION"},
-    {"id":"MQ23-G03","status":"PENDING_EXECUTION_PRODUCTION_MULTICOLUMN_ENTRYPOINT"},
-    {"id":"MQ23-G04","status":"PENDING_EXECUTION_TRANSACTION_CHECKPOINT_COMMIT_ROLLBACK"},
-    {"id":"MQ23-G05","status":"PENDING_EXECUTION_FAILURE_ISOLATION"},
-    {"id":"MQ23-G06","status":"PENDING_EXECUTION_SCRATCH_ISOLATION"},
-    {"id":"MQ23-G07","status":"PENDING_EXECUTION_SHARED_IMMUTABLE_PARAMETER_INTEGRITY"},
-    {"id":"MQ23-G08","status":"PENDING_EXECUTION_ORDER_PARTITION_INDEPENDENCE"},
-    {"id":"MQ23-G09","status":"PENDING_EXECUTION_SINGLE_VS_MULTI_IDENTITY"},
-    {"id":"MQ23-G10","status":"PENDING_EXECUTION_BATCH_MATRIX_1_2_8_17_31_32"},
-    {"id":"MQ23-G11","status":"PENDING_EXECUTION_A_B_A_REPEATABILITY"},
-    {"id":"MQ23-G12","status":"PENDING_EXECUTION_RUNTIME_DIAGNOSTICS"},
-    {"id":"MQ23-G13","status":"PENDING_EXECUTION_DIFFICULT_OR_REJECTED_TAIL_ISOLATION"},
-    {"id":"MQ23-G14","status":"PENDING_EXECUTION_AUTHORITATIVE_HARD_MASS"},
-    {"id":"MQ23-G15","status":"PENDING_EXECUTION_GENERIC_RUNTIME_WORKER_MATRIX_1_2_4_8_NONPHYSICAL"},
-    {"id":"MQ23-G16","status":"PENDING_EXECUTION_MEMORY_LAYOUT_OBSERVATION_NONPHYSICAL"},
-    {"id":"MQ23-G17","status":"PENDING_EXECUTION_O0_O2_IDENTITY"},
-    {"id":"MQ23-G18","status":"PENDING_EXECUTION_GENERIC_TIME"},
-    {"id":"MQ23-G19","status":"PENDING_EXECUTION_SOURCE_BOUNDARY_AND_SCOPE_HOLDS"},
-    {"id":"MQ23-G20","status":"PASS_SCOPE_LOCK_NO_PARALLEL_OR_PHYSICS_PROMOTION"}
+    {"id":"MQ23-G01","status":"PASS_EXACT_REBOUND_SOURCE","evidence_class":"PROVENANCE"},
+    {"id":"MQ23-G02","status":"PASS_FVQ15_SOURCE_BOUND_ADMISSION","evidence_class":"SCIENTIFIC_PROVENANCE"},
+    {"id":"MQ23-G03","status":"PASS_PRODUCTION_SERIALIZED_MULTICOLUMN_ENTRYPOINT","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G04","status":"PASS_REAL_TRANSACTION_CHECKPOINT_COMMIT_ROLLBACK","evidence_class":"REAL_PHYSICS_TRANSACTION"},
+    {"id":"MQ23-G05","status":"PASS_REAL_FAILURE_ISOLATION","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G06","status":"PASS_GENERIC_RUNTIME_SCRATCH_ISOLATION","evidence_class":"DETERMINISTIC_RUNTIME_INFRASTRUCTURE_ONLY"},
+    {"id":"MQ23-G07","status":"PASS_SHARED_IMMUTABLE_PARAMETER_INTEGRITY","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G08","status":"PASS_REAL_ORDER_PARTITION_INDEPENDENCE","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G09","status":"PASS_SINGLE_VS_MULTI_IDENTITY","evidence_class":"REAL_PHYSICS_AND_SCIENTIFIC_IDENTITY"},
+    {"id":"MQ23-G10","status":"PASS_REAL_BATCH_MATRIX_1_2_8_17_31_32","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G11","status":"PASS_REAL_A_B_A_REPEATABILITY","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G12","status":"PASS_REAL_RUNTIME_DIAGNOSTICS_SERIALIZED_MAX1","evidence_class":"REAL_PHYSICS_DIAGNOSTICS"},
+    {"id":"MQ23-G13","status":"PASS_GENERIC_DIFFICULT_TAIL_AND_FAILURE_ISOLATION","evidence_class":"DETERMINISTIC_RUNTIME_INFRASTRUCTURE_ONLY"},
+    {"id":"MQ23-G14","status":"PASS_AUTHORITATIVE_HARD_MASS","evidence_class":"REAL_PHYSICS_MASS"},
+    {"id":"MQ23-G15","status":"PASS_GENERIC_RUNTIME_WORKERS_1_2_4_8_NOT_PHYSICAL_PARALLEL_ADMISSION","evidence_class":"DETERMINISTIC_RUNTIME_INFRASTRUCTURE_ONLY"},
+    {"id":"MQ23-G16","status":"PASS_GENERIC_RUNTIME_MEMORY_LAYOUT_OBSERVATION","evidence_class":"DETERMINISTIC_RUNTIME_INFRASTRUCTURE_ONLY"},
+    {"id":"MQ23-G17","status":"PASS_REAL_O0_O2_IDENTITY","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G18","status":"PASS_REAL_GENERIC_TIME","evidence_class":"REAL_PHYSICS_RUNTIME"},
+    {"id":"MQ23-G19","status":"PASS_SOURCE_BOUND_SCOPE_AND_INDEPENDENT_SCIENTIFIC_REPLAY","evidence_class":"INDEPENDENT_SCIENTIFIC_REPLAY"},
+    {"id":"MQ23-G20","status":"PASS_SCOPE_LOCK_NO_PARALLEL_OR_PHYSICS_PROMOTION","evidence_class":"SCOPE_GOVERNANCE"}
   ],
-  "required_real_physics_batch_matrix": [1,2,8,17,31,32],
-  "required_generic_runtime_worker_matrix": [1,2,4,8],
+  "real_physics_batch_matrix": [1,2,8,17,31,32],
+  "generic_runtime_worker_matrix": [1,2,4,8],
   "worker_matrix_semantics": "GENERIC_RUNTIME_INFRASTRUCTURE_ONLY; DOES_NOT_ADMIT_PARALLEL_REAL_PHYSICS",
-  "resolved_blocker": {
-    "id": "FMQ23-B01",
-    "status": "RESOLVED_UPSTREAM_NOT_BY_QUALIFICATION_PATCH",
-    "source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
-    "scientific_admission": "65efc66cc76fa9005eac46e5779439c5ada574d1"
+  "mass_gate": {
+    "complete_required": true,
+    "missing_mask_required": 0,
+    "existing_hard_tolerance": 1e-12,
+    "observed_max_abs_column_residual": 2.77555756156289135e-17,
+    "observed_aggregate_unrounded_residual": 0.0,
+    "new_tolerance": false
   },
-  "promotion": "NONE_UNTIL_MQ23_G03_G19_EXECUTED_AND_PASS"
+  "scientific_identity": {
+    "criterion": "EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+    "maximum_observed_difference": 0.0,
+    "direct_reference_columns": [1,2,17,31]
+  },
+  "promotion": {
+    "restricted_serialized_real_physics_multiswap": true,
+    "scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "parallel_real_physics": false,
+    "general_swap5_multiswap_release": false
+  }
 }
