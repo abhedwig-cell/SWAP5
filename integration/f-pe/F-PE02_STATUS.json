@@ -1,26 +1,32 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PE",
   "work_unit": "F-PE02",
   "branch": "work/f-pe02-diagnostics-policy-separation",
   "start_head": "4c62c7a7080a247a57d73893b2f2ed3a15bd7fd0",
-  "current_source_checkpoint": "599d60ccaf839ffb34325e45ca35226bf47ba080",
-  "phase": "PARTIAL_QUALIFICATION",
-  "status": "PERSISTED_DIAGNOSTICS_CANDIDATE_NUMERICAL_POLICY_LINEAGE_BLOCKED",
-  "IMPLEMENTED": true,
+  "phase": "PARTIAL_EXIT",
+  "status": "PARTIAL_EXIT_DIAGNOSTICS_QUALIFIED_NUMERICAL_POLICY_LINEAGE_BLOCKED",
+  "IMPLEMENTED": false,
   "PERSISTED": true,
   "TESTED": true,
   "QUALIFIED": false,
+  "overall_status_note": "Overall booleans describe the complete mixed-scope F-PE02 work unit. Diagnostics is complete; numerical-policy source separation is deliberately not implemented because shared solver semantics require upstream source-lineage integration and independent scientific requalification.",
   "diagnostics_subgate": {
-    "implemented": true,
-    "persisted": true,
-    "candidate_tested": true,
-    "final_self_verification_pending": true,
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "decision": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
+    "production_source_commit": "599d60ccaf839ffb34325e45ca35226bf47ba080",
     "candidate_workflow_run": 34209492653,
-    "materialization_workflow_run": 34209749802
+    "persisted_self_verification_run": 34210225418
   },
   "numerical_policy_separation": {
-    "contract_defined": true,
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "contract_persisted": true,
     "source_integration_performed_by_fpe": false,
     "status": "BLOCKED_FPE02_B01",
     "blocker_artifact": "integration/f-pe/F-PE02_NUMERICAL_POLICY_LINEAGE_BLOCKER.json"
@@ -33,5 +39,5 @@
   "physics_changed": false,
   "mass_requirement_relaxed": false,
   "parallel_real_physics_admitted": false,
-  "next_gate": "Persisted diagnostic postimage self-verification, then hand off FPE02-B01 to F-MR/F-VQ lineage integration."
+  "safe_parallel_next_work": "Reference-only difficult-column and performance characterization may proceed independently of FPE02-B01, provided no non-reference numerical policy is introduced."
 }

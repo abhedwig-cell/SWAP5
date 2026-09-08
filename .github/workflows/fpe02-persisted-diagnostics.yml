@@ -10,7 +10,6 @@ on:
       - 'integration/f-pe/F-PE02_*.json'
       - 'tools/fpe/fpe02_diagnostics_candidate.py'
       - '.github/workflows/fpe02-persisted-diagnostics.yml'
-      - '.github/workflows/fpe02-diagnostics-candidate.yml'
   workflow_dispatch:
 
 permissions:
@@ -79,13 +78,22 @@ jobs:
           grep -F 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' /tmp/fpe02-persisted.log
           grep -F 'FMR05_O0_O2_OUTPUT_IDENTITY PASS' /tmp/fpe02-persisted.log
           grep -F 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' /tmp/fpe02-persisted.log
-      - name: Verify fail-closed F-PE02 policy status
+      - name: Verify qualified diagnostics and fail-closed overall status
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
           s=json.loads(Path('integration/f-pe/F-PE02_STATUS.json').read_text())
+          q=json.loads(Path('integration/f-pe/F-PE02_QUALIFICATION.json').read_text())
+          e=json.loads(Path('integration/f-pe/F-PE02_DIAGNOSTICS_QUALIFICATION_EVIDENCE.json').read_text())
           b=json.loads(Path('integration/f-pe/F-PE02_NUMERICAL_POLICY_LINEAGE_BLOCKER.json').read_text())
+          assert e['state']=='QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION'
+          assert s['diagnostics_subgate']['QUALIFIED'] is True
+          assert s['QUALIFIED'] is False
+          assert s['IMPLEMENTED'] is False
+          assert q['overall_qualified'] is False
+          assert q['diagnostics']['qualified'] is True
+          assert q['numerical_policy_separation']['qualified'] is False
           assert s['reference_execution_class']=='REFERENCE'
           assert s['balanced_status']=='DEFINED_NOT_ADMITTED'
           assert s['throughput_status']=='DEFINED_NOT_ADMITTED'
@@ -94,7 +102,5 @@ jobs:
           assert not s['mass_requirement_relaxed']
           assert not s['parallel_real_physics_admitted']
           assert b['status']=='BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION'
-          assert not b['physics_change_by_fpe02']
-          assert not b['non_reference_policy_admission']
-          print('FPE02_FAIL_CLOSED_POLICY_GATE PASS')
+          print('FPE02_QUALIFIED_DIAGNOSTICS_FAIL_CLOSED_OVERALL_GATE PASS')
           PY

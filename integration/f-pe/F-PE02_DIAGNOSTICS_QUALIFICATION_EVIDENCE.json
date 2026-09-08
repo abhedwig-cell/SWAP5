@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE02",
   "subgate": "INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
-  "state": "PERSISTED_CANDIDATE_REQUIRES_FINAL_SELF_VERIFICATION",
+  "state": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
   "reference_basis": {
     "fpe01_qualified_head": "4c62c7a7080a247a57d73893b2f2ed3a15bd7fd0",
     "qualified_real_physics_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
@@ -18,19 +18,29 @@
     "kernel_pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
     "kernel_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
     "runtime_pre_blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
-    "runtime_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
+    "runtime_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36"
+  },
+  "materialization": {
+    "connector_materialized_commit": "599d60ccaf839ffb34325e45ca35226bf47ba080",
+    "connector_materialized_tree": "5bd16ee0e4936b51976bff3364fd893fce30ce2e",
     "changed_production_paths": [
       "src/kernel/mod_kernel_transactions.f90",
       "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
     ],
-    "legacy_solver_adapter_transaction_source_changed": false
+    "legacy_solver_adapter_transaction_source_changed": false,
+    "auxiliary_materialization_verification_run": 34209749802,
+    "auxiliary_materialization_verification_job": 102007654216
   },
-  "materialization_verification": {
-    "workflow_run": 34209749802,
-    "workflow_job": 102007654216,
+  "persisted_postimage_self_verification": {
+    "workflow_run": 34210225418,
+    "workflow_job": 102009190715,
+    "head": "3954e0deec78bfb6c04ae6f3c00c0795ba85a662",
     "conclusion": "success",
-    "connector_materialized_commit": "599d60ccaf839ffb34325e45ca35226bf47ba080",
-    "connector_materialized_tree": "5bd16ee0e4936b51976bff3364fd893fce30ce2e"
+    "exact_post_blobs_verified": true,
+    "protected_physics_blobs_verified": true,
+    "source_scope_exactly_two_diagnostic_paths": true,
+    "O0_O2_real_physics_compatibility_replay": "PASS",
+    "fail_closed_policy_gate": "PASS"
   },
   "observed_reference_interval_cost_first_column": {
     "accepted_substeps": 1,
@@ -56,7 +66,9 @@
     "rollback_commit_contracts": true,
     "parallel_reference_backend_admitted": false
   },
-  "interpretation": "The earlier F-PE01 solver_iterations surface represented the latest solver observation and understated interval aggregate work. F-PE02 propagates existing canonical interval counters without altering solver decisions, physics, transaction semantics or mass accounting.",
+  "interpretation": "The earlier F-PE01 solver_iterations surface represented the latest solver observation and understated aggregate interval work. F-PE02 propagates canonical interval counters without changing solver decisions, physics, transaction semantics or authoritative mass accounting.",
+  "qualification_scope": "OBSERVATIONAL_DIAGNOSTICS_PROPAGATION_ONLY",
+  "production_policy_admission": false,
   "physics_changed": false,
-  "non_reference_policy_admitted": false
+  "mass_requirement_relaxed": false
 }
