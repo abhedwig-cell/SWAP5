@@ -1,0 +1,348 @@
+module mod_fmr_serialized_multiswap_runtime
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use mod_transaction_reference, only: TX_MASS_MISSING_NONE
+  use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
+       kernel_result_t, kernel_diagnostics_t, kernel_executor_t
+  use mod_soil_water_solver_contract, only: top_boundary_provider_t
+  use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
+       fmr_aggregate_diagnostics_t, fmr_build_execution_order, fmr_count_templates, &
+       FMR_BACKEND_SERIALIZED_REFERENCE
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, &
+       fmr_b110_physical_forcing_t, fmr_serialized_reference_backend_t, &
+       fmr_serialized_physical_observation_t
+  implicit none
+  private
+
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_OK = 0
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_INVALID_REQUEST = 1
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_REGISTRY_REJECTED = 2
+
+  type, public :: fmr_serialized_column_result_t
+    integer(int64) :: column_id = 0_int64
+    integer :: kernel_status = 0
+    integer :: commit_status = -1
+    logical :: completed = .false.
+    logical :: committed = .false.
+    logical :: solver_executed = .false.
+    character(len=32) :: solver_route = 'not-run'
+    integer :: solver_iterations = 0
+    integer(int64) :: initial_revision = -1_int64
+    integer(int64) :: final_revision = -1_int64
+    real(real64) :: final_committed_time = 0.0_real64
+    logical :: final_committed_time_bound = .false.
+    type(canonical_mass_accounting_t) :: mass
+  end type fmr_serialized_column_result_t
+
+  public :: fmr_run_serialized_physical_multiswap
+
+contains
+
+  subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
+                                                    state_registry, numerical_config, top_boundary, t0, t1, &
+                                                    batch_size, results, diagnostics, aggregate, dispatch_status)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    class(top_boundary_provider_t), target, intent(in) :: top_boundary
+    real(real64), intent(in) :: t0, t1
+    integer, intent(in) :: batch_size
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
+    type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
+    integer, intent(out) :: dispatch_status
+
+    type(fmr_serialized_reference_backend_t), target :: backend
+    type(kernel_executor_t) :: transaction_control
+    integer, allocatable :: order(:)
+    integer :: batch_start, batch_end, pos, idx, batches
+
+    call initialize_outputs(columns, results, diagnostics, aggregate)
+    dispatch_status = FMR_SERIAL_DISPATCH_OK
+
+    if (batch_size <= 0 .or. t1 <= t0) then
+      dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
+      call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
+      call build_aggregate(columns, diagnostics, 0, aggregate)
+      return
+    end if
+
+    if (.not. registry_structure_valid(columns, templates, state_registry)) then
+      dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
+      call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
+      call build_aggregate(columns, diagnostics, 0, aggregate)
+      return
+    end if
+
+    call backend%initialize(top_boundary)
+    call fmr_build_execution_order(columns, order)
+    batches = 0
+    do batch_start = 1, size(columns), batch_size
+      batches = batches + 1
+      batch_end = min(size(columns), batch_start + batch_size - 1)
+      do pos = batch_start, batch_end
+        idx = order(pos)
+        call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+             forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx))
+      end do
+    end do
+
+    call build_aggregate(columns, diagnostics, batches, aggregate)
+  end subroutine fmr_run_serialized_physical_multiswap
+
+  subroutine initialize_outputs(columns, results, diagnostics, aggregate)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
+    type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
+    integer :: i
+
+    allocate(results(size(columns)), diagnostics(size(columns)))
+    aggregate = fmr_aggregate_diagnostics_t()
+    do i = 1, size(columns)
+      results(i)%column_id = columns(i)%column_id
+      diagnostics(i)%column_id = columns(i)%column_id
+      diagnostics(i)%template_id = columns(i)%template_id
+      diagnostics(i)%backend = columns(i)%backend_id
+      diagnostics(i)%execution_class = columns(i)%execution_class
+      allocate(diagnostics(i)%worker_assignments(1))
+      diagnostics(i)%worker_assignments(1) = 1
+    end do
+  end subroutine initialize_outputs
+
+  logical function registry_structure_valid(columns, templates, states) result(valid)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(kernel_committed_state_t), intent(in) :: states(:)
+    logical, allocatable :: state_claimed(:)
+    integer :: i, j, state_index
+
+    valid = .false.
+
+    do i = 1, size(templates)
+      if (templates(i)%template_id <= 0_int64) return
+      do j = i + 1, size(templates)
+        if (templates(j)%template_id == templates(i)%template_id) return
+      end do
+    end do
+
+    allocate(state_claimed(size(states)))
+    state_claimed = .false.
+    do i = 1, size(columns)
+      if (columns(i)%column_id <= 0_int64) return
+      do j = i + 1, size(columns)
+        if (columns(j)%column_id == columns(i)%column_id) return
+      end do
+      if (columns(i)%state_handle < 1_int64 .or. &
+          columns(i)%state_handle > int(size(states), int64)) return
+      state_index = int(columns(i)%state_handle)
+      if (state_claimed(state_index)) return
+      state_claimed(state_index) = .true.
+    end do
+
+    valid = .true.
+  end function registry_structure_valid
+
+  subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
+                            state_registry, numerical_config, t0, t1, output, diagnostic)
+    type(fmr_serialized_reference_backend_t), intent(inout) :: backend
+    type(kernel_executor_t), intent(inout) :: transaction_control
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    type(kernel_committed_state_t), intent(inout) :: state_registry(:)
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+
+    type(kernel_checkpoint_t) :: checkpoint
+    type(kernel_result_t) :: kernel_result
+    type(kernel_candidate_state_t) :: candidate
+    type(kernel_diagnostics_t) :: kernel_diag
+    type(fmr_serialized_physical_observation_t) :: observation
+    integer :: state_index, parameter_index, forcing_index, commit_status
+    logical :: checkpoint_ok, candidate_ready, did_commit
+
+    if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'ROUTING_REJECTED'
+      call update_committed_provenance_by_handle(column, state_registry, output, diagnostic)
+      return
+    end if
+
+    state_index = int(column%state_handle)
+    parameter_index = int(column%parameter_ref)
+    forcing_index = int(column%forcing_handle)
+    output%initial_revision = state_registry(state_index)%current_revision()
+
+    call fmr_capture_checkpoint(state_registry(state_index), checkpoint, checkpoint_ok)
+    if (.not. checkpoint_ok) then
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'CHECKPOINT_CAPTURE_FAILED'
+      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      return
+    end if
+
+    diagnostic%checkpoint_captures = 1
+    diagnostic%checkpoint_replays = 1
+    diagnostic%runtime_attempts = 1
+    call backend%run_trial(column, templates(find_template_index(column%template_id, templates)), &
+         parameter_registry(parameter_index), state_registry(state_index), forcing_registry(forcing_index), &
+         numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
+
+    output%kernel_status = kernel_result%status
+    output%mass = kernel_result%mass
+    diagnostic%attempts = kernel_diag%attempts
+    diagnostic%retries = kernel_diag%retries
+    candidate_ready = candidate%ready()
+
+    if (kernel_result%completed) then
+      observation = backend%observation()
+      output%solver_executed = observation%solver_executed
+      output%solver_route = observation%solver_diagnostics%route
+      output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
+    end if
+
+    if (.not. kernel_result%completed) then
+      if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'KERNEL_REJECTED'
+      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      return
+    end if
+
+    if (.not. kernel_result%mass%complete .or. &
+        kernel_result%mass%missing_contribution_mask /= TX_MASS_MISSING_NONE) then
+      if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'MASS_INCOMPLETE'
+      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      return
+    end if
+
+    if (.not. candidate_ready) then
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'CANDIDATE_INVALID'
+      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      return
+    end if
+
+    call fmr_commit_candidate(transaction_control, state_registry(state_index), candidate, kernel_diag, &
+         did_commit, commit_status)
+    output%commit_status = commit_status
+    if (.not. did_commit) then
+      diagnostic%rejected = 1
+      diagnostic%failure_classification = 'COMMIT_REJECTED'
+      call update_committed_provenance(state_registry(state_index), output, diagnostic)
+      return
+    end if
+
+    output%completed = .true.
+    output%committed = .true.
+    diagnostic%accepted = 1
+    diagnostic%failure_classification = 'NONE'
+    diagnostic%unrounded_mass_residual = output%mass%residual
+    call update_committed_provenance(state_registry(state_index), output, diagnostic)
+  end subroutine execute_column
+
+  logical function column_is_routable(column, templates, parameter_registry, forcing_registry) result(routable)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(fmr_template_t), intent(in) :: templates(:)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    integer :: template_index
+
+    template_index = find_template_index(column%template_id, templates)
+    routable = template_index > 0 .and. column%backend_id == FMR_BACKEND_SERIALIZED_REFERENCE .and. &
+         column%parameter_ref >= 1_int64 .and. &
+         column%parameter_ref <= int(size(parameter_registry), int64) .and. &
+         column%forcing_handle >= 1_int64 .and. &
+         column%forcing_handle <= int(size(forcing_registry), int64)
+    if (routable) routable = templates(template_index)%compatible_backend_id == FMR_BACKEND_SERIALIZED_REFERENCE
+  end function column_is_routable
+
+  integer function find_template_index(template_id, templates) result(index)
+    integer(int64), intent(in) :: template_id
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer :: i
+
+    index = 0
+    do i = 1, size(templates)
+      if (templates(i)%template_id == template_id) then
+        index = i
+        return
+      end if
+    end do
+  end function find_template_index
+
+  subroutine update_committed_provenance_by_handle(column, states, output, diagnostic)
+    type(fmr_logical_column_t), intent(in) :: column
+    type(kernel_committed_state_t), intent(in) :: states(:)
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    integer :: state_index
+
+    if (column%state_handle < 1_int64 .or. column%state_handle > int(size(states), int64)) return
+    state_index = int(column%state_handle)
+    call update_committed_provenance(states(state_index), output, diagnostic)
+  end subroutine update_committed_provenance_by_handle
+
+  subroutine update_committed_provenance(committed, output, diagnostic)
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    logical :: available
+
+    output%final_revision = committed%current_revision()
+    call committed%current_time(output%final_committed_time, available)
+    output%final_committed_time_bound = available
+    diagnostic%committed_revision = output%final_revision
+    diagnostic%committed_time = output%final_committed_time
+    diagnostic%committed_time_bound = available
+  end subroutine update_committed_provenance
+
+  subroutine mark_all_rejected(diagnostics, classification)
+    type(fmr_column_diagnostics_t), intent(inout) :: diagnostics(:)
+    character(len=*), intent(in) :: classification
+    integer :: i
+
+    do i = 1, size(diagnostics)
+      diagnostics(i)%rejected = 1
+      diagnostics(i)%failure_classification = classification
+    end do
+  end subroutine mark_all_rejected
+
+  subroutine build_aggregate(columns, diagnostics, batches, aggregate)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_column_diagnostics_t), intent(in) :: diagnostics(:)
+    integer, intent(in) :: batches
+    type(fmr_aggregate_diagnostics_t), intent(inout) :: aggregate
+    integer :: i
+
+    aggregate = fmr_aggregate_diagnostics_t()
+    aggregate%columns = size(columns)
+    aggregate%templates = fmr_count_templates(columns)
+    aggregate%batches = batches
+    aggregate%workers = 1
+    allocate(aggregate%work_distribution(1))
+    aggregate%work_distribution = 0_int64
+
+    do i = 1, size(columns)
+      aggregate%attempts = aggregate%attempts + diagnostics(i)%attempts
+      aggregate%retries = aggregate%retries + diagnostics(i)%retries
+      if (diagnostics(i)%accepted == 0) aggregate%failures = aggregate%failures + 1
+      if (diagnostics(i)%accepted == 1) then
+        aggregate%aggregate_unrounded_mass_residual = aggregate%aggregate_unrounded_mass_residual + &
+             diagnostics(i)%unrounded_mass_residual
+      end if
+    end do
+    aggregate%work_distribution(1) = int(aggregate%attempts, int64)
+  end subroutine build_aggregate
+
+end module mod_fmr_serialized_multiswap_runtime
