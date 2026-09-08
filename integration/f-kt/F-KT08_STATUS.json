@@ -9,16 +9,23 @@
   "safety_branch_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
   "contract_checkpoint": "d62e7736240a50086c9950137a98439784fc1c17",
   "source_materialization_commit": "9623841f38c075f61404457ccfe31d89df9839f7",
-  "phase": "SOURCE_PERSISTED_QUALIFICATION_RETRY",
+  "tested_qualification_head": "c4676dfcb8125cf361148a27ce45f494749fa097",
+  "qualification_evidence_commit": "e7c850fef5c46dae1b8e371fef310748ba107fd2",
+  "qualification_evidence": "integration/f-kt/F-KT08_QUALIFICATION_EVIDENCE.json",
+  "qualification_workflow_run": 34186901096,
+  "qualification_workflow_conclusion": "success",
+  "phase": "QUALIFIED_STATUS_PERSISTED_PENDING_FINAL_HEAD_RECHECK",
   "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": false,
-  "QUALIFIED": false,
+  "TESTED": true,
+  "QUALIFIED": true,
   "inventory": "integration/f-kt/F-KT08_MASS_ACCOUNTING_INVENTORY.json",
   "contract": "integration/f-kt/F-KT08_MASS_ACCOUNTING_CONTRACT.json",
   "focused_test": "tests/fkt/test_fkt08_mass_accounting.f90",
   "focused_runner": "tests/fkt/run_fkt08_gate.sh",
-  "forward_regression": "tests/fkt/run_fkt08_fkt06_fkt07_forward_regression.sh",
+  "forward_fkt06_fkt07_regression": "tests/fkt/run_fkt08_fkt06_fkt07_forward_regression.sh",
+  "forward_fci09_regression": "tests/fkt/run_fkt08_fci09_forward_regression.sh",
+  "forward_fci14_regression": "tests/fkt/run_fkt08_fci14_forward_regression.sh",
   "static_gate": "tools/fkt/fkt08_mass_accounting_gate.py",
   "production_source_changed": true,
   "production_source_files": [
@@ -27,36 +34,109 @@
     "src/runtime/mod_canonical_interval_runtime.f90",
     "src/kernel/mod_kernel_transactions.f90"
   ],
+  "production_source_blobs": {
+    "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f"
+  },
   "physics_changed": false,
   "numerical_policy_changed": false,
   "scientific_tolerance_added": false,
   "cumulative_column_accounting_added": false,
+  "mass_conservation_disable_switch_added": false,
+  "canonical_mass_contract": "canonical_mass_accounting_t",
+  "canonical_mass_fields": [
+    "complete",
+    "interval_t0",
+    "interval_t1",
+    "origin_lineage_id",
+    "origin_revision",
+    "accepted_transaction_count",
+    "missing_contribution_mask",
+    "storage_start",
+    "storage_end",
+    "storage_change",
+    "total_in",
+    "total_out",
+    "residual"
+  ],
+  "residual_definition": "storage_end - storage_start - (total_in - total_out)",
+  "completeness_fail_closed": true,
+  "active_missing_contribution_blocks_complete": true,
+  "inactive_optional_contribution_blocks_complete": false,
+  "internal_transfers_counted_as_external": false,
+  "accepted_only_accounting": true,
+  "rejected_trial_accounting_committed": false,
+  "retry_double_counting": false,
+  "rollback_mutates_committed_accounting": false,
+  "commit_publishes_exactly_one_accepted_accounting": true,
+  "generic_time_subdaily": "PASS",
+  "generic_time_non_midnight": "PASS",
+  "generic_time_cross_midnight": "PASS",
+  "O0": "PASS",
+  "O2": "PASS",
+  "O0_O2": "PASS",
+  "historical_F_KT01_to_F_KT07": "PASS",
+  "historical_F_CI03_F_CI04": "PASS",
+  "current_F_KT06_F_KT07_forward": "PASS",
+  "current_F_CI08": "PASS",
+  "current_F_CI09_forward": "PASS",
+  "current_F_CI10": "PASS",
+  "current_F_CI11": "PASS",
+  "current_F_CI13": "PASS",
+  "current_F_CI14_forward": "PASS",
   "qualification_attempts": [
     {
       "run_id": 34160132290,
-      "head": "921e50084f4dd808703d16ab885c422453fbf4ec",
-      "result": "FAILED_HISTORICAL_FKT06_PROVENANCE_GATE_BEFORE_FKT08_EXECUTION",
-      "finding": "F-KT03/F-KT04/F-KT05 passed on evolved source; F-KT06 contract gate intentionally rejected the changed F-KT08 kernel blob before F-KT06 executable test or F-KT08 test ran.",
+      "result": "FAILED_HISTORICAL_PROVENANCE_PIN_BEFORE_FKT08_EXECUTION",
       "production_semantics_changed_by_fix": false
     },
     {
       "run_id": 34160278825,
-      "head": "91511f9c4625af0eadde221c08c5ff9a089a001b",
       "result": "FAILED_TEST_HARNESS_STATIC_REGEX_ONLY",
-      "finding": "Historical F-KT01..07 and F-CI03/F-CI04 replays passed; current-head F-KT03..05 and F-KT06/F-KT07 forward O0/O2 semantics passed. The F-KT08 static Python gate stopped on an over-escaped regular expression before the F-KT08 Fortran test compiled.",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34160375383,
+      "result": "FAILED_OVERBROAD_STATIC_LEAK_CHECK_ONLY",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34186649986,
+      "result": "FKT08_FOCUSED_PASS_THEN_FCI09_HISTORICAL_TRANSACTION_PIN",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34186774660,
+      "result": "FKT08_FOCUSED_AND_FCI08_09_10_11_13_PASS_THEN_FCI14_HISTORICAL_TRANSACTION_PIN",
+      "production_semantics_changed_by_fix": false
+    },
+    {
+      "run_id": 34186901096,
+      "result": "SUCCESS_COMPLETE_QUALIFICATION",
       "production_semantics_changed_by_fix": false
     }
   ],
-  "historical_fci_provenance_policy": "F-CI03/F-CI04 remain immutable and are replayed on exact F-KT07 head; current F-KT08 semantics are qualified by source-bound F-KT08 tests and compatible current F-CI gates",
-  "historical_fkt_provenance_policy": "F-KT01..07 immutable gates are replayed on exact qualified F-KT07 head; F-KT06/F-KT07 executable tests are separately replayed O0/O2 against the evolved F-KT08 source without altering their historical blob pins",
-  "authoritative_full_interval_mass_accounting_qualified": false,
-  "fmr04_profile_mass_complete_capable": false,
+  "historical_fci_provenance_policy": "immutable historical F-CI gates retain exact original source pins; evolved F-KT08 compatibility is proven through explicit source-bound forward wrappers rather than rewriting historical evidence",
+  "historical_fkt_provenance_policy": "F-KT01..07 immutable gates are replayed on exact qualified F-KT07 head; evolved-source F-KT06/F-KT07 executable semantics are separately replayed O0/O2",
+  "authoritative_full_interval_mass_accounting_qualified": true,
+  "fmr04_profile_mass_complete_capable": true,
   "known_missing_physical_contribution_owner_for_fmr04_profile": null,
-  "holds": [
-    "focused F-KT08 O0/O2 still must compile and pass after the static-gate-only correction",
-    "F-MR04 must explicitly consume the qualified F-KT08 completeness hooks before its serialized physical profile can report kernel_result.mass.complete=true",
-    "active root, snow and macropore physical accounting remain outside this F-KT08 profile and stay fail-closed",
-    "independent F-VQ scientific admission remains downstream"
+  "fmr04_qualified_by_fkt08": false,
+  "remaining_holds": [
+    "F-MR04 must consume the exact final qualified F-KT08 head and explicitly supply/mark its already-calculated restricted-profile contributions before kernel_result.mass.complete=true is demonstrated on the real serialized physical fixture",
+    "active root-extraction accounting beyond the restricted F-MR04 profile remains unqualified by F-KT08",
+    "active snow accounting remains fail-closed until its contribution owner is connected and qualified",
+    "active macropore accounting remains fail-closed until its contribution owner is connected and qualified",
+    "independent scientific physical-runtime admission remains F-VQ14 ownership"
   ],
-  "next_action": "rerun the unchanged F-KT08 production source through the corrected static gate and full qualification workflow"
+  "invariants_audited": [1, 3, 4, 5, 7, 8, 9, 13, 16, 23, 25, 26, 27, 29],
+  "downstream_handoff": {
+    "workstream": "F-MR",
+    "resume_unit": "F-MR04",
+    "instruction": "consume exact final qualified F-KT08 head; rerun existing serialized physical fixture; require kernel_result.mass.complete=true; if all existing gates remain green, qualify F-MR04 and pass that exact F-MR04 SHA to F-VQ14"
+  },
+  "final_head_recheck_required": true,
+  "next_action": "require the exact status-promotion branch head to pass the F-KT kernel qualification workflow; then hand that exact green SHA to F-MR04"
 }
