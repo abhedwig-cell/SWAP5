@@ -82,6 +82,19 @@ program test_fsi16_prescribed_bottom_head
      if (workspace%legacy_worker%diagnostics%headcalc_calls /= calls_before) failures = failures + 1
   end do
 
+  ! Prescribed head must fail closed before HeadCalc if the lower face distance
+  ! was not supplied. Existing NN-only parameter sets remain valid for modes 7/-2.
+  rejected = request_a
+  deallocate(rejected%parameters%node_distance)
+  allocate(rejected%parameters%node_distance(numnod))
+  rejected%parameters%node_distance = disnod(1:numnod)
+  call prepare_workspace(workspace)
+  calls_before = workspace%legacy_worker%diagnostics%headcalc_calls
+  call solver%solve(rejected, workspace, reject_result)
+  if (reject_result%status /= SW_SOLVE_FAILED) failures = failures + 1
+  if (trim(reject_result%diagnostics%route) /= 'bottom-distance-required') failures = failures + 1
+  if (workspace%legacy_worker%diagnostics%headcalc_calls /= calls_before) failures = failures + 1
+
   if (failures /= 0) then
      write(*,'(A,I0)') 'F-SI16_PRESCRIBED_BOTTOM_HEAD FAIL failures=', failures
      error stop 1
@@ -93,6 +106,7 @@ program test_fsi16_prescribed_bottom_head
   print *, 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS'
   print *, 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS'
   print *, 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS'
+  print *, 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS'
   print *, 'F-SI16_PRESCRIBED_BOTTOM_HEAD_GATE PASS'
 
 contains
@@ -118,10 +132,10 @@ contains
   subroutine configure_kernel_parameters()
     kernel_params%parameter_set_id = 516_int64
     kernel_params%active_nodes = numnod
-    allocate(kernel_params%z(numnod), kernel_params%dz(numnod), kernel_params%node_distance(numnod))
+    allocate(kernel_params%z(numnod), kernel_params%dz(numnod), kernel_params%node_distance(numnod+1))
     kernel_params%z = z
     kernel_params%dz = dz
-    kernel_params%node_distance = disnod(1:numnod)
+    kernel_params%node_distance = disnod
   end subroutine configure_kernel_parameters
 
   subroutine configure_providers(reference_head)
