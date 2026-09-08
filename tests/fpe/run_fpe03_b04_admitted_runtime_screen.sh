@@ -28,11 +28,14 @@ git diff --quiet "$FVQ25" -- src || {
 [[ "$(git rev-parse HEAD:tests/fmr/test_fmr06_snow_smoke.f90)" == "$SNOW_TEST_BLOB" ]]
 [[ "$(git rev-parse HEAD:tests/fmr/test_fmr09_root_sink_runtime.f90)" == "$ROOT_TEST_BLOB" ]]
 python3 - <<'PY'
-import json
+import json, subprocess
 from pathlib import Path
 v25=json.loads(Path('integration/f-vq/F-VQ25_STATUS.json').read_text())
-v17=json.loads(Path('integration/f-vq/F-VQ17_STATUS.json').read_text())
-v21=json.loads(Path('integration/f-vq/F-VQ21_STATUS.json').read_text())
+def remote_json(ref,path):
+    raw=subprocess.check_output(['git','show',f'origin/{ref}:{path}'], text=True)
+    return json.loads(raw)
+v17=remote_json('qualification/f-vq17-fmr06-snow-runtime','integration/f-vq/F-VQ17_STATUS.json')
+v21=remote_json('qualification/f-vq21-fmr09-root-sink-runtime','integration/f-vq/F-VQ21_STATUS.json')
 assert v25['status']=='QUALIFIED_INDEPENDENT_FMR14_INTERVAL_DIAGNOSTICS_SCIENTIFIC_NO_CHANGE_ADMISSION'
 assert v25['state']['qualified'] is True
 assert v25['physics_changed'] is False and v25['acceptance_changed'] is False and v25['mass_requirement_relaxed'] is False
