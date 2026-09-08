@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "finding": "CUMDENS_TOP_IS_DYNAMIC_CROP_DERIVED_INPUT_NOT_IMMUTABLE_PROCESS_PARAMETER",
+  "legacy_source": {
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "facts": [
+      "RootExtraction_MACRO task 2 consumes noddrz and cumdens_top to distribute ptra over rooted compartments.",
+      "initialize_rootdistribution calls update_cumdens_top at crop emergence.",
+      "update_rootdistribution calls update_cumdens_top again during crop/root development.",
+      "update_cumdens_top recomputes cumulative fractions using the current noddrz and compartment depths.",
+      "adaptive root distribution can additionally update the normalized cumulative root-density curve before cumdens_top is rebuilt."
+    ]
+  },
+  "correction_to_readiness_inventory": {
+    "previous_classification": "cumdens_top/rooted node distribution listed as immutable process parameter",
+    "corrected_classification": "rooted_nodes and current normalized cumulative root fractions are dynamic crop-derived process inputs for each root-uptake evaluation",
+    "still_immutable": [
+      "Feddes thresholds hlim3l, hlim3h, hlim4",
+      "transpiration-rate thresholds adcrl, adcrh",
+      "active soil-column topology/node count"
+    ]
+  },
+  "architecture_effect": {
+    "process_owns_root_growth_state": false,
+    "crop_runtime_owns_root_distribution_evolution": true,
+    "root_uptake_process_receives_current_distribution_explicitly": true,
+    "persistent_root_uptake_process_state_added": false,
+    "solver_or_headcalc_dependency_added": false
+  },
+  "candidate_action": "Move rooted_nodes and cumulative_root_fraction from root_water_uptake_parameters_t into root_water_uptake_request_t before owner qualification."
+}
