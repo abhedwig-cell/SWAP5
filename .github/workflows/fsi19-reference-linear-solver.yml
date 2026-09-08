@@ -46,7 +46,27 @@ jobs:
           if-no-files-found: error
 
       - name: Production HeadCalc versus F-SI18 reference control
-        run: bash tests/fsi/run_fsi19_headcalc_production_gate.sh
+        run: |
+          set +e
+          bash tests/fsi/run_fsi19_headcalc_production_gate.sh > fsi19-headcalc.log 2>&1
+          rc=$?
+          cat fsi19-headcalc.log
+          {
+            echo '### F-SI19 HeadCalc reference-control diagnostic'
+            echo '```text'
+            sed -n '1,320p' fsi19-headcalc.log
+            echo '```'
+            echo "exit_code=$rc"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$rc"
+
+      - name: Preserve HeadCalc diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi19-headcalc-reference-control-diagnostic
+          path: fsi19-headcalc.log
+          if-no-files-found: warn
 
       - name: Pinned predecessor and F-KT boundary regression
         run: bash tests/fsi/run_fsi16_closeout_regression_gate.sh
