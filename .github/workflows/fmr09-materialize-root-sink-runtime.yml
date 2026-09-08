@@ -1,0 +1,32 @@
+name: F-MR09 materialize root sink runtime
+
+on:
+  push:
+    branches:
+      - work/f-mr09-root-sink-runtime-composition
+    paths:
+      - tools/fmr/fmr09_materialize_root_sink_runtime.py
+      - .github/workflows/fmr09-materialize-root-sink-runtime.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize source-locked runtime composition
+        run: python3 tools/fmr/fmr09_materialize_root_sink_runtime.py
+      - name: Verify owner scope and commit
+        run: |
+          set -euo pipefail
+          changed=$(git diff --name-only)
+          test "$changed" = "src/runtime/mod_fmr_serialized_reference_backend.f90"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/runtime/mod_fmr_serialized_reference_backend.f90
+          git commit -m "compose(F-MR09): bind root sink and authoritative mass"
+          git push origin HEAD:work/f-mr09-root-sink-runtime-composition
