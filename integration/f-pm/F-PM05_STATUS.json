@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "title": "Root Water Uptake Migration Readiness",
+  "branch": "work/f-pm05-root-water-uptake-readiness",
+  "status": "BLOCKED_ROOT_WATER_UPTAKE_MIGRATION_REQUIRES_QUALIFIED_COMPOSED_ROOT_SINK_ROUTE",
+  "phase": "READINESS_CLOSED_FAIL_CLOSED",
+  "exact_branch_base": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "state": {
+    "inventory_complete": true,
+    "readiness_contract_persisted": true,
+    "readiness_gate_persisted": true,
+    "readiness_gate_tested": true,
+    "readiness_gate_passed": true,
+    "readiness_decision_qualified": true,
+    "production_source_modified": false,
+    "reference_source_modified": false,
+    "production_migration_allowed": false,
+    "scientific_root_uptake_admission": false
+  },
+  "tested_readiness_head": "fda3dcd45afa9fd7e61dc2455e08df1da1e4365f",
+  "workflow_run_id": 34245810016,
+  "workflow_job_id": 102127356333,
+  "workflow_conclusion": "success",
+  "readiness_contract_path": "integration/f-pm/F-PM05_READINESS_CONTRACT.json",
+  "inventory_path": "integration/f-pm/F-PM05_ROOT_WATER_UPTAKE_INVENTORY.json",
+  "evidence_path": "integration/f-pm/F-PM05_READINESS_EVIDENCE.json",
+  "selected_smallest_future_seam": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+  "resolved_dependencies": {
+    "process_hydraulic_view": "QUALIFIED_FSI17",
+    "committed_process_view_binding": "QUALIFIED_FMR07",
+    "generic_transaction_contract": "AVAILABLE"
+  },
+  "blocking_dependency": {
+    "owner": ["F-SI", "F-MR"],
+    "current_lineage": "F-SI10-era source/sink channel rejects any nonzero root_extraction_sink",
+    "separate_owner_qualification": "F-SI11 QUALIFIED_PRECOMPUTED_ROOT_SINK_SWKIMPL0",
+    "composition_state": "NOT_COMPOSED_IN_CURRENT_FPM05_BASE",
+    "required_resolution": "source-bind the exact F-SI11 root-sink contract into the current qualified runtime lineage and independently qualify preservation of residual order, transaction semantics, hard mass balance, O0/O2, snow and admitted irrigation behavior"
+  },
+  "held_scope": [
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated uptake",
+    "root-growth feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "full RootExtraction module reentrancy",
+    "macropores"
+  ],
+  "downstream": {
+    "fpm05_must_not_modify_production_while_blocked": true,
+    "owner_resolution_required_before_resume": true,
+    "resume_condition": "an exact current runtime lineage exists in which the F-SI11 precomputed root-sink route is owner-qualified and coexists with the committed hydraulic view and previously admitted process behavior"
+  }
+}
