@@ -11,8 +11,8 @@
     "fsi13_materialized_source_postimage": "9463324c2d823deb32acb883f8f2bd245768ea21",
     "fsi13_qualified_candidate_head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
     "fsi13_status_head": "36c2540033585f396f8c456b1af47e236cdcd00a",
-    "headcalc_blob": "355bf276b3db4815adadfa4a190d96f8875dca07",
-    "reference_adapter_blob": "9e9d21ff5715558b4524062dc8fd008dce628a0a",
+    "headcalc_blob": "355bf276e3564bdf9128c23077dbe03da712a17c",
+    "reference_adapter_blob": "9e9d21ff7ae2b62c95b1b93c016ae95abb447137",
     "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
     "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
   },
@@ -98,6 +98,12 @@
       "conclusion": "failure",
       "failure_class": "TEST_HARNESS_COPIED_SCRIPT_REPOSITORY_ROOT_ERROR",
       "production_source_changed_to_fix_failure": false
+    },
+    "qualification_record_provenance_correction": {
+      "reason": "live source-bound fetch at materialized postimage showed earlier transcribed blob suffixes were incorrect",
+      "production_source_changed": false,
+      "headcalc_blob_verified_at_postimage": "355bf276e3564bdf9128c23077dbe03da712a17c",
+      "reference_adapter_blob_verified_at_postimage": "9e9d21ff7ae2b62c95b1b93c016ae95abb447137"
     },
     "automatic_materialization_trigger_retired_at": "afa08a7429cc3e8de8b779da9c755da6ee0d2aea"
   },
