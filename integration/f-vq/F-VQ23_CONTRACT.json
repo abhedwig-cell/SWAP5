@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ23",
+  "scope": "INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_RUNTIME_SCIENTIFIC_ADMISSION",
+  "branch": "qualification/f-vq23-fmr13-reference-linear-solver-runtime",
+  "candidate": {
+    "fmr13_closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "fmr13_closeout_tree": "310b0b419181456b7c0af029e42de742fa96f19d",
+    "fmr13_tested_candidate": "7828d41cfcb91856aaf5b567d9ff3bc762984aca",
+    "fmr13_status_blob": "6a53239713ea1682087f7e3628eff7e538c5809b",
+    "fsi19_closeout": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "reference_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "headcalc_blob": "1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b",
+    "reference_workspace_blob": "178d3289e09583c256b1aa400407d468d9c18e68"
+  },
+  "independent_oracles": {
+    "nonzero_headcalc_reference": {
+      "source_owner": "F-SI18",
+      "fsi18_closeout": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+      "method": "Reproduce the pre-seam reference-TRIDAG nonzero convergence probe and compare the F-MR13 production HeadCalc output bitwise for O0 and O2. Do not invoke the F-SI19 producer qualification gate as the F-VQ decision procedure."
+    },
+    "mass_transaction_runtime": {
+      "source_owner": "F-VQ21",
+      "method": "Run the independently authored F-VQ21 root-sink runtime oracle unchanged in scientific assertions against the F-MR13 postimage, adapting only compile closure/source locks required by the later qualified runtime lineage."
+    }
+  },
+  "hard_requirements": {
+    "candidate_production_source_changed": false,
+    "nonzero_headcalc_cases_all_converge": true,
+    "headcalc_bitwise_reference_identity": true,
+    "hard_mass_conservation": true,
+    "authoritative_mass_exactly_once": true,
+    "rollback_replay": true,
+    "a_b_a_determinism": true,
+    "o0_o2_identity": true,
+    "reference_mode_preserved": true
+  },
+  "not_admitted": [
+    "new physics",
+    "changed solver controls",
+    "performance thresholds",
+    "BALANCED execution",
+    "THROUGHPUT execution",
+    "FALLBACK execution",
+    "parallel real-physics execution",
+    "F-PE higher-cost workload or tail acceptance",
+    "resolution of FPE02_B01"
+  ]
+}
