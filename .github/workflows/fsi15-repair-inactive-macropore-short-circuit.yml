@@ -1,0 +1,41 @@
+name: F-SI15 repair inactive macropore short circuit
+
+on:
+  push:
+    branches:
+      - work/f-si15-explicit-macropore-option
+    paths:
+      - '.github/workflows/fsi15-repair-inactive-macropore-short-circuit.yml'
+      - 'tools/fsi/fsi15_repair_inactive_macropore_short_circuit.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi15-repair-inactive-macropore-short-circuit
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si15-explicit-macropore-option
+      - name: Apply source-bound inactive macropore repair
+        run: python3 tools/fsi/fsi15_repair_inactive_macropore_short_circuit.py
+      - name: Commit only HeadCalc repair
+        run: |
+          changed="$(git diff --name-only | sort)"
+          if [ "$changed" != 'src/legacy/b1_10_port/headcalc.f90' ]; then
+            echo 'F-SI15 repair changed unexpected paths:' >&2
+            printf '%s\n' "$changed" >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/headcalc.f90
+          git commit -m 'F-SI15: repair inactive macropore short-circuit guards'
+          git push origin HEAD:work/f-si15-explicit-macropore-option
