@@ -15,7 +15,7 @@ program test_fsi16_prescribed_bottom_head
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   implicit none
 
-  type(soil_water_parameter_set_t), target :: kernel_params
+  type(soil_water_parameter_set_t), target :: kernel_params, short_params
   type(b110_default_mvg_parameters_t), target :: hydraulic_params
   type(b110_default_mvg_provider_t), target :: constitutive
   type(b110_source_sink_provider_t), target :: source_sink
@@ -83,17 +83,19 @@ program test_fsi16_prescribed_bottom_head
   end do
 
   ! Prescribed head must fail closed before HeadCalc if the lower face distance
-  ! was not supplied. Existing NN-only parameter sets remain valid for modes 7/-2.
+  ! was not supplied. Keep this negative fixture separate so request_a/request_b
+  ! retain their shared immutable NN+1 parameter set throughout the gate.
+  call configure_short_parameters()
   rejected = request_a
-  deallocate(rejected%parameters%node_distance)
-  allocate(rejected%parameters%node_distance(numnod))
-  rejected%parameters%node_distance = disnod(1:numnod)
+  rejected%parameters => short_params
   call prepare_workspace(workspace)
   calls_before = workspace%legacy_worker%diagnostics%headcalc_calls
   call solver%solve(rejected, workspace, reject_result)
   if (reject_result%status /= SW_SOLVE_FAILED) failures = failures + 1
   if (trim(reject_result%diagnostics%route) /= 'bottom-distance-required') failures = failures + 1
   if (workspace%legacy_worker%diagnostics%headcalc_calls /= calls_before) failures = failures + 1
+  if (size(request_a%parameters%node_distance) /= numnod+1) failures = failures + 1
+  if (size(request_b%parameters%node_distance) /= numnod+1) failures = failures + 1
 
   if (failures /= 0) then
      write(*,'(A,I0)') 'F-SI16_PRESCRIBED_BOTTOM_HEAD FAIL failures=', failures
@@ -107,6 +109,7 @@ program test_fsi16_prescribed_bottom_head
   print *, 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS'
   print *, 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS'
   print *, 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS'
+  print *, 'F-SI16_PARAMETER_FIXTURE_ISOLATION PASS'
   print *, 'F-SI16_PRESCRIBED_BOTTOM_HEAD_GATE PASS'
 
 contains
@@ -137,6 +140,15 @@ contains
     kernel_params%dz = dz
     kernel_params%node_distance = disnod
   end subroutine configure_kernel_parameters
+
+  subroutine configure_short_parameters()
+    short_params%parameter_set_id = 517_int64
+    short_params%active_nodes = numnod
+    allocate(short_params%z(numnod), short_params%dz(numnod), short_params%node_distance(numnod))
+    short_params%z = z
+    short_params%dz = dz
+    short_params%node_distance = disnod(1:numnod)
+  end subroutine configure_short_parameters
 
   subroutine configure_providers(reference_head)
     real(real64), intent(out) :: reference_head
