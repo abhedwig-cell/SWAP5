@@ -1,0 +1,69 @@
+name: F-TA03 temporary validation
+
+on:
+  push:
+    branches:
+      - work/f-ta03-fixture-fidelity-metadata
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    if: ${{ !contains(github.event.head_commit.message, 'regenerate fidelity-enriched test register') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out F-TA03 branch
+        uses: actions/checkout@v7
+        with:
+          ref: work/f-ta03-fixture-fidelity-metadata
+          fetch-depth: 0
+
+      - name: Exclude this temporary runner from the validation postimage
+        run: |
+          git rm --cached .github/workflows/f-ta03-temporary-validation.yml
+          rm -f .github/workflows/f-ta03-temporary-validation.yml
+
+      - name: Regenerate canonical test register
+        run: python3 tools/test_architecture/build_registry.py
+
+      - name: Validate gate fidelity and claim boundaries
+        run: python3 tools/test_architecture/validate_gate_fidelity.py
+
+      - name: Validate F-TA structure
+        run: python3 tools/test_architecture/validate_test_architecture.py
+
+      - name: Replay F-TA02 impact corpus
+        run: python3 tools/test_architecture/validate_impact_cases.py
+
+      - name: Compile Python test-architecture tooling
+        run: python3 -m py_compile tools/test_architecture/*.py
+
+      - name: Run documentation checks
+        run: python3 tools/docs/check_docs.py
+
+      - name: Guard production and reference source against F-TA03 base
+        run: |
+          changed="$(git diff --name-only f90d3d79c7bd3e608ce284c1a092662d3a18976d HEAD -- src reference)"
+          if [[ -n "$changed" ]]; then
+            echo 'FTA03_PRODUCTION_REFERENCE_DIFF_GUARD FAIL'
+            printf '%s\n' "$changed"
+            exit 1
+          fi
+          echo 'FTA03_PRODUCTION_REFERENCE_DIFF_GUARD PASS'
+
+      - name: Persist regenerated register
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add test-architecture/test-register.json
+          if git diff --cached --quiet -- test-architecture/test-register.json; then
+            echo 'FTA03_REGISTER_ALREADY_CURRENT PASS'
+          else
+            git commit --only test-architecture/test-register.json -m 'chore(F-TA03): regenerate fidelity-enriched test register'
+            git push origin HEAD:work/f-ta03-fixture-fidelity-metadata
+            echo 'FTA03_REGISTER_PERSISTED PASS'
+          fi
+
+      - name: Final marker
+        run: echo 'FTA03_TEMPORARY_VALIDATION PASS'
