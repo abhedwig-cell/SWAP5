@@ -1,0 +1,132 @@
+name: F-VQ15 independent serialized multi-column physical admission
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - qualification/f-vq15-fmr05-serialized-multiswap
+    paths:
+      - '.github/workflows/fvq15-fmr05-serialized-multicolumn.yml'
+      - 'tests/fvq/**'
+      - 'integration/f-vq/F-VQ15_*.json'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-exact-fmr05-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout F-VQ15 qualification harness
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout exact locked F-MR05 candidate
+        uses: actions/checkout@v4
+        with:
+          ref: c28e7a2810b4a3678c577335a6a3086b173eb976
+          path: candidate
+          fetch-depth: 0
+
+      - name: Checkout exact F-MR05 handoff evidence
+        uses: actions/checkout@v4
+        with:
+          ref: 286e339f836b151c5a4f8907c5b26654bbd018fa
+          path: fmrhandoff
+          fetch-depth: 0
+
+      - name: Checkout exact F-VQ14 scientific admission
+        uses: actions/checkout@v4
+        with:
+          ref: 69e581000bfcf15c74f2c4be5fa089502f794821
+          path: fvq14
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Verify exact provenance and qualification-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qualification-results
+          python3 - <<'PY' | tee qualification-results/provenance.log
+          import json, subprocess
+          from pathlib import Path
+
+          contract = json.loads(Path('integration/f-vq/F-VQ15_CONTRACT.json').read_text())
+          status = json.loads(Path('integration/f-vq/F-VQ15_STATUS.json').read_text())
+          handoff = json.loads(Path('fmrhandoff/integration/f-mr/F-MR05_FVQ15_HANDOFF.json').read_text())
+          vq14 = json.loads(Path('fvq14/integration/f-vq/F-VQ14_STATUS.json').read_text())
+
+          candidate = 'c28e7a2810b4a3678c577335a6a3086b173eb976'
+          tree = 'a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6'
+          runtime_blob = 'e4f5bc0bf47e2721d689e62107b5224196a093d9'
+
+          assert contract['qualification_only'] is True
+          assert contract['source_modification_permitted'] is False
+          assert contract['candidate_source_commit'] == candidate
+          assert contract['candidate_source_tree'] == tree
+          assert contract['candidate_production_source']['blob'] == runtime_blob
+          assert status['candidate_source_commit'] == candidate
+          assert status['production_source_changed_by_fvq15'] is False
+          assert status['reference_source_changed_by_fvq15'] is False
+          assert status['scientific_admission'] is False
+          assert status['release_to_fmq23'] is False
+
+          assert handoff['candidate_source_commit'] == candidate
+          assert handoff['candidate_source_tree'] == tree
+          assert handoff['production_runtime']['blob'] == runtime_blob
+          assert handoff['qualification_boundary']['scientific_multicolumn_admission_at_handoff'] is False
+          assert handoff['qualification_boundary']['fmq23_resume_allowed'] is False
+
+          assert vq14['qualified'] is True
+          assert vq14['decision'] == 'QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION'
+          assert vq14['candidate_source_commit'] == '11eb34ea3afe8f5dda0515c28d7e08428dd2e272'
+          assert vq14['scientific_criterion'] == 'EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE'
+          assert vq14['maximum_observed_scientific_difference'] == 0.0
+          assert vq14['mass_complete'] is True
+          assert vq14['missing_mass_contribution_mask'] == 0
+          assert vq14['authoritative_mass_residual_hex'] == '0x0.0p+0'
+          assert vq14['independent_mass_residual_hex'] == '0x0.0p+0'
+          assert vq14['parallel_reference_backend_admitted'] is False
+
+          assert subprocess.check_output(['git','-C','candidate','rev-parse','HEAD'],text=True).strip() == candidate
+          assert subprocess.check_output(['git','-C','candidate','rev-parse','HEAD^{tree}'],text=True).strip() == tree
+          assert subprocess.check_output(['git','-C','candidate','hash-object','src/runtime/mod_fmr_serialized_multiswap_runtime.f90'],text=True).strip() == runtime_blob
+          changed = subprocess.check_output(['git','diff','--name-only',candidate,'HEAD','--','src','reference'],text=True).splitlines()
+          assert changed == [], f'F-VQ15 source boundary violation: {changed}'
+
+          print('FVQ15_PROVENANCE_LOCK PASS')
+          print('FVQ15_FVQ14_SCIENTIFIC_BASIS PASS')
+          print('FVQ15_QUALIFICATION_ONLY_SOURCE_UNCHANGED PASS')
+          PY
+          printf 'qualification_head=%s\n' "$(git rev-parse HEAD)" > qualification-results/context.txt
+          printf 'candidate_head=%s\n' "$(git -C candidate rev-parse HEAD)" >> qualification-results/context.txt
+          printf 'candidate_tree=%s\n' "$(git -C candidate rev-parse HEAD^{tree})" >> qualification-results/context.txt
+          printf 'fmrhandoff_head=%s\n' "$(git -C fmrhandoff rev-parse HEAD)" >> qualification-results/context.txt
+          printf 'fvq14_head=%s\n' "$(git -C fvq14 rev-parse HEAD)" >> qualification-results/context.txt
+
+      - name: Run independent F-VQ15 O0 O2 admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fvq/run_fvq15_gate.sh candidate qualification-results \
+            | tee qualification-results/fvq15_gate.log
+
+      - name: Record immutable evidence hashes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find qualification-results -type f ! -name all_artifacts.sha256 -print0 \
+            | sort -z | xargs -0 sha256sum > qualification-results/all_artifacts.sha256 || true
+
+      - name: Upload F-VQ15 qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vq15-exact-fmr05-serialized-multicolumn-evidence
+          path: qualification-results/
+          if-no-files-found: error
