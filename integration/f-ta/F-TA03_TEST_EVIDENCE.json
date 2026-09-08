@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-TA",
+  "work_unit": "F-TA03",
+  "branch": "work/f-ta03-fixture-fidelity-metadata",
+  "base_head": "f90d3d79c7bd3e608ce284c1a092662d3a18976d",
+  "validated_input_head": "0a2f20f15739de898c5e21c96c93b41253f172d8",
+  "generated_register_commit": "a5a01f0",
+  "temporary_runner_cleanup_commit": "8324598989636682b9d6d4238b4f97f001d84506",
+  "github_actions_run_id": 34253193113,
+  "github_actions_job_id": 102152373740,
+  "result": "PASS",
+  "tests": [
+    {
+      "command": "python3 tools/test_architecture/build_registry.py",
+      "result": "PASS",
+      "detail": "110 registry records generated; 2 reviewed gate-fidelity records merged"
+    },
+    {
+      "command": "python3 tools/test_architecture/validate_gate_fidelity.py",
+      "result": "PASS",
+      "detail": "2 reviewed records; 2 positive claim cases; 4 negative fail-closed cases"
+    },
+    {
+      "command": "python3 tools/test_architecture/validate_test_architecture.py",
+      "result": "PASS",
+      "detail": "110 registry records; 92 tracked test/workflow artifacts; 2 fidelity records"
+    },
+    {
+      "command": "python3 tools/test_architecture/validate_impact_cases.py",
+      "result": "PASS",
+      "detail": "F-TA02 regression: 6 historical positive cases and 2 negative fail-closed cases"
+    },
+    {
+      "command": "python3 -m py_compile tools/test_architecture/*.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python3 tools/docs/check_docs.py",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --name-only f90d3d79c7bd3e608ce284c1a092662d3a18976d HEAD -- src reference",
+      "result": "PASS_EMPTY",
+      "detail": "no production or reference source changes"
+    }
+  ],
+  "markers": [
+    "FTA03_GATE_FIDELITY_OVERLAY_PASS reviewed=2",
+    "FTA03_CLAIM_CORPUS_PASS positive=2 negative_fail_closed=4",
+    "FTA03_ZERO_STEP_NUMERICAL_BEHAVIOR_CLAIMS=FAIL_CLOSED",
+    "FTA03_SCIENTIFIC_ADMISSION_AUTHORITY=EXTERNAL_OWNER_ONLY",
+    "FTA03_STRUCTURE_PASS records=110 tracked_artifacts=92 fidelity_records=2",
+    "FTA02_IMPACT_CORPUS_PASS cases=6 negative_fail_closed=2",
+    "FTA03_PRODUCTION_REFERENCE_DIFF_GUARD PASS",
+    "FTA03_REGISTER_PERSISTED PASS",
+    "FTA03_TEMPORARY_VALIDATION PASS"
+  ],
+  "reviewed_gate_paths": [
+    "tests/fsi/run_fsi05_gate.sh",
+    "tests/fvq/run_fvq15_gate.sh"
+  ],
+  "claim_boundary": "This evidence qualifies only the fail-closed test-architecture behavior of the F-TA03 metadata/validator vertical slice. It does not qualify numerical accuracy, solver convergence, solver cost, performance tails, physical validity, mass closure or any scientific admission.",
+  "broad_or_scientific_qualification_run": false
+}
