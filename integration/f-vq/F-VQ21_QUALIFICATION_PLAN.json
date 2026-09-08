@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ21",
+  "title": "Independent scientific qualification plan for F-MR09 precomputed root-sink runtime composition",
+  "branch": "qualification/f-vq21-fmr09-root-sink-runtime",
+  "candidate": {
+    "fmr09_closeout_commit": "17a70b7e21b18ba847e5882037577b27aa8afd87",
+    "fmr09_closeout_tree": "59f420b898fda6fcce2bfee7c5c93ae22aa23932",
+    "candidate_production_source_must_remain_immutable": true
+  },
+  "independent_legacy_oracle": {
+    "source_archive": "user-supplied SWAP 4.3.1 canonical source archive",
+    "headcalc_f90_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "fluxes_f90_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+    "variables_f90_sha256": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+    "swapoutput_f90_sha256": "9fe6d939bd5213777a8a63a9b99ce154cd1aaa0e15b74895e41a33c2acac05ee",
+    "semantics": [
+      "qrot is a per-compartment root-water-extraction flux with dimensions L/T",
+      "positive qrot enters the Richards residual as a sink via +qrot(i)",
+      "the reconstructed vertical flux balance subtracts qrot(i)",
+      "cumulative qrot is booked on the outgoing side of the legacy water balance"
+    ]
+  },
+  "independent_equation_oracle": {
+    "fixture": "heterogeneous nodewise positive qrot paired with identical nodewise qssdi",
+    "hydraulic_expectation": "because the admitted residual uses +root_sink-source, identical qrot and qssdi cancel node by node and the committed hydraulic state must equal the zero-root zero-qssdi control",
+    "mass_expectation": "authoritative total_out delta equals sum(qrot)*DeltaT exactly once and authoritative total_in delta equals sum(qssdi)*DeltaT exactly once",
+    "hard_mass_expectation": "accepted residual remains within 1e-12 and aggregate authoritative mass remains complete",
+    "transaction_expectation": "A/B/A from one committed checkpoint reproduces A candidate state and authoritative mass exactly after discarding B"
+  },
+  "required_gates": [
+    "exact immutable candidate source locks",
+    "heterogeneous nodewise balanced root/qssdi hydraulic cancellation",
+    "independently computed exactly-once root total_out",
+    "independently computed exactly-once qssdi total_in",
+    "hard mass conservation",
+    "root-active checkpoint-discard-replay and A/B/A identity",
+    "inactive nonzero root forcing fail-closed before solver",
+    "negative root forcing fail-closed before solver",
+    "F-VQ18 fixed-irrigation scientific regression",
+    "F-VQ20 scheduled-irrigation scientific regression",
+    "F-MR07 committed hydraulic-view regression",
+    "F-MR06 snow rollback/mass regression",
+    "O0/O2 output identity"
+  ],
+  "not_admitted": [
+    "dynamic Feddes or drought-stress root extraction calculation",
+    "root-sink reevaluation inside Newton",
+    "swkimpl=1 root uptake",
+    "macropore root uptake",
+    "negative root sink as source convention",
+    "full RootExtraction process migration",
+    "parallel reference backend"
+  ],
+  "qualification_policy": {
+    "production_source_changes_allowed": false,
+    "owner_test_expected_values_may_serve_as_scientific_oracle": false,
+    "owner_gate_replay_may_be_used_only_as_regression": true,
+    "fail_closed_on_any_source_lock_or_equation_mismatch": true
+  }
+}
