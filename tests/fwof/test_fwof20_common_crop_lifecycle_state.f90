@@ -38,30 +38,37 @@ program test_fwof20_common_crop_lifecycle_state
   write(*,'(A)') 'FWOF20_INVALID_STATE_FAILS_CLOSED=PASS'
 
   call committed%initialize(42_int64, initial, did_initialize, 12.5_real64)
-  call require(did_initialize .and. committed%ready(), 'F-KT committed initialization')
+  call require(did_initialize, 'F-KT committed initialization flag')
+  call require(committed%ready(), 'F-KT committed initialization readiness')
   call require(committed%current_lineage_id() == 42_int64, 'lineage id')
   call require(committed%current_revision() == 0_int64, 'initial revision')
   call committed%current_time(tvalue, available)
-  call require(available .and. same_bits(tvalue, 12.5_real64), 'initial committed time')
+  call require(available, 'initial committed time available')
+  call require(same_bits(tvalue, 12.5_real64), 'initial committed time')
 
   call committed%snapshot(committed_copy, available)
-  call require(available .and. same_crop_state(initial, committed_copy), 'committed snapshot identity')
+  call require(available, 'committed snapshot available')
+  call require(same_crop_state(initial, committed_copy), 'committed snapshot identity')
 
   call set_crop_state(initial, .false., 9.0_real64, 9.0_real64)
   call committed%snapshot(committed_copy, available)
-  call require(available .and. matches_crop_state(committed_copy, .true., 0.75_real64, 2.25_real64), &
+  call require(available, 'committed snapshot after initializer mutation available')
+  call require(matches_crop_state(committed_copy, .true., 0.75_real64, 2.25_real64), &
        'committed state independent from initializer')
   write(*,'(A)') 'FWOF20_FKT_COMMITTED_INITIALIZATION_CLONES_STATE=PASS'
 
   call committed%capture_checkpoint(checkpoint, available)
-  call require(available .and. checkpoint%ready(), 'checkpoint capture')
+  call require(available, 'checkpoint capture available')
+  call require(checkpoint%ready(), 'checkpoint capture readiness')
   call require(checkpoint%current_lineage_id() == 42_int64, 'checkpoint lineage')
   call require(checkpoint%origin_revision() == 0_int64, 'checkpoint revision')
   call checkpoint%current_time(tvalue, available)
-  call require(available .and. same_bits(tvalue, 12.5_real64), 'checkpoint time')
+  call require(available, 'checkpoint time available')
+  call require(same_bits(tvalue, 12.5_real64), 'checkpoint time')
 
   call checkpoint%snapshot(checkpoint_copy, available)
-  call require(available .and. matches_crop_state(checkpoint_copy, .true., 0.75_real64, 2.25_real64), &
+  call require(available, 'checkpoint physical snapshot available')
+  call require(matches_crop_state(checkpoint_copy, .true., 0.75_real64, 2.25_real64), &
        'checkpoint physical state')
   write(*,'(A)') 'FWOF20_FKT_CHECKPOINT_EXACT_SNAPSHOT=PASS'
 
@@ -73,12 +80,14 @@ program test_fwof20_common_crop_lifecycle_state
   deallocate(trial_b1)
 
   call committed%snapshot(committed_copy, available)
-  call require(available .and. matches_crop_state(committed_copy, .true., 0.75_real64, 2.25_real64), &
+  call require(available, 'committed snapshot after trial discard available')
+  call require(matches_crop_state(committed_copy, .true., 0.75_real64, 2.25_real64), &
        'discarded trial cannot mutate committed state')
   write(*,'(A)') 'FWOF20_TRIAL_DISCARD_LEAVES_COMMITTED_STATE_UNCHANGED=PASS'
 
   call checkpoint%snapshot(trial_a, available)
-  call require(available .and. matches_crop_state(trial_a, .true., 0.75_real64, 2.25_real64), &
+  call require(available, 'replayed A snapshot available')
+  call require(matches_crop_state(trial_a, .true., 0.75_real64, 2.25_real64), &
        'replayed A from checkpoint')
   call trial_a%clone(trial_b2)
   call mutate_trial(trial_b2)
@@ -139,9 +148,10 @@ contains
     type is (crop_lifecycle_state_t)
       select type (r => right)
       type is (crop_lifecycle_state_t)
-        equal = (l%crop_emerged .eqv. r%crop_emerged) .and. &
-             same_bits(l%development_stage, r%development_stage) .and. &
-             same_bits(l%leaf_area_index, r%leaf_area_index)
+        if (.not. (l%crop_emerged .eqv. r%crop_emerged)) return
+        if (.not. same_bits(l%development_stage, r%development_stage)) return
+        if (.not. same_bits(l%leaf_area_index, r%leaf_area_index)) return
+        equal = .true.
       end select
     end select
   end function same_crop_state
@@ -154,8 +164,10 @@ contains
     equal = .false.
     select type (typed => state)
     type is (crop_lifecycle_state_t)
-      equal = (typed%crop_emerged .eqv. emerged) .and. &
-           same_bits(typed%development_stage, dvs) .and. same_bits(typed%leaf_area_index, lai)
+      if (.not. (typed%crop_emerged .eqv. emerged)) return
+      if (.not. same_bits(typed%development_stage, dvs)) return
+      if (.not. same_bits(typed%leaf_area_index, lai)) return
+      equal = .true.
     end select
   end function matches_crop_state
 
