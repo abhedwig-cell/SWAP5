@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "title": "Restricted TCS7+DCS2 Single-Node SSDI Production Candidate Contract",
+  "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-candidate",
+  "exact_candidate_base": "ad42be53e75ecc6375fcbb832492b203303f7855",
+  "readiness_status": "ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SINGLE_NODE_SSDI_MIGRATION",
+  "selection_evidence": "integration/f-pm/F-PM04_SELECTION_OPPORTUNITY_EVIDENCE.json",
+  "production_scope": {
+    "allowed": [
+      "src/process/mod_irrigation_process.f90",
+      "F-PM04 tests, gate, workflow and integration evidence"
+    ],
+    "forbidden": [
+      "F-MR backend changes",
+      "F-MR08 lineage changes",
+      "HeadCalc/Newton/Jacobian changes",
+      "legacy file I/O",
+      "calendar parsing"
+    ]
+  },
+  "selected_profile": {
+    "timing": "TCS7 critical pressure head",
+    "depth": "DCS2 DVS-dependent fixed depth",
+    "application": "single-node SSDI only",
+    "rate": "positive cm/day with positive interpolated depth and duration <= 1 day",
+    "table_policy": "2..7 finite strictly increasing DVS knots; below-first clamp; full seven-knot above-last clamp; partial-table above-last fail closed",
+    "surface_application": false,
+    "multi_node_ssdi": false,
+    "availability_scaling": false,
+    "minimum_interval_overlay": false,
+    "solute_overirrigation": false,
+    "depth_limits": false
+  },
+  "api_design": {
+    "scheduled_parameters_type": "scheduled_irrigation_parameters_t",
+    "scheduled_request_type": "scheduled_irrigation_request_t",
+    "hydraulic_input": "process_hydraulic_view_t from the qualified F-SI17/F-MR07 interface",
+    "result_type": "existing irrigation_flux_result_t with explicit event_origin",
+    "diagnostics_type": "existing irrigation_diagnostics_t with fail-closed invalid-parameter/hydraulic statuses",
+    "entry_point": "evaluate_scheduled_irrigation_interval"
+  },
+  "parameter_data": [
+    "scheduled_irrigation_enabled",
+    "active_nodes",
+    "sensor_node",
+    "single_ssdi_node",
+    "irr_rate_cm_per_day",
+    "TCS7 explicit DVS/head knots and actual knot count",
+    "DCS2 explicit DVS/depth_cm knots and actual knot count"
+  ],
+  "management_request": [
+    "t0",
+    "t1",
+    "DVS",
+    "selection_opportunity",
+    "irrigation_enabled",
+    "schedule_enabled",
+    "crop_emerged",
+    "irrigation_window_open",
+    "fixed_event_already_selected"
+  ],
+  "selection_semantics": {
+    "new_start_requires_selection_opportunity": true,
+    "selection_opportunity_is_management_runtime_input": true,
+    "infer_midnight": false,
+    "infer_one_day_interval": false,
+    "infer_solver_step_count": false,
+    "active_scheduled_event_continues_without_selection_opportunity": true,
+    "event_completion_does_not_retrigger_implicitly": true,
+    "fixed_event_precedence": "new scheduled start forbidden when fixed_event_already_selected is true"
+  },
+  "persistent_state": {
+    "shared_irrigation_state": true,
+    "new_field": "active_event_origin",
+    "origins": ["NONE", "FIXED", "SCHEDULED"],
+    "fixed_active_state": "origin FIXED plus existing fixed event index/start/end",
+    "scheduled_active_state": "origin SCHEDULED, active_event_index == 0, existing start/end; next_fixed_event_index remains unchanged",
+    "scheduled_depth_or_DVS_persisted": false,
+    "scheduled_rate_persisted": false,
+    "reason": "rate and topology are immutable parameters; stored event end is sufficient for continuation"
+  },
+  "equation_identity": {
+    "threshold": "phcrit = restricted_afgen(TCS7_table,DVS)",
+    "trigger": "pressure_head(sensor_node) <= phcrit",
+    "depth": "depth_cm = restricted_afgen(DCS2_depth_cm_table,DVS)",
+    "duration": "event_end - event_start = depth_cm / irr_rate_cm_per_day",
+    "source": "subsurface_source(single_ssdi_node) = irr_rate_cm_per_day",
+    "interval_mass": "external_inflow_amount = irr_rate_cm_per_day * active_duration",
+    "full_event_mass": "external_inflow_amount summed over accepted event intervals = depth_cm"
+  },
+  "transaction_and_time": {
+    "candidate_state_starts_as_committed_state": true,
+    "cross_event_end": "IRRIGATION_SPLIT_REQUIRED with candidate identical to committed and no source applied",
+    "event_end_tolerance": "reuse existing floating-point same_time policy",
+    "rejected_trial_mutates_committed_state": false,
+    "generic_interval": true
+  },
+  "fixed_event_regression": {
+    "existing_entry_point_preserved": "evaluate_fixed_irrigation_interval",
+    "existing fixed-event equations preserved": true,
+    "existing F-PM03 source blob remains historical scientific evidence only": true,
+    "new candidate requires fresh regression because production blob changes": true
+  },
+  "minimum_candidate_tests": [
+    "fixed-event F-PM03 regression on modified module",
+    "inactive and outer-gate false",
+    "selection_opportunity false cannot start even below threshold",
+    "TCS7 no-trigger and equality trigger",
+    "AFGEN below-first, interior, exact knot and full-table above-last",
+    "partial-table above-last fail closed",
+    "duplicate/nonmonotone/nonfinite table fail closed",
+    "invalid/mismatched hydraulic view fail closed",
+    "positive DCS2 depth and duration identity",
+    "single-node SSDI source and full-event mass identity",
+    "multi-node configuration impossible/rejected",
+    "continuation without selection opportunity",
+    "completion followed by no-selection interval does not retrigger",
+    "future explicit selection opportunity may retrigger if physical condition still qualifies",
+    "split-required no mutation",
+    "rollback/replay",
+    "A/B/A",
+    "no-trigger/no-selection optional source allocation absent",
+    "O0/O2 output identity",
+    "exact B1.10 source identity"
+  ],
+  "scientific_status": {
+    "structural_candidate_may_be_built": true,
+    "scientifically_qualified": false,
+    "independent_fvq_required": true
+  }
+}
