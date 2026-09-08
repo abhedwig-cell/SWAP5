@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ19",
+  "target_workstream": "F-PE",
+  "candidate_source_commit": "439432ad91d64353e70afda4ff0837f69521a9e5",
+  "decision": "QUALIFIED_INDEPENDENT_NONSTATIONARY_EXACT_TEMPORAL_ACCEPTANCE_READY_FOR_FPE",
+  "released_evidence": {
+    "fixture": "tests/fmr/test_fmr06_snow_smoke.f90",
+    "fixture_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "nonstationary_state_change": "snow_water_storage 0.10 -> 0.12",
+    "interval": "1400.25 -> 1401.25",
+    "temporal_tolerance": "0.0",
+    "exact_comparator_active_snow_fields": [
+      "snow_water_storage",
+      "liquid_water_storage",
+      "event_applied",
+      "event_t0"
+    ],
+    "direct_fvq17_closeout_replay": "PASS",
+    "hard_mass_and_transaction_contract": "PASS"
+  },
+  "qualification_evidence": "integration/f-vq/F-VQ19_QUALIFICATION_EVIDENCE.json",
+  "invariant_audit": "integration/f-vq/F-VQ19_INVARIANT_AUDIT.json",
+  "artifact_id": 10061662125,
+  "artifact_digest": "sha256:662655b14451b780c9a3dc1a409c74a5fa1b8a7604c72cd1a1a690597be9569e",
+  "allowed_downstream_use": "F-PE may consume this exact admitted nonstationary fixture to characterize and qualify the existing REFERENCE temporal-acceptance behavior without inventing a new tolerance.",
+  "not_released": [
+    "graded temporal tolerances",
+    "subdaily SNOW",
+    "multiday or arbitrary-duration SNOW",
+    "BALANCED",
+    "THROUGHPUT",
+    "FALLBACK",
+    "parallel real-physics execution",
+    "any relaxation of mass conservation"
+  ]
+}
