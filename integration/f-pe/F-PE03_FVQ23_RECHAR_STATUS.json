@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-FVQ23-RECHAR",
+  "title": "REFERENCE tail re-characterization on F-MR13/F-VQ23 production solver lineage",
+  "branch": "work/f-pe03-reference-tail-recharacterization-fvq23",
+  "status": "PERSISTED_PENDING_REFERENCE_TAIL_RECHARACTERIZATION",
+  "phase": "PERSISTED_NOT_YET_TESTED",
+  "reference_only": true,
+  "candidate_lineage": {
+    "fmr13_closeout": "985058c0261d284424432a65bded16b7fc9107cb",
+    "fvq23_closeout": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
+    "fvq23_status": "QUALIFIED_INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_SCIENTIFIC_NO_CHANGE_ADMISSION"
+  },
+  "historical_probe_lineage": {
+    "fpe03_handoff": "c9aa2219ddf69555b0cae77c89628fe355d0a4eb",
+    "old_fixture_commit": "e67d624967f53184904e689333594015e9658683",
+    "old_fixture_blob": "6623613a3526c119bf1fada5540eed93346592e1",
+    "purpose": "re-run the same diagnostic relative top-flux perturbations with the production reference linear solver now admitted through F-SI19/F-MR13/F-VQ23"
+  },
+  "required_outcomes": {
+    "production_source_immutable_vs_fmr13": true,
+    "baseline_reference_acceptance": true,
+    "hard_mass_gate_for_every_accepted_case": true,
+    "rollback_no_commit_for_rejected_cases": true,
+    "deterministic_replay": true,
+    "O0_O2_identity": true,
+    "classify_any_accepted_higher_cost_route": true
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "scientific_admission_expanded": false,
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "execution_classes": {
+    "REFERENCE": "ADMITTED_LINEAGE_RECHARACTERIZATION_ONLY",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "Finding an accepted higher-cost route here is characterization only. The perturbed workload itself remains diagnostic until independently admitted by F-VQ. No bounded-cost threshold or non-REFERENCE execution class may be inferred from this work unit."
+}
