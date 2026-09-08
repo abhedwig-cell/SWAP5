@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "evidence_type": "SOURCE_BOUND_OWNER_BLOCKER_REPRODUCTION",
+  "decision": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+  "status_commit_tested": "f382b51529b11b8bca22668f344ac5f568d795c6",
+  "workflow": {
+    "name": "F-GC02 physical boundary blocker",
+    "run_id": 34207629156,
+    "job_id": 102000798982,
+    "job_name": "source-bound-blocker",
+    "conclusion": "success",
+    "gate": "tests/fgc/run_fgc02_blocker_gate.sh"
+  },
+  "provenance": {
+    "fgc01_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
+    "qualified_physical_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fmq23_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "kernel_transactions_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "fmr_checkpoint_orchestrator_blob": "232875e7192f995930c102609cee08dc8938c86a",
+    "fmr_physical_backend_blob": "ade399a1df4b582c9038442093ccacce034f923d",
+    "fsi_legacy_binding_blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "fsi_state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "headcalc_blob": "be5978827095445b15de7baf607728792de6a366"
+  },
+  "verified_facts": [
+    "Candidate-only checkpoint trial, explicit commit and explicit discard already exist.",
+    "Current restricted real-physics admission accepts only bottom modes 7 and -2.",
+    "HeadCalc defines bottom modes 7 and -2 as free drainage.",
+    "HeadCalc defines SWBOTB 5 as a specified lower pressure-head route.",
+    "Explicit state binding maps request boundary bottom_head to state hbot.",
+    "Current F-SI legacy admission fails closed outside 7/-2, so the controllable lower-head route is not qualified for F-GC use."
+  ],
+  "qualification_claim": "The blocker is reproduced and tested. Physical groundwater coupling itself is NOT qualified.",
+  "required_next_owner_sequence": [
+    "F-SI qualifies explicit lower-head physical boundary with authoritative bottom flux and complete mass.",
+    "F-MR admits that exact F-SI-qualified capability into the restricted serialized physical profile.",
+    "F-GC02 resumes on the existing branch and executes physical predictor/corrector qualification from the same T0 checkpoint."
+  ]
+}
