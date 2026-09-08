@@ -1,0 +1,62 @@
+{
+  "schema_version": 2,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03-B04-RUNTIME-SCREEN-FVQ27",
+  "title": "Continue scientifically admitted REFERENCE runtime tail screening on F-VQ27 lineage",
+  "branch": "work/f-pe03-b04-admitted-runtime-screen-fvq27",
+  "status": "IN_PROGRESS_PERSISTED_BEFORE_TESTING",
+  "phase": "LINEAGE_REBOUND_SCREEN_PLAN_PERSISTED",
+  "base": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fvq27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
+    "production_source_must_remain_identical": true
+  },
+  "prior_negative_evidence": {
+    "tranche1_branch": "work/f-pe03-b04-admitted-runtime-screen",
+    "tranche1_head": "040ffa0617f4ff1c9fe10e66d8d1c5871f01c4e5",
+    "tranche1_result": "NEGATIVE_NO_HIGHER_COST_CASE_IN_TRANCHE_1",
+    "screened": [
+      "F-VQ17/F-MR06 one-call-daily snow",
+      "F-VQ21/F-MR09 precomputed root-sink control",
+      "F-VQ21/F-MR09 balanced root-sink plus SSDI"
+    ],
+    "b12_branch": "work/f-pe03-b04-b12-accepted-tail-candidate",
+    "b12_head": "89c6926d5f7d3c2cf8d5d3c00b7b3ea7a8b333e0",
+    "b12_result": "ACCEPTED_CASES_EQUAL_BASELINE_COST",
+    "fvq27_mode5_result": "BOTH_ACCEPTED_SIGNS_EQUAL_BASELINE_COST"
+  },
+  "baseline": {
+    "field_order_without_accepted_substeps": [
+      "solver_nonlinear_iterations",
+      "solver_internal_retries",
+      "solver_headcalc_calls",
+      "solver_jacobian_builds",
+      "solver_linear_solves",
+      "solver_backtracking_attempts",
+      "solver_alternative_solver_calls"
+    ],
+    "cost_vector": [3,0,3,3,3,3,0]
+  },
+  "screen_plan": {
+    "f_vq19_nonstationary_snow": "VERIFY_EXACT_FIXTURE_REDUNDANCY_WITH_ALREADY_SCREENED_FVQ17_SNOW_BLOB",
+    "f_vq14_restricted_physical_runtime": "SCREEN_IF_EXACT_ADMITTED_FIXTURE_CAN_BE_REPLAYED_ON_FVQ27_WITH_OBSERVER_ONLY_INSTRUMENTATION",
+    "f_vq15_serialized_multicolumn_runtime": "SCREEN_QUALIFIED_COLUMN_COUNTS_1_2_17_31_AND_REVERSED_ORDER_WITH_PER_COLUMN_INTERVAL_COSTS_IF_SOURCE_BOUND_REPLAY_IS_AVAILABLE",
+    "f_mr10_root_uptake_derived_sink": "DO_NOT_USE_AS_B04_SCIENTIFIC_EVIDENCE_WITHOUT_SEPARATE_INDEPENDENT_RUNTIME_ADMISSION"
+  },
+  "candidate_rule": "A B04 candidate must be an already independently scientifically admitted REFERENCE runtime workload that completes and commits with complete authoritative mass inside the unchanged hard mass gate and has at least one interval-cost counter strictly above [3,0,3,3,3,3,0].",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "retry_policy_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "fpe03_b04_resolved": false,
+  "claim_limit": "This checkpoint only rebinds B04 screening to the exact F-VQ27-qualified lineage. It grants no new scientific admission and makes no higher-cost claim.",
+  "next_action": "Prove F-VQ19 fixture redundancy, then screen exact F-VQ14/F-VQ15 admitted runtime fixtures with observer-only diagnostics on the immutable F-VQ27 production postimage."
+}
