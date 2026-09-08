@@ -1,0 +1,44 @@
+name: F-PE04 reference failure envelope
+
+on:
+  push:
+    branches: [work/f-pe04-reference-failure-envelope]
+    paths:
+      - 'tests/fpe/test_fpe04_reference_failure_envelope.f90'
+      - 'tests/fpe/run_fpe04_reference_failure_envelope_gate.sh'
+      - 'integration/f-pe/F-PE04_*.json'
+      - '.github/workflows/fpe04-reference-failure-envelope.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize-reference-envelope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify F-PE04 scope lock
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('integration/f-pe/F-PE04_DEPENDENCIES.json').read_text())
+          c=json.loads(Path('integration/f-pe/F-PE04_REFERENCE_FAILURE_CONTRACT.json').read_text())
+          m=json.loads(Path('integration/f-pe/F-PE04_PERTURBATION_MATRIX.json').read_text())
+          assert d['start_head']=='8f7bab11fd856d7cb2f7bacb8c299cf2b0517061'
+          assert d['lineage_constraints']['reference_only'] is True
+          assert d['lineage_constraints']['production_source_change_allowed'] is False
+          assert d['lineage_constraints']['prescribed_bottom_head_admitted_on_this_lineage'] is False
+          assert c['scope']['execution_class']=='REFERENCE'
+          for k in ['production_source_change','physics_change','numerical_controls_change','solver_tolerance_change','timestep_policy_change','retry_limit_change','fallback_change','policy_admission']:
+              assert c['scope'][k] is False
+          assert c['mass']['performance_mass_concession_allowed'] is False
+          assert c['claim_limits']['bounded_cost_policy_admitted'] is False
+          assert c['claim_limits']['balanced_admitted'] is False
+          assert c['claim_limits']['throughput_admitted'] is False
+          assert c['claim_limits']['fallback_admitted'] is False
+          assert any(x['family']=='PRE_SOLVER_VALIDATION' for x in m['sweeps'])
+          print('FPE04_SCOPE_LOCK=PASS')
+          PY
+      - name: Run O0/O2 REFERENCE failure envelope
+        run: bash tests/fpe/run_fpe04_reference_failure_envelope_gate.sh
