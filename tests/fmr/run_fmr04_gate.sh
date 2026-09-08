@@ -15,7 +15,10 @@ check_blob() {
     exit 1
   }
 }
-check_blob src/kernel/mod_kernel_transactions.f90 e8605e73a191e863374a26b096e0d597cb70cadd
+check_blob src/transaction/mod_transaction_reference.f90 b1878606ae6cb2b04a7b4b15e3e537deacf4477f
+check_blob src/runtime/mod_canonical_contracts.f90 0c2b15fc45011c580384cf6a618e7b378fdccf0a
+check_blob src/runtime/mod_canonical_interval_runtime.f90 f2cae79d533343db818c11e0b61b605ac5f6739d
+check_blob src/kernel/mod_kernel_transactions.f90 9f7c16e71cfb93b57f796ba759bae73824318a2f
 check_blob src/solver/mod_soil_water_solver_contract.f90 57b51997d28807fbe2da1b2e5bf654fc4167adb9
 check_blob src/solver/mod_reference_richards_workspace.f90 93285b2ca24669494c93c00403e3783fca6758e9
 check_blob src/solver/mod_reference_richards_state_binding.f90 e68d88382c6502c571713cc97fddd4e18434e271
@@ -40,7 +43,8 @@ for forbidden in ['call headcalc(', 'use variables', 'use mod_grid', 'use mod_sn
     assert forbidden not in runtime, f'F-MR runtime leaks solver/legacy internal: {forbidden}'
 for required in ['fmr_trial_from_checkpoint', 'kernel_model_t', 'reference_richards_legacy_solver_t',
                  'b110_default_mvg_provider_t', 'b110_source_sink_provider_t',
-                 'root_extraction_active', 'macropore_active', 'snow_active', 'swkimpl == 0']:
+                 'root_extraction_active', 'macropore_active', 'snow_active', 'swkimpl == 0',
+                 'storage_accounting_status', 'mass_accounting_complete', 'tx_mass_missing_none']:
     assert required in runtime, f'missing runtime contract token: {required}'
 for required in ['use variables', 'use mod_grid', 'bind_b110_serialized_legacy_context']:
     assert required in context, f'missing legacy context adapter token: {required}'
@@ -94,8 +98,9 @@ for opt in 0 2; do
   fi
   grep -Fq 'FMR04_SERIALIZED_PHYSICAL_COMPOSITION_TEST PASS' "$OUT/output.txt"
   grep -Fq 'FMR04_REAL_HEADCALC_EXECUTED=TRUE' "$OUT/output.txt"
-  grep -Fq 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=F' "$OUT/output.txt"
-  grep -Fq 'FMR04_FULL_INTERVAL_MASS_ADMISSION=BLOCKED_FKT_RESULT_BOUNDARY_INCOMPLETE' "$OUT/output.txt"
+  grep -Fq 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=T' "$OUT/output.txt"
+  grep -Fq 'FMR04_AUTHORITATIVE_MISSING_MASK=0' "$OUT/output.txt"
+  grep -Fq 'FMR04_FULL_INTERVAL_MASS_ADMISSION=PASS_FKT08_AUTHORITATIVE' "$OUT/output.txt"
   grep -Fq 'FMR04_ACTIVE_ROOT_FAIL_CLOSED=PASS' "$OUT/output.txt"
   grep -Fq 'FMR04_MACROPORE_FAIL_CLOSED=PASS' "$OUT/output.txt"
   grep -Fq 'FMR04_SNOW_FAIL_CLOSED=PASS' "$OUT/output.txt"
@@ -111,4 +116,4 @@ cat "$BUILD/o0/output.txt"
 echo "FMR04_O0_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o0/executable.sha256")"
 echo "FMR04_O2_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o2/executable.sha256")"
 echo "FMR04_OUTPUT_SHA256=$(cut -d' ' -f1 "$BUILD/o0/output.sha256")"
-echo 'FMR04_GATE PASS_WITH_FULL_INTERVAL_MASS_HOLD'
+echo 'FMR04_GATE PASS_FKT08_AUTHORITATIVE_MASS'
