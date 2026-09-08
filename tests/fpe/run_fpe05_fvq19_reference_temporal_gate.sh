@@ -75,6 +75,15 @@ PY
 
 python3 tests/fpe/fpe05_make_cost_probe.py "$BUILD/test_fpe05_cost_probe.f90" | tee "$EVIDENCE_DIR/probe-generation.txt"
 
+git show 1d9ff946f45488557d10700f047089d3298a4794:tests/vq/fvq17/test_fvq17_snow_multiswap_reference.f90 > \
+  "$BUILD/test_fvq17_snow_multiswap_reference.f90"
+FVQ17_VERIFIER_BLOB="$(git hash-object "$BUILD/test_fvq17_snow_multiswap_reference.f90")"
+[[ "$FVQ17_VERIFIER_BLOB" == "2465fcc504839d3677b28299ca0a5af5bfbe825e" ]] || {
+  echo "FPE05_FVQ17_VERIFIER_BLOB_MISMATCH actual=$FVQ17_VERIFIER_BLOB" >&2
+  exit 1
+}
+echo "FPE05_IMMUTABLE_FVQ17_VERIFIER_BLOB=$FVQ17_VERIFIER_BLOB" | tee "$EVIDENCE_DIR/fvq17-verifier-lock.txt"
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -122,15 +131,26 @@ for opt in 0 2; do
   test "$(grep -c '^FPE05_COST ' "$OUT/probe-a.txt")" -eq 51
   cmp "$OUT/probe-a.txt" "$OUT/probe-b.txt"
 
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" \
+    -c "$BUILD/test_fvq17_snow_multiswap_reference.f90" -o "$OUT/fvq17-replay.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/fvq17-replay.o" -o "$OUT/fvq17-replay"
+  "$OUT/fvq17-replay" > "$OUT/fvq17-replay.txt" 2>&1 || { cat "$OUT/fvq17-replay.txt" >&2; exit 1; }
+  grep -Fq 'FVQ17_SUBDAILY_RUNTIME_FAIL_CLOSED=PASS' "$OUT/fvq17-replay.txt"
+  grep -Fq 'FVQ17_MULTIDAY_RUNTIME_FAIL_CLOSED=PASS' "$OUT/fvq17-replay.txt"
+  grep -Fq 'FVQ17_INDEPENDENT_SNOW_MULTISWAP_REFERENCE PASS' "$OUT/fvq17-replay.txt"
+
   cp "$OUT/original.txt" "$EVIDENCE_DIR/original-o${opt}.txt"
   cp "$OUT/probe-a.txt" "$EVIDENCE_DIR/probe-o${opt}.txt"
-  sha256sum "$OUT/original.txt" "$OUT/probe-a.txt" > "$EVIDENCE_DIR/output-o${opt}.sha256"
+  cp "$OUT/fvq17-replay.txt" "$EVIDENCE_DIR/fvq17-current-lineage-o${opt}.txt"
+  sha256sum "$OUT/original.txt" "$OUT/probe-a.txt" "$OUT/fvq17-replay.txt" > "$EVIDENCE_DIR/output-o${opt}.sha256"
   echo "FPE05_O${opt}_ORIGINAL_FIXTURE=PASS"
   echo "FPE05_O${opt}_COST_PROBE_REPEAT_IDENTITY=PASS"
+  echo "FPE05_O${opt}_CURRENT_LINEAGE_FVQ17_ROLLBACK_REPLAY=PASS"
 done
 
 cmp "$BUILD/o0/original.txt" "$BUILD/o2/original.txt"
 cmp "$BUILD/o0/probe-a.txt" "$BUILD/o2/probe-a.txt"
+cmp "$BUILD/o0/fvq17-replay.txt" "$BUILD/o2/fvq17-replay.txt"
 grep '^FPE05_COST ' "$BUILD/o0/probe-a.txt" > "$EVIDENCE_DIR/cost-envelope.txt"
 sha256sum "$EVIDENCE_DIR/cost-envelope.txt" > "$EVIDENCE_DIR/cost-envelope.sha256"
 
@@ -140,6 +160,8 @@ sha256sum "$EVIDENCE_DIR/cost-envelope.txt" > "$EVIDENCE_DIR/cost-envelope.sha25
   echo 'FPE05_COST_PROBE_REPEAT_IDENTITY=PASS'
   echo 'FPE05_COST_RECORD_COUNT=51'
   echo 'FPE05_MASS_AND_COMMIT_ASSERTIONS_REUSED_FROM_IMMUTABLE_FMR06_FIXTURE=PASS'
+  echo 'FPE05_CURRENT_LINEAGE_FAILURE_ROLLBACK_NO_LEAKAGE_REPLAY=PASS'
+  echo 'FPE05_CURRENT_LINEAGE_FVQ17_REPLAY_O0_O2_IDENTITY=PASS'
   echo 'FPE05_NO_NEW_NUMERIC_TOLERANCE=PASS'
   echo 'FPE05_BALANCED_THROUGHPUT_FALLBACK_NOT_ADMITTED=PASS'
   echo 'FPE05_GATE PASS_REFERENCE_NONSTATIONARY_TEMPORAL_COST_CHARACTERIZATION'
