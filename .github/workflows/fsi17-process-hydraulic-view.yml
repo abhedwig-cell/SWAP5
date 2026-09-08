@@ -1,0 +1,26 @@
+name: F-SI17 process hydraulic view
+
+on:
+  push:
+    branches:
+      - work/f-si17-process-hydraulic-view
+    paths:
+      - 'integration/f-si/F-SI17_*'
+      - 'src/solver/mod_process_hydraulic_view.f90'
+      - 'tests/fsi/test_fsi17_process_hydraulic_view.f90'
+      - 'tests/fsi/run_fsi17_gate.sh'
+      - 'tools/fsi/fsi17_process_hydraulic_view_gate.py'
+      - '.github/workflows/fsi17-process-hydraulic-view.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI17 source-bound qualification gate
+        run: bash tests/fsi/run_fsi17_gate.sh
