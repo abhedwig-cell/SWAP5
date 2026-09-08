@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP03",
+  "execution_basis": {
+    "kind": "local deterministic Python probe of the persisted candidate algorithm",
+    "note": "No GitHub Actions run exists for the experiment branch. Numerical evidence was generated in the active analysis runtime using the same B1.10-equation-aligned constitutive and F-LMFP03 face/update logic. Production admission is not claimed."
+  },
+  "tests": {
+    "gravity_only_homogeneous": {
+      "pass": true,
+      "q": 2.462210966592056,
+      "K": 2.462210966592056,
+      "abs_error": 0.0
+    },
+    "hydrostatic_homogeneous_zero_flux": {
+      "pass": true,
+      "max_abs_q": 0.0,
+      "cases": 4
+    },
+    "hydrostatic_heterogeneous_zero_flux": {
+      "pass": true,
+      "q": 8.259171124791465e-12,
+      "interface_head": -19.99999999996362,
+      "expected_interface_head": -20.0,
+      "iterations": 37,
+      "equal_flux_residual": -2.4011015398173186e-11
+    },
+    "heterogeneous_gravity_equal_flux": {
+      "pass": true,
+      "q": 3.5248246210388725,
+      "interface_head": -18.635353377030697,
+      "iterations": 35,
+      "equal_flux_residual": -2.2231283480778075e-10
+    },
+    "bounded_heterogeneous_face_matrix": {
+      "pass": true,
+      "cases": 500,
+      "failures": 0,
+      "max_iterations": 42,
+      "mean_iterations": 35.788,
+      "max_equal_flux_residual": 8.307559085096727e-10
+    },
+    "accepted_column_mass_conservation": {
+      "pass": true,
+      "mass_residual": 6.938893903907228e-15,
+      "max_face_iterations": 38,
+      "step_duration": 0.05
+    },
+    "reject_without_mutation_and_retry": {
+      "pass": true,
+      "rejected_reason": "storage_bounds:[0, 1]",
+      "advised_step_duration": 3.4829335863197485e-05,
+      "retry_mass_residual": 5.022674984256348e-15
+    },
+    "rejected_trial_repeatability": {
+      "pass": true,
+      "same_reason": true,
+      "same_advised_step": true,
+      "same_faces": true
+    },
+    "generic_time_refinement": {
+      "pass": true,
+      "duration": 0.2,
+      "reference_steps": 2560,
+      "l1_errors": {
+        "20": 0.01640771395680929,
+        "40": 0.008325892218751463,
+        "80": 0.004109109428335422,
+        "160": 0.002000883176560997,
+        "320": 0.0009399692556524286
+      },
+      "error_ratios": {
+        "20_to_40": 1.9706853662909611,
+        "40_to_80": 2.0262035762148676,
+        "80_to_160": 2.053647847346052,
+        "160_to_320": 2.128668745843387
+      },
+      "max_mass_residual": 7.174816296640074e-15,
+      "max_face_iterations": 38
+    },
+    "random_column_trial_matrix": {
+      "pass": true,
+      "cases": 200,
+      "accepted_first_trial": 179,
+      "rejected_first_trial": 21,
+      "retries_accepted": 21,
+      "failures": 0,
+      "max_mass_residual": 6.768023641523513e-15,
+      "max_face_iterations": 40
+    },
+    "historical_max_dry_wet_hydrostatic_counterexample": {
+      "pass": true,
+      "case": "homogeneous material, center distance 20, h_upper=-30, h_lower=-10",
+      "historical_style_q_dry": -2.852184107705403,
+      "historical_style_q_wet": 1.192099909547251,
+      "historical_style_max_q": 1.192099909547251,
+      "expected_hydrostatic_q": 0.0,
+      "interpretation": "max(dry,wet) is not hydrostatic-consistent in this reconstructed case and is not admitted as the SWAP5 candidate closure"
+    }
+  },
+  "overall_pass": true,
+  "qualification_limit": "structural and numerical prototype evidence only; no FullRichards physical-equivalence claim"
+}
