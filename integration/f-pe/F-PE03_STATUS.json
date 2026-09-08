@@ -1,0 +1,94 @@
+{
+  "schema_version": 3,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "phase": "PARTIAL_EXIT_OWNER_DEPENDENCY",
+  "status": "PARTIAL_EXIT_REFERENCE_COST_CLIFF_LOCALIZED_ACCEPTED_DIFFICULT_FIXTURE_STILL_MISSING",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": false,
+  "reference_only": true,
+  "production_source_changed": false,
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "numerical_controls_changed": false,
+  "scientific_admission_expanded": false,
+  "fpe05_dependency": {
+    "closeout_head": "54e10f990c36c6be9cdc54b4b2a430435585b04e",
+    "status": "QUALIFIED_REFERENCE_NONSTATIONARY_TEMPORAL_ACCEPTANCE_AND_COST_CHARACTERIZATION",
+    "original_fpe03_b01": "RESOLVED_FOR_REFERENCE_CHARACTERIZATION_RESUME"
+  },
+  "current_lineage_characterization": {
+    "historical_stress_replay": "PASS_EXACT_HISTORICAL_METRICS",
+    "nonstationary_snow_overlay": "PASS_COST_CLIFF_PERSISTS",
+    "root_cause_localization": "FULL_TRIAL_RICHARDS_SOLVER_NONCONVERGENCE_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE",
+    "flux_boundary_probe": "PASS_TRANSITION_BRACKETED",
+    "flux_refinement_probe": "PASS_BINARY_LOW_COST_OR_FULL_RETRY_NO_INTERMEDIATE_COST_ROUTE",
+    "refined_relative_flux_transition_bracket": [3e-12, 1e-11],
+    "both_flux_signs_symmetric_at_tested_levels": true
+  },
+  "observed_cost_classes": {
+    "accepted_low_cost": {
+      "accepted_substeps": 1,
+      "nonlinear_iterations": 3,
+      "internal_retries": 0,
+      "headcalc_calls": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "alternative_solver_calls": 0
+    },
+    "rejected_full_retry": {
+      "accepted_substeps": 0,
+      "nonlinear_iterations": 24,
+      "internal_retries": 3,
+      "headcalc_calls": 3,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "alternative_solver_calls": 0
+    },
+    "accepted_intermediate_or_higher_cost_route_observed": false
+  },
+  "scientific_boundary": {
+    "admitted_nonstationary_reference_fixture_available": true,
+    "diagnostic_flux_perturbations_scientifically_admitted": false,
+    "transactional_acceptance_equals_scientific_admission": false,
+    "production_solver_defect_established": false
+  },
+  "scope_flags": {
+    "accepted_difficult_physical_fixture_found": false,
+    "physical_tail_distribution_qualified": false,
+    "representative_p50_p95_p99": false,
+    "B12_or_heavy_clay_covered": false,
+    "bounded_cost_policy_admitted": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "fallback_policy_admitted": false,
+    "parallel_real_physics_admitted": false
+  },
+  "blocker": {
+    "code": "FPE03-B02",
+    "status": "BLOCKED_OWNER_INPUT_REQUIRED",
+    "description": "F-PE03 has no independently admissible accepted higher-cost real-physics REFERENCE workload. Diagnostic perturbations show a deterministic binary transition from the low-cost converged route to full-trial Newton exhaustion and retry failure, not an accepted difficult tail.",
+    "owner_boundary": "Investigating the Richards convergence discontinuity belongs to the solver-owning workstream such as F-SI. Providing any perturbed real-physics fixture as production tail evidence requires independent F-VQ/F-MR scientific admission. F-PE must not change solver controls or physics merely to manufacture a difficult accepted case."
+  },
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "execution_classes": {
+    "REFERENCE": "ADMITTED_EXISTING_ROUTE_CHARACTERIZED_WITH_CURRENT_LIMITS",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "decision": "STOP_FPE03_NUMERICAL_BOUNDARY_BISECTION",
+  "next_allowed_action": "Read-only solver-owner handoff audit, or resume F-PE03 only when an independently admitted accepted higher-cost real-physics REFERENCE fixture becomes available.",
+  "next_disallowed_actions": [
+    "Do not define a bounded-cost production threshold from rejected diagnostic trials",
+    "Do not admit BALANCED, THROUGHPUT or FALLBACK",
+    "Do not relax mass conservation or temporal acceptance",
+    "Do not change REFERENCE solver controls merely to make diagnostic perturbations converge",
+    "Do not promote diagnostic perturbations to scientific admission"
+  ]
+}
