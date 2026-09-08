@@ -1,0 +1,21 @@
+{
+  "work_unit": "F-SI14",
+  "status": "UNQUALIFIED_CANDIDATE",
+  "branch": "work/f-si14-grid-geometry-binding",
+  "fsi13_qualified_parent": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+  "production_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4",
+  "scope": "explicit request grid geometry authority on the already-admitted common reference route",
+  "admitted_bottom_modes": [7, -2],
+  "swkimpl": 0,
+  "swmacro": 0,
+  "formula_change": false,
+  "physics_change": false,
+  "policy_change": false,
+  "qualification_pending": true,
+  "notes": [
+    "HeadCalc common route receives active_nodes, z, dz and node_distance from the existing request parameter set.",
+    "Legacy direct calls retain MOD_grid authority.",
+    "The non-admitted swbotb=8 guard was nested to prevent Fortran non-short-circuit evaluation of grid_disnod(NN+1) on admitted free-drainage routes.",
+    "This artifact is a checkpoint only and must not be interpreted as qualification."
+  ]
+}
