@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF18",
+  "title": "Restricted Reference-ET No-Interception Potential-Transpiration Producer",
+  "branch": "work/f-wof18-reference-et-transpiration-producer",
+  "status": "QUALIFIED_RESTRICTED_SWETR1_NOINTERCEPTION_POTENTIAL_TRANSPIRATION_PRODUCER",
+  "qualification_scope": "SWETR1_SWMETDETAIL0_SWDIVIDE0_SWINTER0_CURRENT_ET_RESULT",
+  "base": {
+    "commit": "c54e0bf1fff5c986ee64bf8fdb4248e5f4b15172",
+    "status": "QUALIFIED_OPTION_AWARE_CROP_ROOT_GEOMETRY_SNAPSHOT_PRODUCER"
+  },
+  "qualified_candidate": {
+    "commit": "025e014eaa1f3148ec4f3f8c003ad65928cd4edd",
+    "production_source": "src/process/mod_reference_et_transpiration_process.f90",
+    "production_source_blob": "497b42f2450a003a070dbc4020573866d1ef93b0",
+    "contract_blob": "9bcb7a32354294985843af50dbf1730ed029023b",
+    "source_bound_evidence_blob": "b70b5e55eaa1a4bbd448094aa8856a5446398cd8",
+    "oracle_test_blob": "528485282c646852481da89d8bb05edf3eb92673",
+    "gate_blob": "e5993da9454d880816e410fa0e30650646a2af31",
+    "workflow_blob": "fe2a25f98aee5530327cb5fa18a243d8583e0f09"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "production_scope": {
+    "production_source_changed": true,
+    "production_source_delta_count": 1,
+    "crop_source_changed": false,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "legacy_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_workstream_merge_performed": false
+  },
+  "admission": {
+    "SWETR_1": true,
+    "SWMETDETAIL_0": true,
+    "SWDIVIDE_0": true,
+    "SWINTER_0": true,
+    "Penman_Monteith": false,
+    "interception_modes_1_2_3": false,
+    "weather_IO_or_calendar_selection": false,
+    "persistent_ET_state": false,
+    "current_interval_ET_result": true,
+    "trap_safe_fail_closed_validation": true,
+    "runtime_binding": false
+  },
+  "verification": {
+    "github_actions_run": 34269701662,
+    "github_actions_conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "independent_B1_10_formula_identity": "PASS",
+    "B1_10_oracle_potential_transpiration_cm_per_day": 0.27508,
+    "F_WOF13_ET_result_consumption": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "input_read_only": "PASS",
+    "invalid_active_inputs_fail_closed_with_fp_traps": "PASS",
+    "output_sha256": "eb9a47693e6b49cddb0f50b6f3368e6f684bf29a085cd86a98f6109374a75444"
+  },
+  "fwof14_blocker_effect": {
+    "nonadaptive_root_view_algorithm": "RESOLVED",
+    "option_aware_root_geometry_derivation": "RESOLVED",
+    "restricted_SWETR1_SWINTER0_ET_algorithm": "RESOLVED",
+    "complete_committed_crop_lifecycle_binding": "OPEN",
+    "current_canopy_factor_binding": "OPEN",
+    "end_to_end_root_uptake_input_producer": "BLOCKED"
+  },
+  "open": [
+    "qualify a minimal read-only crop/canopy owner view supplying crop_emerged plus the option-specific DVS/WRT/SWRD2 root-depth state required by F-WOF17",
+    "qualify ownership/binding of vegetation_cover_fraction, crop_factor and CO2_transpiration_factor for the admitted ET route",
+    "compose the qualified crop geometry, nonadaptive root distribution and reference-ET result into the F-WOF13 assembly without reintroducing legacy globals",
+    "qualify complete transactional crop lifecycle evolution separately before claiming full crop-host admission",
+    "cover SWRDC=1 and broader ET/interception physics in separate workunits if required"
+  ],
+  "next": "Start a source-bound F-WOF19 crop/canopy owner-view readiness workunit. Do not implement full crop lifecycle or runtime composition unless the required committed owner state is already qualified on the current lineage."
+}
