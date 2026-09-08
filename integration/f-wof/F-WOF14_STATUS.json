@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF14",
+  "title": "Concrete Root-Uptake Producer Readiness and Owner-Gap Resolution",
+  "branch": "work/f-wof14-root-uptake-producer-readiness",
+  "status": "BLOCKED_BOTH_OWNER_INPUTS_NOT_YET_AVAILABLE",
+  "qualification_scope": "SOURCE_BOUND_PRODUCER_READINESS_ONLY",
+  "base": {
+    "commit": "03c8c2900c976dec955b2c34a5d903c68edd9547",
+    "status": "QUALIFIED_EXPLICIT_CROP_ROOT_SNAPSHOT_AND_ET_ASSEMBLY_SEAM"
+  },
+  "tested_candidate": "06a34df18208880ec949885a0d83a6a1379593c1",
+  "verification": {
+    "github_actions_run": 34265837687,
+    "github_actions_conclusion": "success",
+    "zero_production_delta": "PASS",
+    "crop_root_producer_absence": "PASS",
+    "current_ET_producer_absence": "PASS",
+    "FWO10_full_crop_host_absence": "PASS",
+    "diverged_lineage_no_blind_merge": "PASS",
+    "first_ci_attempt": {
+      "run": 34265739018,
+      "conclusion": "failure",
+      "classification": "READINESS_HARNESS_ASSERTION_JOINED_TWO_SEPARATE_FWO10_OPEN_ITEMS",
+      "production_or_physics_failure": false
+    }
+  },
+  "gates": {
+    "qualified_FWO13_base": "PASS",
+    "explicit_crop_root_owner_state_available": "FAIL",
+    "explicit_current_ET_result_available": "FAIL",
+    "evaluation_order_source_bound": "PASS_FROM_FWO12_READINESS",
+    "runtime_solver_independence": "PASS_CONTRACT_AVAILABLE",
+    "legacy_global_reads_in_new_producer": "NOT_ADMITTED",
+    "file_IO_in_new_producer": "NOT_ADMITTED",
+    "implicit_daily_or_midnight_assumption": "NOT_ADMITTED",
+    "silent_crop_or_ET_physics_change": "NOT_ADMITTED"
+  },
+  "scope": {
+    "production_source_changed": false,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "crop_physics_changed": false,
+    "ET_physics_changed": false,
+    "concrete_WOFOST_provider_implemented": false,
+    "legacy_global_adapter_implemented": false,
+    "cross_lineage_merge_performed": false
+  },
+  "state": {
+    "readiness_assessed": true,
+    "implemented": false,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "blocked": true
+  },
+  "owners": {
+    "primary_crop_root_owner": "F-WOF crop lifecycle/state",
+    "primary_ET_owner": "ET process/result owner",
+    "runtime_owner_after_both_release": "F-MR"
+  },
+  "release_conditions": [
+    "qualify a minimal crop-owned committed or derivable root state with a read-only crop_root_state_view_t producer",
+    "qualify an explicit current potential-transpiration result producer with evaluation-point semantics matching the root-uptake call",
+    "compose both through the already-qualified F-WOF13 assembly seam without runtime or solver reading legacy crop globals"
+  ],
+  "affected_invariants": [2, 3, 4, 7, 9, 21, 22, 27, 29, 30],
+  "next": "Split the blocker. Start F-WOF15 for minimal crop-root state ownership/view-production resolution. Keep ET result production as a separate owner workunit; do not combine them into one hidden provider."
+}
