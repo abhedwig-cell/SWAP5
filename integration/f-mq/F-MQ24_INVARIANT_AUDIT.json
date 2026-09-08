@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ24",
+  "candidate_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "qualification_head_reviewed": "d46cafc697e8ccc1daecf91263a6b3f11fd8cb4d",
+  "production_source_changed_by_fmq24": false,
+  "audit": [
+    {"invariant":1,"status":"PASS","finding":"One shared SWAP kernel/runtime lineage is qualified; no SNOW-specific alternate kernel is introduced."},
+    {"invariant":2,"status":"PASS","finding":"Qualification adds no production I/O; the admitted runtime composition remains outside file-format concerns."},
+    {"invariant":3,"status":"PASS","finding":"SNOW parameters, state, forcing, runtime diagnostics and results remain explicitly separated."},
+    {"invariant":4,"status":"PASS","finding":"Persistent SNOW continuation state is compact and allocated only for snow-active columns."},
+    {"invariant":5,"status":"PASS","finding":"Solver workspace remains worker/job-owned; F-MQ24 adds no per-column scratch."},
+    {"invariant":6,"status":"PASS_NO_NEW_CONSTRAINT","finding":"Qualification does not restrict SoA/pool/batch implementations; mixed active/inactive batches are exercised."},
+    {"invariant":7,"status":"PASS","finding":"Checkpoint, rejected trial, rollback, replay and commit all pass through F-KT-owned transaction semantics; rejected trials leave committed state unchanged."},
+    {"invariant":8,"status":"PASS","finding":"A/B/A and replay are exact from the same committed state; no hidden process state is introduced."},
+    {"invariant":9,"status":"PASS_WITH_HOLD","finding":"Runtime uses generic t0/t1 but SNOW is admitted only for the exact one-call duration 1.0; subdaily and multiday calls fail closed."},
+    {"invariant":10,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No coupling-window restriction is introduced; SNOW event scheduling retains its explicit admitted time-domain hold."},
+    {"invariant":11,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No predictor-corrector or coupling contract is modified."},
+    {"invariant":12,"status":"PASS_NOT_APPLICABLE","finding":"Groundwater head/flux interface contract is untouched."},
+    {"invariant":13,"status":"PASS","finding":"Authoritative mass is complete with zero missing mask; melt is treated as an internal transfer and not double-counted as external loss."},
+    {"invariant":14,"status":"PASS_NOT_APPLICABLE","finding":"No groundwater response tangent is involved."},
+    {"invariant":15,"status":"PASS_NOT_APPLICABLE","finding":"No coupling-run count or predictor/corrector cost policy is changed."},
+    {"invariant":16,"status":"PASS_SCOPED","finding":"Real MultiSWAP batches 1,2,17,31 pass for inactive, active and mixed SNOW profiles; real physical execution remains serialized."},
+    {"invariant":17,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No 1:1 MODFLOW mapping assumption is introduced."},
+    {"invariant":18,"status":"PASS_NOT_APPLICABLE","finding":"Deep-vadose composition is unaffected."},
+    {"invariant":19,"status":"PASS_NOT_APPLICABLE","finding":"No component-transition storage transfer is changed."},
+    {"invariant":20,"status":"PASS_WITH_SCOPE_HOLD","finding":"SNOW composition is solver-interface compatible, but F-MQ24 only qualifies the restricted equilibrium Richards profile actually exercised."},
+    {"invariant":21,"status":"PASS","finding":"Exact F-VQ16 B1.10-qualified SNOW process blob is reused; no duplicate physics implementation is admitted."},
+    {"invariant":22,"status":"PASS","finding":"SNOW process remains behind clean interfaces and does not depend on HeadCalc internals."},
+    {"invariant":23,"status":"PASS","finding":"No performance/execution policy silently changes physics; balanced, throughput and fallback remain not admitted."},
+    {"invariant":24,"status":"PASS_NO_NEW_CONSTRAINT","finding":"No new bounded-cost solver or fallback ladder is introduced by this qualification."},
+    {"invariant":25,"status":"PASS","finding":"Reference behavior remains anchored in exact F-VQ16/F-VQ17 scientific qualification and the full-accuracy reference route."},
+    {"invariant":26,"status":"PASS","finding":"Per-column/runtime diagnostics include SNOW activity, event preparation, solve count and authoritative mass evidence."},
+    {"invariant":27,"status":"PASS","finding":"Inactive SNOW columns retain zero optional SNOW state and pass explicit inactive regression."},
+    {"invariant":28,"status":"PASS","finding":"Tile fractions, MODFLOW composition and transfer-zone ownership remain outside the SWAP kernel/runtime seam."},
+    {"invariant":29,"status":"PASS","finding":"No midnight, file-format or MODFLOW dependency is introduced; the exact one-call duration restriction is explicit rather than hidden."},
+    {"invariant":30,"status":"PASS","finding":"F-MQ24 records explicit source-bound qualification evidence and this complete invariant audit before admission."}
+  ],
+  "decision_relevance": {
+    "blocking_invariant_failures": 0,
+    "qualified_holds": [
+      "Subdaily, multiday and arbitrary-duration SNOW remain not admitted.",
+      "Parallel real-physics remains not admitted.",
+      "General non-equilibrium Richards scope remains not admitted.",
+      "Performance policies and 100k-column performance claims remain outside F-MQ24."
+    ]
+  }
+}
