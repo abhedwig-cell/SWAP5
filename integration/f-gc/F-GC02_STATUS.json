@@ -7,39 +7,63 @@
   "physical_seam_contract_commit": "7031174da0da44142cac3a0a3b118b6aba88589e",
   "blocker_commit": "d92545ffede668cdd508796fe079007df02021ab",
   "blocker_gate_commit": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
-  "status": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+  "blocker_resolution_commit": "f93cd47e488e167ffecac2950722e4d1a773a737",
+  "status": "IN_PROGRESS_PHYSICAL_PREDICTOR_CORRECTOR_COMPOSITION_AFTER_OWNER_RESOLUTION",
   "physical_coupling_implemented": false,
   "persisted": true,
   "blocker_reproduction_tested": true,
   "physical_coupling_tested": false,
   "qualified": false,
-  "ci_evidence": {
-    "workflow": "F-GC02 physical boundary blocker",
-    "run_id": 34207546465,
-    "job_id": 102000535832,
-    "head_sha": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
-    "conclusion": "success"
+  "upstream_qualified_chain": {
+    "F_SI16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f",
+    "F_SI16_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+    "F_MR11_closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
+    "F_MR11_production_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+    "F_VQ26_closeout": "a1d5ad9147e18301f68183822577b1ba8fca3de2",
+    "F_VQ26_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME_SCIENTIFIC_ADMISSION"
   },
-  "findings": [
-    "The qualified F-KT/F-MR checkpoint and candidate seam already supports candidate-only trial, explicit commit and explicit discard without committed-state mutation.",
-    "No F-KT transaction algorithm change is required for F-GC02.",
-    "The current F-MR restricted real-physics admission accepts only bottom modes 7 and -2.",
-    "HeadCalc implements bottom modes 7 and -2 as free drainage, so forcing%bottom_head is not a controllable groundwater coupling boundary on the admitted physical route.",
-    "HeadCalc already contains a specified lower pressure-head route for SWBOTB 5 and explicit state binding already carries request%boundary%bottom_head into state%hbot, but that route is not currently admitted by F-SI/F-MR.",
-    "Enabling that route inside F-GC would cross the F-SI/F-MR ownership boundary and would invalidate the scientific-admission constraint."
-  ],
-  "required_upstream_owner_work": {
-    "F-SI": "Qualify an explicit lower pressure-head boundary through the existing soil-water boundary interface for the same restricted real-physics route, with authoritative returned bottom flux and complete mass accounting.",
-    "F-MR": "After F-SI qualification, admit that exact capability in the restricted serialized physical profile while preserving the existing candidate-only checkpoint orchestration seam.",
-    "F-KT": "NONE"
+  "resolved_owner_blocker": {
+    "former_status": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+    "resolved": true,
+    "control_input": "fmr_b110_physical_forcing_t%bottom_head",
+    "control_semantics": "lower-boundary face pressure head",
+    "authoritative_solver_output": "solve_result%bottom_flux",
+    "solver_qbot_sign": "positive into SWAP through the lower boundary; negative out",
+    "serialized_runtime_only": true
   },
-  "resume_condition": "Resume this same F-GC02 branch only after exact qualified F-SI/F-MR provenance exists for a controllable groundwater lower boundary. Then implement predictor trial, discard, groundwater response, corrector from the same T0 checkpoint, exact interface flux pairing, authoritative mass gate and single accepted commit.",
-  "not_claimed": [
-    "qualified single-column physical coupling",
-    "MODFLOW production integration",
-    "parallel physical coupling",
-    "production response tangent",
-    "deep-vadose physics",
-    "two-tile physical coupling"
-  ]
+  "physical_coupling_contract": {
+    "trial_signature": "swap_trial(checkpoint_T0, window, gw_head_candidate, base_boundary_conditions) -> trial_candidate",
+    "groundwater_head_binding": "gw_head_candidate -> forcing%bottom_head",
+    "authoritative_flux_binding": "q_swap = -solve_result%bottom_flux",
+    "interface_sign_reason": "F-SI/F-MR bottom_flux is positive into SWAP while F-GC q_swap is positive out of SWAP",
+    "interface_flux_target": "q_swap + q_gw = 0",
+    "head_target": "H_SWAP - H_GW = 0",
+    "predictor_origin": "same committed T0 checkpoint",
+    "corrector_origin": "same committed T0 checkpoint",
+    "predictor_commit_allowed": false,
+    "accepted_corrector_commits": 1,
+    "rejected_trial_enters_mass_ledger": false,
+    "coupling_interface_transfer_booked_once": true,
+    "swap_interval_mass_owner": "F-KT/F-MR unchanged"
+  },
+  "source_characterization": {
+    "F_GC01_coupler": "tests/fgc/fgc01_coupler.py",
+    "F_GC01_models": "tests/fgc/fgc01_models.py",
+    "F_GC01_orchestration": "predictor and optional corrector both call trial(checkpoint, head, t1); only accepted trial is committed",
+    "production_coupling_module_preexisting": false,
+    "composition_strategy": "replace deterministic SWAP trial provider with immutable F-MR11-backed physical trial provider while preserving F-GC01 orchestration"
+  },
+  "architecture_holds": {
+    "F_KT_transaction_algorithm_changed": false,
+    "F_SI_physics_changed": false,
+    "F_MR_scheduler_changed": false,
+    "new_interface_tolerance_allowed": false,
+    "mass_tolerance_allowed": false,
+    "parallel_physical_backend_admitted": false,
+    "MODFLOW_package_in_scope": false,
+    "deep_vadose_in_scope": false,
+    "response_tangent_production_in_scope": false,
+    "two_tile_physical_coupling_in_scope": false
+  },
+  "next_gate": "SOURCE_BOUND_FGC01_ORCHESTRATOR_TO_FMR11_TRIAL_COMPOSITION"
 }
