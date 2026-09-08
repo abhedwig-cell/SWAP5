@@ -1,15 +1,25 @@
 {
   "schema_version": 1,
   "workstream": "F-VQ",
-  "work_unit": "F-VQ23",
-  "scope": "INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_RUNTIME_SCIENTIFIC_ADMISSION",
-  "phase": "VERIFIER_IMPLEMENTED_AWAITING_QUALIFICATION",
-  "status": "IN_PROGRESS_VERIFIER_ONLY",
+  "work_unit": "F-VQ23_PROBE_DUPLICATE",
+  "scope": "SUPERSEDED_DUPLICATE_FMR13_REFERENCE_LINEAR_SOLVER_RUNTIME_VERIFIER",
+  "phase": "SUPERSEDED_NO_QUALIFICATION_CLAIM",
+  "status": "SUPERSEDED_BY_CANONICAL_FVQ23",
   "branch": "qualification/f-vq23-fmr13-reference-linear-solver-runtime",
-  "start_candidate": "985058c0261d284424432a65bded16b7fc9107cb",
-  "contract": "integration/f-vq/F-VQ23_CONTRACT.json",
-  "verifier": "tests/fvq/run_fvq23_fmr13_reference_linear_solver_runtime_gate.sh",
-  "workflow": ".github/workflows/fvq23-fmr13-reference-linear-solver-runtime.yml",
+  "canonical_fvq23": {
+    "branch": "qualification/f-vq23-fmr13-reference-linear-solver",
+    "closeout_commit": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
+    "status": "QUALIFIED_INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_SCIENTIFIC_NO_CHANGE_ADMISSION"
+  },
+  "probe_evidence": {
+    "workflow_run": 34265913552,
+    "workflow_job": 102195105791,
+    "conclusion": "failure",
+    "failure_class": "VERIFIER_COMPILE_CLOSURE_ONLY",
+    "fsi18_reference_control": "PASS",
+    "failed_missing_test_support": "tests/fsi/mod_fsi07_top_provider.f90",
+    "production_failure_detected": false
+  },
   "state": {
     "implemented": true,
     "persisted": true,
@@ -18,5 +28,5 @@
     "candidate_production_source_changed": false
   },
   "scientific_admission": false,
-  "next_gate": "Require the independent verifier to pass the F-SI18 nonzero HeadCalc bitwise reference comparison and F-VQ21 mass/transaction oracle at O0 and O2 before scientific admission."
+  "claim_limit": "This duplicate branch carries no F-VQ23 qualification claim. Its useful finding is only that the stronger nonzero F-SI18 reference-control strategy is viable but needs its historical test-only top-provider fixture materialized explicitly. The stronger production-bound nonzero HeadCalc check is moved to F-VQ24."
 }
