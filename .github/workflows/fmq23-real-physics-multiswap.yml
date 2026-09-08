@@ -1,0 +1,26 @@
+name: F-MQ23 real-physics MultiSWAP admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq23-fvq14-real-physics-runtime
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capability-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify exact F-VQ14 locks and production runtime capability
+        run: python3 tests/multiswap/fmq23_capability_audit.py
+      - name: Upload fail-closed audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmq23-capability-audit
+          path: build/fmq23/capability_audit.json
+          if-no-files-found: error

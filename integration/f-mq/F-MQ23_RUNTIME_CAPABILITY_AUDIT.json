@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "audit_type": "production runtime capability audit before physical execution",
+  "source_under_qualification": {
+    "commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "tree": "04afa5d5a90671a7791174708ae6bf48b272c83f"
+  },
+  "observed_production_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "543af573b34bfccd8fbdecf719af22994c5236b2",
+    "src/runtime/mod_fmr_deterministic_runtime.f90": "6f567600e42bc4e37e0e175ef4a3edc97a945592",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "ade399a1df4b582c9038442093ccacce034f923d"
+  },
+  "findings": {
+    "logical_column_and_template_contract_present": true,
+    "serialized_backend_id_present": true,
+    "serialized_real_physics_entrypoint": "fmr_serialized_reference_backend_t%run_trial",
+    "serialized_entrypoint_cardinality": "ONE_LOGICAL_COLUMN_PER_CALL",
+    "synthetic_multicolumn_entrypoint": "fmr_run_deterministic(columns, ...)",
+    "synthetic_multicolumn_backend": "FMR_BACKEND_DETERMINISTIC_TEST",
+    "production_serialized_multicolumn_dispatch_entrypoint_found": false,
+    "qualification_harness_may_invent_production_dispatch": false
+  },
+  "blocker": {
+    "id": "FMQ23-B01",
+    "status": "CONFIRMED_BY_LIVE_SOURCE_REREAD",
+    "owner": "F-MR",
+    "statement": "The admitted serialized real-physics backend is a production per-column trial backend, but the locked production source contains no multi-column serialized-reference dispatch/orchestration entrypoint. The only production multi-column dispatcher found is fmr_run_deterministic, which is backend-specific synthetic qualification code. A qualification-only F-MQ harness cannot substitute for the missing production MultiSWAP dispatcher and then claim production-runtime coverage.",
+    "required_resolution_outside_fmq": "F-MR must provide a production multi-column serialized-reference orchestration/dispatch contract without opening parallel real physics; that source must then receive the required independent F-VQ admission before F-MQ23 can resume production-runtime qualification.",
+    "production_source_change_in_fmq_allowed": false
+  },
+  "effect": {
+    "physical_execution_started": false,
+    "reason": "MQ23-G03 cannot be reached through an existing production MultiSWAP serialized composition route",
+    "qualification": "FAIL_CLOSED",
+    "scientific_admission_revoked": false,
+    "fvq14_restricted_single_column_admission_remains_valid": true,
+    "parallel_reference_backend_remains_not_admitted": true
+  }
+}
