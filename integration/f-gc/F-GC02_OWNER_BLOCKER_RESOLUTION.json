@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "blocker_id": "FGC02-B01",
+  "previous_status": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
+  "resolution_status": "SATISFIED_BY_INDEPENDENTLY_QUALIFIED_OWNER_CAPABILITY",
+  "resumed_branch": "work/f-gc02-physical-coupling-seam",
+  "resume_from_head": "6501e4149da54169bde82e89c17f3b2ce07ee048",
+  "owner_chain": {
+    "F_SI16": {
+      "closeout": "6591b2f481e1760f844514e63ef873e8deda301f",
+      "production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+      "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5"
+    },
+    "F_MR11": {
+      "closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
+      "production_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+      "decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME"
+    },
+    "F_VQ26": {
+      "closeout": "a1d5ad9147e18301f68183822577b1ba8fca3de2",
+      "workflow_run": 34277883448,
+      "workflow_job": 102235297691,
+      "conclusion": "success",
+      "independent_findings": [
+        "accepted prescribed-head trials with positive and negative authoritative qbot",
+        "exactly-once bottom-flux mass accounting",
+        "discard and rollback isolation",
+        "A/B/A replay",
+        "zero-tolerance stationary temporal acceptance",
+        "canonical F-SI16 source-lock replay",
+        "unsupported bottom modes fail closed"
+      ]
+    }
+  },
+  "capability_now_available_to_F_GC02": {
+    "bottom_mode": 5,
+    "control_input": "fmr_b110_physical_forcing_t%bottom_head",
+    "input_semantics": "lower-boundary face pressure head in cm",
+    "authoritative_output": "serialized physical observation / solver result bottom_flux",
+    "qbot_sign": "positive into SWAP soil profile through lower boundary; negative out",
+    "serialized_only": true
+  },
+  "ownership_holds": {
+    "F_KT_change_required": false,
+    "F_SI_physics_change_allowed_in_F_GC02": false,
+    "F_MR_scheduler_change_allowed_in_F_GC02": false,
+    "groundwater_coupling_admitted_by_this_resolution": false,
+    "parallel_real_physics_admitted": false,
+    "mass_tolerance": "NONE"
+  },
+  "resume_instruction": "Continue the same existing F-GC02 unit. Compose the immutable F-MR11 production candidate into the existing F-GC01 predictor/corrector contract. Prove prescribed groundwater-head authority, q_SWAP=-q_GW sign semantics, same-T0 checkpoint predictor/corrector replay, exactly-once authoritative mass, commit-once/rollback behavior and generic coupling windows before claiming groundwater coupling admission. Do not create a new F-GC work unit."
+}
