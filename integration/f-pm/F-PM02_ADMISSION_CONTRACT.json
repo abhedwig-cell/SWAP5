@@ -1,8 +1,8 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
-  "status": "REFRESH_TOOLING_PERSISTED_PENDING_EXECUTION",
+  "status": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
   "purpose": "Fail-closed admission gate for the first production process migration (SNOW). F-PM does not merge lineages or modify production process source before one shared downstream production basis is explicitly qualified for physical SWAP use.",
   "parent_closeout": {
     "f_pm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
@@ -111,7 +111,11 @@
   },
   "current_observation": {
     "candidate": "c28e7a2810b4a3678c577335a6a3086b173eb976",
-    "assessment": "PENDING_EXECUTABLE_GATE_REFRESH",
-    "production_migration_allowed": false
+    "candidate_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "admission_evidence": "integration/f-pm/F-PM02_ADMISSION_EVIDENCE.json",
+    "checks_passed": 51,
+    "checks_failed": 0,
+    "assessment": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+    "production_migration_allowed": true
   }
 }
