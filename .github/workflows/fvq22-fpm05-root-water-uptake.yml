@@ -1,0 +1,29 @@
+name: F-VQ22 independent F-PM05 root water uptake qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq22-fpm05-root-water-uptake
+    paths-ignore:
+      - integration/f-vq/F-VQ22_QUALIFICATION.json
+      - integration/f-vq/F-VQ22_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ22 independent root uptake scientific oracle
+        run: bash tests/fvq/run_fvq22_root_uptake_gate.sh
+      - name: F-MR09 cross-process regression only
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
