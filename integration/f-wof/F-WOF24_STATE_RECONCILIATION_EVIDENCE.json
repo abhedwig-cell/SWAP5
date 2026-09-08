@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF24",
+  "title": "Source-Bound WOFOST Lifecycle/Biomass State Reconciliation",
+  "source_provenance": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "F_WOF20_status": "integration/f-wof/F-WOF20_STATUS.json",
+    "F_WOF23_status": "integration/f-wof/F-WOF23_STATUS.json"
+  },
+  "legacy_WOFOST_binding": {
+    "emergence_initialization": {
+      "source": "SWAP/wofost.f90:704-767",
+      "findings": [
+        "DVS and TSUM are initialized separately from the WOFOST_states biomass object.",
+        "WRT/WST/WSO and leaf-cohort state are initialized when the crop trajectory becomes active.",
+        "LAI is immediately calculated as LASUM + SSA*WST + SPA*WSO rather than advanced as an independent prognostic variable."
+      ]
+    },
+    "biomass_update": {
+      "source": "SWAP/wofost.f90:975-1103",
+      "findings": [
+        "WRT/WST/WSO and leaf cohorts are updated from prior biomass state.",
+        "LAI is recalculated after biomass/cohort updates as LASUM + SSA*WST + SPA*WSO.",
+        "DVS and TSUM are updated as crop-development state outside WOFOST_states."
+      ]
+    },
+    "published_actual_view": {
+      "source": "SWAP/wofost.f90:1243-1287",
+      "findings": [
+        "Actual plant-interface WRT is copied from the actual WOFOST state.",
+        "Actual LAI is copied from the actual WOFOST state's recalculated LAI.",
+        "Potential WRTPOT and potential state come from the separate potential trajectory."
+      ]
+    }
+  },
+  "current_lineage_reconciliation": {
+    "F_WOF20": {
+      "qualified_type": "crop_lifecycle_state_t",
+      "fields": ["crop_emerged", "development_stage", "leaf_area_index"],
+      "decision": "retain for its admitted common route; do not embed unchanged inside actual-WOFOST composite"
+    },
+    "F_WOF23": {
+      "qualified_type": "wofost_actual_biomass_state_t",
+      "primary_state": ["WRT", "WST", "WSO", "LAIEXP", "LV", "SLA", "LVAGE"],
+      "reconstructible": ["WLV", "LASUM", "LAI"],
+      "actual_WRT_view": true
+    },
+    "duplicate_LAI_if_naively_nested": true,
+    "resolution": "WOFOST-specific atomic owner stores crop_emerged and DVS directly plus optional primary biomass; WOFOST LAI is only a derived read-only view."
+  },
+  "state_presence_semantics": {
+    "not_emerged": {
+      "biomass_allocated": false,
+      "root_biomass_view_available": false,
+      "derived_LAI": 0.0
+    },
+    "emerged": {
+      "biomass_allocated": true,
+      "biomass_must_validate": true,
+      "root_biomass_view_available": true,
+      "derived_LAI_requires": ["valid primary biomass", "finite nonnegative SSA", "finite nonnegative SPA"]
+    }
+  },
+  "F_WOF17_composition": {
+    "module": "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+    "blob": "56c3e10ccd25e6790882a649d472bd67a31d0f7b",
+    "entrypoint": "build_swrd3_root_geometry_snapshot",
+    "required_current_crop_inputs": ["crop_emerged", "actual_root_biomass"],
+    "WRTPOT_required": false,
+    "source_change_required": false
+  },
+  "scientific_nonclaims": [
+    "DVS alone is not the complete phenology continuation required for future WOFOST evolution.",
+    "F-WOF24 does not qualify TSUM/vernalization/anthesis continuation.",
+    "F-WOF24 does not qualify leaf-cohort ageing or creation cadence.",
+    "F-WOF24 does not qualify arbitrary subdaily WOFOST evolution.",
+    "The composite is qualified only as an atomic current physical-state/view boundary for already-qualified downstream consumers."
+  ],
+  "decision": "IMPLEMENT_WOFOST_SPECIFIC_ATOMIC_OWNER_WITH_OPTIONAL_BIOMASS_AND_DERIVED_LAI"
+}
