@@ -72,6 +72,7 @@ for opt in 0 2; do
   grep -Fq 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS' "$out/output.txt"
   grep -Fq 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS' "$out/output.txt"
   grep -Fq 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS' "$out/output.txt"
+  grep -Fq 'F-SI16_PARAMETER_FIXTURE_ISOLATION PASS' "$out/output.txt"
   grep -Fq 'F-SI16_PRESCRIBED_BOTTOM_HEAD_GATE PASS' "$out/output.txt"
   echo "F-SI16_PRESCRIBED_BOTTOM_HEAD_O${opt} PASS"
 done
