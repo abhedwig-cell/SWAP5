@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF16",
+  "title": "Restricted Non-Adaptive Crop-Root View Producer",
+  "branch": "work/f-wof16-nonadaptive-root-view-producer",
+  "status": "QUALIFIED_RESTRICTED_NONADAPTIVE_CROP_ROOT_VIEW_PRODUCER",
+  "qualification_scope": "SWRDC_NONADAPTIVE_DERIVED_VIEW_ONLY",
+  "base": {
+    "commit": "f23883eea13aef7c70a235acf0eccfeca772f41e",
+    "status": "QUALIFIED_OPTION_DEPENDENT_CROP_ROOT_STATE_OWNERSHIP"
+  },
+  "qualified_candidate": {
+    "commit": "d2ae00cea1caceb0b6c379480a8d3f8739e34821",
+    "production_source": "src/crop/mod_nonadaptive_crop_root_view_producer.f90",
+    "production_source_blob": "32e827c70f733b5451328ac7a95a1001a0d711f7",
+    "contract_blob": "df9252d0e69fd6952b1c4bdb3961710f41292fa3",
+    "oracle_test_blob": "358b3e23f012f2374b36d655ff0f1cb1d8b19e8d",
+    "gate_blob": "cb12d15d7c2b9976d4718e9109eb4d879601ae06",
+    "workflow_blob": "7c65428451479e89bf2bdaed7849e808c987e888"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "production_scope": {
+    "production_source_changed": true,
+    "production_source_delta_count": 1,
+    "runtime_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "process_source_changed": false,
+    "legacy_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_workstream_merge_performed": false
+  },
+  "admission": {
+    "nonadaptive_root_distribution": true,
+    "adaptive_SWRDC_1": false,
+    "root_growth_evolution": false,
+    "ET_production": false,
+    "runtime_binding": false,
+    "persistent_derived_root_view_state": false,
+    "boundary_ambiguity_policy": "FAIL_CLOSED_WITHIN_1E_MINUS_8_CM_OF_A_NODE_BOTTOM_WHEN_ROOT_DEPTH_IS_POSITIVE"
+  },
+  "verification": {
+    "github_actions_run": 34267714635,
+    "github_actions_conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "independent_B1_10_oracle": "PASS",
+    "oracle_max_abs_diff": 0.0,
+    "F_WOF13_view_validation": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "input_read_only": "PASS",
+    "fail_closed_validation": "PASS",
+    "output_sha256": "c0020c5c03e4ff307822989b48f6d68c1078f4eafc6a76f33cb3fedc3e70590f"
+  },
+  "fwof14_blocker_effect": {
+    "crop_root_view_algorithm_for_nonadaptive_route": "RESOLVED",
+    "concrete_committed_crop_geometry_source": "OPEN",
+    "potential_transpiration_producer": "OPEN",
+    "end_to_end_root_uptake_input_producer": "BLOCKED"
+  },
+  "open": [
+    "bind crop_emerged and current_root_depth to a qualified committed crop-owner state without introducing legacy globals",
+    "qualify a current-interval ET producer for potential_transpiration",
+    "cover SWRDC=1 adaptive root distribution in a separate option-specific workunit if required",
+    "qualify root-growth evolution separately before any lifecycle integration"
+  ],
+  "next": "Resolve the smallest committed crop-geometry source seam and the current-interval ET producer as separate owner workunits; do not combine them into the root-view producer."
+}
