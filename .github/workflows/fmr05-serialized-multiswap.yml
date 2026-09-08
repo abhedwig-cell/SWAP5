@@ -15,6 +15,7 @@ on:
       - 'src/runtime/mod_canonical_interval_runtime.f90'
       - 'src/kernel/mod_kernel_transactions.f90'
       - 'tests/fmr/test_fmr05_serialized_multiswap.f90'
+      - 'tests/fmr/test_fmr05_strict_acceptance.f90'
       - 'tests/fmr/run_fmr05_gate.sh'
       - '.github/workflows/fmr05-serialized-multiswap.yml'
   workflow_dispatch:
