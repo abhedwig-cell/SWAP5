@@ -7,7 +7,7 @@
     "status": "QUALIFIED_MASS_CONSERVING_REALLOCATION_REQUEST_APPLY_STRUCTURAL_SEAM"
   },
   "branch": "work/f-wof10-leaf-cohort-apply-seam",
-  "status": "ADMITTED_FOR_MINIMAL_LEAF_COHORT_APPLY_IMPLEMENTATION",
+  "status": "QUALIFIED_LAYOUT_NEUTRAL_LEAF_COHORT_APPLIED_TRANSFER_STRUCTURAL_SEAM",
   "qualification_scope": "SURVIVING_OLD_LEAF_COHORT_WEIGHT_TRANSFORM_ONLY",
   "owner": "Crop physics",
   "source_basis": {
@@ -28,22 +28,64 @@
     "full_crop_host_integration": false,
     "wofost81_nitrogen_in_scope": false
   },
-  "required_gates": [
-    "interior proportional scaling matches pinned PCSE semantics",
-    "zero applied transfer is identity",
-    "full depletion produces zero surviving cohort biomass",
-    "applied transfer above surviving biomass fails closed",
-    "negative cohort biomass fails closed",
-    "zero-size cohort set accepts only zero applied transfer",
-    "cohort order and relative proportions are preserved in the interior",
-    "mass residual remains within explicit floating-point closure tolerance",
-    "O0 and O2 outputs are identical"
-  ],
+  "qualified_candidate": {
+    "commit": "7246df258365a7a035ebb9abb242673860f64945",
+    "leaf_cohort_source_blob": "9f050830e76af850d445e6c64e1812c39ea908eb",
+    "focused_test_blob": "75679d6bdb42db0492ca8a83b0645c9386463aed",
+    "gate_runner_blob": "6b4be97fc324d59fd0ad5794e7c972dcacaffbc0",
+    "workflow_blob": "7e6c5605e1ada4f8000b267e03330e42f2def3be"
+  },
+  "verification": {
+    "github_actions_run": 34243764454,
+    "github_actions_conclusion": "success",
+    "scope_gate": "PASS",
+    "o0_o2_compile_and_output_gate": "PASS",
+    "interior_pcse_proportional_semantics": "PASS",
+    "zero_transfer_identity": "PASS",
+    "full_depletion_equality_edge": "PASS",
+    "excess_transfer_fail_closed": "PASS",
+    "negative_input_fail_closed": "PASS",
+    "zero_size_cohort_set": "PASS",
+    "relative_proportion_preservation": "PASS",
+    "floating_point_mass_closure": "PASS",
+    "layout_neutral_non_366_case": "PASS",
+    "fwof09_limited_leaf_composition": "PASS",
+    "first_ci_attempt": {
+      "run": 34243649509,
+      "conclusion": "failure",
+      "classification": "WARNING_POLICY_COMPARE_REALS_ONLY",
+      "physics_failure": false,
+      "test_failure": false,
+      "resolution": "replace exact REAL equality branch syntax with warning-clean logically equivalent ordered comparisons"
+    }
+  },
+  "behavioral_contract": {
+    "input_is_surviving_old_leaf_biomass_after_death": true,
+    "new_same_day_leaf_growth_is_not_part_of_input": true,
+    "cohort_scale_is_uniform": true,
+    "cohort_order_preserved": true,
+    "sla_and_age_unchanged": true,
+    "full_depletion_sets_all_surviving_old_cohort_weights_to_zero": true,
+    "mass_closure_is_hard_checked": true
+  },
   "affected_invariants": [3, 4, 6, 7, 13, 21, 27, 30],
   "production_migration_allowed": true,
+  "production_leaf_reallocation_allowed": false,
   "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
-  "next": "Implement a pure assumed-shape cohort-weight transform without legacy layout or I/O dependencies."
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "scientific_claims_not_made": [
+    "full WOFOST73 crop-host lifecycle integration is qualified",
+    "legacy lvshft may be copied as the SWAP5 state layout",
+    "arbitrary subdaily crop reallocation is qualified",
+    "WOFOST81 nitrogen physiology is admitted",
+    "legacy SWAP nitrogen may be removed"
+  ],
+  "open": [
+    "compose old-leaf death, ageing, applied reallocation, new leaf growth and leaf aggregate refresh in one crop-host transaction",
+    "compose leaf donor removal with F-WOF09 cumulative applied state and storage receiver atomically",
+    "qualify actual crop lifecycle ordering before production leaf reallocation is enabled"
+  ],
+  "next": "Start a separate crop-host lifecycle composition workunit only when ownership and ordering scope is explicitly admitted; do not broaden this qualified seam implicitly."
 }
