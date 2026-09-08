@@ -32,39 +32,60 @@ check_blob src/legacy/b1_10_port/headcalc.f90 be5978827095445b15de7baf607728792d
 check_blob src/legacy/b1_10_port/soilwater.f90 470bc81a380e114d70fecd75426ec2331c1c9fcc
 check_blob reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64 6cfcec4e38b02343ba48e7e6fb5d595158e19653
 check_blob reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json c64942d2964bb67c200f973b76e05222ad73067f
-# The only F-MR05 production source addition.
-check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 915b7c9bf27cf56ac2669a8354ef385e38a7ef54
+# The only F-MR05 production source file.
+check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 e4f5bc0bf47e2721d689e62107b5224196a093d9
 
 echo 'FMR05_EXACT_BASELINE_AND_SOURCE_BLOBS PASS'
 echo 'FMR05_FMR04_QUALIFIED_SOURCE_BLOBS_FORWARD PASS'
 
 python3 - <<'PY'
 from pathlib import Path
-import json
+import json, subprocess
 runtime = Path('src/runtime/mod_fmr_serialized_multiswap_runtime.f90').read_text().lower()
-contract = json.loads(Path('integration/f-mr/F-MR05_DISPATCH_CONTRACT.json').read_text())
-ownership = json.loads(Path('integration/f-mr/F-MR05_OWNERSHIP.json').read_text())
-deps = json.loads(Path('integration/f-mr/F-MR05_DEPENDENCIES.json').read_text())
+required_docs = [
+ 'F-MR05_DEPENDENCIES.json','F-MR05_MULTICOLUMN_CONTRACT.json','F-MR05_BACKEND_ADMISSION.json',
+ 'F-MR05_TRANSACTION_ISOLATION.json','F-MR05_MASS_ACCOUNTING.json','F-MR05_STATUS.json'
+]
+for name in required_docs:
+    assert Path('integration/f-mr',name).exists(), f'missing required F-MR05 artifact {name}'
+contract = json.loads(Path('integration/f-mr/F-MR05_MULTICOLUMN_CONTRACT.json').read_text())
+admission = json.loads(Path('integration/f-mr/F-MR05_BACKEND_ADMISSION.json').read_text())
+isolation = json.loads(Path('integration/f-mr/F-MR05_TRANSACTION_ISOLATION.json').read_text())
+mass = json.loads(Path('integration/f-mr/F-MR05_MASS_ACCOUNTING.json').read_text())
 status = json.loads(Path('integration/f-mr/F-MR05_STATUS.json').read_text())
 for forbidden in ['call headcalc(', 'use variables', 'use mod_grid', 'use mod_snow', 'use mod_drain', 'use mod_irrigation',
                   '!$omp', 'omp_lib', 'shadow_profile_mass', 'mass_tolerance =', 'parallel do']:
     assert forbidden not in runtime, f'F-MR05 runtime boundary leak: {forbidden}'
 for required in ['fmr_run_serialized_physical_multiswap', 'fmr_build_execution_order',
                  'fmr_serialized_reference_backend_t', 'fmr_capture_checkpoint', 'fmr_commit_candidate',
-                 'mass%complete', 'missing_contribution_mask', 'tx_mass_missing_none',
-                 'aggregate_unrounded_mass_residual', 'state_handle', 'parameter_ref', 'forcing_handle']:
+                 'mass%complete', 'missing_contribution_mask', 'tx_mass_missing_none', 'state_handle',
+                 'parameter_ref', 'forcing_handle', 'fmr_serialized_batch_diagnostics_t',
+                 'max_simultaneous_real_physical_solves', 'physical_solve_count',
+                 'authoritative_aggregate_mass', 'dispatch_ordinal', 'admission_status']:
     assert required in runtime, f'missing F-MR05 runtime contract token: {required}'
-assert contract['physical_parallelism'] == 1
-assert ownership['serialization']['physical_worker_count'] == 1
-assert ownership['serialization']['parallel_reference_backend_admitted'] is False
-assert deps['dependencies']['F-VQ14']['qualified_source_commit'] == '11eb34ea3afe8f5dda0515c28d7e08428dd2e272'
-assert deps['post_source_change_requirement']['f_vq14_admission_inherited_by_modified_source'] is False
-assert status['required_postchange_requalification'] == 'F-VQ15'
+assert contract['physical_execution']['max_concurrent_real_physical_solves'] == 1
+assert contract['batch_contract']['calendar_assumption'] is False
+assert admission['parallel_reference_backend_admitted'] is False
+assert admission['admitted_profile'] == 'EXACT_FVQ14_RESTRICTED_PROFILE_ONLY'
+assert isolation['transaction_owner'] == 'F-KT08'
+assert isolation['runtime_local_transaction_clone'] is False
+assert mass['canonical_owner'] == 'F-KT08 kernel_result.mass'
+assert mass['new_tolerance'] is False
+assert status['scientific_multicolumn_admission'] is False
+assert status['fmq23_resume_allowed'] is False
+changed = subprocess.check_output(['git','diff','--name-only','d27af923a1522440323ca61d4f50a90914ce5b6b','HEAD','--','src'],text=True).splitlines()
+assert changed == ['src/runtime/mod_fmr_serialized_multiswap_runtime.f90'], f'unexpected F-MR05 production source changes: {changed}'
 print('FMR05_ARCHITECTURE_AND_REQUALIFICATION_BOUNDARY PASS')
+print('FMR05_PRODUCTION_SOURCE_SCOPE_ONLY_RUNTIME_MODULE PASS')
 PY
 
+# Preserve the exact existing F-MR04 one-column serialized physical route.
+bash tests/fmr/run_fmr04_gate.sh > "$BUILD/fmr04_regression.txt"
+grep -Fq 'FMR04_GATE PASS' "$BUILD/fmr04_regression.txt"
+echo 'FMR05_FMR04_SINGLE_COLUMN_REGRESSION PASS'
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-SRC=(
+MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
@@ -84,33 +105,49 @@ SRC=(
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   tests/fmr/mod_fmr04_fixed_top_provider.f90
-  tests/fmr/test_fmr05_serialized_multiswap.f90
 )
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   mkdir -p "$OUT"
   objects=()
-  for src in "${SRC[@]}"; do
+  for src in "${MODULE_SRC[@]}"; do
     obj="$OUT/$(basename "${src%.*}").o"
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
-  gfortran -O"$opt" "${objects[@]}" -o "$OUT/fmr05_serialized_multiswap"
-  "$OUT/fmr05_serialized_multiswap" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
-  for batch in 1 2 8 17 31 32; do grep -Fq "FMR05_BATCH_SIZE_${batch}=PASS" "$OUT/output.txt"; done
-  grep -Fq 'FMR05_INPUT_ORDER_INDEPENDENCE=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_SINGLE_VS_MULTI_IDENTITY=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_FAILURE_ISOLATION=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_DUPLICATE_STATE_HANDLE_FAIL_CLOSED=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_PHYSICAL_WORKER_COUNT=1' "$OUT/output.txt"
-  grep -Fq 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED' "$OUT/output.txt"
-  grep -Fq 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_MAX_ABS_COLUMN_MASS_RESIDUAL=' "$OUT/output.txt"
-  grep -Fq 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=' "$OUT/output.txt"
-  grep -Fq 'FMR05_REAL_HEADCALC_MULTICOLUMN=PASS' "$OUT/output.txt"
-  grep -Fq 'FMR05_SERIALIZED_MULTISWAP_TEST PASS' "$OUT/output.txt"
-  sha256sum "$OUT/fmr05_serialized_multiswap" | sed "s#${OUT}/##" > "$OUT/executable.sha256"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr05_serialized_multiswap.f90 -o "$OUT/test_base.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_base.o" -o "$OUT/fmr05_serialized_multiswap"
+  "$OUT/fmr05_serialized_multiswap" > "$OUT/base.txt" 2>&1 || { cat "$OUT/base.txt" >&2; exit 1; }
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr05_strict_acceptance.f90 -o "$OUT/test_strict.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_strict.o" -o "$OUT/fmr05_strict_acceptance"
+  "$OUT/fmr05_strict_acceptance" > "$OUT/strict.txt" 2>&1 || { cat "$OUT/strict.txt" >&2; exit 1; }
+
+  cat "$OUT/base.txt" "$OUT/strict.txt" > "$OUT/output.txt"
+  for batch in 1 2 8 17 31 32; do grep -Fq "FMR05_BATCH_SIZE_${batch}=PASS" "$OUT/base.txt"; done
+  grep -Fq 'FMR05_INPUT_ORDER_INDEPENDENCE=PASS' "$OUT/base.txt"
+  grep -Fq 'FMR05_SINGLE_VS_MULTI_IDENTITY=PASS' "$OUT/base.txt"
+  grep -Fq 'FMR05_FAILURE_ISOLATION=PASS' "$OUT/base.txt"
+  grep -Fq 'FMR05_DUPLICATE_STATE_HANDLE_FAIL_CLOSED=PASS' "$OUT/base.txt"
+  grep -Fq 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS' "$OUT/base.txt"
+  grep -Fq 'FMR05_TWO_COLUMN_A_B=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_B_A_COLUMN_ID_BINDING=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_A_B_A_REPEATABILITY=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_IMMUTABLE_PARAMETER_SHARING=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_UNSUPPORTED_ROOT_EXTRACTION=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_UNSUPPORTED_MACROPORE=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_UNSUPPORTED_SNOW=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_UNSUPPORTED_SWKIMPL=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_CROSS_COLUMN_CHECKPOINT_REJECTION=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_STALE_CHECKPOINT_REJECTION=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_ROLLBACK_A_LEAVES_A_B_UNCHANGED=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_COMMIT_A_LEAVES_B_UNCHANGED=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_GENERIC_TIME_1000_125_TO_1000_625=PASS' "$OUT/strict.txt"
+  grep -Fq 'FMR05_MAX_SIMULTANEOUS_REAL_PHYSICAL_SOLVES=1' "$OUT/strict.txt"
+  grep -Fq 'FMR05_STRICT_ACCEPTANCE_TEST PASS' "$OUT/strict.txt"
+  sha256sum "$OUT/fmr05_serialized_multiswap" "$OUT/fmr05_strict_acceptance" > "$OUT/executables.sha256"
   sha256sum "$OUT/output.txt" > "$OUT/output.sha256"
   echo "FMR05_O${opt} PASS"
 done
@@ -118,7 +155,9 @@ done
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'FMR05_O0_O2_OUTPUT_IDENTITY PASS'
 cat "$BUILD/o0/output.txt"
-echo "FMR05_O0_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o0/executable.sha256")"
-echo "FMR05_O2_EXECUTABLE_SHA256=$(cut -d' ' -f1 "$BUILD/o2/executable.sha256")"
+echo "FMR05_O0_BASE_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o0/executables.sha256")"
+echo "FMR05_O0_STRICT_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o0/executables.sha256")"
+echo "FMR05_O2_BASE_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o2/executables.sha256")"
+echo "FMR05_O2_STRICT_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o2/executables.sha256")"
 echo "FMR05_OUTPUT_SHA256=$(cut -d' ' -f1 "$BUILD/o0/output.sha256")"
-echo 'FMR05_GATE PASS_FOCUSED_RUNTIME_CANDIDATE_REQUIRES_FVQ15'
+echo 'FMR05_GATE PASS_STRICT_RUNTIME_CANDIDATE_REQUIRES_FVQ15'
