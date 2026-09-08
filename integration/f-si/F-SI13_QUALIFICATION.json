@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI13",
+  "decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+  "qualified": true,
+  "downstream_fsi14_allowed": true,
+  "branch": "work/f-si13-explicit-bottom-boundary",
+  "provenance": {
+    "fsi12_qualification_head": "3dacdb03503a5ac5f6ce3fe86a55612e9b08a46d",
+    "fsi13_materialized_source_postimage": "9463324c2d823deb32acb883f8f2bd245768ea21",
+    "fsi13_qualified_candidate_head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
+    "fsi13_status_head": "36c2540033585f396f8c456b1af47e236cdcd00a",
+    "headcalc_blob": "355bf276b3db4815adadfa4a190d96f8875dca07",
+    "reference_adapter_blob": "9e9d21ff5715558b4524062dc8fd008dce628a0a",
+    "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "qualification_runs": {
+    "candidate": {
+      "run": 34204400057,
+      "job": 101990395062,
+      "head": "5ef8175e236f8e9e053dc91e791718794f1fe9d4",
+      "conclusion": "success"
+    },
+    "status_self_verification": {
+      "run": 34204860657,
+      "job": 101991869489,
+      "head": "36c2540033585f396f8c456b1af47e236cdcd00a",
+      "conclusion": "success"
+    },
+    "qualification_record_self_verification_required": true
+  },
+  "admitted_semantics": {
+    "explicit_common_route_bottom_mode_source": "soil_water_solve_request_t%boundary%bottom_mode",
+    "explicit_common_route_admitted_bottom_modes": [7, -2],
+    "legacy_direct_route": "unchanged legacy-global swbotb semantics when explicit state binding is absent",
+    "unsupported_common_bottom_modes": "fail closed before HeadCalc",
+    "bottom_boundary_physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false
+  },
+  "admitted_profile": {
+    "reference_solver": "B1.10 reference Richards path",
+    "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "F-SI10 precomputed source/sink provider",
+    "root_sink": "F-SI11 precomputed root-sink provider",
+    "top_boundary": "explicit top provider",
+    "solver_controls": "F-SI12 explicit per-solve request controls",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2]
+  },
+  "qualification_matrix": {
+    "FSI13_T01_STATIC_BOTTOM_MODE_BINDING": "PASS",
+    "FSI13_T02_BOTTOM_MODE_7_REQUEST_AUTHORITY_O0_O2_1_2_4_8": "PASS",
+    "FSI13_T03_BOTTOM_MODE_MINUS2_REQUEST_AUTHORITY_O0_O2_1_2_4_8": "PASS",
+    "FSI13_T04_GLOBAL_SWBOTB_POISON_NO_LEAK": "PASS",
+    "FSI13_T05_ABA_ORDER_INDEPENDENCE": "PASS",
+    "FSI13_T06_SCRATCH_POISONING": "PASS",
+    "FSI13_T07_REQUEST_IMMUTABILITY": "PASS",
+    "FSI13_T08_ROUTE_ITERATION_FINGERPRINT_IDENTITY": "PASS",
+    "FSI13_T09_FOCUSED_UNROUNDED_EQUATION_RESIDUAL": "PASS",
+    "FSI13_T10_UNSUPPORTED_BOTTOM_MODE_FAILCLOSED_O0": "PASS",
+    "FSI13_T11_UNSUPPORTED_BOTTOM_MODE_FAILCLOSED_O2": "PASS",
+    "FSI13_T12_LEGACY_DIRECT_IDENTITY_O0": "PASS",
+    "FSI13_T13_LEGACY_DIRECT_IDENTITY_O2": "PASS",
+    "FSI13_T14_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS",
+    "FSI13_T15_FSI12_PINNED_REGRESSION": "PASS",
+    "FSI13_T16_SWKIMPL1_HOLD_PRESERVED": "PASS",
+    "FSI13_T17_FKT_BOUNDARY_REGRESSION": "PASS"
+  },
+  "negative_and_hold_contracts": {
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_5_prescribed_head": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "fallback_policy": "NOT_IN_SCOPE",
+    "coarse_or_reduced_solver": "NOT_IN_SCOPE"
+  },
+  "audit_trail": {
+    "qualification_attempt_1": {
+      "run": 34204163267,
+      "job": 101989642976,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_ESCAPED_NEWLINE_MATCH_ERROR",
+      "production_source_changed_to_fix_failure": false
+    },
+    "qualification_attempt_2": {
+      "run": 34204308509,
+      "job": 101990106517,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_COPIED_SCRIPT_REPOSITORY_ROOT_ERROR",
+      "production_source_changed_to_fix_failure": false
+    },
+    "automatic_materialization_trigger_retired_at": "afa08a7429cc3e8de8b779da9c755da6ee0d2aea"
+  },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "guarded i-1 references produce compiler -Wdo-subscript warnings",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning",
+    "corrected B1.10 hydraulic oracle compilation emits existing maybe-uninitialized warnings"
+  ],
+  "invariant_assessment": {
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_BOTTOM_BOUNDARY_MODE",
+    "scratch_per_worker": "PRESERVED",
+    "transactional_time_step_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_AND_TESTED_WITH_UNROUNDED_FOCUSED_RESIDUAL",
+    "multiswap_scalability": "REDUCED_ONE_ADMITTED_GLOBAL_CROSS_COLUMN_DEPENDENCY",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "no_silent_time_or_io_assumptions_added": true
+  }
+}
