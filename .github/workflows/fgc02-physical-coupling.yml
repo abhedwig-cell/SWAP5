@@ -1,0 +1,27 @@
+name: F-GC02 physical coupling
+
+on:
+  push:
+    branches:
+      - work/f-gc02-physical-coupling-seam
+    paths:
+      - 'integration/f-gc/F-GC02_*'
+      - 'tests/fgc/test_fgc02_physical_coupling.f90'
+      - 'tests/fgc/run_fgc02_physical_coupling_gate.sh'
+      - 'tests/fgc/fgc01_coupler.py'
+      - 'tests/fgc/fgc01_models.py'
+      - 'tests/fgc/test_fgc01_*.py'
+      - '.github/workflows/fgc02-physical-coupling.yml'
+  workflow_dispatch:
+
+jobs:
+  fgc02-physical-coupling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-GC02 source-bound physical coupling gate
+        run: bash tests/fgc/run_fgc02_physical_coupling_gate.sh
