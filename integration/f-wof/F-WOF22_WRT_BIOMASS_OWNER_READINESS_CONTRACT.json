@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF22",
+  "title": "WRT/WRTPOT Biomass Ownership Reconciliation and SWRD=3 Readiness",
+  "branch": "work/f-wof22-wrt-biomass-owner-readiness",
+  "base": {
+    "commit": "530c36b8e9e6b6e9c7b6f179bc0edf199a40d1bf",
+    "status": "QUALIFIED_OPTIONAL_SWRD2_TRANSACTIONAL_ROOT_HISTORY_STATE"
+  },
+  "purpose": "Resolve authoritative ownership of actual and potential root biomass needed by SWRD=3 without creating a root-geometry-only duplicate biomass state, and define the smallest release condition for later composition into F-WOF17.",
+  "source_basis": {
+    "legacy_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_fixed_f90_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "legacy_wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "historical_ownership_resolution": "work/f-wof06-potential-shadow-state / integration/f-wof/F-WOF06_STATE_OWNERSHIP.md"
+  },
+  "legacy_route_constraints": {
+    "SWRD_3_simple_crop_CROPTYPE_1": "FORBIDDEN_BY_SOURCE",
+    "source": "SWAP/MOD_cropdevelopment.f90:1685-1688",
+    "meaning": "Root extension based on root biomass is not an admissible simple-crop route in B1.10."
+  },
+  "ownership_resolution": {
+    "actual_WRT": {
+      "classification": "READ_ONLY_FIELD_OF_PRIMARY_COMMITTED_CROP_BIOMASS_STATE",
+      "standalone_root_geometry_state": false,
+      "consumer": "F-WOF17 SWRD=3 current-root-geometry producer"
+    },
+    "potential_WRTPOT": {
+      "classification": "OPTIONAL_TRANSACTIONAL_SHADOW_BIOMASS_STATE_WHEN_POTENTIAL_TRAJECTORY_IS_ENABLED",
+      "mandatory_per_column": false,
+      "needed_by_F_WOF17_current_geometry": false,
+      "needed_by_full_SWRD3_root_extension": true
+    },
+    "immutable_RLWTB_and_WRTMAX": "shared parameter data, not dynamic state"
+  },
+  "historical_F_WOF06_reconciliation": {
+    "decision": "ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW",
+    "status": "QUALIFIED_ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW_STATE_OWNERSHIP",
+    "reused_as_architectural_evidence": true,
+    "production_merge_permitted": false,
+    "reason": "The F-WOF06 branch is historically qualified ownership evidence but diverged from the current admitted lineage; ownership semantics may be carried forward, production code must not be blindly merged."
+  },
+  "current_lineage_gate": {
+    "primary_biomass_owner_present": false,
+    "authoritative_actual_WRT_view_present": false,
+    "optional_potential_shadow_host_present": false,
+    "SWRD3_production_composition_allowed": false
+  },
+  "release_condition": [
+    "introduce or source-bind a current-lineage primary crop biomass owner that carries actual WRT together with the crop biomass state that scientifically owns it",
+    "expose actual WRT through a read-only biomass view rather than duplicating it in root geometry state",
+    "only allocate/persist WRTPOT or a potential biomass trajectory when the potential/reference capability is enabled",
+    "if a potential shadow is enabled across trial boundaries, prove checkpoint/trial/rollback/replay semantics",
+    "compose only actual WRT into F-WOF17 current SWRD=3 geometry; keep WRTPOT in the later root-evolution path"
+  ],
+  "allowed_result_of_this_workunit": [
+    "qualified owner/readiness reconciliation",
+    "zero-production source delta",
+    "explicit production blocker for SWRD=3 until a biomass owner/view exists"
+  ],
+  "forbidden": [
+    "WRT-only committed helper state",
+    "WRTPOT allocation for every column",
+    "blind merge of historical F-WOF04-F-WOF10 production",
+    "simple-crop SWRD=3 admission contrary to B1.10",
+    "root growth or biomass evolution implementation",
+    "calendar scheduling",
+    "runtime or solver ownership of crop biomass"
+  ],
+  "affected_invariants": [3,4,6,7,16,21,25,27,29,30]
+}
