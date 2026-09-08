@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF24",
+  "title": "Atomic Actual-WOFOST Crop-Owner State and Read-Only WRT/LAI Views",
+  "branch": "work/f-wof24-crop-owner-composite-state",
+  "status": "QUALIFIED_ATOMIC_ACTUAL_WOFOST_CROP_OWNER_STATE_AND_WRT_LAI_VIEWS",
+  "decision": "QUALIFY_ATOMIC_OWNER_AND_CURRENT_STATE_VIEWS_KEEP_CROP_EVOLUTION_SEPARATE",
+  "base": {
+    "commit": "b34c541dbc781ab25d73f6cdf2a86c8a17be6f64",
+    "status": "QUALIFIED_COMPACT_PRIMARY_ACTUAL_WOFOST_BIOMASS_STATE_AND_WRT_VIEW_CARRIER"
+  },
+  "tested_candidate": "44bb8c3f9a73f9ae185e94c4de6223620f2bc64d",
+  "github_actions": {
+    "run_id": 34282390437,
+    "conclusion": "success"
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "owner_and_view_production_admitted": true,
+    "WOFOST_evolution_admitted": false,
+    "runtime_end_to_end_admitted": false
+  },
+  "production_scope": {
+    "production_file": "src/crop/mod_wofost_crop_owner_state.f90",
+    "production_blob": "2cb513b17fff9095ae42c166f12aac01dfdb294d",
+    "runtime_source_changed": false,
+    "kernel_source_changed": false,
+    "solver_source_changed": false,
+    "process_source_changed": false,
+    "legacy_adapter_source_changed": false,
+    "F_WOF17_root_geometry_source_changed": false,
+    "physics_evolution_changed": false,
+    "numerical_policy_changed": false,
+    "cross_lineage_merge_performed": false
+  },
+  "qualified_atomic_owner": {
+    "execution_class": "actual WOFOST crop",
+    "committed_lifecycle_fields": ["crop_emerged", "development_stage_DVS"],
+    "biomass": "optional compact F-WOF23 primary actual biomass state",
+    "biomass_presence": "required when emerged, absent when not emerged",
+    "transaction_authority": "F-KT only"
+  },
+  "qualified_views": {
+    "actual_WRT": "authoritative read-only root biomass from the atomic owner",
+    "actual_LAI": "derived read-only LASUM + SSA*WST + SPA*WSO",
+    "duplicate_WOFOST_LAI_committed_state": false,
+    "inactive_LAI": "zero without consuming active canopy parameters"
+  },
+  "route_specific_scaling": {
+    "inactive_WOFOST_biomass_allocation": false,
+    "simple_crop_state_replaced": false,
+    "SWRD1_state_replaced": false,
+    "SWRD2_state_replaced": false,
+    "potential_shadow_mandatory": false
+  },
+  "qualified_transaction_semantics": {
+    "deep_clone_lifecycle_and_biomass": true,
+    "FKT_committed_initialization": true,
+    "FKT_atomic_checkpoint": true,
+    "discarded_biomass_deallocation_cannot_mutate_committed_owner": true,
+    "same_checkpoint_replay_bitwise_deterministic": true,
+    "O0_O2_output_identity": true
+  },
+  "F_WOF17_SWRD3": {
+    "actual_WRT_owner_view_available": true,
+    "existing_consumer": "build_swrd3_root_geometry_snapshot",
+    "consumer_source_changed": false,
+    "owner_view_to_geometry_composition_tested": true,
+    "current_geometry_state_view_boundary_admitted": true,
+    "full_WOFOST_SWRD3_evolution_runtime_admitted": false
+  },
+  "remaining_primary_blocker": {
+    "owner": "F-WOF",
+    "topic": "WOFOST evolution and temporal semantics",
+    "reason": "State ownership is no longer the primary blocker. The current owner still lacks a source-bound qualified evolution contract for phenology, biomass rates, leaf-cohort ageing/creation and their legacy daily/update-call semantics.",
+    "release_conditions": [
+      "source-bind the complete minimum phenology continuation required by the intended actual-WOFOST route, including whether TSUM/vernalization/anthesis state is irreducible",
+      "separate forcing and trial rates from committed crop state",
+      "characterize every legacy per-call or per-day update assumption, especially leaf-cohort creation and physiological ageing",
+      "define a generic [t0,t1] evolution contract without silently interpreting an arbitrary solver substep as a crop day",
+      "prove checkpoint/trial/discard/replay for the evolved atomic owner before runtime admission"
+    ]
+  },
+  "not_qualified": [
+    "TSUM/vernalization/anthesis continuation",
+    "biomass growth/death/allocation evolution",
+    "leaf-cohort ageing/creation cadence",
+    "generic subdaily WOFOST evolution",
+    "potential WOFOST shadow state",
+    "grass/nutrient optional state",
+    "runtime/MultiSWAP WOFOST advancement",
+    "end-to-end coupled WOFOST/SWRD3 production"
+  ],
+  "recommended_next": "F-WOF25 WOFOST Evolution & Temporal Semantics Readiness. Run source-bound zero-production analysis first. Do not implement crop evolution until committed phenology state, forcing/rate separation and per-call/day cadence semantics are explicitly qualified.",
+  "affected_invariants": [3,4,6,7,8,9,16,21,22,25,27,29,30]
+}
