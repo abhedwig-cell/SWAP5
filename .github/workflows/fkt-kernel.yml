@@ -74,7 +74,7 @@ jobs:
       - name: F-CI08 attempt-context regression on evolved transaction source
         run: bash tests/fci/run_fci08_gate.sh
       - name: F-CI09 transaction binding forward regression
-        run: bash tests/fkt/run_fkt07_fci09_forward_regression.sh
+        run: bash tests/fkt/run_fkt08_fci09_forward_regression.sh
       - name: F-CI10 unrounded physical mass seam regression
         run: bash tests/fci/run_fci10_gate.sh
       - name: F-CI11 controlled interval and mass regression
