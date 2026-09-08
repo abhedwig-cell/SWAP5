@@ -10,10 +10,19 @@ from pathlib import Path
 from select_impact import ROOT, select
 
 CASES = ROOT / "test-architecture" / "impact-validation-cases.json"
+OWNERSHIP = ROOT / "test-architecture" / "legacy-process-ownership.json"
 
 
 def main() -> None:
     corpus = json.loads(CASES.read_text(encoding="utf-8"))
+    ownership = json.loads(OWNERSHIP.read_text(encoding="utf-8"))
+    mapped = {item["path"] for item in ownership["files"]}
+    actual = {
+        path.relative_to(ROOT).as_posix()
+        for path in (ROOT / "src" / "legacy" / "b1_10_port").iterdir()
+        if path.is_file()
+    }
+    assert mapped == actual, f"legacy ownership drift: missing={actual - mapped}, stale={mapped - actual}"
     passed = 0
     for case in corpus["cases"]:
         commit = case["historical_commit"]

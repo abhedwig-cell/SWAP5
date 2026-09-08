@@ -6,13 +6,13 @@
   "baseline_commit": "7abde2dd05724dd8df62869547a70a24c5e71773",
   "scope": "TEST_IMPACT_SELECTION_AND_PROVENANCE_TOOLING_ONLY",
   "implemented": true,
-  "persisted": false,
-  "tested": false,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "production_source_changed": false,
   "reference_results_changed": false,
   "claims": {
-    "historical_replay": "NOT_YET_PERSISTED",
+    "historical_replay": "PASS_6_POSITIVE_2_NEGATIVE_FAIL_CLOSED",
     "selector_completeness": "NOT_CLAIMED",
     "automatic_test_suppression": "NOT_ALLOWED",
     "qualification_authority": "NONE"
@@ -24,6 +24,14 @@
     "FTA02-B04 fixture and tolerance metadata remain partial for several existing test families",
     "FTA02-B05 F-MQ evidence remains off the selected baseline lineage"
   ],
-  "next_action": "Persist the F-TA02 postimage, execute positive and negative impact checks, and record exact recovery provenance.",
-  "recovery_point": "PENDING"
+  "test_results": {
+    "historical_impact_corpus": "PASS",
+    "negative_fail_closed_cases": "PASS",
+    "fta01_registry_regression": "PASS",
+    "documentation_source_check": "PASS",
+    "python_syntax": "PASS",
+    "production_reference_diff_guard": "PASS"
+  },
+  "next_action": "F-TA03: normalize fixture/tolerance metadata at executable gate level and expand the validation corpus before considering any automated test suppression.",
+  "recovery_point": "172fbf2839de9f4d39171ac71d73883b5d48aad8"
 }

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-TA",
+  "work_unit": "F-TA02",
+  "checkpoint_commit": "a7345b2b74479d858a81757fe47585166d44a796",
+  "baseline_commit": "7abde2dd05724dd8df62869547a70a24c5e71773",
+  "tests": [
+    {"command": "python3 tools/test_architecture/validate_impact_cases.py", "result": "PASS", "detail": "6 pinned historical positive cases and 2 negative fail-closed cases"},
+    {"command": "python3 tools/test_architecture/validate_test_architecture.py", "result": "PASS", "detail": "110 registry records and 92 tracked test/workflow artifacts"},
+    {"command": "python3 tools/docs/check_docs.py", "result": "PASS"},
+    {"command": "python3 -m py_compile tools/test_architecture/*.py", "result": "PASS"},
+    {"command": "production/reference diff guard against baseline", "result": "PASS"}
+  ],
+  "historical_cases": [
+    "FTA02-H01-KERNEL-CHECKPOINT",
+    "FTA02-H02-SOLVER-CONTROLS",
+    "FTA02-H03-RUNTIME-DIAGNOSTICS",
+    "FTA02-H04-MASS-CONTRACT",
+    "FTA02-H05-REFERENCE-MANIFEST",
+    "FTA02-H06-GOVERNANCE-ONLY"
+  ],
+  "negative_cases": ["UNMAPPED_CHANGED_PATH_BLOCKS", "INCOMPLETE_SEMANTIC_DECLARATION_BLOCKS"],
+  "qualification_claim": "NONE_REPRESENTATIVE_REPLAY_ONLY",
+  "selector_completeness": "NOT_PROVEN",
+  "broad_or_scientific_qualification_run": false
+}
