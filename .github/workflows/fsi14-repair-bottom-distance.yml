@@ -1,0 +1,41 @@
+name: F-SI14 repair unadmitted bottom distance guard
+
+on:
+  push:
+    branches:
+      - work/f-si14-grid-geometry-binding
+    paths:
+      - 'tools/fsi/fsi14_guard_unadmitted_bottom_distance.py'
+      - '.github/workflows/fsi14-repair-bottom-distance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fsi14-repair-bottom-distance
+  cancel-in-progress: true
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si14-grid-geometry-binding
+      - name: Apply source-bound non-short-circuit guard repair
+        run: python3 tools/fsi/fsi14_guard_unadmitted_bottom_distance.py
+      - name: Commit only HeadCalc
+        run: |
+          changed="$(git diff --name-only | sort)"
+          if [ "$changed" != 'src/legacy/b1_10_port/headcalc.f90' ]; then
+            echo 'F-SI14 repair changed unexpected paths:' >&2
+            printf '%s\n' "$changed" >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/headcalc.f90
+          git commit -m 'F-SI14: guard unadmitted bottom-distance evaluation'
+          git push origin HEAD:work/f-si14-grid-geometry-binding
