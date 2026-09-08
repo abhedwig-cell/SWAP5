@@ -1,0 +1,35 @@
+name: F-PE03 flux convergence boundary probe
+
+on:
+  push:
+    branches:
+      - work/f-pe03-reference-tail-characterization-fvq19
+    paths:
+      - 'integration/f-pe/F-PE03_*.json'
+      - 'integration/f-pe/F-PE05_*.json'
+      - 'tests/fpe/fpe03_make_nonstationary_snow_overlay.py'
+      - 'tests/fpe/fpe03_make_flux_boundary_probe.py'
+      - 'tests/fpe/run_fpe03_flux_boundary_probe_gate.sh'
+      - '.github/workflows/fpe03-flux-boundary-probe.yml'
+  workflow_dispatch:
+
+jobs:
+  fpe03-flux-boundary-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run source-bound flux convergence boundary probe
+        env:
+          FPE03_FLUX_BOUNDARY_EVIDENCE_DIR: ${{ github.workspace }}/fpe03-flux-boundary-evidence
+        run: bash tests/fpe/run_fpe03_flux_boundary_probe_gate.sh
+      - name: Upload flux-boundary characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe03-flux-boundary-evidence
+          path: fpe03-flux-boundary-evidence
+          if-no-files-found: error
