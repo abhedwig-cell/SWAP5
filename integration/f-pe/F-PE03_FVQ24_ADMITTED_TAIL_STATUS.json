@@ -1,14 +1,13 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PE",
   "work_unit": "F-PE03-FVQ24-ADMITTED-TAIL",
   "title": "Scientifically admitted F-VQ24 nonzero REFERENCE workload on F-VQ25 diagnostics postimage",
   "branch": "work/f-pe03-fvq24-admitted-tail-characterization",
-  "status": "IMPLEMENTED_PERSISTED_PENDING_FVQ24_ADMITTED_WORKLOAD_RUNTIME_CHARACTERIZATION",
-  "phase": "IMPLEMENTED_PERSISTED_NOT_YET_TESTED",
+  "status": "PARTIAL_EXIT_QUALIFIED_FVQ24_SOLVER_ADMITTED_NONZERO_WORKLOAD_REJECTED_BY_PRODUCTION_TRANSACTION_PATH",
+  "phase": "CLOSED_PARTIAL_EXIT_QUALIFIED_NEGATIVE_RUNTIME_CHARACTERIZATION",
   "base": {
     "fpe03_fvq25_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
-    "fpe03_status": "PARTIAL_EXIT_QUALIFIED_REFERENCE_REJECTION_COST_CHARACTERIZED_ACCEPTED_HIGHER_COST_FIXTURE_STILL_MISSING",
     "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
     "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398"
   },
@@ -17,7 +16,6 @@
     "closeout": "4a8c0740222da5934e1fae53000c1c19db733e27",
     "status": "QUALIFIED_INDEPENDENT_FMR12_FMR13_NONZERO_HEADCALC_SOLVER_SEAM_EQUIVALENCE",
     "scientific_admission": true,
-    "fpe_use_explicitly_allowed": true,
     "fsi18_probe_commit": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
     "fsi18_probe_blob": "1a0898cfd927455d9219db0f59ac238943cd1435",
     "head0": -75.0,
@@ -32,37 +30,66 @@
     "max_backtracking": 4,
     "hydraulic_and_mass_tolerances": 1e-12
   },
-  "implementation": {
-    "runtime_probe_generator": "tests/fpe/fpe03_make_fvq24_runtime_probe.py",
-    "runtime_probe_generator_blob": "424f531a9efa318d6a68d82f2fdb5e5724b4f724",
-    "gate": "tests/fpe/run_fpe03_fvq24_admitted_tail_gate.sh",
-    "gate_blob": "348206507287c365894cce8bb1105452194116c9",
-    "production_source_changed": false
+  "qualification": {
+    "tested_candidate": "6137f12f7d5ff9fb0f32f70511af7811ce6248c5",
+    "workflow_run": 34269358973,
+    "workflow_job": 102206721779,
+    "conclusion": "success",
+    "artifact_id": 10073163026,
+    "artifact_digest": "sha256:5e3f49de7069b9dc3e8664a9b8de554cbccf216cb002111291782499bf3e5a9c",
+    "production_source_immutability": "PASS",
+    "scientific_owner_lock": "PASS",
+    "exact_admitted_stimulus_mapped_to_runtime": "PASS",
+    "deterministic_replay_o0_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_gate_for_accepted_cases": "PASS",
+    "rejected_cases_no_commit": "PASS"
   },
-  "characterization_rule": "Preserve the exact F-VQ24 physical stimulus and numerical settings while routing it through the unchanged F-VQ25/F-MR14 production REFERENCE runtime solely to observe transaction acceptance and aggregate interval cost. No acceptance, physics, numerical-control or mass setting may be relaxed to obtain a desired outcome.",
-  "required_evidence": {
-    "production_source_immutable": true,
-    "fvq24_source_and_stimulus_pinned": true,
-    "baseline_accepted": true,
-    "all_case_transaction_outcomes_reported": true,
-    "aggregate_interval_cost_vectors_reported": true,
-    "hard_mass_gate_for_accepted_cases": true,
-    "rejected_cases_no_commit": true,
-    "deterministic_replay": true,
-    "o0_o2_identity": true
+  "observed_reference_costs": {
+    "vector_order": [
+      "nonlinear_iterations",
+      "internal_retries",
+      "headcalc_calls",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "alternative_solver_calls"
+    ],
+    "baseline_accepted_vector": [3, 0, 3, 3, 3, 3, 0],
+    "accepted_nonzero_cases": 0,
+    "rejected_nonzero_cases": 4,
+    "accepted_higher_cost_cases": 0,
+    "plus_minus_3e_12_rejected_vector": [13, 0, 9, 13, 13, 14, 0],
+    "plus_minus_1e_11_rejected_vector": [32, 0, 9, 32, 32, 34, 0]
+  },
+  "interpretation": {
+    "solver_level_nonzero_workload_scientifically_admitted": true,
+    "production_transaction_acceptance_for_nonzero_cases": false,
+    "production_solver_defect_inferred": false,
+    "mass_or_policy_relaxation_justified": false,
+    "accepted_difficult_reference_workload_established": false
   },
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "physics_changed": false,
   "numerical_controls_changed": false,
   "acceptance_changed": false,
   "mass_requirement_relaxed": false,
   "scientific_admission_expanded": false,
-  "fpe03_b04": "OPEN_PENDING_EXACT_FVQ24_WORKLOAD_RUNTIME_CHARACTERIZATION",
+  "fpe03_b04": "OPEN_FVQ24_SOLVER_ADMITTED_NONZERO_WORKLOAD_REJECTED_BY_PRODUCTION_TRANSACTION_PATH",
   "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
-  "claim_limit": "This unit may determine whether the already scientifically admitted F-VQ24 five-case physical workload is also accepted by the unchanged production transaction path and, if so, characterize aggregate REFERENCE interval cost. It cannot broaden F-VQ24 admission or admit any non-REFERENCE execution class."
+  "representative_tail_distribution_established": false,
+  "bounded_cost_threshold_established": false,
+  "execution_classes": {
+    "REFERENCE": "ADMITTED_CHARACTERIZATION_ONLY",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "This unit qualifies only the runtime outcome of the already scientifically admitted F-VQ24 five-case workload on the unchanged F-MR14/F-VQ25 REFERENCE transaction path. The four nonzero cases are materially more expensive but all are rejected and uncommitted. No accepted difficult production workload, representative tail distribution, bounded-cost threshold or non-REFERENCE execution-class admission is established.",
+  "next_owner_action": "Seek a scientifically admitted workload whose nontrivial Richards evolution is accepted by the current production transaction contract, including newly admitted boundary-condition routes where appropriate. If repeated admitted workloads fail only at temporal acceptance, escalate to the temporal-acceptance owner rather than relaxing F-PE policy locally."
 }
