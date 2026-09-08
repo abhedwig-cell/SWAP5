@@ -15,7 +15,7 @@ module mod_crop_root_uptake_input_contract
   integer, parameter, public :: CROP_ROOT_INPUT_PROVIDER_REJECTED = 8
   integer, parameter, public :: CROP_ROOT_INPUT_NOT_CANONICAL = 9
 
-  real(real64), parameter :: ROOT_FRACTION_TOL = 64.0_real64 * epsilon(1.0_real64)
+  real(real64), parameter :: ROOT_FRACTION_TOL = 256.0_real64 * epsilon(1.0_real64)
 
   type, public :: crop_root_uptake_input_t
     logical :: crop_emerged = .false.
@@ -107,7 +107,7 @@ contains
     end if
 
     do i = 2, raw_input%rooted_nodes + 1
-      if (raw_input%cumulative_root_fraction(i) + ROOT_FRACTION_TOL < raw_input%cumulative_root_fraction(i - 1)) then
+      if (raw_input%cumulative_root_fraction(i) < raw_input%cumulative_root_fraction(i - 1)) then
         status = CROP_ROOT_INPUT_DISTRIBUTION_INVALID
         input = crop_root_uptake_input_t()
         return
