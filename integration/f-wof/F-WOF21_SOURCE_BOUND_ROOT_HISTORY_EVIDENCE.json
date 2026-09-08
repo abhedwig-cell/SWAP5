@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF21",
+  "title": "Source-Bound Evidence for SWRD=2 Root History and SWRD=3 WRT Ownership",
+  "source_provenance": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "fixed_f90_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+  },
+  "SWRD_2_history": {
+    "initialize": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1807-1814",
+      "behavior": "rd = min(RDI,RDM); rdpot = rd"
+    },
+    "potential_update": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1851-1884",
+      "behavior": "rrpot = min(RDM-rdpot,RRI); when allowed, rdpot = rdpot + rrpot",
+      "prior_state_dependency": true
+    },
+    "actual_update": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1887-1932",
+      "behavior": "rr = min(RDM-rd,RRI), then stress/assimilation/oxygen conditions may reduce or suppress rr before rd = rd + rr",
+      "prior_state_dependency": true,
+      "actual_may_lag_potential": true
+    },
+    "reset": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1954-1969",
+      "behavior": "rd = 0; rdpot = 0"
+    },
+    "classification": "IRREDUCIBLE_OPTIONAL_COMMITTED_ROOT_HISTORY"
+  },
+  "SWRD_1": {
+    "source": "SWAP/MOD_cropdevelopment.f90:1804-1806,1867-1870,1908-1910",
+    "behavior": "actual and potential root depth are recalculated from DVS/RDTB/RDM",
+    "independent_root_depth_history_required": false
+  },
+  "SWRD_3": {
+    "source": "SWAP/MOD_cropdevelopment.f90:1809-1813,1879-1883,1934-1937",
+    "behavior": "actual root depth is recalculated from WRT and RLWTB; potential depth uses WRTPOT",
+    "independent_root_depth_history_required": false,
+    "WRT_needed": true
+  },
+  "WRT_broader_ownership": {
+    "fixed_crop": {
+      "source": "SWAP/fixed.f90:166-204,208-268",
+      "findings": [
+        "WRT can be initialized from WROOTTB(DVS) when adaptive roots, microscopic drought uptake, or oxygen physics needs root biomass.",
+        "WRT is updated as crop root biomass and GRRT/DRRT rates are derived from the WRT change."
+      ]
+    },
+    "WOFOST": {
+      "source": "SWAP/wofost.f90:704-767,1060-1088,1243-1287",
+      "findings": [
+        "WOFOST initializes s%wrt from biomass partitioning together with s%wst, s%wlv and s%wso.",
+        "WOFOST evolves s%wrt by root growth rate together with other organ biomass.",
+        "Actual WRT published to plant_interface is copied from s%wrt; potential WRTPOT is copied from potential WOFOST state."
+      ]
+    },
+    "classification": "BROADER_CROP_BIOMASS_STATE_NOT_ROOT_GEOMETRY_HELPER",
+    "standalone_SWRD3_WRT_state_permitted": false,
+    "reason": "Adding WRT only to satisfy root geometry would create a competing copy of crop biomass state once fixed-crop/WOFOST evolution is migrated."
+  },
+  "state_shape_consequence": {
+    "SWRD_1": "use base crop_lifecycle_state_t",
+    "SWRD_2": "use an extended state subtype carrying rd and rdpot",
+    "SWRD_3": "use base/common crop lifecycle plus a future authoritative biomass owner/view; do not allocate SWRD2 root history"
+  },
+  "decision": "IMPLEMENT_SWRD2_OPTIONAL_HISTORY_BLOCK_STANDALONE_WRT_DUPLICATION"
+}
