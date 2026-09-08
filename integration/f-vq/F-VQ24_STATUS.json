@@ -1,23 +1,105 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ24",
-  "scope": "INDEPENDENT_FMR13_NONZERO_HEADCALC_REFERENCE_EQUIVALENCE",
-  "phase": "VERIFIER_IMPLEMENTED_AWAITING_QUALIFICATION",
-  "status": "IN_PROGRESS_VERIFIER_ONLY",
+  "scope": "INDEPENDENT_FMR12_FMR13_NONZERO_HEADCALC_SOLVER_SEAM_EQUIVALENCE",
+  "phase": "INDEPENDENTLY_QUALIFIED_STRENGTHENS_FVQ23",
+  "status": "QUALIFIED_INDEPENDENT_FMR12_FMR13_NONZERO_HEADCALC_SOLVER_SEAM_EQUIVALENCE",
   "branch": "qualification/f-vq24-fmr13-nonzero-headcalc-equivalence",
-  "base_admission": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
-  "candidate": "985058c0261d284424432a65bded16b7fc9107cb",
+  "base_admission": {
+    "work_unit": "F-VQ23",
+    "closeout_commit": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
+    "status": "QUALIFIED_INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_SCIENTIFIC_NO_CHANGE_ADMISSION"
+  },
+  "candidate": {
+    "work_unit": "F-MR13",
+    "closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "closeout_tree": "310b0b419181456b7c0af029e42de742fa96f19d"
+  },
+  "predecessor": {
+    "work_unit": "F-MR12",
+    "closeout_commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a"
+  },
   "contract": "integration/f-vq/F-VQ24_CONTRACT.json",
   "verifier": "tests/fvq/run_fvq24_fmr13_nonzero_headcalc_equivalence_gate.sh",
   "workflow": ".github/workflows/fvq24-fmr13-nonzero-headcalc-equivalence.yml",
+  "decisive_verifier": {
+    "tested_head": "98a9eb677cc5901e0b2c760e7dfe484f6a9b7ed7",
+    "workflow_run_id": 34267127000,
+    "workflow_job_id": 102199185938,
+    "conclusion": "success",
+    "artifact_id": 10072274704,
+    "artifact_name": "fvq24-fmr13-nonzero-headcalc-diagnostic",
+    "artifact_digest": "sha256:829f65ac5f6f09085e3033e8bfbeeb52b3a286f01d7255f6c339cbf3e176c53e",
+    "probe_output_sha256": "291a3cc3a96d20c3fe954caf9ee38978d21015b33ae9cb0755fa525e0b70f9d7"
+  },
+  "qualification": {
+    "candidate_production_immutability": "PASS",
+    "fmr12_to_fmr13_production_delta_exactly_three_solver_seam_paths": "PASS",
+    "shared_solver_contract_byte_identity": "PASS",
+    "reference_tridag": "SWAP_4_3_1_THOMAS_OPERATION_ORDER_TEST_ONLY",
+    "fmr12_reference_O0_all_five_converged": "PASS",
+    "fmr12_reference_O2_all_five_converged": "PASS",
+    "fmr13_candidate_O0_all_five_converged": "PASS",
+    "fmr13_candidate_O2_all_five_converged": "PASS",
+    "nonzero_cases_2_to_5_converged_both_sides": "PASS",
+    "band_fallback_calls_five_case_probe": 0,
+    "fmr12_fmr13_full_output_bitwise_O0": "PASS",
+    "fmr12_fmr13_full_output_bitwise_O2": "PASS",
+    "fmr12_O0_O2_output_identity": "PASS",
+    "fmr13_O0_O2_output_identity": "PASS",
+    "repeat_run_identity": "PASS",
+    "post_test_candidate_production_immutability": "PASS"
+  },
+  "probe_stimulus": {
+    "source": "F-SI18 five-case convergence-cliff probe, compatibility-adapted only to the shared F-MR12/F-MR13 request generation",
+    "head0": -75.0,
+    "step_duration": 1.0,
+    "top_flux_relative_perturbations": [0.0, 3.0e-12, -3.0e-12, 1.0e-11, -1.0e-11],
+    "bottom_mode": 7,
+    "root_sink": "ZERO",
+    "source_sink": "NONZERO_NODEWISE_QDRA_WITH_MATCHING_QSSDI",
+    "macropore": "INACTIVE",
+    "compatibility_edits": [
+      "remove exactly one later-generation request%physical%macropore_active=.false. write because F-MR12/F-MR13 share the older request type and the same test sets swmacro=0",
+      "synchronize legacy time and numerical globals to the already identical request values consumed by the shared F-MR12/F-MR13 adapter",
+      "assert zero alternative/band solver calls so this probe isolates the TRIDAG seam"
+    ]
+  },
+  "discarded_probe_interpretation": {
+    "direct_fsi18_postimage_comparison": "NOT_A_VALID_FMR13_SCIENTIFIC_ORACLE",
+    "reason": "F-SI18/F-SI19 use a later HeadCalc/request contract generation with explicit physical, numerical, time and parameter arguments, while F-MR12/F-MR13 share the older runtime contract. The failed cross-generation probe therefore mixed solver-seam and contract-generation differences and is not evidence of a production regression.",
+    "candidate_failure_detected_by_discarded_probe": false
+  },
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "candidate_production_source_changed": false
   },
-  "scientific_admission": false,
-  "next_gate": "Require bitwise equality with the exact F-SI18 five-case reference-TRIDAG HeadCalc output at O0 and O2, with all nonzero cases converged and repeat-run identity."
+  "scientific_admission": true,
+  "qualified_capabilities": [
+    "production-bound HeadCalc execution of the F-MR13 reference TRIDAG seam under the exact F-MR12/F-MR13 shared runtime contract",
+    "baseline plus four small nonzero top-flux perturbations with all five cases converged",
+    "bitwise F-MR12 predecessor equivalence at O0 and O2",
+    "repeat-run and O0/O2 deterministic identity for the five-case probe"
+  ],
+  "not_admitted": [
+    "F-SI15 explicit physical-option contract composition into F-MR runtime",
+    "prescribed-bottom-head behavior beyond separately qualified routes",
+    "band-fallback production-bound nonzero behavior beyond the existing direct F-SI19 oracle",
+    "new physics or new numerical controls",
+    "BALANCED, THROUGHPUT or FALLBACK execution classes",
+    "parallel real-physics execution",
+    "performance thresholds or bounded-cost claims"
+  ],
+  "architecture_note": "F-VQ24 does not qualify the older F-MR12/F-MR13 implicit macropore-global contract as the desired SWAP5 architecture. Physical-option explicitness remains a separate composition responsibility under the architecture invariants.",
+  "release": {
+    "fvq23_strengthened": true,
+    "fmr13_nonzero_reference_workload_scientifically_admitted": true,
+    "fpe_may_use_this_exact_nonzero_workload_for_reference_characterization": true,
+    "restriction": "F-PE may consume only the exact F-MR13 production postimage and the qualified five-case F-VQ24 scope unless a broader workload receives separate admission."
+  },
+  "claim_limit": "F-VQ24 proves only that the F-MR13 production-bound reference linear TRIDAG seam is bitwise equivalent to the SWAP 4.3.1 Thomas reference when inserted into its exact F-MR12 predecessor runtime for the qualified five-case HeadCalc workload. It does not broaden physics, solver-policy, performance or execution-class admission."
 }
