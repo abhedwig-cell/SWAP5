@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "branch": "work/f-pe03-reference-tail-characterization-fvq19",
+  "status": "READ_ONLY_SOLVER_OWNER_HANDOFF_FINDINGS_PERSISTED",
+  "production_source_changed": false,
+  "current_cost_cliff_cause_changed": false,
+  "current_cost_cliff_cause": "FULL_TRIAL_RICHARDS_SOLVER_NONCONVERGENCE_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE",
+  "findings": [
+    {
+      "code": "FPE03-H01",
+      "classification": "NUMERICAL_REQUEST_VALIDATION_GAP",
+      "observation": "validate_soil_water_request does not require max_backtracking to be positive. validate_legacy_request checks equality with the legacy maxbacktr value but does not add a positivity constraint.",
+      "source_consequence": "HeadCalc assigns sum1 inside the do itry=1,MaxBackTr loop and later reads sum1 in the total-balance convergence check. If MaxBackTr is zero, that assignment loop can be skipped while the later read remains reachable within a Newton iteration.",
+      "current_fpe03_fixture_affected": false,
+      "reason_current_fixture_not_affected": "The characterized REFERENCE fixture uses max_backtracking=4, and sum1 is assigned before the convergence check on every executed Newton iteration.",
+      "owner": "F-SI or solver-contract owner",
+      "recommended_owner_action": "Add or qualify fail-closed numerical-config validation before solver entry. At minimum assess max_iterations > 0 and max_backtracking > 0 as explicit solver-contract invariants."
+    },
+    {
+      "code": "FPE03-H02",
+      "classification": "LEGACY_CONDUCTIVITY_MEAN_ENUM_GAP",
+      "observation": "The local HeadCalc dkmean function assigns its result only for swkmean values 1 through 6 and has no default/error branch. The common soil-water request validator does not validate conductivity_mean_method as an allowed enumeration; validate_legacy_request only checks equality to the current legacy global.",
+      "current_fpe03_fixture_affected": false,
+      "reason_current_fixture_not_affected": "The characterized admitted REFERENCE route uses swkmean=1 and swkimpl=0. The compiler warning therefore does not explain the measured flux convergence cliff.",
+      "owner": "F-SI or solver-contract owner",
+      "recommended_owner_action": "Assess explicit allowed-value validation for conductivity_mean_method and fail closed on unsupported methods before entering legacy numerical routines."
+    }
+  ],
+  "compiler_warning_interpretation": {
+    "headcalc_array_subscript_warnings": "The observed i-1 warnings occur on statements guarded by i > 1 in the source and are not established runtime out-of-bounds defects from this evidence.",
+    "sum1_warning": "Potentially real for an invalid zero-backtracking configuration, but not active in the current F-PE03 fixture.",
+    "dkmean_warning": "Potentially real for an unsupported conductivity-mean enum, but not active in the current admitted F-PE03 route."
+  },
+  "governance": {
+    "fpe_should_patch_solver_source": false,
+    "balanced_or_throughput_admission_changed": false,
+    "mass_requirement_changed": false,
+    "scientific_admission_changed": false
+  },
+  "next_action": "Route these validation findings to the solver-owning workstream without reopening F-PE03 numerical bisection."
+}
