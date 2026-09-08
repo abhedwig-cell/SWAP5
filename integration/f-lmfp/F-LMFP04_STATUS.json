@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP04",
+  "title": "FullRichards Hydraulic A/B Qualification I",
+  "branch": "work/f-lmfp04-fullrichards-ab1",
+  "base": {
+    "work_unit": "F-LMFP03",
+    "commit": "3d703041bac16ac20fb32085f5e4ccb70cee40eb",
+    "decision": "QUALIFIED_STANDALONE_GENERIC_TIME_COLUMN_READY_FOR_FULLRICHARDS_AB"
+  },
+  "scope": {
+    "production_implementation": false,
+    "layeredmfp_standalone_only": true,
+    "fullrichards_oracle": "SWAP5 reference_richards_legacy_solver_t",
+    "bottom_mode": 7,
+    "top_boundary": "explicit flux only",
+    "sources_sinks": "zero for hydraulic core cases",
+    "crop": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "required_cases": [
+    "hydrostatic equilibrium",
+    "free drainage from uniform head",
+    "redistribution from nonuniform head",
+    "moderate infiltration homogeneous sand-like material",
+    "moderate infiltration clay-like material",
+    "heterogeneous contrast profile"
+  ],
+  "comparison_outputs": [
+    "water_content profile",
+    "pressure_head profile",
+    "top flux",
+    "bottom flux",
+    "storage change",
+    "mass residual",
+    "step refinement",
+    "solver cost diagnostics"
+  ],
+  "hard_rules": {
+    "independent_custom_richards_oracle_allowed_as_primary_reference": false,
+    "mass_conservation_required": true,
+    "no_post_update_clipping": true,
+    "no_production_src_change": true,
+    "no_application_envelope_claim_before_results": true
+  },
+  "provenance_note": "The supplied SWAP 4.3.1 archive HeadCalc is not byte-identical to the current SWAP5 pinned reference HeadCalc, so the archive is not used as the authoritative F-LMFP04 Richards oracle.",
+  "status": "AB_HARNESS_IN_PREPARATION",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_src_changed": false
+  }
+}
