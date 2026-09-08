@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF16",
+  "title": "Restricted Non-Adaptive Crop-Root View Producer Qualification Evidence",
+  "branch": "work/f-wof16-nonadaptive-root-view-producer",
+  "base_commit": "f23883eea13aef7c70a235acf0eccfeca772f41e",
+  "qualified_candidate": {
+    "commit": "d2ae00cea1caceb0b6c379480a8d3f8739e34821",
+    "production_source_blob": "32e827c70f733b5451328ac7a95a1001a0d711f7",
+    "contract_blob": "df9252d0e69fd6952b1c4bdb3961710f41292fa3",
+    "oracle_test_blob": "358b3e23f012f2374b36d655ff0f1cb1d8b19e8d",
+    "gate_blob": "cb12d15d7c2b9976d4718e9109eb4d879601ae06",
+    "workflow_blob": "7c65428451479e89bf2bdaed7849e808c987e888"
+  },
+  "source_locks": {
+    "crop_root_uptake_input_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "crop_root_uptake_input_assembly_blob": "71f1e237c41af56ee85dcadfaae330f5d50ae0f7",
+    "fwof12_source_inventory_blob": "53613edbbc238e9b4fbc17f8ad336db378c2b2e5",
+    "fwof15_status_blob": "7d3451fbd69258422d4131f00449870819d8bf92"
+  },
+  "github_actions": {
+    "run_id": 34267714635,
+    "job_id": 102201189115,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04"
+  },
+  "verified_results": {
+    "single_crop_production_source_delta": "PASS",
+    "scope_and_architecture_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_crop_dependency_free": "PASS",
+    "emerged_zero_root_dependency_free": "PASS",
+    "multi_node_nonuniform_RDCTB_independent_B1_10_oracle": "PASS",
+    "multi_node_oracle_max_abs_diff": 0.0,
+    "F_WOF13_view_validation": "PASS",
+    "inputs_read_only": "PASS",
+    "one_node_exact_endpoints": "PASS",
+    "node_boundary_ambiguity_fail_closed": "PASS",
+    "invalid_grid_depth_table_fail_closed": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "output_sha256": "c0020c5c03e4ff307822989b48f6d68c1078f4eafc6a76f33cb3fedc3e70590f"
+  },
+  "qualified_scope": {
+    "root_distribution": "SWRDC != 1 only",
+    "current_root_depth": "explicit read-only input snapshot",
+    "root_density_profile": "immutable structured RDCTB-equivalent x/y parameters",
+    "node_geometry": "immutable positive-down node-bottom depths",
+    "boundary_policy": "fail closed within 1e-8 cm of a positive root-depth node bottom",
+    "persistent_per_node_state_added": false,
+    "root_growth_evolution": false,
+    "ET_production": false,
+    "runtime_integration": false
+  },
+  "nonclaims": [
+    "SWRDC=1 adaptive root redistribution is qualified",
+    "crop emergence or current root depth are now produced by a complete SWAP5 crop host",
+    "root growth evolution is qualified",
+    "potential transpiration production is qualified",
+    "the F-WOF14 end-to-end producer blocker is fully released",
+    "arbitrary subdaily crop-root evolution is qualified"
+  ]
+}
