@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF11",
+  "title": "Root-Uptake Crop Input Provider Contract Qualification Evidence",
+  "base": {
+    "commit": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "status": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING"
+  },
+  "tested_candidate": {
+    "commit": "4e9d8054331984d349de13755f7ad911ac845bc0",
+    "tree": "39fa8e96f4af7288b56d1609e40f7160d3828a58",
+    "production_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "focused_test_blob": "7b83492f2e2c3926d4fad558f6a712c8cdc11494",
+    "gate_runner_blob": "05c42800ae421f3db453309125b9ec3bdcc2644d",
+    "workflow_blob": "dff72c9e6d2990508c3c8fe482d2d6ca547846a7"
+  },
+  "production_delta": {
+    "only_added_src_file": "src/crop/mod_crop_root_uptake_input_contract.f90",
+    "existing_production_sources_modified": false,
+    "runtime_source_modified": false,
+    "solver_source_modified": false,
+    "kernel_source_modified": false,
+    "process_physics_modified": false
+  },
+  "validation_alignment": {
+    "reference": "F-PM05 qualified root-water-uptake request validation",
+    "root_fraction_endpoint_tolerance": "256*epsilon(real64)",
+    "root_fraction_monotonicity": "strict nondecreasing",
+    "silent_divergence_from_FPM05_request_domain": false
+  },
+  "github_actions": {
+    "successful_run": 34259427370,
+    "conclusion": "success",
+    "tested_head": "4e9d8054331984d349de13755f7ad911ac845bc0",
+    "fwof11_output_sha256": "07de8ff573845466c4c75fa5d712f56526d32e26009a727f775baf8a8342522e",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "first_attempt": {
+      "run": 34259307681,
+      "conclusion": "failure",
+      "classification": "TEST_HARNESS_TYPE_BOUND_OVERRIDE_LOCATION_ONLY",
+      "production_contract_failure": false,
+      "physics_failure": false,
+      "resolution": "move mock provider override from internal program procedure to a separate test module"
+    }
+  },
+  "gates": {
+    "single_crop_contract_production_delta": "PASS",
+    "FMR10_FVQ22_FMR09_protected_lineage": "PASS",
+    "runtime_solver_legacy_IO_boundary_static": "PASS",
+    "warning_clean_O0_compile": "PASS",
+    "warning_clean_O2_compile": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_crop_canonicalization_without_stale_dependency": "PASS",
+    "active_zero_root_canonicalization": "PASS",
+    "active_rooted_normalized_distribution": "PASS",
+    "nonfinite_negative_nonmonotone_malformed_out_of_range_fail_closed": "PASS",
+    "provider_status_propagation": "PASS",
+    "provider_output_canonicalization": "PASS",
+    "FMR09_cross_process_regression": "PASS"
+  },
+  "architectural_findings": {
+    "crop_contract_depends_on_runtime": false,
+    "crop_contract_depends_on_solver": false,
+    "crop_contract_depends_on_HeadCalc": false,
+    "crop_contract_reads_files": false,
+    "provider_interface_self_is_read_only": true,
+    "inactive_crop_requires_root_distribution_storage": false,
+    "active_zero_root_requires_root_distribution_storage": false,
+    "active_rooted_distribution_is_explicit": true
+  },
+  "not_qualified": [
+    "concrete WOFOST provider implementation",
+    "legacy global-state crop adapter",
+    "crop-host lifecycle ordering",
+    "daily WOFOST cadence",
+    "potential-transpiration computation",
+    "root-depth evolution",
+    "root-distribution evolution",
+    "full crop integration"
+  ],
+  "next": {
+    "work_unit": "F-MR11",
+    "purpose": "adapt the shared crop_root_uptake_input_t into the already qualified F-MR10 runtime binding without making crop depend on F-MR internals"
+  }
+}
