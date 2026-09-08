@@ -11,6 +11,7 @@ module mod_irrigation_process
 
   real(real64), parameter, public :: IRRIGATION_FIXED_EVENT_MATCH_TOLERANCE = 1.0e-3_real64
   real(real64), parameter, public :: IRRIGATION_MAX_EVENT_DURATION = 1.0_real64
+  real(real64), parameter :: IRRIGATION_TIME_EPSILON_SCALE = 64.0_real64
 
   integer, parameter, public :: IRRIGATION_APPLICATION_SPRINKLER = 0
   integer, parameter, public :: IRRIGATION_APPLICATION_SURFACE = 1
@@ -81,8 +82,9 @@ contains
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
     type(fixed_irrigation_event_t) :: event
-    real(real64) :: duration, event_end
+    real(real64) :: duration, event_end, effective_t0, effective_t1
     integer :: event_index
+    logical :: finishes_at_event_end
 
     candidate_state = committed_state
     fluxes = irrigation_flux_result_t()
@@ -116,19 +118,23 @@ contains
       end if
       duration = event%depth / event%rate
       event_end = committed_state%active_event_start + duration
-      if (committed_state%active_event_end /= event_end) then
+      if (.not. same_time(committed_state%active_event_end, event_end)) then
         diagnostics%status = IRRIGATION_INVALID_STATE
         return
       end if
-      if (request%t0 < committed_state%active_event_start .or. request%t0 > event_end) then
+      if ((request%t0 < committed_state%active_event_start .and. &
+           .not. same_time(request%t0, committed_state%active_event_start)) .or. &
+          (request%t0 > event_end .and. .not. same_time(request%t0, event_end))) then
         diagnostics%status = IRRIGATION_INVALID_STATE
         return
       end if
-      if (request%t0 == event_end) then
+      if (same_time(request%t0, event_end)) then
         call clear_active_event(candidate_state)
         return
       end if
-      if (request%t1 > event_end) then
+
+      finishes_at_event_end = same_time(request%t1, event_end)
+      if (request%t1 > event_end .and. .not. finishes_at_event_end) then
         candidate_state = committed_state
         diagnostics%status = IRRIGATION_SPLIT_REQUIRED
         diagnostics%split_required = .true.
@@ -136,9 +142,15 @@ contains
         return
       end if
 
-      call apply_event(parameters, event, event_index, request%t1-request%t0, duration, fluxes)
-      fluxes%event_remains_active = request%t1 < event_end
-      if (request%t1 == event_end) then
+      effective_t0 = request%t0
+      if (same_time(effective_t0, committed_state%active_event_start)) &
+        effective_t0 = committed_state%active_event_start
+      effective_t1 = request%t1
+      if (finishes_at_event_end) effective_t1 = event_end
+
+      call apply_event(parameters, event, event_index, effective_t1-effective_t0, duration, fluxes)
+      fluxes%event_remains_active = .not. finishes_at_event_end
+      if (finishes_at_event_end) then
         fluxes%event_finished = .true.
         call clear_active_event(candidate_state)
       end if
@@ -159,7 +171,8 @@ contains
 
     duration = event%depth / event%rate
     event_end = request%t0 + duration
-    if (request%t1 > event_end) then
+    finishes_at_event_end = same_time(request%t1, event_end)
+    if (request%t1 > event_end .and. .not. finishes_at_event_end) then
       candidate_state = committed_state
       diagnostics%status = IRRIGATION_SPLIT_REQUIRED
       diagnostics%split_required = .true.
@@ -173,10 +186,12 @@ contains
     candidate_state%active_event_start = request%t0
     candidate_state%active_event_end = event_end
 
-    call apply_event(parameters, event, event_index, request%t1-request%t0, duration, fluxes)
+    effective_t1 = request%t1
+    if (finishes_at_event_end) effective_t1 = event_end
+    call apply_event(parameters, event, event_index, effective_t1-request%t0, duration, fluxes)
     fluxes%event_started = .true.
-    fluxes%event_remains_active = request%t1 < event_end
-    if (request%t1 == event_end) then
+    fluxes%event_remains_active = .not. finishes_at_event_end
+    if (finishes_at_event_end) then
       fluxes%event_finished = .true.
       call clear_active_event(candidate_state)
     end if
@@ -249,6 +264,15 @@ contains
       fluxes%external_inflow_amount = sum(fluxes%subsurface_source) * active_duration
     end if
   end subroutine apply_event
+
+  pure logical function same_time(a, b)
+    real(real64), intent(in) :: a, b
+    real(real64) :: tolerance
+
+    tolerance = IRRIGATION_TIME_EPSILON_SCALE * epsilon(1.0_real64) * &
+                max(1.0_real64, abs(a), abs(b))
+    same_time = abs(a-b) <= tolerance
+  end function same_time
 
   pure subroutine clear_active_event(state)
     type(irrigation_state_t), intent(inout) :: state
