@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF15",
+  "title": "Source-Bound Evidence for Physical-Option-Dependent Crop-Root State",
+  "source_provenance": {
+    "uploaded_archive": "SWAP_4.3.1(6).zip",
+    "uploaded_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "source": "SWAP/MOD_cropdevelopment.f90",
+    "sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "prior_repository_binding": "integration/f-wof/F-WOF12_SOURCE_BOUND_PROVIDER_INVENTORY.json"
+  },
+  "root_extension": {
+    "initialize_rootextension_1785_1825": {
+      "SWRD_1": "rd = AFGEN(RDTB,DVS), clipped to RDM",
+      "SWRD_2": "rd = min(RDI,RDM)",
+      "SWRD_3": "rd = AFGEN(RLWTB,WRT), clipped to RDM",
+      "all_modes": "rdpot initialized from rd; noddrz then derived by scanning zbotcp against current rd"
+    },
+    "update_rootextension_1829_1950": {
+      "SWRD_1": "rdpot is recalculated from DVS and actual rd is assigned from rdpot",
+      "SWRD_2_potential": "rdpot is incremented from its previous value by a bounded potential extension",
+      "SWRD_2_actual": "rd is incremented from its previous value by stress/assimilation-conditioned rr and may therefore lag rdpot",
+      "SWRD_3": "rdpot is recalculated from WRTPOT and actual rd is recalculated from WRT",
+      "noddrz": "noddrz_old is retained only across the same crop update; new noddrz is re-derived by scanning grid geometry after rd changes"
+    },
+    "ownership_consequence": {
+      "SWRD_1_independent_rd_state": false,
+      "SWRD_2_rd_state": true,
+      "SWRD_2_rdpot_state": true,
+      "SWRD_3_independent_rd_state": false,
+      "noddrz_persistent_state": false,
+      "rr_and_noddrz_old": "same-update intermediate/result unless another qualified process contract proves a cross-transaction need"
+    }
+  },
+  "root_distribution": {
+    "initialize_cumdens_2103_2156": {
+      "inputs": ["RDM", "RDCTB", "zbotcp/grid"],
+      "behavior": "construct relative root-density samples over the maximum root zone, integrate them and normalize the cumulative distribution",
+      "ownership_consequence": "for non-adaptive distribution the normalized cumulative profile is reconstructible from immutable parameters and grid"
+    },
+    "update_rootdistribution_2076_2099": {
+      "SWRDC_1": "update_wroot_node then update_cumdens before update_cumdens_top",
+      "SWRDC_nonadaptive": "skip dynamic per-node redistribution; update_cumdens_top uses the already parameter-derived cumulative profile"
+    },
+    "update_wroot_node_2160_2235": {
+      "prior_dynamic_dependency": "previous wroot_node values",
+      "crop_inputs": ["WRT", "GRRT", "DRRT"],
+      "root_geometry_inputs": ["rd", "rr", "noddrz_old", "noddrz"],
+      "daily_process_inputs": ["inqpotrot_day", "inqredrot_day"],
+      "behavior": "root growth and death are redistributed per node using prior root biomass and uptake/stress weights",
+      "ownership_consequence": "SWRDC=1 requires an optional committed per-node root-distribution state such as wroot_node or a scientifically equivalent representation"
+    },
+    "update_cumdens_2239_2275": {
+      "behavior": "sum current wroot_node and normalize cumulative root biomass over the rooted nodes",
+      "ownership_consequence": "cumdens is a derived normalized representation, not the irreducible adaptive state"
+    },
+    "update_cumdens_top_2279_2301": {
+      "behavior": "sample the normalized cumulative distribution at compartment-top/root-zone-relative positions using noddrz/grid geometry",
+      "ownership_consequence": "cumdens_top is a read-only derived view field and should not be an independent commit authority"
+    },
+    "finalize_wroot_node_2322_2361": {
+      "behavior": "derive per-node root weights from cumulative fractions and WRT, then derive LRV and interface root-density quantities",
+      "ownership_consequence": "wroot_node_top and lrv_node are derived diagnostics/process inputs when their consuming physics is active; they are not automatically mandatory persistent state"
+    }
+  },
+  "option_matrix": [
+    {
+      "SWRD": 1,
+      "SWRDC": "nonadaptive",
+      "independent_root_depth_state": [],
+      "per_node_dynamic_root_state": [],
+      "view_basis": "committed DVS + immutable RDTB/RDM/RDCTB/grid"
+    },
+    {
+      "SWRD": 2,
+      "SWRDC": "nonadaptive",
+      "independent_root_depth_state": ["actual_root_depth", "potential_root_depth"],
+      "per_node_dynamic_root_state": [],
+      "view_basis": "committed root-depth state + immutable RDCTB/RDM/grid"
+    },
+    {
+      "SWRD": 3,
+      "SWRDC": "nonadaptive",
+      "independent_root_depth_state": [],
+      "per_node_dynamic_root_state": [],
+      "view_basis": "committed WRT + immutable RLWTB/RDM/RDCTB/grid"
+    },
+    {
+      "SWRD": "1|2|3",
+      "SWRDC": 1,
+      "independent_root_depth_state": "as required by SWRD mode",
+      "per_node_dynamic_root_state": ["per_node_root_biomass_distribution_or_semantic_equivalent"],
+      "view_basis": "current root geometry + committed adaptive distribution state + immutable grid"
+    }
+  ],
+  "important_nonclaims": [
+    "The exact SWAP5 crop-host state type is not defined here.",
+    "The exact data structure for adaptive per-node root state is not fixed here; SoA/pool/batch layouts remain allowed.",
+    "This evidence does not qualify a root-growth update implementation.",
+    "This evidence does not qualify arbitrary subdaily root-growth cadence.",
+    "This evidence does not qualify potential transpiration production.",
+    "A future view producer must source-bind B1.10 node-boundary and cumulative-distribution mapping rather than merely approximating them."
+  ]
+}
