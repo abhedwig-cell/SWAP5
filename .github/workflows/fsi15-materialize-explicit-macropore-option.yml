@@ -1,13 +1,6 @@
 name: F-SI15 materialize explicit macropore option
 
 on:
-  push:
-    branches:
-      - work/f-si15-explicit-macropore-option
-    paths:
-      - '.github/workflows/fsi15-materialize-explicit-macropore-option.yml'
-      - 'tools/fsi/fsi15_materialize_explicit_macropore_option.py'
-      - 'integration/f-si/F-SI15_EXPLICIT_PHYSICAL_OPTION_CONTRACT.json'
   workflow_dispatch:
 
 permissions:
