@@ -64,6 +64,19 @@ program test_fmr09_root_sink_runtime
   call fmr_run_serialized_physical_multiswap(columns, templates, parameters, forcing_balanced, states_balanced, config, &
        top_provider, t0, t1, 1, result_balanced, diag_balanced, aggregate_balanced, dispatch_balanced, run_balanced)
 
+  write(*,'(A,1X,I0,1X,L1,1X,A,1X,I0,1X,I0,1X,L1,1X,L1,1X,L1)') 'FMR09_CONTROL_DIAG=', &
+       dispatch_control, result_control(1)%admitted, trim(result_control(1)%admission_status), &
+       result_control(1)%kernel_status, result_control(1)%commit_status, result_control(1)%completed, &
+       result_control(1)%committed, result_control(1)%solver_executed
+  write(*,'(A,1X,I0,1X,L1,1X,A,1X,I0,1X,I0,1X,L1,1X,L1,1X,L1)') 'FMR09_BALANCED_DIAG=', &
+       dispatch_balanced, result_balanced(1)%admitted, trim(result_balanced(1)%admission_status), &
+       result_balanced(1)%kernel_status, result_balanced(1)%commit_status, result_balanced(1)%completed, &
+       result_balanced(1)%committed, result_balanced(1)%solver_executed
+  write(*,'(A,1X,ES24.16,1X,ES24.16)') 'FMR09_CONTROL_MASS=', result_control(1)%mass%residual, &
+       result_control(1)%mass%total_out
+  write(*,'(A,1X,ES24.16,1X,ES24.16)') 'FMR09_BALANCED_MASS=', result_balanced(1)%mass%residual, &
+       result_balanced(1)%mass%total_out
+
   call require(dispatch_control == FMR_SERIAL_DISPATCH_OK .and. dispatch_balanced == FMR_SERIAL_DISPATCH_OK, &
        'runtime dispatch')
   call require(result_control(1)%completed .and. result_control(1)%committed .and. &
