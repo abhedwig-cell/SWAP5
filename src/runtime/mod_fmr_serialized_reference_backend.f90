@@ -18,8 +18,16 @@ module mod_fmr_serialized_reference_backend
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
+  use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
+       snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   implicit none
   private
+
+  type, public :: fmr_snow_runtime_state_t
+    type(snow_state_t) :: process
+    logical :: event_applied = .false.
+    real(real64) :: event_t0 = 0.0_real64
+  end type fmr_snow_runtime_state_t
 
   type, extends(canonical_state_t), public :: fmr_b110_physical_state_t
     integer :: active_nodes = 0
@@ -27,6 +35,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: water_content(:)
     real(real64) :: ponding_depth = 0.0_real64
     real(real64) :: groundwater_level = 0.0_real64
+    type(fmr_snow_runtime_state_t), allocatable :: snow
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -57,6 +66,7 @@ module mod_fmr_serialized_reference_backend
     logical :: tabulated_hydraulics_active = .false.
     logical :: elasticity_active = .false.
     logical :: frost_active = .false.
+    type(snow_parameters_t), allocatable :: snow
   end type fmr_b110_physical_parameters_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
@@ -67,6 +77,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: drainage_flux_by_level(:,:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
+    type(snow_forcing_t), allocatable :: snow
   end type fmr_b110_physical_forcing_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -77,6 +88,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
+    logical :: snow_active = .false.
+    logical :: snow_event_prepared = .false.
+    integer :: snow_status = 0
+    real(real64) :: snow_melt_rate = 0.0_real64
+    type(snow_flux_result_t) :: snow_fluxes
+    type(snow_mass_contribution_t) :: snow_mass
   end type fmr_serialized_physical_observation_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
@@ -102,10 +119,20 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: head_rel_tolerance = 1.0e-12_real64
     real(real64) :: ponding_tolerance = 1.0e-12_real64
     real(real64) :: top_flux = 0.0_real64
+    real(real64) :: base_top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
     logical :: forcing_admitted = .false.
+    logical :: state_profile_admitted = .false.
+    logical :: snow_active = .false.
+    logical :: snow_event_prepared = .false.
+    real(real64) :: snow_outer_t0 = 0.0_real64
+    real(real64) :: snow_outer_t1 = 0.0_real64
+    real(real64) :: snow_melt_rate = 0.0_real64
+    type(snow_state_t) :: snow_candidate
+    type(snow_flux_result_t) :: snow_fluxes
+    type(snow_diagnostics_t) :: snow_diagnostics
     type(fmr_serialized_physical_observation_t) :: last_observation
   contains
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -149,6 +176,10 @@ contains
       end if
       copy%ponding_depth = self%ponding_depth
       copy%groundwater_level = self%groundwater_level
+      if (allocated(self%snow)) then
+        allocate(copy%snow)
+        copy%snow = self%snow
+      end if
     end select
   end subroutine fmr_b110_state_clone
 
@@ -166,6 +197,55 @@ contains
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
+
+  subroutine clear_snow_preparation(model)
+    type(fmr_serialized_reference_model_t), intent(inout) :: model
+    model%snow_active = .false.
+    model%snow_event_prepared = .false.
+    model%state_profile_admitted = .false.
+    model%snow_outer_t0 = 0.0_real64
+    model%snow_outer_t1 = 0.0_real64
+    model%snow_melt_rate = 0.0_real64
+    model%snow_candidate = snow_state_t()
+    model%snow_fluxes = snow_flux_result_t()
+    model%snow_diagnostics = snow_diagnostics_t()
+  end subroutine clear_snow_preparation
+
+  subroutine prepare_snow_outer_event(model, parameters, committed, forcing, t0, t1)
+    type(fmr_serialized_reference_model_t), intent(inout) :: model
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1
+    class(transaction_state_t), allocatable :: snapshot
+    logical :: available
+
+    call clear_snow_preparation(model)
+    model%snow_active = parameters%snow_active
+    model%snow_outer_t0 = t0
+    model%snow_outer_t1 = t1
+    call committed%snapshot(snapshot, available)
+    if (.not. available) return
+
+    select type (physical => snapshot)
+    type is (fmr_b110_physical_state_t)
+      if (parameters%snow_active) then
+        if (.not. allocated(parameters%snow) .or. .not. allocated(forcing%snow) .or. &
+            .not. allocated(physical%snow)) return
+        call evaluate_snow_reference_call(parameters%snow, physical%snow%process, forcing%snow, t0, t1, &
+             model%snow_candidate, model%snow_fluxes, model%snow_diagnostics)
+        if (model%snow_diagnostics%status /= SNOW_OK .or. .not. model%snow_diagnostics%mass%available) return
+        model%snow_event_prepared = .true.
+        model%snow_melt_rate = model%snow_fluxes%melt / (t1 - t0)
+        model%state_profile_admitted = .true.
+      else
+        if (allocated(parameters%snow) .or. allocated(forcing%snow) .or. allocated(physical%snow)) return
+        model%state_profile_admitted = .true.
+      end if
+    class default
+      return
+    end select
+  end subroutine prepare_snow_outer_event
 
   subroutine fmr_serialized_backend_initialize(self, top_boundary)
     class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
@@ -201,6 +281,7 @@ contains
       return
     end if
 
+    call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
   end subroutine fmr_serialized_backend_run_trial
@@ -217,7 +298,8 @@ contains
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
 
-    ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0
+    ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
+         self%state_profile_admitted
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       ok = ok .and. parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
@@ -230,9 +312,13 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            .not. parameters%root_extraction_active .and. .not. parameters%macropore_active .and. &
-           .not. parameters%snow_active .and. .not. parameters%hysteresis_active .and. &
-           .not. parameters%tabulated_hydraulics_active .and. .not. parameters%elasticity_active .and. &
-           .not. parameters%frost_active
+           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
+           .not. parameters%elasticity_active .and. .not. parameters%frost_active
+      if (parameters%snow_active) then
+        ok = ok .and. allocated(parameters%snow) .and. self%snow_event_prepared
+      else
+        ok = ok .and. .not. allocated(parameters%snow) .and. .not. self%snow_event_prepared
+      end if
     class default
       ok = .false.
     end select
@@ -270,8 +356,9 @@ contains
       self%head_abs_tolerance = parameters%head_abs_tolerance
       self%head_rel_tolerance = parameters%head_rel_tolerance
       self%ponding_tolerance = parameters%ponding_tolerance
+      self%snow_active = parameters%snow_active
     class default
-      error stop 'F-MR04 serialized backend: unexpected parameter type'
+      error stop 'F-MR06 serialized backend: unexpected parameter type'
     end select
   end subroutine fmr_serialized_configure_parameters
 
@@ -296,6 +383,13 @@ contains
           size(forcing%drainage_flux_by_level,2) /= n .or. &
           size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
       if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      if (self%snow_active) then
+        if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
+        if (.not. same_real_bits(interval%t0, self%snow_outer_t0) .or. &
+            .not. same_real_bits(interval%t1, self%snow_outer_t1)) return
+      else
+        if (allocated(forcing%snow)) return
+      end if
       if (associated(self%qdra)) deallocate(self%qdra)
       if (associated(self%qssdi)) deallocate(self%qssdi)
       if (associated(self%qrot)) deallocate(self%qrot)
@@ -303,7 +397,9 @@ contains
       self%qdra = forcing%drainage_flux_by_level
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink
+      self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
+      if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate
       self%top_head = forcing%top_head
       self%bottom_flux = forcing%bottom_flux
       self%bottom_head = forcing%bottom_head
@@ -313,6 +409,18 @@ contains
     end select
   end subroutine fmr_serialized_prepare_interval
 
+  subroutine populate_snow_observation(self)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    self%last_observation%snow_active = self%snow_active
+    self%last_observation%snow_event_prepared = self%snow_event_prepared
+    self%last_observation%snow_melt_rate = self%snow_melt_rate
+    if (self%snow_active) then
+      self%last_observation%snow_status = self%snow_diagnostics%status
+      self%last_observation%snow_fluxes = self%snow_fluxes
+      self%last_observation%snow_mass = self%snow_diagnostics%mass
+    end if
+  end subroutine populate_snow_observation
+
   subroutine fmr_serialized_advance(self, state, t0, t1, outcome)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(transaction_state_t), intent(inout) :: state
@@ -321,10 +429,12 @@ contains
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
     real(real64) :: step_duration
-    logical :: context_ok
+    logical :: context_ok, snow_event_applied_this_call
 
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
+    call populate_snow_observation(self)
+    snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
@@ -360,6 +470,17 @@ contains
     type is (fmr_b110_physical_state_t)
       if (physical%active_nodes /= self%soil_parameters%active_nodes .or. &
           .not. allocated(physical%pressure_head) .or. .not. allocated(physical%water_content)) return
+      if (self%snow_active) then
+        if (.not. allocated(physical%snow) .or. .not. self%snow_event_prepared) return
+        if (.not. physical%snow%event_applied .or. .not. same_real_bits(physical%snow%event_t0, self%snow_outer_t0)) then
+          physical%snow%process = self%snow_candidate
+          physical%snow%event_applied = .true.
+          physical%snow%event_t0 = self%snow_outer_t0
+          snow_event_applied_this_call = .true.
+        end if
+      else
+        if (allocated(physical%snow)) return
+      end if
       request%base_state%active_nodes = physical%active_nodes
       allocate(request%base_state%pressure_head(physical%active_nodes), &
                request%base_state%water_content(physical%active_nodes))
@@ -380,6 +501,7 @@ contains
     self%last_observation%bottom_flux = solve_result%bottom_flux
     self%last_observation%solver_diagnostics = solve_result%diagnostics
     self%last_observation%solver_equation_residual_available = .false.
+    call populate_snow_observation(self)
 
     outcome%nonlinear_iterations = solve_result%diagnostics%nonlinear_iterations
     outcome%internal_retries = solve_result%diagnostics%internal_retries
@@ -400,21 +522,25 @@ contains
     end select
 
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
-         outcome%mass_in, outcome%mass_out)
+         snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
     outcome%mass_accounting_complete = .true.
     outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
 
-  subroutine account_external_fluxes(self, step_duration, top_flux, bottom_flux, total_in, total_out)
+  subroutine account_external_fluxes(self, step_duration, solver_top_flux, bottom_flux, snow_event_applied, &
+                                     total_in, total_out)
     class(fmr_serialized_reference_model_t), intent(in) :: self
-    real(real64), intent(in) :: step_duration, top_flux, bottom_flux
+    real(real64), intent(in) :: step_duration, solver_top_flux, bottom_flux
+    logical, intent(in) :: snow_event_applied
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
-    real(real64) :: value
+    real(real64) :: value, external_top_flux
 
-    total_in = max(0.0_real64, -top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
-    total_out = max(0.0_real64, top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
+    external_top_flux = solver_top_flux
+    if (self%snow_active) external_top_flux = self%base_top_flux
+    total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
+    total_out = max(0.0_real64, external_top_flux) * step_duration + max(0.0_real64, -bottom_flux) * step_duration
     do i = 1, size(self%qssdi)
       value = self%qssdi(i) * step_duration
       if (value >= 0.0_real64) then
@@ -433,18 +559,27 @@ contains
         end if
       end do
     end do
+    if (self%snow_active .and. snow_event_applied) then
+      total_in = total_in + self%snow_diagnostics%mass%snowfall_external_in + &
+           self%snow_diagnostics%mass%rain_external_in
+      total_out = total_out + self%snow_diagnostics%mass%sublimation_external_out
+    end if
   end subroutine account_external_fluxes
 
   real(real64) function fmr_serialized_storage(self, state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: state
-    if (.not. associated(self%soil_parameters)) error stop 'F-MR04 storage requested before parameter binding'
+    if (.not. associated(self%soil_parameters)) error stop 'F-MR06 storage requested before parameter binding'
     select type (physical => state)
     type is (fmr_b110_physical_state_t)
-      if (.not. allocated(physical%water_content)) error stop 'F-MR04 physical storage state incomplete'
+      if (.not. allocated(physical%water_content)) error stop 'F-MR06 physical storage state incomplete'
       value = sum(self%soil_parameters%dz * physical%water_content) + physical%ponding_depth
+      if (self%snow_active) then
+        if (.not. allocated(physical%snow)) error stop 'F-MR06 active snow storage state incomplete'
+        value = value + physical%snow%process%snow_water_storage
+      end if
     class default
-      error stop 'F-MR04 physical storage type mismatch'
+      error stop 'F-MR06 physical storage type mismatch'
     end select
   end function fmr_serialized_storage
 
@@ -463,6 +598,8 @@ contains
            allocated(physical%pressure_head) .and. allocated(physical%water_content)
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
+      if (complete .and. self%snow_active) complete = allocated(physical%snow)
+      if (complete .and. .not. self%snow_active) complete = .not. allocated(physical%snow)
     class default
       complete = .false.
     end select
@@ -490,6 +627,13 @@ contains
                            all(full%water_content == half%water_content) .and. &
                            full%ponding_depth == half%ponding_depth .and. &
                            full%groundwater_level == half%groundwater_level
+          if (same) same = allocated(full%snow) .eqv. allocated(half%snow)
+          if (same .and. allocated(full%snow)) then
+            same = full%snow%process%snow_water_storage == half%snow%process%snow_water_storage .and. &
+                   full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage .and. &
+                   full%snow%event_applied .eqv. half%snow%event_applied .and. &
+                   full%snow%event_t0 == half%snow%event_t0
+          end if
         end if
       end select
     end select
@@ -499,5 +643,10 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  pure logical function same_real_bits(a, b) result(same)
+    real(real64), intent(in) :: a, b
+    same = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_real_bits
 
 end module mod_fmr_serialized_reference_backend
