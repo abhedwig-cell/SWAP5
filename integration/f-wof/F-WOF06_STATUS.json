@@ -1,0 +1,47 @@
+{
+  "workunit": "F-WOF06",
+  "title": "Potential crop shadow-state ownership resolution",
+  "baseline": {
+    "branch": "work/f-wof05-stem-reallocation-composition",
+    "commit": "135823ddcacef14dca4d2805277a4ace20e18b75",
+    "status": "QUALIFIED_TWO_TRACK_STEM_ONLY_REALLOCATION_COMPOSITION_LEAF_FAIL_CLOSED"
+  },
+  "branch": "work/f-wof06-potential-shadow-state",
+  "status": "QUALIFIED_ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW_STATE_OWNERSHIP",
+  "qualification_scope": "CROP_STATE_OWNERSHIP_ONLY",
+  "source_baseline": {
+    "supplied_swap431_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "legacy_wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+  },
+  "static_reference_inventory": {
+    "s_pot_total": 24,
+    "s_pot_wofost_f90": 10,
+    "s_pot_swapoutput_f90": 14,
+    "r_pot_total": 7,
+    "r_pot_wofost_f90": 7,
+    "m_pot_total": 14,
+    "m_pot_wofost_f90": 7,
+    "m_pot_swapoutput_f90": 7,
+    "other_process_module_references": 0
+  },
+  "decision": {
+    "actual_crop_state": "PRIMARY_COMMITTED_PHYSICAL_STATE",
+    "potential_crop_state": "OPTIONAL_TRANSACTIONAL_SHADOW_REFERENCE_STATE",
+    "mandatory_potential_state_per_column": false,
+    "shared_immutable_crop_parameters": true,
+    "legacy_restart_output_adapter_support_preserved_when_enabled": true
+  },
+  "fwof05_pair_type_interpretation": "QUALIFICATION_AND_COMPOSITION_HARNESS_NOT_MANDATORY_FINAL_COLUMN_LAYOUT",
+  "affected_invariants": [3, 4, 7, 16, 25, 27, 29, 30],
+  "production_code_changed": false,
+  "persisted": true,
+  "implemented": false,
+  "tested": true,
+  "qualified": true,
+  "open": [
+    "leaf reallocation remains unadmitted",
+    "the final common crop host has not yet been composed end-to-end",
+    "runtime policy for enabling or omitting potential shadow output remains to be integrated"
+  ],
+  "next": "Use actual crop state as the minimal host baseline; keep potential trajectory behind an explicit optional capability while resolving the remaining leaf-reallocation seam separately."
+}
