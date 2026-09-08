@@ -115,8 +115,9 @@ contains
            trim(label)//':column mass complete')
       call require(abs(results(j)%mass%residual) <= hard_mass_gate, trim(label)//':column mass hard gate')
       call require(results(j)%solver_executed, trim(label)//':real solver executed')
-      call require(results(j)%committed_revision == 1_int64, trim(label)//':revision')
-      call require(same_bits(results(j)%committed_time,t1), trim(label)//':committed time')
+      call require(results(j)%final_revision == 1_int64, trim(label)//':revision')
+      call require(results(j)%final_committed_time_bound .and. same_bits(results(j)%final_committed_time,t1), &
+           trim(label)//':committed time')
       if (snow_active(i)) then
         call require(state_matches_snow(states(i), expected_snow(i), t0), trim(label)//':direct snow state identity')
         call require(expected_diag(i)%mass%available, trim(label)//':direct mass available')
@@ -433,8 +434,9 @@ contains
     column_result_identical=a%column_id==b%column_id .and. a%completed.eqv.b%completed .and. a%committed.eqv.b%committed .and. &
          a%kernel_status==b%kernel_status .and. a%commit_status==b%commit_status .and. &
          a%solver_executed.eqv.b%solver_executed .and. a%solver_iterations==b%solver_iterations .and. &
-         trim(a%solver_route)==trim(b%solver_route) .and. a%committed_revision==b%committed_revision .and. &
-         same_bits(a%committed_time,b%committed_time) .and. mass_identical(a%mass,b%mass)
+         trim(a%solver_route)==trim(b%solver_route) .and. a%final_revision==b%final_revision .and. &
+         (a%final_committed_time_bound .eqv. b%final_committed_time_bound) .and. &
+         same_bits(a%final_committed_time,b%final_committed_time) .and. mass_identical(a%mass,b%mass)
   end function column_result_identical
 
   logical function mass_identical(a,b)
