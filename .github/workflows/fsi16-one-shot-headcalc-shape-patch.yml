@@ -28,11 +28,8 @@ jobs:
 
           headcalc = Path('src/legacy/b1_10_port/headcalc.f90')
           s = headcalc.read_text()
-          old = """      if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &
-          size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'"""
-          new = """      if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &
-          (size(parameter_set%node_distance) /= numnod .and. &
-           size(parameter_set%node_distance) /= numnod+1)) error stop 'HeadCalc: explicit grid geometry shape mismatch'"""
+          old = "size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'"
+          new = "(size(parameter_set%node_distance) /= numnod .and. &\n           size(parameter_set%node_distance) /= numnod+1)) error stop 'HeadCalc: explicit grid geometry shape mismatch'"
           if s.count(old) != 1:
               raise SystemExit(f'expected one HeadCalc shape marker, found {s.count(old)}')
           headcalc.write_text(s.replace(old, new, 1))
