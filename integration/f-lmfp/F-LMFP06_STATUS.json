@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP06",
+  "title": "Heterogeneous Interface Physics & Darcian-Mean Reference",
+  "branch": "work/f-lmfp06-interface-physics-darcian-reference",
+  "base": {
+    "work_unit": "F-LMFP05",
+    "commit": "d53719b31202f73b621afce71b107699a0000737",
+    "decision": "QUALIFIED_FACE_CLOSURE_ATTRIBUTION_READY_FOR_INTERFACE_PHYSICS_QUALIFICATION"
+  },
+  "objective": "Establish an independent, interface-consistent steady-Darcian reference for heterogeneous soil faces and use it to compare arithmetic, harmonic, LayeredMFP equal-flux and reconstructable SWKMEAN=7 Darcian-mean behaviour before any candidate solver face-law change.",
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "physics_changed": false,
+    "hydraulic_only": true,
+    "steady_local_interface_reference": true,
+    "transient_column_admission": false,
+    "crop": false,
+    "root_uptake": false,
+    "drainage_process": false,
+    "ponding": false,
+    "groundwater": false,
+    "modflow": false
+  },
+  "reference_hierarchy": [
+    "Independent steady local Darcy boundary-value solution with continuous pressure head and conservative flux across the material interface",
+    "Direct LayeredMFP equal-flux interface construction using SWAP-compatible K(h)",
+    "Simple arithmetic and harmonic endpoint-conductivity controls",
+    "Historical SWAP SWKMEAN=7 lineage only after its table-generation mathematics is reconstructed from source/literature or equivalent independent equations"
+  ],
+  "source_provenance": {
+    "swap_4_3_1_module": "MOD_Kavg_Szym.f90",
+    "swap_4_3_1_entry": "functions.f90 hcomean SWKMEAN=7",
+    "observed_behaviour": "Runtime mode 7 bilinearly interpolates a precomputed K_Szym(boundary, htop, hbot) table and validates profile, compartment count, material-layer mapping and dz against the table metadata.",
+    "required_table_pattern": "Kavg_Szymkiewicz_<profile>_<numnod>.unf",
+    "tables_available_in_supplied_source_archive": false,
+    "literature_lineage": [
+      "Warrick 1991 Numerical approximations of darcian flow through unsaturated soil",
+      "Szymkiewicz 2009 Approximation of internodal conductivities in numerical simulation of one-dimensional infiltration, drainage, and capillary rise in unsaturated soils",
+      "Szymkiewicz and Helmig 2011 Comparison of conductivity averaging methods for one-dimensional unsaturated flow in layered soils"
+    ]
+  },
+  "qualification_questions": [
+    "Can a numerically independent steady-Darcy BVP reproduce known homogeneous limiting cases without relying on any SWKMEAN implementation?",
+    "At heterogeneous interfaces, how close is LayeredMFP equal-flux to the independent BVP across gradients, grid lengths, orientations and conductivity contrasts?",
+    "Where do arithmetic and harmonic endpoint means fail relative to the steady-Darcian reference?",
+    "Does the LayeredMFP MFP construction remain conservative and directionally correct across strong contrasts?",
+    "Can the mathematical content behind SWKMEAN=7 be reconstructed independently despite missing .unf tables, without reverse-engineering undocumented binary values?"
+  ],
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "flux_continuity_at_interface_required": true,
+    "no_post_update_clipping": true,
+    "no_production_face_law_change": true,
+    "no_tuning_to_swkmean1": true,
+    "no_claimed_swkmean7_numeric_results_without_reconstructed_or_source_table_evidence": true,
+    "independent_reference_must_not_call_layeredmfp_face_solver_internally": true
+  },
+  "planned_outputs": [
+    "steady heterogeneous interface oracle",
+    "homogeneous analytic sanity tests",
+    "heterogeneous orientation/contrast/gradient matrix",
+    "arithmetic/harmonic/MFP error maps against oracle",
+    "SWKMEAN=7 provenance and reconstruction note",
+    "qualification decision for the next transient-column workunit"
+  ],
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  },
+  "status": "INTERFACE_PHYSICS_REFERENCE_IN_PREPARATION"
+}
