@@ -1,0 +1,32 @@
+name: F-MR15 owner composition
+
+on:
+  push:
+    branches:
+      - work/f-mr15-prescribed-head-interval-diagnostics-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-owner-composition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-MR15 owner composition gate
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr15_owner_composition_gate.sh | tee fmr15-owner.log
+      - name: Preserve owner evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmr15-owner-composition
+          path: fmr15-owner.log
