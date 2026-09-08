@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR10",
+  "title": "Explicit Committed Root-Uptake Process Runtime Binding Qualification Evidence",
+  "branch": "work/f-mr10-root-uptake-process-binding",
+  "base": {
+    "fvq22_closeout_commit": "1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+    "fvq22_closeout_tree": "7e412ee0126b93e301bf7c268c6dbd5dc00f2b66",
+    "fvq22_status": "QUALIFIED_INDEPENDENT_FPM05_MACRO_FEDDES_DROUGHT_ONLY_ROOT_WATER_UPTAKE_SCIENTIFIC_ADMISSION",
+    "fpm05_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+  },
+  "tested_candidate": {
+    "head": "c7a7f43c655ef281a081529d7e2b6e7950884ae9",
+    "tree": "87902a0100cdb6fe3486634d87095edd628b3f52",
+    "runtime_binding_blob": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+    "workflow_run_id": 34258306780,
+    "workflow_job_id": 102169592841,
+    "workflow_conclusion": "success",
+    "fmr10_output_sha256": "3dbe3698bd2432bd2bf08052c83d937b3ee36aa1d65449fbc661b96d37a5c703",
+    "fvq22_scientific_output_sha256": "482f0e09bacaeb9428c322734a540ece0738f0c636e3b2db018df344cfff8c5a",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "production_delta": {
+    "only_src_change": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
+    "process_source_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "serialized_runtime_modified": false,
+    "irrigation_modified": false,
+    "snow_modified": false,
+    "legacy_reference_modified": false,
+    "crop_host_added_or_merged": false
+  },
+  "binding_contract": {
+    "input_dto": [
+      "crop_emerged",
+      "potential_transpiration",
+      "rooted_nodes",
+      "cumulative_root_fraction"
+    ],
+    "committed_state_read": "qualified F-MR07 process hydraulic view only for active crop evaluation",
+    "process_call": "qualified F-PM05/F-VQ22 root-water-uptake process",
+    "output": "root_water_uptake_flux_result_t plus process and binding diagnostics",
+    "mutates_committed_state": false,
+    "mutates_solver_forcing": false,
+    "books_authoritative_mass": false,
+    "persistent_binding_state": false
+  },
+  "gate_results": {
+    "single_runtime_binding_production_delta": "PASS",
+    "protected_owner_source_locks": "PASS",
+    "runtime_binding_boundary_static": "PASS",
+    "inactive_crop_no_committed_view_or_distribution_dependency": "PASS",
+    "active_binding_direct_process_bitwise_identity": "PASS",
+    "dynamic_root_distribution_pass_through": "PASS",
+    "committed_state_read_only": "PASS",
+    "invalid_active_crop_input_fail_closed": "PASS",
+    "binding_A_B_A_identity": "PASS",
+    "binding_output_to_FMR09_root_forcing": "PASS",
+    "binding_authoritative_root_mass_exactly_once": "PASS",
+    "binding_books_no_separate_mass": "PASS",
+    "balanced_hydraulic_identity": "PASS",
+    "hard_mass_conservation": "PASS",
+    "FMR10_O0_O2_output_identity": "PASS",
+    "FVQ22_O0_O2_output_identity": "PASS",
+    "FVQ22_exact_scientific_output_hash_preserved": "PASS",
+    "FMR09_cross_process_regression": "PASS",
+    "fixed_irrigation_regression": "PASS",
+    "scheduled_irrigation_regression": "PASS",
+    "committed_hydraulic_view_regression": "PASS",
+    "snow_regression": "PASS"
+  },
+  "numeric_evidence": {
+    "bound_root_uptake_rate": 0.18,
+    "interval_duration": 0.5,
+    "expected_root_amount": 0.09,
+    "observed_authoritative_total_in_delta": 0.08999999999999998,
+    "observed_authoritative_total_out_delta": 0.08999999999999998,
+    "hard_mass_tolerance": 1e-12,
+    "fmr09_reference_root_expected_out": 0.08,
+    "fmr09_reference_root_observed_out": 0.08
+  },
+  "architecture_evidence": {
+    "binding_imports_legacy_crop_or_meteo_modules": false,
+    "binding_imports_or_mutates_FMR_forcing": false,
+    "binding_contains_mass_accounting": false,
+    "inactive_crop_uses_dependency_free_zero_route": true,
+    "active_crop_uses_committed_hydraulic_view": true,
+    "crop_input_values_are_not_reinterpreted_by_runtime_binding": true,
+    "scientific_process_blob_unchanged": true,
+    "F_WOF_lineage_merged": false
+  },
+  "held_scope": {
+    "real_crop_host_binding": "NOT_ADMITTED",
+    "ptra_computation": "NOT_IN_SCOPE",
+    "root_depth_or_distribution_computation": "NOT_IN_SCOPE",
+    "additional_root_uptake_physics": "NOT_IN_SCOPE",
+    "reason": "current qualified runtime lineage has no common crop host and F-WOF10 explicitly does not qualify full crop-host lifecycle integration"
+  },
+  "qualification_interpretation": "F-MR10 qualifies only the explicit runtime binding from committed hydraulic state plus externally supplied current crop/ET inputs into the already scientifically qualified restricted root-water-uptake process. It does not qualify a real WOFOST or other crop host as the producer of those inputs."
+}
