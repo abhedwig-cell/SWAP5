@@ -30,8 +30,7 @@ check_blob src/crop/mod_crop_root_uptake_input_contract.f90 cc5594f6c7a91ac2ff37
 check_blob src/crop/mod_crop_root_uptake_input_assembly.f90 71f1e237c41af56ee85dcadfaae330f5d50ae0f7
 check_blob src/crop/mod_nonadaptive_crop_root_view_producer.f90 32e827c70f733b5451328ac7a95a1001a0d711f7
 check_blob integration/f-wof/F-WOF15_STATUS.json 7d3451fbd69258422d4131f00449870819d8bf92
-check_blob integration/f-wof/F-WOF16_STATUS.json 3e718dc9cf72f81c31cfd78ec07e87af2e72b39d || true
-
+check_blob integration/f-wof/F-WOF16_STATUS.json 7f1b78695e07b571d050950db88c9b49def63c03
 echo 'FWOF17_UPSTREAM_SOURCE_LOCKS=PASS'
 
 python3 - <<'PY'
