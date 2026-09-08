@@ -1,13 +1,7 @@
 name: F-SI13 materialize explicit bottom boundary
 
 on:
-  push:
-    branches:
-      - work/f-si13-explicit-bottom-boundary
-    paths:
-      - 'integration/f-si/F-SI13_BOTTOM_BOUNDARY_CONTRACT.json'
-      - 'tools/fsi/fsi13_materialize_bottom_boundary.py'
-      - '.github/workflows/fsi13-materialize-bottom-boundary.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
