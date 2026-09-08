@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF11",
+  "title": "Explicit Root-Uptake Crop Input Provider Contract and Owner Resolution",
+  "branch": "work/f-wof11-root-uptake-crop-input-provider",
+  "base": {
+    "fmr10_closeout_commit": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "fmr10_closeout_tree": "49025c65b4420b452917fa2f2a7b66b6233e3c4e",
+    "fmr10_status": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING"
+  },
+  "ownership": {
+    "contract_owner": "Crop, ET and root-uptake physics",
+    "runtime_consumer": "F-MR through an explicit adapter/binding",
+    "root_uptake_physics_owner": "F-PM05/F-VQ22 qualified restricted process",
+    "soil_hydraulic_state_owner": "committed column state through F-MR07 view",
+    "authoritative_mass_owner": "F-KT/F-MR",
+    "legacy_IO_owner": "adapter layer"
+  },
+  "source_bound_legacy_semantics": {
+    "rootextraction_task2_crop_gate": "plant_interface%fl_cropemergence",
+    "potential_transpiration": "MOD_meteo%ptra",
+    "root_depth_no_root_gate": "plant_interface%rd < 1e-14",
+    "rooted_node_count": "plant_interface%noddrz",
+    "current_root_distribution": "MOD_cropdevelopment%cumdens_top",
+    "root_distribution_update": "MOD_cropdevelopment%update_cumdens_top recomputes cumdens_top from current noddrz and root distribution",
+    "canonical_rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "canonical_cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+  },
+  "shared_contract": {
+    "production_module": "src/crop/mod_crop_root_uptake_input_contract.f90",
+    "data_type": "crop_root_uptake_input_t",
+    "fields": [
+      "crop_emerged",
+      "potential_transpiration",
+      "rooted_nodes",
+      "cumulative_root_fraction"
+    ],
+    "abstract_provider": "crop_root_uptake_input_provider_t",
+    "provider_operation": "evaluate current crop/ET state into the explicit DTO without soil-hydraulic reads or solver access",
+    "provider_has_persistent_state": false,
+    "contract_has_file_IO": false,
+    "contract_depends_on_runtime": false,
+    "contract_depends_on_solver": false
+  },
+  "validation_policy": {
+    "active_nodes_must_be_positive": true,
+    "potential_transpiration_must_be_finite_nonnegative": true,
+    "rooted_nodes_range": "0..active_nodes",
+    "inactive_crop_canonical_form": {
+      "potential_transpiration": 0.0,
+      "rooted_nodes": 0,
+      "cumulative_root_fraction_allocated": false
+    },
+    "active_crop_with_zero_roots": "rooted_nodes=0 and no cumulative distribution required",
+    "active_crop_with_roots": {
+      "distribution_size": "rooted_nodes+1",
+      "first_fraction": 0.0,
+      "last_fraction": 1.0,
+      "nondecreasing": true,
+      "all_values_finite": true
+    }
+  },
+  "legacy_provider_obligation": {
+    "inactive_crop": "fl_cropemergence=false must map to the canonical inactive DTO",
+    "no_root": "rd < 1e-14 must map to rooted_nodes=0 regardless of stale legacy noddrz/cumdens storage",
+    "active_rooted": "noddrz and the current cumdens_top(1:noddrz+1) must be copied after the crop-development update appropriate to the evaluation point",
+    "ptra": "copy the current potential transpiration from the crop/ET ownership boundary, not recompute it in runtime"
+  },
+  "cadence_contract": {
+    "provider_contract_is_time_unit_agnostic": true,
+    "provider_does_not_assume_midnight_or_one_day": true,
+    "concrete_crop_host_must_define_when_its_state_is_current_for_the_requested_kernel_interval": true,
+    "cadence_not_yet_qualified_for_legacy_WOFOST_host": true
+  },
+  "cross_lineage_policy": {
+    "F_WOF04_through_F_WOF10_blind_merge_forbidden": true,
+    "reason": "existing F-WOF reallocation lineage diverges from the current qualified runtime lineage and F-WOF10 explicitly does not qualify full crop-host lifecycle integration",
+    "F_WOF11_introduces_only_a_new_common_contract_on_the_current_runtime_lineage": true
+  },
+  "required_gates": [
+    "only the new crop contract module is added under src",
+    "contract has no dependency on F-MR, solver, HeadCalc, files or legacy globals",
+    "inactive crop canonicalization and validation",
+    "active zero-root validation",
+    "active rooted normalized distribution validation",
+    "nonfinite, negative, nonmonotone, malformed and out-of-range inputs fail closed",
+    "provider interface can return explicit status without side effects",
+    "F-MR10, F-VQ22 and F-MR09 protected source blobs remain unchanged",
+    "O0/O2 contract-test output identity"
+  ],
+  "not_admitted": [
+    "a concrete WOFOST provider implementation",
+    "legacy global-state adapter",
+    "crop-host lifecycle ordering",
+    "daily WOFOST cadence",
+    "ptra computation",
+    "root-depth evolution",
+    "root-distribution evolution",
+    "full crop integration",
+    "any new root-uptake physics"
+  ],
+  "downstream_if_qualified": {
+    "next_runtime_unit": "F-MR11",
+    "purpose": "adapt crop_root_uptake_input_t into the already qualified F-MR10 binding without making crop depend on runtime internals",
+    "next_crop_host_unit_after_that": "concrete source-bound provider implementation only after cadence and host-state ownership are qualified"
+  }
+}
