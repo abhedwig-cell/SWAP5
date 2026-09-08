@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03-FVQ24-ADMITTED-TAIL",
   "title": "Scientifically admitted F-VQ24 nonzero REFERENCE workload on F-VQ25 diagnostics postimage",
   "branch": "work/f-pe03-fvq24-admitted-tail-characterization",
-  "status": "PERSISTED_PENDING_FVQ24_ADMITTED_WORKLOAD_RUNTIME_CHARACTERIZATION",
-  "phase": "PERSISTED_NOT_YET_IMPLEMENTED",
+  "status": "IMPLEMENTED_PERSISTED_PENDING_FVQ24_ADMITTED_WORKLOAD_RUNTIME_CHARACTERIZATION",
+  "phase": "IMPLEMENTED_PERSISTED_NOT_YET_TESTED",
   "base": {
     "fpe03_fvq25_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
     "fpe03_status": "PARTIAL_EXIT_QUALIFIED_REFERENCE_REJECTION_COST_CHARACTERIZED_ACCEPTED_HIGHER_COST_FIXTURE_STILL_MISSING",
@@ -14,6 +14,7 @@
   },
   "incoming_scientific_workload": {
     "owner": "F-VQ24",
+    "closeout": "4a8c0740222da5934e1fae53000c1c19db733e27",
     "status": "QUALIFIED_INDEPENDENT_FMR12_FMR13_NONZERO_HEADCALC_SOLVER_SEAM_EQUIVALENCE",
     "scientific_admission": true,
     "fpe_use_explicitly_allowed": true,
@@ -31,6 +32,13 @@
     "max_backtracking": 4,
     "hydraulic_and_mass_tolerances": 1e-12
   },
+  "implementation": {
+    "runtime_probe_generator": "tests/fpe/fpe03_make_fvq24_runtime_probe.py",
+    "runtime_probe_generator_blob": "424f531a9efa318d6a68d82f2fdb5e5724b4f724",
+    "gate": "tests/fpe/run_fpe03_fvq24_admitted_tail_gate.sh",
+    "gate_blob": "348206507287c365894cce8bb1105452194116c9",
+    "production_source_changed": false
+  },
   "characterization_rule": "Preserve the exact F-VQ24 physical stimulus and numerical settings while routing it through the unchanged F-VQ25/F-MR14 production REFERENCE runtime solely to observe transaction acceptance and aggregate interval cost. No acceptance, physics, numerical-control or mass setting may be relaxed to obtain a desired outcome.",
   "required_evidence": {
     "production_source_immutable": true,
@@ -44,7 +52,7 @@
     "o0_o2_identity": true
   },
   "state": {
-    "implemented": false,
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false
