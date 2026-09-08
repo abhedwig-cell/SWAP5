@@ -13,7 +13,7 @@ on:
 
 jobs:
   qualify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,3 +22,11 @@ jobs:
         run: gfortran --version
       - name: F-VQ19 independent source-bound qualification
         run: bash tests/vq/fvq19/run_fvq19_gate.sh
+      - name: Upload immutable F-VQ19 run evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq19-fmr08-nonstationary-temporal-evidence
+          path: .fvq19-artifacts/
+          include-hidden-files: true
+          if-no-files-found: error
