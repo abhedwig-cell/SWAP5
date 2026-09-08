@@ -25,14 +25,12 @@ if mode == -2:
     s=s.replace(marker,insert,1)
 elif mode != 7:
     raise SystemExit('F-SI13 authority gate supports only 7 and -2')
-needle="  dt = 99.0_real64\n  maxit = 0"
-repl="  swbotb = 5\n  dt = 99.0_real64\n  maxit = 0"
-if needle not in s: raise SystemExit('F-SI13 swbotb poison insertion marker missing')
-s=s.replace(needle,repl,1)
+needle="  dt = 99.0_real64"
+if s.count(needle) != 1: raise SystemExit(f'F-SI13 swbotb poison marker count={s.count(needle)}')
+s=s.replace(needle,r"  swbotb = 5\n  dt = 99.0_real64",1)
 needle="  if (transfer(dt,0_int64) /= transfer(99.0_real64,0_int64)) failures = failures + 1"
-repl="  if (swbotb /= 5) failures = failures + 1\n"+needle
-if needle not in s: raise SystemExit('F-SI13 swbotb persistence marker missing')
-s=s.replace(needle,repl,1)
+if s.count(needle) != 1: raise SystemExit(f'F-SI13 swbotb persistence marker count={s.count(needle)}')
+s=s.replace(needle,r"  if (swbotb /= 5) failures = failures + 1\n"+needle,1)
 p.write_text(s)
 PY
   chmod +x "$out"
