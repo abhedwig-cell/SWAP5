@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ18",
+  "scope": "RESTRICTED_B110_FIXED_EVENT_IRRIGATION_SCIENTIFIC_ADMISSION",
+  "status": "QUALIFIED_FPM03_RESTRICTED_FIXED_EVENT_IRRIGATION_SCIENTIFIC_ADMISSION",
+  "branch": "qualification/f-vq18-fpm03-fixed-irrigation",
+  "state": {
+    "candidate_source_modified": false,
+    "independent_verifier_implemented": true,
+    "persisted": true,
+    "tested": true,
+    "scientifically_qualified": true
+  },
+  "qualified_source_commit": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+  "qualified_source_tree": "dc053278de45df5eff427689ef244159cf8d8d3e",
+  "fpm03_closeout_commit": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+  "fpm03_closeout_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+  "production_source": "src/process/mod_irrigation_process.f90",
+  "production_source_blob": "af8dc3b3e16d261af573c9b626704638d5ee70c9",
+  "qualification_evidence_path": "integration/f-vq/F-VQ18_QUALIFICATION.json",
+  "contract_path": "integration/f-vq/F-VQ18_CONTRACT.json",
+  "decisive_verifier_head": "d189a4606e9e64113518d57b6f5edff15c023052",
+  "decisive_verifier_tree": "be11ee50323650e3eb50ecef0c191c27abf915fe",
+  "decisive_workflow_run_id": 34234335478,
+  "decisive_job_id": 102088059430,
+  "decisive_output_sha256": "81a812d0d5933a201f6568164112dfd60168cf59a32498ec2520df51174ca8cc",
+  "scientifically_admitted_capabilities": [
+    "B1.10 fixed-event date/cursor semantics",
+    "surface application types 0 and 1 gross irrigation result and concentration metadata",
+    "SSDI application type 2 node source and translated total-water semantics",
+    "transaction-safe fixed-event replay, split and completion",
+    "authoritative SSDI external-inflow accounting exactly once",
+    "O0/O2 identity within the independent verifier",
+    "preservation of qualified F-MR06 one-call-daily snow semantics"
+  ],
+  "not_admitted": [
+    "scheduled TCS1-TCS8 irrigation trigger equations",
+    "scheduled DCS1-DCS2 irrigation depth equations",
+    "rainfall reduction",
+    "solute-threshold over-irrigation",
+    "MultiSWAP task=4 availability scaling",
+    "legacy irrigation file parsing and I/O",
+    "surface gird-to-nird interception/meteo composition"
+  ],
+  "downstream": {
+    "fpm03_fixed_event_scientific_admission_complete": true,
+    "broader_irrigation_migration_must_remain_separate": true,
+    "recommended_next_process_migration_step": "source-bound readiness and smallest structural seam for scheduled irrigation TCS/DCS using the already-qualified process hydraulic view; do not infer readiness for all trigger/depth variants from this fixed-event admission"
+  }
+}
