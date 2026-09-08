@@ -1,0 +1,161 @@
+name: F-SI16 one-shot derived bottom distance repair
+
+on:
+  push:
+    branches:
+      - work/f-si16-explicit-prescribed-bottom-head
+    paths:
+      - '.github/workflows/fsi16-one-shot-derived-bottom-distance.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair-derived-bottom-distance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si16-explicit-prescribed-bottom-head
+      - name: Apply source-bound F-SI16 geometry repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = "808e52e825f80ac129508ab32aa77913fa7ace09"
+          test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = "60db514d6896cd0dc89cbe9f457ecd05f90d126f"
+          test "$(git rev-parse HEAD:src/adapter/mod_reference_richards_legacy_binding.f90)" = "618658b4770346583c261c8eed4c82c2bea51d26"
+          test "$(git rev-parse HEAD:tests/fsi/test_fsi16_prescribed_bottom_head.F90)" = "2c386fc7c6c396af5c990594b1ae5ff197a9e552"
+          test "$(git rev-parse HEAD:tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh)" = "b43ae790ada4b948091c488cd0ff36abd384ff1b"
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+
+          def replace_exact(path, old, new, count=1):
+              p = Path(path)
+              s = p.read_text()
+              n = s.count(old)
+              if n != count:
+                  raise SystemExit(f'{path}: expected {count} occurrence(s), found {n}: {old[:80]!r}')
+              p.write_text(s.replace(old, new, count))
+
+          contract = 'src/solver/mod_soil_water_solver_contract.f90'
+          replace_exact(contract,
+              "    ! Existing common routes consume NN node distances. Boundary modes that\n"
+              "    ! physically require the lower face may supply NN+1; their solver-specific\n"
+              "    ! validator owns that stricter requirement.\n"
+              "    if (size(request%parameters%node_distance) /= n .and. &\n"
+              "        size(request%parameters%node_distance) /= n+1) return",
+              "    if (size(request%parameters%node_distance) /= n) return")
+
+          headcalc = 'src/legacy/b1_10_port/headcalc.f90'
+          replace_exact(headcalc,
+              "      if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &\n"
+              "          (size(parameter_set%node_distance) /= numnod .and. &\n"
+              "           size(parameter_set%node_distance) /= numnod+1)) error stop 'HeadCalc: explicit grid geometry shape mismatch'",
+              "      if (size(parameter_set%z) /= numnod .or. size(parameter_set%dz) /= numnod .or. &\n"
+              "          size(parameter_set%node_distance) /= numnod) error stop 'HeadCalc: explicit grid geometry shape mismatch'")
+          replace_exact(headcalc,
+              "real(8) function grid_disnod(node)\n"
+              "   integer, intent(in) :: node\n"
+              "   if (explicit_geometry) then\n"
+              "      grid_disnod = parameter_set%node_distance(node)\n"
+              "   else\n"
+              "      grid_disnod = legacy_disnod(node)\n"
+              "   end if\n"
+              "end function grid_disnod",
+              "real(8) function grid_disnod(node)\n"
+              "   integer, intent(in) :: node\n"
+              "   if (explicit_geometry) then\n"
+              "      if (node == numnod+1) then\n"
+              "         ! Exact B1.10 swap_base geometry: lower face is half the last compartment thickness.\n"
+              "         grid_disnod = 0.5d0*parameter_set%dz(numnod)\n"
+              "      else\n"
+              "         grid_disnod = parameter_set%node_distance(node)\n"
+              "      end if\n"
+              "   else\n"
+              "      grid_disnod = legacy_disnod(node)\n"
+              "   end if\n"
+              "end function grid_disnod")
+
+          adapter = 'src/adapter/mod_reference_richards_legacy_binding.f90'
+          replace_exact(adapter,
+              "    if (request%boundary%bottom_mode == 5) then\n"
+              "       if (size(request%parameters%node_distance) /= request%parameters%active_nodes+1) then\n"
+              "          route = 'bottom-distance-required'\n"
+              "          return\n"
+              "       end if\n"
+              "    end if\n",
+              "")
+
+          test = 'tests/fsi/test_fsi16_prescribed_bottom_head.F90'
+          replace_exact(test,
+              "  type(soil_water_parameter_set_t), target :: kernel_params, short_params",
+              "  type(soil_water_parameter_set_t), target :: kernel_params")
+          start = "  ! Prescribed head must fail closed before HeadCalc if the lower face distance\n"
+          end = "  if (failures /= 0) then\n"
+          s = Path(test).read_text()
+          i = s.find(start)
+          j = s.find(end, i)
+          if i < 0 or j < 0:
+              raise SystemExit('focused short-geometry block not found')
+          s = s[:i] + "  ! F-SI14 geometry remains NN-sized; the B1.10 lower face is derived from dz(NN).\n  if (size(request_a%parameters%node_distance) /= numnod) failures = failures + 1\n  if (size(request_b%parameters%node_distance) /= numnod) failures = failures + 1\n  if (size(request_c%parameters%node_distance) /= numnod) failures = failures + 1\n\n" + s[j:]
+          Path(test).write_text(s)
+          replace_exact(test,
+              "  print *, 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS'\n  print *, 'F-SI16_PARAMETER_FIXTURE_ISOLATION PASS'",
+              "  print *, 'F-SI16_DERIVED_BOTTOM_DISTANCE PASS'")
+          replace_exact(test,
+              "    allocate(kernel_params%z(numnod), kernel_params%dz(numnod), kernel_params%node_distance(numnod+1))\n"
+              "    kernel_params%z = z\n"
+              "    kernel_params%dz = dz\n"
+              "    kernel_params%node_distance = disnod",
+              "    allocate(kernel_params%z(numnod), kernel_params%dz(numnod), kernel_params%node_distance(numnod))\n"
+              "    kernel_params%z = z\n"
+              "    kernel_params%dz = dz\n"
+              "    kernel_params%node_distance = disnod(1:numnod)")
+          s = Path(test).read_text()
+          start = "  subroutine configure_short_parameters()\n"
+          end = "  end subroutine configure_short_parameters\n\n"
+          i = s.find(start)
+          j = s.find(end, i)
+          if i < 0 or j < 0:
+              raise SystemExit('configure_short_parameters block not found')
+          j += len(end)
+          Path(test).write_text(s[:i] + s[j:])
+
+          gate = 'tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
+          replace_exact(gate,
+              "expected_src=$'src/adapter/mod_reference_richards_legacy_binding.f90\\nsrc/legacy/b1_10_port/headcalc.f90\\nsrc/solver/mod_soil_water_solver_contract.f90'",
+              "expected_src=$'src/adapter/mod_reference_richards_legacy_binding.f90\\nsrc/legacy/b1_10_port/headcalc.f90'")
+          replace_exact(gate,
+              "check_blob src/solver/mod_soil_water_solver_contract.f90 808e52e825f80ac129508ab32aa77913fa7ace09",
+              "check_blob src/solver/mod_soil_water_solver_contract.f90 4271372085d800fd5da969a2ed073b00422d79c6")
+          new_headcalc_blob = subprocess.check_output(['git','hash-object',headcalc], text=True).strip()
+          replace_exact(gate,
+              "check_blob src/legacy/b1_10_port/headcalc.f90 60db514d6896cd0dc89cbe9f457ecd05f90d126f",
+              f"check_blob src/legacy/b1_10_port/headcalc.f90 {new_headcalc_blob}")
+          replace_exact(gate,
+              "grep -Fq 'size(request%parameters%node_distance) /= n+1' src/solver/mod_soil_water_solver_contract.f90\n"
+              "grep -Fq 'size(parameter_set%node_distance) /= numnod+1' src/legacy/b1_10_port/headcalc.f90\n",
+              "grep -Fq 'size(request%parameters%node_distance) /= n) return' src/solver/mod_soil_water_solver_contract.f90\n"
+              "grep -Fq 'grid_disnod = 0.5d0*parameter_set%dz(numnod)' src/legacy/b1_10_port/headcalc.f90\n")
+          replace_exact(gate,
+              "grep -Fq \"route = 'bottom-distance-required'\" src/adapter/mod_reference_richards_legacy_binding.f90\n",
+              "if grep -Fq \"route = 'bottom-distance-required'\" src/adapter/mod_reference_richards_legacy_binding.f90; then\n"
+              "  echo 'F-SI16_PRESCRIBED_HEAD FAIL stale explicit lower-face parameter guard' >&2; exit 1\n"
+              "fi\n")
+          replace_exact(gate,
+              "  grep -Fq 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS' \"$out/output.txt\"\n"
+              "  grep -Fq 'F-SI16_PARAMETER_FIXTURE_ISOLATION PASS' \"$out/output.txt\"",
+              "  grep -Fq 'F-SI16_DERIVED_BOTTOM_DISTANCE PASS' \"$out/output.txt\"")
+          PY
+          git diff --check
+          test "$(git hash-object src/solver/mod_soil_water_solver_contract.f90)" = "4271372085d800fd5da969a2ed073b00422d79c6"
+          git rm .github/workflows/fsi16-one-shot-derived-bottom-distance.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/solver/mod_soil_water_solver_contract.f90 src/legacy/b1_10_port/headcalc.f90 \
+                  src/adapter/mod_reference_richards_legacy_binding.f90 tests/fsi/test_fsi16_prescribed_bottom_head.F90 \
+                  tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
+          git commit -m 'F-SI16: derive lower face from exact B1.10 grid geometry'
+          git push origin HEAD:work/f-si16-explicit-prescribed-bottom-head
