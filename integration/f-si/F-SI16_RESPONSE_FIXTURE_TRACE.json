@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI16",
+  "title": "Prescribed-head response fixture and boundary-face semantics trace",
+  "basis_head": "6301735e0caddd0cb87d32dcafa497093aeac501",
+  "source_bound_boundary_semantics": {
+    "bottom_head_semantics": "pressure head at the lower boundary face",
+    "unit": "cm",
+    "b110_gradient": "head_gradient(NN+1)=(h(NN)-hbot)/disnod(NN+1)+1",
+    "b110_bottom_residual_contribution": "kmean(NN+1)*head_gradient(NN+1)",
+    "b110_swkimpl0_jacobian_contribution": "kmean(NN+1)/disnod(NN+1)",
+    "last_node_equals_bottom_head_required": false,
+    "superseded_interpretation": "HNEW(NN)-HBOT=0 as the production mode-5 equation",
+    "reason": "the inspected B1.10 HeadCalc production route applies the prescribed head on the lower face through the Darcy gradient"
+  },
+  "fixture_characterization": {
+    "historical_fixture": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "historical_tridag_behavior": "returns a zero Newton correction for every system",
+    "historical_fixture_scope": "valid for predecessor exact-equilibrium replay, not for nontrivial prescribed-head response qualification",
+    "runner_local_response_fixture": "tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh replaces only the test-local TRIDAG implementation; predecessor source remains byte-identical",
+    "latest_blocking_run": 34241608738,
+    "latest_blocking_job": 102112916296,
+    "latest_failure_class": "TEST_FIXTURE_COMPILE_ERROR_LOOP_VARIABLE_REUSE",
+    "production_seam_implicated_by_latest_failure": false
+  },
+  "qualification_repair": {
+    "fix_runner_local_tridag_compile_error": true,
+    "remove_invalid_last_node_equals_boundary_face_head_assertion": true,
+    "preserve_nontrivial_boundary_response_check": true,
+    "verify_bottom_face_equation_semantics": true,
+    "add_multiple_prescribed_head_cases": true,
+    "require_positive_and_negative_authoritative_qbot_if_supported": true,
+    "no_new_scientific_tolerance": true,
+    "production_physics_change_required": false,
+    "numerical_policy_change_required": false
+  },
+  "scope": {
+    "F_KT_change": false,
+    "F_MR_change": false,
+    "F_GC_change": false,
+    "groundwater_logic_added": false
+  },
+  "decision": "REPAIR_QUALIFICATION_FIXTURE_AND_ASSERT_FACE_HEAD_SEMANTICS_BEFORE_ADMISSION"
+}
