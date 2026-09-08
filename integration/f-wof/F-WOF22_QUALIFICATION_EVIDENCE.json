@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF22",
+  "title": "WRT/WRTPOT Biomass Owner Readiness Qualification Evidence",
+  "tested_candidate": "300ab8d515e98a7c96571262a32c240fcfa864ac",
+  "base": "530c36b8e9e6b6e9c7b6f179bc0edf199a40d1bf",
+  "github_actions": {
+    "run_id": 34280794282,
+    "job_id": 102244783521,
+    "conclusion": "success"
+  },
+  "candidate_delta": {
+    "ahead_by": 4,
+    "behind_by": 0,
+    "production_src_changed": false,
+    "files": [
+      ".github/workflows/fwof22-wrt-biomass-owner-readiness.yml",
+      "integration/f-wof/F-WOF22_SOURCE_BOUND_BIOMASS_OWNER_EVIDENCE.json",
+      "integration/f-wof/F-WOF22_WRT_BIOMASS_OWNER_READINESS_CONTRACT.json",
+      "tests/fwof/run_fwof22_wrt_biomass_owner_readiness_gate.sh"
+    ]
+  },
+  "gate_markers": [
+    "FWOF22_ZERO_PRODUCTION_DELTA=PASS",
+    "FWOF22_CURRENT_LINEAGE_LOCKS=PASS",
+    "FWOF22_HISTORICAL_FWO06_OWNERSHIP_EVIDENCE_LOCK=PASS",
+    "FWOF22_ACTUAL_WRT_PRIMARY_BIOMASS_OWNER_CLASSIFICATION=PASS",
+    "FWOF22_WRTPOT_OPTIONAL_TRANSACTIONAL_SHADOW_CLASSIFICATION=PASS",
+    "FWOF22_SWRD3_EXISTING_CONSUMER_SEAM=PASS",
+    "FWOF22_SIMPLE_CROP_SWRD3_REMAINS_FORBIDDEN=PASS",
+    "FWOF22_WRT_ONLY_DUPLICATE_STATE_FORBIDDEN=PASS",
+    "FWOF22_PRODUCTION_SWRD3_REMAINS_FAIL_CLOSED=PASS",
+    "FWOF22_WRT_BIOMASS_OWNER_READINESS_GATE PASS"
+  ],
+  "qualified_findings": {
+    "actual_WRT_owner": "primary committed crop biomass state",
+    "actual_WRT_interface": "read-only crop biomass view",
+    "WRTPOT_owner": "optional transactional potential/shadow biomass trajectory",
+    "WRTPOT_mandatory_per_column": false,
+    "WRT_only_root_geometry_state_permitted": false,
+    "simple_crop_SWRD3_admitted": false,
+    "F_WOF17_geometry_consumer_already_accepts_actual_root_biomass": true,
+    "F_WOF17_geometry_source_change_required_for_future_WRT_composition": false,
+    "current_primary_biomass_owner_present": false,
+    "current_authoritative_actual_WRT_view_present": false,
+    "current_optional_potential_shadow_host_present": false,
+    "SWRD3_production_currently_admitted": false
+  },
+  "historical_reconciliation": {
+    "historical_head": "28e127b1555f05a1862652ee6f33abe1619bbbec",
+    "historical_decision": "ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW",
+    "merge_base_with_assessment_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "historical_only_commits": 17,
+    "current_only_commits_at_assessment": 355,
+    "blind_production_merge_permitted": false
+  },
+  "qualification_scope": "OWNER_AND_READINESS_ONLY",
+  "production_qualification": false,
+  "reason_production_not_qualified": "No current-lineage primary crop biomass owner or authoritative actual-WRT view exists yet. The SWRD=3 consumer seam is ready, but supplying it from duplicated helper state would violate source-bound ownership and state-minimization requirements."
+}
