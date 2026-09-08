@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF18",
+  "title": "Restricted SWETR=1 No-Interception Potential-Transpiration Qualification Evidence",
+  "branch": "work/f-wof18-reference-et-transpiration-producer",
+  "base_commit": "c54e0bf1fff5c986ee64bf8fdb4248e5f4b15172",
+  "qualified_candidate": {
+    "commit": "025e014eaa1f3148ec4f3f8c003ad65928cd4edd",
+    "production_source_blob": "497b42f2450a003a070dbc4020573866d1ef93b0",
+    "contract_blob": "9bcb7a32354294985843af50dbf1730ed029023b",
+    "source_bound_evidence_blob": "b70b5e55eaa1a4bbd448094aa8856a5446398cd8",
+    "oracle_test_blob": "528485282c646852481da89d8bb05edf3eb92673",
+    "gate_blob": "e5993da9454d880816e410fa0e30650646a2af31",
+    "workflow_blob": "fe2a25f98aee5530327cb5fa18a243d8583e0f09"
+  },
+  "github_actions": {
+    "qualified_run_id": 34269701662,
+    "qualified_job_id": 102207863998,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "prior_attempts": [
+      {
+        "run_id": 34269425267,
+        "conclusion": "failure",
+        "classification": "STATIC_GATE_COMMENT_FALSE_POSITIVE",
+        "physics_failure": false,
+        "production_failure": false,
+        "resolution": "make implementation dependency scan insensitive to comments"
+      },
+      {
+        "run_id": 34269526431,
+        "conclusion": "failure",
+        "classification": "REAL_FAIL_CLOSED_NAN_VALIDATION_DEFECT",
+        "physics_formula_failure": false,
+        "production_robustness_failure": true,
+        "cause": "Fortran does not guarantee short-circuit evaluation of .or.; ordered comparisons on NaN could execute after ieee_is_finite and trap under -ffpe-trap=invalid",
+        "resolution": "split finiteness and ordered comparisons into sequential fail-closed guards without changing valid-domain formula"
+      }
+    ]
+  },
+  "verified_results": {
+    "single_ET_process_production_delta": "PASS",
+    "crop_and_assembly_source_locks": "PASS",
+    "scope_ownership_units_architecture_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_crop_dependency_free_zero": "PASS",
+    "SWETR1_SWINTER0_independent_B1_10_formula_identity": "PASS",
+    "B1_10_oracle_potential_transpiration_cm_per_day": 0.27508,
+    "inputs_read_only": "PASS",
+    "zero_cover_and_crop_factor_routes": "PASS",
+    "CO2_transpiration_factor_application": "PASS",
+    "invalid_active_inputs_fail_closed_with_fp_traps": "PASS",
+    "A_B_A_bitwise_identity": "PASS",
+    "F_WOF13_ET_result_consumption": "PASS",
+    "output_sha256": "eb9a47693e6b49cddb0f50b6f3368e6f684bf29a085cd86a98f6109374a75444"
+  },
+  "unit_reconciliation": {
+    "weather_fixture_ETref_unit": "mm/day rate convention",
+    "legacy_ETpot_conversion": "0.1 converts ET0 from mm/day to potential transpiration in cm/day",
+    "conflicting_MOD_meteo_global_comment": "etr comment says cm/day",
+    "classification": "NONEXECUTING_COMMENT_DISCREPANCY",
+    "qualified_API_resolution": "reference_et_mm_per_day is explicit and no ambiguous legacy unit comment is propagated"
+  },
+  "qualified_scope": {
+    "SWETR": 1,
+    "SWMETDETAIL": 0,
+    "SWDIVIDE": 0,
+    "SWINTER": 0,
+    "output": "current root_uptake_et_result_t potential_transpiration",
+    "persistent_ET_state": false,
+    "requires_midnight_or_day_start": false,
+    "integrates_over_solver_timestep": false,
+    "Penman_Monteith": false,
+    "interception_modes_1_2_3": false,
+    "weather_file_IO_or_record_selection": false,
+    "runtime_integration": false
+  },
+  "nonclaims": [
+    "full SWAP ET physics is qualified",
+    "Penman-Monteith or SWETR=0 is qualified",
+    "interception physics SWINTER=1,2,3 is qualified",
+    "crop-factor, vegetation-cover or CO2-factor production by a complete crop host is qualified",
+    "weather forcing resampling or calendar-record selection is qualified",
+    "the complete F-WOF14 end-to-end root-uptake input producer is qualified"
+  ]
+}
