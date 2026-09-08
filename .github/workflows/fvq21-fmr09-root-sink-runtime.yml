@@ -1,0 +1,31 @@
+name: F-VQ21 independent F-MR09 root sink qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq21-fmr09-root-sink-runtime
+    paths-ignore:
+      - integration/f-vq/F-VQ21_QUALIFICATION.json
+      - integration/f-vq/F-VQ21_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-VQ21 independent root sink scientific oracle
+        run: bash tests/fvq/run_fvq21_root_sink_runtime_gate.sh
+      - name: F-MR09 transaction regression only
+        run: bash tests/fmr/run_fmr09_root_sink_transaction_diag.sh
+      - name: F-MR09 cross-process regression only
+        run: bash tests/fmr/run_fmr09_root_sink_runtime_gate.sh
