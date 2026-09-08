@@ -3,26 +3,27 @@
   "workstream": "F-SI",
   "work_unit": "F-SI15",
   "title": "Explicit physical macropore option authority for admitted reference common path",
-  "status": "PERSISTED_CONTRACT_IMPLEMENTATION_PENDING",
+  "status": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
+  "qualified": true,
   "branch": "work/f-si15-explicit-macropore-option",
   "basis": {
     "fsi14_final_qualification_head": "d1b1553805ce11f235ac2565381c1ac31739b1f4",
     "fsi14_decision": "QUALIFIED_REQUEST_GRID_GEOMETRY_AUTHORITY",
-    "headcalc_blob": "c46756412df7527d6298246570b2aa31bd983823",
-    "reference_adapter_blob": "b17b65563fef826772923afe9c32ca7e0463ec14",
-    "soil_water_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
-    "canonical_head_observed": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
-    "fkt_integration_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fsi14_headcalc_blob": "c46756412df7527d6298246570b2aa31bd983823",
+    "fsi14_reference_adapter_blob": "b17b65563fef826772923afe9c32ca7e0463ec14",
+    "fsi14_soil_water_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "canonical_head_observed_at_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
     "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db",
     "shared_fkt_type_change_required": false
   },
-  "source_bound_problem": {
-    "common_request_has_separate_numerical_config": true,
-    "common_request_has_explicit_physical_config": false,
-    "adapter_dependency": "validate_legacy_request still reads global MOD_swap_base%swmacro to decide whether the admitted common route may execute",
-    "headcalc_dependency": "HeadCalc still reads global swmacro on the explicit common route",
-    "matrix_fraction_dependency": "FrArMtrx is used directly in storage and Jacobian terms even though the admitted F-SI14 profile requires swmacro=0, where the physical matrix fraction is unity",
-    "architectural_issue": "physical-option selection is still partly hidden in legacy globals and is not separated explicitly from numerical solver policy on the common request"
+  "implementation": {
+    "source_materialization_commit": "a4fbd07dd5f85578c360f2e1081a9b96425ab6e4",
+    "source_bound_short_circuit_repair_postimage": "58fb46892fb446120a3788445a4fa2fea3561e8e",
+    "final_soil_water_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "final_reference_adapter_blob": "9bfa182aff7f7a7ab853fe00151a1f14ed9a8492",
+    "final_headcalc_blob": "7ce94a4cfc4634b946f41b01f54d2d7f6efc798f",
+    "production_source_unchanged_since_repair_postimage": true
   },
   "ownership": {
     "physical_option_selection": "outside F-SI; supplied explicitly to solver",
@@ -32,17 +33,19 @@
     "committed_state_and_transaction": "F-KT",
     "generic_time_semantics": "F-KT"
   },
-  "implementation_contract": {
-    "common_contract": "add a soil_water_physical_config_t separate from soil_water_numerical_config_t",
+  "qualified_contract": {
+    "common_contract": "soil_water_physical_config_t is separate from soil_water_numerical_config_t",
     "initial_physical_option": "macropore_active",
-    "request_shape": "soil_water_solve_request_t contains physical and numerical as distinct categories",
-    "legacy_request_builder": "copies legacy global swmacro into request%physical%macropore_active only for compatibility request construction",
-    "explicit_adapter_authority": "validate request%physical%macropore_active; do not read global swmacro to select the admitted common route",
-    "active_macropore_request": "fail closed before HeadCalc; no active macropore production path is admitted",
-    "headcalc_explicit_route": "consume explicit physical_config and use a local swmacro selector",
-    "headcalc_legacy_route": "preserve legacy global swmacro exactly when no explicit state/request binding is present",
-    "inactive_matrix_fraction": "exactly 1.0 on explicit macropore_active=false route; do not read FrArMtrx for admitted storage/Jacobian terms",
-    "active_matrix_fraction": "legacy FrArMtrx behavior remains only on legacy/direct or future separately admitted active macropore route",
+    "request_shape": "soil_water_solve_request_t contains physical and numerical as distinct data categories",
+    "legacy_request_builder": "copies legacy global swmacro into request%physical%macropore_active only during compatibility request construction",
+    "explicit_adapter_authority": "request%physical%macropore_active",
+    "admitted_explicit_value": false,
+    "active_macropore_request": "fail closed before HeadCalc with route explicit-macropore-deferred",
+    "headcalc_explicit_route": "requires explicit physical_config and uses a local inactive macropore selector",
+    "headcalc_legacy_route": "preserves legacy global swmacro semantics when no explicit state/request binding is present",
+    "inactive_matrix_fraction": 1.0,
+    "inactive_macropore_surface_fraction": 0.0,
+    "inactive_route_legacy_macropore_arrays_authoritative": false,
     "formula_change": false,
     "macropore_physics_change": false,
     "numerical_policy_change": false,
@@ -50,11 +53,14 @@
     "persistent_state_change": false,
     "shared_fkt_type_change": false
   },
-  "admitted_profile_held_fixed": {
+  "admitted_profile": {
     "reference_solver": "B1.10 Richards reference route",
     "swkimpl": 0,
     "macropore_active": false,
-    "bottom_modes": [7, -2],
+    "bottom_modes": [
+      7,
+      -2
+    ],
     "top_boundary": "explicit top provider",
     "constitutive": "F-SI09 corrected B1.10 provider",
     "source_sink": "F-SI10 precomputed provider",
@@ -63,22 +69,15 @@
     "bottom_mode_authority": "F-SI13 explicit request bottom mode",
     "grid_geometry_authority": "F-SI14 explicit request parameter geometry"
   },
-  "qualification_required": {
-    "request_macropore_false_authoritative": true,
-    "global_swmacro_poison_after_request_build": true,
-    "global_frarmtrx_poison_after_request_build": true,
-    "active_macropore_request_fail_closed_before_headcalc": true,
-    "same_profile_identity_against_fsi14": true,
-    "workers": [1, 2, 4, 8],
-    "optimization_levels": ["O0", "O2"],
-    "aba_order_independence": true,
-    "scratch_poisoning": true,
-    "request_immutability": true,
-    "solver_route_iteration_identity": true,
-    "focused_unrounded_equation_residual": true,
-    "legacy_direct_identity_against_fsi14": true,
-    "fsi14_pinned_regression": true,
-    "fkt_boundary_regression": true
+  "qualification": {
+    "first_successful_two_layer_head": "562bbecb793a802b006386b250dd25bd35583806",
+    "first_successful_two_layer_run": 34212719100,
+    "first_successful_two_layer_job": 102017224573,
+    "full_closeout_candidate_head": "4d71787dc83818c9ffa413b53bb7f1b9bd0f34b5",
+    "full_closeout_run": 34212910547,
+    "full_closeout_job": 102017848952,
+    "full_closeout_conclusion": "success",
+    "final_qualification_artifact_self_verification_required": true
   },
   "holds": {
     "macropore_active_true": "NOT_ADMITTED",
@@ -91,24 +90,27 @@
     "coarse_or_reduced_solver": "NOT_IN_SCOPE"
   },
   "invariant_assessment": {
-    "explicit_data_separation": "TARGETED_IMPROVEMENT_PHYSICAL_CONFIG_SEPARATE_FROM_NUMERICAL_CONFIG",
-    "compact_persistent_state": "PRESERVED",
+    "explicit_data_separation": "IMPROVED_PHYSICAL_CONFIG_SEPARATED_FROM_NUMERICAL_CONFIG",
+    "compact_persistent_state": "PRESERVED_NO_OPTIONAL_MACROPORE_STATE_ADDED",
     "scratch_per_worker": "PRESERVED",
     "scalable_memory_layout": "PRESERVED",
-    "mass_conservation": "MUST_REMAIN_BITWISE_IDENTICAL_TO_FSI14_ON_ADMITTED_PROFILE",
-    "multiswap_scalability": "TARGETS_REMOVAL_OF_COMMON_PATH_GLOBAL_PHYSICAL_OPTION_DEPENDENCY",
+    "mass_conservation": "PRESERVED_BY_UNROUNDED_RESIDUAL_CHECKS_AND_EXACT_FSI14_IDENTITY",
+    "multiswap_scalability": "IMPROVED_BY_REMOVING_ADMITTED_COMMON_ROUTE_GLOBAL_PHYSICAL_OPTION_AUTHORITY",
     "alternative_solver_interface": "PRESERVED",
-    "physics_vs_solver_policy_separation": "TARGETED_IMPROVEMENT",
+    "physics_vs_solver_policy_separation": "IMPROVED",
     "reference_mode": "PRESERVED",
-    "optional_functionality_scaling": "TARGETS_INACTIVE_MACROPORE_WITH_ZERO_OPTIONAL_STATE_OR_SCRATCH_COST"
+    "diagnostics": "PRESERVED",
+    "optional_functionality_scaling": "IMPROVED_INACTIVE_MACROPORE_ADDS_NO_OPTIONAL_PERSISTENT_STATE_OR_HEAVY_SCRATCH",
+    "no_silent_time_or_io_assumptions_added": true
   },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "QUALIFIED": true,
     "physics_changed": false,
     "numerical_policy_changed": false,
-    "transaction_semantics_changed": false
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false
   }
 }

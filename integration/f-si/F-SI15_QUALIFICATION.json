@@ -1,0 +1,187 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI15",
+  "decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY",
+  "qualified": true,
+  "downstream_fsi16_allowed": true,
+  "branch": "work/f-si15-explicit-macropore-option",
+  "provenance": {
+    "fsi14_final_qualification_head": "d1b1553805ce11f235ac2565381c1ac31739b1f4",
+    "fsi15_source_materialization_commit": "a4fbd07dd5f85578c360f2e1081a9b96425ab6e4",
+    "fsi15_source_bound_short_circuit_repair_postimage": "58fb46892fb446120a3788445a4fa2fea3561e8e",
+    "fsi15_first_successful_two_layer_head": "562bbecb793a802b006386b250dd25bd35583806",
+    "fsi15_full_closeout_candidate_head": "4d71787dc83818c9ffa413b53bb7f1b9bd0f34b5",
+    "soil_water_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "reference_adapter_blob": "9bfa182aff7f7a7ab853fe00151a1f14ed9a8492",
+    "headcalc_blob": "7ce94a4cfc4634b946f41b01f54d2d7f6efc798f",
+    "canonical_head_observed_at_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "qualification_runs": {
+    "source_materialization": {
+      "run": 34211759490,
+      "job": 102014153667,
+      "source_commit": "a4fbd07dd5f85578c360f2e1081a9b96425ab6e4",
+      "conclusion": "success"
+    },
+    "source_bound_short_circuit_repair": {
+      "run": 34212075325,
+      "job": 102015166870,
+      "repair_postimage": "58fb46892fb446120a3788445a4fa2fea3561e8e",
+      "conclusion": "success"
+    },
+    "two_layer_qualification": {
+      "run": 34212719100,
+      "job": 102017224573,
+      "head": "562bbecb793a802b006386b250dd25bd35583806",
+      "conclusion": "success"
+    },
+    "full_closeout": {
+      "run": 34212910547,
+      "job": 102017848952,
+      "head": "4d71787dc83818c9ffa413b53bb7f1b9bd0f34b5",
+      "conclusion": "success",
+      "fsi14_pinned_regression": "PASS",
+      "fkt_boundary_regression": "PASS"
+    },
+    "final_qualification_artifact_self_verification_required": true
+  },
+  "admitted_semantics": {
+    "physical_config_category": "soil_water_physical_config_t",
+    "numerical_config_category": "soil_water_numerical_config_t",
+    "explicit_common_route_macropore_authority": "soil_water_solve_request_t%physical%macropore_active",
+    "admitted_macropore_active": false,
+    "active_macropore_true": "FAIL_CLOSED_BEFORE_HEADCALC",
+    "active_macropore_failure_route": "explicit-macropore-deferred",
+    "inactive_matrix_fraction": 1.0,
+    "inactive_macropore_surface_fraction": 0.0,
+    "legacy_swmacro_poison_after_request_build": "NO_EFFECT_ON_ADMITTED_COMMON_ROUTE",
+    "legacy_macropore_arrays_poison_after_request_build": "NO_EFFECT_ON_ADMITTED_COMMON_ROUTE",
+    "legacy_direct_route": "unchanged legacy global macropore semantics",
+    "physics_formula_changed": false,
+    "macropore_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false
+  },
+  "admitted_profile": {
+    "reference_solver": "B1.10 Richards reference route",
+    "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "F-SI10 precomputed source/sink provider",
+    "root_sink": "F-SI11 precomputed root-sink provider",
+    "top_boundary": "explicit top provider",
+    "solver_controls": "F-SI12 explicit per-solve request controls",
+    "bottom_boundary": "F-SI13 explicit free-drainage modes",
+    "grid_geometry": "F-SI14 explicit request parameter geometry",
+    "swkimpl": 0,
+    "macropore_active": false,
+    "bottom_modes": [
+      7,
+      -2
+    ]
+  },
+  "qualification_matrix": {
+    "FSI15_T01_STATIC_PHYSICAL_OPTION_BINDING": "PASS",
+    "FSI15_T02_INACTIVE_MACROPORE_POISON_O0_1_2_4_8": "PASS",
+    "FSI15_T03_INACTIVE_MACROPORE_POISON_O2_1_2_4_8": "PASS",
+    "FSI15_T04_INACTIVE_MACROPORE_O0_O2_IDENTITY": "PASS",
+    "FSI15_T05_ACTIVE_MACROPORE_FAIL_CLOSED_BEFORE_HEADCALC": "PASS",
+    "FSI15_T06_ABA_ORDER_INDEPENDENCE": "PASS",
+    "FSI15_T07_SCRATCH_POISONING": "PASS",
+    "FSI15_T08_REQUEST_IMMUTABILITY": "PASS",
+    "FSI15_T09_SOLVER_ROUTE_ITERATION_IDENTITY": "PASS",
+    "FSI15_T10_FOCUSED_UNROUNDED_EQUATION_RESIDUAL": "PASS",
+    "FSI15_T11_FSI14_MODE_7_O0_1_2_4_8_IDENTITY": "PASS",
+    "FSI15_T12_FSI14_MODE_7_O2_1_2_4_8_IDENTITY": "PASS",
+    "FSI15_T13_FSI14_MODE_7_O0_O2_IDENTITY": "PASS",
+    "FSI15_T14_FSI14_MODE_MINUS2_O0_1_2_4_8_IDENTITY": "PASS",
+    "FSI15_T15_FSI14_MODE_MINUS2_O2_1_2_4_8_IDENTITY": "PASS",
+    "FSI15_T16_FSI14_MODE_MINUS2_O0_O2_IDENTITY": "PASS",
+    "FSI15_T17_FSI14_LEGACY_DIRECT_O0_IDENTITY": "PASS",
+    "FSI15_T18_FSI14_LEGACY_DIRECT_O2_IDENTITY": "PASS",
+    "FSI15_T19_FSI14_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS",
+    "FSI15_T20_FSI14_PINNED_REGRESSION": "PASS",
+    "FSI15_T21_FKT_BOUNDARY_REGRESSION": "PASS"
+  },
+  "negative_and_hold_contracts": {
+    "macropore_active_true": "NOT_ADMITTED",
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_5_prescribed_head": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "fldtmin_execution_state": "DEFERRED_OWNER_COORDINATION_REQUIRED",
+    "calendar_daystart_history_reset": "DEFERRED_TO_FKT_TIME_HISTORY_COORDINATION",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "runtime_batching": "NOT_IN_SCOPE",
+    "fallback_policy": "NOT_IN_SCOPE",
+    "coarse_or_reduced_solver": "NOT_IN_SCOPE"
+  },
+  "audit_trail": {
+    "source_review_non_short_circuit_finding": {
+      "finding": "Fortran does not guarantee short-circuit evaluation; IcTopMp and IDecMpRat could still be evaluated on the explicit inactive route",
+      "production_source_changed_to_fix_finding": true,
+      "repair_postimage": "58fb46892fb446120a3788445a4fa2fea3561e8e",
+      "repair_scope": "control-flow guards only; no formula or active macropore admission change"
+    },
+    "qualification_attempt_1": {
+      "run": 34212552111,
+      "job": 102016693391,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_BASELINE_POISON_ONLY_IMPORTS_REJECTED_BY_WERROR",
+      "solver_execution_reached": false,
+      "production_source_changed_to_fix_failure": false
+    },
+    "qualification_attempt_2": {
+      "run": 34212696238,
+      "job": 102017156145,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_WORKFLOW_STILL_CALLED_OLD_WERROR_GATE",
+      "solver_execution_reached": false,
+      "production_source_changed_to_fix_failure": false
+    },
+    "materializer_retirement": {
+      "commit": "2b5a07448b677bb2fe86a207a294ad19f86b757f",
+      "reason": "one-time source materializer retired after production postimage to prevent stale re-materialization on later governance commits"
+    }
+  },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "legacy guarded i-1 references can produce compiler -Wdo-subscript warnings",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning",
+    "legacy B1.10 MvG functions can produce may-be-uninitialized warnings"
+  ],
+  "invariant_assessment": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_PHYSICAL_CONFIG",
+    "compact_persistent_state": "PRESERVED_NO_OPTIONAL_MACROPORE_STATE_ADDED",
+    "scratch_per_worker": "PRESERVED",
+    "scalable_memory_layout": "PRESERVED",
+    "transactional_time_step_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_AND_TESTED_WITH_UNROUNDED_FOCUSED_RESIDUAL_AND_EXACT_FSI14_IDENTITY",
+    "multiswap_scalability": "REDUCED_GLOBAL_PHYSICAL_OPTION_DEPENDENCY_ON_ADMITTED_COMMON_ROUTE",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "IMPROVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "optional_functionality_scaling": "IMPROVED_INACTIVE_MACROPORE_ADDS_NO_OPTIONAL_PERSISTENT_STATE_OR_HEAVY_SCRATCH",
+    "no_silent_time_or_io_assumptions_added": true
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "physics_changed": false,
+    "macropore_physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false,
+    "production_source_unchanged_since_repair_postimage": "58fb46892fb446120a3788445a4fa2fea3561e8e"
+  }
+}
