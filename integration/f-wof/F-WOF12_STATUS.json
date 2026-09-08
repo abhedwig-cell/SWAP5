@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF12",
+  "title": "Concrete Root-Uptake Crop-State Provider Readiness",
+  "branch": "work/f-wof12-root-uptake-provider-readiness",
+  "phase": "READINESS_BLOCKED_FAIL_CLOSED",
+  "status": "BLOCKED",
+  "decision": "BLOCKED_CONCRETE_ROOT_UPTAKE_PROVIDER_REQUIRES_EXPLICIT_CROP_ET_SNAPSHOT_OWNERSHIP",
+  "base": {
+    "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+    "status": "QUALIFIED_SHARED_CROP_ROOT_UPTAKE_INPUT_RUNTIME_ADAPTER"
+  },
+  "state": {
+    "readiness_assessed": true,
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "source_bound_findings": {
+    "legacy_root_extraction_evaluation_point_proven": true,
+    "crop_emerged_current_at_evaluation": true,
+    "rooted_nodes_current_at_evaluation": true,
+    "cumulative_root_fraction_current_at_evaluation": true,
+    "potential_transpiration_current_at_evaluation": true,
+    "potential_transpiration_is_dynamic_ET_result": true,
+    "root_geometry_and_distribution_follow_legacy_day_end_update_order": true,
+    "moving_root_update_before_same_day_root_extraction_would_change_physics": true
+  },
+  "gate_summary": {
+    "canonical_source_identity": "PASS",
+    "legacy_call_order_and_freshness": "PASS",
+    "potential_transpiration_data_classification": "PASS_DYNAMIC_ET_RESULT",
+    "crop_root_state_classification": "PASS",
+    "F_WOF11_shared_contract": "PASS",
+    "F_MR12_runtime_adapter": "PASS",
+    "F_MR10_committed_hydraulic_binding": "PASS",
+    "F_PM05_F_VQ22_root_uptake_science": "PASS",
+    "explicit_production_crop_host": "FAIL_MISSING",
+    "explicit_current_ET_result_owner": "FAIL_MISSING",
+    "single_hidden_global_provider_architecture": "FAIL_REJECTED",
+    "production_provider_admission": "FAIL_CLOSED",
+    "no_production_change": "PASS"
+  },
+  "primary_blocker": {
+    "owner": "F-WOF / Crop, ET and root-uptake physics",
+    "missing_contract": "explicit crop-root state snapshot/view ownership",
+    "required_semantics": [
+      "crop emergence/lifecycle state",
+      "root geometry sufficient to determine rooted nodes",
+      "current root-distribution state or derived cumulative root-fraction view"
+    ]
+  },
+  "secondary_blocker": {
+    "owner": "Crop/ET physics",
+    "missing_contract": "explicit current potential-transpiration result supplied at root-uptake evaluation",
+    "reason": "ptra is a current ET process result and may vary within the day; it must not be smuggled into persistent crop state"
+  },
+  "release_conditions": [
+    "define and qualify a runtime-independent crop-root state snapshot/view contract",
+    "define the current potential-transpiration input/result ownership explicitly",
+    "prove their assembly occurs at the intended root-uptake evaluation point",
+    "preserve legacy B1.10 root-update ordering where that cadence remains part of the admitted reference physics",
+    "prove transaction/retry semantics do not advance crop/root state on rejected trials",
+    "keep inactive crop free of root-distribution state allocation",
+    "do not read MOD_meteo, MOD_cropdevelopment, plant_interface or other legacy globals from production provider code"
+  ],
+  "production_change_policy": {
+    "production_source_changed": false,
+    "crop_source_changed": false,
+    "runtime_source_changed": false,
+    "process_source_changed": false,
+    "solver_source_changed": false,
+    "kernel_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "cross_workstream_merge_performed": false
+  },
+  "affected_invariants": [2, 3, 4, 7, 9, 21, 22, 27, 29, 30],
+  "not_admitted": [
+    "concrete WOFOST root-uptake provider",
+    "legacy-global root-uptake provider",
+    "full crop host integration",
+    "potential-transpiration computation",
+    "root growth implementation",
+    "root-distribution evolution",
+    "arbitrary subdaily crop cadence"
+  ],
+  "next": "Start a separate F-WOF-owned explicit crop-root state snapshot / root-uptake input assembly seam. Keep potential_transpiration an explicit dynamic ET input rather than persistent crop state."
+}
