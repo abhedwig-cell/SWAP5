@@ -1,0 +1,36 @@
+{
+  "workunit": "F-WOF04",
+  "title": "Crop Owner Resolution and Minimal WOFOST73 Host Admission",
+  "baseline": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+  },
+  "branch": "work/f-wof04-crop-owner-host",
+  "status": "OWNER_RESOLVED_MINIMAL_CROP_HOST_IMPLEMENTATION_ADMITTED",
+  "owner": "Crop, ET and root-uptake physics",
+  "source_bound_basis": [
+    "docs/architecture/component-map.md",
+    "docs/architecture/legacy-migration-biophysics.md"
+  ],
+  "scope": {
+    "allowed": [
+      "create src/crop owner boundary",
+      "admit the already-qualified WOFOST73 biomass-reallocation subcomponent",
+      "add deterministic qualification tests and diagnostics",
+      "preserve one-day crop-process admission explicitly"
+    ],
+    "forbidden": [
+      "full WOFOST migration",
+      "WOFOST81 nitrogen implementation",
+      "changes to irrigation or snow workstreams",
+      "changes to soil-water solver internals",
+      "hidden generalization from one-day WOFOST cadence to arbitrary duration"
+    ]
+  },
+  "production_migration_allowed": true,
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "next": "Implement only the minimal src/crop WOFOST73 reallocation subcomponent and its deterministic tests."
+}
