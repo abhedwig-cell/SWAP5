@@ -8,6 +8,7 @@ on:
       - 'integration/f-si/F-SI16_*'
       - 'tests/fsi/test_fsi16_prescribed_bottom_head.F90'
       - 'tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
+      - 'tests/fsi/run_fsi16_response_diagnostic.sh'
       - 'tests/fsi/run_fsi16_closeout_regression_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/**'
@@ -25,6 +26,8 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
+      - name: F-SI16 nontrivial response diagnostic
+        run: bash tests/fsi/run_fsi16_response_diagnostic.sh
       - name: F-SI16 prescribed bottom-head gate
         run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
       - name: F-SI16 pinned predecessor and F-KT closeout regressions
