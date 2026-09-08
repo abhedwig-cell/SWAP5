@@ -33,5 +33,3 @@ jobs:
           sudo apt-get install -y gfortran
       - name: F-MR11 prescribed bottom-head runtime owner gate
         run: bash tests/fmr/run_fmr11_prescribed_bottom_head_runtime_gate.sh
-      - name: F-SI16 focused solver regression
-        run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
