@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "title": "Irrigation Process Migration Readiness and Smallest Structural Seam",
+  "branch": "work/f-pm03-irrigation-readiness",
+  "mode": "SOURCE_BOUND_FAIL_CLOSED_READINESS",
+  "production_irrigation_source_change_allowed_before_readiness_pass": false,
+  "source_basis": {
+    "composed_candidate_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "composed_candidate_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "fvq17_closeout": "1d9ff946f45488557d10700f047089d3298a4794",
+    "fvq17_decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "fmq24_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "fmq24_candidate_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fmq24_candidate_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "fpm01_head": "725876f8fa388ab9d95bfcbbb410e9b1ec02051a",
+    "fpm01_irrigation_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "fsi10_head": "8dc05bd4133cd24f13e794d7410d408f9337cf74",
+    "fkt08_integration_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt08_kernel_blob_in_composed_candidate": "9f7c16e71cfb93b57f796ba759bae73824318a2f"
+  },
+  "readiness_questions": [
+    "Can B1.10 irrigation decisions consume all required hydraulic information through an admitted process-facing read-only hydraulic view without HeadCalc or reference-Richards internal state?",
+    "Can irrigation persistent management state live inside the F-KT opaque physical transaction carrier so rejected trials cannot consume events, counters or quota?",
+    "Can surface irrigation and SSDI be delivered through explicit physical flux/source contracts and counted exactly once by authoritative interval mass accounting?",
+    "Can legacy file parsing and reporting state remain outside the process kernel seam?",
+    "Can the smallest structural seam preserve B1.10 event ordering and explicit calendar/day semantics without inventing a generic daily kernel assumption?"
+  ],
+  "required_process_data_separation": {
+    "immutable_parameters": true,
+    "persistent_dynamic_management_state": true,
+    "forcing_and_management_request": true,
+    "hydraulic_view": true,
+    "physical_flux_result": true,
+    "temporary_workspace": true,
+    "reporting_only_history": "outside committed physical process state unless proven continuation-critical",
+    "legacy_io": "adapter_only"
+  },
+  "hydraulic_view_minimum_semantics": {
+    "required_by_legacy_trigger_families": ["TCS2", "TCS3", "TCS4", "TCS7", "TCS8", "DCS1"],
+    "minimum_candidate_fields": [
+      "committed node pressure head",
+      "committed node water content with source-bound semantics",
+      "active-node shape and node identity sufficient for sensor/root-zone selection"
+    ],
+    "not_allowed": [
+      "reference_richards_state_binding_t",
+      "HeadCalc h/theta globals",
+      "Newton vectors",
+      "Jacobian arrays",
+      "reference solver workspace arrays"
+    ],
+    "qualification_requirement": "The view and its mapping from committed physical state must be qualified by the owning F-SI/runtime lineage before F-PM03 production irrigation migration."
+  },
+  "transaction_requirements": [
+    "Every continuation-critical irrigation cursor/counter must be cloned with the physical transaction state.",
+    "Rejected trials must not permanently increment day/event counters or advance fixed-event cursors.",
+    "Rollback/replay from the same committed revision must reproduce the same irrigation decision and flux result.",
+    "Transient qssdi/gird/nird/result workspace must not become duplicate committed water state."
+  ],
+  "mass_requirements": [
+    "Irrigation is external water inflow.",
+    "SSDI source contribution must be counted exactly once through authoritative accepted-interval accounting.",
+    "Surface irrigation reaching the soil top boundary must be counted exactly once as external top inflow.",
+    "Process diagnostics/reporting totals must never add a second authoritative mass contribution.",
+    "Rejected trials must not publish mass accounting."
+  ],
+  "time_requirements": [
+    "Preserve fixed-date irrigation schedules and crop-year windows as explicit calendar management semantics.",
+    "Preserve minimum-day and weekly trigger counters where B1.10 semantics are genuinely day-count based.",
+    "Do not hide the legacy driver fact that Irrigation(3) is invoked at flDayStart.",
+    "Do not generalize irrigation to arbitrary interval durations until each trigger/event-duration rule has explicit source-bound semantics."
+  ],
+  "readiness_pass_conditions": [
+    "Qualified process-facing hydraulic view is available on the exact source lineage selected for migration.",
+    "F-KT transaction carrier can include the proposed compact irrigation continuation state without bypassing checkpoint/candidate/commit semantics.",
+    "Authoritative mass path for the selected smallest irrigation seam is complete and non-duplicative.",
+    "No required irrigation physics depends on legacy file I/O inside the process seam.",
+    "No unqualified SNOW or other process change is required for the focused fixture."
+  ],
+  "fail_closed_exits": [
+    "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_EXPLICIT_HYDRAULIC_VIEW",
+    "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_TRANSACTION_STATE_ADMISSION",
+    "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_AUTHORITATIVE_MASS_BINDING",
+    "BLOCKED_IRRIGATION_MIGRATION_REQUIRES_OWNERLINEAGE_COMPOSITION"
+  ],
+  "production_change_policy": "No src/process irrigation module, runtime irrigation state, solver binding or production irrigation source is added unless all readiness pass conditions are satisfied on one source-bound lineage.",
+  "snow_policy": "Reuse exact already-qualified F-MR06/F-VQ17/F-MQ24 SNOW semantics only; F-PM03 does not reimplement or requalify SNOW."
+}
