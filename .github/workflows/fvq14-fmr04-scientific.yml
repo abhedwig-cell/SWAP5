@@ -1,0 +1,120 @@
+name: F-VQ14 exact F-MR04 scientific admission
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - qualification/f-vq14-fmr04-physical-runtime
+    paths:
+      - '.github/workflows/fvq14-fmr04-scientific.yml'
+      - 'tests/fvq/**'
+      - 'integration/f-vq/F-VQ14_QUALIFICATION_CONTRACT.json'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-exact-candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout F-VQ14 qualification harness
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout exact locked F-MR04 candidate
+        uses: actions/checkout@v4
+        with:
+          ref: 11eb34ea3afe8f5dda0515c28d7e08428dd2e272
+          path: candidate
+          fetch-depth: 0
+
+      - name: Checkout exact qualified F-SI09 evidence/source identity basis
+        uses: actions/checkout@v4
+        with:
+          ref: 0f9f84e6f98e43c4ada39f1a8d9b180b0f672330
+          path: fsi09
+          fetch-depth: 0
+
+      - name: Checkout exact qualified F-SI10 binding basis
+        uses: actions/checkout@v4
+        with:
+          ref: 8dc05bd4133cd24f13e794d7410d408f9337cf74
+          path: fsi10
+          fetch-depth: 0
+
+      - name: Checkout exact qualified F-KT08 mass-accounting basis
+        uses: actions/checkout@v4
+        with:
+          ref: 510d1f29d40225c68f3a8d3e789071279941e87b
+          path: fkt08
+          fetch-depth: 0
+
+      - name: Verify immutable dependency and handoff provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qualification-results
+          python3 - <<'PY' | tee qualification-results/dependency_provenance.log
+          import json
+          from pathlib import Path
+          handoff = json.loads(Path('integration/f-vq/F-VQ14_FMR04_HANDOFF.json').read_text())
+          contract = json.loads(Path('integration/f-vq/F-VQ14_QUALIFICATION_CONTRACT.json').read_text())
+          fsi09 = json.loads(Path('fsi09/integration/f-si/F-SI09_QUALIFICATION.json').read_text())
+          fsi10 = json.loads(Path('fsi10/integration/f-si/F-SI10_QUALIFICATION.json').read_text())
+          fkt08 = json.loads(Path('fkt08/integration/f-kt/F-KT08_QUALIFICATION_EVIDENCE.json').read_text())
+          assert handoff['candidate']['source_commit'] == '11eb34ea3afe8f5dda0515c28d7e08428dd2e272'
+          assert handoff['candidate']['source_tree'] == '04afa5d5a90671a7791174708ae6bf48b272c83f'
+          assert handoff['fmr04']['qualification_evidence_commit'] == '21864207ed1731292620f0e523d7081eadd12acc'
+          assert handoff['fkt08']['qualified_head'] == '510d1f29d40225c68f3a8d3e789071279941e87b'
+          assert handoff['fsi09']['qualification_head'] == '0f9f84e6f98e43c4ada39f1a8d9b180b0f672330'
+          assert handoff['fsi10']['qualification_head'] == '8dc05bd4133cd24f13e794d7410d408f9337cf74'
+          assert handoff['corrected_oracle']['id'] == 'B1.10'
+          assert handoff['corrected_oracle']['mod_mvg_sha256'] == '4bb79730b1b59653a851a9e6d8a1ff806c4d1c1668d6b341e96ecd12c7a338b1'
+          assert contract['source_under_test']['commit'] == handoff['candidate']['source_commit']
+          assert contract['source_under_test']['tree'] == handoff['candidate']['source_tree']
+          assert fsi09['status'] == 'QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER'
+          assert fsi09['qualified_source']['corrected_mod_mvg_sha256'] == handoff['corrected_oracle']['mod_mvg_sha256']
+          assert fsi10['status'] == 'QUALIFIED_PRECOMPUTED_DRAINAGE_IRRIGATION_BINDING_ROOT_INACTIVE'
+          assert fkt08['qualification']['status'] == 'QUALIFIED'
+          print('VQ14_DEPENDENCY_PROVENANCE PASS')
+          print('VQ14_B110_SHA256', handoff['corrected_oracle']['mod_mvg_sha256'])
+          PY
+          printf 'qualification_head=%s\n' "$(git rev-parse HEAD)" > qualification-results/qualification_workflow_context.txt
+          printf 'candidate_head=%s\n' "$(git -C candidate rev-parse HEAD)" >> qualification-results/qualification_workflow_context.txt
+          printf 'candidate_tree=%s\n' "$(git -C candidate rev-parse HEAD^{tree})" >> qualification-results/qualification_workflow_context.txt
+          printf 'fsi09_head=%s\n' "$(git -C fsi09 rev-parse HEAD)" >> qualification-results/qualification_workflow_context.txt
+          printf 'fsi10_head=%s\n' "$(git -C fsi10 rev-parse HEAD)" >> qualification-results/qualification_workflow_context.txt
+          printf 'fkt08_head=%s\n' "$(git -C fkt08 rev-parse HEAD)" >> qualification-results/qualification_workflow_context.txt
+
+      - name: Independently replay corrected B1.10 source admission and provider identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd fsi09 && bash tests/fsi/run_fsi09_source_admission_gate.sh) \
+            | tee qualification-results/fsi09_source_admission_replay.log
+          (cd fsi09 && bash tests/fsi/run_fsi09_b110_provider_gate.sh) \
+            | tee qualification-results/fsi09_provider_identity_replay.log
+
+      - name: Run F-VQ14 exact O0 O2 scientific mass transaction qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fvq/run_fvq14_gate.sh candidate qualification-results \
+            | tee qualification-results/fvq14_gate.log
+
+      - name: Record immutable evidence hashes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find qualification-results -maxdepth 1 -type f ! -name all_artifacts.sha256 -print0 \
+            | sort -z | xargs -0 sha256sum > qualification-results/all_artifacts.sha256 || true
+
+      - name: Upload F-VQ14 qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vq14-exact-fmr04-scientific-evidence
+          path: qualification-results/
+          if-no-files-found: error
