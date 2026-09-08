@@ -31,8 +31,8 @@
     "modflow": false
   },
   "staged_gates": {
-    "A_coordinate_and_envelope": "select and qualify a monotone head coordinate regular at h=0 with near-saturated and dry-tail coverage",
-    "B_homogeneous_face_matrix": "rerun F-LMFP08 identities and Darcian face-oracle matrix over expanded materials and face lengths",
+    "A_coordinate_and_envelope": "QUALIFIED_FOUNDATIONAL_MFP_COORDINATE",
+    "B_homogeneous_face_matrix": "rerun F-LMFP08 identities and Darcian face-oracle matrix over expanded head envelope, materials and face lengths, with MFP and Darcian-ratio table densities treated separately",
     "C_heterogeneous_interface": "qualify equal-flux interface continuity, accuracy and bounded local solve behaviour over material contrasts",
     "D_cardinality_and_cost": "measure material/geometry-class counts, table memory and preparation/runtime cost proxies",
     "E_transient_regression": "rerun F-LMFP07/F-LMFP08 ordinary and strong-gradient transient gates with exact mass conservation"
@@ -46,7 +46,8 @@
     "representation_is_immutable_shared_parameter_data": true,
     "continuity_must_be_tested_by_refinement_not_only_left_right_symmetry": true,
     "saturated_or_positive_head_support_must_be_explicitly_qualified_not_inferred": true,
-    "heterogeneous_interface_changes_require_separate_evidence": true
+    "heterogeneous_interface_changes_require_separate_evidence": true,
+    "mfp_material_table_density_and_geometry_specific_darcian_ratio_density_must_not_be_conflated": true
   },
   "gate_A_coordinate_envelope": {
     "candidate_family": "x=asinh(h/hscale)",
@@ -54,53 +55,64 @@
     "materials": 5,
     "material_status": "SYNTHETIC_HYDRAULIC_STRESS_FIXTURES_NOT_PRODUCTION_CATALOG",
     "pair_cases_per_material": 198,
-    "initial_candidates": 12,
-    "initial_hscale_cm": [0.01, 0.1, 1.0, 10.0],
-    "initial_negative_head_nodes": [48, 64, 96],
-    "initial_run": {
+    "A1": {
       "run": 34278440087,
       "head": "cfe57ba6ff00a177832113b146bf76d2e7275e8d",
       "job": 102237111372,
       "conclusion": "FAILURE",
       "artifact": 10076633415,
-      "artifact_digest": "sha256:f85aad17542355bfbdae7c52b798c5a9cf2967224856f775d591dd13d0104974"
+      "artifact_digest": "sha256:f85aad17542355bfbdae7c52b798c5a9cf2967224856f775d591dd13d0104974",
+      "tested_hscale_cm": [0.01, 0.1, 1.0, 10.0],
+      "tested_negative_head_nodes": [48, 64, 96],
+      "interpretation": "Coordinate family was regular through h=0 but density was insufficient over eight decades of dry-head range. Thresholds were retained unchanged."
     },
-    "failure_interpretation": "The asinh family is regular through h=0 and passes refinement behaviour there, but 48-96 negative-head nodes are too sparse over the eight-decade dry envelope to meet the predeclared MFP secant and limiting-conductivity error gates.",
-    "best_initial_examples": {
-      "hscale_0p1_nodes96": {
-        "mfp_secant_p90_rel_error": 0.013406361398702268,
-        "mfp_secant_p99_rel_error": 0.0886458538129999,
-        "mfp_secant_max_rel_error": 0.16450329068593245,
-        "limit_k_p90_rel_error": 0.16156900532106927,
-        "zero_refinement_max_ratio": 0.20031904062340203,
-        "projected_R_bytes_per_class": 20736
-      },
-      "hscale_0p01_nodes96": {
-        "mfp_secant_p90_rel_error": 0.01494060272792125,
-        "mfp_secant_p99_rel_error": 0.0988681372506339,
-        "mfp_secant_max_rel_error": 0.13098227315907313,
-        "limit_k_p90_rel_error": 0.12982356919058421,
-        "zero_refinement_max_ratio": 0.20076084284961207,
-        "projected_R_bytes_per_class": 20736
-      }
+    "A2": {
+      "run": 34278671493,
+      "head": "89b2c1de1a9df0dd1b74c566c495bfd4bfc6ca22",
+      "job": 102237861860,
+      "conclusion": "SUCCESS",
+      "artifact": 10076717072,
+      "artifact_digest": "sha256:d746bf27a027750909579eeaea5e9a2480fd8746953765f48e6bb7dfe1f6395b",
+      "thresholds_changed_from_A1": false,
+      "tested_hscale_cm": [0.01, 0.1],
+      "tested_negative_head_nodes": [128, 160, 192]
     },
-    "thresholds_unchanged_after_failure": true,
-    "next_experiment": "Increase density only for hscale 0.01 and 0.1 cm; do not relax thresholds. Test 128, 160 and 192 negative-head nodes and quantify memory consequence."
+    "selected_foundational_mfp_coordinate": {
+      "hscale_cm": 0.01,
+      "negative_head_nodes": 128,
+      "coordinate_roundtrip_max_rel_or_scaled_abs": 1.341104507446289e-15,
+      "mfp_secant_median_rel_error": 9.792105607639296e-05,
+      "mfp_secant_p90_rel_error": 0.00870057781667366,
+      "mfp_secant_p99_rel_error": 0.054096026918580446,
+      "mfp_secant_max_rel_error": 0.0725890881103596,
+      "limit_k_p90_rel_error": 0.08448802980417365,
+      "limit_k_max_rel_error": 0.27932208610369896,
+      "zero_refinement_expected_ratio": 0.2,
+      "zero_refinement_max_ratio": 0.2003190406242081,
+      "fail_closed_outside_head_envelope": true
+    },
+    "memory_interpretation": {
+      "mfp_phi_table": "1D immutable data shared per hydraulic material; 128 head nodes do not imply a geometry-specific 128x27 table",
+      "naive_same_density_R_projection_bytes_per_material_geometry_class": 27648,
+      "naive_projection_status": "NOT_ADOPTED_AS_ARCHITECTURE",
+      "required_next_test": "Gate B must separately qualify a coarser asinh head axis for the geometry-specific Darcian log-ratio table while using the 128-node material MFP table as baseline."
+    },
+    "decision": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED"
   },
   "candidate_questions": [
-    "Can the asinh coordinate meet the fixed error gate by density alone, or is a piecewise/adaptive head grid required?",
-    "Can saturated and near-saturated face behaviour be represented without a special discontinuous branch?",
-    "How dry can the table extend before interpolation density or constitutive dynamic range becomes impractical?",
-    "Can the homogeneous correction be reused across a bounded set of face-length classes or normalized to reduce geometry cardinality?",
+    "How coarse can the geometry-specific Darcian-ratio head axis remain while preserving the F-LMFP08 face and transient gains on the expanded head envelope?",
+    "Can saturated and near-saturated Darcian-ratio behaviour be represented continuously without a special discontinuous branch?",
+    "Can the correction be normalized so face-length cardinality is smaller than one table per exact face distance?",
     "Does the heterogeneous equal-flux interface remain continuous and accurate when either half-face crosses the near-saturated region?",
-    "What envelope boundary should fail closed rather than extrapolate?"
+    "Which parts of the extremely dry tail should be represented versus fail closed based on physically negligible conductance?"
   ],
   "scope_flags": {
     "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
     "PRODUCTION_IMPLEMENTED": false,
     "PERSISTED": true,
     "TESTED": true,
+    "GATE_A_QUALIFIED": true,
     "QUALIFIED": false
   },
-  "status": "GATE_A1_FAILED_DENSITY_INSUFFICIENT_CONTINUATION_ADMITTED_WITH_UNCHANGED_THRESHOLDS"
+  "status": "GATE_A_QUALIFIED_READY_FOR_SEPARATE_DARCIAN_RATIO_DENSITY_AND_EXPANDED_HOMOGENEOUS_FACE_MATRIX"
 }
