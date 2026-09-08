@@ -1,17 +1,16 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PE",
   "work_unit": "F-PE03-B04-B12",
   "title": "B12 accepted higher-cost REFERENCE workload candidate search",
   "branch": "work/f-pe03-b04-b12-accepted-tail-candidate",
-  "status": "PERSISTED_DIAGNOSTIC_CANDIDATE_SEARCH_HARNESS_REPAIRED_PENDING_RETEST",
-  "phase": "PERSISTED_BEFORE_RETEST",
+  "status": "QUALIFIED_NEGATIVE_SOURCE_BOUND_B12_HISTORICAL_MATRIX_NO_ACCEPTED_HIGHER_COST_REFERENCE_CASE",
+  "phase": "CLOSED_QUALIFIED_NEGATIVE_CANDIDATE_SEARCH",
   "reference_only": true,
   "base": {
     "fpe03_fvq25_negative_closeout": "e5088956e97e442c6f024dea4d4df06dff9cf415",
     "fmr14_closeout": "3a531e2c7da54ba0d98b87d3b4d660fd9772b398",
-    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8",
-    "fpe03_b04": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED"
+    "fvq25_closeout": "652783f7cb87ed876a17452e7a6d98b54b4b50c8"
   },
   "source_fixture": {
     "origin": "user-supplied SWAP 4.3.1 distribution",
@@ -19,22 +18,16 @@
     "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
     "source_path": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
     "source_file_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
-    "source_header": "sfu,ORES,OSAT,ALFA,NPAR,KSATFIT,KSATEXM,LEXP,H_ENPR",
     "b12_row": "B12,0.01,0.529749,0.016562,1.090671,2.245895,179.6716,-4.493581,0",
     "original_b12_row_line_ending": "CRLF",
     "original_b12_row_sha256_with_crlf": "20958231bf61dce00c024c6b8eeca30d0478ae17814d8d16688da6ea0b2d2a53",
     "b12_row_sha256_without_line_ending": "8f6b214ba7894dd49be927c9384a80168f0ad05fabeb48b2f8d1330ef916e59e",
     "repository_fixture_line_ending": "LF",
-    "repository_fixture_b12_row_sha256_with_lf": "ffe20ab48aa426fe20e57dd1ef9ef1a90efa3cf99fa9da24eb09d1c2eb148dfb",
-    "prior_failure_run": 34269414610,
-    "prior_failure_class": "TEST_HARNESS_PROVENANCE_LINE_ENDING_MISMATCH_BEFORE_COMPILE"
+    "repository_fixture_b12_row_sha256_with_lf": "ffe20ab48aa426fe20e57dd1ef9ef1a90efa3cf99fa9da24eb09d1c2eb148dfb"
   },
   "source_mapping_resolution": {
     "status": "RESOLVED_FROM_EXACT_USER_SUPPLIED_SWAP_4_3_1_SOURCE",
-    "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
     "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
-    "legacy_readswap_source": "SWAP/readswap.f90",
-    "legacy_mvg_source": "SWAP/MOD_MvG_functions.f90",
     "cofgen_mapping": {
       "1": "ORES",
       "2": "OSAT",
@@ -48,32 +41,77 @@
       "10": "KSATEXM when supplied and greater than KSATFIT"
     },
     "current_provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
-    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
-    "fsi09_provider_semantics": "BITWISE_SOURCE_BOUND_TO_CORRECTED_B1_10_MVG_ORACLE",
-    "note": "The active F-SI09 default-MvG admitted provider does not activate a separate saturated-extrapolation route; COFGEN(10) is retained as source-bound input provenance and is not used by the admitted b110_hconduc branch."
+    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER"
   },
-  "search_contract": {
-    "purpose": "Determine whether source-bound B12 hydraulic parameters yield at least one accepted REFERENCE case with aggregate interval cost above the admitted baseline without changing production source or numerical policy.",
-    "baseline_cost_vector": [3, 0, 3, 3, 3, 3, 0],
-    "production_source_immutable": true,
-    "mass_tolerance_unchanged": true,
-    "temporal_acceptance_unchanged": true,
-    "retry_policy_unchanged": true,
-    "solver_controls_unchanged": true,
-    "physics_options_unchanged_except_hydraulic_parameter_set": true,
-    "candidate_matrix_scientific_admission": "DIAGNOSTIC_ONLY_UNTIL_INDEPENDENT_FVQ",
-    "acceptance_requirement": "completed + committed + complete authoritative mass + hard mass residual <= 1e-12",
-    "higher_cost_requirement": "at least one aggregate interval cost counter strictly above the admitted baseline vector"
+  "qualification": {
+    "tested_candidate": "addf102920f7576ab273638caefc29e552cf4d0e",
+    "workflow_run": 34270106403,
+    "workflow_job": 102209250992,
+    "conclusion": "success",
+    "artifact_id": 10073455503,
+    "artifact_digest": "sha256:26abfdb495b44a9ec68154ef0e432fd32c0285d486ea434b6f60fa04c6ee3018",
+    "production_source_immutability": "PASS",
+    "source_fixture_and_mapping": "PASS",
+    "historical_24_case_matrix_reused": "PASS",
+    "deterministic_replay_o0_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_gate": "PASS",
+    "rejected_cases_zero_accepted_substeps": "PASS"
+  },
+  "observed_reference_costs": {
+    "vector_order": [
+      "nonlinear_iterations",
+      "internal_retries",
+      "headcalc_calls",
+      "jacobian_builds",
+      "linear_solves",
+      "backtracking_attempts",
+      "alternative_solver_calls"
+    ],
+    "admitted_baseline_vector": [3, 0, 3, 3, 3, 3, 0],
+    "cases_total": 24,
+    "accepted_count": 6,
+    "rejected_count": 18,
+    "accepted_higher_cost_count": 0,
+    "accepted_case_indices": [1,2,3,4,5,6],
+    "accepted_case_names": [
+      "easy_uniform_m75",
+      "wet_uniform_m5",
+      "uniform_m50",
+      "uniform_m100",
+      "dry_uniform_m500",
+      "very_dry_uniform_m5000"
+    ],
+    "accepted_case_cost": [3,0,3,3,3,3,0]
+  },
+  "fpe03_b04": {
+    "status": "BLOCKED_SCIENTIFICALLY_ADMITTED_ACCEPTED_HIGHER_COST_REFERENCE_WORKLOAD_REQUIRED",
+    "b12_candidate_result": "NEGATIVE_NO_ACCEPTED_HIGHER_COST_CASE_IN_HISTORICAL_MATRIX",
+    "reason": "Six source-bound B12 cases are accepted but all have exactly the admitted baseline aggregate cost; the remaining eighteen are transaction-rejected. B12 therefore does not supply the missing accepted higher-cost REFERENCE workload within this matrix."
   },
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "scientific_admission_expanded": false,
   "production_source_changed": false,
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "acceptance_changed": false,
+  "retry_policy_changed": false,
+  "transaction_semantics_changed": false,
+  "mass_requirement_relaxed": false,
+  "representative_tail_distribution_established": false,
   "bounded_cost_threshold_established": false,
-  "execution_class_admission": "REFERENCE_CHARACTERIZATION_ONLY",
-  "claim_limit": "This subunit is a source-bound diagnostic search for an accepted difficult REFERENCE candidate. A positive candidate is not scientifically admitted until an independent F-VQ gate qualifies the exact workload and provenance. A negative result does not justify relaxing mass conservation, temporal acceptance, physics or numerical policy."
+  "fpe02_b01": "BLOCKED_SHARED_SEMANTICS_REQUIRES_FMR_FVQ_REQUALIFICATION",
+  "execution_classes": {
+    "REFERENCE": "ADMITTED_CHARACTERIZATION_ONLY",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "This subunit qualifies only the negative source-bound B12 candidate-search result for the inherited historical 24-case diagnostic matrix. It does not scientifically admit that matrix as a production workload, does not establish representative tail statistics or bounded-cost thresholds, and does not admit BALANCED, THROUGHPUT or FALLBACK.",
+  "next_owner_action": "Keep FPE03-B04 open. Search existing scientifically meaningful/reference-qualified workload families for a production-transaction-accepted REFERENCE case with aggregate cost strictly above [3,0,3,3,3,3,0]. Do not relax mass conservation, temporal acceptance, physics or numerical controls to manufacture acceptance."
 }
