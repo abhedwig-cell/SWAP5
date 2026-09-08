@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "title": "REFERENCE temporal-acceptance bottleneck and owner handoff",
+  "branch": "work/f-pe05-reference-temporal-acceptance",
+  "start_head": "568f071cf07a912e7f5cadd1ab456f5284338c33",
+  "dependencies": {
+    "fpe04_status": "QUALIFIED_REFERENCE_FAILURE_AND_RETRY_ENVELOPE",
+    "fpe04_qualification_source_head": "04c1bbd7981dcfb9cf5349146947c57a21ce81b8",
+    "fpe04_persisted_closeout_head": "568f071cf07a912e7f5cadd1ab456f5284338c33",
+    "fpe04_qualification_run": 34224645009,
+    "fpe03_blocker": "FPE03-B01",
+    "fpe02_policy_blocker": "FPE02-B01"
+  },
+  "source_bindings": {
+    "transaction_reference_blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_interval_runtime_blob": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "serialized_reference_backend_blob": "ade399a1df4b582c9038442093ccacce034f923d",
+    "kernel_transactions_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e"
+  },
+  "source_bound_facts": [
+    "execute_reference_interval constructs an independent full-step state and a two-half-step state from the same checkpoint and calls model%temporal_error(full_state, half_state)",
+    "transaction acceptance requires temporal_error <= transaction temporal_tolerance in addition to solver and hard mass gates",
+    "the admitted serialized REFERENCE backend binds temporal_error to fmr_serialized_temporal_identity",
+    "fmr_serialized_temporal_identity returns zero only when full-step and two-half-step pressure_head, water_content, ponding_depth and groundwater_level are exactly equal; otherwise it returns huge(real64)",
+    "therefore any finite temporal tolerance on this backend rejects a full/two-half state mismatch; tolerance magnitude cannot turn a mismatch into a graded temporal error",
+    "this exact full/two-half equality requirement does not logically require equality to the initial state, so accepted nonstationary execution is not declared impossible",
+    "F-PE04 observed no accepted nonstationary case and all accepted cases retained their own initial physical payload"
+  ],
+  "scope_lock": {
+    "reference_only": true,
+    "production_source_change": false,
+    "physics_change": false,
+    "transaction_semantics_change": false,
+    "temporal_metric_change": false,
+    "solver_control_change": false,
+    "tolerance_change": false,
+    "retry_change": false,
+    "fallback_change": false,
+    "non_reference_policy_admission": false
+  }
+}

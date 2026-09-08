@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "contract": "REFERENCE_TEMPORAL_ACCEPTANCE_CONTRACT",
+  "question": "Can F-PE obtain the accepted nonstationary REFERENCE fixture needed by FPE03-B01 on the current admitted lineage without changing production physics, numerical controls or temporal-acceptance semantics?",
+  "answer": "NOT_ESTABLISHED_AND_NOT_SAFE_TO_FORCE_INSIDE_FPE",
+  "necessary_reference_acceptance_conditions": [
+    "full-step solver converges",
+    "both half-step solver calls converge",
+    "full-step and two-half-step mass residuals satisfy the existing hard mass gate",
+    "full-step and two-half-step physical states are exactly equal under the current serialized backend temporal_error implementation",
+    "the interval completes and only then may candidate state and authoritative mass be published"
+  ],
+  "observed_fpe04_evidence": {
+    "accepted_cases": 20,
+    "accepted_higher_cost_cases": 0,
+    "rejected_after_retry_cases": 30,
+    "accepted_nonstationary_fixture_found": false,
+    "accepted_payload_change_found": false,
+    "o0_o2": "PASS_IDENTICAL_OUTPUT",
+    "transaction_and_mass_safety": "PASS"
+  },
+  "interpretation": {
+    "current_temporal_metric_is_graded": false,
+    "current_temporal_metric_is_exact_identity_gate": true,
+    "nonstationary_acceptance_proven_impossible": false,
+    "accepted_nonstationary_fixture_available": false,
+    "continuing_random_fixture_search_inside_fpe_is_justified": false,
+    "reason": "Without an upstream admitted nonstationary fixture or a scientifically qualified temporal-error implementation, F-PE would be selecting or altering physical acceptance semantics rather than evaluating execution policy."
+  },
+  "owner_boundary": {
+    "physical_backend_temporal_error_implementation": "F-MR or owning physical runtime workstream",
+    "generic_transaction_contract_if_interface_semantics_must_change": "F-KT",
+    "scientific_admission": "F-VQ",
+    "performance_policy_consumption_after_admission": "F-PE"
+  },
+  "claim_limits": {
+    "bug_claimed": false,
+    "temporal_identity_declared_scientifically_wrong": false,
+    "nonstationary_execution_declared_impossible": false,
+    "new_temporal_tolerance_recommended": false,
+    "new_retry_limit_recommended": false,
+    "bounded_cost_threshold_defined": false,
+    "balanced_admitted": false,
+    "throughput_admitted": false,
+    "fallback_admitted": false
+  }
+}

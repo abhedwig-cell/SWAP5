@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "handoff": "OWNER_QUALIFIED_NONSTATIONARY_TEMPORAL_ACCEPTANCE",
+  "trigger": "FPE03-B01 remains unresolved after F-PE04 and current serialized REFERENCE temporal acceptance is an exact full-step/two-half-step identity gate rather than a graded physical temporal-error metric.",
+  "required_upstream_outcome": {
+    "acceptable_path_A": "Provide and independently qualify at least one accepted nonstationary real-physics fixture on the current physical runtime lineage that passes existing solver, hard mass, transaction and exact temporal-identity gates with deterministic cost diagnostics.",
+    "acceptable_path_B": "If exact temporal identity is not the intended long-term physical acceptance rule, implement a source-bound nonstationary temporal-error metric or acceptance rule under the owning runtime/transaction workstream, preserve checkpoint/rollback and hard mass semantics, integrate it into the current physical runtime lineage, and obtain independent F-VQ scientific admission."
+  },
+  "minimum_evidence_after_upstream_work": [
+    "exact qualified source SHA and relevant source blob SHAs",
+    "nonstationary initial and final physical state evidence",
+    "full-step and two-half-step temporal comparison evidence",
+    "authoritative complete mass accounting with no missing contribution mask",
+    "failure rollback and no-leakage evidence",
+    "deterministic replay",
+    "O0/O2 qualification",
+    "interval cost diagnostics including nonlinear iterations, Jacobian builds, linear solves, backtracking and retries"
+  ],
+  "fpe_resume_rule": "Only after one of the upstream paths is independently admitted may F-PE reopen FPE03-B01, characterize a real physical difficult tail, or start qualification of bounded-cost non-REFERENCE execution policy.",
+  "separate_blocker": "FPE02-B01 numerical-policy source-lineage reconciliation also remains unresolved and must be satisfied before BALANCED or THROUGHPUT numerical-policy implementation.",
+  "non_admission": {
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  }
+}
