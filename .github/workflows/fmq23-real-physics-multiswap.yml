@@ -19,6 +19,7 @@ jobs:
       - name: Verify exact F-VQ14 locks and production runtime capability
         run: python3 tests/multiswap/fmq23_capability_audit.py
       - name: Upload fail-closed audit evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: fmq23-capability-audit

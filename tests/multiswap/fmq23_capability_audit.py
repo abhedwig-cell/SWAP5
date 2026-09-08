@@ -3,7 +3,6 @@ import json
 import pathlib
 import re
 import subprocess
-import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 LOCKED_SOURCE = "11eb34ea3afe8f5dda0515c28d7e08428dd2e272"
@@ -26,7 +25,7 @@ def main():
     require(run("git", "rev-parse", f"{LOCKED_SOURCE}^{{tree}}") == LOCKED_TREE, "locked production tree")
     changed_src = run("git", "diff", "--name-only", LOCKED_SOURCE, "HEAD", "--", "src")
     require(changed_src == "", "production src changed: " + changed_src)
-    require(run("git", "merge-base", "--is-ancestor", FVQ14_HEAD, "HEAD") == "", "F-VQ14 ancestry")
+    subprocess.check_call(["git", "merge-base", "--is-ancestor", FVQ14_HEAD, "HEAD"], cwd=ROOT)
     require(run("git", "hash-object", str(PACKAGE_PATH)) == PACKAGE_BLOB, "immutable F-VQ14 package blob")
 
     package = json.loads(PACKAGE_PATH.read_text())
@@ -60,8 +59,9 @@ def main():
     for path in production_runtime:
         text = path.read_text().lower()
         has_columns_array = bool(re.search(r"type\s*\(\s*fmr_logical_column_t\s*\).*::\s*columns\s*\(:\)", text))
-        has_serialized = "fmr_backend_serialized_reference" in text or "fmr_serialized_reference_backend_t" in text
-        if has_columns_array and has_serialized:
+        binds_serialized_backend_type = "fmr_serialized_reference_backend_t" in text
+        invokes_serialized_trial = "%run_trial(" in text and "serialized" in text
+        if has_columns_array and binds_serialized_backend_type and invokes_serialized_trial:
             multi_serialized_candidates.append(path.relative_to(ROOT).as_posix())
 
     blocker_present = len(multi_serialized_candidates) == 0
