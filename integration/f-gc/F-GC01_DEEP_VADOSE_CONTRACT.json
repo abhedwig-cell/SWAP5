@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "contract": "OPTIONAL_DEEP_VADOSE_MODE_BOUNDARY_V1",
+  "owner": "external transfer component composed by runtime/coupler",
+  "modes": {"DIRECT": "q_swap_bottom is paired directly with groundwater interface transfer", "TRANSFER_ZONE": "dS/dt = q_swap_bottom - q_gw; q_gw = S/tau"},
+  "implemented_in_fgc01": false,
+  "mode_switch": {"stored_water_inventory_required": true, "direct_to_transfer": "initialize or explicitly import S without inventing water", "transfer_to_direct": "discharge, transfer or explicitly retain S before detach", "loss_or_double_counting": "FORBIDDEN", "atomic_accept_or_fail_closed": true},
+  "qualification_required_later": ["storage continuity", "interval mass closure", "rollback of rejected mode switch", "tau parameter provenance", "direct/transfer transition replay"]
+}

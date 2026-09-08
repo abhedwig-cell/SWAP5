@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC01",
+  "audit_time_utc": "2026-09-08T08:20:00Z",
+  "branch": "work/f-gc01-groundwater-coupling",
+  "start_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "start_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "baseline": {
+    "fmr05_status": "QUALIFIED_SERIALIZED_REAL_PHYSICS_MULTICOLUMN_RUNTIME_CANDIDATE_READY_FOR_FVQ",
+    "fmr05_qualified_source": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fvq15_qualification_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fvq15_decision": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+    "fmq23_qualification_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "qualified_profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY"
+  },
+  "source_bound_contracts": {
+    "fkt08_head_observed": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "transaction_blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_contracts_blob": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "canonical_interval_runtime_blob": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "kernel_transactions_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "fsi_boundary_blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "fsi_contract": "integration/f-si/F-SI01_SOLVER_INTERFACE_CONTRACT.json"
+  },
+  "dependency_findings": [
+    {
+      "id": "GC01-D01",
+      "finding": "The qualified F-MR05 production entrypoint commits each admitted column internally and does not expose a candidate-only coupling trial.",
+      "owner": "F-MR/F-KT interface boundary",
+      "effect": "F-GC01 may prove orchestration with a deterministic contract double but must not claim physical predictor-corrector integration."
+    },
+    {
+      "id": "GC01-D02",
+      "finding": "The F-SI logical result reserves an optional interface sensitivity shape, but the qualified physical baseline provides no production response tangent.",
+      "owner": "F-SI",
+      "effect": "F-GC01 reserves tangent fields and does not require finite-difference production runs."
+    },
+    {
+      "id": "GC01-D03",
+      "finding": "F-SI12 was observed as IMPLEMENTED_PRETEST, not qualified, and is therefore not imported or treated as baseline authority.",
+      "owner": "F-SI",
+      "effect": "Only source-bound interfaces present at the exact F-MR05 source are consumed."
+    }
+  ],
+  "holds": [
+    "Parallel physical HeadCalc execution is not admitted.",
+    "Active root extraction, macropore, snow and implicit conductivity are outside the admitted profile.",
+    "No production MODFLOW integration or deep-vadose physics is admitted by F-GC01."
+  ]
+}

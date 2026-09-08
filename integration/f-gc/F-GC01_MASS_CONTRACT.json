@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "contract": "COUPLING_INTERFACE_MASS_CONSERVATION_V1",
+  "swap_authority": "F-KT08 canonical_mass_accounting_t remains authoritative and complete for each accepted SWAP interval.",
+  "interface_identity": "water_leaving_swap + water_leaving_groundwater = 0",
+  "window_quantities": {"swap_transfer_m": "q_swap * (T1-T0)", "groundwater_transfer_m": "q_groundwater * (T1-T0)", "mass_residual_m": "swap_transfer_m + groundwater_transfer_m"},
+  "requirements": {"exact_opposite_assignment": true, "mass_loss_tolerance": "NONE", "head_tolerance_may_be_nonzero": true, "head_residual_is_not_mass_residual": true, "rejected_trials_excluded": true, "retry_double_counting_forbidden": true},
+  "fail_closed_when": ["SWAP mass incomplete", "missing contribution mask nonzero", "interface transfer non-finite", "interval provenance mismatch", "fluxes are not exact opposites"]
+}

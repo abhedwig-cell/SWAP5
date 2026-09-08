@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "contract": "GENERIC_PREDICTOR_CORRECTOR_WINDOW_V1",
+  "window": {"notation": "[T0,T1]", "delta_t": "T1-T0", "requirement": "finite T1 > T0", "calendar_semantics": false},
+  "supported_shapes": ["subdaily", "non-midnight", "greater-than-one-day", "adaptive-smaller", "adaptive-larger"],
+  "protocol": [
+    "read committed SWAP state at T0", "capture immutable checkpoint", "apply predictor boundary", "run predictor trial", "obtain groundwater response", "evaluate interface residual", "derive corrector boundary", "run corrector from the same T0 checkpoint", "accept and commit exactly once", "otherwise discard and rollback or retry"
+  ],
+  "physical_origin_rule": "Every predictor and corrector trial uses the same committed lineage, revision and physical state at T0.",
+  "warm_start_rule": "Worker-local numerical guesses may be reused; candidate physical state may not be used as the next trial origin.",
+  "acceptance": {"requires_head_convergence": true, "requires_exact_flux_pairing": true, "requires_complete_swap_mass": true, "commit_count": 1},
+  "rejection": {"committed_state_mutation": false, "candidate_publication": false, "diagnostic_required": true}
+}

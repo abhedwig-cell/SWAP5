@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "contract": "GROUNDWATER_CELL_TILE_COMPOSITION_V1",
+  "ownership": "runtime/coupler, never SWAP kernel",
+  "mapping": "one groundwater cell to one or more surface tiles",
+  "tile_fields": ["tile_id", "fraction", "component_kind", "interface_flux_per_tile_area"],
+  "component_kinds": ["SWAP", "NON_SWAP", "OPEN_WATER", "TRANSFER_ZONE"],
+  "complete_cell_rule": {"sum_fractions": 1.0, "comparison": "exact decimal composition in deterministic harness", "failure": "FAIL_CLOSED"},
+  "aggregation": "q_cell = sum(fraction_i * q_i)",
+  "one_to_one_required": false,
+  "swap_knows_cell_fraction": false
+}

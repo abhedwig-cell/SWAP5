@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "contract": "GROUNDWATER_COUPLING_INTERFACE_V1",
+  "equilibrium": {"head": "H_SWAP = H_GW", "flux": "q_SWAP = -q_GW"},
+  "sign_convention": {
+    "q_swap": "positive water leaving SWAP through its bottom interface",
+    "q_groundwater": "positive water leaving groundwater through the same interface",
+    "flux_residual": "q_swap + q_groundwater"
+  },
+  "units": {"head": "m", "flux_rate": "m s-1", "interval_volume_per_area": "m", "area": "m2"},
+  "area_basis": "Each tile flux is per unit tile area; cell flux is area-fraction weighted per unit groundwater-cell area.",
+  "request": ["coupling_id", "t0", "t1", "boundary_head_m", "swap_lineage_id", "swap_origin_revision", "candidate_revision"],
+  "response": ["swap_interface_flux_m_per_s", "swap_endpoint_head_m", "groundwater_interface_flux_m_per_s", "head_residual_m", "flux_residual_m_per_s", "convergence_status", "candidate_revision", "commit_revision"],
+  "provenance": {"interval_required": true, "candidate_and_commit_revision_required": true, "module_globals_forbidden": true},
+  "convergence": {"head_tolerance_explicit_per_contract": true, "mass_tolerance": "NONE", "head_and_mass_residuals_are_distinct": true},
+  "response_tangent": {"reserved": true, "quantity": "dh_bottom_dq_bottom", "availability_required_in_fgc01": false, "fallback_runs_must_not_be_structural_api_requirement": true}
+}

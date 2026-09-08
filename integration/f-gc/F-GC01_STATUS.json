@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC01",
+  "branch": "work/f-gc01-groundwater-coupling",
+  "start_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "phase": "CONTRACT_PERSISTED_PRE_HARNESS",
+  "status": "IMPLEMENTED_CONTRACT_PRETEST",
+  "IMPLEMENTED": true,
+  "PERSISTED": false,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "production_physics_changed": false,
+  "richards_physics_changed": false,
+  "process_physics_changed": false,
+  "numerical_policy_changed": false,
+  "blockers": [],
+  "holds": ["Deterministic harness and executable gates not yet persisted.", "No physical MODFLOW coupling is implied."]
+}
