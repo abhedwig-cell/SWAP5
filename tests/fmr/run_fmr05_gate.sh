@@ -16,7 +16,6 @@ check_blob() {
   }
 }
 
-# Exact F-VQ14/F-MR04/F-KT08/F-SI physical baseline consumed by F-MR05.
 check_blob src/transaction/mod_transaction_reference.f90 b1878606ae6cb2b04a7b4b15e3e537deacf4477f
 check_blob src/runtime/mod_canonical_contracts.f90 0c2b15fc45011c580384cf6a618e7b378fdccf0a
 check_blob src/runtime/mod_canonical_interval_runtime.f90 f2cae79d533343db818c11e0b61b605ac5f6739d
@@ -32,7 +31,6 @@ check_blob src/legacy/b1_10_port/headcalc.f90 be5978827095445b15de7baf607728792d
 check_blob src/legacy/b1_10_port/soilwater.f90 470bc81a380e114d70fecd75426ec2331c1c9fcc
 check_blob reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.f90.gz.b64 6cfcec4e38b02343ba48e7e6fb5d595158e19653
 check_blob reference/swap-4.3.1/b1_10_source/MOD_MvG_functions.manifest.json c64942d2964bb67c200f973b76e05222ad73067f
-# The only F-MR05 production source file.
 check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 e4f5bc0bf47e2721d689e62107b5224196a093d9
 
 echo 'FMR05_EXACT_BASELINE_AND_SOURCE_BLOBS PASS'
@@ -79,11 +77,6 @@ print('FMR05_ARCHITECTURE_AND_REQUALIFICATION_BOUNDARY PASS')
 print('FMR05_PRODUCTION_SOURCE_SCOPE_ONLY_RUNTIME_MODULE PASS')
 PY
 
-# Preserve the exact existing F-MR04 one-column serialized physical route.
-bash tests/fmr/run_fmr04_gate.sh > "$BUILD/fmr04_regression.txt"
-grep -Fq 'FMR04_GATE PASS' "$BUILD/fmr04_regression.txt"
-echo 'FMR05_FMR04_SINGLE_COLUMN_REGRESSION PASS'
-
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
@@ -117,6 +110,19 @@ for opt in 0 2; do
     objects+=("$obj")
   done
 
+  # Direct source-bound F-MR04 regression; avoids stale historical status-schema checks.
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr04_serialized_physical.F90 -o "$OUT/test_fmr04.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr04.o" -o "$OUT/fmr04_serialized_physical"
+  "$OUT/fmr04_serialized_physical" > "$OUT/fmr04.txt" 2>&1 || { cat "$OUT/fmr04.txt" >&2; exit 1; }
+  grep -Fq 'FMR04_SERIALIZED_PHYSICAL_COMPOSITION_TEST PASS' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_REAL_HEADCALC_EXECUTED=TRUE' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_KERNEL_FULL_INTERVAL_MASS_COMPLETE=T' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_AUTHORITATIVE_MISSING_MASK=0' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_ACTIVE_ROOT_FAIL_CLOSED=PASS' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_MACROPORE_FAIL_CLOSED=PASS' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_SNOW_FAIL_CLOSED=PASS' "$OUT/fmr04.txt"
+  grep -Fq 'FMR04_SWKIMPL1_FAIL_CLOSED=PASS' "$OUT/fmr04.txt"
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr05_serialized_multiswap.f90 -o "$OUT/test_base.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_base.o" -o "$OUT/fmr05_serialized_multiswap"
   "$OUT/fmr05_serialized_multiswap" > "$OUT/base.txt" 2>&1 || { cat "$OUT/base.txt" >&2; exit 1; }
@@ -125,7 +131,7 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_strict.o" -o "$OUT/fmr05_strict_acceptance"
   "$OUT/fmr05_strict_acceptance" > "$OUT/strict.txt" 2>&1 || { cat "$OUT/strict.txt" >&2; exit 1; }
 
-  cat "$OUT/base.txt" "$OUT/strict.txt" > "$OUT/output.txt"
+  cat "$OUT/fmr04.txt" "$OUT/base.txt" "$OUT/strict.txt" > "$OUT/output.txt"
   for batch in 1 2 8 17 31 32; do grep -Fq "FMR05_BATCH_SIZE_${batch}=PASS" "$OUT/base.txt"; done
   grep -Fq 'FMR05_INPUT_ORDER_INDEPENDENCE=PASS' "$OUT/base.txt"
   grep -Fq 'FMR05_SINGLE_VS_MULTI_IDENTITY=PASS' "$OUT/base.txt"
@@ -147,17 +153,21 @@ for opt in 0 2; do
   grep -Fq 'FMR05_GENERIC_TIME_1000_125_TO_1000_625=PASS' "$OUT/strict.txt"
   grep -Fq 'FMR05_MAX_SIMULTANEOUS_REAL_PHYSICAL_SOLVES=1' "$OUT/strict.txt"
   grep -Fq 'FMR05_STRICT_ACCEPTANCE_TEST PASS' "$OUT/strict.txt"
-  sha256sum "$OUT/fmr05_serialized_multiswap" "$OUT/fmr05_strict_acceptance" > "$OUT/executables.sha256"
+  sha256sum "$OUT/fmr04_serialized_physical" "$OUT/fmr05_serialized_multiswap" "$OUT/fmr05_strict_acceptance" > "$OUT/executables.sha256"
   sha256sum "$OUT/output.txt" > "$OUT/output.sha256"
   echo "FMR05_O${opt} PASS"
 done
 
+cmp "$BUILD/o0/fmr04.txt" "$BUILD/o2/fmr04.txt"
+echo 'FMR05_FMR04_SINGLE_COLUMN_REGRESSION_O0_O2_IDENTITY PASS'
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'FMR05_O0_O2_OUTPUT_IDENTITY PASS'
 cat "$BUILD/o0/output.txt"
-echo "FMR05_O0_BASE_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o0/executables.sha256")"
-echo "FMR05_O0_STRICT_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o0/executables.sha256")"
-echo "FMR05_O2_BASE_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o2/executables.sha256")"
-echo "FMR05_O2_STRICT_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o2/executables.sha256")"
+echo "FMR05_O0_FMR04_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o0/executables.sha256")"
+echo "FMR05_O0_BASE_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o0/executables.sha256")"
+echo "FMR05_O0_STRICT_EXECUTABLE_SHA256=$(sed -n '3s/ .*//p' "$BUILD/o0/executables.sha256")"
+echo "FMR05_O2_FMR04_EXECUTABLE_SHA256=$(sed -n '1s/ .*//p' "$BUILD/o2/executables.sha256")"
+echo "FMR05_O2_BASE_EXECUTABLE_SHA256=$(sed -n '2s/ .*//p' "$BUILD/o2/executables.sha256")"
+echo "FMR05_O2_STRICT_EXECUTABLE_SHA256=$(sed -n '3s/ .*//p' "$BUILD/o2/executables.sha256")"
 echo "FMR05_OUTPUT_SHA256=$(cut -d' ' -f1 "$BUILD/o0/output.sha256")"
 echo 'FMR05_GATE PASS_STRICT_RUNTIME_CANDIDATE_REQUIRES_FVQ15'
