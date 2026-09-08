@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF19",
+  "title": "Qualification Evidence: Crop/Canopy Owner-State Readiness",
+  "branch": "work/f-wof19-crop-canopy-owner-readiness",
+  "tested_candidate": "24116e72b4282d8016eadf90cc321024a7f232fb",
+  "github_actions": {
+    "run_id": 34278317058,
+    "conclusion": "success",
+    "workflow": ".github/workflows/fwof19-crop-canopy-owner-readiness.yml",
+    "gate": "tests/fwof/run_fwof19_crop_canopy_owner_readiness_gate.sh"
+  },
+  "verified": {
+    "zero_production_delta": "PASS",
+    "qualified_upstream_source_locks": "PASS",
+    "F_WOF10_divergence_lock": "PASS",
+    "owner_classification": "PASS",
+    "reconstructible_state_minimization": "PASS",
+    "current_crop_lifecycle_host_absent": "PASS",
+    "transactional_crop_owner_gap": "PASS",
+    "blind_historical_lineage_merge_forbidden": "PASS"
+  },
+  "qualified_owner_model": {
+    "common_committed_crop_state": ["crop_emerged", "DVS", "LAI"],
+    "SWRD_1_extra_root_history": [],
+    "SWRD_2_optional_committed_root_history": ["actual_root_depth", "potential_root_depth"],
+    "SWRD_3_root_geometry_dependency": ["WRT"],
+    "reconstructible_non_authoritative": ["vcover", "CF", "rooted_nodes", "cumulative_root_fraction", "potential_transpiration"],
+    "current_derived_nonpersistent": ["fco2tra", "selected_reference_ET"]
+  },
+  "source_bound_relations": {
+    "vcover": "1 - exp(-kdir * kdif * LAI)",
+    "CF_for_SWCF1": "AFGEN(CFTB,DVS)",
+    "SWRD1_root_depth": "min(AFGEN(RDTB,DVS),RDM)",
+    "SWRD3_root_depth": "min(AFGEN(RLWTB,WRT),RDM)",
+    "restricted_ptra": "qualified by F-WOF18 and remains a current ET result"
+  },
+  "lineage_evidence": {
+    "F_WOF18_base": "828350c4f48e7004993af90b3b9e2f3874babec3",
+    "F_WOF10_head": "98a26f0294aafac6d1ed46ace2d6bcc05914d9f0",
+    "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "F_WOF10_only_commits": 35,
+    "F_WOF18_only_commits": 331,
+    "comparison": "diverged"
+  },
+  "blocking_finding": {
+    "production_crop_lifecycle_host_present": false,
+    "transaction_binding_present": false,
+    "checkpoint_rollback_replay_evidence_present": false,
+    "full_F_WOF17_F_WOF18_owner_composition_admitted": false
+  },
+  "qualification_scope": "OWNER_STATE_CLASSIFICATION_AND_READINESS_ONLY",
+  "nonclaims": [
+    "No crop lifecycle evolution was implemented.",
+    "No daily cadence was admitted as a kernel assumption.",
+    "No F-WOF04 through F-WOF10 production code was merged.",
+    "No committed crop state was added to runtime.",
+    "No F-WOF17/F-WOF18 production physics was changed."
+  ]
+}
