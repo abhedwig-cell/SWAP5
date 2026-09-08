@@ -1,0 +1,21 @@
+name: F-WOF15 root state ownership
+
+on:
+  push:
+    branches:
+      - work/f-wof15-root-state-ownership
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF15 root state ownership gate
+        run: bash tests/fwof/run_fwof15_root_state_ownership_gate.sh
