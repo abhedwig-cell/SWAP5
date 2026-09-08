@@ -37,8 +37,8 @@ def replace_once(old: str, new: str, label: str) -> None:
     text = text.replace(old, new, 1)
 
 replace_once(
-    'program test_fpe03_reference_stress\n',
-    'program test_fpe03_nonstationary_snow_overlay\n',
+    'program test_fpe03_reference_stress\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n',
+    'program test_fpe03_nonstationary_snow_overlay\n  use, intrinsic :: iso_fortran_env, only: int64, real64\n',
     'program name',
 )
 replace_once(
