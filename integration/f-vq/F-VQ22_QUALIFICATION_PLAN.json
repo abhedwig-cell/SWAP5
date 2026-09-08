@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ22",
+  "title": "Independent scientific qualification of restricted F-PM05 MACRO Feddes drought-only root-water uptake",
+  "branch": "qualification/f-vq22-fpm05-root-water-uptake",
+  "candidate": {
+    "fpm05_closeout_commit": "591363019aa4b2324bec55354b45093b3b189819",
+    "fpm05_closeout_tree": "dd07ad0d16783e43b951b218904e7e2d1f409af4",
+    "candidate_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "candidate_production_source_must_remain_immutable": true
+  },
+  "canonical_legacy_oracle": {
+    "source_archive": "user-supplied canonical SWAP 4.3.1 source archive",
+    "rootextraction_path": "SWAP/rootextraction.f90",
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "cropdevelopment_path": "SWAP/MOD_cropdevelopment.f90",
+    "cropdevelopment_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "source_bound_semantics": [
+      "RootExtraction_MACRO task 2 resets qpotrot/qrot/stress diagnostics before any early exit",
+      "rd < 1e-14 returns zero uptake before pressure-head or root-distribution use",
+      "ptra < 1e-10 returns zero uptake before pressure-head or root-distribution use",
+      "potential node uptake is (cumdens_top(node+1)-cumdens_top(node))*ptra",
+      "critical hlim3 is hlim3l below adcrl, linearly interpolated for adcrl through adcrh, and hlim3h above adcrh",
+      "Feddes drought factor is zero below hlim4, linear from hlim4 through hlim3, and one above hlim3",
+      "restricted drought-only result is qrot=qpotential*alpdry because oxygen, salinity and frost factors are held at one",
+      "qrosum is the sum of accepted per-node qrot",
+      "current rooted-node count and cumulative root fractions are crop-derived dynamic inputs"
+    ]
+  },
+  "independent_oracle_policy": {
+    "owner_test_expected_literals_may_serve_as_scientific_oracle": false,
+    "owner_gate_replay_may_be_used_only_as_regression": true,
+    "expected_values_are_recomputed_from_canonical_equations_inside_fvq22": true,
+    "multiple_boundary_and_interior_fixtures_required": true,
+    "real_runtime_mass_test_uses_independently_computed_oracle_qrot": true
+  },
+  "required_scientific_gates": [
+    "qualification branch changes no src production source",
+    "exact F-PM05 process blob remains immutable",
+    "source-bound constants 1e-14 and 1e-10 are represented by equivalent admitted zero-route controls",
+    "no-root route yields zero without hydraulic view or root distribution",
+    "ptra below 1e-10 yields zero without hydraulic view or root distribution",
+    "ptra exactly 1e-10 enters active evaluation rather than the negligible-transpiration exit",
+    "independent potential-uptake oracle for multiple dynamic root distributions",
+    "independent hlim3 oracle below, at, within, at and above adcrl/adcrh",
+    "independent Feddes drought oracle below hlim4, at hlim4, inside transition, at hlim3 and above hlim3",
+    "candidate qrot equals independently computed nodewise oracle",
+    "candidate qrosum-equivalent actual_uptake_total equals independent sum(qrot)",
+    "active invalid root distribution and invalid hydraulic view fail closed",
+    "A/B/A direct-process determinism",
+    "real F-MR09 runtime consumes candidate result without sign or node-order change",
+    "authoritative total_out delta equals sum(independent oracle qrot)*DeltaT exactly once",
+    "balanced qssdi=qrot fixture preserves hydraulics while total_in and total_out are each booked exactly once",
+    "hard accepted mass balance",
+    "F-VQ21/F-MR09 cross-process regressions remain green",
+    "O0/O2 full qualification output identity"
+  ],
+  "not_admitted": [
+    "oxygen stress",
+    "salinity stress",
+    "frost stress",
+    "compensated root uptake",
+    "drought-dependent root extension feedback",
+    "MICRO/Jong-van-Lier uptake",
+    "swkimpl=1 dynamic root-sink reevaluation",
+    "macropore root uptake",
+    "full legacy RootExtraction module reentrancy",
+    "production crop-owner composition beyond the explicit request contract"
+  ],
+  "qualification_policy": {
+    "production_source_changes_allowed": false,
+    "fail_closed_on_any_candidate_blob_or_oracle_mismatch": true,
+    "scientific_admission_is_restricted_to_named_profile": true
+  }
+}
