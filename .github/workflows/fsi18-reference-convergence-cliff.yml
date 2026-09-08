@@ -1,0 +1,33 @@
+name: F-SI18 reference convergence cliff
+
+on:
+  push:
+    branches:
+      - work/f-si18-reference-convergence-cliff
+    paths:
+      - 'integration/f-si/F-SI18_*.json'
+      - 'tests/fsi/test_fsi18_reference_convergence_cliff.F90'
+      - 'tests/fsi/run_fsi18_reference_convergence_cliff_gate.sh'
+      - '.github/workflows/fsi18-reference-convergence-cliff.yml'
+  workflow_dispatch:
+
+jobs:
+  fsi18-reference-convergence-cliff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run F-SI18 source-bound solver reproduction
+        env:
+          FSI18_EVIDENCE_DIR: ${{ github.workspace }}/fsi18-convergence-cliff-evidence
+        run: bash tests/fsi/run_fsi18_reference_convergence_cliff_gate.sh
+      - name: Upload F-SI18 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi18-reference-convergence-cliff-evidence
+          path: fsi18-convergence-cliff-evidence
+          if-no-files-found: error
