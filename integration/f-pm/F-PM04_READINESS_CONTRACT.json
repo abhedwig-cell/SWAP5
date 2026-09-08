@@ -2,7 +2,7 @@
   "schema_version": 1,
   "workstream": "F-PM",
   "work_unit": "F-PM04",
-  "title": "Scheduled Irrigation TCS7+DCS2 SSDI Readiness Contract",
+  "title": "Scheduled Irrigation TCS7+DCS2 Single-Node SSDI Readiness Contract",
   "branch": "work/f-pm04-scheduled-irrigation-tcs7-dcs2-readiness",
   "readiness_only_until_gate_pass": true,
   "production_source_change_allowed_before_gate_pass": false,
@@ -17,56 +17,88 @@
     "fmr08_parallel_owner_work": "work/f-mr08-nonstationary-temporal-acceptance",
     "fmr08_backend_source_overlap_allowed": false
   },
+  "source_evidence": "integration/f-pm/F-PM04_B110_SOURCE_EVIDENCE.json",
   "selected_restricted_profile": {
     "timing_criterion": "TCS7",
     "depth_criterion": "DCS2",
-    "application": "SSDI",
+    "application": "SSDI_SINGLE_NODE_ONLY",
+    "ssdi_node_contract": "ssdi_first_node == ssdi_last_node",
     "minimum_interval_overlay": false,
     "solute_overirrigation": false,
     "depth_limits": false,
     "rainfall_reduction": false,
     "external_availability_scaling": false,
-    "rate_policy": "irr_rate > 0 and irr_depth/irr_rate <= 1",
-    "calendar_policy": "window membership supplied explicitly as management input; no hidden midnight/day-start assumption"
+    "rate_policy": "irr_rate_cm_per_day > 0 and depth_cm/irr_rate_cm_per_day <= 1",
+    "calendar_policy": "window membership supplied explicitly as management input; no hidden midnight/day-start assumption",
+    "table_policy": "2..7 finite strictly increasing DVS knots; partial tables fail closed when runtime DVS exceeds the final supplied knot"
   },
-  "required_equation_identity": {
-    "trigger_threshold": "phcrit = afgen(hcritab, DVS)",
-    "trigger": "pressure_head(sensor_node) <= phcrit",
-    "depth": "irr_depth = afgen(fidtab, DVS) * 0.1",
-    "ssdi_source": "qssdi(ssdi_first:ssdi_last) = irr_rate",
-    "duration": "dt_irr_event = irr_depth / irr_rate",
+  "required_source_identity": {
+    "legacy_trigger_threshold": "phcrit = afgen(hcritab,14,DVS)",
+    "legacy_trigger": "h(nodsen) <= phcrit",
+    "legacy_depth": "irr_depth_cm = afgen(fidtab,14,DVS) * 0.1",
+    "legacy_ssdi_source": "qssdi(single_node) = irr_rate_cm_per_day",
+    "legacy_duration": "dt_irr_event = irr_depth_cm / irr_rate_cm_per_day",
     "outer_order": "scheduled trigger evaluated only after fixed-event precedence and only when explicit irrigation/schedule/crop/window gates are true"
+  },
+  "target_translation": {
+    "kernel_io_independence": true,
+    "tcs7_table": "immutable DVS/head table in dimensionless DVS and cm pressure head",
+    "dcs2_table": "legacy FID mm values translated by adapter to immutable cm depths before entering process",
+    "irr_rate": "legacy mm/h translated by adapter to cm/day before entering process",
+    "sensor_node": "legacy dcrit/zbotcp lookup translated outside process to immutable validated node index",
+    "ssdi_node": "legacy ss_irr_z/zbotcp lookup translated outside process to immutable validated single node index"
+  },
+  "afgen_admission_scope": {
+    "source": "SWAP/functions.f90:66-108",
+    "target_semantics": "endpoint-first clamp plus piecewise linear interpolation over explicit populated knots",
+    "allow_below_first_knot": true,
+    "allow_above_last_knot_for_partial_table": false,
+    "allow_duplicate_or_nonmonotone_knots": false,
+    "allow_uninitialized_tail_sentinel_state": false,
+    "reason": "legacy calls length 14 even after partial table reads; target must not persist or depend on stale SAVE-array tail state"
   },
   "required_interfaces": {
     "hydraulic_read": {
       "owner": "F-SI/F-MR",
       "requirement": "read-only committed process_hydraulic_view_t pressure_head with validated active_nodes and sensor-node bounds",
-      "status": "EXPECTED_AVAILABLE_FROM_FSI17_FMR07"
+      "status": "QUALIFIED_BY_FSI17_FMR07"
     },
     "ssdi_source": {
       "owner": "F-SI/F-MR",
-      "requirement": "precomputed positive node source accepted without direct HeadCalc mutation",
-      "status": "EXPECTED_AVAILABLE_FROM_FSI10_AND_EXISTING_RUNTIME"
+      "requirement": "precomputed positive single-node source accepted without direct HeadCalc mutation",
+      "status": "SOURCE_PATH_PRESENT_AND_FIXED_EVENT_MASS_ROUTE_INDEPENDENTLY_ADMITTED"
     },
     "transaction": {
       "owner": "F-KT",
       "requirement": "active scheduled-event state changes are candidate-only until commit; rejected/split trials leave committed state unchanged",
-      "status": "EXPECTED_AVAILABLE_GENERIC_CONTRACT"
+      "status": "AVAILABLE_GENERIC_CONTRACT"
     },
     "mass": {
       "owner": "F-KT/F-MR",
-      "requirement": "positive SSDI irrigation is external inflow exactly once in accepted authoritative interval accounting",
-      "status": "EXPECTED_AVAILABLE_AND_INDEPENDENTLY_DEMONSTRATED_BY_FVQ18"
+      "requirement": "positive single-node SSDI irrigation is external inflow exactly once in accepted authoritative interval accounting",
+      "status": "INDEPENDENTLY_DEMONSTRATED_FOR_EXISTING_SSDI_SOURCE_ROUTE_BY_FVQ18"
     }
+  },
+  "legacy_dependency_cut": {
+    "observed": "legacy irrigation executes root-zone capacity and watcon calculations for every tcs>1 before TCS7 evaluation",
+    "source_ranges": ["SWAP/irrigation.f90:349-361", "SWAP/irrigation.f90:456-470"],
+    "selected_process_outputs_use_these_values": false,
+    "migrate_into_tcs7_dcs2_seam": false,
+    "qualification_caveat": "structural readiness does not claim that removing legacy incidental/global side effects is scientifically invisible; later independent F-VQ must verify observable runtime identity"
+  },
+  "multi_node_ssdi_hold": {
+    "status": "HELD_UNRESOLVED_SOURCE_SEMANTIC_DIFFERENCE",
+    "finding": "scheduled SSDI assigns the same rate to every selected node without dividing DCS2 depth by node count, whereas fixed-event SSDI explicitly divides fixed depth over nodes before execution",
+    "admitted_by_fpm04": false,
+    "resolution_required": "separate source-theory reconciliation and independent mass qualification before multi-node scheduled SSDI admission"
   },
   "process_owned_data_separation": {
     "immutable_parameters": [
-      "TCS7 threshold table",
-      "DCS2 fixed-depth table",
+      "TCS7 explicit-knot threshold table",
+      "DCS2 explicit-knot depth table in cm",
       "sensor_node",
-      "ssdi_first_node",
-      "ssdi_last_node",
-      "irr_rate"
+      "single_ssdi_node",
+      "irr_rate_cm_per_day"
     ],
     "persistent_dynamic_state": [
       "active scheduled-event flag",
@@ -82,8 +114,11 @@
       "irrigation_window_open",
       "fixed_event_already_selected"
     ],
+    "hydraulic_view": [
+      "pressure_head(sensor_node)"
+    ],
     "physical_result": [
-      "optional SSDI source array",
+      "optional single-node SSDI source array",
       "event duration",
       "active duration",
       "external inflow reconciliation amount"
@@ -109,33 +144,42 @@
     "ssdi_array_allocated_only_for_active_ssdi_event": true
   },
   "readiness_gate_must_prove": [
+    "exact B0/B1.10 functions.f90 and irrigation.f90 identities are pinned and B1.10 patches do not modify them",
+    "AFGEN restricted deterministic table semantics are explicit",
     "exact FSI17 process hydraulic view blob is present",
     "exact FMR07 committed view binding is present and candidate/checkpoint view access remains absent",
     "existing SSDI source path remains present",
     "F-KT committed/candidate semantics remain present",
-    "F-VQ18 status independently admits restricted SSDI mass exactly once without requiring merge",
-    "no unqualified surface gird-to-nird route is required by selected seam",
-    "no HeadCalc/Newton/Jacobian/workspace dependency is required by selected seam",
+    "F-VQ18 independently admits the existing restricted SSDI mass route exactly once without implying scheduled TCS/DCS admission",
+    "selected seam is single-node SSDI so unresolved scheduled multi-node mass semantics cannot enter",
+    "no unqualified surface gird-to-nird route is required",
+    "root-zone/watcon calculations are not required as data dependencies of TCS7+DCS2 outputs",
     "all TCS7+DCS2 inputs can be assigned to parameters, management forcing, committed hydraulic view or compact process state",
-    "no calendar or day counter is silently inferred from generic solver interval duration"
+    "no calendar or day counter is silently inferred from generic solver interval duration",
+    "no F-MR backend source is modified by this readiness unit"
   ],
-  "readiness_pass_decision": "ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SSDI_MIGRATION",
-  "readiness_fail_decision": "BLOCKED_SCHEDULED_IRRIGATION_TCS7_DCS2_SSDI_REQUIRES_OWNER_ADMISSION",
+  "readiness_pass_decision": "ADMITTED_FOR_STRUCTURAL_TCS7_DCS2_SINGLE_NODE_SSDI_MIGRATION",
+  "readiness_fail_decision": "BLOCKED_SCHEDULED_IRRIGATION_TCS7_DCS2_SINGLE_NODE_SSDI_REQUIRES_OWNER_ADMISSION",
   "after_pass": {
     "production_scope": "smallest pure process seam only; do not modify F-MR backend or F-MR08 lineage",
     "minimum_tests": [
       "inactive",
       "outer-gate false",
+      "AFGEN below-first clamp",
+      "AFGEN exact-knot and interior interpolation",
+      "partial-table above-last fail-closed",
+      "nonmonotone/duplicate table fail-closed",
       "TCS7 no-trigger",
-      "TCS7 trigger boundary",
-      "DCS2 interpolation identity",
-      "one SSDI event",
+      "TCS7 trigger equality boundary",
+      "DCS2 translated-cm interpolation identity",
+      "one single-node SSDI event",
       "active-event continuation",
       "split-required no mutation",
       "rollback/replay",
       "A/B/A",
       "optional allocation scaling",
-      "external inflow identity",
+      "external inflow identity exactly once",
+      "multi-node scheduled SSDI rejected",
       "O0/O2",
       "source-bound B1.10 identity"
     ],
