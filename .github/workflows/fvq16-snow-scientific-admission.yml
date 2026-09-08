@@ -27,4 +27,5 @@ jobs:
         with:
           name: fvq16-snow-scientific-evidence
           path: .fvq16-artifacts/
+          include-hidden-files: true
           if-no-files-found: error
