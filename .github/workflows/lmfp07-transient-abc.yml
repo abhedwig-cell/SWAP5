@@ -1,0 +1,32 @@
+name: F-LMFP07 Transient Darcian A-B-C
+
+on:
+  push:
+    branches:
+      - work/f-lmfp07-transient-darcian-candidate-ab
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/**'
+      - '.github/workflows/lmfp07-transient-abc.yml'
+  workflow_dispatch:
+
+jobs:
+  transient-abc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Transient MFP lookup oracle A/B/C gate
+        run: bash experiments/lmfp/run_lmfp07_transient_abc_gate.sh
+      - name: Upload F-LMFP07 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp07-transient-abc-evidence
+          path: |
+            lmfp07-artifacts/
+            lmfp04-artifacts/F-LMFP04_FULLRICHARDS_REFERENCE.txt
+          if-no-files-found: warn
