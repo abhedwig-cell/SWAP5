@@ -1,0 +1,107 @@
+name: F-SI16 one-shot response fixture repair
+
+on:
+  push:
+    branches:
+      - work/f-si16-explicit-prescribed-bottom-head
+    paths:
+      - '.github/workflows/fsi16-one-shot-response-fixture-repair.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair-response-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-si16-explicit-prescribed-bottom-head
+      - name: Repair F-SI16 response fixture and face-head assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh)" = "65552793e4bad68c305f730606b43228f47f5e37"
+          test "$(git rev-parse HEAD:tests/fsi/test_fsi16_prescribed_bottom_head.F90)" = "5481391204785949f3ff5ef6fee22354d973df8c"
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_exact(path, old, new, count=1):
+              p=Path(path)
+              s=p.read_text()
+              n=s.count(old)
+              if n != count:
+                  raise SystemExit(f'{path}: expected {count}, found {n}: {old[:100]!r}')
+              p.write_text(s.replace(old,new,count))
+
+          gate='tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
+          replace_exact(gate, '  integer :: i\n  real(8) :: beta, gamma(n)\n',
+                              '  integer :: i, j\n  real(8) :: beta, gamma(n)\n')
+          replace_exact(gate,
+              "    if (abs(beta) <= tiny(1.0d0)) then\n      ierror = 1\n      do i = 1, n\n        solution(i) = 0.0d0\n      end do\n      return\n    end if\n    solution(i) = (rhs(i) - upper(i)*solution(i-1))/beta\n",
+              "    if (abs(beta) <= tiny(1.0d0)) then\n      ierror = 1\n      do j = 1, n\n        solution(j) = 0.0d0\n      end do\n      return\n    end if\n    solution(i) = (rhs(i) - upper(i)*solution(i-1))/beta\n")
+
+          test='tests/fsi/test_fsi16_prescribed_bottom_head.F90'
+          replace_exact(test,
+              '  real(real64) :: head_value, expected_qbot, qnan, head_tolerance\n',
+              '  real(real64) :: head_value, expected_qbot, qnan, bottom_gradient, equation_residual\n'
+              '  real(real64) :: check_theta(numnod), check_k(numnod), check_capacity(numnod), check_dkdh(numnod)\n')
+          old='''  ! A nontrivial prescribed-head perturbation must control the solved lower node.
+  ! It starts from the same base state as request_a, so this checks boundary
+  ! authority rather than merely replaying an already-satisfied boundary value.
+  call prepare_workspace(workspace)
+  call solver%solve(request_c, workspace, result_c)
+  if (result_c%status /= SW_SOLVE_CONVERGED) failures = failures + 1
+  if (trim(result_c%diagnostics%route) /= 'legacy-reference-bound') failures = failures + 1
+  head_tolerance = max(1.0e-10_real64, 64.0_real64*epsilon(1.0_real64) * &
+       max(1.0_real64, abs(request_c%boundary%bottom_head)))
+  if (abs(result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) > head_tolerance) &
+       failures = failures + 1
+  if (transfer(result_c%candidate_state%pressure_head(numnod),0_int64) == &
+      transfer(result_a%candidate_state%pressure_head(numnod),0_int64)) failures = failures + 1
+  expected_qbot = continuity_qbot(request_c, result_c)
+  if (transfer(result_c%bottom_flux,0_int64) /= transfer(expected_qbot,0_int64)) failures = failures + 1
+  if (transfer(result_c%bottom_flux,0_int64) == transfer(request_c%boundary%bottom_flux,0_int64)) failures = failures + 1
+'''
+          new='''  ! bottom_head is the pressure head on the lower boundary face, not h(NN).
+  ! A nontrivial perturbation must therefore change the solved state while the
+  ! exact B1.10 lower-face Darcy equation remains satisfied.
+  call prepare_workspace(workspace)
+  call solver%solve(request_c, workspace, result_c)
+  if (result_c%status /= SW_SOLVE_CONVERGED) failures = failures + 1
+  if (trim(result_c%diagnostics%route) /= 'legacy-reference-bound') failures = failures + 1
+  if (transfer(result_c%candidate_state%pressure_head(numnod),0_int64) == &
+      transfer(result_a%candidate_state%pressure_head(numnod),0_int64)) failures = failures + 1
+  expected_qbot = continuity_qbot(request_c, result_c)
+  if (transfer(result_c%bottom_flux,0_int64) /= transfer(expected_qbot,0_int64)) failures = failures + 1
+  if (transfer(result_c%bottom_flux,0_int64) == transfer(request_c%boundary%bottom_flux,0_int64)) failures = failures + 1
+  call constitutive%evaluate(request_c%base_state%pressure_head, check_theta, check_k, check_capacity, check_dkdh)
+  bottom_gradient = (result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) / &
+       (0.5_real64*request_c%parameters%dz(numnod)) + 1.0_real64
+  equation_residual = result_c%bottom_flux + check_k(numnod)*bottom_gradient
+  if (abs(equation_residual) > request_c%numerical%total_balance_tolerance) failures = failures + 1
+'''
+          replace_exact(test, old, new)
+          replace_exact(test,
+              "  write(*,'(A,Z16.16)') 'F-SI16_PERTURBED_HEAD_BITS ', transfer(result_c%candidate_state%pressure_head(numnod),0_int64)\n",
+              "  write(*,'(A,Z16.16)') 'F-SI16_PERTURBED_HEAD_BITS ', transfer(result_c%candidate_state%pressure_head(numnod),0_int64)\n"
+              "  write(*,'(A,ES24.16)') 'F-SI16_BOTTOM_FACE_EQUATION_RESIDUAL ', equation_residual\n")
+          replace_exact(test,
+              "  print *, 'F-SI16_BOTTOM_HEAD_RESPONSE PASS'\n",
+              "  print *, 'F-SI16_BOTTOM_HEAD_RESPONSE PASS'\n  print *, 'F-SI16_BOTTOM_FACE_EQUATION_RESIDUAL PASS'\n")
+
+          gate_text=Path(gate).read_text()
+          marker="  grep -Fq 'F-SI16_BOTTOM_HEAD_RESPONSE PASS' \"$out/output.txt\"\n"
+          if gate_text.count(marker) != 1:
+              raise SystemExit('gate response marker not unique')
+          gate_text=gate_text.replace(marker, marker + "  grep -Fq 'F-SI16_BOTTOM_FACE_EQUATION_RESIDUAL PASS' \"$out/output.txt\"\n", 1)
+          Path(gate).write_text(gate_text)
+          PY
+          git diff --check
+          git rm .github/workflows/fsi16-one-shot-response-fixture-repair.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh tests/fsi/test_fsi16_prescribed_bottom_head.F90
+          git commit -m 'F-SI16: repair response fixture and face-head equation check'
+          git push origin HEAD:work/f-si16-explicit-prescribed-bottom-head
