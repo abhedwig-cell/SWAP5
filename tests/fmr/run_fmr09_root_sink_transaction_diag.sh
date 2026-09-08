@@ -18,6 +18,9 @@ s = s.replace(
 "    self%forcing_admitted = .false.\n    self%last_observation = fmr_serialized_physical_observation_t()",
 "    self%forcing_admitted = .false.\n    self%last_observation = fmr_serialized_physical_observation_t()\n    write(*,'(A,1X,L1,1X,L1)') 'FMR09_TRACE_PREP_START=', self%root_extraction_active, associated(self%soil_parameters)", 1)
 s = s.replace(
+"    type is (fmr_b110_physical_forcing_t)\n      if (.not. allocated(forcing%drainage_flux_by_level)",
+"    type is (fmr_b110_physical_forcing_t)\n      write(*,'(A,1X,I0,1X,L1,1X,L1,1X,L1)') 'FMR09_TRACE_FORCING_ALLOC=', n, &\n           allocated(forcing%drainage_flux_by_level), allocated(forcing%subsurface_irrigation_source), &\n           allocated(forcing%root_extraction_sink)\n      if (allocated(forcing%drainage_flux_by_level) .and. allocated(forcing%subsurface_irrigation_source) .and. &\n          allocated(forcing%root_extraction_sink)) then\n        write(*,'(A,1X,I0,1X,I0,1X,I0,1X,I0)') 'FMR09_TRACE_FORCING_SHAPES=', &\n             size(forcing%drainage_flux_by_level,1), size(forcing%drainage_flux_by_level,2), &\n             size(forcing%subsurface_irrigation_source), size(forcing%root_extraction_sink)\n      end if\n      if (.not. allocated(forcing%drainage_flux_by_level)", 1)
+s = s.replace(
 "      if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return\n      if (self%root_extraction_active) then",
 "      write(*,'(A,1X,L1,1X,ES24.16,1X,ES24.16)') 'FMR09_TRACE_PREP_QROT=', self%root_extraction_active, &\n           minval(forcing%root_extraction_sink), maxval(forcing%root_extraction_sink)\n      if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return\n      if (self%root_extraction_active) then", 1)
 s = s.replace(
@@ -36,6 +39,8 @@ Path(sys.argv[1]).write_text(s)
 PY
 
 grep -Fq 'FMR09_TRACE_PREP_START=' "$DIAG_BACKEND"
+grep -Fq 'FMR09_TRACE_FORCING_ALLOC=' "$DIAG_BACKEND"
+grep -Fq 'FMR09_TRACE_FORCING_SHAPES=' "$DIAG_BACKEND"
 grep -Fq 'FMR09_TRACE_CONTEXT_OK=' "$DIAG_BACKEND"
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
