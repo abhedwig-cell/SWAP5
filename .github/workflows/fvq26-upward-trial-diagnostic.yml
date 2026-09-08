@@ -1,0 +1,32 @@
+name: F-VQ26 upward trial diagnostic
+
+on:
+  push:
+    branches:
+      - qualification/f-vq26-upward-trial-diagnostic
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Diagnose upward prescribed-head trial
+        run: |
+          set -o pipefail
+          bash tests/fvq/run_fvq26_upward_trial_diagnostic.sh | tee fvq26-upward-diagnostic.log
+      - name: Preserve diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fvq26-upward-trial-diagnostic
+          path: fvq26-upward-diagnostic.log
