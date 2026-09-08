@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR06",
+  "qualification_source_candidate": {
+    "commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_multiswap_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
+  },
+  "f_vq17": {
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "workflow_run": 34220743742,
+    "workflow_job": 102043008867,
+    "artifact_id": 10053642012,
+    "qualified": true
+  },
+  "f_mq24": {
+    "closeout_head": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_RUNTIME",
+    "decisive_workflow_run": 34221926703,
+    "decisive_workflow_job": 102046822922,
+    "post_closeout_health_run": 34222232273,
+    "post_closeout_health_job": 102047818076,
+    "snow_multiswap_production_admission": true,
+    "qualified": true
+  },
+  "scope": "EXACT_FMR06_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_WITH_FVQ16_ONE_CALL_DAILY_SNOW_AND_RESTRICTED_EQUILIBRIUM_RICHARDS",
+  "holds": [
+    "No subdaily, multiday or arbitrary-duration SNOW physics is admitted.",
+    "Parallel real-physics execution remains not admitted.",
+    "General non-equilibrium Richards scope remains not admitted.",
+    "No balanced, throughput or fallback execution policy is admitted.",
+    "No production-scale 100k-column performance claim is implied."
+  ],
+  "result": "EXACT_FMR06_CANDIDATE_EXTERNALLY_QUALIFIED_BY_FVQ17_AND_FMQ24"
+}
