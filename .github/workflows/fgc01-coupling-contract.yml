@@ -1,0 +1,21 @@
+name: F-GC01 coupling contract and deterministic harness
+
+on:
+  push:
+    branches: [work/f-gc01-groundwater-coupling]
+  pull_request:
+    paths:
+      - 'integration/f-gc/**'
+      - 'tests/fgc/**'
+      - 'tools/fgc/**'
+      - '.github/workflows/fgc01-coupling-contract.yml'
+
+jobs:
+  deterministic-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fgc/run_fgc01_gate.sh
