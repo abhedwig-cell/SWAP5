@@ -1,0 +1,76 @@
+name: F-MQ23 qualified serialized real-physics MultiSWAP
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - qualification/f-mq23-fvq14-real-physics-runtime
+    paths:
+      - '.github/workflows/fmq23-real-physics-multiswap-qualified.yml'
+      - 'tests/multiswap/run_fmq23_gate.sh'
+      - 'integration/f-mq/F-MQ23_*.json'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-rebound-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout F-MQ23 qualification overlay
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout exact F-MR05 production candidate
+        uses: actions/checkout@v4
+        with:
+          ref: c28e7a2810b4a3678c577335a6a3086b173eb976
+          path: candidate
+          fetch-depth: 0
+
+      - name: Checkout exact qualified F-VQ15 admission
+        uses: actions/checkout@v4
+        with:
+          ref: 65efc66cc76fa9005eac46e5779439c5ada574d1
+          path: fvq15
+          fetch-depth: 0
+
+      - name: Checkout exact qualified F-MR01 generic runtime basis
+        uses: actions/checkout@v4
+        with:
+          ref: 6ed341437ebcfc6bd19c281f1064a789e90fbd05
+          path: fmr01
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+
+      - name: Execute F-MQ23 G03-G19 source-bound qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qualification-results
+          bash tests/multiswap/run_fmq23_gate.sh candidate fvq15 fmr01 qualification-results \
+            | tee qualification-results/fmq23_gate.log
+
+      - name: Record exact workflow context and immutable evidence hashes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf 'fmq23_head=%s\n' "$(git rev-parse HEAD)" > qualification-results/context.txt
+          printf 'candidate_head=%s\n' "$(git -C candidate rev-parse HEAD)" >> qualification-results/context.txt
+          printf 'candidate_tree=%s\n' "$(git -C candidate rev-parse HEAD^{tree})" >> qualification-results/context.txt
+          printf 'fvq15_head=%s\n' "$(git -C fvq15 rev-parse HEAD)" >> qualification-results/context.txt
+          printf 'fmr01_head=%s\n' "$(git -C fmr01 rev-parse HEAD)" >> qualification-results/context.txt
+          find qualification-results -type f ! -name all_artifacts.sha256 -print0 \
+            | sort -z | xargs -0 sha256sum > qualification-results/all_artifacts.sha256 || true
+
+      - name: Upload F-MQ23 qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-mq23-qualified-serialized-real-physics-multiswap
+          path: qualification-results/
+          if-no-files-found: error
