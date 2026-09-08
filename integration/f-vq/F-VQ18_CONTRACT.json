@@ -6,10 +6,13 @@
   "branch": "qualification/f-vq18-fpm03-fixed-irrigation",
   "qualification_only": true,
   "source_modification_permitted": false,
-  "candidate_source_commit": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
-  "candidate_source_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+  "candidate_closeout_commit": "55efeb4090a669d179a8d93f73e0799e6c7623c5",
+  "candidate_closeout_tree": "746d40e6beb25e92986f523d80669966d861b7cb",
+  "qualified_source_commit": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+  "qualified_source_tree": "dc053278de45df5eff427689ef244159cf8d8d3e",
   "candidate_process_blob": "af8dc3b3e16d261af573c9b626704638d5ee70c9",
   "candidate_process_path": "src/process/mod_irrigation_process.f90",
+  "provenance_rule": "The F-VQ18 branch starts from the F-PM03 closeout package, while scientific source identity is locked to the F-PM03 qualified source commit and exact irrigation process blob. The two later F-PM03 commits add qualification evidence/status only and do not change production source.",
   "fpm03_status": "QUALIFIED_STRUCTURAL_FIXED_EVENT_IRRIGATION_SEAM_REQUIRES_INDEPENDENT_FVQ",
   "legacy_oracle": {
     "path": "SWAP/irrigation.f90",
@@ -18,8 +21,8 @@
   },
   "scientific_criterion": "SOURCE_BOUND_EQUATION_AND_EVENT_IDENTITY_WITH_EXACT_IDENTITY_WHERE_DEFINED_AND_NO_NEW_PHYSICS_TOLERANCE",
   "required_independent_checks": [
-    "Lock exact candidate commit, tree and irrigation process blob before execution.",
-    "Qualification branch must have zero changes under src/ and reference/ relative to the exact candidate.",
+    "Lock exact qualified source commit, source tree, closeout commit and irrigation process blob before execution.",
+    "Qualification branch must have zero changes under src/ and reference/ relative to the exact closeout candidate.",
     "Do not call the F-PM03 engineering qualification script as the scientific verifier.",
     "Reconstruct the B1.10 fixed-event oracle independently from persisted source-bound oracle rules.",
     "Verify fixed-event selection at the legacy 1e-3 management-date boundary, including just-inside and exact-boundary no-match behavior.",
@@ -31,7 +34,7 @@
     "Independently compose positive SSDI through the qualified real F-MR/F-KT route and verify authoritative total_in owns the irrigation inflow exactly once with complete mass accounting.",
     "Verify an equal balancing drainage sink can isolate identical committed Richards physics while preserving the independent mass ownership assertion.",
     "Verify fixed-event inactive/no-event columns allocate no SSDI source array.",
-    "Verify F-MR06 SNOW regression behavior remains source-identical and qualification output remains unchanged.",
+    "Verify F-MR06 SNOW source blobs remain exact and its one-call-daily rollback/replay/commit/mass smoke behavior still passes.",
     "Run O0 and O2 and require verifier-output identity."
   ],
   "hard_holds": [
