@@ -9,7 +9,8 @@ cd "$ROOT/experiments/lmfp"
 python3 -m py_compile \
   run_lmfp02_testbench.py \
   run_lmfp03_column.py \
-  run_lmfp06_darcian_reference.py
+  run_lmfp06_darcian_reference.py \
+  run_lmfp06_szym2009_control.py
 
 python3 run_lmfp06_darcian_reference.py \
   > "$OUTDIR/F-LMFP06_DARCIAN_REFERENCE_EVIDENCE.json"
@@ -42,5 +43,35 @@ print(json.dumps({
     'max_accumulated_ode_steps_per_root': matrix['max_accumulated_ode_steps_per_root'],
   },
   'reproducibility': e['tests']['oracle_tolerance_reproducibility'],
+}, indent=2, sort_keys=True))
+PY
+
+python3 run_lmfp06_szym2009_control.py \
+  > "$OUTDIR/F-LMFP06_SZYMKIEWICZ_2009_CONTROL.json"
+
+python3 - "$OUTDIR/F-LMFP06_SZYMKIEWICZ_2009_CONTROL.json" <<'PY'
+import json, pathlib, sys
+p = pathlib.Path(sys.argv[1])
+e = json.loads(p.read_text())
+assert e['structural_pass'] is True
+assert e['swkmean7_reproduced'] is False
+for name, test in e['tests'].items():
+    assert test['pass'] is True, name
+m = e['tests']['homogeneous_oracle_matrix']
+assert m['failures'] == 0
+assert m['sign_mismatch'] == 0
+assert m['szym2009_error']['p90'] < m['mfp_error']['p90']
+print(json.dumps({
+  'structural_pass': e['structural_pass'],
+  'control': e['control'],
+  'swkmean7_reproduced': e['swkmean7_reproduced'],
+  'targeted': e['tests']['targeted_strong_gradient_control'],
+  'matrix_summary': {
+    'cases': m['cases'],
+    'fraction_szym2009_better_than_mfp': m['fraction_szym2009_better_than_mfp'],
+    'mfp_error': m['mfp_error'],
+    'szym2009_error': m['szym2009_error'],
+    'by_regime': m['by_regime'],
+  }
 }, indent=2, sort_keys=True))
 PY
