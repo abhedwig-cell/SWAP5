@@ -9,12 +9,17 @@
     "commit": "7fd36497ba071ddb7d6fe59677f5f2aa8fdda557",
     "decision": "QUALIFIED_INITIAL_FULLRICHARDS_AB_READY_FOR_FLUX_CLOSURE_ATTRIBUTION"
   },
+  "candidate_head_before_closeout": "02518234e0a607dd682f9c603d5db31b614c358b",
   "objective": "Attribute the persistent LayeredMFP versus FullRichards redistribution/interface offsets to face-flux closure versus time integration and determine their behaviour under spatial refinement before changing the candidate solver.",
   "scope": {
     "production_implementation": false,
     "production_src_changed": false,
+    "physics_changed": false,
+    "solver_controls_changed": false,
+    "mass_or_temporal_tolerances_changed": false,
     "hydraulic_only": true,
     "fullrichards_oracle": "current SWAP5 reference_richards_legacy_solver_t",
+    "reference_conductivity_mean": "SWKMEAN=1 arithmetic endpoint conductivity",
     "bottom_mode": 7,
     "top_boundary": "explicit flux",
     "crop": false,
@@ -23,30 +28,81 @@
     "groundwater": false,
     "modflow": false
   },
-  "attribution_questions": [
-    "How different are arithmetic endpoint-K and MFP-secant face fluxes on identical frozen states?",
-    "Does substituting arithmetic-K into the reduced-order update collapse the small-dt homogeneous redistribution difference to FullRichards?",
-    "Do LayeredMFP and FullRichards approach each other under spatial refinement for the same continuous homogeneous profile?",
-    "At material interfaces, does coarse LayeredMFP agree better with a refined Richards reference than with the coarse four-layer Richards discretisation?",
-    "Does the historical SWAP SWKMEAN=7 Darcian-mean option indicate an existing alternative face-discretisation lineage that must be accounted for?"
-  ],
-  "new_provenance_finding": {
-    "source": "/mnt/data/SWAP_4.3.1(6).zip nested tools/SWAP/source/SWAP.ZIP",
-    "finding": "functions.f90 defines SWKMEAN=1..7; mode 7 delegates to MOD_Kavg_Szym and is described as a Darcian mean after Szymkiewicz/Warrick, using precomputed profile/grid-specific tables.",
-    "qualification_effect": "SWKMEAN=7 is a diagnostic lineage/control to investigate, not an admitted replacement reference in F-LMFP05 unless independently reconstructed and verified."
+  "decisive_evidence": {
+    "final_same_grid_and_spatial_gate_run": 34261087376,
+    "final_same_grid_and_spatial_gate_conclusion": "SUCCESS",
+    "post_report_verification_run": 34261524163,
+    "post_report_verification_conclusion": "SUCCESS",
+    "post_report_artifact": 10070065182,
+    "post_report_artifact_digest": "sha256:ca3b717c732808d4baf227ff2c3ca3cf77be00b24d200f2f903f629dbe861262",
+    "same_grid_mfp_over_arithmetic_error_ratio": {
+      "redistribution_sand": 963,
+      "sand_over_clay": 7233,
+      "clay_over_sand": 5211
+    },
+    "homogeneous_refinement": {
+      "coarse_dx_cm": 10.0,
+      "coarse_max_abs_flux_difference_cm_per_day": 0.072581,
+      "fine_dx_cm": 0.15625,
+      "fine_max_abs_flux_difference_cm_per_day": 0.000098777,
+      "fine_grid_observed_order": "approaches 2"
+    },
+    "heterogeneous_interface_limit": {
+      "K_sand_at_interface_cm_per_day": 0.020064,
+      "K_clay_at_interface_cm_per_day": 0.004861,
+      "arithmetic_limit_cm_per_day_magnitude": 0.012462,
+      "equal_flux_harmonic_limit_cm_per_day_magnitude": 0.0078253,
+      "difference_persists_under_refinement": true
+    },
+    "frozen_face_sweep": {
+      "cases": 1296,
+      "all_mfp_face_solves_succeeded": true,
+      "maximum_interface_bisection_iterations": 47,
+      "flow_direction_disagreements": 0,
+      "extreme_contrast_magnitude_difference_observed": true
+    }
   },
-  "hard_rules": {
-    "mass_conservation_required": true,
-    "no_post_update_clipping": true,
-    "no_production_path_change": true,
-    "do_not_tune_layeredmfp_to_coarse_richards_before_spatial_attribution": true,
-    "do_not_claim_swkmean7_behaviour_without_source_or table evidence": true
+  "claims": {
+    "persistent_f_lmfp04_offset_attributed_to_face_closure": "ESTABLISHED",
+    "homogeneous_mfp_and_arithmetic_closures_same_local_continuum_limit": "SUPPORTED_BY_REFINEMENT",
+    "heterogeneous_mfp_equal_flux_limit_is_harmonic_series_resistance": "ESTABLISHED_FOR_TESTED_LOCAL_LIMIT",
+    "swkmean1_is_unique_physical_truth_at_material_interface": "NOT_ESTABLISHED",
+    "layeredmfp_should_be_changed_to_arithmetic_k": "REJECTED",
+    "swkmean7_numerical_behaviour": "NOT_ESTABLISHED_MISSING_PRECOMPUTED_TABLES",
+    "production_reference_small_dt_defect": "NOT_ESTABLISHED",
+    "wall_clock_speedup": "NOT_ESTABLISHED",
+    "production_admission": "NOT_GRANTED"
   },
-  "status": "ATTRIBUTION_HARNESS_IN_PREPARATION",
+  "failed_or_rejected_diagnostic_routes": {
+    "tiny_dt_reference_probe": {
+      "classification": "REJECTED_AS_SPATIAL_ORACLE",
+      "reason": "Current Reference HeadCalc showed case/grid-dependent and non-monotone retry behaviour at diagnostic very small timesteps. Tolerances were not weakened or tuned to force passage."
+    }
+  },
+  "source_provenance": {
+    "swap_4_3_1_swkmean7": "MOD_Kavg_Szym.f90 and functions.f90 show a Darcian-mean option attributed in source comments to Szymkiewicz/Warrick.",
+    "required_table_pattern": "Kavg_Szymkiewicz_<profile>_<numnod>.unf",
+    "required_tables_found_in_supplied_archive": false,
+    "qualification_effect": "SWKMEAN=7 remains a lineage/reference candidate for F-LMFP06, not an admitted F-LMFP05 oracle."
+  },
+  "architecture_invariants": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "transactional_timesteps": "UNCHANGED",
+    "mass_conservation": "UNCHANGED_HARD",
+    "reference_mode": "UNCHANGED",
+    "solver_policy_physics_separation": "PRESERVED",
+    "alternative_soil_water_solvers": "SUPPORTED_BY_NO_PRODUCTION_CHANGE",
+    "diagnostic_truthfulness": "PRESERVED_BY_REJECTING_UNCLEAN_TINY_DT_ORACLE"
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false
-  }
+    "TESTED": true,
+    "QUALIFIED": true
+  },
+  "report": "integration/f-lmfp/F-LMFP05_REPORT.md",
+  "next_work_unit": "F-LMFP06",
+  "next_action": "Qualify heterogeneous material-interface physics using an independent interface-consistent reference and reconstruct the Szymkiewicz/Warrick Darcian-mean lineage before any LayeredMFP face-law change.",
+  "status": "QUALIFIED_FACE_CLOSURE_ATTRIBUTION_READY_FOR_INTERFACE_PHYSICS_QUALIFICATION"
 }
