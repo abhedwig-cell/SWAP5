@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ24",
+  "scope": "INDEPENDENT_FMR13_NONZERO_HEADCALC_REFERENCE_EQUIVALENCE",
+  "phase": "PERSISTED_PENDING_VERIFIER_IMPLEMENTATION",
+  "status": "IN_PROGRESS_VERIFIER_ONLY",
+  "branch": "qualification/f-vq24-fmr13-nonzero-headcalc-equivalence",
+  "base_admission": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
+  "candidate": "985058c0261d284424432a65bded16b7fc9107cb",
+  "contract": "integration/f-vq/F-VQ24_CONTRACT.json",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "candidate_production_source_changed": false
+  },
+  "scientific_admission": false,
+  "next_gate": "Persist and run the independent F-SI18 five-case production-bound HeadCalc reference-equivalence verifier at O0 and O2."
+}
