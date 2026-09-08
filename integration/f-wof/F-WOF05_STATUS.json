@@ -7,7 +7,8 @@
     "status": "QUALIFIED_WOFOST73_REALLOCATION_OWNER_HOST_STRUCTURAL_SEAM"
   },
   "branch": "work/f-wof05-stem-reallocation-composition",
-  "status": "ADMITTED_STEM_ONLY_REALLOCATION_COMPOSITION_LEAF_FAIL_CLOSED",
+  "status": "QUALIFIED_TWO_TRACK_STEM_ONLY_REALLOCATION_COMPOSITION_LEAF_FAIL_CLOSED",
+  "qualification_scope": "POTENTIAL_ACTUAL_STEM_ONLY_ONE_DAY_COMPOSITION",
   "owner": "Crop, ET and root-uptake physics",
   "scope": {
     "stem_reallocation_allowed": true,
@@ -38,10 +39,37 @@
     "finding": "PCSE Wofost73 imports WOFOST_Leaf_Dynamics, while proportional REALLOC_LV cohort reduction is present in the N-aware leaf implementation used by Wofost81; standard WOFOST73 crop parameter examples keep leaf reallocation disabled.",
     "policy": "Fail closed whenever leaf_fraction > 0 or leaf_rate > 0 until leaf-cohort semantics and edge cases are independently qualified."
   },
+  "qualified_candidate": {
+    "commit": "227033d7deca9b5c9ad9d3ca4ed96f43afc3e4e1",
+    "composition_source_blob": "ea48b93479b74a2d1225f5b468472fed2dd93477",
+    "focused_test_blob": "e50944eaa3a8ae8708798fd177b843ab119399aa",
+    "gate_runner_blob": "aac2463d06cc137a3aaea5a516c8ffb579ddbe58",
+    "workflow_blob": "f06f455d14cdc0c961baa9038368810c50b134d4"
+  },
+  "verification": {
+    "github_actions_run": 34240727439,
+    "github_actions_conclusion": "success",
+    "persisted_scope_gate": "PASS",
+    "o0_o2_identity_gate": "PASS",
+    "official_winterwheat_vector": "PASS",
+    "repeat_trial_transactionality": "PASS",
+    "pair_fail_atomicity": "PASS",
+    "negative_stem_endpoint_rejection": "PASS",
+    "leaf_reallocation_fail_closed": "PASS",
+    "non_daily_duration_fail_closed": "PASS",
+    "dry_matter_balance": "PASS"
+  },
   "production_migration_allowed": true,
   "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
-  "next": "Implement a pure two-track stem-only composition layer around the qualified F-WOF04 reallocation subcomponent, with fail-atomic trials and hard dry-matter balance."
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "scientific_claims_not_made": [
+    "leaf reallocation is qualified",
+    "full WOFOST73 crop integration is qualified",
+    "WOFOST81 nitrogen physics is qualified",
+    "arbitrary subdaily crop reallocation is qualified",
+    "legacy SWAP nitrogen may be removed"
+  ],
+  "next": "Resolve and qualify leaf-cohort reallocation semantics independently, or continue WOFOST73 crop-host composition only through physics that does not require leaf reallocation."
 }
