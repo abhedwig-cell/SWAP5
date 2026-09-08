@@ -1,6 +1,7 @@
 module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
+       TX_MASS_MISSING_UNSPECIFIED
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
@@ -112,6 +113,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: prepare_interval => fmr_serialized_prepare_interval
     procedure :: advance => fmr_serialized_advance
     procedure :: storage => fmr_serialized_storage
+    procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
   end type fmr_serialized_reference_model_t
 
@@ -399,6 +401,8 @@ contains
 
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          outcome%mass_in, outcome%mass_out)
+    outcome%mass_accounting_complete = .true.
+    outcome%missing_mass_contribution_mask = TX_MASS_MISSING_NONE
     outcome%solver_ok = .true.
   end subroutine fmr_serialized_advance
 
@@ -443,6 +447,27 @@ contains
       error stop 'F-MR04 physical storage type mismatch'
     end select
   end function fmr_serialized_storage
+
+  subroutine fmr_serialized_storage_accounting_status(self, state, complete, missing_mask)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+    if (.not. associated(self%soil_parameters)) return
+    select type (physical => state)
+    type is (fmr_b110_physical_state_t)
+      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. &
+           allocated(physical%pressure_head) .and. allocated(physical%water_content)
+      if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
+           size(physical%water_content) == physical%active_nodes
+    class default
+      complete = .false.
+    end select
+    if (complete) missing_mask = TX_MASS_MISSING_NONE
+  end subroutine fmr_serialized_storage_accounting_status
 
   real(real64) function fmr_serialized_temporal_identity(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self
