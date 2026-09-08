@@ -52,21 +52,25 @@ program test_fpm05_macro_feddes_root_uptake
   call require(close(diag%critical_pressure_head,parameters%hlim3h), 'hlim3 high branch')
   write(*,'(A)') 'FPM05_HLIM3_BRANCH_BOUNDARIES=PASS'
 
+  bad_view = process_hydraulic_view_t()
   request_variant = request
   request_variant%rooted_nodes = 0
-  ! A stale crop-owned distribution is intentionally left allocated: the
-  ! explicit no-root route must ignore it and produce no uptake.
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
+  if (allocated(request_variant%cumulative_root_fraction)) deallocate(request_variant%cumulative_root_fraction)
+  call evaluate_macro_feddes_drought_uptake(parameters,bad_view,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_OK .and. diag%no_roots, 'no-root early exit')
   call require(allocated(flux%root_extraction_sink) .and. maxval(abs(flux%root_extraction_sink)) == 0.0_real64, &
        'no-root zero sink')
+  write(*,'(A)') 'FPM05_NO_ROOT_ROUTE_NO_HYDRAULIC_OR_DISTRIBUTION_DEPENDENCY=PASS'
 
+  bad_view = process_hydraulic_view_t()
   request_variant = request
   request_variant%potential_transpiration = 1.0e-12_real64
-  call evaluate_macro_feddes_drought_uptake(parameters,view_a,request_variant,flux,diag)
+  if (allocated(request_variant%cumulative_root_fraction)) deallocate(request_variant%cumulative_root_fraction)
+  call evaluate_macro_feddes_drought_uptake(parameters,bad_view,request_variant,flux,diag)
   call require(diag%status == ROOT_UPTAKE_OK .and. diag%negligible_transpiration, &
        'negligible transpiration early exit')
   call require(maxval(abs(flux%root_extraction_sink)) == 0.0_real64, 'negligible transpiration zero sink')
+  write(*,'(A)') 'FPM05_NEGLIGIBLE_PTRA_ROUTE_NO_HYDRAULIC_OR_DISTRIBUTION_DEPENDENCY=PASS'
   write(*,'(A)') 'FPM05_LEGACY_EARLY_EXIT_ZERO_ROUTES=PASS'
 
   parameter_variant = parameters
