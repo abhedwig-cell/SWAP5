@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF19",
+  "title": "Source-Bound Crop/Canopy Owner-State Evidence",
+  "base_commit": "828350c4f48e7004993af90b3b9e2f3874babec3",
+  "source_provenance": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "interface_plant_f90_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822"
+  },
+  "legacy_execution_findings": {
+    "crop_emergence": {
+      "evidence": "cropemergence mutates fl_start_cropemergence and fl_cropemergence; croprotation resets/sets these around active crop/calendar transitions",
+      "regions": ["SWAP/MOD_cropdevelopment.f90:260-343", "SWAP/MOD_cropdevelopment.f90:375-447"],
+      "classification": "COMMITTED_CROP_LIFECYCLE_STATE"
+    },
+    "DVS": {
+      "evidence": "DVS is a saved plant status field, is initialized/reset, is advanced by crop development, and is consumed by cropfactor and SWRD=1 root depth",
+      "regions": ["SWAP/interface_plant.f90:85-90", "SWAP/MOD_cropdevelopment.f90:1040-1082", "SWAP/MOD_cropdevelopment.f90:1230-1234", "SWAP/MOD_cropdevelopment.f90:1867-1870"],
+      "classification": "COMMITTED_CROP_STATE"
+    },
+    "LAI": {
+      "evidence": "LAI is a saved actual crop-status field, reset with crop state, and croprotation derives vcover from current LAI and extinction coefficients",
+      "regions": ["SWAP/interface_plant.f90:85-93", "SWAP/MOD_cropdevelopment.f90:342-343", "SWAP/MOD_cropdevelopment.f90:1076-1079"],
+      "classification": "COMMITTED_CROP_STATE"
+    },
+    "WRT": {
+      "evidence": "WRT is a saved actual root biomass field and SWRD=3 derives root depth from RLWTB and current WRT",
+      "regions": ["SWAP/interface_plant.f90:90-97", "SWAP/MOD_cropdevelopment.f90:1809-1811", "SWAP/MOD_cropdevelopment.f90:1934-1937"],
+      "classification": "COMMITTED_CROP_BIOMASS_STATE"
+    },
+    "SWRD2_root_depth": {
+      "evidence": "SWRD=2 incrementally advances rd and rdpot based on prior values and stress/assimilation conditions",
+      "regions": ["SWAP/MOD_cropdevelopment.f90:1851-1932"],
+      "classification": "OPTIONAL_COMMITTED_ROOT_HISTORY"
+    },
+    "vegetation_cover_fraction": {
+      "evidence": "croprotation assigns vcover = 1 - exp(-kdir*kdif*lai)",
+      "region": "SWAP/MOD_cropdevelopment.f90:342-343",
+      "classification": "RECONSTRUCTIBLE_VIEW_NOT_COMMIT_AUTHORITY"
+    },
+    "crop_factor_CF": {
+      "evidence": "for SWCF=1 cropfactor task 2 assigns CF = AFGEN(CFTB,DVS)",
+      "region": "SWAP/MOD_cropdevelopment.f90:1208-1244",
+      "classification": "RECONSTRUCTIBLE_VIEW_NOT_COMMIT_AUTHORITY"
+    },
+    "fco2tra": {
+      "evidence": "co2_effect task 2 initializes fco2tra=1 and, when CO2 correction is active, derives it from selected CO2 concentration and CO2TRATB",
+      "region": "SWAP/MOD_cropdevelopment.f90:885-909",
+      "classification": "CURRENT_DERIVED_CROP_RESPONSE_FACTOR_NOT_COMMIT_AUTHORITY"
+    },
+    "potential_transpiration": {
+      "evidence": "F-WOF18 already qualifies the restricted SWETR=1/SWINTER=0 current ET result and F-WOF15 classifies it outside crop-root committed state",
+      "classification": "CURRENT_ET_PROCESS_RESULT"
+    }
+  },
+  "current_admitted_lineage_inventory": {
+    "src_crop": [
+      "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+      "src/crop/mod_crop_root_uptake_input_assembly.f90",
+      "src/crop/mod_crop_root_uptake_input_contract.f90",
+      "src/crop/mod_nonadaptive_crop_root_view_producer.f90"
+    ],
+    "concrete_crop_lifecycle_host_present": false,
+    "committed_DVS_owner_present": false,
+    "committed_LAI_owner_present": false,
+    "committed_WRT_owner_present": false,
+    "committed_SWRD2_depth_owner_present": false,
+    "qualified_root_geometry_producer_present": true,
+    "qualified_nonadaptive_root_view_producer_present": true,
+    "qualified_restricted_ET_result_producer_present": true
+  },
+  "historical_F_WOF04_to_F_WOF10_lineage": {
+    "F_WOF10_head": "98a26f0294aafac6d1ed46ace2d6bcc05914d9f0",
+    "src_crop_at_F_WOF10": [
+      "src/crop/mod_wofost73_reallocation.f90",
+      "src/crop/mod_wofost_leaf_cohort_reallocation.f90",
+      "src/crop/mod_wofost_reallocation_request_apply.f90",
+      "src/crop/mod_wofost_stem_reallocation_composition.f90"
+    ],
+    "contains_full_crop_lifecycle_host": false,
+    "compare_to_F_WOF18": {
+      "status": "diverged",
+      "F_WOF10_only_commits": 35,
+      "F_WOF18_only_commits": 331,
+      "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+    },
+    "blind_merge_permitted": false
+  },
+  "minimal_future_owner_authority": {
+    "common_committed_fields": ["crop_emerged", "DVS", "LAI"],
+    "mode_specific_fields": {
+      "SWRD_1": [],
+      "SWRD_2": ["actual_root_depth", "potential_root_depth"],
+      "SWRD_3": ["WRT for the root-geometry dependency"]
+    },
+    "must_not_be_added_as_duplicate_state": [
+      "vcover",
+      "CF",
+      "rooted_nodes",
+      "cumulative_root_fraction",
+      "potential_transpiration"
+    ]
+  },
+  "transaction_gap": {
+    "current_lineage_has_crop_lifecycle_state_binding": false,
+    "current_lineage_has_crop_lifecycle_checkpoint_rollback_tests": false,
+    "why_blocking": "Without an admitted transactional crop owner, F-WOF17/F-WOF18 can be unit-qualified as pure producers but cannot be claimed to receive authoritative current crop state during checkpoint, retry, rollback and replay."
+  },
+  "decision": "BLOCK_FULL_OWNER_COMPOSITION_UNTIL_TRANSACTIONAL_CROP_LIFECYCLE_HOST_EXISTS"
+}
