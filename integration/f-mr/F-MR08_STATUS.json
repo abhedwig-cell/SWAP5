@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR08",
+  "title": "Nonstationary Temporal Acceptance Owner Resolution",
+  "branch": "work/f-mr08-nonstationary-temporal-acceptance",
+  "start_checkpoint": "fb1875aea5d0738fa0440f11fbc197623bde6b6c",
+  "path_a_evidence_checkpoint": "428d32b1cc6304cde2a9e610fd1a0a04487b119d",
+  "tested_source_head": "49ddb20933b1ba73a15c3343f5566185e904ec74",
+  "tested_source_tree": "338c15d5dd0dbd0dae2a6c0f0cd5514221bef580",
+  "qualification_evidence_commit": "b938fd5837475f473ad2de1c46e5e249d9403013",
+  "phase": "OWNER_QUALIFIED_READY_FOR_INDEPENDENT_FVQ",
+  "status": "QUALIFIED_OWNER_CANDIDATE",
+  "decision": "QUALIFIED_EXISTING_TEMPORAL_IDENTITY_WITH_ADMITTED_NONSTATIONARY_FIXTURE_READY_FOR_FVQ",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": true,
+  "qualification_scope": "F-MR OWNER QUALIFICATION ONLY; NEW INDEPENDENT F-VQ OF THE F-MR08 CANDIDATE IS STILL REQUIRED",
+  "production_source_changed": false,
+  "fkt_source_changed": false,
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "temporal_tolerance_changed": false,
+  "mass_semantics_changed": false,
+  "exact_identity_rule_changed": false,
+  "path_a": {
+    "result": "PROVEN",
+    "fixture": "tests/fmr/test_fmr06_snow_smoke.f90",
+    "fixture_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "exact_prior_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "nonstationary_state": "active SNOW persistent state",
+    "initial_snow_water_storage": 0.10,
+    "committed_snow_water_storage": 0.12,
+    "snow_storage_delta": 0.02,
+    "temporal_tolerance": 0.0,
+    "non_midnight_interval": [1400.25, 1401.25],
+    "full_vs_two_half_comparator_includes_active_snow_state": true,
+    "mass_separate_hard_gate": true
+  },
+  "path_b": {
+    "needed_for_immediate_fpe_blocker": false,
+    "production_implementation_allowed": false,
+    "blocker": "No independently qualified per-metric numeric temporal limits or admitted scope exist; arbitrary normalization limits would be scientific tuning."
+  },
+  "source_lock": {
+    "src/process/mod_snow_process.f90": "54702d71b4c84dce2842813549bd14c57301a383",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "tests/fmr/test_fmr06_snow_smoke.f90": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "all_preexisting_files_since_ffab7d_modified_or_deleted": false
+  },
+  "owner_gate": {
+    "workflow": ".github/workflows/fmr08-nonstationary-temporal-acceptance.yml",
+    "gate": "tests/fmr/run_fmr08_path_a_gate.sh",
+    "workflow_run": 34238749505,
+    "workflow_job": 102103168369,
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success",
+    "source_lock": "PASS",
+    "nonstationary_source_audit": "PASS",
+    "fmr06_engineering_replay": "PASS",
+    "path_a_gate": "PASS_OWNER_CANDIDATE_REQUIRES_INDEPENDENT_FVQ"
+  },
+  "prior_independent_evidence": {
+    "work_unit": "F-VQ17",
+    "closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "decisive_qualification_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "workflow_run": 34220743742,
+    "decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "scope_reused": "existing admitted one-call-daily SNOW route only",
+    "does_not_replace_new_fmr08_fvq": true
+  },
+  "holds": [
+    "Mass conservation remains an absolute separate hard gate and is not normalized or relaxed.",
+    "Rejected or discarded trials do not mutate externally committed state.",
+    "No new temporal tolerance or numeric profile has been introduced.",
+    "No subdaily, multiday or arbitrary-duration SNOW scope is admitted by F-MR08.",
+    "No BALANCED, THROUGHPUT, FALLBACK or parallel real-physics execution scope is admitted by F-MR08.",
+    "F-PE must not consume this F-MR08 owner candidate until a new independent F-VQ has admitted the exact immutable candidate."
+  ],
+  "artifacts": [
+    "integration/f-mr/F-MR08_DECISION_CONTRACT.json",
+    "integration/f-mr/F-MR08_PATH_A_EVIDENCE.json",
+    "integration/f-mr/F-MR08_QUALIFICATION_EVIDENCE.json",
+    "integration/f-mr/F-MR08_STATUS.json",
+    "tests/fmr/run_fmr08_path_a_gate.sh",
+    ".github/workflows/fmr08-nonstationary-temporal-acceptance.yml"
+  ],
+  "next_step": {
+    "owner": "F-VQ",
+    "instruction": "Independently qualify the exact immutable F-MR08 closeout candidate. Recheck the source lock, independently establish that active persistent SNOW state changes while exact full-vs-two-half temporal acceptance at tolerance zero succeeds, preserve hard mass and transaction gates, and do not introduce or tune graded temporal limits. Only after independent PASS may F-PE resume consumption of this fixture."
+  }
+}
