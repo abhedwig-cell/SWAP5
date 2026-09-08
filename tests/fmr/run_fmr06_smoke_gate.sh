@@ -19,7 +19,7 @@ check_blob() {
 
 check_blob src/process/mod_snow_process.f90 54702d71b4c84dce2842813549bd14c57301a383
 check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 202ab846cbd30d149d0d450249b3d517e333994f
-check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 296353619916d7277352fd0ce26ce0894080b97f
+check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 1bb0c6d4683db2729d48de31babcea72bc1a6caf
 check_blob src/kernel/mod_kernel_transactions.f90 9f7c16e71cfb93b57f796ba759bae73824318a2f
 check_blob src/transaction/mod_transaction_reference.f90 b1878606ae6cb2b04a7b4b15e3e537deacf4477f
 check_blob src/runtime/mod_canonical_contracts.f90 0c2b15fc45011c580384cf6a618e7b378fdccf0a
@@ -47,8 +47,9 @@ for token in ['prepare_snow_outer_event', 'evaluate_snow_reference_call', 'snow_
               'fmr_trial_from_checkpoint']:
     assert token in backend, f'missing F-MR06 snow seam token: {token}'
 assert 'melt_internal_transfer' in process, 'admitted snow process missing melt internal-transfer mass term'
-assert 'call fmr_build_execution_order(columns, order)' in dispatch, 'deterministic aggregate execution order missing'
-assert 'results(order(j))%column_id' in dispatch, 'deterministic authoritative mass ordering missing'
+assert 'call fmr_build_execution_order(columns, order)' in dispatch, 'canonical execution order missing'
+assert 'call build_aggregate(columns, diagnostics, batches, aggregate, order)' in dispatch, 'generic aggregate does not reuse canonical order'
+assert 'call finalize_runtime_diagnostics(results, local_runtime, order)' in dispatch, 'authoritative aggregate does not reuse canonical order'
 print('FMR06_SOURCE_SCOPE_AND_ARCHITECTURE PASS')
 PY
 
