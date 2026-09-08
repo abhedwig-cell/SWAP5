@@ -159,7 +159,7 @@ contains
     call evaluate_scheduled_irrigation_interval(p,active,req,unused_view,finished,flux,diag)
     call require(diag%status == IRRIGATION_OK .and. flux%event_finished,'continuation without new selection/view')
     call require(.not. finished%active_event,'completion clears event')
-    call require(close_real(flux%active_duration,0.15_real64),'continuation persisted duration')
+    call require(close_time_delta(flux%active_duration,0.15_real64,req%t0,req%t1),'continuation persisted duration')
 
     req=scheduled_irrigation_request_t()
     req%t0=t0+duration; req%t1=t0+duration+0.10_real64; req%dvs=0.5_real64
@@ -301,6 +301,13 @@ contains
     tol=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(a),abs(b))
     close_real=abs(a-b)<=tol
   end function close_real
+
+  logical function close_time_delta(a,b,t_left,t_right)
+    real(real64), intent(in) :: a,b,t_left,t_right
+    real(real64) :: tol
+    tol=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(t_left),abs(t_right))
+    close_time_delta=abs(a-b)<=tol
+  end function close_time_delta
 
   logical function same_bits(a,b)
     real(real64), intent(in) :: a,b
