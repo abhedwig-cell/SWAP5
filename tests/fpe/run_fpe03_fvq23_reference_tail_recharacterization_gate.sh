@@ -19,8 +19,6 @@ LINEAR_SOLVER_BLOB=b292d284e5549049eac1c80df4cc30008154eb96
 HEADCALC_BLOB=1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b
 WORKSPACE_BLOB=178d3289e09583c256b1aa400407d468d9c18e68
 
-# F-PE is characterization-only here. The production postimage must remain
-# exactly the F-MR13 source that F-VQ23 independently admitted.
 git diff --quiet "$FMR13" -- src || {
   echo 'FPE03_FVQ23_PRODUCTION_SOURCE_IMMUTABILITY=FAIL' >&2
   git diff --name-only "$FMR13" -- src >&2
@@ -36,14 +34,12 @@ from pathlib import Path
 s=json.loads(Path('integration/f-vq/F-VQ23_STATUS.json').read_text())
 assert s['status'] == 'QUALIFIED_INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_SCIENTIFIC_NO_CHANGE_ADMISSION'
 assert s['state']['qualified'] is True
-assert s['production_source_modified'] is False
+assert s['state']['production_source_modified'] is False
 print('FPE03_FVQ23_SCIENTIFIC_REFERENCE_LINEAGE_LOCK=PASS')
 PY
 echo 'FPE03_FVQ23_PRODUCTION_SOURCE_IMMUTABILITY=PASS'
 echo 'FPE03_FVQ23_REFERENCE_LINEAR_SOLVER_SOURCE_LOCKS=PASS'
 
-# Re-materialize the exact historical diagnostic workload. Do not edit the
-# perturbation levels or scientific source anchors in this work unit.
 [[ "$(git rev-parse "$OLD_FPE03:tests/fpe/test_fpe03_reference_stress.f90")" == "$OLD_TEST_BLOB" ]]
 [[ "$(git rev-parse "$HISTORICAL_FPE03:tests/fpe/fpe03_make_nonstationary_snow_overlay.py")" == "$NONSTATIONARY_GENERATOR_BLOB" ]]
 [[ "$(git rev-parse "$HISTORICAL_FPE03:tests/fpe/fpe03_make_flux_refinement_probe.py")" == "$REFINEMENT_GENERATOR_BLOB" ]]
@@ -131,7 +127,6 @@ baseline=(
 assert vals['FPE03_CASE_01_ACCEPTED'] == 'T'
 assert vals['FPE03_CASE_01_ACCEPTED_SUBSTEPS'] == '1'
 assert baseline == (3,0,3,3,3,3,0), baseline
-
 levels=[1e-10,3e-11,1e-11,3e-12,1e-12]
 accepted=[]
 rejected=[]
@@ -140,15 +135,7 @@ for j,level in enumerate(levels):
     for offset,sign in ((0,'plus'),(1,'minus')):
         i=2+2*j+offset
         p=f'FPE03_CASE_{i:02d}_'
-        vector=(
-            int(vals[p+'NONLINEAR_ITERATIONS']),
-            int(vals[p+'INTERNAL_RETRIES']),
-            int(vals[p+'HEADCALC_CALLS']),
-            int(vals[p+'JACOBIAN_BUILDS']),
-            int(vals[p+'LINEAR_SOLVES']),
-            int(vals[p+'BACKTRACKING_ATTEMPTS']),
-            int(vals[p+'ALTERNATIVE_SOLVER_CALLS']),
-        )
+        vector=(int(vals[p+'NONLINEAR_ITERATIONS']),int(vals[p+'INTERNAL_RETRIES']),int(vals[p+'HEADCALC_CALLS']),int(vals[p+'JACOBIAN_BUILDS']),int(vals[p+'LINEAR_SOLVES']),int(vals[p+'BACKTRACKING_ATTEMPTS']),int(vals[p+'ALTERNATIVE_SOLVER_CALLS']))
         row=(sign,level,vector)
         if vals[p+'ACCEPTED']=='T':
             accepted.append(row)
@@ -156,7 +143,6 @@ for j,level in enumerate(levels):
                 higher.append(row)
         else:
             rejected.append(row)
-
 fmt=lambda row: f'{row[0]}:{row[1]:.0e}:' + ','.join(map(str,row[2]))
 print('FPE03_FVQ23_BASELINE_COST_VECTOR=' + ','.join(map(str,baseline)))
 print('FPE03_FVQ23_ACCEPTED_NONZERO_COUNT=' + str(len(accepted)))
