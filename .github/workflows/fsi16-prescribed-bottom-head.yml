@@ -6,8 +6,12 @@ on:
       - work/f-si16-explicit-prescribed-bottom-head
     paths:
       - 'integration/f-si/F-SI16_*'
+      - 'reference/swap-4.3.1/b1_10_oracles/F-SI16_*'
       - 'tests/fsi/test_fsi16_prescribed_bottom_head.F90'
+      - 'tests/fsi/test_fsi16_b110_direct_oracle_common.F90'
+      - 'tests/fsi/mod_fsi16_b110_direct_oracle_fixture.f90'
       - 'tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh'
+      - 'tests/fsi/run_fsi16_b110_direct_oracle_gate.sh'
       - 'tests/fsi/run_fsi16_qualification_matrix_gate.sh'
       - 'tests/fsi/run_fsi16_qualification_matrix_gate_v2.sh'
       - 'tests/fsi/run_fsi16_closeout_regression_gate.sh'
@@ -31,5 +35,7 @@ jobs:
         run: bash tests/fsi/run_fsi16_prescribed_bottom_head_gate.sh
       - name: F-SI16 qualification matrix
         run: bash tests/fsi/run_fsi16_qualification_matrix_gate_v2.sh
+      - name: F-SI16 exact B1.10 numerical oracle
+        run: bash tests/fsi/run_fsi16_b110_direct_oracle_gate.sh
       - name: F-SI16 pinned predecessor and F-KT closeout regressions
         run: bash tests/fsi/run_fsi16_closeout_regression_gate.sh
