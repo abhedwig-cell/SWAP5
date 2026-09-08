@@ -6,7 +6,8 @@
     "commit": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
   },
   "branch": "work/f-wof04-crop-owner-host",
-  "status": "OWNER_RESOLVED_MINIMAL_CROP_HOST_IMPLEMENTATION_ADMITTED",
+  "status": "QUALIFIED_WOFOST73_REALLOCATION_OWNER_HOST_STRUCTURAL_SEAM",
+  "qualification_scope": "OWNER_QUALIFIED_STANDALONE_CROP_SUBCOMPONENT_ONLY",
   "owner": "Crop, ET and root-uptake physics",
   "source_bound_basis": [
     "docs/architecture/component-map.md",
@@ -29,8 +30,34 @@
   },
   "production_migration_allowed": true,
   "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
-  "next": "Implement only the minimal src/crop WOFOST73 reallocation subcomponent and its deterministic tests."
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "qualified_candidate": {
+    "commit": "492ca1d6bd30d7319e7dc9d3d0727e7c805eb4e7",
+    "production_source_blob": "49d358a851f52a8e8bd3d1c171fd832d3f03cbdf",
+    "focused_test_blob": "2de752648b440905c605f330dce9ca5b93e61aa5",
+    "gate_runner_blob": "4b0042966a6e99b07a936b4c5fecb39c23513d68",
+    "workflow_blob": "88d2ebcc0f4af2e97d33f7bbd1728ea2c9a8c76a"
+  },
+  "verification": {
+    "local_compiler": "GNU Fortran 14.2.0",
+    "local_o0_o2_gate": "PASS",
+    "local_source_bytes_match_github_blobs": true,
+    "github_actions_run": 34238438841,
+    "github_actions_conclusion": "success",
+    "first_ci_attempt": {
+      "run": 34238282434,
+      "conclusion": "failure",
+      "classification": "WORKFLOW_EXECUTABLE_BIT_ONLY",
+      "physics_or_compiler_failure": false
+    }
+  },
+  "scientific_claims_not_made": [
+    "full WOFOST73 crop integration is qualified",
+    "arbitrary subdaily reallocation cadence is qualified",
+    "WOFOST81 crop nitrogen is admitted",
+    "legacy SWAP nitrogen may be removed"
+  ],
+  "next": "Compose this qualified subcomponent into the future common crop host with explicit crop state and organ-flux ownership; do not broaden physics scope."
 }
