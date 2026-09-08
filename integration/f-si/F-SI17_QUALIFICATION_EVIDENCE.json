@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI17",
+  "title": "Qualification evidence for explicit process-facing hydraulic view",
+  "source_under_test": {
+    "commit": "66b8bba76949680242cd343d9900710bdff100bf",
+    "tree": "5cb3ea52c8fe7e26bb26fc5d839a2e2ec704baf5",
+    "module": "src/solver/mod_process_hydraulic_view.f90",
+    "module_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "qualified_fsi15_base": "fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
+  },
+  "decisive_run": {
+    "workflow": "F-SI17 process hydraulic view",
+    "run_id": 34227038114,
+    "job_id": 102063574047,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "observed_gate_output": [
+    "FSI17_STATIC_PROCESS_HYDRAULIC_VIEW PASS",
+    "FSI17_PROCESS_HYDRAULIC_VIEW PASS",
+    "FSI17_O0_O2_OUTPUT_IDENTITY PASS",
+    "FSI17_GATE PASS"
+  ],
+  "qualification_results": {
+    "valid_state_snapshot": "PASS",
+    "missing_water_content_fail_closed": "PASS",
+    "shape_mismatch_fail_closed": "PASS",
+    "pressure_head_copy_no_alias": "PASS",
+    "water_content_copy_no_alias": "PASS",
+    "surface_and_groundwater_scalar_copy": "PASS",
+    "A_B_A_repeatability": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "forbidden_dependency_static_gate": "PASS",
+    "common_solver_contract_unchanged_from_fsi15": "PASS",
+    "reference_richards_state_binding_unchanged_from_fsi15": "PASS",
+    "reference_richards_workspace_unchanged_from_fsi15": "PASS"
+  },
+  "source_delta_from_fsi15": {
+    "existing_production_files_modified": 0,
+    "new_production_files": [
+      "src/solver/mod_process_hydraulic_view.f90"
+    ],
+    "supporting_files": [
+      ".github/workflows/fsi17-process-hydraulic-view.yml",
+      "integration/f-si/F-SI17_PROCESS_HYDRAULIC_VIEW_CONTRACT.json",
+      "tests/fsi/run_fsi17_gate.sh",
+      "tests/fsi/test_fsi17_process_hydraulic_view.f90",
+      "tools/fsi/fsi17_process_hydraulic_view_gate.py"
+    ],
+    "cross_workstream_merge": false
+  },
+  "semantics": {
+    "view_is_snapshot": true,
+    "view_arrays_are_copies": true,
+    "view_exposes_solver_workspace": false,
+    "view_exposes_headcalc_internal_arrays": false,
+    "view_persistent_per_column": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "mass_semantics_changed": false,
+    "transaction_semantics_changed": false,
+    "calendar_semantics_changed": false
+  },
+  "scope_hold": "F-SI17 qualifies construction and content of a process-facing hydraulic snapshot only. It does not qualify that a particular process receives committed rather than candidate/trial state. That runtime binding remains F-MR ownership.",
+  "fpm03_relevance": "The primary F-SI hydraulic-view blocker is satisfied at the interface level. F-PM03 remains blocked until F-MR source-binds this exact qualified view onto an admitted physical runtime lineage with committed-state semantics.",
+  "decision": "QUALIFIED_EXPLICIT_PROCESS_HYDRAULIC_VIEW_READY_FOR_RUNTIME_BINDING"
+}
