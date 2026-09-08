@@ -1,0 +1,33 @@
+name: F-MR14 materialize qualified interval diagnostics
+
+on:
+  push:
+    branches:
+      - work/f-mr14-interval-cost-diagnostics-recomposition
+    paths:
+      - tools/fmr14_materialize.py
+      - .github/workflows/fmr14-materialize.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact qualified observer delta
+        run: |
+          python3 tools/fmr14_materialize.py materialize
+          python3 tools/fmr14_materialize.py verify
+          test "$(git diff --name-only -- src | sort)" = $'src/kernel/mod_kernel_transactions.f90\nsrc/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - name: Commit source postimage
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/kernel/mod_kernel_transactions.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m 'feat(F-MR14): compose qualified interval cost diagnostics'
+          git push
