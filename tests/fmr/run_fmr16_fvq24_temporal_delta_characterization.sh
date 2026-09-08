@@ -11,13 +11,12 @@ FVQ27=1dc8219beda37fbcd6fd4232c964208fa0f17c8f
 FVQ24=4a8c0740222da5934e1fae53000c1c19db733e27
 OLD_FPE03=e67d624967f53184904e689333594015e9658683
 OLD_FPE03_BLOB=6623613a3526c119bf1fada5540eed93346592e1
-FVQ24_GENERATOR_BRANCH=work/f-pe03-fvq24-admitted-tail-characterization
+FVQ24_GENERATOR_BRANCH=origin/work/f-pe03-fvq24-admitted-tail-characterization
 FVQ24_GENERATOR_BLOB=e08f3224afef41b16b52fd966b0f72544f266e26
 BACKEND_BLOB=6f39d60a87c1987ae95d7faec2f55f865af90a08
 
 fail() { echo "FMR16_TEMPORAL_CHARACTERIZATION_FAIL $*" >&2; exit 1; }
 
-# Readiness characterization must not modify production source.
 git diff --quiet "$FVQ27" -- src || {
   echo 'FMR16_PRODUCTION_IMMUTABILITY_TO_FVQ27=FAIL' >&2
   git diff --name-only "$FVQ27" -- src >&2
@@ -27,7 +26,6 @@ git diff --quiet "$FVQ27" -- src || {
 echo 'FMR16_PRODUCTION_IMMUTABILITY_TO_FVQ27=PASS'
 echo 'FMR16_BINARY_TEMPORAL_BACKEND_SOURCE_LOCK=PASS'
 
-# Lock the scientific owner and exact F-VQ24 stimulus release.
 git show "$FVQ24:integration/f-vq/F-VQ24_STATUS.json" > "$BUILD/fvq24-status.json"
 python3 - "$BUILD/fvq24-status.json" <<'PY'
 import json,sys
@@ -45,7 +43,6 @@ assert s['release']['fpe_may_use_this_exact_nonzero_workload_for_reference_chara
 print('FMR16_FVQ24_SCIENTIFIC_STIMULUS_LOCK=PASS')
 PY
 
-# Recreate the exact existing F-VQ24 runtime probe from its locked historical source.
 [[ "$(git rev-parse "$OLD_FPE03:tests/fpe/test_fpe03_reference_stress.f90")" == "$OLD_FPE03_BLOB" ]]
 [[ "$(git rev-parse "$FVQ24_GENERATOR_BRANCH:tests/fpe/fpe03_make_fvq24_runtime_probe.py")" == "$FVQ24_GENERATOR_BLOB" ]]
 git show "$OLD_FPE03:tests/fpe/test_fpe03_reference_stress.f90" > "$BUILD/base.f90"
@@ -56,8 +53,6 @@ grep -Fq 'FPE03_FVQ24_SCIENTIFIC_STIMULUS_CHANGED=NO' "$BUILD/generator.log"
 grep -Fq 'FPE03_FVQ24_TRANSACTION_POLICY_CHANGED=NO' "$BUILD/generator.log"
 echo 'FMR16_FVQ24_EXACT_RUNTIME_PROBE_RECREATED=PASS'
 
-# Build-only observer copy of the exact production backend. The function keeps
-# the current binary 0/huge return behavior; it only emits componentwise deltas.
 cp src/runtime/mod_fmr_serialized_reference_backend.f90 "$BUILD/mod_fmr_serialized_reference_backend_probe.f90"
 python3 - "$BUILD/mod_fmr_serialized_reference_backend_probe.f90" <<'PY'
 from pathlib import Path
@@ -75,8 +70,6 @@ p.write_text(s)
 print('FMR16_TEMPORAL_OBSERVER_COPY_GENERATED=PASS')
 PY
 
-# Prove the observer copy normalizes exactly to the production backend when the
-# declarations and write-only block are removed.
 python3 - "$BUILD/mod_fmr_serialized_reference_backend_probe.f90" <<'PY'
 from pathlib import Path
 import sys
@@ -167,7 +160,6 @@ for c in cases:
             monotone=all(vals[i+1] < vals[i] for i in range(len(vals)-1))
             print(f"FMR16_CASE={c['case']}:{label}:STRICTLY_DECREASES_WITH_DT_HALVING={str(monotone).upper()}:ratios="+','.join(f'{r:.9e}' for r in ratios))
             if not monotone: raise SystemExit(f"case {c['case']} {label} delta not monotone")
-# Baseline should retain exact identity and all observed nonzero cases must expose finite graded deltas.
 if any(x!=0.0 for x in cases[0]['deltas'][0]): raise SystemExit('baseline not exact zero')
 for c in cases[1:]:
     if not all(all(math.isfinite(x) for x in row) for row in c['deltas']): raise SystemExit('nonfinite delta')
