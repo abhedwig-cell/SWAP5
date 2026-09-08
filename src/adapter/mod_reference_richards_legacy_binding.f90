@@ -188,7 +188,7 @@ contains
        route = 'legacy-min-dt-deferred'
        return
     end if
-    if (swbotb /= 7 .and. swbotb /= -2) then
+    if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if
@@ -202,10 +202,6 @@ contains
     end if
     if (.not. associated(request%evaluation%source_sink)) then
        route = 'source-sink-provider-required'
-       return
-    end if
-    if (request%boundary%bottom_mode /= swbotb) then
-       route = 'legacy-bottom-mode-mismatch'
        return
     end if
     if (request%parameters%active_nodes /= numnod) return

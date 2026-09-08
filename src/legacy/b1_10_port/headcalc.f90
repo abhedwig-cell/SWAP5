@@ -34,7 +34,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_top,            only: boundtop, pondrunoff, hsurf
    use MOD_drain,          only: qdra, nrlevs
    use MOD_irrigation,     only: qssdi, nird
-   use variables,          only: fldaystart, swbotb, runon, epd, reva, pondm1, legacy_dt => dt, runots, t1900, thetm1, qrot,      &
+   use variables,          only: fldaystart, legacy_swbotb => swbotb, runon, epd, reva, pondm1, legacy_dt => dt, runots, t1900, thetm1, qrot,      &
                                  legacy_swkimpl => swkimpl, legacy_swkmean => swkmean, hplate, swbotb3impl, swbotb3resvert, deepgw, rimlay,              &
                                  sw4, qbotab, fldtmin, legacy_maxit => maxit, legacy_maxbacktr => maxbacktr, legacy_critdevh2cp => critdevh2cp, legacy_critdevh1cp => critdevh1cp, legacy_critdevponddt => critdevponddt,    &
                                  legacy_dtmin => dtmin, nodgwl, gwlm1, hm1, legacy_CritDevBalCp => CritDevBalCp, legacy_CritDevBalTot => CritDevBalTot
@@ -70,7 +70,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
-   integer                          :: swkimpl, swkmean, maxit, maxbacktr
+   integer                          :: swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
    real(8)                          :: CritDevBalCp, CritDevBalTot
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
@@ -117,6 +117,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
+   swbotb = legacy_swbotb
    dt = legacy_dt
    swkimpl = legacy_swkimpl
    swkmean = legacy_swkmean
@@ -129,6 +130,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    CritDevBalCp = legacy_CritDevBalCp
    CritDevBalTot = legacy_CritDevBalTot
    if (.not. legacy_state_binding) then
+      if (.not. present(boundary_conditions)) error stop 'HeadCalc: explicit boundary conditions required'
+      swbotb = boundary_conditions%bottom_mode
       if (.not. present(numerical_config)) error stop 'HeadCalc: explicit numerical config required'
       if (.not. present(explicit_step_duration)) error stop 'HeadCalc: explicit step duration required'
       if (explicit_step_duration <= 0.0d0) error stop 'HeadCalc: explicit step duration must be positive'
