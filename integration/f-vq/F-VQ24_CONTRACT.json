@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ24",
+  "title": "F-MR13 Production-Bound Nonzero HeadCalc Reference Equivalence",
+  "scope": "INDEPENDENT_FMR13_NONZERO_HEADCALC_REFERENCE_EQUIVALENCE",
+  "branch": "qualification/f-vq24-fmr13-nonzero-headcalc-equivalence",
+  "base_admission": {
+    "work_unit": "F-VQ23",
+    "closeout_commit": "fbd30628f3a072021cd3f4ab8e45f28df547d5de",
+    "status": "QUALIFIED_INDEPENDENT_FMR13_REFERENCE_LINEAR_SOLVER_SCIENTIFIC_NO_CHANGE_ADMISSION"
+  },
+  "candidate": {
+    "fmr13_closeout_commit": "985058c0261d284424432a65bded16b7fc9107cb",
+    "fmr13_closeout_tree": "310b0b419181456b7c0af029e42de742fa96f19d",
+    "headcalc_blob": "1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b",
+    "reference_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "reference_workspace_blob": "178d3289e09583c256b1aa400407d468d9c18e68"
+  },
+  "reference_oracle": {
+    "fsi18_closeout_commit": "8c5438a73e8ae4c9fcbd9de9fdd82d9a600626b2",
+    "probe_blob": "1a0898cfd927455d9219db0f59ac238943cd1435",
+    "top_provider_fixture_blob": "cf8905a97dcb928b18f129bf1f76a9230da82151",
+    "support_fixture_blob": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+    "method": "Execute the exact pre-seam F-SI18 reference-TRIDAG control, then compile the same five-case HeadCalc probe against exact F-MR13 production HeadCalc plus the admitted reference linear solver. Historical test-only fixtures are materialized from F-SI18. Compare complete probe output bitwise per optimization level."
+  },
+  "hard_requirements": {
+    "candidate_production_source_changed": false,
+    "fsi18_reference_control_passes": true,
+    "all_five_headcalc_cases_converge": true,
+    "nonzero_cases_2_to_5_converge": true,
+    "candidate_output_bitwise_equals_fsi18_reference_O0": true,
+    "candidate_output_bitwise_equals_fsi18_reference_O2": true,
+    "candidate_O0_O2_output_identity": true,
+    "repeat_run_identity": true
+  },
+  "claim_limit": "F-VQ24 only strengthens F-VQ23 with an explicit production-bound nonzero HeadCalc reference-equivalence check. It does not admit new physics, solver controls, performance policy, execution classes, parallel execution, or any new process route."
+}
