@@ -48,7 +48,10 @@ program test_fmr09_root_sink_runtime
   call configure_control_forcing(forcing_control(1), conductivity0)
 
   forcing_balanced(1) = forcing_control(1)
-  forcing_balanced(1)%root_extraction_sink = [0.04_real64, 0.08_real64, 0.12_real64]
+  ! Scalar assignment preserves the already-qualified numnod forcing shape.
+  ! A shorter array constructor would trigger allocatable reallocation and turn
+  ! this into a shape-rejection test instead of an active-root runtime test.
+  forcing_balanced(1)%root_extraction_sink = 0.04_real64
   forcing_balanced(1)%subsurface_irrigation_source = forcing_balanced(1)%root_extraction_sink
   expected_root_amount = sum(forcing_balanced(1)%root_extraction_sink) * (t1-t0)
 
