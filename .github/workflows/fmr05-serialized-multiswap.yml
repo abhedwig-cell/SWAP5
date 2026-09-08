@@ -1,0 +1,32 @@
+name: F-MR05 serialized real-physics MultiSWAP runtime
+
+on:
+  push:
+    branches:
+      - integration/f-mr
+    paths:
+      - 'integration/f-mr/F-MR05_*.json'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_checkpoint_orchestrator.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'tests/fmr/test_fmr05_serialized_multiswap.f90'
+      - 'tests/fmr/run_fmr05_gate.sh'
+      - '.github/workflows/fmr05-serialized-multiswap.yml'
+  workflow_dispatch:
+
+jobs:
+  fmr05-serialized-multiswap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: F-MR05 production serialized MultiSWAP focused gate
+        run: bash tests/fmr/run_fmr05_gate.sh
