@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT08",
+  "title": "Authoritative Accepted Full-Interval Mass Accounting",
+  "start_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+  "safety_branch": "integration/f-kt08-safety",
+  "safety_branch_head": "b91da4fb01e3b0c21d39a5782d36f8eedc55875d",
+  "contract_checkpoint": "d62e7736240a50086c9950137a98439784fc1c17",
+  "production_source_materialization_commit": "9623841f38c075f61404457ccfe31d89df9839f7",
+  "tested_qualification_head": "c4676dfcb8125cf361148a27ce45f494749fa097",
+  "qualification_workflow": ".github/workflows/fkt-kernel.yml",
+  "qualification_run_id": 34186901096,
+  "qualification_run_conclusion": "success",
+  "jobs": {
+    "fkt08_focused_o0_o2": {"job_id": 101936963350, "conclusion": "success"},
+    "historical_fci_provenance": {"job_id": 101936963461, "conclusion": "success"},
+    "historical_fkt_provenance": {"job_id": 101936963490, "conclusion": "success"},
+    "current_fci_regression": {"job_id": 101937018223, "conclusion": "success"}
+  },
+  "production_source_blobs": {
+    "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "src/kernel/mod_kernel_transactions.f90": "9f7c16e71cfb93b57f796ba759bae73824318a2f"
+  },
+  "canonical_mass_contract": {
+    "type": "canonical_mass_accounting_t",
+    "single_canonical_contract": true,
+    "fields": [
+      "complete",
+      "interval_t0",
+      "interval_t1",
+      "origin_lineage_id",
+      "origin_revision",
+      "accepted_transaction_count",
+      "missing_contribution_mask",
+      "storage_start",
+      "storage_end",
+      "storage_change",
+      "total_in",
+      "total_out",
+      "residual"
+    ],
+    "residual_definition": "storage_end - storage_start - (total_in - total_out)",
+    "equivalent_balance": "storage_start + total_in - total_out - storage_end = 0",
+    "unrounded_internal_real64_terms": true,
+    "new_scientific_tolerance": false,
+    "mass_conservation_disable_switch": false
+  },
+  "storage_accounting": {
+    "ownership": "transaction_model_t%storage reports persistent physical water storage only; model-specific adapters own active-store composition",
+    "b1_10_existing_storage": ["volact", "pond", "optional crop interception storage"],
+    "fmr04_restricted_profile_storage": ["sum(dz*water_content)", "ponding_depth"],
+    "excluded_from_storage": ["Newton scratch", "Jacobian", "solver workspace", "temporary residuals", "diagnostics", "reconstructible intermediates"],
+    "optional_active_but_missing": "complete=false with nonzero missing_contribution_mask",
+    "optional_inactive": "no contribution and no persistent accounting payload required"
+  },
+  "external_flux_accounting": {
+    "b1_10_inflows": ["rain", "irrigation", "runon", "ssdi", "bottom_in", "drainage_in", "inundation"],
+    "b1_10_outflows": ["interception", "runoff", "root_uptake", "pond_evaporation", "soil_evaporation", "drainage_out", "bottom_out"],
+    "fmr04_restricted_profile_fluxes": ["top_flux", "bottom_flux", "subsurface_irrigation_source", "drainage_flux_by_level"],
+    "sign_policy": "physics sign conventions are unchanged; model/adapter supplies aggregate mass_in and mass_out to canonical accounting",
+    "exactly_once": true
+  },
+  "internal_transfer_handling": {
+    "counted_in_external_total": false,
+    "focused_test": "transfer between two persistent stores changes neither total storage balance nor external inflow/outflow accounting",
+    "result": "PASS"
+  },
+  "completeness_semantics": {
+    "default": "fail-closed",
+    "complete_true": "all storage and external flux contributions required by the active physical configuration are present exactly once, all terms are finite, at least one accepted transaction exists, and the full requested interval completed",
+    "complete_false": "one or more required active contributions are missing, storage accounting is incomplete, an accepted trial reports incomplete accounting, a term is nonfinite, provenance is incomplete, or the requested interval did not complete",
+    "missing_diagnostics": "compact int64 missing_contribution_mask",
+    "active_missing_is_not_zero": true
+  },
+  "transaction_semantics": {
+    "authoritative_route": "only the ultimately accepted TX_ROUTE_TWO_HALF branch contributes accepted mass terms",
+    "rejected_trials_committed": false,
+    "retry_double_counting": false,
+    "rollback_mutates_committed_accounting": false,
+    "successful_commit_publishes_exactly_one_candidate_accounting": true,
+    "failed_or_stale_commit_publishes_accounting": false,
+    "candidate_mass_provenance_bound_to": ["origin_lineage_id", "origin_revision", "interval_t0", "interval_t1"]
+  },
+  "focused_test_results": {
+    "complete_simple_case": "PASS",
+    "missing_active_contribution": "PASS",
+    "inactive_optional_no_payload": "PASS",
+    "active_optional_missing": "PASS",
+    "internal_transfer": "PASS",
+    "rejected_trial": "PASS",
+    "retry_no_double_count": "PASS",
+    "rollback": "PASS",
+    "stale_second_commit": "PASS",
+    "generic_time": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_gate": "PASS"
+  },
+  "generic_time": {
+    "calendar_assumptions_added": false,
+    "subdaily": "PASS",
+    "non_midnight": "PASS",
+    "cross_midnight": "PASS",
+    "accounting_definition_changes_by_calendar_boundary": false
+  },
+  "regression_results": {
+    "historical_F_KT01_to_F_KT07_exact_head_replay": "PASS",
+    "historical_F_CI03_F_CI04_exact_head_replay": "PASS",
+    "current_F_KT06_F_KT07_forward_semantics_O0_O2": "PASS",
+    "F_CI08_attempt_context": "PASS",
+    "F_CI09_forward_transaction_binding": "PASS",
+    "F_CI10_unrounded_physical_mass_seam": "PASS",
+    "F_CI11_controlled_interval_and_mass": "PASS",
+    "F_CI13_recoverable_trial_status": "PASS",
+    "F_CI14_forward_temporal_acceptance": "PASS"
+  },
+  "qualification_attempt_history": [
+    {"run_id": 34160132290, "classification": "historical provenance pin stopped evolved kernel before F-KT08 execution", "production_semantics_fix_required": false},
+    {"run_id": 34160278825, "classification": "F-KT08 Python static-gate regex error", "production_semantics_fix_required": false},
+    {"run_id": 34160375383, "classification": "over-broad static solver-internal leak check", "production_semantics_fix_required": false},
+    {"run_id": 34186649986, "classification": "F-KT08 focused O0/O2 PASS; downstream F-CI09 historical transaction pin", "production_semantics_fix_required": false},
+    {"run_id": 34186774660, "classification": "F-KT08 focused and F-CI08/09/10/11/13 PASS; downstream F-CI14 historical transaction pin", "production_semantics_fix_required": false},
+    {"run_id": 34186901096, "classification": "complete qualification success", "production_semantics_fix_required": false}
+  ],
+  "fmr04_handoff": {
+    "previous_fmr04_status": "TESTED_WITH_FULL_INTERVAL_MASS_HOLD",
+    "previous_fmr04_status_head": "38d76ec63bb39d2ea4ed0a04ec15531b846d8b6b",
+    "previous_fmr04_tested_source_commit": "0809b05a5bc26bd25be4f3d7b32abb9cfb43635f",
+    "physical_term_owner_blocker_for_restricted_profile": false,
+    "known_missing_contribution_owner_for_restricted_profile": null,
+    "fmr04_profile_mass_complete_capable": true,
+    "meaning": "the qualified F-KT boundary can carry authoritative complete accounting for the already restricted F-MR04 profile once F-MR04 explicitly supplies/marks its already-calculated storage and flux contributions through the F-KT08 completeness hooks",
+    "fmr04_qualified_by_fkt08": false,
+    "required_next_step": "resume existing F-MR04, consume exact qualified F-KT08 final head, rerun the serialized physical fixture, require kernel_result.mass.complete=true, then pass the exact qualified F-MR04 SHA to F-VQ14"
+  },
+  "remaining_scope_holds": [
+    "active root-extraction accounting beyond the restricted F-MR04 profile is not qualified by F-KT08",
+    "active snow accounting is not qualified by F-KT08 and remains fail-closed until its owner supplies a complete contribution",
+    "active macropore accounting is not qualified by F-KT08 and remains fail-closed until its owner supplies a complete contribution",
+    "independent scientific physical-runtime admission remains F-VQ14 ownership"
+  ],
+  "invariant_audit": {
+    "1": "PASS: one canonical kernel/result accounting contract; no use-case-specific kernel",
+    "3": "PASS: result accounting remains separate from parameters, forcing, physical state and numerical config",
+    "4": "PASS: no cumulative accounting history added to committed per-column state",
+    "5": "PASS: solver scratch/workspace is excluded from mass storage accounting",
+    "7": "PASS: accepted candidate accounting follows trial/retry/commit/rollback semantics",
+    "8": "PASS: retries/replays from the same committed state do not double-count accepted accounting",
+    "9": "PASS: accounting is bound to generic [t0,t1] and tested subdaily/non-midnight/cross-midnight",
+    "13": "PASS: completeness is fail-closed; no missing term is silently treated as zero and no mass-conservation-off switch exists",
+    "16": "PASS: per-interval compact result only; no heavy per-column history introduced",
+    "23": "PASS: no physical option or solver numerical policy changed",
+    "25": "PASS: reference qualification/regression paths remain available and historical provenance is preserved",
+    "26": "PASS: completeness and compact missing-contribution diagnostics are first-class result diagnostics",
+    "27": "PASS: inactive optional physics requires no contribution/payload; active missing physics blocks completeness",
+    "29": "PASS: no file, path, midnight, day-length, or MODFLOW dependency introduced"
+  },
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "scientific_tolerance_added": false,
+  "authoritative_full_interval_mass_accounting_qualified": true,
+  "fmr04_profile_mass_complete_capable": true,
+  "result": "QUALIFIED_BASIS"
+}
