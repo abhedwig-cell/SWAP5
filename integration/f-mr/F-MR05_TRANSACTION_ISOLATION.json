@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "PER_COLUMN_FKT_TRANSACTION_ISOLATION",
+  "transaction_owner": "F-KT08",
+  "runtime_local_transaction_clone": false,
+  "per_column": ["committed state handle","lineage id","revision","committed time","checkpoint","candidate"],
+  "rules": {
+    "checkpoint_capture": "F-KT-owned kernel_checkpoint_t from the selected state_handle",
+    "trial": "F-MR04 backend through F-KT kernel executor",
+    "commit": "F-KT commit_candidate only",
+    "rollback": "discard candidate only; never mutate committed state",
+    "rejected_column_does_not_block_independent_neighbors": true,
+    "duplicate_state_handle_within_dispatch": "fail closed before execution"
+  },
+  "required_negative_tests": [
+    "checkpoint A presented with committed state B -> KERNEL_STATUS_CHECKPOINT_MISMATCH",
+    "stale checkpoint after A revision advances -> KERNEL_STATUS_CHECKPOINT_MISMATCH",
+    "wrong lineage -> fail closed before physical solve",
+    "rollback/rejection A leaves A committed state unchanged and B unchanged",
+    "commit A does not mutate B"
+  ]
+}

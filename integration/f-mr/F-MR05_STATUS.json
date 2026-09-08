@@ -1,71 +1,43 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-MR",
   "work_unit": "F-MR05",
   "branch": "integration/f-mr",
   "start_head": "d27af923a1522440323ca61d4f50a90914ce5b6b",
-  "qualified_source_commit": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
-  "qualified_source_tree": "c0b2eaf00865ed3649a169a15e8d3dcf188e8dea",
-  "production_source_commit": "860583e2cc86cdc66414407689abd913dd60589c",
-  "qualification_evidence_commit": "ef47f4c0c523fe736e109634715185983fab72f8",
-  "qualification_evidence": "integration/f-mr/F-MR05_QUALIFICATION_EVIDENCE.json",
-  "invariant_audit": "integration/f-mr/F-MR05_INVARIANT_AUDIT.json",
-  "workflow_run_id": 34193626846,
-  "workflow_job_id": 101956574184,
-  "phase": "QUALIFIED_RUNTIME_COMPOSITION_CANDIDATE_PENDING_INDEPENDENT_FVQ15",
-  "status": "QUALIFIED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME_CANDIDATE_PENDING_FVQ15",
+  "phase": "ACCEPTANCE_HARDENING_PERSISTED_NOT_YET_TESTED",
+  "status": "PERSISTED_STRICT_ACCEPTANCE_HARDENING",
+  "previous_runtime_qualification": {
+    "source_commit": "96d68b909f6da318d5b3c8a88e5768f020b7c343",
+    "evidence_commit": "ef47f4c0c523fe736e109634715185983fab72f8",
+    "closeout_commit": "678ff55fb5e701e2bdda75cb32e3c809dc71c1db",
+    "classification": "VALID_FOR_EARLIER_NARROWER_RUNTIME_SCOPE_SUPERSEDED_FOR_CURRENT_STRICT_ACCEPTANCE"
+  },
   "IMPLEMENTED": true,
   "PERSISTED": true,
-  "TESTED": true,
-  "QUALIFIED": true,
-  "qualification_scope": "F-MR_RUNTIME_COMPOSITION_ONLY",
-  "production_source": {
-    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
-    "blob": "915b7c9bf27cf56ac2669a8354ef385e38a7ef54",
-    "other_production_source_changed_by_fmr05": false
-  },
-  "test_result": {
-    "real_headcalc_multicolumn": "PASS",
-    "batch_sizes": [1,2,8,17,31,32],
-    "input_order_independence": "PASS",
-    "single_vs_multi_identity": "PASS",
-    "failure_isolation": "PASS",
-    "duplicate_state_handle_fail_closed": "PASS",
-    "O0": "PASS",
-    "O2": "PASS",
-    "O0_O2_output_identity": "PASS",
-    "authoritative_mass_complete_all_accepted": "PASS",
-    "authoritative_missing_contribution_mask_all_accepted": 0,
-    "max_abs_column_mass_residual": 2.77555756156289135e-17,
-    "baseline_aggregate_unrounded_mass_residual": 0.0,
-    "physical_worker_count": 1,
-    "parallel_reference_backend": "NOT_ADMITTED"
-  },
-  "regressions": {
-    "fmr01_current_evolved_source": {"run_id":34193626851,"conclusion":"success"},
-    "fmr02_historical_exact_provenance": {
-      "run_id":34193626975,
-      "conclusion":"failure",
-      "classification":"EXPECTED_HISTORICAL_PROVENANCE_PIN_MISMATCH_BEFORE_EXECUTION",
-      "semantic_failure":false,
-      "historical_evidence_rewritten":false
-    }
-  },
-  "scientific_admission": false,
-  "production_physics_qualified_for_fmr05_source": false,
-  "fvq14_admission_inherited": false,
-  "independent_requalification_required": "F-VQ15",
-  "ready_for_fvq15": true,
-  "ready_for_fmq23": false,
+  "TESTED": false,
+  "QUALIFIED": false,
+  "production_multicolumn_entrypoint": true,
+  "serialized_real_physics_multicolumn_runtime_implemented": true,
+  "serialized_real_physics_multicolumn_runtime_tested": false,
+  "scientific_multicolumn_admission": false,
   "parallel_reference_backend_admitted": false,
-  "physical_worker_count": 1,
-  "hard_holds": [
-    "F-MR05 runtime qualification is not scientific admission of the modified source postimage.",
-    "Independent F-VQ15 must bind and qualify exact qualified_source_commit before production real-physics MultiSWAP admission.",
-    "Parallel HeadCalc remains NOT_ADMITTED.",
-    "Active root extraction, macropore, snow and implicit conductivity remain outside the restricted profile.",
-    "F-MQ23 remains blocked until F-VQ15 admission of exact qualified_source_commit.",
-    "No new mass tolerance, disable switch or second mass-accounting model is admitted."
+  "general_multiswap_release": false,
+  "fvq15_ready": false,
+  "fmq23_resume_allowed": false,
+  "active_profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+  "strict_acceptance_additions": [
+    "explicit F-MR05 batch physical-execution diagnostics",
+    "dispatch ordinal and effective interval provenance",
+    "explicit A/B/A repeatability",
+    "explicit cross-column and stale checkpoint rejection",
+    "explicit unsupported-physics negative tests",
+    "explicit immutable-parameter non-mutation evidence",
+    "exact named contract artifacts"
   ],
-  "next_step": "Start F-VQ15 directly from exact qualified_source_commit, perform independent source-bound scientific/runtime admission, and only after success release that exact SHA back to F-MQ23."
+  "hard_holds": [
+    "No downstream scientific admission is inherited from F-VQ14 after any F-MR05 source change.",
+    "F-VQ15 must be rebound to the final strict F-MR05 candidate.",
+    "F-MQ23 remains blocked until F-VQ15 PASS.",
+    "Parallel real-physics execution remains NOT_ADMITTED."
+  ]
 }

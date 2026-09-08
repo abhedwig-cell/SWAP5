@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "PRODUCTION_SERIALIZED_REAL_PHYSICS_MULTICOLUMN",
+  "reuses_column_model": "fmr_logical_column_t",
+  "entrypoint": "fmr_run_serialized_physical_multiswap",
+  "effective_per_column_input": ["column_id","template_id","parameter_ref","state_handle","forcing_handle","backend_id","numerical_config","t0","t1"],
+  "batch_contract": {
+    "common_numerical_config_per_dispatch": true,
+    "common_t0_t1_per_dispatch": true,
+    "reason": "F-MR05 is one homogeneous serialized execution window; columns needing another interval/config are a separate dispatch. This does not impose day/calendar semantics.",
+    "generic_interval_required": true,
+    "calendar_assumption": false
+  },
+  "identity": {
+    "result_bound_by_column_id": true,
+    "execution_position_is_not_identity": true,
+    "state_bound_by_state_handle": true,
+    "parameter_bound_by_parameter_ref": true,
+    "forcing_bound_by_forcing_handle": true
+  },
+  "dispatch": {
+    "deterministic_order": "template_id then column_id",
+    "order_independent_physical_result_for_independent_columns": true,
+    "per_column_failure_isolation": true,
+    "batch_atomic": false
+  },
+  "physical_execution": {
+    "backend": "FMR_BACKEND_SERIALIZED_REFERENCE",
+    "max_concurrent_real_physical_solves": 1,
+    "parallel_reference_backend_admitted": false,
+    "runtime_calls_headcalc_directly": false
+  },
+  "downstream_admission": {
+    "profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+    "scientific_admission_of_modified_postimage": false,
+    "required_next_gate": "F-VQ15"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "AUTHORITATIVE_PER_COLUMN_AND_AGGREGATE_MASS",
+  "canonical_owner": "F-KT08 kernel_result.mass",
+  "new_mass_model": false,
+  "new_tolerance": false,
+  "mass_conservation_disable_switch": false,
+  "accepted_column_requirements": {
+    "complete": true,
+    "missing_contribution_mask": 0,
+    "unrounded_terms_preserved": true,
+    "residual_gate_owner": "F-KT numerical configuration"
+  },
+  "aggregate": {
+    "contributors": "committed accepted columns only",
+    "storage_start": "sum accepted canonical storage_start",
+    "storage_end": "sum accepted canonical storage_end",
+    "storage_change": "sum accepted canonical storage_change",
+    "total_in": "sum accepted canonical total_in",
+    "total_out": "sum accepted canonical total_out",
+    "residual": "sum accepted canonical residual",
+    "rejected_trials_counted": false,
+    "rollback_candidates_counted": false,
+    "double_counting_allowed": false,
+    "rounded_reporting_values_used": false
+  },
+  "diagnostic_requirement": "publish both aggregate residual and maximum absolute accepted per-column residual so cancellation cannot hide a defect"
+}

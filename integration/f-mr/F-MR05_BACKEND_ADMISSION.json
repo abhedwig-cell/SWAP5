@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR05",
+  "contract": "SERIALIZED_PHYSICAL_BACKEND_ADMISSION",
+  "backend": "FMR_BACKEND_SERIALIZED_REFERENCE",
+  "admitted_profile": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+  "profile_owner": "existing F-MR04/F-KT execution_admitted hook",
+  "runtime_duplicates_physics_admission_logic": false,
+  "required": {
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "macropore_active": false,
+    "snow_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "frost_active": false,
+    "bottom_modes": [7,-2]
+  },
+  "explicitly_not_admitted": ["F-SI11 active root profile","snow","macropore","implicit conductivity","parallel reference backend"],
+  "max_concurrent_real_physical_solves": 1,
+  "parallel_reference_backend_admitted": false,
+  "broaden_profile_in_fmr05": false,
+  "scientific_requalification_after_fmr05_source_change": "F-VQ15"
+}
