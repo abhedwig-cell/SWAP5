@@ -166,8 +166,9 @@ module mod_soil_water_solver_contract
        real(real64), intent(in) :: water_content_top
        type(soil_water_boundary_conditions_t), intent(in) :: requested
        real(real64), intent(out) :: actual_top_flux
-       real(real64), intent(out) :: surface_head
-       real(real64), intent(out) :: runoff_flux
+       real(real64), intent(out) :: surface_head, runoff_flux
+
+       ! Interface only; implementation supplied by the selected provider.
      end subroutine top_boundary_evaluate_ifc
 
      subroutine macropore_evaluate_ifc(self, pressure_head, exchange_flux, active)
@@ -204,7 +205,11 @@ contains
     if (.not. allocated(request%parameters%node_distance)) return
     if (size(request%parameters%z) /= n) return
     if (size(request%parameters%dz) /= n) return
-    if (size(request%parameters%node_distance) /= n) return
+    ! Existing common routes consume NN node distances. Boundary modes that
+    ! physically require the lower face may supply NN+1; their solver-specific
+    ! validator owns that stricter requirement.
+    if (size(request%parameters%node_distance) /= n .and. &
+        size(request%parameters%node_distance) /= n+1) return
     if (request%base_state%active_nodes /= n) return
     if (.not. allocated(request%base_state%pressure_head)) return
     if (.not. allocated(request%base_state%water_content)) return
