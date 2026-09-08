@@ -9,12 +9,11 @@ if len(sys.argv) != 3:
 src_path = Path(sys.argv[1])
 out_path = Path(sys.argv[2])
 src = src_path.read_text(encoding='utf-8')
-expected_sha = '23c00e4a188e88bc36ef95cbe4faaacdd6aad639'
-import hashlib
-actual_sha = hashlib.sha1(src.encode('utf-8')).hexdigest()
-if actual_sha != expected_sha:
-    raise SystemExit(f'FSI19 support fixture blob drift {actual_sha} != {expected_sha}')
 
+# Git provenance is pinned by the calling source-bound gate with
+# `git rev-parse HEAD:path`. This helper deliberately validates the structure
+# it transforms instead of recomputing a raw-text SHA, which is not a Git blob
+# object id and is sensitive to checkout/text normalization.
 for name in ('tridag', 'bandec', 'banbks'):
     pattern = re.compile(
         rf'(?ims)^subroutine\s+{name}\b.*?^end\s+subroutine\s+{name}\s*\n'
