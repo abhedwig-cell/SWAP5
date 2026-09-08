@@ -15,17 +15,17 @@ module mod_root_water_uptake_process
 
   type, public :: root_water_uptake_parameters_t
     integer :: active_nodes = 0
-    integer :: rooted_nodes = 0
     real(real64) :: hlim3l = 0.0_real64
     real(real64) :: hlim3h = 0.0_real64
     real(real64) :: hlim4 = 0.0_real64
     real(real64) :: adcrl = 0.0_real64
     real(real64) :: adcrh = 0.0_real64
-    real(real64), allocatable :: cumulative_root_fraction(:)
   end type root_water_uptake_parameters_t
 
   type, public :: root_water_uptake_request_t
     real(real64) :: potential_transpiration = 0.0_real64
+    integer :: rooted_nodes = 0
+    real(real64), allocatable :: cumulative_root_fraction(:)
   end type root_water_uptake_request_t
 
   type, public :: root_water_uptake_flux_result_t
@@ -72,7 +72,7 @@ contains
       diagnostics%status = ROOT_UPTAKE_INVALID_HYDRAULIC_VIEW
       return
     end if
-    if (.not. ieee_is_finite(request%potential_transpiration) .or. request%potential_transpiration < 0.0_real64) then
+    if (.not. valid_request(parameters, request)) then
       diagnostics%status = ROOT_UPTAKE_INVALID_REQUEST
       return
     end if
@@ -87,7 +87,7 @@ contains
     diagnostics%drought_reduction = 0.0_real64
     diagnostics%drought_reduction_factor = 1.0_real64
 
-    if (parameters%rooted_nodes == 0) then
+    if (request%rooted_nodes == 0) then
       diagnostics%no_roots = .true.
       return
     end if
@@ -101,9 +101,9 @@ contains
     diagnostics%critical_pressure_head = hlim3
     diagnostics%evaluated = .true.
 
-    do node = 1, parameters%rooted_nodes
-      qpotential = (parameters%cumulative_root_fraction(node+1) - &
-                    parameters%cumulative_root_fraction(node)) * request%potential_transpiration
+    do node = 1, request%rooted_nodes
+      qpotential = (request%cumulative_root_fraction(node+1) - &
+                    request%cumulative_root_fraction(node)) * request%potential_transpiration
       alpdry = drought_reduction_factor(hydraulic_view%pressure_head(node), hlim3, parameters%hlim4)
 
       diagnostics%potential_root_sink(node) = qpotential
@@ -119,12 +119,9 @@ contains
 
   pure logical function valid_parameters(parameters) result(valid)
     type(root_water_uptake_parameters_t), intent(in) :: parameters
-    real(real64) :: tolerance
-    integer :: node
 
     valid = .false.
     if (parameters%active_nodes <= 0) return
-    if (parameters%rooted_nodes < 0 .or. parameters%rooted_nodes > parameters%active_nodes) return
     if (.not. ieee_is_finite(parameters%hlim3l)) return
     if (.not. ieee_is_finite(parameters%hlim3h)) return
     if (.not. ieee_is_finite(parameters%hlim4)) return
@@ -132,23 +129,6 @@ contains
     if (.not. ieee_is_finite(parameters%adcrh)) return
     if (parameters%adcrh <= parameters%adcrl) return
     if (parameters%hlim4 >= parameters%hlim3l .or. parameters%hlim4 >= parameters%hlim3h) return
-
-    if (parameters%rooted_nodes == 0) then
-      valid = .true.
-      return
-    end if
-
-    if (.not. allocated(parameters%cumulative_root_fraction)) return
-    if (size(parameters%cumulative_root_fraction) /= parameters%rooted_nodes + 1) return
-    if (any(.not. ieee_is_finite(parameters%cumulative_root_fraction))) return
-
-    tolerance = ROOT_UPTAKE_FRACTION_TOLERANCE_SCALE * epsilon(1.0_real64)
-    if (abs(parameters%cumulative_root_fraction(1)) > tolerance) return
-    if (abs(parameters%cumulative_root_fraction(parameters%rooted_nodes+1) - 1.0_real64) > tolerance) return
-    do node = 1, parameters%rooted_nodes
-      if (parameters%cumulative_root_fraction(node+1) < parameters%cumulative_root_fraction(node)) return
-    end do
-
     valid = .true.
   end function valid_parameters
 
@@ -163,6 +143,37 @@ contains
     if (any(.not. ieee_is_finite(hydraulic_view%pressure_head))) return
     valid = .true.
   end function valid_hydraulic_view
+
+  pure logical function valid_request(parameters, request) result(valid)
+    type(root_water_uptake_parameters_t), intent(in) :: parameters
+    type(root_water_uptake_request_t), intent(in) :: request
+    real(real64) :: tolerance
+    integer :: node
+
+    valid = .false.
+    if (.not. ieee_is_finite(request%potential_transpiration)) return
+    if (request%potential_transpiration < 0.0_real64) return
+    if (request%rooted_nodes < 0 .or. request%rooted_nodes > parameters%active_nodes) return
+
+    ! Root-distribution arrays are irrelevant on the explicit no-root route.
+    if (request%rooted_nodes == 0) then
+      valid = .true.
+      return
+    end if
+
+    if (.not. allocated(request%cumulative_root_fraction)) return
+    if (size(request%cumulative_root_fraction) /= request%rooted_nodes + 1) return
+    if (any(.not. ieee_is_finite(request%cumulative_root_fraction))) return
+
+    tolerance = ROOT_UPTAKE_FRACTION_TOLERANCE_SCALE * epsilon(1.0_real64)
+    if (abs(request%cumulative_root_fraction(1)) > tolerance) return
+    if (abs(request%cumulative_root_fraction(request%rooted_nodes+1) - 1.0_real64) > tolerance) return
+    do node = 1, request%rooted_nodes
+      if (request%cumulative_root_fraction(node+1) < request%cumulative_root_fraction(node)) return
+    end do
+
+    valid = .true.
+  end function valid_request
 
   pure real(real64) function critical_hlim3(parameters, potential_transpiration) result(hlim3)
     type(root_water_uptake_parameters_t), intent(in) :: parameters
