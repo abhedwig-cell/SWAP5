@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "title": "F-VQ19-qualified nonstationary REFERENCE resume and diagnostics composition",
+  "branch": "work/f-pe05-reference-temporal-acceptance-fvq19",
+  "resume_base": "7b35af8049c7b2185d0fbe87189c1791bfa5d532",
+  "resume_base_role": "exact F-VQ19 closeout with independently qualified nonstationary exact temporal acceptance",
+  "historical_blocker_branch": "work/f-pe05-reference-temporal-acceptance",
+  "historical_blocker_head": "1aa0cea4eec77a61ba782a2f55a9ef2ae724e24c",
+  "historical_blocker_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_TEMPORAL_ACCEPTANCE_REQUIRED",
+  "upstream_release": {
+    "f_vq19_status": "QUALIFIED_INDEPENDENT_NONSTATIONARY_EXACT_TEMPORAL_ACCEPTANCE_READY_FOR_FPE",
+    "f_vq19_candidate": "439432ad91d64353e70afda4ff0837f69521a9e5",
+    "f_vq19_artifact_digest": "sha256:662655b14451b780c9a3dc1a409c74a5fa1b8a7604c72cd1a1a690597be9569e",
+    "fixture_blob": "4f45bb0623fef3fb6d091579e8f435563c858a69",
+    "state_change": "snow_water_storage 0.10 -> 0.12",
+    "interval": "1400.25 -> 1401.25",
+    "temporal_tolerance": "0.0"
+  },
+  "diagnostics_composition": {
+    "source": "F-PE02 diagnostics subgate",
+    "status": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION",
+    "materialized_commit": "599d60ccaf839ffb34325e45ca35226bf47ba080",
+    "kernel_pre_blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+    "kernel_qualified_post_blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "runtime_original_pre_blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "runtime_original_post_blob": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
+    "resume_runtime_pre_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf",
+    "composition_rule": "Apply only the already-qualified additive diagnostics fields and mappings to the F-VQ19 runtime preimage. No SNOW, solver, transaction decision, physics or mass logic may be replaced by the old F-PE lineage.",
+    "production_paths_allowed": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ]
+  },
+  "qualification_required_after_composition": [
+    "exact source-scope proof",
+    "direct replay of F-VQ19 independent qualification on the protected physical source scope",
+    "nonstationary SNOW fixture accepted with exact temporal identity",
+    "complete authoritative hard-mass accounting",
+    "rollback and deterministic replay",
+    "O0 and O2",
+    "deterministic interval cost counters: accepted_substeps, nonlinear_iterations, internal_retries, headcalc_calls, jacobian_builds, linear_solves, backtracking_attempts, alternative_solver_calls and transaction retries"
+  ],
+  "scope_holds": [
+    "REFERENCE only",
+    "No new temporal tolerance or graded metric",
+    "No BALANCED, THROUGHPUT or FALLBACK admission",
+    "No physics change",
+    "No mass relaxation",
+    "No parallel real-physics admission",
+    "FPE02-B01 numerical-policy separation remains independently blocked"
+  ],
+  "checkpoint_status": "PERSISTED_BEFORE_DIAGNOSTICS_COMPOSITION"
+}
