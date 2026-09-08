@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP03",
+  "title": "Conservative Generic-Time Column Advance Prototype",
+  "branch": "work/f-lmfp03-generic-time-column",
+  "base": {
+    "work_unit": "F-LMFP02",
+    "commit": "4674b2315dff9f783d1fcb72899b5a459775e1ef",
+    "decision": "QUALIFIED_STANDALONE_MFP_PRIMITIVES_READY_FOR_COLUMN_PROTOTYPE"
+  },
+  "scope": {
+    "production_implementation": false,
+    "production_solver_registration": false,
+    "standalone_column_prototype": true,
+    "generic_step_duration": true,
+    "free_drainage_bottom_only": true,
+    "prescribed_top_flux": true,
+    "external_source_sink_vectors": true,
+    "full_richards_ab_qualification": false,
+    "groundwater_qualification": false,
+    "modflow_admission": false
+  },
+  "candidate_design": {
+    "persistent_state": "layer water storage only in the prototype; head is reconstructed from storage",
+    "face_flux": "MFP-secanted Darcy finite-volume closure with scalar equal-flux solve at heterogeneous material interfaces",
+    "bottom_flux": "unit-gradient free drainage q=K(bottom state)",
+    "time_integration": "explicit conservative trial update; reject rather than clip if layer storage leaves constitutive bounds",
+    "retry": "return admissible-step diagnostic to caller; no committed state mutation",
+    "mass_ledger": "top-bottom + sources-sinks equals storage change on every accepted trial"
+  },
+  "qualification_questions": [
+    "Does the face closure preserve hydrostatic zero flux?",
+    "Does homogeneous gravity-only flow reduce to q=K?",
+    "Does a heterogeneous interface satisfy equal full flux across both half layers?",
+    "Does every accepted column step conserve mass to floating-point precision?",
+    "Are rejected trials non-mutating and diagnostically retryable?",
+    "Does temporal error decrease under step refinement for smooth nonstationary forcing?",
+    "Can per-face work remain bounded independently of column-wide Newton convergence?"
+  ],
+  "hard_holds": {
+    "WOFOST_max_dry_wet_closure": "not admitted as SWAP5 candidate physics",
+    "WOFOST_field_capacity_gating": "not admitted",
+    "WOFOST_fixed_upward_fraction": "not admitted",
+    "production_mfp_resolution": "not selected",
+    "bottom_head": "not in this workunit",
+    "drainage_process": "not integrated",
+    "root_uptake_process": "represented only as external sink vector",
+    "surface_ponding_runoff": "not integrated"
+  },
+  "status": "PROTOTYPE_STARTED",
+  "scope_flags": {
+    "IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "production_src_changed": false,
+    "transaction_semantics_changed": false
+  }
+}
