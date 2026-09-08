@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "scope": "RESTRICTED_B110_FIXED_EVENT_IRRIGATION_SEAM",
+  "status": "QUALIFIED_STRUCTURAL_FIXED_EVENT_IRRIGATION_SEAM_REQUIRES_INDEPENDENT_FVQ",
+  "branch": "work/f-pm03-irrigation-fixed-event-seam",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "scientific_production_admission": false
+  },
+  "qualified_source_commit": "61df2b26c569fe59231f22ba0b28e21e009d3892",
+  "qualification_evidence_commit": "caaca14619524dfc538f433e0720d5df66c4842f",
+  "qualification_evidence_path": "integration/f-pm/F-PM03_FIXED_EVENT_QUALIFICATION.json",
+  "contract_path": "integration/f-pm/F-PM03_FIXED_EVENT_SEAM_CONTRACT.json",
+  "oracle_path": "integration/f-pm/F-PM03_B110_FIXED_EVENT_ORACLE.json",
+  "production_source": "src/process/mod_irrigation_process.f90",
+  "production_source_blob": "af8dc3b3e16d261af573c9b626704638d5ee70c9",
+  "decisive_source_run": {
+    "workflow_run_id": 34231439122,
+    "job_id": 102078300868,
+    "conclusion": "success",
+    "combined_output_sha256": "fb809db3fa84546849e66e23545f9023a09a0eab970e17b7af79cd5cd76a2c93"
+  },
+  "evidence_commit_self_verification": {
+    "workflow_run_id": 34231586339,
+    "conclusion": "success"
+  },
+  "qualified_capabilities": [
+    "B1.10 fixed-event cursor semantics",
+    "application type 0 and 1 surface gross irrigation result",
+    "application type 2 SSDI node-source result",
+    "legacy fixed-event date-match tolerance",
+    "source-bound SSDI per-node depth/rate translation semantics",
+    "surface-only irrigation concentration semantics",
+    "transaction-safe candidate event history",
+    "rollback and replay without committed cursor mutation",
+    "event-end split-required semantics",
+    "machine-precision generic event-end comparison and clamping",
+    "positive SSDI authoritative mass ownership exactly once through F-MR/F-KT",
+    "O0/O2 output identity",
+    "preservation of qualified F-MR06 snow behavior"
+  ],
+  "not_qualified_or_not_migrated": [
+    "scheduled TCS1-TCS8 irrigation trigger equations",
+    "scheduled DCS1-DCS2 irrigation depth equations",
+    "rainfall reduction",
+    "solute-threshold over-irrigation",
+    "external MultiSWAP task=4 irrigation availability scaling",
+    "legacy irrigation file parsing and I/O",
+    "surface gird-to-nird interception/meteo route",
+    "scientific production admission of this fixed-event seam"
+  ],
+  "next_required_gate": "INDEPENDENT_FVQ",
+  "next_recommended_work": "F-VQ independent source-bound scientific admission of the restricted fixed-event irrigation seam before any production-admission claim or before using it as qualified precedent for broader scheduled irrigation migration."
+}
