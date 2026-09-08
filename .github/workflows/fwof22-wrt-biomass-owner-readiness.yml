@@ -1,0 +1,21 @@
+name: F-WOF22 WRT biomass owner readiness
+
+on:
+  push:
+    branches:
+      - work/f-wof22-wrt-biomass-owner-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF22 WRT biomass owner readiness gate
+        run: bash tests/fwof/run_fwof22_wrt_biomass_owner_readiness_gate.sh
