@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR13",
+  "evidence_type": "OWNER_COMPOSITION_QUALIFICATION",
+  "base_commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+  "materialization_commit": "e4ae5cb11f6e10d471e5cebfd33ab35e98047b64",
+  "tested_candidate_commit": "7828d41cfcb91856aaf5b567d9ff3bc762984aca",
+  "github_actions": {
+    "run": 34263809500,
+    "job": 102188046835,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gfortran": "GNU Fortran 13.3.0",
+    "artifact_id": 10070977572,
+    "artifact_digest": "sha256:a914e3d4e3bc7649768df9816e9b69011c400aa0fc7844d266afb1a88c0da316"
+  },
+  "composition": {
+    "exact_production_delta_from_fmr12": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "src/solver/mod_reference_linear_solver.f90",
+      "src/solver/mod_reference_richards_workspace.f90"
+    ],
+    "exact_base_plus_fsi19_delta": "PASS",
+    "historical_fmr09_gate_modified": false,
+    "historical_fmr12_gate_modified": false,
+    "headcalc_postimage_blob": "1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b",
+    "reference_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "reference_workspace_postimage_blob": "178d3289e09583c256b1aa400407d468d9c18e68",
+    "fmr12_crop_root_uptake_adapter_blob_preserved": "9105126c219cbd06fadfa7757ba95d7b7bd0499b"
+  },
+  "fsi19_direct_oracle": {
+    "source_blob": "bf8c9d85c98157d128086d2c2fb20f6129b98e63",
+    "O0": "PASS_BITWISE_LEGACY_ORACLE",
+    "O2": "PASS_BITWISE_LEGACY_ORACLE",
+    "O0_O2_output_identity": "PASS"
+  },
+  "fmr09_authoritative_runtime_regression": {
+    "gate": "PASS",
+    "historical_internal_output_sha256_preserved": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "root_sink_exactly_once": "PASS",
+    "hard_mass_balance": "PASS",
+    "balanced_root_ssdi_state_identity": "PASS",
+    "ssdi_authoritative_mass_exactly_once": "PASS",
+    "ssdi_real_physics_state_identity": "PASS",
+    "committed_process_hydraulic_view": "PASS",
+    "snow_rollback": "PASS",
+    "snow_replay_bitwise": "PASS",
+    "snow_authoritative_mass_complete": "PASS",
+    "snow_authoritative_mass_residual": 0.0,
+    "fvq20_scheduled_irrigation_rollback_replay": "PASS",
+    "fvq20_scheduled_irrigation_A_B_A": "PASS",
+    "fvq18_fixed_irrigation_transaction_replay": "PASS",
+    "fvq18_fixed_irrigation_A_B_A": "PASS",
+    "full_O0_O2_output_identity": "PASS"
+  },
+  "fmr12_fmr10_regression": {
+    "gate": "PASS",
+    "historical_internal_output_sha256_preserved": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "wrapper_bitwise_equivalent_to_direct_fmr10": "PASS",
+    "committed_and_crop_input_read_only": "PASS",
+    "invalid_shared_dto_fails_before_fmr10": "PASS",
+    "A_B_A_determinism": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "source_policy": {
+    "physics_changed": false,
+    "numerical_controls_changed": false,
+    "retry_policy_changed": false,
+    "mass_requirement_relaxed": false,
+    "transaction_semantics_changed": false,
+    "reference_mode_preserved": true,
+    "worker_local_tridag_scratch": true
+  },
+  "compiler_warning_note": "The composed run reproduces pre-existing warnings in legacy HeadCalc and inherited runtime/tests. The new reference linear solver is compiled by the direct oracle with -Wall -Wextra -Werror under O0 and O2 and passes. F-MR13 did not alter production physics to silence inherited warnings.",
+  "scientific_admission": false,
+  "fpe02_b01_resolved": false,
+  "execution_classes": {
+    "REFERENCE": "OWNER_COMPOSITION_QUALIFIED_IN_FMR13_SCOPE",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "This evidence qualifies only F-SI19 source-seam composition into the F-MR12 real-physics runtime lineage. It does not independently scientifically admit the higher-cost diagnostic workload, performance thresholds, fallback policy, parallel real-physics execution, or non-REFERENCE execution classes."
+}

@@ -4,7 +4,7 @@
   "work_unit": "F-MR13",
   "title": "F-SI19 Reference Linear Solver Seam into Qualified F-MR Runtime Lineage",
   "branch": "work/f-mr13-reference-linear-solver-runtime",
-  "status": "MATERIALIZED_PERSISTED_PENDING_QUALIFICATION",
+  "status": "QUALIFIED_FSI19_REFERENCE_LINEAR_SOLVER_SEAM_IN_FMR_REAL_PHYSICS_LINEAGE",
   "qualification_scope": "OWNER_COMPOSITION_ONLY",
   "base": {
     "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
@@ -21,34 +21,53 @@
   "owner_materialization": {
     "commit": "e4ae5cb11f6e10d471e5cebfd33ab35e98047b64",
     "production_delta_verified": true,
+    "headcalc_blob": "1ab0a7dec7a1ca785c01540ebe1c6f3342a1773b",
+    "reference_workspace_blob": "178d3289e09583c256b1aa400407d468d9c18e68",
     "production_paths": [
       "src/legacy/b1_10_port/headcalc.f90",
       "src/solver/mod_reference_linear_solver.f90",
       "src/solver/mod_reference_richards_workspace.f90"
     ]
   },
-  "required_qualification": {
-    "exact_fsi19_module_blob": true,
-    "exact_base_plus_qualified_seam_delta": true,
-    "fsi19_direct_solver_oracle_o0_o2": true,
-    "authoritative_mass_exactly_once": true,
-    "rollback_replay": true,
-    "fmr09_cross_process_regression": true,
-    "fmr12_fmr10_regression": true,
-    "o0_o2_output_identity": true
+  "qualification": {
+    "tested_candidate_commit": "7828d41cfcb91856aaf5b567d9ff3bc762984aca",
+    "github_actions_run": 34263809500,
+    "github_actions_job": 102188046835,
+    "conclusion": "success",
+    "exact_base_plus_fsi19_delta": "PASS",
+    "fsi19_direct_solver_oracle_O0": "PASS",
+    "fsi19_direct_solver_oracle_O2": "PASS",
+    "fsi19_direct_solver_oracle_O0_O2_identity": "PASS",
+    "fmr09_authoritative_mass_transaction_replay": "PASS",
+    "fmr09_internal_output_sha256_preserved": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d",
+    "fmr12_fmr10_runtime_regression": "PASS",
+    "fmr12_internal_output_sha256_preserved": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "hard_mass_balance": "PASS",
+    "authoritative_mass_exactly_once": "PASS",
+    "rollback_replay": "PASS",
+    "O0_O2_output_identity": "PASS"
   },
   "state": {
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   },
   "physics_changed": false,
   "numerical_controls_changed": false,
   "retry_policy_changed": false,
   "mass_requirement_relaxed": false,
   "transaction_semantics_changed": false,
+  "reference_mode_preserved": true,
+  "scratch_ownership": "WORKER_JOB_LOCAL_REFERENCE_RICHARDS_WORKSPACE",
   "scientific_admission": false,
-  "claim_limit": "F-MR13 may qualify only composition of the already F-SI19-qualified reference linear solver seam into the qualified F-MR12 real-physics runtime lineage. It does not independently admit new physics, performance thresholds, BALANCED, THROUGHPUT, FALLBACK, parallel real-physics execution, or the F-PE higher-cost diagnostic workload.",
-  "next_owner_after_qualification": "Independent F-VQ scientific admission of the composed F-MR13 runtime postimage before F-PE uses the accepted higher-cost workload for production-tail claims."
+  "fpe02_b01": "NOT_RESOLVED_BY_FMR13",
+  "execution_classes": {
+    "REFERENCE": "OWNER_COMPOSITION_QUALIFIED_IN_FMR13_SCOPE",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED"
+  },
+  "claim_limit": "F-MR13 qualifies only composition of the already F-SI19-qualified reference linear solver seam into the qualified F-MR12 real-physics runtime lineage. It does not independently admit new physics, performance thresholds, BALANCED, THROUGHPUT, FALLBACK, parallel real-physics execution, or the F-PE higher-cost diagnostic workload.",
+  "next_owner_action": "Run independent F-VQ scientific admission on the exact F-MR13 composed postimage before F-PE uses the accepted higher-cost workload for production-tail claims."
 }
