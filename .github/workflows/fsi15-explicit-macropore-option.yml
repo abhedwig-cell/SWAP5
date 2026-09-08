@@ -28,3 +28,5 @@ jobs:
         run: bash tests/fsi/run_fsi15_physical_option_authority_gate_v2.sh
       - name: F-SI15 exact F-SI14 common and legacy-direct identity gate
         run: bash tests/fsi/run_fsi15_fsi14_identity_gate.sh
+      - name: F-SI15 pinned F-SI14 and F-KT closeout regressions
+        run: bash tests/fsi/run_fsi15_closeout_regression_gate.sh
