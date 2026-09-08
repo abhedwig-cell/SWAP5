@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE05",
+  "evidence": "SOURCE_BOUND_REFERENCE_TEMPORAL_ACCEPTANCE_OWNER_GATE",
+  "candidate_head": "d3c79bb24e46e4f4d722592e255b2968153458b2",
+  "workflow_run": 34227365123,
+  "workflow_conclusion": "success",
+  "source_preimage": {
+    "transaction_reference": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_interval_runtime": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "serialized_reference_backend": "ade399a1df4b582c9038442093ccacce034f923d",
+    "kernel_transactions": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "fpe04_status": "dac3afc75ca0f25bb167d851eeff2e9756298bc9"
+  },
+  "verified_assertions": [
+    "transaction layer compares full-step and two-half-step through model temporal_error",
+    "transaction temporal acceptance is temporal_error <= configured temporal_tolerance",
+    "serialized REFERENCE binds temporal_error to fmr_serialized_temporal_identity",
+    "serialized temporal identity compares pressure_head, water_content, ponding_depth and groundwater_level by exact equality",
+    "serialized temporal identity returns zero for equality and huge(real64) otherwise",
+    "F-PE04 dependency remains qualified and contains no accepted nonstationary higher-cost fixture",
+    "F-PE05 changes no production source and admits no BALANCED, THROUGHPUT or FALLBACK policy"
+  ],
+  "decision_supported": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_TEMPORAL_ACCEPTANCE_REQUIRED",
+  "scientific_claim_limit": "This evidence qualifies the source-bound owner blocker only. It does not prove nonstationary acceptance impossible, does not diagnose the temporal identity rule as scientifically wrong, and does not qualify any alternative temporal metric or execution policy."
+}
