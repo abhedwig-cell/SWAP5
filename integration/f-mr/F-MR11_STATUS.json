@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR11",
+  "title": "Restricted Serialized Runtime Admission of Explicit Prescribed Bottom-Head Boundary",
+  "branch": "work/f-mr11-prescribed-bottom-head-runtime-admission",
+  "status": "IN_PROGRESS_SOURCE_BOUND_FSI16_RUNTIME_COMPOSITION",
+  "phase": "PERSISTED_NOT_YET_IMPLEMENTED_OR_TESTED",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "production_runtime_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_admitted": false
+  },
+  "lineage": {
+    "runtime_base_work_unit": "F-MR10",
+    "runtime_base_closeout": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "fsi16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f",
+    "fsi16_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
+    "fsi16_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+    "fsi16_decisive_workflow_run": 34256811255,
+    "fsi16_final_closeout_workflow_run": 34257495188
+  },
+  "handoff_resolution": {
+    "original_fsi16_suggested_target": "F-MR10",
+    "live_finding": "F-MR10 already occupied and qualified by explicit root-uptake process runtime binding",
+    "resolved_target": "F-MR11",
+    "reason": "preserve independent work-unit ownership and do not overwrite F-MR10"
+  },
+  "source_bound_runtime_trace": {
+    "bottom_head_forcing_already_present": true,
+    "runtime_request_binding_already_present": "request%boundary%bottom_head = self%bottom_head",
+    "authoritative_solver_qbot_already_observed": "last_observation%bottom_flux = solve_result%bottom_flux",
+    "authoritative_bottom_mass_accounting_already_present": "positive qbot -> total_in; negative qbot -> total_out; multiplied once by step_duration",
+    "current_profile_guard": "bottom_mode == 7 or bottom_mode == -2",
+    "current_temporal_comparator_guard": "bottom_mode other than 7/-2 returns huge temporal_error",
+    "fsi16_production_delta_from_fsi15": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/legacy/b1_10_port/headcalc.f90"
+    ]
+  },
+  "scope": {
+    "requested_action": "compose the already F-SI16-qualified mode-5 solver capability into the restricted serialized physical runtime",
+    "required_bottom_mode": 5,
+    "serialized_only": true,
+    "preserve_modes_7_and_minus2": true,
+    "preserve_fmr10_root_uptake_binding": true,
+    "preserve_fkt_transaction_semantics": true,
+    "no_groundwater_coupling_logic": true,
+    "no_new_temporal_tolerance": true,
+    "no_physics_formula_change": true
+  },
+  "holds": {
+    "bottom_modes_1_3_8_9": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "active_macropores": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "groundwater_coupling": "NOT_ADMITTED",
+    "fmr10_crop_owner_hold": "UNCHANGED_AND_OUT_OF_SCOPE"
+  },
+  "next_gate": "RECONCILE_FSI16_TWO_BLOB_OVERLAY_AND_PROVE_EXISTING_TEMPORAL_ACCEPTANCE_CAN_ADMIT_MODE5_WITHOUT_POLICY_CHANGE"
+}
