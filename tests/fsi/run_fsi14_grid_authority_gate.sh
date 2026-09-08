@@ -119,9 +119,9 @@ needle='''  if (global_state_fingerprint() /= globals_before) failures = failure
   if (transfer(dt,0_int64) /= transfer(99.0_real64,0_int64)) failures = failures + 1'''
 checks='''  if (global_state_fingerprint() /= globals_before) failures = failures + 1
   if (numnod /= 1) failures = failures + 1
-  if (any(z /= [91.0_real64,92.0_real64,93.0_real64,94.0_real64])) failures = failures + 1
-  if (any(dz /= [9.0_real64,8.0_real64,7.0_real64,6.0_real64])) failures = failures + 1
-  if (any(disnod /= [5.0_real64,4.0_real64,3.0_real64,2.0_real64,1.0_real64])) failures = failures + 1
+  if (maxval(abs(z-[91.0_real64,92.0_real64,93.0_real64,94.0_real64])) > 0.0_real64) failures = failures + 1
+  if (maxval(abs(dz-[9.0_real64,8.0_real64,7.0_real64,6.0_real64])) > 0.0_real64) failures = failures + 1
+  if (maxval(abs(disnod-[5.0_real64,4.0_real64,3.0_real64,2.0_real64,1.0_real64])) > 0.0_real64) failures = failures + 1
   if (transfer(dt,0_int64) /= transfer(99.0_real64,0_int64)) failures = failures + 1'''
 if x.count(needle)!=1: raise SystemExit('F-SI14 grid persistence marker mismatch')
 x=x.replace(needle,checks,1)
