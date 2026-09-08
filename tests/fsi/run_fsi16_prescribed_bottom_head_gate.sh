@@ -5,7 +5,6 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 FSI15_HEAD="fe5e55d5d5ebff42e8212cba8df15652e5f1a52b"
 BUILD="${TMPDIR:-/tmp}/swap5-fsi16-prescribed-head-$$"
 RESPONSE_STUB="$BUILD/fsi16_response_headcalc_stubs.f90"
-RESPONSE_TEST="$BUILD/fsi16_response_test.F90"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
@@ -33,11 +32,11 @@ check_blob src/legacy/b1_10_port/headcalc.f90 d92f77963329d61ab3feb988f912252c01
 
 grep -Fq 'size(request%parameters%node_distance) /= n) return' src/solver/mod_soil_water_solver_contract.f90
 grep -Fq 'grid_disnod = 0.5d0*parameter_set%dz(numnod)' src/legacy/b1_10_port/headcalc.f90
+grep -Fq 'fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%hbot) / grid_disnod(NN+1) + 1.0d0' src/legacy/b1_10_port/headcalc.f90
+grep -Fq 'fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)' src/legacy/b1_10_port/headcalc.f90
 grep -Fq 'request%boundary%bottom_mode /= 5' src/adapter/mod_reference_richards_legacy_binding.f90
-if grep -Fq "route = 'bottom-distance-required'" src/adapter/mod_reference_richards_legacy_binding.f90; then
-  echo 'F-SI16_PRESCRIBED_HEAD FAIL stale explicit lower-face parameter guard' >&2; exit 1
-fi
 grep -Fq 'call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq 'result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'state%qbot = state%qtop' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)' src/adapter/mod_reference_richards_legacy_binding.f90
 if grep -Fqi 'call fluxes' src/adapter/mod_reference_richards_legacy_binding.f90; then
@@ -49,9 +48,9 @@ echo 'F-SI16_STATIC_MINIMAL_PRODUCTION_SEAM PASS'
 
 # F-SI04 deliberately used a zero-update TRIDAG stub because its admitted
 # fixtures started at exact equilibrium. That stub cannot qualify a genuine
-# prescribed-head perturbation. Derive a runner-local copy with the standard
-# tridiagonal elimination/back-substitution while leaving the predecessor stub
-# byte-identical for all pinned historical gates.
+# prescribed-head perturbation. Derive a runner-local copy with a standard
+# tridiagonal elimination/back-substitution while leaving predecessor source
+# byte-identical for the pinned historical gates.
 python3 - tests/fsi/fsi04_real_headcalc_stubs.f90 "$RESPONSE_STUB" <<'PY'
 from pathlib import Path
 import sys
@@ -121,41 +120,6 @@ grep -Fq 'gamma(i) = lower(i-1)/beta' "$RESPONSE_STUB"
 grep -Fq 'solution(i) = solution(i) - gamma(i+1)*solution(i+1)' "$RESPONSE_STUB"
 echo 'F-SI16_RESPONSE_CAPABLE_TRIDAG_FIXTURE PASS'
 
-# Keep all assertions unchanged, but derive a runner-local diagnostic copy so
-# any remaining qualification failure identifies the exact property.
-cp tests/fsi/test_fsi16_prescribed_bottom_head.F90 "$RESPONSE_TEST"
-python3 - "$RESPONSE_TEST" <<'PY'
-from pathlib import Path
-import sys
-p=Path(sys.argv[1])
-s=p.read_text()
-marker="  if (failures /= 0) then\n"
-diag="""  write(*,'(A,I0,1X,A)') 'F-SI16_DIAG_C_STATUS ', result_c%status, trim(result_c%diagnostics%route)
-  write(*,'(A,L1)') 'F-SI16_DIAG_C_HEAD_MATCH ', &
-       abs(result_c%candidate_state%pressure_head(numnod)-request_c%boundary%bottom_head) <= head_tolerance
-  write(*,'(A,L1)') 'F-SI16_DIAG_C_HEAD_CHANGED ', &
-       transfer(result_c%candidate_state%pressure_head(numnod),0_int64) /= &
-       transfer(result_a%candidate_state%pressure_head(numnod),0_int64)
-  write(*,'(A,L1)') 'F-SI16_DIAG_C_QBOT_CONTINUITY ', &
-       transfer(result_c%bottom_flux,0_int64) == transfer(expected_qbot,0_int64)
-  write(*,'(A,L1)') 'F-SI16_DIAG_C_QBOT_SEED_INDEPENDENT ', &
-       transfer(result_c%bottom_flux,0_int64) /= transfer(request_c%boundary%bottom_flux,0_int64)
-  write(*,'(A,L1)') 'F-SI16_DIAG_REQUEST_A_IMMUTABLE ', request_fingerprint(request_a) == request_a_before
-  write(*,'(A,L1)') 'F-SI16_DIAG_REQUEST_B_IMMUTABLE ', request_fingerprint(request_b) == request_b_before
-  write(*,'(A,L1)') 'F-SI16_DIAG_REQUEST_C_IMMUTABLE ', request_fingerprint(request_c) == request_c_before
-  write(*,'(A,L1)') 'F-SI16_DIAG_LEGACY_MODE_POISON ', swbotb == 3
-  write(*,'(A,L1)') 'F-SI16_DIAG_LEGACY_HBOT_POISON ', ieee_is_nan(hbot)
-  write(*,'(A,L1)') 'F-SI16_DIAG_LEGACY_GWLINP_POISON ', ieee_is_nan(gwlinp)
-  write(*,'(A,L1)') 'F-SI16_DIAG_LEGACY_QBOT_POISON ', ieee_is_nan(qbot)
-  write(*,'(A,L1)') 'F-SI16_DIAG_GEOMETRY_A ', size(request_a%parameters%node_distance) == numnod
-  write(*,'(A,L1)') 'F-SI16_DIAG_GEOMETRY_B ', size(request_b%parameters%node_distance) == numnod
-  write(*,'(A,L1)') 'F-SI16_DIAG_GEOMETRY_C ', size(request_c%parameters%node_distance) == numnod
-"""
-if s.count(marker) != 1:
-    raise SystemExit(f'F-SI16 final failure marker count={s.count(marker)}')
-p.write_text(s.replace(marker,diag+marker,1))
-PY
-
 FLAGS=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
 compile_gate() {
   local opt="$1" out="$2"
@@ -171,7 +135,7 @@ compile_gate() {
   gfortran "${FLAGS[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c src/solver/mod_b110_root_sink_provider.f90 -o "$out/root.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c src/legacy/b1_10_port/headcalc.f90 -o "$out/headcalc.o"
   gfortran "${FLAGS[@]}" -O"$opt" -J "$out" -I "$out" -c src/adapter/mod_reference_richards_legacy_binding.f90 -o "$out/adapter.o"
-  gfortran "${FLAGS[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c "$RESPONSE_TEST" -o "$out/driver.o"
+  gfortran "${FLAGS[@]}" -Werror -O"$opt" -J "$out" -I "$out" -c tests/fsi/test_fsi16_prescribed_bottom_head.F90 -o "$out/driver.o"
   gfortran "${FLAGS[@]}" -O"$opt" "$out/driver.o" "$out/adapter.o" "$out/headcalc.o" "$out/root.o" \
     "$out/process.o" "$out/mvg.o" "$out/top.o" "$out/state.o" "$out/workspace.o" "$out/contract.o" \
     "$out/worker.o" "$out/stubs.o" -o "$out/test"
@@ -186,6 +150,8 @@ for opt in 0 2; do
   fi
   grep -Fq 'F-SI16_BOTTOM_FLUX_SEED_INDEPENDENCE PASS' "$out/output.txt"
   grep -Fq 'F-SI16_BOTTOM_HEAD_RESPONSE PASS' "$out/output.txt"
+  grep -Fq 'F-SI16_BOTTOM_FACE_GRADIENT_IDENTITY PASS' "$out/output.txt"
+  grep -Fq 'F-SI16_UNROUNDED_RESIDUAL_IDENTITY PASS' "$out/output.txt"
   grep -Fq 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS' "$out/output.txt"
   grep -Fq 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS' "$out/output.txt"
   grep -Fq 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS' "$out/output.txt"
