@@ -1,9 +1,9 @@
 module mod_fmr_serialized_multiswap_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use mod_transaction_reference, only: TX_MASS_MISSING_NONE
+  use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
-       kernel_result_t, kernel_diagnostics_t, kernel_executor_t
+       kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
   use mod_soil_water_solver_contract, only: top_boundary_provider_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
@@ -21,6 +21,12 @@ module mod_fmr_serialized_multiswap_runtime
 
   type, public :: fmr_serialized_column_result_t
     integer(int64) :: column_id = 0_int64
+    integer :: dispatch_ordinal = 0
+    real(real64) :: requested_t0 = 0.0_real64
+    real(real64) :: requested_t1 = 0.0_real64
+    logical :: admission_assessed = .false.
+    logical :: admitted = .false.
+    character(len=40) :: admission_status = 'NOT_ASSESSED'
     integer :: kernel_status = 0
     integer :: commit_status = -1
     logical :: completed = .false.
@@ -35,13 +41,32 @@ module mod_fmr_serialized_multiswap_runtime
     type(canonical_mass_accounting_t) :: mass
   end type fmr_serialized_column_result_t
 
+  ! F-MR05-specific composition diagnostics.  This is deliberately separate
+  ! from the generic F-MR01 aggregate type so the strict serialized physical
+  ! admission constraint does not leak into the logical runtime core.
+  type, public :: fmr_serialized_batch_diagnostics_t
+    integer :: number_requested = 0
+    integer :: number_admitted = 0
+    integer :: number_executed = 0
+    integer :: number_committed = 0
+    integer :: number_rejected = 0
+    integer :: physical_solve_count = 0
+    integer :: max_simultaneous_real_physical_solves = 0
+    logical :: deterministic_collection = .false.
+    real(real64) :: effective_t0 = 0.0_real64
+    real(real64) :: effective_t1 = 0.0_real64
+    real(real64) :: max_abs_column_mass_residual = 0.0_real64
+    type(canonical_mass_accounting_t) :: authoritative_aggregate_mass
+  end type fmr_serialized_batch_diagnostics_t
+
   public :: fmr_run_serialized_physical_multiswap
 
 contains
 
   subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
-                                                    batch_size, results, diagnostics, aggregate, dispatch_status)
+                                                    batch_size, results, diagnostics, aggregate, dispatch_status, &
+                                                    runtime_diagnostics)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -55,19 +80,25 @@ contains
     type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
     integer, intent(out) :: dispatch_status
+    type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
+    type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     integer, allocatable :: order(:)
-    integer :: batch_start, batch_end, pos, idx, batches
+    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls
 
-    call initialize_outputs(columns, results, diagnostics, aggregate)
+    call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
+    call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
+    active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
 
     if (batch_size <= 0 .or. t1 <= t0) then
       dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
       call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
       call build_aggregate(columns, diagnostics, 0, aggregate)
+      call finalize_runtime_diagnostics(results, local_runtime)
+      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
@@ -75,6 +106,8 @@ contains
       dispatch_status = FMR_SERIAL_DISPATCH_REGISTRY_REJECTED
       call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
       call build_aggregate(columns, diagnostics, 0, aggregate)
+      call finalize_runtime_diagnostics(results, local_runtime)
+      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
@@ -86,16 +119,22 @@ contains
       batch_end = min(size(columns), batch_start + batch_size - 1)
       do pos = batch_start, batch_end
         idx = order(pos)
+        results(idx)%dispatch_ordinal = pos
         call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-             forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx))
+             forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+             local_runtime, active_physical_calls)
       end do
     end do
 
+    local_runtime%deterministic_collection = .true.
     call build_aggregate(columns, diagnostics, batches, aggregate)
+    call finalize_runtime_diagnostics(results, local_runtime)
+    if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap
 
-  subroutine initialize_outputs(columns, results, diagnostics, aggregate)
+  subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     type(fmr_logical_column_t), intent(in) :: columns(:)
+    real(real64), intent(in) :: t0, t1
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     type(fmr_column_diagnostics_t), allocatable, intent(out) :: diagnostics(:)
     type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
@@ -105,6 +144,8 @@ contains
     aggregate = fmr_aggregate_diagnostics_t()
     do i = 1, size(columns)
       results(i)%column_id = columns(i)%column_id
+      results(i)%requested_t0 = t0
+      results(i)%requested_t1 = t1
       diagnostics(i)%column_id = columns(i)%column_id
       diagnostics(i)%template_id = columns(i)%template_id
       diagnostics(i)%backend = columns(i)%backend_id
@@ -113,6 +154,21 @@ contains
       diagnostics(i)%worker_assignments(1) = 1
     end do
   end subroutine initialize_outputs
+
+  subroutine initialize_runtime_diagnostics(number_requested, t0, t1, runtime)
+    integer, intent(in) :: number_requested
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_batch_diagnostics_t), intent(out) :: runtime
+
+    runtime = fmr_serialized_batch_diagnostics_t()
+    runtime%number_requested = number_requested
+    runtime%effective_t0 = t0
+    runtime%effective_t1 = t1
+    runtime%authoritative_aggregate_mass = canonical_mass_accounting_t()
+    runtime%authoritative_aggregate_mass%interval_t0 = t0
+    runtime%authoritative_aggregate_mass%interval_t1 = t1
+    runtime%authoritative_aggregate_mass%missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+  end subroutine initialize_runtime_diagnostics
 
   logical function registry_structure_valid(columns, templates, states) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
@@ -148,7 +204,7 @@ contains
   end function registry_structure_valid
 
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
-                            state_registry, numerical_config, t0, t1, output, diagnostic)
+                            state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -160,6 +216,8 @@ contains
     real(real64), intent(in) :: t0, t1
     type(fmr_serialized_column_result_t), intent(inout) :: output
     type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer, intent(inout) :: active_physical_calls
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -170,6 +228,7 @@ contains
     logical :: checkpoint_ok, candidate_ready, did_commit
 
     if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
+      output%admission_status = 'ROUTING_REJECTED'
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'ROUTING_REJECTED'
       call update_committed_provenance_by_handle(column, state_registry, output, diagnostic)
@@ -183,6 +242,7 @@ contains
 
     call fmr_capture_checkpoint(state_registry(state_index), checkpoint, checkpoint_ok)
     if (.not. checkpoint_ok) then
+      output%admission_status = 'CHECKPOINT_CAPTURE_FAILED'
       diagnostic%rejected = 1
       diagnostic%failure_classification = 'CHECKPOINT_CAPTURE_FAILED'
       call update_committed_provenance(state_registry(state_index), output, diagnostic)
@@ -192,6 +252,8 @@ contains
     diagnostic%checkpoint_captures = 1
     diagnostic%checkpoint_replays = 1
     diagnostic%runtime_attempts = 1
+
+    active_physical_calls = active_physical_calls + 1
     call backend%run_trial(column, templates(find_template_index(column%template_id, templates)), &
          parameter_registry(parameter_index), state_registry(state_index), forcing_registry(forcing_index), &
          numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
@@ -202,12 +264,29 @@ contains
     diagnostic%retries = kernel_diag%retries
     candidate_ready = candidate%ready()
 
-    if (kernel_result%completed) then
+    if (kernel_diag%admission_rejections > 0 .or. kernel_result%status == KERNEL_STATUS_NOT_ADMITTED) then
+      output%admission_assessed = .true.
+      output%admitted = .false.
+      output%admission_status = 'PHYSICAL_PROFILE_REJECTED'
+    else if (kernel_diag%transaction_calls > 0 .or. kernel_result%completed) then
+      output%admission_assessed = .true.
+      output%admitted = .true.
+      output%admission_status = 'ADMITTED'
+    else
+      output%admission_status = 'PRE_ADMISSION_REJECTED'
+    end if
+
+    if (kernel_diag%transaction_calls > 0) then
       observation = backend%observation()
       output%solver_executed = observation%solver_executed
       output%solver_route = observation%solver_diagnostics%route
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
+      if (output%solver_executed) then
+        runtime%max_simultaneous_real_physical_solves = max( &
+             runtime%max_simultaneous_real_physical_solves, active_physical_calls)
+      end if
     end if
+    active_physical_calls = active_physical_calls - 1
 
     if (.not. kernel_result%completed) then
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
@@ -344,5 +423,70 @@ contains
     end do
     aggregate%work_distribution(1) = int(aggregate%attempts, int64)
   end subroutine build_aggregate
+
+  subroutine finalize_runtime_diagnostics(results, runtime)
+    type(fmr_serialized_column_result_t), intent(in) :: results(:)
+    type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
+    integer :: i
+    logical :: aggregate_complete
+
+    runtime%number_admitted = 0
+    runtime%number_executed = 0
+    runtime%number_committed = 0
+    runtime%number_rejected = 0
+    runtime%physical_solve_count = 0
+    runtime%max_abs_column_mass_residual = 0.0_real64
+    runtime%authoritative_aggregate_mass%complete = .false.
+    runtime%authoritative_aggregate_mass%origin_lineage_id = 0_int64
+    runtime%authoritative_aggregate_mass%origin_revision = -1_int64
+    runtime%authoritative_aggregate_mass%accepted_transaction_count = 0
+    runtime%authoritative_aggregate_mass%storage_start = 0.0_real64
+    runtime%authoritative_aggregate_mass%storage_end = 0.0_real64
+    runtime%authoritative_aggregate_mass%storage_change = 0.0_real64
+    runtime%authoritative_aggregate_mass%total_in = 0.0_real64
+    runtime%authoritative_aggregate_mass%total_out = 0.0_real64
+    runtime%authoritative_aggregate_mass%residual = 0.0_real64
+    aggregate_complete = .false.
+
+    do i = 1, size(results)
+      if (results(i)%admitted) runtime%number_admitted = runtime%number_admitted + 1
+      if (results(i)%solver_executed) then
+        runtime%number_executed = runtime%number_executed + 1
+        runtime%physical_solve_count = runtime%physical_solve_count + 1
+      end if
+      if (results(i)%committed) then
+        runtime%number_committed = runtime%number_committed + 1
+        aggregate_complete = .true.
+        aggregate_complete = aggregate_complete .and. results(i)%mass%complete .and. &
+             results(i)%mass%missing_contribution_mask == TX_MASS_MISSING_NONE
+        runtime%authoritative_aggregate_mass%accepted_transaction_count = &
+             runtime%authoritative_aggregate_mass%accepted_transaction_count + &
+             results(i)%mass%accepted_transaction_count
+        runtime%authoritative_aggregate_mass%storage_start = runtime%authoritative_aggregate_mass%storage_start + &
+             results(i)%mass%storage_start
+        runtime%authoritative_aggregate_mass%storage_end = runtime%authoritative_aggregate_mass%storage_end + &
+             results(i)%mass%storage_end
+        runtime%authoritative_aggregate_mass%storage_change = runtime%authoritative_aggregate_mass%storage_change + &
+             results(i)%mass%storage_change
+        runtime%authoritative_aggregate_mass%total_in = runtime%authoritative_aggregate_mass%total_in + &
+             results(i)%mass%total_in
+        runtime%authoritative_aggregate_mass%total_out = runtime%authoritative_aggregate_mass%total_out + &
+             results(i)%mass%total_out
+        runtime%authoritative_aggregate_mass%residual = runtime%authoritative_aggregate_mass%residual + &
+             results(i)%mass%residual
+        runtime%max_abs_column_mass_residual = max(runtime%max_abs_column_mass_residual, abs(results(i)%mass%residual))
+      else
+        runtime%number_rejected = runtime%number_rejected + 1
+      end if
+    end do
+
+    if (runtime%number_committed > 0 .and. aggregate_complete) then
+      runtime%authoritative_aggregate_mass%complete = .true.
+      runtime%authoritative_aggregate_mass%missing_contribution_mask = TX_MASS_MISSING_NONE
+    else
+      runtime%authoritative_aggregate_mass%complete = .false.
+      runtime%authoritative_aggregate_mass%missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    end if
+  end subroutine finalize_runtime_diagnostics
 
 end module mod_fmr_serialized_multiswap_runtime
