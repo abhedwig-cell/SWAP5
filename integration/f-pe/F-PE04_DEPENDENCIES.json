@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE04",
+  "branch": "work/f-pe04-reference-failure-envelope",
+  "start_head": "8f7bab11fd856d7cb2f7bacb8c299cf2b0517061",
+  "start_head_message": "qualify(F-PE03): self-verify partial reference-tail exit",
+  "upstream": {
+    "F-PE01": {"status": "QUALIFIED_PERFORMANCE_AND_EXECUTION_POLICY_QUALIFICATION_ARCHITECTURE", "status_blob": "b10ec7a5d90e21a4045dc65a7b7fccb665b46b23"},
+    "F-PE02": {"status": "PARTIAL_EXIT_DIAGNOSTICS_QUALIFIED_NUMERICAL_POLICY_LINEAGE_BLOCKED", "diagnostics_subgate": "QUALIFIED_PERSISTED_INTERVAL_COST_DIAGNOSTICS_PROPAGATION", "status_blob": "c03f5b280a0b039e51d9768f83b0e0eccdb0464e"},
+    "F-PE03": {"status": "PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING", "status_blob": "9bb1d7355aa6043b62a0eca540d8615aee6a0e9b", "evidence_blob": "b898b0cc8349774208c138a62b1fbe38287debd0", "contract_blob": "d479f6f85a348fd10b089803e0b66c39298c8921"}
+  },
+  "pinned_reference_source": {
+    "kernel_transactions": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "serialized_multiswap_runtime": "940fa6deb461443dd7b5993038a9a2fbbb434e36",
+    "serialized_reference_backend": "ade399a1df4b582c9038442093ccacce034f923d",
+    "reference_richards_legacy_binding": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+    "legacy_headcalc": "be5978827095445b15de7baf607728792de6a366",
+    "soil_water_solver_contract": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "reference_richards_workspace": "93285b2ca24669494c93c00403e3783fca6758e9",
+    "reference_richards_state_binding": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "default_mvg_provider": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "source_sink_provider": "d6c57add72387e5c0022a44319fff08046194aac",
+    "transaction_reference": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_contracts": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "canonical_interval_runtime": "f2cae79d533343db818c11e0b61b605ac5f6739d"
+  },
+  "lineage_constraints": {
+    "reference_only": true,
+    "production_source_change_allowed": false,
+    "numerical_control_change_allowed": false,
+    "physics_change_allowed": false,
+    "admitted_bottom_modes": [7, -2],
+    "prescribed_bottom_head_admitted_on_this_lineage": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE04",
+  "status": "DESIGN_MATRIX_PERSISTED_AWAITING_EXECUTION",
+  "center_fixture": "F-PE03 admitted four-node MvG physical fixture at uniform h=-75 with balanced top/bottom and source/sink forcing",
+  "fixed": {"bottom_mode": 7, "swkimpl": 0, "swkmean": 1, "root_extraction_active": false, "macropore_active": false, "snow_active": false, "hysteresis_active": false, "tabulated_hydraulics_active": false, "elasticity_active": false, "frost_active": false},
+  "sweeps": [
+    {"family": "BASELINE_AND_UNIFORM_STATE", "cases": [
+      {"id":"C00","delta":"none; uniform h=-75"},
+      {"id":"C01","delta":"uniform h=-5"},
+      {"id":"C02","delta":"uniform h=-5000"}
+    ]},
+    {"family": "INITIAL_STATE_SINGLE_NODE_HEAD", "node": 2, "delta_head_cm": [1e-14,1e-13,1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4,1e-3,1e-2]},
+    {"family": "TOP_FLUX_RELATIVE", "delta_fraction": [1e-14,1e-13,1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4], "signs": ["plus","minus"]},
+    {"family": "SOURCE_SINK_IMBALANCE", "field": "subsurface_irrigation_source", "delta_fraction": [1e-14,1e-13,1e-12,1e-11,1e-10,1e-9,1e-8,1e-7,1e-6,1e-5,1e-4]},
+    {"family": "BOTTOM_MODE7_CONTROL", "delta": "bottom_flux multiplied by 1.01 while bottom_mode remains 7; interpreted only as a control/inertness probe, not prescribed-head evidence"},
+    {"family": "PRE_SOLVER_VALIDATION", "delta": "forcing_handle points outside registry; negative control only", "expected_class": "FAIL_CLOSED_PRE_SOLVER"}
+  ],
+  "excluded": [
+    "bottom_head perturbation as prescribed-head physics, because no prescribed-head bottom mode is admitted on this lineage",
+    "root extraction perturbation, because the admitted profile requires root_extraction_active=false and forcing admission rejects nonzero root sink",
+    "numerical tolerance, iteration, backtracking, retry, timestep-policy or fallback changes"
+  ],
+  "execution_rule": "Every admitted perturbation is replayed twice from a fresh identical committed state under both -O0 and -O2. The pre-solver validation case is a negative admission-control probe and is not counted as an admitted physical perturbation."
+}
