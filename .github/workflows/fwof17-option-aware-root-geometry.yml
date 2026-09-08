@@ -1,0 +1,21 @@
+name: F-WOF17 option-aware root geometry
+
+on:
+  push:
+    branches:
+      - work/f-wof17-option-aware-root-geometry
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF17 option-aware root geometry gate
+        run: bash tests/fwof/run_fwof17_option_aware_root_geometry_gate.sh
