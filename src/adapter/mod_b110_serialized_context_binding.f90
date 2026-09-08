@@ -31,10 +31,13 @@ contains
     if (maxval(abs(request%parameters%dz-dz(1:n))) > 0.0_real64) return
     if (maxval(abs(request%parameters%node_distance-disnod(1:n))) > 0.0_real64) return
 
-    ! F-MR04 binds only the already-qualified bare/root-inactive profile.
-    ! It never disables requested physics silently: nonzero legacy activity is rejected.
+    ! The legacy global qrot is an admission guard only for the root-inactive route.
+    ! Once an explicit F-SI11 root provider is bound, root extraction is carried by
+    ! request%evaluation%root_sink and the global qrot must be irrelevant/poisonable.
     if (swmacro /= 0) return
-    if (any(abs(qrot(1:n)) > 0.0_real64)) return
+    if (.not. associated(request%evaluation%root_sink)) then
+      if (any(abs(qrot(1:n)) > 0.0_real64)) return
+    end if
     if (abs(melt) > 0.0_real64) return
     if (request%numerical%conductivity_implicit_mode /= 0) return
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2) return
