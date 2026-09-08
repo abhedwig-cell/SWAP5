@@ -262,19 +262,22 @@ contains
   real(real64) function continuity_qbot(request, result) result(value)
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: result
-    real(real64) :: sink_value
-    integer :: i, level
+    real(real64) :: volm1, volact, qrosum, qdrtot, qssdisum
+    real(real64) :: sink_vector(numnod)
+    integer :: level
 
-    value = result%top_flux
-    do i = 1, numnod
-       sink_value = 0.0_real64
-       do level = 1, size(drainage,1)
-          sink_value = sink_value + drainage(level,i)
-       end do
-       value = value + request%parameters%dz(i) * &
-            (result%candidate_state%water_content(i)-request%base_state%water_content(i)) / request%step_duration + &
-            sink_value - irrigation(i) + roots(i)
+    ! Independent expected value with exact B1.10 watstor()+fluxes() grouping.
+    volm1 = sum(request%base_state%water_content(1:numnod) * request%parameters%dz(1:numnod))
+    volact = sum(result%candidate_state%water_content(1:numnod) * request%parameters%dz(1:numnod))
+    sink_vector = 0.0_real64
+    do level = 1, size(drainage,1)
+       sink_vector = sink_vector + drainage(level,1:numnod)
     end do
+    qrosum = sum(roots(1:numnod))
+    qdrtot = sum(sink_vector)
+    qssdisum = sum(irrigation(1:numnod))
+    value = result%top_flux + qrosum + qdrtot + &
+         (volact-volm1) / request%step_duration - qssdisum
   end function continuity_qbot
 
   integer(int64) function request_fingerprint(request) result(fp)
