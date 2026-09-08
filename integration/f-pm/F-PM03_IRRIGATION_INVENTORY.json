@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM03",
+  "title": "Source-bound B1.10 irrigation ownership and dependency inventory",
+  "source_basis": {
+    "composed_candidate_commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "composed_candidate_tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "fpm01_source_oracle_path": "SWAP/irrigation.f90",
+    "fpm01_source_oracle_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "oracle_reverified_against_project_archive": true,
+    "current_production_process_directory": "src/process",
+    "current_production_process_files": ["src/process/mod_snow_process.f90"],
+    "current_production_irrigation_process_exists": false
+  },
+  "legacy_entrypoints": ["irrigation(task)", "read_irrigation_fixed()"],
+  "legacy_driver_order": {
+    "daily_call": "swap.f90 invokes Irrigation(3) inside flDayStart before TimeControl(9) and before subdaily soil-water stepping",
+    "external_multiswap_adjustment": "legacy MultiSWAP path may invoke Irrigation(4) to scale gird and event duration with f_irr_avail",
+    "event_reset": "Irrigation(9) resets current event fluxes/state at event end",
+    "solver_consumers": [
+      "surface irrigation is converted through meteo/interception to nird and enters the top-boundary water flux",
+      "SSDI qssdi is consumed as a node source inside HeadCalc"
+    ]
+  },
+  "immutable_parameters": {
+    "scheduling": ["schedule", "startirr", "endirr", "tcs", "tcsfix", "irgdayfix"],
+    "application": ["isuas", "irr_rate", "ss_irr_z", "fixed irtype", "fixed irdate", "fixed irdepth", "fixed irrate"],
+    "trigger_tables": ["treltab", "rawtab", "tawtab", "dwatab", "hcritab", "tcritab"],
+    "depth_rules": ["dcs", "ditab", "fidtab", "phfieldcapacity", "dcslim", "irgdepmin", "irgdepmax", "raithreshold"],
+    "solute_rules": ["cirrs", "irconc", "swcirrthres", "cirrthres", "perirrsurp"],
+    "derived_parameter_or_mapping_workspace": [
+      "nod_ssdi derived from ss_irr_z and grid geometry",
+      "sensor node derived from dcrit and grid geometry",
+      "wclos/wcmes/wchis derived from hydraulic parameters and field-capacity/stress heads",
+      "calendar window anchors derived from month/day plus crop-year context"
+    ]
+  },
+  "persistent_dynamic_management_state": {
+    "continuation_critical": [
+      "nirri fixed-event cursor",
+      "dayfix minimum-interval/weekly counter",
+      "current active-event identity where an event spans more than one solver interval",
+      "event timing information needed to continue an already-started SSDI/surface event"
+    ],
+    "must_be_transactional": true,
+    "must_not_be_duplicated_as_solver_state": true
+  },
+  "forcing_and_management_input": {
+    "time_calendar": ["current simulation date/time", "crop start/end year context"],
+    "crop_process": ["fl_cropemergence", "dvs", "rd", "noddrz"],
+    "daily_stress_history": ["iptra_day", "iqreddry_day", "iqredsol_day"],
+    "meteorology": ["grai"],
+    "solute_state_when_enabled": ["cml at sensor node"],
+    "external_management_control": ["sw_irrig", "f_irr_avail"],
+    "fixed_event_schedule": ["irdate", "irtype", "irdepth", "irrate", "irconc"]
+  },
+  "hydraulic_information_consumed": {
+    "pressure_head": [
+      "h(node) across rooted nodes for actual water content/deficit calculations through watcon(node,h(node))",
+      "h(sensor_node) for TCS=7 trigger"
+    ],
+    "water_content": ["theta(sensor_node) for TCS=8 trigger"],
+    "hydraulic_parameter_evaluation": [
+      "watcon(node,phlo/phme/phhi) during initialization",
+      "watcon(node,h(node)) during TCS2/TCS3/TCS4 and DCS1 runtime decisions"
+    ],
+    "geometry_needed_for_interpretation": ["dz", "ztopcp", "zbotcp", "layer", "root-zone bottom node"],
+    "direct_groundwater_indicator_used_by_irrigation_f90": false,
+    "solver_internal_access_in_legacy": true
+  },
+  "physical_flux_result": {
+    "surface": {
+      "legacy_fields": ["gird", "nird"],
+      "meaning": "gross irrigation rate is processed with interception/meteorology into net surface irrigation and then top-boundary inflow"
+    },
+    "subsurface": {
+      "legacy_fields": ["qssdi(:)", "qssdisum"],
+      "meaning": "node-distributed SSDI source"
+    },
+    "event_metadata": ["irrigevent", "isua", "cirr", "dt_irr_event", "irr_depth"]
+  },
+  "temporary_workspace": [
+    "root-zone water-holding/depletion accumulators",
+    "interpolated crop-stage thresholds",
+    "temporary sensor/root-zone indices when reconstructible",
+    "current decision flags and non-continuation local scalars"
+  ],
+  "timing_and_calendar_assumptions": {
+    "calendar_physics_or_management": [
+      "fixed irrigation dates",
+      "annually recurring start/end irrigation window",
+      "cross-year crop irrigation window reconstruction"
+    ],
+    "day_count_management": [
+      "TCS=6 weekly trigger increments dayfix once per Irrigation(3) call",
+      "tcsfix minimum interval increments dayfix once per Irrigation(3) call"
+    ],
+    "hidden_driver_assumption": "Irrigation(3) is called at flDayStart, so some counters mean calls-as-days rather than elapsed generic interval duration",
+    "event_duration": "dt_irr_event is a fraction of a day and fixed-input validation forbids duration greater than one day",
+    "generic_time_admission": "NOT_ESTABLISHED"
+  },
+  "solver_coupling": {
+    "existing_fsi10_capability": "precomputed subsurface irrigation source can be supplied through the common source/sink provider",
+    "fsi10_full_irrigation_process_admission": false,
+    "surface_route": "top-boundary inflow after interception/meteo processing",
+    "legacy_direct_headcalc_mutation_required_in_target": false,
+    "target_rule": "irrigation decides through a process contract and returns explicit flux/source; solver consumes that result through existing interfaces"
+  },
+  "reporting_only_history": {
+    "examples": ["flheadirg output-header flag", "qssdisum/integral publication where not needed for continuation"],
+    "rule": "reporting accumulators are not part of compact committed irrigation state unless source-bound evidence proves they alter future irrigation decisions"
+  },
+  "legacy_io_dependencies": {
+    "initialization": "irrigation task 1 reads crop irrigation settings through rdinit/rds* calls and closes the crop file",
+    "fixed_events": "read_irrigation_fixed reads the main SWP stream or a separate .irg file using file units, pathwork, inquire/open/close and checkdate",
+    "target_ownership": "legacy adapter/translation layer outside the kernel"
+  },
+  "mass_ownership": {
+    "irrigation_is_external_inflow": true,
+    "composed_runtime_qssdi_accounting": "fmr_serialized_reference_backend account_external_fluxes adds accepted qssdi*step_duration once to total_in for positive qssdi",
+    "composed_runtime_surface_accounting": "accepted top flux is included once in authoritative external flux accounting; an irrigation seam must feed this route rather than add a second process-authoritative total",
+    "reporting_is_non_authoritative": true
+  },
+  "optional_scaling": {
+    "inactive_irrigation_requires_persistent_state": false,
+    "inactive_irrigation_requires_qssdi_workspace": false,
+    "target": "allocate compact irrigation continuation state and optional source arrays only for active irrigation profiles"
+  }
+}
