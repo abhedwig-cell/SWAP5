@@ -28,3 +28,5 @@ jobs:
         run: bash tests/fsi/run_fsi14_grid_authority_gate.sh
       - name: F-SI14 exact F-SI13 same-geometry and legacy-direct identity gate
         run: bash tests/fsi/run_fsi14_qualification_identity_gate.sh
+      - name: F-SI14 pinned F-SI13 and F-KT closeout regressions
+        run: bash tests/fsi/run_fsi14_closeout_regression_gate.sh
