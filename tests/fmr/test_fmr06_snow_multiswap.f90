@@ -40,6 +40,7 @@ program test_fmr06_snow_multiswap
   write(*,'(A)') 'FMR06_SNOW_BATCH_31=PASS'
   write(*,'(A)') 'FMR06_SNOW_MIXED_ACTIVE_INACTIVE=PASS'
   write(*,'(A)') 'FMR06_SNOW_WARM_MELT_INTERNAL_TRANSFER=PASS'
+  write(*,'(A)') 'FMR06_SNOW_RICHARDS_RESTRICTED_EQUILIBRIUM=PASS'
   write(*,'(A)') 'FMR06_SNOW_REVERSE_ORDER_COLUMN_IDENTITY=PASS'
   write(*,'(A)') 'FMR06_SNOW_A_B_A_REPEATABILITY=PASS'
   write(*,'(A)') 'FMR06_SNOW_OPTIONAL_STATE_SCALING=PASS'
@@ -82,6 +83,7 @@ contains
       snow_active(i) = mod(i,2) == 1
       call configure_parameters(parameters(i), initial_states(i), conductivity0, snow_active(i), i)
       call configure_forcing(forcings(i), conductivity0, snow_active(i), i)
+      if (snow_active(i)) call balance_melt_top_flux(parameters(i), initial_states(i), forcings(i), conductivity0)
       call configure_column(columns(i), templates(1), i)
       call fmr_new_b110_committed_state(states(i), columns(i)%column_id, initial_states(i), t0, ok)
       call require(ok, trim(label)//':state init')
@@ -154,6 +156,7 @@ contains
       active = mod(i,2) == 1
       call configure_parameters(parameters(i), initial_states(i), conductivity0, active, i)
       call configure_forcing(forcings(i), conductivity0, active, i)
+      if (active) call balance_melt_top_flux(parameters(i), initial_states(i), forcings(i), conductivity0)
       call configure_column(cols_a(i), templates(1), i)
       call fmr_new_b110_committed_state(states_a(i), cols_a(i)%column_id, initial_states(i), t0, ok)
       call require(ok, 'order A state')
@@ -204,6 +207,7 @@ contains
       active = mod(i,2) == 1
       call configure_parameters(parameters(i), initial_states(i), conductivity0, active, i)
       call configure_forcing(forcings(i), conductivity0, active, i)
+      if (active) call balance_melt_top_flux(parameters(i), initial_states(i), forcings(i), conductivity0)
       call configure_column(cols(i), templates(1), i)
       call fmr_new_b110_committed_state(states_a(i), cols(i)%column_id, initial_states(i), t0, ok)
       call require(ok, 'repeat A state')
@@ -329,6 +333,19 @@ contains
       end if
     end if
   end subroutine configure_forcing
+
+  subroutine balance_melt_top_flux(p, state, f, conductivity0)
+    type(fmr_b110_physical_parameters_t), intent(in) :: p
+    type(fmr_b110_physical_state_t), intent(in) :: state
+    type(fmr_b110_physical_forcing_t), intent(inout) :: f
+    real(real64), intent(in) :: conductivity0
+    type(snow_state_t) :: candidate
+    type(snow_flux_result_t) :: fluxes
+    type(snow_diagnostics_t) :: diagnostics
+    call evaluate_snow_reference_call(p%snow, state%snow%process, f%snow, t0, t1, candidate, fluxes, diagnostics)
+    call require(diagnostics%status == SNOW_OK .and. diagnostics%mass%available, 'balance melt direct snow')
+    f%top_flux = -conductivity0 + fluxes%melt/(t1-t0)
+  end subroutine balance_melt_top_flux
 
   subroutine configure_transaction(cfg)
     type(canonical_numerical_config_t), intent(out) :: cfg
