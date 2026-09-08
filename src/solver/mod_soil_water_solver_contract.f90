@@ -56,6 +56,11 @@ module mod_soil_water_solver_contract
      procedure(source_sink_evaluate_ifc), deferred :: evaluate
   end type source_sink_provider_t
 
+  type, abstract, public :: root_sink_provider_t
+   contains
+     procedure(root_sink_evaluate_ifc), deferred :: evaluate
+  end type root_sink_provider_t
+
   type, abstract, public :: top_boundary_provider_t
    contains
      procedure(top_boundary_evaluate_ifc), deferred :: evaluate
@@ -69,6 +74,7 @@ module mod_soil_water_solver_contract
   type, public :: hydraulic_evaluation_context_t
      class(constitutive_hydraulics_provider_t), pointer :: constitutive => null()
      class(source_sink_provider_t), pointer :: source_sink => null()
+     class(root_sink_provider_t), pointer :: root_sink => null()
      class(top_boundary_provider_t), pointer :: top_boundary => null()
      class(macropore_exchange_provider_t), pointer :: macropore => null()
   end type hydraulic_evaluation_context_t
@@ -138,6 +144,14 @@ module mod_soil_water_solver_contract
        real(real64), intent(out) :: source(:)
        real(real64), intent(out) :: sink(:)
      end subroutine source_sink_evaluate_ifc
+
+     subroutine root_sink_evaluate_ifc(self, pressure_head, water_content, root_sink)
+       import :: root_sink_provider_t, real64
+       class(root_sink_provider_t), intent(in) :: self
+       real(real64), intent(in) :: pressure_head(:)
+       real(real64), intent(in) :: water_content(:)
+       real(real64), intent(out) :: root_sink(:)
+     end subroutine root_sink_evaluate_ifc
 
      subroutine top_boundary_evaluate_ifc(self, pressure_head_top, water_content_top, requested, &
                                            actual_top_flux, surface_head, runoff_flux)
