@@ -256,6 +256,7 @@ contains
 
   logical function flux_equal(a,b)
     type(irrigation_flux_result_t), intent(in) :: a,b
+    integer :: i
     flux_equal = (a%applied .eqv. b%applied) .and. (a%event_started .eqv. b%event_started) .and. &
          (a%event_finished .eqv. b%event_finished) .and. (a%event_remains_active .eqv. b%event_remains_active) .and. &
          a%event_index == b%event_index .and. a%application_type == b%application_type .and. &
@@ -272,8 +273,12 @@ contains
         flux_equal = .false.
         return
       end if
-      flux_equal = all(transfer(a%subsurface_source, [(0_int64, i=1,size(a%subsurface_source))]) == &
-                       transfer(b%subsurface_source, [(0_int64, i=1,size(b%subsurface_source))]))
+      do i=1,size(a%subsurface_source)
+        if (.not. same_bits(a%subsurface_source(i),b%subsurface_source(i))) then
+          flux_equal = .false.
+          return
+        end if
+      end do
     end if
   end function flux_equal
 
