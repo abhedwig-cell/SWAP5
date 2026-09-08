@@ -1,0 +1,33 @@
+name: F-MR16 F-VQ24 temporal delta characterization
+
+on:
+  push:
+    branches:
+      - work/f-mr16-richards-temporal-error-readiness
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Characterize F-VQ24 full versus two-half Richards state deltas
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr16_fvq24_temporal_delta_characterization.sh | tee fmr16-temporal-delta.log
+      - name: Preserve characterization evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmr16-fvq24-temporal-delta-characterization
+          path: fmr16-temporal-delta.log
+          if-no-files-found: error
