@@ -56,8 +56,15 @@ assert 'rooted_nodes' in request
 assert 'cumulative_root_fraction' in request
 assert 'hlim3 = parameters%hlim3h +' in p
 assert 'alpdry = (hlim4 - pressure_head) / (hlim4 - hlim3)' in p
+no_root=p.index('if (request%rooted_nodes == 0) then')
+low_ptra=p.index('if (request%potential_transpiration < ROOT_UPTAKE_NEGLIGIBLE_TRANSPIRATION) then')
+root_dist=p.index('if (.not. valid_root_distribution(request)) then')
+hyd_view=p.index('if (.not. valid_hydraulic_view(parameters, hydraulic_view)) then')
+assert no_root < root_dist and no_root < hyd_view
+assert low_ptra < root_dist and low_ptra < hyd_view
 print('FPM05_PROCESS_BOUNDARY_STATIC=PASS')
 print('FPM05_DYNAMIC_ROOT_DISTRIBUTION_API_STATIC=PASS')
+print('FPM05_ZERO_ROUTE_DEPENDENCY_ORDER_STATIC=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -108,6 +115,8 @@ for opt in 0 2; do
   for marker in \
     'FPM05_MACRO_FEDDES_SOURCE_EQUATIONS=PASS' \
     'FPM05_HLIM3_BRANCH_BOUNDARIES=PASS' \
+    'FPM05_NO_ROOT_ROUTE_NO_HYDRAULIC_OR_DISTRIBUTION_DEPENDENCY=PASS' \
+    'FPM05_NEGLIGIBLE_PTRA_ROUTE_NO_HYDRAULIC_OR_DISTRIBUTION_DEPENDENCY=PASS' \
     'FPM05_LEGACY_EARLY_EXIT_ZERO_ROUTES=PASS' \
     'FPM05_INVALID_DOMAIN_FAIL_CLOSED=PASS' \
     'FPM05_STATELESS_A_B_A_IDENTITY=PASS' \
