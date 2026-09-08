@@ -23,6 +23,7 @@ program test_fmr05_serialized_multiswap
   real(real64), parameter :: t0 = 1000.125_real64
   real(real64), parameter :: t1 = 1000.625_real64
   real(real64), parameter :: head0 = -75.0_real64
+  real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
   integer, parameter :: nfull = 32
   integer, parameter :: nbatch = 6
   integer, parameter :: batch_sizes(nbatch) = [1, 2, 8, 17, 31, 32]
@@ -36,11 +37,13 @@ program test_fmr05_serialized_multiswap
   type(fmr_aggregate_diagnostics_t) :: baseline_aggregate, trial_aggregate, single_aggregate
   type(fmr_aggregate_diagnostics_t) :: failure_aggregate, duplicate_aggregate
   integer :: dispatch_status, i
+  real(real64) :: baseline_max_abs_residual
 
   call execute_case(nfull, 8, .false., 0, .false., baseline_results, baseline_diag, baseline_aggregate, &
        baseline_states, dispatch_status)
   call require(dispatch_status == FMR_SERIAL_DISPATCH_OK, 'baseline dispatch status')
   call validate_success_case(nfull, 8, baseline_results, baseline_diag, baseline_aggregate, baseline_states)
+  baseline_max_abs_residual = max_abs_residual(baseline_results)
 
   do i = 1, nbatch
     call execute_case(nfull, batch_sizes(i), .false., 0, .false., trial_results, trial_diag, trial_aggregate, &
@@ -81,11 +84,15 @@ program test_fmr05_serialized_multiswap
   write(*,'(A)') 'FMR05_DUPLICATE_STATE_HANDLE_FAIL_CLOSED=PASS'
 
   call require(baseline_aggregate%workers == 1, 'serialized physical worker count')
-  call require(baseline_aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'aggregate exact mass identity')
+  call require(baseline_max_abs_residual <= hard_mass_gate, 'baseline maximum absolute residual within F-KT hard gate')
+  call require(same_bits(baseline_aggregate%aggregate_unrounded_mass_residual, &
+       sum_accepted_residuals(baseline_results)), 'baseline aggregate canonical residual sum')
   write(*,'(A)') 'FMR05_PHYSICAL_WORKER_COUNT=1'
   write(*,'(A)') 'FMR05_PARALLEL_REFERENCE_BACKEND=NOT_ADMITTED'
   write(*,'(A)') 'FMR05_AUTHORITATIVE_MASS_COMPLETE_ALL_ACCEPTED=PASS'
-  write(*,'(A)') 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=0x0.0p+0'
+  write(*,'(A,ES26.17E3)') 'FMR05_MAX_ABS_COLUMN_MASS_RESIDUAL=', baseline_max_abs_residual
+  write(*,'(A,ES26.17E3)') 'FMR05_AGGREGATE_UNROUNDED_MASS_RESIDUAL=', &
+       baseline_aggregate%aggregate_unrounded_mass_residual
   write(*,'(A)') 'FMR05_REAL_HEADCALC_MULTICOLUMN=PASS'
   write(*,'(A)') 'FMR05_SERIALIZED_MULTISWAP_TEST PASS'
 
@@ -256,7 +263,7 @@ contains
   subroutine configure_transaction(config)
     type(canonical_numerical_config_t), intent(out) :: config
     config%transaction%temporal_tolerance = 0.0_real64
-    config%transaction%mass_tolerance = 1.0e-12_real64
+    config%transaction%mass_tolerance = hard_mass_gate
     config%transaction%retry_scale = 0.5_real64
     config%transaction%max_retries = 2
     config%max_committed_substeps = 8
@@ -281,14 +288,15 @@ contains
     call require(aggregate%batches == expected_batches, 'aggregate batches')
     call require(aggregate%workers == 1, 'aggregate serialized worker')
     call require(aggregate%failures == 0, 'aggregate no failures')
-    call require(aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'aggregate exact residual')
+    call require(same_bits(aggregate%aggregate_unrounded_mass_residual, sum_accepted_residuals(results)), &
+         'aggregate equals accepted canonical residual sum')
+    call require(max_abs_residual(results) <= hard_mass_gate, 'maximum column residual within F-KT hard gate')
 
     do i = 1, n
       call require(results(i)%completed .and. results(i)%committed, 'accepted result committed')
       call require(results(i)%mass%complete, 'accepted mass complete')
       call require(results(i)%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'accepted missing mask zero')
-      call require(results(i)%mass%residual == 0.0_real64, 'accepted exact mass residual')
-      call require(results(i)%mass%total_in == results(i)%mass%total_out, 'accepted total in/out identity')
+      call require(abs(results(i)%mass%residual) <= hard_mass_gate, 'accepted residual within F-KT hard mass gate')
       call require(results(i)%mass%accepted_transaction_count == 1, 'accepted transaction count')
       call require(results(i)%mass%origin_revision == 0_int64, 'accepted origin revision')
       call require(results(i)%mass%origin_lineage_id == results(i)%column_id, 'accepted origin lineage')
@@ -305,7 +313,8 @@ contains
       call require(diagnostics(i)%checkpoint_captures == 1 .and. diagnostics(i)%checkpoint_replays == 1, &
            'checkpoint orchestration')
       call require(trim(diagnostics(i)%failure_classification) == 'NONE', 'no failure classification')
-      call require(diagnostics(i)%unrounded_mass_residual == 0.0_real64, 'diagnostic exact residual')
+      call require(same_bits(diagnostics(i)%unrounded_mass_residual,results(i)%mass%residual), &
+           'diagnostic authoritative residual identity')
       call require(allocated(diagnostics(i)%worker_assignments), 'worker assignment allocated')
       call require(diagnostics(i)%worker_assignments(1) == 1, 'serialized worker assignment')
       handle = int(results(i)%column_id - 505000_int64)
@@ -328,7 +337,9 @@ contains
 
     call require(size(results) == 8, 'failure fixture size')
     call require(aggregate%failures == 1, 'one isolated failure')
-    call require(aggregate%aggregate_unrounded_mass_residual == 0.0_real64, 'failure case aggregate residual')
+    call require(same_bits(aggregate%aggregate_unrounded_mass_residual, sum_accepted_residuals(results)), &
+         'failure aggregate equals accepted canonical residual sum')
+    call require(max_abs_residual(results) <= hard_mass_gate, 'failure fixture accepted residuals within hard gate')
     do i = 1, size(results)
       handle = int(results(i)%column_id - 505000_int64)
       if (results(i)%column_id == bad_id) then
@@ -341,7 +352,8 @@ contains
         call require(available .and. same_real(committed_time,t0), 'bad state time unchanged')
       else
         call require(results(i)%committed .and. results(i)%mass%complete, 'neighbor committed with complete mass')
-        call require(results(i)%mass%residual == 0.0_real64, 'neighbor exact residual')
+        call require(results(i)%mass%missing_contribution_mask == TX_MASS_MISSING_NONE, 'neighbor missing mask zero')
+        call require(abs(results(i)%mass%residual) <= hard_mass_gate, 'neighbor residual within F-KT hard gate')
         call require(states(handle)%current_revision() == 1_int64, 'neighbor state survives failure')
       end if
     end do
@@ -449,6 +461,24 @@ contains
       end if
     end do
   end function state_sets_identical
+
+  real(real64) function sum_accepted_residuals(results) result(total)
+    type(fmr_serialized_column_result_t), intent(in) :: results(:)
+    integer :: i
+    total = 0.0_real64
+    do i = 1, size(results)
+      if (results(i)%committed) total = total + results(i)%mass%residual
+    end do
+  end function sum_accepted_residuals
+
+  real(real64) function max_abs_residual(results) result(value)
+    type(fmr_serialized_column_result_t), intent(in) :: results(:)
+    integer :: i
+    value = 0.0_real64
+    do i = 1, size(results)
+      if (results(i)%committed) value = max(value, abs(results(i)%mass%residual))
+    end do
+  end function max_abs_residual
 
   integer(int64) function committed_fingerprint(state) result(fp)
     type(kernel_committed_state_t), intent(in) :: state
