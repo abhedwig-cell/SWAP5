@@ -141,9 +141,9 @@ contains
        ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
        ! leaves the exact unrounded compartment residual vector in worker scratch.
-       ! Reuse the existing continuity recurrence and HeadCalc's own SUM order;
-       ! do not call legacy fluxes(), which mutates integration globals outside
-       ! the focused solver service.
+       ! Materialize qbot with exact B1.10 watstor()+fluxes() arithmetic grouping
+       ! from explicit request/state/provider data; do not call legacy fluxes(),
+       ! which mutates integration globals outside the focused solver service.
        if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
@@ -184,18 +184,22 @@ contains
     type(soil_water_solve_request_t), intent(in) :: request
     type(reference_richards_workspace_t), intent(in) :: richards
     type(reference_richards_state_binding_t), intent(inout) :: state
-    integer :: node
+    integer :: n
+    real(real64) :: volm1, volact, qrosum, qdrtot, qssdisum
 
-    ! Exact operation order of HeadCalc's existing vertical-flux recurrence:
-    ! q(i+1)=q(i)+storage(i)+sink(i)-source(i)+root_sink(i).
-    ! The F-SI16 admitted profile has explicit inactive macropores, therefore
-    ! matrix_fraction is exactly one and no macropore exchange term is present.
-    state%qbot = state%qtop
-    do node = 1, state%active_nodes
-       state%qbot = state%qbot + request%parameters%dz(node) * &
-            (state%theta(node)-state%thetm1(node)) / request%step_duration + &
-            richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)
-    end do
+    ! Exact B1.10 arithmetic grouping for inactive macropores:
+    ! watstor(): volact = SUM(theta*dz), with volm1 holding the preceding
+    ! storage; fluxes(): qbot = qtop + qrosum + qdrtot +
+    ! (volact-volm1)/dt - qssdisum.  The explicit solver contract supplies
+    ! the equivalent base state and source/sink/root-sink vectors directly.
+    n = state%active_nodes
+    volm1 = sum(state%thetm1(1:n) * request%parameters%dz(1:n))
+    volact = sum(state%theta(1:n) * request%parameters%dz(1:n))
+    qrosum = sum(richards%provider_root_sink(1:n))
+    qdrtot = sum(richards%sink(1:n))
+    qssdisum = sum(richards%source(1:n))
+    state%qbot = state%qtop + qrosum + qdrtot + &
+         (volact-volm1) / request%step_duration - qssdisum
   end subroutine materialize_prescribed_head_bottom_flux
 
   subroutine validate_legacy_request(request, ok, route)
