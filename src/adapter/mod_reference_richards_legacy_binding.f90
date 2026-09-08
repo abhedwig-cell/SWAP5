@@ -138,15 +138,16 @@ contains
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
-       ! B1.10 SWBOTB=5 prescribes head, so qbot is an output rather than an
-       ! input boundary condition. HeadCalc already uses this same continuity
-       ! recurrence for its saturated prescribed-groundwater special case.
-       ! Reuse those explicit post-solve terms here rather than publishing the
-       ! request-seeded qbot or calling legacy fluxes(), which mutates global
-       ! integration state outside the focused solver service.
+       ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
+       ! an output rather than an input boundary condition. HeadCalc already
+       ! leaves the exact unrounded compartment residual vector in worker scratch.
+       ! Reuse the existing continuity recurrence and HeadCalc's own SUM order;
+       ! do not call legacy fluxes(), which mutates integration globals outside
+       ! the focused solver service.
        if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
        end if
 
        result%candidate_state%active_nodes = n
