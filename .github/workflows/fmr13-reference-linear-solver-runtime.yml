@@ -1,0 +1,38 @@
+name: F-MR13 reference linear solver runtime qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr13-reference-linear-solver-runtime
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'materialize(F-MR13)') || startsWith(github.event.head_commit.message, 'qualify(F-MR13)')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+
+      - name: F-MR13 composed solver-runtime qualification gate
+        run: |
+          set -o pipefail
+          bash tests/fmr/run_fmr13_reference_linear_solver_runtime_gate.sh | tee fmr13.log
+
+      - name: Preserve F-MR13 diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fmr13-reference-linear-solver-runtime-diagnostic
+          path: fmr13.log
+          if-no-files-found: warn

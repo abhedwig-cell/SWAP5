@@ -1,0 +1,40 @@
+name: F-MR13 materialize F-SI19 linear solver seam
+
+on:
+  push:
+    branches:
+      - work/f-mr13-reference-linear-solver-runtime
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.actor != 'github-actions[bot]' && startsWith(github.event.head_commit.message, 'scaffold(F-MR13)')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fail-closed source materialization
+        run: |
+          set -euo pipefail
+          python3 tools/fmr13_materialize.py apply
+          expected=$'src/legacy/b1_10_port/headcalc.f90\nsrc/solver/mod_reference_richards_workspace.f90'
+          actual="$(git diff --name-only -- src | sort)"
+          [[ "$actual" == "$expected" ]] || {
+            echo 'FMR13_MATERIALIZATION_UNEXPECTED_WORKTREE_DELTA' >&2
+            printf 'expected:\n%s\nactual:\n%s\n' "$expected" "$actual" >&2
+            exit 1
+          }
+          git diff --check
+
+      - name: Persist materialized owner composition
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/legacy/b1_10_port/headcalc.f90 src/solver/mod_reference_richards_workspace.f90
+          git commit -m 'materialize(F-MR13): compose F-SI19 linear solver seam into F-MR12'
+          git push origin HEAD:work/f-mr13-reference-linear-solver-runtime

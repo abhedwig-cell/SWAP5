@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR13",
+  "title": "F-SI19 Reference Linear Solver Seam into Qualified F-MR Runtime Lineage",
+  "branch": "work/f-mr13-reference-linear-solver-runtime",
+  "status": "PERSISTED_PENDING_MATERIALIZATION_AND_QUALIFICATION",
+  "qualification_scope": "OWNER_COMPOSITION_ONLY",
+  "base": {
+    "commit": "e639ca5ae703d6bdb97829a0bd7d2762db1d8a9a",
+    "work_unit": "F-MR12",
+    "status": "QUALIFIED_SHARED_CROP_ROOT_UPTAKE_INPUT_RUNTIME_ADAPTER"
+  },
+  "incoming_seam": {
+    "work_unit": "F-SI19",
+    "closeout_commit": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "status": "QUALIFIED_REFERENCE_LINEAR_SOLVER_SEAM_SOURCE_BOUND_LEGACY_EQUIVALENT",
+    "materialization_commit": "50b3c785b3074debf3dcc76b8bee46565511d9e4",
+    "linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96"
+  },
+  "allowed_production_delta_from_fmr12": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/solver/mod_reference_linear_solver.f90",
+    "src/solver/mod_reference_richards_workspace.f90"
+  ],
+  "required_qualification": {
+    "exact_fsi19_module_blob": true,
+    "exact_base_plus_qualified_seam_delta": true,
+    "fsi19_direct_solver_oracle_o0_o2": true,
+    "authoritative_mass_exactly_once": true,
+    "rollback_replay": true,
+    "fmr09_cross_process_regression": true,
+    "fmr12_fmr10_regression": true,
+    "o0_o2_output_identity": true
+  },
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  },
+  "physics_changed": false,
+  "numerical_controls_changed": false,
+  "retry_policy_changed": false,
+  "mass_requirement_relaxed": false,
+  "transaction_semantics_changed": false,
+  "scientific_admission": false,
+  "claim_limit": "F-MR13 may qualify only composition of the already F-SI19-qualified reference linear solver seam into the qualified F-MR12 real-physics runtime lineage. It does not independently admit new physics, performance thresholds, BALANCED, THROUGHPUT, FALLBACK, parallel real-physics execution, or the F-PE higher-cost diagnostic workload.",
+  "next_owner_after_qualification": "Independent F-VQ scientific admission of the composed F-MR13 runtime postimage before F-PE uses the accepted higher-cost workload for production-tail claims."
+}
