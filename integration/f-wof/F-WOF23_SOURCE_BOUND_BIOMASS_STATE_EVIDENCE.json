@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF23",
+  "title": "Source-Bound Actual-WOFOST Biomass Continuation State Evidence",
+  "source_provenance": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "prior_owner_readiness": "integration/f-wof/F-WOF22_STATUS.json"
+  },
+  "legacy_state_type": {
+    "source": "SWAP/wofost.f90:143-167",
+    "fields": [
+      "fl_potential",
+      "ilv",
+      "sla(366)",
+      "lv(366)",
+      "lvage(366)",
+      "wrt",
+      "wst",
+      "wlv",
+      "wso",
+      "dwrt",
+      "dwst",
+      "dwlv",
+      "lasum",
+      "laiexp",
+      "lai"
+    ]
+  },
+  "core_living_biomass": {
+    "source": "SWAP/wofost.f90:740-761,975-1037,1077-1088",
+    "findings": {
+      "WRT": "initialized from partitioned TDWI; contributes to maintenance respiration, root death and SWRD=3 root behavior; updated from prior WRT",
+      "WST": "initialized from partitioned aboveground biomass; contributes to maintenance respiration and LAI; updated from prior WST",
+      "WSO": "initialized from partitioned aboveground biomass; contributes to maintenance respiration and LAI; updated from prior WSO"
+    },
+    "classification": "IRREDUCIBLE_PRIMARY_COMMITTED_BIOMASS_STATE"
+  },
+  "leaf_cohort_history": {
+    "source": "SWAP/wofost.f90:735-761,1769-1884,1892-1943",
+    "findings": [
+      "Leaf death consumes current cohort biomass and physiological age.",
+      "Each update shifts LV, SLA and LVAGE and inserts a new cohort at index 1.",
+      "SLA is assigned when a cohort is created and may include actual-crop nutrient effects, so current DVS alone cannot reconstruct historical cohort SLA.",
+      "LVAGE controls life-span death and is therefore history, not a diagnostic.",
+      "The number of active cohorts controls loop bounds and cohort shifting."
+    ],
+    "classification": "IRREDUCIBLE_ACTIVE_COHORT_HISTORY",
+    "compact_representation": "Store only active equal-length LV/SLA/LVAGE arrays; array length is cohort count."
+  },
+  "incremental_LAIEXP": {
+    "source": "SWAP/wofost.f90:757-761,1057-1074,1818-1835,2264-2266",
+    "findings": [
+      "LAIEXP is initialized from leaf area and subsequently incremented from its prior value.",
+      "LAIEXP is consumed by exponential leaf-area growth logic before the next update.",
+      "It cannot in general be reconstructed from only current organ biomass and DVS."
+    ],
+    "classification": "IRREDUCIBLE_PRIMARY_COMMITTED_BIOMASS_STATE"
+  },
+  "reconstructible_fields": {
+    "WLV": {
+      "source": "SWAP/wofost.f90:1924-1943",
+      "formula": "ordered sum LV(i), i=1..active cohorts",
+      "classification": "RECONSTRUCTIBLE_VIEW"
+    },
+    "LASUM": {
+      "source": "SWAP/wofost.f90:1924-1943",
+      "formula": "ordered sum LV(i)*SLA(i), i=1..active cohorts",
+      "classification": "RECONSTRUCTIBLE_VIEW"
+    },
+    "LAI": {
+      "source": "SWAP/wofost.f90:1087-1088",
+      "formula": "LASUM + SSA*WST + SPA*WSO",
+      "classification": "RECONSTRUCTIBLE_VIEW_WITH_IMMUTABLE_PARAMETERS"
+    },
+    "ILV": {
+      "classification": "REPRESENTATION_METADATA",
+      "compact_equivalent": "length of active cohort arrays"
+    }
+  },
+  "excluded_or_optional_fields": {
+    "fl_potential": {
+      "classification": "TRAJECTORY_CONFIGURATION_NOT_DYNAMIC_STATE"
+    },
+    "DWRT": {
+      "source": "SWAP/wofost.f90:1082-1085,1184-1208,1248-1276; source-wide reads are output/restart oriented",
+      "classification": "OUTPUT_RESTART_ACCUMULATOR_NOT_CORE_BIOMASS_CONTINUATION"
+    },
+    "DWST_DWLV": {
+      "source": "SWAP/wofost.f90:2101-2145,2236-2266; SWAP/wofostnut.f90:164-282",
+      "classification": "OPTIONAL_COMMITTED_STATE_WHEN_GRASS_MANAGEMENT_OR_RELEVANT_NUTRIENT_PHYSICS_ACTIVE",
+      "mandatory_for_core_standard_WOFOST_route": false
+    },
+    "phenology": {
+      "examples": ["DVS", "TSUM", "vern", "fl_anthesis", "fl_vernalised"],
+      "classification": "SEPARATE_CROP_LIFECYCLE_STATE_NOT_BIOMASS_CARRIER"
+    },
+    "rates": {
+      "classification": "TRIAL_WORKSPACE_OR_RESULTS_NOT_COMMITTED_BIOMASS_STATE"
+    }
+  },
+  "time_semantics": {
+    "legacy_cohort_shift_per_update_call": true,
+    "arbitrary_interval_evolution_qualified_here": false,
+    "consequence": "The carrier is time-neutral, but future WOFOST evolution must source-bind cohort creation/ageing cadence before generic subdaily execution is admitted."
+  },
+  "actual_WRT_view": {
+    "source_field": "primary biomass WRT",
+    "consumer_already_available": "src/crop/mod_crop_root_geometry_snapshot_producer.f90::build_swrd3_root_geometry_snapshot(actual_root_biomass,...)",
+    "view_requires_duplicate_WRT_state": false
+  },
+  "decision": "IMPLEMENT_COMPACT_PRIMARY_ACTUAL_WOFOST_BIOMASS_CARRIER_WITH_ACTIVE_COHORT_HISTORY_AND_READ_ONLY_WRT_VIEW"
+}
