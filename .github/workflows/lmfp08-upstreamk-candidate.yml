@@ -1,0 +1,28 @@
+name: F-LMFP08 Upstream-K Darcian Ratio Candidate
+
+on:
+  push:
+    branches:
+      - work/f-lmfp08-physics-informed-darcian-correction
+  workflow_dispatch:
+
+jobs:
+  upstreamk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: |
+          gfortran --version
+          python3 --version
+      - name: Upstream-K normalized Darcian ratio qualification gate
+        run: bash experiments/lmfp/run_lmfp08_upstreamk_gate.sh
+      - name: Upload upstream-K evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp08-upstreamk-evidence
+          path: |
+            lmfp08-upstreamk-artifacts/
+            lmfp04-artifacts/

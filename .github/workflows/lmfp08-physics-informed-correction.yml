@@ -1,11 +1,10 @@
 name: F-LMFP08 Physics-Informed Darcian Correction
 
 on:
-  push:
-    branches:
-      - work/f-lmfp08-physics-informed-darcian-correction
   workflow_dispatch:
 
+# Retained as the qualified log-ratio evidence harness. Later candidate commits
+# must not repeatedly rerun this expensive already-persisted comparison.
 jobs:
   qualification:
     runs-on: ubuntu-latest

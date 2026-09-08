@@ -1,11 +1,11 @@
 name: F-LMFP08 Positive Log K_DAR Candidate
 
 on:
-  push:
-    branches:
-      - work/f-lmfp08-physics-informed-darcian-correction
   workflow_dispatch:
 
+# Retained as candidate-comparison evidence. Its push-triggered run is allowed to
+# finish on the commit where it was introduced; later representation experiments
+# should not automatically rerun it.
 jobs:
   logk:
     runs-on: ubuntu-latest
