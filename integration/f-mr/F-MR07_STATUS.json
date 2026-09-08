@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR07",
+  "title": "Committed Process Hydraulic View Runtime Binding",
+  "branch": "work/f-mr07-committed-process-hydraulic-view",
+  "start_head": "ffab7d705928170db3e76a5d346caafeb560e605",
+  "contract_checkpoint": "b83b4452e17cbd1686d0fc33ad5209aff0592152",
+  "tested_source_head": "b773b876873027873af125b1b71748f760b0e330",
+  "tested_source_tree": "8f09b0816ac007c0210858ca4c0b72893578d5d6",
+  "qualification_evidence_commit": "2061cd58795d84cf0a165aa39e698d98866f7f9a",
+  "invariant_audit_commit": "44920182f15bee4a74e7348de40b8fc616331c3f",
+  "phase": "QUALIFIED_READY_FOR_FPM03_IRRIGATION_MIGRATION",
+  "status": "QUALIFIED",
+  "decision": "QUALIFIED_COMMITTED_PROCESS_HYDRAULIC_VIEW_BINDING_READY_FOR_FPM03",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": true,
+  "production_source_changed": true,
+  "existing_fmr06_production_source_modified": false,
+  "new_production_source": [
+    "src/solver/mod_process_hydraulic_view.f90",
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+  ],
+  "source_provenance": {
+    "fmr06_candidate": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "fsi17_qualified_head": "fca2f497e465c4782ebc6e25756aff70cbb2554e",
+    "fsi17_exact_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "runtime_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+    "blind_merge_performed": false
+  },
+  "qualified_contract": {
+    "procedure": "fmr_build_committed_process_hydraulic_view",
+    "accepted_state": "kernel_committed_state_t only",
+    "view": "process_hydraulic_view_t",
+    "fields": ["active_nodes", "pressure_head", "water_content", "ponding_depth", "groundwater_level"],
+    "candidate_state_accepted": false,
+    "checkpoint_state_accepted": false,
+    "solver_workspace_exposed": false,
+    "headcalc_internal_exposed": false,
+    "persistent_view_state": false,
+    "returned_view_aliases_committed_state": false
+  },
+  "qualification": {
+    "workflow_run": 34228098547,
+    "workflow_job": 102067107920,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "exact_source_scope": "PASS",
+    "static_committed_binding": "PASS",
+    "uninitialized_fail_closed": "PASS",
+    "committed_snapshot_identity": "PASS",
+    "detached_snapshot_mutation_isolation": "PASS",
+    "returned_view_no_alias": "PASS",
+    "snow_active_coexistence": "PASS",
+    "A_B_A": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "full_fmr06_snow_multiswap_replay": "PASS",
+    "fmr06_replay_O0_O2_output_identity": "PASS"
+  },
+  "physics_changed": false,
+  "numerical_policy_changed": false,
+  "transaction_semantics_changed": false,
+  "mass_semantics_changed": false,
+  "snow_semantics_changed": false,
+  "irrigation_physics_changed": false,
+  "scientific_irrigation_admission": false,
+  "fpm03_readiness_effect": {
+    "fsi_hydraulic_view_blocker": "RESOLVED_BY_FSI17",
+    "fmr_committed_view_binding_blocker": "RESOLVED_BY_FMR07",
+    "production_irrigation_migration_may_resume": true,
+    "independent_fvq_still_required_after_structural_candidate": true
+  },
+  "artifacts": [
+    "integration/f-mr/F-MR07_COMMITTED_PROCESS_HYDRAULIC_VIEW_CONTRACT.json",
+    "integration/f-mr/F-MR07_QUALIFICATION_EVIDENCE.json",
+    "integration/f-mr/F-MR07_INVARIANT_AUDIT.json",
+    "integration/f-mr/F-MR07_STATUS.json"
+  ],
+  "downstream_handoff": {
+    "owner": "F-PM",
+    "resume_unit": "F-PM03",
+    "instruction": "Resume irrigation migration from this exact qualified F-MR07 lineage. Reuse the persisted F-PM03 readiness evidence source-bound rather than merging its old branch. Implement only the smallest B1.10 irrigation seam, consume the committed process hydraulic view, preserve optional-state scaling, and require rollback/replay plus exactly-once irrigation external-inflow accounting before structural qualification."
+  }
+}
