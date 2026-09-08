@@ -81,5 +81,5 @@ jobs:
         run: bash tests/fci/run_fci11_gate.sh
       - name: F-CI13 recoverable trial-status regression
         run: bash tests/fci/run_fci13_gate.sh
-      - name: F-CI14 temporal-acceptance contract regression
-        run: bash tests/fci/run_fci14_gate.sh
+      - name: F-CI14 temporal-acceptance forward regression
+        run: bash tests/fkt/run_fkt08_fci14_forward_regression.sh
