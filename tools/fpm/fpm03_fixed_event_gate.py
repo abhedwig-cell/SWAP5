@@ -31,7 +31,11 @@ required = [
     'candidate_state%next_fixed_event_index = event_index + 1',
     'diagnostics%status = irrigation_split_required',
     'diagnostics%split_time = event_end',
-    'candidate_state = committed_state',
+    'irrigation_time_epsilon_scale = 64.0_real64',
+    'same_time = abs(a-b) <= tolerance',
+    'finishes_at_event_end = same_time(request%t1, event_end)',
+    'if (finishes_at_event_end) effective_t1 = event_end',
+    'if (.not. same_time(committed_state%active_event_end, event_end)) then',
 ]
 for token in required:
     assert token in process, f'missing structural fixed-event token: {token}'
@@ -53,9 +57,13 @@ concentration_pos = process.index('fluxes%concentration = event%concentration')
 assert branch_start < concentration_pos < branch_else, 'SSDI must retain task-3 cirr reset value'
 
 assert contract['translation_contract']['ssdi_depth'].startswith('legacy post-read internal irdepth after division')
+assert contract['time_semantics']['legacy_event_match_tolerance_role'].startswith('management event selection only')
+assert contract['time_semantics']['numerical_event_end_tolerance'].startswith('64 * epsilon(real64)')
+assert 'clamped' in contract['time_semantics']['numerical_event_end_policy']
 assert contract['mass_contract']['double_count_process_and_solver_mass'] is False
 assert contract['hydraulic_view']['fixed_event_seam_consumes_hydraulic_view'] is False
 assert contract['optional_scaling']['ssdi_array_only_when_ssdi_flux_is_active'] is True
 
 print('FPM03_FIXED_EVENT_STATIC_ARCHITECTURE PASS')
 print('FPM03_FIXED_EVENT_B110_ORACLE_BINDING PASS')
+print('FPM03_FIXED_EVENT_GENERIC_TIME_POLICY PASS')
