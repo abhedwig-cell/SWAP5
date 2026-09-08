@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE03",
+  "closeout_classification": "PARTIAL_EXIT_CHARACTERIZATION_VERIFIED_PHYSICAL_TAIL_BLOCKED",
+  "branch": "work/f-pe03-reference-tail-characterization",
+  "source_basis": {
+    "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
+    "fpe03_self_verification_head": "8f7bab11fd856d7cb2f7bacb8c299cf2b0517061",
+    "production_source_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "numerical_controls_changed": false
+  },
+  "self_verification": {
+    "workflow": "F-PE03 reference physical stress characterization",
+    "workflow_run": 34212856397,
+    "workflow_job": 102017672830,
+    "head_sha": "8f7bab11fd856d7cb2f7bacb8c299cf2b0517061",
+    "conclusion": "success",
+    "platform": "Ubuntu 24.04.4",
+    "compiler": "GNU Fortran 13.2.0",
+    "scope_lock": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": true,
+    "partial_exit_self_verification": "PASS"
+  },
+  "characterization": {
+    "cases": 24,
+    "accepted_stationary_cases": 6,
+    "rejected_perturbed_cases": 18,
+    "accepted_higher_cost_cases": 0,
+    "accepted_cost_vector": {
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 3,
+      "jacobian_builds": 3,
+      "linear_solves": 3,
+      "backtracking_attempts": 3,
+      "internal_retries": 0
+    },
+    "rejected_cost_vector": {
+      "headcalc_calls": 3,
+      "nonlinear_iterations": 24,
+      "jacobian_builds": 24,
+      "linear_solves": 24,
+      "backtracking_attempts": 96,
+      "internal_retries": 3
+    },
+    "smallest_tested_flux_perturbation_fraction": 0.0001,
+    "accepted_max_abs_unrounded_mass_residual": 2.77555756156289135e-17,
+    "hard_mass_gate": 1e-12,
+    "rejected_cases_committed": false
+  },
+  "qualified_scope": {
+    "reference_cost_cliff_characterization_verified": true,
+    "transactional_rollback_behavior_verified": true,
+    "accepted_case_mass_accounting_verified": true,
+    "physical_tail_distribution_qualified": false,
+    "accepted_difficult_physical_fixture_found": false,
+    "bounded_cost_policy_admitted": false,
+    "balanced_policy_admitted": false,
+    "throughput_policy_admitted": false,
+    "fallback_policy_admitted": false,
+    "parallel_real_physics_admitted": false
+  },
+  "blocker": {
+    "code": "FPE03-B01",
+    "status": "BLOCKED_FAIL_CLOSED",
+    "description": "At least one accepted nonstationary real-physics fixture must be admitted or ported on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
+    "owner_boundary": "F-VQ/F-MR or the owning physical workstream"
+  },
+  "disposition": "PARK_FPE03_UNTIL_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_EXISTS"
+}
