@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "target_decision": "QUALIFIED_PERFORMANCE_AND_EXECUTION_POLICY_QUALIFICATION_ARCHITECTURE",
+  "gates": [
+    {"id":"PE-G01","name":"EXACT_REFERENCE_PROVENANCE","requirement":"Pin F-VQ15/F-MQ23 source-bound admitted reference candidate and exact start head.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G02","name":"REFERENCE_IMMUTABILITY","requirement":"F-PE01 changes no src production physics and REFERENCE remains the existing qualified route.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G03","name":"EXECUTION_CLASS_FAIL_CLOSED","requirement":"BALANCED, THROUGHPUT and FALLBACK are DEFINED_NOT_ADMITTED and requests before admission must fail closed.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G04","name":"HARD_MASS","requirement":"Mass complete, missing contribution mask zero where accepted, and no performance concession to mass conservation.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G05","name":"REPRODUCIBLE_COST_SURFACE","requirement":"Source-bound workflow measures real serialized reference counts 1/2/8/17/31/32 and deterministic median/p95/p99/max cost summaries.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G06","name":"MEMORY_OWNERSHIP","requirement":"Persistent state, immutable parameters, worker scratch, runtime metadata and optional process state are explicitly separated; ABI byte observations are not universalized.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G07","name":"SYNTHETIC_SCALE","requirement":"1k/10k/100k scale harness exists without claiming 100k full physical solves or production memory capacity.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G08","name":"DIFFICULT_TAIL","requirement":"31 easy plus 1 difficult structure exists; synthetic evidence must remain labeled synthetic and cannot support a physical bounded-cost claim.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G09","name":"TRANSACTIONAL_REROUTE","requirement":"Any future reroute originates from the correct committed state; rejected trials commit neither state nor mass.","failure":"FAIL_CLOSED"},
+    {"id":"PE-G10","name":"NO_INVENTED_THRESHOLDS","requirement":"F-PE01 defines no production performance or allowable-deviation threshold without later evidence.","failure":"FAIL_CLOSED"}
+  ],
+  "metric_rules": {
+    "primary": "deterministic cost counters and hard mass status",
+    "secondary": "wall clock when measured on a controlled host",
+    "percentiles": "deterministic nearest-rank",
+    "required_distribution_outputs": ["median","p95","p99","maximum"],
+    "no_scalar_weighted_cost_proxy_without_calibration": true
+  },
+  "future_non_reference_admission_protocol": {
+    "physics_identity_required": true,
+    "explicit_numerical_control_delta_required": true,
+    "reference_comparison_required": true,
+    "mass_gate": "HARD",
+    "allowable_deviation_threshold_must_be_evidence_derived": true,
+    "rollback_and_fallback_origin": "CORRECT_COMMITTED_PHYSICAL_STATE",
+    "production_admission_in_fpe01": false
+  },
+  "known_preconditions_for_later_fpe_work": [
+    "Propagate accepted-substep, Jacobian, linear-solve and related diagnostics through the kernel/runtime result surface without physics changes.",
+    "Separate numerical solver policy controls from the mixed restricted-reference physical parameter carrier before implementing non-reference execution classes.",
+    "Add a qualified real difficult physical column before making bounded-cost claims.",
+    "Measure real-physics memory payloads before capacity claims for 100k physical columns."
+  ]
+}

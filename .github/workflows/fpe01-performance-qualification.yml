@@ -29,6 +29,51 @@ jobs:
       - name: Validate fail-closed F-PE01 contracts
         run: python3 tools/fpe/fpe01_reference_probe.py validate-contracts
 
+      - name: Validate F-PE01 closeout scope and artifacts
+        run: |
+          python3 - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          root = Path('.')
+          required = [
+              'F-PE01_DEPENDENCIES.json',
+              'F-PE01_EXECUTION_CLASS_CONTRACT.json',
+              'F-PE01_COST_DIAGNOSTICS_CONTRACT.json',
+              'F-PE01_MEMORY_MODEL.json',
+              'F-PE01_BENCHMARK_MATRIX.json',
+              'F-PE01_REFERENCE_BASELINE.json',
+              'F-PE01_QUALIFICATION_PROTOCOL.json',
+              'F-PE01_QUALIFICATION_EVIDENCE.json',
+              'F-PE01_STATUS.json',
+          ]
+          base = root / 'integration/f-pe'
+          for name in required:
+              assert (base / name).is_file(), f'missing F-PE01 artifact {name}'
+              json.loads((base / name).read_text())
+
+          status = json.loads((base / 'F-PE01_STATUS.json').read_text())
+          assert status['status'] == 'QUALIFIED_PERFORMANCE_AND_EXECUTION_POLICY_QUALIFICATION_ARCHITECTURE'
+          assert status['IMPLEMENTED'] and status['PERSISTED'] and status['TESTED'] and status['QUALIFIED']
+          assert status['parallel_real_physics_admitted'] is False
+          assert status['production_source_changed_by_fpe01'] is False
+          assert status['physics_changed_by_fpe01'] is False
+          assert status['execution_classes']['REFERENCE'] == 'ADMITTED_EXISTING_QUALIFIED_ROUTE'
+          for name in ('BALANCED','THROUGHPUT','FALLBACK'):
+              assert status['execution_classes'][name] == 'DEFINED_NOT_ADMITTED'
+
+          changed = subprocess.check_output([
+              'git','diff','--name-only','ff6c2b4f48dd9e76f5bec41281493f1d35d03d90','HEAD'
+          ], text=True).splitlines()
+          allowed_exact = {'.github/workflows/fpe01-performance-qualification.yml'}
+          for path in changed:
+              assert path.startswith('integration/f-pe/') or path.startswith('tools/fpe/') or path in allowed_exact, \
+                  f'F-PE01 changed out-of-scope path: {path}'
+              assert not path.startswith('src/'), f'F-PE01 production source change: {path}'
+          print('FPE01_CLOSEOUT_SCOPE PASS')
+          PY
+
       - name: Instrument qualification-only F-MR05 test checkout
         run: python3 tools/fpe/fpe01_reference_probe.py instrument tests/fmr/test_fmr05_serialized_multiswap.f90
 

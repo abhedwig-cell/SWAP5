@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "reference_class": "REFERENCE",
+  "reference_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "reference_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+  "runtime_entrypoint": "fmr_run_serialized_physical_multiswap",
+  "scientific_admission": {
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fvq15_decision": "QUALIFIED_FMR05_RESTRICTED_SERIALIZED_MULTICOLUMN_PHYSICAL_ADMISSION",
+    "fmq23_branch_head_at_fpe01_start": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "qualified_scope": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY"
+  },
+  "execution": {
+    "physical_execution": "SERIALIZED",
+    "physical_worker_count": 1,
+    "parallel_real_physics_admitted": false,
+    "generic_worker_count_results_are_parallel_physics_evidence": false
+  },
+  "measurement": {
+    "workflow": ".github/workflows/fpe01-performance-qualification.yml",
+    "run_id": 34207125583,
+    "job_id": 101999122724,
+    "run_head": "5b4a56cdf1eeb2425d149fd3d3061569af68b5c1",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "runner_image_version": "20260831.293.1",
+    "compiler": "GNU Fortran 13.2.0",
+    "artifact_id": 10048220007,
+    "artifact_name": "fpe01-performance-qualification-evidence",
+    "artifact_zip_sha256": "4d1efdb1912bd56d76f5ebf50e5796dfdfd8ea7f2a603fc44349de3be2283d51",
+    "generic_interval": [1000.125, 1000.625],
+    "statistics_rule": "nearest-rank",
+    "logical_column_counts": [1,2,8,17,31,32],
+    "total_observed_column_intervals": 91,
+    "matrix": [
+      {"logical_columns":1,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":1,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":1,"max_abs_mass_residual":0.0},
+      {"logical_columns":2,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":2,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":2,"max_abs_mass_residual":0.0},
+      {"logical_columns":8,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":8,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":8,"max_abs_mass_residual":1.3877787807814457e-17},
+      {"logical_columns":17,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":17,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":17,"max_abs_mass_residual":2.7755575615628914e-17},
+      {"logical_columns":31,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":31,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":31,"max_abs_mass_residual":2.7755575615628914e-17},
+      {"logical_columns":32,"attempts_median":1,"attempts_p95":1,"attempts_p99":1,"attempts_max":1,"attempts_sum":32,"retries_median":0,"retries_p95":0,"retries_p99":0,"retries_max":0,"retries_sum":0,"newton_median":1,"newton_p95":1,"newton_p99":1,"newton_max":1,"newton_sum":32,"max_abs_mass_residual":2.7755575615628914e-17}
+    ],
+    "overall": {
+      "attempts_median": 1,
+      "attempts_p95": 1,
+      "attempts_p99": 1,
+      "attempts_max": 1,
+      "retries_median": 0,
+      "retries_p95": 0,
+      "retries_p99": 0,
+      "retries_max": 0,
+      "newton_median": 1,
+      "newton_p95": 1,
+      "newton_p99": 1,
+      "newton_max": 1,
+      "maximum_absolute_mass_residual": 2.7755575615628914e-17
+    }
+  },
+  "hard_mass": {
+    "reference_gate": 1.0e-12,
+    "all_measured_columns_pass": true,
+    "authoritative_mass_complete_all_accepted": true,
+    "mass_concession_for_performance": false
+  },
+  "not_measured_at_real_multiswap_surface": [
+    "accepted_substeps",
+    "jacobian_assemblies",
+    "linear_solves",
+    "constitutive_evaluations",
+    "minimum_step_hits",
+    "wall_clock_seconds"
+  ],
+  "interpretation_limit": "The measured admitted reference fixture is an easy restricted physical profile. One attempt, one Newton iteration and zero retries do not establish bounded cost for difficult physical columns."
+}

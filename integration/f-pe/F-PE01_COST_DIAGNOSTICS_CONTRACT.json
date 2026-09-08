@@ -10,92 +10,20 @@
     "blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9"
   },
   "metrics": {
-    "attempted_steps": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "INSTRUMENTATION_REQUIRED_AT_INTERVAL_RUNTIME_LEVEL",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED",
-      "nullable_until_instrumented": true
-    },
-    "accepted_steps": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "INSTRUMENTATION_REQUIRED_AT_INTERVAL_RUNTIME_LEVEL",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED",
-      "nullable_until_instrumented": true
-    },
-    "retries": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "AVAILABLE_AS_SOLVER_INTERNAL_RETRIES_FOR_SOLVE_RESULT; INTERVAL_AGGREGATION_REQUIRED",
-      "source_field": "soil_water_solve_result_t.diagnostics.internal_retries",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "newton_iterations": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "AVAILABLE_AS_NONLINEAR_ITERATIONS_FOR_SOLVE_RESULT; INTERVAL_AGGREGATION_REQUIRED",
-      "source_field": "soil_water_solve_result_t.diagnostics.nonlinear_iterations",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "jacobian_assemblies": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "AVAILABLE_AS_JACOBIAN_BUILDS_FOR_SOLVE_RESULT; INTERVAL_AGGREGATION_REQUIRED",
-      "source_field": "soil_water_solve_result_t.diagnostics.jacobian_builds",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "linear_solves": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "AVAILABLE_FOR_SOLVE_RESULT; INTERVAL_AGGREGATION_REQUIRED",
-      "source_field": "soil_water_solve_result_t.diagnostics.linear_solves",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "constitutive_evaluations": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "NOT_EXPOSED_BY_PINNED_SOLVER_DIAGNOSTICS",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED",
-      "nullable_until_instrumented": true
-    },
-    "minimum_step_hits": {
-      "type": "integer_nonnegative",
-      "availability_on_reference_source": "NOT_EXPOSED_BY_PINNED_SOLVER_DIAGNOSTICS",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED",
-      "nullable_until_instrumented": true
-    },
-    "solver_status": {
-      "type": "enum",
-      "availability_on_reference_source": "AVAILABLE",
-      "source_field": "soil_water_solve_result_t.status",
-      "values": ["NOT_RUN","CONVERGED","RETRY_ADVISED","FAILED"],
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "solver_route": {
-      "type": "string",
-      "availability_on_reference_source": "AVAILABLE",
-      "source_field": "soil_water_solve_result_t.diagnostics.route",
-      "determinism_class": "PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"
-    },
-    "fallback_or_relaxed_class_flag": {
-      "type": "enum",
-      "availability_on_reference_source": "FPE_RUNTIME_METADATA_REQUIRED",
-      "values": ["REFERENCE","BALANCED","THROUGHPUT","FALLBACK"],
-      "current_reference_value": "REFERENCE",
-      "non_reference_values_admitted": false
-    },
-    "wall_clock_seconds": {
-      "type": "real_nonnegative",
-      "availability_on_reference_source": "OPTIONAL_OBSERVATION",
-      "determinism_class": "WALL_CLOCK_DEPENDENT",
-      "qualification_role": "SECONDARY_NOT_A_SCIENTIFIC_CONTRACT"
-    },
-    "authoritative_mass_status": {
-      "type": "enum_or_boolean",
-      "availability_on_reference_source": "AVAILABLE_AT_KERNEL_RUNTIME_RESULT_LEVEL",
-      "determinism_class": "PHYSICS_INVARIANT_HARD_GATE"
-    },
-    "authoritative_mass_residual": {
-      "type": "real",
-      "availability_on_reference_source": "AVAILABLE",
-      "current_evidence_owner": "F-KT08 kernel_result.mass",
-      "determinism_class": "PHYSICS_INVARIANT_HARD_GATE",
-      "rounded_for_acceptance": false
-    }
+    "attempted_steps": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_AT_FMR_RUNTIME_DIAGNOSTICS","source_field":"fmr_column_diagnostics_t.attempts","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"},
+    "accepted_steps": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_IN_KERNEL_DIAGNOSTICS_AS_ACCEPTED_SUBSTEPS_BUT_NOT_PROPAGATED_TO_FMR05_RESULT_SURFACE","source_field":"kernel_diagnostics_t.accepted_substeps","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC","nullable_on_current_fmr_surface":true},
+    "retries": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_AT_FMR_RUNTIME_DIAGNOSTICS","source_field":"fmr_column_diagnostics_t.retries","solver_internal_field":"soil_water_solve_result_t.diagnostics.internal_retries","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"},
+    "newton_iterations": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_AT_FMR_RESULT_SURFACE","source_field":"fmr_serialized_column_result_t.solver_iterations","solver_field":"soil_water_solve_result_t.diagnostics.nonlinear_iterations","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"},
+    "jacobian_assemblies": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_IN_CANONICAL_AND_SOLVER_DIAGNOSTICS_BUT_NOT_PROPAGATED_TO_FMR05_RESULT_SURFACE","source_fields":["canonical_run_diagnostics_t.jacobian_builds","soil_water_solve_result_t.diagnostics.jacobian_builds"],"determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC","nullable_on_current_fmr_surface":true},
+    "linear_solves": {"type":"integer_nonnegative","availability_on_reference_source":"AVAILABLE_IN_CANONICAL_AND_SOLVER_DIAGNOSTICS_BUT_NOT_PROPAGATED_TO_FMR05_RESULT_SURFACE","source_fields":["canonical_run_diagnostics_t.linear_solves","soil_water_solve_result_t.diagnostics.linear_solves"],"determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC","nullable_on_current_fmr_surface":true},
+    "constitutive_evaluations": {"type":"integer_nonnegative","availability_on_reference_source":"NOT_EXPOSED_BY_PINNED_SOLVER_DIAGNOSTICS","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED","nullable_until_instrumented":true},
+    "minimum_step_hits": {"type":"integer_nonnegative","availability_on_reference_source":"NOT_EXPOSED_BY_PINNED_SOLVER_DIAGNOSTICS","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC_WHEN_INSTRUMENTED","nullable_until_instrumented":true},
+    "solver_status": {"type":"enum","availability_on_reference_source":"AVAILABLE_IN_SOLVER_RESULT_AND_BACKEND_OBSERVATION","values":["NOT_RUN","CONVERGED","RETRY_ADVISED","FAILED"],"determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"},
+    "solver_route": {"type":"string","availability_on_reference_source":"AVAILABLE_AT_FMR_RESULT_SURFACE","source_field":"fmr_serialized_column_result_t.solver_route","determinism_class":"PHYSICS_AND_NUMERICAL_ROUTE_DETERMINISTIC"},
+    "fallback_or_relaxed_class_flag": {"type":"enum","availability_on_reference_source":"FPE_RUNTIME_METADATA_REQUIRED_FOR_FUTURE_NON_REFERENCE_CLASSES","values":["REFERENCE","BALANCED","THROUGHPUT","FALLBACK"],"current_reference_value":"REFERENCE","non_reference_values_admitted":false},
+    "wall_clock_seconds": {"type":"real_nonnegative","availability_on_reference_source":"OPTIONAL_OBSERVATION","determinism_class":"WALL_CLOCK_DEPENDENT","qualification_role":"SECONDARY_NOT_A_SCIENTIFIC_CONTRACT"},
+    "authoritative_mass_status": {"type":"enum_or_boolean","availability_on_reference_source":"AVAILABLE_AT_KERNEL_RUNTIME_RESULT_LEVEL","determinism_class":"PHYSICS_INVARIANT_HARD_GATE"},
+    "authoritative_mass_residual": {"type":"real","availability_on_reference_source":"AVAILABLE","current_evidence_owner":"F-KT08 kernel_result.mass","determinism_class":"PHYSICS_INVARIANT_HARD_GATE","rounded_for_acceptance":false}
   },
   "additional_existing_solver_counters": {
     "backtracking_attempts": "soil_water_solve_result_t.diagnostics.backtracking_attempts",
@@ -115,7 +43,7 @@
   "aggregation": {
     "column_interval_is_primary_record": true,
     "batch_statistics": ["median","p95","p99","maximum","sum_retries","sum_newton_iterations"],
-    "percentile_rule": "Use a documented deterministic nearest-rank calculation in the F-PE01 harness.",
+    "percentile_rule": "deterministic nearest-rank",
     "no_production_thresholds_in_fpe01": true
   }
 }

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "decision": "QUALIFIED_PERFORMANCE_AND_EXECUTION_POLICY_QUALIFICATION_ARCHITECTURE",
+  "scope": "Qualification architecture only; no performance policy beyond REFERENCE is production admitted.",
+  "provenance": {
+    "branch_start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "qualified_reference_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "qualified_reference_source_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
+    "fvq15_head": "65efc66cc76fa9005eac46e5779439c5ada574d1",
+    "fmq23_start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90"
+  },
+  "workflow_evidence": {
+    "workflow": ".github/workflows/fpe01-performance-qualification.yml",
+    "measurement_run_id": 34207125583,
+    "measurement_job_id": 101999122724,
+    "measurement_run_head": "5b4a56cdf1eeb2425d149fd3d3061569af68b5c1",
+    "measurement_conclusion": "success",
+    "artifact_id": 10048220007,
+    "artifact_zip_sha256": "4d1efdb1912bd56d76f5ebf50e5796dfdfd8ea7f2a603fc44349de3be2283d51"
+  },
+  "gate_results": {
+    "exact_reference_provenance": "PASS",
+    "reference_unchanged": "PASS",
+    "non_reference_fail_closed": "PASS",
+    "source_bound_fmr05_gate": "PASS_STRICT_RUNTIME_CANDIDATE_REQUIRES_FVQ15",
+    "o0_o2_reference_output_identity": "PASS",
+    "real_physics_counts_1_2_8_17_31_32": "PASS",
+    "physical_worker_count_one": "PASS",
+    "parallel_reference_backend_not_admitted": "PASS",
+    "authoritative_mass_complete": "PASS",
+    "maximum_absolute_measured_mass_residual": 2.7755575615628914e-17,
+    "synthetic_scale_1k_10k_100k": "PASS_NO_FULL_PHYSICS_CLAIM",
+    "synthetic_31_easy_plus_1_difficult": "PASS_SYNTHETIC_ONLY",
+    "production_thresholds_introduced": false,
+    "production_source_or_physics_modified_by_fpe01": false
+  },
+  "measured_reference_cost": {
+    "observed_column_intervals": 91,
+    "attempts": {"median":1,"p95":1,"p99":1,"maximum":1},
+    "retries": {"median":0,"p95":0,"p99":0,"maximum":0},
+    "newton_iterations": {"median":1,"p95":1,"p99":1,"maximum":1},
+    "interpretation": "Easy restricted reference fixture only; not a difficult-column bound."
+  },
+  "difficult_tail_evidence": {
+    "type": "SYNTHETIC_RUNTIME_INFRASTRUCTURE",
+    "structure": "31_easy_plus_1_difficult",
+    "easy_cost": 3,
+    "difficult_cost": 896,
+    "diagnosed_retries": 8,
+    "median": 3,
+    "p95": 3,
+    "p99": 896,
+    "maximum": 896,
+    "amplification": 298.6666666666667,
+    "physical_bounded_cost_claim": false
+  },
+  "synthetic_scale_evidence": [
+    {"logical_columns":1000,"projected_generic_metadata_plus_mock_state_bytes":56000,"real_physics_solves":0},
+    {"logical_columns":10000,"projected_generic_metadata_plus_mock_state_bytes":560000,"real_physics_solves":0},
+    {"logical_columns":100000,"projected_generic_metadata_plus_mock_state_bytes":5600000,"real_physics_solves":0}
+  ],
+  "diagnostic_surface_gaps": [
+    "accepted_substeps exists in kernel diagnostics but is not propagated through the current F-MR05 result surface",
+    "Jacobian builds and linear solves exist in canonical/solver diagnostics but are not propagated through the current F-MR05 result surface",
+    "constitutive evaluations and minimum-step hits are not exposed by the pinned solver diagnostics"
+  ],
+  "architecture_debt_not_hidden_by_qualification": [
+    "The restricted reference physical parameter carrier still contains numerical solver-control fields. Non-reference execution policy must not use that mixed carrier implicitly; explicit policy separation is required before admission.",
+    "No qualified real difficult physical column was measured in F-PE01.",
+    "No universal real-physics per-column memory byte guarantee was established."
+  ],
+  "admission_state": {
+    "REFERENCE": "ADMITTED_EXISTING_QUALIFIED_ROUTE",
+    "BALANCED": "DEFINED_NOT_ADMITTED",
+    "THROUGHPUT": "DEFINED_NOT_ADMITTED",
+    "FALLBACK": "DEFINED_NOT_ADMITTED",
+    "parallel_real_physics": "NOT_ADMITTED"
+  }
+}

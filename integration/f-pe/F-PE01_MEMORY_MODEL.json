@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE01",
+  "reference_source_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+  "principle": "No heavy solver instance per logical column. Persistent physical continuation state, immutable parameters, worker scratch, runtime metadata and optional process state are distinct ownership categories.",
+  "categories": {
+    "persistent_per_column_state": {
+      "owner": "kernel_committed_state_t containing fmr_b110_physical_state_t",
+      "source_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "source_blob": "ade399a1df4b582c9038442093ccacce034f923d",
+      "physical_payload": [
+        "active_nodes",
+        "pressure_head(active_nodes)",
+        "water_content(active_nodes)",
+        "ponding_depth",
+        "groundwater_level"
+      ],
+      "must_not_contain": ["Jacobian","Newton delta","linear solve workspace","constitutive temporaries"],
+      "real_physics_byte_footprint_measured_in_fpe01": false
+    },
+    "shared_immutable_parameter_data": {
+      "owner": "runtime parameter registry referenced by parameter_ref/template identity",
+      "source_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "sharing_qualified_by_fmr05": true,
+      "examples": ["z","dz","node_distance","cofgen","hydraulic provider parameters"],
+      "per_column_deep_copy_required": false,
+      "note": "Numerical solver controls still coexist in the current restricted reference parameter carrier. F-PE01 forbids using that structural legacy as an implicit execution-policy mechanism; separation is a precondition for future non-reference admission."
+    },
+    "worker_scratch": {
+      "owner": "worker/job-local solver model and reference_richards_workspace_t",
+      "source_path": "src/solver/mod_reference_richards_workspace.f90",
+      "source_blob": "93285b2ca24669494c93c00403e3783fca6758e9",
+      "contains": [
+        "Jacobian bands",
+        "residual",
+        "delta_head",
+        "sink/source temporaries",
+        "dconductivity_dhead",
+        "old_head",
+        "vertical_flux",
+        "head_gradient",
+        "linear solver band matrix and pivots",
+        "convergence flags",
+        "warm_start_head",
+        "solver diagnostics"
+      ],
+      "persistent_per_logical_column": false,
+      "reference_runtime_observation": "One backend/model/workspace is reused by the admitted serialized runtime; physical concurrency is one."
+    },
+    "batch_runtime_metadata": {
+      "owner": "MultiSWAP runtime",
+      "examples": ["logical column IDs","template IDs","state/parameter/forcing handles","dispatch ordinal","per-column diagnostics","batch aggregate diagnostics"],
+      "scales_with_logical_columns": true,
+      "is_physical_continuation_state": false
+    },
+    "optional_process_state": {
+      "rule": "Allocate only for active process modules and keep ownership separate from always-present state.",
+      "current_reference_profile": "Restricted profile has root extraction, macropore, snow, hysteresis, tabulated hydraulics, elasticity and frost inactive.",
+      "fpe01_adds_optional_state": false
+    }
+  },
+  "compiler_abi_specific_evidence": {
+    "source": "integration/f-mq/F-MQ23_QUALIFICATION_EVIDENCE.json generic runtime infrastructure only",
+    "logical_runtime_metadata_per_column_bytes": 48,
+    "deterministic_mock_committed_state_per_column_bytes": 8,
+    "shared_immutable_parameters_two_records_bytes": 16,
+    "worker_scratch_per_worker_bytes": 112,
+    "unused_optional_state_overhead_bytes": 0,
+    "universal_contract": false,
+    "real_b110_physical_state_measurement": false
+  },
+  "synthetic_scale_projection": {
+    "meaning": "Projection of only the F-MQ23 generic deterministic metadata plus mock-state byte observations. It is not a projection of full real-physics SWAP memory.",
+    "per_logical_column_observed_generic_bytes": 56,
+    "cases": [
+      {"logical_columns":1000,"projected_generic_bytes":56000},
+      {"logical_columns":10000,"projected_generic_bytes":560000},
+      {"logical_columns":100000,"projected_generic_bytes":5600000}
+    ],
+    "production_memory_guarantee": false
+  },
+  "qualification_findings": [
+    "Persistent physical state and worker scratch are structurally separate on the reference source.",
+    "The current serialized backend reuses a worker-local solver workspace instead of storing one solver instance per logical column.",
+    "A real-physics per-column byte inventory remains to be measured before any memory-capacity claim for 100k physical columns."
+  ]
+}
