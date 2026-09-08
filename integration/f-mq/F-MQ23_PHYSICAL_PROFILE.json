@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "profile_id": "EXACT_FVQ14_RESTRICTED_PROFILE_ONLY",
+  "source_profile_id": "FMR04_B110_BARE_ROOT_INACTIVE_SERIAL_V1",
+  "oracle": {
+    "commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+    "path": "integration/f-vq/F-VQ14_REFERENCE_RUN_PACKAGE.json",
+    "expected_values_must_be_consumed_not_reconstructed": true
+  },
+  "admitted": {
+    "hydraulics": "corrected B1.10 default-MvG analytical",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "root_extraction_active": false,
+    "qrot": 0.0,
+    "snow_active": false,
+    "macropore_active": false,
+    "top_boundary": "explicit admitted fixed-flux provider",
+    "source_sink": "F-SI10 precomputed drainage plus subsurface irrigation",
+    "bottom_mode": 7,
+    "generic_time": {"t0": 1000.125, "t1": 1000.625},
+    "backend": "SERIALIZED_REFERENCE_BACKEND"
+  },
+  "not_admitted": [
+    "active root extraction",
+    "qrot != 0",
+    "macropore physics",
+    "snow",
+    "swkimpl != 0",
+    "unqualified hydraulic model families",
+    "unqualified bottom boundaries",
+    "relaxed numerical policy",
+    "balanced numerical policy",
+    "throughput numerical policy",
+    "fallback numerical policy",
+    "MODFLOW coupling",
+    "PARALLEL_REFERENCE_BACKEND"
+  ],
+  "scope_drift_forbidden": true,
+  "general_swap5_multiswap_release": false
+}

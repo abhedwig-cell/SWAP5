@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "title": "First Real-Physics MultiSWAP Admission",
+  "qualification_only": true,
+  "repository": "abhedwig-cell/SWAP5",
+  "qualification_branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+  "safety_branch": "safety/f-mq23-fvq14-real-physics-runtime",
+  "branch_base": "69e581000bfcf15c74f2c4be5fa089502f794821",
+  "fmq22": {
+    "branch": "qualification/f-mq22-fkt06-p14-optional-state",
+    "head": "893c24732acabe4de4d1a0cd2835ab77cd3c253e",
+    "role": "last qualified MultiSWAP synthetic/optional-state baseline"
+  },
+  "fvq14": {
+    "branch": "qualification/f-vq14-fmr04-physical-runtime",
+    "qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+    "decision": "QUALIFIED_FMR04_RESTRICTED_PHYSICAL_SCIENTIFIC_ADMISSION",
+    "qualification_evidence_commit": "c056d3280e81fa54ad55f11daeab686590efe77b",
+    "workflow_run": 34190065621,
+    "fmq23_release": true
+  },
+  "physical_source": {
+    "commit": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+    "substitution_allowed": false
+  },
+  "reference_run_package": {
+    "commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+    "path": "integration/f-vq/F-VQ14_REFERENCE_RUN_PACKAGE.json",
+    "blob_sha": "a7935b2871cb88a8f854ac6b54797b81c3b40c5d",
+    "status_required": "QUALIFIED_IMMUTABLE_RESTRICTED_PHYSICAL_REFERENCE_RUN",
+    "scientific_expected_values_source": "THIS_PACKAGE_ONLY"
+  },
+  "backend_policy": {
+    "serialized_reference_backend": "ONLY_REAL_PHYSICS_BACKEND_ELIGIBLE_FOR_FMQ23",
+    "parallel_reference_backend": "NOT_ADMITTED"
+  },
+  "production_owners_if_blocked": {
+    "runtime_composition_or_dispatch": "F-MR",
+    "transaction_semantics": "F-KT",
+    "solver_or_provider_reentrancy": "F-SI",
+    "process_physics": "F-PM"
+  },
+  "production_source_changes_allowed": false
+}

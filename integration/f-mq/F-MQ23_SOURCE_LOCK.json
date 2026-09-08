@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ23",
+  "lock_mode": "FAIL_CLOSED",
+  "locked_production_source_sha": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+  "locked_production_source_tree": "04afa5d5a90671a7791174708ae6bf48b272c83f",
+  "locked_fvq14_qualification_head": "69e581000bfcf15c74f2c4be5fa089502f794821",
+  "locked_fvq14_reference_package_commit": "06f878c123903f8fe45602f521ec06e9baa1ca5e",
+  "locked_fvq14_reference_package_blob": "a7935b2871cb88a8f854ac6b54797b81c3b40c5d",
+  "locked_fvq14_evidence_commit": "c056d3280e81fa54ad55f11daeab686590efe77b",
+  "locked_fvq14_workflow": 34190065621,
+  "scientific_criterion": "EXACT_BITWISE_IDENTITY_NO_NEW_SCIENTIFIC_TOLERANCE",
+  "protected_production_paths": ["src/"],
+  "qualification_path_prefixes": ["integration/f-mq/", "tests/multiswap/", ".github/workflows/"],
+  "verification": {
+    "source_commit_live_verified": true,
+    "source_tree_live_verified": true,
+    "fvq14_head_live_verified": true,
+    "reference_package_blob_live_verified": true,
+    "production_source_diff_required_empty": true,
+    "full_branch_tree_expected_equal_to_source_tree": false,
+    "reason_full_tree_differs": "qualification-only evidence is layered on the F-VQ14 qualification head"
+  },
+  "physical_execution_precondition": "all locks PASS and git diff of protected production paths against locked source is empty",
+  "mismatch_action": "FAIL_CLOSED_NO_PHYSICAL_EXECUTION",
+  "production_source_changed": false
+}
