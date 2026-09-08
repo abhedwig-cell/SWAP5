@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR12",
+  "title": "Shared Crop Root-Uptake Input Adapter Qualification Evidence",
+  "base": {
+    "commit": "b6a667035d5e900a7e2209e76491c1817ffd2043",
+    "tree": "d61ad8f161631721314afabda72bba73c0699cd7",
+    "status": "QUALIFIED_RUNTIME_SOLVER_INDEPENDENT_ROOT_UPTAKE_CROP_INPUT_PROVIDER_CONTRACT"
+  },
+  "tested_candidate": {
+    "commit": "1821dead05bd056e983fd37bca5fae43e57efdef",
+    "tree": "79e62dab7bf81616241db43122131414ad776fcc",
+    "contract_blob": "b2ee458e36bc621fd9736cd4a0c21660a3757d93",
+    "production_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "focused_test_blob": "a9effbc2506311f94eac65c1e73dbe9df16ce9e5",
+    "gate_runner_blob": "3227d1245f2ffbaa9239f136e72c4e64b0d23bba",
+    "workflow_blob": "73f6e36af4b6ce4048081798a81e794f160a54f0"
+  },
+  "production_delta": {
+    "only_added_src_file": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+    "existing_production_sources_modified": false,
+    "crop_contract_modified": false,
+    "root_uptake_process_modified": false,
+    "FMR10_binding_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "mass_accounting_modified": false
+  },
+  "github_actions": {
+    "run": 34260134252,
+    "conclusion": "success",
+    "tested_head": "1821dead05bd056e983fd37bca5fae43e57efdef",
+    "fmr12_output_sha256": "5e70234b073d7d865075ec8d315755426b47d825539e0a0d74df6c122e733e29",
+    "fmr09_regression_output_sha256": "920ec4876c528dc3af9f5de4616f50a1214b3c87e999d9261bf57a348cf2f08d"
+  },
+  "gates": {
+    "single_runtime_adapter_production_delta": "PASS",
+    "FWO11_FMR10_FPM05_protected_source_locks": "PASS",
+    "runtime_adapter_boundary_static": "PASS",
+    "new_crop_contract_warning_clean_O0": "PASS",
+    "new_crop_contract_warning_clean_O2": "PASS",
+    "new_adapter_warning_clean_O0": "PASS",
+    "new_adapter_warning_clean_O2": "PASS",
+    "new_verifier_warning_clean_O0": "PASS",
+    "new_verifier_warning_clean_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "inactive_shared_DTO_preserves_FMR10_dependency_free_route": "PASS",
+    "active_zero_root_exact_mapping": "PASS",
+    "active_rooted_field_for_field_mapping": "PASS",
+    "wrapper_bitwise_equivalent_to_direct_FMR10": "PASS",
+    "committed_state_read_only": "PASS",
+    "shared_crop_input_read_only": "PASS",
+    "invalid_shared_DTO_fails_before_FMR10": "PASS",
+    "A_B_A_determinism": "PASS",
+    "FMR09_cross_process_regression": "PASS"
+  },
+  "representative_result": {
+    "fixture": "active rooted A",
+    "actual_uptake_total_rate": 0.20454545454545453,
+    "meaning": "F-MR12 wrapper output is bitwise identical to direct F-MR10 output for the same exactly mapped crop input"
+  },
+  "architecture_findings": {
+    "crop_code_depends_on_runtime": false,
+    "runtime_adapter_depends_on_shared_crop_contract": true,
+    "runtime_adapter_depends_on_FMR10": true,
+    "runtime_silently_canonicalizes_invalid_crop_input": false,
+    "adapter_accesses_solver_internals": false,
+    "adapter_accesses_legacy_globals": false,
+    "adapter_performs_file_IO": false,
+    "adapter_books_mass": false,
+    "adapter_mutates_committed_state": false,
+    "adapter_mutates_shared_crop_input": false
+  },
+  "not_qualified": [
+    "concrete WOFOST crop-state provider",
+    "legacy crop-global adapter",
+    "potential-transpiration computation",
+    "root-depth evolution",
+    "root-distribution evolution",
+    "crop-host lifecycle ordering",
+    "daily or subdaily crop cadence"
+  ]
+}
