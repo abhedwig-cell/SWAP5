@@ -22,6 +22,20 @@ echo 'FSI18_EXACT_FSI16_PRODUCTION_SOURCE=PASS'
   echo 'FSI18_ADAPTER_SOURCE_LOCK=FAIL' >&2; exit 1; }
 echo 'FSI18_FSI16_OWNER_SOURCE_LOCK=PASS'
 
+python3 - <<'PY' | tee "$EVIDENCE_DIR/linear-solver-harness-audit.txt"
+from pathlib import Path
+import re
+stub = Path('tests/fsi/fsi04_real_headcalc_stubs.f90').read_text().lower()
+match = re.search(r'subroutine\s+tridag\b(.*?)end\s+subroutine\s+tridag', stub, re.S)
+assert match, 'TRIDAG test stub not found'
+body = match.group(1)
+assert re.search(r'solution\s*\(\s*i\s*\)\s*=\s*0\.0d0', body), 'TRIDAG stub no longer returns exact zero corrections'
+assert re.search(r'ierror\s*=\s*0', body), 'TRIDAG stub no longer reports success'
+print('FSI18_LINEAR_SOLVER_HARNESS=ZERO_STEP_TRIDAG_STUB')
+print('FSI18_PRODUCTION_NUMERICAL_LINEAR_SOLVER_EXERCISED=NO')
+print('FSI18_HARNESS_NUMERICAL_REPRESENTATIVENESS=NO')
+PY
+
 python3 - <<'PY' | tee "$EVIDENCE_DIR/contract-audit.txt"
 import json
 from pathlib import Path
@@ -96,14 +110,17 @@ print('FSI18_SIGN_SYMMETRY=' + ('YES' if symmetric else 'NO'))
 for i in range(1,6):
     print(f"FSI18_CASE_{i}_SUMMARY=converged:{b(i,'CONVERGED')},nl:{n(i,'NONLINEAR_ITERATIONS')},retry:{n(i,'INTERNAL_RETRIES')},jac:{n(i,'JACOBIAN_BUILDS')},lin:{n(i,'LINEAR_SOLVES')},bt:{n(i,'BACKTRACKING_ATTEMPTS')}")
 if reproduced:
-    classification='REPRODUCED_ON_FSI16_SOLVER_LINEAGE'
+    classification='REPRODUCED_IN_SOURCE_LOCKED_ZERO_STEP_TRIDAG_HARNESS'
 elif symmetric:
-    classification='NOT_REPRODUCED_BUT_SIGN_SYMMETRIC_ON_FSI16_SOLVER_LINEAGE'
+    classification='NOT_REPRODUCED_BUT_SIGN_SYMMETRIC_IN_ZERO_STEP_TRIDAG_HARNESS'
 else:
     classification='NOT_REPRODUCED_AND_ASYMMETRIC_REQUIRES_DIAGNOSIS'
 print('FSI18_REPRODUCTION_CLASSIFICATION='+classification)
+print('FSI18_PRODUCTION_NUMERICAL_LINEAR_SOLVER_EXERCISED=NO')
+print('FSI18_PRODUCTION_RICHARDS_COST_CLIFF_ESTABLISHED=NO')
+print('FSI18_HARNESS_LIMITATION_ESTABLISHED=YES')
 print('FSI18_PRODUCTION_CHANGE_AUTHORIZED=NO')
 PY
 
 cat "$EVIDENCE_DIR/classification.txt"
-echo 'FSI18_REFERENCE_CONVERGENCE_CLIFF_GATE=PASS_CHARACTERIZATION_ONLY'
+echo 'FSI18_REFERENCE_CONVERGENCE_CLIFF_GATE=PASS_HARNESS_DIAGNOSIS_ONLY'
