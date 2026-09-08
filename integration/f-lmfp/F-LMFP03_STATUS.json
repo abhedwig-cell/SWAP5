@@ -9,6 +9,8 @@
     "commit": "4674b2315dff9f783d1fcb72899b5a459775e1ef",
     "decision": "QUALIFIED_STANDALONE_MFP_PRIMITIVES_READY_FOR_COLUMN_PROTOTYPE"
   },
+  "decision": "QUALIFIED_STANDALONE_GENERIC_TIME_COLUMN_READY_FOR_FULLRICHARDS_AB",
+  "qualification_scope": "standalone conservative LayeredMFP column trial only; no production or FullRichards physical admission",
   "scope": {
     "production_implementation": false,
     "production_solver_registration": false,
@@ -22,39 +24,85 @@
     "modflow_admission": false
   },
   "candidate_design": {
-    "persistent_state": "layer water storage only in the prototype; head is reconstructed from storage",
-    "face_flux": "MFP-secanted Darcy finite-volume closure with scalar equal-flux solve at heterogeneous material interfaces",
+    "persistent_state": "layer water storage; pressure head reconstructed from h(theta)",
+    "face_flux": "full Darcy MFP-secant finite-volume closure",
+    "heterogeneous_interface": "bounded scalar continuous-head/equal-full-flux solve",
     "bottom_flux": "unit-gradient free drainage q=K(bottom state)",
-    "time_integration": "explicit conservative trial update; reject rather than clip if layer storage leaves constitutive bounds",
-    "retry": "return admissible-step diagnostic to caller; no committed state mutation",
-    "mass_ledger": "top-bottom + sources-sinks equals storage change on every accepted trial"
+    "time_integration": "explicit conservative trial update",
+    "bounds_policy": "reject trial and advise smaller step; never post-update clip storage",
+    "transaction_ownership": "caller/runtime owns commit/discard; rejected trial does not mutate base state",
+    "mass_ledger": "top-bottom plus sources-sinks equals total storage change"
   },
-  "qualification_questions": [
-    "Does the face closure preserve hydrostatic zero flux?",
-    "Does homogeneous gravity-only flow reduce to q=K?",
-    "Does a heterogeneous interface satisfy equal full flux across both half layers?",
-    "Does every accepted column step conserve mass to floating-point precision?",
-    "Are rejected trials non-mutating and diagnostically retryable?",
-    "Does temporal error decrease under step refinement for smooth nonstationary forcing?",
-    "Can per-face work remain bounded independently of column-wide Newton convergence?"
-  ],
+  "qualified_findings": {
+    "gravity_only_homogeneous_q_equals_K": true,
+    "hydrostatic_homogeneous_zero_flux": true,
+    "hydrostatic_heterogeneous_zero_flux": true,
+    "heterogeneous_equal_full_flux": true,
+    "bounded_heterogeneous_face_matrix_cases": 500,
+    "bounded_heterogeneous_face_matrix_failures": 0,
+    "max_heterogeneous_face_iterations": 42,
+    "accepted_column_mass_residual": 6.938893903907228e-15,
+    "random_column_cases": 200,
+    "random_column_failures_after_retry": 0,
+    "random_column_max_mass_residual": 6.768023641523513e-15,
+    "rejected_trial_non_mutating": true,
+    "rejected_trial_repeatable": true,
+    "generic_time_refinement_pass": true,
+    "observed_refinement_error_ratio_min": 1.9706853662909611,
+    "historical_max_dry_wet_hydrostatic_consistent": false,
+    "historical_max_dry_wet_admitted_as_candidate_closure": false
+  },
+  "architectural_findings": {
+    "common_constitutive_provider_forward_functions_sufficient_for_fullrichards": true,
+    "layeredmfp_additional_inverse_h_theta_needed": true,
+    "layeredmfp_additional_mfp_service_needed": true,
+    "production_contract_change_made": false,
+    "persistent_layer_state_can_remain_compact": true,
+    "mfp_tables_should_be_shared_immutable_material_data": true,
+    "face_heads_fluxes_and_brackets_are_worker_scratch": true
+  },
+  "artifacts": {
+    "prototype": "experiments/lmfp/run_lmfp03_column.py",
+    "prototype_commit": "4602e934ece0c2b1a4ca6c106c7f0d73b9e0a8f4",
+    "evidence": "experiments/lmfp/F-LMFP03_COLUMN_EVIDENCE.json",
+    "evidence_commit": "564a2312d7e1bd51e359f75db282aa63ab7c1fb8",
+    "report": "integration/f-lmfp/F-LMFP03_REPORT.md",
+    "report_commit": "57cc928d047dd50e0d9232b1dd9a5a1767257144"
+  },
   "hard_holds": {
-    "WOFOST_max_dry_wet_closure": "not admitted as SWAP5 candidate physics",
-    "WOFOST_field_capacity_gating": "not admitted",
-    "WOFOST_fixed_upward_fraction": "not admitted",
-    "production_mfp_resolution": "not selected",
-    "bottom_head": "not in this workunit",
-    "drainage_process": "not integrated",
-    "root_uptake_process": "represented only as external sink vector",
-    "surface_ponding_runoff": "not integrated"
+    "WOFOST_max_dry_wet_closure": "REJECTED_AS_GENERIC_SW5_FACE_LAW",
+    "WOFOST_field_capacity_gating": "NOT_ADMITTED",
+    "WOFOST_fixed_upward_fraction": "NOT_ADMITTED",
+    "production_mfp_resolution": "NOT_SELECTED",
+    "production_inverse_h_theta_path": "NOT_DESIGNED",
+    "bottom_head": "NOT_IN_THIS_WORKUNIT",
+    "groundwater": "NOT_QUALIFIED",
+    "modflow": "NOT_QUALIFIED",
+    "drainage_process": "NOT_INTEGRATED",
+    "root_uptake_process": "EXTERNAL_SINK_ONLY",
+    "surface_ponding_runoff": "NOT_INTEGRATED",
+    "full_richards_equivalence": "NOT_TESTED",
+    "application_envelope": "NOT_DEFINED",
+    "performance_speedup": "NOT_MEASURED",
+    "b12_heavy_clay": "NOT_TESTED"
   },
-  "status": "PROTOTYPE_STARTED",
+  "test_evidence_caveat": "No GitHub Actions run exists for this experimental branch. The deterministic numerical evidence was executed in the active local analysis runtime with the same B1.10-aligned constitutive and F-LMFP03 algorithmic logic. This qualification is therefore restricted to the standalone prototype proposition and is not production admission.",
+  "next_work_unit": {
+    "id": "F-LMFP04",
+    "title": "FullRichards Hydraulic A/B Qualification I",
+    "scope": "hydraulic-only free-drainage and prescribed-top-flux cases before crop, drainage, ponding or groundwater integration"
+  },
   "scope_flags": {
-    "IMPLEMENTED": false,
+    "IMPLEMENTED": true,
+    "implementation_scope": "standalone_prototype_only",
     "PERSISTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "test_scope": "local deterministic structural/numerical prototype tests",
+    "QUALIFIED": true,
+    "qualification_scope_flag": "standalone_generic_time_column_only_not_physical_solver_admission",
+    "production_implemented": false,
     "production_src_changed": false,
-    "transaction_semantics_changed": false
+    "transaction_semantics_changed": false,
+    "numerical_policy_changed": false
   }
 }
