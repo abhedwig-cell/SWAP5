@@ -79,6 +79,6 @@ jobs:
           ! grep -Eq '\bcall[[:space:]]+(tridag|bandec|banbks)\b' src/legacy/b1_10_port/headcalc.f90
           ! grep -Eq '\bmacp\b' src/legacy/b1_10_port/headcalc.f90
           grep -Fq 'real(real64), allocatable :: tridag_gamma(:)' src/solver/mod_reference_richards_workspace.f90
-          grep -Fq 'allocate(workspace%tridag_gamma(active_nodes))' src/solver/mod_reference_richards_workspace.f90
+          grep -Eq '^[[:space:]]*allocate\(.*workspace%tridag_gamma\(active_nodes\).*$' src/solver/mod_reference_richards_workspace.f90
           grep -Fq 'if (allocated(workspace%tridag_gamma)) nreal = nreal + size(workspace%tridag_gamma, kind=int64)' src/solver/mod_reference_richards_workspace.f90
           echo 'FSI19_ARCHITECTURAL_SEAM_GUARDS=PASS'
