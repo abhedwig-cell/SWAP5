@@ -44,7 +44,7 @@ for forbidden in [
     'mod_fmr_', 'mod_soil_water_solver', 'mod_process_hydraulic_view', 'reference_richards',
     'headcalc', 'mod_meteo', 'mod_cropdevelopment', 'plant_interface',
     'total_in', 'total_out', 'mass%', 'open(', 'close(', 'inquire(', 'read(',
-    't1900', 'date', 'daystart', 'dayend'
+    't1900', 'daystart', 'dayend', 'calendar_'
 ]:
     assert forbidden not in p, forbidden
 for required in [
