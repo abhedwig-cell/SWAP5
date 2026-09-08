@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF22",
+  "title": "Source-Bound Biomass Ownership and SWRD=3 Consumer Evidence",
+  "source_provenance": {
+    "reused_current_lineage_source_evidence": "integration/f-wof/F-WOF21_SOURCE_BOUND_ROOT_HISTORY_EVIDENCE.json",
+    "reused_current_lineage_source_evidence_blob": "8d3f0f365f65320518b9254f823a59429d07bc38",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "fixed_f90_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+  },
+  "legacy_scientific_binding": {
+    "SWRD3_current_depth": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1809-1813,1934-1937",
+      "driver": "actual WRT through RLWTB",
+      "independent_root_depth_history": false
+    },
+    "SWRD3_potential_depth": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1879-1883",
+      "driver": "WRTPOT through RLWTB",
+      "needed_for_current_geometry": false,
+      "needed_for_potential_root_extension_path": true
+    },
+    "simple_crop_restriction": {
+      "source": "SWAP/MOD_cropdevelopment.f90:1685-1688",
+      "classification": "SWRD3_NOT_ADMITTED_FOR_CROPTYPE1_SIMPLE_CROP"
+    },
+    "fixed_crop_WRT": {
+      "source": "SWAP/fixed.f90:166-204,208-268",
+      "classification": "CROP_BIOMASS_STATE",
+      "evidence": "WRT is initialized/updated as crop root biomass and GRRT/DRRT are derived from its change."
+    },
+    "WOFOST_WRT": {
+      "source": "SWAP/wofost.f90:704-767,1060-1088,1243-1287",
+      "classification": "PRIMARY_ACTUAL_CROP_BIOMASS_STATE",
+      "evidence": "s%wrt is initialized and evolved together with organ biomass; plant_interface WRT is copied from actual WOFOST state."
+    },
+    "WOFOST_WRTPOT": {
+      "source": "SWAP/wofost.f90:1243-1287",
+      "classification": "POTENTIAL_SHADOW_BIOMASS_STATE",
+      "evidence": "WRTPOT is copied from the potential WOFOST trajectory rather than from actual state."
+    }
+  },
+  "historical_owner_resolution": {
+    "branch": "work/f-wof06-potential-shadow-state",
+    "head": "28e127b1555f05a1862652ee6f33abe1619bbbec",
+    "status": "QUALIFIED_ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW_STATE_OWNERSHIP",
+    "owner_document_blob": "ababdb87e3c644bb65cf32665698af596aefffa8",
+    "status_blob": "3d1d182820d3e4c2d5884e4ba84ac0a508991c3d",
+    "semantic_decision": "ACTUAL_PRIMARY_POTENTIAL_OPTIONAL_SHADOW",
+    "production_merge_permitted": false,
+    "current_compare": {
+      "current_head_at_assessment": "1e8e35b20d11cf00114d41dd5b340aa73656b278",
+      "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "historical_only_commits": 17,
+      "current_only_commits": 355,
+      "status": "diverged"
+    }
+  },
+  "current_lineage_inventory": {
+    "common_crop_lifecycle_state": {
+      "present": true,
+      "module": "src/crop/mod_crop_lifecycle_state.f90",
+      "blob": "c1fbb2c615254cfda0b26a7aff20447fb9960502"
+    },
+    "SWRD2_optional_root_history": {
+      "present": true,
+      "module": "src/crop/mod_swrd2_crop_lifecycle_state.f90",
+      "blob": "206a2b472119c459b884ee360bd19c7a2ac7077b"
+    },
+    "primary_biomass_owner": {
+      "present": false
+    },
+    "authoritative_actual_WRT_view": {
+      "present": false
+    },
+    "optional_potential_shadow_host": {
+      "present": false
+    },
+    "SWRD3_geometry_consumer": {
+      "present": true,
+      "module": "src/crop/mod_crop_root_geometry_snapshot_producer.f90",
+      "blob": "56c3e10ccd25e6790882a649d472bd67a31d0f7b",
+      "entrypoint": "build_swrd3_root_geometry_snapshot",
+      "input": "actual_root_biomass",
+      "uses_WRTPOT": false,
+      "meaning": "No geometry API change is required to consume a future authoritative actual-WRT view."
+    }
+  },
+  "ownership_decision": {
+    "actual_WRT": "READ_ONLY_VIEW_FIELD_FROM_PRIMARY_COMMITTED_CROP_BIOMASS_OWNER",
+    "WRTPOT": "OPTIONAL_TRANSACTIONAL_SHADOW_FIELD_ONLY_WHEN_POTENTIAL_REFERENCE_TRAJECTORY_ENABLED",
+    "WRT_only_root_geometry_helper_state": "FORBIDDEN",
+    "SWRD3_current_geometry_composition": "BLOCKED_UNTIL_AUTHORITATIVE_ACTUAL_WRT_VIEW_EXISTS",
+    "SWRD3_potential_root_extension": "BLOCKED_UNTIL_OPTIONAL_POTENTIAL_BIOMASS_SHADOW_EXISTS_AND_IS_TRANSACTIONALLY_QUALIFIED"
+  },
+  "state_scaling_consequence": {
+    "all_columns_pay_for_WRTPOT": false,
+    "SWRD1_columns_need_biomass_for_root_geometry": false,
+    "SWRD2_columns_need_biomass_for_root_geometry": false,
+    "SWRD3_columns_need_actual_WRT_view": true,
+    "potential_shadow_only_when_enabled": true
+  },
+  "decision": "QUALIFY_OWNERSHIP_RECONCILIATION_BLOCK_PRODUCTION_SWRD3_UNTIL_BIOMASS_OWNER_VIEW_EXISTS"
+}
