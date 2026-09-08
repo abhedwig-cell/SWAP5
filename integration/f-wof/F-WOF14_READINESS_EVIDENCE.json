@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF14",
+  "title": "Concrete Root-Uptake Producer Readiness and Owner-Gap Resolution",
+  "branch": "work/f-wof14-root-uptake-producer-readiness",
+  "base_commit": "03c8c2900c976dec955b2c34a5d903c68edd9547",
+  "tested_candidate": "06a34df18208880ec949885a0d83a6a1379593c1",
+  "decision": "BLOCKED_BOTH_OWNER_INPUTS_NOT_YET_AVAILABLE",
+  "github_actions": {
+    "successful_run": 34265837687,
+    "conclusion": "success",
+    "first_run": 34265739018,
+    "first_run_conclusion": "failure",
+    "first_run_classification": "READINESS_HARNESS_ASSERTION_JOINED_TWO_SEPARATE_FWO10_OPEN_ITEMS",
+    "first_run_production_or_physics_failure": false
+  },
+  "verified": {
+    "zero_production_delta": "PASS",
+    "FWO13_FMR12_FMR10_source_locks": "PASS",
+    "current_owner_source_inventory": "PASS",
+    "concrete_crop_root_view_producer_absent": "PASS",
+    "current_ET_result_producer_absent": "PASS",
+    "FWO10_full_crop_host_not_qualified": "PASS",
+    "FWO10_and_current_lineages_diverged_no_blind_merge": "PASS"
+  },
+  "source_findings": {
+    "current_src_crop": [
+      "mod_crop_root_uptake_input_contract.f90",
+      "mod_crop_root_uptake_input_assembly.f90"
+    ],
+    "current_src_process": [
+      "mod_irrigation_process.f90",
+      "mod_root_water_uptake_process.f90",
+      "mod_snow_process.f90"
+    ],
+    "crop_root_state_view_type_has_concrete_producer": false,
+    "root_uptake_et_result_type_has_concrete_producer": false,
+    "serialized_reference_backend_contains_potential_transpiration": false,
+    "serialized_reference_backend_contains_crop_root_state_view": false,
+    "FWO10_full_crop_host_integration": false,
+    "FWO10_head": "98a26f0294aafac6d1ed46ace2d6bcc05914d9f0",
+    "FWO10_to_FWO13_compare_status": "diverged",
+    "FWO10_to_FWO13_ahead_by": 293,
+    "FWO10_to_FWO13_behind_by": 35,
+    "common_merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+  },
+  "architectural_interpretation": {
+    "crop_root_input_gap": "F-WOF13 defines a read-only crop-root view contract, but current admitted production lineage has no crop-host-owned state/view producer that supplies it.",
+    "ET_input_gap": "F-WOF13 defines the current potential-transpiration result carrier, but current admitted production lineage has no ET process/result producer supplying it.",
+    "runtime_must_not_fill_gap": true,
+    "legacy_global_adapter_must_not_fill_gap": true,
+    "blind_FWO10_merge_must_not_fill_gap": true
+  },
+  "required_owner_resolutions": [
+    "crop owner: qualify minimal committed/derived crop-root state and a read-only view producer",
+    "ET owner: qualify an explicit current potential-transpiration process result at the root-uptake evaluation point",
+    "only after both are qualified: compose them through F-WOF13 and F-MR12"
+  ]
+}
