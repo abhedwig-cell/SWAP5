@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM04",
+  "evidence_class": "SOURCE_BOUND_READINESS_EVIDENCE",
+  "canonical_distribution": {
+    "artifact": "SWAP_4.3.1.zip",
+    "sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_fortran_archive": "tools/SWAP/source/SWAP.ZIP",
+    "nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "identity_basis": "reference/swap-4.3.1/b0/SOURCE_IDENTITY.md and file-manifest.sha256"
+  },
+  "b110_identity": {
+    "snapshot": "B1.10",
+    "source_manifest_sha256": "2dfc004f1bae3fc249f384d4f947a07ed4627e83e251ce6557d03092f0b4d1b1",
+    "functions_path": "SWAP/functions.f90",
+    "functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "irrigation_path": "SWAP/irrigation.f90",
+    "irrigation_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "b110_patch_targets_functions_or_irrigation": false,
+    "reason": "B1.10 reconstructs B0 plus qualified patches whose target list does not include functions.f90 or irrigation.f90, so these two source members retain their exact B0 bytes."
+  },
+  "afgen": {
+    "source_lines": "SWAP/functions.f90:66-108",
+    "signature": "real(8) function afgen(table, iltab, x)",
+    "table_layout": "alternating x,y values",
+    "semantics": [
+      "x <= first x returns first y",
+      "inside a populated interval, linear interpolation uses the bracketing x,y pair",
+      "a decreasing next x is treated as the legacy partial-table sentinel and returns the preceding y",
+      "when the declared table is fully populated and x exceeds the last x, the last y is returned"
+    ],
+    "hazards": [
+      "the interpolation denominator is the difference between adjacent x knots, so duplicate bracketing x values are invalid",
+      "TCS7 and DCS2 call AFGEN with declared length 14 even when fewer than seven x,y pairs were read",
+      "the saved 14-element irrigation tables are not explicitly cleared before partial refill"
+    ],
+    "restricted_target_contract": {
+      "pair_count": "2..7",
+      "x_knots": "finite and strictly increasing",
+      "tcs7_x_range": "DVS knots within legacy [0,2] input range",
+      "dcs2_x_range": "DVS knots within legacy [0,2] input range",
+      "evaluation": "for a partial table, runtime DVS must not exceed the last supplied knot; values below the first knot retain AFGEN first-y clamping",
+      "implementation_form": "explicit knot-count table, not an uninitialized 14-element sentinel buffer"
+    }
+  },
+  "ttutil_partial_table_evidence": {
+    "archive": "tools/SWAP/source/TTUTIL.ZIP",
+    "archive_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+    "rdador_sha256": "609328ee8e62842767144b29dde6a9a9ae5caacfbd0de5b46a3bc446b97f15ad",
+    "rdfdor_sha256": "712c69667354d9fc24e0d4c4b1919337ae1b2e6f742373a8d17ecd252a2fe2b0",
+    "rddata_sha256": "4f8d98180f86bc675c18d8c77f6b0fbf83a048cfa8a9488fff88ffee5fb9e0e0",
+    "finding": "RDADOR asks RDDATA for an unknown number of values up to the declared capacity and returns that count; it does not define the unused tail of the caller array. This makes the clean target contract use an explicit actual knot count rather than preserving stale SAVE-array tail state."
+  },
+  "tcs7": {
+    "parameter_read_lines": "SWAP/irrigation.f90:259-290",
+    "runtime_lines": "SWAP/irrigation.f90:533-540",
+    "source_equation": "phcrit = afgen(hcritab,14,dvs); trigger when h(nodsen) <= phcrit",
+    "sensor_translation": "legacy maps dcrit to nodsen using zbotcp and +1e-5 cm; target receives a pretranslated immutable sensor node and validates 1..active_nodes",
+    "hydraulic_dependency": "pressure_head(sensor_node) from the committed process hydraulic view"
+  },
+  "dcs2": {
+    "parameter_read_lines": "SWAP/irrigation.f90:329-336",
+    "runtime_lines": "SWAP/irrigation.f90:577-581",
+    "source_equation": "irr_depth_cm = 0.1 * afgen(fidtab,14,dvs)",
+    "adapter_translation": "target immutable DCS2 table stores depth in cm after legacy mm-to-cm translation; the process interpolates the translated cm table"
+  },
+  "outer_scheduled_gate": {
+    "source_lines": "SWAP/irrigation.f90:419-454",
+    "precedence": "fixed event selection occurs first; scheduled selection requires irrigevent == 0",
+    "required_explicit_inputs": [
+      "irrigation enabled",
+      "schedule enabled",
+      "crop emerged",
+      "irrigation window open",
+      "no fixed event already selected"
+    ],
+    "calendar_reconstruction_in_process": false
+  },
+  "legacy_tcs_gt_1_prelude": {
+    "source_lines": "SWAP/irrigation.f90:456-470 and initialization 349-361",
+    "finding": "legacy executes root-zone capacity and watcon calculations for every tcs>1, including TCS7, even though TCS7+DCS2 does not consume awlh, awmh, awah or cdef",
+    "target_decision": "do not migrate these calculations into the restricted TCS7+DCS2 process seam; they belong to TCS2/TCS3/TCS4/TCS6/DCS1 dependency paths",
+    "qualification_limit": "this is a structural dependency cut, not yet a claim of full-runtime numerical identity; later independent F-VQ must detect any observable legacy side effect before scientific admission"
+  },
+  "scheduled_ssdi": {
+    "node_mapping_lines": "SWAP/irrigation.f90:167-185",
+    "regular_rate_lines": "SWAP/irrigation.f90:596-615",
+    "source_equations": [
+      "qssdi(nod_ssdi(1):nod_ssdi(2)) = irr_rate",
+      "dt_irr_event = irr_depth/irr_rate"
+    ],
+    "unit_translation": "legacy irr_rate input mm/h is translated outside the target process to cm/d",
+    "multi_node_finding": "scheduled SSDI does not divide DCS2 irr_depth by the number of SSDI nodes before assigning the same rate to every node",
+    "contrast_with_fixed_event": "fixed-event SSDI explicitly divides irdepth by node count at SWAP/irrigation.f90:725-727 before cm conversion",
+    "restricted_target_contract": "first structural seam admits only single-node SSDI, ssdi_first_node == ssdi_last_node",
+    "multi_node_status": "HELD_UNRESOLVED_SOURCE_SEMANTIC_DIFFERENCE"
+  },
+  "rate_scope": {
+    "included": "irr_rate > 0 and irr_depth/irr_rate <= 1",
+    "excluded": [
+      "irr_depth/irr_rate > 1 temporary rate adaptation",
+      "irr_rate <= 0 whole-day spreading",
+      "task=4 f_irr_avail scaling"
+    ]
+  },
+  "mass_scope": {
+    "single_node_expected_external_inflow": "irr_rate * active_duration, with full-event amount equal to irr_depth",
+    "double_booking_forbidden": true,
+    "multi_node_mass_not_admitted_by_fpm04": true
+  }
+}
