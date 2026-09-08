@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF14",
+  "title": "Concrete Root-Uptake Producer Readiness and Owner-Gap Resolution",
+  "branch": "work/f-wof14-root-uptake-producer-readiness",
+  "base": {
+    "commit": "03c8c2900c976dec955b2c34a5d903c68edd9547",
+    "status": "QUALIFIED_EXPLICIT_CROP_ROOT_SNAPSHOT_AND_ET_ASSEMBLY_SEAM"
+  },
+  "purpose": "Determine whether a concrete producer for the qualified F-WOF13 crop-root snapshot and ET-result inputs can now be implemented from qualified SWAP5 owner state/results without reintroducing legacy globals, hidden runtime dependencies, or unqualified crop lifecycle semantics.",
+  "fail_closed_rule": "No production producer implementation is allowed unless both the crop-root state source and current potential-transpiration source are explicitly owned, source-bound, and available through qualified non-legacy interfaces at the intended root-uptake evaluation point.",
+  "required_reads": [
+    "latest qualified F-WOF crop-owner lineage and its open lifecycle gaps",
+    "current production src/crop state-bearing types and interfaces",
+    "current ET/potential-transpiration production contracts and result carriers",
+    "legacy B1.10 source order for emergence, root distribution, ptra and RootExtraction",
+    "F-WOF11/F-WOF13/F-MR12/F-MR10 qualified contracts"
+  ],
+  "gates": {
+    "qualified_FWO13_base": "REQUIRED",
+    "explicit_crop_root_owner_state_available": "REQUIRED",
+    "explicit_current_ET_result_available": "REQUIRED",
+    "evaluation_order_source_bound": "REQUIRED",
+    "runtime_solver_independence": "REQUIRED",
+    "legacy_global_reads_in_new_producer": "FORBIDDEN",
+    "file_IO_in_new_producer": "FORBIDDEN",
+    "implicit_daily_or_midnight_assumption": "FORBIDDEN",
+    "silent_crop_or_ET_physics_change": "FORBIDDEN"
+  },
+  "allowed_if_ready": [
+    "a minimal crop-owned view producer over already-qualified crop-root state",
+    "a minimal adapter from an already-qualified current ET result to root_uptake_et_result_t",
+    "focused deterministic tests and source locks"
+  ],
+  "forbidden": [
+    "full WOFOST migration",
+    "new root-growth equations",
+    "new ET equations",
+    "copying legacy crop globals into a new global module",
+    "runtime or solver code reading WOFOST/legacy module variables",
+    "blindly merging divergent F-WOF lineages",
+    "claiming arbitrary subdaily WOFOST crop evolution"
+  ],
+  "decision_outcomes": [
+    "READY_MINIMAL_PRODUCER_IMPLEMENTATION_ALLOWED",
+    "BLOCKED_CROP_ROOT_OWNER_STATE_NOT_YET_AVAILABLE",
+    "BLOCKED_CURRENT_ET_RESULT_NOT_YET_AVAILABLE",
+    "BLOCKED_BOTH_OWNER_INPUTS_NOT_YET_AVAILABLE"
+  ],
+  "affected_invariants": [2, 3, 4, 7, 9, 21, 22, 27, 29, 30]
+}
