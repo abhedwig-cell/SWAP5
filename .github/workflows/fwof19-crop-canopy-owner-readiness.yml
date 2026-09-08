@@ -1,0 +1,21 @@
+name: F-WOF19 crop-canopy owner readiness
+
+on:
+  push:
+    branches:
+      - work/f-wof19-crop-canopy-owner-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: F-WOF19 crop-canopy owner readiness gate
+        run: bash tests/fwof/run_fwof19_crop_canopy_owner_readiness_gate.sh
