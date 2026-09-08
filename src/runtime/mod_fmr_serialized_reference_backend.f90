@@ -1,5 +1,6 @@
 module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE, &
        TX_MASS_MISSING_UNSPECIFIED
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
@@ -17,6 +18,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
@@ -101,6 +103,7 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b110_source_sink_provider_t), pointer :: source_sink => null()
+    type(b110_root_sink_provider_t), pointer :: root_sink => null()
     class(top_boundary_provider_t), pointer :: top_boundary => null()
     type(reference_richards_legacy_solver_t) :: solver
     type(reference_richards_legacy_workspace_t) :: workspace
@@ -125,6 +128,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_head = 0.0_real64
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
+    logical :: root_extraction_active = .false.
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     real(real64) :: snow_outer_t0 = 0.0_real64
@@ -311,7 +315,7 @@ contains
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%root_extraction_active .and. .not. parameters%macropore_active .and. &
+           .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%snow_active) then
@@ -337,7 +341,8 @@ contains
       if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
       if (associated(self%constitutive)) deallocate(self%constitutive)
       if (associated(self%source_sink)) deallocate(self%source_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink)
+      if (associated(self%root_sink)) deallocate(self%root_sink)
+      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
       allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
@@ -356,6 +361,7 @@ contains
       self%head_abs_tolerance = parameters%head_abs_tolerance
       self%head_rel_tolerance = parameters%head_rel_tolerance
       self%ponding_tolerance = parameters%ponding_tolerance
+      self%root_extraction_active = parameters%root_extraction_active
       self%snow_active = parameters%snow_active
     class default
       error stop 'F-MR06 serialized backend: unexpected parameter type'
@@ -382,7 +388,12 @@ contains
       if (size(forcing%drainage_flux_by_level,1) <= 0 .or. &
           size(forcing%drainage_flux_by_level,2) /= n .or. &
           size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
-      if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+      if (self%root_extraction_active) then
+        if (any(forcing%root_extraction_sink < 0.0_real64)) return
+      else
+        if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
       if (self%snow_active) then
         if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
         if (.not. same_real_bits(interval%t0, self%snow_outer_t0) .or. &
@@ -428,6 +439,7 @@ contains
     type(trial_outcome_t), intent(out) :: outcome
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64) :: step_duration
     logical :: context_ok, snow_event_applied_this_call
 
@@ -438,15 +450,24 @@ contains
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
+    if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
 
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
-    call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
+    if (self%root_extraction_active) then
+      allocate(source_sink_root_zero(size(self%qrot)))
+      source_sink_root_zero = 0.0_real64
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, source_sink_root_zero)
+      call bind_b110_root_sink_provider(self%root_sink, self%qrot)
+    else
+      call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
+    end if
 
     request%parameters => self%soil_parameters
     request%evaluation%constitutive => self%constitutive
     request%evaluation%source_sink => self%source_sink
+    if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     request%evaluation%top_boundary => self%top_boundary
     request%step_duration = step_duration
     request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
@@ -558,6 +579,14 @@ contains
           total_in = total_in - value
         end if
       end do
+    end do
+    do i = 1, size(self%qrot)
+      value = self%qrot(i) * step_duration
+      if (value >= 0.0_real64) then
+        total_out = total_out + value
+      else
+        total_in = total_in - value
+      end if
     end do
     if (self%snow_active .and. snow_event_applied) then
       total_in = total_in + self%snow_diagnostics%mass%snowfall_external_in + &
