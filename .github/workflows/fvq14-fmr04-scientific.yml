@@ -106,7 +106,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bash tests/fvq/run_fvq14_gate.sh candidate qualification-results \
+          bash integration/f-vq/tools/F-VQ14_RUNNER_WRAPPER.sh candidate qualification-results \
             | tee qualification-results/fvq14_gate.log
 
       - name: Record immutable evidence hashes
