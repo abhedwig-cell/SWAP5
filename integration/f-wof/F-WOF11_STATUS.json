@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF11",
+  "title": "Explicit Root-Uptake Crop Input Provider Contract and Owner Resolution",
+  "branch": "work/f-wof11-root-uptake-crop-input-provider",
+  "status": "QUALIFIED_RUNTIME_SOLVER_INDEPENDENT_ROOT_UPTAKE_CROP_INPUT_PROVIDER_CONTRACT",
+  "qualification_scope": "SHARED_CROP_INPUT_CONTRACT_ONLY",
+  "owner": "Crop, ET and root-uptake physics",
+  "base": {
+    "commit": "6e4ddecb585833f42c3e27fb121345a40b5fa880",
+    "status": "QUALIFIED_EXPLICIT_COMMITTED_ROOT_UPTAKE_PROCESS_RUNTIME_BINDING"
+  },
+  "qualified_candidate": {
+    "tested_commit": "4e9d8054331984d349de13755f7ad911ac845bc0",
+    "production_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "focused_test_blob": "7b83492f2e2c3926d4fad558f6a712c8cdc11494",
+    "gate_runner_blob": "05c42800ae421f3db453309125b9ec3bdcc2644d",
+    "workflow_blob": "dff72c9e6d2990508c3c8fe482d2d6ca547846a7"
+  },
+  "verification": {
+    "github_actions_run": 34259427370,
+    "github_actions_conclusion": "success",
+    "fwof11_output_sha256": "07de8ff573845466c4c75fa5d712f56526d32e26009a727f775baf8a8342522e",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "warning_clean_Werror": "PASS",
+    "protected_lineage": "PASS",
+    "FMR09_cross_process_regression": "PASS",
+    "first_ci_attempt": {
+      "run": 34259307681,
+      "conclusion": "failure",
+      "classification": "TEST_HARNESS_TYPE_BOUND_OVERRIDE_LOCATION_ONLY",
+      "production_or_physics_failure": false
+    }
+  },
+  "contract": {
+    "type": "crop_root_uptake_input_t",
+    "abstract_provider": "crop_root_uptake_input_provider_t",
+    "fields": [
+      "crop_emerged",
+      "potential_transpiration",
+      "rooted_nodes",
+      "cumulative_root_fraction"
+    ],
+    "inactive_crop_is_dependency_free_and_canonical": true,
+    "active_zero_root_needs_no_distribution": true,
+    "active_rooted_distribution_is_explicit": true,
+    "provider_self_is_read_only": true,
+    "runtime_dependency": false,
+    "solver_dependency": false,
+    "HeadCalc_dependency": false,
+    "legacy_IO_dependency": false
+  },
+  "scope": {
+    "production_migration_allowed": true,
+    "production_contract_only": true,
+    "concrete_WOFOST_provider_allowed": false,
+    "legacy_global_adapter_allowed": false,
+    "full_crop_host_integration_allowed": false,
+    "new_root_uptake_physics_allowed": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true
+  },
+  "affected_invariants": [2, 3, 4, 9, 21, 22, 27, 29, 30],
+  "scientific_claims_not_made": [
+    "a concrete WOFOST crop provider is qualified",
+    "legacy SWAP crop globals are admitted in SWAP5",
+    "crop-host lifecycle ordering is qualified",
+    "one-day or arbitrary subdaily WOFOST cadence is qualified",
+    "potential transpiration or root distribution evolution has been migrated"
+  ],
+  "next": "Start F-MR11 as a minimal adapter from crop_root_uptake_input_t to the already-qualified F-MR10 runtime binding; keep crop code independent of runtime internals and do not add a concrete WOFOST provider yet."
+}
