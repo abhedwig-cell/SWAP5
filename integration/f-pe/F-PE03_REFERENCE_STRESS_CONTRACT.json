@@ -1,19 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE03",
-  "title": "Reference-only physical stress characterization and tail-fixture gate",
-  "status": "CHARACTERIZATION_HARNESS_READY_NOT_YET_TESTED",
+  "title": "Reference-only diagnostic stress characterization and tail-fixture gate",
+  "status": "PARTIAL_EXIT_DIAGNOSTIC_CHARACTERIZATION_COMPLETE_SCIENTIFIC_ADMISSION_NOT_EXPANDED",
   "basis": {
     "fpe02_closeout": "2c28a4366440885faedbe2fbe3ce56104d82692e",
     "fpe02_status": "PARTIAL_EXIT_DIAGNOSTICS_QUALIFIED_NUMERICAL_POLICY_LINEAGE_BLOCKED",
     "physical_runtime": "F-MR05/F-VQ15/F-MQ23 restricted serialized real-physics MultiSWAP",
-    "reference_solver": "corrected B1.10 reference Richards path"
+    "reference_solver": "corrected B1.10 reference Richards path",
+    "scientific_reference": "F-VQ14 exact restricted four-node stationary fixture only"
   },
   "purpose": [
-    "characterize deterministic interval solver work on real accepted physical columns",
-    "seek an accepted higher-cost physical stress fixture inside the already-admitted profile",
-    "separate real physical solver cost evidence from F-MQ23 synthetic difficult-tail scheduling evidence"
+    "characterize deterministic interval solver work for the exact admitted stationary reference fixture and diagnostic extrapolations that share its physical topology",
+    "probe whether a transactionally accepted higher-cost nonstationary case exists without claiming that diagnostic extrapolations are scientifically admitted",
+    "separate real solver-route cost observations from F-MQ23 synthetic difficult-tail scheduling evidence"
   ],
   "hard_scope": {
     "execution_policy": "REFERENCE_ONLY",
@@ -25,10 +26,22 @@
     "fallback_admission_allowed": false,
     "production_source_change_allowed": false
   },
+  "scientific_admission_boundary": {
+    "fvq14_admission_scope": "EXACT_RESTRICTED_STATIONARY_FIXTURE_ONLY",
+    "fvq14_initial_pressure_head": -75.0,
+    "fvq14_interval": [1000.125, 1000.625],
+    "fvq14_retry_subgate": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION",
+    "transactional_acceptance_equals_scientific_admission": false,
+    "stress_matrix_expands_scientific_admission": false,
+    "uniform_heads_other_than_minus75_scientifically_admitted": false,
+    "nonuniform_head_profiles_scientifically_admitted": false,
+    "perturbed_boundary_fluxes_scientifically_admitted": false,
+    "stress_cases_classification": "DIAGNOSTIC_EXTRAPOLATION_ON_SAME_PHYSICAL_TOPOLOGY"
+  },
   "stress_dimensions": [
-    "initial pressure-head profile within the existing four-node physical fixture",
-    "top flux forcing",
-    "bottom flux forcing"
+    "diagnostic initial pressure-head profile variation on the existing four-node topology",
+    "diagnostic top-flux forcing perturbation",
+    "diagnostic bottom-flux forcing perturbation"
   ],
   "fixed_physics": {
     "hydraulic_model": "F-SI09 corrected B1.10 default-MvG provider already present on F-MR05 lineage",
@@ -56,14 +69,15 @@
     "solver_alternative_solver_calls",
     "authoritative_unrounded_mass_residual"
   ],
-  "acceptance_rules": {
-    "accepted_case_must_commit": true,
-    "accepted_case_mass_complete": true,
-    "accepted_case_missing_mass_mask": 0,
+  "transactional_acceptance_rules": {
+    "transactionally_accepted_case_must_commit": true,
+    "transactionally_accepted_case_mass_complete": true,
+    "transactionally_accepted_case_missing_mass_mask": 0,
     "hard_mass_gate": 1e-12,
-    "higher_cost_fixture_requires_real_accepted_case": true,
-    "higher_cost_definition": "at least one accepted non-baseline case exceeds the accepted easy baseline in one or more deterministic interval work counters",
-    "rejected_stress_case_is_not_a_qualified_difficult_fixture": true
+    "higher_cost_diagnostic_requires_real_transactionally_accepted_case": true,
+    "higher_cost_definition": "at least one transactionally accepted non-baseline diagnostic case exceeds the stationary baseline in one or more deterministic interval work counters",
+    "transactionally_rejected_stress_case_is_not_a_qualified_difficult_fixture": true,
+    "transactionally_accepted_stress_case_is_not_automatically_scientifically_admitted": true
   },
   "claim_limits": {
     "representative_physical_tail_distribution": false,
@@ -71,7 +85,9 @@
     "B12_or_heavy_clay_representativeness": false,
     "bounded_cost_policy_admission": false,
     "balanced_throughput_fallback_admission": false,
-    "physical_parallel_performance_admission": false
+    "physical_parallel_performance_admission": false,
+    "scientific_admission_expansion": false,
+    "production_solver_defect_claim_from_diagnostic_rejections": false
   },
   "synthetic_tail_boundary": {
     "fmq23_synthetic_difficult_tail_may_be_used_as_physical_tail_evidence": false,
