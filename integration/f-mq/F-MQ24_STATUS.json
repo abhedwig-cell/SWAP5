@@ -4,62 +4,62 @@
   "work_unit": "F-MQ24",
   "branch": "qualification/f-mq24-snow-multiswap-admission",
   "start_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
-  "phase": "PREQUALIFICATION_RUNTIME_CAPABILITY_GATE",
-  "status": "BLOCKED_PRE_IMPLEMENTATION",
-  "decision": "BLOCKED_PRE_IMPLEMENTATION_MISSING_SNOW_RUNTIME_COMPOSITION",
+  "phase": "READY_FOR_SOURCE_BOUND_QUALIFICATION",
+  "status": "CANDIDATE_SUPPLIED_QUALIFICATION_PENDING",
+  "decision": "READY_FOR_SOURCE_BOUND_FMQ24_QUALIFICATION",
   "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": false,
   "QUALIFIED": false,
   "qualification_only": true,
   "production_source_changed_by_fmq24": false,
-  "runtime_source": {
-    "qualified_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
-    "qualified_tree": "a1a161e5e33fc143a7dc7f3c1b9749fc96f861f6",
-    "fmq23_closeout_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
-    "fmq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME"
+  "candidate_source": {
+    "commit": "ffab7d705928170db3e76a5d346caafeb560e605",
+    "tree": "06bd92b2cf96b7bc6eb6978250017cd054547a56",
+    "snow_process_blob": "54702d71b4c84dce2842813549bd14c57301a383",
+    "serialized_backend_blob": "202ab846cbd30d149d0d450249b3d517e333994f",
+    "serialized_multiswap_runtime_blob": "1bb0c6d4683db2729d48de31babcea72bc1a6caf"
   },
-  "scientific_snow_source": {
-    "candidate_commit": "2becebfe747663ea3b896d7d19f4381c32df77db",
-    "candidate_tree": "21a753da94c3ccbbab0b36dc04cd618f5b0d6547",
-    "fvq16_closeout_head": "98712959d811c788c77842eede4c6f558cca1c11",
-    "fvq16_decision": "QUALIFIED_FPM02_B110_ONE_CALL_DAILY_SNOW_SCIENTIFIC_ADMISSION",
-    "admitted_scope": "EXACT_B1_10_ONE_CALL_DAILY_SNOW_PROCESS_ONLY"
+  "upstream_scientific_admission": {
+    "fvq17_closeout_head": "1d9ff946f45488557d10700f047089d3298a4794",
+    "fvq17_decision": "QUALIFIED_FMR06_SERIALIZED_ONE_CALL_DAILY_SNOW_MULTISWAP_SCIENTIFIC_ADMISSION",
+    "fvq17_decisive_head": "6377e0e932bc5258ed6105253360ec887257de3b",
+    "admitted_scope": "EXACT_FMR06_SERIALIZED_REAL_PHYSICS_MULTISWAP_WITH_FVQ16_ONE_CALL_DAILY_SNOW_AND_RESTRICTED_EQUILIBRIUM_RICHARDS"
   },
   "precheck": {
-    "evidence": "integration/f-mq/F-MQ24_PRECHECK_EVIDENCE.json",
-    "qualified_runtime_contains_mod_snow_process": false,
-    "qualified_runtime_has_snow_active_flag": true,
-    "qualified_runtime_admits_snow_active": false,
-    "existing_fmr05_snow_behavior": "PASS_FAIL_CLOSED",
-    "production_capability_missing": true
+    "historical_evidence": "integration/f-mq/F-MQ24_PRECHECK_EVIDENCE.json",
+    "current_evidence": "integration/f-mq/F-MQ24_FMR06_PRECHECK_EVIDENCE.json",
+    "historical_blocker": "FMQ24-B01",
+    "historical_blocker_status": "UPSTREAM_CAPABILITY_SUPPLIED_PENDING_FMQ24_QUALIFICATION",
+    "candidate_contains_exact_snow_process": true,
+    "candidate_admits_valid_snow_active_profile": true,
+    "candidate_uses_fkt_checkpoint_route": true,
+    "candidate_mass_composition_present": true,
+    "qualification_may_proceed": true
   },
+  "snow_multiswap_production_admission": false,
+  "parallel_real_physics_admitted": false,
+  "subdaily_snow_admitted": false,
+  "multiday_snow_admitted": false,
+  "arbitrary_duration_snow_admitted": false,
+  "general_richards_scope_expanded": false,
+  "performance_policy_admitted": false,
   "blockers": [
     {
-      "id": "FMQ24-B01",
-      "owner": "F-MR",
-      "classification": "MISSING_PRODUCTION_RUNTIME_COMPOSITION",
-      "description": "The qualified serialized MultiSWAP runtime cannot route a snow-active column through the exact F-VQ16-admitted process. The admitted process source is absent from the runtime candidate and snow_active is explicitly rejected by the current backend admission contract.",
-      "release_condition": "A separate runtime implementation unit must compose the exact F-VQ16 process into per-column transactional state, forcing/event handling and F-KT mass accounting, then provide an exact source candidate back to F-MQ24 for qualification."
+      "id": "FMQ24-G01",
+      "owner": "F-MQ",
+      "classification": "FINAL_QUALIFICATION_NOT_YET_EXECUTED",
+      "release_condition": "F-MQ24 must independently execute its source-bound 1/2/17/31 all-inactive/all-active/mixed, order, repeatability, transaction-isolation, mass and O0/O2 matrix on exact candidate ffab7d705928170db3e76a5d346caafeb560e605."
     }
   ],
   "hard_holds": [
-    "F-MQ24 must not modify production source to remove this blocker.",
-    "F-VQ16 scientific SNOW admission remains valid and is not invalidated by this runtime blocker.",
-    "No SNOW MultiSWAP runtime is admitted yet.",
-    "No subdaily or arbitrary-duration SNOW physics is admitted.",
-    "No parallel real-physics admission extension is implied."
+    "F-MQ24 may not modify production source.",
+    "No SNOW MultiSWAP production admission exists until F-MQ24's own gate passes.",
+    "No subdaily, multiday or arbitrary-duration SNOW physics is admitted.",
+    "No parallel real-physics admission extension is implied.",
+    "No general non-equilibrium Richards admission is implied.",
+    "No balanced, throughput or fallback execution policy is admitted.",
+    "No 100k-column performance qualification is implied."
   ],
-  "handoff": {
-    "required_workstream": "F-MR",
-    "proposed_unit": "F-MR06",
-    "proposed_scope": "Compose exact F-VQ16 B1.10 one-call-daily SNOW process into the serialized physical MultiSWAP runtime while preserving F-KT transaction/mass authority and optional-state semantics.",
-    "minimum_source_pins": [
-      "c28e7a2810b4a3678c577335a6a3086b173eb976",
-      "2becebfe747663ea3b896d7d19f4381c32df77db",
-      "98712959d811c788c77842eede4c6f558cca1c11"
-    ],
-    "return_to_fmq24_after_implementation": true
-  },
-  "next_step": "Do not attempt F-MQ24 runtime qualification until F-MR supplies a production candidate that implements the missing snow-aware runtime composition."
+  "next_step": "Persist and execute the independent F-MQ24 source-bound qualification harness on exact candidate ffab7d705928170db3e76a5d346caafeb560e605."
 }
