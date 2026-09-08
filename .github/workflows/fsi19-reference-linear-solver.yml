@@ -23,7 +23,27 @@ jobs:
           python3 --version
 
       - name: Direct legacy linear solver oracle
-        run: bash tests/fsi/run_fsi19_reference_linear_solver_gate.sh
+        run: |
+          set +e
+          bash tests/fsi/run_fsi19_reference_linear_solver_gate.sh > fsi19-direct.log 2>&1
+          rc=$?
+          cat fsi19-direct.log
+          {
+            echo '### F-SI19 direct-oracle diagnostic'
+            echo '```text'
+            sed -n '1,240p' fsi19-direct.log
+            echo '```'
+            echo "exit_code=$rc"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$rc"
+
+      - name: Preserve direct-oracle diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi19-direct-oracle-diagnostic
+          path: fsi19-direct.log
+          if-no-files-found: error
 
       - name: Production HeadCalc versus F-SI18 reference control
         run: bash tests/fsi/run_fsi19_headcalc_production_gate.sh
