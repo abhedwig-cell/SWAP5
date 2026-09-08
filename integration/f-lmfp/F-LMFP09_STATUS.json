@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "title": "Hydraulic Envelope and Representation Geometry Qualification",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "base": {
+    "work_unit": "F-LMFP08",
+    "commit": "7ce558267a7fd36ae508a5c2229f996c916ff61a",
+    "decision": "QUALIFIED_CONSTRAINED_CONTINUOUS_MFP_DARCIAN_RATIO_REPRESENTATION"
+  },
+  "objective": "Determine whether the qualified F-LMFP08 homogeneous-face representation can be extended to a materially broader hydraulic envelope with a coordinate system regular through h=0, fail-closed boundaries, bounded table cardinality and qualified heterogeneous-interface continuity, without changing production code or weakening mass and reference gates.",
+  "scope": {
+    "production_implementation": false,
+    "production_src_changed": false,
+    "experimental_harness_only": true,
+    "hydraulic_only": true,
+    "generic_time": true,
+    "fullrichards_reference": true,
+    "direct_darcian_face_control": true,
+    "near_saturation": true,
+    "positive_pressure_head": true,
+    "dry_tail": true,
+    "more_materials": true,
+    "more_face_lengths": true,
+    "heterogeneous_interface": true,
+    "crop": false,
+    "root_uptake": false,
+    "drainage_process": false,
+    "groundwater_coupling": false,
+    "modflow": false
+  },
+  "staged_gates": {
+    "A_coordinate_and_envelope": "select and qualify a monotone head coordinate regular at h=0 with near-saturated and dry-tail coverage",
+    "B_homogeneous_face_matrix": "rerun F-LMFP08 identities and Darcian face-oracle matrix over expanded materials and face lengths",
+    "C_heterogeneous_interface": "qualify equal-flux interface continuity, accuracy and bounded local solve behaviour over material contrasts",
+    "D_cardinality_and_cost": "measure material/geometry-class counts, table memory and preparation/runtime cost proxies",
+    "E_transient_regression": "rerun F-LMFP07/F-LMFP08 ordinary and strong-gradient transient gates with exact mass conservation"
+  },
+  "hard_rules": {
+    "mass_conservation_required": true,
+    "no_post_update_clipping": true,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true,
+    "reference_mode_unchanged": true,
+    "representation_is_immutable_shared_parameter_data": true,
+    "continuity_must_be_tested_by_refinement_not_only_left_right_symmetry": true,
+    "saturated_or_positive_head_support_must_be_explicitly_qualified_not_inferred": true,
+    "heterogeneous_interface_changes_require_separate_evidence": true
+  },
+  "candidate_questions": [
+    "Can a signed/asinh-like or piecewise linear-log pressure-head coordinate remove the h=0 singularity without degrading dry-tail resolution?",
+    "Can saturated and near-saturated face behaviour be represented without a special discontinuous branch?",
+    "How dry can the table extend before interpolation density or constitutive dynamic range becomes impractical?",
+    "Can the homogeneous correction be reused across a bounded set of face-length classes or normalized to reduce geometry cardinality?",
+    "Does the heterogeneous equal-flux interface remain continuous and accurate when either half-face crosses the near-saturated region?",
+    "What envelope boundary should fail closed rather than extrapolate?"
+  ],
+  "scope_flags": {
+    "EXPERIMENTAL_HARNESS_IMPLEMENTED": false,
+    "PRODUCTION_IMPLEMENTED": false,
+    "PERSISTED": true,
+    "TESTED": false,
+    "QUALIFIED": false
+  },
+  "status": "HYDRAULIC_ENVELOPE_QUALIFICATION_IN_PREPARATION"
+}
