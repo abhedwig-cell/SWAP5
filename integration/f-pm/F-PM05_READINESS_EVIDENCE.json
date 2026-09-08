@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM05",
+  "evidence_type": "SOURCE_BOUND_ROOT_WATER_UPTAKE_READINESS",
+  "decision": "BLOCKED_ROOT_WATER_UPTAKE_MIGRATION_REQUIRES_QUALIFIED_COMPOSED_ROOT_SINK_ROUTE",
+  "branch": "work/f-pm05-root-water-uptake-readiness",
+  "exact_branch_base": "46ef693672dda13261a966cc9904e72437c7bcfb",
+  "tested_head": "fda3dcd45afa9fd7e61dc2455e08df1da1e4365f",
+  "workflow": {
+    "run_id": 34245810016,
+    "job_id": 102127356333,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gate": "tools/fpm/fpm05_root_water_uptake_readiness_gate.py"
+  },
+  "gate_results": {
+    "readiness_contract": "PASS",
+    "no_production_or_reference_change": "PASS",
+    "canonical_b110_rootextraction_source_lock": "PASS",
+    "committed_hydraulic_view_available": "PASS",
+    "current_base_nonzero_root_sink_rejected": "PASS",
+    "fsi11_separate_root_sink_qualified": "PASS",
+    "fsi11_not_composed_in_current_base": "PASS",
+    "smallest_feddes_seam_source_bound": "PASS"
+  },
+  "source_facts": {
+    "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+    "current_solver_contract_blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9",
+    "current_source_sink_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "fsi11_qualified_head": "9f488bfb4805791e9513bfa7146c59d38423917b",
+    "fsi11_solver_contract_blob": "0a57b07712f93538cbfaf9130838682307cede09",
+    "fsi11_root_sink_provider_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+    "process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "committed_view_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf"
+  },
+  "selected_future_process_seam": {
+    "profile": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+    "read_side": "committed pressure_head through qualified process_hydraulic_view_t",
+    "write_side": "precomputed per-node qrot/root sink through a separately qualified root-sink solver channel",
+    "persistent_process_state_required": false,
+    "swkimpl": 0,
+    "held_physics": [
+      "oxygen stress",
+      "salinity stress",
+      "frost stress",
+      "compensated uptake",
+      "root-growth feedback",
+      "MICRO/Jong-van-Lier uptake",
+      "swkimpl=1 dynamic root-sink reevaluation",
+      "full RootExtraction module reentrancy",
+      "macropores"
+    ]
+  },
+  "blocker_interpretation": "The process read-side dependency is resolved by F-SI17/F-MR07, but the exact current F-PM05 runtime lineage still uses the F-SI10-era source/sink contract that rejects any nonzero root_extraction_sink. F-SI11 separately qualified the required precomputed qrot-style root sink while preserving its legacy residual position, but that owner-qualified route is not an ancestor of the current runtime lineage.",
+  "owner_handoff": {
+    "owners": ["F-SI", "F-MR"],
+    "required_action": "Compose the exact qualified F-SI11 precomputed root-sink contract into a current qualified runtime lineage without blind merge. Preserve the committed hydraulic-view binding, exact residual ordering, transaction replay/rollback, hard mass balance, O0/O2 behavior, snow semantics and admitted irrigation semantics.",
+    "fpm05_production_change_allowed": false
+  }
+}
