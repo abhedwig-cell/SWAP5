@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF15",
+  "title": "Physical-Option-Dependent Crop-Root State Ownership Qualification",
+  "branch": "work/f-wof15-root-state-ownership",
+  "base_commit": "24eee52efc0ce68c879632bb6fa42cce6289f901",
+  "tested_candidate": "b51cf899417fc1940465ec35129daae4d5444cb9",
+  "artifacts": {
+    "contract_blob": "30c6e230656937ca4dcb53ddeab259988eddde70",
+    "source_bound_evidence_blob": "4e30aeafa70b72b42f6f25cd940ad22077011545",
+    "gate_blob": "8eafd1cebf6826714dbb79212af675b9d5b31d1b",
+    "workflow_blob": "adc3f4386028c0cce2ee946d7c5e44754e3e12ba"
+  },
+  "github_actions": {
+    "run": 34266618453,
+    "job": 102197461427,
+    "conclusion": "success"
+  },
+  "gate_results": {
+    "zero_production_delta": "PASS",
+    "FWO12_source_binding_lock": "PASS",
+    "source_hash_reconciliation": "PASS",
+    "SWRD_option_dependent_depth_state": "PASS",
+    "SWRDC_option_dependent_distribution_state": "PASS",
+    "derived_view_fields_not_commit_authorities": "PASS",
+    "optional_state_memory_scaling": "PASS",
+    "ET_ownership_remains_separate": "PASS",
+    "nonclaims_fail_closed": "PASS",
+    "decision": "OPTION_DEPENDENT_MINIMAL_ROOT_STATE_WITH_DERIVED_VIEW"
+  },
+  "qualified_ownership": {
+    "SWRD_1": "actual root depth is derivable from committed DVS and immutable RDTB/RDM; no independent actual-root-depth state is required solely for the root-uptake view",
+    "SWRD_2": "actual_root_depth and potential_root_depth are optional committed physical root state because both are history-dependent",
+    "SWRD_3": "actual root depth is derivable from committed WRT and immutable RLWTB/RDM; no independent actual-root-depth state is required solely for the root-uptake view",
+    "SWRDC_nonadaptive": "no persistent per-node distribution state is required; normalized distribution and cumulative-root-fraction view are reconstructible",
+    "SWRDC_1": "an optional committed per-node root-biomass distribution or scientifically equivalent state is required"
+  },
+  "derived_not_persistent_by_default": [
+    "noddrz",
+    "mxnoddrz",
+    "non-adaptive cumdens",
+    "cumdens_top",
+    "rootdist integration workspace",
+    "noddrz_old as same-update geometry",
+    "rr and rrpot as same-update increments",
+    "wroot_node_top and lrv_node when reconstructible for the enabled consuming physics"
+  ],
+  "transactional_requirement": "enabled SWRD=2 and SWRDC=1 root state must be checkpointed, trialed, committed and rolled back atomically with crop evolution",
+  "memory_requirement": "per-node adaptive root state is forbidden for columns/templates where SWRDC=1 is inactive",
+  "scope_limits": [
+    "no production crop state type implemented",
+    "no root-growth solver/process implemented",
+    "no root-distribution update implementation qualified",
+    "no arbitrary subdaily crop-root evolution qualified",
+    "no potential-transpiration producer qualified",
+    "no runtime or solver changes"
+  ]
+}
