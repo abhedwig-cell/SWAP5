@@ -1,0 +1,23 @@
+name: F-MR08 nonstationary temporal acceptance
+
+on:
+  push:
+    branches:
+      - work/f-mr08-nonstationary-temporal-acceptance
+    paths:
+      - 'integration/f-mr/F-MR08_*'
+      - 'tests/fmr/run_fmr08_path_a_gate.sh'
+      - '.github/workflows/fmr08-nonstationary-temporal-acceptance.yml'
+  workflow_dispatch:
+
+jobs:
+  path-a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR08 source-bound Path A gate
+        run: bash tests/fmr/run_fmr08_path_a_gate.sh
