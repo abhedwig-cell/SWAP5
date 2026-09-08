@@ -12,7 +12,7 @@ cd "$ROOT"
   echo 'F-SI16_PRESCRIBED_HEAD FAIL lineage' >&2; exit 1; }
 
 changed_src="$(git diff --name-only "$FSI15_HEAD"...HEAD -- src | sort)"
-expected_src='src/adapter/mod_reference_richards_legacy_binding.f90'
+expected_src=$'src/adapter/mod_reference_richards_legacy_binding.f90\nsrc/solver/mod_soil_water_solver_contract.f90'
 [[ "$changed_src" == "$expected_src" ]] || {
   echo 'F-SI16_PRESCRIBED_HEAD FAIL unexpected production delta:' >&2
   printf '%s\n' "$changed_src" >&2
@@ -25,11 +25,13 @@ check_blob() {
   [[ "$actual" == "$expected" ]] || {
     echo "F-SI16_PRESCRIBED_HEAD FAIL blob $path expected=$expected actual=$actual" >&2; exit 1; }
 }
-check_blob src/solver/mod_soil_water_solver_contract.f90 4271372085d800fd5da969a2ed073b00422d79c6
+check_blob src/solver/mod_soil_water_solver_contract.f90 808e52e825f80ac129508ab32aa77913fa7ace09
 check_blob src/solver/mod_reference_richards_state_binding.f90 e68d88382c6502c571713cc97fddd4e18434e271
 check_blob src/legacy/b1_10_port/headcalc.f90 7ce94a4cfc4634b946f41b01f54d2d7f6efc798f
 
+grep -Fq 'size(request%parameters%node_distance) /= n+1' src/solver/mod_soil_water_solver_contract.f90
 grep -Fq 'request%boundary%bottom_mode /= 5' src/adapter/mod_reference_richards_legacy_binding.f90
+grep -Fq "route = 'bottom-distance-required'" src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'state%qbot = state%qtop' src/adapter/mod_reference_richards_legacy_binding.f90
 grep -Fq 'richards%sink(node) - richards%source(node) + richards%provider_root_sink(node)' src/adapter/mod_reference_richards_legacy_binding.f90
@@ -69,6 +71,7 @@ for opt in 0 2; do
   grep -Fq 'F-SI16_LEGACY_BOTTOM_GLOBAL_POISON PASS' "$out/output.txt"
   grep -Fq 'F-SI16_CONTINUITY_QBOT_IDENTITY PASS' "$out/output.txt"
   grep -Fq 'F-SI16_UNOWNED_BOTTOM_MODES_FAIL_CLOSED PASS' "$out/output.txt"
+  grep -Fq 'F-SI16_BOTTOM_DISTANCE_FAIL_CLOSED PASS' "$out/output.txt"
   grep -Fq 'F-SI16_PRESCRIBED_BOTTOM_HEAD_GATE PASS' "$out/output.txt"
   echo "F-SI16_PRESCRIBED_BOTTOM_HEAD_O${opt} PASS"
 done
