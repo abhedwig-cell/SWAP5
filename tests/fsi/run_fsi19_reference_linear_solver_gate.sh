@@ -9,7 +9,7 @@ cd "$ROOT"
 
 [[ "$(git hash-object src/solver/mod_reference_linear_solver.f90)" == 'b292d284e5549049eac1c80df4cc30008154eb96' ]] || {
   echo 'FSI19_LINEAR_SOLVER_BLOB_LOCK FAIL' >&2; exit 1; }
-[[ "$(git hash-object tests/fsi/test_fsi19_reference_linear_solver.f90)" == '$(git rev-parse HEAD:tests/fsi/test_fsi19_reference_linear_solver.f90)' ]] || {
+[[ "$(git hash-object tests/fsi/test_fsi19_reference_linear_solver.f90)" == "$(git rev-parse HEAD:tests/fsi/test_fsi19_reference_linear_solver.f90)" ]] || {
   echo 'FSI19_DIRECT_ORACLE_DIRTY FAIL' >&2; exit 1; }
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
