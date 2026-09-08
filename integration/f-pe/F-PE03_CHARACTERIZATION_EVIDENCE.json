@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PE",
   "work_unit": "F-PE03",
   "status": "PARTIAL_EXIT_REFERENCE_COST_CLIFF_CHARACTERIZED_ACCEPTED_DIFFICULT_FIXTURE_MISSING",
@@ -10,6 +10,16 @@
     "fmr05_fvq15_fmq23_profile": "RESTRICTED_SERIALIZED_REAL_PHYSICS_REFERENCE_PROFILE",
     "production_source_changed_by_fpe03": false
   },
+  "scientific_admission_boundary": {
+    "fvq14_scope": "EXACT_RESTRICTED_STATIONARY_FOUR_NODE_FIXTURE_ONLY",
+    "fvq14_initial_pressure_head": -75.0,
+    "fvq14_interval": [1000.125, 1000.625],
+    "fvq14_retry_subgate": "NOT_TESTED_NO_SAFE_PHYSICAL_FAILURE_INDUCTION",
+    "stress_matrix_scientifically_admitted": false,
+    "stress_matrix_classification": "DIAGNOSTIC_EXTRAPOLATION_ON_SAME_PHYSICAL_TOPOLOGY",
+    "transactional_acceptance_is_scientific_admission": false,
+    "admission_profile_expanded_by_fpe03": false
+  },
   "characterization_runs": {
     "coarse_search": {
       "head": "bc6a432ae81ad6dbe5ea15d2a24142299b73cf6e",
@@ -19,8 +29,8 @@
       "classification": "SEARCH_MATRIX_TOO_COARSE_NOT_PRODUCTION_FAILURE",
       "scope_lock_passed": true,
       "compiled_real_reference_stack": true,
-      "baseline_accepted": true,
-      "nonbaseline_cases_accepted": 0,
+      "baseline_transactionally_accepted": true,
+      "nonbaseline_cases_transactionally_accepted": 0,
       "rejected_case_cost": {
         "headcalc_calls": 3,
         "nonlinear_iterations": 24,
@@ -32,7 +42,7 @@
       "rejected_cases_committed": false,
       "committed_state_mutation_on_rejected_cases": false,
       "production_source_implicated": false,
-      "repair": "refined characterization matrix around the admitted reference basin; no production source or numerical control change"
+      "repair": "refined diagnostic matrix closer to the exact admitted stationary fixture; no production source, scientific admission, physics, solver policy or numerical-control change"
     },
     "refined_search": {
       "head": "675981580b2741e3979bdc84d90bacdcd2e416e8",
@@ -52,7 +62,9 @@
     "accepted_cases": 6,
     "rejected_cases": 18,
     "accepted_higher_cost_cases": 0,
+    "accepted_semantics": "TRANSACTIONALLY_ACCEPTED_DIAGNOSTIC_CASES_NOT_SCIENTIFIC_ADMISSION",
     "accepted_uniform_pressure_heads": [-5.0, -50.0, -75.0, -100.0, -500.0, -5000.0],
+    "scientifically_admitted_uniform_pressure_heads_from_fvq14": [-75.0],
     "accepted_cost_vector": {
       "accepted_substeps": 1,
       "headcalc_calls": 3,
@@ -82,22 +94,43 @@
     "smallest_tested_flux_perturbation_fraction": 0.0001,
     "smallest_tested_flux_perturbations_rejected": true
   },
+  "root_cause_audit": {
+    "kernel_status_2": "CANONICAL_STATUS_TRANSACTION_FAILED",
+    "transaction_policy_max_retries": 2,
+    "attempts_implied_by_retry_policy": 3,
+    "observed_headcalc_calls_per_rejected_case": 3,
+    "observed_nonlinear_iterations_per_rejected_case": 24,
+    "observed_backtracking_attempts_per_rejected_case": 96,
+    "solver_max_iterations_per_attempt": 8,
+    "solver_max_backtracking_per_iteration": 4,
+    "source_derived_failure_stage": "EACH_FULL_TRIAL_EXHAUSTS_EIGHT_NEWTON_ITERATIONS_AND_RETURNS_SW_SOLVE_RETRY_ADVISED_BEFORE_TWO_HALF_MASS_OR_TEMPORAL_ACCEPTANCE_CHECKS",
+    "solver_route": "legacy-reference-retry",
+    "headcalc_reduction_signal": "fldecdt_or_worker_request_dt_reduction",
+    "mass_rejection_inferred_as_cause": false,
+    "temporal_rejection_inferred_as_cause": false,
+    "production_solver_defect_established": false,
+    "reason_no_defect_claim": "the rejected stress cases are diagnostic extrapolations outside the exact F-VQ14 scientifically admitted state/forcing fixture, and F-SI12 qualifies control binding rather than these numerical-control values as a general production policy"
+  },
   "qualified_lineage_fixture_audit": {
     "fvq14": {
-      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
-      "evidence": "reference package has storage_start equal storage_end and identical initial/final pressure head and water content"
+      "result": "NO_ADMITTED_NONSTATIONARY_FIXTURE",
+      "evidence": "reference package is exact restricted stationary four-node fixture; storage_start equals storage_end and initial/final pressure head and water content are identical"
     },
     "fvq15": {
-      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
-      "evidence": "multicolumn reference qualification is bitwise bound to F-VQ14 and balances top/bottom and per-node source/sink forcing"
+      "result": "NO_ADMITTED_NONSTATIONARY_FIXTURE",
+      "evidence": "multicolumn scientific qualification is bitwise bound to the exact F-VQ14 restricted profile"
     },
     "fsi09": {
-      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "result": "NO_ADMITTED_NONSTATIONARY_FIXTURE",
       "evidence": "uniform head per column, equal top and bottom flux, zero source/sink; qualification requires unchanged water content and one nonlinear iteration"
     },
     "fsi10": {
-      "result": "NO_ACCEPTED_NONSTATIONARY_FIXTURE",
+      "result": "NO_ADMITTED_NONSTATIONARY_FIXTURE",
       "evidence": "heterogeneous nonzero drainage and irrigation are constructed with exact per-node net balance, preserving the zero focused residual"
+    },
+    "fsi12": {
+      "result": "CONTROL_BINDING_ONLY_NOT_NUMERICAL_POLICY_ADMISSION",
+      "evidence": "F-SI12 makes soil_water_solve_request_t numerical controls authoritative but states external policy selection is outside F-SI"
     },
     "fvq09": {
       "result": "HARNESS_CONTRACT_ONLY",
@@ -112,10 +145,11 @@
   "interpretation": {
     "accepted_reference_cost_variation_observed": false,
     "accepted_difficult_physical_fixture_observed": false,
-    "sharp_reference_cost_cliff_observed": true,
-    "cost_cliff_description": "stationary uniform accepted states use the low reference cost vector; tested nonstationary or flux-perturbed cases enter the bounded existing retry/rollback path and do not commit",
+    "diagnostic_reference_route_cost_cliff_observed": true,
+    "scientifically_qualified_reference_cost_cliff": false,
+    "cost_cliff_description": "the exact stationary reference fixture and several transactionally accepted stationary diagnostic extrapolations use the low cost vector; tested nonstationary or flux-perturbed diagnostic extrapolations exhaust the existing full-trial solver retry route and do not commit",
     "production_bug_claimed": false,
-    "reason_no_bug_claim": "the current qualification coverage contains no accepted nonstationary real-physics fixture on the current F-MR05 lineage, so the observed cliff cannot yet distinguish fixture narrowness, solver-control interaction, or a production solver defect"
+    "reason_no_bug_claim": "the current scientific qualification coverage contains no admitted nonstationary real-physics fixture on the F-MR05 lineage, so the diagnostic cliff cannot establish representative production behavior or a solver defect"
   },
   "claim_limits": {
     "physical_tail_percentiles_qualified": false,
@@ -126,13 +160,14 @@
     "balanced_policy_admitted": false,
     "throughput_policy_admitted": false,
     "parallel_real_physics_admitted": false,
-    "synthetic_fmq23_tail_promoted_to_physical_evidence": false
+    "synthetic_fmq23_tail_promoted_to_physical_evidence": false,
+    "diagnostic_stress_matrix_promoted_to_scientific_admission": false
   },
   "blocker": {
     "code": "FPE03-B01",
     "status": "BLOCKED_FAIL_CLOSED",
-    "description": "Admit or port at least one accepted nonstationary real-physics fixture on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
+    "description": "Independently admit or port at least one nonstationary real-physics fixture on the current F-MR05 source lineage before physical tail distributions or bounded-cost execution policies can be qualified.",
     "owner_boundary": "F-VQ/F-MR or the owning physical workstream"
   },
-  "next_gate": "ADMIT_OR_PORT_ACCEPTED_NONSTATIONARY_REAL_PHYSICS_FIXTURE_ON_CURRENT_FMR05_LINEAGE"
+  "next_gate": "INDEPENDENTLY_ADMIT_OR_PORT_NONSTATIONARY_REAL_PHYSICS_FIXTURE_ON_CURRENT_FMR05_LINEAGE"
 }
