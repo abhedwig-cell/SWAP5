@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "blocker_id": "FGC02-B01",
+  "status": "BLOCKED_ON_QUALIFIED_PHYSICAL_GROUNDWATER_BOUNDARY",
+  "finding": "The checkpoint/candidate/replay seam required for coupling already exists and is usable without changing F-KT or F-MR transaction semantics, but the currently scientific-admitted real-physics backend exposes only SWBOTB 7 or -2, which HeadCalc implements as free drainage. F-GC therefore cannot apply a predictor or corrector groundwater head boundary within the admitted profile.",
+  "source_evidence": {
+    "kernel_candidate_seam": {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob": "9f7c16e71cfb93b57f796ba759bae73824318a2f",
+      "evidence": "kernel_executor_t%advance_interval materializes kernel_candidate_state_t from a committed state or exact checkpoint without mutating committed state; commit_candidate and rollback_candidate are separate operations."
+    },
+    "fmr_candidate_seam": {
+      "path": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "blob": "232875e7192f995930c102609cee08dc8938c86a",
+      "evidence": "fmr_trial_from_checkpoint, fmr_commit_candidate and fmr_discard_candidate are separate public operations."
+    },
+    "fmr_physical_admission": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "ade399a1df4b582c9038442093ccacce034f923d",
+      "evidence": "execution_admitted accepts bottom_mode only when it equals 7 or -2."
+    },
+    "fsi_legacy_binding_admission": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0",
+      "evidence": "validate_legacy_request fails closed unless swbotb equals 7 or -2."
+    },
+    "headcalc_boundary_semantics": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "be5978827095445b15de7baf607728792de6a366",
+      "evidence": [
+        "SWBOTB 7 or -2 is explicitly the free drainage option.",
+        "SWBOTB 5 is explicitly the pressure-head-at-lower-boundary option.",
+        "For SWBOTB 5, the lower-boundary gradient uses state%hbot, which is populated from request%boundary%bottom_head by the explicit state binding."
+      ]
+    }
+  },
+  "why_fgc_cannot_work_around_it": [
+    "Using SWBOTB 7 or -2 while varying forcing%bottom_head would not change the admitted free-drainage boundary and would create a false coupling test.",
+    "Directly enabling SWBOTB 5 inside F-GC would alter F-SI/F-MR physical admission outside F-GC ownership.",
+    "Reading or mutating HeadCalc internals from the coupler would violate the solver-interface ownership invariant.",
+    "Claiming H_SWAP = H_GW without an admitted controllable groundwater boundary would be scientifically misleading."
+  ],
+  "minimum_owner_capability_required": {
+    "preferred_physical_seam": "Qualified explicit lower pressure-head boundary through the existing soil_water_boundary_conditions_t / fmr_b110_physical_forcing_t bottom_head field, initially for the same restricted B1.10 physics profile and serialized execution.",
+    "candidate_legacy_route": "SWBOTB 5, because existing HeadCalc already treats it as a specified lower-boundary pressure head and uses state%hbot in the lower gradient.",
+    "required_owners": ["F-SI", "F-MR"],
+    "F-SI_work": [
+      "Admit and qualify the explicit bottom-head request for the restricted real-physics route without exposing solver internals.",
+      "Prove the returned bottom flux is authoritative for the trial and mass accounting remains complete.",
+      "Preserve generic [t0,t1], candidate-only execution and same-checkpoint replay semantics."
+    ],
+    "F-MR_work": [
+      "Promote the newly F-SI-qualified bottom-head capability into the exact restricted serialized physical profile.",
+      "Do not change transaction ownership or automatic production commit semantics; F-GC will continue to use the existing candidate-only checkpoint orchestrator."
+    ],
+    "F-KT_work": "NONE currently required"
+  },
+  "minimum_reproduction": {
+    "setup": "Use the admitted F-MR05 B1.10 physical fixture and exact qualified source c28e7a2810b4a3678c577335a6a3086b173eb976.",
+    "steps": [
+      "Capture the committed T0 checkpoint.",
+      "Run a physical trial with bottom_mode 7 or -2 while changing forcing%bottom_head.",
+      "Observe that the admitted HeadCalc route remains free drainage, so bottom_head is not the coupling control variable.",
+      "Attempting bottom_mode 5 fails closed at current F-SI/F-MR admission before it can be used as a qualified coupling trial."
+    ],
+    "expected": "No F-GC-owned predictor/corrector can impose an admitted groundwater head boundary; F-GC02 remains unqualified until the owner capability is qualified."
+  },
+  "downstream_after_owner_fix": [
+    "Predictor physical trial from T0 checkpoint with explicit groundwater head.",
+    "Discard predictor candidate.",
+    "Groundwater response and head residual.",
+    "Corrector physical trial from the same T0 checkpoint.",
+    "Exact q_SWAP = -q_GW assignment and authoritative mass check.",
+    "Commit accepted corrector exactly once or discard without committed-state mutation.",
+    "Repeat for subdaily, non-midnight and multiple admitted coupling windows, then two-tile aggregation."
+  ]
+}
