@@ -17,11 +17,11 @@ def replace_once(old: str, new: str, label: str) -> None:
         raise SystemExit(f'{label}: expected one anchor, found {n}')
     text = text.replace(old, new, 1)
 
-replace_once(
-    'program test_fpe03_reference_stress\n',
-    'program test_fpe03_fvq24_admitted_runtime_probe\n',
-    'program name',
-)
+old_header = 'program test_fpe03_reference_stress\n'
+if not text.startswith(old_header):
+    raise SystemExit('program header: exact first-line anchor missing')
+text = 'program test_fpe03_fvq24_admitted_runtime_probe\n' + text[len(old_header):]
+
 replace_once('  integer, parameter :: ncases = 24\n', '  integer, parameter :: ncases = 5\n', 'case count')
 replace_once(
     '  real(real64), parameter :: t1 = 1000.625_real64\n',
