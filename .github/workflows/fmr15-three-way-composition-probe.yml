@@ -1,0 +1,20 @@
+name: F-MR15 three-way composition probe
+
+on:
+  push:
+    branches:
+      - work/f-mr15-prescribed-head-interval-diagnostics-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Probe F-MR15 composition
+        run: bash tests/fmr/run_fmr15_three_way_composition_probe.sh
