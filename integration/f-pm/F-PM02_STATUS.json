@@ -1,15 +1,34 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-PM",
   "work_unit": "F-PM02",
   "branch": "work/f-pm02-snow-admission",
-  "status": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
+  "status": "STRUCTURAL_SNOW_IMPLEMENTATION_PRESENT_TEST_RECONCILIATION_REQUIRED",
   "implemented": false,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "production_migration_started": false,
+  "production_migration_started": true,
   "production_migration_allowed": true,
+  "reconciliation": {
+    "observed_branch_head": "caf931883f2ef79b5b9b9db318cebd7759ad9972",
+    "observed_head_message": "F-PM02: admit baseline and extract structural snow process",
+    "implementation_present": true,
+    "production_source_present": "src/process/mod_snow_process.f90",
+    "focused_test_present": "tests/fpm/test_fpm02_snow_process.f90",
+    "gate_runner_present": "tests/fpm/run_fpm02_snow_gate.sh",
+    "workflow_present": ".github/workflows/fpm02-snow-process.yml",
+    "status_was_stale": true,
+    "remaining_test_gaps": [
+      "explicit snow-inactive identity",
+      "source-bound B1.10 structural reference identity cases",
+      "state continuation and accepted-candidate commit",
+      "explicit rollback from rejected candidate",
+      "immutable parameter non-mutation",
+      "complete mass cases without inventing a new scientific tolerance",
+      "fail-closed invalid and unadmitted duration coverage"
+    ]
+  },
   "admission": {
     "decision": "ADMITTED_FOR_STRUCTURAL_SNOW_PROCESS_MIGRATION",
     "candidate_commit": "c28e7a2810b4a3678c577335a6a3086b173eb976",
@@ -27,16 +46,24 @@
     "integration/f-pm/F-PM02_SNOW_MASS_CONTRACT.json"
   ],
   "source_change_control": {
-    "production_src_files_changed_so_far": 0,
+    "production_src_files_changed_so_far": 1,
+    "production_src_files": ["src/process/mod_snow_process.f90"],
     "physics_formulas_changed": false,
     "solver_or_numerical_policy_changed": false,
     "runtime_scheduler_changed": false
   },
+  "lineage_note": {
+    "admitted_physical_baseline": "c28e7a2810b4a3678c577335a6a3086b173eb976",
+    "fpm02_head_is_descendant_of_admitted_baseline": false,
+    "merge_base": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "interpretation": "F-MR05/F-VQ15/F-MQ23 provide source-bound admission provenance; F-PM02 does not merge qualified owner lineages inside F-PM."
+  },
   "holds": [
-    "F-VQ15 and F-MQ23 do not admit SNOW physics; they admit the physical basis on which structural migration may start.",
+    "F-VQ15 and F-MQ23 do not admit SNOW physics; they admit the physical basis on which structural migration may proceed.",
     "Preserve B1.10 one-call daily semantics; arbitrary-duration scaling is not admitted.",
     "Parallel real physics remains NOT_ADMITTED.",
-    "F-PM cannot independently grant scientific SNOW admission."
+    "F-PM cannot independently grant scientific SNOW admission.",
+    "Do not mark IMPLEMENTED/TESTED/QUALIFIED until the focused migration tests and source-bound qualification evidence are complete."
   ],
-  "next_action": "Commit contracts, then implement the smallest explicit-state SNOW process seam without changing equations."
+  "next_action": "Complete source-bound focused SNOW identity, continuation, transaction, mass and O0/O2 tests against the already-present structural process seam; then persist exact candidate/evidence and hand off to independent F-VQ."
 }
