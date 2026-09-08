@@ -1,0 +1,35 @@
+name: F-WOF09 reallocation request apply
+
+on:
+  push:
+    branches: [work/f-wof09-reallocation-request-apply-seam]
+    paths:
+      - src/crop/mod_wofost73_reallocation.f90
+      - src/crop/mod_wofost_reallocation_request_apply.f90
+      - tests/fwof/**
+      - integration/f-wof/F-WOF09_STATUS.json
+      - .github/workflows/fwof09-reallocation-request-apply.yml
+  workflow_dispatch:
+
+jobs:
+  focused-request-apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Verify persisted scope admission
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path('integration/f-wof/F-WOF09_STATUS.json').read_text())
+          assert status['baseline']['commit'] == '31957266a3c8ef06c16fcf2d4322ae7937c0fdcc'
+          assert status['scope']['preserve_fwof04_reference_api_unchanged'] is True
+          assert status['scope']['request_phase_separate_from_apply_phase'] is True
+          assert status['scope']['cumulative_state_updates_from_applied_only'] is True
+          assert status['scope']['one_day_crop_process_admission'] is True
+          assert status['scope']['leaf_cohort_integration_allowed'] is False
+          PY
+      - name: O0 O2 request apply parity transaction and dry-matter gate
+        run: bash tests/fwof/run_fwof09_request_apply_gate.sh
