@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI14",
+  "decision": "QUALIFIED_REQUEST_GRID_GEOMETRY_AUTHORITY",
+  "qualified": true,
+  "downstream_fsi15_allowed": true,
+  "branch": "work/f-si14-grid-geometry-binding",
+  "provenance": {
+    "fsi13_final_qualification_head": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+    "fsi14_initial_materialized_source_postimage": "8b3bcca5a02ca33ca0111d002e00b508cfe4a225",
+    "fsi14_bottom_distance_guard_repair_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4",
+    "fsi14_unqualified_candidate_checkpoint": "c0eb2ba5591161a5c087bd505f2bb07043c3eece",
+    "fsi14_qualified_candidate_head": "82f90dec30bf13161eab2178f3220b8249a9c288",
+    "headcalc_blob": "c46756412df7527d6298246570b2aa31bd983823",
+    "reference_adapter_blob": "b17b65563fef826772923afe9c32ca7e0463ec14",
+    "reference_workspace_blob": "a09ba3457a8ce3685df446bfacbf5220cd401507",
+    "canonical_head_observed_at_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "fkt_integration_head_observed_at_closeout": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "fkt_fsi_boundary_blob": "ee1a153c30bbae9416ce08414e8b56049d3d14db"
+  },
+  "qualification_runs": {
+    "grid_authority_candidate": {
+      "run": 34208158735,
+      "job": 102002517467,
+      "head": "c0eb2ba5591161a5c087bd505f2bb07043c3eece",
+      "conclusion": "success"
+    },
+    "composite_same_geometry_candidate": {
+      "run": 34209105848,
+      "job": 102005588623,
+      "head": "82f90dec30bf13161eab2178f3220b8249a9c288",
+      "conclusion": "success"
+    },
+    "qualification_record_self_verification_required": true
+  },
+  "admitted_semantics": {
+    "explicit_common_route_grid_geometry_source": "soil_water_solve_request_t%parameters",
+    "explicit_common_route_active_nodes_source": "soil_water_parameter_set_t%active_nodes",
+    "explicit_common_route_z_source": "soil_water_parameter_set_t%z",
+    "explicit_common_route_dz_source": "soil_water_parameter_set_t%dz",
+    "explicit_common_route_node_distance_source": "soil_water_parameter_set_t%node_distance",
+    "node_distance_shape_for_admitted_modes": "active_nodes",
+    "artificial_bottom_interface_distance_requirement_added": false,
+    "legacy_direct_route": "unchanged MOD_grid authority when explicit state/request binding is absent",
+    "explicit_common_route_admitted_bottom_modes": [7, -2],
+    "bottom_mode_8_guard_repair": "control-flow safety only; prevents non-short-circuit evaluation of grid_disnod(NN+1) outside swbotb=8",
+    "bottom_mode_8_admitted": false,
+    "grid_discretization_changed": false,
+    "physics_formula_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "shared_fkt_type_changed": false
+  },
+  "workspace_semantics": {
+    "provider_theta": "worker-owned scratch",
+    "provider_k": "worker-owned scratch",
+    "provider_capacity": "worker-owned scratch",
+    "provider_dkdh": "worker-owned scratch",
+    "provider_root_sink": "worker-owned scratch",
+    "persistent_column_state_added": false,
+    "heavy_scratch_scaling": "O(active workers * active nodes), not O(logical columns * active nodes)"
+  },
+  "admitted_profile": {
+    "reference_solver": "B1.10 reference Richards path",
+    "constitutive": "F-SI09 corrected B1.10 default-MvG provider",
+    "drainage_irrigation": "F-SI10 precomputed source/sink provider",
+    "root_sink": "F-SI11 precomputed root-sink provider",
+    "top_boundary": "explicit top provider",
+    "solver_controls": "F-SI12 explicit per-solve request controls",
+    "bottom_boundary": "F-SI13 explicit free-drainage modes",
+    "swkimpl": 0,
+    "swmacro": 0,
+    "bottom_modes": [7, -2]
+  },
+  "qualification_matrix": {
+    "FSI14_T01_STATIC_REQUEST_GEOMETRY_BINDING": "PASS",
+    "FSI14_T02_MUTABLE_LEGACY_GRID_POISON_NO_LEAK": "PASS",
+    "FSI14_T03_REQUEST_CONTROL_AUTHORITY_O0_1_2_4_8": "PASS",
+    "FSI14_T04_REQUEST_CONTROL_AUTHORITY_O2_1_2_4_8": "PASS",
+    "FSI14_T05_REQUEST_CONTROL_POISON_IDENTITY": "PASS",
+    "FSI14_T06_COMMON_ROUTE_O0_O2_IDENTITY": "PASS",
+    "FSI14_T07_FSI13_SAME_GEOMETRY_MODE_7_O0_1_2_4_8": "PASS",
+    "FSI14_T08_FSI13_SAME_GEOMETRY_MODE_7_O2_1_2_4_8": "PASS",
+    "FSI14_T09_FSI13_SAME_GEOMETRY_MODE_7_O0_O2": "PASS",
+    "FSI14_T10_FSI13_SAME_GEOMETRY_MODE_MINUS2_O0_1_2_4_8": "PASS",
+    "FSI14_T11_FSI13_SAME_GEOMETRY_MODE_MINUS2_O2_1_2_4_8": "PASS",
+    "FSI14_T12_FSI13_SAME_GEOMETRY_MODE_MINUS2_O0_O2": "PASS",
+    "FSI14_T13_ABA_ORDER_INDEPENDENCE": "PASS",
+    "FSI14_T14_SCRATCH_POISONING": "PASS",
+    "FSI14_T15_REQUEST_IMMUTABILITY": "PASS",
+    "FSI14_T16_ROUTE_ITERATION_FINGERPRINT_IDENTITY": "PASS",
+    "FSI14_T17_FOCUSED_UNROUNDED_EQUATION_RESIDUAL": "PASS",
+    "FSI14_T18_FSI13_LEGACY_DIRECT_IDENTITY_O0": "PASS",
+    "FSI14_T19_FSI13_LEGACY_DIRECT_IDENTITY_O2": "PASS",
+    "FSI14_T20_FSI13_LEGACY_DIRECT_O0_O2_IDENTITY": "PASS"
+  },
+  "negative_and_hold_contracts": {
+    "bottom_mode_1_groundwater_level": "NOT_ADMITTED",
+    "bottom_mode_3_cauchy": "NOT_ADMITTED",
+    "bottom_mode_5_prescribed_head": "NOT_ADMITTED",
+    "bottom_mode_8_lysimeter": "NOT_ADMITTED",
+    "bottom_mode_9_extended_head": "NOT_ADMITTED",
+    "swkimpl1": "NOT_ADMITTED",
+    "macropore": "NOT_ADMITTED",
+    "full_rootextraction_reentrancy": "NOT_ADMITTED",
+    "parallel_reference_backend": "NOT_ADMITTED",
+    "fallback_policy": "NOT_IN_SCOPE",
+    "coarse_or_reduced_solver": "NOT_IN_SCOPE"
+  },
+  "audit_trail": {
+    "qualification_attempt_1": {
+      "run": 34207048591,
+      "job": 101998870269,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_NESTED_PYTHON_QUOTING_ERROR",
+      "production_source_changed_to_fix_failure": false
+    },
+    "qualification_attempt_2": {
+      "run": 34207198194,
+      "job": 101999364129,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_REAL_EQUALITY_REJECTED_BY_WERROR",
+      "production_source_changed_to_fix_failure": false
+    },
+    "qualification_attempt_3": {
+      "run": 34207337215,
+      "job": 101999830477,
+      "conclusion": "failure",
+      "failure_class": "SOURCE_BOUND_FORTRAN_NON_SHORT_CIRCUIT_BOTTOM_DISTANCE_EVALUATION",
+      "observed_failure": "parameter_set%node_distance(NN+1) evaluated on admitted free-drainage route although the distance is physically unused there",
+      "production_source_changed_to_fix_failure": true,
+      "repair_postimage": "204c779b201d3846dd02490456b24fe84c0b59a4",
+      "repair_scope": "one nested swbotb=8 guard in HeadCalc",
+      "contract_expanded_to_n_plus_1": false,
+      "bottom_mode_8_admitted_by_repair": false
+    },
+    "identity_attempt_with_shortened_direct_interface": {
+      "run": 34208849522,
+      "job": 102004757749,
+      "conclusion": "failure",
+      "failure_class": "TEST_HARNESS_EXPLICIT_INTERFACE_ABI_MISMATCH",
+      "common_route_same_geometry_results_before_failure": "PASS_FOR_MODES_7_AND_MINUS2_O0_O2_1_2_4_8",
+      "production_source_changed_to_fix_failure": false
+    }
+  },
+  "legacy_warnings_observed_not_claimed_resolved": [
+    "legacy/F-SI13 guarded i-1 references can produce compiler -Wdo-subscript warnings",
+    "legacy HeadCalc sum1 may-be-uninitialized warning",
+    "legacy HeadCalc dkmean result may-be-uninitialized warning"
+  ],
+  "invariant_assessment": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "IMPROVED_FOR_GRID_GEOMETRY",
+    "compact_persistent_state": "PRESERVED_NO_GRID_OR_PROVIDER_SCRATCH_COPIED_PER_COLUMN",
+    "scratch_per_worker": "IMPROVED_PROVIDER_TEMPORARIES_WORKER_OWNED",
+    "scalable_memory_layout": "PRESERVED",
+    "transactional_time_step_ownership": "PRESERVED_FKT",
+    "mass_conservation": "PRESERVED_AND_TESTED_WITH_UNROUNDED_FOCUSED_RESIDUAL_AND_FSI13_IDENTITY",
+    "multiswap_scalability": "REDUCED_GLOBAL_MOD_GRID_DEPENDENCY_ON_ADMITTED_COMMON_ROUTE",
+    "alternative_solver_interface": "PRESERVED",
+    "headcalc_internal_leakage": "REDUCED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PRESERVED",
+    "optional_functionality_scaling": "PRESERVED",
+    "no_silent_time_or_io_assumptions_added": true
+  }
+}
