@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "base": "db727db92e7d5b77eccd0103921c527fe6dd5ffc",
+  "production_implementation": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "gate_A": {
+    "name": "EXECUTION_POINT_AND_COMPOSITION_ATOMICITY",
+    "status": "OPEN",
+    "QROT_dimensional_mapping_source_bound": true,
+    "PTRA_restricted_producer_qualified": true,
+    "current_root_sink_is_preformed_trial_forcing": true,
+    "current_multiswap_runtime_owns_checkpoint_and_commit": true,
+    "current_multiswap_runtime_owns_PTRA": false,
+    "current_runtime_has_trial_safe_WOFOST_accumulator": false,
+    "naive_postcommit_outer_wrapper_admitted": false
+  },
+  "decision": "GATE_A_SOURCE_BOUND_READY_FOR_EXECUTION_POINT_AND_ATOMICITY_DESIGN",
+  "status": "PERSISTED_BEFORE_PRODUCTION_IMPLEMENTATION_OR_TESTING"
+}
