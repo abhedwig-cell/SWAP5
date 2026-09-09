@@ -505,11 +505,12 @@ contains
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available
-    self%temporal_indicator_budget_valid = self%temporal_indicator_budget_supplied .and. &
-         ieee_is_finite(config%model_temporal_indicator_budget) .and. &
-         config%model_temporal_indicator_budget > 0.0_real64
+    self%temporal_indicator_budget_valid = .false.
     if (self%temporal_indicator_budget_supplied) then
       self%temporal_indicator_budget = config%model_temporal_indicator_budget
+      if (ieee_is_finite(self%temporal_indicator_budget)) then
+        self%temporal_indicator_budget_valid = self%temporal_indicator_budget > 0.0_real64
+      end if
     else
       self%temporal_indicator_budget = 0.0_real64
     end if
