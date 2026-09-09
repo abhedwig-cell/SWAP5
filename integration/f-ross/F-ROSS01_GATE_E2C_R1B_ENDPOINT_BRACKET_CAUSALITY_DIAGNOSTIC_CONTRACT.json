@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R1B_ENDPOINT_BRACKET_CAUSALITY_DIAGNOSTIC",
+  "status": "DIAGNOSTIC_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "prerequisite": "E2C_R1 failed with 196 bracket failures while all valid-probe accuracy metrics passed",
+  "purpose": "Determine whether R1 bracket failures are concentrated at physical roots asymptotically close to K(h_above), and whether the failure is caused by endpoint resolution rather than broad path quadrature error.",
+  "candidate_changed": false,
+  "diagnostic_materials": ["B12","O13"],
+  "reuse_exact_R1_probes_and_residual": true,
+  "report_for_every_R1_bracket_failure": [
+    "h_above",
+    "h_below",
+    "q_reference",
+    "K_h_above",
+    "relative_root_gap_to_K_h_above",
+    "branch_class",
+    "R1 bracket residual signs",
+    "residual at fixed endpoint epsilon ladder 1e-8,1e-10,1e-12,1e-14 and nextafter endpoint",
+    "distance from h_above to first R1 quadrature lane"
+  ],
+  "summary_metrics": [
+    "failure_count",
+    "min_median_max_relative_root_gap",
+    "fraction with relative root gap below 1e-10",
+    "fraction with relative root gap below 1e-12",
+    "fraction whose sign bracket is recovered only by tighter endpoint q",
+    "fraction whose sign bracket is still absent at nextafter endpoint"
+  ],
+  "hard_guards": [
+    "No R1 threshold or quadrature is changed by this diagnostic.",
+    "No result from this diagnostic can qualify R1.",
+    "R2 endpoint clustering may be opened only if the causal evidence supports it."
+  ]
+}
