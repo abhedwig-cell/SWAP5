@@ -2,15 +2,17 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-fkt09-gate-$$"
-mkdir -p "$BUILD/o0" "$BUILD/o2" "$BUILD/canon_o0" "$BUILD/canon_o2"
+mkdir -p "$BUILD/o0" "$BUILD/o2" "$BUILD/canon_o0" "$BUILD/canon_o2" "$BUILD/kernel_o0" "$BUILD/kernel_o2"
 trap 'rm -rf "$BUILD"' EXIT
 
 SRC="$ROOT/src/transaction/mod_transaction_reference.f90"
 CONTRACTS="$ROOT/src/runtime/mod_canonical_contracts.f90"
 RUNTIME="$ROOT/src/runtime/mod_canonical_interval_runtime.f90"
+KERNEL="$ROOT/src/kernel/mod_kernel_transactions.f90"
 TEST_CERT="$ROOT/tests/transaction/test_transaction_model_certificate.f90"
 TEST_CONTEXT="$ROOT/tests/transaction/test_transaction_attempt_context.f90"
 TEST_CANON="$ROOT/tests/fkt/test_fkt09_canonical_certificate_composition.f90"
+TEST_KERNEL="$ROOT/tests/fkt/test_fkt09_kernel_certificate_diagnostics.f90"
 COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace)
 
 bash "$ROOT/tests/transaction/run_a23bl_gate.sh"
@@ -34,6 +36,12 @@ gfortran "${COMMON[@]}" -O2 -J "$BUILD/canon_o2" "$SRC" "$CONTRACTS" "$RUNTIME" 
 "$BUILD/canon_o2.exe" | tee "$BUILD/canon_o2.txt"
 diff -u "$BUILD/canon_o0.txt" "$BUILD/canon_o2.txt"
 
+gfortran "${COMMON[@]}" -O0 -J "$BUILD/kernel_o0" "$SRC" "$CONTRACTS" "$RUNTIME" "$KERNEL" "$TEST_KERNEL" -o "$BUILD/kernel_o0.exe"
+"$BUILD/kernel_o0.exe" | tee "$BUILD/kernel_o0.txt"
+gfortran "${COMMON[@]}" -O2 -J "$BUILD/kernel_o2" "$SRC" "$CONTRACTS" "$RUNTIME" "$KERNEL" "$TEST_KERNEL" -o "$BUILD/kernel_o2.exe"
+"$BUILD/kernel_o2.exe" | tee "$BUILD/kernel_o2.txt"
+diff -u "$BUILD/kernel_o0.txt" "$BUILD/kernel_o2.txt"
+
 if grep -Ein 'mod_soil_water|mod_reference_richards|pressure_head' "$SRC"; then
   echo 'FKT09_GENERICITY_GATE FAIL: model-specific dependency found in transaction source' >&2
   exit 1
@@ -56,5 +64,6 @@ echo 'FKT09_FKT05_CHECKPOINT_REGRESSION=PASS'
 echo 'FKT09_MODEL_CERTIFICATE_O0_O2_IDENTITY=PASS'
 echo 'FKT09_ATTEMPT_CONTEXT_REGRESSION=PASS'
 echo 'FKT09_CANONICAL_CERTIFICATE_COMPOSITION=PASS'
+echo 'FKT09_KERNEL_CERTIFICATE_COMMIT_DIAGNOSTICS=PASS'
 echo 'FKT09_GENERICITY_GATE=PASS'
 echo 'FKT09_MODEL_CERTIFICATE_GATE=PASS'
