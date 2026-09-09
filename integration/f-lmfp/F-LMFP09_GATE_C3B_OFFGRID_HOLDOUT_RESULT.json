@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C3B_OFFGRID_ENDPOINT_PAIR_HOLDOUT",
+  "workflow": {
+    "run_id": 34314564777,
+    "head_under_test": "0eaa7627f5015399a128f409e6c9c251ce9ea1d2",
+    "conclusion": "failure",
+    "candidate": "BASE33_PLUS_SIGNED_PRESSURE_HEAD_DECADES",
+    "actual_axis_nodes": 49,
+    "thresholds_changed_from_C2": false,
+    "candidate_changed_after_C3": false,
+    "design_precommitted_before_C3_result": true
+  },
+  "holdout": {
+    "cases_per_class": 310,
+    "fixed_middecade_cases_per_class": 110,
+    "random_asinh_dry_to_wet_cases_per_class": 200,
+    "random_seed": 531093003,
+    "exact_anchor_endpoints_excluded": true
+  },
+  "classes": [
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 5.0,
+      "artifact_id": 10089667064,
+      "artifact_digest": "sha256:98cc7e0924af72da4ec1b7608c548d872c32d0a0220f5cf7115016c53f18c7a6",
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {"median":0.0013198280682425565,"p90":0.41144320028535375,"p99":7.836294723383702,"maximum":20.477924431644812},
+      "strong_gradient_p90": 0.41144320028535375,
+      "worst_case": {"h_upper_cm":-114937.07419966027,"h_lower_cm":0.0396305193232134,"gradient":22987.42276603592,"q_ref":-0.3354279676903439,"q_candidate":-7.204296542313403,"relative_error":20.477924431644812},
+      "pass": false
+    },
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 10.0,
+      "artifact_id": 10089638447,
+      "artifact_digest": "sha256:8926245af0970278d77e99318da395db52f003267df799264c7b15c1f4b8b727",
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {"median":0.002471602753604902,"p90":0.32469086381504836,"p99":7.03356948879525,"maximum":17.892110731762006},
+      "strong_gradient_p90": 0.32469086381504836,
+      "worst_case": {"h_upper_cm":-114937.07419966027,"h_lower_cm":0.0396305193232134,"gradient":11493.71138301796,"q_ref":-0.15975550437479585,"q_candidate":-3.0181186786571326,"relative_error":17.892110731762006},
+      "pass": false
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 5.0,
+      "artifact_id": 10089640649,
+      "artifact_digest": "sha256:3cf0908ad1a36b1d980f0aa8d2e843a166661b3b588989f0dc96b9cc86b63685",
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {"median":0.08983711097602445,"p90":0.5577115982617433,"p99":11.58638669024126,"maximum":14.425946026952689},
+      "strong_gradient_p90": 0.5577115982617433,
+      "worst_case": {"h_upper_cm":-16819.143780614846,"h_lower_cm":0.006398189161031837,"gradient":3363.8300357608014,"q_ref":-0.0602043709929692,"q_candidate":-0.9287093775241789,"relative_error":14.425946026952689},
+      "pass": false
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 10.0,
+      "artifact_id": 10089661454,
+      "artifact_digest": "sha256:0ad05a6fe928beadbcd9fa222b7461c3b7337d26b63de1597c1b26efcac68868",
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {"median":0.0901231269296809,"p90":0.4921823049190885,"p99":10.16136475355549,"maximum":16.275642290309715},
+      "strong_gradient_p90": 0.4921823049190885,
+      "worst_case": {"h_upper_cm":-16690.441259133968,"h_lower_cm":-0.12054547200433398,"gradient":1669.0320713661963,"q_ref":-0.01788600676960385,"q_candidate":-0.3089922549537341,"relative_error":16.275642290309715},
+      "pass": false
+    }
+  ],
+  "structural_observations": {
+    "all_face_evaluations_completed": true,
+    "coverage_failures": 0,
+    "sign_mismatches": 0,
+    "equal_head_identity_pass": true,
+    "hydrostatic_zero_flux_identity_pass": true,
+    "continuity_refinement_pass": true,
+    "explicit_fail_closed_envelope_pass": true,
+    "failure_is_accuracy_generalization_not_coverage_or_sign": true
+  },
+  "interpretation": "The green C3 characterization was not sufficient evidence because its deterministic decade anchors overlap exact endpoint values in the C2 stress probes. The precommitted off-grid C3b holdout rejects the frozen 49-node bilinear endpoint-pair representation in every tested previously-failing material/length class. Errors are not marginal: p90 relative flux error is about 0.32 to 0.56 and worst-case relative errors are about 14 to 20 on strong dry-to-wet gradients, despite zero sign mismatches and zero coverage failures. The representation therefore does not generalize over the intended extreme dry-wet hydraulic envelope at this density.",
+  "decision": "C3_49_NODE_ANCHORED_ENDPOINT_REPRESENTATION_REJECTED_FOR_GENERALIZATION_DO_NOT_PROCEED_TO_CATALOG",
+  "layeredmfp_overall_decision": "RESEARCH_CONTINUES",
+  "next_gate": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+  "next_gate_rule": "C4 is characterization only. It may determine whether the same representation family converges with globally bounded density. Because C3b is now observed, any density promoted from C4 must pass a new unseen C4b holdout before qualification.",
+  "status": "PERSISTED_TESTED_NEGATIVE_QUALIFICATION_EVIDENCE"
+}
