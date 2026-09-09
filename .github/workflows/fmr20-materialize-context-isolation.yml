@@ -1,0 +1,30 @@
+name: F-MR20 materialize canonical context isolation
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+    paths:
+      - .github/workflows/fmr20-materialize-context-isolation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize fail-closed stage-1 context isolation
+        run: python3 tests/fmr/materialize_fmr20_canonical_context_isolation.py
+      - name: Persist source postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          test -n "$(git status --porcelain -- src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90)"
+          git add src/adapter/mod_reference_richards_legacy_binding.f90 src/legacy/b1_10_port/headcalc.f90
+          git commit -m 'refactor(F-MR20): isolate canonical min-dt and day-event context'
+          git push origin HEAD:work/f-mr20-concurrency-isolation
