@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "gate": "A_INITIAL_STATE_HYDRAULIC_TIMESCALE",
+  "tested_head": "52709c1b40d0c6e474d41ed4117cf0df228216c4",
+  "workflow": {
+    "run_id": 34304932000,
+    "job_id": 102319538196,
+    "conclusion": "success"
+  },
+  "source_controls": {
+    "production_source_unchanged": "PASS",
+    "fvq28_pattern_lock": "PASS",
+    "repeat_O0": "PASS",
+    "repeat_O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "frozen_matrix": {
+    "initial_uniform_pressure_head_cm": [-40.0, -55.0, -110.0, -160.0, -210.0, -320.0],
+    "attempt_dt_day": [0.25, 0.125, 0.0625],
+    "jump_cases_per_state": 4,
+    "source": "F-VQ28 Gate B held-out C/U/X classification"
+  },
+  "descriptor_results": {
+    "tau_bottom_day_by_state": [
+      0.0024577602166636842,
+      0.0037876770603876976,
+      0.01048403192549106,
+      0.018719619205453456,
+      0.0287262396036952,
+      0.05619298617782823
+    ],
+    "tau_spread_max_over_min": 22.863494085728213,
+    "lambda_halves_exactly_with_retry": true,
+    "initial_K_C_invariant_to_retry_horizon": true,
+    "distinct_initial_timescales": true
+  },
+  "classification_result": {
+    "state_pattern_coherence_across_jumps": "PASS",
+    "initial_scalar_threshold_falsified": true,
+    "counterexample_count": 4,
+    "counterexample": {
+      "initial_head_cm": -320.0,
+      "pattern_each_of_four_jumps": "UCU"
+    },
+    "interpretation": "Hydraulic state is informative, but a scalar initial-state K/C timescale alone cannot explain or safely translate the existing retry classification."
+  },
+  "decision": "B_INITIAL_STATE_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_DYNAMIC_LOCAL_CHARACTERIZATION_REQUIRED",
+  "scientific_claim_limit": "Gate A is mechanism characterization only. It does not select or admit a temporal metric, normalization, tolerance, retry policy, transaction topology or production path.",
+  "hard_constraints": {
+    "production_metric_selected": false,
+    "normalization_selected": false,
+    "temporal_tolerance_selected": false,
+    "physics_changed": false,
+    "mass_gate_relaxed": false,
+    "transaction_semantics_changed": false
+  }
+}
