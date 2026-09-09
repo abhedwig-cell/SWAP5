@@ -1,0 +1,30 @@
+name: F-MR20 materialize scalar physical executor
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+    paths:
+      - .github/workflows/fmr20-materialize-scalar-executor.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize scalar execution seam
+        run: python3 tests/fmr/materialize_fmr20_scalar_executor_seam.py
+      - name: Persist serialized runtime postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          test -n "$(git status --porcelain -- src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+          git add src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m 'refactor(F-MR20): expose scalar physical column executor'
+          git push origin HEAD:work/f-mr20-concurrency-isolation
