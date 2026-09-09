@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP10",
   "title": "Hydraulic-Scale Normalized and Geometry-Aware Face Representation Feasibility",
@@ -11,6 +11,10 @@
   "nomination_precommit_commit": "6149373b01eb7a81af0f3abbbb233d97430f372e",
   "implementation_audit": "integration/f-lmfp/F-LMFP10_A0_IMPLEMENTATION_AUDIT.json",
   "implementation_audit_commit": "f6bf096440ebbd8a2fe1f5cfdda6665bdcea2ed7",
+  "interstream_boundary": "integration/f-lmfp/F-LMFP10_INTERSTREAM_OWNERSHIP_BOUNDARY.json",
+  "interstream_boundary_commit": "5500443845645d56286a337729fca71a9de19fca",
+  "revealed_material_shape_characterization": "integration/f-lmfp/F-LMFP10_C7A_MATERIAL_SHAPE_CHARACTERIZATION.json",
+  "revealed_material_shape_characterization_commit": "b57b405f8b5710877c742213a51c99b6e7056e8e",
   "production_implementation": false,
   "qualification": false,
   "A0": {
@@ -25,7 +29,8 @@
     ],
     "execution_run": 34329612925,
     "execution_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
-    "execution_status_last_observed": "MATRIX_PARTLY_IN_PROGRESS_PARTLY_QUEUED_NO_AGGREGATE_ARTIFACT_YET",
+    "execution_status_last_observed": "5_OF_15_MATERIAL_JOBS_COMPLETE_REMAINDER_RUNNING_NO_AGGREGATE_YET",
+    "completed_materials_observed": ["O01", "O05", "O07", "B18", "O13"],
     "executed": false,
     "tested": false,
     "result_persisted": false,
@@ -35,7 +40,36 @@
     "classes": 30,
     "characterization_only": true,
     "fresh_holdout": false,
-    "nomination_made": false
+    "nomination_made": false,
+    "partial_observations_not_decision": [
+      "O01 and O05 show strong improvement in the predeclared geometry-sensitive 20 cm strong-gradient diagnostics for both scale-normalized candidates.",
+      "O07 and B18 show severe degradation for both scale-normalized candidates on the frozen classifier slice.",
+      "O13 also shows severe degradation but is diagnostic-only under the frozen nomination contract and cannot select or reject a candidate by itself.",
+      "No A0 nomination is made from partial results."
+    ]
+  },
+  "parallel_owner_reconciliation": {
+    "F_SI09": {
+      "branch": "work/f-si09-b110-constitutive-provider",
+      "qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+      "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+      "implication": "The old legacy near-saturation conductivity seam is historical C7a evidence, not automatically an unresolved SWAP5 owner defect. Any A1 or later SWAP5-admitted-provider claim must bind or cross-qualify against the exact F-SI09 provider/blob."
+    },
+    "F_ROSS01": {
+      "branch": "work/f-ross01-fast-mfp-feasibility",
+      "latest_head_observed": "eb68ad0a870b4e2ecd55621d1e9bea5d2b799f27",
+      "boundary": "Active independent workstream. No LMFP implementation is copied into Ross and no Ross implementation is copied into LMFP. Ross evidence is read-only cross-context only."
+    },
+    "F_VQ30": {
+      "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
+      "head_observed": "0c3b974708fbb06b13cc3233736fb7aa18c78c76",
+      "boundary": "Temporal qualification only; A0 does not derive timestep, retry or temporal acceptance semantics."
+    },
+    "F_VZAA02": {
+      "branch": "work/f-vzaa02-donor-separability",
+      "closeout_head": "80157dc2beb9bb2ceb0cbcf00c984eb2662317d9",
+      "boundary": "Negative donor qualification closed; no VZAA donor signal is imported."
+    }
   },
   "scope_flags": {
     "PERSISTED": true,
@@ -52,10 +86,10 @@
   },
   "hard_blockers": [
     "A0 characterization has not completed; no candidate is nominated.",
-    "No A1 geometry-axis design or fresh qualification holdout may be derived before the precommitted A0 aggregate result is complete and persisted.",
-    "Conductivity-coordinate remains excluded while the inherited near-saturation K discontinuity owner seam is unresolved.",
-    "No transient work may begin before a new hydraulic face representation passes characterization, nomination, and a separate fresh unseen holdout."
+    "No A1 design or fresh qualification holdout may be selected before the precommitted A0 aggregate is complete and persisted.",
+    "Any future SWAP5-admitted default-MvG hydraulic qualification must explicitly reconcile with the exact qualified F-SI09 corrected constitutive provider rather than silently retaining the frozen legacy C7a constitutive basis.",
+    "No transient work may begin from A0 characterization; hydraulic qualification and a fresh unseen holdout remain prerequisites."
   ],
-  "decision": "A0_PRECOMMITTED_IMPLEMENTED_PRE_RESULT_AUDIT_PASS_EXECUTION_STILL_RUNNING_NO_QUALIFICATION",
-  "status": "PERSISTED_IMPLEMENTED_AUDITED_EXECUTING_NOT_YET_TESTED"
+  "decision": "A0_PRECOMMITTED_IMPLEMENTED_EXECUTING_PARTIAL_RESULTS_NONDECISION_PARALLEL_OWNERS_RECONCILED",
+  "status": "PERSISTED_IMPLEMENTED_AUDITED_EXECUTING_NOT_YET_TESTED_OR_NOMINATED"
 }
