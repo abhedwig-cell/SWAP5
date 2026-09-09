@@ -136,8 +136,16 @@ contains
 
   logical function kernel_persistence_ready(self) result(is_ready)
     class(kernel_persistence_snapshot_t), intent(in) :: self
-    is_ready = self%valid .and. self%schema_version_value == KERNEL_PERSISTENCE_SCHEMA_VERSION .and. &
-         self%layout_id_value > 0_int64 .and. self%committed_copy%ready()
+
+    ! Keep impure type-bound validation calls explicitly ordered. Fortran does
+    ! not guarantee short-circuit evaluation of logical expressions, and O2
+    ! must not be allowed to eliminate a validation call that O0 evaluates.
+    is_ready = .false.
+    if (.not. self%valid) return
+    if (self%schema_version_value /= KERNEL_PERSISTENCE_SCHEMA_VERSION) return
+    if (self%layout_id_value <= 0_int64) return
+    if (.not. self%committed_copy%ready()) return
+    is_ready = .true.
   end function kernel_persistence_ready
 
   integer function get_persistence_schema_version(self) result(value)
@@ -189,7 +197,10 @@ contains
 
   logical function kernel_persistence_time_is_bound(self) result(is_bound)
     class(kernel_persistence_snapshot_t), intent(in) :: self
-    is_bound = self%ready() .and. self%committed_copy%time_is_bound()
+
+    is_bound = .false.
+    if (.not. self%ready()) return
+    is_bound = self%committed_copy%time_is_bound()
   end function kernel_persistence_time_is_bound
 
   subroutine kernel_persistence_snapshot_physical(self, copy, available)
