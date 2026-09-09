@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "topic": "SWAP_4_3_1_KSATEXM_NEAR_SATURATED_CONDUCTIVITY_SEMANTICS",
+  "status": "SOURCE_TRACE_PERSISTED_C2_NOT_STARTED",
+  "source_release": "SWAP 4.3.1 frozen audit package",
+  "source_hashes": {
+    "MOD_MvG_functions.f90": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "Staringreeks_2018.csv": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae"
+  },
+  "source_bound_semantics": {
+    "threshold_head_cm": -2.0,
+    "activation": "readswap enables the KSATEXM branch when a KSATEXM value is supplied and KSATEXM > KSATFIT",
+    "threshold_state": "relative saturation and base MvG conductivity are evaluated at h=-2 cm",
+    "conductivity_above_threshold": "for relsat > relsatthr and no macropore override, K is linearly interpolated in relative saturation between K(h=-2) and KSATEXM at saturation",
+    "conductivity_below_threshold": "the normal Mualem-van Genuchten conductivity using KSATFIT and LEXP applies",
+    "catalog_relation": "all frozen Staringreeks 2018 rows have KSATEXM > KSATFIT",
+    "gate_b_and_c1_relation": "Gate B and C1 deliberately disabled KSATEXM; therefore their h in [-2,-1] cm results do not represent the full Staringreeks KSATEXM-enabled conductivity semantics."
+  },
+  "qualification_consequence": "KSATEXM must be a separate Gate C subgate after a bounded base unimodal catalog representation has been resolved. It may not be silently folded into or inferred from C1.",
+  "production_implementation": false
+}
