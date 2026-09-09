@@ -1,0 +1,34 @@
+name: F-KT12 committed-state restore
+
+on:
+  push:
+    branches:
+      - work/f-kt12-generic-committed-state-restore
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'tests/fkt/test_fkt05_reusable_checkpoint.f90'
+      - 'tests/fkt/run_fkt05_gate.sh'
+      - 'tests/fkt/test_fkt12_committed_restore.f90'
+      - 'tests/fkt/run_fkt12_committed_restore_gate.sh'
+      - 'integration/f-kt/F-KT12_COMMITTED_STATE_RESTORE_CONTRACT.json'
+      - '.github/workflows/fkt12-committed-state-restore.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-committed-boundary-restore:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT12 committed restore gate
+        run: bash tests/fkt/run_fkt12_committed_restore_gate.sh
