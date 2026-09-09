@@ -56,7 +56,7 @@ program test_fsi21_initial_hydraulic_timescale
       tau = c0*lbottom*lbottom/k0
       lambda = attempt_dt(attempt_id)/tau
       call require(d0 > 0.0_real64 .and. tau > 0.0_real64 .and. lambda > 0.0_real64, 'finite positive descriptor')
-      write(*,'(A,I0,A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
+      write(*,'(A,I0,A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
            'FSI21_GATEA_ROW:STATE=', state_id, ':ATTEMPT=', attempt_id, ':H0_CM=', initial_heads(state_id), &
            ':DT_DAY=', attempt_dt(attempt_id), ':K0_CM_DAY=', k0, ':C0_PER_CM=', c0, ':D0_CM2_DAY=', d0, &
            ':L_BOTTOM_CM=', lbottom, ':TAU_DAY=', tau, ':LAMBDA=', lambda
