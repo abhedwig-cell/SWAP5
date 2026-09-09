@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT12",
+  "title": "Generic Committed-State Restore, Persistence Boundary & Provenance Qualification",
+  "branch": "work/f-kt12-generic-committed-state-restore",
+  "base": {
+    "work_unit": "F-KT11",
+    "commit": "3b03632defd9945b59ed2f1120f87c7497b0c7b4"
+  },
+  "contract": {
+    "commit": "033840c9576d7ceba96330d2b75fc9944e67da54",
+    "file": "integration/f-kt/F-KT12_COMMITTED_STATE_RESTORE_CONTRACT.json",
+    "scope": "committed-boundary typed restore only",
+    "serialization_adapters": "out_of_scope",
+    "byte_level_import": "not_defined"
+  },
+  "definitive_tested_head": "eb7de82da18864cc4ed4d2e9a253499613fbe3b9",
+  "source_delta_from_base": {
+    "ahead_by": 12,
+    "behind_by": 0,
+    "production_files": [
+      "src/kernel/mod_kernel_committed_persistence.f90"
+    ],
+    "test_files": [
+      "tests/fkt/mod_fkt12_mass_complete_test_model.f90",
+      "tests/fkt/run_fkt12_committed_restore_gate.sh",
+      "tests/fkt/test_fkt12_committed_restore.f90"
+    ],
+    "workflow_files": [
+      ".github/workflows/fkt12-committed-state-restore.yml"
+    ]
+  },
+  "implemented_contract": {
+    "carrier": "opaque typed kernel_persistence_snapshot_t",
+    "export_source": "already-ready kernel_committed_state_t only",
+    "restore_target": "uninitialized kernel_committed_state_t only",
+    "stable_lineage_preserved": true,
+    "committed_revision_preserved": true,
+    "committed_time_preserved": true,
+    "schema_version_validated": true,
+    "expected_layout_id_validated": true,
+    "raw_revision_setter_exposed": false,
+    "raw_lineage_setter_exposed": false,
+    "arbitrary_historical_rollback_exposed": false,
+    "physical_state_deep_copied": true,
+    "forcing_persisted": false,
+    "solver_scratch_persisted": false,
+    "newton_vectors_persisted": false,
+    "jacobians_persisted": false,
+    "worker_warm_start_persisted": false,
+    "filesystem_dependency_added": false,
+    "file_format_added": false
+  },
+  "lineage_decision": {
+    "policy": "preserve stable lineage across committed-boundary restore",
+    "reason": "checkpoint, candidate and accepted-window provenance already bind to lineage plus revision and no generic safe rebind protocol exists"
+  },
+  "qualification_gate": {
+    "workflow": "F-KT12 committed-state restore",
+    "run": 34359323306,
+    "job": 102491939814,
+    "tested_head": "eb7de82da18864cc4ed4d2e9a253499613fbe3b9",
+    "conclusion": "success",
+    "markers": [
+      "FKT12_EXPORT_RESTORE_PHYSICAL_LINEAGE_REVISION_TIME_EXACT=PASS",
+      "FKT12_RESTORE_ZERO_PHYSICAL_TRANSFER=PASS",
+      "FKT12_PRE_RESTART_STALE_PROVENANCE_REMAINS_REJECTED=PASS",
+      "FKT12_EXACT_SPLIT_RUN_ENDPOINT_IDENTITY=PASS",
+      "FKT12_REVISION_AND_LINEAGE_CONTINUATION=PASS",
+      "FKT12_MASS_CONTINUATION_WITHOUT_LEDGER_RESET=PASS",
+      "FKT12_REQUEST_BASE_IMMUTABILITY=PASS",
+      "FKT12_INVALID_SCHEMA_LAYOUT_TARGET_FAIL_CLOSED=PASS",
+      "FKT12_COMMITTED_RESTORE_GATE PASS",
+      "FKT12_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FKT12_COMMITTED_BOUNDARY_RESTORE_QUALIFICATION_GATE PASS"
+    ],
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true
+  },
+  "preservation": {
+    "F_KT03_contract_gate": "PASS",
+    "F_KT03_FSI_boundary_gate": "PASS",
+    "F_KT03_opaque_transaction_gate": "PASS",
+    "F_KT03_O0_O2_gate": "PASS",
+    "F_KT04_contract_gate": "PASS",
+    "F_KT04_temporal_provenance_gate": "PASS",
+    "F_KT04_O0_O2_gate": "PASS",
+    "F_KT05_contract_gate": "PASS",
+    "F_KT05_reusable_checkpoint_gate": "PASS",
+    "F_KT05_O0_O2_gate": "PASS"
+  },
+  "split_run": {
+    "continuous": "T0 -> T1 -> T2",
+    "restored": "T0 -> T1 -> export opaque carrier -> fresh committed object -> restore -> T2",
+    "endpoint_physical_identity": "exact",
+    "endpoint_lineage_identity": "exact",
+    "endpoint_revision_identity": "exact",
+    "endpoint_committed_time_identity": "exact",
+    "deterministic_replay": "PASS"
+  },
+  "provenance": {
+    "pre_restore_candidate_after_restore": "rejected as stale revision",
+    "pre_restore_checkpoint_after_restore": "rejected as checkpoint revision mismatch",
+    "next_checkpoint_origin_revision": "restored committed revision",
+    "next_candidate_origin_revision": "restored committed revision",
+    "next_commit_revision": "restored revision plus one"
+  },
+  "mass": {
+    "restore_physical_transfer": 0,
+    "accepted_interval_mass_accounting_complete": true,
+    "continuous_vs_restored_storage_start_identity": "exact",
+    "continuous_vs_restored_storage_end_identity": "exact",
+    "continuous_vs_restored_residual_identity": "exact",
+    "initial_storage_double_count": false,
+    "ledger_reset_on_restore": false,
+    "mass_tolerance_relaxed": false
+  },
+  "fail_closed_cases": {
+    "default_or_invalid_carrier": "PASS",
+    "wrong_schema_expectation": "PASS",
+    "wrong_layout_expectation": "PASS",
+    "restore_into_initialized_target": "PASS",
+    "invalid_source_export": "PASS",
+    "nonpositive_layout_export": "PASS"
+  },
+  "integrity_assessment": {
+    "logical_API_integrity": "QUALIFIED_FOR_OPAQUE_IN_MEMORY_TYPED_CARRIER",
+    "cryptographic_authenticity": "NOT_CLAIMED",
+    "caller_can_directly_set_revision": false,
+    "caller_can_directly_set_lineage": false,
+    "external_decoded_representation_reconstruction": "NOT_IMPLEMENTED",
+    "reason": "the current opaque carrier can only be constructed from a live ready kernel_committed_state_t; no trusted adapter-facing reconstruction/import contract exists for rebuilding that opaque carrier after full process loss"
+  },
+  "process_restart_boundary": {
+    "typed_fresh_object_restore_semantics": "QUALIFIED",
+    "full_process_crash_recovery_from_external_serialized_representation": "NOT_QUALIFIED",
+    "external_serialization_format": "OUT_OF_SCOPE",
+    "trusted_adapter_reconstruction_seam": "PENDING",
+    "consequence_for_F_WOF39": "true crop-window process restart remains blocked until a trusted external reconstruction/import seam is separately qualified"
+  },
+  "architecture_invariants": {
+    "2_kernel_separate_from_io": "PASS_NO_IO_OR_FORMAT_DEPENDENCY",
+    "3_explicit_data_separation": "PASS_ONLY_COMMITTED_CONTINUATION_STATE_AND_PROVENANCE",
+    "4_compact_persistent_state": "PASS_WITH_LAYOUT_ID_EXTERNAL_TO_IMMUTABLE_PARAMETER_DATA",
+    "5_scratch_per_worker": "PASS_NO_SOLVER_SCRATCH_PERSISTED",
+    "7_transactional_timesteps": "PASS_COMMITTED_BOUNDARY_ONLY",
+    "8_cheap_recompute_warm_start": "PASS_NO_WORKER_WARM_START_PERSISTENCE_REQUIRED",
+    "9_generic_time": "PASS_COMMITTED_TIME_PRESERVED_WITHOUT_CALENDAR_ASSUMPTION",
+    "11_coupling_core": "COMPATIBLE_STABLE_LINEAGE_AND_REVISION_CONTINUATION",
+    "13_mass_conservation": "PASS_EXACT_COMPLETE_LEDGER_FIXTURE_AND_ZERO_RESTORE_TRANSFER",
+    "16_multiswap_primary": "DIRECTIONALLY_COMPATIBLE_PER_COLUMN_CARRIER_AND_EXTERNAL_LAYOUT_ID_NOT_FULL_MULTISWAP_RESTART_QUALIFICATION",
+    "28_runtime_coupler_composition": "PASS_SERIALIZATION_HELD_OUTSIDE_KERNEL",
+    "29_no_silent_dependencies": "PASS_EXPLICIT_SCHEMA_LAYOUT_LINEAGE_REVISION_TIME",
+    "30_architecture_change_test": "PASS_EXECUTABLE_SPLIT_RUN_NEGATIVE_PROVENANCE_MASS_AND_O0_O2_GATES"
+  },
+  "not_qualified": [
+    "external file or byte serialization",
+    "trusted reconstruction of kernel_persistence_snapshot_t from an externally decoded representation after process loss",
+    "full crash recovery from persisted bytes",
+    "mid-transaction restart",
+    "in-flight checkpoint persistence",
+    "in-flight candidate persistence",
+    "distributed checkpoint storage",
+    "MPI or cloud persistence",
+    "full MultiSWAP checkpoint/restart",
+    "WOFOST true process restart",
+    "canonical promotion"
+  ],
+  "decision": "QUALIFIED_GENERIC_COMMITTED_STATE_TYPED_RESTORE_AND_PROVENANCE_BOUNDARY_EXTERNAL_RECONSTRUCTION_PENDING",
+  "status": "QUALIFIED_GENERIC_COMMITTED_STATE_TYPED_RESTORE_EXTERNAL_SERIALIZATION_RECONSTRUCTION_PENDING"
+}
