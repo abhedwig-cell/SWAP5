@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gates": ["B_CONTINUATION_CARRIER", "C_TRIAL_RETRY_ROLLBACK", "F_A_B_A_ISOLATION", "H_O0_O2_FOCUSED"],
+  "tested_head": "0506dac956938664e5ce9524fce45aad726e8af8",
+  "workflow": {
+    "name": "F-KT10 temporal history transaction",
+    "run": 34339894774,
+    "job": 102427956658,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "platform": "Ubuntu 24.04"
+  },
+  "production_carrier": {
+    "path": "src/transaction/mod_fkt_temporal_indicator_history.f90",
+    "type": "fkt_temporal_indicator_history_t",
+    "payload": "previous_right_derivative(:)",
+    "finite_nonempty_replace": true,
+    "snapshot_copy": true,
+    "mass_accounting_participation": false
+  },
+  "results": {
+    "clone_isolation": "PASS",
+    "temporal_reject_retry_preserves_origin_history": "PASS",
+    "solver_reject_retry_preserves_origin_history": "PASS",
+    "mass_reject_retry_preserves_origin_history": "PASS",
+    "model_certificate_unavailable_remains_fail_closed": "PASS",
+    "A_B_A_history_isolation": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "attempt_1": {
+    "run": 34339683042,
+    "job": 102427276047,
+    "tested_head": "460d827cb97a4311bdc06657475435e6a9296026",
+    "classification": "HARNESS_ONLY_COMPILE_FAILURE_BEFORE_TEST_EXECUTION",
+    "cause": "Synthetic test derived types were declared in a program scope, so deferred type-bound overrides were not valid module procedures.",
+    "production_code_implicated": false,
+    "test_case_executed": false,
+    "matrix_or_expectation_changed_by_repair": false
+  },
+  "repair": {
+    "commit": "0506dac956938664e5ce9524fce45aad726e8af8",
+    "scope": "Move synthetic test types and bindings into a module; no production or semantic change."
+  },
+  "qualification_boundary": {
+    "transactional_history_lifecycle_tested": true,
+    "real_Richards_binding_tested": false,
+    "scientific_temporal_tolerance_selected": false,
+    "F_KT09_dimensionless_certificate_populated": false,
+    "coupling_released": false
+  }
+}
