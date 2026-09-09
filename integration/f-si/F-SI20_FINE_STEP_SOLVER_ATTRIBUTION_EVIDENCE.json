@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "PRESCRIBED_HEAD_FINE_STEP_SOLVER_REJECTION_ATTRIBUTION",
+  "scope": "nonproduction attribution only; exact F-GC02 solver controls retained and transaction retries extended only for observation",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fsi20_driver_blob": "98c945164b6ca7d9c2aaef332a322896f132fa79",
+    "fsi18_reference_tridag_generator_blob": "bf25c4c7fefaa59811255b0bc25c041522ab008e",
+    "production_source_changed": false
+  },
+  "workflow": {
+    "name": "F-SI20 fine-step solver rejection attribution",
+    "run": 34301935822,
+    "job": 102310478038,
+    "head": "317af6d0f5c7f58f0ebd025df96c51f6e17b1930",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.2.0"
+  },
+  "controls": {
+    "bottom_mode": 5,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "requested_outer_dt_day": 0.25,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1e-6,
+    "hard_mass_gate": 1e-12,
+    "baseline_nonlinear_tolerance": 1e-12,
+    "transaction_max_retries_observer_only": 16
+  },
+  "attribution": {
+    "transaction_attempts_observed": 17,
+    "solver_rejected_attempts": 5,
+    "mass_rejected_attempts": 0,
+    "last_attempt_with_full_and_both_half_solves_converged": 12,
+    "last_fully_solved_attempt_dt_day": 1.220703125e-4,
+    "last_fully_solved_half_step_dt_day": 6.103515625e-5,
+    "first_solver_rejected_attempt": 13,
+    "first_solver_rejected_attempt_dt_day": 6.103515625e-5,
+    "first_failed_leg": "HALF1",
+    "first_failed_direct_solve_dt_day": 3.0517578125e-5,
+    "first_failed_status": "SW_SOLVE_RETRY_ADVISED",
+    "first_failed_nonlinear_iterations": 8,
+    "first_failed_jacobian_builds": 8,
+    "first_failed_linear_solves": 8,
+    "first_failed_backtracking_attempts": 19,
+    "first_failed_mass_residual_available": false,
+    "following_attempts_at_or_below_failed_direct_dt_also_retry_advised": true
+  },
+  "boundary_observations": {
+    "direct_solve_dt_6_103515625e_5_day": {
+      "status": "CONVERGED",
+      "nonlinear_iterations": 3,
+      "backtracking_attempts": 3,
+      "unrounded_mass_residual": 5.63438184997266944e-15
+    },
+    "second_half_at_same_solve_dt_on_attempt_12": {
+      "status": "CONVERGED",
+      "nonlinear_iterations": 4,
+      "backtracking_attempts": 4,
+      "unrounded_mass_residual": -1.03639319348758363e-13
+    },
+    "direct_solve_dt_3_0517578125e_5_day": {
+      "status": "RETRY_ADVISED",
+      "nonlinear_iterations": 8,
+      "backtracking_attempts": 19,
+      "unrounded_mass_residual": "NaN because no converged candidate was materialized"
+    }
+  },
+  "interpretation": {
+    "temporal_rejection_and_solver_rejection_are_separate": true,
+    "nominal_dtmin_reached_before_solver_failure": false,
+    "solver_failure_occurs_above_nominal_dtmin": true,
+    "failure_is_a_mass_rejection": false,
+    "failure_is_the_old_fsi18_zero_correction_artifact": false,
+    "production_solver_policy_change_justified": false,
+    "key_finding": "The exact prescribed-head startup first loses solver admissibility when the two-half comparison for attempt 13 asks HALF1 to solve 3.0517578125e-5 day. The full 6.103515625e-5 day solve still converges, while the finer direct solve reaches the exact max_iterations=8 and returns RETRY_ADVISED. Subsequent finer full solves also return RETRY_ADVISED. This is a solver-envelope boundary distinct from the earlier temporal rejections and from the hard mass gate."
+  },
+  "scientific_boundary": [
+    "Do not classify NaN unrounded mass residual on a nonconverged solve as a mass-balance failure; the authoritative mass gate is not reached for that candidate.",
+    "Do not increase max_iterations, max_backtracking or change nonlinear tolerances merely to expose a longer temporal tail.",
+    "Do not infer a production temporal limit from the last observable comparison.",
+    "A separate sensitivity characterization may determine whether the fine-step solver boundary is controlled by nonlinear tolerance, finite-precision behavior or another solver mechanism."
+  ]
+}
