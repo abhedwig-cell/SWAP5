@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R0_CROSS_REGION_INTERPOLATION_CAUSALITY_DIAGNOSTIC",
+  "status": "DIAGNOSTIC_CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisite": "DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION_REJECTED",
+  "parent_evidence": "F-ROSS01_GATE_E2A_NEAR_SATURATION_FACE_CHARACTERIZATION_RESULT.json",
+  "purpose": "Determine why the E2A direct-head cross-region representation fails strongly for B12/O13 before defining any replacement representation.",
+  "materials": {
+    "structural_failures": ["B12", "O13"],
+    "mild_failure_anchors": ["B01", "O14"]
+  },
+  "physical_scope": {
+    "hydraulic_family": "same base MvG/KSATFIT law as E2A",
+    "face_length_cm": 10.0,
+    "wet_head_envelope_cm": [-1.0, 1.0],
+    "dry_head_envelope_cm": [-10000.0, -1.0],
+    "region": "WET_DRY only for causal decomposition",
+    "oracle": "same steady-Darcy integral/root law as E2A"
+  },
+  "fresh_probe_rule": {
+    "count_per_material": 192,
+    "distribution": "independent scrambled Sobol in wet h and dry u",
+    "seed_rule": "uint32(first8hex(sha256('F-ROSS01-E2A-R0:'+material)))",
+    "observed_E2A_worst_probes_are_added_as_named_diagnostic_witnesses": true,
+    "qualification_use": false
+  },
+  "precommitted_diagnostic_axes": {
+    "wet": {
+      "coordinate": "linear pressure head h in [-1,+1] cm",
+      "node_count": 33
+    },
+    "dry_log_head": {
+      "coordinate": "u=log10(-h) on [0,4]",
+      "node_counts": [241, 481, 961]
+    },
+    "dry_effective_saturation": {
+      "coordinate": "S uniformly between S(-10000) and S(-1), mapped to h by the exact material inverse",
+      "node_count": 241,
+      "reason": "Ross uses water-content/saturation-type dependent variables in unsaturated regions; this diagnostic tests coordinate conditioning without changing the constitutive law."
+    }
+  },
+  "precommitted_decomposition": [
+    "FULL_BILINEAR_LOGM: both wet and dry dimensions interpolated in log mobility",
+    "WET_ONLY_LOGM: dry head held exact, interpolate only between adjacent wet nodes",
+    "DRY_ONLY_LOGM: wet head held exact, interpolate only between adjacent dry nodes",
+    "FULL_BILINEAR_M: same nodes but interpolate positive mobility M directly instead of log(M), diagnostic only"
+  ],
+  "reported_metrics": [
+    "max and p99 hybrid flux error for each decomposition",
+    "max absolute flux error over KSATFIT for each decomposition",
+    "per-probe wet-only, dry-only and combined errors",
+    "error change under dry log-head node counts 241->481->961",
+    "error change from dry u-coordinate to uniform-S coordinate at 241 nodes",
+    "error change from logM interpolation to direct-M interpolation",
+    "worst witness and coordinate-cell locations"
+  ],
+  "classification_rules": {
+    "DRY_AXIS_RESOLUTION_DOMINANT": "At Nwet=33, p99 DRY_ONLY_LOGM error is at least 10x WET_ONLY_LOGM and p99 FULL_BILINEAR_LOGM decreases by at least 4x from Nu=241 to Nu=961.",
+    "DRY_COORDINATE_CONDITIONING_DOMINANT": "Uniform-S Nu=241 p99 DRY_ONLY_LOGM is at least 4x lower than log-head Nu=241 while WET_ONLY remains below the frozen E2A p99 threshold.",
+    "LOG_MOBILITY_TRANSFORM_DOMINANT": "At identical Nu=241/Nwet=33 nodes, direct-M p99 full-bilinear flux error is at least 4x lower than logM.",
+    "WET_AXIS_DOMINANT": "p99 WET_ONLY_LOGM is at least 10x DRY_ONLY_LOGM for log-head Nu=241.",
+    "MIXED_OR_NONSEPARABLE": "none of the dominant classifications above is met."
+  },
+  "hard_guards": [
+    "No thresholds from E2A are relaxed.",
+    "No result from this diagnostic qualifies a replacement representation.",
+    "No physical theta(h) or K(h) law is changed.",
+    "No new candidate is selected until this diagnostic result is persisted.",
+    "The E2A failure remains authoritative negative evidence."
+  ],
+  "exit": "Persist causal classification and only then freeze a separate E2A-R1 representation contract if evidence supports one.",
+  "relevant_invariants": [3,5,13,16,20,23,24,25,26,27,30]
+}
