@@ -118,7 +118,10 @@ contains
 
   pure logical function valid_nonnegative(value) result(valid)
     real(real64), intent(in) :: value
-    valid = ieee_is_finite(value) .and. value >= 0.0_real64
+
+    valid = .false.
+    if (.not. ieee_is_finite(value)) return
+    valid = value >= 0.0_real64
   end function valid_nonnegative
 
 end module mod_wofost_one_day_rate_state_view
