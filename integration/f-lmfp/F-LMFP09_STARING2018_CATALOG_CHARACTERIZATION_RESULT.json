@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP09",
+  "subgate": "B3_STARING2018_CATALOG_HOMOGENEOUS_CHARACTERIZATION_RESULT",
+  "tested_head": "9044279b405ebb10fc02c42315e5b37cb6f0ce6a",
+  "workflow_run": 34301918555,
+  "catalog": {
+    "source": "SWAP_4.3.1 data/soil/Staringreeks_2018.csv",
+    "materials": 36,
+    "classes": 72,
+    "lengths_cm": [10.0, 20.0],
+    "passed_classes": 47,
+    "failed_classes": 25
+  },
+  "artifact_digests": {
+    "shard_0": "sha256:51ec1ae8e807ac76986750434a7c8a2664e2f4b6a0df07b4cea42f86a6f92985",
+    "shard_1": "sha256:8d354273b2d209c96d877775ae98d8a2cc08320f92a0249a54b843f20a3e4852",
+    "shard_2": "sha256:8388b902389e29a0c2a541c85b3b6021cf85af89b4ae552d74d319458c69b8e1",
+    "shard_3": "sha256:8c421ae346f46f29e9255d751c1672e50507dba683cd590c4292d903b2257dea",
+    "shard_4": "sha256:919ebe0c9bf00f0f329c6083c2f9a826a14f387363d5e876ae6b69c2f57a0349",
+    "shard_5": "sha256:696e24ffa378f0e9f1288a9452971e8509217c5635a77aabd305b2aaea14e22f"
+  },
+  "predeclared_face_thresholds": {
+    "p90_rel_error_lt": 0.02,
+    "p99_rel_error_lt": 0.10,
+    "max_rel_error_lt": 0.30,
+    "strong_gradient_p90_lt": 0.02,
+    "near_saturation_p90_lt": 0.02,
+    "dormant_abs_error_over_ks_lt": 1e-7,
+    "sign_mismatches_eq": 0,
+    "oracle_failures_eq": 0,
+    "corrected_p90_lt_mfp_p90": true,
+    "corrected_better_fraction_ge": 0.75
+  },
+  "global_structural_findings": {
+    "all_identity_pass": true,
+    "all_fail_closed_pass": true,
+    "all_sign_mismatch_zero": true,
+    "all_face_oracle_calls_completed": true
+  },
+  "violation_counts": {
+    "maximum": 16,
+    "p99": 13,
+    "near_saturation_p90": 11,
+    "continuity": 1
+  },
+  "failed_classes": {
+    "B02": [20],
+    "B05": [20],
+    "B07": [10,20],
+    "B08": [20],
+    "B09": [10],
+    "B10": [10,20],
+    "B11": [10,20],
+    "B12": [10,20],
+    "B17": [10,20],
+    "B18": [10],
+    "O07": [10,20],
+    "O08": [20],
+    "O10": [20],
+    "O11": [10,20],
+    "O12": [20],
+    "O13": [10,20],
+    "O18": [20]
+  },
+  "worst_cases": {
+    "B12_20cm_max_rel_error": 2.4782804911432366,
+    "O13_10cm_max_rel_error": 2.0235096351050883,
+    "O13_20cm_max_rel_error": 2.0230011755367547,
+    "B09_10cm_continuity_final_ratio": 0.5289659839758506
+  },
+  "classification": {
+    "catalog_import_failure": false,
+    "general_identity_or_mass_semantics_failure": false,
+    "general_fail_closed_failure": false,
+    "general_flow_direction_failure": false,
+    "dominant_failure": "TAIL_AND_NEAR_SATURATION_FACE_ACCURACY_MATERIAL_AND_GEOMETRY_DEPENDENT",
+    "continuity_exception": "B09:10cm only",
+    "density_change_admitted": false,
+    "threshold_change_admitted": false,
+    "next_required_action": "characterize representation geometry and material hydraulic transition scales before selecting another candidate"
+  },
+  "decision": "NOT_QUALIFIED_FULL_STARING2018_HOMOGENEOUS_CATALOG_LOCALIZED_REPRESENTATION_REFINEMENT_REQUIRED"
+}
