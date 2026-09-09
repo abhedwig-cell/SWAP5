@@ -1,0 +1,48 @@
+name: F-ROSS01 Gate E3A-R1 Unresolved Near-Unsat Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e3a-r1-unresolved-near-unsat-diagnostic.yml
+      - experiments/ross/run_ross01_gate_e3a_r1_unresolved_near_unsat_diagnostic.py
+      - integration/f-ross/F-ROSS01_GATE_E3A_R1_UNRESOLVED_NEAR_UNSAT_DIAGNOSTIC_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e3a_encountered_transition_faces.py
+      - experiments/ross/run_ross01_gate_e2c_r3_endpoint_limit_holdout.py
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen unresolved diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3a-r1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3a_r1_unresolved_near_unsat_diagnostic.py \
+            "$out/F-ROSS01_GATE_E3A_R1_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3A_R1_STDOUT.txt"
+      - name: Assert diagnostic reproduces frozen unresolved population
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3a-r1/F-ROSS01_GATE_E3A_R1_RESULT.json'))
+          assert r['qualification_use'] is False
+          assert r['candidate_changed'] is False
+          assert r['total_unresolved_count'] == 7
+          counts={x['material']:x['unresolved_count'] for x in r['results']}
+          assert counts == {'B12':2,'O13':5}
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3a-r1-unresolved-near-unsat-diagnostic
+          path: ross01-gate-e3a-r1/
