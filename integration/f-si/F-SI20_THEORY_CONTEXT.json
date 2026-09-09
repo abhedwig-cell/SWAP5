@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "kind": "SOURCE_THEORY_CONTEXT_NOT_PRODUCTION_ADMISSION",
+  "official_source": {
+    "reference": "Kroes et al. (2017), SWAP version 4: Theory description and user manual, Wageningen Environmental Research Report 2780",
+    "wur_edepot_id": "416321",
+    "richards_section": "2.4.1 Richards equation / numerical implementation",
+    "documented_scheme": "implicit, backward, finite difference scheme with explicit linearization of hydraulic conductivities",
+    "time_control_section": "Part 10 numerical solution / report page 29",
+    "documented_legacy_time_step_rule": "increase, keep or halve the timestep from the number of nonlinear iterations needed for convergence",
+    "documented_head_criteria": "CritDevH1CP and CritDevH2CP constrain relative and absolute pressure-head changes between nonlinear iterations, not full-step versus two-half temporal discrepancy"
+  },
+  "source_bound_interpretation": {
+    "formal_method_family_known": true,
+    "backward_temporal_discretization_explicitly_documented": true,
+    "legacy_step_doubling_temporal_tolerance_found": false,
+    "legacy_critdevh_reusable_as_temporal_tolerance": false,
+    "reason": "The documented CritDevH criteria are nonlinear iteration convergence criteria. Reusing their numerical values as a SWAP5 temporal acceptance tolerance would silently change their meaning and is not source justified.",
+    "legacy_dt_adaptation_reusable_as_swap5_accuracy_contract": false,
+    "reason_2": "Legacy timestep adaptation is iteration-count based and does not estimate temporal truncation error. SWAP5 transaction acceptance intentionally requires an explicit model-owned temporal signal instead."
+  },
+  "relation_to_fsi20_measurements": {
+    "fixed_horizon_evidence": "integration/f-si/F-SI20_FINE_REFERENCE_SYNTHESIS.json",
+    "measured_fixed_horizon_behavior": "pressure-head endpoint differences decrease monotonically under refinement and the fine apparent order approaches approximately one on the exact prescribed-head fixture",
+    "consistency_with_documented_scheme": "QUALITATIVELY_CONSISTENT_WITH_FIRST_ORDER_BACKWARD_TIME_DISCRETIZATION",
+    "qualification_limit": "Do not use a Richardson multiplier solely from the method label. The measured full-versus-two-half discrepancy is not a fixed multiplier of fine-reference endpoint error across all retry horizons, so any quantitative error-bound interpretation requires separate qualification."
+  },
+  "candidate_semantic_consequence": {
+    "dimensionally_clean_observable": "max_i abs(h_full(i)-h_two_half(i))",
+    "units": "cm pressure head",
+    "meaning_that_can_be_defended_now": "direct full-step versus two-half pressure-head endpoint discrepancy",
+    "meaning_not_yet_defended": "universal estimate or upper bound of the two-half candidate's error to the exact Richards solution",
+    "numeric_temporal_tolerance_selected": false,
+    "production_metric_admitted": false
+  }
+}
