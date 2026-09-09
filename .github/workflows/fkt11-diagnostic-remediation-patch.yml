@@ -23,21 +23,10 @@ jobs:
           from pathlib import Path
           p=Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
           s=p.read_text()
-          old="""    if (self%temporal_indicator_budget_valid) then
-              self%temporal_indicator_budget = config%model_temporal_indicator_budget
-            else
-              self%temporal_indicator_budget = 0.0_real64
-            end if"""
-          new="""    if (self%temporal_indicator_budget_supplied) then
-              ! Preserve the native supplied value for diagnostics even when it is
-              ! invalid.  The separate validity flag remains the sole guard on
-              ! normalization, so no invalid value can reach B_inf/H_budget.
-              self%temporal_indicator_budget = config%model_temporal_indicator_budget
-            else
-              self%temporal_indicator_budget = 0.0_real64
-            end if"""
+          old='if (self%temporal_indicator_budget_valid) then'
+          new='if (self%temporal_indicator_budget_supplied) then'
           if s.count(old) != 1:
-              raise SystemExit('F-KT11 diagnostic remediation source token drift')
+              raise SystemExit(f'F-KT11 diagnostic remediation condition count={s.count(old)}')
           p.write_text(s.replace(old,new,1))
           PY
           git diff --check
