@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF33",
   "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Composition",
@@ -10,11 +10,11 @@
   },
   "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD",
   "decision": "QUALIFIED_KERNEL_COMPOSITION_READY_FOR_ACCEPTED_WINDOW_RUNTIME_BINDING_NOT_END_TO_END_ADMITTED",
-  "tested_candidate": "626bd6e6671982847b3d72fa8c934ca4850deb86",
+  "tested_candidate": "d27a46f770700e2da521815471eeb18c237ce624",
   "verification": {
     "workflow": "F-WOF33 two-phase crop window",
-    "run_id": 34311477183,
-    "job_id": 102338857838,
+    "run_id": 34311722051,
+    "job_id": 102339581883,
     "conclusion": "success",
     "O0": "PASS",
     "O2": "PASS",
@@ -25,9 +25,7 @@
   },
   "production": {
     "implemented": true,
-    "source_files_changed_from_base": [
-      "src/crop/mod_wofost_two_phase_crop_window.f90"
-    ],
+    "source_files_changed_from_base": ["src/crop/mod_wofost_two_phase_crop_window.f90"],
     "persistent_column_state_added": false,
     "commit_authority_added": false,
     "scheduler_added": false,
@@ -38,8 +36,8 @@
     "begin": "committed owner -> F-WOF26 prepare -> F-WOF28 frozen semantic view -> F-WOF31 PGASS -> worker-local context",
     "complete": "worker-local context + frozen accepted aggregates -> F-WOF32 rate packet -> F-WOF26 structural candidate",
     "trial_context": "prepared crop candidate plus small semantic/prepared context only; no immutable parameter bundle or accepted aggregate accumulator",
-    "failure_atomicity": "failed begin yields no ready context; failed complete returns phase-A prepared candidate rather than partial structural state",
-    "replay": "bitwise deterministic for qualified begin and complete fixtures",
+    "failure_atomicity": "failed begin yields no ready context; failed complete has non-OK status and candidate_built=false. The returned phase-A prepared trial state is non-committable retry/warm-start material only; no partial structural update is exposed and committed input remains bitwise unchanged.",
+    "replay": "bitwise deterministic for qualified begin and complete fixtures; same window context is reusable after a discarded complete",
     "inactive_crop": "qualified exact no-op and skips all active-only dependencies",
     "daily_cadence": "one successful complete invokes exactly one structural cohort shift/create"
   },
@@ -61,6 +59,6 @@
     "soybean and grass routes",
     "arbitrary subdaily or multi-day WOFOST calls"
   ],
-  "next": "F-WOF34 should implement the smallest runtime accepted-window aggregation and provenance seam. It must accumulate IQROT/IPTRA only from accepted process/soil-water contributions for one crop window, prove rollback/retry zero contribution and same-window lineage, and feed the frozen carrier to F-WOF33 without moving transaction logic into the crop kernel.",
+  "next": "F-WOF34 — Accepted-Window Runtime Lineage and Crop-Event Scheduling Seam. An existing live F-WOF34 branch must be reconciled and continued rather than restarted. It must accumulate IQROT/IPTRA only from accepted process/soil-water contributions for one crop window, prove rollback/retry zero contribution and same-window lineage, and feed the frozen carrier to F-WOF33 without moving transaction logic into the crop kernel.",
   "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
 }
