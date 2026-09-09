@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION",
+  "contract": "F-ROSS01_GATE_E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION_PRECOMMIT.json",
+  "workflow_run": 34408376974,
+  "workflow_head": "b4262146ab10cbeb8e7b490a5dee4b347743c289",
+  "workflow_conclusion": "failure",
+  "production_implementation": false,
+  "material_count": 4,
+  "material_pass_count": 3,
+  "pass": false,
+  "decision": "ANALYTIC_SATURATED_SEGMENT_REMEDIATION_REMOVES_KSAT_FALLBACK_DEFECT_BUT_B01_EXACT_UPPER_SIGN_IS_BINARY64_ROUNDOFF_LIMITED_CERTIFIED_SNAP_RESEARCH_REQUIRED",
+  "artifacts": {
+    "B01": {"id":10126235570,"digest":"sha256:827b6980c8b4be64b5dfa656053c87fffa2689e278cd05950580b315d58057b9"},
+    "B12": {"id":10126235115,"digest":"sha256:2fd1de0c10661d7f86b27350b8992789dcbf961fc956b4b572a124541bfffa5d"},
+    "O13": {"id":10126232570,"digest":"sha256:2b419f6f9c7fb14d515bf4010d481d95f099048c8fee14da997234505b03ab07"},
+    "O14": {"id":10126244719,"digest":"sha256:e7e0437237b43088d948df653bfb28288defecff0d55dda3f843b2dc48bc85ee"}
+  },
+  "B01": {
+    "pass": false,
+    "witness_count": 3,
+    "valid_count": 2,
+    "candidate_unresolved_count": 1,
+    "defect_witness": {
+      "probe_id":"fresh_near_0023",
+      "h_surface_cm":0.8418598139923603,
+      "h_top_node_cm":-1.7857563818019415e-08,
+      "split_lower_residual_cm":7399157122097848.0,
+      "split_exact_physical_upper_residual_binary64_cm":5.329070518200751e-15,
+      "high_precision_exact_upper_residual_cm":-1.0317550150523912e-13,
+      "classification":"BINARY64_SIGN_AMBIGUITY_AT_PHYSICAL_UPPER_BOUND_AFTER_ANALYTIC_SPLIT"
+    },
+    "ordinary_controls": {
+      "fresh_near_0011_max_abs_error_over_ksatfit":1.357938063393914e-12,
+      "fresh_dry_0007_abs_error_over_ksatfit":1.3107202756847832e-13,
+      "max_root_residual_evaluations":66,
+      "max_constitutive_K_evaluations":520
+    }
+  },
+  "other_materials": {
+    "B12":{"pass":true},
+    "O13":{"pass":true},
+    "O14":{"pass":true}
+  },
+  "numerical_interpretation": {
+    "finding":"Analytically splitting the saturated h>=0 segment prevents the catastrophic q=KSAT fallback. The remaining B01 miss is only the sign of a 5.33e-15 cm residual at the exact physical upper flux bound.",
+    "required_next_test":"A bounded upper-snap may be admitted only with an explicit binary64 residual roundoff certificate and a derivative-based upper bound on the implied flux error. No unconditional tolerance-based snap is allowed."
+  },
+  "hard_nonclaims": [
+    "R2R2-R2 is not qualified overall.",
+    "No residual threshold may be silently relaxed inside this failed gate.",
+    "No heavier quadrature, Phi tuning, precomputed table or constitutive smoothing is justified by this result.",
+    "No 320-case face requalification, response tangent, surface ledger, runtime, MultiSWAP, groundwater or production admission follows."
+  ],
+  "next_gate":"E3E_R2R2_R3_ROUNDOFF_CERTIFIED_PHYSICAL_UPPER_SNAP",
+  "status":"FAILED_AS_FROZEN_ANALYTIC_SPLIT_EFFECTIVE_ROUNDOFF_CERTIFICATE_REQUIRED"
+}
