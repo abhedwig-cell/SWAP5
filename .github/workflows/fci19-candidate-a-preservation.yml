@@ -1,0 +1,35 @@
+name: F-CI19 Candidate A composition preservation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci19-candidate-a-preservation
+    paths:
+      - 'src/**'
+      - 'reference/**'
+      - 'tests/fci/run_fci19_candidate_a_preservation_gate.sh'
+      - 'integration/f-ci/F-CI19_CANDIDATE_A_QUALIFICATION.json'
+      - '.github/workflows/fci19-candidate-a-preservation.yml'
+  workflow_dispatch:
+
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI19 Candidate A composition preservation gate
+        run: bash tests/fci/run_fci19_candidate_a_preservation_gate.sh
+      - name: Upload qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci19-candidate-a-preservation
+          path: .fci19-artifacts/
+          if-no-files-found: warn
