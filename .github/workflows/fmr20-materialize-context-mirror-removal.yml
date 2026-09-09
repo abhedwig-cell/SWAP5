@@ -1,0 +1,30 @@
+name: F-MR20 materialize canonical context mirror removal
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+    paths:
+      - .github/workflows/fmr20-materialize-context-mirror-removal.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize fail-closed stage-2 context mirror removal
+        run: python3 tests/fmr/materialize_fmr20_context_mirror_removal.py
+      - name: Persist source postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          test -n "$(git status --porcelain -- src/legacy/b1_10_port/headcalc.f90 src/runtime/mod_fmr_serialized_reference_backend.f90)"
+          git add src/legacy/b1_10_port/headcalc.f90 src/runtime/mod_fmr_serialized_reference_backend.f90
+          git commit -m 'refactor(F-MR20): remove canonical legacy-context mirror'
+          git push origin HEAD:work/f-mr20-concurrency-isolation
