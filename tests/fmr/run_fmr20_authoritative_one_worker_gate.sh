@@ -8,6 +8,7 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 BASE=110440d28ff2b585763ad8fd4eedb88e7d112eeb
+BASE_REF=refs/remotes/origin/work/f-mr19-restricted-multiswap-process-restart
 fail() { echo "FMR20_AUTH_GATE_FAIL $*" >&2; exit 1; }
 
 for spec in \
@@ -26,7 +27,10 @@ for spec in \
 done
 echo 'FMR20_AUTH_G01_SOURCE_LOCK=PASS'
 
-git diff --name-only "$BASE" HEAD -- src > "$BUILD/src.changed"
+git fetch --quiet --no-tags --depth=1 origin \
+  work/f-mr19-restricted-multiswap-process-restart:"$BASE_REF"
+[[ "$(git rev-parse "$BASE_REF")" == "$BASE" ]] || fail 'live MR19 base drift'
+git diff --name-only "$BASE_REF" HEAD -- src > "$BUILD/src.changed"
 printf '%s\n' \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90 \
   src/runtime/mod_fmr_parallel_worker_pool.f90 > "$BUILD/src.expected"
