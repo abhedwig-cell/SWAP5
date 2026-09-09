@@ -1,0 +1,47 @@
+name: F-ROSS01 Gate E3D-R3 Sub-Ksat Event Feasibility
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'experiments/ross/run_ross01_gate_e3d_r3_subksat_event_feasibility.py'
+      - '.github/workflows/ross01-gate-e3d-r3-subksat-event-feasibility.yml'
+      - 'integration/f-ross/F-ROSS01_GATE_E3D_R3_SUBKSAT_EVENT_FEASIBILITY_DIAGNOSTIC_PRECOMMIT.json'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen sub-Ksat reference event feasibility probe
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3d-r3"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3d_r3_subksat_event_feasibility.py \
+            "$out/F-ROSS01_GATE_E3D_R3_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3D_R3_STDOUT.txt"
+      - name: Assert diagnostic semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3d-r3/F-ROSS01_GATE_E3D_R3_RESULT.json'))
+          assert r['qualification_use'] is False
+          assert r['production_implementation'] is False
+          assert r['reference_only'] is True
+          assert r['c1r_table_generation'] is False
+          assert r['hard_mass_tolerance_cm'] == 1e-9
+          assert r['q_top_fraction_ksat'] == [0.25,0.5,0.75,1.0]
+          assert r['trial_dt_day'] == [0.001,0.002,0.004,0.008,0.016,0.032]
+          PY
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3d-r3-subksat-event-feasibility
+          path: ross01-gate-e3d-r3/
