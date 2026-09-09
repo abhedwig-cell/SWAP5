@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "title": "Hydraulic-Scale Normalized and Geometry-Aware Face Representation Feasibility",
+  "branch": "work/f-lmfp10-scale-normalized-geometry-aware-face",
+  "base": {
+    "F_LMFP09_closed_head": "8c17839a06b1e2b4606041aaa3e848e69b80978f",
+    "C6b_core_envelope": "QUALIFIED_AND_RETAINED",
+    "C7a_full_catalog": "REJECTED_54_OF_72_CLASSES_PASS_18_FAIL",
+    "C7a_result": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json",
+    "C7a_routing_precommit": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json"
+  },
+  "purpose": "Determine whether a materially new, globally bounded hydraulic-scale-normalized endpoint representation can regularize the catalog-wide material and geometry dependence that defeated the frozen absolute-head n49 endpoint-pair family, without retuning C7a thresholds, adding material-specific exception knots, or changing SWAP hydraulic physics.",
+  "scope": {
+    "qualification": false,
+    "characterization_only": true,
+    "production_implementation": false,
+    "transient_solver": false,
+    "heterogeneous_interface": false,
+    "root_uptake": false,
+    "drainage": false,
+    "groundwater": false,
+    "MODFLOW": false,
+    "response_tangent": false
+  },
+  "source_bound_nonduplication": {
+    "already_tested_not_reopened_as_new": [
+      "absolute-head anchored endpoint-pair interpolation from F-LMFP09 C3/C6/C7",
+      "global absolute-head density escalation from C4",
+      "simple linear effective-saturation plus positive-head bilinear direct-flux table from C5a",
+      "raw or transformed rectangular h_upper-gradient tables whose composition leaves the head envelope",
+      "h_lower=0 saturation-crossing knots on the h_upper-gradient ratio representation from B1/B2",
+      "validation-driven local knot insertion",
+      "VZAA history correction donor"
+    ],
+    "important_prior_positive_but_limited_evidence": "The F-LMFP09 saturation-aligned h_upper-gradient ratio family passed the four synthetic reference material/geometry classes but did not establish production-catalog generalization or response tangents.",
+    "reason_for_new_workunit": "C7a shows failures across ten Staring2018 materials, both geometries and multiple accuracy checks. A new representation hypothesis is required rather than another n49 repair."
+  },
+  "constitutive_owner_separation": {
+    "known_issue": "Legacy standard-MvG near-saturation conductivity shortcut is value-discontinuous for part of the Staring2018 catalog.",
+    "classes_with_jump_factor_gt_1p10": 21,
+    "largest_known_jump_materials": ["O13", "B12", "B11"],
+    "rule": "F-LMFP10 must report overlap with this owner seam separately. It may not use a conductivity-based coordinate or alter the constitutive branch in A0. Numerical representation improvement does not prove the owner seam harmless, and owner-seam failures do not automatically falsify a representation away from that seam."
+  },
+  "A0_characterization": {
+    "name": "MATERIAL_SCALE_COORDINATE_SCREEN",
+    "qualification": false,
+    "data_status": "REVEALED_CHARACTERIZATION_ALLOWED",
+    "reference": "Independent conservative steady Darcy face BVP oracle from F-LMFP06/F-LMFP09",
+    "baseline": "Frozen F-LMFP09 n49 absolute-head endpoint-pair provider where evaluable",
+    "candidate_output": "log Darcian-to-MFP face-response ratio, with exact equal-head local-limit constraint and hydrostatic zero-flux identity preserved by construction",
+    "candidate_families": {
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {
+        "coordinate": "x(h)=asinh(alpha*h)",
+        "meaning": "Normalize pressure head by the van Genuchten alpha scale only.",
+        "endpoint_axes": "upper and lower endpoint heads use the same material-specific transformed coordinate",
+        "geometry": "10 and 20 cm remain explicit separate characterization classes in A0"
+      },
+      "B_H50_NORMALIZED_ENDPOINTS": {
+        "coordinate": "x(h)=asinh(h/h50), with h50<0 defined by the standard van Genuchten retention relation at effective saturation Se=0.5 using the material alpha,n,m parameters",
+        "meaning": "Normalize by a material retention-transition suction that incorporates both alpha and n/m shape.",
+        "endpoint_axes": "upper and lower endpoint heads use the same material-specific transformed coordinate",
+        "geometry": "10 and 20 cm remain explicit separate characterization classes in A0"
+      }
+    },
+    "explicitly_not_in_A0": [
+      "conductivity-coordinate because of the unresolved near-saturation K owner seam",
+      "3D geometry interpolation",
+      "material-specific adaptive knots",
+      "new classifier thresholds",
+      "transient integration"
+    ],
+    "axis_rule": {
+      "head_envelope_cm": [-1000000.0, 100.0],
+      "nodes_per_endpoint_axis": 49,
+      "zero_head_exact_node": true,
+      "construction": "Use 49 deterministic nodes split between transformed negative and positive domains in proportion to transformed span, including both envelope endpoints and x=0 exactly. No node placement may depend on flux errors or C7a failed rows.",
+      "table_values_per_material_geometry_class": 2401,
+      "bytes_per_material_geometry_class_before_metadata": 19208
+    },
+    "panel": {
+      "failed_materials": ["B10", "B11", "B12", "B17", "B18", "O01", "O05", "O07", "O11", "O13"],
+      "control_materials": ["B01", "B05", "O02", "O16", "O18"],
+      "face_lengths_cm": [10.0, 20.0],
+      "reason": "All C7a-failing materials plus predeclared passing controls span contrasting retention/conductivity shapes while keeping the first characterization bounded."
+    },
+    "probe_generation": {
+      "reuse_C7a_seed_families": true,
+      "C7a_rows_are_revealed_not_holdout": true,
+      "raw_cases_per_class": 600,
+      "classifier": "Use the frozen C6b/C7a classifier only as a common reporting slice, not as a tunable admission rule in A0.",
+      "also_report_inside_full_head_envelope_before_classifier": true
+    },
+    "metrics": [
+      "active median/p90/p99/max relative flux error",
+      "strong-gradient p90",
+      "near-saturation p90",
+      "sign mismatches",
+      "fraction better than plain MFP",
+      "fraction better than frozen n49 on rows common to both candidates",
+      "10 versus 20 cm paired material behavior",
+      "error versus NPAR, alpha, h50 and known K-jump factor",
+      "table memory and runtime interpolation corner count"
+    ],
+    "selection_rule": "A0 may only nominate a coordinate family for A1 if it materially reduces both the widespread rare-tail failure family and the O01/O05 20cm strong-gradient failure without introducing structural/sign failures. No C7a acceptance threshold is used as an A0 pass/fail threshold and no qualification claim is allowed.",
+    "if_neither_candidate_is_coherent": "Do not tune nodes. Close A0 negative and formulate a materially different representation hypothesis before further testing."
+  },
+  "future_geometry_gate_if_A0_nominates": {
+    "name": "A1_GEOMETRY_AXIS_CHARACTERIZATION",
+    "precommit_required": true,
+    "candidate": "Not yet selected",
+    "concept": "Only after A0 nomination, characterize whether one shared per-material table with explicit dimensionless geometry coordinate L/|h50| or alpha*L is preferable to separate per-geometry tables.",
+    "available_physical_lengths_for_precommit": [5.0, 10.0, 11.3746, 12.0, 15.0, 20.0],
+    "fresh_qualification_holdout_after_characterization": true
+  },
+  "hard_rules": {
+    "mass_conservation_absolute": true,
+    "no_threshold_relaxation": true,
+    "no_material_specific_error_tuned_knots": true,
+    "no_pair_specific_tables": true,
+    "no_silent_extrapolation": true,
+    "candidate_runtime_oracle_calls": 0,
+    "shared_immutable_representation": true,
+    "persistent_column_state_added": false,
+    "worker_scratch_only": true,
+    "production_runtime_target": "O(1) face lookup or another explicitly bounded local operation",
+    "fresh_unseen_holdout_required_before_any_new_qualification": true,
+    "fullrichards_reference_preserved": true,
+    "physics_vs_solver_policy_separation": true
+  },
+  "architecture_invariant_review": {
+    "kernel_io": "UNCHANGED",
+    "transactional_state": "UNCHANGED; A0 has no timestep state",
+    "MultiSWAP": "Candidate tables must remain shared immutable data, not per-column allocations",
+    "generic_time": "NO_TIMESTEP_ASSUMPTION_INTRODUCED",
+    "coupling": "NOT_ADMITTED_BY_A0",
+    "mass": "NO_TRADEOFF_ALLOWED",
+    "alternative_solver_interface": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "PER_MATERIAL_GEOMETRY_FAILURE_LOCALIZATION_REQUIRED"
+  },
+  "decision_options": [
+    "A0_NOMINATE_ALPHA_NORMALIZED_FOR_A1",
+    "A0_NOMINATE_H50_NORMALIZED_FOR_A1",
+    "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE"
+  ],
+  "status": "PRECOMMITTED_BEFORE_F_LMFP10_IMPLEMENTATION_OR_EXECUTION"
+}
