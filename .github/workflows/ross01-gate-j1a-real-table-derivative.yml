@@ -1,0 +1,45 @@
+name: F-ROSS01 Gate J1A Real Table Derivative
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-j1a-real-table-derivative.yml
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+      - integration/f-ross/F-ROSS01_GATE_J1A_REAL_TABLE_FACE_DERIVATIVE_CONTRACT.json
+      - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
+      - experiments/ross/run_ross01_gate_c1r_characterization.py
+      - experiments/ross/run_ross01_gate_c1.py
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  derivative:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen J1A derivative material characterization
+        run: |
+          set -euo pipefail
+          out="ross01-j1a-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_J1A_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_J1A_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-j1a-${{ matrix.material }}
+          path: ross01-j1a-${{ matrix.material }}/
