@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "checkpoint": "PRIMARY_CODE_BLOCKERS_AFTER_B2E_R3",
+  "production_implementation": false,
+  "qualified_overall": false,
+  "resolved_before_checkpoint": [
+    "bounded fixed-slot transaction semantics",
+    "collision-free falling-slug advection mass",
+    "infiltration/groundwater front-coordinate sort relaxation mass",
+    "Eq18 grouped numerical representation",
+    "restricted Heun existing-front trajectory",
+    "fully-funded dry-bin creation mass event with supplied initial advance",
+    "atomic existing-front plus creation mass path with supplied initial advances",
+    "bounded seed-free Green-Ampt dry-bin scalar-root numerical policy"
+  ],
+  "blocking_seams": [
+    {
+      "id": "DRY_BIN_PHYSICAL_PARAMETER_MAPPING",
+      "reason": "The papers define the event and Green-Ampt relation but do not uniquely freeze the 2015 code-level selection/mapping of K, capillary drive/psi and delta-theta for every dry-bin creation context.",
+      "required_evidence": "M2WC70 C implementation or independently equivalent authoritative primary oracle",
+      "forbidden_shortcut": "Do not infer the missing mapping from generic Green-Ampt theory."
+    },
+    {
+      "id": "FALLING_SLUG_CAPILLARY_RELAXATION_GEOMETRY",
+      "reason": "The 2015 paper defines clipping direction, leftward transfer and exact mass ownership but not the complete multi-slug clipping order, receiver-capacity rule, cascade/tie handling or simultaneous groundwater-contact mutation order.",
+      "required_evidence": "M2WC70 C event/data-structure implementation or independently equivalent authoritative primary algorithm oracle",
+      "forbidden_shortcut": "Do not turn geometric clipping into deletion, epsilon repair or an invented local redistribution rule."
+    },
+    {
+      "id": "EXPLICIT_DIFFUSION_EXTENSION",
+      "reason": "Exact equation-level primary provenance remains unavailable in the current FWC evidence set.",
+      "required_evidence": "primary 2016 diffusion equations or verified implementation",
+      "forbidden_shortcut": "Do not reconstruct production algebra from secondary summaries."
+    }
+  ],
+  "negative_evidence_preserved": [
+    "B2D forward Euler hydrologic trajectory failure",
+    "B2E-C sequential binary64 remaining-water decision failure",
+    "B2E-R2 source-style successive-approximation seed-independence failure"
+  ],
+  "safe_parallel_work_while_blocked": [
+    "runtime/memory characterization of already-qualified bounded primitives, without production admission",
+    "solver-neutral state/view interface design",
+    "independent source acquisition and provenance verification",
+    "test infrastructure for exact transactional mass ledgers"
+  ],
+  "decision": "FWC_PRIMARY_PHYSICAL_RESEARCH_SEAMS_PARKED_PENDING_AUTHORITATIVE_CODE_LEVEL_EVIDENCE",
+  "status": "PARK_PRIMARY_PHYSICS_CONTINUE_ONLY_NON_OVERLAPPING_INFRASTRUCTURE_OR_PROVENANCE_WORK"
+}
