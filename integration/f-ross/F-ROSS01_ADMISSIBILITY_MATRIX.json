@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "Evidence-backed RossFast solver admissibility matrix",
+  "status": "INITIAL_MATRIX_FROZEN",
+  "production_implementation": false,
+  "policy": "F-ROSS01_ADMISSIBILITY_AND_NEAR_SATURATION_POLICY_CONTRACT.json",
+  "semantics": {
+    "ROSSFAST_ADMISSIBLE": "The complete requested solver use is qualified for the stated envelope. No current row has this status yet.",
+    "ROSSFAST_NOT_YET_QUALIFIED": "The combination is architecturally or physically eligible for research but one or more required qualification gates remain open or have failed for the tested representation.",
+    "ROSSFAST_NOT_SUPPORTED": "A deliberate product or architecture exclusion. This status is not inferred merely from missing evidence or a failed candidate representation.",
+    "fallback_rule": "Any requested production combination that is not ROSSFAST_ADMISSIBLE must use an explicitly selected qualified alternative such as FullRichards; requested physics must not be changed to gain RossFast admission."
+  },
+  "rows": [
+    {
+      "id": "RF-MVG-BASE-UNSAT-HOMOGENEOUS",
+      "hydraulic_model_family": "UNIMODAL_MUALEM_VAN_GENUCHTEN",
+      "conductivity_closure_id": "KSATFIT_BASE_MVG",
+      "retention_closure_id": "BASE_VG_H_ENPR_ZERO",
+      "active_optional_physics": [],
+      "face_geometry": "homogeneous_10_cm",
+      "state_regime": "unsaturated_h_minus_10000_to_minus_1_cm",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "qualified_subscope": {
+        "steady_face_representation": true,
+        "material_catalog": "36 Staringreeks 2018 materials",
+        "evidence": "F-ROSS01_GATE_C1R_36_MATERIAL_HOLDOUT_RESULT.json",
+        "result": "36/36 PASS on fresh holdout"
+      },
+      "open_before_solver_admission": [
+        "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
+        "E_SATURATION_TRANSITIONS",
+        "F_TIMESTEP",
+        "G_HETEROGENEOUS_PROFILES",
+        "H_BOTTOM_BOUNDARY",
+        "I_GROUNDWATER",
+        "J1_REAL_HYDRAULIC_RESPONSE_TANGENT",
+        "K_RUNTIME",
+        "L_MULTISWAP",
+        "M_FULLRICHARDS_QUALIFICATION"
+      ],
+      "reason_code": "FACE_RESPONSE_QUALIFIED_FULL_SOLVER_ENVELOPE_INCOMPLETE"
+    },
+    {
+      "id": "RF-MVG-EXACT-SWAP431-KSATEXM",
+      "hydraulic_model_family": "UNIMODAL_MUALEM_VAN_GENUCHTEN",
+      "conductivity_closure_id": "SWAP431_EXACT_KSATEXM",
+      "retention_closure_id": "BASE_VG_H_ENPR_ZERO",
+      "active_optional_physics": [],
+      "face_geometry": "homogeneous_10_cm",
+      "state_regime": "unsaturated_h_minus_10000_to_minus_1_cm",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "qualified_subscope": {
+        "source_constitutive_law": true,
+        "steady_face_representation": false,
+        "evidence": "F-ROSS01_GATE_C2A_EXACT_KSATEXM_CLOSEOUT.json"
+      },
+      "reason_code": "EXACT_KSATEXM_C2A_COMPACT_REPRESENTATIONS_FAILED_CHARACTERIZATION",
+      "fallback_physics_rule": "Retain exact KSATEXM and use FullRichards or another separately qualified solver."
+    },
+    {
+      "id": "RF-MVG-HENPR-NONZERO",
+      "hydraulic_model_family": "MODIFIED_VG_H_ENPR",
+      "conductivity_closure_id": "H_ENPR_DEPENDENT",
+      "retention_closure_id": "H_ENPR_NONZERO",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "SEPARATE_HYDRAULIC_FAMILY_NOT_FACE_QUALIFIED",
+      "scope_note": "H_ENPR is not KSATEXM and must not inherit C1R or C2A qualification."
+    },
+    {
+      "id": "RF-MACROPORE-EXPLICIT",
+      "hydraulic_model_family": "ANY_WITH_EXPLICIT_SWAPP_MACROPORE_PHYSICS",
+      "active_optional_physics": ["macropore_flow"],
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "MACROPORE_STATE_AND_FACE_COMPOSITION_NOT_QUALIFIED",
+      "scope_note": "No silent disabling or folding of explicit macropore physics into a matrix conductivity closure is allowed."
+    },
+    {
+      "id": "RF-HETEROGENEOUS-FACE",
+      "hydraulic_model_family": "QUALIFIED_OR_CANDIDATE_HYDRAULICS",
+      "face_geometry": "heterogeneous_material_interface",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "HETEROGENEOUS_STEADY_FACE_RESPONSE_GATE_OPEN"
+    },
+    {
+      "id": "RF-SATURATION-CROSSING",
+      "hydraulic_model_family": "QUALIFIED_OR_CANDIDATE_HYDRAULICS",
+      "state_regime": "near_saturation_or_saturation_crossing_outside_current_h_envelope",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "SATURATION_TRANSITION_AND_STORAGE_SWITCH_GATE_OPEN"
+    },
+    {
+      "id": "RF-TRANSIENT-PROCESS-COLUMN",
+      "hydraulic_model_family": "QUALIFIED_OR_CANDIDATE_HYDRAULICS",
+      "active_optional_physics": ["root_sink_or_other_physical_sources", "surface_fluxes"],
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "DISCRETE_MASS_TIMESTEP_AND_PROCESS_ACCURACY_GATES_OPEN"
+    },
+    {
+      "id": "RF-BOTTOM-GROUNDWATER-COUPLING",
+      "hydraulic_model_family": "QUALIFIED_OR_CANDIDATE_HYDRAULICS",
+      "boundary_contracts": ["bottom_boundary", "groundwater_interface"],
+      "coupling_mode": "standalone_or_MODFLOW_predictor_corrector",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "qualified_subscope": {
+        "synthetic_response_tangent_algebra": true,
+        "real_hydraulic_response_tangent": false
+      },
+      "reason_code": "REAL_BOTTOM_FACE_GROUNDWATER_AND_TANGENT_GATES_OPEN"
+    },
+    {
+      "id": "RF-MULTISWAP-PRODUCTION",
+      "hydraulic_model_family": "ANY_CURRENT_ROSSFAST_RESEARCH_FAMILY",
+      "coupling_mode": "MultiSWAP",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "RUNTIME_BATCHING_BOUNDED_COST_AND_PRODUCTION_ACCURACY_NOT_QUALIFIED",
+      "architecture_note": "Shared immutable tables and zero per-column table state are compatible with MultiSWAP but do not constitute a performance qualification."
+    },
+    {
+      "id": "RF-CLASSB-PUBLISHED-MMVG2006",
+      "hydraulic_model_family": "PUBLISHED_MMVG_2006",
+      "conductivity_closure_id": "SCHAAP_VAN_GENUCHTEN_2006_EQ16",
+      "retention_closure_id": "FINITE_AIR_ENTRY_MMVG_EQ4_8",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "CLASS_B_PHYSICAL_CLOSURE_CONSTITUTIVE_GATE_NOT_YET_RUN",
+      "required_reference": "FullRichards must use the identical closure before solver-equivalence qualification.",
+      "parameter_note": "Published K_o and L are conductivity parameters fitted to data; no automatic mapping from SWAP KSATFIT/KSATEXM is assumed."
+    },
+    {
+      "id": "RF-CLASSB-NHI-CONSERVATIVE-NEAR-SATURATION",
+      "hydraulic_model_family": "NHI_METASWAP_NEAR_SATURATION_VARIANT",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "EXACT_NHI_TABLE_MAPPING_NOT_SOURCE_BOUND",
+      "scope_note": "Conceptual lineage is relevant but must remain separate from the published MMVG formulation until the exact implementation is recovered."
+    },
+    {
+      "id": "RF-CLASSB-MMVG-WITH-EXPLICIT-SWAP-MACROPORE",
+      "hydraulic_model_family": "MMVG_OR_SV2006_INSPIRED",
+      "active_optional_physics": ["macropore_flow"],
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "POTENTIAL_NEAR_SATURATION_CONDUCTIVITY_DOUBLE_COUNT_REQUIRES_ANALYSIS",
+      "scope_note": "No permanent NOT_SUPPORTED decision is made yet; a physical double-counting analysis is required first."
+    }
+  ],
+  "current_counts": {
+    "ROSSFAST_ADMISSIBLE": 0,
+    "ROSSFAST_NOT_YET_QUALIFIED": 12,
+    "ROSSFAST_NOT_SUPPORTED": 0
+  },
+  "governance": {
+    "no_inheritance_across_hydraulic_families": true,
+    "no_silent_physics_downgrade": true,
+    "fallback_must_be_explicit": true,
+    "state_dependent_admission_requires_transaction_safe_diagnostics": true,
+    "mass_conservation_is_hard": true,
+    "production_admission_requires_full_envelope_evidence": true
+  },
+  "next_update_trigger": "Update a row only when a separately frozen qualification gate changes its evidence state; do not infer admission from adjacent rows or similar parameter values."
+}
