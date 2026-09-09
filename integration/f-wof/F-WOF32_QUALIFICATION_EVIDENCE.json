@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF32",
+  "title": "Pure Phase-B Standard-WOFOST Finalize-Rate Qualification Evidence",
+  "base": {
+    "commit": "90020b1d24a3142a86a8c2d5d835e6ae38084df4",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_ACTUAL_PGASS_PREPARE_PROVIDER"
+  },
+  "tested_candidate": "ba00e2fb1c795f3478bbd5edde0f3daeecc5a6d1",
+  "workflow": {
+    "name": "F-WOF32 finalize rates",
+    "run_id": 34310772654,
+    "job_id": 102336803995,
+    "conclusion": "success"
+  },
+  "markers": [
+    "FWOF32_PRODUCTION_DELTA_SINGLE_FINALIZE_RATE_MODULE=PASS",
+    "FWOF32_FWO31_CLOSEOUT_AND_UPSTREAM_RATE_BOUNDARY_LOCK=PASS",
+    "FWOF32_EXACT_PHASE_B_INPUT_AND_PACKET_BOUNDARY_STATIC=PASS",
+    "FWOF32_B110_RATE_FORMULA_AND_CHECK_ORDER_STATIC=PASS",
+    "FWOF32_NO_STATE_MUTATION_PERSISTENT_RATE_WORKSPACE_OR_RUNTIME_TRANSACTION_DEPENDENCY=PASS",
+    "FWOF32_ACCEPTED_WINDOW_PROVENANCE_OWNER_BOUNDARY_STATIC=PASS",
+    "FWOF32_RESTRICTED_DTSUM_AND_CVO_DISCREPANCIES_PERSISTED=PASS",
+    "FWOF32_O0=PASS",
+    "FWOF32_O2=PASS",
+    "FWOF32_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF32_B110_FULL_RATE_PACKET_BITWISE_TRANSCRIPT_EQUIVALENCE=PASS",
+    "FWOF32_STATE_PARAMETERS_PREPARED_AND_AGGREGATES_READ_ONLY=PASS",
+    "FWOF32_B110_RELTR_NEGLIGIBLE_IPTRA_SEMANTICS=PASS",
+    "FWOF32_IDSL0_HAS_NO_DAYLP_DEPENDENCY=PASS",
+    "FWOF32_GLAIEXP_RECOMPUTE_VS_CARRYOVER_CONTRACT=PASS",
+    "FWOF32_CVO_ZERO_STORAGE_ALLOCATION_STRENGTHENING=PASS",
+    "FWOF32_B110_PARTITION_CHECK_FAILS_CLOSED=PASS",
+    "FWOF32_NEGATIVE_DTSUM_RESTRICTED_PROFILE_FAILS_CLOSED=PASS",
+    "FWOF32_INPUT_AND_TABLE_DOMAIN_VALIDATION=PASS",
+    "FWOF32_FINALIZE_RATES_TEST PASS",
+    "FWOF32_FWO31_PREPARE_ASSIMILATION_EXACT_REGRESSION=PASS",
+    "FWOF32_FINALIZE_RATES_GATE PASS"
+  ],
+  "output_sha256": "ba19ecb50b3365065244d6daf3483888875195e6d06ddf36432f5b84452c3584",
+  "F_WOF31_reference_output_sha256": "d4ad755913eb884d5e764499a33fb7937114f82d61dee1a69b03dfb650003335",
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "reference_regions": ["update_dvs_rate", "update_wofost restricted standard route", "chckprt", "chckcbl", "relgrwt", "deaths", "glai"]
+  },
+  "production_delta": [
+    "src/crop/mod_wofost_finalize_rates.f90"
+  ],
+  "qualified_semantics": [
+    "provider is read-only and produces the existing F-WOF26 wofost_one_day_rate_packet_t",
+    "RELTR preserves B1.10 abs(IPTRA)<1e-10 semantics and clamped IQROT/IPTRA ratio otherwise",
+    "IDSL=0 has no DAYLP dependency; IDSL=1 uses source photoperiod reduction",
+    "raw DVR is produced before F-WOF26 anthesis first-crossing truncation",
+    "maintenance respiration, Q10 response, partitioning, conversion factor and organ growth preserve B1.10 arithmetic ordering",
+    "B1.10 CHCKPRT and CHCKCBL criteria are retained as fail-closed checks",
+    "water/high-LAI leaf death, root/stem death, leaf ageing and SLA/GLAI sink adjustment preserve the restricted source route",
+    "LAIEXP<6 recomputes GLAIEXP; LAIEXP>=6 emits recomputed=false so F-WOF26 consumes the owner compatibility carryover",
+    "no persistent rate workspace or full legacy WOFOST_rates object is introduced"
+  ],
+  "qualified_strengthenings": [
+    {
+      "id": "F-WOF32-CVO-ZERO-NONZERO-FO",
+      "rule": "FO>0 with CVO<=0 fails closed rather than silently omitting the storage-organ conversion term"
+    },
+    {
+      "id": "F-WOF32-NEGATIVE-DTSUM-OUTSIDE-RESTRICTED-PACKET",
+      "rule": "negative evaluated DTSMTB output fails closed because the already-qualified F-WOF26 restricted packet contract is nonnegative"
+    }
+  ],
+  "accepted_window_provenance_boundary": {
+    "consumer_semantic_type": "wofost_accepted_window_aggregates_t",
+    "provider_accumulates_trials": false,
+    "runtime_must_supply_same_window_same_accepted_trajectory": true,
+    "rejected_trials_must_contribute_zero": true,
+    "runtime_lineage_binding_implemented": false,
+    "end_to_end_provenance_qualified": false
+  },
+  "invariant_audit": {
+    "2_kernel_separate_from_IO": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS_NO_STATE_ADDED",
+    "5_scratch_per_worker": "PASS_NO_PERSISTENT_RATE_WORKSPACE",
+    "7_transactional_steps": "PASS_DESIGN_PROVIDER_READ_ONLY; RUNTIME_LINEAGE_HELD",
+    "8_replay_and_warm_start": "PASS_PROVIDER_DETERMINISTIC_INPUT_OUTPUT",
+    "9_generic_time": "PASS_NO_CALENDAR_DEPENDENCY; DAILY_CROP_EVENT_SEMANTICS_RETAINED_OUTSIDE_PROVIDER",
+    "16_MultiSWAP_primary": "PASS_SHAREABLE_PARAMETERS_AND_STATELESS_PROVIDER",
+    "21_reuse_SWAP_physics": "PASS_SOURCE_BOUND_RESTRICTED_WOFOST",
+    "23_physics_policy_separation": "PASS",
+    "25_reference_mode": "PASS_BITWISE_SOURCE_TRANSCRIPT_ON_QUALIFIED_FIXTURE",
+    "27_optional_functionality_scales": "PASS_NO_OPTIONAL_ROUTE_STATE_ADDED",
+    "28_runtime_system_composition": "PASS_ACCEPTED_PROVENANCE_REMAINS_RUNTIME_OWNER",
+    "29_no_hidden_dependencies": "PASS",
+    "30_explicit_invariant_check": "PASS_WITH_RUNTIME_PROVENANCE_HOLD"
+  },
+  "qualification_decision": "QUALIFY_RESTRICTED_PURE_PHASE_B_RATE_PROVIDER_WITH_RUNTIME_ACCEPTED_WINDOW_LINEAGE_HOLD",
+  "next_required_seam": "compose the qualified phase-A provider, accepted-window consumer boundary, phase-B provider and F-WOF26 structural candidate in a two-phase crop-window orchestration seam; separately bind accepted IQROT/IPTRA accumulation to transaction/runtime acceptance before end-to-end admission"
+}
