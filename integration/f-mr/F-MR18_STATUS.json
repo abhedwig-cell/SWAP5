@@ -1,22 +1,38 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR18",
   "branch": "work/f-mr18-generic-accepted-commit-receipt",
   "base": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
-  "production_implementation": false,
+  "production_implementation": true,
+  "implementation_commit": "0045a5239adac2e67d59753461264d1fdc3ac6b9",
+  "production_path": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
   "persisted": true,
   "tested": false,
   "qualified": false,
   "gate_A": {
     "name": "GENERIC_COMMIT_HANDOFF_DESIGN_SELECTION",
-    "status": "OPEN",
-    "preferred_candidate": "GENERIC_ACCEPTED_COMMIT_RECEIPT",
-    "postcommit_domain_callback": "DISFAVORED_PENDING_EVIDENCE",
+    "status": "CANDIDATE_IMPLEMENTED_PERSISTED_UNTESTED",
+    "selected_candidate": "GENERIC_ACCEPTED_COMMIT_RECEIPT",
+    "postcommit_domain_callback": "REJECTED_FOR_CURRENT_CANDIDATE",
     "kernel_commit_authority_remains_F_KT": true,
     "domain_specific_imports_allowed": false,
-    "postcommit_expected_error_allowed": false
+    "postcommit_expected_error_allowed": false,
+    "all_receipt_prevalidation_before_F_KT_commit": true,
+    "postcommit_receipt_creation_scalar_assignment_only": true,
+    "postcommit_allocation": false
   },
-  "decision": "PERSISTED_BEFORE_IMPLEMENTATION_OR_TESTING",
-  "status": "GATE_A_OPEN_RECEIPT_CANDIDATE_SELECTED_FOR_SOURCE_BOUND_DESIGN"
+  "scope": {
+    "existing_F_KT_source_changed": false,
+    "existing_F_MR_orchestrator_changed": false,
+    "serialized_MultiSWAP_runtime_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "mass_accounting_changed": false,
+    "domain_payload_in_receipt": false,
+    "persistent_column_state_added": false
+  },
+  "next": "Add an executable Gate A/B harness against real F-KT commit semantics before integrating the optional receipt helper into serialized MultiSWAP runtime.",
+  "decision": "PERSISTED_BEFORE_TESTING",
+  "status": "IMPLEMENTED_PERSISTED_UNTESTED_NOT_QUALIFIED"
 }
