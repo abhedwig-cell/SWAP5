@@ -1,0 +1,52 @@
+name: F-WOF41 materialize production owner persistence API
+
+on:
+  push:
+    branches:
+      - work/f-wof41-production-owner-persistence-api
+    paths:
+      - '.github/workflows/fwof41-materialize-production-owner-api.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize-production-owner-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exact F-WOF40 qualified candidate into production owners
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$(mktemp -d)"
+          trap 'rm -rf "$OUT"' EXIT
+
+          if grep -Fq 'type, public :: fmr_wofost_crop_event_identity_persistence_t' src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 && \
+             grep -Fq 'type, public :: fmr_wofost_crop_transaction_persistence_t' src/runtime/mod_fmr_wofost_crop_transaction.f90; then
+            echo 'FWOF41_PRODUCTION_OWNER_API_ALREADY_MATERIALIZED=PASS'
+            exit 0
+          fi
+
+          python3 tools/fwof40_materialize_persistence_candidate.py \
+            src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 \
+            src/runtime/mod_fmr_wofost_crop_transaction.f90 \
+            "$OUT/mod_fmr_wofost_accepted_window_lineage.f90" \
+            "$OUT/mod_fmr_wofost_crop_transaction.f90"
+
+          cp "$OUT/mod_fmr_wofost_accepted_window_lineage.f90" src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
+          cp "$OUT/mod_fmr_wofost_crop_transaction.f90" src/runtime/mod_fmr_wofost_crop_transaction.f90
+          git diff --check
+          git diff --exit-code -- tools/fwof40_materialize_persistence_candidate.py
+          grep -Fq 'type, public :: fmr_wofost_crop_event_identity_persistence_t' src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
+          grep -Fq 'type, public :: fmr_wofost_crop_transaction_persistence_t' src/runtime/mod_fmr_wofost_crop_transaction.f90
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 src/runtime/mod_fmr_wofost_crop_transaction.f90
+          git commit -m 'feat(F-WOF41): bind owner persistence API in production source'
+          git push origin HEAD:work/f-wof41-production-owner-persistence-api
+          echo 'FWOF41_PRODUCTION_OWNER_API_MATERIALIZED=PASS'
