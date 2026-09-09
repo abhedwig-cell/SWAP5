@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/lmfp09-gate-c2-endpoint-pair.yml
       - experiments/lmfp/run_lmfp09_gate_c_endpoint_pair.py
+      - experiments/lmfp/run_lmfp09_gate_c_endpoint_pair_persisted.py
       - integration/f-lmfp/F-LMFP09_GATE_C2_ENDPOINT_PAIR_ACCEPTANCE.json
   workflow_dispatch:
 
@@ -25,7 +26,7 @@ jobs:
           out="lmfp09-gate-c2-endpoint-pair"
           rm -rf "$out"
           mkdir -p "$out"
-          python3 experiments/lmfp/run_lmfp09_gate_c_endpoint_pair.py \
+          python3 experiments/lmfp/run_lmfp09_gate_c_endpoint_pair_persisted.py \
             "$out/F-LMFP09_GATE_C2_ENDPOINT_PAIR_RESULT.json" \
             | tee "$out/F-LMFP09_GATE_C2_ENDPOINT_PAIR_STDOUT.json"
       - name: Upload Gate C2 evidence
