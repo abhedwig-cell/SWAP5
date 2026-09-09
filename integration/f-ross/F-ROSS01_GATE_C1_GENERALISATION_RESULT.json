@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1_STARINGREEKS_UNIMODAL_MVG_GENERALISATION",
+  "contract": "F-ROSS01_GATE_C1_GENERALISATION_CONTRACT.json",
+  "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
+  "constitutive_scope": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+  "workflow": {
+    "run": 34335930101,
+    "head": "dc955c97155be4d8d6afb6ce226f7b9ad0435b14",
+    "groups": [
+      {"group":"b01-b06","conclusion":"success","artifact":10097795856,"artifact_digest":"sha256:fc389264a423b8a191c3519503cf56a0be3320ec6abcc6b135a28624737009e1"},
+      {"group":"b07-b12","conclusion":"success","artifact":10097783811,"artifact_digest":"sha256:c50d5563dd6112ea3dfe628c8698e6cd43cb752febea7179a5d2fc8fd4e2d2c0"},
+      {"group":"b13-b18","conclusion":"failure","artifact":10097782522,"artifact_digest":"sha256:a68dc373f77b0d2076fb6c161111e509d5069c9ea55b088595615abfa1f3ca80"},
+      {"group":"o01-o06","conclusion":"failure","artifact":10097786170,"artifact_digest":"sha256:5536142c44e4961e56272d2a672edc637c0026276d18cccf38f4e150a0092fd0"},
+      {"group":"o07-o12","conclusion":"success","artifact":10097778958,"artifact_digest":"sha256:565680b65dc7d77d4a0f65761ed8e12c9e8bba17433c3f4b55f2f020509f33b5"},
+      {"group":"o13-o18","conclusion":"failure","artifact":10097799738,"artifact_digest":"sha256:d0b4d22db91ce4776c11222fce0b112cf74757295f7ef197a78a95fdeebefe04"}
+    ]
+  },
+  "aggregate": {
+    "material_count": 36,
+    "pass_count": 31,
+    "fail_count": 5,
+    "failed_materials": ["B13","O01","O05","O14","O15"],
+    "full_table_generation_failures": 0,
+    "wrong_sign_failures": 0,
+    "near_zero_failures": 0,
+    "nan_or_inf_failures": 0,
+    "shared_table_plus_axis_bytes_each": 134160
+  },
+  "failed_material_detail": [
+    {
+      "material":"B13",
+      "failed_metrics":["lookup_failures"],
+      "lookup_failures":4,
+      "max_hybrid_metric":0.00031978866117726403,
+      "p99_hybrid_metric":0.00030266636327122456,
+      "max_abs_error_over_ksatfit":0.00034394362989542107,
+      "classification":"QUALIFICATION_ENDPOINT_GUARD_FAILURE_ONLY_ACCURACY_WITHIN_THRESHOLDS"
+    },
+    {
+      "material":"O01",
+      "failed_metrics":["lookup_failures","max_abs_error_over_ksatfit"],
+      "lookup_failures":4,
+      "max_hybrid_metric":0.0020865786260444294,
+      "p99_hybrid_metric":0.001729273991768675,
+      "max_abs_error_over_ksatfit":0.0009060869802028022,
+      "classification":"TRUE_REPRESENTATION_ACCURACY_FAILURE_PLUS_ENDPOINT_GUARD_FAILURE"
+    },
+    {
+      "material":"O05",
+      "failed_metrics":["lookup_failures","max_abs_error_over_ksatfit"],
+      "lookup_failures":4,
+      "max_hybrid_metric":0.0018773425912168803,
+      "p99_hybrid_metric":0.001555075837142598,
+      "max_abs_error_over_ksatfit":0.001133099302738023,
+      "classification":"TRUE_REPRESENTATION_ACCURACY_FAILURE_PLUS_ENDPOINT_GUARD_FAILURE"
+    },
+    {
+      "material":"O14",
+      "failed_metrics":["max_abs_error_over_ksatfit"],
+      "lookup_failures":0,
+      "max_hybrid_metric":0.0005191762650436742,
+      "p99_hybrid_metric":0.0004658313518145024,
+      "max_abs_error_over_ksatfit":0.0015673854140445455,
+      "classification":"TRUE_REPRESENTATION_ACCURACY_FAILURE"
+    },
+    {
+      "material":"O15",
+      "failed_metrics":["lookup_failures"],
+      "lookup_failures":4,
+      "max_hybrid_metric":0.0003226367942531782,
+      "p99_hybrid_metric":0.00029840842091629054,
+      "max_abs_error_over_ksatfit":0.00018491626746864164,
+      "classification":"QUALIFICATION_ENDPOINT_GUARD_FAILURE_ONLY_ACCURACY_WITHIN_THRESHOLDS"
+    }
+  ],
+  "diagnosis": {
+    "endpoint_guard_issue": "For several materials, exact h=-1 cm probes round-trip through S->h to values infinitesimally wetter than -1 cm, producing a tiny negative log10(-h) table coordinate that the frozen lookup extrapolation guard rejects. This is a qualification-harness endpoint tolerance issue, not evidence of a physical domain failure.",
+    "endpoint_guard_does_not_explain_all_failures": true,
+    "true_accuracy_failure_materials": ["O01","O05","O14"],
+    "important_limit": "The frozen C1 contract is nevertheless failed because any material failure is fail-closed and no post-hoc repair or retuning is allowed on the C1 probes."
+  },
+  "pass": false,
+  "decision": "C1_GENERALISATION_FAILED_GATE_B_REPRESENTATION_NOT_UNIVERSAL_ACROSS_STARINGREEKS_MVG",
+  "production_implementation": false,
+  "scientific_interpretation": "Gate B remains qualified for its B01 scope. C1 demonstrates that the exact same N=129 uniform-log-head representation cannot be promoted unchanged to the complete 36-material Staringreeks unimodal MvG catalog under the frozen absolute-error threshold. This is not yet a RossFast no-go: a bounded revised table coordinate/density representation may be researched in a separate fresh refinement gate.",
+  "scope_guard": "C1 did not test KSATEXM, other SWAP hydraulic model families, saturation switching, heterogeneous profiles, timestep accuracy, processes, bottom boundaries, groundwater, MultiSWAP, real-table response tangents or FullRichards equivalence."
+}
