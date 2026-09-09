@@ -26,6 +26,14 @@ module mod_canonical_contracts
     type(transaction_policy_t) :: transaction
     integer :: max_committed_substeps = 10000
     real(real64) :: progress_tolerance = 0.0_real64
+    ! Generic carrier for a model-owned temporal-indicator budget.  The
+    ! canonical runtime and F-KT transaction core deliberately do not attach
+    ! physical units or estimator semantics to this scalar.  The selected
+    ! model owns that interpretation and must normalize its native indicator
+    ! into the dimensionless F-KT09 certificate surface.  Absence is the
+    ! default; zero is never an implicit budget.
+    logical :: model_temporal_indicator_budget_available = .false.
+    real(real64) :: model_temporal_indicator_budget = 0.0_real64
   end type canonical_numerical_config_t
 
   type, public :: canonical_mass_accounting_t
