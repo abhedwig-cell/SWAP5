@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "scope": "source-bound state-cardinality and process-policy audit before prototype",
+  "primary_source": {
+    "citation": "Ogden FL et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51",
+    "doi": "10.1002/2015WR017126"
+  },
+  "source_bound_findings": {
+    "water_content_discretization": "The method divides theta-space into a user-chosen finite number N of bins between residual water content and effective porosity.",
+    "reported_infiltration_resolution": "The paper states that approximately 150-200 bins between theta_r and theta_e are required to accurately describe infiltration-front profiles, while fewer may suffice if the minimum simulated water content stays above theta_r.",
+    "bin_constitutive_cost": "K(theta) and psi(theta) are evaluated at bin edges and can be precomputed because they are constant for a fixed hydraulic material and bin definition.",
+    "water_regimes": [
+      "surface-connected infiltration fronts",
+      "surface-detached falling slugs",
+      "groundwater-connected capillary fronts",
+      "water simultaneously connected to surface and groundwater or extending indefinitely as initial state"
+    ],
+    "time_integration": "The paper describes one ODE per active bin and generally uses explicit forward Euler time integration, followed by capillary relaxation.",
+    "capillary_relaxation": "The published relaxation operation moves water between theta bins without REV-scale advection and is claimed to conserve mass when implemented with finite-volume transfers.",
+    "root_uptake_reference_policy": "The paper removes transpiration demand from the right-most water-containing bin in the specified root zone first. This is a published FWC process policy, not automatically SWAP5 root-uptake physics."
+  },
+  "bounded_state_assessment": {
+    "fixed_bin_arrays": "BOUNDED_O_NBINS",
+    "recommended_source_bin_count_is_small": false,
+    "reported_typical_infiltration_bins": [150, 200],
+    "multiple_falling_slug_cardinality_bound_found_in_primary_source": false,
+    "dynamic_event_state_hard_bound_established": false,
+    "persistent_state_admission": "OPEN",
+    "interpretation": "A finite theta-bin discretization bounds the base per-material/bin arrays, but this alone does not prove a hard bound on all dynamic front/slug objects under repeated forcing. SWAP5 must not infer bounded persistent state until the official implementation or an equation-level reconstruction establishes the exact representation and maximum multiplicity."
+  },
+  "SWAP5_process_policy_separation": {
+    "root_uptake": "Do not inherit right-most-bin-first extraction as hidden solver physics. SWAP root uptake should remain an external conservative sink contract unless separately scientifically qualified.",
+    "evaporation": "Accept realized or potential evaporation through the shared process/boundary contract; do not duplicate surface-process ownership inside FWC.",
+    "groundwater": "Published groundwater-front dynamics are evidence of physical capability, not yet the SWAP5 imposed-head/imposed-flux interface contract.",
+    "capillary_relaxation": "May remain an internal FWC state-representation operation only if its transfers are exactly ledgered, bounded in work and transaction-safe."
+  },
+  "next_gates": [
+    "inspect the official 2015 C implementation to determine exact arrays/data structures for infiltration fronts, falling slugs and groundwater fronts",
+    "prove or impose a hard maximum dynamic-state cardinality per theta bin and per soil layer without changing physical meaning",
+    "measure capillary-relaxation complexity and establish whether it is O(Nbins), O(Nbins log Nbins) or worse in the actual implementation",
+    "qualify smaller or nonuniform theta-bin layouts against the 150-200-bin reference before claiming MultiSWAP memory suitability",
+    "externalize SWAP root uptake and other shared process physics rather than copying the historical FWC process policy"
+  ],
+  "decision": "FWC_RESEARCH_CONTINUES_STATE_BASE_IS_FINITE_BUT_DYNAMIC_EVENT_BOUND_NOT_YET_PROVEN",
+  "production_implementation": false,
+  "status": "PERSISTED_BEFORE_PROTOTYPE"
+}
