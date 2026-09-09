@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF36",
   "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
@@ -7,18 +7,37 @@
   "production_implementation": false,
   "persisted": true,
   "tested": false,
-  "qualified": false,
+  "qualified": true,
+  "qualification_scope": "GATE_A_OWNER_AND_ATOMICITY_ONLY",
   "gate_A": {
     "name": "EXECUTION_POINT_AND_COMPOSITION_ATOMICITY",
-    "status": "OPEN",
+    "status": "QUALIFIED_NEGATIVE_SHARED_RUNTIME_OWNER_SEAM_REQUIRED",
+    "evidence": "integration/f-wof/F-WOF36_GATE_A_OWNER_ATOMICITY_EVIDENCE.json",
     "QROT_dimensional_mapping_source_bound": true,
     "PTRA_restricted_producer_qualified": true,
     "current_root_sink_is_preformed_trial_forcing": true,
     "current_multiswap_runtime_owns_checkpoint_and_commit": true,
     "current_multiswap_runtime_owns_PTRA": false,
     "current_runtime_has_trial_safe_WOFOST_accumulator": false,
-    "naive_postcommit_outer_wrapper_admitted": false
+    "naive_postcommit_outer_wrapper_admitted": false,
+    "precommit_WOFOST_admission_admitted": false,
+    "generic_commit_associated_runtime_seam_required": true
   },
-  "decision": "GATE_A_SOURCE_BOUND_READY_FOR_EXECUTION_POINT_AND_ATOMICITY_DESIGN",
-  "status": "PERSISTED_BEFORE_PRODUCTION_IMPLEMENTATION_OR_TESTING"
+  "owner_handoff": {
+    "workstream": "F-MR",
+    "suggested_work_unit": "F-MR18",
+    "F_WOF36_production_work_blocked": true,
+    "resume_condition": "A generic transaction-safe commit-associated accepted-side-effect or observer seam is qualified by the runtime owner on the composed postimage."
+  },
+  "scope_holds": {
+    "physical_PTRA_QROT_binding_implemented": false,
+    "mass_accounting_changed": false,
+    "root_uptake_physics_changed": false,
+    "ET_physics_changed": false,
+    "F_KT_commit_authority_changed": false,
+    "calendar_dependency_added": false,
+    "canonical_promotion": false
+  },
+  "decision": "GATE_A_CLOSED_FAIL_CLOSED_HANDOFF_TO_GENERIC_RUNTIME_OWNER",
+  "status": "QUALIFIED_GATE_A_BLOCKED_PENDING_F_MR_COMMIT_ASSOCIATED_SEAM"
 }
