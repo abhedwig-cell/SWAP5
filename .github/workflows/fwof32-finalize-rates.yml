@@ -1,0 +1,24 @@
+name: F-WOF32 finalize rates
+
+on:
+  push:
+    branches:
+      - work/f-wof32-finalize-rate-provider
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  finalize-rates:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-WOF32 gate
+        run: bash tests/fwof/run_fwof32_finalize_rates_gate.sh
