@@ -16,7 +16,9 @@
       "SWAP/wofost.f90:1348-1404 assimilation actual-PGASS path",
       "SWAP/wofost.f90:1470-1529 TOTASS",
       "SWAP/wofost.f90:1533-1622 ASSIM",
-      "SWAP/variables.f90:41-45 parameters::pi"
+      "SWAP/variables.f90:41-45 parameters::pi",
+      "SWAP/MOD_cropdevelopment.f90:829-839,887-907 CO2AMAXTB/CO2EFFTB 0..2 response ranges",
+      "SWAP/MOD_meteo.f90:386-389 detailed-crop RAD 0..5e6 input range"
     ]
   },
   "admitted_profile": {
@@ -55,9 +57,9 @@
   },
   "fail_closed_rules": [
     "all used state, parameter-table results and forcing values must be finite",
-    "RAD and DIFPP must be nonnegative",
+    "RAD must lie in the source-bound detailed-crop range 0..5e6 J m-2 d-1 and DIFPP must be nonnegative",
     "DAYL must lie in 0..24 hours",
-    "FCO2EFF and FCO2AMAX must be nonnegative",
+    "FCO2EFF and FCO2AMAX must lie in the source-bound response-factor range 0..2",
     "if AMAX<=0 or LAI<=0, DTGA is exactly zero and unused solar denominator checks are skipped",
     "if RAD=0 on an otherwise active path, DTGA is exactly zero",
     "when active irradiation is evaluated require DSINBE>0 and positive SINB at every Gauss time point before division",
