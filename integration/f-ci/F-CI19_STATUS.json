@@ -1,9 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workunit": "F-CI19",
-  "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission Planning",
-  "status": "QUALIFIED_CANDIDATE_A_SOURCE_AND_COMPOSITION_READY_FOR_CANONICAL_POSTIMAGE_QUALIFICATION",
-  "phase": "SOURCE_LINEAGE_AND_REACHABILITY_QUALIFIED_POSTIMAGE_NOT_YET_QUALIFIED",
+  "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission",
+  "status": "QUALIFIED_RESTRICTED_GOVERNED_POSTIMAGE_READY_FOR_CANONICAL_FAST_FORWARD",
+  "phase": "CANONICAL_POSTIMAGE_MATERIALIZED_TESTED_AND_QUALIFIED",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_parent": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
   "candidate_a": {
     "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
     "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
@@ -11,15 +13,29 @@
     "composition_preservation": "PASS",
     "source_lineage_reachability": "PASS"
   },
+  "governed_canonical_postimage": {
+    "commit": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "governance_parent": "2c0a627906cf718452236dab27d3a92082329b1c",
+    "materialization_only_src_reference": true,
+    "src_tree_identity": "PASS",
+    "reference_tree_identity": "PASS",
+    "governance_tree_identity": "PASS"
+  },
   "decisive_evidence": {
-    "composition_workflow_run": 34319928251,
-    "composition_job": 102364081577,
-    "composition_artifact": 10091475248,
-    "composition_artifact_sha256": "cec8b32ae9da710405653611302d24b5e91fcec1c5736df3ccb6fb6a442b3eef",
+    "candidate_composition_workflow_run": 34319928251,
+    "candidate_composition_job": 102364081577,
+    "candidate_composition_artifact": 10091475248,
+    "candidate_composition_artifact_sha256": "cec8b32ae9da710405653611302d24b5e91fcec1c5736df3ccb6fb6a442b3eef",
     "reachability_workflow_run": 34320967298,
     "reachability_job": 102367277768,
     "reachability_artifact": 10091832379,
-    "reachability_artifact_sha256": "49232f699cff28d2f479955093b1d4be7f4be89d8e69c0dccdd5c5bc86de4c96"
+    "reachability_artifact_sha256": "49232f699cff28d2f479955093b1d4be7f4be89d8e69c0dccdd5c5bc86de4c96",
+    "canonical_postimage_workflow_run": 34321916045,
+    "canonical_postimage_job": 102370257397,
+    "canonical_postimage_tested_head": "68ad047c17334b9b5aa4593a0c831111e331b376",
+    "canonical_postimage_artifact": 10092198457,
+    "canonical_postimage_artifact_sha256": "ea42b3d8985d0fd23dc8f5a50051d1bca1f62221d1200325f337d1d2397faf07",
+    "canonical_postimage_terminal_marker": "FCI19_CANONICAL_POSTIMAGE_GATE PASS_RESTRICTED_GOVERNED_CANDIDATE"
   },
   "frontier_reconciliation": {
     "F_SI22": "EVIDENCE_ONLY_NO_PRODUCTION_DELTA",
@@ -34,7 +50,7 @@
   "hard_holds": [
     "production Richards model-owned temporal certificate remains not admitted",
     "general groundwater predictor-corrector coupling remains not admitted",
-    "WOFOST full physical production binding remains outside Candidate A",
+    "WOFOST full physical production binding remains outside this canonical scope",
     "parallel real-physics execution remains not admitted",
     "BALANCED THROUGHPUT and FALLBACK remain not admitted",
     "subdaily and multiday active snow remain not admitted",
@@ -43,18 +59,22 @@
     "irrigation process admission does not imply runtime composition",
     "LayeredMFP and VZAA are not production solver admissions"
   ],
-  "next": {
-    "action": "MATERIALIZE_AND_QUALIFY_EXACT_CANONICAL_POSTIMAGE_CANDIDATE",
-    "canonical_ref_move_allowed_now": false,
-    "reason": "The source postimage and inherited claims are qualified, but governance plus exact source/reference tree composition has not yet been tested as one exact postimage."
+  "canonical_promotion": {
+    "current_canonical_head_verified": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "postimage_line_is_descendant": true,
+    "fast_forward_required": true,
+    "force_update_allowed": false,
+    "canonical_ref_move_allowed_now": true,
+    "claim_scope": "RESTRICTED_ONLY"
   },
   "state": {
     "implemented": true,
     "persisted": true,
     "tested": true,
     "source_lineage_qualified": true,
-    "canonical_postimage_materialized": false,
-    "canonical_postimage_qualified": false,
+    "canonical_postimage_materialized": true,
+    "canonical_postimage_qualified": true,
     "canonical_ref_advanced": false
-  }
+  },
+  "next": "Fast-forward integration/f-ci-canonical to this qualified closeout line without force, then record the final canonical head and keep all hard holds explicit."
 }
