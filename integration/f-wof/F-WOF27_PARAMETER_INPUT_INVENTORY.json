@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted Standard-WOFOST Rate Evaluator Parameter and Input Inventory",
+  "scope": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false
+  },
+  "source_provenance": {
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "parameter_declarations": "SWAP/wofost.f90:35-143",
+    "legacy_input_ranges": "SWAP/wofost.f90:433-704",
+    "phenology_rates": "SWAP/wofost.f90:817-929",
+    "dry_matter_and_organ_rates": "SWAP/wofost.f90:933-1107",
+    "assimilation": "SWAP/wofost.f90:1348-1622",
+    "partition_and_leaf_helpers": "SWAP/wofost.f90:1626-1848",
+    "AFGEN": "SWAP/functions.f90:66-108"
+  },
+  "immutable_rate_parameters": {
+    "phenology": [
+      {
+        "name": "IDSL",
+        "admitted": [0, 1],
+        "use": "select temperature-only or temperature-plus-photoperiod vegetative development"
+      },
+      {
+        "name": "DLO",
+        "presence": "IDSL=1 only",
+        "use": "upper photoperiod threshold"
+      },
+      {
+        "name": "DLC",
+        "presence": "IDSL=1 only",
+        "use": "lower photoperiod threshold"
+      },
+      {
+        "name": "TSUMEA",
+        "use": "vegetative development denominator"
+      },
+      {
+        "name": "TSUMAM",
+        "use": "generative development denominator"
+      },
+      {
+        "name": "DTSMTB",
+        "type": "piecewise-linear table",
+        "x": "daily mean temperature",
+        "y": "daily effective temperature-sum increment"
+      }
+    ],
+    "assimilation_and_canopy": [
+      {
+        "name": "KDIF",
+        "use": ["canopy light extinction in ASSIM", "critical-LAI leaf-death calculation"]
+      },
+      {
+        "name": "EFF",
+        "use": "initial light-use efficiency before CO2 response factor"
+      },
+      {
+        "name": "CFRDM",
+        "use": "gross-assimilation CO2-to-dry-matter conversion"
+      },
+      {
+        "name": "AMAXTB",
+        "type": "piecewise-linear table",
+        "x": "DVS",
+        "y": "maximum assimilation rate"
+      },
+      {
+        "name": "TMPFTB",
+        "type": "piecewise-linear table",
+        "x": "daytime mean temperature",
+        "y": "AMAX temperature factor"
+      },
+      {
+        "name": "TMNFTB",
+        "type": "piecewise-linear table",
+        "x": "running minimum temperature",
+        "y": "daily gross assimilation correction factor"
+      },
+      {
+        "name": "RELMF",
+        "use": "actual-trajectory attainable-yield multiplier; B1.10 actual PGASS always applies it"
+      }
+    ],
+    "conversion_and_respiration": [
+      "CVR",
+      "CVS",
+      "CVL",
+      "CVO",
+      "Q10",
+      "RMR",
+      "RML",
+      "RMS",
+      "RMO",
+      "RFSETB[DVS->maintenance_respiration_factor]"
+    ],
+    "partitioning": [
+      "FRTB[DVS->root_partition]",
+      "FLTB[DVS->leaf_partition]",
+      "FSTB[DVS->stem_partition]",
+      "FOTB[DVS->storage_partition]"
+    ],
+    "death_and_leaf_rates": [
+      "PERDL",
+      "RDRRTB[DVS->relative_root_death]",
+      "RDRSTB[DVS->relative_stem_death]",
+      "TBASE",
+      "RGRLAI",
+      "SLATB[DVS->specific_leaf_area]"
+    ],
+    "view_assembly_parameters_not_rate_equation_parameters": [
+      {
+        "name": "SSA",
+        "use": "derive current total LAI from leaf cohorts plus stem area"
+      },
+      {
+        "name": "SPA",
+        "use": "derive current total LAI from leaf cohorts plus storage-organ area"
+      }
+    ],
+    "structural_integrator_parameters_not_rate_provider_parameters": [
+      {
+        "name": "SPAN",
+        "owner": "F-WOF26 lifespan death during structural cohort update"
+      },
+      {
+        "name": "DVSEND",
+        "owner": "F-WOF26 structural DVS cap / lifecycle composition"
+      }
+    ]
+  },
+  "explicit_state_view": {
+    "required_scalars": [
+      "DVS",
+      "WRT actual root biomass",
+      "WST actual stem biomass",
+      "WSO actual storage biomass",
+      "WLV reconstructed as ordered sum of active LV cohorts",
+      "LAI reconstructed as sum(LV*SLA)+SSA*WST+SPA*WSO",
+      "LAIEXP"
+    ],
+    "not_required": [
+      "TSUM as a rate feedback input",
+      "anthesis flag because F-WOF26 owns first-crossing truncation",
+      "leaf cohort arrays themselves after WLV and LAI views have been assembled",
+      "leaf ages because lifespan death remains structural",
+      "nofd/atmin7 after the running minimum-temperature context has been prepared",
+      "root-depth or root-distribution state for admitted SWRD=1 rate equations"
+    ],
+    "mutation_allowed": false
+  },
+  "explicit_forcing_and_window_context": {
+    "prepare_assimilation": [
+      "TAVD",
+      "RAD",
+      "DAYL",
+      "SINLD",
+      "COSLD",
+      "DIFPP",
+      "DSINBE",
+      "FCO2EFF",
+      "FCO2AMAX",
+      "TMNR from F-WOF26 candidate-local Tmin history"
+    ],
+    "finalize_rates": [
+      "TAV",
+      "DAYLP when IDSL=1",
+      "accepted IQROT_WINDOW",
+      "accepted IPTRA_WINDOW",
+      "prepared actual PGASS"
+    ],
+    "calendar_inputs": [],
+    "latitude_input": [],
+    "weather_cursor_or_record_id": []
+  },
+  "legacy_inputs_explicitly_excluded_from_restricted_provider": [
+    {
+      "name": "KDIR",
+      "reason": "read by legacy read_wofost but no WOFOST rate equation in the scoped source reads the variable; ASSIM derives direct-beam extinction from KDIF and solar height"
+    },
+    {
+      "name": "TDWI",
+      "reason": "initialization only, not one-day rate evaluation"
+    },
+    {
+      "name": "SW_POTRELMF",
+      "reason": "controls potential shadow PGASS only; actual B1.10 PGASS always multiplies RELMF"
+    },
+    {
+      "name": "SW_HARV",
+      "reason": "lifecycle/harvest logic, not rate packet production"
+    },
+    {
+      "name": "vernalization parameters",
+      "reason": "IDSL=2 excluded from first profile"
+    },
+    {
+      "name": "nutrient parameters and NNI/NSLA/RDRNS",
+      "reason": "nutrient route excluded"
+    },
+    {
+      "name": "AERATECRIT/SWWRTNONOX/IALPWET/WRTMAX",
+      "reason": "SWRD=3 and oxygen-sensitive root-growth branches excluded by admitted SWRD=1 profile"
+    }
+  ],
+  "table_representation_contract": {
+    "legacy": "AFGEN consumes fixed macroptb alternating x,y arrays, clamps below/above range, and treats a decreasing x as an end-of-active-table sentinel",
+    "target": "shared immutable compact piecewise-linear tables containing only active x,y knots",
+    "target_interpolation": "clamp to first/last y outside active x range and linearly interpolate between bracketing knots",
+    "target_validation": [
+      "at least one active knot",
+      "finite x and y values",
+      "strictly increasing x for adjacent active knots",
+      "no macroptb sentinel or unused tail stored in kernel parameter objects"
+    ],
+    "reason": "preserve AFGEN behavior without importing parser-era fixed array layout into the kernel"
+  },
+  "fail_closed_parameter_strengthening": [
+    {
+      "legacy_gap": "DLO and DLC are each accepted independently in [0,24] but IDSL=1 divides by DLO-DLC",
+      "target_rule": "require DLO>DLC when IDSL=1"
+    },
+    {
+      "legacy_gap": "TSUMEA and TSUMAM input ranges include zero although development equations divide by them",
+      "target_rule": "require the active phase denominator to be strictly positive; normally validate both >0 for the admitted standard parameter set"
+    },
+    {
+      "legacy_gap": "KDIF input range includes zero although ASSIM and critical-LAI death use it as a divisor or extinction denominator",
+      "target_rule": "require KDIF>0 for an active crop rate provider"
+    },
+    {
+      "legacy_gap": "CFRDM input range includes zero although PGASS conversion divides by CFRDM",
+      "target_rule": "require CFRDM>0"
+    },
+    {
+      "legacy_gap": "CVR/CVS/CVL ranges include zero although CVF divides by them; CVO is guarded only by setting the storage term to zero when CVO<=0",
+      "target_rule": "require CVR>0, CVS>0, CVL>0 and require CVO>0 whenever evaluated FO>0; do not silently reinterpret nonzero storage allocation with CVO=0"
+    },
+    {
+      "legacy_gap": "Q10 range includes zero and the exponent may be negative",
+      "target_rule": "require Q10>0"
+    },
+    {
+      "legacy_gap": "TOTASS/ASSIM divide by DSINBE and instantaneous SINB on active assimilation paths",
+      "target_rule": "validate explicit solar geometry as finite and denominator-safe whenever AMAX>0 and LAI>0; zero-assimilation short circuits may avoid unused denominator checks"
+    }
+  ],
+  "gate_results": {
+    "F_WOF27_G01_complete_parameter_inventory": "PASS_SOURCE_BOUND_FOR_RESTRICTED_PROFILE",
+    "F_WOF27_G02_complete_state_view_inventory": "PASS_SOURCE_BOUND_FOR_RESTRICTED_PROFILE",
+    "production_rate_evaluator": "NOT_IMPLEMENTED"
+  }
+}
