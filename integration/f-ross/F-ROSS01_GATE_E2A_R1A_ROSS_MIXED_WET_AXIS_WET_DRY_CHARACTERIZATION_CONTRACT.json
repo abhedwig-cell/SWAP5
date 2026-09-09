@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R1A_ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZATION",
+  "status": "CHARACTERIZATION_CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
+    "DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION_REJECTED",
+    "WET_AXIS_CAUSALITY_CONFIRMED_FOR_STRUCTURAL_E2A_FAILURES_READY_FOR_SEPARATE_ROSS_MIXED_NEAR_SATURATION_AXIS_RESEARCH"
+  ],
+  "purpose": "Test whether a Ross-consistent mixed wet coordinate removes the B12/O13 WET_DRY interpolation failure before any full near-saturation face representation is reconsidered.",
+  "physical_scope": {
+    "hydraulic_family": "Staringreeks 2018 unimodal base MvG with KSATFIT, H_ENPR=0 and KSATEXM disabled",
+    "face_length_cm": 10.0,
+    "region": "WET_DRY only",
+    "wet_head_cm": [-1.0, 1.0],
+    "dry_head_cm": [-10000.0, -1.0],
+    "materials": ["B12", "O13", "B01", "O14"],
+    "oracle": "unchanged steady-Darcy integral/root law from E2A"
+  },
+  "fixed_dry_axis": {
+    "coordinate": "u=log10(-h)",
+    "node_count": 241,
+    "head_range_cm": [-10000.0, -1.0],
+    "reason": "R0 showed p99 dry-only errors around 4e-5 for B12/O13 and no material improvement of the full error from Nu=241 to 961."
+  },
+  "candidate_wet_axis": {
+    "unsaturated_branch": "uniform effective saturation S from S(h=-1 cm) to S=1, mapped back to h with the exact base-MvG inverse",
+    "saturated_branch": "uniform pressure head h from 0 to +1 cm",
+    "shared_transition_node": "h=0 cm appears once logically and is shared by both branches",
+    "persistent_state": "pressure head remains canonical persistent state; S is lookup/worker coordinate only",
+    "candidates": [
+      {"id": "U17_SAT17", "unsaturated_nodes_including_h0": 17, "saturated_nodes_including_h0": 17, "logical_unique_wet_nodes": 33},
+      {"id": "U33_SAT17", "unsaturated_nodes_including_h0": 33, "saturated_nodes_including_h0": 17, "logical_unique_wet_nodes": 49},
+      {"id": "U33_SAT33", "unsaturated_nodes_including_h0": 33, "saturated_nodes_including_h0": 33, "logical_unique_wet_nodes": 65}
+    ],
+    "selection_rule": "smallest listed candidate passing every frozen metric for all four materials; no new density or coordinate may be introduced after execution"
+  },
+  "stored_face_quantity": {
+    "quantity": "float32 log mobility M=q/(L+h_above-h_below)",
+    "interpolation": "bilinear in binary64 after promoting four float32 logM nodes",
+    "direct_M": "not a candidate in R1A because R0 did not identify the log transform as dominant"
+  },
+  "probe_plan": {
+    "fresh_sobol_per_material": 384,
+    "fresh_seed_rule": "uint32(first8hex(sha256('F-ROSS01-E2A-R1A:'+material)))",
+    "distribution": "wet branch sampled uniformly in physical h over [-1,+1], dry branch uniformly in u over [0,4]",
+    "targeted_wet_heads_cm": [-0.1, -0.01, -0.001, -0.000001, -0.000000001, 0.0, 0.000000001, 0.000001, 0.001, 0.01, 0.1],
+    "targeted_dry_heads_cm": [-2.0, -10.0, -100.0, -1000.0],
+    "parent_structural_witnesses": [
+      {"material": "B12", "h_above_cm": -0.011933669447898865, "h_below_cm": -1.994237053678148},
+      {"material": "O13", "h_above_cm": -0.007651396095752716, "h_below_cm": -141.70309854948502}
+    ]
+  },
+  "frozen_metrics": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "node_evaluation_failures": 0
+  },
+  "required_diagnostics": [
+    "max and p99 hybrid error per candidate and material",
+    "max absolute flux error over KSATFIT",
+    "worst probe including mixed wet branch, wet cell and dry cell",
+    "separate maxima for h<0 and h>=0 wet branches",
+    "explicit +/-1e-9 cm transition witnesses",
+    "candidate sparse-node count and conceptual full-table shared-memory formula",
+    "no per-column table state"
+  ],
+  "hard_guards": [
+    "This is characterization, not qualification or production admission.",
+    "The E2A direct-head failure remains preserved.",
+    "No physical theta(h), K(h) or KSATFIT law is changed.",
+    "No Class-B H_ENPR/SVG2006 work is reopened.",
+    "No dry-axis retuning is allowed in this gate.",
+    "No threshold relaxation is allowed after seeing results.",
+    "A passing WET_DRY R1A permits only a separately frozen full-region R1B characterization."
+  ],
+  "exit": {
+    "pass": "ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZED_READY_FOR_FULL_NEAR_SATURATION_REGION_R1B",
+    "fail": "ROSS_MIXED_WET_AXIS_WET_DRY_REJECTED_RECONCILE_BEFORE_ANY_FULL_REGION_R1B"
+  },
+  "relevant_invariants": [3,4,5,7,8,13,16,20,23,24,25,26,27,30]
+}
