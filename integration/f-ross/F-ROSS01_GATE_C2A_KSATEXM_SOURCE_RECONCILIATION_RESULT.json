@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_KSATEXM_SOURCE_RECONCILIATION",
+  "pass": true,
+  "decision": "SWAP431_KSATEXM_LAW_SOURCE_BOUND_AND_READY_FOR_C2A_CHARACTERIZATION",
+  "hash_verification": {
+    "outer_zip_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_MvG_functions_f90_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "readswap_f90_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "Staringreeks_2018_csv_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae"
+  },
+  "source_locations": {
+    "readswap_threshold_constant": "readswap.f90:89-90",
+    "readswap_activation_and_threshold_construction": ["readswap.f90:497-511", "readswap.f90:678-692"],
+    "fill_cofgen_node_activation": "MOD_MvG_functions.f90:103-108",
+    "hconduc_ksatexm_branch": "MOD_MvG_functions.f90:578-592",
+    "dhconduc_implicit_limitation": "MOD_MvG_functions.f90:718-725",
+    "fluseksatexm_comment": "variables.f90:361-363"
+  },
+  "reconciled_equations": {
+    "m": "1-1/n",
+    "h_thr_cm": -2.0,
+    "S_thr": "(1+|alpha*h_thr|^n)^(-m)",
+    "K_thr": "KSATFIT*S_thr^lambda*(1-(1-S_thr^(1/m))^m)^2",
+    "extension_fraction": "f=(S-S_thr)/(1-S_thr)",
+    "K_for_S_gt_S_thr": "f*KSATEXM+(1-f)*K_thr",
+    "K_at_S_eq_S_thr": "base Mualem-VG K, equal to K_thr",
+    "K_limit_as_S_to_1": "KSATEXM"
+  },
+  "activation_contract": {
+    "input_flag_required": true,
+    "ksatexm_must_exceed_ksatfit": true,
+    "k_thr_must_be_less_than_ksatexm": true,
+    "macropore_mode_must_be_off_for_hconduc_extension": true
+  },
+  "catalog_reconciliation": {
+    "material_count": 36,
+    "all_h_enpr_equal_zero": true,
+    "all_ksatexm_greater_than_ksatfit": true,
+    "ksatexm_over_ksatfit_min": 2.0,
+    "ksatexm_over_ksatfit_min_material": "B13",
+    "ksatexm_over_ksatfit_max": 80.00000000000001,
+    "ksatexm_over_ksatfit_max_material": "B10",
+    "s_thr_min": 0.9947912433347297,
+    "s_thr_min_material": "B05",
+    "s_thr_max": 0.9998867922631897,
+    "s_thr_max_material": "O14",
+    "k_thr_over_ksatfit_min": 0.0444131444175154,
+    "k_thr_over_ksatfit_min_material": "O13",
+    "k_thr_over_ksatfit_max": 0.9899422776742576,
+    "k_thr_over_ksatfit_max_material": "O05",
+    "normalized_extension_slope_max_material": "O12"
+  },
+  "architectural_implications": {
+    "mass_ledger_change": false,
+    "persistent_column_state_change": false,
+    "shared_material_parameter_change": true,
+    "runtime_lookup_complexity_change": false,
+    "global_nonlinear_iterations_required": false,
+    "legacy_dhconduc_is_not_an_authoritative_tangent_oracle_for_extension": true
+  },
+  "scope_limit": "Source reconciliation only. No C2A interpolation qualification, no h>-1 cm qualification and no non-zero H_ENPR qualification."
+}
