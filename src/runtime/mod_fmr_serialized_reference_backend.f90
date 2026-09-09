@@ -11,7 +11,7 @@ module mod_fmr_serialized_reference_backend
        KERNEL_STATUS_NOT_ADMITTED
   use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_OPTIONAL_STATE_NONE, FMR_OPTIONAL_STATE_RICHARDS_TEMPORAL_HISTORY
+       FMR_NUMERICAL_CONTINUATION_NONE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -46,7 +46,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
 
-  ! Optional F-KT-owned numerical continuation state for F-SI25.  This is a
+  ! Optional F-KT-owned numerical continuation state for F-SI25. This is a
   ! distinct dynamic state layout: ordinary B1.10 columns keep the base type
   ! above and therefore carry no derivative vector or optional descriptor.
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_temporal_indicator_state_t
@@ -290,19 +290,19 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
 
-  logical function state_matches_optional_layout(state, temporal_history_enabled) result(matches)
+  logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled
 
     select type (state)
-    class is (fmr_b110_temporal_indicator_state_t)
+    type is (fmr_b110_temporal_indicator_state_t)
       matches = temporal_history_enabled
     class is (fmr_b110_physical_state_t)
       matches = .not. temporal_history_enabled
     class default
       matches = .false.
     end select
-  end function state_matches_optional_layout
+  end function state_matches_numerical_continuation_layout
 
   subroutine clear_snow_preparation(model)
     type(fmr_serialized_reference_model_t), intent(inout) :: model
@@ -332,7 +332,7 @@ contains
     model%snow_outer_t1 = t1
     call committed%snapshot(snapshot, available)
     if (.not. available) return
-    if (.not. state_matches_optional_layout(snapshot, model%temporal_indicator_history_enabled)) return
+    if (.not. state_matches_numerical_continuation_layout(snapshot, self_or_false(model))) return
 
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
@@ -353,6 +353,11 @@ contains
       return
     end select
   end subroutine prepare_snow_outer_event
+
+  pure logical function self_or_false(model) result(enabled)
+    type(fmr_serialized_reference_model_t), intent(in) :: model
+    enabled = model%temporal_indicator_history_enabled
+  end function self_or_false
 
   subroutine fmr_serialized_backend_initialize(self, top_boundary)
     class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
@@ -390,10 +395,10 @@ contains
       return
     end if
 
-    select case (template%optional_state_layout_id)
-    case (FMR_OPTIONAL_STATE_NONE)
+    select case (template%numerical_continuation_layout_id)
+    case (FMR_NUMERICAL_CONTINUATION_NONE)
       self%model%temporal_indicator_history_enabled = .false.
-    case (FMR_OPTIONAL_STATE_RICHARDS_TEMPORAL_HISTORY)
+    case (FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
       self%model%temporal_indicator_history_enabled = .true.
     case default
       result = kernel_result_t()
@@ -613,7 +618,7 @@ contains
 
     self%last_observation%temporal_current_derivative_available = .true.
     ! Deliberately do not populate outcome%temporal_certificate_available or
-    ! outcome%temporal_indicator here.  F-SI25 B_inf is unnormalised head-domain
+    ! outcome%temporal_indicator here. F-SI25 B_inf is unnormalised head-domain
     ! evidence; F-KT09 certificate admission remains a separate scientific gate.
     ok = .true.
   end subroutine evaluate_temporal_history_service
@@ -638,7 +643,7 @@ contains
         .not. associated(self%hydraulic_parameters) .or. .not. associated(self%constitutive) .or. &
         .not. associated(self%source_sink) .or. .not. associated(self%top_boundary)) return
     if (self%root_extraction_active .and. .not. associated(self%root_sink)) return
-    if (.not. state_matches_optional_layout(state, self%temporal_indicator_history_enabled)) return
+    if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
 
