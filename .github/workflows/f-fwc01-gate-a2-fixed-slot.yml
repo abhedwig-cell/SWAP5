@@ -1,0 +1,46 @@
+name: F-FWC01 Gate A2 Fixed-Slot Fail-Closed Bound
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-a2-fixed-slot.yml
+      - experiments/fwc/fwc01_gate_a2_fixed_slot_fail_closed.py
+      - integration/f-fwc/F-FWC01_GATE_A2_FIXED_SLOT_FAIL_CLOSED_BOUND_PRECOMMIT.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen A2 fixed-slot fail-closed probe
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-a2"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_a2_fixed_slot_fail_closed.py \
+            "$out/F-FWC01_GATE_A2_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_A2_STDOUT.txt"
+      - name: Assert frozen decision
+        run: |
+          python3 - <<'PY'
+          import json
+          p='fwc01-gate-a2/F-FWC01_GATE_A2_RESULT.json'
+          r=json.load(open(p))
+          assert r['pass'] is True, r['failures']
+          assert r['decision']=='QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE'
+          assert r['all_accepted_topologies_equal_dynamic_reference'] is True
+          assert r['all_overflows_state_bitwise_unchanged'] is True
+          assert r['all_overflows_ledger_exactly_unchanged'] is True
+          assert r['no_merge_clip_drop_on_overflow'] is True
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-a2-fixed-slot
+          path: fwc01-gate-a2/
