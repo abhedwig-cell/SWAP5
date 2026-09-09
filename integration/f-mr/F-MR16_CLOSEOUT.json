@@ -1,0 +1,96 @@
+{
+  "workunit": "F-MR16",
+  "title": "Richards Quantitative Temporal-Error Readiness & Owner Boundary",
+  "closeout_decision": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_NEEDED",
+  "status": "CLOSED_READINESS_BLOCKED_FSI_SOURCE_THEORY_QUALIFIED_RICHARDS_TEMPORAL_ERROR_REQUIRED",
+  "metric_source_theory_ready": false,
+  "production_metric_admitted": false,
+  "production_owner": "F-SI / soil-water model implementation",
+  "fpe_may_resume_reference_tail_characterization": false,
+  "fpe_may_start_bounded_cost_policy_qualification": false,
+  "measured": {
+    "profile": "exact F-VQ24-qualified five-case Richards stimulus",
+    "retry_scales": [1.0, 0.5, 0.25],
+    "baseline": "exact full-step/two-half-step state identity",
+    "nonzero_cases": "finite h and theta component maxima in all four perturbed cases",
+    "strict_monotone_h_theta_cases": "2/4",
+    "final_below_dt1_h_theta_cases": "4/4",
+    "ponding_delta": "zero throughout this profile",
+    "groundwater_level_delta": "zero throughout this profile",
+    "optional_process_state": "inactive for the qualified profile",
+    "optimization_determinism": "O0/O2 characterization output identity PASS"
+  },
+  "what_the_measurement_establishes": [
+    "The current binary Richards comparator throws away a finite graded full-step versus two-half-step state discrepancy on physically evolving cases.",
+    "Retry halving does not produce a robust monotone h/theta discrepancy sequence for the exact qualified nonzero probe.",
+    "The current three-scale ladder is characterization evidence, not proof of an asymptotic temporal-error law.",
+    "No ponding, groundwater or optional-state discrepancy semantics can be inferred from this inactive/zero-delta profile."
+  ],
+  "why_no_metric_is_selected": [
+    "The measured pressure-head discrepancies overlap the scale of the configured nonlinear head stopping criterion at approximately -75 cm, so temporal truncation is not separated from nonlinear stopping/arithmetic/route effects.",
+    "No qualified formal temporal order or Richardson step-doubling factor was found for the admitted Richards path.",
+    "Apparent order inferred diagnostically from successive discrepancy ratios is unstable and becomes negative on the second halving for the +/-1e-11 cases.",
+    "The artifact contains only component maxima, not nodewise spatial patterns or dz-weighted signed theta storage-state differences.",
+    "The characterization-only relative h/theta normalizations were invented solely for observation and have no source/theory basis for production use.",
+    "Combining head and water content into one scalar would therefore require an arbitrary normalization that F-MR16 explicitly does not admit."
+  ],
+  "pressure_head_candidate_assessment": {
+    "status": "PLAUSIBLE_FSI_RESEARCH_DIRECTION_NOT_ADMITTED",
+    "basis": "HeadCalc's nonlinear convergence is directly expressed in pressure head, and theta is constitutively updated from pressure head on this route.",
+    "missing": "temporal-order contract, solver-floor separation, qualified tolerance semantics, active-state coverage and broader convergence evidence"
+  },
+  "current_binary_comparator_assessment": {
+    "scientifically_intended_universal_richards_contract": "NOT_ESTABLISHED",
+    "outcome_C_rejected": true,
+    "reason": "F-MR16 found implementation evidence for exact identity but no source/theory evidence that bitwise/exact final-state identity is the intended temporal-accuracy criterion for physically evolving Richards solutions. F-VQ19 SNOW identity semantics are not generalized to Richards."
+  },
+  "exact_missing_evidence": [
+    "F-SI model-owner theory/source statement for the admitted Richards time discretization and temporal-error observable.",
+    "Evidence separating temporal discrepancy from nonlinear solver stopping tolerance while physics and forcing remain unchanged.",
+    "An extended dt ladder sufficient to establish or refute the intended asymptotic regime.",
+    "Nodewise signed/absolute h and theta difference vectors and spatial/max-location diagnostics.",
+    "If theta/storage is used, a signed dz-weighted state-storage discrepancy that remains distinct from the authoritative mass gate.",
+    "Explicit semantics and qualification for ponding, groundwater level and optional process state, or a justified conditional exclusion contract.",
+    "Source/theory evidence for any normalization or scalarization across unlike dimensions.",
+    "Deterministic model-owned metric evaluation and independent scientific qualification after implementation."
+  ],
+  "ownership_chain": {
+    "F_KT": "unchanged generic checkpoint/retry/rollback/commit and scalar temporal_error <= temporal_tolerance contract",
+    "F_SI": "next production owner for Richards-specific temporal-error semantics",
+    "F_MR": "future composition owner after F-SI qualification",
+    "F_VQ": "independent scientific qualification after composition",
+    "F_PE": "may consume an accepted nontrivial Richards runtime only after that chain; owns later cost thresholds/policies"
+  },
+  "mass": {
+    "authoritative_mass_complete_required": true,
+    "missing_contribution_mask_zero_required_for_complete_claim": true,
+    "rejected_trials_must_remain_uncommitted": true,
+    "temporal_accuracy_is_separate_gate": true,
+    "mass_softening_admitted": false
+  },
+  "reference": {
+    "full_accuracy_reference_preserved": true,
+    "balanced_added": false,
+    "throughput_added": false,
+    "fallback_added": false,
+    "iteration_cost_cap_added": false,
+    "physics_changed": false
+  },
+  "evidence": {
+    "successful_characterization_run": 34283246020,
+    "tested_characterization_head": "dacb043b968e79c3a849aad104008883124c090d",
+    "status_reconciliation_commit": "832d2a6b2d82c803ce10b493b2313c8ea5eae673",
+    "characterization_evidence_commit": "60931b9d440ca7c6f339e07018877900b4c76632",
+    "interpretation_commit": "428385a2289267b3e9c4b4e5c4db2a70cd9c11ca",
+    "fsi_handoff_commit": "26dca61a2459de5c592700ce8d80079510814717",
+    "invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440"
+  },
+  "honest_state": {
+    "implemented": "YES_CHARACTERIZATION_HARNESS_ONLY",
+    "persisted": true,
+    "tested": "YES_CHARACTERIZATION_WORKFLOW",
+    "qualified": "NO_PRODUCTION_TEMPORAL_METRIC",
+    "workunit_closed": true
+  },
+  "next_action": "Open an F-SI/model-owner workunit for Richards temporal-error theory, metric semantics and qualification. Do not modify production temporal acceptance in F-MR16 and do not resume F-PE reference-tail/bounded-cost qualification yet."
+}
