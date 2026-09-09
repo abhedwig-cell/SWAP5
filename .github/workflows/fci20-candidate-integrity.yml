@@ -1,0 +1,17 @@
+name: F-CI20 candidate integrity admission
+
+on:
+  push:
+    branches:
+      - integration/f-ci20-post-fci19-candidate-convergence
+  workflow_dispatch:
+
+jobs:
+  candidate-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-CI20 candidate integrity gate
+        run: bash tests/fci/run_fci20_candidate_integrity_gate.sh
