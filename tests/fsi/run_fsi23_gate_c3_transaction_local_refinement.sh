@@ -75,7 +75,9 @@ build_modules() {
 }
 
 run_matrix() {
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   build_modules "$opt" "$out"
   mapfile -t objects < "$out/objects.txt"
   local case_id=0
