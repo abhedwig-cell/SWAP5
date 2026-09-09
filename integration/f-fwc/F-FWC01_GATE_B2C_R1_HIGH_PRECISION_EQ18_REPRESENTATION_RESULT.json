@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_R1_HIGH_PRECISION_EQ18_NUMERICAL_REPRESENTATION_CHARACTERIZATION",
+  "contract": "F-FWC01_GATE_B2C_R1_HIGH_PRECISION_EQ18_REPRESENTATION_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34387088292,
+    "head": "fd609ef8290d7dd81445e0f5bbbe4c2e1015f44e",
+    "conclusion": "failure_expected_from_frozen_gate",
+    "artifact_id": 10118106872,
+    "artifact_digest": "sha256:fb56f5781457f44bb272f161b43fe7ebd1c61318d83476f5181865ca9c7fd281"
+  },
+  "decimal_precision_digits": 80,
+  "case_count": 4099,
+  "metric_limit": 1.4210854715202004e-14,
+  "direct_endpoint_eq18": {
+    "formula_association": "(capillary + K_d - K_i)/(theta_d-theta_i)",
+    "max_normalized_forward_error": 1.5434297530163218e-10,
+    "cases_exceeding_limit": 504,
+    "status": "REJECTED_NUMERICALLY_UNSTABLE_ASSOCIATION"
+  },
+  "grouped_delta_K_eq18": {
+    "formula_association": "(capillary + (K_d-K_i))/(theta_d-theta_i)",
+    "observed_via_precomputed_binary64_delta_harness": true,
+    "max_normalized_forward_error": 3.6842454811049645e-16,
+    "cases_exceeding_limit": 0,
+    "status": "SELECTED_FOR_SEPARATE_QUALIFICATION"
+  },
+  "synthetic_endpoint_construction_diagnostic": {
+    "max_relative_nominal_delta_theta_mismatch": 4.9361178369119826e-09,
+    "max_relative_nominal_delta_K_mismatch": 0.0005200085211810361,
+    "interpretation": "pre-rounding synthetic increments are not interchangeable with exact differences of the rounded endpoint values supplied to the kernel"
+  },
+  "decimal80_limit_identity_diagnostic": {
+    "green_ampt_residual": "-1E-78",
+    "zero_capillary_residual": "0",
+    "interpretation": "the Green-Ampt residual is at the Decimal80 arithmetic floor and is not evidence of a source-equation mismatch"
+  },
+  "pass": false,
+  "decision": "B2C_R1_DIRECT_ASSOCIATION_REJECTED_GROUPED_DELTA_K_REPRESENTATION_SELECTED_FOR_INDEPENDENT_QUALIFICATION",
+  "interpretation": [
+    "The B2C failure was not explained solely by fixture construction. The direct left-associated binary64 expression itself can amplify cancellation substantially.",
+    "Explicit grouping of the conductivity increment K_d-K_i removes that instability on the frozen characterization set without changing the physical equation.",
+    "The selected grouped representation does not require dynamic state; delta-K can be formed locally or cached as immutable shared parameter data."
+  ],
+  "hard_guards": [
+    "B2C and B2C-R1 remain FAIL and are not rewritten.",
+    "Do not use the unstable direct association in a production candidate.",
+    "Do not infer that precomputed delta-K must become per-column state.",
+    "The grouped representation requires a new independent qualification before infiltration-front advancement is admitted."
+  ],
+  "next_gate": "B2C_R2_GROUPED_DELTA_K_EQ18_INDEPENDENT_QUALIFICATION",
+  "status": "DIRECT_ASSOCIATION_REJECTED_GROUPED_DELTA_K_ROUTE_SELECTED"
+}
