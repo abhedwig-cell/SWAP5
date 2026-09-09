@@ -108,6 +108,8 @@ module mod_kernel_transactions
     integer :: trial_rollbacks = 0
     integer :: solver_rejections = 0
     integer :: temporal_rejections = 0
+    integer :: temporal_certificate_unavailable_rejections = 0
+    integer :: temporal_acceptance_source = 0
     integer :: mass_rejections = 0
     integer :: candidate_materializations = 0
     integer :: candidate_rollbacks = 0
@@ -133,6 +135,9 @@ module mod_kernel_transactions
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
+    real(real64) :: max_temporal_indicator = 0.0_real64
+    real(real64) :: min_accepted_substep_duration = huge(0.0_real64)
+    real(real64) :: max_accepted_substep_duration = 0.0_real64
   end type kernel_diagnostics_t
 
   ! F-KT owns this generic physical-model seam. Implementations may delegate
@@ -633,6 +638,9 @@ contains
     diagnostics%trial_rollbacks = runtime_diagnostics%rollbacks
     diagnostics%solver_rejections = runtime_diagnostics%solver_rejections
     diagnostics%temporal_rejections = runtime_diagnostics%temporal_rejections
+    diagnostics%temporal_certificate_unavailable_rejections = &
+         runtime_diagnostics%temporal_certificate_unavailable_rejections
+    diagnostics%temporal_acceptance_source = runtime_diagnostics%temporal_acceptance_source
     diagnostics%mass_rejections = runtime_diagnostics%mass_rejections
     diagnostics%nonlinear_iterations = runtime_diagnostics%nonlinear_iterations
     diagnostics%internal_retries = runtime_diagnostics%internal_retries
@@ -642,6 +650,9 @@ contains
     diagnostics%backtracking_attempts = runtime_diagnostics%backtracking_attempts
     diagnostics%alternative_solver_calls = runtime_diagnostics%alternative_solver_calls
     diagnostics%max_abs_step_mass_residual = runtime_diagnostics%max_abs_step_mass_residual
+    diagnostics%max_temporal_indicator = runtime_diagnostics%max_temporal_indicator
+    diagnostics%min_accepted_substep_duration = runtime_diagnostics%min_accepted_substep_duration
+    diagnostics%max_accepted_substep_duration = runtime_diagnostics%max_accepted_substep_duration
   end subroutine map_transaction_diagnostics
 
 end module mod_kernel_transactions
