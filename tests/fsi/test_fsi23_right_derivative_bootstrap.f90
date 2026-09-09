@@ -128,9 +128,9 @@ contains
       total_out=max(0.0_real64,result%top_flux)*dts(idt)+max(0.0_real64,-result%bottom_flux)*dts(idt)
       mass_residual=storage1-storage0-(total_in-total_out)
       call require(abs(mass_residual)<=1.0e-12_real64,'hard external mass gate')
-      write(*,'(A,I0,A,A,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3)') &
+      write(*,'(A,I0,A,A,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3,A,ES24.15E3)') &
            'FSI23_BOOTSTRAP_POINT:CASE=',cid,':KIND=',trim(kind),':H0=',h0,':STIM=',stimulus, &
-           ':DT=',dts(idt),':ERR=',errors(idt),':MASS=',mass_residual
+           ':DT=',dts(idt),':BOOT=',hdot_boot(inode),':SLOPE=',slope(inode),':ERR=',errors(idt),':MASS=',mass_residual
       if (idt==ndt) then
         smallest_slope=slope(inode)
         smallest_boot=hdot_boot(inode)
