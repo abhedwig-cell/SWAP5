@@ -2,7 +2,7 @@ program test_fpe06_temporal_certificate_cost
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_NONE
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_mass_accounting_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
        kernel_result_t, kernel_diagnostics_t
@@ -20,6 +20,7 @@ program test_fpe06_temporal_certificate_cost
 
   real(real64), parameter :: t0 = 4100.375_real64
   real(real64), parameter :: hard_mass_gate = 1.0e-12_real64
+  integer, parameter :: principal_advances_per_interval = 3
   integer(int64), parameter :: lineage_id = 206001_int64
 
   character(len=128) :: arg
@@ -69,9 +70,9 @@ program test_fpe06_temporal_certificate_cost
   hdot_n = -static_residual/(capacity*parameters%dz)
   call require(all(ieee_is_finite(hdot_n)), 'finite right-derivative seed')
 
-  ! Untimed preflight obtains the same B_inf quantity whose direct/runtime equivalence
-  ! was independently qualified by F-VQ34.  The resulting 2*B_inf budget is only the
-  ! frozen VALID_ACCEPT test-oracle construction; PE06 does not select application policy.
+  ! Untimed preflight obtains the last-advance B_inf under the same corrected
+  ! external-full-half benchmark harness. The 2*B_inf budget is measurement
+  ! scaffolding only and is not an application budget policy.
   call configure_transaction(config_preflight)
   config_preflight%model_temporal_indicator_budget_available = .false.
   config_preflight%model_temporal_indicator_budget = 0.0_real64
@@ -83,11 +84,13 @@ program test_fpe06_temporal_certificate_cost
   call backend_preflight%run_trial(column_b, template_b, parameters, committed_preflight, forcing, config_preflight, &
        t0, t0+step_dt, checkpoint_preflight, result_preflight, candidate_preflight, diagnostics_preflight)
   observation_preflight = backend_preflight%observation()
-  call require(result_preflight%completed .and. candidate_preflight%ready(), 'preflight TX_TEMPORAL_NONE completes')
+  call require(result_preflight%completed .and. candidate_preflight%ready(), 'preflight external full-half completes')
+  call require(diagnostics_preflight%headcalc_calls == principal_advances_per_interval, &
+       'preflight has full plus two half principal advances')
   call require(observation_preflight%temporal_indicator_enabled, 'preflight temporal service enabled')
   call require(observation_preflight%temporal_indicator_available, 'preflight raw indicator available')
   call require(observation_preflight%temporal_additional_full_nonlinear_solves == 0, 'preflight zero extra nonlinear')
-  call require(observation_preflight%temporal_additional_tridiagonal_solves == 1, 'preflight one defect tridag')
+  call require(observation_preflight%temporal_additional_tridiagonal_solves == 1, 'preflight last advance one defect tridag')
   preflight_binf = observation_preflight%temporal_head_inf_bound
   call require(ieee_is_finite(preflight_binf) .and. preflight_binf > 0.0_real64, 'positive finite preflight B_inf')
   test_budget = 2.0_real64*preflight_binf
@@ -119,26 +122,28 @@ program test_fpe06_temporal_certificate_cost
   call require(result_b%completed .and. candidate_b%ready(), 'B completes')
   call require(.not. observation_a%temporal_indicator_enabled, 'A temporal service disabled')
   call require(observation_b%temporal_indicator_enabled, 'B temporal service enabled')
-  call require(observation_b%temporal_previous_derivative_available, 'B seeded history available')
-  call require(observation_b%temporal_indicator_available, 'B raw indicator available')
-  call require(observation_b%temporal_certificate_available, 'B normalized certificate available')
-  call require(close_to(observation_b%temporal_normalized_indicator, 0.5_real64), 'B uses frozen C_h=0.5 test oracle')
-  call require(observation_b%temporal_additional_full_nonlinear_solves == 0, 'B zero extra nonlinear trajectories')
-  call require(observation_b%temporal_additional_tridiagonal_solves == 1, 'B one defect tridag')
+  call require(observation_b%temporal_previous_derivative_available, 'B last advance has previous history')
+  call require(observation_b%temporal_indicator_available, 'B last raw indicator available')
+  call require(observation_b%temporal_certificate_available, 'B last normalized certificate available')
+  call require(close_to(observation_b%temporal_normalized_indicator, 0.5_real64), &
+       'B last advance uses frozen C_h=0.5 test oracle')
+  call require(observation_b%temporal_additional_full_nonlinear_solves == 0, 'B zero extra nonlinear trajectories per advance')
+  call require(observation_b%temporal_additional_tridiagonal_solves == 1, 'B one defect tridag per admitted advance')
 
   call require(diagnostics_a%attempts == diagnostics_b%attempts .and. diagnostics_a%attempts == 1, 'same one attempt')
   call require(diagnostics_a%retries == diagnostics_b%retries .and. diagnostics_a%retries == 0, 'same zero retries')
   call require(diagnostics_a%trial_rollbacks == diagnostics_b%trial_rollbacks .and. diagnostics_a%trial_rollbacks == 0, &
        'same zero rollbacks')
-  call require(diagnostics_a%headcalc_calls == diagnostics_b%headcalc_calls .and. diagnostics_a%headcalc_calls == 1, &
-       'same one principal Richards trajectory')
+  call require(diagnostics_a%headcalc_calls == diagnostics_b%headcalc_calls .and. &
+       diagnostics_a%headcalc_calls == principal_advances_per_interval, 'same three principal Richards advances')
   call require(diagnostics_a%nonlinear_iterations == diagnostics_b%nonlinear_iterations, 'same nonlinear iterations')
   call require(diagnostics_a%internal_retries == diagnostics_b%internal_retries, 'same internal retries')
   call require(diagnostics_a%jacobian_builds == diagnostics_b%jacobian_builds, 'same principal jacobian builds')
   call require(diagnostics_a%backtracking_attempts == diagnostics_b%backtracking_attempts, 'same backtracking')
   call require(diagnostics_a%alternative_solver_calls == diagnostics_b%alternative_solver_calls, 'same alternative solver calls')
-  call require(same_solver_diagnostics(observation_a, observation_b), 'principal solver diagnostics exact')
-  call require(diagnostics_b%linear_solves == diagnostics_a%linear_solves + 1, 'total linear solve delta exactly one')
+  call require(same_solver_diagnostics(observation_a, observation_b), 'last principal solver diagnostics exact')
+  call require(diagnostics_b%linear_solves == diagnostics_a%linear_solves + principal_advances_per_interval, &
+       'aggregate linear solve delta exactly three defect tridag calls')
 
   call candidate_a%snapshot(snapshot_a, available_a)
   call candidate_b%snapshot(snapshot_b, available_b)
@@ -168,8 +173,9 @@ program test_fpe06_temporal_certificate_cost
   write(*,'(A,I0)') 'FPE06_B_HEADCALC=', diagnostics_b%headcalc_calls
   write(*,'(A,I0)') 'FPE06_A_LINEAR_SOLVES=', diagnostics_a%linear_solves
   write(*,'(A,I0)') 'FPE06_B_LINEAR_SOLVES=', diagnostics_b%linear_solves
-  write(*,'(A,I0)') 'FPE06_B_EXTRA_TRIDAG=', observation_b%temporal_additional_tridiagonal_solves
-  write(*,'(A,I0)') 'FPE06_B_EXTRA_NONLINEAR=', observation_b%temporal_additional_full_nonlinear_solves
+  write(*,'(A,I0)') 'FPE06_B_DEFECT_TRIDAG_PER_ADVANCE=', observation_b%temporal_additional_tridiagonal_solves
+  write(*,'(A,I0)') 'FPE06_B_DEFECT_TRIDAG_AGGREGATE=', diagnostics_b%linear_solves-diagnostics_a%linear_solves
+  write(*,'(A,I0)') 'FPE06_B_EXTRA_NONLINEAR_PER_ADVANCE=', observation_b%temporal_additional_full_nonlinear_solves
   write(*,'(A,ES26.17E3)') 'FPE06_MASS_RESIDUAL=', result_b%mass%residual
   write(*,'(A)') 'FPE06_PRETIMING_EQUIVALENCE=PASS'
 
@@ -185,11 +191,11 @@ contains
 
   subroutine configure_transaction(c)
     type(canonical_numerical_config_t), intent(out) :: c
-    c%transaction%temporal_tolerance = 0.0_real64
+    c%transaction%temporal_tolerance = huge(0.0_real64)
     c%transaction%mass_tolerance = hard_mass_gate
     c%transaction%retry_scale = 0.5_real64
     c%transaction%max_retries = 0
-    c%transaction%temporal_mode = TX_TEMPORAL_NONE
+    c%transaction%temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
     c%max_committed_substeps = 1
     c%progress_tolerance = 0.0_real64
     c%model_temporal_indicator_budget_available = .false.
