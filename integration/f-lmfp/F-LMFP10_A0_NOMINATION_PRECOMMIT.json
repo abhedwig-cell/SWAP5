@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP10",
+  "gate": "A0_MATERIAL_SCALE_COORDINATE_SCREEN_NOMINATION",
+  "qualification": false,
+  "precommit": true,
+  "purpose": "Make the A0 nomination decision reproducible before either scale-normalized candidate is executed.",
+  "candidate_families": ["A_ALPHA_NORMALIZED_ENDPOINTS", "B_H50_NORMALIZED_ENDPOINTS"],
+  "baseline": "Frozen F-LMFP09 n49 absolute-head endpoint-pair provider evaluated on the same revealed C7a probe rows.",
+  "decision_groups": {
+    "R4_non_owner_tail": {
+      "classes": [
+        "B10:10cm", "B10:20cm",
+        "B17:10cm", "B17:20cm",
+        "B18:10cm", "B18:20cm",
+        "O07:10cm", "O07:20cm",
+        "O11:10cm", "O11:20cm"
+      ],
+      "metric": "median over classes of candidate active-max-relative-error divided by n49 active-max-relative-error",
+      "symbol": "tail_score",
+      "coherent_if_lt": 1.0
+    },
+    "R3_geometry_strong_gradient": {
+      "classes": ["O01:20cm", "O05:20cm"],
+      "metric": "maximum over the two classes of candidate strong-gradient-p90 divided by n49 strong-gradient-p90",
+      "symbol": "geometry_score",
+      "coherent_if_lt": 1.0
+    },
+    "passing_controls": {
+      "classes": [
+        "B01:10cm", "B01:20cm",
+        "B05:10cm", "B05:20cm",
+        "O02:10cm", "O02:20cm",
+        "O16:10cm", "O16:20cm",
+        "O18:10cm", "O18:20cm"
+      ],
+      "metric": "median over classes of candidate active-p90 divided by n49 active-p90",
+      "symbol": "control_score",
+      "coherent_if_le": 1.25
+    },
+    "owner_overlap_diagnostic_only": {
+      "classes": [
+        "B11:10cm", "B11:20cm",
+        "B12:10cm", "B12:20cm",
+        "O13:10cm", "O13:20cm"
+      ],
+      "reason": "These classes overlap the known legacy near-saturation K discontinuity seam and therefore cannot by themselves select or reject the numerical coordinate family. Their metrics remain visible."
+    }
+  },
+  "global_structural_requirements_for_nomination": {
+    "provider_builds_all_30_panel_classes": true,
+    "49_nodes_each_endpoint_axis": true,
+    "runtime_oracle_calls_eq_0": true,
+    "identity_checks_all_pass": true,
+    "fail_closed_checks_all_pass": true,
+    "active_sign_mismatches_across_panel_eq_0": true
+  },
+  "row_level_improvement_requirement": {
+    "population": "all active rows in the ten R4_non_owner_tail classes on which both candidate and n49 return finite values",
+    "metric": "fraction with candidate relative error strictly smaller than n49 relative error",
+    "coherent_if_gt": 0.5
+  },
+  "coherent_candidate": "A candidate is coherent only if every global structural requirement holds, tail_score<1, geometry_score<1, control_score<=1.25, and failed-tail row-level better fraction>0.5.",
+  "nomination_rule": {
+    "one_coherent": "Nominate that candidate for a separately precommitted A1 geometry-axis characterization.",
+    "none_coherent": "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE. Do not tune nodes or thresholds on A0 data.",
+    "both_coherent_and_one_pareto_dominates": "Nominate the candidate whose tail_score and geometry_score are both <= the other candidate and at least one is strictly lower, provided its control_score is also <= the other candidate.",
+    "both_coherent_tradeoff": "Do not choose by an invented weighted score. Persist A0 as AMBIGUOUS_TRADEOFF and precommit a separate discriminator before further evaluation."
+  },
+  "not_used_for_nomination": [
+    "C7a absolute acceptance thresholds",
+    "owner-overlap classes B11/B12/O13",
+    "transient results",
+    "material-specific exception lists beyond the predeclared diagnostic groups",
+    "VZAA evidence"
+  ],
+  "fresh_holdout_required_after_any_nomination": true,
+  "status": "FROZEN_BEFORE_A0_IMPLEMENTATION_AND_EXECUTION"
+}
