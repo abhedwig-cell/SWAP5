@@ -1,0 +1,31 @@
+name: F-MR20 materialize parallel-v1 rejection isolation
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+    paths:
+      - tests/fmr/materialize_fmr20_v1_rejection_isolation.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize strengthened qualification test
+        run: python3 tests/fmr/materialize_fmr20_v1_rejection_isolation.py
+      - name: Persist qualification postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          test -n "$(git status --porcelain -- tests/fmr/test_fmr20_parallel_v1_qualification.f90 tests/fmr/run_fmr20_parallel_v1_qualification.sh)"
+          git add tests/fmr/test_fmr20_parallel_v1_qualification.f90 tests/fmr/run_fmr20_parallel_v1_qualification.sh
+          git commit -m 'test(F-MR20): strengthen cross-column rejection isolation qualification'
+          git push origin HEAD:work/f-mr20-concurrency-isolation
