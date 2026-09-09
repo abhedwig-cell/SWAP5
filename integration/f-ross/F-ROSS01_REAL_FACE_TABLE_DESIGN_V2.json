@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "supersedes_for_further_characterization": "F-ROSS01_REAL_FACE_TABLE_DESIGN.json",
+  "does_not_rewrite": "F-ROSS01_REAL_FACE_CHARACTERIZATION_V1.json",
+  "production_implementation": false,
+  "source_basis": {
+    "primary_source": "Ross PJ (2011), doi:10.2136/vzj2010.0085",
+    "source_implemented_method": "two-dimensional precomputed steady-state flux tables with bilinear interpolation",
+    "source_discussion_extension": "Ross explicitly notes the table-size/accuracy tradeoff, that smaller intervals at high water contents may improve accuracy, and that quadratic interpolation with smaller tables may offer similar accuracy at higher lookup cost.",
+    "SWAP5_variant_status": "qualification-only bounded-cost representation experiment, not claimed to be the exact Ross 2011 implementation"
+  },
+  "fixture": {
+    "material": "B01",
+    "path_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "unsaturated_only": true,
+    "effective_saturation": "S=(theta-theta_r)/(theta_s-theta_r)"
+  },
+  "representation": {
+    "table_coordinate": "x=logit(S)=ln(S/(1-S))",
+    "axis": "uniform x grid between logit(S(-10000 cm)) and logit(S(-1 cm))",
+    "stored_value": "steady downward-positive Darcy flux q in float64 cm/day",
+    "interpolation": "tensor-product quadratic Lagrange interpolation using a bounded 3x3 stencil",
+    "boundary_stencil": "one-sided nearest valid 3-node stencil, no extrapolation beyond the frozen envelope",
+    "runtime_indexing": "analytic uniform-grid index after two logit transforms",
+    "runtime_complexity_per_face": "O(1): two coordinate transforms, bounded index arithmetic, nine table reads and fixed interpolation arithmetic",
+    "global_nonlinear_iterations_added": 0,
+    "table_shared_per_material_geometry_class": true,
+    "per_column_table_state_bytes": 0,
+    "candidate_node_counts_per_axis": [65, 97, 129, 177],
+    "selection_rule": "Choose the smallest node count passing all B1-B6 characterization criteria. Do not change representation or density after holdout freeze."
+  },
+  "characterization": {
+    "ordinary_probe_count": 384,
+    "ordinary_probe_generator": "deterministic scrambled Sobol points mapped first to the physical S envelope",
+    "ordinary_probe_seed": 41031,
+    "special_equal_head_probe_count": 81,
+    "special_equal_head_heads": "negative geometric spacing from -1 cm through -10000 cm",
+    "hydrostatic_probe_rule": "h_below=h_above+10 cm where both endpoints remain inside the envelope",
+    "near_hydrostatic_probe_offsets_cm": [-0.1, -0.01, 0.01, 0.1],
+    "monotonicity_diagnostic": "At ordinary probes, perturb each transformed endpoint coordinate locally and report violations of expected q increase with upper wetness and q decrease with lower wetness; diagnostic only, not an added post-hoc hard gate."
+  },
+  "gate_metrics": {
+    "B1_accuracy": {
+      "hybrid_metric": "abs(q_table-q_ref)/(abs(q_ref)+1e-4*Ksat)",
+      "max_allowed": 0.01,
+      "p99_allowed": 0.002,
+      "secondary_abs_over_ksat_max_allowed": 0.0005
+    },
+    "B2_sign": {
+      "reference_nonzero_threshold": "1e-8*Ksat",
+      "required_wrong_sign_count": 0,
+      "near_zero_table_abs_limit": "1e-6*Ksat"
+    },
+    "B3_equal_head_gravity": {
+      "expected": "q_ref=K(h)>0",
+      "required_wrong_sign_count": 0,
+      "max_relative_error_allowed": 0.005
+    },
+    "B4_hydrostatic": {
+      "expected": "q_ref=0 when h_below-h_above=10 cm",
+      "max_abs_q_over_ksat_allowed": 1e-5
+    },
+    "B5_domain": {
+      "required_lookup_failures": 0,
+      "required_nan_or_inf": 0,
+      "extrapolation_allowed": false
+    },
+    "B6_memory": {
+      "max_bytes_per_shared_class": 262144,
+      "formula": "8*N*N bytes q table plus 32 bytes transform/index metadata; the uniform axis itself is not stored",
+      "must_be_independent_of_column_count": true,
+      "must_be_independent_of_run_duration": true,
+      "preprocessing_is_offline_or_template_level": true
+    }
+  },
+  "fresh_holdout_rule": {
+    "freeze_only_after_one_candidate_passes_characterization": true,
+    "minimum_ordinary_probe_count": 512,
+    "different_scrambled_sobol_seed": true,
+    "include_fresh_special_physics_probes": true,
+    "material_and_geometry_unchanged": true,
+    "no_representation_density_or_threshold_changes_after_freeze": true
+  },
+  "scope_guard": "Success qualifies one unsaturated homogeneous B01 face class only. It does not qualify material generalisation, saturation switching, heterogeneity, transient timestep accuracy, bottom boundary, groundwater, processes, MultiSWAP or FullRichards equivalence.",
+  "status": "V2_REPRESENTATION_FROZEN_BEFORE_FORMAL_CHARACTERIZATION_AND_BEFORE_ANY_HOLDOUT"
+}
