@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR20",
   "evidence_stage": "PARALLEL_REAL_PHYSICS_ARCHITECTURE_READINESS",
@@ -7,11 +7,20 @@
   "decision": "F-MR20_PARALLEL_REAL_PHYSICS_ARCHITECTURE_READY_FOR_IMPLEMENTATION",
   "baseline": {
     "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
-    "commit": "f84d5c88f082151a492f07b3054ed7d726e5cdab",
+    "commit": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "tree": "339faff7af9c0460bb6a5d11f6ed68f1e44e3e3b",
+    "commit_message": "qualify(F-MQ23): persist restricted serialized real-physics MultiSWAP exit",
     "mq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
     "mq23_real_physical_worker_count": 1,
     "mq23_parallel_real_physics_admitted": false,
     "runtime_core_blob": "543af573b34bfccd8fbdecf719af22994c5236b2"
+  },
+  "provenance_reconciliation": {
+    "reconciled_live_before_closeout": true,
+    "rejected_stale_baseline_value": "f84d5c88f082151a492f07b3054ed7d726e5cdab",
+    "authoritative_live_branch_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "branch_compare_status": "MR20 readiness branch is ahead of the live MQ23 branch with no production source changes",
+    "reason_for_correction": "Closeout evidence must bind to the live qualified MQ23 branch head rather than an earlier handoff value."
   },
   "tested_candidate": {
     "head": "9287adc28f6c441cdfb25a4a20009e059e2c97dd",
@@ -23,6 +32,13 @@
     "test": "tests/fmr/test_fmr20_parallel_readiness.f90",
     "runner": "tests/fmr/run_fmr20_parallel_readiness_gate.sh",
     "workflow": ".github/workflows/fmr20-parallel-real-physics.yml"
+  },
+  "final_relocked_candidate": {
+    "head_before_provenance_correction": "3165ec7f04ea8f083e6105815793b76b988ff933",
+    "workflow_run": 34397850012,
+    "workflow_job": 102621904929,
+    "workflow_conclusion": "success",
+    "purpose": "Prove that the promoted readiness contract itself remains source-locked and O0/O2 green."
   },
   "matrix": {
     "workers": [1, 2, 4, 8],
@@ -58,7 +74,14 @@
     "reference_completion_available_by_all_test_lanes": true
   },
   "scope_guard": {
-    "production_src_changed_relative_to_mq23": false,
+    "production_src_changed_relative_to_live_mq23": false,
+    "live_compare_changed_files": [
+      ".github/workflows/fmr20-parallel-real-physics.yml",
+      "integration/f-mr/F-MR20_PARALLEL_READINESS.json",
+      "integration/f-mr/F-MR20_READINESS_RESULTS.json",
+      "tests/fmr/run_fmr20_parallel_readiness_gate.sh",
+      "tests/fmr/test_fmr20_parallel_readiness.f90"
+    ],
     "gate": "FMR20_G02_NO_PRODUCTION_SOURCE_CHANGE=PASS",
     "meaning": "The tested object is an architecture/scheduling oracle only. No parallel runtime, worker pool, thread synchronization or real-physics concurrent execution exists in this candidate."
   },
@@ -85,7 +108,7 @@
     "25_reference_mode_available": "PASS_FOR_READINESS: reference completion availability is retained for every route.",
     "26_runtime_diagnostics": "DESIGN_BOUND: canonical result/diagnostic collection order is executable-proven; production worker diagnostics remain to be implemented.",
     "29_no_silent_dependencies": "PASS_FOR_READINESS: scheduler oracle has no calendar, file, I/O or MODFLOW assumptions.",
-    "30_change_audit": "PASS: tested branch has no production source changes relative to MQ23."
+    "30_change_audit": "PASS: final readiness branch has no production source changes relative to live MQ23."
   },
   "qualified_readiness_scope": [
     "deterministic canonical scheduling contract",
