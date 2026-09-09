@@ -1,4 +1,4 @@
-name: F-WOF38 fix atomic gate zero oracle
+name: F-WOF38 repair strict atomic gate harness
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Replace direct REAL equality by existing bitwise zero oracle
+      - name: Remove unused generated-test declaration
         shell: bash
         run: |
           set -euo pipefail
@@ -27,16 +27,17 @@ jobs:
           import sys
           path = Path(sys.argv[1])
           src = path.read_text(encoding='utf-8')
-          old = 'crop_result1%mass%complete .and. crop_result1%mass%residual == 0.0_real64'
-          new = 'crop_result1%mass%complete .and. bitwise_equal(crop_result1%mass%residual, 0.0_real64)'
+          old = '  logical :: crop_initialized, crop_checkpoint_ok, snapshot_available, did_commit\n'
+          new = '  logical :: crop_checkpoint_ok, snapshot_available, did_commit\n'
           if src.count(old) != 1:
-              raise SystemExit(f'FWOF38 strict-zero anchor count={src.count(old)}')
+              raise SystemExit(f'FWOF38 unused-variable anchor count={src.count(old)}')
           path.write_text(src.replace(old, new, 1), encoding='utf-8')
           PY
           test "$(git diff --name-only)" = "$TARGET"
           git diff --check
-          grep -Fq 'bitwise_equal(crop_result1%mass%residual, 0.0_real64)' "$TARGET"
-          echo 'FWOF38_TEST_ONLY_BITWISE_ZERO_ORACLE_FIX=PASS'
+          grep -Fq 'logical :: crop_checkpoint_ok, snapshot_available, did_commit' "$TARGET"
+          ! grep -Fq 'crop_initialized' "$TARGET"
+          echo 'FWOF38_TEST_ONLY_UNUSED_VARIABLE_FIX=PASS'
       - name: Commit test-only correction
         shell: bash
         run: |
@@ -44,5 +45,5 @@ jobs:
           git config user.name 'SWAP5 Qualification Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-          git commit -m 'test(F-WOF38): use bitwise zero mass oracle'
+          git commit -m 'test(F-WOF38): remove unused generated-test variable'
           git push origin HEAD:${GITHUB_REF_NAME}
