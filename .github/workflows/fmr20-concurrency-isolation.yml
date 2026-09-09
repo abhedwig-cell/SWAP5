@@ -1,0 +1,29 @@
+name: F-MR20 concurrency isolation
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authoritative-one-worker-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run authoritative F-MR20 one-worker identity gate
+        run: bash tests/fmr/run_fmr20_authoritative_one_worker_gate.sh
