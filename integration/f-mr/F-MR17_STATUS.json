@@ -1,13 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR17",
   "title": "Richards Transactional Temporal Refinement Semantics & Owner Resolution",
   "branch": "work/f-mr17-richards-temporal-refinement-semantics",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED_BEFORE_CHARACTERIZATION",
-  "phase": "NONPRODUCTION_REFINEMENT_SEMANTICS_CHARACTERIZATION",
+  "status": "CLOSED_OWNER_RESOLUTION_SUPERSEDED_BY_FKT09_AND_FSI22",
+  "phase": "OWNER_RESOLUTION_COMPLETE_NO_DUPLICATE_CHARACTERIZATION",
   "base_head": "81919d5373fb1976e228b32ae213a4685c0e4f9b",
   "contract": "integration/f-mr/F-MR17_CONTRACT.json",
+  "owner_gate": {
+    "tested_head": "66b829a067a10814a10fad5b90059e6125b2a9a3",
+    "workflow_run": 34304798094,
+    "workflow_job": 102319143446,
+    "conclusion": "success",
+    "key_result": "FKT_GENERIC_TRANSACTION_REFINEMENT_SEAM_REQUIRED_IF_SAME_HORIZON_CANDIDATE_PROCEEDS"
+  },
   "incoming_decisions": {
     "fmr16": "CLOSED_READINESS_BLOCKED_FSI_SOURCE_THEORY_QUALIFIED_RICHARDS_TEMPORAL_ERROR_REQUIRED",
     "fsi20": "NEGATIVE_FVQ28_HANDOFF_BOUND_SEPARATE_OWNER_RUNTIME_POLICY_WORKUNIT_REQUIRED",
@@ -15,34 +22,55 @@
     "fgc02_release": false,
     "fpe_release": false
   },
+  "resolved_by_later_work": {
+    "F_KT09": {
+      "status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+      "qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "qualification_workflow_run": 34306247949,
+      "resolution": "Provides the generic model-owned attempt-local certificate transport, fail-closed acceptance, rollback/retry and private substep composition seam that F-MR17 identified as missing."
+    },
+    "F_SI22": {
+      "branch": "work/f-si22-richards-fixed-horizon-certificate",
+      "gate_A_tested_head": "e8ea8182476d35527f0bfcac4640bb6854517751",
+      "gate_A_workflow_run": 34310854032,
+      "evidence": "integration/f-si/F-SI22_GATE_A_FIXED_HORIZON_BAND_EVIDENCE.json",
+      "resolution": "Actually characterizes the same-horizon nested-refinement candidate on the owner matrix. All 15 cases contract, but dry cases show that contraction alone is not a conservative accuracy certificate before N=16."
+    },
+    "F_VQ28_GATE_A": {
+      "held_out_cases": 24,
+      "maximum_persistent_conservative_entry_N": 16,
+      "resolution": "Already supplies independent held-out support for a bounded same-horizon refinement profile while its Gate B rejection applies specifically to the obsolete endpoint-shortening runtime translation."
+    }
+  },
   "current_decision": {
     "existing_endpoint_shortening_retry_plus_raw_head_defect": "REJECTED_BY_FVQ28",
-    "same_horizon_nested_refinement": "PRIMARY_NONPRODUCTION_RESEARCH_CANDIDATE",
-    "embedded_or_multilevel_model_estimator": "SECONDARY_ONLY_IF_SOURCE_THEORY_SUPPORT_EXISTS",
+    "same_horizon_nested_refinement": "SUPPORTED_AS_RICHARDS_OWNER_OBSERVABLE_SEMANTIC",
+    "generic_transaction_seam_missing": false,
     "production_metric_selected": false,
     "production_tolerance_selected": false,
-    "production_semantic_change_authorized": false
+    "production_richards_certificate_admitted": false,
+    "duplicate_FMR17_characterization_required": false
   },
   "state": {
     "contract_persisted": true,
+    "owner_gate_tested": true,
     "production_source_modified": false,
-    "characterization_harness_implemented": false,
-    "tested": false,
-    "research_candidate_selected": false,
-    "owner_handoff_ready": false,
-    "qualified": false
+    "characterization_harness_implemented_on_FMR17": false,
+    "duplicate_characterization_intentionally_not_started": true,
+    "owner_handoff_resolved_by_FKT09": true,
+    "scientific_owner_characterization_progressed_by_FSI22": true,
+    "qualified_as_production_temporal_path": false,
+    "closed": true
   },
   "hard_constraints": {
     "physics_changed": false,
     "mass_requirement_relaxed": false,
-    "transaction_semantics_changed": false,
-    "retry_policy_changed": false,
-    "solver_policy_changed": false,
-    "coupling_orchestration_changed": false,
+    "retry_policy_changed_on_FMR17": false,
+    "temporal_tolerance_selected": false,
     "reference_mode_preserved": true,
     "generic_time_preserved": true,
     "fgc02_specific_tuning": false,
     "balanced_throughput_fallback_admitted": false
   },
-  "next_action": "Build a source-bound nonproduction comparative harness on the exact F-SI20/F-VQ28 handoff lineage. Reproduce the F-VQ28 held-out matrix and compare existing endpoint-shortening retry behavior against same-horizon nested refinement levels that all terminate at the same t1. Record same-endpoint state error, dimensional endpoint observables, solver cost, hard authoritative mass, determinism and failure class. Do not alter production source or choose a tolerance."
+  "next_action": "Do not continue a parallel F-MR17 refinement harness. Continue from F-SI22/F-KT09 and require source/theory or independent numeric-profile evidence for a scientifically defensible mapping from same-horizon Richards observables to the generic F-KT09 dimensionless certificate before any production admission."
 }
