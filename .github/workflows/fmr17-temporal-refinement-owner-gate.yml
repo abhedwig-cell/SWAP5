@@ -1,0 +1,17 @@
+name: F-MR17 temporal refinement owner gate
+
+on:
+  push:
+    branches:
+      - work/f-mr17-richards-temporal-refinement-semantics
+  workflow_dispatch:
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run source-bound owner-resolution gate
+        run: bash tests/fmr/run_fmr17_temporal_refinement_owner_gate.sh
