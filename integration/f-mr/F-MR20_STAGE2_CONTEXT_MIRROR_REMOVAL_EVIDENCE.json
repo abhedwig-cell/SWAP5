@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR20",
+  "stage": "CANONICAL_CONTEXT_ISOLATION_STAGE_2",
+  "production_commit": "62afea593604552c9e241b59545e4321ef8f0f29",
+  "poison_test_commit": "3704ca67057363a22bb2d739d417e8a124bb1f45",
+  "tested_gate_commit": "c860463679ba12a1fd31b0ae4e7fa49fc2e464af",
+  "workflow_run_id": 34404576996,
+  "workflow_job_id": 102644358515,
+  "conclusion": "success",
+  "production_postimage_blobs": {
+    "src/legacy/b1_10_port/headcalc.f90": "04c4877754b39161d5afa0f2496a015fd3334cc5",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "e0432faa0e05a3c136ee5aed6fddb12ad631848d",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff"
+  },
+  "test_blob": "b12f1f850a13d33699231f3552aafbcf16303b10",
+  "gates": {
+    "source_lock": "PASS",
+    "bounded_stage2_source_scope": "PASS",
+    "canonical_min_dt_day_event_worker_local": "PASS",
+    "canonical_backend_legacy_context_mirror_removed": "PASS",
+    "canonical_build_without_mirror_module": "PASS",
+    "gnu_fortran_O0": "PASS",
+    "gnu_fortran_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "mirror_poison_result_identity": "PASS",
+    "mirror_poison_diagnostic_identity": "PASS",
+    "mirror_poison_committed_state_time_identity": "PASS",
+    "mirror_poison_hard_mass_gate": "PASS",
+    "one_worker_serialized_pool_identity": "PASS",
+    "multiworker_remains_fail_closed_before_physics": "PASS",
+    "multiworker_zero_physical_solves": "PASS",
+    "multiworker_state_time_nonmutation": "PASS"
+  },
+  "poisoned_legacy_mirror_inputs": [
+    "dt", "swbotb", "swkimpl", "swkmean", "dtmin", "maxit", "maxbacktr",
+    "CritDevBalCp", "CritDevBalTot", "critdevh2cp", "critdevh1cp", "critdevponddt",
+    "fldtmin", "qtop", "qbot", "hbot", "qrot", "swmacro", "melt", "qdra", "qssdi"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_for_stage2_claim": true,
+    "qualified_for_parallel_execution": false
+  },
+  "claim": "Within the restricted canonical explicit Richards profile, the serialized runtime no longer requires or consumes the mutable legacy pre-solve context mirror. Strongly poisoned mirror/global values do not change result, diagnostics, committed state/time or hard mass balance in the authoritative fixture.",
+  "remaining_requirement_before_multiworker_admission": "Classify every remaining legacy/global HeadCalc dependency under the exact admitted bottom-mode/physics/numerical profile and prove that any non-worker/non-request state is branch-dead or immutable/read-only for that profile. Then implement separate backend/workspace ownership per worker and test actual concurrent execution."
+}
