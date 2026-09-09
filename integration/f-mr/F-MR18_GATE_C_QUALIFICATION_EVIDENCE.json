@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "gate": "C",
+  "branch": "work/f-mr18-generic-accepted-commit-receipt",
+  "qualified_scope": "SERIALIZED_MULTISWAP_OPTIONAL_SPARSE_ACCEPTED_COMMIT_RECEIPT_ROUTING",
+  "tested_head": "5cce4cdbfc7deac0fe40a0ed32b4591f6f704889",
+  "workflow_run": 34337899251,
+  "workflow_job": 102421518664,
+  "conclusion": "success",
+  "production_source_delta": [
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "evidence": {
+    "exact_two_file_source_delta": "PASS",
+    "generic_runtime_boundary": "PASS",
+    "no_per_column_receipt_state": "PASS",
+    "existing_no_receipt_commit_route_retained": "PASS",
+    "receipt_request_prevalidation_precedes_backend": "PASS",
+    "historical_F_MR05_physical_fixture_rehydrated": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "sparse_requested_receipts_exact": "PASS",
+    "no_receipt_route_physical_and_mass_identity": "PASS",
+    "A_B_A_receipt_replay": "PASS",
+    "rejected_requested_column_emits_no_ready_receipt": "PASS",
+    "invalid_sparse_requests_fail_before_state_mutation": "PASS",
+    "F_WOF34_exact_transcript_preservation": "PASS",
+    "F_WOF34_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "F_CI19_nested_F_MR15_receipt_dependency": "PASS",
+    "F_CI19_semantic_preservation": "PASS",
+    "final_gate_marker": "FMR18_MULTISWAP_RECEIPT_GATE PASS"
+  },
+  "semantic_result": {
+    "receipt_request_feature_scoped": true,
+    "receipt_output_ephemeral": true,
+    "persistent_column_state_added": false,
+    "nonrequested_columns_use_existing_commit_route": true,
+    "requested_columns_use_existing_execute_column_checkpoint_and_candidate": true,
+    "accepted_requested_column_receipt_matches_committed_provenance": true,
+    "rejected_requested_column_receipt_ready": false,
+    "invalid_request_can_mutate_committed_state": false,
+    "mass_accounting_changed": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "F_KT_commit_authority_changed": false
+  },
+  "not_qualified": [
+    "WOFOST PTRA/QROT physical binding",
+    "accepted-window WOFOST total publication",
+    "restart or crash atomicity across external persistence",
+    "canonical runtime admission beyond the qualified F-MR18 composition"
+  ],
+  "decision": "QUALIFIED_SERIALIZED_MULTISWAP_OPTIONAL_SPARSE_ACCEPTED_COMMIT_RECEIPT_ROUTING"
+}
