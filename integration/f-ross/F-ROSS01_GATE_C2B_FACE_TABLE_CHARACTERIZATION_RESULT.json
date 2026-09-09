@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_STEADY_FACE_CHARACTERIZATION",
+  "run": 34348000289,
+  "head": "7fa1d1822fa39f7b483c2ef3f4618850b2b578d1",
+  "candidate": {
+    "N": 241,
+    "storage": "float32_log_mobility",
+    "coordinate": "uniform_u_log10_negative_head_0_to_4",
+    "shared_table_plus_metadata_bytes": 232356
+  },
+  "thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0
+  },
+  "materials": {
+    "B05": {"artifact_id": 10102582504, "artifact_digest": "sha256:90c3fc3d9361c0ef6717770c09fe54c303b1b5b35d5d2129fe00ccd71f29161a", "max_hybrid_metric": 0.005949752437139586, "p99_hybrid_metric": 0.005745995462686343, "max_abs_error_over_ksatfit": 0.008620762025153935, "worst_hybrid_location_cm": [-40.001, -39.999], "worst_abs_location_cm": [-4.001, -3.999]},
+    "B10": {"artifact_id": 10102581086, "artifact_digest": "sha256:b78f6148e7e5add1f6c15c7c9d1aa4209d2c0b626615d00dbcd3f41ba5a5ba1e", "max_hybrid_metric": 0.010664668917495472, "p99_hybrid_metric": 0.009966537328903369, "max_abs_error_over_ksatfit": 0.032054143837496614, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-3.9, -6.0]},
+    "B12": {"artifact_id": 10102572460, "artifact_digest": "sha256:0e2bbd6c39b19e9289561355575b78f1e0430fd2ed60ce5fdcaa9207da314e86", "max_hybrid_metric": 0.010564654958885002, "p99_hybrid_metric": 0.009886188518128732, "max_abs_error_over_ksatfit": 0.03276211088536348, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-3.9, -6.0]},
+    "O05": {"artifact_id": 10102601792, "artifact_digest": "sha256:c9f5497654a67dc6090f4968909e613f576532d425c418e017ef9c3c549ac785", "max_hybrid_metric": 0.005936140349729186, "p99_hybrid_metric": 0.005122216291972173, "max_abs_error_over_ksatfit": 0.0105550321871679, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-4.001, -3.999]},
+    "O12": {"artifact_id": 10102576122, "artifact_digest": "sha256:8696c7a912453a9895d6473b1469459c23136e1a1431e653b413abe1a85a02ea", "max_hybrid_metric": 0.010927180902482937, "p99_hybrid_metric": 0.010204637975561667, "max_abs_error_over_ksatfit": 0.03267479819554446, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-4.001, -3.999]},
+    "O13": {"artifact_id": 10102562785, "artifact_digest": "sha256:4942bb57e71fd1e74dcc527c8b444b62e3bdfa4b65df7ab01968b326a1199183", "max_hybrid_metric": 0.010312872099599127, "p99_hybrid_metric": 0.009715713682851802, "max_abs_error_over_ksatfit": 0.03384241459460232, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-3.9, -6.0]},
+    "O14": {"artifact_id": 10102568296, "artifact_digest": "sha256:27818e8e1957d6f74fb81cc7c2d1f175aba0e87d551f32494e501ebe57005aa6", "max_hybrid_metric": 0.0015729682946220907, "p99_hybrid_metric": 0.0012192486137900858, "max_abs_error_over_ksatfit": 0.0018704018202863317, "worst_hybrid_location_cm": [-4.001, -3.999], "worst_abs_location_cm": [-4.001, -3.999]}
+  },
+  "pass_count": 0,
+  "fail_count": 7,
+  "failed_materials": ["B05", "B10", "B12", "O05", "O12", "O13", "O14"],
+  "failure_topology": {
+    "join_u_minus4": 0.6020599913279624,
+    "join_u_minus40": 1.6020599913279625,
+    "uniform_N241_cell_width_u": 0.016666666666666666,
+    "fractional_cell_position_minus4": 0.12359947967774332,
+    "fractional_cell_position_minus40": 0.12359947967775042,
+    "observation": "Both C0 conductivity-derivative joins are one log10 decade apart and therefore occupy the same non-node fractional position in the uniform N241 grid. All seven worst absolute probes are at or immediately span the -4 cm join; B05 also exposes the same effect at -40 cm in its worst hybrid probe.",
+    "inference": "The failure is consistent with bilinear interpolation across non-aligned C0 joins. State-coordinate, sign and hydrostatic structural checks remain qualified."
+  },
+  "decision": "C2B_FACE_CHARACTERIZATION_FAIL_CLOSED_UNIFORM_N241_NOT_ADMISSIBLE",
+  "next_candidate": {
+    "name": "C2B_SEAM_ALIGNED_N241_R1",
+    "coordinate": "piecewise_uniform_u_with_exact_nodes_at_log10_4_and_log10_40",
+    "interval_counts": [36, 60, 144],
+    "segment_cell_widths_u": [0.016723888647998956, 0.016666666666666666, 0.016652361171333594],
+    "same_N": 241,
+    "same_table_storage_bytes": 232356,
+    "rationale": "Align both physical C0 joins without increasing N or table memory while preserving near-uniform global resolution and O(1) piecewise lookup."
+  },
+  "scope_guard": "Characterization evidence only. No holdout, transient, groundwater, production or empirical hydraulic validation claim."
+}
