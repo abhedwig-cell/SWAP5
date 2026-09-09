@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -81,6 +81,11 @@
     "full_catalog_qualification_already_impossible": true,
     "precommit_commit": "8da4df81dfe0f9eeb93998de12399dce9bc58e14",
     "precommit": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json",
+    "postresult_routing_precommit": {
+      "path": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json",
+      "commit": "7c1bebcb16221c7c501e3d3580419307459a220c",
+      "full_aggregate_revealed_before_precommit": false
+    },
     "implementation_commits": [
       "26d8ac3aae456643f90b67cda597dda012a59b09",
       "4fb6d96b634d1cb9e7bb5861b92014b6f920d4b9",
@@ -88,7 +93,7 @@
     ],
     "execution_run": 34325023479,
     "execution_head": "d50aae893c751b8f1526602f0f09e5c8dc57ec1d",
-    "execution_status_last_observed": "IN_PROGRESS_1_OF_12_SHARDS_COMPLETE_REMAINDER_RUNNING",
+    "execution_status_last_observed": "IN_PROGRESS_4_OF_12_SHARDS_COMPLETE_REMAINDER_RUNNING",
     "tested": false,
     "result_persisted": false,
     "provider": "FROZEN_49_NODE_ANCHORED_HEAD_PAIR",
@@ -96,26 +101,36 @@
     "catalog": "36_STARING2018_MATERIALS_X_10_AND_20_CM_EQUALS_72_CLASSES",
     "raw_holdout_cases": 43200,
     "scientific_rule": "ALL_72_CLASSES_MUST_PASS_INHERITED_C6A_C6B_STRUCTURAL_EVIDENCE_SUFFICIENCY_AND_ACCURACY_RULES_NO_RETUNING",
-    "first_completed_shard": {
-      "shard": 7,
-      "materials": ["O04", "O05", "O06"],
-      "artifact_id": 10093775614,
-      "artifact_digest": "sha256:ef6f7bd073568741c7640a72aaf18371858e28d3a2fef3766a6f3d22d5fd1caa",
-      "classes_passed": 5,
-      "classes_total": 6,
-      "first_failed_class": "O05:20cm",
-      "failed_check": "strong_gradient_p90_lt_0p02",
-      "strong_gradient_p90_rel_error": 0.033027923762514434,
-      "active_p90_rel_error": 0.013741437168469118,
-      "active_p99_rel_error": 0.08728170630083112,
-      "active_max_rel_error": 0.10779635387939977,
-      "admitted_cases": 346,
-      "active_cases": 314,
-      "runtime_oracle_calls": 0,
-      "sign_mismatches": 0,
-      "structural_checks_all_pass": true,
-      "evidence_sufficiency_checks_all_pass": true,
-      "interpretation": "This single precommitted class failure is sufficient to rule out full-catalog C7a qualification. Remaining shards continue only to complete the failure localization map; no provider, classifier or threshold may be retuned on C7a holdout evidence."
+    "partial_localization": {
+      "completed_shards": [7, 9, 10, 11],
+      "classes_observed": 24,
+      "classes_passed": 19,
+      "classes_failed": 5,
+      "failed_materials": ["O05", "O11", "O13"],
+      "failed_classes": ["O05:20cm", "O11:10cm", "O11:20cm", "O13:10cm", "O13:20cm"],
+      "failure_check_counts": {
+        "accuracy:active_max_lt_0p30": 3,
+        "accuracy:active_p99_lt_0p10": 2,
+        "accuracy:strong_gradient_p90_lt_0p02": 1,
+        "accuracy:near_saturation_p90_lt_0p02": 1
+      },
+      "failed_classes_by_length_cm": {
+        "10": 2,
+        "20": 3
+      },
+      "structural_failures": 0,
+      "evidence_sufficiency_failures": 0,
+      "active_sign_mismatches": 0,
+      "reference_oracle_failures": 0,
+      "classifier_admitted_rows": 11067,
+      "active_evaluated_rows": 10535,
+      "observed_routing_interpretation": "Observed failures are accuracy-only and already span geometry-specific strong-gradient behavior (O05), persistent material/tail behavior (O11), and near-saturation plus tail behavior (O13). No single geometry-only explanation is sufficient for the revealed subset.",
+      "artifact_digests": {
+        "shard_7": "sha256:ef6f7bd073568741c7640a72aaf18371858e28d3a2fef3766a6f3d22d5fd1caa",
+        "shard_9": "sha256:8cfb4e35df5cebc5cb1d25b7407e369cdb66fbfcf75c0a4ef5fa0760152446da",
+        "shard_10": "sha256:f80efcf6449a9dc629ab25d8a61d9a6fef37d14f64946da2241b0d2dc2460821",
+        "shard_11": "sha256:04474b726fa356ccaee9c5ca8801e96566bf82ad63764b327f01fd323afe7b59"
+      }
     },
     "production_admission": false
   },
@@ -159,6 +174,7 @@
     "C7A_EXPERIMENT_IMPLEMENTED": true,
     "C7A_EXECUTION_STARTED": true,
     "C7A_FIRST_CLASS_FAILURE_PERSISTED": true,
+    "C7A_POSTRESULT_ROUTING_PRECOMMITTED_BEFORE_FULL_REVEAL": true,
     "C7A_EXECUTION_COMPLETE": false,
     "CATALOG_COVERAGE_QUALIFIED": false,
     "TRANSIENT_ANCHOR_GATE_PRECOMMITTED": false,
@@ -166,5 +182,5 @@
     "OVERALL_QUALIFIED": false
   },
   "decision": "C7A_FULL_CATALOG_QUALIFICATION_FAILED_EXECUTION_CONTINUES_FOR_LOCALIZATION",
-  "status": "C7A_NOT_QUALIFIED_PARTIAL_EVIDENCE_PERSISTED_AGGREGATE_PENDING"
+  "status": "C7A_NOT_QUALIFIED_FOUR_SHARD_LOCALIZATION_CHECKPOINT_PERSISTED_AGGREGATE_PENDING"
 }
