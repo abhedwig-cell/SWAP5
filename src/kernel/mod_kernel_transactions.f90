@@ -22,6 +22,15 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_COMMIT_STATUS_STALE_REVISION = 4
   integer, parameter, public :: KERNEL_COMMIT_STATUS_TIME_MISMATCH = 5
 
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_OK = 0
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_TARGET_INITIALIZED = 1
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PROVENANCE = 2
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PHYSICAL = 3
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_INVALID_TIME = 4
+  integer, parameter, public :: KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED = 5
+
+  public :: kernel_reconstruct_committed_state_trusted
+
   type, abstract, public :: kernel_parameters_t
   end type kernel_parameters_t
 
@@ -223,6 +232,61 @@ contains
     self%initialized = .true.
     did_initialize = .true.
   end subroutine kernel_initialize_committed
+
+  ! Explicit trusted reconstruction boundary for adapter-owned persistence.
+  ! This is deliberately one atomic constructor for a complete committed
+  ! provenance record plus one decoded physical continuation state. It is not
+  ! a revision, lineage or time setter and it cannot overwrite a live target.
+  ! Ordinary runtime code must continue to use initialize() and transaction
+  ! commit. External parsing and codec selection remain outside this module.
+  subroutine kernel_reconstruct_committed_state_trusted(target, lineage_id, revision, physical_state, &
+       committed_time, time_bound, reconstructed, status)
+    type(kernel_committed_state_t), intent(inout) :: target
+    integer(int64), intent(in) :: lineage_id
+    integer(int64), intent(in) :: revision
+    class(transaction_state_t), allocatable, intent(in) :: physical_state
+    real(real64), intent(in) :: committed_time
+    logical, intent(in) :: time_bound
+    logical, intent(out) :: reconstructed
+    integer, intent(out) :: status
+    class(transaction_state_t), allocatable :: copy
+
+    reconstructed = .false.
+    status = KERNEL_TRUSTED_RECONSTRUCTION_TARGET_INITIALIZED
+    if (target%initialized .or. allocated(target%physical_state)) return
+
+    status = KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PROVENANCE
+    if (lineage_id <= 0_int64 .or. revision < 0_int64) return
+
+    status = KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PHYSICAL
+    if (.not. allocated(physical_state)) return
+
+    status = KERNEL_TRUSTED_RECONSTRUCTION_INVALID_TIME
+    if (time_bound) then
+      if (.not. ieee_is_finite(committed_time)) return
+    else
+      if (transfer(committed_time, 0_int64) /= transfer(0.0_real64, 0_int64)) return
+    end if
+
+    call physical_state%clone(copy)
+    if (.not. allocated(copy)) return
+
+    call move_alloc(copy, target%physical_state)
+    target%lineage_id = lineage_id
+    target%revision = revision
+    target%committed_time_value = committed_time
+    target%time_bound = time_bound
+    target%initialized = .true.
+
+    status = KERNEL_TRUSTED_RECONSTRUCTION_VALIDATION_FAILED
+    if (.not. target%ready()) then
+      target = kernel_committed_state_t()
+      return
+    end if
+
+    reconstructed = .true.
+    status = KERNEL_TRUSTED_RECONSTRUCTION_OK
+  end subroutine kernel_reconstruct_committed_state_trusted
 
   subroutine kernel_snapshot_committed(self, copy, available)
     class(kernel_committed_state_t), intent(in) :: self
