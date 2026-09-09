@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE",
+  "contract": "F-ROSS01_GATE_C2B_STATE_COORDINATE_CONDITIONING_CONTRACT.json",
+  "status": "COMPLETE_FAIL_CLOSED_STRICT_ROUNDTRIP_GATE",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34347094944,
+    "head": "be48f807d173488546f7a4c459039b419b53936e",
+    "job": 102451165288,
+    "conclusion": "failure",
+    "artifact": 10102147152,
+    "artifact_digest": "sha256:d7bfe62ffb66df0d776e3637de69435a022df63e3f8a9bc8ed155fe68a3831c5"
+  },
+  "aggregate": {
+    "material_count": 36,
+    "pass_count": 3,
+    "fail_count": 33,
+    "max_abs_u_error_vs_80_digit_reference": 1.965094753586527e-14,
+    "max_abs_u_roundtrip_error_from_log_head_origin": 4.11437533348602e-11,
+    "max_normalized_forward_difference_vs_direct_source_arithmetic": 1.2548850847338144e-12,
+    "nan_or_inf_failures": 0,
+    "coordinate_domain_failures": 0,
+    "endpoint_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0,
+    "branch_selection_failures": 0,
+    "monotonicity_failures": 1
+  },
+  "failure_diagnosis": {
+    "mapping_formula_accuracy": "PASS-like: binary64 mapping differs from 80-digit evaluation by at most 1.97e-14 in u, far below the 2e-12 criterion.",
+    "stabilized_source_equivalence": "PASS: stabilized H_ENPR forward state differs from direct source arithmetic by at most 1.25e-12 normalized state, below the frozen 2e-12 criterion.",
+    "strict_roundtrip": "FAIL: head-origin h->representable S->u roundtrip reaches 4.11e-11 in u, driven by finite representability of S very near saturation rather than mapping-formula error.",
+    "single_monotonicity_flag": "O18 has one 4.44e-16 positive u excursion between the representable state immediately below S105 and S105 itself. Explicitly mapping the exact physical join S105 to u=log10(4.2) removes the ulp-level artifact."
+  },
+  "table_resolution_context": {
+    "candidate_N": 241,
+    "u_span": 4.0,
+    "table_cell_width_u": 0.016666666666666666,
+    "worst_roundtrip_as_fraction_of_one_table_cell": 2.468625200091612e-9,
+    "interpretation": "The failed 2e-12 roundtrip threshold is orders of magnitude stricter than the table discretization and is not itself a face-flux accuracy measure."
+  },
+  "decision": "STRICT_C2B_STATE_COORDINATE_GATE_FAILED_OPEN_R1_WITH_EXACT_JOIN_AND_TABLE_CELL_RELATIVE_ROUNDTRIP_BOUND",
+  "scope_guard": "Failure is preserved. No C2B face-table qualification follows from these diagnostics."
+}
