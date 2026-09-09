@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "evidence_stage": "PRETIMING_EQUIVALENCE",
+  "status": "PRETIMING_EQUIVALENCE_TESTED_PERSISTED_WALL_CLOCK_CHARACTERIZATION_PENDING",
+  "decision": "NOT_YET_QUALIFIED",
+  "tested_head": "9937ef9f0773b0e158a6d304f8b7e8181de70e48",
+  "workflow_run": 34395435281,
+  "workflow_job": 102613872338,
+  "workflow_conclusion": "success",
+  "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+  "runner_image": "ubuntu-24.04 20260907.300.1",
+  "protocol": "integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL.json",
+  "protocol_correction": "integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL_CORRECTION_01.json",
+  "driver": "tests/fpe/test_fpe06_temporal_certificate_cost.f90",
+  "runner": "tests/fpe/run_fpe06_pretiming_equivalence.sh",
+  "matrix": {
+    "source": "frozen F-VQ34 independent_matrix",
+    "cases": 12,
+    "optimization_modes": ["O0", "O2"],
+    "executions": 24,
+    "O0_cases_passed": 12,
+    "O2_cases_passed": 12,
+    "O0_O2_matrix_identity": true
+  },
+  "source_gates": {
+    "source_lock": true,
+    "protocol_correction_01_lock": true,
+    "reference_tridag_source": true
+  },
+  "corrected_harness": {
+    "transaction_mode": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "benchmark_temporal_tolerance": "huge(real64)",
+    "principal_advances_per_arm_per_interval": 3,
+    "retries": 0,
+    "rollbacks": 0,
+    "arm_A_temporal_service": false,
+    "arm_B_temporal_service": true,
+    "arm_B_defect_tridag_per_advance": 1,
+    "arm_B_additional_full_nonlinear_solves_per_advance": 0,
+    "expected_and_observed_aggregate_headcalc_delta_B_minus_A": 0,
+    "expected_and_observed_aggregate_linear_solve_delta_B_minus_A": 3
+  },
+  "hard_equivalence_gates": {
+    "attempts_equal": true,
+    "principal_headcalc_calls_equal": true,
+    "nonlinear_iterations_equal": true,
+    "internal_retries_equal": true,
+    "jacobian_builds_equal": true,
+    "backtracking_attempts_equal": true,
+    "alternative_solver_calls_equal": true,
+    "last_principal_solver_diagnostics_equal": true,
+    "candidate_physical_state_bitwise_equal": true,
+    "strict_mass_result_bitwise_equal": true,
+    "max_abs_step_mass_residual_bitwise_equal": true,
+    "mass_rejection_count_equal": true,
+    "only_B_carries_temporal_continuation_history": true
+  },
+  "negative_evidence_retained": {
+    "failed_run": 34394714005,
+    "failed_job": 102611440755,
+    "invalid_assumption": "TX_TEMPORAL_NONE is a valid one-trial benchmark execution route",
+    "resolution": "Explicit protocol correction; acceptance criteria were not weakened."
+  },
+  "architecture_invariant_audit": {
+    "7_transactional_timesteps": "PASS_FOR_PRETIMING: existing valid full/two-half transaction path used; no bypass.",
+    "13_mass_conservation_absolute": "PASS_FOR_PRETIMING: A/B mass accounting and residual are bitwise identical across all 24 O0/O2 case executions.",
+    "23_physics_solver_policy_separated": "PASS_FOR_PRETIMING: physical configuration and reference solver settings are identical; only optional numerical continuation layout differs.",
+    "24_predictable_compute": "PARTIAL: fixed incremental solve topology is executable-proven; wall-clock distribution/tails remain unmeasured.",
+    "25_reference_mode_available": "PASS_FOR_PRETIMING: reference Richards path used.",
+    "26_runtime_diagnostics": "PASS_FOR_PRETIMING: existing principal and temporal solve counters support the cost-shape checks.",
+    "30_architecture_change_audit": "PASS_FOR_PRETIMING: no production source modified by PE06 evidence work."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "open": [
+      "paired wall-clock characterization with warmup and balanced ordering",
+      "median/p95/max paired delta and active/inactive ratio for O0 and O2",
+      "transient allocation/scratch characterization without invented byte counts",
+      "final F-PE06 results and closeout only after timing evidence is reproducible"
+    ]
+  }
+}
