@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_C_R1_ATOMIC_FUNDED_PREFIX_LEDGER_REPRESENTATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream_negative_evidence": {
+    "run": 34393034419,
+    "decision": "COMPOSED_FWC_INFILTRATION_MASS_PATH_NOT_QUALIFIED_RESEARCH_REQUIRED",
+    "physical_case_count": 72,
+    "physical_case_pass_count": 66,
+    "failed_case_count": 6,
+    "max_abs_composed_mass_residual_cm": 4.4162038684489973e-16,
+    "diagnosis": "six fully funded positive prefixes false-rejected because sequential binary64 remaining-water subtraction placed the next exact demand a few ulps above the represented remainder"
+  },
+  "candidate_representation": {
+    "physics_changed": false,
+    "event_order_changed": false,
+    "partial_funding_admitted": false,
+    "funding_certificate": "compute total demand for existing-front advance plus complete intended dry-prefix storage with math.fsum; compare available water once against that atomic total before any commit",
+    "publication": "after certificate PASS, publish existing-front advance then dry fronts strictly left-to-right using the certified immutable demand vector",
+    "surface_remainder": "available water minus the exact same certified total-demand scalar used by the funding check",
+    "negative_cases": "if available water is less than certified total demand, entire trial remains uncommitted and routes fail closed",
+    "epsilon_or_tolerance_for_funding_decision": false
+  },
+  "frozen_matrix": "identical to B2E-C including B2E-A parity cases, 4 materials, 16/64/200 bins, prefixes 0/1/2/4, and insufficient-existing/insufficient-creation controls",
+  "frozen_acceptance": {
+    "all_B2E_A_parity_cases_pass": true,
+    "all_72_physical_cases_pass": true,
+    "max_abs_composed_mass_residual_cm": 1e-12,
+    "max_abs_B2D_internal_step_mass_residual_cm": 1e-12,
+    "strict_existing_then_creation_publication_order": true,
+    "surface_remainder_nonnegative": true,
+    "all_insufficient_controls_fail_closed": true,
+    "committed_state_and_ledger_unchanged_on_reject": true,
+    "water_clip_drop_merge_count": 0,
+    "new_persistent_state_bytes_beyond_front_state": 0
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_ATOMIC_FUNDED_PREFIX_COMPOSED_INFILTRATION_MASS_PATH_READY_FOR_ZD_AND_RAINFALL_EVENT_QUALIFICATION",
+    "fail": "ATOMIC_FUNDED_PREFIX_LEDGER_REPRESENTATION_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "B2E-C negative evidence remains preserved and is not relabelled PASS.",
+    "No epsilon, ulp allowance, clipping, mass repair or partial dry-front construction is permitted.",
+    "The same certified total-demand scalar must be used for admission and surface remainder accounting.",
+    "Eq18 and Heun/RK2 remain exactly B2D-R1 physics/policy.",
+    "No Green-Ampt Z_d, redistribution, groundwater, crop, runtime or MultiSWAP production qualification."
+  ],
+  "relevant_invariants": [3,4,5,7,8,13,20,23,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
