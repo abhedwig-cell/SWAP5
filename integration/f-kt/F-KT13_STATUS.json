@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workunit": "F-KT13",
+  "title": "Trusted External Reconstruction and True Process-Boundary Restart Qualification",
+  "branch": "work/f-kt13-external-reconstruction",
+  "qualified_executable_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+  "qualification_run_id": 34362223859,
+  "qualification_job_id": 102501830094,
+  "decision": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION",
+  "state": {
+    "contract_persisted": true,
+    "implementation_persisted": true,
+    "executable_tested": true,
+    "qualified_within_scope": true,
+    "production_restart_format_qualified": false,
+    "production_swap_state_codec_registry_qualified": false
+  },
+  "qualified_scope": [
+    "committed-boundary process restart across complete producer-process termination",
+    "adapter-owned external representation outside the kernel",
+    "atomic reconstruction of a complete provenance record plus decoded physical continuation state",
+    "opaque typed persistence carrier reconstruction followed by the existing F-KT12 restore seam",
+    "stable lineage, committed revision and generic committed time across processes",
+    "exact next checkpoint and next candidate provenance",
+    "zero physical transfer caused by reconstruction/restore",
+    "complete interval water ledger without starting-storage reset or double count",
+    "fail-closed malformed, incompatible and invalid external records",
+    "O0/O2 identity of the qualification artifact and executable result"
+  ],
+  "architecture_result": {
+    "kernel_knows_files_or_paths": false,
+    "kernel_knows_serialization_format": false,
+    "kernel_parses_external_representation": false,
+    "independent_revision_setter_added": false,
+    "independent_lineage_setter_added": false,
+    "independent_time_setter_added": false,
+    "trusted_atomic_reconstruction_seam_added": true,
+    "ordinary_commit_and_initialize_paths_preserved": true,
+    "solver_scratch_persisted": false,
+    "forcing_persisted": false,
+    "immutable_parameters_duplicated_in_artifact": false
+  },
+  "trust_boundary": {
+    "meaning": "logical API and provenance integrity",
+    "cryptographic_authenticity": false,
+    "trusted_adapter_requirement": true,
+    "note": "The language-level public trusted constructor is an explicit architecture seam, not a cryptographic or capability-security boundary. Its correctness depends on adapter admission and qualification; ordinary runtime code must not use it as a mutation shortcut."
+  },
+  "preserved_qualifications": [
+    "F-KT03 opaque transaction boundary",
+    "F-KT04 temporal provenance",
+    "F-KT05 reusable checkpoint provenance",
+    "F-KT12 typed committed-state export/restore"
+  ],
+  "remaining_before_operational_restart": [
+    "qualify codecs for real SWAP continuation-state owner types and active optional feature state",
+    "bind stable runtime template/layout identities to those codecs",
+    "qualify dependent WOFOST/crop-owner process restart",
+    "qualify MultiSWAP many-column checkpoint/restart and batching behavior",
+    "define operational adapter storage/error/recovery policy outside the kernel",
+    "qualify schema evolution or migration explicitly before accepting cross-version restart artifacts"
+  ],
+  "explicit_nonclaims": [
+    "F-KT13 does not establish a production restart file format",
+    "F-KT13 does not prove every real SWAP state type serializable",
+    "F-KT13 does not qualify mid-transaction restart",
+    "F-KT13 does not persist trial candidates or solver scratch",
+    "F-KT13 does not provide arbitrary historical rollback",
+    "F-KT13 does not guarantee compatibility across schema or layout changes",
+    "F-KT13 does not claim cryptographic authenticity of restart artifacts"
+  ],
+  "historical_dependency_update": {
+    "F-WOF39_at_its_closeout": "truthfully reported true restart blocked by generic F-KT persistence",
+    "current_effect": "that generic blocker is now removed by F-KT13, but WOFOST true process restart still requires its own dependent qualification and real crop-owner codec coverage"
+  }
+}
