@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_EVENT_AWARE_PONDING_ONSET_SATURATION_TRANSITION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "QUALIFIED_TIGHT_E3_QUALIFICATION_SOLVER_AND_ENCOUNTERED_FACE_COMPOSITION_READY_FOR_REAL_SATURATION_EVENT_FIXTURE",
+    "STOP_FLUX_ONLY_H0_FIXTURE_AS_SATURATION_ADMISSION_ROUTE_DESIGN_EVENT_AWARE_SURFACE_STORAGE_HEAD_SWITCH_GATE"
+  ],
+  "purpose": "Test the first physically admissible saturation transition under atmospheric supply by composing the Ross soil-water column with a separate transactional surface-storage component and a flux-to-head boundary switch. This is an onset-of-ponding gate, not finite ponding/runoff qualification.",
+  "fixture": {
+    "materials": ["B01","B12","O13","O14"],
+    "initial_soil_heads_cm": [-0.2,-1.5,-5.0],
+    "initial_surface_storage_cm": 0.0,
+    "atmospheric_supply_fraction_ksat": 1.5,
+    "bottom_head_cm": -15.0,
+    "horizon_day": 0.001,
+    "candidate_step_counts": [4,8,16],
+    "reference_step_count": 64,
+    "soil_face_length_cm": 10.0,
+    "surface_head_in_ponding_onset_branch_cm": 0.0
+  },
+  "surface_boundary_contract": {
+    "q_sign": "positive_downward",
+    "flux_admissibility_predictor": "h_surface_required = h_top_committed + L*(q_supply/Ksat - 1)",
+    "flux_branch": "Allowed only when committed surface storage is zero and h_surface_required <= 1e-6 cm. Soil top flux is prescribed q_supply and surface storage remains zero.",
+    "ponding_onset_branch": "When the flux branch is inadmissible, set hydraulic surface head to exactly 0 cm for this restricted onset gate. Soil infiltration q_top is solved from the same 10 cm hydraulic face used by the qualified face machinery. Excess supply is stored externally as S_surface_new = S_surface_old + dt*(q_supply-q_top).",
+    "candidate_surface_face": "E3C expanded_candidate_face(h_surface=0,h_top)",
+    "reference_surface_face": "full-accuracy reference_face(h_surface=0,h_top)",
+    "surface_storage_owner": "separate boundary/runtime component, not Ross soil persistent state",
+    "maximum_surface_storage_cm": 0.025,
+    "maximum_surface_storage_basis": "one tenth of the unchanged E3 head-error threshold; larger storage requires a separate finite-ponding-head qualification",
+    "runoff": false,
+    "evaporation": false,
+    "macropores": false
+  },
+  "transaction_contract": {
+    "committed_state": ["three soil heads","surface storage"],
+    "trial_scratch": ["nonlinear vectors","trial heads","trial fluxes","trial surface storage"],
+    "rejected_trial_effect": "bitwise no change to committed soil heads and exactly no change to committed surface-storage ledger",
+    "commit": "soil heads and surface storage commit atomically"
+  },
+  "mass_contract": {
+    "soil_cell_residual": "dS_i - dt*(q_in-q_out)",
+    "surface_residual": "S_surface_new-S_surface_old-dt*(q_supply-q_top)",
+    "composed_residual": "dS_soil + dS_surface - dt*(q_supply-q_bottom)",
+    "hard_tolerance_cm": 1e-9,
+    "mass_repair": false,
+    "clipping_repair": false
+  },
+  "hydrologic_acceptance": {
+    "max_cumulative_bottom_flux_difference_cm": 0.001,
+    "max_total_composed_storage_difference_cm": 0.001,
+    "max_soil_cell_storage_difference_cm": 0.001,
+    "max_surface_storage_difference_cm": 0.001,
+    "max_head_difference_cm": 0.25,
+    "max_h0_transition_time_difference_day": 0.00025,
+    "reference_top_cell_h0_crossing_required": true,
+    "finest_candidate_top_cell_h0_crossing_required": true,
+    "ponding_onset_branch_required": true,
+    "positive_surface_storage_required": true,
+    "unqualified_face_fallback_count": 0,
+    "all_trajectories_complete": true
+  },
+  "qualification_solver": {
+    "method": "scipy least_squares qualification scaffold",
+    "xtol": 1e-14,
+    "ftol": 1e-14,
+    "gtol": 1e-14,
+    "max_nfev": 200,
+    "production_solver_claim": false
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_EVENT_AWARE_PONDING_ONSET_SATURATION_TRANSITION_READY_FOR_FINITE_PONDING_AND_HETEROGENEOUS_QUALIFICATION",
+    "fail": "EVENT_AWARE_PONDING_ONSET_SATURATION_TRANSITION_NOT_QUALIFIED_PRESERVE_FAILURE"
+  },
+  "hard_nonclaims": [
+    "No finite positive ponding-head hydraulic feedback is qualified; h_surface is fixed at 0 cm in the onset branch.",
+    "No runoff, evaporation, rainfall interception or macropore surface routing is qualified.",
+    "No production nonlinear solver is qualified.",
+    "No endpoint-limit response tangent, heterogeneous profile, groundwater, runtime or MultiSWAP admission follows.",
+    "The legacy global/module implementation is not copied into the SWAP5 kernel."
+  ],
+  "hard_guards": [
+    "The rejected flux-only E3D fixture remains negative evidence and is not overwritten.",
+    "No threshold, forcing, step count or face accuracy criterion may be tuned after this precommit.",
+    "Surface storage is a separate compositional state category and may not be hidden inside Ross soil state.",
+    "Mass conservation is hard across atmosphere plus surface plus soil.",
+    "If surface storage exceeds 0.025 cm, fail closed to a future finite-ponding gate rather than silently using h_surface=0."
+  ],
+  "relevant_invariants": [2,3,4,5,7,9,13,20,23,26,28,29,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
