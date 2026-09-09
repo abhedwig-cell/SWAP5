@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C3_TRANSACTION_LOCAL_REFINEMENT",
+  "role": "diagnostic attribution of the immutable frozen-matrix numeric failure",
+  "qualification_attempt": {
+    "tested_commit": "e2bc598c2161e88726f7e39d0c7245423eab9ac9",
+    "workflow_run": 34324752170,
+    "workflow_job": 102379335974,
+    "conclusion": "failure"
+  },
+  "attribution_run": {
+    "diagnostic_commit": "0a23e658633b3cb7f3e3320195b559cd3e1e38fe",
+    "workflow_run": 34325020448,
+    "workflow_job": 102380179435,
+    "conclusion": "success_expected_failure_reproduced",
+    "diagnostic_only": true
+  },
+  "first_failing_case": {
+    "case": 2,
+    "initial_head_cm": -25.0,
+    "bottom_head_jump_cm": -0.01,
+    "retry_halving": 9,
+    "attempt_dt_day": 0.00048828125,
+    "N1_trajectory_completed_before_failure": true,
+    "N4_trajectory_completed_before_failure": true,
+    "N8_trajectory_completed": false,
+    "failing_trajectory_steps": 8,
+    "failing_substep_index": 5,
+    "failing_substep_dt_day": 0.00006103515625,
+    "solver_status": 2,
+    "solver_status_name": "SW_SOLVE_RETRY_ADVISED",
+    "nonlinear_iterations": 8,
+    "backtracking_attempts": 20
+  },
+  "source_bound_interpretation": [
+    "The failure is inside the required N8 finite-comparator trajectory, after N1 and N4 for the same committed-state attempt already completed.",
+    "The failing substep duration is 6.103515625e-5 d, twice the previously observed 3.0517578125e-5 d nominal direct-solve cliff; therefore a single global dt threshold is not a sufficient convergence description.",
+    "The failure occurs at substep 5 rather than at the first N8 substep, demonstrating trajectory/state dependence of the convergence ceiling under the frozen nonlinear controls.",
+    "This is not a mass-conservation failure: all completed C3 rows reported external mass residual 0.0 and the failure is solver retry advice before an accepted endpoint exists.",
+    "Because the predeclared C3 comparator is N8, the available N4 endpoint may not be retrospectively relabelled as the C3 reference after observing this failure."
+  ],
+  "qualification_effect": {
+    "C3_full_matrix_complete": false,
+    "C3_transaction_local_error_relation_qualified": false,
+    "N8_exact_reference": false,
+    "N4_substitute_reference_admitted": false,
+    "true_error_bound_qualified": false,
+    "global_scale_factor_qualified": false,
+    "scientific_temporal_tolerance_selected": false,
+    "production_certificate_admitted": false
+  },
+  "preserved_positive_evidence": {
+    "Gate_B_restricted_right_derivative_bootstrap": "QUALIFIED_TEST_ONLY",
+    "Gate_C1B_exact_manufactured_eigenmode_relation": "QUALIFIED",
+    "Gate_C2_nonlinear_physical_transfer": "15_of_15_finite_N512_comparisons_consistent_but_highly_state_dependent",
+    "C3_case2_completed_ratio_sequence_before_failure": [
+      1659.701131823196,
+      1078.855446494343,
+      1235.668718228781,
+      349.6271695173415,
+      91.18263712667155,
+      43.856647811791596,
+      25.85740951160698,
+      9.957929752704136,
+      4.405910150581233
+    ]
+  },
+  "next_action": "Close Gate C3 fail-closed. Do not weaken the reference depth after seeing the failure. If the embedded-estimator line continues, use a separate predeclared workunit to assess a bounded production-compatible construction that does not require a deep refinement trajectory, explicitly reconciling it with F-VQ28's negative raw step-doubling/retry translation evidence."
+}
