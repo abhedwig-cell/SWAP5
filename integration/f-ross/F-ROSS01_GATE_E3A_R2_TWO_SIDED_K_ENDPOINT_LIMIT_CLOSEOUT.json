@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3A_R2_TWO_SIDED_K_ENDPOINT_LIMIT_FACE_SCOPE_QUALIFICATION",
+  "workflow_run": 34391513365,
+  "workflow_head": "7ee4516a1bf84217d5bc682bffad5d522f5d6a13",
+  "artifact_id": 10119823844,
+  "tested": true,
+  "qualified_restricted": true,
+  "production_implementation": false,
+  "decision": "QUALIFIED_E3_ENCOUNTERED_FACE_SCOPE_WITH_TWO_SIDED_K_ENDPOINT_LIMIT_READY_FOR_EVENT_AND_SOLVER_REMEDIATION",
+  "material_face_class_count": 8,
+  "material_face_class_pass_count": 8,
+  "total_lower_side_endpoint_limit_count": 7,
+  "candidate_unresolved_count": 0,
+  "candidate_nonfinite_count": 0,
+  "wrong_sign_count": 0,
+  "max_hybrid_metric": 0.00017119979544305238,
+  "max_abs_error_over_ksatfit": 1.0785868631416794e-05,
+  "lower_side_endpoint_max_hybrid_metric": 3.897467793520848e-12,
+  "lower_side_endpoint_max_abs_error_over_ksatfit": 8.276887037377664e-13,
+  "new_persistent_state_bytes": 0,
+  "new_constitutive_physics": false,
+  "quadrature_changed": false,
+  "root_iteration_count_changed": false,
+  "metric_tolerances_changed": false,
+  "qualified_face_classes": [
+    "NEAR_UNSAT_NEAR_UNSAT",
+    "DRY_ABOVE_WET_BELOW_TRANSITION_BAND"
+  ],
+  "hard_nonclaims": [
+    "No E3 column requalification.",
+    "No wetting-event admission.",
+    "No response tangent, runtime or MultiSWAP qualification."
+  ]
+}
