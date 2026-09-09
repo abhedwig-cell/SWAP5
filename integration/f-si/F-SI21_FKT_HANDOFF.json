@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "from_work_unit": "F-SI21",
+  "to_owner": "F-KT",
+  "proposed_next_work_unit": "F-KT09",
+  "title": "Generic Model-Owned Temporal Certificate Transaction Seam",
+  "source_branch": "work/f-si21-richards-temporal-runtime-policy",
+  "source_base": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "decision_contract_commit": "dc58c50fa75c0c54004a321ed518cb407c63c6e5",
+  "gate_A_evidence_commit": "ca38b6628644147f0b1886dfbe92b5f974c38cf1",
+  "scientific_trigger": {
+    "work_unit": "F-VQ28",
+    "closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "finding": "Existing outer full-versus-two-half retry topology does not preserve a conservative relation between Richards endpoint defect and fine-reference endpoint error across the held-out hydraulic envelope."
+  },
+  "required_owner_change": {
+    "scope": "GENERIC TRANSACTION/RUNTIME CONTRACT ONLY",
+    "must_not_reference": ["Richards", "HeadCalc", "pressure_head", "B1.10 hydraulic arrays"],
+    "capability": "Allow a transaction model to return an attempt-local temporal-accuracy certificate and allow numerical policy to select that certificate as the temporal acceptance source.",
+    "conceptual_trial_outcome_fields": [
+      "temporal_certificate_available",
+      "temporal_certificate_accepted",
+      "temporal_indicator"
+    ],
+    "conceptual_policy_modes": [
+      "EXTERNAL_FULL_VS_TWO_HALF",
+      "MODEL_OWNED_CERTIFICATE"
+    ],
+    "default_or_existing_behavior_must_remain_available": true,
+    "certificate_mode_unavailable_semantics": "FAIL_CLOSED"
+  },
+  "certificate_mode_transaction_semantics": {
+    "checkpoint_before_attempt": true,
+    "one candidate branch per attempt_allowed": true,
+    "solver_failure_retries": true,
+    "temporal_certificate_failure_retries": true,
+    "hard_mass_failure_retries": true,
+    "retry_may_reduce_attempt_duration": true,
+    "accepted_attempt_publishes_only_to_private canonical interval working state": true,
+    "external committed state mutation": false,
+    "external candidate_materialization_before_requested_t1": false,
+    "mass_tolerance_independent_of_temporal_certificate": true
+  },
+  "diagnostic_requirements": {
+    "temporal_acceptance_source_visible": true,
+    "temporal_indicator_visible": true,
+    "certificate_unavailable_visible": true,
+    "attempts_retries_rollbacks_visible": true,
+    "accepted_dt_visible": true,
+    "mass_rejections_remain_visible": true,
+    "solver_cost_remains_visible": true
+  },
+  "hard_holds": {
+    "no_numeric_temporal_limits_in_fkt09": true,
+    "no_richards_estimator_implementation_in_fkt09": true,
+    "no_mass_relaxation": true,
+    "no_physics_change": true,
+    "no_calendar_assumption": true,
+    "no_coupling_specific_logic": true,
+    "no_persistent_certificate_scratch": true,
+    "existing_exact_identity_restricted_routes_not_silently_reinterpreted": true,
+    "independent_fvq_required_for_any_new_production_temporal_policy": true
+  },
+  "acceptance_for_fkt09": [
+    "Existing transaction mode remains behaviorally unchanged under its existing policy.",
+    "Certificate mode is fail-closed when the model does not provide a certificate.",
+    "Certificate mode preserves checkpoint, rollback, private accepted-substep and explicit external commit semantics.",
+    "Hard mass conservation remains an independent gate.",
+    "Generic diagnostics distinguish solver, temporal-certificate and mass rejection.",
+    "No F-SI or Richards-specific type leaks into F-KT."
+  ],
+  "production_richards_admitted_by_this_handoff": false
+}
