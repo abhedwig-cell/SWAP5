@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_NEAR_SATURATION_FACE_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E2A_NEAR_SATURATION_FACE_CHARACTERIZATION_CONTRACT.json",
+  "production_implementation": false,
+  "execution": {
+    "workflow_run": 34370055488,
+    "head": "8eecfe3c4010929d3ea70383c0415c298dabea7c",
+    "artifact_id": 10111756425,
+    "artifact_name": "f-ross01-gate-e2a-near-saturation-face-characterization",
+    "artifact_sha256": "451ace1e9c04d9122ed90042c7404653628b78a6bdd6afdc3a7665845c5323e5",
+    "raw_result_sha256": "17a1d66cc36f84b97d2776cfd4731231800c8ba863191d5485cc66b92177446c",
+    "elapsed_seconds_descriptive": 335.0681207180023
+  },
+  "candidate_wet_node_counts": [17, 33],
+  "selected_wet_node_count": null,
+  "stress_materials": ["O01", "O05", "O14", "B01", "B12", "O13"],
+  "aggregate": {
+    "17": {
+      "pass_count": 2,
+      "max_hybrid_metric": 2.688249849464378,
+      "max_p99_hybrid_metric": 1.690317274827169,
+      "max_abs_error_over_ksatfit": 0.6423242155554174,
+      "max_incremental_shared_table_plus_axis_bytes": 35996
+    },
+    "33": {
+      "pass_count": 2,
+      "max_hybrid_metric": 2.306031150028467,
+      "max_p99_hybrid_metric": 0.7721998599833524,
+      "max_abs_error_over_ksatfit": 0.5928882033714311,
+      "max_incremental_shared_table_plus_axis_bytes": 70172
+    }
+  },
+  "material_projection": {
+    "O01": {
+      "n17_pass": true,
+      "n33_pass": true,
+      "n33_max_hybrid_metric": 0.00012173684995983454,
+      "n33_p99_hybrid_metric": 0.00009908679847132868,
+      "n33_max_abs_error_over_ksatfit": 0.0002415468628261134
+    },
+    "O05": {
+      "n17_pass": true,
+      "n33_pass": true,
+      "n33_max_hybrid_metric": 0.00015588994711640547,
+      "n33_p99_hybrid_metric": 0.00011670057403533327,
+      "n33_max_abs_error_over_ksatfit": 0.00025747205149156233
+    },
+    "O14": {
+      "n17_pass": false,
+      "n33_pass": false,
+      "n33_failed_metrics": ["max_abs_error_over_ksatfit"],
+      "n33_max_hybrid_metric": 0.000540299769477482,
+      "n33_p99_hybrid_metric": 0.0000821967172028096,
+      "n33_max_abs_error_over_ksatfit": 0.0005464576720692727,
+      "n33_worst_probe": {
+        "kind": "wet_wet",
+        "h_above_cm": 0.037352437153458595,
+        "h_below_cm": -0.14340071566402912,
+        "q_ref_cm_per_day": 2.5241816214785726,
+        "q_table_cm_per_day": 2.5228176718724105
+      }
+    },
+    "B01": {
+      "n17_pass": false,
+      "n33_pass": false,
+      "n33_failed_metrics": ["max_abs_error_over_ksatfit"],
+      "n33_max_hybrid_metric": 0.0008765303669453581,
+      "n33_p99_hybrid_metric": 0.00015258906110155113,
+      "n33_max_abs_error_over_ksatfit": 0.0008814900272622253,
+      "n33_worst_probe": {
+        "kind": "wet_wet",
+        "h_above_cm": 0.011916283518075943,
+        "h_below_cm": -0.15130172669887543,
+        "q_ref_cm_per_day": 31.398573598244614,
+        "q_table_cm_per_day": 31.37104905803951
+      }
+    },
+    "B12": {
+      "n17_pass": false,
+      "n33_pass": false,
+      "n33_failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"],
+      "n33_max_hybrid_metric": 1.5707907973910704,
+      "n33_p99_hybrid_metric": 0.550787298265684,
+      "n33_max_abs_error_over_ksatfit": 0.5249635331996503,
+      "n33_worst_hybrid_probe": {
+        "kind": "wet_dry",
+        "h_above_cm": -0.011933669447898865,
+        "h_below_cm": -1.994237053678148,
+        "q_ref_cm_per_day": 0.6513706521485434,
+        "q_table_cm_per_day": 1.6748904613538862
+      }
+    },
+    "O13": {
+      "n17_pass": false,
+      "n33_pass": false,
+      "n33_failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"],
+      "n33_max_hybrid_metric": 2.306031150028467,
+      "n33_p99_hybrid_metric": 0.7721998599833524,
+      "n33_max_abs_error_over_ksatfit": 0.5928882033714311,
+      "n33_worst_hybrid_probe": {
+        "kind": "wet_dry",
+        "h_above_cm": -0.007651396095752716,
+        "h_below_cm": -141.70309854948502,
+        "q_ref_cm_per_day": 2.338859555547029,
+        "q_table_cm_per_day": 7.734576926866982
+      }
+    }
+  },
+  "structural_checks": {
+    "table_generation_failures": 0,
+    "reference_failures": 0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_hydrostatic_abs_q_over_ksatfit": 0.0,
+    "minus1_boundary_node_logmobility_max_abs_difference": 0.0,
+    "memory_limit_violations": 0
+  },
+  "failure_classification": {
+    "primary": "REPRESENTATION_ERROR_NOT_ORACLE_OR_COMPOSITION_SEAM_FAILURE",
+    "mild_subset": "O14 and B01 fail N33 only on max_abs_error_over_ksatfit, with worst probes in WET_WET near h=0.",
+    "structural_subset": "B12 and O13 fail strongly in WET_DRY. Refining only the wet axis from 17 to 33 leaves order-one errors, showing that the direct product table with the unchanged global dry u-axis does not resolve cross-region mobility curvature.",
+    "not_a_valid_repair_inside_E2A": "Do not add more wet nodes, relax metrics or change coordinates inside E2A after observing this result."
+  },
+  "pass": false,
+  "decision": "DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION_REJECTED",
+  "next_action": "Open a separately frozen diagnostic/representation gate that localizes WET_DRY curvature for B12/O13 and distinguishes dry-axis resolution, coordinate choice and separability failure before defining any replacement representation."
+}
