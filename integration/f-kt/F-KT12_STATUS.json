@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT12",
+  "title": "Generic Committed-State Restore, Persistence Boundary & Provenance Qualification",
+  "branch": "work/f-kt12-generic-committed-state-restore",
+  "base": "3b03632defd9945b59ed2f1120f87c7497b0c7b4",
+  "production_implementation": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "GENERIC_OPAQUE_TYPED_COMMITTED_BOUNDARY_RESTORE_AND_PROVENANCE_CONTINUATION",
+  "production_files": [
+    "src/kernel/mod_kernel_committed_persistence.f90"
+  ],
+  "qualification": {
+    "definitive_tested_head": "eb7de82da18864cc4ed4d2e9a253499613fbe3b9",
+    "run": 34359323306,
+    "job": 102491939814,
+    "conclusion": "success",
+    "exact_split_run": true,
+    "stable_lineage_preserved": true,
+    "revision_continuation": true,
+    "committed_time_continuation": true,
+    "stale_candidate_rejection": true,
+    "stale_checkpoint_rejection": true,
+    "zero_restore_transfer": true,
+    "complete_mass_ledger_continuation": true,
+    "request_base_immutability": true,
+    "schema_layout_fail_closed": true,
+    "O0_O2_output_identity": true,
+    "F_KT03_F_KT04_F_KT05_preserved": true
+  },
+  "integrity": {
+    "opaque_carrier_fields_private": true,
+    "raw_revision_setter": false,
+    "raw_lineage_setter": false,
+    "logical_API_integrity": "QUALIFIED",
+    "cryptographic_authenticity": "NOT_CLAIMED"
+  },
+  "external_persistence_boundary": {
+    "serialization_adapter_in_scope": false,
+    "byte_or_file_format_defined": false,
+    "trusted_adapter_facing_reconstruction_import_implemented": false,
+    "full_process_crash_recovery_from_external_representation_qualified": false,
+    "hold": "EXTERNAL_SERIALIZATION_RECONSTRUCTION_PENDING",
+    "reason": "the opaque carrier is exported from a live committed object and restored into a fresh object, but F-KT12 does not expose a safe trusted reconstruction path for rebuilding that opaque carrier from an externally decoded representation after total process loss"
+  },
+  "scope_holds": {
+    "filesystem_added": false,
+    "file_format_added": false,
+    "paths_or_file_units_added": false,
+    "forcing_persisted": false,
+    "solver_scratch_persisted": false,
+    "jacobians_persisted": false,
+    "newton_vectors_persisted": false,
+    "mid_transaction_restart": false,
+    "in_flight_candidate_persistence": false,
+    "historical_rollback": false,
+    "mass_tolerance_relaxed": false,
+    "canonical_promotion": false
+  },
+  "dependent_handoff": {
+    "F_WOF39_true_process_restart": "REMAINS_BLOCKED_BY_EXTERNAL_RECONSTRUCTION_SEAM",
+    "MultiSWAP_checkpoint_restart": "NOT_YET_QUALIFIED",
+    "external_IO_adapter": "MAY_USE_THE_QUALIFIED_TYPED_EXPORT_RESTORE_SEMANTICS_AS_KERNEL_CONTRACT_BUT_REQUIRES_A_SEPARATE_TRUSTED_RECONSTRUCTION_IMPORT_QUALIFICATION"
+  },
+  "recommended_next": "Qualify a serialization-neutral trusted reconstruction/import seam between an external persistence adapter and the opaque F-KT carrier. Do not add filesystem or format knowledge to the kernel and do not expose a general raw revision setter. Only after that seam is qualified should true process/crash restart be claimed for WOFOST, MultiSWAP or standalone runtime.",
+  "evidence": "integration/f-kt/F-KT12_QUALIFICATION_EVIDENCE.json",
+  "closeout_docs_begin": "616d99ed85ec5836f9ea808c0035f0905c21beb6",
+  "post_test_closeout_docs_only": true,
+  "not_qualified": [
+    "external serialized representation reconstruction",
+    "full process/crash restart",
+    "user-facing restart files",
+    "mid-transaction restart",
+    "full MultiSWAP checkpoint/restart",
+    "WOFOST true process restart",
+    "canonical promotion"
+  ],
+  "affected_invariants": [2,3,4,5,7,8,9,11,13,16,28,29,30],
+  "decision": "QUALIFIED_GENERIC_COMMITTED_STATE_TYPED_RESTORE_AND_PROVENANCE_BOUNDARY_EXTERNAL_RECONSTRUCTION_PENDING",
+  "status": "QUALIFIED_GENERIC_COMMITTED_STATE_TYPED_RESTORE_EXTERNAL_SERIALIZATION_RECONSTRUCTION_PENDING"
+}
