@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "PRESCRIBED_HEAD_PHYSICAL_ENVELOPE",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_src_diff_from_fvq27": "EMPTY_PASS"
+  },
+  "workflow": {
+    "run": 34302103130,
+    "job": 102310995226,
+    "head": "ba84b0e7501f22a69ce68b4e25dc5afddfdba183",
+    "conclusion": "success",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "matrix": {
+    "soil_and_geometry": "same four-node F-GC02/F-SI20 homogeneous fixture",
+    "total_horizon_day": 0.25,
+    "initial_uniform_pressure_heads_cm": [-25.0,-75.0,-250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1,-0.01,0.001,0.01,0.1],
+    "top_flux_for_each_initial_state": "minus initial hydraulic conductivity so the pre-jump profile is stationary",
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12,
+    "reference_trajectory_steps": 128
+  },
+  "all_cases": {
+    "count": 15,
+    "all_direct_trajectories_converged": true,
+    "all_external_mass_residuals_within_hard_gate": true,
+    "maximum_external_mass_residual": 0.0,
+    "exact_fgc02_plus_0_01_case_dhead_cm": 2.5524294842682593e-4,
+    "exact_fgc02_source_lock_passed": true
+  },
+  "raw_headnorm_range": {
+    "minimum_dhead_cm": 2.5518430177839946e-5,
+    "maximum_dhead_cm": 1.1246847745752575e-2,
+    "minimum_twohalf_to_n128_endpoint_error_cm": 2.407293507644681e-6,
+    "maximum_twohalf_to_n128_endpoint_error_cm": 1.2024322558261247e-2,
+    "minimum_dhead_over_twohalf_endpoint_error": 0.6387132988708418,
+    "maximum_dhead_over_twohalf_endpoint_error": 46.723068841068745
+  },
+  "by_initial_hydraulic_state": [
+    {
+      "initial_head_cm": -25.0,
+      "dhead_range_cm": [1.1229982628080393e-4,1.1246847745752575e-2],
+      "dhead_over_twohalf_endpoint_error_range": [46.57502569051245,46.723068841068745],
+      "interpretation": "Raw one-versus-two-step head defect is strongly conservative relative to the N=128 endpoint error over the tested small-jump range."
+    },
+    {
+      "initial_head_cm": -75.0,
+      "dhead_range_cm": [2.5518430177839946e-5,2.5582944684288123e-3],
+      "dhead_over_twohalf_endpoint_error_range": [1.8623989327957873,1.8739519181081885],
+      "interpretation": "Raw head defect is the same order as the N=128 endpoint error and is conservative on the tested jumps."
+    },
+    {
+      "initial_head_cm": -250.0,
+      "dhead_range_cm": [7.67201652820404e-5,7.68009472787412e-3],
+      "dhead_over_twohalf_endpoint_error_range": [0.6387132988708418,0.6391188025455069],
+      "interpretation": "Raw head defect is smaller than the remaining two-half to N=128 endpoint error on all tested jumps, so it is not a uniformly conservative endpoint-error estimator."
+    }
+  ],
+  "scaling_findings": {
+    "approximately_linear_in_boundary_jump_within_each_initial_state": true,
+    "sign_symmetry_approximately_holds_for_small_positive_and_negative_jumps": true,
+    "state_dependence_is_material": true,
+    "single_universal_absolute_head_tolerance_justified_by_this_evidence": false,
+    "single_universal_defect_to_endpoint_error_factor_justified": false,
+    "normalization_selected": false
+  },
+  "scientific_interpretation": {
+    "restricted_raw_headnorm_remains_a_valid_dimensional_observable": true,
+    "raw_headnorm_is_uniformly_reliable_as_endpoint_error_estimator": false,
+    "reason": "The ratio between the one-step/two-half head defect and the two-half-to-fine-reference endpoint error varies by roughly two orders of magnitude across the tested initial hydraulic states and falls below one for the dry state.",
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "owner_qualified": false,
+    "decision_class": "B_STATE_DEPENDENT_TEMPORAL_ESTIMATOR_OR_RESTRICTED_ENVELOPE_REQUIRED"
+  },
+  "next_evidence": "For a fixed small prescribed-head jump represented by the exact F-GC02 +0.01 cm case, resolve full fixed-horizon refinement curves separately at initial heads -25, -75 and -250 cm. Determine how quickly each state enters a reproducible decay regime, whether the defect becomes conservative after additional refinement, and whether the exact F-GC02 retry budget can reach that regime. Do not introduce state normalization yet."
+}
