@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT11",
+  "title": "Explicit Richards Head-Budget Certificate Production Policy Binding",
+  "branch": "work/f-kt11-richards-head-budget-certificate-policy",
+  "base_commit": "dd34312f52ba4feb6507ca9d36a924897b64c7b8",
+  "scope": "owner implementation and owner qualification of production policy binding only; no application budget selection and no continuation bootstrap admission",
+  "source_locks": {
+    "F_VQ32_handoff": {"path":"integration/f-vq/F-VQ32_OWNER_HANDOFF.json","blob":"f7b7cce171b3b1829d7005c5ab7abae7c44ba4a9"},
+    "F_VQ32_closeout": {"path":"integration/f-vq/F-VQ32_CLOSEOUT.json","blob":"51b075c6f72880897416bdcfd92549bd68d26b7b","decision":"QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING"},
+    "F_KT09_contract": {"path":"integration/f-kt/F-KT09_DECISION_CONTRACT.json","blob":"7957c07ba3a1e31469f315b437f9ac3248a860e0"},
+    "F_KT10_closeout": {"path":"integration/f-kt/F-KT10_CLOSEOUT.json","blob":"1a53f26c4c299080d2ae8f03304320d55cf8ae8b"},
+    "canonical_config": {"path":"src/runtime/mod_canonical_contracts.f90","blob":"078ee248f57c8a6ee1e3b82d6afa38362a9fe579"},
+    "serialized_backend": {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"85753dd22832cdb0b0ff4ca87d2442590e34370c"},
+    "transaction_core": {"path":"src/transaction/mod_transaction_reference.f90","blob":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"},
+    "canonical_interval_runtime": {"path":"src/runtime/mod_canonical_interval_runtime.f90","blob":"55f3d271aa6200a994fd0144d6fce0701c918a74"}
+  },
+  "fixed_scientific_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "B_inf_owner": "F-SI25 production Richards temporal indicator",
+    "H_budget_owner": "external numerical/application accuracy policy",
+    "H_budget_validity": "explicitly supplied, finite and >0 in the native units required by the selected model; for the Richards binding those units are cm pressure head",
+    "C_h_contract": "finite nonnegative dimensionless scalar",
+    "generic_acceptance": "F-KT09 accepts only available finite nonnegative C_h<=1",
+    "default_H_budget": null,
+    "nonlinear_true_error_bound": false,
+    "shorter_dt_monotonicity": false
+  },
+  "architecture_selection": {
+    "generic_budget_carrier": "canonical_numerical_config_t.model_temporal_indicator_budget_available + model_temporal_indicator_budget",
+    "generic_runtime_meaning": "opaque model-owned temporal-indicator budget in the selected model's native indicator units; canonical/F-KT transaction code does not interpret its physical units or normalize it",
+    "richards_interpretation": "serialized reference Richards backend interprets the supplied native-unit budget as H_budget in cm pressure head and computes C_h=B_inf/H_budget",
+    "persistent_column_state_added": false,
+    "physical_parameter_field_added": false,
+    "forcing_field_added": false,
+    "transaction_policy_numeric_limit_added": false,
+    "transaction_core_formula_change": false,
+    "reason": "This keeps model-specific dimensional semantics outside the generic transaction acceptance core while preserving explicit numerical-configuration ownership and avoiding contamination of physical parameters or committed state."
+  },
+  "production_binding_contract": {
+    "when_history_service_disabled": "no model certificate is produced by the Richards backend",
+    "when_history_unavailable": "indicator/certificate remains unavailable; F-KT09 fails closed; current derivative may exist only in the rejected trial clone and cannot bootstrap committed history",
+    "when_budget_not_supplied": "certificate unavailable with explicit diagnostic reason",
+    "when_budget_supplied_but_invalid": "certificate unavailable with explicit diagnostic reason; no clamp, floor, absolute value or default substitution",
+    "when_B_inf_unavailable_or_invalid": "certificate unavailable with explicit diagnostic reason",
+    "when_budget_and_B_inf_valid": "populate trial_outcome.temporal_certificate_available=true and trial_outcome.temporal_indicator=B_inf/H_budget",
+    "hard_mass_ordering": "F-KT09 hard mass gate remains independent and is evaluated before certificate acceptance",
+    "retry_semantics": "existing F-KT09 checkpoint restore and retry_scale semantics are unchanged; a fixed supplied budget is reused across attempts but no claim is made that shorter dt improves C_h",
+    "commit_semantics": "only an accepted transaction can publish physical state and continuation history atomically",
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0,
+    "indicator_companion_cost": "unchanged F-SI25 one additional defect tridiagonal solve and zero additional full nonlinear trajectories"
+  },
+  "required_diagnostics": {
+    "raw_B_inf": true,
+    "budget_supplied": true,
+    "budget_valid": true,
+    "budget_native_value": true,
+    "normalized_C_h": true,
+    "certificate_available": true,
+    "unavailable_reason": true,
+    "existing_transaction_attempt_retry_rollback_mass_diagnostics": "unchanged"
+  },
+  "frozen_owner_test_matrix": {
+    "real_Richards_fixture": {"initial_uniform_head_cm":-125.0,"bottom_head_jump_cm":0.03,"attempt_dt_day":0.3,"bottom_mode":5,"hard_mass_tolerance":1e-12},
+    "seed_origin": "same restricted finite right-sided derivative construction already used by F-KT10/F-VQ31 qualification; qualification-only origin, not arbitrary restart admission",
+    "cases": [
+      {"id":"VALID_ACCEPT","budget_rule":"2*direct_B_inf from source-locked owner oracle for this test fixture","max_retries":0,"expected":"accepted, candidate produced, C_h=0.5 within floating tolerance"},
+      {"id":"VALID_REJECT","budget_rule":"0.5*direct_B_inf from source-locked owner oracle for this test fixture","max_retries":0,"expected":"temporal rejection, exact rollback, C_h=2 within floating tolerance"},
+      {"id":"MISSING_BUDGET","budget_available":false,"max_retries":0,"expected":"certificate unavailable temporal rejection, exact rollback"},
+      {"id":"INVALID_ZERO_BUDGET","budget_available":true,"budget_value":0.0,"max_retries":0,"expected":"certificate unavailable temporal rejection, exact rollback"},
+      {"id":"NO_HISTORY_WITH_VALID_BUDGET","budget_rule":"2*direct_B_inf","max_retries":0,"expected":"certificate unavailable temporal rejection, no bootstrap commit"},
+      {"id":"BOUNDED_RETRY_NO_MONOTONICITY_CLAIM","budget_value_cm":1e-12,"max_retries":2,"retry_scale":0.5,"expected":"bounded retries and rollback; no assertion that C_h decreases across attempts"}
+    ],
+    "synthetic_budget_values_are_scientific_tolerances": false,
+    "post_result_budget_tuning_allowed": false
+  },
+  "gates": {
+    "A_SOURCE_AND_SEMANTIC_LOCK": "All F-VQ32/F-KT09/F-KT10 source locks and formula/nonclaims remain exact.",
+    "B_CONFIG_SEPARATION": "Budget is numerical configuration only, absent by default, not in physical parameters, forcing, committed state or transaction policy tolerance.",
+    "C_REAL_RICHARDS_CERTIFICATE_ACCEPT": "Valid seeded history plus explicit valid budget produces dimensionless C_h and F-KT09 accepts through model-certified route with hard mass intact.",
+    "D_THRESHOLD_REJECTION_AND_ROLLBACK": "Valid too-small structural probe budget produces temporal rejection and exact physical/history/revision/time rollback.",
+    "E_MISSING_INVALID_FAIL_CLOSED": "Missing or invalid budget produces certificate-unavailable rejection with no default/clamp/floor.",
+    "F_NO_HISTORY_FAIL_CLOSED": "No-history origin remains unavailable and cannot self-bootstrap by rejected trials.",
+    "G_BOUNDED_RETRY": "Existing retry policy is exercised with fixed budget, exact rollback and bounded attempts; no monotonicity assertion or adaptive budget change.",
+    "H_COST_AND_MASS": "Certificate normalization adds zero nonlinear and zero linear solves; underlying indicator remains zero extra nonlinear plus one defect TRIDAG; hard 1e-12 mass gate unchanged.",
+    "I_O0_O2_AND_REGRESSION": "Owner matrix O0/O2 machine-readable identity plus F-KT09, F-KT10, F-VQ32-relevant regressions remain green.",
+    "J_DIAGNOSTICS": "Raw B_inf, budget provenance/validity, C_h, availability/reason and transaction diagnostics are visible without true-error wording.",
+    "K_ARCHITECTURE_INVARIANTS": "Explicitly check invariants 3,4,5,6,7,8,9,11,12,13,15,16,20,22,23,24,25,26,27,29,30."
+  },
+  "possible_owner_pass_decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_READY_FOR_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "hard_nonclaims": [
+    "No numerical H_budget value or universal application tolerance is selected.",
+    "No nonlinear true-error upper bound is claimed.",
+    "No shorter-dt monotonicity is claimed.",
+    "No arbitrary restart or discontinuity history bootstrap is implemented or admitted.",
+    "No F-GC02, groundwater coupling or F-PE release follows from owner verification.",
+    "No production I/O format or legacy input option is introduced."
+  ],
+  "persist_early_test_second": true,
+  "next_action": "After committing this contract, implement the generic budget carrier and Richards normalization/diagnostics seam without changing F-KT09 transaction acceptance algebra, then add owner tests and CI."
+}
