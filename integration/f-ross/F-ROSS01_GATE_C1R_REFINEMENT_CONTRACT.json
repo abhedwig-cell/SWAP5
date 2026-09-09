@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_BOUNDED_DENSE_TABLE_REFINEMENT",
+  "status": "FROZEN_BEFORE_CHARACTERIZATION",
+  "production_implementation": false,
+  "parent_evidence": "F-ROSS01_GATE_C1_GENERALISATION_RESULT.json",
+  "purpose": "Test whether the three genuine C1 interpolation-accuracy failures can be removed without changing the physical face law, runtime complexity or 262144-byte shared-class memory ceiling.",
+  "unchanged_physical_representation": {
+    "coordinate": "u=log10(-h/cm) uniform on [0,4]",
+    "driving_head": "g=L+h_above-h_below",
+    "stored_physical_quantity": "log(M) with M=q/g>0",
+    "runtime_flux": "q=g*exp(interpolated_log_M)",
+    "exact_equal_head": "q=K(h)",
+    "structural_hydrostatic": "q=0 when g=0",
+    "face_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0,-1.0],
+    "ksatexm": "disabled",
+    "constitutive_family": "same unimodal Mualem-van Genuchten KSATFIT law as C1"
+  },
+  "candidate_representation_change": {
+    "table_storage_type": "IEEE754_float32_log_mobility",
+    "interpolation_arithmetic": "convert four table entries to float64 and evaluate bilinear interpolation in float64",
+    "axis_storage": "analytic_uniform_axis_no_array; locator x=(N-1)*log10(-h)/4",
+    "candidate_node_counts_per_axis": [225,241,255],
+    "candidate_selection": "smallest shared-memory candidate passing all frozen characterization criteria on every stress material",
+    "shared_memory_formula_bytes": "4*N*N + 32 bytes fixed scalar metadata upper-bound",
+    "runtime_lookup_complexity": "O(1)",
+    "per_column_table_state_bytes": 0
+  },
+  "stress_materials": {
+    "development_failure_targets": ["O01","O05","O14"],
+    "regression_anchors": ["B01","B12","O13"],
+    "rationale": "O01/O05/O14 are the genuine C1 accuracy failures; B01 preserves the qualified Gate B fixture, B12 exercises low-n clay behavior, O13 exercises the catalog minimum n and lambda extreme."
+  },
+  "fresh_characterization": {
+    "ordinary_probe_count_per_material": 512,
+    "ordinary_seed_rule": "uint32(first8hex(sha256('F-ROSS01-C1R-CHAR:'+material)))",
+    "equal_head_count": 64,
+    "hydrostatic_count": 64,
+    "near_hydrostatic_count": 96,
+    "wet_dry_cross_count": 49,
+    "edge_count": 6,
+    "no_reuse_as_future_holdout": true
+  },
+  "criteria_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "endpoint_policy": "Representable boundary values are clamped only after a scale-aware roundoff check against the exact frozen head envelope. The previous C1 endpoint-guard defect is treated as a harness defect and may not be counted as improved physical accuracy.",
+  "exit_rule": {
+    "characterization_pass": "freeze the selected N and float32 representation before any new 36-material holdout",
+    "characterization_fail": "reject this dense-table refinement family fail-closed; do not tune on a future holdout",
+    "no_catalog_claim_from_characterization": true
+  },
+  "scope_guard": "C1R does not touch KSATEXM, other hydraulic families, saturation switching, heterogeneous profiles, timestep accuracy, processes, bottom boundaries, groundwater, MultiSWAP, real-table response tangents or FullRichards equivalence."
+}
