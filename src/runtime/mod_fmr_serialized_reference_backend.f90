@@ -46,9 +46,6 @@ module mod_fmr_serialized_reference_backend
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
 
-  ! Optional F-KT-owned numerical continuation state for F-SI25. This is a
-  ! distinct dynamic state layout: ordinary B1.10 columns keep the base type
-  ! above and therefore carry no derivative vector or optional descriptor.
   type, extends(fmr_b110_physical_state_t), public :: fmr_b110_temporal_indicator_state_t
     private
     type(fkt_temporal_indicator_history_t) :: temporal_history
@@ -193,7 +190,6 @@ contains
   subroutine copy_b110_physical_state(source, target)
     class(fmr_b110_physical_state_t), intent(in) :: source
     class(fmr_b110_physical_state_t), intent(inout) :: target
-
     target%active_nodes = source%active_nodes
     if (allocated(target%pressure_head)) deallocate(target%pressure_head)
     if (allocated(source%pressure_head)) then
@@ -229,7 +225,6 @@ contains
     class(transaction_state_t), allocatable, intent(out) :: copy
     real(real64), allocatable :: derivative(:)
     logical :: available, ok
-
     allocate(fmr_b110_temporal_indicator_state_t :: copy)
     select type (typed_copy => copy)
     type is (fmr_b110_temporal_indicator_state_t)
@@ -251,7 +246,6 @@ contains
     class(fmr_b110_temporal_indicator_state_t), intent(in) :: self
     real(real64), allocatable, intent(out) :: derivative(:)
     logical, intent(out) :: available
-
     available = self%temporal_history%available(self%active_nodes)
     if (.not. available) return
     call self%temporal_history%snapshot(derivative, available)
@@ -264,7 +258,6 @@ contains
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
     class(transaction_state_t), allocatable :: carrier
-
     allocate(fmr_b110_physical_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_physical_state_t)
@@ -280,7 +273,6 @@ contains
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
     class(transaction_state_t), allocatable :: carrier
-
     allocate(fmr_b110_temporal_indicator_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_temporal_indicator_state_t)
@@ -293,7 +285,6 @@ contains
   logical function state_matches_numerical_continuation_layout(state, temporal_history_enabled) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled
-
     select type (state)
     type is (fmr_b110_temporal_indicator_state_t)
       matches = temporal_history_enabled
@@ -325,15 +316,13 @@ contains
     real(real64), intent(in) :: t0, t1
     class(transaction_state_t), allocatable :: snapshot
     logical :: available
-
     call clear_snow_preparation(model)
     model%snow_active = parameters%snow_active
     model%snow_outer_t0 = t0
     model%snow_outer_t1 = t1
     call committed%snapshot(snapshot, available)
     if (.not. available) return
-    if (.not. state_matches_numerical_continuation_layout(snapshot, self_or_false(model))) return
-
+    if (.not. state_matches_numerical_continuation_layout(snapshot, model%temporal_indicator_history_enabled)) return
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -353,11 +342,6 @@ contains
       return
     end select
   end subroutine prepare_snow_outer_event
-
-  pure logical function self_or_false(model) result(enabled)
-    type(fmr_serialized_reference_model_t), intent(in) :: model
-    enabled = model%temporal_indicator_history_enabled
-  end function self_or_false
 
   subroutine fmr_serialized_backend_initialize(self, top_boundary)
     class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
@@ -382,7 +366,6 @@ contains
     type(kernel_result_t), intent(out) :: result
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
-
     self%model%temporal_indicator_history_enabled = .false.
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
@@ -394,7 +377,6 @@ contains
       diagnostics%admission_rejections = 1
       return
     end if
-
     select case (template%numerical_continuation_layout_id)
     case (FMR_NUMERICAL_CONTINUATION_NONE)
       self%model%temporal_indicator_history_enabled = .false.
@@ -408,7 +390,6 @@ contains
       diagnostics%admission_rejections = 1
       return
     end select
-
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
@@ -425,7 +406,6 @@ contains
     class(kernel_parameters_t), intent(in) :: parameters
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     logical :: ok
-
     ok = associated(self%top_boundary) .and. numerical_config%max_committed_substeps > 0 .and. &
          self%state_profile_admitted
     select type (parameters)
@@ -437,10 +417,8 @@ contains
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
-      ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. &
-           parameters%bottom_mode == 5) .and. &
-           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%macropore_active .and. &
+      ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5) .and. &
+           parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. .not. parameters%macropore_active .and. &
            .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
            .not. parameters%elasticity_active .and. .not. parameters%frost_active
       if (parameters%snow_active) then
@@ -458,7 +436,6 @@ contains
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
     integer :: n
-
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
@@ -499,7 +476,6 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n
-
     self%forcing_admitted = .false.
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -508,11 +484,9 @@ contains
     n = self%soil_parameters%active_nodes
     select type (forcing)
     type is (fmr_b110_physical_forcing_t)
-      if (.not. allocated(forcing%drainage_flux_by_level) .or. &
-          .not. allocated(forcing%subsurface_irrigation_source) .or. &
+      if (.not. allocated(forcing%drainage_flux_by_level) .or. .not. allocated(forcing%subsurface_irrigation_source) .or. &
           .not. allocated(forcing%root_extraction_sink)) return
-      if (size(forcing%drainage_flux_by_level,1) <= 0 .or. &
-          size(forcing%drainage_flux_by_level,2) /= n .or. &
+      if (size(forcing%drainage_flux_by_level,1) <= 0 .or. size(forcing%drainage_flux_by_level,2) /= n .or. &
           size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
       if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
       if (self%root_extraction_active) then
@@ -522,8 +496,7 @@ contains
       end if
       if (self%snow_active) then
         if (.not. self%snow_event_prepared .or. .not. allocated(forcing%snow)) return
-        if (.not. same_real_bits(interval%t0, self%snow_outer_t0) .or. &
-            .not. same_real_bits(interval%t1, self%snow_outer_t1)) return
+        if (.not. same_real_bits(interval%t0, self%snow_outer_t0) .or. .not. same_real_bits(interval%t1, self%snow_outer_t1)) return
       else
         if (allocated(forcing%snow)) return
       end if
@@ -565,33 +538,27 @@ contains
     type(soil_water_solve_result_t), intent(in) :: solve_result
     type(trial_outcome_t), intent(inout) :: outcome
     logical, intent(out) :: ok
-
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
     logical :: previous_available, replaced
     integer :: n
-
     ok = .false.
     n = request%parameters%active_nodes
     previous_available = .false.
-
     select type (physical => state)
     type is (fmr_b110_temporal_indicator_state_t)
       call physical%temporal_history%snapshot(previous_derivative, previous_available)
-      if (previous_available) previous_available = size(previous_derivative) == n .and. &
-           all(ieee_is_finite(previous_derivative))
+      if (previous_available) previous_available = size(previous_derivative) == n .and. all(ieee_is_finite(previous_derivative))
     class default
       return
     end select
-
     indicator_request%previous_right_derivative_available = previous_available
     if (previous_available) then
       allocate(indicator_request%previous_right_derivative(n))
       indicator_request%previous_right_derivative = previous_derivative
     end if
-
-    call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, indicator_result)
+    call self%solver%evaluate_temporal_indicator(request, solve_result, indicator_request, self%workspace, indicator_result)
     self%last_observation%temporal_indicator_enabled = .true.
     self%last_observation%temporal_previous_derivative_available = previous_available
     self%last_observation%temporal_indicator_status = indicator_result%status
@@ -599,15 +566,12 @@ contains
     self%last_observation%temporal_indicator_route = indicator_result%route
     self%last_observation%temporal_head_inf_bound = indicator_result%head_inf_bound
     self%last_observation%temporal_additional_tridiagonal_solves = indicator_result%additional_tridiagonal_solves
-    self%last_observation%temporal_additional_full_nonlinear_solves = &
-         indicator_result%additional_full_nonlinear_solves
+    self%last_observation%temporal_additional_full_nonlinear_solves = indicator_result%additional_full_nonlinear_solves
     outcome%linear_solves = outcome%linear_solves + indicator_result%additional_tridiagonal_solves
-
     if (indicator_result%additional_full_nonlinear_solves /= 0) return
     if (.not. allocated(indicator_result%current_right_derivative)) return
     if (size(indicator_result%current_right_derivative) /= n) return
     if (any(.not. ieee_is_finite(indicator_result%current_right_derivative))) return
-
     select type (physical => state)
     type is (fmr_b110_temporal_indicator_state_t)
       call physical%temporal_history%replace(indicator_result%current_right_derivative, replaced)
@@ -615,11 +579,7 @@ contains
     class default
       return
     end select
-
     self%last_observation%temporal_current_derivative_available = .true.
-    ! Deliberately do not populate outcome%temporal_certificate_available or
-    ! outcome%temporal_indicator here. F-SI25 B_inf is unnormalised head-domain
-    ! evidence; F-KT09 certificate admission remains a separate scientific gate.
     ok = .true.
   end subroutine evaluate_temporal_history_service
 
@@ -633,7 +593,6 @@ contains
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64) :: step_duration
     logical :: context_ok, snow_event_applied_this_call, temporal_history_ok
-
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -646,7 +605,6 @@ contains
     if (.not. state_matches_numerical_continuation_layout(state, self%temporal_indicator_history_enabled)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
-
     call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
     if (self%root_extraction_active) then
       allocate(source_sink_root_zero(size(self%qrot)))
@@ -656,7 +614,6 @@ contains
     else
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot)
     end if
-
     request%parameters => self%soil_parameters
     request%evaluation%constitutive => self%constitutive
     request%evaluation%source_sink => self%source_sink
@@ -679,11 +636,10 @@ contains
     request%numerical%head_abs_tolerance = self%head_abs_tolerance
     request%numerical%head_rel_tolerance = self%head_rel_tolerance
     request%numerical%ponding_tolerance = self%ponding_tolerance
-
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
-      if (physical%active_nodes /= self%soil_parameters%active_nodes .or. &
-          .not. allocated(physical%pressure_head) .or. .not. allocated(physical%water_content)) return
+      if (physical%active_nodes /= self%soil_parameters%active_nodes .or. .not. allocated(physical%pressure_head) .or. &
+          .not. allocated(physical%water_content)) return
       if (self%snow_active) then
         if (.not. allocated(physical%snow) .or. .not. self%snow_event_prepared) return
         if (.not. physical%snow%event_applied .or. .not. same_real_bits(physical%snow%event_t0, self%snow_outer_t0)) then
@@ -696,8 +652,7 @@ contains
         if (allocated(physical%snow)) return
       end if
       request%base_state%active_nodes = physical%active_nodes
-      allocate(request%base_state%pressure_head(physical%active_nodes), &
-               request%base_state%water_content(physical%active_nodes))
+      allocate(request%base_state%pressure_head(physical%active_nodes), request%base_state%water_content(physical%active_nodes))
       request%base_state%pressure_head = physical%pressure_head
       request%base_state%water_content = physical%water_content
       request%base_state%ponding_depth = physical%ponding_depth
@@ -705,7 +660,6 @@ contains
     class default
       return
     end select
-
     call bind_b110_serialized_legacy_context(request, context_ok)
     if (.not. context_ok) return
     call self%solver%solve(request, self%workspace, solve_result)
@@ -716,7 +670,6 @@ contains
     self%last_observation%solver_diagnostics = solve_result%diagnostics
     self%last_observation%solver_equation_residual_available = .false.
     call populate_snow_observation(self)
-
     outcome%nonlinear_iterations = solve_result%diagnostics%nonlinear_iterations
     outcome%internal_retries = solve_result%diagnostics%internal_retries
     outcome%headcalc_calls = 1
@@ -725,12 +678,10 @@ contains
     outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
     outcome%alternative_solver_calls = solve_result%diagnostics%alternative_solver_calls
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
-
     if (self%temporal_indicator_history_enabled) then
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
       if (.not. temporal_history_ok) return
     end if
-
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       physical%active_nodes = solve_result%candidate_state%active_nodes
@@ -741,7 +692,6 @@ contains
     class default
       return
     end select
-
     call account_external_fluxes(self, step_duration, solve_result%top_flux, solve_result%bottom_flux, &
          snow_event_applied_this_call, outcome%mass_in, outcome%mass_out)
     outcome%mass_accounting_complete = .true.
@@ -757,7 +707,6 @@ contains
     real(real64), intent(out) :: total_in, total_out
     integer :: i, level
     real(real64) :: value, external_top_flux
-
     external_top_flux = solver_top_flux
     if (self%snow_active) external_top_flux = self%base_top_flux
     total_in = max(0.0_real64, -external_top_flux) * step_duration + max(0.0_real64, bottom_flux) * step_duration
@@ -789,8 +738,7 @@ contains
       end if
     end do
     if (self%snow_active .and. snow_event_applied) then
-      total_in = total_in + self%snow_diagnostics%mass%snowfall_external_in + &
-           self%snow_diagnostics%mass%rain_external_in
+      total_in = total_in + self%snow_diagnostics%mass%snowfall_external_in + self%snow_diagnostics%mass%rain_external_in
       total_out = total_out + self%snow_diagnostics%mass%sublimation_external_out
     end if
   end subroutine account_external_fluxes
@@ -817,14 +765,13 @@ contains
     class(transaction_state_t), intent(in) :: state
     logical, intent(out) :: complete
     integer(int64), intent(out) :: missing_mask
-
     complete = .false.
     missing_mask = TX_MASS_MISSING_UNSPECIFIED
     if (.not. associated(self%soil_parameters)) return
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
-      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. &
-           allocated(physical%pressure_head) .and. allocated(physical%water_content)
+      complete = physical%active_nodes == self%soil_parameters%active_nodes .and. allocated(physical%pressure_head) .and. &
+           allocated(physical%water_content)
       if (complete) complete = size(physical%pressure_head) == physical%active_nodes .and. &
            size(physical%water_content) == physical%active_nodes
       if (complete .and. self%snow_active) complete = allocated(physical%snow)
@@ -848,20 +795,16 @@ contains
     class is (fmr_b110_physical_state_t)
       select type (half => half_state)
       class is (fmr_b110_physical_state_t)
-        if (full%active_nodes == half%active_nodes .and. allocated(full%pressure_head) .and. &
-            allocated(half%pressure_head) .and. allocated(full%water_content) .and. allocated(half%water_content)) then
-          same = size(full%pressure_head) == size(half%pressure_head) .and. &
-                 size(full%water_content) == size(half%water_content)
-          if (same) same = all(full%pressure_head == half%pressure_head) .and. &
-                           all(full%water_content == half%water_content) .and. &
-                           full%ponding_depth == half%ponding_depth .and. &
-                           full%groundwater_level == half%groundwater_level
+        if (full%active_nodes == half%active_nodes .and. allocated(full%pressure_head) .and. allocated(half%pressure_head) .and. &
+            allocated(full%water_content) .and. allocated(half%water_content)) then
+          same = size(full%pressure_head) == size(half%pressure_head) .and. size(full%water_content) == size(half%water_content)
+          if (same) same = all(full%pressure_head == half%pressure_head) .and. all(full%water_content == half%water_content) .and. &
+                           full%ponding_depth == half%ponding_depth .and. full%groundwater_level == half%groundwater_level
           if (same) same = allocated(full%snow) .eqv. allocated(half%snow)
           if (same .and. allocated(full%snow)) then
             same = full%snow%process%snow_water_storage == half%snow%process%snow_water_storage .and. &
                    full%snow%process%liquid_water_storage == half%snow%process%liquid_water_storage .and. &
-                   full%snow%event_applied .eqv. half%snow%event_applied .and. &
-                   full%snow%event_t0 == half%snow%event_t0
+                   full%snow%event_applied .eqv. half%snow%event_applied .and. full%snow%event_t0 == half%snow%event_t0
           end if
         end if
       end select
