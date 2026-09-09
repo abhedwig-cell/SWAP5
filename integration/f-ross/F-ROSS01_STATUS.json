@@ -30,80 +30,39 @@
     "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES"
   ],
   "primary_lineage": [
-    {
-      "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions",
-      "doi": "10.2134/agronj2003.1352",
-      "role": "non-iterative continuity update and MFP-based approximate face flux"
-    },
-    {
-      "citation": "Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions",
-      "doi": "10.4225/08/5859741868a90",
-      "role": "flexible hydraulic-property extension; equation-level audit incomplete"
-    },
-    {
-      "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes",
-      "doi": "10.2136/vzj2010.0085",
-      "role": "precomputed accurate steady-Darcian face fluxes with bounded O(N) runtime linear solve"
-    }
+    {"citation":"Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions","doi":"10.2134/agronj2003.1352","role":"non-iterative continuity update and MFP-based approximate face flux"},
+    {"citation":"Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions","doi":"10.4225/08/5859741868a90","role":"flexible hydraulic-property extension; equation-level audit incomplete"},
+    {"citation":"Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes","doi":"10.2136/vzj2010.0085","role":"precomputed accurate steady-Darcian face fluxes with bounded O(N) runtime linear solve"}
   ],
   "primary_candidate_for_first_physical_prototype": "ROSS2011_PRECOMPUTED_STEADY_STATE_FACE_FLUX",
   "qualified_subgates": [
+    {"gate":"A_CONTINUITY_ALGEBRA","run":34314383222,"head":"7d56fdee87cef995797f4f558bd69955703f482a","artifact":10089514525,"artifact_digest":"sha256:a10eece27a158bf1b0f7f4bac96887df8b9bec4e209661a9d147a7d8d05a88f7","cases":18,"max_abs_mass_residual":8.326672684688674e-17,"max_abs_tridiagonal_residual":8.673617379884035e-19,"base_state_bitwise_unchanged":true,"global_nonlinear_iterations":0,"scope":"analytic linear face law only; continuity algebra and transaction-safe bounded linear solve"},
+    {"gate":"J0_RESPONSE_TANGENT_ALGEBRA","run":34318919093,"head":"5dd1e29fa71716c67a02ed2122a0191dbb1fe401","artifact":10091096595,"artifact_digest":"sha256:8d8f171ab0de25fee4e94bc103ab5adbff332240fc2bb609276251408a92a503","analytic_trials":162,"tangent_comparisons":324,"max_tangent_metric":1.26885786529119e-10,"max_abs_mass_residual":1.1102230246251565e-16,"base_state_bitwise_unchanged":true,"cost_shape":"ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE","scope":"analytic linear bottom face only; same-factorization response sensitivity construction"},
+    {"gate":"B_REAL_FACE_TABLE","run":34335144568,"head":"cf7f13af9e2db91be039229d6c6d94819903960a","artifact":10097400431,"artifact_digest":"sha256:9a60517b715623821a944829474b0befb11191407dc35b9824ef146b3184dfe3","candidate":"V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129","fixture":"B01_NO_KSATEXM_L10_H_-10000_-1","holdout_probes":1399,"max_hybrid_metric":0.0007632329516314338,"p99_hybrid_metric":0.0006434272772995881,"max_abs_error_over_ksat":0.0003868674999822999,"wrong_sign_count":0,"max_hydrostatic_abs_q_over_ksat":3.329211979474659e-15,"shared_table_plus_axis_bytes":134160,"scope":"one homogeneous unsaturated B01 10-cm face over h [-10000,-1] cm with KSATEXM disabled"}
+  ],
+  "failed_or_open_qualification_evidence": [
     {
-      "gate": "A_CONTINUITY_ALGEBRA",
-      "run": 34314383222,
-      "head": "7d56fdee87cef995797f4f558bd69955703f482a",
-      "artifact": 10089514525,
-      "artifact_digest": "sha256:a10eece27a158bf1b0f7f4bac96887df8b9bec4e209661a9d147a7d8d05a88f7",
-      "cases": 18,
-      "max_abs_mass_residual": 8.326672684688674e-17,
-      "max_abs_tridiagonal_residual": 8.673617379884035e-19,
-      "base_state_bitwise_unchanged": true,
-      "global_nonlinear_iterations": 0,
-      "scope": "analytic linear face law only; continuity algebra and transaction-safe bounded linear solve"
-    },
-    {
-      "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
-      "run": 34318919093,
-      "head": "5dd1e29fa71716c67a02ed2122a0191dbb1fe401",
-      "artifact": 10091096595,
-      "artifact_digest": "sha256:8d8f171ab0de25fee4e94bc103ab5adbff332240fc2bb609276251408a92a503",
-      "analytic_trials": 162,
-      "tangent_comparisons": 324,
-      "max_tangent_metric": 1.26885786529119e-10,
-      "max_abs_mass_residual": 1.1102230246251565e-16,
-      "base_state_bitwise_unchanged": true,
-      "cost_shape": "ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE",
-      "scope": "analytic linear bottom face only; same-factorization response sensitivity construction"
-    },
-    {
-      "gate": "B_REAL_FACE_TABLE",
-      "run": 34335144568,
-      "head": "cf7f13af9e2db91be039229d6c6d94819903960a",
-      "artifact": 10097400431,
-      "artifact_digest": "sha256:9a60517b715623821a944829474b0befb11191407dc35b9824ef146b3184dfe3",
-      "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
-      "fixture": "B01_NO_KSATEXM_L10_H_-10000_-1",
-      "holdout_probes": 1399,
-      "max_hybrid_metric": 0.0007632329516314338,
-      "p99_hybrid_metric": 0.0006434272772995881,
-      "max_abs_error_over_ksat": 0.0003868674999822999,
-      "wrong_sign_count": 0,
-      "max_hydrostatic_abs_q_over_ksat": 3.329211979474659e-15,
-      "shared_table_plus_axis_bytes": 134160,
-      "scope": "one homogeneous unsaturated B01 10-cm face over h [-10000,-1] cm with KSATEXM disabled"
+      "gate": "C1_STARINGREEKS_UNIMODAL_MVG_GENERALISATION",
+      "run": 34335930101,
+      "head": "dc955c97155be4d8d6afb6ce226f7b9ad0435b14",
+      "material_count": 36,
+      "pass_count": 31,
+      "fail_count": 5,
+      "failed_materials": ["B13","O01","O05","O14","O15"],
+      "true_accuracy_failure_materials": ["O01","O05","O14"],
+      "decision": "C1_GENERALISATION_FAILED_GATE_B_REPRESENTATION_NOT_UNIVERSAL_ACROSS_STARINGREEKS_MVG",
+      "scope": "same frozen Gate B N129 representation across Staringreeks unimodal MvG using KSATFIT and KSATEXM disabled"
     }
   ],
-  "shared_oracle_dependency": "Gate B used an independent qualification-only steady-Darcian oracle reconstructed from Ross 2011 equations and frozen SWAP 4.3.1 constitutive sources without borrowing F-LMFP implementation internals.",
+  "shared_oracle_dependency": "Gate B and C1 use an independent qualification-only steady-Darcian oracle reconstructed from Ross 2011 equations and frozen SWAP 4.3.1 constitutive sources without borrowing F-LMFP implementation internals.",
   "current_findings": [
-    "Ross 2011 provides the cleanest first physical prototype candidate in the Ross lineage",
-    "the finite-volume continuity algebra conserves mass to roundoff across 1 to 128 cells and sigma 0, 0.5 and 1 without global nonlinear iteration",
-    "the committed test base state remains bitwise unchanged in continuity and tangent algebra gates",
-    "a discrete bottom response tangent can be obtained algebraically from the same tridiagonal factorization with one additional O(N) backsolve in the analytic linear fixture",
-    "the naive bilinear q(S_above,S_below) face table was rejected because interpolation violated the hydrostatic zero-flow manifold",
-    "a constrained representation using g=L+h_above-h_below, uniform log10(-h) coordinates and interpolation of log(q/g) qualified on a frozen unseen B01 holdout",
-    "Gate B passed all B1-B6 criteria on 1399 probes with max hybrid metric 7.632329516314338e-4, zero wrong signs, machine-scale hydrostatic residual and 134160 shared bytes",
-    "Gate B success is a physical prototype result only and does not qualify catalog generalisation, saturation switching, timestep accuracy, processes, groundwater, MultiSWAP or FullRichards equivalence"
+    "Gate B qualifies the B01 N129 log-head/log-mobility face representation on a frozen unseen holdout while preserving O(1) lookup, structural sign correctness and structural hydrostatic zero-flow",
+    "C1 tested the exact same representation without retuning across all 36 Staringreeks unimodal MvG materials with KSATEXM disabled",
+    "31 of 36 C1 materials passed every frozen criterion; B13 and O15 failed only through a qualification endpoint guard, while O01, O05 and O14 exceeded the absolute flux-error threshold and are genuine representation generalisation failures",
+    "C1 is therefore fail-closed and may not be rewritten as a pass after endpoint repair",
+    "C1 failure does not yet establish a RossFast no-go because a revised bounded shared representation may be characterized in a separate fresh refinement gate under the same 262144-byte class-memory ceiling",
+    "catalog-wide SWAP hydraulic generalisation remains the primary hard blocker; no groundwater or MultiSWAP promotion follows from Gate B"
   ],
-  "next_action": "Execute Gate C as a separate fail-closed hydraulic-catalog generalisation study. Keep the Gate B representation frozen initially, test diverse homogeneous unsaturated SWAP material classes against the same direct steady-Darcy oracle, and distinguish representation failure from constitutive-model or envelope limitations. Do not proceed to groundwater or MultiSWAP on the strength of B01 alone.",
-  "status": "REAL_B01_FACE_TABLE_QUALIFIED_CATALOG_GENERALISATION_REMAINS_PRIMARY_BLOCKER"
+  "next_action": "Run a separate C1R bounded-representation refinement using fresh characterization probes, then freeze a new unseen holdout if a candidate passes characterization. Preserve the failed C1 evidence. In parallel keep KSATEXM and other SWAP hydraulic families outside C1R until the base unimodal catalog representation is resolved.",
+  "status": "B01_FACE_QUALIFIED_C1_CATALOG_GENERALISATION_FAILED_REFINEMENT_REQUIRED"
 }
