@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "evidence_type": "closeout_readiness_qualification",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "qualified_head": "9dff7aa0fd6e9208c2f46332b8c4872510adad6f",
+  "base_spine": {
+    "workunit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1"
+  },
+  "materialized_production_source": {
+    "commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "production_delta_count": 8,
+    "paths": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90"
+    ]
+  },
+  "qualification_execution": {
+    "workflow": "F-CI21 closeout readiness",
+    "run_id": 34400129738,
+    "job_id": 102629666247,
+    "conclusion": "success",
+    "same_head_materialization_workflow": {
+      "run_id": 34400129811,
+      "job_id": 102629666858,
+      "conclusion": "success"
+    }
+  },
+  "required_markers": [
+    "FCI21_SOURCE_BLOB_LOCK=PASS",
+    "FCI21_TEMPORAL_ARCHITECTURE_SOURCE_GUARD=PASS",
+    "FCI21_PRODUCTION_SCOPE_GUARD=PASS",
+    "FCI21_TEMPORAL_COMPILE_O0=PASS",
+    "FCI21_TEMPORAL_COMPILE_O2=PASS",
+    "FCI21_TEMPORAL_MATERIALIZATION_GATE PASS",
+    "FCI21_CLOSEOUT_CURRENT_MATERIALIZATION_GATE=PASS",
+    "FCI21_CLOSEOUT_EXACT_EIGHT_PATH_SRC_DELTA=PASS",
+    "FCI21_CLOSEOUT_CANONICAL_MANIFEST_UNCHANGED=PASS",
+    "FCI21_CLOSEOUT_COMPILE_EVIDENCE=PASS",
+    "FCI21_CLOSEOUT_SI25_EVIDENCE=PASS",
+    "FCI21_CLOSEOUT_VQ30_EVIDENCE=PASS",
+    "FCI21_CLOSEOUT_VQ31_EVIDENCE=PASS",
+    "FCI21_CLOSEOUT_VQ32_EVIDENCE=PASS",
+    "FCI21_CLOSEOUT_VQ33_NEGATIVE_SENTINEL=PASS",
+    "FCI21_CLOSEOUT_VQ34_REMEDIATED_POLICY=PASS",
+    "FCI21_CLOSEOUT_WOF42_MR18_PRESERVATION=PASS",
+    "FCI21_CLOSEOUT_SCOPE_BOUNDARY=PASS",
+    "FCI21_CLOSEOUT_VQ33_TEXT_SENTINEL=PASS",
+    "FCI21_CLOSEOUT_READINESS_GATE PASS"
+  ],
+  "evidence_chain": {
+    "materialization_compile": "MATERIALIZATION_COMPILE_QUALIFIED",
+    "F_SI25": "SI25_SCIENTIFIC_REPLAY_QUALIFIED_ON_WOF42_MATERIALIZED_POSTIMAGE",
+    "F_VQ30": "VQ30_HELD_OUT_OPERATOR_REPLAY_QUALIFIED_ON_FCI21_MATERIALIZED_POSTIMAGE",
+    "F_VQ31": "PASS_MATERIALIZED_FVQ31_TRANSACTION_HISTORY_BEHAVIOR_PRESERVED",
+    "F_VQ32": "PASS_MATERIALIZED_FVQ32_HEAD_BUDGET_NORMALIZATION_BEHAVIOR_PRESERVED",
+    "F_VQ33": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "F_VQ33_interpretation": "PRESERVE_FVQ33_FAILURE_AND_REQUIRE_FVQ34_FOR_POSITIVE_REMEDIATED_QUALIFICATION",
+    "F_VQ34": "PASS_MATERIALIZED_FVQ34_REMEDIATED_CERTIFICATE_BEHAVIOR_PRESERVED",
+    "F_WOF42_F_MR18": "PASS_F_WOF42_AND_F_MR18_POSTIMAGE_PRESERVATION_ON_F_CI21"
+  },
+  "negative_evidence_lock": {
+    "F_VQ33_must_remain_failed": true,
+    "F_VQ33_reinterpreted_as_pass": false,
+    "F_VQ33_used_as_positive_evidence": false,
+    "rejected_backend_materialized": false,
+    "remediated_F_KT11_backend_materialized": true
+  },
+  "scientific_and_policy_boundary": {
+    "normalization_formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "application_H_budget_selected": false,
+    "empirical_multiplier": null,
+    "general_nonlinear_true_error_bound_qualified": false,
+    "shorter_dt_monotonicity_assumed": false,
+    "mass_gate_precedes_certificate_gate": true,
+    "certificate_rejection_preserves_committed_state": true,
+    "invalid_budget_values_fail_closed": true,
+    "native_invalid_budget_value_retained_diagnostically": true
+  },
+  "preservation_boundary": {
+    "F_WOF42_crop_persistence_preserved": true,
+    "F_MR18_accepted_commit_receipt_preserved": true,
+    "F_MR18_sparse_multiswap_receipt_preserved": true,
+    "per_column_receipt_state_added": false,
+    "canonical_source_manifest_changed": false,
+    "canonical_ref_changed": false,
+    "production_source_changed_by_closeout_work": false
+  },
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,13,15,16,20,22,23,25,26,27,29,30],
+  "architecture_result": {
+    "single_kernel": "PASS",
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS",
+    "scratch_per_worker": "PASS_WITHIN_MATERIALIZED_SCOPE",
+    "transactional_steps": "PASS",
+    "warm_start_correct_committed_origin": "PASS_WITHIN_REPLAY_SCOPE",
+    "generic_time": "PASS",
+    "mass_conservation": "PASS_HARD_GATE",
+    "bounded_certificate_cost": "PASS",
+    "multiswap_preservation": "PASS",
+    "alternative_solver_openness": "PASS",
+    "no_HeadCalc_internal_exposure": "PASS",
+    "physics_solver_policy_separation": "PASS",
+    "reference_mode_preserved": "PASS",
+    "runtime_diagnostics": "PASS",
+    "optional_state_scales_with_use": "PASS",
+    "no_silent_dependencies": "PASS",
+    "architecture_change_reconciled": "PASS"
+  },
+  "closeout_boundary": {
+    "materialized_subsystem_qualified": true,
+    "canonical_admission_completed": false,
+    "separate_canonical_admission_required": true,
+    "groundwater_coupling_released": false,
+    "application_temporal_tolerance_selected": false
+  },
+  "decision": "QUALIFIED_F_CI21_CLOSEOUT_READINESS_CANONICAL_ADMISSION_SEPARATE"
+}
