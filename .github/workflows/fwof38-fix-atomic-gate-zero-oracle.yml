@@ -1,4 +1,4 @@
-name: F-WOF38 repair strict assertion evaluation semantics
+name: F-WOF38 add explicit failed then accepted retry gate
 
 on:
   push:
@@ -11,13 +11,13 @@ permissions:
   contents: write
 
 jobs:
-  repair-test-semantics:
+  add-gate-e:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Split assertions containing impure function calls
+      - name: Add same-checkpoint failed then accepted retry oracle
         shell: bash
         run: |
           set -euo pipefail
@@ -27,55 +27,71 @@ jobs:
           import sys
           path = Path(sys.argv[1])
           src = path.read_text(encoding='utf-8')
-          replacements = [
-            ("  call require(crop_status == FMR_WOF38_OK .and. crop_event_forcing%ready(), 'F-WOF38 event forcing construction')\n",
-             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 event forcing construction status')\n  call require(crop_event_forcing%ready(), 'F-WOF38 event forcing construction ready')\n"),
-            ("  call require(crop_status == FMR_WOF38_OK .and. crop_parameters%ready(), 'F-WOF38 crop parameters')\n",
-             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop parameters status')\n  call require(crop_parameters%ready(), 'F-WOF38 crop parameters ready')\n"),
-            ("  call require(crop_status == FMR_WOF38_OK .and. crop_initial_state%ready(), 'F-WOF38 crop transaction state')\n",
-             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop transaction state status')\n  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"),
-            ("  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED .and. crop_kernel_candidate2%ready(), &\n       'F-WOF38 replay crop F-KT trial')\n",
-             "  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED, 'F-WOF38 replay crop F-KT trial status')\n  call require(crop_kernel_candidate2%ready(), 'F-WOF38 replay crop F-KT candidate ready')\n"),
-            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 first candidate contains matching event receipt')\n",
-             "    call require(tx%receipt_ready(), 'F-WOF38 first candidate receipt ready')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 first candidate consumes matching event')\n"),
-            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 replay candidate contains same receipt')\n",
-             "    call require(tx%receipt_ready(), 'F-WOF38 replay candidate receipt ready')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 replay candidate consumes same event')\n"),
-            ("    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &\n         'F-WOF38 rollback leaves owner and receipt uncommitted')\n",
-             "    call require(snapshot_available, 'F-WOF38 rollback owner snapshot available')\n    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 rollback leaves owner at checkpoint')\n    call require(.not. tx%receipt_ready(), 'F-WOF38 rollback leaves receipt uncommitted')\n"),
-            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 matching event receipt committed with owner')\n",
-             "    call require(tx%receipt_ready(), 'F-WOF38 committed receipt ready with owner')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 committed receipt matches event')\n"),
-            ("  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH .and. &\n       .not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval rejected')\n",
-             "  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH, 'F-WOF38 duplicate original interval status')\n  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval no candidate')\n"),
-            ("  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. &\n       .not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot move to next crop interval')\n",
-             "  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 stale next-interval event status')\n  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot materialize next-interval candidate')\n"),
-            ("  call require(crop_status == FMR_WOF38_OK .and. bad_crop_event_forcing%ready(), &\n       'F-WOF38 bad crop event remains source-provenance valid')\n",
-             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 bad crop event provenance status')\n  call require(bad_crop_event_forcing%ready(), 'F-WOF38 bad crop event remains source-provenance ready')\n"),
-            ("  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. .not. bad_crop_candidate%ready(), &\n       'F-WOF38 crop failure no candidate')\n",
-             "  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 crop failure status')\n  call require(.not. bad_crop_candidate%ready(), 'F-WOF38 crop failure no candidate')\n"),
-            ("    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &\n         'F-WOF38 crop failure owner receipt unchanged')\n",
-             "    call require(snapshot_available, 'F-WOF38 crop failure owner snapshot available')\n    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 crop failure owner unchanged')\n    call require(.not. tx%receipt_ready(), 'F-WOF38 crop failure receipt unchanged')\n"),
-            ("  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED .and. .not. policy_crop_candidate%ready(), &\n       'F-WOF38 retry-shrinking policy rejected')\n",
-             "  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED, 'F-WOF38 retry-shrinking policy status')\n  call require(.not. policy_crop_candidate%ready(), 'F-WOF38 retry-shrinking policy no candidate')\n"),
-          ]
-          for old, new in replacements:
-              count = src.count(old)
-              if count != 1:
-                  raise SystemExit(f'FWOF38 assertion anchor count={count}: {old.splitlines()[0]}')
-              src = src.replace(old, new, 1)
+          anchor = """  print '(a)', 'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS'
+
+  ! A policy that permits dt shrinking is not admitted for this fixed one-day
+"""
+          insert = """  print '(a)', 'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS'
+
+  ! Retry the same accepted physical event from exactly the same still-committed
+  ! crop checkpoint after the failed crop trial. The failure above must have
+  ! consumed neither owner state nor event receipt; this retry may publish once.
+  call bad_crop_kernel%advance_interval(crop_parameters, bad_crop_committed, crop_event_forcing, crop_config, &
+       100.0_real64, 101.0_real64, bad_crop_result, bad_crop_candidate, bad_crop_diag, bad_crop_checkpoint)
+  call require(bad_crop_result%status == CANONICAL_STATUS_COMPLETED, &
+       'F-WOF38 same-checkpoint accepted retry completes')
+  call require(bad_crop_candidate%ready(), 'F-WOF38 same-checkpoint accepted retry candidate ready')
+  call require(bad_crop_committed%current_revision() == 0, &
+       'F-WOF38 accepted retry remains candidate-only before commit')
+  call bad_crop_kernel%commit_candidate(bad_crop_committed, bad_crop_candidate, bad_crop_diag, &
+       did_commit, crop_commit_status)
+  call require(did_commit, 'F-WOF38 same-checkpoint accepted retry did commit')
+  call require(crop_commit_status == KERNEL_COMMIT_STATUS_COMMITTED, &
+       'F-WOF38 same-checkpoint accepted retry commit status')
+  call require(bad_crop_committed%current_revision() == 1, &
+       'F-WOF38 failed then accepted retry publishes exactly one revision')
+  call bad_crop_committed%snapshot(crop_snapshot, snapshot_available)
+  call require(snapshot_available, 'F-WOF38 retry committed snapshot')
+  select type (tx => crop_snapshot)
+  type is (fmr_wofost_crop_transaction_state_t)
+    call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
+    call require(snapshot_available, 'F-WOF38 retry owner snapshot available')
+    call require(same_owner(crop_snapshot_owner, candidate1), &
+         'F-WOF38 retry owner equals direct qualified candidate')
+    call require(tx%receipt_ready(), 'F-WOF38 retry receipt committed')
+    call require(tx%consumed_event(event_identity), 'F-WOF38 retry receipt matches source event')
+  class default
+    call require(.false., 'F-WOF38 retry committed state type')
+  end select
+  print '(a)', 'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS'
+
+  ! A policy that permits dt shrinking is not admitted for this fixed one-day
+"""
+          if src.count(anchor) != 1:
+              raise SystemExit(f'FWOF38 Gate E insertion anchor count={src.count(anchor)}')
+          src = src.replace(anchor, insert, 1)
+          marker_anchor = """    'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS' \\
+    'FWOF38_FIXED_ONE_DAY_EVENT_FORBIDS_RETRY_DT_SHRINKING=PASS' \\
+"""
+          marker_insert = """    'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS' \\
+    'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS' \\
+    'FWOF38_FIXED_ONE_DAY_EVENT_FORBIDS_RETRY_DT_SHRINKING=PASS' \\
+"""
+          if src.count(marker_anchor) != 1:
+              raise SystemExit(f'FWOF38 Gate E marker anchor count={src.count(marker_anchor)}')
+          src = src.replace(marker_anchor, marker_insert, 1)
           path.write_text(src, encoding='utf-8')
           PY
           test "$(git diff --name-only)" = "$TARGET"
           git diff --check
-          ! grep -Fq 'crop_event_forcing%ready(),' "$TARGET"
-          ! grep -Fq 'tx%receipt_ready() .and. tx%consumed_event' "$TARGET"
-          ! grep -Fq '.and. .not. crop_duplicate_candidate%ready()' "$TARGET"
-          echo 'FWOF38_TEST_ASSERTION_EVALUATION_ORDER_REPAIR=PASS'
-      - name: Commit test semantic repair
+          grep -Fq 'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS' "$TARGET"
+          echo 'FWOF38_GATE_E_TEST_ORACLE_ADDED=PASS'
+      - name: Commit Gate E test oracle
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'SWAP5 Qualification Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-          git commit -m 'test(F-WOF38): split impure assertion calls'
+          git commit -m 'test(F-WOF38): add failed then accepted same-checkpoint retry'
           git push origin HEAD:${GITHUB_REF_NAME}
