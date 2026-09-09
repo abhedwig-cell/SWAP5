@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "branch": "work/f-vzaa01-vadose-zone-analytical-assessment",
+  "status": "RESEARCH_HYPOTHESIS_NOT_QUALIFIED",
+  "premise": "The published sequential top-down VZAA formulation does not exactly close the accepted-step mass ledger and cannot strictly impose a general lower head/flux boundary. A SWAP5-derived method may only proceed if both defects are repaired structurally, not by hiding the residual in an unreported boundary term.",
+  "rejected_repairs": [
+    {
+      "repair": "define q_bottom after the step as whatever value closes the mass balance",
+      "reason": "this converts a storage discrepancy into an artificial unprescribed interface flux and violates the explicit groundwater boundary contract"
+    },
+    {
+      "repair": "clip final layer water contents to physical bounds and report the clipped profile",
+      "reason": "post-update clipping creates or destroys water unless every correction is explicitly sourced through a boundary or pairwise transfer ledger"
+    },
+    {
+      "repair": "relax the SWAP5 water-balance tolerance because VZAA errors shrink with refinement",
+      "reason": "mass conservation is a hard invariant and cannot be exchanged for layer count or speed"
+    },
+    {
+      "repair": "perform unrestricted global iteration until the bottom condition happens to match",
+      "reason": "this would discard the bounded-cost objective and can collapse back toward a general nonlinear column solve"
+    }
+  ],
+  "candidate_conservative_structure": {
+    "name": "ANALYTICAL_FORWARD_PREDICTOR_PLUS_BOUNDED_CONSERVATIVE_BACKWARD_CORRECTOR",
+    "step_1": "Starting only from committed state, forcing and top/bottom boundary data, execute the source-faithful analytical/sequential layer predictor and record every predicted face transfer and layer storage change.",
+    "step_2": "Construct the exact target accepted-step total storage from the external ledger: delta_S_target = dt * (q_top - q_bottom - sinks + sources), using the imposed bottom flux directly when flux-controlled.",
+    "step_3": "Inject/remove the boundary-transfer difference only through the lower boundary ledger, then redistribute required state adjustment upward using pairwise internal transfers. Every internal correction appears with equal and opposite signs on adjacent layer ledgers, so it cannot change total profile water.",
+    "step_4": "For prescribed bottom head, treat q_bottom as the scalar interface unknown. Evaluate a reconstructed bottom-head residual after the conservative correction. Use either one response-tangent correction or a strictly bounded scalar correction sequence; do not accept a trial unless both head residual and exact mass ledger pass.",
+    "step_5": "Reject the trial if layer admissibility, interface monotonicity, bottom-head response, correction-count cap or qualified envelope is violated. Committed state remains untouched."
+  },
+  "why_backward_correction_is_needed": "A purely top-down predictor has weak/no same-step feedback from the bottom condition into upstream layers. Direct groundwater coupling requires bottom information to affect the column response. A bottom-up correction sweep provides an O(N_layers) path for that feedback while keeping internal corrections conservative.",
+  "mass_ledger_requirements": [
+    "one realized external top flux",
+    "one realized external bottom flux",
+    "all sinks/sources included once",
+    "every internal predictor/corrector transfer cancels pairwise across the two adjacent layer ledgers",
+    "accepted delta storage computed from final unrounded state",
+    "no hidden residual flux",
+    "rollback discards all predictor and corrector trial state"
+  ],
+  "prescribed_flux_case": {
+    "unknown_interface_variable": "none if q_bottom is supplied",
+    "minimum_required_correction": "adjust profile storage by exactly the boundary-transfer difference and redistribute conservatively while preserving admissibility",
+    "hard_question": "whether one bounded backward sweep produces a physically acceptable profile over the intended envelope"
+  },
+  "prescribed_head_case": {
+    "unknown_interface_variable": "q_bottom",
+    "residual": "R(q_bottom) = H_bottom_reconstructed_after_conservative_trial(q_bottom) - H_bottom_target",
+    "production_target": "predictor plus one tangent-informed corrector in ordinary cases, with only bounded additional correction work where qualification allows",
+    "non_target": "many complete VZAA reruns per MODFLOW coupling window"
+  },
+  "response_tangent_hypothesis": "Propagate local analytical layer sensitivities during the forward predictor and reverse correction sweep so dH_bottom/dq_bottom or dq_bottom/dH_bottom is obtained in O(N_layers) marginal work. Finite +/- perturbations remain reference/fallback evidence only.",
+  "runtime_model_if_successful": "O(N_layers * N_internal_substeps * (1 + N_bounded_corrections)), with N_bounded_corrections explicitly capped; the desired ordinary path has one predictor and one corrector sweep.",
+  "qualification_tests_before_any_production_claim": [
+    "closed profile with zero top and bottom flux must preserve storage exactly under internal redistribution",
+    "prescribed nonzero bottom flux must change profile storage by exactly its ledger contribution",
+    "prescribed bottom head must converge within a fixed correction cap without mass residual",
+    "recharge, zero-flux and capillary-rise signs must cross continuously without clipping",
+    "strong heterogeneous interfaces must not use the uniform-soil analytical flux relation across the material jump",
+    "correction magnitude and spatial footprint must remain bounded under coarse layers and long dt",
+    "full Richards comparison must show whether the backward correction repairs only conservation or also the physical profile response"
+  ],
+  "decision_consequence": "This hypothesis keeps VZAA_FEASIBLE_AFTER_CONSERVATIVE_MODIFICATION open, but provides no evidence yet that the modified method passes. Until the correction is algebraically and numerically demonstrated, the published direct VZAA path remains blocked and VZAA is at minimum an algorithmic donor candidate.",
+  "status_label": "CONSERVATIVE_FORWARD_BACKWARD_REPAIR_HYPOTHESIS_PERSISTED_NOT_IMPLEMENTED"
+}
