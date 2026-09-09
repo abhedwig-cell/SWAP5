@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "depends_on": "F-ROSS01_REAL_FACE_ORACLE_CONTRACT.json",
+  "production_implementation": false,
+  "fixture": {
+    "material": "B01",
+    "path_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "saturation_switching": false,
+    "coordinate_state": "effective saturation S=(theta-theta_r)/(theta_s-theta_r)",
+    "S_min_and_S_max_are_derived_exactly_from_the_frozen_head_envelope_and_SWAPPED_MVG_retention_law": true
+  },
+  "table": {
+    "shape": "square q(S_above,S_below)",
+    "stored_value": "steady downward-positive Darcy flux in cm/day",
+    "interpolation": "bilinear in physical S coordinates between four neighboring stored fluxes",
+    "runtime_lookup_complexity": "O(1)",
+    "table_data_immutable_and_shared_per_material_geometry_class": true,
+    "per_column_table_state_bytes": 0,
+    "candidate_node_counts_per_axis": [33, 65, 97, 129],
+    "candidate_wet_end_density_exponents": [1.0, 0.75, 0.5],
+    "node_mapping": "S_j = S_min + (S_max-S_min)*(j/(N-1))^p; inverse index is analytic and O(1)",
+    "selection_rule": "Choose the smallest-memory candidate that passes all characterization criteria. Ties prefer p closer to 1 and then smaller N. Do not tune after holdout freeze."
+  },
+  "characterization": {
+    "ordinary_probe_count": 384,
+    "ordinary_probe_generator": "deterministic scrambled Sobol points mapped to the two-dimensional S envelope",
+    "ordinary_probe_seed": 41031,
+    "special_probe_families": [
+      "equal-head points spanning the head envelope",
+      "hydrostatic pairs h_below=h_above+L where both heads remain in envelope",
+      "near-hydrostatic pairs on both signs",
+      "wet-wet, dry-dry, wet-dry and dry-wet endpoint combinations"
+    ],
+    "candidate_density_and_mapping_may_be_selected_using_characterization_only": true,
+    "holdout_access_during_characterization": false
+  },
+  "precommitted_gate_metrics": {
+    "B1_accuracy": {
+      "hybrid_metric": "abs(q_table-q_ref)/(abs(q_ref)+1e-4*Ksat)",
+      "max_allowed": 0.01,
+      "p99_allowed": 0.002,
+      "secondary_abs_over_ksat_max_allowed": 0.0005
+    },
+    "B2_sign": {
+      "reference_nonzero_threshold": "1e-8*Ksat",
+      "required_wrong_sign_count": 0,
+      "near_zero_table_abs_limit": "1e-6*Ksat"
+    },
+    "B3_equal_head_gravity": {
+      "expected": "q_ref=K(h)>0 for downward-positive x",
+      "required_wrong_sign_count": 0,
+      "max_relative_error_allowed": 0.005
+    },
+    "B4_hydrostatic": {
+      "expected": "q_ref=0 when h_below-h_above=L",
+      "max_abs_q_over_ksat_allowed": 1e-5
+    },
+    "B5_domain": {
+      "required_lookup_failures": 0,
+      "required_nan_or_inf": 0,
+      "extrapolation_allowed": false
+    },
+    "B6_memory": {
+      "q_table_plus_axis_storage_max_bytes_per_shared_class": 262144,
+      "must_be_independent_of_column_count": true,
+      "must_be_independent_of_run_duration": true,
+      "preprocessing_is_offline_or_template_level_not_per_time_step": true
+    }
+  },
+  "fresh_holdout_rule": {
+    "freeze_only_after_characterization_selection": true,
+    "minimum_ordinary_probe_count": 512,
+    "must_use_different_seed_or_disjoint_sequence_range": true,
+    "include_special_physics_probes": true,
+    "no_density_or_mapping_changes_after_freeze": true
+  },
+  "scope_guard": [
+    "Gate B success qualifies one real homogeneous unsaturated material and one face length only",
+    "catalog-wide material generalisation belongs to Gate C",
+    "saturation transitions, heterogeneous faces, transient timestep accuracy, bottom boundary, groundwater, processes, MultiSWAP and FullRichards comparison remain open"
+  ],
+  "status": "TABLE_DESIGN_AND_PASS_CRITERIA_FROZEN_BEFORE_CHARACTERIZATION"
+}
