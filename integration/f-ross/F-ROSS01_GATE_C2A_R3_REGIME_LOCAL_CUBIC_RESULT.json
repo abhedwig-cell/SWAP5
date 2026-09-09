@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R3_KSATEXM_REGIME_LOCAL_TENSOR_CUBIC_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_C2A_R3_REGIME_LOCAL_CUBIC_CONTRACT.json",
+  "status": "COMPLETE_FAIL_CLOSED",
+  "production_implementation": false,
+  "candidate": {
+    "N": 241,
+    "coordinate": "R2_hybrid_uniform_S_wet_uniform_u_dry",
+    "interpolation": "regime_local_4x4_tensor_cubic_lagrange_log_mobility",
+    "storage": "IEEE754_float32_log_mobility",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "table_values_per_lookup": 16,
+    "runtime_lookup_complexity": "O(1)",
+    "seam_crossing_stencils": false
+  },
+  "workflow": {
+    "run": 34343193670,
+    "head": "7da09f358df9dbcdbd41c5e3312cdbb980ae1945",
+    "conclusion": "failure"
+  },
+  "qualification_thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "materials": {
+    "B10": {
+      "pass": false,
+      "ksatexm_over_ksatfit": 80.00000000000001,
+      "max_abs_error_over_ksatfit": 0.42898377763158096,
+      "max_hybrid_metric": 0.39398385461117885,
+      "p99_hybrid_metric": 0.10803922794649731,
+      "lookup_failures": 0,
+      "artifact": 10100686467,
+      "artifact_digest": "sha256:586c91bfde8bfa47f5d42f248473fc2b74b45da59b85bcd4cec6be850a5dfd15",
+      "worst_case": "broad wet-extension error; worst absolute probe h_above=-1.9781159362721035 cm, h_below=-1 cm"
+    },
+    "O12": {
+      "pass": false,
+      "ksatexm_over_ksatfit": 80.0,
+      "max_abs_error_over_ksatfit": 0.37220331298681597,
+      "max_hybrid_metric": 0.3028005426574286,
+      "p99_hybrid_metric": 0.07164999502659511,
+      "lookup_failures": 0,
+      "artifact": 10100664205,
+      "artifact_digest": "sha256:c133b837ccfaff483e1f5f19039b5ad7cc17a666dedf84d0f0809d1aaa46b612",
+      "worst_case": "broad wet-extension error; worst probe h_above=-1.9781159362720842 cm, h_below=-2 cm"
+    },
+    "O13": {
+      "pass": false,
+      "ksatexm_over_ksatfit": 80.0,
+      "max_abs_error_over_ksatfit": 0.6204157443700609,
+      "max_hybrid_metric": 0.6898806027557326,
+      "p99_hybrid_metric": 0.20236353527418954,
+      "lookup_failures": 0,
+      "artifact": 10100680149,
+      "artifact_digest": "sha256:e11f55336e85d77c414fff2ec7bd3c3490f3d18cbeb6c71b96ca84dbef50ea46",
+      "worst_case": "broad wet-extension plus threshold-cross error; worst absolute probe h_above=-1.913890029947851 cm, h_below=-1 cm"
+    },
+    "B05": {
+      "pass": false,
+      "max_abs_error_over_ksatfit": 0.021424810203214517,
+      "max_hybrid_metric": 0.027226707017031927,
+      "p99_hybrid_metric": 0.001041663466137794,
+      "lookup_failures": 0,
+      "artifact": 10100654245,
+      "artifact_digest": "sha256:811d40e07f7c8a5e65fbac058ad15314617c1739b1f15e35abf49e7087e8e5e6",
+      "failure_class": "localized_or_tail_dominated_not_catalog_bulk_failure"
+    },
+    "O14": {
+      "pass": false,
+      "ksatexm_over_ksatfit": 2.0,
+      "max_abs_error_over_ksatfit": 0.0025051239386118932,
+      "max_hybrid_metric": 0.0027321578136643627,
+      "p99_hybrid_metric": 0.000007316054836414939,
+      "lookup_failures": 0,
+      "artifact": 10100624758,
+      "artifact_digest": "sha256:70545c2abcc022fa3a7bfac5460d548266c4d6da336f10f7be09d06a49dd8f6c",
+      "worst_case": "narrow h=-2 cm threshold-cross band; h_above=-1.9950000000006904 cm, h_below=-2.0499999999993492 cm"
+    },
+    "O05": {
+      "pass": false,
+      "max_abs_error_over_ksatfit": 0.04721987318355103,
+      "max_hybrid_metric": 0.04448138450160114,
+      "p99_hybrid_metric": 0.0007717374305921829,
+      "lookup_failures": 0,
+      "artifact": 10100668424,
+      "artifact_digest": "sha256:e3526d1c268078b60f29816ebcf8b0b164d27b79cb6ea942066184e23fd9d568",
+      "failure_class": "localized_or_tail_dominated_not_catalog_bulk_failure"
+    }
+  },
+  "aggregate": {
+    "material_count": 6,
+    "pass_count": 0,
+    "fail_count": 6,
+    "holdout_opened": false,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0
+  },
+  "diagnosis": {
+    "localized_tail_class": ["B05", "O14", "O05"],
+    "broad_wet_extension_class": ["B10", "O12", "O13"],
+    "interpretation": "R3 strongly reduces bulk interpolation error for some moderate KSATEXM cases but does not satisfy the frozen maximum-error gate. For the three KSATEXM/KSATFIT=80 stress materials the p99 error remains large, so their failure is not explainable as only a narrow h=-2 cm seam artifact. A single local seam patch would therefore not be a justified universal redesign.",
+    "no_r4_default": true
+  },
+  "decision": "C2A_R3_REJECTED_FAIL_CLOSED_NO_36_MATERIAL_HOLDOUT",
+  "scope_guard": "This rejects only the tested R3 compact representation for exact SWAP 4.3.1 KSATEXM within h=[-10000,-1] cm. It does not declare KSATEXM invalid physics and does not permanently exclude a differently represented exact-KSATEXM RossFast family."
+}
