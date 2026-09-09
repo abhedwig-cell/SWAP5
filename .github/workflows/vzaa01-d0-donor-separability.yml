@@ -1,0 +1,40 @@
+name: F-VZAA01 D0 donor separability
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-vzaa01-d0-donor-separability-evidence
+    paths:
+      - 'experiments/vzaa/**'
+      - 'experiments/lmfp/**'
+      - 'integration/f-vzaa/**'
+      - '.github/workflows/vzaa01-d0-donor-separability.yml'
+      - 'src/solver/**'
+      - 'src/runtime/**'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'tests/fsi/**'
+
+permissions:
+  contents: read
+
+jobs:
+  d0-characterization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run precommitted D0 characterization
+        run: bash experiments/vzaa/run_vzaa01_d0_gate.sh
+      - name: Upload D0 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vzaa01-d0-donor-separability
+          path: vzaa01-d0-artifacts/
+          if-no-files-found: error
