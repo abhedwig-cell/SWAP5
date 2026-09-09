@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_ANALYTICAL_STATE_TO_HEAD_INVERSE",
+  "contract": "F-ROSS01_GATE_C2B_HENPR_STATE_INVERSE_CONTRACT.json",
+  "status": "COMPLETE_FAIL_CLOSED_AS_RUNTIME_HEAD_INVERSE_GATE",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34346361747,
+    "head": "1c7db062103a34f259afc7054c70e95e90fce0f9",
+    "job": 102448777351,
+    "conclusion": "failure",
+    "artifact": 10101846689,
+    "artifact_digest": "sha256:23064b7266b7ac84b95b5f16023d8a758be68f777fe0be1132a164a1c2146144"
+  },
+  "aggregate": {
+    "material_count": 36,
+    "pass_count": 1,
+    "fail_count": 35,
+    "max_head_abs_error_cm": 1.0410987627551549e-9,
+    "max_head_scaled_error": 2.478806577988464e-10,
+    "max_state_normalized_error": 1.254774062431352e-12,
+    "branch_mismatch_count": 29,
+    "inverse_nonmonotone_count": 15,
+    "nan_or_inf_count": 10,
+    "wet_rational_state_width_range": [2.8467657352093667e-5, 0.0016245247612952651]
+  },
+  "legacy_prhead_diagnostic": {
+    "max_wet_branch_abs_error_cm": 3.855439885214162,
+    "max_material_p99_wet_branch_abs_error_cm": 3.814988179616363,
+    "total_comparable_probe_error_gt_0_01_cm": 119226,
+    "total_comparable_probe_error_gt_0_1_cm": 114006,
+    "finding": "SWAP 4.3.1 prhead is not the inverse of watcon on the H_ENPR rational wet branch because prhead contains only the normalized dry-VG inverse until its geometry-dependent near-saturation branch."
+  },
+  "failure_diagnosis": {
+    "physical_inverse_derivation_wrong": false,
+    "primary_causes": [
+      "The first implementation reconstructed theta and subtracted theta_s on the narrow wet branch, causing avoidable cancellation.",
+      "The source term_105_a/term_105_ab arithmetic leaves a roughly 1e-12 normalized-water-content floating seam between mathematically equivalent dry and wet join evaluations, creating machine-level branch ambiguity in an exact inverse test.",
+      "Even after algebraic stabilization, reconstructing head from a representable water-content state becomes ill-conditioned extremely close to saturation; exploratory stabilized evaluation reduces the worst head roundtrip to about 1.7e-10 cm but still cannot satisfy the predeclared 1e-11 scaled-head criterion near h around -0.02 cm."
+    ],
+    "interpretation": "The frozen gate was intentionally strict and therefore remains failed. Its failure does not imply that the H_ENPR retention law is physically non-invertible. It shows that exact head recovery from binary64 theta arbitrarily close to saturation is the wrong runtime contract for the primary Ross2011 precomputed-flux route."
+  },
+  "ross2011_architecture_implication": {
+    "source_method": "Ross2011 uses unsaturated water content as primary state and a precomputed q(v_upper,v_lower) face table; runtime face flux need not reconstruct head before every lookup.",
+    "next_runtime_mapping": "Qualify direct representable S-to-table-coordinate mapping over the bounded unsaturated face-table envelope.",
+    "offline_head_reconstruction": "Offline table generation may use stabilized analytical formulas and/or higher precision because iterations and expensive constitutive work are allowed offline.",
+    "pressure_output": "Derived diagnostic head accuracy near saturation must be separately specified and must not silently become the flux-table admission criterion."
+  },
+  "decision": "RAW_THETA_TO_HEAD_INVERSE_GATE_FAILED_DO_NOT_BLOCK_DIRECT_ROSS2011_STATE_TO_TABLE_COORDINATE_ROUTE",
+  "scope_guard": "No production state-layout decision is made here. Unified-head state and mixed Ross state remain candidate architectures until transient saturation-transition and conservation gates decide between them."
+}
