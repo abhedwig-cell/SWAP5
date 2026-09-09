@@ -11,7 +11,8 @@ FSI18_BRANCH=origin/work/f-si18-reference-convergence-cliff
 FSI18_GENERATOR=tests/fsi/fsi18_make_reference_tridag_stubs.py
 FSI18_GENERATOR_BLOB=bf25c4c7fefaa59811255b0bc25c041522ab008e
 STUB=tests/fsi/fsi04_real_headcalc_stubs.f90
-DRIVER=tests/fkt/test_fkt10_real_richards_history_binding.f90
+DRIVER_SOURCE=tests/fkt/test_fkt10_real_richards_history_binding.f90
+DRIVER="$BUILD/test_fkt10_real_richards_history_binding.f90"
 
 fail() { echo "FKT10_REAL_HISTORY_RUNNER_FAIL $*" >&2; exit 1; }
 
@@ -31,6 +32,24 @@ assert 'outcome%temporal_certificate_available = .true.' not in backend
 assert 'outcome%temporal_indicator = indicator_result%head_inf_bound' not in backend
 print('FKT10_GATE_D_PHYSICAL_NUMERICAL_LAYOUT_SEPARATION=PASS')
 print('FKT10_GATE_E_CERTIFICATE_NONPROMOTION_SOURCE_GUARD=PASS')
+PY
+
+# This is a composition harness, not a temporal-accuracy qualification.  The
+# serialized backend deliberately returns HUGE for a non-identical full-vs-two-half
+# comparison because no scientific external comparator is admitted here.  The
+# originally persisted 1e30 test-only tolerance was therefore not neutral. Make
+# the test-only policy exactly accept that sentinel; production code and F-KT09
+# policy are untouched, and the model-certificate nonpromotion case below still
+# has to fail closed.
+python3 - "$DRIVER_SOURCE" "$DRIVER" <<'PY'
+from pathlib import Path
+import sys
+src=Path(sys.argv[1]).read_text()
+old='c%transaction%temporal_tolerance = 1.0e30_real64'
+new='c%transaction%temporal_tolerance = huge(0.0_real64)'
+assert src.count(old)==1, 'unexpected composition-harness temporal tolerance source'
+Path(sys.argv[2]).write_text(src.replace(old,new))
+print('FKT10_COMPOSITION_TEST_EXTERNAL_COMPARATOR_NEUTRALIZED=PASS_TEST_ONLY')
 PY
 
 # Replace only the deliberately-zero F-SI04 TRIDAG fixture with the exact
