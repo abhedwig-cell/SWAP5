@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "evidence": "GATE_A_ATTEMPT2_REFERENCE_DECISION_TRACE",
+  "role": "diagnostic_trace_only",
+  "tested_head": "8dca3c2c2a73614af36cf127b4cc887012463664",
+  "workflow_run": 34318253020,
+  "workflow_job": 102358974321,
+  "conclusion": "failure_expected_from_persisted_attempt2_blocker",
+  "trace_did_not_change_numerics_or_protocol": true,
+  "case": {
+    "calibration_case": 1,
+    "initial_head_cm": -25.0,
+    "bottom_head_cm": -25.05,
+    "bottom_head_jump_cm": -0.05,
+    "horizon_day": 0.125,
+    "optimization": "O0"
+  },
+  "frozen_floor_decision_inputs_cm": {
+    "d_128_abs_x128_minus_x256": 3.40349970429088e-12,
+    "d_256_abs_x256_minus_x512": 9.094947017729282e-13,
+    "machine_floor": 7.119638212316204e-13,
+    "d_128_over_floor": 4.780439121756487,
+    "d_256_over_floor": 1.277445109780439
+  },
+  "frozen_rule": "N=512 may be used as finite reference only when both d_128 and d_256 are <= machine floor.",
+  "decision": "EXTENDED_REFERENCE_REQUIRED",
+  "decision_is_unambiguous": true,
+  "extended_reference": {
+    "required_levels": [1024, 2048],
+    "N1024_endpoint_produced": false,
+    "failure": "fixed-horizon direct Richards solve did not converge before N=1024 endpoint output"
+  },
+  "common_ladder": {
+    "completed_through_N": 512,
+    "maximum_external_mass_residual": 0.0,
+    "N512_max_solver_residual": 8.785194793858864e-13
+  },
+  "scientific_interpretation": "The second-last common-ladder defect is about 4.78 times the frozen floor and the last defect is still about 1.28 times the floor. The case therefore cannot be reclassified as floor-resolved without changing the predeclared rule after observing the failure. The mandatory deeper finite reference cannot be generated under the frozen solver controls. This diagnostic supports fail-closed closure of F-VQ29 rather than retrospective floor inflation or solver-tolerance relaxation.",
+  "not_qualification_evidence_for": [
+    "a q_cap",
+    "an Nmin",
+    "a defect-to-error multiplier",
+    "a scientific temporal tolerance",
+    "production certificate admission"
+  ]
+}

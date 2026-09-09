@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "title": "Richards Fixed-Horizon Error-Bound Estimator Qualification",
+  "branch": "qualification/f-vq29-richards-fixed-horizon-error-bound",
+  "status": "COMPLETE_FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION",
+  "phase": "GATE_A_CALIBRATION_STOPPED_BEFORE_ERROR_BOUND_DERIVATION",
+  "decision_class": "FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION",
+  "base_commit": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+  "owner_input": {
+    "F_SI22_status": "QUALIFIED_FIXED_HORIZON_REFINEMENT_OWNER_OBSERVABLE_NUMERIC_ERROR_BOUND_PROFILE_REQUIRED",
+    "F_SI22_closeout": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+    "F_VQ28_status": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "F_VQ28_fixed_horizon_maximum_persistent_conservative_entry_N": 16
+  },
+  "plan": "integration/f-vq/F-VQ29_QUALIFICATION_PLAN.json",
+  "evidence": {
+    "attempt1_reference_depth_failure": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT1_REFERENCE_DEPTH_FAILURE.json",
+    "attempt2_protocol_lock": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT2_PROTOCOL_LOCK.json",
+    "attempt2_reference_failure": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT2_REFERENCE_FAILURE.json",
+    "attempt2_reference_decision_trace": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT2_REFERENCE_DECISION_TRACE.json"
+  },
+  "workflow_evidence": {
+    "attempt1_run": 34311884409,
+    "attempt1_job": 102340062487,
+    "attempt1_conclusion": "failure",
+    "attempt2_run": 34317993789,
+    "attempt2_job": 102358186936,
+    "attempt2_conclusion": "failure",
+    "trace_run": 34318253020,
+    "trace_job": 102358974321,
+    "trace_conclusion": "failure",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "gate_A_result": {
+    "calibration_matrix_case_count_planned": 54,
+    "cases_reaching_bound_derivation": 0,
+    "first_case": {
+      "initial_head_cm": -25.0,
+      "bottom_head_jump_cm": -0.05,
+      "horizon_day": 0.125,
+      "common_ladder_completed_through_N": 512,
+      "maximum_external_mass_residual_common_ladder": 0.0,
+      "d_128_cm": 3.40349970429088e-12,
+      "d_256_cm": 9.094947017729282e-13,
+      "machine_floor_cm": 7.119638212316204e-13,
+      "d_128_over_floor": 4.780439121756487,
+      "d_256_over_floor": 1.277445109780439,
+      "floor_resolved_under_frozen_rule": false,
+      "extended_reference_required": true,
+      "N1024_endpoint_produced": false
+    },
+    "q_cap_derived": false,
+    "Nmin_derived": false,
+    "defect_to_error_multiplier_derived": false,
+    "held_out_gate_executed": false,
+    "scientific_temporal_tolerance_selected": false,
+    "production_certificate_admitted": false
+  },
+  "qualified_findings": {
+    "same_horizon_common_ladder_can_complete_with_exact_external_mass_closure_for_case1_through_N512": true,
+    "case1_is_not_floor_resolved_under_predeclared_attempt2_rule": true,
+    "mandatory_extended_reference_for_case1_is_unavailable_under_frozen_solver_controls": true,
+    "current_evidence_is_insufficient_to_calibrate_a_conservative_geometric_tail_bound": true,
+    "retrospective_floor_inflation_would_be_data_dependent": true,
+    "retrospective_solver_tolerance_relaxation_would_change_the_frozen_numerical_profile": true
+  },
+  "not_qualified": {
+    "minimum_admissible_refinement_depth": true,
+    "global_or_restricted_q_cap": true,
+    "geometric_tail_multiplier": true,
+    "defect_to_remaining_error_upper_bound": true,
+    "held_out_envelope_validity": true,
+    "bounded_cost_two_trajectory_production_certificate": true,
+    "application_or_scientific_temporal_tolerance": true,
+    "production_runtime_admission": true
+  },
+  "hard_holds_preserved": {
+    "production_richards_source_modified": false,
+    "physics_changed": false,
+    "solver_max_iterations_changed": false,
+    "solver_backtracking_changed": false,
+    "solver_min_step_duration_changed": false,
+    "nonlinear_head_tolerance_changed": false,
+    "hard_mass_tolerance_changed": false,
+    "calibration_matrix_changed_after_failure": false,
+    "held_out_matrix_changed_after_failure": false,
+    "manual_q_margin_added": false,
+    "machine_floor_widened_after_failure": false,
+    "N512_relabelled_as_reference_against_frozen_rule": false
+  },
+  "release_decision": {
+    "F_VQ29_error_bound_profile": "NO_GO",
+    "production_certificate": "NO_GO",
+    "scientific_temporal_tolerance": "NOT_SELECTED",
+    "existing_F_SI22_owner_observable": "REMAINS_VALID_WITHOUT_ERROR_BOUND_ADMISSION",
+    "existing_F_VQ28_negative_runtime_translation": "UNCHANGED",
+    "reason": "The frozen calibration cannot obtain the finite reference required to test the proposed bound on its first case, and the case does not satisfy the predeclared floor-resolved exception."
+  },
+  "invariant_assessment": {
+    "7_transactional_time_steps": "PASS_UNCHANGED_NO_PRODUCTION_CHANGE",
+    "8_cheap_recompute_and_warm_start": "PASS_UNCHANGED_NO_PRODUCTION_CHANGE",
+    "9_generic_time": "PASS_CHARACTERIZATION_USES_ARBITRARY_FIXED_HORIZONS_NOT_CALENDAR_SEMANTICS",
+    "13_mass_conservation_absolute": "PASS_FOR_COMPLETED_COMMON_LADDER_CASE1_ALL_REPORTED_EXTERNAL_RESIDUALS_ZERO; NO_RELAXATION",
+    "15_limit_coupling_cost": "PASS_NO_EXPENSIVE_CERTIFICATE_ADMITTED_TO_PRODUCTION",
+    "20_alternative_soil_water_solvers_open": "PASS_UNCHANGED",
+    "23_physics_and_solver_policy_separated": "PASS_NO_PHYSICS_CHANGE_AND_NO_SOLVER_POLICY_RETUNING",
+    "24_predictable_compute_time": "NOT_ADMITTED_BY_FVQ29; REFERENCE_DEPTH_CONVERGENCE_CEILING_EXPOSED",
+    "25_reference_mode_available": "PASS_UNCHANGED",
+    "26_runtime_diagnostics": "PASS_QUALIFICATION_DIAGNOSTICS_PERSISTED; PRODUCTION_DIAGNOSTICS_UNCHANGED",
+    "29_no_silent_dependencies": "PASS_FROZEN_HORIZON_GRID_AND_NUMERICS_EXPLICIT"
+  },
+  "next_action": "Do not continue F-VQ29 by widening the floating-point floor, relaxing nonlinear tolerances, increasing solver iteration budgets solely to manufacture an N=2048 reference, or changing the frozen calibration/held-out matrices. If a fixed-horizon temporal error bound is still required, open a separate owner/qualification workunit for an independently justified reference construction or error-estimation method that does not depend on an unavailable over-refined endpoint. Preserve F-SI22's qualified same-horizon observable and F-VQ28's negative transaction-translation finding."
+}
