@@ -1,94 +1,89 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP10",
   "title": "Hydraulic-Scale Normalized and Geometry-Aware Face Representation Feasibility",
   "branch": "work/f-lmfp10-scale-normalized-geometry-aware-face",
   "base_head": "8c17839a06b1e2b4606041aaa3e848e69b80978f",
   "contract": "integration/f-lmfp/F-LMFP10_CONTRACT.json",
-  "contract_commit": "7d08a024e41d6ef4ad9240b19d1605a1859f95ce",
-  "nomination_precommit": "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
-  "nomination_precommit_commit": "6149373b01eb7a81af0f3abbbb233d97430f372e",
-  "implementation_audit": "integration/f-lmfp/F-LMFP10_A0_IMPLEMENTATION_AUDIT.json",
-  "implementation_audit_commit": "f6bf096440ebbd8a2fe1f5cfdda6665bdcea2ed7",
-  "interstream_boundary": "integration/f-lmfp/F-LMFP10_INTERSTREAM_OWNERSHIP_BOUNDARY.json",
-  "interstream_boundary_latest_commit": "5be78682c59c2921c5d65857ee4038bc6dd9a8f1",
-  "revealed_material_shape_characterization": "integration/f-lmfp/F-LMFP10_C7A_MATERIAL_SHAPE_CHARACTERIZATION.json",
-  "revealed_material_shape_characterization_commit": "b57b405f8b5710877c742213a51c99b6e7056e8e",
-  "early_nomination_impossibility": "integration/f-lmfp/F-LMFP10_A0_EARLY_NOMINATION_IMPOSSIBILITY.json",
-  "early_nomination_impossibility_commit": "b756fd4936fbaef6b2252e6de2f630021ce1b577",
-  "post_A0_routing_precommit": "integration/f-lmfp/F-LMFP10_POST_A0_ROUTING_PRECOMMIT.json",
-  "post_A0_routing_precommit_commit": "ad2f27efa7f8a6e51552b2eadad5752ebed45833",
-  "production_implementation": false,
-  "qualification": false,
+  "nomination_precommit": {
+    "path": "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
+    "commit": "6149373b01eb7a81af0f3abbbb233d97430f372e"
+  },
+  "implementation_audit": {
+    "path": "integration/f-lmfp/F-LMFP10_A0_IMPLEMENTATION_AUDIT.json",
+    "commit": "f6bf096440ebbd8a2fe1f5cfdda6665bdcea2ed7",
+    "result": "PASS_PRE_RESULT"
+  },
   "A0": {
     "name": "MATERIAL_SCALE_COORDINATE_SCREEN",
-    "implemented": true,
-    "implementation_pre_result_audit": "PASS",
-    "execution_run": 34329612925,
-    "execution_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
-    "execution_status_last_observed": "6_OF_15_MATERIAL_JOBS_COMPLETE_REMAINDER_RUNNING_NO_AGGREGATE_YET",
-    "completed_materials_observed": ["O01", "O05", "O07", "B17", "B18", "O13"],
-    "executed": false,
-    "tested": false,
-    "result_persisted": false,
-    "candidate_families": ["A_ALPHA_NORMALIZED_ENDPOINTS", "B_H50_NORMALIZED_ENDPOINTS"],
     "characterization_only": true,
-    "fresh_holdout": false,
-    "nomination_made": false,
-    "nomination_still_possible": false,
-    "forced_decision_under_frozen_rule": "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE",
-    "proof_summary": "For both candidate families, B17, B18 and O07 contribute six of the ten predeclared R4 tail classes with active-max error ratios strictly greater than one. The aggregate tail_score is the sixth sorted ratio, so tail_score<1 is impossible regardless of the four remaining tail classes.",
-    "why_execution_continues": "Complete precommitted panel, controls and authoritative aggregate for localization; do not alter or cancel the experiment."
+    "candidate_families": [
+      "A_ALPHA_NORMALIZED_ENDPOINTS",
+      "B_H50_NORMALIZED_ENDPOINTS"
+    ],
+    "execution_run": 34329612925,
+    "tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "material_jobs": 15,
+    "material_jobs_success": 15,
+    "aggregate_job": 102413374134,
+    "aggregate_job_conclusion": "success",
+    "authoritative_result": "integration/f-lmfp/F-LMFP10_A0_FINAL_DECISION.json",
+    "authoritative_artifact_id": 10097493154,
+    "authoritative_artifact_digest": "sha256:a5db61abc171e5fe625d240ad17ebee95bcfe7beb74d6ba416277f6ead05ec4a",
+    "aggregate_json_sha256": "aaa3935c96ae7b3c9ab7c67e09986c4c41c5ca634ae2b4a04f991ab6a7dbd3f2",
+    "candidate_A_coherent": false,
+    "candidate_B_coherent": false,
+    "nominated_candidate": null,
+    "frozen_nomination_result": "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE",
+    "fresh_holdout_used": false,
+    "A1_holdout_opened": false
   },
-  "parallel_owner_reconciliation": {
-    "F_SI09": {
-      "branch": "work/f-si09-b110-constitutive-provider",
-      "qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
-      "provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
-      "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
-      "near_saturation_shortcut_retained": true,
-      "retained_semantics": "relsat > 1-1e-6 selects Ksat; otherwise the Mualem expression is evaluated",
-      "implication": "F-SI09 did not establish the F-LMFP09 near-saturation value jump as repaired. The exact admitted provider retains the shortcut, so future LMFP qualification must keep this owner-level constitutive seam explicit rather than silently assuming continuity."
+  "candidate_summary": {
+    "A_ALPHA_NORMALIZED_ENDPOINTS": {
+      "geometry_score": 0.1969840762694886,
+      "control_score": 7.936587343389922,
+      "tail_score": 5.678582931301278,
+      "tail_row_better_fraction": 0.3015179392824287,
+      "coherent": false
     },
-    "F_ROSS01": {
-      "branch": "work/f-ross01-fast-mfp-feasibility",
-      "latest_head_observed": "eb68ad0a870b4e2ecd55621d1e9bea5d2b799f27",
-      "boundary": "Active independent face-representation workstream; read-only cross-evidence only, no implementation sharing."
-    },
-    "F_VQ30": {
-      "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
-      "head_observed": "0c3b974708fbb06b13cc3233736fb7aa18c78c76",
-      "boundary": "Temporal qualification only; no timestep or retry semantics from A0."
-    },
-    "F_VZAA02": {
-      "branch": "work/f-vzaa02-donor-separability",
-      "closeout_head": "80157dc2beb9bb2ceb0cbcf00c984eb2662317d9",
-      "boundary": "Negative donor route closed; no donor signal imported."
+    "B_H50_NORMALIZED_ENDPOINTS": {
+      "geometry_score": 0.252319575523656,
+      "control_score": 9.624447676397827,
+      "tail_score": 7.13033686006231,
+      "tail_row_better_fraction": 0.16352345906163754,
+      "coherent": false
     }
+  },
+  "parallel_owner_boundary": {
+    "F_SI09_near_saturation_shortcut_retained": true,
+    "F_ROSS01_active_independent_representation_work": true,
+    "do_not_import_F_VQ30_temporal_policy": true
   },
   "scope_flags": {
     "PERSISTED": true,
     "EXPERIMENT_IMPLEMENTED": true,
     "IMPLEMENTATION_AUDITED_AGAINST_PRECOMMIT": true,
-    "EXECUTION_STARTED": true,
-    "EXECUTION_COMPLETE": false,
-    "A0_NOMINATION_LOGICALLY_FAILED": true,
-    "TESTED": false,
+    "EXECUTION_COMPLETE": true,
+    "TESTED": true,
+    "RESULT_PERSISTED": true,
+    "A0_NOMINATION_FAILED": true,
     "QUALIFIED": false,
     "PRODUCTION_IMPLEMENTED": false,
     "TRANSIENT_ADMITTED": false,
     "GROUNDWATER_ADMITTED": false,
-    "MODFLOW_ADMITTED": false
+    "MODFLOW_ADMITTED": false,
+    "CLOSED": true
   },
-  "hard_blockers": [
-    "Complete and persist the authoritative A0 aggregate even though nomination is already fail-closed impossible.",
-    "Do not start predeclared A1; A0 nominated no viable candidate under the frozen rule.",
-    "Any new representation must be materially different and use a separately precommitted fresh unseen holdout.",
-    "The exact F-SI09 admitted default-MvG provider retains the near-saturation Ksat shortcut; F-LMFP must not silently assume that constitutive value continuity has been repaired.",
-    "Do not create a low-NPAR production classifier or threshold from revealed C7a/A0 evidence.",
-    "Do not overlap active F-ROSS01 representation implementation work."
-  ],
-  "decision": "A0_NOMINATION_FAIL_CLOSED_IMPOSSIBLE_FULL_MATRIX_CONTINUES_FOR_LOCALIZATION",
-  "status": "PERSISTED_IMPLEMENTED_EXECUTING_NEGATIVE_A0_DECISION_FORCED_AGGREGATE_PENDING"
+  "routing": {
+    "retune_candidate_A": false,
+    "retune_candidate_B": false,
+    "hybrid_in_same_gate": false,
+    "conductivity_coordinate_in_same_gate": false,
+    "A1_holdout": false,
+    "transient_rescue": false,
+    "next": "Any further face-representation hypothesis must be materially different, separately precommitted and qualified on fresh unseen evidence. Do not reuse A0 as qualification evidence."
+  },
+  "decision": "REJECTED_SCALE_NORMALIZED_CANDIDATE_FAMILIES",
+  "status": "CLOSED_NEGATIVE_REJECTED_SCALE_NORMALIZED_CANDIDATE_FAMILIES"
 }
