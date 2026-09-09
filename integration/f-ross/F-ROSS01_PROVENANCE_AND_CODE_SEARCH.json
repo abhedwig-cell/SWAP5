@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "search_date": "2026-09-09",
+  "report_2006": {
+    "title": "Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions",
+    "author": "Peter J. Ross",
+    "series": "CSIRO Land and Water Science Report 39/06",
+    "year": 2006,
+    "doi": "10.4225/08/5859741868a90",
+    "public_pdf_locator_found": true,
+    "equation_level_audit_completed": false
+  },
+  "source_code_search": {
+    "public_official_source_repository_found": false,
+    "evidence_that_source_code_existed": true,
+    "evidence": "A later Agricultural Water Management study explicitly thanks P.J. Ross for providing the source code of the Ross fast Richards solution, indicating author-distributed code existed, but this initial search did not locate a public authoritative repository or license statement.",
+    "license_status": "UNKNOWN",
+    "admission_rule": "Do not copy or adapt third-party Ross code into SWAP5 without explicit provenance and license. Reconstruct algorithm independently from citable method sources if no admissible code artifact is found."
+  },
+  "independent_implementations_or_descendants": [
+    {
+      "name": "FHAVeT",
+      "citation": "Tinet et al. (2015), Hydrology and Earth System Sciences 19:969-980",
+      "doi": "10.5194/hess-19-969-2015",
+      "relevance": "Uses a Ross-derived noniterative Richards water solver in a soil-atmosphere model; reports generally improved computation time and mass balance mostly below 0.002 m, with differences under some dry conditions.",
+      "code_provenance_admitted": false
+    }
+  ],
+  "status": "PRIMARY_AND_REPORT_PROVENANCE_IDENTIFIED_PUBLIC_AUTHORITATIVE_SOURCE_CODE_NOT_YET_FOUND"
+}
