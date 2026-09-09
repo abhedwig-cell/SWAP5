@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ30",
+  "title": "Independent Held-Out Qualification of the Bounded Stiffness-Aware Richards Temporal Indicator",
+  "qualification_plan": {
+    "path": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
+    "freeze_commit": "c8f56d352cfd485f4bf33e3ce0a593a1a2ca2112",
+    "frozen_before_execution": true,
+    "owner_exact_triplet_overlap": 0,
+    "case_count": 16
+  },
+  "owner_source_lock": {
+    "work_unit": "F-SI24",
+    "head": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+    "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false
+  },
+  "execution": {
+    "workflow": ".github/workflows/fvq30-heldout-stiffness-indicator.yml",
+    "successful_run_id": 34332303346,
+    "successful_job_id": 102403487324,
+    "tested_head": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.3.0",
+    "conclusion": "success",
+    "all_frozen_gates": "PASS",
+    "production_source_unchanged": true
+  },
+  "precase_harness_failure": {
+    "run_id": 34332102516,
+    "job_id": 102402847269,
+    "head": "934306df7b7add3a14d9d7e89ce8ca14caaa47cf",
+    "classification": "HARNESS_ONLY_NO_HELD_OUT_CASE_EXECUTED",
+    "failure": "Bash local declaration expanded tag before assignment under set -u: tag unbound variable",
+    "held_out_cases_executed_before_failure": 0,
+    "held_out_case_results_observed_before_fix": 0,
+    "early_gates_passed": [
+      "VQ30-G01 source lock",
+      "VQ30-G02 exact linear regression",
+      "VQ30-G04 bounded cost owner shape",
+      "VQ30-G07 operator ownership",
+      "VQ30-G08 no empirical rescue prelock",
+      "VQ30-G09 F-VQ28 reconciliation prelock"
+    ],
+    "repair_commit": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+    "repair_scope": "runner-only Bash local scoping; no plan, matrix, candidate formula, solver controls, pass rule, production source, tolerance or coefficient changed"
+  },
+  "gate_results": {
+    "VQ30_G01_SOURCE_LOCK": "PASS",
+    "VQ30_G02_EXACT_LINEAR_REGRESSION": "PASS",
+    "VQ30_G03_HELD_OUT_NONLINEAR_TRANSFER": "PASS",
+    "VQ30_G04_BOUNDED_COST": "PASS",
+    "VQ30_G05_HARD_MASS": "PASS",
+    "VQ30_G06_O0_O2": "PASS_BITWISE_IDENTITY",
+    "VQ30_G07_OPERATOR_OWNERSHIP": "PASS_AS_FUTURE_PRODUCTION_REQUIREMENT",
+    "VQ30_G08_NO_EMPIRICAL_RESCUE": "PASS",
+    "VQ30_G09_FVQ28_RECONCILIATION": "PASS"
+  },
+  "exact_linear_regression": {
+    "status": "PASS",
+    "single_mode_combined_over_exact": [
+      1.0167886580680778,
+      1.0686409085462425,
+      1.2997154238127535,
+      2.072573193211282,
+      5.60403973924559
+    ],
+    "multimode_combined_over_exact": [
+      1.1390965391368788,
+      1.6584662296311474,
+      2.75485835478501,
+      3.586711510833906,
+      4.961930727912633
+    ],
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false,
+    "formula_drift": false
+  },
+  "held_out_matrix": {
+    "initial_uniform_heads_cm": [-35.0, -95.0, -185.0, -300.0],
+    "prescribed_bottom_head_jumps_cm": [-0.075, 0.075],
+    "fixed_horizons_day": [0.125, 0.5],
+    "case_count": 16,
+    "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
+    "O0_cases_pass": 16,
+    "O2_cases_pass": 16,
+    "O0_O2_bitwise_identity": true,
+    "finite_comparator_cases": 16,
+    "negative_transfer_cases": 0
+  },
+  "aggregate_results": {
+    "B_inf_over_E1_512_min": 6.685266816523914,
+    "B_inf_over_E1_512_max": 102.49832534208181,
+    "raw_EOBS_over_B_inf_min": 2.54217031177781,
+    "raw_EOBS_over_B_inf_max": 101.21256518294182,
+    "max_reference_mass_residual": 0.0,
+    "max_candidate_mass_residual": 2.7755575615628914e-15,
+    "hard_mass_tolerance": 1.0e-12,
+    "state_dependence": {
+      "h0_-300_cm_B_inf_over_E1_512": [6.685266816523914, 7.177178448888357],
+      "h0_-185_cm_B_inf_over_E1_512": [7.101552551829357, 13.078813410540427],
+      "h0_-95_cm_B_inf_over_E1_512": [10.5736709395829, 102.49832534208181],
+      "h0_-35_cm_B_inf_over_E1_512": [23.41797791194515, 49.670686313340674]
+    },
+    "horizon_dependence": {
+      "dt_0.125_day_B_inf_over_E1_512": [7.101552551829357, 49.670686313340674],
+      "dt_0.5_day_B_inf_over_E1_512": [6.685266816523914, 102.49832534208181]
+    }
+  },
+  "case_rows": [
+    {"case":1,"h0_cm":-35.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512":0.0033552571625321548,"B_inf":0.16583851340652198,"B_inf_over_E1_512":49.42646878409955,"raw_EOBS_over_E1_512":1340.9413825553786,"raw_EOBS_over_B_inf":27.1300259869416,"D128_256":5.575600425800076e-09,"D256_512":2.1484893863998877e-09,"reference_mass":0.0,"candidate_mass":2.3314683517128287e-15},
+    {"case":2,"h0_cm":-35.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512":0.0033391026777422894,"B_inf":0.16585552167417314,"B_inf_over_E1_512":49.670686313340674,"raw_EOBS_over_E1_512":1347.428832166361,"raw_EOBS_over_B_inf":27.127244098587486,"D128_256":5.240607947598619e-09,"D256_512":2.0131523115196615e-09,"reference_mass":0.0,"candidate_mass":1.9984014443252818e-15},
+    {"case":3,"h0_cm":-35.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512":0.007639042582411548,"B_inf":0.17889093046332208,"B_inf_over_E1_512":23.41797791194515,"raw_EOBS_over_E1_512":2370.1936158654403,"raw_EOBS_over_B_inf":101.21256518294182,"D128_256":7.105427357601002e-15,"D256_512":1.4210854715202004e-14,"reference_mass":0.0,"candidate_mass":2.220446049250313e-15},
+    {"case":4,"h0_cm":-35.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512":0.00762308504626219,"B_inf":0.17891001482513616,"B_inf_over_E1_512":23.46950266714664,"raw_EOBS_over_E1_512":2375.1551848607833,"raw_EOBS_over_B_inf":101.20176888901874,"D128_256":7.105427357601002e-15,"D256_512":7.105427357601002e-15,"reference_mass":0.0,"candidate_mass":2.7755575615628914e-15},
+    {"case":5,"h0_cm":-95.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512":0.012104758717995878,"B_inf":0.1281593241818406,"B_inf_over_E1_512":10.587515799989383,"raw_EOBS_over_E1_512":89.42227813526472,"raw_EOBS_over_B_inf":8.446011304687206,"D128_256":5.107130274950578e-05,"D256_512":2.539960875935776e-05,"reference_mass":0.0,"candidate_mass":1.2212453270876722e-15},
+    {"case":6,"h0_cm":-95.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512":0.012131955448637655,"B_inf":0.1282793047675744,"B_inf_over_E1_512":10.5736709395829,"raw_EOBS_over_E1_512":89.2219112797065,"raw_EOBS_over_B_inf":8.438120666844398,"D128_256":5.098445417672792e-05,"D256_512":2.535478454035456e-05,"reference_mass":0.0,"candidate_mass":3.7470027081099033e-16},
+    {"case":7,"h0_cm":-95.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512":0.0016148274640954696,"B_inf":0.1655171107861864,"B_inf_over_E1_512":102.49832534208181,"raw_EOBS_over_E1_512":2743.734354324983,"raw_EOBS_over_B_inf":26.76857739058604,"D128_256":1.0008108120018733e-08,"D256_512":3.874916387758276e-09,"reference_mass":0.0,"candidate_mass":8.465450562766819e-16},
+    {"case":8,"h0_cm":-95.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512":0.001619762835474603,"B_inf":0.16568302970036003,"B_inf_over_E1_512":102.2884499333593,"raw_EOBS_over_E1_512":2735.374537750652,"raw_EOBS_over_B_inf":26.741773284596086,"D128_256":9.743203577272652e-09,"D256_512":3.767496536966064e-09,"reference_mass":0.0,"candidate_mass":6.522560269672795e-16},
+    {"case":9,"h0_cm":-185.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512":0.012253159888359733,"B_inf":0.08719848505871007,"B_inf_over_E1_512":7.116408000318919,"raw_EOBS_over_E1_512":30.032340632682974,"raw_EOBS_over_B_inf":4.220154413762827,"D128_256":8.244798826240185e-05,"D256_512":4.138352127824874e-05,"reference_mass":0.0,"candidate_mass":2.5673907444456745e-16},
+    {"case":10,"h0_cm":-185.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512":0.01228830796355851,"B_inf":0.08726606477627394,"B_inf_over_E1_512":7.101552551829357,"raw_EOBS_over_E1_512":29.94655007688941,"raw_EOBS_over_B_inf":4.216901847635443,"D128_256":8.274866263491276e-05,"D256_512":4.1534728438819e-05,"reference_mass":0.0,"candidate_mass":1.3877787807814457e-16},
+    {"case":11,"h0_cm":-185.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512":0.010757402491094581,"B_inf":0.1406940599631088,"B_inf_over_E1_512":13.078813410540427,"raw_EOBS_over_E1_512":144.9799914633963,"raw_EOBS_over_B_inf":11.085102823361222,"D128_256":2.2192331641690544e-05,"D256_512":1.0869322267126336e-05,"reference_mass":0.0,"candidate_mass":2.949029909160572e-16},
+    {"case":12,"h0_cm":-185.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512":0.010766832977708418,"B_inf":0.14080198736777871,"B_inf_over_E1_512":13.077381961742533,"raw_EOBS_over_E1_512":144.85307603909863,"raw_EOBS_over_B_inf":11.076611240909052,"D128_256":2.2122977185290438e-05,"D256_512":1.0834397528469708e-05,"reference_mass":0.0,"candidate_mass":5.377642775528102e-16},
+    {"case":13,"h0_cm":-300.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512":0.008670323114756684,"B_inf":0.06222845620413025,"B_inf_over_E1_512":7.177178448888357,"raw_EOBS_over_E1_512":18.255411882958594,"raw_EOBS_over_B_inf":2.5435360166899703,"D128_256":4.171048368561969e-05,"D256_512":2.0841745367761178e-05,"reference_mass":0.0,"candidate_mass":3.3046482217358175e-16},
+    {"case":14,"h0_cm":-300.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512":0.008680320040411971,"B_inf":0.062262312013967446,"B_inf_over_E1_512":7.17281295206858,"raw_EOBS_over_E1_512":18.234512138684092,"raw_EOBS_over_B_inf":2.54217031177781,"D128_256":4.1808197863701935e-05,"D256_512":2.089064031451926e-05,"reference_mass":0.0,"candidate_mass":3.8163916471489756e-17},
+    {"case":15,"h0_cm":-300.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512":0.01673329216464481,"B_inf":0.11192892136170505,"B_inf_over_E1_512":6.688995821049237,"raw_EOBS_over_E1_512":42.237444967397,"raw_EOBS_over_B_inf":6.3144672380392715,"D128_256":9.308806829722016e-05,"D256_512":4.658142199787108e-05,"reference_mass":0.0,"candidate_mass":2.714842239903703e-16},
+    {"case":16,"h0_cm":-300.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512":0.01675173998324908,"B_inf":0.11198985142905195,"B_inf_over_E1_512":6.685266816523914,"raw_EOBS_over_E1_512":42.19097961730199,"raw_EOBS_over_B_inf":6.31103900191671,"D128_256":9.3151604914965e-05,"D256_512":4.661304052433479e-05,"reference_mass":0.0,"candidate_mass":2.5066754227864863e-16}
+  ],
+  "cost_shape": {
+    "principal_nonlinear_solve_changed": false,
+    "extra_full_nonlinear_solves_candidate_normal_path": 0,
+    "extra_tridiagonal_solves_candidate_normal_path": 1,
+    "deep_refinement_trajectory_candidate_normal_path": false,
+    "N128_N256_N512_role": "qualification-only finite comparators",
+    "N512_exact_truth": false
+  },
+  "operator_ownership": {
+    "qualified_requirement": "Future production implementation must expose accepted-state operator evaluation through the soil-water solver interface.",
+    "external_HeadCalc_internal_array_access_allowed": false,
+    "existing_workspace_dfdh_is_accepted_state_J": false,
+    "production_operator_seam_implemented_in_F_VQ30": false
+  },
+  "critical_interpretation": {
+    "held_out_transfer_supported": true,
+    "stiffness_aware_indicator_materially_less_conservative_than_raw_observer": true,
+    "remaining_conservatism_is_large": true,
+    "remaining_conservatism_is_state_and_horizon_dependent": true,
+    "B_inf_is_true_general_nonlinear_error_bound": false,
+    "N512_is_exact_truth": false,
+    "scientific_temporal_tolerance_selected": false,
+    "production_temporal_acceptance_admitted": false,
+    "reference_strength_gate_from_F_VQ29_overturned": false,
+    "retry_translation_negative_evidence_from_F_VQ28_overturned": false
+  },
+  "reconciliation": {
+    "F_VQ28": "The earlier raw step-doubling/retry-translation route remains non-admitted. F-SI24/F-VQ30 has a genuinely different bounded-cost normal architecture: accepted-state local information plus one tridiagonal defect solve, with no deep refinement ladder and no second nonlinear companion trajectory.",
+    "F_VQ29": "The finite N512 comparator remains finite-reference evidence only. F-VQ30 does not derive a true error upper bound, q_cap, Nmin, geometric tail multiplier, scientific tolerance or production certificate."
+  }
+}
