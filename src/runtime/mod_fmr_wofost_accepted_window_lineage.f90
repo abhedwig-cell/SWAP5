@@ -81,6 +81,21 @@ module mod_fmr_wofost_accepted_window_lineage
     procedure, public :: ready => crop_event_token_ready
   end type fmr_wofost_crop_event_token_t
 
+  ! Compact opaque identity of one frozen accepted physical crop event.
+  ! This is provenance metadata, not crop physics and not a second commit owner.
+  type, public :: fmr_wofost_crop_event_identity_t
+    private
+    logical :: initialized = .false.
+    integer(int64) :: lineage_id = 0_int64
+    integer(int64) :: final_revision = -1_int64
+    real(real64) :: t0 = 0.0_real64
+    real(real64) :: t1 = 0.0_real64
+    real(real64) :: actual_root_uptake_integral = 0.0_real64
+    real(real64) :: potential_transpiration_integral = 0.0_real64
+  contains
+    procedure, public :: ready => crop_event_identity_ready
+  end type fmr_wofost_crop_event_identity_t
+
   public :: certify_fkt_accepted_interval
   public :: begin_wofost_trial_contribution
   public :: accumulate_wofost_trial_process_rate
@@ -90,6 +105,9 @@ module mod_fmr_wofost_accepted_window_lineage
   public :: admit_wofost_accepted_trial
   public :: prepare_wofost_crop_event_delivery
   public :: commit_wofost_crop_event_delivery
+  public :: identify_wofost_crop_event
+  public :: same_wofost_crop_event_identity
+  public :: crop_event_identity_matches_interval
 
 contains
 
@@ -469,6 +487,54 @@ contains
     if (.not. self%ready()) return
     count = self%accepted_intervals
   end function accepted_window_interval_count
+
+  subroutine identify_wofost_crop_event(token, identity, status)
+    type(fmr_wofost_crop_event_token_t), intent(in) :: token
+    type(fmr_wofost_crop_event_identity_t), intent(out) :: identity
+    integer, intent(out) :: status
+
+    identity = fmr_wofost_crop_event_identity_t()
+    status = FMR_WOFOST_LINEAGE_EVENT_TOKEN_MISMATCH
+    if (.not. token%ready()) return
+
+    identity%lineage_id = token%lineage_id
+    identity%final_revision = token%final_revision
+    identity%t0 = token%t0
+    identity%t1 = token%t1
+    identity%actual_root_uptake_integral = token%actual_root_uptake_integral
+    identity%potential_transpiration_integral = token%potential_transpiration_integral
+    identity%initialized = .true.
+    status = FMR_WOFOST_LINEAGE_OK
+  end subroutine identify_wofost_crop_event
+
+  pure logical function crop_event_identity_ready(self) result(ready)
+    class(fmr_wofost_crop_event_identity_t), intent(in) :: self
+    ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%final_revision >= 0_int64 .and. &
+         ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. self%t1 > self%t0 .and. &
+         ieee_is_finite(self%actual_root_uptake_integral) .and. &
+         ieee_is_finite(self%potential_transpiration_integral) .and. &
+         self%actual_root_uptake_integral >= 0.0_real64 .and. &
+         self%potential_transpiration_integral >= 0.0_real64
+  end function crop_event_identity_ready
+
+  pure logical function same_wofost_crop_event_identity(left, right) result(matches)
+    type(fmr_wofost_crop_event_identity_t), intent(in) :: left, right
+    matches = .false.
+    if (.not. left%ready() .or. .not. right%ready()) return
+    matches = left%lineage_id == right%lineage_id .and. &
+         left%final_revision == right%final_revision .and. &
+         same_time(left%t0, right%t0) .and. same_time(left%t1, right%t1) .and. &
+         same_real_bits(left%actual_root_uptake_integral, right%actual_root_uptake_integral) .and. &
+         same_real_bits(left%potential_transpiration_integral, right%potential_transpiration_integral)
+  end function same_wofost_crop_event_identity
+
+  pure logical function crop_event_identity_matches_interval(identity, t0, t1) result(matches)
+    type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
+    real(real64), intent(in) :: t0, t1
+    matches = .false.
+    if (.not. identity%ready()) return
+    matches = same_time(identity%t0, t0) .and. same_time(identity%t1, t1)
+  end function crop_event_identity_matches_interval
 
   pure logical function crop_event_token_ready(self) result(ready)
     class(fmr_wofost_crop_event_token_t), intent(in) :: self
