@@ -1,0 +1,67 @@
+name: F-ROSS01 Gate E3E-R2P KSAT Endpoint Admissibility
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R1_STABLE_VGM_ENDPOINT_IDENTITY.json'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r1_endpoint_limit_oracle_repair.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2p_ksat_endpoint_admissibility_policy.py'
+      - '.github/workflows/ross01-gate-e3e-r2p-ksat-endpoint-admissibility.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy mpmath
+      - name: Execute frozen endpoint-admissibility gate
+        run: |
+          set -o pipefail
+          rm -rf ross01-gate-e3e-r2p
+          mkdir -p ross01-gate-e3e-r2p
+          python3 experiments/ross/run_ross01_gate_e3e_r2p_ksat_endpoint_admissibility_policy.py \
+            ross01-gate-e3e-r2p/F-ROSS01_GATE_E3E_R2P_RESULT.json \
+            | tee ross01-gate-e3e-r2p/F-ROSS01_GATE_E3E_R2P_STDOUT.txt
+      - name: Assert frozen policy semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          p='ross01-gate-e3e-r2p/F-ROSS01_GATE_E3E_R2P_RESULT.json'
+          r=json.load(open(p))
+          assert r['gate']=='E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY'
+          assert r['production_implementation'] is False
+          assert r['qualification_target']=='ZERO_SURFACE_MIXED_SATURATED_UNSATURATED_FACE_ENDPOINT_SEMANTICS_ONLY'
+          assert r['material_count']==4
+          assert r['material_pass_count']==4
+          assert r['endpoint_plateau_count']==2
+          assert r['interior_root_control_count']==2
+          assert r['persistent_state_bytes']==0
+          assert r['new_constitutive_physics'] is False
+          assert r['mass_repair_or_clipping'] is False
+          assert r['pass'] is True
+          by={x['material']:x for x in r['results']}
+          assert by['B12']['branch']=='ENDPOINT_KSAT_PLATEAU'
+          assert by['O13']['branch']=='ENDPOINT_KSAT_PLATEAU'
+          assert by['B01']['branch']=='INTERIOR_ROOT'
+          assert by['O14']['branch']=='INTERIOR_ROOT'
+          assert all(x['pass'] for x in r['results'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2p
+          path: ross01-gate-e3e-r2p/
