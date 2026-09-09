@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST continuation-state inventory",
+  "scope": {
+    "sw_wofost": 1,
+    "route": "standard detailed WOFOST",
+    "zero_production_readiness": true,
+    "excluded": [
+      "sw_wofost=2 soybean specialization",
+      "sw_wofost=3 grass",
+      "potential WOFOST shadow",
+      "nutrient route",
+      "grass management"
+    ]
+  },
+  "source_provenance": {
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "current_owner_source": "src/crop/mod_wofost_crop_owner_state.f90",
+    "current_biomass_source": "src/crop/mod_wofost_actual_biomass_state.f90",
+    "existing_owner_evidence": "integration/f-wof/F-WOF24_STATE_RECONCILIATION_EVIDENCE.json",
+    "transaction_contract": "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json"
+  },
+  "legacy_call_evidence": {
+    "module_saved_variables": "SWAP/wofost.f90:8-32",
+    "emergence_initialization": "SWAP/wofost.f90:704-767",
+    "standard_phenology_rate": "SWAP/wofost.f90:817-929",
+    "daily_state_update": "SWAP/wofost.f90:933-1107",
+    "running_minimum_temperature_update": "SWAP/wofost.f90:1348-1394",
+    "vernalization_post_update": "SWAP/wofost.f90:345-393",
+    "legacy_observable_phenology_output": "SWAP/wofost.f90:1160-1175"
+  },
+  "classification": {
+    "persistent_committed_crop_state_common": [
+      {
+        "name": "crop_emerged",
+        "owner_status": "ALREADY_OWNED_F_WOF24",
+        "meaning": "whether the actual WOFOST crop trajectory is active",
+        "units": "logical",
+        "initialization": "crop lifecycle/emergence event",
+        "update_cadence": "lifecycle event, not a soil-water solver substep",
+        "transaction_semantics": "committed physical state; candidate-only mutation until F-KT commit"
+      },
+      {
+        "name": "DVS",
+        "owner_status": "ALREADY_OWNED_F_WOF24_AS_DEVELOPMENT_STAGE",
+        "meaning": "crop development stage",
+        "units": "dimensionless",
+        "initialization": "0 at WOFOST emergence",
+        "update_cadence": "once per legacy daily WOFOST evolution update",
+        "transition_logic": "standard rate from update_dvs_rate; update DVS=min(DVS+dvr*delt,DVSEND) with legacy delt=1",
+        "transaction_semantics": "committed physical state; rejected crop event must not advance it"
+      },
+      {
+        "name": "TSUM",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "accumulated temperature sum",
+        "units": "degree C day under the qualified one-day legacy cadence",
+        "initialization": "0 at WOFOST emergence",
+        "update_cadence": "once per legacy daily WOFOST evolution update",
+        "transition_logic": "TSUM=TSUM+dtsum*delt with legacy delt=1",
+        "continuation_role": "prognostic and source-observable state for standard WOFOST; in the scoped standard equations it is not itself a feedback dependency for subsequent DVS rates",
+        "transaction_semantics": "committed crop state for faithful continuation/output; rejected event must not advance it"
+      },
+      {
+        "name": "fl_anthesis",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "anthesis threshold has already been crossed",
+        "units": "logical",
+        "initialization": "false at WOFOST emergence",
+        "update_cadence": "evaluated on the daily phenology-rate event",
+        "transition_logic": "when DVS+dvr >= 1 and the flag is false, set true and truncate dvr to 1-DVS",
+        "continuation_role": "irreducible because it controls whether the DVS boundary correction is applied again",
+        "transaction_semantics": "transition must be candidate-local even though legacy update_dvs_rate mutates the saved flag"
+      },
+      {
+        "name": "nofd",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "number of populated days in the running minimum-temperature history",
+        "units": "count, 0..7",
+        "initialization": "0 at WOFOST emergence",
+        "update_cadence": "once at the legacy day-start assimilation event",
+        "transition_logic": "nofd=min(nofd+1,7)",
+        "continuation_role": "irreducible persistent climate-memory state",
+        "transaction_semantics": "must roll back with the crop owner; rejected/replayed events may not consume a history slot"
+      },
+      {
+        "name": "atmin7[7]",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "minimum-temperature history used for the running low-temperature assimilation correction",
+        "units": "degree C",
+        "initialization": "seven zeros at WOFOST emergence",
+        "update_cadence": "once at the legacy day-start assimilation event",
+        "transition_logic": "shift prior entries 1:6 to 2:7 and insert current daily TMN at element 1",
+        "continuation_role": "irreducible persistent climate-memory state across crop events",
+        "transaction_semantics": "must be deep-copied/checkpointed and only published on crop-event commit"
+      }
+    ],
+    "persistent_committed_crop_state_optional_IDSL2": [
+      {
+        "name": "vern",
+        "presence": "only for standard WOFOST with IDSL=2",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "vernalization state",
+        "units": "vernalization units as defined by VERNRTB/VERNBASE/VERNSAT",
+        "initialization": "0 at WOFOST emergence",
+        "update_cadence": "daily WOFOST evolution event while the IDSL=2 route exists",
+        "transition_logic": "legacy post-update applies vern=vern+vernrate",
+        "transaction_semantics": "optional committed state; no allocation/storage burden for IDSL!=2"
+      },
+      {
+        "name": "fl_vernalised",
+        "presence": "only for standard WOFOST with IDSL=2",
+        "owner_status": "MISSING_FROM_CURRENT_OWNER",
+        "meaning": "vernalization is complete or has been forced complete at the critical DVS",
+        "units": "logical",
+        "initialization": "false at WOFOST emergence",
+        "update_cadence": "daily phenology/evolution event",
+        "transition_logic": "can become true in update_dvs_rate at VERNDVS or after vern reaches VERNSAT",
+        "transaction_semantics": "candidate-local transition; rejected event must leave committed value unchanged"
+      }
+    ],
+    "already_owned_primary_actual_biomass_state": [
+      "WRT/root_biomass",
+      "WST/stem_biomass",
+      "WSO/storage_biomass",
+      "LAIEXP/exponential_leaf_area_index",
+      "active LV/leaf_biomass cohorts",
+      "active SLA/specific_leaf_area cohorts",
+      "active LVAGE/leaf_age cohorts"
+    ],
+    "reconstructible_or_derived_not_additional_committed_state": [
+      {
+        "name": "WLV",
+        "derivation": "sum(active LV)"
+      },
+      {
+        "name": "LASUM",
+        "derivation": "sum(active LV*SLA)"
+      },
+      {
+        "name": "LAI",
+        "derivation": "LASUM + SSA*WST + SPA*WSO"
+      },
+      {
+        "name": "ILV",
+        "derivation": "active cohort count"
+      }
+    ],
+    "event_local_rates_or_intermediates": [
+      {
+        "name": "dtsum",
+        "target_classification": "event-local rate",
+        "reason": "computed from current event forcing TAV and immutable DTSMTB before TSUM/DVS update"
+      },
+      {
+        "name": "dvr",
+        "target_classification": "event-local rate",
+        "reason": "computed from current DVS, daylength/vernalization state and current dtsum before the one event update"
+      },
+      {
+        "name": "daylp",
+        "target_classification": "event-local derived astronomical intermediate",
+        "reason": "legacy stores it between day-start assimilation and day-end phenology-rate calculation; no evidence requires persistence across accepted crop windows"
+      },
+      {
+        "name": "WOFOST_rates",
+        "target_classification": "event-local rates/workspace",
+        "reason": "growth, death, allocation and leaf-age rates are consumed to build the candidate state and need not survive an accepted crop event"
+      }
+    ],
+    "diagnostic_or_nonphysical_state": [
+      {
+        "name": "first_warning",
+        "classification": "diagnostic warning latch, not physical crop continuation state",
+        "note": "warning reproducibility may require diagnostics ownership, but it must not be promoted into physical crop state merely because legacy saves it"
+      },
+      {
+        "name": "DWRT/DWST/DWLV",
+        "classification": "standard-route cumulative output/diagnostic in this scoped sw_wofost=1 analysis",
+        "note": "no source-bound feedback into the scoped standard evolution was found; grass management is excluded and must be qualified separately"
+      }
+    ]
+  },
+  "vernrate_reconciliation_hazard": {
+    "name": "vernrate",
+    "intended_target_classification": "event-local rate/intermediate",
+    "source_observation": "legacy declares vernrate SAVE. update_dvs_rate resets/assigns it only inside the .NOT.fl_vernalised branch. If fl_vernalised becomes true after vern reaches VERNSAT, a previously positive vernrate can remain saved and the following daily task-3 call still executes vern=vern+vernrate.",
+    "physical_feedback_after_fl_vernalised": "none found for subsequent standard-route DVS evolution because fl_vernalised bypasses the vernalization reduction",
+    "observable_effect": "vern itself is written by the legacy WOFOST output and can therefore continue to drift from the saved stale rate",
+    "decision": "DO_NOT_PROMOTE_VERNRATE_TO_PERSISTENT_PHYSICAL_STATE_YET; RECONCILE WHETHER THE LEGACY CARRYOVER IS AN ORACLE SEMANTIC TO_PRESERVE, A DIAGNOSTIC_ONLY_EFFECT, OR A LEGACY_DEFECT BEFORE G03 CAN_PASS",
+    "gate": "HOLD"
+  },
+  "state_shape_decision": {
+    "common_extension_required": ["TSUM", "fl_anthesis", "nofd", "atmin7[7]"],
+    "IDSL2_extension_required": ["vern", "fl_vernalised"],
+    "fixed_366_leaf_arrays_required": false,
+    "potential_shadow_required": false,
+    "inactive_IDSL2_state_required": false,
+    "rates_in_persistent_column_state": false
+  },
+  "transaction_boundary": {
+    "authority": "F-KT",
+    "required_atomicity": "phenology/climate-memory, lifecycle and actual biomass must be part of the same candidate physical crop continuation for an admitted crop event",
+    "rejected_event_mutates_committed": false,
+    "same_checkpoint_same_inputs_replay_required": true
+  },
+  "gates": {
+    "WOF25_G01_complete_continuation_state": "PASS_WITH_G03_VERNRATE_RECONCILIATION_HOLD",
+    "WOF25_G02_minimal_committed_state": "PASS_INVENTORY_ONLY_NOT_IMPLEMENTED",
+    "WOF25_G03_rates_are_not_state": "HOLD_LEGACY_VERNRATE_CARRYOVER_REQUIRES_SOURCE_SEMANTIC_RECONCILIATION",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  },
+  "deferred_to_next_persisted_evidence": [
+    "complete daily forcing contract",
+    "IQROT_DAY/IPTRA_DAY/IALPWET_DAY accepted-aggregate provenance",
+    "explicit day-start/day-end call and cadence contract",
+    "full transaction/event composition with root state",
+    "threshold/event-splitting implications"
+  ]
+}
