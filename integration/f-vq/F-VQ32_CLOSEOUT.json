@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ32",
+  "title": "Independent Qualification of Explicit Head-Budget Normalization for the Richards Temporal Indicator",
+  "branch": "qualification/f-vq32-richards-head-budget-normalization",
+  "base_commit": "e6c103ebb69bb9fa6eb631f8c1d41fb2708372b2",
+  "qualification_plan": "integration/f-vq/F-VQ32_QUALIFICATION_PLAN.json",
+  "qualification_plan_commit": "432736967813729d6c869a2bf73c15b5263ca415",
+  "independent_evidence": "integration/f-vq/F-VQ32_INDEPENDENT_EVIDENCE.json",
+  "tested_head": "b53d08010bd31a2511e59528458c97a1713fd46a",
+  "workflow_run": 34349868041,
+  "workflow_conclusion": "success",
+  "status": "COMPLETE_INDEPENDENTLY_QUALIFIED_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+  "decision": "QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+  "candidate": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "H_budget_requirement": "explicit finite positive head-domain numerical/application accuracy budget in cm with independent provenance"
+  },
+  "qualification_summary": {
+    "exact_linear_independent_cases": 6,
+    "fresh_nonlinear_cases": 12,
+    "synthetic_budget_probe_count": 3,
+    "synthetic_budget_values_cm": [0.01,0.1,1.0],
+    "synthetic_budget_values_are_application_tolerances": false,
+    "fresh_B_inf_range_cm": [0.0286928670785477381,0.0665605333115878300],
+    "max_direct_transaction_B_inf_abs_diff": 3.02535774210355157e-15,
+    "max_mass_residual": 2.85882428840977809e-15,
+    "hard_mass_tolerance": 1e-12,
+    "O0_O2_identity": true,
+    "normalization_extra_nonlinear_trajectories": 0,
+    "normalization_extra_tridiagonal_solves": 0,
+    "deep_reference_runs": 0,
+    "post_result_tuning": false,
+    "first_full_workflow_success": true,
+    "production_src_changed": false
+  },
+  "what_is_qualified": [
+    "Independent semantic/algebraic validity of C_h=B_inf/H_budget with no hidden default or fitted coefficient.",
+    "Exact-linear error-budget implication only inside the already-qualified theorem scope.",
+    "Fresh nonlinear normalized-indicator composition/noninterference without upgrading B_inf to a nonlinear true-error bound.",
+    "Invalid/unavailable input fail-closed semantics.",
+    "F-KT09 structural compatibility without production activation.",
+    "Preservation of F-VQ28 and F-VQ29 negative evidence."
+  ],
+  "hard_nonclaims": [
+    "No numeric H_budget value is qualified for production or applications.",
+    "No universal temporal tolerance is selected.",
+    "No nonlinear true-error upper bound is qualified.",
+    "No monotone shorter-dt improvement is qualified.",
+    "No production temporal acceptance/retry policy is admitted.",
+    "No initial no-history bootstrap, arbitrary restart or forcing/event/topology-discontinuity continuation is qualified.",
+    "No F-GC02, groundwater coupling or F-PE release follows."
+  ],
+  "governance": {
+    "persist_early_test_second": true,
+    "plan_and_matrices_frozen_before_execution": true,
+    "all_cases_retained": true,
+    "first_full_workflow_all_jobs_success": true,
+    "post_result_harness_repair": false,
+    "post_result_formula_or_budget_change": false
+  },
+  "next_required_work": [
+    "A separate F-KT owner workunit may bind an explicitly supplied H_budget and normalized C_h to the already-qualified generic certificate transaction seam, while keeping H_budget provenance outside F-KT and preserving fail-closed unavailable semantics.",
+    "That policy work must not infer or hard-code a universal H_budget, must not assume retry monotonicity, and must preserve the independent hard-mass gate and exact rollback semantics.",
+    "Continuation provenance remains separately blocked at initial no-history, arbitrary restart and forcing/event/topology-discontinuity boundaries unless explicitly qualified.",
+    "Resume existing F-GC02 only after production policy binding and required continuation-provenance dependencies are independently qualified."
+  ]
+}
