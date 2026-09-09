@@ -34,6 +34,8 @@ program test_fsi25_reference_indicator_production_seam
   real(real64) :: heads0(numnod), water0(numnod), conductivity0_nodes(numnod), capacity0(numnod), dkdh0(numnod)
   real(real64) :: static_residual(numnod), hdot_n(numnod), storage0, storage1, total_in, total_out
   real(real64) :: state_head_snapshot(numnod), state_water_snapshot(numnod), solver_mass
+  real(real64) :: top_flux_snapshot, bottom_flux_snapshot, mass_snapshot
+  integer :: status_snapshot
   integer :: nonlinear_before, jacobian_before, linear_before, backtracking_before, retries_before
   integer :: i
 
@@ -96,6 +98,10 @@ program test_fsi25_reference_indicator_production_seam
 
   state_head_snapshot = result%candidate_state%pressure_head
   state_water_snapshot = result%candidate_state%water_content
+  top_flux_snapshot = result%top_flux
+  bottom_flux_snapshot = result%bottom_flux
+  mass_snapshot = result%unrounded_mass_balance_residual
+  status_snapshot = result%status
   nonlinear_before = workspace%legacy_worker%diagnostics%nonlinear_iterations
   jacobian_before = workspace%legacy_worker%diagnostics%jacobian_builds
   linear_before = workspace%legacy_worker%diagnostics%linear_solves
@@ -128,6 +134,11 @@ program test_fsi25_reference_indicator_production_seam
        'candidate head noninterference')
   call require(maxval(abs(result%candidate_state%water_content-state_water_snapshot)) == 0.0_real64, &
        'candidate water noninterference')
+  call require(transfer(result%top_flux,0_int64) == transfer(top_flux_snapshot,0_int64), 'top flux noninterference')
+  call require(transfer(result%bottom_flux,0_int64) == transfer(bottom_flux_snapshot,0_int64), 'bottom flux noninterference')
+  call require(transfer(result%unrounded_mass_balance_residual,0_int64) == transfer(mass_snapshot,0_int64), &
+       'mass residual noninterference')
+  call require(result%status == status_snapshot, 'solve status noninterference')
   call require(workspace%legacy_worker%diagnostics%nonlinear_iterations == nonlinear_before, 'nonlinear counter noninterference')
   call require(workspace%legacy_worker%diagnostics%jacobian_builds == jacobian_before, 'jacobian counter noninterference')
   call require(workspace%legacy_worker%diagnostics%linear_solves == linear_before, 'principal linear counter noninterference')
