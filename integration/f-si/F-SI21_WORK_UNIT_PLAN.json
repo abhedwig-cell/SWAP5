@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Hydraulic Timescale and Retry-Translation Mechanism Characterization",
+  "branch": "work/f-si21-hydraulic-timescale-retry-translation",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "trigger": {
+    "owner_work_unit": "F-SI20",
+    "owner_exit": "C_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_PROFILE",
+    "independent_work_unit": "F-VQ28",
+    "independent_status": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "gate_b_decision": "FAIL_TRANSLATION_EXISTING_RETRY_TOPOLOGY_DOES_NOT_PRESERVE_CONSERVATIVE_RELATION",
+    "resolved_attempts": 67,
+    "underconservative_resolved_attempts": 36,
+    "cases_losing_previously_conservative_relation_on_retry": 10
+  },
+  "question": "Can the loss and recovery of the raw full-versus-two-half head-defect relationship across actual retry horizons be explained by hydraulic state and local hydraulic timescale descriptors strongly enough to justify a later, separately qualified estimator or refinement-semantic proposal?",
+  "scope": {
+    "mechanism_characterization_only": true,
+    "production_metric_selection": false,
+    "production_tolerance_selection": false,
+    "normalization_selection": false,
+    "transaction_topology_change": false,
+    "solver_policy_change": false,
+    "physics_change": false,
+    "production_source_change": false,
+    "F_GC02_special_case": false
+  },
+  "frozen_matrix": {
+    "source": "F-VQ28 Gate B held-out matrix",
+    "initial_uniform_pressure_head_cm": [-40.0, -55.0, -110.0, -160.0, -210.0, -320.0],
+    "bottom_head_jump_cm": [-0.05, -0.01, 0.01, 0.05],
+    "actual_retry_horizon_day": [0.25, 0.125, 0.0625],
+    "case_count": 24,
+    "attempt_count": 72,
+    "same_endpoint_reference": "reuse F-VQ28 resolved N512 classification only; do not replace unavailable rows post hoc"
+  },
+  "hydraulic_descriptors_gate_A": {
+    "evaluate_at": "uniform committed T0 state before the prescribed bottom-head perturbation",
+    "constitutive_provider": "production b110_default_mvg_provider interface",
+    "descriptors": [
+      "K0_cm_per_day",
+      "C0_per_cm",
+      "D0_cm2_per_day = K0/C0",
+      "L_bottom_cm = dz(bottom node)",
+      "tau_bottom_day = C0*L_bottom_cm^2/K0",
+      "lambda_attempt = attempt_dt_day/tau_bottom_day"
+    ],
+    "reason": "Richards hydraulic diffusivity has scale K/C. With a bottom-head perturbation, C*L^2/K is a physically interpretable local diffusion timescale. This is a diagnostic candidate, not an admitted normalizer.",
+    "predeclared_falsifier": "If the same initial state shows non-monotone conservative/under-conservative classifications while lambda_attempt changes monotonically with retry halving, an initial-state scalar hydraulic-timescale threshold is insufficient by construction."
+  },
+  "gate_A_decision": {
+    "A": "INITIAL_STATE_TIMESCALE_SUFFICIENTLY_EXPLAINS_CLASSIFICATION_STRUCTURE_FOR_A_SEPARATE_CANDIDATE_SEMANTICS_PROPOSAL",
+    "B": "INITIAL_STATE_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_DYNAMIC_LOCAL_CHARACTERIZATION_REQUIRED",
+    "C": "NO_USEFUL_HYDRAULIC_TIMESCALE_RELATION_OBSERVED_DO_NOT_PROMOTE_THIS_ROUTE"
+  },
+  "conditional_gate_B": {
+    "run_only_if_gate_A_exit": "B",
+    "purpose": "Characterize dynamic local K, C, K/C and timescale changes along the existing full and two-half trial branches at the actual retry horizons.",
+    "restriction": "Do not fit an acceptance threshold or optimize a normalizer. Freeze dynamic observation locations before execution and retain exact checkpoint/trial semantics."
+  },
+  "hard_controls": {
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "retry_scale": 0.5,
+    "transaction_max_retries": 2,
+    "reference_mode_preserved": true,
+    "generic_time_preserved": true
+  },
+  "architecture_invariants_checked": [3,5,7,9,11,13,15,23,24,25,26,29,30],
+  "next_action": "Implement Gate A as a test-only hydraulic-descriptor extractor and deterministic classifier against the already frozen F-VQ28 Gate B C/U/X patterns. Persist evidence before any conditional dynamic-local Gate B is designed."
+}
