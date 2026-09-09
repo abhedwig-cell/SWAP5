@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1C_C1R_BOUNDARY_DERIVATIVE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "prerequisite": "J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE_TANGENT_QUALIFIED_READY_FOR_J1C_BOUNDARY_CHARACTERIZATION",
+  "purpose": "Characterize where the qualified C1R bilinear face law is continuous but only piecewise differentiable, and freeze fail-closed tangent semantics for node lines, equal-head shortcut and head-envelope edges.",
+  "production_implementation": false,
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "internal_node_characterization": {
+    "node_indices": [1, 60, 120, 180, 205, 239],
+    "both_endpoint_axes": true,
+    "other_endpoint_u": 2.345,
+    "method": "evaluate the exact same node head from the left cell with fraction 1 and right cell with fraction 0; compare flux and one-sided derivatives without smoothing",
+    "hard_flux_continuity_metric_max": 1e-12,
+    "derivative_jump": "descriptive; finite one-sided values required but equality is not required",
+    "includes_localized_O01_transition_node": 205
+  },
+  "tail_characterization": {
+    "high_conductivity_side_u_pairs": [[0.025, 0.075], [0.075, 0.025]],
+    "dry_tail_u_pairs": [[3.925, 3.975], [3.975, 3.925]],
+    "hard_requirement": "finite flux and endpoint derivatives; no extrapolation and no head-envelope endpoint claim"
+  },
+  "equal_head_limit": {
+    "u_midcell_values": [0.5083333333333333, 1.5083333333333333, 2.5083333333333333, 3.5083333333333333],
+    "generic_limit": "evaluate bilinear face law at h_a=h_b inside a table cell, without invoking the production equal-head shortcut",
+    "shortcut": "production C1R lookup returns K(h) on exact equal-head branch",
+    "record": [
+      "generic bilinear limiting flux",
+      "shortcut K(h) flux",
+      "relative flux gap",
+      "generic endpoint derivatives and diagonal derivative sum"
+    ],
+    "admission_semantics": "no unique cross-branch derivative claim; exact equal-head shortcut is an explicit separate branch. Gap is characterization, not silently averaged into a tangent."
+  },
+  "hydrostatic_condition": {
+    "u_a_values": [1.5083333333333333, 2.5083333333333333, 3.5083333333333333],
+    "h_b": "h_a + 10 cm",
+    "hard_scaled_flux_max": 1e-12,
+    "hard_scaled_derivative_antisymmetry_max": 1e-12,
+    "meaning": "at zero driving gradient the bilinear law must give q=0 and dq/dh_a=-dq/dh_b for the frozen face law"
+  },
+  "hard_gates": [
+    "all internal node fluxes are continuous across left/right cell representations to scaled 1e-12",
+    "all one-sided node derivatives are finite",
+    "all high-conductivity and dry-tail interior probes are finite and remain inside the qualified envelope",
+    "all hydrostatic probes satisfy scaled q <= 1e-12 and derivative antisymmetry <= 1e-12",
+    "shared C1R table remains bitwise unchanged",
+    "no smoothing or derivative averaging is introduced"
+  ],
+  "piecewise_tangent_policy": {
+    "strict_cell_interior": "qualified analytic derivative and J1B-R1 same-factorization response tangent may be used",
+    "internal_node_line": "flux remains continuous; derivative is one-sided/piecewise and a unique smooth tangent must not be invented",
+    "fd_or_trial_crosses_node": "classify as regime switch and retry/route/fallback rather than average across cells",
+    "exact_equal_head_shortcut": "separate branch; do not claim the strict-interior bilinear tangent through the branch switch",
+    "head_envelope_endpoints": "no unique derivative claim; fail closed or use explicit one-sided boundary policy",
+    "dry_and_high_K_interior": "normal strict-interior tangent semantics remain available when the probe is not on an excluded branch"
+  },
+  "exit_rule": {
+    "pass": "J1_BOUNDARY_BEHAVIOR_CHARACTERIZED_READY_FOR_J1_CLOSEOUT",
+    "fail": "Keep J1 incomplete and classify continuity, nonfinite or branch-semantics failure without table retuning."
+  },
+  "scope_guards": [
+    "C1R base MvG/KSATFIT only.",
+    "No Class-B H_ENPR or KSATEXM.",
+    "No saturation, heterogeneity, groundwater, crop/process physics or production admission."
+  ],
+  "relevant_invariants": [5, 7, 11, 14, 15, 20, 23, 25, 26, 30]
+}
