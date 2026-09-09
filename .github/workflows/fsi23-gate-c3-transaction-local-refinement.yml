@@ -1,0 +1,27 @@
+name: F-SI23 Gate C3 transaction-local observer refinement
+
+on:
+  push:
+    branches:
+      - work/f-si23-richards-embedded-temporal-estimator
+    paths:
+      - 'integration/f-si/F-SI23_GATE_C3_TRANSACTION_LOCAL_REFINEMENT_PLAN.json'
+      - 'tests/fsi/test_fsi23_gate_c3_transaction_local_refinement.f90'
+      - 'tests/fsi/run_fsi23_gate_c3_transaction_local_refinement.sh'
+      - '.github/workflows/fsi23-gate-c3-transaction-local-refinement.yml'
+  workflow_dispatch:
+
+jobs:
+  transaction-local-refinement:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-SI23 Gate C3 transaction-local matrix
+        run: bash tests/fsi/run_fsi23_gate_c3_transaction_local_refinement.sh
