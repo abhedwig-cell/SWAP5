@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT11",
+  "title": "Invalid-Budget Diagnostic Remediation Owner Evidence",
+  "triggered_by_independent_unit": {
+    "work_unit": "F-VQ33",
+    "status_commit": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED"
+  },
+  "superseded_owner_candidate": {
+    "source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "tree": "e3e941dcd7058728581f5488498ebcefb8973aa6",
+    "workflow_run": 34356407443,
+    "handoff_commit": "41644e4759f2aafae7a8db66272e03d242652de1",
+    "reason": "original frozen owner matrix did not distinguish preservation of supplied invalid negative/NaN/+Inf native diagnostic values from reset-to-zero behavior"
+  },
+  "qualified_remediated_candidate": {
+    "source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "tree": "d24f20559653b028d7967bf57da37da432803221",
+    "production_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "production_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "remediation_test_path": "tests/fkt/run_fkt11_invalid_budget_diagnostic_remediation.sh",
+    "remediation_test_blob": "0b50b2e3a526e2e645a37df0ebaf34498257d7bd",
+    "workflow_path": ".github/workflows/fkt11-richards-head-budget-certificate-policy.yml",
+    "workflow_blob": "0e22c8fe5737d70b79f62fa1365739409c4d0dc8",
+    "temporary_write_workflow_present": false
+  },
+  "clean_owner_workflow": {
+    "run": 34359330293,
+    "job": 102491962405,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "original_owner_gate": "PASS",
+    "supplemental_invalid_budget_gate": "PASS",
+    "O0": true,
+    "O2": true,
+    "O0_O2_identity": true
+  },
+  "supplemental_results": {
+    "INVALID_NEGATIVE_BUDGET": "PASS",
+    "INVALID_NAN_BUDGET": "PASS",
+    "INVALID_POSITIVE_INFINITY_BUDGET": "PASS",
+    "native_value_preservation_bitwise": "PASS",
+    "nan_safe_under_ffpe_trap_invalid": "PASS",
+    "certificate_unavailable_for_all_three": "PASS",
+    "unavailable_reason_budget_invalid": "PASS",
+    "raw_B_inf_remains_diagnostic": "PASS",
+    "committed_physical_state_immutable_on_rejection": "PASS",
+    "accepted_history_immutable_on_rejection": "PASS"
+  },
+  "unchanged_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "budget_validity": "explicitly supplied AND finite AND >0",
+    "default_H_budget": null,
+    "invalid_budget_rescue": false,
+    "transaction_acceptance_algebra_changed": false,
+    "hard_mass_ordering_changed": false,
+    "physical_state_changed": false,
+    "forcing_or_physical_parameters_changed": false,
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0,
+    "true_error_upper_bound_claim": false,
+    "shorter_dt_monotonicity_claim": false
+  },
+  "architecture_invariant_audit": {
+    "overall": "PASS_NO_ARCHITECTURE_INVARIANT_CONFLICT",
+    "3_explicit_data_separation": "PASS: budget remains numerical configuration only",
+    "4_compact_persistent_state": "PASS: no persistent state added",
+    "5_scratch_per_worker": "PASS: no scratch ownership change",
+    "7_transactional_steps": "PASS: rejected invalid-budget trials leave committed physical/history state unchanged",
+    "8_cheap_recalculation_warm_start": "PASS: no committed-history bootstrap from rejected trials",
+    "9_generic_time": "PASS: no calendar assumption added",
+    "11_coupling_core_functionality": "PASS_NOT_CHANGED",
+    "13_mass_conservation_absolute": "PASS: hard mass gate unchanged and remains before certificate acceptance",
+    "15_limit_coupling_cost": "PASS_NOT_CHANGED; normalization adds no solve",
+    "20_alternative_soil_water_solvers": "PASS: generic transaction carrier remains model-owned and unit-opaque",
+    "23_physics_solver_policy_separation": "PASS: no physical option or application budget default introduced",
+    "24_predictable_compute_time": "PASS: no additional nonlinear or linear solve introduced by normalization",
+    "25_reference_mode": "PASS_NOT_CHANGED",
+    "26_runtime_diagnostics": "PASS: supplied invalid native budget is now preserved diagnostically while validity remains explicit",
+    "27_optional_functionality_scales_with_use": "PASS_NOT_CHANGED",
+    "29_no_silent_dependencies": "PASS: no default budget or hidden tolerance",
+    "30_architecture_change_audit": "PASS: remediation explicitly audited"
+  },
+  "owner_decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITH_COMPLETE_INVALID_BUDGET_DIAGNOSTICS_READY_FOR_FRESH_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "gc02_release": false
+}
