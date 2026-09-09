@@ -1,14 +1,16 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workunit": "F-CI23",
   "title": "Canonical Provenance Gate Reconciliation",
   "branch": "qualification/f-ci23-canonical-provenance-gate-reconciliation",
   "base_canonical": {
     "branch": "integration/f-ci-canonical",
-    "head": "e5662a513846296585a1a7005729896c165091ac",
+    "pre_F_CI23_head": "e5662a513846296585a1a7005729896c165091ac",
+    "first_promoted_F_CI23_head": "01f82d3ba16d9905146e6c54d618515af4685907",
     "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
     "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
-    "F_CI22_promotion_was_non_forced_fast_forward": true
+    "F_CI22_promotion_was_non_forced_fast_forward": true,
+    "F_CI23_first_promotion_was_non_forced_fast_forward": true
   },
   "trigger": {
     "post_F_CI22_canonical_workflow_run": 34404588323,
@@ -50,7 +52,8 @@
       "authority": "F-CI21 closeout plus F-CI22 exact postimage admission",
       "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
       "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
-      "F_CI21_closeout_reexecuted_on_qualification_head": true
+      "F_CI21_closeout_reexecuted_on_qualification_head": true,
+      "F_CI21_closeout_reexecuted_on_first_canonical_promotion": true
     }
   },
   "qualification": {
@@ -59,14 +62,17 @@
     "initial_lineage_aware_success_conclusion": "success",
     "evidence_head": "c844e0118fe53d461b82ab2a20e0eb13ab7d51d9",
     "evidence_head_run": 34407639916,
-    "evidence_head_jobs": {
-      "historical_F_CI03_through_F_CI18": 102654345027,
-      "frozen_F_CI19_candidate_preservation": 102654344630,
-      "frozen_F_CI19_source_lineage": 102654344853,
-      "current_postimage_lineage": 102654545519
+    "status_head": "01f82d3ba16d9905146e6c54d618515af4685907",
+    "status_head_run": 34407783226,
+    "first_post_promotion_canonical_run": 34408015944,
+    "first_post_promotion_canonical_conclusion": "success",
+    "first_post_promotion_jobs": {
+      "historical_F_CI03_through_F_CI18": 102655553253,
+      "frozen_F_CI19_candidate_preservation": 102655553237,
+      "frozen_F_CI19_source_lineage": 102655553005,
+      "current_restricted_canonical_postimage": 102655776361
     },
-    "evidence_head_conclusion": "success",
-    "terminal_marker": "FCI23_CANONICAL_PROVENANCE_RECONCILIATION PASS"
+    "terminal_marker": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS"
   },
   "hard_holds": {
     "general_groundwater_predictor_corrector_coupling_released": false,
@@ -97,10 +103,12 @@
     "qualified": true,
     "production_source_changed": false,
     "reference_changed": false,
-    "canonical_workflow_reconciled_on_qualification_branch": true,
-    "canonical_ref_advanced_by_F_CI23": false,
-    "post_promotion_canonical_workflow_passed": false,
-    "closed": false
+    "canonical_workflow_reconciled": true,
+    "canonical_ref_advanced_by_F_CI23": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "closeout_record_persisted": true,
+    "final_governance_head_requalification_pending": true,
+    "closed": true
   },
-  "decision": "QUALIFIED_LINEAGE_AWARE_CANONICAL_PROVENANCE_GATE_RECONCILIATION_READY_FOR_FINAL_PRE_PROMOTION_REPLAY_AND_NON_FORCED_FAST_FORWARD_DECISION"
+  "decision": "QUALIFIED_CLOSED_LINEAGE_AWARE_CANONICAL_PROVENANCE_GATE_RECONCILIATION_PENDING_FINAL_GOVERNANCE_HEAD_REPLAY_AND_NON_FORCED_FAST_FORWARD"
 }
