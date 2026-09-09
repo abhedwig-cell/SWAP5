@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Nonstationary Prescribed-Head Temporal Estimator and Same-Endpoint Refinement Policy",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "status": "IN_PROGRESS_SOURCE_BOUND_SEAM_AUDIT",
+  "phase": "WORK_UNIT_RESERVED_BEFORE_ALGORITHMIC_SELECTION",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "contract": "integration/f-si/F-SI21_WORK_UNIT_CONTRACT.json",
+  "trigger": {
+    "f_si20": "C_SEPARATE_OWNER_RUNTIME_POLICY_REQUIRED_FOR_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE",
+    "f_vq28": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED"
+  },
+  "current_findings": {
+    "existing_transaction_checkpoint_trial_rollback_semantics_are_not_the_observed_failure": true,
+    "hard_mass_gate_is_not_the_observed_failure": true,
+    "existing_retry_horizon_shortening_is_not_equivalent_to_fixed_horizon_refinement": true,
+    "simple_raw_head_defect_replacement_is_disallowed": true,
+    "same_endpoint_refinement_is_the_primary_architectural_direction_to_audit": true,
+    "specific_estimator_selected": false
+  },
+  "holds": {
+    "production_source_change": "NOT_ALLOWED",
+    "production_temporal_metric": "NOT_SELECTED",
+    "production_temporal_tolerance": "NOT_SELECTED",
+    "f_gc02_release": "NOT_ALLOWED",
+    "f_pe_release": "NOT_ALLOWED",
+    "f_kt_contract_change": "NOT_YET_AUTHORIZED"
+  },
+  "state": {
+    "reserved": true,
+    "persisted": false,
+    "source_seam_audit_complete": false,
+    "candidate_matrix_frozen": false,
+    "characterization_harness_implemented": false,
+    "tested": false,
+    "independently_qualified": false,
+    "production_implemented": false
+  },
+  "next_action": "Audit the current transaction, kernel, canonical numerical configuration, and serialized Richards temporal seams. Determine whether a same-endpoint nested refinement candidate can be characterized outside production source while keeping mass conservation and rollback semantics exact. Persist the seam audit before running numerical candidate experiments."
+}
