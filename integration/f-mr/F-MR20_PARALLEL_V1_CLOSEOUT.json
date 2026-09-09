@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "title": "Restricted Parallel Real-Physics MultiSWAP V1 Closeout",
+  "status": "COMPLETE_QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE",
+  "exit_condition_achieved": true,
+  "authoritative_results": "integration/f-mr/F-MR20_PARALLEL_V1_QUALIFICATION_RESULTS.json",
+  "scientific_tested_head": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+  "scientific_tested_tree": "04cb3dc2f6254c7fdcd368bfd7b28a781cdda3cf",
+  "results_persisted_head": "8826eda17c790ac588a93750e0d6183d8c462d14",
+  "qualification_evidence": {
+    "scientific_head": {
+      "parallel_v1_run": 34407111635,
+      "parallel_v1_job": 102652624005,
+      "parallel_v1_conclusion": "success",
+      "authoritative_regression_run": 34407111633,
+      "authoritative_regression_job": 102652623835,
+      "authoritative_regression_conclusion": "success"
+    },
+    "results_persisted_head": {
+      "parallel_v1_run": 34407380580,
+      "parallel_v1_job": 102653491885,
+      "parallel_v1_conclusion": "success",
+      "authoritative_regression_run": 34407380521,
+      "authoritative_regression_job": 102653490709,
+      "authoritative_regression_conclusion": "success"
+    }
+  },
+  "qualified_scope": {
+    "real_physics": true,
+    "logical_columns_in_qualification": 32,
+    "batch_size": 9,
+    "multiworker_counts": [2, 4],
+    "one_worker_semantics": "exact serialized-reference delegation",
+    "top_boundary": "stateless fixed-flux production provider",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false,
+    "hard_mass_gate": 1e-12
+  },
+  "qualified_properties": [
+    "true concurrent real-physics execution with 2 workers",
+    "true concurrent real-physics execution with 4 workers",
+    "bit-identical serialized-versus-2-worker scientific outcome within frozen scope",
+    "bit-identical serialized-versus-4-worker scientific outcome within frozen scope",
+    "2-versus-4 worker-count independence",
+    "A-B-A repeatability",
+    "input-order independence",
+    "deterministic canonical result and aggregate collection",
+    "cross-column rejection and rollback isolation",
+    "shared immutable parameter integrity",
+    "fail-closed rejection of out-of-scope multiworker profiles before physical solves",
+    "O0/O2 output identity",
+    "hard water-mass gate retained without performance concession",
+    "single-source transactional checkpoint/trial/commit-discard execution seam",
+    "worker-owned reusable heavy solver/workspace rather than per-column heavy solver state"
+  ],
+  "production_source_scope_relative_to_fmr19": [
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "fmr19_restart_scope_untouched": true,
+  "architecture_summary": {
+    "kernel_count": 1,
+    "parallel_transaction_implementation_count": 1,
+    "heavy_solver_ownership": "per worker",
+    "committed_state_ownership": "per logical column through committed-state registry",
+    "shared_parameter_ownership": "immutable registry references",
+    "reduction_order": "canonical and deterministic",
+    "unsupported_physics_policy": "fail closed before parallel physical execution"
+  },
+  "explicit_nonclaims": [
+    "general parallel SWAP outside the frozen V1 profile",
+    "root-extraction parallel qualification",
+    "snow parallel qualification",
+    "macropore parallel qualification",
+    "frost, hysteresis, tabulated-hydraulics or elasticity parallel qualification",
+    "bottom mode 5 or any non-7 bottom-boundary parallel qualification",
+    "temporal-continuation-history parallel qualification",
+    "worker counts other than 2 and 4",
+    "8-worker qualification",
+    "parallel speedup",
+    "parallel efficiency",
+    "universal production memory scaling guarantee",
+    "bounded difficult-column extraction/fallback qualification",
+    "full F-MR20 readiness matrix across all planned column and worker counts"
+  ],
+  "downstream": {
+    "released": [
+      "restricted production-parallel reference execution research within the exact V1 profile",
+      "performance characterization of this qualified V1 path",
+      "subsequent scoped expansion workunits for currently excluded physics or worker counts"
+    ],
+    "not_released": [
+      "silent widening of V1 admission",
+      "replacement of the serialized reference mode",
+      "performance-policy changes that alter physics",
+      "general MultiSWAP parallel qualification beyond this frozen scope"
+    ]
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  }
+}
