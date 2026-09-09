@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION_PRECOMMIT.json",
+  "workflow_run": 34407141956,
+  "workflow_head": "848faed7f25845d931073c3e07a688a6f879416f",
+  "workflow_conclusion": "failure",
+  "production_implementation": false,
+  "qualification_use": true,
+  "inherited_steady_q_is_qualification_authority": false,
+  "material_count": 4,
+  "material_pass_count": 2,
+  "fresh_probe_count_total": 320,
+  "valid_reference_probe_count_total": 318,
+  "reference_failure_count_total": 2,
+  "candidate_unresolved_count_total": 0,
+  "candidate_nonfinite_count_total": 0,
+  "wrong_sign_count_total": 0,
+  "fresh_overlap_count_with_original_e3e_total": 0,
+  "crosscheck_count_total": 8,
+  "crosscheck_pass_count_total": 8,
+  "pass": false,
+  "decision": "R2R2_FAILED_AS_FROZEN_TWO_EXTREME_NEAR_SATURATION_REFERENCE_UPPER_BRACKET_CASES_REQUIRE_ORACLE_REMEDIATION_CANDIDATE_ACCURACY_NOT_FALSIFIED",
+  "artifacts": {
+    "B01": {"id": 10125853371, "digest": "sha256:f8d260633d17e7527a542c37393d7e5afa827758c93ee3fde3685ff278e79283"},
+    "B12": {"id": 10125800944, "digest": "sha256:ed85c42d3e0d79da032ddda26fc670b345c181d9f1c93d14b0f41a4c20119d25"},
+    "O13": {"id": 10125794833, "digest": "sha256:f1f4f111f1f1cbc7e0e126d557b181c3992f8526892c9be07561126a1e678857"},
+    "O14": {"id": 10125829042, "digest": "sha256:d3c20d3fdcef0d5e53485de62aa6908fa18d23643b911e21537b232bfe5815c6"}
+  },
+  "materials": {
+    "B01": {
+      "pass": false,
+      "fresh_probe_count": 80,
+      "valid_probe_count": 79,
+      "reference_failure_count": 1,
+      "failed_metrics": ["reference_failure_count", "all_fresh_probes_valid"],
+      "max_abs_error_over_ksatfit_on_valid_probes": 7.064855103734076e-09,
+      "max_hybrid_metric_on_valid_probes": 7.0641486137404715e-09,
+      "p99_hybrid_metric_on_valid_probes": 6.390757935087114e-09,
+      "max_constitutive_K_evaluations": 530,
+      "max_root_residual_evaluations": 66,
+      "crosschecks_passed": 2,
+      "reference_failure": {
+        "probe_id": "fresh_near_0023",
+        "h_surface_cm": 0.8418598139923603,
+        "h_top_node_cm": -1.7857563818019415e-08,
+        "physical_upper_delta_q_over_ksat": 0.16837196636998483,
+        "old_upper_safety_fraction": 0.999999999999,
+        "failure": "no_logdelta_sign_change"
+      }
+    },
+    "B12": {
+      "pass": true,
+      "fresh_probe_count": 80,
+      "valid_probe_count": 80,
+      "endpoint_reference_case_count": 16,
+      "failed_metrics": [],
+      "max_abs_error_over_ksatfit": 2.4182835958342957e-13,
+      "max_hybrid_metric": 2.4180360696882566e-13,
+      "p99_hybrid_metric": 2.408156076314633e-13,
+      "crosschecks_passed": 2
+    },
+    "O13": {
+      "pass": true,
+      "fresh_probe_count": 80,
+      "valid_probe_count": 80,
+      "endpoint_reference_case_count": 16,
+      "failed_metrics": [],
+      "max_abs_error_over_ksatfit": 7.51661090738324e-14,
+      "max_hybrid_metric": 7.515859302657214e-14,
+      "p99_hybrid_metric": 7.51585889713592e-14,
+      "crosschecks_passed": 2
+    },
+    "O14": {
+      "pass": false,
+      "fresh_probe_count": 80,
+      "valid_probe_count": 79,
+      "reference_failure_count": 1,
+      "failed_metrics": ["reference_failure_count", "all_fresh_probes_valid"],
+      "max_abs_error_over_ksatfit_on_valid_probes": 4.2958611338249624e-08,
+      "max_hybrid_metric_on_valid_probes": 4.295431298735291e-08,
+      "p99_hybrid_metric_on_valid_probes": 1.7842235072448022e-08,
+      "max_constitutive_K_evaluations": 530,
+      "max_root_residual_evaluations": 66,
+      "crosschecks_passed": 2,
+      "reference_failure": {
+        "probe_id": "fresh_near_0003",
+        "h_surface_cm": 0.37579678846033,
+        "h_top_node_cm": -1.9219207863995577e-08,
+        "physical_upper_delta_q_over_ksat": 0.07515936153590756,
+        "old_upper_safety_fraction": 0.999999999999,
+        "failure": "no_logdelta_sign_change"
+      }
+    }
+  },
+  "failure_interpretation": {
+    "classification": "REFERENCE_ORACLE_UPPER_BRACKET_RESOLUTION_FAILURE_NOT_CANDIDATE_ACCURACY_FAILURE",
+    "evidence": [
+      "Both failures occur for positive surface head with an extremely thin near-saturated unsaturated interval, so the physical root is expected very close to the saturated-Darcy upper flux bound.",
+      "The frozen oracle stopped at delta_upper*0.999999999999 rather than evaluating the exact nonsingular physical upper bound.",
+      "All 318 resolved fresh cases satisfy the original E3E candidate accuracy thresholds by many orders of magnitude.",
+      "All eight preselected 100-digit adaptive crosschecks agree with the primary reference.",
+      "No candidate unresolved, nonfinite or wrong-sign event occurred."
+    ]
+  },
+  "hard_nonclaims": [
+    "R2R2 is not qualified overall because two frozen reference cases are unresolved.",
+    "The two failures do not qualify the candidate by extrapolation from the other 318 cases.",
+    "No R2R2 threshold, fresh seed or candidate implementation is changed after observing the failure.",
+    "No top-boundary composition, surface ledger, response tangent, runtime, MultiSWAP, groundwater or production admission follows."
+  ],
+  "next_gate": "E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION",
+  "status": "FAILED_AS_FROZEN_REFERENCE_UPPER_BRACKET_REMEDIATION_REQUIRED"
+}
