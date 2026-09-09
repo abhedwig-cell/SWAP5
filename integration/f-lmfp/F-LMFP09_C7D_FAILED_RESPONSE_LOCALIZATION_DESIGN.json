@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C7D_FAILED_RESPONSE_LOCALIZATION",
+  "qualification": false,
+  "production_implementation": false,
+  "purpose": "Post-result diagnosis of the already-revealed C7a failures. Replay the exact C7a samples and frozen provider to locate the hydraulic response regions that produce the failed max, p99, strong-gradient and near-saturation checks before any new representation hypothesis is designed.",
+  "base": {
+    "C7a_run": 34325023479,
+    "C7a_aggregate_artifact": 10094521180,
+    "C7a_aggregate_digest": "sha256:64f8a49dac947a36d123299b08217b621dafa3c2d48f0e92bcb38678f293a8cc",
+    "C7a_decision": "NOT_QUALIFIED_FROZEN_N49_FULL_STARING2018_CATALOG_LOCALIZE_WITHOUT_RETUNING"
+  },
+  "epistemic_status": {
+    "revealed_C7a_rows_reused": true,
+    "new_holdout": false,
+    "can_support_new_candidate_qualification": false,
+    "can_support_failure_mechanism_hypothesis": true,
+    "fresh_unseen_holdout_required_after_any_future_candidate_selection": true
+  },
+  "frozen_inputs": {
+    "provider": "49_NODE_ANCHORED_HEAD_PAIR",
+    "provider_base_n": 33,
+    "classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "gradient_seed": 17161301231784269399,
+    "gradient_raw_cases_per_class": 240,
+    "head_pair_seed": 12392949708496324958,
+    "head_pair_raw_cases_per_class": 360,
+    "thresholds_changed": false
+  },
+  "failed_classes_to_replay": [
+    "B10:10cm", "B10:20cm", "B11:10cm", "B11:20cm", "B12:10cm", "B12:20cm",
+    "B17:10cm", "B17:20cm", "B18:10cm", "B18:20cm", "O01:20cm", "O05:20cm",
+    "O07:10cm", "O07:20cm", "O11:10cm", "O11:20cm", "O13:10cm", "O13:20cm"
+  ],
+  "required_per_row_diagnostics": [
+    "h_upper_cm",
+    "h_lower_cm",
+    "gradient",
+    "probe_source",
+    "q_reference",
+    "q_candidate",
+    "q_plain_mfp",
+    "candidate_relative_error",
+    "plain_mfp_relative_error",
+    "effective_saturation_upper",
+    "effective_saturation_lower",
+    "conductivity_ratio",
+    "strong_gradient_flag",
+    "near_saturation_flag",
+    "pressure_head_sign_regime",
+    "straddles_h_zero",
+    "distance_of_endpoint_effective_saturation_to_0p999999"
+  ],
+  "required_per_class_outputs": {
+    "top_active_error_rows": 20,
+    "error_threshold_counts": [0.02, 0.10, 0.30],
+    "group_error_counts_by": [
+      "probe_source",
+      "pressure_head_sign_regime",
+      "straddles_h_zero",
+      "strong_gradient_flag",
+      "near_saturation_flag"
+    ],
+    "owner_seam_proximity_diagnostic": "Report proximity to relsat=0.999999 but do not infer causation from proximity alone."
+  },
+  "interpretation_rules": {
+    "R3_geometry": "Supported only when paired geometries differ materially and the high-error rows are concentrated in strong gradients without owner-seam evidence dominating.",
+    "R4_material_transition": "Supported when both geometries show the same localized response pattern away from the known constitutive seam.",
+    "R5_owner_overlap": "Mandatory caution when high-error rows are near the relsat=0.999999 conductivity jump or when h=0/near-saturation behavior dominates. Numerical repair must not silently reinterpret qualified constitutive semantics.",
+    "R6_family_rejection": "Already established for the full-catalog n49 claim. C7D may localize subpatterns but cannot reverse C7a."
+  },
+  "hard_rules": {
+    "no_provider_retuning": true,
+    "no_classifier_retuning": true,
+    "no_threshold_relaxation": true,
+    "no_candidate_selection_from_C7D_as_qualification": true,
+    "no_C7b_transient_rescue": true,
+    "mass_conservation_requirement_unchanged": true,
+    "production_admission": false
+  },
+  "status": "PRECOMMITTED_POST_C7A_DIAGNOSTIC_REPLAY_READY_FOR_IMPLEMENTATION"
+}
