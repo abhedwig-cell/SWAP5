@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C3_ANCHORED_ENDPOINT_AXIS_CHARACTERIZATION",
+  "head_under_test": "7d164e19cc70a831436cdb0a15514672f58179fd",
+  "workflow": {
+    "run_id": 34313375177,
+    "conclusion": "success",
+    "artifact_id": 10089474182,
+    "artifact_digest": "sha256:64b2882bd013b2326210a1c7470c59c508972f3839ebb27009572b238f83bed5"
+  },
+  "candidate": {
+    "name": "BASE33_PLUS_SIGNED_PRESSURE_HEAD_DECADES",
+    "coordinate": "asinh(h/0.01cm)",
+    "axis_nodes": 49,
+    "table_values_per_material_half_face_class": 2401,
+    "bytes_per_material_half_face_class_before_metadata": 19208,
+    "material_specific_knots": false,
+    "pair_specific_knots": false,
+    "thresholds_changed_from_C2": false,
+    "extreme_C2_tail_probes_retained": true
+  },
+  "preparation": {
+    "characterized_classes": 4,
+    "total_shared_bytes_before_metadata": 76832,
+    "total_offline_oracle_solves": 9412,
+    "runtime_lookup_complexity": "O(1) bilinear endpoint-pair interpolation per half-face evaluation"
+  },
+  "classes": [
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 5.0,
+      "active_relative_error": {"median": 0.00006115, "p90": 0.0022066, "p99": 0.00323275, "maximum": 0.00352354},
+      "strong_gradient_p90": 0.0022541,
+      "near_saturation_p90": 0.0024270,
+      "dormant_scaled_abs_max": 5.45697e-12,
+      "sign_mismatches": 0,
+      "failures": 0,
+      "pass": true
+    },
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 10.0,
+      "active_relative_error": {"p90": 0.00447197, "p99": 0.00596684, "maximum": 0.00696017},
+      "strong_gradient_p90": 0.00492289,
+      "near_saturation_p90": 0.000578527,
+      "dormant_scaled_abs_max": 1.2987e-11,
+      "sign_mismatches": 0,
+      "failures": 0,
+      "pass": true
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 5.0,
+      "active_relative_error": {"p90": 0.00735950, "p99": 0.0147771, "maximum": 0.0261837},
+      "strong_gradient_p90": 0.00723707,
+      "near_saturation_p90": 0.00947885,
+      "dormant_scaled_abs_max": 1.60986e-11,
+      "sign_mismatches": 0,
+      "failures": 0,
+      "pass": true
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 10.0,
+      "active_relative_error": {"p90": 0.01090965, "p99": 0.0286458, "maximum": 0.0314762},
+      "strong_gradient_p90": 0.00546061,
+      "near_saturation_p90": 0.00134527,
+      "dormant_scaled_abs_max": 3.34861e-12,
+      "sign_mismatches": 0,
+      "failures": 0,
+      "pass": true
+    }
+  ],
+  "structural_checks": {
+    "equal_head_identity_all": true,
+    "hydrostatic_zero_flux_all": true,
+    "continuity_refinement_all": true,
+    "explicit_fail_closed_all": true,
+    "face_matrix_all": true
+  },
+  "methodological_limit": "The deterministic signed-decade anchors overlap some exact endpoint values used in the C2 failure probes. This C3 success therefore cannot by itself establish generalization of the representation density.",
+  "required_next_gate": "C3B_OFFGRID_ENDPOINT_PAIR_HOLDOUT",
+  "C3B_design_precommitted_before_C3_result": true,
+  "decision": "C3_ANCHORED_PROVIDER_CHARACTERIZATION_PASSED_BUT_REQUIRES_PRECOMMITTED_OFFGRID_HOLDOUT_BEFORE_QUALIFICATION",
+  "status": "PERSISTED_TESTED_SUCCESSFUL_CHARACTERIZATION_NOT_YET_QUALIFIED"
+}
