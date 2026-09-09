@@ -143,7 +143,7 @@ contains
     f%daylength_hours = 12.0_real64
     f%sine_solar_height_offset = 0.4_real64
     f%sine_solar_height_amplitude = 0.5_real64
-    f%diffuse_irradiation_perpendicular = 200.0_real64
+    f%diffuse_irradiation_perpendicular = 10.0_real64
     f%daily_effective_solar_height = 30000.0_real64
     f%co2_efficiency_factor = 1.10_real64
     f%co2_amax_factor = 1.05_real64
