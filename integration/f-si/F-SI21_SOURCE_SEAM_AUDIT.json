@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Source-Bound Same-Endpoint Temporal Refinement Seam Audit",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "production_source_lock": {
+    "transaction_reference": {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f"
+    },
+    "kernel_transactions": {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob": "af42c7d51ef545e20c76d3000f1ed1493690d68e"
+    },
+    "canonical_contracts": {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob": "0c2b15fc45011c580384cf6a618e7b378fdccf0a"
+    },
+    "canonical_interval_runtime": {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "f2cae79d533343db818c11e0b61b605ac5f6739d"
+    },
+    "serialized_reference_backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08"
+    },
+    "production_source_modified_in_F_SI21": false
+  },
+  "incoming_evidence": {
+    "F_SI20": {
+      "head": "631d80abf04915cc964b24144f3fde8ef937093f",
+      "decision": "C_SEPARATE_OWNER_RUNTIME_POLICY_REQUIRED_FOR_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE"
+    },
+    "F_VQ28": {
+      "closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+      "decision": "FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED_FOR_RAW_HEAD_DEFECT_PROFILE",
+      "resolved_attempts": 67,
+      "underconservative_resolved_attempts": 36,
+      "heldout_cases_losing_conservative_relation_during_retry": 10
+    },
+    "F_MR16": {
+      "head": "a19bf5ab988523f9ea8b6f9b03098603ede80b49",
+      "decision": "CLOSED_READINESS_BLOCKED_FSI_SOURCE_THEORY_QUALIFIED_RICHARDS_TEMPORAL_ERROR_REQUIRED",
+      "stable_asymptotic_order_established": false,
+      "temporal_vs_nonlinear_solver_error_separated": false,
+      "production_temporal_metric_qualified": false
+    },
+    "F_MR17": {
+      "head": "66b829a067a10814a10fad5b90059e6125b2a9a3",
+      "workflow_run": 34304798094,
+      "workflow_job": 102319143446,
+      "workflow_conclusion": "success",
+      "owner_resolution": "FKT_GENERIC_TRANSACTION_REFINEMENT_SEAM_REQUIRED_IF_SAME_HORIZON_CANDIDATE_PROCEEDS"
+    }
+  },
+  "source_findings": {
+    "transaction_temporal_callback_shape": "transaction_model_t.temporal_error receives exactly full_state and half_state final states and returns one scalar",
+    "transaction_existing_trial_topology": "execute_reference_interval constructs one full route and one two-half route from the same attempt checkpoint",
+    "transaction_existing_retry_semantics": "a rejection multiplies attempt_dt by retry_scale, so the next retry ends at an earlier attempt endpoint",
+    "transaction_existing_accept_route": "the accepted physical state is the two-half state of the accepted attempt",
+    "deeper_same_endpoint_levels_expressible_in_current_transaction_callback": false,
+    "canonical_numerical_config_has_refinement_profile": false,
+    "kernel_candidate_contract_can_publish_multiple_refinement_candidates": false,
+    "canonical_interval_runtime_same_origin_same_t1_alternative_routes": false,
+    "canonical_interval_runtime_private_substepping_is_same_endpoint_refinement": false,
+    "serialized_backend_can_own_model_specific_endpoint_observable": true,
+    "serialized_backend_current_callback_receives_refinement_level_metadata": false,
+    "existing_checkpoint_revision_time_isolation_is_reusable": true,
+    "hard_mass_contract_is_reusable": true
+  },
+  "interpretation": {
+    "same_endpoint_nested_refinement_is_algorithmically_characterizable_test_only": true,
+    "reason_test_only": "A nonproduction harness can clone the same source state and execute 1, 2, 4 or more equal substeps to the same endpoint for scientific characterization.",
+    "test_only_harness_proves_production_transaction_composability": false,
+    "reason_not_composable": "The current generic transaction API has no contract for a refinement hierarchy, per-level mass and cost diagnostics, selection of a refined trajectory, or fail-closed refinement exhaustion while retaining one outer endpoint.",
+    "model_owned_scalar_callback_alone_is_sufficient_for_same_endpoint_nested_refinement": false,
+    "owner_for_model_observable": "F-SI",
+    "owner_for_generic_same_endpoint_refinement_orchestration": "F-KT",
+    "owner_for_runtime_composition_after_owner_admission": "F-MR"
+  },
+  "smallest_required_F_KT_capability": {
+    "purpose": "Permit bounded same-endpoint refinement without weakening checkpoint, rollback, mass or generic-time semantics.",
+    "requirements": [
+      "one immutable attempt origin for every compared refinement level",
+      "all compared levels terminate at the same attempt t1",
+      "generic level progression independent of model-specific observable definition",
+      "model-owned scalar comparison hook or equivalent owner-qualified observation seam",
+      "hard mass acceptance for every trajectory eligible for publication",
+      "only one selected refined trajectory may become the transaction candidate",
+      "rejected or superseded trajectories never mutate committed state",
+      "explicit bounded maximum refinement level or cost budget",
+      "diagnostics for levels executed, solver work, mass residual, rejection class and selected level",
+      "retry endpoint shortening, if retained, remains a separate fallback action after same-endpoint evaluation and is not itself counted as convergence evidence"
+    ],
+    "not_required_at_this_stage": [
+      "production temporal tolerance",
+      "Richards-specific normalization",
+      "FGC02-specific policy",
+      "mass tolerance relaxation",
+      "solver iteration increase",
+      "physics change"
+    ]
+  },
+  "F_SI21_decision": {
+    "source_seam_audit_complete": true,
+    "specific_numeric_estimator_selected": false,
+    "candidate_family_retained": "SAME_ENDPOINT_NESTED_REFINEMENT_WITH_MODEL_OWNED_OBSERVABLE",
+    "candidate_numeric_characterization_may_continue_test_only": true,
+    "production_semantic_design_may_proceed_without_F_KT": false,
+    "exit_class_if_F_KT_not_opened": "BLOCKED_RUNTIME_TRANSACTION_CONTRACT_CHANGE_REQUIRES_F_KT_OWNER",
+    "F_GC02_release_allowed": false,
+    "F_PE_release_allowed": false
+  },
+  "architecture_invariant_check": {
+    "7_transactional_steps": "preserved only if all levels share immutable origin and only selected level can publish",
+    "8_recompute_and_warm_start": "compatible; warm starts may be numerical only and physical origin remains exact",
+    "9_generic_time": "same-endpoint hierarchy is defined over generic [t0,t1]",
+    "13_mass_conservation": "remains hard for each publishable trajectory",
+    "15_coupling_cost": "requires bounded conditional refinement, not unconditional deep hierarchy",
+    "23_physics_solver_policy_separation": "preserved; refinement is numerical policy and cannot change physics",
+    "24_bounded_cost": "requires explicit level or work cap and diagnosed fallback",
+    "25_reference_mode": "must retain a stricter reference profile",
+    "26_diagnostics": "requires first-class refinement-level diagnostics",
+    "29_no_silent_dependencies": "no calendar, file or MODFLOW assumptions introduced",
+    "30_architecture_change_gate": "F-KT owner qualification required before production transaction change"
+  },
+  "next_action": "Open a separate F-KT owner-resolution workunit for the smallest generic same-endpoint nested-refinement transaction seam. F-SI21 may continue nonproduction numerical characterization in parallel only if it is explicitly labelled algorithmic evidence and is not treated as proof of production transaction admissibility."
+}
