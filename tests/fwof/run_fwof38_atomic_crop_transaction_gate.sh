@@ -153,7 +153,7 @@ setup_crop = update_anchor + '''
   call require(crop_result1%status == CANONICAL_STATUS_COMPLETED .and. crop_result1%completed, &
        'F-WOF38 first crop F-KT trial')
   call require(crop_kernel_candidate1%ready(), 'F-WOF38 first crop candidate ready')
-  call require(crop_result1%mass%complete .and. crop_result1%mass%residual == 0.0_real64, &
+  call require(crop_result1%mass%complete .and. bitwise_equal(crop_result1%mass%residual, 0.0_real64), &
        'F-WOF38 crop transaction zero water ledger residual')
   call require(crop_diag1%temporal_acceptance_source == TX_TEMPORAL_MODEL_CERTIFICATE, &
        'F-WOF38 fixed crop event model certificate')
