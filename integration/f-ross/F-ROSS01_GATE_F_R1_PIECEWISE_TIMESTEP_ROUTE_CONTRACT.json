@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F_R1_PIECEWISE_C1R_TIMESTEP_CONVERGENCE",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_implementation": false,
+  "prerequisites": [
+    "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
+    "PIECEWISE_ADJACENT_CELL_ROUTE_CHARACTERIZED_READY_FOR_F_R1_POLICY_PRECOMMIT"
+  ],
+  "unchanged_from_initial_F": {
+    "hydraulic_family": "C1R base MvG/KSATFIT N241 float32 bilinear log-mobility",
+    "homogeneous": true,
+    "unsaturated_only": true,
+    "sigma": 0.5,
+    "horizon_day": 0.0016,
+    "step_counts": [2,4,8,16],
+    "dt_days": [0.0008,0.0004,0.0002,0.0001],
+    "materials": ["B01","B12","O01","O05","O14","O18"],
+    "cell_counts": [4,16,64],
+    "profiles": ["wet_gradient","mid_gradient","dry_gradient"],
+    "source_sink_patterns": ["zero","mixed_local_source_and_sink"],
+    "total_base_cases": 108,
+    "reference_solver": "DOP853",
+    "reference_rtol": 1e-11,
+    "reference_atol_theta": 1e-13,
+    "reference_max_step_coarse_day": 0.000025,
+    "reference_max_step_fine_day": 0.0000125,
+    "candidate_algebra": "identical to initial Gate F; one factorization plus one normal backsolve per accepted step",
+    "mass_ledger": "identical",
+    "sigma_or_dt_retuning": false
+  },
+  "piecewise_route_policy": {
+    "normal_route": "If no state component changes N241 interpolation cell, accept under the original Gate F rules.",
+    "transition_route": "If exactly one state component changes to exactly one adjacent N241 interpolation cell during an otherwise valid trial, accept the conservative trial as an explicit PIECEWISE_ADJACENT_CELL transition route. The Jacobian and all face derivatives for that trial remain those of the accepted start-state cells. No cross-node derivative is defined or averaged. The next step reassembles from the new accepted cell.",
+    "transition_detection": "post-solve comparison of start and candidate table-cell indices; O(n) diagnostic work only",
+    "extra_factorizations_for_transition_route": 0,
+    "extra_backsolves_for_transition_route": 0,
+    "retry_count_for_transition_route": 0,
+    "branch_count": "one explicit branch count per accepted adjacent-cell transition trial",
+    "exact_node_endpoint": "fail closed in F-R1 because no side tag is qualified here",
+    "more_than_one_transitioning_component_per_trial": "fail closed",
+    "more_than_one_cell_index_of_displacement_for_any_component": "fail closed",
+    "nonfinite_domain_envelope_or_mass_failure": "fail closed"
+  },
+  "hard_temporal_gates_unchanged": {
+    "max_reference_coarse_vs_fine_theta_span_normalized": 1e-9,
+    "max_finest_candidate_theta_span_normalized_error": 1e-5,
+    "max_finest_candidate_state_change_relative_error": 0.005,
+    "refinement_errors_nonincreasing": true,
+    "minimum_observed_order_in_informative_cases": 1.0,
+    "median_observed_order_in_informative_cases": 1.5
+  },
+  "hard_physical_and_numerical_gates_unchanged": {
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-12,
+    "candidate_domain_failure_count": 0,
+    "candidate_head_envelope_failure_count": 0,
+    "candidate_nonfinite_count": 0,
+    "candidate_input_mutation_count": 0,
+    "reference_nonfinite_count": 0,
+    "table_bitwise_unchanged": true,
+    "initial_state_bitwise_unchanged_outside_trial_sequences": true
+  },
+  "route_gates": {
+    "inadmissible_transition_route_count": 0,
+    "maximum_abs_cell_displacement_on_transition_route": 1,
+    "maximum_transitioning_components_per_transition_trial": 1,
+    "cross_node_derivative_averaging_count": 0,
+    "extra_factorizations_due_to_transition_route": 0,
+    "extra_backsolves_due_to_transition_route": 0
+  },
+  "cost_contract": {
+    "normal_accepted_step": "1 factorization + 1 backsolve",
+    "piecewise_transition_accepted_step": "1 factorization + 1 backsolve + O(n) branch detection",
+    "global_nonlinear_iterations": 0,
+    "routine_retries": 0,
+    "qualification_reference_cost_excluded_from_production_cost": true
+  },
+  "explicit_nonclaims": [
+    "F-R1 does not create a smooth tangent at a table node.",
+    "F-R1 does not qualify exact-on-node endpoint state handling.",
+    "F-R1 does not qualify multi-node or multi-component seam jumps.",
+    "F-R1 does not qualify saturation, heterogeneity, groundwater, H_ENPR or KSATEXM.",
+    "F-R1 does not qualify a general adaptive timestep controller.",
+    "F-R1 does not change the failed initial Gate F evidence."
+  ],
+  "exit": {
+    "pass": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+    "fail": "F_TIMESTEP_REMAINS_UNQUALIFIED_CLASSIFY_TEMPORAL_MASS_ROUTE_OR_REFERENCE_FAILURE"
+  },
+  "relevant_invariants": [5,7,8,9,13,14,15,23,24,25,26,30]
+}
