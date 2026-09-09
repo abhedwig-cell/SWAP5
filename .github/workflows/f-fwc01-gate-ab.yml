@@ -1,0 +1,59 @@
+name: F-FWC01 bounded-state and exact-mass gate
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - 'experiments/fwc/**'
+      - 'integration/f-fwc/F-FWC01_GATE_AB_*'
+      - '.github/workflows/f-fwc01-gate-ab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Execute frozen independent reconstruction
+        run: |
+          python experiments/fwc/fwc01_gate_ab_bounded_state_exact_mass.py --output /tmp/fwc01-gate-ab.json
+      - name: Assert frozen gate outcomes
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          generated = json.loads(Path('/tmp/fwc01-gate-ab.json').read_text())
+          persisted = json.loads(Path('integration/f-fwc/F-FWC01_GATE_AB_BOUNDED_STATE_EXACT_MASS_RESULT.json').read_text())
+
+          gate_a = generated['gate_A']
+          gate_b = generated['gate_B']
+          worst = gate_a['worst_modeled_row']
+
+          assert gate_a['hard_finite_forcing_independent_dynamic_list_bound_established'] is False
+          assert gate_a['dynamic_list_primary_multiswap_pass'] is False
+          assert worst['max_simultaneous_objects'] == 51200
+          assert worst['modeled_persistent_bytes_per_column'] == 1232000
+          finest = next(x for x in gate_a['duration_characterization'] if x['period_residence'] == 0.00390625)
+          assert finest['max_objects_by_horizon'] == {'1.0': 256, '10.0': 256, '100.0': 256}
+
+          assert gate_b['all_cases_pass'] is True
+          assert len(gate_b['cases']) == 4
+          for case in gate_b['cases']:
+              assert abs(case['mass_residual']) <= case['mass_tolerance']
+              assert case['committed_state_bitwise_unchanged_after_reject'] is True
+              assert case['committed_ledger_exactly_unchanged_after_reject'] is True
+              assert case['mass_repair_applied'] is False
+              assert case['clipping_repair_applied'] is False
+
+          assert persisted['gate_A_bounded_state']['decision'] == 'REJECT_SOURCE_STYLE_DYNAMIC_LINKED_LIST_AS_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION'
+          assert persisted['gate_B_exact_mass']['status'] == 'PASS_MINIMAL_LEDGER_AND_TRANSACTION_FEASIBILITY'
+          assert persisted['overall']['requested_positive_exit_reached'] is False
+          PY
