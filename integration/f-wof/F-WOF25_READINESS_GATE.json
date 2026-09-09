@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST one-day evolution readiness gate",
+  "zero_production": true,
+  "gates": {
+    "WOF25_G01_complete_continuation_state": {
+      "status": "PASS",
+      "evidence": "F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+      "result": "common state is crop_emerged, DVS, TSUM, fl_anthesis, nofd, atmin7 plus F-WOF23 biomass/cohorts; IDSL2 adds vern and fl_vernalised"
+    },
+    "WOF25_G02_minimal_committed_state": {
+      "status": "PASS_READINESS",
+      "evidence": [
+        "F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+        "F-WOF25_OPTIONAL_STATE_CLASSIFICATION.json"
+      ],
+      "result": "derived fields and inactive-option state are excluded; no fixed 366-cohort allocation is required"
+    },
+    "WOF25_G03_rates_are_not_state": {
+      "status": "PASS_PHYSICAL_CONTINUATION",
+      "evidence": "F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json",
+      "result": "dtsum, dvr, daylp, vernrate and WOFOST_rates remain event-local",
+      "reference_hold": "exact legacy post-vernalised VERN output requires compatibility or expected-difference qualification"
+    },
+    "WOF25_G04_daily_forcing_contract": {
+      "status": "PASS",
+      "evidence": "F-WOF25_FORCING_AGGREGATE_CONTRACT.json",
+      "result": "TMN, TAV, TAVD, radiation, solar geometry and active CO2 factors are explicit event/provider inputs; hidden calendar globals are forbidden"
+    },
+    "WOF25_G05_cross_process_aggregates": {
+      "status": "PASS_READINESS_WITH_OPTION_HOLD",
+      "evidence": "F-WOF25_FORCING_AGGREGATE_CONTRACT.json",
+      "result": "IQROT/IPTRA/IALPWET are accepted window aggregates only; rejected soil-water trials contribute zero",
+      "option_hold": "production owner for active oxygen IALPWET window accumulation across composed runtime intervals is not claimed by F-WOF25"
+    },
+    "WOF25_G06_explicit_evolution_event": {
+      "status": "PASS",
+      "evidence": "F-WOF25_TRANSACTION_EVENT_CONTRACT.json",
+      "result": "one explicit crop event/window with [t0,t1], first admitted duration one day; runtime schedules it and kernel time remains generic"
+    },
+    "WOF25_G07_transaction_semantics": {
+      "status": "PASS_DESIGN",
+      "evidence": [
+        "F-WOF25_TRANSACTION_EVENT_CONTRACT.json",
+        "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json",
+        "integration/f-kt/F-KT05_REUSABLE_CHECKPOINT_CONTRACT.json"
+      ],
+      "result": "prepare, aggregate and finalize are candidate-only; F-KT remains the only commit/rollback authority; discard and deterministic replay tests are specified"
+    },
+    "WOF25_G08_soil_water_cadence": {
+      "status": "PASS",
+      "evidence": [
+        "F-WOF25_B110_DAILY_CALL_CADENCE_EVIDENCE.json",
+        "F-WOF25_FORCING_AGGREGATE_CONTRACT.json"
+      ],
+      "result": "many soil-water substeps may occur inside a crop window; WOFOST evolution occurs once at its physical cadence"
+    },
+    "WOF25_G09_threshold_event_semantics": {
+      "status": "PASS_CHARACTERIZED_ONE_DAY_ONLY",
+      "evidence": "F-WOF25_THRESHOLD_EVENT_EVIDENCE.json",
+      "result": "emergence, anthesis, vernalization, cohort shifting, root changes and maturity are cadence-sensitive; arbitrary split/merge equivalence is explicitly unqualified"
+    },
+    "WOF25_G10_MultiSWAP_scalability": {
+      "status": "PASS_DESIGN",
+      "evidence": "F-WOF25_OPTIONAL_STATE_CLASSIFICATION.json",
+      "result": "parameter sharing, compact active cohorts, option-dependent state and worker-local rates are compatible with SoA/pools/batching"
+    }
+  },
+  "readiness_decision": {
+    "status": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE",
+    "meaning": "the zero-production source-bound contracts are sufficient to start a separate smallest structural candidate without inventing missing state or cadence semantics",
+    "production_evolution_in_F_WOF25": false,
+    "full_option_coverage": false,
+    "first_structural_candidate_should_be_restricted": true
+  },
+  "recommended_first_structural_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "crop_window": "one explicit day",
+    "IDSL": "prefer 0 or 1 initially so the post-vernalised VERN compatibility hold is outside the first production seam",
+    "root_state": "prefer a route with reconstructible/nonadaptive root geometry before composing optional SWRD2/SWRDC1 history",
+    "oxygen_same_window_export": "exclude initially unless the runtime accepted-window aggregator owner is composed explicitly",
+    "nutrient": false,
+    "potential_shadow": false,
+    "soybean": false,
+    "grass": false
+  },
+  "holds_not_blocking_restricted_structural_readiness": [
+    "IDSL2 exact post-vernalised VERN diagnostic compatibility",
+    "production runtime owner for active oxygen IALPWET crop-window accumulation across smaller committed intervals",
+    "concrete optional SWRD2/SWRDC1 root-history carrier composition",
+    "arbitrary subdaily or multiday WOFOST evolution"
+  ],
+  "next_unit_rule": "do not start production work in F-WOF25; choose the next free F-WOF work-unit code live and make it the smallest structural one-day candidate constrained by the profile above"
+}
