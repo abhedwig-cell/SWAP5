@@ -1,0 +1,35 @@
+name: F-SI20 fine-step solver rejection classification
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_fine_step_solver_rejection_classification.sh'
+      - '.github/workflows/fsi20-fine-step-solver-rejection-classification.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run fine-step solver rejection classification
+        run: |
+          set -o pipefail
+          bash tests/fsi/run_fsi20_fine_step_solver_rejection_classification.sh | tee fsi20-solver-rejection.log
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-fine-step-solver-rejection-classification
+          path: fsi20-solver-rejection.log
+          if-no-files-found: error
