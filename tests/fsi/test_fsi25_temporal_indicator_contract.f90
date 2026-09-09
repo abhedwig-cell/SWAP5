@@ -1,17 +1,37 @@
-program test_fsi25_temporal_indicator_contract
-  use, intrinsic :: iso_fortran_env, only: real64
+module mod_fsi25_dummy_solver
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, soil_water_temporal_indicator_request_t, &
-       soil_water_temporal_indicator_result_t, SW_TEMPORAL_INDICATOR_UNAVAILABLE, SW_TEMPORAL_INDICATOR_FAILED
+       soil_water_solve_request_t, soil_water_solve_result_t
   implicit none
+  private
 
-  type, extends(soil_water_solver_workspace_base_t) :: dummy_workspace_t
+  type, extends(soil_water_solver_workspace_base_t), public :: dummy_workspace_t
   end type dummy_workspace_t
 
-  type, extends(soil_water_solver_t) :: dummy_solver_t
+  type, extends(soil_water_solver_t), public :: dummy_solver_t
    contains
      procedure :: solve => dummy_solve
   end type dummy_solver_t
+
+contains
+
+  subroutine dummy_solve(self, request, workspace, result)
+    class(dummy_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_solve_result_t), intent(out) :: result
+
+    result = soil_water_solve_result_t()
+  end subroutine dummy_solve
+
+end module mod_fsi25_dummy_solver
+
+program test_fsi25_temporal_indicator_contract
+  use, intrinsic :: iso_fortran_env, only: real64
+  use mod_soil_water_solver_contract, only: soil_water_solve_request_t, soil_water_solve_result_t, &
+       soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
+       SW_TEMPORAL_INDICATOR_UNAVAILABLE, SW_TEMPORAL_INDICATOR_FAILED
+  use mod_fsi25_dummy_solver, only: dummy_solver_t, dummy_workspace_t
+  implicit none
 
   type(dummy_solver_t) :: solver
   type(dummy_workspace_t) :: workspace
@@ -35,16 +55,4 @@ program test_fsi25_temporal_indicator_contract
   print '(a)', 'FSI25_GATE_B_GENERIC_SOLVER_DEFAULT=PASS'
   print '(a)', 'FSI25_GATE_B_HEADcalc_INTERNALS_EXPOSED=NO'
   print '(a)', 'FSI25_GATE_B_PERSISTENT_COLUMN_STATE_ADDED=NO'
-
-contains
-
-  subroutine dummy_solve(self, request, workspace, result)
-    class(dummy_solver_t), intent(inout) :: self
-    type(soil_water_solve_request_t), intent(in) :: request
-    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
-    type(soil_water_solve_result_t), intent(out) :: result
-
-    result = soil_water_solve_result_t()
-  end subroutine dummy_solve
-
 end program test_fsi25_temporal_indicator_contract
