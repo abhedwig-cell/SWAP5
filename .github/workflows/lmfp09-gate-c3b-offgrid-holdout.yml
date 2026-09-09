@@ -1,0 +1,44 @@
+name: F-LMFP09 Gate C3b Offgrid Holdout
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - .github/workflows/lmfp09-gate-c3b-offgrid-holdout.yml
+      - experiments/lmfp/run_lmfp09_gate_c3b_offgrid_holdout.py
+      - integration/f-lmfp/F-LMFP09_GATE_C3B_OFFGRID_HOLDOUT_DESIGN.json
+  workflow_dispatch:
+
+jobs:
+  offgrid-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [reference_sand, very_fast]
+        half_length: [5.0, 10.0]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run C3b off-grid holdout class
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${{ matrix.material }}-${{ matrix.half_length }}"
+          out="lmfp09-gate-c3b-${tag}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c3b_offgrid_holdout.py \
+            "$out/F-LMFP09_GATE_C3B_RESULT.json" \
+            "${{ matrix.material }}" \
+            "${{ matrix.half_length }}" \
+            | tee "$out/F-LMFP09_GATE_C3B_STDOUT.json"
+      - name: Upload C3b evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c3b-${{ matrix.material }}-${{ matrix.half_length }}
+          path: lmfp09-gate-c3b-${{ matrix.material }}-${{ matrix.half_length }}/
