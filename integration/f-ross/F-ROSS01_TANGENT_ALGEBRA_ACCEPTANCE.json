@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
+  "purpose": "Test the discrete response-tangent construction on the already qualified continuity algebra before attaching real SWAP hydraulic face tables.",
+  "production_implementation": false,
+  "physical_hydraulics_qualified": false,
+  "boundary_fixture": "ANALYTIC_LINEAR_BOTTOM_FACE_LAW_WITH_EXTERNAL_BOUNDARY_STATE",
+  "state_semantics": "The external boundary variable is an algebraic boundary state for this gate and is not claimed to be SWAP pressure head.",
+  "precommitted_method": [
+    "Replace the prescribed bottom-flux fixture by q_bottom = k_bottom*(theta_last - b_bottom) + gravity_bottom.",
+    "Assemble the normal Ross-style tridiagonal trial system including the derivative of the bottom face with respect to the bottom cell state.",
+    "Factor the tridiagonal matrix once.",
+    "Solve the normal trial increment from that factorization.",
+    "Differentiate the same frozen-regime discrete equations with respect to b_bottom and solve one sensitivity RHS using the same factorization.",
+    "Evaluate dq_bottom/db_bottom from the explicit boundary derivative and the bottom-cell response.",
+    "Compare this tangent with symmetric +/- delta boundary trials that restart from the identical committed state."
+  ],
+  "precommitted_cases": {
+    "cell_counts": [1, 2, 3, 8, 32, 128],
+    "sigma": [0.0, 0.5, 1.0],
+    "boundary_states": [0.10, 0.18, 0.26],
+    "bottom_face_coefficients": [0.03, 0.11, 0.27],
+    "finite_difference_steps": [1e-07, 1e-06]
+  },
+  "acceptance": {
+    "normal_trial_mass_residual_abs_max": 1e-12,
+    "normal_trial_linear_residual_abs_max": 1e-12,
+    "sensitivity_linear_residual_abs_max": 1e-12,
+    "tangent_vs_symmetric_difference_relative_or_scaled_absolute_max": 1e-08,
+    "base_state_bitwise_unchanged": true,
+    "matrix_factorizations_per_analytic_trial": 1,
+    "normal_backsolves_per_analytic_trial": 1,
+    "additional_tangent_backsolves_per_analytic_trial": 1,
+    "global_nonlinear_iterations": 0
+  },
+  "hard_scope_limits": [
+    "No claim about real SWAP h(theta), K(h), saturation switching or tabulated steady-Darcian derivatives.",
+    "No claim that the algebraic boundary variable equals groundwater head.",
+    "No prescribed-flux inversion qualification.",
+    "No MODFLOW coupling qualification.",
+    "Symmetric perturbation trials are reference evidence only and are not a proposed production path."
+  ],
+  "transaction_requirements": {
+    "committed_state_mutated": false,
+    "finite_difference_trials_start_from_identical_committed_state": true,
+    "tangent_is_trial_scratch_only": true
+  },
+  "architecture_invariants": {
+    "transactional_timesteps": "DIRECTLY_TESTED_ALGEBRAICALLY",
+    "mass_conservation": "HARD_UNCHANGED",
+    "interface_sensitivity": "STRUCTURAL_CONSTRUCTION_UNDER_TEST",
+    "coupling_cost": "TARGET_ONE_EXTRA_O_N_BACKSOLVE_NOT_EXTRA_FULL_RUNS",
+    "scratch_per_worker": "TANGENT_AND_FACTORIZATION_ARE_NONPERSISTENT",
+    "reference_mode": "SYMMETRIC_PERTURBATION_REMAINS_REFERENCE_ONLY"
+  },
+  "decision": "PERSISTED_BEFORE_EXECUTION",
+  "status": "READY_FOR_ALGEBRAIC_IMPLEMENTATION"
+}
