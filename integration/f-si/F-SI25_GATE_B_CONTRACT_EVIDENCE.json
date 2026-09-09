@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI25",
+  "gate": "B_generic_solver_service",
+  "status": "PASS",
+  "contract_commit": "e39b2c7f1e3fe6a68fcbad80fc96db7e5d440440",
+  "implementation_head_tested": "5a69b6a20a9bf1bcae1c00db550b76f8c2ee4703",
+  "workflow": {
+    "name": "F-SI25 temporal indicator contract",
+    "run": 34334745856,
+    "job": 102411406286,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04"
+  },
+  "attempt_1": {
+    "run": 34334613961,
+    "classification": "HARNESS_ONLY_COMPILE_FAILURE",
+    "production_contract_compile_reached": true,
+    "failure": "dummy type-bound solve procedure was internal to the test program instead of a module/external procedure",
+    "candidate_semantics_observed": false,
+    "repair_commit": "5a69b6a20a9bf1bcae1c00db550b76f8c2ee4703",
+    "repair_scope": "test-only dummy solver placement"
+  },
+  "verified": {
+    "generic_default_status": "UNAVAILABLE",
+    "malformed_history_fails_closed": true,
+    "default_claims_available": false,
+    "default_extra_full_nonlinear_solves": 0,
+    "default_extra_tridiagonal_solves": 0,
+    "HeadCalc_internal_arrays_exposed": false,
+    "persistent_column_state_added": false
+  },
+  "nonclaims": [
+    "No reference Richards accepted-state operator is implemented by Gate B.",
+    "No temporal indicator value is qualified by Gate B.",
+    "No temporal tolerance or retry policy is admitted."
+  ]
+}
