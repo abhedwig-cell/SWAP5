@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R2_KSATEXM_HYBRID_S_U_CHARACTERIZATION",
+  "run_id": 34342694684,
+  "run_head": "e8f4831544d5cec5cb584a992853484487762ccf",
+  "pass": false,
+  "decision": "C2A_R2_HYBRID_S_U_REJECTED_BILINEAR_LOG_MOBILITY_REMAINS_INSUFFICIENT",
+  "candidate": {
+    "N": 241,
+    "wet_coordinate": "uniform relative saturation S between h=-1 and h=-2 cm",
+    "dry_coordinate": "uniform u=log10(-h/cm) between h=-2 and h=-10000 cm",
+    "seam_node_index": 18,
+    "storage": "float32_log_mobility",
+    "interpolation": "bilinear log mobility",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "material_results": {
+    "B10": {"pass": false, "max_abs_error_over_ksatfit": 0.6531325293315813, "max_hybrid_metric": 0.5754657999658828, "p99_hybrid_metric": 0.2858938338438601},
+    "O12": {"pass": false, "max_abs_error_over_ksatfit": 0.6077085966076664, "max_hybrid_metric": 0.49439240976585247, "p99_hybrid_metric": 0.10683488013773908},
+    "O13": {"pass": false, "max_abs_error_over_ksatfit": 0.8435493801201639, "max_hybrid_metric": 0.7847868233959713, "p99_hybrid_metric": 0.4486532353782744},
+    "B05": {"pass": false, "max_abs_error_over_ksatfit": 0.0182392220000735, "max_hybrid_metric": 0.02257613193025303, "p99_hybrid_metric": 0.005821655957374193},
+    "O14": {"pass": false, "max_abs_error_over_ksatfit": 0.0027202512441026456, "max_hybrid_metric": 0.00296678163389531, "p99_hybrid_metric": 0.00021397807604423921},
+    "O05": {"pass": false, "max_abs_error_over_ksatfit": 0.046362690577587726, "max_hybrid_metric": 0.04367391369506749, "p99_hybrid_metric": 0.008640334867474923}
+  },
+  "comparison_to_r1": {
+    "B05_abs_reduction_factor": 6.599424179095539,
+    "O14_abs_reduction_factor": 2.120588660674893,
+    "O12_abs_reduction_factor": 1.8277540437163474,
+    "O13_abs_reduction_factor": 1.6703322555826928,
+    "O05_abs_reduction_factor": 1.9698523357383415,
+    "B10_abs_reduction_factor": 1.823384122567683,
+    "interpretation": "Using the same physical variable S as the source-defined wet-end conductivity law materially reduces error across all six stress materials, but none reaches the frozen acceptance thresholds. Coordinate mismatch was therefore real but is not the remaining dominant limitation."
+  },
+  "failure_interpretation": {
+    "source_law_failure": false,
+    "oracle_failure": false,
+    "state_mapping_failure": false,
+    "memory_failure": false,
+    "runtime_complexity_failure": false,
+    "axis_choice_only_sufficient": false,
+    "remaining_candidate_limitation": "second-order bilinear interpolation of the strongly curved two-dimensional steady-face log-mobility surface"
+  },
+  "artifacts": {
+    "B10": {"id": 10100475230, "digest": "sha256:687fb267498be785e73f737f3b526c21a72beb67bd578657b4d51490cb91d456"},
+    "O12": {"id": 10100473344, "digest": "sha256:794ed3befad339cd8c3955f7cb0e8b7af0df2f5b28e0972b7f3bb1146e1d78a9"},
+    "O05": {"id": 10100459065, "digest": "sha256:46db0d834e4b21d87ae5c34489186db8230b31ea84365acdd86bee82e8481f65"},
+    "B05": {"id": 10100454372, "digest": "sha256:c4317b5f08c2094e01af43b13c1047713c4be3e9d9afc70d6b8fb191cbf03dc8"},
+    "O13": {"id": 10100444545, "digest": "sha256:c15dbc3c67b74d232655317e2a73b09beef7a6e8ea740e0da865fa01e659ec74"},
+    "O14": {"id": 10100412484, "digest": "sha256:d919729eaa939e33b8661895f346b9b7ac13693c4c6d9c31d504f0aac4348559"}
+  },
+  "next_step": "Freeze one R3 candidate retaining the exact R2 hybrid S-u axis, N=241 and table storage, while replacing bilinear interpolation by local 4x4 tensor-cubic Lagrange interpolation of log mobility. Stencils must remain wholly inside the wet or dry constitutive regime on each axis and never cross h=-2 cm. No holdout access.",
+  "scope_limit": "R2 development characterization failure only. No RossFast scientific NO-GO and no claim outside C2A."
+}
