@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "topic": "REAL_H0_SATURATION_EVENT_TOP_BOUNDARY_SEMANTICS",
+  "status": "SOURCE_BOUND_RECONCILED_E3D_FLUX_ONLY_FIXTURE_NOT_A_VALID_PRODUCTION_SURFACE_TRANSITION_MODEL",
+  "production_implementation": false,
+  "source_identity": {
+    "baseline": "SWAP_4.3.1_B0",
+    "canonical_nested_fortran_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "verified_against_project_reference_identity": true,
+    "inspected_members": [
+      {"path":"SWAP/boundtop.f90","sha256":"69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04"},
+      {"path":"SWAP/headcalc.f90","sha256":"db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"}
+    ]
+  },
+  "legacy_semantics": [
+    "boundtop computes atmospheric supply/demand q0 and a provisional flux q1 including previous ponding storage.",
+    "It computes the surface pressure head h0 that would result if the provisional flux were imposed using the saturated surface conductivity.",
+    "If h0 <= 1e-6 cm, the flux boundary remains valid and qtop=q1 with zero ponding.",
+    "If h0 > 1e-6 cm, ponding occurs: ftoph becomes true, saturated surface conductivity is used, runoff becomes possible, and a ponding state is computed instead of continuing an unrestricted prescribed-flux boundary.",
+    "During headcalc, ftoph selects a surface-head/Darcy residual branch; otherwise the top residual uses qtop as a flux boundary.",
+    "The ponding-layer balance explicitly includes pond storage change, precipitation/irrigation/melt/runon, evaporation, runoff and infiltrating qtop."
+  ],
+  "source_locations": {
+    "boundtop_flux_or_ponding_switch": "SWAP/boundtop.f90 lines 112-168 in the canonical B0 archive",
+    "headcalc_ponding_balance": "SWAP/headcalc.f90 lines 325-340 in the canonical B0 archive",
+    "headcalc_top_residual_branch": "SWAP/headcalc.f90 lines 528-537 in the canonical B0 archive"
+  },
+  "e3d_implication": {
+    "frozen_fixture": "initial heads [-0.2,-1.5,-5] cm, q_top=1.5*Ksat, bottom head -15 cm, horizon 0.001 d",
+    "finding": "The E3D scaffold kept a prescribed flux-only top boundary through the attempted h=0 crossing and supplied no surface-water/ponding degree of freedom. That is not the source-bound SWAP surface transition semantics once the imposed flux would require positive surface head.",
+    "qualification_effect": "E3D remains a valid negative test of the flux-only scaffold but may not be interpreted as evidence that RossFast saturation physics itself is invalid.",
+    "required_next_design": "Qualify saturation transition with an event-aware top-boundary contract that conserves excess supply into explicit surface storage and switches to a head/Darcy infiltration branch when the flux boundary becomes inadmissible. The surface-storage owner belongs outside the soil-water solver state but must participate transactionally in the composed trial."
+  },
+  "architecture_binding": [
+    "Do not encode rainfall/ponding policy inside the Ross soil-water face solver.",
+    "The soil-water solver must expose the hydraulic response needed by a top-boundary component; the runtime/component composition owns supply, surface storage, runoff and event switching.",
+    "A rejected saturation-event trial may modify neither committed soil state nor committed surface-water storage.",
+    "Mass conservation across atmosphere/surface/soil remains hard and may not be repaired by clipping flux or head.",
+    "The event time is generic and may occur inside any [t0,t1] interval; no midnight/day assumption is allowed."
+  ],
+  "relevant_invariants": [2,3,7,9,13,20,23,28,29,30],
+  "decision": "STOP_FLUX_ONLY_H0_FIXTURE_AS_SATURATION_ADMISSION_ROUTE_DESIGN_EVENT_AWARE_SURFACE_STORAGE_HEAD_SWITCH_GATE",
+  "hard_nonclaims": [
+    "This reconciliation does not qualify the legacy boundtop implementation for SWAP5 production.",
+    "This does not require copying legacy global state or module structure.",
+    "This does not qualify runoff, macropores or evaporation.",
+    "This does not yet prove RossFast versus FullRichards equivalence across the composed saturation event."
+  ]
+}
