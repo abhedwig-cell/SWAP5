@@ -1,0 +1,28 @@
+name: F-SI22 fixed-horizon nested refinement band
+
+on:
+  push:
+    branches:
+      - work/f-si22-richards-fixed-horizon-certificate
+    paths:
+      - 'integration/f-si/F-SI22_DECISION_CONTRACT.json'
+      - 'tests/fsi/run_fsi22_fixed_horizon_band_matrix.sh'
+      - 'tests/fsi/test_fsi20_fixed_horizon_reference.f90'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+      - '.github/workflows/fsi22-fixed-horizon-band.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-SI22 Gate A fixed-horizon band matrix
+        run: bash tests/fsi/run_fsi22_fixed_horizon_band_matrix.sh
