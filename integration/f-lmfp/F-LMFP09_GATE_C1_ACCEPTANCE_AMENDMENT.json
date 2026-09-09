@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C1_COMPOSED_CORRECTED_HALF_FACE_INTERFACE_ACCEPTANCE_AMENDMENT",
+  "status": "PERSISTED_BEFORE_GATE_C_EXECUTION",
+  "reason": "The initial Gate-C plan required homogeneous reduction to be reported but did not assign a numerical reduction tolerance. This amendment freezes that tolerance before the Gate-C workflow is introduced.",
+  "homogeneous_reduction_acceptance": {
+    "same_material_controls": ["reference_sand", "reference_clay", "B06", "B12"],
+    "symmetric_half_face_geometries_cm": [[5.0,5.0],[10.0,10.0]],
+    "comparison": "composed corrected half-face equal-flux route versus the single full-face corrected candidate on the same material and total distance",
+    "active_relative_error_p90_max": 0.02,
+    "active_relative_error_maximum_max": 0.10,
+    "sign_mismatches": 0,
+    "thresholds_may_not_be_relaxed_after_results": true
+  },
+  "other_gate_c_thresholds": "unchanged from F-LMFP09_GATE_C1_CORRECTED_HALF_FACE_PLAN.json",
+  "production_admission": false,
+  "groundwater_admission": false
+}

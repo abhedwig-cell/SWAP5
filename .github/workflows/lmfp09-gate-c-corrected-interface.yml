@@ -1,0 +1,37 @@
+name: F-LMFP09 Gate C Corrected Interface
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  corrected-interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        group: [synthetic, catalog]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run corrected heterogeneous interface gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="lmfp09-gate-c-${{ matrix.group }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c_corrected_interface.py \
+            "$out/F-LMFP09_GATE_C_${{ matrix.group }}.json" \
+            "${{ matrix.group }}" \
+            | tee "$out/F-LMFP09_GATE_C_${{ matrix.group }}.stdout.json"
+      - name: Upload Gate C evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c-${{ matrix.group }}
+          path: lmfp09-gate-c-${{ matrix.group }}/
