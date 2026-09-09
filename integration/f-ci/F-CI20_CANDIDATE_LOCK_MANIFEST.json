@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI20",
+  "title": "Post-F-CI19 Candidate Integrity and Composition Admission",
+  "branch": "integration/f-ci20-post-fci19-candidate-convergence",
+  "purpose": "Freeze exact source authority, ancestry, production identity, evidence status and replay obligations before any controlled composition onto the restricted canonical lineage.",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "tree": "a0c1a4f135589b2b6304427b29341317e867c522",
+    "authority": "F-CI19 restricted canonical source lineage"
+  },
+  "governance": {
+    "persist_before_composition": true,
+    "production_composition_performed_by_this_manifest": false,
+    "canonical_ref_update_performed": false,
+    "whole_divergent_branch_merge_admitted": false,
+    "source_authority_rule": "Use exact qualified source commits and production blobs. Branch tips are provenance pointers, not automatic production authority.",
+    "replay_rule": "A positive qualification bound to a different source tree is not inherited automatically by a future composed tree.",
+    "failed_evidence_rule": "Failed qualification remains negative evidence and may not be reinterpreted as PASS after owner remediation."
+  },
+  "candidates": {
+    "F-WOF42": {
+      "branch": "work/f-wof42-crop-persistence-layout-completeness",
+      "live_tip": "ed0219402072f121856d82cb6068ab74c70f34d1",
+      "live_tree": "e9884e86e9af677de4b150afa1ca208e46b27292",
+      "relationship_to_canonical_base": {
+        "status": "ahead",
+        "merge_base": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+        "ahead_by": 164,
+        "behind_by": 0
+      },
+      "staging_decision": "ADMIT_AS_PRIMARY_SPINE_FOR_LATER_CONTROLLED_COMPOSITION",
+      "reason": "Linear descendant of the exact F-CI19 canonical base with qualified crop persistence and accepted-window runtime work. No canonical promotion is implied by this admission."
+    },
+    "F-MR18": {
+      "branch": "work/f-mr18-generic-accepted-commit-receipt",
+      "live_tip": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
+      "live_tree": "b1895ee7a46f8c372590a9c6451e64ed01077fd5",
+      "relationship_to_F-WOF42": "ANCESTOR_TRANSITIVELY_INCLUDED",
+      "staging_decision": "NO_SEPARATE_OVERLAY",
+      "reason": "F-WOF42 already descends through the F-MR18 accepted-commit-receipt lineage."
+    },
+    "F-KT13": {
+      "branch": "work/f-kt13-external-reconstruction",
+      "live_tip": "66c2d682330c9637c6f0cbfbaca2a3ef755346ba",
+      "live_tree": "84d30064e91acccc251882694e14e13d32060f65",
+      "qualified_executable_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+      "decision": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION",
+      "relationship_to_canonical_base": {
+        "status": "diverged",
+        "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+      },
+      "production_identity_against_F-WOF42": {
+        "src/kernel/mod_kernel_committed_persistence.f90": {
+          "F_KT13_blob": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+          "F_WOF42_blob": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+          "identity": "EXACT"
+        },
+        "src/kernel/mod_kernel_transactions.f90": {
+          "F_KT13_blob": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+          "F_WOF42_blob": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+          "identity": "EXACT"
+        }
+      },
+      "staging_decision": "NO_SEPARATE_PRODUCTION_OVERLAY_SOURCE_EQUIVALENT_IN_WOF42",
+      "replay_on_future_composed_tree": "REQUIRED_IF_OTHER_DELTAS_TOUCH_KERNEL_OR_RUNTIME_CONTEXT",
+      "nonclaims": [
+        "No production restart file format is qualified.",
+        "No generic codec registry for all real SWAP continuation-state types is qualified.",
+        "No mid-transaction restart is qualified."
+      ]
+    },
+    "F-KT11": {
+      "branch": "work/f-kt11-richards-head-budget-certificate-policy",
+      "live_branch_tip": "00a9924890d407758404413f99c982bb591b5367",
+      "live_branch_tree": "79c562cbe851d23b4d5a754125650047911782c7",
+      "authoritative_remediated_candidate_source": {
+        "commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+        "tree": "d24f20559653b028d7967bf57da37da432803221",
+        "authority": "F-VQ34 exact candidate source"
+      },
+      "relationship_to_canonical_base": {
+        "status": "diverged",
+        "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+        "ahead_by": 597,
+        "behind_by": 15
+      },
+      "qualified_production_surface_observations": {
+        "src/runtime/mod_canonical_contracts.f90": {
+          "candidate_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+          "F_WOF42_blob": "078ee248f57c8a6ee1e3b82d6afa38362a9fe579",
+          "identity": "DIFFERENT"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "candidate_blob": "9af5a494526810324dc00706b444e448e770cba9",
+          "F_WOF42_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+          "identity": "DIFFERENT",
+          "remediation_commit": "5727d81309dbfa1347360a462cdac803b3d43afb"
+        },
+        "src/kernel/mod_kernel_transactions.f90": {
+          "candidate_source_blob_at_6e9a684": "63994d8ea6d0a40611574484ececf99e86379783",
+          "F_WOF42_blob": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+          "identity": "DIFFERENT"
+        },
+        "src/solver/mod_reference_richards_temporal_indicator.f90": {
+          "candidate_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+          "F_WOF42_presence": "ABSENT_AT_LIVE_CHECK",
+          "identity": "NOT_PRESENT_IN_SPINE"
+        }
+      },
+      "staging_decision": "REPLAY_REQUIRED_DEPENDENCY_BEARING_TEMPORAL_SUBSYSTEM_CANDIDATE",
+      "whole_branch_merge": "PROHIBITED",
+      "reason": "The qualified remediated source is a large divergent lineage and the temporal policy depends on production surfaces absent from or different in F-WOF42. Controlled materialization must first enumerate the minimal dependency-closed production postimage and then requalify it on the composed tree."
+    },
+    "F-SI25": {
+      "owner_tested_head": "bb51a0700bcf1484066b2c38d699654e697c007b",
+      "status": "COMPLETE_OWNER_VERIFIED_PRODUCTION_INDICATOR_SEAM",
+      "independently_qualified": false,
+      "production_role": "solver-owned accepted-state temporal indicator seam",
+      "staging_decision": "DEPENDENCY_EVIDENCE_FOR_KT11_MATERIALIZATION",
+      "replay": "REQUIRED_ON_FUTURE_COMPOSED_TEMPORAL_TREE"
+    },
+    "F-SI26": {
+      "tested_head": "d487641bee37940085df03bca07d956fc4a017a7",
+      "status": "COMPLETE_OWNER_QUALIFIED_SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+      "production_src_changed": false,
+      "staging_decision": "EVIDENCE_ONLY_OWNER_CANDIDATE",
+      "positive_independent_successor": "F-VQ32"
+    },
+    "F-VQ30": {
+      "tested_head": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+      "status": "COMPLETE_QUALIFIED_HELD_OUT_TRANSFER_READY_FOR_PRODUCTION_OPERATOR_SEAM",
+      "production_changes": false,
+      "staging_decision": "POSITIVE_EVIDENCE_REPLAY_REQUIRED_ON_NEW_OPERATOR_POSTIMAGE"
+    },
+    "F-VQ31": {
+      "tested_head": "6279657ba36ce5c20d7395cafb3f7db9672cf2cd",
+      "independently_qualified": true,
+      "production_source_changed": false,
+      "staging_decision": "POSITIVE_TRANSACTION_COMPOSITION_EVIDENCE_REPLAY_REQUIRED_ON_NEW_TEMPORAL_POSTIMAGE"
+    },
+    "F-VQ32": {
+      "tested_head": "b53d08010bd31a2511e59528458c97a1713fd46a",
+      "status": "COMPLETE_INDEPENDENTLY_QUALIFIED_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+      "production_src_changed": false,
+      "staging_decision": "POSITIVE_NORMALIZATION_EVIDENCE_REPLAY_REQUIRED_WITH_KT11_POLICY_BINDING"
+    },
+    "F-VQ33": {
+      "branch": "qualification/f-vq33-richards-head-budget-certificate",
+      "closeout_head": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+      "failed_candidate_source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+      "failed_candidate_source_tree": "e3e941dcd7058728581f5488498ebcefb8973aa6",
+      "failed_backend_blob": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+      "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+      "staging_decision": "NEGATIVE_HISTORICAL_EVIDENCE_DO_NOT_COUNT_AS_PASS"
+    },
+    "F-VQ34": {
+      "branch": "qualification/f-vq34-remediated-richards-head-budget-certificate",
+      "closeout_head": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+      "closeout_tree": "93419b564012c2b066d1a80c068da8597ad2521a",
+      "candidate_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+      "candidate_source_tree": "d24f20559653b028d7967bf57da37da432803221",
+      "workflow_run": 34364081068,
+      "workflow_conclusion": "success",
+      "production_src_changed_by_qualification": false,
+      "decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE",
+      "staging_decision": "POSITIVE_EXACT_SOURCE_EVIDENCE_REPLAY_REQUIRED_ON_FUTURE_COMPOSED_TREE"
+    }
+  },
+  "current_admission_verdict": {
+    "primary_spine": "F-WOF42",
+    "transitive_no_overlay": ["F-MR18"],
+    "source_equivalent_no_overlay": ["F-KT13"],
+    "dependency_bearing_replay_required": ["F-KT11"],
+    "positive_evidence_replay_nodes": ["F-SI25", "F-SI26", "F-VQ30", "F-VQ31", "F-VQ32", "F-VQ34"],
+    "negative_evidence_nodes": ["F-VQ33"],
+    "canonical_promotion_admitted": false,
+    "production_composition_admitted_by_F_CI20_at_this_stage": false
+  }
+}
