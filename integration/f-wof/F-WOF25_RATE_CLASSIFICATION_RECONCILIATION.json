@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST rate-versus-state reconciliation",
+  "scope": {
+    "sw_wofost": 1,
+    "purpose": "close G03 without promoting legacy SAVE variables to physical state merely to reproduce implementation artifacts"
+  },
+  "source_evidence": {
+    "declarations": "SWAP/wofost.f90:12-32,170-205",
+    "phenology_rate_calculation": "SWAP/wofost.f90:817-929",
+    "state_update": "SWAP/wofost.f90:1060-1103",
+    "vernalization_post_update": "SWAP/wofost.f90:379-393",
+    "vernalization_output": "SWAP/wofost.f90:1169-1175",
+    "source_wide_vernalization_search_result": "vern/vernrate/fl_vernalised have no standard-route consumers outside the listed calculation, update and output sites"
+  },
+  "classifications": [
+    {
+      "name": "dtsum",
+      "classification": "EVENT_LOCAL_RATE",
+      "proof": "recomputed from current TAV and immutable DTSMTB on each daily phenology event before TSUM/DVS update; no cross-event read is required"
+    },
+    {
+      "name": "dvr",
+      "classification": "EVENT_LOCAL_RATE",
+      "proof": "recomputed from current DVS, daylp, optional vernalization state, dtsum and immutable parameters on each daily event"
+    },
+    {
+      "name": "daylp",
+      "classification": "EVENT_WINDOW_DERIVED_INTERMEDIATE",
+      "proof": "derived from current window astronomical forcing at day-start assimilation and consumed by the same window phenology calculation; no accepted-window continuation dependency exists"
+    },
+    {
+      "name": "WOFOST_rates",
+      "classification": "EVENT_LOCAL_RATE_WORKSPACE",
+      "proof": "growth/death/allocation/leaf-age rates are calculated from committed crop origin plus current event inputs and consumed to form one candidate state; the next accepted crop event can recompute them"
+    },
+    {
+      "name": "vernrate",
+      "classification": "EVENT_LOCAL_RATE_WITH_LEGACY_POST_COMPLETION_DIAGNOSTIC_CARRYOVER",
+      "proof_before_completion": "while fl_vernalised is false, update_dvs_rate resets vernrate to zero and then assigns the current-day rate when DVS<VERNDVS; prior-day vernrate is therefore not a continuation input",
+      "legacy_after_completion": "once fl_vernalised is true, update_dvs_rate no longer overwrites vernrate, yet task 3 still executes vern=vern+vernrate. A stale last rate can therefore continue changing the reported VERN value.",
+      "physical_feedback_after_completion": "none found in the scoped standard route: fl_vernalised bypasses the vernalization reduction and VERN is subsequently only written as output",
+      "state_decision": "do not promote vernrate into persistent physical crop state",
+      "compatibility_consequence": "bitwise reproduction of the legacy post-vernalised VERN diagnostic may require a compatibility-only carryover or an explicitly qualified expected difference; this is not grounds for contaminating the physical continuation state with a rate"
+    }
+  ],
+  "gate_resolution": {
+    "WOF25_G03_rates_are_not_state": "PASS_FOR_PHYSICAL_CONTINUATION",
+    "IDSL2_exact_post_vernalised_VERN_output_oracle": "HOLD_REQUIRES_COMPATIBILITY_OR_EXPECTED_DIFFERENCE_DECISION",
+    "vernrate_persistent_physical_state_required": false
+  },
+  "structural_candidate_rule": "A future production candidate may keep all listed rates in worker/event workspace. If IDSL=2 is included in exact B1.10 output qualification, the candidate/VQ plan must explicitly cover the legacy stale-vernrate diagnostic behavior rather than silently persisting vernrate as crop state."
+}
