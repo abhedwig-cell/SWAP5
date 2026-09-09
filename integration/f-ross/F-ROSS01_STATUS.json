@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -88,6 +88,27 @@
       "scope": "real C1R internal hydraulics, MvG storage, prescribed-flux boundaries and synthetic distributed source/sink terms; timestep accuracy not qualified"
     },
     {
+      "gate": "F_R1_PIECEWISE_C1R_TIMESTEP_CONVERGENCE",
+      "evidence": "F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_RESULT.json",
+      "run": 34365245795,
+      "head": "ac199f89ef41127bed01fb6b08f7e007be43daf7",
+      "decision": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+      "materials": 6,
+      "base_cases": 108,
+      "sigma": 0.5,
+      "horizon_day": 0.0016,
+      "candidate_dt_days": [0.0008, 0.0004, 0.0002, 0.0001],
+      "piecewise_transition_routes": 8,
+      "inadmissible_transition_routes": 0,
+      "max_transitioning_components_per_transition_trial": 1,
+      "max_abs_cell_displacement_on_transition_route": 1,
+      "extra_factorizations_due_to_transition_route": 0,
+      "extra_backsolves_due_to_transition_route": 0,
+      "retry_count_due_to_transition_route": 0,
+      "sigma_or_dt_retuned": false,
+      "scope": "restricted homogeneous unsaturated C1R timestep route; adjacent single-component single-node interpolation-cell transitions only"
+    },
+    {
       "gate": "C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION",
       "evidence": "F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json",
       "candidate": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
@@ -129,6 +150,18 @@
       "reason": "flux is continuous across tested table nodes while the normal derivative can jump strongly; no unique cross-branch tangent is invented"
     },
     {
+      "gate": "F_INITIAL_SMOOTH_TIMESTEP_GATE",
+      "status": "FAIL_PRESERVED_PIECEWISE_SEAM_TRANSITION_ONLY",
+      "evidence": "F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_INITIAL_RESULT.json",
+      "reason": "O14 crosses the same C1R table seam at every precommitted timestep resolution; temporal accuracy, convergence order, reference self-check and mass gates pass. F-R1 later qualifies only an explicit restricted adjacent-cell route without rewriting this failure."
+    },
+    {
+      "gate": "F_R1_PIECEWISE_TIMESTEP_ROUTE",
+      "status": "QUALIFIED_RESTRICTION",
+      "evidence": "F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_RESULT.json",
+      "reason": "only one transitioning state component and one adjacent cell per accepted trial are qualified; exact-node endpoints, multi-component transitions and multi-node jumps remain fail-closed"
+    },
+    {
       "gate": "C2A_EXACT_SWAPP431_KSATEXM_COMPACT_LINE",
       "status": "FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED",
       "evidence": "F-ROSS01_GATE_C2A_EXACT_KSATEXM_CLOSEOUT.json"
@@ -150,7 +183,7 @@
     "base_MvG_KSATFIT_face_subscope": "QUALIFIED_FACE_LEVEL_ONLY",
     "base_MvG_KSATFIT_response_tangent": "QUALIFIED_STRICT_INTERIOR_WITH_EXPLICIT_PIECEWISE_BRANCH_SEMANTICS",
     "base_MvG_KSATFIT_conservative_unsaturated_trial_column": "QUALIFIED_RESTRICTED_PRESCRIBED_FLUX_SOURCE_SINK_SCOPE",
-    "timestep_accuracy": "NOT_YET_QUALIFIED",
+    "timestep_accuracy": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05",
     "saturation_transitions": "NOT_YET_QUALIFIED",
     "heterogeneous_profiles": "NOT_YET_QUALIFIED",
     "production_bottom_boundary": "NOT_YET_QUALIFIED",
@@ -160,7 +193,6 @@
     "Class_B_HENPR_SVG2006_bridge": "CONSTITUTIVELY_QUALIFIED_FACE_NOT_YET_QUALIFIED"
   },
   "open_gates_for_primary_base_family": [
-    "F_TIMESTEP",
     "E_SATURATION_TRANSITIONS",
     "G_HETEROGENEOUS_PROFILES",
     "H_BOTTOM_BOUNDARY",
@@ -170,14 +202,15 @@
     "M_FULLRICHARDS_QUALIFICATION"
   ],
   "hard_guards": [
-    "Mass conservation remains absolute. Gate D qualifies it only for the stated homogeneous unsaturated prescribed-flux/source-sink trial scope.",
-    "A mass-conservative trial is not automatically a temporally accurate trial; Gate F remains required.",
+    "Mass conservation remains absolute. Gate D and F-R1 qualify it only for their stated homogeneous unsaturated prescribed-flux/source-sink scope.",
+    "F-R1 does not qualify saturation and may not be extrapolated across the h=0 or theta=theta_s transition.",
     "Numerical policy may not silently change requested physical closure.",
     "Unsupported hydraulic combinations must fail closed to a qualified solver route.",
-    "J1 tangent and Gate D do not constitute groundwater, MODFLOW, runtime, MultiSWAP or production admission.",
+    "J1, Gate D and F-R1 do not constitute groundwater, MODFLOW, runtime, MultiSWAP or production admission.",
     "Internal table-node lines and equal-head branch transitions do not have an invented unique cross-branch smooth tangent.",
+    "The F-R1 transition route is limited to one component crossing one adjacent interpolation cell in an otherwise valid trial; exact-node endpoints, multi-component transitions and multi-node jumps remain fail-closed.",
     "Class-B face representation remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding."
   ],
-  "next_action": "Open F_TIMESTEP for the qualified C1R base family: quantify temporal error and state-change acceptability for the conservative Gate-D update against independently refined time integration, without changing the mass ledger or silently selecting a different sigma after seeing results.",
-  "status": "BASE_MVG_FACE_TANGENT_AND_CONSERVATIVE_UNSATURATED_TRIAL_COLUMN_QUALIFIED_READY_FOR_TIMESTEP_GATE_CLASS_B_FACE_DEFERRED"
+  "next_action": "Open E_SATURATION_TRANSITIONS as a saturation-state and constitutive admission gate before implementing a saturated RossFast trajectory. Establish the canonical state representation across theta=theta_s and h=0, exact base-family constitutive closure near saturation, mass ownership, transition semantics and fail-closed routing. Do not infer a unique saturated pressure head from theta alone or reuse the unsaturated C1R table beyond its qualified h=-1 cm upper envelope.",
+  "status": "C1R_J1_D_AND_RESTRICTED_PIECEWISE_F_QUALIFIED_READY_FOR_SATURATION_TRANSITION_GATE_CLASS_B_FACE_DEFERRED"
 }
