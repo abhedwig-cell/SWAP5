@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R1_KSATEXM_SEAM_ALIGNED_CHARACTERIZATION",
+  "run_id": 34342248930,
+  "run_head": "c0f736c06498528176b5d0395cb6660fa862e8e4",
+  "pass": false,
+  "decision": "C2A_R1_SEAM_ALIGNED_LOG_HEAD_REJECTED_WET_EXTENSION_REMAINS_UNDERRESOLVED",
+  "candidate": {
+    "N": 241,
+    "wet_coordinate": "uniform log-head from h=-1 to h=-2 with 18 intervals",
+    "dry_coordinate": "uniform log-head from h=-2 to h=-10000 with 222 intervals",
+    "h_minus_2_is_exact_node": true,
+    "storage": "float32_log_mobility",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "material_results": {
+    "B05": {"pass": false, "max_abs_error_over_ksatfit": 0.12036455863753377, "max_hybrid_metric": 0.1063484985187505, "p99_hybrid_metric": 0.029639713086031562},
+    "O14": {"pass": false, "max_abs_error_over_ksatfit": 0.005768586102455892, "max_hybrid_metric": 0.006035257239315388, "p99_hybrid_metric": 0.0009114662312457326},
+    "O12": {"pass": false, "max_abs_error_over_ksatfit": 1.1107750165392152, "max_hybrid_metric": 0.5939072249829078, "p99_hybrid_metric": 0.40732445648166615},
+    "O13": {"pass": false, "max_abs_error_over_ksatfit": 1.4090057317968159, "max_hybrid_metric": 0.843674191674939, "p99_hybrid_metric": 0.7263351849681208},
+    "O05": {"pass": false, "max_abs_error_over_ksatfit": 0.09132833624157956, "max_hybrid_metric": 0.05912793845845056, "p99_hybrid_metric": 0.03006453021139637},
+    "B10": {"pass": false, "max_abs_error_over_ksatfit": 1.1909073862145196, "max_hybrid_metric": 0.6704165587269886, "p99_hybrid_metric": 0.49711091067591084}
+  },
+  "comparison_to_uniform_u_baseline": {
+    "statement": "Exact seam alignment changed several errors but did not move any stress material through the frozen gate. For high-KSATEXM materials the remaining errors are order unity in KSATFIT-normalized absolute terms, demonstrating that the wet extension itself is underresolved in log-head coordinates.",
+    "seam_alignment_only_is_sufficient": false
+  },
+  "failure_interpretation": {
+    "source_law_failure": false,
+    "oracle_failure": false,
+    "memory_failure": false,
+    "runtime_complexity_failure": false,
+    "representation_failure": true,
+    "next_physical_coordinate_candidate": "Use relative saturation S as the wet-end coordinate because the SWAP 4.3.1 KSATEXM extension is exactly linear in S, while retaining log-head u on the dry side."
+  },
+  "artifacts": {
+    "B10": {"id": 10100287049, "digest": "sha256:eeb84c827695d38ed6f91391c1aee803a036e4eb268f745cf9f7b904232e6720"},
+    "B05": {"id": 10100270696, "digest": "sha256:ceae1ff68ead111ef7c0d13a2f2dc8ddf2e9f166cf7c68437570d9e40071b0f8"},
+    "O13": {"id": 10100258231, "digest": "sha256:fecb9efbeb0ecee93fecc3fd95b2c2043b295c181b584333e4edd537ce054b06"},
+    "O14": {"id": 10100254690, "digest": "sha256:aacef1b0f0cd7e55b3d9f89fa4913da812eab9388751405bc8a174b7a3853d5b"},
+    "O05": {"id": 10100247801, "digest": "sha256:89948ea5562a64ea420e9916d0f2ef13ab0d49aae6f4ce08173a2696aba34e7d"},
+    "O12": {"id": 10100246458, "digest": "sha256:d3fc7734ed92459dc840ac9fdd2bb2d81a42adb162b934b69f3b9d8095aae536"}
+  },
+  "next_step": "Freeze one R2 hybrid-axis candidate: 18 wet intervals uniform in S between S(h=-1) and S_thr, 222 dry intervals uniform in u between log10(2) and 4, exact shared seam node, N=241 unchanged. Reuse only development characterization probes; no holdout access.",
+  "scope_limit": "R1 characterization failure only. No RossFast scientific NO-GO and no claim outside C2A."
+}
