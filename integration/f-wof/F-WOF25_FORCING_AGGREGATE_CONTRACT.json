@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST daily forcing and accepted-process aggregate contract",
+  "scope": {
+    "sw_wofost": 1,
+    "safe_initial_window_duration_days": 1.0,
+    "zero_production_readiness": true,
+    "arbitrary_subdaily_or_multiday_WOFOST_evolution": false
+  },
+  "source_provenance": {
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "legacy_driver": "SWAP/swap.f90:359-520",
+    "legacy_aggregate_reset_and_integrate": "SWAP/integral.f90:119-135,250-296",
+    "legacy_assimilation": "SWAP/wofost.f90:1348-1466",
+    "legacy_astronomy": "SWAP/MOD_meteo.f90:1567-1674",
+    "legacy_root_extension_aggregate_use": "SWAP/MOD_cropdevelopment.f90:1887-1919",
+    "current_root_mass_contract": "integration/f-mr/F-MR09_ROOT_SINK_COMPOSITION_CONTRACT.json",
+    "current_root_process_binding": "integration/f-mr/F-MR10_ROOT_UPTAKE_PROCESS_BINDING_CONTRACT.json",
+    "current_restricted_potential_transpiration_producer": "integration/f-wof/F-WOF18_REFERENCE_ET_TRANSPIRATION_CONTRACT.json",
+    "transaction_authority": "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json"
+  },
+  "data_categories": {
+    "immutable_crop_parameters": {
+      "examples": [
+        "IDSL/DLO/DLC",
+        "TSUMEA/TSUMAM/DTSMTB",
+        "VERNDVS/VERNBASE/VERNSAT/VERNRTB",
+        "AMAXTB/TMPFTB/TMNFTB/EFF",
+        "partitioning, conversion, respiration, SLA and senescence tables"
+      ],
+      "rule": "shared/referenceable parameter data; never rewritten as daily forcing or dynamic crop state"
+    },
+    "persistent_crop_state": {
+      "defined_by": "integration/f-wof/F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+      "rule": "not repeated inside the forcing DTO"
+    },
+    "daily_weather_or_derived_event_forcing": [
+      {
+        "name": "TMN",
+        "meaning": "minimum air temperature for the crop window",
+        "units": "degree C",
+        "legacy_use": "inserted once into atmin7 at day-start assimilation"
+      },
+      {
+        "name": "TAV",
+        "meaning": "daily average air temperature",
+        "units": "degree C",
+        "legacy_use": "phenology, maintenance respiration and physiological leaf ageing"
+      },
+      {
+        "name": "TAVD",
+        "meaning": "average daytime air temperature",
+        "units": "degree C",
+        "legacy_use": "temperature response of maximum assimilation"
+      },
+      {
+        "name": "RAD",
+        "meaning": "daily global shortwave radiation",
+        "units": "J m-2 day-1",
+        "legacy_use": "ASTRO/TOTASS daily assimilation"
+      },
+      {
+        "name": "solar_geometry",
+        "fields": [
+          "DAYL_h",
+          "DAYLP_h",
+          "SINLD",
+          "COSLD",
+          "DIFPP_J_m2_s",
+          "DSINBE_s"
+        ],
+        "meaning": "explicit astronomical forcing for the crop window",
+        "legacy_origin": "ASTRO(daynr, latitude, RAD)",
+        "target_rule": "calendar/day-of-year translation is outside the crop kernel; no hidden daynr/t1900/calendar global is admitted"
+      },
+      {
+        "name": "FCO2EFF/FCO2AMAX",
+        "meaning": "CO2 response factors where the selected crop physics uses them",
+        "units": "dimensionless",
+        "classification": "event-derived forcing/process input, not persistent crop state"
+      }
+    ],
+    "accepted_process_aggregates": [
+      {
+        "name": "IQROT_WINDOW",
+        "legacy_name": "IQROT_DAY",
+        "meaning": "actual root water uptake integrated over accepted soil-water substeps in the crop window",
+        "legacy_formula": "sum(qrosum_i * dt_i)",
+        "units": "cm water over the one-day crop window",
+        "consumer": "actual WOFOST water-stress factor RELTR=clamp(IQROT_DAY/IPTRA_DAY,0,1)",
+        "target_owner": "runtime/F-KT accepted-step accounting; F-MR09 already establishes authoritative exactly-once root-extraction mass ownership",
+        "acceptance_rule": "only accepted substep results may be accumulated; rejected trial fluxes contribute exactly zero"
+      },
+      {
+        "name": "IPTRA_WINDOW",
+        "legacy_name": "IPTRA_DAY",
+        "meaning": "potential transpiration rate integrated over accepted substep durations in the crop window",
+        "legacy_formula": "sum(ptra_i * dt_i)",
+        "units": "cm water over the one-day crop window",
+        "consumer": "RELTR denominator and root-extension gates",
+        "target_producer_note": "F-WOF18 qualifies a restricted potential-transpiration rate producer but does not itself integrate or persist IPTRA_WINDOW",
+        "acceptance_rule": "integrate the process rate only for the final accepted duration of each substep; no rejected duration is booked"
+      },
+      {
+        "name": "IALPWET_WINDOW",
+        "legacy_name": "IALPWET_DAY",
+        "meaning": "time integral over the accepted crop window of the dimensionless oxygen/aeration factor at the bottom of the root zone",
+        "legacy_formula": "sum(alpwetnoddrz_i * dt_i)",
+        "legacy_comment_units": "dimensionless because the legacy window is exactly one day",
+        "temporal_semantic": "for a one-day window the integral is numerically the daily mean and is compared directly with dimensionless AERATECRIT; that comparison is not automatically equivalent for an arbitrary-duration crop window",
+        "consumers": [
+          "standard WOFOST SWRD=3 root-growth suppression when the corresponding oxygen/root-aeration option is active",
+          "root-extension suppression in cropdevelopment when the corresponding physics is active"
+        ],
+        "target_owner": "accepted root-uptake/oxygen-process aggregation outside persistent crop state",
+        "target_owner_status": "CONTRACT_DEFINED_HERE; NO CLAIM_OF_CURRENT_PRODUCTION_OXYGEN_AGGREGATOR_QUALIFICATION",
+        "acceptance_rule": "only accepted interval results may be accumulated; rejected oxygen/root-uptake trials contribute exactly zero"
+      }
+    ],
+    "event_local_rates_and_intermediates": {
+      "examples": [
+        "TMNR derived from candidate atmin7/nofd",
+        "DAYLP if solar_geometry is not passed pre-expanded",
+        "potential and actual PGASS",
+        "DTSUM",
+        "DVR",
+        "RELTR",
+        "growth/death/allocation rates",
+        "leaf physiological-age increment"
+      ],
+      "persistent_column_state": false,
+      "storage_rule": "temporary crop-window context or worker/batch scratch only"
+    }
+  },
+  "legacy_acceptance_provenance": {
+    "retry_loop": "SWAP/swap.f90:433-457 runs SoilWater trials/reductions until the timestep is no longer reduced",
+    "accepted_state_update": "SWAP/swap.f90:459-460 calls SoilWater(3) only after the retry loop exits",
+    "aggregate_booking": "SWAP/swap.f90:462-463 calls integral(3) after that accepted-step update",
+    "result": "legacy day totals do not book a separate contribution for rejected SoilWater retries",
+    "target_strengthening": "modern accumulation must be tied explicitly to F-KT/F-MR accepted-result lineage and exactly-once booking rather than inferred from call order"
+  },
+  "crop_window_aggregate_contract": {
+    "window": "[t0,t1] explicitly supplied by runtime/event scheduler",
+    "initial_admission": "t1-t0 is exactly one qualified crop day",
+    "reset": "new aggregate carrier starts at zero at t0; reset is a runtime window operation, not a global calendar-day side effect",
+    "accumulate": "append exactly-once accepted process contributions whose accepted interval lies inside the crop window",
+    "finalize": "freeze the aggregate carrier before crop finalization; later trial work cannot mutate the frozen accepted view",
+    "lineage": "all contributions must belong to the same parent physical candidate lineage and crop-window identity",
+    "rejected_trial_leakage": false,
+    "persistent_crop_state": false,
+    "immutable_parameter": false
+  },
+  "day_start_assimilation_dependency": {
+    "finding": "legacy assimilation is executed before the day's soil-water substeps, not at day end",
+    "candidate_state_effects": ["nofd", "atmin7"],
+    "window_local_outputs": ["TMNR", "DAYLP/solar geometry", "potential PGASS", "actual PGASS"],
+    "optional_same_window_soil_process_outputs": ["max_resp_factor", "q10_root", "c_mroot", "f_senes when oxygen physics is active"],
+    "implication": "the safe one-day event cannot be modeled as a day-end-only black box if oxygen/root-respiration physics consumes these day-start outputs during soil-water substeps",
+    "target_rule": "prepare a trial-local crop-window context from the committed crop checkpoint at t0, expose only read-only same-window process inputs, accumulate accepted soil/process results, then finalize one candidate crop state at t1. None of the day-start candidate climate-memory updates are committed before the parent transaction commits."
+  },
+  "generic_time_boundary": {
+    "kernel_interval_generic": true,
+    "calendar_day_kernel_primitive": false,
+    "crop_physical_cadence_may_be_daily": true,
+    "daynr_in_crop_kernel": false,
+    "t1900_in_crop_kernel": false,
+    "arbitrary_window_scaling_of_delt_1_formulas": "FORBIDDEN_UNQUALIFIED",
+    "IALPWET_threshold_rescaling": "NOT_QUALIFIED"
+  },
+  "gates": {
+    "WOF25_G04_daily_forcing_contract": "PASS_CONTRACT_SOURCE_BOUND",
+    "WOF25_G05_cross_process_aggregate_provenance": "PASS_CONTRACT_SOURCE_BOUND_WITH_ACTIVE_OXYGEN_PRODUCTION_OWNER_HOLD",
+    "WOF25_G08_soil_water_cadence_separation": "PASS_CONTRACT_SOURCE_BOUND",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
