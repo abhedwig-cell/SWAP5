@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "C_NONLINEAR_B110_FINITE_COMPARATOR_CHARACTERIZATION",
+  "frozen_before_execution": true,
+  "parent_status_head": "df0ae33aa0e59225e07bf8438b84292e21ff6946",
+  "gate_B_evidence": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_EVIDENCE.json",
+  "reused_comparator_evidence": {
+    "path": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json",
+    "blob": "cac160dbbdbb89b172d2afa055994d918abb0bbc",
+    "semantics": "The persisted F-SI23 N512 endpoint difference is a finite same-endpoint comparator only and is not exact truth. Gate C does not rerun or deepen the N512 ladder."
+  },
+  "purpose": "Characterize whether the fixed, uncalibrated F-SI24 stiffness-aware one-linear-solve indicator transfers from the exact constant-linear theorem to the existing real nonlinear B1.10 C2 envelope strongly enough to dominate the already persisted finite N512 endpoint differences, without fitting a scale, tolerance or factor and without adding any nonlinear reference trajectory.",
+  "matrix": {
+    "initial_uniform_heads_cm": [-25.0, -75.0, -250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1, -0.01, 0.001, 0.01, 0.1],
+    "case_count": 15,
+    "attempt_horizon_day": 0.25,
+    "bottom_mode": 5,
+    "top_flux": "-K(h0), identical to F-SI23 C2",
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12,
+    "new_Richards_trajectories_per_case": "N1 only",
+    "new_deep_reference_trajectories": 0,
+    "new_companion_full_nonlinear_solves": 0,
+    "new_companion_tridiagonal_solves_per_case": 1
+  },
+  "N1_reproduction_guard": {
+    "raw_EOBS": "The Gate-C N1 e_raw infinity norm must reproduce the persisted F-SI23 C2 EOBS for the same case under epsilon-scaled numerical consistency only.",
+    "reason": "This binds the new indicator to the already characterized C2 principal attempt rather than silently changing the trial semantics."
+  },
+  "test_only_final_state_operator": {
+    "scope": "current admitted SwKimpl=0, explicit top flux, SWBOTB=5, uniform base-state conductivity, no source/root/macropore Jacobian terms",
+    "storage_diagonal": "M_i=C(h_N1_i,dt)*dz_i evaluated by the existing B1.10 constitutive provider at the accepted N1 candidate state",
+    "darcy_face_conductances": "Use the same current-solver-policy base-state face conductances as HeadCalc SwKimpl=0. Because the frozen initial profile is uniform, all node conductivities equal k0=K(h0); internal g_i=k0/disnod_i and lower-boundary g_bot=k0/disnod_(n+1).",
+    "J_final": "M/dt plus the symmetric tridiagonal Darcy conductance operator for explicit top flux and prescribed bottom head",
+    "stale_workspace_dfdh_used": false,
+    "production_api_claim": false,
+    "architectural_boundary": "This reconstruction is test-only. Any later production implementation must expose solver-owned operator evaluation rather than couple other modules to HeadCalc internal arrays."
+  },
+  "indicator": {
+    "bootstrap_hdot_n": "Identical source-bound F-SI23 C2 right-sided bootstrap under the prescribed bottom-head jump.",
+    "hdot_np1": "(h_N1-h0)/dt",
+    "e_raw": "0.5*dt*(hdot_np1-hdot_n)",
+    "rhs": "(M/dt)*e_raw",
+    "defect_solve": "J_final*delta=rhs using one reference TRIDAG solve",
+    "raw_M_norm": "sqrt(sum(M_i*e_raw_i^2))",
+    "double_defect_M_norm": "2*sqrt(sum(M_i*delta_i^2))",
+    "B_M": "min(raw_M_norm,double_defect_M_norm)",
+    "B_inf": "B_M/sqrt(min_i M_i)",
+    "D_inf_diagnostic": "2*max_i(abs(delta_i)); report only, never call it a theorem-derived bound",
+    "factor_two": "fixed analytic Gate-A/Gate-B factor; not calibrated on B1.10"
+  },
+  "finite_comparator": {
+    "E1_512": "Persisted F-SI23 C2 max_i|h_N1-h_N512| for the identical case",
+    "positive_transfer_rule": "B_inf >= E1_512",
+    "negative_transfer_rule": "B_inf < E1_512 is negative nonlinear transfer evidence because the candidate does not dominate even the finite N512 difference",
+    "if_all_15_positive": "Call only FINITE_COMPARATOR_CONSISTENT_NONLINEAR_CHARACTERIZATION. Do not call B_inf a true-error bound and do not promote N512 to exact truth."
+  },
+  "reported_ratios": [
+    "EOBS/E1_512",
+    "B_inf/E1_512",
+    "D_inf_diagnostic/E1_512",
+    "EOBS/B_inf when B_inf>0"
+  ],
+  "pass_rules_for_harness": [
+    "All 15 N1 principal HeadCalc attempts converge under the frozen C2 controls or the first model failure is persisted without changing the matrix.",
+    "Every N1 principal attempt passes the unchanged hard external mass gate.",
+    "N1 EOBS reproduces the persisted F-SI23 C2 EOBS for the same case under epsilon-scaled numerical consistency only.",
+    "Final-state capacities and all M_i are finite and strictly positive.",
+    "The reconstructed J_final is finite, symmetric in its off-diagonal conductance pairing, and the one reference TRIDAG solve succeeds.",
+    "All indicator norms and ratios are finite when their denominators are positive.",
+    "O0 and O2 machine-readable outputs are identical.",
+    "Production Richards/runtime/adapter source remains unchanged from the F-SI24 base."
+  ],
+  "not_a_harness_pass_rule": [
+    "B_inf must dominate E1_512 in every case",
+    "D_inf must dominate E1_512",
+    "B_inf/E1_512 must be near one",
+    "one global nonlinear calibration factor must exist"
+  ],
+  "hard_holds": {
+    "factor_or_norm_change_after_execution": false,
+    "empirical_floor": false,
+    "scientific_temporal_tolerance_selection": false,
+    "dimensionless_certificate_mapping": false,
+    "mass_tolerance_relaxation": false,
+    "production_source_change": false,
+    "F_KT09_start": false,
+    "F_VQ_start": false,
+    "F_GC02_release": false,
+    "F_PE_release": false
+  },
+  "next_if_all_15_finite_comparator_consistent": "Persist an owner candidate profile that clearly separates exact linear theorem from nonlinear finite-comparator evidence. Only then decide whether a disjoint held-out F-VQ qualification is scientifically justified; do not use this 15-case matrix as held-out evidence.",
+  "next_if_any_negative_transfer": "Close nonlinear transfer fail-closed for the current F-SI24 candidate while retaining the exact linear Gate-B theorem. Do not fit a nonlinear multiplier or revert to a deep production refinement ladder."
+}
