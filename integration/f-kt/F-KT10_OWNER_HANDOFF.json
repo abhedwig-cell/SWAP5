@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "artifact": "OWNER_HANDOFF",
+  "branch": "work/f-kt10-temporal-indicator-history-commit-composition",
+  "closeout_commit": "e621c43c619dd0bc2bb2ac52abcb318b512314ba",
+  "decision": "HANDOFF_TRANSACTION_COMPOSED_RICHARDS_TEMPORAL_HISTORY_TO_INDEPENDENT_F_VQ",
+  "source_status": "COMPLETE_OWNER_VERIFIED_TRANSACTIONAL_RICHARDS_HISTORY_COMPOSITION",
+  "destination": {
+    "workstream": "F-VQ",
+    "suggested_work_unit": "F-VQ31",
+    "suggested_title": "Independent Qualification of Transaction-Composed Richards Temporal Indicator History",
+    "suggested_branch": "qualification/f-vq31-transaction-composed-richards-temporal-history",
+    "branch_existed_at_handoff_check": false,
+    "reservation_created": false,
+    "must_recheck_live_before_creation": true
+  },
+  "authoritative_sources": {
+    "F_KT10_closeout": "integration/f-kt/F-KT10_CLOSEOUT.json",
+    "F_KT10_gate_G_evidence": "integration/f-kt/F-KT10_GATE_G_OWNER_REPLAY_EVIDENCE.json",
+    "F_KT10_gate_G_plan": "integration/f-kt/F-KT10_GATE_G_TRANSACTIONAL_REPLAY_PLAN.json",
+    "F_SI25_closeout": "integration/f-si/F-SI25_CLOSEOUT.json",
+    "F_SI25_owner_evidence": "integration/f-si/F-SI25_OWNER_EVIDENCE.json",
+    "F_VQ30_plan": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
+    "F_VQ30_evidence": "integration/f-vq/F-VQ30_HELD_OUT_EVIDENCE.json",
+    "F_VQ30_closeout": "integration/f-vq/F-VQ30_CLOSEOUT.json"
+  },
+  "qualification_goal": "Independently verify that the F-SI25 production indicator remains numerically and physically non-interfering when its previous accepted derivative is owned, cloned, rejected, retried, rolled back and committed through the F-KT10 transaction state, without selecting or implying a scientific temporal tolerance or production acceptance policy.",
+  "required_independent_gates": {
+    "G01_source_lineage_lock": "Lock F-KT10 closeout/handoff, F-SI25 closeout/evidence and frozen F-VQ30 plan/evidence before execution.",
+    "G02_transaction_lifecycle": "Independently verify warmup-unavailable, accepted commit, temporal rejection, solver rejection, mass rejection, retry, rollback and committed-history reuse semantics.",
+    "G03_feature_scope_and_A_B_A": "Verify inactive layouts allocate no derivative vector and A-B-A execution cannot leak continuation history between columns.",
+    "G04_real_production_binding": "Exercise the admitted reference-Richards production seam through F-KT10-owned history and verify physical state, accepted fluxes and mass are unchanged by history plumbing.",
+    "G05_frozen_F_VQ30_replay": "Replay the frozen 16-case F-VQ30 production matrix with transaction-supplied previous history and require unchanged B_inf, hard mass and bounded-cost shape.",
+    "G06_independent_disjoint_composition_matrix": "Freeze before execution a composition matrix disjoint from F-KT10's single real fixture and preferably from F-SI24/F-VQ30 state-jump-time triplets; compare direct F-SI25 explicit-history evaluation against transaction-composed F-KT10 evaluation on the same physical case. This is a composition equivalence gate, not a truth/error-bound gate.",
+    "G07_bounded_cost": "Require zero additional full nonlinear trajectories and at most one additional defect tridiagonal solve for indicator evaluation.",
+    "G08_hard_mass_and_noninterference": "Require hard mass closure and physical state/flux identity with and without continuation plumbing in the admitted envelope.",
+    "G09_O0_O2": "Require machine-readable O0/O2 identity under current convention for focused independent qualification outputs.",
+    "G10_fail_closed_policy_boundary": "Verify B_inf is not populated into the F-KT09 dimensionless <=1 certificate; temporal acceptance remains unavailable/fail-closed.",
+    "G11_seed_and_continuity_boundary": "Verify absent seed preserves warmup-unavailable and invalid seed fails closed. Do not qualify arbitrary restart files or forcing/event-discontinuity continuity provenance."
+  },
+  "recommended_disjoint_matrix": {
+    "status": "SUGGESTION_ONLY_MUST_BE_FROZEN_BY_F_VQ31_BEFORE_EXECUTION",
+    "initial_uniform_heads_cm": [-55.0, -140.0, -240.0],
+    "prescribed_bottom_head_jumps_cm": [-0.04, 0.04],
+    "horizons_day": [0.2, 0.375],
+    "case_count": 12,
+    "comparison": "direct F-SI25 production seam with explicit known previous derivative versus the same seam reached through F-KT10 transaction-owned seeded history",
+    "pass_semantics": "same B_inf/current derivative/indicator route and physical/mass/cost noninterference within strict deterministic/floating regression policy; no N512 or scientific truth comparator required"
+  },
+  "hard_holds": [
+    "Do not select a scientific temporal tolerance or normalization.",
+    "Do not promote B_inf into the F-KT09 dimensionless <=1 production certificate.",
+    "Do not call B_inf a qualified general nonlinear true-error bound.",
+    "Do not introduce q_cap, Nmin, geometric-tail multipliers, fitted safety factors or deep refinement trajectories.",
+    "Do not change Richards physics, forcing, boundary semantics or mass accounting.",
+    "Do not expose HeadCalc private arrays or make solver scratch persistent per column.",
+    "Do not qualify arbitrary restart files from the optional seed seam.",
+    "Do not carry history across forcing/event/topology discontinuities unless continuity is separately established; otherwise fail closed/unavailable.",
+    "Do not release F-GC02, groundwater coupling or F-PE from this qualification alone."
+  ],
+  "success_boundary": {
+    "may_qualify": "independent production/composition correctness of transaction-owned indicator history in the admitted reference-Richards envelope",
+    "may_not_qualify": "scientific temporal acceptance tolerance, general nonlinear error bound, forcing-discontinuity continuity, arbitrary restart persistence, groundwater/coupling release",
+    "independent_result_then_routes_to": "separate scientific temporal acceptance/normalization work before the existing F-GC02 can be resumed"
+  },
+  "affected_architecture_invariants": [3,4,5,6,7,8,9,11,13,15,16,20,22,23,24,25,26,27,29,30]
+}
