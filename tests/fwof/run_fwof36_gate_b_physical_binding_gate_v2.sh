@@ -42,9 +42,14 @@ if src.count(old) != 1:
     raise SystemExit(f'FWOF36 V2 helper anchor count={src.count(old)}')
 src = src.replace(old, new, 1)
 
+root_anchor = 'ROOT="$(cd "$(dirname "$0")/../.." && pwd)"'
+if src.count(root_anchor) != 1:
+    raise SystemExit(f'FWOF36 V2 root anchor count={src.count(root_anchor)}')
+src = src.replace(root_anchor, 'ROOT="${FWOF36_V2_ROOT:?}"', 1)
+
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 print('FWOF36_GATE_B_V2_DISPOSABLE_MAIN_FIX=PASS')
 PY
 
 chmod +x "$TMP/gate.sh"
-bash "$TMP/gate.sh"
+FWOF36_V2_ROOT="$ROOT" bash "$TMP/gate.sh"
