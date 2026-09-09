@@ -1,0 +1,31 @@
+name: F-MR18 align Gate C harness
+
+on:
+  push:
+    branches:
+      - work/f-mr18-generic-accepted-commit-receipt
+    paths:
+      - 'tools/fmr18_fix_gate_c_harness.py'
+      - '.github/workflows/fmr18-align-gate-c-harness.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: work/f-mr18-generic-accepted-commit-receipt
+      - name: Align Gate C harness to frozen receipt-record contract
+        run: python3 tools/fmr18_fix_gate_c_harness.py
+      - name: Persist aligned harness
+        run: |
+          test -n "$(git status --porcelain -- tests/fmr/run_fmr18_multiswap_receipt_gate.sh)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/fmr/run_fmr18_multiswap_receipt_gate.sh
+          git commit -m "fix(F-MR18): align Gate C harness with sparse receipt records"
+          git push origin HEAD:work/f-mr18-generic-accepted-commit-receipt
