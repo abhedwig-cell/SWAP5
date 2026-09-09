@@ -1,0 +1,52 @@
+name: F-FWC01 Gate B2D Existing Infiltration Front Advance
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2d-existing-infiltration-front.yml
+      - experiments/fwc/fwc01_gate_b2d_existing_infiltration_front_advance.py
+      - integration/f-fwc/F-FWC01_GATE_B2D_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_HYDROLOGIC_PRECOMMIT.json
+      - integration/f-fwc/F-FWC01_GATE_B2A_MATERIAL_FIXTURE.json
+      - experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen B2D existing-front gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2d"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2d_existing_infiltration_front_advance.py \
+            "$out/F-FWC01_GATE_B2D_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2D_STDOUT.txt"
+      - name: Assert frozen B2D decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2d/F-FWC01_GATE_B2D_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE'
+          assert r['max_abs_step_mass_residual_cm'] <= 1e-12
+          assert r['max_abs_horizon_mass_residual_cm'] <= 1e-11
+          assert r['total_nonfinite_count'] == 0
+          assert r['total_negative_velocity_count'] == 0
+          assert r['total_accepted_boundary_violation_count'] == 0
+          assert r['rejected_trial_state_mutation_count'] == 0
+          assert r['rejected_trial_ledger_mutation_count'] == 0
+          assert r['mass_repair_count'] == 0
+          assert r['clipping_repair_count'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2d-existing-infiltration-front
+          path: fwc01-gate-b2d/
