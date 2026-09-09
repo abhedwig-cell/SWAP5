@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "title": "Transactional Temporal Indicator History Ownership & Commit Composition",
+  "branch": "work/f-kt10-temporal-indicator-history-commit-composition",
+  "base_commit": "86c54fcdeec52a246b9cc03d4030b6f6b6d9d3f7",
+  "source_lineage": {
+    "F_KT09_head_is_ancestor": true,
+    "F_KT09_observed_head": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+    "F_KT09_status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+    "F_SI25_handoff_commit": "86c54fcdeec52a246b9cc03d4030b6f6b6d9d3f7",
+    "F_SI25_status": "COMPLETE_OWNER_VERIFIED_PRODUCTION_INDICATOR_SEAM"
+  },
+  "goal": "Qualify the transaction-owned lifecycle of the previous accepted right-derivative history required by F-SI25, including warmup, trial isolation, accepted-substep advancement, retry, rollback, checkpoint and external commit semantics, without selecting a scientific tolerance or admitting the Richards indicator as a production acceptance certificate.",
+  "problem_statement": [
+    "F-SI25 needs the right derivative from the immediately preceding accepted state transition.",
+    "F-SI25 deliberately does not own persistent history.",
+    "A worker/model-local history cache is invalid because columns, retries and A-B-A ordering can reuse workers.",
+    "A post-external-commit side variable is insufficient because F-KT09 can accept multiple private substeps inside one requested external interval.",
+    "The history must therefore follow the same accepted-trial clone/rollback semantics as the canonical state while remaining explicitly categorized as numerical continuation, not physical water state."
+  ],
+  "gate_A_design_selection": {
+    "status": "OPEN_UNTIL_PERSISTED_EVIDENCE",
+    "candidates": [
+      {
+        "name": "worker_or_solver_local_history",
+        "initial_position": "REJECT",
+        "reason": "Not column-lineage-owned; unsafe under retries, worker reuse and MultiSWAP A-B-A execution."
+      },
+      {
+        "name": "post_external_commit_runtime_side_variable",
+        "initial_position": "REJECT",
+        "reason": "Cannot correctly advance between privately accepted F-KT09 substeps and risks postcommit split ownership."
+      },
+      {
+        "name": "generic_kernel_committed_sidecar_outside_inner_transaction_state",
+        "initial_position": "DISFAVORED",
+        "reason": "Atomic external commit can be made safe, but inner canonical substep acceptance would require a second transaction mechanism or invasive API plumbing."
+      },
+      {
+        "name": "feature_scoped_numerical_continuation_subobject_cloned_with_transaction_state",
+        "initial_position": "PREFERRED_CANDIDATE",
+        "reason": "Attempt clones naturally isolate history; accepted private substeps naturally advance it; retries discard trial mutations; no separate publication authority is introduced. Physical and numerical-continuation fields must remain logically explicit and separately typed."
+      }
+    ],
+    "selection_requirements": [
+      "No worker-local or global hidden ownership.",
+      "No numerical-continuation field is interpreted as physical water storage or enters MassLedger/storage accounting.",
+      "Inactive columns allocate no derivative vector.",
+      "A checkpoint clone captures the exact continuation history associated with its physical origin revision.",
+      "A candidate carries history from its accepted private substep path, not from rejected trials.",
+      "External commit remains the existing F-KT move/publication boundary.",
+      "No HeadCalc-private arrays become transaction state."
+    ]
+  },
+  "candidate_history_semantics": {
+    "availability": "explicit logical/allocated state; unavailable at initial warmup unless a qualified restart supplies matching history",
+    "payload": "right derivative vector associated with the immediately preceding accepted soil-water substep",
+    "dimension": "active soil-water nodes for the model-specific continuation payload",
+    "origin": "the exact accepted transition that produced the current committed/substep state",
+    "trial_read": "read from the cloned origin transaction state",
+    "trial_candidate": "F-SI25 current_right_derivative from a converged admitted solve",
+    "accepted_private_substep": "replace the clone's history with the accepted candidate derivative before it becomes the next canonical working state",
+    "rejected_trial": "discard derivative candidate with the rejected trial clone",
+    "retry": "restart from unchanged accepted origin history",
+    "external_candidate": "contains the continuation history resulting from all privately accepted substeps up to requested t1",
+    "external_commit": "publishes physical and continuation state together through the existing F-KT candidate commit",
+    "rollback_candidate": "discards both together",
+    "restart": "history is optional numerical continuation state; if claimed present it must be checkpoint/restart-consistent with the physical lineage/time, otherwise unavailable/fail closed"
+  },
+  "F_SI25_composition": {
+    "call_point": "after a converged admitted reference-Richards solve and before trial state publication within the model advance",
+    "previous_derivative_input": "from trial origin continuation state",
+    "current_derivative_output": "candidate continuation value",
+    "warmup": "if previous derivative unavailable, do not claim B_inf available; still retain current derivative if the physical trial is accepted",
+    "B_inf_use_in_F_KT10": "diagnostic/owner-composition evidence only",
+    "F_KT09_certificate_population": false,
+    "reason_certificate_not_populated": "F-KT09 requires a finite nonnegative dimensionless indicator <= 1, while F-SI25 deliberately provides an unnormalized head-domain indicator and no scientific temporal limit has been selected."
+  },
+  "gates": {
+    "A_architecture_selection": "Persist candidate comparison and select only a design satisfying transaction atomicity, explicit data separation and optional-state scaling.",
+    "B_continuation_carrier": "Implement the selected separately typed feature-scoped numerical continuation carrier with exact clone semantics and no mass-accounting participation.",
+    "C_trial_retry_rollback": "Prove rejected solver/temporal/mass trials and retries cannot mutate accepted history; accepted private substeps advance it exactly once.",
+    "D_checkpoint_external_commit": "Prove checkpoint reuse preserves origin history and external candidate commit/rollback publishes or discards physical+continuation state atomically.",
+    "E_F_SI25_binding": "Bind F-SI25 history input/current derivative output in the admitted reference-Richards envelope without changing its formula, operator policy, cost or physical result.",
+    "F_feature_scoped_MultiSWAP": "Prove inactive columns carry no vector state and A-B-A/multi-column execution has no cross-column leakage.",
+    "G_owner_replay": "Replay F-SI25 exact-linear, owner and frozen F-VQ30 production cases through transaction-supplied history where applicable; numerical outputs and hard mass remain identical.",
+    "H_compiler_identity": "O0/O2 identity for focused transaction/history qualification."
+  },
+  "hard_holds": [
+    "No scientific temporal tolerance or normalization is selected.",
+    "Do not set trial_outcome temporal_certificate_available from B_inf in F-KT10.",
+    "Do not turn B_inf into a <=1 acceptance decision.",
+    "Do not claim B_inf is a general nonlinear true-error upper bound.",
+    "Do not add q_cap, Nmin, geometric-tail multipliers, fitted factors or deep refinement trajectories.",
+    "Do not change F-KT09 default full-vs-two-half behavior or generic certificate semantics.",
+    "Do not change Richards physics, forcing, boundary semantics or mass accounting.",
+    "Do not count numerical continuation history as water storage or MassLedger mass.",
+    "Do not store history for inactive columns.",
+    "Do not expose HeadCalc internals.",
+    "Do not move commit authority outside F-KT.",
+    "Do not release F-GC02, groundwater coupling or F-PE."
+  ],
+  "qualification_boundary": {
+    "production_history_lifecycle_may_be_owner_verified_here": true,
+    "independent_F_VQ_after_owner_completion": true,
+    "scientific_tolerance_requires_separate_evidence": true,
+    "production_temporal_acceptance_requires_later_admission": true
+  },
+  "affected_architecture_invariants": [3,4,5,6,7,8,9,13,15,16,20,22,23,24,25,26,27,29,30]
+}
