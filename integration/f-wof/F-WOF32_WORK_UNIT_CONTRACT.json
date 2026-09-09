@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF32",
+  "title": "Pure Phase-B Standard-WOFOST Finalize-Rate Provider",
+  "branch": "work/f-wof32-finalize-rate-provider",
+  "base": {
+    "commit": "90020b1d24a3142a86a8c2d5d835e6ae38084df4",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_ACTUAL_PGASS_PREPARE_PROVIDER",
+    "exact_closeout_run": 34305957436,
+    "exact_closeout_conclusion": "success"
+  },
+  "goal": "Implement and qualify the read-only phase-B provider that converts an already prepared actual PGASS plus accepted one-day root-uptake/potential-transpiration aggregates into the exact restricted F-WOF26 one-day rate packet for standard WOFOST.",
+  "admitted_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false,
+    "grass_management": false
+  },
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "regions": [
+      "SWAP/wofost.f90:817-929 update_dvs_rate",
+      "SWAP/wofost.f90:933-1107 update_wofost restricted standard route",
+      "SWAP/wofost.f90:1626-1663 chckprt",
+      "SWAP/wofost.f90:1667-1702 chckcbl",
+      "SWAP/wofost.f90:1706-1729 relgrwt",
+      "SWAP/wofost.f90:1733-1777 deaths",
+      "SWAP/wofost.f90:1829-1875 glai"
+    ],
+    "dependency_graph": "integration/f-wof/F-WOF27_RATE_DEPENDENCY_GRAPH.json"
+  },
+  "input_boundary": {
+    "state_view": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "immutable_parameters": [
+      "IDSL", "DLO", "DLC", "TSUMEA", "TSUMAM", "KDIF", "CVR", "CVS", "CVL", "CVO", "Q10", "RMR", "RML", "RMS", "RMO", "PERDL", "TBASE", "RGRLAI",
+      "DTSMTB", "RFSETB", "FRTB", "FLTB", "FSTB", "FOTB", "RDRRTB", "RDRSTB", "SLATB"
+    ],
+    "prepared_phase_A": "wofost_prepare_assimilation_result_t.actual_pgass",
+    "accepted_process_aggregates": ["IQROT_WINDOW as actual_root_uptake", "IPTRA_WINDOW as potential_transpiration"],
+    "forcing": ["TAV", "DAYLP only when IDSL=1"]
+  },
+  "output": "wofost_one_day_rate_packet_t consumed atomically by F-WOF26 structural evolution",
+  "formula_order": [
+    "RELTR = 1 when abs(IPTRA_WINDOW)<1e-10, otherwise max(0,min(1,IQROT_WINDOW/IPTRA_WINDOW))",
+    "DTSUM = AFGEN(DTSMTB,TAV)",
+    "DVR = DVRED*DTSUM/TSUMEA for DVS<1, otherwise DTSUM/TSUMAM; DVRED=1 for IDSL=0 and max(0,min(1,(DAYLP-DLC)/(DLO-DLC))) for IDSL=1",
+    "GASS = actual_pgass*RELTR",
+    "RMRES = (RMR*WRT + RML*WLV + RMS*WST + RMO*WSO)*AFGEN(RFSETB,DVS)",
+    "TEFF = Q10**((TAV-25)/10); MRES=min(GASS,RMRES*TEFF); ASRC=GASS-MRES",
+    "FR/FL/FS/FO = AFGEN partition tables and preserve B1.10 CHCKPRT arithmetic/order and 1e-4 criterion",
+    "HELP=0; when CVO>0 HELP=FO/CVO; qualified strengthening rejects FO>0 with CVO<=0",
+    "CVF = 1/((FL/CVL + FS/CVS + HELP)*(1-FR) + FR/CVR); DMI=CVF*ASRC",
+    "preserve B1.10 CHCKCBL arithmetic/order and 1e-4 criterion",
+    "ADMI=(1-FR)*DMI; GRRT=FR*DMI; GRLV=FL*ADMI; GRST=FS*ADMI; GRSO=FO*ADMI",
+    "DSLV=max(WLV*(1-RELTR)*PERDL, WLV*max(0,min(0.03,0.03*(LAI-3.2/KDIF)/(3.2/KDIF))))",
+    "DRST=WST*AFGEN(RDRSTB,DVS); DRRT=WRT*AFGEN(RDRRTB,DVS)",
+    "GWST=GRST-DRST; GWRT=GRRT-DRRT; GWSO=GRSO",
+    "FYSDEL=max(0,(TAV-TBASE)/(35-TBASE)); SLAT=AFGEN(SLATB,DVS)",
+    "when LAIEXP<6: GLAIEXP=RELTR*LAIEXP*RGRLAI*max(0,TAV-TBASE); GLASOL=GRLV*SLAT; GLA=min(GLAIEXP,GLASOL); when GRLV>0 SLAT=GLA/GRLV",
+    "when LAIEXP>=6: do not recompute GLAIEXP; F-WOF26 uses the reference compatibility carryover sidecar"
+  ],
+  "ownership_boundaries": {
+    "anthesis_first_crossing_truncation": "F-WOF26 structural evolution, not this provider",
+    "leaf_lifespan_death": "F-WOF26 structural cohort evolution, not this provider",
+    "GLAIEXP_saved_rate_carryover": "F-WOF26 owner compatibility sidecar, not persistent rate-provider state",
+    "accepted_aggregate_lineage": "runtime/transaction owner outside crop kernel",
+    "crop_state_mutation": "none"
+  },
+  "accepted_window_provenance_contract": {
+    "semantic_input_type": "wofost_accepted_window_aggregates_t",
+    "producer_rule": "runtime may materialize this carrier only from committed/accepted process contributions for the crop window",
+    "rejected_trial_rule": "rejected or rolled-back solver trials contribute exactly zero to the carrier",
+    "window_rule": "IQROT and IPTRA must refer to the same crop event window and same accepted trajectory",
+    "provider_rule": "F-WOF32 treats the carrier as frozen read-only input and never accumulates trial contributions itself",
+    "runtime_binding_implemented_here": false,
+    "end_to_end_provenance_claimed_here": false
+  },
+  "fail_closed_rules": [
+    "state view and prepared actual_pgass must be finite; actual_pgass must be nonnegative",
+    "accepted aggregate values must be finite and nonnegative",
+    "TAV must be finite; DAYLP is validated only for IDSL=1 and must then lie in 0..24 h",
+    "evaluated RFSETB, partition fractions, root/stem relative death and SLAT must remain inside B1.10 parser y-ranges 0..1",
+    "restricted F-WOF26 packet requires evaluated DTSUM in 0..100; negative parser-admissible DTSMTB output is not silently clamped",
+    "partition closure must satisfy the B1.10 CHCKPRT criterion",
+    "FO>0 with CVO<=0 fails closed rather than silently dropping the storage conversion term",
+    "CVF denominator and all produced packet fields must be finite and denominator-safe",
+    "B1.10 CHCKCBL criterion must pass"
+  ],
+  "explicit_restrictions_or_discrepancies": [
+    {
+      "id": "F-WOF32-NEGATIVE-DTSUM-OUTSIDE-RESTRICTED-PACKET",
+      "finding": "B1.10 parser range permits DTSMTB y down to -10, while the already qualified F-WOF26 structural packet contract admits only nonnegative temperature_sum_increment.",
+      "disposition": "fail closed when the evaluated DTSMTB result is negative; do not clamp or silently broaden the F-WOF26 contract in this work unit"
+    },
+    {
+      "id": "F-WOF32-CVO-ZERO-NONZERO-FO",
+      "finding": "B1.10 sets HELP=0 whenever CVO<=0, even when FO>0, thereby dropping the storage-organ conversion contribution.",
+      "disposition": "fail closed for FO>0 with CVO<=0, as already required by the F-WOF27/F-WOF30 domain-strengthening contract"
+    }
+  ],
+  "production_scope": {
+    "new_module": "src/crop/mod_wofost_finalize_rates.f90",
+    "persistent_state_added": false,
+    "state_mutation": false,
+    "worker_scratch_persisted": false,
+    "calendar_or_file_IO_dependency": false,
+    "soil_solver_dependency": false,
+    "runtime_transaction_dependency": false
+  },
+  "gates": {
+    "G01_exact_phase_B_input_boundary": "REQUIRED",
+    "G02_bitwise_source_transcript_rate_packet": "REQUIRED",
+    "G03_RELTR_reference_semantics": "REQUIRED",
+    "G04_partition_and_carbon_checks": "REQUIRED",
+    "G05_CVO_FO_fail_closed_strengthening": "REQUIRED",
+    "G06_GLAIEXP_recompute_vs_carryover_contract": "REQUIRED",
+    "G07_read_only_no_persistent_rate_state": "REQUIRED",
+    "G08_O0_O2_identity": "REQUIRED",
+    "G09_F_WOF31_exact_regression": "REQUIRED",
+    "G10_accepted_window_provenance_owner_boundary": "REQUIRED",
+    "G11_invariant_audit": "REQUIRED"
+  },
+  "not_qualified": [
+    "runtime production binding that proves IQROT/IPTRA lineage from accepted solver contributions",
+    "end-to-end crop-day orchestration of prepare -> soil substeps -> accepted aggregate -> finalize rates -> structural commit",
+    "IDSL=2 vernalization",
+    "SWRD=2/3 root rate routes",
+    "nutrient corrections",
+    "oxygen root-growth suppression",
+    "potential trajectory",
+    "soybean and grass routes"
+  ],
+  "affected_invariants": [2,3,4,5,7,8,9,16,21,23,25,26,27,28,29,30]
+}
