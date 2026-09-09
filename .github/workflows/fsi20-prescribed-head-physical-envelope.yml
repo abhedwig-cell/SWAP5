@@ -1,0 +1,31 @@
+name: F-SI20 prescribed-head physical envelope
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/test_fsi20_prescribed_head_physical_envelope.f90'
+      - 'tests/fsi/run_fsi20_prescribed_head_physical_envelope.sh'
+      - '.github/workflows/fsi20-prescribed-head-physical-envelope.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run prescribed-head physical envelope
+        run: bash tests/fsi/run_fsi20_prescribed_head_physical_envelope.sh
