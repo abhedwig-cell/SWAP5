@@ -508,7 +508,7 @@ contains
     self%temporal_indicator_budget_valid = self%temporal_indicator_budget_supplied .and. &
          ieee_is_finite(config%model_temporal_indicator_budget) .and. &
          config%model_temporal_indicator_budget > 0.0_real64
-    if (self%temporal_indicator_budget_valid) then
+    if (self%temporal_indicator_budget_supplied) then
       self%temporal_indicator_budget = config%model_temporal_indicator_budget
     else
       self%temporal_indicator_budget = 0.0_real64
