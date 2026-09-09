@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_SOLVE",
+  "contract": "F-ROSS01_GATE_E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34385709334,
+    "head": "236be0e656bb33e7409e2495e48d24b828a16191",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifact_id": 10117618189,
+    "artifact_digest": "sha256:9e0197c6106878573543dcb49b88f1fe41477508e61ede5b5aa1cd02222ed0ad"
+  },
+  "candidate": "R1_QUARTER_DECADE_GL8_WITH_FIRST_SEGMENT_T8_ENDPOINT_CLUSTERING_AND_NEXTAFTER_Q_BRACKET",
+  "material_count": 4,
+  "material_pass_count": 2,
+  "total_bracket_failures": 28,
+  "total_nonfinite_count": 0,
+  "max_abs_error_over_ksatfit": 0.0002902687720364049,
+  "max_hybrid_metric": 0.00028492561960496895,
+  "max_p99_hybrid_metric": 2.4497577310089795e-05,
+  "max_constitutive_K_evaluations": 530,
+  "max_root_residual_evaluations": 66,
+  "materials": {
+    "B12": {"probe_count":622,"valid_probe_count":608,"bracket_failure_count":14,"max_abs_error_over_ksatfit":0.00028614096647185306,"max_hybrid_metric":0.0002793905182996553,"p99_hybrid_metric":1.1621517361583351e-05,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66},
+    "O13": {"probe_count":622,"valid_probe_count":608,"bracket_failure_count":14,"max_abs_error_over_ksatfit":0.0002902687720364049,"max_hybrid_metric":0.00028492561960496895,"p99_hybrid_metric":2.4497577310089795e-05,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66},
+    "B01": {"probe_count":621,"valid_probe_count":621,"bracket_failure_count":0,"max_abs_error_over_ksatfit":7.897658754809407e-07,"max_hybrid_metric":8.440752210166425e-07,"p99_hybrid_metric":1.7428915139688464e-08,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66},
+    "O14": {"probe_count":621,"valid_probe_count":621,"bracket_failure_count":0,"max_abs_error_over_ksatfit":1.4172355193417127e-06,"max_hybrid_metric":2.031244786148673e-07,"p99_hybrid_metric":4.367546426734228e-09,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66}
+  },
+  "interpretation": [
+    "Endpoint clustering reduced R1 bracket failures from 196 to 28 without changing the broad-path quarter-decade segmentation, GL8 density, probes or acceptance thresholds.",
+    "All frozen accuracy, sign, finite, antisymmetry and cost metrics pass on valid probes for all four materials.",
+    "B12 and O13 each retain 14 bracket failures, so the all-probe fail-closed gate is not qualified.",
+    "The remaining blocker is further localized endpoint completeness rather than general WET_DRY face accuracy or cost-bound violation."
+  ],
+  "pass": false,
+  "decision": "ENDPOINT_CLUSTERED_LOCAL_FACE_SOLVE_NOT_QUALIFIED_RESEARCH_REQUIRED",
+  "hard_guards": [
+    "R2 remains FAIL and may not be promoted from conditional accuracy alone.",
+    "Do not weaken the zero-bracket-failure requirement.",
+    "Do not retune R2 first-segment t8 mapping, GL8 density, quarter-decade segmentation or thresholds inside R2.",
+    "Any follow-up must first characterize the 28 residual failures under a new diagnostic contract.",
+    "The precomputed near-saturation table route remains closed."
+  ],
+  "next_research_direction": "E2C_R2B_RESIDUAL_ENDPOINT_FAILURE_CHARACTERIZATION",
+  "status": "FAILED_ON_28_RESIDUAL_ENDPOINT_BRACKETS_WITH_ALL_VALID_PROBE_ACCURACY_AND_COST_METRICS_PASSING"
+}
