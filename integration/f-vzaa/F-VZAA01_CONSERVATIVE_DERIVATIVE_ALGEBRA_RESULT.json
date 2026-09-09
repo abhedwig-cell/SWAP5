@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "branch": "work/f-vzaa01-vadose-zone-analytical-assessment",
+  "gate": "CONSERVATIVE_DERIVATIVE_ALGEBRA",
+  "classification": "VZAA_DERIVED_ALGORITHMIC_RESEARCH_ONLY",
+  "ci": {
+    "run_id": 34315458453,
+    "job_id": 102350607098,
+    "head_sha": "ff3e0789451fa9677f0fd5e4c7f27dc5d8aab0fc",
+    "conclusion": "success",
+    "artifact_id": 10090061097,
+    "artifact_digest": "sha256:5fa66af0e4c715dc08e9b9b449d41bedf9500a435facedc08058addd9327ee40"
+  },
+  "result": {
+    "pass": true,
+    "decision": "CONSERVATIVE_DERIVATIVE_ALGEBRA_QUALIFIED_FOR_PREDICTOR_INTEGRATION",
+    "accepted_mass_residual_abs_max": 8.049116928532385e-16,
+    "internal_pairwise_transfer_total_change_abs_max": 0.0,
+    "checks": {
+      "accepted_mass_residual_within_tolerance": true,
+      "all_base_states_unchanged": true,
+      "downward_bottom_flux_realized_exactly": true,
+      "upward_bottom_flux_realized_exactly_without_clipping": true,
+      "head_residual_is_explicit_and_nonzero": true,
+      "head_residual_has_no_hidden_compensating_flux": true,
+      "pairwise_internal_transfer_total_change_within_tolerance": true,
+      "rejected_trial_is_rejected": true
+    }
+  },
+  "qualified_claim": "The conservative derivative shell can enforce exact external flux accounting, pairwise debit-credit internal correction, explicit head residuals and transaction-safe rejection to roundoff in the isolated algebra gate.",
+  "non_claims": [
+    "published VZAA reproduced",
+    "published VZAA mass problem repaired",
+    "VZAA hydraulic predictor fidelity established",
+    "prescribed-head corrector convergence established",
+    "bounded half-order history representation established",
+    "response tangent qualified",
+    "production solver admission"
+  ],
+  "remaining_hard_blockers": [
+    "integrate a source-bound analytical predictor without reinterpreting unpublished/supplementary details",
+    "replace or scientifically qualify the published unbounded half-order moisture-history evaluation with bounded state/work",
+    "demonstrate prescribed-head residual reduction with a bounded corrector",
+    "demonstrate exact mass together with the physical predictor, not only the correction shell",
+    "qualify bidirectional groundwater exchange and response tangent against FullRichards"
+  ],
+  "published_method_position": "VZAA_ALGORITHMIC_DONOR_ONLY",
+  "derived_method_position": "CONSERVATIVE_SHELL_FEASIBLE_PHYSICAL_PREDICTOR_AND_HISTORY_COMPRESSION_OPEN",
+  "production_implementation": false,
+  "status": "TESTED_AND_PERSISTED_NOT_PHYSICALLY_QUALIFIED"
+}
