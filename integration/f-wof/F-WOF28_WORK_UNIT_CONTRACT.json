@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF28",
+  "title": "WOFOST One-Day Rate State View Assembly",
+  "branch": "work/f-wof28-rate-state-view-assembly",
+  "base": {
+    "commit": "3944fc59b1780586e91d31e1f632e458ea29ad23",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_RATE_EVALUATOR_READINESS"
+  },
+  "goal": "Implement the smallest production seam required by F-WOF27: assemble a compact semantic read-only pre-event WOFOST rate-state view without exposing future rate physics to crop-owner biomass internals.",
+  "production_scope": {
+    "new_semantic_view": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "inputs": ["wofost_crop_owner_state_t", "SSA", "SPA"],
+    "output_presence": "inactive crop returns available=false with no active canopy-parameter dependency; emerged valid crop returns available=true",
+    "persistent_state_added": false,
+    "rate_physics_added": false,
+    "state_mutation": false
+  },
+  "architectural_boundary": {
+    "future_rate_provider_reads": "wofost_one_day_rate_state_view_t only",
+    "future_rate_provider_must_not_read": "wofost_crop_owner_state_t%biomass internals",
+    "view_assembler_may_read_owner_internals": true,
+    "reason": "the assembler is the explicit translation boundary from authoritative crop owner state to semantic rate inputs"
+  },
+  "fail_closed_rules": [
+    "invalid owner returns non-OK status",
+    "active view requires finite nonnegative SSA and SPA",
+    "active DVS must be finite and nonnegative",
+    "all assembled biomass and LAI scalars must be finite and nonnegative",
+    "inactive route returns before inspecting SSA or SPA"
+  ],
+  "tests": [
+    "inactive owner produces unavailable zero view and ignores invalid active-only canopy coefficients",
+    "active view exactly matches authoritative DVS, organ biomass, living leaf biomass, derived LAI and LAIEXP",
+    "assembly cannot mutate owner or cohort arrays",
+    "negative or nonfinite SSA/SPA fail closed for active crops",
+    "invalid owner fails closed",
+    "O0 and O2 outputs are identical",
+    "F-WOF26 structural semantics remain regression-compatible under explicit recompilation"
+  ],
+  "forbidden": [
+    "WOFOST assimilation or growth-rate formulas",
+    "new persistent WOFOST state",
+    "calendar or I/O dependencies",
+    "accepted IQROT/IPTRA provenance logic",
+    "copying leaf cohort arrays into the rate-state view"
+  ],
+  "affected_invariants": [2,3,4,5,6,7,8,9,16,21,27,29,30]
+}
