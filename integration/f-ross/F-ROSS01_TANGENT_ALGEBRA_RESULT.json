@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
+  "workflow": {
+    "run_id": 34318919093,
+    "head_under_test": "5dd1e29fa71716c67a02ed2122a0191dbb1fe401",
+    "conclusion": "success",
+    "artifact_id": 10091096595,
+    "artifact_digest": "sha256:8d8f171ab0de25fee4e94bc103ab5adbff332240fc2bb609276251408a92a503"
+  },
+  "fixture": "ANALYTIC_LINEAR_INTERNAL_AND_BOTTOM_FACE_LAWS_NOT_SWAP_PHYSICS",
+  "coverage": {
+    "analytic_trials": 162,
+    "finite_difference_reference_trials": 648,
+    "tangent_comparisons": 324,
+    "cell_counts": [1, 2, 3, 8, 32, 128],
+    "sigma": [0.0, 0.5, 1.0],
+    "boundary_states": [0.10, 0.18, 0.26],
+    "bottom_face_coefficients": [0.03, 0.11, 0.27],
+    "finite_difference_steps": [1e-07, 1e-06]
+  },
+  "thresholds": {
+    "mass_residual_abs_max": 1e-12,
+    "linear_residual_abs_max": 1e-12,
+    "tangent_relative_or_scaled_absolute_max": 1e-08,
+    "tangent_scale_floor": 1e-08
+  },
+  "observed": {
+    "maximum_abs_normal_trial_mass_residual": 8.326672684688674e-17,
+    "maximum_abs_fd_reference_mass_residual": 1.1102230246251565e-16,
+    "maximum_abs_normal_linear_residual": 1.734723475976807e-18,
+    "maximum_abs_sensitivity_linear_residual": 1.3877787807814457e-17,
+    "maximum_tangent_comparison_metric": 1.26885786529119e-10,
+    "base_state_bitwise_unchanged_all": true,
+    "analytic_path_matrix_factorizations_per_trial": 1,
+    "analytic_path_normal_backsolves_per_trial": 1,
+    "analytic_path_additional_tangent_backsolves_per_trial": 1,
+    "analytic_path_global_nonlinear_iterations": 0
+  },
+  "claims": {
+    "same_factorization_discrete_tangent_construction": "QUALIFIED_FOR_ANALYTIC_LINEAR_FIXTURE",
+    "incremental_tangent_cost_shape": "ONE_ADDITIONAL_O_N_BACKSOLVE_FOR_ANALYTIC_FIXTURE",
+    "transaction_safe_tangent_scratch": "SUPPORTED_BY_BITWISE_UNCHANGED_BASE_STATE",
+    "real_swap_hydraulic_tangent": "NOT_QUALIFIED",
+    "saturation_switch_tangent": "NOT_QUALIFIED",
+    "prescribed_flux_inversion": "NOT_QUALIFIED",
+    "groundwater_coupling": "NOT_QUALIFIED",
+    "modflow_coupling": "NOT_QUALIFIED"
+  },
+  "decision": "RESPONSE_TANGENT_ALGEBRA_QUALIFIED_READY_FOR_REAL_HYDRAULIC_DERIVATIVE_GATE_AFTER_FACE_TABLE_QUALIFICATION",
+  "status": "PERSISTED_TESTED_QUALIFIED_SUBGATE"
+}

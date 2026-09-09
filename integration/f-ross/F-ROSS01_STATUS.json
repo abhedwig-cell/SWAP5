@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -12,36 +12,80 @@
   "qualified": false,
   "decision": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
   "decision_is_final": false,
-  "open_gates": ["B_REAL_FACE_TABLE", "C_SWAPHYDRAULICS_GENERALISATION", "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES", "E_SATURATION_TRANSITIONS", "F_TIMESTEP", "G_HETEROGENEOUS_PROFILES", "H_BOTTOM_BOUNDARY", "I_GROUNDWATER", "J_RESPONSE_TANGENT", "K_RUNTIME", "L_MULTISWAP", "M_FULLRICHARDS_QUALIFICATION"],
-  "hard_blockers_if_failed": ["C_SWAPHYDRAULICS_GENERALISATION", "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES"],
+  "open_gates": [
+    "B_REAL_FACE_TABLE",
+    "C_SWAPHYDRAULICS_GENERALISATION",
+    "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
+    "E_SATURATION_TRANSITIONS",
+    "F_TIMESTEP",
+    "G_HETEROGENEOUS_PROFILES",
+    "H_BOTTOM_BOUNDARY",
+    "I_GROUNDWATER",
+    "J1_REAL_HYDRAULIC_RESPONSE_TANGENT",
+    "K_RUNTIME",
+    "L_MULTISWAP",
+    "M_FULLRICHARDS_QUALIFICATION"
+  ],
+  "hard_blockers_if_failed": [
+    "C_SWAPHYDRAULICS_GENERALISATION",
+    "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES"
+  ],
   "primary_lineage": [
-    {"citation":"Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions","doi":"10.2134/agronj2003.1352","role":"non-iterative continuity update and MFP-based approximate face flux"},
-    {"citation":"Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions","doi":"10.4225/08/5859741868a90","role":"flexible hydraulic-property extension; equation-level audit incomplete"},
-    {"citation":"Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes","doi":"10.2136/vzj2010.0085","role":"precomputed accurate steady-Darcian face fluxes with bounded O(N) runtime linear solve"}
+    {
+      "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions",
+      "doi": "10.2134/agronj2003.1352",
+      "role": "non-iterative continuity update and MFP-based approximate face flux"
+    },
+    {
+      "citation": "Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions",
+      "doi": "10.4225/08/5859741868a90",
+      "role": "flexible hydraulic-property extension; equation-level audit incomplete"
+    },
+    {
+      "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes",
+      "doi": "10.2136/vzj2010.0085",
+      "role": "precomputed accurate steady-Darcian face fluxes with bounded O(N) runtime linear solve"
+    }
   ],
   "primary_candidate_for_first_physical_prototype": "ROSS2011_PRECOMPUTED_STEADY_STATE_FACE_FLUX",
-  "qualified_subgate": {
-    "gate": "A_CONTINUITY_ALGEBRA",
-    "run": 34314383222,
-    "head": "7d56fdee87cef995797f4f558bd69955703f482a",
-    "artifact": 10089514525,
-    "artifact_digest": "sha256:a10eece27a158bf1b0f7f4bac96887df8b9bec4e209661a9d147a7d8d05a88f7",
-    "cases": 18,
-    "max_abs_mass_residual": 8.326672684688674e-17,
-    "max_abs_tridiagonal_residual": 8.673617379884035e-19,
-    "base_state_bitwise_unchanged": true,
-    "global_nonlinear_iterations": 0,
-    "scope": "analytic linear face law only; continuity algebra and transaction-safe bounded linear solve"
-  },
+  "qualified_subgates": [
+    {
+      "gate": "A_CONTINUITY_ALGEBRA",
+      "run": 34314383222,
+      "head": "7d56fdee87cef995797f4f558bd69955703f482a",
+      "artifact": 10089514525,
+      "artifact_digest": "sha256:a10eece27a158bf1b0f7f4bac96887df8b9bec4e209661a9d147a7d8d05a88f7",
+      "cases": 18,
+      "max_abs_mass_residual": 8.326672684688674e-17,
+      "max_abs_tridiagonal_residual": 8.673617379884035e-19,
+      "base_state_bitwise_unchanged": true,
+      "global_nonlinear_iterations": 0,
+      "scope": "analytic linear face law only; continuity algebra and transaction-safe bounded linear solve"
+    },
+    {
+      "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
+      "run": 34318919093,
+      "head": "5dd1e29fa71716c67a02ed2122a0191dbb1fe401",
+      "artifact": 10091096595,
+      "artifact_digest": "sha256:8d8f171ab0de25fee4e94bc103ab5adbff332240fc2bb609276251408a92a503",
+      "analytic_trials": 162,
+      "tangent_comparisons": 324,
+      "max_tangent_metric": 1.26885786529119e-10,
+      "max_abs_mass_residual": 1.1102230246251565e-16,
+      "base_state_bitwise_unchanged": true,
+      "cost_shape": "ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE",
+      "scope": "analytic linear bottom face only; same-factorization response sensitivity construction"
+    }
+  ],
   "shared_oracle_dependency": "Real SWAP-hydraulic face-table qualification must use a common authoritative steady-Darcian reference rather than copying unmerged F-LMFP06-09 experiment internals into this branch.",
   "current_findings": [
     "Ross 2011 provides the cleanest first physical prototype candidate in the Ross lineage",
-    "the finite-volume continuity algebra has now been independently executed and conserves mass to roundoff across 1 to 128 cells and sigma 0, 0.5 and 1",
-    "one tridiagonal O(N) solve per internal step is executable without global nonlinear iteration",
-    "the test base state remained bitwise unchanged, supporting transaction-safe trial semantics",
-    "this success does not yet qualify physical face tables, SWAP hydraulics, saturated-unsaturated switching or timestep accuracy",
-    "full SWAP hydraulic catalog, MODFLOW boundary duality and response tangent remain open"
+    "the finite-volume continuity algebra conserves mass to roundoff across 1 to 128 cells and sigma 0, 0.5 and 1 without global nonlinear iteration",
+    "the committed test base state remains bitwise unchanged in continuity and tangent algebra gates",
+    "a discrete bottom response tangent can be obtained algebraically from the same tridiagonal factorization with one additional O(N) backsolve in the analytic linear fixture",
+    "the tangent agrees with symmetric boundary perturbation reference trials to a maximum precommitted metric of 1.26885786529119e-10",
+    "none of these algebra gates qualifies real SWAP face tables, saturation switching, physical groundwater head semantics or MODFLOW coupling"
   ],
-  "next_action": "qualify a real precomputed steady-Darcian face table against a shared authoritative face oracle, first for unsaturated homogeneous fixtures and unseen interpolation probes, before integrating it into the continuity algebra harness",
-  "status": "ALGEBRAIC_GATE_QUALIFIED_READY_FOR_REAL_FACE_TABLE_GATE"
+  "next_action": "Qualify a real precomputed steady-Darcian face table against the shared authoritative face oracle, first for unsaturated homogeneous SWAP hydraulic fixtures and unseen interpolation probes. Only after that physical face representation passes should J1 apply the already-qualified same-factorization tangent construction to real table derivatives and regime-switch fail-closed checks.",
+  "status": "CONTINUITY_AND_RESPONSE_TANGENT_ALGEBRA_QUALIFIED_REAL_HYDRAULIC_FACE_TABLE_REMAINS_PRIMARY_BLOCKER"
 }
