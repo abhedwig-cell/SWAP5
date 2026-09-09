@@ -1,13 +1,14 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ28",
   "title": "Independent Richards Temporal Numeric-Profile Qualification",
   "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
-  "status": "IN_PROGRESS_HELD_OUT_GATE_A_IMPLEMENTATION_REQUIRED",
-  "phase": "PLAN_PERSISTED_BEFORE_TEST_IMPLEMENTATION",
+  "status": "IN_PROGRESS_GATE_A_HELD_OUT_BOUNDED_PROFILE_PASSED_RUNTIME_SHAPE_TRANSLATION_REQUIRED",
+  "phase": "HELD_OUT_FIXED_HORIZON_PROFILE_TESTED_AND_PERSISTED",
   "base_commit": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
   "plan": "integration/f-vq/F-VQ28_QUALIFICATION_PLAN.json",
+  "gate_A_evidence": "integration/f-vq/F-VQ28_GATE_A_EVIDENCE.json",
   "owner_input": {
     "work_unit": "F-SI20",
     "raw_head_observable_characterized": true,
@@ -16,21 +17,55 @@
     "owner_qualified": false,
     "decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS"
   },
+  "gate_A": {
+    "workflow_run": 34303003171,
+    "workflow_job": 102313763530,
+    "conclusion": "success",
+    "held_out_cases": 24,
+    "all_cases_mass_hard": true,
+    "maximum_external_mass_residual": 5.42101086242752217e-20,
+    "repeat_determinism": true,
+    "o0_o2_identity": true,
+    "all_resolved_defect_curves_monotone": true,
+    "bounded_fixed_horizon_profile_candidate": true,
+    "maximum_persistent_conservative_entry_N": 16,
+    "entry_N_by_initial_head_cm": {
+      "-40": 1,
+      "-55": 1,
+      "-110": 1,
+      "-160": 4,
+      "-210": 16,
+      "-320": 16
+    },
+    "entry_invariant_across_tested_jump_sign_and_amplitude_within_each_state": true
+  },
+  "interpretation": {
+    "raw_head_defect_is_reproducibly_state_dependent": true,
+    "universal_absolute_tolerance_admitted": false,
+    "universal_defect_to_error_factor_admitted": false,
+    "bounded_fixed_horizon_refinement_behavior_supported": true,
+    "runtime_equivalence_established": false,
+    "critical_semantic_limit": "Fixed-horizon N is not a transaction retry count or a direct F-GC02 internal-substep count. Gate A cannot by itself define a production retry policy or tolerance."
+  },
   "state": {
     "plan_persisted": true,
     "held_out_matrix_frozen": true,
-    "harness_implemented": false,
-    "tested": false,
+    "harness_implemented": true,
+    "gate_A_tested": true,
+    "gate_A_evidence_persisted": true,
+    "runtime_shape_translation_tested": false,
     "qualified": false,
     "production_source_modified": false
   },
   "holds": {
-    "F_SI20_owner_finalization": "WAITING_FOR_FVQ28",
+    "F_SI20_owner_finalization": "WAITING_FOR_FVQ28_RUNTIME_SHAPE_TRANSLATION",
     "F_GC02_release": "NOT_ALLOWED",
     "production_temporal_tolerance": "NOT_SELECTED",
     "production_metric": "NOT_SELECTED",
+    "state_normalization": "NOT_SELECTED",
     "retry_policy_change": "NOT_ALLOWED_IN_FVQ28",
     "mass_gate_relaxation": "NOT_ALLOWED"
   },
-  "next_action": "Implement held-out Gate A exactly from the persisted plan and run it with production source immutability, repeat determinism and O0/O2 identity checks."
+  "current_decision_class": "A_FIXED_HORIZON_PROFILE_CANDIDATE_HELD_OUT_VALIDATED_BUT_RUNTIME_SEMANTICS_NOT_YET_TRANSLATED",
+  "next_action": "Freeze and run Gate B using the exact production transaction topology and F-GC02 numerical policy. Characterize the actually reachable retry/substep trajectories across held-out hydraulic states, without selecting a temporal tolerance and without changing retry, solver, mass, transaction or coupling policy. Decide whether the bounded fixed-horizon regime is representable by the existing runtime topology or requires a separate owner/runtime policy workunit."
 }
