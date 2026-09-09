@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "B_EXACT_MANUFACTURED_DEFECT_BOUND",
+  "plan": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_PLAN.json",
+  "tested_head": "546b16a8dcc12acf7e213ced593668e769ddc870",
+  "workflow_run": 34327204626,
+  "workflow_job": 102387097566,
+  "conclusion": "success",
+  "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+  "source_plan_driver_lock": "PASS",
+  "reference_tridag": "SWAP_4_3_1_THOMAS_TEST_ONLY",
+  "O0_O2_identity": true,
+  "production_source_unchanged": true,
+  "prechecks": {
+    "M_orthogonality_cross": 4.163336342344337e-17,
+    "multimode_node2_hdot_per_day": -8.881784197001252e-16,
+    "near_zero_derivative_path_requires_division": false,
+    "both_generalized_eigenpair_checks": "PASS"
+  },
+  "single_mode": {
+    "point_count": 5,
+    "lambda_dt": [0.025, 0.1, 0.4, 1.6, 6.4],
+    "route_selection": ["RAW", "RAW", "RAW", "DOUBLE_DEFECT", "DOUBLE_DEFECT"],
+    "exact_M_error": [
+      7.391081720562380e-05,
+      1.048474964524567e-03,
+      1.083742785944218e-02,
+      4.503974611048586e-02,
+      3.290090492865879e-02
+    ],
+    "raw_M_bound": [
+      7.515168064367966e-05,
+      1.120443238677751e-03,
+      1.408557214337570e-02,
+      1.213526215429256e-01,
+      6.821985211061755e-01
+    ],
+    "double_defect_M_bound": [
+      1.466374256462042e-04,
+      2.037169524868637e-03,
+      2.012224591910815e-02,
+      9.334817041763509e-02,
+      1.843779786773447e-01
+    ],
+    "combined_bound_to_exact_ratio": [
+      1.0167886580742804,
+      1.0686409085464603,
+      1.2997154238128148,
+      2.072573193211282,
+      5.604039739245582
+    ],
+    "raw_to_combined_improvement_at_x6p4": 3.7000000000000006,
+    "predeclared_route_switch_behavior": "PASS"
+  },
+  "multimode": {
+    "point_count": 5,
+    "dt_day": [0.0125, 0.05, 0.2, 0.8, 1.6],
+    "mode1_lambda_dt": [0.03202472144201790, 0.1280988857680716, 0.5123955430722864, 2.049582172289146, 4.099164344578291],
+    "mode2_lambda_dt": [0.1973620987222252, 0.7894483948889006, 3.157793579555602, 12.63117431822241, 25.26234863644482],
+    "exact_M_error": [
+      1.192409679933202e-03,
+      8.775847695558251e-03,
+      1.820609002804521e-02,
+      2.529337072964464e-02,
+      2.235295495519799e-02
+    ],
+    "raw_M_bound": [
+      1.358269739645405e-03,
+      1.455444703946983e-02,
+      1.006041903329682e-01,
+      4.955234876299347e-01,
+      1.033717627299310e+00
+    ],
+    "double_defect_M_bound": [
+      2.269568137464032e-03,
+      1.631367470024294e-02,
+      5.015519922172887e-02,
+      9.072002394380635e-02,
+      1.109138140518429e-01
+    ],
+    "combined_bound_to_exact_ratio": [
+      1.139096539137031,
+      1.6584662296311636,
+      2.7548583547850356,
+      3.586711510833927,
+      4.96193072791259
+    ],
+    "raw_to_combined_improvement_at_dt1p6": 9.32000793711894,
+    "near_zero_derivative_case_completed": true
+  },
+  "algebra_and_conservation": {
+    "all_HeadCalc_BE_endpoints_match_analytic": true,
+    "all_raw_observers_match_analytic": true,
+    "all_reconstructed_J_eigen_actions_match": true,
+    "all_one_tridiagonal_defect_solves_match_analytic": true,
+    "maximum_reported_delta_difference": 1.863309853633588e-14,
+    "all_exact_M_errors_bounded_by_raw": true,
+    "all_exact_M_errors_bounded_by_double_defect": true,
+    "all_exact_M_errors_bounded_by_combined_minimum": true,
+    "all_head_infinity_errors_bounded_by_M_conversion": true,
+    "maximum_absolute_discrete_mass_residual": 1.734723475976807e-18,
+    "maximum_absolute_exact_continuous_mass_residual": 8.673617379884035e-19
+  },
+  "qualified": [
+    "For the frozen constant linear dissipative four-node hydraulic operator, the F-SI23 derivative-difference observer remains a conservative M-norm bound on backward-Euler local endpoint error.",
+    "For the same scope, one Jacobian-transported defect solve with J_BE*delta=(M/dt)*e_raw and the fixed analytic factor 2 also gives a conservative M-norm bound.",
+    "The predeclared combined minimum min(||e_raw||_M,2||delta||_M) remains conservative on single-mode and two-mode manufactured states across nonstiff through strongly stiff lambda*dt values.",
+    "The defect transport materially reduces stiff over-amplification while requiring zero extra full nonlinear Richards solves and one tridiagonal solve.",
+    "The vector construction is well-defined when a local committed derivative is approximately zero because it contains no componentwise derivative division.",
+    "The temporal indicator remains observer-only: the principal mass-conservative backward-Euler state and hard mass ledger are unchanged."
+  ],
+  "not_qualified": [
+    "A nonlinear B1.10 true-error bound.",
+    "A variable-state or variable-time M/A theorem.",
+    "A production final-state operator seam.",
+    "Use of stale HeadCalc dfdh scratch as exact accepted-state Jacobian.",
+    "A scientific temporal tolerance or dimensionless certificate mapping.",
+    "A production acceptance/retry policy.",
+    "Macropores, SwKimpl=1, root-sink Jacobians, saturated/DAE states, F-GC02 release or F-PE release."
+  ],
+  "gate_B_decision": "QUALIFIED_EXACT_LINEAR_BOUNDED_ONE_SOLVE_CANDIDATE_READY_FOR_SEPARATE_NONLINEAR_CHARACTERIZATION",
+  "next_action": "Persist status and, if continuing F-SI24, freeze Gate C before any nonlinear run. Gate C must reconstruct a test-only final-state SwKimpl=0 residual Jacobian from the accepted candidate state plus base-step face conductances and compare the fixed, uncalibrated combined indicator against existing finite same-endpoint evidence. No factor/tolerance fitting and no production seam yet."
+}
