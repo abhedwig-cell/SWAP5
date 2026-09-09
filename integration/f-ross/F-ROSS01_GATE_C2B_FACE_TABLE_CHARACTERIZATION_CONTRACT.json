@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_STEADY_FACE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_CHARACTERIZATION",
+  "production_implementation": false,
+  "physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "constitutive_evidence": "F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json",
+  "state_coordinate_evidence": "F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_RESULT.json",
+  "purpose": "Test whether the already-selected C1R compact Ross2011 steady-face representation can represent the unchanged C2B physical closure over the same homogeneous unsaturated 10-cm face envelope without increasing memory, runtime complexity or relaxing flux-error criteria.",
+  "candidate": {
+    "N": 241,
+    "table_coordinate": "uniform u=log10(-h/cm) on [0,4]",
+    "head_envelope_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0,
+    "storage": "IEEE754_float32_log_mobility",
+    "interpolation": "bilinear log mobility in binary64 arithmetic",
+    "state_to_coordinate": "C2B direct S-to-u R1 mapping with exact endpoints and exact h=-4.2 cm retention join",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(interpolated_log_mobility), with exact equal-state K(h)",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)",
+    "runtime_nonlinear_iterations": 0
+  },
+  "reference_oracle": {
+    "equation": "Independent steady one-dimensional Darcy path solve used by C1R, with K(h) replaced only by the frozen C2B closure.",
+    "offline_iterations_allowed": true,
+    "runtime_iterations_allowed": false,
+    "quadrature_seams_cm": [-40.0, -4.0],
+    "seam_rule": "Adaptive path and hydrostatic-mobility quadrature must split whenever an interval crosses a C2B conductivity-derivative seam.",
+    "no_table_interpolation_inside_oracle": true
+  },
+  "characterization_materials": ["B10", "O12", "O13", "B05", "O14", "O05", "B12"],
+  "selection_rationale": {
+    "B10": "legacy KSATEXM ratio 80 and prior broad wet-end representation failure",
+    "O12": "legacy KSATEXM ratio 80 and prior high near-saturation slope stress",
+    "O13": "legacy KSATEXM ratio 80, low-n stress and prior largest C2A R3 failure",
+    "B05": "wide wet extension interval and prior tail-localized failure",
+    "O14": "low KSATEXM ratio but previous interpolation and coordinate stress",
+    "O05": "well-documented near-saturation stiffness case from prior SWAP431 work",
+    "B12": "heavy-clay/low-n material, 80x KSATEXM and strongest legacy H_ENPR+KSATEXM discontinuity diagnostic"
+  },
+  "probe_policy": {
+    "base": "reuse C1R characterization ordinary Sobol, equal-head, hydrostatic, near-hydrostatic, wet-dry-cross and edge families with a fresh C2B material seed",
+    "additional_join_probes": "add deterministic state pairs around h=-40 cm and h=-4 cm, including same-side and crossing cases with offsets 1e-3, 1e-2, 0.1, 0.5 and 2 cm where inside the frozen envelope",
+    "holdout_access": false
+  },
+  "qualification_policy": {
+    "reuse_C1R_thresholds_without_relaxation": true,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "important_scaling_guard": "Errors remain normalized to KSATFIT exactly as in C1R and C2A. The larger KSATEXM endpoint is not used to make the acceptance threshold easier.",
+  "exit_rule": {
+    "characterization_pass": "Freeze the N241 C2B representation unchanged and create a fresh 36-material C2B holdout before any catalog qualification claim.",
+    "characterization_fail": "Reject this representation fail-closed. Any density, coordinate, interpolation or physical-closure change requires a new predeclared characterization contract before holdout access."
+  },
+  "science_guard": "Even a face-table pass does not empirically validate the new hydraulic closure. The KSATFIT->Ko and LEXP->L mapping remains subject to a separate soil-hydraulic science qualification.",
+  "scope_guard": "Face response only. No h>-1 cm, saturation switching, transient timestep, heterogeneous face, explicit macropore, bottom boundary, groundwater, response tangent, MultiSWAP production or FullRichards equivalence claim."
+}
