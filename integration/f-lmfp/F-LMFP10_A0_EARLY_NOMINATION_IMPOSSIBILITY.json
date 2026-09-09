@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "gate": "A0_MATERIAL_SCALE_COORDINATE_SCREEN",
+  "artifact": "EARLY_NOMINATION_IMPOSSIBILITY_PROOF",
+  "qualification": false,
+  "production_implementation": false,
+  "workflow_run": 34329612925,
+  "tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+  "precommitted_rule_sources": [
+    "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
+    "experiments/lmfp/run_lmfp10_a0_aggregate.py"
+  ],
+  "aggregate_rule": {
+    "tail_classes": 10,
+    "tail_metric_per_class": "candidate frozen-classifier active maximum relative error divided by n49 frozen-classifier active maximum relative error",
+    "tail_score": "percentile(tail_ratios,0.50) implemented as sorted_values[int(0.50*N)], hence the sixth sorted value for N=10",
+    "coherence_requirement": "tail_score < 1.0",
+    "overall_coherent_candidate_requires_all_checks": true
+  },
+  "completed_decisive_tail_classes": {
+    "O07:10cm": {
+      "n49_max": 0.3876381128161979,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 1.5526061667935527, "ratio": 4.005298022719801},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 1.3079577734609134, "ratio": 3.3741722761948676}
+    },
+    "O07:20cm": {
+      "n49_max": 0.3872601209183597,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 2.1990887126206666, "ratio": 5.678582931301278},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 2.7612951146163676, "ratio": 7.13033686006231}
+    },
+    "B18:10cm": {
+      "n49_max": 0.4460725428581415,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 2.1096151545865465, "ratio": 4.729309589578212},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 2.708132617472179, "ratio": 6.071058756766857}
+    },
+    "B18:20cm": {
+      "n49_max": 0.4430367489411082,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 2.74314970603001, "ratio": 6.191697895459796},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 5.430354099042942, "ratio": 12.257118877885198}
+    },
+    "B17:10cm": {
+      "n49_max": 0.5328304202289805,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 2.4890193383651544, "ratio": 4.6713161333685},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 3.1267166730334828, "ratio": 5.868127183297448}
+    },
+    "B17:20cm": {
+      "n49_max": 0.5300248081165608,
+      "A_ALPHA_NORMALIZED_ENDPOINTS": {"max": 3.2168622944467433, "ratio": 6.069267410100744},
+      "B_H50_NORMALIZED_ENDPOINTS": {"max": 6.260612197566399, "ratio": 11.811922954726285}
+    }
+  },
+  "proof": {
+    "A_ALPHA_NORMALIZED_ENDPOINTS_tail_ratios_already_strictly_gt_1": 6,
+    "B_H50_NORMALIZED_ENDPOINTS_tail_ratios_already_strictly_gt_1": 6,
+    "remaining_tail_classes_unobserved_for_this_proof": ["B10:10cm", "B10:20cm", "O11:10cm", "O11:20cm"],
+    "logical_consequence": "For each family, even if every remaining tail ratio were arbitrarily small, the sixth sorted value among ten ratios remains strictly greater than 1 because six already-completed ratios are strictly greater than 1.",
+    "tail_score_lt_1_still_possible": false,
+    "coherent_candidate_still_possible": false,
+    "A0_nomination_still_possible_under_frozen_rule": false
+  },
+  "decision_already_forced_by_frozen_rule": "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE",
+  "why_execution_continues": [
+    "Complete the full precommitted panel for failure localization and controls.",
+    "Allow the existing aggregate job to produce the authoritative complete result.",
+    "Do not cancel or modify the experiment because remaining results can characterize the representation failure without changing the decision."
+  ],
+  "forbidden_followup_on_A0_data": [
+    "Retune alpha or h50 coordinate scales.",
+    "Delete low-NPAR materials from the claim.",
+    "Change the tail-score percentile or threshold.",
+    "Create a low-NPAR classifier threshold from these revealed rows and call it qualified.",
+    "Proceed to the predeclared A1 geometry-axis gate as if a candidate had been nominated."
+  ],
+  "next_after_complete_aggregate": "Close A0 negative, retain the O01/O05 geometry improvement and low-NPAR failure localization as characterization, reconcile future physical evidence with F-SI09, and formulate a materially different representation hypothesis before any fresh holdout.",
+  "status": "EARLY_FAIL_CLOSED_NOMINATION_IMPOSSIBLE_FULL_EXECUTION_CONTINUES_FOR_LOCALIZATION"
+}
