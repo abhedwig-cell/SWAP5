@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Optional-state and MultiSWAP scaling classification for standard WOFOST evolution",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true
+  },
+  "allocation_classes": {
+    "inactive_or_not_emerged_column": {
+      "crop_evolution_state_allocated": false,
+      "biomass_cohort_state_allocated": false,
+      "vernalization_state_allocated": false,
+      "adaptive_root_state_allocated": false,
+      "rule": "inactive columns must not carry dead WOFOST state"
+    },
+    "emerged_standard_common": {
+      "required_common_state": [
+        "crop_emerged",
+        "DVS",
+        "TSUM",
+        "fl_anthesis",
+        "nofd",
+        "atmin7[7]",
+        "WRT/WST/WSO",
+        "LAIEXP",
+        "active LV/SLA/LVAGE cohorts"
+      ],
+      "fixed_366_leaf_arrays": false,
+      "active_cohort_compaction": true
+    },
+    "IDSL2_vernalization": {
+      "enabled_when": "IDSL=2 only",
+      "persistent_state": ["vern", "fl_vernalised"],
+      "vernrate_persistent": false,
+      "allocation_for_IDSL0_or_1": false
+    },
+    "root_option_state": {
+      "source": "integration/f-wof/F-WOF15_ROOT_STATE_OWNERSHIP_CONTRACT.json",
+      "SWRD1": "no independent root-depth state",
+      "SWRD2": ["actual_root_depth", "potential_root_depth"],
+      "SWRD3": "no independent root-depth state",
+      "SWRDC1": ["per_node_root_biomass_distribution_or_semantic_equivalent"],
+      "SWRDC_nonadaptive": "no per-node dynamic root-distribution state"
+    },
+    "potential_shadow": {
+      "allocated": false,
+      "reason": "explicitly outside F-WOF25 scope and must remain a separate optional trajectory"
+    },
+    "nutrient_or_grass_specific_state": {
+      "allocated": false,
+      "reason": "separate future execution classes/qualification"
+    }
+  },
+  "nonpersistent_working_data": {
+    "WOFOST_rates": "worker/event-local scratch",
+    "dtsum_dvr_daylp_vernrate": "worker/event-local scratch",
+    "solar_geometry_and_tmnr": "event-local derived context",
+    "accepted_crop_window_aggregates": "runtime/event-window state, not crop physical state",
+    "solver_Newton_or_Jacobian_data": "worker scratch outside crop owner"
+  },
+  "batching_and_layout": {
+    "logical_api_may_be_object_oriented": true,
+    "internal_layout_may_be_SoA_or_pooled": true,
+    "recommended_execution_class_keys": [
+      "standard WOFOST active/inactive",
+      "IDSL2 vernalization active/inactive",
+      "root-state topology such as SWRD2 or SWRDC1",
+      "optional oxygen same-window crop-context dependency"
+    ],
+    "immutable_parameter_sharing": "crop parameter sets referenced by ID/shared pool rather than copied per column",
+    "cohort_storage": "pool/offset representation or equivalent compact active-length storage is allowed",
+    "rates_workspace": "per worker or batch, never one permanent heavy solver/workspace object per column"
+  },
+  "physics_policy_separation": {
+    "IDSL_SWRD_SWRDC_oxygen": "physical configuration",
+    "reference_balanced_throughput": "numerical policy",
+    "rule": "batching or performance policy may group physical execution classes but may not silently disable vernalization, root physics or oxygen coupling"
+  },
+  "gates": {
+    "WOF25_G10_MultiSWAP_scalability": "PASS_DESIGN_CONTRACT_ONLY",
+    "optional_state_scaling": "PASS_DESIGN_CONTRACT_ONLY",
+    "production_layout_implemented": false
+  }
+}
