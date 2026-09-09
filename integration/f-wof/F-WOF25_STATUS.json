@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Actual WOFOST Evolution and Temporal Semantics Readiness",
+  "branch": "work/f-wof25-evolution-temporal-readiness",
+  "base": {
+    "commit": "c48dd266c174b7b4e9101d06a228eba91a5bf4f9",
+    "status": "QUALIFIED_ATOMIC_ACTUAL_WOFOST_CROP_OWNER_STATE_AND_WRT_LAI_VIEWS"
+  },
+  "status": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE",
+  "decision": "QUALIFY_ZERO_PRODUCTION_READINESS_ONLY",
+  "tested_candidate": "243961b6358f0eefc57212cbe5e77017028a86c0",
+  "verification": {
+    "workflow": "F-WOF25 evolution readiness gate",
+    "run_id": 34300541357,
+    "conclusion": "success",
+    "zero_production_diff_from_F_WOF24": "PASS",
+    "machine_readable_readiness_reconciliation": "PASS"
+  },
+  "scope": {
+    "sw_wofost": 1,
+    "standard_detailed_WOFOST": true,
+    "soybean_sw_wofost_2": false,
+    "grass_sw_wofost_3": false,
+    "potential_shadow": false,
+    "nutrient_route": false,
+    "grass_management": false,
+    "production_evolution_implemented": false
+  },
+  "qualified_readiness": {
+    "physical_continuation_state": [
+      "crop_emerged",
+      "DVS",
+      "TSUM",
+      "fl_anthesis",
+      "nofd",
+      "atmin7[7]",
+      "actual WRT/WST/WSO/LAIEXP and compact active LV/SLA/LVAGE cohort history",
+      "vern and fl_vernalised only when IDSL=2",
+      "option-dependent root history only where F-WOF15 requires it"
+    ],
+    "exact_B110_reference_compatibility_memory": [
+      "conditional legacy_lai_exponential_rate_carryover from r_act%glaiex after the LAIEXP threshold",
+      "conditional IDSL2 legacy_vernalization_rate_carryover where exact post-completion VERN continuation requires it"
+    ],
+    "ordinary_rates": "event/worker-local; the full WOFOST_rates object is not persistent",
+    "forcing": "explicit crop-window weather/solar/CO2 inputs with calendar translation outside the kernel",
+    "accepted_aggregates": "IQROT_WINDOW/IPTRA_WINDOW/IALPWET_WINDOW are accumulated only from accepted process intervals and never from rejected trials",
+    "time": "kernel remains generic [t0,t1]; first crop evolution admission is one explicit B1.10-equivalent day scheduled by runtime/event layer",
+    "transaction": "prepare, accumulate and finalize are candidate-local and publish only through F-KT",
+    "cadence": "many soil-water substeps may occur inside one crop window; WOFOST/cohort/root evolution is not called once per Richards substep",
+    "thresholds": "emergence, anthesis, vernalization, LAIEXP carryover, cohort shifting, root evolution and maturity are explicitly characterized as cadence-sensitive",
+    "MultiSWAP": "shared immutable parameters, compact active cohorts, option-dependent state, conditional reference compatibility sidecars and worker-local rates are SoA/pool/batch compatible"
+  },
+  "readiness_artifacts": [
+    "integration/f-wof/F-WOF25_WOFOST_EVOLUTION_TEMPORAL_READINESS_CONTRACT.json",
+    "integration/f-wof/F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+    "integration/f-wof/F-WOF25_FORCING_AGGREGATE_CONTRACT.json",
+    "integration/f-wof/F-WOF25_B110_CALL_CADENCE_EVIDENCE.json",
+    "integration/f-wof/F-WOF25_B110_DAILY_CALL_CADENCE_EVIDENCE.json",
+    "integration/f-wof/F-WOF25_RATE_LIFETIME_RECONCILIATION.json",
+    "integration/f-wof/F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json",
+    "integration/f-wof/F-WOF25_TEMPORAL_EVENT_CONTRACT.json",
+    "integration/f-wof/F-WOF25_TRANSACTION_CONTRACT.json",
+    "integration/f-wof/F-WOF25_TRANSACTION_EVENT_CONTRACT.json",
+    "integration/f-wof/F-WOF25_THRESHOLD_EVENT_EVIDENCE.json",
+    "integration/f-wof/F-WOF25_OPTIONAL_STATE_CLASSIFICATION.json",
+    "integration/f-wof/F-WOF25_INVARIANT_AUDIT.json",
+    "integration/f-wof/F-WOF25_READINESS_GATE.json"
+  ],
+  "authoritative_reconciliation_precedence": {
+    "continuation_and_saved_rate_semantics": [
+      "F-WOF25_CONTINUATION_STATE_INVENTORY.json schema_version 2",
+      "F-WOF25_RATE_LIFETIME_RECONCILIATION.json",
+      "F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json schema_version 2"
+    ],
+    "event_and_transaction_semantics": [
+      "F-WOF25_TEMPORAL_EVENT_CONTRACT.json",
+      "F-WOF25_TRANSACTION_CONTRACT.json",
+      "F-WOF25_FORCING_AGGREGATE_CONTRACT.json"
+    ],
+    "final_gate": "F-WOF25_READINESS_GATE.json schema_version 2"
+  },
+  "not_qualified": [
+    "production crop evolution in F-WOF25",
+    "arbitrary subdaily WOFOST evolution",
+    "arbitrary multi-day single-call WOFOST evolution",
+    "full IDSL2 production composition",
+    "active oxygen IALPWET window aggregation across smaller committed runtime intervals",
+    "optional SWRD2/SWRDC1 root-history production composition",
+    "potential shadow",
+    "nutrient route",
+    "soybean specialization",
+    "grass route"
+  ],
+  "next_workunit_check": {
+    "checked_live": true,
+    "matching_ref_query": "heads/work/f-wof26",
+    "matching_refs_found": 0,
+    "next_free_code_at_closeout": "F-WOF26",
+    "branch_created": false
+  },
+  "handoff": {
+    "recommended_unit": "F-WOF26",
+    "recommended_title": "Restricted Standard WOFOST One-Day Structural Evolution Candidate",
+    "first_profile": [
+      "sw_wofost=1 actual trajectory only",
+      "one explicit daily crop event",
+      "prefer IDSL=0 or 1 initially",
+      "prefer reconstructible/nonadaptive root geometry",
+      "exclude active oxygen same-window export until its accepted-window runtime owner is composed",
+      "preserve conditional GLAIEXP carryover on an exact B1.10 reference path or explicitly restrict and qualify the reference envelope",
+      "no potential shadow, nutrients, soybean or grass"
+    ],
+    "required_tests": [
+      "checkpoint -> crop trial -> discard leaves committed crop state and enabled compatibility memory bitwise unchanged",
+      "same checkpoint + same forcing + same frozen accepted aggregates replays bitwise-identical candidate",
+      "rejected soil-water trials contribute zero to crop-window aggregates",
+      "one day with many soil-water substeps performs exactly one WOFOST cohort shift/create operation",
+      "zero-production F-WOF25 evidence remains locked as the source-bound contract"
+    ]
+  },
+  "affected_invariants": [3,4,5,6,7,8,9,10,11,13,16,21,23,25,26,27,28,29,30]
+}
