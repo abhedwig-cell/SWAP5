@@ -1,0 +1,73 @@
+name: F-ROSS01 Gate E3E-R2R2-R2 Analytic Saturated Segment
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json'
+      - 'experiments/ross/run_ross01_gate_e2c_r2_endpoint_clustered_local_face.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_fresh_5cm_reference_characterization.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_r1_exact_physical_upper_bracket.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_r2_analytic_saturated_segment_candidate.py'
+      - '.github/workflows/ross01-gate-e3e-r2r2-r2-analytic-saturated-segment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Execute frozen analytic saturated-segment remediation
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3e-r2r2-r2-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r2r2_r2_analytic_saturated_segment_candidate.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R2R2_R2_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R2R2_R2_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen remediation semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r2r2-r2-{m}/F-ROSS01_GATE_E3E_R2R2_R2_{m}_RESULT.json'
+          r=json.load(open(p)); mr=r['material_result']
+          assert r['gate']=='E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION'
+          assert r['production_implementation'] is False
+          assert mr['candidate_unresolved_count']==0
+          assert mr['candidate_nonfinite_count']==0
+          assert mr['wrong_sign_count']==0
+          assert mr['max_hybrid_metric']<=0.01
+          assert mr['max_abs_error_over_ksatfit']<=0.0005
+          assert mr['max_constitutive_K_evaluations']<=530
+          assert mr['max_root_residual_evaluations']<=66
+          assert all(x['candidate_branch']=='SURFACE_SATURATED_ANALYTIC_SPLIT_BISECTION' for x in mr['rows'] if 'candidate_branch' in x)
+          assert all(x.get('pass') for x in mr['rows'])
+          assert mr['pass'] is True
+          assert r['pass'] is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2r2-r2-${{ matrix.material }}
+          path: ross01-gate-e3e-r2r2-r2-${{ matrix.material }}/
