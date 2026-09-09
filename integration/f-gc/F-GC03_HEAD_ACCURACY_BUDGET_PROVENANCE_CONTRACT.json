@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC03",
+  "contract": "COUPLING_RICHARDS_TEMPORAL_HEAD_BUDGET_PROVENANCE_V1",
+  "purpose": "Keep the application/runtime Richards temporal head budget explicit, versioned and independent of the trial outcome while preserving a strict distinction from coupling convergence, predictor perturbation and nonlinear solver tolerances.",
+  "quantities": {
+    "coupling_head_residual_tolerance": {
+      "symbol": "epsilon_cpl_h",
+      "native_unit": "m",
+      "owner": "coupling/application convergence policy",
+      "meaning": "allowed interface head residual for H_SWAP-H_GW",
+      "maps_automatically_to_H_budget": false
+    },
+    "richards_temporal_head_budget": {
+      "symbol": "H_budget",
+      "native_unit": "cm pressure head",
+      "owner": "explicit application/runtime numerical configuration",
+      "meaning": "normalization budget for the qualified Richards temporal indicator C_h=B_inf/H_budget",
+      "default": null,
+      "must_be_finite_positive": true
+    },
+    "predictor_head_perturbation": {
+      "symbol": "delta_H_predictor",
+      "native_unit": "cm pressure head for the frozen F-GC02 fixture",
+      "owner": "coupling trial construction",
+      "meaning": "distinct candidate head used to exercise predictor/corrector response",
+      "maps_automatically_to_H_budget": false
+    },
+    "nonlinear_solver_tolerance": {
+      "symbol": "epsilon_Newton",
+      "owner": "Richards nonlinear solver policy",
+      "maps_automatically_to_H_budget": false
+    }
+  },
+  "budget_provenance_record": {
+    "required_fields": [
+      "value_cm",
+      "provenance_id",
+      "policy_version",
+      "scope_id",
+      "frozen_source_identity"
+    ],
+    "selection_rule": "The value must be selected and frozen independently of the trial B_inf, C_h or accept/reject result.",
+    "runtime_requirement": "The complete provenance record must be available before the first physical attempt for an interval that uses the certificate.",
+    "missing_or_invalid_behavior": "certificate unavailable; transaction fails closed according to qualified F-KT11/F-VQ34 semantics",
+    "diagnostic_requirement": "Expose budget supplied/valid/native value together with provenance_id and policy_version at the runtime/coupling diagnostic surface."
+  },
+  "admissible_provenance_classes": {
+    "EXTERNAL_APPLICATION_ACCURACY_REQUIREMENT_FROZEN_BEFORE_EXECUTION": {
+      "admissible": true,
+      "requirements": [
+        "numeric finite positive value exists before execution",
+        "source identity and policy version are immutable for the qualification run",
+        "value is not selected from the current trial B_inf or outcome",
+        "scope identifies the application/execution profile"
+      ]
+    },
+    "VERSIONED_NUMERICAL_POLICY_TEMPLATE_QUALIFIED_ON_INDEPENDENT_EVIDENCE": {
+      "admissible": true,
+      "requirements": [
+        "template value is established on evidence disjoint from the target trial",
+        "template scope is explicit and not material-specific post-hoc tuning",
+        "qualification establishes the policy use, not merely one target-trial pass"
+      ]
+    }
+  },
+  "nonadmissible_provenance_classes": {
+    "CURRENT_TRIAL_B_INF_OR_FUNCTION_OF_B_INF": "circular target-outcome-dependent selection",
+    "F_VQ34_QUALIFICATION_ONLY_BUDGET_CONSTRUCTION": "qualification oracle is not an application policy",
+    "FGC02_PREDICTOR_HEAD_PERTURBATION": "trial perturbation is not an accuracy budget",
+    "LEGACY_BINARY_TRANSACTION_TEMPORAL_TOLERANCE": "different historical acceptance semantics",
+    "NONLINEAR_NEWTON_TOLERANCE": "different numerical error source and owner",
+    "UNQUALIFIED_COUPLING_HEAD_RESIDUAL_TOLERANCE": "interface convergence quantity is not automatically the model temporal indicator budget",
+    "MATERIAL_SPECIFIC_POST_HOC_TUNING": "violates generic numerical-policy provenance"
+  },
+  "unit_policy": {
+    "coupling_interface_head_unit": "m",
+    "richards_temporal_budget_native_unit": "cm pressure head",
+    "explicit_conversion_factor_m_to_cm": 100.0,
+    "conversion_changes_semantics": false,
+    "automatic_derivation_from_coupling_tolerance": false,
+    "note": "Unit conversion is permitted only after the semantic owner has supplied a legitimate budget quantity; conversion itself cannot create that budget."
+  },
+  "error_claim_boundary": {
+    "B_inf_is_proven_nonlinear_true_error_bound": false,
+    "C_h_le_1_proves_total_application_head_error_within_budget": false,
+    "coupling_and_temporal_errors_may_be_rigorously_added_without_separate_proof": false,
+    "qualified_claim": "C_h is a dimensionless acceptance certificate for the qualified bounded stiffness-aware Richards temporal indicator relative to an explicitly supplied budget."
+  },
+  "frozen_FGC02_reexecution_release_condition": {
+    "all_required": [
+      "F-VQ34 qualified production certificate binding remains source-locked",
+      "exact F-GC02 physical fixture remains unchanged",
+      "finite positive numeric H_budget with admissible provenance is frozen before any target-trial execution",
+      "budget value is independent of F-GC02 B_inf and result",
+      "hard mass remains an earlier absolute gate",
+      "fresh independent F-VQ admission workunit is opened and matrix/contract is frozen before execution"
+    ],
+    "currently_satisfied": false,
+    "current_missing_item": "finite positive numeric H_budget with admissible independent application/runtime provenance"
+  },
+  "current_policy_state": {
+    "numeric_H_budget_selected": false,
+    "FGC02_execution_authorized": false,
+    "F_VQ35_execution_authorized": false,
+    "production_source_change_required_for_policy_contract": false
+  }
+}
