@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2D_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_HYDROLOGIC_TRAJECTORY",
+  "contract": "F-FWC01_GATE_B2D_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_HYDROLOGIC_PRECOMMIT.json",
+  "production_implementation": false,
+  "candidate_numerical_policy": "EXPLICIT_EULER",
+  "workflow": {
+    "run": 34389708800,
+    "head": "ea65795ac27b6ebd4a58916b2b1f2466cc0be2ca",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifact_id": 10119119250,
+    "artifact_digest": "sha256:bfd8e33fa823dd4e5af6f1b65d011565e206b99068422bc988593d347d3896d0",
+    "full_row_artifact_only": true
+  },
+  "case_count": 864,
+  "case_pass_count": 524,
+  "case_fail_count": 340,
+  "failure_metric_counts": {
+    "front_trajectory": 297,
+    "equivalent_water": 7,
+    "nonworsening": 42
+  },
+  "fail_count_by_material": {
+    "B01": 116,
+    "B12": 57,
+    "O13": 72,
+    "O14": 95
+  },
+  "mass_and_transaction_evidence": {
+    "max_abs_step_mass_residual_cm": 1.249000902703301e-16,
+    "max_abs_horizon_mass_residual_cm": 1.93279164281754e-15,
+    "total_nonfinite_count": 0,
+    "total_negative_velocity_count": 0,
+    "total_accepted_boundary_violation_count": 0,
+    "rejected_trial_state_mutation_count": 0,
+    "rejected_trial_ledger_mutation_count": 0,
+    "mass_repair_count": 0,
+    "clipping_repair_count": 0,
+    "interpretation": "FINITE_VOLUME_MASS_AND_TRANSACTION_SEMANTICS_PASS_WITHIN_B2D_SCOPE"
+  },
+  "hydraulic_trajectory_evidence": {
+    "max_finest_relative_front_displacement_error": 0.0027381664185878135,
+    "frozen_limit": 0.001,
+    "max_finest_abs_equivalent_water_depth_error_cm": 0.00032067774820915274,
+    "frozen_limit_water_cm": 0.0001,
+    "median_error16_over_error8": 0.49919,
+    "median_observed_order_8_to_16": 1.00224,
+    "worst_case_error_sequence_1_2_4_8_16_steps_approx": [0.0477,0.02277,0.01113,0.005506,0.002738],
+    "interpretation": "CLEAN_FIRST_ORDER_EXPLICIT_EULER_TIME_INTEGRATION_ERROR_DOMINATES_THE_SCIENTIFIC_FAIL"
+  },
+  "numerical_floor_note": "The 42 nonworsening flags are dominated by cases already near floating-point/reference error floors and are not the reason to reject Euler. The material failure is the frozen finite hydrologic trajectory error in the meaningful cases.",
+  "physics_interpretation": [
+    "Eq18 itself is not falsified by B2D.",
+    "Mass conservation is strongly supported for the restricted existing-front finite-volume ownership.",
+    "The explicit-Euler policy with at most 16 frozen substeps is not sufficiently accurate for the frozen hydrologic trajectory targets.",
+    "Do not loosen the B2D thresholds or add more Euler substeps after seeing the result.",
+    "A distinct second-order numerical-policy gate is justified while preserving identical Eq18 physics, cases, horizons and hydrologic thresholds."
+  ],
+  "pass": false,
+  "decision": "EXISTING_INFILTRATION_FRONT_ADVANCE_NOT_QUALIFIED_RESEARCH_REQUIRED",
+  "next_research_direction": "B2D_R1_CONSERVATIVE_HEUN_RK2_NUMERICAL_POLICY",
+  "hard_guards": [
+    "B2D explicit Euler remains FAIL.",
+    "Do not reclassify the trajectory miss as a mass-conservation defect.",
+    "Do not relax the hydrologic thresholds in B2D-R1.",
+    "Keep physical Eq18 and event exclusions unchanged."
+  ]
+}
