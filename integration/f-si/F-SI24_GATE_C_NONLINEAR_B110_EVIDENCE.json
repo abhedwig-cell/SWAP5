@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "C_NONLINEAR_B110_FINITE_COMPARATOR_CHARACTERIZATION",
+  "plan": "integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_PLAN.json",
+  "attempt1_mapping_failure": "integration/f-si/F-SI24_GATE_C_ATTEMPT1_GEOMETRY_MAPPING_FAILURE.json",
+  "tested_head": "15351b66b8ea7920a8287232ece9342b9f5ae328",
+  "workflow_run": 34328375813,
+  "workflow_job": 102390874767,
+  "conclusion": "success",
+  "source_plan_comparator_driver_lock": "PASS",
+  "reference_tridag": "SWAP_4_3_1_THOMAS_TEST_ONLY",
+  "O0_O2_identity": true,
+  "production_source_unchanged": true,
+  "matrix": {
+    "case_count": 15,
+    "initial_uniform_heads_cm": [-25.0, -75.0, -250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1, -0.01, 0.001, 0.01, 0.1],
+    "attempt_horizon_day": 0.25,
+    "new_principal_Richards_trajectories_per_case": 1,
+    "new_deep_reference_trajectories": 0,
+    "new_full_nonlinear_companion_trajectories": 0,
+    "new_companion_tridiagonal_solves_per_case": 1
+  },
+  "comparator_semantics": {
+    "source": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json",
+    "source_blob": "cac160dbbdbb89b172d2afa055994d918abb0bbc",
+    "N512_exact_reference": false,
+    "new_N512_runs_executed": false,
+    "meaning": "E1_512 is the already persisted finite same-endpoint N1-to-N512 endpoint difference only."
+  },
+  "indicator": {
+    "raw": "e_raw=0.5*dt*(hdot_np1-hdot_n)",
+    "final_state_operator_scope": "test-only SwKimpl=0 accepted-state capacity plus current-policy base-state Darcy face conductances",
+    "explicit_bottom_distance": "0.5*dz_last per explicit HeadCalc grid_disnod semantics",
+    "defect_solve": "J_final*delta=(M/dt)*e_raw",
+    "B_M": "min(||e_raw||_M,2||delta||_M)",
+    "B_inf": "B_M/sqrt(min_i M_i)",
+    "D_inf_diagnostic": "2*max_i(abs(delta_i))",
+    "factor_two_fitted": false,
+    "global_scale_fitted": false,
+    "tolerance_selected": false
+  },
+  "aggregate": {
+    "finite_comparator_consistent_cases": 15,
+    "negative_transfer_cases": 0,
+    "all_N1_principal_mass_gates_passed": true,
+    "exact_maximum_mass_residual_recorded_here": false,
+    "raw_EOBS_over_E1_512_min": 32.02439744299201,
+    "raw_EOBS_over_E1_512_max": 1662.352031370096,
+    "B_inf_over_E1_512_min": 6.612988690174384,
+    "B_inf_over_E1_512_max": 56.88109916717148,
+    "D_inf_over_E1_512_min": 3.805153992582932,
+    "D_inf_over_E1_512_max": 25.09180768542775,
+    "raw_over_B_inf_improvement_min": 4.842651173829171,
+    "raw_over_B_inf_improvement_max": 77.1603231392969
+  },
+  "state_slices": {
+    "h0_minus25": {
+      "cases": 5,
+      "finite_comparator_consistent": 5,
+      "negative": 0,
+      "B_inf_over_E1_512_range": [21.50341287566621, 21.54412998464334]
+    },
+    "h0_minus75": {
+      "cases": 5,
+      "finite_comparator_consistent": 5,
+      "negative": 0,
+      "B_inf_over_E1_512_range": [56.77914338615517, 56.88109916717148]
+    },
+    "h0_minus250": {
+      "cases": 5,
+      "finite_comparator_consistent": 5,
+      "negative": 0,
+      "B_inf_over_E1_512_range": [6.612988690174384, 6.624803561532395]
+    }
+  },
+  "rows": [
+    {"case":1,"h0_cm":-25.0,"jump_cm":-0.1,"raw_ratio":1657.535187836696,"B_inf_ratio":21.50341287566621,"D_inf_ratio":8.945811497224074,"B_inf_ge_E1_512":true},
+    {"case":2,"h0_cm":-25.0,"jump_cm":-0.01,"raw_ratio":1659.7011414744504,"B_inf_ratio":21.521807692557925,"D_inf_ratio":8.953447206643352,"B_inf_ge_E1_512":true},
+    {"case":3,"h0_cm":-25.0,"jump_cm":0.001,"raw_ratio":1659.966051627356,"B_inf_ratio":21.5240472809497,"D_inf_ratio":8.954376794901636,"B_inf_ge_E1_512":true},
+    {"case":4,"h0_cm":-25.0,"jump_cm":0.01,"raw_ratio":1660.1828263127463,"B_inf_ratio":21.525879452798986,"D_inf_ratio":8.955136773040149,"B_inf_ge_E1_512":true},
+    {"case":5,"h0_cm":-25.0,"jump_cm":0.1,"raw_ratio":1662.352031370096,"B_inf_ratio":21.54412998464334,"D_inf_ratio":8.962706865692454,"B_inf_ge_E1_512":true},
+    {"case":6,"h0_cm":-75.0,"jump_cm":-0.1,"raw_ratio":1121.7314040515487,"B_inf_ratio":56.88109916717148,"D_inf_ratio":25.09180768542775,"B_inf_ge_E1_512":true},
+    {"case":7,"h0_cm":-75.0,"jump_cm":-0.01,"raw_ratio":1120.188687910772,"B_inf_ratio":56.83502889940995,"D_inf_ratio":25.07169342159513,"B_inf_ge_E1_512":true},
+    {"case":8,"h0_cm":-75.0,"jump_cm":0.001,"raw_ratio":1120.0004687903968,"B_inf_ratio":56.82941125999396,"D_inf_ratio":25.0692399089066,"B_inf_ge_E1_512":true},
+    {"case":9,"h0_cm":-75.0,"jump_cm":0.01,"raw_ratio":1119.8465256434865,"B_inf_ratio":56.824833436428626,"D_inf_ratio":25.067233284113843,"B_inf_ge_E1_512":true},
+    {"case":10,"h0_cm":-75.0,"jump_cm":0.1,"raw_ratio":1118.3097598799943,"B_inf_ratio":56.77914338615517,"D_inf_ratio":25.047205889847444,"B_inf_ge_E1_512":true},
+    {"case":11,"h0_cm":-250.0,"jump_cm":-0.1,"raw_ratio":32.10857400155038,"B_inf_ratio":6.624803561532395,"D_inf_ratio":3.812323917757218,"B_inf_ge_E1_512":true},
+    {"case":12,"h0_cm":-250.0,"jump_cm":-0.01,"raw_ratio":32.07064422814913,"B_inf_ratio":6.619450799964193,"D_inf_ratio":3.8090929356460315,"B_inf_ge_E1_512":true},
+    {"case":13,"h0_cm":-250.0,"jump_cm":0.001,"raw_ratio":32.06601401533915,"B_inf_ratio":6.618798064747511,"D_inf_ratio":3.808698544528588,"B_inf_ge_E1_512":true},
+    {"case":14,"h0_cm":-250.0,"jump_cm":0.01,"raw_ratio":32.062226594478765,"B_inf_ratio":6.618269320623631,"D_inf_ratio":3.808375945403302,"B_inf_ge_E1_512":true},
+    {"case":15,"h0_cm":-250.0,"jump_cm":0.1,"raw_ratio":32.02439744299201,"B_inf_ratio":6.612988690174384,"D_inf_ratio":3.805153992582932,"B_inf_ge_E1_512":true}
+  ],
+  "qualified": [
+    "The fixed, uncalibrated stiffness-aware F-SI24 indicator is finite-comparator-consistent in all 15 frozen nonlinear B1.10 owner cases.",
+    "No case provides negative transfer evidence against the persisted finite N512 endpoint difference.",
+    "The theorem-derived B_inf materially reduces the raw observer overconservatism across wet, intermediate and dry states while remaining above the finite comparator in this owner matrix.",
+    "The bounded-cost shape is preserved: one principal nonlinear N1 attempt plus one tridiagonal companion solve; no new deep refinement or full nonlinear companion trajectory is required.",
+    "Principal backward-Euler state and hard mass acceptance remain unchanged."
+  ],
+  "not_qualified": [
+    "B_inf as a nonlinear true-error bound.",
+    "N512 as exact truth.",
+    "D_inf as a theorem-derived or production bound despite its positive owner-matrix behavior.",
+    "A universal nonlinear safety factor or calibration.",
+    "A scientific temporal tolerance or dimensionless acceptance certificate.",
+    "A production final-state operator API or production retry policy.",
+    "Macropores, SwKimpl=1, root-sink Jacobians, saturated/DAE states, F-GC02 release or F-PE release."
+  ],
+  "decision_class": "FINITE_COMPARATOR_CONSISTENT_NONLINEAR_CHARACTERIZATION_NOT_TRUE_ERROR_BOUND",
+  "next_action": "Persist a consolidated owner candidate profile separating the exact linear theorem from the nonlinear finite-comparator evidence. Before any independent F-VQ run, freeze a genuinely disjoint held-out matrix and preserve the no-fitting/no-tolerance/no-production-change holds."
+}
