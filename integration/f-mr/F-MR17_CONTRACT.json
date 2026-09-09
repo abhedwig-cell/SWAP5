@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR17",
+  "title": "Richards Transactional Temporal Refinement Semantics & Owner Resolution",
+  "branch": "work/f-mr17-richards-temporal-refinement-semantics",
+  "base": {
+    "fsi20_negative_handoff_head": "81919d5373fb1976e228b32ae213a4685c0e4f9b",
+    "fsi20_negative_handoff": "integration/f-si/F-SI20_FVQ28_NEGATIVE_QUALIFICATION_HANDOFF.json",
+    "fvq28_closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "fmr16_readiness_head": "a19bf5ab988523f9ea8b6f9b03098603ede80b49"
+  },
+  "problem_statement": "F-VQ28 independently rejected direct use of the raw full-versus-two-half Richards head defect under the existing endpoint-shortening retry topology. The raw dimensional observable remains scientifically useful, but 36 of 67 resolved held-out retry attempts were under-conservative and 10 held-out cases lost a previously conservative relation during retry halving. A different estimator or refinement semantic is required before nonstationary prescribed-head temporal acceptance may proceed.",
+  "scope": {
+    "purpose": "Define and characterize a generic, transaction-safe temporal refinement semantic for Richards evolution without selecting a production tolerance or modifying production physics.",
+    "primary_research_candidate": "SAME_HORIZON_NESTED_REFINEMENT",
+    "secondary_research_candidate": "MODEL_OWNED_EMBEDDED_OR_MULTI_LEVEL_ESTIMATOR_IF_SOURCE_THEORY_SUPPORT_EXISTS",
+    "explicitly_rejected_candidate": "RAW_HEAD_DEFECT_WITH_EXISTING_ENDPOINT_SHORTENING_RETRY_TRANSLATION",
+    "not_allowed": [
+      "FGC02-specific tolerance tuning",
+      "mass-gate relaxation",
+      "solver-tolerance reuse as temporal tolerance",
+      "unconditional fixed N=16 production stepping",
+      "silent physics changes",
+      "production transaction changes before owner qualification",
+      "BALANCED, THROUGHPUT or FALLBACK admission"
+    ]
+  },
+  "same_horizon_candidate_semantics": {
+    "outer_interval": "Always remains the requested generic [t0,t1].",
+    "trial_origin": "Every refinement level starts physically from the same committed/checkpoint state.",
+    "level_0": "One full-step route over [t0,t1].",
+    "level_1": "Two half steps over the same [t0,t1].",
+    "deeper_levels": "If independently justified, 2^k equal substeps still ending at the same t1; no accepted physical state is published until the outer trial is accepted.",
+    "comparison": "Compare successive same-endpoint refinement levels using only owner-qualified dimensional observables/scalarization.",
+    "commit": "Only the accepted refined trajectory may become the candidate for outer transaction commit.",
+    "rollback": "Every rejected level/trial leaves committed state unchanged.",
+    "forcing": "No hidden event or forcing discontinuity may be introduced inside a refinement level; event semantics remain explicit and generic.",
+    "mass": "Every candidate refinement trajectory must preserve the unchanged hard authoritative mass contract."
+  },
+  "performance_guard": {
+    "normal_path_target": "Do not require unconditional deep refinement. The ordinary route remains approximately full plus two-half work.",
+    "extra_work_rule": "Additional refinement work is permitted only when acceptance evidence requires it.",
+    "incremental_reuse_required_for_production_candidate": true,
+    "structural_six_to_nine_full_runs_for_every_window_forbidden": true,
+    "bounded_cost_threshold_selected_here": false
+  },
+  "owner_boundaries": {
+    "F_SI": "Owns Richards-specific physical state observables and any model-specific estimator semantics.",
+    "F_MR": "Owns runtime composition and this nonproduction refinement-semantics characterization.",
+    "F_KT": "Owns generic checkpoint/trial/retry/commit semantics; any proposed production change to generic transaction behavior requires explicit F-KT owner qualification.",
+    "F_VQ": "Must independently qualify any selected numeric profile and composed production path.",
+    "F_GC": "Consumes only an admitted generic prescribed-head path; may not define temporal tolerances.",
+    "F_PE": "May resume tail/performance qualification only after an accepted nontrivial Richards runtime is independently admitted."
+  },
+  "qualification_gates": {
+    "A": "Reproduce F-VQ28 negative boundary and prove production source immutability.",
+    "B": "Characterize same-horizon nested refinement on the frozen F-VQ28 held-out hydraulic-state/jump matrix, with same-endpoint references and exact source locks.",
+    "C": "Demonstrate deterministic O0/O2 behavior, hard mass conservation, checkpoint isolation, rollback/replay and no committed mutation for rejected trajectories.",
+    "D": "Establish whether a dimensionally defensible owner observable/profile can bound remaining same-endpoint error over a predeclared calibration/held-out split without FGC02-specific tuning.",
+    "E": "If a production candidate changes generic transaction semantics, hand off to F-KT before any production implementation; if model-owned only, hand off to F-SI owner finalization.",
+    "F": "Require independent F-VQ admission of the exact composed production postimage before F-GC02 or F-PE release."
+  },
+  "architecture_invariants": [1,3,5,7,8,9,10,11,12,13,15,16,23,24,25,26,29,30],
+  "hard_constraints": {
+    "production_source_changed_at_contract_stage": false,
+    "physics_changed": false,
+    "mass_requirement_relaxed": false,
+    "transaction_semantics_changed": false,
+    "retry_policy_changed": false,
+    "temporal_tolerance_selected": false,
+    "reference_mode_preserved": true,
+    "generic_time_preserved": true
+  },
+  "exit_rule": "F-MR17 may select only a research candidate and owner handoff based on source-bound evidence. It may not declare a production temporal metric or tolerance qualified. Production release requires the relevant owner qualification, F-MR composition if needed, and independent F-VQ admission."
+}
