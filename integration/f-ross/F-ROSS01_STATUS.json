@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "RossFast Non-Iterative MFP-Based Fast Richards Solver",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "base_commit": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "production_implementation": false,
+  "persisted": true,
+  "tested": false,
+  "reproduced": false,
+  "qualified": false,
+  "decision": "ROSSFAST_QUALIFICATION_INCOMPLETE",
+  "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M"],
+  "hard_blockers_if_failed": ["C_SWAPHYDRAULICS_GENERALISATION", "D_DISCRETE_MASS_CONSERVATION"],
+  "primary_source": {
+    "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions, Agronomy Journal 95(6):1352-1361",
+    "doi": "10.2134/agronj2003.1352"
+  },
+  "independent_evaluation": {
+    "citation": "Crevoisier D, Chanzy A, Voltz M (2009), Evaluation of the Ross fast solution of Richards' equation in unfavourable conditions for standard finite element methods, Advances in Water Resources 32(6):936-947",
+    "doi": "10.1016/j.advwatres.2009.03.008"
+  },
+  "status": "SOURCE_BOUND_WORKUNIT_STARTED_THEORY_RECONSTRUCTION_NEXT"
+}
