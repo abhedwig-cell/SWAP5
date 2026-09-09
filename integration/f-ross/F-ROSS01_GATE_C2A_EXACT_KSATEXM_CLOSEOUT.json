@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_EXACT_SOURCE_BOUND_SWAPP431_KSATEXM_CLOSEOUT",
+  "status": "COMPLETE_FAIL_CLOSED",
+  "production_implementation": false,
+  "physical_closure": "SWAP431_EXACT_KSATEXM",
+  "physics_changed": false,
+  "admissibility_outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+  "source_contract": "F-ROSS01_GATE_C2A_KSATEXM_SOURCE_CONTRACT.json",
+  "policy_contract": "F-ROSS01_ADMISSIBILITY_AND_NEAR_SATURATION_POLICY_CONTRACT.json",
+  "frozen_scope": {
+    "hydraulic_family": "Staringreeks_2018_unimodal_MVG",
+    "ksatexm": "exact SWAP 4.3.1 source law enabled",
+    "h_enpr_cm": 0.0,
+    "macropore_physics": false,
+    "homogeneous_face": true,
+    "face_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "memory_ceiling_bytes": 262144,
+    "runtime_iteration_allowed": false
+  },
+  "characterization_lineage": [
+    {
+      "candidate": "C2A_UNIFORM_U_N241_BILINEAR",
+      "result": "FAIL",
+      "preserved_result": "F-ROSS01_GATE_C2A_KSATEXM_CHARACTERIZATION_RESULT.json",
+      "interpretation": "source-defined h=-2 cm derivative seam is not aligned to the uniform u grid and large wet-end amplification is poorly represented"
+    },
+    {
+      "candidate": "C2A_R1_SEAM_ALIGNED_U_N241_BILINEAR",
+      "result": "FAIL",
+      "workflow_run": 34342248930,
+      "preserved_result": "F-ROSS01_GATE_C2A_R1_SEAM_ALIGNED_RESULT.json",
+      "interpretation": "exact seam alignment alone is insufficient"
+    },
+    {
+      "candidate": "C2A_R2_HYBRID_S_U_N241_BILINEAR",
+      "result": "FAIL",
+      "workflow_run": 34342694684,
+      "workflow_head": "e8f4831544d5cec5cb584a992853484487762ccf",
+      "preserved_result": "F-ROSS01_GATE_C2A_R2_HYBRID_S_U_RESULT.json",
+      "interpretation": "using S in the wet extension materially reduces error for several materials but remains outside the frozen gate"
+    },
+    {
+      "candidate": "C2A_R3_HYBRID_S_U_N241_REGIME_LOCAL_CUBIC",
+      "result": "FAIL",
+      "workflow_run": 34343193670,
+      "workflow_head": "7da09f358df9dbcdbd41c5e3312cdbb980ae1945",
+      "preserved_result": "F-ROSS01_GATE_C2A_R3_REGIME_LOCAL_CUBIC_RESULT.json",
+      "interpretation": "higher local interpolation order improves bulk error for some cases but cannot rescue the frozen gate; extreme KSATEXM amplification remains a broad failure mode"
+    }
+  ],
+  "failure_mechanisms": {
+    "localized_threshold_cross_tail": {
+      "examples": ["O14", "B05", "O05"],
+      "evidence": "R3 p99 can satisfy the frozen criterion while maximum error remains above tolerance, with O14 worst case directly straddling h=-2 cm",
+      "meaning": "some moderate extensions are close to representable but still unqualified under the current compact table"
+    },
+    "broad_extreme_wet_extension_conditioning": {
+      "examples": ["B10", "O12", "O13"],
+      "evidence": "all three KSATEXM/KSATFIT=80 stress materials retain large R3 p99 as well as large maxima",
+      "meaning": "this is not a single-cell seam artifact and should not be repaired by an ad hoc threshold patch"
+    }
+  },
+  "hard_conclusions": [
+    "No tested C2A candidate passed characterization, therefore no 36-material exact-KSATEXM holdout was opened.",
+    "Frozen C1R accuracy thresholds were not relaxed after observing C2A results.",
+    "Exact SWAP 4.3.1 KSATEXM remains valid requested physics and must use an explicitly qualified alternative solver such as FullRichards whenever RossFast admission fails.",
+    "No production policy may silently replace exact KSATEXM with a smoother conductivity closure.",
+    "No R4 compact-table redesign is opened by this closeout. A future exact-KSATEXM research route requires a new representation hypothesis and a new predeclared characterization contract."
+  ],
+  "what_is_not_concluded": [
+    "KSATEXM is not declared scientifically invalid.",
+    "RossFast is not declared fundamentally incapable of exact KSATEXM under every possible representation.",
+    "No claim is made for h>-1 cm, saturation crossing, heterogeneous faces, transient columns, groundwater coupling or MultiSWAP production."
+  ],
+  "next_route": {
+    "required_first": "freeze an evidence-backed RossFast admissibility matrix",
+    "parallel_research_allowed_after_matrix": [
+      "Class B near-saturation physical closures used identically by FullRichards and RossFast",
+      "future separately contracted exact-KSATEXM representation research"
+    ],
+    "preferred_class_B_lineage": "Schaap_and_van_Genuchten_2006_MMVG_family, with published formulation kept distinct from any SWAP5-specific parameter mapping or NHI simplification"
+  },
+  "decision": "EXACT_SWAPP431_KSATEXM_C2A_COMPACT_N241_LINE_FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED"
+}
