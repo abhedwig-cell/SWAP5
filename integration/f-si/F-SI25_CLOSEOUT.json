@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI25",
+  "title": "Production Accepted-State Operator & Bounded Stiffness-Aware Indicator Seam",
+  "branch": "work/f-si25-accepted-state-operator-indicator-seam",
+  "base_commit": "2590820b228ca5fd3ac31c12728310a10171a144",
+  "contract_commit": "e39b2c7fae157ab73cd163bda07d642c2285588e",
+  "owner_evidence_commit": "b2ccc2a6b02c405a280301bf736f448245d375e1",
+  "tested_head": "bb51a0700bcf1484066b2c38d699654e697c007b",
+  "workflow": {
+    "name": "F-SI25 reference indicator production seam",
+    "run_id": 34338272775,
+    "job_id": 102422718403,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.3.0"
+  },
+  "realized": true,
+  "persisted": true,
+  "tested": true,
+  "independently_qualified": false,
+  "status": "COMPLETE_OWNER_VERIFIED_PRODUCTION_INDICATOR_SEAM",
+  "decision": "IMPLEMENTED_OWNER_VERIFIED_PRODUCTION_SOLVER_OWNED_BOUNDED_STIFFNESS_AWARE_INDICATOR_SEAM_READY_FOR_TRANSACTION_HISTORY_COMPOSITION_AND_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "gate_results": {
+    "A_contract_and_lineage": "PASS",
+    "B_generic_solver_service": "PASS_FAIL_CLOSED_DEFAULT_UNAVAILABLE",
+    "C_reference_richards_operator": "PASS_SOLVER_OWNED_NO_HEADCALC_INTERNAL_ARRAY_EXPOSURE",
+    "D_candidate_semantics": "PASS_EXACT_F_SI24_F_VQ30_FORMULA_NO_TOLERANCE_OR_ACCEPTANCE_POLICY",
+    "E_noninterference_and_cost": "PASS",
+    "F_owner_replay": "PASS_EXACT_LINEAR_PLUS_15_F_SI24_OWNER_CASES_PLUS_16_F_VQ30_FROZEN_CASES",
+    "G_O0_O2": "PASS_BITWISE_IDENTITY"
+  },
+  "verification_summary": {
+    "F_SI24_owner_cases": 15,
+    "F_SI24_max_metric_abs_diff": 0.0,
+    "F_VQ30_frozen_cases": 16,
+    "F_VQ30_O0_cases_pass": 16,
+    "F_VQ30_O2_cases_pass": 16,
+    "F_VQ30_max_B_inf_abs_diff": 0.0,
+    "max_candidate_mass_residual": 2.7755575615628914e-15,
+    "hard_mass_tolerance": 1.0e-12,
+    "additional_full_nonlinear_solves": 0,
+    "additional_tridiagonal_solves": 1,
+    "exact_linear_factor_2_regression": "PASS",
+    "deep_N128_N256_N512_trajectory_in_production": false
+  },
+  "qualified_owner_envelope": {
+    "solver": "reference Richards legacy binding",
+    "top_boundary": "explicit fixed flux",
+    "bottom_mode": 5,
+    "macropore_active": false,
+    "root_sink_provider": "not active/not admitted",
+    "source_sink": "admitted B1.10 head-independent provider semantics",
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "operator_policy": "M uses converged candidate-state capacity; Darcy conductances use base-state conductivity under frozen SwKimpl=0 policy",
+    "unsupported_routes": "indicator unavailable fail-closed; principal solve unchanged"
+  },
+  "state_and_scratch": {
+    "persistent_per_column_indicator_state_added": false,
+    "previous_accepted_right_derivative_persisted_by_F_SI25": false,
+    "committed_state_mutated_by_indicator": false,
+    "temporary_operator_and_defect_arrays": "invocation-local solver scratch",
+    "reusable_worker_pooling": "not implemented; optional later optimization without semantic change"
+  },
+  "hard_nonclaims": [
+    "This closeout is owner verification of the implementation, not independent production qualification.",
+    "B_inf is not a qualified general nonlinear true-error bound.",
+    "N512 is not exact truth.",
+    "No scientific temporal tolerance is selected.",
+    "No production temporal acceptance or retry policy is admitted.",
+    "No q_cap, Nmin, geometric tail multiplier, safety factor or fitted rescue coefficient is introduced.",
+    "No arbitrary head-dependent top boundary, root sink, source/sink Jacobian or macropore operator support is admitted.",
+    "F-GC02, groundwater coupling and F-PE remain unreleased."
+  ],
+  "architecture_assessment": {
+    "single_kernel": "PASS",
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS",
+    "scratch_not_column_state": "PASS_WITH_POOLING_OPTIMIZATION_DEFERRED",
+    "transactional_correctness": "PASS_FOR_NONMUTATING_INDICATOR_SERVICE; committed history composition still downstream",
+    "generic_time": "PASS",
+    "mass_conservation": "PASS",
+    "bounded_cost": "PASS",
+    "MultiSWAP_openness": "PASS",
+    "alternative_solver_openness": "PASS_GENERIC_UNAVAILABLE_DEFAULT",
+    "no_HeadCalc_internal_coupling": "PASS",
+    "physics_solver_policy_separation": "PASS",
+    "diagnostics": "PASS",
+    "no_silent_dependencies": "PASS"
+  },
+  "next_required_work": [
+    "F-KT transaction-owned persistence/rollback/commit semantics for previous accepted right derivative, feature-scoped and inactive-column-free.",
+    "Independent production/composition qualification after transaction history composition; use the next live-free F-VQ number only after rechecking.",
+    "Scientific temporal tolerance and acceptance/retry policy remain separate later gates.",
+    "Resume the existing F-GC02 only after those temporal dependencies actually qualify."
+  ]
+}
