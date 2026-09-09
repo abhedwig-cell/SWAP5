@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF26",
+  "title": "Restricted Standard WOFOST One-Day Structural State Integrator Qualification Evidence",
+  "base": {
+    "commit": "342096ca6d44a8d83458209eda2039424db0d2d5",
+    "status": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE"
+  },
+  "tested_candidate": "59c371ecb86fdfc9443c12af99fad2d3f9b6d361",
+  "verification": {
+    "workflow": "F-WOF26 one-day structural evolution",
+    "run_id": 34301817653,
+    "conclusion": "success",
+    "compiler_modes": ["-O0", "-O2"],
+    "O0_O2_output_identity": "PASS",
+    "structural_gate_output_sha256": "e3ec4954bc2a98984eb232f41eb073f44474cb988f2e8c01cc71e375794fefa0",
+    "F_WOF24_backward_compatibility": "PASS_O0_O2_AND_OUTPUT_IDENTITY"
+  },
+  "production_delta_from_F_WOF25": {
+    "source_files": [
+      "src/crop/mod_wofost_crop_owner_state.f90",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90"
+    ],
+    "other_source_files_changed": false,
+    "F_WOF25_status_and_readiness_locked": true
+  },
+  "qualified_production_capability": {
+    "name": "restricted one-day standard-WOFOST structural state integrator",
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "event_duration": "exactly one explicit crop day",
+    "owner_extension": {
+      "common_optional_continuation": [
+        "temperature_sum",
+        "anthesis_reached",
+        "minimum_temperature_history_count",
+        "minimum_temperature_history[7]"
+      ],
+      "reference_compatibility_sidecar": [
+        "conditional B1.10 LAIEXP exponential-rate carryover"
+      ],
+      "full_rate_workspace_persisted": false
+    },
+    "prepare_phase": [
+      "validate explicit one-day [t0,t1]",
+      "deep-copy caller owner into a candidate",
+      "update nofd-equivalent minimum-temperature history candidate-locally",
+      "derive running minimum temperature from candidate-local history"
+    ],
+    "finalize_phase": [
+      "derive B1.10 RELTR from explicit accepted IQROT/IPTRA window values",
+      "require supplied event-local rate packet to bind to that RELTR",
+      "apply leaf stress death from oldest cohorts",
+      "apply pre-shift lifespan death",
+      "insert exactly one new youngest cohort and physiologically age survivors once",
+      "update LAIEXP and capture/use B1.10 post-threshold carryover semantics",
+      "integrate root/stem/storage net growth",
+      "apply first anthesis crossing correction so DVS lands exactly on 1",
+      "update TSUM and DVS once",
+      "return candidate without commit authority"
+    ]
+  },
+  "source_bound_semantic_mapping": {
+    "legacy_fixed_cadence": "B1.10 WOFOST DELT=1 and one task-3 crop update at day end",
+    "anthesis": "first DVS+dvr crossing of 1 sets anthesis flag and truncates dvr to 1-DVS",
+    "leaf_death": "water/high-LAI stress death is removed from oldest cohorts before lifespan death",
+    "leaf_shift": "one call shifts retained cohorts, ages them by FYSDEL*DELT and inserts one youngest cohort even when GRLV is zero",
+    "LAIEXP": "when pre-event LAIEXP<6 GLAIEXP is current-event input; after threshold the B1.10 saved value remains a continuation dependency",
+    "RELTR": "1 when abs(IPTRA_WINDOW)<1e-10, otherwise clamp(IQROT_WINDOW/IPTRA_WINDOW,0,1)",
+    "day_start_climate_memory": "nofd increments to at most seven, atmin7 shifts and current TMN enters the youngest slot"
+  },
+  "transaction_and_replay_evidence": {
+    "F_KT_checkpoint_used": true,
+    "prepare_mutates_checkpoint": false,
+    "discarded_candidate_mutates_committed_state": false,
+    "same_checkpoint_same_event_candidate_replay": "BITWISE_IDENTICAL",
+    "same_checkpoint_same_event_diagnostics_replay": "BITWISE_IDENTICAL",
+    "commit_authority_added_by_F_WOF26": false
+  },
+  "fail_closed_evidence": [
+    "non-one-day active crop event is rejected",
+    "rate packet RELTR inconsistent with accepted aggregates is rejected",
+    "post-LAIEXP-threshold exact-reference path without carryover sidecar is rejected",
+    "invalid active owner/continuation/forcing/parameters/rates are rejected"
+  ],
+  "backward_compatibility": {
+    "existing_F_WOF24_view_only_owner_behavior": "PASS",
+    "old emerged owner_without_evolution_continuation_remains_valid": true,
+    "existing_WRT_and_derived_LAI_views_retained": true,
+    "inactive_owner_optional_state_forbidden": true
+  },
+  "explicit_qualification_boundary": {
+    "full_standard_WOFOST_production_physics_qualified": false,
+    "reason": "F-WOF26 integrates an explicit event-local rate packet but does not calculate the WOFOST rates themselves.",
+    "missing_rate_physics": [
+      "assimilation/photosynthesis",
+      "temperature and solar response calculations",
+      "maintenance respiration",
+      "partitioning",
+      "organ growth and death rate calculation",
+      "leaf growth/death/SLA/FYSDEL rate calculation"
+    ],
+    "accepted_aggregate_provenance_verified_inside_integrator": false,
+    "accepted_aggregate_precondition": "caller/runtime must provide frozen accepted-window IQROT/IPTRA values under F-KT/F-WOF25 lineage and exactly-once semantics; the value-only DTO cannot prove lineage itself",
+    "root_extension_distribution_evolution": false,
+    "IDSL2_vernalization": false,
+    "oxygen_IALPWET_window_composition": false,
+    "potential_shadow": false,
+    "nutrient_route": false,
+    "soybean": false,
+    "grass": false,
+    "arbitrary_subdaily_or_multiday_crop_evolution": false
+  },
+  "architecture_invariant_audit": {
+    "2_kernel_no_IO": "PASS_NO_IO_OR_PARSING_DEPENDENCY",
+    "3_explicit_data_separation": "PASS_STATE_FORCING_AGGREGATES_PARAMETERS_RATES_DIAGNOSTICS_SEPARATE",
+    "4_compact_persistent_state": "PASS_OPTIONAL_CONTINUATION_AND_CONDITIONAL_SINGLE_SCALAR_REFERENCE_SIDECAR",
+    "5_scratch_per_worker": "PASS_EVENT_LOCAL_RATE_PACKET_NOT_OWNER_STATE",
+    "6_scalable_memory_layout": "PASS_NO_LAYOUT_CONSTRAINT_ADDED",
+    "7_transactional_time_steps": "PASS_CANDIDATE_ONLY_AND_F_KT_REPLAY_TESTED",
+    "8_cheap_recalculation": "PASS_SAME_CHECKPOINT_REPLAY_BITWISE_IDENTICAL",
+    "9_generic_time": "PASS_EXPLICIT_T0_T1_WITH_ONE_DAY_PROCESS_ADMISSION_ONLY",
+    "13_mass_conservation": "PASS_NO_NEW_WATER_MASS_OWNER; IQROT_IS_READ_ONLY_ACCEPTED_AGGREGATE_INPUT",
+    "16_MultiSWAP": "PASS_OPTIONAL_OWNER_STATE_AND_NO_PER_COLUMN_RATE_WORKSPACE",
+    "21_reuse_SWAP_physics": "PASS_SOURCE_BOUND_B110_STATE_UPDATE_SEMANTICS",
+    "23_physics_solver_policy_separation": "PASS_NO_NUMERICAL_POLICY_DEPENDENCY",
+    "25_reference_mode": "PASS_B110_GLAIEXP_CARRYOVER_PRESERVED_FOR_EXACT_REFERENCE_PATH",
+    "27_optional_functionality": "PASS_INACTIVE_OWNER_HAS_NO_NEW_OPTIONAL_ALLOCATIONS",
+    "29_no_hidden_dependencies": "PASS_NO_CALENDAR_DAYNR_T1900_IO_SOLVER_OR_MODFLOW_DEPENDENCY",
+    "30_architecture_change_audited": "PASS"
+  },
+  "qualification_decision": "QUALIFY_RESTRICTED_STANDARD_WOFOST_ONE_DAY_STRUCTURAL_STATE_INTEGRATOR_ONLY",
+  "next_dependency": "source-bound one-day standard-WOFOST rate evaluator capable of producing the qualified event-local rate packet without introducing persistent rate workspace or hidden calendar/global dependencies"
+}
