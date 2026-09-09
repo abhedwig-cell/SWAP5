@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "audit": "CONCURRENT_RESTRICTED_REAL_PHYSICS_CONTEXT_OWNERSHIP",
+  "status": "SOURCE_BOUND_BLOCKER_CONFIRMED",
+  "decision": "BLOCKED_SHARED_MUTABLE_LEGACY_CONTEXT_WORKER_COUNT_GT1_MUST_REMAIN_NOT_ADMITTED",
+  "audited_head_before_artifact": "dea3da3d3c1f9d63a7ea868e2ef761a54c87aa51",
+  "source_bound_objects": {
+    "serialized_backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "ade399a1df4b582c9038442093ccacce034f923d"
+    },
+    "serialized_context_binding": {
+      "path": "src/adapter/mod_b110_serialized_context_binding.f90",
+      "blob": "94e904ed9701a00fb273ced4944161e9f47c5200"
+    },
+    "legacy_solver_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "eb4b74ee422bc331ed3d6abaa40dd9f85b2551c0"
+    },
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "be5978827095445b15de7baf607728792de6a366"
+    },
+    "worker_context": {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "2a190d206200ad201c37c9a82d3e32e651d37a37"
+    },
+    "state_binding": {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob": "e68d88382c6502c571713cc97fddd4e18434e271"
+    },
+    "soil_water_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "57b51997d28807fbe2da1b2e5bf654fc4167adb9"
+    }
+  },
+  "positive_isolation_already_present": {
+    "explicit_candidate_state_binding": true,
+    "worker_owned_headcalc_scratch": true,
+    "worker_owned_solver_history": true,
+    "worker_owned_solver_diagnostics": true,
+    "worker_owned_numerical_control_carrier": true,
+    "worker_owned_execution_time_carrier": true,
+    "explicit_constitutive_provider": true,
+    "explicit_source_sink_provider": true,
+    "explicit_top_boundary_provider": true,
+    "request_contains_step_duration": true,
+    "request_contains_boundary_conditions": true,
+    "request_contains_numerical_config": true,
+    "meaning": "Most data required for a reentrant restricted solve already exists outside legacy globals. The blocker is residual use of shared module context, not absence of an explicit kernel/solver contract."
+  },
+  "decisive_shared_mutable_hazards": [
+    {
+      "owner": "mod_b110_serialized_context_binding",
+      "finding": "bind_b110_serialized_legacy_context writes request-specific values into the shared variables module before every solve.",
+      "written": [
+        "dt",
+        "swbotb",
+        "swkimpl",
+        "swkmean",
+        "dtmin",
+        "maxit",
+        "maxbacktr",
+        "CritDevBalCp",
+        "CritDevBalTot",
+        "critdevh2cp",
+        "critdevh1cp",
+        "critdevponddt",
+        "fldtmin",
+        "qtop",
+        "qbot",
+        "hbot"
+      ]
+    },
+    {
+      "owner": "mod_reference_richards_legacy_binding",
+      "finding": "reference_richards_legacy_solve validates an explicit request against shared module values and then calls HeadCalc; therefore separate backend/workspace objects do not isolate the complete execution context.",
+      "shared_values_read_during_validation": [
+        "swmacro",
+        "swkimpl",
+        "fldtmin",
+        "swbotb",
+        "numnod",
+        "z",
+        "dz",
+        "disnod",
+        "dt",
+        "maxit",
+        "maxbacktr",
+        "swkmean",
+        "dtmin",
+        "CritDevBalCp",
+        "CritDevBalTot",
+        "critdevh2cp",
+        "critdevh1cp",
+        "critdevponddt"
+      ]
+    },
+    {
+      "owner": "headcalc canonical explicit-state path",
+      "finding": "HeadCalc still imports and directly consumes legacy module controls while worker/state/provider arguments are present.",
+      "examples": [
+        "fldaystart controls solver-history reset",
+        "swbotb selects lower-boundary branches",
+        "dt enters residuals, balances and retry state",
+        "swkmean selects conductivity averaging",
+        "swkimpl selects Jacobian/conductivity treatment",
+        "maxit bounds nonlinear iterations",
+        "fldtmin changes iteration/backtracking and failure behaviour",
+        "balance/head/ponding tolerances control convergence"
+      ]
+    },
+    {
+      "owner": "headcalc failure path",
+      "finding": "HeadCalc can assign shared fldtmin=.FALSE. on a nonconverged trajectory. This is a concrete shared write during solver execution, not merely a read-only compatibility dependency."
+    }
+  ],
+  "why_backend_per_worker_is_insufficient": [
+    "fmr_serialized_reference_backend_t can own independent model/kernel/workspace objects, but those objects converge onto bind_b110_serialized_legacy_context before each HeadCalc solve.",
+    "Two concurrent calls may interleave request binding, validation and HeadCalc reads/writes through the same Fortran module storage.",
+    "A worker-local a23bu_worker_context_t protects Newton/scratch/diagnostic arrays but does not make variables/MOD_* module storage thread-local.",
+    "Therefore worker_count>1 cannot be admitted by merely allocating multiple backend instances."
+  ],
+  "restricted_profile_nuance": {
+    "explicit_state_avoids_legacy_h_theta_publication": true,
+    "explicit_source_sink_avoids_legacy_qdra_qssdi_for_main_restricted_path": true,
+    "explicit_top_provider_keeps_actual_top_flux_in_state_binding": true,
+    "shared_grid_can_be_read_only_only_if_execution_batch_has_one_frozen_layout": true,
+    "conclusion": "The remaining blocker is narrower than full SWAP global-state removal, so a bounded canonical-path isolation refactor is plausible. It still requires edits to existing solver/adapter/HeadCalc source and must be independently qualified."
+  },
+  "minimum_isolation_refactor": {
+    "goal": "Make the canonical restricted HeadCalc path reentrant without changing legacy standalone semantics.",
+    "steps": [
+      "Pass request step_duration, boundary conditions and soil_water_numerical_config explicitly into the canonical HeadCalc execution path instead of rebinding them through variables.",
+      "Replace canonical fldtmin use with worker%control%at_min_dt and keep dt-reduction requests in worker/state-local control.",
+      "Replace canonical fldaystart dependence with worker%time%day_start_event; no hidden calendar read is allowed.",
+      "Use request parameters/state binding for canonical per-column state and keep provider-owned constitutive/source/top data explicit.",
+      "Stop calling bind_b110_serialized_legacy_context from the canonical restricted backend once all required mutable controls are explicit; retain it only for legacy-adapter execution where necessary.",
+      "For the first concurrent admission, require one homogeneous frozen grid/layout per concurrent batch; do not rebind MOD_grid between workers.",
+      "Add a source gate proving the canonical path has no mutable variables-module read/write dependencies before any OpenMP/thread worker execution is enabled.",
+      "Then run 1/2/4/8-worker exact committed-state, mass, diagnostics, order and repeatability qualification against the MQ23 reference."
+    ]
+  },
+  "rejected_shortcuts": [
+    {
+      "option": "multiple backend objects without context isolation",
+      "reason": "shared module storage remains"
+    },
+    {
+      "option": "global critical section around HeadCalc",
+      "reason": "would preserve serialization and does not qualify simultaneous real-physics solving"
+    },
+    {
+      "option": "silently use threadprivate on selected globals",
+      "reason": "would require broad initialization/provenance qualification and risks hidden per-thread physics/config divergence"
+    },
+    {
+      "option": "enable worker_count>1 and rely on equal fixture values",
+      "reason": "not a thread-safety proof and fails for allowed per-column/batch variation or failure/retry trajectories"
+    }
+  ],
+  "architecture_invariant_audit": {
+    "2_kernel_separate_from_io": "UNCHANGED",
+    "3_explicit_data_separation": "REFACTOR_DIRECTION_REQUIRED: numerical and boundary request data must stay explicit instead of being mirrored into shared globals.",
+    "5_scratch_per_worker": "PARTLY_REALIZED: scratch is worker-owned; residual shared control state remains a blocker.",
+    "6_scalable_memory_layout": "COMPATIBLE_WITH_REFACTOR",
+    "9_generic_time": "CURRENT_CANONICAL_PATH_STILL_READS fldaystart; replace with explicit worker event before concurrent qualification.",
+    "16_multiswap_primary": "BLOCKER_MUST_BE_REMOVED_FOR_REAL_PARALLELISM",
+    "22_no_headcalc_internals_for_other_modules": "PRESERVE: isolation should remain behind solver interface.",
+    "23_physics_vs_solver_policy": "PRESERVE: explicit numerical controls must not modify physics.",
+    "24_predictable_runtime": "NO_PARALLEL_CLAIM_YET",
+    "25_reference_mode": "MQ23 serialized reference remains available throughout refactor qualification.",
+    "29_no_silent_dependencies": "CURRENT fldaystart/module-control dependencies are exactly the silent dependencies to retire from canonical path.",
+    "30_change_audit": "PASS_FAIL_CLOSED: no concurrency source refactor has been started in this audit."
+  },
+  "ownership_gate": {
+    "current_F_MR20_additive_source_ownership_exhausted": true,
+    "shared_existing_source_edit_required_for_next_step": true,
+    "instruction": "Do not enable worker_count>1 on the current branch state. Reconcile ownership before editing shared solver/adapter/HeadCalc source; active F-MR19 must not be disturbed."
+  },
+  "current_runtime_requirement": "FMR_PARALLEL_POOL_MULTIWORKER_NOT_ADMITTED must remain enforced until the minimum isolation refactor and subsequent real-physics concurrency qualification are green."
+}
