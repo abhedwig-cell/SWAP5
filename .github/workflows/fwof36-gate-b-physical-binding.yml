@@ -9,6 +9,7 @@ on:
       - 'src/runtime/mod_fmr_wofost_physical_trial_binding.f90'
       - 'integration/f-wof/F-WOF36_GATE_B_DESIGN_PRECOMMIT.json'
       - 'tests/fwof/run_fwof36_gate_b_physical_binding_gate.sh'
+      - 'tests/fwof/run_fwof36_gate_b_physical_binding_gate_v2.sh'
       - '.github/workflows/fwof36-gate-b-physical-binding.yml'
   workflow_dispatch:
 
@@ -25,4 +26,4 @@ jobs:
           sudo apt-get install -y gfortran
           gfortran --version
       - name: Run F-WOF36 Gate B real-physics binding gate
-        run: bash tests/fwof/run_fwof36_gate_b_physical_binding_gate.sh
+        run: bash tests/fwof/run_fwof36_gate_b_physical_binding_gate_v2.sh
