@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "A_CONTINUITY_ALGEBRA",
+  "workflow_run": 34314383222,
+  "head_under_test": "7d56fdee87cef995797f4f558bd69955703f482a",
+  "artifact": {
+    "id": 10089514525,
+    "digest": "sha256:a10eece27a158bf1b0f7f4bac96887df8b9bec4e209661a9d147a7d8d05a88f7"
+  },
+  "cases": 18,
+  "cell_counts": [1,2,3,8,32,128],
+  "sigma_values": [0.0,0.5,1.0],
+  "observed": {
+    "maximum_abs_mass_residual": 8.326672684688674e-17,
+    "maximum_abs_tridiagonal_residual": 8.673617379884035e-19,
+    "base_state_bitwise_unchanged_all": true,
+    "global_nonlinear_iterations": 0,
+    "cost_structure": "one O(N) tridiagonal solve plus O(N) face evaluation per internal step"
+  },
+  "thresholds": {
+    "maximum_abs_mass_residual": 1e-12,
+    "maximum_abs_tridiagonal_residual": 1e-12
+  },
+  "decision": "CONTINUITY_ALGEBRA_QUALIFIED_READY_FOR_REAL_FACE_TABLE_GATE",
+  "scope_limit": "Uses an analytic linear face law solely to verify Ross continuity algebra. It does not qualify SWAP hydraulics, physical table interpolation, saturated-unsaturated transitions, timestep accuracy, groundwater, coupling or production use.",
+  "status": "PERSISTED_TESTED_QUALIFIED_WITHIN_ALGEBRAIC_SCOPE"
+}
