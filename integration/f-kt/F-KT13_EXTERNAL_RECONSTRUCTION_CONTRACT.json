@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "workunit": "F-KT13",
+  "title": "Trusted External Reconstruction and True Process-Boundary Restart Qualification",
+  "base": {
+    "branch": "work/f-kt12-generic-committed-state-restore",
+    "commit": "a7fad31e392ab5b43d4db3eea5e18687e8d36bc6",
+    "qualified_typed_restore_head": "eb7de82da18864cc4ed4d2e9a253499613fbe3b9"
+  },
+  "scope": "committed-boundary process restart through an adapter-owned external representation",
+  "problem": "F-KT12 qualifies opaque typed export and restore only while a live kernel_persistence_snapshot_t still exists. After total process loss there is no qualified path from an external representation back to an opaque typed snapshot without exposing independent revision or lineage mutation.",
+  "selected_architecture": {
+    "kernel_role": [
+      "remain free of files, paths, parsers and byte formats",
+      "retain opaque committed-state ownership",
+      "retain F-KT12 schema/layout validation and restore semantics",
+      "provide one atomic trusted reconstruction seam for a complete provenance record plus one already-decoded physical continuation state",
+      "validate the entire imported record before publishing a ready typed persistence carrier"
+    ],
+    "adapter_role": [
+      "own the external representation",
+      "own serialization and parsing",
+      "own physical-state codec selection",
+      "own artifact completeness checks",
+      "decode physical state before calling the trusted kernel seam",
+      "call the trusted reconstruction seam atomically rather than setting lineage, revision or time independently"
+    ],
+    "ordinary_runtime_api": [
+      "no revision setter",
+      "no lineage setter",
+      "no committed-time setter",
+      "no arbitrary historical rollback",
+      "no raw overwrite of an initialized committed state"
+    ]
+  },
+  "trusted_reconstruction_record": {
+    "fields": [
+      "schema_version",
+      "layout_id",
+      "lineage_id",
+      "committed_revision",
+      "time_bound",
+      "committed_time",
+      "decoded physical continuation state"
+    ],
+    "atomicity": "all fields are accepted or rejected as one record; no field is independently assignable through the ordinary API",
+    "validation": [
+      "schema version exact",
+      "layout id positive",
+      "lineage id positive",
+      "revision nonnegative",
+      "committed time finite when bound",
+      "unbound time uses the canonical zero payload",
+      "decoded physical state allocated and cloneable",
+      "constructed typed carrier passes the existing F-KT12 ready checks"
+    ]
+  },
+  "qualification_adapter": {
+    "status": "test-only concrete adapter used to qualify the generic boundary",
+    "location": "outside src/kernel",
+    "representation": "strict versioned line-oriented artifact with real values stored by exact int64 bit pattern",
+    "codec_registry": "one known deterministic F-KT physical-state codec plus explicit unknown-codec rejection",
+    "production_format_claim": false,
+    "cryptographic_authenticity_claim": false
+  },
+  "process_boundary_test": {
+    "reference": "continuous executable T0->T1->T2",
+    "producer": "separate executable T0->T1, export typed state, adapter writes artifact, process exits",
+    "consumer": "new executable parses artifact, decodes physical state, reconstructs opaque typed carrier, restores committed state, continues T1->T2",
+    "required_identity": [
+      "endpoint physical state bit exact",
+      "lineage exact",
+      "revision exact",
+      "committed time exact",
+      "next checkpoint origin revision exact",
+      "next candidate origin revision exact",
+      "mass ledger complete",
+      "mass residual exact",
+      "restore/reconstruction introduces no physical transfer"
+    ]
+  },
+  "negative_gates": [
+    "wrong schema fails closed",
+    "wrong layout fails closed",
+    "unknown physical-state codec fails closed",
+    "truncated representation fails closed",
+    "duplicate or unexpected provenance field fails closed",
+    "inconsistent time-bound/time-payload record fails closed",
+    "invalid lineage fails closed",
+    "invalid revision fails closed",
+    "invalid physical payload fails closed",
+    "restore into already initialized target remains rejected by F-KT12"
+  ],
+  "preservation_gates": [
+    "F-KT03",
+    "F-KT04",
+    "F-KT05",
+    "F-KT12"
+  ],
+  "optimization": [
+    "O0",
+    "O2"
+  ],
+  "architecture_invariants": {
+    "2_kernel_separate_from_io": "hard requirement",
+    "3_explicit_data_separation": "compatible",
+    "4_compact_persistent_state": "hard requirement",
+    "5_scratch_per_worker": "hard exclusion from artifact",
+    "7_transactional_timesteps": "restore only at committed boundary",
+    "8_cheap_recompute_warm_start": "warm-start state not persisted",
+    "9_generic_time": "committed scalar time preserved without calendar assumptions",
+    "11_coupling_core": "compatible with committed-window restart",
+    "13_mass_conservation": "hard gate",
+    "16_multiswap_primary": "per-column logical record; batching may be layered later",
+    "23_physics_solver_policy_separated": "neither persisted forcing nor solver policy mutation",
+    "26_runtime_diagnostics": "restart path must remain diagnosable without persisting reporting history",
+    "28_runtime_coupler_composition": "artifact and codec ownership stay outside kernel",
+    "29_no_silent_dependencies": "explicit schema/layout/codec/provenance record",
+    "30_architecture_change_test": "required"
+  },
+  "explicit_nonclaims": [
+    "no mid-transaction restart",
+    "no in-flight candidate persistence",
+    "no worker scratch persistence",
+    "no production restart file format",
+    "no cryptographic authenticity",
+    "no arbitrary rollback",
+    "no blanket compatibility across schema or layout changes"
+  ],
+  "exit_if_qualified": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION",
+  "preimplementation_status": "CONTRACT_PERSISTED_IMPLEMENTATION_NOT_YET_TESTED_OR_QUALIFIED"
+}
