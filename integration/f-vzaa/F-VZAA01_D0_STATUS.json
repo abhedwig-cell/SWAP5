@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01-D0",
+  "title": "VZAA donor separability characterization",
+  "branch": "work/f-vzaa01-d0-donor-separability-evidence",
+  "base_layeredmfp_head": "f5af8f4a9371cb55f223d91e24cf96f91bdd4f6d",
+  "vzaa_source_evidence_head": "cffeed211b4bc6f3389ed12ba555253d905f993e",
+  "execution_head": "9d2bd1fd05f2039fd66488764c035316e69a17f4",
+  "decision_commit": "8b9e2b6733dd4f6c3d926eb4d8e9cd49a0f81ee9",
+  "workflow": {
+    "run": 34323109845,
+    "conclusion": "success",
+    "artifact": 10092743882,
+    "artifact_digest": "sha256:e563686cc9e9aba574633391ef85cef9d99349b26c4c46a55c1bd17b95a7c94d"
+  },
+  "state": {
+    "precommitted": true,
+    "implemented_experiment_only": true,
+    "persisted": true,
+    "executed": true,
+    "structural_mass_gate_passed": true,
+    "scientifically_qualified": false,
+    "production_implemented": false,
+    "kernel_contract_changed": false,
+    "solver_contract_changed": false,
+    "headcalc_workspace_dependency_added": false
+  },
+  "decision": "D0A_REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL",
+  "next_stage_permissions": {
+    "D0B_direction_reversal": false,
+    "D0C_shallow_groundwater": false,
+    "D0D_heterogeneous_interface": false,
+    "D1_bounded_history": false,
+    "D2_conservative_integration": false
+  },
+  "next_stage_reason": "D0-A failed the precommitted donor-separability falsification criteria. Further VZAA donor development requires a materially new, source-bound hypothesis and a new precommit; it may not be justified by tuning the tested Eq. 3/5/6/15/17 diagnostic after seeing these results.",
+  "reporting_erratum": {
+    "initial_summary_aggregate_h_switch_counts_valid": false,
+    "trajectory_local_switch_count_from_raw_rows": 2,
+    "decision_affected": false
+  },
+  "artifacts": {
+    "precommit": "integration/f-vzaa/F-VZAA01_D0_DONOR_SEPARABILITY_PRECOMMIT.json",
+    "source_binding": "integration/f-vzaa/F-VZAA01_D0_SOURCE_BINDING.json",
+    "result": "integration/f-vzaa/F-VZAA01_D0_DONOR_SEPARABILITY_RESULT.json",
+    "execution_gate": "experiments/vzaa/run_vzaa01_d0_gate.sh",
+    "trajectory_patcher": "experiments/vzaa/vzaa01_d0_patch_fullrichards_trajectory.py",
+    "diagnostic_core": "experiments/vzaa/run_vzaa01_d0_donor_separability.py",
+    "fail_closed_gate_driver": "experiments/vzaa/run_vzaa01_d0_gate_driver.py"
+  },
+  "status": "CLOSED_REJECTED_D0A"
+}
