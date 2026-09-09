@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-WOF",
   "work_unit": "F-WOF35",
   "title": "Accepted-Window Runtime Lineage Canonical Composition",
@@ -10,12 +10,15 @@
     "qualified_F_CI19_src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
     "qualified_F_CI19_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
   },
-  "input": {
-    "F_WOF34_qualified_source": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
-    "F_WOF34_qualification_run": 34312699703,
-    "F_WOF34_expected_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
-    "F_WOF33_closeout": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
-    "F_WOF33_expected_output_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f"
+  "status": "QUALIFIED_RESTRICTED_CANONICAL_ACCEPTED_WINDOW_RUNTIME_LINEAGE_COMPOSITION_PHYSICAL_BINDING_HELD",
+  "decision": "QUALIFY_COMPOSITION_ONLY_DO_NOT_CLAIM_PHYSICAL_WOFOST_PRODUCTION_ADMISSION",
+  "qualification_evidence": "integration/f-wof/F-WOF35_QUALIFICATION_EVIDENCE.json",
+  "tested_candidate": {
+    "commit": "4516482af6dd93300e5bd214f079ed9498c86757",
+    "workflow": "F-WOF35 canonical composition",
+    "run_id": 34333045977,
+    "job_id": 102405879525,
+    "conclusion": "success"
   },
   "composition": {
     "dependency_closure_materialized": true,
@@ -29,61 +32,53 @@
       "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"
     ]
   },
-  "execution_history": [
-    {
-      "run": 34332201622,
-      "head": "8f77f4243697279cb88c1f57595de3558a6ba396",
-      "conclusion": "failure",
-      "classification": "GATE_HARNESS_PROVENANCE_ERROR_NOT_COMPOSITION_SEMANTIC_FAILURE",
-      "passed_before_failure": [
-        "exact donor blob identity",
-        "F-WOF34 O0 execution against canonical owners",
-        "F-WOF34 O2 execution against canonical owners",
-        "O0/O2 output identity",
-        "exact F-WOF34 transcript SHA identity"
-      ],
-      "failure": "The first F-WOF35 gate incorrectly invoked historical run_fci03_gate.sh directly. That gate intentionally pins an older transaction-source provenance and is not a valid later-lineage composition-preservation test.",
-      "repair_policy": "Do not weaken or edit historical F-CI gates. Use the already-qualified F-CI19 composition-preservation harness as the executable semantic oracle, while allowing only the exact byte-locked F-WOF donor additions in its disposable source-identity wrapper."
-    },
-    {
-      "run": 34333045977,
-      "head": "4516482af6dd93300e5bd214f079ed9498c86757",
-      "status_last_observed": "QUEUED",
-      "purpose": "corrected composition replay using F-CI19 preservation route"
-    }
-  ],
-  "gate": {
-    "script": "tests/fwof/run_fwof35_canonical_composition_gate.sh",
-    "workflow": "F-WOF35 canonical composition",
-    "current_workflow_run": 34333045977,
-    "current_workflow_head": "4516482af6dd93300e5bd214f079ed9498c86757",
-    "required": [
-      "canonical ancestry and exact F-CI19 source/reference base-tree identity",
-      "exact four-file donor source delta and exact donor blob identity",
-      "F-WOF34 O0 and O2 execution against current canonical transaction/runtime/kernel owners",
-      "O0/O2 output identity",
-      "exact F-WOF34 transcript SHA identity",
-      "F-CI19 composition-preservation semantic replay with hard mass, rollback and O0/O2 oracles unchanged",
-      "immutable F-WOF33 closeout regression"
-    ]
+  "verification": {
+    "canonical_F_CI19_base_tree_identity": "PASS",
+    "exact_four_file_donor_delta": "PASS",
+    "F_WOF34_O0": "PASS",
+    "F_WOF34_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_WOF34_exact_transcript_identity": "PASS",
+    "F_WOF34_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "F_CI19_semantic_preservation": "PASS",
+    "F_CI19_hard_mass_preservation": "PASS",
+    "F_CI19_rollback_replay_preservation": "PASS",
+    "F_CI19_O0_O2_preservation": "PASS",
+    "F_WOF33_exact_closeout_regression": "PASS"
   },
+  "superseded_failed_run": {
+    "run": 34332201622,
+    "classification": "GATE_HARNESS_PROVENANCE_ERROR_NOT_COMPOSITION_SEMANTIC_FAILURE",
+    "reason": "Historical F-CI03 source-provenance lock was incorrectly invoked directly on the later F-CI19 lineage. No historical gate was weakened; the corrected run uses the qualified F-CI19 composition-preservation route."
+  },
+  "post_test_changes": {
+    "through_commit": "0842373b3a7f87b62e5f437986f4280c0e0b01aa",
+    "source_or_test_delta": false,
+    "metadata_only": true
+  },
+  "physical_binding_frontier": "integration/f-wof/F-WOF35_PHYSICAL_BINDING_FRONTIER.json",
   "scope_flags": {
     "PERSISTED": true,
     "COMPOSITION_MATERIALIZED": true,
-    "TEST_EXECUTION_STARTED": true,
-    "TESTED": false,
-    "QUALIFIED": false,
+    "TESTED": true,
+    "QUALIFIED": true,
     "CANONICAL_ADMITTED": false,
     "ACTUAL_RICHARDS_ROOT_ET_SUBSTEP_BINDING": false,
+    "PHYSICAL_WOFOST_PRODUCTION_ADMITTED": false,
     "CALENDAR_SCHEDULER": false,
     "ACTIVE_WINDOW_RESTART_OWNERSHIP": false
   },
-  "hard_holds": [
-    "No canonical promotion before corrected composed regression passes.",
-    "F-CI19 still requires actual physical process-substep binding and accepted-window provenance on a composed postimage before WOFOST physical production admission.",
-    "Historical multi-day B1.10 WOFOST equivalence remains unqualified.",
-    "No calendar scheduler, oxygen IALPWET aggregate, nutrients, soybean, grass or potential-crop claim is introduced here."
+  "not_qualified": [
+    "actual Richards/root-uptake/ET production substep binding",
+    "physical WOFOST production admission",
+    "full restart or distributed ownership of active accepted crop windows",
+    "calendar scheduler",
+    "historical multi-day B1.10 crop equivalence",
+    "oxygen IALPWET aggregate",
+    "nutrients",
+    "soybean",
+    "grass",
+    "potential crop"
   ],
-  "decision": "COMPOSITION_MATERIALIZED_CORRECTED_PRESERVATION_REPLAY_QUEUED_NO_QUALIFICATION",
-  "status": "PERSISTED_COMPOSED_CORRECTED_GATE_EXECUTING_NOT_YET_QUALIFIED"
+  "next": "A separate physical-binding workunit may now qualify runtime-owned same-trial PTRA and applied root-extraction/QROT accumulation under F-KT checkpoint/retry/commit provenance. Canonical promotion of this dormant composition, if desired, must still be reconciled against the live canonical ref and its governance before moving that ref."
 }
