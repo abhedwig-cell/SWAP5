@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -21,40 +21,34 @@
       "head": "7d56fdee87cef995797f4f558bd69955703f482a",
       "cases": 18,
       "max_abs_mass_residual": 8.326672684688674e-17,
-      "max_abs_tridiagonal_residual": 8.673617379884035e-19,
-      "base_state_bitwise_unchanged": true,
-      "global_nonlinear_iterations": 0,
-      "scope": "analytic linear fixture only"
+      "scope": "analytic linear continuity fixture"
     },
     {
       "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
       "run": 34318919093,
       "head": "5dd1e29fa71716c67a02ed2122a0191dbb1fe401",
-      "analytic_trials": 162,
-      "tangent_comparisons": 324,
       "max_tangent_metric": 1.26885786529119e-10,
       "cost_shape": "ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE",
-      "scope": "analytic linear fixture only"
+      "scope": "analytic linear fixture"
     },
     {
       "gate": "B_REAL_FACE_TABLE",
       "run": 34335144568,
       "head": "cf7f13af9e2db91be039229d6c6d94819903960a",
       "candidate": "N129 log-head/log-mobility",
-      "scope": "B01 homogeneous unsaturated 10-cm face, h=[-10000,-1] cm, KSATEXM disabled"
+      "scope": "B01 homogeneous unsaturated 10-cm face"
     },
     {
       "gate": "C1R_BASE_MVG_36_MATERIAL_FACE_CATALOG",
       "evidence": "F-ROSS01_GATE_C1R_36_MATERIAL_HOLDOUT_RESULT.json",
       "run": 34339656739,
       "head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
-      "candidate": "N241 float32 log-mobility with qualified direct S-to-u mapping",
+      "candidate": "N241 float32 log-mobility",
       "material_count": 36,
       "holdout_probe_count": 50436,
       "pass_count": 36,
       "max_abs_error_over_ksatfit": 0.00043924621324671555,
       "max_hybrid_metric": 0.0005836322947071754,
-      "max_p99_hybrid_metric": 0.0005085815912726284,
       "shared_table_plus_metadata_bytes": 232356,
       "per_column_table_state_bytes": 0,
       "runtime_lookup_complexity": "O(1)",
@@ -64,23 +58,34 @@
       "gate": "J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT",
       "evidence": "F-ROSS01_GATE_J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_CLOSEOUT.json",
       "decision": "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE",
-      "face_derivative_evidence_commit": "8e808635eb61841826cfccf99c709b158707adab",
       "column_run": 34358497637,
-      "column_head": "d0a43d2f88a4b939564569075ec7d3f9d98669c1",
       "boundary_run": 34359202974,
-      "boundary_head": "6f562b0099407f6c265f6d73d2e769788d847f4e",
       "primary_quantity": "d_h_bottom_d_q_bottom",
       "primary_units": "day",
       "q_bottom_sign": "positive downward",
-      "base_cases": 72,
-      "smooth_fd_comparisons": 143,
-      "routed_known_node_crossings": 1,
-      "unexpected_cell_switches": 0,
       "max_smooth_tangent_metric": 3.419659398931413e-07,
-      "max_scaled_flux_continuity_residual": 2.4437408376474047e-13,
       "cost_shape": "ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE_NO_SECOND_NONLINEAR_TRAJECTORY",
-      "piecewise_semantics": "strict interpolation-cell interiors qualified; node lines and exact equal-head shortcut are explicit branch boundaries without invented cross-branch smooth tangent",
-      "scope": "C1R base MvG/KSATFIT only; homogeneous unsaturated 10-cm face chain; no groundwater or production admission"
+      "piecewise_semantics": "strict interpolation-cell interiors qualified; node lines and equal-head shortcut remain explicit branch boundaries",
+      "scope": "C1R base MvG/KSATFIT homogeneous unsaturated chain"
+    },
+    {
+      "gate": "D_CONSERVATIVE_PHYSICAL_UNSATURATED_C1R_COLUMN",
+      "evidence": "F-ROSS01_GATE_D_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_RESULT.json",
+      "run": 34361029949,
+      "head": "c2bf7ad46652f38718a32262e935841c0dfb6a8e",
+      "decision": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
+      "materials": 6,
+      "trial_count": 972,
+      "trial_error_count": 0,
+      "max_abs_global_mass_residual_cm": 1.2769021679858578e-19,
+      "max_abs_cell_balance_residual_cm": 1.6263032587282567e-19,
+      "max_tridiagonal_residual_theta": 6.776263578034403e-21,
+      "max_abs_delta_theta": 5.792196621968248e-05,
+      "candidate_domain_failures": 0,
+      "candidate_head_envelope_failures": 0,
+      "candidate_table_cell_changes": 0,
+      "cost_shape": "ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_NO_GLOBAL_NONLINEAR_ITERATION_NO_RETRY",
+      "scope": "real C1R internal hydraulics, MvG storage, prescribed-flux boundaries and synthetic distributed source/sink terms; timestep accuracy not qualified"
     },
     {
       "gate": "C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION",
@@ -88,7 +93,7 @@
       "candidate": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
       "material_count": 36,
       "pass_count": 36,
-      "scope": "mathematical constitutive admissibility only; H_ENPR=-4 cm; no empirical hydraulic or Ross face qualification"
+      "scope": "constitutive admissibility only; face representation not qualified"
     },
     {
       "gate": "C2B_STATE_COORDINATE_R1",
@@ -98,72 +103,63 @@
       "pass_count": 36,
       "max_abs_u_error_vs_80_digit_reference": 1.965094753586527e-14,
       "runtime_iterations": 0,
-      "scope": "direct representable-state to table-coordinate mapping only"
+      "scope": "state-to-table-coordinate mapping only"
     }
   ],
   "negative_or_restricted_evidence": [
     {
       "gate": "C1_ORIGINAL_N129_GENERALISATION",
       "status": "FAIL_PRESERVED",
-      "reason": "original N129 representation not universal; superseded for the base family by separately qualified C1R N241 without rewriting the original failure"
+      "reason": "N129 was not universal and was superseded only by separately qualified C1R N241"
     },
     {
       "gate": "J1A_INITIAL_BINARY64_FINITE_DIFFERENCE",
       "status": "FAIL_PRESERVED_ORACLE_LIMITATION",
-      "meaning": "near-zero endpoint derivatives produced cancellation-dominated binary64 symmetric-FD metrics; unchanged perturbations passed a later 80-digit oracle on 6/6 materials, so the failure is retained as oracle-limitation evidence rather than erased"
+      "reason": "near-zero derivative cancellation; unchanged perturbations later passed the 80-digit oracle"
     },
     {
       "gate": "J1B_INITIAL_COLUMN_RESPONSE",
       "status": "FAIL_PRESERVED_FIXTURE_AND_REGIME_SWITCH",
-      "evidence": "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json",
-      "meaning": "18 precommitted dry fixtures used h_top=-1000 cm exactly on N241 node 180 and one O01 large-FD oracle crossed node 205; these failures were localized before J1B-R1 qualification"
+      "evidence": "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json"
     },
     {
       "gate": "J1_PIECEWISE_DERIVATIVE_BOUNDARIES",
       "status": "QUALIFIED_RESTRICTION",
       "evidence": "F-ROSS01_GATE_J1C_BOUNDARY_DERIVATIVE_CHARACTERIZATION_RESULT.json",
-      "meaning": "tested internal table-node fluxes are continuous but the normal derivative can jump strongly; exact node lines, equal-head branch transitions and head-envelope endpoints do not receive an invented unique smooth tangent"
+      "reason": "flux is continuous across tested table nodes while the normal derivative can jump strongly; no unique cross-branch tangent is invented"
     },
     {
       "gate": "C2A_EXACT_SWAPP431_KSATEXM_COMPACT_LINE",
       "status": "FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED",
-      "evidence": "F-ROSS01_GATE_C2A_EXACT_KSATEXM_CLOSEOUT.json",
-      "meaning": "tested compact representations failed; exact KSATEXM physics itself is not rejected"
+      "evidence": "F-ROSS01_GATE_C2A_EXACT_KSATEXM_CLOSEOUT.json"
     },
     {
       "gate": "LEGACY_H_ENPR_PLUS_ACTIVE_KSATEXM_COMPOSITION",
       "status": "NOT_SUPPORTED_AS_CANONICAL_COMPOSITION",
-      "evidence": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json",
-      "cases": 108,
-      "discontinuous_cases": 108,
-      "meaning": "physical branch composition is discontinuous; solver fallback cannot repair it without changing physics"
+      "evidence": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json"
     },
     {
       "gate": "C2B_CLASS_B_FACE_REPRESENTATION",
       "status": "NOT_YET_QUALIFIED_DEFERRED",
-      "lineage": [
-        "uniform N241 face table: FAIL",
-        "seam-aligned R1: all hybrid and p99 metrics pass but local absolute-error tail remains",
-        "MFP-residual R2 with cheap cumulative-Phi lookup: FAIL and substantially worse",
-        "exact-Phi diagnostic: 1/4 PASS; B05, B10 and O13 still fail absolute-error gate"
-      ],
       "latest_evidence": "F-ROSS01_GATE_C2B_MFP_NORMALIZATION_EXACT_PHI_DIAGNOSTIC_RESULT.json",
-      "decision": "STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING",
-      "meaning": "the Class-B physical closure remains constitutively qualified, but no compact RossFast face representation is qualified"
+      "decision": "STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING"
     }
   ],
   "admissibility": {
     "matrix": "F-ROSS01_ADMISSIBILITY_MATRIX.json",
     "base_MvG_KSATFIT_face_subscope": "QUALIFIED_FACE_LEVEL_ONLY",
     "base_MvG_KSATFIT_response_tangent": "QUALIFIED_STRICT_INTERIOR_WITH_EXPLICIT_PIECEWISE_BRANCH_SEMANTICS",
-    "physical_transient_Ross_column": "NOT_YET_QUALIFIED",
+    "base_MvG_KSATFIT_conservative_unsaturated_trial_column": "QUALIFIED_RESTRICTED_PRESCRIBED_FLUX_SOURCE_SINK_SCOPE",
+    "timestep_accuracy": "NOT_YET_QUALIFIED",
+    "saturation_transitions": "NOT_YET_QUALIFIED",
+    "heterogeneous_profiles": "NOT_YET_QUALIFIED",
+    "production_bottom_boundary": "NOT_YET_QUALIFIED",
     "groundwater_solver": "NOT_ADMITTED",
     "exact_KSATEXM": "ROSSFAST_NOT_YET_QUALIFIED",
     "legacy_H_ENPR_plus_KSATEXM": "NOT_SUPPORTED_AS_CANONICAL_COMPOSITION",
     "Class_B_HENPR_SVG2006_bridge": "CONSTITUTIVELY_QUALIFIED_FACE_NOT_YET_QUALIFIED"
   },
   "open_gates_for_primary_base_family": [
-    "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
     "F_TIMESTEP",
     "E_SATURATION_TRANSITIONS",
     "G_HETEROGENEOUS_PROFILES",
@@ -174,14 +170,14 @@
     "M_FULLRICHARDS_QUALIFICATION"
   ],
   "hard_guards": [
-    "Mass conservation remains absolute and is not qualified by a face-only or tangent-only gate.",
+    "Mass conservation remains absolute. Gate D qualifies it only for the stated homogeneous unsaturated prescribed-flux/source-sink trial scope.",
+    "A mass-conservative trial is not automatically a temporally accurate trial; Gate F remains required.",
     "Numerical policy may not silently change requested physical closure.",
-    "Unsupported or unqualified hydraulic combinations must fail closed to an explicitly qualified solver route.",
-    "J1 response-tangent qualification is not groundwater, MODFLOW, runtime, MultiSWAP or production admission.",
-    "Internal table-node lines and exact equal-head branch transitions do not have an invented unique cross-branch smooth tangent.",
-    "Finite-difference plus/minus profile solves remain qualification oracles only and are not part of the production tangent cost.",
-    "Class-B near-saturation research remains deferred and must not delay qualification of the already qualified base family."
+    "Unsupported hydraulic combinations must fail closed to a qualified solver route.",
+    "J1 tangent and Gate D do not constitute groundwater, MODFLOW, runtime, MultiSWAP or production admission.",
+    "Internal table-node lines and equal-head branch transitions do not have an invented unique cross-branch smooth tangent.",
+    "Class-B face representation remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding."
   ],
-  "next_action": "Open D for the qualified C1R base MvG/KSATFIT family: build a conservative physical Ross column with storage and source/sink terms while retaining the J1 strict-interior response-tangent and explicit regime-boundary semantics. Keep Class-B C2B face representation deferred.",
-  "status": "BASE_MVG_FACE_AND_REAL_RESPONSE_TANGENT_QUALIFIED_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE_CLASS_B_FACE_DEFERRED"
+  "next_action": "Open F_TIMESTEP for the qualified C1R base family: quantify temporal error and state-change acceptability for the conservative Gate-D update against independently refined time integration, without changing the mass ledger or silently selecting a different sigma after seeing results.",
+  "status": "BASE_MVG_FACE_TANGENT_AND_CONSERVATIVE_UNSATURATED_TRIAL_COLUMN_QUALIFIED_READY_FOR_TIMESTEP_GATE_CLASS_B_FACE_DEFERRED"
 }
