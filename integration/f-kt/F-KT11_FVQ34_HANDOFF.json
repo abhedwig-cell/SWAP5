@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT11",
+  "handoff_to": "F-VQ34",
+  "title": "Fresh Independent Production Qualification of Remediated Richards Head-Budget Temporal Certificate",
+  "owner_closeout_commit": "48279f27b884a91dd9d3d697ea9c718e734af840",
+  "qualified_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+  "qualified_source_tree": "d24f20559653b028d7967bf57da37da432803221",
+  "production_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+  "owner_workflow_run": 34359330293,
+  "owner_workflow_job": 102491962405,
+  "owner_decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITH_COMPLETE_INVALID_BUDGET_DIAGNOSTICS_READY_FOR_FRESH_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "prior_independent_result": {
+    "work_unit": "F-VQ33",
+    "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "status_commit": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "must_remain_failed": true,
+    "negative_transfer": false
+  },
+  "fixed_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "no_default_budget": true,
+    "budget_owner": "explicit numerical configuration",
+    "richards_native_unit": "cm pressure head",
+    "validity": "supplied AND finite AND >0",
+    "invalid_supplied_native_value_preserved_diagnostically": true,
+    "invalid_certificate_unavailable": true,
+    "no_history_certificate_unavailable": true,
+    "hard_mass_before_certificate": true,
+    "certificate_cannot_override_mass_failure": true,
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0
+  },
+  "independent_requirements": {
+    "freeze_matrix_before_execution": true,
+    "matrix_disjoint_from_F_SI24_F_VQ30_F_VQ31_F_VQ32_F_KT10_F_KT11_F_VQ33": true,
+    "include_valid_accept": true,
+    "include_valid_reject": true,
+    "include_C_h_equals_1_boundary": true,
+    "include_missing_budget": true,
+    "include_zero_budget": true,
+    "include_negative_budget": true,
+    "include_NaN_budget": true,
+    "include_positive_infinity_budget": true,
+    "include_no_history": true,
+    "include_bounded_retry_without_monotonicity_claim": true,
+    "include_hard_mass_precedence_oracle": true,
+    "include_diagnostic_native_value_preservation": true,
+    "include_O0_O2_identity": true,
+    "include_source_locked_FKT09_FKT10_FVQ32_regressions": true,
+    "no_application_budget_selection": true,
+    "no_fitted_factor": true,
+    "no_scientific_tolerance_added": true
+  },
+  "prohibited_claims": [
+    "B_inf is a proven nonlinear true-error upper bound",
+    "shorter dt must monotonically reduce C_h",
+    "F-VQ34 selects a universal or recommended H_budget",
+    "F-VQ34 automatically releases F-GC02"
+  ],
+  "gc02_release": false,
+  "handoff_status": "IMMUTABLE_REMEDIATED_OWNER_HANDOFF_READY"
+}
