@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "status": "CHARACTERIZATION_SELECTED_V2_BEFORE_HOLDOUT",
+  "production_implementation": false,
+  "fixture": "B01_NO_KSATEXM_L10_H_-10000_-1",
+  "baseline_rejection": {
+    "representation": "bilinear q(S_above,S_below)",
+    "finding": "All frozen baseline candidates failed characterization. The dominant structural failure was interpolation across the hydrostatic q=0 manifold; wet-end clustering reduced but did not remove the error. Equal-head and sign errors also remained for multiple candidates.",
+    "evidence": "F-ROSS01_REAL_FACE_TABLE_CHARACTERIZATION_RESULT.json"
+  },
+  "selected_representation": {
+    "name": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD",
+    "node_count_per_axis": 129,
+    "coordinate": "u = log10(-h/cm), uniform on [0,4] for h in [-1,-10000] cm",
+    "stored_quantity": "log(M), where M = q/g and g = L + h_above - h_below",
+    "runtime_reconstruction": "q = g * exp(bilinear(log(M)))",
+    "equal_head_rule": "if h_above == h_below within exact state-comparison semantics, return K(h_above) directly",
+    "hydrostatic_property": "g=0 implies q=0 by construction",
+    "sign_property": "M>0, so sign(q)=sign(g) by construction",
+    "hydrostatic_node_limit": "for offline nodes with g=0, M is the small-gradient limit [integral(dh/K)]^-1",
+    "interpolation": "bilinear in u_above,u_below",
+    "runtime_lookup_complexity": "O(1)",
+    "global_nonlinear_iterations": 0,
+    "per_column_table_state_bytes": 0,
+    "shared_table_plus_axis_bytes": 134160,
+    "full_table_entries": 16641,
+    "state_conversion": "B01 theta/effective-saturation to h is analytic for this first physical fixture; catalog-general state conversion remains Gate C work"
+  },
+  "characterization_observed": {
+    "max_hybrid_metric": 0.0007455928677593106,
+    "p99_hybrid_metric": 0.0006359030365251587,
+    "max_abs_error_over_ksat": 0.00038089445015692427,
+    "wrong_sign_count": 0,
+    "max_equal_head_relative_error": 0.0,
+    "max_hydrostatic_abs_q_over_ksat": 0.0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "pass": true
+  },
+  "full_table_preprocessing_check": {
+    "entries_generated": 16641,
+    "local_reference_runtime_seconds": 18.231531143188477,
+    "failures": 0,
+    "note": "Timing is descriptive only and is not an isolated performance benchmark; preprocessing is offline/template-level and not part of per-step runtime. CI holdout will independently require complete table generation."
+  },
+  "architecture_fit": {
+    "immutable_shared_class_data": true,
+    "bounded_memory": true,
+    "memory_independent_of_column_count": true,
+    "memory_independent_of_run_duration": true,
+    "kernel_file_io_required": false,
+    "mass_ledger_modified": false,
+    "ross_continuity_architecture_preserved": true
+  },
+  "scope_limit": [
+    "one homogeneous B01 material only",
+    "10 cm face length only",
+    "unsaturated envelope -10000 to -1 cm only",
+    "KSATEXM disabled",
+    "no saturation transitions",
+    "no heterogeneous faces",
+    "no timestep qualification",
+    "no bottom boundary or groundwater claim",
+    "no process physics",
+    "no MultiSWAP admission",
+    "no FullRichards equivalence claim"
+  ],
+  "next_step": "Freeze a disjoint unseen holdout before any further representation or density change."
+}
