@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_SEAM_ALIGNED_FACE_CHARACTERIZATION_R1",
+  "run": 34349970561,
+  "head": "0efb31c0c3cdf45d134f97e2e33c9070ab97bd6c",
+  "candidate": {
+    "N": 241,
+    "storage": "float32_log_mobility",
+    "coordinate": "piecewise_uniform_u_with_exact_nodes_at_log10_4_and_log10_40",
+    "segment_intervals": [36, 60, 144],
+    "shared_table_plus_metadata_bytes": 232356
+  },
+  "thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0
+  },
+  "materials": {
+    "B05": {"artifact_id": 10103356739, "artifact_digest": "sha256:6b7e864e0f83fa169f85bad4747b702b160a8085b332ea790527e76074ee5795", "max_hybrid_metric": 0.003854697851733312, "p99_hybrid_metric": 0.0014719272477563001, "max_abs_error_over_ksatfit": 0.007232008346106857, "worst_location_cm": [-3.9, -4.5], "q_ref": 119.41161879002182, "q_table": 119.87193903575088},
+    "B10": {"artifact_id": 10103354147, "artifact_digest": "sha256:2e2e4d7bd29271f83db556eeda372bcb50f00c71ae203d21eddf622d198e8fb8", "max_hybrid_metric": 0.008439233527667775, "p99_hybrid_metric": 0.0017865692106177743, "max_abs_error_over_ksatfit": 0.02821401225017538, "worst_location_cm": [-3.9, -6.0], "q_ref": 12.811690184961675, "q_table": 12.919814264469814},
+    "B12": {"artifact_id": 10103347803, "artifact_digest": "sha256:693432cddeb72eb86358b377cb5b664038a5f8f5f40c41f220e4960a8ad13bef", "max_hybrid_metric": 0.008744886048879057, "p99_hybrid_metric": 0.0018104575943884433, "max_abs_error_over_ksatfit": 0.029163463637956577, "worst_location_cm": [-3.9, -6.0], "q_ref": 7.489647411240845, "q_table": 7.555145488408013},
+    "O05": {"artifact_id": 10103375941, "artifact_digest": "sha256:d63d16997666927c79fd250b05e284394f7fd17767b9e02def9ac22f55a5d73f", "max_hybrid_metric": 0.004526131108468245, "p99_hybrid_metric": 0.0018064729178423453, "max_abs_error_over_ksatfit": 0.00855045427115179, "worst_location_cm": [-3.9, -4.5], "q_ref": 32.90409281382787, "q_table": 33.05302893575175},
+    "O12": {"artifact_id": 10103357348, "artifact_digest": "sha256:9ee7001fb92d69dcd12a6fedaaee50e16c8e72fbe5109917d5ec4cbb1aefcfec", "max_hybrid_metric": 0.00808933666251817, "p99_hybrid_metric": 0.0017262345625865812, "max_abs_error_over_ksatfit": 0.02628597590468325, "worst_location_cm": [-3.9, -4.5], "q_ref": 3.508428222545308, "q_table": 3.5368099530228956},
+    "O13": {"artifact_id": 10103331419, "artifact_digest": "sha256:5aade7584a7a6919b1192f7ac514637aa8e47bde5a525db6e2348956832b9bf9", "max_hybrid_metric": 0.009383649445751884, "p99_hybrid_metric": 0.0017679415342150917, "max_abs_error_over_ksatfit": 0.031109006165489932, "worst_location_cm": [-3.9, -6.0], "q_ref": 32.121310915303745, "q_table": 32.42273512876197},
+    "O14": {"artifact_id": 10103347597, "artifact_digest": "sha256:6ca39d19464d46d2f0d6bb5d4462defb6ed8dd250b6f290d5aaaa0e29c09b23c", "max_hybrid_metric": 0.0009253501540088213, "p99_hybrid_metric": 0.000367094412403541, "max_abs_error_over_ksatfit": 0.0011270220966071761, "worst_location_cm": [-3.9, -4.1], "q_ref": 3.0397122026450445, "q_table": 3.0425252317658225}
+  },
+  "pass_count": 0,
+  "fail_count": 7,
+  "failed_materials": ["B05", "B10", "B12", "O05", "O12", "O13", "O14"],
+  "comparison_to_uniform_N241": {
+    "observation": "Exact endpoint-axis alignment removes most broad error: for B10/B12/O12/O13 the p99 hybrid metric falls from approximately 0.0097-0.0102 to approximately 0.00173-0.00181. B05/O05 also fall below the p99 threshold. O14 improves further.",
+    "remaining_failure": "All seven materials still exceed the frozen maximum absolute flux error threshold, and every worst case is a face whose endpoint interval crosses the -4 cm conductivity-transition region.",
+    "interpretation": "The dominant remaining feature is not merely an axis node placement problem. The steady two-point mobility has a path-dependent crossing feature in the two-endpoint state plane. Further seam-only grid shifting is not justified."
+  },
+  "decision": "C2B_SEAM_ALIGNED_N241_R1_CHARACTERIZATION_FAIL_CLOSED_STOP_SEAM_ONLY_REFINEMENT",
+  "next_research_direction": "Factor a cheap seam-aware constitutive mobility scale out of the two-dimensional steady mobility and interpolate only a flatter residual. A Ross-lineage-compatible candidate is a secant mean derived from a precomputed one-dimensional matric-flux-potential integral of K(h).",
+  "scope_guard": "Characterization evidence only. No holdout, transient, groundwater, production or empirical hydraulic validation claim."
+}
