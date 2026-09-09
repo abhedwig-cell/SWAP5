@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "gate": "B_TRANSACTION_SHAPE_TRANSLATION",
+  "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+  "gate_A_evidence": "integration/f-vq/F-VQ28_GATE_A_EVIDENCE.json",
+  "purpose": "Test whether the bounded fixed-horizon behavior admitted by Gate A is safely representable by the existing production transaction topology, without changing temporal tolerance, retry policy, solver policy, mass gates or coupling semantics.",
+  "frozen_before_execution": true,
+  "held_out_matrix": {
+    "initial_uniform_pressure_heads_cm": [-40.0,-55.0,-110.0,-160.0,-210.0,-320.0],
+    "prescribed_bottom_head_jumps_cm": [-0.05,-0.01,0.01,0.05],
+    "case_count": 24,
+    "attempt_durations_day": [0.25,0.125,0.0625],
+    "attempt_count_per_case": 3,
+    "same_endpoint_reference_steps": 512,
+    "reference_warning": "Each N=512 trajectory is a finite same-endpoint reference, not an exact solution."
+  },
+  "production_shape": {
+    "retry_scale": 0.5,
+    "max_retries": 2,
+    "max_committed_substeps": 1,
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "temporal_acceptance": "production binary temporal metric retained; observer instrumentation is test-only and must normalize back to the production backend"
+  },
+  "comparison_semantics": {
+    "transaction_observable": "For each actual retry attempt, record max_i abs(h_full-h_two_half) from the existing FULL/HALF1/HALF2 transaction topology.",
+    "same_endpoint_reference": "For the identical committed T0 state, forcing and attempt endpoint, compare the two-half endpoint against an N=512 equal-substep trajectory over that same attempt horizon.",
+    "reason": "This avoids comparing fixed-horizon refinement N with retry count. Both defect and finite-reference endpoint error refer to exactly the same physical endpoint time."
+  },
+  "gate_questions": [
+    "Do all 24 held-out cases reach all three production retry attempts without solver or mass rejection under unchanged controls?",
+    "Does transaction-observed D_h agree with the direct same-horizon N=1 versus N=2 defect?",
+    "At each actual retry attempt, is D_h conservative relative to the remaining two-half-to-N512 endpoint error where both are above the numerical floor?",
+    "If an outer attempt is conservative, do later retry halvings preserve rather than lose that property?",
+    "Can the existing retry topology therefore represent the Gate A bounded profile without a new owner/runtime policy?"
+  ],
+  "decision_rule": {
+    "PASS": "All resolved held-out cases preserve a safe conservative estimator relationship through the actually reachable retry sequence, so Gate A can be translated without changing runtime policy.",
+    "FAIL_TRANSLATION": "One or more resolved held-out cases lose or fail the conservative estimator relationship on an actually reachable retry. Return fail-closed to F-SI20 and require a separate owner/runtime policy decision. Do not tune a tolerance or retry budget inside F-VQ28."
+  },
+  "not_allowed": [
+    "production temporal tolerance selection",
+    "state normalization selection",
+    "Richardson or defect multiplier fitting",
+    "retry budget change",
+    "solver control change",
+    "mass gate relaxation",
+    "F-KT semantic change",
+    "F-GC02 release from Gate B alone"
+  ],
+  "persist_early": true,
+  "next_action": "Implement the source-locked Gate B harness and run it exactly on this frozen matrix."
+}
