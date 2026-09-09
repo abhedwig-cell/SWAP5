@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_R3_BOUNDED_MONOTONE_GREEN_AMPT_SCALAR_ROOT_POLICY",
+  "contract": "F-FWC01_GATE_B2E_R3_BOUNDED_GA_SCALAR_ROOT_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34394645682,
+    "head": "5920cb98bf3178c4d483167f1ca887b9e3589616",
+    "conclusion": "success",
+    "artifact_id": 10121000577,
+    "artifact_digest": "sha256:83dba468f4f8dc2bf49eb5f452f671e34bb11a19ff9891e229b284a6831840e8"
+  },
+  "upstream_R2_failure_preserved": true,
+  "physics_changed_from_R2": false,
+  "equation": "g(F)=F-A*ln(1+F/A)-K*dt=0, A=psi*delta_theta, Z=F/delta_theta",
+  "candidate_policy": "DOUBLE_BRACKET_PLUS_FIXED_80_BISECTION",
+  "oracle": "MPMATH_80_DIGIT_240_BISECTION",
+  "case_count": 320,
+  "case_pass_count": 320,
+  "max_depth_error_vs_high_precision_cm": 2.2737367544323206e-13,
+  "max_candidate_bracket_expansions": 2,
+  "max_candidate_residual_evaluations": 84,
+  "candidate_residual_evaluation_bound": 145,
+  "dt_sensitivity_failure_count": 0,
+  "seed_required": false,
+  "new_persistent_state_bytes": 0,
+  "cache_key_requires_dt": true,
+  "decision": "QUALIFIED_BOUNDED_SEED_FREE_GREEN_AMPT_DRY_BIN_SCALAR_ROOT_POLICY_READY_FOR_PHYSICAL_PARAMETER_MAPPING",
+  "architecture_interpretation": [
+    "The dry-bin Green-Ampt scalar root can be evaluated with bounded deterministic work and without a seed-dependent persistent state.",
+    "The numerical policy changes only how the published scalar equation is solved; it does not alter the physical equation or select physical K, psi or delta-theta values.",
+    "The exact dry-bin advance depends on dt on the frozen grid, so any reusable derived cache must retain timestep/integration-policy provenance.",
+    "The failed published successive-approximation R2 gate remains negative evidence and is not overwritten by this modern numerical policy."
+  ],
+  "hard_nonclaims": [
+    "No M2WC70 code-equivalence claim.",
+    "No physical mapping of K, psi or delta-theta to a specific 2015 FWC dry bin.",
+    "No rainfall allocation or partial dry-bin funding qualification follows from this result.",
+    "No capillary relaxation, runtime, groundwater or MultiSWAP qualification follows from this result."
+  ],
+  "next_gate": "B2E_R4_PHYSICAL_DRY_BIN_PARAMETER_MAPPING_BLOCKED_PENDING_PRIMARY_CODE_OR_EQUIVALENT_SOURCE_ORACLE",
+  "status": "QUALIFIED_NUMERICAL_POLICY_PHYSICAL_PARAMETER_MAPPING_STILL_OPEN"
+}
