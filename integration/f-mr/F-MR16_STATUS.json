@@ -1,86 +1,82 @@
 {
   "workunit": "F-MR16",
   "title": "Richards Quantitative Temporal-Error Readiness & Owner Boundary",
-  "status": "IN_PROGRESS_CHARACTERIZATION_TESTED_PENDING_INTERPRETATION",
+  "status": "CLOSED_READINESS_BLOCKED_FSI_SOURCE_THEORY_QUALIFIED_RICHARDS_TEMPORAL_ERROR_REQUIRED",
+  "decision_class": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_REQUIRED",
   "implementation_status": "CHARACTERIZATION_HARNESS_IMPLEMENTED_NONPRODUCTION",
   "persistence_status": "PERSISTED",
-  "test_status": "TESTED",
-  "qualification_status": "NOT_QUALIFIED_METRIC_PENDING",
+  "test_status": "TESTED_CHARACTERIZATION_WORKFLOW_SUCCESS",
+  "qualification_status": "NOT_QUALIFIED_PRODUCTION_TEMPORAL_METRIC",
   "branch": "work/f-mr16-richards-temporal-error-readiness",
   "base_commit": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
   "performance_trigger_commit": "d0258204fae26cb706fcb54cd0503b3e412357d0",
-  "current_characterization_head": "dacb043b968e79c3a849aad104008883124c090d",
-  "decision": "PENDING_SOURCE_THEORY_INTERPRETATION_AND_OWNER_DECISION",
-  "characterization": {
-    "profile_status": "QUALIFIED_BY_F_VQ24_NOT_REQUALIFIED_HERE",
-    "probe": "exact F-VQ24-qualified Richards probe",
-    "head0_cm": -75.0,
-    "interval_duration": 1.0,
-    "top_flux_relative_perturbations": [0.0, 3e-12, -3e-12, 1e-11, -1e-11],
-    "bottom_mode": 7,
-    "root_sink": 0.0,
-    "qdra": "nonzero nodewise",
-    "qssdi": "matching nonzero nodewise",
-    "macropores": "inactive",
-    "step_doubling": "one full interval versus two half intervals through the existing transaction comparison",
-    "observed_retry_step_sizes": [1.0, 0.5, 0.25],
-    "observer": "nonproduction copy of the serialized Richards backend with observation-only component maxima inserted before the unchanged binary comparator",
-    "workflow": ".github/workflows/fmr16-fvq24-temporal-delta-characterization.yml",
-    "workflow_run_id": 34283246020,
-    "workflow_head": "dacb043b968e79c3a849aad104008883124c090d",
-    "workflow_conclusion": "success",
-    "artifact_name": "fmr16-temporal-delta-characterization",
-    "artifact_id": 10078442634,
-    "artifact_log_sha256": "cac049d749ae2751c24a1af8402ce673aaa02f8a33d01708dee8a820a0c646c3"
+  "tested_characterization_head": "dacb043b968e79c3a849aad104008883124c090d",
+  "successful_characterization_run": 34283246020,
+  "characterization_conclusion": {
+    "baseline_exact_identity": true,
+    "finite_graded_nonzero_h_theta_deltas": true,
+    "strict_monotone_h_theta_cases": "2/4",
+    "final_below_dt1_h_theta_cases": "4/4",
+    "robust_monotone_dt_halving_signal": false,
+    "ponding_delta_nonzero_observed": false,
+    "groundwater_delta_nonzero_observed": false,
+    "optional_process_state_qualified": false,
+    "stable_asymptotic_order_established": false,
+    "temporal_vs_nonlinear_solver_error_separated": false
   },
-  "characterization_test_facts": {
-    "baseline_exact_temporal_identity": "PASS",
-    "nonzero_richards_finite_component_deltas": "PASS",
-    "nonzero_cases_strictly_monotone_head_and_theta": "2/4",
-    "nonzero_cases_final_delta_below_initial_head_and_theta": "4/4",
-    "robust_monotone_dt_halving_signal": "NO",
-    "o0_o2_identity": "PASS",
-    "production_acceptance_changed": false,
-    "mass_requirement_changed": false,
-    "retry_policy_changed": false,
-    "production_metric_selected": false
+  "metric_decision": {
+    "quantitative_metric_defensible_now": false,
+    "mixed_head_theta_scalar_admitted": false,
+    "characterization_relative_normalizations_admitted": false,
+    "head_only_metric_admitted": false,
+    "head_only_candidate": "PLAUSIBLE_FSI_RESEARCH_DIRECTION_REQUIRES_THEORY_AND_QUALIFICATION",
+    "current_binary_comparator_universal_scientific_intent_established": false
   },
-  "evidence_boundary": {
-    "persisted_artifact_contains": [
-      "max absolute pressure-head difference",
-      "max absolute water-content difference",
-      "absolute ponding-depth difference",
-      "absolute groundwater-level difference",
-      "diagnostic relative head and theta differences produced only by the nonproduction observer",
-      "retry-scale monotonicity characterization"
-    ],
-    "persisted_artifact_does_not_contain": [
-      "nodewise pressure-head difference vector",
-      "nodewise water-content difference vector",
-      "spatial location or pattern of component maxima",
-      "storage-weighted or vertically integrated water-content difference"
-    ],
-    "interpretation_rule": "missing componentwise or integrated evidence must not be inferred from maxima"
-  },
-  "facts": {
-    "f_kt_scalar_contract": "temporal_error <= temporal_tolerance",
-    "current_richards_temporal_error": "binary 0 for exact equality of relevant final state, huge(real64) otherwise",
-    "binary_metric_gap": "no graded convergence signal for physically evolving Richards state",
-    "mass_gate": "separate and absolute",
-    "reference_policy": "unchanged full-accuracy path",
-    "production_metric_change": "not implemented"
-  },
+  "decisive_reason": "Measured max pressure-head discrepancies overlap the nonlinear HeadCalc stopping scale for the exact probe, while the retry ladder is nonmonotone in 2/4 nonzero cases and no qualified formal temporal-order/estimator contract exists. The current evidence therefore cannot identify a clean temporal truncation signal or justify scalar normalization.",
+  "evidence_gaps": [
+    "model-owner Richards time-discretization and temporal-error theory/source contract",
+    "solver-tolerance separation evidence with unchanged physics",
+    "extended dt ladder sufficient to assess asymptotic behavior",
+    "nodewise signed/absolute h and theta deltas with spatial/max locations",
+    "signed dz-weighted theta state-storage difference if theta/storage is proposed",
+    "active-state or explicit exclusion semantics for ponding, groundwater and optional process state",
+    "source/theory basis for every normalization/scalarization"
+  ],
   "ownership": {
-    "F_KT": "checkpoint/retry/rollback/commit plus generic scalar acceptance",
-    "F_SI": "Richards model/solver specific temporal-error semantics",
-    "F_MR": "runtime binding/composition of model-supplied metric",
-    "F_PE": "performance policy and cost thresholds"
+    "F_KT": "unchanged generic transaction and scalar acceptance contract",
+    "F_SI": "production owner for Richards-specific temporal-error semantics and qualification",
+    "F_MR": "future composition/binding only after F-SI owner qualification",
+    "F_VQ": "independent scientific qualification of the composed path",
+    "F_PE": "performance thresholds and policies only after accepted nontrivial Richards runtime"
   },
-  "qualification_boundary": [
-    "No production Richards temporal-error metric is admitted by this characterization step.",
-    "No arbitrary cross-unit normalization is admitted.",
-    "No F-PE threshold, BALANCED, THROUGHPUT, FALLBACK, iteration cap, or physics change is admitted.",
-    "Non-monotone delta behavior is characterization evidence rather than a test failure.",
-    "F-PE remains blocked until the F-MR16 owner/theory decision is closed and any required model-owned metric work, F-MR composition, independent F-VQ, and accepted nontrivial Richards runtime are complete."
-  ]
+  "mass_and_reference": {
+    "authoritative_mass_complete_required": true,
+    "mass_softening": false,
+    "rejected_trials_commit": false,
+    "reference_full_accuracy_preserved": true,
+    "balanced_added": false,
+    "throughput_added": false,
+    "fallback_added": false,
+    "solver_cost_cap_added": false,
+    "physics_changed": false
+  },
+  "fpe_release": {
+    "reference_tail_characterization_may_resume": false,
+    "bounded_cost_policy_qualification_may_resume": false,
+    "required_chain": "F-SI/model owner -> F-MR composition -> independent F-VQ -> accepted nontrivial Richards runtime -> F-PE reference-tail characterization"
+  },
+  "persisted_artifacts": {
+    "status_reconciliation_commit": "832d2a6b2d82c803ce10b493b2313c8ea5eae673",
+    "characterization_evidence_commit": "60931b9d440ca7c6f339e07018877900b4c76632",
+    "interpretation_commit": "428385a2289267b3e9c4b4e5c4db2a70cd9c11ca",
+    "fsi_owner_handoff_commit": "26dca61a2459de5c592700ce8d80079510814717",
+    "invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440",
+    "closeout_commit": "2feb058ff0bb9272c8e49bc90336646c72b0788b",
+    "characterization_evidence": "integration/f-mr/F-MR16_CHARACTERIZATION_EVIDENCE.json",
+    "interpretation": "integration/f-mr/F-MR16_INTERPRETATION.json",
+    "owner_handoff": "integration/f-mr/F-MR16_FSI_OWNER_HANDOFF.json",
+    "invariant_audit": "integration/f-mr/F-MR16_INVARIANT_AUDIT.json",
+    "closeout": "integration/f-mr/F-MR16_CLOSEOUT.json"
+  },
+  "next_action": "Start an F-SI/model-owner Richards temporal-error theory and qualification workunit. Do not make a production temporal metric change in F-MR16 and do not resume F-PE yet."
 }
