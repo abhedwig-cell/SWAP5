@@ -1,0 +1,39 @@
+name: F-ROSS01 State Coordinate Conditioning
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-state-coordinate-conditioning.yml
+      - experiments/ross/run_ross01_state_coordinate_conditioning.py
+      - integration/f-ross/F-ROSS01_STATE_COORDINATE_CONDITIONING_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy mpmath
+      - name: Run frozen state-coordinate conditioning gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="ross01-state-coordinate-conditioning"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_state_coordinate_conditioning.py \
+            "$out/F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json" \
+            | tee "$out/F-ROSS01_STATE_COORDINATE_CONDITIONING_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-state-coordinate-conditioning
+          path: ross01-state-coordinate-conditioning/
