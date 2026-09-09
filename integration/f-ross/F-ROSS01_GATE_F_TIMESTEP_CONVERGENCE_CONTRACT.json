@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F_TIMESTEP_CONVERGENCE_SMOOTH_C1R",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_implementation": false,
+  "prerequisites": [
+    "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE",
+    "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE"
+  ],
+  "candidate_policy": {
+    "sigma": 0.5,
+    "meaning": "precommitted balanced linearly implicit Ross step; sigma is numerical policy and does not change the requested hydraulics",
+    "global_nonlinear_iterations_per_step": 0,
+    "matrix_factorizations_per_step": 1,
+    "normal_backsolves_per_step": 1,
+    "retry_or_fallback_in_this_gate": 0
+  },
+  "physical_problem": {
+    "hydraulics": "unchanged qualified C1R N241 float32 bilinear log-mobility face law",
+    "storage": "unimodal MvG theta(h)",
+    "internal_flux": "recomputed from the accepted state at the start of every step",
+    "boundary_fluxes": "prescribed q_top and q_bottom frozen from the initial state for the whole horizon",
+    "sources_and_sinks": "frozen from the initial state for the whole horizon",
+    "reason_for_frozen_external_terms": "all timestep resolutions integrate exactly the same semi-discrete physical forcing problem"
+  },
+  "precommitted_cases": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "cell_counts": [4, 16, 64],
+    "profile_families": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "source_sink_patterns": ["zero", "mixed_local_source_and_sink"],
+    "base_cases_per_material": 18,
+    "total_base_cases": 108,
+    "horizon_day": 0.0016,
+    "candidate_step_counts": [2, 4, 8, 16],
+    "candidate_dt_days": [0.0008, 0.0004, 0.0002, 0.0001],
+    "finest_candidate_dt_day": 0.0001,
+    "finest_candidate_dt_lineage": "same maximum dt already exercised conservatively in Gate D"
+  },
+  "independent_temporal_oracle": {
+    "equations": "continuous-time semi-discrete finite-volume theta ODE using the same C1R face flux values, MvG inverse and frozen external terms",
+    "derivative_independence": "reference ODE uses face flux values only and does not use the Ross candidate face Jacobian or linearly implicit step",
+    "solver": "scipy.integrate.solve_ivp DOP853",
+    "rtol": 1e-11,
+    "atol_theta": 1e-13,
+    "reference_max_step_coarse": 0.000025,
+    "reference_max_step_fine": 0.0000125,
+    "oracle_value": "fine reference",
+    "reference_self_check": "coarse and fine reference final theta must agree before candidate errors are interpreted"
+  },
+  "error_metrics": {
+    "theta_span_normalized": "max_i abs(theta_candidate_i-theta_reference_i)/(theta_s-theta_r)",
+    "state_change_relative": "max_i abs(theta_candidate_i-theta_reference_i)/max(max_i abs(theta_reference_i-theta_initial_i), 1e-8*(theta_s-theta_r))",
+    "observed_order": "log2(error_8_steps/error_16_steps) for informative cases",
+    "informative_order_floor_theta_span_normalized": 1e-10
+  },
+  "hard_gates": {
+    "maximum_reference_coarse_vs_fine_theta_span_normalized": 1e-9,
+    "maximum_finest_candidate_theta_span_normalized_error": 1e-5,
+    "maximum_finest_candidate_state_change_relative_error": 0.005,
+    "refinement_error_nonincreasing": true,
+    "minimum_observed_order_in_informative_cases": 1.0,
+    "median_observed_order_in_informative_cases": 1.5,
+    "maximum_abs_step_mass_residual_cm": 1e-12,
+    "maximum_abs_horizon_mass_residual_cm": 1e-12,
+    "candidate_state_within_unsaturated_MvG_domain": true,
+    "candidate_head_within_C1R_envelope": true,
+    "candidate_table_cell_transition_count": 0,
+    "nonfinite_count": 0,
+    "shared_table_bitwise_unchanged": true,
+    "initial_state_bitwise_unchanged_outside_trial_sequence": true
+  },
+  "transaction_and_piecewise_policy": {
+    "each_step": "start from the current accepted state, assemble one trial, solve once, validate, then commit locally to the qualification trajectory",
+    "rejected_or_unqualified_trial": "must not mutate the prior accepted state",
+    "table_cell_transition": "fails this smooth-regime F gate rather than averaging derivatives across a C1R node; adaptive retry is a later revision if required",
+    "exact_equal_head_branch": "outside the unique smooth derivative claim and not intentionally exercised"
+  },
+  "mass_policy": {
+    "mass_conservation_is_absolute": true,
+    "no_residual_correction": true,
+    "same_realized_internal_face_flux_shared_by_adjacent_cells": true,
+    "reference_accuracy_does_not_relax_candidate_mass_gate": true
+  },
+  "explicit_nonclaims": [
+    "This gate does not establish a universal production timestep or adaptive timestep controller.",
+    "This gate does not qualify saturation transitions, heterogeneous faces, groundwater or bottom-boundary switching.",
+    "This gate does not qualify Class-B H_ENPR or KSATEXM.",
+    "This gate does not compare RossFast to FullRichards; that remains Gate M.",
+    "A PASS is restricted to the precommitted smooth unsaturated horizon and sigma=0.5 policy."
+  ],
+  "failure_policy": "Preserve failures and classify reference-oracle, temporal-accuracy, convergence-order, regime-transition, constitutive-domain or mass failure. Do not tune dt levels, sigma, reference tolerances or acceptance thresholds after execution; any revision requires a new precommit.",
+  "pass_decision": "QUALIFIED_RESTRICTED_SMOOTH_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+  "relevant_invariants": [3,5,7,8,9,13,20,23,24,25,26,30]
+}
