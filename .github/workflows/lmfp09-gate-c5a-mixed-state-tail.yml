@@ -1,0 +1,48 @@
+name: F-LMFP09 Gate C5a Mixed State Tail
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - .github/workflows/lmfp09-gate-c5a-mixed-state-tail.yml
+      - experiments/lmfp/run_lmfp09_gate_c5a_mixed_state_tail.py
+      - integration/f-lmfp/F-LMFP09_GATE_C5A_MIXED_STATE_TAIL_CHARACTERIZATION_ACCEPTANCE.json
+  workflow_dispatch:
+
+jobs:
+  mixed-state-tail-characterization:
+    strategy:
+      fail-fast: false
+      matrix:
+        case:
+          - material: reference_sand
+            half_length: '10.0'
+            slug: reference_sand_10
+          - material: very_fast
+            half_length: '5.0'
+            slug: very_fast_5
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run C5a mixed-state tail characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="lmfp09-gate-c5a-${{ matrix.case.slug }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c5a_mixed_state_tail.py \
+            "$out/F-LMFP09_GATE_C5A_MIXED_STATE_TAIL_RESULT.json" \
+            "${{ matrix.case.material }}" \
+            "${{ matrix.case.half_length }}" \
+            | tee "$out/F-LMFP09_GATE_C5A_MIXED_STATE_TAIL_STDOUT.json"
+      - name: Upload C5a evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c5a-${{ matrix.case.slug }}
+          path: lmfp09-gate-c5a-${{ matrix.case.slug }}/
