@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC04",
+  "title": "Independent Richards Head-Budget Scale Characterization from Disjoint Temporal Evidence",
+  "branch": "work/f-gc04-independent-head-budget-scale-characterization",
+  "start_head": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+  "tested_head": "24f5390dedb13accbbdc066e7293210e28335958",
+  "tested_tree": "f5c0d1b751790ffd88ffcb05ff39a0ac09ba6651",
+  "artifacts": {
+    "plan_blob": "aad2cc77490e6d3ad1e3cc4fde0d4753b30a738f",
+    "runner_blob": "22ddf3d17c5e6e403141b21f5a0966b14938b5eb",
+    "workflow_blob": "76abe745bd9a77ee515a7cf4eb26735972e80497",
+    "F_GC03_closeout_blob": "33e56ca3dd0c55fec1bdd70019cca0096e5d53c2",
+    "F_VQ29_status_blob": "d7bbeff65f9d506e5144b3b885930a835a1cef35",
+    "F_VQ30_held_out_evidence_blob": "39832173174271f4ad97278662467eb4dab13599",
+    "F_VQ30_closeout_blob": "6663bcc1149f07962bb9921840958d6d7de628a4",
+    "F_VQ31_independent_evidence_blob": "b68ba117ae470d4a6b2ca3b55b9c1697cbcd1923",
+    "F_VQ32_independent_evidence_blob": "f27cfd22f16cea16bee8c8a27e0c34b23c5dcc53",
+    "F_VQ32_closeout_blob": "51b075c6f72880897416bdcfd92549bd68d26b7b",
+    "F_VQ34_closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270"
+  },
+  "execution": {
+    "workflow_run": 34370975763,
+    "workflow_job": 102531798089,
+    "workflow_conclusion": "success",
+    "run_attempt": 1,
+    "platform": "ubuntu-24.04",
+    "permissions": "contents: read",
+    "first_run_success": true
+  },
+  "target_isolation": {
+    "F_GC02_physical_trial_executed": false,
+    "F_GC02_B_inf_read": false,
+    "F_GC02_result_used": false,
+    "target_result_dependency": false,
+    "loaded_evidence_sources": ["F-VQ29", "F-VQ30", "F-VQ31", "F-VQ32", "F-VQ34", "F-GC03"]
+  },
+  "independent_indicator_scale_cm": {
+    "F_VQ30": {
+      "count": 16,
+      "min": 0.06222845620413025,
+      "median": 0.13448668236534161,
+      "max": 0.17891001482513616
+    },
+    "F_VQ31": {
+      "count": 12,
+      "min": 0.04768810801771562,
+      "median": 0.07169896638516277,
+      "max": 0.09195254941124752
+    },
+    "F_VQ32": {
+      "count": 12,
+      "min": 0.028692867078547738,
+      "median": 0.05259780331985281,
+      "max": 0.06656053331158783
+    },
+    "combined": {
+      "count": 40,
+      "min": 0.028692867078547738,
+      "median": 0.07204361398412952,
+      "max": 0.17891001482513616
+    }
+  },
+  "reference_relationship": {
+    "F_VQ30_B_inf_over_E1_512_min": 6.685266816523914,
+    "F_VQ30_B_inf_over_E1_512_max": 102.49832534208181,
+    "remaining_conservatism": "LARGE_AND_STATE_AND_HORIZON_DEPENDENT",
+    "interpretation": "The indicator is substantially and variably conservative relative to the available finite-reference discrepancy. This evidence does not establish a fixed conversion from B_inf to nonlinear true temporal error and therefore cannot itself define an application H_budget."
+  },
+  "negative_evidence_preserved": {
+    "F_VQ29_error_bound_derivation_reached": false,
+    "F_VQ29_scientific_temporal_tolerance_selected": false,
+    "B_inf_true_general_nonlinear_error_upper_bound_qualified": false,
+    "monotone_dt_reduction_qualified": false,
+    "F_VQ31_truth_comparator_used": false,
+    "F_VQ32_probe_budgets_are_application_tolerances": false,
+    "F_VQ34_numeric_application_H_budget_selected": false
+  },
+  "gate_results": {
+    "G01_SOURCE_LOCKS_AND_TARGET_ISOLATION": "PASS",
+    "G02_NO_FGC02_TARGET_RESULT_ACCESS": "PASS",
+    "G03_QUANTITATIVE_EVIDENCE_EXTRACTED_WITHOUT_REINTERPRETATION": "PASS",
+    "G04_F_VQ29_NEGATIVE_ERROR_BOUND_EVIDENCE_PRESERVED": "PASS",
+    "G05_INDICATOR_SCALE_NOT_CONFLATED_WITH_APPLICATION_REQUIREMENT": "PASS",
+    "G06_NO_NUMERIC_SELECTION_OR_RECOMMENDATION": "PASS",
+    "G07_NO_TRUE_ERROR_OR_MONOTONICITY_OVERCLAIM": "PASS",
+    "G08_NEXT_DECISION_BOUNDARY_EXPLICIT": "PASS",
+    "G09_CORE_INVARIANT_AUDIT": "PASS",
+    "APPLICATION_NUMERIC_H_BUDGET_PRESENT": "NO",
+    "F_GC02_RELEASE": "NO",
+    "F_VQ35_AUTHORIZED": "NO",
+    "overall_characterization_gate": "PASS"
+  },
+  "qualified_claims": {
+    "independent_B_inf_scale_characterized": true,
+    "observed_combined_scale_order": "approximately 0.03 to 0.18 cm over the frozen independent matrices",
+    "observed_combined_median_cm": 0.07204361398412952,
+    "indicator_conservatism_is_state_and_horizon_dependent": true,
+    "application_accuracy_requirement_derived": false,
+    "numeric_H_budget_selected": false,
+    "recommended_H_budget": null,
+    "universal_default_H_budget": null
+  },
+  "core_invariant_audit": {
+    "3_explicit_data_separation": "PASS: numerical indicator evidence is kept separate from application accuracy policy and physical coupling forcing.",
+    "7_transactional_timesteps": "PASS: no target trial is rerun or retrospectively accepted from characterization evidence.",
+    "11_coupling_core_functionality": "PASS_WITHIN_SCOPE: coupling admission dependency is made explicit rather than hidden in the solver.",
+    "13_mass_conservation_absolute": "PASS: no mass gate, tolerance or accounting behavior is changed.",
+    "23_physics_solver_policy_separated": "PASS: observed indicator magnitude is not converted into a physical or application policy value.",
+    "25_reference_mode_available": "PASS: finite-reference evidence is retained as characterization evidence with its limitations.",
+    "26_runtime_diagnostics": "PASS_WITHIN_SCOPE: future H_budget provenance remains explicitly required by F-GC03.",
+    "29_no_silent_dependencies": "PASS: no default, hidden 0.01 cm value or target-derived budget is introduced.",
+    "30_architecture_change_audit": "PASS: evidence-only workunit changes no production source and records applicable invariant boundaries."
+  },
+  "production_source_modified": false,
+  "decision": "CHARACTERIZED_INDEPENDENT_INDICATOR_SCALE_APPLICATION_REQUIREMENT_STILL_MISSING"
+}
