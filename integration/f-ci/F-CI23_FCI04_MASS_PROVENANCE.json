@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-CI23",
+  "historical_gate": "F-CI04",
+  "purpose": "Reconcile the obsolete F-CI04 negative mass placeholder with later explicitly qualified authoritative accepted full-interval mass accounting without weakening fail-closed mass conservation.",
+  "historical_expectation": {
+    "source_gate": "tools/fci/fci04_contract_gate.py",
+    "obsolete_literal": "result%mass%complete = .false.",
+    "original_meaning": "At F-CI04 time full accepted physical interval mass accounting was not yet available and the runtime was forbidden to fabricate completeness."
+  },
+  "qualified_forward_authority": {
+    "F_KT08_final_head": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "F_KT08_final_head_workflow_run": 34187095449,
+    "F_KT08_final_head_workflow_conclusion": "success",
+    "F_KT08_status_path": "integration/f-kt/F-KT08_STATUS.json",
+    "F_KT08_status_blob": "157fd9f50e291f37439cb374ae20d875605580db",
+    "F_KT08_qualification_evidence_path": "integration/f-kt/F-KT08_QUALIFICATION_EVIDENCE.json",
+    "F_KT08_qualification_evidence_blob": "5b5f6e0fe790f5290798f9f64030c33ccae896f2",
+    "F_KT08_runtime_blob": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "F_MR04_qualified_source_head": "11eb34ea3afe8f5dda0515c28d7e08428dd2e272",
+    "F_MR04_qualification_evidence_path": "integration/f-mr/F-MR04_QUALIFICATION_EVIDENCE.json",
+    "F_MR04_qualification_evidence_blob": "50e37e6f5666b59e27fb7aa0dde51ca060c873e2",
+    "F_MR04_status_path": "integration/f-mr/F-MR04_STATUS.json",
+    "F_MR04_status_blob": "9d073bf239a94fd381b10f1a4a745d6c17991cdf",
+    "F_KT09_runtime_diagnostics_commit": "b3839a5fe2bcc535d7545cf6a4c85f7eb2f6fd0f",
+    "current_admitted_runtime_blob": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+    "F_CI19_candidate_A_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec"
+  },
+  "required_semantics": {
+    "accepted_only_accounting": true,
+    "rejected_trials_committed": false,
+    "retry_double_counting": false,
+    "rollback_mutates_committed_accounting": false,
+    "mass_conservation_disable_switch": false,
+    "completeness_fail_closed": true,
+    "active_missing_contribution_blocks_complete": true,
+    "finite_terms_required": true,
+    "accepted_transaction_required": true,
+    "zero_missing_contribution_mask_required": true,
+    "full_requested_interval_completion_required": true,
+    "generic_time": true,
+    "physics_changed_by_F_KT08": false,
+    "numerical_policy_changed_by_F_KT08": false
+  },
+  "F_MR04_executable_confirmation": {
+    "consumed_F_KT08": "510d1f29d40225c68f3a8d3e789071279941e87b",
+    "workflow_run": 34187700639,
+    "workflow_job": 101939262051,
+    "conclusion": "SUCCESS",
+    "authoritative_full_interval_mass_complete": "PASS",
+    "authoritative_missing_mask_zero": "PASS",
+    "authoritative_mass_residual": "PASS_ZERO"
+  },
+  "later_runtime_evolution": {
+    "only_runtime_change_after_F_MR04_before_F_CI19_candidate_A": "b3839a5fe2bcc535d7545cf6a4c85f7eb2f6fd0f",
+    "change_purpose": "F-KT09 model-owned temporal certificate diagnostics aggregation",
+    "mass_completeness_logic_changed": false,
+    "accepted_mass_accumulation_logic_changed": false,
+    "mass_residual_definition_changed": false
+  },
+  "decision": "REPLACE_OBSOLETE_NEGATIVE_LITERAL_WITH_PINNED_QUALIFIED_FAIL_CLOSED_MASS_PROVENANCE_CHECK",
+  "nonclaims": [
+    "This does not newly qualify any physical process.",
+    "This does not make active optional physics complete when its required contribution is missing.",
+    "This does not relax mass conservation or add a tolerance/disable switch.",
+    "This does not reinterpret rejected trial mass as committed mass.",
+    "This does not modify production source or reference data."
+  ]
+}
