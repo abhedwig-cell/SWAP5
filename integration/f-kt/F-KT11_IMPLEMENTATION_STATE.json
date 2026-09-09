@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT11",
+  "phase": "IMPLEMENTED_NOT_YET_OWNER_TESTED",
+  "live_reconciliation": {
+    "starting_head": "3b03632defd9945b59ed2f1120f87c7497b0c7b4",
+    "starting_tree": "509cca9d3ea5ad65ee5c3597ce3a50b7a8f4ab7d",
+    "workflow_runs_on_starting_head": 0
+  },
+  "persisted_chain": [
+    {"sha":"e63384a73db6c9c2cb1cf97e0c9d0d477a62c77f","purpose":"frozen F-KT11 owner contract"},
+    {"sha":"1c7338db0066cdec7b3ccad06ffe0bdb96ee91d2","purpose":"explicit numerical-configuration budget carrier"},
+    {"sha":"3b03632defd9945b59ed2f1120f87c7497b0c7b4","purpose":"Richards backend normalization and transaction-outcome binding"}
+  ],
+  "current_source_blobs": {
+    "canonical_numerical_config":"c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "serialized_richards_backend":"f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "transaction_core":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "implementation_audit": {
+    "budget_owner":"canonical_numerical_config_t only",
+    "budget_default_available":false,
+    "budget_default_value_is_not_a_default_policy":true,
+    "richards_budget_validity":"supplied AND finite AND >0",
+    "normalization":"C_h = B_inf / H_budget inside Richards backend",
+    "generic_transaction_formula_changed":false,
+    "mass_gate_precedes_certificate_gate":true,
+    "normalization_extra_nonlinear_solves":0,
+    "normalization_extra_linear_solves":0,
+    "persistent_column_state_added":false,
+    "physical_parameter_field_added":false,
+    "forcing_field_added":false,
+    "transaction_policy_tolerance_added":false,
+    "automatic_budget_selection":false,
+    "history_bootstrap_on_rejected_trial":false
+  },
+  "diagnostic_surfaces": {
+    "raw_B_inf":"fmr_serialized_physical_observation_t.temporal_head_inf_bound",
+    "budget_supplied":"fmr_serialized_physical_observation_t.temporal_head_budget_supplied",
+    "budget_valid":"fmr_serialized_physical_observation_t.temporal_head_budget_valid",
+    "native_budget_value":"fmr_serialized_physical_observation_t.temporal_head_budget",
+    "normalized_C_h":"fmr_serialized_physical_observation_t.temporal_normalized_indicator",
+    "certificate_available":"fmr_serialized_physical_observation_t.temporal_certificate_available",
+    "unavailable_reason":"fmr_serialized_physical_observation_t.temporal_certificate_unavailable_reason",
+    "attempt_retry_rollback_mass":"kernel_diagnostics_t and canonical transaction diagnostics"
+  },
+  "source_bound_mass_ordering": [
+    "physical model advance",
+    "compute hard mass residual and reject if mass fails",
+    "validate model certificate availability/finite/nonnegative",
+    "apply C_h <= 1",
+    "commit only after both gates pass"
+  ],
+  "hard_nonclaims": [
+    "No H_budget value has been selected for applications.",
+    "B_inf is not claimed to be a proven nonlinear true-error upper bound.",
+    "No monotonic decrease of C_h with smaller dt is claimed.",
+    "No arbitrary restart/bootstrap admission is introduced.",
+    "No F-GC02 release follows from this implementation state."
+  ],
+  "tested": false,
+  "qualified": false,
+  "next_action":"Add frozen owner matrix tests and source-lock regressions before introducing the F-KT11 workflow."
+}
