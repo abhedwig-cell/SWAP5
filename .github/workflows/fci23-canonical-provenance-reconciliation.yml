@@ -1,0 +1,88 @@
+name: F-CI23 canonical provenance gate reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci23-canonical-provenance-gate-reconciliation
+    paths:
+      - 'integration/f-ci/F-CI23_*'
+      - 'tools/fci/fci03_transaction_substrate_gate.py'
+      - '.github/workflows/fci23-canonical-provenance-reconciliation.yml'
+  workflow_dispatch:
+
+jobs:
+  full-canonical-chain:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI23 scope and postimage lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=e5662a513846296585a1a7005729896c165091ac
+          EXPECTED_SRC=3446aa1d0d80861b22f7e74c7ad51bcedef4f479
+          EXPECTED_REFERENCE=9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse HEAD:src)" = "$EXPECTED_SRC"
+          test "$(git rev-parse HEAD:reference)" = "$EXPECTED_REFERENCE"
+          git diff --exit-code "$BASE"..HEAD -- src reference
+          while IFS= read -r path; do
+            test -z "$path" && continue
+            case "$path" in
+              integration/f-ci/F-CI23_*.json|integration/f-ci/F-CI23_*.md|tools/fci/fci03_transaction_substrate_gate.py|.github/workflows/fci23-canonical-provenance-reconciliation.yml) ;;
+              *) echo "FCI23_SCOPE_FAIL unexpected path: $path" >&2; exit 2 ;;
+            esac
+          done < <(git diff --name-only "$BASE"..HEAD)
+          echo 'FCI23_G01_SCOPE_AND_POSTIMAGE_LOCK=PASS'
+      - name: F-CI03 provenance reconciliation
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci03_gate.sh | tee /tmp/fci03.out
+          grep -Fq '"status": "PASS"' /tmp/fci03.out
+          grep -Fq 'FCI03_GATE PASS' /tmp/fci03.out
+          echo 'FCI23_G06_FCI03_TRANSACTION_SUBSTRATE=PASS'
+      - name: F-CI04 through F-CI18 canonical chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci04_gate.sh
+          echo 'FCI23_CHAIN_FCI04=PASS'
+          python tools/fci/fci05_b1_10_physical_preimage_gate.py
+          echo 'FCI23_CHAIN_FCI05=PASS'
+          bash tests/fci/run_fci06_gate.sh
+          echo 'FCI23_CHAIN_FCI06=PASS'
+          bash tests/fci/run_fci07_gate.sh
+          echo 'FCI23_CHAIN_FCI07=PASS'
+          bash tests/fci/run_fci08_gate.sh
+          echo 'FCI23_CHAIN_FCI08=PASS'
+          bash tests/fci/run_fci09_gate.sh
+          echo 'FCI23_CHAIN_FCI09=PASS'
+          bash tests/fci/run_fci10_gate.sh
+          echo 'FCI23_CHAIN_FCI10=PASS'
+          bash tests/fci/run_fci11_gate.sh
+          echo 'FCI23_CHAIN_FCI11=PASS'
+          bash tests/fci/run_fci12_gate.sh
+          echo 'FCI23_CHAIN_FCI12=PASS'
+          bash tests/fci/run_fci13_gate.sh
+          echo 'FCI23_CHAIN_FCI13=PASS'
+          bash tests/fci/run_fci14_gate.sh
+          echo 'FCI23_CHAIN_FCI14=PASS'
+          bash tests/fci/run_fci15_gate.sh
+          echo 'FCI23_CHAIN_FCI15=PASS'
+          bash tests/fci/run_fci16_gate.sh
+          echo 'FCI23_CHAIN_FCI16=PASS'
+          bash tests/fci/run_fci17_gate.sh
+          echo 'FCI23_CHAIN_FCI17=PASS'
+          bash tests/fci/run_fci18_gate.sh
+          echo 'FCI23_CHAIN_FCI18=PASS'
+      - name: Final immutable postimage assertion
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src)" = 3446aa1d0d80861b22f7e74c7ad51bcedef4f479
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI23_G08_FINAL_SRC_REFERENCE_IMMUTABILITY=PASS'
+          echo 'FCI23_CANONICAL_PROVENANCE_RECONCILIATION PASS'
