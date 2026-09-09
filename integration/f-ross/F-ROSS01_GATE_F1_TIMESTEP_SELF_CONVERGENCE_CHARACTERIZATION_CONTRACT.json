@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F1_TIMESTEP_SELF_CONVERGENCE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_implementation": false,
+  "prerequisite": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
+  "purpose": "Characterize temporal self-convergence and state-change cost signals for the conservative C1R Ross update before selecting any production timestep-acceptance threshold.",
+  "source_basis": {
+    "unsaturated_sigma": 0.5,
+    "reason": "Ross source lineage uses central time weighting in unsaturated conditions; Gate F1 does not compare or retune sigma after execution.",
+    "retry_structure": "a rejected trial may be recomputed at smaller dt from the same physical base state; F1 characterizes fixed-step trajectories only and does not yet qualify the retry controller"
+  },
+  "hydraulic_scope": {
+    "family": "C1R base MvG/KSATFIT",
+    "homogeneous": true,
+    "unsaturated_only": true,
+    "face_length_cm": 10.0,
+    "H_ENPR": 0,
+    "KSATEXM": "disabled",
+    "bottom_mode": "prescribed flux only"
+  },
+  "precommitted_trajectory_matrix": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "cell_counts": [16, 64],
+    "profile_families": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "forcing_patterns": ["zero", "distributed_root_sink", "mixed_local_source_and_sink"],
+    "horizon_day": 0.01,
+    "candidate_dt_days": [0.0001, 0.00025, 0.0005, 0.001],
+    "reference_dt_day": 0.0000125,
+    "fine_reference_dt_day": 0.00000625,
+    "all_dt_values_divide_horizon_exactly": true,
+    "external_forcing_policy": "q_top, q_bottom, source and sink are frozen from the initial state and remain constant over the horizon for every resolution of a scenario"
+  },
+  "independent_reference_policy": {
+    "reference": "repeat the same conservative Ross update over the same horizon with independently re-evaluated C1R fluxes and derivatives at every much smaller accepted substep",
+    "fine_reference": "repeat again at half the reference dt",
+    "important_limit": "This is a temporal self-convergence oracle for RossFast, not a FullRichards physics oracle. FullRichards comparison remains Gate M.",
+    "no_candidate_trajectory_is_used_to_seed_reference": true
+  },
+  "aligned_time_metrics": [
+    "maximum absolute theta error",
+    "RMS theta error",
+    "maximum relative head error using max(1 cm, abs(reference head)) denominator",
+    "absolute bottom-head error",
+    "relative bottom-head error using max(1 cm, abs(reference bottom head)) denominator",
+    "profile table-cell mismatch count",
+    "maximum accepted-step absolute Delta theta",
+    "maximum accepted-step Delta theta divided by theta_s-theta_r",
+    "accepted-step table-cell crossing count"
+  ],
+  "reference_convergence_metrics": [
+    "same state/head metrics for reference dt against fine-reference dt at aligned reference times",
+    "reference and fine-reference mass residuals",
+    "reference domain and C1R-envelope validity"
+  ],
+  "hard_execution_gates": {
+    "all_precommitted_trajectories_complete": true,
+    "all_candidate_reference_and_fine_reference_states_remain_unsaturated_and_inside_C1R_head_envelope": true,
+    "nonfinite_count": 0,
+    "maximum_abs_per_step_mass_residual_cm": 1e-12,
+    "base_initial_state_not_mutated": true,
+    "shared_table_not_mutated": true,
+    "global_nonlinear_iterations": 0,
+    "factorizations_per_accepted_step": 1,
+    "normal_backsolves_per_accepted_step": 1
+  },
+  "characterization_not_prejudged": {
+    "no_temporal_error_threshold_is_selected_before_F1": true,
+    "no_state_change_acceptability_threshold_is_selected_before_F1": true,
+    "no_required_convergence_order_is assumed": true,
+    "no_dt_value_may_be_removed_or replaced after seeing results": true,
+    "no_sigma_tuning_after seeing results": true
+  },
+  "F1_exit": {
+    "successful_characterization": "TIMESTEP_SELF_CONVERGENCE_CHARACTERIZED_READY_FOR_F2_ACCEPTANCE_POLICY_PRECOMMIT",
+    "execution_failure": "TIMESTEP_CHARACTERIZATION_FAILED_CLASSIFY_DOMAIN_MASS_ALGEBRA_OR_REGIME_FAILURE_BEFORE_POLICY"
+  },
+  "explicit_nonclaims": [
+    "F1 does not itself qualify a production timestep policy.",
+    "F1 does not qualify FullRichards accuracy.",
+    "F1 does not qualify saturation, heterogeneity, groundwater or other bottom-boundary modes.",
+    "F1 does not change the Gate-D mass ledger or C1R table/derivative representation."
+  ],
+  "relevant_invariants": [7,8,9,13,15,23,24,25,26,30]
+}
