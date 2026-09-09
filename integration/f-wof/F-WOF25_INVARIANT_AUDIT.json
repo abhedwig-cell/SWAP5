@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "SWAP core invariant audit for standard WOFOST evolution readiness",
+  "scope": "zero-production readiness contracts only",
+  "audit": {
+    "3_explicit_data_separation": {
+      "status": "PASS",
+      "evidence": "parameters, committed crop state, event forcing, accepted cross-process aggregates, rates/workspace, results and diagnostics are explicitly separate"
+    },
+    "4_compact_persistent_state": {
+      "status": "PASS",
+      "evidence": "common continuation is minimal; LAI/WLV/LASUM/ILV are derived; vernalization and adaptive root state are option-dependent; potential shadow is excluded"
+    },
+    "5_scratch_per_worker": {
+      "status": "PASS",
+      "evidence": "dtsum, dvr, daylp, vernrate and WOFOST_rates are event/worker-local rather than permanent per-column state"
+    },
+    "6_scalable_memory_layout": {
+      "status": "PASS_DESIGN",
+      "evidence": "SoA/pools/batches and compact active cohort storage remain permitted; no object-per-column internal layout is required"
+    },
+    "7_transactional_time_steps": {
+      "status": "PASS_DESIGN",
+      "evidence": "complete enabled crop continuation is candidate-only; prepare/aggregate/finalize phases do not create a second commit authority; F-KT owns publication and rollback"
+    },
+    "8_cheap_recalculation_and_warm_start": {
+      "status": "PASS_DESIGN",
+      "evidence": "same crop checkpoint plus forcing and frozen accepted aggregates must replay identically; numerical warm starts cannot replace the committed physical origin"
+    },
+    "9_generic_time": {
+      "status": "PASS",
+      "evidence": "the kernel remains [t0,t1]-generic while standard WOFOST is admitted first as its own explicit one-day physical process cadence; arbitrary dt substitution is forbidden"
+    },
+    "10_flexible_coupling_windows": {
+      "status": "PASS_DESIGN_WITH_RUNTIME_REQUIREMENT",
+      "evidence": "crop windows are runtime events and accepted aggregates may span smaller kernel/coupling intervals; no MODFLOW or midnight boundary is encoded in crop state",
+      "hold": "production runtime window-accumulator persistence across smaller commits is not implemented by F-WOF25"
+    },
+    "11_coupling_core_functionality": {
+      "status": "PASS_NO_CONFLICT",
+      "evidence": "crop evolution consumes accepted process results and remains under the same transaction authority, so rollback/coupling composition is not bypassed"
+    },
+    "13_absolute_mass_conservation": {
+      "status": "PASS_NO_NEW_MASS_OWNER",
+      "evidence": "IQROT/IPTRA/IALPWET are read-only accepted aggregates for crop physics; root-water mass ownership remains exactly-once under F-KT/F-MR"
+    },
+    "16_MultiSWAP_primary_use_case": {
+      "status": "PASS_DESIGN",
+      "evidence": "execution classes can group active standard WOFOST, IDSL2, root topology and oxygen-context requirements while sharing immutable parameter sets"
+    },
+    "21_reuse_SWAP_physics": {
+      "status": "PASS",
+      "evidence": "the contracts preserve standard WOFOST assimilation, phenology, allocation, cohort and root semantics rather than replacing them with a reduced model"
+    },
+    "23_physics_solver_policy_separation": {
+      "status": "PASS",
+      "evidence": "IDSL/SWRD/SWRDC/oxygen are physical options; numerical reference/balanced/throughput policies do not alter them"
+    },
+    "25_reference_mode_available": {
+      "status": "PASS_WITH_QUALIFICATION_HOLD",
+      "evidence": "B1.10 one-day cadence remains the reference oracle",
+      "hold": "exact post-vernalised VERN diagnostic reproduction requires an explicit compatibility or expected-difference decision because legacy stale vernrate is not physical continuation state"
+    },
+    "26_runtime_diagnostics": {
+      "status": "PASS_DESIGN",
+      "evidence": "the event signature returns diagnostics and lineage/aggregate provenance is explicit",
+      "hold": "production diagnostic fields are deferred to the structural candidate"
+    },
+    "27_optional_functionality_scales_with_use": {
+      "status": "PASS",
+      "evidence": "IDSL2, adaptive root state, potential shadow and nutrient/grass state are not universally allocated"
+    },
+    "28_runtime_coupler_system_composition": {
+      "status": "PASS",
+      "evidence": "crop scheduling, crop-window aggregation and calendar translation are runtime/provider responsibilities outside the crop kernel"
+    },
+    "29_no_hidden_dependencies": {
+      "status": "PASS",
+      "evidence": "no hidden daynr/t1900/calendar globals, .swp parsing, midnight assumption, MODFLOW dependency or Richards-substep-equals-crop-day assumption is admitted"
+    },
+    "30_every_architecture_change_audited": {
+      "status": "PASS",
+      "evidence": "F-WOF25 explicitly audits state, API/event cadence, transactions, MultiSWAP scaling and cross-process aggregation before production implementation"
+    }
+  },
+  "overall": {
+    "architectural_readiness": "PASS_WITH_EXPLICIT_OPTION_AND_REFERENCE_HOLDS",
+    "production_evolution_admitted": false,
+    "mass_conservation_weakened": false,
+    "generic_time_weakened": false,
+    "transaction_authority_changed": false
+  }
+}
