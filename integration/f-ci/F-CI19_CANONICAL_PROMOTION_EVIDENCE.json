@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "title": "Canonical Branch Fast-Forward Promotion Evidence",
+  "decision": "CANONICAL_FAST_FORWARD_COMPLETED_RESTRICTED_SCOPE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "pre_promotion_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "promoted_head": "0beb324ccda1912ddfb707a0700670a3395c0444",
+  "promotion": {
+    "method": "FAST_FORWARD_REF_UPDATE",
+    "force": false,
+    "pre_promotion_head_reverified_immediately_before_update": true,
+    "pre_promotion_compare_status": "ahead",
+    "ahead_by": 12,
+    "behind_by": 0,
+    "merge_base": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab"
+  },
+  "qualified_source_boundary": {
+    "candidate_a_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "governed_postimage": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "postimage_to_promotion_closeout_delta": [
+      "integration/f-ci/F-CI19_CANONICAL_POSTIMAGE_QUALIFICATION_EVIDENCE.json",
+      "integration/f-ci/F-CI19_STATUS.json"
+    ],
+    "postimage_to_promotion_closeout_src_changed": false,
+    "postimage_to_promotion_closeout_reference_changed": false
+  },
+  "decisive_qualification": {
+    "workflow_run": 34321916045,
+    "workflow_job": 102370257397,
+    "conclusion": "success",
+    "tested_head": "68ad047c17334b9b5aa4593a0c831111e331b376",
+    "artifact_id": 10092198457,
+    "artifact_zip_sha256": "ea42b3d8985d0fd23dc8f5a50051d1bca1f62221d1200325f337d1d2397faf07",
+    "terminal_marker": "FCI19_CANONICAL_POSTIMAGE_GATE PASS_RESTRICTED_GOVERNED_CANDIDATE"
+  },
+  "claims_admitted": [
+    "qualified restricted Candidate A source/reference postimage is now the canonical source lineage",
+    "F-KT09 generic transaction/model-certificate seam is present with production Richards certificate still held",
+    "F-MR15/F-VQ27 restricted prescribed-head composition is preserved",
+    "F-SI19 reference linear-solver semantics are preserved",
+    "restricted snow MultiSWAP semantics are preserved",
+    "hard mass conservation and rollback/replay remain qualified in the carried scope"
+  ],
+  "claims_not_admitted": [
+    "production Richards model-owned temporal certificate",
+    "general groundwater predictor-corrector coupling",
+    "WOFOST full physical production binding",
+    "parallel real-physics reference execution",
+    "BALANCED THROUGHPUT or FALLBACK production modes",
+    "subdaily or multiday active snow",
+    "active macropore or swkimpl=1 expansion",
+    "concrete crop-owner root-uptake runtime composition",
+    "irrigation runtime composition",
+    "LayeredMFP or VZAA production solver use"
+  ],
+  "canonical_head_verified_after_update": "0beb324ccda1912ddfb707a0700670a3395c0444"
+}
