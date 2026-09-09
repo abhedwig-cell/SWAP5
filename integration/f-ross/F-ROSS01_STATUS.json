@@ -2,7 +2,7 @@
   "schema_version": 1,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
-  "title": "RossFast Non-Iterative MFP-Based Fast Richards Solver",
+  "title": "RossFast Non-Iterative Fast Richards Solver",
   "branch": "work/f-ross01-fast-mfp-feasibility",
   "base_commit": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
   "production_implementation": false,
@@ -14,15 +14,20 @@
   "decision_is_final": false,
   "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M"],
   "hard_blockers_if_failed": ["C_SWAPHYDRAULICS_GENERALISATION", "D_DISCRETE_MASS_CONSERVATION"],
-  "primary_source": {
-    "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions, Agronomy Journal 95(6):1352-1361",
-    "doi": "10.2134/agronj2003.1352"
-  },
-  "flexible_hydraulics_report": {
-    "citation": "Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions, CSIRO Land and Water Science Report 39/06",
-    "doi": "10.4225/08/5859741868a90",
-    "equation_level_audit_complete": false
-  },
+  "primary_lineage": [
+    {"citation":"Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions","doi":"10.2134/agronj2003.1352","role":"non-iterative continuity update and MFP-based approximate face flux"},
+    {"citation":"Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions","doi":"10.4225/08/5859741868a90","role":"flexible hydraulic-property extension; equation-level audit incomplete"},
+    {"citation":"Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes","doi":"10.2136/vzj2010.0085","role":"precomputed accurate steady-Darcian face fluxes with bounded O(N) runtime linear solve"}
+  ],
+  "primary_candidate_for_first_prototype": "ROSS2011_PRECOMPUTED_STEADY_STATE_FACE_FLUX",
+  "why_promoted": [
+    "retains finite-volume continuity and exact computational mass balance",
+    "runtime has no global nonlinear iteration and uses one tridiagonal linear solve per internal step",
+    "face hydraulics can be generated from arbitrary h(theta) and K(h) relations offline",
+    "heterogeneous two-material paths are directly representable",
+    "runtime cost is largely independent of hydraulic-property complexity",
+    "architecture maps naturally to immutable shared material/geometry path tables and worker-local O(N) solve scratch"
+  ],
   "independent_evaluation": {
     "citation": "Crevoisier D, Chanzy A, Voltz M (2009), Evaluation of the Ross fast solution of Richards' equation in unfavourable conditions for standard finite element methods, Advances in Water Resources 32(6):936-947",
     "doi": "10.1016/j.advwatres.2009.03.008",
@@ -36,12 +41,13 @@
     "license": "UNKNOWN"
   },
   "current_findings": [
-    "MFP/Kirchhoff potential and non-iterative mixed-variable formulation are scientifically relevant core features",
-    "Brooks-Corey is not proven to be a fundamental mathematical restriction",
-    "generalisation to the full SWAP hydraulic catalog remains open",
-    "exact accepted-step SWAP5 mass ledger remains open",
-    "heterogeneous interface and bounded local solve semantics remain open",
-    "MODFLOW imposed-head/imposed-flux contract and response tangent remain open"
+    "Brooks-Corey is not a fundamental restriction of the broader Ross lineage",
+    "Ross 2011 provides a cleaner SWAP5 candidate than directly porting the 2003 approximate face-flux formula",
+    "the 2011 method is not iteration-free in offline table generation, but its production step contains no global nonlinear iteration",
+    "a global tridiagonal linear solve is compatible with the bounded runtime objective and should be distinguished from Newton iteration",
+    "table density, material/geometry class cardinality and saturated-unsaturated state switching remain qualification gates",
+    "full SWAP hydraulic catalog, accepted-step mass ledger, MODFLOW boundary duality and response tangent remain open"
   ],
-  "status": "THEORY_AND_PROVENANCE_TRIAGE_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
+  "next_action": "build an isolated Ross2011-style continuity/table prototype by reusing the existing SWAP5 Darcian face-oracle science where possible, then qualify exact mass, timestep bounds, saturated-unsaturated transitions and homogeneous/heterogeneous face tables before adding process sinks or groundwater coupling",
+  "status": "ROSS2011_TABLE_VARIANT_PROMOTED_PRIMARY_PROTOTYPE_CANDIDATE_PERSISTED_BEFORE_IMPLEMENTATION"
 }
