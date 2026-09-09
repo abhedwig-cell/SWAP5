@@ -3,27 +3,29 @@
   "work_unit": "F-MR19",
   "title": "Restricted MultiSWAP Committed-Boundary Process Restart Qualification Evidence",
   "candidate": {
-    "head": "d2b3aeeacf5f4c087c9afe0088ad6a77c956be1a",
+    "head": "dfffd8535b3345b105b2d71537d8149225f35c54",
     "branch": "work/f-mr19-restricted-multiswap-process-restart",
     "production_source": "src/runtime/mod_fmr_committed_restart.f90",
-    "test": "tests/fmr/test_fmr19_process_restart.f90",
+    "real_physics_test": "tests/fmr/test_fmr19_process_restart.f90",
+    "negative_contract_test": "tests/fmr/test_fmr19_restart_contract_negative.f90",
     "gate": "tests/fmr/run_fmr19_process_restart_gate.sh",
+    "workflow": ".github/workflows/fmr19-process-restart.yml",
     "contract": "integration/f-mr/F-MR19_RESTART_CONTRACT.json"
   },
   "github_actions": {
-    "workflow": "F-MR19 committed-boundary process restart",
-    "workflow_file": ".github/workflows/fmr19-process-restart.yml",
-    "run_id": 34390153521,
-    "job_id": 102596200153,
-    "head_sha": "d2b3aeeacf5f4c087c9afe0088ad6a77c956be1a",
+    "workflow_name": "F-MR19 committed-boundary process restart",
+    "run_id": 34391094044,
+    "job_id": 102599292121,
+    "head_sha": "dfffd8535b3345b105b2d71537d8149225f35c54",
     "conclusion": "success",
-    "completed_at": "2026-09-09T18:37:51Z"
+    "completed_at": "2026-09-09T18:47:05Z"
   },
   "compiler_matrix": {
     "gnu_fortran": true,
     "O0": "PASS",
     "O2": "PASS",
-    "O0_O2_output_identity": "PASS"
+    "real_physics_O0_O2_output_identity": "PASS",
+    "negative_contract_O0_O2_output_identity": "PASS"
   },
   "batch_matrix": {
     "1": "PASS",
@@ -47,13 +49,24 @@
   },
   "fail_closed_evidence": {
     "wrong_parameter_set_identity": "PASS_ATOMIC",
-    "wrong_template_or_layout_identity": "PARTIAL_PASS: state-layout mismatch is executable; remaining exact template identity axes require explicit negative probes",
+    "missing_logical_column_id": "PASS_ATOMIC",
+    "duplicate_logical_column_id": "PASS_ATOMIC",
+    "bundle_schema_mismatch": "PASS_ATOMIC",
+    "record_schema_mismatch": "PASS_ATOMIC",
+    "kernel_schema_mismatch": "PASS_ATOMIC",
+    "nonreconstructable_physical_continuation": "PASS_ATOMIC",
+    "invalid_reconstruction_provenance": "PASS_ATOMIC",
     "wrong_per_column_parameter_ref": "PASS_ATOMIC",
-    "duplicate_column_id": "PASS_ATOMIC",
-    "missing_column_id": "PENDING_EXECUTABLE_PROBE",
-    "schema_mismatch": "PENDING_EXECUTABLE_PROBE",
-    "nonreconstructable_physical_continuation": "PENDING_EXECUTABLE_PROBE",
-    "restore_into_initialized_target": "PENDING_EXECUTABLE_PROBE"
+    "wrong_template_id": "PASS_ATOMIC",
+    "wrong_physics_topology_id": "PASS_ATOMIC",
+    "wrong_vertical_layout_id": "PASS_ATOMIC",
+    "wrong_state_layout_id": "PASS_ATOMIC",
+    "wrong_solver_interface_id": "PASS_ATOMIC",
+    "wrong_optional_state_layout_id": "PASS_ATOMIC",
+    "wrong_numerical_continuation_layout_id": "PASS_ATOMIC",
+    "wrong_backend_compatibility": "PASS_ATOMIC",
+    "restore_into_initialized_target": "PASS_FAIL_CLOSED",
+    "whole_registry_publication": "PASS: rejected fresh-target probes leave every target unready; publication occurs only after all records reconstruct successfully"
   },
   "architecture_scope": {
     "kernel_source_changed": false,
@@ -61,20 +74,16 @@
     "kernel_io_added": false,
     "parallel_real_physics_changed": false,
     "restart_boundary": "accepted committed boundary only",
-    "runtime": "restricted serialized real-physics MultiSWAP only"
+    "runtime": "restricted serialized real-physics MultiSWAP only",
+    "parameter_payload": "external shared immutable registry; not persisted per column",
+    "solver_scratch": "not persisted"
   },
   "qualification": {
-    "status": "TESTED_CANDIDATE_NEGATIVE_GATE_COMPLETION_PENDING",
+    "status": "QUALIFIED",
     "tested": true,
-    "qualified": false,
-    "decision": "NOT_YET_QUALIFIED",
-    "open": [
-      "explicit missing-column fail-closed probe",
-      "explicit bundle/record schema mismatch fail-closed probes",
-      "explicit nonreconstructable physical continuation fail-closed probe",
-      "explicit initialized-target fail-closed probe",
-      "explicit negative probes for all template identity axes"
-    ],
+    "qualified": true,
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
+    "open": [],
     "forbidden_claims_retained": [
       "general SWAP persistence format",
       "byte or file serialization qualification",
