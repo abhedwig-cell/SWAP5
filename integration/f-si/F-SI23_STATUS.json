@@ -1,17 +1,22 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-SI",
   "work_unit": "F-SI23",
   "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
   "branch": "work/f-si23-richards-embedded-temporal-estimator",
-  "status": "GATE_B_RESTRICTED_RIGHT_DERIVATIVE_PLAN_FROZEN_READY_FOR_TEST_ONLY_CHARACTERIZATION",
-  "phase": "BOOTSTRAP_PLAN_PERSISTED_BEFORE_EXECUTION",
+  "status": "GATE_B_RESTRICTED_RIGHT_DERIVATIVE_BOOTSTRAP_QUALIFIED_TEST_ONLY",
+  "phase": "BOOTSTRAP_QUALIFIED_OBSERVER_ERROR_RELATION_NOT_YET_CHARACTERIZED",
   "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
   "gate_A_mapping": "integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json",
   "gate_A_reconciliation": "integration/f-si/F-SI23_GATE_A_LITERATURE_RECONCILIATION.json",
   "gate_B_plan": "integration/f-si/F-SI23_GATE_B_BOOTSTRAP_PLAN.json",
+  "gate_B_evidence": "integration/f-si/F-SI23_GATE_B_BOOTSTRAP_EVIDENCE.json",
   "gate_A_contract_run": 34320565144,
   "gate_A_contract_conclusion": "success",
+  "gate_B_qualified_commit": "beee6dfd9b0f56274a1ba64ef7ce9f0b0a29e7b6",
+  "gate_B_workflow_run": 34322065842,
+  "gate_B_workflow_job": 102370730493,
+  "gate_B_conclusion": "success",
   "current_candidate": {
     "name": "decision_only_backward_euler_pressure_head_error_observer",
     "pressure_head_formula_source_bound": true,
@@ -26,8 +31,20 @@
     "discontinuity_requires_internal_restart": true,
     "pre_discontinuity_derivative_reuse": false,
     "restricted_SWB5_unsaturated_source_mapping_available": true,
-    "test_only_characterization_authorized": true,
+    "restricted_SWB5_unsaturated_bootstrap_qualified": true,
+    "qualified_scope_is_test_only": true,
+    "frozen_case_count": 12,
+    "all_frozen_cases_strict_error_decrease": true,
+    "all_external_mass_residuals_passed": true,
+    "O0_O2_identity": true,
     "general_saturated_DAE_bootstrap_qualified": false
+  },
+  "gate_B_attribution": {
+    "initial_apparent_numeric_failure_preserved": true,
+    "immutable_failure_evidence": "integration/f-si/F-SI23_GATE_B_ATTEMPT1_FAILURE.json",
+    "root_cause": "test bottom-face geometry used stub disnod instead of explicit HeadCalc 0.5*last-dz face distance",
+    "physics_or_solver_failure": false,
+    "scientific_acceptance_criteria_changed_after_failure": false
   },
   "hard_holds": {
     "production_source_modified": false,
@@ -37,9 +54,11 @@
     "dimensionless_certificate_mapping_selected": false,
     "solver_iteration_budget_changed": false,
     "nonlinear_tolerance_changed": false,
+    "LTE_observer_qualified": false,
+    "transactional_derivative_history_implemented": false,
     "F_GC02_release": false,
     "F_PE_release": false,
     "F_VQ30_started": false
   },
-  "next_action": "Implement only the frozen Gate B test harness for the restricted right-sided derivative bootstrap, execute O0/O2 characterization under unchanged numerical controls, and persist the result before any temporal-observer implementation."
+  "next_action": "Freeze a separate Gate C owner-side characterization of e_h = 0.5*dt*(hdot_np1-hdot_n) against an independent same-endpoint temporal-error reference within a source-bound envelope. Do not select a threshold, normalize into the F-KT09 certificate, modify production source, or start F-VQ30 before that owner-side error relation is characterized."
 }
