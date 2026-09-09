@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST rate lifetime and legacy carryover reconciliation",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true,
+    "potential_shadow": false,
+    "nutrient_route": false,
+    "grass": false,
+    "soybean": false
+  },
+  "source_provenance": {
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "source_regions": {
+      "saved_module_state": "SWAP/wofost.f90:8-32",
+      "WOFOST_rates_type": "SWAP/wofost.f90:170-205",
+      "standard_update": "SWAP/wofost.f90:960-1107",
+      "vernalization_rate": "SWAP/wofost.f90:839-874",
+      "vernalization_post_update": "SWAP/wofost.f90:379-393",
+      "GLAI": "SWAP/wofost.f90:1816-1847",
+      "rate_reset": "SWAP/wofost.f90:2307-2335"
+    }
+  },
+  "general_rule": {
+    "decision": "WOFOST rates are event-local unless a later accepted crop event reads a value that legacy intentionally or accidentally leaves from the prior event",
+    "persistent_rate_arrays_or_full_WOFOST_rates_object": false,
+    "worker_or_window_context_for_ordinary_rates": true
+  },
+  "event_local_rates": [
+    "dtsum",
+    "dvr",
+    "daylp/solar-derived window intermediate",
+    "pgass",
+    "fr",
+    "fl",
+    "fs",
+    "fo",
+    "gass",
+    "mres",
+    "dmi",
+    "admi",
+    "grrt",
+    "grlv",
+    "grst",
+    "grso",
+    "fysdel",
+    "dslv",
+    "dalv",
+    "drlv",
+    "drst",
+    "drrt",
+    "gwst",
+    "gwrt",
+    "gwso",
+    "slat"
+  ],
+  "source_bound_cross_event_exceptions": [
+    {
+      "legacy_name": "r%glaiex",
+      "target_semantic_name": "legacy_lai_exponential_rate_carryover",
+      "source_facts": [
+        "glai assigns r%glaiex only while s%laiexp < 6",
+        "update_wofost adds r%glaiex*delt to s%laiexp on every standard update",
+        "r_act and r_pot are SAVE objects and reset_wofost_rates is not a daily reset"
+      ],
+      "cross_event_effect": "after LAIEXP reaches or exceeds 6, the last computed GLAIEXP remains live and continues to change committed LAIEXP on later daily calls",
+      "observable_physical_state_affected": "LAIEXP, which is already qualified as committed primary actual biomass state in F-WOF23",
+      "classification": "SOURCE_BOUND_ORACLE_COMPATIBILITY_MEMORY_NOT_A_GENERAL_RATE_STATE",
+      "minimum_storage_rule": "for exact B1.10 continuation, retain one scalar only once the actual trajectory enters the LAIEXP>=6 carryover regime; before that threshold the rate is recomputed from current inputs and need not persist",
+      "initialization": "canonical zero before any computed carryover exists; capture the current event's computed GLAIEXP when the candidate first enters the carryover regime",
+      "transaction_semantics": "candidate-local; rejected events cannot change the committed carryover value",
+      "alternative_not_admitted_here": "resetting GLAIEXP to zero after the threshold would be a theory/code correction requiring separate scientific qualification against the legacy oracle"
+    },
+    {
+      "legacy_name": "vernrate",
+      "target_semantic_name": "legacy_vernalization_rate_carryover",
+      "presence": "only when IDSL=2",
+      "source_facts": [
+        "update_dvs_rate resets/assigns vernrate only while fl_vernalised is false",
+        "wofost task 3 adds vernrate to vern after the actual/potential biomass updates on every IDSL=2 daily call",
+        "if saturation makes fl_vernalised true after a positive vernrate, the next call bypasses the reassignment but still adds the saved value"
+      ],
+      "cross_event_effect": "legacy VERN can continue increasing after saturation-driven vernalization completion",
+      "future_standard_DVS_feedback_after_completion": "none found because fl_vernalised bypasses the vernalization reduction on subsequent standard-route phenology evaluations",
+      "observable_state_affected": "VERN is written by legacy WOFOST output and is part of the requested IDSL=2 continuation state",
+      "classification": "OPTIONAL_SOURCE_BOUND_ORACLE_COMPATIBILITY_MEMORY_NOT_A_GENERAL_RATE_STATE",
+      "minimum_storage_rule": "retain one scalar only for IDSL=2 trajectories where a nonzero carryover must be reproduced; forced completion at VERNDVS canonically leaves/sets a zero carryover",
+      "initialization": "zero at WOFOST emergence",
+      "transaction_semantics": "optional candidate-local memory; rejected events cannot change it",
+      "alternative_not_admitted_here": "forcing vernrate to zero after completion would be a theory/code correction requiring separate scientific qualification"
+    }
+  ],
+  "non_state_saved_value": {
+    "legacy_name": "r%gla",
+    "finding": "GLA can also remain stale when LAIEXP>=6, but no scoped standard-route feedback or committed-state update consumes that stale GLA after the conditional block",
+    "classification": "DIAGNOSTIC_OR_DEAD_SAVED_VALUE_NOT_COMMITTED_STATE"
+  },
+  "state_model_refinement": {
+    "supersedes_initial_blanket_hypothesis": "The initial F-WOF25 readiness contract listed vernrate and WOFOST_rates as non-committed rates. Source audit refines that hypothesis: the full rate object remains non-state, but two scalar prior-event values have source-bound continuation effects under narrow conditions.",
+    "ordinary_rates_persistent_per_column": false,
+    "full_WOFOST_rates_persistent_per_column": false,
+    "compatibility_memory_scaling": [
+      "GLAIEXP carryover only for active actual-WOFOST trajectories in the carryover regime",
+      "VERNRATE carryover only for IDSL=2 where required",
+      "inactive crops and unrelated execution classes allocate neither"
+    ],
+    "SoA_friendly": true
+  },
+  "gate": {
+    "WOF25_G03": "PASS_WITH_TWO_EXPLICIT_SOURCE_BOUND_COMPATIBILITY_MEMORY_EXCEPTIONS",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
