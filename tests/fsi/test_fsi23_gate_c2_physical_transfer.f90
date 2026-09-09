@@ -91,7 +91,7 @@ program test_fsi23_gate_c2_physical_transfer
   end if
   finite_consistent = eobs >= e1_512
 
-  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A,A,A,A,ES26.17E3)') &
+  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A,A,A,A,ES26.17E3,A,ES26.17E3)') &
        'FSI23_C2_ROW:H0=',initial_head_cm,':JUMP=',predictor_bottom_head_cm-initial_head_cm, &
        ':EOBS=',eobs,':E1_512=',e1_512,':D128_256=',d128_256,':D256_512=',d256_512, &
        ':FLOOR=',floor_cm,':RATIO_AVAILABLE=',yesno(ratio_available),':EOBS_GE_E1_512=',yesno(finite_consistent), &
