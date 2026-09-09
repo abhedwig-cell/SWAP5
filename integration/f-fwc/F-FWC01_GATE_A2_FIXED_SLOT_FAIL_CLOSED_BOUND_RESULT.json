@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "A2_FIXED_SLOT_FAIL_CLOSED_BOUND",
+  "contract": "F-FWC01_GATE_A2_FIXED_SLOT_FAIL_CLOSED_BOUND_PRECOMMIT.json",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "workflow": {
+    "run": 34381244691,
+    "head": "3587426bf43f5ccbe0d44805d52d7d36d5933d1e",
+    "conclusion": "success",
+    "artifact_id": 10115919243,
+    "artifact_digest": "sha256:d01b889146bddc0d8fab1abeaf8c9d9ed75cf63d0de0784adffebd83c659481a"
+  },
+  "candidate": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
+  "case_count": 48,
+  "normal_case_count": 12,
+  "overflow_routed_case_count": 36,
+  "theta_bin_counts": [16, 64, 200],
+  "persistent_bytes_per_column": {
+    "16": 3328,
+    "64": 13312,
+    "200": 41600
+  },
+  "maximum_active_slots_any_case": 8,
+  "maximum_abs_mass_residual": 0.0,
+  "all_accepted_topologies_equal_dynamic_reference": true,
+  "all_overflows_state_bitwise_unchanged": true,
+  "all_overflows_ledger_exactly_unchanged": true,
+  "no_merge_clip_drop_on_overflow": true,
+  "explicit_diffusion_scratch_persistent": false,
+  "overflow_behavior": {
+    "coarse_period_0_25_residence": "NORMAL",
+    "period_0_0625_residence": "FALLBACK_REQUIRED_AFTER_8_ACCEPTED_SLUGS",
+    "period_0_015625_residence": "FALLBACK_REQUIRED_AFTER_8_ACCEPTED_SLUGS",
+    "period_0_00390625_residence": "FALLBACK_REQUIRED_AFTER_8_ACCEPTED_SLUGS",
+    "committed_state_mutated_by_rejected_overflow_trial": false,
+    "committed_ledger_mutated_by_rejected_overflow_trial": false
+  },
+  "pass": true,
+  "decision": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
+  "qualified_claim": "A fixed-capacity per-bin slot representation can impose a forcing-independent persistent-memory bound while exactly matching the unbounded reference topology on accepted no-overflow trials and conservatively failing closed on overflow.",
+  "hard_nonclaims": [
+    "Eight slots are not shown sufficient for useful FWC coverage.",
+    "The 200-bin 41.6 kB persistent payload is not admitted as acceptable MultiSWAP memory cost.",
+    "Runtime work is not bounded under arbitrarily dense forcing events.",
+    "No physical FWC hydraulic equations or profile accuracy are qualified by A2.",
+    "No official M2WC70 code behavior is reproduced.",
+    "No MultiSWAP production admission follows from A2."
+  ],
+  "invariant_reconciliation": {
+    "4_compact_persistent_state": "Persistent allocation is fixed by template and does not grow with run history.",
+    "5_scratch_per_worker": "Explicit-diffusion temporary arrays remain worker-owned scratch.",
+    "7_transactional_steps": "Overflow trials do not mutate committed state or ledger.",
+    "13_mass_absolute": "No water is clipped, merged or discarded to satisfy the capacity bound.",
+    "16_multiswap_primary": "The representation is bounded, but the 200-bin payload cost remains unqualified for primary MultiSWAP.",
+    "24_predictable_runtime": "Memory is bounded; event-rate runtime cost remains separately open.",
+    "26_diagnostics": "Overflow emits explicit FALLBACK_REQUIRED.",
+    "30_explicit_qualification": "The result separates bounded representation semantics from physical accuracy and runtime affordability."
+  },
+  "next_gate": "PHYSICAL_FWC_STATE_AND_MASS_EQUATION_QUALIFICATION_WITH_FIXED_SLOT_OVERFLOW_ROUTE"
+}
