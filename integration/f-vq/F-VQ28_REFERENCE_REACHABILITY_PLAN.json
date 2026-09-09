@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "study": "SAME_ENDPOINT_REFERENCE_REACHABILITY_ATTRIBUTION",
+  "base_after_gate_b_attempt1_evidence": "5a32b9db3b3c7a7647479019bc127f168ae2ee69",
+  "purpose": "Determine whether the N512 same-endpoint finite reference failure seen in Gate B is isolated or part of a systematic fine-step solver reachability boundary, without changing any physics or numerical controls.",
+  "frozen_matrix": {
+    "initial_heads_cm": [-40.0,-55.0,-110.0,-160.0,-210.0,-320.0],
+    "prescribed_bottom_head_jumps_cm": [-0.05,-0.01,0.01,0.05],
+    "retry_horizons_day": [0.25,0.125,0.0625],
+    "case_horizon_count": 72,
+    "candidate_reference_substep_counts": [64,128,256,512]
+  },
+  "unchanged_controls": {
+    "bottom_mode": 5,
+    "top_flux_rule": "minus initial hydraulic conductivity",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "reference_tridag": "source-locked SWAP 4.3.1 Thomas operation order",
+    "optional_physics": "inactive"
+  },
+  "outputs": [
+    "success or failure for every case/horizon/N",
+    "substep_duration",
+    "first failed substep",
+    "solver status at failure",
+    "maximum nonlinear iterations and backtracking before failure",
+    "maximum hard mass residual over accepted direct substeps"
+  ],
+  "interpretation_rules": {
+    "no_posthoc_reference_downgrade": true,
+    "universal_reachable_level_is_descriptive_not_automatically_admitted": true,
+    "any_new_reference_level_for_gate_b_requires_separate_persisted_qualification_before_reuse": true,
+    "solver_failure_is_not_a_mass_failure": true,
+    "production_source_change": "forbidden",
+    "retry_policy_change": "forbidden",
+    "tolerance_selection": "forbidden"
+  },
+  "next_action": "Run the frozen reachability attribution with repeat determinism and O0/O2 identity. Persist the complete reachability boundary before deciding whether Gate B can be reformulated with a separately qualified finite reference."
+}
