@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34381026618,
+    "head": "b97313a380b17643c7360fc6cf403dcf7713e6f1",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifact_id": 10115898342,
+    "artifact_digest": "sha256:2e08d634c12758007d87eb8879cdd3fb56667a6e303ea8d7b3dedf4bfeeca42c"
+  },
+  "runtime_ok": true,
+  "candidate": "LOCAL_TENSOR_Q2_LOGM_FIXED_A33_SAT17_U241",
+  "fixed_nodes_unchanged": true,
+  "additional_shared_table_storage_bytes": 0,
+  "per_column_table_state_bytes": 0,
+  "table_loads_per_lookup": 9,
+  "lookup_complexity": "O(1)",
+  "frozen_thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0
+  },
+  "materials": {
+    "B12": {
+      "pass": false,
+      "failed_metrics": ["max_abs_error_over_ksatfit"],
+      "max_hybrid_metric": 0.0018378587200721399,
+      "p99_hybrid_metric": 0.000611636810351264,
+      "max_abs_error_over_ksatfit": 0.0009133155249703937,
+      "wrong_sign_count": 0,
+      "lookup_failures": 0,
+      "nan_or_inf": 0,
+      "node_evaluation_failures": 0,
+      "known_witness_max_hybrid": 0.0017300185063632333,
+      "unsaturated_wet_branch_max_hybrid": 0.0018378587200721399,
+      "saturated_wet_branch_max_hybrid": 0.0008488107900877913
+    },
+    "O13": {
+      "pass": true,
+      "failed_metrics": [],
+      "max_hybrid_metric": 0.0014853133469676654,
+      "p99_hybrid_metric": 0.0007667420000876531,
+      "max_abs_error_over_ksatfit": 0.0002901866900390174,
+      "wrong_sign_count": 0,
+      "lookup_failures": 0,
+      "nan_or_inf": 0,
+      "node_evaluation_failures": 0
+    },
+    "B01": {
+      "pass": true,
+      "failed_metrics": [],
+      "max_hybrid_metric": 0.00007361210946596503,
+      "p99_hybrid_metric": 0.000029499809182439207,
+      "max_abs_error_over_ksatfit": 0.00007656792003563898,
+      "wrong_sign_count": 0,
+      "lookup_failures": 0,
+      "nan_or_inf": 0,
+      "node_evaluation_failures": 0
+    },
+    "O14": {
+      "pass": true,
+      "failed_metrics": [],
+      "max_hybrid_metric": 0.00001080117840903762,
+      "p99_hybrid_metric": 0.000003018832031324035,
+      "max_abs_error_over_ksatfit": 0.00001698328755111215,
+      "wrong_sign_count": 0,
+      "lookup_failures": 0,
+      "nan_or_inf": 0,
+      "node_evaluation_failures": 0
+    }
+  },
+  "interpretation": [
+    "Q2 materially improves the near-saturation hybrid error for B12 and O13 without adding nodes or state.",
+    "B12 nevertheless violates the frozen absolute flux-error criterion: 9.133155249703937e-4 of KSATFIT versus the precommitted 5e-4 maximum.",
+    "O13, B01 and O14 pass every frozen Q2 criterion.",
+    "The gate is all-material fail-closed, so a single B12 failure rejects the candidate family.",
+    "The workflow failure is the intended scientific gate outcome, not an infrastructure failure."
+  ],
+  "pass": false,
+  "decision": "FIXED_NODE_Q2_REJECTED_STOP_PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_APPROACH",
+  "hard_guards": [
+    "Do not add Q3, additional nodes or new coordinates as a continuation of this table line.",
+    "Do not relax or retune the frozen error criteria after observing B12.",
+    "Preserve E2A, R1A, R2A and E2B negative evidence.",
+    "Next near-saturation research must change face formulation, for example a bounded local face solve or another non-table formulation.",
+    "No saturation-transition production admission follows from E2B."
+  ],
+  "status": "PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_LINE_CLOSED"
+}
