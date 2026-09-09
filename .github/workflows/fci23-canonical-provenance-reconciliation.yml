@@ -6,13 +6,70 @@ on:
       - qualification/f-ci23-canonical-provenance-gate-reconciliation
     paths:
       - 'integration/f-ci/F-CI23_*'
-      - 'tools/fci/fci03_transaction_substrate_gate.py'
-      - 'tools/fci/fci04_contract_gate.py'
+      - 'tools/fci/fci23_current_lineage_authority_gate.py'
       - '.github/workflows/fci23-canonical-provenance-reconciliation.yml'
+      - '.github/workflows/fci-canonical.yml'
   workflow_dispatch:
 
 jobs:
-  full-canonical-chain:
+  historical-fci03-through-fci18:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1eceed967b12396b8bbc832f897376378463adce
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact qualified F-CI18 gate-promotion chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+          python tools/fci/fci05_b1_10_physical_preimage_gate.py
+          bash tests/fci/run_fci06_gate.sh
+          bash tests/fci/run_fci07_gate.sh
+          bash tests/fci/run_fci08_gate.sh
+          bash tests/fci/run_fci09_gate.sh
+          bash tests/fci/run_fci10_gate.sh
+          bash tests/fci/run_fci11_gate.sh
+          bash tests/fci/run_fci12_gate.sh
+          bash tests/fci/run_fci13_gate.sh
+          bash tests/fci/run_fci14_gate.sh
+          bash tests/fci/run_fci15_gate.sh
+          bash tests/fci/run_fci16_gate.sh
+          bash tests/fci/run_fci17_gate.sh
+          bash tests/fci/run_fci18_gate.sh
+          echo 'FCI23_HISTORICAL_FCI03_THROUGH_FCI18=PASS'
+
+  frozen-fci19-candidate-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5d5ece58b2b8e053a270992ded52377dd524f9c4
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay frozen F-CI19 Candidate A composition preservation
+        run: bash tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh
+
+  frozen-fci19-source-lineage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e06e3af07efd72a893e860b5d90ccd85efc3c643
+          fetch-depth: 0
+      - name: Replay frozen F-CI19 source lineage and reachability
+        run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
+
+  current-postimage-lineage:
+    needs:
+      - historical-fci03-through-fci18
+      - frozen-fci19-candidate-preservation
+      - frozen-fci19-source-lineage
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -20,70 +77,31 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-CI23 scope and postimage lock
+      - name: F-CI23 qualification-only scope and exact postimage
         shell: bash
         run: |
           set -euo pipefail
           BASE=e5662a513846296585a1a7005729896c165091ac
-          EXPECTED_SRC=3446aa1d0d80861b22f7e74c7ad51bcedef4f479
-          EXPECTED_REFERENCE=9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          test "$(git rev-parse HEAD:src)" = "$EXPECTED_SRC"
-          test "$(git rev-parse HEAD:reference)" = "$EXPECTED_REFERENCE"
+          test "$(git rev-parse HEAD:src)" = 3446aa1d0d80861b22f7e74c7ad51bcedef4f479
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           git diff --exit-code "$BASE"..HEAD -- src reference
           while IFS= read -r path; do
             test -z "$path" && continue
             case "$path" in
-              integration/f-ci/F-CI23_*.json|integration/f-ci/F-CI23_*.md|tools/fci/fci03_transaction_substrate_gate.py|tools/fci/fci04_contract_gate.py|.github/workflows/fci23-canonical-provenance-reconciliation.yml) ;;
+              integration/f-ci/F-CI23_*.json|integration/f-ci/F-CI23_*.md|tools/fci/fci23_current_lineage_authority_gate.py|.github/workflows/fci23-canonical-provenance-reconciliation.yml|.github/workflows/fci-canonical.yml) ;;
               *) echo "FCI23_SCOPE_FAIL unexpected path: $path" >&2; exit 2 ;;
             esac
           done < <(git diff --name-only "$BASE"..HEAD)
-          echo 'FCI23_G01_SCOPE_AND_POSTIMAGE_LOCK=PASS'
-      - name: F-CI03 provenance reconciliation
-        run: |
-          set -euo pipefail
-          bash tests/fci/run_fci03_gate.sh | tee /tmp/fci03.out
-          grep -Fq '"status": "PASS"' /tmp/fci03.out
-          grep -Fq 'F-CI03_GATE PASS' /tmp/fci03.out
-          echo 'FCI23_G06_FCI03_TRANSACTION_SUBSTRATE=PASS'
-      - name: F-CI04 through F-CI18 canonical chain
+          echo 'FCI23_QUALIFICATION_SCOPE=PASS'
+      - name: Current source-lineage authority gate
+        run: python tools/fci/fci23_current_lineage_authority_gate.py
+      - name: Reexecute current F-CI21 closeout semantics on exact HEAD
+        run: bash tests/fci/run_fci21_closeout_readiness_gate.sh
+      - name: Final current authority and postimage recheck
         shell: bash
         run: |
           set -euo pipefail
-          bash tests/fci/run_fci04_gate.sh
-          echo 'FCI23_CHAIN_FCI04=PASS'
-          python tools/fci/fci05_b1_10_physical_preimage_gate.py
-          echo 'FCI23_CHAIN_FCI05=PASS'
-          bash tests/fci/run_fci06_gate.sh
-          echo 'FCI23_CHAIN_FCI06=PASS'
-          bash tests/fci/run_fci07_gate.sh
-          echo 'FCI23_CHAIN_FCI07=PASS'
-          bash tests/fci/run_fci08_gate.sh
-          echo 'FCI23_CHAIN_FCI08=PASS'
-          bash tests/fci/run_fci09_gate.sh
-          echo 'FCI23_CHAIN_FCI09=PASS'
-          bash tests/fci/run_fci10_gate.sh
-          echo 'FCI23_CHAIN_FCI10=PASS'
-          bash tests/fci/run_fci11_gate.sh
-          echo 'FCI23_CHAIN_FCI11=PASS'
-          bash tests/fci/run_fci12_gate.sh
-          echo 'FCI23_CHAIN_FCI12=PASS'
-          bash tests/fci/run_fci13_gate.sh
-          echo 'FCI23_CHAIN_FCI13=PASS'
-          bash tests/fci/run_fci14_gate.sh
-          echo 'FCI23_CHAIN_FCI14=PASS'
-          bash tests/fci/run_fci15_gate.sh
-          echo 'FCI23_CHAIN_FCI15=PASS'
-          bash tests/fci/run_fci16_gate.sh
-          echo 'FCI23_CHAIN_FCI16=PASS'
-          bash tests/fci/run_fci17_gate.sh
-          echo 'FCI23_CHAIN_FCI17=PASS'
-          bash tests/fci/run_fci18_gate.sh
-          echo 'FCI23_CHAIN_FCI18=PASS'
-      - name: Final immutable postimage assertion
-        shell: bash
-        run: |
-          set -euo pipefail
+          python tools/fci/fci23_current_lineage_authority_gate.py
           test "$(git rev-parse HEAD:src)" = 3446aa1d0d80861b22f7e74c7ad51bcedef4f479
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI23_G08_FINAL_SRC_REFERENCE_IMMUTABILITY=PASS'
           echo 'FCI23_CANONICAL_PROVENANCE_RECONCILIATION PASS'
