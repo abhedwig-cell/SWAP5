@@ -1,0 +1,35 @@
+name: F-SI20 fine-reference trajectory study
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/test_fsi20_fine_reference_trajectory.f90'
+      - 'tests/fsi/run_fsi20_fine_reference_trajectory.sh'
+      - '.github/workflows/fsi20-fine-reference-trajectory.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run fine-reference trajectory study
+        run: |
+          bash tests/fsi/run_fsi20_fine_reference_trajectory.sh | tee fsi20-fine-reference.log
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-fine-reference-trajectory
+          path: fsi20-fine-reference.log
+          if-no-files-found: error
