@@ -1,0 +1,26 @@
+name: F-GC04 independent head-budget scale characterization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-gc04-independent-head-budget-scale-characterization
+    paths:
+      - 'integration/f-gc/F-GC04_*.json'
+      - 'tests/fgc/run_fgc04_independent_head_budget_scale_characterization.sh'
+      - '.github/workflows/fgc04-independent-head-budget-scale-characterization.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  independent-scale-characterization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout F-GC04
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run source-locked independent indicator scale characterization
+        run: bash tests/fgc/run_fgc04_independent_head_budget_scale_characterization.sh
