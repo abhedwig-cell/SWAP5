@@ -1,0 +1,28 @@
+name: F-VQ28 transaction-shape translation gate
+
+on:
+  push:
+    branches:
+      - qualification/f-vq28-richards-temporal-numeric-profile
+    paths:
+      - 'tests/fvq/test_fvq28_transaction_shape_matrix.f90'
+      - 'tests/fvq/test_fvq28_transaction_shape_reference.f90'
+      - 'tests/fvq/run_fvq28_transaction_shape_gate.sh'
+      - '.github/workflows/fvq28-transaction-shape-gate.yml'
+      - 'integration/f-vq/F-VQ28_GATE_B_PLAN.json'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ28 transaction-shape Gate B
+        run: bash tests/fvq/run_fvq28_transaction_shape_gate.sh
