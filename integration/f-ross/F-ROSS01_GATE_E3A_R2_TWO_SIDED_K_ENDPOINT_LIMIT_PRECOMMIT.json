@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3A_R2_TWO_SIDED_K_ENDPOINT_LIMIT_FACE_SCOPE_QUALIFICATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "e3a_run": 34390856679,
+    "e3a_r1_run": 34391252818,
+    "open_class": "NEAR_UNSAT_NEAR_UNSAT",
+    "unresolved_count": 7,
+    "diagnosis": "all seven failures are h_below>h_above, delta_h<L bracket failures with full-accuracy q asymptotically equal to K(h_above) from below"
+  },
+  "candidate": {
+    "base": "unchanged E2C-R3 endpoint_limit_candidate",
+    "new_branch": "LOWER_SIDE_K_ABOVE_ENDPOINT_LIMIT",
+    "trigger": [
+      "base candidate raises bracket_failure",
+      "h_below > h_above",
+      "h_below-h_above < face_length"
+    ],
+    "returned_flux": "K(h_above)",
+    "new_persistent_state_bytes": 0,
+    "scratch_owner": "worker",
+    "new_constitutive_physics": false,
+    "quadrature_changed": false,
+    "root_iteration_count_changed": false,
+    "metric_tolerances_changed": false
+  },
+  "qualification_scope": {
+    "materials": ["B01","B12","O13","O14"],
+    "face_classes": ["NEAR_UNSAT_NEAR_UNSAT","DRY_ABOVE_WET_BELOW_TRANSITION_BAND"],
+    "probe_sets": "reuse all E3A Sobol and targeted probes unchanged",
+    "reference": "full-accuracy steady_q"
+  },
+  "frozen_metrics": {
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "wrong_sign_count": 0,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "endpoint_limit_max_hybrid_metric": 0.002,
+    "endpoint_limit_max_abs_error_over_ksatfit": 0.0005,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_E3_ENCOUNTERED_FACE_SCOPE_WITH_TWO_SIDED_K_ENDPOINT_LIMIT_READY_FOR_EVENT_AND_SOLVER_REMEDIATION",
+    "fail": "TWO_SIDED_K_ENDPOINT_LIMIT_FACE_SCOPE_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "Do not modify the original R3 endpoint-limit branch.",
+    "Do not change quadrature, root count, bracket epsilon or metric tolerances.",
+    "The new branch is invoked only after an actual bracket_failure and only in the structurally frozen h_below>h_above, delta_h<L class.",
+    "No E3 column qualification follows from a face-only PASS.",
+    "No response tangent, runtime or MultiSWAP qualification."
+  ],
+  "relevant_invariants": [5,13,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
