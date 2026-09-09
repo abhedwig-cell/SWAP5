@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ34",
+  "title": "Fresh Independent Production Qualification of the Remediated Richards Head-Budget Temporal Certificate",
+  "branch": "qualification/f-vq34-remediated-richards-head-budget-certificate",
+  "candidate_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+  "candidate_source_tree": "d24f20559653b028d7967bf57da37da432803221",
+  "owner_handoff_commit": "00a9924890d407758404413f99c982bb591b5367",
+  "prior_failed_independent_unit": {
+    "work_unit": "F-VQ33",
+    "status_blob": "a353d8e137c85616fcda06e167c5acce66c9955f",
+    "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "negative_transfer": false,
+    "reuse_as_pass": false
+  },
+  "frozen_before_execution": true,
+  "candidate_lock": {
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "budget_owner": "explicit numerical configuration",
+    "richards_native_budget_unit": "cm pressure head",
+    "valid_budget": "supplied AND finite AND >0",
+    "invalid_supplied_native_value_preserved_diagnostically": true,
+    "missing_invalid_no_history": "certificate unavailable",
+    "mass_before_certificate": true,
+    "certificate_can_override_mass_failure": false,
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0
+  },
+  "independent_matrix": {
+    "frozen_before_execution": true,
+    "case_count": 12,
+    "cases": [
+      {"case":1,"h0_cm":-50.0,"jump_cm":-0.045,"horizon_day":0.225,"probe":"VALID_ACCEPT","budget_rule":"2*direct_B_inf"},
+      {"case":2,"h0_cm":-50.0,"jump_cm":0.045,"horizon_day":0.45,"probe":"VALID_REJECT","budget_rule":"0.5*direct_B_inf"},
+      {"case":3,"h0_cm":-135.0,"jump_cm":-0.045,"horizon_day":0.225,"probe":"MISSING_BUDGET","budget_rule":"not supplied"},
+      {"case":4,"h0_cm":-135.0,"jump_cm":0.045,"horizon_day":0.45,"probe":"INVALID_ZERO_BUDGET","budget_rule":"0"},
+      {"case":5,"h0_cm":-225.0,"jump_cm":-0.045,"horizon_day":0.225,"probe":"NO_HISTORY_WITH_VALID_BUDGET","budget_rule":"2*direct_B_inf"},
+      {"case":6,"h0_cm":-225.0,"jump_cm":0.045,"horizon_day":0.45,"probe":"BOUNDED_RETRY_NO_MONOTONICITY_CLAIM","budget_rule":"1e-12 cm fixed structural probe"},
+      {"case":7,"h0_cm":-360.0,"jump_cm":-0.045,"horizon_day":0.225,"probe":"INVALID_NEGATIVE_BUDGET","budget_rule":"-abs(direct_B_inf)"},
+      {"case":8,"h0_cm":-360.0,"jump_cm":0.045,"horizon_day":0.45,"probe":"INVALID_NAN_BUDGET","budget_rule":"NaN supplied"},
+      {"case":9,"h0_cm":-90.0,"jump_cm":-0.02,"horizon_day":0.35,"probe":"INVALID_POSITIVE_INFINITY_BUDGET","budget_rule":"+Inf supplied"},
+      {"case":10,"h0_cm":-175.0,"jump_cm":0.02,"horizon_day":0.35,"probe":"BOUNDARY_ACCEPT","budget_rule":"direct_B_inf; expected C_h=1"},
+      {"case":11,"h0_cm":-305.0,"jump_cm":-0.02,"horizon_day":0.35,"probe":"VALID_ACCEPT","budget_rule":"2*direct_B_inf"},
+      {"case":12,"h0_cm":-420.0,"jump_cm":0.02,"horizon_day":0.35,"probe":"VALID_REJECT","budget_rule":"0.5*direct_B_inf"}
+    ],
+    "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ30_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ31_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ32_matrix": 0,
+    "exact_triplet_overlap_with_F_KT10_real_fixture": 0,
+    "exact_triplet_overlap_with_F_KT11_owner_fixture": 0,
+    "exact_triplet_overlap_with_F_VQ33_matrix": 0
+  },
+  "hard_mass_precedence_oracle": {
+    "production_source_order_lock": true,
+    "executable_oracle": "source-locked existing F-KT09 generic model-certificate mass-failure case",
+    "reason": "do not alter real Richards physical accounting merely to induce a mass failure"
+  },
+  "required_gates": {
+    "G01_candidate_handoff_and_prior_failure_lock": true,
+    "G02_matrix_disjointness": true,
+    "G03_direct_B_inf_equivalence": true,
+    "G04_valid_accept_reject_and_boundary": true,
+    "G05_missing_zero_negative_NaN_infinity_fail_closed": true,
+    "G06_invalid_native_budget_diagnostic_preservation": true,
+    "G07_no_history_no_bootstrap": true,
+    "G08_bounded_retry_exact_rollback_without_monotonicity_claim": true,
+    "G09_hard_mass_precedence": true,
+    "G10_cost_and_diagnostic_completeness": true,
+    "G11_O0_O2_identity": true,
+    "G12_FKT09_FKT10_FVQ32_source_locked_regression": true,
+    "G13_no_scope_expansion_and_invariant_audit": true
+  },
+  "qualification_constraints": {
+    "no_application_H_budget_selection": true,
+    "no_universal_H_budget": true,
+    "no_default_budget": true,
+    "no_fitted_factor": true,
+    "no_scientific_tolerance_added": true,
+    "no_dt_monotonicity_claim": true,
+    "no_true_error_upper_bound_claim_for_B_inf": true,
+    "no_negative_transfer_from_F_VQ33": true,
+    "no_GC02_release_from_F_VQ34_alone": true
+  },
+  "status": "PLAN_FROZEN_BEFORE_EXECUTION"
+}
