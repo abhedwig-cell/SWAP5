@@ -59,6 +59,17 @@ fsi_replacement = """  for marker in \\
   done"""
 src = src[:fsi_start] + fsi_replacement + src[fsi_end + len('\n  done'):]
 
+# Candidate A HeadCalc now imports mod_reference_linear_solver. The snow replay
+# must compile that owner module before HeadCalc. This changes only test build order.
+needle = '''  src/solver/mod_b110_source_sink_provider.f90
+  src/legacy/b1_10_port/headcalc.f90'''
+replacement = '''  src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_reference_linear_solver.f90
+  src/legacy/b1_10_port/headcalc.f90'''
+if needle not in src:
+    raise SystemExit('expected snow compile-order anchor not found')
+src = src.replace(needle, replacement, 1)
+
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$TMP"
