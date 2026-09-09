@@ -1,0 +1,21 @@
+name: F-WOF34 accepted-window runtime lineage
+
+on:
+  push:
+    branches:
+      - work/f-wof34-accepted-window-runtime-lineage
+  workflow_dispatch:
+
+jobs:
+  accepted-window-lineage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-WOF34 gate
+        run: bash tests/fwof/run_fwof34_accepted_window_runtime_lineage_gate.sh
