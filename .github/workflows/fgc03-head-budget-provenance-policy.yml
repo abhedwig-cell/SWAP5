@@ -1,0 +1,26 @@
+name: F-GC03 head-budget provenance policy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-gc03-coupling-head-accuracy-budget-provenance
+    paths:
+      - 'integration/f-gc/F-GC03_*.json'
+      - 'tests/fgc/run_fgc03_head_budget_provenance_gate.sh'
+      - '.github/workflows/fgc03-head-budget-provenance-policy.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  provenance-policy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout F-GC03
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run source-locked provenance policy gate
+        run: bash tests/fgc/run_fgc03_head_budget_provenance_gate.sh
