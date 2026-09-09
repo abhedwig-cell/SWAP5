@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_C1B_EXACT_HYDRAULIC_EIGENMODE_OBSERVER_RELATION",
+  "plan": "integration/f-si/F-SI23_GATE_C1B_HYDRAULIC_EIGENMODE_PLAN.json",
+  "plan_blob": "d5b03f1bbea416448d4b0aa84d408b51f01be79b",
+  "plan_frozen_before_execution": true,
+  "superseded_preexecution_plan": "integration/f-si/F-SI23_GATE_C1_MMS_PLAN.json",
+  "preexecution_source_reconciliation": "integration/f-si/F-SI23_GATE_C1_PLAN_SOURCE_RECONCILIATION.json",
+  "tested_commit": "bb64dfeeae99f6e5108831fe3c2ebbb4d5d71d70",
+  "workflow": {
+    "run": 34322973747,
+    "job": 102373611651,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "source_locks": {
+    "production_Richards_runtime_source_unchanged_from_FVQ29_base": true,
+    "reference_tridag_test_only": true,
+    "reference_tridag_operation_order": "SWAP_4_3_1_THOMAS"
+  },
+  "eigenpair_precheck": {
+    "maximum_generalized_residual": 1.526556658859590e-16,
+    "epsilon_scaled_bound": 1.455191522836685e-11,
+    "result": "PASS"
+  },
+  "points": [
+    {"lambda_dt":0.4,"dt_day":0.1561293830159525,"observer_cm":0.3858342126817854,"exact_local_error_cm":0.2968605324001885,"rho":1.299715423812736,"discrete_mass_residual":0.0,"exact_mass_residual":0.0},
+    {"lambda_dt":0.2,"dt_day":0.07806469150797626,"observer_cm":0.1125349786988569,"exact_local_error_cm":0.09859806347905931,"rho":1.141350800695569,"discrete_mass_residual":0.0,"exact_mass_residual":4.336808689942018e-19},
+    {"lambda_dt":0.1,"dt_day":0.03903234575398813,"observer_cm":0.03069135782695815,"exact_local_error_cm":0.02871999151587090,"rho":1.068640908546155,"discrete_mass_residual":0.0,"exact_mass_residual":-2.168404344971009e-19},
+    {"lambda_dt":0.05,"dt_day":0.01951617287699407,"observer_cm":0.008038212764211515,"exact_local_error_cm":0.007775229928441263,"rho":1.033823158696346,"discrete_mass_residual":0.0,"exact_mass_residual":1.084202172485504e-19},
+    {"lambda_dt":0.025,"dt_day":0.009758086438497033,"observer_cm":0.002058566683533295,"exact_local_error_cm":0.002024576756653573,"rho":1.016788658058045,"discrete_mass_residual":0.0,"exact_mass_residual":-2.168404344971009e-19}
+  ],
+  "qualified_findings": {
+    "HeadCalc_endpoint_matches_analytic_backward_Euler_eigenmode": true,
+    "computed_observer_matches_analytic_derivative_difference": true,
+    "observer_is_conservative_relative_to_exact_local_error_on_frozen_eigenmode": true,
+    "rho_strictly_decreases_toward_one": true,
+    "observer_magnitude_strictly_decreases": true,
+    "exact_local_error_strictly_decreases": true,
+    "discrete_water_ledger_closes": true,
+    "exact_manufactured_continuous_mass_identity_closes": true,
+    "principal_mass_conservative_backward_Euler_state_changed": false
+  },
+  "gate_C1B_decision": "QUALIFIED_EXACT_MANUFACTURED_HYDRAULIC_EIGENMODE_OBSERVER_RELATION",
+  "claim_boundary": {
+    "qualified": [
+      "the e_h algebra is implemented consistently with the source-bound HeadCalc backward-Euler derivative",
+      "the observer has the expected conservative asymptotic relation to exact local temporal error on this exact linear hydraulic eigenmode",
+      "the observer can coexist with the unchanged mass-conservative principal state"
+    ],
+    "not_qualified": [
+      "rho>=1 or any upper bound for nonlinear B1.10 soil hydraulics",
+      "a scientific temporal tolerance",
+      "a dimensionless F-KT09 certificate mapping",
+      "saturated or DAE behavior",
+      "transactional derivative-history persistence",
+      "production implementation",
+      "F-GC02 release",
+      "F-PE release",
+      "F-VQ30"
+    ]
+  },
+  "next_gate": "Gate C2 physical-envelope transfer characterization with real B1.10 hydraulics and explicitly finite same-endpoint reference evidence."
+}
