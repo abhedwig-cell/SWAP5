@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1_STARINGREEKS_UNIMODAL_MVG_GENERALISATION",
+  "contract": "F-ROSS01_GATE_C1_GENERALISATION_CONTRACT.json",
+  "workflow": {
+    "name": "F-ROSS01 Gate C1 Generalisation",
+    "run_id": 34335930101,
+    "head": "dc955c97155be4d8d6afb6ce226f7b9ad0435b14",
+    "conclusion": "failure",
+    "matrix_groups": 6,
+    "artifacts": [
+      {"name":"f-ross01-c1-b01-b06","id":10097795856,"digest":"sha256:fc389264a423b8a191c3519503cf56a0be3320ec6abcc6b135a28624737009e1"},
+      {"name":"f-ross01-c1-b07-b12","id":10097783811,"digest":"sha256:c50d5563dd6112ea3dfe628c8698e6cd43cb752febea7179a5d2fc8fd4e2d2c0"},
+      {"name":"f-ross01-c1-b13-b18","id":10097782522,"digest":"sha256:a68dc373f77b0d2076fb6c161111e509d5069c9ea55b088595615abfa1f3ca80"},
+      {"name":"f-ross01-c1-o01-o06","id":10097786170,"digest":"sha256:5536142c44e4961e56272d2a672edc637c0026276d18cccf38f4e150a0092fd0"},
+      {"name":"f-ross01-c1-o07-o12","id":10097778958,"digest":"sha256:565680b65dc7d77d4a0f65761ed8e12c9e8bba17433c3f4b55f2f020509f33b5"},
+      {"name":"f-ross01-c1-o13-o18","id":10097799738,"digest":"sha256:d0b4d22db91ce4776c11222fce0b112cf74757295f7ef197a78a95fdeebefe04"}
+    ]
+  },
+  "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
+  "material_count": 36,
+  "initial_matrix_pass_count": 31,
+  "initial_matrix_fail_count": 5,
+  "initial_failed_materials": ["B13","O01","O05","O14","O15"],
+  "unambiguous_accuracy_failures": [
+    {
+      "material": "O01",
+      "max_abs_error_over_ksatfit": 0.0009060869802028022,
+      "threshold": 0.0005,
+      "max_hybrid_metric": 0.0020865786260444294,
+      "p99_hybrid_metric": 0.001729273991768675,
+      "lookup_failures": 4
+    },
+    {
+      "material": "O05",
+      "max_abs_error_over_ksatfit": 0.001133099302738023,
+      "threshold": 0.0005,
+      "max_hybrid_metric": 0.0018773425912168803,
+      "p99_hybrid_metric": 0.001555075837142598,
+      "lookup_failures": 4
+    },
+    {
+      "material": "O14",
+      "max_abs_error_over_ksatfit": 0.0015673854140445455,
+      "threshold": 0.0005,
+      "max_hybrid_metric": 0.0005191762650436742,
+      "p99_hybrid_metric": 0.0004658313518145024,
+      "lookup_failures": 0
+    }
+  ],
+  "endpoint_roundtrip_issue": {
+    "affected_materials_in_initial_matrix": ["B13","O01","O05","O15"],
+    "lookup_failures_each": 4,
+    "interpretation": "The exact S-envelope edge values can reconstruct through h(S) just outside the strict head-domain guard by floating roundoff for some parameter sets. This is a qualification-harness endpoint issue and does not erase independent accuracy failures.",
+    "materials_with_no_other_failed_metric": ["B13","O15"],
+    "requalification_needed_before_counting_B13_or_O15_as_clean_passes": true
+  },
+  "invariants": {
+    "representation_or_density_changed_after_gate_freeze": false,
+    "ksatexm_enabled": false,
+    "all_successfully_generated_tables_have_16641_entries": true,
+    "shared_table_plus_axis_bytes": 134160,
+    "wrong_sign_failures_observed_in_reported_accuracy_failures": 0,
+    "hydrostatic_structure_remained_within_threshold": true
+  },
+  "pass": false,
+  "decision": "C1_GENERALISATION_FAILED_GATE_B_REPRESENTATION_NOT_UNIVERSAL_ACROSS_STARINGREEKS_MVG",
+  "reason": "At least O01, O05 and O14 violate the frozen absolute face-flux error criterion at N=129. The aggregate C1 contract therefore fails regardless of endpoint-roundtrip cleanup for B13 and O15.",
+  "next_action": "Do not tune on the exposed C1 qualification probes. Use a new characterization set to test bounded material-class-specific density or another bounded representation, then freeze a fresh unseen holdout if a revised candidate is selected.",
+  "scope_limit": "This rejects universality of the frozen N=129 Gate-B representation across the 36 Staringreeks unimodal MvG materials. It does not reject RossFast as a solver family and does not qualify KSATEXM or other hydraulic families."
+}
