@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR20",
+  "stage": "CANONICAL_CONTEXT_ISOLATION_STAGE_1",
+  "production_commit": "a5c4053256ba23f42c7316ac1bc41682b8200d64",
+  "tested_gate_commit": "1a5235e1ce01d496c35aeb296e7286a77b609527",
+  "workflow": "F-MR20 concurrency isolation",
+  "workflow_run_id": 34403776859,
+  "workflow_job_id": 102641710177,
+  "conclusion": "success",
+  "postimage_blobs": {
+    "src/legacy/b1_10_port/headcalc.f90": "e14733162da96399c8a247e5500b1d9e1ba95875",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff"
+  },
+  "gates": {
+    "source_lock": "PASS",
+    "bounded_stage1_source_scope": "PASS",
+    "multiworker_fails_before_physics": "PASS",
+    "no_direct_legacy_or_openmp_dependency_in_scheduler_pool": "PASS",
+    "canonical_min_dt_day_event_worker_local": "PASS",
+    "gnu_fortran_O0": "PASS",
+    "gnu_fortran_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "one_worker_result_identity": "PASS",
+    "one_worker_diagnostic_identity": "PASS",
+    "one_worker_aggregate_identity": "PASS",
+    "one_worker_runtime_diagnostic_identity": "PASS",
+    "one_worker_committed_state_time_identity": "PASS",
+    "hard_mass_gate": "PASS",
+    "multiworker_zero_physical_solves": "PASS",
+    "multiworker_state_time_nonmutation": "PASS"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_for_parallel_execution": false
+  },
+  "remaining_blocker": "The canonical serialized backend still invokes bind_b110_serialized_legacy_context, which validates against and writes shared legacy module state before each solve. HeadCalc also still initializes local explicit configuration by first reading legacy globals before overriding them. These dependencies must be removed or isolated before worker_count>1 can be admitted.",
+  "claim_limit": "Stage 1 proves one-worker scientific/transaction identity after moving fldtmin and fldaystart decisions to worker-owned context. It does not prove thread safety or admit simultaneous real-physics solves."
+}
