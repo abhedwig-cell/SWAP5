@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "Prior KSATEXM and near-saturation research reuse map",
+  "status": "REUSE_EVIDENCE_MAPPED_NOT_PROMOTED",
+  "production_implementation": false,
+  "purpose": "Reuse prior SWAP 4.3.1 hydraulic and performance research as diagnostic evidence, stress-case design and candidate-closure context for RossFast without promoting earlier results into current Ross qualification gates.",
+  "reuse_rules": [
+    "Prior project evidence may define stress materials, probe locations, constitutive diagnostics and candidate hypotheses.",
+    "Prior project evidence does not by itself qualify RossFast, C2A, a new conductivity closure, saturation crossing, groundwater coupling or FullRichards equivalence.",
+    "Exact SWAP 4.3.1 KSATEXM remains Class A source-bound physics and must retain its own fail-closed qualification lineage.",
+    "Any Schaap-van-Genuchten-inspired or otherwise modified near-saturation relation is Class B physical hydraulics and must be implemented identically in FullRichards and RossFast before solver-comparison claims.",
+    "Performance pathologies caused by a Jacobian or boundary inconsistency are evidence about numerical sensitivity, not evidence that the constitutive law itself is wrong."
+  ],
+  "prior_project_strands": [
+    {
+      "id": "O05_KSATEXM_TRANSITION_ANALYSIS_2026_09_02",
+      "evidence_strength": "prior_project_run_record_reusable_as_diagnostic_and_stress_case",
+      "facts": {
+        "material": "O05",
+        "alpha_cm_inverse": 0.030304,
+        "n": 2.887502,
+        "ksatfit_cm_per_d": 17.42,
+        "ksatexm_cm_per_d": 174.19,
+        "ksatexm_to_ksatfit_ratio_approx": 10.0,
+        "near_saturation_K_change": "approximately 17.2 to 174.2 cm/d",
+        "delta_theta_approx": 0.000065,
+        "extreme_K_over_C_order": "up to about 5.3e7",
+        "observed_solver_effect": "dry O05 required about 11-14 percent more Newton work than O02 with the same accepted-step count; normal Hupsel O05 was not uniformly slower"
+      },
+      "ross_reuse": [
+        "retain O05 as a mandatory wet-end stress material",
+        "place dense constitutive and face-response probes around the narrow KSATEXM transition interval",
+        "track K, dK/dh where defined, MFP slope, face mobility and table interpolation error in addition to flux error",
+        "use the observed tiny theta interval as evidence that theta-only uniform tabulation may be poorly conditioned without a physics-aligned coordinate"
+      ]
+    },
+    {
+      "id": "N4_KSATEXM_PONDING_JACOBIAN_PATHOLOGY_2026_09_02",
+      "evidence_strength": "prior_project_numerical_pathology_reusable_for_boundary_and_solver_stress_design",
+      "facts": {
+        "example_ks_cm_per_d": 80.0,
+        "example_dt_d": 0.05,
+        "legacy_switch_steps": 2029,
+        "legacy_switch_iterations": 19779,
+        "legacy_switch_dt_reductions": 11894,
+        "corrected_jacobian_steps": 70,
+        "corrected_jacobian_iterations": 193,
+        "corrected_jacobian_dt_reductions": 0,
+        "aggregate_24_case_legacy_iterations": 237690,
+        "aggregate_24_case_corrected_iterations": 1248,
+        "aggregate_24_case_legacy_dt_reductions": 183022,
+        "aggregate_24_case_corrected_dt_reductions": 0,
+        "median_iteration_ratio_approx": 190.0
+      },
+      "interpretation": "The near-saturation KSATEXM regime can amplify an inconsistent surface/ponding Jacobian dramatically. This does not prove KSATEXM physics invalid. It proves that near-saturation qualification must separate constitutive conditioning from boundary/Jacobian correctness.",
+      "ross_reuse": [
+        "add near-ponding and saturation-approach cases to later timestep/boundary qualification",
+        "require structural separation between constitutive face-response error and boundary-contract error",
+        "use bounded-cost behavior as an explicit metric once RossFast reaches transient qualification"
+      ]
+    },
+    {
+      "id": "SWAP431_HYDRAULIC_TESTBANK_AND_SWAPP011",
+      "evidence_strength": "reproducible_constitutive_consistency_framework",
+      "project_sources": [
+        "SWAP_4.3.1_numerieke_waterkern_code_audit.docx",
+        "SWAP_4.3.1_codeaanpassingen_en_testbank.docx",
+        "SWAP_4.3.1_E2_reuse_feasibility.md",
+        "SWAP_4.3.1_E3_semantic_prototype.md"
+      ],
+      "reusable_methods": [
+        "compare analytic or candidate C(h) with independent numerical dtheta/dh",
+        "compare candidate dK/dh with independent numerical derivative of the actual K(h)",
+        "test inverse consistency h -> theta -> h",
+        "treat piecewise joins and practically saturated limits explicitly rather than hiding them in generic finite-difference probes",
+        "keep constitutive evaluation and solver-state timing explicit so caches cannot become order-dependent"
+      ],
+      "ross_reuse": "Use this test philosophy as the constitutive pre-gate for both Class A KSATEXM representation and any Class B near-saturation closure."
+    },
+    {
+      "id": "A23AJ_COFGEN_DERIVED_REFRESH",
+      "evidence_strength": "qualified_architecture_and_derived_data_ownership_evidence",
+      "project_source": "A23AJ_COFGEN_DERIVED_REFRESH_CONTRACT.md",
+      "facts": [
+        "CofGen(25:42) are derived hydraulic data, not independent physical state",
+        "near-saturation and air-entry derived terms include CofGen(26:28) and polynomial extension constants CofGen(41:42)",
+        "derived constitutive data must be refreshed after accepted primary hydraulic parameter changes and should be versioned in the target architecture"
+      ],
+      "ross_reuse": [
+        "Ross lookup tables and closure coefficients must be immutable/versioned derived parameter payloads keyed to the hydraulic parameter/closure identity",
+        "no face table belongs in persistent per-column physical state",
+        "tillage or other accepted hydraulic parameter mutation must invalidate/rebind derived Ross constitutive payloads explicitly"
+      ]
+    },
+    {
+      "id": "NHI_METASWAP_NEAR_SATURATION_CORRECTION_LINE",
+      "evidence_strength": "project_domain_evidence_and_candidate_physics_lineage_not_yet_ross_qualified",
+      "project_source": "VanWater_Reactie_op_NHI_webinar_#4.docx",
+      "facts": [
+        "The project material reports that the standard Van Genuchten conductivity shape can be too steep near saturation for heavy soils and does not represent air-entry/macropore behavior well.",
+        "The NHI/MetaSWAP line uses a simplified application inspired by Schaap and van Genuchten (2006) to modify the near-saturation k-h relation, implemented through table-based soil hydraulics in SWAP/MetaSWAP contexts.",
+        "The project material reports substantial hydrologic sensitivity to that near-saturation k-h modification in heavy-clay examples."
+      ],
+      "primary_literature": {
+        "citation": "Schaap MG, van Genuchten MT (2006), A Modified Mualem-van Genuchten Formulation for Improved Description of the Hydraulic Conductivity Near Saturation, Vadose Zone Journal 5:27-34",
+        "doi": "10.2136/vzj2005.0005",
+        "source_level_findings": [
+          "introduces a small non-zero air-entry pressure; reported optimum about -4 cm in the analysed database",
+          "uses a pressure-dependent piecewise linear conductivity correction between 0 and -40 cm",
+          "reports a stronger correction from 0 to -4 cm and a smaller correction from -4 to -40 cm",
+          "authors explicitly describe the correction as empirical and advise caution because near-saturated K measurements are uncertain"
+        ]
+      },
+      "ross_reuse": [
+        "promote this line to the first literature-backed Class B candidate family rather than inventing an arbitrary smoothing polynomial",
+        "keep the NHI simplified implementation distinct from the exact 2006 formulation until its equations and parameter mapping are source-bound",
+        "test whether an air-entry-aware closure improves Ross table compactness, MFP smoothness and transient bounded-cost behavior while preserving mass conservation"
+      ]
+    }
+  ],
+  "current_ross_context": {
+    "class_A_C2A_uniform_u_result": "FAILED",
+    "class_A_C2A_R1_seam_aligned_result": "FAILED",
+    "class_A_C2A_R2_hybrid_S_u_workflow_run": 34342694684,
+    "class_A_C2A_R2_workflow_conclusion": "failure",
+    "interpretation": "Repeated failure of increasingly physics-aligned table coordinates strengthens the case for reusing the earlier KSATEXM stress evidence and separately investigating a literature-backed Class B closure, but does not justify altering Class A acceptance criteria or rewriting KSATEXM."
+  },
+  "recommended_research_sequence": [
+    "Persist the exact R2 failure metrics and fail-close that representation before opening another Class A redesign.",
+    "Reconstruct the earlier O05 and N4 probes as frozen reusable ROSS01 stress fixtures with explicit provenance.",
+    "Source-bind the exact NHI simplified Schaap-van-Genuchten implementation if available; otherwise reconstruct the 2006 MMVG equations independently and keep the NHI variant labelled unresolved.",
+    "Define one Class B candidate contract before running it: same theta(h) policy, K(h) equations, air-entry parameter, saturated endpoint, continuity class, MFP definition, allowed materials and immutable parameter identity.",
+    "Run constitutive qualification first, then steady-face qualification, then FullRichards same-physics transient reference tests. Only after those pass should RossFast transient or groundwater qualification use the Class B variant."
+  ],
+  "decision": "REUSE_PRIOR_KSATEXM_RESEARCH_AS_EVIDENCE_AND_CANDIDATE_LINEAGE_NOT_AS_CURRENT_GATE_PASS"
+}
