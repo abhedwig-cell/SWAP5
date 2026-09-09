@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_A_OWNER_MAPPING",
+  "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+  "candidate": {
+    "name": "decision_only_backward_euler_pressure_head_LTE_observer",
+    "status": "FEASIBLE_WITH_UNRESOLVED_BOOTSTRAP_AND_DISCONTINUITY_SEMANTICS",
+    "principal_state_advance": "existing_reference_Richards_backward_Euler_candidate_unchanged",
+    "mass_conservation": "existing mixed-form theta storage update and independent hard ledger gate remain authoritative",
+    "observer_units": "cm pressure head",
+    "observer_vector": "e_h = 0.5 * dt * (hdot_np1 - hdot_n)",
+    "current_derivative": "hdot_np1 = (h_BE_np1 - h_n) / dt",
+    "candidate_scalar_observable_before_normalization": "max_i abs(e_h(i))",
+    "corrected_Thomas_Gladwell_state_used_as_candidate": false,
+    "scientific_tolerance_selected": false,
+    "dimensionless_certificate_mapping_selected": false
+  },
+  "literature_boundary": {
+    "Kavetski_Binning_Sloan_2001": "supports the concept of adaptive temporal error control for mixed-form Richards while retaining a mass-conservative principal moisture-content formulation",
+    "Kavetski_Binning_Sloan_2002": "provides the backward-Euler derivative, embedded local-error and Thomas-Gladwell formulas used here for feasibility reconstruction",
+    "direct_formula_transfer_to_SWAP_qualified": false,
+    "reason": "The published spatial/time formulations and startup/variable-step details must not be assumed identical to SWAP HeadCalc without source-bound mapping and later independent qualification."
+  },
+  "source_mapping": {
+    "soil_water_solver_contract_blob": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "reference_state_binding_blob": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "reference_legacy_binding_blob": "db432cac3f1156a179c636435a25f52cdececffc",
+    "worker_context_blob": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+    "headcalc_blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "canonical_physical_state": [
+      "pressure_head",
+      "water_content",
+      "ponding_depth",
+      "groundwater_level"
+    ],
+    "solve_base_state_is_explicit": true,
+    "headcalc_mixed_storage_term": "(theta-thetm1)*matrix_fraction*dz/dt",
+    "headcalc_failed_trial_restores_h_and_theta_from_hm1_thetm1": true,
+    "adapter_comment_FKT_owns_committed_base_state": true,
+    "adapter_candidate_state_materialized_only_after_solve": true,
+    "prescribed_head_qbot_uses_exact_storage_difference": true,
+    "existing_a23bu_solver_history_contains_cross_step_pressure_derivative": false
+  },
+  "ownership_decision": {
+    "hdot_prev_is_physical_state": false,
+    "hdot_prev_category": "optional model-owned numerical temporal-estimator history",
+    "persistent_per_column_when_estimator_active": [
+      "valid flag",
+      "previous accepted pressure-head derivative vector",
+      "minimal continuity metadata needed to reject reuse across incompatible forcing/boundary semantics"
+    ],
+    "worker_scratch": [
+      "current hdot vector",
+      "current LTE vector",
+      "temporary max norm reduction"
+    ],
+    "history_update_point": "only after the corresponding candidate interval/subinterval is accepted into canonical working state",
+    "history_on_solver_rejection": "unchanged",
+    "history_on_temporal_rejection": "unchanged",
+    "history_on_mass_rejection": "unchanged",
+    "history_on_rollback": "restore exact committed/canonical accepted value",
+    "F_KT09_certificate_persistent_storage_required": false
+  },
+  "continuity_and_bootstrap": {
+    "previous_derivative_reusable_across_arbitrary_forcing_discontinuity": false,
+    "previous_derivative_reusable_across_arbitrary_boundary_discontinuity": false,
+    "F_GC02_prescribed_head_change_at_outer_t0_requires_explicit_right_side_semantics": true,
+    "startup_after_initialization_resolved": false,
+    "startup_after_restart_resolved": false,
+    "startup_after_discontinuity_resolved": false,
+    "silent_default_hdot_prev_zero_allowed": false,
+    "silent_left_derivative_reuse_after_discontinuity_allowed": false,
+    "candidate_bootstrap_routes_for_later_qualification": [
+      "compute a right-sided initial derivative from the semi-discrete mixed Richards residual under the new forcing/boundary state",
+      "use a separately qualified one-time embedded/startup solve",
+      "use another source-bound startup construction from the original method"
+    ]
+  },
+  "cost_assessment": {
+    "steady_state_attempt_nonlinear_solves": 1,
+    "steady_state_additional_estimator_work": "O(number_of_active_nodes) vector arithmetic and reduction",
+    "full_vs_two_half_required": false,
+    "nested_refinement_ladder_required": false,
+    "bootstrap_cost_bounded": "OPEN",
+    "production_cost_qualified": false
+  },
+  "transaction_mapping": {
+    "existing_FKT09_model_owned_certificate_mode": "compatible in principle",
+    "one_model_advance_per_attempt": true,
+    "candidate_publication_before_certificate_acceptance": false,
+    "hard_mass_gate_independent": true,
+    "unavailable_estimator_semantics": "must fail closed if MODEL_OWNED_CERTIFICATE mode is explicitly selected",
+    "partial_external_interval_candidate_exposure": false
+  },
+  "rejected_at_gate_A": [
+    "store hdot_prev inside soil_water_physical_state_t",
+    "treat reference_richards_state_binding hm1/thetm1 as automatically qualified multistep history",
+    "replace the accepted BE pressure-head state by a Thomas-Gladwell corrected head before proving exact mass compatibility",
+    "derive a dimensionless <=1 certificate without independent scaling/tolerance evidence",
+    "accept first step with uncontrolled error solely to seed hdot_prev"
+  ],
+  "gate_A_decision": "OWNER_SHAPE_FEASIBLE_BOOTSTRAP_AND_DISCONTINUITY_SEMANTICS_BLOCK_PROTOTYPE",
+  "next_gate": "Reconstruct and qualify a right-sided startup/restart/discontinuity derivative bootstrap before implementing even a test-only LTE observer."
+}

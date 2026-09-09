@@ -1,62 +1,83 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI23",
   "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
   "branch": "work/f-si23-richards-embedded-temporal-estimator",
-  "status": "IN_PROGRESS_GATE_A_METHOD_RECONSTRUCTION_PERSISTED",
-  "phase": "OWNER_FEASIBILITY_BEFORE_ANY_PROTOTYPE",
+  "status": "GATE_A_OWNER_SHAPE_FEASIBLE_BOOTSTRAP_BLOCKS_PROTOTYPE",
+  "phase": "OWNER_MAPPING_PERSISTED_PENDING_STARTUP_DERIVATIVE_RECONSTRUCTION",
   "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
   "contract": "integration/f-si/F-SI23_WORK_UNIT_CONTRACT.json",
   "method_assessment": "docs/f-si/F-SI23_METHOD_ASSESSMENT.md",
-  "current_decision": {
-    "primary_candidate": "embedded_mass_conservative_temporal_estimator",
-    "primary_literature_lineage": "Kavetski_Binning_Sloan_2001_2002",
-    "residual_aposteriori_route": "THEORY_REFERENCE_OR_FALLBACK",
-    "MMS": "INDEPENDENT_CODE_VERIFICATION_AXIS_ONLY",
-    "F_VQ30_open_now": false,
-    "production_implementation_allowed_now": false,
-    "test_only_prototype_allowed_now": false,
-    "reason": "The embedded estimator must first be reconstructed at equation, state, startup, variable-step, mass and bounded-cost level and mapped to SWAP's existing semi-discrete Richards owner boundary."
+  "gate_A_mapping": "integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json",
+  "current_candidate": {
+    "name": "decision_only_backward_euler_pressure_head_LTE_observer",
+    "principal_mass_conservative_candidate_changed": false,
+    "observer_formula": "e_h = 0.5*dt*(hdot_np1-hdot_n)",
+    "hdot_np1_formula": "(h_BE_np1-h_n)/dt",
+    "candidate_dimensional_output": "max_i abs(e_h(i))",
+    "steady_attempt_nonlinear_solves": 1,
+    "steady_extra_work": "O(active_nodes)",
+    "prototype_allowed_now": false,
+    "production_allowed_now": false
   },
-  "source_bound_findings": {
-    "fine_step_solver_cliff": "NONLINEAR_SOLVER_CEILING_NOT_DTMIN_NOT_MASS",
-    "tighter_nonlinear_tolerance_materially_changes_temporal_curve": false,
-    "same_horizon_endpoint_difference_owner_observable_qualified": true,
-    "same_horizon_geometric_error_bound_qualified": false,
-    "existing_transaction_retry_translation_qualified": false,
-    "over_refined_BE_reference_available_for_FVQ29": false
+  "qualified_or_source_bound_findings": {
+    "existing_BE_candidate_is_explicitly_separate_from_committed_base_state": true,
+    "HeadCalc_uses_mixed_theta_storage_difference": true,
+    "prescribed_head_bottom_flux_materialization_uses_exact_storage_difference": true,
+    "hard_mass_gate_can_remain_independent_of_temporal_observer": true,
+    "existing_worker_history_has_no_cross_step_pressure_derivative": true,
+    "F_KT09_supports_one_model_advance_model_owned_certificate_mode": true,
+    "F_KT09_persists_no_certificate_state": true,
+    "decision_only_observer_can_fit_existing_transaction_boundary_in_principle": true,
+    "Thomas_Gladwell_corrected_state_mass_compatibility_proven": false
   },
-  "literature_findings": {
-    "mixed_form_embedded_error_control_exists": true,
-    "published_method_estimates_local_temporal_error_in_pressure_head": true,
-    "published_method_keeps_principal_mass_conservative_time_approximation_in_moisture_content": true,
-    "published_method_is_directly_transferable_to_SWAP_without_rederivation": false,
-    "residual_based_Richards_aposteriori_error_estimation_exists": true,
-    "published_residual_constants_or_norms_directly_transferable_to_SWAP": false,
-    "MMS_can_supply_exact_test_truth": true,
-    "MMS_alone_can_qualify_physical_production_envelope": false
+  "numerical_history_decision": {
+    "previous_pressure_derivative_is_physical_state": false,
+    "category": "optional model-owned numerical history",
+    "allocated_only_if_estimator_active": true,
+    "updated_only_on_accepted_canonical_progress": true,
+    "unchanged_on_rejected_trial": true,
+    "rollback_safe": true,
+    "worker_scratch_owns_current_derivative_and_error_vectors": true
   },
-  "open_gate_A_items": [
-    "obtain and reconstruct the exact Kavetski-Binning-Sloan discrete temporal formulas",
-    "map required primary and auxiliary states to SWAP pressure-head/water-content ownership",
-    "determine startup-step and variable-step semantics",
-    "determine whether the method needs one solve, embedded correction solves, or multistep history per accepted interval",
-    "separate persistent history from worker scratch",
-    "prove or explicitly test ledger mass conservation under candidate advance",
-    "define a test-only MMS verification case",
-    "define the later independent held-out physical-envelope qualification boundary"
-  ],
+  "active_blocker": {
+    "class": "STARTUP_RESTART_AND_DISCONTINUITY_DERIVATIVE_SEMANTICS",
+    "first_step_hdot_n_available": false,
+    "restart_hdot_n_available": false,
+    "right_derivative_after_forcing_or_boundary_jump_available": false,
+    "left_derivative_reuse_qualified": false,
+    "zero_derivative_default_qualified": false,
+    "effect": "No LTE observer prototype may be admitted until a right-sided/bootstrap derivative construction is source-bound and qualified."
+  },
+  "pre_rejected_shortcuts_still_hold": true,
   "hard_holds": {
     "production_source_modified": false,
     "physics_changed": false,
     "mass_requirement_relaxed": false,
     "scientific_temporal_tolerance_selected": false,
+    "dimensionless_certificate_mapping_selected": false,
     "nonlinear_tolerance_reinterpreted": false,
     "solver_iteration_budget_changed": false,
     "F_GC02_release": false,
     "F_PE_release": false,
     "F_VQ30_started": false
   },
-  "next_action": "Reconstruct the primary candidate algorithm from original literature and audit the current SWAP HeadCalc/semi-discrete state interface against its required variables and operations. Persist a Gate A mapping before writing any estimator prototype."
+  "invariant_assessment": {
+    "3_explicit_data_separation": "PASS_CANDIDATE_NUMERICAL_HISTORY_SEPARATE_FROM_PHYSICAL_STATE",
+    "4_compact_persistent_state": "PASS_IN_PRINCIPLE_ONE_OPTIONAL_VECTOR_PLUS_METADATA_ONLY_WHEN_ACTIVE",
+    "5_scratch_per_worker": "PASS_CURRENT_DERIVATIVE_AND_LTE_VECTOR_ARE_SCRATCH",
+    "7_transactional_time_steps": "PASS_MAPPING_HISTORY_UPDATES_ONLY_ON_ACCEPTED_CANONICAL_PROGRESS",
+    "8_cheap_recompute_and_warm_start": "PASS_IN_PRINCIPLE_REJECTED_TRIAL_DOES_NOT_DESTROY_COMMITTED_HISTORY",
+    "9_generic_time": "PASS_FORMULA_USES_GENERIC_DT",
+    "13_mass_conservation_absolute": "PASS_BY_DESIGN_BE_CANDIDATE_AND_HARD_LEDGER_UNCHANGED; SCIENTIFIC_TEST_PENDING",
+    "15_limit_coupling_cost": "PROMISING_ONE_SOLVE_PLUS_VECTOR_WORK_STEADY_STATE; BOOTSTRAP_COST_OPEN",
+    "20_alternative_soil_water_solvers_open": "PASS_IF_HISTORY_AND_CERTIFICATE_REMAIN_SOLVER_OWNED",
+    "23_physics_and_solver_policy_separated": "PASS_NO_PHYSICS_CHANGE_OR_TOLERANCE_SELECTION",
+    "24_predictable_compute_time": "PROMISING_STEADY_STATE_BOUNDED_COST; BOOTSTRAP_OPEN",
+    "25_reference_mode_available": "PASS_UNCHANGED",
+    "26_runtime_diagnostics": "REQUIRED_LATER_ESTIMATOR_AVAILABLE_RAW_LTE_BOOTSTRAP_REASON",
+    "29_no_silent_dependencies": "BLOCKER_EXPLICIT_FOR_DISCONTINUITY_AND_STARTUP"
+  },
+  "next_action": "Reconstruct a right-sided startup/restart/discontinuity derivative from original method and/or the SWAP semi-discrete residual. Determine whether it can be computed without a second nonlinear solve and without introducing hidden forcing continuity assumptions. Persist that Gate B feasibility decision before any test-only estimator implementation."
 }

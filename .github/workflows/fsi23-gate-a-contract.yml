@@ -1,0 +1,24 @@
+name: F-SI23 Gate A owner mapping
+
+on:
+  push:
+    branches:
+      - work/f-si23-richards-embedded-temporal-estimator
+    paths:
+      - 'integration/f-si/F-SI23_WORK_UNIT_CONTRACT.json'
+      - 'integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json'
+      - 'integration/f-si/F-SI23_STATUS.json'
+      - 'docs/f-si/F-SI23_METHOD_ASSESSMENT.md'
+      - 'tests/fsi/run_fsi23_gate_a_contract.sh'
+      - '.github/workflows/fsi23-gate-a-contract.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-a-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate F-SI23 Gate A owner mapping
+        run: bash tests/fsi/run_fsi23_gate_a_contract.sh
