@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "title": "Bounded Stiffness-Aware Embedded Richards Temporal Indicator Feasibility",
+  "branch": "work/f-si24-bounded-stiffness-aware-temporal-indicator",
+  "base_commit": "81185df08c5231d3990c9a941591d444e880a077",
+  "status": "GATE_B_QUALIFIED_EXACT_LINEAR_ONE_SOLVE_BOUND_READY_FOR_NONLINEAR_B110_CHARACTERIZATION",
+  "phase": "EXACT_LINEAR_THEOREM_AND_IMPLEMENTATION_ALGEBRA_QUALIFIED_NONLINEAR_BOUND_OPEN",
+  "gate_A_derivation": "integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json",
+  "gate_B_plan": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_PLAN.json",
+  "gate_B_evidence": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_EVIDENCE.json",
+  "gate_B_tested_head": "546b16a8dcc12acf7e213ced593668e769ddc870",
+  "gate_B_workflow_run": 34327204626,
+  "gate_B_workflow_job": 102387097566,
+  "candidate": {
+    "id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+    "raw": "e_raw=0.5*dt*(hdot_np1-hdot_n)",
+    "defect_solve": "J_BE*delta=(M/dt)*e_raw",
+    "combined_linear_bound": "B_M=min(||e_raw||_M,2||delta||_M)",
+    "head_infinity_conversion": "B_inf=B_M/sqrt(min_i M_ii)",
+    "factor_two_empirical": false,
+    "extra_full_nonlinear_solves": 0,
+    "extra_tridiagonal_solves": 1,
+    "principal_BE_state_changed": false,
+    "mass_gate_changed": false,
+    "production_allowed": false
+  },
+  "gate_B_qualified": {
+    "constant_linear_dissipative_scope": true,
+    "single_mode_nonstiff_to_stiff": true,
+    "multimode_superposition": true,
+    "near_zero_local_derivative_without_division": true,
+    "O0_O2_identity": true,
+    "production_source_unchanged": true,
+    "hard_mass_preserved": true
+  },
+  "not_qualified": {
+    "nonlinear_B110_true_error_bound": false,
+    "variable_state_operator_theorem": false,
+    "production_final_state_operator_seam": false,
+    "scientific_temporal_tolerance": false,
+    "dimensionless_certificate_mapping": false,
+    "production_retry_acceptance_policy": false,
+    "F_GC02_release": false,
+    "F_PE_release": false
+  },
+  "hard_holds": {
+    "do_not_fit_factor_two": true,
+    "do_not_fit_global_scale": true,
+    "do_not_select_tolerance": true,
+    "do_not_use_stale_dfdh_as_final_J": true,
+    "do_not_add_full_nonlinear_companion_run": true,
+    "mass_conservation_hard": true,
+    "production_source_change": false
+  },
+  "next_action": "Freeze Gate C nonlinear B1.10 characterization before execution. Reconstruct test-only final-state SwKimpl=0 J from accepted-state capacity plus the current solver-policy base-state face conductances, apply exactly one defect TRIDAG solve, and compare the fixed uncalibrated combined indicator to the already persisted F-SI23 C2 finite N512 comparator. Do not call N512 exact truth and do not start independent F-VQ qualification yet."
+}
