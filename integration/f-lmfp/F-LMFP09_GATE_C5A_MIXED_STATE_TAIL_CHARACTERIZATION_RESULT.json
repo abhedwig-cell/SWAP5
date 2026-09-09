@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C5A_MIXED_STATE_TAIL_CHARACTERIZATION",
+  "workflow": {
+    "run_id": 34316119729,
+    "head_under_test": "bb91442ee5888a40398986c8d05df1972990955b",
+    "conclusion": "success",
+    "qualification": false,
+    "probe_set": "REVEALED_C3B_CHARACTERIZATION_SET_NOT_VALID_FOR_QUALIFICATION"
+  },
+  "candidate": "DIRECT_STEADY_Q_SE_SE_AND_SE_POSITIVE_H",
+  "provider_shape": {
+    "se_nodes": 51,
+    "positive_head_nodes": 7,
+    "total_values": 2958,
+    "bytes_before_metadata": 23664,
+    "offline_oracle_solves": 2958
+  },
+  "classes": [
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 10.0,
+      "active_relative_error": {
+        "median": 0.32999335720200024,
+        "p90": 1.2367408951748873,
+        "p99": 5.598460345464102,
+        "maximum": 25.39167819088755
+      },
+      "fraction_better_than_plain_mfp": 0.8258064516129032,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "diagnostic_threshold_pass": false,
+      "artifact": {
+        "artifact_id": 10090373397,
+        "digest": "sha256:027bc00cef3d04b20e1acf47c3cc0cfe9eae05142f3beda1aa0b06f08024d860"
+      }
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 5.0,
+      "active_relative_error": {
+        "median": 0.6958158810886726,
+        "p90": 5.700599002009445,
+        "p99": 23.001389097872053,
+        "maximum": 140.43761655135967
+      },
+      "fraction_better_than_plain_mfp": 0.7419354838709677,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "diagnostic_threshold_pass": false,
+      "artifact": {
+        "artifact_id": 10090375743,
+        "digest": "sha256:fc512c91011081867a89be70e703fa51a82f380d73281d9a3261a7490f351406"
+      }
+    }
+  ],
+  "observations": {
+    "representation_is_compact_relative_to_c4_113_node_head_pair_table": true,
+    "coverage_failures_observed": false,
+    "sign_mismatches_observed": false,
+    "existing_diagnostic_thresholds_met": false,
+    "candidate_promoted_to_holdout": false
+  },
+  "interpretation": "Changing the interpolation geometry from pressure-head pairs to a simple effective-saturation/positive-head mixed coordinate does not regularize the extreme dry-to-wet steady-Darcian response sufficiently. The representation is materially smaller than the largest C4 table and often improves on plain MFP, but its tail errors are far above the pre-existing diagnostic thresholds. No C5b qualification holdout is justified for this frozen candidate.",
+  "decision": "SIMPLE_MIXED_STATE_BILINEAR_REPRESENTATION_NOT_PROMOTED_NO_C5B_HOLDOUT",
+  "qualification": false,
+  "status": "PERSISTED_TESTED_NEGATIVE_CHARACTERIZATION_EVIDENCE"
+}

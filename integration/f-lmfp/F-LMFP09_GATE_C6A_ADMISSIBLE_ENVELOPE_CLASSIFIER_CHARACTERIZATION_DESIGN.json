@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C6A_ADMISSIBLE_ENVELOPE_CLASSIFIER_CHARACTERIZATION",
+  "purpose": "Determine whether the already-qualified conservative LayeredMFP interface construction has a simple, explicit and cheap hydraulic core envelope in which a frozen lookup representation can meet the existing accuracy rules, while all states outside that envelope are classified fail-closed rather than extrapolated or silently accepted.",
+  "qualification": false,
+  "production_implementation": false,
+  "candidate_representations": [
+    "C3_FROZEN_49_NODE_ANCHORED_HEAD_PAIR_PROVIDER",
+    "C4_FROZEN_113_NODE_ANCHORED_HEAD_PAIR_PROVIDER"
+  ],
+  "why_c5a_is_not_carried_forward": "The frozen C5a mixed-state candidate failed the existing diagnostic thresholds by wide margins on both tested blocker classes and is therefore not a C6a admission candidate.",
+  "precommitted_classifier_features": [
+    "minimum_endpoint_effective_saturation",
+    "maximum_endpoint_effective_saturation",
+    "upper_endpoint_saturated_flag",
+    "lower_endpoint_saturated_flag",
+    "absolute_hydraulic_gradient",
+    "absolute_endpoint_head_difference_cm",
+    "endpoint_conductivity_ratio"
+  ],
+  "precommitted_candidate_threshold_grid": {
+    "minimum_endpoint_effective_saturation_lower_bounds": [1e-06, 1e-05, 0.0001, 0.001, 0.01, 0.05, 0.1],
+    "absolute_hydraulic_gradient_upper_bounds": [10.0, 30.0, 100.0, 300.0, 1000.0, 3000.0, 10000.0],
+    "absolute_endpoint_head_difference_cm_upper_bounds": [10.0, 30.0, 100.0, 300.0, 1000.0, 3000.0, 10000.0, 100000.0],
+    "endpoint_conductivity_ratio_upper_bounds": [10.0, 100.0, 1000.0, 1000000.0]
+  },
+  "characterization_data": {
+    "revealed_sets_allowed": [
+      "C2 endpoint-pair stress evidence",
+      "C3b off-grid dry-to-wet holdout now treated only as revealed characterization data",
+      "C4 density characterization data"
+    ],
+    "new_characterization_sampling": "Allowed only with a fixed recorded seed and must be marked revealed immediately after execution. It cannot serve as C6b qualification evidence."
+  },
+  "unchanged_accuracy_rules": {
+    "threshold_relaxation_allowed": false,
+    "error_metric_change_allowed": false,
+    "extreme_probe_deletion_allowed": false,
+    "sign_mismatch_allowed": false,
+    "silent_extrapolation_allowed": false,
+    "silent_solver_switch_allowed": false
+  },
+  "characterization_outputs": [
+    "admitted_case_fraction per candidate classifier",
+    "diagnostic-threshold violation count among admitted cases",
+    "p90 p99 and maximum relative flux error among admitted active cases",
+    "sign mismatch count among admitted cases",
+    "rejected-case fraction and hydraulic-regime summary",
+    "representation bytes and offline oracle cost",
+    "Pareto set of simple classifiers only; no qualified classifier claim"
+  ],
+  "selection_rule": "C6a may nominate at most one provider plus one simple axis-aligned classifier for C6b. A nominee must have zero sign mismatches, zero coverage failures, zero known diagnostic-threshold violations in admitted revealed cases, nonzero admitted coverage in both blocker materials, and a lower shared immutable table cost than an always-use-FullRichards strategy can plausibly justify only as a performance candidate. No numerical threshold may be modified after nomination.",
+  "c6b_holdout_rule": "Any C6a nominee requires a separately precommitted unseen C6b holdout with a new random seed, off-grid states, the full available F-LMFP09 hydraulic fixture set and both flow directions. The exact provider, classifier features, classifier thresholds and existing accuracy rules must be frozen before that holdout is generated.",
+  "out_of_envelope_semantics": "OUT_OF_LAYEREDMFP_ADMITTED_ENVELOPE is an explicit diagnostic classification, not a numerical failure and not permission to extrapolate. Runtime fallback policy remains outside this characterization gate and must preserve mass, transactionality and reference-mode truthfulness.",
+  "architecture_invariants": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "UNCHANGED",
+    "compact_persistent_state": "NO_NEW_DYNAMIC_STATE",
+    "shared_immutable_representation": "REQUIRED",
+    "transactional_timesteps": "UNCHANGED",
+    "mass_conservation": "HARD_UNCHANGED",
+    "bounded_cost": "SUPPORTED_BY_EXPLICIT_ADMISSION_CLASSIFICATION",
+    "physics_solver_policy_separation": "PRESERVED",
+    "reference_mode": "FULLRICHARDS_REMAINS_AVAILABLE",
+    "diagnostics": "OUT_OF_ENVELOPE_MUST_BE_EXPLICIT"
+  },
+  "decision": "PRECOMMITTED_CHARACTERIZATION_READY_FOR_IMPLEMENTATION",
+  "status": "PERSISTED_BEFORE_EXECUTION"
+}

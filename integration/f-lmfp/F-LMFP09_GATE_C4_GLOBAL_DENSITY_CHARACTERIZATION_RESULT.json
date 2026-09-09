@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+  "workflow": {
+    "run_id": 34314877011,
+    "head_under_test": "45b679428c222c91bfde71b464a23ac59879f8c7",
+    "conclusion": "success",
+    "qualification": false,
+    "probe_set": "REVEALED_C3B_CHARACTERIZATION_SET_NOT_VALID_FOR_QUALIFICATION"
+  },
+  "classes": [
+    {
+      "material": "reference_sand",
+      "half_face_length_cm": 10.0,
+      "actual_axis_nodes": [49, 65, 81, 113],
+      "corrected_active_relative_error": {
+        "p90": [0.32469086381504836, 0.2857242919745907, 0.2904049553596889, 0.2655785991153374],
+        "p99": [7.03356948879525, 7.216732191103531, 8.313840330140806, 0.7913076012406345],
+        "maximum": [17.892110731762006, 17.895268090981492, 22.851144626503512, 1.5733621058042697]
+      },
+      "final_density_cost": {
+        "table_values": 12769,
+        "bytes_before_metadata": 102152,
+        "offline_oracle_solves": 12658
+      },
+      "final_density_artifact": {
+        "artifact_id": 10090346198,
+        "digest": "sha256:732c224f9d2eabc505ea9f3959844e049f1134c72b1b75e17d64562416cc2b83"
+      },
+      "failures": 0,
+      "sign_mismatches": 0,
+      "final_density_pass": false
+    },
+    {
+      "material": "very_fast",
+      "half_face_length_cm": 5.0,
+      "actual_axis_nodes": [49, 65, 81, 113],
+      "corrected_active_relative_error": {
+        "p90": [0.5577115982617433, 0.7820950454922795, 0.42355431925165926, 0.5264767605423428],
+        "p99": [11.58638669024126, 17.622227835512515, 0.9756490238403382, 3.644909439111382],
+        "maximum": [14.425946026952689, 18.59305254014523, 1.11184515714441, 4.721777004044456]
+      },
+      "final_density_cost": {
+        "table_values": 12769,
+        "bytes_before_metadata": 102152,
+        "offline_oracle_solves": 12656
+      },
+      "final_density_artifact": {
+        "artifact_id": 10090306594,
+        "digest": "sha256:55d59191bccf6b3d56756f3efbba13e3ebca9e33e7c7fcb79daf387480af7ef9"
+      },
+      "failures": 0,
+      "sign_mismatches": 0,
+      "final_density_pass": false
+    }
+  ],
+  "observations": {
+    "all_eight_jobs_completed": true,
+    "coverage_failures_observed": false,
+    "sign_mismatches_observed": false,
+    "convergence_is_monotone": false,
+    "any_tested_density_meets_existing_diagnostic_thresholds_in_both_classes": false,
+    "largest_tested_table_values_per_class": 12769,
+    "largest_tested_bytes_per_class_before_metadata": 102152,
+    "density_selected_for_holdout": false
+  },
+  "interpretation": "Increasing the frozen head-by-head endpoint table from 49 to 113 actual axis nodes does not provide a sufficiently rapid or monotone route to the existing diagnostic thresholds on the revealed extreme dry-to-wet set. Some tail quantiles improve at selected densities, but others worsen nonmonotonically and the largest tested density still fails materially in both classes. The result rejects global densification of this representation as the next general-envelope route; it does not reject the conservative composed interface construction or LayeredMFP in a narrower explicitly admitted envelope.",
+  "decision": "GLOBAL_HEAD_PAIR_DENSIFICATION_NOT_PROMOTED_NO_C4B_HOLDOUT",
+  "qualification": false,
+  "status": "PERSISTED_TESTED_NEGATIVE_CHARACTERIZATION_EVIDENCE"
+}

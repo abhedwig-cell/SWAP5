@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -34,70 +34,50 @@
     "fullrichards_reference_preserved": true
   },
   "qualified_prior_evidence": {
-    "gate_A_coordinate": {
-      "decision": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED",
-      "head_envelope_cm": [-100000000.0,100.0],
-      "hscale_cm": 0.01,
-      "mfp_nodes": 128
-    },
+    "gate_A_coordinate": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED",
     "F_LMFP08_homogeneous_face_representation": "QUALIFIED_WITHIN_ITS_EARLIER_TESTED_HYDRAULIC_SCOPE",
-    "F_LMFP08_transient_mass": "QUALIFIED_TO_ROUNDOFF_WITHIN_EARLIER_TESTED_SCOPE"
+    "F_LMFP08_transient_mass": "QUALIFIED_TO_ROUNDOFF_WITHIN_EARLIER_TESTED_SCOPE",
+    "C2_composed_heterogeneous_interface": "PROMISING_WITH_ZERO_FAILURES_IN_1000_CASES_AND_EQUAL_FLUX_RESIDUAL_WITHIN_PRECOMMITTED_BOUND"
   },
-  "gate_C2_endpoint_pair": {
-    "run": 34311445769,
-    "decision": "FAILED_OVERALL_BUT_COMPOSED_HETEROGENEOUS_INTERFACE_BLOCKER_REMOVED",
-    "heterogeneous_cases": 1000,
-    "heterogeneous_failures": 0,
-    "active_relative_error_p90": 0.004377953524000742,
-    "active_relative_error_p99": 0.02845864145791556,
-    "active_relative_error_maximum": 0.13223252543078204,
-    "equal_flux_scaled_residual_max": 9.998024630419877e-11,
-    "sign_mismatches": 0,
-    "root_iteration_maximum": 57,
-    "root_iteration_cap": 60,
-    "failure_localization": "provider interpolation resolution in extreme dry-to-wet endpoint-pair tail",
-    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C2_RESULT_DIAGNOSIS.json"
-  },
-  "gate_C3_anchored_characterization": {
-    "run": 34313375177,
-    "conclusion": "success",
-    "candidate": "BASE33_PLUS_SIGNED_PRESSURE_HEAD_DECADES",
-    "axis_nodes": 49,
-    "values_per_class": 2401,
-    "bytes_per_class_before_metadata": 19208,
-    "interpretation": "successful characterization only; exact decade anchors overlapped some C2 stress endpoints and therefore required an independently precommitted off-grid holdout",
-    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3_ANCHORED_ENDPOINT_AXIS_RESULT.json"
-  },
-  "gate_C3b_offgrid_holdout": {
-    "run": 34314564777,
-    "conclusion": "failure",
-    "classes_tested": 4,
-    "classes_failed": 4,
-    "cases_per_class": 310,
-    "coverage_failures": 0,
-    "sign_mismatches": 0,
-    "p90_relative_flux_error_range": [0.32469086381504836,0.5577115982617433],
-    "worst_relative_flux_error_range": [14.425946026952689,20.477924431644812],
-    "interpretation": "the frozen 49-node bilinear endpoint-pair representation does not generalize over the intended extreme dry-to-wet envelope; this rejects the representation at this density, not LayeredMFP as a solver concept",
-    "decision": "C3_49_NODE_ANCHORED_ENDPOINT_REPRESENTATION_REJECTED_FOR_GENERALIZATION_DO_NOT_PROCEED_TO_CATALOG",
-    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3B_OFFGRID_HOLDOUT_RESULT.json"
+  "negative_representation_evidence": {
+    "C3b_49_node_anchored_head_pair": {
+      "decision": "REJECTED_FOR_GENERALIZATION",
+      "p90_relative_flux_error_range": [0.32469086381504836, 0.5577115982617433],
+      "worst_relative_flux_error_range": [14.425946026952689, 20.477924431644812],
+      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3B_OFFGRID_HOLDOUT_RESULT.json"
+    },
+    "C4_global_head_pair_densification": {
+      "run": 34314877011,
+      "largest_actual_axis_nodes": 113,
+      "largest_values_per_class": 12769,
+      "largest_bytes_per_class_before_metadata": 102152,
+      "monotone_convergence": false,
+      "density_promoted": false,
+      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C4_GLOBAL_DENSITY_CHARACTERIZATION_RESULT.json"
+    },
+    "C5a_simple_mixed_state_bilinear": {
+      "run": 34316119729,
+      "values_per_class": 2958,
+      "bytes_per_class_before_metadata": 23664,
+      "reference_sand_p90": 1.2367408951748873,
+      "very_fast_p90": 5.700599002009445,
+      "candidate_promoted": false,
+      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C5A_MIXED_STATE_TAIL_CHARACTERIZATION_RESULT.json"
+    }
   },
   "current_gate": {
-    "name": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
-    "workflow_run": 34314877011,
+    "name": "C6A_ADMISSIBLE_ENVELOPE_CLASSIFIER_CHARACTERIZATION",
     "qualification": false,
-    "base_axis_nodes": [33,49,65,97],
-    "anchors_unchanged": true,
-    "thresholds_unchanged": true,
-    "classes": ["reference_sand_10cm","very_fast_5cm"],
-    "purpose": "determine whether the same 2-D endpoint representation family shows sufficiently rapid monotone convergence at globally bounded density and memory",
-    "qualification_rule": "because the C3b probes have now been observed, any C4-selected density requires a new independently precommitted C4b holdout before it can be qualified",
-    "evidence_design": "integration/f-lmfp/F-LMFP09_GATE_C4_GLOBAL_DENSITY_CHARACTERIZATION_DESIGN.json"
+    "purpose": "test whether a simple explicit hydraulic core envelope can be recognized cheaply so that LayeredMFP is only admitted where the frozen cheap representation meets unchanged accuracy rules",
+    "candidate_providers": ["C3_49_NODE_ANCHORED_HEAD_PAIR", "C4_113_NODE_ANCHORED_HEAD_PAIR"],
+    "design": "integration/f-lmfp/F-LMFP09_GATE_C6A_ADMISSIBLE_ENVELOPE_CLASSIFIER_CHARACTERIZATION_DESIGN.json",
+    "qualification_rule": "any nominee requires a new precommitted C6b unseen holdout before qualification"
   },
   "separate_open_blockers": [
     "production hydraulic catalog admission remains open",
     "inherited near-saturation conductivity discontinuity in the catalog remains an owner-level constitutive issue",
     "transient expanded-envelope regression remains open after representation qualification",
+    "bounded runtime fallback policy is not yet admitted",
     "root uptake, drainage, moving groundwater and MODFLOW coupling are outside F-LMFP09 current scope",
     "response tangent not admitted"
   ],
@@ -109,8 +89,11 @@
     "GATE_A_QUALIFIED": true,
     "HETEROGENEOUS_INTERFACE_CONSTRUCTION_PROMISING": true,
     "C3_49_NODE_REPRESENTATION_QUALIFIED": false,
+    "C4_GLOBAL_DENSITY_ROUTE_PROMOTED": false,
+    "C5A_MIXED_STATE_ROUTE_PROMOTED": false,
+    "C6A_DESIGN_PERSISTED": true,
     "OVERALL_QUALIFIED": false
   },
-  "decision": "RESEARCH_CONTINUES",
-  "status": "C3B_REJECTED_49_NODE_ENDPOINT_REPRESENTATION_C4_GLOBAL_DENSITY_CHARACTERIZATION_QUEUED_OR_RUNNING"
+  "decision": "RESEARCH_CONTINUES_WITH_EXPLICIT_ENVELOPE_PARTITIONING",
+  "status": "C4_AND_C5A_NEGATIVE_EVIDENCE_PERSISTED_C6A_ADMISSIBLE_ENVELOPE_CHARACTERIZATION_READY"
 }
