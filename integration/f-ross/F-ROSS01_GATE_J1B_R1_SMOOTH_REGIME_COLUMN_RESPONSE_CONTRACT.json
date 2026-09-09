@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1B_R1_SMOOTH_REGIME_C1R_COLUMN_RESPONSE_TANGENT",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "parents": [
+    "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json",
+    "F-ROSS01_GATE_J1B_O01_CELL_SWITCH_DIAGNOSTIC_RESULT.json"
+  ],
+  "purpose": "Re-run the same-factorization real C1R column response tangent only after correcting the invalid node-aligned dry fixture and explicitly routing the already localized O01 large-FD table-node crossing to boundary characterization rather than averaging across it.",
+  "production_implementation": false,
+  "primary_quantity": {
+    "name": "d_h_bottom_d_q_bottom",
+    "units": "day",
+    "q_bottom_sign": "positive downward",
+    "expected_sign": "negative"
+  },
+  "frozen_changes_from_initial_j1b": {
+    "dry_fixture_only": {
+      "old": {"name": "dry", "n_faces": 16, "h_top_cm": -1000.0},
+      "new": {
+        "name": "dry_midcell",
+        "n_faces": 16,
+        "u_top": 3.0083333333333333,
+        "h_top_cm": -1019.3734859388727,
+        "construction": "exact midpoint in log-head coordinate between N241 nodes 180 and 181: u=(180.5)/60; chosen before rerun execution to maximize distance from both adjacent node lines"
+      },
+      "unchanged_q_fractions": [-0.02, 0.0, 0.02]
+    },
+    "known_regime_switch_routing_only": {
+      "material": "O01",
+      "geometry": "long_dry",
+      "n_faces": 64,
+      "h_top_cm": -3000.0,
+      "q_fraction_of_K_top": 0.0,
+      "fd_factor": 3e-05,
+      "head_index": 39,
+      "expected_base_cell": 204,
+      "expected_minus_cell": 204,
+      "expected_plus_cell": 205,
+      "policy": "retain the precommitted perturbation unchanged; require the same transition to be reproduced; exclude only this crossing comparison from the smooth local-derivative metric and route it to J1C boundary characterization"
+    }
+  },
+  "unchanged_from_initial_j1b": {
+    "other_geometries": [
+      ["wet_short", 2, -50.0],
+      ["mid", 4, -200.0],
+      ["long_dry", 64, -3000.0]
+    ],
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "q_fractions": [-0.02, 0.0, 0.02],
+    "fd_factors": [1e-05, 3e-05],
+    "table": "qualified C1R N241 float32 log-mobility",
+    "face_derivative": "qualified J1A strict-interior analytic derivative",
+    "tangent_metric_threshold": 1e-05,
+    "continuity_threshold": 1e-10,
+    "linear_residual_threshold": 1e-11,
+    "factorizations_per_base_case": 1,
+    "normal_backsolves_per_base_case": 1,
+    "additional_tangent_backsolves_per_base_case": 1,
+    "production_nonlinear_trajectory_for_tangent": 0
+  },
+  "expected_counts": {
+    "base_cases": 72,
+    "finite_difference_comparisons_total": 144,
+    "routed_known_regime_switch_comparisons": 1,
+    "smooth_finite_difference_comparisons": 143,
+    "unexpected_regime_switches": 0
+  },
+  "hard_gates": [
+    "all 72 replacement/precommitted base cases assemble with strict-interior unique face derivatives",
+    "the one previously localized O01 transition is reproduced exactly and no additional FD cell transition occurs",
+    "the routed O01 transition is not included in a central-FD smooth derivative error metric",
+    "all 143 smooth symmetric-FD comparisons satisfy tangent metric <= 1e-5",
+    "the smaller 1e-5 O01 long_dry q=0 symmetric FD remains a valid smooth-regime oracle",
+    "steady serial-face continuity <= 1e-10 scaled residual",
+    "normal and tangent linear residuals <= 1e-11",
+    "d_h_bottom/d_q_bottom is negative in all 72 base cases",
+    "base profiles and shared tables remain bitwise unchanged",
+    "production candidate cost is exactly one factorization, one normal backsolve and one additional tangent backsolve per base case"
+  ],
+  "prohibited": [
+    "changing either FD factor",
+    "table retuning",
+    "derivative smoothing",
+    "averaging across the O01 node crossing",
+    "dropping the O01 base case",
+    "changing q fractions",
+    "Class-B work",
+    "production admission"
+  ],
+  "exit_rule": {
+    "pass": "J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE_TANGENT_QUALIFIED_READY_FOR_J1C_BOUNDARY_CHARACTERIZATION",
+    "fail": "Keep J1 incomplete and classify any new fixture, algebra, FD, cost or regime-switch failure without further tuning."
+  },
+  "relevant_invariants": [5, 7, 11, 12, 13, 14, 15, 20, 23, 25, 26, 30]
+}
