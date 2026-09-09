@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "design": "INTERFACE_TANGENT_AND_MODFLOW_COUPLING",
+  "production_implementation": false,
+  "source_basis": {
+    "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal 10:760-766",
+    "doi": "10.2136/vzj2010.0085",
+    "source_bound_fact": "Ross obtains the two endpoint derivatives of each face flux together with the steady-flux table interpolation and uses them in the tridiagonal first-order time-step system."
+  },
+  "prescribed_bottom_head_candidate": {
+    "input": "H_bottom supplied by the common groundwater boundary/coupler contract",
+    "primary_output": "realized conservative q_bottom from the same accepted trial",
+    "target_contract": ["H_SWAP=H_MF at imposed boundary semantics","q_SWAP=-q_MF under shared sign convention"],
+    "tangent": "dq_bottom/dH_bottom"
+  },
+  "tangent_derivation_candidate": [
+    "Build the normal Ross trial linear system A * Delta_v = b using the start-state face fluxes and table derivatives.",
+    "Differentiate the same discrete trial equations with respect to H_bottom while freezing the active table cells, saturation modes and timestep/limiter regime.",
+    "Solve A * s = r_H for s=d(Delta_v)/dH_bottom using the same tridiagonal coefficients/factorization when reusable.",
+    "Evaluate dq_bottom/dH_bottom from the explicit bottom-face boundary derivative plus the bottom-cell-state derivative times s_bottom.",
+    "Return the tangent only together with its active-regime diagnostics."
+  ],
+  "cost_target": {
+    "normal_trial": "one bounded O(Ncells) tridiagonal solve per internal step after O(1) face-table lookups",
+    "tangent_incremental_work": "one additional O(Ncells) tridiagonal backsolve per accepted internal step when the same factorization is reusable",
+    "full_extra_Ross_runs_required": 0,
+    "symmetric_perturbation_runs": "reference/qualification only"
+  },
+  "fail_closed_conditions": [
+    "bottom response crosses a saturated/unsaturated state switch",
+    "table interpolation cell changes invalidate the local derivative assumption at the requested perturbation scale",
+    "timestep acceptability or limiter regime changes",
+    "ponding/deponding or other boundary regime switch",
+    "local dq_bottom/dH_bottom is zero, nonfinite or too ill-conditioned to invert safely",
+    "trial itself is rejected"
+  ],
+  "prescribed_bottom_flux_candidate": {
+    "preferred_research_paths": [
+      "use a directly formulated flux-boundary row in the same continuity solve when mathematically clean",
+      "or locally invert the qualified head-response only when dq_bottom/dH_bottom is finite, nonzero and one-to-one in the active regime"
+    ],
+    "forbidden": "blind reciprocal tangent or hidden boundary correction across a regime switch"
+  },
+  "transaction_semantics": {
+    "committed_state_mutated": false,
+    "tangent_state": "worker scratch / trial result only",
+    "rollback": "discard candidate state and tangent together",
+    "warm_start": "numerical factorization/scratch may be reused only for the same physically correct committed base state"
+  },
+  "qualification_gates": [
+    "compare analytical/discrete tangent against symmetric +/-DeltaH trials from identical committed state",
+    "sweep bottom head through recharge, zero-flux and capillary-rise regimes",
+    "test moving saturated/unsaturated interface",
+    "test heterogeneous bottom material/path tables",
+    "verify mass ledger is unchanged by tangent calculation",
+    "measure incremental tangent cost and worst-case internal substep count",
+    "verify tangent unavailable flag at regime discontinuities rather than returning misleading values"
+  ],
+  "architecture_assessment": {
+    "invariant_12_groundwater_interface": "PROMISING_DESIGN_NOT_QUALIFIED",
+    "invariant_14_interface_sensitivities": "STRONG_STRUCTURAL_FIT",
+    "invariant_15_coupling_cost": "PROMISING_NO_STRUCTURAL_PLUS_MINUS_FULL_RUN_REQUIREMENT",
+    "invariant_24_predictable_runtime": "ADDITIONAL_BACKSOLVE_IS_BOUNDED_O_N; INTERNAL_SUBSTEP_COUNT_STILL_OPEN"
+  },
+  "decision": "ROSSFAST_RESPONSE_TANGENT_STRUCTURALLY_FEASIBLE_REQUIRES_REAL_HYDRAULIC_TABLE_QUALIFICATION",
+  "status": "DESIGN_PERSISTED_BEFORE_COUPLING_PROTOTYPE"
+}
