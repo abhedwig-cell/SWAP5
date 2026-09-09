@@ -135,7 +135,7 @@ program test_fsi25_reference_indicator_production_seam
        'backtracking counter noninterference')
   call require(workspace%legacy_worker%diagnostics%internal_retries == retries_before, 'retry counter noninterference')
 
-  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A)') &
+  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A)') &
        'FSI25_PROD_ROW:H0=',h0,':JUMP=',jump,':RAW_M=',indicator_result%raw_m_norm, &
        ':D2_M=',2.0_real64*indicator_result%defect_m_norm,':BM=',indicator_result%bounded_m_norm, &
        ':BINF=',indicator_result%head_inf_bound,':MIN_M=',indicator_result%min_mass_weight, &
