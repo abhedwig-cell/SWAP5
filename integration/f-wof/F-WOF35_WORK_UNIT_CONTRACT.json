@@ -18,6 +18,18 @@
     "qualification_run": 34312699703,
     "qualification_decision": "QUALIFIED_ACCEPTED_WINDOW_RUNTIME_LINEAGE_AND_EXACTLY_ONCE_CROP_EVENT_DELIVERY_READY_FOR_CANONICAL_COMPOSITION"
   },
+  "composition_dependency_closure": {
+    "reason": "The current canonical lineage does not contain the F-WOF34 runtime seam or its direct crop semantic dependency chain. F-WOF35 therefore materializes the minimum exact qualified donor closure needed to replay the F-WOF34 seam against current canonical transaction/runtime owners.",
+    "exact_donor_files": [
+      {"path":"src/crop/mod_wofost_actual_biomass_state.f90","blob":"feab0672b38e1c9668ac418cbe9d800f032cf4d8"},
+      {"path":"src/crop/mod_wofost_crop_owner_state.f90","blob":"31bb390a0b70bec0a3f525f1d704a2c53890f9b4"},
+      {"path":"src/crop/mod_wofost_one_day_structural_evolution.f90","blob":"c1fd9704ca1617f1f34d41fd7ec38640cce81d94"},
+      {"path":"src/runtime/mod_fmr_wofost_accepted_window_lineage.f90","blob":"0e3f5d506f24669cae731fe71eb1411abc8d9008"},
+      {"path":"tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90","blob":"44510fd1393653a39f22750c66843b95c655da19"}
+    ],
+    "semantic_changes_in_materialization": false,
+    "production_admission_from_materialization": false
+  },
   "observed_overlap": {
     "direct_production_path_overlap": [],
     "shared_owner_or_dependency_paths_changed_on_canonical_lineage": [
@@ -30,8 +42,8 @@
   },
   "required_sequence": [
     "re-read current canonical owner contracts and exact F-WOF34 source boundary",
-    "materialize the qualified source blob without modifying its semantics unless a separately justified composition patch is required",
-    "compile F-WOF34 lineage/event tests against current canonical F-KT/runtime owners",
+    "materialize the exact qualified donor dependency closure without semantic changes",
+    "compile and execute F-WOF34 lineage/event tests against current canonical F-KT/runtime owners",
     "run current canonical regression suite required by F-CI19 composition policy",
     "run F-WOF33 crop-window regression on its immutable qualified reference",
     "persist any composition-only deltas separately from the F-WOF34 qualified source evidence",
