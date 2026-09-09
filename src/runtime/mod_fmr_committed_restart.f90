@@ -10,7 +10,7 @@ module mod_fmr_committed_restart
   implicit none
   private
 
-  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 1
+  integer, parameter, public :: FMR_RESTART_SCHEMA_VERSION = 2
   integer, parameter, public :: FMR_RESTART_OK = 0
   integer, parameter, public :: FMR_RESTART_INVALID_STRUCTURE = 1
   integer, parameter, public :: FMR_RESTART_DUPLICATE_COLUMN = 2
@@ -21,6 +21,7 @@ module mod_fmr_committed_restart
   integer, parameter, public :: FMR_RESTART_KERNEL_PERSISTENCE_REJECTED = 7
   integer, parameter, public :: FMR_RESTART_TARGET_ALREADY_INITIALIZED = 8
   integer, parameter, public :: FMR_RESTART_SCHEMA_MISMATCH = 9
+  integer, parameter, public :: FMR_RESTART_PARAMETER_SET_MISMATCH = 10
 
   ! Adapter-facing, serialization-neutral decoded continuation record.
   !
@@ -42,17 +43,29 @@ module mod_fmr_committed_restart
     class(transaction_state_t), allocatable :: physical_state
   end type fmr_committed_restart_record_t
 
+  ! One stable identity binds all compact per-column parameter_ref values to the
+  ! externally reconstructed immutable parameter registry.  The immutable
+  ! parameter payload itself is shared runtime configuration and is therefore
+  ! neither duplicated per column nor embedded in physical continuation state.
+  type, public :: fmr_committed_restart_bundle_t
+    integer :: schema_version = 0
+    integer(int64) :: parameter_set_identity = 0_int64
+    type(fmr_committed_restart_record_t), allocatable :: records(:)
+  end type fmr_committed_restart_bundle_t
+
   public :: fmr_export_committed_restart
   public :: fmr_restore_committed_restart
   public :: fmr_restart_template_identity_matches
 
 contains
 
-  subroutine fmr_export_committed_restart(columns, templates, state_registry, records, exported, status)
+  subroutine fmr_export_committed_restart(columns, templates, state_registry, parameter_set_identity, &
+                                          bundle, exported, status)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(kernel_committed_state_t), intent(in) :: state_registry(:)
-    type(fmr_committed_restart_record_t), allocatable, intent(out) :: records(:)
+    integer(int64), intent(in) :: parameter_set_identity
+    type(fmr_committed_restart_bundle_t), intent(out) :: bundle
     logical, intent(out) :: exported
     integer, intent(out) :: status
 
@@ -64,6 +77,7 @@ contains
 
     exported = .false.
     status = FMR_RESTART_INVALID_STRUCTURE
+    if (parameter_set_identity <= 0_int64) return
     if (.not. registry_structure_valid(columns, templates, state_registry)) return
 
     allocate(candidate_records(size(columns)))
@@ -116,13 +130,17 @@ contains
       end if
     end do
 
-    call move_alloc(candidate_records, records)
+    bundle%schema_version = FMR_RESTART_SCHEMA_VERSION
+    bundle%parameter_set_identity = parameter_set_identity
+    call move_alloc(candidate_records, bundle%records)
     exported = .true.
     status = FMR_RESTART_OK
   end subroutine fmr_export_committed_restart
 
-  subroutine fmr_restore_committed_restart(records, columns, templates, state_registry, restored, status)
-    type(fmr_committed_restart_record_t), intent(in) :: records(:)
+  subroutine fmr_restore_committed_restart(bundle, parameter_set_identity, columns, templates, &
+                                            state_registry, restored, status)
+    type(fmr_committed_restart_bundle_t), intent(in) :: bundle
+    integer(int64), intent(in) :: parameter_set_identity
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(kernel_committed_state_t), intent(inout) :: state_registry(:)
@@ -136,9 +154,19 @@ contains
 
     restored = .false.
     status = FMR_RESTART_INVALID_STRUCTURE
+    if (bundle%schema_version /= FMR_RESTART_SCHEMA_VERSION) then
+      status = FMR_RESTART_SCHEMA_MISMATCH
+      return
+    end if
+    if (parameter_set_identity <= 0_int64 .or. bundle%parameter_set_identity <= 0_int64 .or. &
+        parameter_set_identity /= bundle%parameter_set_identity) then
+      status = FMR_RESTART_PARAMETER_SET_MISMATCH
+      return
+    end if
+    if (.not. allocated(bundle%records)) return
     if (.not. registry_structure_valid(columns, templates, state_registry, allow_uninitialized=.true.)) return
-    if (size(records) /= size(columns)) return
-    if (.not. records_have_unique_positive_columns(records)) then
+    if (size(bundle%records) /= size(columns)) return
+    if (.not. records_have_unique_positive_columns(bundle%records)) then
       status = FMR_RESTART_DUPLICATE_COLUMN
       return
     end if
@@ -151,13 +179,13 @@ contains
 
     allocate(candidate_states(size(state_registry)))
     do i = 1, size(columns)
-      record_index = find_record_index(columns(i)%column_id, records)
+      record_index = find_record_index(columns(i)%column_id, bundle%records)
       if (record_index == 0) then
         status = FMR_RESTART_COLUMN_NOT_FOUND
         return
       end if
-      if (records(record_index)%schema_version /= FMR_RESTART_SCHEMA_VERSION .or. &
-          records(record_index)%kernel_schema_version /= KERNEL_PERSISTENCE_SCHEMA_VERSION) then
+      if (bundle%records(record_index)%schema_version /= FMR_RESTART_SCHEMA_VERSION .or. &
+          bundle%records(record_index)%kernel_schema_version /= KERNEL_PERSISTENCE_SCHEMA_VERSION) then
         status = FMR_RESTART_SCHEMA_MISMATCH
         return
       end if
@@ -167,31 +195,31 @@ contains
         status = FMR_RESTART_TEMPLATE_MISMATCH
         return
       end if
-      if (.not. fmr_restart_template_identity_matches(records(record_index)%template_identity, &
+      if (.not. fmr_restart_template_identity_matches(bundle%records(record_index)%template_identity, &
                                                        templates(template_index))) then
         status = FMR_RESTART_TEMPLATE_MISMATCH
         return
       end if
-      if (columns(i)%template_id /= records(record_index)%template_identity%template_id .or. &
-          columns(i)%backend_id /= records(record_index)%template_identity%compatible_backend_id) then
+      if (columns(i)%template_id /= bundle%records(record_index)%template_identity%template_id .or. &
+          columns(i)%backend_id /= bundle%records(record_index)%template_identity%compatible_backend_id) then
         status = FMR_RESTART_TEMPLATE_MISMATCH
         return
       end if
-      if (columns(i)%parameter_ref /= records(record_index)%parameter_ref) then
+      if (columns(i)%parameter_ref /= bundle%records(record_index)%parameter_ref) then
         status = FMR_RESTART_PARAMETER_MISMATCH
         return
       end if
-      if (.not. allocated(records(record_index)%physical_state)) then
+      if (.not. allocated(bundle%records(record_index)%physical_state)) then
         status = FMR_RESTART_STATE_NOT_COMMITTED
         return
       end if
 
       call reconstruct_kernel_persistence_snapshot_trusted( &
-           records(record_index)%kernel_schema_version, &
-           records(record_index)%template_identity%state_layout_id, &
-           records(record_index)%lineage_id, records(record_index)%revision, &
-           records(record_index)%committed_time, records(record_index)%time_bound, &
-           records(record_index)%physical_state, snapshot, ok, kernel_status)
+           bundle%records(record_index)%kernel_schema_version, &
+           bundle%records(record_index)%template_identity%state_layout_id, &
+           bundle%records(record_index)%lineage_id, bundle%records(record_index)%revision, &
+           bundle%records(record_index)%committed_time, bundle%records(record_index)%time_bound, &
+           bundle%records(record_index)%physical_state, snapshot, ok, kernel_status)
       if (.not. ok .or. kernel_status /= KERNEL_PERSISTENCE_OK) then
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
