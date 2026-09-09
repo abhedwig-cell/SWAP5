@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "C_NONLINEAR_B110_FINITE_COMPARATOR_CHARACTERIZATION",
+  "attempt": 1,
+  "tested_head": "5abd5a4023071be9f51616869269d7311e3bf0cd",
+  "workflow_run": 34327956473,
+  "workflow_job": 102389524695,
+  "conclusion": "failure_before_scientific_interpretation",
+  "source_plan_comparator_driver_lock": "PASS",
+  "reference_tridag": "PASS",
+  "first_case_reached_principal_and_companion_calculation": true,
+  "failure_label": "frozen lower-face geometry consistency",
+  "classification": "TEST_ONLY_EXPLICIT_GEOMETRY_MAPPING_ERROR",
+  "root_cause": {
+    "incorrect_test_assumption": "The driver assembled the bottom conductance from fixture-global disnod(numnod+1)=1.0 and separately asserted that this global value equalled 0.5*dz_last.",
+    "actual_explicit_HeadCalc_semantics": "headcalc grid_disnod(node) uses parameter_set%node_distance(node) for ordinary explicit nodes, but for node==numnod+1 it explicitly returns 0.5*parameter_set%dz(numnod).",
+    "headcalc_source_blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "fixture_global_disnod_is_not_explicit_bottom_distance": true
+  },
+  "scientific_effect": {
+    "Gate_C_bound_result_interpretable": false,
+    "reason": "The test-only companion Jacobian used the wrong lower-face conductance before the final geometry assertion stopped the case.",
+    "negative_nonlinear_transfer_evidence": false,
+    "positive_nonlinear_transfer_evidence": false
+  },
+  "allowed_fix": "Change only the test-only final-state Jacobian reconstruction so its bottom-face distance follows the already existing HeadCalc explicit geometry rule 0.5*dz_last, remove the invalid comparison to fixture-global disnod(n+1), and relock the runner to that driver. Do not change the frozen Gate-C plan, matrix, comparator values, factor 2, norms, numerical controls or production source.",
+  "production_source_modified": false
+}
