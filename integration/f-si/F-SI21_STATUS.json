@@ -1,15 +1,16 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-SI",
   "work_unit": "F-SI21",
   "title": "Hydraulic Timescale and Retry-Translation Mechanism Characterization",
   "branch": "work/f-si21-hydraulic-timescale-retry-translation",
-  "status": "IN_PROGRESS_GATE_A_QUALIFIED_GATE_B_OBSERVATIONS_FROZEN_BEFORE_EXECUTION",
-  "phase": "DYNAMIC_LOCAL_HYDRAULIC_CHARACTERIZATION",
+  "status": "CLOSED_MECHANISM_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_HANDOFF_TO_CANONICAL_FSI21_POLICY",
+  "phase": "CLOSED_NEGATIVE_MECHANISM_SUBSTUDY",
   "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
   "plan": "integration/f-si/F-SI21_WORK_UNIT_PLAN.json",
   "gate_A_evidence": "integration/f-si/F-SI21_GATE_A_EVIDENCE.json",
   "gate_B_observation_plan": "integration/f-si/F-SI21_GATE_B_OBSERVATION_PLAN.json",
+  "gate_B_evidence": "integration/f-si/F-SI21_GATE_B_EVIDENCE.json",
   "gate_A": {
     "tested_head": "52709c1b40d0c6e474d41ed4117cf0df228216c4",
     "workflow_run": 34304932000,
@@ -18,8 +19,27 @@
     "decision": "B_INITIAL_STATE_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_DYNAMIC_LOCAL_CHARACTERIZATION_REQUIRED",
     "tau_spread": 22.863494085728213,
     "initial_scalar_threshold_falsified": true,
-    "counterexample": "h0=-320 cm gives UCU for all four small bottom-head jumps",
-    "production_source_unchanged": true
+    "counterexample": "h0=-320 cm gives UCU for all four small bottom-head jumps"
+  },
+  "gate_B": {
+    "tested_head": "e98dc3975a2102919106922dd888cd62e2716fc2",
+    "workflow_run": 34305638703,
+    "workflow_job": 102321644548,
+    "artifact_id": 10086565268,
+    "artifact_digest": "sha256:737ecd5bb59f61e83abff7900eaae1258a514da2f9db735fe5b864d0959e9d66",
+    "conclusion": "success",
+    "resolved_attempts": 67,
+    "C_count": 31,
+    "U_count": 36,
+    "C_U_dynamic_tau_ranges_overlap": true,
+    "decision": "B_DYNAMIC_LOCAL_HYDRAULICS_INFORMATIVE_BUT_NOT_SUFFICIENT_SAME_ENDPOINT_REFINEMENT_FAMILY_REMAINS_PRIMARY"
+  },
+  "scientific_interpretation": {
+    "hydraulic_state_is_informative": true,
+    "initial_tau_alone_sufficient": false,
+    "dynamic_local_tau_alone_sufficient": false,
+    "separate_timescale_threshold_candidate_justified": false,
+    "same_endpoint_or_model_owned_certificate_route_remains_primary": true
   },
   "state": {
     "plan_persisted": true,
@@ -27,27 +47,27 @@
     "gate_A_implemented": true,
     "gate_A_tested": true,
     "gate_A_classified": true,
-    "dynamic_gate_B_allowed": true,
-    "gate_B_observation_locations_frozen": true,
-    "gate_B_implemented": false,
-    "gate_B_tested": false,
-    "gate_B_classified": false,
+    "gate_B_observation_locations_frozen_before_execution": true,
+    "gate_B_implemented": true,
+    "gate_B_tested": true,
+    "gate_B_classified": true,
     "production_source_modified": false,
     "production_metric_selected": false,
     "production_tolerance_selected": false,
     "normalization_selected": false,
-    "owner_qualified": false
+    "owner_qualified": false,
+    "substudy_closed": true
   },
   "holds": {
     "F_GC02_release": "NOT_ALLOWED",
     "F_PE_release": "NOT_ALLOWED",
     "production_temporal_metric": "NOT_SELECTED",
     "production_temporal_tolerance": "NOT_SELECTED",
-    "retry_policy_change": "NOT_ALLOWED",
+    "retry_policy_change_by_this_substudy": "NOT_ALLOWED",
     "solver_policy_change": "NOT_ALLOWED",
     "mass_gate_relaxation": "NOT_ALLOWED",
-    "F_KT_transaction_change": "NOT_ALLOWED"
+    "production_Richards_certificate": "NOT_ADMITTED"
   },
-  "regie_note": "A broader F-SI21 same-endpoint estimator/refinement-policy contract exists separately. This hydraulic-timescale branch is a mechanism-characterization substudy and must hand evidence back rather than independently define production policy.",
-  "next_action": "Implement test-only Gate B exactly at the predeclared checkpoint/full-endpoint/half-midpoint/two-half-endpoint observation locations on the frozen F-VQ28 Gate B matrix. Characterize dynamic h, theta, K, C, K/C and tau without fitting thresholds or changing production code."
+  "claim_limit": "This closeout qualifies only a negative mechanism finding: simple initial or dynamic-local hydraulic-timescale separation is insufficient on the frozen F-VQ28 retry matrix. It does not qualify a temporal estimator, normalization, tolerance, transaction mode, Richards certificate, F-GC02 release or F-PE release.",
+  "next_owner_action": "Continue only through the canonical F-SI21 estimator/runtime-policy line and its explicit F-KT09 generic model-owned certificate seam. Any Richards certificate semantics and numeric profile remain F-SI-owned and require independent F-VQ admission on the exact composed production postimage."
 }
