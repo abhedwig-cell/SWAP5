@@ -1,0 +1,61 @@
+{
+  "decision": "PRODUCTION_CATALOG_PROVENANCE_FROZEN_READY_FOR_SHARDED_HYDRAULIC_ENVELOPE_TESTING",
+  "f_lmfp_b110_mapping": {
+    "alpha": "ALFA",
+    "h_enpr": "H_ENPR",
+    "ksat_function": "KSATFIT",
+    "ksat_measured_metadata": "KSATEXM",
+    "l": "LEXP",
+    "m": "1-1/NPAR",
+    "n": "NPAR",
+    "note": "The F-LMFP B110 evaluator uses KSATFIT in K(h). KSATEXM is retained as source metadata and is not substituted for the fitted conductivity parameter.",
+    "theta_r": "ORES",
+    "theta_s": "OSAT"
+  },
+  "legacy_input_semantics": {
+    "SWSOPHY": 0,
+    "columns": {
+      "ALFA": "Mualem-van Genuchten alpha [1/cm]",
+      "H_ENPR": "air-entry pressure head [cm]",
+      "KSATEXM": "measured saturated hydraulic conductivity [cm/d]",
+      "KSATFIT": "fitted saturated hydraulic conductivity used by the hydraulic conductivity function [cm/d]",
+      "LEXP": "hydraulic conductivity exponent [-]",
+      "NPAR": "Mualem-van Genuchten n [-]",
+      "ORES": "residual water content [cm3/cm3]",
+      "OSAT": "saturated water content [cm3/cm3]"
+    }
+  },
+  "parameter_extrema": {
+    "ALFA": {"max": 0.042807, "max_id": "B05", "min": 0.003288, "min_id": "O14"},
+    "H_ENPR": {"max": 0.0, "max_id": "B01", "min": 0.0, "min_id": "B01"},
+    "KSATEXM": {"max": 1041.03005, "max_id": "B06", "min": 1.790046, "min_id": "B14"},
+    "KSATFIT": {"max": 104.103005, "max_id": "B06", "min": 0.895023, "min_id": "B14"},
+    "LEXP": {"max": 7.202077, "max_id": "B02", "min": -6.091311, "min_id": "O13"},
+    "NPAR": {"max": 2.887502, "max_id": "O05", "min": 1.079952, "min_id": "O13"},
+    "ORES": {"max": 0.02, "max_id": "B01", "min": 0.0, "min_id": "B07"},
+    "OSAT": {"max": 0.889246, "max_id": "O16", "min": 0.333434, "min_id": "O06"}
+  },
+  "repository_search": {
+    "interpretation": "The F-LMFP09 branch did not contain the distributed Staringreeks_2018 hydraulic catalog; the frozen SWAP 4.3.1 archive is therefore the explicit source of the experimental catalog fixtures.",
+    "production_catalog_found_in_SWAP5": false
+  },
+  "schema_version": 1,
+  "scope": {
+    "catalog_identity": "actual SWAP-distributed Staringreeks_2018 hydraulic catalog",
+    "operational_usage_claim": "none; distribution in SWAP 4.3.1 does not prove every operational setup uses every row",
+    "production_catalog_hydraulic_envelope_qualified": false,
+    "production_solver_admission": false
+  },
+  "source": {
+    "archive_name": "SWAP_4.3.1(6).zip",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "catalog_name": "Staringreeks_2018",
+    "member_path": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "member_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "row_count": 36,
+    "row_ids": ["B01","B02","B03","B04","B05","B06","B07","B08","B09","B10","B11","B12","B13","B14","B15","B16","B17","B18","O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18"]
+  },
+  "subgate": "B3_PRODUCTION_CATALOG_PROVENANCE",
+  "work_unit": "F-LMFP09",
+  "workstream": "F-LMFP"
+}
