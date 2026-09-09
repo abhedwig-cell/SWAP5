@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_KSATEXM_CHARACTERIZATION",
+  "run_id": 34341660558,
+  "run_head": "c7b0a29d03a55bb33103a6ecab3f6396052fd4fe",
+  "conclusion": "failure",
+  "pass": false,
+  "decision": "C2A_UNIFORM_U_N241_REJECTED_CONSTITUTIVE_SEAM_NOT_RESOLVED",
+  "candidate": {
+    "N": 241,
+    "coordinate": "uniform u=log10(-h/cm) on [0,4]",
+    "storage": "float32_log_mobility",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)",
+    "ksatexm_source_law": "SWAP_4.3.1_linear_in_relative_saturation_above_h_minus_2_cm"
+  },
+  "material_results": {
+    "B05": {"pass": false, "max_abs_error_over_ksatfit": 0.12177844429475522, "max_hybrid_metric": 0.10759774180452125, "p99_hybrid_metric": 0.04278651715742595, "failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"]},
+    "O14": {"pass": false, "max_abs_error_over_ksatfit": 0.005388712788097329, "max_hybrid_metric": 0.005637823079577496, "p99_hybrid_metric": 0.0012613427772228114, "failed_metrics": ["max_abs_error_over_ksatfit"]},
+    "O12": {"pass": false, "max_abs_error_over_ksatfit": 0.8969980401513018, "max_hybrid_metric": 0.8874929248373983, "p99_hybrid_metric": 0.4137613996187765, "failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"]},
+    "O13": {"pass": false, "max_abs_error_over_ksatfit": 0.9711562529127257, "max_hybrid_metric": 3.934407359391858, "p99_hybrid_metric": 0.650624479109445, "failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"]},
+    "O05": {"pass": false, "max_abs_error_over_ksatfit": 0.08729583968034643, "max_hybrid_metric": 0.057666288428204544, "p99_hybrid_metric": 0.05247861048846538, "failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"]},
+    "B10": {"pass": false, "max_abs_error_over_ksatfit": 0.9299614434940877, "max_hybrid_metric": 1.2690183159145563, "p99_hybrid_metric": 0.4573885993479944, "failed_metrics": ["max_hybrid_metric", "p99_hybrid_metric", "max_abs_error_over_ksatfit"]}
+  },
+  "failure_diagnostics": {
+    "all_six_characterization_materials_failed": true,
+    "oracle_lookup_table_generation_and_finite_value_failures_observed": false,
+    "wrong_sign_or_near_zero_failures_observed": false,
+    "dominant_failure_class": "INTERPOLATION_ACCURACY_AROUND_SOURCE_DEFINED_KSATEXM_DERIVATIVE_SEAM",
+    "source_seam_head_cm": -2.0,
+    "source_seam_u": 0.3010299956639812,
+    "uniform_grid_seam_index": 18.06179973983887,
+    "seam_aligned_with_uniform_grid_node": false,
+    "observed_examples": [
+      "B05 worst ordinary-coordinate error has h_above=-1.9538421551474423 cm, immediately wet of the -2 cm seam; q_ref=72.03275888626287 and q_table=79.78400594233709 cm/d.",
+      "O12 worst hybrid probe spans h_above=-2.0000009999999455 and h_below=-1.9999990000000039 cm, effectively straddling the source-defined seam.",
+      "O12 worst absolute threshold-cross probe uses h_above=-1.95 and h_below=-2.75 cm."
+    ]
+  },
+  "artifacts": {
+    "B10": {"id": 10100065997, "digest": "sha256:387fac239778b3c24c1ac423e43d8e163177c035ae708883a5e1f98c612b7618"},
+    "O13": {"id": 10100058461, "digest": "sha256:061435214c93af95d6ae8fafa3eff5be69db0fac11ae81f99a72e8832ab2f89a"},
+    "O05": {"id": 10100043930, "digest": "sha256:89952269996b7b0d7712ba29b4090755fc841dc58608497f5326da014859f573"},
+    "O12": {"id": 10100042241, "digest": "sha256:6191ff1bec92a48478feeecc3b427483312cfeeb0a9c88c00e59ed68c0684573"},
+    "O14": {"id": 10100020399, "digest": "sha256:866b2c4d949c88b32725e0f7011bf25f2b7e14eed5839777331f5b6ea693005b"},
+    "B05": {"id": 10100008513, "digest": "sha256:cbe9a1453eafe257312258250ef07974bb79bb96bb851dde48e341416330bd81"}
+  },
+  "next_step": "Freeze a source-driven seam-aligned C2A-R1 coordinate with u=log10(2) as an exact table node, retaining N=241, float32 log mobility, the same memory ceiling and O(1) lookup. No holdout may be accessed before R1 characterization passes.",
+  "scope_limit": "This rejection applies only to the uniform-u N241 representation for source-bound KSATEXM inside h=[-10000,-1] cm. It is not a RossFast scientific NO-GO and makes no claim about h>-1 cm, H_ENPR, groundwater, MultiSWAP, transient accuracy or FullRichards equivalence."
+}
