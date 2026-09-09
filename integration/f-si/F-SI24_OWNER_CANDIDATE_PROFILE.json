@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "artifact": "OWNER_CANDIDATE_PROFILE",
+  "branch": "work/f-si24-bounded-stiffness-aware-temporal-indicator",
+  "owner_status": "READY_FOR_DISJOINT_INDEPENDENT_QUALIFICATION_DESIGN_NOT_PRODUCTION",
+  "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+  "principal_advance": {
+    "method": "existing mass-conservative reference Richards backward Euler",
+    "candidate_state_changed_by_indicator": false,
+    "hard_mass_acceptance_changed": false
+  },
+  "observer_and_companion": {
+    "raw_vector": "e_raw=0.5*dt*(hdot_np1-hdot_n)",
+    "accepted_state_mass_diagonal": "M_i=C(h_np1)_i*dz_i for the qualified constant-linear theorem and the nonlinear owner characterization reconstruction",
+    "companion_equation": "J*delta=(M/dt)*e_raw",
+    "exact_linear_M_norm_bound": "B_M=min(||e_raw||_M,2||delta||_M)",
+    "head_infinity_conversion": "B_inf=B_M/sqrt(min_i M_i)",
+    "analytic_factor": 2.0,
+    "analytic_factor_fitted": false,
+    "componentwise_derivative_division": false,
+    "extra_full_nonlinear_solves": 0,
+    "extra_tridiagonal_solves": 1
+  },
+  "exact_linear_evidence": {
+    "derivation": "integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json",
+    "manufactured_plan": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_PLAN.json",
+    "manufactured_evidence": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_EVIDENCE.json",
+    "qualified": true,
+    "scope": "constant linear dissipative M*u_dot+A*u=0 with positive diagonal M and symmetric PSD A",
+    "single_mode_nonstiff_to_stiff": true,
+    "multimode": true,
+    "near_zero_local_derivative": true,
+    "hard_mass_preserved": true
+  },
+  "nonlinear_owner_evidence": {
+    "plan": "integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_PLAN.json",
+    "attempt1_mapping_failure": "integration/f-si/F-SI24_GATE_C_ATTEMPT1_GEOMETRY_MAPPING_FAILURE.json",
+    "evidence": "integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_EVIDENCE.json",
+    "matrix_role": "OWNER_CHARACTERIZATION_CALIBRATION_STYLE_NOT_HELD_OUT",
+    "case_count": 15,
+    "finite_comparator_consistent_cases": 15,
+    "negative_transfer_cases": 0,
+    "comparator": "persisted F-SI23 N1-to-N512 same-endpoint finite endpoint difference",
+    "comparator_exact_truth": false,
+    "new_deep_reference_runs": 0,
+    "raw_EOBS_over_comparator_range": [32.02439744299201,1662.352031370096],
+    "B_inf_over_comparator_range": [6.612988690174384,56.88109916717148],
+    "raw_over_B_inf_reduction_range": [4.842651173829171,77.1603231392969],
+    "nonlinear_true_error_bound_qualified": false
+  },
+  "operator_contract_boundary": {
+    "existing_workspace_dfdh_is_exact_accepted_state_J": false,
+    "reason": "HeadCalc forms the Jacobian on old_head before applying the Newton correction and does not rebuild it after the accepted update.",
+    "test_only_owner_reconstruction": "allowed only for qualification evidence under the frozen SwKimpl=0 scope",
+    "production_requirement": "Expose an explicit solver-owned operator/Jacobian evaluation service or result contract. Do not let crop, runtime, coupler or other SWAP modules read HeadCalc private arrays or reimplement HeadCalc numerical internals.",
+    "invariant_22_binding": true
+  },
+  "candidate_production_shape_if_later_qualified": {
+    "persistent_optional_state": "previous accepted right-sided pressure-head derivative plus continuity-valid metadata only when this estimator is active",
+    "worker_scratch": ["current derivative vector","raw error vector","accepted-state operator coefficients or factorization","defect vector","norm reductions"],
+    "transaction_semantics": "history updates only on accepted commit; solver, mass or temporal rejection leaves committed history unchanged; rollback restores exact committed history",
+    "generic_time": true,
+    "calendar_dependency": false,
+    "expected_normal_path_cost": "one Richards principal attempt plus O(N) operator evaluation and one tridiagonal solve",
+    "full_refinement_ladder_in_normal_path": false
+  },
+  "hard_nonclaims": [
+    "No nonlinear true-error bound is claimed.",
+    "N512 is not an exact reference.",
+    "D_inf=2*maxabs(delta) is diagnostic only and is not promoted to a bound.",
+    "No scientific temporal tolerance is selected.",
+    "No dimensionless certificate mapping is selected.",
+    "No universal nonlinear multiplier or safety factor is selected.",
+    "No production acceptance/retry policy is admitted.",
+    "No F-GC02 or F-PE release follows from F-SI24 owner evidence.",
+    "No production operator API is implemented in this workunit."
+  ],
+  "independent_qualification_entry_requirements": [
+    "A disjoint held-out B1.10 state/boundary/time matrix must be frozen before execution.",
+    "The 15 Gate-C owner cases may not count as held-out qualification evidence.",
+    "Factor 2, M norm, B_inf conversion and operator reconstruction semantics must be frozen before held-out execution.",
+    "No tolerance, floor, state normalization or nonlinear multiplier may be selected from held-out results.",
+    "All principal attempts must retain the hard mass gate.",
+    "A negative held-out B_inf-to-finite-comparator result must fail closed; do not repair it by post-hoc scaling.",
+    "Even a positive finite-comparator held-out result does not by itself make the finite comparator exact truth; any production true-error certificate claim requires an independently justified reference/error semantics."
+  ],
+  "recommended_next_owner_action": "Check live for an existing F-VQ30 or equivalent independent qualification branch. If absent, define and freeze a disjoint held-out qualification contract before any run. Production operator materialization remains downstream of independent qualification."
+}
