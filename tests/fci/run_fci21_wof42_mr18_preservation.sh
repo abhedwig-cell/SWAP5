@@ -107,6 +107,19 @@ replacement = "# F-CI21 translation: exact MR18 production blobs and the complet
               "echo 'FCI21_MR18C_POSTIMAGE_LINEAGE_TRANSLATION=PASS'\n"
 src = src[:start] + replacement + src[end:]
 
+# F-CI21 adds a production dependency to the already-qualified legacy binding.
+# Add only the required compile predecessors to Gate C's disposable module list;
+# do not change its executable test program or any scientific/transaction oracle.
+needle = "  src/legacy/b1_10_port/headcalc.f90\n  src/adapter/mod_reference_richards_legacy_binding.f90\n"
+replacement = ("  src/legacy/b1_10_port/headcalc.f90\n"
+               "  src/solver/mod_fixed_flux_top_boundary_provider.f90\n"
+               "  src/solver/mod_reference_richards_temporal_indicator.f90\n"
+               "  src/adapter/mod_reference_richards_legacy_binding.f90\n")
+if src.count(needle) != 1:
+    raise SystemExit(f'F-CI21 MR18 C temporal compile-dependency anchor count={src.count(needle)}')
+src = src.replace(needle, replacement, 1)
+print('FCI21_MR18C_TEMPORAL_COMPILE_DEPENDENCY_TRANSLATION=PASS')
+
 # Gate C originally nested F-CI19 solely to prove composition preservation on
 # its then-current tree. On F-CI21 that historical source-lineage boundary is
 # obsolete. Replace only that trailing composition replay with the current
