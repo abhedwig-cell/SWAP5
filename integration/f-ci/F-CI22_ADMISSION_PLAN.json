@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI22",
+  "title": "Restricted Temporal Certificate Canonical Admission",
+  "branch": "qualification/f-ci22-temporal-certificate-canonical-admission",
+  "purpose": "Decide whether the exact closed F-CI21 postimage may advance the restricted canonical source lineage without broadening any qualified claim.",
+  "canonical_pre_admission": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "tree": "a0c1a4f135589b2b6304427b29341317e867c522",
+    "must_be_reverified_immediately_before_any_ref_update": true
+  },
+  "candidate": {
+    "workunit": "F-CI21",
+    "closed_head": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "tree": "130d329a73b76e35eba43b57f441e017115cbea2",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "status_blob": "3d0d891aee18744c998f9beedf2fa7851edc4c0a",
+    "closeout_blob": "57f670c02a58cd21fc442a076c7a2ad06087254a",
+    "materialized_production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "materialized_production_source_tree": "7dc94493d44952ad032c02c1d039bc4df0aa8e3f"
+  },
+  "lineage_observation_at_open": {
+    "compare": "3144c35eb8c60f822cc363dc48c21591e14b4cf4...697755068253cfb5a2f838c63894e1609a85ff51",
+    "status": "ahead",
+    "merge_base": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "ahead_by": 214,
+    "behind_by": 0,
+    "direct_fast_forward_possible_if_all_admission_gates_pass": true
+  },
+  "qualification_only_rule": {
+    "production_src_change_allowed": false,
+    "reference_change_allowed": false,
+    "physics_change_allowed": false,
+    "numerical_policy_change_allowed": false,
+    "scientific_scope_expansion_allowed": false,
+    "canonical_ref_update_allowed_before_qualification": false,
+    "canonical_source_manifest_update_planned": false
+  },
+  "required_gates": [
+    "G01 live canonical head remains exactly the pinned pre-admission head",
+    "G02 candidate remains a strict linear descendant of canonical with zero behind commits",
+    "G03 candidate src and reference trees equal the exact closed F-CI21 trees",
+    "G04 all F-CI22 qualification commits leave src and reference byte-identical to F-CI21",
+    "G05 F-CI21 closed qualified status and closeout identities and decisions remain exact",
+    "G06 F-VQ33 remains failed negative evidence and is not used as positive evidence",
+    "G07 no default H_budget, no selected application H_budget or universal tolerance, and no nonlinear true-error-bound or shorter-dt monotonicity claim is introduced",
+    "G08 hard mass precedence, rollback, WOF42 crop persistence and MR18 accepted-commit receipt preservation remain carried scope",
+    "G09 rerun the current F-CI21 source/compile and semantic closeout-readiness gates on the F-CI22 qualification head",
+    "G10 qualification artifacts and metadata do not change the candidate production/reference postimage",
+    "G11 immediately before promotion reverify canonical head and fast-forward relation; promotion must use force=false",
+    "G12 after promotion verify canonical ref equals the promoted qualified closeout head"
+  ],
+  "admissible_outcomes": [
+    "QUALIFIED_RESTRICTED_FCI21_POSTIMAGE_FOR_CANONICAL_FAST_FORWARD",
+    "BLOCKED_FCI22_CANONICAL_ADMISSION"
+  ],
+  "promotion_scope_if_qualified": {
+    "admit_exact_fci21_restricted_temporal_certificate_postimage": true,
+    "preserve_F_VQ33_failure": true,
+    "preserve_existing_hard_holds": true,
+    "release_groundwater_coupling": false,
+    "select_application_H_budget": false,
+    "select_universal_temporal_tolerance": false,
+    "qualify_general_nonlinear_true_error_bound": false,
+    "admit_shorter_dt_monotonicity": false
+  },
+  "state": {
+    "plan_persisted": true,
+    "qualification_started": false,
+    "qualified": false,
+    "canonical_ref_advanced": false,
+    "closed": false
+  },
+  "decision": "PLAN_PERSISTED_QUALIFICATION_REQUIRED_CANONICAL_UNCHANGED"
+}
