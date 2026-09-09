@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA02",
+  "title": "VZAA Donor Separability, Trajectory Capture & Diagnostic Flux Falsification",
+  "branch": "work/f-vzaa02-donor-separability",
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "production_implementation": false,
+  "final_classification": "NOT_QUALIFIED_VZAA_D0_DONOR_SIGNAL_FALSIFIED_ON_ORDINARY_HOMOGENEOUS_MATRIX",
+  "decision": "CLOSE_F_VZAA02_DO_NOT_PROGRESS_TO_D1",
+  "tested_head": "8c394d3e282ec427ece8c10b2ff57b0ce4a2f900",
+  "workflow_run": 34323697236,
+  "workflow_conclusion": "success",
+  "artifact_id": 10092928409,
+  "artifact_digest": "sha256:dc8c03add2e373b6e2b08f4893a85324450bab10d620338a67eb0f19919f3f40",
+  "gate_status": {
+    "D0_reference_trajectory_capture": "PASS",
+    "D0_candidate_committed_trajectory_capture": "PASS",
+    "D0_mass_ledger_identity": "PASS",
+    "D0_source_bound_flux_reconstruction": "PASS_STRUCTURALLY",
+    "D0_donor_separability": "FAIL_SCIENTIFIC_QUALIFICATION",
+    "D1_bounded_history_candidate": "NOT_AUTHORIZED",
+    "production_solver_admission": "NOT_AUTHORIZED"
+  },
+  "decisive_observations": {
+    "all_nontrivial_homogeneous_case_refinements_vzaa_mae_worse_than_lmfp": true,
+    "redistribution_sand_refinement_1": "0/160 VZAA points closer to FullRichards; 0/160 correction directions agree with needed correction",
+    "redistribution_sand_refinement_2": "0/320 VZAA points closer to FullRichards; 0/320 correction directions agree with needed correction",
+    "scientific_tolerance_introduced": false,
+    "refinement_stable_negative_result": true
+  },
+  "architecture_invariant_assessment": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "explicit_data_separation": "UNCHANGED",
+    "compact_persistent_state": "UNCHANGED_NO_HISTORY_STATE_ADDED",
+    "scratch_per_worker": "UNCHANGED",
+    "transactional_timesteps": "RESPECTED_CANDIDATE_H_USES_COMMITTED_HISTORY_ONLY",
+    "generic_time": "RESPECTED_LITERAL_EQ5_USES_RECORDED_T0_T1_AND_NON_DAY_SPECIFIC_INTERVALS",
+    "coupling_contract": "UNCHANGED_NOT_ADMITTED",
+    "mass_conservation": "REFERENCE_LEDGER_IDENTITY_VERIFIED_MAX_ABS_5_55E_17_NO_ACCEPTED_TRANSFER_CHANGED",
+    "interface_sensitivity": "UNCHANGED_NOT_ADMITTED",
+    "bounded_cost": "RAW_LITERAL_HISTORY_REMAINS_NON_BOUNDED_AND_D1_COMPRESSION_NOT_JUSTIFIED_AFTER_D0_FAILURE",
+    "multiswap_scalability": "NO_NEW_PER_COLUMN_HISTORY_STATE_OR_SOLVER_INSTANCE_ADDED",
+    "alternative_solver_interface": "UNCHANGED_NO_NEW_SOLVER_FAMILY",
+    "physics_solver_policy_separation": "UNCHANGED",
+    "reference_mode": "FULLRICHARDS_REFERENCE_USED_ONLY_AS_EVIDENCE_NOT_AS_CANDIDATE_HISTORY",
+    "diagnostics": "EXPERIMENT_ONLY_MACHINE_READABLE_EVIDENCE_PERSISTED"
+  },
+  "upstream_implication": {
+    "F_VZAA01_D0_gate": "RESOLVED_NEGATIVE",
+    "compressed_fractional_history_path": "DEFERRED_NOT_JUSTIFIED_BY_D0",
+    "conservative_derivative_path": "NOT_ADVANCED_BY_F_VZAA02",
+    "preferred_reduced_order_focus": "RETURN_TO_ALREADY_QUALIFIED_LAYEREDMFP_LINE_AND_OTHER_INDEPENDENT_CANDIDATES"
+  },
+  "open_source_limit": "DOI-linked official MATLAB supplement remains uncaptured; F-VZAA02 evidence is therefore an independent source-bound reconstruction, not an official-code reproduction.",
+  "status": "CLOSED_NOT_QUALIFIED_D0_DONOR_SIGNAL_FALSIFIED_D1_NOT_AUTHORIZED"
+}

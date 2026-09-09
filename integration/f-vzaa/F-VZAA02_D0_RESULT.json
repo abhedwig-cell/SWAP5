@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA02",
+  "gate": "D0_DIAGNOSTIC_FLUX_FALSIFICATION",
+  "classification": "NOT_QUALIFIED_VZAA_D0_DONOR_SIGNAL_FALSIFIED_ON_ORDINARY_HOMOGENEOUS_MATRIX",
+  "qualified": false,
+  "d1_authorized": false,
+  "production_implementation": false,
+  "new_solver_family_implemented": false,
+  "official_vzaa_code_reproduction": false,
+  "operator_classification": "independent_source_bound_reconstruction",
+  "tested_head": "8c394d3e282ec427ece8c10b2ff57b0ce4a2f900",
+  "workflow": {
+    "name": "F-VZAA02 Donor Separability D0",
+    "run_id": 34323697236,
+    "job_id": 102375966636,
+    "conclusion": "success",
+    "artifact_id": 10092928409,
+    "artifact_digest": "sha256:dc8c03add2e373b6e2b08f4893a85324450bab10d620338a67eb0f19919f3f40"
+  },
+  "evidence_files": {
+    "flux_evidence_sha256": "2b0d79705c316ee6ad7a37b0d8ad43cb9606b0fa7c130270fb0f8bfe7183f68d",
+    "flux_points_sha256": "cfdbe32cb5e141ebf612de2976caa5ea0aed2d1b03818e5f9c26884cd8029932",
+    "fullrichards_trajectory_sha256": "f5b5d7397ffacd4638c6480e9c04f21e96355717efc48acf08740f0ab8679357",
+    "lmfp08_trajectory_sha256": "4a8f2b277742304dfed84fb821cb22657e14edea8f2833fbc68650544d5f9176"
+  },
+  "source_lineage": {
+    "vzaa_primary": "Sadeghi et al. (2026), Journal of Hydrology 673, 135467, DOI 10.1016/j.jhydrol.2026.135467, Eqs. 3, 5, 6 and 7",
+    "hydraulic_precursor": "Sadeghi et al. (2022), Journal of Hydrology 610, 127999, DOI 10.1016/j.jhydrol.2022.127999, van Genuchten Eqs. 28 and 30",
+    "eq5_reference": "F-VZAA01 cffeed211b4bc6f3389ed12ba555253d905f993e; qualified Eq5 reference run 34320488095",
+    "accepted_trajectory_base": "F-VZAA02 84a1c878b19cc808c6ddaf6af94875620e73f05e"
+  },
+  "structural_evidence": {
+    "aligned_accepted_steps": 660,
+    "diagnostic_points": 2640,
+    "candidate_committed_history_chain_exact": true,
+    "fullrichards_history_leaked_into_candidate_H": false,
+    "all_points_finite": true,
+    "max_reference_bottom_ledger_identity_mismatch_abs": 5.551115123125783e-17,
+    "literal_eq5_history_term_evaluations": 91320,
+    "literal_direct_history_total_work": "O(N_layers * N_steps^2)",
+    "scientific_tolerance_introduced": false
+  },
+  "ordinary_homogeneous_matrix": {
+    "case_2_redistribution_sand": {
+      "refinement_1": {
+        "points": 160,
+        "lmfp_mean_abs_error": 0.0389758740777444,
+        "vzaa_mean_abs_error": 0.13693217839885255,
+        "vzaa_closer_count": 0,
+        "delta_direction_agree_count": 0
+      },
+      "refinement_2": {
+        "points": 320,
+        "lmfp_mean_abs_error": 0.03887476713734107,
+        "vzaa_mean_abs_error": 0.13636940594942074,
+        "vzaa_closer_count": 0,
+        "delta_direction_agree_count": 0
+      }
+    },
+    "case_3_infiltration_sand": {
+      "refinement_1": {
+        "points": 160,
+        "lmfp_mean_abs_error": 2.7876198408168085e-06,
+        "vzaa_mean_abs_error": 0.011425869889813187,
+        "vzaa_closer_fraction": 0.09375,
+        "delta_direction_agree_fraction": 0.33125
+      },
+      "refinement_2": {
+        "points": 320,
+        "lmfp_mean_abs_error": 1.2798035303315654e-06,
+        "vzaa_mean_abs_error": 0.011411990015642522,
+        "vzaa_closer_fraction": 0.084375,
+        "delta_direction_agree_fraction": 0.64375
+      }
+    },
+    "case_4_infiltration_clay": {
+      "refinement_1": {
+        "points": 200,
+        "lmfp_mean_abs_error": 3.028803591248778e-07,
+        "vzaa_mean_abs_error": 0.0010033765183355926,
+        "vzaa_closer_fraction": 0.105,
+        "delta_direction_agree_fraction": 0.44
+      },
+      "refinement_2": {
+        "points": 400,
+        "lmfp_mean_abs_error": 4.0128610242984567e-07,
+        "vzaa_mean_abs_error": 0.0010015275914303692,
+        "vzaa_closer_fraction": 0.0925,
+        "delta_direction_agree_fraction": 0.7775
+      }
+    },
+    "all_nontrivial_homogeneous_case_refinements_have_vzaa_mae_gt_lmfp_mae": true,
+    "robust_zero_closer_and_zero_direction_agreement_regimes": [2]
+  },
+  "heterogeneous_cases": {
+    "role": "supplementary_falsification_only",
+    "reason": "published Eq3 derivation is a uniform-soil formulation; heterogeneous cases cannot be used for source-scope admission",
+    "case_5_vzaa_closer_count_both_refinements": 0,
+    "case_6_vzaa_closer_count_both_refinements": 0
+  },
+  "decision_basis": [
+    "the precommitted D0 donor hypothesis requires distinct diagnostic value beyond LayeredMFP",
+    "every nontrivial homogeneous case/refinement has larger VZAA mean absolute flux error than LMFP",
+    "redistribution_sand shows zero closer points and zero required-direction agreement at both refinements",
+    "the result is refinement-stable and does not depend on a scientific tolerance",
+    "the literal full-history signal already has non-bounded trajectory cost, so bounded-history D1 is not justified after the raw donor signal fails"
+  ],
+  "scope_limit": "This decision falsifies the tested source-bound D0 donor signal for the existing ordinary homogeneous matrix. It is not a universal falsification of the published VZAA method, does not reproduce the official MATLAB supplement, does not qualify heterogeneous interfaces, and does not modify SWAP5 production physics or accepted transfers.",
+  "decision": "D0_NOT_QUALIFIED_CLOSE_F_VZAA02_DO_NOT_PROGRESS_TO_D1"
+}
