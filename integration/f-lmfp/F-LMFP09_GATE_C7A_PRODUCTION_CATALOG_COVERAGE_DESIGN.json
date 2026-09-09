@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C7A_PRODUCTION_CATALOG_COVERAGE",
+  "qualification": true,
+  "production_implementation": false,
+  "precommit": true,
+  "base_head": "f5af8f4a9371cb55f223d91e24cf96f91bdd4f6d",
+  "purpose": "Test whether the C6b-frozen n49 homogeneous hydraulic face provider and frozen admissible-envelope classifier generalize without retuning to the full distributed Staringreeks 2018 hydraulic catalog at the already-established catalog geometries.",
+  "catalog": {
+    "source_artifact": "SWAP_4.3.1(6).zip",
+    "source_artifact_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "member": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "member_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "materials": 36,
+    "material_ids": ["B01","B02","B03","B04","B05","B06","B07","B08","B09","B10","B11","B12","B13","B14","B15","B16","B17","B18","O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18"],
+    "hydraulic_mapping": "Use the already-frozen B3 provenance mapping: ORES, OSAT, ALFA, NPAR, KSATFIT, LEXP, H_ENPR; KSATEXM remains metadata and is not substituted for KSATFIT."
+  },
+  "geometry": {
+    "face_lengths_cm": [10.0, 20.0],
+    "classes": 72,
+    "reason": "These are the existing F-LMFP09 Staringreeks catalog geometries and core homogeneous-face lengths. The C6b 5 cm very_fast blocker class remains useful blocker evidence but is not silently promoted to a catalog-wide requirement in this gate."
+  },
+  "provider_frozen_from_C6b": {
+    "family": "ANCHORED_HEAD_PAIR",
+    "base_n": 33,
+    "expected_actual_axis_nodes": 49,
+    "expected_table_values": 2401,
+    "expected_bytes_before_metadata_per_class": 19208,
+    "runtime_oracle_calls": 0,
+    "provider_parameter_or_density_retuning_allowed": false
+  },
+  "classifier_frozen_from_C6b": {
+    "min_se": 1e-06,
+    "g_max": 10000.0,
+    "dh_max_cm": 100000.0,
+    "k_ratio_max": 1000000.0,
+    "retuning_on_C7a_rows_allowed": false
+  },
+  "holdout": {
+    "families": {
+      "gradient": {
+        "raw_cases_per_class": 240,
+        "seed_derivation_label": "F-LMFP09:C7A:gradient:v1",
+        "seed_derivation": "first unsigned 64 bits of SHA-256(label)",
+        "seed": 17161301231784269399,
+        "sampling": "same distribution family as C6b, but independent frozen seed"
+      },
+      "head_pair": {
+        "raw_cases_per_class": 360,
+        "seed_derivation_label": "F-LMFP09:C7A:headpair:v1",
+        "seed_derivation": "first unsigned 64 bits of SHA-256(label)",
+        "seed": 12392949708496324958,
+        "sampling": "same distribution family as C6b, but independent frozen seed"
+      }
+    },
+    "raw_cases_per_class": 600,
+    "raw_cases_total": 43200,
+    "C6a_or_C6b_revealed_rows_reused": false,
+    "reference": "independent conservative steady local Darcy BVP oracle already used by F-LMFP09",
+    "selection_order": "provider-head-envelope filter, then frozen C6b classifier, then reference/candidate accuracy evaluation"
+  },
+  "evidence_sufficiency_per_class": {
+    "minimum_admitted_cases": 100,
+    "minimum_active_admitted_cases": 60,
+    "origin": "Inherited unchanged from the precommitted C6b unseen-holdout gate.",
+    "on_insufficient_counts": "Class is not qualified. Do not relax classifier, sample criteria or provider on C7a evidence."
+  },
+  "accuracy_acceptance_per_class": {
+    "origin": "Inherited unchanged from C6a/C6b summarize() rules.",
+    "oracle_failures_eq": 0,
+    "active_sign_mismatches_eq": 0,
+    "active_p90_rel_error_lt": 0.02,
+    "active_p99_rel_error_lt": 0.10,
+    "active_max_rel_error_lt": 0.30,
+    "strong_gradient_p90_rel_error_lt": 0.02,
+    "near_saturation_p90_rel_error_lt": 0.02,
+    "dormant_abs_error_over_ks_lt": 1e-07,
+    "corrected_p90_lt_plain_mfp_p90": true,
+    "fraction_corrected_better_on_informative_cases_ge": 0.75
+  },
+  "structural_acceptance_per_class": {
+    "provider_build_succeeds": true,
+    "actual_axis_nodes_eq": 49,
+    "table_values_eq": 2401,
+    "candidate_runtime_oracle_calls_eq": 0,
+    "all_admitted_candidate_fluxes_finite": true
+  },
+  "gate_decision_rule": {
+    "qualified": "All 72 material-geometry classes satisfy structural checks, inherited evidence-sufficiency counts, and every inherited C6a/C6b accuracy check.",
+    "not_qualified": "Any class failure prevents full-catalog qualification. Failures must be localized by material, geometry, classifier-rejection reason and accuracy check before any new hypothesis is proposed.",
+    "no_threshold_or_provider_tuning_on_revealed_C7a_rows": true,
+    "no_partial_production_admission_from_this_gate": true
+  },
+  "sharding": {
+    "allowed": true,
+    "planned_materials_per_shard": 3,
+    "planned_shards": 12,
+    "reason": "Execution-cost control only. Every shard uses identical frozen provider, classifier, samples and acceptance rules."
+  },
+  "scope_exclusions": {
+    "heterogeneous_interfaces": true,
+    "transient_stepping": true,
+    "root_uptake": true,
+    "drainage": true,
+    "ponding_and_surface_processes": true,
+    "groundwater_boundary": true,
+    "MODFLOW_coupling": true,
+    "response_tangents": true,
+    "production_solver_admission": true
+  },
+  "cross_track_VZAA": {
+    "D0A_decision": "D0A_REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL",
+    "used_as_provider_or_fallback": false,
+    "used_to_change_thresholds": false,
+    "interpretation": "Negative donor evidence only; C7a tests LayeredMFP on its own frozen hydraulic representation."
+  },
+  "next_gate_if_C7a_qualifies": "C7B_TRANSIENT_ENVELOPE_QUALIFICATION_PRECOMMIT_REQUIRED",
+  "next_gate_if_C7a_fails": "LOCALIZE_FAILURES_AND_PRECOMMIT_A_MATERIALLY_NEW_REPRESENTATION_OR_CLASSIFICATION_HYPOTHESIS_BEFORE_NEW_TESTING",
+  "status": "PRECOMMITTED_BEFORE_C7A_IMPLEMENTATION_OR_EXECUTION"
+}
