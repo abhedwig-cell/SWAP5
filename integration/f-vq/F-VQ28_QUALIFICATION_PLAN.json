@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "title": "Independent Richards Temporal Numeric-Profile Qualification",
+  "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+  "base_commit": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
+  "owner_source": {
+    "work_unit": "F-SI20",
+    "status_file": "integration/f-si/F-SI20_STATUS.json",
+    "owner_contract_exit": "B_MORE_SOURCE_THEORY_OR_NUMERICAL_EVIDENCE_REQUIRED",
+    "decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS",
+    "raw_observable": "max_i abs(h_full-h_two_half)",
+    "units": "cm",
+    "production_metric_selected": false,
+    "production_tolerance_selected": false
+  },
+  "purpose": "Independently determine whether the source-bound raw pressure-head step-doubling observable can support a restricted, bounded and scientifically reproducible temporal numeric profile across materially different hydraulic states. The workunit must not select limits merely to release F-GC02.",
+  "independence_rules": {
+    "production_src_must_remain_identical_to_base": true,
+    "owner_three_state_matrix_is_calibration_context_not_held_out_validation": true,
+    "held_out_states_are_frozen_before_execution": true,
+    "no_posthoc_removal_of_failed_states": true,
+    "no_hidden_state_normalization": true,
+    "no_universal_defect_to_exact_error_multiplier_assumed": true,
+    "mass_gate_remains_separate_and_absolute": true,
+    "F_KT_transaction_semantics_unchanged": true,
+    "solver_controls_unchanged": true,
+    "coupling_orchestration_unchanged": true
+  },
+  "source_locks": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fsi20_status_commit": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
+    "fsi20_reference_tridag_evidence": "integration/f-si/F-SI20_REFERENCE_TRIDAG_REQUALIFICATION_EVIDENCE.json",
+    "fsi20_physical_envelope_evidence": "integration/f-si/F-SI20_PHYSICAL_ENVELOPE_EVIDENCE.json",
+    "fsi20_state_refinement_evidence": "integration/f-si/F-SI20_HYDRAULIC_STATE_REFINEMENT_EVIDENCE.json"
+  },
+  "calibration_context": {
+    "initial_heads_cm": [-25.0,-75.0,-250.0],
+    "primary_jump_cm": 0.01,
+    "known_result": "state dependence is material; dry state is pre-asymptotically under-conservative at coarse fixed-horizon levels and enters a conservative regime only after additional refinement"
+  },
+  "held_out_gate_A": {
+    "soil_and_geometry": "same source-locked four-node homogeneous F-GC02/F-SI20 fixture",
+    "total_horizon_day": 0.25,
+    "initial_uniform_pressure_heads_cm": [-40.0,-55.0,-110.0,-160.0,-210.0,-320.0],
+    "prescribed_bottom_head_jumps_cm": [-0.05,-0.01,0.01,0.05],
+    "trajectory_steps": [1,2,4,8,16,32,64,128,256,512],
+    "reference_trajectory_steps": 512,
+    "top_flux_rule": "minus initial hydraulic conductivity so each pre-jump profile is stationary",
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "observables": [
+      "successive raw pressure-head defect D_h(N)=max abs(h_N-h_2N)",
+      "remaining finite-reference endpoint error E_2N=max abs(h_2N-h_Nref)",
+      "D_h/E_2N where numerically meaningful",
+      "nodewise water-content differences",
+      "signed storage difference",
+      "maximum external and solver mass residual",
+      "solver iterations and backtracking"
+    ]
+  },
+  "gate_A_questions": [
+    "Do all frozen held-out trajectories satisfy the unchanged hard mass gate?",
+    "Does the raw defect decrease with refinement before numerical-floor contamination?",
+    "For each held-out state and stimulus, is there a bounded refinement level after which the raw defect no longer underestimates the remaining finite-reference endpoint error over resolved levels?",
+    "Is any such entry level reproducible across jump sign and amplitude within a hydraulic state?",
+    "Does the required refinement remain bounded over the frozen held-out state range under unchanged 8/4 solver controls?"
+  ],
+  "not_admitted_by_gate_A": [
+    "production temporal tolerance",
+    "production state normalization",
+    "Richardson factor",
+    "changed retry budget",
+    "changed F-KT scalar acceptance semantics",
+    "F-GC02 release",
+    "general Richards temporal admission outside the frozen envelope"
+  ],
+  "possible_exit_classes": {
+    "A": "QUALIFIED_RESTRICTED_BOUNDED_REFINEMENT_PROFILE_READY_FOR_FSI20_OWNER_FINALIZATION",
+    "B": "MORE_CALIBRATION_THEORY_OR_HELD_OUT_EVIDENCE_REQUIRED",
+    "C": "CURRENT_RAW_HEAD_DEFECT_NOT_QUALIFIABLE_FOR_BOUNDED_TEMPORAL_PROFILE_ON_TESTED_ENVELOPE"
+  },
+  "persist_early": true,
+  "next_action": "Implement and run held-out Gate A exactly as frozen. Persist raw rows and failures before interpreting or proposing any numeric profile."
+}
