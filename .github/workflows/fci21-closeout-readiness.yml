@@ -1,0 +1,28 @@
+name: F-CI21 closeout readiness
+
+on:
+  push:
+    branches:
+      - integration/f-ci21-temporal-certificate-materialization
+    paths:
+      - 'src/**'
+      - 'integration/f-ci/F-CI21_*.json'
+      - 'tests/fci/run_fci21_closeout_readiness_gate.sh'
+      - 'tests/fci/run_fci21_temporal_materialization_gate.sh'
+      - '.github/workflows/fci21-closeout-readiness.yml'
+  workflow_dispatch:
+
+jobs:
+  closeout-readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Reconcile complete F-CI21 evidence chain
+        run: bash tests/fci/run_fci21_closeout_readiness_gate.sh
