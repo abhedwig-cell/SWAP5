@@ -1,0 +1,35 @@
+name: F-SI20 prescribed-head temporal characterization
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'integration/f-si/F-SI20_*'
+      - 'tests/fsi/test_fsi20_prescribed_head_temporal_characterization.f90'
+      - 'tests/fsi/run_fsi20_prescribed_head_temporal_characterization.sh'
+      - '.github/workflows/fsi20-prescribed-head-temporal-characterization.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Characterize prescribed-head temporal discrepancy
+        run: |
+          set -o pipefail
+          bash tests/fsi/run_fsi20_prescribed_head_temporal_characterization.sh | tee fsi20-prescribed-head-temporal.log
+      - name: Preserve characterization evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-prescribed-head-temporal-characterization
+          path: fsi20-prescribed-head-temporal.log
+          if-no-files-found: error
