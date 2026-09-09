@@ -1,0 +1,26 @@
+name: F-SI20 predictor rejection classification
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_rejection_classification.sh'
+      - 'tests/fsi/test_fsi20_prescribed_head_temporal_characterization.f90'
+      - '.github/workflows/fsi20-rejection-classification.yml'
+  workflow_dispatch:
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Classify exact prescribed-head predictor rejection
+        run: bash tests/fsi/run_fsi20_rejection_classification.sh
