@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "evidence": "GATE_A_ATTEMPT2_FLOOR_AWARE_REFERENCE_PROTOCOL_LOCK",
+  "parent_head": "1239650ea493f505fb250788e441f5656082bea3",
+  "attempt1_failure_evidence": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT1_REFERENCE_DEPTH_FAILURE.json",
+  "attempt1_workflow_run": 34311884409,
+  "protocol": {
+    "common_ladder": [1,2,4,8,16,32,64,128,256,512],
+    "machine_floor_rule": "128*epsilon*max(1,abs(h0),abs(hbot))",
+    "floor_resolved_condition": "d_128 <= floor AND d_256 <= floor",
+    "floor_resolved_reference": 512,
+    "non_floor_extended_ladder": [1024,2048],
+    "non_floor_reference": 2048,
+    "required_extended_failure_policy": "FAIL_CLOSED",
+    "classification_timing": "before q_cap, Nmin, bound multiplier or held-out evaluation"
+  },
+  "frozen_calibration_matrix": {
+    "initial_heads_cm": [-25.0,-40.0,-55.0,-75.0,-110.0,-160.0,-210.0,-250.0,-320.0],
+    "bottom_head_jumps_cm": [-0.05,0.05],
+    "horizons_day": [0.125,0.25,0.5],
+    "case_count": 54
+  },
+  "frozen_held_out_matrix": {
+    "initial_heads_cm": [-35.0,-65.0,-95.0,-135.0,-185.0,-230.0,-285.0,-360.0],
+    "bottom_head_jumps_cm": [-0.025,0.025],
+    "horizons_day": [0.1875,0.375],
+    "case_count": 32
+  },
+  "data_snooping_guard": {
+    "attempt1_stopped_before_any_q_cap": true,
+    "attempt1_stopped_before_any_Nmin": true,
+    "attempt1_stopped_before_any_bound_multiplier": true,
+    "attempt1_stopped_before_any_held_out_case": true,
+    "calibration_matrix_changed": false,
+    "held_out_matrix_changed": false,
+    "candidate_formula_changed": false,
+    "scientific_tolerance_selected": false
+  },
+  "hard_holds": {
+    "production_source_changed": false,
+    "physics_changed": false,
+    "solver_iteration_limit_changed": false,
+    "solver_backtracking_limit_changed": false,
+    "solver_min_step_duration_changed": false,
+    "nonlinear_head_tolerance_changed": false,
+    "hard_mass_tolerance_changed": false,
+    "manual_q_margin_allowed": false
+  },
+  "qualification_interpretation": "The protocol prevents numerically floor-resolved cases from being rejected only because unnecessary deeper substepping becomes harder for the nonlinear solver, while retaining a mandatory deeper finite reference for every case whose common-ladder temporal defect remains resolvable."
+}

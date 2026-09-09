@@ -6,7 +6,8 @@ on:
       - qualification/f-vq29-richards-fixed-horizon-error-bound
     paths:
       - 'integration/f-vq/F-VQ29_QUALIFICATION_PLAN.json'
-      - 'tests/fvq/run_fvq29_calibration_error_bound.sh'
+      - 'integration/f-vq/F-VQ29_GATE_A_ATTEMPT2_PROTOCOL_LOCK.json'
+      - 'tests/fvq/run_fvq29_calibration_error_bound_floor_aware.sh'
       - 'tests/fsi/test_fsi20_fixed_horizon_reference.f90'
       - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
       - '.github/workflows/fvq29-richards-error-bound.yml'
@@ -24,5 +25,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
           gfortran --version
-      - name: Run F-VQ29 Gate A calibration
-        run: bash tests/fvq/run_fvq29_calibration_error_bound.sh
+      - name: Run F-VQ29 Gate A floor-aware calibration
+        run: bash tests/fvq/run_fvq29_calibration_error_bound_floor_aware.sh

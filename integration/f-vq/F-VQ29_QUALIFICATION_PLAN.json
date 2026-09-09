@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-VQ",
   "work_unit": "F-VQ29",
   "title": "Richards Fixed-Horizon Error-Bound Estimator Qualification",
@@ -12,16 +12,30 @@
     "F_KT09_qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec"
   },
   "purpose": "Determine whether same-horizon Richards endpoint defects can be converted into a conservative dimensional upper bound on remaining endpoint head error. This work unit does not choose an application/scientific temporal tolerance and does not admit production use.",
+  "protocol_revision_after_attempt1": {
+    "attempt1_tested_head": "17172b0c1488b77dcab6f9cdc2c0257afc0a031f",
+    "attempt1_workflow_run": 34311884409,
+    "attempt1_evidence": "integration/f-vq/F-VQ29_GATE_A_ATTEMPT1_REFERENCE_DEPTH_FAILURE.json",
+    "failure": "The first calibration case completed the common refinement levels through N=512 with exact mass closure and then failed before producing the N=1024 endpoint required by the attempted universal N=2048 reference.",
+    "scientific_interpretation": "The failure occurred after the common-ladder endpoint sequence had reached the frozen floating-point floor. Forcing every case deeper therefore mixes temporal-reference qualification with avoidable nonlinear over-refinement and can reject a numerically resolved case for lack of a physically more informative finite reference.",
+    "revision_rule": "Every case first runs the frozen common ladder N=[1,2,4,8,16,32,64,128,256,512]. If both final common-ladder head defects d_128=|x_128-x_256| and d_256=|x_256-x_512| are at or below the frozen machine floor, N=512 is the finite reference for that case. Otherwise the case must run the extended ladder through N=1024 and N=2048 and N=2048 is its finite reference. Any required extended-ladder nonconvergence is qualification failure.",
+    "data_snooping_guard": "Attempt 1 stopped on calibration case 1 before q_cap, Nmin, a bound multiplier, a scientific tolerance, or a held-out result was derived. Calibration states, jumps, horizons, held-out states, held-out jumps and held-out horizons remain unchanged. The revised reference-depth rule is frozen before Attempt 2 calibration execution.",
+    "solver_tolerances_changed": false,
+    "mass_tolerance_changed": false,
+    "candidate_formula_changed": false,
+    "calibration_matrix_changed": false,
+    "held_out_matrix_changed": false
+  },
   "mathematical_candidate": {
     "endpoint_family": "x_N is the Richards endpoint state obtained over the same physical [t0,t1] using N equal internal substeps",
     "defect": "d_N = max_i abs(h_N(i)-h_2N(i))",
     "contraction_ratio": "q_N = d_2N/d_N when both defects are above the numerical floor",
     "candidate_global_cap": "q_cap is derived only from the frozen calibration matrix as the maximum resolved q_N at and beyond a candidate minimum refinement depth Nmin",
     "two_trajectory_bound_target": "For x_2N, B_2N = q_cap/(1-q_cap) * d_N, conditional on the independently tested profile assumption that every future defect contracts by no more than q_cap.",
-    "qualification_test": "B_2N must upper-bound the observed max-head error of x_2N against a much finer same-horizon finite reference for every resolved calibration and held-out case, while all future resolved q values also remain <= q_cap.",
-    "numerical_floor_branch": "If d_N is at or below the frozen machine floor, the case is not used to derive q_cap. At the candidate Nmin it passes only as floor-dominated when the observed x_2N-to-reference head error is also at or below that same floor; otherwise the candidate Nmin fails. No additive floor is silently inserted into B_2N.",
+    "qualification_test": "B_2N must upper-bound the observed max-head error of x_2N against the case-specific finite same-horizon reference selected by the frozen floor-aware reference protocol for every resolved calibration and held-out case, while all future resolved q values also remain <= q_cap.",
+    "numerical_floor_branch": "If d_N is at or below the frozen machine floor, the case is not used to derive q_cap. At the candidate Nmin it passes only as floor-dominated when the observed x_2N-to-selected-finite-reference head error is also at or below that same floor; otherwise the candidate Nmin fails. No additive floor is silently inserted into B_2N.",
     "not_claimed": [
-      "Nref is an exact analytical solution",
+      "N=512 or N=2048 is an exact analytical solution",
       "geometric contraction is a theorem for Richards flow",
       "q_cap is universal outside the frozen profile",
       "B_2N is a scientific/application acceptance tolerance",
@@ -36,9 +50,10 @@
     "solver_min_step_duration_day": 1e-6,
     "nonlinear_head_tolerance": 1e-12,
     "hard_mass_tolerance": 1e-12,
-    "nested_steps": [1,2,4,8,16,32,64,128,256,512,1024,2048],
-    "finite_reference_steps": 2048,
-    "machine_floor_rule": "128*epsilon*max(1,abs(h0),abs(hbot))"
+    "common_nested_steps": [1,2,4,8,16,32,64,128,256,512],
+    "extended_nested_steps": [1024,2048],
+    "machine_floor_rule": "128*epsilon*max(1,abs(h0),abs(hbot))",
+    "floor_resolved_reference_rule": "Use N=512 only when both d_128 and d_256 from the common ladder are <= the frozen machine floor; otherwise N=2048 is mandatory."
   },
   "gate_A_calibration": {
     "role": "derive candidate Nmin and q_cap only",
@@ -47,7 +62,7 @@
     "horizons_day": [0.125,0.25,0.5],
     "case_count": 54,
     "states_are_previously_observed": true,
-    "selection_rule": "For each candidate Nmin in [1,2,4,8,16,32,64], derive q_cap as the maximum resolved future contraction ratio over all calibration cases from Nmin onward. The first Nmin with finite q_cap<1 and conservative B_2N for every resolved calibration case, plus the frozen floor-dominated rule for unresolved cases, is the sole Gate B candidate. No rounding, safety factor or manually chosen margin may be added."
+    "selection_rule": "For each candidate Nmin in [1,2,4,8,16,32,64], derive q_cap as the maximum resolved future contraction ratio over all calibration cases from Nmin onward within each case's frozen available refinement sequence. The first Nmin with finite q_cap<1 and conservative B_2N for every resolved calibration case, plus the frozen floor-dominated rule for unresolved cases, is the sole Gate B candidate. No rounding, safety factor or manually chosen margin may be added."
   },
   "gate_B_held_out": {
     "role": "independent falsification of the frozen Gate A Nmin and q_cap",
@@ -59,21 +74,25 @@
     "horizons_previously_used_in_FSI20_FSI22_FVQ28": false,
     "frozen_before_gate_A_execution": true,
     "pass_conditions": [
-      "all trajectories required for the test converge",
+      "all trajectories required by the frozen floor-aware finite-reference protocol converge",
       "hard mass gate passes for every trajectory",
       "every resolved future q_N at and beyond frozen Nmin is <= frozen q_cap",
-      "B_2N computed only from d_N and frozen q_cap is >= observed max-head error of x_2N against N=2048 reference for every resolved case",
+      "B_2N computed only from d_N and frozen q_cap is >= observed max-head error of x_2N against the selected finite reference for every resolved case",
       "any d_N at numerical floor satisfies the separately frozen floor-dominated rule",
-      "no held-out-dependent adjustment of Nmin, q_cap, matrix, floor rule or formula"
+      "no held-out-dependent adjustment of Nmin, q_cap, matrix, floor rule, finite-reference rule or formula"
     ]
   },
   "finite_reference_controls": {
-    "primary_reference": 2048,
-    "tail_diagnostic": "also report max-head difference x_1024 versus x_2048",
-    "interpretation": "Held-out bound pass is relative to a finite same-horizon reference. If the reference-tail diagnostic is not small enough relative to the candidate bound or observed remaining error, qualification must remain conditional or fail closed rather than treating N=2048 as exact."
+    "common_reference_candidate": 512,
+    "extended_reference": 2048,
+    "selection_occurs_before_qcap_or_bound_derivation": true,
+    "floor_resolved_tail_diagnostic": "report max-head difference x_256 versus x_512",
+    "extended_tail_diagnostic": "report max-head difference x_1024 versus x_2048",
+    "interpretation": "A bound pass is relative to the finite same-horizon reference selected by the frozen protocol. The N=512 branch is admitted only after two consecutive common-ladder defects are already at or below the machine floor. The N=2048 branch remains mandatory otherwise. Neither finite reference is treated as analytical truth."
   },
   "cost_boundary": {
-    "full_1_to_2048_ladder_is_characterization_only": true,
+    "common_1_to_512_ladder_is_characterization_only": true,
+    "extended_1024_2048_is_characterization_only_and_conditional": true,
     "production_candidate_if_bound_qualifies": "two same-horizon trajectories at Nmin and 2*Nmin are sufficient to evaluate B_2N if the frozen contraction profile itself is admitted later",
     "production_cost_qualified_here": false,
     "invariant_15_and_24_followup_required": true
