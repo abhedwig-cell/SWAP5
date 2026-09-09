@@ -1,23 +1,12 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
   "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
-  "scope": {
-    "production_implementation": false,
-    "experimental_harness_only": true,
-    "hydraulic_only": true,
-    "generic_time": true,
-    "fullrichards_reference": true,
-    "heterogeneous_interface": true,
-    "positive_pressure_head": true,
-    "dry_tail": true,
-    "root_uptake": false,
-    "drainage_process": false,
-    "groundwater_coupling": false,
-    "modflow": false
-  },
+  "production_implementation": false,
+  "experimental_harness_only": true,
+  "closeout": "integration/f-lmfp/F-LMFP09_CLOSEOUT.json",
   "hard_rules": {
     "mass_conservation_required": true,
     "no_threshold_relaxation_after_failure": true,
@@ -32,155 +21,70 @@
     "C3b_49_node_anchored_head_pair_general_envelope": "REJECTED_FOR_GENERALIZATION",
     "C4_global_head_pair_densification": "NOT_PROMOTED",
     "C5a_simple_mixed_state_bilinear": "NOT_PROMOTED",
-    "F_VZAA01_D0A_history_donor": "REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL_NOT_USED_AS_C7A_PROVIDER_FALLBACK_OR_THRESHOLD_SOURCE"
-  },
-  "C6a": {
-    "run": 34318474571,
-    "head": "79ab249d466e732c11c8f49caf151fad360d19d8",
-    "qualification": false,
-    "shared_passing_classifiers_n49": 1176,
-    "shared_passing_classifiers_n113": 1176,
-    "nominated_classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
-    "reference_sand_admitted_fraction": 0.5190562613430127,
-    "very_fast_admitted_fraction": 0.46819787985865724,
-    "provider_selection": "49_NODE_ANCHORED_HEAD_PAIR"
+    "F_VZAA01_D0A_history_donor": "REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL"
   },
   "C6b": {
-    "run": 34320316643,
-    "head": "352dd99be52db810c2558a9d7622ff080d14c898",
     "qualification": true,
+    "run": 34320316643,
     "provider": "49_NODE_ANCHORED_HEAD_PAIR",
     "classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
-    "reference_sand": {
-      "raw_cases": 600,
-      "admitted_cases": 442,
-      "active_cases": 392,
-      "p90_rel_error": 0.004815350371796538,
-      "p99_rel_error": 0.009136578764031322,
-      "max_rel_error": 0.011031311767695303,
-      "failures": 0,
-      "sign_mismatches": 0,
-      "pass": true
-    },
-    "very_fast": {
-      "raw_cases": 600,
-      "admitted_cases": 426,
-      "active_cases": 364,
-      "p90_rel_error": 0.006588362653230558,
-      "p99_rel_error": 0.015732305713579944,
-      "max_rel_error": 0.026840304149993194,
-      "failures": 0,
-      "sign_mismatches": 0,
-      "pass": true
-    },
-    "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED"
+    "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED",
+    "scope_limit": "Two precommitted blocker materials inside the homogeneous hydraulic core envelope only. No catalog, transient, heterogeneous-interface or production admission."
   },
   "C7a": {
-    "name": "PRODUCTION_CATALOG_COVERAGE",
     "qualification": false,
-    "full_catalog_qualification_already_impossible": true,
-    "precommit_commit": "8da4df81dfe0f9eeb93998de12399dce9bc58e14",
-    "precommit": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json",
-    "postresult_routing_precommit": {
-      "path": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json",
-      "commit": "7c1bebcb16221c7c501e3d3580419307459a220c",
-      "full_aggregate_revealed_before_precommit": false
-    },
-    "implementation_commits": [
-      "26d8ac3aae456643f90b67cda597dda012a59b09",
-      "4fb6d96b634d1cb9e7bb5861b92014b6f920d4b9",
-      "d50aae893c751b8f1526602f0f09e5c8dc57ec1d"
-    ],
-    "execution_run": 34325023479,
+    "run": 34325023479,
     "execution_head": "d50aae893c751b8f1526602f0f09e5c8dc57ec1d",
-    "execution_status_last_observed": "IN_PROGRESS_4_OF_12_SHARDS_COMPLETE_REMAINDER_RUNNING",
-    "tested": false,
-    "result_persisted": false,
-    "provider": "FROZEN_49_NODE_ANCHORED_HEAD_PAIR",
-    "classifier": "FROZEN_se=1e-06|g=10000|dh=100000|kr=1e+06",
-    "catalog": "36_STARING2018_MATERIALS_X_10_AND_20_CM_EQUALS_72_CLASSES",
-    "raw_holdout_cases": 43200,
-    "scientific_rule": "ALL_72_CLASSES_MUST_PASS_INHERITED_C6A_C6B_STRUCTURAL_EVIDENCE_SUFFICIENCY_AND_ACCURACY_RULES_NO_RETUNING",
-    "partial_localization": {
-      "completed_shards": [7, 9, 10, 11],
-      "classes_observed": 24,
-      "classes_passed": 19,
-      "classes_failed": 5,
-      "failed_materials": ["O05", "O11", "O13"],
-      "failed_classes": ["O05:20cm", "O11:10cm", "O11:20cm", "O13:10cm", "O13:20cm"],
-      "failure_check_counts": {
-        "accuracy:active_max_lt_0p30": 3,
-        "accuracy:active_p99_lt_0p10": 2,
-        "accuracy:strong_gradient_p90_lt_0p02": 1,
-        "accuracy:near_saturation_p90_lt_0p02": 1
-      },
-      "failed_classes_by_length_cm": {
-        "10": 2,
-        "20": 3
-      },
-      "structural_failures": 0,
-      "evidence_sufficiency_failures": 0,
-      "active_sign_mismatches": 0,
-      "reference_oracle_failures": 0,
-      "classifier_admitted_rows": 11067,
-      "active_evaluated_rows": 10535,
-      "observed_routing_interpretation": "Observed failures are accuracy-only and already span geometry-specific strong-gradient behavior (O05), persistent material/tail behavior (O11), and near-saturation plus tail behavior (O13). No single geometry-only explanation is sufficient for the revealed subset.",
-      "artifact_digests": {
-        "shard_7": "sha256:ef6f7bd073568741c7640a72aaf18371858e28d3a2fef3766a6f3d22d5fd1caa",
-        "shard_9": "sha256:8cfb4e35df5cebc5cb1d25b7407e369cdb66fbfcf75c0a4ef5fa0760152446da",
-        "shard_10": "sha256:f80efcf6449a9dc629ab25d8a61d9a6fef37d14f64946da2241b0d2dc2460821",
-        "shard_11": "sha256:04474b726fa356ccaee9c5ca8801e96566bf82ad63764b327f01fd323afe7b59"
-      }
+    "result": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json",
+    "aggregate_artifact_id": 10094521180,
+    "aggregate_artifact_digest": "sha256:64f8a49dac947a36d123299b08217b621dafa3c2d48f0e92bcb38678f293a8cc",
+    "classes_tested": 72,
+    "classes_qualified": 54,
+    "classes_not_qualified": 18,
+    "failed_materials": 10,
+    "structural_failures": 0,
+    "evidence_sufficiency_failures": 0,
+    "reference_oracle_failures": 0,
+    "active_sign_mismatches": 0,
+    "failure_check_counts_nonexclusive": {
+      "active_max_lt_0p30": 15,
+      "active_p99_lt_0p10": 7,
+      "strong_gradient_p90_lt_0p02": 2,
+      "near_saturation_p90_lt_0p02": 1
     },
-    "production_admission": false
+    "failed_both_geometries": ["B10", "B11", "B12", "B17", "B18", "O07", "O11", "O13"],
+    "failed_20cm_only": ["O01", "O05"],
+    "decision": "NOT_QUALIFIED_FROZEN_N49_FULL_STARING2018_CATALOG_LOCALIZE_WITHOUT_RETUNING"
   },
-  "transient_readiness_after_C7a": {
-    "precommitted": false,
-    "blocked_by_C7a_failure": true,
-    "reason": "C7a full-catalog qualification is already impossible. Even absent that failure, the existing transient reference matrix contains synthetic material/geometry anchors not established by catalog coverage.",
-    "required_anchor_classes_before_any_future_transient_execution": {
-      "reference_sand_face_lengths_cm": [10.0, 11.3746, 12.0, 15.0, 20.0],
-      "reference_clay_face_lengths_cm": [10.0, 15.0, 20.0]
-    },
-    "heterogeneous_face_route": "REMAINS_EXISTING_MFP_EQUAL_FLUX_INTERFACE_AND_IS_NOT_QUALIFIED_BY_C7A"
+  "routing": {
+    "precommit": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json",
+    "primary": "R6_WIDESPREAD_MULTI_CHECK_REPRESENTATION_FAILURE",
+    "secondary": [
+      "R3_STRONG_GRADIENT_GEOMETRY_DEPENDENT_ACCURACY_FAILURE",
+      "R4_MATERIAL_TRANSITION_SCALE_ACCURACY_FAILURE"
+    ],
+    "constitutive_owner_overlap": "R5 applies to a subset; C7a does not establish numerical causation for the known near-saturation discontinuity seam"
   },
-  "current_gate": {
-    "name": "C7A_PRODUCTION_CATALOG_COVERAGE",
-    "qualification": false,
-    "rule": "Frozen n49 provider and C6b classifier are evaluated without retuning across all 72 Staring2018 homogeneous material-geometry classes. Any class failure prevents full catalog qualification.",
-    "status": "EXECUTION_CONTINUES_FOR_FAILURE_LOCALIZATION_FULL_CATALOG_QUALIFICATION_ALREADY_FAILED"
+  "transient_readiness": {
+    "C7b_precommitted": false,
+    "C7b_blocked": true,
+    "reason": "A transient gate may not rescue a hydraulic face representation that failed full-catalog hydraulic qualification.",
+    "future_synthetic_anchor_face_gate_still_required": true
   },
-  "separate_open_blockers": [
-    "complete C7a failure localization and persist aggregate result",
-    "production hydraulic catalog admission failed under the frozen C7a provider/classifier contract",
-    "inherited near-saturation conductivity discontinuity in the catalog remains an owner-level constitutive issue",
-    "transient expanded-envelope regression is blocked; no C7b precommit under the failed C7a contract",
-    "heterogeneous-interface qualification remains open",
-    "bounded runtime fallback policy is not yet admitted",
-    "root uptake, drainage, moving groundwater and MODFLOW coupling are outside F-LMFP09 current scope",
-    "response tangent not admitted"
-  ],
   "scope_flags": {
     "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
     "PRODUCTION_IMPLEMENTED": false,
     "PERSISTED": true,
     "TESTED": true,
-    "GATE_A_QUALIFIED": true,
-    "C6A_CHARACTERIZATION_COMPLETE": true,
-    "C6B_DESIGN_PERSISTED": true,
-    "C6B_EXECUTED": true,
     "C6B_HYDRAULIC_CORE_ENVELOPE_QUALIFIED": true,
-    "C7A_DESIGN_PRECOMMITTED": true,
-    "C7A_EXPERIMENT_IMPLEMENTED": true,
-    "C7A_EXECUTION_STARTED": true,
-    "C7A_FIRST_CLASS_FAILURE_PERSISTED": true,
-    "C7A_POSTRESULT_ROUTING_PRECOMMITTED_BEFORE_FULL_REVEAL": true,
-    "C7A_EXECUTION_COMPLETE": false,
+    "C7A_EXECUTION_COMPLETE": true,
+    "C7A_RESULT_PERSISTED": true,
     "CATALOG_COVERAGE_QUALIFIED": false,
-    "TRANSIENT_ANCHOR_GATE_PRECOMMITTED": false,
     "TRANSIENT_ENVELOPE_QUALIFIED": false,
-    "OVERALL_QUALIFIED": false
+    "OVERALL_QUALIFIED": false,
+    "WORK_UNIT_CLOSED": true
   },
-  "decision": "C7A_FULL_CATALOG_QUALIFICATION_FAILED_EXECUTION_CONTINUES_FOR_LOCALIZATION",
-  "status": "C7A_NOT_QUALIFIED_FOUR_SHARD_LOCALIZATION_CHECKPOINT_PERSISTED_AGGREGATE_PENDING"
+  "next_gate": "SEPARATE_MATERIALLY_NEW_REPRESENTATION_FEASIBILITY_CHARACTERIZATION_WITH_FRESH_HOLDOUT_BEFORE_ANY_PROMOTION",
+  "decision": "RESEARCH_CONTINUES_VIA_NEW_REPRESENTATION_WORKUNIT",
+  "status": "F_LMFP09_CLOSED_C6B_CORE_QUALIFIED_C7A_FULL_CATALOG_REJECTED"
 }
