@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION_SOURCE_BOUND_EQ19",
+  "prerequisite": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
+  "source_provenance": {
+    "primary": {
+      "citation": "Ogden FL, Lai W, Steinke RC, Zhu J, Talbot CA (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51",
+      "doi": "10.1002/2015WR017126",
+      "source_bound_claims": [
+        "falling slugs occur during rainfall or snowmelt hiatus when infiltrated water detaches from the surface",
+        "capillary gradient is approximated as zero and gravity is the driving force",
+        "the falling rate is the incremental hydraulic conductivity component of the water-content bin",
+        "top and bottom ends of a slug have the same velocity, preserving slug length during the advective step",
+        "equation 19 itself is not inherently mass conservative; conservation is imposed by finite-volume water bookkeeping"
+      ],
+      "equation_19_image_text_machine_readable": false
+    },
+    "equation_rendering_crosscheck": "Public finite-water-content method summary renders equation 19 as dz_j/dt = [K(theta_j)-K(theta_{j-1})]/[theta_j-theta_{j-1}]. This gate does not claim official M2WC70 source reproduction.",
+    "official_M2WC70_checksum_available": false
+  },
+  "candidate": {
+    "theta_discretization": "uniform fixed water-content bins between theta_r and theta_s",
+    "constitutive_evaluation": "Mualem-van Genuchten K(theta) using the Staringreeks 2018 KSATFIT parameters already frozen in SWAP5 F-ROSS01 C1 catalog",
+    "falling_slug_velocity": "v_j = [K(theta_j)-K(theta_{j-1})]/Delta_theta",
+    "vertical_coordinate": "z positive downward in cm",
+    "velocity_units": "cm/day",
+    "slug_state": "top and bottom coordinates plus bin identity in the qualified fixed-slot representation",
+    "water_storage_per_slug": "Delta_theta times in-domain slug length, in cm water depth per unit area",
+    "advective_update": "top and bottom coordinates translated by exactly v_j*dt",
+    "bottom_boundary": "geometric exit from the finite column is ledgered as outflow; truncation at the physical domain boundary is not numerical clipping repair",
+    "slot_capacity": 8,
+    "overflow_policy": "reject trial unchanged and emit FALLBACK_REQUIRED"
+  },
+  "materials": ["B01","B12","O13","O14"],
+  "theta_bin_counts": [16,64,200],
+  "column_length_cm": 100.0,
+  "time_steps_day": [1e-6,1e-5,1e-4,1e-3],
+  "required_cases": [
+    "fully internal slug translation with no boundary contact",
+    "leading-edge bottom-boundary crossing",
+    "partial boundary exit over multiple accepted steps",
+    "complete slug exit",
+    "multiple independent bins/slugs without collision or capillary relaxation",
+    "intentional ninth-slot overflow as a rejected trial"
+  ],
+  "mass_identity": "initial_storage - cumulative_bottom_outflow - final_storage = residual for the no-inflow falling-slug fixture",
+  "frozen_mass_tolerance": "64 * binary64_epsilon * max(1, abs(initial)+abs(outflow)+abs(final))",
+  "acceptance": {
+    "mass_residual_within_frozen_roundoff_tolerance": true,
+    "internal_translation_preserves_slug_length": true,
+    "candidate_velocity_matches_frozen_equation_expression": true,
+    "bottom_exit_is_exactly_ledgered": true,
+    "rejected_overflow_trial_committed_state_bitwise_unchanged": true,
+    "rejected_overflow_trial_committed_ledger_exactly_unchanged": true,
+    "mass_repair": false,
+    "numerical_clipping_repair": false
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES",
+    "fail": "ADVECTIVE_FALLING_SLUG_PHYSICAL_MASS_SUBGATE_FAILED"
+  },
+  "hard_nonclaims": [
+    "No full FWC physical-column qualification.",
+    "No infiltration-front equation 18 qualification.",
+    "No groundwater-front equation 21 qualification.",
+    "No capillary-relaxation trajectory qualification.",
+    "No explicit-diffusion 2016 equation reconstruction.",
+    "No hydraulic accuracy comparison against FullRichards.",
+    "No claim that eight slots give acceptable fallback incidence or MultiSWAP throughput."
+  ],
+  "hard_guards": [
+    "Do not infer the 2016 explicit-diffusion equations from the advective falling-slug formula.",
+    "Do not use capillary relaxation to hide a slot overflow in this gate.",
+    "Do not repair mass by clipping storage values.",
+    "Only physical domain-boundary truncation with an equal ledgered outflow is allowed.",
+    "Do not promote this narrow subgate to full FWC or MultiSWAP admission."
+  ],
+  "relevant_invariants": [4,5,7,13,16,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
