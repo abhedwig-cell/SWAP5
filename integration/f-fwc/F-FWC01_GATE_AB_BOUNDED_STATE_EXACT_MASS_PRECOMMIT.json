@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "AB_BOUNDED_STATE_AND_EXACT_MASS_FALSIFICATION",
+  "frozen_parent_head": "2b1238f4eb171d97ad8673a3632dddca34682734",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "official_code_status": {
+    "record": "University of Wyoming DataCorral M2WC70",
+    "archive": "M2WC70.zip",
+    "official_archive_obtained_in_execution_environment": false,
+    "checksum_captured": false,
+    "rule": "No source-code identity or official-code behavior claim may be made from this gate."
+  },
+  "source_bound_topology_basis": [
+    "The 2015 FWC method discretizes the finite water-content domain into a fixed finite number of bins.",
+    "The 2015 implementation lineage states that falling slugs were represented with a linked-list methodology.",
+    "For the published falling-slug velocity relation, top and bottom move with the same bin velocity so slug length is preserved during pure advection.",
+    "The primary source does not establish a forcing-independent hard maximum number of simultaneously active falling-slug list objects per bin or per column.",
+    "The 2016 explicit-diffusion extension adds per-bin diffusive redistribution but is not credited here with any unproven topology-merging or minimum-slug-thickness rule."
+  ],
+  "gate_A_bounded_state": {
+    "purpose": "Falsify or support a forcing-independent persistent-state bound before hydraulic accuracy work.",
+    "variants": [
+      "FWC_ADVECTIVE",
+      "FWC_EXPLICIT_DIFFUSION"
+    ],
+    "theta_bin_counts": [16, 32, 64, 128, 200],
+    "topology_stress_model": {
+      "column_length_normalized": 1.0,
+      "falling_slug_velocity_normalized": 1.0,
+      "residence_time_normalized": 1.0,
+      "pulse_periods_in_residence_times": [0.25, 0.0625, 0.015625, 0.00390625],
+      "pulse_duty_fraction": 0.25,
+      "run_horizons_in_residence_times": [1.0, 10.0, 100.0],
+      "merge_rule": "Merge only geometrically overlapping intervals. No heuristic merge, minimum thickness or object cap.",
+      "bottom_rule": "Intervals leaving the finite column are removed as physical boundary outflow events.",
+      "scope_modes": [
+        "single_active_bin",
+        "replicated_all_bins_storage_envelope"
+      ]
+    },
+    "modeled_payload_contract": {
+      "fixed_committed_coordinates_per_theta_bin_bytes": 16,
+      "falling_slug_interval_payload_bytes": 24,
+      "falling_slug_payload_definition": "two binary64 endpoints plus two 32-bit integer metadata fields in a packed production-oriented payload model; not sizeof() of official C nodes",
+      "explicit_diffusion_worker_scratch_bytes_per_theta_bin": 16,
+      "explicit_diffusion_worker_scratch_is_persistent_column_state": false
+    },
+    "must_report": [
+      "maximum simultaneous intervals/front objects",
+      "modeled persistent bytes per column",
+      "create/split rate",
+      "merge rate",
+      "boundary-removal rate",
+      "growth with run duration",
+      "growth with forcing-event refinement",
+      "advective and explicit-diffusion variants separately"
+    ],
+    "decision_rule": {
+      "unrestricted_dynamic_list_primary_multiswap_admission": "PASS only if a finite forcing-independent maximum persistent object count is established. Otherwise reject this representation for primary MultiSWAP production consideration.",
+      "finite_duration_plateau_is_not_sufficient": true,
+      "reason": "A finite column can plateau for fixed velocity and pulse period while the plateau can still diverge as admitted event period tends to zero or hydraulic residence time grows.",
+      "bounded_fixed_slot_followup": "May remain research-eligible only with conservative fail-closed overflow and separate physical qualification."
+    }
+  },
+  "gate_B_exact_mass": {
+    "purpose": "Demonstrate the smallest transaction-safe finite-volume ledger without claiming hydraulic fidelity.",
+    "variants": [
+      "FWC_ADVECTIVE",
+      "FWC_EXPLICIT_DIFFUSION"
+    ],
+    "theta_bin_counts": [16, 64],
+    "accepted_steps": 10000,
+    "initial_storage_definition": "deterministic positive binary64 per-bin water-depth payload",
+    "surface_inflow_definition": "deterministic positive boundary water-depth increment each accepted step",
+    "advective_internal_transfer": "fixed fractional donor-to-next-bin finite-volume transfer, exactly ledger-neutral internally",
+    "bottom_outflow_definition": "fixed fractional removal from the final bin, recorded as boundary outflow",
+    "explicit_diffusion_transfer": "nearest-neighbor donor-to-receiver finite-volume transfer proportional to the positive storage difference, applied pairwise and exactly ledger-neutral internally",
+    "mass_identity": "initial + cumulative_inflow - cumulative_outflow - final = residual",
+    "mass_tolerance": "64 * binary64_epsilon * max(1, abs(initial)+abs(inflow)+abs(outflow)+abs(final))",
+    "mass_repair": "FORBIDDEN",
+    "clipping_to_force_closure": "FORBIDDEN",
+    "transaction_test": {
+      "type": "intentional rejected trial",
+      "rejection_condition": "candidate front-slot overflow in trial metadata",
+      "required_committed_state_check": "bitwise identical packed binary64 state before and after rejection",
+      "required_committed_ledger_check": "exactly unchanged before and after rejection"
+    },
+    "decision_rule": "PASS only if both variants satisfy the frozen mass tolerance and rejected trials do not alter committed state or ledger."
+  },
+  "hard_nonclaims": [
+    "No FullRichards equivalence claim.",
+    "No infiltration-profile accuracy claim.",
+    "No groundwater, crop, SWAP integration or MultiSWAP implementation claim.",
+    "No official FWC code reproduction claim.",
+    "No diffusion-affordability claim from mass conservation alone."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
