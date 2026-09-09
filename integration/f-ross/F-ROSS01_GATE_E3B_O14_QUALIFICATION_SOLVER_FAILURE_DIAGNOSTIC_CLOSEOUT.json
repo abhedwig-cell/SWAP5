@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3B_O14_QUALIFICATION_SOLVER_FAILURE_DIAGNOSTIC",
+  "workflow_run": 34391947303,
+  "workflow_head": "f16c2a710fbcbe8a6d7f481871ccb4a9814523bb",
+  "artifact_id": 10120014824,
+  "tested": true,
+  "qualification_diagnostic_complete": true,
+  "production_implementation": false,
+  "decision": "QUALIFICATION_SOLVER_BLOCKER_CONFIRMED_BOTH_O14_TRIALS_HAVE_INDEPENDENT_STRONG_MASS_ROOT",
+  "hard_mass_certificate_cm": 1e-9,
+  "strong_diagnostic_target_cm": 1e-12,
+  "frozen_failed_trial_count": 2,
+  "original_failure_count_reproduced": 2,
+  "trials_with_independent_strong_root": 2,
+  "independent_strong_solver_variants_per_trial": 3,
+  "reference_wetting_original": {
+    "termination": "gtol",
+    "nfev": 3,
+    "max_abs_cell_residual_cm": 1.1786118433421123e-09,
+    "abs_global_residual_cm": 1.251517534083587e-09
+  },
+  "reference_wetting_tight_same_method": {
+    "nfev": 5,
+    "max_abs_cell_residual_cm": 4.2116511016557223e-16,
+    "abs_global_residual_cm": 4.334098184510804e-17
+  },
+  "candidate_draining_original": {
+    "termination": "gtol",
+    "nfev": 5,
+    "max_abs_cell_residual_cm": 9.187744052705209e-10,
+    "abs_global_residual_cm": 1.6315069578535027e-09
+  },
+  "candidate_draining_tight_same_method": {
+    "nfev": 7,
+    "max_abs_cell_residual_cm": 5.994011710586111e-16,
+    "abs_global_residual_cm": 7.730361489821647e-17
+  },
+  "interpretation": "The O14 failures in original E3 are caused by the qualification least-squares stopping criterion terminating before the hard mass certificate is met. A mass-conserving in-bounds root exists for both frozen failed trials without changing physics or the 1e-9 mass gate.",
+  "hard_nonclaims": [
+    "No production nonlinear solver qualification.",
+    "No E3 saturation-transition requalification.",
+    "No physics or mass-tolerance change."
+  ],
+  "next_action": "Qualify the minimally tighter least-squares stopping policy over the full frozen E3 matrix before freezing a true h=0 event gate."
+}
