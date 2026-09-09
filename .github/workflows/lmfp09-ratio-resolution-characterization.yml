@@ -1,0 +1,24 @@
+name: F-LMFP09 Ratio Resolution Characterization
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  ratio-resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Ratio head resolution characterization
+        run: bash experiments/lmfp/run_lmfp09_ratio_resolution_characterization_gate.sh
+      - name: Upload ratio resolution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-ratio-resolution-characterization
+          path: lmfp09-ratio-resolution-artifacts/
