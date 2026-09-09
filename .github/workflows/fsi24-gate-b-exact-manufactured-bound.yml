@@ -1,0 +1,30 @@
+name: F-SI24 Gate B exact manufactured defect bound
+
+on:
+  push:
+    branches:
+      - work/f-si24-bounded-stiffness-aware-temporal-indicator
+    paths:
+      - 'integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json'
+      - 'integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_PLAN.json'
+      - 'tests/fsi/test_fsi24_gate_b_exact_manufactured_bound.f90'
+      - 'tests/fsi/run_fsi24_gate_b_exact_manufactured_bound.sh'
+      - 'tests/fsi/mod_fsi23_mms_providers.f90'
+      - '.github/workflows/fsi24-gate-b-exact-manufactured-bound.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-manufactured-bound:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-SI24 Gate B
+        run: bash tests/fsi/run_fsi24_gate_b_exact_manufactured_bound.sh
