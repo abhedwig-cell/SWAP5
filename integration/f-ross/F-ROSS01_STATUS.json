@@ -10,16 +10,38 @@
   "tested": false,
   "reproduced": false,
   "qualified": false,
-  "decision": "ROSSFAST_QUALIFICATION_INCOMPLETE",
+  "decision": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
+  "decision_is_final": false,
   "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M"],
   "hard_blockers_if_failed": ["C_SWAPHYDRAULICS_GENERALISATION", "D_DISCRETE_MASS_CONSERVATION"],
   "primary_source": {
     "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions, Agronomy Journal 95(6):1352-1361",
     "doi": "10.2134/agronj2003.1352"
   },
+  "flexible_hydraulics_report": {
+    "citation": "Ross PJ (2006), Fast Solution of Richards' Equation for Flexible Soil Hydraulic Property Descriptions, CSIRO Land and Water Science Report 39/06",
+    "doi": "10.4225/08/5859741868a90",
+    "equation_level_audit_complete": false
+  },
   "independent_evaluation": {
     "citation": "Crevoisier D, Chanzy A, Voltz M (2009), Evaluation of the Ross fast solution of Richards' equation in unfavourable conditions for standard finite element methods, Advances in Water Resources 32(6):936-947",
-    "doi": "10.1016/j.advwatres.2009.03.008"
+    "doi": "10.1016/j.advwatres.2009.03.008",
+    "supports_non_Brooks_Corey_generalisation": true,
+    "demonstrated_hydraulics": "modified van Genuchten-Mualem",
+    "reported_speedup_vs_HYDRUS1D_range": [1.25,14.0]
   },
-  "status": "SOURCE_BOUND_WORKUNIT_STARTED_THEORY_RECONSTRUCTION_NEXT"
+  "source_code": {
+    "evidence_author_distributed_code_existed": true,
+    "public_authoritative_repository_found": false,
+    "license": "UNKNOWN"
+  },
+  "current_findings": [
+    "MFP/Kirchhoff potential and non-iterative mixed-variable formulation are scientifically relevant core features",
+    "Brooks-Corey is not proven to be a fundamental mathematical restriction",
+    "generalisation to the full SWAP hydraulic catalog remains open",
+    "exact accepted-step SWAP5 mass ledger remains open",
+    "heterogeneous interface and bounded local solve semantics remain open",
+    "MODFLOW imposed-head/imposed-flux contract and response tangent remain open"
+  ],
+  "status": "THEORY_AND_PROVENANCE_TRIAGE_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
 }
