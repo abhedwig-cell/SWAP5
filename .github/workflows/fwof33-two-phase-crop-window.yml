@@ -1,0 +1,24 @@
+name: F-WOF33 two-phase crop window
+
+on:
+  push:
+    branches:
+      - work/f-wof33-two-phase-crop-window-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  crop-window-composition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-WOF33 gate
+        run: bash tests/fwof/run_fwof33_two_phase_crop_window_gate.sh
