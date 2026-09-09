@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Same-endpoint temporal characterization decision",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "source_characterization_head": "3435f242b769cbfc71d3b28ab65ebd91eed114c8",
+  "characterization_evidence": "integration/f-si/F-SI21_CHARACTERIZATION_EVIDENCE.json",
+  "characterization_evidence_blob": "a86f3bccfbe05fc7211b327421cd9b018f4ab940",
+  "characterization_workflow": {
+    "run_id": 34311266920,
+    "job_id": 102338245587,
+    "conclusion": "success"
+  },
+  "measured_findings": {
+    "trajectory_count": 72,
+    "all_levels_solver_success": true,
+    "solver_failure_rows": 0,
+    "mass_failure_rows": 0,
+    "hard_mass_gate_pass": true,
+    "max_mass_residual_on_success": 6.776263578034403e-21,
+    "o0_o2_identity": true,
+    "repeat_deterministic": true,
+    "c1_shape_pass_trajectories": 72,
+    "c2_base_safe_trajectories": 72,
+    "c3_persistent_decay_by_n32_trajectories": 72,
+    "first_persistent_fine_n": 8,
+    "first_persistent_fine_n_trajectories": 72,
+    "head_and_theta_defects_nonincreasing_across_all_observed_refinement_transitions": true,
+    "ponding_and_gwl_defects_zero_for_this_frozen_fixture_envelope": true
+  },
+  "cost_findings": {
+    "c2_base_n2_physical_solves": 3,
+    "c1_through_n4_physical_solves": 7,
+    "persistent_decay_through_n8_physical_solves": 15,
+    "reference_through_n32_physical_solves": 63,
+    "normal_path_six_to_nine_full_execution_budget_respected_by_c1": false,
+    "normal_path_six_to_nine_full_execution_budget_respected_by_persistent_decay_guard": false,
+    "bounded_numeric_trigger_for_c2_selected": false
+  },
+  "interpretation": {
+    "same_endpoint_refinement_is_numerically_well_behaved_on_frozen_matrix": true,
+    "same_endpoint_refinement_is_scientifically_useful_as_reference_characterization": true,
+    "fixed_c1_is_rejected_as_mandatory_normal_path_due_to_cost": true,
+    "c2_base_pair_is_not_a_complete_error_acceptance_policy": true,
+    "reason_c2_is_incomplete": "The N1/N2 base supplies one same-endpoint defect but no independently qualified per-metric limit or bounded escalation trigger. The previously rejected raw-defect profile is not re-admitted by this workunit.",
+    "persistent_decay_guard_requires_at_least_n8_under_the_predeclared_definition": true,
+    "persistent_decay_guard_is_too_expensive_as_mandatory_normal_path": true,
+    "c3_remains_reference_only": true,
+    "specific_bounded_cost_production_candidate_selected": false,
+    "production_temporal_metric_selected": false,
+    "production_temporal_tolerance_selected": false,
+    "production_transaction_semantics_changed": false,
+    "production_source_changed": false
+  },
+  "architecture_invariant_assessment": {
+    "7_transactional_timesteps": "PRESERVED_IN_CHARACTERIZATION; NO_PRODUCTION_SEMANTIC_CHANGE",
+    "8_cheap_recompute_and_warm_start": "SAME_ENDPOINT_RECOMPUTE_PROVEN_FEASIBLE_TEST_ONLY",
+    "9_generic_time": "PRESERVED; TARGET HORIZONS 0.25, 0.125 AND 0.0625 DAY ARE EXPLICIT INTERVALS",
+    "13_mass_conservation_absolute": "PASS; ZERO MASS FAILURE ROWS; NO MASS RELAXATION",
+    "15_limit_coupling_cost": "BLOCKS FIXED C1 AND PERSISTENT-DECAY NORMAL PATHS AT 7 AND 15 PHYSICAL SOLVES RESPECTIVELY",
+    "16_multiswap_primary": "NO MANDATORY HIGH-MULTIPLICITY NORMAL PATH ADMITTED",
+    "23_physics_vs_solver_policy": "PRESERVED; NO PHYSICS CHANGE",
+    "24_predictable_runtime": "NO BOUNDED-COST ESCALATION TRIGGER QUALIFIED",
+    "25_reference_mode": "C3 REMAINS AVAILABLE AS CHARACTERIZATION/REFERENCE CANDIDATE",
+    "26_runtime_diagnostics": "CHARACTERIZATION EMITS SOLVER COST, REFINEMENT LEVEL AND MASS DIAGNOSTICS",
+    "30_architecture_change_audit": "NO PRODUCTION ARCHITECTURE CHANGE ADMITTED"
+  },
+  "exit_state": "BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND",
+  "qualification_release": {
+    "ready_for_independent_numeric_qualification_of_specific_same_endpoint_candidate": false,
+    "f_kt_production_contract_change_allowed": false,
+    "f_gc02_release": false,
+    "f_pe_release": false
+  },
+  "recommended_successor_scope": [
+    "Develop a genuinely bounded-cost Richards temporal estimator that can operate from the normal predictor/corrector work budget rather than requiring fixed N4/N8 same-endpoint refinement.",
+    "Prefer model-owned embedded or Jacobian/factorization-reusing error information, state-aware scaling, or a similarly cheap estimator over repeated full physical solves.",
+    "Retain same-endpoint N8/N32 refinement as reference-mode evidence for qualification of any cheaper estimator.",
+    "Do not infer a production limit from the 72-trajectory matrix; any metric limits or escalation trigger require separate source-bound definition and independent F-VQ qualification.",
+    "Only involve F-KT ownership once a specific bounded-cost production lifecycle/transaction semantic exists to implement."
+  ],
+  "decision": "CLOSE_F_SI21_BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND"
+}
