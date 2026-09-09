@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "artifact": "C7A_POSTRESULT_ROUTING_PRECOMMIT",
+  "qualification": false,
+  "production_implementation": false,
+  "precommit": true,
+  "branch_head_before_precommit": "76a044a6023a617a40224bb4f77b7ea16c53d838",
+  "timing": {
+    "C7a_run": 34325023479,
+    "full_C7a_aggregate_revealed": false,
+    "completed_shards_observed_before_this_precommit": [7],
+    "known_failure_before_this_precommit": "O05:20cm strong-gradient p90 0.033027923762514434 > frozen 0.02 threshold",
+    "reason": "Freeze the interpretation and follow-up routing before the remaining eleven shards reveal the full failure pattern."
+  },
+  "hard_rules": {
+    "C7a_full_catalog_decision_can_return_to_qualified": false,
+    "frozen_n49_provider_may_be_retuned_on_C7a_rows": false,
+    "frozen_C6b_classifier_may_be_widened_or_retuned_on_C7a_rows": false,
+    "accuracy_thresholds_may_be_relaxed_on_C7a_rows": false,
+    "failed_classes_may_be_deleted_from_the_C7a_claim": false,
+    "C7b_transient_gate_under_failed_C7a_contract": false,
+    "production_admission_from_partial_catalog_passes": false,
+    "new_candidate_promotion_requires_fresh_unseen_holdout": true,
+    "mass_conservation_remains_hard": true
+  },
+  "required_final_C7a_localization": {
+    "per_class": [
+      "pass/fail",
+      "failed structural checks",
+      "failed evidence-sufficiency checks",
+      "failed accuracy checks",
+      "admitted and active counts",
+      "sign mismatches and oracle failures",
+      "active p90/p99/max",
+      "strong-gradient p90",
+      "near-saturation p90",
+      "plain-MFP comparison",
+      "classifier rejection reasons",
+      "source hydraulic parameters"
+    ],
+    "paired_geometry": "For every material compare 10 cm and 20 cm without changing samples, thresholds or candidate.",
+    "aggregate": [
+      "number of failed classes by check",
+      "number of failed materials",
+      "10 cm versus 20 cm failure counts",
+      "materials failing both geometries",
+      "materials failing one geometry only",
+      "structural versus accuracy versus evidence-sufficiency failure counts"
+    ]
+  },
+  "routing": {
+    "R1_STRUCTURAL_OR_REFERENCE_SEMANTICS_FAILURE": {
+      "trigger": "Any class fails provider construction/shape, finite candidate evaluation, zero-runtime-oracle semantics, sign preservation, or the independent reference oracle itself.",
+      "interpretation": "Do not diagnose this as table density or classifier narrowness. First resolve representation/reference semantics or implementation correctness.",
+      "allowed_next": "Separate correctness characterization with no production or transient admission.",
+      "forbidden_next": "No geometry tuning, threshold relaxation or classifier widening to hide a structural failure."
+    },
+    "R2_EVIDENCE_SUFFICIENCY_ONLY_FAILURE": {
+      "trigger": "One or more classes fail only because admitted_cases < 100 or active_admitted_cases < 60 while structural and evaluated accuracy checks otherwise pass.",
+      "interpretation": "The frozen classifier does not provide enough demonstrated support for full catalog coverage in those classes.",
+      "allowed_next": "Characterize why the frozen classifier excludes those classes. A narrower explicitly qualified production applicability domain is only a separate future hypothesis, with independent use-case justification and a fresh holdout.",
+      "forbidden_next": "Do not widen the classifier or lower sample requirements using C7a rows."
+    },
+    "R3_STRONG_GRADIENT_GEOMETRY_DEPENDENT_ACCURACY_FAILURE": {
+      "trigger": "Accuracy failures are concentrated in strong-gradient p90 while structural, evidence-sufficiency and near-saturation checks remain green, and paired 10/20 cm results show material-specific geometry dependence.",
+      "interpretation": "Treat face geometry as an explicit representation variable. A global density increase is not automatically justified.",
+      "allowed_next": "Characterization-only geometry sensitivity using already established physically relevant face lengths. Candidate coordinate/normalization changes must be materially new and precommitted before testing. Any promoted candidate then requires a new unseen holdout.",
+      "existing_lengths_available_for_future_precommit": [5.0, 10.0, 11.3746, 12.0, 15.0, 20.0],
+      "forbidden_next": "Do not patch only the observed failing length or insert pair-specific tables."
+    },
+    "R4_MATERIAL_TRANSITION_SCALE_ACCURACY_FAILURE": {
+      "trigger": "Failures persist for the same material across both geometries or occur across several materials in a pattern not explained primarily by face length.",
+      "interpretation": "Characterize whether fixed absolute-head anchors fail to resolve material-specific hydraulic transition scales.",
+      "allowed_next": "Characterization-only comparison of materially new globally bounded coordinates such as hydraulic-scale-normalized head, effective saturation, or conductivity-based coordinates. Selection must occur before any new qualification holdout.",
+      "candidate_examples_are_not_preselected": true,
+      "forbidden_next": "Do not add material-specific hand-tuned knots after looking at failing rows."
+    },
+    "R5_NEAR_SATURATION_OR_CONSTITUTIVE_OWNER_FAILURE": {
+      "trigger": "Failures are dominated by near-saturation behavior or align with the already-known inherited conductivity transition/discontinuity seam.",
+      "interpretation": "Route the constitutive issue to its owner boundary before claiming a numerical representation repair.",
+      "allowed_next": "Owner-level constitutive qualification, then rerun LayeredMFP evidence against the qualified constitutive contract.",
+      "forbidden_next": "Do not use interpolation density or classifier thresholds to mask an inherited constitutive discrepancy."
+    },
+    "R6_WIDESPREAD_MULTI_CHECK_REPRESENTATION_FAILURE": {
+      "trigger": "Failures are broad across materials/geometries and span multiple accuracy checks, even though structural semantics remain correct.",
+      "interpretation": "Reject the frozen n49 endpoint-pair family for full catalog generalization rather than accumulating local exceptions.",
+      "allowed_next": "Open a materially new representation feasibility/characterization gate or stop this candidate family.",
+      "forbidden_next": "No patch ladder of material-specific exceptions, density escalation without new hypothesis, or production fallback disguised as numerical policy."
+    }
+  },
+  "isolated_failure_policy": {
+    "rule": "Even if the completed map contains only one failing class, C7a remains NOT_QUALIFIED. An isolated failure may justify targeted characterization of sensitivity but not full-catalog production admission.",
+    "fresh_holdout_required_before_any_revised_claim": true
+  },
+  "transient_boundary": {
+    "C7b_remains_blocked": true,
+    "reason": "A transient gate must not be used to rescue a hydraulic face representation that already failed its full-catalog hydraulic qualification.",
+    "future_transient_anchor_requirement_remains_separate": true
+  },
+  "architecture_invariants": {
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT",
+    "shared_immutable_hydraulic_data": "PRESERVED",
+    "no_per_column_heavy_solver_state": "PRESERVED",
+    "physics_vs_solver_policy": "NO_SILENT_FALLBACK_OR_PHYSICS_CHANGE",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "FAILURE_ROUTE_MUST_REMAIN_EXPLICIT",
+    "alternative_solver_openness": "PRESERVED"
+  },
+  "status": "PRECOMMITTED_BEFORE_FULL_C7A_AGGREGATE_REVEAL"
+}
