@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ30",
+  "title": "Independent Held-Out Qualification of the Bounded Stiffness-Aware Richards Temporal Indicator",
+  "status": "COMPLETE_QUALIFIED_HELD_OUT_TRANSFER_READY_FOR_PRODUCTION_OPERATOR_SEAM",
+  "decision": "QUALIFIED_HELD_OUT_TRANSFER_OF_BOUNDED_STIFFNESS_AWARE_RICHARDS_INDICATOR_READY_FOR_PRODUCTION_OPERATOR_SEAM",
+  "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
+  "owner_base": {
+    "work_unit": "F-SI24",
+    "head": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+    "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND"
+  },
+  "frozen_plan": {
+    "path": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
+    "commit": "c8f56d352cfd485f4bf33e3ce0a593a1a2ca2112",
+    "held_out_cases": 16,
+    "owner_exact_triplet_overlap": 0,
+    "post_execution_tuning": false
+  },
+  "evidence": {
+    "path": "integration/f-vq/F-VQ30_HELD_OUT_EVIDENCE.json",
+    "commit": "4db724064fd5ebb58ce9ac7f038333ce29d7d671",
+    "successful_actions_run": 34332303346,
+    "successful_job": 102403487324,
+    "tested_head": "c83abe23bff2005c6211cf45d0a1c46738e08b7e"
+  },
+  "qualification_summary": {
+    "G01_source_lock": "PASS",
+    "G02_exact_linear_regression": "PASS",
+    "G03_held_out_nonlinear_transfer": "PASS_16_OF_16_FINITE_COMPARATOR_CONSISTENT_ZERO_NEGATIVE_TRANSFER",
+    "G04_bounded_cost": "PASS_ZERO_EXTRA_NONLINEAR_ONE_EXTRA_TRIDIAGONAL",
+    "G05_hard_mass": "PASS_MAX_CANDIDATE_RESIDUAL_2.7755575615628914e-15_AT_1e-12_GATE",
+    "G06_O0_O2": "PASS_BITWISE_IDENTITY",
+    "G07_operator_ownership": "PASS_AS_PRODUCTION_ARCHITECTURAL_REQUIREMENT_NOT_IMPLEMENTATION",
+    "G08_no_empirical_rescue": "PASS",
+    "G09_F_VQ28_reconciliation": "PASS_DIFFERENT_BOUNDED_COST_ARCHITECTURE"
+  },
+  "held_out_result_shape": {
+    "finite_comparator_cases": 16,
+    "negative_transfer_cases": 0,
+    "B_inf_over_E1_512_min": 6.685266816523914,
+    "B_inf_over_E1_512_max": 102.49832534208181,
+    "raw_EOBS_over_B_inf_min": 2.54217031177781,
+    "raw_EOBS_over_B_inf_max": 101.21256518294182,
+    "remaining_conservatism": "LARGE_AND_STATE_AND_HORIZON_DEPENDENT"
+  },
+  "what_is_qualified": [
+    "Independent reproduction of the exact manufactured linear bounded one-solve candidate without formula drift.",
+    "Transfer of the fixed F-SI24 candidate to the precommitted disjoint 16-case nonlinear B1.10 matrix relative to the qualified finite N512 comparator semantics.",
+    "Bounded candidate cost shape: unchanged principal nonlinear solve plus at most one additional tridiagonal defect solve and O(N) accepted-state operator work.",
+    "Observer non-interference with accepted state, accepted fluxes and hard mass accounting.",
+    "Requirement that any production accepted-state operator evaluation is solver-owned through the soil-water solver interface."
+  ],
+  "hard_nonclaims": [
+    "B_inf is not qualified as a true general nonlinear error upper bound.",
+    "N512 is not exact truth.",
+    "No scientific temporal tolerance is selected.",
+    "No production temporal acceptance or retry policy is admitted.",
+    "No q_cap, Nmin or geometric-tail multiplier is derived.",
+    "F-VQ28 negative evidence for raw step-doubling/retry translation remains valid.",
+    "F-VQ29 negative evidence about finite-reference strength remains valid.",
+    "Groundwater coupling is not qualified or released by F-VQ30.",
+    "F-GC02 is not released by F-VQ30.",
+    "F-PE is not released by F-VQ30.",
+    "The production solver-owned operator seam is not implemented by F-VQ30."
+  ],
+  "architecture_invariant_checks": {
+    "invariant_1_single_kernel": "PASS_NO_NEW_KERNEL_VARIANT",
+    "invariant_2_kernel_io_separation": "PASS_NO_IO_CHANGE",
+    "invariant_5_scratch_per_worker": "PASS_CANDIDATE_OPERATOR_WORK_REMAINS_SOLVER_WORKSPACE_CONCERN",
+    "invariant_7_transactional_steps": "PASS_OBSERVER_DOES_NOT_CHANGE_COMMITTED_OR_TRIAL_STATE",
+    "invariant_8_cheap_recalculation_warm_start": "NO_CONFLICT",
+    "invariant_9_generic_time": "PASS_INDICATOR_USES_GENERIC_DT_NOT_CALENDAR_BOUNDARIES",
+    "invariant_11_coupling_core": "NO_RELEASE_CLAIM_COUPLING_PATH_REMAINS_HELD",
+    "invariant_13_mass_absolute": "PASS_HARD_MASS_GATE_UNCHANGED",
+    "invariant_14_interface_sensitivities": "NO_CONFLICT_OPERATOR_REUSE_DIRECTION_COMPATIBLE_BUT_NOT_QUALIFIED_HERE",
+    "invariant_15_limit_coupling_cost": "PASS_CANDIDATE_NORMAL_PATH_HAS_NO_DEEP_REFINEMENT_LADDER",
+    "invariant_16_MultiSWAP_primary": "PASS_BOUNDED_ONE_TRIDIAGONAL_COST_SHAPE_IS_COMPATIBLE_WITH_BATCHED_RUNTIME_DESIGN",
+    "invariant_20_alternative_soil_water_solvers": "PASS_REQUIREMENT_IS_SOIL_WATER_SOLVER_INTERFACE_OWNED_NOT_HEADCALC_EXPOSED",
+    "invariant_22_no_HeadCalc_internal_coupling": "PASS_AS_HARD_NEXT_OWNER_REQUIREMENT",
+    "invariant_23_physics_solver_policy_separation": "PASS_NO_PHYSICS_CHANGE_OR_TOLERANCE_SELECTION",
+    "invariant_24_predictable_cost": "PASS_FOR_INDICATOR_COST_SHAPE_ONLY_NOT_FULL_RICHARDS_RUNTIME_CERTIFICATE",
+    "invariant_25_reference_mode": "PASS_REFERENCE_EVIDENCE_RETAINED_WITHOUT_PROMOTING_N512_TO_TRUTH",
+    "invariant_26_runtime_diagnostics": "NEXT_OWNER_MUST_EXPOSE_INDICATOR_AS_DIAGNOSTIC_WITHOUT_HIDDEN_ACCEPTANCE_POLICY",
+    "invariant_29_no_silent_dependencies": "PASS_NO_MIDNIGHT_DAY_FILE_OR_MODFLOW_ASSUMPTION_ADDED"
+  },
+  "next_owner": {
+    "workstream": "F-SI",
+    "next_free_unit_checked_live": "F-SI25",
+    "branch_existed_at_closeout_check": false,
+    "scope": "smallest production solver-owned accepted-state operator and bounded stiffness-aware indicator seam",
+    "must_preserve": [
+      "principal Richards state and flux semantics",
+      "hard mass gate",
+      "generic [t0,t1] time semantics",
+      "one extra tridiagonal solve maximum for the indicator normal path",
+      "no deep production refinement ladder",
+      "no external HeadCalc internal-array access",
+      "transactional commit/rollback isolation",
+      "reference mode and diagnostic visibility"
+    ]
+  },
+  "downstream_numbering_observation": {
+    "F_MR18_branch_free_at_live_check": true,
+    "F_KT10_branch_free_at_live_check": true,
+    "reservation_created": false,
+    "note": "Recheck live when those downstream composition workunits are actually started; F-VQ30 does not pre-allocate them."
+  },
+  "production_changes_in_F_VQ30": false,
+  "closed_fail_open": false
+}
