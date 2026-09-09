@@ -8,7 +8,6 @@ on:
       - 'src/runtime/mod_fmr_accepted_commit_receipt.f90'
       - 'tests/fmr/test_fmr18_accepted_commit_receipt.f90'
       - 'tests/fmr/run_fmr18_accepted_commit_receipt_gate.sh'
-      - 'integration/f-mr/F-MR18_*.json'
       - '.github/workflows/fmr18-accepted-commit-receipt.yml'
   workflow_dispatch:
 
