@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT11",
+  "title": "Explicit Richards Head-Budget Certificate Production Policy Binding",
+  "decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_READY_FOR_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "qualified_source": {
+    "commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "tree": "e3e941dcd7058728581f5488498ebcefb8973aa6",
+    "workflow_run_id": 34356407443,
+    "workflow_job_id": 102482099289,
+    "workflow_conclusion": "success"
+  },
+  "production_binding": {
+    "implemented": true,
+    "persisted": true,
+    "owner_tested": true,
+    "owner_verified": true,
+    "independently_production_qualified": false
+  },
+  "scientific_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "Richards_native_budget_unit": "cm pressure head",
+    "C_h_dimensionless": true,
+    "acceptance": "certificate available AND finite AND nonnegative AND C_h<=1",
+    "default_H_budget": null,
+    "automatic_H_budget_selection": false,
+    "B_inf_proven_nonlinear_true_error_upper_bound": false,
+    "shorter_dt_monotonicity_claim": false
+  },
+  "frozen_owner_matrix": {
+    "initial_uniform_head_cm": -125.0,
+    "bottom_head_jump_cm": 0.03,
+    "attempt_dt_day": 0.3,
+    "bottom_mode": 5,
+    "hard_mass_tolerance": 1e-12,
+    "direct_B_inf_cm": 0.05758722731442157,
+    "cases": {
+      "VALID_ACCEPT": "PASS, structural H_budget=2*direct_B_inf, C_h=0.5, accepted and explicitly committed",
+      "VALID_REJECT": "PASS, structural H_budget=0.5*direct_B_inf, C_h=2, rejected with exact rollback",
+      "MISSING_BUDGET": "PASS, certificate unavailable and rejected",
+      "INVALID_ZERO_BUDGET": "PASS, certificate unavailable and rejected",
+      "NO_HISTORY_WITH_VALID_BUDGET": "PASS, certificate unavailable, rejected, no history bootstrap",
+      "BOUNDED_RETRY_NO_MONOTONICITY_CLAIM": "PASS, H_budget=1e-12, max_retries=2, exactly 3 attempts and 3 rollbacks"
+    }
+  },
+  "gate_results": {
+    "A_contract_and_source_locks": "PASS",
+    "B_numerical_configuration_ownership": "PASS",
+    "C_valid_accept": "PASS",
+    "D_valid_threshold_reject": "PASS",
+    "E_missing_invalid_budget": "PASS",
+    "F_no_history": "PASS",
+    "G_bounded_retry": "PASS",
+    "H_hard_mass_order_and_cost": "PASS",
+    "I_O0_O2_and_regressions": "PASS",
+    "J_diagnostics": "PASS",
+    "K_architecture_invariants": "PASS"
+  },
+  "regression_results": {
+    "F_KT09_generic_acceptance": "PASS",
+    "F_KT10_transaction_history": "PASS",
+    "F_KT10_real_Richards_replay": "PASS",
+    "F_VQ32_semantic_source_lock": "PASS",
+    "O0_O2_owner_matrix_identity": "PASS",
+    "O0_O2_FKT10_real_identity": "PASS"
+  },
+  "cost_result": {
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0,
+    "indicator_extra_full_nonlinear_trajectories": 0,
+    "indicator_defect_tridiagonal_solve_with_accepted_history": 1,
+    "no_history_defect_tridiagonal_solve": 0
+  },
+  "mass_result": {
+    "ordering": ["physical trial","hard mass qualification","model temporal certificate","transaction acceptance or rejection"],
+    "hard_mass_gate_independent": true,
+    "certificate_overrides_mass_failure": false,
+    "hard_mass_tolerance_changed": false
+  },
+  "diagnostic_result": {
+    "raw_B_inf": true,
+    "budget_supplied": true,
+    "budget_valid": true,
+    "native_budget_value": true,
+    "normalized_C_h": true,
+    "certificate_available": true,
+    "unavailable_reason": true,
+    "attempt_retry_rollback": true,
+    "hard_mass_diagnostics": true
+  },
+  "architecture_audit": {
+    "path": "integration/f-kt/F-KT11_INVARIANT_AUDIT.json",
+    "result": "PASS_NO_ARCHITECTURE_INVARIANT_CONFLICT"
+  },
+  "owner_evidence": {
+    "path": "integration/f-kt/F-KT11_OWNER_EVIDENCE.json"
+  },
+  "source_locks": {
+    "contract_blob": "7861ed7e44368ab7cd0fbb1bcb423e3056799e47",
+    "canonical_numerical_config_blob": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "serialized_richards_backend_blob": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "transaction_core_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "richards_indicator_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "owner_driver_template_blob": "b49a5ed4fa199d9f09933ff421d24cd0bb6738ee",
+    "owner_runner_blob": "0422624960a4c96b8ddf822725062b15c0d25df3",
+    "ci_wrapper_blob": "d83e00aca7f2b0e42003f244f79ee66d6a292296",
+    "workflow_blob": "2920b574afb79be9b43a13d98f5225e359bca396",
+    "F_VQ32_handoff_blob": "f7b7cce171b3b1829d7005c5ab7abae7c44ba4a9",
+    "F_VQ32_closeout_blob": "51b075c6f72880897416bdcfd92549bd68d26b7b",
+    "F_KT09_contract_blob": "7957c07ba3a1e31469f315b437f9ac3248a860e0",
+    "F_KT10_closeout_blob": "1a53f26c4c299080d2ae8f03304320d55cf8ae8b"
+  },
+  "explicit_non_release": {
+    "F_GC02_released": false,
+    "reason": "F-KT11 is owner verification only; independent production qualification in F-VQ33 is still required."
+  },
+  "next": "Create or resume F-VQ33 using a disjoint independent qualification matrix and immutable F-KT11 handoff."
+}
