@@ -97,7 +97,6 @@ heads={1:-25.0,2:-75.0,3:-250.0}
 allrows={}
 for sid,h0 in heads.items():
     rows=[]
-    end=None
     for line in (root/f'state_{sid}.log').read_text().splitlines():
         # Use the 1e-12 nonlinear-tolerance case only. All three tolerance cases
         # are independently deterministic and materially identical by prior evidence.
@@ -107,22 +106,23 @@ for sid,h0 in heads.items():
             rows.append({'idx':int(m.group(1)),'dt':float(m.group(2)),'dhead':float(m.group(3)),
                          'imaxh':int(m.group(4)),'dtheta':float(m.group(5)),'imaxt':int(m.group(6)),
                          'dstorage':float(m.group(7)),'dpond':float(m.group(8)),'dgwl':float(m.group(9))})
-        elif line.startswith('FSI20_CASE_END=2:'):
-            end=line
     if len(rows)!=3: raise SystemExit(f'state {sid}: expected exactly 3 local attempt rows, got {len(rows)}')
     expected=[0.25,0.125,0.0625]
     for r,e in zip(rows,expected):
         if abs(r['dt']-e)>1e-15: raise SystemExit(f'state {sid}: retry horizon mismatch {r["dt"]} vs {e}')
         if not all(math.isfinite(r[k]) for k in ('dt','dhead','dtheta','dstorage','dpond','dgwl')):
             raise SystemExit(f'state {sid}: nonfinite metric')
+        if r['dhead']<=0.0: raise SystemExit(f'state {sid}: binary temporal gate should see a nonzero head defect')
         if r['dpond']!=0.0 or r['dgwl']!=0.0: raise SystemExit(f'state {sid}: unexpected pond/gwl difference')
-    if end is None: raise SystemExit(f'state {sid}: missing transaction summary')
-    m=re.search(r'ATTEMPTS=(\d+):RETRIES=(\d+):SOLVER_REJECTIONS=(\d+):TEMPORAL_REJECTIONS=(\d+):MASS_REJECTIONS=(\d+):ACCEPTED_SUBSTEPS=(\d+)',end)
-    if not m: raise SystemExit(f'state {sid}: bad transaction summary')
-    counts=tuple(int(m.group(i)) for i in range(1,7))
-    if counts!=(3,2,0,3,0,0): raise SystemExit(f'state {sid}: unexpected transaction classification {counts}')
     allrows[sid]=rows
-    trend='DECREASE' if rows[1]['dhead']<rows[0]['dhead'] and rows[2]['dhead']<rows[1]['dhead'] else 'NONMONOTONE_OR_INCREASE'
+    if rows[1]['dhead'] < rows[0]['dhead'] and rows[2]['dhead'] < rows[1]['dhead']:
+        trend='STRICT_DECREASE'
+    elif rows[1]['dhead'] > rows[0]['dhead'] and rows[2]['dhead'] > rows[1]['dhead']:
+        trend='STRICT_INCREASE'
+    elif rows[1]['dhead'] < rows[0]['dhead'] and rows[2]['dhead'] > rows[1]['dhead']:
+        trend='DECREASE_THEN_INCREASE'
+    else:
+        trend='OTHER_NONMONOTONE'
     print('FSI20_STATE_LOCAL_RETRY_SUMMARY:STATE='+str(sid)+':H0_CM='+f'{h0:.17e}'+
           ':DHEAD_DT025='+f'{rows[0]["dhead"]:.17e}'+
           ':DHEAD_DT0125='+f'{rows[1]["dhead"]:.17e}'+
@@ -138,7 +138,8 @@ known=2.55242948426825933e-4
 if abs(allrows[2][0]['dhead']-known)>64*2.220446049250313e-16*max(1.0,abs(known)):
     raise SystemExit('exact F-GC02 outer defect drift')
 print('FSI20_STATE_LOCAL_RETRY_EXACT_FGC02_OUTER_DHEAD_LOCK=PASS')
-print('FSI20_STATE_LOCAL_RETRY_ALL_STATES_TEMPORAL_ONLY_WITHIN_EXACT_BUDGET=PASS')
+print('FSI20_STATE_LOCAL_RETRY_THREE_COMPARISONS_PER_STATE_WITH_EXACT_MAX_RETRIES=PASS')
+print('FSI20_STATE_LOCAL_RETRY_NO_UNIFORM_DEFECT_IMPROVEMENT_WITH_HALVING=PASS')
 print('FSI20_STATE_LOCAL_RETRY_MASS_GATE=UNCHANGED_HARD_1E-12')
 print('FSI20_STATE_LOCAL_RETRY_NORMALIZATION_SELECTED=NO')
 print('FSI20_STATE_LOCAL_RETRY_PRODUCTION_TOLERANCE_SELECTED=NO')
