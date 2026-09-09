@@ -1,0 +1,35 @@
+name: F-SI20 head-norm physical envelope
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_headnorm_physical_envelope.sh'
+      - '.github/workflows/fsi20-headnorm-physical-envelope.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run head-norm physical envelope
+        run: |
+          set -o pipefail
+          bash tests/fsi/run_fsi20_headnorm_physical_envelope.sh | tee fsi20-headnorm-physical-envelope.log
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-headnorm-physical-envelope
+          path: fsi20-headnorm-physical-envelope.log
+          if-no-files-found: error
