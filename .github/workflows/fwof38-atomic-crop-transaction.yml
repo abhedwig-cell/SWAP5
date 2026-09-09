@@ -30,3 +30,5 @@ jobs:
           gfortran --version
       - name: Run F-WOF38 atomic crop transaction gate
         run: bash tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
+
+# Retriggered after replacing direct REAL zero comparison with a bitwise oracle.
