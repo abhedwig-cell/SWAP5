@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC05",
+  "title": "Independent Coupling Head-Accuracy Objective and Versioned Numerical Policy Template Qualification",
+  "status": "PRE_REGISTERED_RESEARCH_IN_PROGRESS",
+  "branch": "work/f-gc05-coupling-head-accuracy-policy",
+  "base": {
+    "work_unit": "F-GC04",
+    "head": "9574c5659b9f5bd78e2067db45032a6ed9fa4ef2",
+    "source_decision": "CHARACTERIZED_INDEPENDENT_INDICATOR_SCALE_APPLICATION_REQUIREMENT_STILL_MISSING"
+  },
+  "intended_application_class": "General-purpose direct iterative SWAP-MODFLOW coupling for water-table and soil-water applications in which interface head and exchange flux affect coupled predictions. This registration does not assume a specific spatial resolution, management decision, observation network, target fixture, or calibrated MODFLOW model.",
+  "accuracy_objective_hierarchy": [
+    {"level": 0, "name": "application_quantity_of_interest", "meaning": "The prediction or decision whose acceptable error must ultimately be protected, for example groundwater level, root-zone response, drainage, capillary rise, or another application-defined quantity."},
+    {"level": 1, "name": "application_head_accuracy_requirement", "symbol": "H_app", "meaning": "A finite positive head-accuracy requirement justified by the intended application, observational resolution, decision threshold, benchmark, or independently qualified reference comparison."},
+    {"level": 2, "name": "physical_and_representation_uncertainty", "meaning": "Conceptual-model, parameter, observation, spatial-discretization and other physical/model-representation uncertainties. These contextualize H_app but are not coupling tolerances and cannot by themselves be used to hide numerical error."},
+    {"level": 3, "name": "coupling_error_allocation", "symbol": "H_cpl", "meaning": "The portion of the independently specified application accuracy requirement allocated to coupling and component numerical error. Allocation requires an explicit rationale and may be application/version specific."},
+    {"level": 4, "name": "richards_temporal_head_budget", "symbol": "H_budget", "meaning": "The finite positive Richards temporal head-accuracy budget used by the qualified certificate C_h = B_inf / H_budget. It is not an observed error and is not selected from B_inf."},
+    {"level": 5, "name": "component_solver_convergence_criteria", "meaning": "Richards nonlinear/linear convergence settings and MODFLOW IMS closure criteria. These are solver controls, not application accuracy requirements."},
+    {"level": 6, "name": "diagnostic_indicators", "meaning": "Observed temporal indicators such as B_inf and coupling/interface residual diagnostics. They assess a frozen policy but cannot define the policy by target fitting."}
+  ],
+  "explicit_accuracy_objective": "Keep the Richards temporal-integration contribution sufficiently below an independently stated application/coupling head-accuracy allowance that it does not consume an unjustified share of the application error budget, while preserving exact mass accounting and the explicit SWAP-MODFLOW interface contract. No absolute centimetre value is preregistered here because the external application requirement has not yet been identified.",
+  "candidate_policy_rule": {
+    "template": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+    "constraints": [
+      "H_app must have traceable provenance independent of F-GC02 and F-GC04 indicator magnitudes",
+      "A_temporal must be in (0,1] and justified independently as an error-allocation policy rather than chosen to pass a target fixture",
+      "H_budget must be finite and positive",
+      "the policy version must identify application scope and provenance",
+      "mass conservation is not relaxed by any head-accuracy allocation",
+      "interface-head residual tolerance remains a separate coupling convergence control unless an independent derivation explicitly relates it to H_cpl"
+    ],
+    "numeric_candidate_selected": false
+  },
+  "validation_matrix": [
+    "MODFLOW solver closure semantics versus actual head accuracy",
+    "spatial and temporal discretization error versus coupling/component temporal error",
+    "coupling interface residual semantics versus temporal indicator semantics",
+    "application sensitivity of groundwater level and soil-water process predictions",
+    "numerical uncertainty versus conceptual/parameter/observation uncertainty",
+    "evidence for or against a transferable absolute centimetre-scale application objective",
+    "traceability of any H_app and A_temporal to independent application evidence",
+    "target-leakage audit before any F-GC02 rerun"
+  ],
+  "reject_criteria": [
+    "the only numeric basis is the F-GC02 target result",
+    "the only numeric basis is the F-GC04 B_inf distribution",
+    "a MODFLOW or Richards solver tolerance is re-labelled as application head accuracy",
+    "a coupling head residual is re-labelled as Richards temporal error without derivation",
+    "physical/model uncertainty is used as permission for arbitrary numerical error",
+    "the proposed absolute head objective is not transferable across the stated application class",
+    "the error-allocation fraction is selected after viewing target-fixture pass/fail behavior",
+    "mass conservation or interface flux conservation is relaxed"
+  ],
+  "target_leakage_lock": {
+    "F_GC02_target_fixture_may_select_H_budget": false,
+    "F_GC02_target_fixture_may_tune_H_budget": false,
+    "F_GC02_target_fixture_may_determine_pass_threshold": false,
+    "F_GC04_B_inf_distribution_may_select_H_budget": false,
+    "F_GC02_execution_authorized_before_policy_freeze": false
+  },
+  "independent_source_axes": [
+    {"source": "USGS MODFLOW 6 Groundwater Flow Model documentation", "finding_to_test": "MODFLOW head-change closure is a convergence criterion and does not itself guarantee equal head-solution accuracy."},
+    {"source": "USGS groundwater-model limitation and uncertainty literature", "finding_to_test": "Spatial discretization, time discretization, parameter structure, observations and conceptualization are distinct contributors to prediction uncertainty."},
+    {"source": "Dagès, Paniconi and Sulis (2012); Fiorentini, Orlandini and Paniconi (2015)", "finding_to_test": "Coupling error is scheme- and time-resolution-dependent and must be diagnosed separately from component solver tolerances and physical uncertainty."}
+  ],
+  "hard_nonclaims": [
+    "no production coupling change",
+    "no MODFLOW adapter",
+    "no new Richards formula",
+    "no mass-policy change",
+    "no F-GC02 rerun",
+    "no numeric H_budget candidate has been evaluated"
+  ],
+  "architecture_invariants_checked": [7,9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
