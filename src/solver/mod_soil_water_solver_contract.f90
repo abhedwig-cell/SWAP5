@@ -245,24 +245,19 @@ contains
     class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
     type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
 
-    ! Fail-closed common default. Alternative soil-water solvers are not
-    ! required to expose a Richards operator or to emulate this indicator.
-    ! Referencing otherwise unused dummies keeps strict compiler diagnostics
-    ! useful without introducing state changes or hidden work.
-    if (self%reserved_for_contract_use() .or. request%step_duration < 0.0_real64 .or. &
-        solve_result%status < SW_SOLVE_NOT_RUN .or. indicator_request%previous_right_derivative_available .and. &
+    indicator_result = soil_water_temporal_indicator_result_t()
+    if (indicator_request%previous_right_derivative_available .and. &
         .not. allocated(indicator_request%previous_right_derivative)) then
-       indicator_result = soil_water_temporal_indicator_result_t()
        indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
-       indicator_result%route = 'contract-invalid'
+       indicator_result%route = 'indicator-history-invalid'
        return
     end if
-    select type (workspace)
-    class is (soil_water_solver_workspace_base_t)
-       indicator_result = soil_water_temporal_indicator_result_t()
-       indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
-       indicator_result%route = 'solver-indicator-unavailable'
-    end select
+
+    ! Fail closed by default. This deliberate no-op leaves request, solve result,
+    ! solver and worker workspace untouched; alternative soil-water solvers are
+    ! not required to emulate a Richards-specific operator.
+    indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+    indicator_result%route = 'solver-indicator-unavailable'
   end subroutine soil_water_temporal_indicator_unavailable
 
 end module mod_soil_water_solver_contract
