@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "purpose": "Define bounded representation candidates and MultiSWAP cost gates before any production-like prototype.",
+  "source_reference": {
+    "doi": "10.1002/2015WR017126",
+    "source_bound_baseline": [
+      "theta-space finite-water-content bins are fixed by discretization",
+      "about 150-200 bins over the full theta_r to theta_e range are reported for accurate infiltration-front profiles",
+      "front positions and falling-slug/groundwater-front regimes evolve dynamically",
+      "forward-Euler timestep guidance is of order 10 s for infiltration, 100 s for falling slugs and up to 500 s for groundwater-front dynamics",
+      "nonuniform bin distributions are explicitly suggested by the paper as a possible way to reduce bin count"
+    ]
+  },
+  "candidate_A_fixed_or_semifixed_theta_bins": {
+    "description": "Keep a fixed bounded theta-bin layout per hydraulic material/template. Dynamic state is stored in fixed-index arrays for front/occupancy quantities; no dynamic allocation is allowed during a trial.",
+    "native_lineage": "closest to the published FWC discretization",
+    "advantages": [
+      "hard O(Nbins) base memory layout",
+      "natural SoA/SIMD batching",
+      "constitutive K(theta) and psi(theta) values can be immutable shared data",
+      "deterministic indexing and transaction-safe trial buffers"
+    ],
+    "risks": [
+      "150-200 uniform bins may be too much persistent state/work for very large MultiSWAP batches",
+      "falling-slug multiplicity is not yet proven representable by a fixed finite number of coordinates per bin",
+      "explicit internal timestep count may dominate runtime under infiltration",
+      "depth-profile views require reconstruction/projection from theta-domain geometry"
+    ],
+    "promising_variant": "offline nonuniform theta bins chosen from hydraulic/solution-resolution criteria shared by a template, never validation-case-specific per column",
+    "hard_gate": "Any reduction in bins must be qualified against a high-resolution FWC reference and FullRichards; performance policy may not silently coarsen physical representation."
+  },
+  "candidate_B_dynamic_front_object_pool": {
+    "description": "Store only active infiltration, slug and groundwater-front intervals as dynamic objects rather than dense per-bin dynamic arrays.",
+    "native_lineage": "derived representation, not the published fixed-bin implementation",
+    "advantages": [
+      "could reduce state when only a small subset of theta space is active",
+      "may avoid work on empty bins"
+    ],
+    "risks": [
+      "object count can depend on forcing history",
+      "front creation/merge/sort operations introduce branch divergence",
+      "unbounded pool growth would violate compact predictable MultiSWAP state",
+      "hard capping or merging objects can alter physics unless separately qualified",
+      "less suitable for contiguous SoA/vector execution"
+    ],
+    "hard_gate": "Reject as production representation unless a source- or algorithm-derived finite maximum object count is proven for arbitrary admitted forcing, with conservative deterministic merge rules."
+  },
+  "candidate_C_fixed_bins_with_bounded_front_slots": {
+    "description": "Hybrid research candidate: fixed/nonuniform theta bins plus a fixed predeclared number of front/slug coordinate slots per bin or per column, all stored in SoA form.",
+    "advantages": [
+      "preserves bounded allocation and batch layout while allowing more than one disconnected interval if required",
+      "transactional trial state can be copied or checkpointed predictably"
+    ],
+    "risks": [
+      "maximum slot count is currently unknown",
+      "overflow policy cannot discard or merge water silently",
+      "large worst-case slot counts can erase the expected memory advantage"
+    ],
+    "hard_gate": "Official-code audit or a complete event-topology proof must establish the required maximum slot count before this representation can be admitted."
+  },
+  "runtime_cost_model_to_measure": {
+    "base_form": "O(Nbins * N_internal_steps + N_events * event_cost)",
+    "must_report": [
+      "Nbins",
+      "maximum simultaneously active fronts/slugs",
+      "front create/merge events",
+      "capillary-relaxation operations",
+      "internal ODE steps per external interval",
+      "maximum not just mean internal steps",
+      "persistent bytes per column",
+      "scratch bytes per worker",
+      "branch/regime counts",
+      "p50/p95/p99/max wall cost"
+    ],
+    "bounded_cost_requirement": "All production-admitted configurations require explicit finite maxima or fail-closed retry/rejection rules; no unbounded event or front growth."
+  },
+  "current_preference_for_first_prototype": "CANDIDATE_A_FIXED_OR_SEMIFIXED_THETA_BINS",
+  "reason": "It is closest to the source method and best aligned with fixed-layout MultiSWAP batching. Dynamic object compression should not be introduced before the source implementation and event topology are understood.",
+  "decision": "FWC_RESEARCH_CONTINUES_FIXED_BIN_REFERENCE_FIRST_DYNAMIC_POOL_NOT_ADMITTED",
+  "production_implementation": false,
+  "status": "REPRESENTATION_CANDIDATES_PERSISTED_BEFORE_PROTOTYPE"
+}
