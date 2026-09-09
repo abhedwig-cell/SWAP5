@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "Equation-level reconstruction of Schaap and van Genuchten 2006 MMVG and separation from NHI simplification",
+  "status": "PRIMARY_SOURCE_RECONSTRUCTED_CANDIDATE_NOT_YET_QUALIFIED",
+  "production_implementation": false,
+  "primary_source": {
+    "citation": "Schaap MG, van Genuchten MT (2006), A Modified Mualem-van Genuchten Formulation for Improved Description of the Hydraulic Conductivity Near Saturation, Vadose Zone Journal 5(1):27-34",
+    "doi": "10.2136/vzj2005.0005",
+    "publisher_full_text": "https://acsess.onlinelibrary.wiley.com/doi/full/10.2136/vzj2005.0005",
+    "independent_public_copy": "https://www.ars.usda.gov/ARSUserFiles/20360500/pdf_pubs/p2115.pdf"
+  },
+  "notation": {
+    "h": "pressure head, cm; negative below saturation",
+    "theta_r": "residual volumetric water content",
+    "theta_s": "measurable saturated volumetric water content",
+    "theta_m": "fictitious extrapolated water-content parameter greater than theta_s",
+    "alpha": "retention shape parameter, cm^-1",
+    "n": "retention shape parameter > 1",
+    "m": "1 - 1/n",
+    "h_s": "minimum capillary height / air-entry head, negative",
+    "K_o": "matrix-flow conductivity matching point used by modified Mualem relation",
+    "K_s": "measured saturated hydraulic conductivity",
+    "L": "empirical pore-connectivity parameter"
+  },
+  "published_equations": [
+    {
+      "paper_equation": 4,
+      "name": "modified_retention",
+      "equation": "theta(h)=theta_r+(theta_m-theta_r)/(1+|alpha*h|^n)^m for h<h_s; theta(h)=theta_s for h>=h_s",
+      "role": "introduces a finite air-entry plateau while preserving measurable theta_s"
+    },
+    {
+      "paper_equation": 5,
+      "name": "theta_m_continuity_definition",
+      "equation": "theta_m=theta_r+(theta_s-theta_r)*(1+|alpha*h_s|^n)^m",
+      "role": "makes Eq. 4 continuous at h_s"
+    },
+    {
+      "paper_equation": 6,
+      "name": "modified_mualem_matrix_conductivity",
+      "equation_semantics": "for h<h_s use a normalized Mualem conductivity based on the modified retention coordinate, with K=K_o at h_s; for h>=h_s set matrix conductivity K_m=K_o",
+      "normalization_note": "The PDF text extraction flattens Eq. 8. The source/Vogel lineage shows that the denominator in Eq. 6 normalizes the Mualem integral at the finite air-entry state so that the conductivity reaches exactly K_o at h_s. Implementation must use the source image or independently verified Vogel formulation rather than a naive F(1)=0 transcription.",
+      "implementation_status": "SEMANTICS_SOURCE_BOUND_EXACT_MACHINE_FORMULA_REQUIRES_VISUAL_OR_SECONDARY_EQUATION_CROSSCHECK_BEFORE_CODING"
+    },
+    {
+      "paper_equation": 7,
+      "name": "F_function",
+      "equation": "F(x)=[1-x^(1/m)]^m, applied to the modified-retention saturation coordinate used by Eq. 6",
+      "role": "closed-form Mualem integral term"
+    },
+    {
+      "paper_equation": 8,
+      "name": "modified_saturation_coordinate",
+      "equation_semantics": "the modified retention uses theta_m in the internal saturation coordinate; the finite air-entry state corresponds to (theta_s-theta_r)/(theta_m-theta_r) < 1",
+      "role": "provides the finite upper integration state used to normalize Eq. 6"
+    },
+    {
+      "paper_equation": 9,
+      "name": "near_saturation_total_conductivity_structure",
+      "equation": "K(h)=A(h)*K_m(h) for h>h_m; K(h)=K_m(h) for h<=h_m",
+      "role": "adds a pressure-dependent near-saturation correction above the matrix-flow relation"
+    },
+    {
+      "paper_equation": 10,
+      "name": "scaled_log_conductivity_residual",
+      "equation": "R(h)=[log K(h)-log K_m(h)]/[log K_s-log K_m(h)]",
+      "role": "maps the measured-vs-matrix conductivity discrepancy to a dimensionless 0..1 wet-end correction coordinate"
+    },
+    {
+      "paper_equation": 15,
+      "name": "published_piecewise_R",
+      "equation": "R(h)=0 for h<-40 cm; R(h)=0.2778+0.00694*h for -40<=h<-4 cm; R(h)=1+0.1875*h for -4<=h<=0 cm",
+      "checks": [
+        "R(-40)=0",
+        "R(-4)=0.25 on both linear segments",
+        "R(0)=1"
+      ],
+      "role": "empirical two-segment wet-end correction fitted to 235 UNSODA conductivity data sets"
+    },
+    {
+      "paper_equation": 16,
+      "name": "published_total_conductivity",
+      "equation": "K(h)=[K_s/K_m(h)]^R(h) * K_m(h)",
+      "equivalent_log_form": "log K(h)=(1-R(h))*log K_m(h)+R(h)*log K_s",
+      "endpoint_properties": [
+        "if R=0 then K=K_m",
+        "if R=1 then K=K_s",
+        "positive K is preserved for positive K_m and K_s"
+      ]
+    }
+  ],
+  "published_parameter_findings": {
+    "h_s_selected_cm": -4.0,
+    "basis": "combined retention and conductivity fitting performance across 235 UNSODA samples",
+    "texture_detail": "Sands, Loams and Silts had combined optima roughly between -3 and -5 cm; Clays had a broader minimum around -8 cm; the full data set optimum was -4 cm",
+    "R_break_head_cm": -4.0,
+    "R_zero_head_cm": -40.0,
+    "R_at_break": 0.25,
+    "mean_logK_RMSE_MMVG": 0.261,
+    "mean_logK_RMSE_FMVG": 0.410,
+    "sample_count": 235
+  },
+  "scientific_caveats_from_primary_source": [
+    "The near-saturation correction is explicitly empirical, not a mechanistic pore-network derivation.",
+    "Near-saturated hydraulic-conductivity measurements are uncertain, so the authors recommend caution.",
+    "The apparent micro/meso/macropore interpretation is plausible but not uniquely established by the fitted correction.",
+    "The formulation does not explicitly define separate matrix and macropore domains and was not recommended by the authors as a preferential-flow model."
+  ],
+  "important_distinction_for_SWAP5": {
+    "statement": "Published MMVG is not merely a smooth replacement for the SWAP 4.3.1 KSATEXM interpolation. It modifies the near-saturation constitutive model and distinguishes a matrix matching point K_o from measured saturated K_s before bridging between them in log-conductivity space.",
+    "consequence": "A faithful MMVG candidate must be exposed as a separate physical hydraulic closure, not hidden inside RossFast numerical policy."
+  },
+  "nhi_metaswap_v9_lineage": {
+    "source": "Van Walsum PEV, Kok H, Leander R (2026), MetaSWAP V9 Theory and model implementation, final version 20 March 2026",
+    "official_url": "https://nhi.nu/documents/272/11211295-006-_rSbkUL1.0-MetaSWAP_V9_Theory_and_model_implementation_-__voor_publicatie.pdf",
+    "documented_facts": [
+      "The NHI/MetaSWAP V9 appendix explicitly cites Schaap and van Genuchten 2006 for heavy-soil near-saturation conductivity problems.",
+      "NHI uses a comparatively conservative adjustment starting at -10 cm rather than simply copying the paper's -40/-4/0 cm construction.",
+      "The NHI adjustment is implemented through table-form soil hydraulics.",
+      "MetaSWAP V9 states that the unmodified table can change conductivity by a factor of about 3 for a volumetric-fraction change of only 0.0001 near saturation and calls this a mathematical artefact rather than an experimental-data feature.",
+      "NHI does not represent macropore conductivity through this correction; macropore flow is handled separately through bypass flow, while extra near-saturation retention storage is added separately."
+    ],
+    "status": "NHI_SIMPLIFIED_VARIANT_CONFIRMED_CONCEPTUALLY_EXACT_TABLE_MAPPING_NOT_YET_SOURCE_BOUND",
+    "required_next_source": "MetaSWAP Test_report_76 and/or the exact NHI soil-physics table-generation procedure used for Figure A.2"
+  },
+  "rossfast_candidate_implications": [
+    "Keep Class A exact SWAP 4.3.1 KSATEXM evidence unchanged and fail-closed.",
+    "Open a separate Class B candidate family for published MMVG and optionally a second Class B candidate for the NHI conservative -10 cm simplification once its exact table mapping is obtained.",
+    "Do not combine the published MMVG macropore-inspired conductivity correction with SWAP explicit macropore flow without a double-counting analysis.",
+    "Because Eq. 16 is affine in log K between log K_m and log K_s for a prescribed R(h), it is structurally attractive for compact precomputation and interpolation, but this is only a hypothesis until face-response tests pass.",
+    "The air-entry plateau may remove the pathological van-Genuchten wet-end slope that motivated the current Ross table difficulties, but transient saturation crossing and storage continuity must be qualified separately.",
+    "FullRichards and RossFast must use the same Class B constitutive closure for any solver accuracy comparison."
+  ],
+  "proposed_next_gate": {
+    "id": "C2B_MMVG2006_CONSTITUTIVE_CHARACTERIZATION",
+    "scope": "offline research only",
+    "candidate_variants": [
+      "PUBLISHED_MMVG_2006",
+      "NHI_CONSERVATIVE_MMVG_ONLY_AFTER_EXACT_TABLE_MAPPING_IS_SOURCE_BOUND"
+    ],
+    "minimum_metrics": [
+      "theta continuity at h_s",
+      "K continuity at h_s and at R-segment joins",
+      "one-sided dK/dh at -40, -4, h_s and 0",
+      "monotonicity and positivity",
+      "MFP continuity and quadrature conditioning",
+      "K/K_s and d(logK)/dh wet-end stiffness",
+      "Ross steady-face representation error on the frozen O05/O12/O13/B05/O14/B10 stress materials",
+      "memory and O(1) lookup budget"
+    ],
+    "no_promotion": "Passing this constitutive gate would not qualify transient RossFast, groundwater coupling, macropore combinations or production use."
+  },
+  "decision": "PUBLISHED_MMVG_IS_A_SOURCE_BOUND_CLASS_B_CANDIDATE; NHI_VARIANT_IS_RELEVANT_BUT_MUST_REMAIN_SEPARATE_UNTIL_EXACT_MAPPING_IS_RECOVERED"
+}
