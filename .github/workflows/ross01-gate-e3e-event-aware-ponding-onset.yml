@@ -1,0 +1,64 @@
+name: F-ROSS01 Gate E3E Event-Aware Ponding-Onset Saturation Transition
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - '.github/workflows/ross01-gate-e3e-event-aware-ponding-onset.yml'
+      - 'experiments/ross/run_ross01_gate_e3e_event_aware_ponding_onset.py'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_EVENT_AWARE_PONDING_ONSET_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_E3D_SURFACE_BOUNDARY_SOURCE_RECONCILIATION.json'
+      - 'experiments/ross/run_ross01_gate_e3c_tight_qualification_solver_policy.py'
+      - 'experiments/ross/run_ross01_gate_e3_saturation_transition_hydrologic_relevance.py'
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen event-aware ponding-onset gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3e-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_event_aware_ponding_onset.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen gate semantics
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-{m}/F-ROSS01_GATE_E3E_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['production_implementation'] is False
+          assert r['qualification_solver_is_production_solver'] is False
+          assert r['tests']['cell_mass'] is True
+          assert r['tests']['surface_mass'] is True
+          assert r['tests']['composed_step_mass'] is True
+          assert r['tests']['composed_horizon_mass'] is True
+          assert r['tests']['transaction'] is True
+          assert r['tests']['face_scope'] is True
+          assert r['tests']['ponding_onset_branch_present'] is True
+          assert r['tests']['positive_surface_storage_present'] is True
+          PY
+        env:
+          MATERIAL: ${{ matrix.material }}
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3e-${{ matrix.material }}
+          path: ross01-gate-e3e-${{ matrix.material }}/
