@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC03",
+  "title": "Coupling Head-Accuracy Budget Provenance and Temporal Error Allocation Policy",
+  "branch": "work/f-gc03-coupling-head-accuracy-budget-provenance",
+  "tested_head": "33d9725fd59cfae238084a1482fe46d8982ebb9f",
+  "workflow_run": 34369787999,
+  "workflow_job": 102527745078,
+  "workflow_conclusion": "success",
+  "policy_evidence_blob": "aee1bb2d48b70f0177a3e3149a1501899b81a30d",
+  "decision": "POLICY_CONTRACT_QUALIFIED_NUMERIC_APPLICATION_REQUIREMENT_STILL_MISSING",
+  "status": "COMPLETE_POLICY_SCOPE_FAIL_CLOSED_FOR_TARGET_EXECUTION",
+  "qualified": {
+    "head_budget_provenance_contract": true,
+    "quantity_separation": true,
+    "unit_separation": true,
+    "admissible_provenance_classes": true,
+    "post_hoc_sources_fail_closed": true,
+    "runtime_provenance_diagnostics_contract": true,
+    "exact_FGC02_reexecution_release_condition": true,
+    "production_source_changed": false
+  },
+  "not_qualified_or_not_present": {
+    "numeric_application_H_budget": null,
+    "recommended_H_budget": null,
+    "universal_H_budget": null,
+    "coupling_head_residual_numeric_tolerance": null,
+    "FGC02_physical_trial_reexecution": false,
+    "FGC02_admission": false,
+    "F_VQ35_execution_authorization": false,
+    "B_inf_true_error_upper_bound": false,
+    "rigorous_total_error_budget_composition": false
+  },
+  "downstream_state": {
+    "F_VQ34": "QUALIFIED_WITHIN_FROZEN_SCOPE",
+    "F_GC02": "FAIL_CLOSED_PENDING_INDEPENDENT_NUMERIC_APPLICATION_RUNTIME_H_BUDGET",
+    "F_VQ35": "NOT_OPENED_AND_NOT_AUTHORIZED",
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT"
+  },
+  "release_condition_for_future_FGC02_reassessment": [
+    "A finite positive numeric Richards H_budget exists with admissible provenance.",
+    "The value and provenance are frozen before any target F-GC02 physical execution.",
+    "The value is independent of the F-GC02 B_inf, C_h and accept/reject result.",
+    "The exact frozen F-GC02 physical fixture remains unchanged.",
+    "Hard SWAP mass remains an earlier absolute acceptance gate.",
+    "A fresh independent F-VQ workunit freezes its admission contract before execution."
+  ],
+  "admissible_future_sources": [
+    "EXTERNAL_APPLICATION_ACCURACY_REQUIREMENT_FROZEN_BEFORE_EXECUTION",
+    "VERSIONED_NUMERICAL_POLICY_TEMPLATE_QUALIFIED_ON_INDEPENDENT_EVIDENCE"
+  ],
+  "prohibited_future_shortcuts": [
+    "0.01 cm predictor perturbation as H_budget",
+    "legacy transaction temporal_tolerance as H_budget",
+    "current target-trial B_inf or a function of it",
+    "F-VQ34 qualification-only budget constructions",
+    "Newton/nonlinear tolerance as H_budget",
+    "automatic equivalence between coupling head residual tolerance and Richards temporal H_budget",
+    "material-specific post-hoc tuning"
+  ],
+  "core_invariant_audit": {
+    "3": "PASS_EXPLICIT_NUMERICAL_QUANTITY_SEPARATION",
+    "7": "PASS_NO_RETROSPECTIVE_ACCEPTANCE_OR_COMMIT",
+    "11": "PASS_EXPLICIT_COUPLING_POLICY_PROVENANCE",
+    "12": "PASS_INTERFACE_CONTRACT_UNCHANGED",
+    "13": "PASS_HARD_MASS_UNCHANGED",
+    "23": "PASS_PHYSICS_AND_NUMERICAL_POLICY_SEPARATED",
+    "26": "PASS_PROVENANCE_DIAGNOSTICS_REQUIRED",
+    "29": "PASS_NO_HIDDEN_DEFAULT_OR_0P01CM_DEPENDENCY",
+    "30": "PASS_EXPLICIT_ARCHITECTURE_AUDIT"
+  },
+  "next_action": "Do not execute F-GC02 or open F-VQ35 yet. Identify or independently establish a numeric application/runtime head-accuracy requirement under an admissible provenance class, freeze it before target execution, and only then open a fresh independent admission unit for the exact frozen F-GC02 trial."
+}
