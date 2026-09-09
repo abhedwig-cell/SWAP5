@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "purpose": "Qualify a cancellation-resistant direct mapping from representable normalized water state S to the Ross face-table coordinate u=log10(-h/cm) for the C2B H_ENPR/SvG2006 closure over the existing bounded face envelope h=[-10000,-1] cm, without requiring a general runtime theta-to-head reconstruction.",
+  "physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "relationship_to_failed_inverse_gate": "F-ROSS01_GATE_C2B_HENPR_STATE_INVERSE_RESULT.json failed the stronger raw theta-to-head requirement near saturation. Ross2011 runtime face lookup does not require that stronger contract, so this is a separate coordinate qualification rather than a threshold relaxation.",
+  "frozen_scope": {
+    "materials": "all 36 Staringreeks 2018 unimodal MvG rows",
+    "H_ENPR_cm": -4.0,
+    "h105_cm": -4.2,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "state_coordinate": "S=(theta-theta_r)/(theta_s-theta_r)",
+    "hysteresis": false,
+    "elasticity": false,
+    "runtime_iterations": 0
+  },
+  "canonical_numerical_retention_form": {
+    "physics_change": false,
+    "rationale": "The SWAP source formulas are mathematically constructed to match value and derivative at h105. Direct source arithmetic leaves an approximately 1e-12 normalized floating seam. V1N evaluates algebraically equivalent join coefficients in a form that enforces the intended C0 join exactly in binary64.",
+    "definitions": [
+      "m=1-1/n",
+      "f(h)=(1+|alpha*h|^n)^(-m)",
+      "s_entry=f(H_ENPR)",
+      "S105=f(h105)/s_entry",
+      "theta105=theta_r+(theta_s-theta_r)*S105",
+      "C105=dtheta/dh of the normalized dry branch at h105",
+      "A=(theta105-theta_s-C105*h105)/(C105*h105^2)",
+      "AB=C105*(1+A*h105)^2"
+    ],
+    "forward_wet_state": "S=1+(AB/(theta_s-theta_r))*h/(1+A*h)",
+    "source_equivalence_check": "The stabilized normalized S(h) must remain within 2e-12 of the direct source arithmetic over the frozen head envelope for every material."
+  },
+  "candidate_mapping": {
+    "dry_branch_S_below_S105": "f=S*s_entry; z=-log(f)/m; u=(log(expm1(z))/n-log(alpha))/log(10)",
+    "wet_branch_S_at_or_above_S105": "w=1-S; u=(log(theta_s-theta_r)+log1p(-S)-log(AB+A*(theta_s-theta_r)*w))/log(10)",
+    "exact_endpoint_special_cases": {
+      "S_min_equals_stabilized_S_of_h_minus10000": "u=4 exactly",
+      "S_max_equals_stabilized_S_of_h_minus1": "u=0 exactly"
+    },
+    "domain_rule": "Representable S outside [S_min,S_max] is rejected exactly. No hidden epsilon widens the physical table domain.",
+    "runtime_complexity": "O(1)",
+    "runtime_root_finding": false
+  },
+  "frozen_probes_per_material": {
+    "exact_endpoints": 2,
+    "nextafter_inward_from_each_endpoint": 2048,
+    "uniform_state_fraction_samples": 8193,
+    "uniform_log_head_origin_samples": 8193,
+    "join_focused_samples_each_side": 4096,
+    "high_precision_reference_samples": 2048,
+    "high_precision_decimal_digits": 80,
+    "out_of_domain_one_ulp_rejection_checks": 2
+  },
+  "acceptance": {
+    "nan_or_inf_count": 0,
+    "coordinate_outside_closed_interval_count": 0,
+    "monotonicity_violation_count": 0,
+    "exact_endpoint_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0,
+    "branch_selection_failures_outside_exact_join": 0,
+    "max_abs_u_error_vs_80_digit_reference": 2e-12,
+    "max_abs_u_roundtrip_error_from_log_head_origin": 2e-12,
+    "max_normalized_forward_difference_vs_direct_source_arithmetic": 2e-12
+  },
+  "exit_rule": {
+    "pass": "Freeze this mapping for C2B bounded face-table characterization and test a separately contracted steady-face representation without changing the physical closure.",
+    "fail": "Fail-close the mapping. Do not fall back to runtime nonlinear theta-to-head inversion inside RossFast."
+  },
+  "scope_guard": "Coordinate conditioning only for h=[-10000,-1] cm. No claim for h>-1 cm, saturation switching, positive pressure head, timestep accuracy, groundwater coupling or production state layout."
+}
