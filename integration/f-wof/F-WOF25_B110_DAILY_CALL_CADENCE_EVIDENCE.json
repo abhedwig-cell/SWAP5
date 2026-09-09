@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "B1.10 Standard WOFOST Daily Call and Cadence Evidence",
+  "scope": {
+    "sw_wofost": 1,
+    "potential_shadow": false,
+    "nutrient_route": false,
+    "grass": false,
+    "soybean": false
+  },
+  "source_provenance": {
+    "archive": "user-supplied SWAP_4.3.1(6).zip",
+    "nested_source": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "previous_locked_hashes": {
+      "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+    }
+  },
+  "legacy_call_order": [
+    {
+      "phase": "day_start",
+      "source": "SWAP/swap.f90:362-399",
+      "facts": [
+        "TimeControl selects the current day, then daily meteo is loaded.",
+        "crop rotation/emergence is checked before assimilation.",
+        "for an emerged detailed crop, assimilation() is called exactly in the flDayStart block."
+      ]
+    },
+    {
+      "phase": "day_start_assimilation",
+      "source": "SWAP/wofost.f90:1348-1404,1470-1526",
+      "facts": [
+        "assimilation shifts atmin7, increments nofd and computes the running minimum-temperature mean including current-day TMN.",
+        "astro(daynr,...) derives DAYL, DAYLP and radiation geometry using day number, latitude and daily radiation.",
+        "potential and actual daily gross assimilation are computed from pre-growth crop state and current-day weather.",
+        "r_pot%pgass and r_act%pgass are prepared daily rates/intermediates; they are not physical continuation state."
+      ]
+    },
+    {
+      "phase": "soil_water_substeps",
+      "source": "SWAP/swap.f90:410-463",
+      "facts": [
+        "daily integrated variables are reset at day start before substep processing.",
+        "soil-water timestep reduction/retry occurs inside fldtreduce before SoilWater(3) and integral(3).",
+        "integral(3) is called only after the current substep leaves the retry loop."
+      ]
+    },
+    {
+      "phase": "accepted_substep_aggregate",
+      "source": "SWAP/integral.f90:119-135,250-296",
+      "facts": [
+        "IQROT_DAY accumulates qrosum*dt.",
+        "IPTRA_DAY accumulates ptra*dt.",
+        "IALPWET_DAY accumulates alpwetnoddrz*dt.",
+        "the three daily accumulators are zeroed at initialization/day start and accumulated over soil-water timesteps."
+      ]
+    },
+    {
+      "phase": "day_end_crop_evolution",
+      "source": "SWAP/swap.f90:474-492; SWAP/MOD_cropdevelopment.f90:1001-1014; SWAP/wofost.f90:345-393",
+      "facts": [
+        "cropdevelopment(3) is called once in the flDayEnd block.",
+        "cropdevelopment(3) calls wofost(3) before root-extension and root-distribution updates.",
+        "wofost(3) computes phenology rates, consumes IQROT_DAY/IPTRA_DAY for actual water-stress reduction, updates potential and actual WOFOST trajectories, and then updates vernalisation state when IDSL=2."
+      ]
+    }
+  ],
+  "fixed_cadence_evidence": {
+    "source": "SWAP/wofost.f90:7-8,1047-1102,1852-1943",
+    "legacy_delt": 1.0,
+    "meaning": "the standard implementation advances biomass, leaf cohorts, TSUM and DVS with an explicit one-day increment per WOFOST update call",
+    "arbitrary_dt_equivalence_proven": false,
+    "soil_water_substep_is_crop_update": false
+  },
+  "source_bound_conclusion": "B1.10 standard WOFOST has a real daily process cadence layered over smaller soil-water timesteps. Generic kernel time therefore requires an explicit one-day crop event/window, not replacement of delt=1 by arbitrary solver dt."
+}
