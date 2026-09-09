@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT11",
+  "subscope": "native invalid-budget diagnostic preservation remediation",
+  "trigger": {
+    "independent_unit": "F-VQ33",
+    "independent_status_commit": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "finding": "supplied invalid negative/NaN/+Inf budget is diagnosed as 0.0 rather than preserving the native supplied value required by the frozen F-KT11 contract"
+  },
+  "previous_owner_source": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+  "previous_owner_workflow": 34356407443,
+  "previous_owner_matrix_remains_immutable": true,
+  "remediation_contract": {
+    "preserve_raw_supplied_budget_in_diagnostic_carrier": true,
+    "normalization_uses_budget_only_when_valid": true,
+    "validity_rule_unchanged": "supplied AND finite AND >0",
+    "missing_budget_diagnostic_value": 0.0,
+    "no_clamp": true,
+    "no_floor": true,
+    "no_abs": true,
+    "no_default": true,
+    "no_acceptance_formula_change": true,
+    "no_mass_ordering_change": true,
+    "no_state_change": true,
+    "no_extra_solve": true
+  },
+  "supplemental_owner_cases": [
+    {"id":"INVALID_NEGATIVE_BUDGET","supplied":true,"value_rule":"-abs(direct_B_inf)","expected_valid":false,"expected_reason":"budget-invalid","expected_native_value":"exact supplied finite negative value"},
+    {"id":"INVALID_NAN_BUDGET","supplied":true,"value":"NaN","expected_valid":false,"expected_reason":"budget-invalid","expected_native_value":"NaN"},
+    {"id":"INVALID_POSITIVE_INFINITY_BUDGET","supplied":true,"value":"+Inf","expected_valid":false,"expected_reason":"budget-invalid","expected_native_value":"+Inf"}
+  ],
+  "owner_decision_before_remediation": "SUPERSEDED_PENDING_DIAGNOSTIC_REMEDIATION",
+  "persist_early_test_second": true
+}
