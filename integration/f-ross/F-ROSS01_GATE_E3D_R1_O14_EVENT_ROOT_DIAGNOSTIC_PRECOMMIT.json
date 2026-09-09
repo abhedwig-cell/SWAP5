@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3D_R1_O14_REAL_EVENT_FIRST_TRIAL_ROOT_DIAGNOSTIC",
+  "production_implementation": false,
+  "qualification_use_only": true,
+  "upstream_failure": {
+    "gate": "E3D_REAL_H0_SATURATION_TRANSITION_COLUMN",
+    "workflow_run": 34395856647,
+    "material": "O14",
+    "fixture": "q_top=1.5*Ksat, horizon=0.001 d, initial_heads=(-0.2,-1.5,-5), bottom_head=-15",
+    "observed": "reference64 and candidate4/8/16 all rejected their first trial"
+  },
+  "purpose": "Determine whether the frozen O14 E3D first-trial failures are absence of a mass-conserving solution or local solver/start-point failures near the h=0 nonsmooth event.",
+  "trials": [
+    {"route":"reference","step_count":64},
+    {"route":"candidate","step_count":4},
+    {"route":"candidate","step_count":8},
+    {"route":"candidate","step_count":16}
+  ],
+  "start_head_variants_cm": [
+    [-0.2,-1.5,-5.0],
+    [-0.1,-1.5,-5.0],
+    [-0.01,-1.5,-5.0],
+    [0.01,-1.5,-5.0],
+    [0.1,-1.5,-5.0]
+  ],
+  "solver_variants": [
+    "tight bounded least_squares with max_nfev=5000",
+    "scipy root hybr diagnostic only",
+    "scipy root lm diagnostic only"
+  ],
+  "hard_mass_certificate_cm": 1e-9,
+  "strong_diagnostic_target_cm": 1e-12,
+  "requirements": [
+    "Committed state remains bitwise unchanged during diagnostics.",
+    "Candidate strong roots may use only the already-qualified E3A-R2 face composition.",
+    "No tolerance, forcing, horizon or physics change is permitted.",
+    "Record root multiplicity/sign side rather than choosing a preferred root post hoc."
+  ],
+  "hard_nonclaims": [
+    "A diagnostic root does not requalify E3D.",
+    "No production nonlinear solver follows.",
+    "No forcing or timestep retuning follows from this diagnostic alone."
+  ],
+  "status": "PRECOMMITTED_READY_FOR_EXECUTION"
+}
