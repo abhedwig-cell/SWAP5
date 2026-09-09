@@ -1,0 +1,58 @@
+name: F-ROSS01 Gate E3E-R1 5cm Boundary Numerical Seam Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - '.github/workflows/ross01-gate-e3e-r1-boundary-numerical-seam-diagnostic.yml'
+      - 'experiments/ross/run_ross01_gate_e3e_r1_boundary_numerical_seam_diagnostic.py'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R1_BOUNDARY_NUMERICAL_SEAM_DIAGNOSTIC_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_5CM_SURFACE_BOUNDARY_FACE_RECONCILIATION.json'
+      - 'experiments/ross/run_ross01_gate_e3e_5cm_surface_boundary_face.py'
+
+jobs:
+  diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install diagnostic dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen boundary numerical seam diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3e-r1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r1_boundary_numerical_seam_diagnostic.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert diagnostic-only semantics
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r1-{m}/F-ROSS01_GATE_E3E_R1_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['qualification_use'] is False
+          assert r['production_implementation'] is False
+          assert r['reference_failure_count'] == 0
+          assert len(r['variants']) == 2
+          assert r['variants'][0]['variant'] == 'A_ZERO_ADJACENT_UNSAT_CLUSTERING'
+          assert r['variants'][1]['variant'] == 'B_DUAL_ENDPOINT_RESIDUAL_PROXIMITY'
+          PY
+        env:
+          MATERIAL: ${{ matrix.material }}
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3e-r1-${{ matrix.material }}
+          path: ross01-gate-e3e-r1-${{ matrix.material }}/
