@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "gate": "A0_MATERIAL_SCALE_COORDINATE_SCREEN",
+  "execution": {
+    "workflow_run": 34329612925,
+    "tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "material_jobs": 15,
+    "material_jobs_success": 15,
+    "aggregate_job": 102413374134,
+    "aggregate_conclusion": "success"
+  },
+  "authoritative_artifact": {
+    "artifact_id": 10097493154,
+    "name": "f-lmfp10-a0-material-scale-coordinate-result",
+    "archive_digest": "sha256:a5db61abc171e5fe625d240ad17ebee95bcfe7beb74d6ba416277f6ead05ec4a",
+    "aggregate_json_sha256": "aaa3935c96ae7b3c9ab7c67e09986c4c41c5ca634ae2b4a04f991ab6a7dbd3f2",
+    "aggregate_json_path_in_artifact": "F-LMFP10_A0_MATERIAL_SCALE_COORDINATE_RESULT.json"
+  },
+  "panel": {
+    "materials": 15,
+    "geometry_classes": 30,
+    "axis_nodes_per_class": 49,
+    "fresh_holdout_used": false
+  },
+  "candidate_results": {
+    "A_ALPHA_NORMALIZED_ENDPOINTS": {
+      "coherent": false,
+      "checks": {
+        "structural_required": true,
+        "geometry_score_lt_1": true,
+        "control_score_le_1p25": false,
+        "tail_score_lt_1": false,
+        "tail_row_better_fraction_gt_0p5": false
+      },
+      "scores": {
+        "geometry_score": 0.1969840762694886,
+        "control_score": 7.936587343389922,
+        "tail_score": 5.678582931301278,
+        "tail_row_better_fraction": 0.3015179392824287
+      },
+      "structural": {
+        "active_sign_mismatches": 0,
+        "continuity_all_pass_diagnostic": true,
+        "fail_closed_all_pass": true,
+        "identity_all_pass": true,
+        "runtime_oracle_calls_zero_all": true
+      }
+    },
+    "B_H50_NORMALIZED_ENDPOINTS": {
+      "coherent": false,
+      "checks": {
+        "structural_required": true,
+        "geometry_score_lt_1": true,
+        "control_score_le_1p25": false,
+        "tail_score_lt_1": false,
+        "tail_row_better_fraction_gt_0p5": false
+      },
+      "scores": {
+        "geometry_score": 0.252319575523656,
+        "control_score": 9.624447676397827,
+        "tail_score": 7.13033686006231,
+        "tail_row_better_fraction": 0.16352345906163754
+      },
+      "structural": {
+        "active_sign_mismatches": 0,
+        "continuity_all_pass_diagnostic": true,
+        "fail_closed_all_pass": true,
+        "identity_all_pass": true,
+        "runtime_oracle_calls_zero_all": true
+      }
+    }
+  },
+  "frozen_nomination_rule_result": {
+    "decision": "A0_NO_COHERENT_SCALE_NORMALIZED_CANDIDATE",
+    "nominated_candidate": null,
+    "neither_wins": true
+  },
+  "routing": {
+    "start_A1_holdout": false,
+    "retune_A_or_B": false,
+    "create_hybrid_in_F_LMFP10": false,
+    "add_conductivity_coordinate": false,
+    "transient_gate": false,
+    "groundwater_gate": false,
+    "next": "Close F-LMFP10 as a negative feasibility result. Any further representation hypothesis must be materially different and separately precommitted before seeing its own qualification data."
+  },
+  "status": "COMPLETE_NEGATIVE_A0_REJECT_BOTH_CANDIDATE_FAMILIES"
+}
