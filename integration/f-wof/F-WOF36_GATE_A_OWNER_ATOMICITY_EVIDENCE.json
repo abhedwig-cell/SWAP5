@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "gate": "A_EXECUTION_POINT_AND_COMPOSITION_ATOMICITY",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "base": "db727db92e7d5b77eccd0103921c527fe6dd5ffc",
+  "evidence_class": "SOURCE_BOUND_OWNER_AND_ATOMICITY_QUALIFICATION",
+  "production_source_changed": false,
+  "findings": [
+    {
+      "owner": "F-WOF34 accepted-window lineage",
+      "finding": "Trial-local PTRA/QROT contribution scratch can be initialized from an F-KT checkpoint, accumulated without mutating committed crop state, discarded on rejected trials, and admitted only with a post-commit certificate. This supplies the crop-side semantics but does not own the physical commit point."
+    },
+    {
+      "owner": "F-MR serialized MultiSWAP runtime",
+      "finding": "The runtime captures the checkpoint, executes the physical trial, rejects incomplete mass or invalid candidates, and calls fmr_commit_candidate. Therefore the actual decision point that publishes physical state is inside F-MR runtime execution."
+    },
+    {
+      "owner": "F-KT kernel transaction",
+      "finding": "A successful kernel_commit_candidate is the authoritative atomic physical-state publication: candidate state is moved into committed state, revision increments exactly by one, committed time becomes candidate origin_t1, and the candidate is cleared. Failed commits leave committed state unchanged."
+    },
+    {
+      "owner": "physical root sink",
+      "finding": "The exact QROT-equivalent rate is sum(root_extraction_sink) of the preformed root sink physically supplied to the Richards trial. No additional dz factor is admissible. Recomputing uptake after the trial would not prove identity with the physically applied sink."
+    },
+    {
+      "owner": "potential transpiration",
+      "finding": "Restricted PTRA production is separately qualified, but current canonical serialized MultiSWAP runtime does not carry that PTRA quantity together with the same checkpoint/trial provenance and commit decision."
+    },
+    {
+      "owner": "runtime extension infrastructure",
+      "finding": "No existing generic commit observer, accepted-side-effect, callback or sidecar seam was found on the current composed source lineage that can atomically associate trial-local process metadata with successful F-KT publication."
+    }
+  ],
+  "atomicity_analysis": {
+    "naive_outer_wrapper": "REJECTED",
+    "reason": "If physical F-KT commit succeeds and a subsequently called fallible WOFOST window-admission routine returns a normal runtime error, physical committed state and accepted-window metadata can diverge. The outer WOFOST owner cannot roll back an already published F-KT revision.",
+    "precommit_only_WOFOST_admission": "REJECTED",
+    "reason_precommit": "F-WOF34 semantics intentionally require proof of an actual F-KT commit. Admitting before commit would allow a later commit rejection to contribute crop integrals from a non-accepted physical trial.",
+    "required_resolution": "A generic F-MR/F-KT-adjacent commit-associated observer or accepted-side-effect seam must own the composition point. It must prevalidate all expected failure modes before physical publication and ensure that the post-publication metadata action is total/non-fallible for the prevalidated payload, or otherwise make physical publication and side-effect publication one recoverable transaction under the same owner."
+  },
+  "required_properties_of_owner_seam": [
+    "generic and not WOFOST-specific",
+    "does not move F-KT commit authority into crop code",
+    "same checkpoint lineage/revision/interval as the physical candidate",
+    "attempt-local scratch only before commit",
+    "zero contribution on routing, solver, temporal, mass, candidate or commit rejection",
+    "accepted contribution exactly once after successful commit",
+    "prevalidation before commit of any condition that can produce an expected runtime rejection",
+    "post-commit path must not expose a normal recoverable error that leaves side-effect metadata missing",
+    "inactive columns incur no persistent optional-state allocation",
+    "no solver scratch added to column state",
+    "deterministic single-column and MultiSWAP ordering",
+    "mass accounting and applied Richards sink remain unchanged",
+    "generic time only, no calendar assumption"
+  ],
+  "owner_handoff": {
+    "required_workstream": "F-MR",
+    "suggested_work_unit": "F-MR18",
+    "suggested_title": "Generic Commit-Associated Accepted Side-Effect / Observer Seam",
+    "F_WOF36_may_implement_before_handoff": false,
+    "resume_condition": "F-MR owner qualifies a generic transaction-safe commit-associated seam on the composed postimage."
+  },
+  "gate_decision": "QUALIFIED_NEGATIVE_SHARED_RUNTIME_OWNER_SEAM_REQUIRED",
+  "status": "GATE_A_CLOSED_FAIL_CLOSED_NO_PRODUCTION_IMPLEMENTATION"
+}
