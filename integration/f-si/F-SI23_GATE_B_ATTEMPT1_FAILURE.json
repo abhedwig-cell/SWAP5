@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_B_BOOTSTRAP_ATTEMPT1_FAILURE",
+  "tested_head": "915895aa6c007c2bb308a123a2ba2dccdc921ddb",
+  "workflow_run": 34321363189,
+  "workflow_job": 102368516928,
+  "conclusion": "failure",
+  "source_and_plan_lock": "PASS",
+  "reference_tridag": "PASS",
+  "failure_class": "SCIENTIFIC_BOOTSTRAP_MAPPING_FAILURE_NOT_SOLVER_OR_MASS_FAILURE",
+  "first_case": {
+    "case": 1,
+    "kind": "BOTTOM",
+    "initial_head_cm": -25.0,
+    "bottom_head_jump_cm": -0.05,
+    "dt_day": [0.001,0.0005,0.00025,0.000125,0.0000625],
+    "max_slope_error_cm_per_day": [11.71093288986276,8.26679465003366,11.44126814899531,21.15323592523603,27.86472302296809],
+    "external_mass_residual": [0.0,0.0,0.0,0.0,0.0],
+    "all_direct_backward_euler_solves_converged": true,
+    "strict_error_decrease": false
+  },
+  "interpretation": "The predeclared restricted mapping hdot=-R_static/(capacity*dz) is not supported by the frozen finite-difference initial-slope test as implemented. Error improves once and then grows strongly as dt decreases, while every tested direct solve converges and closes external mass exactly. This is not evidence for changing the frozen matrix, dt sequence, nonlinear controls or mass tolerance.",
+  "diagnostic_gap": "Attempt 1 reported only the maximum vector slope error. It did not print the stimulated-node bootstrap derivative and observed backward-Euler slope separately, so a diagnostic-only repeat is needed to distinguish a source-mapping omission from an unexpected small-dt solver slope limit.",
+  "holds": {
+    "gate_B_plan_changed": false,
+    "production_source_changed": false,
+    "physics_changed": false,
+    "nonlinear_controls_changed": false,
+    "mass_tolerance_changed": false,
+    "scientific_temporal_tolerance_selected": false,
+    "bootstrap_qualified": false,
+    "temporal_observer_prototype_unlocked": false
+  }
+}
