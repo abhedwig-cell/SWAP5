@@ -68,9 +68,15 @@ assert params['gate_results']['F_WOF27_G02_complete_state_view_inventory'].start
 assert params['gate_results']['production_rate_evaluator'] == 'NOT_IMPLEMENTED'
 excluded = {x['name'] for x in params['legacy_inputs_explicitly_excluded_from_restricted_provider']}
 assert 'KDIR' in excluded
-rules = ' '.join(x['target_rule'] for x in params['fail_closed_parameter_strengthening'])
-for token in ['DLO>DLC','TSUMEA','KDIF>0','CFRDM>0','Q10>0']:
-    assert token in rules, token
+strengthening = params['fail_closed_parameter_strengthening']
+combined = ' '.join((x['legacy_gap'] + ' ' + x['target_rule']) for x in strengthening)
+for token in ['DLO', 'DLC', 'TSUMEA', 'TSUMAM', 'KDIF', 'CFRDM', 'CVR', 'CVS', 'CVL', 'Q10']:
+    assert token in combined, token
+assert any(x['target_rule'] == 'require DLO>DLC when IDSL=1' for x in strengthening)
+assert any('strictly positive' in x['target_rule'] and 'TSUMEA' in x['legacy_gap'] for x in strengthening)
+assert any(x['target_rule'] == 'require KDIF>0 for an active crop rate provider' for x in strengthening)
+assert any(x['target_rule'] == 'require CFRDM>0' for x in strengthening)
+assert any(x['target_rule'] == 'require Q10>0' for x in strengthening)
 
 assert graph['phase_A_prepare_assimilation']['output'] == 'actual_pgass'
 assert graph['source_order_preservation']['PGASS_before_soil_substeps'] is True
