@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "diagnosis": "SOURCE_BOUND_PHYSICAL_COUPLING_GATE_FAILURE",
+  "observed_head": "250b2a400984144405b427f968aa11949a7745fe",
+  "workflow_run": 34282343201,
+  "workflow_job": 102249834183,
+  "failed_step": "F-GC02 source-bound physical coupling gate",
+  "observed_failure": "FGC02_PHYSICAL_COUPLING_FAIL predictor physical trial completed",
+  "source_lock_evidence": {
+    "fmr11_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
+    "fmr11_closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
+    "candidate_to_closeout_src_diff": "PASS_EMPTY",
+    "eight_exact_production_blob_locks": "PASS",
+    "response_capable_tridag_fixture": "PASS",
+    "compile_and_link_reached_executable": true
+  },
+  "failing_fixture": {
+    "t0": 4100.125,
+    "t1": 4100.375,
+    "initial_profile_head_cm": -75.0,
+    "corrector_bottom_head_cm": -75.0,
+    "predictor_bottom_head_cm": -74.99,
+    "transaction_temporal_tolerance": 0.0,
+    "meaning": "The corrector is the stationary prescribed-head case. The predictor changes the prescribed lower head relative to the T0 profile and is therefore a nonstationary mode-5 Richards workload."
+  },
+  "contract_reconciliation": {
+    "fgc01_requires_same_t0_predictor_and_corrector": true,
+    "fgc01_corrector_is_exercised_only_after_nonzero_predictor_head_residual": true,
+    "meaningful_corrector_requires_distinct_head_candidate": true,
+    "fvq26_admits_zero_tolerance_stationary_mode5_temporal_acceptance": true,
+    "fvq26_nonstationary_mode5_temporal_behavior": "NOT_ADMITTED_BY_FVQ26",
+    "fvq27_nonstationary_mode5_temporal_behavior": "NOT_EXPANDED_BY_FVQ27",
+    "fvq19_nonstationary_scope": "ONE_CALL_DAILY_SERIALIZED_REFERENCE_SNOW_FIXTURE_ONLY"
+  },
+  "classification": {
+    "A_qualification_test_defect": false,
+    "B_fgc_composition_defect": false,
+    "C_upstream_contract_defect": true,
+    "D_scientific_coupling_discrepancy": false,
+    "reason": "Changing the fixture to make both physical trials stationary would remove the distinct predictor/corrector head path that F-GC02 is required to qualify. The current independently admitted F-MR11/F-VQ26 capability is therefore insufficient for the requested physical predictor-corrector composition."
+  },
+  "runtime_rejection_subclassification": {
+    "status": "NOT_YET_DIRECTLY_OBSERVED",
+    "required_next_evidence": "Expose predictor result status plus solver, temporal and mass rejection counters in the qualification harness and replay the same immutable F-MR11 candidate. Do not infer the rejection counter from the failed completed flag alone."
+  },
+  "fail_closed_owner": {
+    "primary_owner": "F-MR",
+    "required_capability": "qualified nonstationary prescribed-bottom-head mode-5 temporal acceptance for the restricted serialized REFERENCE runtime",
+    "independent_follow_on": "F-VQ",
+    "F_GC_may_change_F_MR_or_F_KT": false,
+    "F_KT_escalation_rule": "Only the owner workstream may escalate to F-KT if resolving the capability requires a generic transaction acceptance change. F-GC02 must not introduce such a change locally."
+  },
+  "prohibited_repairs": [
+    "do not introduce a new temporal tolerance",
+    "do not weaken the predictor/corrector test to identical head candidates",
+    "do not consume rejected physical trial flux as an accepted coupling result",
+    "do not modify F-SI, F-MR or F-KT production source from F-GC02"
+  ],
+  "next_action": "Add diagnostics-only qualification-harness observability, replay the failing predictor against the immutable F-MR11 candidate, persist the exact rejection counters, then stop F-GC02 fail-closed unless an already independently qualified nonstationary mode-5 acceptance contract is found."
+}
