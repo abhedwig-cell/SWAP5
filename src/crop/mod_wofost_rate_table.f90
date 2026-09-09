@@ -85,7 +85,7 @@ contains
     real(real64), intent(out) :: value_y
     integer, intent(out) :: status
     integer :: lo, hi, mid, n
-    real(real64) :: fraction
+    real(real64) :: slope
 
     value_y = 0.0_real64
     status = WOFOST_RATE_TABLE_OK
@@ -120,8 +120,10 @@ contains
       end if
     end do
 
-    fraction = (query_x - self%x(lo)) / (self%x(hi) - self%x(lo))
-    value_y = self%y(lo) + fraction * (self%y(hi) - self%y(lo))
+    ! Preserve the B1.10 AFGEN arithmetic order: compute the segment slope
+    ! first, then multiply by the horizontal offset.
+    slope = (self%y(hi) - self%y(lo)) / (self%x(hi) - self%x(lo))
+    value_y = self%y(lo) + (query_x - self%x(lo)) * slope
   end subroutine wofost_rate_table_evaluate
 
 end module mod_wofost_rate_table
