@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF33",
   "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Composition",
@@ -62,9 +62,9 @@
       "F-WOF32 finalize rate packet from the exact phase-A state snapshot and frozen phase-B forcing",
       "F-WOF26 finalize structural candidate from the prepared candidate, same accepted aggregates and generated packet"
     ],
-    "outputs": ["complete candidate", "rate packet", "composition and structural diagnostics"],
+    "outputs": ["complete candidate only on success", "rate packet only on successful phase-B", "composition and structural diagnostics"],
     "commit_authority": false,
-    "on_failure": "returned candidate is reset to the phase-A prepared candidate and must not represent a partially applied structural trial"
+    "on_failure": "candidate output is reset to default/unavailable; candidate-local Tmin history and any partial structural update remain confined to the worker-local context or failed call and cannot be mistaken for a commit candidate"
   },
   "trial_context_contract": {
     "ownership": "worker/job-local crop-window trial context, never persistent column state",
@@ -113,7 +113,7 @@
     "G05_same_input_begin_replay_bitwise_identity": "REQUIRED",
     "G06_same_context_complete_replay_bitwise_identity": "REQUIRED",
     "G07_exactly_one_structural_cohort_shift_per_complete": "REQUIRED",
-    "G08_failure_returns_unadvanced_prepared_candidate": "REQUIRED",
+    "G08_failure_exposes_no_candidate": "REQUIRED",
     "G09_no_commit_scheduler_solver_or_aggregate_accumulator": "REQUIRED",
     "G10_O0_O2_identity": "REQUIRED",
     "G11_F_WOF31_and_F_WOF32_exact_regressions": "REQUIRED",
