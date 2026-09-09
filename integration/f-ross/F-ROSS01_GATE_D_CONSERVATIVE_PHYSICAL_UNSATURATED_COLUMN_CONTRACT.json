@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "D_CONSERVATIVE_PHYSICAL_UNSATURATED_C1R_COLUMN",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_implementation": false,
+  "prerequisites": [
+    "C1R_BASE_MVG_36_MATERIAL_FACE_CATALOG_QUALIFIED",
+    "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE"
+  ],
+  "source_basis": {
+    "method": "Ross 2011 precomputed steady-state face-flux continuity formulation",
+    "unsaturated_state_variable": "volumetric water content theta",
+    "discrete_balance": "finite-volume continuity balance with first-order two-endpoint face-flux expansion at a selected sigma fraction of the trial step",
+    "linear_system": "one tridiagonal solve for Delta theta",
+    "mass_statement": "the same single-valued realized internal face flux must enter adjacent control-volume ledgers with opposite signs"
+  },
+  "qualified_hydraulics_reused_unchanged": {
+    "family": "Staringreeks 2018 unimodal MvG KSATFIT C1R base",
+    "table": "N241 float32 bilinear log-mobility",
+    "face_length_cm": 10.0,
+    "H_ENPR": 0,
+    "KSATEXM": "disabled",
+    "heterogeneity": false,
+    "saturation": false
+  },
+  "state_and_derivative_contract": {
+    "persistent_trial_input": "theta_i represented physically by the equivalent unsaturated MvG head h_i",
+    "storage_per_cell_cm_water": "theta_i * dz_i",
+    "face_flux_start": "qualified C1R q(h_upper,h_lower)",
+    "face_derivative_chain_rule": "dq/dtheta = dq/dh * dh/dtheta using the same MvG constitutive inverse; no finite-difference derivative in the candidate path",
+    "trial_increment": "Delta theta from one direct tridiagonal solve",
+    "candidate_theta": "theta_start + Delta theta",
+    "candidate_head": "MvG inverse h(theta_candidate), used only as trial-result physical state; no second hydraulic trajectory is solved"
+  },
+  "discrete_equation": {
+    "cell": "Delta theta_i = dt/dz_i * (q_in_i^sigma - q_out_i^sigma + source_i - sink_i)",
+    "internal_face": "q_j^sigma = q_j^0 + sigma * (dq_j/dtheta_upper * Delta theta_upper + dq_j/dtheta_lower * Delta theta_lower)",
+    "boundary_fluxes": "top and bottom are prescribed external Darcy fluxes for Gate D and appear exactly once in the ledger",
+    "sign": "vertical Darcy flux positive downward; distributed source positive into storage and sink positive out of storage"
+  },
+  "precommitted_cases": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "cell_counts": [4, 16, 64],
+    "sigma_values": [0.0, 0.5, 1.0],
+    "profile_families": [
+      {"name":"wet_gradient","head_range_cm":[-40.0,-120.0]},
+      {"name":"mid_gradient","head_range_cm":[-180.0,-650.0]},
+      {"name":"dry_gradient","head_range_cm":[-1200.0,-4200.0]}
+    ],
+    "source_sink_patterns": [
+      "zero",
+      "distributed_root_sink",
+      "mixed_local_source_and_sink"
+    ],
+    "trial_dt_days": [1e-05, 0.0001],
+    "profile_construction": "deterministic logarithmic interpolation of head magnitude with a fixed sub-cell offset to avoid exact N241 node lines",
+    "boundary_flux_construction": "deterministic fractions of K at the start-state boundary cells, frozen in the implementation before execution",
+    "source_sink_construction": "deterministic bounded fractions of the same start-state hydraulic scale, frozen in the implementation before execution"
+  },
+  "hard_gates": {
+    "maximum_abs_global_mass_residual_cm": 1e-12,
+    "maximum_abs_cell_balance_residual_cm": 1e-12,
+    "maximum_tridiagonal_residual_theta": 1e-12,
+    "candidate_theta_within_unsaturated_constitutive_domain": true,
+    "candidate_head_within_C1R_envelope": true,
+    "nonfinite_count": 0,
+    "base_state_bitwise_unchanged": true,
+    "shared_table_bitwise_unchanged": true,
+    "internal_face_ledger_identity": "bitwise same realized q_j^sigma object/value is used as outflow of cell j and inflow of cell j+1",
+    "matrix_factorizations_per_trial": 1,
+    "normal_backsolves_per_trial": 1,
+    "global_nonlinear_iterations": 0,
+    "retries_in_gate_D_candidate_path": 0
+  },
+  "mass_ledger": {
+    "global_identity": "sum_i dz_i*Delta theta_i = dt*(q_top - q_bottom + sum_i(source_i - sink_i))",
+    "cell_identity": "dz_i*Delta theta_i = dt*(q_{i-1/2}^sigma - q_{i+1/2}^sigma + source_i - sink_i)",
+    "internal_flux_cancellation": "each internal q^sigma occurs once positive and once negative in the global sum",
+    "no_residual_correction": true,
+    "no_mass_tolerance_used_to_modify_state": true
+  },
+  "transaction_and_noninterference": {
+    "base_state_is_committed_input": true,
+    "candidate_is_trial_only": true,
+    "no_committed_state_mutation": true,
+    "normal_increment_and_face_linearization_are_worker_scratch": true,
+    "J1_response_tangent_not_required_to_mutate_or_close_mass": true
+  },
+  "cost_diagnostics": [
+    "table lookups",
+    "table derivative evaluations",
+    "constitutive dh/dtheta evaluations",
+    "matrix factorizations",
+    "normal backsolves",
+    "global nonlinear iterations",
+    "retry count",
+    "branch_or_fallback count"
+  ],
+  "explicit_nonclaims": [
+    "Gate D does not qualify timestep accuracy or optimal sigma; that is Gate F.",
+    "Gate D does not qualify saturation or saturated-unsaturated transitions; that is Gate E.",
+    "Gate D does not qualify heterogeneous faces; that is Gate G.",
+    "Gate D uses prescribed-flux boundaries only and does not admit production bottom-boundary modes; that is Gate H.",
+    "Gate D does not qualify groundwater, MODFLOW coupling, runtime, MultiSWAP or FullRichards equivalence.",
+    "Gate D does not extend to Class-B H_ENPR or KSATEXM."
+  ],
+  "failure_policy": "Any failed mass identity, invalid constitutive state, nonfinite value, unexpected branch transition or extra solve keeps D unqualified. Do not retune C1R tables, J1 derivatives, hydraulic physics, acceptance tolerances or timestep values after seeing results; a new revision requires a new precommit with the failure preserved.",
+  "pass_decision": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
+  "relevant_invariants": [3,5,7,9,13,14,15,20,23,25,26,30]
+}
