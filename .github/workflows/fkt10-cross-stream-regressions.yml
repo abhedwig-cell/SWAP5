@@ -1,0 +1,41 @@
+name: F-KT10 cross-stream regressions
+
+on:
+  push:
+    branches:
+      - work/f-kt10-temporal-indicator-history-commit-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fsi25-owner-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-SI25 production seam owner replay
+        run: bash tests/fsi/run_fsi25_reference_indicator_production_seam.sh
+
+  fmr06-optional-state-compat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-MR06 snow optional-state compatibility regression
+        run: bash tests/fkt/run_fkt10_fmr06_snow_compat_regression.sh
