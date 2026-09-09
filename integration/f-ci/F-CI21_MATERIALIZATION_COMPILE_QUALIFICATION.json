@@ -1,0 +1,50 @@
+{
+  "work_unit": "F-CI21",
+  "stage": "materialization_compile_qualification",
+  "base": {
+    "work_unit": "F-WOF42",
+    "commit": "ed0219402072f121856d82cb6068ab74c70f34d1"
+  },
+  "materialized_source": {
+    "commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+    "tree": "7dc94493d44952ad032c02c1d039bc4df0aa8e3f",
+    "production_delta_count": 8
+  },
+  "production_surfaces": [
+    {"path":"src/solver/mod_soil_water_solver_contract.f90","blob":"dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0"},
+    {"path":"src/solver/mod_fixed_flux_top_boundary_provider.f90","blob":"fb226f133bd48d8ab945f111c76897aeff49facf"},
+    {"path":"src/solver/mod_reference_richards_temporal_indicator.f90","blob":"fe8f87d11257d4c6bc019f1d628ac41ba3106d4e"},
+    {"path":"src/adapter/mod_reference_richards_legacy_binding.f90","blob":"6eda1fec1bd03c03a1c0a8f2df29a273f70d962f"},
+    {"path":"src/transaction/mod_fkt_temporal_indicator_history.f90","blob":"78884becbfa2fdaba74726608f9e37a303ae4c58"},
+    {"path":"src/runtime/mod_fmr_runtime_core.f90","blob":"adc2b7514cc062c0cde4e71582ba8ed7776a7335"},
+    {"path":"src/runtime/mod_canonical_contracts.f90","blob":"c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"},
+    {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"9af5a494526810324dc00706b444e448e770cba9"}
+  ],
+  "explicit_kernel_delta": [],
+  "non_delta_locks": [
+    {"path":"src/kernel/mod_kernel_transactions.f90","blob":"f1acff10dd99c308a00f434440d6a9ef14632f0d"},
+    {"path":"src/kernel/mod_kernel_committed_persistence.f90","blob":"ffd886c3401fc12739a456fe60a8741c12b9848b"},
+    {"path":"src/transaction/mod_transaction_reference.f90","blob":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"},
+    {"path":"src/runtime/mod_canonical_interval_runtime.f90","blob":"55f3d271aa6200a994fd0144d6fce0701c918a74"}
+  ],
+  "test_only_fixture": {
+    "path": "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "blob": "23c00ed17b2031bec6097a08d04fd95a775ff29a"
+  },
+  "qualified_head": "95cdb6c81839263bdf857306d990d077b26b1af6",
+  "workflow": {
+    "name": "F-CI21 temporal materialization",
+    "run_id": 34389796506,
+    "conclusion": "success"
+  },
+  "gates": {
+    "source_blob_lock": "PASS",
+    "architecture_source_guard": "PASS",
+    "production_scope_guard": "PASS",
+    "compile_O0": "PASS",
+    "compile_O2": "PASS"
+  },
+  "state": "MATERIALIZATION_COMPILE_QUALIFIED",
+  "scientific_replay_complete": false,
+  "canonical_modified": false
+}
