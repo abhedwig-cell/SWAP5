@@ -1,23 +1,45 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI24",
   "title": "Bounded Stiffness-Aware Embedded Richards Temporal Indicator Feasibility",
   "branch": "work/f-si24-bounded-stiffness-aware-temporal-indicator",
   "base_commit": "81185df08c5231d3990c9a941591d444e880a077",
-  "status": "GATE_B_QUALIFIED_EXACT_LINEAR_ONE_SOLVE_BOUND_READY_FOR_NONLINEAR_B110_CHARACTERIZATION",
-  "phase": "EXACT_LINEAR_THEOREM_AND_IMPLEMENTATION_ALGEBRA_QUALIFIED_NONLINEAR_BOUND_OPEN",
+  "status": "GATE_C_FINITE_COMPARATOR_CONSISTENT_NONLINEAR_OWNER_PROFILE_READY_FOR_HELD_OUT_QUALIFICATION_DESIGN",
+  "phase": "EXACT_LINEAR_BOUND_QUALIFIED_NONLINEAR_OWNER_TRANSFER_SUPPORTED_INDEPENDENT_QUALIFICATION_NOT_STARTED",
   "gate_A_derivation": "integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json",
   "gate_B_plan": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_PLAN.json",
   "gate_B_evidence": "integration/f-si/F-SI24_GATE_B_EXACT_MANUFACTURED_EVIDENCE.json",
-  "gate_B_tested_head": "546b16a8dcc12acf7e213ced593668e769ddc870",
-  "gate_B_workflow_run": 34327204626,
-  "gate_B_workflow_job": 102387097566,
+  "gate_C_plan": "integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_PLAN.json",
+  "gate_C_attempt1_mapping_failure": "integration/f-si/F-SI24_GATE_C_ATTEMPT1_GEOMETRY_MAPPING_FAILURE.json",
+  "gate_C_evidence": "integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_EVIDENCE.json",
+  "gate_B": {
+    "tested_head": "546b16a8dcc12acf7e213ced593668e769ddc870",
+    "workflow_run": 34327204626,
+    "workflow_job": 102387097566,
+    "decision": "QUALIFIED_EXACT_LINEAR_BOUNDED_ONE_SOLVE_CANDIDATE"
+  },
+  "gate_C": {
+    "tested_head": "15351b66b8ea7920a8287232ece9342b9f5ae328",
+    "workflow_run": 34328375813,
+    "workflow_job": 102390874767,
+    "decision": "FINITE_COMPARATOR_CONSISTENT_NONLINEAR_CHARACTERIZATION_NOT_TRUE_ERROR_BOUND",
+    "cases": 15,
+    "finite_comparator_consistent": 15,
+    "negative_transfer": 0,
+    "raw_EOBS_over_E1_512_range": [32.02439744299201,1662.352031370096],
+    "B_inf_over_E1_512_range": [6.612988690174384,56.88109916717148],
+    "raw_over_B_inf_improvement_range": [4.842651173829171,77.1603231392969],
+    "O0_O2_identity": true,
+    "hard_mass_gate_all_cases": true,
+    "N512_exact_reference": false,
+    "new_N512_runs": 0
+  },
   "candidate": {
     "id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
     "raw": "e_raw=0.5*dt*(hdot_np1-hdot_n)",
-    "defect_solve": "J_BE*delta=(M/dt)*e_raw",
-    "combined_linear_bound": "B_M=min(||e_raw||_M,2||delta||_M)",
+    "defect_solve": "J*delta=(M/dt)*e_raw",
+    "combined_exact_linear_bound": "B_M=min(||e_raw||_M,2||delta||_M)",
     "head_infinity_conversion": "B_inf=B_M/sqrt(min_i M_ii)",
     "factor_two_empirical": false,
     "extra_full_nonlinear_solves": 0,
@@ -26,22 +48,32 @@
     "mass_gate_changed": false,
     "production_allowed": false
   },
-  "gate_B_qualified": {
-    "constant_linear_dissipative_scope": true,
-    "single_mode_nonstiff_to_stiff": true,
-    "multimode_superposition": true,
+  "operator_ownership": {
+    "stale_HeadCalc_dfdh_is_exact_final_J": false,
+    "test_only_final_state_reconstruction_used": true,
+    "production_requirement": "Any production candidate must expose solver-owned accepted-state operator evaluation; no other module may depend on HeadCalc internal arrays or duplicate its private numerical implementation.",
+    "invariant_22": "PRESERVED_BY_OWNER_DESIGN"
+  },
+  "qualified": {
+    "exact_constant_linear_M_norm_bound": true,
+    "one_linear_solve_stiffness_aware_construction": true,
+    "linear_single_and_multimode_transfer": true,
     "near_zero_local_derivative_without_division": true,
-    "O0_O2_identity": true,
-    "production_source_unchanged": true,
-    "hard_mass_preserved": true
+    "nonlinear_B110_finite_comparator_owner_consistency_15_of_15": true,
+    "bounded_cost_shape": true,
+    "mass_conservation_unchanged": true
   },
   "not_qualified": {
     "nonlinear_B110_true_error_bound": false,
     "variable_state_operator_theorem": false,
+    "N512_exact_truth": false,
+    "D_inf_theorem_bound": false,
+    "universal_nonlinear_safety_factor": false,
     "production_final_state_operator_seam": false,
     "scientific_temporal_tolerance": false,
     "dimensionless_certificate_mapping": false,
     "production_retry_acceptance_policy": false,
+    "independent_held_out_qualification": false,
     "F_GC02_release": false,
     "F_PE_release": false
   },
@@ -51,8 +83,25 @@
     "do_not_select_tolerance": true,
     "do_not_use_stale_dfdh_as_final_J": true,
     "do_not_add_full_nonlinear_companion_run": true,
+    "do_not_reuse_owner_matrix_as_held_out": true,
+    "do_not_call_N512_exact": true,
     "mass_conservation_hard": true,
-    "production_source_change": false
+    "production_source_change": false,
+    "F_KT09_start": false,
+    "F_VQ_start_before_frozen_disjoint_matrix": false
   },
-  "next_action": "Freeze Gate C nonlinear B1.10 characterization before execution. Reconstruct test-only final-state SwKimpl=0 J from accepted-state capacity plus the current solver-policy base-state face conductances, apply exactly one defect TRIDAG solve, and compare the fixed uncalibrated combined indicator to the already persisted F-SI23 C2 finite N512 comparator. Do not call N512 exact truth and do not start independent F-VQ qualification yet."
+  "invariant_assessment": {
+    "7_transactional_steps": "UNCHANGED; observer/candidate not published as accepted state",
+    "8_cheap_recompute_and_warm_start": "SUPPORTED_SHAPE; zero extra nonlinear trajectories",
+    "9_generic_time": "SUPPORTED; indicator parameterized by generic dt",
+    "13_mass_conservation": "PASS; principal BE state and hard ledger unchanged",
+    "15_limit_coupling_cost": "SUPPORTED_SHAPE; one extra tridiagonal solve, no full companion Richards run",
+    "22_no_HeadCalc_internal_coupling": "PASS_BY_DESIGN_HOLD; production operator must remain solver-owned",
+    "23_physics_solver_policy_separation": "PASS; no physics change or tolerance selection",
+    "24_predictable_compute": "SUPPORTED_CANDIDATE_SHAPE_NOT_PRODUCTION_QUALIFIED",
+    "25_reference_mode": "UNCHANGED",
+    "26_diagnostics": "OWNER_DIAGNOSTICS_PERSISTED; production diagnostics not implemented",
+    "29_no_silent_dependencies": "PASS; explicit bottom geometry discrepancy was detected, persisted and corrected source-bound"
+  },
+  "next_action": "Create one consolidated owner candidate profile, then check live for an existing F-VQ30 or equivalent qualification owner. If none exists and independent qualification remains warranted, freeze a genuinely disjoint held-out B1.10 matrix before any execution. Do not use the 15 owner cases for qualification and do not implement the production operator seam yet."
 }
