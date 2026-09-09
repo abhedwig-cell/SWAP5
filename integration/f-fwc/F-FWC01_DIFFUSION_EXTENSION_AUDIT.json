@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "source": {
+    "citation": "Zhu J, Ogden FL, Lai W, Chen X, Talbot CA (2016), An explicit approach to capture diffusive effects in finite water-content method for solving vadose zone flow, Journal of Hydrology 535:270-281",
+    "doi": "10.1016/j.jhydrol.2016.01.078"
+  },
+  "source_bound_findings": [
+    "the paper explicitly adds soil-water diffusive effects to the earlier finite-water-content / Talbot-Ogden method",
+    "advection and diffusion are treated separately per water-content bin",
+    "conductivity and diffusivity are treated as bin-dependent constants during each local analytical calculation",
+    "diffusive water ahead of the advective front is calculated and redistributed among bins",
+    "the added diffusion treatment uses algebraic calculations rather than a global nonlinear Richards solve",
+    "the authors report material improvement in water-content profile shape while total and cumulative infiltration differ little from the original advective method in their tests",
+    "published horizontal-infiltration tests used 200 water-content bins and time steps ranging from about 0.005 h for sand to 0.2 h for clay"
+  ],
+  "qualification_consequence": {
+    "previous_binary_assumption": "FWC must either neglect the SMVE diffusion-like term or revert to full Richards",
+    "corrected_position": "A third candidate exists: bounded explicit per-bin diffusion correction. It must be assessed separately because it can improve profile fidelity without a global Newton solve.",
+    "production_admission": false
+  },
+  "new_candidate_families": [
+    {
+      "name": "FWC_ADVECTIVE",
+      "physics": "gravity plus integrated capillary/advection-like term; no explicit diffusion-like correction",
+      "expected_strength": "low algorithmic complexity and sharp-front handling",
+      "primary_risk": "profile-shape bias when diffusion is material"
+    },
+    {
+      "name": "FWC_EXPLICIT_DIFFUSION",
+      "physics": "FWC advection plus explicit binwise diffusion redistribution",
+      "expected_strength": "closer profile representation without global nonlinear iteration",
+      "primary_risks": [
+        "bin count may be large",
+        "small stable time steps may be required",
+        "redistribution/event work must remain strictly conservative",
+        "state and scratch layout may be expensive for hundreds of thousands of columns"
+      ]
+    }
+  ],
+  "runtime_and_state_gate_additions": [
+    "measure accuracy and cost versus number of water-content bins, including 16, 32, 64, 128 and the published 200-bin scale where feasible",
+    "measure maximum stable/admitted internal step count separately for sand, loam and clay",
+    "separate persistent front/bin state from worker-local diffusion scratch",
+    "prove that diffusive redistribution conserves the exact accepted-step water ledger to roundoff",
+    "characterize whether the diffusion correction is vectorizable over fixed-bin templates",
+    "do not assume the published 200-bin configuration is an acceptable MultiSWAP production layout"
+  ],
+  "applicability_implication": "The neglected-diffusion issue is no longer by itself a reason to reject FWC. Instead it creates a two-level applicability/cost study: advective FWC may qualify where diffusion is demonstrably negligible, while explicit-diffusion FWC may extend the envelope only if its bin and substep costs remain bounded and acceptable.",
+  "status": "DIFFUSION_EXTENSION_IDENTIFIED_AND_ADDED_AS_SEPARATE_QUALIFICATION_CANDIDATE"
+}
