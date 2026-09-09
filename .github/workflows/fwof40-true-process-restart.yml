@@ -11,6 +11,7 @@ on:
       - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
       - 'src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90'
       - 'tools/fwof40_materialize_persistence_candidate.py'
+      - 'tools/fwof40_order_external_adapter_validation.py'
       - 'tests/fwof/mod_fwof40_restart_fixture.f90'
       - 'tests/fwof/mod_fwof40_external_crop_restart_adapter.f90'
       - 'tests/fwof/test_fwof40_reference.f90'
