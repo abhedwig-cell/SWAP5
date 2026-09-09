@@ -1,16 +1,16 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "Evidence-backed RossFast solver admissibility matrix",
-  "status": "INITIAL_MATRIX_FROZEN",
+  "status": "UPDATED_WITH_PHYSICAL_COMPOSITION_EXCLUSION",
   "production_implementation": false,
   "policy": "F-ROSS01_ADMISSIBILITY_AND_NEAR_SATURATION_POLICY_CONTRACT.json",
   "semantics": {
     "ROSSFAST_ADMISSIBLE": "The complete requested solver use is qualified for the stated envelope. No current row has this status yet.",
     "ROSSFAST_NOT_YET_QUALIFIED": "The combination is architecturally or physically eligible for research but one or more required qualification gates remain open or have failed for the tested representation.",
-    "ROSSFAST_NOT_SUPPORTED": "A deliberate product or architecture exclusion. This status is not inferred merely from missing evidence or a failed candidate representation.",
-    "fallback_rule": "Any requested production combination that is not ROSSFAST_ADMISSIBLE must use an explicitly selected qualified alternative such as FullRichards; requested physics must not be changed to gain RossFast admission."
+    "ROSSFAST_NOT_SUPPORTED": "A deliberate canonical-product or architecture exclusion backed by evidence. This status is not inferred merely from missing evidence or a failed candidate representation.",
+    "fallback_rule": "Any requested production combination that is not ROSSFAST_ADMISSIBLE must use an explicitly selected qualified alternative without silently changing requested physics. If the requested physical composition itself is NOT_SUPPORTED, solver fallback does not make it canonical; exact historical reproduction requires an explicitly named legacy-compatibility route."
   },
   "rows": [
     {
@@ -62,11 +62,24 @@
     {
       "id": "RF-MVG-HENPR-NONZERO",
       "hydraulic_model_family": "MODIFIED_VG_H_ENPR",
-      "conductivity_closure_id": "H_ENPR_DEPENDENT",
-      "retention_closure_id": "H_ENPR_NONZERO",
+      "conductivity_closure_id": "H_ENPR_MATRIX_KSATFIT_ONLY",
+      "retention_closure_id": "SWAP431_H_ENPR_NONZERO",
       "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
       "reason_code": "SEPARATE_HYDRAULIC_FAMILY_NOT_FACE_QUALIFIED",
-      "scope_note": "H_ENPR is not KSATEXM and must not inherit C1R or C2A qualification."
+      "scope_note": "H_ENPR alone is a source-defined finite-air-entry modified-MvG family. It must not inherit C1R or C2A qualification and must not be conflated with active legacy KSATEXM."
+    },
+    {
+      "id": "RF-LEGACY-HENPR-PLUS-ACTIVE-KSATEXM",
+      "hydraulic_model_family": "SWAP431_LEGACY_MODIFIED_VG_PLUS_KSATEXM",
+      "conductivity_closure_id": "H_ENPR_BRANCH_COMPOSED_WITH_LEGACY_MINUS2CM_KSATEXM_EXTENSION",
+      "retention_closure_id": "SWAP431_H_ENPR_NONZERO",
+      "outcome": "ROSSFAST_NOT_SUPPORTED",
+      "reason_code": "SOURCE_CONSISTENT_CONSTITUTIVE_DISCONTINUITY_AND_NONMONOTONE_K_ACTIVATION",
+      "evidence": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json",
+      "evidence_summary": "108/108 diagnostic cases were discontinuous and had a downward K jump when KSATEXM activated after H_ENPR changed theta(h).",
+      "canonical_policy": "Do not expose as an ordinary composable SWAP5 hydraulic configuration.",
+      "legacy_compatibility_rule": "Exact historical behavior may be reproduced only through an explicitly named legacy-compatibility mode with diagnostics. Solver fallback is not a repair for this physical branch mismatch.",
+      "replacement_rule": "Use a separately defined continuous physical near-saturation closure if H_ENPR-like finite air entry and measured saturated conductivity are both desired."
     },
     {
       "id": "RF-MACROPORE-EXPLICIT",
@@ -125,7 +138,23 @@
       "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
       "reason_code": "CLASS_B_PHYSICAL_CLOSURE_CONSTITUTIVE_GATE_NOT_YET_RUN",
       "required_reference": "FullRichards must use the identical closure before solver-equivalence qualification.",
-      "parameter_note": "Published K_o and L are conductivity parameters fitted to data; no automatic mapping from SWAP KSATFIT/KSATEXM is assumed."
+      "parameter_note": "A faithful published-MMVG candidate retains its own fitted K_o and L semantics; it must not be declared equivalent to legacy SWAP parameters without an explicit mapping contract."
+    },
+    {
+      "id": "RF-CLASSB-SWAP5-HENPR-SVG2006-BRIDGE-V1",
+      "hydraulic_model_family": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+      "conductivity_closure_id": "SWAP_HENPR_MATRIX_PLUS_SVG2006_PRESSURE_DEPENDENT_LOGK_BRIDGE_TO_KSATEXM",
+      "retention_closure_id": "SWAP431_H_ENPR_MODIFIED_VG",
+      "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
+      "reason_code": "NEW_CLASS_B_PHYSICAL_CLOSURE_CONSTITUTIVE_CHARACTERIZATION_NOT_YET_COMPLETE",
+      "first_research_h_enpr_cm": -4.0,
+      "parameter_mapping_hypothesis": {
+        "matrix_matching_scale": "KSATFIT",
+        "measured_saturated_target": "KSATEXM",
+        "pore_connectivity": "LEXP"
+      },
+      "required_reference": "The same closure must be callable by FullRichards before any RossFast equivalence claim.",
+      "identity_guard": "This is neither exact SWAP431 KSATEXM nor verbatim published MMVG2006 nor the unresolved NHI conservative variant."
     },
     {
       "id": "RF-CLASSB-NHI-CONSERVATIVE-NEAR-SATURATION",
@@ -136,7 +165,7 @@
     },
     {
       "id": "RF-CLASSB-MMVG-WITH-EXPLICIT-SWAP-MACROPORE",
-      "hydraulic_model_family": "MMVG_OR_SV2006_INSPIRED",
+      "hydraulic_model_family": "MMVG_OR_SVG2006_INSPIRED",
       "active_optional_physics": ["macropore_flow"],
       "outcome": "ROSSFAST_NOT_YET_QUALIFIED",
       "reason_code": "POTENTIAL_NEAR_SATURATION_CONDUCTIVITY_DOUBLE_COUNT_REQUIRES_ANALYSIS",
@@ -145,8 +174,8 @@
   ],
   "current_counts": {
     "ROSSFAST_ADMISSIBLE": 0,
-    "ROSSFAST_NOT_YET_QUALIFIED": 12,
-    "ROSSFAST_NOT_SUPPORTED": 0
+    "ROSSFAST_NOT_YET_QUALIFIED": 13,
+    "ROSSFAST_NOT_SUPPORTED": 1
   },
   "governance": {
     "no_inheritance_across_hydraulic_families": true,
@@ -154,7 +183,8 @@
     "fallback_must_be_explicit": true,
     "state_dependent_admission_requires_transaction_safe_diagnostics": true,
     "mass_conservation_is_hard": true,
-    "production_admission_requires_full_envelope_evidence": true
+    "production_admission_requires_full_envelope_evidence": true,
+    "physical_configuration_may_be_rejected_independently_of_solver_capability": true
   },
   "next_update_trigger": "Update a row only when a separately frozen qualification gate changes its evidence state; do not infer admission from adjacent rows or similar parameter values."
 }
