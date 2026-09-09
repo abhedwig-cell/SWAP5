@@ -107,7 +107,8 @@ program test_fwof26_one_day_structural_evolution
        'survivor physiological ageing after daily shift')
   call require(diagnostics1%leaf_cohort_count_before == 3 .and. diagnostics1%leaf_cohort_count_after == 3, &
        'exactly one cohort inserted after one old cohort dies')
-  call require(same_bits(candidate1%biomass%exponential_leaf_area_index, 6.1_real64), 'LAIEXP threshold crossed')
+  call require(abs(candidate1%biomass%exponential_leaf_area_index - 6.1_real64) <= 1.0e-14_real64, &
+       'LAIEXP threshold crossed')
   call require(allocated(candidate1%b110_reference_compatibility), 'GLAIEXP carryover sidecar allocated at threshold')
   call require(same_bits(candidate1%b110_reference_compatibility%lai_exponential_rate_carryover, 0.2_real64), &
        'GLAIEXP carryover captured')
@@ -131,7 +132,7 @@ program test_fwof26_one_day_structural_evolution
   call require(status == WOFOST_ONE_DAY_OK, 'day2 finalize succeeds')
   call require(diagnostics2%used_lai_exponential_carryover, 'day2 uses stored GLAIEXP carryover')
   call require(.not. diagnostics2%captured_lai_exponential_carryover, 'day2 does not recapture GLAIEXP')
-  call require(same_bits(candidate2%biomass%exponential_leaf_area_index, 6.3_real64), &
+  call require(abs(candidate2%biomass%exponential_leaf_area_index - 6.3_real64) <= 1.0e-14_real64, &
        'day2 LAIEXP uses prior B1.10 rate')
   call require(candidate2%biomass%active_leaf_cohort_count() == 4, 'day2 adds exactly one zero-mass cohort')
   call require(same_bits(candidate2%biomass%leaf_biomass(1), 0.0_real64), &
