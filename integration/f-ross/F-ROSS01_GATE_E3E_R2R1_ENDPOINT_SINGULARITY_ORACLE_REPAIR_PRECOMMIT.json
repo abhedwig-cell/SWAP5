@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R1_ENDPOINT_SINGULARITY_ORACLE_REPAIR",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_NUMERICS_ONLY",
+  "upstream_failed_gate": "F-ROSS01_GATE_E3E_R2_5CM_REFERENCE_ORACLE_VALIDITY_RESULT.json",
+  "face_length_cm": 5.0,
+  "materials": ["B01", "B12", "O13", "O14"],
+  "witness_policy": {
+    "common_controls_per_material": [
+      {"id": "DEEP_ENDPOINT_CONTROL", "h_surface_cm": 0.0, "h_top_node_cm": -100.0},
+      {"id": "NEAR_SATURATION_CONTROL", "h_surface_cm": 0.9, "h_top_node_cm": -0.01}
+    ],
+    "material_specific_witnesses": {
+      "B01": [
+        {"id": "R2_B01_WORST_LEGACY", "h_surface_cm": 0.924612096320944, "h_top_node_cm": -0.010519765794413582, "known_legacy_q_cm_per_day": 37.0649174713324}
+      ],
+      "B12": [
+        {"id": "R1_B12_WORST", "h_surface_cm": 0.8837919082381909, "h_top_node_cm": -0.009962848502903649, "known_r1_candidate_q_cm_per_day": 2.6432032548322555, "known_inherited_reference_q_cm_per_day": 2.647350867878214}
+      ],
+      "O13": [
+        {"id": "R1_O13_WORST", "h_surface_cm": 0.7833053261466696, "h_top_node_cm": -0.013722375623542532, "known_r1_candidate_q_cm_per_day": 11.208432753954423, "known_inherited_reference_q_cm_per_day": 11.23381766750256}
+      ],
+      "O14": []
+    }
+  },
+  "oracle_a": {
+    "id": "MPMATH100_LOGDELTA_ENDPOINT_TRANSFORM",
+    "precision_decimal_digits": 100,
+    "q_coordinate": "y=log10(q/KSAT-1), q>KSAT",
+    "root_policy": "deterministic sign scan in y followed by bisection",
+    "path_policy": "split at h=0; saturated surface-head contribution analytic; unsaturated interval h=h_top*t^8, t in [0,1], integrated with mpmath high precision",
+    "forbidden": ["machine-nextafter lower q bracket", "direct unsplit adaptive head quadrature"]
+  },
+  "oracle_b": {
+    "id": "SEGMENTED_GL64_LOGDELTA",
+    "arithmetic": "binary64 constitutive evaluation with explicit log-delta root coordinate",
+    "q_coordinate": "y=log10(q/KSAT-1), q>KSAT",
+    "root_policy": "deterministic sign scan in y followed by bisection",
+    "path_policy": "split at h=0; negative-head interval partitioned geometrically toward zero; independent 64-point Gauss-Legendre integration on each segment; no t^8 endpoint transform",
+    "forbidden": ["scipy adaptive quad", "legacy steady_q path transform"]
+  },
+  "frozen_root_scan": {
+    "log10_delta_min": -14.0,
+    "log10_delta_samples": 225,
+    "upper_endpoint_safety_fraction": 0.999999999999,
+    "bisection_iterations": 90
+  },
+  "acceptance": {
+    "all_witnesses_resolved_by_both_oracles": true,
+    "all_roots_strictly_inside_physical_q_interval": true,
+    "max_abs_q_difference_over_ksat": 1.0e-9,
+    "max_abs_oracle_a_path_residual_cm": 1.0e-10,
+    "max_abs_oracle_b_path_residual_cm": 1.0e-8,
+    "nonfinite_count": 0,
+    "wrong_sign_count": 0
+  },
+  "diagnostics_required": [
+    "q_oracle_a_cm_per_day",
+    "q_oracle_b_cm_per_day",
+    "log10_delta_oracle_a",
+    "log10_delta_oracle_b",
+    "q_saturated_darcy_upper_cm_per_day",
+    "oracle_pair_abs_error_over_ksat",
+    "path_residuals_cm",
+    "known_legacy_or_candidate_residuals_when_available"
+  ],
+  "hard_nonclaims": [
+    "This gate does not qualify a Ross candidate face.",
+    "This gate does not rehabilitate or falsify the inherited steady_q oracle outside the frozen witnesses.",
+    "The prior 5 cm boundary-face failure remains binding.",
+    "No surface-process, finite-positive ponding, runoff, runtime or MultiSWAP admission follows from this gate.",
+    "No acceptance threshold may be relaxed after execution."
+  ],
+  "success_exit": "QUALIFIED_ENDPOINT_ROBUST_REFERENCE_ORACLE_WITNESSES_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "failure_exit": "ENDPOINT_ROBUST_ORACLES_DISAGREE_OR_UNRESOLVED_FURTHER_ORACLE_RESEARCH_REQUIRED"
+}
