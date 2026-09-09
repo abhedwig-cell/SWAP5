@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "audit": "PUBLISHED_BIN_COUNT_TIMESTEP_AND_STATE_COST",
+  "production_implementation": false,
+  "sources": [
+    {
+      "citation": "Ogden FL et al. (2017), The Soil Moisture Velocity Equation, JAMES 9",
+      "doi": "10.1002/2017MS000931",
+      "source_bound_findings": [
+        "the finite moisture-content domain is discretized into fixed water-content bins",
+        "bins are binary filled/empty at a given depth rather than fractional spatial cells",
+        "the cited Talbot-Ogden accuracy requirement varies strongly by texture, from about 75 bins for clays to almost 400 for sands for deep well-drained infiltration",
+        "the reported forward-Euler explicit finite-volume solution requires timestep magnitude on the order of seconds during infiltration"
+      ]
+    },
+    {
+      "citation": "Ogden FL et al. (2015), Validation of finite water-content vadose zone dynamics method using column experiments with a moving water table and applied surface flux",
+      "doi": "10.1002/2014WR016454",
+      "source_bound_findings": [
+        "the moving-water-table validation used N=200 water-content bins",
+        "the paper notes that simpler groundwater-coupled infiltration schemes can use far fewer bins, but that statement is not evidence for the full FWC method under arbitrary SWAP forcing"
+      ]
+    },
+    {
+      "citation": "Zhu J et al. (2016), An explicit approach to capture diffusive effects in finite water-content method for solving vadose zone flow, Journal of Hydrology 535:270-281",
+      "doi": "10.1016/j.jhydrol.2016.01.078",
+      "source_bound_findings": [
+        "diffusive effects are added explicitly at the level of individual water-content bins",
+        "advection and diffusion are treated separately for each bin",
+        "the method improves water-content profile prediction but does not remove the bin-wise work structure"
+      ]
+    }
+  ],
+  "SWAP5_implications": {
+    "fixed_bin_representation_can_bound_persistent_state": true,
+    "small_fixed_state_claim": false,
+    "reason": "A production-credible accuracy range may require O(10^2) to O(4x10^2) bin states or equivalent compact front coordinates per hydraulic layer/material domain.",
+    "runtime_complexity_candidate": "O(N_bins * N_internal_steps) plus front/event bookkeeping",
+    "internal_step_bound_proven": false,
+    "published_seconds_scale_infiltration_steps_are_material": true,
+    "multiswap_risk": "Hundreds of bins combined with seconds-scale internal timesteps may produce predictable but still excessive throughput cost even without nonlinear iteration.",
+    "memory_risk": "Fixed bins avoid mathematically unbounded state growth, but multiple front/slug bookkeeping per bin must still be bounded explicitly.",
+    "physics_policy_rule": "Reducing bin count or enlarging internal timestep for throughput is a numerical approximation that requires explicit qualification against the reference and may not silently alter process physics."
+  },
+  "required_next_tests": [
+    "derive or reconstruct exact maximum front/slug objects per fixed-bin representation",
+    "measure accuracy-versus-bin-count for sand, clay, layered contrast and moving-water-table scenarios against FullRichards",
+    "measure accepted internal step count per forcing interval, including rainfall pulses and drying/re-wetting",
+    "separate FWC_ADVECTIVE and FWC_EXPLICIT_DIFFUSION cost envelopes",
+    "report persistent bytes per column, scratch bytes per worker, p50/p95/p99/max internal steps and branch/event counts",
+    "reject any production envelope whose worst-case cost cannot be bounded a priori or whose reduced bin count changes qualified physics beyond evidence-based limits"
+  ],
+  "current_interpretation": "FWC remains scientifically credible and mass-conservation-oriented, but its published discretization evidence weakens the hypothesis that it is automatically a low-state, low-cost MultiSWAP solver. Predictability and speed must be qualified separately.",
+  "decision": "FWC_RESEARCH_CONTINUES_RUNTIME_AND_STATE_COST_NOW_A_PRIMARY_GATE",
+  "status": "SOURCE_BOUND_COST_AUDIT_PERSISTED"
+}
