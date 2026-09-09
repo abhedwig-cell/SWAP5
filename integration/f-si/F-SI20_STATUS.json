@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-SI",
   "work_unit": "F-SI20",
   "title": "Richards Temporal-Error Semantics and Prescribed-Head Readiness",
@@ -16,8 +16,8 @@
     "fgc02_blocked_head": "70d15ecdfcda87beb5c35b758fb291d7f76f5a4f",
     "fgc02_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
   },
-  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_REFERENCE_EVIDENCE_REQUIRED",
-  "phase": "CHARACTERIZATION_TESTED_TEMPORAL_ONLY_REJECTION_PROVEN",
+  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_LOCAL_STARTUP_ESTIMATOR_QUALIFICATION_REQUIRED",
+  "phase": "FIXED_HORIZON_CONVERGENCE_AND_LOCAL_ENDPOINT_ERROR_TESTED",
   "owner_scope": {
     "production_owner": "F-SI / soil-water model implementation",
     "fmr_role_after_owner_change": "bind and compose model-owned temporal signal into existing F-KT scalar acceptance seam",
@@ -29,41 +29,57 @@
     "current_behavior": "0 for exact relevant final-state equality, huge(real64) otherwise",
     "fgc02_failure": "the -74.99 cm prescribed-head predictor from a -75.0 cm T0 profile is physically nonstationary and is rejected before a candidate completes",
     "direct_rejection_classification": "TEMPORAL_ONLY",
-    "scientific_gap": "no model-owned quantitative Richards temporal-error semantics have been qualified for nonstationary prescribed-head mode 5"
+    "updated_scientific_gap": "Richards fixed-horizon refinement now demonstrates strong state convergence over the tested range, but the local full-versus-two-half startup discrepancy is nonmonotone over the first seven retry halvings. Its acceptance semantics near an instantaneous prescribed-head boundary change remain unqualified."
   },
   "tested_characterization": {
-    "evidence_file": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
+    "component_evidence_file": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
     "characterization_workflow_run": 34299712399,
-    "characterization_workflow_job": 102303831300,
-    "characterization_conclusion": "success",
     "rejection_workflow_run": 34299889387,
-    "rejection_workflow_job": 102304350698,
-    "rejection_conclusion": "success",
     "production_immutability_to_fvq27": "PASS",
     "fgc02_predictor_provenance_lock": "PASS",
-    "repeat_determinism_o0": "PASS",
-    "repeat_determinism_o2": "PASS",
+    "repeat_determinism": "PASS",
     "o0_o2_identity": "PASS",
     "nodewise_h_theta_deltas": "MEASURED",
     "signed_dz_theta_difference": "MEASURED",
     "nonlinear_tolerance_axis": [1e-10,1e-12,1e-14],
     "temporal_signal_materially_sensitive_to_nonlinear_tolerance": false,
-    "stable_asymptotic_order_demonstrated": false,
-    "monotone_dt_halving_demonstrated": false
+    "first_seven_local_halvings_monotone": false
   },
-  "exact_fgc02_baseline_rejection": {
-    "nonlinear_tolerance": 1e-12,
-    "attempts": 7,
-    "retries": 6,
-    "solver_rejections": 0,
-    "temporal_rejections": 7,
-    "mass_rejections": 0,
-    "accepted_substeps": 0,
-    "committed_revision": 0,
-    "meaning": "The current F-GC02 predictor failure is caused by the binary temporal identity gate alone on this fixture. Solver convergence and hard mass acceptance are not the rejecting gates."
+  "fixed_horizon_reference": {
+    "evidence_file": "integration/f-si/F-SI20_FIXED_HORIZON_REFERENCE_EVIDENCE.json",
+    "workflow_run": 34300363405,
+    "workflow_job": 102305775986,
+    "conclusion": "success",
+    "total_horizon_day": 0.25,
+    "substep_counts": [1,2,4,8,16,32,64,128,256,512,1024],
+    "successive_dhead_cm_first": 2.55242948426825933e-4,
+    "successive_dhead_cm_last": 9.42004874104895862e-9,
+    "hard_mass_gate_satisfied": true,
+    "finite_reference_warning": "N=1024 is the finest tested trajectory, not an exact solution.",
+    "interpretation": "The prescribed-head Richards trajectory approaches progressively refined fixed-horizon endpoints over the tested range. The earlier local nonmonotonicity is therefore not evidence that Richards itself lacks temporal convergence."
+  },
+  "local_fine_reference": {
+    "evidence_file": "integration/f-si/F-SI20_FINE_REFERENCE_TRAJECTORY_EVIDENCE.json",
+    "workflow_run": 34300431076,
+    "workflow_job": 102305980967,
+    "artifact_id": 10084720127,
+    "artifact_digest": "sha256:fd70623a845272d6bd0d8e70e32ed85295e24a1973f85f5456f4fe91ebc2b506",
+    "conclusion": "success",
+    "nodewise_endpoint_error_persisted": true,
+    "raw_head_step_doubling_same_order_as_tested_endpoint_error": true,
+    "local_step_doubling_tends_to_zero_established": false,
+    "interpretation": "Pressure-head step doubling is an informative dimensional observable on this probe, but the changing attempted endpoint after each retry and the startup transient prevent the first seven rows from defining a monotone or asymptotic acceptance ladder."
+  },
+  "current_metric_assessment": {
+    "binary_identity_scientifically_required": false,
+    "mixed_head_theta_scalar_admitted": false,
+    "head_only_observable": "PLAUSIBLE_MODEL_OWNED_CANDIDATE_NOT_ADMITTED",
+    "head_units": "cm on the current SWAP solver route",
+    "richardson_factor_admitted": false,
+    "production_tolerance_selected": false,
+    "production_metric_selected": false
   },
   "hard_constraints": {
-    "production_metric_selected": false,
     "production_source_modified": false,
     "physics_changed": false,
     "mass_requirement_relaxed": false,
@@ -78,11 +94,15 @@
     "characterization_harness_implemented": true,
     "characterization_tested": true,
     "rejection_classified": true,
+    "fixed_horizon_reference_tested": true,
+    "local_fine_reference_tested": true,
     "metric_selected": false,
     "production_implemented": false,
     "owner_qualified": false,
     "independently_qualified": false
   },
-  "current_decision_class": "B_MORE_THEORY_OR_NUMERICAL_REFERENCE_EVIDENCE_REQUIRED",
-  "next_action": "Construct a nonproduction mass-hard fine-reference trajectory study for the exact F-GC02 prescribed-head predictor. Test whether full-versus-two-half step-doubling discrepancy predicts endpoint error to progressively refined trajectories before selecting any model-owned temporal metric."
+  "current_decision_class": "B_LOCAL_STARTUP_ESTIMATOR_AND_EVENT_SEMANTICS_EVIDENCE_REQUIRED",
+  "fpe_release": false,
+  "fgc02_release": false,
+  "next_action": "Extend the nonproduction local prescribed-head startup retry ladder from the same committed T0 state toward the existing solver minimum step duration. Preserve nodewise h/theta and signed storage diagnostics, do not require monotonicity, and determine whether the raw pressure-head step-doubling discrepancy eventually enters a reproducible decay regime or remains unsuitable across the admissible local step range. In parallel, inspect the generic forcing/event contract for an explicit discontinuity-boundary semantic before selecting any production metric."
 }
