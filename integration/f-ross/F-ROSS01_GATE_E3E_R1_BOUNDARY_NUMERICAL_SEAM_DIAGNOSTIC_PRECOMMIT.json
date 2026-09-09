@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "diagnostic": "E3E_R1_5CM_BOUNDARY_NUMERICAL_SEAM_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN",
+  "upstream_negative_evidence": "F-ROSS01_GATE_E3E_5CM_SURFACE_BOUNDARY_FACE_RECONCILIATION.json",
+  "scope": "Reuse the exact E3E material/probe set and references. Characterize two isolated numerical changes only; do not qualify on the tuning set.",
+  "variants": [
+    {
+      "id": "A_ZERO_ADJACENT_UNSAT_CLUSTERING",
+      "change": "Apply the existing t^8 GL8 endpoint transform to the first unsaturated segment adjacent to h=0 when the face starts at positive surface head. Keep quarter-decade segmentation, GL8 lanes, 64 bisection iterations and all constitutive physics unchanged."
+    },
+    {
+      "id": "B_DUAL_ENDPOINT_RESIDUAL_PROXIMITY",
+      "change": "After variant A, if the physical q bracket has no sign change, compare absolute residual at the lower and upper physical endpoint and return the closer endpoint rather than always forcing the lower K(h_above) endpoint. Record which endpoint is selected and compare that choice against the full-accuracy reference."
+    }
+  ],
+  "frozen_diagnostic_success_indicators": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "unresolved_count": 0
+  },
+  "cost_policy": "No increase in GL lanes per segment. Report observed constitutive K evaluations and root residual evaluations; no production cost claim.",
+  "selection_rule": "If variant A alone resolves generic B12/O13 failures, preserve it independently. Variant B is only considered for bracket failures and must select the same physical endpoint as the reference-nearest endpoint on every encountered bracket failure.",
+  "hard_nonclaims": [
+    "Not a qualification gate.",
+    "No production implementation.",
+    "No threshold relaxation.",
+    "No new holdout evidence; the exact E3E probes are reused diagnostically.",
+    "No surface-process or ponding qualification."
+  ]
+}
