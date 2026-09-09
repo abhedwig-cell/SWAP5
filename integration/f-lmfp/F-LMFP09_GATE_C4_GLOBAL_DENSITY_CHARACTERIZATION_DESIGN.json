@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+  "purpose": "Determine whether the bounded 2-D endpoint-pair log-ratio representation converges sufficiently rapidly under globally increased asinh-axis density, after the 49x49 anchored candidate failed the off-grid C3b holdout.",
+  "qualification": false,
+  "candidate_family_frozen": "asinh endpoint-pair bilinear log(K_DAR/K_MFP) with the same signed pressure-head decade anchors and exact equal-head reconciliation",
+  "base_axis_nodes_to_characterize": [33,49,65,97],
+  "anchors_unchanged": true,
+  "thresholds_unchanged": true,
+  "characterization_classes": [
+    {"material":"reference_sand","half_face_length_cm":10.0},
+    {"material":"very_fast","half_face_length_cm":5.0}
+  ],
+  "probe_set": "reuse the now-revealed C3b off-grid set only for convergence characterization",
+  "methodological_rule": "Because C3b has now been observed, no density selected from C4 may be called qualified on C3b. Any promoted density requires a newly precommitted independent C4b holdout with a different deterministic seed and off-grid endpoint family.",
+  "metrics": [
+    "axis_nodes after anchors",
+    "table values and bytes per material-half-face class",
+    "offline oracle solves",
+    "active relative-error median/p90/p99/max",
+    "strong-gradient p90",
+    "sign mismatches",
+    "coverage failures",
+    "fraction better than plain MFP",
+    "worst endpoint pair"
+  ],
+  "decision_interpretation": {
+    "rapid_monotone_convergence_at_bounded_memory": "representation family remains viable; choose the smallest defensible density only as a candidate and send it to new C4b holdout",
+    "slow_or_nonmonotone_convergence_or_excessive_memory": "do not continue brute-force 2-D density escalation; investigate a different coordinate/representation such as transformed flux structure, low-rank/separable representation, local analytic face solve, or restrict the hydraulic envelope",
+    "no_threshold_relaxation": true,
+    "no_deletion_of_extreme_dry_wet_cases": true
+  },
+  "status": "DESIGN_PERSISTED_BEFORE_DENSITY_RUN"
+}
