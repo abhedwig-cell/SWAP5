@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ31",
+  "title": "Independent Qualification of Transaction-Composed Richards Temporal Indicator History",
+  "branch": "qualification/f-vq31-transaction-composed-richards-temporal-history",
+  "frozen_plan": {
+    "path": "integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json",
+    "commit": "a1c4a87c39d878d0a93600b8e1c214e08d660ff6",
+    "blob": "6695f9be69c4485e24ebcba802927ce90af8beac",
+    "frozen_before_execution": true
+  },
+  "implementation": {
+    "production_source_changed_by_F_VQ31": false,
+    "qualification_runner": "tests/fvq/run_fvq31_disjoint_transaction_composition.sh",
+    "runner_commit": "3950cd13ab3941ffd1acdac4e0e863b02e9fa43d",
+    "workflow": ".github/workflows/fvq31-transaction-composition-qualification.yml",
+    "workflow_head": "6279657ba36ce5c20d7395cafb3f7db9672cf2cd",
+    "post_result_tuning": false,
+    "harness_repair_after_execution": false
+  },
+  "execution": {
+    "workflow_name": "F-VQ31 independent transaction composition qualification",
+    "run_id": 34347188123,
+    "tested_head": "6279657ba36ce5c20d7395cafb3f7db9672cf2cd",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.3.0",
+    "first_execution_all_jobs_success": true,
+    "jobs": {
+      "frozen_fvq30_regression": {"job_id":102451471749,"conclusion":"success"},
+      "real_richards_binding": {"job_id":102451471762,"conclusion":"success"},
+      "transaction_lifecycle": {"job_id":102451471861,"conclusion":"success"},
+      "disjoint_composition": {"job_id":102451471947,"conclusion":"success"},
+      "cross_stream_regressions": {"job_id":102451472712,"conclusion":"success"}
+    }
+  },
+  "gate_results": {
+    "G01_SOURCE_LINEAGE_LOCK": "PASS",
+    "G02_TRANSACTION_LIFECYCLE": "PASS",
+    "G03_FEATURE_SCOPE_AND_A_B_A": "PASS",
+    "G04_REAL_PRODUCTION_BINDING": "PASS",
+    "G05_FROZEN_F_VQ30_REPLAY": "PASS_16_O0_PLUS_16_O2",
+    "G06_DISJOINT_COMPOSITION_MATRIX": "PASS_12_O0_PLUS_12_O2",
+    "G07_BOUNDED_COST": "PASS_ZERO_EXTRA_NONLINEAR_ONE_DEFECT_TRIDIAGONAL",
+    "G08_HARD_MASS_NONINTERFERENCE": "PASS",
+    "G09_O0_O2": "PASS",
+    "G10_POLICY_FAIL_CLOSED": "PASS_NO_F_KT09_CERTIFICATE_PROMOTION",
+    "G11_SEED_CONTINUITY_BOUNDARY": "PASS_FOR_QUALIFIED_SEED_BOUNDARY_WITH_RESTART_AND_DISCONTINUITY_NONCLAIMS"
+  },
+  "transaction_lifecycle_replay": {
+    "clone_isolation": "PASS",
+    "temporal_retry_history": "PASS",
+    "solver_retry_history": "PASS",
+    "mass_retry_history": "PASS",
+    "no_unqualified_certificate": "PASS",
+    "A_B_A_history_isolation": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "independent_disjoint_matrix": {
+    "case_count": 12,
+    "exact_triplet_overlap_with_prior_matrices": 0,
+    "O0_cases_pass": 12,
+    "O2_cases_pass": 12,
+    "O0_O2_normalized_output_identity": true,
+    "direct_vs_transaction_max_B_inf_abs_diff": 5.974387651264124e-15,
+    "max_mass_residual_across_direct_and_transaction_routes": 1.8318679906315083e-15,
+    "hard_mass_tolerance": 1e-12,
+    "indicator_route_all_cases": "reference-richards-defect-bound",
+    "additional_full_nonlinear_trajectories": 0,
+    "additional_defect_tridiagonal_solves": 1,
+    "truth_or_N512_comparator_used": false,
+    "role": "composition equivalence only"
+  },
+  "disjoint_case_rows": [
+    {"case":1,"h0_cm":-55.0,"jump_cm":-0.04,"dt_day":0.2,"direct_B_inf":0.08720080502265806,"transaction_B_inf":0.08720080502266031,"abs_diff":2.248201624865942e-15},
+    {"case":2,"h0_cm":-55.0,"jump_cm":0.04,"dt_day":0.2,"direct_B_inf":0.08723615521087212,"transaction_B_inf":0.08723615521087442,"abs_diff":2.3037127760972e-15},
+    {"case":3,"h0_cm":-55.0,"jump_cm":-0.04,"dt_day":0.375,"direct_B_inf":0.09191433360116472,"transaction_B_inf":0.09191433360116472,"abs_diff":0.0},
+    {"case":4,"h0_cm":-55.0,"jump_cm":0.04,"dt_day":0.375,"direct_B_inf":0.09195254941124752,"transaction_B_inf":0.09195254941124752,"abs_diff":0.0},
+    {"case":5,"h0_cm":-140.0,"jump_cm":-0.04,"dt_day":0.2,"direct_B_inf":0.06584096074332919,"transaction_B_inf":0.06584096074333459,"abs_diff":5.398459457239824e-15},
+    {"case":6,"h0_cm":-140.0,"jump_cm":0.04,"dt_day":0.2,"direct_B_inf":0.06587123811365432,"transaction_B_inf":0.06587123811365968,"abs_diff":5.35682609381638e-15},
+    {"case":7,"h0_cm":-140.0,"jump_cm":-0.04,"dt_day":0.375,"direct_B_inf":0.07752669465667121,"transaction_B_inf":0.07752669465667121,"abs_diff":0.0},
+    {"case":8,"h0_cm":-140.0,"jump_cm":0.04,"dt_day":0.375,"direct_B_inf":0.07756321056512608,"transaction_B_inf":0.07756321056512608,"abs_diff":0.0},
+    {"case":9,"h0_cm":-240.0,"jump_cm":-0.04,"dt_day":0.2,"direct_B_inf":0.04768810801771562,"transaction_B_inf":0.047688108017721595,"abs_diff":5.974387651264124e-15},
+    {"case":10,"h0_cm":-240.0,"jump_cm":0.04,"dt_day":0.2,"direct_B_inf":0.047704787827486376,"transaction_B_inf":0.04770478782749233,"abs_diff":5.953570969552402e-15},
+    {"case":11,"h0_cm":-240.0,"jump_cm":-0.04,"dt_day":0.375,"direct_B_inf":0.0611790816776621,"transaction_B_inf":0.0611790816776621,"abs_diff":0.0},
+    {"case":12,"h0_cm":-240.0,"jump_cm":0.04,"dt_day":0.375,"direct_B_inf":0.06119996999632636,"transaction_B_inf":0.06119996999632636,"abs_diff":0.0}
+  ],
+  "frozen_F_VQ30_regression": {
+    "frozen_cases": 16,
+    "O0_cases_pass": 16,
+    "O2_cases_pass": 16,
+    "matrix_and_expected_B_inf_unchanged": true,
+    "bounded_cost_unchanged": true,
+    "hard_mass_pass": true,
+    "deep_reference_trajectory_added": false
+  },
+  "real_production_binding": {
+    "reference_Richards_history_binding": "PASS",
+    "principal_physical_result_changed_by_history_plumbing": false,
+    "mass_accounting_changed_by_history_plumbing": false,
+    "F_KT09_certificate_population_from_B_inf": false
+  },
+  "cross_stream": {
+    "F_SI25_owner_production_replay": "PASS",
+    "F_MR06_snow_optional_state_compatibility": "PASS"
+  },
+  "current_derivative_evidence": {
+    "status": "PASS_STRUCTURAL_EQUIVALENCE_NOT_NEW_VECTOR_DIAGNOSTIC",
+    "basis": "Both routes use the same source-locked F-SI25 service; current_right_derivative is computed from identical base-state, candidate-state and dt, the backend passes transaction history unchanged into that service and stores the service output unchanged into trial continuation state.",
+    "new_runtime_vector_diagnostic_added": false
+  },
+  "seed_and_continuity_boundary": {
+    "no_seed": "warmup unavailable remains the default",
+    "invalid_seed": "fails closed",
+    "valid_seed": "finite correctly-sized derivative only",
+    "arbitrary_restart_file_semantics_qualified": false,
+    "forcing_event_topology_discontinuity_continuation_qualified": false
+  },
+  "hard_nonclaims": [
+    "B_inf is not a qualified general nonlinear true-error upper bound.",
+    "No scientific temporal normalization or application tolerance is selected.",
+    "No production temporal acceptance or retry policy is admitted.",
+    "Arbitrary restart-file persistence is not qualified.",
+    "Forcing, event or topology-discontinuity continuation provenance is not qualified.",
+    "No q_cap, Nmin, geometric-tail multiplier, fitted safety factor or deep production refinement trajectory is introduced.",
+    "F-GC02, groundwater coupling and F-PE remain unreleased."
+  ]
+}
