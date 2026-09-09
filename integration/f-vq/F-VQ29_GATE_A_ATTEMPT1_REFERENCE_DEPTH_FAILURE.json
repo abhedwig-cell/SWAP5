@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "evidence": "GATE_A_ATTEMPT1_FINITE_REFERENCE_DEPTH_FAILURE",
+  "tested_head": "17172b0c1488b77dcab6f9cdc2c0257afc0a031f",
+  "workflow_run": 34311884409,
+  "workflow_job": 102340062487,
+  "conclusion": "failure",
+  "source_controls": {
+    "source_lock": "PASS",
+    "test_only_reference_tridag": "PASS",
+    "reference_tridag_operation_order": "SWAP_4_3_1_THOMAS"
+  },
+  "failure_location": {
+    "calibration_case": 1,
+    "initial_head_cm": -25.0,
+    "bottom_head_jump_cm": -0.05,
+    "horizon_day": 0.125,
+    "optimization": "O0",
+    "completed_levels": [1,2,4,8,16,32,64,128,256,512],
+    "next_extended_reference_level_failed_before_endpoint_output": 1024
+  },
+  "completed_level_evidence": {
+    "maximum_mass_residual_N1_to_N512": 0.0,
+    "maximum_solver_residual_at_N512": 8.785194793858864e-13,
+    "driver_failure": "fixed-horizon direct Richards solve converged requirement failed after N=512"
+  },
+  "qualification_effect": {
+    "q_cap_derived": false,
+    "Nmin_derived": false,
+    "candidate_formula_changed": false,
+    "calibration_matrix_changed": false,
+    "held_out_matrix_changed": false,
+    "scientific_tolerance_selected": false,
+    "production_source_changed": false
+  },
+  "interpretation": "The attempted universal N=2048 finite reference over-refines the wet profile after the same-horizon endpoint sequence is already known from F-SI22 to reach floating-point floor. Continuing to force finer solves can trigger nonlinear nonconvergence without adding resolvable temporal-reference information. Solver or mass tolerances must not be relaxed to manufacture a deeper reference.",
+  "required_revision": "Use a predeclared floor-aware reference protocol: first run a common N<=512 ladder; classify a case as floor-resolved only when the final two resolved same-horizon defects are both at or below the frozen machine floor. Only non-floor-resolved cases are eligible for the extended N=1024/2048 reference ladder. Failure of an extended non-floor case remains qualification failure.",
+  "data_snooping_guard": "Attempt 1 stopped on the first calibration case before any q_cap, Nmin or error-bound candidate was computed. The frozen calibration and held-out state/horizon matrices therefore remain unchanged."
+}
