@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "evidence_stage": "SOURCE_BOUND_MEMORY_COST_CHARACTERIZATION",
+  "status": "PERSISTED_SOURCE_BOUND_CHARACTERIZATION",
+  "decision": "CHARACTERIZED_NOT_A_STANDALONE_QUALIFICATION",
+  "scope": "Incremental source-visible payload of the seeded-history admitted reference-Richards temporal service only; excludes the principal Richards request/result/workspace that exists in both A and B arms.",
+  "source_lock": {
+    "history_path": "src/transaction/mod_fkt_temporal_indicator_history.f90",
+    "history_blob": "78884becbfa2fdaba74726608f9e37a303ae4c58",
+    "backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "indicator_path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+    "indicator_blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "linear_solver_path": "src/solver/mod_reference_linear_solver.f90",
+    "linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96"
+  },
+  "persistent_optional_continuation_payload": {
+    "owner": "fkt_temporal_indicator_history_t%previous_right_derivative",
+    "element_type": "real(real64)",
+    "elements": "n active nodes",
+    "payload_bytes_formula": "8*n",
+    "physical_state": false,
+    "mass_accounting": false,
+    "allocated_when_feature_inactive": false,
+    "notes": "This is optional numerical continuation data, not solver scratch. Descriptor/allocator metadata is excluded from the byte formula."
+  },
+  "seeded_admitted_service_transient_vectors": {
+    "backend_snapshot_copy": {
+      "vectors": 1,
+      "names": ["previous_derivative"],
+      "payload": "1*n real64"
+    },
+    "backend_indicator_request_copy": {
+      "vectors": 1,
+      "names": ["indicator_request%previous_right_derivative"],
+      "payload": "1*n real64"
+    },
+    "indicator_result_vector": {
+      "vectors": 1,
+      "names": ["indicator_result%current_right_derivative"],
+      "payload": "1*n real64"
+    },
+    "indicator_constitutive_vectors": {
+      "vectors": 8,
+      "names": [
+        "water_base",
+        "conductivity_base",
+        "capacity_base",
+        "dkdh_base",
+        "water_candidate",
+        "conductivity_candidate",
+        "capacity_candidate",
+        "dkdh_candidate"
+      ],
+      "payload": "8*n real64"
+    },
+    "indicator_operator_defect_vectors": {
+      "vectors": 8,
+      "names": [
+        "mass_weight",
+        "lower",
+        "diagonal",
+        "upper",
+        "rhs",
+        "delta",
+        "gamma",
+        "e_raw"
+      ],
+      "payload": "8*n real64"
+    },
+    "source_visible_peak_transient_vector_count": 19,
+    "source_visible_peak_transient_payload_bytes_formula": "19*8*n = 152*n",
+    "source_visible_peak_incremental_payload_including_existing_optional_history_bytes_formula": "20*8*n = 160*n"
+  },
+  "lifetime_reasoning": {
+    "peak_location": "Inside evaluate_reference_richards_temporal_indicator after the operator/defect arrays are allocated and before subroutine return.",
+    "why_19_transient_vectors_overlap": "The caller-owned previous_derivative and indicator_request copy remain live while the callee owns current_right_derivative plus sixteen local n-vectors.",
+    "history_replace_peak": "After indicator return the sixteen local indicator work vectors have been automatically released. fkt_history_replace explicitly deallocates the old history before allocating the replacement, so source code does not require old and new persistent history payloads to coexist.",
+    "automatic_deallocation": "Local allocatables in the indicator are procedure-local and are not persistent column state."
+  },
+  "compute_and_allocation_operations_per_seeded_admitted_service": {
+    "history_snapshot": "one allocation plus O(n) copy",
+    "indicator_request_history_copy": "one allocation plus O(n) copy",
+    "current_right_derivative": "one allocation plus O(n) arithmetic",
+    "constitutive_evaluation": "two full n-node evaluations into eight allocated result vectors",
+    "operator_defect_workspace": "eight n-vectors allocated and populated",
+    "defect_linear_solve": "one reference_tridag forward/backward O(n) sweep; no separately exposed factorization event",
+    "history_replace": "explicit deallocate old payload, allocate n, O(n) copy",
+    "normalization": "scalar head_inf_bound/H_budget plus diagnostics"
+  },
+  "complexity": {
+    "incremental_persistent_payload": "O(n)",
+    "incremental_source_visible_peak_transient_payload": "O(n)",
+    "defect_linear_solve": "O(n)",
+    "history_copy_work": "O(n)",
+    "indicator_operator_assembly": "O(n)"
+  },
+  "hard_nonclaims": [
+    "152*n is not a process RSS prediction.",
+    "160*n excludes allocatable descriptors, allocator bookkeeping, stack scalars, provider-internal temporaries, compiler-created expression temporaries and already-existing principal-solver request/result/workspace arrays.",
+    "No hidden compiler allocation is inferred from source inspection.",
+    "This artifact does not qualify a memory allocator, cache behavior, vectorization efficiency or worker-count scaling.",
+    "The current implementation uses per-call allocatables; PE06 does not change production source to pool or reuse them."
+  ],
+  "architecture_invariant_audit": {
+    "4_compact_persistent_state": "PASS_WITHIN_SCOPE: only the optional temporal-history layout carries one n-vector; inactive columns carry no history payload.",
+    "5_scratch_per_worker": "PASS_WITH_CAVEAT: indicator work arrays are transient and not committed column state. Current procedure-local allocation is compatible with non-persistent scratch semantics, although PE06 does not claim an optimized reusable worker scratch pool.",
+    "16_multiswap_primary_use": "OPEN_PERFORMANCE_IMPLICATION: 152*n source-visible transient bytes per active service call is O(n), but allocator churn and batch behavior require later runtime optimization/qualification if material at scale.",
+    "27_optional_functionality_scales_with_use": "PASS_WITHIN_SCOPE: persistent history exists only for the temporal-history continuation layout; indicator transient work occurs only when the service is invoked.",
+    "30_architecture_change_audit": "PASS: characterization only; no production source change."
+  },
+  "optimization_observations_not_changes": [
+    "The snapshot plus indicator-request copy creates two simultaneously live copies of the previous derivative before the indicator uses it.",
+    "The indicator currently allocates sixteen local work vectors on every admitted call in addition to current_right_derivative.",
+    "These are candidates for future worker-scratch reuse or interface-copy reduction, but no such optimization is admitted by F-PE06."
+  ]
+}
