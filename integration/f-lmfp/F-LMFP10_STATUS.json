@@ -9,12 +9,15 @@
   "contract_commit": "7d08a024e41d6ef4ad9240b19d1605a1859f95ce",
   "nomination_precommit": "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
   "nomination_precommit_commit": "6149373b01eb7a81af0f3abbbb233d97430f372e",
+  "implementation_audit": "integration/f-lmfp/F-LMFP10_A0_IMPLEMENTATION_AUDIT.json",
+  "implementation_audit_commit": "f6bf096440ebbd8a2fe1f5cfdda6665bdcea2ed7",
   "production_implementation": false,
   "qualification": false,
   "A0": {
     "name": "MATERIAL_SCALE_COORDINATE_SCREEN",
     "design_persisted": true,
     "implemented": true,
+    "implementation_pre_result_audit": "PASS",
     "implementation_commits": [
       "75be1120d67f66d294bdd5c439ace8eaa251e81f",
       "91ef39205239eee8ca91d87aed10c5e6cd1c3176",
@@ -22,7 +25,7 @@
     ],
     "execution_run": 34329612925,
     "execution_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
-    "execution_status_last_observed": "QUEUED_15_MATERIAL_JOBS",
+    "execution_status_last_observed": "MATRIX_PARTLY_IN_PROGRESS_PARTLY_QUEUED_NO_AGGREGATE_ARTIFACT_YET",
     "executed": false,
     "tested": false,
     "result_persisted": false,
@@ -31,11 +34,13 @@
     "face_lengths_cm": [10.0, 20.0],
     "classes": 30,
     "characterization_only": true,
-    "fresh_holdout": false
+    "fresh_holdout": false,
+    "nomination_made": false
   },
   "scope_flags": {
     "PERSISTED": true,
     "EXPERIMENT_IMPLEMENTED": true,
+    "IMPLEMENTATION_AUDITED_AGAINST_PRECOMMIT": true,
     "EXECUTION_STARTED": true,
     "EXECUTION_COMPLETE": false,
     "TESTED": false,
@@ -47,9 +52,10 @@
   },
   "hard_blockers": [
     "A0 characterization has not completed; no candidate is nominated.",
+    "No A1 geometry-axis design or fresh qualification holdout may be derived before the precommitted A0 aggregate result is complete and persisted.",
     "Conductivity-coordinate remains excluded while the inherited near-saturation K discontinuity owner seam is unresolved.",
     "No transient work may begin before a new hydraulic face representation passes characterization, nomination, and a separate fresh unseen holdout."
   ],
-  "decision": "A0_PRECOMMITTED_IMPLEMENTED_EXECUTION_STARTED_NO_QUALIFICATION",
-  "status": "PERSISTED_IMPLEMENTED_EXECUTING_NOT_YET_TESTED"
+  "decision": "A0_PRECOMMITTED_IMPLEMENTED_PRE_RESULT_AUDIT_PASS_EXECUTION_STILL_RUNNING_NO_QUALIFICATION",
+  "status": "PERSISTED_IMPLEMENTED_AUDITED_EXECUTING_NOT_YET_TESTED"
 }
