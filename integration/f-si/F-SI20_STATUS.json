@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "title": "Richards Temporal-Error Semantics and Prescribed-Head Readiness",
+  "branch": "work/f-si20-richards-temporal-error-semantics",
+  "base": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fvq27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
+    "production_source_must_remain_identical_during_readiness": true
+  },
+  "trigger": {
+    "fmr16_owner_handoff_commit": "26dca61a2459de5c592700ce8d80079510814717",
+    "fmr16_invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440",
+    "fmr16_decision_class": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_REQUIRED",
+    "fgc02_blocked_head": "70d15ecdfcda87beb5c35b758fb291d7f76f5a4f",
+    "fgc02_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
+  },
+  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_EVIDENCE_BEFORE_IMPLEMENTATION",
+  "phase": "PERSISTED_PRE_CHARACTERIZATION",
+  "owner_scope": {
+    "production_owner": "F-SI / soil-water model implementation",
+    "fmr_role_after_owner_change": "bind and compose model-owned temporal signal into existing F-KT scalar acceptance seam",
+    "fkt_change_required_by_current_evidence": false,
+    "fgc_change_required_by_current_evidence": false
+  },
+  "source_problem": {
+    "current_binding": "fmr_serialized_reference_model_t%temporal_error => fmr_serialized_temporal_identity",
+    "current_behavior": "0 for exact relevant final-state equality, huge(real64) otherwise",
+    "fgc02_failure": "the -74.99 cm prescribed-head predictor from a -75.0 cm T0 profile is physically nonstationary and is rejected before a candidate completes",
+    "scientific_gap": "no model-owned quantitative Richards temporal-error semantics have been qualified for nonstationary prescribed-head mode 5"
+  },
+  "first_characterization_target": {
+    "source_fixture": "F-GC02 prescribed-head predictor",
+    "bottom_mode": 5,
+    "initial_profile_head_cm": -75.0,
+    "predictor_bottom_head_cm": -74.99,
+    "base_window": [4100.125, 4100.375],
+    "calendar_semantics": false,
+    "required_observables": [
+      "nodewise signed pressure-head full-minus-two-half differences",
+      "nodewise signed water-content full-minus-two-half differences",
+      "max absolute head and theta differences with maximizing node",
+      "signed dz-weighted theta storage-state difference",
+      "ponding-depth difference",
+      "groundwater-level difference",
+      "solver/temporal/mass rejection counters"
+    ],
+    "required_axes": [
+      "extended dt halving ladder",
+      "nonlinear head tolerance sensitivity with unchanged physics",
+      "O0/O2 deterministic replay"
+    ]
+  },
+  "hard_constraints": {
+    "production_metric_selected": false,
+    "production_source_modified": false,
+    "physics_changed": false,
+    "mass_requirement_relaxed": false,
+    "temporal_tolerance_reinterpreted": false,
+    "retry_policy_changed_in_production": false,
+    "cross_unit_normalization_introduced": false,
+    "reference_mode_preserved": true,
+    "generic_time_preserved": true
+  },
+  "state": {
+    "persisted": true,
+    "characterization_harness_implemented": false,
+    "characterization_tested": false,
+    "metric_selected": false,
+    "production_implemented": false,
+    "owner_qualified": false,
+    "independently_qualified": false
+  },
+  "next_action": "Implement a nonproduction source-locked characterization harness for the exact F-GC02 prescribed-head predictor on the F-VQ27 postimage, then interpret the dt and nonlinear-tolerance dependence before selecting any production metric."
+}
