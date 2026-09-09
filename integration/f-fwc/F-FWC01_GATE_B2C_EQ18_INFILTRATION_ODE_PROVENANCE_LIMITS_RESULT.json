@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_EQ18_INFILTRATION_ODE_PROVENANCE_AND_LIMITS",
+  "contract": "F-FWC01_GATE_B2C_EQ18_INFILTRATION_ODE_PROVENANCE_LIMITS_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34386408258,
+    "head": "0ac07fe7d1c5dbbc8e89ae6d5f8d335d6f49f0ba",
+    "conclusion": "failure_expected_from_frozen_gate",
+    "artifact_id": 10117857828,
+    "artifact_digest": "sha256:7235ef6be7978809113871527326e57e2134c171dcce2d6242fe93d3f16a8623"
+  },
+  "reconciled_equation_under_test": "dz_j/dt = [K(theta_d)*(G_eff+h_p)/z_j + K(theta_d)-K(theta_i)]/[theta_d-theta_i]",
+  "case_count": 256,
+  "case_pass_count": 201,
+  "rejection_checks_pass": true,
+  "identity_failure_counts_reproduced_from_frozen_fixture": {
+    "gravity_finite_difference_identity": 43,
+    "pure_capillary_identity": 54,
+    "large_depth_limit": 43,
+    "green_ampt_one_bin_identity": 0
+  },
+  "maximum_reported_green_ampt_identity_residual": 2.384185791015625e-7,
+  "diagnostic_interpretation": [
+    "The Green-Ampt one-bin identity passes in all 256 frozen cases despite a nonzero absolute binary64 residual at large magnitude.",
+    "The failed checks are concentrated in identities that reconstruct small differences from rounded endpoint quantities before division by small delta-theta.",
+    "A reproduced gravity-case worst ratio is about 11.38 times the frozen naive roundoff tolerance while the expected velocity magnitude is about 3.90e5 cm/day; this is consistent with conditioning amplification rather than a structural equation mismatch.",
+    "A reproduced pure-capillary worst ratio is about 19.11 times the frozen naive tolerance with an absolute residual of order 7.2e-13.",
+    "The frozen B2C tolerance model did not include forward-error amplification from forming theta_d-theta_i and K_d-K_i from independently rounded endpoints."
+  ],
+  "classification": "FAILED_FLOATING_POINT_IDENTITY_ORACLE_CONDITIONING_NOT_EQUATION_REJECTION",
+  "pass": false,
+  "decision": "B2C_FROZEN_BINARY64_IDENTITY_GATE_FAILED_SOURCE_EQ18_RECONCILIATION_REQUIRES_HIGH_PRECISION_NUMERICAL_REPRESENTATION_QUALIFICATION",
+  "hard_guards": [
+    "B2C remains FAIL and its frozen thresholds are not relaxed post hoc.",
+    "Do not promote Eq18 to production from the source argument alone.",
+    "A follow-up must compare the same source algebra against a high-precision oracle and explicitly distinguish endpoint-derived differences from shared immutable delta-theta and delta-K parameters.",
+    "No dry-bin creation, rainfall allocation, G_eff closure, front merge or groundwater interaction is admitted by this result."
+  ],
+  "next_gate": "B2C_R1_HIGH_PRECISION_EQ18_NUMERICAL_REPRESENTATION_CHARACTERIZATION",
+  "status": "FAILED_FROZEN_IDENTITY_ORACLE_CONDITIONING_READY_FOR_HIGH_PRECISION_CHARACTERIZATION"
+}
