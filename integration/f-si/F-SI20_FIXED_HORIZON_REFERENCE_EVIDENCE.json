@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "FIXED_HORIZON_PRESCRIBED_HEAD_RICHARDS_REFINEMENT",
+  "scope": "nonproduction numerical characterization only; no temporal metric or tolerance admitted",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fgc02_fixture": "same -75.0 cm to -74.99 cm prescribed-head physical stimulus and numerical controls",
+    "production_source_changed": false
+  },
+  "workflow": {
+    "name": "F-SI20 fixed-horizon fine-reference",
+    "run": 34300363405,
+    "job": 102305775986,
+    "head": "e2ccf714f42916731e8da862c92f140f980b84b6",
+    "conclusion": "success",
+    "repeat_o0": "PASS",
+    "repeat_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "artifact": "NONE; evidence is reproduced from the successful workflow log and committed harness"
+  },
+  "problem": {
+    "total_horizon_day": 0.25,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "bottom_mode": 5,
+    "substep_counts": [1,2,4,8,16,32,64,128,256,512,1024],
+    "head_abs_tolerance": 1e-12,
+    "head_rel_tolerance": 1e-12,
+    "mass_gate": 1e-12,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1e-6
+  },
+  "endpoint_refinement_rows": [
+    {"n":1,"n2":2,"dhead_n_n2_cm":2.55242948426825933e-4,"dtheta_n_n2":2.45253912511955718e-7,"ehead_n_ref1024_cm":3.73584356864853362e-4,"ehead_n2_ref1024_cm":1.36652008762894184e-4,"signed_storage_n_ref1024":-8.07299691540919184e-7},
+    {"n":2,"n2":4,"dhead_n_n2_cm":1.02942967401986607e-4,"dtheta_n_n2":9.89141930585191176e-8,"ehead_n_ref1024_cm":1.36652008762894184e-4,"ehead_n2_ref1024_cm":3.52066050481880666e-5,"signed_storage_n_ref1024":-2.88545085658231670e-7},
+    {"n":4,"n2":8,"dhead_n_n2_cm":2.76148633417960809e-5,"dtheta_n_n2":2.65340962535276503e-8,"ehead_n_ref1024_cm":3.52066050481880666e-5,"ehead_n2_ref1024_cm":7.59174170639198564e-6,"signed_storage_n_ref1024":-6.85421000512498324e-8},
+    {"n":8,"n2":16,"dhead_n_n2_cm":5.81177479830330412e-6,"dtheta_n_n2":5.58431911823475957e-9,"ehead_n_ref1024_cm":7.59174170639198564e-6,"ehead_n2_ref1024_cm":1.77996690808868152e-6,"signed_storage_n_ref1024":-1.40772985490755786e-8},
+    {"n":16,"n2":32,"dhead_n_n2_cm":1.25678275253449101e-6,"dtheta_n_n2":1.20759602317832559e-9,"ehead_n_ref1024_cm":1.77996690808868152e-6,"ehead_n2_ref1024_cm":5.23184155554190511e-7,"signed_storage_n_ref1024":-3.23267018709216813e-9},
+    {"n":32,"n2":64,"dhead_n_n2_cm":3.35562802433742036e-7,"dtheta_n_n2":3.22429860588613337e-10,"ehead_n_ref1024_cm":5.23184155554190511e-7,"ehead_n2_ref1024_cm":1.87621353120448475e-7,"signed_storage_n_ref1024":-9.41556999034531827e-10},
+    {"n":64,"n2":128,"dhead_n_n2_cm":1.12996772827500536e-7,"dtheta_n_n2":1.08574482737822109e-10,"ehead_n_ref1024_cm":1.87621353120448475e-7,"ehead_n2_ref1024_cm":7.46245802929479396e-8,"signed_storage_n_ref1024":-3.36309979864779507e-10},
+    {"n":128,"n2":256,"dhead_n_n2_cm":4.51642421239739633e-8,"dtheta_n_n2":4.33966196311530439e-11,"ehead_n_ref1024_cm":7.46245802929479396e-8,"ehead_n2_ref1024_cm":2.94603381689739763e-8,"signed_storage_n_ref1024":-1.33524635792525714e-10},
+    {"n":256,"n2":512,"dhead_n_n2_cm":2.00402894279250177e-8,"dtheta_n_n2":1.92559301837036401e-11,"ehead_n_ref1024_cm":2.94603381689739763e-8,"ehead_n2_ref1024_cm":9.42004874104895862e-9,"signed_storage_n_ref1024":-5.26688692659149638e-11},
+    {"n":512,"n2":1024,"dhead_n_n2_cm":9.42004874104895862e-9,"dtheta_n_n2":9.05142627516397624e-12,"ehead_n_ref1024_cm":9.42004874104895862e-9,"ehead_n2_ref1024_cm":0.0,"signed_storage_n_ref1024":-1.68349778562060237e-11}
+  ],
+  "mass_and_solver": {
+    "hard_mass_residual_all_trajectories": "0.0 in workflow output",
+    "maximum_reported_unrounded_solver_residual_at_n1024": 8.89316398300366018e-13,
+    "note": "The N=1024 endpoint is a finite numerical reference, not an exact solution. Further refinement is not inferred from this run."
+  },
+  "interpretation": {
+    "fixed_horizon_state_refinement_decreases": true,
+    "richards_lacks_temporal_convergence": false,
+    "binary_exact_identity_is_required_by_science": false,
+    "stable_universal_formal_order_established": false,
+    "richardson_factor_admitted": false,
+    "production_metric_admitted": false,
+    "key_finding": "At the same physical final time, successive prescribed-head Richards trajectories approach one another strongly over the tested refinement range while the hard mass gate remains satisfied. Therefore the earlier nonmonotone local retry sequence cannot be interpreted as evidence that the Richards trajectory itself fails to converge in time."
+  },
+  "scientific_boundary": [
+    "N=1024 is only the finest tested trajectory and must not be called the exact solution.",
+    "The apparent order varies across the refinement ladder; no production Richardson correction is justified here.",
+    "This study does not select a temporal tolerance and does not release F-PE or F-GC02."
+  ]
+}
