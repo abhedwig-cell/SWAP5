@@ -1,80 +1,86 @@
 {
-  "schema_version": 1,
-  "workstream": "F-MR",
-  "work_unit": "F-MR16",
-  "title": "Richards Quantitative Temporal-Error Readiness and Owner Boundary",
+  "workunit": "F-MR16",
+  "title": "Richards Quantitative Temporal-Error Readiness & Owner Boundary",
+  "status": "IN_PROGRESS_CHARACTERIZATION_TESTED_PENDING_INTERPRETATION",
+  "implementation_status": "CHARACTERIZATION_HARNESS_IMPLEMENTED_NONPRODUCTION",
+  "persistence_status": "PERSISTED",
+  "test_status": "TESTED",
+  "qualification_status": "NOT_QUALIFIED_METRIC_PENDING",
   "branch": "work/f-mr16-richards-temporal-error-readiness",
-  "status": "IN_PROGRESS_READINESS_PERSISTED_BEFORE_TESTING",
-  "phase": "DIAGNOSIS_AND_METRIC_CHARACTERIZATION",
-  "base": {
-    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
-    "fvq27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
-    "production_source_must_remain_identical_during_readiness": true
+  "base_commit": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+  "performance_trigger_commit": "d0258204fae26cb706fcb54cd0503b3e412357d0",
+  "current_characterization_head": "dacb043b968e79c3a849aad104008883124c090d",
+  "decision": "PENDING_SOURCE_THEORY_INTERPRETATION_AND_OWNER_DECISION",
+  "characterization": {
+    "profile_status": "QUALIFIED_BY_F_VQ24_NOT_REQUALIFIED_HERE",
+    "probe": "exact F-VQ24-qualified Richards probe",
+    "head0_cm": -75.0,
+    "interval_duration": 1.0,
+    "top_flux_relative_perturbations": [0.0, 3e-12, -3e-12, 1e-11, -1e-11],
+    "bottom_mode": 7,
+    "root_sink": 0.0,
+    "qdra": "nonzero nodewise",
+    "qssdi": "matching nonzero nodewise",
+    "macropores": "inactive",
+    "step_doubling": "one full interval versus two half intervals through the existing transaction comparison",
+    "observed_retry_step_sizes": [1.0, 0.5, 0.25],
+    "observer": "nonproduction copy of the serialized Richards backend with observation-only component maxima inserted before the unchanged binary comparator",
+    "workflow": ".github/workflows/fmr16-fvq24-temporal-delta-characterization.yml",
+    "workflow_run_id": 34283246020,
+    "workflow_head": "dacb043b968e79c3a849aad104008883124c090d",
+    "workflow_conclusion": "success",
+    "artifact_name": "fmr16-temporal-delta-characterization",
+    "artifact_id": 10078442634,
+    "artifact_log_sha256": "cac049d749ae2751c24a1af8402ce673aaa02f8a33d01708dee8a820a0c646c3"
   },
-  "trigger": {
-    "fpe03_b04_closeout": "d0258204fae26cb706fcb54cd0503b3e412357d0",
-    "fpe03_b04_status": "CLOSED_PARTIAL_NEGATIVE_OWNER_BLOCKED_ACCEPTED_NONTRIVIAL_RICHARDS_RUNTIME_REQUIRED",
-    "observed_pattern": "All currently accepted REFERENCE runtime fixtures are at the baseline cost vector, while scientifically admitted nonzero F-VQ24 Richards trajectories are materially more expensive but rejected and uncommitted."
+  "characterization_test_facts": {
+    "baseline_exact_temporal_identity": "PASS",
+    "nonzero_richards_finite_component_deltas": "PASS",
+    "nonzero_cases_strictly_monotone_head_and_theta": "2/4",
+    "nonzero_cases_final_delta_below_initial_head_and_theta": "4/4",
+    "robust_monotone_dt_halving_signal": "NO",
+    "o0_o2_identity": "PASS",
+    "production_acceptance_changed": false,
+    "mass_requirement_changed": false,
+    "retry_policy_changed": false,
+    "production_metric_selected": false
   },
-  "diagnosis": {
-    "generic_transaction_layer": "ALREADY_SUPPORTS_QUANTITATIVE_MODEL_OWNED_TEMPORAL_ERROR_RETRY_ROLLBACK_AND_TWO_HALF_COMMIT",
-    "canonical_interval_runtime": "ALREADY_SUPPORTS_ACCEPTED_SUBSTEPS_OVER_GENERIC_T0_T1_WITH_PRIVATE_WORKING_STATE_AND_FINAL_EXTERNAL_COMMIT",
-    "serialized_richards_backend_temporal_error": "BINARY_BITWISE_IDENTITY_ONLY",
-    "current_backend_behavior": "returns 0 only when full-step and two-half final physical states are bitwise identical, otherwise returns huge(real64)",
-    "consequence": "Any genuinely evolving Richards state that differs between full and two-half paths is temporally rejected for every finite temporal_tolerance. Retry step reduction cannot provide graded convergence unless exact bitwise identity eventually occurs.",
-    "mass_contract_implicated": false,
-    "transaction_mechanism_redesign_required_by_current_evidence": false
+  "evidence_boundary": {
+    "persisted_artifact_contains": [
+      "max absolute pressure-head difference",
+      "max absolute water-content difference",
+      "absolute ponding-depth difference",
+      "absolute groundwater-level difference",
+      "diagnostic relative head and theta differences produced only by the nonproduction observer",
+      "retry-scale monotonicity characterization"
+    ],
+    "persisted_artifact_does_not_contain": [
+      "nodewise pressure-head difference vector",
+      "nodewise water-content difference vector",
+      "spatial location or pattern of component maxima",
+      "storage-weighted or vertically integrated water-content difference"
+    ],
+    "interpretation_rule": "missing componentwise or integrated evidence must not be inferred from maxima"
+  },
+  "facts": {
+    "f_kt_scalar_contract": "temporal_error <= temporal_tolerance",
+    "current_richards_temporal_error": "binary 0 for exact equality of relevant final state, huge(real64) otherwise",
+    "binary_metric_gap": "no graded convergence signal for physically evolving Richards state",
+    "mass_gate": "separate and absolute",
+    "reference_policy": "unchanged full-accuracy path",
+    "production_metric_change": "not implemented"
   },
   "ownership": {
-    "transaction_checkpoint_retry_commit": "F-KT",
-    "solver_internal_time_control_or_model_temporal_error": "F-SI_OR_MODEL_IMPLEMENTATION",
-    "serialized_runtime_composition": "F-MR",
-    "performance_thresholds": "F-PE",
-    "this_work_unit": "F-MR_READINESS_AND_RUNTIME_OWNER_CHARACTERIZATION_ONLY"
+    "F_KT": "checkpoint/retry/rollback/commit plus generic scalar acceptance",
+    "F_SI": "Richards model/solver specific temporal-error semantics",
+    "F_MR": "runtime binding/composition of model-supplied metric",
+    "F_PE": "performance policy and cost thresholds"
   },
-  "fkt_contract_lock": {
-    "fkt04_status": "QUALIFIED",
-    "fkt04_temporal_provenance_scope": "committed temporal provenance, contiguous continuation and fail-closed time-origin validation",
-    "fkt04_test_model_temporal_error": "abs(half_state - full_state)",
-    "fkt04_numerical_acceptance_policy_changed": false,
-    "interpretation": "F-KT deliberately accepts a model-defined scalar quantitative temporal error and does not prescribe Richards-specific scaling."
-  },
-  "primary_scientific_probe": {
-    "workload_owner": "F-VQ24",
-    "workload_closeout": "4a8c0740222da5934e1fae53000c1c19db733e27",
-    "head0": -75.0,
-    "step_duration": 1.0,
-    "relative_top_flux_perturbations": [0.0, 3e-12, -3e-12, 1e-11, -1e-11],
-    "bottom_mode": 7,
-    "root_sink": "ZERO",
-    "source_sink": "NONZERO_NODEWISE_QDRA_WITH_MATCHING_QSSDI",
-    "purpose": "Measure actual full-vs-two-half component differences and their evolution under retry-scale dt without changing production acceptance."
-  },
-  "readiness_questions": [
-    "Which physical components differ between full and two-half F-VQ24 states: pressure head, water content, ponding depth, groundwater level or optional process state?",
-    "How do absolute and relative component deltas scale as dt is halved?",
-    "Does a monotone convergence signal exist over the current retry ladder?",
-    "Can a dimensionally explicit scalar metric be defined without hidden fixed scales or mixing incompatible units?",
-    "Are existing numerical configuration fields sufficient, or is an explicit Richards temporal-error contract/configuration required before implementation?"
-  ],
-  "hard_constraints": {
-    "physics_changed_during_readiness": false,
-    "mass_tolerance_relaxed": false,
-    "temporal_tolerance_reinterpreted_without_contract": false,
-    "retry_policy_changed": false,
-    "accepted_state_route_changed": false,
-    "transaction_semantics_changed": false,
-    "execution_class_changed": false,
-    "reference_mode_preserved": true,
-    "no_fpe_threshold_selected": true
-  },
-  "invariant_focus": [7,8,9,13,23,24,25,26,29,30],
-  "state": {
-    "implemented": false,
-    "persisted": true,
-    "tested": false,
-    "qualified": false
-  },
-  "claim_limit": "F-MR16 currently records a source-grounded readiness diagnosis only. It does not authorize changing the temporal metric, tolerance, retry policy, mass gate or production acceptance. A production change is forbidden until the F-VQ24 full-vs-two-half state deltas are characterized and the metric semantics are explicit and dimensionally defensible.",
-  "next_action": "Build a read-only F-VQ24 temporal-delta characterization harness on the exact F-VQ27 source postimage and measure componentwise full-vs-two-half differences over the retry-scale dt ladder."
+  "qualification_boundary": [
+    "No production Richards temporal-error metric is admitted by this characterization step.",
+    "No arbitrary cross-unit normalization is admitted.",
+    "No F-PE threshold, BALANCED, THROUGHPUT, FALLBACK, iteration cap, or physics change is admitted.",
+    "Non-monotone delta behavior is characterization evidence rather than a test failure.",
+    "F-PE remains blocked until the F-MR16 owner/theory decision is closed and any required model-owned metric work, F-MR composition, independent F-VQ, and accepted nontrivial Richards runtime are complete."
+  ]
 }
