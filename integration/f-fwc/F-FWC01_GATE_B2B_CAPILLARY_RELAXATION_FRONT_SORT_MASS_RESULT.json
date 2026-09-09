@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2B_CAPILLARY_RELAXATION_FRONT_SORT_MASS",
+  "contract": "F-FWC01_GATE_B2B_CAPILLARY_RELAXATION_FRONT_SORT_MASS_PRECOMMIT.json",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION_SOURCE_BOUND_2015_SECTION_3_3_AND_3_6",
+  "workflow": {
+    "run": 34385463627,
+    "head": "b7566fafa42b323460a53ed5b576b3fcc5a4b963",
+    "conclusion": "success",
+    "artifact_id": 10117516272,
+    "artifact_digest": "sha256:7360c3b4ba1019655da22daab79291693654b8691a1ee30bea1df85834644489"
+  },
+  "case_count": 420,
+  "case_pass_count": 420,
+  "theta_bin_counts": [16,64,200],
+  "front_types": ["INFILTRATION_Z","GROUNDWATER_H"],
+  "maximum_abs_mass_residual": 0.0,
+  "all_binary64_multisets_identical": true,
+  "all_outputs_monotone_nonincreasing": true,
+  "all_rejection_checks_pass": true,
+  "persistent_extra_state_bytes": 0,
+  "sort_scratch_owner": "worker",
+  "source_sink_ledger_delta": 0.0,
+  "boundary_ledger_delta": 0.0,
+  "decision": "QUALIFIED_SOURCE_BOUND_INFILT_GW_FRONT_CAPILLARY_RELAXATION_SORT_MASS_READY_FOR_INFILTRATION_FRONT_CREATION_MASS_GATE",
+  "hard_nonclaims": [
+    "No falling-slug capillary-relaxation clip-and-move-left qualification.",
+    "No infiltration equation 18 trajectory qualification.",
+    "No groundwater equation 21 trajectory qualification.",
+    "No layered-soil relaxation qualification.",
+    "No explicit-diffusion qualification.",
+    "No hydraulic-accuracy or MultiSWAP production admission."
+  ],
+  "status": "QUALIFIED_RESTRICTED_FRONT_SORT_CAPILLARY_RELAXATION_MASS_SUBGATE"
+}
