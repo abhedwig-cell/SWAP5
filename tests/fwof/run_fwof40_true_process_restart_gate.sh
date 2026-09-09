@@ -16,6 +16,13 @@ python3 tools/fwof40_materialize_persistence_candidate.py \
   "$BUILD/mod_fmr_wofost_accepted_window_lineage.f90" \
   "$BUILD/mod_fmr_wofost_crop_transaction.f90" >/dev/null
 
+# The qualification codec is also materialized with explicitly ordered impure
+# validation calls. Fortran does not guarantee short-circuit evaluation.
+python3 tools/fwof40_order_external_adapter_validation.py \
+  tests/fwof/mod_fwof40_external_crop_restart_adapter.f90 \
+  "$BUILD/mod_fwof40_external_crop_restart_adapter.f90" | tee "$BUILD/adapter_ordering.txt"
+grep -Fq 'FWOF40_EXTERNAL_ADAPTER_ORDERED_VALIDATION_MATERIALIZED=PASS' "$BUILD/adapter_ordering.txt"
+
 FWO34=85c0f7838d56c63d49f16af8242bdf4cbe4219d9
 git show "$FWO34:tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90" > "$BUILD/fwof34_full.f90"
 python3 - "$BUILD/fwof34_full.f90" "$BUILD/mod_fwof34_test_model.f90" <<'PY'
@@ -57,7 +64,7 @@ for OPT in 0 2; do
   gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$ROOT/src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
   gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$BUILD/mod_fwof34_test_model.f90"
   gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$ROOT/tests/fwof/mod_fwof40_restart_fixture.f90"
-  gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$ROOT/tests/fwof/mod_fwof40_external_crop_restart_adapter.f90"
+  gfortran "${COMMON[@]}" -O"$OPT" -J . -I . -c "$BUILD/mod_fwof40_external_crop_restart_adapter.f90"
 
   OBJECTS=(./*.o)
   gfortran "${COMMON[@]}" -O"$OPT" -J . -I . "$ROOT/tests/fwof/test_fwof40_reference.f90" "${OBJECTS[@]}" -o reference
