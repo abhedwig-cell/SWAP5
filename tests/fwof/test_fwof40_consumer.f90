@@ -34,7 +34,9 @@ program test_fwof40_consumer
   call fwof40_require(len_trim(input_path) > 0 .and. len_trim(output_path) > 0, 'consumer paths')
 
   call read_fwof40_crop_restart_artifact(trim(input_path), crop, ok, status)
-  call fwof40_require(ok .and. status == FWO40_EXTERNAL_OK .and. crop%ready(), 'consumer restore')
+  call fwof40_require(ok, 'consumer restore available')
+  call fwof40_require(status == FWO40_EXTERNAL_OK, 'consumer restore status')
+  call fwof40_require(crop%ready(), 'consumer restored crop ready')
   call fwof40_require(crop%current_lineage_id() == 4001_int64, 'restored crop lineage')
   call fwof40_require(crop%current_revision() == 1_int64, 'restored crop revision one')
   write(*,'(A)') 'FWOF40_FRESH_PROCESS_RECONSTRUCTION=PASS'
