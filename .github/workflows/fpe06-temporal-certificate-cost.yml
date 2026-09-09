@@ -17,10 +17,39 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      - name: Install gfortran
+      - name: Ensure gfortran
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gfortran
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
           gfortran --version
       - name: Run F-PE06 source-locked pre-timing O0/O2 gate
         run: bash tests/fpe/run_fpe06_pretiming_equivalence.sh
+
+  paired-wall-clock:
+    needs: pretiming-equivalence
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE06 balanced ABBA O0/O2 timing characterization
+        run: bash tests/fpe/run_fpe06_paired_timing.sh
+      - name: Upload F-PE06 timing evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe06-timing-evidence
+          path: fpe06_timing_artifact
+          if-no-files-found: warn
