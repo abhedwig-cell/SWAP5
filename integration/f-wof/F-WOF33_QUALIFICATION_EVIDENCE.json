@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF33",
+  "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Qualification Evidence",
+  "base": {
+    "commit": "5c35f2c244a476819a673c46b6e926561ea99c84",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_PHASE_B_RATE_PROVIDER_WITH_RUNTIME_LINEAGE_HOLD"
+  },
+  "tested_candidate": "626bd6e6671982847b3d72fa8c934ca4850deb86",
+  "workflow": {
+    "name": "F-WOF33 two-phase crop window",
+    "run_id": 34311477183,
+    "job_id": 102338857838,
+    "conclusion": "success"
+  },
+  "markers": [
+    "FWOF33_PRODUCTION_DELTA_SINGLE_COMPOSITION_MODULE=PASS",
+    "FWOF33_FWO32_CLOSEOUT_AND_COMPONENT_CHAIN_LOCK=PASS",
+    "FWOF33_EXACT_TWO_PHASE_COMPONENT_ORDER_STATIC=PASS",
+    "FWOF33_TRIAL_CONTEXT_HAS_NO_PARAMETER_BUNDLE_OR_ACCEPTED_ACCUMULATOR=PASS",
+    "FWOF33_NO_COMMIT_SCHEDULER_SOLVER_TRANSACTION_OR_IO_DEPENDENCY=PASS",
+    "FWOF33_RUNTIME_ACCEPTED_WINDOW_PROVENANCE_HOLD_STATIC=PASS",
+    "FWOF33_O0=PASS",
+    "FWOF33_O2=PASS",
+    "FWOF33_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF33_PHASE_A_COMPONENT_ORDER_AND_BITWISE_COMPOSITION=PASS",
+    "FWOF33_PHASE_B_AND_STRUCTURAL_COMPONENT_ORDER_BITWISE_COMPOSITION=PASS",
+    "FWOF33_EXACTLY_ONE_COHORT_SHIFT_PER_COMPLETE=PASS",
+    "FWOF33_BEGIN_AND_COMPLETE_LEAVE_COMMITTED_STATE_UNCHANGED=PASS",
+    "FWOF33_SAME_CHECKPOINT_BEGIN_REPLAY_BITWISE_IDENTITY=PASS",
+    "FWOF33_SAME_CONTEXT_COMPLETE_REPLAY_BITWISE_IDENTITY=PASS",
+    "FWOF33_FAILED_PHASE_B_RETURNS_UNADVANCED_PREPARED_CANDIDATE=PASS",
+    "FWOF33_WINDOW_CONTEXT_REUSABLE_AFTER_DISCARDED_COMPLETE=PASS",
+    "FWOF33_FAILED_STRUCTURAL_FINALIZE_RETURNS_UNADVANCED_PREPARED_CANDIDATE=PASS",
+    "FWOF33_INACTIVE_CROP_SKIPS_ALL_ACTIVE_ONLY_DEPENDENCIES=PASS",
+    "FWOF33_ONLY_QUALIFIED_ONE_DAY_EVENT_AND_FAILED_BEGIN_IS_ATOMIC=PASS",
+    "FWOF33_TWO_PHASE_CROP_WINDOW_TEST PASS",
+    "FWOF33_FWO31_PREPARE_ASSIMILATION_EXACT_REGRESSION=PASS",
+    "FWOF33_FWO32_FINALIZE_RATES_EXACT_REGRESSION=PASS",
+    "FWOF33_TWO_PHASE_CROP_WINDOW_GATE PASS"
+  ],
+  "output_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f",
+  "F_WOF31_reference_output_sha256": "d4ad755913eb884d5e764499a33fb7937114f82d61dee1a69b03dfb650003335",
+  "F_WOF32_reference_output_sha256": "ba19ecb50b3365065244d6daf3483888875195e6d06ddf36432f5b84452c3584",
+  "production_delta": [
+    "src/crop/mod_wofost_two_phase_crop_window.f90"
+  ],
+  "qualified_composition": {
+    "begin_order": [
+      "F-WOF26 structural prepare",
+      "F-WOF28 semantic rate-state snapshot",
+      "F-WOF31 actual-PGASS prepare"
+    ],
+    "complete_order": [
+      "F-WOF32 phase-B rate packet",
+      "F-WOF26 structural finalize"
+    ],
+    "component_vs_composition": "bitwise identical prepared candidate, PGASS, rate packet, complete candidate and structural diagnostics on the qualified active fixture",
+    "committed_input_mutation": false,
+    "complete_failure_candidate": "reset to the phase-A prepared candidate",
+    "discarded_complete_context_reusable": true,
+    "inactive_crop": "exact no-op without inspecting active-only forcing, canopy coefficients, rate parameters, structural parameters or accepted aggregates",
+    "cohort_cadence": "exactly one cohort shift/create per successful complete call",
+    "context_observation_accessors": "pure and side-effect free"
+  },
+  "transaction_and_replay": {
+    "same_committed_same_forcing_begin": "bitwise identical observable prepared candidate, PGASS and begin diagnostics",
+    "same_window_same_aggregates_complete": "bitwise identical candidate, packet and diagnostics",
+    "failed_begin_usable_context": false,
+    "failed_complete_commits_state": false,
+    "commit_authority_added": false
+  },
+  "runtime_provenance_hold": {
+    "semantic_carrier": "wofost_accepted_window_aggregates_t",
+    "accepted_accumulator_in_crop_context": false,
+    "transaction_result_in_crop_context": false,
+    "rejected_trial_zero_contribution_proven_end_to_end": false,
+    "same_window_same_accepted_trajectory_proven_end_to_end": false,
+    "owner": "runtime/transaction layer outside crop kernel"
+  },
+  "qualification_history": {
+    "initial_run": 34311340464,
+    "initial_result": "failure in O2 test compilation only: impure observation function used as the right operand of .and. triggered -Werror=function-elimination",
+    "resolution": "made private-context ready/crop_active accessors pure; no crop physics or component ordering changed",
+    "qualified_run": 34311477183
+  },
+  "invariant_audit": {
+    "2_kernel_separate_from_IO": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS_NO_NEW_PERSISTENT_COLUMN_STATE",
+    "5_scratch_per_worker": "PASS_TRIAL_CONTEXT_ONLY",
+    "6_scalable_layout": "PASS_SHARED_PARAMETERS_NOT_COPIED_IN_CONTEXT",
+    "7_transactional_steps": "PASS_COMPOSITION_IS_CANDIDATE_ONLY_NO_COMMIT; RUNTIME_AGGREGATE_LINEAGE_HELD",
+    "8_replay_and_warm_start": "PASS_BITWISE_REPLAY",
+    "9_generic_time": "PASS_PROCESS_EVENT_IS_ONE_DAY_WITHOUT_CALENDAR_IDENTITY",
+    "13_mass_conservation": "PASS_NO_NEW_WATER_OWNER_OR_FLUX_TRANSFORMATION",
+    "16_MultiSWAP_primary": "PASS_STATELESS_API_PLUS_WORKER_LOCAL_CONTEXT",
+    "21_reuse_SWAP_physics": "PASS_QUALIFIED_COMPONENT_COMPOSITION",
+    "23_physics_policy_separation": "PASS",
+    "25_reference_mode": "PASS_COMPONENT_EXACTNESS_PRESERVED",
+    "26_runtime_diagnostics": "PASS_COMPONENT_STATUS_AND_STRUCTURAL_DIAGNOSTICS_EXPOSED",
+    "27_optional_functionality_scales": "PASS_INACTIVE_ROUTE_SKIPS_ACTIVE_ONLY_WORK",
+    "28_runtime_system_composition": "PASS_RUNTIME_PROVENANCE_REMAINS_OUTSIDE_KERNEL",
+    "29_no_hidden_dependencies": "PASS",
+    "30_explicit_invariant_check": "PASS_WITH_RUNTIME_PROVENANCE_HOLD"
+  },
+  "qualification_decision": "QUALIFY_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD",
+  "next_required_seam": "runtime accepted-window accumulator and lineage binding proving that only accepted same-window soil-water contributions enter IQROT/IPTRA and that rejected/rolled-back trials contribute exactly zero"
+}
