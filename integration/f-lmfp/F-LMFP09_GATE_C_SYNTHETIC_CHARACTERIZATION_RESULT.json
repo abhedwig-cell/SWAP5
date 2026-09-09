@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP09",
+  "subgate": "C1_SYNTHETIC_COMPOSED_INTERFACE_CHARACTERIZATION_RESULT",
+  "tested_head": "5e08687f6d7c5adcba861677c3b1ea89a8e712b7",
+  "workflow_run": 34302745316,
+  "artifact": {
+    "id": 10085861333,
+    "digest": "sha256:c8db17b546dd673a63cb1f12beaa6e9feb2e6545f2a3a117029e161b86570d46"
+  },
+  "candidate": "COMPOSED_SATURATION_ALIGNED_HALF_FACE_EQUAL_FLUX",
+  "tested_cases": 1000,
+  "failed_cases": 129,
+  "successful_case_metrics": {
+    "active_cases": 607,
+    "dormant_cases": 264,
+    "active_rel_error": {
+      "median": 0.00013083259569572,
+      "p90": 0.0033019496227678236,
+      "p99": 0.027433311702838005,
+      "maximum": 0.12325341292449074
+    },
+    "dormant_abs_error_over_ks_max": 6.879839104004189e-12,
+    "equal_flux_scaled_residual_max": 9.996313499183174e-11,
+    "root_iterations": {"p50": 38, "p90": 43, "p99": 45, "maximum": 45},
+    "sign_mismatches": 0,
+    "hydrostatic_abs_flux_max": 3.5472686479391885e-11
+  },
+  "other_gates": {
+    "provider_self_check_pass": true,
+    "homogeneous_reduction_pass": true,
+    "continuity_pass": true,
+    "continuity_maximum_final_ratio": 0.24598229107833045,
+    "explicit_fail_closed_pass": true,
+    "tangent_admitted": false
+  },
+  "coverage_diagnosis": {
+    "provider_local_gradient_envelope": [-28.0, 28.0],
+    "failure_type": "CoverageFailure",
+    "failure_count": 129,
+    "reference_root_outside_local_gradient_envelope_count": 129,
+    "reference_root_inside_local_gradient_envelope_count": 0,
+    "reference_upper_half_gradient_range_over_failed_cases": [-9265.51784550754, 5969.558980384842],
+    "reference_lower_half_gradient_range_over_failed_cases": [-11879.117960769683, 18471.03569101508],
+    "interpretation": "the homogeneous half-face gradient envelope is not compositionally sufficient for the tested heterogeneous material contrasts; the failures are not a bisection iteration-cap failure"
+  },
+  "architecture": {
+    "mass_compatible": true,
+    "single_realized_face_flux": true,
+    "pair_specific_tables": false,
+    "persistent_column_state_added": false,
+    "production_code_changed": false,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true
+  },
+  "threshold_change_admitted": false,
+  "blind_gradient_envelope_expansion_admitted": false,
+  "next_required_action": "qualify a bounded transformed local-gradient representation before re-running Gate C",
+  "decision": "NOT_QUALIFIED_GATE_C_LOCAL_GRADIENT_COMPOSITION_ENVELOPE_REQUIRED"
+}
