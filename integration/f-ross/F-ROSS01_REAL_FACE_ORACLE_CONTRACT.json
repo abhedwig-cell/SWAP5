@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "purpose": "Freeze the qualification-only authoritative steady one-dimensional Darcy face oracle before Ross table design and characterization.",
+  "production_implementation": false,
+  "oracle_lineage": "INDEPENDENT_RECONSTRUCTION_NO_LMFP_IMPLEMENTATION_BORROWING",
+  "theory_trace": {
+    "primary_source": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal 10:760-766, doi:10.2136/vzj2010.0085",
+    "source_semantics": [
+      "vertical coordinate x is positive downward",
+      "steady face flux is obtained by integrating Darcy's law with constant q between prescribed endpoint states",
+      "for a uniform path the boundary-value solve may use h as independent variable",
+      "Ross gives the exact sign partition using h0 = h_below - path_length",
+      "q = 0 at h_above = h_below - path_length",
+      "q = K(h_above) at equal endpoint heads",
+      "runtime table lookup is separate from offline steady-Darcy table generation"
+    ],
+    "downward_coordinate_equation": "q = K(h) * (1 - dh/dx)",
+    "qualification_ode": "dx/dh = 1 / (1 - q/K(h))",
+    "boundary_condition": "x(h_below) - x(h_above) = path_length",
+    "special_exact_cases": {
+      "equal_head": "h_above == h_below => q = K(h_above)",
+      "hydrostatic": "h_below - h_above == path_length => q = 0"
+    }
+  },
+  "hydraulic_trace": {
+    "source_release": "SWAP 4.3.1 frozen audit package supplied to this project",
+    "outer_zip_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "constitutive_source": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_MvG_functions.f90",
+    "constitutive_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "parameter_mapping_source": "tools/SWAP/source/SWAP.ZIP::SWAP/readswap.f90",
+    "parameter_mapping_source_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "material_catalog": "data/soil/Staringreeks_2018.csv",
+    "material_catalog_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae"
+  },
+  "first_physical_fixture": {
+    "material": "B01",
+    "hydraulic_model": "default unimodal Mualem-van Genuchten with H_ENPR = 0 and no saturation switching inside the qualified envelope",
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_definition": "1 - 1/n",
+    "ksat_cm_per_day": 31.225016,
+    "lambda": 0.98087,
+    "ksatexm_not_enabled_in_this_fixture": true
+  },
+  "oracle_numerics": {
+    "root_method": "bracketed scalar root solve using Ross sign bounds",
+    "path_integral": "adaptive quadrature of dx/dh",
+    "no_table_interpolation_inside_oracle": true,
+    "no_finite_difference_face_approximation_inside_oracle": true,
+    "equal_head_and_hydrostatic_cases_are_analytic": true,
+    "offline_iterations_allowed": true,
+    "runtime_iterations_allowed": false
+  },
+  "independence_rules": [
+    "do not import or copy F-LMFP06-10 table-generation or oracle implementation",
+    "LMFP results may be used only as later cross-evidence, not as implementation lineage",
+    "Ross table errors are measured against this direct steady-Darcy oracle, not against another interpolated table"
+  ],
+  "scope": {
+    "homogeneous_material": true,
+    "unsaturated_only": true,
+    "one_vertical_face": true,
+    "known_path_length": true,
+    "bounded_head_envelope": true,
+    "saturation_switching": false,
+    "heterogeneous_materials": false,
+    "process_physics": false
+  },
+  "status": "ORACLE_CONTRACT_FROZEN_BEFORE_TABLE_CHARACTERIZATION"
+}
