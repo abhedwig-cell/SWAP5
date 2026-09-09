@@ -1,11 +1,11 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-SI",
   "work_unit": "F-SI23",
   "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
   "branch": "work/f-si23-richards-embedded-temporal-estimator",
-  "status": "GATE_C1B_EXACT_MANUFACTURED_OBSERVER_RELATION_QUALIFIED_READY_FOR_PHYSICAL_TRANSFER_CHARACTERIZATION",
-  "phase": "BOOTSTRAP_AND_EXACT_EIGENMODE_RELATION_QUALIFIED_PHYSICAL_ENVELOPE_OPEN",
+  "status": "GATE_C2_POSITIVE_PHYSICAL_TRANSFER_WITH_STRONG_STATE_DEPENDENCE_READY_FOR_TRANSACTION_LOCAL_REFINEMENT_CHARACTERIZATION",
+  "phase": "RAW_OBSERVER_FAIL_SAFE_TRANSFER_SUPPORTED_PRODUCTION_EFFICIENCY_OPEN",
   "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
   "gate_A_mapping": "integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json",
   "gate_A_reconciliation": "integration/f-si/F-SI23_GATE_A_LITERATURE_RECONCILIATION.json",
@@ -14,19 +14,26 @@
   "gate_C1_preexecution_reconciliation": "integration/f-si/F-SI23_GATE_C1_PLAN_SOURCE_RECONCILIATION.json",
   "gate_C1B_plan": "integration/f-si/F-SI23_GATE_C1B_HYDRAULIC_EIGENMODE_PLAN.json",
   "gate_C1B_evidence": "integration/f-si/F-SI23_GATE_C1B_EIGENMODE_EVIDENCE.json",
+  "gate_C2_plan": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_PLAN.json",
+  "gate_C2_evidence": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json",
   "gate_A_contract_run": 34320565144,
   "gate_B_qualified_commit": "beee6dfd9b0f56274a1ba64ef7ce9f0b0a29e7b6",
   "gate_B_workflow_run": 34322065842,
   "gate_C1B_tested_commit": "bb64dfeeae99f6e5108831fe3c2ebbb4d5d71d70",
   "gate_C1B_workflow_run": 34322973747,
-  "gate_C1B_workflow_job": 102373611651,
+  "gate_C2_tested_commit": "20b6e33a10150b4d81ceaab1f30e11805108ecfc",
+  "gate_C2_workflow_run": 34323642853,
+  "gate_C2_workflow_job": 102375784027,
   "current_candidate": {
     "name": "decision_only_backward_euler_pressure_head_error_observer",
     "formula": "e_h=0.5*dt*(hdot_np1-hdot_n)",
     "pressure_head_formula_source_bound": true,
     "exact_linear_hydraulic_eigenmode_relation_qualified": true,
-    "nonlinear_B110_physical_transfer_qualified": false,
-    "rigorous_general_SWAP_mixed_form_LTE_status": "NOT_YET_QUALIFIED",
+    "nonlinear_B110_finite_reference_transfer_supported": true,
+    "nonlinear_B110_negative_transfer_cases": 0,
+    "true_error_upper_bound_qualified": false,
+    "raw_magnitude_production_efficiency_supported": false,
+    "single_global_multiplicative_calibration_supported": false,
     "principal_mass_conservative_BE_candidate_changed": false,
     "Thomas_Gladwell_corrected_state_used": false,
     "production_allowed": false
@@ -43,8 +50,19 @@
     "rho_strictly_decreases_toward_one": true,
     "discrete_mass_residual_all_points": 0.0,
     "maximum_absolute_exact_continuous_mass_residual": 4.336808689942018e-19,
-    "O0_O2_identity": true,
-    "claim_transfer_to_nonlinear_physics": false
+    "O0_O2_identity": true
+  },
+  "nonlinear_physical_transfer": {
+    "case_count": 15,
+    "finite_reference_consistent_cases": 15,
+    "negative_transfer_cases": 0,
+    "all_mass_residuals": 0.0,
+    "R512_h0_minus25_range": [1657.535187836696,1662.352031370096],
+    "R512_h0_minus75_range": [1118.3097598799943,1121.7314040515487],
+    "R512_h0_minus250_range": [32.02439744299201,32.10857400155038],
+    "strong_state_dependence": true,
+    "raw_observer_extremely_conservative_at_0p25_day": true,
+    "N512_exact_reference": false
   },
   "hard_holds": {
     "production_source_modified": false,
@@ -59,5 +77,5 @@
     "F_PE_release": false,
     "F_VQ30_started": false
   },
-  "next_action": "Freeze Gate C2 physical-envelope transfer characterization on real B1.10 constitutive hydraulics. Compare e_h only to explicitly finite same-endpoint evidence; never relabel N512 or another finite BE endpoint as exact. Preserve mass, solver controls and production source, and make no threshold or certificate-normalization decision in Gate C2."
+  "next_action": "Freeze a transaction-local dt-refinement characterization from one committed state. For each retry-sized dt, recompute the right-sided bootstrap and e_h against a finite same-endpoint refined trajectory for that shortened endpoint. Determine whether EOBS and its finite-reference ratio approach the exact-eigenmode asymptotic regime predictably as dt shrinks. Select no threshold, normalization or global scale, and do not start F-VQ30 yet."
 }
