@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "SWAP 4.3.1 H_ENPR modified-MvG source reconciliation and relation to near-saturation closure research",
+  "status": "SOURCE_RECONCILED",
+  "production_implementation": false,
+  "source_trace": {
+    "constitutive_source": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_MvG_functions.f90",
+    "constitutive_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "input_source": "tools/SWAP/source/SWAP.ZIP::SWAP/readswap.f90",
+    "input_source_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "variables_source": "tools/SWAP/source/SWAP.ZIP::SWAP/variables.f90"
+  },
+  "parameter_semantics": {
+    "KSATFIT": "SWAP source describes this as saturated hydraulic conductivity fitted on the VG relation from laboratory data.",
+    "KSATEXM": "SWAP source describes this as saturated hydraulic conductivity examined/measured in laboratory or field.",
+    "H_ENPR": "SWAP source describes this as soil-water entry pressure head for the modified Mualem-Van Genuchten curve.",
+    "LEXP": "Mualem pore-connectivity exponent used by the conductivity relation."
+  },
+  "h_enpr_retention_semantics": {
+    "active_condition": "H_ENPR<=-0.01 cm for the default MvG route",
+    "s_enpr": "f(H_ENPR), where f(h)=(1+|alpha*h|^n)^(-m)",
+    "dry_branch": "For h<1.05*H_ENPR, theta=theta_r+(theta_s-theta_r)*f(h)/s_enpr.",
+    "wet_join_branch": "For h>=1.05*H_ENPR and h<0, SWAP uses a source-derived rational continuation theta=theta_s+term_105_ab*h/(1+term_105_a*h) that joins the normalized branch and reaches theta_s at h=0.",
+    "saturated_branch": "For h>=0, theta=theta_s unless elasticity is explicitly active."
+  },
+  "h_enpr_matrix_conductivity_semantics": {
+    "wet_matrix_branch": "For h>=H_ENPR, K_m=KSATFIT.",
+    "dry_matrix_branch": "For h<H_ENPR, se=f(h)/s_enpr and K_m=KSATFIT*se^LEXP*((1-F(f(h)))/(1-F(s_enpr)))^2, with F(x)=(1-x^(1/m))^m.",
+    "normalization_property": "The dry branch reaches exactly KSATFIT at H_ENPR, so H_ENPR defines a finite-air-entry normalized matrix-conductivity relation.",
+    "upper_cap": "The source caps the non-KSATEXM result at KSATFIT."
+  },
+  "relation_to_schaap_van_genuchten_2006": {
+    "common_structure": [
+      "finite non-zero air-entry pressure",
+      "normalized Mualem matrix conductivity that reaches a fitted matching conductivity at the air-entry state",
+      "distinction between a fitted matrix conductivity scale and a measured saturated conductivity is available in SWAP through KSATFIT and KSATEXM"
+    ],
+    "important_difference": "SWAP H_ENPR retention uses a rational near-entry continuation toward theta_s instead of the exact published MMVG flat theta_s plateau above h_s. SWAP H_ENPR therefore must not be called the published 2006 MMVG model without qualification.",
+    "published_bridge_relevance": "Schaap and van Genuchten 2006 provides a literature-backed pressure-dependent log-conductivity bridge from matrix K_m toward measured K_s. This is a plausible separate physical closure to combine with the existing SWAP H_ENPR matrix semantics, but such a hybrid is a new SWAP5 hydraulic closure, not legacy KSATEXM and not verbatim published MMVG."
+  },
+  "legacy_composition_finding": {
+    "evidence": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json",
+    "finding": "Legacy active KSATEXM takes precedence over H_ENPR K_m but uses relsatthr and ksatthr derived from unmodified VG at h=-2 cm. With H_ENPR active this creates a shifted activation head and a discontinuous downward K jump.",
+    "canonical_consequence": "Do not expose H_ENPR<0 plus the legacy KSATEXM extension as an ordinary canonical SWAP5 composition."
+  },
+  "architecture_consequences": [
+    "Near-saturation conductivity closure identity belongs to physical configuration, not solver policy.",
+    "FullRichards and RossFast must consume the same closure object and immutable derived parameters.",
+    "A requested legacy exact-KSATEXM law must not be silently replaced by an H_ENPR/SvG-style bridge for performance reasons.",
+    "Explicit SWAP macropore physics must remain separate; any conductivity bridge motivated partly by macro/mesopore effects needs a double-counting analysis before combination.",
+    "Derived near-saturation coefficients and Ross face tables are immutable parameter payloads, not persistent column state."
+  ],
+  "recommended_candidate_lineage": {
+    "candidate_id": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+    "classification": "CLASS_B_NEW_PHYSICAL_HYDRAULIC_CLOSURE",
+    "matrix_retention_base": "source-bound SWAP H_ENPR modified-MvG",
+    "saturated_conductivity_target": "KSATEXM",
+    "first_research_H_ENPR_cm": -4.0,
+    "rationale": "Uses existing SWAP finite-air-entry physics and source parameter meanings while replacing the incompatible legacy -2 cm linear-in-S extension by an explicit literature-backed continuous pressure-dependent bridge.",
+    "not_equal_to": ["SWAP431_EXACT_KSATEXM", "PUBLISHED_MMVG_2006", "NHI_METASWAP_CONSERVATIVE_VARIANT"]
+  },
+  "decision": "SWAP431_H_ENPR_IS_A_REUSABLE_FINITE_AIR_ENTRY_MATRIX_BASE_BUT_LEGACY_ACTIVE_KSATEXM_IS_NOT_A_CONTINUOUS_COMPOSITE_CLOSURE"
+}
