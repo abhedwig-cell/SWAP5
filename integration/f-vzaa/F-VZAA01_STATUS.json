@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-VZAA",
   "work_unit": "F-VZAA01",
   "title": "Vadose Zone Analytical Algorithm Assessment, Conservation Repair & SWAP5 Suitability",
@@ -9,7 +9,7 @@
   "official_code_reproduced": false,
   "qualified": false,
   "final_classification": null,
-  "interim_decision": "PUBLISHED_VZAA_DIRECT_SOLVER_BLOCKED_STANDALONE_CONSERVATIVE_DERIVATIVE_DEPRIORITIZED_D0_DONOR_SEPARABILITY_SPECIFIED",
+  "interim_decision": "PUBLISHED_VZAA_DIRECT_SOLVER_BLOCKED_H0_LITERAL_HISTORY_REFERENCE_QUALIFIED_D0_DONOR_SIGNAL_STILL_REQUIRED_BEFORE_COMPRESSION_CANDIDATE",
   "primary_source": {
     "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467",
     "doi": "10.1016/j.jhydrol.2026.135467",
@@ -31,6 +31,17 @@
     "adaptive_substepping": "ADDITIONAL_RUNTIME_VARIABILITY",
     "conservative_forward_backward_hypothesis": "PERSISTED_RESEARCH_HYPOTHESIS_NOT_QUALIFIED_AND_DEPRIORITIZED_PENDING_DISTINCT_BENEFIT"
   },
+  "H0_literal_history_reference": {
+    "status": "QUALIFIED_REFERENCE_ONLY",
+    "run": 34320488095,
+    "head": "88c0298e22e1fa3dc5a602324b81b7454229ae0d",
+    "artifact": 10091660837,
+    "artifact_digest": "sha256:34b400b74c0131134177cca60d84ab728d835e20966026d8d448bda19dc8d442",
+    "finest_uniform_relative_error_max": 0.014178675779252565,
+    "finest_nonuniform_relative_error_max": 0.019272644232626875,
+    "reversal_eq6_switch_count_all_test_resolutions": 3,
+    "scope": "source-faithful full-history midpoint Eq5 comparator only"
+  },
   "qualification_gates": {
     "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_CORE_ALGEBRA_COMPARATIVE_POSITIONING_AND_DONOR_FALSIFICATION_PLAN_RECONSTRUCTED",
     "B_published_code_reproduction": "OPEN_SUPPLEMENT_NOT_CAPTURED",
@@ -40,6 +51,7 @@
     "F_bidirectional_groundwater_exchange": "PARTIAL_PHYSICS_PRESENT_INTERFACE_NOT_QUALIFIED",
     "G_transactional_trial_rollback": "CONDITIONALLY_PLAUSIBLE_HISTORY_STATE_OWNER_REQUIRED",
     "H_bounded_runtime": "FAIL_STRONG_BOUNDED_COST_CLAIM_FOR_LITERAL_FULL_HISTORY_FORMULATION",
+    "H0_literal_Eq5_reference": "PASS_REFERENCE_ONLY",
     "I_modflow_response_tangent": "OPEN_NOT_PROVIDED_BOUNDED_SCALAR_RESPONSE_IS_ONLY_A_RESEARCH_PATH",
     "J_swap_physics_interface": "OPEN",
     "D0_donor_separability": "SPECIFIED_EXECUTION_BLOCKED_ON_TIME_RESOLVED_REFERENCE_CAPTURE"
@@ -47,21 +59,18 @@
   "comparative_positioning": {
     "layeredmfp": {
       "observed_branch": "work/f-lmfp09-hydraulic-envelope-geometry",
-      "observed_head": "7d164e19cc70a831436cdb0a15514672f58179fd",
-      "assessment": "MOST_ADVANCED_SWAP5_SPECIFIC_REDUCED_ORDER_TRACK_CURRENT_F_LMFP08_SCOPE_ALREADY_HAS_ROUNDOFF_MASS_AND_BOUNDED_SHARED_FACE_REPRESENTATION"
+      "assessment": "MOST_ADVANCED_SWAP5_SPECIFIC_REDUCED_ORDER_TRACK; F-LMFP09 NOW HAS A PRECOMMITTED UNSEEN CORE-ENVELOPE HOLDOUT IN EXECUTION"
     },
     "rossfast": {
       "observed_branch": "work/f-ross01-fast-mfp-feasibility",
-      "observed_head": "a351de29183cb896f205e318af6522bc02bb95b3",
-      "assessment": "STRONG_INDEPENDENT_MFP_CANDIDATE_NO_INHERENT_FULL_TEMPORAL_HISTORY_BUT_SWAP5_HARD_GATES_REMAIN_OPEN"
+      "assessment": "STRONG INDEPENDENT MFP CANDIDATE; SAME-FACTORIZATION RESPONSE-TANGENT ALGEBRA IS QUALIFIED BUT REAL HYDRAULIC TABLE AND SATURATION GATES REMAIN OPEN"
     },
     "fwc": {
       "observed_branch": "work/f-fwc01-finite-water-content-assessment",
-      "observed_head": "eebd347a486bf7597de9b5d5809ad91b19342084",
-      "assessment": "STRONGER_PUBLISHED_CONSERVATION_AND_MOVING_WATER_TABLE_LINEAGE_THAN_VZAA_BUT_DYNAMIC_FRONT_STATE_COST_AND_GENERIC_SWAP_HYDRAULICS_REMAIN_OPEN"
+      "assessment": "STRONGER PUBLISHED CONSERVATION AND MOVING-WATER-TABLE LINEAGE THAN VZAA, BUT DYNAMIC FRONT/SLUG STATE CARDINALITY AND MULTISWAP COST REMAIN OPEN"
     },
     "vzaa_distinct_candidate_value": "HISTORY_AWARE_TRANSIENT_DIFFUSIVE_LAYER_MIDPOINT_SIGNAL_AS_DIAGNOSTIC_OR_BOUNDED_DONOR_PROPOSAL_NOT_AS_ACCEPTED_LEDGER",
-    "standalone_derivative_burden_of_proof": "MUST_SHOW_MATERIALLY_DISTINCT_ACCURACY_OR_APPLICABILITY_ENVELOPE_NOT_AVAILABLE_MORE_SIMPLY_INSIDE_LAYEREDMFP_COMMON_SOLVER_ARCHITECTURE"
+    "standalone_derivative_burden_of_proof": "MUST_SHOW_MATERIALLY_DISTINCT_ACCURACY_OR_APPLICABILITY_ENVELOPE_NOT_AVAILABLE MORE SIMPLY INSIDE LAYEREDMFP COMMON SOLVER ARCHITECTURE"
   },
   "donor_separability": {
     "status": "D0_SPECIFIED_NOT_EXECUTED",
@@ -71,7 +80,7 @@
     "candidate_signal": "q_vzaa_mid = q_hist + q_steady",
     "reference_signal": "q_ref_mid = 0.5*(q_ref_in + q_ref_out)",
     "baseline_signal": "q_lmfp_mid = 0.5*(q_lmfp_in + q_lmfp_out)",
-    "warm_start_value_currently_weak": "CURRENT_F_LMFP07_F_LMFP08_EXPERIMENTAL_TRANSIENT_ROUTE_HAS_NO_GLOBAL_NONLINEAR_NEWTON_PROFILE_ITERATION_TO_WARM_START",
+    "warm_start_value_currently_weak": "CURRENT LAYEREDMFP EXPERIMENTAL TRANSIENT ROUTE HAS NO GLOBAL NONLINEAR NEWTON PROFILE ITERATION TO WARM START",
     "execution_blocker": "CURRENT_FULLRICHARDS_AB_EVIDENCE_NEEDS_TIME_RESOLVED_LAYER_MOISTURE_HEAD_AND_FACE_FLUX_CAPTURE"
   },
   "research_paths_remaining": {
@@ -86,8 +95,9 @@
       "required_proof": "MATERIALLY_DISTINCT_BENEFIT_OVER_LAYEREDMFP_OR_COMMON_SOLVER_MACHINERY_BEFORE_SEPARATE_SOLVER_FAMILY_IS_JUSTIFIED"
     },
     "compressed_fractional_history": {
-      "status": "OPEN_ONLY_IF_D0_SIGNAL_JUSTIFIES_METHOD_COMPLEXITY",
-      "required_proof": "FIXED_MAX_STATE_BOUNDED_UPDATE_TRANSACTIONAL_ROLLBACK_RESTART_SUFFICIENCY_NONUNIFORM_TIME_SEMANTICS_AND_ERROR_VERSUS_LITERAL_HISTORY"
+      "status": "REFERENCE_READY_CANDIDATE_DEFERRED_UNTIL_D0_SIGNAL_JUSTIFIES_METHOD_COMPLEXITY",
+      "reference_artifact": "integration/f-vzaa/F-VZAA01_H0_LITERAL_EQ5_REFERENCE_RESULT.json",
+      "required_proof": "FIXED_MAX_STATE_BOUNDED_UPDATE_TRANSACTIONAL_ROLLBACK_RESTART_SUFFICIENCY_NONUNIFORM_TIME_SEMANTICS_ERROR_VERSUS_LITERAL_HISTORY_AND_EQ6_SIGN_CLASSIFICATION"
     }
   },
   "next_actions": [
@@ -95,7 +105,7 @@
     "determine whether time-resolved face flux and moisture trajectories can be exposed in experiment-only evidence without production-kernel changes",
     "define any cross-track evidence workunit only after that seam is source-bound",
     "capture and provenance-check DOI-linked supplementary MATLAB appendices if an authoritative artifact becomes accessible",
-    "do not implement VZAA donor code on the current VZAA branch before D0 prerequisites are satisfied"
+    "do not implement a bounded-history candidate until D0 shows that the history signal provides material value beyond simpler existing reduced-order machinery"
   ],
-  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_D0_DONOR_SEPARABILITY_SPECIFIED_EXECUTION_BLOCKED_ON_REFERENCE_CAPTURE"
+  "status": "DIRECT_PUBLISHED_FORMULATION_BLOCKED_H0_REFERENCE_QUALIFIED_D0_REMAINS_NEXT_DECISION_GATE"
 }

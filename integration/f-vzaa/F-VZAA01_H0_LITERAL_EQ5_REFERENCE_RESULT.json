@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "gate": "H0_LITERAL_EQ5_REFERENCE",
+  "production_implementation": false,
+  "run": 34320488095,
+  "head": "88c0298e22e1fa3dc5a602324b81b7454229ae0d",
+  "artifact": {
+    "id": 10091660837,
+    "name": "f-vzaa01-h0-literal-eq5-reference",
+    "digest": "sha256:34b400b74c0131134177cca60d84ab728d835e20966026d8d448bda19dc8d442"
+  },
+  "operator": "published full-history midpoint Eq. 5 sum",
+  "observed": {
+    "constant_abs_H_max": 0.0,
+    "finest_uniform_relative_error_max": 0.014178675779252565,
+    "finest_nonuniform_relative_error_max": 0.019272644232626875,
+    "uniform_refinement_error_strictly_decreases": {
+      "linear_wetting": true,
+      "linear_drying": true,
+      "quadratic_wetting": true
+    },
+    "wetting_and_drying_signs_match_exact": true,
+    "repeated_calls_bitwise_deterministic": true,
+    "reversal_values_finite": true,
+    "reversal_eq6_classification_switches_per_uniform_run": {
+      "32": 3,
+      "64": 3,
+      "128": 3,
+      "256": 3,
+      "512": 3,
+      "1024": 3
+    }
+  },
+  "acceptance": {
+    "constant_abs_H_max_le_1e_15": true,
+    "uniform_refinement_error_strictly_decreases_all_nonconstant": true,
+    "finest_uniform_relative_error_max_le_0p02": true,
+    "finest_nonuniform_relative_error_max_le_0p03": true,
+    "wetting_and_drying_signs_match_exact": true,
+    "repeated_calls_bitwise_deterministic": true,
+    "reversal_values_finite": true
+  },
+  "pass": true,
+  "decision": "H0_LITERAL_EQ5_REFERENCE_QUALIFIED_FOR_BOUNDED_HISTORY_COMPARATOR_USE",
+  "scope_limit": "This qualifies only the direct source-faithful full-history midpoint Eq. 5 reference evaluator and its test-grid behavior. It does not qualify VZAA flux physics, the complete VZAA solver, mass-conservation repair, groundwater coupling, or any bounded-memory approximation.",
+  "status": "QUALIFIED_REFERENCE_ONLY"
+}
