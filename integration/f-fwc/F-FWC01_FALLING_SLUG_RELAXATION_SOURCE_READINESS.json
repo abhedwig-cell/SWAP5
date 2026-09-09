@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "topic": "FALLING_SLUG_CAPILLARY_RELAXATION_SOURCE_READINESS",
+  "production_implementation": false,
+  "primary_source": {
+    "doi": "10.1002/2015WR017126",
+    "section": "capillary relaxation / falling-slug procedure",
+    "source_bound_facts": [
+      "Falling slugs are advanced first using equation 19, preserving slug length under the balanced-capillary-force assumption.",
+      "Slugs that reach groundwater fronts are merged with the groundwater front and raise its capillary extent by the transferred slug length in that bin.",
+      "In the subsequent capillary-relaxation step, slug water in bins to the right that is deeper than slugs to the left is geometrically clipped and moved as far left as possible.",
+      "The source states that this process is inherently mass conservative when implemented correctly.",
+      "Capillary relaxation at the leading edge produces a sharp bottom front."
+    ]
+  },
+  "readiness_assessment": {
+    "physical_directionality_defined": true,
+    "mass_ownership_defined": true,
+    "single_simple_two_bin_geometry_uniquely_reconstructable": false,
+    "multi_slug_event_order_uniquely_defined_in_article_text": false,
+    "receiver_capacity_and_tie_breaking_uniquely_defined_in_article_text": false,
+    "code_level_algorithm_required": true
+  },
+  "blocking_ambiguities": [
+    "Exact clipping coordinate rule when several left bins can receive water.",
+    "Exact event order when multiple disconnected slug intervals overlap in depth.",
+    "Exact receiver-capacity rule and whether transfer cascades across more than one bin in one relaxation event.",
+    "Exact handling of simultaneous groundwater contact and capillary-relaxation candidates.",
+    "Exact linked-list mutation/merge order needed to determine whether multiple slugs per bin can persist."
+  ],
+  "architecture_binding": [
+    "Do not approximate geometric clipping by deleting or numerically clipping volume; mass must move to an explicit owner.",
+    "Do not assume one slug per bin until M2WC70 data structures and event rules prove that bound.",
+    "Any trial relaxation must operate transactionally on a trial copy and commit only after exact volume closure.",
+    "Falling-slug relaxation remains separate from the already qualified infiltration/groundwater front-coordinate sorting gate B2B."
+  ],
+  "decision": "FALLING_SLUG_RELAXATION_PHYSICS_SOURCE_BOUND_BUT_ALGORITHM_NOT_UNIQUELY_RECONSTRUCTABLE_FROM_PAPER_CODE_LEVEL_EVIDENCE_REQUIRED",
+  "status": "BLOCKED_PENDING_M2WC70_OR_EQUIVALENT_PRIMARY_ALGORITHM_ORACLE"
+}
