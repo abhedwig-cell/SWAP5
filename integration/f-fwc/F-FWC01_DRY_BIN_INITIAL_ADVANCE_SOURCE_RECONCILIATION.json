@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "topic": "DRY_BIN_INITIAL_ADVANCE_SOURCE_RECONCILIATION",
+  "production_implementation": false,
+  "qualified": false,
+  "primary_sources": [
+    {
+      "doi": "10.1029/2008WR006815",
+      "role": "original dry-bin creation algorithm",
+      "source_findings": [
+        "When theta_d equals theta_i, the ordinary front-advance denominator is undefined.",
+        "Dry-bin wetting-front advances are calculated at initialization by successive approximation for each bin.",
+        "An assumed Z_de is inserted into the Green-Ampt cumulative infiltration equation to obtain Z_d.",
+        "Z_de is iterated until |Z_de-Z_d| is less than 0.0005 cm.",
+        "The resulting dry-bin Z_d values are stored and reused whenever water is injected into an unsaturated bin.",
+        "The corresponding front storage volume is debited from water available for infiltration before advancing to the next bin."
+      ]
+    },
+    {
+      "doi": "10.1002/2015WR017126",
+      "role": "improved FWC method",
+      "source_findings": [
+        "Existing infiltration fronts use the improved Eq.18 before new dry bins are created.",
+        "If surface water remains and a new bin can take water, its initial delta-z is limited by the maximum advance during a time step described by Talbot and Ogden 2008.",
+        "The 2015 method therefore retains the dry-bin advance as an event/timestep numerical quantity rather than redefining it as an independent physical state variable."
+      ]
+    }
+  ],
+  "official_code_artifact": {
+    "record": "M2WC70",
+    "publisher": "University of Wyoming DataCorral",
+    "resource_size_mb": 230,
+    "code_language": "C",
+    "archive_fetch_succeeded_in_current_environment": false,
+    "code_level_reconciliation_complete": false
+  },
+  "architecture_binding": {
+    "persistent_dynamic_state": false,
+    "material_only_immutable_parameter": false,
+    "allowed_representation": "DERIVED_EVENT_NUMERICAL_QUANTITY_OR_CACHE_WITH_EXPLICIT_PROVENANCE",
+    "required_cache_key_components": [
+      "soil_hydraulic_parameter_identity",
+      "theta_bin_definition",
+      "initial_water_content_context",
+      "time_step_or_equivalent_integration_interval_policy",
+      "dry_bin_initialization_algorithm_version"
+    ],
+    "reason": "A stored legacy Z_d table is a computational reuse device. Its derivation is tied to the dry-bin initialization algorithm and the infiltration time discretization, so a SWAP5 cache must not erase that provenance."
+  },
+  "relation_to_qualified_gates": {
+    "B2E_A": "Qualified only the fully funded creation mass event with supplied initial advance.",
+    "B2E_C_R1": "Qualified only atomic funded-prefix composition with supplied initial advances.",
+    "no_promotion": "Neither gate qualifies the calculation of Z_d itself."
+  },
+  "hard_guards": [
+    "Do not persist Z_d as dynamic per-column physical state.",
+    "Do not treat one Z_d table as universally valid across changed timestep policy or changed hydraulic/bin parameters.",
+    "Do not claim code-equivalence to M2WC70 until the official C source has been inspected or an independently equivalent oracle has been frozen.",
+    "Do not infer partial dry-bin funding semantics from the source reconciliation."
+  ],
+  "next_gate": "B2E_DRY_BIN_INITIAL_ADVANCE_NUMERICAL_PROVENANCE_QUALIFICATION",
+  "status": "SOURCE_SEMANTICS_RECONCILED_CODE_LEVEL_ORACLE_STILL_OPEN"
+}
