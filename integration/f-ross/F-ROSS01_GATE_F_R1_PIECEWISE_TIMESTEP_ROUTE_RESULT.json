@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F_R1_PIECEWISE_C1R_TIMESTEP_CONVERGENCE",
+  "contract": "F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_CONTRACT.json",
+  "run": 34365245795,
+  "head": "ac199f89ef41127bed01fb6b08f7e007be43daf7",
+  "production_implementation": false,
+  "material_count": 6,
+  "material_pass_count": 6,
+  "total_base_cases": 108,
+  "sigma": 0.5,
+  "horizon_day": 0.0016,
+  "candidate_step_counts": [2,4,8,16],
+  "candidate_dt_days": [0.0008,0.0004,0.0002,0.0001],
+  "candidate_algebra_changed_from_initial_gate_f": false,
+  "mass_ledger_changed_from_initial_gate_f": false,
+  "sigma_or_dt_retuned": false,
+  "initial_gate_f_negative_evidence_preserved": "F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_INITIAL_RESULT.json",
+  "matrix": [
+    {"material":"B01","pass":true,"piecewise_transition_route_count":0,"base_initial_gate_f_pass":true},
+    {"material":"B12","pass":true,"piecewise_transition_route_count":0,"base_initial_gate_f_pass":true},
+    {"material":"O01","pass":true,"piecewise_transition_route_count":0,"base_initial_gate_f_pass":true},
+    {"material":"O05","pass":true,"piecewise_transition_route_count":0,"base_initial_gate_f_pass":true},
+    {"material":"O14","pass":true,"piecewise_transition_route_count":8,"base_initial_gate_f_pass":false,"base_failed_metrics":["candidate_table_cell_transition_count"],"base_nontransition_hard_gates_pass":true,"inadmissible_transition_route_count":0,"exact_node_endpoint_count":0,"max_transitioning_components_per_transition_trial":1,"max_abs_cell_displacement_on_transition_route":1,"cross_node_derivative_averaging_count":0,"extra_factorizations_due_to_transition_route":0,"extra_backsolves_due_to_transition_route":0,"retry_count_due_to_transition_route":0,"finest_theta_span_error_max":4.3105881456334905e-09,"finest_state_change_relative_error_max":6.644015230360982e-06,"minimum_observed_order":1.9995042690639488,"median_observed_order":1.9998704097891853,"reference_self_max":5.811724474922376e-13,"max_abs_step_mass_residual_cm":1.1130012926921506e-18,"max_abs_horizon_mass_residual_cm":4.436586206513259e-14},
+    {"material":"O18","pass":true,"piecewise_transition_route_count":0,"base_initial_gate_f_pass":true}
+  ],
+  "artifact_evidence": [
+    {"material":"B01","artifact_id":10109599992,"sha256":"4ab3906e9d3e12f80ceb65dc1e20855379597e6d58310f670290989ba6ccec9d"},
+    {"material":"B12","artifact_id":10109607829,"sha256":"5a0e2d4c32680ae3f8ba5e59f4da6161be7751a06072415d42ee20b5a12326ee"},
+    {"material":"O01","artifact_id":10109611504,"sha256":"3d86f818b0f2d6d300d985075c9531b5dcfc2f3cf1cf50098d3ed043ebfcad21"},
+    {"material":"O05","artifact_id":10109606686,"sha256":"0826e07410dd3b71df3a99b5a4a296e214697e4595800b14c54b2067c7682e7c"},
+    {"material":"O14","artifact_id":10109635323,"sha256":"9793253a2ec6c7371415d2adfb25ec2369b5ffeb95380ed76a2c4dc71df67f2e"},
+    {"material":"O18","artifact_id":10109596866,"sha256":"393d1cfb3a1643476a112dda2b71324fb5a6c579668efd6a3f0a33934218ff7b"}
+  ],
+  "qualified_route_semantics": {
+    "normal_route": "strict-cell-interior step with no N241 cell change",
+    "piecewise_transition_route": "exactly one state component may enter exactly one adjacent N241 cell in an otherwise valid accepted trial; all derivatives for the trial come from the accepted start-state cells; the next step reassembles from the new cell",
+    "cross_node_smooth_derivative_claim": false,
+    "derivative_averaging_across_node": false,
+    "extra_production_factorization_for_route": 0,
+    "extra_production_backsolve_for_route": 0,
+    "routine_retry_for_route": 0,
+    "route_detection_complexity": "O(n) cell-index comparison",
+    "fail_closed_if": [
+      "more than one state component changes cell in one trial",
+      "any state component crosses more than one table node in one trial",
+      "candidate endpoint lies exactly on an internal table node",
+      "mass, MvG domain, head envelope or finite-value gate fails"
+    ]
+  },
+  "hard_guards": [
+    "Mass conservation remains absolute.",
+    "The initial smooth Gate F failure is retained as negative evidence and is not rewritten.",
+    "No sigma, timestep, table or constitutive retuning was used to obtain F-R1 PASS.",
+    "F-R1 does not qualify a unique derivative at a table node.",
+    "F-R1 remains restricted to homogeneous unsaturated C1R base MvG/KSATFIT physics."
+  ],
+  "pass": true,
+  "decision": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+  "next_gate": "E_SATURATION_TRANSITIONS"
+}
