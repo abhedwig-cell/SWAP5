@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "title": "Bounded Temporal-Certificate Cost and Reference Runtime Overhead Characterization",
+  "branch": "qualification/f-pe06-temporal-certificate-cost",
+  "base_branch": "qualification/f-vq34-remediated-richards-head-budget-certificate",
+  "source_baseline_head_before_protocol": "93419b564012c2b066d1a80c068da8597ad2521a",
+  "status": "MEASUREMENT_PROTOCOL_PERSISTED_EXECUTION_PENDING",
+  "decision": "NOT_YET_QUALIFIED",
+  "purpose": "Measure and characterize only the incremental compute and transient-memory cost of the already-qualified reference-Richards temporal certificate machinery, without selecting a head budget, changing physics, changing solver fidelity, or defining a performance policy.",
+  "qualified_dependency": {
+    "artifact": "integration/f-vq/F-VQ34_CLOSEOUT.json",
+    "artifact_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270",
+    "candidate_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "tested_head": "31e3f85ae83fe8bab9554da5467de0598446c0bd",
+    "workflow_run": 34364081068,
+    "workflow_conclusion": "success",
+    "decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE",
+    "qualified_formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "dependency_nonclaim_preserved": "F-VQ34 does not select, recommend or qualify a numeric H_budget for any application."
+  },
+  "scope": {
+    "included": [
+      "optional accepted right-derivative history snapshot and replacement",
+      "reference Richards temporal-indicator operator construction",
+      "reference constitutive reevaluation performed by the temporal indicator",
+      "one defect reference_tridag solve when previous derivative history is available and the indicator envelope is admitted",
+      "B_inf/head_inf_bound norm construction",
+      "scalar normalization by an already-supplied valid H_budget",
+      "runtime diagnostic and transaction-outcome counter propagation",
+      "incremental transient allocation/copy cost attributable to the temporal service"
+    ],
+    "excluded": [
+      "selection, recommendation or optimization of H_budget",
+      "BALANCED numerical policy",
+      "THROUGHPUT numerical policy",
+      "changes to physical configuration or physical process options",
+      "changes to the reference Richards nonlinear algorithm or tolerances",
+      "production speedup claims",
+      "coupling accuracy policy",
+      "parallel real-physics qualification"
+    ]
+  },
+  "source_bound_inventory": [
+    {
+      "path": "src/transaction/mod_fkt_temporal_indicator_history.f90",
+      "blob": "78884becbfa2fdaba74726608f9e37a303ae4c58",
+      "role": "F-KT-owned optional continuation carrier; replace and snapshot allocate and copy O(n) derivative vectors; payload is explicitly not physical state and does not enter storage or mass accounting."
+    },
+    {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "blob": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+      "role": "Computes current derivative, constitutive/operator terms, raw defect, one reference_tridag correction and head_inf_bound; declares additional_full_nonlinear_solves=0 and additional_tridiagonal_solves=1 after the defect solve is invoked."
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+      "role": "Owns reference_tridag; forward elimination and backward substitution are combined in one routine, so factorization is not separately observable on the defect path."
+    },
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+      "role": "Defines principal-solver diagnostics and temporal-indicator result counters."
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "9af5a494526810324dc00706b444e448e770cba9",
+      "role": "Selects temporal-history service from numerical_continuation_layout_id, calls the principal reference solve once per model advance, invokes temporal service after convergence, accumulates the extra tridiagonal solve into outcome linear_solves, replaces accepted trial history, and normalizes head_inf_bound by the supplied budget."
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+      "role": "Provides TX_TEMPORAL_NONE for an A/B timing route that keeps transaction acceptance independent of the certificate while the runtime temporal service can still execute."
+    },
+    {
+      "path": "tests/fvq/test_fvq34_remediated_head_budget_certificate.f90",
+      "blob": "ad5657bebd16db006fa36b2495f3c643ef6eb0bf",
+      "role": "Frozen qualified fixture family and positive test-oracle budget construction; VALID_ACCEPT uses H_budget=2*direct_Binf only to force C_h=0.5 in qualification and is not an application budget policy."
+    }
+  ],
+  "source_observations": {
+    "principal_solve_precedes_temporal_service": true,
+    "temporal_service_enabled_by_template_numerical_continuation_layout": true,
+    "temporal_service_independent_of_transaction_temporal_mode": true,
+    "source_declared_additional_full_nonlinear_solves": 0,
+    "source_declared_additional_tridiagonal_solves_after_defect_call": 1,
+    "defect_factorization_separately_observable": false,
+    "defect_linear_metric": "one combined reference_tridag call",
+    "history_replace_allocates_and_copies": true,
+    "history_snapshot_allocates_and_copies": true,
+    "indicator_uses_multiple_transient_O_n_arrays": true,
+    "source_declared_counters_are_measured_runtime_cost_proof": false,
+    "finite_source_inspection_is_a_universal_wall_clock_bound": false
+  },
+  "paired_runtime_design": {
+    "purpose": "Isolate full temporal-service overhead without certificate-driven accept/reject/retry differences.",
+    "transaction_mode_both_arms": "TX_TEMPORAL_NONE",
+    "same_in_both_arms": [
+      "physical initial state fields bitwise",
+      "parameter_set_id and all physical parameter values",
+      "forcing",
+      "[t0,t1]",
+      "reference Richards numerical tolerances and iteration limits",
+      "canonical numerical configuration including the positive test-oracle budget value",
+      "single-attempt transaction policy and mass tolerance",
+      "compiler build"
+    ],
+    "arm_A_inactive": {
+      "numerical_continuation_layout": "FMR_NUMERICAL_CONTINUATION_NONE",
+      "state_carrier": "fmr_b110_physical_state_t",
+      "temporal_service_expected": false
+    },
+    "arm_B_active": {
+      "numerical_continuation_layout": "FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
+      "state_carrier": "fmr_b110_temporal_indicator_state_t",
+      "previous_right_derivative": "seeded from the same frozen source-bound fixture construction used by F-VQ34",
+      "temporal_service_expected": true,
+      "budget": "reuse the corresponding frozen F-VQ34 positive test-oracle budget construction unchanged; PE06 must not tune, select or rank it"
+    },
+    "why_TX_TEMPORAL_NONE": "The model still executes the temporal service when the history layout is enabled, but transaction acceptance does not consume C_h. Therefore A and B can have the same accepted trial count and physical step fate, avoiding a retry/rollback confounder.",
+    "timing_order": "balanced ABBA blocks with A/B roles otherwise unchanged",
+    "warmup": "execute untimed warmup blocks before every measured compiler/case block",
+    "timing_unit": "time batches large enough to dominate clock resolution; report per-trial values from fixed batch counts",
+    "compiler_modes": ["O0", "O2"],
+    "production_matrix": "reuse the frozen 12-case F-VQ34 hydraulic matrix; no post-result case changes",
+    "synthetic_size_sweep": "optional for O(n) complexity/allocation characterization only; never production acceptance evidence"
+  },
+  "required_pre_timing_equivalence_gates": [
+    "A and B each execute exactly one principal Richards trajectory per attempt",
+    "A and B attempts, retries and rollback counts are identical",
+    "A and B principal nonlinear_iterations are identical",
+    "A and B principal jacobian_builds are identical",
+    "A and B principal backtracking_attempts and internal_retries are identical",
+    "B observation reports temporal_additional_full_nonlinear_solves=0",
+    "B observation reports temporal_additional_tridiagonal_solves=1 on admitted seeded-history cases",
+    "B total linear_solves equals A total linear_solves+1 when all principal-solver diagnostics are equal",
+    "A and B candidate physical pressure_head, water_content, ponding_depth and groundwater_level are bitwise identical",
+    "A and B physical mass accounting and residual are bitwise identical",
+    "only B carries the optional accepted derivative continuation payload"
+  ],
+  "metrics": {
+    "principal_full_nonlinear_trajectories": "required via headcalc_calls/attempts and exact A/B equality",
+    "nonlinear_iterations": "required",
+    "internal_retries": "required",
+    "jacobian_builds": "required",
+    "principal_linear_solves": "required",
+    "defect_tridiagonal_solves": "required separately through temporal observation and A/B delta",
+    "factorizations": "NOT_SEPARATELY_OBSERVABLE_ON_REFERENCE_TRIDAG_DEFECT_PATH",
+    "backtracking_attempts": "required",
+    "alternative_solver_calls": "required",
+    "history_snapshot_replace_operations": "required structural count; allocation/copy timing may be measured in a component microbenchmark",
+    "normalization_operations": "required structural count; scalar normalization timing may be measured only as part of temporal service unless clock resolution permits isolation",
+    "allocations": "report only with reliable instrumentation; otherwise report source-bound allocation sites and O(n) transient shape without invented byte counts",
+    "scratch_bytes": "report only from reliable type/array accounting; no persistent per-column scratch may be introduced",
+    "wall_clock": ["median", "p95", "max", "paired_delta", "active_over_inactive_ratio"],
+    "compiler_identity": "required",
+    "optimization_mode": "required"
+  },
+  "component_microbenchmarks": [
+    {
+      "component": "history",
+      "operations": ["snapshot", "replace"],
+      "rule": "fixed vector sizes and fixed iteration counts; source-bound O(n) allocation/copy characterization only"
+    },
+    {
+      "component": "temporal_indicator",
+      "operations": ["current derivative", "constitutive reevaluation", "operator assembly", "reference_tridag", "norms"],
+      "rule": "use a precomputed converged solve_result so the principal nonlinear solve is not included in component timing"
+    },
+    {
+      "component": "normalization",
+      "operations": ["head_inf_bound/H_budget", "diagnostic propagation"],
+      "rule": "retain the frozen positive test-oracle budget construction; no H_budget policy inference is permitted"
+    }
+  ],
+  "hypotheses": {
+    "H1": {
+      "statement": "Enabling the admitted temporal service adds zero full nonlinear Richards trajectories.",
+      "source_support": "indicator sets additional_full_nonlinear_solves=0 and backend invokes service only after the converged principal solve",
+      "runtime_status": "UNVERIFIED"
+    },
+    "H2": {
+      "statement": "An admitted seeded-history temporal evaluation adds exactly one combined defect reference_tridag solve.",
+      "source_support": "one reference_tridag call followed by additional_tridiagonal_solves=1",
+      "runtime_status": "UNVERIFIED"
+    },
+    "H3": {
+      "statement": "Under TX_TEMPORAL_NONE, enabling temporal-history/certificate machinery leaves the physical candidate and strict mass result bitwise unchanged.",
+      "runtime_status": "UNVERIFIED"
+    },
+    "H4": {
+      "statement": "The incremental temporal-service transient work is O(n) in vertical node count for the currently admitted reference-Richards envelope.",
+      "source_support": "history and indicator allocate/copy/assemble a fixed number of length-n vectors and reference_tridag is a single forward/backward sweep",
+      "runtime_status": "STRUCTURALLY_SUPPORTED_MEASUREMENT_PENDING"
+    }
+  },
+  "reporting_rules": [
+    "Separate source-declared solve counters from empirically observed runtime counters.",
+    "Separate component timing from end-to-end paired runtime timing.",
+    "Do not subtract or name a defect factorization cost separately because reference_tridag exposes no separate factorization event.",
+    "Report O0 and O2 independently before any pooled summary.",
+    "A finite benchmark matrix characterizes observed wall-clock tails; it does not establish a universal hardware-independent time bound.",
+    "Any failure of physical or mass identity invalidates performance interpretation and must stop qualification.",
+    "Synthetic size sweeps may support complexity statements only and cannot replace the qualified real-Richards fixture matrix."
+  ],
+  "architecture_invariant_audit": {
+    "3_explicit_data_separation": "REQUIRED: temporal budget remains numerical configuration; history remains optional numerical continuation data, not physical storage.",
+    "5_scratch_per_worker": "REQUIRED: indicator transient arrays and solver workspace remain transient/worker-local; no PE06 persistent scratch is admitted.",
+    "7_transactional_timesteps": "REQUIRED: benchmark configuration may not bypass checkpoint/trial/commit semantics; TX_TEMPORAL_NONE is used only to remove certificate acceptance as an A/B timing confounder.",
+    "9_generic_time": "REQUIRED: reuse non-calendar [t0,t1] fixture horizons; no day-boundary assumption.",
+    "13_mass_conservation_absolute": "HARD GATE: A/B strict physical mass result must remain identical; performance evidence is void if mass semantics differ.",
+    "23_physics_solver_policy_separated": "HARD GATE: only numerical continuation layout differs between A/B; physical options and reference solver settings do not.",
+    "24_predictable_compute": "TARGET: quantify fixed extra trajectory/linear-solve shape and observed overhead/tails; no universal wall-clock guarantee from a finite matrix.",
+    "25_reference_mode_available": "PASS BY SCOPE: only the qualified reference Richards path is characterized.",
+    "26_runtime_diagnostics": "REQUIRED: use existing solve/temporal counters and preserve provenance of all timing rows.",
+    "30_architecture_change_audit": "REQUIRED: any instrumentation source change must be reconciled here before evidence is accepted."
+  },
+  "forbidden_claims": [
+    "PE06 does not select or recommend H_budget.",
+    "PE06 does not define BALANCED or THROUGHPUT solver policy.",
+    "PE06 does not qualify a production speedup.",
+    "PE06 does not permit a physical-fidelity or mass-conservation concession.",
+    "PE06 does not infer a universal wall-clock bound from finite hardware measurements.",
+    "PE06 is not qualified until the paired O0/O2 runtime matrix and equivalence gates are persisted and independently reproducible."
+  ],
+  "planned_evidence": {
+    "driver": "tests/fpe/test_fpe06_temporal_certificate_cost.f90",
+    "runner": "tests/fpe/run_fpe06_temporal_certificate_cost.sh",
+    "workflow": ".github/workflows/fpe06-temporal-certificate-cost.yml",
+    "results": "integration/f-pe/F-PE06_RESULTS.json",
+    "closeout": "integration/f-pe/F-PE06_CLOSEOUT.json"
+  },
+  "governance": {
+    "persist_early_test_second": true,
+    "protocol_frozen_before_benchmark_execution": true,
+    "post_result_metric_deletion_allowed": false,
+    "post_result_case_deletion_allowed": false,
+    "production_source_change_required_for_protocol": false
+  },
+  "state": {
+    "realized": "source-bound measurement design and observability classification",
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "implement executable paired A/B driver without production-source behavior changes",
+      "add source-locking runner and O0/O2 workflow",
+      "execute frozen 12-case matrix",
+      "persist raw/aggregated counters and timing distributions",
+      "reconcile physical/mass identity before interpreting timings",
+      "independent reproducibility and closeout"
+    ]
+  }
+}
