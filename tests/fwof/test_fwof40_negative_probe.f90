@@ -10,7 +10,15 @@ program test_fwof40_negative_probe
   call get_command_argument(1, path)
   if (len_trim(path) == 0) error stop 'F-WOF40 negative probe path missing'
   call read_fwof40_crop_restart_artifact(trim(path), committed, restored, status)
-  if (restored .or. committed%ready() .or. status == FWO40_EXTERNAL_OK) then
+  if (restored) then
+    write(*,'(A,I0)') 'FWOF40_NEGATIVE_UNEXPECTED_ACCEPT status=', status
+    error stop 1
+  end if
+  if (committed%ready()) then
+    write(*,'(A,I0)') 'FWOF40_NEGATIVE_UNEXPECTED_ACCEPT status=', status
+    error stop 1
+  end if
+  if (status == FWO40_EXTERNAL_OK) then
     write(*,'(A,I0)') 'FWOF40_NEGATIVE_UNEXPECTED_ACCEPT status=', status
     error stop 1
   end if
