@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Source-Bound Restricted One-Day WOFOST Rate Dependency Graph",
+  "profile": {
+    "sw_wofost": 1,
+    "actual": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen": false,
+    "potential_shadow": false
+  },
+  "consumer": {
+    "source": "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "type": "wofost_one_day_rate_packet_t",
+    "fields": [
+      "temperature_sum_increment",
+      "development_rate",
+      "root_net_growth_rate",
+      "stem_net_growth_rate",
+      "storage_net_growth_rate",
+      "leaf_growth_rate",
+      "leaf_stress_death_rate",
+      "leaf_age_increment",
+      "youngest_specific_leaf_area",
+      "lai_exponential_growth_rate",
+      "lai_exponential_rate_recomputed",
+      "relative_transpiration_used"
+    ]
+  },
+  "phase_A_prepare_assimilation": {
+    "output": "actual_pgass",
+    "source": "SWAP/wofost.f90:1348-1466,1470-1622",
+    "inputs": {
+      "state_view": ["DVS", "LAI"],
+      "prepared_window_context": ["TMNR"],
+      "forcing": ["TAVD", "RAD", "DAYL", "SINLD", "COSLD", "DIFPP", "DSINBE", "FCO2EFF", "FCO2AMAX"],
+      "parameters": ["KDIF", "EFF", "CFRDM", "AMAXTB", "TMPFTB", "TMNFTB", "RELMF"]
+    },
+    "formula_graph": [
+      "EFFC = FCO2EFF * EFF",
+      "AMAX = FCO2AMAX * AFGEN(AMAXTB,DVS) * AFGEN(TMPFTB,TAVD)",
+      "DTGA = TOTASS(DAYL,AMAX,EFFC,LAI,DIFPP,DSINBE,SINLD,COSLD,RAD,KDIF)",
+      "DTGA = DTGA * AFGEN(TMNFTB,TMNR)",
+      "PGASS = DTGA * 30 * (0.4/CFRDM) / 44",
+      "actual PGASS = PGASS * RELMF"
+    ],
+    "state_mutation": false,
+    "why_separate": "B1.10 computes PGASS before soil-water substeps. The first restricted profile has no same-window oxygen consumer, but retaining a prepare output preserves the source phase boundary for later qualified options."
+  },
+  "phase_B_finalize_after_accepted_aggregates": {
+    "source": "SWAP/wofost.f90:817-929,933-1107,1626-1848",
+    "input_prepared": ["actual_pgass"],
+    "input_accepted": ["IQROT_WINDOW", "IPTRA_WINDOW"],
+    "input_state_view": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "forcing": ["TAV", "DAYLP when IDSL=1"],
+    "rate_graph": [
+      {
+        "node": "RELTR",
+        "formula": "1 if abs(IPTRA_WINDOW)<1e-10 else clamp(IQROT_WINDOW/IPTRA_WINDOW,0,1)",
+        "packet": "relative_transpiration_used"
+      },
+      {
+        "node": "DTSUM",
+        "formula": "AFGEN(DTSMTB,TAV)",
+        "packet": "temperature_sum_increment"
+      },
+      {
+        "node": "DVR_RAW",
+        "formula": "if DVS<1: DVRED*DTSUM/TSUMEA; else DTSUM/TSUMAM, where DVRED=1 for IDSL=0 and clamp((DAYLP-DLC)/(DLO-DLC),0,1) for IDSL=1",
+        "packet": "development_rate",
+        "boundary": "F-WOF26, not this provider, owns first-anthesis truncation to exactly DVS=1"
+      },
+      {
+        "node": "GASS",
+        "formula": "actual_pgass * RELTR",
+        "packet": null
+      },
+      {
+        "node": "RMRES",
+        "formula": "(RMR*WRT + RML*WLV + RMS*WST + RMO*WSO) * AFGEN(RFSETB,DVS)",
+        "packet": null
+      },
+      {
+        "node": "TEFF",
+        "formula": "Q10**((TAV-25)/10)",
+        "packet": null
+      },
+      {
+        "node": "MRES_ASRC",
+        "formula": "MRES=min(GASS,RMRES*TEFF); ASRC=GASS-MRES",
+        "packet": null
+      },
+      {
+        "node": "PARTITION",
+        "formula": "FR=AFGEN(FRTB,DVS), FL=AFGEN(FLTB,DVS), FS=AFGEN(FSTB,DVS), FO=AFGEN(FOTB,DVS)",
+        "validation": "abs(FR + (FL+FS+FO)*(1-FR) - 1) <= 1e-4"
+      },
+      {
+        "node": "CVF_DMI",
+        "formula": "HELP=FO/CVO when CVO>0 else 0; CVF=1/((FL/CVL+FS/CVS+HELP)*(1-FR)+FR/CVR); DMI=CVF*ASRC"
+      },
+      {
+        "node": "ORGAN_GROSS_GROWTH",
+        "formula": "ADMI=(1-FR)*DMI; GRRT=FR*DMI; GRLV=FL*ADMI; GRST=FS*ADMI; GRSO=FO*ADMI"
+      },
+      {
+        "node": "LEAF_STRESS_DEATH",
+        "formula": "DSLV=max(WLV*(1-RELTR)*PERDL, WLV*max(0,min(0.03,0.03*(LAI-3.2/KDIF)/(3.2/KDIF))))",
+        "packet": "leaf_stress_death_rate",
+        "exclusion": "nutrient death increment excluded"
+      },
+      {
+        "node": "STEM_ROOT_DEATH_SWRD1",
+        "formula": "DRST=WST*AFGEN(RDRSTB,DVS); DRRT=WRT*AFGEN(RDRRTB,DVS)",
+        "boundary": "SWRD=3 oxygen and WRTMAX branches deliberately excluded"
+      },
+      {
+        "node": "NET_ORGAN_GROWTH",
+        "formula": "GWST=GRST-DRST; GWRT=GRRT-DRRT; GWSO=GRSO",
+        "packet": ["stem_net_growth_rate", "root_net_growth_rate", "storage_net_growth_rate"]
+      },
+      {
+        "node": "LEAF_AGE_INCREMENT",
+        "formula": "FYSDEL=max(0,(TAV-TBASE)/(35-TBASE))",
+        "packet": "leaf_age_increment"
+      },
+      {
+        "node": "SLAT_BASE",
+        "formula": "SLAT=AFGEN(SLATB,DVS)",
+        "packet": "youngest_specific_leaf_area before possible GLAI sink adjustment"
+      },
+      {
+        "node": "GLAIEXP_PRE_THRESHOLD",
+        "condition": "LAIEXP<6",
+        "formula": "GLAIEXP=RELTR*LAIEXP*RGRLAI*max(0,TAV-TBASE); GLASOL=GRLV*SLAT; GLA=min(GLAIEXP,GLASOL); if GRLV>0 then SLAT=GLA/GRLV",
+        "packet": ["leaf_growth_rate=GRLV", "youngest_specific_leaf_area=possibly adjusted SLAT", "lai_exponential_growth_rate=GLAIEXP", "lai_exponential_rate_recomputed=true"]
+      },
+      {
+        "node": "GLAIEXP_POST_THRESHOLD",
+        "condition": "LAIEXP>=6",
+        "source_behavior": "GLAI does not assign GLAIEXP; B1.10 uses the prior saved r_act%glaiex during structural LAIEXP update",
+        "provider_contract": "do not recompute; packet sets lai_exponential_rate_recomputed=false and F-WOF26 consumes the owner compatibility sidecar",
+        "packet": ["leaf_growth_rate=GRLV", "youngest_specific_leaf_area=SLAT", "lai_exponential_rate_recomputed=false"]
+      }
+    ]
+  },
+  "packet_mapping": {
+    "temperature_sum_increment": "DTSUM",
+    "development_rate": "raw DVR before F-WOF26 anthesis correction",
+    "root_net_growth_rate": "GWRT",
+    "stem_net_growth_rate": "GWST",
+    "storage_net_growth_rate": "GWSO",
+    "leaf_growth_rate": "GRLV",
+    "leaf_stress_death_rate": "DSLV only; lifespan death remains F-WOF26 structural logic",
+    "leaf_age_increment": "FYSDEL",
+    "youngest_specific_leaf_area": "SLAT after GLAI sink/source adjustment when LAIEXP<6, otherwise AFGEN(SLATB,DVS)",
+    "lai_exponential_growth_rate": "GLAIEXP only when recomputed; value is semantically ignored by F-WOF26 when recomputed=false",
+    "lai_exponential_rate_recomputed": "LAIEXP<6",
+    "relative_transpiration_used": "RELTR"
+  },
+  "excluded_source_nodes": [
+    "DEATHA/DALV because F-WOF26 applies lifespan death directly to compact cohorts",
+    "DRLV cumulative dead-leaf output because F-WOF26 primary continuation does not own legacy dead-organ output accumulators",
+    "potential trajectory rate graph",
+    "SUBPAR nutrient partition correction",
+    "nutrient SLA and leaf-death corrections",
+    "SWRD=3 oxygen suppression and WRTMAX root-death branch",
+    "grass management and mowing/grazing",
+    "IDSL=2 VERNRATE/VERNFAC"
+  ],
+  "source_order_preservation": {
+    "PGASS_before_soil_substeps": true,
+    "RELTR_after_accepted_process_aggregation": true,
+    "rate_packet_before_structural_state_mutation": true,
+    "structural_cohort_mutation_inside_rate_provider": false
+  },
+  "gate_results": {
+    "F_WOF27_G03_prepare_vs_finalize_dependency_graph": "PASS_SOURCE_BOUND",
+    "F_WOF27_G04_exact_mapping_to_F_WOF26_rate_packet": "PASS_SOURCE_BOUND",
+    "F_WOF27_G07_restricted_SWRD1_root_rate_boundary": "PASS_SOURCE_BOUND",
+    "F_WOF27_G08_reference_GLAIEXP_carryover_read_contract": "PASS_SOURCE_BOUND"
+  }
+}
