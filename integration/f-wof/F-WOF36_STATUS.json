@@ -1,14 +1,16 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-WOF",
   "work_unit": "F-WOF36",
   "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
   "base": "db727db92e7d5b77eccd0103921c527fe6dd5ffc",
+  "gate_A_handoff_head": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
+  "F_MR18_composed_closeout_head": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
   "production_implementation": false,
   "persisted": true,
   "tested": false,
   "qualified": true,
-  "qualification_scope": "GATE_A_OWNER_AND_ATOMICITY_ONLY",
+  "qualification_scope": "GATE_A_OWNER_AND_ATOMICITY_PLUS_QUALIFIED_RUNTIME_OWNER_HANDOFF",
   "gate_A": {
     "name": "EXECUTION_POINT_AND_COMPOSITION_ATOMICITY",
     "status": "QUALIFIED_NEGATIVE_SHARED_RUNTIME_OWNER_SEAM_REQUIRED",
@@ -17,27 +19,57 @@
     "PTRA_restricted_producer_qualified": true,
     "current_root_sink_is_preformed_trial_forcing": true,
     "current_multiswap_runtime_owns_checkpoint_and_commit": true,
-    "current_multiswap_runtime_owns_PTRA": false,
-    "current_runtime_has_trial_safe_WOFOST_accumulator": false,
     "naive_postcommit_outer_wrapper_admitted": false,
-    "precommit_WOFOST_admission_admitted": false,
-    "generic_commit_associated_runtime_seam_required": true
+    "precommit_WOFOST_admission_admitted": false
   },
   "owner_handoff": {
     "workstream": "F-MR",
-    "suggested_work_unit": "F-MR18",
-    "F_WOF36_production_work_blocked": true,
-    "resume_condition": "A generic transaction-safe commit-associated accepted-side-effect or observer seam is qualified by the runtime owner on the composed postimage."
+    "work_unit": "F-MR18",
+    "status": "SATISFIED",
+    "evidence": "integration/f-wof/F-WOF36_FMR18_HANDOFF_RESUME_EVIDENCE.json",
+    "F_MR18_status": "integration/f-mr/F-MR18_STATUS.json",
+    "F_MR18_gate_C_evidence": "integration/f-mr/F-MR18_GATE_C_QUALIFICATION_EVIDENCE.json",
+    "F_WOF36_production_work_blocked": false,
+    "resume_condition_satisfied": true,
+    "composition_method": "FAST_FORWARD_SAME_LINEAR_HISTORY"
+  },
+  "gate_B": {
+    "name": "PHYSICAL_TRIAL_PTRA_QROT_PAYLOAD_BINDING",
+    "status": "READY_NOT_IMPLEMENTED",
+    "required_before_implementation": [
+      "define a trial-local payload carrying exact PTRA and exact applied QROT rate",
+      "bind payload identity to the same checkpoint lineage/revision/t0/t1 used by the physical candidate",
+      "route payload only for sparse WOFOST-active columns requesting an F-MR18 receipt",
+      "prevalidate finite and nonnegative PTRA/QROT before physical commit",
+      "ensure every rejected or discarded physical trial contributes zero",
+      "use the qualified F-MR18 receipt as the only proof authorizing accepted-window contribution",
+      "do not recompute QROT from candidate post-state"
+    ],
+    "qualification_after_implementation": [
+      "same-checkpoint trial contribution identity",
+      "rejected and retried trial zero contribution",
+      "accepted retry exactly once",
+      "QROT integral equals exact applied root sink sum times accepted interval duration",
+      "PTRA integral equals same-trial PTRA times accepted interval duration",
+      "F-WOF34 exact semantic regression",
+      "F-WOF35 composition preservation regression",
+      "mass accounting unchanged",
+      "O0/O2 identity",
+      "single-column and MultiSWAP deterministic identity",
+      "inactive/non-WOFOST zero-cost functional path"
+    ]
   },
   "scope_holds": {
     "physical_PTRA_QROT_binding_implemented": false,
+    "accepted_window_publication_implemented": false,
     "mass_accounting_changed": false,
     "root_uptake_physics_changed": false,
     "ET_physics_changed": false,
     "F_KT_commit_authority_changed": false,
+    "persistent_column_optional_state_added": false,
     "calendar_dependency_added": false,
     "canonical_promotion": false
   },
-  "decision": "GATE_A_CLOSED_FAIL_CLOSED_HANDOFF_TO_GENERIC_RUNTIME_OWNER",
-  "status": "QUALIFIED_GATE_A_BLOCKED_PENDING_F_MR_COMMIT_ASSOCIATED_SEAM"
+  "decision": "RUNTIME_OWNER_BLOCKER_SATISFIED_PROCEED_TO_GATE_B_PHYSICAL_TRIAL_PAYLOAD_BINDING",
+  "status": "QUALIFIED_GATE_A_F_MR18_HANDOFF_SATISFIED_GATE_B_READY"
 }
