@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R1A_ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E2A_R1A_ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZATION_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34373028401,
+    "head": "9a0e91a8a3edbcc5a48ddfadc00d0542da966e98",
+    "conclusion": "failure",
+    "artifact_id": 10112717989,
+    "artifact_digest": "sha256:80b78770e41f66a2c7ce58e7400bbafb52293e3229eafa356eccb4388f94357f"
+  },
+  "selected_candidate": null,
+  "all_candidates_rejected": true,
+  "structural_findings": {
+    "B12": {
+      "best_tested_candidate": "U33_SAT33",
+      "p99_hybrid_metric": 1.4457287598539577,
+      "max_hybrid_metric": 1.5934748678619415,
+      "max_abs_error_over_ksatfit": 0.576575941660312,
+      "unsaturated_wet_branch_max_hybrid": 1.5934748678619415,
+      "saturated_wet_branch_max_hybrid": 0.0007249208907167056,
+      "transition_plus_minus_1e9_max_hybrid": 0.24924519423571515,
+      "worst_h_above_cm": -0.006681255996227264,
+      "worst_h_below_cm": -2.1627095864411228
+    },
+    "O13": {
+      "best_tested_candidate": "U33_SAT33",
+      "p99_hybrid_metric": 2.003582261112648,
+      "max_hybrid_metric": 2.160947876578007,
+      "max_abs_error_over_ksatfit": 0.6458967420733667,
+      "unsaturated_wet_branch_max_hybrid": 2.160947876578007,
+      "saturated_wet_branch_max_hybrid": 0.0002896600325455778,
+      "transition_plus_minus_1e9_max_hybrid": 0.36231675427717236,
+      "worst_h_above_cm": -0.0064528752118349075,
+      "worst_h_below_cm": -1348.0887092096832
+    }
+  },
+  "anchor_findings": {
+    "B01_U33_SAT33": {
+      "p99_hybrid_metric": 0.0019184744011729556,
+      "max_hybrid_metric": 0.002177952092991107,
+      "max_abs_error_over_ksatfit": 0.003995771602585133,
+      "failed_metric": "max_abs_error_over_ksatfit"
+    },
+    "O14_U33_SAT33": {
+      "p99_hybrid_metric": 0.00031817810564993435,
+      "max_hybrid_metric": 0.0006949372023272923,
+      "max_abs_error_over_ksatfit": 0.0020720501661264322,
+      "failed_metric": "max_abs_error_over_ksatfit"
+    }
+  },
+  "causal_interpretation": [
+    "The saturated h>=0 branch is not the structural blocker for B12/O13; its max hybrid errors remain below 0.0013 in every tested density.",
+    "The structural failure remains entirely on the h<0 unsaturated wet branch close to saturation.",
+    "Uniform effective saturation does not sufficiently resolve this branch for low-n MvG materials because S(-1 cm) is already extremely close to one.",
+    "For N=33 unsaturated S nodes, the last nonzero head before the h=0 node is approximately -0.04146 cm for B12 and -0.03999 cm for O13, leaving the observed h around -0.005 to -0.007 cm structural-error zone unresolved.",
+    "A different constitutively motivated near-saturation coordinate is required; increasing the saturated-head density cannot repair this failure."
+  ],
+  "decision": "ROSS_MIXED_UNIFORM_S_WET_AXIS_REJECTED_NO_FULL_REGION_R1B",
+  "hard_guards": [
+    "Do not increase S-node density post hoc inside R1A.",
+    "Do not open the promised full-region R1B from this failed characterization.",
+    "E2A and R1A negative evidence remain preserved.",
+    "No physical hydraulic law or Class-B scope is changed."
+  ]
+}
