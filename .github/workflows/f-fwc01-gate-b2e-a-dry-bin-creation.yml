@@ -1,0 +1,47 @@
+name: F-FWC01 Gate B2E-A Fully Funded Dry-Bin Creation
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2e-a-dry-bin-creation.yml
+      - experiments/fwc/fwc01_gate_b2e_a_fully_funded_dry_bin_creation_event.py
+      - integration/f-fwc/F-FWC01_GATE_B2E_A_FULLY_FUNDED_DRY_BIN_CREATION_EVENT_PRECOMMIT.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen B2E-A gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2e-a"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2e_a_fully_funded_dry_bin_creation_event.py \
+            "$out/F-FWC01_GATE_B2E_A_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2E_A_STDOUT.txt"
+      - name: Assert frozen B2E-A decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2e-a/F-FWC01_GATE_B2E_A_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_RESTRICTED_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT_READY_FOR_ZD_PROVENANCE_AND_COMPOSED_INFILTRATION_GATE'
+          assert r['max_abs_mass_residual_cm'] <= 1e-12
+          assert r['water_clip_drop_merge_count'] == 0
+          assert r['new_persistent_state_bytes_beyond_front_state'] == 0
+          assert r['partial_dry_bin_funding_qualified'] is False
+          assert r['insufficient_fallback_count'] > 0
+          assert r['slot_fallback_count'] > 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2e-a-dry-bin-creation
+          path: fwc01-gate-b2e-a/
