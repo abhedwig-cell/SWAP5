@@ -49,7 +49,7 @@ contains
     type(fmr_b110_physical_state_t) :: initial_state
     type(kernel_committed_state_t) :: committed
     type(fmr_serialized_reference_backend_t) :: backend
-    type(fmr04_fixed_top_provider_t), target :: top_provider
+    type(fmr04_fixed_flux_top_provider_t), target :: top_provider
     type(canonical_numerical_config_t) :: config
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: result
