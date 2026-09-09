@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "qualified": true,
+  "decision": "QUALIFIED_REAL_UNSATURATED_HOMOGENEOUS_STEADY_DARCIAN_FACE_TABLE_READY_FOR_PHYSICAL_ROSS_PROTOTYPE",
+  "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
+  "fixture": "B01_NO_KSATEXM_L10_H_-10000_-1",
+  "freeze_contract_blob_sha": "e7a76a37b0c36b6341db7c3bb3db0ac148e01d9d",
+  "characterization": {
+    "run": 34334441992,
+    "head": "35df71da8c34f8a113f4e7412a6cd66bd2950fc4",
+    "artifact": 10097121109,
+    "artifact_digest": "sha256:fa0b4b5b1f436e210c6850cb3b6437fadd57f7eb04c4c3eba5e05d39ecbf1d5f"
+  },
+  "holdout": {
+    "run": 34335144568,
+    "head": "cf7f13af9e2db91be039229d6c6d94819903960a",
+    "artifact": 10097400431,
+    "artifact_digest": "sha256:9a60517b715623821a944829474b0befb11191407dc35b9824ef146b3184dfe3",
+    "probe_count": 1399,
+    "ordinary_unseen_probe_count": 1024,
+    "max_hybrid_metric": 0.0007632329516314338,
+    "p99_hybrid_metric": 0.0006434272772995881,
+    "max_abs_error_over_ksat": 0.0003868674999822999,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.0,
+    "max_hydrostatic_abs_q_over_ksat": 3.329211979474659e-15,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_entries": 16641,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_axis_bytes": 134160,
+    "table_sha256_float64_c_order": "e3d0f7e78bdb47d4c40818af7b6a1efd97cf22d83e63fe80e97146833367adad"
+  },
+  "gate_results": {
+    "B1_face_table_accuracy": "PASS",
+    "B2_sign_correctness": "PASS",
+    "B3_equal_head_gravity_behavior": "PASS",
+    "B4_hydrostatic_zero_flow": "PASS",
+    "B5_domain_and_interpolation_robustness": "PASS",
+    "B6_bounded_shared_memory": "PASS"
+  },
+  "architectural_findings": [
+    "the naive bilinear q(S_above,S_below) representation is rejected because it does not preserve the hydrostatic zero-flow manifold between nodes",
+    "factoring the exact driving head g=L+h_above-h_below preserves flux sign and hydrostatic zero-flow structurally",
+    "log10(-h) coordinates and interpolation of log(q/g) provide the first qualified bounded representation for the B01 fixture",
+    "runtime lookup remains O(1), the table is immutable shared material-geometry data, and persistent per-column table state is zero"
+  ],
+  "scope_limit": "This qualifies one homogeneous unsaturated B01 face of length 10 cm over h in [-10000,-1] cm with KSATEXM disabled. It does not qualify catalog-wide hydraulics, saturation transitions, heterogeneous profiles, transient timestep accuracy, bottom boundaries, groundwater, process physics, MultiSWAP, response tangents for the real table, or FullRichards equivalence.",
+  "production_implementation": false
+}
