@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF31",
+  "title": "Pure Phase-A WOFOST Prepare-Assimilation Provider",
+  "branch": "work/f-wof31-prepare-assimilation-provider",
+  "base": {
+    "commit": "ba8a2bda14671488a5800c7791abdfc80e8219c5",
+    "status": "QUALIFIED_RESTRICTED_SHARED_IMMUTABLE_WOFOST_RATE_PARAMETER_BUNDLE"
+  },
+  "goal": "Implement and qualify the source-bound read-only phase-A provider that produces actual PGASS for the restricted standard-WOFOST profile from a semantic crop state view, shared immutable rate parameters, candidate-local TMNR and explicit solar/weather/CO2 forcing.",
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "regions": [
+      "SWAP/wofost.f90:1348-1404 assimilation actual-PGASS path",
+      "SWAP/wofost.f90:1470-1529 TOTASS",
+      "SWAP/wofost.f90:1533-1622 ASSIM",
+      "SWAP/variables.f90:41-45 parameters::pi"
+    ]
+  },
+  "admitted_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "phase": "prepare_assimilation_before_soil_water_substeps",
+    "nutrients": false,
+    "oxygen_root_respiration_side_effects": false,
+    "potential_shadow": false
+  },
+  "inputs": {
+    "state_view": ["DVS", "LAI"],
+    "parameters": ["KDIF", "EFF", "CFRDM", "RELMF", "AMAXTB", "TMPFTB", "TMNFTB"],
+    "forcing_context": ["TAVD", "RAD", "DAYL", "SINLD", "COSLD", "DIFPP", "DSINBE", "FCO2EFF", "FCO2AMAX", "TMNR"]
+  },
+  "output": "actual_pgass only",
+  "reference_formula": [
+    "EFFC = FCO2EFF * EFF",
+    "AMAX = FCO2AMAX * AFGEN(AMAXTB,DVS) * AFGEN(TMPFTB,TAVD)",
+    "DTGA = TOTASS(DAYL,AMAX,EFFC,LAI,DIFPP,DSINBE,SINLD,COSLD,RAD,KDIF)",
+    "DTGA = DTGA * AFGEN(TMNFTB,TMNR)",
+    "PGASS = DTGA * 30 * (0.4/CFRDM) / 44",
+    "actual_pgass = PGASS * RELMF"
+  ],
+  "reference_numeric_rules": [
+    "preserve B1.10 three-point Gauss coordinates and weights for time and canopy-depth integration",
+    "preserve B1.10 PI literal after real64 rounding",
+    "preserve source arithmetic ordering where it affects reference floating-point behavior",
+    "F-WOF29 supplies bitwise-qualified AFGEN semantics"
+  ],
+  "explicit_global_removal": {
+    "legacy_TOTASS_RAD_global": "explicit forcing argument",
+    "legacy_ASSIM_KDIF_global": "F-WOF30 immutable parameter",
+    "legacy_ASTRO_daynr_call": "replaced by explicit DAYL/SINLD/COSLD/DIFPP/DSINBE forcing",
+    "legacy_running_Tmin_state_update": "remains F-WOF26 candidate-local preparation; provider receives TMNR only"
+  },
+  "fail_closed_rules": [
+    "all used state, parameter-table results and forcing values must be finite",
+    "RAD and DIFPP must be nonnegative",
+    "DAYL must lie in 0..24 hours",
+    "FCO2EFF and FCO2AMAX must be nonnegative",
+    "if AMAX<=0 or LAI<=0, DTGA is exactly zero and unused solar denominator checks are skipped",
+    "if RAD=0 on an otherwise active path, DTGA is exactly zero",
+    "when active irradiation is evaluated require DSINBE>0 and positive SINB at every Gauss time point before division",
+    "when direct-beam VISPP>0 require effective EFFC>0 before division by EFFC*VISPP"
+  ],
+  "new_source_bound_discrepancy": {
+    "id": "F-WOF31-EFF-ZERO-DIRECT-BEAM-SINGULARITY",
+    "finding": "B1.10 read_wofost admits EFF=0, while ASSIM divides by EFF*VISPP whenever VISPP>0; the exact zero-efficiency direct-beam case is therefore not numerically defined by the legacy implementation.",
+    "disposition": "fail closed for active direct-beam evaluation with effective EFFC<=0; do not invent a limiting formula in this work unit"
+  },
+  "production_scope": {
+    "new_module": "src/crop/mod_wofost_prepare_assimilation.f90",
+    "state_mutation": false,
+    "persistent_rate_workspace": false,
+    "calendar_dependency": false,
+    "file_IO_dependency": false,
+    "soil_solver_dependency": false,
+    "runtime_accepted_aggregate_dependency": false
+  },
+  "gates": {
+    "G01_exact_phase_A_input_boundary": "REQUIRED",
+    "G02_source_formula_transcript_equivalence": "REQUIRED",
+    "G03_hidden_RAD_KDIF_globals_removed": "REQUIRED",
+    "G04_zero_assimilation_short_circuits": "REQUIRED",
+    "G05_solar_denominators_fail_closed": "REQUIRED",
+    "G06_EFFC_direct_beam_singularity_fail_closed": "REQUIRED",
+    "G07_state_and_parameter_read_only": "REQUIRED",
+    "G08_O0_O2_identity": "REQUIRED",
+    "G09_F_WOF30_regression": "REQUIRED",
+    "G10_invariant_audit": "REQUIRED"
+  },
+  "not_qualified": [
+    "potential PGASS path",
+    "nutrient stress",
+    "oxygen max_resp_factor side calculations",
+    "finalize-rate packet",
+    "accepted IQROT/IPTRA provenance",
+    "end-to-end crop-day evolution"
+  ],
+  "affected_invariants": [2,3,4,5,7,8,9,16,21,23,25,27,29,30]
+}
