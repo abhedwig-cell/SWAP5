@@ -165,10 +165,16 @@ assert 'outcome%temporal_indicator = indicator_result%head_inf_bound' not in bac
 for path in (
     'tests/fkt/run_fkt10_real_richards_binding_compile.sh',
     'tests/fkt/run_fkt10_real_richards_history_binding.sh',
-    'tests/fkt/run_fkt10_transactional_fvq30_replay.sh',
     'tests/fvq/run_fvq31_disjoint_transaction_composition.sh',
 ):
     replace_one(path, "assert 'outcome%temporal_certificate_available = .true.' not in backend", budget_guard)
+
+src_budget_guard = budget_guard.replace('backend','src')
+replace_one(
+    'tests/fkt/run_fkt10_transactional_fvq30_replay.sh',
+    "assert 'outcome%temporal_certificate_available = .true.' not in src",
+    src_budget_guard,
+)
 
 for path in (
     'tests/fkt/run_fkt10_real_richards_binding_compile.sh',
