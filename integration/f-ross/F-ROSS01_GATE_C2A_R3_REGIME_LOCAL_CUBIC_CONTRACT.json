@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R3_KSATEXM_REGIME_LOCAL_TENSOR_CUBIC_CHARACTERIZATION",
+  "status": "INTERPOLATION_POLICY_FROZEN_BEFORE_R3_CHARACTERIZATION",
+  "production_implementation": false,
+  "motivation": "R2 materially reduced errors by matching the source-law variable S in the wet region, but all six stress materials still failed. R3 keeps the R2 physical axis and storage exactly unchanged and tests whether the remaining limitation is the second-order bilinear interpolation of the two-dimensional log-mobility surface.",
+  "unchanged_candidate": {
+    "node_count_per_axis": 241,
+    "wet_interval_count": 18,
+    "dry_interval_count": 222,
+    "seam_node_index_zero_based": 18,
+    "wet_coordinate": "uniform S from S(h=-1) to S_thr=S(h=-2)",
+    "dry_coordinate": "uniform u=log10(-h/cm) from log10(2) to 4",
+    "stored_quantity": "IEEE754_float32 log mobility",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "persistent_axis_array_bytes": 0,
+    "physical_law": "source-bound SWAP 4.3.1 KSATEXM",
+    "head_envelope_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0
+  },
+  "r3_change_only": {
+    "interpolation": "tensor product of two local four-point cubic Lagrange interpolants in analytic index coordinates",
+    "table_values_per_lookup": 16,
+    "arithmetic_type": "float64 after reading float32 table values",
+    "runtime_complexity": "O(1)",
+    "extra_persistent_memory_bytes": 0,
+    "extra_per_column_state_bytes": 0
+  },
+  "regime_local_stencil_contract": {
+    "wet_allowed_indices": [0, 18],
+    "dry_allowed_indices": [18, 240],
+    "classification": "S >= S_thr uses the wet regime, S < S_thr uses the dry regime; S==S_thr is exactly x=18 and uses a wet one-sided stencil",
+    "stencil_size_per_axis": 4,
+    "stencil_start_rule": "start=clamp(floor(x)-1, regime_min, regime_max-3); indices=start..start+3",
+    "seam_crossing_forbidden": true,
+    "seam_node_shared_by_both_regimes": true,
+    "endpoint_policy": "one-sided four-point cubic stencil inside the same regime",
+    "node_reproduction": "At an exact table-node coordinate the cubic Lagrange interpolant must reproduce that stored table value exactly up to float64 arithmetic."
+  },
+  "structural_physics_guards": {
+    "flux_sign": "q=g*exp(logM_interp), so interpolated mobility remains strictly positive for finite logM and the flux sign remains the sign of driving head g",
+    "hydrostatic": "g=0 gives q=0 structurally",
+    "equal_head": "equal-head path continues to bypass the table and returns source-bound K(h) exactly",
+    "mass_ledger": "unchanged; table only approximates face flux",
+    "finite_guard": "non-finite or overflowed cubic logM/exp is a hard lookup failure, never clipped"
+  },
+  "characterization": {
+    "materials": ["B10", "O12", "O13", "B05", "O14", "O05"],
+    "probe_set": "reuse the frozen C2A development characterization probes",
+    "no_holdout_access": true,
+    "candidate_count": 1,
+    "no_density_tuning": true,
+    "no_axis_tuning": true,
+    "no_threshold_tuning": true
+  },
+  "criteria": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "exit_rule": {
+    "pass_all_six": "freeze R3 unchanged and create a fresh 36-material KSATEXM holdout before any C2A catalog qualification claim",
+    "any_fail": "reject R3 fail-closed. Do not increase interpolation order or density automatically. Diagnose residual error topology and reconsider stored quantity or an analytic wet-end correction before another candidate."
+  },
+  "scope_guard": "No h>-1 cm, no non-zero H_ENPR, no saturation switching, no heterogeneous profiles, no timestep qualification, no bottom boundary, no groundwater, no MultiSWAP production claim, no J1 response tangent and no FullRichards equivalence."
+}
