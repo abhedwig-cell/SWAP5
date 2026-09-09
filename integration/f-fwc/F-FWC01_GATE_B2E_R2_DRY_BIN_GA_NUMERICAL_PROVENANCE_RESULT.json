@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_R2_DRY_BIN_GREEN_AMPT_NUMERICAL_PROVENANCE",
+  "contract": "F-FWC01_GATE_B2E_R2_DRY_BIN_GA_NUMERICAL_PROVENANCE_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34394374918,
+    "head": "df98ceefe71a0a16be04d959928e2e979ee56ec2",
+    "conclusion": "failure_expected_from_frozen_gate",
+    "artifact_id": 10120900078,
+    "artifact_digest": "sha256:7e8e91ae32379ae6df68a40a890a7973724bd0e4e92048995df3e0583ad45482"
+  },
+  "case_count": 320,
+  "case_pass_count": 38,
+  "seed_variant_count_per_case": 5,
+  "root_error_failure_count": 1385,
+  "max_depth_error_vs_independent_root_cm": 0.9993333612323362,
+  "max_iteration_count": 1801,
+  "dt_sensitivity_group_count": 80,
+  "dt_sensitivity_failure_count": 0,
+  "published_iteration_depth_delta_cm": 0.0005,
+  "classification": "SOURCE_STOP_RULE_NOT_A_SEED_INDEPENDENT_ROOT_ERROR_CERTIFICATE",
+  "interpretation": [
+    "The published successive-approximation stopping rule was preserved exactly and was not relaxed after execution.",
+    "A small difference between consecutive fixed-point iterates does not by itself bound distance to the Green-Ampt root when the local contraction factor is close to one.",
+    "The paper does not specify enough initialization detail to convert the historical method into a seed-independent SWAP5 numerical contract.",
+    "This result does not prove the M2WC70 implementation is wrong because the official C code may use a specific initialization policy not yet inspected.",
+    "All frozen K/psi/delta-theta groups showed strict dependence of the exact root on dt; timestep provenance is therefore required for any cached dry-bin advance."
+  ],
+  "pass": false,
+  "decision": "PUBLISHED_DRY_BIN_GA_SUCCESSIVE_APPROXIMATION_NOT_NUMERICALLY_QUALIFIED_ON_FROZEN_GRID_CHARACTERIZE_BEFORE_PHYSICAL_MAPPING",
+  "hard_guards": [
+    "Preserve this R2 failure as negative evidence.",
+    "Do not widen the 0.0005 cm source criterion post hoc.",
+    "Do not infer M2WC70 code failure from this paper-level seed-independence test.",
+    "Do not promote dry-bin Z_d to a material-only cache key.",
+    "Any modern replacement numerical policy must solve the same Green-Ampt equation and remain separate from physical parameter mapping."
+  ],
+  "next_gate": "B2E_R3_BOUNDED_MONOTONE_GREEN_AMPT_SCALAR_ROOT_POLICY",
+  "status": "FAILED_PUBLISHED_SUCCESSIVE_APPROXIMATION_SEED_INDEPENDENCE_READY_FOR_MODERN_SCALAR_ROOT_POLICY"
+}
