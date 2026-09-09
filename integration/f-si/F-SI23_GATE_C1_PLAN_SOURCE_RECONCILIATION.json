@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_C1_PREEXECUTION_PLAN_SOURCE_RECONCILIATION",
+  "superseded_plan": "integration/f-si/F-SI23_GATE_C1_MMS_PLAN.json",
+  "superseded_plan_blob": "2f97eb3bb0b723031611b20c30aa88d073028c80",
+  "superseded_plan_commit": "9cb36c09376e2587c159406cf350d3a835dfbb36",
+  "execution_started": false,
+  "production_source_changed": false,
+  "finding": {
+    "planned_assumption": "manufactured sink_i=lambda*C*dz_i*u_i would participate implicitly in the backward-Euler nonlinear solve",
+    "source_observation": "HeadCalc evaluates source_sink once before the Newton loop and treats the resulting sink/source vectors as constant for the current timestep",
+    "consequence": "the planned state-dependent manufactured sink would be frozen at the step-start state and would not produce du/dt=-lambda*u under backward Euler",
+    "classification": "PLAN_SOURCE_MAPPING_INCOMPATIBILITY_FOUND_BEFORE_EXECUTION"
+  },
+  "decision": "DO_NOT_EXECUTE_SUPERSEDED_C1_PLAN",
+  "scientific_criteria_relaxed": false,
+  "retrospective_result_tuning": false,
+  "replacement_requirement": "Construct the exact manufactured decay through terms that are actually state-dependent inside the HeadCalc residual/Jacobian, preferably the linear Darcy operator with a generalized eigenmode, while retaining an unchanged mixed-form storage update and hard mass accounting."
+}
