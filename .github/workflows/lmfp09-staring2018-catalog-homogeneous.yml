@@ -1,0 +1,37 @@
+name: F-LMFP09 Staring2018 Catalog Homogeneous Matrix
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  catalog-shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run Staring2018 catalog shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="lmfp09-catalog-shard-${{ matrix.shard }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_staring2018_catalog_shard.py \
+            "$out/F-LMFP09_STARING2018_CATALOG_SHARD_${{ matrix.shard }}.json" \
+            "${{ matrix.shard }}" \
+            | tee "$out/F-LMFP09_STARING2018_CATALOG_SHARD_${{ matrix.shard }}.stdout.json"
+      - name: Upload shard evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-staring2018-catalog-shard-${{ matrix.shard }}
+          path: lmfp09-catalog-shard-${{ matrix.shard }}/
