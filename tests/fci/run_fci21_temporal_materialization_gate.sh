@@ -60,7 +60,7 @@ indicator = Path('src/solver/mod_reference_richards_temporal_indicator.f90').rea
 assert 'numerical_continuation_layout_id' in core
 assert 'optional_state_layout_id' in core
 assert 'fmr_numerical_continuation_richards_temporal_history' in core
-assert 'evaluate_temporal_indicator => soil_water_default_temporal_indicator' in contract
+assert 'evaluate_temporal_indicator => soil_water_temporal_indicator_unavailable' in contract
 assert 'sw_temporal_indicator_unavailable' in contract
 assert 'fkt_temporal_indicator_history_t' in history
 assert 'previous_right_derivative' in history
