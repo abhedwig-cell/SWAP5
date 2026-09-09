@@ -6,196 +6,88 @@ on:
       - integration/f-ci-canonical
   pull_request:
     paths:
-      - 'src/transaction/**'
-      - 'src/runtime/**'
-      - 'src/adapter/**'
-      - 'src/legacy/**'
-      - 'tests/transaction/**'
-      - 'tests/runtime/**'
-      - 'tests/fci/**'
-      - 'tools/fci/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'tools/**'
       - 'integration/f-ci/**'
       - 'reference/swap-4.3.1/**'
       - '.github/workflows/fci-canonical.yml'
 
 jobs:
-  fci03-transaction-substrate:
-    runs-on: ubuntu-latest
+  historical-fci03-through-fci18:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 1eceed967b12396b8bbc832f897376378463adce
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact qualified F-CI18 gate-promotion chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci03_gate.sh
+          bash tests/fci/run_fci04_gate.sh
+          python tools/fci/fci05_b1_10_physical_preimage_gate.py
+          bash tests/fci/run_fci06_gate.sh
+          bash tests/fci/run_fci07_gate.sh
+          bash tests/fci/run_fci08_gate.sh
+          bash tests/fci/run_fci09_gate.sh
+          bash tests/fci/run_fci10_gate.sh
+          bash tests/fci/run_fci11_gate.sh
+          bash tests/fci/run_fci12_gate.sh
+          bash tests/fci/run_fci13_gate.sh
+          bash tests/fci/run_fci14_gate.sh
+          bash tests/fci/run_fci15_gate.sh
+          bash tests/fci/run_fci16_gate.sh
+          bash tests/fci/run_fci17_gate.sh
+          bash tests/fci/run_fci18_gate.sh
+          echo 'FCI_CANONICAL_HISTORICAL_FCI03_THROUGH_FCI18=PASS'
+
+  frozen-fci19-candidate-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5d5ece58b2b8e053a270992ded52377dd524f9c4
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay frozen F-CI19 Candidate A composition preservation
+        run: bash tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh
+
+  frozen-fci19-source-lineage:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e06e3af07efd72a893e860b5d90ccd85efc3c643
+          fetch-depth: 0
+      - name: Replay frozen F-CI19 source lineage and reachability
+        run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
+
+  current-restricted-canonical-postimage:
+    needs:
+      - historical-fci03-through-fci18
+      - frozen-fci19-candidate-preservation
+      - frozen-fci19-source-lineage
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: F-CI03 transaction and worker gate
-        run: bash tests/fci/run_fci03_gate.sh
-
-  fci04-canonical-runtime:
-    needs: fci03-transaction-substrate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI04 canonical runtime and seam gate
-        run: bash tests/fci/run_fci04_gate.sh
-
-  fci05-b1-10-physical-preimage:
-    needs: fci04-canonical-runtime
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: F-CI05 static B1.10 physical preimage gate
-        run: python tools/fci/fci05_b1_10_physical_preimage_gate.py
-
-  fci06-controlled-source-port:
-    needs: fci05-b1-10-physical-preimage
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI06 controlled source-port and checkpoint gate
-        run: bash tests/fci/run_fci06_gate.sh
-
-  fci07-legacy-trial-capsule:
-    needs: fci06-controlled-source-port
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI07 worker-local legacy trial capsule gate
-        run: bash tests/fci/run_fci07_gate.sh
-
-  fci08-transaction-attempt-context:
-    needs: fci07-legacy-trial-capsule
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI08 transaction attempt-context gate
-        run: bash tests/fci/run_fci08_gate.sh
-
-  fci09-b1-10-transaction-binding:
-    needs: fci08-transaction-attempt-context
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI09 B1.10 transaction binding gate
-        run: bash tests/fci/run_fci09_gate.sh
-
-  fci10-time-mass-seam:
-    needs: fci09-b1-10-transaction-binding
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI10 time and mass seam gate
-        run: bash tests/fci/run_fci10_gate.sh
-
-  fci11-controlled-interval-mass-port:
-    needs: fci10-time-mass-seam
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI11 controlled interval and mass source-port gate
-        run: bash tests/fci/run_fci11_gate.sh
-
-  fci12-physical-transaction-advance:
-    needs: fci11-controlled-interval-mass-port
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI12 physical advance and temporal characterization gate
-        run: bash tests/fci/run_fci12_gate.sh
-
-  fci13-recoverable-physical-trial-status:
-    needs: fci12-physical-transaction-advance
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI13 recoverable physical trial status gate
-        run: bash tests/fci/run_fci13_gate.sh
-
-  fci14-reference-temporal-acceptance:
-    needs: fci13-recoverable-physical-trial-status
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
-      - name: F-CI14 reference temporal acceptance contract gate
-        run: bash tests/fci/run_fci14_gate.sh
-
-  fci15-exit-gate-contract:
-    needs: fci14-reference-temporal-acceptance
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: F-CI15 machine-readable exit-gate contract gate
-        run: bash tests/fci/run_fci15_gate.sh
-
-  fci16-exit-gate-assessment:
-    needs: fci15-exit-gate-contract
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: F-CI16 evidence-bound exit-gate assessment gate
-        run: bash tests/fci/run_fci16_gate.sh
-
-  fci17-canonical-baseline-registry:
-    needs: fci16-exit-gate-assessment
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: F-CI17 canonical baseline and supersession registry gate
-        run: bash tests/fci/run_fci17_gate.sh
-
-  fci18-exit-scope-ownership:
-    needs: fci17-canonical-baseline-registry
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: F-CI18 exit scope and ownership gate
-        run: bash tests/fci/run_fci18_gate.sh
+      - name: Current lineage authority gate
+        run: python tools/fci/fci23_current_lineage_authority_gate.py
+      - name: Reexecute current F-CI21 closeout semantics
+        run: bash tests/fci/run_fci21_closeout_readiness_gate.sh
+      - name: Final exact postimage and authority recheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci23_current_lineage_authority_gate.py
+          test "$(git rev-parse HEAD:src)" = 3446aa1d0d80861b22f7e74c7ad51bcedef4f479
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
