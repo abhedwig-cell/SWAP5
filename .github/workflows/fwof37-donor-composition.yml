@@ -1,0 +1,32 @@
+name: F-WOF37 donor composition
+
+on:
+  push:
+    branches:
+      - work/f-wof37-physical-accepted-window-crop-event-composition
+    paths:
+      - 'src/crop/mod_wofost_rate_table.f90'
+      - 'src/crop/mod_wofost_rate_parameters.f90'
+      - 'src/crop/mod_wofost_one_day_rate_state_view.f90'
+      - 'src/crop/mod_wofost_prepare_assimilation.f90'
+      - 'src/crop/mod_wofost_finalize_rates.f90'
+      - 'src/crop/mod_wofost_two_phase_crop_window.f90'
+      - 'integration/f-wof/F-WOF37_DESIGN_PRECOMMIT.json'
+      - 'tests/fwof/run_fwof37_donor_composition_gate.sh'
+      - '.github/workflows/fwof37-donor-composition.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-donor-composition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF37 donor composition gate
+        run: bash tests/fwof/run_fwof37_donor_composition_gate.sh
