@@ -1,0 +1,28 @@
+name: F-SI24 Gate C nonlinear B1.10 finite comparator
+
+on:
+  push:
+    branches:
+      - work/f-si24-bounded-stiffness-aware-temporal-indicator
+    paths:
+      - 'integration/f-si/F-SI24_GATE_C_NONLINEAR_B110_PLAN.json'
+      - 'tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90'
+      - 'tests/fsi/run_fsi24_gate_c_nonlinear_b110.sh'
+      - '.github/workflows/fsi24-gate-c-nonlinear-b110.yml'
+  workflow_dispatch:
+
+jobs:
+  nonlinear-b110-characterization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-SI24 Gate C
+        run: bash tests/fsi/run_fsi24_gate_c_nonlinear_b110.sh
