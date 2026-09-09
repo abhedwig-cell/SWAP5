@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Composition-aware harness correction after run 34319183895 exposed only a
+# stale F-KT09 marker expectation. Historical qualification gates are unchanged.
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BASE="$ROOT/tests/fci/run_fci19_candidate_a_preservation_gate.sh"
 TMP="$ROOT/tests/fci/.fci19_candidate_a_v2_$$.sh"
