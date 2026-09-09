@@ -1,0 +1,26 @@
+name: F-PE06 temporal certificate cost
+
+on:
+  push:
+    branches:
+      - qualification/f-pe06-temporal-certificate-cost
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pretiming-equivalence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-PE06 source-locked pre-timing O0/O2 gate
+        run: bash tests/fpe/run_fpe06_pretiming_equivalence.sh
