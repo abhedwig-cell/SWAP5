@@ -1,0 +1,35 @@
+name: F-SI20 hydraulic-state local retry matrix
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_hydraulic_state_local_retry_matrix.sh'
+      - '.github/workflows/fsi20-hydraulic-state-local-retry.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run hydraulic-state local retry matrix
+        run: |
+          set -o pipefail
+          bash tests/fsi/run_fsi20_hydraulic_state_local_retry_matrix.sh | tee fsi20-hydraulic-state-local-retry.log
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-hydraulic-state-local-retry
+          path: fsi20-hydraulic-state-local-retry.log
+          if-no-files-found: error
