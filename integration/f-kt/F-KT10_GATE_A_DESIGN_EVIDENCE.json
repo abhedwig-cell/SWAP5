@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gate": "A_ARCHITECTURE_SELECTION",
+  "branch": "work/f-kt10-temporal-indicator-history-commit-composition",
+  "status": "SELECTED_FEATURE_SCOPED_EXTENDED_TRANSACTION_STATE",
+  "source_findings": {
+    "kernel_committed_state": "src/kernel/mod_kernel_transactions.f90 stores one opaque transaction_state_t physical/canonical carrier plus lineage/revision/time; checkpoint clones it and candidate commit move_alloc publishes it atomically.",
+    "inner_transaction_semantics": "The canonical interval engine advances cloned transaction states through private accepted substeps before external candidate materialization.",
+    "current_B110_state": "src/runtime/mod_fmr_serialized_reference_backend.f90 defines fmr_b110_physical_state_t as the canonical transaction-state subtype and its clone implementation controls exact retry/checkpoint isolation.",
+    "template_hook": "src/runtime/mod_fmr_runtime_core.f90 already separates state_layout_id from optional_state_layout_id, so optional continuation storage can be selected by template rather than added to every logical column."
+  },
+  "candidate_decisions": [
+    {
+      "candidate": "worker_or_solver_local_history",
+      "decision": "REJECTED",
+      "reason": "Worker/model objects are reusable execution objects; history would not be authoritative per column lineage and would leak under A-B-A/retry reuse."
+    },
+    {
+      "candidate": "post_external_commit_runtime_side_variable",
+      "decision": "REJECTED",
+      "reason": "F-KT09 can accept multiple private substeps inside one external interval; history must advance between those accepted substeps, not only after external publication."
+    },
+    {
+      "candidate": "kernel_committed_sidecar_outside_inner_transaction_state",
+      "decision": "REJECTED_FOR_CURRENT_SCOPE",
+      "reason": "Would require a second sidecar transaction across every inner accepted substep or invasive changes to the canonical transaction API."
+    },
+    {
+      "candidate": "optional_continuation_field_on_every_base_B110_state",
+      "decision": "REJECTED",
+      "reason": "Even an unallocated descriptor would impose optional-feature state shape on inactive columns and would not use the existing optional_state_layout_id separation."
+    },
+    {
+      "candidate": "feature_scoped_extended_B110_transaction_state",
+      "decision": "SELECTED",
+      "reason": "An indicator-enabled template can use a subtype of fmr_b110_physical_state_t containing a separately typed temporal numerical-continuation payload. The existing transaction clone/accept/rollback mechanics then carry physical and continuation categories atomically while inactive templates retain the unchanged base state type."
+    }
+  ],
+  "selected_design": {
+    "base_state_type_unchanged": "fmr_b110_physical_state_t",
+    "new_indicator_enabled_state_type": "fmr_b110_temporal_indicator_state_t extends fmr_b110_physical_state_t",
+    "new_separate_payload_type": "fmr_b110_temporal_continuation_t",
+    "payload_fields": [
+      "previous_right_derivative(:)"
+    ],
+    "availability_semantics": "payload allocation plus finite correct-shape vector; no synthetic zero history",
+    "template_selection": "nonzero dedicated optional_state_layout_id identifies indicator-enabled state topology",
+    "inactive_template_storage": "unchanged base state type; no derivative vector and no continuation payload object",
+    "clone_rule": "dynamic type and optional continuation payload must be preserved exactly by clone",
+    "mass_rule": "storage() continues to use only water_content, ponding and active physical process storage; temporal continuation is ignored by mass accounting",
+    "inner_substep_rule": "model advance mutates continuation only on the trial clone after a converged solve; transaction rejection discards that clone, accepted route publishes it as the next private canonical state",
+    "external_commit_rule": "existing kernel candidate commit move_alloc publishes the accepted composite state once; no second commit authority",
+    "solver_boundary": "runtime passes only the explicit previous derivative value to the F-SI25 public solver service; no HeadCalc arrays enter continuation state"
+  },
+  "F_SI25_scope_hold": {
+    "indicator_enabled_template_requires": [
+      "bottom_mode=5",
+      "swkimpl=0",
+      "swkmean=1",
+      "macropore inactive",
+      "root extraction inactive",
+      "F-SI25-compatible fixed explicit top-flux provider"
+    ],
+    "physical_or_solver_topology_change": "must use a different template/optional state layout and may not silently carry qualified-history availability across the change"
+  },
+  "architecture_invariant_results": {
+    "3_explicit_data_separation": "PASS_SEPARATE_TYPED_CONTINUATION_SUBOBJECT",
+    "4_compact_persistent_state": "PASS_ONLY_INDICATOR_TEMPLATE_HAS_CONTINUATION_PAYLOAD",
+    "5_scratch_per_worker": "PASS_HISTORY_IS_NOT_SCRATCH; OPERATOR_TEMPORARIES_REMAIN_F_SI_WORKER_CALL_SCRATCH",
+    "6_scalable_layout": "PASS_TEMPLATE_OPTIONAL_STATE_LAYOUT_CAN_MAP_TO_SEPARATE_POOL_SOA_LATER",
+    "7_transactional_steps": "PASS_SAME_CLONE_ACCEPT_ROLLBACK_CARRIER",
+    "8_cheap_recomputation": "PASS_RETRY_REUSES_COMMITTED_HISTORY_NO_EXTRA_NONLINEAR_TRAJECTORY",
+    "9_generic_time": "PASS_NO_CALENDAR_FIELD",
+    "13_mass_conservation": "PASS_CONTINUATION_EXCLUDED_FROM_STORAGE_AND_LEDGER",
+    "16_MultiSWAP_primary": "PASS_OPTIONAL_STATE_LAYOUT_ID_IS_TEMPLATE_SCOPED",
+    "20_alternative_solver_openness": "PASS_FEATURE_STATE_IS_MODEL_SPECIFIC_NOT_COMMON_SOLVER_REQUIREMENT",
+    "22_no_HeadCalc_internals": "PASS",
+    "23_physics_solver_policy_separation": "PASS",
+    "27_optional_functionality_scales": "PASS_BASE_STATE_UNCHANGED_FOR_INACTIVE_TEMPLATES",
+    "29_no_silent_dependencies": "PASS_TEMPLATE_AND_ENVELOPE_EXPLICIT",
+    "30_change_assessed": "PASS"
+  },
+  "implementation_gate_opened": true,
+  "scientific_acceptance_gate_opened": false
+}
