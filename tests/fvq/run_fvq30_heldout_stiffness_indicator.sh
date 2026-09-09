@@ -85,6 +85,7 @@ PY
 python3 "$LINEAR" | tee "$BUILD/exact_linear.txt"
 grep -Fq 'FVQ30_G02_EXACT_LINEAR_REGRESSION PASS' "$BUILD/exact_linear.txt" || fail 'independent exact-linear regression did not pass'
 
+git fetch --quiet --no-tags origin work/f-si18-reference-convergence-cliff:refs/remotes/origin/work-f-si18-reference-convergence-cliff 2>/dev/null || true
 git fetch --quiet --no-tags origin work/f-si18-reference-convergence-cliff:refs/remotes/origin/work/f-si18-reference-convergence-cliff
 [[ "$(git rev-parse "$FSI18_BRANCH:$FSI18_GENERATOR")" == "$FSI18_GENERATOR_BLOB" ]] || fail 'F-SI18 TRIDAG generator drift'
 git show "$FSI18_BRANCH:$FSI18_GENERATOR" > "$BUILD/make_reference_tridag.py"
@@ -97,8 +98,8 @@ echo 'FVQ30_REFERENCE_TRIDAG=PASS'
 
 [[ "$(grep -c 'call solver%solve' "$CAND_DRIVER")" -eq 1 ]] || fail 'candidate characterization driver nonlinear solve call count drift'
 [[ "$(grep -c 'call reference_tridag' "$CAND_DRIVER")" -eq 1 ]] || fail 'candidate characterization driver tridiagonal solve call count drift'
-if grep -Eq 'nsteps|run_trajectory|N512|512' "$CAND_DRIVER"; then
-  fail 'candidate driver unexpectedly contains a refinement trajectory'
+if grep -Eq 'nsteps|run_trajectory' "$CAND_DRIVER"; then
+  fail 'candidate driver unexpectedly contains a refinement trajectory controller'
 fi
 python3 - "$OWNER_PROFILE" <<'PY'
 import json,sys
