@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_SOLVE",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "E2C_R1 failed on 196 endpoint bracket cases while valid-probe accuracy passed",
+    "E2C_R1B endpoint causality diagnostic reproduced all 196 failures as q>K(h_above) endpoint-local cases"
+  ],
+  "candidate": {
+    "id": "R1_QUARTER_DECADE_GL8_WITH_FIRST_SEGMENT_T8_ENDPOINT_CLUSTERING_AND_NEXTAFTER_Q_BRACKET",
+    "broad_path_segmentation": "unchanged from R1: negative-head quarter-decades from 1e-12 to 1e4 cm plus exact endpoints and h=0",
+    "quadrature": "unchanged GL8 per segment except the first segment adjacent to h_above uses h=h_above+(h1-h_above)*t^8 with the same eight Gauss-Legendre lanes mapped in t",
+    "endpoint_reason": "cluster first-segment lanes toward h_above where q>K(h_above) roots create a narrow Darcy-integrand boundary layer",
+    "q_above_K_endpoint_bracket": "lo = nextafter(K(h_above), +infinity)",
+    "other_bracket_branches": "unchanged from E2C/R1",
+    "root_solver": "64 fixed safeguarded bisection updates",
+    "maximum_segments_per_face": 66,
+    "quadrature_lanes_per_segment": 8,
+    "generic_max_constitutive_K_evaluations": 530,
+    "generic_max_root_residual_evaluations": 66,
+    "persistent_per_column_state_bytes": 0,
+    "scratch_owner": "worker",
+    "table_lookup": false,
+    "adaptive_panel_creation": false,
+    "material_specific_policy": false
+  },
+  "materials": ["B12","O13","B01","O14"],
+  "scope": {
+    "constitutive_family": "Staringreeks 2018 unimodal MvG using KSATFIT, H_ENPR=0, KSATEXM disabled",
+    "face_class": "WET_DRY",
+    "wet_head_cm": [-1.0,1.0],
+    "dry_head_cm": [-10000.0,-1.0],
+    "homogeneous_face_length_cm": 10.0
+  },
+  "probe_policy": {
+    "reuse_exact_frozen_E2C_R1_probe_builder": true,
+    "fresh_sobol_per_material": 512,
+    "retain_targeted_and_known_witness_cases": true,
+    "no_probe_removal_after_results": true
+  },
+  "frozen_metrics": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "nonfinite_count": 0,
+    "bracket_failure_count": 0,
+    "face_balance_antisymmetry_scaled_max": 1e-10,
+    "equal_head_relative_max": 1e-12,
+    "hydrostatic_abs_q_over_ksatfit_max": 1e-12,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_BOUNDED_ENDPOINT_CLUSTERED_LOCAL_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE",
+    "fail": "ENDPOINT_CLUSTERED_LOCAL_FACE_SOLVE_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_nonclaims": [
+    "PASS does not admit R2 as the normal RossFast production face path.",
+    "PASS does not qualify a saturation-transition timestep or column.",
+    "PASS does not qualify runtime or MultiSWAP throughput.",
+    "PASS does not reopen the rejected precomputed near-saturation table line."
+  ],
+  "hard_guards": [
+    "R1 broad-path quarter-decade segmentation and GL8 density are unchanged.",
+    "Only first-segment endpoint coordinate mapping and the q>K endpoint bracket are changed from R1.",
+    "No thresholds, probes, material-specific settings or bisection count may be retuned after execution.",
+    "Any bracket or finite-check failure fails closed.",
+    "R1 remains preserved as FAIL regardless of R2 outcome."
+  ],
+  "relevant_invariants": [5,7,13,15,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
