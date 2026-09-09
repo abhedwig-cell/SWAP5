@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-MR",
   "work_unit": "F-MR18",
   "branch": "work/f-mr18-generic-accepted-commit-receipt",
@@ -8,19 +8,47 @@
   "implementation_commit": "0045a5239adac2e67d59753461264d1fdc3ac6b9",
   "production_path": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "STANDALONE_GENERIC_ACCEPTED_COMMIT_RECEIPT_SEAM",
+  "qualification": {
+    "tested_head": "3d0c1008f1372c59cf716427453296a688b84bdf",
+    "workflow_run": 34335331677,
+    "workflow_job": 102413272679,
+    "conclusion": "success",
+    "evidence": "integration/f-mr/F-MR18_QUALIFICATION_EVIDENCE.json"
+  },
   "gate_A": {
     "name": "GENERIC_COMMIT_HANDOFF_DESIGN_SELECTION",
-    "status": "CANDIDATE_IMPLEMENTED_PERSISTED_UNTESTED",
+    "status": "QUALIFIED_RECEIPT_CANDIDATE",
     "selected_candidate": "GENERIC_ACCEPTED_COMMIT_RECEIPT",
-    "postcommit_domain_callback": "REJECTED_FOR_CURRENT_CANDIDATE",
+    "postcommit_domain_callback": "REJECTED_FOR_CURRENT_SCOPE",
     "kernel_commit_authority_remains_F_KT": true,
     "domain_specific_imports_allowed": false,
-    "postcommit_expected_error_allowed": false,
-    "all_receipt_prevalidation_before_F_KT_commit": true,
-    "postcommit_receipt_creation_scalar_assignment_only": true,
-    "postcommit_allocation": false
+    "postcommit_expected_error_allowed": false
+  },
+  "gate_B": {
+    "name": "REAL_FKT_RECEIPT_SEMANTICS",
+    "status": "QUALIFIED",
+    "real_commit_exact_receipt": true,
+    "commit_rejection_no_receipt": true,
+    "precommit_mismatch_nonmutating": true,
+    "O0_O2_identity": true,
+    "F_WOF34_transcript_preserved": true
+  },
+  "gate_C": {
+    "name": "SERIALIZED_MULTISWAP_OPTIONAL_RECEIPT_INTEGRATION",
+    "status": "OPEN",
+    "required_before_F_WOF36_resume": true,
+    "requirements": [
+      "existing no-receipt runtime route remains behaviorally identical",
+      "receipt-enabled route uses the exact checkpoint and candidate already owned by execute_column",
+      "sparse or otherwise feature-scoped receipt request so inactive columns do not acquire persistent optional state",
+      "rejected columns expose no ready receipt",
+      "accepted columns expose exactly one receipt matching committed revision/time",
+      "deterministic batch and A-B-A replay",
+      "mass accounting unchanged"
+    ]
   },
   "scope": {
     "existing_F_KT_source_changed": false,
@@ -29,10 +57,9 @@
     "physics_changed": false,
     "numerical_policy_changed": false,
     "mass_accounting_changed": false,
-    "domain_payload_in_receipt": false,
-    "persistent_column_state_added": false
+    "persistent_column_state_added": false,
+    "canonical_promotion": false
   },
-  "next": "Add an executable Gate A/B harness against real F-KT commit semantics before integrating the optional receipt helper into serialized MultiSWAP runtime.",
-  "decision": "PERSISTED_BEFORE_TESTING",
-  "status": "IMPLEMENTED_PERSISTED_UNTESTED_NOT_QUALIFIED"
+  "decision": "QUALIFIED_STANDALONE_RECEIPT_SEAM_CONTINUE_TO_OPTIONAL_MULTISWAP_INTEGRATION",
+  "status": "QUALIFIED_GATES_A_B_GATE_C_OPEN"
 }
