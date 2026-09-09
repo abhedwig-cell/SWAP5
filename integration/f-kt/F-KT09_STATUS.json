@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT09",
+  "title": "Generic Model-Owned Temporal Certificate Transaction Seam",
+  "branch": "work/f-kt09-model-owned-temporal-certificate",
+  "status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+  "source_base": "15a8e2f92b323e7b397eeb4589eed5e9aa8d025b",
+  "qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+  "qualification_workflow_run": 34306247949,
+  "qualification_job": 102323436945,
+  "qualification_evidence": "integration/f-kt/F-KT09_QUALIFICATION_EVIDENCE.json",
+  "decision_contract": "integration/f-kt/F-KT09_DECISION_CONTRACT.json",
+  "regression_reconciliation": "integration/f-kt/F-KT09_REGRESSION_LINEAGE_RECONCILIATION.json",
+  "scope_flags": {
+    "generic_certificate_transport_implemented": true,
+    "existing_full_half_default_preserved": true,
+    "fail_closed_missing_certificate": true,
+    "independent_hard_mass_gate_preserved": true,
+    "canonical_substep_composition_implemented": true,
+    "kernel_candidate_commit_boundary_preserved": true,
+    "kernel_certificate_diagnostics_implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "richards_estimator_implemented": false,
+    "richards_certificate_normalization_implemented": false,
+    "richards_temporal_limit_selected": false,
+    "production_richards_certificate_admitted": false
+  },
+  "owner_boundary": {
+    "F_KT_owns": [
+      "generic temporal acceptance mode selection",
+      "attempt-local certificate transport",
+      "generic finite nonnegative dimensionless indicator acceptance contract",
+      "transaction rollback/retry semantics",
+      "private canonical substep composition",
+      "kernel candidate publication boundary",
+      "generic certificate diagnostics transport"
+    ],
+    "F_KT_does_not_own": [
+      "Richards temporal estimator",
+      "Richards state or flux error norm",
+      "Richards certificate scaling or normalization",
+      "scientific temporal thresholds",
+      "soil-profile-specific acceptance envelopes"
+    ]
+  },
+  "handoff": {
+    "owner": "F-SI",
+    "next_question": "Define and characterize a Richards-owned attempt-local temporal accuracy estimator/certificate that can populate the qualified F-KT09 seam without relying on raw full-versus-two-half defect monotonicity.",
+    "production_code_before_estimator_qualification": false,
+    "numeric_threshold_before_evidence": false,
+    "independent_FVQ_after_candidate_estimator": true
+  }
+}
