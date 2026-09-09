@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI25",
+  "artifact": "OWNER_HANDOFF",
+  "branch": "work/f-si25-accepted-state-operator-indicator-seam",
+  "closeout_commit": "c6044bcc298761a0d1edd5e6e3e9e2b3a96be6d9",
+  "decision": "HANDOFF_TO_F_KT_FOR_TRANSACTION_OWNED_ACCEPTED_DERIVATIVE_HISTORY_COMPOSITION",
+  "destination": {
+    "workstream": "F-KT",
+    "suggested_work_unit": "F-KT10",
+    "suggested_title": "Transactional Temporal Indicator History Ownership & Commit Composition",
+    "suggested_branch": "work/f-kt10-temporal-indicator-history-commit-composition",
+    "branch_existed_at_handoff_check": false,
+    "reservation_created": false
+  },
+  "source_contracts": {
+    "F_SI25_closeout": "integration/f-si/F-SI25_CLOSEOUT.json",
+    "F_SI25_owner_evidence": "integration/f-si/F-SI25_OWNER_EVIDENCE.json",
+    "F_KT09_branch_observed": "work/f-kt09-model-owned-temporal-certificate",
+    "F_KT09_observed_head": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+    "F_KT09_status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+    "F_MR18_branch_observed": "work/f-mr18-generic-accepted-commit-receipt",
+    "F_MR18_status": "QUALIFIED_GATES_A_B_C_F_WOF36_RESUME_ALLOWED"
+  },
+  "why_F_KT_owns_next_step": [
+    "F-SI25 intentionally does not persist previous accepted right-derivative history.",
+    "The previous derivative is continuation state: it becomes authoritative only when the physical candidate is actually accepted/committed.",
+    "Rejected, retried or rolled-back trials must not advance that history.",
+    "Checkpoint/retry/rollback/commit ownership already belongs to F-KT.",
+    "F-KT09 already owns generic model-owned temporal-certificate transport and rollback/retry semantics, while explicitly not owning the Richards estimator itself."
+  ],
+  "required_F_KT10_semantics": {
+    "history_payload": "previous accepted Richards right derivative required by F-SI25 on the next accepted-step evaluation",
+    "initial_state": "history unavailable is explicit; F-SI25 returns current derivative but no B_inf certificate on warmup",
+    "trial_read": "a trial may read only history belonging to its exact committed origin state/lineage",
+    "trial_write": "candidate current_right_derivative remains attempt-local until commit",
+    "retry": "failed/rejected/retried attempt discards its derivative candidate and rereads unchanged committed history",
+    "rollback": "restores exact pre-attempt history availability/value and provenance",
+    "commit": "on actual accepted physical commit, current_right_derivative becomes the next committed previous derivative atomically with the accepted state transition",
+    "generic_time": "history is associated with accepted interval provenance, not calendar day boundaries",
+    "feature_scope": "allocate/store derivative history only for columns/execution classes where the qualified indicator path is active",
+    "restart_checkpoint": "if continuation/restart is in scope, the derivative history and availability/provenance must be included in checkpoint sufficiency; otherwise fail closed rather than silently warm-starting with unrelated history",
+    "MultiSWAP": "no one-heavy-object-per-column requirement; storage must remain compatible with feature-scoped arrays/pools/SoA"
+  },
+  "F_MR18_relationship": {
+    "may_be_used_as": "generic proof that an actual F-KT commit occurred and for exact lineage/revision/t0/t1 handoff where composition needs it",
+    "must_not_be_used_as": "owner or persistent carrier of Richards derivative history",
+    "reason": "F-MR18's qualified receipt contract deliberately contains provenance only, no domain payload and no persistent column state."
+  },
+  "required_tests": [
+    "warmup: unavailable history yields no temporal indicator but exposes a finite current derivative candidate",
+    "accepted commit: exactly the accepted candidate derivative becomes committed history",
+    "rejected temporal trial: committed history bitwise unchanged",
+    "solver rejection: committed history bitwise unchanged",
+    "hard-mass rejection: committed history bitwise unchanged",
+    "retry with shorter dt: every retry starts from the same committed derivative history until one candidate commits",
+    "rollback after trial: derivative history and availability/provenance exactly restored",
+    "A-B-A column ordering: no cross-column history leakage",
+    "inactive feature columns: no derivative-history allocation/cost",
+    "generic interval/substep composition: history advances at each privately accepted substep only if that substep is the authoritative F-KT accepted continuation point; external publication semantics remain unchanged",
+    "O0/O2 identity",
+    "hard mass and physical state unchanged by history plumbing",
+    "F-SI25 frozen 16-case production replay remains numerically identical when history is supplied transactionally"
+  ],
+  "hard_holds": [
+    "Do not select a scientific temporal tolerance in F-KT10.",
+    "Do not normalize B_inf into the F-KT09 dimensionless <=1 certificate contract without separate scientific evidence and qualification.",
+    "Do not reinterpret B_inf as a general nonlinear true-error bound.",
+    "Do not introduce q_cap, Nmin, geometric tail multipliers, fitted safety factors or deep refinement trajectories.",
+    "Do not change Richards physics, boundary semantics or mass accounting.",
+    "Do not make history persistent for columns that never use the indicator.",
+    "Do not expose HeadCalc internals to F-KT/runtime.",
+    "Do not move physical commit authority out of F-KT.",
+    "Do not release F-GC02, groundwater coupling or F-PE from this composition alone."
+  ],
+  "downstream_after_F_KT10": {
+    "independent_qualification_required": true,
+    "observed_free_candidate_at_prior_check": "F-VQ31",
+    "must_recheck_live_before_creation": true,
+    "qualification_scope": "transaction-composed production indicator/history semantics, noninterference, bounded cost and frozen F-VQ30 replay; any scientific normalization/tolerance must be separately frozen and evidenced before admission",
+    "coupling_release": "none until temporal acceptance dependency itself is qualified; then resume the existing F-GC02 rather than creating a replacement"
+  },
+  "affected_architecture_invariants": [3,4,5,6,7,8,9,11,13,15,16,23,24,25,26,27,29,30]
+}
