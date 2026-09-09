@@ -1,0 +1,41 @@
+name: F-KT13 external reconstruction
+
+on:
+  push:
+    branches:
+      - work/f-kt13-external-reconstruction
+    paths:
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
+      - 'tests/fkt/test_fkt05_reusable_checkpoint.f90'
+      - 'tests/fkt/mod_fkt12_mass_complete_test_model.f90'
+      - 'tests/fkt/run_fkt12_committed_restore_gate.sh'
+      - 'tests/fkt/mod_fkt13_process_support.f90'
+      - 'tests/fkt/mod_fkt13_persistence_adapter.f90'
+      - 'tests/fkt/test_fkt13_trusted_reconstruction.f90'
+      - 'tests/fkt/fkt13_reference.f90'
+      - 'tests/fkt/fkt13_producer.f90'
+      - 'tests/fkt/fkt13_consumer.f90'
+      - 'tests/fkt/fkt13_negative_probe.f90'
+      - 'tests/fkt/run_fkt13_external_reconstruction_gate.sh'
+      - 'integration/f-kt/F-KT13_EXTERNAL_RECONSTRUCTION_CONTRACT.json'
+      - '.github/workflows/fkt13-external-reconstruction.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-true-process-boundary-restart:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT13 external reconstruction gate
+        run: bash tests/fkt/run_fkt13_external_reconstruction_gate.sh
