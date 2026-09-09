@@ -12,12 +12,19 @@ BACKEND_BLOB=6f39d60a87c1987ae95d7faec2f55f865af90a08
 FGC02_BRANCH=origin/work/f-gc02-physical-coupling-seam
 FGC02_FIXTURE=tests/fgc/test_fgc02_physical_coupling.f90
 FGC02_FIXTURE_BLOB=d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6
+STUB_BLOB=23c00e4a188e88bc36ef95cbe4faaacdd6aad639
+FSI18_BRANCH=origin/work/f-si18-reference-convergence-cliff
+FSI18_GENERATOR_BLOB=bf25c4c7fefaa59811255b0bc25c041522ab008e
+FSI18_REFERENCE_EVIDENCE_BLOB=bf433c7adff71ce9d10463d53a55a92fe4599655
 
 fail() { echo "FSI20_STATE_REFINE_FAIL $*" >&2; exit 1; }
 
 git diff --quiet "$FVQ27" -- src || fail 'production source drift from F-VQ27'
 [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$BACKEND_BLOB" ]] || fail 'backend blob drift'
 [[ "$(git rev-parse "$FGC02_BRANCH:$FGC02_FIXTURE")" == "$FGC02_FIXTURE_BLOB" ]] || fail 'F-GC02 fixture drift'
+[[ "$(git rev-parse HEAD:tests/fsi/fsi04_real_headcalc_stubs.f90)" == "$STUB_BLOB" ]] || fail 'local zero-correction stub drift'
+[[ "$(git rev-parse "$FSI18_BRANCH:tests/fsi/fsi18_make_reference_tridag_stubs.py")" == "$FSI18_GENERATOR_BLOB" ]] || fail 'F-SI18 reference generator drift'
+[[ "$(git rev-parse "$FSI18_BRANCH:integration/f-si/F-SI18_REFERENCE_TRIDAG_EVIDENCE.json")" == "$FSI18_REFERENCE_EVIDENCE_BLOB" ]] || fail 'F-SI18 reference evidence drift'
 grep -Fq 'real(real64), parameter :: initial_heads(nh) = [-25.0_real64, -75.0_real64, -250.0_real64]' tests/fsi/test_fsi20_hydraulic_state_refinement.f90
 grep -Fq 'real(real64), parameter :: head_jump = 0.01_real64' tests/fsi/test_fsi20_hydraulic_state_refinement.f90
 grep -Fq 'integer, parameter :: nsteps(nlevels) = [1,2,4,8,16,32,64,128,256,512]' tests/fsi/test_fsi20_hydraulic_state_refinement.f90
@@ -27,9 +34,15 @@ grep -Fq 'request%numerical%min_step_duration = 1.0e-6_real64' tests/fsi/test_fs
 echo 'FSI20_STATE_REFINE_SOURCE_LOCK=PASS'
 echo 'FSI20_STATE_REFINE_EXACT_FGC02_SOLVER_CONTROLS=PASS'
 
+git show "$FSI18_BRANCH:tests/fsi/fsi18_make_reference_tridag_stubs.py" > "$BUILD/make_reference_tridag.py"
+python3 "$BUILD/make_reference_tridag.py" tests/fsi/fsi04_real_headcalc_stubs.f90 "$BUILD/fsi04_reference_tridag_stubs.f90"
+if grep -Fq 'solution(i) = 0.0d0' "$BUILD/fsi04_reference_tridag_stubs.f90"; then fail 'zero-correction TRIDAG survived replacement'; fi
+grep -Fq 'SWAP 4.3.1 tridag.f90' "$BUILD/fsi04_reference_tridag_stubs.f90" || fail 'reference TRIDAG marker missing'
+echo 'FSI20_STATE_REFINE_REFERENCE_TRIDAG_CONTROL=PASS'
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 MODULE_SRC=(
-  tests/fsi/fsi04_real_headcalc_stubs.f90
+  "$BUILD/fsi04_reference_tridag_stubs.f90"
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
@@ -119,4 +132,6 @@ print('FSI20_STATE_REFINE_NORMALIZATION_SELECTED=NO')
 print('FSI20_STATE_REFINE_PRODUCTION_TOLERANCE_SELECTED=NO')
 PY
 
+git diff --quiet "$FVQ27" -- src || fail 'production source changed during state refinement'
+echo 'FSI20_STATE_REFINE_PRODUCTION_SOURCE_UNCHANGED=PASS'
 echo 'FSI20_HYDRAULIC_STATE_REFINEMENT PASS'
