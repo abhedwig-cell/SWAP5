@@ -1,0 +1,30 @@
+name: F-KT10 temporal history transaction
+
+on:
+  push:
+    branches:
+      - work/f-kt10-temporal-indicator-history-commit-composition
+    paths:
+      - 'integration/f-kt/F-KT10_WORK_UNIT_CONTRACT.json'
+      - 'integration/f-kt/F-KT10_GATE_A_DESIGN_EVIDENCE.json'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/transaction/mod_fkt_temporal_indicator_history.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fkt/test_fkt10_temporal_history_transaction.f90'
+      - 'tests/fkt/run_fkt10_temporal_history_transaction.sh'
+      - '.github/workflows/fkt10-temporal-history-transaction.yml'
+  workflow_dispatch:
+
+jobs:
+  history-transaction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT10 history transaction qualification
+        run: bash tests/fkt/run_fkt10_temporal_history_transaction.sh
