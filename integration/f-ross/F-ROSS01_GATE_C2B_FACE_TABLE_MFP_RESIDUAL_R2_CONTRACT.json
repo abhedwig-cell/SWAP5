@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_MFP_RESIDUAL_FACE_CHARACTERIZATION_R2",
+  "purpose": "Test whether factoring a cheap seam-aware constitutive mobility scale out of the two-dimensional steady face mobility removes the remaining path-crossing interpolation tail while retaining bounded O(1) runtime and the existing memory ceiling.",
+  "frozen_physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "dependencies": {
+    "state_coordinate_gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE_R1",
+    "failed_uniform_result": "integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_CHARACTERIZATION_RESULT.json",
+    "failed_seam_result": "integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_SEAM_ALIGNED_R1_RESULT.json"
+  },
+  "candidate": {
+    "N": 241,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "u_definition": "u = log10(-h)",
+    "axis": "same piecewise-uniform seam-aligned R1 axis with exact nodes at h=-4 and -40 cm",
+    "segment_intervals": [36, 60, 144],
+    "two_dimensional_storage": "float32 log residual r = log(M_exact / M_phi)",
+    "one_dimensional_storage": "float64 Phi(h) at the same 241 axis nodes",
+    "phi_definition": "Phi(h) = integral from -10000 cm to h of K(xi) dxi",
+    "reference_mobility": "M_phi(ha,hb) = [Phi(hb)-Phi(ha)]/(hb-ha), with equal/near-equal head limit K((ha+hb)/2)",
+    "runtime_flux": "q = [L + ha - hb] * M_phi_runtime * exp(bilinear_interpolated_log_residual)",
+    "runtime_phi_lookup": "O(1) linear interpolation in the same piecewise u coordinate",
+    "runtime_nonlinear_iterations": 0,
+    "two_dimensional_table_bytes": 232324,
+    "phi_table_bytes": 1928,
+    "fixed_metadata_bytes": 32,
+    "expected_shared_bytes": 234284,
+    "shared_bytes_max": 262144
+  },
+  "characterization_materials": ["B10", "O12", "O13", "B05", "O14", "O05", "B12"],
+  "probes": "Reuse the exact C2B characterization probes including explicit -40 and -4 cm join probes. These remain characterization probes and are not a future holdout.",
+  "thresholds": {
+    "reference_failures": 0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "shared_table_plus_metadata_bytes": 262144
+  },
+  "hard_rules": [
+    "Do not change the H_ENPR/SVG2006 physical closure.",
+    "Do not increase the 2D table above N241 in this gate.",
+    "Do not relax any C1R face-flux threshold.",
+    "The runtime candidate must use the stored 1D Phi table, not on-the-fly quadrature.",
+    "Do not add runtime root finding or nonlinear iteration.",
+    "Keep the failed uniform and seam-only evidence unchanged.",
+    "If R2 passes characterization, freeze a separate fresh unseen face-flux holdout before qualification.",
+    "If R2 fails broadly, do not silently densify; characterize the residual topology before another representation change."
+  ],
+  "decision_if_all_pass": "C2B_MFP_RESIDUAL_N241_R2_CHARACTERIZATION_PASS_READY_TO_FREEZE_FRESH_HOLDOUT",
+  "decision_if_any_fail": "C2B_MFP_RESIDUAL_N241_R2_CHARACTERIZATION_FAIL_CLOSED",
+  "scope_guard": "Representation characterization only. No transient, groundwater, production or empirical hydraulic-validation claim."
+}
