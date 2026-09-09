@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "upstream_required": {
+    "R2R1": "QUALIFIED_ENDPOINT_ROBUST_5CM_REFERENCE_WITNESSES_WITH_B12_O13_KSAT_ENDPOINT_DEGENERACY_FRESH_REFERENCE_CHARACTERIZATION_AND_ADMISSIBILITY_POLICY_REQUIRED",
+    "R2P": "QUALIFIED_ZERO_SURFACE_KSAT_PLATEAU_AS_DERIVED_FACE_LOCAL_MIXED_ENDPOINT_SEMANTICS_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION"
+  },
+  "purpose": "Re-characterize the existing bounded 5 cm Ross surface-to-top-node face candidate against an endpoint-aware independent reference on a genuinely fresh holdout, without reusing the invalid inherited steady_q oracle as authority.",
+  "geometry": {
+    "face_length_cm": 5.0,
+    "surface_head_scope_cm": [0.0, 1.0],
+    "top_node_head_scope_cm": [-10000.0, -1e-8],
+    "q_sign": "positive downward"
+  },
+  "materials": ["B01", "B12", "O13", "O14"],
+  "fresh_holdout_per_material": {
+    "zero_surface": 16,
+    "positive_surface_dry": 32,
+    "positive_surface_near_saturation": 32,
+    "total": 80
+  },
+  "fresh_sampling": {
+    "generator": "independently seeded scrambled Sobol",
+    "seed_token_prefix": "F-ROSS01-E3E-R2R2-FRESH-V1",
+    "zero_surface_mapping": "h_surface=0 exactly; h_top=-10^(4*b) cm, b in (0,1)",
+    "positive_dry_mapping": "h_surface=10^(-8*(1-a)) cm; h_top=-10^(4*b) cm",
+    "positive_near_mapping": "h_surface=10^(-8*(1-a)) cm; h_top=-10^(-8*b) cm",
+    "overlap_guard": "No fresh pair may exactly equal any pair in the original E3E deterministic or independent-holdout set."
+  },
+  "reference": {
+    "primary_all_fresh_cases": "R2R1 stable VGM endpoint formulation with 60-digit fixed GL256 t^12 path integration and log-delta root solve using bounded-cost reverse scan",
+    "endpoint_policy": "R2P: exact h_surface=0 uses q=KSAT and derived plateau only when independent endpoint path is shorter than 5 cm; otherwise solve regular interior q>KSAT root",
+    "independent_crosscheck": "100-digit adaptive t^8 oracle on preselected probe ids fresh_zero_0003 and fresh_near_0011 for every material",
+    "crosscheck_probe_count_total": 8,
+    "max_primary_path_residual_cm": 1e-8,
+    "max_crosscheck_q_difference_over_ksat": 1e-9,
+    "inherited_steady_q_role": "diagnostic only; never qualification authority in this gate"
+  },
+  "candidate": {
+    "implementation": "existing run_ross01_gate_e3e_5cm_surface_boundary_face.candidate_q using explicit 5 cm geometry and the already persisted E2C/E3A bounded endpoint candidate",
+    "no_candidate_tuning_before_execution": true,
+    "persistent_state_bytes": 0,
+    "scratch_owner": "worker"
+  },
+  "frozen_accuracy_thresholds_unchanged_from_original_e3e": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "additional_endpoint_checks": {
+    "endpoint_reference_cases_require_candidate_flux_equal_ksat_with_abs_over_ksat": 1e-12,
+    "endpoint_reference_cases_require_no_wrong_sign": true,
+    "positive_surface_cases_must_never_be_classified_as_endpoint_plateau_by_reference": true,
+    "reference_branch_must_be_explicit_for_every_case": true
+  },
+  "qualification_logic": {
+    "per_material": "All fresh probes valid; all reference quality checks pass; all original E3E candidate thresholds pass on the fresh holdout; all frozen crosschecks pass.",
+    "overall": "All four materials pass independently. No pooled-average rescue is allowed.",
+    "failure": "Persist the first scientifically failing classification without changing thresholds, seeds, candidate or oracle; remediation requires a new gate."
+  },
+  "architecture_checks": {
+    "mass_conservation": "Face qualification changes no ledger or state; later column composition must still prove exact mass conservation.",
+    "transactionality": "No committed state is mutated by this characterization.",
+    "persistent_state": "0 new bytes per column.",
+    "scratch": "reference and candidate numerical temporaries are worker-owned.",
+    "bounded_cost": "candidate retains frozen E2C cost caps; expensive independent reference is qualification-only.",
+    "solver_policy_vs_physics": "R2P endpoint routing changes neither VGM parameters nor physical options.",
+    "reference_mode": "high-accuracy independent reference remains separate from candidate production path."
+  },
+  "hard_nonclaims": [
+    "No full top-boundary, ponding storage, rainfall, evaporation or runoff qualification.",
+    "No surface-water ledger qualification.",
+    "No response tangent qualification across endpoint switching.",
+    "No heads above 1 cm.",
+    "No groundwater, runtime, MultiSWAP or production admission.",
+    "No conclusion may be based on the superseded inherited steady_q oracle alone."
+  ],
+  "success_exit": "QUALIFIED_RESTRICTED_FRESH_ENDPOINT_AWARE_5CM_SURFACE_BOUNDARY_FACE_READY_FOR_TOP_BOUNDARY_COMPOSITION_PROTOTYPE",
+  "failure_exit": "FRESH_ENDPOINT_AWARE_5CM_SURFACE_BOUNDARY_FACE_NOT_QUALIFIED_REMEDIATION_REQUIRED"
+}
