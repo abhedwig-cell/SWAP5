@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF35",
   "evidence_type": "SOURCE_BOUND_NEXT_SEAM_FRONTIER_NOT_QUALIFICATION",
@@ -11,7 +11,11 @@
   "observations": [
     {
       "path": "src/process/mod_root_water_uptake_process.f90",
-      "finding": "The qualified root-water-uptake process request carries potential_transpiration and its result exposes actual_uptake_total. These are the semantic PTRA/QROT quantities needed by the accepted-window accumulator."
+      "finding": "The qualified root-water-uptake process request carries potential_transpiration. Per rooted node it computes qpotential as a root-fraction increment times potential_transpiration, sets root_extraction_sink(node)=qpotential*drought_reduction_factor, and defines actual_uptake_total=sum(root_extraction_sink)."
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "finding": "On the explicit provider route, root_sink_term(node) is the provider root_extraction_sink(node) and is added directly to the compartment residual alongside vertical/source/sink flux terms. It is not multiplied by layer thickness at this boundary."
     },
     {
       "path": "src/runtime/mod_fmr_root_uptake_process_binding.f90",
@@ -31,18 +35,25 @@
     },
     {
       "path": "src/solver/mod_b110_root_sink_provider.f90",
-      "finding": "The root-sink provider serves the supplied sink strengths to the Richards solve; it does not own crop potential transpiration or accepted-window provenance."
+      "finding": "The root-sink provider returns the supplied root_extraction_sink vector unchanged; it does not own crop potential transpiration or accepted-window provenance."
     },
     {
       "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
       "finding": "The MultiSWAP runtime owns checkpoint/trial/commit flow and receives a fully formed forcing_registry, but its request does not carry the crop-root process request or potential_transpiration."
     }
   ],
+  "resolved_dimensional_mapping": {
+    "status": "SOURCE_BOUND",
+    "IQROT_equivalent_rate": "sum(root_extraction_sink) for the exact sink vector physically supplied to that trial",
+    "equals_process_result": "root_water_uptake_flux_result_t.actual_uptake_total",
+    "extra_layer_thickness_factor_required": false,
+    "reason": "The root-uptake process constructs each layer value as a fraction of potential_transpiration and sums these values to actual_uptake_total; HeadCalc consumes each provider value directly as a flux contribution in the water-balance residual."
+  },
   "missing_owner_seam": {
     "required_joint_ownership": [
       "F-KT checkpoint/trial lineage and interval identity",
-      "the actual root-uptake quantity physically applied for that trial",
-      "the corresponding potential-transpiration quantity",
+      "the exact root_extraction_sink vector physically applied for that trial or its source-bound sum",
+      "the corresponding potential_transpiration quantity",
       "trial discard/retry semantics",
       "the final F-KT commit-derived acceptance certificate"
     ],
@@ -50,8 +61,7 @@
     "architecture_boundary": "The missing seam belongs in runtime/process composition outside the crop kernel. It must not move F-KT commit authority into WOFOST and must not add persistent solver scratch to column state."
   },
   "unresolved_before_implementation": [
-    "source-bind the exact dimensional mapping from root_extraction_sink to the IQROT-equivalent actual-uptake rate/integral used by WOFOST",
-    "decide whether the production trial accumulator consumes the already-formed physical sink input or a separately qualified process result, without double evaluation or state inconsistency",
+    "decide whether the production trial accumulator consumes the already-formed physical sink input directly or a separately carried process result, without double evaluation or state inconsistency",
     "define how potential_transpiration travels with the same trial provenance into the runtime seam",
     "prove rejected and retried trials contribute zero while an accepted retry contributes exactly once",
     "prove no change to mass accounting or Richards sink application",
@@ -59,9 +69,9 @@
   ],
   "not_claimed": [
     "physical production binding is implemented",
-    "candidate-state root-uptake recomputation is scientifically correct",
+    "candidate-state root-uptake recomputation is scientifically correct or needed",
     "historical daily WOFOST trajectory equivalence",
     "calendar scheduling or restart ownership"
   ],
-  "status": "FRONTIER_IDENTIFIED_FAIL_CLOSED_PENDING_F_WOF35_COMPOSITION_PASS"
+  "status": "FRONTIER_IDENTIFIED_QROT_MAPPING_SOURCE_BOUND_PENDING_F_WOF35_COMPOSITION_PASS"
 }
