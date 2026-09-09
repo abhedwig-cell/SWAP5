@@ -68,7 +68,6 @@ def build_cases() -> list[dict]:
             "k_i": k_i, "k_d": k_d, "g": g, "hp": hp, "z": z,
             "nominal_dt": nominal_dt, "nominal_dk": nominal_dk,
         })
-    # Deterministic limit fixtures.
     rows.extend([
         {"id":"green_ampt", "theta_i":0.0, "theta_d":0.37, "k_i":0.0, "k_d":12.5, "g":83.0, "hp":4.0, "z":27.0, "nominal_dt":0.37, "nominal_dk":12.5},
         {"id":"zero_capillary", "theta_i":0.11, "theta_d":0.31, "k_i":2.0, "k_d":9.0, "g":0.0, "hp":0.0, "z":50.0, "nominal_dt":0.20, "nominal_dk":7.0},
@@ -86,12 +85,16 @@ def decimal_limit_residuals() -> dict:
         f = (td-ti)*z
         ga = kd * (Decimal(1) + (td-ti)*(gg+hp)/f)
         ga_res = infiltration-ga
-
         ti2, td2, ki2, kd2, z2 = map(Decimal, ("0.11", "0.31", "2", "9", "50"))
-        v2 = (kd2*(Decimal(0))/z2 + kd2-ki2)/(td2-ti2)
+        v2 = (kd2*Decimal(0)/z2 + kd2-ki2)/(td2-ti2)
         fd = (kd2-ki2)/(td2-ti2)
         fd_res = v2-fd
-    return {"green_ampt_decimal80_residual": str(ga_res), "zero_capillary_decimal80_residual": str(fd_res)}
+    return {
+        "green_ampt_decimal80_residual": str(ga_res),
+        "zero_capillary_decimal80_residual": str(fd_res),
+        "green_ampt_exact_zero": ga_res == 0,
+        "zero_capillary_exact_zero": fd_res == 0,
+    }
 
 
 def main() -> None:
@@ -99,10 +102,10 @@ def main() -> None:
         raise SystemExit("usage: fwc01_gate_b2c_r1_decimal80_eq18_representation.py OUTPUT.json")
     out = Path(sys.argv[1])
     cases = build_cases()
-    direct_errors = []
-    cached_errors = []
-    dt_mismatch = []
-    dk_mismatch = []
+    direct_errors: list[float] = []
+    cached_errors: list[float] = []
+    dt_mismatch: list[float] = []
+    dk_mismatch: list[float] = []
     direct_fail = 0
     cached_fail = 0
     worst_direct = None
@@ -126,13 +129,12 @@ def main() -> None:
         s = sorted(xs); return s[int(0.99*(len(s)-1))]
 
     limits = decimal_limit_residuals()
-    passed = direct_fail == 0 and cached_fail == 0 and limits["green_ampt_decimal80_residual"] == "0E-78" and limits["zero_capillary_decimal80_residual"] == "0"
+    passed = direct_fail == 0 and cached_fail == 0 and limits["green_ampt_exact_zero"] and limits["zero_capillary_exact_zero"]
     result = {
         "schema_version":1, "workstream":"F-FWC", "work_unit":"F-FWC01",
         "gate":"B2C_R1_HIGH_PRECISION_EQ18_NUMERICAL_REPRESENTATION_CHARACTERIZATION",
         "contract":CONTRACT, "production_implementation":False,
-        "decimal_precision_digits":80, "case_count":len(cases),
-        "metric_limit":LIMIT,
+        "decimal_precision_digits":80, "case_count":len(cases), "metric_limit":LIMIT,
         "direct_endpoint_eq18":{
             "max_normalized_forward_error":max(direct_errors), "p99_normalized_forward_error":p99(direct_errors),
             "cases_exceeding_limit":direct_fail, "worst_case":{"id":worst_direct[1],"error":worst_direct[0],"binary64":worst_direct[2],"decimal80":worst_direct[3]}
