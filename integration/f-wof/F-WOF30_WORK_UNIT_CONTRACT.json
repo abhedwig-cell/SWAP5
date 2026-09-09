@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF30",
+  "title": "Restricted Shared Immutable WOFOST Rate Parameter Bundle",
+  "branch": "work/f-wof30-rate-parameter-bundle",
+  "base": {
+    "commit": "55a823276a1869f15623d1d0694add4df54dec2e",
+    "status": "QUALIFIED_COMPACT_IMMUTABLE_WOFOST_RATE_TABLE_SUBSTRATE"
+  },
+  "goal": "Implement the smallest shared immutable scalar/table parameter object required by the F-WOF27 restricted standard-WOFOST one-day rate-provider profile without parser layout, dynamic crop state, forcing, rate workspace or structural-integrator parameters.",
+  "admitted_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false,
+    "soybean": false,
+    "grass": false
+  },
+  "production_scope": {
+    "new_module": "src/crop/mod_wofost_rate_parameters.f90",
+    "shared_parameter_data": true,
+    "dynamic_column_state_added": false,
+    "rate_equations_added": false,
+    "forcing_added": false,
+    "parser_or_file_IO_added": false,
+    "runtime_provenance_added": false
+  },
+  "included_scalars": [
+    "IDSL", "DLO conditional on IDSL=1", "DLC conditional on IDSL=1", "TSUMEA", "TSUMAM",
+    "KDIF", "EFF", "CFRDM", "RELMF",
+    "CVR", "CVS", "CVL", "CVO",
+    "Q10", "RMR", "RML", "RMS", "RMO",
+    "PERDL", "TBASE", "RGRLAI"
+  ],
+  "included_tables": [
+    "DTSMTB", "AMAXTB", "TMPFTB", "TMNFTB", "RFSETB",
+    "FRTB", "FLTB", "FSTB", "FOTB", "RDRRTB", "RDRSTB", "SLATB"
+  ],
+  "explicit_exclusions": {
+    "view_assembly": ["SSA", "SPA"],
+    "structural_integration": ["SPAN", "DVSEND"],
+    "legacy_orphan_for_scoped_rate_path": ["KDIR"],
+    "initialization_only": ["TDWI"],
+    "potential_shadow_only": ["SW_POTRELMF"],
+    "runtime_or_forcing": ["TAV", "TAVD", "RAD", "DAYL", "DAYLP", "SINLD", "COSLD", "DIFPP", "DSINBE", "FCO2EFF", "FCO2AMAX", "TMNR", "IQROT", "IPTRA", "PGASS"]
+  },
+  "source_bound_scalar_ranges": {
+    "DLO_DLC": "0..24 when IDSL=1",
+    "TSUMEA_TSUMAM": "legacy 0..10000, strengthened to >0..10000",
+    "KDIF": "legacy 0..2, strengthened to >0..2",
+    "EFF": "0..10",
+    "CFRDM": "legacy 0..1, strengthened to >0..1",
+    "RELMF": "0..1",
+    "CVR_CVS_CVL": "legacy 0..1, strengthened to >0..1",
+    "CVO": "0..1; CVO=0 remains admissible until evaluated FO is known",
+    "Q10": "legacy 0..5, strengthened to >0..5",
+    "RMR_RML_RMS_RMO": "0..1",
+    "PERDL": "0..3",
+    "TBASE": "-10..30",
+    "RGRLAI": "0..1"
+  },
+  "semantic_strengthening": [
+    "IDSL must be 0 or 1",
+    "when IDSL=1 require DLO>DLC",
+    "when IDSL=0 photoperiod thresholds are inactive and canonicalized out of the stored scalar view",
+    "all active scalar parameters must be finite",
+    "all twelve table objects must already satisfy the F-WOF29 compact-table ready contract"
+  ],
+  "immutability_contract": [
+    "bundle components are private",
+    "construction is validation-gated",
+    "there is no public post-construction mutator",
+    "scalar access returns a value copy",
+    "table access is semantic evaluation only; internal table objects are not exposed",
+    "bundle is intended to be shared by template/reference across columns"
+  ],
+  "gates": {
+    "G01_exact_parameter_membership": "REQUIRED",
+    "G02_source_bound_scalar_domain_validation": "REQUIRED",
+    "G03_all_F_WOF29_tables_ready": "REQUIRED",
+    "G04_private_storage_no_mutator": "REQUIRED",
+    "G05_semantic_table_evaluation_equivalence": "REQUIRED",
+    "G06_no_state_forcing_IO_calendar_or_rate_equations": "REQUIRED",
+    "G07_O0_O2_identity": "REQUIRED",
+    "G08_F_WOF29_regression": "REQUIRED",
+    "G09_invariant_audit": "REQUIRED"
+  },
+  "not_qualified": [
+    "PGASS assimilation equations",
+    "finalize-rate equations",
+    "CVO/FO cross-domain validation because FO is not yet evaluated",
+    "partition-sum scientific validation",
+    "parser-to-bundle adapter",
+    "accepted IQROT/IPTRA provenance binding",
+    "end-to-end one-day crop-rate production"
+  ],
+  "affected_invariants": [2,3,4,5,6,8,16,21,23,25,27,29,30]
+}
