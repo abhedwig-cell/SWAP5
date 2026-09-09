@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_BOUNDED_DENSE_TABLE_REFINEMENT",
+  "status": "AUTHORITATIVE_STATE_SPACE_ENDPOINT_FREEZE_BEFORE_V3_CHARACTERIZATION",
+  "supersedes": "F-ROSS01_GATE_C1R_REFINEMENT_CONTRACT_V2.json",
+  "v1_shakeout_run": 34337003822,
+  "v2_run": 34337358633,
+  "v2_requalification_reason": "V2 demonstrated that a head-space epsilon derived only from binary64 spacing in h is not a valid endpoint contract for the composed S->h inverse. For O01 and O05, exact frozen S_max values round-trip through h(S) to approximately 2.79e-13 and 9.13e-13 cm wetter than h=-1 cm, respectively, while the V2 head tolerance at that boundary is approximately 2.84e-14 cm. This is conditioning of the constitutive inverse at the wet endpoint, not physical extrapolation.",
+  "production_implementation": false,
+  "purpose": "Qualify a bounded dense-table refinement without allowing a numerical endpoint guard to create false domain failures or silently extend the physical head envelope.",
+  "unchanged_physical_face_law": {
+    "coordinate": "u=log10(-h/cm) uniform on [0,4]",
+    "driving_head": "g=L+h_above-h_below",
+    "stored_physical_quantity": "log(M), M=q/g>0",
+    "runtime_flux": "q=g*exp(interpolated_log_M)",
+    "exact_equal_head": "q=K(h)",
+    "structural_hydrostatic": "q=0 when g=0",
+    "face_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0,-1.0],
+    "constitutive_family": "unimodal Mualem-van Genuchten using KSATFIT with KSATEXM disabled"
+  },
+  "candidate_representation": {
+    "table_storage_type": "IEEE754_float32_log_mobility",
+    "interpolation_arithmetic": "four float32 nodal log-mobility values converted to float64; bilinear interpolation and exp evaluated in float64",
+    "axis_storage": "analytic uniform log-head axis; no axis array",
+    "candidate_node_counts_per_axis": [225,241,255],
+    "candidate_selection": "smallest N passing every frozen criterion on every stress material",
+    "shared_memory_formula_bytes": "4*N*N + 32 bytes fixed scalar metadata upper bound",
+    "shared_memory_limit_bytes": 262144,
+    "runtime_lookup_complexity": "O(1)",
+    "per_column_table_state_bytes": 0
+  },
+  "state_space_endpoint_contract": {
+    "authoritative_state_domain": "[S_min,S_max] where S_min=S(h=-10000 cm) and S_max=S(h=-1 cm) are computed from the same immutable material parameters used by the face table",
+    "binary64_state_boundary_tolerance": "128*epsilon_binary64*max(1,abs(S),abs(S_boundary))",
+    "outside_state_policy": "reject if S lies outside [S_min,S_max] by more than the state-boundary tolerance; otherwise clamp only to that exact state boundary",
+    "exact_boundary_inverse": "after the allowed state-space clamp, S==S_min maps directly to h=-10000 cm and S==S_max maps directly to h=-1 cm without evaluating the constitutive inverse h(S)",
+    "interior_inverse": "for S strictly inside (S_min,S_max), evaluate the frozen constitutive h(S) and require the result to lie inside the exact frozen head envelope; no head-space domain-extension epsilon is allowed",
+    "endpoint_coordinate": "the exact mapped wet and dry head boundaries use u=0 and u=4 respectively",
+    "rationale": "Endpoint identity belongs to the state-to-coordinate map. It must not depend on the conditioning error of composing the floating retention forward and inverse functions."
+  },
+  "stress_materials": {
+    "development_failure_targets": ["O01","O05","O14"],
+    "regression_anchors": ["B01","B12","O13"]
+  },
+  "fresh_characterization": {
+    "ordinary_probe_count_per_material": 512,
+    "ordinary_seed_rule": "uint32(first8hex(sha256('F-ROSS01-C1R-CHAR:'+material)))",
+    "equal_head_count": 64,
+    "hydrostatic_count": 64,
+    "near_hydrostatic_count": 96,
+    "wet_dry_cross_count": 49,
+    "edge_count": 6,
+    "note": "These are characterization probes already exposed during C1R design and may never be reused as the later catalog holdout."
+  },
+  "criteria_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "exit_rule": {
+    "characterization_pass": "freeze the smallest passing N and this exact float32/state-space endpoint representation before generating any fresh 36-material holdout",
+    "characterization_fail": "reject bounded dense bilinear refinement fail-closed and investigate a different interpolation representation rather than tuning a future holdout",
+    "no_catalog_claim_from_characterization": true
+  },
+  "scope_guard": "No KSATEXM, other hydraulic families, saturation switching, heterogeneous profiles, timestep accuracy, processes, bottom boundaries, groundwater, MultiSWAP, real-table response tangents or FullRichards equivalence."
+}
