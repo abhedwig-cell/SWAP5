@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "substudy": "HYDRAULIC_TIMESCALE_RETRY_TRANSLATION",
+  "gate": "B_DYNAMIC_LOCAL_HYDRAULIC_CHARACTERIZATION",
+  "tested_head": "e98dc3975a2102919106922dd888cd62e2716fc2",
+  "workflow": {
+    "run_id": 34305638703,
+    "job_id": 102321644548,
+    "conclusion": "success",
+    "artifact_id": 10086565268,
+    "artifact_digest": "sha256:737ecd5bb59f61e83abff7900eaae1258a514da2f9db735fe5b864d0959e9d66"
+  },
+  "source_controls": {
+    "predeclared_observation_plan": "PASS",
+    "production_source_immutability": "PASS",
+    "frozen_fvq28_matrix_lock": "PASS",
+    "reference_tridag_test_only_control": "PASS",
+    "backend_observer_normalizes_to_production": "PASS",
+    "repeat_O0": "PASS",
+    "repeat_O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "observations": {
+    "cases": 24,
+    "attempts": 72,
+    "resolved_classified_attempts": 67,
+    "C_count": 31,
+    "U_count": 36,
+    "C_tau_full_over_two_half_endpoint_range": [0.9999624521416943, 1.0000377022146199],
+    "U_tau_full_over_two_half_endpoint_range": [0.9999569147888137, 1.0000297754334617],
+    "C_tau_two_half_endpoint_over_checkpoint_range": [0.9983841331921518, 1.0016168790528723],
+    "U_tau_two_half_endpoint_over_checkpoint_range": [0.9993457939343009, 1.0012176680822242],
+    "C_U_tau_full_over_endpoint_ranges_overlap": true,
+    "across_jump_tau_endpoint_over_checkpoint_spread_decreases_with_drier_initial_state": true,
+    "largest_across_jump_spread": 0.0032327458607205317,
+    "smallest_across_jump_spread": 0.0003194449466077387
+  },
+  "predeclared_counterexample_trace": {
+    "initial_head_cm": -320.0,
+    "all_four_jump_patterns": "UCU",
+    "interpretation": "Dynamic local tau evolves smoothly and by small amounts across the U-C-U attempt sequence; neither tau_full/tau_two_half_endpoint nor tau_endpoint/tau_checkpoint exhibits a corresponding robust U-to-C-to-U separator across all four jumps.",
+    "bottom_head_defect_cm_examples": {
+      "jump_case_21": [0.0028915538597971136, 0.003160722667587379, 0.0031093364767116327],
+      "jump_case_22": [0.0005784771667549649, 0.0006323300269741594, 0.000622033104377806],
+      "jump_case_23": [0.0005785603685808383, 0.000632422777357533, 0.0006221160107315882],
+      "jump_case_24": [0.002893633904932358, 0.0031630414264327555, 0.0031114091355561868]
+    }
+  },
+  "classification": {
+    "predeclared_exit": "B_DYNAMIC_LOCAL_HYDRAULICS_INFORMATIVE_BUT_NOT_SUFFICIENT_SAME_ENDPOINT_REFINEMENT_FAMILY_REMAINS_PRIMARY",
+    "single_dynamic_tau_separator_supported": false,
+    "separate_hydraulic_timescale_estimator_candidate_justified": false,
+    "same_endpoint_or_model_owned_certificate_route_remains_primary": true
+  },
+  "hard_constraints": {
+    "threshold_fitted": false,
+    "normalization_selected": false,
+    "temporal_tolerance_selected": false,
+    "physics_changed": false,
+    "mass_gate_relaxed": false,
+    "retry_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "production_source_changed": false
+  },
+  "claim_limit": "This Gate B closes only the hydraulic-timescale mechanism substudy. It does not prove hydraulic state is irrelevant, does not qualify a temporal estimator, and does not admit a production Richards temporal policy. The observed C/U overlap and UCU traces are sufficient to reject a simple dynamic-local tau separator as the next standalone production candidate within this frozen envelope.",
+  "handoff": "Feed this negative mechanism evidence to the canonical F-SI21 estimator/runtime-policy line. Do not fork a separate production temporal metric from the hydraulic-timescale substudy."
+}
