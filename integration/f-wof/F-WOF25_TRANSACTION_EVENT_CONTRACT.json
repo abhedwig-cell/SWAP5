@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST one-day event and transaction contract",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true,
+    "first_scientific_admission_window": "one explicit crop-evolution day equivalent to the B1.10 daily oracle"
+  },
+  "authorities": {
+    "crop_physics_owner": "F-WOF",
+    "candidate_checkpoint_commit_rollback": "F-KT only",
+    "soil_water_substep_acceptance_and_mass": "F-KT/F-MR admitted runtime path",
+    "crop_window_scheduling_and_aggregate_composition": "runtime/event layer outside the crop kernel",
+    "calendar_translation": "forcing/runtime adapter outside the kernel"
+  },
+  "conceptual_event": {
+    "signature": "evolve_crop(parameters, committed_crop_state, crop_event_forcing, accepted_process_aggregates, t0, t1) -> candidate_crop_state + crop_results + diagnostics",
+    "t0_t1_explicit": true,
+    "initial_duration_days": 1.0,
+    "kernel_day_primitive": false,
+    "midnight_assumption": false,
+    "soil_water_substep_count": "independent of crop cadence",
+    "crop_evolution_count_per_initial_window": 1
+  },
+  "two_phase_window_semantics": {
+    "reason": "B1.10 assimilation runs at day start, while actual crop evolution and root extension run at day end after soil-water aggregates have been accumulated.",
+    "prepare_phase": {
+      "input_origin": "committed crop checkpoint at the previous crop-event boundary plus explicit current-window forcing",
+      "candidate_only_climate_memory": [
+        "nofd candidate increment",
+        "atmin7 candidate shift with current TMN"
+      ],
+      "derived_window_context": [
+        "TMNR",
+        "solar geometry/DAYLP",
+        "potential and actual PGASS",
+        "other rate/intermediate values needed before finalization"
+      ],
+      "read_only_same_window_exports": "only explicitly qualified process inputs may be exposed to soil-water/oxygen processing; no crop state is committed here",
+      "committed_crop_state_mutated": false
+    },
+    "accumulate_phase": {
+      "inputs": [
+        "accepted root-water uptake contributions",
+        "accepted potential-transpiration contributions",
+        "accepted oxygen/root-aeration contributions when active"
+      ],
+      "rejected_trial_contribution": 0,
+      "lineage_rule": "every contribution is bound to the same crop-window identity and accepted physical lineage",
+      "persistent_crop_state": false,
+      "runtime_window_state_may_be_needed_across_smaller_coupling_or_kernel_intervals": true,
+      "rule_if_window_spans_multiple_commits": "runtime may persist only the accepted aggregate/window provenance, not WOFOST rates or a half-committed crop candidate"
+    },
+    "finalize_phase": {
+      "input": "same committed crop origin, deterministic prepared context, frozen accepted aggregates and explicit [t0,t1]",
+      "operations": [
+        "compute standard phenology rates",
+        "compute actual water-stress reduction from accepted IQROT/IPTRA",
+        "compute biomass growth/death/allocation rates",
+        "update active leaf cohorts exactly once under the qualified daily cadence",
+        "update TSUM/DVS/anthesis and optional vernalization state",
+        "update option-dependent root state or derived root geometry according to separately qualified root ownership"
+      ],
+      "output": "complete candidate crop continuation plus results/diagnostics",
+      "publication": "F-KT explicit commit only"
+    }
+  },
+  "atomic_physical_crop_continuation": {
+    "always_common": [
+      "crop_emerged",
+      "DVS",
+      "TSUM",
+      "fl_anthesis",
+      "nofd",
+      "atmin7[7]",
+      "actual WOFOST biomass and active LV/SLA/LVAGE cohort history"
+    ],
+    "IDSL2_only": [
+      "vern",
+      "fl_vernalised"
+    ],
+    "root_option_state": {
+      "source": "F-WOF15",
+      "SWRD1": "no independent root-depth state; derive from committed DVS and parameters",
+      "SWRD2": "actual and potential root-depth history is optional committed physical state and must transact atomically with crop evolution",
+      "SWRD3": "actual root depth is derivable from committed actual WRT and parameters",
+      "SWRDC1": "adaptive per-node root biomass/distribution history is optional committed physical state and must transact atomically",
+      "nonadaptive_distribution": "no per-node committed root array"
+    }
+  },
+  "transaction_rules": {
+    "checkpoint_contains_complete_enabled_crop_physical_state": true,
+    "trial_origin": "clone of committed crop continuation or F-KT checkpoint clone",
+    "prepare_mutates_committed": false,
+    "rejected_soil_water_trial_mutates_accepted_window_aggregate": false,
+    "rejected_crop_event_mutates_committed_crop_state": false,
+    "rejected_crop_event_advances_temperature_history": false,
+    "rejected_crop_event_advances_leaf_cohorts": false,
+    "rejected_crop_event_advances_root_state": false,
+    "same_checkpoint_same_forcing_same_accepted_aggregates_replay": "bitwise identical candidate required",
+    "warm_start": "numerical/worker-local only; may not replace committed physical origin"
+  },
+  "required_structural_candidate_tests": [
+    "checkpoint -> crop trial -> discard -> exact committed crop owner unchanged",
+    "same checkpoint + same forcing + same frozen accepted aggregates -> exact same candidate",
+    "rejected soil-water retry contributes zero to crop-window aggregates",
+    "accepted substep replay cannot double-book IQROT/IPTRA/IALPWET",
+    "one crop window with many soil-water substeps performs one WOFOST cohort shift/create operation",
+    "all enabled optional root state rolls back atomically with phenology and biomass",
+    "inactive IDSL2 option allocates no vernalization state",
+    "inactive adaptive-root options allocate no per-node root state"
+  ],
+  "initial_candidate_restriction_option": {
+    "allowed_for_smallest_first_production_seam": "a future structural unit may first admit a root configuration with no independent root-history allocation and may exclude oxygen cross-window exports, provided the execution class is explicit and physics is not silently changed",
+    "examples": [
+      "IDSL=0 or 1 while IDSL2 vernrate semantics remain held",
+      "nonadaptive root distribution",
+      "SWRD=1 or another route whose root depth is reconstructible from already committed crop state"
+    ],
+    "full_option_coverage_claimed_by_F_WOF25": false
+  },
+  "forbidden": [
+    "commit nofd/atmin7 at day start before the parent transaction is accepted",
+    "advance crop once per Richards or Newton substep",
+    "store daily WOFOST rates as permanent per-column state",
+    "let rejected soil-water trials leak into crop-window aggregates",
+    "give crop code a second commit/rollback authority",
+    "require the generic kernel interval itself to be exactly one day"
+  ],
+  "gates": {
+    "WOF25_G06_explicit_evolution_event": "PASS_CONTRACT_ONLY",
+    "WOF25_G07_transaction_semantics": "PASS_CONTRACT_ONLY",
+    "WOF25_G08_soil_water_cadence": "PASS_CONTRACT_ONLY",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
