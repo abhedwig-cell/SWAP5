@@ -90,6 +90,7 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     tests/fmr/test_fmr19_process_restart.f90 -o "$OUT/test_fmr19.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr19.o" -o "$OUT/fmr19_process_restart"
@@ -109,10 +110,41 @@ for opt in 0 2; do
     'FMR19_REAL_HEADCALC_PROCESS_RESTART_TEST PASS'; do
     grep -Fq "$marker" "$OUT/output.txt"
   done
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
+    tests/fmr/test_fmr19_restart_contract_negative.f90 -o "$OUT/test_fmr19_negative.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr19_negative.o" -o "$OUT/fmr19_restart_contract_negative"
+  "$OUT/fmr19_restart_contract_negative" > "$OUT/negative_output.txt" 2>&1 || { cat "$OUT/negative_output.txt" >&2; exit 1; }
+  for marker in \
+    FMR19_NEGATIVE_PARAMETER_SET=PASS \
+    FMR19_NEGATIVE_MISSING_COLUMN=PASS \
+    FMR19_NEGATIVE_DUPLICATE_COLUMN=PASS \
+    FMR19_NEGATIVE_BUNDLE_SCHEMA=PASS \
+    FMR19_NEGATIVE_RECORD_SCHEMA=PASS \
+    FMR19_NEGATIVE_KERNEL_SCHEMA=PASS \
+    FMR19_NEGATIVE_PHYSICAL_CONTINUATION=PASS \
+    FMR19_NEGATIVE_RECONSTRUCTION_PROVENANCE=PASS \
+    FMR19_NEGATIVE_PARAMETER_REF=PASS \
+    FMR19_NEGATIVE_TEMPLATE_ID=PASS \
+    FMR19_NEGATIVE_PHYSICS_TOPOLOGY=PASS \
+    FMR19_NEGATIVE_VERTICAL_LAYOUT=PASS \
+    FMR19_NEGATIVE_STATE_LAYOUT=PASS \
+    FMR19_NEGATIVE_SOLVER_INTERFACE=PASS \
+    FMR19_NEGATIVE_OPTIONAL_STATE_LAYOUT=PASS \
+    FMR19_NEGATIVE_NUMERICAL_CONTINUATION_LAYOUT=PASS \
+    FMR19_NEGATIVE_BACKEND_COMPATIBILITY=PASS \
+    FMR19_NEGATIVE_INITIALIZED_TARGET=PASS \
+    FMR19_NEGATIVE_ATOMIC_PUBLICATION=PASS \
+    'FMR19_RESTART_CONTRACT_NEGATIVE_TEST PASS'; do
+    grep -Fq "$marker" "$OUT/negative_output.txt"
+  done
   echo "FMR19_O${opt}=PASS"
 done
 
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+cmp "$BUILD/o0/negative_output.txt" "$BUILD/o2/negative_output.txt"
 echo 'FMR19_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'FMR19_NEGATIVE_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
+cat "$BUILD/o0/negative_output.txt"
 echo 'FMR19_GATE PASS_EXECUTABLE_CANDIDATE'
