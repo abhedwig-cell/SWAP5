@@ -1,0 +1,26 @@
+name: F-KT10 transactional F-VQ30 replay
+
+on:
+  push:
+    branches:
+      - work/f-kt10-temporal-indicator-history-commit-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  transactional-fvq30-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT10 transactional frozen replay
+        run: bash tests/fkt/run_fkt10_transactional_fvq30_replay.sh
