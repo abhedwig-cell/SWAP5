@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R2B_ENDPOINT_CLUSTER_EXPONENT_DIAGNOSTIC",
+  "status": "DIAGNOSTIC_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "prerequisite": "E2C-R2 reduced R1 bracket failures from 196 to 28 but did not reach zero",
+  "purpose": "Characterize whether the 28 residual endpoint failures can be covered by a material-independent fixed endpoint-clustering exponent without changing broad-path segmentation, quadrature lane count, root iteration bound or acceptance thresholds.",
+  "materials": ["B12","O13"],
+  "reuse_exact_R2_failure_probe_set": true,
+  "fixed_endpoint_exponents": [8,12,16,24,32],
+  "unchanged_components": [
+    "R1 quarter-decade broad-path segmentation",
+    "eight Gauss-Legendre lanes per segment",
+    "nextafter(K(h_above),+infinity) q>K endpoint bracket",
+    "64 fixed bisection updates",
+    "all R2 probes and thresholds"
+  ],
+  "required_reports": [
+    "exact 28 R2 failure identities",
+    "h_above and h_below",
+    "reference q and K(h_above)",
+    "relative reference root gap to K(h_above)",
+    "first segment length",
+    "nearest first-segment lane distance from h_above for each exponent",
+    "whether each exponent restores a sign-changing bracket",
+    "fraction and count restored per exponent",
+    "smallest exponent that restores each failure if any"
+  ],
+  "decision_rule": {
+    "all_restored_by_one_fixed_exponent": "ENDPOINT_CLUSTER_EXPONENT_CAUSAL_ROUTE_SUPPORTED_READY_TO_FREEZE_R3_WITH_SMALLEST_COMMON_FIXED_EXPONENT",
+    "not_all_restored": "FIXED_EXPONENT_CLUSTERING_INSUFFICIENT_DO_NOT_OPEN_R3_AS_SIMPLE_EXPONENT_CHANGE"
+  },
+  "hard_guards": [
+    "This diagnostic cannot qualify any candidate.",
+    "R2 remains FAIL regardless of diagnostic outcome.",
+    "No exponent outside the frozen set may be introduced after seeing results in this diagnostic.",
+    "No lane count, broad-path segmentation, threshold or material-specific policy may change."
+  ]
+}
