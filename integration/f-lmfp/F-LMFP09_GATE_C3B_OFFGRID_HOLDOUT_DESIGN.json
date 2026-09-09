@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C3B_OFFGRID_ENDPOINT_PAIR_HOLDOUT",
+  "purpose": "Prevent a C3 pass from being interpreted as qualification when the deterministic decade anchors coincide with endpoint values in the C2 failure probes.",
+  "precommitted_before_C3_result": true,
+  "candidate_frozen_from_C3": "BASE33_PLUS_SIGNED_PRESSURE_HEAD_DECADES",
+  "thresholds": "IDENTICAL_TO_C2_PROVIDER_SELF_CHECK",
+  "no_new_knots_after_holdout_seen": true,
+  "no_material_specific_knots": true,
+  "no_pair_specific_knots": true,
+  "holdout_construction": {
+    "exclude_exact_anchor_heads": true,
+    "dry_upper_head_families_cm": [
+      -750000.0,
+      -316227.7660168379,
+      -177827.94100389228,
+      -56234.13251903491,
+      -31622.776601683792,
+      -17782.794100389227,
+      -5623.413251903491,
+      -3162.2776601683795,
+      -1778.2794100389228,
+      -562.341325190349
+    ],
+    "wet_lower_head_families_cm": [-316.22776601683796,-31.622776601683793,-3.1622776601683795,-0.31622776601683794,-0.03162277660168379,-0.0031622776601683794,0.0031622776601683794,0.03162277660168379,0.31622776601683794,3.1622776601683795,31.622776601683793],
+    "random_component": {
+      "enabled": true,
+      "seed": 531093003,
+      "sampling_coordinate": "uniform in asinh(h/0.01cm) for each endpoint, filtered to strong dry-to-wet contrasts",
+      "minimum_cases_per_material_length_class": 200
+    },
+    "materials": "at minimum the C2 failing synthetic classes reference_sand and very_fast; if passed, run unchanged candidate over the complete synthetic material set",
+    "half_face_lengths_cm": [5.0,10.0]
+  },
+  "required_checks": [
+    "same active-flux relative-error thresholds as C2",
+    "same strong-gradient p90 threshold as C2",
+    "same dormant scaled-absolute threshold as C2",
+    "zero sign mismatches",
+    "zero coverage failures inside declared envelope",
+    "exact equal-head identity retained",
+    "hydrostatic zero-flux identity retained",
+    "continuity refinement retained",
+    "report p50/p90/p99/max and worst-case endpoint pair",
+    "report table bytes and offline-oracle preparation count unchanged from frozen C3 candidate"
+  ],
+  "decision_rule": {
+    "if_C3_fails": "C3B_NOT_RUN; localize C3 first without changing this holdout design",
+    "if_C3_passes_and_C3B_fails": "ANCHOR_PASS_CLASSIFIED_AS_IN_SAMPLE_OR_INSUFFICIENT_GENERALIZATION; DO_NOT_PROCEED_TO_CATALOG",
+    "if_C3_and_C3B_pass": "PROCEED_TO_FULL_SYNTHETIC_MATRIX_THEN_CATALOG_ADMISSION_WITH_CANDIDATE_FROZEN"
+  },
+  "status": "DESIGN_PERSISTED_UNSEEN_HOLDOUT_NOT_YET_RUN"
+}
