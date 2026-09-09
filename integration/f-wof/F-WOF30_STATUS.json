@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF30",
+  "title": "Restricted Shared Immutable WOFOST Rate Parameter Bundle",
+  "branch": "work/f-wof30-rate-parameter-bundle",
+  "base": {
+    "commit": "55a823276a1869f15623d1d0694add4df54dec2e",
+    "status": "QUALIFIED_COMPACT_IMMUTABLE_WOFOST_RATE_TABLE_SUBSTRATE"
+  },
+  "status": "QUALIFIED_RESTRICTED_SHARED_IMMUTABLE_WOFOST_RATE_PARAMETER_BUNDLE",
+  "decision": "QUALIFIED_PARAMETER_BOUNDARY_READY_FOR_PREPARE_ASSIMILATION_PROVIDER",
+  "tested_candidate": "eb0d3c52e216c0310417f2e774ff7c4fe7a325a4",
+  "verification": {
+    "workflow": "F-WOF30 rate parameter bundle",
+    "run_id": 34304715699,
+    "job_id": 102318903292,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "16827a9cf83541accd0c5e659d59a0d8c13a8aa55bfcbed3993798ddc2da0cec",
+    "F_WOF29_rate_table_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_rate_parameters.f90"
+    ],
+    "dynamic_column_state_added": false,
+    "rate_equations_added": false,
+    "forcing_or_runtime_state_added": false,
+    "parser_or_file_IO_added": false
+  },
+  "qualified_contract": {
+    "bundle_type": "wofost_rate_parameter_bundle_t",
+    "bundle_storage": "private validated scalar DTO plus twelve private F-WOF29 compact table objects",
+    "post_construction_public_mutator": false,
+    "scalar_access": "value-copy semantic scalar view",
+    "table_access": "twelve semantic evaluation methods; internal tables are not exposed",
+    "intended_runtime_ownership": "shared immutable crop/template parameter object referenced by many columns"
+  },
+  "scalar_domain": {
+    "IDSL": "0 or 1 only",
+    "IDSL_1": "DLO and DLC each 0..24 and DLO>DLC",
+    "IDSL_0": "DLO/DLC inactive and canonicalized to zero in stored bundle",
+    "TSUMEA_TSUMAM": ">0 and <=10000",
+    "KDIF": ">0 and <=2",
+    "EFF": "0..10",
+    "CFRDM": ">0 and <=1",
+    "RELMF": "0..1",
+    "CVR_CVS_CVL": ">0 and <=1",
+    "CVO": "0..1; zero deliberately remains admissible until FO is evaluated",
+    "Q10": ">0 and <=5",
+    "RMR_RML_RMS_RMO": "0..1",
+    "PERDL": "0..3",
+    "TBASE": "-10..30",
+    "RGRLAI": "0..1",
+    "nonfinite_active_scalar": "rejected before unsafe arithmetic"
+  },
+  "table_routes": [
+    "DTSMTB", "AMAXTB", "TMPFTB", "TMNFTB", "RFSETB",
+    "FRTB", "FLTB", "FSTB", "FOTB", "RDRRTB", "RDRSTB", "SLATB"
+  ],
+  "explicit_exclusions": [
+    "SSA and SPA view-assembly parameters",
+    "SPAN and DVSEND structural-integrator parameters",
+    "KDIR scoped legacy orphan",
+    "TDWI initialization-only data",
+    "SW_POTRELMF potential-shadow control",
+    "forcing and accepted-window data",
+    "PGASS or any rate-equation workspace"
+  ],
+  "not_qualified": [
+    "prepare-assimilation PGASS equations",
+    "finalize-rate equations",
+    "CVO with nonzero evaluated FO cross-domain rule",
+    "partition conservation check",
+    "legacy parser-to-bundle adapter",
+    "accepted IQROT/IPTRA provenance runtime binding",
+    "end-to-end crop-day rate production"
+  ],
+  "next": "implement and qualify the pure read-only phase-A prepare-assimilation provider that produces actual PGASS from F-WOF28 state view, F-WOF30 parameters and explicit solar/weather/CO2 forcing",
+  "affected_invariants": [2,3,4,5,6,8,16,21,23,25,27,29,30]
+}
