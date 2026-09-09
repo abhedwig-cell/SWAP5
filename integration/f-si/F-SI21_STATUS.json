@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Richards Temporal Runtime Policy and Model-Owned Accuracy Seam",
+  "branch": "work/f-si21-richards-temporal-runtime-policy",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "status": "OWNER_POLICY_ARCHITECTURE_RESOLVED_GENERIC_FKT_CERTIFICATE_SEAM_REQUIRED",
+  "phase": "SOURCE_BOUNDARY_RESOLVED_AND_OWNER_HANDOFF_PERSISTED",
+  "decision_contract": "integration/f-si/F-SI21_DECISION_CONTRACT.json",
+  "gate_A_evidence": "integration/f-si/F-SI21_GATE_A_SOURCE_BOUNDARY_EVIDENCE.json",
+  "fkt_handoff": "integration/f-si/F-SI21_FKT_HANDOFF.json",
+  "source_bound_decision": {
+    "existing_outer_full_half_temporal_translation_admitted": false,
+    "raw_full_half_endpoint_defect_retained_as_diagnostic": true,
+    "model_owned_temporal_accuracy_is_preferred_architectural_direction": true,
+    "generic_runtime_certificate_consumer_required": true,
+    "richards_specific_logic_in_fkt_allowed": false,
+    "production_numeric_estimator_selected": false,
+    "production_numeric_limits_selected": false
+  },
+  "gate_A": "PASS_REQUIRES_FKT_GENERIC_CERTIFICATE_CONSUMPTION_SEAM_BEFORE_PRODUCTION_PATH",
+  "gate_B_candidate_estimator_characterization": "DEFERRED_UNTIL_GENERIC_CERTIFICATE_SEAM_CONTRACT_IS_AVAILABLE_OR_CAN_BE MOCKED WITHOUT OWNER VIOLATION",
+  "state": {
+    "implemented": false,
+    "persisted": true,
+    "source_audit_completed": true,
+    "architecture_decision_completed": true,
+    "production_source_modified": false,
+    "tested": false,
+    "production_qualified": false
+  },
+  "holds": {
+    "F_SI20_owner_finalization": "BLOCKED",
+    "F_GC02_release": "NOT_ALLOWED",
+    "F_PE_reference_temporal_consumption": "NOT_ALLOWED_FOR_NEW_RICHARDS_GRADED_PROFILE",
+    "mass_gate_relaxation": "NOT_ALLOWED",
+    "retry_tuning": "NOT_ALLOWED",
+    "temporal_tolerance_selection": "NOT_ALLOWED"
+  },
+  "next_action": "Start F-KT09 from this exact F-SI21 handoff lineage. Implement and qualify only the generic transaction capability for attempt-local model-owned temporal certificates, preserving existing behavior as a separate mode. After that seam is stable, return to F-SI for a bounded-cost Richards estimator candidate and independent F-VQ qualification."
+}
