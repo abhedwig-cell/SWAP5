@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C5_MIXED_STATE_FACE_REPRESENTATION",
+  "qualification": false,
+  "trigger": "Contingency design persisted before C4 density results are complete. C3b showed severe off-grid dry-to-wet tail errors in head-by-head bilinear interpolation while the equal-flux interface construction itself remained sound.",
+  "scientific_donor": {
+    "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal 10:760-766",
+    "doi": "10.2136/vzj2010.0085",
+    "relevant_idea": "Use water content as table state in unsaturated cells and matric head in saturated cells, with precomputed steady-Darcian flux tables. This is a representation idea only; LayeredMFP temporal update semantics remain separate from RossFast."
+  },
+  "hypothesis": "The extreme C3b errors may be caused primarily by poor head-space interpolation geometry across many decades of suction, not by the existence of a two-endpoint steady-flux response itself. A bounded mixed-state coordinate may regularize the unsaturated dry tail without brute-force global head-axis density.",
+  "precommitted_candidate_family": {
+    "unsaturated_endpoint_coordinate": "effective saturation S_e=(theta-theta_r)/(theta_s-theta_r), evaluated from the shared SWAP hydraulic material; theta itself remains an equivalent candidate only if material-local scaling is preferable",
+    "saturated_endpoint_coordinate": "matric/pressure head h",
+    "regime_pairs": ["UU","US","SU","SS"],
+    "hydraulic_physics": "same direct steady-Darcian face oracle and same SWAP constitutive functions as the reference; no solver-specific hydraulic law",
+    "representation_candidates": [
+      "direct realized steady-Darcian flux q(v_upper,v_lower)",
+      "constrained residual/correction around the existing MFP face closure using the same mixed endpoint coordinates"
+    ],
+    "table_ownership": "immutable shared material/geometry-class data",
+    "runtime_lookup_target": "bounded O(1) interpolation per face plus any separately bounded heterogeneous equal-flux scalar solve",
+    "pair_specific_tables": false,
+    "validation_case_specific_knots": false
+  },
+  "physical_identities_to_preserve": [
+    "same-material equal-head gravity-flow identity",
+    "hydrostatic zero-flux identity",
+    "continuous sign change through zero flux",
+    "single realized face flux used with opposite signs in adjacent balances",
+    "explicit fail-closed behavior outside admitted coordinate/state envelope"
+  ],
+  "methodology": {
+    "C3b_use": "revealed C3b probes may be used only for representation characterization and comparison with the failed head-by-head family",
+    "qualification_holdout": "any promoted C5 candidate requires a new independently precommitted C5b off-grid holdout before qualification",
+    "thresholds": "reuse existing face-error, sign, continuity and identity thresholds; do not relax after seeing results",
+    "C4_role": "C4 must still finish because it determines whether brute-force head-axis density is viable and provides a cost/convergence baseline"
+  },
+  "cross_track_boundary": {
+    "shared_with_RossFast": "steady-Darcian face-reference science and possibly immutable path-table data structures may be shared behind a solver-neutral hydraulic-face provider",
+    "not_shared": "RossFast tridiagonal time integration and LayeredMFP conservative reduced-order layer update remain distinct solver algorithms",
+    "no_experimental_branch_dependency": true,
+    "no_copy_of_Ross_or_LMFP_hydraulic_physics": true
+  },
+  "decision_rules": {
+    "if_C4_converges_rapidly_at_bounded_cost": "C5 remains an alternative representation study, not automatically preferred",
+    "if_C4_converges_slowly_or_requires_excessive_quadratic_memory": "prioritize C5 characterization over further global head-axis density escalation",
+    "if_C5_also_has_severe_offgrid_tail_error": "stop generic 2-D interpolation escalation and investigate a local steady-Darcian face solve or a narrower scientifically defined LayeredMFP envelope"
+  },
+  "production_implementation": false,
+  "status": "ALTERNATIVE_REPRESENTATION_DESIGN_PERSISTED_BEFORE_C4_CLOSEOUT"
+}
