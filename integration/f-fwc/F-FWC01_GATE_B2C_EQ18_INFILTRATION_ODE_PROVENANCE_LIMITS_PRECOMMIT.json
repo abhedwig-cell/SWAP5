@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_EQ18_INFILTRATION_ODE_PROVENANCE_AND_LIMITS",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "implementation_provenance": "PRIMARY_SOURCE_ALGEBRAIC_RECONCILIATION_2008_EQ6_PLUS_2015_EQ17_GRADIENT_AND_STATED_EQ18_DIFFERENCE",
+  "primary_sources": [
+    {"doi":"10.1029/2008WR006815","role":"Talbot-Ogden equation 6 wetting-front ODE structure"},
+    {"doi":"10.1029/2008WR007455","role":"2008 correction changes equation 7, not equation 6"},
+    {"doi":"10.1002/2015WR017126","role":"equation 17 conductivity finite difference, Geff/hp infiltration gradient, equation 18 difference from 2008 equation 6, Green-Ampt and infinite-depth limits"}
+  ],
+  "reconciled_equation": {
+    "symbolic": "dz_j/dt = [ K(theta_d)*(G_eff+h_p)/z_j + K(theta_d)-K(theta_i) ] / [theta_d-theta_i]",
+    "sign_conventions": {
+      "z_j": "positive downward from land surface",
+      "G_eff": "positive capillary drive",
+      "h_p": "nonnegative ponded-water depth",
+      "K": "positive downward conductivity contribution"
+    }
+  },
+  "source_bound_reasoning": [
+    "Talbot-Ogden 2008 equation 6 has the Green-Ampt-form capillary term plus K(theta_d), divided by theta_d-theta_i.",
+    "Ogden et al. 2015 state equation 18 is identical to 2008 equation 6 except for subtraction of K(theta_i) from K(theta_d).",
+    "Ogden et al. 2015 replace the infiltration hydraulic-gradient capillary length by positive G_eff plus surface ponding h_p.",
+    "Ogden et al. 2015 state the infinite-depth limit is the finite-difference approximation of dK/dtheta.",
+    "Ogden et al. 2015 state the one-bin deep well-drained limit is Green-Ampt with G_eff=H_c, theta_d=theta_e, K(theta_i)=0 and z=F/DeltaTheta."
+  ],
+  "executable_checks": [
+    "one-bin Green-Ampt infiltration-rate identity for positive H_c and optional h_p",
+    "z_j to large-depth limit approaches [K(theta_d)-K(theta_i)]/[theta_d-theta_i]",
+    "zero capillary and zero ponding reduces exactly to the conductivity finite-difference velocity",
+    "K(theta_d)=K(theta_i) leaves only the capillary/ponding contribution",
+    "dimensions are L/T for every tested finite input",
+    "nonpositive theta_d-theta_i or nonpositive z_j fails closed"
+  ],
+  "fixtures": {
+    "synthetic_cases": 256,
+    "theta_difference_range": [1e-4,0.8],
+    "K_i_range_cm_per_day": [0.0,100.0],
+    "K_increment_range_cm_per_day": [0.0,500.0],
+    "G_eff_range_cm": [0.0,500.0],
+    "h_p_range_cm": [0.0,20.0],
+    "z_range_cm": [1e-4,1000000.0]
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_SOURCE_RECONCILED_EQ18_ALGEBRA_READY_FOR_RESTRICTED_EXISTING_FRONT_ADVANCE_MASS_GATE",
+    "fail": "EQ18_SOURCE_RECONCILIATION_OR_LIMIT_IDENTITY_FAILED_STOP_INFILTRATION_IMPLEMENTATION"
+  },
+  "hard_nonclaims": [
+    "No dry-bin front creation qualification.",
+    "No rainfall/snowmelt allocation or ponding lifecycle qualification.",
+    "No capillary-drive G_eff closure implementation qualification.",
+    "No front merge, falling-slug conversion or groundwater interaction qualification.",
+    "No hydraulic accuracy vs FullRichards."
+  ],
+  "hard_guards": [
+    "Do not infer dry-bin initialization from this ODE gate.",
+    "Do not replace G_eff with an arbitrary suction parameter in later production code without a separate closure contract.",
+    "Do not change sign conventions silently.",
+    "Mass conservation remains a separate finite-volume ownership requirement even if the ODE algebra passes."
+  ],
+  "relevant_invariants": [13,20,23,25,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
