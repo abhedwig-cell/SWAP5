@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted Standard-WOFOST One-Day Rate Provider Boundary",
+  "base_commit": "428ad482d6b449e3e71d0c42bcc8521a98b9f2fe",
+  "scope": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen": false,
+    "potential_shadow": false,
+    "crop_event_days": 1.0
+  },
+  "provider_role": "purely evaluate source-bound one-day WOFOST rates from immutable parameters, explicit forcing/context, a read-only crop state view and accepted water-process aggregates; never mutate crop state",
+  "required_types": {
+    "immutable_parameter_set": {
+      "ownership": "shared immutable parameter object referenced by crop/template identity, not duplicated per column",
+      "contains": [
+        "IDSL,DLO,DLC,TSUMEA,TSUMAM,DTSMTB",
+        "KDIF,EFF,CFRDM,AMAXTB,TMPFTB,TMNFTB,RELMF",
+        "CVR,CVS,CVL,CVO,Q10,RMR,RML,RMS,RMO,RFSETB",
+        "FRTB,FLTB,FSTB,FOTB",
+        "PERDL,RDRRTB,RDRSTB,TBASE,RGRLAI,SLATB"
+      ],
+      "does_not_contain": [
+        "dynamic crop state",
+        "rate workspace",
+        "calendar state",
+        "weather cursor",
+        "file names or parser metadata",
+        "KDIR",
+        "SPAN or DVSEND because F-WOF26 owns those structural rules"
+      ]
+    },
+    "state_view": {
+      "name": "wofost_one_day_rate_state_view_t",
+      "fields": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+      "source": "assembled read-only from wofost_crop_owner_state_t plus immutable SSA/SPA canopy coefficients",
+      "mutation_allowed": false,
+      "critical_rule": "the rate provider must not read owner%biomass internals directly; the owner/view layer supplies the semantic scalars"
+    },
+    "prepare_forcing": {
+      "name": "wofost_prepare_assimilation_input_t",
+      "fields": ["TAVD", "RAD", "DAYL", "SINLD", "COSLD", "DIFPP", "DSINBE", "FCO2EFF", "FCO2AMAX", "TMNR"]
+    },
+    "prepared_assimilation": {
+      "name": "wofost_prepared_assimilation_t",
+      "fields": ["actual_pgass"],
+      "persistence": "event-local or worker scratch only; never committed column state"
+    },
+    "finalize_forcing": {
+      "name": "wofost_finalize_rate_input_t",
+      "fields": ["TAV", "DAYLP_if_IDSL1", "accepted_IQROT_WINDOW", "accepted_IPTRA_WINDOW", "prepared_actual_pgass"]
+    },
+    "output": {
+      "type": "wofost_one_day_rate_packet_t",
+      "current_owner": "src/crop/mod_wofost_one_day_structural_evolution.f90",
+      "consumer": "F-WOF26 structural integrator",
+      "persistence": "event-local only"
+    }
+  },
+  "procedure_contracts": {
+    "assemble_state_view": {
+      "semantic_signature": "owner + SSA + SPA -> read-only DVS/WRT/WST/WSO/WLV/LAI/LAIEXP view",
+      "owner": "crop owner/view layer, not rate physics",
+      "fail_closed": [
+        "invalid owner",
+        "inactive crop when active view requested",
+        "nonfinite or negative SSA/SPA",
+        "nonfinite derived scalar"
+      ]
+    },
+    "prepare_assimilation": {
+      "semantic_signature": "immutable parameters + state view + explicit prepare forcing -> prepared actual PGASS",
+      "side_effects": "none",
+      "time_identity": "no date/day-number input; solar geometry is already explicit"
+    },
+    "finalize_rates": {
+      "semantic_signature": "immutable parameters + same pre-event state view + finalize forcing/accepted aggregates + prepared PGASS -> one-day rate packet",
+      "side_effects": "none",
+      "critical_lineage_precondition": "accepted IQROT/IPTRA must already represent the accepted crop window; the rate evaluator cannot reconstruct or certify F-KT provenance from scalar values alone"
+    }
+  },
+  "same_state_view_rule": {
+    "required": true,
+    "reason": "B1.10 computes PGASS and all same-day growth/death rates from the pre-integration crop state; F-WOF26 mutates state only after the rate packet is complete",
+    "forbidden": "reassemble the finalize state view from a partially updated candidate"
+  },
+  "reference_GLIAEXP_rule": {
+    "condition": "pre-event LAIEXP < 6",
+    "provider": "recompute GLAIEXP and set lai_exponential_rate_recomputed=true",
+    "post_threshold": "set lai_exponential_rate_recomputed=false; F-WOF26 consumes the stored B1.10 compatibility carryover",
+    "provider_does_not_need_numeric_carryover": true
+  },
+  "dependency_direction": [
+    "crop owner/view -> semantic rate state view",
+    "immutable crop parameter store -> rate provider",
+    "runtime accepted-process aggregation -> finalize input",
+    "rate provider -> event-local wofost_one_day_rate_packet_t",
+    "F-WOF26 structural integrator consumes packet and owns mutation"
+  ],
+  "forbidden_dependencies": [
+    "MOD_meteo or ASTRO",
+    "atmosphere_interface globals",
+    "plant_interface globals",
+    "MOD_integral",
+    "variables/daynr/t1900",
+    "file/parser routines",
+    "Richards or MODFLOW internals",
+    "persistent WOFOST_rates workspace",
+    "direct mutation of wofost_crop_owner_state_t"
+  ],
+  "production_readiness_findings": {
+    "parameter_boundary": "READY",
+    "phase_boundary": "READY",
+    "consumer_packet_mapping": "READY",
+    "read_only_state_view_contract": "READY_AS_CONTRACT_NOT_IMPLEMENTED",
+    "rate_provider": "NOT_IMPLEMENTED",
+    "recommended_smallest_next_production_seam": "implement and qualify semantic read-only rate-state view assembly before broad rate equations"
+  },
+  "affected_invariants": [2,3,4,5,6,7,9,16,21,23,27,28,29,30]
+}
