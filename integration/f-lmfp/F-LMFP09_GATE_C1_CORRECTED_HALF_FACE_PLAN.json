@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C1_COMPOSED_CORRECTED_HALF_FACE_INTERFACE_PLAN",
+  "status": "PERSISTED_BEFORE_TESTING",
+  "candidate": "COMPOSED_SATURATION_ALIGNED_HALF_FACE_EQUAL_FLUX",
+  "design": {
+    "upper_half": "qualified saturation-aligned homogeneous Darcian-ratio provider for upper material and upper half-face length",
+    "lower_half": "qualified saturation-aligned homogeneous Darcian-ratio provider for lower material and lower half-face length",
+    "interface_unknown": "single continuous pressure head h_interface",
+    "root_equation": "q_upper(h_upper,h_interface) = q_lower(h_interface,h_lower)",
+    "realized_flux": "one scalar face flux returned after root acceptance and used once by both adjacent cells",
+    "pair_specific_lookup_table": false,
+    "runtime_oracle_calls": 0,
+    "root_scratch": "worker-local only",
+    "root_iteration_cap": 60,
+    "coverage": "interface search is restricted to the intersection of both half-face head and gradient lookup envelopes; no bracket outside coverage is allowed",
+    "failure_semantics": "explicit fail-closed when the coverage intersection is empty or no equal-flux root is bracketed inside qualified coverage"
+  },
+  "geometry": {
+    "half_face_length_pairs_cm": [[5.0,5.0],[10.0,10.0],[5.0,10.0],[10.0,5.0]],
+    "new_half_face_length_requiring_provider_self_check_cm": 5.0,
+    "already_homogeneous_tested_length_cm": 10.0,
+    "pair_table_cardinality": 0,
+    "representation_cardinality_rule": "material x distinct half-face geometry class, shared immutable data; never logical column x face"
+  },
+  "pair_selection": {
+    "uses_validation_error": false,
+    "synthetic_orientations": [
+      ["reference_sand","reference_clay"],
+      ["reference_clay","reference_sand"],
+      ["very_fast","slow_heavy"],
+      ["slow_heavy","very_fast"]
+    ],
+    "Staringreeks_2018_orientations": [
+      ["B06","B14"], ["B14","B06"],
+      ["B02","O13"], ["O13","B02"],
+      ["B06","B12"], ["B12","B06"],
+      ["O05","O14"], ["O14","O05"]
+    ],
+    "source_bound_rationale": "pairs are selected from catalog parameter extrema plus the pre-existing difficult B12 class, not from Gate-C validation results"
+  },
+  "head_gradient_matrix": {
+    "upper_head_anchors_cm": [-100000.0,-1000.0,-100.0,-10.0,-1.0,0.0,10.0],
+    "total_gradient_targets": [-20.0,-5.0,-1.0,0.0,0.5,1.0,2.0,5.0,20.0],
+    "near_saturation_interface_crossing": "explicit hydrostatic h_interface=0 controls and nonzero perturbations around them",
+    "directions": "upward and downward",
+    "boundary_probes": "separate deliberate coverage-edge cases must fail closed rather than being counted as interpolation failures"
+  },
+  "acceptance_predeclared": {
+    "provider_self_check": "same unchanged B2 homogeneous identities, continuity, fail-closed and face-error thresholds",
+    "covered_interface_candidate_failures": 0,
+    "active_flux_sign_mismatches": 0,
+    "active_face_rel_error_p90_max": 0.02,
+    "active_face_rel_error_p99_max": 0.10,
+    "active_face_rel_error_maximum_max": 0.30,
+    "dormant_abs_error_over_ks_scale_max": 1e-7,
+    "equal_flux_scaled_residual_max": 1e-9,
+    "accepted_root_iterations_max": 60,
+    "hydrostatic_abs_flux_max": 2e-10,
+    "continuity_final_small_over_large_max": 0.35,
+    "homogeneous_reduction": "reported separately for symmetric 5+5 and 10+10 same-material controls; no silent same-material shortcut in this test",
+    "interface_head_error": "report median, p90, p99 and maximum scaled and absolute; no independent head threshold is introduced because the conserved interface quantity is the single face flux",
+    "response_tangent": "finite-difference behavior and knot/root derivative changes must be reported; production tangent admission remains false"
+  },
+  "hard_rules": {
+    "threshold_relaxation_after_results": false,
+    "silent_extrapolation": false,
+    "silent_solver_switch": false,
+    "mass_conservation": "structurally compatible because only one accepted face flux exists; transient mass must still be rerun in Gate E",
+    "production_code_change": false,
+    "production_solver_admission": false,
+    "groundwater_admission": false
+  },
+  "architecture_invariants_checked": [1,3,4,5,6,7,8,9,12,13,14,16,20,21,22,23,24,25,26,27,29,30]
+}
