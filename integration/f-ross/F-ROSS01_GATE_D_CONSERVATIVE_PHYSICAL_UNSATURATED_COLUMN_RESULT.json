@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "D_CONSERVATIVE_PHYSICAL_UNSATURATED_C1R_COLUMN",
+  "status": "QUALIFIED",
+  "production_implementation": false,
+  "workflow_run": 34361029949,
+  "head": "c2bf7ad46652f38718a32262e935841c0dfb6a8e",
+  "contract": "F-ROSS01_GATE_D_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_CONTRACT.json",
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "material_pass_count": 6,
+  "material_count": 6,
+  "trials_per_material": 162,
+  "trial_count": 972,
+  "trial_error_count": 0,
+  "case_axes": {
+    "cell_counts": [4, 16, 64],
+    "sigma_values": [0.0, 0.5, 1.0],
+    "dt_days": [1e-05, 0.0001],
+    "profile_families": ["wet_gradient", "mid_gradient", "dry_gradient"],
+    "source_sink_patterns": ["zero", "distributed_root_sink", "mixed_local_source_and_sink"]
+  },
+  "observed_global_maxima": {
+    "max_abs_global_mass_residual_cm": 1.2769021679858578e-19,
+    "max_abs_cell_balance_residual_cm": 1.6263032587282567e-19,
+    "max_abs_internal_flux_cancellation_residual_cm": 1.0714966782766899e-19,
+    "max_tridiagonal_residual_theta": 6.776263578034403e-21,
+    "max_abs_delta_theta": 5.792196621968248e-05
+  },
+  "hard_thresholds": {
+    "maximum_abs_global_mass_residual_cm": 1e-12,
+    "maximum_abs_cell_balance_residual_cm": 1e-12,
+    "maximum_tridiagonal_residual_theta": 1e-12
+  },
+  "domain_and_noninterference": {
+    "candidate_theta_domain_failure_count": 0,
+    "candidate_head_C1R_envelope_failure_count": 0,
+    "candidate_table_cell_change_count_diagnostic": 0,
+    "nonfinite_count": 0,
+    "base_state_bitwise_unchanged_all": true,
+    "shared_table_bitwise_unchanged_all": true,
+    "internal_face_values_computed_once_and_shared_by_adjacent_ledgers_all": true
+  },
+  "cost": {
+    "matrix_factorizations_per_trial": 1,
+    "normal_backsolves_per_trial": 1,
+    "global_nonlinear_iterations": 0,
+    "retry_count": 0,
+    "branch_or_fallback_count": 0,
+    "runtime_shape": "O(N) qualified C1R face lookups/derivatives plus one O(N) tridiagonal factorization/backsolve"
+  },
+  "physical_content_qualified": {
+    "storage": "unimodal MvG volumetric water content theta(h) and exact storage increment dz*Delta theta",
+    "internal_flux": "qualified C1R N241 real hydraulic face flux",
+    "face_state_derivative": "qualified analytic dq/dh chained through analytic MvG dh/dtheta",
+    "sources_and_sinks": "distributed terms in physical flux units included exactly once in each cell and global ledger",
+    "boundaries": "prescribed top and bottom Darcy fluxes included exactly once",
+    "trial_state": "candidate theta and inverse-MvG head produced without a second hydraulic trajectory"
+  },
+  "interpretation": "Gate D demonstrates a conservative unsaturated physical-column trial using real C1R hydraulics and MvG storage rather than the analytic linear Gate-A fixture. Mass closure is structural because the same realized linearized internal face flux is shared by adjacent finite-volume ledgers. This is the intended property and no residual correction is applied.",
+  "explicit_nonclaims": [
+    "The small tested Delta theta values do not qualify timestep accuracy, timestep acceptability policy or optimal sigma.",
+    "The source/sink fixtures exercise conservation and state coupling, not crop root-uptake or other process-physics fidelity.",
+    "No saturated cell or saturated-unsaturated transition is qualified.",
+    "No heterogeneous face is qualified.",
+    "Only prescribed-flux boundary terms are exercised; production bottom-boundary semantics are not admitted.",
+    "Groundwater, MODFLOW coupling, runtime, MultiSWAP and FullRichards equivalence remain unqualified.",
+    "Class-B H_ENPR and KSATEXM remain outside scope."
+  ],
+  "decision": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
+  "next_gate": "F_TIMESTEP",
+  "relevant_invariants": [3,5,7,9,13,14,15,20,23,25,26,30]
+}
