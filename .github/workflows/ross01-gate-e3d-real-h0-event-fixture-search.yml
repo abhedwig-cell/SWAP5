@@ -1,0 +1,44 @@
+name: F-ROSS01 Gate E3D Real H0 Event Fixture Search
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'experiments/ross/run_ross01_gate_e3d_real_h0_event_fixture_search.py'
+      - '.github/workflows/ross01-gate-e3d-real-h0-event-fixture-search.yml'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute bounded real h0 event fixture search
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3d-search"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3d_real_h0_event_fixture_search.py \
+            "$out/F-ROSS01_GATE_E3D_SEARCH_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3D_SEARCH_STDOUT.txt"
+      - name: Assert diagnostic semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3d-search/F-ROSS01_GATE_E3D_SEARCH_RESULT.json'))
+          assert r['qualification_use'] is False
+          assert r['production_implementation'] is False
+          assert r['search_steps'] == 16
+          assert r['validation_reference_steps'] == 64
+          assert r['validation_candidate_steps'] == 16
+          PY
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3d-real-h0-event-fixture-search
+          path: ross01-gate-e3d-search/
