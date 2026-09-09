@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_R1_HIGH_PRECISION_EQ18_NUMERICAL_REPRESENTATION_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisite": "B2C failed because its frozen identity oracle mixed rounded endpoint semantics with nominal pre-rounding increments",
+  "physical_equation_unchanged": "dz_j/dt = [K(theta_d)*(G_eff+h_p)/z_j + K(theta_d)-K(theta_i)]/[theta_d-theta_i]",
+  "purpose": "Separate source-algebra numerical evaluation error from synthetic endpoint-construction error before any infiltration-front implementation.",
+  "oracle": {
+    "precision_decimal_digits": 80,
+    "endpoint_semantics": "Decimal.from_float of the exact binary64 values theta_i, theta_d, K_i, K_d, G_eff, h_p and z, followed by the source Eq18 algebra at 80-digit precision",
+    "reason": "This tests whether binary64 evaluation represents the same algebra for the actual values supplied to the kernel, without treating pre-rounding synthetic increments as if they were the same data."
+  },
+  "representations": [
+    {
+      "id": "DIRECT_ENDPOINT_EQ18",
+      "formula": "(K_d*(G_eff+h_p)/z + K_d-K_i)/(theta_d-theta_i)",
+      "persistent_extra_state": "none"
+    },
+    {
+      "id": "PRECOMPUTED_BINARY64_DELTAS_EQ18",
+      "formula": "(K_d*(G_eff+h_p)/z + delta_K)/delta_theta",
+      "delta_theta": "binary64 theta_d-theta_i computed once from the same endpoints",
+      "delta_K": "binary64 K_d-K_i computed once from the same endpoints",
+      "architectural_role": "optional immutable shared parameter cache, not dynamic state"
+    }
+  ],
+  "fixtures": {
+    "random_cases": 4096,
+    "seed_family": "F-FWC01-B2C-R1-ENDPOINT-SEMANTICS",
+    "theta_difference_range": [1e-8,0.8],
+    "K_i_range_cm_per_day": [0.0,1000.0],
+    "nominal_K_increment_range_cm_per_day": [1e-10,1000.0],
+    "G_eff_range_cm": [0.0,1000.0],
+    "h_p_range_cm": [0.0,50.0],
+    "z_range_cm": [1e-8,1e8],
+    "include_exact_green_ampt_cases": true,
+    "include_zero_capillary_and_equal_K_cases": true
+  },
+  "frozen_source_algebra_metric": {
+    "normalized_forward_error": "abs(v_binary64-v_decimal80)/max(1,abs(v_decimal80))",
+    "maximum_allowed": 1.4210854715202004e-14,
+    "interpretation": "64*binary64_epsilon; this is an algebra-evaluation criterion, not a hydraulic-accuracy tolerance"
+  },
+  "required_reports": [
+    "max and p99 normalized forward error for both representations",
+    "case counts exceeding 64*epsilon",
+    "max relative mismatch between nominal generated delta_theta and endpoint-derived delta_theta",
+    "max relative mismatch between nominal generated delta_K and endpoint-derived delta_K",
+    "Green-Ampt one-bin identity evaluated in Decimal80",
+    "zero-capillary conductivity finite-difference identity in Decimal80",
+    "whether precomputed deltas change any source value relative to the same endpoint semantics"
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_EQ18_BINARY64_ENDPOINT_SEMANTICS_READY_FOR_RESTRICTED_EXISTING_FRONT_ADVANCE_MASS_GATE",
+    "fail": "EQ18_BINARY64_REPRESENTATION_NOT_QUALIFIED_NUMERICAL_POLICY_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "B2C remains FAIL and is not rewritten.",
+    "No physical equation term, sign convention or source interpretation may change in R1.",
+    "Nominal pre-rounding increment mismatch is diagnostic and may not be silently counted as source-algebra error.",
+    "Precomputed deltas, if retained later, are immutable shared parameter data and not per-column dynamic state.",
+    "No dry-bin creation, rainfall allocation, G_eff closure, merge or groundwater interaction is qualified here."
+  ],
+  "relevant_invariants": [3,4,6,13,20,23,25,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
