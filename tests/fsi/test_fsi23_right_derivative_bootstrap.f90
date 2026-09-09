@@ -79,7 +79,7 @@ contains
     case('BOTTOM')
       hbot=h0+stimulus
       inode=numnod
-      static_residual(numnod)=k0*(h0-hbot)/disnod(numnod+1)
+      static_residual(numnod)=k0*(h0-hbot)/(0.5_real64*parameters%dz(numnod))
     case('TOP')
       qtop=-k0*(1.0_real64+stimulus)
       inode=1
