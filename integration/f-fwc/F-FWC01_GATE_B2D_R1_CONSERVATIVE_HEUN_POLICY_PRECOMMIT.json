@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2D_R1_CONSERVATIVE_HEUN_RK2_NUMERICAL_POLICY_QUALIFICATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "physics_changed_from_B2D": false,
+  "upstream": [
+    "B2D explicit Euler preserved as FAIL on hydrologic trajectory accuracy",
+    "B2D restricted existing-front mass and transaction semantics strongly conserved",
+    "B2C-R2 grouped delta-K Eq18 representation qualified"
+  ],
+  "candidate": {
+    "numerical_policy": "EXPLICIT_HEUN_RK2",
+    "source_ode": "dz/dt=A/z+B, identical to B2D",
+    "stage_1": "v0=f(z_n)",
+    "predictor": "z_p=z_n+dt*v0",
+    "stage_2": "v1=f(z_p)",
+    "accepted_update": "z_n1=z_n+0.5*dt*(v0+v1)",
+    "water_flux_ledger": "F_bar=(theta_d-theta_i)*0.5*(v0+v1), so accepted storage change equals dt*F_bar by construction",
+    "predictor_state_owner": "worker scratch",
+    "persistent_extra_state_bytes": 0,
+    "boundary_policy": "predictor or final front outside [0,100] cm rejects trial before commit; no clipping"
+  },
+  "frozen_case_reuse": {
+    "exactly_reuse_B2D_materials": true,
+    "materials": ["B01","B12","O13","O14"],
+    "theta_bin_counts": [16,64,200],
+    "bin_fractions": [0.125,0.5,0.875,1.0],
+    "initial_front_depth_cm": [1.0,10.0,50.0],
+    "G_eff_cm": [1.0,10.0,100.0],
+    "ponding_head_cm": [0.0,5.0],
+    "candidate_step_counts": [1,2,4,8,16],
+    "horizon_policy": "identical B2D T=min(0.01 day,0.1*z0/v0)",
+    "independent_reference": "identical B2D analytic integral and deterministic inversion"
+  },
+  "frozen_acceptance": {
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-11,
+    "finest_relative_front_displacement_error": 0.001,
+    "finest_abs_equivalent_water_depth_error_cm": 0.0001,
+    "meaningful_convergence_error_floor_relative": 0.0001,
+    "for_cases_with_e8_at_or_above_floor_e16_over_e8_max": 0.5,
+    "nonfinite_count": 0,
+    "negative_velocity_count": 0,
+    "accepted_front_boundary_violation_count": 0,
+    "rejected_trial_committed_state_mutation_count": 0,
+    "rejected_trial_committed_ledger_mutation_count": 0,
+    "mass_repair_count": 0,
+    "clipping_repair_count": 0
+  },
+  "why_convergence_floor_is_hydrologic_not_tuning": "B2D exposed nonworsening flags at numerical error floors even where absolute hydrologic errors were already negligible. R1 therefore tests refinement rate only when the 8-step relative front error is at least 1e-4; below that level the frozen absolute hydrologic acceptance metrics remain authoritative.",
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_HEUN_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE",
+    "fail": "HEUN_EXISTING_INFILTRATION_FRONT_POLICY_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "Do not change Eq18 physics, G_eff inputs, cases, horizon or hydrologic tolerances from B2D.",
+    "Do not erase or overwrite the Euler FAIL.",
+    "No predictor clipping or flux repair.",
+    "Predictor and stage values are worker scratch, not persistent state.",
+    "No dry-bin creation, rainfall allocation, front collision or merge is admitted here.",
+    "No production runtime or MultiSWAP admission follows."
+  ],
+  "relevant_invariants": [3,4,5,7,8,9,13,16,20,23,24,25,26,27,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
