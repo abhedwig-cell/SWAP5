@@ -37,12 +37,12 @@ git update-ref "$AUTH_REF" FETCH_HEAD
 [[ "$(git rev-parse "$AUTH_REF:$AUTH_DRIVER")" == "$AUTH_DRIVER_BLOB" ]] || fail 'VQ34 authority driver drift'
 echo 'FCI21_VQ34_AUTHORITY_LOCK=PASS'
 
-# Restore the exact historical qualification runner and its legacy regression
-# helpers into the CI checkout. Production src is never copied from authority.
+# Restore the exact historical qualification runner, legacy regression helpers,
+# and their contract metadata into the CI checkout. Production src is never copied
+# from authority.
 OVERLAY_SINGLE=(
   integration/f-vq/F-VQ34_QUALIFICATION_PLAN.json
   integration/f-vq/F-VQ32_CLOSEOUT.json
-  integration/f-kt/F-KT10_CLOSEOUT.json
   tests/fvq/run_fvq34_remediated_head_budget_certificate.sh
   tests/fvq/test_fvq34_remediated_head_budget_certificate.f90
 )
@@ -54,15 +54,15 @@ done
 while IFS= read -r path; do
   mkdir -p "$(dirname "$path")"
   git show "$AUTH_REF:$path" > "$path"
-done < <(git ls-tree -r --name-only "$AUTH_REF" -- tests/transaction tests/fkt tools/fkt)
+done < <(git ls-tree -r --name-only "$AUTH_REF" -- tests/transaction tests/fkt tools/fkt integration/f-kt)
 
 chmod +x tests/fvq/run_fvq34_remediated_head_budget_certificate.sh
 find tests/transaction tests/fkt -maxdepth 1 -type f -name '*.sh' -exec chmod +x {} +
 
 git config user.name 'F-CI21 qualification overlay'
 git config user.email 'f-ci21-overlay@invalid.local'
-git add "${OVERLAY_SINGLE[@]}" tests/transaction tests/fkt tools/fkt
-git commit --quiet --no-gpg-sign -m 'ci-only: overlay exact VQ34 qualification helpers'
+git add "${OVERLAY_SINGLE[@]}" tests/transaction tests/fkt tools/fkt integration/f-kt
+git commit --quiet --no-gpg-sign -m 'ci-only: overlay exact VQ34 qualification helpers and FKT contracts'
 
 git diff --quiet "$SOURCE_COMMIT" HEAD -- src || fail 'VQ34 test overlay changed production src'
 [[ "$(git rev-parse HEAD:$AUTH_RUNNER)" == "$AUTH_RUNNER_BLOB" ]] || fail 'overlaid VQ34 runner mismatch'
