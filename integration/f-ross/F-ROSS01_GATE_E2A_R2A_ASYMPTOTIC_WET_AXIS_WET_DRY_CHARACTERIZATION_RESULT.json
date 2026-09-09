@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R2A_ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E2A_R2A_ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZATION_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34373857328,
+    "head": "4cb7ae8e1d667ff1ae8f565d0ce597f40d96358d",
+    "conclusion": "failure",
+    "artifact_id": 10113045655,
+    "artifact_digest": "sha256:7b9c84dbb766baf20d3729cea719e9c105016bb360d836f3afb30bc260834d3e"
+  },
+  "selected_candidate": null,
+  "all_material_candidate": null,
+  "best_tested_candidate": "A33_SAT17",
+  "results_A33_SAT17": {
+    "B12": {
+      "pass": false,
+      "failed_metrics": ["max_abs_error_over_ksatfit"],
+      "p99_hybrid_metric": 0.0016573567161765215,
+      "max_hybrid_metric": 0.004364185024845413,
+      "max_abs_error_over_ksatfit": 0.0009012267872305441,
+      "transition_1e9_max_hybrid": 5.922587013690562e-05,
+      "known_witness_max_hybrid": 0.00036036026387566286,
+      "last_nonzero_negative_head_cm": -2.511160722224693e-17,
+      "worst_h_above_cm": -0.07915189862251282,
+      "worst_h_below_cm": -3525.2238122379467
+    },
+    "O13": {
+      "pass": false,
+      "failed_metrics": ["p99_hybrid_metric"],
+      "p99_hybrid_metric": 0.002056529479250791,
+      "max_hybrid_metric": 0.0033163814084246385,
+      "max_abs_error_over_ksatfit": 0.0003700474731916244,
+      "transition_1e9_max_hybrid": 7.774325480767239e-05,
+      "known_witness_max_hybrid": 0.0005253071666719303,
+      "last_nonzero_negative_head_cm": -1.4939286941783047e-19,
+      "worst_h_above_cm": -0.23973708227276802,
+      "worst_h_below_cm": -1347.627329861609
+    },
+    "B01": {
+      "pass": true,
+      "p99_hybrid_metric": 7.66266211278442e-05,
+      "max_hybrid_metric": 0.00012816100770727835,
+      "max_abs_error_over_ksatfit": 0.00014590603179296652,
+      "transition_1e9_max_hybrid": 2.722744651721545e-06,
+      "last_nonzero_negative_head_cm": -0.008942189714656646
+    },
+    "O14": {
+      "pass": true,
+      "p99_hybrid_metric": 5.741576271163825e-05,
+      "max_hybrid_metric": 5.978897900761037e-05,
+      "max_abs_error_over_ksatfit": 0.0004249338132275541,
+      "transition_1e9_max_hybrid": 9.030885286977342e-07,
+      "last_nonzero_negative_head_cm": -0.0036211412008238515
+    }
+  },
+  "interpretation": [
+    "The constitutively motivated t=1-(-h)^(n-1) coordinate removes the order-unity structural interpolation failure seen in E2A and R1A.",
+    "Nevertheless the precommitted production-facing E2A accuracy criteria are not met simultaneously for all four materials at either frozen node count.",
+    "A33_SAT17 is a near miss: B12 fails only the max absolute flux error threshold and O13 fails only the p99 hybrid threshold, while B01 and O14 pass.",
+    "Because node densities [17,33] and the exit rule were frozen before execution, adding more nodes now would be post-hoc tuning and is not permitted in this line.",
+    "The near-saturation coordinate-table line is therefore stopped despite the substantial improvement. The next research step must change the face formulation rather than continue coordinate or density tuning."
+  ],
+  "decision": "ASYMPTOTIC_WET_AXIS_REJECTED_STOP_NEAR_SATURATION_TABLE_LINE_AND_RECONSIDER_FACE_FORMULATION",
+  "hard_guards": [
+    "Do not add A65 or another wet-axis density as a continuation of R2A.",
+    "Do not relax E2A accuracy thresholds.",
+    "Do not promote A33_SAT17 based on near-miss status.",
+    "E2A, R1A and R2A negative evidence remain authoritative.",
+    "Class-B C2B remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding."
+  ]
+}
