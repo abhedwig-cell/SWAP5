@@ -1,0 +1,49 @@
+name: F-FWC01 Gate B2C-R2 Grouped Eq18 Hydrologic Relevance
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2c-r2-grouped-hydrologic-relevance.yml
+      - experiments/fwc/fwc01_gate_b2c_r2_grouped_delta_k_hydrologic_relevance.py
+      - integration/f-fwc/F-FWC01_GATE_B2C_R2_GROUPED_DELTA_K_EQ18_HYDROLOGIC_RELEVANCE_PRECOMMIT.json
+      - integration/f-fwc/F-FWC01_GATE_B2A_MATERIAL_FIXTURE.json
+      - experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen grouped Eq18 hydrologic relevance gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2c-r2"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2c_r2_grouped_delta_k_hydrologic_relevance.py \
+            "$out/F-FWC01_GATE_B2C_R2_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2C_R2_STDOUT.txt"
+      - name: Assert frozen qualification decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2c-r2/F-FWC01_GATE_B2C_R2_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_GROUPED_DELTA_K_EQ18_NUMERICAL_REPRESENTATION_READY_FOR_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_GATE'
+          assert r['grouped_delta_K']['cases_exceeding_forward_error_limit'] == 0
+          assert r['grouped_delta_K']['front_effect_threshold_exceedance_count'] == 0
+          assert r['grouped_delta_K']['water_effect_threshold_exceedance_count'] == 0
+          assert r['grouped_delta_K']['persistent_extra_state_bytes'] == 0
+          assert r['nonfinite_count'] == 0
+          assert r['negative_velocity_count'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2c-r2-grouped-hydrologic-relevance
+          path: fwc01-gate-b2c-r2/
