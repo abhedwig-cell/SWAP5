@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R2B_ENDPOINT_CLUSTER_EXPONENT_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_E2C_R2B_ENDPOINT_CLUSTER_EXPONENT_DIAGNOSTIC_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34386244933,
+    "head": "9b026fe428aff240736f9c2079f3ff873575fe7d",
+    "conclusion": "success",
+    "artifact_id": 10117811138,
+    "artifact_digest": "sha256:f97e9a470fe8c835263203cafc9b958684f98a094025ffe188f497ab97de75b3"
+  },
+  "R2_failure_count_reproduced": 28,
+  "fixed_endpoint_exponents": [8,12,16,24,32],
+  "restored_count_by_exponent": {"8":0,"12":27,"16":15,"24":1,"32":27},
+  "smallest_common_fixed_exponent": null,
+  "residual_failure_reference_root_gap": {
+    "minimum_relative_to_K_h_above": 9.933350722683856e-15,
+    "maximum_relative_to_K_h_above": 4.537701329499712e-12
+  },
+  "representative_binary64_collapse": {
+    "material": "O13",
+    "probe_id": "sobol_458",
+    "h_above_cm": -1.914985477924347e-05,
+    "h_below_cm": -188.90334833454273,
+    "relative_reference_root_gap": 9.966429828480135e-15,
+    "t8_nearest_lane_distance_cm": 3.015437292225309e-19,
+    "t12_and_higher_reported_nearest_lane_distance_cm": 0.0,
+    "interpretation": "Increasing the endpoint exponent eventually collapses quadrature heads to h_above in binary64, producing non-monotone bracket behavior rather than a clean convergence sequence."
+  },
+  "decision": "FIXED_EXPONENT_CLUSTERING_INSUFFICIENT_DO_NOT_OPEN_R3_AS_SIMPLE_EXPONENT_CHANGE",
+  "interpretation": [
+    "A simple larger endpoint exponent is not a robust numerical policy: recovery counts are strongly non-monotone across the frozen exponent set.",
+    "The residual roots are nevertheless extremely close to the endpoint conductivity K(h_above).",
+    "The next research route should test an explicit endpoint-limit branch rather than further coordinate clustering."
+  ],
+  "recommended_followup": "QUALIFY_R2_PLUS_DETECTABLE_Q_ABOVE_K_BRACKET_FAILURE_TO_EXACT_ENDPOINT_LIMIT_Q_EQUALS_K_H_ABOVE_ON_NEW_INDEPENDENT_HOLDOUT",
+  "hard_guards": [
+    "Do not select t12 merely because it restored 27/28 known failures.",
+    "Do not add material-specific exponents.",
+    "Do not relax the face-flux accuracy thresholds.",
+    "R2 remains FAIL."
+  ],
+  "status": "SIMPLE_EXPONENT_ESCALATION_REJECTED_ENDPOINT_LIMIT_ROUTE_OPEN_FOR_SEPARATE_QUALIFICATION"
+}
