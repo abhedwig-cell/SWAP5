@@ -1,0 +1,27 @@
+name: F-SI23 Gate C2 nonlinear physical transfer
+
+on:
+  push:
+    branches:
+      - work/f-si23-richards-embedded-temporal-estimator
+    paths:
+      - 'integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_PLAN.json'
+      - 'tests/fsi/test_fsi23_gate_c2_physical_transfer.f90'
+      - 'tests/fsi/run_fsi23_gate_c2_physical_transfer.sh'
+      - '.github/workflows/fsi23-gate-c2-physical-transfer.yml'
+  workflow_dispatch:
+
+jobs:
+  physical-transfer:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-SI23 Gate C2 physical transfer matrix
+        run: bash tests/fsi/run_fsi23_gate_c2_physical_transfer.sh
