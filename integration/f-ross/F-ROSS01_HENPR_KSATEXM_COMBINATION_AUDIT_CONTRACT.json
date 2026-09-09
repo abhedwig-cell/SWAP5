@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2X_LEGACY_H_ENPR_PLUS_KSATEXM_COMBINATION_AUDIT",
+  "status": "CONTRACT_FROZEN_BEFORE_REPRODUCIBLE_RUN",
+  "production_implementation": false,
+  "purpose": "Determine whether the legacy SWAP 4.3.1 combination H_ENPR<0 plus active KSATEXM defines a constitutively continuous K(h) relation when theta(h) follows the same source implementation.",
+  "source_trace": {
+    "constitutive_source": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_MvG_functions.f90",
+    "constitutive_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "input_mapping_source": "tools/SWAP/source/SWAP.ZIP::SWAP/readswap.f90",
+    "input_mapping_source_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "material_catalog": "data/soil/Staringreeks_2018.csv",
+    "material_catalog_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae"
+  },
+  "source_semantics_under_test": {
+    "h_enpr_modified_retention": "For H_ENPR<=-0.01 cm, watcon uses a normalized VG branch below 1.05*H_ENPR and a rational polynomial extension toward theta_s above that join.",
+    "h_enpr_modified_conductivity": "For head>=H_ENPR and when the KSATEXM branch is not active, hconduc returns KSATFIT; below H_ENPR it uses the finite-air-entry normalized Mualem-VG conductivity.",
+    "ksatexm_threshold": "readswap always derives relsatthr and ksatthr from the unmodified VG relation at the fixed hthr=-2 cm, independent of H_ENPR.",
+    "branch_precedence": "hconduc evaluates the active KSATEXM condition before the H_ENPR modified-VG branch.",
+    "combination_guard": "No readswap guard was found that rejects H_ENPR<0 together with KSATEXM>KSATFIT for the default MvG family."
+  },
+  "diagnostic_matrix": {
+    "materials": "all 36 Staringreeks 2018 unimodal MvG rows",
+    "diagnostic_h_enpr_cm": [-2.0, -4.0, -10.0],
+    "ksatexm": "catalog value; active only where KSATEXM>KSATFIT",
+    "macropore": false,
+    "hysteresis": false
+  },
+  "quantities": [
+    "actual head where source-consistent modified retention first reaches legacy relsatthr",
+    "K from the H_ENPR modified-VG branch immediately before KSATEXM activation",
+    "K value approached by the KSATEXM branch immediately after activation, equal to legacy ksatthr",
+    "post/pre conductivity ratio and relative jump",
+    "whether the activation head equals the nominal legacy -2 cm threshold",
+    "whether K(h) is monotone across the activation seam"
+  ],
+  "decision_rule": {
+    "continuous": "abs(K_post-K_pre)/max(KSATFIT,abs(K_pre),abs(K_post)) <= 1e-10",
+    "discontinuous": "any larger source-consistent one-sided mismatch",
+    "policy_consequence_if_discontinuous": "Do not treat H_ENPR<0 plus legacy KSATEXM as a silently composable SWAP5 hydraulic configuration. Route it to explicit legacy-compatibility handling or a separately defined physical closure; do not repair it inside RossFast numerical policy."
+  },
+  "scope_guard": "Diagnostic audit only. H_ENPR values are deliberately imposed on the catalog for combination testing; this does not claim that the frozen Staringreeks rows themselves use non-zero H_ENPR. No Ross table, transient solver, groundwater or production admission claim follows from this audit."
+}
