@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3D_R2_REAL_H0_SATURATION_TRANSITION_RECONCILIATION",
+  "qualification_run": 34396633815,
+  "qualification_head": "4368972cc1fc9ebe9c4eeb6401843834cdfbc3d5",
+  "fixture": {
+    "initial_heads_cm": [-0.2, -1.5, -5.0],
+    "q_top_fraction_ksat": 1.5,
+    "bottom_head_cm": -15.0,
+    "horizon_day": 0.001,
+    "candidate_step_counts": [4, 8, 16],
+    "reference_step_count": 64
+  },
+  "frozen_thresholds": {
+    "mass_tolerance_cm": 1e-9,
+    "bottom_flux_tolerance_cm": 0.001,
+    "storage_tolerance_cm": 0.001,
+    "cell_storage_tolerance_cm": 0.001,
+    "head_tolerance_cm": 0.25,
+    "transition_time_tolerance_day": 0.00025,
+    "max_trajectory_head_guard_cm": 0.8
+  },
+  "harness_remediation": {
+    "contract": "F-ROSS01_GATE_E3D_R2_FAIL_CLOSED_HARNESS_REMEDIATION_PRECOMMIT.json",
+    "purpose": "Incomplete trajectories are represented as structured non-passing evidence instead of interpolation KeyError.",
+    "physics_changed": false,
+    "forcing_changed": false,
+    "tolerances_changed": false,
+    "solver_policy_changed": false,
+    "face_policy_changed": false
+  },
+  "materials": [
+    {
+      "material": "B01",
+      "reference_completed_steps": 0,
+      "reference_step_count": 64,
+      "candidate_completed_steps": [0, 0, 0],
+      "candidate_step_counts": [4, 8, 16],
+      "comparison_available": false,
+      "reference_top_cell_h0_crossing": false,
+      "finest_candidate_top_cell_h0_crossing": false,
+      "max_trajectory_head_cm": -0.2,
+      "max_abs_step_mass_residual_cm": 0.00249222959484538,
+      "unqualified_face_fallback_count": 0,
+      "qualification_solver_failure_count": 4,
+      "pass": false
+    },
+    {
+      "material": "B12",
+      "reference_completed_steps": 19,
+      "reference_step_count": 64,
+      "candidate_completed_steps": [1, 3, 5],
+      "candidate_step_counts": [4, 8, 16],
+      "comparison_available": false,
+      "reference_top_cell_h0_crossing": false,
+      "finest_candidate_top_cell_h0_crossing": false,
+      "max_trajectory_head_cm": 0.3764796516997669,
+      "max_abs_step_mass_residual_cm": 0.0016714914739297208,
+      "unqualified_face_fallback_count": 0,
+      "qualification_solver_failure_count": 4,
+      "reference_last_accepted_top_head_cm": -0.000015913269995001268,
+      "pass": false
+    },
+    {
+      "material": "O13",
+      "reference_completed_steps": 7,
+      "reference_step_count": 64,
+      "candidate_completed_steps": [0, 2, 1],
+      "candidate_step_counts": [4, 8, 16],
+      "comparison_available": false,
+      "reference_top_cell_h0_crossing": false,
+      "finest_candidate_top_cell_h0_crossing": false,
+      "max_trajectory_head_cm": -0.0007082961193946383,
+      "max_abs_step_mass_residual_cm": 0.0015863039728781475,
+      "unqualified_face_fallback_count": 0,
+      "qualification_solver_failure_count": 4,
+      "pass": false
+    },
+    {
+      "material": "O14",
+      "reference_completed_steps": 0,
+      "reference_step_count": 64,
+      "candidate_completed_steps": [0, 0, 0],
+      "candidate_step_counts": [4, 8, 16],
+      "comparison_available": false,
+      "reference_top_cell_h0_crossing": false,
+      "finest_candidate_top_cell_h0_crossing": false,
+      "max_trajectory_head_cm": -0.2,
+      "max_abs_step_mass_residual_cm": 0.0001827909793349569,
+      "unqualified_face_fallback_count": 0,
+      "qualification_solver_failure_count": 4,
+      "pass": false
+    }
+  ],
+  "o14_root_diagnostic": {
+    "workflow_run": 34396168752,
+    "decision": "O14_EVENT_STEP_STRONG_ROOT_NOT_ESTABLISHED_PRESERVE_E3D_FAILURE",
+    "strong_mass_root_count_across_frozen_reference_and_candidate_first_trials": 0,
+    "interpretation": "The frozen O14 failure was not rescued by the bounded multi-start diagnostic; a simple bad initial guess is not established as the cause."
+  },
+  "decision": "E3D_1P5_KSAT_REAL_H0_FIXTURE_NOT_QUALIFIED_PRESERVE_NEGATIVE_EVIDENCE",
+  "interpretation": [
+    "B01 and O14 reject the imposed 1.5*KSAT flux from the first trial.",
+    "B12 and O13 progress toward the saturation seam before the reference/candidate trajectories become incomplete.",
+    "No material produced a qualified reference-and-candidate h=0 crossing under this frozen fixture.",
+    "No unqualified face fallback explains the failures.",
+    "The evidence points to the saturation/top-boundary discrete event formulation as the next research seam rather than to C1R face interpolation."
+  ],
+  "hard_nonclaims": [
+    "No claim that RossFast saturation transitions are impossible.",
+    "No claim that the physical SWAP top-boundary process is defective.",
+    "No production solver or top-boundary policy qualification.",
+    "No tolerance relaxation or forcing retuning is authorized by this reconciliation."
+  ]
+}
