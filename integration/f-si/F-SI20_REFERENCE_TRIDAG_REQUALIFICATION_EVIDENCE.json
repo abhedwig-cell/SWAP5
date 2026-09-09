@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "REFERENCE_TRIDAG_TEMPORAL_REQUALIFICATION",
+  "scope": "nonproduction evidence reconciliation only; production source and numerical policy unchanged",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "committed_zero_correction_stub_blob": "23c00e4a188e88bc36ef95cbe4faaacdd6aad639",
+    "fsi18_reference_tridag_generator_blob": "bf25c4c7fefaa59811255b0bc25c041522ab008e",
+    "fsi18_reference_tridag_evidence_blob": "bf433c7adff71ce9d10463d53a55a92fe4599655",
+    "production_source_changed": false
+  },
+  "workflow": {
+    "name": "F-SI20 reference TRIDAG temporal requalification",
+    "run": 34301572071,
+    "job": 102309385192,
+    "head": "2c36ff0266db6eb653d54720a16402c2c2a005ca",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.2.0"
+  },
+  "method": {
+    "test_dependency_change_only": true,
+    "replaced_dependency": "the F-SI04 zero-correction TRIDAG test stub",
+    "replacement": "the F-SI18 source-locked test-only SWAP 4.3.1 Thomas/TRIDAG operation order",
+    "production_source_change": false,
+    "solver_control_change": false,
+    "mass_requirement_change": false,
+    "temporal_acceptance_change": false,
+    "rerun_gates": [
+      "fixed-horizon prescribed-head refinement",
+      "fixed-horizon nonlinear-tolerance axis",
+      "prescribed-head temporal characterization",
+      "extended prescribed-head startup retry ladder"
+    ]
+  },
+  "requalified_findings": {
+    "fixed_horizon_successive_head_refinement_decreases": true,
+    "fixed_horizon_first_dhead_cm": 2.55242948426825933e-4,
+    "fixed_horizon_last_dhead_cm": 9.42004874104895862e-9,
+    "nonlinear_tolerance_axis_materially_changes_temporal_signal": false,
+    "extended_startup_temporal_comparisons": 12,
+    "extended_startup_solver_rejections": 5,
+    "extended_startup_mass_rejections": 0,
+    "last_valid_temporal_attempt_dt_day": 1.220703125e-4,
+    "last_valid_step_doubling_dhead_cm": 5.5774555818288718e-6,
+    "late_temporal_dhead_suffix_strictly_decreasing": true,
+    "late_temporal_dhead_suffix_length": 7,
+    "fine_step_solver_rejections_persist_with_reference_tridag": true
+  },
+  "interpretation": {
+    "old_fsi18_zero_correction_fixture_artifact_explains_fsi20_tail": false,
+    "fsi20_temporal_characterization_survives_reference_tridag_requalification": true,
+    "fine_step_solver_rejection_requires_separate_attribution": true,
+    "production_temporal_metric_admitted": false,
+    "production_numeric_limits_admitted": false,
+    "key_finding": "Replacing only the known F-SI18 zero-correction TRIDAG test dependency with the source-locked SWAP 4.3.1 Thomas control leaves the F-SI20 prescribed-head temporal characterization materially unchanged. The late decreasing temporal signal and the five finer-step solver rejections therefore cannot be dismissed as the old F-SI18 fixture artifact."
+  },
+  "scientific_boundary": [
+    "This requalification does not establish a universal temporal error law or Richardson factor.",
+    "It does not select any F-CI14 numerical temporal limit.",
+    "It does not justify changing max iterations, backtracking, dtmin, mass tolerances or temporal acceptance.",
+    "F-GC02 remains fail-closed pending independently qualified temporal limits and downstream admission."
+  ]
+}
