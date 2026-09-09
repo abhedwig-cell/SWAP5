@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP10",
   "title": "Hydraulic-Scale Normalized and Geometry-Aware Face Representation Feasibility",
@@ -7,23 +7,37 @@
   "base_head": "8c17839a06b1e2b4606041aaa3e848e69b80978f",
   "contract": "integration/f-lmfp/F-LMFP10_CONTRACT.json",
   "contract_commit": "7d08a024e41d6ef4ad9240b19d1605a1859f95ce",
+  "nomination_precommit": "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
+  "nomination_precommit_commit": "6149373b01eb7a81af0f3abbbb233d97430f372e",
   "production_implementation": false,
   "qualification": false,
   "A0": {
     "name": "MATERIAL_SCALE_COORDINATE_SCREEN",
     "design_persisted": true,
-    "implemented": false,
+    "implemented": true,
+    "implementation_commits": [
+      "75be1120d67f66d294bdd5c439ace8eaa251e81f",
+      "91ef39205239eee8ca91d87aed10c5e6cd1c3176",
+      "c738347ae47e3b5788e54fa96d82ec20c8de4acb"
+    ],
+    "execution_run": 34329612925,
+    "execution_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "execution_status_last_observed": "QUEUED_15_MATERIAL_JOBS",
     "executed": false,
     "tested": false,
+    "result_persisted": false,
     "candidate_families": ["A_ALPHA_NORMALIZED_ENDPOINTS", "B_H50_NORMALIZED_ENDPOINTS"],
     "panel_materials": 15,
     "face_lengths_cm": [10.0, 20.0],
     "classes": 30,
-    "characterization_only": true
+    "characterization_only": true,
+    "fresh_holdout": false
   },
   "scope_flags": {
     "PERSISTED": true,
-    "EXPERIMENT_IMPLEMENTED": false,
+    "EXPERIMENT_IMPLEMENTED": true,
+    "EXECUTION_STARTED": true,
+    "EXECUTION_COMPLETE": false,
     "TESTED": false,
     "QUALIFIED": false,
     "PRODUCTION_IMPLEMENTED": false,
@@ -32,10 +46,10 @@
     "MODFLOW_ADMITTED": false
   },
   "hard_blockers": [
-    "No new representation has yet been characterized.",
+    "A0 characterization has not completed; no candidate is nominated.",
     "Conductivity-coordinate remains excluded while the inherited near-saturation K discontinuity owner seam is unresolved.",
     "No transient work may begin before a new hydraulic face representation passes characterization, nomination, and a separate fresh unseen holdout."
   ],
-  "decision": "A0_PRECOMMITTED_READY_FOR_IMPLEMENTATION",
-  "status": "PERSISTED_BEFORE_IMPLEMENTATION_OR_TESTING"
+  "decision": "A0_PRECOMMITTED_IMPLEMENTED_EXECUTION_STARTED_NO_QUALIFICATION",
+  "status": "PERSISTED_IMPLEMENTED_EXECUTING_NOT_YET_TESTED"
 }
