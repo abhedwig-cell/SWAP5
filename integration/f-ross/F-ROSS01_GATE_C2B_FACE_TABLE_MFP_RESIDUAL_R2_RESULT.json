@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_MFP_RESIDUAL_FACE_CHARACTERIZATION_R2",
+  "run": 34350935251,
+  "head": "6f73eecbf08d2d3fef758d155c2f3b7623adb0ce",
+  "candidate": {
+    "N": 241,
+    "two_dimensional_storage": "float32_log_mobility_residual_over_mfp_secant",
+    "phi_storage": "float64_241_node_cumulative_mfp",
+    "phi_runtime_lookup": "linear interpolation in seam-aligned piecewise-u coordinate",
+    "shared_bytes": 234284,
+    "runtime_quadrature": false,
+    "runtime_nonlinear_iterations": 0
+  },
+  "materials": {
+    "B05": {"artifact_id": 10103753755, "artifact_digest": "sha256:25e9cc5fcc39a755a5225d24bf11d6f5744e28c57f0fe7738d3db761be473c87", "max_hybrid_metric": 0.06845696952013021, "p99_hybrid_metric": 0.05534898927089381, "max_abs_error_over_ksatfit": 0.022609227872106973, "worst_hybrid_location_cm": [-39.999, -39.99], "worst_abs_location_cm": [-3.99, -3.999]},
+    "B10": {"artifact_id": 10103773461, "artifact_digest": "sha256:b840dc974555c295e350fe35cda6ac3ac275ccb835a16ee742d93f77244c188b", "max_hybrid_metric": 0.04360459994162161, "p99_hybrid_metric": 0.03885970880339794, "max_abs_error_over_ksatfit": 0.12398891779579818, "worst_hybrid_location_cm": [-39.999, -39.99], "worst_abs_location_cm": [-3.99, -3.999]},
+    "B12": {"artifact_id": 10103746310, "artifact_digest": "sha256:76e6d07198c7c4d1d3d65a288e683baee0126a3dcc0599672fa1839f2f38df17", "max_hybrid_metric": 0.04122055860474451, "p99_hybrid_metric": 0.03508903606461543, "max_abs_error_over_ksatfit": 0.12398891779797412, "worst_hybrid_location_cm": [-3.999, -3.99], "worst_abs_location_cm": [-3.99, -3.999]},
+    "O05": {"artifact_id": 10103751151, "artifact_digest": "sha256:be7618bf1030d0da5dbf5be09e35cc7e8e88f9e4a21063ce9f2912c90b7c02d5", "max_hybrid_metric": 0.08823240456934119, "p99_hybrid_metric": 0.0702615642315077, "max_abs_error_over_ksatfit": 0.028216915657283632, "worst_hybrid_location_cm": [-39.999, -39.99], "worst_abs_location_cm": [-3.999, -4.01]},
+    "O12": {"artifact_id": 10103724489, "artifact_digest": "sha256:0f5c4b4c522a4bd718917dc1aadab62753e48c91c5de90bcd6938331cb007477", "max_hybrid_metric": 0.04122055860432012, "p99_hybrid_metric": 0.02879950660900872, "max_abs_error_over_ksatfit": 0.12398891779669265, "worst_hybrid_location_cm": [-3.999, -3.99], "worst_abs_location_cm": [-3.99, -3.999]},
+    "O13": {"artifact_id": 10103728610, "artifact_digest": "sha256:cab1c7a1cd217188fbd13dbe857ee89658e20b0db627d777322da80169ee8587", "max_hybrid_metric": 0.04135626328233026, "p99_hybrid_metric": 0.03814898212281128, "max_abs_error_over_ksatfit": 0.12398891855156799, "worst_hybrid_location_cm": [-39.999, -39.99], "worst_abs_location_cm": [-3.99, -3.999]},
+    "O14": {"artifact_id": 10103706371, "artifact_digest": "sha256:e3577a2575f321cc332cecaef298947c9b52242b402a52232277cc2a9b5367e8", "max_hybrid_metric": 0.0367828616860053, "p99_hybrid_metric": 0.012291532639362616, "max_abs_error_over_ksatfit": 0.01953122649722658, "worst_hybrid_location_cm": [-927.006692283422, -925.4104284536141], "worst_abs_location_cm": [-4.001, -4.01]}
+  },
+  "pass_count": 0,
+  "fail_count": 7,
+  "failed_materials": ["B05", "B10", "B12", "O05", "O12", "O13", "O14"],
+  "comparison": {
+    "seam_aligned_R1": "R1 had already reduced the broad p99 error below 0.002 for all seven materials but retained a local absolute-error tail.",
+    "R2": "The stored cumulative-Phi linear interpolation makes the result substantially worse. Several materials show approximately 0.124*KSATFIT absolute error for nearly equal heads just below -4 cm, and new large relative errors also appear at -40 cm and, for O14, in the dry range.",
+    "diagnosis": "R2 as a runtime representation is rejected. The failure topology is consistent with loss of accuracy when a cumulative potential is linearly interpolated in log-head and then differenced over a very short head interval. This result does not by itself prove that MFP normalization is intrinsically unsuitable."
+  },
+  "decision": "C2B_MFP_RESIDUAL_N241_R2_CHARACTERIZATION_FAIL_CLOSED_RUNTIME_PHI_LOOKUP_NOT_ADMISSIBLE",
+  "next_action": "Run a non-production diagnostic with the same residual normalization but exact direct Phi-secant integration at lookup. Use it only to separate normalization quality from the failed cumulative-Phi runtime representation. Do not promote it as a candidate because runtime quadrature violates the bounded O(1) objective.",
+  "scope_guard": "Negative representation evidence only. No holdout, transient, groundwater, production or empirical hydraulic-validation claim."
+}
