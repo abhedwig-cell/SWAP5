@@ -2,7 +2,8 @@ module mod_canonical_interval_runtime
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_result_t, execute_reference_interval, &
-       TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED
+       TX_STATUS_ACCEPTED, TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -153,6 +154,15 @@ contains
     result%diagnostics%rollbacks = result%diagnostics%rollbacks + tx%rollbacks
     result%diagnostics%solver_rejections = result%diagnostics%solver_rejections + tx%solver_rejections
     result%diagnostics%temporal_rejections = result%diagnostics%temporal_rejections + tx%temporal_rejections
+    result%diagnostics%temporal_certificate_unavailable_rejections = &
+         result%diagnostics%temporal_certificate_unavailable_rejections + &
+         tx%temporal_certificate_unavailable_rejections
+    if (result%diagnostics%temporal_acceptance_source == TX_TEMPORAL_NONE) then
+      result%diagnostics%temporal_acceptance_source = tx%temporal_acceptance_source
+    else if (tx%temporal_acceptance_source /= TX_TEMPORAL_NONE .and. &
+             tx%temporal_acceptance_source /= result%diagnostics%temporal_acceptance_source) then
+      result%diagnostics%temporal_acceptance_source = TX_TEMPORAL_NONE
+    end if
     result%diagnostics%mass_rejections = result%diagnostics%mass_rejections + tx%mass_rejections
     result%diagnostics%nonlinear_iterations = result%diagnostics%nonlinear_iterations + tx%nonlinear_iterations
     result%diagnostics%internal_retries = result%diagnostics%internal_retries + tx%internal_retries
@@ -162,9 +172,22 @@ contains
     result%diagnostics%backtracking_attempts = result%diagnostics%backtracking_attempts + tx%backtracking_attempts
     result%diagnostics%alternative_solver_calls = result%diagnostics%alternative_solver_calls + &
          tx%alternative_solver_calls
+    if (ieee_is_finite(tx%temporal_indicator) .and. tx%temporal_indicator >= 0.0_real64) then
+      result%diagnostics%max_temporal_indicator = max(result%diagnostics%max_temporal_indicator, &
+           tx%temporal_indicator)
+    end if
     if (tx%status == TX_STATUS_ACCEPTED) then
-      result%diagnostics%max_abs_step_mass_residual = max(result%diagnostics%max_abs_step_mass_residual, &
-           abs(tx%full_mass_residual), abs(tx%half_mass_residual))
+      if (tx%temporal_acceptance_source == TX_TEMPORAL_MODEL_CERTIFICATE) then
+        result%diagnostics%max_abs_step_mass_residual = max(result%diagnostics%max_abs_step_mass_residual, &
+             abs(tx%accepted_mass_residual))
+      else
+        result%diagnostics%max_abs_step_mass_residual = max(result%diagnostics%max_abs_step_mass_residual, &
+             abs(tx%full_mass_residual), abs(tx%half_mass_residual))
+      end if
+      result%diagnostics%min_accepted_substep_duration = min(result%diagnostics%min_accepted_substep_duration, &
+           tx%accepted_dt)
+      result%diagnostics%max_accepted_substep_duration = max(result%diagnostics%max_accepted_substep_duration, &
+           tx%accepted_dt)
     end if
   end subroutine accumulate_transaction
 
