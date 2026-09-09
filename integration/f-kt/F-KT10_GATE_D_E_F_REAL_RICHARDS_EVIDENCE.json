@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "evidence_scope": "GATE_D_E_F_REAL_RICHARDS_TRANSACTION_HISTORY_COMPOSITION",
+  "status": "REALIZED_PERSISTED_TESTED_PENDING_CROSS_STREAM_REGRESSION_AND_CLOSEOUT",
+  "tested_source_head": "5789a6286fe0f135500b0fd6b8f3bef4f90151ff",
+  "compile_gate": {
+    "workflow": "F-KT10 real Richards history binding",
+    "run_id": 34344464469,
+    "job_id": 102442661742,
+    "conclusion": "success",
+    "o0_compile": "PASS",
+    "o2_compile": "PASS",
+    "layout_separation_source_guard": "PASS",
+    "certificate_nonpromotion_source_guard": "PASS"
+  },
+  "real_execution_gate": {
+    "workflow": "F-KT10 real Richards transaction history execution",
+    "run_id": 34344464428,
+    "job_id": 102442661038,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "reference_tridag": "SWAP_4_3_1_THOMAS_TEST_ONLY_REPLACEMENT_OF_ZERO_CORRECTION_FIXTURE",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "synthetic_transaction_lifecycle_regression": "PASS"
+  },
+  "first_execution_attempt": {
+    "run_id": 34344293585,
+    "job_id": 102442113594,
+    "tested_head": "8364c5132ca8f1a882006b8fe19376eea7d1253c",
+    "conclusion": "failure",
+    "classification": "HARNESS_ONLY_EXTERNAL_COMPARATOR_NOT_ACTUALLY_NEUTRAL",
+    "failure_location": "baseline real Richards outer transaction before history-route comparison",
+    "cause": "The serialized backend deliberately returns HUGE for non-identical full-vs-two-half states because no scientific external comparator is admitted. The persisted composition harness used 1e30 as a nominally neutral test-only tolerance, which is smaller than HUGE(real64).",
+    "production_defect": false,
+    "indicator_formula_changed_after_result": false,
+    "physical_fixture_changed_after_result": false,
+    "hard_mass_gate_changed_after_result": false,
+    "correction": "The runner builds a temporary test-driver copy with temporal_tolerance=HUGE(0.0_real64), explicitly TEST_ONLY. Production source and F-KT09 policy remain unchanged."
+  },
+  "fixture": {
+    "nodes": 4,
+    "initial_head_cm": -75.0,
+    "bottom_head_jump_cm": 0.01,
+    "bottom_mode": 5,
+    "top_boundary": "FIXED_EXPLICIT_FLUX_EQUAL_TO_MINUS_INITIAL_CONDUCTIVITY",
+    "swkimpl": 0,
+    "conductivity_mean_method": 1,
+    "root_extraction_active": false,
+    "macropore_active": false,
+    "snow_active": false,
+    "hard_mass_tolerance": 1e-12,
+    "time_points_day_coordinate": [1000.125, 1000.375, 1000.625, 1000.875]
+  },
+  "gate_D_real_binding": {
+    "result": "PASS",
+    "ordinary_layout": "FMR_NUMERICAL_CONTINUATION_NONE",
+    "history_layout": "FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY",
+    "physical_optional_state_axis_preserved": true,
+    "unknown_numerical_continuation_layout_999_fail_closed": true,
+    "ordinary_columns_gain_derivative_state": false
+  },
+  "gate_E_noninterference_and_cost": {
+    "result": "PASS",
+    "baseline_headcalc_calls_first_outer_interval": 3,
+    "history_headcalc_calls_first_outer_interval": 3,
+    "baseline_linear_solves_first_outer_interval": 9,
+    "history_linear_solves_first_outer_interval": 10,
+    "additional_full_nonlinear_trajectories": 0,
+    "additional_defect_tridiagonal_solves": 1,
+    "accepted_physical_candidate_identity": "BITWISE_FINGERPRINT_EQUAL_BASELINE_VS_HISTORY",
+    "authoritative_mass_identity": "BITWISE_EQUAL_BASELINE_VS_HISTORY",
+    "hard_mass": "PASS",
+    "observed_B_inf": 3.13153319757037229e-5,
+    "B_inf_promoted_to_F_KT09_certificate": false,
+    "model_certificate_route_with_B_inf_available": "FAIL_CLOSED_AS_REQUIRED"
+  },
+  "gate_F_transactional_history": {
+    "result": "PASS",
+    "trial_history_private_until_commit": true,
+    "discard_preserves_committed_history_and_revision": true,
+    "checkpoint_replay_physical_identity": true,
+    "checkpoint_replay_mass_identity": true,
+    "checkpoint_replay_history_identity": true,
+    "first_commit_publishes_accepted_history_atomically": true,
+    "next_interval_reads_committed_history": true,
+    "second_trial_rollback_preserves_first_committed_history": true,
+    "second_replay_and_commit": "PASS",
+    "certificate_rejection_does_not_publish_trial_history": true
+  },
+  "gate_H_determinism": {
+    "result": "PASS",
+    "o0_o2_real_execution_output_identity": true,
+    "o0_o2_synthetic_history_output_identity": true
+  },
+  "architecture_invariants": {
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS_FEATURE_SCOPED",
+    "5_scratch_per_worker": "PASS_OPERATOR_DEFECT_SCRATCH_NOT_PERSISTED_PER_COLUMN",
+    "7_transactional_steps": "PASS",
+    "9_generic_time": "PASS_NON_CALENDAR_TIME_COORDINATES",
+    "13_mass_conservation": "PASS_HARD_1E_12_GATE_AND_BASELINE_IDENTITY",
+    "15_limit_coupling_cost": "PASS_FOR_THIS_SEAM_ZERO_EXTRA_NONLINEAR_ONE_EXTRA_TRIDIAGONAL",
+    "16_multiswap_primary": "PASS_TEMPLATE_LEVEL_NUMERICAL_CONTINUATION_SELECTION",
+    "22_no_headcalc_internal_coupling": "PASS",
+    "23_physics_solver_policy_separation": "PASS_SEPARATE_PHYSICAL_OPTIONAL_AND_NUMERICAL_CONTINUATION_LAYOUT_AXES",
+    "26_runtime_diagnostics": "PASS_INDICATOR_ROUTE_AND_COST_EXPOSED_AS_OBSERVATION",
+    "27_optional_functionality_scales_with_usage": "PASS",
+    "30_architecture_change_explicitly_tested": "PASS_FOR_GATE_D_E_F"
+  },
+  "hard_nonclaims": [
+    "B_inf is not qualified as a true nonlinear upper error bound.",
+    "No scientific temporal tolerance or normalization is selected.",
+    "F-KT09 model-certificate acceptance remains unavailable for this B_inf.",
+    "No production temporal retry/acceptance policy is qualified here.",
+    "No groundwater-coupling or F-GC02 release is implied.",
+    "No F-PE release is implied.",
+    "Cross-stream F-SI25 and F-MR06 regressions are still pending at this evidence checkpoint."
+  ]
+}
