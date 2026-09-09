@@ -1,0 +1,39 @@
+name: F-ROSS01 Gate C2B State Coordinate R1
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-c2b-state-coordinate-r1.yml
+      - experiments/ross/run_ross01_gate_c2b_state_coordinate_r1.py
+      - experiments/ross/run_ross01_gate_c2b_state_coordinate_conditioning.py
+      - integration/f-ross/F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy mpmath
+      - name: Run frozen C2B state coordinate R1 qualification
+        run: |
+          set -euo pipefail
+          out="ross01-c2b-state-coordinate-r1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_c2b_state_coordinate_r1.py \
+            "$out/F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-c2b-state-coordinate-r1
+          path: ross01-c2b-state-coordinate-r1/
