@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "subject": "AUTHORITATIVE_RICHARDS_LINEAGE_FOR_CONCURRENCY_ISOLATION",
+  "status": "RECONCILED_DO_NOT_REFACTOR_OLD_MQ23_POSTIMAGE",
+  "current_mr20_branch": {
+    "branch": "work/f-mr20-parallel-real-physics-readiness",
+    "pre_reconciliation_head": "71b85ed8fb23c8c59880f1d51cc791ac8d94e913",
+    "baseline": "qualification/f-mq23-fvq14-real-physics-runtime",
+    "baseline_head": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "one_worker_seam_tested": true,
+    "multiworker_real_physics_admitted": false
+  },
+  "live_mr19_closeout": {
+    "branch": "work/f-mr19-restricted-multiswap-process-restart",
+    "head": "110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+    "commit_message": "closeout(F-MR19): qualify serialized committed-boundary restart",
+    "status": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
+    "parallel_real_physics_changed": false
+  },
+  "authoritative_source_postimages_at_mr19_closeout": {
+    "src/adapter/mod_b110_serialized_context_binding.f90": "e21c964eac48d5feb91388cfd06a646c4002a497",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+    "src/legacy/b1_10_port/headcalc.f90": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0"
+  },
+  "key_lineage_evidence": {
+    "fmr04_materialization_commit": "d645d1ab07ce65e09defa04d42f8f3df333a21aa",
+    "fmr04_role": "integrated qualified F-SI09/F-SI10 explicit provider/state-binding postimage",
+    "fmr09_materialization_commit": "7f66eb08040ba789b574f44f81980382069bf2dc",
+    "fmr09_role": "added explicit root-sink provider seam",
+    "fmr13_materialization_commit": "e4ae5cb11f6e10d471e5cebfd33ab35e98047b64",
+    "fmr13_role": "moved tridiagonal/band linear scratch into reference solver/workspace seam",
+    "fmr15_materialization_commit": "af04ee6a2079569db9f1fde6ff3ac63076b22586",
+    "fmr15_status": "QUALIFIED_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_OWNER_COMPOSITION",
+    "fmr15_headcalc_blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "fmr15_context_binding_blob": "e21c964eac48d5feb91388cfd06a646c4002a497",
+    "fmr15_critical_change": "canonical HeadCalc receives explicit numerical_config, physical_config, step_duration and parameter geometry and materializes local dt/swk*/maxit/tolerance controls",
+    "fvq27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
+    "fvq27_candidate_immutable": true,
+    "fvq27_o0_o2_identity": true,
+    "fvq27_mass_and_transaction_regressions": true
+  },
+  "revised_concurrency_assessment": {
+    "mq23_audit_was_valid_for_mq23_blob": true,
+    "mq23_audit_is_not_the_correct_refactor_base": true,
+    "already_isolated_on_authoritative_line": [
+      "canonical step duration is local from explicit_step_duration",
+      "canonical bottom mode is local from boundary_conditions",
+      "canonical conductivity policy is local from numerical_config",
+      "canonical nonlinear/backtracking limits are local from numerical_config",
+      "canonical balance/head/ponding tolerances are local from numerical_config",
+      "canonical geometry can come from parameter_set rather than MOD_grid",
+      "candidate h/theta/ponding/gwl are in explicit state binding",
+      "constitutive/source/root/top data use explicit providers",
+      "linear solver scratch is reference-workspace owned"
+    ],
+    "remaining_shared_mutable_seams_to_requalify": [
+      "bind_b110_serialized_legacy_context is still called before canonical solve and mirrors request data into variables module",
+      "validate_legacy_request still rejects on shared fldtmin",
+      "HeadCalc still reads shared fldaystart for history reset",
+      "HeadCalc still uses shared fldtmin in retry/backtracking/nonconvergence branches and can assign fldtmin=.FALSE.",
+      "other legacy globals imported by HeadCalc must be classified as unreachable, immutable batch-shared, or still mutable on the restricted canonical path"
+    ]
+  },
+  "branching_decision": {
+    "do_not": [
+      "edit MQ23-era HeadCalc/adapter blobs on the existing MR20 branch",
+      "merge the entire divergent MR19 branch into the existing MR20 branch",
+      "enable worker_count>1 before context isolation qualification"
+    ],
+    "do": "continue concurrency isolation from exact MR19 closeout 110440d28ff2b585763ad8fd4eedb88e7d112eeb on a dedicated MR20 continuation branch, then re-materialize the already-tested additive scheduler/worker-pool seam against that authoritative source line",
+    "reason": "avoids regressing F-MR09/F-MR13/F-MR15/F-VQ27 and later temporal/restart-qualified solver/runtime changes while keeping the concurrency delta source-bound"
+  },
+  "next_gate": {
+    "name": "F-MR20 CANONICAL CONTEXT ISOLATION ON AUTHORITATIVE LINEAGE",
+    "first_actions": [
+      "create continuation branch at MR19 closeout",
+      "port only additive MR20 scheduler/worker-pool seam first",
+      "prove one-worker identity on the newer serialized runtime before shared-source edits",
+      "then retire canonical fldtmin/fldaystart and pre-solve context-mirror dependencies with exact source locks and legacy-path regressions",
+      "keep worker_count>1 fail-closed throughout"
+    ]
+  }
+}
