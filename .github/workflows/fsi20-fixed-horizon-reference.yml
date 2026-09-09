@@ -1,0 +1,31 @@
+name: F-SI20 fixed-horizon fine-reference
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/test_fsi20_fixed_horizon_reference.f90'
+      - 'tests/fsi/run_fsi20_fixed_horizon_reference.sh'
+      - '.github/workflows/fsi20-fixed-horizon-reference.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run fixed-horizon fine-reference study
+        run: bash tests/fsi/run_fsi20_fixed_horizon_reference.sh
