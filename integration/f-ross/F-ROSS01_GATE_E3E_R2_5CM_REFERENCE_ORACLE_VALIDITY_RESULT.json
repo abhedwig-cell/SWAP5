@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2_5CM_REFERENCE_ORACLE_VALIDITY",
+  "workflow_run": 34400250255,
+  "workflow_head": "6eb53e8c5726573191bcfd3a3e15b807a164ddd0",
+  "production_implementation": false,
+  "qualification_use": false,
+  "pass": false,
+  "decision": "R2_REFERENCE_ORACLE_HARNESS_NOT_QUALIFIED_ENDPOINT_SINGULARITY_REPAIR_REQUIRED",
+  "material_results": [
+    {
+      "material": "B01",
+      "result_emitted": true,
+      "pass": false,
+      "legacy_max_abs_error_over_ksatfit_vs_split_adaptive": 3.1927327264674806e-05,
+      "legacy_count_exceeding_5e_4": 0,
+      "max_split_adaptive_vs_split_fixed_abs_over_ksatfit": 0.00010634202556654326,
+      "max_split_adaptive_vs_mpmath80_witness_abs_over_ksatfit": 2.139022672124473e-14,
+      "worst_legacy_probe": {
+        "family": "near_saturation",
+        "h_surface_cm": 0.924612096320944,
+        "h_top_node_cm": -0.010519765794413582,
+        "q_legacy_cm_per_day": 37.0649174713324,
+        "q_split_adaptive_cm_per_day": 37.06392054002772,
+        "q_split_fixed_cm_per_day": 37.063920540026785
+      },
+      "interpretation": "B01 produced a result, but full independent-oracle agreement over the frozen probe set did not satisfy the R2 certificate. The close split-adaptive/mpmath witness agreement is positive diagnostic evidence only."
+    },
+    {
+      "material": "B12",
+      "result_emitted": false,
+      "pass": false,
+      "failure": {
+        "type": "split_adaptive_bracket_failure",
+        "h_surface_cm": 0.0,
+        "h_top_node_cm": -100.0,
+        "q_lower_cm_per_day": 2.2458950000000004,
+        "q_upper_cm_per_day": 47.163795000000006,
+        "residual_lower_cm": -3.7768694575967126,
+        "residual_upper_cm": -4.938379167091308
+      }
+    },
+    {
+      "material": "O13",
+      "result_emitted": false,
+      "pass": false,
+      "failure": {
+        "type": "split_adaptive_bracket_failure",
+        "h_surface_cm": 0.0,
+        "h_top_node_cm": -100.0,
+        "q_lower_cm_per_day": 9.689291000000003,
+        "q_upper_cm_per_day": 203.47511100000003,
+        "residual_lower_cm": -4.361504570564678,
+        "residual_upper_cm": -4.970587592365968
+      }
+    },
+    {
+      "material": "O14",
+      "result_emitted": false,
+      "pass": false,
+      "failure": {
+        "type": "split_adaptive_bracket_failure",
+        "h_surface_cm": 0.0,
+        "h_top_node_cm": -100.0,
+        "q_lower_cm_per_day": 2.1273600000000004,
+        "q_upper_cm_per_day": 44.67456,
+        "residual_lower_cm": -3.7028226420360537,
+        "residual_upper_cm": -4.932197109152926
+      }
+    }
+  ],
+  "common_failure_interpretation": {
+    "finding": "For B12, O13 and O14 the frozen split-adaptive oracle failed before producing a qualification result at the common control h_surface=0 cm, h_top=-100 cm. The lower q endpoint was machine-nextafter above KSAT, where K/(K-q) has a numerically singular endpoint layer. Direct adaptive head quadrature emitted convergence/roundoff warnings and returned same-sign bracket residuals.",
+    "classification": "REFERENCE_ORACLE_HARNESS_PATHOLOGY_NOT_PHYSICAL_ROSS_FALSIFICATION",
+    "required_repair": "Resolve q-KSAT in a logarithmic positive coordinate and use endpoint-robust, independently implemented path integrals before interpreting any 5 cm surface-to-unsaturated candidate discrepancy."
+  },
+  "hard_nonclaims": [
+    "R2 does not falsify the inherited legacy steady_q reference.",
+    "R2 does not qualify or falsify the Ross candidate face.",
+    "The prior 5 cm boundary-face failure remains binding until a valid independent oracle and fresh qualification exist.",
+    "No finite-positive ponding-head, surface-process, runoff or production admission follows from R2.",
+    "No R2 threshold is relaxed after observing the failures."
+  ],
+  "next_gate": "E3E_R2R1_ENDPOINT_SINGULARITY_ORACLE_REPAIR",
+  "status": "FAILED_AS_FROZEN_WITH_HARNESS_PATHOLOGY_IDENTIFIED"
+}
