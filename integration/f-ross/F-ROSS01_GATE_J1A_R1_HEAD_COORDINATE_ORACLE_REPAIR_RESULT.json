@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_R1_HEAD_COORDINATE_ORACLE_REPAIR",
+  "contract": "F-ROSS01_GATE_J1A_R1_HEAD_COORDINATE_ORACLE_REPAIR_CONTRACT.json",
+  "workflow_run": 34355379062,
+  "head": "324ba84820e54e1f523dc4abd5b622f4f5a3713d",
+  "status": "FAILED_PRESERVED_DO_NOT_OPEN_J1B",
+  "material_count": 6,
+  "pass_count": 2,
+  "passed_materials": ["B12", "O18"],
+  "failed_materials": ["B01", "O01", "O05", "O14"],
+  "observed": {
+    "maximum_repaired_self_consistency_metric": 0.00019297285194700637,
+    "maximum_p99_repaired_self_consistency_metric": 0.000024234779073094664,
+    "maximum_base_direct_head_vs_production_lookup_scaled_error": 8.415686809654214e-14,
+    "cell_change_count_total": 0,
+    "nonfinite_derivative_count_total": 0,
+    "table_bitwise_unchanged_all": true,
+    "finite_difference_factors_unchanged": [1e-06, 3e-06]
+  },
+  "per_material": [
+    {"material":"B01","pass":false,"max_repaired_metric":4.662409733657525e-05,"p99_repaired_metric":1.2546311595699582e-05,"max_original_roundtrip_metric":2.117414047664152e-05},
+    {"material":"B12","pass":true,"max_repaired_metric":2.0373214591515622e-07,"p99_repaired_metric":4.889945677909581e-08,"max_original_roundtrip_metric":1.6710883290915992e-07},
+    {"material":"O01","pass":false,"max_repaired_metric":8.19226278994261e-05,"p99_repaired_metric":2.4234779073094664e-05,"max_original_roundtrip_metric":4.7460433229204535e-05},
+    {"material":"O05","pass":false,"max_repaired_metric":0.00019297285194700637,"p99_repaired_metric":2.129770325274752e-05,"max_original_roundtrip_metric":8.160149210785064e-05},
+    {"material":"O14","pass":false,"max_repaired_metric":5.983862624313537e-06,"p99_repaired_metric":1.4047493062224514e-06,"max_original_roundtrip_metric":4.759745513152872e-06},
+    {"material":"O18","pass":true,"max_repaired_metric":8.357742221976174e-07,"p99_repaired_metric":2.55695958884176e-07,"max_original_roundtrip_metric":1.5835268224911561e-06}
+  ],
+  "failure_characterization": {
+    "classification": "DOUBLE_PRECISION_SYMMETRIC_FD_CANCELLATION_SUSPECTED_NOT_YET_PROVEN",
+    "evidence": [
+      "Removing the h-to-S-to-u roundtrip does not make the gate pass, so that roundtrip is not the sole cause.",
+      "At every failed material the worst normalized row is controlled by an endpoint derivative close to zero.",
+      "The companion large-magnitude endpoint derivative in the same worst row agrees with direct-head symmetric FD at approximately 1e-10 to 1e-8 relative scale.",
+      "No table-cell crossing, equal-head branch crossing, nonfinite derivative or table mutation occurred.",
+      "Direct-head base flux matches the production state-based C1R lookup to at most 8.42e-14 scaled error."
+    ],
+    "not_yet_excluded": [
+      "a derivative algebra defect localized to near-zero components",
+      "double-precision cancellation in q_plus minus q_minus divided by a small fixed head perturbation",
+      "the original relative-or-scaled metric being too strict near a true zero derivative"
+    ]
+  },
+  "decision": "J1A_R1_FAIL_PRESERVED_TEST_HIGH_PRECISION_FD_WITH_IDENTICAL_PRECOMMITTED_STEPS",
+  "next_action": "Run J1A-R2 with an 80-decimal-digit flux-only symmetric finite-difference oracle over exactly the same head perturbations, float32 table values, probes and analytic derivative. Do not alter perturbation sizes or the table. Keep J1B closed until R2 resolves whether the remaining discrepancy is finite-difference roundoff amplification.",
+  "scope_guards": [
+    "No Class-B C2B work.",
+    "No table retuning.",
+    "No finite-difference size tuning.",
+    "No J1B while J1A remains unresolved.",
+    "No production, groundwater or MODFLOW admission claim."
+  ]
+}
