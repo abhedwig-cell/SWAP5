@@ -5,7 +5,7 @@
   "title": "Nonstationary Prescribed-Head Temporal Estimator and Same-Endpoint Refinement Policy",
   "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
   "status": "IN_PROGRESS_SOURCE_BOUND_SEAM_AUDIT",
-  "phase": "WORK_UNIT_RESERVED_BEFORE_ALGORITHMIC_SELECTION",
+  "phase": "WORK_UNIT_RESERVED_AND_PERSISTED_BEFORE_ALGORITHMIC_SELECTION",
   "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
   "contract": "integration/f-si/F-SI21_WORK_UNIT_CONTRACT.json",
   "trigger": {
@@ -30,7 +30,7 @@
   },
   "state": {
     "reserved": true,
-    "persisted": false,
+    "persisted": true,
     "source_seam_audit_complete": false,
     "candidate_matrix_frozen": false,
     "characterization_harness_implemented": false,
