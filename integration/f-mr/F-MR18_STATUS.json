@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "branch": "work/f-mr18-generic-accepted-commit-receipt",
+  "base": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
+  "production_implementation": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "gate_A": {
+    "name": "GENERIC_COMMIT_HANDOFF_DESIGN_SELECTION",
+    "status": "OPEN",
+    "preferred_candidate": "GENERIC_ACCEPTED_COMMIT_RECEIPT",
+    "postcommit_domain_callback": "DISFAVORED_PENDING_EVIDENCE",
+    "kernel_commit_authority_remains_F_KT": true,
+    "domain_specific_imports_allowed": false,
+    "postcommit_expected_error_allowed": false
+  },
+  "decision": "PERSISTED_BEFORE_IMPLEMENTATION_OR_TESTING",
+  "status": "GATE_A_OPEN_RECEIPT_CANDIDATE_SELECTED_FOR_SOURCE_BOUND_DESIGN"
+}
