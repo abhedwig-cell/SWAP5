@@ -1,0 +1,37 @@
+name: F-ROSS01 Gate E2C-R1B Endpoint Bracket Causality Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e2c-r1b-endpoint-diagnostic.yml
+      - experiments/ross/run_ross01_gate_e2c_r1b_endpoint_bracket_diagnostic.py
+      - integration/f-ross/F-ROSS01_GATE_E2C_R1B_ENDPOINT_BRACKET_CAUSALITY_DIAGNOSTIC_CONTRACT.json
+      - experiments/ross/run_ross01_gate_e2c_r1_segmented_local_face.py
+      - experiments/ross/run_ross01_gate_e2c_bounded_local_face_solve.py
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install diagnostic dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen R1 endpoint bracket diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e2c-r1b"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e2c_r1b_endpoint_bracket_diagnostic.py \
+            "$out/F-ROSS01_GATE_E2C_R1B_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E2C_R1B_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e2c-r1b-endpoint-diagnostic
+          path: ross01-gate-e2c-r1b/
