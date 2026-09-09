@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3_RESTRICTED_SATURATION_TRANSITION_COLUMN_HYDROLOGIC_RELEVANCE",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_solver_is_production_solver": false,
+  "upstream": [
+    "E1 unified persistent pressure-head state qualified",
+    "C1R/F-R1 restricted unsaturated route qualified below h=-1 cm",
+    "E2C-R3 bounded endpoint-limit near-saturation WET_DRY face fallback qualified",
+    "R3 endpoint-limit micro-error shown hydrologically negligible on independent holdout"
+  ],
+  "physical_composition": {
+    "persistent_state": "pressure head h per cell",
+    "storage": "theta(h), with theta=theta_s for h>=0 and base MvG below 0",
+    "cell_length_cm": 10.0,
+    "cell_count": 3,
+    "internal_mass_ledger": "one shared face flux value enters one adjacent cell and leaves the other",
+    "candidate_face_policy": [
+      "SAT_SAT: analytic Darcy with Ksat",
+      "UNSAT_UNSAT h<=-1 cm: qualified C1R table",
+      "WET_DRY with h_above in [-1,1] and h_below<=-1 cm: qualified E2C-R3",
+      "all other face classes: exact-reference fail-closed fallback, counted as UNQUALIFIED_FACE_FALLBACK"
+    ],
+    "reference_face": "full-accuracy steady_q using the same MvG/KSATFIT material",
+    "qualification_nonlinear_solver": "scipy least_squares over head residual; qualification scaffolding only"
+  },
+  "materials": ["B01","B12","O13","O14"],
+  "case_families": [
+    {
+      "id": "WETTING_TOP_FLUX",
+      "initial_heads_cm": [-0.2,-1.5,-5.0],
+      "top_flux_fraction_of_ksat": 0.5,
+      "bottom_boundary_head_cm": -15.0,
+      "required_event": "at least one cell crosses from h<0 to h>=0 in candidate and reference"
+    },
+    {
+      "id": "DRAINING_BOTTOM_HEAD",
+      "initial_heads_cm": [0.2,0.05,-1.5],
+      "top_flux_fraction_of_ksat": 0.0,
+      "bottom_boundary_head_cm": -15.0,
+      "required_event": "at least one initially saturated cell crosses from h>=0 to h<0 in candidate and reference"
+    }
+  ],
+  "time_policy": {
+    "horizon_day": 0.002,
+    "candidate_step_counts": [4,8,16],
+    "reference_step_count": 64,
+    "sigma_or_timestep_retuning_after_results": false
+  },
+  "hydrologic_observables": [
+    "cumulative bottom flux cm",
+    "total column storage cm",
+    "per-cell storage cm",
+    "pressure-head trajectory cm",
+    "first saturation/desaturation crossing time",
+    "candidate face-route counts",
+    "nonlinear qualification-solver evaluations",
+    "step and horizon water-balance residuals"
+  ],
+  "frozen_acceptance": {
+    "max_abs_step_mass_residual_cm": 1e-9,
+    "max_abs_horizon_mass_residual_cm": 1e-9,
+    "max_finest_cumulative_bottom_flux_difference_cm": 0.001,
+    "max_finest_total_storage_difference_cm": 0.001,
+    "max_finest_cell_storage_difference_cm": 0.001,
+    "max_finest_head_difference_cm": 0.25,
+    "max_transition_time_difference_day": 0.00025,
+    "required_transition_event_count_per_case_min": 1,
+    "unqualified_face_fallback_count_for_full_pass": 0,
+    "nonfinite_count": 0,
+    "committed_state_mutation_on_rejected_trial_count": 0
+  },
+  "interpretation_policy": [
+    "Mass conservation is a hard gate and is never waived as hydrologically negligible.",
+    "Internal endpoint differences already shown at ~1e-12 Ksat scale are not independently re-optimized in E3.",
+    "Hydraulic discrepancies are judged by their effect on storage, cumulative flux, heads and transition timing.",
+    "If hydrologic metrics pass but an UNQUALIFIED_FACE_FALLBACK occurs, classify a face-scope coverage gap rather than a hydrologic failure.",
+    "Qualification nonlinear-solver cost is diagnostic only; no runtime or MultiSWAP throughput claim follows."
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_PHYSICAL_SATURATION_TRANSITION_COLUMN_READY_FOR_HETEROGENEOUS_AND_BOUNDARY_QUALIFICATION",
+    "hydrology_pass_face_scope_gap": "HYDROLOGICALLY_ACCEPTABLE_SATURATION_TRANSITION_FACE_SCOPE_GAP_REQUIRES_EXPLICIT_FACE_QUALIFICATION",
+    "fail": "SATURATION_TRANSITION_PHYSICAL_COLUMN_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "No theta-only saturated pressure-head reconstruction.",
+    "No silent extrapolation of C1R or R3 outside qualified face classes.",
+    "No post-result tolerance or forcing tuning inside E3.",
+    "No response tangent qualification across saturation or endpoint-limit branches here.",
+    "No production runtime, groundwater or MultiSWAP admission from E3 alone."
+  ],
+  "relevant_invariants": [3,4,5,7,8,9,11,13,14,15,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
