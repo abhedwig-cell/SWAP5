@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE_HOLDOUT",
+  "status": "FROZEN_BEFORE_HOLDOUT_EXECUTION",
+  "candidate_locked": {
+    "representation": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD",
+    "node_count_per_axis": 129,
+    "coordinate": "u=log10(-h/cm) uniform on [0,4]",
+    "stored_quantity": "log(q/g), g=L+h_above-h_below, with analytic hydrostatic limit at g=0",
+    "face_length_cm": 10.0,
+    "material": "B01",
+    "ksatexm_enabled": false,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "no_density_or_representation_changes_after_this_commit": true
+  },
+  "fresh_ordinary_holdout": {
+    "generator": "scipy.stats.qmc.Sobol(d=2,scramble=true)",
+    "seed": 88421,
+    "count": 1024,
+    "mapping": "map each Sobol coordinate affinely into frozen effective-saturation envelope; then execute runtime state path S -> h -> u",
+    "disjoint_from_characterization_seed": 41031
+  },
+  "special_holdout": {
+    "equal_head_count": 96,
+    "equal_head_generation": "heads = -geomspace(1,10000,96); convert h->S and runtime reconstruct S->h before lookup",
+    "hydrostatic_count_target": 96,
+    "hydrostatic_generation": "h_above=-geomspace(11,10000,96), h_below=h_above+L when both remain in envelope; convert both h->S and runtime reconstruct",
+    "near_hydrostatic_count_target": 128,
+    "near_hydrostatic_generation": "64 h_above values from -geomspace(21,10000,64), each with h_below=h_above+L+epsilon for epsilon in {-1,+1} cm when in envelope; convert through S",
+    "wet_dry_cross_count": 49,
+    "wet_dry_cross_generation": "Cartesian product of fixed normalized S fractions {0.01,0.03,0.1,0.5,0.9,0.97,0.99} mapped into the frozen S envelope",
+    "envelope_edge_probes": [
+      "(h_min,h_min)",
+      "(h_max,h_max)",
+      "(h_min,h_max)",
+      "(h_max,h_min)",
+      "hydrostatic pairs nearest both admissible edges"
+    ]
+  },
+  "execution_requirements": {
+    "generate_all_16641_table_entries": true,
+    "full_table_generation_failures_required": 0,
+    "runtime_table_lookup_extrapolation_allowed": false,
+    "runtime_lookup_failures_required": 0,
+    "nan_or_inf_required": 0,
+    "holdout_may_not_change_table_after_generation": true,
+    "base_hydraulic_parameters_immutable": true
+  },
+  "acceptance_thresholds_unchanged_from_characterization": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksat": 0.0005,
+    "wrong_sign_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksat": 1e-05,
+    "shared_table_plus_axis_bytes_max": 262144
+  },
+  "decision_rule": "PASS only if every B1-B6 criterion passes on the frozen unseen holdout and complete table generation succeeds. Any failed criterion rejects Gate B fail-closed; no retuning on these probes.",
+  "scope_guard": "A holdout PASS qualifies only the first homogeneous unsaturated B01 10-cm face-law prototype. Gate C and all transient, saturation, heterogeneous, bottom-boundary, groundwater, process, MultiSWAP and FullRichards gates remain open."
+}
