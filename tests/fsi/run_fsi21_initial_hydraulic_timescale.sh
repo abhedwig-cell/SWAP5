@@ -11,7 +11,7 @@ BASE=631d80abf04915cc964b24144f3fde8ef937093f
 PROVIDER_BLOB=97d67eb373073b183be6d1bf5b756ecb5125dde2
 CONTRACT_BLOB=4271372085d800fd5da969a2ed073b00422d79c6
 STUB_BLOB=23c00e4a188e88bc36ef95cbe4faaacdd6aad639
-DRIVER_BLOB=c3eaf112295c431d7ba530ee606e063c8eb77242
+DRIVER_BLOB=7c072e504140766537645a8b5f8219d78b234957
 FVQ28_BRANCH=origin/qualification/f-vq28-richards-temporal-numeric-profile
 FVQ28_GATEB=integration/f-vq/F-VQ28_GATE_B_EVIDENCE.json
 FVQ28_GATEB_BLOB=279d50777a6fb362514818d004a5ddd23423b60d
@@ -38,8 +38,8 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_b110_default_mvg_provider.f90 -o "$OUT/provider.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fsi/test_fsi21_initial_hydraulic_timescale.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "$OUT/stubs.o" "$OUT/contract.o" "$OUT/provider.o" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/run1.txt" 2>&1
-  "$OUT/test" > "$OUT/run2.txt" 2>&1
+  "$OUT/test" > "$OUT/run1.txt" 2>&1 || { cat "$OUT/run1.txt" >&2; exit 1; }
+  "$OUT/test" > "$OUT/run2.txt" 2>&1 || { cat "$OUT/run2.txt" >&2; exit 1; }
   cmp "$OUT/run1.txt" "$OUT/run2.txt"
   grep -Fq 'FSI21_GATEA_INITIAL_HYDRAULIC_TIMESCALE_DRIVER PASS' "$OUT/run1.txt"
   echo "FSI21_GATEA_REPEAT_O${opt}=PASS"
@@ -92,13 +92,10 @@ for sid, item in enumerate(by_state, 1):
     pats = item['case_patterns']
     if len(pats) != 4 or any(len(p) != 3 for p in pats):
         raise SystemExit(f'state {sid}: pattern shape drift')
-    # At each retry horizon all resolved jump cases must agree for state-coherence.
     for pos in range(3):
         resolved = {p[pos] for p in pats if p[pos] in ('C','U')}
         if len(resolved) > 1:
             state_coherent = False
-    # Any fully resolved C/U sequence with two transitions cannot result from a
-    # one-threshold rule applied to monotonically halving initial-state lambda.
     for p in pats:
         if 'X' not in p:
             transitions = sum(p[i] != p[i-1] for i in (1,2))
