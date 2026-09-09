@@ -101,6 +101,7 @@ MODULE_SRC=(
   src/kernel/mod_kernel_transactions.f90
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
   src/solver/mod_reference_linear_solver.f90
