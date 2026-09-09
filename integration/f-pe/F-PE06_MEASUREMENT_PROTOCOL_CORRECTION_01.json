@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "correction": 1,
+  "status": "PERSISTED_PROTOCOL_CORRECTION_PRETIMING_RERUN_PENDING",
+  "supersedes": [
+    "F-PE06_MEASUREMENT_PROTOCOL.json paired_runtime_design.transaction_mode_both_arms=TX_TEMPORAL_NONE",
+    "F-PE06_MEASUREMENT_PROTOCOL.json source_observations.temporal_service_independent_of_transaction_temporal_mode as sufficient basis for a one-trial TX_TEMPORAL_NONE benchmark route",
+    "F-PE06_MEASUREMENT_PROTOCOL.json required_pre_timing_equivalence_gates requiring exactly one principal Richards trajectory"
+  ],
+  "trigger_evidence": {
+    "workflow_run": 34394714005,
+    "workflow_job": 102611440755,
+    "head": "0a2c6e15703d68ee77f30986b631780c6113a6b3",
+    "conclusion": "failure",
+    "first_executable_failure": "FPE06_FAIL preflight TX_TEMPORAL_NONE completes",
+    "source_owner": "src/transaction/mod_transaction_reference.f90",
+    "source_blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "source_reconciliation": {
+    "valid_policy_admits_TX_TEMPORAL_NONE": false,
+    "valid_policy_admitted_modes": [
+      "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+      "TX_TEMPORAL_MODEL_CERTIFICATE"
+    ],
+    "execute_reference_interval_special_cases_only_model_certificate": true,
+    "all_other_valid_execution_uses_full_plus_two_half_trials": true,
+    "fmr_external_temporal_identity_is_not_a_general_accuracy_estimator": true,
+    "conclusion": "TX_TEMPORAL_NONE is a constant/default diagnostic value, not a valid one-trial transaction execution policy. The original PE06 A/B route was invalid and must not be used for timing evidence."
+  },
+  "corrected_pretiming_harness": {
+    "transaction_mode_both_arms": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "temporal_tolerance_both_arms": "huge(real64), finite benchmark-only acceptance neutralizer",
+    "max_retries": 0,
+    "purpose": "Keep transaction topology, accepted physical branch, mass accounting and principal Richards solve count exactly equal between A and B while preventing the external temporal identity comparison from splitting the benchmark arms.",
+    "principal_model_advances_per_accepted_interval": 3,
+    "arm_A": "FMR_NUMERICAL_CONTINUATION_NONE; temporal service disabled",
+    "arm_B": "FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY; seeded accepted right-derivative history; temporal service executes after each of the three principal advances",
+    "expected_temporal_additional_full_nonlinear_solves_per_advance_B": 0,
+    "expected_temporal_additional_tridiagonal_solves_per_advance_B": 1,
+    "expected_aggregate_headcalc_delta_B_minus_A": 0,
+    "expected_aggregate_linear_solve_delta_B_minus_A": 3,
+    "normalization": "A positive test-oracle budget may be obtained from an untimed seeded-history preflight using the same corrected external-full-half harness; this is measurement scaffolding only and is not an application H_budget policy.",
+    "timing_interpretation": "End-to-end paired delta is for three temporal-service invocations. Per-service characterization may divide only fixed-count aggregate work, while wall-clock results must retain both aggregate and per-service provenance."
+  },
+  "hard_gates": [
+    "A and B each complete exactly one transaction attempt with zero retries and zero rollbacks",
+    "A and B each execute exactly three principal Richards advances",
+    "A and B principal nonlinear iterations, Jacobian builds, internal retries, backtracking and alternative solver calls are identical",
+    "B adds zero principal/nonlinear trajectories",
+    "B aggregate linear solve count equals A plus exactly three defect reference_tridag calls",
+    "A and B candidate physical state is bitwise identical",
+    "A and B strict mass result and maximum step mass residual are bitwise identical",
+    "Only B carries accepted derivative continuation state"
+  ],
+  "nonclaims": [
+    "The huge temporal tolerance is not a production accuracy policy and qualifies no physical fidelity concession.",
+    "The external-full-half harness is benchmark scaffolding, not the production model-certificate execution route.",
+    "PE06 still does not select H_budget, BALANCED or THROUGHPUT policy.",
+    "No wall-clock evidence is admissible until this corrected pre-timing equivalence gate passes O0 and O2."
+  ],
+  "architecture_invariants": {
+    "7_transactional_timesteps": "PRESERVED: the corrected harness uses a valid existing transaction route and does not bypass checkpoint/trial/candidate semantics.",
+    "13_mass_conservation_absolute": "HARD_GATE: bitwise A/B mass identity remains required before timing.",
+    "23_physics_solver_policy_separated": "PRESERVED: only optional numerical continuation layout differs; the huge external temporal tolerance is identical benchmark scaffolding in both arms.",
+    "24_predictable_compute": "TARGET: fixed three-advance harness permits deterministic counting of incremental temporal-service work; it is not a production wall-clock guarantee.",
+    "30_architecture_change_audit": "PASS_FOR_CORRECTION: no production source change is made; the invalid assumption is explicitly retained as negative evidence."
+  }
+}
