@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1_STARINGREEKS_UNIMODAL_MVG_GENERALISATION",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "purpose": "Test whether the Gate B representation generalises across the full 36-row Staringreeks 2018 homogeneous unimodal Mualem-van Genuchten material catalog without changing representation, node density, face geometry or acceptance thresholds.",
+  "catalog": {
+    "artifact": "F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "source": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "source_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "material_count": 36,
+    "materials": ["B01","B02","B03","B04","B05","B06","B07","B08","B09","B10","B11","B12","B13","B14","B15","B16","B17","B18","O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18"]
+  },
+  "constitutive_scope": {
+    "retention": "unimodal van Genuchten effective saturation with m=1-1/n",
+    "conductivity": "Mualem-van Genuchten using KSATFIT and LEXP",
+    "ksatexm": "disabled in C1 to keep the constitutive law identical in form to qualified Gate B",
+    "h_enpr": "all catalog rows have H_ENPR=0 but enhanced near-saturated conductivity is explicitly outside C1",
+    "saturation_switching": false
+  },
+  "representation_locked_from_gate_b": {
+    "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
+    "node_count_per_axis": 129,
+    "coordinate": "u=log10(-h/cm) uniform on [0,4]",
+    "stored_quantity": "log(q/g), g=L+h_above-h_below",
+    "exact_equal_head": "q=K(h)",
+    "exact_hydrostatic_structure": "q=g*M so q=0 when g=0",
+    "face_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0,-1.0],
+    "no_representation_or_density_tuning_in_c1": true
+  },
+  "qualification_probes_per_material": {
+    "ordinary": 256,
+    "ordinary_generator": "scipy.stats.qmc.Sobol(d=2,scramble=true)",
+    "seed_rule": "integer from first 8 hex digits of sha256('F-ROSS01-C1:'+material), reduced to uint32",
+    "equal_head": 48,
+    "hydrostatic": 48,
+    "near_hydrostatic": 64,
+    "wet_dry_cross": 25,
+    "edge": 6,
+    "minimum_total_per_material": 447,
+    "all_16641_table_entries_must_be_generated": true
+  },
+  "acceptance_thresholds_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_axis_bytes_max": 262144
+  },
+  "aggregate_decision_rule": "C1 PASS only if every one of the 36 frozen materials passes every per-material criterion. Any single material failure rejects C1 fail-closed. No retuning on C1 probes.",
+  "valid_pass_decision": "C1_STARINGREEKS_UNIMODAL_MVG_GENERALISATION_QUALIFIED_READY_FOR_KSATEXM_AND_OTHER_HYDRAULIC_FAMILIES",
+  "valid_fail_decision": "C1_GENERALISATION_FAILED_GATE_B_REPRESENTATION_NOT_UNIVERSAL_ACROSS_STARINGREEKS_MVG",
+  "scope_guard": "Even a C1 PASS does not qualify KSATEXM near-saturated extensions, other SWAP hydraulic model families, saturation transitions, heterogeneous profiles, transient timestep accuracy, process physics, bottom boundary, groundwater, MultiSWAP, real-table response tangents or FullRichards equivalence."
+}
