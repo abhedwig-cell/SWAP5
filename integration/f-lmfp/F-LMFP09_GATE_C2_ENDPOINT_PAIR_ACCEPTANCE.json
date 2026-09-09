@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C2_BOUNDED_TRANSFORMED_ENDPOINT_PAIR_SYNTHETIC_QUALIFICATION",
+  "status": "PERSISTED_BEFORE_FIRST_C2_EXECUTION",
+  "candidate": "BOUNDED_TRANSFORMED_ENDPOINT_PAIR_LOG_RATIO",
+  "basis": {
+    "geometry_pretest": "integration/f-lmfp/F-LMFP09_GATE_C_BOUNDED_ENDPOINT_COORDINATE_PRETEST.json",
+    "gate_c1_plan": "integration/f-lmfp/F-LMFP09_GATE_C1_CORRECTED_HALF_FACE_PLAN.json",
+    "gate_c1_homogeneous_amendment": "integration/f-lmfp/F-LMFP09_GATE_C1_ACCEPTANCE_AMENDMENT.json",
+    "catalog_discontinuity_owner_boundary": "integration/f-lmfp/F-LMFP09_GATE_C_CATALOG_CONSTITUTIVE_DISCONTINUITY_CHARACTERIZATION.json"
+  },
+  "scope": {
+    "synthetic_only": true,
+    "catalog_admission": false,
+    "production_code_change": false,
+    "production_solver_admission": false,
+    "groundwater_admission": false,
+    "modflow_admission": false,
+    "thresholds_changed_from_gate_c1": false
+  },
+  "representation": {
+    "coordinates": [
+      "x_upper=asinh(h_upper/0.01 cm)",
+      "x_lower=asinh(h_lower/0.01 cm)"
+    ],
+    "ratio_head_envelope_cm": [-1000000.0, 100.0],
+    "base_axis_nodes": 33,
+    "zero_knot_inserted_exactly": true,
+    "table_class": "material x half-face geometry",
+    "pair_specific_tables": false,
+    "runtime_oracle_calls": 0,
+    "shared_immutable_parameter_data": true,
+    "persistent_column_state_added": false,
+    "root_scratch": "worker-local"
+  },
+  "predeclared_acceptance": {
+    "provider_identity": {
+      "equal_head_abs_error_max": 2e-10,
+      "hydrostatic_abs_flux_max": 2e-10
+    },
+    "provider_continuity_final_small_over_large_max": 0.35,
+    "provider_fail_closed_outside_endpoint_envelope": true,
+    "provider_face_matrix": {
+      "covered_failures": 0,
+      "active_flux_sign_mismatches": 0,
+      "active_rel_error_p90_max": 0.02,
+      "active_rel_error_p99_max": 0.10,
+      "active_rel_error_maximum_max": 0.30,
+      "strong_gradient_rel_error_p90_max": 0.02,
+      "near_saturation_rel_error_p90_max": 0.02,
+      "dormant_abs_error_over_ks_scale_max": 1e-7,
+      "corrected_p90_must_improve_over_mfp": true,
+      "fraction_corrected_better_on_informative_cases_min": 0.75
+    },
+    "heterogeneous_interface": {
+      "covered_candidate_failures": 0,
+      "active_flux_sign_mismatches": 0,
+      "active_face_rel_error_p90_max": 0.02,
+      "active_face_rel_error_p99_max": 0.10,
+      "active_face_rel_error_maximum_max": 0.30,
+      "dormant_abs_error_over_ks_scale_max": 1e-7,
+      "equal_flux_scaled_residual_max": 1e-9,
+      "accepted_root_iterations_max": 60,
+      "hydrostatic_abs_flux_max": 2e-10
+    },
+    "composed_interface_continuity_final_small_over_large_max": 0.35,
+    "homogeneous_reduction": {
+      "same_material_controls": ["reference_sand", "reference_clay"],
+      "symmetric_half_face_geometries_cm": [[5.0, 5.0], [10.0, 10.0]],
+      "active_relative_error_p90_max": 0.02,
+      "active_relative_error_maximum_max": 0.10,
+      "sign_mismatches": 0,
+      "silent_same_material_shortcut": false
+    }
+  },
+  "hard_rules": {
+    "threshold_relaxation_after_results": false,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true,
+    "single_realized_face_flux_required": true,
+    "mass_conservation_requirement_unchanged": true,
+    "reference_mode_unchanged": true,
+    "catalog_b110_jump_not_reinterpreted": true,
+    "catalog_failure_may_not_be_counted_as_c2_coordinate_failure": true
+  },
+  "decision_if_pass": "GATE_C2_SYNTHETIC_ENDPOINT_PAIR_QUALIFIED_ONLY",
+  "decision_if_fail": "GATE_C2_SYNTHETIC_ENDPOINT_PAIR_FAILED_LOCALIZE_WITHOUT_THRESHOLD_RELAXATION"
+}
