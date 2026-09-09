@@ -1,0 +1,29 @@
+name: F-WOF27 rate evaluator readiness
+
+on:
+  push:
+    branches:
+      - work/f-wof27-one-day-rate-evaluator-readiness
+  workflow_dispatch:
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run F-WOF27 zero-production readiness gate
+        run: bash tests/fwof/run_fwof27_rate_evaluator_readiness_gate.sh
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Retain F-WOF26 structural integrator qualification
+        run: bash tests/fwof/run_fwof26_one_day_structural_evolution_gate.sh
+
+      - name: Retain F-WOF24 owner behavior
+        run: bash tests/fwof/run_fwof26_fwof24_backward_compatibility.sh
