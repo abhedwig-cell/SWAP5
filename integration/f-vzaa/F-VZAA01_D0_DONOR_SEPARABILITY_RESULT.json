@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01-D0",
+  "stage": "D0-A",
+  "branch": "work/f-vzaa01-d0-donor-separability-evidence",
+  "execution": {
+    "workflow_run": 34323109845,
+    "head": "9d2bd1fd05f2039fd66488764c035316e69a17f4",
+    "conclusion": "success",
+    "artifact_id": 10092743882,
+    "artifact_digest": "sha256:e563686cc9e9aba574633391ef85cef9d99349b26c4c46a55c1bd17b95a7c94d",
+    "execution_failures": 0,
+    "diagnostic_failures": 0
+  },
+  "source_binding": {
+    "publication": "Sadeghi et al. (2026), Journal of Hydrology 673, 135467",
+    "doi": "10.1016/j.jhydrol.2026.135467",
+    "equations_used": [3, 5, 6, 15, 17],
+    "deep_groundwater_specialization": "q_vzaa_mid=-sqrt(c*D(theta))*H+K(theta)",
+    "official_matlab_supplement_captured": false,
+    "reproduction_label": "SOURCE_BOUND_EQUATION_RECONSTRUCTION_NOT_OFFICIAL_CODE_REPRODUCTION"
+  },
+  "structural_mass_gate": {
+    "pass": true,
+    "candidate_max_abs_mass_residual_cm": 3.761368386895336e-15,
+    "candidate_threshold_cm": 2e-10,
+    "ordinary_fullrichards_max_abs_mass_residual_cm": 4.962970139021916e-13,
+    "ordinary_fullrichards_threshold_cm": 2e-8,
+    "stress_direct_darcian_max_abs_mass_residual_cm": 1.9148823124134612e-15,
+    "stress_direct_darcian_threshold_cm": 2e-10,
+    "fullrichards_ledger_identity_max_abs_cm_d": 5.551115123125783e-17,
+    "fullrichards_ledger_identity_threshold_cm_d": 1e-10,
+    "interpretation": "These are inherited structural conservation thresholds, not scientific donor-accuracy tolerances."
+  },
+  "ordinary_fullrichards_family": {
+    "rows": 1680,
+    "vzaa_rmse_cm_d": 0.09202544107197946,
+    "layeredmfp_rmse_cm_d": 0.024375235719731558,
+    "vzaa_mae_cm_d": 0.0426360837947894,
+    "layeredmfp_mae_cm_d": 0.011117346418577758,
+    "vzaa_closer_fraction": 0.13095238095238096,
+    "delta_q_direction_match_fraction": 0.41215323645970936,
+    "direction_rows": 1514
+  },
+  "stress_direct_darcian_family": {
+    "rows": 300,
+    "vzaa_rmse_cm_d": 3.5591549386181995,
+    "layeredmfp_rmse_cm_d": 0.6392046790515329,
+    "vzaa_mae_cm_d": 2.252214888352391,
+    "layeredmfp_mae_cm_d": 0.4197739160966449,
+    "vzaa_closer_fraction": 0.0,
+    "delta_q_direction_match_fraction": 0.6,
+    "direction_rows": 300
+  },
+  "fine_refinement_case_characterization": {
+    "steady_sand": {
+      "vzaa_rmse_cm_d": 2.165694149466902e-15,
+      "layeredmfp_rmse_cm_d": 4.5938365477889666e-14,
+      "vzaa_over_layeredmfp_rmse": 0.0471434742385264,
+      "vzaa_closer_fraction": 1.0,
+      "interpretation": "Both representations are at machine-negligible error; this is an identity/steady regime, not useful donor evidence."
+    },
+    "redistribution_sand": {
+      "vzaa_rmse_cm_d": 0.17047682267357708,
+      "layeredmfp_rmse_cm_d": 0.04557805549025744,
+      "vzaa_over_layeredmfp_rmse": 3.740326805078761,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 0.0,
+      "median_signed_delta_q_over_e_needed": -2.2142991413124973
+    },
+    "infiltration_sand": {
+      "vzaa_rmse_cm_d": 0.022749590545893983,
+      "layeredmfp_rmse_cm_d": 3.0783260710235217e-6,
+      "vzaa_over_layeredmfp_rmse": 7390.247173630279,
+      "vzaa_closer_fraction": 0.084375,
+      "delta_q_direction_match_fraction": 0.6372549019607843,
+      "median_abs_delta_q_over_e_needed": 26.789663888698257,
+      "median_signed_delta_q_over_e_needed": 5.692852922687403
+    },
+    "infiltration_clay": {
+      "vzaa_rmse_cm_d": 0.0019894149834646636,
+      "layeredmfp_rmse_cm_d": 6.687284112992689e-7,
+      "vzaa_over_layeredmfp_rmse": 2974.9221804400977,
+      "vzaa_closer_fraction": 0.0925,
+      "delta_q_direction_match_fraction": 0.7849740932642487,
+      "median_abs_delta_q_over_e_needed": 37.53369911382797,
+      "median_signed_delta_q_over_e_needed": 23.883449822255397
+    },
+    "sand_strong_gradient_1": {
+      "vzaa_over_layeredmfp_rmse": 6.2301222960262965,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 1.0,
+      "median_signed_delta_q_over_e_needed": 6.274151782466265
+    },
+    "sand_strong_gradient_2": {
+      "vzaa_over_layeredmfp_rmse": 4.761315634158767,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 1.0,
+      "median_signed_delta_q_over_e_needed": 5.046905293767282
+    },
+    "sand_strong_gradient_3": {
+      "vzaa_over_layeredmfp_rmse": 16.273749467977925,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 1.0,
+      "median_signed_delta_q_over_e_needed": 16.06470301750959
+    },
+    "clay_strong_gradient_down": {
+      "vzaa_over_layeredmfp_rmse": 118.39326130609959,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 0.0,
+      "median_signed_delta_q_over_e_needed": -116.15688464056346
+    },
+    "clay_strong_gradient_up": {
+      "vzaa_over_layeredmfp_rmse": 9246.700632929222,
+      "vzaa_closer_fraction": 0.0,
+      "delta_q_direction_match_fraction": 0.0,
+      "median_signed_delta_q_over_e_needed": -8989.842328023045
+    }
+  },
+  "bounded_apparent_improvement_check": {
+    "observation": "The deepest layer of the two infiltration cases has VZAA RMSE below LayeredMFP RMSE in both refinements.",
+    "fine_sand_layer4_vzaa_rmse_cm_d": 2.286128e-10,
+    "fine_sand_layer4_layeredmfp_rmse_cm_d": 3.233779e-10,
+    "fine_clay_layer4_vzaa_rmse_cm_d": 1.876130e-10,
+    "fine_clay_layer4_layeredmfp_rmse_cm_d": 4.048106e-10,
+    "fine_sand_layer4_vzaa_closer_fraction": 0.30,
+    "fine_clay_layer4_vzaa_closer_fraction": 0.34,
+    "decision": "NOT_A_USEFUL_DONOR_REGIME",
+    "reason": "Both representations are already at approximately 1e-10 cm/d absolute error, individual-step wins are a minority, and the same VZAA term is orders of magnitude worse higher in the same profiles."
+  },
+  "temporal_refinement": {
+    "observation": "VZAA errors are generally stable under the factor-two refinement rather than converging toward a distinct useful correction; the strong-gradient VZAA RMSE fine/coarse ratios are approximately 0.999 to 1.000.",
+    "infiltration_direction_fraction_changes_with_refinement": true,
+    "interpretation": "The adverse stress-case signal is refinement-robust. The infiltration correction direction is not sufficiently stable and its magnitude remains far too large."
+  },
+  "history_and_switching": {
+    "maximum_history_length": 101,
+    "maximum_raw_theta_history_bytes_per_layer": 808,
+    "history_evaluation_cost": "grows linearly with accepted history length in the literal Eq. 5 implementation",
+    "true_trajectory_c_switches_total": 2,
+    "true_switch_location": "infiltration_sand refinement 2 layer 4",
+    "interpretation": "D0-A failure is not primarily caused by c-switch chatter."
+  },
+  "reporting_erratum": {
+    "affected_artifact_fields": [
+      "reference_families.ordinary.h_regime_switches",
+      "reference_families.stress.h_regime_switches"
+    ],
+    "problem": "The initial aggregate summary grouped switch counting by layer only and therefore counted transitions between different cases/refinements as if they belonged to one trajectory.",
+    "raw_rows_reanalysis": "Exactly two real trajectory-local switches; all decision logic in this result uses trajectory-local counting.",
+    "scientific_effect": "NONE_ON_D0_DECISION"
+  },
+  "precommit_falsification_findings": [
+    "VZAA diagnostic is consistently less accurate than LayeredMFP in redistribution and all strong-gradient cases.",
+    "The correction direction is systematically wrong in redistribution_sand and both clay strong-gradient cases.",
+    "Where direction is correct in strong-gradient sand, correction magnitude is typically 5x to 16x the needed correction and VZAA is never closer to the oracle.",
+    "In infiltration cases the direction fraction changes materially with refinement and median correction magnitude remains tens of times larger than the needed correction.",
+    "The only broad case where VZAA is uniformly closer is steady_sand, where both errors are at machine-negligible scale and H contributes no useful dynamic information.",
+    "The only layer-local RMSE improvement occurs where LayeredMFP is already approximately exact and therefore does not justify unbounded history cost."
+  ],
+  "decision": "D0A_REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL",
+  "qualification": false,
+  "d0b_direction_reversal_allowed": false,
+  "d0c_shallow_groundwater_allowed": false,
+  "d1_bounded_history_allowed": false,
+  "d2_conservative_integration_allowed": false,
+  "d0d_heterogeneous_interface": "NOT_JUSTIFIED_WITHOUT_A_NEW_SOURCE_BOUND_HYPOTHESIS",
+  "production_admission": "NONE",
+  "claim_limit": "This rejects the published VZAA Eq. 3/5/6/15/17 relation as a useful diagnostic flux donor/correction for the tested LayeredMFP D0-A regimes. It does not claim that the complete published sequential VZAA algorithm cannot reproduce its reported benchmarks, and it is not an official MATLAB-code reproduction because the supplementary code has not been captured."
+}
