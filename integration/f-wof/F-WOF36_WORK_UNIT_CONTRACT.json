@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF36",
+  "title": "Physical Trial PTRA/QROT Accepted-Window Binding",
+  "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
+  "base": {
+    "commit": "db727db92e7d5b77eccd0103921c527fe6dd5ffc",
+    "status": "QUALIFIED_RESTRICTED_CANONICAL_ACCEPTED_WINDOW_RUNTIME_LINEAGE_COMPOSITION_PHYSICAL_BINDING_HELD"
+  },
+  "goal": "Qualify the runtime-owned seam that binds the exact potential-transpiration rate and the exact root-extraction rate physically applied to one Richards trial to F-WOF34 trial scratch, then admits that contribution only after the same F-KT checkpoint lineage/revision/interval has actually committed.",
+  "source_bound_inputs": {
+    "PTRA_semantics": "root_water_uptake_request_t.potential_transpiration and the restricted qualified F-WOF18 current reference-ET result producer",
+    "QROT_semantics": "sum of the exact fmr_b110_physical_forcing_t.root_extraction_sink vector supplied to the Richards trial; this equals root_water_uptake_flux_result_t.actual_uptake_total on the qualified process route",
+    "QROT_extra_dz_factor": false,
+    "physical_sink_application": "the serialized reference backend binds the supplied root_extraction_sink before advancing Richards and the B1.10 root-sink provider returns it unchanged",
+    "acceptance_authority": "F-KT commit only",
+    "accepted_window_owner": "runtime outside crop kernel"
+  },
+  "gate_A_execution_point_and_atomicity": {
+    "status": "REQUIRED_BEFORE_PRODUCTION_IMPLEMENTATION",
+    "questions": [
+      "Where can trial-local PTRA/QROT scratch be prepared without changing the physical forcing actually used by Richards?",
+      "How is the exact same F-KT checkpoint used for both the physical candidate and F-WOF34 trial provenance?",
+      "How are rejected, mass-incomplete, invalid-candidate and commit-rejected paths guaranteed to contribute zero?",
+      "How is post-commit accepted-window admission proven total for every prevalidated successful F-KT commit, so no expected runtime status can leave a committed physical state with missing accepted-window metadata?",
+      "How is active WOFOST binding represented sparsely so non-WOFOST columns pay no window-state allocation cost?",
+      "How are batch ordering and A-B-A replay kept deterministic?"
+    ],
+    "outer_wrapper_not_preapproved": true,
+    "reason": "A naive wrapper that first commits the physical runtime and only then performs fallible window admission can create a normal-error partial-composition state. Gate A must close this before implementation."
+  },
+  "candidate_data_contract": {
+    "runtime_local_trial_scratch": true,
+    "persistent_solver_scratch": false,
+    "sparse_WOFOST_active_binding": true,
+    "potential_transpiration_must_share_trial_interval_identity": true,
+    "actual_uptake_is_derived_from_exact_applied_sink_not_recomputed_after_trial": true,
+    "candidate_state_root_uptake_recomputation_required": false,
+    "calendar_dependency": false
+  },
+  "required_failure_paths": [
+    "routing rejection",
+    "checkpoint capture failure",
+    "physical profile rejection",
+    "kernel rejected/incomplete",
+    "mass incomplete",
+    "candidate invalid",
+    "commit rejected",
+    "lineage/revision/time mismatch",
+    "non-finite or negative PTRA/QROT input",
+    "missing sparse WOFOST binding"
+  ],
+  "qualification_gates_after_A": [
+    "same-checkpoint trial contribution identity",
+    "rejected and retried trial zero contribution",
+    "accepted retry exactly once",
+    "QROT integral equals exact applied root sink sum times accepted interval duration",
+    "PTRA integral equals same-trial PTRA times accepted interval duration",
+    "F-WOF34 exact semantic regression",
+    "F-WOF35 composition preservation regression",
+    "mass accounting unchanged",
+    "O0/O2 identity",
+    "single-column and MultiSWAP deterministic identity",
+    "inactive/non-WOFOST zero-cost functional path"
+  ],
+  "not_in_scope": [
+    "new Feddes/root-uptake physics",
+    "re-evaluation of root uptake from candidate post-state",
+    "new ET physics",
+    "calendar scheduler",
+    "active-window restart/distributed ownership",
+    "historical multi-day B1.10 crop trajectory equivalence",
+    "oxygen IALPWET, nutrients, soybean, grass or potential crop",
+    "canonical promotion"
+  ],
+  "affected_invariants": [3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
+}
