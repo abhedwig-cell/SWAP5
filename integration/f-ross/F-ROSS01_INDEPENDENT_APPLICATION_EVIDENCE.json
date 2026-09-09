@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "evidence": [
+    {
+      "citation": "Varado N, Braud I, Ross PJ, Haverkamp R (2006), Assessment of an efficient numerical solution of the 1D Richards' equation on bare soil, Journal of Hydrology 323:244-257",
+      "doi": "10.1016/j.jhydrol.2005.07.052",
+      "relevance": "independent broader assessment of the Ross 2003 numerical scheme for infiltration/evaporation conditions",
+      "qualification_use": "supports broader testing beyond the single original Ross benchmark but does not establish SWAP5 heterogeneous, groundwater or coupling admission"
+    },
+    {
+      "citation": "Varado N, Braud I, Ross PJ (2006), Development and assessment of an efficient vadose zone module solving the 1D Richards' equation and including root extraction by plants, Journal of Hydrology 323:258-275",
+      "doi": "10.1016/j.jhydrol.2005.09.015",
+      "source_bound_findings": [
+        "Ross-derived water flow was successfully embedded with root-extraction formulations in a larger vadose-zone module",
+        "reported cumulative transpiration errors were below a few percent in the tested cases",
+        "soil evaporation was less accurately represented and showed systematic underestimation",
+        "one tested root-water-uptake compensation formulation was unsuitable for sandy soil",
+        "the authors concluded the Ross method with a selected root-extraction formulation was efficient and sufficiently accurate for larger-scale watershed use under their tested conditions"
+      ],
+      "SWAP5_interpretation": "This is evidence that distributed root sinks are not fundamentally incompatible with RossFast. It is not evidence that SWAP root uptake, evaporation or crop stress may be ported unchanged. Surface evaporation deserves an explicit bias gate."
+    },
+    {
+      "citation": "Crevoisier D, Chanzy A, Voltz M (2009), Evaluation of the Ross fast solution of Richards' equation in unfavourable conditions for standard finite element methods, Advances in Water Resources 32:936-947",
+      "doi": "10.1016/j.advwatres.2009.03.008",
+      "source_bound_findings": [
+        "tested sand, loam and clay over initial conditions from extremely dry to near saturation and multiple grids",
+        "reported numerical robustness superior to HYDRUS-1D in every tested scenario with modified VGM hydraulics",
+        "reported mean speed ratio about 4.1 and range about 1.25 to 14 relative to HYDRUS-1D",
+        "coarse grids showed particularly favorable speed/accuracy compromise",
+        "modified rather than standard VGM was deliberately used to avoid severe near-saturation hydraulic nonlinearity"
+      ],
+      "SWAP5_interpretation": "Strong evidence for feasibility and bounded non-global solving, but it exposes near-saturation constitutive behavior as a qualification target rather than proving the full SWAP catalog."
+    },
+    {
+      "citation": "Tinet A-J et al. (2015), Development and evaluation of an efficient soil-atmosphere model (FHAVeT) based on the Ross fast solution of the Richards equation for bare soil conditions, HESS 19:969-980",
+      "doi": "10.5194/hess-19-969-2015",
+      "source_bound_findings": [
+        "Ross-derived solver was coupled to heat and surface-energy processes",
+        "reported water mass-balance error was mostly below 0.002 m",
+        "computation time was generally improved compared with the study reference",
+        "behavior differed under some dry conditions"
+      ],
+      "SWAP5_interpretation": "Useful external evidence for integrated process use, but the reported mass-balance magnitude is not acceptable as a SWAP5 conservation tolerance. SWAP5 must prove its own discrete ledger to roundoff."
+    }
+  ],
+  "new_gates_or_focus": [
+    "explicit surface-evaporation bias scenarios",
+    "distributed SWAP root uptake as externally supplied conservative sink",
+    "standard and modified VGM near-saturation behavior treated separately",
+    "dry-tail scenarios where later coupled Ross applications reported differences",
+    "mass conservation judged from SWAP5 ledger, not historical model balance magnitudes"
+  ],
+  "status": "INDEPENDENT_APPLICATION_EVIDENCE_STRENGTHENS_FEASIBILITY_BUT_DOES_NOT_CLOSE_SWAP5_HARD_GATES"
+}
