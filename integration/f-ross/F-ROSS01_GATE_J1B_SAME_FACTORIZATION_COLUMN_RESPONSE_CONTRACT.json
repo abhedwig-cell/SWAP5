@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1B_SAME_FACTORIZATION_C1R_COLUMN_RESPONSE_TANGENT",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "prerequisite": "QUALIFIED_REAL_C1R_FACE_DERIVATIVE_READY_FOR_J1B_SAME_FACTORIZATION_COLUMN_TANGENT",
+  "production_implementation": false,
+  "primary_quantity": {
+    "name": "d_h_bottom_d_q_bottom",
+    "definition": "Derivative of the lower endpoint pressure head h_bottom with respect to prescribed lower boundary Darcy flux q_bottom for the frozen homogeneous Ross face chain at fixed top pressure head.",
+    "h_bottom_units": "cm pressure head",
+    "q_bottom_units": "cm/day",
+    "tangent_units": "day",
+    "flux_sign": "positive downward, matching the C1R steady_q/table-face convention",
+    "expected_sign_in_qualified_cases": "negative"
+  },
+  "discrete_system": {
+    "faces": "N serial 10 cm C1R faces with fixed h_0 and unknown h_1..h_N",
+    "internal_residual_i": "R_i = q_i(h_{i-1},h_i) - q_{i+1}(h_i,h_{i+1}) for i=1..N-1",
+    "bottom_residual": "R_N = q_N(h_{N-1},h_N) - q_bottom",
+    "jacobian": "tridiagonal from the qualified closed-form C1R endpoint face derivatives",
+    "implicit_tangent_equation": "J * d(h_1..h_N)/d(q_bottom) = e_N",
+    "production_incremental_cost": "reuse one factorization already available for the normal frozen-regime solve and perform exactly one additional tangent backsolve"
+  },
+  "qualification_cases": {
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "geometry_top_head_pairs": [
+      {"name":"wet_short","n_faces":2,"h_top_cm":-50.0},
+      {"name":"mid","n_faces":4,"h_top_cm":-200.0},
+      {"name":"dry","n_faces":16,"h_top_cm":-1000.0},
+      {"name":"long_dry","n_faces":64,"h_top_cm":-3000.0}
+    ],
+    "base_bottom_flux_fractions_of_K_at_top": [-0.02, 0.0, 0.02],
+    "total_cases": 72,
+    "base_profile_generation": "qualification-only independent scalar root solution of each frozen table face q_i=q_bottom, not part of production tangent cost"
+  },
+  "finite_difference_precommit": {
+    "oracle": "independently regenerate complete plus and minus table-law profiles for q_bottom +/- delta_q; never use analytic face derivatives inside the FD profile generator",
+    "relative_factors": [1e-05, 3e-05],
+    "scale": "max(abs(q_bottom), K(h_top), 1e-12*KSATFIT)",
+    "symmetric": true,
+    "both_sizes_must_pass": true,
+    "no_size_tuning_after_execution": true
+  },
+  "hard_gates": {
+    "tangent_metric": "abs(t_analytic-t_fd)/max(abs(t_analytic),abs(t_fd),1e-10 day)",
+    "maximum_tangent_metric": 1e-05,
+    "maximum_scaled_base_flux_continuity_residual": 1e-10,
+    "maximum_linear_residual": 1e-11,
+    "cell_switch_count_for_fd_oracle": 0,
+    "nonfinite_count": 0,
+    "base_state_bitwise_unchanged": true,
+    "table_bitwise_unchanged": true,
+    "tangent_sign_negative_all_cases": true
+  },
+  "cost_contract": {
+    "matrix_factorizations_per_base_case": 1,
+    "normal_backsolves_per_base_case": 1,
+    "additional_tangent_backsolves_per_base_case": 1,
+    "table_derivative_evaluations_per_base_case": "N faces",
+    "production_nonlinear_trajectory_for_tangent": 0,
+    "finite_difference_plus_minus_profile_solves_are_qualification_oracle_only": true
+  },
+  "mass_and_noninterference": {
+    "mass_proxy": "steady serial-face continuity, all face fluxes equal q_bottom within the hard residual gate",
+    "tangent_is_diagnostic_only": true,
+    "normal correction and tangent vectors are scratch and are not committed",
+    "base profile and shared table must remain bitwise unchanged"
+  },
+  "smooth_regime_policy": {
+    "all base and FD endpoint heads must remain strict C1R interpolation-cell interiors",
+    "exact equal-head shortcut is excluded",
+    "any table-cell transition in plus/minus FD fails this gate and is classified as regime switching rather than silently averaged"
+  },
+  "exit_rule": {
+    "pass": "J1B_COLUMN_RESPONSE_TANGENT_QUALIFIED_READY_FOR_BOUNDARY_CONTINUITY_CHARACTERIZATION",
+    "fail": "Keep J1 incomplete and classify derivative representation, discrete algebra, FD oracle or regime switching from recorded diagnostics."
+  },
+  "scope_guards": [
+    "C1R base MvG/KSATFIT only.",
+    "Homogeneous unsaturated 10 cm faces only.",
+    "No Class-B H_ENPR, KSATEXM, saturation, heterogeneity, groundwater switching, crop/process physics or production admission."
+  ],
+  "relevant_invariants": [5, 7, 11, 12, 13, 14, 15, 20, 23, 25, 26, 30]
+}
