@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS",
+  "purpose": "Branch-local immutable hydraulic parameter fixture for the four precommitted B2A materials. This repairs only the unavailable cross-branch test fixture and does not change the frozen scientific gate.",
+  "source": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+  "source_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+  "constitutive_scope": "UNIMODAL_MUALEM_VAN_GENUCHTEN_USING_KSATFIT_WITH_KSATEXM_DISABLED",
+  "rows": [
+    {"sfu":"B01","theta_r":0.02,"theta_s":0.427494,"alpha_per_cm":0.021659,"n":1.734737,"ksatfit_cm_per_day":31.225016,"lambda":0.98087,"h_enpr_cm":0.0},
+    {"sfu":"B12","theta_r":0.01,"theta_s":0.529749,"alpha_per_cm":0.016562,"n":1.090671,"ksatfit_cm_per_day":2.245895,"lambda":-4.493581,"h_enpr_cm":0.0},
+    {"sfu":"O13","theta_r":0.01,"theta_s":0.573268,"alpha_per_cm":0.027854,"n":1.079952,"ksatfit_cm_per_day":9.689291,"lambda":-6.091311,"h_enpr_cm":0.0},
+    {"sfu":"O14","theta_r":0.01,"theta_s":0.393878,"alpha_per_cm":0.003288,"n":1.616573,"ksatfit_cm_per_day":2.495984,"lambda":0.514012,"h_enpr_cm":0.0}
+  ],
+  "repair_classification": "TEST_FIXTURE_PROVENANCE_REPAIR_BEFORE_SCIENTIFIC_EXECUTION",
+  "scientific_precommit_changed": false
+}
