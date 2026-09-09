@@ -23,4 +23,4 @@ jobs:
           sudo apt-get install -y gfortran
           gfortran --version
       - name: Run F-KT11 owner gate
-        run: bash tests/fkt/run_fkt11_richards_head_budget_policy.sh
+        run: bash tests/fkt/run_fkt11_owner_ci.sh
