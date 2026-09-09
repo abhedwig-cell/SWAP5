@@ -1,0 +1,64 @@
+{
+  "workunit": "F-MR16",
+  "handoff": "F-SI_RICHARDS_TEMPORAL_ERROR_SEMANTICS",
+  "decision_class": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_REQUIRED",
+  "production_owner": "F-SI / soil-water model implementation",
+  "request": "Define and qualify the Richards-specific temporal-error semantics before F-MR binds them into the transaction acceptance seam.",
+  "source_problem": {
+    "current_runtime_binding": "fmr_serialized_reference_model_t%temporal_error => fmr_serialized_temporal_identity",
+    "current_semantics": "0 for exact final-state equality, huge(real64) otherwise",
+    "scientific_gap": "physically evolving Richards states expose finite graded full-step versus two-half-step discrepancies, but the production comparator discards their magnitude"
+  },
+  "fmr16_evidence": {
+    "characterization_commit": "60931b9d440ca7c6f339e07018877900b4c76632",
+    "interpretation_commit": "428385a2289267b3e9c4b4e5c4db2a70cd9c11ca",
+    "workflow_run_id": 34283246020,
+    "nonzero_cases": 4,
+    "strict_monotone_h_and_theta": "2/4",
+    "final_below_initial_h_and_theta": "4/4",
+    "ponding_delta": "zero on all rows",
+    "groundwater_delta": "zero on all rows",
+    "asymptotic_order_demonstrated": false,
+    "solver_tolerance_separation_demonstrated": false
+  },
+  "requirements_for_fsi": [
+    "State the temporal discretization contract for the admitted Richards route and whether the estimator relies on a formal order.",
+    "Choose the model-owned temporal observable or observables. Do not inherit F-MR16's diagnostic relative normalizations as production semantics.",
+    "If pressure head alone is selected, define units and tolerance semantics explicitly and justify why constitutive theta, ponding, groundwater and optional process state are either controlled indirectly or handled separately.",
+    "If multiple state components are selected, provide a source/theory basis for scalarization or expose separate controls. Do not introduce arbitrary Hscale/Thetascale constants.",
+    "Demonstrate that the selected temporal signal is not dominated by nonlinear convergence tolerances or route switching on the qualification profiles.",
+    "Characterize a sufficient dt ladder to establish the intended convergence regime or explicitly define behavior outside it.",
+    "Retain deterministic, side-effect-free evaluation from two candidate states and model-owned immutable/numerical configuration only. No hidden global state.",
+    "Support generic [t0,t1] intervals without calendar assumptions.",
+    "Keep authoritative mass completeness/residual acceptance separate and absolute.",
+    "Define conditional handling of ponding, groundwater and optional process state. Unused optional state must not be fabricated merely to satisfy the metric.",
+    "Keep the semantics usable behind the common soil-water solver interface so Full Richards, coarse Richards and future reduced-order solvers can own their own numerical error contract without F-MR knowing solver internals."
+  ],
+  "minimum_qualification_evidence_requested": [
+    "nodewise signed and absolute h differences across full-step/two-half-step candidates",
+    "nodewise signed and absolute theta differences and maximizing-node information",
+    "signed dz-weighted theta storage-state difference if theta/storage is proposed as a control",
+    "solver-tolerance sensitivity characterization with unchanged physics",
+    "extended dt characterization sufficient to assess asymptotic behavior",
+    "active-state evidence or explicit exclusion contract for ponding, groundwater and optional states",
+    "O0/O2 and repeat determinism for the metric evaluation",
+    "mass-complete accepted/rejected transaction evidence with rejected trials uncommitted"
+  ],
+  "not_requested": [
+    "F-PE performance threshold",
+    "BALANCED policy",
+    "THROUGHPUT policy",
+    "FALLBACK policy",
+    "iteration caps for runtime cost",
+    "physics changes",
+    "changes to F-KT checkpoint/retry/rollback/commit semantics"
+  ],
+  "return_path": [
+    "F-SI/model owner implements and qualifies Richards temporal semantics",
+    "F-MR composes the model-owned signal into the existing F-KT acceptance seam",
+    "independent F-VQ scientifically qualifies the composed path",
+    "an accepted nontrivial Richards runtime is demonstrated",
+    "F-PE may then resume reference-tail characterization and only later bounded-cost policy qualification"
+  ],
+  "fpe_release_now": false
+}
