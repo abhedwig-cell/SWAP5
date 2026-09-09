@@ -1,0 +1,26 @@
+name: F-KT10 real Richards transaction history execution
+
+on:
+  push:
+    branches:
+      - work/f-kt10-temporal-indicator-history-commit-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-richards-history:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT10 real Richards history execution gate
+        run: bash tests/fkt/run_fkt10_real_richards_history_binding.sh
