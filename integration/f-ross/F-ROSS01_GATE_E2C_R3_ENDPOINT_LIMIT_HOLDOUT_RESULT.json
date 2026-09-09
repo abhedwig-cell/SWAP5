@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R3_ENDPOINT_LIMIT_WITH_INDEPENDENT_HOLDOUT",
+  "contract": "F-ROSS01_GATE_E2C_R3_ENDPOINT_LIMIT_HOLDOUT_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_use": true,
+  "workflow": {
+    "run": 34387271577,
+    "head": "080aa69ef9ef487f5899ce620d32e4ee46617491",
+    "conclusion": "success",
+    "artifact_id": 10118200694,
+    "artifact_digest": "sha256:388c5825399e8f59f1e6b59a070350359d80d4263427f106633bc5b9c63f7037"
+  },
+  "candidate": "R2_PLUS_EXPLICIT_Q_ABOVE_K_ENDPOINT_LIMIT",
+  "material_count": 4,
+  "material_pass_count": 4,
+  "legacy_probe_count_total": 2486,
+  "independent_holdout_probe_count_total": 4096,
+  "endpoint_limit_count_total": 37,
+  "endpoint_limit_legacy_count_total": 28,
+  "endpoint_limit_independent_holdout_count_total": 9,
+  "unresolved_failure_count_total": 0,
+  "max_hybrid_metric": 0.00028492561960496895,
+  "max_p99_hybrid_metric": 2.114833975305732e-05,
+  "max_abs_error_over_ksatfit": 0.0002902687720364049,
+  "endpoint_limit_max_hybrid_metric": 4.536322266843834e-12,
+  "endpoint_limit_max_abs_error_over_ksatfit": 1.4926425424410582e-12,
+  "endpoint_limit_max_reference_relative_gap": 4.537701329499712e-12,
+  "max_constitutive_K_evaluations": 530,
+  "max_root_residual_evaluations": 66,
+  "persistent_per_column_state_bytes": 0,
+  "scratch_owner": "worker",
+  "materials": {
+    "B12": {
+      "legacy_probes": 622,
+      "independent_holdout_probes": 1024,
+      "endpoint_limit_total": 18,
+      "endpoint_limit_holdout": 4,
+      "max_abs_error_over_ksatfit": 0.00028614096647185306,
+      "p99_hybrid_metric": 1.5156475569332033e-05,
+      "endpoint_limit_max_hybrid_metric": 4.536322266843834e-12,
+      "endpoint_limit_max_abs_error_over_ksatfit": 1.4926425424410582e-12
+    },
+    "O13": {
+      "legacy_probes": 622,
+      "independent_holdout_probes": 1024,
+      "endpoint_limit_total": 19,
+      "endpoint_limit_holdout": 5,
+      "max_abs_error_over_ksatfit": 0.0002902687720364049,
+      "p99_hybrid_metric": 2.114833975305732e-05,
+      "endpoint_limit_max_hybrid_metric": 2.303237163877341e-12,
+      "endpoint_limit_max_abs_error_over_ksatfit": 5.71766591887841e-13
+    },
+    "B01": {
+      "legacy_probes": 621,
+      "independent_holdout_probes": 1024,
+      "endpoint_limit_total": 0,
+      "max_abs_error_over_ksatfit": 7.897658754809407e-07,
+      "p99_hybrid_metric": 2.4326704518920896e-08
+    },
+    "O14": {
+      "legacy_probes": 621,
+      "independent_holdout_probes": 1024,
+      "endpoint_limit_total": 0,
+      "max_abs_error_over_ksatfit": 2.2082096975639548e-06,
+      "p99_hybrid_metric": 6.328698874407761e-09
+    }
+  },
+  "decision": "QUALIFIED_BOUNDED_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE",
+  "interpretation": [
+    "The endpoint-limit branch reproduces all 28 known residual R2 cases and is independently exercised on nine new Sobol holdout probes.",
+    "Endpoint-limit oracle errors are orders of magnitude below the frozen face-flux thresholds.",
+    "No unresolved bracket or nonfinite failures remain across 6582 legacy plus independent probes.",
+    "The normal R2 path retains its bounded 530 constitutive-evaluation and 66 residual-evaluation limits.",
+    "B01 and O14 never invoke the endpoint-limit route in this gate."
+  ],
+  "hard_nonclaims": [
+    "R3 is not admitted as the normal RossFast production face path.",
+    "No saturation-transition timestep or column is qualified.",
+    "No unique response tangent is qualified across the endpoint-limit branch.",
+    "No runtime or MultiSWAP throughput qualification follows."
+  ],
+  "preserved_negative_evidence": [
+    "E2A direct-head near-saturation table rejection",
+    "E2A-R1A uniform-S wet-axis rejection",
+    "E2A-R2A asymptotic wet-axis table rejection",
+    "E2B fixed-node Q2 table rejection",
+    "E2C single-panel t8 GL128 local-solve rejection",
+    "E2C-R1 segmented endpoint-bracket rejection",
+    "E2C-R2 residual 28-bracket rejection",
+    "E2C-R2B simple exponent escalation rejection"
+  ],
+  "status": "QUALIFIED_BOUNDED_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_SATURATION_TRANSITION_COLUMN_GATE"
+}
