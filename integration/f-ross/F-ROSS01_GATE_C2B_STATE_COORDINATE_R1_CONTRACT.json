@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE_R1",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "purpose": "Requalify the same direct C2B representable-state to Ross table-coordinate mapping after the strict R0 gate showed that the formula itself is high-precision accurate but h->binary64 S representability produces roundtrip error far below table resolution. R1 adds an exact physical join mapping and expresses the head-origin roundtrip bound relative to the actual N241 table cell width.",
+  "lineage": {
+    "failed_R0": "F-ROSS01_GATE_C2B_STATE_COORDINATE_RESULT.json",
+    "physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+    "candidate_N": 241,
+    "u_span": 4.0,
+    "cell_width_u": 0.016666666666666666
+  },
+  "unchanged_mapping": {
+    "dry_branch": "f=S*s_entry; z=-log(f)/m; u=(log(expm1(z))/n-log(alpha))/log(10)",
+    "wet_branch": "w=1-S; u=(log(theta_s-theta_r)+log1p(-S)-log(AB+A*(theta_s-theta_r)*w))/log(10)",
+    "source_equivalent_stabilized_join_coefficients": true,
+    "runtime_complexity": "O(1)",
+    "runtime_iterations": 0
+  },
+  "R1_exact_mapping_points": {
+    "S_min_at_h_minus10000": "u=4 exactly",
+    "S_max_at_h_minus1": "u=0 exactly",
+    "S105_at_h_minus4_2": "u=log10(4.2) exactly"
+  },
+  "roundtrip_acceptance_rationale": {
+    "metric": "abs(u_reconstructed-u_origin)/table_cell_width_u",
+    "threshold_fraction_of_one_table_cell": 1e-8,
+    "equivalent_absolute_u_threshold_for_N241": 1.6666666666666666e-10,
+    "reason": "The roundtrip term measures finite representability of the water-content state generated from head, not error in the direct state-to-coordinate formula. Requiring this perturbation below one hundred-millionth of an interpolation cell makes it negligible relative to any table discretization while retaining a deterministic quantitative gate.",
+    "downstream_guard": "The subsequent face-table gate retains the original frozen flux-error criteria and therefore independently catches any coordinate perturbation that matters physically."
+  },
+  "acceptance": {
+    "nan_or_inf_count": 0,
+    "coordinate_outside_closed_interval_count": 0,
+    "exact_endpoint_mapping_failures": 0,
+    "exact_join_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0,
+    "branch_selection_failures_outside_exact_join": 0,
+    "strict_monotonicity_violation_count": 0,
+    "max_abs_u_error_vs_80_digit_reference": 2e-12,
+    "max_abs_u_roundtrip_fraction_of_table_cell": 1e-8,
+    "max_normalized_forward_difference_vs_direct_source_arithmetic": 2e-12
+  },
+  "test_set": "Reuse the R0 deterministic endpoints, nextafter, uniform-state, log-head-origin, join-focused and 80-digit reference probes without retuning probe locations.",
+  "exit_rule": {
+    "pass": "Freeze R1 as the C2B bounded runtime state-to-coordinate mapping and open the separately contracted steady-face representation characterization.",
+    "fail": "Fail-close R1. Do not weaken the downstream face-flux criteria or add runtime root finding."
+  },
+  "scope_guard": "Mapping only for h=[-10000,-1] cm and N241 candidate resolution. No h>-1, saturation switching, transient solver, groundwater or production claim."
+}
