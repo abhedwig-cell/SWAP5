@@ -1,0 +1,33 @@
+name: F-VQ28 Richards temporal numeric profile
+
+on:
+  push:
+    branches:
+      - qualification/f-vq28-richards-temporal-numeric-profile
+    paths:
+      - 'tests/fvq/test_fvq28_heldout_temporal_profile.f90'
+      - 'tests/fvq/run_fvq28_heldout_temporal_profile.sh'
+      - 'integration/f-vq/F-VQ28_QUALIFICATION_PLAN.json'
+      - 'integration/f-vq/F-VQ28_STATUS.json'
+      - '.github/workflows/fvq28-richards-temporal-numeric-profile.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen held-out temporal profile gate
+        run: bash tests/fvq/run_fvq28_heldout_temporal_profile.sh
