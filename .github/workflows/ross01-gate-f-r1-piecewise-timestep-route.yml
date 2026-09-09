@@ -1,0 +1,42 @@
+name: F-ROSS01 Gate F R1 Piecewise C1R Timestep Route
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-f-r1-piecewise-timestep-route.yml
+      - experiments/ross/run_ross01_gate_f_r1_piecewise_timestep_route.py
+      - integration/f-ross/F-ROSS01_GATE_F_R1_PIECEWISE_TIMESTEP_ROUTE_CONTRACT.json
+      - experiments/ross/run_ross01_gate_f_timestep_convergence.py
+      - experiments/ross/run_ross01_gate_d_conservative_physical_unsaturated_column.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+
+jobs:
+  timestep:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen Gate F R1 piecewise C1R timestep route
+        run: |
+          set -euo pipefail
+          out="ross01-gate-f-r1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_f_r1_piecewise_timestep_route.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_GATE_F_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_F_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-f-r1-${{ matrix.material }}
+          path: ross01-gate-f-r1-${{ matrix.material }}/
