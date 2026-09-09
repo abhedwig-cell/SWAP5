@@ -1,6 +1,6 @@
 module mod_wofost_two_phase_crop_window
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
+  use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t
   use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t, &
        wofost_accepted_window_aggregates_t, wofost_one_day_update_parameters_t, &
        wofost_one_day_rate_packet_t, wofost_one_day_window_context_t, &
@@ -172,9 +172,9 @@ contains
     status = WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
     if (.not. window%ready()) return
 
-    ! The prepared candidate stays private in the worker-local window until
-    ! all phase-B and structural work succeeds. A failed complete call exposes
-    ! no candidate that could accidentally be committed.
+    ! A failure below can never expose a partially advanced crop candidate.
+    candidate = window%prepared_candidate
+
     if (window%crop_active()) then
       diagnostics%phase_b_evaluated = .true.
       call finalize_wofost_one_day_rates(window%rate_state_view, rate_parameters, &
@@ -194,7 +194,7 @@ contains
          candidate, diagnostics%structural, component_status)
     diagnostics%structural_finalize_status = component_status
     if (component_status /= WOFOST_ONE_DAY_OK) then
-      candidate = wofost_crop_owner_state_t()
+      candidate = window%prepared_candidate
       status = WOFOST_CROP_WINDOW_STRUCTURAL_FINALIZE_ERROR
       return
     end if
@@ -203,21 +203,16 @@ contains
     status = WOFOST_CROP_WINDOW_OK
   end subroutine complete_wofost_one_day_crop_window
 
-  logical function wofost_crop_window_ready(self) result(ready)
+  pure logical function wofost_crop_window_ready(self) result(ready)
     class(wofost_two_phase_crop_window_t), intent(in) :: self
-
-    ready = .false.
-    if (.not. self%initialized) return
-    if (self%prepared_candidate%validate() /= WOFOST_CROP_OWNER_OK) return
-    ready = .true.
+    ready = self%initialized
   end function wofost_crop_window_ready
 
-  logical function wofost_crop_window_crop_active(self) result(active)
+  pure logical function wofost_crop_window_crop_active(self) result(active)
     class(wofost_two_phase_crop_window_t), intent(in) :: self
-
     active = .false.
-    if (.not. self%ready()) return
-    active = self%prepared_candidate%crop_is_emerged()
+    if (.not. self%initialized) return
+    active = self%prepared_candidate%crop_emerged
   end function wofost_crop_window_crop_active
 
   subroutine wofost_crop_window_read_prepared_actual_pgass(self, value, available)
