@@ -1,5 +1,6 @@
 module mod_transaction_reference
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: iso_fortran_env, only: real64, int64
   implicit none
   private
 
@@ -7,7 +8,20 @@ module mod_transaction_reference
   integer, parameter, public :: TX_STATUS_RETRY_EXHAUSTED = 1
   integer, parameter, public :: TX_STATUS_INVALID_INTERVAL = 2
   integer, parameter, public :: TX_ROUTE_NONE = 0
+  integer, parameter, public :: TX_ROUTE_MODEL_CERTIFIED = 1
   integer, parameter, public :: TX_ROUTE_TWO_HALF = 2
+
+  integer, parameter, public :: TX_TEMPORAL_NONE = 0
+  integer, parameter, public :: TX_TEMPORAL_EXTERNAL_FULL_HALF = 1
+  integer, parameter, public :: TX_TEMPORAL_MODEL_CERTIFICATE = 2
+
+  integer(int64), parameter, public :: TX_MASS_MISSING_NONE = 0_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_START = 1_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_STORAGE_END = 2_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_EXTERNAL_FLUX = 4_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_ACTIVE_CONTRIBUTION = 8_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_NONFINITE = 16_int64
+  integer(int64), parameter, public :: TX_MASS_MISSING_UNSPECIFIED = 32_int64
 
   type, abstract, public :: transaction_state_t
   contains
@@ -24,6 +38,10 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: mass_accounting_complete = .false.
+    integer(int64) :: missing_mass_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    logical :: temporal_certificate_available = .false.
+    real(real64) :: temporal_indicator = huge(0.0_real64)
     integer :: nonlinear_iterations = 0
     integer :: internal_retries = 0
     integer :: headcalc_calls = 0
@@ -38,6 +56,7 @@ module mod_transaction_reference
     procedure(advance_iface), deferred :: advance
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
+    procedure :: storage_accounting_status => default_storage_accounting_status
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
   end type transaction_model_t
@@ -47,11 +66,13 @@ module mod_transaction_reference
     real(real64) :: mass_tolerance = 1.0e-10_real64
     real(real64) :: retry_scale = 0.5_real64
     integer :: max_retries = 8
+    integer :: temporal_mode = TX_TEMPORAL_EXTERNAL_FULL_HALF
   end type transaction_policy_t
 
   type, public :: transaction_result_t
     integer :: status = TX_STATUS_INVALID_INTERVAL
     integer :: accepted_route = TX_ROUTE_NONE
+    integer :: temporal_acceptance_source = TX_TEMPORAL_NONE
     integer :: attempts = 0
     integer :: retries = 0
     integer :: rollbacks = 0
@@ -60,6 +81,7 @@ module mod_transaction_reference
     integer :: half_trials = 0
     integer :: solver_rejections = 0
     integer :: temporal_rejections = 0
+    integer :: temporal_certificate_unavailable_rejections = 0
     integer :: mass_rejections = 0
     integer :: nonlinear_iterations = 0
     integer :: accepted_nonlinear_iterations = 0
@@ -75,11 +97,20 @@ module mod_transaction_reference
     integer :: accepted_backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     integer :: accepted_alternative_solver_calls = 0
+    logical :: accepted_mass_complete = .false.
+    integer(int64) :: accepted_missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
+    real(real64) :: accepted_storage_start = 0.0_real64
+    real(real64) :: accepted_storage_end = 0.0_real64
+    real(real64) :: accepted_storage_change = 0.0_real64
+    real(real64) :: accepted_total_in = 0.0_real64
+    real(real64) :: accepted_total_out = 0.0_real64
+    real(real64) :: accepted_mass_residual = huge(0.0_real64)
     real(real64) :: requested_t0 = 0.0_real64
     real(real64) :: requested_t1 = 0.0_real64
     real(real64) :: accepted_t1 = 0.0_real64
     real(real64) :: accepted_dt = 0.0_real64
     real(real64) :: temporal_error = huge(0.0_real64)
+    real(real64) :: temporal_indicator = huge(0.0_real64)
     real(real64) :: full_mass_residual = huge(0.0_real64)
     real(real64) :: half_mass_residual = huge(0.0_real64)
   end type transaction_result_t
@@ -134,6 +165,19 @@ contains
     end if
   end subroutine default_restore_attempt_context
 
+  subroutine default_storage_accounting_status(self, state, complete, missing_mask)
+    class(transaction_model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    logical, intent(out) :: complete
+    integer(int64), intent(out) :: missing_mask
+
+    if (.not. same_type_as(self, self) .or. .not. same_type_as(state, state)) then
+      error stop 'unreachable transaction mass-accounting type'
+    end if
+    complete = .false.
+    missing_mask = TX_MASS_MISSING_UNSPECIFIED
+  end subroutine default_storage_accounting_status
+
   subroutine execute_reference_interval(model, committed, t0, t1, policy, result)
     class(transaction_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
@@ -151,6 +195,8 @@ contains
     real(real64) :: storage0, storage_full, storage_half
     real(real64) :: full_mass_residual, half_mass_residual, terr
     logical :: solver_ok, mass_ok, temporal_ok
+    logical :: storage_start_complete, storage_end_complete
+    integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer :: retry_index
 
     result = transaction_result_t()
@@ -163,9 +209,16 @@ contains
       return
     end if
 
+    if (policy%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE) then
+      call execute_model_certificate_interval(model, committed, t0, t1, policy, result)
+      return
+    end if
+    result%temporal_acceptance_source = TX_TEMPORAL_EXTERNAL_FULL_HALF
+
     call committed%clone(checkpoint)
     call model%capture_attempt_context(checkpoint_context)
     storage0 = model%storage(checkpoint)
+    call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -240,6 +293,7 @@ contains
       end if
 
       storage_half = model%storage(half_state)
+      call model%storage_accounting_status(half_state, storage_end_complete, end_missing_mask)
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
@@ -269,6 +323,28 @@ contains
         cycle
       end if
 
+      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half1_outcome%missing_mass_contribution_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, half2_outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. storage_end_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. half1_outcome%mass_accounting_complete .or. &
+          .not. half2_outcome%mass_accounting_complete) then
+        accepted_missing_mask = ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      end if
+      result%accepted_storage_start = storage0
+      result%accepted_storage_end = storage_half
+      result%accepted_storage_change = storage_half - storage0
+      result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
+      result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%accepted_mass_residual = half_mass_residual
+      result%accepted_missing_contribution_mask = accepted_missing_mask
+      result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
+           half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete .and. &
+           accepted_missing_mask == TX_MASS_MISSING_NONE
+
       ! Physical state and worker/job-local context commit together. The context
       ! is restored into the backend, but is never inserted into column state.
       call model%restore_attempt_context(half_context)
@@ -292,6 +368,131 @@ contains
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_reference_interval
 
+  subroutine execute_model_certificate_interval(model, committed, t0, t1, policy, result)
+    class(transaction_model_t), intent(inout) :: model
+    class(transaction_state_t), allocatable, intent(inout) :: committed
+    real(real64), intent(in) :: t0, t1
+    type(transaction_policy_t), intent(in) :: policy
+    type(transaction_result_t), intent(out) :: result
+
+    class(transaction_state_t), allocatable :: checkpoint
+    class(transaction_state_t), allocatable :: candidate_state
+    class(transaction_attempt_context_t), allocatable :: checkpoint_context
+    class(transaction_attempt_context_t), allocatable :: accepted_context
+    type(trial_outcome_t) :: outcome
+    real(real64) :: attempt_dt, attempt_t1
+    real(real64) :: storage0, storage_candidate, mass_residual
+    logical :: mass_ok, temporal_ok, certificate_valid
+    logical :: storage_start_complete, storage_end_complete
+    integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
+    integer :: retry_index
+
+    result = transaction_result_t()
+    result%requested_t0 = t0
+    result%requested_t1 = t1
+    result%accepted_t1 = t0
+    result%temporal_acceptance_source = TX_TEMPORAL_MODEL_CERTIFICATE
+
+    call committed%clone(checkpoint)
+    call model%capture_attempt_context(checkpoint_context)
+    storage0 = model%storage(checkpoint)
+    call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    attempt_dt = t1 - t0
+
+    do retry_index = 0, policy%max_retries
+      result%attempts = result%attempts + 1
+      attempt_t1 = t0 + attempt_dt
+
+      call model%restore_attempt_context(checkpoint_context)
+      call checkpoint%clone(candidate_state)
+      call model%advance(candidate_state, t0, attempt_t1, outcome)
+      result%full_trials = result%full_trials + 1
+      result%nonlinear_iterations = result%nonlinear_iterations + outcome%nonlinear_iterations
+      result%internal_retries = result%internal_retries + outcome%internal_retries
+      result%headcalc_calls = result%headcalc_calls + outcome%headcalc_calls
+      result%jacobian_builds = result%jacobian_builds + outcome%jacobian_builds
+      result%linear_solves = result%linear_solves + outcome%linear_solves
+      result%backtracking_attempts = result%backtracking_attempts + outcome%backtracking_attempts
+      result%alternative_solver_calls = result%alternative_solver_calls + outcome%alternative_solver_calls
+
+      if (.not. outcome%solver_ok) then
+        result%solver_rejections = result%solver_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
+        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
+        cycle
+      end if
+
+      call model%capture_attempt_context(accepted_context)
+      storage_candidate = model%storage(candidate_state)
+      call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+      mass_residual = storage_candidate - storage0 - (outcome%mass_in - outcome%mass_out)
+      result%full_mass_residual = mass_residual
+      result%accepted_mass_residual = mass_residual
+      result%temporal_indicator = outcome%temporal_indicator
+      mass_ok = abs(mass_residual) <= policy%mass_tolerance
+
+      if (.not. mass_ok) then
+        result%mass_rejections = result%mass_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
+        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
+        cycle
+      end if
+
+      certificate_valid = outcome%temporal_certificate_available .and. &
+           ieee_is_finite(outcome%temporal_indicator) .and. outcome%temporal_indicator >= 0.0_real64
+      temporal_ok = certificate_valid .and. outcome%temporal_indicator <= 1.0_real64
+      if (.not. certificate_valid) then
+        result%temporal_certificate_unavailable_rejections = &
+             result%temporal_certificate_unavailable_rejections + 1
+      end if
+      if (.not. temporal_ok) then
+        result%temporal_rejections = result%temporal_rejections + 1
+        call model%restore_attempt_context(checkpoint_context)
+        call reject_and_retry(result, retry_index, policy, attempt_dt)
+        if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
+        cycle
+      end if
+
+      accepted_missing_mask = ior(start_missing_mask, end_missing_mask)
+      accepted_missing_mask = ior(accepted_missing_mask, outcome%missing_mass_contribution_mask)
+      if (.not. storage_start_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_START)
+      if (.not. storage_end_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_STORAGE_END)
+      if (.not. outcome%mass_accounting_complete) accepted_missing_mask = &
+           ior(accepted_missing_mask, TX_MASS_MISSING_EXTERNAL_FLUX)
+      result%accepted_storage_start = storage0
+      result%accepted_storage_end = storage_candidate
+      result%accepted_storage_change = storage_candidate - storage0
+      result%accepted_total_in = outcome%mass_in
+      result%accepted_total_out = outcome%mass_out
+      result%accepted_missing_contribution_mask = accepted_missing_mask
+      result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
+           outcome%mass_accounting_complete .and. accepted_missing_mask == TX_MASS_MISSING_NONE
+
+      call model%restore_attempt_context(accepted_context)
+      call move_alloc(candidate_state, committed)
+      result%status = TX_STATUS_ACCEPTED
+      result%accepted_route = TX_ROUTE_MODEL_CERTIFIED
+      result%accepted_t1 = attempt_t1
+      result%accepted_dt = attempt_dt
+      result%accepted_nonlinear_iterations = outcome%nonlinear_iterations
+      result%accepted_internal_retries = outcome%internal_retries
+      result%accepted_headcalc_calls = outcome%headcalc_calls
+      result%accepted_jacobian_builds = outcome%jacobian_builds
+      result%accepted_linear_solves = outcome%linear_solves
+      result%accepted_backtracking_attempts = outcome%backtracking_attempts
+      result%accepted_alternative_solver_calls = outcome%alternative_solver_calls
+      result%commits = result%commits + 1
+      return
+    end do
+
+    call model%restore_attempt_context(checkpoint_context)
+    result%status = TX_STATUS_RETRY_EXHAUSTED
+  end subroutine execute_model_certificate_interval
+
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
     type(transaction_result_t), intent(inout) :: result
     integer, intent(in) :: retry_index
@@ -312,7 +513,9 @@ contains
     valid_policy = policy%temporal_tolerance >= 0.0_real64 .and. &
                    policy%mass_tolerance >= 0.0_real64 .and. &
                    policy%retry_scale > 0.0_real64 .and. policy%retry_scale < 1.0_real64 .and. &
-                   policy%max_retries >= 0
+                   policy%max_retries >= 0 .and. &
+                   (policy%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+                    policy%temporal_mode == TX_TEMPORAL_MODEL_CERTIFICATE)
   end function valid_policy
 
 end module mod_transaction_reference
