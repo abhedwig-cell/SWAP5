@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP09",
+  "finding": "PRODUCTION_MVG_NEAR_SATURATION_K_SHORTCUT_IS_VALUE_DISCONTINUOUS_FOR_STARING2018_CLASSES",
+  "status": "SOURCE_BOUND_DIAGNOSIS_AWAITING_TARGETED_GATE_C_TRACE_CONFIRMATION",
+  "production_source": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_member": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "member": "SWAP/MOD_MvG_functions.f90",
+    "member_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "relevant_semantics": {
+      "h_crit_cm": -0.01,
+      "watcon_near_saturation": "for standard MvG with h_enpr > h_crit and head > h_crit: watcon = wc_crit + c_crit*(head-h_crit), clamped to wcs",
+      "hconduc_shortcut": "for standard MvG with h_enpr > h_crit: if relsat > 1-1e-6 then hconduc = ksatfit, else evaluate the Mualem conductivity expression",
+      "source_line_regions_in_member": {
+        "watcon": "approximately lines 325-333",
+        "hconduc": "approximately lines 593-609, with shortcut at 600-605"
+      }
+    }
+  },
+  "staring2018_source": {
+    "member": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "member_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae",
+    "classes": 36,
+    "all_h_enpr_cm": 0.0
+  },
+  "gate_c_observation_to_explain": {
+    "previous_workflow_run": 34302745316,
+    "previous_catalog_job": 102312970118,
+    "failure": "root_iteration_cap_without_acceptance",
+    "iterations": 60,
+    "final_residual": -1.3012122522204232,
+    "final_scale": 3.498779962238512,
+    "collapsed_interface_head_cm": -0.0015993631837436448
+  },
+  "b12_source_bound_calculation": {
+    "material": "B12",
+    "ores": 0.01,
+    "osat": 0.529749,
+    "alpha_per_cm": 0.016562,
+    "n": 1.090671,
+    "m": 0.08313303869448997,
+    "lambda": -4.493581,
+    "ksatfit_cm_per_d": 2.245895,
+    "relsat_shortcut_threshold": 0.999999,
+    "threshold_head_cm": -0.0015993631839145463,
+    "difference_from_failed_gate_c_midpoint_cm": 1.709015051614582e-13,
+    "mualem_k_immediately_below_threshold_cm_per_d": 0.8358527246036368,
+    "shortcut_k_immediately_above_threshold_cm_per_d": 2.245895,
+    "jump_factor": 2.686950536112952,
+    "interpretation": "The failed Gate-C bisection midpoint coincides with the production conductivity shortcut threshold to floating-point scale. A continuous equal-flux root is therefore not guaranteed across this branch."
+  },
+  "catalog_characterization": {
+    "calculation": "For every Staring2018 row, solve production watcon(h) for relsat=0.999999 and compare the Mualem branch value just below the strict shortcut with ksatfit just above it.",
+    "classes_with_jump_factor_gt_1p10": 21,
+    "classes_with_jump_factor_gt_1p50": 9,
+    "classes_with_jump_factor_gt_2p00": 3,
+    "largest": [
+      {"material": "O13", "threshold_head_cm": -0.0009331676140729162, "jump_factor": 3.143858533310346},
+      {"material": "B12", "threshold_head_cm": -0.0015993631839145463, "jump_factor": 2.686950536112952},
+      {"material": "B11", "threshold_head_cm": -0.0011805970137000002, "jump_factor": 2.232588203513069}
+    ]
+  },
+  "scope_and_nonclaims": {
+    "production_bug_declared": false,
+    "physics_change_proposed": false,
+    "threshold_change_proposed": false,
+    "gate_c_root_tolerance_change_proposed": false,
+    "representation_change_proposed": false,
+    "reason": "This artifact diagnoses an inherited production constitutive discontinuity and its relevance to Gate C. Scientific disposition of that discontinuity is a separate owner/qualification decision."
+  },
+  "architecture_implications": {
+    "mass_conservation": "An equal-flux composition must still realize one conservative interface flux; accepting unequal upper/lower half-face fluxes is not admissible.",
+    "reference_mode": "The existing production constitutive semantics remain the reference until explicitly qualified otherwise.",
+    "solver_policy": "Increasing bisection iterations or relaxing residual tolerance cannot turn a value jump into a continuous root and is therefore not an evidence-based fix.",
+    "tangent_readiness": "A value-discontinuous constitutive branch is incompatible with an unconditional smooth interface-response tangent assumption at the threshold.",
+    "production_admission": false
+  },
+  "next_required_evidence": [
+    "Complete the persisted B06/B12 homogeneous Gate-C root trace and verify that the collapsed bracket straddles the production relsat shortcut threshold.",
+    "Classify whether the near-saturation conductivity shortcut is retained as qualified legacy reference physics/numerics or corrected in a separate scientific qualification workunit.",
+    "Do not conflate this homogeneous constitutive discontinuity with the separate synthetic Gate-C local-gradient envelope failure."
+  ]
+}
