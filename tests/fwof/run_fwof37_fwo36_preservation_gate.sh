@@ -50,8 +50,10 @@ from pathlib import Path
 import sys
 s = Path(sys.argv[1]).read_text(encoding='utf-8')
 old_root = 'ROOT="$(cd "$(dirname "$0")/../.." && pwd)"'
-if s.count(old_root) != 1:
-    raise SystemExit(f'F-WOF37 V2 root anchor count={s.count(old_root)}')
+if old_root not in s:
+    raise SystemExit('F-WOF37 V2 top-level root anchor missing')
+# The literal occurs twice in V2: once as the real top-level assignment and
+# once inside V2's own Python transformation logic. Replace only the first.
 s = s.replace(old_root, 'ROOT="${FWOF37_ROOT:?}"', 1)
 old_base = 'python3 - "$ROOT/tests/fwof/run_fwof36_gate_b_physical_binding_gate.sh" "$TMP/gate.sh" <<\'PY\''
 new_base = 'python3 - "${FWOF37_FWO36_BASE:?}" "$TMP/gate.sh" <<\'PY\''
