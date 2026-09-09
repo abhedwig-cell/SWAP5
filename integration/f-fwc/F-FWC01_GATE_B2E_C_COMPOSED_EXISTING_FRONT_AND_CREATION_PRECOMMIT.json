@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_C_COMPOSED_EXISTING_FRONT_ADVANCE_AND_FULLY_FUNDED_CREATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "B2D_R1": "QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_HEUN_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE",
+    "B2E_A": "QUALIFIED_RESTRICTED_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT_READY_FOR_ZD_PROVENANCE_AND_COMPOSED_INFILTRATION_GATE"
+  },
+  "source_order": "Talbot and Ogden 2008 section 2.3: available surface water funds existing-front advance demand in bin order; when an unsaturated-at-surface bin is reached, a dry-bin front Z_d is created and its corresponding storage volume is debited; continue until water exhausted or last bin",
+  "frozen_scope": {
+    "materials": ["B01","B12","O13","O14"],
+    "theta_bin_counts": [16,64,200],
+    "existing_front": "one real-MvG B2D-R1 front using grouped Eq18 and conservative Heun RK2",
+    "existing_front_bin_fraction": 0.5,
+    "initial_front_depth_cm": 10.0,
+    "G_eff_cm": 10.0,
+    "ponding_head_cm": 0.0,
+    "heun_substeps": 16,
+    "dry_creation_prefixes": [0,1,2,4],
+    "dry_front_depth_Zd": "immutable supplied fixture, not Green-Ampt-qualified here",
+    "partial_dry_bin_funding": "fail closed"
+  },
+  "generic_creation_primitive": {
+    "delta_theta": "explicit argument taken from the same real FWC discretization as the existing front",
+    "parity_requirement": "must reproduce B2E-A creation/debit behavior when called with B2E-A fixture delta_theta"
+  },
+  "frozen_acceptance": {
+    "max_abs_composed_mass_residual_cm": 1e-12,
+    "B2D_internal_mass_certificate_preserved": true,
+    "creation_parity_with_B2E_A": true,
+    "strict_existing_then_creation_order": true,
+    "surface_remainder_nonnegative": true,
+    "insufficient_existing_or_creation_water_rolls_back_entire_trial": true,
+    "committed_state_and_ledger_bitwise_unchanged_on_reject": true,
+    "water_clip_drop_merge_count": 0,
+    "new_persistent_state_bytes_beyond_front_state": 0
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_COMPOSED_EXISTING_FRONT_AND_FULLY_FUNDED_CREATION_MASS_PATH_READY_FOR_ZD_AND_RAINFALL_EVENT_QUALIFICATION",
+    "fail": "COMPOSED_FWC_INFILTRATION_MASS_PATH_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "Do not qualify Green-Ampt Z_d calculation.",
+    "Do not infer partially funded dry fronts.",
+    "Do not change Eq18 or Heun physics/policy from B2D-R1.",
+    "Do not use different delta-theta widths for existing and newly created fronts in the composed physical cases.",
+    "No redistribution, groundwater, crop, runtime or MultiSWAP production qualification."
+  ],
+  "relevant_invariants": [3,4,5,7,8,9,13,20,23,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
