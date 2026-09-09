@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "diagnostic": "E3E_R1_5CM_BOUNDARY_NUMERICAL_SEAM_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_E3E_R1_BOUNDARY_NUMERICAL_SEAM_DIAGNOSTIC_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34399505761,
+    "head": "ed967afc5a6e40012bbfee46421e21de77c8a0bb",
+    "conclusion": "success"
+  },
+  "materials": {
+    "B01": {"A_indicator_pass":true,"B_indicator_pass":true,"max_abs_error_over_ksatfit":3.192732728424459e-05,"unresolved_count":0,"endpoint_selection_count":0},
+    "B12": {"A_indicator_pass":false,"B_indicator_pass":false,"max_abs_error_over_ksatfit":0.0018467528740028205,"max_hybrid_metric":0.0015665702876947562,"p99_hybrid_metric":0.0004281608041344384,"unresolved_count":0,"endpoint_selection_count":0,"worst_probe":{"id":"near_0235","h_surface":0.8837919082381909,"h_top_node":-0.009962848502903649,"q_candidate":2.6432032548322555,"q_inherited_reference":2.647350867878214}},
+    "O13": {"A_indicator_pass":false,"B_indicator_pass":false,"max_abs_error_over_ksatfit":0.0026198938135037365,"max_hybrid_metric":0.002259492276943998,"p99_hybrid_metric":0.0004878261924076859,"unresolved_count":0,"endpoint_selection_count":0,"worst_probe":{"id":"near_0218","h_surface":0.7833053261466696,"h_top_node":-0.013722375623542532,"q_candidate":11.208432753954423,"q_inherited_reference":11.23381766750256}},
+    "O14": {"A_indicator_pass":true,"B_indicator_pass":true,"max_abs_error_over_ksatfit":3.8706514346266735e-05,"unresolved_count":0,"endpoint_selection_count":0}
+  },
+  "interpretation": [
+    "Zero-adjacent unsaturated endpoint clustering removes the large B01 and O14 5 cm errors on the reused characterization probes without increasing quadrature-lane count.",
+    "The proposed dual-endpoint residual-proximity branch is never exercised in this diagnostic after zero-adjacent clustering and therefore receives no evidentiary support from this run.",
+    "B12 and O13 retain approximately 0.00185 and 0.00262 Ksat worst-case discrepancy against the inherited steady_q reference despite zero unresolved cases and acceptable hybrid/p99 indicators.",
+    "Independent equation-level reconstruction of the recorded B12/O13 worst probes shows the clustered candidate satisfies the explicitly h=0-split steady-Darcy path equation while the inherited reference is numerically near the fully saturated Darcy upper bound. This creates a reference-oracle validity question that must be resolved before candidate requalification."
+  ],
+  "decision": "MIXED_DIAGNOSTIC_ZERO_ADJACENT_CLUSTERING_SUPPORTED_FOR_B01_O14_B12_O13_REFERENCE_ORACLE_VALIDITY_REQUIRED",
+  "next_gate": "E3E_R2_5CM_SURFACE_TO_UNSAT_REFERENCE_ORACLE_VALIDITY",
+  "hard_nonclaims": [
+    "No 5 cm candidate is qualified by this diagnostic.",
+    "No dual-endpoint policy is qualified or even activated here.",
+    "No error threshold is relaxed.",
+    "No ponding or surface-ledger qualification follows."
+  ],
+  "status": "DIAGNOSTIC_COMPLETE_REFERENCE_ORACLE_AUDIT_OPEN"
+}
