@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_5CM_SURFACE_WET_TO_UNSAT_BOUNDARY_FACE",
+  "status": "PRECOMMIT_FROZEN",
+  "purpose": "Qualify the bounded Ross face candidate for the half-cell surface-to-top-node geometry needed by the legacy SWAP flux/head top-boundary switch, without yet composing surface storage or runoff.",
+  "geometry": {
+    "face_length_cm": 5.0,
+    "assumed_top_cell_thickness_cm": 10.0,
+    "interpretation": "surface to top-cell center"
+  },
+  "materials": ["B01", "B12", "O13", "O14"],
+  "constitutive_scope": "Staringreeks 2018 unimodal Mualem-van Genuchten, KSATFIT, H_ENPR=0, KSATEXM disabled",
+  "head_scope_cm": {
+    "surface_head_min": 0.0,
+    "surface_head_max": 1.0,
+    "top_node_head_min": -10000.0,
+    "top_node_head_max": 0.0
+  },
+  "deterministic_surface_heads_cm": [0.0, 0.000001, 0.0001, 0.001, 0.01, 0.1, 0.2, 1.0],
+  "deterministic_top_node_heads_cm": [-10000.0, -1000.0, -100.0, -10.0, -5.0, -1.0, -0.5, -0.1, -0.01, -0.001, -0.000001, 0.0],
+  "independent_holdout": {
+    "dry_family_per_material": 256,
+    "near_saturation_family_per_material": 256,
+    "sampling": "independently seeded scrambled Sobol",
+    "dry_mapping": "hsurf=a^4 in [0,1] cm; htop=-10^(4b) in [-10000,-1] cm",
+    "near_mapping": "hsurf=a^4 in [0,1] cm; htop=-b^4 in [-1,0] cm"
+  },
+  "reference": "full-accuracy steady hydraulic face solve with physical face length explicitly set to 5 cm",
+  "candidate": "existing bounded local/two-sided endpoint candidate with all length-dependent branch logic explicitly set to 5 cm",
+  "thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "surface_head_scope_provenance": {
+    "distribution": "SWAP_4.3.1(6).zip",
+    "examples": [
+      {"path": "SWAP_4.3.1/cases/1.hupselbrook/swap.swp", "sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b", "PONDMX_cm": 0.2},
+      {"path": "SWAP_4.3.1/cases/2.grassgrowth/swap.swp", "sha256": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196", "PONDMX_cm": 0.2},
+      {"path": "SWAP_4.3.1/cases/3.macroporeflow/swap.swp", "sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b", "PONDMX_cm": 1.0},
+      {"path": "SWAP_4.3.1/cases/4.salinitystress/tools/template/swap.swp", "sha256": "923c1527d074f154db16c844d7094c15886257e8190864e57d0b41baca645486", "PONDMX_cm": 0.2}
+    ],
+    "scope_rule": "The first qualification is deliberately bounded to 0..1 cm. Larger allowed legacy PONDMX values are outside this gate and require separate qualification."
+  },
+  "architecture_checks": {
+    "6_scalable_memory_layout": "No per-column table or face state is introduced.",
+    "13_mass_conservation_absolute": "This gate qualifies only an antisymmetric interface flux; full surface-ledger conservation remains a later gate.",
+    "20_alternative_soil_water_solvers": "Face geometry is explicit qualification input rather than a hidden Richards-only constant.",
+    "23_physics_solver_policy_separated": "Face length and surface head are physical/geometry inputs; bisection bounds are numerical policy.",
+    "24_predictable_runtime": "Candidate evaluation counts remain bounded by the frozen E2C cost caps.",
+    "27_optional_functionality_scales_with_use": "No new persistent state.",
+    "29_no_silent_dependencies": "The 5 cm length is explicit and cannot inherit the existing 10 cm C1R assumption silently."
+  },
+  "hard_nonclaims": [
+    "No full top-boundary or ponding qualification.",
+    "No runoff qualification.",
+    "No surface-water ledger qualification.",
+    "No C1R 10 cm table reuse at 5 cm.",
+    "No production implementation or admission.",
+    "No surface heads above 1 cm qualified."
+  ]
+}
