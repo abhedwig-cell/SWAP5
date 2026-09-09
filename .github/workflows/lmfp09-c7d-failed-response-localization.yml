@@ -1,0 +1,57 @@
+name: F-LMFP09 C7D failed response localization
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - 'integration/f-lmfp/F-LMFP09_C7D_FAILED_RESPONSE_LOCALIZATION_DESIGN.json'
+      - 'experiments/lmfp/run_lmfp09_c7d_failed_response_localization.py'
+      - 'experiments/lmfp/aggregate_lmfp09_c7d_failed_response_localization.py'
+      - '.github/workflows/lmfp09-c7d-failed-response-localization.yml'
+  workflow_dispatch:
+
+jobs:
+  localize:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replay revealed C7a failures without retuning
+        run: |
+          mkdir -p evidence
+          python experiments/lmfp/run_lmfp09_c7d_failed_response_localization.py \
+            evidence/c7d-shard-${{ matrix.shard }}.json \
+            ${{ matrix.shard }}
+      - name: Upload C7D shard evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: c7d-shard-${{ matrix.shard }}
+          path: evidence/c7d-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: localize
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all C7D shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c7d-shard-*
+          path: evidence/shards
+          merge-multiple: true
+      - name: Aggregate diagnostic localization
+        run: |
+          python experiments/lmfp/aggregate_lmfp09_c7d_failed_response_localization.py \
+            'evidence/shards/c7d-shard-*.json' \
+            evidence/F-LMFP09_C7D_FAILED_RESPONSE_LOCALIZATION_RESULT.json
+      - name: Upload C7D aggregate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-c7d-failed-response-localization
+          path: evidence/F-LMFP09_C7D_FAILED_RESPONSE_LOCALIZATION_RESULT.json
+          if-no-files-found: error
