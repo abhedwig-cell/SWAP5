@@ -1,0 +1,26 @@
+name: F-KT11 Richards head-budget certificate policy
+
+on:
+  push:
+    branches:
+      - work/f-kt11-richards-head-budget-certificate-policy
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-KT11 owner gate
+        run: bash tests/fkt/run_fkt11_richards_head_budget_policy.sh
