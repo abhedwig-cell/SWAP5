@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "candidate": "ROSS2011_PRECOMPUTED_STEADY_STATE_FACE_FLUX",
+  "production_implementation": false,
+  "source": {
+    "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal 10:760-766",
+    "doi": "10.2136/vzj2010.0085",
+    "relationship": "uses the Ross 2003 continuity-equation time discretization but replaces online approximate Darcian face evaluation by lookup of accurately precomputed steady-state face fluxes"
+  },
+  "source_bound_algorithm": {
+    "spatial_balance": "finite-volume continuity equation",
+    "unsaturated_primary_variable": "cell-average volumetric water content",
+    "saturated_primary_variable": "matric head",
+    "face_flux": "bilinear interpolation in a two-end-state table q(v_upper,v_lower)",
+    "flux_derivatives": "obtained from the same table interpolation and used in a first-order Taylor expansion over the trial time step",
+    "column_step": "one tridiagonal linear solve for state increments, not a global nonlinear iteration",
+    "retry": "if state change is unacceptable, reduce the time step; source states that fluxes and derivatives need not be recalculated for that retry",
+    "mass": "finite-volume discretization is stated to conserve mass to computational error",
+    "heterogeneous_face": "a table can represent a path composed of two materials; accurate composite entries may be generated offline with an equal-flux/steady-Darcy boundary-value solve",
+    "mfp_role": "Kirchhoff/matric-flux-potential transform is used to accelerate and regularize offline generation of accurate steady-state flux tables, not required in production lookup",
+    "hysteresis": "not supported by the source method because flux is assumed to be a unique function of endpoint state"
+  },
+  "cost_model": {
+    "runtime_per_internal_step": "O(N_cells) table lookups plus O(N_cells) tridiagonal linear solve",
+    "global_nonlinear_iterations": 0,
+    "offline_table_generation": "potentially expensive iterative ODE/root solution but reusable immutable template/material-geometry data",
+    "source_operation_estimate": "Ross 2011 estimated about 112 weighted operation units per grid cell per step versus 374 for the Ross 2003 implementation and 179 per HYDRUS iteration",
+    "source_runtime_observation": "in three reported tests the table method was 1.5 to 3.2 times faster than Ross 2006 and execution time per step remained approximately constant across differing hydraulic property complexity",
+    "multiswap_fit": "promising if material/geometry/path-class cardinality and table memory remain bounded and shared"
+  },
+  "source_test_evidence": {
+    "hydraulics": ["Brooks-Corey", "van Genuchten retention with tested conductivity forms", "modified van Genuchten-Mualem infiltration comparison"],
+    "directions": ["downward infiltration", "upward infiltration", "constant-flux infiltration", "free drainage"],
+    "heterogeneous_profile": true,
+    "reported_table_memory_examples": ["about 58 KB for six tables in tests 1-2", "72 KB for eight tables in test 3", "12 KB for two tables in test 4"],
+    "reported_table_density_sensitivity": "doubling the table interval changed drainage materially in test 3b, while halving changed little",
+    "important_limit": "accurate steady-state face flux does not eliminate transient spatial-discretization error; sharp infiltration fronts inside coarse cells remain a stated source of error"
+  },
+  "SWAP5_assessment": {
+    "architectural_fit": "HIGH",
+    "reason": "bounded linear-time runtime, shared immutable face-class data, exact finite-volume mass structure, generic endpoint hydraulics and no global nonlinear iteration align closely with SWAP5 invariants",
+    "stronger_than_ross2003_for_general_hydraulics": true,
+    "closer_to_richards_than_layered_bucket_logic": true,
+    "production_admission": false,
+    "critical_open_gates": [
+      "reconstruct exact Ross 2003/2011 time-discrete linear system including saturated-unsaturated transitions",
+      "prove SWAP5 accepted-step mass closure with sinks, drainage, surface and groundwater exchange",
+      "replace any historical disk/file ownership with kernel-external immutable parameter preparation",
+      "qualify SWAP hydraulic catalog including near-saturation discontinuities and inverse theta-head behavior",
+      "bound path-class/table cardinality for MultiSWAP templates",
+      "qualify generic timestep/retry controller and maximum internal substep count",
+      "derive imposed-bottom-head and imposed-bottom-flux semantics plus response tangent",
+      "quantify coarse-cell transient error against FullRichards for infiltration, drying, capillary rise, clay and moving water table"
+    ]
+  },
+  "relationship_to_layeredmfp": {
+    "commonality": "both exploit high-quality local steady Darcian/MFP face information and immutable shared lookup structures",
+    "difference": "Ross 2011 retains a depth-discretized finite-volume continuity system with a global tridiagonal linear update, whereas LayeredMFP is a reduced-order layer-storage model with bounded local interface solves",
+    "research_implication": "do not duplicate face-oracle science; reuse or cross-qualify the F-LMFP06-09 Darcian face machinery as a reference for RossFast table generation where contracts permit"
+  },
+  "current_decision": "ROSSFAST_REQUIRES_FURTHER_RESEARCH_WITH_ROSS2011_TABLE_VARIANT_PROMOTED_TO_PRIMARY_CANDIDATE",
+  "status": "PRIMARY_CANDIDATE_PERSISTED_BEFORE_PROTOTYPE"
+}
