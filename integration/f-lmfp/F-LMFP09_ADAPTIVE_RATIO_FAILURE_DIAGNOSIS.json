@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "source_head": "43694191dfbc036fcbb8e93e5d9f4b6cdfa43721",
+  "workflow": {
+    "name": "F-LMFP09 Adaptive Ratio Refinement",
+    "run": 34282601436,
+    "job": 102250682809,
+    "conclusion": "FAILURE",
+    "artifact": 10078228756,
+    "artifact_digest": "sha256:ea169dc545e8be77bcbb96543e5b1e8b66aa697aeb2d6fe3c6b76339d85669a1"
+  },
+  "source_bound_observation": {
+    "material_geometry_class": "reference_sand:20cm",
+    "base_ratio_head_nodes": 33,
+    "adaptive_ratio_head_nodes": 34,
+    "gradient_nodes": 27,
+    "selected_interval_cm": [-65850.16624414353, -26591.47947641415],
+    "selected_interval_score_max_abs_delta_log_ratio": 3.652898625325378,
+    "inserted_midpoint_cm": -41845.589304007,
+    "previously_observed_outlier_interval_cm": [-115.30715360110095, -46.56309852748798],
+    "selected_interval_matches_previously_observed_outlier_cell": false,
+    "extra_oracle_solves": 27,
+    "increment_bytes_per_class": 216
+  },
+  "gate_results": {
+    "identity_pass": true,
+    "asymptotic_continuity_pass": true,
+    "fail_closed_pass": true,
+    "face_matrix_pass": false,
+    "structural_pass": false,
+    "face_matrix": {
+      "cases": 273,
+      "active_cases": 212,
+      "corrected_active_rel_error_max": 0.45162180968031085,
+      "corrected_active_rel_error_p90": 0.012189041242335137,
+      "corrected_active_rel_error_p99": 0.08352229244181744,
+      "near_saturation_corrected_p90_rel_error": 0.010083441379158562,
+      "strong_gradient_corrected_p90_rel_error": 0.009655272953702347,
+      "sign_mismatches": 0,
+      "fraction_corrected_better_on_informative_cases": 0.9758064516129032
+    },
+    "dominant_active_outliers": [
+      {
+        "h_upper_cm": -68.62559681419931,
+        "h_lower_cm": -3.8581341097305284,
+        "gradient": 3.238373135223439,
+        "q_ref_cm_d": -1.7736368172941934,
+        "q_corrected_cm_d": -2.574649886436224,
+        "corrected_rel_error": 0.45162180968031085
+      },
+      {
+        "h_upper_cm": -100.0,
+        "h_lower_cm": 0.0,
+        "gradient": 5.0,
+        "q_ref_cm_d": -2.6820255210623145,
+        "q_corrected_cm_d": -3.8252784596498897,
+        "corrected_rel_error": 0.4262647501336035
+      }
+    ]
+  },
+  "comparison_to_B1_C1": {
+    "prior_result_commit": "70166da71873cef53e71435e54d6b7e5950fa3fe",
+    "prior_result_file": "integration/f-lmfp/F-LMFP09_B1_C1_RESULT.json",
+    "prior_33_node_corrected_max_rel_error": 0.45162180968031085,
+    "prior_33_node_corrected_p90_rel_error": 0.012189,
+    "prior_33_node_corrected_p99_rel_error": 0.083522,
+    "interpretation": "The adaptive split leaves the dominant active-error signature effectively unchanged because it refines a remote very-dry interval rather than the interval containing both dominant active outliers."
+  },
+  "failure_classification": {
+    "primary": "A_REPRESENTATION_RATIO_AXIS_RESOLUTION_REMAINS_INSUFFICIENT_FOR_REFERENCE_SAND_20CM_ACTIVE_OUTLIER_REGION",
+    "secondary": "D_EXPERIMENTAL_ADAPTIVE_SELECTOR_HEURISTIC_IS_MISDIRECTED_BY_UNWEIGHTED_DRY_TAIL_LOG_RATIO_VARIATION",
+    "not_supported_by_this_failure": [
+      "threshold_relaxation",
+      "mass_tradeoff",
+      "identity_relaxation",
+      "silent_solver_switch",
+      "global_65_node_ratio_tables_for_all_classes",
+      "true_physical_discontinuity",
+      "foundational_MFP_coordinate_rejection"
+    ]
+  },
+  "diagnosis": "The failed run is not evidence that the constrained MFP-Darcian-ratio family is discontinuous or that Gate-A asinh geometry is invalid. The concrete failure is that the first adaptive selector scores raw adjacent nodal log-ratio change without regard to local interpolation defect or physically active flux scale. Across the dry tail this raw quantity is large, so the selector spends its one refinement row far from the two active validation outliers. The unchanged face-matrix maximum confirms that this split does not address the actual 33-node representation-resolution deficit.",
+  "next_characterization": {
+    "thresholds_must_remain_unchanged": true,
+    "production_semantics_must_remain_unchanged": true,
+    "required": [
+      "characterize a split of the already source-bound outlier interval without presenting validation-driven placement as a production algorithm",
+      "compare against a 65-node reference_sand:20cm ratio table as a bounded density control",
+      "evaluate an interpolation-defect or curvature-based selector that is independent of validation probes",
+      "retain exact equal-head, hydrostatic/asymptotic continuity and fail-closed checks"
+    ],
+    "reason_not_to_test_only_top_two_raw_delta_splits": "The ranked raw-delta scores are dominated by several adjacent very-dry intervals, so a second split under the same unweighted score is not expected to test the active outlier region."
+  },
+  "architecture": {
+    "production_code_changed": false,
+    "kernel_io_changed": false,
+    "persistent_state_changed": false,
+    "mass_semantics_changed": false,
+    "solver_policy_changed": false,
+    "shared_immutable_representation_model_preserved": true,
+    "no_per_column_table_introduced": true,
+    "fullrichards_reference_preserved": true,
+    "groundwater_admission": false,
+    "production_admission": false
+  },
+  "decision": "DIAGNOSED_ADAPTIVE_SELECTOR_MISDIRECTED_KEEP_THRESHOLDS_AND_CHARACTERIZE_ACTIVE_INTERVAL_BEFORE_NEW_SELECTOR"
+}
