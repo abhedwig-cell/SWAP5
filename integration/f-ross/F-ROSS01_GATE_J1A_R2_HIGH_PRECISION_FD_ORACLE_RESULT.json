@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_R2_HIGH_PRECISION_FD_ORACLE",
+  "contract": "F-ROSS01_GATE_J1A_R2_HIGH_PRECISION_FD_ORACLE_CONTRACT.json",
+  "workflow_run": 34355979139,
+  "head": "66f321c945b30a87f3e9d8e5c56610e693d477e5",
+  "status": "QUALIFIED",
+  "material_count": 6,
+  "pass_count": 6,
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "observed": {
+    "maximum_high_precision_self_consistency_metric": 3.3240472938706354e-08,
+    "maximum_p99_high_precision_self_consistency_metric": 2.5607602934873058e-09,
+    "maximum_high_precision_absolute_derivative_difference": 3.864606412662397e-10,
+    "maximum_binary64_direct_self_consistency_metric_diagnostic": 0.00019297285194700637,
+    "maximum_base_high_precision_vs_production_lookup_scaled_error": 8.406790734802571e-14,
+    "cell_change_count_total": 0,
+    "nonfinite_derivative_count_total": 0,
+    "table_bitwise_unchanged_all": true,
+    "decimal_precision_digits": 80,
+    "finite_difference_factors_unchanged": [1e-06, 3e-06]
+  },
+  "per_material": [
+    {"material":"B01","pass":true,"max_high_precision_metric":7.576743808248971e-09,"p99_high_precision_metric":1.190334548128353e-09,"binary64_direct_max_metric":4.662409733657525e-05},
+    {"material":"B12","pass":true,"max_high_precision_metric":1.0427339406491305e-10,"p99_high_precision_metric":9.371185594074886e-11,"binary64_direct_max_metric":2.0373214591515622e-07},
+    {"material":"O01","pass":true,"max_high_precision_metric":3.3240472938706354e-08,"p99_high_precision_metric":2.5607602934873058e-09,"binary64_direct_max_metric":8.19226278994261e-05},
+    {"material":"O05","pass":true,"max_high_precision_metric":2.9720346455120218e-08,"p99_high_precision_metric":2.4194892537014993e-09,"binary64_direct_max_metric":0.00019297285194700637},
+    {"material":"O14","pass":true,"max_high_precision_metric":2.3203696473008916e-10,"p99_high_precision_metric":1.2106082747967936e-10,"binary64_direct_max_metric":5.983862624313537e-06},
+    {"material":"O18","pass":true,"max_high_precision_metric":1.0747642021612826e-10,"p99_high_precision_metric":8.857642987727698e-11,"binary64_direct_max_metric":8.357742221976174e-07}
+  ],
+  "failure_reconciliation": {
+    "original_j1a": "FAILED_PRESERVED",
+    "j1a_r1_direct_head_binary64": "FAILED_PRESERVED",
+    "classification": "FINITE_DIFFERENCE_ORACLE_ROUNDOFF_CANCELLATION_CONFIRMED",
+    "basis": [
+      "The analytic derivative, table, probes and the original two perturbation magnitudes were unchanged in R2.",
+      "Only arithmetic precision in the independent flux-only finite-difference oracle changed from binary64 to 80 decimal digits.",
+      "All six materials then passed the original 1e-6 self-consistency gate by at least about a factor 30.",
+      "The binary64 direct-head diagnostic retained the earlier near-zero-derivative failures, isolating subtractive cancellation in the finite-difference oracle."
+    ]
+  },
+  "qualified_claim": "The closed-form endpoint derivatives of the qualified C1R N241 float32 bilinear log-mobility face law are qualified on strict interpolation-cell interiors away from the exact equal-head shortcut and head-envelope endpoints.",
+  "decision": "QUALIFIED_REAL_C1R_FACE_DERIVATIVE_READY_FOR_J1B_SAME_FACTORIZATION_COLUMN_TANGENT",
+  "scope_guards": [
+    "No unique derivative claim at internal table-node lines.",
+    "No exact equal-head shortcut derivative claim.",
+    "No head-envelope endpoint derivative claim.",
+    "No Class-B C2B, KSATEXM, saturation, heterogeneity, groundwater or production admission claim."
+  ]
+}
