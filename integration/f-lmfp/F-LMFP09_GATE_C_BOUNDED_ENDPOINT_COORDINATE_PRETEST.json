@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "C2_BOUNDED_COMPOSITION_CLOSED_COORDINATE_PRETEST",
+  "basis": {
+    "synthetic_characterization": "integration/f-lmfp/F-LMFP09_GATE_C_SYNTHETIC_CHARACTERIZATION_RESULT.json",
+    "observed_failed_reference_upper_half_gradient_range": [-9265.51784550754, 5969.558980384842],
+    "observed_failed_reference_lower_half_gradient_range": [-11879.117960769683, 18471.03569101508],
+    "current_linear_gradient_envelope": [-28.0, 28.0],
+    "ratio_head_envelope_cm": [-1000000.0, 100.0],
+    "half_face_lengths_cm": [5.0, 10.0],
+    "head_coordinate": "x=asinh(h/0.01 cm)"
+  },
+  "rejected_geometry": {
+    "candidate": "global rectangular transformed raw-gradient axis y=asinh(g/gscale)",
+    "reason": "Transforming g compresses numeric range but does not make a rectangular (h_upper,g) table compositionally valid. At the admitted head boundaries, many large-magnitude g nodes map h_lower=h_upper+g*L outside the admitted head/MFP envelope. Masking or extrapolating those cells would add unqualified runtime geometry and violate fail-closed semantics.",
+    "blind_physical_gradient_expansion_admitted": false
+  },
+  "next_candidate": {
+    "name": "BOUNDED_TRANSFORMED_ENDPOINT_PAIR_LOG_RATIO",
+    "coordinates": [
+      "x_upper=asinh(h_upper/0.01 cm)",
+      "x_lower=asinh(h_lower/0.01 cm)"
+    ],
+    "interpretation": "For fixed face length, local gradient remains g=(h_lower-h_upper)/L but the tabulated correction uses two bounded endpoint coordinates instead of a globally rectangular raw-gradient axis.",
+    "composition_closed": true,
+    "reason": "If both half-face endpoint heads are inside the admitted ratio head envelope, every runtime lookup lies inside the same bounded rectangular x_upper/x_lower table. No additional local-gradient coverage envelope is required.",
+    "identity_constraints": {
+      "hydrostatic_g_eq_1": "preserved structurally because q_base=K_MFP*(1-g) is exactly zero independent of finite correction ratio",
+      "equal_head_g_eq_0": "must be constrained to K(h_upper) using the already qualified exact local-limit correction, not inferred from interpolation",
+      "h_lower_eq_0": "insert x_lower=0 exactly",
+      "h_upper_eq_0": "insert x_upper=0 exactly"
+    },
+    "qualification_requirements": [
+      "No production code change in F-LMFP09",
+      "Use independent steady Darcy face oracle for table preparation and validation",
+      "Keep calibration/preparation nodes separate from validation probes",
+      "Retain existing face error, sign, continuity, fail-closed and mass-compatible gates without relaxation",
+      "Re-run homogeneous reduction before heterogeneous Gate C",
+      "Do not interpret successful synthetic coverage as catalog admission across the separately localized B110 constitutive jump"
+    ]
+  },
+  "cardinality_pretest": {
+    "base_asinh_head_nodes": 33,
+    "zero_inserted": true,
+    "endpoint_axis_nodes": 34,
+    "candidate_values_per_material_geometry_class": 1156,
+    "current_saturation_aligned_values_per_class": {
+      "half_face_5cm": 1539,
+      "half_face_10cm": 1485
+    },
+    "interpretation": "The composition-closed endpoint-pair candidate does not require greater scalar table cardinality than the current Gate C provider at the tested 33-node base density. This is a geometry/cardinality pretest only, not an accuracy qualification."
+  },
+  "architecture_invariants": {
+    "kernel_io_separation_unchanged": true,
+    "immutable_shared_parameter_data": true,
+    "persistent_column_state_added": false,
+    "worker_local_interface_scratch": true,
+    "mass_conservation_requirement_unchanged": true,
+    "solver_policy_separate_from_physics": true,
+    "reference_mode_unchanged": true,
+    "production_admission": false
+  },
+  "decision": "ADMIT_ENDPOINT_PAIR_COORDINATE_FOR_EXPERIMENTAL_ACCURACY_QUALIFICATION_ONLY"
+}
