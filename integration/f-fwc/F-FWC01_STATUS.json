@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-FWC",
   "work_unit": "F-FWC01",
   "title": "Finite Water Content Soil-Water Solver Assessment",
@@ -10,14 +10,9 @@
   "tested": true,
   "reproduced": false,
   "qualified": false,
-  "decision": "FWC_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_RESEARCH_CONTINUES",
+  "decision": "FWC_BOUNDED_FAIL_CLOSED_REPRESENTATION_SEMANTICS_QUALIFIED_PHYSICAL_EQUATIONS_STILL_OPEN",
   "decision_is_final": false,
   "requested_positive_exit_reached": false,
-  "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"],
-  "hard_blockers_if_failed": [
-    "C_BOUNDED_STATE_OR_QUALIFIED_MEMORY_CONTRACT",
-    "D_DISCRETE_MASS_CONSERVATION"
-  ],
   "primary_lineage": [
     {"doi":"10.1029/2008WR006815","role":"finite-water-content infiltration and redistribution","correction_doi":"10.1029/2008WR007455"},
     {"doi":"10.1002/2015WR017126","role":"general 1-D vadose-zone solution method"},
@@ -37,61 +32,70 @@
     "checksum_captured": false,
     "reproduced": false
   },
-  "candidate_families": [
-    "FWC_ADVECTIVE",
-    "FWC_EXPLICIT_DIFFUSION"
-  ],
-  "executable_gate_ab": {
+  "candidate_families": ["FWC_ADVECTIVE","FWC_EXPLICIT_DIFFUSION"],
+  "gate_ab": {
     "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
-    "precommit_commit": "f9300d4f4c065bbecc12d3e53308bc0dcab1d2c8",
-    "experiment_commit": "9f16331c83a22b813423895cfe547a73998e9985",
-    "result_commit": "9a7465f582fad3b473103f7c6eae684173c6f597",
-    "workflow_head": "6af5bdcf58ede363facb9690983ce15046bf79a2",
     "workflow_run": 34380354951,
+    "workflow_head": "6af5bdcf58ede363facb9690983ce15046bf79a2",
     "workflow_conclusion": "success",
-    "bounded_state": {
-      "source_style_dynamic_linked_list": "NO_GO_FOR_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION",
-      "finite_duration_plateau_observed": true,
-      "forcing_independent_hard_bound_established": false,
-      "frozen_single_bin_object_growth_under_event_refinement": "4_TO_256_OBJECTS_64X",
-      "frozen_200_bin_replicated_storage_envelope_finest_case_bytes": 1232000,
-      "byte_value_is_official_C_sizeof": false,
-      "advective": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST",
-      "explicit_diffusion": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST"
-    },
-    "exact_mass": {
-      "minimal_finite_volume_ledger_feasibility": "QUALIFIED",
-      "cases": 4,
-      "accepted_steps_per_case": 10000,
-      "max_abs_mass_residual": 2.3314683517128287e-15,
-      "frozen_mass_tolerance": 1.4210854715202004e-14,
-      "mass_repair": false,
-      "rejected_trial_committed_state_bitwise_unchanged": true,
-      "rejected_trial_committed_ledger_exactly_unchanged": true,
-      "physical_FWC_equation_mass_qualification": "OPEN"
-    }
+    "source_style_dynamic_linked_list": "NO_GO_FOR_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION",
+    "forcing_independent_hard_bound_established": false,
+    "single_bin_object_growth_under_64x_event_refinement": "4_TO_256",
+    "200_bin_finest_modeled_persistent_bytes": 1232000,
+    "minimal_transaction_safe_finite_volume_ledger": "QUALIFIED",
+    "max_abs_mass_residual": 2.3314683517128287e-15,
+    "physical_FWC_equation_mass_qualification": "OPEN"
   },
-  "current_findings": [
-    "published method is explicitly finite-volume and conservation-oriented, but the primary source warns that conservation depends on exact finite-volume bookkeeping rather than the ODEs being inherently conservative",
-    "published method is explicit and non-iterative",
-    "published lineage includes layered soils and rising/falling groundwater-table validation",
-    "the 2015 implementation lineage explicitly identifies a linked-list methodology for falling slugs",
-    "fixed theta-bin count bounds base arrays but does not establish a forcing-independent bound on dynamic falling-slug objects",
-    "the frozen topology falsification reaches a duration plateau for fixed event spacing but the plateau grows 64x when event period is refined 64x",
-    "source-style dynamic linked-list state is therefore rejected for primary MultiSWAP persistent representation",
-    "a bounded fixed-slot or dense-bin redesign remains research-eligible only with conservative fail-closed overflow and separate physical qualification",
-    "2015 advective formulation neglects soil-water diffusivity",
-    "a 2016 explicit binwise extension restores a diffusion contribution without a global nonlinear solve",
-    "the diffusion extension is not credited with an unproven topology-collapse rule and therefore shares the bounded-state no-go for source-style linked-list persistence",
-    "minimal advective and explicit-diffusion finite-volume ledger reconstructions close at binary64 roundoff scale without mass repair",
-    "intentional rejected trials leave committed base state and ledger unchanged",
-    "generic SWAP pressure-head and hydraulic-service fidelity remains open",
-    "MODFLOW imposed-head/imposed-flux contract and response tangent remain open"
+  "gate_a2": {
+    "evidence": "F-FWC01_GATE_A2_FIXED_SLOT_FAIL_CLOSED_BOUND_RESULT.json",
+    "workflow_run": 34381244691,
+    "workflow_head": "3587426bf43f5ccbe0d44805d52d7d36d5933d1e",
+    "workflow_conclusion": "success",
+    "candidate": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
+    "decision": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
+    "cases": 48,
+    "normal_cases": 12,
+    "overflow_routed_cases": 36,
+    "maximum_active_slots": 8,
+    "persistent_bytes_per_column": {"16":3328,"64":13312,"200":41600},
+    "accepted_topology_equal_dynamic_reference": true,
+    "overflow_committed_state_bitwise_unchanged": true,
+    "overflow_committed_ledger_exactly_unchanged": true,
+    "overflow_water_merge_clip_drop": false,
+    "overflow_diagnostic": "FALLBACK_REQUIRED",
+    "explicit_diffusion_scratch_owner": "worker",
+    "important_nonclaims": [
+      "eight slots are not shown sufficient for useful hydrological coverage",
+      "41.6 kB persistent state at 200 bins is not admitted as acceptable MultiSWAP memory cost",
+      "runtime event-rate boundedness remains open",
+      "physical FWC hydraulic equations remain unqualified"
+    ]
+  },
+  "admissibility": {
+    "source_style_dynamic_list_primary_multiswap": "REJECTED",
+    "hard_bounded_fixed_slot_transaction_semantics": "QUALIFIED",
+    "physical_advective_FWC_equations": "NOT_YET_QUALIFIED",
+    "physical_explicit_diffusion_FWC_equations": "NOT_YET_QUALIFIED",
+    "physical_mass_conservation": "NOT_YET_QUALIFIED",
+    "hydraulic_accuracy_vs_FullRichards": "NOT_YET_QUALIFIED",
+    "runtime_affordability": "NOT_YET_QUALIFIED",
+    "groundwater_interface": "NOT_ADMITTED",
+    "crop_and_shared_process_integration": "NOT_ADMITTED",
+    "MultiSWAP_production": "NOT_ADMITTED"
+  },
+  "hard_guards": [
+    "Do not restore source-style dynamic linked-list persistence as the primary MultiSWAP representation without a new forcing-independent bound proof.",
+    "Fixed-slot overflow may reject/retry or route to a qualified fallback, but may never discard, silently merge or clip water.",
+    "A2 boundedness does not qualify eight slots as an adequate coverage policy.",
+    "A2 boundedness does not qualify the 200-bin memory cost or runtime event cost.",
+    "No physical FWC claim may be promoted from the synthetic topology and ledger probes.",
+    "Do not start groundwater, crop or MultiSWAP production integration before physical FWC mass and hydraulic gates pass.",
+    "If M2WC70 becomes retrievable, capture checksum and code structure before any official-code reproduction claim."
   ],
   "next_action": {
-    "priority": "BOUND_REPRESENTATION_BEFORE_HYDRAULIC_AB",
-    "instruction": "Do not start groundwater, crop, MultiSWAP runtime implementation or broad hydraulic A/B yet. First determine whether a fixed dense-bin or fixed-slot FWC representation can preserve all admitted water topology with a hard finite memory contract. Any slot overflow must fail closed or route conservatively to a qualified reference solver; it may not discard, merge or clip water to force boundedness. Then qualify physical FWC mass equations and only afterwards proceed to hydraulic comparison.",
-    "official_code_preference": "If M2WC70 becomes retrievable, capture checksum and exact front/slug structures before claiming source reproduction."
+    "priority": "PHYSICAL_FWC_STATE_AND_MASS_EQUATION_GATE",
+    "instruction": "Freeze source-derived advective FWC equations and separately the explicit-diffusion extension. Implement the smallest physical conservative column using the qualified fixed-slot fail-closed transaction semantics. Require exact accepted-step mass closure, unchanged committed state on overflow/rejection, no clipping repair, and explicit separation of worker scratch. Only after this passes may hydraulic A/B against FullRichards begin.",
+    "runtime_cost_followup": "After physical feasibility, measure fallback incidence and event/substep cost. Memory boundedness alone is insufficient for MultiSWAP."
   },
-  "status": "EXECUTABLE_BOUNDED_STATE_FALSIFICATION_AND_MINIMAL_MASS_LEDGER_GATE_COMPLETE_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_OPEN"
+  "status": "A2_HARD_BOUNDED_FAIL_CLOSED_SEMANTICS_QUALIFIED_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_EQUATION_GATE"
 }
