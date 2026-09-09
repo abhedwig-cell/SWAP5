@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "audit": "GATE_A_SOURCE_RECONCILIATION_WITH_ROSS2011",
+  "source": {
+    "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal 10:760-766",
+    "doi": "10.2136/vzj2010.0085"
+  },
+  "source_structure": {
+    "cell_balance": "finite-volume continuity balance over cell i using q_(i-1/2) and q_(i+1/2)",
+    "time_point": "flux is evaluated at a selected fraction sigma of the time step",
+    "state_variable": "v=theta in unsaturated cells and v=h in saturated cells",
+    "flux_linearization": "q^sigma is approximated from the start-step face flux plus first derivatives with respect to the two endpoint states times sigma times their increments",
+    "resulting_system": "the unknown increments Delta v form a tridiagonal linear system",
+    "retry_semantics": "if state changes are unacceptable, a smaller dt can be solved without recomputing the start-step fluxes or derivatives",
+    "mass_statement": "the discretized continuity equation gives exact mass balance to computational error"
+  },
+  "gate_A_correspondence": {
+    "finite_volume_cell_balance": "MATCH",
+    "selected_sigma_fraction": "MATCH_TESTED_SIGMA_0_0P5_1",
+    "first_order_two_endpoint_flux_derivative_update": "MATCH_FOR_ANALYTIC_LINEAR_FACE_FIXTURE",
+    "tridiagonal_increment_system": "MATCH",
+    "one_direct_tridiagonal_solve": "MATCH",
+    "no_global_nonlinear_iteration": "MATCH",
+    "mass_from_single_valued_internal_face_fluxes": "MATCH",
+    "base_state_not_mutated_by_trial": "SWAP5_ADDITION_COMPATIBLE_WITH_SOURCE_STRUCTURE"
+  },
+  "not_yet_reconstructed_or_qualified": [
+    "mixed theta/head matrix coefficients when a cell changes saturation status",
+    "Ross state-change acceptability and timestep selection rules",
+    "boundary-condition variants from the illustrative Fortran code",
+    "bilinear flux-table derivative interpolation on real nonlinear hydraulic tables",
+    "ponding/deponding transitions",
+    "source/sink implementation beyond the continuity term admitted by the paper",
+    "generic SWAP5 prescribed-head and prescribed-flux bottom contracts"
+  ],
+  "interpretation": "The executed Gate A harness tests the same algebraic continuity/linearization structure described by Ross 2011, but deliberately replaces the nonlinear precomputed face table with an analytic linear face law. The green Gate A result is therefore valid evidence for conservation and bounded tridiagonal algebra, not evidence for Ross hydraulic fidelity.",
+  "decision": "GATE_A_SOURCE_RECONCILED_READY_FOR_REAL_FACE_TABLE_AND_MIXED_STATE_GATES",
+  "status": "PERSISTED_SOURCE_BOUND_RECONCILIATION"
+}
