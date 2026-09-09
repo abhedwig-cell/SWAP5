@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "B1_C2_SATURATION_ALIGNED_RATIO_KNOTS_RESULT",
+  "tested_head": "fa2c99e45423983873928b3ae1bc8f21f5797b7e",
+  "workflow": {
+    "name": "F-LMFP09 Saturation Aligned Ratio Knots",
+    "run": 34300595679,
+    "job": 102306471241,
+    "conclusion": "SUCCESS",
+    "artifact": 10084800717,
+    "artifact_digest": "sha256:110d3702d6ee52173f50dcddf2e0c1218dbf55ace1fe6883e41762560236de1f"
+  },
+  "material_geometry_class": "reference_sand:20cm",
+  "representation": "CONSTRAINED_CONTINUOUS_MFP_LOG_DARCIAN_RATIO_WITH_HLOWER_ZERO_ALIGNED_HEAD_KNOTS",
+  "selection_uses_validation_error": false,
+  "thresholds_changed": false,
+  "knot_rule": "augment the 33-node asinh upper-head ratio axis with every h_upper=-g*L for fixed G_AXIS nodes whose h_lower=0 crossing lies inside the ratio envelope",
+  "base_33": {
+    "head_nodes": 33,
+    "bytes_per_class": 7128,
+    "face_pass": false,
+    "corrected_max_rel_error": 0.45162180968031085,
+    "corrected_p90_rel_error": 0.012189041242335137,
+    "corrected_p99_rel_error": 0.08352229244181744,
+    "strong_gradient_p90_rel_error": 0.009655272953702347,
+    "near_saturation_p90_rel_error": 0.010083441379158562
+  },
+  "saturation_aligned": {
+    "head_nodes": 53,
+    "inserted_crossing_knots": 20,
+    "bytes_per_class": 11448,
+    "base_master_oracle_solves": 891,
+    "extra_crossing_knot_oracle_solves": 540,
+    "runtime_oracle_calls": 0,
+    "identity_pass": true,
+    "asymptotic_continuity_pass": true,
+    "fail_closed_pass": true,
+    "face_pass": true,
+    "corrected_max_rel_error": 0.13580793593911333,
+    "corrected_p90_rel_error": 0.005061507790833792,
+    "corrected_p99_rel_error": 0.027601029416761808,
+    "strong_gradient_p90_rel_error": 0.0031627606792412697,
+    "near_saturation_p90_rel_error": 0.0031386164744415987,
+    "sign_mismatches": 0
+  },
+  "physical_crossing_characterization": {
+    "oracle_value_continuity": "SUPPORTED; for unsaturated-side tested gradients the symmetric crossing jump contracts at approximately the 0.2 epsilon refinement ratio down to the smallest probe",
+    "saturated_flat_cases": "negative-gradient crossings with both endpoint heads effectively saturated reach numerical-noise-scale reference differences; these are not interpreted as discontinuities",
+    "candidate_value_continuity": "SUPPORTED; crossing jump contracts at approximately 0.2",
+    "local_derivative_continuity": "NOT_QUALIFIED",
+    "derivative_observation": "The piecewise-linear nonuniform ratio interpolation produces left/right derivative changes at inserted h_lower=0 knots. Example g=5 at h_upper=-100 cm: reference finite-difference slopes converge near -0.25745, while the fitted slopes at the smallest probe are about -0.26280 and -0.35098.",
+    "tangent_admission": false
+  },
+  "interpretation": {
+    "failure_classification": "B_INTERPOLATION_GEOMETRY_NEAR_LOWER_HEAD_SATURATION_CROSSING",
+    "result": "A validation-independent, geometry-derived knot rule resolves the previously failing reference_sand:20cm homogeneous face gate without uniform global densification.",
+    "not_claimed": [
+      "C1 differentiability",
+      "heterogeneous-interface qualification",
+      "production material catalog qualification",
+      "transient regression",
+      "groundwater admission",
+      "production solver admission"
+    ]
+  },
+  "architecture": {
+    "production_code_changed": false,
+    "physics_changed": false,
+    "mass_semantics_changed": false,
+    "exact_equal_head_and_hydrostatic_identities_preserved": true,
+    "fail_closed_preserved": true,
+    "shared_immutable_geometry_class_data": true,
+    "per_column_tables": false,
+    "bounded_runtime_lookup": true,
+    "fullrichards_reference_preserved": true
+  },
+  "decision": "QUALIFIED_SATURATION_ALIGNED_HLOWER_ZERO_KNOT_RULE_FOR_EXPANDED_HOMOGENEOUS_MATRIX"
+}

@@ -1,0 +1,24 @@
+name: F-LMFP09 Saturation Aligned Homogeneous Matrix
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  homogeneous-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Expanded saturation aligned homogeneous matrix
+        run: bash experiments/lmfp/run_lmfp09_saturation_aligned_homogeneous_matrix_gate.sh
+      - name: Upload homogeneous matrix evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-saturation-aligned-homogeneous-matrix
+          path: lmfp09-saturation-aligned-matrix-artifacts/
