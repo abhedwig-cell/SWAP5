@@ -1,0 +1,34 @@
+name: F-SI20 extended startup retry ladder
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_extended_startup_retry_ladder.sh'
+      - '.github/workflows/fsi20-extended-startup-retry-ladder.yml'
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run extended startup retry ladder
+        run: |
+          bash tests/fsi/run_fsi20_extended_startup_retry_ladder.sh | tee fsi20-extended-startup.log
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fsi20-extended-startup-retry-ladder
+          path: fsi20-extended-startup.log
+          if-no-files-found: error
