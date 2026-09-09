@@ -55,6 +55,7 @@ MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
   src/runtime/mod_canonical_contracts.f90
   src/runtime/mod_canonical_interval_runtime.f90
   src/kernel/mod_kernel_transactions.f90
@@ -66,12 +67,14 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
+  src/process/mod_snow_process.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
   src/runtime/mod_fmr_committed_restart.f90
