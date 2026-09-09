@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF28",
+  "title": "WOFOST One-Day Semantic Rate State View Qualification Evidence",
+  "base": {
+    "commit": "3944fc59b1780586e91d31e1f632e458ea29ad23",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_RATE_EVALUATOR_READINESS"
+  },
+  "tested_candidate": "3a16789326db47d50c4c65394389d53c32d10f3d",
+  "workflow": {
+    "name": "F-WOF28 rate-state view",
+    "run_id": 34303687219,
+    "job_id": 102315802727,
+    "conclusion": "success"
+  },
+  "evidence_markers": [
+    "FWOF28_PRODUCTION_DELTA_SINGLE_RATE_STATE_VIEW_MODULE=PASS",
+    "FWOF28_FWO27_CLOSEOUT_AND_PRIOR_OWNER_LOCK=PASS",
+    "FWOF28_COMPACT_SCALAR_VIEW_STATIC=PASS",
+    "FWOF28_OWNER_READ_ONLY_BOUNDARY_STATIC=PASS",
+    "FWOF28_NO_RATE_PHYSICS_CALENDAR_IO_OR_SOLVER_DEPENDENCY=PASS",
+    "FWOF28_NO_LEAF_COHORT_COPY_IN_VIEW=PASS",
+    "FWOF28_O0=PASS",
+    "FWOF28_O2=PASS",
+    "FWOF28_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF28_INACTIVE_ROUTE_NO_ACTIVE_CANOPY_DEPENDENCY=PASS",
+    "FWOF28_ACTIVE_SEMANTIC_RATE_STATE_VIEW=PASS",
+    "FWOF28_ASSEMBLY_DOES_NOT_MUTATE_OWNER=PASS",
+    "FWOF28_ACTIVE_CANOPY_PARAMETERS_FAIL_CLOSED=PASS",
+    "FWOF28_INVALID_OWNER_FAILS_CLOSED=PASS",
+    "FWOF28_ACTIVE_NEGATIVE_DVS_FAILS_CLOSED=PASS",
+    "FWOF28_RATE_STATE_VIEW_ASSEMBLY_TEST PASS",
+    "FWOF28_FWO26_STRUCTURAL_REGRESSION_EXACT_OUTPUT=PASS",
+    "FWOF28_RATE_STATE_VIEW_GATE PASS"
+  ],
+  "view_output_sha256": "9b2b856922cc4b27a2edf24a3ca5a58924eaef40c0ad47c15bfb10d5be3c05c3",
+  "F_WOF26_reference_output_sha256": "e3ec4954bc2a98984eb232f41eb073f44474cb988f2e8c01cc71e375794fefa0",
+  "production_delta": [
+    "src/crop/mod_wofost_one_day_rate_state_view.f90"
+  ],
+  "semantic_mapping": {
+    "DVS": "development_stage",
+    "WRT": "actual_root_biomass",
+    "WST": "actual_stem_biomass",
+    "WSO": "actual_storage_biomass",
+    "WLV": "living_leaf_biomass",
+    "LAI": "actual_leaf_area_index",
+    "LAIEXP": "exponential_leaf_area_index"
+  },
+  "qualified_properties": [
+    "view is compact scalar-only data with no allocatable cohort copy",
+    "owner argument is read-only and tests retain bitwise owner state across assembly",
+    "inactive crop returns unavailable before inspecting active-only SSA/SPA",
+    "active canopy parameters are finite and nonnegative or fail closed",
+    "active semantic values are finite and nonnegative or fail closed",
+    "nonfinite checks use explicit control flow and do not rely on Fortran .and. short-circuit behavior",
+    "module has no crop-rate equations, calendar, I/O, soil solver or coupling dependency",
+    "existing F-WOF26 structural trajectory output is unchanged"
+  ],
+  "qualification_decision": "QUALIFY_COMPACT_READ_ONLY_WOFOST_RATE_STATE_VIEW_ASSEMBLY",
+  "rate_evaluator_qualified": false,
+  "next_required_production_seam": "immutable compact table and parameter substrate for the restricted standard-WOFOST rate provider"
+}
