@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT11",
+  "title": "Explicit Richards Head-Budget Certificate Production Policy Binding Remediation Closeout",
+  "status": "COMPLETE",
+  "decision": "IMPLEMENTED_OWNER_VERIFIED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITH_COMPLETE_INVALID_BUDGET_DIAGNOSTICS_READY_FOR_FRESH_INDEPENDENT_PRODUCTION_QUALIFICATION",
+  "qualified_source_commit": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+  "qualified_source_tree": "d24f20559653b028d7967bf57da37da432803221",
+  "production_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+  "owner_workflow_run": 34359330293,
+  "owner_workflow_job": 102491962405,
+  "owner_workflow_conclusion": "success",
+  "owner_matrix": {
+    "original_frozen_cases": [
+      "VALID_ACCEPT",
+      "VALID_REJECT",
+      "MISSING_BUDGET",
+      "INVALID_ZERO_BUDGET",
+      "NO_HISTORY_WITH_VALID_BUDGET",
+      "BOUNDED_RETRY_NO_MONOTONICITY_CLAIM"
+    ],
+    "supplemental_remediation_cases": [
+      "INVALID_NEGATIVE_BUDGET",
+      "INVALID_NAN_BUDGET",
+      "INVALID_POSITIVE_INFINITY_BUDGET"
+    ],
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identity": "PASS"
+  },
+  "fixed_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "budget_location": "numerical configuration only",
+    "default_H_budget": null,
+    "valid_budget": "supplied AND finite AND >0",
+    "invalid_budget": "certificate unavailable; preserve supplied native value diagnostically; no clamp/floor/abs/default",
+    "no_history": "certificate unavailable; rejected trial cannot bootstrap committed history",
+    "hard_mass_ordering": "physical trial -> hard mass qualification -> temporal certificate -> transaction acceptance/rejection",
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0,
+    "B_inf_true_nonlinear_error_upper_bound": false,
+    "shorter_dt_monotonicity_claim": false
+  },
+  "supersession": {
+    "previous_qualified_source": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "previous_owner_handoff_commit": "41644e4759f2aafae7a8db66272e03d242652de1",
+    "F_VQ33_status_commit": "3a495a78c4cad5438299029f0931e75a3eafff7c",
+    "F_VQ33_decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+    "interpretation": "The prior owner candidate and its F-VQ33 handoff remain immutable historical evidence but are superseded for future production qualification. F-VQ33 remains a failed independent qualification and is not reopened or reinterpreted."
+  },
+  "architecture_invariant_audit": "PASS_NO_ARCHITECTURE_INVARIANT_CONFLICT",
+  "gc02_release": false,
+  "next_action": "Open a fresh independent F-VQ34 candidate from qualified_source_commit with a matrix frozen before execution and disjoint from F-VQ33 as well as earlier qualification matrices."
+}
