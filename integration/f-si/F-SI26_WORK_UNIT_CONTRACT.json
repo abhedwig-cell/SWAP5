@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI26",
+  "title": "Scientific Normalization & Acceptance Semantics for the Bounded Richards Temporal Indicator",
+  "branch": "work/f-si26-richards-temporal-indicator-scientific-normalization",
+  "base_commit": "0053d5b0a523e494a7fbfcdc55190b946230aa56",
+  "scope": "owner-level scientific/numerical semantics assessment only; no production acceptance implementation, retry-policy binding, coupling release or empirical calibration",
+  "source_locks": {
+    "F_VQ31_closeout": {"path":"integration/f-vq/F-VQ31_CLOSEOUT.json","blob":"82064e357abe5d941850fcaa4eb8dcdf49e1b4af","decision":"QUALIFIED_INDEPENDENT_TRANSACTION_COMPOSITION_OF_RICHARDS_TEMPORAL_INDICATOR_HISTORY_READY_FOR_SEPARATE_SCIENTIFIC_TEMPORAL_ACCEPTANCE_WORK"},
+    "F_SI24_profile": {"path":"integration/f-si/F-SI24_OWNER_CANDIDATE_PROFILE.json","blob":"e3d16aec6e74892ddfb1ff050994b04389c54214"},
+    "F_SI25_closeout": {"path":"integration/f-si/F-SI25_CLOSEOUT.json","blob":"5bbb3613fe53ab68ec083e979dc7b062c117349c"},
+    "F_SI25_owner_evidence": {"path":"integration/f-si/F-SI25_OWNER_EVIDENCE.json","blob":"553e43d55f021dfb5efc9df4b9b8d96353a545d7"},
+    "F_KT09_decision_contract": {"path":"integration/f-kt/F-KT09_DECISION_CONTRACT.json","blob":"7957c07ba3a1e31469f315b437f9ac3248a860e0"},
+    "F_KT10_closeout": {"path":"integration/f-kt/F-KT10_CLOSEOUT.json","blob":"1a53f26c4c299080d2ae8f03304320d55cf8ae8b"},
+    "F_VQ30_evidence": {"path":"integration/f-vq/F-VQ30_HELD_OUT_EVIDENCE.json","blob":"39832173174271f4ad97278662467eb4dab13599"},
+    "F_VQ30_closeout": {"path":"integration/f-vq/F-VQ30_CLOSEOUT.json","blob":"6663bcc1149f07962bb9921840958d6d7de628a4"},
+    "F_VQ28_negative_status": {"commit":"d8bcb1c90e897812ae8b91295be98e58023e10fb","path":"integration/f-vq/F-VQ28_STATUS.json","blob":"97f1dff93f1da8b443e8bd853f6e0c37ba9cf08c"},
+    "F_VQ29_negative_status": {"commit":"394d064a0dad0a7f7852b129bae99713b9aeb4c0","path":"integration/f-vq/F-VQ29_STATUS.json","blob":"d7bbeff65f9d506e5144b3b885930a835a1cef35"},
+    "F_SI23_status": {"path":"integration/f-si/F-SI23_STATUS.json","blob":"cc2de3e2bbec313e6ae6942fde280cf7ad834867"},
+    "F_SI23_literature_reconciliation": {"path":"integration/f-si/F-SI23_GATE_A_LITERATURE_RECONCILIATION.json","blob":"518690d554256e312973be461da9579afaeb5835"},
+    "F_SI20_headnorm_policy_evidence": {"path":"integration/f-si/F-SI20_HEADNORM_FGC02_POLICY_EVIDENCE.json","blob":"9294a16b7b852d1bde7de17b986414920aae8130"},
+    "F_SI20_theory_context": {"path":"integration/f-si/F-SI20_THEORY_CONTEXT.json","blob":"3f205935abb4dbee5a07875f04f472077127bfd1"}
+  },
+  "fixed_indicator_semantics": {
+    "B_inf_unit": "cm pressure head",
+    "B_inf_formula": "B_M/sqrt(min_i M_i)",
+    "B_M_formula": "min(||e_raw||_M,2||delta||_M)",
+    "e_raw_formula": "0.5*dt*(hdot_np1-hdot_n)",
+    "analytic_factor": 2.0,
+    "candidate_formula_may_change_in_F_SI26": false,
+    "general_nonlinear_true_error_bound_claimed": false,
+    "N512_or_other_finite_refinement_is_truth": false
+  },
+  "semantic_separation": {
+    "indicator": "B_inf is a bounded-stiffness-aware head-domain temporal indicator with exact-linear bound evidence and qualified nonlinear transfer evidence in a restricted envelope.",
+    "normalization": "A dimensionless mapping may express B_inf relative to an independently supplied accuracy budget, but the mapping itself must not create a true-error guarantee that B_inf does not possess.",
+    "application_budget": "An application/numerical accuracy budget is an explicit external policy/configuration quantity with scientific or application provenance; it is not inferred from F-SI24/F-VQ30/F-VQ31 case outcomes.",
+    "acceptance_policy": "F-KT acceptance/retry mechanics are downstream and separate; F-SI26 may only define candidate certificate semantics.",
+    "mass": "Mass conservation remains an independent hard gate and may not be traded against temporal accuracy.",
+    "coupling": "Groundwater head/flux interface residual tolerances are separate coupling requirements and may not be silently reused as the Richards temporal budget."
+  },
+  "candidate_classes": [
+    {
+      "id": "ABSOLUTE_HEAD_BUDGET_CONSUMPTION",
+      "mapping": "C_h=B_inf/H_budget",
+      "H_budget_requirement": "positive finite explicit external head-domain temporal-indicator budget in cm",
+      "initial_position": "PREFERRED_FOR_ASSESSMENT",
+      "nonclaim": "C_h<=1 means indicator within configured budget, not proven true solution error <= H_budget"
+    },
+    {
+      "id": "BUILTIN_UNIVERSAL_HEAD_SCALE",
+      "mapping": "B_inf/H_builtin",
+      "initial_position": "REJECT_UNLESS_INDEPENDENT_SCIENTIFIC_REQUIREMENT_EXISTS",
+      "reason": "Choosing H_builtin from observed cases or legacy solver tolerances would be empirical/semantic overreach."
+    },
+    {
+      "id": "STATE_RELATIVE_HEAD_SCALE",
+      "mapping": "B_inf/f(h,state)",
+      "initial_position": "DISFAVORED",
+      "reason": "Can permit large absolute head deviations in dry states and risks becoming a state-dependent rescue factor without an independent scientific contract."
+    },
+    {
+      "id": "M_OR_STORAGE_ONLY_SCALE",
+      "mapping": "M-weighted or storage-equivalent scalar used as sole temporal certificate",
+      "initial_position": "DISFAVORED_AS_SOLE_CERTIFICATE",
+      "reason": "Mass is independently exact and storage sensitivity does not by itself guarantee head or interface-flux accuracy."
+    },
+    {
+      "id": "COUPLING_RESIDUAL_SCALE",
+      "mapping": "normalize B_inf directly by groundwater coupling head/flux tolerance",
+      "initial_position": "REJECT_AS_UNIVERSAL_KERNEL_SEMANTIC",
+      "reason": "Coupling residuals belong to the coupler/application contract and are not universal soil-water temporal-accuracy semantics."
+    },
+    {
+      "id": "RANKING_OR_RETRY_ADVICE_ONLY",
+      "mapping": "retain dimensional B_inf without <=1 production certificate",
+      "initial_position": "FALLBACK_IF_NO_ACCEPTANCE_SEMANTIC_SURVIVES",
+      "reason": "Preserves useful bounded-cost signal without manufacturing an accuracy guarantee."
+    }
+  ],
+  "gates": {
+    "A_EVIDENCE_RECONCILIATION": "Reconcile exact-linear positive evidence, nonlinear conservatism, retry nonmonotonicity, unavailable true reference and F-KT09's generic dimensionless certificate contract without upgrading evidence strength.",
+    "B_DIMENSIONAL_AND_SEMANTIC_VALIDITY": "Any candidate mapping is dimensionally coherent, monotone in B_inf for fixed supplied budget, finite only for valid inputs and has an exact non-overclaiming interpretation.",
+    "C_NO_EMPIRICAL_RESCUE": "No scale, multiplier, floor, material/state coefficient or default tolerance is fitted from F-SI23/F-SI24/F-VQ28/F-VQ29/F-VQ30/F-VQ31 outcomes.",
+    "D_ERROR_CLAIM_BOUNDARY": "The candidate does not convert finite-comparator consistency into a general nonlinear true-error bound and does not reinterpret N512 or any refinement endpoint as truth.",
+    "E_APPLICATION_BUDGET_SEPARATION": "If an external budget is used, its provenance, unit and owner are explicit and separate from nonlinear solver tolerances, hard mass tolerance, coupling residual tolerance and legacy timestep heuristics.",
+    "F_RETRY_SEMANTIC_SAFETY": "The candidate does not assume B_inf or its normalized value decreases monotonically with shorter dt; downstream F-KT retry must remain bounded/fail-closed and independently qualified.",
+    "G_EDGE_AND_DISCONTINUITY_BEHAVIOR": "Invalid/nonpositive/nonfinite budget, unavailable indicator, unsupported operator envelope, initial warmup, restart mismatch and forcing/event/topology discontinuity are fail-closed/unavailable unless separately qualified.",
+    "H_FKT09_COMPATIBILITY": "Any dimensionless candidate fits F-KT09's available+finite+nonnegative+<=1 interface without changing F-KT09 generic semantics or selecting policy here.",
+    "I_ARCHITECTURE_INVARIANTS": "Explicitly assess invariants 7,8,9,11,12,13,15,20,23,24,25,26,29,30; no coupling or F-PE release."
+  },
+  "hard_holds": [
+    "No empirical safety factor or calibration coefficient.",
+    "No q_cap, Nmin, geometric-tail multiplier or retrospective machine-floor inflation.",
+    "No universal built-in temporal head tolerance selected from existing evidence.",
+    "Do not reuse CritDevH nonlinear convergence criteria as temporal accuracy budgets.",
+    "Do not infer monotone retry improvement from smaller dt.",
+    "Do not call B_inf a qualified general nonlinear true-error upper bound.",
+    "Do not change F-SI24/F-SI25 indicator formula, Richards physics, boundary semantics, mass accounting or production source in this owner assessment.",
+    "Do not bind a candidate to F-KT09 production acceptance in F-SI26.",
+    "Do not release F-GC02, groundwater coupling or F-PE."
+  ],
+  "possible_owner_decisions": [
+    "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+    "INDICATOR_QUALIFIED_FOR_RANKING_OR_RETRY_ADVICE_ONLY_NOT_ACCEPTANCE",
+    "NO_DEFENSIBLE_SCIENTIFIC_NORMALIZATION_YET_FAIL_CLOSED"
+  ],
+  "persist_early_test_second": true,
+  "next_action": "Perform source-bound candidate-class assessment against Gates A-I. If ABSOLUTE_HEAD_BUDGET_CONSUMPTION survives, define exact certificate semantics and independent F-VQ qualification requirements without selecting a default H_budget."
+}
