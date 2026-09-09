@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "B",
+  "title": "Restricted Right-Sided Initial-Derivative Bootstrap Characterization",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "base_head": "229d34f692bdeeb118a2e84c2d1cd1fcbb2d5faa",
+  "question": "For the existing SWAP mixed-form Richards owner in a strictly unsaturated restricted envelope, does a right-sided semi-discrete derivative constructed from current capacity and the new-boundary residual converge to the observed initial slope of accepted backward-Euler trajectories as dt decreases?",
+  "scope": {
+    "bottom_mode": 5,
+    "top_mode": "explicit_flux",
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "macropore_active": false,
+    "source_sink": "zero",
+    "root_sink": "zero",
+    "all_nodes_strictly_unsaturated": true,
+    "all_capacities_finite_positive": true,
+    "production_source_modified": false,
+    "test_only_prototype": true
+  },
+  "states_cm": [-25.0,-75.0,-250.0],
+  "stimuli": {
+    "bottom_head_jump_cm": [-0.05,0.05],
+    "top_flux_fractional_perturbation_relative_to_gravity_equilibrium": [-0.05,0.05]
+  },
+  "direct_solve_dt_day": [0.001,0.0005,0.00025,0.000125,0.0000625],
+  "case_count": 12,
+  "bootstrap_construction": {
+    "generic_form": "M(h0) * hdot0_plus + R_static(h0, forcing0_plus, boundary0_plus) = 0",
+    "restricted_mass_diagonal": "M_i = capacity_i(h0) * dz_i",
+    "bottom_mode5_uniform_profile_residual": "R_N = K_N * (h0-hbot)/disnod_(N+1)",
+    "top_flux_uniform_profile_residual": "R_1 = K_0 + qtop",
+    "interior_uniform_profile_residual": "0",
+    "derivative": "hdot0_plus_i = -R_i/M_i"
+  },
+  "structural_pass_conditions": [
+    "all declared capacities are finite and strictly positive",
+    "all declared direct backward-Euler trajectories converge under unchanged F-VQ29 numerical controls",
+    "hard external mass residual <= 1e-12 for every direct trajectory",
+    "finite-difference initial-slope error decreases strictly over the frozen decreasing-dt sequence for every case",
+    "smallest-dt slope error is less than the largest-dt slope error for every case",
+    "bootstrap derivative and smallest-dt observed slope have matching sign at the directly stimulated boundary node when nonzero",
+    "O0 and O2 textual outputs are identical"
+  ],
+  "not_tested_or_not_claimed": [
+    "saturated or singular-capacity DAE states",
+    "active macropores",
+    "root uptake or other source/sink dynamics",
+    "other bottom-boundary modes",
+    "general heterogeneous layer geometry",
+    "LTE reliability or conservativeness",
+    "dimensionless certificate normalization",
+    "scientific temporal tolerance",
+    "production admission"
+  ],
+  "failure_interpretation": "Any failure leaves the right-sided bootstrap unqualified and does not authorize tolerance, iteration-budget, dt-grid, state-matrix or physics changes after observing results.",
+  "success_interpretation": "A pass only qualifies the restricted derivative-bootstrap construction as a test-supported owner operation. It unlocks, but does not itself qualify, a later test-only temporal-observer gate."
+}

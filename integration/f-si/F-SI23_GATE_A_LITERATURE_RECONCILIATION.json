@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_A_LITERATURE_RECONCILIATION",
+  "parent_gate_A": "integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json",
+  "reason": "Full-text reconstruction of the companion adaptive backward-Euler papers sharpens the distinction between a cheap pressure-head error observable and a rigorously qualified mixed-form LTE estimator.",
+  "source_bound_reconstruction": {
+    "backward_Euler_derivative": "hdot_np1 = (h_BE_np1-h_n)/dt",
+    "embedded_error_formula": "e_np1 = 0.5*dt*(hdot_np1-hdot_n)",
+    "initial_derivative_general_ODE_form": "Xdot_0 = M(X_0)^(-1) * (-K(X_0) X_0 + F(X_0))",
+    "first_step_only_initial_derivative_inversion": true,
+    "subsequent_derivative_back_calculated_from_accepted_BE_solution": true,
+    "discontinuity_rule": "land exactly on discontinuity, activate new initial/boundary data, then reinitialize derivative on the right side; pre-discontinuity derivative is not reused",
+    "steady_extra_storage": "O(number_of_state_variables) derivative history"
+  },
+  "important_method_boundary": {
+    "pressure_form_Thomas_Gladwell_output_update_is_directly_mass_conservative_for_SWAP": false,
+    "mass_conservative_modified_Picard_companion_experiment_omits_Thomas_Gladwell_output_update": true,
+    "reason_given_in_companion_paper": "The chord-slope mass-conservative approximation is first-order in time and the Thomas-Gladwell output update does not automatically raise it to second order.",
+    "same_embedded_error_formula_was_still_used_as_error_control_in_that_mass_conservative_experiment": true,
+    "authors_note_theoretical_error_estimator_accuracy_is_affected": true
+  },
+  "F_SI23_effect": {
+    "decision_only_e_h_remains_candidate_observable": true,
+    "e_h_is_rigorous_SWAP_mixed_form_LTE_estimator": false,
+    "Thomas_Gladwell_corrected_state_remains_rejected": true,
+    "next_test_may_qualify_only_right_sided_derivative_bootstrap": true,
+    "estimator_reliability_requires_later_separate_gate": true,
+    "scientific_tolerance_selected": false
+  }
+}
