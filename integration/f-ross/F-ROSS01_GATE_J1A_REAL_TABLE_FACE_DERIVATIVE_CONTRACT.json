@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_REAL_C1R_TABLE_FACE_DERIVATIVE",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "purpose": "Qualify closed-form endpoint derivatives of the already qualified C1R N241 base-MvG/KSATFIT RossFast face lookup before using those derivatives in the same-factorization whole-column response tangent.",
+  "qualified_parent": {
+    "face_evidence": "F-ROSS01_GATE_C1R_36_MATERIAL_HOLDOUT_RESULT.json",
+    "representation": "N241 float32 bilinear log-mobility table in u=log10(-h)",
+    "scope": "36 Staringreeks 2018 unimodal MvG materials, KSATFIT, H_ENPR=0, KSATEXM disabled, homogeneous 10-cm unsaturated faces, h=[-10000,-1] cm"
+  },
+  "analytic_formula_inside_one_table_cell": {
+    "definitions": [
+      "g=L+h_a-h_b",
+      "ell=bilinear interpolation of stored log mobility",
+      "M=exp(ell)",
+      "q=g*M",
+      "dell_du_a=(N-1)/4 * ((1-f_b)*(ell10-ell00)+f_b*(ell11-ell01))",
+      "dell_du_b=(N-1)/4 * ((1-f_a)*(ell01-ell00)+f_a*(ell11-ell10))",
+      "du_dh=1/(ln(10)*h) for h<0",
+      "dq_dh_a=M*(1+g*dell_du_a/(ln(10)*h_a))",
+      "dq_dh_b=M*(-1+g*dell_du_b/(ln(10)*h_b))"
+    ],
+    "runtime_cost": "same four float32 table values already used by bilinear flux lookup plus bounded scalar arithmetic",
+    "extra_table_memory": 0,
+    "extra_persistent_column_state": 0,
+    "runtime_iterations": 0
+  },
+  "differentiability_scope": {
+    "hard_claim": "strict interiors of one bilinear table cell, away from the exact equal-head shortcut",
+    "excluded_from_unique_derivative_claim": [
+      "internal table-node lines where the bilinear derivative is only one-sided/piecewise",
+      "the exact equal-head shortcut branch q=K(h)",
+      "head-envelope endpoints"
+    ],
+    "boundary_diagnostics": "Count and document excluded locations; do not smooth or invent a derivative there. A later solver/runtime contract may use explicit one-sided/fail-closed semantics."
+  },
+  "characterization_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "probe_design": {
+    "per_material": 256,
+    "generator": "scrambled Sobol in table-cell index and within-cell fraction",
+    "cell_index_range": [2, 237],
+    "within_cell_fraction_range": [0.2, 0.8],
+    "equal_head_guard": "reject and deterministically replace probes where the exact equal-head shortcut would activate",
+    "finite_difference_perturbation": "head-space symmetric perturbation capped at 5 percent of distance to the nearest table-cell boundary and 5 percent of |h_a-h_b|, with nominal relative steps 1e-6 and 3e-6"
+  },
+  "hard_self_consistency_gate": {
+    "reference": "symmetric finite difference of the exact same C1R N241 lookup while both perturbations remain in the same table cells and away from the equal-head branch",
+    "metric": "abs(d_analytic-d_fd)/max(abs(d_analytic),abs(d_fd),1e-8*KSATFIT)",
+    "maximum_metric": 1e-06,
+    "both_fd_steps_must_pass": true,
+    "nonfinite_derivative_count": 0,
+    "cell_change_count": 0,
+    "base_table_mutated": false
+  },
+  "physical_oracle_derivative_characterization": {
+    "reference": "symmetric finite difference of the independent steady-Darcian oracle at the same head pairs",
+    "not_an_admission_threshold_in_J1A": true,
+    "record": [
+      "maximum relative-or-scaled derivative metric",
+      "p99 derivative metric",
+      "median derivative metric",
+      "maximum absolute derivative error normalized by KSATFIT per cm",
+      "agreement between the two finite-difference step sizes"
+    ],
+    "reason": "J1A first proves an exact tangent of the approximate RossFast face law. Physical derivative fidelity is characterized separately and will inform later timestep/FullRichards qualification rather than being silently conflated with discrete tangent correctness."
+  },
+  "exit_rule": {
+    "pass": "Persist J1A and open J1B same-factorization whole-column tangent using the unchanged C1R face law and these derivatives.",
+    "fail": "Do not build J1B. Diagnose table derivative algebra or branch semantics without changing the already qualified face values."
+  },
+  "scope_guards": [
+    "No Class-B H_ENPR/SvG2006 closure in J1A.",
+    "No exact legacy KSATEXM.",
+    "No saturation switching.",
+    "No heterogeneous faces.",
+    "No groundwater or MODFLOW claim.",
+    "No production admission."
+  ],
+  "relevant_invariants": [5, 7, 11, 14, 15, 20, 23, 25, 30]
+}
