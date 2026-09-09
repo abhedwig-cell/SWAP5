@@ -6,9 +6,13 @@ on:
       - work/f-kt09-model-owned-temporal-certificate
     paths:
       - 'src/transaction/mod_transaction_reference.f90'
+      - 'src/runtime/mod_canonical_contracts.f90'
+      - 'src/runtime/mod_canonical_interval_runtime.f90'
       - 'tests/transaction/test_transaction_model_certificate.f90'
       - 'tests/transaction/test_transaction_attempt_context.f90'
       - 'tests/transaction/test_transaction_reference.f90'
+      - 'tests/fkt/test_fkt09_canonical_certificate_composition.f90'
+      - 'tests/fkt/run_fkt01_gate.sh'
       - 'tests/transaction/run_fkt09_model_certificate_gate.sh'
       - 'tests/transaction/run_a23bl_gate.sh'
       - 'integration/f-kt/F-KT09_DECISION_CONTRACT.json'
@@ -25,5 +29,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
           gfortran --version
-      - name: Run F-KT09 transaction gate
+      - name: Run F-KT09 transaction and canonical-runtime gate
         run: bash tests/transaction/run_fkt09_model_certificate_gate.sh
