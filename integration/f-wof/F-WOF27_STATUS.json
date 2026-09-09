@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted Standard WOFOST One-Day Rate Evaluator Readiness & Provider Boundary",
+  "branch": "work/f-wof27-one-day-rate-evaluator-readiness",
+  "base": {
+    "commit": "428ad482d6b449e3e71d0c42bcc8521a98b9f2fe",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_STRUCTURAL_STATE_INTEGRATOR"
+  },
+  "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_RATE_EVALUATOR_READINESS",
+  "decision": "QUALIFIED_ZERO_PRODUCTION_PROVIDER_BOUNDARY_READY_FOR_READ_ONLY_STATE_VIEW_SEAM",
+  "tested_candidate": "900030ebbc99bba2d00c51882cd591269d63914a",
+  "verification": {
+    "workflow": "F-WOF27 rate evaluator readiness",
+    "run_id": 34303072011,
+    "job_id": 102313973571,
+    "conclusion": "success",
+    "zero_production_delta": "PASS",
+    "F_WOF26_structural_regression": "PASS_O0_O2_OUTPUT_IDENTITY",
+    "F_WOF24_owner_backward_compatibility": "PASS_O0_O2_OUTPUT_IDENTITY"
+  },
+  "production": {
+    "implemented_in_F_WOF27": false,
+    "source_files_changed_from_F_WOF26_base": [],
+    "rate_evaluator_implemented": false,
+    "read_only_rate_state_view_implemented": false,
+    "runtime_accepted_aggregate_provenance_implemented": false
+  },
+  "qualified_readiness_scope": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "crop_event": "one explicit crop day",
+    "nutrient_route": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false,
+    "soybean": false,
+    "grass": false,
+    "provider_phases": [
+      "prepare actual PGASS from explicit forcing/context and the pre-event state view before soil-water substeps",
+      "finalize the complete event-local F-WOF26 rate packet after accepted IQROT/IPTRA are frozen"
+    ],
+    "required_state_view": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "same_state_view_required_for_prepare_and_finalize": true,
+    "parameter_storage": "shared immutable parameter data or references; no per-column parser layout",
+    "rate_workspace": "event-local or worker scratch only",
+    "calendar_dependency": false,
+    "file_IO_dependency": false
+  },
+  "qualified_source_bound_findings": [
+    "KDIR is a legacy parsed orphan for the scoped rate path and is excluded from the production provider DTO",
+    "ASTRO/daynr and hidden RAD/KDIF globals are replaced by explicit forcing/parameter contracts",
+    "legacy denominator-domain gaps require fail-closed semantic validation",
+    "AFGEN fixed sentinel storage is an adapter representation concern; kernel tables contain only active knots",
+    "SWAP B1.10 CFRDM and RELMF behavior is preserved as explicit SWAP-specific reference physics",
+    "post-LAIEXP-threshold B1.10 rate carryover remains an F-WOF26 compatibility-state concern",
+    "accepted IQROT/IPTRA scalar values cannot establish transaction provenance; runtime/F-KT remains the provenance owner"
+  ],
+  "not_qualified": [
+    "production WOFOST rate equations",
+    "production read-only rate-state view assembly",
+    "end-to-end standard-WOFOST trajectory from forcing",
+    "accepted-window lineage certification inside crop physics",
+    "IDSL=2 vernalization",
+    "SWRD=2 or SWRD=3 root-option rate behavior",
+    "oxygen IALPWET coupling",
+    "nutrient corrections",
+    "potential WOFOST shadow",
+    "soybean specialization",
+    "grass route"
+  ],
+  "blocking_preproduction_seam": {
+    "name": "semantic read-only WOFOST rate-state view assembly",
+    "reason": "the current crop owner does not yet expose WST, WSO, WLV and LAIEXP through a dedicated semantic view; a future rate provider must not bind directly to owner%biomass internals",
+    "recommended_next_work_unit": "F-WOF28"
+  },
+  "later_runtime_dependency": {
+    "name": "accepted aggregate provenance token or equivalent runtime binding",
+    "required_for": "end-to-end runtime admission",
+    "reason": "value-only IQROT/IPTRA cannot prove accepted-window lineage or exactly-once aggregation"
+  },
+  "evidence": [
+    "integration/f-wof/F-WOF27_WORK_UNIT_CONTRACT.json",
+    "integration/f-wof/F-WOF27_PARAMETER_INPUT_INVENTORY.json",
+    "integration/f-wof/F-WOF27_RATE_DEPENDENCY_GRAPH.json",
+    "integration/f-wof/F-WOF27_PROVIDER_BOUNDARY.json",
+    "integration/f-wof/F-WOF27_THEORY_CODE_RECONCILIATION.json",
+    "integration/f-wof/F-WOF27_INVARIANT_AUDIT.json",
+    "tests/fwof/run_fwof27_rate_evaluator_readiness_gate.sh"
+  ],
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,27,28,29,30]
+}
