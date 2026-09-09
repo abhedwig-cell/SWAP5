@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C7A_PRODUCTION_CATALOG_COVERAGE",
+  "qualification": false,
+  "production_implementation": false,
+  "workflow": {
+    "run": 34325023479,
+    "head_under_test": "d50aae893c751b8f1526602f0f09e5c8dc57ec1d",
+    "aggregate_job": 102389471044,
+    "aggregate_job_conclusion": "failure_expected_from_negative_qualification",
+    "all_12_shard_jobs_conclusion": "success",
+    "aggregate_artifact": 10094521180,
+    "aggregate_artifact_digest": "sha256:64f8a49dac947a36d123299b08217b621dafa3c2d48f0e92bcb38678f293a8cc"
+  },
+  "precommit": {
+    "design": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json",
+    "design_commit": "8da4df81dfe0f9eeb93998de12399dce9bc58e14",
+    "postresult_routing": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json",
+    "postresult_routing_commit": "7c1bebcb16221c7c501e3d3580419307459a220c",
+    "provider_or_classifier_retuned_after_reveal": false,
+    "thresholds_changed_after_reveal": false
+  },
+  "provider": {
+    "family": "ANCHORED_HEAD_PAIR",
+    "base_n": 33,
+    "actual_axis_nodes": 49,
+    "table_values_per_material_geometry_class": 2401,
+    "bytes_before_metadata_per_material_geometry_class": 19208,
+    "classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "runtime_oracle_calls": 0
+  },
+  "catalog": {
+    "source": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "materials": 36,
+    "face_lengths_cm": [10.0, 20.0],
+    "classes_expected": 72,
+    "classes_observed": 72,
+    "classes_qualified": 54,
+    "classes_not_qualified": 18,
+    "failed_materials": 10
+  },
+  "coverage_checks": {
+    "all_36_materials_exactly_once_across_shards": true,
+    "all_72_material_geometry_classes_exactly_once": true,
+    "shard_configs_match_precommit": true,
+    "shard_indexes_exact_0_to_11": true
+  },
+  "holdout_totals": {
+    "raw_total": 43200,
+    "inside_provider_head_envelope": 40176,
+    "outside_provider_head_envelope": 3024,
+    "classifier_admitted": 33079,
+    "classifier_rejected": 7097,
+    "active_evaluated_rows": 31219,
+    "dormant_evaluated_rows": 1860,
+    "active_sign_mismatches": 0,
+    "reference_oracle_failures": 0
+  },
+  "failure_check_counts_nonexclusive": {
+    "accuracy:active_max_lt_0p30": 15,
+    "accuracy:active_p99_lt_0p10": 7,
+    "accuracy:strong_gradient_p90_lt_0p02": 2,
+    "accuracy:near_saturation_p90_lt_0p02": 1,
+    "structural": 0,
+    "evidence_sufficiency": 0
+  },
+  "failed_classes": {
+    "10cm": [
+      "B10", "B11", "B12", "B17", "B18", "O07", "O11", "O13"
+    ],
+    "20cm": [
+      "B10", "B11", "B12", "B17", "B18", "O01", "O05", "O07", "O11", "O13"
+    ],
+    "both_geometries": [
+      "B10", "B11", "B12", "B17", "B18", "O07", "O11", "O13"
+    ],
+    "20cm_only": ["O01", "O05"],
+    "10cm_only": []
+  },
+  "failure_modes": {
+    "strong_gradient_geometry_sensitive": {
+      "classes": ["O01:20cm", "O05:20cm"],
+      "strong_gradient_p90_rel_error": {
+        "O01:20cm": 0.03114878822111002,
+        "O05:20cm": 0.033027923762514434
+      },
+      "paired_10cm_classes_pass": true,
+      "routing": "R3_STRONG_GRADIENT_GEOMETRY_DEPENDENT_ACCURACY_FAILURE"
+    },
+    "sparse_tail_or_transition_scale_accuracy": {
+      "classes": [
+        "B10:10cm", "B10:20cm", "B17:10cm", "B17:20cm",
+        "B18:10cm", "B18:20cm", "O07:10cm", "O07:20cm",
+        "O11:10cm", "O11:20cm"
+      ],
+      "characteristic": "active p90 remains below 0.02 while isolated maximum errors exceed 0.30; several 20cm classes additionally exceed p99 0.10",
+      "routing": "R4_MATERIAL_TRANSITION_SCALE_ACCURACY_FAILURE"
+    },
+    "known_constitutive_owner_overlap": {
+      "classes_requiring_owner_separation_before_numerical_causation_claim": [
+        "O13:10cm", "O13:20cm", "B11:10cm", "B11:20cm", "B12:10cm", "B12:20cm"
+      ],
+      "reason": "The already-source-bound B1.10 near-saturation conductivity shortcut is value-discontinuous; O13, B12 and B11 have the three largest catalog jump factors. C7a alone does not establish that this discontinuity caused every listed error.",
+      "known_jump_factors": {
+        "O13": 3.1438601284435728,
+        "B12": 2.686950623940655,
+        "B11": 2.232589530663517
+      },
+      "routing": "R5_NEAR_SATURATION_OR_CONSTITUTIVE_OWNER_FAILURE"
+    }
+  },
+  "worst_metrics": {
+    "active_max_rel_error": {
+      "class": "B12:10cm",
+      "value": 1.080787848228807
+    },
+    "active_p99_rel_error": {
+      "class": "O13:20cm",
+      "value": 0.19094615755865463
+    },
+    "active_p90_rel_error": {
+      "class": "O13:20cm",
+      "value": 0.014087491853587656
+    },
+    "strong_gradient_p90_rel_error": {
+      "class": "O05:20cm",
+      "value": 0.033027923762514434
+    },
+    "near_saturation_p90_rel_error": {
+      "class": "O13:10cm",
+      "value": 0.022187833413986734
+    }
+  },
+  "global_interpretation": {
+    "frozen_n49_endpoint_pair_family_full_catalog_generalization": "REJECTED_UNDER_PRECOMMITTED_C7A_RULE",
+    "most_catalog_classes_pass": true,
+    "partial_catalog_production_admission": false,
+    "structural_semantics_failure": false,
+    "evidence_sufficiency_failure": false,
+    "single_failure_mechanism_supported": false,
+    "routing_R6_claim_level": "The frozen n49 family is rejected for the full-catalog claim because failures span ten materials, both geometries and multiple accuracy checks. This does not erase the more specific R3/R4/R5 subpatterns or prove that one replacement representation can repair all of them."
+  },
+  "architecture_invariants": {
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT",
+    "candidate_runtime_cost": "BOUNDED_TABLE_LOOKUP_RUNTIME_PRESERVED",
+    "shared_immutable_hydraulic_data": "PRESERVED",
+    "per_column_heavy_solver_state": false,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true,
+    "reference_mode": "PRESERVED",
+    "diagnostics": "FAILED_CLASSES_AND_FAILURE_MODES_EXPLICIT"
+  },
+  "decision": "NOT_QUALIFIED_FROZEN_N49_FULL_STARING2018_CATALOG_LOCALIZE_WITHOUT_RETUNING",
+  "next_gate": "NO_C7B_UNTIL_C7A_FAILURES_HAVE_A_NEW_PRECOMMITTED_HYPOTHESIS",
+  "scope_limit": "Homogeneous hydraulic face provider only. No heterogeneous interface, transient solver, process sink, drainage, groundwater, MODFLOW, response tangent or production solver admission.",
+  "status": "PERSISTED_TESTED_NEGATIVE_QUALIFICATION_EVIDENCE"
+}
