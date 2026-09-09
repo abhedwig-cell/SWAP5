@@ -14,28 +14,31 @@ import json, subprocess
 src_path = Path('src/runtime/mod_fmr_committed_restart.f90')
 src = src_path.read_text(encoding='utf-8')
 low = src.lower()
+# Architecture guards inspect executable/declarative Fortran, not explanatory
+# comments that explicitly name forbidden state to document its exclusion.
+code = '\n'.join(line.split('!', 1)[0] for line in low.splitlines())
 contract = json.loads(Path('integration/f-mr/F-MR19_RESTART_CONTRACT.json').read_text())
 
-assert 'type, public :: fmr_committed_restart_bundle_t' in low
-assert 'integer(int64) :: parameter_set_identity' in low
-assert 'fmr_restart_parameter_set_mismatch' in low
-assert 'call reconstruct_kernel_persistence_snapshot_trusted' in low
-assert 'call restore_kernel_committed_state' in low
-assert 'state_registry = candidate_states' in low
+assert 'type, public :: fmr_committed_restart_bundle_t' in code
+assert 'integer(int64) :: parameter_set_identity' in code
+assert 'fmr_restart_parameter_set_mismatch' in code
+assert 'call reconstruct_kernel_persistence_snapshot_trusted' in code
+assert 'call restore_kernel_committed_state' in code
+assert 'state_registry = candidate_states' in code
 assert contract['schema_version'] == 2
 assert contract['scope']['filesystem_or_file_format'] is False
 assert contract['scope']['kernel_io'] is False
 assert contract['scope']['parallel_real_physics'] is False
 
-record = low.split('type, public :: fmr_committed_restart_record_t',1)[1].split('end type fmr_committed_restart_record_t',1)[0]
-bundle = low.split('type, public :: fmr_committed_restart_bundle_t',1)[1].split('end type fmr_committed_restart_bundle_t',1)[0]
+record = code.split('type, public :: fmr_committed_restart_record_t',1)[1].split('end type fmr_committed_restart_record_t',1)[0]
+bundle = code.split('type, public :: fmr_committed_restart_bundle_t',1)[1].split('end type fmr_committed_restart_bundle_t',1)[0]
 for forbidden in ('parameter_set_identity', 'forcing_handle', 'worker', 'newton', 'jacobian', 'warm_start'):
     assert forbidden not in record, f'per-column restart record contains forbidden {forbidden}'
 assert bundle.count('parameter_set_identity') == 1
-for forbidden in ('fmr_b110_physical_parameters_t', 'cofgen', 'forcing_handle', 'jacobian'):
-    assert forbidden not in low, f'restart production module contains payload/scratch dependency {forbidden}'
+for forbidden in ('fmr_b110_physical_parameters_t', 'cofgen', 'forcing_handle', 'jacobian', 'newton', 'warm_start'):
+    assert forbidden not in code, f'restart production module contains payload/scratch dependency {forbidden}'
 for forbidden in ('open(', 'close(', 'read(', 'write('):
-    assert forbidden not in low, f'restart production module performs IO: {forbidden}'
+    assert forbidden not in code, f'restart production module performs IO: {forbidden}'
 
 changed = subprocess.check_output([
     'git','diff','--name-only','66c2d682330c9637c6f0cbfbaca2a3ef755346ba','HEAD','--','src'
