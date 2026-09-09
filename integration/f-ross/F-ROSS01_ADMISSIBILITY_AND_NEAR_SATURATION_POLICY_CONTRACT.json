@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "title": "RossFast admissibility envelope and near-saturation hydraulic closure research policy",
+  "status": "RESEARCH_POLICY_FROZEN",
+  "production_implementation": false,
+  "decision": "ROSSFAST_MAY_BE_A_CAPABILITY_CONSTRAINED_SOLVER_WITH_EXPLICIT_FAIL_CLOSED_ADMISSION",
+  "purpose": "Permit RossFast to target a qualified subset of SWAP5 physics and hydraulic regimes instead of requiring universal feature coverage, while investigating near-saturation conductivity closures without silently changing physical semantics.",
+  "architectural_rules": [
+    "RossFast is a candidate SoilWaterSolver behind the common SWAP5 soil-water interface; it is not a separate SWAP kernel.",
+    "A RossFast production path, if ever admitted, may support only explicitly qualified combinations of hydraulic model, active physics, boundary contracts and state regime.",
+    "Unsupported or unqualified combinations must fail closed to an explicitly selected alternative such as FullRichards; RossFast must never silently disable, approximate or replace a requested physical option.",
+    "Solver admissibility is separate from physical configuration. Numerical policy may select a solver only after the requested physics are known.",
+    "State-dependent admissibility is allowed only when the regime test is explicit, deterministic, diagnostically visible and transaction-safe. A failed RossFast trial must not mutate committed state before fallback.",
+    "Mass conservation remains a hard invariant in every admitted, rejected, retry and fallback path.",
+    "Qualification against FullRichards must compare identical physical constitutive laws. A solver-specific conductivity law is not an acceptable reference comparison."
+  ],
+  "admissibility_contract_shape": {
+    "inputs": [
+      "hydraulic_model_family",
+      "conductivity_closure_id",
+      "retention_closure_id",
+      "active_optional_physics",
+      "vertical_discretization_class",
+      "boundary_contracts",
+      "current_state_regime",
+      "coupling_mode"
+    ],
+    "outcomes": [
+      "ROSSFAST_ADMISSIBLE",
+      "ROSSFAST_NOT_YET_QUALIFIED",
+      "ROSSFAST_NOT_SUPPORTED"
+    ],
+    "required_diagnostic": "reason_code plus the exact qualification envelope identifier used for the decision",
+    "runtime_rule": "No implicit physics downgrade is permitted to turn NOT_SUPPORTED or NOT_YET_QUALIFIED into ADMISSIBLE."
+  },
+  "current_qualification_envelope_not_a_production_claim": {
+    "supported_by_existing_evidence": [
+      "non-iterative continuity algebra under the synthetic linear face law",
+      "same-factorization response-tangent algebra under the synthetic linear bottom-face law",
+      "homogeneous unsaturated Ross2011 steady-face table qualification for a bounded head envelope",
+      "catalog-level unimodal MvG representation refinement work with source-bound SWAP constitutive functions"
+    ],
+    "explicitly_not_yet_admitted": [
+      "h greater than the current unsaturated table envelope near full saturation",
+      "saturation crossing and saturated storage switching",
+      "non-zero H_ENPR physics",
+      "macropore conductivity/flow physics",
+      "heterogeneous material faces",
+      "history-dependent hydraulic options unless separately represented and qualified",
+      "bottom-boundary and groundwater coupling",
+      "full timestep accuracy with sinks and sources",
+      "production response tangents for real hydraulic faces",
+      "MultiSWAP production execution"
+    ],
+    "interpretation": "Items in not_yet_admitted are not automatically permanent exclusions. Each requires a separate qualification gate or an explicit NOT_SUPPORTED decision."
+  },
+  "near_saturation_research_classes": {
+    "class_A_exact_source_bound_SWAPP_431_KSATEXM": {
+      "meaning": "Use the exact SWAP 4.3.1 KSATEXM constitutive law as physics and improve only its bounded Ross table/coordinate representation.",
+      "physics_change": false,
+      "reference_rule": "The qualification oracle must implement the exact source-bound piecewise conductivity law, including the h=-2 cm seam semantics.",
+      "current_lineage": "F-ROSS01 Gate C2A"
+    },
+    "class_B_explicit_smooth_near_saturation_hydraulic_variant": {
+      "meaning": "Investigate a new constitutive conductivity closure that joins the unsaturated law smoothly to the chosen saturated conductivity over an explicit near-saturation interval.",
+      "physics_change": true,
+      "solver_hack_forbidden": true,
+      "reference_rule": "The identical new closure must be selectable by FullRichards and RossFast before any RossFast-versus-reference accuracy claim is made.",
+      "minimum_candidate_properties": [
+        "K(h) positive over the admitted domain",
+        "monotone non-decreasing conductivity toward saturation unless a separately justified hydraulic model states otherwise",
+        "C0 continuity at every constitutive join",
+        "explicitly tested C1 continuity when a smooth derivative is claimed",
+        "exact declared saturated endpoint conductivity",
+        "no hidden change to retention theta(h) unless the hydraulic model variant explicitly includes it",
+        "well-defined matric-flux-potential integral over the complete admitted interval",
+        "finite and stable steady-Darcian face response across the join"
+      ],
+      "preferred_research_property": "A closure whose K(h) and MFP behavior are smooth enough to permit compact bounded face-response representation without introducing runtime nonlinear iteration."
+    }
+  },
+  "qualification_questions": [
+    "Which SWAP hydraulic option combinations preserve a single-valued, compact and accurately precomputable steady-Darcian face response?",
+    "Which options fundamentally add history or auxiliary state that would require a separate Ross table family or make RossFast unattractive?",
+    "Can exact KSATEXM be represented within the existing bounded table-memory and O(1) lookup targets, or does it require a different coordinate/partition strategy?",
+    "Does a scientifically defensible smooth near-saturation conductivity variant materially improve Ross table conditioning and saturation-transition behavior?",
+    "If such a variant is useful, does FullRichards with the same variant remain a stable and accurate reference implementation?",
+    "Can solver selection and fallback remain deterministic, transaction-safe and mass-conservative across admissibility boundaries?"
+  ],
+  "research_sequence": [
+    "Complete or fail-close the existing exact-source-bound KSATEXM C2A line without relaxing its frozen criteria after observing results.",
+    "Build an explicit admissibility matrix from SWAP5 physical feature contracts; mark each combination ADMISSIBLE, NOT_YET_QUALIFIED or NOT_SUPPORTED with evidence lineage.",
+    "Only after exact KSATEXM evidence is preserved, define one or more class-B smooth near-saturation closure candidates as separate physical hydraulic models.",
+    "Characterize class-B candidates first at constitutive level: K, dK/dh where defined, MFP, continuity, monotonicity and endpoint behavior.",
+    "Then characterize steady-Darcian face responses across the near-saturation interval with independent offline oracles and frozen holdouts.",
+    "Only candidates surviving constitutive and face-response gates may proceed to saturation-transition, timestep, groundwater and FullRichards-equivalence qualification."
+  ],
+  "hard_no_go_rules": [
+    "Do not redefine KSATEXM merely to make the current Ross table pass.",
+    "Do not call a smooth conductivity modification a numerical approximation if it materially changes the constitutive law; expose it as a physical hydraulic-model variant.",
+    "Do not require RossFast to support every SWAP option before it can be useful; require instead a complete explicit admissibility contract for any admitted production use.",
+    "Do not promote a restricted RossFast envelope by extrapolation beyond tested heads, materials, boundaries, physics or state regimes.",
+    "Do not allow a performance policy to silently select a different physical closure."
+  ],
+  "relevant_swap5_invariants": [1, 3, 7, 8, 11, 13, 14, 15, 16, 20, 21, 23, 24, 25, 26, 27, 29, 30],
+  "exit_condition_for_this_policy_seam": "The policy seam is complete when the admissibility matrix is evidence-backed and at least the exact-source-bound near-saturation route has a fail-closed qualification result. A new smooth hydraulic closure remains a separate research candidate until independently qualified in both FullRichards and RossFast."
+}
