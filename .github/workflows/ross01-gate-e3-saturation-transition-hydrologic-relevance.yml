@@ -1,0 +1,61 @@
+name: F-ROSS01 Gate E3 Saturation Transition Hydrologic Relevance
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e3-saturation-transition-hydrologic-relevance.yml
+      - experiments/ross/run_ross01_gate_e3_saturation_transition_hydrologic_relevance.py
+      - integration/f-ross/F-ROSS01_GATE_E3_RESTRICTED_SATURATION_TRANSITION_HYDROLOGIC_RELEVANCE_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e2c_r3_endpoint_limit_holdout.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen E3 material gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3_saturation_transition_hydrologic_relevance.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert completed hydrologic characterization
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3-{m}/F-ROSS01_GATE_E3_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['hydrology_pass'] is True
+          assert r['decision'] in {
+            'QUALIFIED_RESTRICTED_PHYSICAL_SATURATION_TRANSITION_COLUMN_READY_FOR_HETEROGENEOUS_AND_BOUNDARY_QUALIFICATION',
+            'HYDROLOGICALLY_ACCEPTABLE_SATURATION_TRANSITION_FACE_SCOPE_GAP_REQUIRES_EXPLICIT_FACE_QUALIFICATION'
+          }
+          for c in r['cases']:
+            assert c['max_abs_step_mass_residual_cm'] <= 1e-9
+            assert c['max_abs_horizon_mass_residual_cm'] <= 1e-9
+            assert c['committed_state_mutation_on_rejected_trial_count'] == 0
+          PY
+        env:
+          MATERIAL: ${{ matrix.material }}
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3-${{ matrix.material }}
+          path: ross01-gate-e3-${{ matrix.material }}/
