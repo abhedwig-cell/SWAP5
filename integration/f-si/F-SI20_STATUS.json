@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-SI",
   "work_unit": "F-SI20",
   "title": "Richards Temporal-Error Semantics and Prescribed-Head Readiness",
@@ -14,20 +14,21 @@
     "fmr16_invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440",
     "fgc02_blocked_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
   },
-  "status": "IN_PROGRESS_OWNER_OBSERVABLE_CHARACTERIZED_INDEPENDENT_NUMERIC_PROFILE_HANDOFF_READY",
-  "phase": "STATE_DEPENDENT_RAW_ENDPOINT_OBSERVABLES_AND_EVENT_SEMANTICS_CHARACTERIZED_REFERENCE_TRIDAG_REQUALIFIED",
+  "status": "BLOCKED_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_TEMPORAL_PROFILE",
+  "phase": "OWNER_OBSERVABLE_CHARACTERIZED_FVQ28_RUNTIME_TRANSLATION_REJECTED",
   "owner_scope": {
     "production_owner": "F-SI / soil-water model implementation",
-    "fmr_role_after_owner_admission": "bind and compose the admitted model-owned temporal signal into the existing F-KT scalar acceptance seam",
-    "fkt_change_required_by_current_evidence": false,
-    "fgc_change_required_by_current_evidence": false
+    "fmr_role_after_any_future_owner_admission": "bind and compose only an independently admitted model-owned temporal signal into a qualified transaction/runtime acceptance seam",
+    "current_existing_fkt_scalar_seam_admitted_for_raw_head_defect": false,
+    "fgc_change_required_by_current_evidence": false,
+    "separate_owner_runtime_policy_workunit_required_for_further_progress": true
   },
   "source_problem": {
     "current_binding": "fmr_serialized_reference_model_t%temporal_error => fmr_serialized_temporal_identity",
     "current_behavior": "0 for exact relevant final-state equality, huge(real64) otherwise",
     "fgc02_failure": "the -74.99 cm prescribed-head predictor from a -75.0 cm T0 profile is physically nonstationary and is rejected before a candidate completes",
     "direct_rejection_classification": "TEMPORAL_ONLY",
-    "updated_scientific_gap": "Raw full-versus-two-half endpoint differences are valid dimensional model-owned observables, but their relationship to remaining endpoint error is materially hydraulic-state dependent. Numeric acceptance limits require independent calibration and held-out validation under the existing F-CI14/F-VQ10 contract."
+    "updated_scientific_gap": "Raw full-versus-two-half pressure-head endpoint differences are valid dimensional model-owned observables, but independent F-VQ28 held-out qualification demonstrates that the existing retry-shortening topology does not preserve a conservative relationship to same-endpoint finite-reference error. A different estimator or refinement semantic therefore requires a separate owner/runtime-policy decision and independent qualification."
   },
   "evidence": {
     "characterization": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
@@ -41,7 +42,8 @@
     "physical_envelope": "integration/f-si/F-SI20_PHYSICAL_ENVELOPE_EVIDENCE.json",
     "hydraulic_state_refinement": "integration/f-si/F-SI20_HYDRAULIC_STATE_REFINEMENT_EVIDENCE.json",
     "prescribed_head_event_semantics": "integration/f-si/F-SI20_PRESCRIBED_HEAD_EVENT_SEMANTICS_EVIDENCE.json",
-    "evidence_reconciliation": "integration/f-si/F-SI20_EVIDENCE_RECONCILIATION.json"
+    "evidence_reconciliation": "integration/f-si/F-SI20_EVIDENCE_RECONCILIATION.json",
+    "fvq28_negative_qualification_handoff": "integration/f-si/F-SI20_FVQ28_NEGATIVE_QUALIFICATION_HANDOFF.json"
   },
   "qualified_findings": {
     "production_immutability_to_fvq27": "PASS",
@@ -62,14 +64,22 @@
     "fgc02_retry_budget_proven_for_materially_different_hydraulic_states": false,
     "exact_fgc02_hidden_forcing_discontinuity_inside_trial": false,
     "exact_fgc02_prescribed_head_change_is_outer_t0_boundary": true,
-    "special_event_split_required_for_exact_fgc02_probe": false
+    "special_event_split_required_for_exact_fgc02_probe": false,
+    "fvq28_gate_A_fixed_horizon_bounded_profile_supported": true,
+    "fvq28_gate_B_actual_retry_translation_safe": false,
+    "fvq28_gate_B_resolved_attempts": 67,
+    "fvq28_gate_B_underconservative_attempts": 36,
+    "fvq28_gate_B_cases_losing_previously_conservative_relation": 10,
+    "fvq28_gate_B_unavailable_N512_references": 5,
+    "fvq28_gate_B_negative_decision_requires_unavailable_references": false,
+    "raw_head_defect_admitted_as_current_transaction_acceptance_metric": false
   },
   "hydraulic_state_summary": {
     "initial_heads_cm": [-25.0, -75.0, -250.0],
     "prescribed_head_jump_cm": 0.01,
     "fixed_horizon_day": 0.25,
     "wet_state": "rapidly converges to floating-point floor; pre-floor raw defect is strongly conservative",
-    "fgc02_state": "raw defect decreases over all resolved tested levels and is conservative relative to the finite-reference endpoint error",
+    "fgc02_state": "raw defect decreases over all resolved tested fixed-horizon levels but transaction retry shortening is independently not admitted as an equivalent error-control path",
     "dry_state": "raw defect is under-conservative through coarse fixed-horizon levels and becomes conservative only after additional refinement, first observed at N=16",
     "semantic_warning": "fixed-horizon N-step refinement is not equivalent to transaction retry halving from one committed T0 state"
   },
@@ -82,25 +92,27 @@
   },
   "current_metric_assessment": {
     "binary_identity_scientifically_required": false,
-    "fci14_eight_endpoint_metric_contract_reusable": true,
-    "head_only_observable": "CHARACTERIZED_DIMENSIONAL_COMPONENT_NOT_A_STANDALONE_PRODUCTION_METRIC",
+    "fci14_eight_endpoint_metric_contract_reusable_in_principle": true,
+    "head_only_observable": "CHARACTERIZED_DIMENSIONAL_COMPONENT_REJECTED_AS_STANDALONE_EXISTING_TRANSACTION_ACCEPTANCE_METRIC",
     "head_units": "cm on the current SWAP solver route",
     "state_normalization_required": false,
     "state_normalization_qualified": false,
     "production_tolerance_selected": false,
-    "production_metric_selected": false
+    "production_metric_selected": false,
+    "simple_replacement_of_binary_metric_with_raw_head_defect_allowed": false
   },
-  "independent_profile_handoff": {
-    "ready": true,
-    "owner": "F-VQ",
-    "contract": "integration/f-vq/F-VQ10_PROMOTION_CONTRACT.json",
-    "required_scalarization": "F-CI14 max(delta_i / limit_i) after all required per-metric limits are independently qualified",
-    "calibration_validation_overlap_allowed": false,
-    "limits_frozen_before_validation": true,
-    "single_fixture_maximum_is_sufficient": false,
-    "solver_or_mass_tolerance_reuse_allowed": false,
-    "hydraulic_state_diversity_required": true,
-    "optional_process_scope": "FAIL_CLOSED"
+  "independent_profile_qualification": {
+    "work_unit": "F-VQ28",
+    "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+    "closeout_commit": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "gate_B_evidence_commit": "f8c344efead200833ca8a068be16ef8d831d39c4",
+    "status": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "decision_class": "C_EXISTING_TRANSACTION_RETRY_TOPOLOGY_REJECTED_FOR_RAW_HEAD_DEFECT_TEMPORAL_PROFILE",
+    "gate_A_workflow_run": 34303003171,
+    "gate_B_workflow_run": 34304261930,
+    "gate_B_workflow_job": 102317547585,
+    "qualification_complete": true,
+    "production_profile_admitted": false
   },
   "hard_constraints": {
     "production_source_modified": false,
@@ -123,15 +135,16 @@
     "event_semantics_resolved_for_exact_fgc02": true,
     "evidence_reconciled": true,
     "owner_observable_characterized": true,
-    "independent_numeric_profile_handoff_ready": true,
+    "independent_numeric_profile_qualification_complete": true,
+    "independent_numeric_profile_admitted": false,
     "metric_selected": false,
     "production_implemented": false,
     "owner_qualified": false,
-    "independently_qualified": false
+    "independently_admitted": false
   },
-  "owner_contract_exit": "B_INDEPENDENT_NUMERIC_PROFILE_QUALIFICATION_REQUIRED_BEFORE_OWNER_FINALIZATION",
-  "current_decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS",
+  "owner_contract_exit": "C_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_PROFILE",
+  "current_decision_class": "C_SEPARATE_OWNER_RUNTIME_POLICY_REQUIRED_FOR_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE",
   "fpe_release": false,
   "fgc02_release": false,
-  "next_action": "Open an independent F-VQ numeric-profile qualification workunit from the exact F-SI20 handoff checkpoint. Reuse the F-CI14 eight-metric endpoint contract and F-VQ10 promotion rules. Split calibration and held-out validation across materially different hydraulic states and prescribed-head stimuli, freeze candidate limits before validation, and return either qualified scoped limits or a fail-closed rejection to F-SI20 for owner finalization. Do not infer one universal defect-to-error multiplier, do not tune on F-GC02 alone, and do not change production source, F-KT transaction semantics, mass gates, solver policy or coupling orchestration."
+  "next_action": "Do not implement the raw pressure-head defect by merely replacing the current binary temporal metric and do not choose an F-GC02-specific tolerance. If nonstationary prescribed-head temporal acceptance remains required, open a separate source-bound owner/runtime-policy workunit to define the smallest different estimator or refinement semantic that can be independently qualified. Preserve checkpoint-trial-retry transactionality, generic time, hard mass conservation, unchanged physical configuration, explicit solver policy separation and full reference mode. Return any future candidate through independent held-out qualification before F-GC02 or F-PE can be released."
 }
