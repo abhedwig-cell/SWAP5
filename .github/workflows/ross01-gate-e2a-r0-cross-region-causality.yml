@@ -1,0 +1,37 @@
+name: F-ROSS01 Gate E2A R0 Cross-Region Causality Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e2a-r0-cross-region-causality.yml
+      - experiments/ross/run_ross01_gate_e2a_r0_cross_region_interpolation_causality.py
+      - integration/f-ross/F-ROSS01_GATE_E2A_R0_CROSS_REGION_INTERPOLATION_CAUSALITY_CONTRACT.json
+      - experiments/ross/run_ross01_gate_c1.py
+      - experiments/ross/run_ross01_face_table_characterization.py
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install diagnostic dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen Gate E2A R0 cross-region interpolation causality diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e2a-r0"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e2a_r0_cross_region_interpolation_causality.py \
+            "$out/F-ROSS01_GATE_E2A_R0_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E2A_R0_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e2a-r0-cross-region-causality
+          path: ross01-gate-e2a-r0/
