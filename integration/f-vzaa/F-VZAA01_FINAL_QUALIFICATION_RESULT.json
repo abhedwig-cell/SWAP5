@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "result_type": "FINAL_QUALIFICATION_RECONCILIATION",
+  "qualified": false,
+  "production_implementation": false,
+  "final_classification": "NOT_QUALIFIED_FOR_CURRENT_SWAP5_SOLVER_OR_DONOR_ADMISSION",
+  "authoritative_input_heads": {
+    "F_VZAA01": "cffeed211b4bc6f3389ed12ba555253d905f993e",
+    "F_VZAA02_closeout": "80157dc2beb9bb2ceb0cbcf00c984eb2662317d9",
+    "F_VZAA02_tested_executable": "8c394d3e282ec427ece8c10b2ff57b0ce4a2f900"
+  },
+  "evidence_chain": {
+    "H0_literal_Eq5_reference": {
+      "decision": "QUALIFIED_REFERENCE_ONLY",
+      "run": 34320488095,
+      "artifact": 10091660837
+    },
+    "conservative_derivative_shell": {
+      "decision": "ALGEBRAICALLY_QUALIFIED_RESEARCH_ONLY",
+      "run": 34315458453,
+      "mass_residual_abs_max": 8.049116928532385e-16
+    },
+    "D0_donor_separability": {
+      "decision": "NOT_QUALIFIED",
+      "run": 34323697236,
+      "artifact": 10092928409,
+      "classification": "NOT_QUALIFIED_VZAA_D0_DONOR_SIGNAL_FALSIFIED_ON_ORDINARY_HOMOGENEOUS_MATRIX"
+    }
+  },
+  "decision_logic": [
+    "the published complete VZAA formulation is not qualified for SWAP5 exact accepted-step conservation and general lower-boundary requirements",
+    "literal Eq5 history has run-length-dependent state and O(N_layers*N_steps^2) direct trajectory work",
+    "an exactly conservative derivative shell is algebraically feasible but its physical predictor/history/coupling path is not qualified",
+    "the precommitted D0 donor hypothesis failed on the first ordinary homogeneous matrix and the F-VZAA02 contract requires expansion only if the signal is not immediately falsified",
+    "therefore D0-B/D0-C expansion and D1 bounded-history compression are not authorized from current evidence",
+    "no production VZAA solver family or VZAA-derived donor integration is justified"
+  ],
+  "scope_limit": "This is a fail-closed SWAP5 suitability decision under the current source and evidence set. It is not a universal scientific falsification of VZAA. The DOI-linked official MATLAB supplement remains uncaptured.",
+  "reopen_only_if": [
+    "material new primary or official-code evidence changes the reconstructed method or resolves a hard gate",
+    "a new, explicitly scoped use case provides a distinct donor hypothesis that is not already falsified by the current D0 evidence"
+  ],
+  "decision": "CLOSE_F_VZAA01_AND_F_VZAA02_RESEARCH_PATH_NO_D1_NO_PRODUCTION_ADMISSION"
+}
