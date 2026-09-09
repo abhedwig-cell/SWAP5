@@ -36,22 +36,48 @@ new = r'''extra_helpers = r''' + "'''" + r'''  subroutine diagnose_result_differ
       end if
       if (.not. column_results_identical(left(i), right(j))) then
         write(*,'(A,I0)') 'FWOF36_DIAG_COLUMN=', left(i)%column_id
-        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_KERNEL_STATUS=', left(i)%kernel_status, right(j)%kernel_status
-        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_COMMIT_STATUS=', left(i)%commit_status, right(j)%commit_status
-        write(*,'(A,2(1X,L1))') 'FWOF36_DIAG_COMPLETED=', left(i)%completed, right(j)%completed
-        write(*,'(A,2(1X,L1))') 'FWOF36_DIAG_COMMITTED=', left(i)%committed, right(j)%committed
-        write(*,'(A,2(1X,L1))') 'FWOF36_DIAG_SOLVER_EXECUTED=', left(i)%solver_executed, right(j)%solver_executed
-        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_SOLVER_ITERATIONS=', left(i)%solver_iterations, right(j)%solver_iterations
-        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_REVISIONS=', left(i)%final_revision, right(j)%final_revision
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_STORAGE_START=', left(i)%mass%storage_start, right(j)%mass%storage_start
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_STORAGE_END=', left(i)%mass%storage_end, right(j)%mass%storage_end
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_STORAGE_CHANGE=', left(i)%mass%storage_change, right(j)%mass%storage_change
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_TOTAL_IN=', left(i)%mass%total_in, right(j)%mass%total_in
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_TOTAL_OUT=', left(i)%mass%total_out, right(j)%mass%total_out
-        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_RESIDUAL=', left(i)%mass%residual, right(j)%mass%residual
+        call diag_logical('KERNEL_STATUS', left(i)%kernel_status == right(j)%kernel_status)
+        call diag_logical('COMMIT_STATUS', left(i)%commit_status == right(j)%commit_status)
+        call diag_logical('COMPLETED', left(i)%completed .eqv. right(j)%completed)
+        call diag_logical('COMMITTED', left(i)%committed .eqv. right(j)%committed)
+        call diag_logical('SOLVER_EXECUTED', left(i)%solver_executed .eqv. right(j)%solver_executed)
+        call diag_logical('SOLVER_ROUTE', trim(left(i)%solver_route) == trim(right(j)%solver_route))
+        call diag_logical('SOLVER_ITERATIONS', left(i)%solver_iterations == right(j)%solver_iterations)
+        call diag_logical('INITIAL_REVISION', left(i)%initial_revision == right(j)%initial_revision)
+        call diag_logical('FINAL_REVISION', left(i)%final_revision == right(j)%final_revision)
+        call diag_logical('FINAL_TIME_BOUND', left(i)%final_committed_time_bound .eqv. right(j)%final_committed_time_bound)
+        call diag_logical('FINAL_TIME_BITS', same_bits(left(i)%final_committed_time, right(j)%final_committed_time))
+        call diag_logical('MASS_COMPLETE', left(i)%mass%complete .eqv. right(j)%mass%complete)
+        call diag_logical('MASS_MISSING_MASK', left(i)%mass%missing_contribution_mask == right(j)%mass%missing_contribution_mask)
+        call diag_logical('MASS_ORIGIN_LINEAGE', left(i)%mass%origin_lineage_id == right(j)%mass%origin_lineage_id)
+        call diag_logical('MASS_ORIGIN_REVISION', left(i)%mass%origin_revision == right(j)%mass%origin_revision)
+        call diag_logical('MASS_ACCEPTED_COUNT', left(i)%mass%accepted_transaction_count == right(j)%mass%accepted_transaction_count)
+        call diag_logical('MASS_INTERVAL_T0', same_bits(left(i)%mass%interval_t0, right(j)%mass%interval_t0))
+        call diag_logical('MASS_INTERVAL_T1', same_bits(left(i)%mass%interval_t1, right(j)%mass%interval_t1))
+        call diag_logical('MASS_STORAGE_START', same_bits(left(i)%mass%storage_start, right(j)%mass%storage_start))
+        call diag_logical('MASS_STORAGE_END', same_bits(left(i)%mass%storage_end, right(j)%mass%storage_end))
+        call diag_logical('MASS_STORAGE_CHANGE', same_bits(left(i)%mass%storage_change, right(j)%mass%storage_change))
+        call diag_logical('MASS_TOTAL_IN', same_bits(left(i)%mass%total_in, right(j)%mass%total_in))
+        call diag_logical('MASS_TOTAL_OUT', same_bits(left(i)%mass%total_out, right(j)%mass%total_out))
+        call diag_logical('MASS_RESIDUAL', same_bits(left(i)%mass%residual, right(j)%mass%residual))
+        write(*,'(A,A,A,A)') 'FWOF36_DIAG_SOLVER_ROUTE_VALUES=', trim(left(i)%solver_route), '|', trim(right(j)%solver_route)
+        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_INITIAL_REVISION_VALUES=', left(i)%initial_revision, right(j)%initial_revision
+        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_FINAL_TIME_VALUES=', left(i)%final_committed_time, right(j)%final_committed_time
+        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_MASS_MASK_VALUES=', left(i)%mass%missing_contribution_mask, right(j)%mass%missing_contribution_mask
+        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_MASS_LINEAGE_VALUES=', left(i)%mass%origin_lineage_id, right(j)%mass%origin_lineage_id
+        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_MASS_REVISION_VALUES=', left(i)%mass%origin_revision, right(j)%mass%origin_revision
+        write(*,'(A,2(1X,I0))') 'FWOF36_DIAG_MASS_COUNT_VALUES=', left(i)%mass%accepted_transaction_count, right(j)%mass%accepted_transaction_count
+        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_INTERVAL_T0_VALUES=', left(i)%mass%interval_t0, right(j)%mass%interval_t0
+        write(*,'(A,2(1X,ES26.17E3))') 'FWOF36_DIAG_INTERVAL_T1_VALUES=', left(i)%mass%interval_t1, right(j)%mass%interval_t1
       end if
     end do
   end subroutine diagnose_result_difference
+
+  subroutine diag_logical(label, matches)
+    character(len=*), intent(in) :: label
+    logical, intent(in) :: matches
+    if (.not. matches) write(*,'(A,A)') 'FWOF36_DIAG_MISMATCH=', trim(label)
+  end subroutine diag_logical
 
   logical function all_revisions_zero(states) result(zero)
     type(kernel_committed_state_t), intent(in) :: states(:)
