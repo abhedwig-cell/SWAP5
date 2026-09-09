@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI22",
+  "audit": "LEGACY_SWAP_4_3_1_TIMESTEP_POLICY_VERSUS_TEMPORAL_ERROR_CONTROL",
+  "repository_branch": "work/f-si22-richards-fixed-horizon-certificate",
+  "repository_head_before_audit_record": "8dc88f25a44f217251f94ec1ea470a5ef622d124",
+  "source_artifact": {
+    "outer_archive_local_name": "SWAP_4.3.1(6).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_archive_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "source_files": [
+    {
+      "path": "SWAP/timecontrol.f90",
+      "sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "relevant_lines": [
+        "133-136: dtmax is capped by output/meteorological resolution and dtmin is constrained relative to dtmax",
+        "138-161: initial dt is geometric mean sqrt(dtmin*dtmax) except explicit initialization or non-Richards solver mode; event time may shorten it",
+        "268-275: next dt is adapted from numerical performance using Newton iteration count; low numbit increases dt, numbit >= MaxIt decreases dt",
+        "280-285: event horizon can cap dt",
+        "385-400: fldecdt from HeadCalc/process failure causes dt reduction by fact_dt_fldect or clamps to dtmin"
+      ]
+    },
+    {
+      "path": "SWAP/headcalc.f90",
+      "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+      "relevant_lines": [
+        "283-287: Newton backtracking reduces the Newton correction when residual progress is inadequate",
+        "301-323: convergence checks compartment balance residual plus relative/absolute pressure-head change between Newton iterations",
+        "325-346: ponding/macropore balance checks are nonlinear/conservation convergence checks",
+        "373: total profile balance residual participates in nonlinear convergence",
+        "425-440: if convergence fails above dtmin, physical soil state is restored and fldecdt requests a smaller timestep",
+        "451-463: at dtmin the legacy routine can warn and continue even without nonlinear convergence"
+      ]
+    },
+    {
+      "path": "SWAP/readswap.f90",
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "relevant_lines": [
+        "758-775: dtmin, dtmax, nonlinear balance/head criteria, iteration limits, numbit_crit and timestep multiplication/reduction factors are numerical-scheme inputs/defaults"
+      ]
+    },
+    {
+      "path": "SWAP/swap.f90",
+      "sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "relevant_lines": [
+        "433-457: legacy retry loop reruns SoilWater after restoring soil/macropore state and calling TimeControl(5) when fldecdt or macropore reduction is requested",
+        "459-472: state/rates are finalized and TimeControl(3) chooses the next step only after the retry loop exits"
+      ]
+    },
+    {
+      "path": "SWAP/calcgwl.f90",
+      "sha256": "d7649f02bf6cd629cc7eceb1c761a6c38d6f0adf0d0c072c7aaab3af4562f5eb",
+      "relevant_lines": [
+        "121-129: gwlconv exceedance produces a warning advising dtMin reduction; it does not set fldecdt or directly reject the step"
+      ]
+    },
+    {
+      "path": "SWAP/surfacewater.f90",
+      "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+      "relevant_lines": [
+        "378-382: ponding/extended-drainage condition may set fldecdt from a process-specific dt heuristic",
+        "385-403: surface-water oscillation may set fldecdt or fail at dtmin"
+      ]
+    }
+  ],
+  "sample_input_evidence": {
+    "path": "SWAP_4.3.1/cases/1.hupselbrook/swap.swp",
+    "lines_437_469_semantics": {
+      "section": "Numerical solution of Richards' equation for soil water flow",
+      "DTMIN": "minimum timestep",
+      "DTMAX": "maximum timestep",
+      "GWLCONV": "maximum groundwater-level difference criterion",
+      "CRITDEVH1CP": "maximum relative pressure-head difference per compartment",
+      "CRITDEVH2CP": "maximum absolute pressure-head difference per compartment",
+      "CRITDEVPONDDT": "ponding-layer water-balance criterion",
+      "CRITDEVBALCP": "compartment Richards balance convergence criterion",
+      "CRITDEVBALTOT": "whole-profile Richards balance convergence criterion",
+      "NUMBIT_CRIT": "iteration-count threshold below which dt increases",
+      "FACT_DT_INCREASE": "dt growth multiplier",
+      "FACT_DT_DECREASE": "dt decrease multiplier",
+      "FACT_DT_FLDECT": "dt reduction factor after HeadCalc/surface-water reduction request"
+    }
+  },
+  "classification": {
+    "legacy_has_adaptive_timestep_control": true,
+    "legacy_has_transaction_like_retry_on_nonconvergence": true,
+    "legacy_has_event_and_forcing_resolution_timestep_caps": true,
+    "legacy_has_process_specific_timestep_reduction_flags": true,
+    "legacy_has_same_horizon_temporal_error_estimator": false,
+    "legacy_compares_independent_same_endpoint_trajectories": false,
+    "legacy_nonlinear_head_criteria_are_temporal_endpoint_error_limits": false,
+    "legacy_balance_criteria_are_temporal_endpoint_error_limits": false,
+    "legacy_iteration_count_rule_is_temporal_endpoint_error_bound": false,
+    "legacy_dtmin_dtmax_define_scientific_temporal_accuracy": false,
+    "legacy_gwlconv_is_automatic_temporal_acceptance_gate": false
+  },
+  "important_distinctions": [
+    "CritDevh1Cp and CritDevh2Cp compare successive nonlinear/Newton iterates within one timestep. They constrain nonlinear convergence, not temporal discretization error between solutions at a common physical endpoint.",
+    "CritDevBalCp, CritDevBalTot and CritDevPondDt are nonlinear/conservation convergence checks. Hard mass conservation remains a separate requirement and cannot be repurposed as temporal accuracy.",
+    "NUMBIT_CRIT and FACT_DT_* implement a work/robustness heuristic: cheap converged solves may grow dt, difficult or failed solves may shrink dt. They do not estimate endpoint truncation error.",
+    "DTMIN and DTMAX are operational numerical bounds and are additionally affected by output, meteorological and event timing. They are not evidence for a universal scientific temporal tolerance.",
+    "GWLCONV is source-bound only to a warning in calcgwl.f90 in this revision. The warning advises reducing dtMin, but the criterion does not itself reject or refine a timestep."
+  ],
+  "legacy_safety_finding": {
+    "legacy_can_continue_at_dtmin_without_richards_nonlinear_convergence": true,
+    "source": "SWAP/headcalc.f90 lines 451-463",
+    "admitted_for_SWAP5_reference_policy": false,
+    "reason": "SWAP5 mass/convergence/diagnostic policies must fail closed or use an explicitly qualified fallback. Legacy continue-with-warning behavior is not a temporal-accuracy contract."
+  },
+  "reusability_for_FSI22": {
+    "same_horizon_estimator_scale_recoverable_from_legacy_source": false,
+    "scientific_endpoint_error_tolerance_recoverable_from_legacy_source": false,
+    "useful_legacy_information": [
+      "iteration count and nonlinear failure are useful runtime cost/robustness diagnostics",
+      "dtmin/dtmax and event caps provide historical operational context",
+      "state restoration before retry confirms the value of transactional retry semantics"
+    ],
+    "not_reusable_as_certificate_normalization": [
+      "CritDevh1Cp",
+      "CritDevh2Cp",
+      "CritDevBalCp",
+      "CritDevBalTot",
+      "CritDevPondDt",
+      "GWLCONV",
+      "NUMBIT_CRIT",
+      "DTMIN",
+      "DTMAX",
+      "FACT_DT_INCREASE",
+      "FACT_DT_DECREASE",
+      "FACT_DT_FLDECT"
+    ]
+  },
+  "decision": {
+    "source_or_theory_backed_temporal_accuracy_scale_found": false,
+    "invent_tolerance_in_FSI22": false,
+    "fixed_horizon_nested_refinement_remains_supported_owner_observable": true,
+    "direct_contraction_ratio_certificate_remains_rejected": true,
+    "independent_numeric_profile_qualification_required": true,
+    "recommended_next_work_unit": "F-VQ29",
+    "recommended_question": "Can a bounded same-horizon Richards error-bound estimator, using independently qualified minimum refinement depth and contraction/tail-bound evidence, conservatively bound fine-reference endpoint error on calibration and held-out hydraulic envelopes without importing nonlinear solver tolerances as temporal tolerances?"
+  }
+}
