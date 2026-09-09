@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "workunit": "F-KT13",
+  "title": "Trusted External Reconstruction and True Process-Boundary Restart Qualification Evidence",
+  "qualified_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+  "workflow": {
+    "name": "F-KT13 external reconstruction",
+    "run_id": 34362223859,
+    "job_id": 102501830094,
+    "conclusion": "success",
+    "runner": "Ubuntu 24.04.4",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "preservation_evidence": [
+    "FKT03_CONTRACT_GATE PASS",
+    "FKT03_FSI_BOUNDARY_GATE PASS",
+    "FKT03_OPAQUE_TRANSACTION_GATE PASS",
+    "FKT03_FOCUSED_O0_O2_GATE PASS",
+    "FKT04_CONTRACT_GATE PASS",
+    "FKT04_TEMPORAL_PROVENANCE_GATE PASS",
+    "FKT04_FOCUSED_O0_O2_GATE PASS",
+    "FKT05_CONTRACT_GATE PASS",
+    "FKT05_REUSABLE_CHECKPOINT_GATE PASS",
+    "FKT05_FOCUSED_O0_O2_GATE PASS",
+    "FKT12_EXPORT_RESTORE_PHYSICAL_LINEAGE_REVISION_TIME_EXACT=PASS",
+    "FKT12_RESTORE_ZERO_PHYSICAL_TRANSFER=PASS",
+    "FKT12_PRE_RESTART_STALE_PROVENANCE_REMAINS_REJECTED=PASS",
+    "FKT12_EXACT_SPLIT_RUN_ENDPOINT_IDENTITY=PASS",
+    "FKT12_REVISION_AND_LINEAGE_CONTINUATION=PASS",
+    "FKT12_MASS_CONTINUATION_WITHOUT_LEDGER_RESET=PASS",
+    "FKT12_REQUEST_BASE_IMMUTABILITY=PASS",
+    "FKT12_INVALID_SCHEMA_LAYOUT_TARGET_FAIL_CLOSED=PASS",
+    "FKT12_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FKT12_COMMITTED_BOUNDARY_RESTORE_QUALIFICATION_GATE PASS"
+  ],
+  "fkt13_positive_evidence": [
+    "FKT13_EXTERNAL_ARTIFACT_FIELD_WHITELIST=PASS",
+    "FKT13_ATOMIC_TRUSTED_RECONSTRUCTION_VALID=PASS",
+    "FKT13_NO_INDEPENDENT_OVERWRITE_PATH=PASS",
+    "FKT13_SCHEMA_LAYOUT_PROVENANCE_PHYSICAL_TIME_FAIL_CLOSED=PASS",
+    "FKT13_TRUSTED_RECONSTRUCTION_UNIT_GATE PASS",
+    "FKT13_CONTINUOUS_REFERENCE_MASS_AND_PROVENANCE=PASS",
+    "FKT13_PRODUCER_T1_EXPORT_AND_EXTERNAL_WRITE=PASS",
+    "FKT13_RECONSTRUCTION_RESTORE_ZERO_TRANSFER=PASS",
+    "FKT13_NEXT_CHECKPOINT_AND_CANDIDATE_PROVENANCE_EXACT=PASS",
+    "FKT13_MASS_CONTINUATION_WITHOUT_STORAGE_RESET=PASS",
+    "FKT13_TWO_SEPARATE_OS_PROCESSES_PRODUCER_THEN_CONSUMER=PASS",
+    "FKT13_CONTINUOUS_VERSUS_PROCESS_RESTART_ENDPOINT_EXACT=PASS",
+    "FKT13_EXTERNAL_REPRESENTATION_O0_O2_IDENTITY=PASS",
+    "FKT13_EXTERNAL_NEGATIVE_CASES_FAIL_CLOSED=PASS",
+    "FKT13_EXTERNAL_RECONSTRUCTION_QUALIFICATION_GATE PASS"
+  ],
+  "process_boundary_proof": {
+    "reference_path": "one executable performs T0->T1->T2 continuously",
+    "restart_path": "producer executable performs T0->T1, writes adapter-owned artifact and exits; a distinct consumer executable starts from the artifact, reconstructs and restores committed state, then performs T1->T2",
+    "same_process_deallocation_only": false,
+    "producer_consumer_are_distinct_os_processes": true,
+    "endpoint_identity": "bit exact"
+  },
+  "exact_reference_endpoint": {
+    "water_bits": 4606314916440232374,
+    "lineage": 130013,
+    "revision": 2,
+    "time_bits": 4626604192193052672,
+    "mass_complete": true,
+    "mass_residual_bits": 0,
+    "storage_start_bits": 4606737688336814571,
+    "storage_end_bits": 4606314916440232374
+  },
+  "exact_restart_endpoint": {
+    "water_bits": 4606314916440232374,
+    "lineage": 130013,
+    "revision": 2,
+    "time_bits": 4626604192193052672,
+    "mass_complete": true,
+    "mass_residual_bits": 0,
+    "storage_start_bits": 4606737688336814571,
+    "storage_end_bits": 4606314916440232374
+  },
+  "negative_artifact_evidence": [
+    {"case": "wrong schema", "adapter_status": 3, "result": "PASS_FAIL_CLOSED"},
+    {"case": "wrong layout", "adapter_status": 4, "result": "PASS_FAIL_CLOSED"},
+    {"case": "unknown codec", "adapter_status": 5, "result": "PASS_FAIL_CLOSED"},
+    {"case": "truncated artifact", "adapter_status": 2, "result": "PASS_FAIL_CLOSED"},
+    {"case": "duplicate revision field", "adapter_status": 2, "result": "PASS_FAIL_CLOSED"},
+    {"case": "inconsistent time-bound record", "adapter_status": 6, "result": "PASS_FAIL_CLOSED"},
+    {"case": "invalid lineage", "adapter_status": 6, "result": "PASS_FAIL_CLOSED"},
+    {"case": "invalid revision", "adapter_status": 6, "result": "PASS_FAIL_CLOSED"},
+    {"case": "NaN physical payload", "adapter_status": 7, "result": "PASS_FAIL_CLOSED"}
+  ],
+  "artifact_scope_evidence": {
+    "field_whitelist": [
+      "schema_version",
+      "layout_id",
+      "codec_id",
+      "lineage_id",
+      "revision",
+      "time_bound",
+      "committed_time_bits",
+      "water_bits"
+    ],
+    "explicitly_absent_from_test_artifact": [
+      "forcing",
+      "solver scratch",
+      "Jacobians",
+      "Newton vectors",
+      "worker warm-start state",
+      "immutable parameter duplication"
+    ],
+    "kernel_file_io": false,
+    "kernel_parser": false
+  },
+  "qualified_claims": [
+    "an externally persisted committed-boundary representation can survive producer process termination and reconstruct an opaque typed F-KT persistence carrier in a new process",
+    "lineage, committed revision and committed time continue exactly across that process boundary",
+    "the next checkpoint and candidate originate from the restored revision",
+    "reconstruction and restore introduce zero physical transfer",
+    "the next interval water ledger starts from restored physical storage without reset or double count",
+    "the qualification representation and observable results are identical under O0 and O2",
+    "invalid external records fail closed before a ready carrier is admitted"
+  ],
+  "nonclaims": [
+    "no production restart file format is qualified",
+    "no generic codec registry for all SWAP physical continuation-state types is qualified",
+    "the concrete qualification codec covers only the deterministic F-KT fixture state",
+    "no mid-transaction restart or in-flight candidate persistence is qualified",
+    "no worker scratch or warm-start persistence is qualified",
+    "no cryptographic authenticity is claimed",
+    "no arbitrary historical rollback is provided"
+  ],
+  "decision": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION"
+}
