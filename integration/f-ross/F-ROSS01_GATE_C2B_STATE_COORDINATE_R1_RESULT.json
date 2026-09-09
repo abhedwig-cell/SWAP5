@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE_R1",
+  "contract": "F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_CONTRACT.json",
+  "status": "COMPLETE_PASS",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34347476677,
+    "head": "c35ef50a26dad377359254efcfa79f39653c9e40",
+    "job": 102452403339,
+    "conclusion": "success",
+    "artifact": 10102301020,
+    "artifact_digest": "sha256:11ae772b52a173a197ed423ce1609d03a59b3573174b89633c8ff6aa35c736e0"
+  },
+  "candidate": {
+    "N": 241,
+    "table_cell_width_u": 0.016666666666666666,
+    "exact_mapping_points": ["h=-10000 cm -> u=4", "h=-4.2 cm -> u=log10(4.2)", "h=-1 cm -> u=0"],
+    "runtime_iterations": 0,
+    "runtime_complexity": "O(1)"
+  },
+  "aggregate": {
+    "material_count": 36,
+    "pass_count": 36,
+    "fail_count": 0,
+    "max_abs_u_error_vs_80_digit_reference": 1.965094753586527e-14,
+    "max_abs_u_roundtrip_error_from_log_head_origin": 4.11437533348602e-11,
+    "max_abs_u_roundtrip_fraction_of_table_cell": 2.468625200091612e-9,
+    "max_normalized_forward_difference_vs_direct_source_arithmetic": 1.2548850847338144e-12,
+    "monotonicity_failures": 0,
+    "nan_or_inf_failures": 0,
+    "coordinate_domain_failures": 0,
+    "endpoint_mapping_failures": 0,
+    "exact_join_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0,
+    "branch_selection_failures": 0
+  },
+  "thresholds": {
+    "max_abs_u_error_vs_80_digit_reference": 2e-12,
+    "max_abs_u_roundtrip_fraction_of_table_cell": 1e-8,
+    "max_normalized_forward_difference_vs_direct_source_arithmetic": 2e-12
+  },
+  "interpretation": [
+    "The direct representable-state to table-coordinate mapping is qualified across all 36 frozen materials without runtime root finding.",
+    "The exact h=-4.2 cm join mapping removes the one-ulp O18 monotonicity artifact observed in R0.",
+    "The worst representability-induced head-origin roundtrip displacement is 2.47e-9 of one N241 interpolation cell, below the frozen 1e-8 cell criterion.",
+    "This mapping qualification does not rescue or reopen the failed raw theta-to-head inverse gate; it qualifies only the runtime contract actually needed by the Ross2011 face-table route."
+  ],
+  "next_action": "Open a separately frozen C2B steady-face representation characterization using the unchanged physical closure and unchanged C1R face-flux accuracy criteria.",
+  "decision": "C2B_STATE_COORDINATE_R1_PASS_READY_FOR_FACE_TABLE_CHARACTERIZATION",
+  "scope_guard": "Coordinate mapping only for h=[-10000,-1] cm with N241 resolution. No face-flux, timestep, saturation, groundwater or production qualification."
+}
