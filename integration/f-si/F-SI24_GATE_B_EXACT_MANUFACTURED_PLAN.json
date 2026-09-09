@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "B_EXACT_MANUFACTURED_DEFECT_BOUND",
+  "frozen_before_execution": true,
+  "parent_head": "b262a5e9be35f278703fe602b577cbf595f8d9bf",
+  "parent_derivation": "integration/f-si/F-SI24_GATE_A_LINEAR_DEFECT_BOUND_DERIVATION.json",
+  "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+  "purpose": "Qualify the algebra, exact linear bound and bounded-cost one-tridiagonal-solve construction on the already admitted four-node linear hydraulic operator before any nonlinear B1.10 transfer or production seam is considered.",
+  "hard_scope": {
+    "production_source_change": false,
+    "principal_backward_euler_state_change": false,
+    "mass_gate_change": false,
+    "scientific_temporal_tolerance_selection": false,
+    "empirical_scale_or_floor": false,
+    "full_nonlinear_companion_solve": false,
+    "normal_path_extra_linear_solves": 1,
+    "F_KT09_start": false,
+    "F_VQ_start": false,
+    "F_GC02_release": false,
+    "F_PE_release": false
+  },
+  "frozen_hydraulic_operator": {
+    "active_nodes": 4,
+    "equilibrium_head_cm": -100.0,
+    "theta_equilibrium": 0.30,
+    "capacity_per_cm": 0.001,
+    "conductivity_cm_per_day": 0.01,
+    "dz_cm": [0.5, 0.5, 1.0, 1.0],
+    "M_diagonal": "capacity*dz",
+    "A": "conductivity * [[1,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,3]]",
+    "J_BE": "M/dt + A",
+    "top_boundary": "explicit qtop=-K; perturbation top flux zero after gravity cancellation",
+    "bottom_boundary": "SWBOTB=5 with hbot=h_eq",
+    "source_sink": "zero",
+    "macropores": false,
+    "root_sink": false,
+    "SwKimpl": 0,
+    "SwKmean": 1,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1e-6,
+    "all_balance_and_head_controls": 1e-12
+  },
+  "single_mode_axis": {
+    "generalized_eigenvalue_AoverK_vs_dz": 0.25619777153614321838009463228648061698,
+    "lambda_per_day": 2.5619777153614321838009463228648061698,
+    "eigenvector": [0.6752098721931038, 0.5887162399055651, 0.4268087132525549, 0.1555537453920313],
+    "amplitude_cm": 10.0,
+    "lambda_dt": [0.025, 0.1, 0.4, 1.6, 6.4],
+    "dt_definition": "dt=(lambda_dt)/lambda; do not round dt independently",
+    "predeclared_route_expectation": {
+      "x_less_than_1": "raw M-norm is smaller than double-defect M-norm",
+      "x_greater_than_1": "double-defect M-norm is smaller than raw M-norm",
+      "reason": "R/(2D)=0.5*(1+x) for a single eigenmode"
+    }
+  },
+  "multimode_axis": {
+    "mode1": {
+      "generalized_eigenvalue_AoverK_vs_dz": 0.25619777153614321838009463228648061698,
+      "lambda_per_day": 2.5619777153614321838009463228648061698,
+      "eigenvector": [0.6752098721931038, 0.5887162399055651, 0.4268087132525549, 0.1555537453920313],
+      "amplitude_cm": 5.0
+    },
+    "mode2": {
+      "generalized_eigenvalue_AoverK_vs_dz": 1.5788967897778011939109549498314371066,
+      "lambda_per_day": 15.788967897778011939109549498314371066,
+      "eigenvector": [-0.85993755826055324873547636713317468951, -0.18106123318707904408753054543225232895, 0.64075359180253965173186093246533823150, 0.45088462765653286067989087747721881613],
+      "amplitude_definition": "a2=lambda1*a1*v1(2)/(-lambda2*v2(2)); this predeclared construction makes the committed right derivative at node 2 zero up to floating-point representation"
+    },
+    "dt_day": [0.0125, 0.05, 0.2, 0.8, 1.6],
+    "purpose": "Exercise M-orthogonal modal superposition, mixed stiff/nonstiff content, and a local near-zero derivative without any derivative division."
+  },
+  "candidate_algebra": {
+    "raw": "e_raw=0.5*dt*(hdot_np1-hdot_n)",
+    "defect_rhs": "rhs=(M/dt)*e_raw",
+    "defect_solve": "J_BE*delta=rhs",
+    "raw_M_norm": "sqrt(sum(M_i*e_raw_i^2))",
+    "double_defect_M_norm": "2*sqrt(sum(M_i*delta_i^2))",
+    "combined_bound": "B_M=min(raw_M_norm,double_defect_M_norm)",
+    "exact_error_M_norm": "sqrt(sum(M_i*(h_BE_i-h_exact_i)^2))",
+    "head_infinity_bound": "B_inf=B_M/sqrt(min(M_i))"
+  },
+  "exact_reference": {
+    "single_mode": "u_exact=a1*v1*exp(-lambda1*dt); u_BE=a1*v1/(1+lambda1*dt)",
+    "multimode": "u_exact=sum_j a_j*v_j*exp(-lambda_j*dt); u_BE=sum_j a_j*v_j/(1+lambda_j*dt)",
+    "defect_single_mode": "delta=0.5*a1*v1*x^2/(1+x)^2",
+    "defect_multimode": "delta=sum_j 0.5*a_j*v_j*x_j^2/(1+x_j)^2",
+    "continuous_mass_check": "storage change equals integrated perturbation lower-boundary exchange mode by mode; top perturbation exchange is zero"
+  },
+  "pass_rules": [
+    "Both frozen generalized eigenpairs satisfy A*v=lambda*M*v under an epsilon-scaled algebraic bound, and their M inner product is zero under the same type of bound.",
+    "The multimode node-2 committed right derivative is near zero under an epsilon-scaled cancellation bound; no division by that derivative or any component derivative occurs anywhere in the candidate.",
+    "All HeadCalc principal backward-Euler solves converge under the frozen 8/4 and 1e-12 controls.",
+    "Every HeadCalc endpoint matches the analytic backward-Euler single-mode or multimode endpoint under an epsilon-scaled numerical consistency bound.",
+    "Every reconstructed J_BE matches the predeclared M/dt+A operator and the one reference tridiagonal solve produces delta matching the analytic modal defect expression under an epsilon-scaled bound.",
+    "For every point exact_error_M_norm <= raw_M_norm and exact_error_M_norm <= double_defect_M_norm within epsilon-scaled comparison allowance only.",
+    "For every point exact_error_M_norm <= B_M and maxabs(h_BE-h_exact) <= B_inf within epsilon-scaled comparison allowance only.",
+    "On the single-mode axis the smaller branch is raw for x<1 and double-defect for x>1, as predeclared.",
+    "The principal discrete backward-Euler water ledger remains hard-closed at every point and the exact manufactured continuous mass identity closes.",
+    "O0 and O2 machine-readable outputs are identical.",
+    "Production Richards/runtime/adapter source is unchanged from the F-SI24 base."
+  ],
+  "fail_closed_rules": [
+    "Do not tune factor 2, M norm, dt points, amplitudes, eigenvectors or epsilon-scaled algebra allowances after observing a failure.",
+    "Do not replace J_BE by the stale HeadCalc dfdh scratch if the explicit reconstructed operator fails.",
+    "Do not weaken the hard mass requirement to qualify the temporal indicator.",
+    "A Gate-B pass qualifies only the exact constant-linear manufactured theorem and implementation algebra; it does not establish a nonlinear B1.10 bound."
+  ],
+  "next_if_pass": "Freeze a separate Gate C nonlinear B1.10 characterization plan before execution. Use the existing F-SI23 C2 calibration-style matrix only as owner evidence and a disjoint held-out matrix for any later independent qualification. First determine whether an explicitly reconstructed final-state SwKimpl=0 operator preserves conservative behavior without fitting factor 2 or a tolerance.",
+  "next_if_fail": "Close F-SI24 fail-closed for this candidate and retain F-SI23 raw observer only as limited owner observable; do not fall back to deep refinement or empirical scaling."
+}
