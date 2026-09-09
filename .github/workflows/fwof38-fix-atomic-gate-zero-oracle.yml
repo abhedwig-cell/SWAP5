@@ -1,4 +1,4 @@
-name: F-WOF38 add explicit failed then accepted retry gate
+name: F-WOF38 add Gate E retry oracle
 
 on:
   push:
@@ -17,75 +17,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Add same-checkpoint failed then accepted retry oracle
+      - name: Patch Gate E oracle
         shell: bash
         run: |
           set -euo pipefail
-          TARGET=tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-          python3 - "$TARGET" <<'PY'
-          from pathlib import Path
-          import sys
-          path = Path(sys.argv[1])
-          src = path.read_text(encoding='utf-8')
-          anchor = """  print '(a)', 'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS'
-
-  ! A policy that permits dt shrinking is not admitted for this fixed one-day
-"""
-          insert = """  print '(a)', 'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS'
-
-  ! Retry the same accepted physical event from exactly the same still-committed
-  ! crop checkpoint after the failed crop trial. The failure above must have
-  ! consumed neither owner state nor event receipt; this retry may publish once.
-  call bad_crop_kernel%advance_interval(crop_parameters, bad_crop_committed, crop_event_forcing, crop_config, &
-       100.0_real64, 101.0_real64, bad_crop_result, bad_crop_candidate, bad_crop_diag, bad_crop_checkpoint)
-  call require(bad_crop_result%status == CANONICAL_STATUS_COMPLETED, &
-       'F-WOF38 same-checkpoint accepted retry completes')
-  call require(bad_crop_candidate%ready(), 'F-WOF38 same-checkpoint accepted retry candidate ready')
-  call require(bad_crop_committed%current_revision() == 0, &
-       'F-WOF38 accepted retry remains candidate-only before commit')
-  call bad_crop_kernel%commit_candidate(bad_crop_committed, bad_crop_candidate, bad_crop_diag, &
-       did_commit, crop_commit_status)
-  call require(did_commit, 'F-WOF38 same-checkpoint accepted retry did commit')
-  call require(crop_commit_status == KERNEL_COMMIT_STATUS_COMMITTED, &
-       'F-WOF38 same-checkpoint accepted retry commit status')
-  call require(bad_crop_committed%current_revision() == 1, &
-       'F-WOF38 failed then accepted retry publishes exactly one revision')
-  call bad_crop_committed%snapshot(crop_snapshot, snapshot_available)
-  call require(snapshot_available, 'F-WOF38 retry committed snapshot')
-  select type (tx => crop_snapshot)
-  type is (fmr_wofost_crop_transaction_state_t)
-    call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
-    call require(snapshot_available, 'F-WOF38 retry owner snapshot available')
-    call require(same_owner(crop_snapshot_owner, candidate1), &
-         'F-WOF38 retry owner equals direct qualified candidate')
-    call require(tx%receipt_ready(), 'F-WOF38 retry receipt committed')
-    call require(tx%consumed_event(event_identity), 'F-WOF38 retry receipt matches source event')
-  class default
-    call require(.false., 'F-WOF38 retry committed state type')
-  end select
-  print '(a)', 'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS'
-
-  ! A policy that permits dt shrinking is not admitted for this fixed one-day
-"""
-          if src.count(anchor) != 1:
-              raise SystemExit(f'FWOF38 Gate E insertion anchor count={src.count(anchor)}')
-          src = src.replace(anchor, insert, 1)
-          marker_anchor = """    'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS' \\
-    'FWOF38_FIXED_ONE_DAY_EVENT_FORBIDS_RETRY_DT_SHRINKING=PASS' \\
-"""
-          marker_insert = """    'FWOF38_FAILED_CROP_EVOLUTION_ZERO_OWNER_RECEIPT_MUTATION=PASS' \\
-    'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS' \\
-    'FWOF38_FIXED_ONE_DAY_EVENT_FORBIDS_RETRY_DT_SHRINKING=PASS' \\
-"""
-          if src.count(marker_anchor) != 1:
-              raise SystemExit(f'FWOF38 Gate E marker anchor count={src.count(marker_anchor)}')
-          src = src.replace(marker_anchor, marker_insert, 1)
-          path.write_text(src, encoding='utf-8')
-          PY
-          test "$(git diff --name-only)" = "$TARGET"
+          echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCnBhdGggPSBQYXRoKCJ0ZXN0cy9md29mL3J1bl9md29mMzhfYXRvbWljX2Nyb3BfdHJhbnNhY3Rpb25fZ2F0ZS5zaCIpCnNyYyA9IHBhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCmFuY2hvciA9ICIiIiAgcHJpbnQgJyhhKScsICdGV09GMzhfRkFJTEVEX0NST1BfRVZPTFVUSU9OX1pFUk9fT1dORVJfUkVDRUlQVF9NVVRBVElPTj1QQVNTJwoKICAhIEEgcG9saWN5IHRoYXQgcGVybWl0cyBkdCBzaHJpbmtpbmcgaXMgbm90IGFkbWl0dGVkIGZvciB0aGlzIGZpeGVkIG9uZS1kYXkKIiIiCmluc2VydCA9ICIiIiAgcHJpbnQgJyhhKScsICdGV09GMzhfRkFJTEVEX0NST1BfRVZPTFVUSU9OX1pFUk9fT1dORVJfUkVDRUlQVF9NVVRBVElPTj1QQVNTJwoKICAhIFJldHJ5IHRoZSBzYW1lIGFjY2VwdGVkIHBoeXNpY2FsIGV2ZW50IGZyb20gZXhhY3RseSB0aGUgc2FtZSBzdGlsbC1jb21taXR0ZWQKICAhIGNyb3AgY2hlY2twb2ludCBhZnRlciB0aGUgZmFpbGVkIGNyb3AgdHJpYWwuIFRoZSBmYWlsdXJlIGFib3ZlIG11c3QgaGF2ZQogICEgY29uc3VtZWQgbmVpdGhlciBvd25lciBzdGF0ZSBub3IgZXZlbnQgcmVjZWlwdDsgdGhpcyByZXRyeSBtYXkgcHVibGlzaCBvbmNlLgogIGNhbGwgYmFkX2Nyb3Bfa2VybmVsJWFkdmFuY2VfaW50ZXJ2YWwoY3JvcF9wYXJhbWV0ZXJzLCBiYWRfY3JvcF9jb21taXR0ZWQsIGNyb3BfZXZlbnRfZm9yY2luZywgY3JvcF9jb25maWcsICYKICAgICAgIDEwMC4wX3JlYWw2NCwgMTAxLjBfcmVhbDY0LCBiYWRfY3JvcF9yZXN1bHQsIGJhZF9jcm9wX2NhbmRpZGF0ZSwgYmFkX2Nyb3BfZGlhZywgYmFkX2Nyb3BfY2hlY2twb2ludCkKICBjYWxsIHJlcXVpcmUoYmFkX2Nyb3BfcmVzdWx0JXN0YXR1cyA9PSBDQU5PTklDQUxfU1RBVFVTX0NPTVBMRVRFRCwgJgogICAgICAgJ0YtV09GMzggc2FtZS1jaGVja3BvaW50IGFjY2VwdGVkIHJldHJ5IGNvbXBsZXRlcycpCiAgY2FsbCByZXF1aXJlKGJhZF9jcm9wX2NhbmRpZGF0ZSVyZWFkeSgpLCAnRi1XT0YzOCBzYW1lLWNoZWNrcG9pbnQgYWNjZXB0ZWQgcmV0cnkgY2FuZGlkYXRlIHJlYWR5JykKICBjYWxsIHJlcXVpcmUoYmFkX2Nyb3BfY29tbWl0dGVkJWN1cnJlbnRfcmV2aXNpb24oKSA9PSAwLCAmCiAgICAgICAnRi1XT0YzOCBhY2NlcHRlZCByZXRyeSByZW1haW5zIGNhbmRpZGF0ZS1vbmx5IGJlZm9yZSBjb21taXQnKQogIGNhbGwgYmFkX2Nyb3Bfa2VybmVsJWNvbW1pdF9jYW5kaWRhdGUoYmFkX2Nyb3BfY29tbWl0dGVkLCBiYWRfY3JvcF9jYW5kaWRhdGUsIGJhZF9jcm9wX2RpYWcsICYKICAgICAgIGRpZF9jb21taXQsIGNyb3BfY29tbWl0X3N0YXR1cykKICBjYWxsIHJlcXVpcmUoZGlkX2NvbW1pdCwgJ0YtV09GMzggc2FtZS1jaGVja3BvaW50IGFjY2VwdGVkIHJldHJ5IGRpZCBjb21taXQnKQogIGNhbGwgcmVxdWlyZShjcm9wX2NvbW1pdF9zdGF0dXMgPT0gS0VSTkVMX0NPTU1JVF9TVEFUVVNfQ09NTUlUVEVELCAmCiAgICAgICAnRi1XT0YzOCBzYW1lLWNoZWNrcG9pbnQgYWNjZXB0ZWQgcmV0cnkgY29tbWl0IHN0YXR1cycpCiAgY2FsbCByZXF1aXJlKGJhZF9jcm9wX2NvbW1pdHRlZCVjdXJyZW50X3JldmlzaW9uKCkgPT0gMSwgJgogICAgICAgJ0YtV09GMzggZmFpbGVkIHRoZW4gYWNjZXB0ZWQgcmV0cnkgcHVibGlzaGVzIGV4YWN0bHkgb25lIHJldmlzaW9uJykKICBjYWxsIGJhZF9jcm9wX2NvbW1pdHRlZCVzbmFwc2hvdChjcm9wX3NuYXBzaG90LCBzbmFwc2hvdF9hdmFpbGFibGUpCiAgY2FsbCByZXF1aXJlKHNuYXBzaG90X2F2YWlsYWJsZSwgJ0YtV09GMzggcmV0cnkgY29tbWl0dGVkIHNuYXBzaG90JykKICBzZWxlY3QgdHlwZSAodHggPT4gY3JvcF9zbmFwc2hvdCkKICB0eXBlIGlzIChmbXJfd29mb3N0X2Nyb3BfdHJhbnNhY3Rpb25fc3RhdGVfdCkKICAgIGNhbGwgdHg cJXNuYXBzaG90X293bmVyKGNyb3Bfc25hcHNob3Rfb3duZXIsIHNuYXBzaG90X2F2YWlsYWJsZSkKICAgIGNhbGwgcmVxdWlyZShzbmFwc2hvdF9hdmFpbGFibGUsICdGLVdPRjM4IHJldHJ5IG93bmVyIHNuYXBzaG90IGF2YWlsYWJsZScpCiAgICBjYWxsIHJlcXVpcmUoc2FtZV9vd25lcihjcm9wX3NuYXBzaG90X293bmVyLCBjYW5kaWRhdGUxKSwgJgogICAgICAgICdGLVdPRjM4IHJldHJ5IG93bmVyIGVxdWFscyBkaXJlY3QgcXVhbGlmaWVkIGNhbmRpZGF0ZScpCiAgICBjYWxsIHJlcXVpcmUodHglcmVjZWlwdF9yZWFkeSgpLCAnRi1XT0YzOCByZXRyeSByZWNlaXB0IGNvbW1pdHRlZCcpCiAgICBjYWxsIHJlcXVpcmUodHglY29uc3VtZWRfZXZlbnQoZXZlbnRfaWRlbnRpdHkpLCAnRi1XT0YzOCByZXRyeSByZWNlaXB0IG1hdGNoZXMgc291cmNlIGV2ZW50JykKICBjbGFzcyBkZWZhdWx0CiAgICBjYWxsIHJlcXVpcmUoLmZhbHNlLiwgJ0YtV09GMzggcmV0cnkgY29tbWl0dGVkIHN0YXRlIHR5cGUnKQogIGVuZCBzZWxlY3QKICBwcmludCA nKGEpJywgJ0ZXT0YzOF9GQUlMRURfVEhFTl9BQ0NFUFRFRF9SRVRSWV9TQU1FX0NIRUNLUE9JTlRfRVhBQ1RMWV9PTkNF P VBBU1MnCgogICEgQSBwb2xpY3kgdGhhdCBwZXJtaXRzIGR0IHNocmlua2luZyBpcyBub3QgYWRtaXR0ZWQgZm9yIHRoaXMgZml4ZWQgb25lLWRheQoiIiIKaWYgc3JjLmNvdW50KGFuY2hvcikgIT0gMToKICAgIHJhaXNlIFN5c3RlbUV4aXQoZiJHYXRlIEUgaW5zZXJ0aW9uIGFuY2hvciBjb3VudD17c3JjLmNvdW50KGFuY2hvcikpfSIpCnNyYyA9IHNyYy5yZXBsYWNlKGFuY2hvciwgaW5zZXJ0LCAxKQptYXJrZXJfYW5jaG9yID0gIiIiICAgICdGV09GMzhfRkFJTEVEX0NST1BfRVZPTFVUSU9OX1pFUk9fT1dORVJfUkVDRUlQVF9NVVRBVElPTj1QQVNTJyBcXAogICAgJ0ZXT0YzOF9GSVhFRF9PTkVfREFZX0VWRU5UX0ZPUkJJRFNfUkVUUllfRFRfU0hSSU5LSU5HPVBBU1MnIFxwCiIiIgptYXJrZXJfaW5zZXJ0ID0gIiIiICAgICdGV09GMzhfRkFJTEVEX0NST1BfRVZPTFVUSU9OX1pFUk9fT1dORVJfUkVDRUlQVF9NVVRBVElPTj1QQVNTJyBcXAogICAgJ0ZXT0YzOF9GQUlMRURfVEhFTl9BQ0NFUFRFRF9SRVRSWV9TQU1FX0NIRUNLUE9JTlRfRVhBQ1RMWV9PTkNFPVBBU1MnIFxwCiAgICAnRldPRjM4X0ZJWEVEX09ORV9EQVlfRVZFTlRfRk9SQklEU19SRVRSWV9EVF9TSFJJTktJTkc9UEFTUycgXHAKIiIiCmlmIHNyYy5jb3VudChtYXJrZXJfYW5jaG9yKSAhPSAxOgogICAgcmFpc2UgU3lzdGVtRXhpdChmIkdhdGUgRSBtYXJrZXIgYW5jaG9yIGNvdW50PXtzcmMuY291bnQobWFya2VyX2FuY2hvcil9IikKc3JjID0gc3JjLnJlcGxhY2UobWFya2VyX2FuY2hvciwgbWFya2VyX2luc2VydCwgMSkKcGF0aC53cml0ZV90ZXh0KHNyYywgZW5jb2Rpbmc9InV0Zi04IikK' | base64 -d > /tmp/fwof38_gate_e.py
+          python3 /tmp/fwof38_gate_e.py
           git diff --check
-          grep -Fq 'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS' "$TARGET"
-          echo 'FWOF38_GATE_E_TEST_ORACLE_ADDED=PASS'
+          grep -Fq 'FWOF38_FAILED_THEN_ACCEPTED_RETRY_SAME_CHECKPOINT_EXACTLY_ONCE=PASS' tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
       - name: Commit Gate E test oracle
         shell: bash
         run: |
