@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "evidence_stage": "PARALLEL_REAL_PHYSICS_ARCHITECTURE_READINESS",
+  "status": "EXECUTABLE_SCHEDULING_READINESS_TESTED_PRODUCTION_IMPLEMENTATION_NOT_STARTED",
+  "decision": "F-MR20_PARALLEL_REAL_PHYSICS_ARCHITECTURE_READY_FOR_IMPLEMENTATION",
+  "baseline": {
+    "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+    "commit": "f84d5c88f082151a492f07b3054ed7d726e5cdab",
+    "mq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "mq23_real_physical_worker_count": 1,
+    "mq23_parallel_real_physics_admitted": false,
+    "runtime_core_blob": "543af573b34bfccd8fbdecf719af22994c5236b2"
+  },
+  "tested_candidate": {
+    "head": "9287adc28f6c441cdfb25a4a20009e059e2c97dd",
+    "workflow_run": 34397614587,
+    "workflow_job": 102621088136,
+    "workflow_conclusion": "success",
+    "platform": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "test": "tests/fmr/test_fmr20_parallel_readiness.f90",
+    "runner": "tests/fmr/run_fmr20_parallel_readiness_gate.sh",
+    "workflow": ".github/workflows/fmr20-parallel-real-physics.yml"
+  },
+  "matrix": {
+    "workers": [1, 2, 4, 8],
+    "columns": [1, 2, 8, 17, 31, 32, 64],
+    "combinations_per_optimization": 28,
+    "optimization_modes": ["O0", "O2"],
+    "scheduler_oracle_executions": 56,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true
+  },
+  "executable_contract_results": {
+    "production_canonical_order_primitive": "fmr_build_execution_order",
+    "canonical_key": "template_id,column_id",
+    "static_worker_formula": "mod(canonical_index-1, worker_count)+1",
+    "canonical_order_strict": true,
+    "exactly_once_assignment": true,
+    "round_robin_worker_balance": true,
+    "empty_worker_assignment_deterministic": true,
+    "reversed_input_identity": true,
+    "permuted_input_identity": true,
+    "reverse_completion_collection_identity": true,
+    "permuted_completion_collection_identity": true,
+    "collection_key": "column_id",
+    "deterministic_replay": true,
+    "bounded_difficult_lane_routing": true,
+    "difficult_cost_basis": "synthetic scheduler metadata only; no synthetic physics",
+    "normal_relaxed_fallback_lane_selection_deterministic": true,
+    "column_identity_metadata_nonmutation": true,
+    "backend_identity_nonmutation": true,
+    "parameter_state_forcing_reference_nonmutation": true,
+    "hard_mass_gate_requirement_retained_by_all_test_lanes": true,
+    "reference_completion_available_by_all_test_lanes": true
+  },
+  "scope_guard": {
+    "production_src_changed_relative_to_mq23": false,
+    "gate": "FMR20_G02_NO_PRODUCTION_SOURCE_CHANGE=PASS",
+    "meaning": "The tested object is an architecture/scheduling oracle only. No parallel runtime, worker pool, thread synchronization or real-physics concurrent execution exists in this candidate."
+  },
+  "negative_evidence": {
+    "workflow_run": 34397526679,
+    "workflow_job": 102620796792,
+    "conclusion": "failure",
+    "classification": "TEST_HARNESS_ONLY",
+    "causes": [
+      "three-dot diff required a merge base unavailable in shallow checkout",
+      "Bash local declaration referenced tag before assignment under set -u"
+    ],
+    "resolution": "Use direct two-tree diff for the no-src scope guard and split local assignments. Scheduler acceptance criteria were unchanged."
+  },
+  "architecture_invariant_audit": {
+    "4_compact_persistent_state": "PASS_FOR_READINESS: scheduling lane/cost metadata is test-local and no per-column persistent production state was added.",
+    "5_scratch_per_worker": "ARCHITECTURE_BOUND: readiness contract retains worker-owned solver/scratch model; simultaneous real-worker execution remains future implementation evidence.",
+    "6_scalable_memory_layout": "PASS_FOR_READINESS: static assignment is defined over logical canonical order and does not require one heavyweight solver per logical column.",
+    "7_transactional_timesteps": "PRESERVED_BY_SCOPE: no transaction or committed-state source changed.",
+    "13_mass_conservation_absolute": "PRESERVED_AS_HARD_REQUIREMENT: every numerical lane in the oracle retains the same hard-mass-gate requirement; no new physical mass result is claimed.",
+    "16_multiswap_primary": "PASS_FOR_READINESS: matrix explicitly spans 1..64 logical columns and 1..8 workers.",
+    "23_physics_solver_policy_separated": "PASS_FOR_READINESS: difficult routing is out-of-band numerical lane metadata and does not mutate template, backend, parameter, state or forcing identity.",
+    "24_predictable_runtime": "PASS_FOR_ARCHITECTURE_READINESS_ONLY: bounded extraction contract is deterministic; no production timing bound is claimed.",
+    "25_reference_mode_available": "PASS_FOR_READINESS: reference completion availability is retained for every route.",
+    "26_runtime_diagnostics": "DESIGN_BOUND: canonical result/diagnostic collection order is executable-proven; production worker diagnostics remain to be implemented.",
+    "29_no_silent_dependencies": "PASS_FOR_READINESS: scheduler oracle has no calendar, file, I/O or MODFLOW assumptions.",
+    "30_change_audit": "PASS: tested branch has no production source changes relative to MQ23."
+  },
+  "qualified_readiness_scope": [
+    "deterministic canonical scheduling contract",
+    "static worker partition formula",
+    "input-order and completion-order independent collection contract",
+    "bounded numerical difficult-lane extraction contract",
+    "physics-identity nonmutation contract",
+    "reference completion and hard-mass-gate requirements",
+    "implementation source ownership may now proceed under the persisted readiness architecture"
+  ],
+  "not_qualified": [
+    "parallel real-physics implementation",
+    "concurrent HeadCalc/reference solver thread safety",
+    "worker-local scratch isolation under simultaneous real solves",
+    "single-worker production parallel-runtime identity to MQ23",
+    "multi-worker committed-state or mass identity",
+    "parallel speedup or bounded wall-clock runtime",
+    "production relaxed/fallback numerical policy",
+    "production memory scaling"
+  ],
+  "next_implementation_gate": {
+    "instruction": "Implement the smallest deterministic static-partition worker runtime behind the persisted contracts, initially with the restricted MQ23 real-physics profile. Persist production source before running long real-physics matrix tests.",
+    "must_start_with": [
+      "worker-owned reusable backend/context",
+      "canonical static partition",
+      "canonical result collection",
+      "one-worker identity to MQ23 before multi-worker admission",
+      "no difficult-lane physics changes"
+    ]
+  },
+  "state": {
+    "readiness_realized": true,
+    "readiness_persisted": true,
+    "scheduling_contract_tested": true,
+    "architecture_ready_for_implementation": true,
+    "production_parallel_runtime_realized": false,
+    "production_parallel_runtime_tested": false,
+    "production_parallel_runtime_qualified": false
+  }
+}
