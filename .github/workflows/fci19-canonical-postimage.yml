@@ -1,0 +1,33 @@
+name: F-CI19 governed canonical postimage qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci19-canonical-postimage
+    paths:
+      - 'tests/fci/run_fci19_canonical_postimage_gate.sh'
+      - 'integration/f-ci/F-CI19_CANONICAL_POSTIMAGE_QUALIFICATION.json'
+      - '.github/workflows/fci19-canonical-postimage.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-CI19 governed postimage qualification
+        run: bash tests/fci/run_fci19_canonical_postimage_gate.sh
+      - name: Upload postimage qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci19-governed-canonical-postimage
+          path: fci19-postimage-artifacts/
+          if-no-files-found: warn
