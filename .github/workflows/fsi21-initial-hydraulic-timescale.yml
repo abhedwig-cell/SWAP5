@@ -1,0 +1,24 @@
+name: F-SI21 initial hydraulic timescale
+
+on:
+  push:
+    branches:
+      - work/f-si21-hydraulic-timescale-retry-translation
+    paths:
+      - 'tests/fsi/test_fsi21_initial_hydraulic_timescale.f90'
+      - 'tests/fsi/run_fsi21_initial_hydraulic_timescale.sh'
+      - 'integration/f-si/F-SI21_*.json'
+      - '.github/workflows/fsi21-initial-hydraulic-timescale.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-a:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch qualification evidence branch
+        run: git fetch origin qualification/f-vq28-richards-temporal-numeric-profile:refs/remotes/origin/qualification/f-vq28-richards-temporal-numeric-profile
+      - name: Run F-SI21 Gate A
+        run: bash tests/fsi/run_fsi21_initial_hydraulic_timescale.sh
