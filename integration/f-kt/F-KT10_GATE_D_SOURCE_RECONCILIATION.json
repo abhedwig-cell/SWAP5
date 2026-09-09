@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gate": "D_REAL_RICHARDS_BINDING_SOURCE_RECONCILIATION",
+  "trigger_head": "d89e1b836dabcdfb89916cd81b6e1ed5e2b2e738",
+  "timing": "BEFORE_ANY_REAL_BINDING_COMPILE_OR_EXECUTION",
+  "finding": {
+    "classification": "FROZEN_PLAN_SOURCE_ASSUMPTION_CONTRADICTED_BY_EXISTING_RUNTIME",
+    "frozen_assumption": "fmr_template_t.optional_state_layout_id could be interpreted as a global 0/1 temporal-history enum",
+    "contradicting_source": "tests/fmr/test_fmr06_snow_multiswap.f90",
+    "contradicting_value": 60605,
+    "meaning": "The existing optional_state_layout_id already identifies feature/physical optional-state layouts such as snow and is not a F-KT numerical-continuation enum.",
+    "result_observed_before_finding": false
+  },
+  "architectural_correction": {
+    "selected": "ADD_SEPARATE_TEMPLATE_LEVEL_NUMERICAL_CONTINUATION_LAYOUT_ID",
+    "reason": "Keep physical optional state distinct from numerical continuation state and allow both to coexist in one model template.",
+    "existing_optional_state_layout_id_preserved": true,
+    "new_field": "numerical_continuation_layout_id",
+    "new_default": 0,
+    "richards_temporal_history_value": 1,
+    "per_column_metadata_added": false,
+    "ordinary_template_behavior_changed": false
+  },
+  "rejected_corrections": [
+    "Reserve magic ranges inside optional_state_layout_id and overload its meaning.",
+    "Treat every nonzero optional_state_layout_id as temporal history.",
+    "Disable existing snow optional-state scaling to make the frozen 0/1 assumption pass."
+  ],
+  "invariant_reconciliation": {
+    "3_explicit_data_separation": "PASS_BY_SEPARATING_PHYSICAL_OPTIONAL_STATE_FROM_NUMERICAL_CONTINUATION_LAYOUT",
+    "4_compact_persistent_state": "PASS_FEATURE_SCOPED_DERIVED_STATE_ONLY",
+    "16_multiswap_primary": "PASS_TEMPLATE_LEVEL_SELECTION",
+    "23_physics_vs_solver_policy": "PASS_NO_LONGER_OVERLOADED",
+    "27_optional_functionality_scales_with_usage": "PASS",
+    "30_architecture_change_explicitly_tested": "OPEN_UNTIL_REAL_BINDING_QUALIFICATION"
+  },
+  "governance": {
+    "matrix_changed_from_frozen_plan": false,
+    "indicator_formula_changed": false,
+    "scientific_threshold_changed": false,
+    "post_result_tuning": false,
+    "implementation_must_be_repaired_before_testing": true
+  }
+}
