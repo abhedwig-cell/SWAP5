@@ -1,0 +1,36 @@
+name: F-LMFP09 Gate C3 Anchored Endpoint Axis
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - .github/workflows/lmfp09-gate-c3-anchored-endpoint-axis.yml
+      - experiments/lmfp/run_lmfp09_gate_c3_anchored_endpoint_axis.py
+      - integration/f-lmfp/F-LMFP09_GATE_C3_ANCHORED_ENDPOINT_AXIS_ACCEPTANCE.json
+  workflow_dispatch:
+
+jobs:
+  anchored-provider-characterization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run C3 anchored provider characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="lmfp09-gate-c3-anchored-endpoint-axis"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c3_anchored_endpoint_axis.py \
+            "$out/F-LMFP09_GATE_C3_ANCHORED_ENDPOINT_AXIS_RESULT.json" \
+            | tee "$out/F-LMFP09_GATE_C3_ANCHORED_ENDPOINT_AXIS_STDOUT.json"
+      - name: Upload C3 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c3-anchored-endpoint-axis
+          path: lmfp09-gate-c3-anchored-endpoint-axis/
