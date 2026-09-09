@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -42,18 +42,43 @@
     "nominated_classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
     "reference_sand_admitted_fraction": 0.5190562613430127,
     "very_fast_admitted_fraction": 0.46819787985865724,
-    "provider_selection": "49_NODE_ANCHORED_HEAD_PAIR",
-    "provider_selection_reason": "same revealed admitted envelope as 113 nodes and all unchanged error rules pass, at 19208 versus 102152 bytes per class before metadata"
+    "provider_selection": "49_NODE_ANCHORED_HEAD_PAIR"
+  },
+  "C6b": {
+    "run": 34320316643,
+    "head": "352dd99be52db810c2558a9d7622ff080d14c898",
+    "qualification": true,
+    "provider": "49_NODE_ANCHORED_HEAD_PAIR",
+    "classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "reference_sand": {
+      "raw_cases": 600,
+      "admitted_cases": 442,
+      "active_cases": 392,
+      "p90_rel_error": 0.004815350371796538,
+      "p99_rel_error": 0.009136578764031322,
+      "max_rel_error": 0.011031311767695303,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "pass": true
+    },
+    "very_fast": {
+      "raw_cases": 600,
+      "admitted_cases": 426,
+      "active_cases": 364,
+      "p90_rel_error": 0.006588362653230558,
+      "p99_rel_error": 0.015732305713579944,
+      "max_rel_error": 0.026840304149993194,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "pass": true
+    },
+    "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED"
   },
   "current_gate": {
-    "name": "C6B_UNSEEN_CORE_ENVELOPE_HOLDOUT",
-    "qualification": true,
-    "provider_base_n": 33,
-    "expected_actual_axis_nodes": 49,
-    "classifier_frozen": true,
-    "holdout_seeds_frozen": [7092026, 9102026],
-    "design": "integration/f-lmfp/F-LMFP09_GATE_C6B_UNSEEN_HOLDOUT_DESIGN.json",
-    "status": "PRECOMMITTED_BEFORE_IMPLEMENTATION_OR_EXECUTION"
+    "name": "CATALOG_COVERAGE_AND_TRANSIENT_ENVELOPE_QUALIFICATION",
+    "qualification": false,
+    "rule": "Frozen n49 provider family and C6b classifier may be evaluated across additional hydraulic classes, but classification thresholds and interpolation density remain unchanged. Production catalog admission requires explicit per-class coverage and accuracy evidence; transient admission additionally requires fail-closed handling of every face outside the qualified envelope.",
+    "status": "READY_FOR_PRECOMMIT"
   },
   "separate_open_blockers": [
     "production hydraulic catalog admission remains open",
@@ -71,9 +96,12 @@
     "GATE_A_QUALIFIED": true,
     "C6A_CHARACTERIZATION_COMPLETE": true,
     "C6B_DESIGN_PERSISTED": true,
-    "C6B_EXECUTED": false,
+    "C6B_EXECUTED": true,
+    "C6B_HYDRAULIC_CORE_ENVELOPE_QUALIFIED": true,
+    "CATALOG_COVERAGE_QUALIFIED": false,
+    "TRANSIENT_ENVELOPE_QUALIFIED": false,
     "OVERALL_QUALIFIED": false
   },
-  "decision": "N49_SIMPLE_CORE_ENVELOPE_READY_FOR_PRECOMMITTED_C6B_UNSEEN_HOLDOUT",
-  "status": "C6A_RECONCILED_C6B_PRECOMMITTED_BEFORE_IMPLEMENTATION"
+  "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED_READY_FOR_CATALOG_COVERAGE_AND_TRANSIENT_QUALIFICATION",
+  "status": "C6B_QUALIFIED_NEXT_GATE_NOT_YET_PRECOMMITTED"
 }

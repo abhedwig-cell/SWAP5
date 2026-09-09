@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C6B_UNSEEN_CORE_ENVELOPE_HOLDOUT",
+  "qualification": true,
+  "production_implementation": false,
+  "run": 34320316643,
+  "head": "352dd99be52db810c2558a9d7622ff080d14c898",
+  "provider": {
+    "family": "ANCHORED_HEAD_PAIR",
+    "base_n": 33,
+    "actual_axis_nodes": 49,
+    "table_values": 2401,
+    "bytes_before_metadata_per_class": 19208
+  },
+  "classifier": {
+    "min_se": 1e-06,
+    "g_max": 10000.0,
+    "dh_max_cm": 100000.0,
+    "k_ratio_max": 1000000.0
+  },
+  "artifacts": {
+    "reference_sand": {
+      "id": 10091676950,
+      "digest": "sha256:fa462ecda97461cbe6d01342971e8d1f62013cd2ea966c6e5b959a2612317dcd"
+    },
+    "very_fast": {
+      "id": 10091690497,
+      "digest": "sha256:2ab074e4dfdd6f1ce9f65a2535d31e4201fcb7d2977c4f4c54016cae4fbfe195"
+    }
+  },
+  "classes": {
+    "reference_sand": {
+      "half_face_length_cm": 10.0,
+      "raw_cases": 600,
+      "inside_provider_head_envelope": 575,
+      "classifier_admitted": 442,
+      "admitted_fraction_of_raw": 0.7366666666666667,
+      "active_cases": 392,
+      "dormant_cases": 50,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {
+        "median": 0.0006611766674419877,
+        "p90": 0.004815350371796538,
+        "p99": 0.009136578764031322,
+        "maximum": 0.011031311767695303
+      },
+      "strong_gradient_p90_rel_error": 0.005672470825308643,
+      "near_saturation_p90_rel_error": 0.0025898813898889766,
+      "dormant_max_abs_error_over_ks_scale": 1.241380034602017e-11,
+      "fraction_corrected_better_on_informative_cases": 0.9696969696969697,
+      "plain_mfp_active_rel_error": {
+        "median": 0.02284445067078544,
+        "p90": 0.35013450803605545,
+        "p99": 0.7010761616478505,
+        "maximum": 0.720943908286679
+      },
+      "saturation_regime_counts": {"SS": 68, "SU": 105, "US": 70, "UU": 199},
+      "pass": true
+    },
+    "very_fast": {
+      "half_face_length_cm": 5.0,
+      "raw_cases": 600,
+      "inside_provider_head_envelope": 594,
+      "classifier_admitted": 426,
+      "admitted_fraction_of_raw": 0.71,
+      "active_cases": 364,
+      "dormant_cases": 62,
+      "failures": 0,
+      "sign_mismatches": 0,
+      "corrected_active_rel_error": {
+        "median": 0.00035165611952359886,
+        "p90": 0.006588362653230558,
+        "p99": 0.015732305713579944,
+        "maximum": 0.026840304149993194
+      },
+      "strong_gradient_p90_rel_error": 0.008300967056467845,
+      "near_saturation_p90_rel_error": 0.006299502691797712,
+      "dormant_max_abs_error_over_ks_scale": 8.373684913704113e-12,
+      "fraction_corrected_better_on_informative_cases": 0.9620253164556962,
+      "plain_mfp_active_rel_error": {
+        "median": 0.005104800424362863,
+        "p90": 0.2856310927609249,
+        "p99": 0.575490838913015,
+        "maximum": 0.7558997680121701
+      },
+      "saturation_regime_counts": {"SS": 82, "SU": 96, "US": 68, "UU": 180},
+      "pass": true
+    }
+  },
+  "precommitted_rules_all_pass": true,
+  "decision": "QUALIFIED_FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_READY_FOR_CATALOG_COVERAGE_AND_TRANSIENT_QUALIFICATION",
+  "scope_limit": "Qualification applies only to the homogeneous hydraulic face representation inside the frozen classifier envelope for the two precommitted blocker materials. It does not qualify production hydraulic catalog coverage, heterogeneous interfaces, transient stepping, mass balance of a complete solver, root uptake, drainage, groundwater coupling, MODFLOW coupling, response tangents, fallback policy or production use.",
+  "status": "C6B_QUALIFIED"
+}
