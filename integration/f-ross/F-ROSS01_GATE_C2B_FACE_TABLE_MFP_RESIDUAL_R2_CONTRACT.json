@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "gate": "C2B_HENPR_SVG2006_N241_MFP_RESIDUAL_FACE_CHARACTERIZATION_R2",
@@ -12,6 +12,7 @@
   },
   "candidate": {
     "N": 241,
+    "face_length_cm": 10.0,
     "head_envelope_cm": [-10000.0, -1.0],
     "u_definition": "u = log10(-h)",
     "axis": "same piecewise-uniform seam-aligned R1 axis with exact nodes at h=-4 and -40 cm",
@@ -19,7 +20,8 @@
     "two_dimensional_storage": "float32 log residual r = log(M_exact / M_phi)",
     "one_dimensional_storage": "float64 Phi(h) at the same 241 axis nodes",
     "phi_definition": "Phi(h) = integral from -10000 cm to h of K(xi) dxi",
-    "reference_mobility": "M_phi(ha,hb) = [Phi(hb)-Phi(ha)]/(hb-ha), with equal/near-equal head limit K((ha+hb)/2)",
+    "reference_mobility": "M_phi(ha,hb) = [Phi(hb)-Phi(ha)]/[L*(hb-ha)], with equal/near-equal head limit K((ha+hb)/2)/L",
+    "dimensional_check": "Phi has units cm^2/day; dividing by L*(hb-ha) gives 1/day, matching q = D*M with D in cm. For constant K, M_phi = K/L exactly.",
     "runtime_flux": "q = [L + ha - hb] * M_phi_runtime * exp(bilinear_interpolated_log_residual)",
     "runtime_phi_lookup": "O(1) linear interpolation in the same piecewise u coordinate",
     "runtime_nonlinear_iterations": 0,
