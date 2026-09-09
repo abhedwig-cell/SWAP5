@@ -17,7 +17,7 @@ for spec in \
   src/legacy/b1_10_port/headcalc.f90:04c4877754b39161d5afa0f2496a015fd3334cc5 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90:544a1ca16fdeebdfce7f89d1ddf1825fa32fa654 \
   src/runtime/mod_fmr_parallel_worker_pool.f90:393e9bfbc4c078d259a5ec70aca78f50e54e8b35 \
-  tests/fmr/test_fmr20_parallel_v1_qualification.f90:b1e9ff7933d4da0957ecd39fe84a0ae3121a6bf9; do
+  tests/fmr/test_fmr20_parallel_v1_qualification.f90:bfebfde94b3931367d69d502a6fc7b1deb8f2ad6; do
   path="${spec%%:*}"
   blob="${spec##*:}"
   [[ "$(git rev-parse HEAD:"$path")" == "$blob" ]] || fail "source lock drift: $path"
@@ -106,7 +106,7 @@ for opt in 0 2; do
     FMR20_V1_WORKER_COUNT_INDEPENDENCE=PASS \
     FMR20_V1_A_B_A_REPEATABILITY=PASS \
     FMR20_V1_INPUT_ORDER_INDEPENDENCE=PASS \
-    FMR20_V1_CROSS_COLUMN_ISOLATION=PASS \
+    FMR20_V1_CROSS_COLUMN_REJECTION_ISOLATION=PASS \
     FMR20_V1_NEGATIVE_PROFILE_FAIL_CLOSED=PASS \
     FMR20_V1_SHARED_PARAMETER_INTEGRITY=PASS \
     'FMR20_PARALLEL_V1_QUALIFICATION_TEST PASS'; do

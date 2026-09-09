@@ -143,16 +143,21 @@ program test_fmr20_parallel_v1_qualification
        top_provider, t0, t1, batch_size, 4, results_perturbed, diag_perturbed, agg_perturbed, serialized_status, pool_status, &
        runtime_perturbed)
   call require(pool_status == FMR_PARALLEL_POOL_OK, 'perturbed 4-worker status')
-  call require(all_committed(results_perturbed), 'perturbed all committed')
-  call require(max_abs_residual(results_perturbed) <= hard_mass_gate, 'perturbed hard mass gate')
+  call require(runtime_perturbed%number_committed == ncol-1 .and. runtime_perturbed%number_rejected == 1, &
+       'perturbed local rejection cardinality')
+  call require(max_abs_residual(results_perturbed) <= hard_mass_gate, 'perturbed committed-column hard mass gate')
   do i = 1, ncol
     if (i == perturb_index) cycle
+    call require(results_perturbed(i)%committed, 'perturbed unaffected column committed')
     call require(column_result_identical(results_4(i), results_perturbed(i)), 'cross-column result isolation')
     call require(committed_state_identical(states_4(i), states_perturbed(i)), 'cross-column state isolation')
   end do
-  call require(.not. column_result_identical(results_4(perturb_index), results_perturbed(perturb_index)) .or. &
-       .not. committed_state_identical(states_4(perturb_index), states_perturbed(perturb_index)), 'perturbation observable')
-  write(*,'(A)') 'FMR20_V1_CROSS_COLUMN_ISOLATION=PASS'
+  call require(.not. results_perturbed(perturb_index)%committed, 'perturbed target locally rejected')
+  call require(committed_state_identical(states_perturbed(perturb_index), states_reject_reference(perturb_index)), &
+       'perturbed target rollback nonmutation')
+  call require(.not. column_result_identical(results_4(perturb_index), results_perturbed(perturb_index)), &
+       'perturbed target rejection observable')
+  write(*,'(A)') 'FMR20_V1_CROSS_COLUMN_REJECTION_ISOLATION=PASS'
 
   parameters_bad = parameters
   parameters_bad(1)%bottom_mode = 5
@@ -372,10 +377,10 @@ contains
     type(fmr_serialized_column_result_t), intent(in) :: left, right
     equal = left%column_id == right%column_id .and. left%dispatch_ordinal == right%dispatch_ordinal .and. &
       same_bits(left%requested_t0,right%requested_t0) .and. same_bits(left%requested_t1,right%requested_t1) .and. &
-      left%admission_assessed .eqv. right%admission_assessed .and. left%admitted .eqv. right%admitted .and. &
+      (left%admission_assessed .eqv. right%admission_assessed) .and. (left%admitted .eqv. right%admitted) .and. &
       trim(left%admission_status) == trim(right%admission_status) .and. left%kernel_status == right%kernel_status .and. &
-      left%commit_status == right%commit_status .and. left%completed .eqv. right%completed .and. &
-      left%committed .eqv. right%committed .and. left%solver_executed .eqv. right%solver_executed .and. &
+      left%commit_status == right%commit_status .and. (left%completed .eqv. right%completed) .and. &
+      (left%committed .eqv. right%committed) .and. (left%solver_executed .eqv. right%solver_executed) .and. &
       trim(left%solver_route) == trim(right%solver_route) .and. left%solver_iterations == right%solver_iterations .and. &
       left%accepted_substeps == right%accepted_substeps .and. &
       left%solver_nonlinear_iterations == right%solver_nonlinear_iterations .and. &
@@ -387,12 +392,12 @@ contains
       left%solver_alternative_solver_calls == right%solver_alternative_solver_calls .and. &
       left%initial_revision == right%initial_revision .and. left%final_revision == right%final_revision .and. &
       same_bits(left%final_committed_time,right%final_committed_time) .and. &
-      left%final_committed_time_bound .eqv. right%final_committed_time_bound .and. mass_identical(left%mass,right%mass)
+      (left%final_committed_time_bound .eqv. right%final_committed_time_bound) .and. mass_identical(left%mass,right%mass)
   end function column_result_identical
 
   logical function mass_identical(left, right) result(equal)
     type(canonical_mass_accounting_t), intent(in) :: left, right
-    equal = left%complete .eqv. right%complete .and. left%missing_contribution_mask == right%missing_contribution_mask .and. &
+    equal = (left%complete .eqv. right%complete) .and. left%missing_contribution_mask == right%missing_contribution_mask .and. &
       left%origin_lineage_id == right%origin_lineage_id .and. left%origin_revision == right%origin_revision .and. &
       left%accepted_transaction_count == right%accepted_transaction_count .and. &
       same_bits(left%interval_t0,right%interval_t0) .and. same_bits(left%interval_t1,right%interval_t1) .and. &
@@ -424,7 +429,7 @@ contains
       if (j <= 0 .or. .not. diagnostic_semantically_identical(left(i), right(j))) then
         equal = .false.; return
       end if
-      if (allocated(left(i)%worker_assignments) .neqv. allocated(right(j)%worker_assignments)) then
+      if ((allocated(left(i)%worker_assignments) .neqv. allocated(right(j)%worker_assignments))) then
         equal = .false.; return
       end if
       if (allocated(left(i)%worker_assignments)) then
@@ -456,7 +461,7 @@ contains
     equal = left%column_id == right%column_id .and. left%template_id == right%template_id .and. &
       left%backend == right%backend .and. left%execution_class == right%execution_class .and. &
       left%committed_revision == right%committed_revision .and. same_bits(left%committed_time,right%committed_time) .and. &
-      left%committed_time_bound .eqv. right%committed_time_bound .and. &
+      (left%committed_time_bound .eqv. right%committed_time_bound) .and. &
       left%checkpoint_captures == right%checkpoint_captures .and. left%checkpoint_replays == right%checkpoint_replays .and. &
       left%runtime_attempts == right%runtime_attempts .and. left%attempts == right%attempts .and. &
       left%retries == right%retries .and. left%accepted == right%accepted .and. left%rejected == right%rejected .and. &
@@ -521,7 +526,7 @@ contains
     if (.not. equal) return
     call left%current_time(lt,lb)
     call right%current_time(rt,rb)
-    equal = lb .eqv. rb
+    equal = (lb .eqv. rb)
     if (equal .and. lb) equal = same_bits(lt,rt)
   end function committed_state_identical
 
@@ -558,11 +563,11 @@ contains
           left(i)%bottom_mode /= right(i)%bottom_mode .or. left(i)%swkimpl /= right(i)%swkimpl .or. &
           left(i)%swkmean /= right(i)%swkmean .or. left(i)%swsophy /= right(i)%swsophy .or. &
           left(i)%max_iterations /= right(i)%max_iterations .or. left(i)%max_backtracking /= right(i)%max_backtracking .or. &
-          left(i)%root_extraction_active .neqv. right(i)%root_extraction_active .or. &
-          left(i)%macropore_active .neqv. right(i)%macropore_active .or. left(i)%snow_active .neqv. right(i)%snow_active .or. &
-          left(i)%hysteresis_active .neqv. right(i)%hysteresis_active .or. &
-          left(i)%tabulated_hydraulics_active .neqv. right(i)%tabulated_hydraulics_active .or. &
-          left(i)%elasticity_active .neqv. right(i)%elasticity_active .or. left(i)%frost_active .neqv. right(i)%frost_active) then
+          (left(i)%root_extraction_active .neqv. right(i)%root_extraction_active) .or. &
+          (left(i)%macropore_active .neqv. right(i)%macropore_active) .or. (left(i)%snow_active .neqv. right(i)%snow_active) .or. &
+          (left(i)%hysteresis_active .neqv. right(i)%hysteresis_active) .or. &
+          (left(i)%tabulated_hydraulics_active .neqv. right(i)%tabulated_hydraulics_active) .or. &
+          (left(i)%elasticity_active .neqv. right(i)%elasticity_active) .or. (left(i)%frost_active .neqv. right(i)%frost_active)) then
         equal = .false.; return
       end if
       if (.not. same_bits(left(i)%min_step_duration,right(i)%min_step_duration) .or. &
@@ -579,7 +584,7 @@ contains
           .not. real_matrix_bits_identical(left(i)%cofgen,right(i)%cofgen)) then
         equal = .false.; return
       end if
-      if (allocated(left(i)%snow) .neqv. allocated(right(i)%snow)) then
+      if ((allocated(left(i)%snow) .neqv. allocated(right(i)%snow))) then
         equal = .false.; return
       end if
     end do
