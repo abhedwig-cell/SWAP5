@@ -1,17 +1,28 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI21",
   "title": "Nonstationary Prescribed-Head Temporal Estimator and Same-Endpoint Refinement Policy",
   "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
-  "status": "IN_PROGRESS_CHARACTERIZATION_HARNESS_IMPLEMENTATION",
-  "phase": "SOURCE_BOUND_CANDIDATE_MATRIX_FROZEN_BEFORE_NUMERICAL_EXECUTION",
+  "status": "CLOSED_BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND",
+  "phase": "SAME_ENDPOINT_CHARACTERIZATION_COMPLETE_COST_GATE_FAIL_CLOSED",
   "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
   "contract": "integration/f-si/F-SI21_WORK_UNIT_CONTRACT.json",
   "seam_audit": "integration/f-si/F-SI21_SEAM_AUDIT.json",
   "seam_audit_commit": "591e7843594f5fe898307284249acf2a14d449db",
   "candidate_matrix": "integration/f-si/F-SI21_CANDIDATE_MATRIX.json",
   "candidate_matrix_commit": "c1fed78164b2965812bd2102b3b09afb4287a696",
+  "characterization_evidence": "integration/f-si/F-SI21_CHARACTERIZATION_EVIDENCE.json",
+  "characterization_evidence_commit": "540718f170d35a27fb8adbf81785ce18f873e20a",
+  "characterization_evidence_blob": "a86f3bccfbe05fc7211b327421cd9b018f4ab940",
+  "characterization_decision": "integration/f-si/F-SI21_CHARACTERIZATION_DECISION.json",
+  "characterization_decision_commit": "a43dcba888c4626f34cda5cf4f39748786c26d29",
+  "characterization_workflow": {
+    "source_head": "3435f242b769cbfc71d3b28ab65ebd91eed114c8",
+    "run_id": 34311266920,
+    "job_id": 102338245587,
+    "conclusion": "success"
+  },
   "trigger": {
     "f_si20": "C_SEPARATE_OWNER_RUNTIME_POLICY_REQUIRED_FOR_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE",
     "f_vq28": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED"
@@ -22,29 +33,61 @@
     "existing_retry_horizon_shortening_is_not_equivalent_to_fixed_horizon_refinement": true,
     "f_ci14_endpoint_metrics_and_scalarization_remain_binding": true,
     "test_only_same_endpoint_nested_refinement_is_feasible_without_production_source_change": true,
+    "characterization_trajectories": 72,
+    "characterization_rows": 432,
+    "all_N1_N2_N4_N8_N16_N32_trajectories_solver_successful": true,
+    "solver_failure_rows": 0,
+    "mass_failure_rows": 0,
+    "max_mass_residual_on_success": 6.776263578034403e-21,
+    "repeat_deterministic": true,
+    "o0_o2_identity": true,
+    "c1_shape_pass_72_of_72": true,
+    "c2_base_safe_72_of_72": true,
+    "persistent_decay_by_N32_72_of_72": true,
+    "first_persistent_fine_N_is_8_for_72_of_72": true,
+    "head_and_theta_defects_nonincreasing_over_all_observed_refinement_transitions": true,
+    "c1_fixed_cost_physical_solves": 7,
+    "persistent_decay_through_N8_physical_solves": 15,
+    "reference_through_N32_physical_solves": 63,
+    "c2_bounded_numeric_trigger_selected": false,
+    "specific_bounded_cost_estimator_selected": false,
     "production_same_endpoint_transaction_semantic_change_requires_f_kt_owner": true,
-    "f_vq_independent_numeric_qualification_still_required": true,
-    "n256_is_not_a_scientific_oracle_merely_because_universally_reachable": true,
-    "specific_estimator_selected": false
+    "f_vq_independent_numeric_qualification_required_only_after_a_specific_candidate_exists": true,
+    "n256_or_any_finite_refinement_level_is_not_a_scientific_oracle_by_reachability_alone": true
+  },
+  "decision_basis": {
+    "scientific_shape": "SUPPORTED_FOR_FROZEN_CHARACTERIZATION_MATRIX",
+    "reference_mode_value": "SUPPORTED",
+    "mandatory_normal_path_c1": "REJECTED_COST_7_FULL_SOLVE_EQUIVALENTS",
+    "mandatory_persistent_decay_guard": "REJECTED_COST_15_FULL_SOLVE_EQUIVALENTS_TO_FINE_N8",
+    "staged_c2": "INCOMPLETE_NO_INDEPENDENTLY_QUALIFIED_LIMIT_OR_BOUNDED_ESCALATION_TRIGGER",
+    "production_admission": "NOT_READY",
+    "exit_state": "BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND"
   },
   "holds": {
-    "production_source_change": "NOT_ALLOWED",
+    "production_source_change": "NOT_ALLOWED_AND_NOT_PERFORMED",
     "production_temporal_metric": "F_CI14_CONTRACT_BOUND_NO_NEW_NUMERIC_PROFILE_SELECTED",
     "production_temporal_tolerance": "NOT_SELECTED",
+    "production_same_endpoint_refinement_lifecycle": "NOT_ADMITTED",
     "f_gc02_release": "NOT_ALLOWED",
     "f_pe_release": "NOT_ALLOWED",
-    "f_kt_contract_change": "OWNER_REQUIRED_BEFORE_ANY_PRODUCTION_ADOPTION",
-    "finite_reference_oracle": "UNRESOLVED_FOR_ALL_SHORT_HORIZON_CASES"
+    "f_kt_contract_change": "DO_NOT_START_UNTIL_SPECIFIC_BOUNDED_COST_LIFECYCLE_EXISTS",
+    "f_vq_followup": "DO_NOT_START_FOR_F_SI21_WITHOUT_SPECIFIC_CANDIDATE",
+    "mass_conservation": "HARD_UNCHANGED"
   },
   "state": {
     "reserved": true,
     "persisted": true,
     "source_seam_audit_complete": true,
     "candidate_matrix_frozen": true,
-    "characterization_harness_implemented": false,
-    "tested": false,
+    "characterization_harness_implemented": true,
+    "characterization_evidence_persisted": true,
+    "tested": true,
+    "decision_persisted": true,
     "independently_qualified": false,
-    "production_implemented": false
+    "production_implemented": false,
+    "closed": true
   },
-  "next_action": "Implement the frozen test-only 72-trajectory same-endpoint characterization harness for N=1,2,4,8,16,32. Reuse source-locked F-VQ28 fixture/solver controls where possible. Emit component defects, decay ratios, solver cost and hard mass diagnostics. Do not modify production source or choose a temporal tolerance."
+  "successor_requirement": "Open a separate F-SI owner workunit only for a genuinely bounded-cost Richards temporal estimator. Prefer embedded/Jacobian-reusing or state-aware model-owned error information that fits the normal predictor-corrector work budget. Retain F-SI21 N8/N32 same-endpoint refinement as reference evidence; do not derive a production tolerance from this matrix. F-KT ownership is required only when a concrete production transaction lifecycle is ready to implement, followed by independent F-VQ qualification.",
+  "next_action": "Do not modify production or release F-GC02/F-PE from F-SI21. Identify or design a bounded-cost model-owned temporal estimator in a separate owner workunit and qualify it against the persisted same-endpoint reference evidence."
 }
