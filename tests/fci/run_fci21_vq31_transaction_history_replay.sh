@@ -30,6 +30,7 @@ git diff --quiet "$SOURCE_COMMIT" HEAD -- \
   src/transaction/mod_fkt_temporal_indicator_history.f90 \
   src/runtime/mod_fmr_runtime_core.f90 \
   src/runtime/mod_fmr_serialized_reference_backend.f90 \
+  src/runtime/mod_fmr_accepted_commit_receipt.f90 \
   src/runtime/mod_canonical_contracts.f90 \
   src/runtime/mod_canonical_interval_runtime.f90 \
   src/runtime/mod_fmr_checkpoint_orchestrator.f90 \
@@ -40,9 +41,8 @@ git diff --quiet "$SOURCE_COMMIT" HEAD -- \
 echo "FCI21_VQ31_POSTIMAGE_LOCK=PASS:MODE=$MODE"
 
 # Freeze the independent VQ31 qualification authority by blob, then overlay only
-# its qualification artifacts into this CI checkout. No authority production source
-# is copied. The local overlay commit exists only so the original source-locked
-# VQ31 runners can use HEAD:path blob checks unchanged.
+# qualification/test artifacts into this CI checkout. Production source always
+# comes from the current F-CI21 postimage.
 git fetch --quiet --no-tags origin "$AUTH_BRANCH:$AUTH_REF"
 
 check_auth() {
@@ -66,6 +66,12 @@ check_auth tests/fkt/test_fkt10_temporal_history_transaction.f90 f061280b4e4f229
 check_auth tests/fkt/test_fkt10_real_richards_history_binding.f90 7656bcd7f129cc8d8456a9ce97685e0b168aef22
 check_auth tests/fkt/test_fkt10_transactional_fvq30_replay.f90 c42765b89b5dd9140aa492ab56abbbf2077be50e
 check_auth tests/fmr/test_fmr06_snow_multiswap.f90 ed4b742b76e97ff0ad27b386850c1d093e4f03d1
+check_auth tests/fsi/run_fsi25_reference_indicator_production_seam.sh fda96af64ee679d11011000a00e15c923153ff67
+check_auth tests/fsi/run_fsi25_temporal_indicator_contract.sh 20518af4e7810a2f601c95f7f0848bd9e0bb47f5
+check_auth tests/fsi/test_fsi25_temporal_indicator_contract.f90 1d34bc703bf58057a023afb959985a6c770a48fe
+check_auth tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90 ecacaf1c004c7118f1ada388c672166d9ad19345
+check_auth integration/f-si/F-SI25_WORK_UNIT_CONTRACT.json 22ad2c9168af6db527e1a3da5488d8ec12305f1c
+check_auth integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json cac160dbbdbb89b172d2afa055994d918abb0bbc
 
 echo "FCI21_VQ31_AUTHORITY_BLOB_LOCK=PASS:MODE=$MODE"
 
@@ -103,6 +109,8 @@ OVERLAY=(
   integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json
   integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json
   integration/f-vq/F-VQ30_HELD_OUT_EVIDENCE.json
+  integration/f-si/F-SI25_WORK_UNIT_CONTRACT.json
+  integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json
   tests/fvq/run_fvq31_disjoint_transaction_composition.sh
   tests/fvq/test_fvq30_exact_linear_regression.py
   tests/fkt/run_fkt10_temporal_history_transaction.sh
@@ -114,22 +122,76 @@ OVERLAY=(
   tests/fkt/test_fkt10_real_richards_history_binding.f90
   tests/fkt/test_fkt10_transactional_fvq30_replay.f90
   tests/fmr/test_fmr06_snow_multiswap.f90
+  tests/fsi/run_fsi25_reference_indicator_production_seam.sh
+  tests/fsi/run_fsi25_temporal_indicator_contract.sh
+  tests/fsi/test_fsi25_temporal_indicator_contract.f90
+  tests/fsi/test_fsi24_gate_c_nonlinear_b110.f90
 )
 for path in "${OVERLAY[@]}"; do
   mkdir -p "$(dirname "$path")"
   git show "$AUTH_REF:$path" > "$path"
 done
-chmod +x tests/fvq/run_fvq31_disjoint_transaction_composition.sh tests/fkt/run_fkt10_*.sh
+chmod +x tests/fvq/run_fvq31_disjoint_transaction_composition.sh tests/fkt/run_fkt10_*.sh tests/fsi/run_fsi25_*.sh
+
+# VQ31 predates the later qualified KT11 budget/certificate materialization and
+# the MR18 accepted-commit receipt dependency. Adapt only the replay harness:
+# - replace the obsolete blanket 'certificate can never be available' source
+#   assertion by an explicit budget-gated source assertion;
+# - add the current receipt module to historical MultiSWAP compile lists.
+# No production source, fixture, matrix, formula, tolerance or numerical criterion
+# is changed.
+python3 - <<'PY'
+from pathlib import Path
+
+def replace_one(path, old, new):
+    p=Path(path); s=p.read_text()
+    if s.count(old) != 1:
+        raise SystemExit(f'FCI21_VQ31_HARNESS_ADAPT_FAIL:{path}:expected exactly one token')
+    p.write_text(s.replace(old,new,1))
+
+budget_guard = """service_start=backend.index('subroutine evaluate_temporal_history_service')
+service_end=backend.index('end subroutine evaluate_temporal_history_service', service_start)
+service=backend[service_start:service_end]
+assert 'self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available' in backend
+assert 'self%temporal_indicator_budget_valid = self%temporal_indicator_budget > 0.0_real64' in backend
+assert 'else if (.not. self%temporal_indicator_budget_supplied) then' in service
+assert 'else if (.not. self%temporal_indicator_budget_valid) then' in service
+assert 'normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget' in service
+assert 'outcome%temporal_certificate_available = .true.' in service
+assert service.index('else if (.not. self%temporal_indicator_budget_supplied) then') < service.index('outcome%temporal_certificate_available = .true.')
+assert service.index('else if (.not. self%temporal_indicator_budget_valid) then') < service.index('outcome%temporal_certificate_available = .true.')
+assert 'outcome%temporal_indicator = indicator_result%head_inf_bound' not in backend"""
+
+for path in (
+    'tests/fkt/run_fkt10_real_richards_binding_compile.sh',
+    'tests/fkt/run_fkt10_real_richards_history_binding.sh',
+    'tests/fkt/run_fkt10_transactional_fvq30_replay.sh',
+    'tests/fvq/run_fvq31_disjoint_transaction_composition.sh',
+):
+    replace_one(path, "assert 'outcome%temporal_certificate_available = .true.' not in backend", budget_guard)
+
+for path in (
+    'tests/fkt/run_fkt10_real_richards_binding_compile.sh',
+    'tests/fkt/run_fkt10_fmr06_snow_compat_regression.sh',
+):
+    replace_one(path,
+        '  src/runtime/mod_fmr_serialized_reference_backend.f90\n  src/runtime/mod_fmr_serialized_multiswap_runtime.f90',
+        '  src/runtime/mod_fmr_serialized_reference_backend.f90\n  src/runtime/mod_fmr_accepted_commit_receipt.f90\n  src/runtime/mod_fmr_serialized_multiswap_runtime.f90')
+
+print('FCI21_VQ31_POST_KT11_BUDGET_GUARD_ADAPTATION=PASS_TEST_ONLY')
+print('FCI21_VQ31_MR18_RECEIPT_COMPILE_ADAPTATION=PASS_TEST_ONLY')
+PY
 
 git config user.name 'F-CI21 qualification overlay'
 git config user.email 'f-ci21-overlay@invalid.local'
 git add "${OVERLAY[@]}"
-git commit --quiet --no-gpg-sign -m 'ci-only: overlay frozen VQ31 qualification authority'
+git commit --quiet --no-gpg-sign -m 'ci-only: overlay frozen VQ31 authority with postimage harness adaptation'
 
-# The overlay must remain test/evidence-only.
+# The overlay and replay adaptations must remain test/evidence-only.
 git diff --quiet "$SOURCE_COMMIT" HEAD -- src || fail 'qualification overlay changed src'
 [[ "$(git rev-parse HEAD:integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json)" == 6695f9be69c4485e24ebcba802927ce90af8beac ]] || fail 'overlay plan blob mismatch'
 [[ "$(git rev-parse HEAD:tests/fkt/test_fkt10_transactional_fvq30_replay.f90)" == c42765b89b5dd9140aa492ab56abbbf2077be50e ]] || fail 'overlay transaction driver mismatch'
+[[ "$(git rev-parse HEAD:tests/fsi/test_fsi25_reference_indicator_production_seam.f90)" == c125c6a2ab706920b7e2a5c6f1c855520b192223 ]] || fail 'current SI25 production driver drift'
 echo "FCI21_VQ31_TEST_ONLY_OVERLAY=PASS:MODE=$MODE"
 
 case "$MODE" in
