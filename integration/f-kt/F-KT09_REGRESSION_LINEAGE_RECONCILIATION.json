@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT09",
+  "topic": "REGRESSION_LINEAGE_RECONCILIATION",
+  "historical_replay_observation": {
+    "workflow_run": 34305679450,
+    "job": 102321761959,
+    "head": "802e2fbbcb45a1b17496cc941dcee54dfe1d6db0",
+    "conclusion": "failure",
+    "failure_stage": "F-KT01 static contract gate before F-KT09 certificate tests",
+    "missing_fragments": [
+      "class(transaction_state_t), allocatable, intent(in) :: committed_state",
+      "call committed_state%clone(working)"
+    ]
+  },
+  "source_reconciliation": {
+    "current_kernel_blob_before_FKT09_kernel_diagnostic_extension": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "current_kernel_committed_carrier": "kernel_committed_state_t",
+    "current_advance_argument": "type(kernel_committed_state_t), intent(in) :: committed_state",
+    "current_physical_trial_origin_without_checkpoint": "call committed_state%physical_state%clone(working)",
+    "current_optional_reusable_checkpoint": true,
+    "fkt01_expected_fragments_are_historical": true,
+    "fkt09_caused_these_signature_differences": false
+  },
+  "regression_policy": {
+    "modify_FKT01_historical_gate": false,
+    "weaken_FKT01_historical_gate": false,
+    "treat_FKT01_failure_as_FKT09_semantic_failure": false,
+    "selected_current_replay": "tests/fkt/run_fkt05_gate.sh",
+    "reason": "F-KT05 preserves the complete F-KT04 boundary and qualifies reusable checkpoint semantics matching the current guarded committed-state lineage."
+  },
+  "qualification_effect": "F-KT09 remains unqualified until the current F-KT05 lineage replay and all F-KT09-specific gates pass on one exact head."
+}
