@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR19",
+  "branch": "work/f-mr19-restricted-multiswap-process-restart",
+  "status": "IMPLEMENTED_PERSISTED_EXECUTABLE_QUALIFICATION_PENDING",
+  "decision": "NOT_YET_QUALIFIED",
+  "implementation_checkpoint": {
+    "first_source_commit": "a618e254f2ec30cf870769f64a1b8c7f1554c121",
+    "source_path": "src/runtime/mod_fmr_committed_restart.f90",
+    "kernel_source_changed": false,
+    "filesystem_or_format_added": false,
+    "parallel_execution_changed": false
+  },
+  "realized": [
+    "adapter-facing decoded per-column committed restart record",
+    "column-id-based restore lookup rather than array-position binding",
+    "exact template/layout identity validation",
+    "parameter reference validation without parameter payload persistence",
+    "trusted F-KT13 reconstruction routed through F-KT12 restore",
+    "temporary-registry reconstruction before atomic publication",
+    "fresh-target-only restore"
+  ],
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "open": [
+    "compile candidate under O0 and O2",
+    "execute real-physics split-run matrix 1,2,8,17,32",
+    "prove reverse record and runtime ordering independence",
+    "prove wrong-template/layout and wrong-parameter atomic rejection",
+    "prove cross-column contamination absence",
+    "prove exact continuous-vs-restarted mass and endpoint identity",
+    "prove deterministic replay",
+    "record source-scope and no-scratch/no-parameter-payload structural gates"
+  ],
+  "mq25_created": false,
+  "qualification_exit": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ"
+}
