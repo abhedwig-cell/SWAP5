@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "evidence": "GATE_A_ATTEMPT2_FLOOR_AWARE_REFERENCE_FAILURE",
+  "tested_head": "b25f4beb4b535464f92768b69218e4f6ef8ed992",
+  "workflow_run": 34317993789,
+  "workflow_job": 102358186936,
+  "conclusion": "failure",
+  "source_controls": {
+    "source_lock": "PASS",
+    "test_only_reference_tridag": "PASS",
+    "reference_tridag_operation_order": "SWAP_4_3_1_THOMAS"
+  },
+  "failure_location": {
+    "calibration_case": 1,
+    "initial_head_cm": -25.0,
+    "bottom_head_jump_cm": -0.05,
+    "horizon_day": 0.125,
+    "optimization": "O0",
+    "common_ladder_completed_through_N": 512,
+    "common_ladder_maximum_mass_residual": 0.0,
+    "common_ladder_maximum_solver_residual_at_N512": 8.785194793858864e-13,
+    "floor_protocol_decision": "EXTENDED_REFERENCE_REQUIRED",
+    "extended_reference_failed_before_endpoint_output_N": 1024
+  },
+  "qualification_effect": {
+    "floor_aware_protocol_executed": true,
+    "case1_floor_resolved": false,
+    "q_cap_derived": false,
+    "Nmin_derived": false,
+    "bound_multiplier_derived": false,
+    "held_out_executed": false,
+    "scientific_tolerance_selected": false,
+    "production_source_changed": false
+  },
+  "interpretation": "The predeclared floor-aware protocol did not rescue calibration case 1. The common N<=512 ladder classified the case as not floor-resolved, so the N=1024/2048 extension was mandatory and correctly failed closed when the N=1024 trajectory did not converge. This run therefore cannot support a finite-reference error-bound calibration.",
+  "diagnostic_gap": "The harness emitted the exact d_128, d_256 and machine-floor values only after a successful extended run, so the failure log proves the EXTENDED_REQUIRED decision but does not expose those three values. A trace-only diagnostic repeat may expose them without changing the protocol or numerical calculation.",
+  "holds": {
+    "do_not_relax_solver_tolerance": true,
+    "do_not_relax_mass_tolerance": true,
+    "do_not_change_calibration_matrix": true,
+    "do_not_change_held_out_matrix": true,
+    "do_not_select_q_cap_or_Nmin": true,
+    "do_not_treat_N512_as_reference_for_case1_without_frozen_floor_condition": true
+  }
+}
