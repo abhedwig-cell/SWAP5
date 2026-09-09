@@ -1,0 +1,76 @@
+name: F-ROSS01 Gate E3E-R2R2-R1 Exact Physical Upper Bracket
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r1_endpoint_limit_oracle_repair.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r1_endpoint_limit_oracle_repair_fastscan.py'
+      - 'experiments/ross/run_ross01_gate_e3e_5cm_surface_boundary_face.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_fresh_5cm_reference_characterization.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_r1_exact_physical_upper_bracket.py'
+      - '.github/workflows/ross01-gate-e3e-r2r2-r1-exact-physical-upper-bracket.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, O14]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Execute frozen exact-upper remediation
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3e-r2r2-r1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r2r2_r1_exact_physical_upper_bracket.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R2R2_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R2R2_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen remediation semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r2r2-r1-{m}/F-ROSS01_GATE_E3E_R2R2_R1_{m}_RESULT.json'
+          r=json.load(open(p))
+          f=r['failed_witness']; c=r['passing_control']
+          assert r['gate']=='E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_target']=='REFERENCE_ORACLE_UPPER_BRACKET_ONLY'
+          assert f['oracle_a_old_safety_residual_cm'] > 0
+          assert f['oracle_b_old_safety_residual_cm'] > 0
+          assert f['oracle_a_exact_upper_residual_cm'] <= 0
+          assert f['oracle_b_exact_upper_residual_cm'] <= 0
+          assert f['oracle_pair_q_difference_over_ksat'] <= 1e-9
+          assert f['candidate_hybrid_metric'] <= 0.01
+          assert f['candidate_abs_error_over_ksatfit'] <= 0.0005
+          assert f['candidate_wrong_sign'] == 0
+          assert f['pass'] is True
+          assert c['pass'] is True
+          assert r['pass'] is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2r2-r1-${{ matrix.material }}
+          path: ross01-gate-e3e-r2r2-r1-${{ matrix.material }}/
