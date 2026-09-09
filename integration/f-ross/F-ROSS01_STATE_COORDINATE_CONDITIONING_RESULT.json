@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING",
+  "contract": "F-ROSS01_STATE_COORDINATE_CONDITIONING_CONTRACT.json",
+  "candidate_formula": "u=(log(expm1(-log(S)/m))/n-log(alpha))/log(10)",
+  "workflow": {
+    "run": 34338717269,
+    "head": "8c487da8be0795c6bdf517f1b0940230846d3471",
+    "conclusion": "success",
+    "artifact": 10098793645,
+    "artifact_digest": "sha256:3fad990c6acb1e03f553e7bbe383db26865aa7897783dc96d5fdf028470a131c"
+  },
+  "aggregate": {
+    "material_count": 36,
+    "pass_count": 36,
+    "fail_count": 0,
+    "max_abs_u_error_vs_80_digit_reference": 2.220446049250313e-15,
+    "worst_reference_material": "O13",
+    "max_abs_u_roundtrip_error_from_log_head_origin": 5.745959263947498e-13,
+    "worst_roundtrip_material": "O05",
+    "nan_or_inf_failures": 0,
+    "coordinate_domain_failures": 0,
+    "monotonicity_failures": 0,
+    "endpoint_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0
+  },
+  "thresholds": {
+    "max_abs_u_error_vs_80_digit_reference": 2e-12,
+    "max_abs_u_roundtrip_error_from_log_head_origin": 2e-12
+  },
+  "pass": true,
+  "decision": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING_QUALIFIED_FOR_C1R",
+  "production_implementation": false,
+  "interpretation": "The cancellation-resistant direct S-to-u mapping is qualified across the frozen 36-material unimodal MvG KSATFIT catalog. Exact material state endpoints map exactly to u=0 and u=4; representable interior states remain finite and within the closed coordinate domain without any head-domain epsilon. This removes the C1R endpoint-conditioning blocker without widening the physical state or head envelope.",
+  "next_use": "C1R characterization may use S->u directly and reconstruct h=-10^u for the driving-head term, while retaining the same face law q=(L+h_above-h_below)*M.",
+  "scope_guard": "Numerical state-to-coordinate mapping only. No claim for table interpolation accuracy, KSATEXM, other hydraulic laws, transient timesteps, groundwater coupling, MultiSWAP or FullRichards equivalence."
+}
