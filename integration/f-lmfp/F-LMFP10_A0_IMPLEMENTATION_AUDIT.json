@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP10",
+  "gate": "A0_MATERIAL_SCALE_COORDINATE_SCREEN",
+  "qualification": false,
+  "purpose": "Pre-result audit that the implemented A0 screen and aggregator execute the already frozen nomination design without post-result retuning.",
+  "nomination_precommit": {
+    "path": "integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json",
+    "commit": "6149373b01eb7a81af0f3abbbb233d97430f372e",
+    "blob": "8d1ad21933b650f971945e8ab4209a3d81d0d759"
+  },
+  "implementation": {
+    "material_screen_blob": "28014a8d44a7afe1c0da158fdaa60a6a6d42d0d1",
+    "aggregate_blob": "e51a622992edaf1b539da9161d255cdf6542b660",
+    "workflow_blob": "db53b0b7766b85f2e7dacfdf66ba8f56cb7e9813",
+    "execution_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "execution_run": 34329612925
+  },
+  "audit": {
+    "candidate_families_exactly_A_and_B": "PASS",
+    "conductivity_coordinate_absent": "PASS",
+    "panel_15_materials_exact": "PASS",
+    "face_lengths_10_and_20_cm_exact": "PASS",
+    "class_count_30_enforced_by_aggregator": "PASS",
+    "49_endpoint_axis_nodes_required": "PASS",
+    "tail_group_exact": "PASS",
+    "geometry_group_exact": "PASS",
+    "passing_control_group_exact": "PASS",
+    "owner_overlap_group_diagnostic_only": "PASS",
+    "tail_score_rule": "PASS_MEDIAN_CLASS_RATIO_USING_EXISTING_LMFP_PERCENTILE_CONVENTION",
+    "geometry_score_rule": "PASS_MAX_OF_PRECOMMITTED_TWO_CLASS_RATIOS",
+    "control_score_rule": "PASS_MEDIAN_CLASS_RATIO",
+    "row_level_better_fraction_rule": "PASS",
+    "global_identity_fail_closed_runtime_oracle_sign_requirements": "PASS",
+    "pareto_nomination_rule": "PASS",
+    "ambiguous_tradeoff_has_no_invented_weighted_score": "PASS",
+    "no_A0_absolute_C7a_threshold_used_for_nomination": "PASS",
+    "fresh_holdout_not_used_in_A0": "PASS",
+    "production_admission_absent": "PASS",
+    "transient_admission_absent": "PASS"
+  },
+  "execution_state_when_audited": {
+    "run_status": "IN_PROGRESS_OR_QUEUED_MATRIX",
+    "material_jobs": 15,
+    "aggregate_waits_for_all_material_jobs": true,
+    "aggregate_result_available": false,
+    "nomination_made": false
+  },
+  "decision": "A0_IMPLEMENTATION_CONFORMS_TO_FROZEN_PRECOMMIT_EXECUTION_RESULTS_STILL_REQUIRED",
+  "hard_hold": "Do not nominate, retune, add a third coordinate family, design A1, or design the qualification holdout from A0 results until the aggregate A0 result exists and is persisted."
+}
