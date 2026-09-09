@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI25",
+  "title": "Production Accepted-State Operator & Bounded Stiffness-Aware Indicator Seam",
+  "branch": "work/f-si25-accepted-state-operator-indicator-seam",
+  "base_commit": "2590820b228ca5fd3ac31c12728310a10171a144",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED_BEFORE_IMPLEMENTATION",
+  "scope": "smallest production solver-owned service that materializes the qualified F-SI24/F-VQ30 bounded stiffness-aware temporal indicator without exposing HeadCalc internals and without admitting temporal acceptance policy",
+  "upstream_authority": {
+    "F_SI24_owner_head": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+    "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+    "F_VQ30_closeout_commit": "41cc1b653f16913326723af58c2fe1542e5a0f53",
+    "F_VQ30_handoff_commit": "2590820b228ca5fd3ac31c12728310a10171a144",
+    "F_VQ30_decision": "QUALIFIED_HELD_OUT_TRANSFER_OF_BOUNDED_STIFFNESS_AWARE_RICHARDS_INDICATOR_READY_FOR_PRODUCTION_OPERATOR_SEAM"
+  },
+  "fixed_candidate_semantics": {
+    "principal_advance_changed": false,
+    "e_raw": "0.5*dt*(hdot_np1-hdot_n)",
+    "M_diagonal": "C_at_candidate_state_i*dz_i",
+    "defect_equation": "J_accepted_policy*delta=(M/dt)*e_raw",
+    "B_M": "min(sqrt(sum(M_i*e_raw_i^2)),2*sqrt(sum(M_i*delta_i^2)))",
+    "B_inf": "B_M/sqrt(min_i M_i)",
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false,
+    "scientific_tolerance_selected": false
+  },
+  "public_contract_direction": {
+    "do_not_expose_operator_arrays": true,
+    "service": "soil-water-solver-owned temporal-indicator evaluation after a converged candidate solve",
+    "input_history": "previous accepted right-sided pressure-head derivative is supplied explicitly by the transaction/runtime owner; F-SI25 does not persist it",
+    "current_derivative": "computed from candidate pressure head, base pressure head and generic step_duration",
+    "output": "availability/status, B_inf and supporting bounded diagnostics plus current right-sided derivative for prospective downstream commit",
+    "unavailable_default": "generic soil-water solvers may return not-available without changing solve semantics",
+    "reference_solver_override": "reference Richards solver evaluates its own accepted-state operator internally and performs at most one additional tridiagonal defect solve"
+  },
+  "qualified_initial_implementation_envelope": {
+    "solver": "reference Richards legacy binding",
+    "constitutive_provider_required": true,
+    "top_mode": "explicit flux",
+    "bottom_mode": 5,
+    "macropore_active": false,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "operator_policy_semantics": "for SwKimpl=0 preserve current HeadCalc policy: Darcy conductivities/means are frozen from the base-state time level while storage capacity is evaluated at the converged candidate state; bottom prescribed-head contribution is included",
+    "unsupported_routes": "fail closed as indicator unavailable; principal solve remains unchanged"
+  },
+  "state_and_scratch_ownership": {
+    "persistent_per_column_state_added_by_F_SI25": false,
+    "future_optional_persistent_state_owner": "F-KT/runtime transaction layer after separate composition qualification",
+    "future_optional_persistent_state": "previous accepted right-sided derivative plus continuity-valid metadata only when indicator/policy is active",
+    "worker_scratch": [
+      "base-state conductivity vector",
+      "candidate-state capacity vector",
+      "operator lower/main/upper coefficients",
+      "raw temporal defect vector",
+      "defect RHS",
+      "defect solution",
+      "tridiagonal scratch",
+      "norm reductions"
+    ],
+    "committed_state_mutation_during_indicator_evaluation": false
+  },
+  "hard_guards": [
+    "No HeadCalc private array is exposed, retained or read by runtime, crop, coupler or process modules.",
+    "Do not reuse the final Newton workspace dfdh arrays as if they were the exact accepted-state operator.",
+    "No extra full nonlinear Richards solve is allowed for the indicator normal path.",
+    "At most one extra tridiagonal defect solve is allowed.",
+    "No N4/N8/N128/N256/N512 refinement ladder is allowed in production code.",
+    "No safety factor, global multiplier, material coefficient, state normalization, floor inflation or temporal tolerance may be fitted.",
+    "Indicator evaluation cannot alter candidate state, accepted fluxes, mass accounting, retry advice or principal solve status.",
+    "No calendar/day boundary assumption may be introduced.",
+    "No F-GC02, F-PE or retry-policy release follows from F-SI25 implementation alone."
+  ],
+  "gates": {
+    "A_contract_and_lineage": "This contract is persisted before production source changes and locks F-SI24/F-VQ30 semantics.",
+    "B_generic_solver_service": "Introduce a common soil-water solver temporal-indicator result/service with a fail-closed default unavailable implementation so alternative solvers are not forced to expose Richards internals.",
+    "C_reference_richards_operator": "Implement the reference Richards override inside the solver boundary for the qualified initial envelope and reconstruct the current-policy accepted-state operator without reading stale final Newton arrays.",
+    "D_candidate_semantics": "Compute exactly the frozen e_raw, one defect solve, B_M and B_inf; return current derivative but do not persist history or choose acceptance tolerance.",
+    "E_noninterference_and_cost": "Focused tests prove principal candidate state/flux/mass/status identity with indicator disabled versus evaluated and prove zero extra nonlinear solves and at most one extra tridiagonal solve.",
+    "F_owner_replay": "Replay the exact-linear formula regression and the frozen 16-case F-VQ30 matrix against the production seam as owner verification; this is not a substitute for downstream independent F-VQ31 qualification.",
+    "G_O0_O2": "Machine-readable owner test outputs are bitwise identical under current convention."
+  },
+  "architecture_invariant_binding": {
+    "1_single_kernel": true,
+    "2_kernel_io_separation": true,
+    "3_explicit_data_separation": true,
+    "4_compact_persistent_state": true,
+    "5_scratch_per_worker": true,
+    "7_transactional_steps": true,
+    "9_generic_time": true,
+    "13_mass_absolute": true,
+    "15_limit_coupling_cost": true,
+    "16_MultiSWAP_primary": true,
+    "20_alternative_soil_water_solvers": true,
+    "22_no_HeadCalc_internal_coupling": true,
+    "23_physics_solver_policy_separation": true,
+    "24_predictable_cost": true,
+    "25_reference_mode": true,
+    "26_runtime_diagnostics": true,
+    "29_no_silent_dependencies": true
+  },
+  "hard_nonclaims": [
+    "B_inf is not a qualified general nonlinear true-error bound.",
+    "N512 is not exact truth.",
+    "No scientific temporal tolerance is selected.",
+    "No production acceptance/retry policy is admitted.",
+    "F-VQ28 and F-VQ29 negative evidence remains valid.",
+    "Groundwater coupling is not released."
+  ],
+  "persist_early_test_second": true,
+  "next_action": "Implement Gate B first with the smallest generic solver-owned temporal-indicator contract and default unavailable behavior, then add the reference Richards override and focused owner tests."
+}
