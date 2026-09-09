@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF31",
+  "title": "Pure Phase-A WOFOST Prepare-Assimilation Provider",
+  "branch": "work/f-wof31-prepare-assimilation-provider",
+  "base": {
+    "commit": "ba8a2bda14671488a5800c7791abdfc80e8219c5",
+    "status": "QUALIFIED_RESTRICTED_SHARED_IMMUTABLE_WOFOST_RATE_PARAMETER_BUNDLE"
+  },
+  "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_ACTUAL_PGASS_PREPARE_PROVIDER",
+  "decision": "QUALIFIED_PHASE_A_ACTUAL_PGASS_READY_FOR_SEPARATE_ACCEPTED_WINDOW_FINALIZE_RATE_PROVIDER",
+  "tested_candidate": "90c912f1d04ab67db7fb5c877e0200f5358a0c97",
+  "verification": {
+    "workflow": "F-WOF31 prepare assimilation",
+    "run_id": 34305769015,
+    "job_id": 102322018969,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "d4ad755913eb884d5e764499a33fb7937114f82d61dee1a69b03dfb650003335",
+    "F_WOF30_parameter_bundle_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_prepare_assimilation.f90"
+    ],
+    "persistent_state_added": false,
+    "state_mutation": false,
+    "calendar_or_file_IO_dependency": false,
+    "soil_solver_dependency": false,
+    "accepted_window_dependency": false
+  },
+  "qualified_contract": {
+    "provider": "prepare_wofost_actual_assimilation",
+    "output": "actual_pgass",
+    "state_reads": ["DVS", "LAI"],
+    "parameter_reads": ["KDIF", "EFF", "CFRDM", "RELMF", "AMAXTB", "TMPFTB", "TMNFTB"],
+    "explicit_context": ["TAVD", "RAD", "DAYL", "SINLD", "COSLD", "DIFPP", "DSINBE", "FCO2EFF", "FCO2AMAX", "TMNR"],
+    "hidden_global_RAD_removed": true,
+    "hidden_global_KDIF_removed": true,
+    "ASTRO_daynr_dependency_removed": true,
+    "TMNR_history_mutation_inside_provider": false,
+    "reference_formula_order_preserved": true,
+    "legacy_Gauss_constants_preserved": true
+  },
+  "source_equivalence": {
+    "normal_active_fixture": "bitwise equal to local transcript of B1.10 AFGEN + TOTASS + ASSIM + PGASS conversion + RELMF",
+    "zero_LAI": "exact zero before unused solar denominator validation",
+    "zero_AMAX": "exact zero before unused solar denominator validation",
+    "zero_RAD": "exact zero before unused solar denominator validation"
+  },
+  "source_bound_discrepancy": {
+    "id": "F-WOF31-EFF-ZERO-DIRECT-BEAM-SINGULARITY",
+    "legacy_condition": "EFF=0 is input-admissible while ASSIM divides by EFF*VISPP for VISPP>0",
+    "qualified_disposition": "active direct-beam evaluation with effective EFFC<=0 fails closed; zero-radiation and otherwise unused routes retain exact zero behavior",
+    "scientific_limiting_formula_invented": false
+  },
+  "validation": {
+    "RAD": "0..5e6 J m-2 d-1",
+    "DAYL": "0..24 h",
+    "FCO2EFF_FCO2AMAX": "0..2",
+    "DIFPP": "nonnegative",
+    "active_DSINBE": ">0",
+    "active_Gauss_SINB": "finite, >0 and not materially above 1",
+    "AMAXTB_evaluated": "0..100",
+    "TMPFTB_TMNFTB_evaluated": "0..1",
+    "nonfinite_state_forcing_or_result": "fails closed"
+  },
+  "not_qualified": [
+    "potential PGASS",
+    "nutrient or oxygen side routes",
+    "phase-B finalize rate equations",
+    "accepted IQROT/IPTRA provenance binding",
+    "end-to-end WOFOST crop-day rate packet or structural evolution"
+  ],
+  "next": "implement and qualify a separate pure phase-B finalize-rate provider that consumes the already prepared actual_pgass plus an explicitly provenance-qualified accepted IQROT/IPTRA coupling-window aggregate",
+  "affected_invariants": [2,3,4,5,7,8,9,16,21,23,25,27,29,30]
+}
