@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C1B_EXACT_HYDRAULIC_EIGENMODE_OBSERVER_RELATION",
+  "supersedes": "integration/f-si/F-SI23_GATE_C1_MMS_PLAN.json",
+  "preexecution_reconciliation": "integration/f-si/F-SI23_GATE_C1_PLAN_SOURCE_RECONCILIATION.json",
+  "frozen_before_execution": true,
+  "purpose": "Verify the pressure-head derivative-difference observer against exact temporal error on a linear semi-discrete Richards eigenmode whose state dependence is carried only by the existing mixed storage and Darcy operator.",
+  "production_source_changes_allowed": false,
+  "scientific_threshold_selection_allowed": false,
+  "certificate_normalization_allowed": false,
+  "F_VQ30_start_allowed": false,
+  "manufactured_hydraulics": {
+    "active_nodes": 4,
+    "dz": [0.5, 0.5, 1.0, 1.0],
+    "internal_node_distance": [1.0, 1.0, 1.0],
+    "explicit_lower_face_distance": 0.5,
+    "equilibrium_head_cm": -100.0,
+    "theta_equilibrium": 0.30,
+    "constant_capacity_per_cm": 0.001,
+    "constant_conductivity_cm_per_day": 0.01,
+    "dKdh": 0.0,
+    "top_boundary": "explicit qtop=-K so the gravity component cancels at the top",
+    "bottom_boundary": "SWBOTB=5 with hbot=h_eq so the gravity component cancels and perturbation has homogeneous Dirichlet condition",
+    "source_sink": "zero",
+    "macropores": false,
+    "root_sink": false
+  },
+  "semi_discrete_perturbation_system": {
+    "u_definition": "u=h-h_eq",
+    "equation": "M*udot + A*u = 0",
+    "M_over_C": [[0.5,0,0,0],[0,0.5,0,0],[0,0,1.0,0],[0,0,0,1.0]],
+    "A_over_K": [[1,-1,0,0],[-1,2,-1,0],[0,-1,2,-1],[0,0,-1,3]],
+    "selected_generalized_eigenvalue_without_K_over_C": 0.25619777153614321838,
+    "K_over_C_per_day": 10.0,
+    "lambda_per_day": 2.5619777153614321838,
+    "selected_eigenvector": [0.6752098721931038,0.5887162399055651,0.4268087132525549,0.1555537453920313],
+    "initial_amplitude_cm": 10.0,
+    "initial_head": "h0=h_eq+amplitude*v",
+    "runtime_precheck": "A*v=lambda*M*v must hold to a machine-epsilon-scaled algebraic consistency bound before any solver result is interpreted"
+  },
+  "exact_and_BE_solutions": {
+    "exact": "u_exact(dt)=u0*exp(-lambda*dt)",
+    "backward_Euler": "u_BE(dt)=u0/(1+lambda*dt)",
+    "right_derivative": "hdot_n=-lambda*u0",
+    "BE_endpoint_derivative": "hdot_np1=(u_BE-u0)/dt=-lambda*u0/(1+lambda*dt)",
+    "observer": "e_h=0.5*dt*(hdot_np1-hdot_n)",
+    "exact_local_error": "err_exact=u_BE-u_exact",
+    "ratio": "rho=maxabs(e_h)/maxabs(err_exact)"
+  },
+  "lambda_dt": [0.4,0.2,0.1,0.05,0.025],
+  "dt_day": [0.15612938301595253,0.07806469150797626,0.03903234575398813,0.019516172876994066,0.009758086438497033],
+  "predeclared_properties": {
+    "rho_greater_than_one": true,
+    "rho_strictly_decreases_at_every_refinement": true,
+    "rho_limit_as_dt_to_zero": 1.0,
+    "observer_magnitude_strictly_decreases": true,
+    "exact_local_error_strictly_decreases": true
+  },
+  "pass_rules": [
+    "The generalized eigenpair precheck passes before HeadCalc execution.",
+    "All five HeadCalc solves converge with max_iterations=8, max_backtracking=4 and unchanged 1e-12 numerical balance controls.",
+    "Each computed HeadCalc endpoint agrees with the analytic backward-Euler eigenmode endpoint under an epsilon-scaled numerical-consistency bound only.",
+    "Each computed e_h agrees with the analytic derivative-difference expression under an epsilon-scaled numerical-consistency bound only.",
+    "The discrete water ledger closes from storage change plus top/bottom boundary exchange; no source/sink term exists.",
+    "The exact manufactured continuous water accounting is consistent with boundary exchange implied by the exact eigenmode; no water is created or discarded in the manufactured definition.",
+    "rho>1 for all five frozen lambda*dt values and decreases strictly at every refinement.",
+    "maxabs(e_h) and maxabs(err_exact) each decrease strictly at every refinement.",
+    "O0 and O2 machine-readable outputs are identical.",
+    "Production Richards/runtime source remains identical to the F-VQ29 base."
+  ],
+  "qualification_boundary": {
+    "can_qualify": [
+      "observer implementation algebra on an exact state-dependent HeadCalc hydraulic problem",
+      "conservative asymptotic relation on this manufactured eigenmode",
+      "compatibility with unchanged mass-conservative backward-Euler principal advancement"
+    ],
+    "cannot_qualify": [
+      "rho>=1 on nonlinear B1.10 soil hydraulics",
+      "production error bounds or tolerances",
+      "F-KT09 normalization",
+      "saturated/DAE states",
+      "transactional history persistence",
+      "F-GC02 or F-PE release",
+      "F-VQ30"
+    ]
+  },
+  "next_if_pass": "Freeze Gate C2 physical-envelope transfer characterization using real B1.10 constitutive hydraulics and finite same-endpoint evidence only as finite evidence, never as exact truth."
+}
