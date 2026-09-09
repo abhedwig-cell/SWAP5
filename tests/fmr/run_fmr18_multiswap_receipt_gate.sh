@@ -168,6 +168,28 @@ echo "FMR18C_FWO34_EXACT_TRANSCRIPT_PRESERVATION=PASS SHA256=$FWO_SHA"
 # donors plus the two explicit F-MR18 files, and add the receipt module to any
 # current MultiSWAP compile sequence. Historical gates themselves remain intact.
 git archive "$FCI19_PRESERVATION_HEAD" tests tools integration/f-kt | tar -x -C "$ROOT"
+
+# F-CI19 creates a disposable F-MR15 semantic replay from the historical
+# F-MR15 runner on the current working tree. Gate C adds one compile-time
+# dependency to the serialized MultiSWAP runtime, so patch only that disposable
+# historical runner's module list before F-CI19 derives its temporary replay.
+FMR15_REPLAY_SOURCE="$ROOT/tests/fmr/run_fmr15_owner_composition_gate.sh"
+python3 - "$FMR15_REPLAY_SOURCE" <<'PY_FMR15'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text(encoding='utf-8')
+needle = '  src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+with_receipt = '  src/runtime/mod_fmr_accepted_commit_receipt.f90\n' + needle
+if with_receipt not in s:
+    count = s.count(needle)
+    if count != 1:
+        raise SystemExit(f'F-MR18 Gate C nested F-MR15 module anchor count={count}')
+    s = s.replace(needle, with_receipt, 1)
+p.write_text(s, encoding='utf-8')
+print('FMR18C_FCI19_NESTED_FMR15_RECEIPT_DEPENDENCY=PASS')
+PY_FMR15
+
 FCI19_BASE="$ROOT/tests/fci/run_fci19_candidate_a_preservation_gate.sh"
 FCI19_V2="$ROOT/tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh"
 python3 - "$FCI19_BASE" <<'PY'
