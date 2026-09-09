@@ -1,0 +1,28 @@
+name: F-VQ34 remediated Richards head-budget certificate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - qualification/f-vq34-remediated-richards-head-budget-certificate
+    paths:
+      - 'integration/f-vq/F-VQ34_QUALIFICATION_PLAN.json'
+      - 'tests/fvq/test_fvq34_remediated_head_budget_certificate.f90'
+      - 'tests/fvq/run_fvq34_remediated_head_budget_certificate.sh'
+      - '.github/workflows/fvq34-remediated-richards-head-budget-certificate.yml'
+
+jobs:
+  independent-production-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ34 independent qualification gate
+        run: bash tests/fvq/run_fvq34_remediated_head_budget_certificate.sh
