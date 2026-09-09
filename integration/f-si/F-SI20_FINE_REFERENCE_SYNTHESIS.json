@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "PRESCRIBED_HEAD_TEMPORAL_FINE_REFERENCE_SYNTHESIS",
+  "scope": "nonproduction source-locked quantitative assessment of the pressure-head step-doubling observable for the exact F-GC02 prescribed-head predictor",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "production_src_diff_at_pre_evidence_head": "EMPTY_PASS",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6"
+  },
+  "physical_fixture": {
+    "t0": 4100.125,
+    "outer_t1": 4100.375,
+    "outer_dt_day": 0.25,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "bottom_mode": 5,
+    "top_flux": "stationary conductivity-balanced F-GC02 setup",
+    "ponding": "inactive/zero",
+    "optional_physics": "inactive"
+  },
+  "study_a_fixed_horizon_exact_fgc02_controls": {
+    "workflow_run": 34300363405,
+    "workflow_head": "e2ccf714f42916731e8da862c92f140f980b84b6",
+    "conclusion": "success",
+    "numerical_controls": {
+      "max_iterations": 8,
+      "max_backtracking": 4,
+      "min_step_duration_day": 1e-6,
+      "head_abs_tolerance": 1e-12,
+      "head_rel_tolerance": 1e-12,
+      "hard_mass_tolerance": 1e-12
+    },
+    "fixed_outer_endpoint": 4100.375,
+    "trajectory_substeps": [1,2,4,8,16,32,64,128,256,512,1024],
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_gate_all_trajectories": "PASS",
+    "endpoint_refinement": [
+      {"n":1,"n2":2,"dhead_cm":2.55242948426825933e-4,"ehead_n_to_n1024_cm":3.73584356864853362e-4,"ehead_n2_to_n1024_cm":1.36652008762894184e-4},
+      {"n":2,"n2":4,"dhead_cm":1.02942967401986607e-4,"ehead_n_to_n1024_cm":1.36652008762894184e-4,"ehead_n2_to_n1024_cm":3.52066050481880666e-5},
+      {"n":4,"n2":8,"dhead_cm":2.76148633417960809e-5,"ehead_n_to_n1024_cm":3.52066050481880666e-5,"ehead_n2_to_n1024_cm":7.59174170639198564e-6},
+      {"n":8,"n2":16,"dhead_cm":5.81177479830330412e-6,"ehead_n_to_n1024_cm":7.59174170639198564e-6,"ehead_n2_to_n1024_cm":1.77996690808868152e-6},
+      {"n":16,"n2":32,"dhead_cm":1.25678275253449101e-6,"ehead_n_to_n1024_cm":1.77996690808868152e-6,"ehead_n2_to_n1024_cm":5.23184155554190511e-7},
+      {"n":32,"n2":64,"dhead_cm":3.35562802433742036e-7,"ehead_n_to_n1024_cm":5.23184155554190511e-7,"ehead_n2_to_n1024_cm":1.87621353120448475e-7},
+      {"n":64,"n2":128,"dhead_cm":1.12996772827500536e-7,"ehead_n_to_n1024_cm":1.87621353120448475e-7,"ehead_n2_to_n1024_cm":7.46245802929479396e-8},
+      {"n":128,"n2":256,"dhead_cm":4.51642421239739633e-8,"ehead_n_to_n1024_cm":7.46245802929479396e-8,"ehead_n2_to_n1024_cm":2.94603381689739763e-8},
+      {"n":256,"n2":512,"dhead_cm":2.00402894279250177e-8,"ehead_n_to_n1024_cm":2.94603381689739763e-8,"ehead_n2_to_n1024_cm":9.42004874104895862e-9},
+      {"n":512,"n2":1024,"dhead_cm":9.42004874104895862e-9,"ehead_n_to_n1024_cm":9.42004874104895862e-9,"ehead_n2_to_n1024_cm":0.0}
+    ],
+    "solver_unrounded_mass_residual_at_n1024": 8.89316398300366018e-13,
+    "interpretation": "Holding the endpoint fixed removes the apparent nonconvergence seen in the retry-horizon ladder. Pressure-head endpoint differences decrease monotonically by more than four orders of magnitude. The fine apparent order trends toward approximately first order, although N=1024 is still a finite reference and its solver mass residual is close to the hard 1e-12 gate."
+  },
+  "study_b_transaction_candidate_vs_strict_reference": {
+    "workflow_run": 34300431076,
+    "workflow_head": "bbf81cae7e8cc87c611a1c584d89d5352248e262",
+    "conclusion": "success",
+    "nonproduction_reference_controls": {
+      "head_tolerance": 1e-14,
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "min_step_duration_day": 1e-8,
+      "temporal_gate_bypass": "huge tolerance for reference construction only",
+      "hard_mass_tolerance": 1e-12
+    },
+    "outer_0_25_day_result": {
+      "step_doubling_dhead_cm": 2.55242948426825933e-4,
+      "two_half_candidate_to_ref256_dhead_cm": 1.36643570257888314e-4,
+      "ref128_to_ref256_dhead_cm": 2.00403746930533089e-8,
+      "step_doubling_over_candidate_endpoint_error": 1.86794700947219261,
+      "candidate_endpoint_error_over_reference_delta": 6818.41394438866064
+    },
+    "retry_horizon_ratios_d_over_candidate_endpoint_error": [
+      {"dt_day":0.25,"ratio":1.86794700947219261},
+      {"dt_day":0.125,"ratio":0.978885518837028568},
+      {"dt_day":0.0625,"ratio":0.670743078219337985},
+      {"dt_day":0.03125,"ratio":0.742220692010092664},
+      {"dt_day":0.015625,"ratio":1.02540606699477399},
+      {"dt_day":0.0078125,"ratio":1.02660225584883102},
+      {"dt_day":0.00390625,"ratio":1.03369844661597732}
+    ],
+    "reference_quality_warning": "The strict reference uses one absolute fine segment size derived from the 0.25-day window. Relative refinement therefore weakens on the shortest retry horizons; ref128-to-ref256 deltas must be retained when interpreting those rows.",
+    "interpretation": "The raw max-head step-doubling discrepancy is the same order as the two-half candidate endpoint error but is not a fixed conservative multiplier across the retry horizons. It may overestimate or underestimate the fine-reference endpoint error depending on horizon."
+  },
+  "cross_study_consistency": {
+    "outer_0_25_step_doubling_dhead_bitwise_same_decimal_value": true,
+    "exact_controls_two_half_to_n1024_dhead_cm": 1.36652008762894184e-4,
+    "strict_reference_two_half_to_ref256_dhead_cm": 1.36643570257888314e-4,
+    "absolute_difference_between_endpoint_error_estimates_cm": 8.43850500587017e-9,
+    "meaning": "Independent direct-solver fixed-horizon refinement and transaction/reference construction agree closely on the physically relevant two-half endpoint error despite different numerical reference settings."
+  },
+  "candidate_observable_assessment": {
+    "observable": "max_i abs(h_full(i)-h_two_half(i))",
+    "units": "cm pressure head for the current SWAP state convention",
+    "dimensionally_explicit": true,
+    "deterministic_on_tested_route": true,
+    "side_effect_free_evaluation_possible": true,
+    "model_owned": true,
+    "mass_mixed_into_observable": false,
+    "cross_unit_normalization_required": false,
+    "fixed_horizon_convergence_signal_demonstrated_on_exact_fixture": true,
+    "fixed_multiplier_to_true_endpoint_error_demonstrated": false,
+    "universal_tolerance_semantics_qualified": false,
+    "ponding_or_optional_state_semantics_qualified": false,
+    "production_admitted": false,
+    "assessment": "SCIENTIFICALLY_PLAUSIBLE_RESTRICTED_RICHARDS_TEMPORAL_OBSERVABLE_REQUIRES_OWNER_TOLERANCE_AND_SCOPE_QUALIFICATION"
+  },
+  "decision": {
+    "binary_identity_comparator_scientifically_required": false,
+    "raw_head_step_doubling_observable_rejected": false,
+    "production_metric_selected": false,
+    "production_acceptance_changed": false,
+    "current_decision_class": "A_CANDIDATE_OBSERVABLE_IDENTIFIED_BUT_PRODUCTION_ACCEPTANCE_NOT_YET_QUALIFIED",
+    "next_evidence": [
+      "Define the model-owner semantics of temporal_tolerance in pressure-head units for a restricted no-ponding Richards route without claiming a fixed Richardson error multiplier outside an established asymptotic regime.",
+      "Repeat fixed-horizon refinement under at least two stricter nonlinear tolerances while retaining the exact physical fixture and hard mass gate, or otherwise demonstrate that the endpoint refinement curve is not set by nonlinear stopping.",
+      "Decide and qualify conditional exclusion or separate control semantics for ponding, groundwater level and optional process state.",
+      "Only after owner semantics are explicit, implement the smallest model-owned production seam and send it to F-MR composition plus independent F-VQ."
+    ]
+  }
+}
