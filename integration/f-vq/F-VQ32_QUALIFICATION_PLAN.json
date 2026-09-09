@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ32",
+  "title": "Independent Qualification of Explicit Head-Budget Normalization for the Richards Temporal Indicator",
+  "branch": "qualification/f-vq32-richards-head-budget-normalization",
+  "base_commit": "e6c103ebb69bb9fa6eb631f8c1d41fb2708372b2",
+  "frozen_before_execution": true,
+  "scope": "independent normalization qualification only; no numeric H_budget admission, no production certificate activation, no retry-policy binding, no coupling release",
+  "source_locks": {
+    "F_SI26_closeout": {"path":"integration/f-si/F-SI26_CLOSEOUT.json","blob":"a07afb736ef3dd4a4fd937c9b04f83bcf77e70c0","decision":"SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION"},
+    "F_SI26_owner_evidence": {"path":"integration/f-si/F-SI26_OWNER_EVIDENCE.json","blob":"42ba1920cbce0a89952f521d56d20995b102db9c"},
+    "F_SI26_handoff": {"path":"integration/f-si/F-SI26_OWNER_HANDOFF.json","blob":"3bdeae8ea0c6938bfb28a9d1aa2df8ae24e5b520"},
+    "F_KT09_decision_contract": {"path":"integration/f-kt/F-KT09_DECISION_CONTRACT.json","blob":"7957c07ba3a1e31469f315b437f9ac3248a860e0"},
+    "F_VQ31_closeout": {"path":"integration/f-vq/F-VQ31_CLOSEOUT.json","blob":"82064e357abe5d941850fcaa4eb8dcdf49e1b4af"},
+    "F_VQ28_negative": {"commit":"d8bcb1c90e897812ae8b91295be98e58023e10fb","path":"integration/f-vq/F-VQ28_STATUS.json","blob":"97f1dff93f1da8b443e8bd853f6e0c37ba9cf08c"},
+    "F_VQ29_negative": {"commit":"394d064a0dad0a7f7852b129bae99713b9aeb4c0","path":"integration/f-vq/F-VQ29_STATUS.json","blob":"d7bbeff65f9d506e5144b3b885930a835a1cef35"},
+    "production_indicator": {"path":"src/solver/mod_reference_richards_temporal_indicator.f90","blob":"fe8f87d11257d4c6bc019f1d628ac41ba3106d4e"},
+    "F_SI25_direct_driver": {"path":"tests/fsi/test_fsi25_reference_indicator_production_seam.f90","blob":"c125c6a2ab706920b7e2a5c6f1c855520b192223"},
+    "F_KT10_transaction_driver": {"path":"tests/fkt/test_fkt10_transactional_fvq30_replay.f90","blob":"c42765b89b5dd9140aa492ab56abbbf2077be50e"}
+  },
+  "candidate_lock": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "valid_B_inf": "finite and >=0",
+    "valid_H_budget": "finite and >0 cm pressure head",
+    "default_H_budget": null,
+    "empirical_multiplier": null,
+    "state_scale": null,
+    "mass_or_storage_scale": null,
+    "coupling_tolerance_alias": null,
+    "nonlinear_true_error_bound_claim": false
+  },
+  "independent_exact_linear_matrix": {
+    "role": "independent theorem-scope reconstruction using a scalar dissipative backward-Euler mode; points differ from F-SI26 owner matrix",
+    "equation": "y_dot=-lambda*y with x=lambda*dt>0, y_n=1",
+    "x_values": [0.015625,0.0625,0.25,1.0,4.0,16.0],
+    "exact_endpoint": "exp(-x)",
+    "backward_euler_endpoint": "1/(1+x)",
+    "e_raw_abs": "0.5*x^2/(1+x)",
+    "double_defect_abs": "x^2/(1+x)^2",
+    "B_inf_scalar": "min(e_raw_abs,double_defect_abs)",
+    "required": "abs(y_BE-y_exact)<=B_inf_scalar and, for every valid synthetic budget, C_h<=1 implies abs(y_BE-y_exact)<=H_budget"
+  },
+  "synthetic_budget_probe_set_cm": [0.01,0.1,1.0],
+  "synthetic_budget_semantics": {
+    "purpose": "algebraic and production-composition probes only",
+    "scientific_or_application_tolerance_admitted": false,
+    "selection_basis": "simple fixed decade values frozen before execution; not derived from observed B_inf values",
+    "required_scaling": "For fixed B_inf, multiplying H_budget by 10 divides C_h by 10 within floating arithmetic.",
+    "threshold_equivalence": "For valid inputs, C_h<=1 iff B_inf<=H_budget."
+  },
+  "fresh_nonlinear_production_matrix": {
+    "role": "fresh production-indicator normalization/noninterference matrix; not a truth or error-bound matrix",
+    "initial_uniform_heads_cm": [-65.0,-125.0,-275.0],
+    "prescribed_bottom_head_jumps_cm": [-0.03,0.03],
+    "horizons_day": [0.15,0.3],
+    "case_count": 12,
+    "cases": [
+      {"case":1,"h0_cm":-65.0,"jump_cm":-0.03,"horizon_day":0.15},
+      {"case":2,"h0_cm":-65.0,"jump_cm":0.03,"horizon_day":0.15},
+      {"case":3,"h0_cm":-65.0,"jump_cm":-0.03,"horizon_day":0.3},
+      {"case":4,"h0_cm":-65.0,"jump_cm":0.03,"horizon_day":0.3},
+      {"case":5,"h0_cm":-125.0,"jump_cm":-0.03,"horizon_day":0.15},
+      {"case":6,"h0_cm":-125.0,"jump_cm":0.03,"horizon_day":0.15},
+      {"case":7,"h0_cm":-125.0,"jump_cm":-0.03,"horizon_day":0.3},
+      {"case":8,"h0_cm":-125.0,"jump_cm":0.03,"horizon_day":0.3},
+      {"case":9,"h0_cm":-275.0,"jump_cm":-0.03,"horizon_day":0.15},
+      {"case":10,"h0_cm":-275.0,"jump_cm":0.03,"horizon_day":0.15},
+      {"case":11,"h0_cm":-275.0,"jump_cm":-0.03,"horizon_day":0.3},
+      {"case":12,"h0_cm":-275.0,"jump_cm":0.03,"horizon_day":0.3}
+    ],
+    "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ30_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ31_matrix": 0,
+    "exact_triplet_overlap_with_F_KT10_real_fixture": 0,
+    "production_route": "reference Richards production indicator with transaction-owned previous derivative history as already independently qualified by F-VQ31",
+    "hard_mass_tolerance": 1e-12,
+    "normalization_is_VQ_owned_postprocessing_only": true,
+    "additional_full_nonlinear_trajectories_for_normalization": 0,
+    "additional_tridiagonal_solves_for_normalization": 0,
+    "truth_claim": false,
+    "finite_refinement_required": false
+  },
+  "invalid_input_matrix": {
+    "invalid_H_budget": [0.0,-1.0,"+inf","nan"],
+    "invalid_B_inf": [-1.0,"+inf","nan","unavailable"],
+    "required": "certificate unavailable/fail closed; no clamping, floor or default substitution"
+  },
+  "gates": {
+    "G01_SOURCE_AND_CANDIDATE_LOCK": "All source blobs, F-SI26 decision and exact C_h formula match the frozen plan.",
+    "G02_INDEPENDENT_EXACT_LINEAR_RECONSTRUCTION": "All frozen scalar x cases reproduce the theorem-scope B_inf upper-bound relation without using F-SI26 owner test points.",
+    "G03_DIMENSIONLESS_BUDGET_ALGEBRA": "All valid probes satisfy finiteness, nonnegativity, threshold equivalence and exact decade scaling; no hidden default budget exists.",
+    "G04_INVALID_INPUT_FAIL_CLOSED": "Invalid/unavailable B_inf or H_budget produces unavailable/fail-closed certificate with no rescue value.",
+    "G05_FRESH_NONLINEAR_PRODUCTION_NORMALIZATION": "All 12 frozen fresh production cases yield finite nonnegative B_inf and valid C_h for all three synthetic budgets without modifying the production indicator path.",
+    "G06_NONINTERFERENCE_AND_COST": "Normalization adds no nonlinear trajectory, no tridiagonal solve, changes no state/flux/mass and all principal attempts retain the 1e-12 hard mass gate.",
+    "G07_O0_O2": "Machine-readable fresh nonlinear B_inf and normalized C_h summaries are bitwise identical under O0/O2 current convention.",
+    "G08_NONLINEAR_CLAIM_BOUNDARY": "No fresh nonlinear case is interpreted as true-error validation and no N512/deep finite reference is run or promoted.",
+    "G09_NEGATIVE_EVIDENCE_PRESERVED": "F-VQ28 retry nonmonotonicity and F-VQ29 insufficient-reference findings remain authoritative; shorter-dt monotonicity is not assumed.",
+    "G10_FKT09_COMPATIBILITY_NO_ACTIVATION": "C_h is structurally compatible with F-KT09 finite nonnegative <=1 certificate input, but F-VQ32 does not activate production temporal acceptance or select policy.",
+    "G11_ARCHITECTURE_INVARIANTS": "Explicitly reconcile invariants 7,8,9,11,12,13,15,20,23,24,25,26,29,30 with no coupling or F-PE release."
+  },
+  "pass_rules": [
+    "All G01-G11 pass exactly as frozen.",
+    "All 6 exact-linear scalar cases are retained regardless of outcome.",
+    "All 12 fresh nonlinear cases and all 3 synthetic budget probes are retained regardless of outcome.",
+    "No H_budget value is promoted from synthetic probe to scientific/application tolerance.",
+    "No multiplier, floor, state/material coefficient, q_cap, Nmin or tail model is added after execution.",
+    "Any source-lock, exact-linear, invalid-input, nonlinear execution, mass, cost, O0/O2 or claim-boundary failure prevents PASS."
+  ],
+  "possible_pass_decision": "QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+  "hard_nonclaims": [
+    "No numeric H_budget is qualified for applications.",
+    "No universal temporal tolerance is selected.",
+    "No nonlinear true-error upper bound is qualified.",
+    "No monotone retry improvement is qualified.",
+    "No production F-KT certificate acceptance/retry policy is admitted.",
+    "No initial bootstrap, arbitrary restart or forcing/event/topology-discontinuity continuation is qualified.",
+    "No F-GC02, groundwater coupling or F-PE release follows."
+  ],
+  "persist_early_test_second": true,
+  "next_action": "After this plan commit, implement an independent VQ-owned scalar theorem/algebra gate and a fresh 12-case production-indicator normalization harness without changing production source or candidate semantics."
+}
