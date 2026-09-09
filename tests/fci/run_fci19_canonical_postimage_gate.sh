@@ -19,7 +19,7 @@ TMP_LINEAGE="$ROOT/tests/fci/.fci19_postimage_lineage_$$.sh"
 rm -rf "$ARTIFACTS"
 mkdir -p "$ARTIFACTS"
 cleanup() {
-  rm -f "$TMP_BASE" "$TMP_V2" "$TMP_LINEAGE"
+  rm -f "$TMP_LINEAGE"
 }
 trap cleanup EXIT
 
@@ -64,13 +64,20 @@ echo 'FCI19_POSTIMAGE_QUALIFICATION_SOURCE_IMMUTABILITY=PASS'
   fail "CI19 integration/governance tree changed during postimage materialization"
 echo 'FCI19_POSTIMAGE_GOVERNANCE_TREE_IDENTITY=PASS'
 
-# Rehydrate the exact already-successful composition-preservation gate from the
-# tested qualification head. Do not duplicate or weaken its scientific oracles.
-[[ ! -e "$TMP_BASE" && ! -e "$TMP_V2" ]] || fail "temporary preservation paths already exist"
-git show "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate.sh" > "$TMP_BASE"
-git show "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh" > "$TMP_V2"
-chmod +x "$TMP_BASE" "$TMP_V2"
+# The governed postimage deliberately carries the CI19 governance/test tree, not
+# the later Candidate A qualification fixtures. For executable replay only,
+# overlay the exact tests/tools from the previously successful preservation head.
+# This is a disposable working-tree fixture overlay. It never changes src,
+# reference, the governed postimage commit or the qualification branch commit.
+git archive "$PRESERVATION_HEAD" tests tools | tar -x -C "$ROOT"
+[[ "$(git hash-object "$TMP_BASE")" == "$(git rev-parse "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate.sh")" ]] || \
+  fail "preservation base harness overlay identity mismatch"
+[[ "$(git hash-object "$TMP_V2")" == "$(git rev-parse "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh")" ]] || \
+  fail "preservation v2 harness overlay identity mismatch"
+echo 'FCI19_POSTIMAGE_EXACT_TEST_TOOL_OVERLAY=PASS'
 
+# Reexecute the exact already-successful composition-preservation harness against
+# the postimage src/reference trees. Do not duplicate or weaken its oracles.
 bash "$TMP_V2" > "$ARTIFACTS/composition-preservation.out" 2>&1 || {
   cat "$ARTIFACTS/composition-preservation.out" >&2
   fail "composition preservation replay"
@@ -90,7 +97,7 @@ grep -Fq 'FCI19_LINEAGE_REACHABILITY_GATE PASS' "$ARTIFACTS/source-lineage-reach
   fail "missing reachability terminal marker"
 echo 'FCI19_POSTIMAGE_SOURCE_LINEAGE_REACHABILITY=PASS'
 
-# Reassert source/reference immutability after all executable replays.
+# Reassert source/reference immutability after all executable replays and fixture overlays.
 git diff --exit-code "$POSTIMAGE"..HEAD -- src reference || fail "post-test source/reference drift"
 [[ "$(git rev-parse HEAD:src)" == "$EXPECTED_SRC_TREE" ]] || fail "post-test src tree mismatch"
 [[ "$(git rev-parse HEAD:reference)" == "$EXPECTED_REFERENCE_TREE" ]] || fail "post-test reference tree mismatch"
