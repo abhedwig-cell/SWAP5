@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "audit": "BOUNDED_HISTORY_APPROXIMATION_FEASIBILITY",
+  "production_implementation": false,
+  "published_algorithm_changed": false,
+  "primary_operator": {
+    "source": "Sadeghi et al. (2026), Journal of Hydrology 673:135467, DOI 10.1016/j.jhydrol.2026.135467",
+    "source_equation": 5,
+    "source_form": "H(t) = -(1/sqrt(pi)) * integral_0^t dtheta(tau)/sqrt(t-tau), discretized by a sum over all prior moisture increments",
+    "mathematical_identification": "For absolutely continuous theta, this is the negative of the classical Caputo half-order derivative. This identification is mathematical interpretation; the VZAA paper itself describes H as a half-order derivative.",
+    "sign_switch_dependency": "VZAA Eq. 6 uses H<=0 versus H>0 to select c_w=0.5 or c_d=2."
+  },
+  "candidate_fast_memory_families": [
+    {
+      "family": "SUM_OF_EXPONENTIALS_FAST_CONVOLUTION",
+      "literature": "Jiang, Zhang, Zhang & Zhang, Fast evaluation of the Caputo fractional derivative, DOI 10.4208/cicp.OA-2016-0136",
+      "fit_to_operator": "PROMISING_AFTER_SIGN_AND_DISCRETIZATION_RECONCILIATION",
+      "state_cost": "O(N_exp) memory variables per history signal",
+      "work_cost": "O(N_exp) per derivative update",
+      "strict_horizon_independent_state": false,
+      "reason": "Published SOE error constructions require N_exp growing approximately logarithmically with T/dt for fixed accuracy as the represented time horizon grows.",
+      "SWAP5_role": "FAST_REFERENCE_OR_BOUNDED_HORIZON_CANDIDATE_NOT_YET_COMPACT_STATE_ADMISSION"
+    },
+    {
+      "family": "FIXED_DIMENSION_DIFFUSIVE_OR_STATE_SPACE_REPRESENTATION",
+      "literature": "Diethelm, A New Diffusive Representation for Fractional Derivatives and convergence analysis, 2022",
+      "fit_to_operator": "PROMISING",
+      "state_cost": "O(M) memory variables for fixed quadrature dimension M, independent of elapsed step count",
+      "work_cost": "O(M) per derivative update",
+      "strict_horizon_independent_state": true,
+      "qualification_limit": "A fixed M is an approximation. Error must be demonstrated for the VZAA operator over the admitted timestep and simulation-horizon range; no arbitrary history truncation is permitted.",
+      "generic_time": "Literature supports arbitrary/nonuniform evaluation grids in principle, but the exact VZAA-derived recurrence still requires implementation and qualification.",
+      "SWAP5_role": "PRIMARY_BOUNDED_MEMORY_RESEARCH_CANDIDATE"
+    }
+  ],
+  "hard_qualification_requirements": [
+    "retain the literal published Eq. 5 history sum as the scientific reference path",
+    "support nonuniform generic timesteps without silently replacing the published temporal semantics",
+    "compare H value error and H sign classification separately",
+    "exercise constant, monotone wetting, monotone drying, pulse, oscillatory and repeated reversal histories",
+    "exercise long quiet tails after early moisture changes because the half-order kernel has long memory",
+    "checkpoint and rollback all memory variables transactionally",
+    "report persistent bytes and operations per layer/history signal",
+    "quantify effect of H approximation on c_w/c_d switching, layer flux, mass ledger and groundwater exchange",
+    "never classify a bounded-memory approximation as published VZAA"
+  ],
+  "first_executable_gate": {
+    "name": "H0_LITERAL_EQ5_REFERENCE",
+    "purpose": "Build a source-faithful direct full-history evaluator for Eq. 5 on generic nonuniform time grids and verify it against analytic histories where a closed-form half-order derivative exists.",
+    "qualification_scope": "REFERENCE_OPERATOR_ONLY_NOT_VZAA_SOLVER",
+    "required_analytic_cases": [
+      "constant theta gives H=0",
+      "linear theta(t)=theta0+a*t gives H=-(2*a/sqrt(pi))*sqrt(t)",
+      "quadratic theta(t)=theta0+a*t^2 gives H=-(8*a/(3*sqrt(pi)))*t^(3/2)"
+    ],
+    "required_discrete_cases": [
+      "uniform grids with refinement characterization",
+      "nonuniform monotone grids with deterministic fixed patterns",
+      "wetting and drying signs",
+      "repeated reversal history for exact direct-sum determinism and sign reporting"
+    ],
+    "rule": "H0 must not introduce any bounded-memory approximation. It exists to freeze the expensive scientific comparator before H1 candidates are tested."
+  },
+  "architecture_assessment": {
+    "literal_published_history": "INADMISSIBLE_FOR_ARBITRARILY_LONG_MULTISWAP_RUNS",
+    "SOE_fast_history": "MAJOR_COST_IMPROVEMENT_BUT_NOT_STRICTLY_FIXED_STATE_OVER_UNBOUNDED_HORIZON_IN_STANDARD_ERROR_CONSTRUCTIONS",
+    "fixed_dimension_diffusive_state": "STRUCTURALLY_COMPATIBLE_WITH_COMPACT_STATE_IF_SCIENTIFIC_ERROR_AND_SIGN_SWITCH_BEHAVIOUR_QUALIFY",
+    "transactionality": "PROMISING_BECAUSE_MEMORY_VARIABLES_CAN_BE_TRIAL_STATE_AND_ROLLED_BACK",
+    "generic_time": "OPEN_UNTIL_EXECUTABLE_NONUNIFORM_UPDATE_IS_QUALIFIED",
+    "mass_conservation": "HISTORY_APPROXIMATION_MUST_NOT_BYPASS_THE_ALREADY_QUALIFIED_CONSERVATIVE_CORRECTION_SHELL"
+  },
+  "decision": "BOUNDED_HISTORY_DERIVATIVE_RESEARCH_IS_FEASIBLE_BUT_IS_A_VZAA_DERIVED_METHOD_CHANGE_LITERAL_EQ5_REFERENCE_REQUIRED_FIRST",
+  "status": "PERSISTED_BEFORE_H0_IMPLEMENTATION"
+}

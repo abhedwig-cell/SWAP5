@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "gate": "H0_LITERAL_EQ5_REFERENCE",
+  "production_implementation": false,
+  "purpose": "Freeze the source-faithful direct full-history Eq. 5 evaluator and analytic-reference tests before any bounded-memory history approximation is implemented.",
+  "operator": "H(t_N)=-(1/sqrt(pi))*sum_{j=0}^{N-1}(theta_{j+1}-theta_j)/sqrt(t_N-0.5*(t_j+t_{j+1}))",
+  "time_semantics": {
+    "strictly_increasing_times_required": true,
+    "uniform_timestep_required": false,
+    "history_starts_at_t0": true,
+    "current_value_is_last_history_sample": true
+  },
+  "precommitted_analytic_histories": [
+    {"name":"constant","theta":"theta0","exact_H":"0"},
+    {"name":"linear_wetting","theta":"theta0+0.003*t","exact_H":"-(2*0.003/sqrt(pi))*sqrt(t)"},
+    {"name":"linear_drying","theta":"theta0-0.003*t","exact_H":"+(2*0.003/sqrt(pi))*sqrt(t)"},
+    {"name":"quadratic_wetting","theta":"theta0+0.0002*t^2","exact_H":"-(8*0.0002/(3*sqrt(pi)))*t^(3/2)"}
+  ],
+  "precommitted_uniform_step_counts": [32,64,128,256,512,1024],
+  "precommitted_nonuniform_patterns": [
+    "alternating dt factors 0.5 and 1.5 normalized to the same final time",
+    "deterministic geometric growth with adjacent-step ratio <=1.08 normalized to the same final time"
+  ],
+  "final_time": 100.0,
+  "acceptance": {
+    "constant_abs_H_max": 1e-15,
+    "uniform_refinement_error_must_decrease_for_linear_and_quadratic_histories": true,
+    "finest_uniform_relative_error_max": 0.02,
+    "finest_nonuniform_relative_error_max": 0.03,
+    "wetting_sign_must_match_exact": true,
+    "drying_sign_must_match_exact": true,
+    "repeated_calls_bitwise_deterministic": true
+  },
+  "reversal_characterization": {
+    "history": "piecewise linear theta with slopes +0.003, -0.004, +0.002, -0.001 over four equal time quarters",
+    "purpose": "Record direct-sum H and Eq. 6 c classification at every sample; no closed-form acceptance threshold is inferred beyond deterministic repeatability and finite values."
+  },
+  "forbidden": [
+    "history truncation",
+    "SOE approximation",
+    "diffusive approximation",
+    "post-result tolerance changes",
+    "claiming H0 qualifies the VZAA flux law or solver"
+  ],
+  "decision": "PERSISTED_BEFORE_EXECUTION",
+  "status": "READY_FOR_REFERENCE_IMPLEMENTATION"
+}
