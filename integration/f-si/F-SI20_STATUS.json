@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-SI",
   "work_unit": "F-SI20",
   "title": "Richards Temporal-Error Semantics and Prescribed-Head Readiness",
@@ -12,15 +12,13 @@
   "trigger": {
     "fmr16_owner_handoff_commit": "26dca61a2459de5c592700ce8d80079510814717",
     "fmr16_invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440",
-    "fmr16_decision_class": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_REQUIRED",
-    "fgc02_blocked_head": "70d15ecdfcda87beb5c35b758fb291d7f76f5a4f",
-    "fgc02_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
+    "fgc02_blocked_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
   },
-  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_LOCAL_STARTUP_ESTIMATOR_QUALIFICATION_REQUIRED",
-  "phase": "FIXED_HORIZON_CONVERGENCE_AND_LOCAL_ENDPOINT_ERROR_TESTED",
+  "status": "IN_PROGRESS_OWNER_OBSERVABLE_CHARACTERIZED_INDEPENDENT_NUMERIC_PROFILE_QUALIFICATION_REQUIRED",
+  "phase": "STATE_DEPENDENT_RAW_HEAD_DEFECT_CHARACTERIZED_AND_REFERENCE_TRIDAG_REQUALIFIED",
   "owner_scope": {
     "production_owner": "F-SI / soil-water model implementation",
-    "fmr_role_after_owner_change": "bind and compose model-owned temporal signal into existing F-KT scalar acceptance seam",
+    "fmr_role_after_owner_admission": "bind and compose the admitted model-owned temporal signal into the existing F-KT scalar acceptance seam",
     "fkt_change_required_by_current_evidence": false,
     "fgc_change_required_by_current_evidence": false
   },
@@ -29,53 +27,54 @@
     "current_behavior": "0 for exact relevant final-state equality, huge(real64) otherwise",
     "fgc02_failure": "the -74.99 cm prescribed-head predictor from a -75.0 cm T0 profile is physically nonstationary and is rejected before a candidate completes",
     "direct_rejection_classification": "TEMPORAL_ONLY",
-    "updated_scientific_gap": "Richards fixed-horizon refinement now demonstrates strong state convergence over the tested range, but the local full-versus-two-half startup discrepancy is nonmonotone over the first seven retry halvings. Its acceptance semantics near an instantaneous prescribed-head boundary change remain unqualified."
+    "updated_scientific_gap": "A raw pressure-head full-versus-two-half endpoint difference is a valid dimensional model-owned observable, but its relation to remaining endpoint error is materially hydraulic-state dependent. One global absolute tolerance or one universal defect-to-error multiplier is not qualified."
   },
-  "tested_characterization": {
-    "component_evidence_file": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
-    "characterization_workflow_run": 34299712399,
-    "rejection_workflow_run": 34299889387,
+  "evidence": {
+    "characterization": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
+    "fixed_horizon_reference": "integration/f-si/F-SI20_FIXED_HORIZON_REFERENCE_EVIDENCE.json",
+    "fixed_horizon_tolerance_axis": "integration/f-si/F-SI20_FIXED_HORIZON_TOLERANCE_AXIS_EVIDENCE.json",
+    "fine_reference": "integration/f-si/F-SI20_FINE_REFERENCE_TRAJECTORY_EVIDENCE.json",
+    "extended_startup_retry": "integration/f-si/F-SI20_EXTENDED_STARTUP_RETRY_EVIDENCE.json",
+    "fine_step_solver_attribution": "integration/f-si/F-SI20_FINE_STEP_SOLVER_ATTRIBUTION_EVIDENCE.json",
+    "reference_tridag_requalification": "integration/f-si/F-SI20_REFERENCE_TRIDAG_REQUALIFICATION_EVIDENCE.json",
+    "fgc02_candidate_policy_probe": "integration/f-si/F-SI20_HEADNORM_FGC02_POLICY_EVIDENCE.json",
+    "physical_envelope": "integration/f-si/F-SI20_PHYSICAL_ENVELOPE_EVIDENCE.json",
+    "hydraulic_state_refinement": "integration/f-si/F-SI20_HYDRAULIC_STATE_REFINEMENT_EVIDENCE.json"
+  },
+  "qualified_findings": {
     "production_immutability_to_fvq27": "PASS",
-    "fgc02_predictor_provenance_lock": "PASS",
+    "reference_tridag_requalification": "PASS",
     "repeat_determinism": "PASS",
     "o0_o2_identity": "PASS",
-    "nodewise_h_theta_deltas": "MEASURED",
-    "signed_dz_theta_difference": "MEASURED",
-    "nonlinear_tolerance_axis": [1e-10,1e-12,1e-14],
-    "temporal_signal_materially_sensitive_to_nonlinear_tolerance": false,
-    "first_seven_local_halvings_monotone": false
+    "hard_mass_gate_preserved": true,
+    "nonlinear_tolerance_materially_drives_fixed_horizon_defect": false,
+    "fixed_horizon_richards_state_convergence_demonstrated_on_tested_fixture": true,
+    "late_startup_defect_decay_regime_observed_before_solver_cliff": true,
+    "fine_step_solver_cliff_class": "NONLINEAR_SOLVER_CEILING_NOT_DTMIN_NOT_MASS",
+    "first_failed_direct_solve_dt_day": 3.0517578125e-5,
+    "raw_head_endpoint_difference_is_valid_dimensional_observable": true,
+    "raw_head_defect_state_dependence_is_material": true,
+    "single_global_absolute_head_tolerance_qualified": false,
+    "single_global_defect_to_error_factor_qualified": false,
+    "richardson_factor_qualified": false,
+    "fgc02_retry_budget_proven_for_materially_different_hydraulic_states": false
   },
-  "fixed_horizon_reference": {
-    "evidence_file": "integration/f-si/F-SI20_FIXED_HORIZON_REFERENCE_EVIDENCE.json",
-    "workflow_run": 34300363405,
-    "workflow_job": 102305775986,
-    "conclusion": "success",
-    "total_horizon_day": 0.25,
-    "substep_counts": [1,2,4,8,16,32,64,128,256,512,1024],
-    "successive_dhead_cm_first": 2.55242948426825933e-4,
-    "successive_dhead_cm_last": 9.42004874104895862e-9,
-    "hard_mass_gate_satisfied": true,
-    "finite_reference_warning": "N=1024 is the finest tested trajectory, not an exact solution.",
-    "interpretation": "The prescribed-head Richards trajectory approaches progressively refined fixed-horizon endpoints over the tested range. The earlier local nonmonotonicity is therefore not evidence that Richards itself lacks temporal convergence."
-  },
-  "local_fine_reference": {
-    "evidence_file": "integration/f-si/F-SI20_FINE_REFERENCE_TRAJECTORY_EVIDENCE.json",
-    "workflow_run": 34300431076,
-    "workflow_job": 102305980967,
-    "artifact_id": 10084720127,
-    "artifact_digest": "sha256:fd70623a845272d6bd0d8e70e32ed85295e24a1973f85f5456f4fe91ebc2b506",
-    "conclusion": "success",
-    "nodewise_endpoint_error_persisted": true,
-    "raw_head_step_doubling_same_order_as_tested_endpoint_error": true,
-    "local_step_doubling_tends_to_zero_established": false,
-    "interpretation": "Pressure-head step doubling is an informative dimensional observable on this probe, but the changing attempted endpoint after each retry and the startup transient prevent the first seven rows from defining a monotone or asymptotic acceptance ladder."
+  "hydraulic_state_summary": {
+    "initial_heads_cm": [-25.0, -75.0, -250.0],
+    "prescribed_head_jump_cm": 0.01,
+    "fixed_horizon_day": 0.25,
+    "wet_state": "rapidly converges to floating-point floor; pre-floor raw defect is strongly conservative",
+    "fgc02_state": "raw defect decreases over all resolved tested levels and is conservative relative to the finite-reference endpoint error",
+    "dry_state": "raw defect is under-conservative through coarse fixed-horizon levels and becomes conservative only after additional refinement, first observed at N=16",
+    "semantic_warning": "fixed-horizon N-step refinement is not equivalent to transaction retry halving from one committed T0 state"
   },
   "current_metric_assessment": {
     "binary_identity_scientifically_required": false,
     "mixed_head_theta_scalar_admitted": false,
-    "head_only_observable": "PLAUSIBLE_MODEL_OWNED_CANDIDATE_NOT_ADMITTED",
+    "head_only_observable": "CHARACTERIZED_DIMENSIONAL_OWNER_OBSERVABLE_NOT_YET_PRODUCTION_METRIC",
     "head_units": "cm on the current SWAP solver route",
-    "richardson_factor_admitted": false,
+    "state_normalization_required": false,
+    "state_normalization_qualified": false,
     "production_tolerance_selected": false,
     "production_metric_selected": false
   },
@@ -93,16 +92,18 @@
     "persisted": true,
     "characterization_harness_implemented": true,
     "characterization_tested": true,
-    "rejection_classified": true,
-    "fixed_horizon_reference_tested": true,
-    "local_fine_reference_tested": true,
+    "reference_tridag_requalified": true,
+    "physical_envelope_tested": true,
+    "hydraulic_state_refinement_tested": true,
+    "owner_observable_characterized": true,
     "metric_selected": false,
     "production_implemented": false,
     "owner_qualified": false,
     "independently_qualified": false
   },
-  "current_decision_class": "B_LOCAL_STARTUP_ESTIMATOR_AND_EVENT_SEMANTICS_EVIDENCE_REQUIRED",
+  "owner_contract_exit": "B_MORE_SOURCE_THEORY_OR_NUMERICAL_EVIDENCE_REQUIRED",
+  "current_decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS",
   "fpe_release": false,
   "fgc02_release": false,
-  "next_action": "Extend the nonproduction local prescribed-head startup retry ladder from the same committed T0 state toward the existing solver minimum step duration. Preserve nodewise h/theta and signed storage diagnostics, do not require monotonicity, and determine whether the raw pressure-head step-doubling discrepancy eventually enters a reproducible decay regime or remains unsuitable across the admissible local step range. In parallel, inspect the generic forcing/event contract for an explicit discontinuity-boundary semantic before selecting any production metric."
+  "next_action": "Open an independent F-VQ numeric-profile qualification workunit using the source-bound raw endpoint observables. Split calibration and held-out validation across materially different hydraulic states and prescribed-head stimuli. Do not infer one universal defect-to-error multiplier, do not select a production tolerance merely to pass F-GC02, and do not change production source, F-KT transaction semantics, mass gates, solver policy or coupling orchestration. Return the qualified profile or a fail-closed rejection to F-SI20 for owner finalization."
 }
