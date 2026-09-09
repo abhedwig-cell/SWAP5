@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2X_LEGACY_H_ENPR_PLUS_KSATEXM_COMBINATION_AUDIT",
+  "contract": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_CONTRACT.json",
+  "status": "COMPLETE_FINDING_CONFIRMED",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34345029443,
+    "head": "389e70e0b7df7ad3630012a275bea5a783854fed",
+    "conclusion": "success",
+    "job": 102444492189,
+    "artifact": 10101312268,
+    "artifact_digest": "sha256:a896e72c551a1b32cdfeffe97edb9b34278d8aa925db38d5ec342864b1fa28ce"
+  },
+  "diagnostic_matrix": {
+    "material_count": 36,
+    "h_enpr_values_cm": [-2.0, -4.0, -10.0],
+    "case_count": 108,
+    "discontinuity_count": 108,
+    "nonmonotone_activation_count": 108,
+    "continuity_tolerance": 1e-10
+  },
+  "summaries": [
+    {
+      "h_enpr_cm": -2.0,
+      "case_count": 36,
+      "discontinuity_count": 36,
+      "nonmonotone_activation_count": 36,
+      "activation_head_range_cm": [-3.877653608198494, -2.542761833849803],
+      "relative_jump_range": [-0.6403214842055398, -0.004252881173657206],
+      "worst": {
+        "material": "B12",
+        "activation_head_cm": -3.818098918890292,
+        "k_pre_over_ksatfit": 0.7123912425198451,
+        "k_post_over_ksatfit": 0.0720697583143053,
+        "relative_jump": -0.6403214842055398
+      }
+    },
+    {
+      "h_enpr_cm": -4.0,
+      "case_count": 36,
+      "discontinuity_count": 36,
+      "nonmonotone_activation_count": 36,
+      "activation_head_range_cm": [-5.884609967218207, -4.177756370161241],
+      "relative_jump_range": [-0.723516186109131, -0.006811476784895071],
+      "worst": {
+        "material": "B12",
+        "activation_head_cm": -5.779359563318437,
+        "k_pre_over_ksatfit": 0.7955859444234363,
+        "k_post_over_ksatfit": 0.0720697583143053,
+        "relative_jump": -0.723516186109131
+      }
+    },
+    {
+      "h_enpr_cm": -10.0,
+      "case_count": 36,
+      "discontinuity_count": 36,
+      "nonmonotone_activation_count": 36,
+      "activation_head_range_cm": [-12.022395162002518, -6.361961823936577],
+      "relative_jump_range": [-0.8031477675835055, -0.010057722325742452],
+      "worst": {
+        "material": "B12",
+        "activation_head_cm": -11.793871293408188,
+        "k_pre_over_ksatfit": 0.8752175258978109,
+        "k_post_over_ksatfit": 0.0720697583143053,
+        "relative_jump": -0.8031477675835055
+      }
+    }
+  ],
+  "source_mechanism": [
+    "SWAP 4.3.1 derives relsatthr and ksatthr from the unmodified MvG law at the fixed nominal hthr=-2 cm.",
+    "With H_ENPR<0, watcon changes theta(h), so actual relsat reaches relsatthr at a different head.",
+    "hconduc gives the active KSATEXM branch precedence over the H_ENPR modified-MvG branch.",
+    "At activation the KSATEXM branch starts from the legacy unmodified-VG ksatthr rather than the one-sided H_ENPR branch conductivity at that actual head.",
+    "The resulting source-consistent K(h) therefore jumps downward in every frozen diagnostic case."
+  ],
+  "scientific_interpretation": "The legacy H_ENPR<0 plus active KSATEXM combination is not a constitutively continuous composition for the tested default MvG family. This is independent of Ross table interpolation. A numerical solver cannot repair the physical branch mismatch without changing the requested constitutive model.",
+  "canonical_swap5_policy": {
+    "ordinary_composable_configuration": false,
+    "recommended_status": "NOT_SUPPORTED_AS_CANONICAL_COMPOSITION",
+    "legacy_reproduction": "May be retained only through an explicitly named legacy-compatibility route if exact historical reproduction is required.",
+    "replacement_route": "Define a separate continuous near-saturation physical closure and expose it identically to FullRichards and RossFast.",
+    "silent_repair_forbidden": true
+  },
+  "decision": "LEGACY_H_ENPR_PLUS_ACTIVE_KSATEXM_IS_NOT_A_CONSTITUTIVELY_CONTINUOUS_COMPOSITION",
+  "scope_guard": "The Staringreeks catalog defaults themselves have H_ENPR=0. The H_ENPR values here were imposed for combination diagnostics. This finding does not reject H_ENPR alone, KSATEXM alone, or a newly defined continuous physical closure."
+}
