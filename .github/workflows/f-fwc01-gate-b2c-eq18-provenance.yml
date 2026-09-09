@@ -1,0 +1,42 @@
+name: F-FWC01 Gate B2C Eq18 Provenance and Limits
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2c-eq18-provenance.yml
+      - experiments/fwc/fwc01_gate_b2c_eq18_provenance_limits.py
+      - integration/f-fwc/F-FWC01_GATE_B2C_EQ18_INFILTRATION_ODE_PROVENANCE_LIMITS_PRECOMMIT.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen Eq18 provenance and limits gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2c"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2c_eq18_provenance_limits.py \
+            "$out/F-FWC01_GATE_B2C_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2C_STDOUT.txt"
+      - name: Assert frozen B2C decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2c/F-FWC01_GATE_B2C_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_SOURCE_RECONCILED_EQ18_ALGEBRA_READY_FOR_RESTRICTED_EXISTING_FRONT_ADVANCE_MASS_GATE'
+          assert r['all_rejection_checks_pass'] is True
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2c-eq18-provenance
+          path: fwc01-gate-b2c/
