@@ -1,0 +1,46 @@
+name: F-ROSS01 Gate C2A KSATEXM Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-c2a-ksatexm-characterization.yml
+      - experiments/ross/run_ross01_gate_c2a_ksatexm_characterization.py
+      - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
+      - experiments/ross/run_ross01_gate_c1r_characterization.py
+      - experiments/ross/run_ross01_gate_c1.py
+      - experiments/ross/run_ross01_face_table_characterization.py
+      - integration/f-ross/F-ROSS01_GATE_C2A_KSATEXM_SOURCE_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B10, O12, O13, B05, O14, O05]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen C2A KSATEXM characterization material
+        run: |
+          set -euo pipefail
+          out="ross01-c2a-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_c2a_ksatexm_characterization.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_C2A_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_C2A_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-c2a-${{ matrix.material }}
+          path: ross01-c2a-${{ matrix.material }}/
