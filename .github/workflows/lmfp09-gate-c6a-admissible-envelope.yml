@@ -1,0 +1,54 @@
+name: F-LMFP09 Gate C6a Admissible Envelope
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - experiments/lmfp/run_lmfp09_gate_c6a_admissible_envelope_classifier.py
+      - .github/workflows/lmfp09-gate-c6a-admissible-envelope.yml
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    name: envelope-characterization (${{ matrix.label }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - material: reference_sand
+            length: '10.0'
+            base_n: '33'
+            label: reference_sand_10_n49
+          - material: reference_sand
+            length: '10.0'
+            base_n: '97'
+            label: reference_sand_10_n113
+          - material: very_fast
+            length: '5.0'
+            base_n: '33'
+            label: very_fast_5_n49
+          - material: very_fast
+            length: '5.0'
+            base_n: '97'
+            label: very_fast_5_n113
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python --version
+      - name: Run C6a admissible-envelope characterization
+        run: |
+          mkdir -p evidence/c6a
+          python experiments/lmfp/run_lmfp09_gate_c6a_admissible_envelope_classifier.py \
+            evidence/c6a/${{ matrix.label }}.json \
+            ${{ matrix.material }} \
+            ${{ matrix.length }} \
+            ${{ matrix.base_n }}
+      - name: Upload C6a evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c6a-${{ matrix.label }}
+          path: evidence/c6a/${{ matrix.label }}.json
+          if-no-files-found: error
