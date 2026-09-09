@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "gate": "B_DYNAMIC_LOCAL_HYDRAULIC_CHARACTERIZATION",
+  "gate_A_evidence": "integration/f-si/F-SI21_GATE_A_EVIDENCE.json",
+  "gate_A_decision": "B_INITIAL_STATE_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_DYNAMIC_LOCAL_CHARACTERIZATION_REQUIRED",
+  "purpose": "Characterize whether dynamic hydraulic state along the actual full/two-half retry branches explains the conservative/under-conservative transition structure. No estimator, threshold or normalization is fitted in this gate.",
+  "frozen_case_matrix": {
+    "source": "F-VQ28 Gate B held-out matrix",
+    "initial_uniform_pressure_head_cm": [-40.0, -55.0, -110.0, -160.0, -210.0, -320.0],
+    "bottom_head_jump_cm": [-0.05, -0.01, 0.01, 0.05],
+    "attempt_horizons_day": [0.25, 0.125, 0.0625],
+    "case_count": 24,
+    "attempt_count": 72
+  },
+  "observation_locations_frozen_before_execution": [
+    "CHECKPOINT_T0",
+    "FULL_ENDPOINT_T1_ATTEMPT",
+    "HALF1_MIDPOINT",
+    "HALF2_ENDPOINT_T1_ATTEMPT"
+  ],
+  "hydraulic_observables_at_each_location": [
+    "pressure_head_bottom_cm",
+    "pressure_head_profile_min_cm",
+    "pressure_head_profile_max_cm",
+    "water_content_bottom",
+    "water_content_profile_min",
+    "water_content_profile_max",
+    "conductivity_bottom_cm_per_day",
+    "capacity_bottom_per_cm",
+    "diffusivity_bottom_cm2_per_day=K/C",
+    "tau_bottom_day=C*L_bottom^2/K"
+  ],
+  "derived_descriptors_allowed_after_observation": [
+    "endpoint_full_vs_two_half_max_abs_head_defect_cm",
+    "bottom_head_change_from_checkpoint_per_branch_cm",
+    "dynamic_tau_ratio_to_checkpoint",
+    "attempt_dt_over_dynamic_tau_at_each_frozen_location",
+    "full_vs_two_half_dynamic_tau_ratio"
+  ],
+  "predeclared_questions": [
+    "Do UCU and other nonmonotone classification patterns coincide with a reversal or strong branch divergence in dynamic local hydraulic timescale?",
+    "Does dynamic state add discriminating information beyond initial h0/tau without jump-specific threshold fitting?",
+    "Are observed relationships coherent across the four small prescribed-head jumps for a given initial state?",
+    "Does any candidate signal remain deterministic O0/O2 and independent of committed mutation?"
+  ],
+  "predeclared_exit": {
+    "A": "DYNAMIC_LOCAL_HYDRAULICS_EXPLAINS_PATTERN_STRONGLY_ENOUGH_TO_JUSTIFY_SEPARATE_ESTIMATOR_CANDIDATE_FREEZE",
+    "B": "DYNAMIC_LOCAL_HYDRAULICS_INFORMATIVE_BUT_NOT_SUFFICIENT_SAME_ENDPOINT_REFINEMENT_FAMILY_REMAINS_PRIMARY",
+    "C": "NO_USEFUL_DYNAMIC_HYDRAULIC_RELATION_STOP_TIMESCALE_ROUTE"
+  },
+  "hard_restrictions": {
+    "fit_threshold": false,
+    "select_normalization": false,
+    "select_tolerance": false,
+    "change_production_source": false,
+    "change_physics": false,
+    "change_mass_gate": false,
+    "change_retry_policy": false,
+    "change_transaction_semantics": false,
+    "FGC02_specific_tuning": false
+  }
+}
