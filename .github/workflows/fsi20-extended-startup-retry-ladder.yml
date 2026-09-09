@@ -24,6 +24,7 @@ jobs:
           gfortran --version
       - name: Run extended startup retry ladder
         run: |
+          set -o pipefail
           bash tests/fsi/run_fsi20_extended_startup_retry_ladder.sh | tee fsi20-extended-startup.log
       - name: Upload evidence
         if: always()
