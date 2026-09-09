@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2_5CM_SURFACE_TO_UNSAT_REFERENCE_ORACLE_VALIDITY",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_ONLY",
+  "trigger": "The prior 5 cm gate and E3E-R1 diagnostic showed B12/O13 worst-case candidate fluxes satisfying the split steady-Darcy path equation while the inherited steady_q oracle was numerically near the fully saturated Darcy upper bound.",
+  "scope": {
+    "materials": ["B01","B12","O13","O14"],
+    "face_length_cm": 5.0,
+    "surface_head_cm": [0.0,1.0],
+    "top_node_head_cm": [-10000.0,0.0],
+    "probe_set": "reuse all 608 per-material E3E 5 cm probes for oracle characterization only",
+    "candidate_qualification_use": false
+  },
+  "oracles": {
+    "legacy_single_panel_t8": {
+      "implementation": "run_ross01_face_table_characterization.steady_q",
+      "role": "object under audit, not assumed authoritative in this new domain"
+    },
+    "split_adaptive": {
+      "equation": "integral_h_surface^h_top K(h)/(K(h)-q) dh = 5 cm",
+      "split": "explicitly split at h=0; positive-head saturated segment evaluated analytically and negative-head segment by scipy quad",
+      "quad_epsabs": 1e-12,
+      "quad_epsrel": 1e-12,
+      "root": "brentq on physical q interval just above KSAT to saturated-Darcy upper bound",
+      "root_xtol": 5e-14,
+      "root_rtol": 1e-14
+    },
+    "split_fixed_gl": {
+      "equation": "same path equation, explicit h=0 split",
+      "unsaturated_quadrature": "fixed 256-point Gauss-Legendre in h on the negative segment",
+      "root": "80 fixed bisection iterations on the same physical q bracket",
+      "role": "independent deterministic double-precision cross-check"
+    },
+    "mpmath80_witness": {
+      "precision_decimal_digits": 80,
+      "witnesses_per_material": 4,
+      "witness_policy": "freeze deterministic near-zero, moderate-negative, prior recorded worst-probe, and dry control before execution",
+      "role": "high-precision equation-level cross-check"
+    }
+  },
+  "frozen_witnesses": {
+    "B01": [[0.7695052395319549,-1.8766271852337812e-9],[0.5,-0.01],[0.1,-1.0],[0.0,-100.0]],
+    "B12": [[0.8837919082381909,-0.009962848502903649],[0.5,-0.01],[0.1,-1.0],[0.0,-100.0]],
+    "O13": [[0.7833053261466696,-0.013722375623542532],[0.5,-0.01],[0.1,-1.0],[0.0,-100.0]],
+    "O14": [[0.911544390759661,-3.724819842771122e-10],[0.5,-0.01],[0.1,-1.0],[0.0,-100.0]]
+  },
+  "acceptance": {
+    "split_adaptive_vs_split_fixed_gl_max_abs_over_ksat": 1e-9,
+    "split_adaptive_vs_mpmath80_witness_max_abs_over_ksat": 1e-9,
+    "split_fixed_gl_vs_mpmath80_witness_max_abs_over_ksat": 1e-9,
+    "wrong_sign_count_between_independent_oracles": 0,
+    "nonfinite_count": 0,
+    "unresolved_count": 0
+  },
+  "legacy_oracle_characterization": {
+    "report_max_abs_over_ksat": true,
+    "report_p99_abs_over_ksat": true,
+    "report_count_exceeding_previous_face_gate_abs_threshold_5e_4": true,
+    "no_legacy_oracle_acceptance_threshold": "The gate decides validity from independent-oracle agreement; legacy discrepancy is evidence, not a tunable acceptance criterion."
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_SPLIT_H0_5CM_REFERENCE_ORACLE_READY_FOR_INDEPENDENT_BOUNDARY_FACE_REQUALIFICATION",
+    "fail": "5CM_REFERENCE_ORACLE_NOT_YET_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "No Ross candidate formula, node grid, quadrature policy or error tolerance is changed by this oracle gate.",
+    "The earlier 5 cm candidate FAIL remains preserved until a new independent qualification gate is executed against a qualified oracle.",
+    "The E3E-R1 reused probes are characterization data only and may not serve as the future candidate requalification holdout.",
+    "No surface-process, ponding, runoff, runtime or MultiSWAP admission follows from oracle qualification."
+  ],
+  "relevant_invariants": [13,20,23,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
