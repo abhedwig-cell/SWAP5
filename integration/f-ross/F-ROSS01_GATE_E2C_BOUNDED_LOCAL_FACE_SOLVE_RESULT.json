@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_BOUNDED_NON_TABLE_NEAR_SATURATION_FACE_SOLVE",
+  "contract": "F-ROSS01_GATE_E2C_BOUNDED_LOCAL_FACE_SOLVE_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34382510895,
+    "head": "2ba65563fef2c4a8b56833a14e46ddc23894192b",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifact_id": 10116429259,
+    "artifact_digest": "sha256:57635039200bf637d0c0918260079d62141da77455147026797731f33605c767"
+  },
+  "candidate": "FIXED_GL128_T8_PLUS_64_BISECTION_LOCAL_STEADY_DARCY",
+  "material_count": 4,
+  "material_pass_count": 2,
+  "total_bracket_failures": 113,
+  "total_nonfinite_count": 0,
+  "max_root_residual_evaluations": 66,
+  "max_constitutive_K_evaluations": 130,
+  "persistent_per_column_state_bytes": 0,
+  "scratch_owner": "worker",
+  "materials": {
+    "B12": {
+      "pass": false,
+      "bracket_failure_count": 54,
+      "max_hybrid_metric": 0.011517218142554304,
+      "p99_hybrid_metric": 0.008298905051761604,
+      "max_abs_error_over_ksatfit": 0.012743180123568598,
+      "wrong_sign_count": 0,
+      "worst_probe": {"h_above_cm":0.9042669143527746,"h_below_cm":-4015.2618619670507,"q_candidate_cm_per_day":2.5098426719733045,"q_ref_cm_per_day":2.4812628399305465}
+    },
+    "O13": {
+      "pass": false,
+      "bracket_failure_count": 59,
+      "max_hybrid_metric": 0.011192144170654273,
+      "p99_hybrid_metric": 0.008576734102639762,
+      "max_abs_error_over_ksatfit": 0.012279881064779754,
+      "wrong_sign_count": 0,
+      "worst_probe": {"h_above_cm":0.9035520181059837,"h_below_cm":-4021.086350314943,"q_candidate_cm_per_day":10.748983712218042,"q_ref_cm_per_day":10.630000371136001}
+    },
+    "B01": {
+      "pass": true,
+      "bracket_failure_count": 0,
+      "max_hybrid_metric": 0.00014337416393047565,
+      "p99_hybrid_metric": 0.000085220883840061,
+      "max_abs_error_over_ksatfit": 0.0002930283917943758
+    },
+    "O14": {
+      "pass": true,
+      "bracket_failure_count": 0,
+      "max_hybrid_metric": 0.000032549293907683526,
+      "p99_hybrid_metric": 0.000022213835164256978,
+      "max_abs_error_over_ksatfit": 0.00009689779341563029
+    }
+  },
+  "face_balance_antisymmetry_scaled_max": 0.0,
+  "equal_head_relative_max": 0.0,
+  "hydrostatic_abs_q_over_ksatfit_max": 0.0,
+  "pass": false,
+  "decision": "BOUNDED_LOCAL_FACE_SOLVE_NOT_YET_QUALIFIED_RESEARCH_REQUIRED",
+  "causal_interpretation": [
+    "The hard root-iteration and constitutive-evaluation bounds were respected, so the failure is not an unbounded-cost failure.",
+    "B01 and O14 demonstrate that the bounded local-solve formulation is numerically viable for less pathological near-saturation constitutive shapes.",
+    "B12 and O13 fail both bracket completeness and frozen accuracy metrics under the single global t^8 GL128 quadrature.",
+    "Their worst errors occur on long WET_DRY paths beginning at positive saturated head and extending thousands of centimeters into the dry range.",
+    "The evidence is consistent with inadequate fixed resolution of constitutive variation over many orders of magnitude in absolute negative head, not with the previously rejected table interpolation problem.",
+    "Because GL128, t^8 and 64 bisection steps were frozen, they are not retuned within E2C."
+  ],
+  "hard_guards": [
+    "E2C remains a preserved FAIL and may not be rewritten as PASS by increasing GL order or changing the t transform inside the same gate.",
+    "The near-saturation table line remains closed.",
+    "A follow-up may use a genuinely different bounded non-table integration coordinate or deterministic segmented quadrature, with a new precommit.",
+    "No saturation-transition column may rely on this failed E2C candidate."
+  ],
+  "next_research_direction": "E2C_R1_DETERMINISTIC_LOG_HEAD_SEGMENTED_LOCAL_FACE_SOLVE",
+  "status": "FAILED_BOUNDED_SINGLE_PANEL_T8_QUADRATURE_READY_FOR_SEPARATE_SEGMENTED_NON_TABLE_RESEARCH"
+}
