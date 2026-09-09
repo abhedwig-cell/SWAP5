@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "audit": "FRONT_STATE_GROUNDWATER_AND_COUPLING_SEMANTICS",
+  "source": {
+    "citation": "Ogden FL et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51:4282-4300",
+    "doi": "10.1002/2015WR017126"
+  },
+  "source_bound_state_topology": {
+    "discretization_domain": "water-content theta, not depth",
+    "bin_occupancy": "binary at a given depth: a bin is locally full or empty",
+    "water_types": [
+      "surface-connected infiltration fronts",
+      "detached falling slugs",
+      "groundwater-connected capillary fronts",
+      "water connected simultaneously to land surface and groundwater or an indefinitely deep initial condition"
+    ],
+    "infiltration_front_state": "front depth z_j per active bin",
+    "groundwater_front_state": "capillary-rise height H_j per active groundwater-connected bin relative to water table",
+    "falling_slug_state": "detached water interval whose top and bottom advance together under the source assumption of balanced capillary forces",
+    "capillary_relaxation": "post-advance internal redistribution/sorting across bins; source states it conserves mass when implemented correctly",
+    "falling_slug_groundwater_merge": "slug water that reaches a groundwater front is merged into that front and raises its capillary extent by the transferred amount"
+  },
+  "source_bound_groundwater_semantics": {
+    "constant_head_lower_boundary": "groundwater fronts advance or retreat per bin by taking water from or giving water to the groundwater table",
+    "dynamic_water_table": "source uses a predictor-corrector step that adjusts groundwater-table motion for vadose-zone uptake/release and is described as mass conservative",
+    "bidirectional_exchange": true,
+    "coupling_claim_in_source": "coupling to a 2-D groundwater solver is described as a straightforward non-iterative predictor-corrector",
+    "SWAP5_limit": "the source does not by itself establish the exact SWAP5 H_SWAP=H_MF and q_SWAP=-q_MF residual contract, arbitrary coupling-window semantics or a response tangent"
+  },
+  "source_bound_numerical_work": {
+    "infiltration_bins_typical_full_range": "about 150-200 in the 2015 method",
+    "forward_euler_timestep_guidance": {
+      "infiltration_seconds_order": 10,
+      "falling_slug_seconds_order": 100,
+      "groundwater_front_seconds_up_to_order": 500
+    },
+    "higher_order_note": "source cites fourth-order Runge-Kutta allowing infiltration timesteps of order 60 s in prior analysis",
+    "one_ODE_per_bin": true,
+    "capillary_relaxation_after_front_or_slug_advance": true
+  },
+  "state_bound_assessment": {
+    "fixed_bin_count_bounds_number_of_bin_slots": true,
+    "fixed_bin_count_alone_proves_complete_persistent_state_bound": false,
+    "reason": "The publication describes detached falling slugs produced by forcing hiatuses, but the inspected article text does not prove a hard maximum number of simultaneously disconnected slug intervals per bin over arbitrary forcing history.",
+    "official_code_needed": true,
+    "official_code_capture_status": "PUBLIC_CC0_ARCHIVE_IDENTIFIED_BUT_DIRECT_ARCHIVE_DOWNLOAD_FAILED_IN_CURRENT_SESSION",
+    "do_not_assume_single_slug_per_bin": true,
+    "required_proof": "derive from source code/data structures and event rules whether each bin has a fixed finite number of front/slug coordinates or whether repeated detach/reattach events can accumulate multiple disconnected intervals"
+  },
+  "SWAP5_interface_implications": {
+    "theta_profile": "can be reconstructed from bin occupancy/front geometry but is not stored on a fixed depth grid by the native method",
+    "head_profile": "requires constitutive inversion and a defined projection from front/bin geometry onto requested process depths",
+    "root_uptake": "source removes water from the least tightly bound available bins within root zone; SWAP5 must instead qualify a solver-neutral conservative sink mapping that preserves SWAP process semantics",
+    "drainage_and_macropore_exchange": "finite-volume source/sink insertion is structurally possible, but process-specific transfer ownership and depth mapping remain unqualified",
+    "oxygen_stress_and_solute_transport": "need stable depth-based hydraulic views; front internals must remain hidden",
+    "groundwater": "scientifically promising; exact MODFLOW interface residual/tangent still open"
+  },
+  "critical_interpretation": "FWC has stronger native groundwater and source/sink semantics than a simple infiltration approximation, but this does not remove the main SWAP5 risk: a theta-domain front representation must provide bounded state and cheap, sufficiently accurate depth-profile hydraulic views to every other SWAP process. That interface cost may be as important as the front ODE cost itself.",
+  "decision": "FWC_RESEARCH_CONTINUES_STATE_BOUND_AND_PROCESS_VIEW_GATES_OPEN",
+  "status": "SOURCE_BOUND_FRONT_AND_GROUNDWATER_AUDIT_PERSISTED"
+}
