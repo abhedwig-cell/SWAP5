@@ -66,7 +66,8 @@ if c.get('decision') != expected_decision:
     raise SystemExit('unexpected F-VQ30 closeout decision')
 if p['owner_source_lock']['candidate_id'] != 'F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND':
     raise SystemExit('candidate identity drift')
-if p['candidate_freeze']['analytic_factor'] != 2.0 or p['candidate_freeze']['empirical_factor_fitted']:
+sem=p['candidate_semantics']
+if sem['analytic_factor'] != 2.0 or sem['factor_fitted'] or sem['global_scale_fitted'] or sem['state_normalization_fitted']:
     raise SystemExit('candidate coefficient/rescue drift')
 cases=p['held_out_matrix']['cases']; rows=e['case_rows']
 if len(cases)!=16 or len(rows)!=16:
