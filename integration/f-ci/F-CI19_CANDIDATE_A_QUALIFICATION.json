@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workunit": "F-CI19",
   "qualification_branch": "qualification/f-ci19-candidate-a-preservation",
   "candidate": {
@@ -7,17 +7,48 @@
     "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
     "origin": "F-KT09 qualified code head"
   },
-  "status": "PERSISTED_BEFORE_TESTING",
+  "status": "QUALIFIED_COMPOSITION_PRESERVATION_PENDING_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT",
   "production_source_changed_by_f_ci19": false,
   "historical_qualification_gates_modified": false,
   "qualification_method": "composition-aware semantic preservation replay against exact Candidate A; historical exact-postimage gates remain immutable",
-  "mandatory_groups": [
-    "F-KT09 generic transaction/model-certificate seam",
-    "F-MR15 and F-VQ27 prescribed-head semantic preservation",
-    "F-SI19 reference linear-solver oracle",
+  "tested_qualification_head": "5d5ece58b2b8e053a270992ded52377dd524f9c4",
+  "workflow_evidence": {
+    "workflow": "F-CI19 Candidate A composition preservation",
+    "run_id": 34319928251,
+    "job_id": 102364081577,
+    "conclusion": "success",
+    "artifact_id": 10091475248,
+    "artifact_zip_sha256": "cec8b32ae9da710405653611302d24b5e91fcec1c5736df3ccb6fb6a442b3eef",
+    "artifact_file_count": 12
+  },
+  "passed_groups": [
+    "Candidate A production/reference source identity",
+    "exact F-MR15 to Candidate A changed production surface",
+    "snow process source identity to F-MQ24 source",
+    "F-KT09 generic transaction/model-certificate seam preservation",
+    "F-MR15 owner semantic preservation",
+    "F-VQ27 prescribed-head semantic preservation",
+    "F-SI19 reference linear-solver oracle preservation",
     "F-MQ24/F-VQ17 restricted snow MultiSWAP semantic preservation",
-    "hard mass, rollback, deterministic replay and O0/O2 preservation",
-    "F-CI18 governance invariant gate as a non-source-mutating inherited governance check"
+    "F-CI18 inherited governance preservation",
+    "hard mass conservation",
+    "rollback and deterministic replay",
+    "O0/O2 output preservation"
+  ],
+  "decisive_markers": [
+    "FCI19_CANDIDATE_A_SOURCE_IDENTITY=PASS",
+    "FCI19_FMR15_TO_CANDIDATE_A_OVERLAP=PASS",
+    "FCI19_SNOW_PROCESS_SOURCE_IDENTITY=PASS",
+    "FCI19_FKT09_PRESERVATION=PASS",
+    "FCI19_FMR15_OWNER_SEMANTIC_PRESERVATION=PASS",
+    "FCI19_FSI19_REFERENCE_LINEAR_SOLVER_PRESERVATION=PASS",
+    "FCI19_FMQ24_SNOW_PRESERVATION=PASS",
+    "FCI19_FCI18_GOVERNANCE_PRESERVATION=PASS",
+    "FCI19_FVQ27_SEMANTIC_PRESERVATION=PASS",
+    "FCI19_HARD_MASS_PRESERVATION=PASS",
+    "FCI19_ROLLBACK_REPLAY_PRESERVATION=PASS",
+    "FCI19_O0_O2_PRESERVATION=PASS",
+    "FCI19_GATE PASS_CANDIDATE_A_COMPOSITION_PRESERVATION"
   ],
   "scope_holds": [
     "no production Richards model-owned temporal certificate admission",
@@ -28,6 +59,7 @@
     "no subdaily or multiday active-snow admission",
     "no LayeredMFP or VZAA production admission"
   ],
-  "admission_outcome": "NOT_TESTED",
+  "admission_outcome": "COMPOSITION_PRESERVATION_QUALIFIED_BUT_CANONICAL_ADMISSION_NOT_YET_AUTHORIZED",
+  "remaining_gate": "Complete full source-lineage admission audit for every production delta already present in Candidate A, not only the selected preserved claims.",
   "canonical_branch_advanced": false
 }
