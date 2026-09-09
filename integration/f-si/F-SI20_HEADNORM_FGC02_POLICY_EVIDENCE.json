@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "CANDIDATE_HEADNORM_FGC02_POLICY_SWEEP",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_src_diff_from_fvq27": "EMPTY_PASS"
+  },
+  "candidate_observable": {
+    "definition": "max_i abs(h_full_i - h_twohalf_i)",
+    "unit": "cm",
+    "restricted_admission_guard_in_probe": "bottom mode 5, equal finite ponding and groundwater-level components, zero ponding, no snow, compatible state shapes",
+    "implementation_mode": "ephemeral test copy of production backend",
+    "only_temporal_function_differs_from_production": true,
+    "production_metric_selected": false
+  },
+  "exact_fgc02_numerical_policy": {
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "transaction_retry_scale": 0.5,
+    "transaction_max_retries": 2,
+    "max_committed_substeps": 8,
+    "mass_tolerance": 1e-12,
+    "production_policy_changed": false
+  },
+  "fixture": {
+    "t0": 4100.125,
+    "t1": 4100.375,
+    "requested_dt_day": 0.25,
+    "initial_uniform_pressure_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "bottom_head_jump_cm": 0.01,
+    "bottom_mode": 5,
+    "top_flux_setup": "conductivity-balanced stationary initial profile",
+    "optional_physics": "inactive"
+  },
+  "workflow": {
+    "run": 34301748787,
+    "job": 102309914360,
+    "head": "0e4347b0fbe87436da46b803050f835913f09654",
+    "conclusion": "success",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "probe_only_temporal_function_differs": "PASS"
+  },
+  "tolerance_sweep_cm": [
+    {"tolerance":1e-3,"completed":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"mass_rejections":0,"accepted_substeps":1},
+    {"tolerance":3e-4,"completed":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"mass_rejections":0,"accepted_substeps":1},
+    {"tolerance":2.6e-4,"completed":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"mass_rejections":0,"accepted_substeps":1},
+    {"tolerance":2.5525e-4,"completed":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"mass_rejections":0,"accepted_substeps":1},
+    {"tolerance":2.5524294842682593e-4,"completed":true,"attempts":1,"retries":0,"solver_rejections":0,"temporal_rejections":0,"mass_rejections":0,"accepted_substeps":1},
+    {"tolerance":2.5524e-4,"completed":false,"attempts":3,"retries":2,"solver_rejections":0,"temporal_rejections":3,"mass_rejections":0,"accepted_substeps":0},
+    {"tolerance":2.5e-4,"completed":false,"attempts":3,"retries":2,"solver_rejections":0,"temporal_rejections":3,"mass_rejections":0,"accepted_substeps":0},
+    {"tolerance":2e-4,"completed":false,"attempts":3,"retries":2,"solver_rejections":0,"temporal_rejections":3,"mass_rejections":0,"accepted_substeps":0},
+    {"tolerance":1e-4,"completed":false,"attempts":3,"retries":2,"solver_rejections":0,"temporal_rejections":3,"mass_rejections":0,"accepted_substeps":0}
+  ],
+  "findings": {
+    "measured_outer_head_defect_cm": 2.5524294842682593e-4,
+    "lowest_completing_tested_tolerance_cm": 2.5524294842682593e-4,
+    "highest_failing_tested_tolerance_cm": 2.5524e-4,
+    "acceptance_boundary_matches_outer_defect_under_less_equal_semantics": true,
+    "retry_halvings_below_boundary_rescue_initial_transaction": false,
+    "reason_retries_do_not_rescue": "For this startup fixture the candidate head defect at 0.125 and 0.0625 day exceeds the 0.25-day defect, so the exact F-GC02 two-retry ladder remains temporal-rejected before any internal substep can be accepted.",
+    "mass_rejections_any_case": false,
+    "hard_mass_requirement_preserved": true
+  },
+  "fine_step_solver_attribution": {
+    "workflow_run": 34301771538,
+    "workflow_job": 102309981660,
+    "head": "433c08062e75de9b7ed3c0987f81f7973af8e948",
+    "conclusion": "success",
+    "first_failed_solve_step_day": 3.0517578125e-5,
+    "first_failure_status": 2,
+    "first_failure_nonlinear_iterations": 8,
+    "first_failure_backtracking_attempts": 19,
+    "failed_fine_step_attempts_observed": 5,
+    "classification": "EXACT_CONTROL_NONLINEAR_SOLVER_CEILING",
+    "dtmin_is_direct_cliff": false,
+    "mass_gate_is_direct_cliff": false,
+    "solver_controls_changed": false,
+    "production_source_changed": false
+  },
+  "scientific_interpretation": {
+    "restricted_headnorm_is_runtime_compatible_on_exact_fixture": true,
+    "single_fixture_absolute_tolerance_is_scientifically_qualified": false,
+    "setting_tolerance_equal_to_measured_outer_defect_would_be_fixture_overfit": true,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "owner_qualified": false,
+    "decision_class": "A_RESTRICTED_OBSERVABLE_RUNTIME_SHAPE_SUPPORTED_BUT_PHYSICAL_ENVELOPE_AND_TOLERANCE_NOT_QUALIFIED"
+  },
+  "next_evidence": "Characterize the raw head-norm and its relation to fine-reference endpoint error across a small prescribed-head startup envelope spanning multiple initial hydraulic states and positive/negative boundary-head perturbations. Keep the same soil, generic 0.25-day horizon, hard mass gate and source lock. Do not normalize or select a production tolerance until the scaling is observed."
+}
