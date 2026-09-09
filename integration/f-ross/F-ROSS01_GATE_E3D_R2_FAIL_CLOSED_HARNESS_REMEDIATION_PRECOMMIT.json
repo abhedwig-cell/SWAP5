@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3D_R2_FAIL_CLOSED_HARNESS_REMEDIATION",
+  "status": "PRECOMMIT_FROZEN",
+  "triggering_evidence": {
+    "workflow_run": 34395856647,
+    "observed_harness_failures": [
+      "B12 reference trajectory ended before finest candidate comparison time; interpolate_reference raised KeyError at t=0.0003125 d",
+      "O13 reference trajectory ended before finest candidate comparison time; interpolate_reference raised KeyError at t=0.000125 d"
+    ]
+  },
+  "allowed_change": [
+    "Detect incomplete reference or candidate trajectories before reference interpolation.",
+    "Represent unavailable trajectory-comparison metrics fail-closed as non-passing values.",
+    "Persist reference/candidate completion counts and a comparison_available flag.",
+    "Allow E3D to emit structured negative evidence instead of crashing when a trajectory is incomplete."
+  ],
+  "frozen_unchanged": {
+    "fixture_initial_heads_cm": [-0.2, -1.5, -5.0],
+    "fixture_q_top_fraction_ksat": 1.5,
+    "fixture_bottom_head_cm": -15.0,
+    "horizon_day": 0.001,
+    "candidate_step_counts": [4, 8, 16],
+    "reference_step_count": 64,
+    "mass_tolerance_cm": 1e-9,
+    "bottom_flux_tolerance_cm": 0.001,
+    "storage_tolerance_cm": 0.001,
+    "cell_storage_tolerance_cm": 0.001,
+    "head_tolerance_cm": 0.25,
+    "transition_time_tolerance_day": 0.00025,
+    "max_trajectory_head_guard_cm": 0.8,
+    "qualification_solver_policy": "E3C_TIGHT_LEAST_SQUARES",
+    "face_policy": "E3C_EXPANDED_QUALIFIED_FACE_COMPOSITION"
+  },
+  "fail_closed_rule": "If reference or candidate trajectory completion is insufficient for the frozen comparison, comparison_available=false and E3D cannot PASS.",
+  "hard_nonclaims": [
+    "No physics change.",
+    "No forcing retuning.",
+    "No tolerance relaxation.",
+    "No nonlinear-solver qualification change.",
+    "No production admission."
+  ]
+}
