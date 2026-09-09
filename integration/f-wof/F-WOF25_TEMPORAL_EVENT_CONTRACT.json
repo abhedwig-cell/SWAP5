@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Explicit standard-WOFOST one-day evolution event contract",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true,
+    "production_entrypoint_created": false,
+    "safe_initial_admission": "one B1.10-equivalent crop window of exactly one day",
+    "arbitrary_subdaily_or_multiday_WOFOST_evolution": false
+  },
+  "source_basis": [
+    "integration/f-wof/F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+    "integration/f-wof/F-WOF25_FORCING_AGGREGATE_CONTRACT.json",
+    "integration/f-wof/F-WOF25_B110_DAILY_CALL_CADENCE_EVIDENCE.json",
+    "integration/f-wof/F-WOF25_B110_CALL_CADENCE_EVIDENCE.json",
+    "integration/f-wof/F-WOF25_RATE_LIFETIME_RECONCILIATION.json",
+    "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json"
+  ],
+  "public_semantic_operation": {
+    "conceptual_signature": "evolve_crop(parameters, committed_crop_state, crop_event_forcing, accepted_process_aggregates, t0, t1) -> candidate_crop_state + crop_results + diagnostics",
+    "interval_explicit": true,
+    "initial_duration_constraint": "t1-t0 == one qualified crop day",
+    "calendar_translation_inside_crop_kernel": false,
+    "runtime_event_scheduler_owns_event_timing": true,
+    "soil_water_solver_step_is_crop_event": false
+  },
+  "required_internal_window_phases": [
+    {
+      "phase": "prepare",
+      "conceptual_operation": "prepare_crop_window(parameters, committed_crop_checkpoint, crop_event_forcing, t0, t1) -> trial_local_crop_window_context",
+      "legacy_equivalent": "flDayStart WOFOST assimilation before soil-water substeps",
+      "candidate_only_state_changes": [
+        "nofd increment",
+        "atmin7 shift and insertion of current TMN"
+      ],
+      "derived_window_context": [
+        "TMNR",
+        "explicit solar/daylength geometry",
+        "actual gross assimilation PGASS",
+        "daylength value needed by day-end phenology",
+        "optional oxygen/root-respiration same-window factors when that physics is active"
+      ],
+      "persistent_commit_allowed": false,
+      "reason": "B1.10 day-start assimilation feeds same-day soil/root physics, so a day-end-only black box cannot reproduce the source call graph for every active standard-WOFOST option"
+    },
+    {
+      "phase": "accumulate_accepted_process_results",
+      "conceptual_operation": "accumulate only accepted soil/root process contributions over [t0,t1]",
+      "inputs": [
+        "accepted root uptake contributions",
+        "accepted potential-transpiration-rate contributions",
+        "accepted aeration/oxygen-factor contributions only when active"
+      ],
+      "outputs": [
+        "IQROT_WINDOW",
+        "IPTRA_WINDOW",
+        "IALPWET_WINDOW when active"
+      ],
+      "rejected_trial_contribution": 0,
+      "crop_state_mutation": false
+    },
+    {
+      "phase": "finalize",
+      "conceptual_operation": "finalize_crop_window(parameters, trial_local_crop_window_context, frozen_accepted_process_aggregates, committed_crop_checkpoint, t0, t1) -> complete candidate crop continuation",
+      "legacy_equivalent": "cropdevelopment(3) at flDayEnd followed by option-dependent root extension/distribution",
+      "ordered_updates": [
+        "standard phenology rate and anthesis transition",
+        "actual water-stress reduction from IQROT_WINDOW/IPTRA_WINDOW",
+        "actual WOFOST biomass, organ and leaf-cohort update",
+        "TSUM and DVS update",
+        "IDSL=2 vernalization post-update when active",
+        "option-dependent root-history update after WOFOST using same-window GRRT and accepted aggregates"
+      ],
+      "candidate_publication_allowed": "only as an F-KT candidate after the entire requested parent interval has been accepted"
+    }
+  ],
+  "temporal_semantics": {
+    "kernel_contract": "generic [t0,t1]",
+    "crop_process_cadence": "one-day event for first admission because the source physics/call structure is daily",
+    "midnight_required_by_kernel": false,
+    "calendar_day_number_required_by_crop_kernel": false,
+    "runtime_may_map_calendar_or_other_schedule_to_event_boundaries": true,
+    "event_duration_is_physical_contract_not_solver_policy": true,
+    "multiple_soil_water_substeps_per_crop_window": true,
+    "multiple_crop_updates_per_soil_substep": false,
+    "crop_update_once_per_soil_substep": false
+  },
+  "threshold_semantics": {
+    "emergence": "explicit lifecycle event before an emerged crop's first prepare phase",
+    "anthesis": "daily transition may truncate DVR so candidate DVS lands on 1 exactly on first crossing",
+    "vernalization_completion": "IDSL=2 ordering must distinguish forced completion during phenology-rate calculation from saturation completion after the crop update",
+    "maturity_or_harvest": "legacy end check occurs after day-end crop evolution and must not be silently moved before final growth",
+    "leaf_cohort_creation": "exactly one new cohort shift per admitted one-day crop event",
+    "leaf_ageing": "one event-local FYSDEL*1-day age increment per retained cohort",
+    "root_depth_change": "option-dependent root extension happens once after the WOFOST update, not per Richards substep",
+    "arbitrary_event_splitting_equivalent": false
+  },
+  "forcing_boundary": {
+    "instantaneous_solver_forcing_directly_consumed_by_crop_event": false,
+    "daily_or_window_weather_forcing_explicit": true,
+    "accepted_process_aggregates_explicit": true,
+    "calendar_globals": false,
+    "meteo_module_globals": false,
+    "hidden_daynr_or_t1900": false
+  },
+  "runtime_composition": {
+    "scheduler_responsibilities": [
+      "place crop-event boundaries",
+      "supply explicit one-day weather/astronomical forcing",
+      "maintain crop-window aggregate identity",
+      "run as many accepted soil-water substeps as needed inside the window",
+      "freeze accepted aggregates before finalization",
+      "request one crop finalization at the physical cadence"
+    ],
+    "crop_module_does_not_know": [
+      "file paths or weather record cursors",
+      "MODFLOW coupling-window identity",
+      "whether soil-water used one or many solver substeps",
+      "calendar arrays or global day counters"
+    ]
+  },
+  "future_generalization_gate": {
+    "subdaily_crop_event": "requires independent scientific qualification of phenology, cohort, threshold and aggregation equivalence",
+    "multi_day_single_event": "requires independent scientific qualification; repeating a daily event N times is not the same contract as one N-day update",
+    "adaptive_crop_event_duration": "not admitted by F-WOF25"
+  },
+  "gates": {
+    "WOF25_G06_explicit_evolution_event": "PASS_CONTRACT_ONLY",
+    "WOF25_G08_soil_water_cadence_separation": "PASS_CONTRACT_ONLY",
+    "WOF25_G09_threshold_event_semantics": "PASS_FOR_ONE_DAY_READINESS_ARBITRARY_SPLITTING_HELD",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
