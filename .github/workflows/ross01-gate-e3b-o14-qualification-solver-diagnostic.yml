@@ -1,0 +1,46 @@
+name: F-ROSS01 Gate E3B O14 Qualification Solver Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e3b-o14-qualification-solver-diagnostic.yml
+      - experiments/ross/run_ross01_gate_e3b_o14_qualification_solver_failure_diagnostic.py
+      - integration/f-ross/F-ROSS01_GATE_E3B_O14_QUALIFICATION_SOLVER_FAILURE_DIAGNOSTIC_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e3_saturation_transition_hydrologic_relevance.py
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen E3B diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3b"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3b_o14_qualification_solver_failure_diagnostic.py \
+            "$out/F-ROSS01_GATE_E3B_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3B_STDOUT.txt"
+      - name: Assert exact original failures reproduced
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3b/F-ROSS01_GATE_E3B_RESULT.json'))
+          assert r['qualification_use_only'] is True
+          assert r['hard_mass_certificate_cm'] == 1e-9
+          assert r['original_failures_reproduced'] is True
+          assert all(t['committed_state_unchanged_during_diagnostics'] for t in r['trials'])
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3b-o14-qualification-solver-diagnostic
+          path: ross01-gate-e3b/
