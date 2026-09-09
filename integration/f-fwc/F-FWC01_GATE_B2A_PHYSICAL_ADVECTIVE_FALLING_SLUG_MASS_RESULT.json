@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS",
+  "contract": "F-FWC01_GATE_B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_PRECOMMIT.json",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION_SOURCE_BOUND_EQ19",
+  "fixture_repair": {
+    "first_run": 34383004978,
+    "first_run_conclusion": "failure_before_scientific_execution",
+    "reason": "cross-branch ROSS material catalog was unavailable on the FWC branch",
+    "repair": "branch-local immutable four-material fixture with frozen Staringreeks provenance",
+    "scientific_precommit_changed": false
+  },
+  "workflow": {
+    "run": 34383285967,
+    "head": "17c879ad7e4027d416520e6078f155371d7db7ea",
+    "conclusion": "success",
+    "artifact_id": 10116708812,
+    "artifact_digest": "sha256:fc08b1b0f2016c1c668a8d69a482e48bacb0777e6654ef68d97033474bb58419"
+  },
+  "materials": ["B01","B12","O13","O14"],
+  "theta_bin_counts": [16,64,200],
+  "dt_days": [1e-6,1e-5,1e-4,1e-3],
+  "case_count": 48,
+  "case_pass_count": 48,
+  "maximum_abs_mass_residual_cm": 6.938893903907228e-18,
+  "mass_identity": "initial_storage - cumulative_bottom_outflow - final_storage = residual",
+  "physical_equation": "falling-slug front velocity v_j = [K(theta_j)-K(theta_{j-1})]/[theta_j-theta_{j-1}]",
+  "constitutive_family": "unimodal Mualem-van Genuchten using KSATFIT with H_ENPR=0 and KSATEXM disabled",
+  "checks": {
+    "incremental_conductivity_velocity_identity": true,
+    "internal_slug_length_preserved": true,
+    "partial_bottom_outflow_ledgered": true,
+    "complete_slug_exit_ledgered": true,
+    "accepted_mass_closure_at_roundoff_scale": true,
+    "overflow_triggered_at_ninth_fixed_slot": true,
+    "overflow_committed_state_bitwise_unchanged": true,
+    "overflow_committed_ledger_exactly_unchanged": true,
+    "mass_repair_applied": false,
+    "numerical_clipping_repair_applied": false
+  },
+  "decision": "QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES",
+  "hard_nonclaims": [
+    "No full FWC physical-column qualification.",
+    "No infiltration-front qualification.",
+    "No groundwater-front qualification.",
+    "No capillary-relaxation trajectory qualification.",
+    "No explicit-diffusion equation reconstruction or qualification.",
+    "No FullRichards hydraulic-accuracy qualification.",
+    "No runtime-affordability or MultiSWAP production admission."
+  ],
+  "relevant_invariants": [4,7,13,16,20,23,25,26,30],
+  "status": "QUALIFIED_RESTRICTED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE"
+}
