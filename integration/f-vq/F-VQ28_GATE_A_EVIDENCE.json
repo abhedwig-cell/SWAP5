@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "gate": "A_HELD_OUT_BOUNDED_REFINEMENT_PROFILE",
+  "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+  "tested_candidate": "cd086d9c70ba52f6c7b867171c17dcd97caf69fd",
+  "workflow": {
+    "run": 34303003171,
+    "job": 102313763530,
+    "conclusion": "success"
+  },
+  "source_controls": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fsi20_owner_status_base": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
+    "production_source_unchanged": "PASS",
+    "frozen_heldout_matrix": "PASS",
+    "exact_solver_and_mass_controls": "PASS",
+    "reference_tridag_control": "PASS",
+    "repeat_o0": "PASS",
+    "repeat_o2": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "matrix": {
+    "soil_and_geometry": "source-locked four-node homogeneous F-GC02/F-SI20 fixture",
+    "total_horizon_day": 0.25,
+    "initial_heads_cm": [-40.0,-55.0,-110.0,-160.0,-210.0,-320.0],
+    "bottom_head_jumps_cm": [-0.05,-0.01,0.01,0.05],
+    "case_count": 24,
+    "trajectory_steps": [1,2,4,8,16,32,64,128,256,512],
+    "finite_reference_steps": 512,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12
+  },
+  "results": {
+    "all_cases_completed": true,
+    "all_cases_hard_mass_gate": "PASS",
+    "maximum_external_mass_residual": 5.42101086242752217e-20,
+    "maximum_observed_nonlinear_iterations": 3,
+    "maximum_observed_backtracking_attempts": 3,
+    "all_resolved_raw_head_defect_curves_monotone_nonincreasing": true,
+    "bounded_profile_candidate": true,
+    "maximum_persistent_conservative_entry_N": 16,
+    "entry_N_by_initial_head_cm": {
+      "-40": 1,
+      "-55": 1,
+      "-110": 1,
+      "-160": 4,
+      "-210": 16,
+      "-320": 16
+    },
+    "entry_N_invariant_across_four_jump_sign_amplitudes_within_each_state": true,
+    "coarse_ratio_examples": {
+      "h0_-40_Dh_over_E2_at_N1": 74.0,
+      "h0_-55_Dh_over_E2_at_N1": 12.0,
+      "h0_-110_Dh_over_E2_at_N1": 1.114,
+      "h0_-160_Dh_over_E2_at_N1": 0.737,
+      "h0_-160_first_persistent_conservative_N": 4,
+      "h0_-210_Dh_over_E2_at_N1": 0.632,
+      "h0_-210_first_persistent_conservative_N": 16,
+      "h0_-320_Dh_over_E2_at_N1": 0.753,
+      "h0_-320_first_persistent_conservative_N": 16
+    }
+  },
+  "scientific_interpretation": {
+    "primary": "The held-out matrix independently reproduces the hydraulic-state dependence seen in the owner calibration context. Across the tested small prescribed-head jump range, the refinement level at which the raw head defect becomes persistently conservative is controlled much more strongly by hydraulic state than by jump sign or amplitude.",
+    "boundedness": "A bounded fixed-horizon refinement entry exists for every frozen held-out case, with maximum observed entry N=16 over h0 from -40 to -320 cm.",
+    "not_a_universal_error_factor": "The defect-to-remaining-error ratio still varies strongly with hydraulic state. Gate A therefore does not admit a universal multiplicative error estimator or a universal absolute production tolerance.",
+    "finite_reference_warning": "N=512 is a finite reference trajectory, not an exact solution. Ratios near numerical floor are excluded from profile classification.",
+    "runtime_semantics_warning": "N is the number of equal substeps used to integrate the same 0.25-day fixed horizon. It is not a transaction retry count and cannot be mapped directly to F-KT retries or F-GC02 internal committed substeps.",
+    "scope_limit": "Evidence applies only to the source-locked homogeneous four-node mode-5 no-optional-physics fixture and tested hydraulic/jump envelope."
+  },
+  "gate_A_decision": "PASS_BOUNDED_FIXED_HORIZON_PROFILE_CANDIDATE_REQUIRES_RUNTIME_SHAPE_TRANSLATION",
+  "admitted_by_gate_A": {
+    "raw_head_defect_is_reproducibly_state_dependent": true,
+    "bounded_fixed_horizon_conservative_entry_exists_on_tested_heldout_envelope": true,
+    "entry_is_jump_invariant_within_tested_small_jump_range": true
+  },
+  "not_admitted_by_gate_A": {
+    "production_temporal_metric": true,
+    "production_temporal_tolerance": true,
+    "state_normalization": true,
+    "universal_richardson_factor": true,
+    "retry_budget_change": true,
+    "F_KT_semantics_change": true,
+    "F_GC02_release": true,
+    "general_richards_temporal_profile": true
+  },
+  "next_action": "Run a separate production-shape translation gate with unchanged F-GC02 transaction policy. Determine whether the actual retry/substep topology can reach or safely represent the fixed-horizon conservative regime across the held-out hydraulic states without selecting a tolerance or changing production policy."
+}
