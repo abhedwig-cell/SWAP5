@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "tested_head": "fed53a1c73bad6c3ef115d6f400b6105d49f67e7",
+  "workflow": {
+    "name": "F-LMFP09 Ratio Resolution Characterization",
+    "run": 34299999856,
+    "job": 102304680746,
+    "conclusion": "SUCCESS",
+    "artifact": 10084627103,
+    "artifact_digest": "sha256:5c1289b9e46f45e4aa86c21996be57b0552ad436d8e7a4759ffa61424483ac34"
+  },
+  "material_geometry_class": "reference_sand:20cm",
+  "thresholds_changed": false,
+  "baseline_reproduced": true,
+  "hard_identity_continuity_fail_closed_invariants_pass": true,
+  "results": {
+    "33_nodes": {
+      "bytes_per_class": 7128,
+      "face_pass": false,
+      "corrected_max_rel_error": 0.45162180968031085,
+      "corrected_p90_rel_error": 0.012189041242335137,
+      "corrected_p99_rel_error": 0.08352229244181744
+    },
+    "34_nodes_source_bound_diagnostic_split": {
+      "bytes_per_class": 7344,
+      "extra_oracle_solves": 27,
+      "split_interval_cm": [-115.30715360110095, -46.56309852748798],
+      "inserted_head_cm": -73.27385874960311,
+      "face_pass": false,
+      "corrected_max_rel_error": 0.42652770511653415,
+      "corrected_p90_rel_error": 0.011623150077672385,
+      "corrected_p99_rel_error": 0.08352229244181744,
+      "former_worst_case_error_at_hu_minus68p6256": 0.22953477420954888
+    },
+    "65_nodes_class_only_control": {
+      "bytes_per_class": 14040,
+      "offline_oracle_solves": 1755,
+      "face_pass": false,
+      "corrected_max_rel_error": 0.42652770511653415,
+      "corrected_p90_rel_error": 0.006131740571566685,
+      "corrected_p99_rel_error": 0.12600053274205567
+    }
+  },
+  "dominant_remaining_case": {
+    "h_upper_cm": -100.0,
+    "h_lower_cm": 0.0,
+    "gradient": 5.0,
+    "face_length_cm": 20.0,
+    "q_ref_cm_d": -2.6820255210623145,
+    "q_corrected_cm_d": -3.825983711625,
+    "corrected_rel_error": 0.42652770511653415,
+    "gradient_is_exact_table_node": true,
+    "lower_head_is_saturation_crossing": true
+  },
+  "corrected_interpretation": {
+    "automated_artifact_decision_was_too_strong": "The artifact string HEAD_DENSITY_ALONE_NOT_SUFFICIENT_REASSESS_RATIO_OR_GRADIENT_GEOMETRY is not adopted as the scientific decision. Failure of a 65-node control only proves that 65 uniform upper-head nodes are insufficient, not that head density can never resolve the representation.",
+    "source_bound_inference": "The dominant remaining case uses g=5, which is an exact G_AXIS node. Its error therefore cannot be caused by gradient interpolation. Bilinear interpolation reduces to upper-head interpolation for this probe. The case also lies exactly on h_lower=0, while the other former dominant outlier has h_lower close to zero. This localizes the unresolved geometry to the near-saturation lower-head crossing in the current (h_upper, g) coordinates.",
+    "failure_classification": {
+      "primary": "B_INTERPOLATION_GEOMETRY_NEAR_LOWER_HEAD_SATURATION_CROSSING",
+      "secondary": "A_UNIFORM_RATIO_HEAD_DENSITY_65_STILL_INSUFFICIENT_FOR_THIS_GEOMETRY",
+      "not_yet_supported": "C_TRUE_PHYSICAL_DISCONTINUITY"
+    }
+  },
+  "next_test": {
+    "purpose": "Characterize R along exact gradient nodes through h_lower=0 and determine whether a small local head refinement resolves the crossing or whether the coordinate family should align explicitly with lower-head saturation geometry.",
+    "no_threshold_relaxation": true,
+    "no_production_selector_from_validation_points": true,
+    "no_global_129_or_larger_table_before_geometry_characterization": true
+  },
+  "architecture": {
+    "production_code_changed": false,
+    "mass_semantics_changed": false,
+    "exact_identities_preserved": true,
+    "fail_closed_preserved": true,
+    "shared_immutable_class_tables_only": true,
+    "per_column_tables": false,
+    "groundwater_admission": false,
+    "production_admission": false
+  },
+  "decision": "QUALIFIED_FAILURE_ATTRIBUTION_TO_NEAR_SATURATION_LOWER_HEAD_INTERPOLATION_GEOMETRY_CONTINUE_WITH_LOCAL_CROSSING_CHARACTERIZATION"
+}
