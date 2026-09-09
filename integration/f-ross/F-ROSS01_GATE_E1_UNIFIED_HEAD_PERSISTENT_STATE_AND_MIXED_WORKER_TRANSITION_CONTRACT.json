@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E1_UNIFIED_HEAD_PERSISTENT_STATE_AND_MIXED_WORKER_TRANSITION",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisite": "SATURATION_REQUIRES_EXPLICIT_HEAD_DOF_AND_SEPARATE_NEAR_SATURATION_CLOSURE_READY_FOR_E1_TRANSITION_DESIGN",
+  "purpose": "Qualify the logical state representation across the unsaturated/saturated boundary before extending RossFast face tables or implementing a saturation-crossing timestep.",
+  "architecture_hypothesis": {
+    "persistent_physical_state": "one pressure_head_cm value per soil control volume",
+    "derived_committed_quantities": ["theta", "effective_saturation", "hydraulic_mode"],
+    "worker_numerical_state": "Ross-style mixed variable: effective saturation/water-content coordinate for h<0 and pressure-head coordinate for h>=0, plus a trial mode mask",
+    "separation_rule": "The solver's mixed dependent variable is numerical scratch and is not required to be the persisted restart coordinate.",
+    "mode_rule": "UNSATURATED for h<0; SATURATED for h>=0. The h=0 boundary belongs deterministically to SATURATED.",
+    "reason": "E0 proved theta and K are noninjective in the saturated regime, while pressure head remains a single physical coordinate on both sides of h=0."
+  },
+  "hydraulic_scope": {
+    "family": "Staringreeks 2018 unimodal MvG base",
+    "retention": "H_ENPR=0",
+    "conductivity": "KSATFIT base MvG",
+    "materials": 36,
+    "heterogeneity": false,
+    "macropores": false,
+    "note": "This gate uses source constitutive functions directly. It does not claim that the existing C1R face table is valid above h=-1 cm."
+  },
+  "precommitted_head_witnesses_cm": [-10000.0, -1000.0, -100.0, -10.0, -1.0, -0.1, -0.001, -1e-09, 0.0, 1e-09, 0.001, 0.1, 1.0, 10.0, 100.0],
+  "transition_pairs_cm": [
+    [-1.0, 1.0],
+    [-0.1, 0.1],
+    [-0.001, 0.001],
+    [-1e-09, 1e-09],
+    [1e-09, -1e-09],
+    [0.001, -0.001],
+    [0.1, -0.1],
+    [1.0, -1.0]
+  ],
+  "hard_tests": {
+    "persistent_head_to_worker_to_head_roundtrip": "all finite witnesses; unsaturated inverse must reproduce h within absolute 1e-8 cm or relative 1e-11, saturated branch must be exact binary64 pass-through",
+    "checkpoint_restore_identity": "serializing and restoring persistent head alone must reproduce mode, theta and worker coordinate deterministically",
+    "storage_delta_representation_independence": "for every transition pair, theta(h1)-theta(h0) computed from persistent heads must equal the same delta obtained after worker encode/decode within 2e-15 volumetric theta",
+    "no_switch_storage_correction": "transition accounting is only theta_end-theta_start; no separate saturation-mode storage term is allowed",
+    "forward_reverse_storage_antisymmetry": "paired forward/reverse transitions must sum to zero within 2e-15 volumetric theta",
+    "rollback_identity": "a rejected crossing trial must leave the committed persistent head, derived theta and mode bitwise/numerically unchanged",
+    "boundary_mode_is_deterministic": "h=0 is SATURATED for every material",
+    "no_nonfinite_values": true
+  },
+  "selection_rule": {
+    "pass": "Select UNIFIED_HEAD_PERSISTENT_STATE_WITH_ROSS_MIXED_WORKER_VARIABLES as the E-line state architecture candidate.",
+    "fail": "Do not select a persistent state layout; reconcile mapping or constitutive semantics before face/transition implementation.",
+    "performance_nonclaim": "Selection is based on physical injectivity, transaction/restart determinism and representation-independent storage, not an assumed runtime advantage."
+  },
+  "transaction_rules": [
+    "Committed state is never mutated by encode/decode or trial construction.",
+    "Trial mode masks and mixed variables belong to worker scratch until commit.",
+    "A committed crossing publishes only the accepted pressure head; theta and mode are derived from that committed state.",
+    "Rollback discards all trial mixed state without needing a compensating water correction."
+  ],
+  "explicit_nonclaims": [
+    "E1 does not qualify Ross timestep algebra through saturation.",
+    "E1 does not qualify face fluxes for -1<h<=0 or saturated faces.",
+    "E1 does not qualify compressible saturated storage; the current base fixture treats theta as plateaued at theta_s for h>=0.",
+    "E1 does not qualify groundwater, prescribed-head boundaries, heterogeneity, macropores, Class-B hydraulics or MultiSWAP performance.",
+    "E1 does not change physical retention or conductivity laws."
+  ],
+  "exit": {
+    "pass": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
+    "fail": "SATURATION_STATE_LAYOUT_NOT_QUALIFIED_RECONCILE_BEFORE_E2"
+  },
+  "relevant_invariants": [3,4,5,7,8,13,16,20,22,23,24,25,26,27,30]
+}
