@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R1_KSATEXM_SEAM_ALIGNED_CHARACTERIZATION",
+  "status": "REPRESENTATION_FROZEN_BEFORE_R1_CHARACTERIZATION",
+  "supersedes_for_characterization": "uniform-u N241 candidate rejected by F-ROSS01_GATE_C2A_KSATEXM_CHARACTERIZATION_RESULT.json",
+  "production_implementation": false,
+  "motivation": "The source-bound SWAP 4.3.1 KSATEXM law is continuous but has a conductivity-derivative seam at h=-2 cm. The rejected uniform-u grid places this seam inside a table cell. R1 aligns the exact source-defined seam with a table node without increasing node count or memory.",
+  "unchanged_physics": {
+    "conductivity_law": "exact source-bound SWAP 4.3.1 KSATEXM extension",
+    "h_thr_cm": -2.0,
+    "h_enpr_enabled": false,
+    "macropore_enabled": false,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0,
+    "homogeneous_faces_only": true
+  },
+  "representation": {
+    "coordinate_semantics": "u=log10(-h/cm)",
+    "u_min": 0.0,
+    "u_seam": 0.3010299956639812,
+    "u_max": 4.0,
+    "node_count_per_axis": 241,
+    "wet_interval_count": 18,
+    "dry_interval_count": 222,
+    "seam_node_index_zero_based": 18,
+    "wet_nodes": "u_i=i*u_seam/18 for i=0..18",
+    "dry_nodes": "u_i=u_seam+(i-18)*(4-u_seam)/222 for i=18..240",
+    "wet_spacing_u": 0.016723888647998957,
+    "dry_spacing_u": 0.016662027046558643,
+    "old_uniform_spacing_u": 0.016666666666666666,
+    "seam_is_exact_node": true,
+    "axis_storage": "analytic_piecewise_uniform_no_persistent_axis_array",
+    "stored_quantity": "IEEE754_float32 log mobility",
+    "interpolation": "bilinear in log mobility with float64 arithmetic inside one piecewise-axis cell",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(interpolated_log_mobility), with exact equal-head q=K(h)",
+    "state_to_coordinate": "qualified direct S-to-u mapping",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "locator": {
+    "wet_side": "if u <= u_seam: x=18*u/u_seam",
+    "dry_side": "if u > u_seam: x=18+222*(u-u_seam)/(4-u_seam)",
+    "cell_rule": "i=min(239,max(0,floor(x))); fraction=x-i",
+    "exact_seam_rule": "u==u_seam maps exactly to x=18 and therefore never interpolates across the constitutive seam"
+  },
+  "characterization": {
+    "materials": ["B10", "O12", "O13", "B05", "O14", "O05"],
+    "probe_set": "reuse the frozen C2A development characterization probes because no holdout has been accessed",
+    "no_new_probe_tuning_for_r1": true,
+    "candidate_count": 1,
+    "selection_tuning": false
+  },
+  "criteria": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "oracle": {
+    "same_source_bound_ksatexm_law": true,
+    "same_independent_steady_darcy_equation": true,
+    "quadrature_split_at_h_minus_2_cm": true,
+    "no_table_interpolation_inside_oracle": true
+  },
+  "exit_rule": {
+    "pass_all_six": "freeze R1 and create a fresh 36-material KSATEXM holdout with new probes before any C2A catalog qualification claim",
+    "any_fail": "reject R1 fail-closed and diagnose whether additional wet-end representation structure is required; do not tune on a future holdout"
+  },
+  "scope_guard": "No h>-1 cm, no non-zero H_ENPR, no saturation switching, no heterogeneous profiles, no timestep qualification, no bottom boundary, no groundwater, no MultiSWAP production claim, no J1 response-tangent admission and no FullRichards equivalence."
+}
