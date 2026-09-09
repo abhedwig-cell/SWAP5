@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF35",
+  "title": "Accepted-Window Runtime Lineage Canonical Composition",
+  "branch": "integration/f-wof35-accepted-window-canonical-composition",
+  "base": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4"
+  },
+  "input": {
+    "F_WOF34_qualified_source": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+    "F_WOF34_qualification_run": 34312699703,
+    "F_WOF34_expected_output_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "F_WOF33_closeout": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+    "F_WOF33_expected_output_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f"
+  },
+  "composition": {
+    "dependency_closure_materialized": true,
+    "materialization_commit": "16fb3a05cdabcda18c385892c89f843e7da9c45b",
+    "semantic_changes_to_donor_blobs": false,
+    "exact_donor_blob_lock": true,
+    "production_paths_added": [
+      "src/crop/mod_wofost_actual_biomass_state.f90",
+      "src/crop/mod_wofost_crop_owner_state.f90",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90",
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"
+    ]
+  },
+  "gate": {
+    "script": "tests/fwof/run_fwof35_canonical_composition_gate.sh",
+    "workflow": "F-WOF35 canonical composition",
+    "workflow_run": 34332201622,
+    "workflow_head": "8f77f4243697279cb88c1f57595de3558a6ba396",
+    "last_observed_status": "QUEUED",
+    "required": [
+      "canonical ancestry and exact donor blob identity",
+      "F-WOF34 O0 and O2 execution against current canonical transaction/runtime/kernel owners",
+      "O0/O2 output identity",
+      "exact F-WOF34 transcript SHA identity",
+      "current F-CI03/F-CI04/F-CI10/F-CI12/F-CI13/F-CI14 behavioral regressions",
+      "immutable F-WOF33 closeout regression"
+    ]
+  },
+  "scope_flags": {
+    "PERSISTED": true,
+    "COMPOSITION_MATERIALIZED": true,
+    "TEST_EXECUTION_STARTED": true,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "CANONICAL_ADMITTED": false,
+    "ACTUAL_RICHARDS_ROOT_ET_SUBSTEP_BINDING": false,
+    "CALENDAR_SCHEDULER": false,
+    "ACTIVE_WINDOW_RESTART_OWNERSHIP": false
+  },
+  "hard_holds": [
+    "No canonical promotion before composed regression passes.",
+    "F-CI19 still requires actual physical process-substep binding and accepted-window provenance on a composed postimage before WOFOST physical production admission.",
+    "Historical multi-day B1.10 WOFOST equivalence remains unqualified.",
+    "No calendar scheduler, oxygen IALPWET aggregate, nutrients, soybean, grass or potential-crop claim is introduced here."
+  ],
+  "decision": "COMPOSITION_MATERIALIZED_EXECUTION_STARTED_NO_QUALIFICATION",
+  "status": "PERSISTED_COMPOSED_EXECUTING_NOT_YET_QUALIFIED"
+}
