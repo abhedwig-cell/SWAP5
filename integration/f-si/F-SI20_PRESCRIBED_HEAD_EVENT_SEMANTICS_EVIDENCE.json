@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "PRESCRIBED_HEAD_OUTER_BOUNDARY_EVENT_SEMANTICS",
+  "scope": "exact F-GC02 prescribed-bottom-head predictor path only; no general claim for arbitrary time-varying forcing inside an interval",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "transaction_reference_blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "canonical_interval_runtime_blob": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_source_changed": false
+  },
+  "fixture_semantics": {
+    "t0_day": 4100.125,
+    "t1_day": 4100.375,
+    "committed_initial_head_cm": -75.0,
+    "predictor_bottom_head_cm": -74.99,
+    "bottom_head_jump_cm": 0.01,
+    "bottom_mode": 5,
+    "forcing_assignment_occurs_before_run_trial": true,
+    "forcing_change_inside_requested_interval": false
+  },
+  "runtime_trace": {
+    "kernel_constructs_one_external_interval": "[t0,t1]",
+    "canonical_runtime_prepare_interval_calls_per_external_interval": 1,
+    "serialized_prepare_interval_copies_bottom_head_from_forcing": true,
+    "transaction_full_trial_uses_bound_bottom_head": true,
+    "transaction_half1_uses_same_bound_bottom_head": true,
+    "transaction_half2_uses_same_bound_bottom_head": true,
+    "retry_attempts_use_same_bound_bottom_head": true,
+    "attempt_endpoint_changes_on_retry": true,
+    "forcing_value_changes_on_retry": false
+  },
+  "interpretation": {
+    "predictor_is_nonstationary": true,
+    "nonstationarity_is_caused_by_outer_boundary_condition_change_at_t0": true,
+    "hidden_discontinuity_inside_full_or_half_trial": false,
+    "full_vs_two_half_compare_same_physical_forcing_on_same_attempted_interval": true,
+    "special_event_split_required_for_exact_fgc02_fixture": false,
+    "generic_internal_forcing_event_policy_qualified_here": false,
+    "key_finding": "For the exact F-GC02 predictor, the prescribed-head change is an outer-boundary condition already present when the interval begins. The canonical runtime binds the forcing once before transaction execution, so FULL and both HALF branches see the same bottom head. The temporal discrepancy therefore cannot be dismissed as an artifact of one branch crossing a hidden forcing discontinuity that another branch does not cross."
+  },
+  "architectural_constraints": {
+    "generic_time_preserved": true,
+    "no_midnight_semantics_introduced": true,
+    "forcing_remains_separate_from_committed_state": true,
+    "transactional_same_t0_origin_preserved": true,
+    "mass_gate_unchanged": true,
+    "production_source_modified": false
+  },
+  "owner_conclusion": "EVENT_BOUNDARY_SEMANTICS_NOT_A_REMAINING_FSI20_BLOCKER_FOR_EXACT_FGC02_PREDICTOR"
+}
