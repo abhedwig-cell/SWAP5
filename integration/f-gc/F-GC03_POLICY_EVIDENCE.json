@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC03",
+  "title": "Coupling Head-Accuracy Budget Provenance and Temporal Error Allocation Policy",
+  "branch": "work/f-gc03-coupling-head-accuracy-budget-provenance",
+  "start_head": "5c8275cc9443d33fd3bc41c333464f333df20275",
+  "tested_head": "33d9725fd59cfae238084a1482fe46d8982ebb9f",
+  "tested_tree": "977eba69f58ac81b6cedd5a766eda9ff4925f399",
+  "artifacts": {
+    "plan_blob": "8e51f7a577dd3f3f24a7d6125f80b0cc86274044",
+    "contract_blob": "ef7465473c0cb6f88f7c192cee4aad3185718969",
+    "runner_blob": "52610c2bf8b5fbedd2fe5546d4f52cf639abe1cf",
+    "workflow_blob": "43c6c1bcc6fb7df6c2b815e4bab5fb6f32de93fe",
+    "F_GC01_interface_contract_blob": "fb1d0df4c78cffb74dabaa7ef1c2ff1bf992763c",
+    "F_GC02_failure_diagnosis_blob": "2ac62f9d87ee774d50ef48309ef1ac4c9a1ed466",
+    "F_GC02_driver_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "F_KT11_FVQ34_handoff_blob": "51890fca7138021385f3366167ade92ef6daffb4",
+    "F_VQ34_closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270"
+  },
+  "execution": {
+    "workflow_run": 34369787999,
+    "workflow_job": 102527745078,
+    "workflow_conclusion": "success",
+    "run_attempt": 1,
+    "platform": "ubuntu-24.04",
+    "permissions": "contents: read",
+    "first_run_success": true
+  },
+  "gate_results": {
+    "G01_SOURCE_AND_CHRONOLOGY_LOCKS": "PASS",
+    "G02_EXPLICIT_QUANTITY_AND_UNIT_SEPARATION": "PASS",
+    "G03_ADMISSIBLE_PROVENANCE_CLASSES_DEFINED": "PASS",
+    "G04_FORBIDDEN_POST_HOC_DERIVATIONS_FAIL_CLOSED": "PASS",
+    "G05_NO_DEFAULT_OR_HIDDEN_0P01CM": "PASS",
+    "G06_NO_TRUE_ERROR_BOUND_OVERCLAIM": "PASS",
+    "G07_RUNTIME_DIAGNOSTIC_PROVENANCE_CONTRACT": "PASS",
+    "G08_FGC02_REEXECUTION_RELEASE_CONDITION_DEFINED": "PASS",
+    "G09_CORE_INVARIANT_POLICY_SEPARATION": "PASS",
+    "NUMERIC_APPLICATION_H_BUDGET_PRESENT": "NO",
+    "FGC02_EXECUTION_AUTHORIZED": "NO",
+    "overall_policy_gate": "PASS"
+  },
+  "qualified_policy_claims": {
+    "richards_temporal_budget_is_distinct_from_coupling_head_residual_tolerance": true,
+    "richards_temporal_budget_is_distinct_from_predictor_perturbation": true,
+    "richards_temporal_budget_is_distinct_from_nonlinear_solver_tolerance": true,
+    "richards_temporal_budget_native_unit": "cm pressure head",
+    "coupling_head_residual_tolerance_native_unit": "m",
+    "explicit_unit_conversion_m_to_cm": 100.0,
+    "unit_conversion_can_create_semantic_budget": false,
+    "budget_must_be_finite_positive": true,
+    "budget_default": null,
+    "budget_must_be_frozen_independently_of_target_trial_B_inf_C_h_or_result": true,
+    "budget_provenance_record_required": true,
+    "missing_or_invalid_budget_fails_closed": true
+  },
+  "admissible_provenance_classes": [
+    "EXTERNAL_APPLICATION_ACCURACY_REQUIREMENT_FROZEN_BEFORE_EXECUTION",
+    "VERSIONED_NUMERICAL_POLICY_TEMPLATE_QUALIFIED_ON_INDEPENDENT_EVIDENCE"
+  ],
+  "explicitly_nonadmissible_sources": [
+    "CURRENT_TRIAL_B_INF_OR_FUNCTION_OF_B_INF",
+    "F_VQ34_QUALIFICATION_ONLY_BUDGET_CONSTRUCTION",
+    "FGC02_PREDICTOR_HEAD_PERTURBATION",
+    "LEGACY_BINARY_TRANSACTION_TEMPORAL_TOLERANCE",
+    "NONLINEAR_NEWTON_TOLERANCE",
+    "UNQUALIFIED_COUPLING_HEAD_RESIDUAL_TOLERANCE",
+    "MATERIAL_SPECIFIC_POST_HOC_TUNING"
+  ],
+  "scientific_nonclaims": {
+    "B_inf_is_proven_nonlinear_true_error_upper_bound": false,
+    "C_h_le_1_proves_total_application_head_error_within_budget": false,
+    "coupling_and_temporal_errors_can_be_rigorously_added_without_separate_proof": false,
+    "F_GC03_selects_numeric_H_budget": false,
+    "F_GC03_releases_F_GC02": false,
+    "F_GC03_authorizes_F_VQ35": false
+  },
+  "frozen_target_reconciliation": {
+    "F_GC02_t0": 4100.125,
+    "F_GC02_t1": 4100.375,
+    "F_GC02_corrector_bottom_head_cm": -75.0,
+    "F_GC02_predictor_bottom_head_cm": -74.99,
+    "F_GC02_predictor_perturbation_cm": 0.01,
+    "F_GC02_old_transaction_temporal_tolerance": 0.0,
+    "predictor_perturbation_is_H_budget": false,
+    "old_temporal_tolerance_is_H_budget": false,
+    "pre_result_numeric_H_budget_found": false
+  },
+  "core_invariant_audit": {
+    "3_explicit_data_separation": "PASS: coupling residual tolerance, Richards temporal budget, predictor perturbation and nonlinear tolerance are separate quantities with separate owners.",
+    "7_transactional_timesteps": "PASS: absence of a legitimate budget cannot retrospectively accept or commit the previously rejected F-GC02 trial.",
+    "11_coupling_core_functionality": "PASS: coupling admission policy and provenance are explicit rather than hidden in solver internals.",
+    "12_explicit_groundwater_interface_contract": "PASS_WITHIN_POLICY_SCOPE: H_SWAP/H_GW and flux contract remain unchanged; this unit does not weaken interface conservation.",
+    "13_mass_conservation_absolute": "PASS: no mass tolerance or mass-gate ordering is changed.",
+    "23_physics_solver_policy_separated": "PASS: accuracy policy is not derived from physical forcing or predictor perturbation.",
+    "26_runtime_diagnostics": "PASS: provenance_id and policy_version are required with supplied/valid/native budget diagnostics.",
+    "29_no_silent_dependencies": "PASS: no default or hidden 0.01 cm H_budget is introduced.",
+    "30_architecture_change_audit": "PASS: policy-only workunit is explicitly reconciled against applicable invariants; production source is unchanged."
+  },
+  "production_source_modified": false,
+  "physical_FGC02_trial_executed": false,
+  "numeric_application_H_budget_selected": false,
+  "evidence_decision": "QUALIFIED_FAIL_CLOSED_HEAD_BUDGET_PROVENANCE_CONTRACT"
+}
