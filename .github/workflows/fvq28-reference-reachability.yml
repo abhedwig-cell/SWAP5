@@ -1,0 +1,32 @@
+name: F-VQ28 same-endpoint reference reachability
+
+on:
+  push:
+    branches:
+      - qualification/f-vq28-richards-temporal-numeric-profile
+    paths:
+      - 'tests/fvq/test_fvq28_reference_reachability.f90'
+      - 'tests/fvq/run_fvq28_reference_reachability.sh'
+      - 'integration/f-vq/F-VQ28_REFERENCE_REACHABILITY_PLAN.json'
+      - '.github/workflows/fvq28-reference-reachability.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  attribute:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run reference reachability attribution
+        run: bash tests/fvq/run_fvq28_reference_reachability.sh
