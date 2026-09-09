@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ33",
+  "title": "Independent Production Qualification of Richards Head-Budget Temporal Certificate",
+  "branch": "qualification/f-vq33-richards-head-budget-certificate",
+  "candidate_source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+  "candidate_source_tree": "e3e941dcd7058728581f5488498ebcefb8973aa6",
+  "owner_handoff_commit": "41644e4759f2aafae7a8db66272e03d242652de1",
+  "owner_workflow_run": 34356407443,
+  "owner_workflow_job": 102482099289,
+  "frozen_before_execution": true,
+  "candidate_lock": {
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "budget_owner": "explicit numerical configuration",
+    "richards_native_budget_unit": "cm pressure head",
+    "generic_runtime_interprets_units": false,
+    "missing_invalid_no_history": "certificate unavailable",
+    "mass_before_certificate": true,
+    "certificate_can_override_mass_failure": false,
+    "normalization_extra_nonlinear_solves": 0,
+    "normalization_extra_linear_solves": 0
+  },
+  "independent_matrix": {
+    "frozen_before_execution": true,
+    "case_count": 12,
+    "cases": [
+      {"case":1,"h0_cm":-45.0,"jump_cm":-0.055,"horizon_day":0.175,"policy_probe":"VALID_ACCEPT","budget_rule":"2*direct_B_inf"},
+      {"case":2,"h0_cm":-45.0,"jump_cm":0.055,"horizon_day":0.425,"policy_probe":"VALID_REJECT","budget_rule":"0.5*direct_B_inf"},
+      {"case":3,"h0_cm":-110.0,"jump_cm":-0.055,"horizon_day":0.175,"policy_probe":"MISSING_BUDGET","budget_rule":"not supplied"},
+      {"case":4,"h0_cm":-110.0,"jump_cm":0.055,"horizon_day":0.425,"policy_probe":"INVALID_ZERO_BUDGET","budget_rule":"0"},
+      {"case":5,"h0_cm":-205.0,"jump_cm":-0.055,"horizon_day":0.175,"policy_probe":"NO_HISTORY_WITH_VALID_BUDGET","budget_rule":"2*direct_B_inf"},
+      {"case":6,"h0_cm":-205.0,"jump_cm":0.055,"horizon_day":0.425,"policy_probe":"BOUNDED_RETRY_NO_MONOTONICITY_CLAIM","budget_rule":"1e-12 cm fixed test budget"},
+      {"case":7,"h0_cm":-335.0,"jump_cm":-0.055,"horizon_day":0.175,"policy_probe":"VALID_REJECT","budget_rule":"0.5*direct_B_inf"},
+      {"case":8,"h0_cm":-335.0,"jump_cm":0.055,"horizon_day":0.425,"policy_probe":"VALID_ACCEPT","budget_rule":"2*direct_B_inf"},
+      {"case":9,"h0_cm":-80.0,"jump_cm":-0.025,"horizon_day":0.325,"policy_probe":"INVALID_NAN_BUDGET","budget_rule":"NaN supplied"},
+      {"case":10,"h0_cm":-155.0,"jump_cm":0.025,"horizon_day":0.325,"policy_probe":"INVALID_POSITIVE_INFINITY_BUDGET","budget_rule":"+Inf supplied"},
+      {"case":11,"h0_cm":-275.0,"jump_cm":-0.025,"horizon_day":0.325,"policy_probe":"INVALID_NEGATIVE_BUDGET","budget_rule":"-abs(direct_B_inf)"},
+      {"case":12,"h0_cm":-390.0,"jump_cm":0.025,"horizon_day":0.325,"policy_probe":"MASS_FAILURE_CANNOT_BE_OVERRIDDEN","budget_rule":"very large finite valid budget"}
+    ],
+    "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ30_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ31_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ32_matrix": 0,
+    "exact_triplet_overlap_with_F_KT10_real_fixture": 0,
+    "exact_triplet_overlap_with_F_KT11_owner_fixture": 0
+  },
+  "required_gates": {
+    "G01_source_and_handoff_lock": true,
+    "G02_numerical_configuration_ownership": true,
+    "G03_direct_B_inf_equivalence": true,
+    "G04_valid_accept_reject_threshold_semantics": true,
+    "G05_missing_and_invalid_fail_closed": true,
+    "G06_no_history_no_bootstrap": true,
+    "G07_bounded_retry_exact_rollback": true,
+    "G08_hard_mass_precedence": true,
+    "G09_diagnostics_and_cost_shape": true,
+    "G10_O0_O2_identity": true,
+    "G11_regressions_FKT09_FKT10": true,
+    "G12_no_scope_expansion": true
+  },
+  "qualification_constraints": {
+    "no_universal_H_budget": true,
+    "no_default_budget": true,
+    "no_fitted_factor": true,
+    "no_scientific_tolerance_added": true,
+    "no_dt_monotonicity_claim": true,
+    "no_true_error_upper_bound_claim_for_B_inf": true,
+    "no_GC02_release_from_FVQ33_alone": true
+  },
+  "status": "PLAN_FROZEN_BEFORE_EXECUTION"
+}
