@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_B_DRY_BIN_INITIAL_ADVANCE_SOURCE_RECONCILIATION",
+  "production_implementation": false,
+  "tested": false,
+  "qualified": false,
+  "source_reconciled": true,
+  "sources": [
+    {
+      "doi": "10.1029/2008WR006815",
+      "role": "original Talbot-Ogden infiltration/event semantics",
+      "findings": [
+        "surface flux depth is allocated to bins sequentially",
+        "existing fronts are advanced first and their storage demand is debited from available water",
+        "for a bin unsaturated at the surface, a dry-bin wetting-front advance Z_d is obtained by successive approximation using the Green-Ampt cumulative infiltration equation",
+        "the 2008 implementation description says these dry-bin Z_d values are stored for later unsaturated-bin injection",
+        "the newly created front storage is explicitly debited from the time-step infiltration volume"
+      ]
+    },
+    {
+      "doi": "10.1002/2015WR017126",
+      "role": "improved finite-water-content method and preferred modern theoretical lineage",
+      "findings": [
+        "Eq. 18 adds the K(theta_i) subtraction and uses right-edge bin hydraulic properties",
+        "mass conservation is imposed through explicit finite-volume accounting",
+        "rainfall is first added to the land surface, existing advancing bins then consume surface water, and only afterward can new bins take water",
+        "for new bins the initial advance is limited by the maximum advance during a time step as described in Talbot and Ogden 2008",
+        "the paper does not by itself establish that one time-independent stored Z_d table is the intended modern production representation"
+      ]
+    },
+    {
+      "record": "University of Wyoming DataCorral M2WC70",
+      "doi": "10.15786/M2WC70",
+      "role": "official 2015 code/data artifact",
+      "archive": "M2WC70.zip",
+      "archive_size": "230 MB",
+      "archive_obtained_in_current_execution_environment": false,
+      "code_level_reconciliation_complete": false
+    }
+  ],
+  "decision": "DO_NOT_PROMOTE_LEGACY_STORED_ZD_TO_SWAP5_PERSISTENT_COLUMN_STATE_OR_FIXED_MATERIAL_CONSTANT_PENDING_2015_CODE_LEVEL_RECONCILIATION",
+  "architecture_interpretation": {
+    "physical_owner": "infiltration event/process",
+    "persistent_column_state": "NOT_ADMITTED",
+    "fixed_material_parameter": "NOT_ADMITTED_FROM_CURRENT_EVIDENCE",
+    "provisional_owner": "derived event/numerical quantity from hydraulic parameters and current time-step/candidate-event context",
+    "cache_policy": "may be shared or cached only when the full derivation input tuple is identical; cache is not committed physical state",
+    "reason": "the source semantics tie initial advance to an infiltration calculation and the 2015 formulation explicitly describes a maximum advance during a time step, which must remain compatible with generic/adaptive kernel time"
+  },
+  "effect_on_qualified_subgates": {
+    "B2E_A": "remains valid only as a fully-funded creation mass/event primitive with supplied initial advance",
+    "B2E_C_R1": "remains valid only as a composed mass/event primitive with supplied initial advance",
+    "Green_Ampt_Zd_calculation": "NOT_YET_QUALIFIED",
+    "modern_code_parity": "NOT_YET_REPRODUCED"
+  },
+  "hard_guards": [
+    "Do not infer a production Z_d formula from the 2008 prose alone.",
+    "Do not copy the 2008 stored-Z_d representation into per-column persistent state.",
+    "Do not assume Z_d is independent of solver/event time interval.",
+    "Do not claim modern 2015 code parity until M2WC70 is obtained and inspected or an equivalent authoritative code source is verified.",
+    "Mass/event subgates do not qualify the missing initial-advance physics."
+  ],
+  "relevant_invariants": [3,4,5,7,9,20,23,25,27,29,30],
+  "next_action": "Obtain and inspect the official 2015 M2WC70 implementation or another authoritative code-level representation of new-bin initial advance; then freeze a timestep-generic initial-advance contract before executable qualification."
+}
