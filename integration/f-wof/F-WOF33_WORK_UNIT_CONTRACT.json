@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF33",
+  "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Composition",
+  "branch": "work/f-wof33-two-phase-crop-window-composition",
+  "base": {
+    "commit": "5c35f2c244a476819a673c46b6e926561ea99c84",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_PHASE_B_RATE_PROVIDER_WITH_RUNTIME_LINEAGE_HOLD",
+    "exact_closeout_run": 34310880431,
+    "exact_closeout_job": 102337115266,
+    "exact_closeout_conclusion": "success"
+  },
+  "goal": "Compose the already-qualified F-WOF26, F-WOF28, F-WOF31 and F-WOF32 seams into one transaction-neutral two-phase standard-WOFOST crop-window API without adding scheduler, commit authority, solver calls or accepted-aggregate accumulation to the crop kernel.",
+  "admitted_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "crop_window": "one explicit B1.10-equivalent crop day",
+    "nutrients": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false,
+    "soybean": false,
+    "grass": false
+  },
+  "qualified_component_chain": [
+    "F-WOF26: candidate-local one-day structural prepare/finalize and GLAIEXP compatibility memory",
+    "F-WOF28: compact read-only DVS/WRT/WST/WSO/WLV/LAI/LAIEXP state view",
+    "F-WOF30: shared immutable restricted rate parameter bundle",
+    "F-WOF31: pure phase-A actual PGASS provider",
+    "F-WOF32: pure phase-B rate-packet provider with runtime accepted-window lineage hold"
+  ],
+  "phase_A_begin": {
+    "inputs": [
+      "committed wofost_crop_owner_state_t",
+      "wofost_one_day_forcing_t",
+      "t0,t1",
+      "SSA stem-area coefficient",
+      "SPA storage-area coefficient",
+      "shared immutable wofost_rate_parameter_bundle_t"
+    ],
+    "order": [
+      "F-WOF26 prepare_wofost_one_day_candidate from committed state",
+      "for active crop only: F-WOF28 assemble one immutable semantic rate-state snapshot",
+      "translate explicit forcing plus candidate-local TMNR to F-WOF31 forcing",
+      "F-WOF31 prepare actual PGASS",
+      "freeze the phase-B TAV/DAYLP forcing in the trial-local context"
+    ],
+    "outputs": ["trial-local crop-window context", "begin diagnostics"],
+    "committed_state_mutation": false,
+    "inactive_crop": "successful no-op context; active-only canopy and rate parameters are not inspected"
+  },
+  "phase_B_complete": {
+    "inputs": [
+      "read-only phase-A crop-window context",
+      "same shared immutable rate parameter bundle",
+      "F-WOF26 structural update parameters DVSEND/SPAN",
+      "frozen semantic wofost_accepted_window_aggregates_t supplied by runtime"
+    ],
+    "order": [
+      "F-WOF32 finalize rate packet from the exact phase-A state snapshot and frozen phase-B forcing",
+      "F-WOF26 finalize structural candidate from the prepared candidate, same accepted aggregates and generated packet"
+    ],
+    "outputs": ["complete candidate", "rate packet", "composition and structural diagnostics"],
+    "commit_authority": false,
+    "on_failure": "returned candidate is reset to the phase-A prepared candidate and must not represent a partially applied structural trial"
+  },
+  "trial_context_contract": {
+    "ownership": "worker/job-local crop-window trial context, never persistent column state",
+    "stores": [
+      "F-WOF26 prepared candidate containing candidate-local Tmin history",
+      "F-WOF26 one-day window context",
+      "seven-scalar F-WOF28 rate-state snapshot",
+      "F-WOF31 prepared actual-PGASS result",
+      "two-scalar F-WOF32 phase-B forcing"
+    ],
+    "does_not_store": [
+      "rate parameter bundle",
+      "solver/Jacobian/Newton workspace",
+      "runtime transaction_result_t",
+      "accepted aggregate accumulator",
+      "calendar cursor or file state"
+    ],
+    "replay": "same committed state + same forcing + same immutable parameters yields bitwise identical begin context; same context + same frozen accepted aggregates yields bitwise identical candidate, packet and diagnostics"
+  },
+  "accepted_window_provenance_hold": {
+    "semantic_carrier": "wofost_accepted_window_aggregates_t",
+    "runtime_owner": true,
+    "rejected_trial_zero_contribution_required": true,
+    "same_crop_window_required": true,
+    "same_accepted_trajectory_required": true,
+    "implemented_or_proven_by_F_WOF33": false,
+    "reason": "moving transaction lineage checks or solver accumulation into crop composition would violate kernel/runtime separation"
+  },
+  "temporal_contract": {
+    "kernel_time": "generic t0,t1 remains outside this process-specific seam",
+    "admitted_process_event": "exactly one qualified crop day as already required by F-WOF26",
+    "Richards_substeps": "not visible to F-WOF33 and must not invoke crop phase-B or structural evolution",
+    "calendar_midnight_required": false,
+    "scheduler_implemented_here": false
+  },
+  "parameter_ownership": {
+    "SSA_SPA": "explicit immutable view-assembly parameters; not copied into persistent crop state",
+    "DVSEND_SPAN": "F-WOF26 structural integrator parameters supplied at complete phase",
+    "rate_parameters": "shared immutable F-WOF30 bundle passed by intent(in) to begin and complete; not copied into trial context"
+  },
+  "gates": {
+    "G01_exact_component_order": "REQUIRED",
+    "G02_committed_state_unchanged_after_begin_and_complete": "REQUIRED",
+    "G03_phase_A_snapshot_reused_by_phase_B": "REQUIRED",
+    "G04_inactive_crop_no_active_parameter_dependency": "REQUIRED",
+    "G05_same_input_begin_replay_bitwise_identity": "REQUIRED",
+    "G06_same_context_complete_replay_bitwise_identity": "REQUIRED",
+    "G07_exactly_one_structural_cohort_shift_per_complete": "REQUIRED",
+    "G08_failure_returns_unadvanced_prepared_candidate": "REQUIRED",
+    "G09_no_commit_scheduler_solver_or_aggregate_accumulator": "REQUIRED",
+    "G10_O0_O2_identity": "REQUIRED",
+    "G11_F_WOF31_and_F_WOF32_exact_regressions": "REQUIRED",
+    "G12_runtime_provenance_hold_persisted": "REQUIRED",
+    "G13_invariant_audit": "REQUIRED"
+  },
+  "not_qualified": [
+    "runtime production accumulation and provenance proof for IQROT/IPTRA",
+    "runtime scheduling of exactly one WOFOST crop event per admitted crop day",
+    "end-to-end legacy scientific qualification over a full historical B1.10 crop trajectory",
+    "IDSL=2 vernalization",
+    "SWRD=2/3 root rate paths",
+    "nutrient and oxygen side routes",
+    "potential trajectory",
+    "soybean and grass routes",
+    "arbitrary subdaily or multi-day WOFOST evolution calls"
+  ],
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
+}
