@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C2_NONLINEAR_B110_PHYSICAL_TRANSFER_CHARACTERIZATION",
+  "frozen_before_execution": true,
+  "owner_inputs": {
+    "gate_B": "QUALIFIED_RESTRICTED_TEST_ONLY_RIGHT_SIDED_DERIVATIVE_BOOTSTRAP",
+    "gate_C1B": "QUALIFIED_EXACT_MANUFACTURED_HYDRAULIC_EIGENMODE_OBSERVER_RELATION",
+    "F_SI22": "QUALIFIED_FIXED_HORIZON_REFINEMENT_OWNER_OBSERVABLE_NUMERIC_ERROR_BOUND_PROFILE_REQUIRED",
+    "F_VQ29": "COMPLETE_FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION"
+  },
+  "purpose": "Characterize transfer of e_h=0.5*dt*(hdot_np1-hdot_n) to real nonlinear B1.10 hydraulics without treating any finite backward-Euler refinement endpoint as exact truth.",
+  "matrix": {
+    "initial_uniform_heads_cm": [-25.0,-75.0,-250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1,-0.01,0.001,0.01,0.1],
+    "case_count": 15,
+    "horizon_day": 0.25,
+    "same_endpoint_step_counts": [1,2,4,8,16,32,64,128,256,512],
+    "finite_reference_endpoint": "N512 only as a finite comparison endpoint",
+    "bottom_mode": 5,
+    "top_flux": "conductivity-balanced initial flux -K(h0)",
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12
+  },
+  "observer_construction": {
+    "hdot_n": "Gate-B source-bound right-sided semi-discrete bootstrap under the new prescribed bottom head",
+    "hdot_np1": "(h_N1-h0)/0.25",
+    "e_h": "0.5*0.25*(hdot_np1-hdot_n)",
+    "scalar_observer": "EOBS=max_i abs(e_h_i)"
+  },
+  "finite_comparators": {
+    "E1_512": "max_i abs(h_N1-h_N512)",
+    "D256_512": "max_i abs(h_N256-h_N512)",
+    "D128_256": "max_i abs(h_N128-h_N256)",
+    "machine_floor": "128*epsilon*max(1,abs(h0),abs(hbot))",
+    "ratio_R512": "EOBS/E1_512 when E1_512 is finite and positive",
+    "important_semantics": "E1_512 is not called true error; D256_512 is not a proof that N512 is converged."
+  },
+  "predeclared_interpretation": {
+    "if_EOBS_lt_E1_512": "negative transfer evidence: the observer does not even dominate the finite N512 endpoint difference for that case",
+    "if_EOBS_ge_E1_512": "finite-reference-consistent conservative relation observed for that case, but no true-error upper bound is qualified",
+    "if_all_cases_EOBS_ge_E1_512": "supports taking the candidate to a later independent qualification design, but does not select a multiplier, threshold or normalization",
+    "if_ratios_are_state_dependent": "retain explicit state/envelope dependence; do not fit a universal factor in C2",
+    "machine_floor_cases": "report separately; never strengthen the reference claim because a tail difference is small"
+  },
+  "pass_rules_for_characterization_harness": [
+    "All 15 cases complete N1 through N512 under frozen controls or any failure is preserved and attributed without changing the matrix.",
+    "Every completed substep passes the unchanged 1e-12 external hard mass gate.",
+    "Bootstrap capacity and conductivity are finite and positive in the admitted unsaturated matrix.",
+    "EOBS, E1_512, D128_256 and D256_512 are finite nonnegative observables.",
+    "O0 and O2 machine-readable outputs are identical for every completed case.",
+    "Production Richards/runtime source remains identical to the F-VQ29 base."
+  ],
+  "not_a_pass_rule": [
+    "EOBS must exceed E1_512",
+    "R512 must be near one",
+    "a universal defect-to-error factor must exist",
+    "N512 must be floor-resolved or exact"
+  ],
+  "hard_holds": {
+    "production_source_change": false,
+    "scientific_temporal_tolerance_selection": false,
+    "F_KT09_dimensionless_mapping": false,
+    "solver_policy_change": false,
+    "mass_tolerance_change": false,
+    "F_VQ30_start": false,
+    "F_GC02_release": false,
+    "F_PE_release": false
+  },
+  "next_if_characterization_supports_transfer": "Define a separate owner candidate profile and then open independent held-out F-VQ qualification. Do not use the C2 calibration matrix itself as held-out evidence."
+}
