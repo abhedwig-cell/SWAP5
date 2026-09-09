@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "FVQ28_NEGATIVE_INDEPENDENT_QUALIFICATION_HANDOFF",
+  "owner_branch": "work/f-si20-richards-temporal-error-semantics",
+  "independent_qualification": {
+    "work_unit": "F-VQ28",
+    "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+    "closeout_commit": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "gate_B_evidence_commit": "f8c344efead200833ca8a068be16ef8d831d39c4",
+    "status": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "decision_class": "C_EXISTING_TRANSACTION_RETRY_TOPOLOGY_REJECTED_FOR_RAW_HEAD_DEFECT_TEMPORAL_PROFILE",
+    "gate_A_workflow_run": 34303003171,
+    "gate_B_workflow_run": 34304261930,
+    "gate_B_workflow_job": 102317547585,
+    "gate_B_test_head": "6d4c43a8a522a5169135abeb51ebcff5e5b12670"
+  },
+  "returned_findings": {
+    "raw_head_defect_remains_valid_dimensional_owner_observable": true,
+    "raw_head_defect_admitted_as_existing_transaction_temporal_acceptance_metric": false,
+    "gate_A_fixed_horizon_bounded_profile_remains_supported": true,
+    "fixed_horizon_refinement_N_equivalent_to_retry_count": false,
+    "existing_retry_shortening_safely_translates_gate_A_profile": false,
+    "held_out_cases": 24,
+    "actual_retry_attempts": 72,
+    "same_endpoint_reference_available_attempts": 67,
+    "same_endpoint_reference_unavailable_attempts": 5,
+    "underconservative_resolved_attempts": 36,
+    "cases_losing_previously_conservative_relation_on_retry": 10,
+    "hard_mass_gate_passed": true,
+    "maximum_gate_B_external_mass_residual": 2.71050543121376109e-20,
+    "transaction_direct_same_horizon_defect_identity": "PASS"
+  },
+  "owner_consequence": {
+    "simple_binary_to_raw_head_metric_replacement_allowed": false,
+    "fgc02_specific_tolerance_selection_allowed": false,
+    "universal_absolute_head_tolerance_qualified": false,
+    "universal_defect_to_error_factor_qualified": false,
+    "richardson_factor_qualified": false,
+    "state_normalization_qualified": false,
+    "current_retry_budget_qualified_for_raw_head_defect": false,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "owner_qualified": false,
+    "fgc02_release": false,
+    "fpe_release": false
+  },
+  "scope_boundary": {
+    "negative_result_does_not_invalidate_richards_solver": true,
+    "negative_result_does_not_invalidate_raw_head_defect_as_diagnostic_observable": true,
+    "negative_result_rejects_current_transaction_shape_as_safe_acceptance_translation": true,
+    "five_unavailable_N512_references_needed_for_negative_decision": false,
+    "reason": "The negative decision already follows from 36 under-conservative resolved attempts and 10 held-out cases that lose a previously conservative relationship during actual retry halving."
+  },
+  "hard_constraints_preserved": {
+    "production_source_modified": false,
+    "physics_changed": false,
+    "mass_requirement_relaxed": false,
+    "retry_policy_changed": false,
+    "solver_policy_changed": false,
+    "fkt_transaction_semantics_changed": false,
+    "coupling_orchestration_changed": false,
+    "reference_mode_preserved": true,
+    "generic_time_preserved": true
+  },
+  "owner_exit": "SEPARATE_OWNER_RUNTIME_POLICY_WORKUNIT_REQUIRED_IF_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_IS_TO_PROCEED",
+  "next_action": "Do not implement the raw head defect in the current acceptance seam. If the blocked prescribed-head path remains required, open a separate source-bound owner/runtime-policy workunit to define and independently qualify a different estimator or refinement semantic. That workunit must preserve checkpoint-trial-retry transactionality, generic time, hard mass conservation, unchanged production physics and a full reference mode."
+}
