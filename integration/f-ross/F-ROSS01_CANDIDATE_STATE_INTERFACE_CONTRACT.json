@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "contract_status": "CANDIDATE_NOT_QUALIFIED",
+  "scientific_basis": "Ross 2003 uses a mixed dependent-variable strategy: water-content/saturation representation in unsaturated regions and pressure-head-type representation in saturated regions. SWAP5 must preserve a physical pressure degree of freedom where saturated water content alone cannot determine head.",
+  "persistent_physical_state_options": [
+    {
+      "name": "UNIFIED_HEAD_STATE",
+      "state": ["pressure_head_per_control_volume"],
+      "derived": ["theta","K","capacity","MFP_or_Kirchhoff_potential","saturation_mode"],
+      "advantage": "fixed-size simple SoA layout and saturated-head state always retained",
+      "risk": "the Ross update is naturally expressed with a mixed variable, so conversion/update algebra may lose some of the original conditioning advantage unless handled carefully"
+    },
+    {
+      "name": "MIXED_Ross_STATE",
+      "state": ["unsaturated_water_content_or_effective_saturation","saturated_pressure_head","mode_mask"],
+      "derived": ["complementary hydraulic quantities"],
+      "advantage": "closest to the numerical structure documented by Ross",
+      "risk": "mode transitions and vectorized storage layout are more complex; exact transition conservation must be proven"
+    }
+  ],
+  "admission_rule_for_state": "Do not choose between unified-head and mixed-state layouts on presumed speed. First reproduce Ross equations, then prove identical physical state, exact storage accounting across saturation transitions and bounded vectorizable cost.",
+  "shared_immutable_parameter_data": [
+    "soil geometry/template",
+    "hydraulic material IDs and parameters",
+    "theta(h), h(theta), K(h) providers",
+    "MFP/Kirchhoff-potential representation per hydraulic material",
+    "precomputed steady-flux or correction tables only if separately qualified",
+    "fixed solver topology metadata"
+  ],
+  "worker_scratch": [
+    "trial mixed/unified variable arrays",
+    "face flux and derivative coefficients",
+    "tridiagonal linear-system coefficients and solution vector",
+    "heterogeneous-interface brackets/local root state if required",
+    "substep/retry trial storage",
+    "mass ledger arrays",
+    "response-tangent workspace",
+    "diagnostic counters"
+  ],
+  "important_runtime_point": "Non-iterative does not mean no solve. The Ross lineage forms a linear/tridiagonal update and may also require constitutive integration/inversion and local interface work. These belong to bounded per-step or worker scratch, not persistent column state.",
+  "advance_trial_interface": {
+    "signature": "advance_trial(base_state, parameters, forcing, boundaries, t0, t1, physical_config, numerical_config, workspace) -> trial_result",
+    "committed_state_mutation": false,
+    "commit_rollback_owner": "runtime_or_kernel_transaction_owner_not_solver",
+    "generic_time": true,
+    "internal_substeps_allowed": true,
+    "substep_count_must_be_bounded_or_fail_closed": true
+  },
+  "boundary_contract": {
+    "top": ["realized infiltration/ponding-coupled flux or head through shared surface contract", "evaporation/surface sink through owning process contract"],
+    "bottom_required": ["free_drainage", "prescribed_flux", "prescribed_head"],
+    "direct_groundwater": "imposed H_MF is boundary data; solver returns one conservative bottom q_SWAP and coupling checks q_SWAP=-q_MF",
+    "deep_vadose": "runtime may route bottom flux through separate transfer-zone component"
+  },
+  "process_facing_result": [
+    "theta profile",
+    "pressure-head profile",
+    "vertical face fluxes",
+    "top and bottom realized flux",
+    "realized distributed root/sink extraction",
+    "storage delta and exact mass ledger",
+    "solver path/substeps/local work diagnostics",
+    "optional bottom response tangent"
+  ],
+  "mass_contract": "One realized face flux is applied with opposite signs to adjacent control-volume ledgers. Boundary and sink/source terms appear exactly once. Saturated/unsaturated mode changes may not create a storage correction outside the ledger.",
+  "response_tangent_candidate": "Differentiate the same linearized/tridiagonal accepted-step system or solve its tangent system using the already assembled/factorized coefficients where possible; local interface roots use implicit differentiation while the active regime is unchanged.",
+  "open_gates": [
+    "exact Ross equation reconstruction",
+    "state transition conservation at saturation",
+    "full SWAP hydraulic catalog",
+    "heterogeneous interface uniqueness and bounded cost",
+    "groundwater bottom modes",
+    "stable response tangent",
+    "process-facing accuracy for evaporation/root uptake/drainage"
+  ],
+  "status": "CANDIDATE_STATE_AND_INTERFACE_CONTRACT_PERSISTED_NO_PRODUCTION_ADMISSION"
+}
