@@ -1,7 +1,7 @@
 module mod_canonical_contracts
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t, &
-       TX_MASS_MISSING_UNSPECIFIED
+       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE
   implicit none
   private
 
@@ -53,6 +53,8 @@ module mod_canonical_contracts
     integer :: rollbacks = 0
     integer :: solver_rejections = 0
     integer :: temporal_rejections = 0
+    integer :: temporal_certificate_unavailable_rejections = 0
+    integer :: temporal_acceptance_source = TX_TEMPORAL_NONE
     integer :: mass_rejections = 0
     integer :: nonlinear_iterations = 0
     integer :: internal_retries = 0
@@ -62,6 +64,9 @@ module mod_canonical_contracts
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
+    real(real64) :: max_temporal_indicator = 0.0_real64
+    real(real64) :: min_accepted_substep_duration = huge(0.0_real64)
+    real(real64) :: max_accepted_substep_duration = 0.0_real64
   end type canonical_run_diagnostics_t
 
   type, public :: canonical_result_t
