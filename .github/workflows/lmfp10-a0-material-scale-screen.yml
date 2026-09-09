@@ -1,0 +1,67 @@
+name: F-LMFP10 A0 material-scale coordinate screen
+
+on:
+  push:
+    branches:
+      - work/f-lmfp10-scale-normalized-geometry-aware-face
+    paths:
+      - 'experiments/lmfp/run_lmfp10_a0_material_scale_screen.py'
+      - 'experiments/lmfp/run_lmfp10_a0_aggregate.py'
+      - 'integration/f-lmfp/F-LMFP10_CONTRACT.json'
+      - 'integration/f-lmfp/F-LMFP10_A0_NOMINATION_PRECOMMIT.json'
+      - '.github/workflows/lmfp10-a0-material-scale-screen.yml'
+  workflow_dispatch:
+
+jobs:
+  material-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        material: [B10, B11, B12, B17, B18, O01, O05, O07, O11, O13, B01, B05, O02, O16, O18]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run A0 material-scale coordinate characterization
+        run: |
+          mkdir -p evidence
+          python experiments/lmfp/run_lmfp10_a0_material_scale_screen.py \
+            evidence/F-LMFP10_A0_${{ matrix.material }}.json \
+            ${{ matrix.material }}
+
+      - name: Upload A0 material evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: lmfp10-a0-${{ matrix.material }}
+          path: evidence/F-LMFP10_A0_${{ matrix.material }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: material-screen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download A0 material evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lmfp10-a0-*
+          path: evidence/materials
+          merge-multiple: true
+
+      - name: Apply precommitted A0 nomination rule
+        run: |
+          python experiments/lmfp/run_lmfp10_a0_aggregate.py \
+            evidence/F-LMFP10_A0_MATERIAL_SCALE_COORDINATE_RESULT.json \
+            evidence/materials/F-LMFP10_A0_*.json
+
+      - name: Upload aggregate A0 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp10-a0-material-scale-coordinate-result
+          path: |
+            evidence/F-LMFP10_A0_MATERIAL_SCALE_COORDINATE_RESULT.json
+            evidence/materials/F-LMFP10_A0_*.json
+          if-no-files-found: error
