@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_BOUNDED_DENSE_TABLE_REFINEMENT_SELECTION",
+  "parent_contract": "F-ROSS01_GATE_C1R_REFINEMENT_CONTRACT_V4.json",
+  "required_mapping_gate": "F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json",
+  "workflow": {
+    "run": 34338929429,
+    "head": "fb85d45fe67ef745893d76fa873b64ceb06b6da8",
+    "n225": {
+      "conclusion": "failure",
+      "artifact": 10099091502,
+      "artifact_digest": "sha256:4937427778eb9e944e736e5b005a39fe952d42a46111322288f8d11feff1a95f"
+    },
+    "n241": {
+      "conclusion": "success",
+      "artifact": 10099071617,
+      "artifact_digest": "sha256:cb1b30122866f76c148632a149f36ff992384b44b477de4a1e63e854484c95e5"
+    },
+    "n255": {
+      "required_for_selection": false,
+      "reason": "Selection rule is the smallest passing candidate. N225 failed and N241 passed, so N255 cannot change the selected minimum."
+    }
+  },
+  "selected_candidate": {
+    "node_count_per_axis": 241,
+    "coordinate": "u derived by qualified direct S-to-u mapping, uniform table axis on [0,4]",
+    "head_reconstruction": "h=-10^u cm with exact frozen endpoints",
+    "stored_quantity": "float32 log mobility M=q/g",
+    "interpolation": "bilinear in binary64 after promoting four float32 table entries",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "n241_characterization": {
+    "stress_materials": ["O01","O05","O14","B01","B12","O13"],
+    "pass_count": 6,
+    "fail_count": 0,
+    "max_abs_error_over_ksatfit": 0.00037456439257434914,
+    "worst_abs_material": "O14",
+    "max_hybrid_metric": 0.0005601889484930241,
+    "worst_hybrid_material": "O01",
+    "max_p99_hybrid_metric": 0.000493368896840503,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0
+  },
+  "pass": true,
+  "decision": "C1R_N241_FLOAT32_LOG_MOBILITY_SELECTED_FOR_FRESH_36_MATERIAL_HOLDOUT",
+  "production_implementation": false,
+  "qualification_limit": "Selection is characterization evidence only. N241 is not yet qualified across the 36-material catalog and may not be promoted without a fresh all-material holdout.",
+  "scope_guard": "No KSATEXM, no other hydraulic families, no transient timestep, process, groundwater, MultiSWAP or FullRichards equivalence claim."
+}
