@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "C1_CATALOG_ROOT_DISCONTINUITY_CHARACTERIZATION",
+  "observed_failure": {
+    "workflow_run": 34302745316,
+    "workflow_job": 102312970118,
+    "tested_head": "5e08687f6d7c5adcba861677c3b1ea89a8e712b7",
+    "stage": "homogeneous_reduction",
+    "exception": "root_iteration_cap_without_acceptance",
+    "root_max": 60,
+    "reported_residual": -1.3012122522204232,
+    "reported_scale": 3.498779962238512,
+    "reported_interface_head_cm": -0.0015993631837436448
+  },
+  "qualified_provider_lineage": {
+    "fsi09_status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+    "fsi09_qualification_path": "integration/f-si/F-SI09_QUALIFICATION.json",
+    "production_provider_path": "src/solver/mod_b110_default_mvg_provider.f90",
+    "production_provider_git_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "fsi09_identity": "PASS_BITWISE against corrected B1.10 source for theta(h), C(h), K(h,theta) over the admitted profile",
+    "relevant_rule": "for cofgen(9) > -0.01 cm, b110_hconduc returns Ksat when relsat > 1-1e-6; otherwise it evaluates the unsaturated MvG conductivity expression"
+  },
+  "b12_transition": {
+    "catalog_id": "B12",
+    "theta_r": 0.01,
+    "theta_s": 0.529749,
+    "alpha_per_cm": 0.016562,
+    "n": 1.090671,
+    "l": -4.493581,
+    "ksatfit_cm_per_day": 2.245895,
+    "h_enpr_cm": 0.0,
+    "relsat_switch": 0.999999,
+    "derived_switch_head_cm": -0.0015993631839145463,
+    "gate_c_root_minus_switch_head_cm": 1.709015065021691e-13,
+    "conductivity_on_unsaturated_side_at_switch_cm_per_day": 0.8358527246422537,
+    "conductivity_on_saturated_snap_side_cm_per_day": 2.245895,
+    "jump_cm_per_day": 1.4100422753577462,
+    "jump_fraction_of_ksat": 0.6278308983090243
+  },
+  "diagnosis": {
+    "iteration_cap_is_root_cause": false,
+    "tolerance_is_root_cause": false,
+    "python_only_test_artifact": false,
+    "qualified_constitutive_transition_is_present": true,
+    "interpretation": "The bisection converges geometrically to the B12 conductivity snap location. The composed equal-flux residual changes sign across a finite constitutive jump and therefore need not contain a zero. Raising ROOT_MAX or relaxing ROOT_TOL cannot make this interface equation continuous.",
+    "catalog_gate_c_status": "NOT_QUALIFIED_ACROSS_B110_NEAR_SATURATION_CONDUCTIVITY_JUMP"
+  },
+  "hard_rules": {
+    "do_not_raise_iteration_cap_as_fix": true,
+    "do_not_relax_equal_flux_tolerance_as_fix": true,
+    "do_not_average_two_inconsistent_face_fluxes_across_jump": true,
+    "do_not_silently_replace_qualified_b110_conductivity_semantics": true,
+    "single_realized_face_flux_and_mass_conservation_remain_required": true,
+    "production_code_change_admitted_by_f_lmfp09": false
+  },
+  "owner_boundary": {
+    "reason": "F-LMFP09 is a qualification-only LayeredMFP workunit and may not reinterpret the already F-SI09-qualified B1.10 constitutive provider.",
+    "required_resolution": "An owner-qualified decision is required for how reduced-order interface solving represents qualified constitutive jumps: explicit piecewise/jump-aware admission, fail-closed exclusion around the jump, or a separately qualified continuous constitutive alternative. F-LMFP09 must not choose among these by numerical convenience."
+  },
+  "parallel_next_action": {
+    "synthetic_gate_c": "Continue with bounded transformed local-gradient representation qualification; this is independent of the B12 constitutive-jump issue.",
+    "catalog_gate_c": "Keep blocked at the localized B110 near-saturation transition until owner-qualified discontinuity semantics exist; add persistent case-level failure capture before the next full catalog rerun."
+  },
+  "decision": "LOCALIZED_QUALIFIED_B110_CONSTITUTIVE_JUMP_OWNER_RESOLUTION_REQUIRED_NO_NUMERICAL_RELAXATION"
+}
