@@ -1,0 +1,38 @@
+name: F-ROSS01 Gate F R0 Piecewise Transition Route Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-f-r0-piecewise-transition-route-characterization.yml
+      - experiments/ross/run_ross01_gate_f_r0_piecewise_transition_route_characterization.py
+      - integration/f-ross/F-ROSS01_GATE_F_R0_PIECEWISE_TRANSITION_ROUTE_CHARACTERIZATION_CONTRACT.json
+      - experiments/ross/run_ross01_gate_f_timestep_convergence.py
+      - experiments/ross/run_ross01_gate_d_conservative_physical_unsaturated_column.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen Gate F R0 piecewise transition route characterization
+        run: |
+          set -euo pipefail
+          out="ross01-gate-f-r0"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_f_r0_piecewise_transition_route_characterization.py \
+            "$out/F-ROSS01_GATE_F_R0_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_F_R0_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-f-r0-piecewise-transition-route-characterization
+          path: ross01-gate-f-r0/
