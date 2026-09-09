@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI22",
+  "title": "Richards Fixed-Horizon Nested Refinement Certificate Characterization",
+  "branch": "work/f-si22-richards-fixed-horizon-certificate",
+  "status": "QUALIFIED_FIXED_HORIZON_REFINEMENT_OWNER_OBSERVABLE_NUMERIC_ERROR_BOUND_PROFILE_REQUIRED",
+  "source_base": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+  "gate_A_tested_head": "e8ea8182476d35527f0bfcac4640bb6854517751",
+  "gate_A_workflow_run": 34310854032,
+  "gate_A_workflow_job": 102337038883,
+  "gate_A_evidence": "integration/f-si/F-SI22_GATE_A_FIXED_HORIZON_BAND_EVIDENCE.json",
+  "legacy_source_audit": "integration/f-si/F-SI22_LEGACY_TIMESTEP_POLICY_SOURCE_AUDIT.json",
+  "decision_contract": "integration/f-si/F-SI22_DECISION_CONTRACT.json",
+  "scope_flags": {
+    "same_horizon_nested_refinement_semantics_characterized": true,
+    "owner_matrix_cases": 15,
+    "hard_mass_pass_all_cases": true,
+    "o0_o2_identity": true,
+    "selected_repeat_determinism": true,
+    "production_richards_source_modified": false,
+    "fixed_horizon_contraction_supported_as_owner_observable": true,
+    "contraction_ratio_alone_qualified_as_accuracy_certificate": false,
+    "legacy_temporal_error_scale_found": false,
+    "error_bound_estimator_qualified": false,
+    "certificate_normalization_qualified": false,
+    "scientific_temporal_tolerance_qualified": false,
+    "production_certificate_admitted": false,
+    "persisted": true,
+    "tested": true,
+    "owner_observable_qualified": true
+  },
+  "qualified_findings": {
+    "all_owner_matrix_cases_contract_from_first_resolved_same_horizon_comparison": true,
+    "dry_cases_are_pre_asymptotically_under_conservative_despite_monotone_contraction": true,
+    "dry_case_first_defect_ge_finite_N512_remaining_error_N": 16,
+    "independent_FVQ28_held_out_maximum_persistent_conservative_entry_N": 16,
+    "legacy_timestep_control_is_runtime_robustness_not_temporal_truncation_error_control": true
+  },
+  "rejected_shortcuts": [
+    "raw outer endpoint-shortening retry defect",
+    "contraction ratio <= 1 as standalone accuracy certificate",
+    "CritDevh1Cp or CritDevh2Cp as temporal endpoint tolerance",
+    "mass-balance convergence criteria as temporal endpoint tolerance",
+    "Newton iteration count as temporal endpoint error estimator",
+    "DTMIN or DTMAX as scientific accuracy threshold",
+    "GWLCONV as automatic temporal acceptance gate",
+    "unqualified universal Richardson factor",
+    "unqualified universal defect-to-error multiplier"
+  ],
+  "owner_boundary": {
+    "F_SI_owns": [
+      "Richards same-endpoint nested-refinement execution semantics",
+      "dimensional state/flux endpoint-difference observables",
+      "contraction and machine-floor diagnostics",
+      "attempt-local certificate computation once the numeric error-bound profile is independently qualified"
+    ],
+    "independent_FVQ_must_qualify": [
+      "minimum admissible refinement depth",
+      "conservative relation between observable defects and remaining endpoint error",
+      "any global or state-restricted contraction cap",
+      "geometric-tail or alternative error-bound mapping",
+      "held-out envelope validity and failure detection",
+      "bounded-cost certificate shape"
+    ],
+    "later_policy_owner_must_qualify": [
+      "scientific/application temporal accuracy target",
+      "mapping of a qualified dimensional error bound to a final <=1 acceptance indicator"
+    ]
+  },
+  "handoff": {
+    "next_work_unit": "F-VQ29",
+    "question": "Can a bounded same-horizon Richards error-bound estimator conservatively upper-bound remaining endpoint error across calibration and held-out envelopes, using qualified refinement-depth/contraction evidence rather than nonlinear-solver tolerances?",
+    "production_code_before_FVQ29": false,
+    "numeric_tolerance_before_error_bound_qualification": false,
+    "full_1_to_512_ladder_allowed_as_production_path": false
+  },
+  "invariant_assessment": {
+    "7_transactional_time_steps": "PASS/UNCHANGED",
+    "8_cheap_recompute_and_warm_start": "PASS/UNCHANGED",
+    "9_generic_time": "PASS",
+    "13_mass_conservation_absolute": "PASS",
+    "20_alternative_soil_water_solvers_open": "PASS",
+    "23_physics_and_solver_policy_separated": "PASS",
+    "24_predictable_compute_time": "OPEN FOR F-VQ29 BOUNDED-COST SHAPE",
+    "25_reference_mode_available": "PASS",
+    "26_runtime_diagnostics": "SUPPORTED",
+    "29_no_silent_dependencies": "PASS"
+  }
+}
