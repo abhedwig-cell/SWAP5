@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_MFP_NORMALIZATION_EXACT_PHI_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_C2B_MFP_NORMALIZATION_EXACT_PHI_DIAGNOSTIC_CONTRACT.json",
+  "status": "COMPLETE_FAIL_CLOSED_NORMALIZATION_LINE_STOPPED",
+  "production_implementation": false,
+  "not_a_production_candidate": true,
+  "workflow": {
+    "run": 34351589409,
+    "head": "23e403a84197854a4497cfbee630a70eebdc75c0",
+    "conclusion": "failure"
+  },
+  "diagnostic_change_only": "Replace the failed R2 linearly interpolated cumulative-Phi lookup by direct split adaptive quadrature of the exact C2B K(h) over the endpoint interval. Keep the same physical closure, N241 seam-aligned axis, 2D float32 residual table, characterization probes and thresholds.",
+  "runtime_guard": "Direct quadrature is diagnostic only and is disqualifying for production under the bounded O(1) RossFast objective.",
+  "thresholds": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005
+  },
+  "materials": {
+    "B05": {
+      "pass": false,
+      "failed_metrics": ["max_abs_error_over_ksatfit"],
+      "max_hybrid_metric": 0.002782133239405723,
+      "p99_hybrid_metric": 0.0010486972003336918,
+      "max_abs_error_over_ksatfit": 0.005219711526369338,
+      "worst_abs_location_cm": [-3.899999999999984, -4.499999999999998],
+      "artifact": 10104005329,
+      "artifact_digest": "sha256:24719a19bfeb92dfd2dc2aa6f1a840388646b740732bc9add0624d909d8602ca"
+    },
+    "B10": {
+      "pass": false,
+      "failed_metrics": ["max_abs_error_over_ksatfit"],
+      "max_hybrid_metric": 0.007577205109551455,
+      "p99_hybrid_metric": 0.0016205193197001704,
+      "max_abs_error_over_ksatfit": 0.025332082242077298,
+      "worst_abs_location_cm": [-3.899999999999984, -5.999999999999975],
+      "artifact": 10104019448,
+      "artifact_digest": "sha256:d5709e41652d9419985238a893daba33a0ae58de30b80c7444a402f64ba818af"
+    },
+    "O13": {
+      "pass": false,
+      "failed_metrics": ["max_abs_error_over_ksatfit"],
+      "max_hybrid_metric": 0.008541895902201444,
+      "p99_hybrid_metric": 0.001581913396233112,
+      "max_abs_error_over_ksatfit": 0.02831839507888455,
+      "worst_abs_location_cm": [-3.900000000000054, -5.999999999999975],
+      "artifact": 10104025059,
+      "artifact_digest": "sha256:be40589d647bb1dc86af4b1fc2501b7084f2608000632adc6b7f2d9ae041fc83"
+    },
+    "O14": {
+      "pass": true,
+      "failed_metrics": [],
+      "max_hybrid_metric": 0.00025536990556731333,
+      "p99_hybrid_metric": 0.00008374768778142488,
+      "max_abs_error_over_ksatfit": 0.00031360522476009026,
+      "worst_abs_location_cm": [-3.5000000000042215, -4.099999999999875],
+      "artifact": 10104004581,
+      "artifact_digest": "sha256:674a03e8e00f5d35a29403a8d9587bec28fdc50ac76933ef47994f3de5486801"
+    }
+  },
+  "aggregate": {
+    "material_count": 4,
+    "pass_count": 1,
+    "fail_count": 3,
+    "failed_materials": ["B05", "B10", "O13"],
+    "all_hybrid_metrics_pass": true,
+    "all_p99_metrics_pass": true,
+    "all_absolute_metrics_pass": false,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0
+  },
+  "causal_interpretation": [
+    "Replacing the cheap cumulative-Phi lookup by exact quadrature substantially improves R2, proving that the linearly interpolated cumulative-Phi difference was a major source of the R2 error.",
+    "O14 becomes fully passing, so MFP-secant normalization can remove the localized tail for at least one material when Phi is exact.",
+    "B05, B10 and O13 still exceed the frozen absolute-error gate even with exact Phi. Therefore the MFP-secant normalization itself does not sufficiently flatten the local two-endpoint steady-face mobility around the h=-4 cm transition for the diagnostic set.",
+    "The remaining failure is not a justification for building a more accurate production Phi interpolator, because exact Phi already fails the required metric for three of four diagnostic materials."
+  ],
+  "decision": "MFP_SECANT_NORMALIZATION_LINE_FAIL_CLOSED_STOP_NO_HERMITE_PHI_OR_FURTHER_PHI_TUNING",
+  "next_action": "Do not continue this MFP-normalization family. Preserve the qualified C2B constitutive and state-coordinate results separately. Any future C2B face-representation research must start from a fundamentally different predeclared two-endpoint representation hypothesis. In the meantime prioritize qualification of the already face-qualified base MvG/KSATFIT RossFast family rather than optional Class-B representation tuning.",
+  "scope_guard": "Diagnostic negative evidence only. This does not reject the C2B physical closure, which remains constitutively qualified, and does not affect the C1R base-MvG face qualification. No holdout, transient, groundwater, MultiSWAP or production claim follows."
+}
