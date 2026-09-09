@@ -172,9 +172,9 @@ contains
     status = WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
     if (.not. window%ready()) return
 
-    ! A failure below can never expose a partially advanced crop candidate.
-    candidate = window%prepared_candidate
-
+    ! The prepared candidate stays private in the worker-local window until
+    ! all phase-B and structural work succeeds. A failed complete call exposes
+    ! no candidate that could accidentally be committed.
     if (window%crop_active()) then
       diagnostics%phase_b_evaluated = .true.
       call finalize_wofost_one_day_rates(window%rate_state_view, rate_parameters, &
@@ -194,7 +194,7 @@ contains
          candidate, diagnostics%structural, component_status)
     diagnostics%structural_finalize_status = component_status
     if (component_status /= WOFOST_ONE_DAY_OK) then
-      candidate = window%prepared_candidate
+      candidate = wofost_crop_owner_state_t()
       status = WOFOST_CROP_WINDOW_STRUCTURAL_FINALIZE_ERROR
       return
     end if
