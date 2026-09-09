@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted One-Day WOFOST Theory-Code-Architecture Reconciliation",
+  "qualification_basis": "SWAP 4.3.1 B1.10 source behavior for the admitted actual standard-WOFOST profile; external WOFOST/PCSE lineage is used only as a discrepancy spot-check, not as a replacement oracle",
+  "frozen_source": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+  },
+  "reconciled_findings": [
+    {
+      "id": "FWO27-R01",
+      "source": "wofost.f90::assimilation",
+      "finding": "legacy assimilation calls ASTRO(daynr,...) internally and therefore couples crop rate physics to calendar/day-number state",
+      "decision": "do not preserve this dependency; DAYL, DAYLP, SINLD, COSLD, DIFPP and DSINBE are explicit forcing/context supplied from outside the provider",
+      "classification": "ARCHITECTURAL_DEPENDENCY_REMOVAL_WITH_PHYSICS_PRESERVED"
+    },
+    {
+      "id": "FWO27-R02",
+      "source": "wofost.f90::totass",
+      "finding": "RAD is read through atmosphere_interface although it is not a formal TOTASS argument",
+      "decision": "RAD becomes an explicit prepare-assimilation input",
+      "classification": "HIDDEN_GLOBAL_TO_EXPLICIT_FORCING"
+    },
+    {
+      "id": "FWO27-R03",
+      "source": "wofost.f90::assim",
+      "finding": "KDIF is read through plant_interface although it is not a formal ASSIM argument",
+      "decision": "KDIF becomes an immutable rate parameter passed explicitly",
+      "classification": "HIDDEN_GLOBAL_TO_EXPLICIT_PARAMETER"
+    },
+    {
+      "id": "FWO27-R04",
+      "source": "wofost.f90::read_wofost and scoped rate routines",
+      "finding": "KDIR is parsed from every dynamic crop file but no scoped standard-WOFOST rate equation reads it; direct-beam coefficients are derived from KDIF and solar height",
+      "decision": "exclude KDIR from the restricted production rate-parameter DTO; retain parser compatibility only in an external legacy adapter if needed",
+      "classification": "ORPHAN_LEGACY_INPUT"
+    },
+    {
+      "id": "FWO27-R05",
+      "source": "wofost.f90::assimilation",
+      "finding": "the seven-day Tmin memory nofd/atmin7 is module-persistent and mutated inside assimilation",
+      "decision": "use the already-qualified F-WOF26 compact optional Tmin continuation; F-WOF27 consumes TMNR read-only and owns no history state",
+      "classification": "PERSISTENT_GLOBAL_TO_COMMITTED_COMPACT_OWNER_STATE"
+    },
+    {
+      "id": "FWO27-R06",
+      "source": "wofost.f90::read_wofost + update_dvs_rate/assim/update_wofost",
+      "finding": "legacy parser ranges admit values that later appear as denominators or unsafe exponent bases",
+      "examples": [
+        "DLO==DLC allowed although IDSL=1 divides by DLO-DLC",
+        "TSUMEA/TSUMAM==0 allowed although DVR divides by them",
+        "KDIF==0 allowed although canopy and critical-LAI equations divide/use inverse KDIF",
+        "CFRDM==0 allowed although PGASS divides by CFRDM",
+        "CVR/CVS/CVL==0 allowed although CVF divides by them",
+        "Q10==0 allowed although Q10 is raised to a potentially negative exponent"
+      ],
+      "decision": "strengthen semantic provider validation and fail closed before evaluation; this is input-domain qualification, not a physics switch",
+      "classification": "LEGACY_VALIDATION_GAP"
+    },
+    {
+      "id": "FWO27-R07",
+      "source": "functions.f90::afgen",
+      "finding": "legacy AFGEN stores active knots in fixed alternating x/y arrays and detects a decreasing x as end-of-table sentinel",
+      "decision": "kernel parameter objects store only active strictly increasing knots and preserve clamp/interpolation behavior; sentinel and unused tail remain adapter concerns",
+      "classification": "REPRESENTATION_MODERNIZATION_WITH_FUNCTIONAL_EQUIVALENCE"
+    },
+    {
+      "id": "FWO27-R08",
+      "source": "wofost.f90::assimilation",
+      "finding": "actual PGASS is always multiplied by RELMF; SW_POTRELMF only selects whether the separate potential shadow also receives RELMF",
+      "decision": "restricted actual provider always applies RELMF and does not expose SW_POTRELMF",
+      "classification": "ACTUAL_VS_POTENTIAL_SEMANTIC_SPLIT"
+    },
+    {
+      "id": "FWO27-R09",
+      "source": "wofost.f90::wofost(task=3), update_wofost, deaths, glai",
+      "finding": "when SWCROPSNM==1 nutrient factors can further reduce RELTR, alter partitioning, leaf death and SLA",
+      "decision": "the admitted profile excludes that route completely; water-only RELTR is IQROT/IPTRA and nutrient corrections require a separate qualification",
+      "classification": "EXPLICITLY_EXCLUDED_PHYSICAL_OPTION"
+    },
+    {
+      "id": "FWO27-R10",
+      "source": "wofost.f90::update_wofost",
+      "finding": "SWRD=3 can suppress root growth from IALPWET and can replace root death behavior above WRTMAX",
+      "decision": "first provider admits SWRD=1 only; no IALPWET, AERATECRIT, SWWRTNONOX or WRTMAX inputs are present",
+      "classification": "EXPLICITLY_EXCLUDED_PHYSICAL_OPTION"
+    },
+    {
+      "id": "FWO27-R11",
+      "source": "wofost.f90::glai",
+      "finding": "when pre-event LAIEXP>=6 legacy GLAI does not assign r%glaiex, so the structural update reuses the previously stored rate value",
+      "decision": "preserve exact B1.10 behavior through F-WOF26 conditional one-scalar compatibility sidecar; F-WOF27 emits recomputed=false and does not invent a rate",
+      "classification": "SOURCE_QUIRK_ALREADY_QUALIFIED_AS_REFERENCE_COMPATIBILITY"
+    },
+    {
+      "id": "FWO27-R12",
+      "source": "wofost.f90::wofost(task=3)",
+      "finding": "daily actual crop rates consume daily integral accumulators IQROT_DAY/IPTRA_DAY after water-process integration; scalar values alone do not prove that they came from the accepted transaction",
+      "decision": "runtime/F-KT owns accepted-window provenance and exactly-once aggregation; the provider receives frozen semantic aggregates and checks only their numerical domain",
+      "classification": "OWNER_BOUNDARY"
+    },
+    {
+      "id": "FWO27-R13",
+      "source": "wofost.f90::assimilation versus current PCSE WOFOST lineage spot-check",
+      "finding": "the three-point Gauss nodes, weights and HOUR=12+0.5*DAYL*XGAUSS form used by SWAP match the current PCSE WOFOST assimilation implementation; there is no evidence here for a SWAP-specific quadrature defect",
+      "external_spot_check": "https://github.com/ajwdewit/pcse/blob/master/pcse/crop/assimilation.py",
+      "decision": "preserve the SWAP B1.10 quadrature in reference production; do not redesign it in F-WOF27",
+      "classification": "NO_DISCREPANCY_FOUND"
+    },
+    {
+      "id": "FWO27-R14",
+      "source": "SWAP B1.10 assimilation versus current PCSE WOFOST72 lineage",
+      "finding": "SWAP converts DTGA with 30*(0.4/CFRDM)/44 and applies RELMF to actual PGASS, whereas the current PCSE WOFOST72 path uses the canonical 30/44 conversion and has no equivalent SWAP RELMF step in that routine",
+      "decision": "treat CFRDM and RELMF as SWAP-specific admitted physics/extensions and preserve them in reference mode; any removal or normalization is a separate scientific change",
+      "classification": "SWAP_SPECIFIC_EXTENSION_NOT_TO_BE_SILENTLY_NORMALIZED"
+    }
+  ],
+  "source_order_contract": {
+    "prepare": "Tmin history is advanced candidate-locally and actual PGASS is evaluated from the pre-integration state before soil-water substeps",
+    "finalize": "DTSUM/DVR and actual dry-matter/organ/leaf rates are evaluated using the same pre-event crop state plus accepted water-window aggregates",
+    "integrate": "only F-WOF26 mutates crop owner state after the complete rate packet exists"
+  },
+  "readiness_decision": "NO_UNRESOLVED_THEORY_CODE_DISCREPANCY_BLOCKS_A_RESTRICTED_REFERENCE_RATE_PROVIDER, PROVIDED_THE_ABOVE_SWAPSPECIFIC_BEHAVIOR_AND_VALIDATION_STRENGTHENING_ARE_EXPLICIT",
+  "not_a_claim": [
+    "scientific equivalence to every modern WOFOST version",
+    "admission of nutrients, oxygen, IDSL=2, SWRD=3 or potential shadow",
+    "permission to change CFRDM/RELMF behavior in reference mode"
+  ]
+}
