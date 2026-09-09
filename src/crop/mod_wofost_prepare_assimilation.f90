@@ -108,10 +108,10 @@ contains
       return
     end if
 
-    ! B1.10 TOTASS is exactly zero when AMAX<=0 or LAI<=0. RAD=0 also
-    ! gives an exact zero path, so do not demand unused solar denominators.
+    ! B1.10 TOTASS is exactly zero when AMAX<=0 or LAI<=0. Because forcing
+    ! validation has already rejected negative RAD, RAD<=0 denotes only RAD=0.
     if (amax <= 0.0_real64 .or. state_view%actual_leaf_area_index <= 0.0_real64 .or. &
-        forcing%global_radiation == 0.0_real64) then
+        forcing%global_radiation <= 0.0_real64) then
       result%actual_pgass = 0.0_real64
       status = WOFOST_PREPARE_ASSIMILATION_OK
       return
