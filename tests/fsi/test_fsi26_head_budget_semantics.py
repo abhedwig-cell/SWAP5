@@ -43,15 +43,12 @@ require(cmode['unavailable_semantics'] == 'FAIL_CLOSED_TEMPORAL_REJECTION', 'F-K
 require(fkt09['hard_constraints']['numeric_temporal_limits_selected'] is False, 'F-KT09 owns no limit')
 print('FSI26_GATE_H_FKT09_COMPATIBILITY=PASS')
 
-# Exact-linear reconstruction from the already qualified F-VQ30 oracle.  The test
+# Exact-linear reconstruction from the already qualified F-VQ30 oracle. The test
 # does not fit a budget: it chooses synthetic positive budgets only to verify the
 # algebraic implication B_inf/H<=1 => exact_inf/H<=1 whenever B_inf is the
 # theorem-qualified exact-linear infinity bound.
 DZ = [0.5,0.5,1.0,1.0]
 CAP = 0.001
-K = 0.01
-EIG1 = 0.25619777153614321838009463228648061698
-EIG2 = 1.5788967897778011939109549498314371066
 L1 = 2.5619777153614321838009463228648061698
 L2 = 15.788967897778011939109549498314371066
 V1 = [0.6752098721931038,0.5887162399055651,0.4268087132525549,0.1555537453920313]
@@ -103,7 +100,6 @@ for label, binf, exact_inf in rows:
         C=binf/H
         require(math.isfinite(C) and C>=0.0, f'finite dimensionless certificate {label}')
         if previous is not None:
-            # H increases in sorted order, so C cannot increase.
             require(C <= previous + 1e-15, f'budget monotonicity {label}')
         previous=C
         if C <= 1.0:
@@ -127,8 +123,9 @@ fvq28=json.loads(subprocess.check_output(['git','show','d8bcb1c90e897812ae8b9129
 fvq29=json.loads(subprocess.check_output(['git','show','394d064a0dad0a7f7852b129bae99713b9aeb4c0:integration/f-vq/F-VQ29_STATUS.json'], cwd=ROOT, text=True))
 require(fvq28['gate_B']['underconservative_resolved_attempts'] == 36, 'F-VQ28 negative retry evidence')
 require(fvq28['qualified_interpretation']['existing_retry_shortening_is_safe_translation_of_gate_A'] is False, 'no monotone retry translation')
-require(fvq29['result'] == 'FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION', 'F-VQ29 fail-closed result')
-require(fvq29['qualified']['finite_reference_is_true_error_bound'] is False, 'no finite reference true bound')
+require(fvq29['status'] == 'COMPLETE_FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION', 'F-VQ29 fail-closed status')
+require(fvq29['not_qualified']['defect_to_remaining_error_upper_bound'] is True, 'no finite reference true error bound')
+require(fvq29['gate_A_result']['production_certificate_admitted'] is False, 'F-VQ29 no production certificate')
 print('FSI26_GATE_F_NO_MONOTONE_RETRY_ASSUMPTION=PASS')
 print('FSI26_GATE_D_FINITE_REFERENCE_NOT_TRUTH=PASS')
 
