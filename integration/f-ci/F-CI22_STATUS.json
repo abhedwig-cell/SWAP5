@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI22",
+  "title": "Restricted Temporal Certificate Canonical Admission",
+  "branch": "qualification/f-ci22-temporal-certificate-canonical-admission",
+  "candidate": {
+    "F_CI21_closed_head": "697755068253cfb5a2f838c63894e1609a85ff51",
+    "F_CI21_tree": "130d329a73b76e35eba43b57f441e017115cbea2",
+    "src_tree": "3446aa1d0d80861b22f7e74c7ad51bcedef4f479",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "canonical_pre_admission": {
+    "branch": "integration/f-ci-canonical",
+    "pinned_head": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "tree": "a0c1a4f135589b2b6304427b29341317e867c522",
+    "must_be_reverified_immediately_before_promotion": true
+  },
+  "qualification": {
+    "evidence_path": "integration/f-ci/F-CI22_QUALIFICATION_EVIDENCE.json",
+    "evidence_commit": "022d322c80298d4955e28ae611f6d53dc0a5f794",
+    "initial_success_run": 34404110657,
+    "initial_success_job": 102642819984,
+    "evidence_head_success_run": 34404236711,
+    "evidence_head_conclusion": "success",
+    "terminal_marker": "FCI22_CANONICAL_ADMISSION_GATE PASS_RESTRICTED_FCI21_POSTIMAGE_READY_FOR_FAST_FORWARD_DECISION"
+  },
+  "qualified_scope": {
+    "exact_F_CI21_postimage_admissible": true,
+    "strict_linear_fast_forward_lineage": true,
+    "production_src_immutable": true,
+    "reference_immutable": true,
+    "F_VQ33_remains_failed_negative_evidence": true,
+    "WOF42_crop_persistence_preserved": true,
+    "MR18_accepted_commit_receipt_preserved": true,
+    "MR18_sparse_multiswap_receipt_preserved": true,
+    "hard_mass_precedence_preserved": true,
+    "transactional_rollback_preserved": true
+  },
+  "hard_nonclaims": {
+    "default_H_budget": null,
+    "application_H_budget_selected": false,
+    "universal_temporal_tolerance_selected": false,
+    "B_inf_general_nonlinear_true_error_bound_qualified": false,
+    "C_h_general_nonlinear_true_error_bound_qualified": false,
+    "shorter_dt_monotonicity_assumed": false,
+    "groundwater_coupling_released": false
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "qualification_closed": true,
+    "canonical_ref_advanced": false,
+    "canonical_post_promotion_regression_passed": false,
+    "closed": false
+  },
+  "next_required_action": "Run the admission gate on this pre-promotion closeout head, reverify the live canonical ref and strict fast-forward relation, then advance integration/f-ci-canonical with force=false only if all checks still pass.",
+  "decision": "QUALIFIED_RESTRICTED_FCI21_POSTIMAGE_READY_FOR_CANONICAL_FAST_FORWARD"
+}
