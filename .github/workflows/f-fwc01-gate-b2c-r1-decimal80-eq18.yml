@@ -1,0 +1,45 @@
+name: F-FWC01 Gate B2C-R1 Decimal80 Eq18 Representation
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2c-r1-decimal80-eq18.yml
+      - experiments/fwc/fwc01_gate_b2c_r1_decimal80_eq18_representation.py
+      - integration/f-fwc/F-FWC01_GATE_B2C_R1_HIGH_PRECISION_EQ18_REPRESENTATION_PRECOMMIT.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen Decimal80 Eq18 representation gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2c-r1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2c_r1_decimal80_eq18_representation.py \
+            "$out/F-FWC01_GATE_B2C_R1_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2C_R1_STDOUT.txt"
+      - name: Assert frozen B2C-R1 decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2c-r1/F-FWC01_GATE_B2C_R1_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_EQ18_BINARY64_ENDPOINT_SEMANTICS_READY_FOR_RESTRICTED_EXISTING_FRONT_ADVANCE_MASS_GATE'
+          assert r['direct_endpoint_eq18']['cases_exceeding_limit'] == 0
+          assert r['precomputed_binary64_deltas_eq18']['cases_exceeding_limit'] == 0
+          assert r['decimal80_limit_identities']['green_ampt_exact_zero'] is True
+          assert r['decimal80_limit_identities']['zero_capillary_exact_zero'] is True
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2c-r1-decimal80-eq18
+          path: fwc01-gate-b2c-r1/
