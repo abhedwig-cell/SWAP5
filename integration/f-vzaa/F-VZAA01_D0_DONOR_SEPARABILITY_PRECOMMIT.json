@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01-D0",
+  "title": "Precommitted diagnostic donor-separability gate",
+  "branch": "work/f-vzaa01-d0-donor-separability-evidence",
+  "base_layeredmfp_head": "f5af8f4a9371cb55f223d91e24cf96f91bdd4f6d",
+  "vzaa_evidence_head": "cffeed211b4bc6f3389ed12ba555253d905f993e",
+  "source": {
+    "primary_publication": "Sadeghi et al. (2026), Journal of Hydrology 673, 135467",
+    "doi": "10.1016/j.jhydrol.2026.135467",
+    "official_supplementary_matlab_captured": false,
+    "implementation_status": "INDEPENDENT_RECONSTRUCTION_ONLY",
+    "rule": "No result from this work may be described as reproduction of the official VZAA code until the DOI-linked supplementary MATLAB is captured and provenance-checked."
+  },
+  "scope": {
+    "stage": "D0-A",
+    "purpose": "Test whether the published VZAA history-aware layer-centred flux relation contains a distinct and reproducible diagnostic signal relative to the current exactly conservative LayeredMFP experimental route.",
+    "production_implementation": false,
+    "accepted_state_modification": false,
+    "water_ledger_modification": false,
+    "kernel_contract_change": false,
+    "solver_contract_change": false,
+    "headcalc_workspace_dependency": false
+  },
+  "sign_convention": {
+    "evidence_flux": "DOWNWARD_POSITIVE",
+    "fullrichards_native_boundary_flux": "UPWARD_POSITIVE",
+    "normalization": "Q_top_down = -result.top_flux; Q_bottom_down = -result.bottom_flux",
+    "vzaa_rule": "Published flux signs are source-bound first and converted exactly once to the downward-positive evidence convention. Sign selection may not be tuned after comparison with the reference."
+  },
+  "reference": {
+    "ordinary_primary": "FULLRICHARDS_ACCEPTED_LEDGER_FACE_RECONSTRUCTION",
+    "ordinary_face_reconstruction": [
+      "DeltaS_i = dz_i * (theta_new_i - theta_old_i)",
+      "Q_0 = -result.top_flux",
+      "Q_i = Q_(i-1) - DeltaS_i / dt",
+      "Q_ref_mid_i = 0.5 * (Q_(i-1) + Q_i)"
+    ],
+    "ordinary_bottom_crosscheck": "Q_N versus -result.bottom_flux; mismatch must remain visible as the accepted column residual expressed as flux.",
+    "darcy_face_crosscheck": "OPTIONAL_DIAGNOSTIC_ONLY_NOT_A_PROMOTION_OR_SELECTION_ORACLE",
+    "stress_reference": "EXISTING_DIRECT_DARCIAN_EXACTLY_CONSERVATIVE_TRANSIENT_ORACLE",
+    "pooling_rule": "FullRichards ordinary evidence and direct-Darcian stress evidence are reported as separate reference families and may not be pooled into one aggregate pass metric."
+  },
+  "candidate": {
+    "route": "F-LMFP08_CONSTRAINED_CONTINUOUS_MFP_LOG_DARCIAN_RATIO",
+    "history_source": "CANDIDATE_COMMITTED_TRAJECTORY_ONLY",
+    "reference_history_forbidden": true,
+    "transaction_rule": "Only accepted candidate steps may extend the diagnostic moisture history. Rejected trials never mutate history."
+  },
+  "case_matrix": {
+    "ordinary_fullrichards": [
+      "steady_sand",
+      "redistribution_sand",
+      "infiltration_sand",
+      "infiltration_clay"
+    ],
+    "stress_direct_darcian": [
+      "sand_strong_gradient_1",
+      "sand_strong_gradient_2",
+      "sand_strong_gradient_3",
+      "clay_strong_gradient_down",
+      "clay_strong_gradient_up"
+    ],
+    "refinements": [1, 2],
+    "deferred_heterogeneous_d0d": [
+      "sand_over_clay",
+      "clay_over_sand"
+    ],
+    "heterogeneous_reason": "Published analytical relation is uniform-soil derived and the primary-source audit does not admit heterogeneous interfaces."
+  },
+  "vzaa_diagnostic": {
+    "history_operator": "Literal published Eq. 5 midpoint-history sum as qualified by H0, evaluated from accepted candidate moisture history.",
+    "c_switch": "c = 0.5 for H <= 0 and c = 2.0 for H > 0, subject to final source-sign normalization.",
+    "terms": [
+      "q_hist = source-normalized form of sqrt(c * D(theta)) * H",
+      "q_steady = source-normalized deep-groundwater limit of the published conductivity term",
+      "q_vzaa_mid = q_hist + q_steady"
+    ],
+    "hydraulic_diffusivity": "MUST_BE_SOURCE_BOUND_BEFORE_EXECUTION. If the official supplement remains unavailable, any D(theta) implementation must be explicitly labelled an independent hydraulic reconstruction and its equation recorded in the result artifact.",
+    "no_clipping_rule": "No post-hoc clipping or singularity masking may be introduced to improve donor agreement. Hydraulic-domain failures are evidence."
+  },
+  "required_step_layer_outputs": [
+    "case",
+    "reference_family",
+    "refinement",
+    "step",
+    "time",
+    "dt",
+    "layer",
+    "theta_old_candidate",
+    "theta_new_candidate",
+    "theta_new_reference",
+    "candidate_face_top",
+    "candidate_face_bottom",
+    "candidate_mid_flux",
+    "reference_face_top",
+    "reference_face_bottom",
+    "reference_mid_flux",
+    "H_literal_eq5",
+    "c_regime",
+    "K_theta",
+    "D_theta",
+    "q_hist",
+    "q_steady",
+    "q_vzaa_mid",
+    "e_vzaa",
+    "e_lmfp",
+    "delta_q",
+    "e_needed",
+    "candidate_mass_residual",
+    "reference_mass_residual",
+    "history_length",
+    "history_bytes_raw"
+  ],
+  "characterization_metrics": [
+    "q_vzaa_mid - q_ref_mid distribution by case/layer/time/refinement",
+    "q_lmfp_mid - q_ref_mid distribution by case/layer/time/refinement",
+    "fraction where VZAA diagnostic is closer to reference than LayeredMFP",
+    "sign agreement of delta_q with e_needed where numerically meaningful",
+    "delta_q/e_needed magnitude ratio where numerically meaningful",
+    "first-step, early-window and later-trajectory results separately",
+    "temporal-refinement stability",
+    "behaviour around H=0 and c-switches",
+    "dry-tail and near-saturation failures",
+    "history length, raw history bytes and diagnostic evaluation count",
+    "NaN, singularity, hydraulic-domain and candidate acceptance failures"
+  ],
+  "acceptance_policy": {
+    "scientific_numeric_tolerance_predeclared": false,
+    "reason": "D0 is characterization and falsification; unsupported scientific tolerances are forbidden.",
+    "reject_regime_if_refinement_robust": [
+      "VZAA diagnostic is consistently less accurate than LayeredMFP midpoint flux",
+      "delta_q has the wrong direction relative to e_needed",
+      "signal direction changes unpredictably with refinement",
+      "H=0 switching creates a material unstable correction signal",
+      "useful behaviour requires FullRichards/reference moisture history",
+      "signal is confined to a regime already accurately covered by LayeredMFP and does not justify history cost"
+    ],
+    "mixed_result": "NOT_QUALIFIED",
+    "promising_result": "AUTHORIZES_ONLY_D1_BOUNDED_DONOR_REPRESENTATION_EXPERIMENT",
+    "direct_vzaa_or_hybrid_solver_admission": "FORBIDDEN"
+  },
+  "stage_gating": {
+    "D0B_direction_reversal": "FORBIDDEN_UNLESS_D0A_SURVIVES",
+    "D0C_shallow_groundwater": "FORBIDDEN_UNLESS_D0A_AND_D0B_SURVIVE",
+    "D0D_heterogeneous_interface": "SEPARATE_QUALIFICATION_REQUIRED",
+    "D1_bounded_history": "FORBIDDEN_UNLESS_D0_IDENTIFIES_A_COHERENT_SIGNAL",
+    "D2_conservative_integration": "FORBIDDEN_UNLESS_D0_AND_D1_SURVIVE"
+  },
+  "architecture_invariants_checked": [
+    2,
+    3,
+    4,
+    5,
+    7,
+    9,
+    13,
+    15,
+    16,
+    20,
+    22,
+    23,
+    24,
+    25,
+    26,
+    29,
+    30
+  ],
+  "precommit_status": "FROZEN_BEFORE_D0_IMPLEMENTATION_AND_EXECUTION"
+}
