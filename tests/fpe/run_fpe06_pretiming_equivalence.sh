@@ -9,8 +9,10 @@ cd "$ROOT"
 
 PROTOCOL=integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL.json
 PROTOCOL_BLOB=82014f10ef446a44784cb5ad2b8418b7c4e36c29
+CORRECTION=integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL_CORRECTION_01.json
+CORRECTION_BLOB=9419441824831b9129cafed1b45be198b3c102b4
 DRIVER=tests/fpe/test_fpe06_temporal_certificate_cost.f90
-DRIVER_BLOB=00c94bba7fb819d39e23c6bb83f6bc066b8d824c
+DRIVER_BLOB=fda2917afb9cd68ee0c1abf6de1a89352a6cee67
 PLAN=integration/f-vq/F-VQ34_QUALIFICATION_PLAN.json
 PLAN_BLOB=4f3f7c8883397ed96d3af2f6585f25698c58e7b4
 BACKEND=src/runtime/mod_fmr_serialized_reference_backend.f90
@@ -40,6 +42,7 @@ fail() { echo "FPE06_PRE_FAIL $*" >&2; exit 1; }
 
 for spec in \
   "$PROTOCOL:$PROTOCOL_BLOB" \
+  "$CORRECTION:$CORRECTION_BLOB" \
   "$DRIVER:$DRIVER_BLOB" \
   "$PLAN:$PLAN_BLOB" \
   "$BACKEND:$BACKEND_BLOB" \
@@ -56,6 +59,7 @@ for spec in \
 done
 
 echo 'FPE06_PRE_G01_SOURCE_LOCK=PASS'
+echo 'FPE06_PRE_G01_PROTOCOL_CORRECTION_01=PASS'
 
 python3 - "$PLAN" "$BUILD/cases.tsv" <<'PY'
 import json,sys
@@ -121,8 +125,11 @@ build_and_run() {
     case_out="$out/${cid}.txt"
     timeout 180s "$out/fpe06" "$h0" "$jump" "$dt" > "$case_out" 2>&1 || { cat "$case_out" >&2; fail "execution opt=$tag case=$cid"; }
     grep -Fq 'FPE06_PRETIMING_EQUIVALENCE=PASS' "$case_out" || { cat "$case_out" >&2; fail "PASS marker opt=$tag case=$cid"; }
-    grep -Fq 'FPE06_B_EXTRA_TRIDAG=1' "$case_out" || fail "extra TRIDAG opt=$tag case=$cid"
-    grep -Fq 'FPE06_B_EXTRA_NONLINEAR=0' "$case_out" || fail "extra nonlinear opt=$tag case=$cid"
+    grep -Fq 'FPE06_A_HEADCALC=3' "$case_out" || fail "A headcalc topology opt=$tag case=$cid"
+    grep -Fq 'FPE06_B_HEADCALC=3' "$case_out" || fail "B headcalc topology opt=$tag case=$cid"
+    grep -Fq 'FPE06_B_DEFECT_TRIDAG_PER_ADVANCE=1' "$case_out" || fail "per-advance defect TRIDAG opt=$tag case=$cid"
+    grep -Fq 'FPE06_B_DEFECT_TRIDAG_AGGREGATE=3' "$case_out" || fail "aggregate defect TRIDAG opt=$tag case=$cid"
+    grep -Fq 'FPE06_B_EXTRA_NONLINEAR_PER_ADVANCE=0' "$case_out" || fail "extra nonlinear opt=$tag case=$cid"
     printf '%s\tPASS\n' "$cid" >> "$out/matrix.txt"
   done < "$BUILD/cases.tsv"
   [[ "$(wc -l < "$out/matrix.txt")" -eq 12 ]] || fail "matrix count opt=$tag"
