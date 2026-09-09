@@ -1,0 +1,49 @@
+name: F-FWC01 Gate B2E-R3 Bounded Green-Ampt Scalar Root
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - 'integration/f-fwc/F-FWC01_GATE_B2E_R3_BOUNDED_GA_SCALAR_ROOT_PRECOMMIT.json'
+      - 'experiments/fwc/fwc01_gate_b2e_r3_bounded_ga_scalar_root.py'
+      - '.github/workflows/f-fwc01-gate-b2e-r3-bounded-ga-scalar-root.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependency
+        run: python3 -m pip install --disable-pip-version-check --quiet mpmath
+      - name: Execute frozen bounded scalar-root gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2e-r3"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2e_r3_bounded_ga_scalar_root.py \
+            "$out/F-FWC01_GATE_B2E_R3_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2E_R3_STDOUT.txt"
+      - name: Assert frozen decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2e-r3/F-FWC01_GATE_B2E_R3_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_BOUNDED_SEED_FREE_GREEN_AMPT_DRY_BIN_SCALAR_ROOT_POLICY_READY_FOR_PHYSICAL_PARAMETER_MAPPING'
+          assert r['upstream_R2_failure_preserved'] is True
+          assert r['physics_changed_from_R2'] is False
+          assert r['seed_required'] is False
+          assert r['cache_key_requires_dt'] is True
+          assert r['max_candidate_residual_evaluations'] <= 145
+          assert r['new_persistent_state_bytes'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2e-r3-bounded-ga-scalar-root
+          path: fwc01-gate-b2e-r3/
