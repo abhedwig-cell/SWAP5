@@ -1,0 +1,47 @@
+name: F-FWC01 Gate B2E-R2 Dry-Bin Green-Ampt Numerical Provenance
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - 'integration/f-fwc/F-FWC01_GATE_B2E_R2_DRY_BIN_GA_NUMERICAL_PROVENANCE_PRECOMMIT.json'
+      - 'experiments/fwc/fwc01_gate_b2e_r2_dry_bin_ga_numerical_provenance.py'
+      - '.github/workflows/f-fwc01-gate-b2e-r2-dry-bin-ga-numerical-provenance.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependency
+        run: python3 -m pip install --disable-pip-version-check --quiet scipy
+      - name: Execute frozen dry-bin Green-Ampt numerical provenance gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2e-r2"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2e_r2_dry_bin_ga_numerical_provenance.py \
+            "$out/F-FWC01_GATE_B2E_R2_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2E_R2_STDOUT.txt"
+      - name: Assert frozen decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2e-r2/F-FWC01_GATE_B2E_R2_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_PUBLISHED_DRY_BIN_GA_FIXED_POINT_NUMERICAL_REPRESENTATION_AND_DT_PROVENANCE_READY_FOR_PHYSICAL_PARAMETER_MAPPING'
+          assert r['published_iteration_depth_delta_cm'] == 0.0005
+          assert r['independent_root_depth_error_limit_cm'] == 0.0005
+          assert r['cache_key_requires_dt'] is True
+          assert r['new_persistent_state_bytes'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2e-r2-dry-bin-ga-numerical-provenance
+          path: fwc01-gate-b2e-r2/
