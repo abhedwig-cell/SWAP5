@@ -2,8 +2,8 @@
   "schema_version": 1,
   "work_unit": "F-MR19",
   "branch": "work/f-mr19-restricted-multiswap-process-restart",
-  "status": "IMPLEMENTED_PERSISTED_EXECUTABLE_QUALIFICATION_PENDING",
-  "decision": "NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
   "implementation_checkpoint": {
     "first_source_commit": "a618e254f2ec30cf870769f64a1b8c7f1554c121",
     "source_path": "src/runtime/mod_fmr_committed_restart.f90",
@@ -11,27 +11,50 @@
     "filesystem_or_format_added": false,
     "parallel_execution_changed": false
   },
+  "qualification_candidate": {
+    "head": "dfffd8535b3345b105b2d71537d8149225f35c54",
+    "workflow_run_id": 34391094044,
+    "workflow_job_id": 102599292121,
+    "workflow_conclusion": "success",
+    "evidence_path": "integration/f-mr/F-MR19_QUALIFICATION_EVIDENCE.json"
+  },
   "realized": [
     "adapter-facing decoded per-column committed restart record",
     "column-id-based restore lookup rather than array-position binding",
-    "exact template/layout identity validation",
+    "exact template/layout identity validation across all identity axes",
     "parameter reference validation without parameter payload persistence",
     "trusted F-KT13 reconstruction routed through F-KT12 restore",
-    "temporary-registry reconstruction before atomic publication",
-    "fresh-target-only restore"
+    "temporary-registry reconstruction before atomic whole-registry publication",
+    "fresh-target-only restore",
+    "explicit fail-closed handling for missing/duplicate columns, schema mismatch and nonreconstructable continuation state"
   ],
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "open": [
-    "compile candidate under O0 and O2",
-    "execute real-physics split-run matrix 1,2,8,17,32",
-    "prove reverse record and runtime ordering independence",
-    "prove wrong-template/layout and wrong-parameter atomic rejection",
-    "prove cross-column contamination absence",
-    "prove exact continuous-vs-restarted mass and endpoint identity",
-    "prove deterministic replay",
-    "record source-scope and no-scratch/no-parameter-payload structural gates"
+  "tested": true,
+  "qualified": true,
+  "qualification_evidence": [
+    "GNU Fortran O0 PASS",
+    "GNU Fortran O2 PASS",
+    "O0/O2 real-physics output identity PASS",
+    "O0/O2 negative-contract output identity PASS",
+    "real-physics batch sizes 1,2,8,17,32 PASS",
+    "reverse record order PASS",
+    "reverse runtime order PASS",
+    "exact lineage/revision/committed-time continuation PASS",
+    "exact continuous-vs-restarted endpoint identity PASS",
+    "per-column and aggregate mass continuation PASS",
+    "deterministic replay PASS",
+    "cross-column contamination absence PASS",
+    "all required fail-closed identity/schema/reconstruction gates PASS",
+    "source-scope/no-kernel-IO/no-parameter-payload/no-solver-scratch structural gates PASS"
+  ],
+  "open": [],
+  "scope_limits": [
+    "restricted serialized real-physics MultiSWAP only",
+    "accepted committed boundary only",
+    "no general byte/file persistence format qualification",
+    "no parallel real-physics restart qualification",
+    "no mid-transaction restart",
+    "no worker scratch persistence"
   ],
   "mq25_created": false,
   "qualification_exit": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ"
