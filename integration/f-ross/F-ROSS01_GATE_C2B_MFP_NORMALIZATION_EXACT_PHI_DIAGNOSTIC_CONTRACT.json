@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_MFP_NORMALIZATION_EXACT_PHI_DIAGNOSTIC",
+  "purpose": "Separate the intrinsic quality of MFP-secant normalization from the failed cumulative-Phi runtime interpolation used in R2.",
+  "not_a_production_candidate": true,
+  "dependencies": {
+    "R1_result": "integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_SEAM_ALIGNED_R1_RESULT.json",
+    "R2_result": "integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_MFP_RESIDUAL_R2_RESULT.json"
+  },
+  "frozen_elements": {
+    "physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+    "N": 241,
+    "axis": "R1 seam-aligned piecewise-u axis",
+    "two_dimensional_storage": "float32 log residual r=log(M_exact/M_phi)",
+    "characterization_probes": "same existing C2B characterization probes",
+    "face_flux_thresholds": "unchanged C1R/C2B thresholds"
+  },
+  "only_change": "At characterization lookup, compute M_phi from a direct split adaptive quadrature of integral K(h) dh between the two endpoint heads, divided by L*(hb-ha). Do not use the stored/interpolated cumulative Phi table for lookup.",
+  "diagnostic_materials": ["B05", "B10", "O13", "O14"],
+  "interpretation": {
+    "if_face_metrics_pass": "MFP residual normalization is promising in principle; R2 failed because its cheap cumulative-Phi lookup was inaccurate. A later production-shaped Phi/secant representation may be researched separately.",
+    "if_face_metrics_fail": "MFP secant normalization itself does not sufficiently flatten the steady face surface; stop this normalization line rather than tuning the Phi lookup."
+  },
+  "hard_rules": [
+    "No qualification or production claim may follow directly from this diagnostic.",
+    "Runtime quadrature in this diagnostic is explicitly disqualifying for production.",
+    "Do not alter the physical closure, N241 grid or error thresholds.",
+    "Preserve R1 and R2 failures unchanged."
+  ],
+  "scope_guard": "Diagnostic causality isolation only."
+}
