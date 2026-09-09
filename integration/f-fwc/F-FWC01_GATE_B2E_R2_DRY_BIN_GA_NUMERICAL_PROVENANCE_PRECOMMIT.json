@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_R2_DRY_BIN_GREEN_AMPT_NUMERICAL_PROVENANCE",
+  "production_implementation": false,
+  "purpose": "Qualify only the numerical fixed-point representation of the published dry-bin Green-Ampt initialization rule and its cache provenance implications.",
+  "source_contract": {
+    "talbot_ogden_2008_doi": "10.1029/2008WR006815",
+    "published_stop_rule": "iterate assumed Z_de against Green-Ampt-derived Z_d until absolute depth difference is less than 0.0005 cm",
+    "green_ampt_form": "F = K*dt + A*ln(1 + F/A), with A = psi*delta_theta and Z = F/delta_theta",
+    "ogden_2015_doi": "10.1002/2015WR017126",
+    "2015_role": "new dry-bin initial advance is bounded by the maximum advance during the timestep described by Talbot and Ogden 2008"
+  },
+  "frozen_grid": {
+    "K_cm_per_day": [0.01, 0.1, 1.0, 10.0, 100.0],
+    "dt_day": [1e-05, 0.0001, 0.001, 0.01],
+    "psi_cm": [1.0, 10.0, 100.0, 1000.0],
+    "delta_theta": [0.001, 0.01, 0.05, 0.2],
+    "initial_Z_seeds_cm": [0.0, 0.001, 0.1, 1.0, 10.0]
+  },
+  "acceptance": {
+    "published_iteration_depth_delta_cm": 0.0005,
+    "max_depth_error_vs_independent_root_cm": 0.0005,
+    "all_seed_variants_must_converge": true,
+    "invalid_nonpositive_inputs_fail_closed": true,
+    "dt_sensitivity_must_be_observable": true,
+    "no_new_persistent_state": true
+  },
+  "hard_nonclaims": [
+    "No claim that the selected generic K, psi and delta-theta tuples reproduce M2WC70 bin mapping.",
+    "No claim of M2WC70 code equivalence.",
+    "No rainfall allocation, partial dry-bin funding, capillary relaxation or production runtime qualification.",
+    "No Green-Ampt dry-bin value may be promoted to a material-only immutable parameter."
+  ],
+  "failure_policy": "Preserve any failure. Do not loosen the 0.0005 cm published iteration criterion after execution.",
+  "status": "PRECOMMITTED_READY_FOR_EXECUTION"
+}
