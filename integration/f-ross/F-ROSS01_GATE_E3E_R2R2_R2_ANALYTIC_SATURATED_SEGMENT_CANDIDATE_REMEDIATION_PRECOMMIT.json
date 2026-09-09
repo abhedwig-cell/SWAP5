@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "qualification_target": "POSITIVE_SURFACE_TO_UNSATURATED_5CM_FACE_CANDIDATE_BRANCH_ONLY",
+  "upstream": {
+    "R2P": "QUALIFIED_ZERO_SURFACE_KSAT_PLATEAU_AS_DERIVED_FACE_LOCAL_MIXED_ENDPOINT_SEMANTICS_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+    "R2R2": "FAILED_AS_FROZEN_REFERENCE_UPPER_BRACKET_REMEDIATION_REQUIRED",
+    "R2R2_R1": "EXACT_PHYSICAL_UPPER_REFERENCE_BRACKET_MECHANISM_VALIDATED_BUT_B01_EXPOSES_REAL_KSAT_ENDPOINT_FALLBACK_CANDIDATE_DEFECT_REMEDIATION_REQUIRED"
+  },
+  "source_bound_defect": {
+    "existing_fallback": "For q-above-K bracket failure, E2C-R3 returns q=K(h_above).",
+    "surface_face_effect": "For h_surface>0, K(h_surface)=KSAT. On B01 fresh_near_0023 the fallback returned q=KSAT while the independently verified root is q/KSAT-1 approximately 0.16837.",
+    "classification": "OVERBROAD_ENDPOINT_FALLBACK_FOR_MIXED_SATURATED_UNSATURATED_SURFACE_FACE"
+  },
+  "candidate_remediation": {
+    "trigger": "h_surface > 0 AND h_top < 0",
+    "saturated_segment": {
+      "range": "h from h_surface down to 0",
+      "K": "KSAT",
+      "analytic_path_length": "L_sat(q)=h_surface*KSAT/(q-KSAT), q>KSAT",
+      "new_constitutive_physics": false
+    },
+    "unsaturated_segment": {
+      "range": "h from 0 down to h_top",
+      "numerics": "reuse the existing E2C-R2 endpoint-clustered bounded quadrature with fixed constitutive K evaluations; use its integral value without its face-length subtraction",
+      "new_table": false,
+      "new_phi_tuning": false
+    },
+    "total_residual": "R(q)=L_sat(q)+L_unsat(q)-5cm",
+    "bracket": {
+      "lower": "nextafter(KSAT,+infinity)",
+      "upper": "exact physical saturated-Darcy bound KSAT*(1+(h_surface-h_top)/5)",
+      "require": "finite opposite-sign residuals or exact endpoint root; otherwise fail closed"
+    },
+    "root": "same bounded bisection count as E2C, no Newton iteration",
+    "other_faces": "unchanged existing E3E candidate routing",
+    "h_surface_zero": "unchanged R2P/E3A endpoint semantics; this remediation does not capture h_surface=0"
+  },
+  "frozen_witnesses": {
+    "defect_positive": [
+      {"material":"B01","probe_id":"fresh_near_0023","h_surface_cm":0.8418598139923603,"h_top_node_cm":-1.7857563818019415e-08,"q_reference_cm_per_day":36.48243334385413}
+    ],
+    "resolved_negative_control": [
+      {"material":"O14","probe_id":"fresh_near_0003","h_surface_cm":0.37579678846033,"h_top_node_cm":-1.9219207863995577e-08,"q_reference_cm_per_day":2.683580563843753}
+    ],
+    "ordinary_positive_surface_controls": [
+      {"material":"B01","probe_id":"fresh_near_0011"},
+      {"material":"B12","probe_id":"fresh_near_0011"},
+      {"material":"O13","probe_id":"fresh_near_0011"},
+      {"material":"O14","probe_id":"fresh_near_0011"},
+      {"material":"B01","probe_id":"fresh_dry_0007"},
+      {"material":"B12","probe_id":"fresh_dry_0007"},
+      {"material":"O13","probe_id":"fresh_dry_0007"},
+      {"material":"O14","probe_id":"fresh_dry_0007"}
+    ]
+  },
+  "reference": {
+    "oracle": "R2R1 stable VGM reference with R2P endpoint semantics and R2R2-R1 exact physical upper bracket",
+    "inherited_steady_q_authority": false
+  },
+  "acceptance": {
+    "all_witnesses_resolved": true,
+    "wrong_sign_count": 0,
+    "max_hybrid_metric": 0.01,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66,
+    "defect_witness_must_not_return_ksat_endpoint_fallback": true,
+    "all_positive_surface_witnesses_use_analytic_saturated_split": true,
+    "reference_path_residual_max_abs_cm": 1e-8,
+    "persistent_state_bytes": 0,
+    "scratch_owner": "worker",
+    "mass_repair_or_clipping": false
+  },
+  "architecture_binding": {
+    "state": "no new persistent state; split geometry is face-local derived scratch",
+    "mass": "no ledger or water amount modified by face evaluation",
+    "transactionality": "candidate evaluation remains trial-local",
+    "physics_vs_policy": "analytical integration of the already saturated K=KSAT segment changes numerical representation only",
+    "bounded_cost": "same root-evaluation cap and no additional full model trajectory",
+    "reference_mode": "independent high-accuracy reference remains qualification-only"
+  },
+  "hard_nonclaims": [
+    "This focused gate does not yet requalify all 320 R2R2 fresh probes.",
+    "No exact-zero-surface endpoint semantics are changed.",
+    "No response tangent across the branch is qualified.",
+    "No Phi tuning, precomputed near-saturation table or HENPR smoothing is reopened.",
+    "No top-boundary ledger, runtime, MultiSWAP, groundwater or production admission follows."
+  ],
+  "success_exit": "QUALIFIED_ANALYTIC_SATURATED_SEGMENT_SURFACE_FACE_REMEDIATION_READY_FOR_IDENTICAL_320_CASE_FRESH_RERUN",
+  "failure_exit": "ANALYTIC_SATURATED_SEGMENT_SURFACE_FACE_REMEDIATION_NOT_QUALIFIED_FURTHER_CANDIDATE_RESEARCH_REQUIRED"
+}
