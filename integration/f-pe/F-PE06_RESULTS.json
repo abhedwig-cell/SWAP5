@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "title": "Bounded Temporal-Certificate Cost and Reference Runtime Overhead Characterization Results",
+  "status": "RESULTS_PERSISTED_FINAL_RECONCILIATION_PENDING",
+  "decision": "NOT_YET_CLOSED",
+  "timing_evidence": {
+    "tested_head": "a3fe000a3726f11e350ae7a1b3d3fbf63eefd514",
+    "workflow_run": 34395935065,
+    "pretiming_job": 102615527401,
+    "pretiming_conclusion": "success",
+    "timing_job": 102615848957,
+    "timing_conclusion": "success",
+    "artifact_name": "fpe06-timing-evidence",
+    "artifact_id": 10121539970,
+    "artifact_size_bytes": 12819,
+    "artifact_sha256": "f8d642301630573e0fa818472054cfe34cfd0e2ca1dd173083e040cb3175e449",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04 image 20260907.300.1",
+    "timing_compile_common": "-std=f2008 -ffree-line-length-none -fbacktrace",
+    "optimization_modes": ["O0", "O2"]
+  },
+  "harness": {
+    "matrix": "frozen 12-case F-VQ34 independent hydraulic matrix",
+    "transaction_route": "TX_TEMPORAL_EXTERNAL_FULL_HALF",
+    "benchmark_temporal_tolerance": "huge(real64), identical in A and B and used only to neutralize the external full/half identity as a benchmark confounder",
+    "principal_advances_per_trial": 3,
+    "arm_A": "temporal continuation layout inactive",
+    "arm_B": "Richards temporal-history layout active with seeded derivative history",
+    "expected_and_pretiming_proven_headcalc_delta_B_minus_A": 0,
+    "expected_and_pretiming_proven_linear_solve_delta_B_minus_A": 3,
+    "temporal_service_invocations_per_B_trial": 3,
+    "ordering": "ABBA",
+    "blocks_per_case": 9,
+    "repetitions_per_process": 30,
+    "warmup_per_process": 3,
+    "raw_process_observations": 864,
+    "paired_blocks_total": 216,
+    "timed_run_trial_calls": 25920,
+    "timed_B_temporal_service_invocations": 38880,
+    "timed_region": "Only the repeated fmr_serialized_reference_backend%run_trial calls inside each process; fixture construction, backend initialization, checkpoint construction, test-budget preflight and process startup are excluded."
+  },
+  "O0": {
+    "paired_blocks": 108,
+    "A_seconds_per_trial": {
+      "median": 3.600445833333333e-05,
+      "p95": 3.785513333333333e-05,
+      "max": 4.547796666666667e-05
+    },
+    "B_seconds_per_trial": {
+      "median": 4.723424166666666e-05,
+      "p95": 4.926808333333333e-05,
+      "max": 6.395218333333334e-05
+    },
+    "paired_delta_seconds_per_trial": {
+      "median": 1.11486e-05,
+      "p95": 1.3040433333333331e-05,
+      "max": 2.8382333333333334e-05,
+      "min": 1.586783333333333e-06,
+      "positive_blocks": 108,
+      "negative_blocks": 0
+    },
+    "B_over_A_ratio": {
+      "median": 1.3116463446774018,
+      "p95": 1.3666562633653523,
+      "max": 1.7979323312674451,
+      "min": 1.0348912550326568
+    },
+    "paired_delta_seconds_per_temporal_service": {
+      "median": 3.7162e-06,
+      "p95": 4.34681111111111e-06,
+      "max": 9.460777777777778e-06,
+      "min": 5.289277777777777e-07
+    },
+    "case_median_delta_seconds_range": [1.070993333333333e-05, 1.1575366666666657e-05],
+    "case_median_ratio_range": [1.2955647693048948, 1.321300601973834]
+  },
+  "O2": {
+    "paired_blocks": 108,
+    "A_seconds_per_trial": {
+      "median": 1.9786666666666668e-05,
+      "p95": 2.2170316666666667e-05,
+      "max": 2.7066200000000002e-05
+    },
+    "B_seconds_per_trial": {
+      "median": 2.6732616666666666e-05,
+      "p95": 2.8533949999999998e-05,
+      "max": 3.995018333333333e-05
+    },
+    "paired_delta_seconds_per_trial": {
+      "median": 6.957058333333331e-06,
+      "p95": 8.703166666666668e-06,
+      "max": 2.070753333333333e-05,
+      "min": -1.6933333333333194e-07,
+      "positive_blocks": 107,
+      "negative_blocks": 1
+    },
+    "B_over_A_ratio": {
+      "median": 1.353133208006231,
+      "p95": 1.4469180570043525,
+      "max": 2.076126902133195,
+      "min": 0.9936196695039042
+    },
+    "paired_delta_seconds_per_temporal_service": {
+      "median": 2.3190194444444437e-06,
+      "p95": 2.901055555555556e-06,
+      "max": 6.90251111111111e-06,
+      "min": -5.644444444444398e-08
+    },
+    "case_median_delta_seconds_range": [6.551033333333332e-06, 7.59436666666667e-06],
+    "case_median_ratio_range": [1.3194087777638699, 1.38412488598371]
+  },
+  "interpretation": {
+    "O0_median_trial_overhead_microseconds": 11.1486,
+    "O0_median_service_overhead_microseconds": 3.7162,
+    "O0_median_ratio_percent_above_A": 31.16463446774018,
+    "O2_median_trial_overhead_microseconds": 6.957058333333331,
+    "O2_median_service_overhead_microseconds": 2.3190194444444437,
+    "O2_median_ratio_percent_above_A": 35.3133208006231,
+    "noise_note": "One of 108 O2 paired blocks has a -0.169 microsecond trial delta; all twelve O2 case-median deltas are positive. This isolated negative block is retained as measurement noise evidence and is not clipped or deleted.",
+    "cost_shape": "Within the qualified frozen matrix and this benchmark harness, the temporal machinery adds no principal Richards trajectories and exactly one defect reference_tridag per service invocation. The measured wall-clock increment is microsecond-scale on this GitHub runner."
+  },
+  "memory_characterization": {
+    "artifact": "integration/f-pe/F-PE06_MEMORY_COST_CHARACTERIZATION.json",
+    "persistent_optional_history_payload_bytes": "8*n",
+    "source_visible_peak_transient_payload_bytes_seeded_admitted_service": "152*n",
+    "source_visible_peak_incremental_payload_including_optional_history": "160*n",
+    "allocator_or_descriptor_overhead_included": false,
+    "principal_solver_arrays_included": false
+  },
+  "qualified_dependency_preserved": {
+    "F_VQ34_H_budget_selection": false,
+    "test_budget_is_application_policy": false,
+    "BALANCED_policy_defined": false,
+    "THROUGHPUT_policy_defined": false
+  },
+  "hard_nonclaims": [
+    "These timings characterize one GitHub-hosted Ubuntu runner and do not establish a universal hardware-independent runtime bound.",
+    "The full/two-half benchmark harness is not a claim that production model-certificate execution should use three principal Richards advances.",
+    "The huge external temporal tolerance is benchmark scaffolding and not a production accuracy policy.",
+    "The per-service delta is an arithmetic normalization of a fixed three-service paired trial delta, not a separately clocked isolated service benchmark.",
+    "F-PE06 does not select or recommend H_budget.",
+    "F-PE06 does not qualify BALANCED or THROUGHPUT solver policy.",
+    "F-PE06 does not authorize any mass-conservation or physical-fidelity concession."
+  ],
+  "architecture_invariant_audit": {
+    "5_scratch_per_worker": "PASS_WITHIN_CHARACTERIZATION_SCOPE: temporal work is transient and not committed per-column scratch; source-visible transient payload is O(n).",
+    "7_transactional_timesteps": "PASS: benchmark uses an existing valid checkpoint/trial transaction route and correctness was prequalified before timing.",
+    "13_mass_conservation_absolute": "PASS: pre-timing A/B physical mass result and max step residual are bitwise identical across all frozen O0/O2 cases; timing cases retain hard mass gates.",
+    "23_physics_solver_policy_separated": "PASS: A/B physical configuration and reference solver settings are identical; only the optional numerical-continuation service differs.",
+    "24_predictable_compute": "PASS_FOR_CHARACTERIZATION: fixed incremental solve topology is executable-proven and observed median/p95/max overhead is recorded without claiming a universal bound.",
+    "25_reference_mode_available": "PASS: reference Richards path is the measured path.",
+    "26_runtime_diagnostics": "PASS: existing headcalc/linear/nonlinear/Jacobian/retry/mass diagnostics support the cost attribution.",
+    "27_optional_functionality_scales_with_use": "PASS_WITHIN_SCOPE: persistent history and transient indicator work occur only for the temporal-history layout/service.",
+    "30_architecture_change_audit": "PASS_PENDING_FINAL_DIFF_RECONCILIATION: evidence and test infrastructure changed; no production source change is intended."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "open": [
+      "final branch diff reconciliation against F-VQ34 base",
+      "formal closeout of F-PE06 characterization scope"
+    ]
+  }
+}
