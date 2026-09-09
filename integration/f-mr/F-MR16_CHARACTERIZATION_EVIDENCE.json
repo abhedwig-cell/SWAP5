@@ -1,0 +1,72 @@
+{
+  "workunit": "F-MR16",
+  "kind": "NONPRODUCTION_RICHARDS_TEMPORAL_DELTA_CHARACTERIZATION",
+  "source_head": "dacb043b968e79c3a849aad104008883124c090d",
+  "source_tree": "4ee15c19641423ea0611badf25d98bc7cbcd623c",
+  "workflow": "F-MR16 F-VQ24 temporal delta characterization",
+  "workflow_run_id": 34283246020,
+  "workflow_conclusion": "success",
+  "artifact_id": 10078442634,
+  "artifact_name": "fmr16-temporal-delta-characterization",
+  "artifact_log_sha256": "cac049d749ae2751c24a1af8402ce673aaa02f8a33d01708dee8a820a0c646c3",
+  "scientific_stimulus": {
+    "qualification_source": "F-VQ24",
+    "fvq24_status_commit": "4a8c0740222da5934e1fae53000c1c19db733e27",
+    "head0_cm": -75.0,
+    "interval_duration": 1.0,
+    "top_flux_relative_perturbations": [0.0, 3e-12, -3e-12, 1e-11, -1e-11],
+    "bottom_mode": 7,
+    "root_sink": "ZERO",
+    "source_sink": "NONZERO_NODEWISE_QDRA_WITH_MATCHING_QSSDI",
+    "macropores": "INACTIVE"
+  },
+  "observer_contract": {
+    "source": "observation-only copy of src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "production_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "production_source_changed": false,
+    "production_acceptance_changed": false,
+    "mass_requirement_changed": false,
+    "retry_policy_changed": false,
+    "recorded_fields": [
+      "max_abs_head",
+      "max_abs_theta",
+      "abs_ponding",
+      "abs_groundwater",
+      "relative_head_diagnostic",
+      "relative_theta_diagnostic"
+    ],
+    "normalization_warning": "relative_head_diagnostic and relative_theta_diagnostic are characterization-only observer outputs based on instantaneous state magnitudes; they are not an admitted or proposed production normalization"
+  },
+  "rows": [
+    {"case":1,"name":"fvq24_baseline","attempt":1,"dt":1.0,"max_abs_head":0.0,"max_abs_theta":0.0,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":0.0,"relative_theta_diagnostic":0.0},
+    {"case":2,"name":"fvq24_plus_3e-12","attempt":1,"dt":1.0,"max_abs_head":4.96669372296310030e-11,"max_abs_theta":4.77395900588817312e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":6.62225829728783161e-13,"relative_theta_diagnostic":1.38010969051408165e-13},
+    {"case":2,"name":"fvq24_plus_3e-12","attempt":2,"dt":0.5,"max_abs_head":4.82458517581108026e-11,"max_abs_theta":4.64073224293315434e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":6.43278023441650828e-13,"relative_theta_diagnostic":1.34159500147656859e-13},
+    {"case":2,"name":"fvq24_plus_3e-12","attempt":3,"dt":0.25,"max_abs_head":4.26325641456060112e-12,"max_abs_theta":4.10782519111307920e-15,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":5.68434188608362750e-14,"relative_theta_diagnostic":1.18753624532623462e-14},
+    {"case":3,"name":"fvq24_minus_3e-12","attempt":1,"dt":1.0,"max_abs_head":4.95106178277637810e-11,"max_abs_theta":4.76285677564192156e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":6.60141571036008689e-13,"relative_theta_diagnostic":1.37690013309480794e-13},
+    {"case":3,"name":"fvq24_minus_3e-12","attempt":2,"dt":0.5,"max_abs_head":4.83879603052628227e-11,"max_abs_theta":4.65183447317940590e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":6.45172804069552886e-13,"relative_theta_diagnostic":1.34480455889671244e-13},
+    {"case":3,"name":"fvq24_minus_3e-12","attempt":3,"dt":0.25,"max_abs_head":4.29167812399100512e-12,"max_abs_theta":4.10782519111307920e-15,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":5.72223749865116552e-14,"relative_theta_diagnostic":1.18753624532650930e-14},
+    {"case":4,"name":"fvq24_plus_1e-11","attempt":1,"dt":1.0,"max_abs_head":7.24327264833846129e-11,"max_abs_theta":6.96109836439973151e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":9.65769686447598720e-13,"relative_theta_diagnostic":2.01239250221370127e-13},
+    {"case":4,"name":"fvq24_plus_1e-11","attempt":2,"dt":0.5,"max_abs_head":2.52526888289139606e-11,"max_abs_theta":2.43138842392909282e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":3.36702517719425256e-13,"relative_theta_diagnostic":7.02893074936096945e-14},
+    {"case":4,"name":"fvq24_plus_1e-11","attempt":3,"dt":0.25,"max_abs_head":3.12070369545836002e-11,"max_abs_theta":2.99760216648792266e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":4.16093826061576289e-13,"relative_theta_diagnostic":8.66580503345969473e-14},
+    {"case":5,"name":"fvq24_minus_1e-11","attempt":1,"dt":1.0,"max_abs_head":7.23474613550934009e-11,"max_abs_theta":6.94999613415347994e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":9.64632818064336855e-13,"relative_theta_diagnostic":2.00918294479652455e-13},
+    {"case":5,"name":"fvq24_minus_1e-11","attempt":2,"dt":0.5,"max_abs_head":2.51816345553379506e-11,"max_abs_theta":2.42028619368284126e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":3.35755127403745752e-13,"relative_theta_diagnostic":6.99683517516875494e-14},
+    {"case":5,"name":"fvq24_minus_1e-11","attempt":3,"dt":0.25,"max_abs_head":3.12923020828748122e-11,"max_abs_theta":3.00870439673417422e-14,"abs_ponding":0.0,"abs_groundwater":0.0,"relative_head_diagnostic":4.17230694437609108e-13,"relative_theta_diagnostic":8.69790060766283592e-14}
+  ],
+  "workflow_summary": {
+    "baseline_exact_temporal_identity": "PASS",
+    "nonzero_richards_finite_component_deltas": "PASS",
+    "nonzero_cases_strictly_monotone_head_and_theta": "2/4",
+    "nonzero_cases_final_delta_below_initial_head_and_theta": "4/4",
+    "robust_monotone_dt_halving_signal": "NO",
+    "characterization_completed_without_metric_selection": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "evidence_not_recorded": [
+    "componentwise node pressure-head deltas",
+    "componentwise node water-content deltas",
+    "identity and location of the node carrying each maximum",
+    "spatial delta pattern",
+    "sum(dz * (theta_full - theta_two_half)) or another signed integrated storage implication"
+  ],
+  "scope_note": "The F-MR16 characterization artifact is evidence about full-step versus two-half-step final-state discrepancies reached on the existing retry route. It is not evidence that any recorded field, ratio, or combination is a scientifically admitted production temporal-error metric."
+}
