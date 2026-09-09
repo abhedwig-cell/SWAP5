@@ -21,3 +21,6 @@ jobs:
 
       - name: Run F-WOF26 gate
         run: bash tests/fwof/run_fwof26_one_day_structural_evolution_gate.sh
+
+      - name: Retain F-WOF24 owner behavior
+        run: bash tests/fwof/run_fwof26_fwof24_backward_compatibility.sh
