@@ -111,8 +111,13 @@ old_guard="assert 'outcome%temporal_certificate_available = .true.' not in backe
 new_guard="""service_start=backend.index('subroutine evaluate_temporal_history_service')\nservice_end=backend.index('end subroutine evaluate_temporal_history_service', service_start)\nservice=backend[service_start:service_end]\nassert 'self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available' in backend\nassert 'self%temporal_indicator_budget_valid = self%temporal_indicator_budget > 0.0_real64' in backend\nassert 'normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget' in service\nassert 'outcome%temporal_certificate_available = .true.' in service\nassert service.index('else if (.not. self%temporal_indicator_budget_supplied) then') < service.index('outcome%temporal_certificate_available = .true.')\nassert service.index('else if (.not. self%temporal_indicator_budget_valid) then') < service.index('outcome%temporal_certificate_available = .true.')\nassert 'outcome%temporal_indicator = indicator_result%head_inf_bound' not in backend"""
 replace_one(runner, old_guard, new_guard)
 
+old_final="""[[ -z \"$(git diff --name-only e6c103ebb69bb9fa6eb631f8c1d41fb2708372b2..HEAD -- src)\" ]] || fail 'production src changed in F-VQ32'\necho 'FVQ32_G11_PRODUCTION_SOURCE_UNCHANGED=PASS'"""
+new_final="""[[ \"$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)\" == fe8f87d11257d4c6bc019f1d628ac41ba3106d4e ]] || fail 'materialized production indicator drift'\necho 'FVQ32_G11_PRODUCTION_SOURCE_UNCHANGED=PASS_MATERIALIZED_POSTIMAGE'"""
+replace_one(runner, old_final, new_final)
+
 print('FCI21_VQ32_MATERIALIZED_SOURCE_GUARD_ADAPTATION=PASS_TEST_ONLY')
 print('FCI21_VQ32_POST_KT11_BUDGET_GUARD_ADAPTATION=PASS_TEST_ONLY')
+print('FCI21_VQ32_FINAL_SOURCE_IDENTITY_ADAPTATION=PASS_TEST_ONLY')
 PY
 
 git config user.name 'F-CI21 qualification overlay'
