@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR18",
+  "gate": "C",
+  "name": "SERIALIZED_MULTISWAP_OPTIONAL_RECEIPT_INTEGRATION",
+  "base_head": "4a9a3f81976f01ff73f810d00b53765dfa09e946",
+  "selected_design": "SPARSE_COLUMN_ID_RECEIPT_REQUEST_WITH_SEPARATE_EPHEMERAL_OUTPUT",
+  "api_shape": {
+    "existing_entrypoint_retained": true,
+    "optional_input": "receipt_column_ids(:)",
+    "optional_output": "commit_receipts(:)",
+    "output_record": "column_id + fmr_accepted_commit_receipt_t",
+    "pair_must_be_present_together": true,
+    "requested_ids_must_be_positive_unique_and_present_in_columns": true,
+    "output_cardinality_equals_request_cardinality": true
+  },
+  "execution_semantics": {
+    "unrequested_column_commit_path": "existing fmr_commit_candidate call unchanged",
+    "requested_column_commit_path": "fmr_commit_candidate_with_receipt using the exact checkpoint and candidate already owned by execute_column",
+    "rejected_requested_column_receipt_ready": false,
+    "accepted_requested_column_receipt_required": true,
+    "postcommit_receipt_failure_policy": "hard internal invariant violation, never ordinary recoverable runtime status",
+    "receipt_persistent_column_state": false,
+    "receipt_solver_scratch": false,
+    "domain_specific_imports": false
+  },
+  "scaling": {
+    "inactive_columns_receive_persistent_optional_state": false,
+    "inactive_columns_use_receipt_commit_helper": false,
+    "ephemeral_storage_scales_with_requested_receipts": true,
+    "per_column_receipt_table_for_all_columns": false
+  },
+  "qualification_requirements": [
+    "legacy no-receipt F-MR05 transcript and committed-state behavior unchanged",
+    "requested accepted columns emit exactly one ready receipt with matching lineage/revision/time",
+    "requested rejected columns emit no ready receipt",
+    "unrequested columns emit no receipt record",
+    "batch-size and input-order deterministic receipt identity",
+    "A-B-A replay identity",
+    "mass accounting unchanged",
+    "O0/O2 identity",
+    "F-WOF34 exact transcript preservation"
+  ],
+  "not_claimed": [
+    "WOFOST PTRA/QROT binding",
+    "accepted-window publication after receipt",
+    "restart/crash atomicity",
+    "canonical admission"
+  ],
+  "status": "DESIGN_FROZEN_BEFORE_GATE_C_IMPLEMENTATION"
+}
