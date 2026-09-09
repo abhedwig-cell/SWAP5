@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "contract_status": "CANDIDATE_NOT_QUALIFIED",
+  "representation_options": [
+    {
+      "name": "FIXED_THETA_BINS_WITH_BOUNDED_FRONT_SLOTS",
+      "persistent_state": [
+        "front positions/depths associated with fixed water-content bins",
+        "front-type/activity masks required to distinguish infiltration fronts, falling slugs and groundwater-connected fronts",
+        "only genuinely physical hysteretic/event state if proven necessary"
+      ],
+      "shared_data": ["fixed theta-bin values", "hydraulic material relations", "layer geometry/template"],
+      "strength": "fixed-size SoA-friendly storage can be designed if maximum active front slots per bin/profile is proven",
+      "hard_open_question": "published bookkeeping does not yet prove that a simple one-front-per-bin persistent representation covers all arbitrary forcing histories"
+    },
+    {
+      "name": "DYNAMIC_FRONT_POOL",
+      "persistent_state": ["active front records in a per-column bounded pool or compact indexed slab"],
+      "strength": "closer to native event representation and can avoid storing inactive bins",
+      "hard_open_question": "requires a mathematically justified hard pool bound; overflow may not silently discard or merge physical water"
+    }
+  ],
+  "non_admissible_design": "unbounded linked-list/vector growth per logical column under arbitrary wetting/drying history",
+  "worker_scratch": [
+    "trial front velocities",
+    "event times",
+    "collision/merge candidates",
+    "layer-interface transfer workspace",
+    "binwise advection/diffusion temporary amounts",
+    "trial sorted front indices",
+    "mass-ledger arrays",
+    "response-tangent workspace",
+    "diagnostic counters"
+  ],
+  "advance_trial_interface": {
+    "signature": "advance_trial(base_state, parameters, forcing, boundaries, t0, t1, physical_config, numerical_config, workspace) -> trial_result",
+    "committed_state_mutation": false,
+    "generic_time": true,
+    "internal_event_substeps_allowed": true,
+    "event_count_must_be_bounded_or_fail_closed": true,
+    "rollback": "discard complete trial front/bin state and scratch; committed state remains untouched"
+  },
+  "process_hydraulic_view": {
+    "must_hide_front_internals": true,
+    "required_services": [
+      "theta at requested vertical support",
+      "pressure head or qualified reconstructed representative head",
+      "hydraulic conductivity",
+      "vertical water flux",
+      "root-zone extractable water/sink realization",
+      "evaporation-facing near-surface hydraulic state",
+      "drainage-facing hydraulic state",
+      "oxygen-stress-facing state",
+      "solute-transport water volumes and face fluxes",
+      "groundwater bottom head/flux"
+    ],
+    "qualification_rule": "If a requested process quantity cannot be reconstructed to sufficient fidelity from the FWC state, that process combination is outside the FWC applicability envelope. Other modules may not be rewritten around front internals."
+  },
+  "mass_contract": {
+    "identity": "storage_change = top_in - top_out + bottom_in - bottom_out - sinks + sources + explicit_internal_component_transfers_that_cancel_pairwise",
+    "front_events": "front creation, collision, merge, layer crossing, groundwater contact and binwise diffusion redistribution must each have a local transfer ledger whose sum is exactly conservative",
+    "post_event_clipping": false,
+    "mass_error_as_performance_tradeoff": false
+  },
+  "boundary_contract": {
+    "required_bottom_modes": ["free_drainage", "prescribed_flux", "prescribed_head"],
+    "moving_groundwater": "groundwater-connected fronts may represent capillary response, but the imposed boundary head remains coupler-owned rather than duplicated as private state",
+    "direct_modflow": "accepted step returns one conservative q_SWAP for imposed H_MF and supports the reverse flux-imposed trial semantics required by coupling qualification"
+  },
+  "response_tangent_candidate": "Differentiate active front-velocity/event equations and event-free substep maps. Tangent must be marked unavailable or treated piecewise at front collisions, merges, limiter switches or topology changes; many +/- full reruns are not the intended production path.",
+  "runtime_contract": {
+    "target_form": "O(N_bins_or_active_fronts * N_events_or_internal_steps)",
+    "required_bounds": ["max persistent fronts", "max bins", "max events per external interval", "max internal substeps", "max layer-interface correction work"],
+    "diffusion_extension": "explicit binwise diffusion adds bounded arithmetic only if bin and substep counts are bounded; published use of 200 bins is evidence, not a production default"
+  },
+  "status": "CANDIDATE_FWC_STATE_AND_INTERFACE_CONTRACT_PERSISTED_BOUNDED_FRONT_TOPOLOGY_REMAINS_HARD_GATE"
+}
