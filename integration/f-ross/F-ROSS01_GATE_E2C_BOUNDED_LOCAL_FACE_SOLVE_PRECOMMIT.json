@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "gate": "E2C_BOUNDED_NON_TABLE_NEAR_SATURATION_FACE_SOLVE",
@@ -7,13 +7,18 @@
   "production_implementation": false,
   "prerequisite_decision": "FIXED_NODE_Q2_REJECTED_STOP_PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_APPROACH",
   "purpose": "Determine whether the C1R base constitutive family can obtain reference-quality WET_DRY near-saturation face fluxes with a hard finite non-table cost bound and fail-closed behavior.",
+  "pre_execution_correction": "Cost semantics corrected before any E2C execution. No probe set, quadrature order, bisection count, acceptance threshold, physics or fail-closed rule was changed.",
   "candidate": {
     "id": "FIXED_GL128_T8_PLUS_64_BISECTION_LOCAL_STEADY_DARCY",
     "face_equation": "solve integral_h_above^h_below K(h)/(K(h)-q) dh = L for q",
     "length_cm": 10.0,
     "quadrature": "128-point Gauss-Legendre on t in [0,1] after h=h_above+(h_below-h_above)*t^8",
     "root_solver": "64 fixed safeguarded bisection iterations after analytic deterministic bracket construction",
-    "generic_max_constitutive_evaluations": 8448,
+    "fixed_quadrature_nodes_per_generic_face": 128,
+    "generic_max_constitutive_K_evaluations": 132,
+    "generic_max_root_residual_evaluations": 66,
+    "generic_max_quadrature_lane_arithmetic_evaluations": 8448,
+    "cost_semantics": "K(h) at the fixed quadrature nodes is independent of q and is evaluated once per face, then reused for all root-residual evaluations. The 8448 bound is 128 quadrature lanes times at most 66 residual evaluations, not 8448 constitutive evaluations.",
     "runtime_iteration_count_is_hard_bounded": true,
     "table_lookup": false,
     "persistent_per_column_state_bytes": 0,
@@ -44,16 +49,17 @@
     "wrong_sign_count": 0,
     "nonfinite_count": 0,
     "bracket_failure_count": 0,
-    "antisymmetry_scaled_max": 1e-10,
+    "face_balance_antisymmetry_scaled_max": 1e-10,
     "equal_head_relative_max": 1e-12,
     "hydrostatic_abs_q_over_ksatfit_max": 1e-12
   },
+  "antisymmetry_semantics": "Mass antisymmetry means a single oriented face flux q is entered with opposite signs in the two neighboring cell ledgers, so (-q)+q must close. It does not mean that swapping the two pressure heads in a fixed gravity orientation should produce -q.",
   "decision_rule": {
     "pass": "QUALIFIED_BOUNDED_REFERENCE_QUALITY_LOCAL_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE",
     "fail": "BOUNDED_LOCAL_FACE_SOLVE_NOT_YET_QUALIFIED_RESEARCH_REQUIRED"
   },
   "hard_nonclaims": [
-    "PASS does not admit this 8448-evaluation route as the normal RossFast production path.",
+    "PASS does not admit this bounded local-solve route as the normal RossFast production path.",
     "PASS does not qualify saturation-transition timesteps, columns, runtime or MultiSWAP.",
     "PASS does not reopen or rehabilitate the rejected near-saturation table line.",
     "The adaptive quadrature plus Brent reference remains qualification oracle only."
@@ -62,7 +68,7 @@
     "No node density, table interpolation or Phi tuning is allowed in E2C.",
     "No quadrature order, bisection count, probes or thresholds may be retuned after execution within this gate.",
     "Any bracket failure or nonfinite evaluation fails closed.",
-    "Mass is represented by one antisymmetric face flux; no state is mutated by the face solve.",
+    "Mass is represented by one oriented face flux with opposite ledger signs; no principal state is mutated by the face solve.",
     "A later cost-reduction gate must preserve this E2C reference-quality envelope."
   ],
   "relevant_invariants": [5,7,13,14,15,20,23,24,25,26,30],
