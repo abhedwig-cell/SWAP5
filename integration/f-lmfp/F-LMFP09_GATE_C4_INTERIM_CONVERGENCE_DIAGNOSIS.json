@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+  "status": "INTERIM_TWO_POINT_DIAGNOSIS_WHILE_MATRIX_RUNNING",
+  "qualification": false,
+  "workflow_run": 34314877011,
+  "characterization_class": "reference_sand_10cm",
+  "rows": [
+    {
+      "base_axis_nodes": 33,
+      "actual_axis_nodes": 49,
+      "values": 2401,
+      "bytes_before_metadata": 19208,
+      "offline_oracle_solves": 2354,
+      "p90_relative_error": 0.32469086381504836,
+      "p99_relative_error": 7.03356948879525,
+      "maximum_relative_error": 17.892110731762006,
+      "median_relative_error": 0.002471602753604902
+    },
+    {
+      "base_axis_nodes": 49,
+      "actual_axis_nodes": 65,
+      "values": 4225,
+      "bytes_before_metadata": 33800,
+      "offline_oracle_solves": 4162,
+      "p90_relative_error": 0.2857242919745907,
+      "p99_relative_error": 7.216732191103531,
+      "maximum_relative_error": 17.895268090981492,
+      "median_relative_error": 0.0014828813332958914
+    }
+  ],
+  "observations": [
+    "Increasing actual axis density from 49 to 65 lowers median and p90 error only modestly.",
+    "p99 error is nonmonotone and becomes slightly worse.",
+    "maximum error remains essentially unchanged and the same off-grid dry-to-wet endpoint pair remains dominant.",
+    "Table bytes rise by approximately 76 percent between these two points while the tail error blocker remains.",
+    "The evidence so far is inconsistent with rapid monotone convergence required to justify brute-force quadratic density growth."
+  ],
+  "methodological_rule": "Do not close C4 until the precommitted 81- and 113-node points and the second material class complete. Do not promote any density from this revealed characterization without a new holdout.",
+  "provisional_direction": "NO_DENSITY_PROMOTION_FROM_FIRST_TWO_POINTS_PRIORITIZE_C5_MIXED_STATE_REPRESENTATION_IF_REMAINING_POINTS_CONFIRM_SLOW_OR_NONMONOTONE_TAIL_CONVERGENCE",
+  "thresholds_changed": false,
+  "production_implementation": false
+}
