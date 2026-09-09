@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ32",
+  "title": "Independent Qualification Evidence for Explicit Head-Budget Normalization",
+  "branch": "qualification/f-vq32-richards-head-budget-normalization",
+  "base_commit": "e6c103ebb69bb9fa6eb631f8c1d41fb2708372b2",
+  "qualification_plan": {
+    "path": "integration/f-vq/F-VQ32_QUALIFICATION_PLAN.json",
+    "freeze_commit": "432736967813729d6c869a2bf73c15b5263ca415",
+    "blob": "e47b71d25133902967294583801df720cac9cd63",
+    "frozen_before_execution": true
+  },
+  "tested_head": "b53d08010bd31a2511e59528458c97a1713fd46a",
+  "workflow": {
+    "name": "F-VQ32 independent Richards head-budget normalization",
+    "run_id": 34349868041,
+    "conclusion": "success",
+    "first_full_execution": true,
+    "post_result_harness_repair": false,
+    "jobs": {
+      "independent_semantic_algebra": {"job_id":102460210646,"conclusion":"success"},
+      "fresh_nonlinear_production_normalization": {"job_id":102460210274,"conclusion":"success","runner":"ubuntu-24.04","gfortran":"13.3.0"}
+    }
+  },
+  "candidate": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "valid_H_budget": "finite positive cm pressure head with independent policy provenance",
+    "valid_B_inf": "finite nonnegative qualified F-SI25 indicator",
+    "empirical_multiplier": false,
+    "nonlinear_true_error_bound_claim": false
+  },
+  "gate_results": {
+    "G01_SOURCE_AND_CANDIDATE_LOCK": "PASS",
+    "G02_INDEPENDENT_EXACT_LINEAR_RECONSTRUCTION": "PASS_6_OF_6",
+    "G03_DIMENSIONLESS_BUDGET_ALGEBRA": "PASS_SCALAR_AND_FRESH_NONLINEAR",
+    "G04_INVALID_INPUT_FAIL_CLOSED": "PASS",
+    "G05_FRESH_NONLINEAR_PRODUCTION_NORMALIZATION": "PASS_12_OF_12_O0_AND_O2",
+    "G06_NONINTERFERENCE_AND_COST": "PASS",
+    "G07_O0_O2": "PASS_BITWISE_MACHINE_READABLE_SUMMARY_IDENTITY",
+    "G08_NONLINEAR_CLAIM_BOUNDARY": "PASS_NO_REFERENCE_RUN_NO_TRUE_ERROR_PROMOTION",
+    "G09_NEGATIVE_EVIDENCE_PRESERVED": "PASS",
+    "G10_FKT09_COMPATIBILITY_NO_ACTIVATION": "PASS",
+    "G11_ARCHITECTURE_INVARIANTS": "PASS_WITH_HARD_NONCLAIMS"
+  },
+  "independent_exact_linear": {
+    "equation": "y_dot=-lambda*y; x=lambda*dt; y_n=1",
+    "x_values": [0.015625,0.0625,0.25,1.0,4.0,16.0],
+    "case_count": 6,
+    "all_B_inf_upper_bound_checks_passed": true,
+    "all_budget_threshold_equivalence_checks_passed": true,
+    "all_exact_linear_budget_implications_passed": true,
+    "matrix_identical_to_F_SI26_owner_matrix": false
+  },
+  "synthetic_budget_probes": {
+    "values_cm": [0.01,0.1,1.0],
+    "purpose": "algebraic and production-composition probes only",
+    "derived_from_observed_B_inf": false,
+    "scientific_or_application_tolerance_admitted": false,
+    "decade_scaling_passed": true,
+    "threshold_equivalence_passed": true
+  },
+  "invalid_input": {
+    "zero_negative_nonfinite_H_budget_fail_closed": true,
+    "negative_nonfinite_or_unavailable_B_inf_fail_closed": true,
+    "clamp_or_floor_used": false,
+    "default_substitution_used": false
+  },
+  "fresh_nonlinear_matrix": {
+    "initial_uniform_heads_cm": [-65.0,-125.0,-275.0],
+    "prescribed_bottom_head_jumps_cm": [-0.03,0.03],
+    "horizons_day": [0.15,0.3],
+    "case_count": 12,
+    "exact_triplet_overlap_with_prior_owner_or_VQ_matrices": 0,
+    "O0_cases_passed": 12,
+    "O2_cases_passed": 12,
+    "O0_O2_identity": true,
+    "finite_nonnegative_B_inf_cases": 12,
+    "B_inf_min_cm": 0.0286928670785477381,
+    "B_inf_max_cm": 0.0665605333115878300,
+    "max_direct_vs_transaction_B_inf_abs_diff": 3.02535774210355157e-15,
+    "max_mass_residual": 2.85882428840977809e-15,
+    "hard_mass_tolerance": 1.0e-12,
+    "normalization_extra_full_nonlinear_trajectories": 0,
+    "normalization_extra_tridiagonal_solves": 0,
+    "deep_reference_trajectories": 0,
+    "finite_reference_truth_claim": false,
+    "rows": [
+      {"case":1,"B_inf_cm":0.0608051071771350052,"C_H0p01":6.08051071771350049,"C_H0p1":0.608051071771349982,"C_H1":0.0608051071771350052,"mass":5.55111512312578270e-17},
+      {"case":2,"B_inf_cm":0.0608261267342453740,"C_H0p01":6.08261267342453760,"C_H0p1":0.608261267342453671,"C_H1":0.0608261267342453740,"mass":1.63757896132210590e-15},
+      {"case":3,"B_inf_cm":0.0665366941690654079,"C_H0p01":6.65366941690654023,"C_H0p1":0.665366941690654023,"C_H1":0.0665366941690654079,"mass":2.08166817117216851e-15},
+      {"case":4,"B_inf_cm":0.0665605333115878300,"C_H0p01":6.65605333115878306,"C_H0p1":0.665605333115878217,"C_H1":0.0665605333115878300,"mass":2.85882428840977809e-15},
+      {"case":5,"B_inf_cm":0.0476124052468906156,"C_H0p01":4.76124052468906189,"C_H0p1":0.476124052468906156,"C_H1":0.0476124052468906156,"mass":1.24900090270330111e-16},
+      {"case":6,"B_inf_cm":0.0476294489583610342,"C_H0p01":4.76294489583610314,"C_H0p1":0.476294489583610314,"C_H1":0.0476294489583610342,"mass":8.04911692853238492e-16},
+      {"case":7,"B_inf_cm":0.0575661576813445847,"C_H0p01":5.75661576813445830,"C_H0p1":0.575661576813445763,"C_H1":0.0575661576813445847,"mass":2.49800180540660222e-16},
+      {"case":8,"B_inf_cm":0.0575872273144195437,"C_H0p01":5.75872273144195468,"C_H0p1":0.575872273144195423,"C_H1":0.0575872273144195437,"mass":6.03683769639928869e-16},
+      {"case":9,"B_inf_cm":0.0286928670785477381,"C_H0p01":2.86928670785477369,"C_H0p1":0.286928670785477347,"C_H1":0.0286928670785477381,"mass":1.89084858881471973e-16},
+      {"case":10,"B_inf_cm":0.0286997328151315199,"C_H0p01":2.86997328151315179,"C_H0p1":0.286997328151315179,"C_H1":0.0286997328151315199,"mass":5.16947595841088514e-16},
+      {"case":11,"B_inf_cm":0.0387264583962766279,"C_H0p01":3.87264583962766284,"C_H0p1":0.387264583962766251,"C_H1":0.0387264583962766279,"mass":3.55618312575245454e-17},
+      {"case":12,"B_inf_cm":0.0387355875477149933,"C_H0p01":3.87355875477149914,"C_H0p1":0.387355875477149891,"C_H1":0.0387355875477149933,"mass":9.54097911787243902e-18}
+    ]
+  },
+  "negative_evidence_reconciliation": {
+    "F_VQ28_underconservative_resolved_attempts": 36,
+    "F_VQ28_shorter_dt_safe_translation": false,
+    "F_VQ29_status": "COMPLETE_FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION",
+    "universal_absolute_tolerance_admitted": false,
+    "nonlinear_defect_to_remaining_error_upper_bound_admitted": false,
+    "shorter_dt_monotonicity_assumed_by_F_VQ32": false
+  },
+  "production_diff_from_base": {
+    "ahead_by": 4,
+    "changed_files": [
+      ".github/workflows/fvq32-richards-head-budget-normalization.yml",
+      "integration/f-vq/F-VQ32_QUALIFICATION_PLAN.json",
+      "tests/fvq/run_fvq32_fresh_head_budget_normalization.sh",
+      "tests/fvq/test_fvq32_head_budget_semantics.py"
+    ],
+    "src_files_changed": 0,
+    "production_source_modified": false
+  },
+  "architecture_invariant_checks": {
+    "7_transactional_time_steps": "PASS_NO_POLICY_OR_COMMITTED_STATE_CHANGE",
+    "8_cheap_recomputation_warm_start": "PASS_NORMALIZATION_IS_SCALAR_POSTPROCESSING",
+    "9_generic_time": "PASS_HORIZONS_ARE_GENERIC_NONCALENDAR_INTERVALS",
+    "11_coupling_core": "NO_RELEASE_CLAIM",
+    "12_groundwater_interface": "UNCHANGED_AND_NOT_USED_AS_NORMALIZATION",
+    "13_mass_conservation_absolute": "PASS_MAX_2.85882428840977809E-15_AT_1E-12_GATE",
+    "15_limit_coupling_cost": "PASS_NO_ADDITIONAL_NONLINEAR_OR_TRIDIAGONAL_NORMALIZATION_COST",
+    "20_alternative_soil_water_solvers": "PASS_FKT09_CERTIFICATE_SURFACE_REMAINS_GENERIC",
+    "23_physics_solver_policy_separation": "PASS_H_BUDGET_REMAINS_NUMERICAL_APPLICATION_ACCURACY_CONFIGURATION",
+    "24_predictable_compute": "PASS_FOR_NORMALIZATION_COMPOSITION_ONLY; RETRY_POLICY_NOT_ADMITTED",
+    "25_reference_mode": "PASS_UNCHANGED",
+    "26_runtime_diagnostics": "REQUIREMENT_PRESERVED_FOR_LATER_BINDING",
+    "29_no_silent_dependencies": "PASS_NO_DEFAULT_BUDGET_AND_CONTINUITY_NONCLAIMS_EXPLICIT",
+    "30_architecture_change_explicitly_tested": "PASS"
+  },
+  "qualified": [
+    "Independent semantic and algebraic validity of C_h=B_inf/H_budget with explicit positive finite H_budget and no default.",
+    "Independent exact-linear theorem-scope implication on six frozen scalar cases distinct from the F-SI26 owner test matrix.",
+    "Fresh nonlinear production-indicator normalization and transaction-composition equivalence on 12 frozen cases disjoint from prior owner/VQ triplets.",
+    "Fail-closed invalid/unavailable input behavior.",
+    "Bounded-cost, hard-mass and state/flux noninterference of normalization.",
+    "Compatibility with the generic F-KT09 certificate shape without activating production temporal acceptance."
+  ],
+  "hard_nonclaims": [
+    "The synthetic 0.01, 0.1 and 1.0 cm budgets are test probes, not qualified application tolerances.",
+    "No numeric H_budget or universal temporal tolerance is qualified.",
+    "No general nonlinear true-error upper bound is qualified.",
+    "No monotone retry improvement is qualified.",
+    "No production F-KT certificate acceptance/retry policy is admitted.",
+    "No initial bootstrap, arbitrary restart or forcing/event/topology-discontinuity continuation is qualified.",
+    "No F-GC02, groundwater coupling or F-PE release follows."
+  ],
+  "decision": "QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING"
+}
