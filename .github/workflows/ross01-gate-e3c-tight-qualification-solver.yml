@@ -1,0 +1,55 @@
+name: F-ROSS01 Gate E3C Tight Qualification Solver Policy
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e3c-tight-qualification-solver.yml
+      - experiments/ross/run_ross01_gate_e3c_tight_qualification_solver_policy.py
+      - integration/f-ross/F-ROSS01_GATE_E3C_TIGHT_QUALIFICATION_SOLVER_POLICY_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e3_saturation_transition_hydrologic_relevance.py
+      - experiments/ross/run_ross01_gate_e3a_r2_two_sided_k_endpoint_limit.py
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen E3C gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3c"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3c_tight_qualification_solver_policy.py \
+            "$out/F-ROSS01_GATE_E3C_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3C_STDOUT.txt"
+      - name: Assert frozen E3C decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3c/F-ROSS01_GATE_E3C_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_TIGHT_E3_QUALIFICATION_SOLVER_AND_ENCOUNTERED_FACE_COMPOSITION_READY_FOR_REAL_SATURATION_EVENT_FIXTURE'
+          assert r['qualification_solver_is_production_solver'] is False
+          assert r['mass_certificate_cm'] == 1e-9
+          assert r['event_crossing_required'] is False
+          for m in r['results']:
+            assert m['pass'] is True
+            for c in m['cases']:
+              assert c['qualification_solver_failure_count'] == 0
+              assert c['unqualified_face_fallback_count'] == 0
+              assert c['max_abs_step_mass_residual_cm'] <= 1e-9
+              assert c['max_abs_cell_mass_residual_cm'] <= 1e-9
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3c-tight-qualification-solver
+          path: ross01-gate-e3c/
