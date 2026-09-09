@@ -5,7 +5,12 @@ program test_fmr20_authoritative_one_worker_identity
   use MOD_snow, only: melt
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
-  use variables, only: legacy_qrot => qrot
+  use variables, only: legacy_qrot => qrot, legacy_dt => dt, legacy_swbotb => swbotb, &
+       legacy_swkimpl => swkimpl, legacy_swkmean => swkmean, legacy_dtmin => dtmin, &
+       legacy_maxit => maxit, legacy_maxbacktr => maxbacktr, legacy_CritDevBalCp => CritDevBalCp, &
+       legacy_CritDevBalTot => CritDevBalTot, legacy_critdevh2cp => critdevh2cp, &
+       legacy_critdevh1cp => critdevh1cp, legacy_critdevponddt => critdevponddt, &
+       legacy_fldtmin => fldtmin, legacy_qtop => qtop, legacy_qbot => qbot, legacy_hbot => hbot
   use mod_transaction_reference, only: transaction_state_t
   use mod_canonical_contracts, only: canonical_numerical_config_t, canonical_mass_accounting_t
   use mod_kernel_transactions, only: kernel_committed_state_t
@@ -35,11 +40,11 @@ program test_fmr20_authoritative_one_worker_identity
   type(fmr_template_t) :: templates(1)
   type(fmr_b110_physical_parameters_t) :: parameters(1)
   type(fmr_b110_physical_forcing_t) :: forcings(ncol)
-  type(kernel_committed_state_t) :: direct_states(ncol), pool_states(ncol), rejected_states(ncol)
-  type(fmr_serialized_column_result_t), allocatable :: direct_results(:), pool_results(:), rejected_results(:)
-  type(fmr_column_diagnostics_t), allocatable :: direct_diag(:), pool_diag(:), rejected_diag(:)
-  type(fmr_aggregate_diagnostics_t) :: direct_aggregate, pool_aggregate, rejected_aggregate
-  type(fmr_serialized_batch_diagnostics_t) :: direct_runtime, pool_runtime, rejected_runtime
+  type(kernel_committed_state_t) :: direct_states(ncol), pool_states(ncol), poison_states(ncol), rejected_states(ncol)
+  type(fmr_serialized_column_result_t), allocatable :: direct_results(:), pool_results(:), poison_results(:), rejected_results(:)
+  type(fmr_column_diagnostics_t), allocatable :: direct_diag(:), pool_diag(:), poison_diag(:), rejected_diag(:)
+  type(fmr_aggregate_diagnostics_t) :: direct_aggregate, pool_aggregate, poison_aggregate, rejected_aggregate
+  type(fmr_serialized_batch_diagnostics_t) :: direct_runtime, pool_runtime, poison_runtime, rejected_runtime
   type(fmr_parallel_assignment_t), allocatable :: schedule_a(:), schedule_b(:), invalid_schedule(:)
   type(fmr_b110_physical_state_t) :: initial_state, column_state
   type(fmr04_fixed_flux_top_provider_t), target :: top_provider
@@ -66,6 +71,8 @@ program test_fmr20_authoritative_one_worker_identity
     call require(ok, 'direct state initialization')
     call fmr_new_b110_committed_state(pool_states(i), columns(i)%column_id, column_state, t0, ok)
     call require(ok, 'pool state initialization')
+    call fmr_new_b110_committed_state(poison_states(i), columns(i)%column_id, column_state, t0, ok)
+    call require(ok, 'poison state initialization')
     call fmr_new_b110_committed_state(rejected_states(i), columns(i)%column_id, column_state, t0, ok)
     call require(ok, 'rejected state initialization')
     rejected_fingerprint(i) = committed_fingerprint(rejected_states(i))
@@ -93,6 +100,22 @@ program test_fmr20_authoritative_one_worker_identity
        top_provider, t0, t1, batch_size, direct_results, direct_diag, direct_aggregate, direct_status, direct_runtime)
   call require(direct_status == FMR_SERIAL_DISPATCH_OK, 'direct serialized dispatch')
   call require(all_committed(direct_results), 'direct committed')
+
+  call poison_legacy_mirror_globals()
+  call fmr_run_serialized_physical_multiswap(columns, templates, parameters, forcings, poison_states, config, &
+       top_provider, t0, t1, batch_size, poison_results, poison_diag, poison_aggregate, serialized_status, poison_runtime)
+  call require(serialized_status == direct_status, 'poison dispatch identity')
+  call require(all_committed(poison_results), 'poison committed')
+  call require(result_sets_identical(direct_results, poison_results), 'mirror poison result identity')
+  call require(diagnostic_sets_identical(direct_diag, poison_diag), 'mirror poison diagnostics identity')
+  call require(aggregates_identical(direct_aggregate, poison_aggregate), 'mirror poison aggregate identity')
+  call require(runtime_diagnostics_identical(direct_runtime, poison_runtime), 'mirror poison runtime identity')
+  call require(state_sets_identical(direct_states, poison_states), 'mirror poison committed-state identity')
+  call require(max_abs_residual(poison_results) <= hard_mass_gate, 'mirror poison hard mass gate')
+  write(*,'(A)') 'FMR20_AUTH_CANONICAL_MIRROR_POISON_RESULT_IDENTITY=PASS'
+  write(*,'(A)') 'FMR20_AUTH_CANONICAL_MIRROR_POISON_DIAGNOSTIC_IDENTITY=PASS'
+  write(*,'(A)') 'FMR20_AUTH_CANONICAL_MIRROR_POISON_STATE_TIME_IDENTITY=PASS'
+  write(*,'(A)') 'FMR20_AUTH_CANONICAL_MIRROR_POISON_HARD_MASS_GATE=PASS'
 
   call reset_legacy_globals()
   call fmr_run_parallel_physical_multiswap(columns, templates, parameters, forcings, pool_states, config, &
@@ -245,6 +268,31 @@ contains
     swmacro = 0
     melt = 0.0_real64
   end subroutine reset_legacy_globals
+
+
+  subroutine poison_legacy_mirror_globals()
+    legacy_qdra = 9.87654321e4_real64
+    legacy_qssdi = -8.7654321e4_real64
+    legacy_qrot = 7.654321e4_real64
+    legacy_dt = 91.25_real64
+    legacy_swbotb = 3
+    legacy_swkimpl = 1
+    legacy_swkmean = 9
+    legacy_dtmin = 83.5_real64
+    legacy_maxit = 37
+    legacy_maxbacktr = 29
+    legacy_CritDevBalCp = 1.2345e3_real64
+    legacy_CritDevBalTot = 2.3456e3_real64
+    legacy_critdevh2cp = 3.4567e3_real64
+    legacy_critdevh1cp = 4.5678e3_real64
+    legacy_critdevponddt = 5.6789e3_real64
+    legacy_fldtmin = .true.
+    legacy_qtop = 6.7891e3_real64
+    legacy_qbot = -7.8912e3_real64
+    legacy_hbot = 8.9123e3_real64
+    swmacro = 1
+    melt = 9.1234e3_real64
+  end subroutine poison_legacy_mirror_globals
 
   logical function schedules_identical(left, right) result(equal)
     type(fmr_parallel_assignment_t), intent(in) :: left(:), right(:)
