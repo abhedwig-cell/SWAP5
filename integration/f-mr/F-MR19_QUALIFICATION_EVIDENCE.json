@@ -47,10 +47,13 @@
   },
   "fail_closed_evidence": {
     "wrong_parameter_set_identity": "PASS_ATOMIC",
-    "wrong_template_or_layout_identity": "PASS_ATOMIC",
+    "wrong_template_or_layout_identity": "PARTIAL_PASS: state-layout mismatch is executable; remaining exact template identity axes require explicit negative probes",
     "wrong_per_column_parameter_ref": "PASS_ATOMIC",
     "duplicate_column_id": "PASS_ATOMIC",
-    "fresh_target_only": "implemented by production restore contract and source candidate"
+    "missing_column_id": "PENDING_EXECUTABLE_PROBE",
+    "schema_mismatch": "PENDING_EXECUTABLE_PROBE",
+    "nonreconstructable_physical_continuation": "PENDING_EXECUTABLE_PROBE",
+    "restore_into_initialized_target": "PENDING_EXECUTABLE_PROBE"
   },
   "architecture_scope": {
     "kernel_source_changed": false,
@@ -61,9 +64,17 @@
     "runtime": "restricted serialized real-physics MultiSWAP only"
   },
   "qualification": {
+    "status": "TESTED_CANDIDATE_NEGATIVE_GATE_COMPLETION_PENDING",
     "tested": true,
-    "qualified": true,
-    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
+    "qualified": false,
+    "decision": "NOT_YET_QUALIFIED",
+    "open": [
+      "explicit missing-column fail-closed probe",
+      "explicit bundle/record schema mismatch fail-closed probes",
+      "explicit nonreconstructable physical continuation fail-closed probe",
+      "explicit initialized-target fail-closed probe",
+      "explicit negative probes for all template identity axes"
+    ],
     "forbidden_claims_retained": [
       "general SWAP persistence format",
       "byte or file serialization qualification",
