@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R1B_ENDPOINT_BRACKET_CAUSALITY_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_E2C_R1B_ENDPOINT_BRACKET_CAUSALITY_DIAGNOSTIC_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34385303749,
+    "head": "f3f9fec8bc574948aee759f874303a29d842bce0",
+    "conclusion": "success",
+    "artifact_id": 10117471958,
+    "artifact_digest": "sha256:53ec809f4e843eefb42f2755dc8158d2392c6679817ba077c40977487b24e6f4"
+  },
+  "total_R1_bracket_failures_reproduced": 196,
+  "endpoint_class_failure_count": 196,
+  "branch_class": "Q_ABOVE_KABOVE_ENDPOINT_ONLY",
+  "materials": {
+    "B12": {
+      "failure_count": 85,
+      "relative_root_gap_to_K_h_above_min": 9.940574606272685e-15,
+      "relative_root_gap_to_K_h_above_median": 3.508700748150129e-12,
+      "relative_root_gap_to_K_h_above_max": 0.00033041561871577965,
+      "fraction_below_1e_10": 0.6588235294117647,
+      "fraction_below_1e_12": 0.1411764705882353,
+      "fraction_recovered_by_nextafter_q_with_existing_R1_quadrature": 0.07058823529411765
+    },
+    "O13": {
+      "failure_count": 111,
+      "relative_root_gap_to_K_h_above_min": 9.933350722683856e-15,
+      "relative_root_gap_to_K_h_above_median": 2.7058873699146127e-12,
+      "relative_root_gap_to_K_h_above_max": 0.000918071670302622,
+      "fraction_below_1e_10": 0.5765765765765766,
+      "fraction_below_1e_12": 0.18018018018018017,
+      "fraction_recovered_by_nextafter_q_with_existing_R1_quadrature": 0.05405405405405406
+    }
+  },
+  "causal_findings": [
+    "Every R1 bracket failure is on the q > K(h_above) endpoint branch; no negative-q or q<K(h_above) branch failures were observed.",
+    "Most failing roots lie extremely close to K(h_above), with median relative gaps of order 3e-12 for B12 and O13.",
+    "Simply moving the q bracket endpoint from a 1e-12 offset to nextafter(K,+inf) recovers only about 5-7 percent of failures with the existing R1 quadrature.",
+    "In representative failures the nearest first-segment GL8 lane remains about 1e-5 to 1e-3 cm away from h_above, so the endpoint contribution is under-resolved even when q is moved closer to K(h_above).",
+    "R1 broad-path accuracy on valid probes remains good; the unresolved issue is endpoint-local."
+  ],
+  "decision": "ENDPOINT_CAUSALITY_SUPPORTED_READY_TO_FREEZE_E2C_R2",
+  "recommended_R2_change": "Keep R1 quarter-decade segmentation and GL8 density, but cluster the first segment quadrature deterministically toward h_above and use the closest representable physical q bracket endpoint on the q>K(h_above) branch.",
+  "hard_guards": [
+    "Do not change R1 broad-path segmentation density or accuracy thresholds in R2.",
+    "Do not interpret this diagnostic as R1 qualification.",
+    "R2 must remain hard bounded and material-independent.",
+    "The near-saturation precomputed table route remains closed."
+  ],
+  "status": "CAUSAL_ENDPOINT_LOCALIZATION_COMPLETE_READY_FOR_E2C_R2"
+}
