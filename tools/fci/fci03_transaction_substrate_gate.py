@@ -27,7 +27,7 @@ FCI08_FORWARD_PROVENANCE = ROOT / "integration/f-ci/F-CI08_TRANSACTION_CONTEXT_P
 FCI23_FORWARD_PROVENANCE = ROOT / "integration/f-ci/F-CI23_TRANSACTION_FORWARD_PROVENANCE.json"
 FCI23_EXPECTED_BLOB = "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
 FCI23_CANDIDATE_HEAD = "4a792636ef73d25c671c5e0953cefd11978cd0ec"
-FCI23_FKT09_CONTRACT = ROOT / "integration/f-kt/F-KT09_DECISION_CONTRACT.json"
+FCI23_FKT09_CONTRACT_PATH = "integration/f-kt/F-KT09_DECISION_CONTRACT.json"
 FCI23_FKT09_CONTRACT_BLOB = "7957c07ba3a1e31469f315b437f9ac3248a860e0"
 FCI23_FCI19_AUDIT = ROOT / "integration/f-ci/F-CI19_FULL_SOURCE_LINEAGE_ADMISSION_AUDIT.json"
 FCI23_FCI19_AUDIT_BLOB = "5985d659c8aa4e22c34243417111b9b013a3a12f"
@@ -51,6 +51,13 @@ def git_object_blob(revision: str, relative: str) -> str:
 
 def load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_json_at_revision(revision: str, relative: str) -> dict:
+    raw = subprocess.check_output(
+        ["git", "-C", str(ROOT), "show", f"{revision}:{relative}"], text=True
+    )
+    return json.loads(raw)
 
 
 def admitted_fci08_evolution(actual: str) -> tuple[bool, dict]:
@@ -78,28 +85,26 @@ def admitted_fci08_evolution(actual: str) -> tuple[bool, dict]:
 def admitted_fci23_evolution(actual: str) -> tuple[bool, dict]:
     if actual != FCI23_EXPECTED_BLOB:
         return False, {"mode": "NOT_FCI23_PINNED_BLOB", "actual": actual}
-    required = [FCI23_FORWARD_PROVENANCE, FCI23_FKT09_CONTRACT, FCI23_FCI19_AUDIT, FCI23_FCI19_STATUS]
+    required = [FCI23_FORWARD_PROVENANCE, FCI23_FCI19_AUDIT, FCI23_FCI19_STATUS]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
     if missing:
         return False, {"mode": "FCI23_AUTHORITY_MISSING", "missing": missing}
 
     try:
         record = load_json(FCI23_FORWARD_PROVENANCE)
-        fkt09 = load_json(FCI23_FKT09_CONTRACT)
+        fkt09 = load_json_at_revision(FCI23_CANDIDATE_HEAD, FCI23_FKT09_CONTRACT_PATH)
         fci19_audit = load_json(FCI23_FCI19_AUDIT)
         fci19_status = load_json(FCI23_FCI19_STATUS)
+        candidate_blob = git_object_blob(FCI23_CANDIDATE_HEAD, TX_PATH)
+        fkt09_contract_blob = git_object_blob(FCI23_CANDIDATE_HEAD, FCI23_FKT09_CONTRACT_PATH)
     except Exception as exc:
-        return False, {"mode": "INVALID_FCI23_FORWARD_PROVENANCE", "error": str(exc)}
+        return False, {"mode": "FCI23_FROZEN_AUTHORITY_UNAVAILABLE", "error": str(exc)}
 
     authority_blobs = {
-        "fkt09_contract": git_blob(FCI23_FKT09_CONTRACT),
+        "fkt09_contract_at_candidate": fkt09_contract_blob,
         "fci19_audit": git_blob(FCI23_FCI19_AUDIT),
         "fci19_status": git_blob(FCI23_FCI19_STATUS),
     }
-    try:
-        candidate_blob = git_object_blob(FCI23_CANDIDATE_HEAD, TX_PATH)
-    except subprocess.CalledProcessError as exc:
-        return False, {"mode": "FCI23_CANDIDATE_OBJECT_UNAVAILABLE", "error": str(exc)}
 
     semantics = record.get("qualified_semantics", {})
     candidate_authority = record.get("candidate_authority", {})
@@ -128,6 +133,7 @@ def admitted_fci23_evolution(actual: str) -> tuple[bool, dict]:
         candidate_authority.get("work_unit") == "F-KT09",
         candidate_authority.get("candidate_head") == FCI23_CANDIDATE_HEAD,
         candidate_authority.get("candidate_source_blob") == actual,
+        candidate_authority.get("decision_contract_path") == FCI23_FKT09_CONTRACT_PATH,
         candidate_authority.get("decision_contract_blob") == FCI23_FKT09_CONTRACT_BLOB,
         candidate_authority.get("production_richards_admitted") is False,
         admission_authority.get("work_unit") == "F-CI19",
@@ -140,7 +146,7 @@ def admitted_fci23_evolution(actual: str) -> tuple[bool, dict]:
         admission_authority.get("status_blob") == FCI23_FCI19_STATUS_BLOB,
         admission_authority.get("candidate_composition_preservation") == "PASS",
         admission_authority.get("candidate_source_lineage_reachability") == "PASS",
-        authority_blobs["fkt09_contract"] == FCI23_FKT09_CONTRACT_BLOB,
+        authority_blobs["fkt09_contract_at_candidate"] == FCI23_FKT09_CONTRACT_BLOB,
         authority_blobs["fci19_audit"] == FCI23_FCI19_AUDIT_BLOB,
         authority_blobs["fci19_status"] == FCI23_FCI19_STATUS_BLOB,
         fkt09.get("work_unit") == "F-KT09",
