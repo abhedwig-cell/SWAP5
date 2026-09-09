@@ -54,7 +54,9 @@ MODULE_SRC=(
 )
 
 build_and_run() {
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   mkdir -p "$out"
   local objects=()
   for src in "${MODULE_SRC[@]}"; do
