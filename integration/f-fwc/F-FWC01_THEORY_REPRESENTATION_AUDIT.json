@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "audit_scope": "initial primary-lineage theory and representation reconstruction before prototype",
+  "sources": [
+    {
+      "role": "original_finite_water_content_method",
+      "citation": "Talbot CA, Ogden FL (2008), A method for computing infiltration and redistribution in a discretized moisture content domain, Water Resources Research 44",
+      "doi": "10.1029/2008WR006815",
+      "correction": {
+        "exists": true,
+        "doi": "10.1029/2008WR007455",
+        "qualification_rule": "Any algorithm reconstruction must use the corrected publication lineage rather than the original paper in isolation."
+      },
+      "source_bound_findings": [
+        "discretises moisture content rather than depth",
+        "uses finite water-content bins with wetting and drying fronts",
+        "front motion represents gravitational and capillary driving forces",
+        "inter-bin capillary redistribution satisfies water deficits created by advancing wetting fronts"
+      ]
+    },
+    {
+      "role": "general_1D_FWC_method",
+      "citation": "Ogden FL et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51",
+      "doi": "10.1002/2015WR017126",
+      "source_bound_findings": [
+        "derives three ODE forms from unsaturated flux and conservation principles using a hodograph transform, Method of Lines and finite water-content discretisation",
+        "uses a finite-volume solution and states mass conservation as guaranteed by that numerical construction",
+        "the ODE method is explicit and does not require nonlinear iteration",
+        "represents infiltration fronts, falling slugs and groundwater-connected fronts",
+        "accepts precipitation, bare-soil evaporation and evapotranspiration forcing",
+        "the derivation is for media homogeneous within layers",
+        "the method explicitly neglects soil-water diffusivity in the approximate formulation",
+        "heterogeneous layers communicate by requiring single-valued head at interfaces and matched flux",
+        "the published layered algorithm moves water between adjacent layers after a step when interface heads differ in order to restore head compatibility",
+        "the paper describes front accounting as a coding/accounting complexity traded against PDE numerical complexity",
+        "any monotonic retention and conductivity relations are stated as usable by the method"
+      ]
+    },
+    {
+      "role": "moving_water_table_validation",
+      "citation": "Ogden FL et al. (2015), Validation of finite water-content vadose zone dynamics method using column experiments with a moving water table and applied surface flux, Water Resources Research",
+      "doi": "10.1002/2014WR016454",
+      "source_bound_findings": [
+        "validated against 143 cm laboratory column experiments with both rising and falling water tables and varied upper fluxes",
+        "FWC and HYDRUS-1D both agreed satisfactorily with measured water contents",
+        "HYDRUS-1D predicted deponding times more accurately for falling-water-table cases",
+        "rising-water-table ponding-time errors were similar in six of nine tests"
+      ]
+    },
+    {
+      "role": "Richards_relation",
+      "citation": "Ogden FL et al. (2017), The Soil Moisture Velocity Equation, Journal of Advances in Modeling Earth Systems 9",
+      "doi": "10.1002/2017MS000931",
+      "source_bound_findings": [
+        "reformulates Richards flow into an SMVE with an advection-like and a diffusion-like term",
+        "the advection-like term contains gravity and integrated wetting-front capillary drive",
+        "the diffusion-like term accounts for the capillary-profile-shape contribution",
+        "the finite-water-content ODE lineage corresponds to the readily solved advection-like part",
+        "the paper reports greater than 99 percent infiltration-flux accuracy against selected analytical Richards solutions when the diffusion-like term is neglected"
+      ],
+      "important_limit": "The >99% result applies to the tested analytical infiltration cases and is not evidence that the diffusion-like contribution is negligible for drying, redistribution, layered fine soils, root uptake, shallow groundwater or all SWAP hydraulic families."
+    }
+  ],
+  "representation_triage": {
+    "dynamic_fronts_are_native_to_published_method": true,
+    "fixed_water_content_bins_are_native_to_published_method": true,
+    "unbounded_number_of_moisture_bins_required": false,
+    "unbounded_number_of_front_objects_ruled_out_by_source": false,
+    "state_growth_gate": "OPEN",
+    "pressure_head_is_native_primary_state": false,
+    "pressure_head_can_be_reconstructed_from_hydraulic_relation_and_front_state": true,
+    "accuracy_of_reconstructed_head_for_all_SWAP_consumers": "OPEN",
+    "heterogeneous_layers_supported_in_published_method": true,
+    "heterogeneous_interface_algorithm_contains_post_step_head_restoration": true
+  },
+  "SWAP5_critical_findings": [
+    {
+      "finding": "Mass conservation is promising but must be re-proven for the exact SWAP5 accepted-step ledger.",
+      "reason": "Published finite-volume conservation does not automatically cover SWAP root sinks, drainage, macropore exchange, surface storage and MODFLOW interface transfers.",
+      "gate": "D"
+    },
+    {
+      "finding": "The neglected diffusion-like term is a physical applicability issue, not a numerical-policy detail.",
+      "reason": "SWAP5 may not label a faster policy as equivalent while silently dropping a physically material term.",
+      "gate": "B/O"
+    },
+    {
+      "finding": "The published layer-interface restoration is structurally a bounded local correction candidate.",
+      "reason": "It may fit SWAP5 if the water transfer is conservative, deterministic, bounded and does not become an unbounded global iteration.",
+      "gate": "G/M"
+    },
+    {
+      "finding": "Dynamic-front bookkeeping could still create variable state and branch divergence even with a fixed number of theta bins.",
+      "reason": "MultiSWAP requires explicit maxima for persistent front/slugs and event work per interval.",
+      "gate": "C/M"
+    },
+    {
+      "finding": "Moving groundwater is scientifically credible in the source lineage but MODFLOW interface semantics are not yet established.",
+      "reason": "Published water-table dynamics do not by themselves provide imposed-head/imposed-flux duality or a response tangent.",
+      "gate": "H/I/N"
+    }
+  ],
+  "initial_position": {
+    "production_admission": false,
+    "decision": "FWC_RESEARCH_CONTINUES",
+    "reason": "FWC has unusually strong source support for conservation, explicit integration, layered soils and moving groundwater, but the omitted diffusion-like physics, front-state bounds, pressure-head service contract and MODFLOW interface are material unresolved gates."
+  },
+  "next_actions": [
+    "obtain and incorporate the 2008 correction into the equation-level reconstruction",
+    "enumerate exact persistent objects for infiltration fronts, falling slugs and groundwater fronts and prove or bound their maximum count",
+    "write a conservative event ledger for front creation, merge, layer crossing, root extraction and water-table movement",
+    "construct paired representation designs: native dynamic-front bookkeeping versus a bounded semi-fixed-bin/state layout",
+    "identify scenarios where the SMVE diffusion-like contribution is expected to be non-negligible and target those first in Richards qualification",
+    "derive the generic pressure-head and face-flux service contract before exposing FWC to other SWAP modules"
+  ],
+  "status": "THEORY_AND_REPRESENTATION_AUDIT_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
+}
