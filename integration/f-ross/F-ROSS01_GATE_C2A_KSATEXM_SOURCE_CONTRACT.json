@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_KSATEXM_WITHIN_EXISTING_UNSATURATED_ENVELOPE",
+  "status": "SOURCE_CONTRACT_FROZEN_BEFORE_CHARACTERIZATION",
+  "production_implementation": false,
+  "purpose": "Qualify the exact SWAP 4.3.1 KSATEXM conductivity extension inside the already-qualified homogeneous unsaturated face envelope h=[-10000,-1] cm without changing the Ross table architecture, node count, memory ceiling or runtime complexity.",
+  "source_trace": {
+    "release": "SWAP 4.3.1 frozen audit package supplied to this project",
+    "outer_zip_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "constitutive_source": "tools/SWAP/source/SWAP.ZIP::SWAP/MOD_MvG_functions.f90",
+    "constitutive_source_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390",
+    "parameter_mapping_source": "tools/SWAP/source/SWAP.ZIP::SWAP/readswap.f90",
+    "parameter_mapping_source_sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "material_catalog": "data/soil/Staringreeks_2018.csv",
+    "material_catalog_sha256": "12234a25374b0a47a20e5fcee0577132895f263a77e0f60f5eb4f2fcb5f9ecae"
+  },
+  "source_semantics": {
+    "activation": "KSATEXM is effectively enabled only when the input contains KSATEXM and KSATEXM > KSATFIT; fill_cofgen then sets fluseksatexm for the node.",
+    "macropore_guard": "hconduc uses the extension only when swmacro == 0; C2A has no macropore physics, so this condition is satisfied.",
+    "threshold_head_cm": -2.0,
+    "threshold_relative_saturation": "S_thr = (1 + |alpha*h_thr|^n)^(-m), with m=1-1/n",
+    "threshold_conductivity": "K_thr = KSATFIT * S_thr^lambda * [1 - (1 - S_thr^(1/m))^m]^2",
+    "extension_condition": "if fluseksatexm and S > S_thr and swmacro==0",
+    "extension_law": "f=(S-S_thr)/(1-S_thr); K=f*KSATEXM + (1-f)*K_thr",
+    "continuity": "At S=S_thr the base Mualem-VG law and the extension both equal K_thr; the implementation uses the base branch exactly at the threshold because the condition is S > S_thr.",
+    "wet_limit": "As S approaches 1 from below the extension approaches KSATEXM.",
+    "input_validation": "SWAP rejects a layer when K_thr >= KSATEXM after KSATEXM activation.",
+    "implicit_derivative_limitation": "SWAP 4.3.1 dhconduc explicitly rejects the KSATEXM linear-interpolation branch for swKimpl=1. C2A therefore does not use legacy dhconduc as an oracle for future Ross response tangents."
+  },
+  "catalog_facts": {
+    "material_count": 36,
+    "all_h_enpr_cm": 0.0,
+    "active_ksatexm_material_count": 36,
+    "ksatexm_over_ksatfit_range": [2.0, 80.00000000000001],
+    "s_thr_range_at_minus_2_cm": [0.9947912433347297, 0.9998867922631897],
+    "k_thr_over_ksatfit_range": [0.0444131444175154, 0.9899422776742576]
+  },
+  "separation_from_h_enpr": {
+    "statement": "KSATEXM and H_ENPR are distinct SWAP constructs. The KSATEXM transition threshold is fixed at h=-2 cm in readswap and is applied in hconduc through relative saturation. H_ENPR controls modified-VG retention/conductivity behaviour in a separate branch.",
+    "c2a_h_enpr_scope": "All frozen Staringreeks 2018 catalog entries have H_ENPR=0, so C2A does not qualify non-zero H_ENPR physics."
+  },
+  "frozen_candidate": {
+    "table_coordinate": "u=log10(-h/cm) uniform on [0,4]",
+    "head_envelope_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0,
+    "node_count_per_axis": 241,
+    "storage": "IEEE754_float32_log_mobility",
+    "interpolation": "bilinear in log mobility, arithmetic in float64",
+    "state_to_coordinate": "qualified direct S-to-u mapping from F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(interpolated_log_mobility), with exact equal-head K(h)",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "characterization_set": {
+    "materials": ["B10", "O12", "O13", "B05", "O14", "O05"],
+    "selection_rationale": {
+      "B10": "maximum KSATEXM/KSATFIT ratio",
+      "O12": "maximum normalized extension slope near saturation",
+      "O13": "minimum K_thr/KSATFIT and low-n stress",
+      "B05": "minimum S_thr and widest extension interval in S",
+      "O14": "maximum S_thr and previous C1 interpolation stress",
+      "O05": "maximum K_thr/KSATFIT and previous C1 interpolation stress"
+    }
+  },
+  "qualification_policy": {
+    "reuse_c1r_thresholds_without_relaxation": true,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "oracle_policy": {
+    "steady_face_equation": "same independent Ross steady one-dimensional Darcy oracle as Gate B/C1R, with only K(h) replaced by the source-bound SWAP 4.3.1 KSATEXM law",
+    "piecewise_integration": "adaptive quadrature must split at h=-2 cm whenever the integration interval crosses that conductivity-derivative seam",
+    "no_table_interpolation_inside_oracle": true,
+    "offline_iterations_allowed": true,
+    "runtime_iterations_allowed": false
+  },
+  "exit_rule": {
+    "characterization_pass": "freeze C2A representation unchanged and create a fresh 36-material KSATEXM holdout before any catalog qualification claim",
+    "characterization_fail": "reject C2A N241 representation fail-closed; any redesign must be a new characterization contract before holdout access"
+  },
+  "scope_guard": "C2A only. No h>-1 cm, no saturation switching, no non-zero H_ENPR, no heterogeneous faces, no timestep accuracy, no bottom boundary, no groundwater, no MultiSWAP production claim, no response-tangent admission and no FullRichards equivalence."
+}
