@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "title": "Temporal Certificate Materialization Closeout Readiness",
+  "branch": "integration/f-ci21-temporal-certificate-materialization",
+  "base_spine": "ed0219402072f121856d82cb6068ab74c70f34d1",
+  "materialized_production_source_commit": "a0331164a8dfc2642becdbe96cab969eabead392",
+  "goal": "Fail-closed reconciliation of the complete F-CI21 materialized temporal subsystem and its required preservation evidence before administrative closeout.",
+  "required_positive_evidence": [
+    "F-CI21_MATERIALIZATION_COMPILE_QUALIFICATION.json",
+    "F-CI21_SI25_SCIENTIFIC_REPLAY_EVIDENCE.json",
+    "F-CI21_VQ30_HELD_OUT_REPLAY_EVIDENCE.json",
+    "F-CI21_VQ31_TRANSACTION_HISTORY_REPLAY_EVIDENCE.json",
+    "F-CI21_VQ32_HEAD_BUDGET_NORMALIZATION_REPLAY_EVIDENCE.json",
+    "F-CI21_VQ34_REMEDIATED_CERTIFICATE_REPLAY_EVIDENCE.json",
+    "F-CI21_WOF42_MR18_PRESERVATION_EVIDENCE.json"
+  ],
+  "required_negative_evidence": "F-CI21_VQ33_FAILURE_KT11_REMEDIATION_RECONCILIATION.json",
+  "hard_closeout_rules": [
+    "Current production src delta relative to exact WOF42 base is exactly the frozen eight-path temporal closure.",
+    "Current production blobs pass the F-CI21 materialization source and O0/O2 compile gate.",
+    "F-SI25 scientific replay remains qualified without broadening its bounded indicator claim.",
+    "F-VQ30 held-out operator replay remains qualified.",
+    "F-VQ31 transaction-history replay remains qualified.",
+    "F-VQ32 normalization remains exactly C_h=B_inf/H_budget with no default H_budget and no empirical multiplier.",
+    "F-VQ33 remains failed and may not be reinterpreted or used as positive evidence.",
+    "The rejected F-VQ33 backend is absent from the production postimage and the remediated F-KT11 backend is present.",
+    "F-VQ34 independently qualifies the remediated policy and preserves native invalid-budget diagnostics.",
+    "F-WOF42 crop persistence and F-MR18 standalone plus sparse MultiSWAP receipt behavior are preserved on the F-CI21 postimage.",
+    "Mass precedence and transactional rollback remain hard gates.",
+    "No numeric H_budget, universal temporal tolerance, shorter-dt monotonicity claim or general nonlinear true-error-bound claim is introduced.",
+    "No canonical source manifest or canonical ref is changed by F-CI21."
+  ],
+  "closeout_boundary": {
+    "qualifies_materialized_subsystem": true,
+    "updates_canonical": false,
+    "requires_separate_canonical_admission": true,
+    "releases_groundwater_coupling": false,
+    "selects_application_head_budget": false,
+    "qualifies_general_nonlinear_error_bound": false
+  },
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,13,15,16,20,22,23,25,26,27,29,30],
+  "state": {
+    "criteria_persisted_before_closeout_gate": true,
+    "gate_tested": false,
+    "closeout_written": false,
+    "canonical_modified": false
+  }
+}
