@@ -36,7 +36,10 @@ MODULES=(
  tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
 build_run(){
- local opt="$1" tag="$2" out="$BUILD/$tag"; mkdir -p "$out"; local objs=()
+ local opt="$1"
+ local tag="$2"
+ local out="$BUILD/$tag"
+ mkdir -p "$out"; local objs=()
  for src in "${MODULES[@]}"; do local obj="$out/$(basename "${src%.*}").o"; gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c "$src" -o "$obj"; objs+=("$obj"); done
  gfortran "${COMMON[@]}" "$opt" -J "$out" -I "$out" -c tests/fvq/test_fvq28_reference_reachability.f90 -o "$out/test.o"
  gfortran "$opt" "${objs[@]}" "$out/test.o" -o "$out/test"
@@ -51,7 +54,7 @@ echo 'FVQ28R_O0_O2_IDENTITY=PASS'
 cat "$BUILD/o0/run1.txt"
 python3 - "$BUILD/o0/run1.txt" <<'PY'
 from pathlib import Path
-import re,sys,collections
+import re,sys
 lines=Path(sys.argv[1]).read_text().splitlines()
 pat=re.compile(r'FVQ28R_ROW:CASE=(\d+):STATE=(\d+):JUMP_ID=(\d+):ATTEMPT=(\d+):NREF_ID=(\d+):H0=\s*([^:]+):JUMP=\s*([^:]+):N=(\d+):SUBDT=\s*([^:]+):SUCCESS=([TF]):FAILURE_CLASS=(\d+):FIRST_FAILED_STEP=(\d+):FAIL_STATUS=(\d+):MAX_MASS=\s*([^:]+):MAX_SOLVER_RES=\s*([^:]+):MAX_NITER=(\d+):MAX_NBACK=(\d+)')
 rows=[]
@@ -81,7 +84,6 @@ print('FVQ28R_UNIVERSALLY_REACHABLE_LEVELS='+(','.join(map(str,universal)) if un
 if universal: print(f'FVQ28R_FINEST_UNIVERSALLY_REACHABLE_N={max(universal)}')
 fails=[r for r in rows if not r['ok']]
 if fails:
- first=min(fails,key=lambda r:(r['subdt'],r['case'],r['attempt'],r['n']))
  print(f"FVQ28R_FAILURE_SUBDT_MIN={min(r['subdt'] for r in fails):.17e}:MAX={max(r['subdt'] for r in fails):.17e}")
  for r in fails[:40]: print(f"FVQ28R_FAILURE:CASE={r['case']}:STATE={r['state']}:H0={r['h0']:.1f}:JUMP_ID={r['jump']}:ATTEMPT={r['attempt']}:N={r['n']}:SUBDT={r['subdt']:.17e}:FIRST_STEP={r['fstep']}:STATUS={r['status']}:NITER={r['nit']}:NBACK={r['nback']}")
 print(f"FVQ28R_MAX_MASS_ON_SUCCESS={max(r['mass'] for r in rows if r['ok']):.17e}")
