@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted Standard-WOFOST One-Day Rate Evaluator Readiness Qualification Evidence",
+  "base": {
+    "commit": "428ad482d6b449e3e71d0c42bcc8521a98b9f2fe",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_STRUCTURAL_STATE_INTEGRATOR"
+  },
+  "tested_candidate": "900030ebbc99bba2d00c51882cd591269d63914a",
+  "verification": {
+    "workflow": "F-WOF27 rate evaluator readiness",
+    "run_id": 34303072011,
+    "job_id": 102313973571,
+    "conclusion": "success",
+    "markers": [
+      "FWOF27_ZERO_PRODUCTION_DELTA=PASS",
+      "FWOF27_FWO26_PRODUCTION_AND_QUALIFICATION_LOCK=PASS",
+      "FWOF27_PARAMETER_AND_STATE_VIEW_INVENTORY=PASS",
+      "FWOF27_PREPARE_FINALIZE_DEPENDENCY_GRAPH=PASS",
+      "FWOF27_RATE_PACKET_MAPPING=PASS",
+      "FWOF27_READ_ONLY_PROVIDER_BOUNDARY=PASS",
+      "FWOF27_FAIL_CLOSED_PARAMETER_STRENGTHENING=PASS",
+      "FWOF27_HIDDEN_GLOBALS_AND_CALENDAR_REMOVED_BY_CONTRACT=PASS",
+      "FWOF27_REFERENCE_GLAIEXP_CARRYOVER_BOUNDARY=PASS",
+      "FWOF27_THEORY_CODE_RECONCILIATION=PASS",
+      "FWOF27_CORE_INVARIANT_AUDIT=PASS",
+      "FWOF27_BROAD_RATE_PRODUCTION_NOT_IMPLEMENTED=PASS",
+      "FWOF27_RATE_EVALUATOR_READINESS_GATE PASS"
+    ],
+    "F_WOF26_regression": {
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_output_identity": "PASS",
+      "output_sha256": "e3ec4954bc2a98984eb232f41eb073f44474cb988f2e8c01cc71e375794fefa0"
+    },
+    "F_WOF24_backward_compatibility": "PASS_O0_O2_OUTPUT_IDENTITY"
+  },
+  "production_delta": {
+    "source_files_changed": [],
+    "zero_production_readiness_only": true,
+    "reason": "the work unit was intentionally constrained to reconciling the provider boundary before rate physics is admitted"
+  },
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+  },
+  "qualified_contracts": {
+    "first_profile": "standard actual WOFOST, IDSL 0/1, SWRD=1, no nutrients/oxygen/potential shadow/soybean/grass",
+    "prepare_phase": "pre-soil-water actual PGASS from explicit forcing, immutable parameters, TMNR and pre-event DVS/LAI",
+    "finalize_phase": "post-accepted-window rate evaluation from the same pre-event state view plus accepted IQROT/IPTRA and prepared PGASS",
+    "required_state_view": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "consumer": "F-WOF26 wofost_one_day_rate_packet_t",
+    "persistent_rate_workspace": false,
+    "provider_state_mutation": false,
+    "calendar_identity": false,
+    "file_IO": false
+  },
+  "source_bound_reconciliation": {
+    "hidden_globals": "RAD, KDIF, daynr/ASTRO and Tmin history were identified and assigned to explicit forcing/parameter/owner contracts",
+    "orphan_input": "KDIR excluded from new scoped parameter object because no scoped rate equation reads it",
+    "parameter_domain_strengthening": "DLO>DLC for IDSL=1, positive TSUM denominators, KDIF, CFRDM, conversion factors and Q10, with denominator-safe solar geometry",
+    "AFGEN_representation": "active compact immutable knots preserve clamp/interpolation semantics without sentinel tails",
+    "SWAP_specific_reference_physics": "CFRDM and RELMF behavior preserved rather than silently normalized to another WOFOST lineage",
+    "GLAIEXP_reference_quirk": "post-threshold carryover remains explicit F-WOF26 compatibility state and is not recomputed by the future provider"
+  },
+  "invariant_audit": "PASS_READINESS_WITH_EXPLICIT_PREPRODUCTION_SEAMS",
+  "remaining_required_seams": [
+    {
+      "name": "semantic read-only WOFOST rate-state view assembly",
+      "stage": "before broad production rate equations",
+      "reason": "avoid coupling rate physics to wofost_crop_owner_state_t biomass internals"
+    },
+    {
+      "name": "accepted aggregate provenance/runtime binding",
+      "stage": "before end-to-end runtime admission",
+      "reason": "scalar IQROT/IPTRA cannot certify accepted F-KT lineage"
+    }
+  ],
+  "qualification_decision": "QUALIFY_RESTRICTED_STANDARD_WOFOST_ONE_DAY_RATE_EVALUATOR_READINESS_ONLY",
+  "production_rate_evaluator_qualified": false,
+  "next": "implement and qualify only the semantic read-only rate-state view assembly in a separate work unit before implementing broad one-day rate physics"
+}
