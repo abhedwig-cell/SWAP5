@@ -1,0 +1,30 @@
+name: F-VZAA01 H0 Literal Eq5 Reference
+
+on:
+  push:
+    branches:
+      - work/f-vzaa01-vadose-zone-analytical-assessment
+    paths:
+      - experiments/vzaa/run_vzaa01_h0_literal_eq5_reference.py
+      - .github/workflows/vzaa01-h0-literal-eq5-reference.yml
+  workflow_dispatch:
+
+jobs:
+  h0-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python --version
+      - name: Run source-faithful literal Eq5 reference gate
+        run: |
+          mkdir -p evidence/vzaa
+          python experiments/vzaa/run_vzaa01_h0_literal_eq5_reference.py evidence/vzaa/h0_literal_eq5_reference.json
+      - name: Upload H0 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vzaa01-h0-literal-eq5-reference
+          path: evidence/vzaa/h0_literal_eq5_reference.json
+          if-no-files-found: error
