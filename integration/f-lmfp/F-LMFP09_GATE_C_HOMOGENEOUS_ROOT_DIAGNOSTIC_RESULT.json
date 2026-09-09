@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-LMFP09",
+  "subgate": "C1_HOMOGENEOUS_ROOT_DIAGNOSTIC",
+  "status": "COMPLETE",
+  "decision": "HOMOGENEOUS_ROOT_FAILURES_LOCALIZED_TO_PRODUCTION_MVG_K_DISCONTINUITY",
+  "workflow": {
+    "run_id": 34305208368,
+    "head_sha": "55274e4e043749d480bb4c40a28d10c9062b3415",
+    "job_id": 102320351044,
+    "job_conclusion": "failure",
+    "artifact_id": 10086503920,
+    "artifact_name": "f-lmfp09-gate-c-homogeneous-root-diagnostic",
+    "artifact_digest": "sha256:918f6578bf1313695724aca3b5e507b6f5de4d0ffc0a068b500312f42517ede8",
+    "artifact_upload": "success"
+  },
+  "coverage": {
+    "materials": ["B06", "B12"],
+    "half_lengths_cm": [5.0, 10.0],
+    "h_upper_cm": [-100.0, -10.0, -1.0, 0.0],
+    "total_gradients": [-5.0, 0.0, 0.5, 1.0, 2.0, 5.0],
+    "cases": 96,
+    "failures": 2
+  },
+  "failures": [
+    {
+      "material": "B12",
+      "half_length_cm": 5.0,
+      "h_upper_cm": 0.0,
+      "h_lower_cm": 0.0,
+      "total_gradient": 0.0,
+      "root_iteration_cap": 60,
+      "collapsed_midpoint_cm": -0.0015993631837436448,
+      "final_bracket": {
+        "lo_cm": -0.0015993631837437489,
+        "hi_cm": -0.0015993631837435407,
+        "width_cm": 2.0816681711721685e-16
+      },
+      "left_side": {
+        "q_upper_cm_per_d": 2.1975677100182245,
+        "q_lower_cm_per_d": 1.3037855954156705,
+        "residual_cm_per_d": 0.893782114602554
+      },
+      "right_side": {
+        "q_upper_cm_per_d": 2.1975677100185105,
+        "q_lower_cm_per_d": 3.498779962238933,
+        "residual_cm_per_d": -1.3012122522204224
+      },
+      "minimum_scaled_residual_during_bisection": 0.0027916652252665823,
+      "classification": "VALUE_DISCONTINUITY_AT_COLLAPSED_BRACKET"
+    },
+    {
+      "material": "B12",
+      "half_length_cm": 10.0,
+      "h_upper_cm": 0.0,
+      "h_lower_cm": 0.0,
+      "total_gradient": 0.0,
+      "root_iteration_cap": 60,
+      "collapsed_midpoint_cm": -0.0015993631837437055,
+      "final_bracket": {
+        "lo_cm": -0.0015993631837438703,
+        "hi_cm": -0.0015993631837435407,
+        "width_cm": 3.2959746043559335e-16
+      },
+      "left_side": {
+        "q_upper_cm_per_d": 2.1960972242449266,
+        "q_lower_cm_per_d": 1.3036355755511282,
+        "residual_cm_per_d": 0.8924616486937984
+      },
+      "right_side": {
+        "q_upper_cm_per_d": 2.1960972242456562,
+        "q_lower_cm_per_d": 3.5005901996062154,
+        "residual_cm_per_d": -1.3044929753605592
+      },
+      "minimum_scaled_residual_during_bisection": 0.0011514815455181259,
+      "classification": "VALUE_DISCONTINUITY_AT_COLLAPSED_BRACKET"
+    }
+  ],
+  "source_binding": {
+    "diagnosis_artifact": "integration/f-lmfp/F-LMFP09_GATE_C_PRODUCTION_K_DISCONTINUITY_DIAGNOSIS.json",
+    "production_threshold_head_b12_cm": -0.0015993631837437272,
+    "maximum_absolute_distance_of_failed_midpoints_from_threshold_cm": 8.239936510889834e-17,
+    "production_source_member": "SWAP/MOD_MvG_functions.f90",
+    "production_source_member_sha256": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+  },
+  "interpretation": {
+    "rootfinder_defect_supported": false,
+    "iteration_cap_too_small_supported": false,
+    "root_tolerance_relaxation_supported": false,
+    "continuous_equal_flux_root_guaranteed": false,
+    "cause": "The homogeneous serial half-face composition encounters the inherited production MvG conductivity value jump at relsat=0.999999. The residual therefore changes sign across a discontinuity instead of passing continuously through zero.",
+    "mass_conservation_requirement": "No disposition may accept unequal upper and lower half-face fluxes as a physical interface solution."
+  },
+  "production_admission": false,
+  "thresholds_changed": false,
+  "physics_changed": false,
+  "next_required_decision": "Define a scientifically qualified treatment of the inherited production K discontinuity for LayeredMFP interface composition before Gate C can be admitted. This is separate from the synthetic local-gradient envelope blocker."
+}
