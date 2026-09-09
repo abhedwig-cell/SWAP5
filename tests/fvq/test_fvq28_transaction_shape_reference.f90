@@ -188,13 +188,13 @@ contains
       call s%solve(request,ws,result)
       max_niter=max(max_niter,result%diagnostics%nonlinear_iterations)
       max_nback=max(max_nback,result%diagnostics%backtracking_attempts)
-      max_solver=max(max_solver,abs(result%unrounded_mass_balance_residual))
       if (result%status /= SW_SOLVE_CONVERGED) then
         fail_step=istep
         fail_status=result%status
         endpoint=state
         return
       end if
+      max_solver=max(max_solver,abs(result%unrounded_mass_balance_residual))
       storage1=sum(result%candidate_state%water_content*p%dz)+result%candidate_state%ponding_depth
       total_in=max(0.0_real64,-result%top_flux)*subdt+max(0.0_real64,result%bottom_flux)*subdt
       total_out=max(0.0_real64,result%top_flux)*subdt+max(0.0_real64,-result%bottom_flux)*subdt
