@@ -1,0 +1,46 @@
+name: F-ROSS01 Gate E3D-R1 O14 Event Root Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3D_R1_O14_EVENT_ROOT_DIAGNOSTIC_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3d_r1_o14_event_root_diagnostic.py'
+      - '.github/workflows/ross01-gate-e3d-r1-o14-event-root-diagnostic.yml'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen O14 event-root diagnostic
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3d-r1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3d_r1_o14_event_root_diagnostic.py \
+            "$out/F-ROSS01_GATE_E3D_R1_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3D_R1_STDOUT.txt"
+      - name: Assert diagnostic semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3d-r1/F-ROSS01_GATE_E3D_R1_RESULT.json'))
+          assert r['qualification_use_only'] is True
+          assert r['production_implementation'] is False
+          assert r['material'] == 'O14'
+          assert r['hard_mass_certificate_cm'] == 1e-9
+          assert r['strong_diagnostic_target_cm'] == 1e-12
+          assert r['committed_state_unchanged'] is True
+          PY
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3d-r1-o14-event-root-diagnostic
+          path: ross01-gate-e3d-r1/
