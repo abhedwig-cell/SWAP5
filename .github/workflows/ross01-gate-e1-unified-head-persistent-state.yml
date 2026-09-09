@@ -1,0 +1,37 @@
+name: F-ROSS01 Gate E1 Unified Head Persistent State
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e1-unified-head-persistent-state.yml
+      - experiments/ross/run_ross01_gate_e1_unified_head_persistent_state.py
+      - integration/f-ross/F-ROSS01_GATE_E1_UNIFIED_HEAD_PERSISTENT_STATE_AND_MIXED_WORKER_TRANSITION_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+      - experiments/ross/run_ross01_gate_c1.py
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen Gate E1 unified-head persistent-state qualification
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e1_unified_head_persistent_state.py \
+            "$out/F-ROSS01_GATE_E1_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E1_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e1-unified-head-persistent-state
+          path: ross01-gate-e1/
