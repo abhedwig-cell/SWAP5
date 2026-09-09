@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard WOFOST threshold and event semantics evidence",
+  "scope": {
+    "sw_wofost": 1,
+    "qualification": "source-bound characterization only",
+    "arbitrary_interval_splitting_qualified": false
+  },
+  "events": [
+    {
+      "name": "emergence",
+      "source": "SWAP/MOD_cropdevelopment.f90:276-340,375-425; SWAP/wofost.f90:704-767",
+      "legacy_timing": "evaluated in the flDayStart crop-rotation path; WOFOST state is initialized when fl_start_cropemergence becomes true",
+      "state_effects": [
+        "crop becomes active",
+        "DVS=0",
+        "TSUM=0",
+        "fl_anthesis=false",
+        "nofd=0 and atmin7=0",
+        "vern=0 and fl_vernalised=false",
+        "initial biomass and first leaf cohort are created"
+      ],
+      "splitting_implication": "legacy does not define continuous within-day emergence. A future arbitrary event split must be qualified separately rather than inferred from generic kernel time."
+    },
+    {
+      "name": "anthesis_DVS_1",
+      "source": "SWAP/wofost.f90:921-927",
+      "legacy_timing": "during the once-daily phenology-rate calculation before the daily biomass/state update",
+      "transition": "if DVS+dvr >= 1 and fl_anthesis is false, set fl_anthesis=true and truncate dvr to exactly 1-DVS",
+      "scientific_note": "the day's assimilation and most growth rates still use the pre-update crop state; the threshold is not resolved by subdaily event splitting in B1.10",
+      "splitting_implication": "splitting the day at the exact anthesis crossing would change rate evaluation order and is not automatically equivalent."
+    },
+    {
+      "name": "vernalization_completion_or_forcing",
+      "source": "SWAP/wofost.f90:853-867,379-393",
+      "legacy_timing": "evaluated on the daily phenology event; fl_vernalised can become true when critical DVS is reached or after post-update vern accumulation reaches VERNSAT",
+      "state": ["vern", "fl_vernalised"],
+      "special_hold": "vernrate SAVE carryover after fl_vernalised requires separate semantic reconciliation before IDSL=2 can be fully admitted",
+      "splitting_implication": "subdaily splitting could alter the day on which vernalization reduction ceases and therefore requires scientific qualification."
+    },
+    {
+      "name": "leaf_cohort_creation_and_ageing",
+      "source": "SWAP/wofost.f90:1047-1074,1852-1943",
+      "legacy_timing": "exactly once per WOFOST update call under delt=1",
+      "transition": [
+        "leaf death is applied to existing cohorts",
+        "all retained cohorts are shifted one class",
+        "physiological age is incremented by fysdel*delt",
+        "one new cohort is inserted at index 1 with LV=grlv*delt, SLA=slat, LVAGE=0",
+        "cohort count increments by one before reconstructing WLV/LASUM"
+      ],
+      "splitting_implication": "calling the same logic twice in a day creates two cohorts and performs two shifts. Arbitrary interval splitting is therefore not scientifically or numerically neutral."
+    },
+    {
+      "name": "root_depth_and_distribution_change",
+      "source": "SWAP/MOD_cropdevelopment.f90:1001-1014,1829-1950; F-WOF15",
+      "legacy_timing": "after wofost(3) at day end, root extension and root distribution are updated once from the day's crop rates and accepted daily stress/uptake aggregates",
+      "state_optionality": "SWRD=2 and SWRDC=1 have irreducible history state; SWRD=1/SWRD=3 and nonadaptive distribution can derive current geometry from committed crop state plus immutable parameters",
+      "splitting_implication": "multiple updates within the same crop window can change stress-limited extension and adaptive distribution history."
+    },
+    {
+      "name": "maturity_or_crop_end",
+      "source": "SWAP/swap.f90:490-515; SWAP/wofost.f90:398-416",
+      "legacy_timing": "after the daily growth update, cropdevelopment(4) checks DVS>=DVSEND or the configured crop-end date and then deactivates/harvests the crop",
+      "splitting_implication": "B1.10 maturity is a day-end event. An exact within-day DVSEND crossing is not an admitted boundary in the legacy oracle."
+    }
+  ],
+  "event_splitting_policy": {
+    "generic_kernel_time": true,
+    "first_crop_admission_uses_daily_event_boundary": true,
+    "arbitrary_subday_split": "NOT_QUALIFIED",
+    "arbitrary_multiday_merge": "NOT_QUALIFIED",
+    "reason": "phenology thresholds, climate memory, cohort operations and root updates are call-order/cadence sensitive",
+    "future_requirement": "qualify each split/merge transformation against the one-day reference oracle before changing process cadence"
+  },
+  "gates": {
+    "WOF25_G09_threshold_event_semantics": "PASS_CHARACTERIZED_ONE_DAY_ONLY",
+    "generic_interval_equivalence": "FAIL_NOT_CLAIMED",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
