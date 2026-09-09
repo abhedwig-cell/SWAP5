@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "purpose": "Qualify a cancellation-resistant mapping from representable effective saturation S in the frozen material domain directly to the uniform log-head table coordinate u, without reconstructing h first and without a hidden head epsilon.",
+  "motivation": {
+    "observed_issue": "The algebraic h(S) inverse contains the subtraction S^(-1/m)-1. Near the wet boundary this is poorly conditioned in binary64 and can reconstruct an h a few ulps outside the head envelope even when S is exactly inside the frozen state domain.",
+    "invalidated_interpretation": "An interior representable S must not be declared physically out of domain solely because the cancellation-prone h(S) implementation rounds outside the corresponding head boundary.",
+    "relationship_to_c1r_v3": "C1R V3 may be used as implementation shakeout but may not be promoted until this state-coordinate gate is resolved."
+  },
+  "candidate_mapping": {
+    "m": "1 - 1/n",
+    "z": "-log(S)/m",
+    "u_formula": "(log(expm1(z))/n - log(alpha))/log(10)",
+    "exact_state_endpoints": {
+      "S_max_equals_S_of_h_minus_1": "u=0 exactly",
+      "S_min_equals_S_of_h_minus_10000": "u=4 exactly"
+    },
+    "domain_rule": "S outside [S_min,S_max] is rejected exactly. No general state or head tolerance extends the physical domain.",
+    "interior_rule": "For representable S strictly inside [S_min,S_max], compute u directly in binary64. The result may equal an endpoint after rounding but must remain finite and inside the closed coordinate interval [0,4].",
+    "runtime_complexity": "O(1)",
+    "persistent_state_change": "none"
+  },
+  "catalog_scope": {
+    "artifact": "F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "material_count": 36,
+    "constitutive_family": "unimodal Mualem-van Genuchten using KSATFIT with KSATEXM disabled",
+    "head_envelope_cm": [-10000.0, -1.0]
+  },
+  "frozen_probes_per_material": {
+    "exact_endpoints": 2,
+    "nextafter_inward_from_each_endpoint": 4096,
+    "uniform_state_fraction_samples": 8193,
+    "uniform_log_head_origin_samples": 8193,
+    "high_precision_reference_samples": 1024,
+    "high_precision_reference_precision_decimal_digits": 80,
+    "out_of_domain_one_ulp_rejection_checks": 2
+  },
+  "acceptance": {
+    "nan_or_inf_count": 0,
+    "coordinate_outside_closed_interval_count": 0,
+    "monotonicity_violation_count": 0,
+    "exact_endpoint_mapping_failures": 0,
+    "out_of_domain_rejection_failures": 0,
+    "max_abs_u_error_vs_80_digit_reference": 2e-12,
+    "max_abs_u_roundtrip_error_from_log_head_origin": 2e-12
+  },
+  "decision_rule": "PASS only if every one of the 36 materials satisfies every frozen criterion. Any failure is fail-closed and blocks use of the candidate mapping in C1R qualification.",
+  "valid_pass_decision": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING_QUALIFIED_FOR_C1R",
+  "valid_fail_decision": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING_FAILED",
+  "scope_guard": "This gate qualifies only numerical state-to-table-coordinate mapping for the frozen C1/C1R constitutive scope. It does not qualify table interpolation accuracy, KSATEXM, saturation switching, heterogeneous profiles, transient timesteps, process physics, groundwater coupling, MultiSWAP or FullRichards equivalence."
+}
