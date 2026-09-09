@@ -1,0 +1,86 @@
+name: F-WOF25 evolution readiness gate
+
+on:
+  push:
+    branches:
+      - work/f-wof25-evolution-temporal-readiness
+  workflow_dispatch:
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify zero-production scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=c48dd266c174b7b4e9101d06a228eba91a5bf4f9
+          if git diff --name-only "$BASE" HEAD -- src | grep -q .; then
+            echo "F-WOF25 must remain zero-production; src/ changed relative to F-WOF24 base"
+            git diff --name-only "$BASE" HEAD -- src
+            exit 1
+          fi
+
+      - name: Validate machine-readable readiness evidence
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path("integration/f-wof")
+          required = [
+              "F-WOF25_WOFOST_EVOLUTION_TEMPORAL_READINESS_CONTRACT.json",
+              "F-WOF25_CONTINUATION_STATE_INVENTORY.json",
+              "F-WOF25_FORCING_AGGREGATE_CONTRACT.json",
+              "F-WOF25_B110_DAILY_CALL_CADENCE_EVIDENCE.json",
+              "F-WOF25_TRANSACTION_EVENT_CONTRACT.json",
+              "F-WOF25_THRESHOLD_EVENT_EVIDENCE.json",
+              "F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json",
+              "F-WOF25_OPTIONAL_STATE_CLASSIFICATION.json",
+              "F-WOF25_INVARIANT_AUDIT.json",
+              "F-WOF25_READINESS_GATE.json",
+          ]
+          docs = {}
+          for name in required:
+              path = root / name
+              if not path.is_file():
+                  raise SystemExit(f"missing required F-WOF25 artifact: {path}")
+              with path.open(encoding="utf-8") as f:
+                  docs[name] = json.load(f)
+
+          gate = docs["F-WOF25_READINESS_GATE.json"]
+          expected = "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE"
+          if gate["readiness_decision"]["status"] != expected:
+              raise SystemExit("unexpected readiness decision")
+          if gate["readiness_decision"]["production_evolution_in_F_WOF25"] is not False:
+              raise SystemExit("F-WOF25 illegally admits production evolution")
+
+          cadence = docs["F-WOF25_B110_DAILY_CALL_CADENCE_EVIDENCE.json"]
+          if cadence["fixed_cadence_evidence"]["legacy_delt"] != 1.0:
+              raise SystemExit("legacy WOFOST one-day cadence evidence changed")
+          if cadence["fixed_cadence_evidence"]["arbitrary_dt_equivalence_proven"] is not False:
+              raise SystemExit("arbitrary dt must remain unqualified")
+
+          forcing = docs["F-WOF25_FORCING_AGGREGATE_CONTRACT.json"]
+          if forcing["crop_window_aggregate_contract"]["rejected_trial_leakage"] is not False:
+              raise SystemExit("rejected trial leakage must be false")
+          if forcing["generic_time_boundary"]["kernel_interval_generic"] is not True:
+              raise SystemExit("generic kernel time invariant was weakened")
+
+          rates = docs["F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json"]
+          if rates["gate_resolution"]["vernrate_persistent_physical_state_required"] is not False:
+              raise SystemExit("vernrate must not become persistent physical state")
+
+          audit = docs["F-WOF25_INVARIANT_AUDIT.json"]
+          if audit["overall"]["production_evolution_admitted"] is not False:
+              raise SystemExit("invariant audit unexpectedly admits production evolution")
+          if audit["overall"]["mass_conservation_weakened"] is not False:
+              raise SystemExit("mass conservation may not be weakened")
+          if audit["overall"]["generic_time_weakened"] is not False:
+              raise SystemExit("generic time may not be weakened")
+
+          print("F-WOF25 readiness artifacts validated")
