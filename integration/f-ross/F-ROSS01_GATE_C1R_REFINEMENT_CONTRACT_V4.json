@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_BOUNDED_DENSE_TABLE_REFINEMENT",
+  "status": "AUTHORITATIVE_CHARACTERIZATION_INTEGRATION_FREEZE",
+  "production_implementation": false,
+  "supersedes_for_selection": [
+    "F-ROSS01_GATE_C1R_REFINEMENT_CONTRACT.json",
+    "F-ROSS01_GATE_C1R_REFINEMENT_CONTRACT_V2.json",
+    "F-ROSS01_GATE_C1R_REFINEMENT_CONTRACT_V3.json"
+  ],
+  "required_prior_gate": {
+    "artifact": "F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json",
+    "decision": "STATE_TO_LOG_HEAD_COORDINATE_CONDITIONING_QUALIFIED_FOR_C1R"
+  },
+  "purpose": "Integrate the independently qualified cancellation-resistant state-to-coordinate mapping into the bounded dense-table C1R characterization and select the smallest passing table density before any new 36-material holdout.",
+  "physical_face_law": {
+    "state_input": "effective saturation S within material-specific [S_min,S_max]",
+    "state_to_coordinate": "qualified direct S->u mapping",
+    "head_reconstruction": "h=-10^u cm, with exact endpoints h=-1 and h=-10000",
+    "driving_head": "g=L+h_above-h_below",
+    "stored_quantity": "float32 log(M), M=q/g>0",
+    "runtime_flux": "q=g*exp(bilinear_interpolated_log_M)",
+    "exact_equal_head": "q=K(h)",
+    "structural_hydrostatic": "q=0 when g=0",
+    "face_length_cm": 10.0,
+    "head_envelope_cm": [-10000.0,-1.0],
+    "ksatexm": "disabled"
+  },
+  "candidate_table": {
+    "coordinate": "uniform u in [0,4]",
+    "candidate_node_counts_per_axis": [225,241,255],
+    "storage": "IEEE754 float32 log mobility",
+    "interpolation_arithmetic": "four entries promoted to binary64, bilinear interpolation in binary64",
+    "shared_memory_formula_bytes": "4*N*N + 32",
+    "shared_memory_limit_bytes": 262144,
+    "candidate_selection": "smallest N passing every frozen characterization criterion on every stress material"
+  },
+  "stress_materials": {
+    "development_failure_targets": ["O01","O05","O14"],
+    "regression_anchors": ["B01","B12","O13"]
+  },
+  "characterization_probes": {
+    "reuse_of_c1r_characterization_set": true,
+    "reason": "This is still the same characterization phase. The only intervening change is replacement of a separately qualified numerical state-coordinate mapping; no holdout probes have been accessed.",
+    "ordinary_per_material": 512,
+    "ordinary_seed_rule": "uint32(first8hex(sha256('F-ROSS01-C1R-CHAR:'+material)))",
+    "equal_head": 64,
+    "hydrostatic": 64,
+    "near_hydrostatic": 96,
+    "wet_dry_cross": 49,
+    "edge": 6
+  },
+  "criteria_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "exit_rule": {
+    "pass": "Freeze the smallest passing N and representation. Then create a fresh 36-material holdout with new seeds before any catalog qualification claim.",
+    "fail": "Reject the bounded dense-table family fail-closed or open a new representation research gate; do not tune on future holdout probes."
+  },
+  "scope_guard": "Characterization only. No 36-material qualification claim, no KSATEXM, no other hydraulic family, no transient timestep qualification, no process physics, no groundwater or MultiSWAP claim."
+}
