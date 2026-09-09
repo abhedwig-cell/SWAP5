@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C1_EXACT_MANUFACTURED_OBSERVER_RELATION",
+  "purpose": "Verify the derivative-difference pressure-head observer against an exact same-endpoint temporal error on a manufactured semi-discrete Richards problem before any physical-envelope transfer claim.",
+  "frozen_before_execution": true,
+  "production_source_changes_allowed": false,
+  "scientific_threshold_selection_allowed": false,
+  "certificate_normalization_allowed": false,
+  "F_VQ30_start_allowed": false,
+  "manufactured_problem": {
+    "active_nodes": 4,
+    "uniform_initial_head_cm": -50.0,
+    "equilibrium_head_cm": -100.0,
+    "u_definition": "u=h-h_eq",
+    "linear_water_content": "theta=theta_eq+C*u",
+    "theta_eq": 0.30,
+    "capacity_C_per_cm": 0.001,
+    "constant_conductivity_cm_per_day": 1.0,
+    "dKdh": 0.0,
+    "top_boundary": "explicit flux qtop=-K",
+    "bottom_boundary": "SWBOTB=7 free drainage qbot=-K",
+    "macropores": false,
+    "root_sink": false,
+    "manufactured_sink_per_node": "sink_i=lambda*C*dz_i*u_i",
+    "lambda_per_day": 8.0,
+    "resulting_exact_ode": "du/dt=-lambda*u independently at every node",
+    "exact_solution": "u(t0+dt)=u0*exp(-lambda*dt)",
+    "backward_Euler_solution": "u_BE=u0/(1+lambda*dt)"
+  },
+  "dt_day": [0.05, 0.025, 0.0125, 0.00625, 0.003125],
+  "lambda_dt": [0.4, 0.2, 0.1, 0.05, 0.025],
+  "observer": {
+    "right_derivative_at_t0": "hdot_n=-lambda*u0",
+    "BE_endpoint_derivative": "hdot_np1=(h_BE-h_n)/dt=-lambda*u0/(1+lambda*dt)",
+    "vector_formula": "e_h=0.5*dt*(hdot_np1-hdot_n)",
+    "analytic_magnitude": "abs(e_h)=0.5*abs(u0)*(lambda*dt)^2/(1+lambda*dt)",
+    "exact_local_endpoint_error": "abs(h_BE-h_exact)=abs(u0)*abs(1/(1+lambda*dt)-exp(-lambda*dt))",
+    "analytic_ratio": "rho=abs(e_h)/exact_local_endpoint_error"
+  },
+  "predeclared_properties": {
+    "rho_greater_than_one_for_frozen_positive_lambda_dt_sequence": true,
+    "rho_strictly_decreases_toward_one_as_dt_halves": true,
+    "exact_local_error_strictly_decreases_as_dt_halves": true,
+    "observer_magnitude_strictly_decreases_as_dt_halves": true,
+    "asymptotic_rho_limit": 1.0
+  },
+  "pass_rules": [
+    "All HeadCalc solves converge under unchanged 8/4 nonlinear controls and unchanged 1e-12 hard numerical balance controls.",
+    "Computed uniform BE endpoint agrees with analytic u_BE to a floating-point consistency bound derived only from machine epsilon and arithmetic scale, not a calibrated scientific tolerance.",
+    "Computed observer agrees with its analytic formula to the same floating-point consistency principle.",
+    "Discrete manufactured water balance closes using storage change, equal top/bottom gravity fluxes, and backward-Euler endpoint sink integration.",
+    "Analytic exact manufactured mass change equals the exact time-integrated manufactured sink.",
+    "rho>1 at all five frozen lambda*dt values and rho decreases strictly at every refinement.",
+    "Observer magnitude and exact local endpoint error each decrease strictly at every refinement.",
+    "O0 and O2 machine-readable outputs are identical."
+  ],
+  "fail_closed_interpretation": {
+    "failure_of_analytic_BE_endpoint_identity": "HARNESS_OR_SOURCE_MAPPING_FAILURE_UNTIL_ATTRIBUTED",
+    "failure_of_observer_analytic_identity": "OBSERVER_IMPLEMENTATION_OR_ALGEBRA_FAILURE",
+    "failure_of_mass_identity": "MASS_OR_MANUFACTURED_COMPOSITION_FAILURE",
+    "failure_of_rho_properties_with_correct_analytic_formulas": "CANDIDATE_OBSERVER_RELATION_REJECTED_ON_EXACT_MANUFACTURED_AXIS"
+  },
+  "what_C1_can_qualify": [
+    "correct source-bound implementation of the derivative-difference observer algebra",
+    "exact temporal-error relation and asymptotic behavior on the manufactured semi-discrete ODE",
+    "compatibility of the observer with an unchanged mass-conservative backward-Euler principal state on this manufactured axis"
+  ],
+  "what_C1_cannot_qualify": [
+    "transfer of rho>=1 or any bound to nonlinear SWAP soil hydraulics",
+    "physical-envelope temporal accuracy",
+    "a production tolerance or F-KT09 normalization",
+    "saturated/DAE states",
+    "transactional persistence of derivative history",
+    "production implementation or F-VQ30"
+  ],
+  "next_if_pass": "Freeze Gate C2 physical-envelope transfer characterization. Compare the same observer to source-bound same-endpoint error evidence without relabelling any finite BE endpoint as exact."
+}
