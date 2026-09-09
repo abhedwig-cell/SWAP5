@@ -92,7 +92,7 @@ jobs:
               raise SystemExit("generic kernel time invariant was weakened")
 
           rates = docs["F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json"]
-          if rates["architecture_decision"]["full_WOFOST_rates_persistent_per_column"] is not False:
+          if rates["architecture_decision"]["copy_full_legacy_rate_object_per_column"] is not False:
               raise SystemExit("full WOFOST rates object may not become persistent state")
           if rates["architecture_decision"]["exact_B110_reference_may_need_narrow_compatibility_memory"] is not True:
               raise SystemExit("exact reference carryover memory was lost")
