@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT09",
+  "title": "Generic Model-Owned Temporal Certificate Transaction Seam",
+  "branch": "work/f-kt09-model-owned-temporal-certificate",
+  "base_commit": "15a8e2f92b323e7b397eeb4589eed5e9aa8d025b",
+  "trigger": "integration/f-si/F-SI21_FKT_HANDOFF.json",
+  "owner_scope": "Generic transaction/runtime semantics only. No Richards or soil-water specific estimator or numerical limit is owned here.",
+  "existing_mode": {
+    "name": "EXTERNAL_FULL_VS_TWO_HALF",
+    "must_remain_default": true,
+    "behavior_change_allowed": false,
+    "accepted_route": "two-half",
+    "temporal_source": "transaction_model_t%temporal_error(full_state, half_state)"
+  },
+  "candidate_mode": {
+    "name": "MODEL_OWNED_CERTIFICATE",
+    "certificate_transport": "trial_outcome_t",
+    "certificate_available": "logical",
+    "certificate_indicator": "dimensionless real scalar",
+    "generic_acceptance": "available AND finite AND indicator >= 0 AND indicator <= 1",
+    "unavailable_semantics": "FAIL_CLOSED_TEMPORAL_REJECTION",
+    "one_model_advance_per_attempt": true,
+    "accepted_route": "single certified candidate branch",
+    "retry_semantics": "On solver, temporal-certificate or hard-mass rejection, restore exact checkpoint and shorten attempt_dt using existing retry_scale.",
+    "canonical_interval_semantics": "An accepted shorter attempt mutates only the private canonical working state. run_canonical_interval continues until requested external t1 before kernel candidate materialization."
+  },
+  "required_diagnostics": [
+    "temporal_acceptance_source",
+    "temporal_certificate_unavailable_rejections",
+    "temporal_indicator",
+    "attempts",
+    "retries",
+    "rollbacks",
+    "accepted_dt",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections"
+  ],
+  "hard_constraints": {
+    "mass_gate_remains_independent": true,
+    "mass_tolerance_unchanged": true,
+    "committed_state_mutation_before_external_commit": false,
+    "persistent_state_certificate_storage": false,
+    "calendar_specific_logic": false,
+    "coupling_specific_logic": false,
+    "richards_specific_logic": false,
+    "numeric_temporal_limits_selected": false,
+    "existing_exact_identity_routes_reinterpreted": false,
+    "new_mode_must_be_explicitly_selected": true
+  },
+  "qualification_gates": {
+    "A_static_contract": "Existing mode unchanged and certificate mode generic/fail-closed.",
+    "B_transaction_behavior": "Synthetic model proves certificate accept, unavailable fail-closed, retry-to-shorter-certified-step, rollback isolation and independent hard-mass rejection.",
+    "C_canonical_interval": "Accepted shorter certified steps compose to requested t1 without exposing partial external candidate or mutating caller committed state.",
+    "D_regression": "Existing F-KT transaction/kernel qualification tests remain green under default mode."
+  },
+  "production_richards_admitted": false,
+  "independent_fvq_required_for_any_model_specific_certificate": true
+}
