@@ -1,0 +1,23 @@
+name: F-WOF29 rate table substrate
+
+on:
+  push:
+    branches:
+      - work/f-wof29-rate-table-substrate
+  workflow_dispatch:
+
+jobs:
+  rate-table:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run F-WOF29 gate
+        run: bash tests/fwof/run_fwof29_rate_table_gate.sh
