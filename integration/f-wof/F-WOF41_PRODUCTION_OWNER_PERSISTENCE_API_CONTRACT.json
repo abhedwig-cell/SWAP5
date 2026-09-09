@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF41",
+  "title": "Production Binding of WOFOST Owner-Controlled Persistence API",
+  "status": "IN_PROGRESS",
+  "branch": "work/f-wof41-production-owner-persistence-api",
+  "base": {
+    "work_unit": "F-WOF40",
+    "closeout_head": "e8cbe0b9a86d78492d34f0873cafe424895b4a99",
+    "definitive_tested_head": "2394431312932df27e52d77b25475f72f11fa38d",
+    "workflow_run": 34371941978,
+    "status": "QUALIFIED_RESTRICTED_TRUE_PROCESS_RESTART_CANDIDATE_PRODUCTION_OWNER_API_BINDING_OPEN"
+  },
+  "goal": "Materialize the exact owner-controlled persistence view and reconstruction APIs already executable-qualified in F-WOF40 directly in production WOFOST owner modules, then rerun the F-WOF40 process-boundary qualification without qualification-time source generation on the positive path.",
+  "production_files_allowed_to_change": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90"
+  ],
+  "qualified_candidate_source": "tools/fwof40_materialize_persistence_candidate.py",
+  "required_API": {
+    "event_identity_owner": [
+      "fmr_wofost_crop_event_identity_persistence_t",
+      "export_wofost_crop_event_identity_persistence",
+      "reconstruct_wofost_crop_event_identity_from_persistence"
+    ],
+    "crop_transaction_owner": [
+      "fmr_wofost_crop_transaction_persistence_t",
+      "export_fmr_wofost_crop_transaction_persistence",
+      "reconstruct_fmr_wofost_crop_transaction_from_persistence"
+    ]
+  },
+  "hard_constraints": [
+    "production API must be semantically identical to the F-WOF40 candidate materialization",
+    "private authoritative event identity remains private; external code receives only serialization-neutral persistence data",
+    "reconstruction must validate owner state and receipt before publishing a ready transaction state",
+    "no TRANSFER/object-memory serialization or compiler-layout dependence",
+    "no file/path/parser/codec concern enters src/kernel or the WOFOST owner modules",
+    "parameters, forcing, solver scratch, retired accepted-window cache and derived views remain excluded from persistent state",
+    "no new commit authority, lineage setter, revision setter or rollback path",
+    "no crop physics, water mass accounting or numerical tolerance change"
+  ],
+  "required_qualification": [
+    "production source compiles O0 and O2 with -Wall -Wextra -Werror",
+    "production persistence API export/reconstruct roundtrip is exact",
+    "invalid owner and receipt persistence data fail closed",
+    "F-WOF38 atomic crop transaction gate remains green",
+    "F-WOF39 lifecycle retirement gate remains green",
+    "F-WOF40 producer/consumer true-process restart gate remains green",
+    "F-WOF40 positive path no longer materializes replacement owner source files",
+    "continuous versus restarted endpoint remains exact",
+    "O0/O2 external representation remains identical"
+  ],
+  "nonclaims": [
+    "not a production SWAP-wide restart format",
+    "not persistence of active unretired accepted-window state",
+    "not qualification of every WOFOST optional state layout",
+    "not mid-transaction restart",
+    "not full MultiSWAP checkpoint/restart",
+    "not canonical promotion"
+  ],
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,21,23,27,29,30],
+  "decision_rule": "Close positively only if the production owner modules contain the already-qualified persistence API, the F-WOF40 process restart passes using those production modules directly, preservation gates remain green, and no serialization or commit authority leaks into the kernel or owner boundary."
+}
