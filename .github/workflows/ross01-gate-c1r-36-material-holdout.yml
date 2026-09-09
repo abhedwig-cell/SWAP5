@@ -1,0 +1,59 @@
+name: F-ROSS01 Gate C1R 36 Material Holdout
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-c1r-36-material-holdout.yml
+      - experiments/ross/run_ross01_gate_c1r_36_material_holdout.py
+      - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
+      - experiments/ross/run_ross01_gate_c1r_characterization.py
+      - integration/f-ross/F-ROSS01_GATE_C1R_36_MATERIAL_HOLDOUT_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1R_SELECTED_REPRESENTATION.json
+      - integration/f-ross/F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  holdout-group:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - slug: b01-b06
+            materials: B01,B02,B03,B04,B05,B06
+          - slug: b07-b12
+            materials: B07,B08,B09,B10,B11,B12
+          - slug: b13-b18
+            materials: B13,B14,B15,B16,B17,B18
+          - slug: o01-o06
+            materials: O01,O02,O03,O04,O05,O06
+          - slug: o07-o12
+            materials: O07,O08,O09,O10,O11,O12
+          - slug: o13-o18
+            materials: O13,O14,O15,O16,O17,O18
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen fresh holdout group
+        shell: bash
+        run: |
+          set -o pipefail
+          out="ross01-c1r-holdout-${{ matrix.slug }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_c1r_36_material_holdout.py \
+            "$out" "${{ matrix.materials }}" \
+            | tee "$out/F-ROSS01_C1R_HOLDOUT_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-c1r-holdout-${{ matrix.slug }}
+          path: ross01-c1r-holdout-${{ matrix.slug }}/
