@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF34",
+  "title": "Accepted-Window Runtime Lineage and Crop-Event Delivery Qualification Evidence",
+  "qualified_source_candidate": {
+    "commit": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+    "tree": "f9eb47eba9bda687cab103c8b4c1ec0ac627ea49",
+    "production_delta": ["src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"]
+  },
+  "base": {
+    "commit": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+    "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD"
+  },
+  "workflow": {
+    "name": "F-WOF34 accepted-window runtime lineage",
+    "run_id": 34312699703,
+    "job_id": 102342447969,
+    "head_sha": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_WOF33_exact_closeout_regression": "PASS"
+  },
+  "gate_audit": {
+    "G01_F_KT_certificate_not_boolean": "PASS_EXECUTABLE_AND_STATIC_BOUNDARY",
+    "G02_rejected_trial_zero_contribution": "PASS_EXECUTABLE_MUTATION_TEST",
+    "G03_retry_same_checkpoint_only_accepted_trial_contributes": "PASS_EXECUTABLE_REJECT_DISCARD_THEN_ACCEPT",
+    "G04_lineage_revision_interval_mismatch_fail_closed_without_mutation": "PASS_EXECUTABLE",
+    "G05_multi_interval_contiguous_window_accumulation": "PASS_EXECUTABLE",
+    "G06_gap_overlap_and_overrun_rejected": "PASS_SOURCE_BOUND_FAIL_CLOSED; TRIAL_GAP_OVERLAP_EXECUTABLE; WINDOW_OVERRUN_SOURCE_INSPECTED",
+    "G07_freeze_only_when_window_complete": "PASS_EXECUTABLE",
+    "G08_frozen_carrier_matches_F_WOF33_semantic_type": "PASS_STATIC_TYPE_BINDING_AND_EXECUTABLE",
+    "G09_crop_event_prepare_replay_bitwise_identity": "PASS_EXECUTABLE",
+    "G10_crop_event_delivery_exactly_once": "PASS_EXECUTABLE",
+    "G11_worker_trial_scratch_not_persistent_crop_state": "PASS_CONTRACT_AND_SOURCE_BOUNDARY",
+    "G12_no_crop_kernel_solver_or_IO_delta": "PASS_SINGLE_RUNTIME_SOURCE_DELTA_STATIC_GATE",
+    "G13_O0_O2_identity": "PASS",
+    "G14_F_WOF33_exact_regression": "PASS",
+    "G15_invariant_audit": "PASS_WITH_EXPLICIT_NONQUALIFIED_BOUNDARY_AND_CANONICAL_COMPOSITION_HOLD"
+  },
+  "qualified_semantics": [
+    "F-KT commit-derived accepted-interval certificates bind positive lineage, origin revision, committed revision and exact accepted interval",
+    "worker/job-local trial process integrals cannot mutate accepted-window totals until admission against a matching accepted certificate",
+    "discarded/rejected trial contributions contribute zero to accepted-window aggregates",
+    "accepted intervals accumulate contiguously and monotonically by lineage revision and time coverage",
+    "a complete window freezes the existing F-WOF33 wofost_accepted_window_aggregates_t semantic carrier",
+    "crop-event preparation is read-only and replayable with bitwise-identical aggregate payloads for the qualified fixture",
+    "delivery commit is provenance-bound and exactly once",
+    "the seam has no calendar-midnight, file-I/O, MODFLOW, HeadCalc, Jacobian or Newton dependency"
+  ],
+  "source_inspection": {
+    "accepted_window_contiguity": "admission requires certificate t0 == covered_t and rejects t1 beyond window t1 before mutation",
+    "accepted_window_revision_order": "certificate and trial origin revision must both equal window next_revision",
+    "delivery_token_integrity": "token lineage, final revision, t0, t1 and aggregate bit patterns must match the completed window before event_delivered mutates"
+  },
+  "not_qualified": [
+    "actual Richards/root-uptake/ET production substep binding",
+    "full restart or distributed ownership/lifetime of active accepted windows",
+    "calendar scheduler",
+    "historical multi-day B1.10 crop trajectory equivalence",
+    "IALPWET oxygen aggregate",
+    "nutrients",
+    "soybean",
+    "grass",
+    "potential crop trajectory"
+  ],
+  "canonical_composition_boundary": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_observed": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "canonical_F_WOF34_label": "DIVERGED_SHARED_OWNER_REQUIRES_SEPARATE_COMPOSITION",
+    "direct_production_path_overlap": [],
+    "shared_dependency_overlap": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/transaction/mod_transaction_reference.f90"
+    ],
+    "interpretation": "qualification of the isolated F-WOF34 seam is not canonical admission; a separate composition owner must replay against current canonical owners before promotion"
+  },
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30],
+  "qualification_decision": "QUALIFIED_ACCEPTED_WINDOW_RUNTIME_LINEAGE_AND_EXACTLY_ONCE_CROP_EVENT_DELIVERY_READY_FOR_CANONICAL_COMPOSITION"
+}
