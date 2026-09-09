@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3_RESTRICTED_SATURATION_TRANSITION_COLUMN_HYDROLOGIC_RELEVANCE",
+  "contract": "F-ROSS01_GATE_E3_RESTRICTED_SATURATION_TRANSITION_HYDROLOGIC_RELEVANCE_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_solver_is_production_solver": false,
+  "workflow": {
+    "run": 34389487999,
+    "head": "298651c16dddd4074ea8520f42972b368e1fc1a6",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifacts": {
+      "B01": {"id":10119090598,"digest":"sha256:58153aadac0ae699fcf54b2b38be4905aae9ee5664e44a929d3ce66b7dbace49"},
+      "B12": {"id":10119205767,"digest":"sha256:779ab0f2ba91c2c50f686534e73fcd5ed2defe0cd70dd406a3fb66350da113f3"},
+      "O13": {"id":10119250669,"digest":"sha256:7ce7728050d93137327fbd4d112552aca4d7bd429116fee0882bc9fb0c07b7f0"},
+      "O14": {"id":10119078372,"digest":"sha256:0824fb80d43bb6b5b24de830ae9648a987c5c9e9014a37a9c88eaa9d8a63725d"}
+    }
+  },
+  "material_results": {
+    "B01": {
+      "wetting": {"hydrology_pass":false,"face_scope_pass":true,"transition_event_present":false,"bottom_flux_error_cm":8.136391628968398e-05,"storage_error_cm":8.136459856444844e-05,"head_error_cm":0.029724103070342123,"max_step_mass_residual_cm":2.9880114875424635e-11},
+      "draining": {"hydrology_pass":true,"face_scope_pass":false,"unqualified_face_fallback_count":3,"bottom_flux_error_cm":0.00040144468919174614,"storage_error_cm":0.00040144468889558027,"head_error_cm":0.031334249591142616,"transition_time_error_day":9.457227375500675e-06,"max_step_mass_residual_cm":3.5749692268993716e-11}
+    },
+    "B12": {
+      "wetting": {"hydrology_pass":false,"face_scope_pass":true,"transition_event_present":false,"bottom_flux_error_cm":5.751467218879491e-09,"storage_error_cm":5.439623862457665e-09,"head_error_cm":0.003000229528065451,"max_step_mass_residual_cm":2.3406121875749197e-12},
+      "draining": {"hydrology_pass":true,"face_scope_pass":false,"unqualified_face_fallback_count":28,"bottom_flux_error_cm":4.4711823209413627e-08,"storage_error_cm":5.774998079743909e-08,"head_error_cm":0.0025527314764097753,"transition_time_error_day":8.278236089509645e-05,"max_step_mass_residual_cm":1.0261398715195316e-10}
+    },
+    "O13": {
+      "wetting": {"hydrology_pass":false,"face_scope_pass":false,"transition_event_present":false,"unqualified_face_fallback_count":10,"bottom_flux_error_cm":1.1468522387910862e-07,"storage_error_cm":1.1468633687172769e-07,"head_error_cm":0.0038948819363905443,"max_step_mass_residual_cm":3.9653019799981704e-11},
+      "draining": {"hydrology_pass":true,"face_scope_pass":false,"unqualified_face_fallback_count":28,"bottom_flux_error_cm":1.3563064066041824e-07,"storage_error_cm":3.0428453712261216e-07,"head_error_cm":0.005099994258306539,"transition_time_error_day":7.754311292067028e-05,"max_step_mass_residual_cm":5.804920067309545e-11}
+    },
+    "O14": {
+      "wetting": {"hydrology_pass":false,"face_scope_pass":true,"transition_event_present":false,"reference_completed_steps":7,"reference_requested_steps":64,"reference_qualification_solver_failure_count":1,"candidate_4_8_16_steps_completed":true,"bottom_flux_error_cm":0.0063258196944714256,"head_and_storage_comparison":"UNAVAILABLE_AFTER_REFERENCE_TRAJECTORY_FAILURE"},
+      "draining": {"hydrology_pass":false,"face_scope_pass":false,"unqualified_face_fallback_count":1,"reference_completed_steps":64,"candidate_16_requested_steps":16,"candidate_16_completed_steps":1,"candidate_16_qualification_solver_failure_count":1,"max_step_mass_residual_cm":1.6315069578535027e-09,"bottom_flux_error_cm":0.0073398851999018485,"storage_error_cm":7.4333140229754235e-06,"head_error_cm":0.03410742746576656,"transition_time_error_day":7.560463643868307e-06}
+    }
+  },
+  "artifact_reconciled_face_scope": {
+    "unqualified_occurrence_count": 70,
+    "classes": {
+      "NEAR_UNSAT_NEAR_UNSAT_BOTH_HEADS_BETWEEN_MINUS1_AND_0_CM": 66,
+      "DRY_ABOVE_WET_BELOW_H_ABOVE_LT_MINUS1_H_BELOW_GT_MINUS1": 4
+    },
+    "by_case": {
+      "B01_DRAINING": {"DRY_ABOVE_WET_BELOW":3},
+      "B12_DRAINING": {"NEAR_UNSAT_NEAR_UNSAT":28},
+      "O13_WETTING": {"NEAR_UNSAT_NEAR_UNSAT":10},
+      "O13_DRAINING": {"NEAR_UNSAT_NEAR_UNSAT":28},
+      "O14_DRAINING": {"DRY_ABOVE_WET_BELOW":1}
+    },
+    "interpretation": "The saturation-transition face coverage gap is narrow and reducible to two explicit head-order classes; it is not a broad unknown near-saturation domain."
+  },
+  "causal_classification": [
+    "The frozen wetting case did not produce the required h=0 transition for any material, so it cannot qualify wetting saturation transition and must not be retuned inside E3.",
+    "B01, B12 and O13 draining trajectories satisfy the frozen hydrologic metrics but encounter one of two unqualified face classes.",
+    "O14 contains an additional qualification-solver/reference robustness blocker. Its 16-step draining trial exceeds the hard step-mass tolerance and is rejected; this cannot be dismissed as hydrologically negligible.",
+    "The O14 incomplete trajectories prevent a physical RossFast conclusion for that material; the qualification solver is scaffolding and must be separated from candidate physics before retrying a new gate."
+  ],
+  "pass": false,
+  "decision": "SATURATION_TRANSITION_PHYSICAL_COLUMN_NOT_QUALIFIED_RESEARCH_REQUIRED",
+  "scientific_interpretation": "E3 does not falsify the already-qualified C1R or R3 face physics. It identifies a narrow face-coverage gap, an inadmissible wetting fixture for the intended event, and an O14 qualification-solver robustness problem.",
+  "next_actions": [
+    "E3A qualify the two encountered missing face classes against the independent exact steady-face reference under a new frozen face-level contract.",
+    "E3B characterize and replace the O14 qualification nonlinear solver only as qualification scaffolding, with mass residual remaining hard.",
+    "E3C create a new event-qualified wetting transition fixture under a fresh precommit rather than tuning E3 after results.",
+    "Only then repeat a restricted saturation-transition column gate."
+  ],
+  "hard_guards": [
+    "E3 remains FAIL.",
+    "Do not weaken the mass tolerance for O14.",
+    "Do not retune the frozen E3 wetting forcing or horizon.",
+    "Do not silently use exact-reference fallback for the two missing face classes in a qualified production candidate.",
+    "Do not claim production solver, response tangent, runtime, groundwater or MultiSWAP qualification."
+  ]
+}
