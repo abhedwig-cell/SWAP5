@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "title": "Conservative derivative contract for VZAA-derived research",
+  "production_implementation": false,
+  "published_VZAA_modified": false,
+  "classification": "VZAA_DERIVED_ALGORITHMIC_RESEARCH_ONLY",
+  "premise": "The published VZAA formulation fails SWAP5 hard gates for exact accepted-step conservation and explicit prescribed bottom head/flux boundaries. Any further work must therefore be a separately named conservative derivative, not a silent repair claimed as reproduced VZAA.",
+  "candidate_step_structure": [
+    "Start exclusively from committed state at t0 and immutable forcing/boundary data for [t0,t1].",
+    "Compute a source-bound VZAA-style layer-local analytical predictor without committing any state.",
+    "Construct the exact accepted-step external mass target from top boundary, imposed bottom flux if applicable, distributed sinks/sources and other explicit exchanges.",
+    "Apply at most a preconfigured bounded number of conservative correction sweeps. Every internal correction transfer is entered once with opposite signs in adjacent layer balances.",
+    "For prescribed bottom flux, bottom exchange is fixed by the boundary and may not be altered to hide a profile residual.",
+    "For prescribed bottom head, bottom flux is an interface unknown. The correction must produce a conservative profile and an explicit head residual H_candidate_bottom-H_boundary; no water may be created to force the head residual to zero.",
+    "Accept only when storage, all external transfers and all sinks/sources close the mass ledger to roundoff-scale numerical tolerance and all state admissibility constraints hold.",
+    "Reject trial explicitly when bounded correction cannot satisfy the declared boundary/residual criteria. Rejection leaves committed state bitwise unchanged."
+  ],
+  "mass_invariants": {
+    "accepted_step_ledger": "DeltaS = Q_top - Q_bottom - sinks + sources + other_explicit_external_transfers",
+    "internal_transfer_sum": "exactly zero by paired debit-credit construction before floating-point summation error",
+    "post_update_clipping": false,
+    "hidden_bottom_residual_flux": false,
+    "mass_tolerance_is_performance_tradeoff": false,
+    "unrounded_ledger_required": true
+  },
+  "bottom_boundary_contract": {
+    "prescribed_flux": {
+      "input": "q_bottom",
+      "acceptance": "realized q_bottom equals imposed boundary value under the shared sign convention; profile correction cannot alter the external amount",
+      "returned": ["candidate_state","realized_bottom_flux","mass_ledger","diagnostics"]
+    },
+    "prescribed_head": {
+      "input": "H_bottom",
+      "unknown": "q_bottom",
+      "residual": "r_H = H_candidate_bottom - H_bottom",
+      "acceptance": "mass closure is mandatory; a nonzero head residual is admissible only inside a separately qualified coupling tolerance",
+      "returned": ["candidate_state","realized_bottom_flux","bottom_head_residual","mass_ledger","diagnostics","optional_response_tangent"]
+    }
+  },
+  "correction_constraints": {
+    "global_Newton_or_unbounded_fixed_point_iteration": false,
+    "maximum_correction_sweeps_must_be_finite_configuration": true,
+    "candidate_initial_maximum_sweeps_for_research": 1,
+    "one_sweep_is_not_prequalified": true,
+    "direction": "bottom-up is the primary research candidate because the published predictor is top-down and the unresolved hard boundary is at the bottom",
+    "pairwise_transfer_only": true,
+    "no_validation_case_specific_parameters": true,
+    "no_silent_fallback_to_Richards_inside_solver": true
+  },
+  "response_tangent_research": {
+    "preferred_quantity": "dq_bottom/dH_bottom or inverse dH_bottom/dq_bottom when locally well conditioned",
+    "preferred_method": "propagate local analytical/implicit sensitivities through predictor and bounded correction sweep",
+    "reference_method": "symmetric perturbation on identical committed state",
+    "invalid_at_regime_switch": "mark tangent unavailable rather than return an unqualified derivative"
+  },
+  "runtime_contract": {
+    "target": "O(N_layers * (1 + N_correction_sweeps))",
+    "N_correction_sweeps_bounded": true,
+    "history_or_memory_terms_must_have_bounded_state": true,
+    "report": ["layer_updates","correction_sweeps","local_root_counts_if_any","internal_substeps","worst_case_cost"]
+  },
+  "qualification_sequence": [
+    "equation-level conservative ledger proof on a synthetic two/three-layer harness",
+    "closed-column no-source conservation test",
+    "prescribed-bottom-flux test including upward and downward exchange",
+    "prescribed-bottom-head residual sweep",
+    "bidirectional recharge-zero-capillary-rise transitions without clipping",
+    "heterogeneous interface test using SWAP hydraulic functions",
+    "timestep and layer-count sensitivity against FullRichards",
+    "response-tangent comparison against symmetric perturbation",
+    "bounded-runtime and rollback tests"
+  ],
+  "hard_failures": [
+    "accepted-step mass residual not reducible to floating-point accumulation without compensating hidden flux",
+    "prescribed bottom flux cannot be honored exactly in the ledger",
+    "prescribed head can be met only by altering stored water without a declared flux",
+    "correction requires unbounded global iteration",
+    "upward groundwater exchange requires clipping or sign suppression"
+  ],
+  "decision_if_hard_failure": "VZAA_ALGORITHMIC_DONOR_ONLY",
+  "decision_if_all_research_gates_pass": "VZAA_FEASIBLE_AFTER_CONSERVATIVE_MODIFICATION",
+  "status": "CONSERVATIVE_DERIVATIVE_CONTRACT_PERSISTED_BEFORE_PROTOTYPE"
+}
