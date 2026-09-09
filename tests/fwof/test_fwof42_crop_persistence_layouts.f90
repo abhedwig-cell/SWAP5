@@ -290,10 +290,10 @@ contains
     call require(.not. allocated(canonical_zero%biomass%leaf_biomass), 'zero edge canonical leaf absence')
     call require(allocated_zero%biomass%active_leaf_cohort_count() == 0, 'zero edge original cohort count')
     call require(canonical_zero%biomass%active_leaf_cohort_count() == 0, 'zero edge canonical cohort count')
-    call require(allocated_zero%biomass%living_leaf_biomass() == canonical_zero%biomass%living_leaf_biomass(), &
-         'zero edge living leaf biomass equivalent')
-    call require(allocated_zero%biomass%leaf_area_sum() == canonical_zero%biomass%leaf_area_sum(), &
-         'zero edge leaf area equivalent')
+    call require(same_real_bits(allocated_zero%biomass%living_leaf_biomass(), &
+         canonical_zero%biomass%living_leaf_biomass()), 'zero edge living leaf biomass equivalent')
+    call require(same_real_bits(allocated_zero%biomass%leaf_area_sum(), &
+         canonical_zero%biomass%leaf_area_sum()), 'zero edge leaf area equivalent')
 
     call configure_forcing(forcing)
     call prepare_wofost_one_day_candidate(allocated_zero, forcing, 10.0_real64, 11.0_real64, &
@@ -348,40 +348,58 @@ contains
     forcing%co2_amax_factor = 1.05_real64
   end subroutine configure_forcing
 
+  pure logical function same_real_bits(left, right) result(same)
+    real(real64), intent(in) :: left, right
+    same = transfer(left, 0_int64) == transfer(right, 0_int64)
+  end function same_real_bits
+
+  pure logical function same_real_vector_bits(left, right) result(same)
+    real(real64), intent(in) :: left(:), right(:)
+    integer :: i
+    same = .false.
+    if (size(left) /= size(right)) return
+    do i = 1, size(left)
+      if (.not. same_real_bits(left(i), right(i))) return
+    end do
+    same = .true.
+  end function same_real_vector_bits
+
   logical function same_owner_exact(left, right) result(same)
     type(wofost_crop_owner_state_t), intent(in) :: left, right
     same = .false.
     if (left%crop_emerged .neqv. right%crop_emerged) return
-    if (left%development_stage /= right%development_stage) return
+    if (.not. same_real_bits(left%development_stage, right%development_stage)) return
     if (allocated(left%biomass) .neqv. allocated(right%biomass)) return
     if (allocated(left%evolution_continuation) .neqv. allocated(right%evolution_continuation)) return
     if (allocated(left%b110_reference_compatibility) .neqv. allocated(right%b110_reference_compatibility)) return
     if (allocated(left%biomass)) then
-      if (left%biomass%root_biomass /= right%biomass%root_biomass) return
-      if (left%biomass%stem_biomass /= right%biomass%stem_biomass) return
-      if (left%biomass%storage_biomass /= right%biomass%storage_biomass) return
-      if (left%biomass%exponential_leaf_area_index /= right%biomass%exponential_leaf_area_index) return
+      if (.not. same_real_bits(left%biomass%root_biomass, right%biomass%root_biomass)) return
+      if (.not. same_real_bits(left%biomass%stem_biomass, right%biomass%stem_biomass)) return
+      if (.not. same_real_bits(left%biomass%storage_biomass, right%biomass%storage_biomass)) return
+      if (.not. same_real_bits(left%biomass%exponential_leaf_area_index, &
+          right%biomass%exponential_leaf_area_index)) return
       if (allocated(left%biomass%leaf_biomass) .neqv. allocated(right%biomass%leaf_biomass)) return
       if (allocated(left%biomass%specific_leaf_area) .neqv. allocated(right%biomass%specific_leaf_area)) return
       if (allocated(left%biomass%leaf_age) .neqv. allocated(right%biomass%leaf_age)) return
       if (allocated(left%biomass%leaf_biomass)) then
         if (size(left%biomass%leaf_biomass) /= size(right%biomass%leaf_biomass)) return
-        if (any(left%biomass%leaf_biomass /= right%biomass%leaf_biomass)) return
-        if (any(left%biomass%specific_leaf_area /= right%biomass%specific_leaf_area)) return
-        if (any(left%biomass%leaf_age /= right%biomass%leaf_age)) return
+        if (.not. same_real_vector_bits(left%biomass%leaf_biomass, right%biomass%leaf_biomass)) return
+        if (.not. same_real_vector_bits(left%biomass%specific_leaf_area, right%biomass%specific_leaf_area)) return
+        if (.not. same_real_vector_bits(left%biomass%leaf_age, right%biomass%leaf_age)) return
       end if
     end if
     if (allocated(left%evolution_continuation)) then
-      if (left%evolution_continuation%temperature_sum /= right%evolution_continuation%temperature_sum) return
+      if (.not. same_real_bits(left%evolution_continuation%temperature_sum, &
+          right%evolution_continuation%temperature_sum)) return
       if (left%evolution_continuation%anthesis_reached .neqv. right%evolution_continuation%anthesis_reached) return
       if (left%evolution_continuation%minimum_temperature_history_count /= &
           right%evolution_continuation%minimum_temperature_history_count) return
-      if (any(left%evolution_continuation%minimum_temperature_history /= &
+      if (.not. same_real_vector_bits(left%evolution_continuation%minimum_temperature_history, &
           right%evolution_continuation%minimum_temperature_history)) return
     end if
     if (allocated(left%b110_reference_compatibility)) then
-      if (left%b110_reference_compatibility%lai_exponential_rate_carryover /= &
-          right%b110_reference_compatibility%lai_exponential_rate_carryover) return
+      if (.not. same_real_bits(left%b110_reference_compatibility%lai_exponential_rate_carryover, &
+          right%b110_reference_compatibility%lai_exponential_rate_carryover)) return
     end if
     same = .true.
   end function same_owner_exact
