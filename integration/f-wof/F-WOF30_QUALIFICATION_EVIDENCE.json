@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF30",
+  "title": "Restricted Shared Immutable WOFOST Rate Parameter Bundle Qualification Evidence",
+  "base": {
+    "commit": "55a823276a1869f15623d1d0694add4df54dec2e",
+    "status": "QUALIFIED_COMPACT_IMMUTABLE_WOFOST_RATE_TABLE_SUBSTRATE"
+  },
+  "tested_candidate": "eb0d3c52e216c0310417f2e774ff7c4fe7a325a4",
+  "workflow": {
+    "name": "F-WOF30 rate parameter bundle",
+    "run_id": 34304715699,
+    "job_id": 102318903292,
+    "conclusion": "success"
+  },
+  "markers": [
+    "FWOF30_PRODUCTION_DELTA_SINGLE_PARAMETER_BUNDLE_MODULE=PASS",
+    "FWOF30_FWO29_CLOSEOUT_AND_TABLE_SUBSTRATE_LOCK=PASS",
+    "FWOF30_EXACT_RESTRICTED_PARAMETER_MEMBERSHIP_STATIC=PASS",
+    "FWOF30_PRIVATE_BUNDLE_NO_PUBLIC_MUTATOR_STATIC=PASS",
+    "FWOF30_SOURCE_BOUND_SCALAR_DOMAIN_RULES_STATIC=PASS",
+    "FWOF30_TWELVE_QUALIFIED_TABLE_DEPENDENCIES_STATIC=PASS",
+    "FWOF30_NO_STATE_FORCING_PARSER_CALENDAR_OR_RATE_PHYSICS_STATIC=PASS",
+    "FWOF30_O0=PASS",
+    "FWOF30_O2=PASS",
+    "FWOF30_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF30_SCALAR_VIEW_COPY_AND_BUNDLE_IMMUTABILITY=PASS",
+    "FWOF30_ALL_TWELVE_SEMANTIC_TABLE_ROUTES=PASS",
+    "FWOF30_IDSL0_INACTIVE_PHOTOPERIOD_CANONICALIZED=PASS",
+    "FWOF30_CVO_ZERO_DEFERRED_TO_FO_AWARE_RATE_VALIDATION=PASS",
+    "FWOF30_SOURCE_BOUND_AND_DENOMINATOR_DOMAINS_FAIL_CLOSED=PASS",
+    "FWOF30_UNREADY_TABLE_SET_FAILS_CLOSED=PASS",
+    "FWOF30_NONFINITE_TABLE_QUERY_FAILS_CLOSED_WITHOUT_ARITHMETIC=PASS",
+    "FWOF30_RATE_PARAMETER_BUNDLE_TEST PASS",
+    "FWOF30_FWO29_RATE_TABLE_EXACT_REGRESSION=PASS",
+    "FWOF30_RATE_PARAMETER_BUNDLE_GATE PASS"
+  ],
+  "output_sha256": "16827a9cf83541accd0c5e659d59a0d8c13a8aa55bfcbed3993798ddc2da0cec",
+  "F_WOF29_reference_output_sha256": "780387c7e71b1a72319f67e96f188fb95f2856bb30b941490fec9c7b09f161c8",
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "legacy_parameter_read_region": "SWAP/wofost.f90:454-592",
+    "inventory": "integration/f-wof/F-WOF27_PARAMETER_INPUT_INVENTORY.json",
+    "table_semantics": "F-WOF29"
+  },
+  "qualified_properties": [
+    "only the restricted actual standard-WOFOST rate parameters are retained",
+    "SSA/SPA remain outside the rate bundle because they belong to semantic state-view assembly",
+    "SPAN/DVSEND remain outside the rate bundle because F-WOF26 owns structural integration",
+    "KDIR is not reintroduced",
+    "legacy scalar input ranges are retained where applicable and known denominator gaps are strengthened fail closed",
+    "IDSL=0 does not retain meaningless DLO/DLC values",
+    "all twelve table dependencies must already be valid compact F-WOF29 tables",
+    "the bundle exposes no public table object and no post-construction mutator",
+    "scalar view mutation cannot mutate the bundle",
+    "nonfinite active values and nonfinite table queries fail closed under floating-point traps",
+    "existing F-WOF29 table behavior remains exact"
+  ],
+  "claim_boundary": [
+    "CVO=0 is not rejected at bundle construction because source-bound validity depends on evaluated FO; future rate physics must reject FO>0 with CVO<=0",
+    "table biological ranges are not newly invented in the kernel bundle; parser adapters and rate-node semantics retain their own validation responsibilities",
+    "no crop rate equation is qualified by this work unit"
+  ],
+  "qualification_decision": "QUALIFY_RESTRICTED_SHARED_IMMUTABLE_WOFOST_RATE_PARAMETER_BUNDLE",
+  "next_required_production_seam": "pure phase-A prepare-assimilation provider producing actual PGASS"
+}
