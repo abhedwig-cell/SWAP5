@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
+  "purpose": "Freeze the finite-difference comparator metric before executable tangent evidence exists.",
+  "analytic_quantity": "dq_bottom/db_bottom from the differentiated frozen-regime discrete trial equations",
+  "reference_quantity": "[q_bottom(b+delta)-q_bottom(b-delta)]/(2*delta), with both reference trials starting from the identical committed theta state",
+  "comparison_metric": "abs(tangent_analytic-tangent_fd)/max(abs(tangent_analytic),abs(tangent_fd),1e-8)",
+  "acceptance_max": 1e-08,
+  "finite_difference_steps": [1e-07, 1e-06],
+  "threshold_changed_from_parent_acceptance": false,
+  "notes": [
+    "The 1e-8 denominator floor only defines the scaled-absolute branch of the already precommitted relative-or-scaled-absolute metric.",
+    "Both finite-difference step sizes must satisfy the same threshold.",
+    "No finite-difference result may be used to tune the analytic formula or threshold after this contract."
+  ],
+  "status": "PERSISTED_BEFORE_EXECUTION"
+}
