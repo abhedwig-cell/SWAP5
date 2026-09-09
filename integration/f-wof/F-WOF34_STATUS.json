@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF34",
+  "title": "Accepted-Window Runtime Lineage and Crop-Event Delivery Seam",
+  "branch": "work/f-wof34-accepted-window-runtime-lineage",
+  "base": {
+    "commit": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+    "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD"
+  },
+  "status": "QUALIFIED_ACCEPTED_WINDOW_RUNTIME_LINEAGE_AND_EXACTLY_ONCE_CROP_EVENT_DELIVERY_READY_FOR_CANONICAL_COMPOSITION",
+  "decision": "QUALIFIED_ISOLATED_RUNTIME_SEAM_CANONICAL_ADMISSION_HELD_FOR_SEPARATE_COMPOSITION",
+  "qualified_source_candidate": {
+    "commit": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+    "tree": "f9eb47eba9bda687cab103c8b4c1ec0ac627ea49"
+  },
+  "qualification_evidence": "integration/f-wof/F-WOF34_QUALIFICATION_EVIDENCE.json",
+  "verification": {
+    "workflow": "F-WOF34 accepted-window runtime lineage",
+    "run_id": 34312699703,
+    "job_id": 102342447969,
+    "head_sha": "85c0f7838d56c63d49f16af8242bdf4cbe4219d9",
+    "conclusion": "success",
+    "G01_G15_reconciled": true,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_identity": "PASS",
+    "F_WOF33_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": ["src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"],
+    "crop_kernel_transaction_knowledge_added": false,
+    "F_KT_commit_authority_changed": false,
+    "persistent_solver_scratch_added": false,
+    "calendar_midnight_dependency_added": false,
+    "file_IO_dependency_added": false
+  },
+  "qualified_contract": {
+    "trial_integrals": "worker/job-local scratch only",
+    "admission": "only after an F-KT commit-derived certificate matches lineage, revision and exact interval",
+    "rejected_trials": "zero contribution to accepted aggregates",
+    "window_coverage": "contiguous accepted intervals only, bounded by the explicit generic crop-window end",
+    "aggregate_carrier": "frozen wofost_accepted_window_aggregates_t compatible with the F-WOF33 consumer seam",
+    "prepare": "read-only and replayable before delivery commit",
+    "delivery": "provenance-bound exactly-once commit"
+  },
+  "not_qualified": [
+    "actual Richards/root/ET production substep binding",
+    "full restart ownership of active accepted windows",
+    "distributed active-window ownership",
+    "calendar scheduler",
+    "historical multi-day B1.10 crop equivalence",
+    "oxygen IALPWET aggregate",
+    "nutrients",
+    "soybean",
+    "grass",
+    "potential crop"
+  ],
+  "canonical_handoff": {
+    "canonical_branch_observed": "integration/f-ci-canonical",
+    "canonical_head_observed": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "canonical_label": "DIVERGED_SHARED_OWNER_REQUIRES_SEPARATE_COMPOSITION",
+    "direct_production_path_overlap": [],
+    "shared_owner_or_dependency_overlap": true,
+    "blind_merge_allowed": false,
+    "required_next": "open a separate composition branch from the current canonical head, transplant only the qualified F-WOF34 seam/evidence as appropriate, reconcile current F-KT/runtime owners, then run composed regression before any canonical promotion"
+  },
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
+}
