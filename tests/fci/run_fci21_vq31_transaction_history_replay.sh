@@ -133,13 +133,9 @@ for path in "${OVERLAY[@]}"; do
 done
 chmod +x tests/fvq/run_fvq31_disjoint_transaction_composition.sh tests/fkt/run_fkt10_*.sh tests/fsi/run_fsi25_*.sh
 
-# VQ31 predates the later qualified KT11 budget/certificate materialization and
-# the MR18 accepted-commit receipt dependency. Adapt only the replay harness:
-# - replace the obsolete blanket 'certificate can never be available' source
-#   assertion by an explicit budget-gated source assertion;
-# - add the current receipt module to historical MultiSWAP compile lists.
-# No production source, fixture, matrix, formula, tolerance or numerical criterion
-# is changed.
+# VQ31 predates later qualified materializations. Adapt only historical replay
+# guards to the already locked F-CI21 postimage. No production source, fixture,
+# matrix, formula, tolerance or numerical criterion is changed.
 python3 - <<'PY'
 from pathlib import Path
 
@@ -184,8 +180,24 @@ for path in (
         '  src/runtime/mod_fmr_serialized_reference_backend.f90\n  src/runtime/mod_fmr_serialized_multiswap_runtime.f90',
         '  src/runtime/mod_fmr_serialized_reference_backend.f90\n  src/runtime/mod_fmr_accepted_commit_receipt.f90\n  src/runtime/mod_fmr_serialized_multiswap_runtime.f90')
 
+# F-SI25 was historically source-branch-qualified by ancestry. F-CI21 is a
+# materialized postimage, so replay identity is established by the outer F-CI21
+# source/postimage locks plus the exact frozen contract/oracle blobs instead.
+si25='tests/fsi/run_fsi25_reference_indicator_production_seam.sh'
+replace_one(
+    si25,
+    'git merge-base --is-ancestor "$CONTRACT_COMMIT" HEAD || fail \'contract commit not in branch history\'',
+    '[[ "$(git rev-parse HEAD:$CONTRACT)" == 22ad2c9168af6db527e1a3da5488d8ec12305f1c ]] || fail \'F-SI25 contract overlay drift\'\necho \'FSI25_FCI21_MATERIALIZED_CONTRACT_IDENTITY=PASS\'',
+)
+replace_one(
+    si25,
+    'git diff --quiet "$BASE" -- \\\n  src/legacy/b1_10_port/headcalc.f90 \\\n  src/runtime/mod_a23bu_worker_execution_context.f90 \\\n  src/solver/mod_reference_richards_workspace.f90 \\\n  src/solver/mod_b110_default_mvg_provider.f90 \\\n  src/solver/mod_b110_source_sink_provider.f90 \\\n  || fail \'forbidden production source drift\'',
+    '[[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == fe8f87d11257d4c6bc019f1d628ac41ba3106d4e ]] || fail \'F-CI21 indicator postimage drift\'\necho \'FSI25_FCI21_MATERIALIZED_SOURCE_IDENTITY=PASS\'',
+)
+
 print('FCI21_VQ31_POST_KT11_BUDGET_GUARD_ADAPTATION=PASS_TEST_ONLY')
 print('FCI21_VQ31_MR18_RECEIPT_COMPILE_ADAPTATION=PASS_TEST_ONLY')
+print('FCI21_VQ31_SI25_MATERIALIZED_LINEAGE_ADAPTATION=PASS_TEST_ONLY')
 PY
 
 git config user.name 'F-CI21 qualification overlay'
