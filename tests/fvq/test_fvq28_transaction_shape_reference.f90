@@ -92,6 +92,8 @@ contains
     real(real64) :: heads(numnod), water(numnod), conductivity(numnod), capacity(numnod), dkdh(numnod)
     real(real64) :: k0, hbot, mass1, mass2, massref, sol1, sol2, solref, dhead, e2h
     integer :: nit1, nit2, nitref, nb1, nb2, nbref, k
+    integer :: failstep1, failstep2, failstepref, status1, status2, statusref
+    logical :: ok1, ok2, okref
 
     call bind_b110_default_mvg_provider(cp, hp, horizon)
     heads = h0
@@ -105,19 +107,37 @@ contains
     initial%pressure_head=heads; initial%water_content=water
     initial%ponding_depth=0.0_real64; initial%groundwater_level=-2.0_real64
 
-    call run_trajectory(1,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,full_ep,mass1,sol1,nit1,nb1)
-    call run_trajectory(2,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,half_ep,mass2,sol2,nit2,nb2)
-    call run_trajectory(nref,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,ref_ep,massref,solref,nitref,nbref)
-    dhead=maxval(abs(full_ep%pressure_head-half_ep%pressure_head))
-    e2h=maxval(abs(half_ep%pressure_head-ref_ep%pressure_head))
-    write(*,'(A,I0,A,I0,A,I0,A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,I0,A,I0)') &
-         'FVQ28B_REF:CASE=',cid,':STATE=',state_id,':JUMP_ID=',jump_id,':ATTEMPT=',attempt_id, &
-         ':DT=',horizon,':DHEAD=',dhead,':E2=',e2h,':MAX_MASS=',max(mass1,mass2,massref), &
-         ':MAX_SOLVER_RES=',max(sol1,sol2,solref),':H0=',h0,':MAX_NITER=',max(nit1,nit2,nitref), &
-         ':MAX_NBACK=',max(nb1,nb2,nbref)
+    call run_trajectory(1,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,full_ep,mass1,sol1,nit1,nb1,ok1,failstep1,status1)
+    call run_trajectory(2,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,half_ep,mass2,sol2,nit2,nb2,ok2,failstep2,status2)
+    call run_trajectory(nref,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,ref_ep,massref,solref,nitref,nbref,okref,failstepref,statusref)
+
+    if (ok1 .and. ok2) then
+      dhead=maxval(abs(full_ep%pressure_head-half_ep%pressure_head))
+    else
+      dhead=-1.0_real64
+    end if
+    if (ok2 .and. okref) then
+      e2h=maxval(abs(half_ep%pressure_head-ref_ep%pressure_head))
+    else
+      e2h=-1.0_real64
+    end if
+
+    if (ok1 .and. ok2 .and. okref) then
+      write(*,'(A,I0,A,I0,A,I0,A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,I0,A,I0)') &
+           'FVQ28B_REF_OK:CASE=',cid,':STATE=',state_id,':JUMP_ID=',jump_id,':ATTEMPT=',attempt_id, &
+           ':DT=',horizon,':DHEAD=',dhead,':E2=',e2h,':MAX_MASS=',max(mass1,mass2,massref), &
+           ':MAX_SOLVER_RES=',max(sol1,sol2,solref),':H0=',h0,':MAX_NITER=',max(nit1,nit2,nitref), &
+           ':MAX_NBACK=',max(nb1,nb2,nbref)
+    else
+      write(*,'(A,I0,A,I0,A,I0,A,I0,A,ES26.17E3,A,ES26.17E3,A,L1,A,L1,A,L1,A,I0,A,I0,A,I0,A,I0,A,I0,A,I0,A,ES26.17E3)') &
+           'FVQ28B_REF_UNAVAILABLE:CASE=',cid,':STATE=',state_id,':JUMP_ID=',jump_id,':ATTEMPT=',attempt_id, &
+           ':DT=',horizon,':DHEAD=',dhead,':FULL_OK=',ok1,':HALF_OK=',ok2,':REF_OK=',okref, &
+           ':FULL_FAIL_STEP=',failstep1,':FULL_STATUS=',status1,':HALF_FAIL_STEP=',failstep2,':HALF_STATUS=',status2, &
+           ':REF_FAIL_STEP=',failstepref,':REF_STATUS=',statusref,':MAX_MASS=',max(mass1,mass2,massref)
+    end if
   end subroutine characterize_attempt
 
-  subroutine run_trajectory(ns,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,endpoint,max_mass,max_solver,max_niter,max_nback)
+  subroutine run_trajectory(ns,horizon,h0,hbot,k0,p,hp,cp,sp,tp,s,ws,initial,endpoint,max_mass,max_solver,max_niter,max_nback,ok,fail_step,fail_status)
     integer, intent(in) :: ns
     real(real64), intent(in) :: horizon,h0,hbot,k0
     type(soil_water_parameter_set_t), target, intent(in) :: p
@@ -130,15 +150,23 @@ contains
     type(soil_water_physical_state_t), intent(in) :: initial
     type(soil_water_physical_state_t), intent(out) :: endpoint
     real(real64), intent(out) :: max_mass,max_solver
-    integer, intent(out) :: max_niter,max_nback
+    integer, intent(out) :: max_niter,max_nback,fail_step,fail_status
+    logical, intent(out) :: ok
     type(soil_water_physical_state_t) :: state
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: result
     real(real64) :: subdt,storage0,storage1,total_in,total_out,residual
     integer :: istep
+
     subdt=horizon/real(ns,real64)
-    call require(subdt>=1.0e-6_real64,'reference substep above dtmin')
-    state=initial; max_mass=0.0_real64; max_solver=0.0_real64; max_niter=0; max_nback=0
+    state=initial; endpoint=initial
+    max_mass=0.0_real64; max_solver=0.0_real64; max_niter=0; max_nback=0
+    ok=.false.; fail_step=0; fail_status=0
+    if (subdt < 1.0e-6_real64) then
+      fail_status=-100
+      return
+    end if
+
     do istep=1,ns
       call bind_b110_default_mvg_provider(cp,hp,subdt)
       request=soil_water_solve_request_t()
@@ -158,18 +186,30 @@ contains
       request%evaluation%constitutive=>cp; request%evaluation%source_sink=>sp; request%evaluation%top_boundary=>tp
       storage0=sum(state%water_content*p%dz)+state%ponding_depth
       call s%solve(request,ws,result)
-      call require(result%status==SW_SOLVE_CONVERGED,'same-endpoint reference solve converged')
+      max_niter=max(max_niter,result%diagnostics%nonlinear_iterations)
+      max_nback=max(max_nback,result%diagnostics%backtracking_attempts)
+      max_solver=max(max_solver,abs(result%unrounded_mass_balance_residual))
+      if (result%status /= SW_SOLVE_CONVERGED) then
+        fail_step=istep
+        fail_status=result%status
+        endpoint=state
+        return
+      end if
       storage1=sum(result%candidate_state%water_content*p%dz)+result%candidate_state%ponding_depth
       total_in=max(0.0_real64,-result%top_flux)*subdt+max(0.0_real64,result%bottom_flux)*subdt
       total_out=max(0.0_real64,result%top_flux)*subdt+max(0.0_real64,-result%bottom_flux)*subdt
       residual=storage1-storage0-(total_in-total_out)
-      max_mass=max(max_mass,abs(residual)); max_solver=max(max_solver,abs(result%unrounded_mass_balance_residual))
-      max_niter=max(max_niter,result%diagnostics%nonlinear_iterations)
-      max_nback=max(max_nback,result%diagnostics%backtracking_attempts)
-      call require(abs(residual)<=hard_mass_gate,'hard same-endpoint reference mass gate')
+      max_mass=max(max_mass,abs(residual))
+      if (abs(residual)>hard_mass_gate) then
+        fail_step=istep
+        fail_status=-200
+        endpoint=state
+        return
+      end if
       state=result%candidate_state
     end do
     endpoint=state
+    ok=.true.
   end subroutine run_trajectory
 
   subroutine require(condition,label)
