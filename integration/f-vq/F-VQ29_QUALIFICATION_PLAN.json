@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ29",
+  "title": "Richards Fixed-Horizon Error-Bound Estimator Qualification",
+  "branch": "qualification/f-vq29-richards-fixed-horizon-error-bound",
+  "base_commit": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+  "owner_input": {
+    "F_SI22_status": "QUALIFIED_FIXED_HORIZON_REFINEMENT_OWNER_OBSERVABLE_NUMERIC_ERROR_BOUND_PROFILE_REQUIRED",
+    "F_SI22_gate_A_run": 34310854032,
+    "F_KT09_status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+    "F_KT09_qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec"
+  },
+  "purpose": "Determine whether same-horizon Richards endpoint defects can be converted into a conservative dimensional upper bound on remaining endpoint head error. This work unit does not choose an application/scientific temporal tolerance and does not admit production use.",
+  "mathematical_candidate": {
+    "endpoint_family": "x_N is the Richards endpoint state obtained over the same physical [t0,t1] using N equal internal substeps",
+    "defect": "d_N = max_i abs(h_N(i)-h_2N(i))",
+    "contraction_ratio": "q_N = d_2N/d_N when both defects are above the numerical floor",
+    "candidate_global_cap": "q_cap is derived only from the frozen calibration matrix as the maximum resolved q_N at and beyond a candidate minimum refinement depth Nmin",
+    "two_trajectory_bound_target": "For x_2N, B_2N = q_cap/(1-q_cap) * d_N, conditional on the independently tested profile assumption that every future defect contracts by no more than q_cap.",
+    "qualification_test": "B_2N must upper-bound the observed max-head error of x_2N against a much finer same-horizon finite reference for every calibration and held-out case, while all future resolved q values also remain <= q_cap.",
+    "not_claimed": [
+      "Nref is an exact analytical solution",
+      "geometric contraction is a theorem for Richards flow",
+      "q_cap is universal outside the frozen profile",
+      "B_2N is a scientific/application acceptance tolerance"
+    ]
+  },
+  "frozen_numerics": {
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "nested_steps": [1,2,4,8,16,32,64,128,256,512,1024,2048],
+    "finite_reference_steps": 2048,
+    "machine_floor_rule": "128*epsilon*max(1,abs(h0),abs(hbot))"
+  },
+  "gate_A_calibration": {
+    "role": "derive candidate Nmin and q_cap only",
+    "initial_heads_cm": [-25.0,-40.0,-55.0,-75.0,-110.0,-160.0,-210.0,-250.0,-320.0],
+    "bottom_head_jumps_cm": [-0.05,0.05],
+    "horizons_day": [0.125,0.25,0.5],
+    "case_count": 54,
+    "states_are_previously_observed": true,
+    "selection_rule": "For each candidate Nmin in [1,2,4,8,16,32,64], derive q_cap as the maximum resolved future contraction ratio over all calibration cases from Nmin onward. The first Nmin with finite q_cap<1 and conservative B_2N for every calibration case is the sole Gate B candidate. No rounding, safety factor or manually chosen margin may be added."
+  },
+  "gate_B_held_out": {
+    "role": "independent falsification of the frozen Gate A Nmin and q_cap",
+    "initial_heads_cm": [-35.0,-65.0,-95.0,-135.0,-185.0,-230.0,-285.0,-360.0],
+    "bottom_head_jumps_cm": [-0.025,0.025],
+    "horizons_day": [0.1875,0.375],
+    "case_count": 32,
+    "states_previously_used_in_FSI20_FSI22_FVQ28": false,
+    "horizons_previously_used_in_FSI20_FSI22_FVQ28": false,
+    "frozen_before_gate_A_execution": true,
+    "pass_conditions": [
+      "all trajectories required for the test converge",
+      "hard mass gate passes for every trajectory",
+      "every resolved future q_N at and beyond frozen Nmin is <= frozen q_cap",
+      "B_2N computed only from d_N and frozen q_cap is >= observed max-head error of x_2N against N=2048 reference for every case",
+      "no held-out-dependent adjustment of Nmin, q_cap, matrix or formula"
+    ]
+  },
+  "finite_reference_controls": {
+    "primary_reference": 2048,
+    "tail_diagnostic": "also report max-head difference x_1024 versus x_2048",
+    "interpretation": "Held-out bound pass is relative to a finite same-horizon reference. If the reference-tail diagnostic is not small enough relative to the candidate bound or observed remaining error, qualification must remain conditional or fail closed rather than treating N=2048 as exact."
+  },
+  "cost_boundary": {
+    "full_1_to_2048_ladder_is_characterization_only": true,
+    "production_candidate_if_bound_qualifies": "two same-horizon trajectories at Nmin and 2*Nmin are sufficient to evaluate B_2N if the frozen contraction profile itself is admitted later",
+    "production_cost_qualified_here": false,
+    "invariant_15_and_24_followup_required": true
+  },
+  "hard_holds": {
+    "production_source_modified": false,
+    "physics_changed": false,
+    "mass_tolerance_relaxed": false,
+    "scientific_temporal_tolerance_selected": false,
+    "nonlinear_solver_tolerance_reinterpreted_as_temporal_tolerance": false,
+    "held_out_matrix_changed_after_gate_A": false,
+    "manual_q_margin_added": false,
+    "universal_richardson_order_assumed": false,
+    "reference_mode_removed": false
+  },
+  "possible_outcomes": [
+    "QUALIFIED_RESTRICTED_FIXED_HORIZON_GEOMETRIC_ERROR_BOUND_PROFILE",
+    "CALIBRATION_SUPPORTED_HELDOUT_REJECTED",
+    "NO_CONSERVATIVE_GEOMETRIC_BOUND_FROM_FROZEN_PROFILE",
+    "FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION"
+  ],
+  "production_richards_certificate_admitted": false,
+  "application_temporal_tolerance_selected": false
+}
