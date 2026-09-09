@@ -1,4 +1,4 @@
-program test_fkt10_temporal_history_transaction
+module mod_fkt10_temporal_history_test_model
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t, &
        transaction_result_t, trial_outcome_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
@@ -6,6 +6,7 @@ program test_fkt10_temporal_history_transaction
        TX_TEMPORAL_MODEL_CERTIFICATE, TX_MASS_MISSING_NONE
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   implicit none
+  private
 
   type, extends(transaction_state_t) :: history_state_t
     real(real64) :: storage_value = 0.0_real64
@@ -24,15 +25,18 @@ program test_fkt10_temporal_history_transaction
     procedure :: storage_accounting_status => history_storage_status
   end type history_model_t
 
-  call test_clone_isolation()
-  call test_temporal_reject_retry()
-  call test_solver_reject_retry()
-  call test_mass_reject_retry()
-  call test_model_certificate_fail_closed()
-  call test_A_B_A_no_history_leakage()
-  write(*,'(A)') 'FKT10_TEMPORAL_HISTORY_TRANSACTION PASS'
+  public :: run_fkt10_temporal_history_tests
 
 contains
+
+  subroutine run_fkt10_temporal_history_tests()
+    call test_clone_isolation()
+    call test_temporal_reject_retry()
+    call test_solver_reject_retry()
+    call test_mass_reject_retry()
+    call test_model_certificate_fail_closed()
+    call test_A_B_A_no_history_leakage()
+  end subroutine run_fkt10_temporal_history_tests
 
   subroutine history_state_clone(self, copy)
     class(history_state_t), intent(in) :: self
@@ -274,4 +278,11 @@ contains
     end if
   end subroutine require
 
+end module mod_fkt10_temporal_history_test_model
+
+program test_fkt10_temporal_history_transaction
+  use mod_fkt10_temporal_history_test_model, only: run_fkt10_temporal_history_tests
+  implicit none
+  call run_fkt10_temporal_history_tests()
+  write(*,'(A)') 'FKT10_TEMPORAL_HISTORY_TRANSACTION PASS'
 end program test_fkt10_temporal_history_transaction
