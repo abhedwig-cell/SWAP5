@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Hydraulic Timescale and Retry-Translation Mechanism Characterization",
+  "branch": "work/f-si21-hydraulic-timescale-retry-translation",
+  "status": "IN_PROGRESS_GATE_A_PLAN_PERSISTED",
+  "phase": "INITIAL_STATE_HYDRAULIC_DESCRIPTOR_GATE",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "plan": "integration/f-si/F-SI21_WORK_UNIT_PLAN.json",
+  "state": {
+    "plan_persisted": true,
+    "frozen_matrix_reused": true,
+    "gate_A_implemented": false,
+    "gate_A_tested": false,
+    "gate_A_classified": false,
+    "dynamic_gate_B_allowed": false,
+    "production_source_modified": false,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "normalization_selected": false,
+    "owner_qualified": false
+  },
+  "holds": {
+    "F_GC02_release": "NOT_ALLOWED",
+    "F_PE_release": "NOT_ALLOWED",
+    "production_temporal_metric": "NOT_SELECTED",
+    "production_temporal_tolerance": "NOT_SELECTED",
+    "retry_policy_change": "NOT_ALLOWED",
+    "solver_policy_change": "NOT_ALLOWED",
+    "mass_gate_relaxation": "NOT_ALLOWED"
+  },
+  "next_action": "Implement test-only Gate A using production K(h) and C(h) evaluation at the committed T0 states, compute K/C and C*L^2/K descriptors for the three actual retry horizons, and compare them against the frozen F-VQ28 C/U/X patterns without fitting a threshold."
+}
