@@ -1,0 +1,28 @@
+name: F-VQ29 Richards fixed-horizon error-bound qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq29-richards-fixed-horizon-error-bound
+    paths:
+      - 'integration/f-vq/F-VQ29_QUALIFICATION_PLAN.json'
+      - 'tests/fvq/run_fvq29_calibration_error_bound.sh'
+      - 'tests/fsi/test_fsi20_fixed_horizon_reference.f90'
+      - 'tests/fsi/fsi04_real_headcalc_stubs.f90'
+      - '.github/workflows/fvq29-richards-error-bound.yml'
+  workflow_dispatch:
+
+jobs:
+  calibration:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-VQ29 Gate A calibration
+        run: bash tests/fvq/run_fvq29_calibration_error_bound.sh
