@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI21",
+  "evidence_type": "postimage_preservation_qualification",
+  "tested_head": "34aaf93ad6478aab85141eee87b62faa9d9f390d",
+  "base_spine": "ed0219402072f121856d82cb6068ab74c70f34d1",
+  "preservation_workflow": {
+    "run_id": 34399614087,
+    "conclusion": "success",
+    "jobs": {
+      "wof42_crop_persistence": {
+        "job_id": 102627950020,
+        "conclusion": "success"
+      },
+      "mr18_accepted_commit_receipt": {
+        "job_id": 102627949986,
+        "conclusion": "success"
+      },
+      "mr18_multiswap_receipt": {
+        "job_id": 102627949768,
+        "conclusion": "success"
+      }
+    }
+  },
+  "same_head_materialization_workflow": {
+    "run_id": 34399614024,
+    "job_id": 102627949353,
+    "conclusion": "success",
+    "markers": [
+      "FCI21_SOURCE_BLOB_LOCK=PASS",
+      "FCI21_TEMPORAL_ARCHITECTURE_SOURCE_GUARD=PASS",
+      "FCI21_PRODUCTION_SCOPE_GUARD=PASS",
+      "FCI21_TEMPORAL_COMPILE_O0=PASS",
+      "FCI21_TEMPORAL_COMPILE_O2=PASS",
+      "FCI21_TEMPORAL_MATERIALIZATION_GATE PASS"
+    ]
+  },
+  "production_scope": {
+    "changed_src_paths_relative_to_WOF42": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90"
+    ],
+    "exact_eight_path_delta": true,
+    "production_source_changed_by_preservation_replay": false
+  },
+  "F_WOF42_preservation": {
+    "historical_qualified_runner_blob": "a20d69e9d0274c824d01102a223b97d1754d3010",
+    "runner_executed_unchanged": true,
+    "direct_valid_layouts_exact": 7,
+    "invalid_layouts_fail_closed": 6,
+    "direct_production_persistence_all_layouts": "PASS",
+    "zero_length_cohort_canonicalization": "QUALIFIED_SEMANTIC_EQUIVALENCE",
+    "inactive_optional_state_minimality": "PASS",
+    "absent_evolution_and_B110_payload_bodies": "PASS",
+    "external_representation_O0_O2_identity": "PASS",
+    "nested_preservation": {
+      "F_WOF38_atomic_crop_transaction": "PASS",
+      "F_WOF39_lifecycle_retirement": "PASS",
+      "F_WOF40_fresh_process_reconstruction": "PASS",
+      "F_WOF41_production_owner_persistence": "PASS",
+      "continuous_vs_process_restart_endpoint_exact": "PASS",
+      "retired_accepted_window_not_persisted": "PASS"
+    },
+    "final_marker": "FWOF42_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_GATE PASS"
+  },
+  "F_MR18_authority_locks": {
+    "accepted_commit_receipt_module_blob": "6798b3296b426950bf028814585c3f5de9be950b",
+    "serialized_multiswap_runtime_blob": "6559237c887e9a8476beb479546becdfe9339920",
+    "standalone_runner_blob": "21363a2e30e30a7e2803b0f0ead72f2890674b4f",
+    "multiswap_runner_blob": "729b5e679420f7e7e3badb3f092c029f3b5992c6",
+    "production_blobs_exact": true
+  },
+  "F_MR18_accepted_commit_receipt_preservation": {
+    "generic_no_domain_imports": "PASS",
+    "receipt_module_allocation_free": "PASS",
+    "real_FKT_commit_creates_exact_receipt": "PASS",
+    "commit_rejection_emits_no_receipt": "PASS",
+    "expected_receipt_failures_precede_physical_commit": "PASS",
+    "prevalidation_rejection_nonmutating_and_replayable": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "F_WOF34_exact_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "final_marker": "FMR18_ACCEPTED_COMMIT_RECEIPT_GATE PASS"
+  },
+  "F_MR18_multiswap_preservation": {
+    "generic_runtime_boundary": "PASS",
+    "no_per_column_receipt_state": "PASS",
+    "no_receipt_commit_route_retained": "PASS",
+    "receipt_request_prevalidation_precedes_backend": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "sparse_requested_receipts_exact": "PASS",
+    "no_receipt_route_physical_and_mass_identity": "PASS",
+    "A_B_A_receipt_replay": "PASS",
+    "rejected_requested_column_emits_no_receipt": "PASS",
+    "invalid_sparse_requests_fail_before_state_mutation": "PASS",
+    "F_WOF34_exact_transcript_sha256": "d36bb86e5e2dfd3fde242321442cf7393efd3cd218259eeeb35c37cb1559d007",
+    "current_F_CI21_composition_preservation": "PASS",
+    "final_marker": "FMR18_MULTISWAP_RECEIPT_GATE PASS"
+  },
+  "materialization_translation_policy": {
+    "historical_base_to_HEAD_delta_guards_reused_as_current_evidence": false,
+    "historical_nested_F_CI19_lineage_reused_as_current_evidence": false,
+    "translated_only_obsolete_lineage_and_compile_dependency_scaffolding": true,
+    "behavioral_oracles_modified": false,
+    "scientific_or_transaction_oracles_modified": false,
+    "current_F_CI21_source_compile_gate_substituted_for_historical_nested_F_CI19": true
+  },
+  "intermediate_failures": [
+    {
+      "class": "test_harness_compile_dependency_closure",
+      "cause": "historical Gate C compile list omitted the now-required temporal-indicator dependency of the legacy binding",
+      "runtime_oracle_started": false,
+      "production_source_changed": false
+    },
+    {
+      "class": "test_harness_compile_dependency_closure",
+      "cause": "historical Gate C compile list omitted the now-required transaction-owned temporal-history dependency of the serialized reference backend",
+      "runtime_oracle_started": false,
+      "production_source_changed": false
+    }
+  ],
+  "architecture_invariants_checked": [1,2,3,4,5,7,8,9,13,16,23,26,27,29,30],
+  "architecture_result": {
+    "single_kernel_preserved": true,
+    "kernel_io_separation_preserved": true,
+    "compact_feature_scoped_state_preserved": true,
+    "transactional_commit_rollback_preserved": true,
+    "generic_time_preserved": true,
+    "mass_conservation_preserved": true,
+    "multiswap_sparse_routing_preserved": true,
+    "receipt_state_not_added_per_column": true,
+    "physics_solver_policy_separation_preserved": true,
+    "diagnostic_visibility_preserved": true,
+    "no_silent_dependency_assumption_introduced": true
+  },
+  "decision": "PASS_F_WOF42_AND_F_MR18_POSTIMAGE_PRESERVATION_ON_F_CI21"
+}
