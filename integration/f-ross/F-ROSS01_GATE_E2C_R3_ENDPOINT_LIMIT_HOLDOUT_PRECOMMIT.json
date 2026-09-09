@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R3_ENDPOINT_LIMIT_WITH_INDEPENDENT_HOLDOUT",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "E2C-R2 reduced bracket failures from 196 to 28 while all valid-probe accuracy and cost metrics passed",
+    "E2C-R2B showed no robust single fixed clustering exponent and localized all 28 residual reference roots within 4.54e-12 relative of K(h_above)"
+  ],
+  "candidate": {
+    "id": "R2_PLUS_EXPLICIT_Q_ABOVE_K_ENDPOINT_LIMIT",
+    "normal_path": "exactly E2C-R2 endpoint-clustered segmented local face solve",
+    "endpoint_limit_trigger": "only when R2 raises its explicit bracket_failure on the h_below<h_above branch corresponding to q>K(h_above)",
+    "endpoint_limit_value": "q = K(h_above)",
+    "all_other_failures": "fail closed",
+    "broad_path_segmentation": "unchanged R1/R2 quarter-decade segmentation",
+    "quadrature": "unchanged R2 GL8 with first-segment t^8 mapping",
+    "root_solver": "unchanged 64 fixed bisection updates on normal path",
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66,
+    "persistent_per_column_state_bytes": 0,
+    "scratch_owner": "worker",
+    "material_specific_policy": false
+  },
+  "materials": ["B12","O13","B01","O14"],
+  "probes": {
+    "retain_all_legacy_E2C_R2_probes": true,
+    "independent_new_sobol_holdout_per_material": 1024,
+    "holdout_seed_family": "F-ROSS01-E2C-R3-INDEPENDENT-HOLDOUT",
+    "holdout_wet_head_cm": [-1.0,1.0],
+    "holdout_dry_head_cm": [-10000.0,-1.0],
+    "holdout_generated_before_execution": true,
+    "no_probe_removal_after_results": true
+  },
+  "frozen_metrics": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "nonfinite_count": 0,
+    "unresolved_failure_count": 0,
+    "face_balance_antisymmetry_scaled_max": 1e-10,
+    "equal_head_relative_max": 1e-12,
+    "hydrostatic_abs_q_over_ksatfit_max": 1e-12,
+    "endpoint_limit_max_hybrid_metric": 0.002,
+    "endpoint_limit_max_abs_error_over_ksatfit": 0.0005,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "required_reports": [
+    "legacy and independent holdout probe counts separately",
+    "endpoint-limit route count separately for legacy and independent holdout probes",
+    "max endpoint-limit hybrid and abs/Ksat error",
+    "max reference relative gap |q_ref-K(h_above)|/K(h_above) on endpoint-limit route",
+    "normal R2 route metrics",
+    "unresolved failure classes",
+    "all cost bounds"
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_BOUNDED_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE",
+    "fail": "ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_nonclaims": [
+    "PASS does not admit R3 as the normal RossFast production face path.",
+    "PASS does not qualify a saturation-transition timestep or column.",
+    "PASS does not qualify response tangents across the endpoint-limit branch.",
+    "PASS does not qualify runtime or MultiSWAP throughput."
+  ],
+  "hard_guards": [
+    "The endpoint limit may not trigger on arbitrary errors or other bracket branches.",
+    "No R2 quadrature, segmentation, thresholds or cost bounds are retuned.",
+    "The new independent holdout is mandatory; the known 28 failures cannot self-qualify the branch.",
+    "All earlier negative evidence remains preserved.",
+    "The precomputed near-saturation table route remains closed."
+  ],
+  "relevant_invariants": [5,7,13,15,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
