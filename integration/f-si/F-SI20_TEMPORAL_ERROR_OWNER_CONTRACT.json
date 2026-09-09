@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "contract": "MODEL_OWNED_RICHARDS_TEMPORAL_ERROR_READINESS_V1",
+  "purpose": "Determine and qualify scientifically defensible Richards-specific temporal-error semantics for physically evolving candidate states before any runtime acceptance expansion.",
+  "base": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+  "upstream_handoff": {
+    "fmr16_owner_handoff": "26dca61a2459de5c592700ce8d80079510814717",
+    "fmr16_interpretation": "428385a2289267b3e9c4b4e5c4db2a70cd9c11ca",
+    "fmr16_invariant_audit": "d60046f985382404e5c15b3ee6d3b8ab4e938440"
+  },
+  "ownership": {
+    "F_SI_owns": [
+      "Richards/model-specific temporal observable semantics",
+      "units and tolerance meaning of the model-owned temporal signal",
+      "solver-tolerance separation evidence",
+      "conditional inclusion or exclusion of Richards-owned physical state components"
+    ],
+    "F_MR_owns_afterward": [
+      "runtime binding of the admitted model-owned signal",
+      "composition into the existing F-KT scalar temporal acceptance seam"
+    ],
+    "F_KT_owns_unchanged": [
+      "checkpoint",
+      "trial/retry",
+      "rollback",
+      "commit",
+      "generic scalar acceptance temporal_error <= temporal_tolerance"
+    ],
+    "F_GC_owns_unchanged": [
+      "predictor/corrector orchestration",
+      "groundwater interface residuals",
+      "coupling commit decision"
+    ]
+  },
+  "scientific_rules": {
+    "no_metric_from_binary_identity": true,
+    "no_arbitrary_cross_unit_scalarization": true,
+    "no_hidden_state_magnitude_normalization": true,
+    "mass_gate_remains_separate_and_absolute": true,
+    "formal_order_must_not_be_assumed_from_code_shape": true,
+    "nonlinear_stopping_error_must_be_separated_from_temporal_signal": true,
+    "nonmonotone_dt_behavior_is_evidence_not_automatic_failure": true,
+    "generic_t0_t1_required": true
+  },
+  "candidate_observables_to_characterize_not_yet_admit": [
+    "max_i abs(h_full-h_two_half)",
+    "nodewise h_full-h_two_half",
+    "max_i abs(theta_full-theta_two_half)",
+    "nodewise theta_full-theta_two_half",
+    "sum_i dz_i*(theta_full-theta_two_half)",
+    "ponding_full-ponding_two_half",
+    "groundwater_full-groundwater_two_half"
+  ],
+  "first_owner_probe": {
+    "provenance": "exact F-GC02 nonstationary prescribed-head predictor",
+    "bottom_mode": 5,
+    "initial_head_cm": -75.0,
+    "candidate_bottom_head_cm": -74.99,
+    "top_boundary": "same stationary zero-source physical setup used by F-GC02",
+    "window": "generic non-midnight [4100.125,4100.375] and dt submultiples",
+    "optional_physics": "inactive",
+    "purpose": "measure why the coupling predictor cannot satisfy the current binary temporal contract and whether a reproducible temporal regime exists independent of nonlinear stopping tolerance"
+  },
+  "qualification_before_implementation": {
+    "required": [
+      "extended dt ladder beyond three points where numerically possible",
+      "at least two stricter nonlinear tolerance settings with unchanged physical stimulus",
+      "nodewise and integrated state-difference evidence",
+      "O0/O2 identity or an explicitly explained compiler-sensitivity finding",
+      "repeat determinism",
+      "source lock to the qualified F-VQ27 production postimage",
+      "explicit statement whether an asymptotic regime is demonstrated",
+      "explicit decision on pressure head, theta/storage, ponding, groundwater and optional state semantics"
+    ],
+    "forbidden": [
+      "select a production tolerance merely because the F-GC02 predictor then passes",
+      "reuse mass tolerance as temporal tolerance",
+      "change HeadCalc physics",
+      "change F-KT transaction semantics",
+      "claim groundwater coupling admission from F-SI20 alone"
+    ]
+  },
+  "exit_options": {
+    "A": "OWNER_QUALIFIED_MODEL_TEMPORAL_METRIC_READY_FOR_FMR_COMPOSITION",
+    "B": "MORE_SOURCE_THEORY_OR_NUMERICAL_EVIDENCE_REQUIRED",
+    "C": "CURRENT_STEP_DOUBLING_SEAM_NOT_SCIENTIFICALLY_USABLE_FOR_RICHARDS_TEMPORAL_ACCEPTANCE"
+  }
+}
