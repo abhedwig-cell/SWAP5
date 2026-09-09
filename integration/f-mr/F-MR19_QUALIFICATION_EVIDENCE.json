@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR19",
+  "title": "Restricted MultiSWAP Committed-Boundary Process Restart Qualification Evidence",
+  "candidate": {
+    "head": "d2b3aeeacf5f4c087c9afe0088ad6a77c956be1a",
+    "branch": "work/f-mr19-restricted-multiswap-process-restart",
+    "production_source": "src/runtime/mod_fmr_committed_restart.f90",
+    "test": "tests/fmr/test_fmr19_process_restart.f90",
+    "gate": "tests/fmr/run_fmr19_process_restart_gate.sh",
+    "contract": "integration/f-mr/F-MR19_RESTART_CONTRACT.json"
+  },
+  "github_actions": {
+    "workflow": "F-MR19 committed-boundary process restart",
+    "workflow_file": ".github/workflows/fmr19-process-restart.yml",
+    "run_id": 34390153521,
+    "job_id": 102596200153,
+    "head_sha": "d2b3aeeacf5f4c087c9afe0088ad6a77c956be1a",
+    "conclusion": "success",
+    "completed_at": "2026-09-09T18:37:51Z"
+  },
+  "compiler_matrix": {
+    "gnu_fortran": true,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "batch_matrix": {
+    "1": "PASS",
+    "2": "PASS",
+    "8": "PASS",
+    "17": "PASS",
+    "32": "PASS"
+  },
+  "positive_evidence": {
+    "column_identity": "PASS: restore and result comparison are keyed by logical column_id, not runtime array position",
+    "lineage_revision_time": "PASS: exact restored lineage, midpoint revision and bit-exact committed time are checked per column",
+    "ordering_independent_restore": "PASS: restart records are reversed before restore",
+    "ordering_independent_runtime": "PASS: reconstructed runtime columns are reversed before restore and continuation",
+    "cross_column_contamination": "PASS: columns carry distinct ids, state fingerprints and column-scaled forcing; reversed-order continuation is compared by column_id and against the continuous reference endpoint",
+    "endpoint_identity": "PASS: continuous and restarted committed-state fingerprints and per-column results are identical",
+    "mass_continuation": "PASS: per-column hard mass residual <= 1e-12 and aggregate accepted-interval mass residual is bit-identical between continuous and restarted paths",
+    "deterministic_replay": "PASS: every batch case is executed twice and restart signatures must match",
+    "shared_parameter_identity": "PASS: one bundle-level parameter_set_identity plus compact per-column parameter_ref",
+    "no_parameter_payload_persistence": "PASS: structural source gate rejects parameter payload ownership in restart module/records",
+    "no_solver_scratch_persistence": "PASS: structural source gate rejects worker/Newton/Jacobian/warm-start persistence"
+  },
+  "fail_closed_evidence": {
+    "wrong_parameter_set_identity": "PASS_ATOMIC",
+    "wrong_template_or_layout_identity": "PASS_ATOMIC",
+    "wrong_per_column_parameter_ref": "PASS_ATOMIC",
+    "duplicate_column_id": "PASS_ATOMIC",
+    "fresh_target_only": "implemented by production restore contract and source candidate"
+  },
+  "architecture_scope": {
+    "kernel_source_changed": false,
+    "filesystem_or_file_format_added": false,
+    "kernel_io_added": false,
+    "parallel_real_physics_changed": false,
+    "restart_boundary": "accepted committed boundary only",
+    "runtime": "restricted serialized real-physics MultiSWAP only"
+  },
+  "qualification": {
+    "tested": true,
+    "qualified": true,
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
+    "forbidden_claims_retained": [
+      "general SWAP persistence format",
+      "byte or file serialization qualification",
+      "parallel real-physics restart qualification",
+      "mid-transaction restart",
+      "worker scratch persistence"
+    ],
+    "F_MQ25_created": false
+  }
+}
