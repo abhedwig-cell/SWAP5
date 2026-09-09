@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -61,6 +61,28 @@
       "scope": "Staringreeks 2018 unimodal MvG, KSATFIT, H_ENPR=0, KSATEXM disabled, homogeneous unsaturated 10-cm faces, h=[-10000,-1] cm"
     },
     {
+      "gate": "J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT",
+      "evidence": "F-ROSS01_GATE_J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_CLOSEOUT.json",
+      "decision": "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE",
+      "face_derivative_evidence_commit": "8e808635eb61841826cfccf99c709b158707adab",
+      "column_run": 34358497637,
+      "column_head": "d0a43d2f88a4b939564569075ec7d3f9d98669c1",
+      "boundary_run": 34359202974,
+      "boundary_head": "6f562b0099407f6c265f6d73d2e769788d847f4e",
+      "primary_quantity": "d_h_bottom_d_q_bottom",
+      "primary_units": "day",
+      "q_bottom_sign": "positive downward",
+      "base_cases": 72,
+      "smooth_fd_comparisons": 143,
+      "routed_known_node_crossings": 1,
+      "unexpected_cell_switches": 0,
+      "max_smooth_tangent_metric": 3.419659398931413e-07,
+      "max_scaled_flux_continuity_residual": 2.4437408376474047e-13,
+      "cost_shape": "ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE_NO_SECOND_NONLINEAR_TRAJECTORY",
+      "piecewise_semantics": "strict interpolation-cell interiors qualified; node lines and exact equal-head shortcut are explicit branch boundaries without invented cross-branch smooth tangent",
+      "scope": "C1R base MvG/KSATFIT only; homogeneous unsaturated 10-cm face chain; no groundwater or production admission"
+    },
+    {
       "gate": "C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION",
       "evidence": "F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json",
       "candidate": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
@@ -84,6 +106,23 @@
       "gate": "C1_ORIGINAL_N129_GENERALISATION",
       "status": "FAIL_PRESERVED",
       "reason": "original N129 representation not universal; superseded for the base family by separately qualified C1R N241 without rewriting the original failure"
+    },
+    {
+      "gate": "J1A_INITIAL_BINARY64_FINITE_DIFFERENCE",
+      "status": "FAIL_PRESERVED_ORACLE_LIMITATION",
+      "meaning": "near-zero endpoint derivatives produced cancellation-dominated binary64 symmetric-FD metrics; unchanged perturbations passed a later 80-digit oracle on 6/6 materials, so the failure is retained as oracle-limitation evidence rather than erased"
+    },
+    {
+      "gate": "J1B_INITIAL_COLUMN_RESPONSE",
+      "status": "FAIL_PRESERVED_FIXTURE_AND_REGIME_SWITCH",
+      "evidence": "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json",
+      "meaning": "18 precommitted dry fixtures used h_top=-1000 cm exactly on N241 node 180 and one O01 large-FD oracle crossed node 205; these failures were localized before J1B-R1 qualification"
+    },
+    {
+      "gate": "J1_PIECEWISE_DERIVATIVE_BOUNDARIES",
+      "status": "QUALIFIED_RESTRICTION",
+      "evidence": "F-ROSS01_GATE_J1C_BOUNDARY_DERIVATIVE_CHARACTERIZATION_RESULT.json",
+      "meaning": "tested internal table-node fluxes are continuous but the normal derivative can jump strongly; exact node lines, equal-head branch transitions and head-envelope endpoints do not receive an invented unique smooth tangent"
     },
     {
       "gate": "C2A_EXACT_SWAPP431_KSATEXM_COMPACT_LINE",
@@ -116,29 +155,33 @@
   "admissibility": {
     "matrix": "F-ROSS01_ADMISSIBILITY_MATRIX.json",
     "base_MvG_KSATFIT_face_subscope": "QUALIFIED_FACE_LEVEL_ONLY",
+    "base_MvG_KSATFIT_response_tangent": "QUALIFIED_STRICT_INTERIOR_WITH_EXPLICIT_PIECEWISE_BRANCH_SEMANTICS",
+    "physical_transient_Ross_column": "NOT_YET_QUALIFIED",
+    "groundwater_solver": "NOT_ADMITTED",
     "exact_KSATEXM": "ROSSFAST_NOT_YET_QUALIFIED",
     "legacy_H_ENPR_plus_KSATEXM": "NOT_SUPPORTED_AS_CANONICAL_COMPOSITION",
     "Class_B_HENPR_SVG2006_bridge": "CONSTITUTIVELY_QUALIFIED_FACE_NOT_YET_QUALIFIED"
   },
   "open_gates_for_primary_base_family": [
     "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
-    "E_SATURATION_TRANSITIONS",
     "F_TIMESTEP",
+    "E_SATURATION_TRANSITIONS",
     "G_HETEROGENEOUS_PROFILES",
     "H_BOTTOM_BOUNDARY",
     "I_GROUNDWATER",
-    "J1_REAL_HYDRAULIC_RESPONSE_TANGENT",
     "K_RUNTIME",
     "L_MULTISWAP",
     "M_FULLRICHARDS_QUALIFICATION"
   ],
   "hard_guards": [
-    "Mass conservation remains absolute and is not qualified by a face-only gate.",
+    "Mass conservation remains absolute and is not qualified by a face-only or tangent-only gate.",
     "Numerical policy may not silently change requested physical closure.",
     "Unsupported or unqualified hydraulic combinations must fail closed to an explicitly qualified solver route.",
-    "No groundwater or MultiSWAP production promotion follows from current evidence.",
-    "Class-B near-saturation research must not delay qualification of the already face-qualified base family."
+    "J1 response-tangent qualification is not groundwater, MODFLOW, runtime, MultiSWAP or production admission.",
+    "Internal table-node lines and exact equal-head branch transitions do not have an invented unique cross-branch smooth tangent.",
+    "Finite-difference plus/minus profile solves remain qualification oracles only and are not part of the production tangent cost.",
+    "Class-B near-saturation research remains deferred and must not delay qualification of the already qualified base family."
   ],
-  "next_action": "Open J1 for the qualified C1R base MvG/KSATFIT family: derive and qualify real table face derivatives and the same-factorization response tangent against independent finite differences. Keep Class-B C2B face representation deferred unless a fundamentally new predeclared two-endpoint hypothesis is justified.",
-  "status": "BASE_MVG_FACE_CATALOG_QUALIFIED_READY_FOR_J1_REAL_TABLE_TANGENT_OPTIONAL_C2B_FACE_DEFERRED"
+  "next_action": "Open D for the qualified C1R base MvG/KSATFIT family: build a conservative physical Ross column with storage and source/sink terms while retaining the J1 strict-interior response-tangent and explicit regime-boundary semantics. Keep Class-B C2B face representation deferred.",
+  "status": "BASE_MVG_FACE_AND_REAL_RESPONSE_TANGENT_QUALIFIED_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE_CLASS_B_FACE_DEFERRED"
 }
