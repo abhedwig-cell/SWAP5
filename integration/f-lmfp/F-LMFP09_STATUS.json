@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -9,102 +9,97 @@
     "commit": "7ce558267a7fd36ae508a5c2229f996c916ff61a",
     "decision": "QUALIFIED_CONSTRAINED_CONTINUOUS_MFP_DARCIAN_RATIO_REPRESENTATION"
   },
-  "objective": "Determine whether the qualified F-LMFP08 homogeneous-face representation can be extended to a materially broader hydraulic envelope with a coordinate system regular through h=0, fail-closed boundaries, bounded table cardinality and qualified heterogeneous-interface continuity, without changing production code or weakening mass and reference gates.",
   "scope": {
     "production_implementation": false,
-    "production_src_changed": false,
     "experimental_harness_only": true,
     "hydraulic_only": true,
     "generic_time": true,
     "fullrichards_reference": true,
-    "direct_darcian_face_control": true,
-    "near_saturation": true,
+    "heterogeneous_interface": true,
     "positive_pressure_head": true,
     "dry_tail": true,
-    "more_materials": true,
-    "more_face_lengths": true,
-    "heterogeneous_interface": true,
-    "crop": false,
     "root_uptake": false,
     "drainage_process": false,
     "groundwater_coupling": false,
     "modflow": false
   },
-  "staged_gates": {
-    "A_coordinate_and_envelope": "QUALIFIED_FOUNDATIONAL_MFP_COORDINATE",
-    "B_homogeneous_face_matrix": "rerun F-LMFP08 identities and Darcian face-oracle matrix over expanded head envelope, materials and face lengths, with MFP and Darcian-ratio table densities treated separately",
-    "C_heterogeneous_interface": "qualify equal-flux interface continuity, accuracy and bounded local solve behaviour over material contrasts",
-    "D_cardinality_and_cost": "measure material/geometry-class counts, table memory and preparation/runtime cost proxies",
-    "E_transient_regression": "rerun F-LMFP07/F-LMFP08 ordinary and strong-gradient transient gates with exact mass conservation"
-  },
   "hard_rules": {
     "mass_conservation_required": true,
-    "no_post_update_clipping": true,
+    "no_threshold_relaxation_after_failure": true,
+    "no_deletion_of_extreme_tail_probes": true,
     "no_silent_extrapolation": true,
     "no_silent_solver_switch": true,
-    "reference_mode_unchanged": true,
-    "representation_is_immutable_shared_parameter_data": true,
-    "continuity_must_be_tested_by_refinement_not_only_left_right_symmetry": true,
-    "saturated_or_positive_head_support_must_be_explicitly_qualified_not_inferred": true,
-    "heterogeneous_interface_changes_require_separate_evidence": true,
-    "mfp_material_table_density_and_geometry_specific_darcian_ratio_density_must_not_be_conflated": true
+    "pair_specific_tables_forbidden": true,
+    "representation_shared_immutable": true,
+    "fullrichards_reference_preserved": true
   },
-  "gate_A_coordinate_envelope": {
-    "candidate_family": "x=asinh(h/hscale)",
-    "head_envelope_cm": [-100000000.0, 100.0],
-    "materials": 5,
-    "material_status": "SYNTHETIC_HYDRAULIC_STRESS_FIXTURES_NOT_PRODUCTION_CATALOG",
-    "pair_cases_per_material": 198,
-    "A1": {
-      "run": 34278440087,
-      "head": "cfe57ba6ff00a177832113b146bf76d2e7275e8d",
-      "job": 102237111372,
-      "conclusion": "FAILURE",
-      "artifact": 10076633415,
-      "artifact_digest": "sha256:f85aad17542355bfbdae7c52b798c5a9cf2967224856f775d591dd13d0104974",
-      "tested_hscale_cm": [0.01, 0.1, 1.0, 10.0],
-      "tested_negative_head_nodes": [48, 64, 96],
-      "interpretation": "Coordinate family was regular through h=0 but density was insufficient over eight decades of dry-head range. Thresholds were retained unchanged."
-    },
-    "A2": {
-      "run": 34278671493,
-      "head": "89b2c1de1a9df0dd1b74c566c495bfd4bfc6ca22",
-      "job": 102237861860,
-      "conclusion": "SUCCESS",
-      "artifact": 10076717072,
-      "artifact_digest": "sha256:d746bf27a027750909579eeaea5e9a2480fd8746953765f48e6bb7dfe1f6395b",
-      "thresholds_changed_from_A1": false,
-      "tested_hscale_cm": [0.01, 0.1],
-      "tested_negative_head_nodes": [128, 160, 192]
-    },
-    "selected_foundational_mfp_coordinate": {
+  "qualified_prior_evidence": {
+    "gate_A_coordinate": {
+      "decision": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED",
+      "head_envelope_cm": [-100000000.0,100.0],
       "hscale_cm": 0.01,
-      "negative_head_nodes": 128,
-      "coordinate_roundtrip_max_rel_or_scaled_abs": 1.341104507446289e-15,
-      "mfp_secant_median_rel_error": 9.792105607639296e-05,
-      "mfp_secant_p90_rel_error": 0.00870057781667366,
-      "mfp_secant_p99_rel_error": 0.054096026918580446,
-      "mfp_secant_max_rel_error": 0.0725890881103596,
-      "limit_k_p90_rel_error": 0.08448802980417365,
-      "limit_k_max_rel_error": 0.27932208610369896,
-      "zero_refinement_expected_ratio": 0.2,
-      "zero_refinement_max_ratio": 0.2003190406242081,
-      "fail_closed_outside_head_envelope": true
+      "mfp_nodes": 128
     },
-    "memory_interpretation": {
-      "mfp_phi_table": "1D immutable data shared per hydraulic material; 128 head nodes do not imply a geometry-specific 128x27 table",
-      "naive_same_density_R_projection_bytes_per_material_geometry_class": 27648,
-      "naive_projection_status": "NOT_ADOPTED_AS_ARCHITECTURE",
-      "required_next_test": "Gate B must separately qualify a coarser asinh head axis for the geometry-specific Darcian log-ratio table while using the 128-node material MFP table as baseline."
-    },
-    "decision": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED"
+    "F_LMFP08_homogeneous_face_representation": "QUALIFIED_WITHIN_ITS_EARLIER_TESTED_HYDRAULIC_SCOPE",
+    "F_LMFP08_transient_mass": "QUALIFIED_TO_ROUNDOFF_WITHIN_EARLIER_TESTED_SCOPE"
   },
-  "candidate_questions": [
-    "How coarse can the geometry-specific Darcian-ratio head axis remain while preserving the F-LMFP08 face and transient gains on the expanded head envelope?",
-    "Can saturated and near-saturated Darcian-ratio behaviour be represented continuously without a special discontinuous branch?",
-    "Can the correction be normalized so face-length cardinality is smaller than one table per exact face distance?",
-    "Does the heterogeneous equal-flux interface remain continuous and accurate when either half-face crosses the near-saturated region?",
-    "Which parts of the extremely dry tail should be represented versus fail closed based on physically negligible conductance?"
+  "gate_C2_endpoint_pair": {
+    "run": 34311445769,
+    "decision": "FAILED_OVERALL_BUT_COMPOSED_HETEROGENEOUS_INTERFACE_BLOCKER_REMOVED",
+    "heterogeneous_cases": 1000,
+    "heterogeneous_failures": 0,
+    "active_relative_error_p90": 0.004377953524000742,
+    "active_relative_error_p99": 0.02845864145791556,
+    "active_relative_error_maximum": 0.13223252543078204,
+    "equal_flux_scaled_residual_max": 9.998024630419877e-11,
+    "sign_mismatches": 0,
+    "root_iteration_maximum": 57,
+    "root_iteration_cap": 60,
+    "failure_localization": "provider interpolation resolution in extreme dry-to-wet endpoint-pair tail",
+    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C2_RESULT_DIAGNOSIS.json"
+  },
+  "gate_C3_anchored_characterization": {
+    "run": 34313375177,
+    "conclusion": "success",
+    "candidate": "BASE33_PLUS_SIGNED_PRESSURE_HEAD_DECADES",
+    "axis_nodes": 49,
+    "values_per_class": 2401,
+    "bytes_per_class_before_metadata": 19208,
+    "interpretation": "successful characterization only; exact decade anchors overlapped some C2 stress endpoints and therefore required an independently precommitted off-grid holdout",
+    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3_ANCHORED_ENDPOINT_AXIS_RESULT.json"
+  },
+  "gate_C3b_offgrid_holdout": {
+    "run": 34314564777,
+    "conclusion": "failure",
+    "classes_tested": 4,
+    "classes_failed": 4,
+    "cases_per_class": 310,
+    "coverage_failures": 0,
+    "sign_mismatches": 0,
+    "p90_relative_flux_error_range": [0.32469086381504836,0.5577115982617433],
+    "worst_relative_flux_error_range": [14.425946026952689,20.477924431644812],
+    "interpretation": "the frozen 49-node bilinear endpoint-pair representation does not generalize over the intended extreme dry-to-wet envelope; this rejects the representation at this density, not LayeredMFP as a solver concept",
+    "decision": "C3_49_NODE_ANCHORED_ENDPOINT_REPRESENTATION_REJECTED_FOR_GENERALIZATION_DO_NOT_PROCEED_TO_CATALOG",
+    "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3B_OFFGRID_HOLDOUT_RESULT.json"
+  },
+  "current_gate": {
+    "name": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+    "workflow_run": 34314877011,
+    "qualification": false,
+    "base_axis_nodes": [33,49,65,97],
+    "anchors_unchanged": true,
+    "thresholds_unchanged": true,
+    "classes": ["reference_sand_10cm","very_fast_5cm"],
+    "purpose": "determine whether the same 2-D endpoint representation family shows sufficiently rapid monotone convergence at globally bounded density and memory",
+    "qualification_rule": "because the C3b probes have now been observed, any C4-selected density requires a new independently precommitted C4b holdout before it can be qualified",
+    "evidence_design": "integration/f-lmfp/F-LMFP09_GATE_C4_GLOBAL_DENSITY_CHARACTERIZATION_DESIGN.json"
+  },
+  "separate_open_blockers": [
+    "production hydraulic catalog admission remains open",
+    "inherited near-saturation conductivity discontinuity in the catalog remains an owner-level constitutive issue",
+    "transient expanded-envelope regression remains open after representation qualification",
+    "root uptake, drainage, moving groundwater and MODFLOW coupling are outside F-LMFP09 current scope",
+    "response tangent not admitted"
   ],
   "scope_flags": {
     "EXPERIMENTAL_HARNESS_IMPLEMENTED": true,
@@ -112,7 +107,10 @@
     "PERSISTED": true,
     "TESTED": true,
     "GATE_A_QUALIFIED": true,
-    "QUALIFIED": false
+    "HETEROGENEOUS_INTERFACE_CONSTRUCTION_PROMISING": true,
+    "C3_49_NODE_REPRESENTATION_QUALIFIED": false,
+    "OVERALL_QUALIFIED": false
   },
-  "status": "GATE_A_QUALIFIED_READY_FOR_SEPARATE_DARCIAN_RATIO_DENSITY_AND_EXPANDED_HOMOGENEOUS_FACE_MATRIX"
+  "decision": "RESEARCH_CONTINUES",
+  "status": "C3B_REJECTED_49_NODE_ENDPOINT_REPRESENTATION_C4_GLOBAL_DENSITY_CHARACTERIZATION_QUEUED_OR_RUNNING"
 }
