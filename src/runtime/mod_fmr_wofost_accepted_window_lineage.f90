@@ -18,6 +18,7 @@ module mod_fmr_wofost_accepted_window_lineage
   integer, parameter, public :: FMR_WOFOST_LINEAGE_WINDOW_INCOMPLETE = 9
   integer, parameter, public :: FMR_WOFOST_LINEAGE_EVENT_ALREADY_DELIVERED = 10
   integer, parameter, public :: FMR_WOFOST_LINEAGE_EVENT_TOKEN_MISMATCH = 11
+  integer, parameter, public :: FMR_WOFOST_LINEAGE_TRIAL_WINDOW_MISMATCH = 12
 
   type, public :: fmr_wofost_accepted_interval_certificate_t
     private
@@ -85,6 +86,7 @@ module mod_fmr_wofost_accepted_window_lineage
   public :: accumulate_wofost_trial_process_rate
   public :: discard_wofost_trial_contribution
   public :: open_wofost_accepted_window
+  public :: prevalidate_wofost_trial_admission
   public :: admit_wofost_accepted_trial
   public :: prepare_wofost_crop_event_delivery
   public :: commit_wofost_crop_event_delivery
@@ -270,6 +272,35 @@ contains
     window%initialized = .true.
     status = FMR_WOFOST_LINEAGE_OK
   end subroutine open_wofost_accepted_window
+
+  subroutine prevalidate_wofost_trial_admission(window, trial, status)
+    type(fmr_wofost_accepted_window_t), intent(in) :: window
+    type(fmr_wofost_trial_contribution_t), intent(in) :: trial
+    integer, intent(out) :: status
+
+    status = FMR_WOFOST_LINEAGE_INVALID_WINDOW
+    if (.not. window%ready()) return
+    if (window%event_delivered) return
+
+    status = FMR_WOFOST_LINEAGE_INVALID_TRIAL
+    if (.not. trial%ready()) return
+    if (.not. trial%complete()) return
+
+    status = FMR_WOFOST_LINEAGE_TRIAL_WINDOW_MISMATCH
+    if (trial%lineage_id /= window%lineage_id) return
+    if (trial%origin_revision /= window%next_revision) return
+
+    if (.not. same_time(trial%t0, window%covered_t)) then
+      status = FMR_WOFOST_LINEAGE_NONCONTIGUOUS
+      return
+    end if
+    if (trial%t1 > window%t1 .and. .not. same_time(trial%t1, window%t1)) then
+      status = FMR_WOFOST_LINEAGE_NONCONTIGUOUS
+      return
+    end if
+
+    status = FMR_WOFOST_LINEAGE_OK
+  end subroutine prevalidate_wofost_trial_admission
 
   subroutine admit_wofost_accepted_trial(window, certificate, trial, status)
     type(fmr_wofost_accepted_window_t), intent(inout) :: window
