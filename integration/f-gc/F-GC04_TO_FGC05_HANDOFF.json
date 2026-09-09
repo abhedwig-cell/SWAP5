@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "from_work_unit": "F-GC04",
+  "to_work_unit": "F-GC05",
+  "title": "External/Application Head-Accuracy Objective Research",
+  "source_closeout_commit": "eb1e5a87b195f9a8cc2d4e3000d82378fec3157f",
+  "closeout_validation_commit": "b5a2e5daef1492c594d954675a34de33b4958ae4",
+  "source_decision": "CHARACTERIZED_INDEPENDENT_INDICATOR_SCALE_APPLICATION_REQUIREMENT_STILL_MISSING",
+  "fixed_boundaries": {
+    "F_GC02_target_result_may_be_used": false,
+    "F_GC02_B_inf_may_be_used_to_choose_budget": false,
+    "observed_B_inf_distribution_may_define_application_accuracy_by_itself": false,
+    "predictor_perturbation_0p01cm_is_H_budget": false,
+    "legacy_binary_temporal_tolerance_is_H_budget": false,
+    "nonlinear_solver_tolerance_is_H_budget": false,
+    "coupling_head_residual_tolerance_is_automatically_H_budget": false,
+    "B_inf_is_proven_nonlinear_true_error_bound": false,
+    "mass_tolerance_allowed": false
+  },
+  "research_question": "Can a finite positive Richards temporal head-accuracy objective be justified from an external application requirement or an independently defensible error-allocation policy, rather than from the target F-GC02 result or indicator magnitude?",
+  "acceptable_outcomes": [
+    "EXTERNAL_APPLICATION_ACCURACY_OBJECTIVE_IDENTIFIED_WITH_TRACEABLE_PROVENANCE_READY_FOR_SEPARATE_POLICY_QUALIFICATION",
+    "ERROR_ALLOCATION_POLICY_RESEARCH_JUSTIFIED_BUT_NUMERIC_APPLICATION_TOLERANCE_STILL_REQUIRED",
+    "NO_GENERIC_NUMERIC_ACCURACY_OBJECTIVE_DEFENSIBLE_APPLICATION_CHOICE_REQUIRED"
+  ],
+  "target_execution_authorized": false,
+  "F_GC02_release": false,
+  "F_VQ35_authorized": false
+}
