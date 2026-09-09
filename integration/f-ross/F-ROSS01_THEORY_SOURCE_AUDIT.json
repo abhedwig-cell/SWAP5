@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "branch": "work/f-ross01-fast-mfp-feasibility",
+  "audit_scope": "initial primary-and-independent theory reconstruction before prototype",
+  "sources": [
+    {
+      "role": "primary_method",
+      "citation": "Ross PJ (2003), Modeling Soil Water and Solute Transport—Fast, Simplified Numerical Solutions, Agronomy Journal 95(6):1352-1361",
+      "doi": "10.2134/agronj2003.1352",
+      "source_bound_findings": [
+        "method is a fast solution of the Richards equation rather than a bucket water balance",
+        "Brooks-Corey hydraulic functions were used in the original formulation",
+        "water content is the dependent variable in unsaturated regions and pressure head in saturated regions",
+        "central time weighting is used in unsaturated conditions and fully implicit weighting in saturated conditions",
+        "water flux uses matric flux potential plus a spatial weighting of the gravity component",
+        "soil-property interfaces are treated by equating fluxes to and from the interface",
+        "the reported benchmark included rainfall, ponding, evaporation and drainage over 400 h"
+      ]
+    },
+    {
+      "role": "independent_evaluation_and_hydraulic_generalisation",
+      "citation": "Crevoisier D, Chanzy A, Voltz M (2009), Evaluation of the Ross fast solution of Richards' equation in unfavourable conditions for standard finite element methods, Advances in Water Resources 32(6):936-947",
+      "doi": "10.1016/j.advwatres.2009.03.008",
+      "source_bound_findings": [
+        "explicitly evaluates the non-iterative Ross method against HYDRUS-1D",
+        "explicitly targets conditions difficult for standard numerical methods",
+        "generalises Kirchhoff-potential evaluation numerically to hydraulic functions beyond the original Brooks-Corey case",
+        "demonstrates the generalisation with modified van Genuchten-Mualem hydraulic functions",
+        "reports Ross-method runtime between 1.25 and 14 times faster than HYDRUS-1D across its tested scenarios",
+        "reports improved robustness and a favourable speed/accuracy compromise particularly on coarse grids"
+      ],
+      "important_limit": "The paper's tested modified VGM representation is not evidence that every SWAP hydraulic family is automatically admissible. The SWAP catalog remains a separate Gate C qualification."
+    },
+    {
+      "role": "later_Ross_lineage",
+      "citation": "Ross PJ (2011), Numerical Solution of the Continuity Equation for Soil Water Flow Using Precomputed Steady-State Fluxes, Vadose Zone Journal",
+      "doi": "10.2136/vzj2010.0085",
+      "source_bound_findings": [
+        "identifies Ross 2006 Fast solution of Richards' equation for flexible soil hydraulic property descriptions as an intermediate source",
+        "uses a precomputed-steady-flux formulation that must be kept distinct from the exact 2003 algorithm until reconstructed"
+      ]
+    }
+  ],
+  "theory_triage": {
+    "matric_flux_potential_is_core": true,
+    "global_newton_iteration_is_core": false,
+    "brooks_corey_is_mathematically_irreplaceable": false,
+    "evidence_for_non_Brooks_Corey_generalisation": true,
+    "evidence_for_full_SWAP_hydraulic_catalog": false,
+    "heterogeneous_interface_flux_matching_present_in_primary_method": true,
+    "evidence_for_exact_discrete_mass_ledger_under_SWAP5_contract": false,
+    "evidence_for_prescribed_MODFLOW_head_and_flux_contract": false,
+    "evidence_for_response_tangent": false
+  },
+  "algorithmic_risk_register": [
+    {
+      "risk": "near-saturation constitutive non-smoothness",
+      "reason": "Crevoisier's demonstrated extension uses modified VGM specifically avoiding severe near-saturation nonlinearity; standard and other SWAP conductivity families require separate qualification",
+      "gate": "C"
+    },
+    {
+      "risk": "first-order/local linearisation bias",
+      "reason": "the fast method obtains non-iterative behaviour through a simplified linearised flux/update structure; structural bias must be measured, not hidden by aggregate errors",
+      "gate": "M"
+    },
+    {
+      "risk": "local interface solve cost",
+      "reason": "equating fluxes at heterogeneous interfaces can require bounded local inversion/root work even without a global Newton solve",
+      "gate": "E/J"
+    },
+    {
+      "risk": "hydraulic-potential integration cost",
+      "reason": "general hydraulics may need numerical or tabulated Kirchhoff/MFP evaluation; production cost must be bounded and preferably shared/precomputed",
+      "gate": "C/J"
+    }
+  ],
+  "initial_position": {
+    "production_admission": false,
+    "decision": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
+    "reason": "The literature supports a credible non-iterative Richards-derived route and shows that Brooks-Corey is not a fundamental blocker, but exact SWAP-catalog hydraulics, conservation, coupling and bounded local work remain unqualified."
+  },
+  "next_actions": [
+    "reconstruct the exact Ross 2003 discrete update and identify every approximation",
+    "obtain and inspect Ross 2006 flexible-hydraulics report if publicly accessible",
+    "derive a hydraulic-provider contract using SWAP K(h), theta(h), inverse h(theta) and MFP/Kirchhoff potential without changing physics",
+    "prove a per-step finite-volume mass ledger before a full profile prototype",
+    "define a bounded local heterogeneous-interface solve with explicit failure semantics",
+    "only then implement an isolated reference harness"
+  ],
+  "status": "THEORY_AUDIT_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
+}
