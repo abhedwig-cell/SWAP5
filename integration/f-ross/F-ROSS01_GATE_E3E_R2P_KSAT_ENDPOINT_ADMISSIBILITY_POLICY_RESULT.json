@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY",
+  "contract": "F-ROSS01_GATE_E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY_PRECOMMIT.json",
+  "workflow_run": 34406785731,
+  "workflow_head": "ee39ff15ff4d6f3386ddaf53d816e75bd0e0c83e",
+  "workflow_conclusion": "success",
+  "artifact": {
+    "id": 10125625265,
+    "digest": "sha256:a4146da8dc947adb5abb8601789c22333ee1874cf9886e1d27889d50539a4326"
+  },
+  "production_implementation": false,
+  "qualification_target": "ZERO_SURFACE_MIXED_SATURATED_UNSATURATED_FACE_ENDPOINT_SEMANTICS_ONLY",
+  "material_count": 4,
+  "material_pass_count": 4,
+  "endpoint_plateau_count": 2,
+  "interior_root_control_count": 2,
+  "persistent_state_bytes": 0,
+  "new_constitutive_physics": false,
+  "mass_repair_or_clipping": false,
+  "pass": true,
+  "decision": "QUALIFIED_ZERO_SURFACE_KSAT_PLATEAU_AS_DERIVED_FACE_LOCAL_MIXED_ENDPOINT_SEMANTICS_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "theory_basis": {
+    "vertical_darcy_with_depth_positive_downward": "q = K(h)*(1-dh/dz)",
+    "plateau_identity": "At h=0 in the saturated segment, K=KSAT and dh/dz=0, so q=KSAT exactly.",
+    "vgm_endpoint": "For classical unimodal Mualem-van Genuchten, 1-Kr ~ 2*(alpha*abs(h))^(n-1) as h->0-. The q=KSAT endpoint path is locally integrable for 1<n<2.",
+    "regular_branch_monotonicity": "For fixed h_surface=0 and h_top<0, the regular q>KSAT path length decreases strictly as q increases. Therefore L_u(KSAT+)<L excludes any regular q>KSAT pure-unsaturated root for that face length.",
+    "mixed_solution": "Where L_u(KSAT+)<L, the unique face-length completion within the qualified endpoint policy is a face-local saturated h=0 plateau of length L-L_u followed by the continuous unsaturated branch, with q=KSAT throughout."
+  },
+  "material_results": {
+    "B01": {
+      "n": 1.734737,
+      "near_saturation_exponent_n_minus_1": 0.734737,
+      "endpoint_path_oracle_a_cm": 60.12822903325322,
+      "endpoint_path_oracle_b_cm": 60.12822903325323,
+      "endpoint_oracle_abs_difference_cm": 7.105427357601002e-15,
+      "branch": "INTERIOR_ROOT",
+      "path_near_physical_upper_cm": 0.6773578081325679,
+      "regular_q_gt_ksat_path_strictly_decreasing": true
+    },
+    "B12": {
+      "n": 1.090671,
+      "near_saturation_exponent_n_minus_1": 0.09067099999999995,
+      "endpoint_path_oracle_a_cm": 1.2262487974582952,
+      "endpoint_path_oracle_b_cm": 1.2262487974582943,
+      "endpoint_oracle_abs_difference_cm": 8.881784197001252e-16,
+      "branch": "ENDPOINT_KSAT_PLATEAU",
+      "plateau_length_oracle_a_cm": 3.773751202541705,
+      "plateau_length_oracle_b_cm": 3.773751202541706,
+      "plateau_length_closure_cm": 0.0,
+      "plateau_darcy_residual_cm_per_day": 0.0,
+      "join_head_discontinuity_cm": 0.0,
+      "regular_q_gt_ksat_path_strictly_decreasing": true
+    },
+    "O13": {
+      "n": 1.079952,
+      "near_saturation_exponent_n_minus_1": 0.07995200000000002,
+      "endpoint_path_oracle_a_cm": 0.638495429434986,
+      "endpoint_path_oracle_b_cm": 0.6384954294349857,
+      "endpoint_oracle_abs_difference_cm": 3.3306690738754696e-16,
+      "branch": "ENDPOINT_KSAT_PLATEAU",
+      "plateau_length_oracle_a_cm": 4.361504570565014,
+      "plateau_length_oracle_b_cm": 4.361504570565014,
+      "plateau_length_closure_cm": 0.0,
+      "plateau_darcy_residual_cm_per_day": 0.0,
+      "join_head_discontinuity_cm": 0.0,
+      "regular_q_gt_ksat_path_strictly_decreasing": true
+    },
+    "O14": {
+      "n": 1.616573,
+      "near_saturation_exponent_n_minus_1": 0.616573,
+      "endpoint_path_oracle_a_cm": 190.0829659117692,
+      "endpoint_path_oracle_b_cm": 190.08296591176912,
+      "endpoint_oracle_abs_difference_cm": 8.526512829121202e-14,
+      "branch": "INTERIOR_ROOT",
+      "path_near_physical_upper_cm": 2.430854656419606,
+      "regular_q_gt_ksat_path_strictly_decreasing": true
+    }
+  },
+  "policy_binding": {
+    "admitted_only_when": "h_surface=0, h_top<0, endpoint integral is finite, independently verified and shorter than the face, with all frozen eligibility checks passing",
+    "endpoint_flux": "q=KSAT exactly",
+    "plateau_state": "derived face-local geometry only; no persistent column state",
+    "positive_surface_head": "not eligible for plateau; use interior q>KSAT route",
+    "unsupported_or_failed_case": "fail closed to qualified reference/FullRichards",
+    "mass_conservation": "unchanged hard requirement",
+    "response_tangent": "not qualified across endpoint switching"
+  },
+  "hard_nonclaims": [
+    "This does not qualify the complete 5 cm Ross candidate face.",
+    "This does not qualify finite-positive surface ponding or any surface-water ledger.",
+    "This does not qualify a response tangent at or across endpoint switching.",
+    "This does not introduce an HENPR/SVG2006 smoothing bridge or otherwise change VGM physics.",
+    "This does not admit groundwater, runtime, MultiSWAP or production use."
+  ],
+  "next_gate": "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "status": "R2P_QUALIFIED_RESTRICTED_ENDPOINT_POLICY_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION"
+}
