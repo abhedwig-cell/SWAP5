@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "purpose": "Prevent superseded test-fixture or parser evidence from being interpreted as authoritative production-equivalent Richards evidence.",
+  "production_source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "production_source_changed_in_fsi20": false
+  },
+  "authoritative_evidence": [
+    {
+      "path": "integration/f-si/F-SI20_THEORY_CONTEXT.json",
+      "role": "documented Richards time-discretization and separation from nonlinear convergence tolerances"
+    },
+    {
+      "path": "integration/f-si/F-SI20_REFERENCE_TRIDAG_REQUALIFICATION_EVIDENCE.json",
+      "role": "requalification of the core temporal characterization with the F-SI18 source-locked SWAP 4.3.1 Thomas/TRIDAG test control"
+    },
+    {
+      "path": "integration/f-si/F-SI20_FINE_STEP_SOLVER_ATTRIBUTION_EVIDENCE.json",
+      "role": "correct FULL/HALF1/HALF2 attribution of the finer-step solver boundary using the reference TRIDAG control"
+    },
+    {
+      "path": "integration/f-si/F-SI20_PHYSICAL_ENVELOPE_EVIDENCE.json",
+      "role": "reference-TRIDAG-requalified 15-case hydraulic-state and boundary-jump envelope"
+    },
+    {
+      "path": "integration/f-si/F-SI20_HYDRAULIC_STATE_REFINEMENT_EVIDENCE.json",
+      "role": "reference-TRIDAG-requalified fixed-horizon refinement at initial heads -25, -75 and -250 cm"
+    },
+    {
+      "path": "integration/f-si/F-SI20_PRESCRIBED_HEAD_EVENT_SEMANTICS_EVIDENCE.json",
+      "role": "source-bound proof that the exact F-GC02 prescribed-head change is an outer t0 boundary condition shared by FULL and both HALF branches"
+    }
+  ],
+  "qualified_contract_dependencies": [
+    {
+      "path": "src/adapter/mod_b1_10_reference_temporal_policy.f90",
+      "contract": "F-CI14 endpoint normalization max(delta_i/limit_i), with physical units preserved and lagged state diagnostic-only"
+    },
+    {
+      "path": "integration/f-vq/F-VQ10_PROMOTION_CONTRACT.json",
+      "contract": "independent calibration/held-out-validation and scientific rationale requirements for any numeric temporal profile"
+    }
+  ],
+  "superseded_or_secondary_evidence": [
+    {
+      "path": "integration/f-si/F-SI20_FIXED_HORIZON_REFERENCE_EVIDENCE.json",
+      "reason": "original run used the known F-SI04 zero-correction TRIDAG test dependency; its numerical trend was independently reproduced by F-SI20_REFERENCE_TRIDAG_REQUALIFICATION_EVIDENCE and must be cited through that requalification for production-equivalent interpretation"
+    },
+    {
+      "path": "integration/f-si/F-SI20_FIXED_HORIZON_TOLERANCE_AXIS_EVIDENCE.json",
+      "reason": "original run used the zero-correction test dependency; the tolerance-axis conclusion was independently reproduced under the reference TRIDAG requalification"
+    },
+    {
+      "path": "integration/f-si/F-SI20_FINE_REFERENCE_TRAJECTORY_EVIDENCE.json",
+      "reason": "secondary diagnostic only; it uses a nonproduction huge temporal-tolerance bypass and a finite trajectory reference and is not needed for final owner admission"
+    },
+    {
+      "path": "integration/f-si/F-SI20_HEADNORM_FGC02_POLICY_EVIDENCE.json",
+      "reason": "fixture-specific ephemeral tolerance sweep; useful to prove comparator runtime shape but explicitly insufficient for scientific numeric-profile selection. Its old fine-step attribution subsection predates the corrected leg parser and is superseded by F-SI20_FINE_STEP_SOLVER_ATTRIBUTION_EVIDENCE.json"
+    },
+    {
+      "workflow_run": 34302103130,
+      "reason": "initial physical-envelope run used the zero-correction TRIDAG dependency; superseded by reference-TRIDAG run 34302182683"
+    },
+    {
+      "workflow_run": 34302303622,
+      "reason": "initial hydraulic-state-refinement run used the zero-correction TRIDAG dependency; superseded by reference-TRIDAG run 34302447907"
+    },
+    {
+      "workflow_run": 34301771538,
+      "reason": "initial solver-attribution parser grouped HALF1 incorrectly because HALF1 shares t0 with FULL; superseded by corrected run 34301935822"
+    }
+  ],
+  "final_scientific_reconciliation": {
+    "richards_fixed_horizon_refinement_observed": true,
+    "raw_full_vs_two_half_endpoint_differences_are_valid_dimensional_observables": true,
+    "raw_head_difference_is_universal_exact_error_estimator": false,
+    "universal_richardson_or_defect_multiplier_qualified": false,
+    "state_dependence_material": true,
+    "hard_mass_gate_remains_separate_and_absolute": true,
+    "nonlinear_solver_envelope_remains_separate_from_temporal_accuracy": true,
+    "exact_fgc02_event_discontinuity_inside_trial": false,
+    "numeric_temporal_profile_qualified": false,
+    "production_temporal_acceptance_admitted": false
+  }
+}
