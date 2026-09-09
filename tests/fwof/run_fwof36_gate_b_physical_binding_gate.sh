@@ -26,11 +26,11 @@ diff -u "$BUILD/expected-source-delta.txt" "$BUILD/actual-source-delta.txt" || f
 echo 'FWOF36_GATE_B_EXACT_TWO_FILE_SOURCE_DELTA=PASS'
 
 # Rehydrate the exact qualified F-MR05 physical fixture. Gate B changes only the
-# disposable main and two fixture switches: root extraction is enabled and a
-# small deterministic nonzero root sink is physically supplied to Richards.
-# As in the qualified F-MR09 positive-root fixture, add an equal SSDI source at
-# each node so the root sink is physically active while the hard water balance
-# remains closed. No mass tolerance is relaxed.
+# disposable main and fixture setup: root extraction is enabled and a small
+# deterministic nonzero root sink is physically supplied to Richards. As in the
+# qualified F-MR09 positive-root fixture, add an equal SSDI source at each node
+# so the root sink is active while the hard water balance remains closed. No
+# mass tolerance is relaxed.
 git show "$FMR05_QUAL:tests/fmr/test_fmr05_serialized_multiswap.f90" > "$BUILD/fmr05-original.f90"
 [[ "$(git hash-object "$BUILD/fmr05-original.f90")" == "$EXPECTED_FMR05_TEST_BLOB" ]] || fail "historical F-MR05 fixture blob mismatch"
 git show "$FMR05_QUAL:tests/fmr/mod_fmr04_fixed_top_provider.f90" > "$BUILD/mod_fmr04_fixed_top_provider.f90"
@@ -67,6 +67,55 @@ helpers = helpers.replace(old_root_sink,
     '      forcing%root_extraction_sink(i) = scale*1.0e-8_real64*real(i,real64)\n'
     '      forcing%subsurface_irrigation_source(i) = forcing%subsurface_irrigation_source(i) + &\n'
     '                                                   forcing%root_extraction_sink(i)\n', 1)
+
+# The frozen F-MR05 comparator mixes .AND. and .EQV. without parentheses.
+# In Fortran, .EQV. has lower precedence than .AND., so the historical text is
+# not a conjunction of the intended pairwise equality predicates. Keep every
+# compared field and exact/bitwise rule, but parenthesize each .EQV. predicate
+# in this disposable derivative so the stated identity oracle is evaluated as
+# intended. The frozen source blob above remains untouched.
+old_cmp = '''    equal = left%column_id == right%column_id .and. left%kernel_status == right%kernel_status .and. &
+         left%commit_status == right%commit_status .and. left%completed .eqv. right%completed .and. &
+         left%committed .eqv. right%committed .and. left%solver_executed .eqv. right%solver_executed .and. &
+         trim(left%solver_route) == trim(right%solver_route) .and. left%solver_iterations == right%solver_iterations .and. &
+         left%initial_revision == right%initial_revision .and. left%final_revision == right%final_revision .and. &
+         left%final_committed_time_bound .eqv. right%final_committed_time_bound .and. &
+         same_bits(left%final_committed_time,right%final_committed_time) .and. &
+         left%mass%complete .eqv. right%mass%complete .and. &
+         left%mass%missing_contribution_mask == right%mass%missing_contribution_mask .and. &
+         left%mass%origin_lineage_id == right%mass%origin_lineage_id .and. &
+         left%mass%origin_revision == right%mass%origin_revision .and. &
+         left%mass%accepted_transaction_count == right%mass%accepted_transaction_count .and. &
+         same_bits(left%mass%interval_t0,right%mass%interval_t0) .and. &
+         same_bits(left%mass%interval_t1,right%mass%interval_t1) .and. &
+         same_bits(left%mass%storage_start,right%mass%storage_start) .and. &
+         same_bits(left%mass%storage_end,right%mass%storage_end) .and. &
+         same_bits(left%mass%storage_change,right%mass%storage_change) .and. &
+         same_bits(left%mass%total_in,right%mass%total_in) .and. &
+         same_bits(left%mass%total_out,right%mass%total_out) .and. &
+         same_bits(left%mass%residual,right%mass%residual)'''
+new_cmp = '''    equal = left%column_id == right%column_id .and. left%kernel_status == right%kernel_status .and. &
+         left%commit_status == right%commit_status .and. (left%completed .eqv. right%completed) .and. &
+         (left%committed .eqv. right%committed) .and. (left%solver_executed .eqv. right%solver_executed) .and. &
+         trim(left%solver_route) == trim(right%solver_route) .and. left%solver_iterations == right%solver_iterations .and. &
+         left%initial_revision == right%initial_revision .and. left%final_revision == right%final_revision .and. &
+         (left%final_committed_time_bound .eqv. right%final_committed_time_bound) .and. &
+         same_bits(left%final_committed_time,right%final_committed_time) .and. &
+         (left%mass%complete .eqv. right%mass%complete) .and. &
+         left%mass%missing_contribution_mask == right%mass%missing_contribution_mask .and. &
+         left%mass%origin_lineage_id == right%mass%origin_lineage_id .and. &
+         left%mass%origin_revision == right%mass%origin_revision .and. &
+         left%mass%accepted_transaction_count == right%mass%accepted_transaction_count .and. &
+         same_bits(left%mass%interval_t0,right%mass%interval_t0) .and. &
+         same_bits(left%mass%interval_t1,right%mass%interval_t1) .and. &
+         same_bits(left%mass%storage_start,right%mass%storage_start) .and. &
+         same_bits(left%mass%storage_end,right%mass%storage_end) .and. &
+         same_bits(left%mass%storage_change,right%mass%storage_change) .and. &
+         same_bits(left%mass%total_in,right%mass%total_in) .and. &
+         same_bits(left%mass%total_out,right%mass%total_out) .and. &
+         same_bits(left%mass%residual,right%mass%residual)'''
+assert helpers.count(old_cmp) == 1, f'F-MR05 comparator anchor count={helpers.count(old_cmp)}'
+helpers = helpers.replace(old_cmp, new_cmp, 1)
 
 extra_decl = '''  integer(int64), parameter :: bind_ids(2) = [505001_int64, 505003_int64]\n  integer(int64), allocatable :: no_bind_ids(:)\n  type(fmr_wofost_accepted_window_t), allocatable :: windows_a(:), windows_a2(:), windows_reverse(:), windows_fail(:), windows_empty(:)\n  real(real64), allocatable :: qrot_a(:), ptra_a(:), qrot_a2(:), ptra_a2(:), qrot_reverse(:), ptra_reverse(:), &\n       qrot_fail(:), ptra_fail(:), qrot_empty(:), ptra_empty(:)\n  integer :: binding_status\n\n'''
 
