@@ -1,0 +1,46 @@
+name: F-LMFP09 Gate C endpoint-pair synthetic
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - experiments/lmfp/run_lmfp09_gate_c_endpoint_pair.py
+      - .github/workflows/f-lmfp09-gate-c-endpoint-pair.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  endpoint-pair-synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run bounded endpoint-pair Gate C gate
+        shell: bash
+        run: |
+          set -uo pipefail
+          out="lmfp09-gate-c-endpoint-pair"
+          rm -rf "$out"
+          mkdir -p "$out"
+          set +e
+          python3 experiments/lmfp/run_lmfp09_gate_c_endpoint_pair.py \
+            "$out/F-LMFP09_GATE_C_ENDPOINT_PAIR_SYNTHETIC.json" \
+            >"$out/stdout.json" 2>"$out/stderr.log"
+          code=$?
+          set -e
+          cat "$out/stdout.json"
+          cat "$out/stderr.log" >&2
+          printf '%s\n' "$code" > "$out/exit_code.txt"
+          exit "$code"
+      - name: Upload Gate C endpoint-pair evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c-endpoint-pair-synthetic
+          path: lmfp09-gate-c-endpoint-pair/
+          if-no-files-found: error
