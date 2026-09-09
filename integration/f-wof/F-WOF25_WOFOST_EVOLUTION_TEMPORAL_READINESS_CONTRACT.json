@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF25",
   "title": "Actual-WOFOST Evolution and Temporal Semantics Readiness",
@@ -8,12 +8,12 @@
     "commit": "c48dd266c174b7b4e9101d06a228eba91a5bf4f9",
     "status": "QUALIFIED_ATOMIC_ACTUAL_WOFOST_CROP_OWNER_STATE_AND_WRT_LAI_VIEWS"
   },
-  "purpose": "Determine whether actual WOFOST evolution can be admitted on the current crop-owner lineage without importing legacy daily-driver assumptions into the kernel. This is a zero-production readiness unit. No crop evolution implementation is permitted unless committed phenology/climate-memory state, forcing/rate separation and temporal cadence are source-bound and transactionally admissible.",
+  "purpose": "Determine whether actual WOFOST evolution can be structurally admitted on the current crop-owner lineage without importing legacy daily-driver assumptions into the kernel. This remains a zero-production readiness unit.",
   "initial_route_scope": {
     "sw_wofost": 1,
     "meaning": "standard detailed WOFOST route",
-    "soybean_sw_wofost_2": "separate future qualification because phenology equations differ",
-    "grass_sw_wofost_3": "separate future qualification because management and temperature counters add state/cadence",
+    "soybean_sw_wofost_2": "separate future qualification",
+    "grass_sw_wofost_3": "separate future qualification",
     "potential_shadow": false,
     "nutrient_route": false,
     "grass_management": false
@@ -21,14 +21,14 @@
   "readiness_gates": {
     "atomic_owner_state": "PASS_F_WOF24",
     "primary_actual_biomass_state": "PASS_F_WOF23",
-    "complete_standard_WOFOST_phenology_continuation": "FAIL_MISSING_FROM_CURRENT_OWNER",
-    "running_minimum_temperature_memory": "FAIL_MISSING_FROM_CURRENT_OWNER",
-    "forcing_and_daily_aggregate_contract": "FAIL_NOT_YET_EXPLICIT",
-    "generic_interval_evolution_semantics": "FAIL_LEGACY_ONE_DAY_CADENCE_NOT_RESOLVED",
+    "complete_standard_WOFOST_continuation_inventory": "PASS_F_WOF25_SOURCE_AUDIT",
+    "running_minimum_temperature_memory": "PASS_CLASSIFIED_AS_COMMITTED_CROP_STATE",
+    "forcing_and_daily_aggregate_contract": "PASS_EXPLICIT_ACCEPTED_WINDOW_CONTRACT",
+    "one_day_event_semantics": "PASS_CONTRACT_ONLY",
     "transaction_authority": "PASS_F_KT_AVAILABLE",
-    "production_evolution": "BLOCKED"
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
   },
-  "required_committed_state_for_standard_WOFOST": {
+  "required_committed_physical_state_for_standard_WOFOST": {
     "already_owned": [
       "crop_emerged",
       "DVS",
@@ -36,43 +36,64 @@
       "LAIEXP",
       "active LV/SLA/LVAGE cohorts"
     ],
-    "missing_common_evolution_state": [
+    "common_extension": [
       "TSUM",
       "fl_anthesis",
       "nofd",
       "atmin7[7]"
     ],
-    "missing_only_when_vernalization_active_IDSL2": [
+    "IDSL2_only": [
       "vern",
       "fl_vernalised"
-    ],
-    "not_committed_rates": [
-      "dtsum",
-      "dvr",
-      "vernrate",
-      "daylp",
-      "WOFOST_rates"
-    ],
-    "diagnostic_not_physical_state": [
-      "first_warning"
     ]
   },
+  "source_oracle_compatibility_refinement": {
+    "reason": "deep source audit found two SAVE values that B1.10 can read across daily calls even though they are conceptually rates",
+    "exact_B110_conditional_memory": [
+      {
+        "semantic_name": "legacy_lai_exponential_rate_carryover",
+        "legacy_field": "r_act%glaiex",
+        "condition": "exact B1.10 code continuation after entering the LAIEXP>=6 carryover regime",
+        "future_state_effect": "LAIEXP",
+        "physical_crop_state": false
+      },
+      {
+        "semantic_name": "legacy_vernalization_rate_carryover",
+        "legacy_field": "vernrate",
+        "condition": "IDSL=2 exact B1.10 post-completion VERN continuation where the saved value is required",
+        "future_standard_DVS_feedback": false,
+        "physical_crop_state": false
+      }
+    ],
+    "authoritative_evidence": [
+      "integration/f-wof/F-WOF25_RATE_LIFETIME_RECONCILIATION.json",
+      "integration/f-wof/F-WOF25_RATE_CLASSIFICATION_RECONCILIATION.json"
+    ],
+    "rule": "do not persist the full WOFOST_rates object. Carry only the narrow conditional compatibility scalars on an exact-code reference path, or qualify an explicit theory-code expected difference."
+  },
+  "ordinary_event_local_rates": [
+    "dtsum",
+    "dvr",
+    "daylp",
+    "PGASS/RELTR",
+    "partitioning, growth, death, allocation and physiological-age rates",
+    "WOFOST_rates as a whole"
+  ],
   "forcing_rate_separation": {
     "daily_weather_or_derived_forcing": [
       "daily minimum temperature TMN",
       "daily average temperature TAV",
       "daytime average temperature TAVD",
-      "day-of-year/astronomical daylength basis",
+      "explicit astronomical/solar-geometry basis",
       "radiation inputs consumed by daily assimilation",
       "CO2 response factors where active"
     ],
     "accepted_interval_aggregates_from_other_processes": [
-      "daily actual root uptake IQROT_DAY",
-      "daily potential transpiration IPTRA_DAY",
-      "daily oxygen/root-aeration indicator IALPWET_DAY when that physics is active",
-      "nutrient stress only in a separately admitted nutrient execution class"
+      "IQROT_WINDOW from accepted root uptake",
+      "IPTRA_WINDOW from accepted potential transpiration",
+      "IALPWET_WINDOW only when the corresponding oxygen/root-aeration physics is active"
     ],
-    "rule": "These are forcing/process results for an evolution window, not persistent crop state and not solver scratch."
+    "rule": "forcing and accepted process results are not immutable crop parameters and not persistent physical crop state"
   },
   "temporal_policy": {
     "kernel_interval_remains_generic": true,
@@ -80,25 +101,27 @@
     "legacy_daily_cadence_must_not_be_encoded_as_kernel_day": true,
     "arbitrary_subdaily_WOFOST_update_allowed_now": false,
     "arbitrary_multi_day_single_update_allowed_now": false,
-    "safe_initial_admission_candidate": "explicit one-day crop-evolution event/window matching the B1.10 daily oracle, scheduled by runtime/event layer rather than assumed by the kernel",
-    "future_generalization": "only after scientific equivalence is demonstrated for interval splitting/aggregation, cohort creation/ageing, phenology thresholds and stress aggregation"
+    "safe_initial_admission_candidate": "explicit one-day crop-evolution window matching the B1.10 daily oracle, scheduled by runtime/event layer"
   },
-  "transaction_requirements_after_unblock": [
-    "the complete crop owner including phenology/climate-memory and biomass must be one F-KT physical state",
-    "assimilation/rate calculations must operate on trial-local inputs/results",
-    "rejected trials must not advance TSUM, DVS, vernalization, anthesis, running-temperature memory or leaf cohorts",
-    "replay from the same checkpoint with the same evolution-window forcing must be deterministic",
-    "potential shadow, if later enabled, must be separately transactional and optional"
+  "transaction_requirements": [
+    "physical phenology/climate-memory, lifecycle, biomass and enabled root history share one F-KT candidate lineage",
+    "day-start crop preparation remains trial-local until parent acceptance",
+    "accepted process aggregates contain no rejected-trial contributions",
+    "enabled exact-reference compatibility memory follows candidate checkpoint/discard/replay semantics",
+    "rejected trials do not advance TSUM, DVS, vernalization, anthesis, running-temperature memory, biomass, cohorts or root history",
+    "same checkpoint plus same forcing and accepted aggregates replays deterministically"
   ],
   "forbidden": [
     "replace legacy delt=1 by arbitrary dt and call it generic-time qualified",
     "call daily WOFOST growth once per soil-water solver substep",
-    "store WOFOST_rates as persistent per-column state",
-    "treat IQROT_DAY/IPTRA_DAY/IALPWET_DAY as immutable parameters",
+    "store the full WOFOST_rates object as persistent per-column state",
+    "silently discard source-bound GLAIEXP or VERNRATE carryover while claiming exact B1.10 code continuation",
+    "treat IQROT/IPTRA/IALPWET as immutable parameters",
     "make daynr/t1900/calendar values hidden kernel globals",
     "advance actual crop state outside F-KT",
     "silently allocate potential WOFOST shadow for every column"
   ],
-  "decision_if_gates_remain_as_assessed": "BLOCK_PRODUCTION_EVOLUTION_REQUIRE_STANDARD_WOFOST_PHENOLOGY_MEMORY_AND_EXPLICIT_DAILY_EVENT_CONTRACT",
+  "readiness_decision": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE",
+  "production_evolution_in_F_WOF25": false,
   "affected_invariants": [3,4,5,7,8,9,16,21,23,25,27,29,30]
 }
