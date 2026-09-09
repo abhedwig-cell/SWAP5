@@ -13,7 +13,6 @@
   "decision": "ROSSFAST_REQUIRES_FURTHER_RESEARCH",
   "decision_is_final": false,
   "open_gates": [
-    "B_REAL_FACE_TABLE",
     "C_SWAPHYDRAULICS_GENERALISATION",
     "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
     "E_SATURATION_TRANSITIONS",
@@ -75,17 +74,36 @@
       "base_state_bitwise_unchanged": true,
       "cost_shape": "ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE",
       "scope": "analytic linear bottom face only; same-factorization response sensitivity construction"
+    },
+    {
+      "gate": "B_REAL_FACE_TABLE",
+      "run": 34335144568,
+      "head": "cf7f13af9e2db91be039229d6c6d94819903960a",
+      "artifact": 10097400431,
+      "artifact_digest": "sha256:9a60517b715623821a944829474b0befb11191407dc35b9824ef146b3184dfe3",
+      "candidate": "V2_LOG_HEAD_LOG_MOBILITY_WITH_EXACT_EQUAL_HEAD_N129",
+      "fixture": "B01_NO_KSATEXM_L10_H_-10000_-1",
+      "holdout_probes": 1399,
+      "max_hybrid_metric": 0.0007632329516314338,
+      "p99_hybrid_metric": 0.0006434272772995881,
+      "max_abs_error_over_ksat": 0.0003868674999822999,
+      "wrong_sign_count": 0,
+      "max_hydrostatic_abs_q_over_ksat": 3.329211979474659e-15,
+      "shared_table_plus_axis_bytes": 134160,
+      "scope": "one homogeneous unsaturated B01 10-cm face over h [-10000,-1] cm with KSATEXM disabled"
     }
   ],
-  "shared_oracle_dependency": "Real SWAP-hydraulic face-table qualification must use a common authoritative steady-Darcian reference rather than copying unmerged F-LMFP06-09 experiment internals into this branch.",
+  "shared_oracle_dependency": "Gate B used an independent qualification-only steady-Darcian oracle reconstructed from Ross 2011 equations and frozen SWAP 4.3.1 constitutive sources without borrowing F-LMFP implementation internals.",
   "current_findings": [
     "Ross 2011 provides the cleanest first physical prototype candidate in the Ross lineage",
     "the finite-volume continuity algebra conserves mass to roundoff across 1 to 128 cells and sigma 0, 0.5 and 1 without global nonlinear iteration",
     "the committed test base state remains bitwise unchanged in continuity and tangent algebra gates",
     "a discrete bottom response tangent can be obtained algebraically from the same tridiagonal factorization with one additional O(N) backsolve in the analytic linear fixture",
-    "the tangent agrees with symmetric boundary perturbation reference trials to a maximum precommitted metric of 1.26885786529119e-10",
-    "none of these algebra gates qualifies real SWAP face tables, saturation switching, physical groundwater head semantics or MODFLOW coupling"
+    "the naive bilinear q(S_above,S_below) face table was rejected because interpolation violated the hydrostatic zero-flow manifold",
+    "a constrained representation using g=L+h_above-h_below, uniform log10(-h) coordinates and interpolation of log(q/g) qualified on a frozen unseen B01 holdout",
+    "Gate B passed all B1-B6 criteria on 1399 probes with max hybrid metric 7.632329516314338e-4, zero wrong signs, machine-scale hydrostatic residual and 134160 shared bytes",
+    "Gate B success is a physical prototype result only and does not qualify catalog generalisation, saturation switching, timestep accuracy, processes, groundwater, MultiSWAP or FullRichards equivalence"
   ],
-  "next_action": "Qualify a real precomputed steady-Darcian face table against the shared authoritative face oracle, first for unsaturated homogeneous SWAP hydraulic fixtures and unseen interpolation probes. Only after that physical face representation passes should J1 apply the already-qualified same-factorization tangent construction to real table derivatives and regime-switch fail-closed checks.",
-  "status": "CONTINUITY_AND_RESPONSE_TANGENT_ALGEBRA_QUALIFIED_REAL_HYDRAULIC_FACE_TABLE_REMAINS_PRIMARY_BLOCKER"
+  "next_action": "Execute Gate C as a separate fail-closed hydraulic-catalog generalisation study. Keep the Gate B representation frozen initially, test diverse homogeneous unsaturated SWAP material classes against the same direct steady-Darcy oracle, and distinguish representation failure from constitutive-model or envelope limitations. Do not proceed to groundwater or MultiSWAP on the strength of B01 alone.",
+  "status": "REAL_B01_FACE_TABLE_QUALIFIED_CATALOG_GENERALISATION_REMAINS_PRIMARY_BLOCKER"
 }
