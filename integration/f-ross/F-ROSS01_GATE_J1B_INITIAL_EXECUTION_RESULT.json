@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1B_SAME_FACTORIZATION_C1R_COLUMN_RESPONSE_TANGENT",
+  "execution": {
+    "run_id": 34356874553,
+    "head": "26936ca27004e82c09016279ac0069e23149832b",
+    "workflow": "F-ROSS01 Gate J1B Same-Factorization Column Tangent"
+  },
+  "status": "FAIL_PRESERVED",
+  "pass": false,
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "precommitted_case_count": 72,
+  "valid_case_count": 54,
+  "case_error_count": 18,
+  "observed": {
+    "maximum_tangent_metric_over_valid_cases": 3.419659398931413e-07,
+    "tangent_threshold": 1e-05,
+    "maximum_scaled_base_flux_continuity_residual": 2.4437408376474047e-13,
+    "continuity_threshold": 1e-10,
+    "maximum_normal_linear_residual": 1.6155871338926322e-27,
+    "maximum_tangent_linear_residual": 5.684341886080802e-14,
+    "linear_threshold": 1e-11,
+    "total_fd_cell_switch_count": 1,
+    "nonnegative_tangent_count": 0,
+    "base_state_bitwise_unchanged_all_valid_cases": true,
+    "table_bitwise_unchanged_all_materials": true,
+    "matrix_factorizations_per_valid_case": [1],
+    "normal_backsolves_per_valid_case": [1],
+    "additional_tangent_backsolves_per_valid_case": [1],
+    "production_nonlinear_trajectories_for_tangent": [0]
+  },
+  "failure_classes": [
+    {
+      "class": "PRECOMMITTED_FIXTURE_ON_INTERPOLATION_NODE",
+      "count": 18,
+      "affected_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+      "affected_geometry": "dry",
+      "n_faces": 16,
+      "h_top_cm": -1000.0,
+      "q_fraction_of_K_top": [-0.02, 0.0, 0.02],
+      "source_reason": "N241 uses x=60*log10(-h); h=-1000 cm gives x=180 exactly, so the top endpoint is on an internal table-node line where J1A intentionally makes no unique derivative claim.",
+      "runtime_error": "ValueError('J1A analytic derivative requires strict cell interior')",
+      "classification": "FIXTURE_DOMAIN_FAILURE_NOT_DERIVATIVE_ALGEBRA_FAILURE"
+    },
+    {
+      "class": "FD_INTERPOLATION_CELL_TRANSITION",
+      "count": 1,
+      "affected_materials": ["O01"],
+      "location": "not recorded by initial result payload; must be localized before any rerun contract is frozen",
+      "classification": "REAL_REGIME_SWITCH_DIAGNOSTIC_REQUIRED"
+    }
+  ],
+  "positive_evidence_retained": {
+    "valid_case_tangent_gate": "all 54 valid base cases remain below the 1e-5 tangent metric threshold",
+    "same_factorization_cost_shape": "observed on every valid case",
+    "mass_proxy": "steady serial-face flux continuity passes on every valid case",
+    "noninterference": "base state and shared table unchanged",
+    "sign": "d_h_bottom/d_q_bottom negative on every valid case"
+  },
+  "decision": "J1B_FAIL_FIXTURE_NODE_PLUS_ONE_O01_FD_REGIME_SWITCH_LOCALIZATION_REQUIRED",
+  "next_action": "Do not tune FD sizes or hydraulic tables. First localize the O01 cell transition. Then freeze a J1B-R1 rerun contract that replaces only the invalid -1000 cm dry fixture with a predeclared strict-interior dry fixture and explicitly handles the observed O01 regime-switch case fail-closed without averaging across cells.",
+  "scope_guards": [
+    "No Class-B H_ENPR work.",
+    "No KSATEXM.",
+    "No table retuning.",
+    "No FD step-size tuning.",
+    "No smoothing across table-node derivative jumps.",
+    "No production admission from this evidence."
+  ]
+}
