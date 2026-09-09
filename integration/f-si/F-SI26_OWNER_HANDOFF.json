@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI26",
+  "title": "Independent qualification handoff for explicit head-budget normalization semantics",
+  "branch": "work/f-si26-richards-temporal-indicator-scientific-normalization",
+  "closeout_commit": "88b71b0830741cf016834039b1d65632c5b058da",
+  "decision": "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "handoff": {
+    "target_work_unit": "F-VQ32",
+    "suggested_title": "Independent Qualification of Explicit Head-Budget Normalization for the Richards Temporal Indicator",
+    "suggested_branch": "qualification/f-vq32-richards-head-budget-normalization",
+    "branch_observed_free_before_handoff": true,
+    "reservation_created_by_this_artifact": false
+  },
+  "candidate_lock": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "B_inf_source": "qualified F-SI25 bounded stiffness-aware temporal indicator",
+    "H_budget_requirement": "explicit finite positive external head-domain numerical/application accuracy budget in cm",
+    "default_H_budget": null,
+    "empirical_scaling_allowed": false
+  },
+  "required_independent_gates": [
+    "Lock exact F-SI26 candidate semantics and all F-VQ28/F-VQ29 negative evidence before execution.",
+    "Independently reproduce the exact-linear theorem implication using a manufactured matrix not identical to the F-SI26 owner test matrix.",
+    "Verify dimensionless algebra, positive-budget scaling invariance and threshold equivalence C_h<=1 iff B_inf<=H_budget for valid finite inputs.",
+    "Verify invalid, zero, negative or nonfinite H_budget and invalid/unavailable B_inf fail closed/unavailable.",
+    "Use fresh or independently replayed nonlinear production-indicator values only to verify normalization/composition and noninterference; do not treat finite comparator data as truth.",
+    "Preserve bounded indicator cost and hard-mass/state/flux noninterference.",
+    "Verify O0/O2 identity where executable nonlinear production paths are exercised.",
+    "Verify no universal default H_budget, multiplier, floor, material/state coefficient, q_cap, Nmin or tail model is introduced.",
+    "Verify F-VQ28 retry nonmonotonicity remains a hard warning and is not overwritten by normalization.",
+    "Verify F-KT09 compatibility without enabling production certificate acceptance/retry in F-VQ32."
+  ],
+  "pass_boundary": {
+    "may_qualify": [
+      "independent semantic/algebraic validity of C_h=B_inf/H_budget",
+      "exact-linear error-budget implication inside the already-qualified exact-linear theorem scope",
+      "nonlinear normalized-indicator semantics without true-error upgrade",
+      "fail-closed invalid/unavailable inputs",
+      "compatibility with F-KT09 generic certificate shape"
+    ],
+    "must_not_qualify": [
+      "any numeric H_budget value or universal temporal tolerance",
+      "general nonlinear true-error bound",
+      "monotone retry improvement",
+      "production F-KT acceptance/retry policy",
+      "bootstrap, arbitrary restart or discontinuity continuation provenance",
+      "groundwater coupling, F-GC02 or F-PE release"
+    ]
+  },
+  "downstream_if_pass": [
+    "Recheck live next F-KT number; F-KT11 was observed free before F-SI26 closeout but is not reserved by this handoff.",
+    "Production policy binding must remain separate from H_budget provenance/selection.",
+    "Continuation bootstrap/restart/discontinuity qualification remains a separate blocker if certificate mode must operate at those boundaries.",
+    "Resume the existing F-GC02 only after the scientific normalization and production policy/continuity dependencies are independently closed."
+  ]
+}
