@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R2A_ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZATION",
+  "status": "CHARACTERIZATION_CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "WET_AXIS_CAUSALITY_CONFIRMED_FOR_STRUCTURAL_E2A_FAILURES_READY_FOR_SEPARATE_ROSS_MIXED_NEAR_SATURATION_AXIS_RESEARCH",
+    "ROSS_MIXED_UNIFORM_S_WET_AXIS_REJECTED_NO_FULL_REGION_R1B"
+  ],
+  "purpose": "Test a constitutively derived near-saturation coordinate that targets the low-n MvG conductivity curvature which defeated both linear-h and uniform-S wet axes.",
+  "derivation": {
+    "base_retention": "S=(1+(alpha*|h|)^n)^(-m), m=1-1/n",
+    "mualem_term": "1-S^(1/m)=(alpha*|h|)^n/(1+(alpha*|h|)^n)",
+    "near_saturation_behavior": "(1-S^(1/m))^m is proportional to |h|^(n*m)=|h|^(n-1), so the leading conductivity deficit toward KSATFIT is governed by |h|^(n-1)",
+    "coordinate": "t=1-(-h)^(n-1) for -1<=h<0, normalized so t=0 at h=-1 and t=1 at h=0",
+    "inverse": "h=-(1-t)^(1/(n-1))",
+    "added_fitted_parameters": 0,
+    "physics_change": false
+  },
+  "physical_scope": {
+    "hydraulic_family": "Staringreeks 2018 unimodal base MvG, KSATFIT, H_ENPR=0, KSATEXM disabled",
+    "region": "WET_DRY only",
+    "wet_head_cm": [-1.0, 1.0],
+    "dry_head_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0,
+    "materials": ["B12", "O13", "B01", "O14"],
+    "oracle": "unchanged E2A steady-Darcy integral/root law"
+  },
+  "fixed_axes": {
+    "dry": "C1R u=log10(-h), N=241",
+    "saturated_wet": "linear pressure head h on [0,+1] cm, N=17",
+    "persistent_state": "unified pressure head from E1; transformed coordinate is lookup/worker-only"
+  },
+  "candidate_unsaturated_wet_axis": {
+    "coordinate": "t=1-(-h)^(n-1)",
+    "candidate_node_counts_including_h_minus1_and_h0": [17,33],
+    "selection_rule": "smallest candidate passing every frozen metric for every material",
+    "no_post_execution_density_addition": true
+  },
+  "stored_face_quantity": {
+    "quantity": "float32 log mobility M=q/(L+h_above-h_below)",
+    "interpolation": "bilinear in binary64",
+    "reason_for_retaining_logM": "R0 did not classify the log-mobility transform as dominant"
+  },
+  "probe_plan": {
+    "fresh_sobol_per_material": 384,
+    "seed_rule": "uint32(first8hex(sha256('F-ROSS01-E2A-R2A:'+material)))",
+    "distribution": "uniform physical wet h over [-1,+1] and uniform dry u over [0,4]",
+    "targeted_wet_heads_cm": [-0.1,-0.01,-0.001,-0.000001,-0.000000001,0.0,0.000000001,0.000001,0.001,0.01,0.1],
+    "targeted_dry_heads_cm": [-2.0,-10.0,-100.0,-1000.0],
+    "known_structural_witnesses": {
+      "B12": [[-0.011933669447898865,-1.994237053678148],[-0.006681255996227264,-2.1627095864411228]],
+      "O13": [[-0.007651396095752716,-141.70309854948502],[-0.0064528752118349075,-1348.0887092096832]],
+      "B01": [[-0.09409510344266891,-1.2136341101952008]],
+      "O14": [[-0.07127580977976322,-1.6563619327833652]]
+    }
+  },
+  "frozen_metrics": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "node_evaluation_failures": 0
+  },
+  "required_diagnostics": [
+    "branch-specific max error",
+    "known-witness errors",
+    "last nonzero negative head represented by each candidate per material",
+    "transition +/-1e-9 cm behavior",
+    "conceptual full WET_DRY table memory and zero per-column table state"
+  ],
+  "hard_guards": [
+    "Characterization only, not qualification.",
+    "E2A and R1A failures remain authoritative negative evidence.",
+    "No threshold relaxation, physics change, Class-B reopening or dry-axis retuning.",
+    "A passing R2A permits only a separately frozen full-region R2B characterization."
+  ],
+  "exit": {
+    "pass": "ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZED_READY_FOR_FULL_REGION_R2B",
+    "fail": "ASYMPTOTIC_WET_AXIS_REJECTED_STOP_NEAR_SATURATION_TABLE_LINE_AND_RECONSIDER_FACE_FORMULATION"
+  },
+  "relevant_invariants": [3,4,5,7,8,13,16,20,23,24,25,26,27,30]
+}
