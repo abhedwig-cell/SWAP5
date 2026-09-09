@@ -1,0 +1,47 @@
+name: F-FWC01 Gate B2A Physical Advective Falling-Slug Mass
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2a-falling-slug-mass.yml
+      - experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py
+      - integration/f-fwc/F-FWC01_GATE_B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_PRECOMMIT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen physical falling-slug mass subgate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2a"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py \
+            "$out/F-FWC01_GATE_B2A_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2A_STDOUT.txt"
+      - name: Assert frozen subgate decision
+        run: |
+          python3 - <<'PY'
+          import json
+          p='fwc01-gate-b2a/F-FWC01_GATE_B2A_RESULT.json'
+          r=json.load(open(p))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES'
+          assert r['mass_repair_applied'] is False
+          assert r['numerical_clipping_repair_applied'] is False
+          assert r['all_overflow_state_bitwise_unchanged'] is True
+          assert r['all_overflow_ledgers_exactly_unchanged'] is True
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2a-falling-slug-mass
+          path: fwc01-gate-b2a/
