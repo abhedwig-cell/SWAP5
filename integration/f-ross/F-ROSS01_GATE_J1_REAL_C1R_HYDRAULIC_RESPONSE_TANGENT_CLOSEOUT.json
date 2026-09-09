@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT",
+  "status": "QUALIFIED",
+  "production_implementation": false,
+  "overall_rossfast_admission": false,
+  "qualified_family": "STARINGREEKS_2018_UNIMODAL_MVG_KSATFIT_C1R_BASE",
+  "candidate": "N241_FLOAT32_BILINEAR_LOG_MOBILITY_WITH_ANALYTIC_STRICT_INTERIOR_FACE_DERIVATIVES",
+  "scope": "homogeneous unsaturated 10 cm faces, h approximately [-10000,-1] cm, H_ENPR=0, KSATEXM disabled",
+  "primary_quantity": {
+    "name": "d_h_bottom_d_q_bottom",
+    "definition": "local derivative of bottom pressure head with respect to prescribed positive-downward bottom Darcy flux for the frozen homogeneous C1R Ross face chain at fixed top pressure head",
+    "h_units": "cm pressure head",
+    "q_units": "cm/day",
+    "tangent_units": "day",
+    "observed_sign": "negative in all 72 qualified J1B-R1 base cases"
+  },
+  "evidence_lineage": [
+    {
+      "stage": "J1A_INITIAL_BINARY64_FD",
+      "status": "FAIL_PRESERVED",
+      "meaning": "5/6 stress materials failed the frozen relative/scaled self metric only in near-zero derivative cases; failure was not rewritten as PASS"
+    },
+    {
+      "stage": "J1A_R1_DIRECT_HEAD_BINARY64_FD",
+      "status": "FAIL_PRESERVED",
+      "evidence_commit": "54074a8e4879cf001217f0f13d13316f9913f3ea",
+      "meaning": "removing h-to-S-to-u roundtrip did not remove all near-zero binary64 cancellation"
+    },
+    {
+      "stage": "J1A_R2_80_DIGIT_FD",
+      "status": "PASS",
+      "run": 34355979139,
+      "head": "66f321c945b30a87f3e9d8e5c56610e693d477e5",
+      "material_pass_count": 6,
+      "material_count": 6,
+      "maximum_high_precision_self_metric": 3.324e-08,
+      "threshold": 1e-06,
+      "classification": "FINITE_DIFFERENCE_ORACLE_ROUNDOFF_CANCELLATION_CONFIRMED",
+      "result_commit": "8e808635eb61841826cfccf99c709b158707adab"
+    },
+    {
+      "stage": "J1B_INITIAL_COLUMN_RESPONSE",
+      "status": "FAIL_PRESERVED",
+      "run": 34356874553,
+      "head": "26936ca27004e82c09016279ac0069e23149832b",
+      "evidence": "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json",
+      "failure_classes": [
+        "18 invalid dry cases from h_top=-1000 cm exactly on N241 node 180",
+        "one O01 large-FD interpolation cell transition"
+      ],
+      "positive_evidence_retained": "all 54 valid cases already met tangent, continuity, linear-residual, sign, cost and noninterference gates"
+    },
+    {
+      "stage": "J1B_O01_SWITCH_LOCALIZATION",
+      "status": "PASS",
+      "run": 34357951321,
+      "head": "bd0e5d65cf1f54c5a24de0b2cc1f65f28f418d22",
+      "evidence": "F-ROSS01_GATE_J1B_O01_CELL_SWITCH_DIAGNOSTIC_RESULT.json",
+      "localized_case": "O01 long_dry q=0 factor=3e-5 head index 39 crosses node 205",
+      "policy": "do not shrink the frozen FD step and do not average derivatives across the node"
+    },
+    {
+      "stage": "J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE",
+      "status": "PASS",
+      "run": 34358497637,
+      "head": "d0a43d2f88a4b939564569075ec7d3f9d98669c1",
+      "evidence": "F-ROSS01_GATE_J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE_RESULT.json",
+      "base_cases": 72,
+      "base_case_errors": 0,
+      "smooth_fd_comparisons": 143,
+      "routed_known_node_crossings": 1,
+      "unexpected_cell_switches": 0,
+      "maximum_smooth_tangent_metric": 3.419659398931413e-07,
+      "tangent_threshold": 1e-05,
+      "maximum_scaled_flux_continuity_residual": 2.4437408376474047e-13,
+      "continuity_threshold": 1e-10,
+      "maximum_normal_linear_residual": 1.6155871338926322e-27,
+      "maximum_tangent_linear_residual": 5.684341886080802e-14,
+      "linear_threshold": 1e-11,
+      "nonnegative_tangent_count": 0,
+      "nonfinite_count": 0,
+      "base_state_bitwise_unchanged_all": true,
+      "table_bitwise_unchanged_all": true
+    },
+    {
+      "stage": "J1C_BOUNDARY_CHARACTERIZATION",
+      "status": "PASS",
+      "run": 34359202974,
+      "head": "6f562b0099407f6c265f6d73d2e769788d847f4e",
+      "evidence": "F-ROSS01_GATE_J1C_BOUNDARY_DERIVATIVE_CHARACTERIZATION_RESULT.json",
+      "material_pass_count": 6,
+      "material_count": 6,
+      "maximum_scaled_internal_node_flux_jump": 0.0,
+      "maximum_crossing_derivative_jump_metric_characterization": 0.9717107292190155,
+      "maximum_transverse_derivative_jump_metric_characterization": 0.0,
+      "maximum_hydrostatic_scaled_abs_q": 0.0,
+      "maximum_hydrostatic_scaled_derivative_antisymmetry": 0.0,
+      "meaning": "C1R flux is continuous across tested internal node lines but the normal derivative can be strongly piecewise-discontinuous"
+    }
+  ],
+  "same_factorization_cost_qualification": {
+    "matrix_factorizations_per_base_case": 1,
+    "normal_backsolves_per_base_case": 1,
+    "additional_tangent_backsolves_per_base_case": 1,
+    "production_nonlinear_trajectories_for_tangent": 0,
+    "production_fallback_or_branch_count_in_J1B_R1_smooth_cases": 0,
+    "table_derivative_evaluations": "one bounded local analytic interpolation derivative evaluation per face",
+    "finite_difference_plus_minus_profile_solves": "qualification oracle only, not production cost"
+  },
+  "mass_and_noninterference": {
+    "mass_proxy": "steady serial-face continuity",
+    "maximum_scaled_flux_continuity_residual": 2.4437408376474047e-13,
+    "base_state_bitwise_unchanged": true,
+    "shared_table_bitwise_unchanged": true,
+    "tangent_is_diagnostic_response_output_only": true,
+    "principal_state_mutated_by_tangent": false
+  },
+  "qualified_piecewise_runtime_semantics": {
+    "strict_interpolation_cell_interior": "use the qualified analytic face derivatives and same-factorization response tangent",
+    "internal_table_node_line": "flux remains continuous but the normal derivative is one-sided/piecewise; no unique smooth derivative may be invented",
+    "trial_or_fd_crosses_node": "classify as regime switching and retry, route or fallback without averaging across the node",
+    "exact_equal_head_shortcut": "explicit separate branch returning constitutive K(h); no cross-branch strict-interior tangent claim",
+    "hydrostatic_condition": "qualified frozen-law behavior q=0 and dq/dh_a=-dq/dh_b",
+    "dry_tail_and_high_conductivity_interior": "finite strict-interior derivatives observed",
+    "head_envelope_endpoints": "excluded from a unique derivative claim; require explicit one-sided or fail-closed policy"
+  },
+  "invariant_reconciliation": {
+    "invariant_5_scratch_per_worker": "normal correction and tangent vectors are scratch, not persistent per-column state",
+    "invariant_7_transactional_steps": "J1 tangent is diagnostic and does not commit or mutate principal state",
+    "invariant_13_mass_absolute": "no tangent path changes mass; serial-face continuity is preserved in the qualified steady column fixture",
+    "invariant_14_interface_sensitivity_first_class": "production-useful d_h_bottom/d_q_bottom is obtained from the same discrete Jacobian factorization with one extra backsolve",
+    "invariant_15_limit_coupling_cost": "production tangent does not require plus/minus full Ross trajectories",
+    "invariant_20_solver_interface": "result supports a response-tangent capability for an alternative soil-water solver without coupling other modules to solver internals",
+    "invariant_23_physics_vs_solver_policy": "no physical closure, table, KSATFIT, H_ENPR or KSATEXM setting was changed to obtain the tangent qualification",
+    "invariant_25_reference_mode": "independent symmetric finite differences remain qualification oracles, not the production algorithm",
+    "invariant_30_explicit_qualification": "initial failures, oracle limitations, regime switching and boundary semantics are preserved rather than hidden"
+  },
+  "not_qualified_by_J1": [
+    "physical transient Ross column with storage and source/sink",
+    "timestep accuracy",
+    "saturation transitions",
+    "heterogeneous profiles",
+    "prescribed bottom-boundary production solver behavior",
+    "groundwater switching or groundwater solver admission",
+    "MODFLOW coupling admission",
+    "Class-B H_ENPR/SVG2006 compact face representation",
+    "KSATEXM",
+    "crop/process physics",
+    "runtime or MultiSWAP admission",
+    "FullRichards equivalence/qualification"
+  ],
+  "next_sequence": [
+    "D_DISCRETE_MASS_WITH_PHYSICAL_PROCESSES",
+    "F_TIMESTEP",
+    "E_SATURATION_TRANSITIONS",
+    "G_HETEROGENEOUS_PROFILES",
+    "H_BOTTOM_BOUNDARY",
+    "I_GROUNDWATER",
+    "K_RUNTIME",
+    "L_MULTISWAP",
+    "M_FULLRICHARDS_QUALIFICATION"
+  ],
+  "pass": true,
+  "decision": "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE"
+}
