@@ -7,8 +7,9 @@ on:
     paths:
       - .github/workflows/f-fwc01-gate-b2a-falling-slug-mass.yml
       - experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py
+      - experiments/fwc/fwc01_gate_b2a_fixture_repair_runner.py
       - integration/f-fwc/F-FWC01_GATE_B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_PRECOMMIT.json
-      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+      - integration/f-fwc/F-FWC01_GATE_B2A_MATERIAL_FIXTURE.json
 
 jobs:
   qualify:
@@ -23,7 +24,7 @@ jobs:
           out="fwc01-gate-b2a"
           rm -rf "$out"
           mkdir -p "$out"
-          python3 experiments/fwc/fwc01_gate_b2a_physical_falling_slug_mass.py \
+          python3 experiments/fwc/fwc01_gate_b2a_fixture_repair_runner.py \
             "$out/F-FWC01_GATE_B2A_RESULT.json" \
             | tee "$out/F-FWC01_GATE_B2A_STDOUT.txt"
       - name: Assert frozen subgate decision
