@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF33",
+  "tested_candidate": "d27a46f770700e2da521815471eeb18c237ce624",
+  "workflow_run": 34311722051,
+  "workflow_job": 102339581883,
+  "overall": "PASS_WITH_RUNTIME_ACCEPTED_WINDOW_LINEAGE_AND_SCHEDULING_HOLDS",
+  "checks": [
+    {"invariant": 2, "result": "PASS", "evidence": "composition module contains no file, parser, path or I/O dependency"},
+    {"invariant": 3, "result": "PASS", "evidence": "committed crop state, immutable parameters, forcing, accepted aggregates, rate packet and diagnostics remain separate types"},
+    {"invariant": 4, "result": "PASS", "evidence": "no new persistent column state is introduced; prepared crop-window data are trial-local"},
+    {"invariant": 5, "result": "PASS", "evidence": "phase-A snapshots and prepared PGASS are worker/job-local context, not per-column persistent scratch"},
+    {"invariant": 6, "result": "PASS_DESIGN", "evidence": "composition adds no object-per-column solver workspace and preserves shared immutable rate parameters"},
+    {"invariant": 7, "result": "PASS_WITH_RUNTIME_COMMIT_OWNER", "evidence": "begin/complete leave committed input bitwise unchanged; failed complete has non-OK status and candidate_built=false; prepared trial state returned on failure is explicitly non-committable"},
+    {"invariant": 8, "result": "PASS", "evidence": "same checkpoint/input replay is bitwise identical and failed-complete context remains reusable for retry/warm start"},
+    {"invariant": 9, "result": "PASS_RESTRICTED_PROCESS_EVENT", "evidence": "kernel time remains generic; this WOFOST process seam admits exactly one qualified crop-day event and rejects half-day invocation"},
+    {"invariant": 10, "result": "PASS_NO_CONFLICT", "evidence": "no MODFLOW or fixed coupling-window assumption is introduced"},
+    {"invariant": 11, "result": "PASS_NO_CONFLICT", "evidence": "transaction authority and rollback remain outside crop composition"},
+    {"invariant": 13, "result": "PASS_NO_NEW_MASS_OWNER", "evidence": "composition neither alters water fluxes nor weakens mass acceptance; accepted aggregate provenance remains runtime-owned"},
+    {"invariant": 16, "result": "PASS_DESIGN", "evidence": "immutable parameter bundle is shared and trial context contains only compact crop-window data"},
+    {"invariant": 21, "result": "PASS", "evidence": "qualified WOFOST physics is reused through F-WOF26/F-WOF28/F-WOF31/F-WOF32 rather than duplicated"},
+    {"invariant": 23, "result": "PASS", "evidence": "no numerical policy is embedded in physical crop configuration"},
+    {"invariant": 25, "result": "PASS", "evidence": "reference-bound component ordering and exact upstream regressions are retained"},
+    {"invariant": 26, "result": "PASS", "evidence": "begin/complete diagnostics expose phase status, candidate construction and component failures"},
+    {"invariant": 27, "result": "PASS", "evidence": "inactive crop path skips active-only canopy/rate dependencies and optional state"},
+    {"invariant": 28, "result": "PASS", "evidence": "runtime/coupler retains accepted-window lineage and scheduling ownership"},
+    {"invariant": 29, "result": "PASS", "evidence": "no midnight, file format, direct MODFLOW, or soil-substep assumption is added"},
+    {"invariant": 30, "result": "PASS", "evidence": "F-WOF33 has explicit machine-readable contract, CI qualification and this invariant audit"}
+  ],
+  "hard_holds": [
+    "runtime accumulation and accepted-trajectory provenance for IQROT/IPTRA are not implemented or proven by F-WOF33",
+    "runtime scheduling of exactly one WOFOST crop event per admitted crop-day window is not implemented by F-WOF33",
+    "full historical multi-day B1.10 crop-trajectory equivalence is not yet qualified"
+  ],
+  "mass_conservation_weakened": false,
+  "transaction_authority_changed": false,
+  "generic_kernel_time_weakened": false,
+  "runtime_lineage_claimed": false
+}
