@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_NUMERICS_ONLY",
+  "upstream": [
+    "F-ROSS01_GATE_E3E_R2_5CM_REFERENCE_ORACLE_VALIDITY_RESULT.json",
+    "F-ROSS01_GATE_E3E_R2R1_PRECOMMIT_SUPERSESSION.json"
+  ],
+  "face_length_cm": 5.0,
+  "materials": ["B01", "B12", "O13", "O14"],
+  "witness_policy": {
+    "common_controls_per_material": [
+      {"id": "DEEP_ZERO_SURFACE_CONTROL", "h_surface_cm": 0.0, "h_top_node_cm": -100.0},
+      {"id": "NEAR_SATURATION_POSITIVE_SURFACE_CONTROL", "h_surface_cm": 0.9, "h_top_node_cm": -0.01}
+    ],
+    "material_specific_witnesses": {
+      "B01": [
+        {"id": "R2_B01_WORST_LEGACY", "h_surface_cm": 0.924612096320944, "h_top_node_cm": -0.010519765794413582, "known_legacy_q_cm_per_day": 37.0649174713324}
+      ],
+      "B12": [
+        {"id": "R1_B12_WORST", "h_surface_cm": 0.8837919082381909, "h_top_node_cm": -0.009962848502903649, "known_r1_candidate_q_cm_per_day": 2.6432032548322555, "known_inherited_reference_q_cm_per_day": 2.647350867878214}
+      ],
+      "O13": [
+        {"id": "R1_O13_WORST", "h_surface_cm": 0.7833053261466696, "h_top_node_cm": -0.013722375623542532, "known_r1_candidate_q_cm_per_day": 11.208432753954423, "known_inherited_reference_q_cm_per_day": 11.23381766750256}
+      ],
+      "O14": []
+    }
+  },
+  "branch_rule": {
+    "positive_surface_head": "For h_surface>0 the saturated surface-to-zero contribution diverges as q->KSAT+, so search for a strictly interior q>KSAT root.",
+    "zero_surface_head": "For h_surface=0 first evaluate the finite q->KSAT+ unsaturated path-length limit. If limit < 5 cm, admit q=KSAT with zero-head saturated plateau length 5-limit. If limit = 5 cm within endpoint tolerance, admit q=KSAT without plateau. If limit > 5 cm, search for an interior q>KSAT root.",
+    "mass_or_physics_change": false
+  },
+  "oracle_a": {
+    "id": "MPMATH100_T8_ADAPTIVE",
+    "precision_decimal_digits": 100,
+    "endpoint_limit": "Evaluate q=KSAT unsaturated path with h=h_top*t^8 and explicit t=0 limiting value.",
+    "interior_root": "Use y=log10(q/KSAT-1), deterministic sign scan and high-precision bisection. Path integral uses the same t^8 variable transform and mpmath adaptive quadrature.",
+    "forbidden": ["machine-nextafter q bracket", "legacy steady_q"]
+  },
+  "oracle_b": {
+    "id": "MPMATH60_FIXED_GL256_T12",
+    "precision_decimal_digits": 60,
+    "endpoint_limit": "Evaluate q=KSAT with an independently powered h=h_top*t^12 transform and fixed 256-point Gauss-Legendre quadrature in t.",
+    "interior_root": "Use y=log10(q/KSAT-1), deterministic sign scan and fixed-GL path evaluations followed by bisection.",
+    "forbidden": ["adaptive quadrature", "t^8 transform", "legacy steady_q"]
+  },
+  "frozen_numeric_policy": {
+    "log10_delta_min": -24.0,
+    "log10_delta_samples": 289,
+    "upper_endpoint_safety_fraction": 0.999999999999,
+    "bisection_iterations": 120,
+    "endpoint_path_length_agreement_cm": 1.0e-9,
+    "endpoint_classification_tolerance_cm": 1.0e-9,
+    "interior_root_q_agreement_over_ksat": 1.0e-9,
+    "oracle_a_path_residual_cm": 1.0e-10,
+    "oracle_b_path_residual_cm": 1.0e-8
+  },
+  "acceptance": [
+    "Both oracles resolve every frozen witness without nonfinite values.",
+    "For h_surface=0, both endpoint path-length limits agree within 1e-9 cm and produce the same ENDPOINT_KSAT or INTERIOR_ROOT classification.",
+    "For every interior-root witness, oracle fluxes agree within 1e-9 KSAT and each path residual meets its frozen tolerance.",
+    "For every endpoint witness, q is exactly KSAT by branch definition and the independently computed plateau lengths agree within 1e-9 cm.",
+    "No acceptance threshold is changed after execution."
+  ],
+  "diagnostics_required": [
+    "branch_classification",
+    "endpoint_path_length_oracle_a_cm",
+    "endpoint_path_length_oracle_b_cm",
+    "saturated_plateau_length_cm_when_applicable",
+    "q_oracle_a_cm_per_day",
+    "q_oracle_b_cm_per_day",
+    "log10_delta_when_interior",
+    "q_saturated_darcy_upper_cm_per_day",
+    "path_residuals_cm",
+    "residual_at_known_legacy_or_candidate_q_when_available"
+  ],
+  "hard_nonclaims": [
+    "This gate does not qualify a Ross candidate face.",
+    "This gate does not qualify the inherited steady_q oracle outside the frozen witnesses.",
+    "The prior 5 cm boundary-face failure remains binding.",
+    "No finite-positive ponding-head, runoff, production, runtime or MultiSWAP admission follows.",
+    "The endpoint branch is a reference-oracle classification, not permission to alter constitutive physics."
+  ],
+  "success_exit": "QUALIFIED_ENDPOINT_LIMIT_AWARE_REFERENCE_ORACLE_WITNESSES_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "failure_exit": "ENDPOINT_LIMIT_AWARE_ORACLES_DISAGREE_OR_UNRESOLVED_FURTHER_ORACLE_RESEARCH_REQUIRED"
+}
