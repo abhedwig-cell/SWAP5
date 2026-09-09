@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "title": "Independent Richards Temporal Numeric-Profile Qualification",
+  "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
+  "status": "IN_PROGRESS_HELD_OUT_GATE_A_IMPLEMENTATION_REQUIRED",
+  "phase": "PLAN_PERSISTED_BEFORE_TEST_IMPLEMENTATION",
+  "base_commit": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
+  "plan": "integration/f-vq/F-VQ28_QUALIFICATION_PLAN.json",
+  "owner_input": {
+    "work_unit": "F-SI20",
+    "raw_head_observable_characterized": true,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "owner_qualified": false,
+    "decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS"
+  },
+  "state": {
+    "plan_persisted": true,
+    "held_out_matrix_frozen": true,
+    "harness_implemented": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_modified": false
+  },
+  "holds": {
+    "F_SI20_owner_finalization": "WAITING_FOR_FVQ28",
+    "F_GC02_release": "NOT_ALLOWED",
+    "production_temporal_tolerance": "NOT_SELECTED",
+    "production_metric": "NOT_SELECTED",
+    "retry_policy_change": "NOT_ALLOWED_IN_FVQ28",
+    "mass_gate_relaxation": "NOT_ALLOWED"
+  },
+  "next_action": "Implement held-out Gate A exactly from the persisted plan and run it with production source immutability, repeat determinism and O0/O2 identity checks."
+}
