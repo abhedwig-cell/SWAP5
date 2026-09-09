@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "title": "Finite Water Content Soil-Water Solver Assessment",
+  "branch": "work/f-fwc01-finite-water-content-assessment",
+  "base_commit": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "production_implementation": false,
+  "persisted": true,
+  "tested": false,
+  "reproduced": false,
+  "qualified": false,
+  "decision": "FWC_QUALIFICATION_INCOMPLETE",
+  "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"],
+  "hard_blockers_if_failed": ["C_BOUNDED_STATE_OR_QUALIFIED_MEMORY_CONTRACT", "D_DISCRETE_MASS_CONSERVATION"],
+  "primary_lineage": [
+    {"doi":"10.1029/2008WR006815","role":"finite-water-content infiltration and redistribution"},
+    {"doi":"10.1002/2015WR017126","role":"general 1-D vadose-zone solution method"},
+    {"doi":"10.1002/2014WR016454","role":"moving-water-table validation"},
+    {"doi":"10.1002/2017MS000931","role":"Soil Moisture Velocity Equation theoretical relation"}
+  ],
+  "status": "SOURCE_BOUND_WORKUNIT_STARTED_THEORY_AND_REPRESENTATION_RECONSTRUCTION_NEXT"
+}
