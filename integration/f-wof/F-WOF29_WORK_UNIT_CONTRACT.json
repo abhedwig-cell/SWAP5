@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF29",
+  "title": "Compact Immutable WOFOST Rate Table Substrate",
+  "branch": "work/f-wof29-rate-table-substrate",
+  "base": {
+    "commit": "64e566590ff8fb4fd8aa194c92d16436f86ea02d",
+    "status": "QUALIFIED_WOFOST_ONE_DAY_SEMANTIC_RATE_STATE_VIEW"
+  },
+  "goal": "Implement the smallest source-bound immutable table substrate needed by the restricted standard-WOFOST rate provider, preserving SWAP 4.3.1 B1.10 AFGEN clamp and linear-interpolation semantics without carrying parser sentinel storage into the kernel.",
+  "source_basis": {
+    "archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "legacy_function": "functions.f90::afgen",
+    "legacy_semantics": [
+      "x <= first knot clamps to first y",
+      "x >= last active knot clamps to last active y",
+      "between knots uses linear interpolation",
+      "legacy decreasing-x sentinel only marks the end of active data in fixed parser storage"
+    ]
+  },
+  "production_scope": {
+    "new_source": "src/crop/mod_wofost_rate_table.f90",
+    "active_knots_only": true,
+    "strictly_increasing_x": true,
+    "finite_x_y_required": true,
+    "single_knot_constant_table_allowed": true,
+    "private_storage": true,
+    "public_mutator_after_construction": false,
+    "persistent_column_state_added": false,
+    "crop_rate_equations_added": false,
+    "parser_or_file_IO_added": false
+  },
+  "API": {
+    "type": "wofost_rate_table_t",
+    "construction": "construct_wofost_rate_table(x_values, y_values, table, status)",
+    "queries": [
+      "table%ready()",
+      "table%knot_count()",
+      "table%evaluate(x, y, status)"
+    ],
+    "storage_rule": "tables are immutable parameter data intended to be shared by crop/template identity; they are never transaction state or worker scratch"
+  },
+  "fail_closed_rules": [
+    "x/y sizes must match and contain at least one knot",
+    "all active x/y values must be finite",
+    "active x values must be strictly increasing",
+    "nonfinite query x is rejected before comparison/arithmetic",
+    "an unconstructed or invalid table cannot be evaluated"
+  ],
+  "qualification_tests": [
+    "compare compact table outputs against an exact local implementation of legacy AFGEN for a full legacy table",
+    "compare against a partially filled legacy table with a decreasing-x sentinel and unused tail",
+    "first/last clamp, exact knots and interior interpolation",
+    "single-knot constant behavior",
+    "reject empty, size-mismatched, duplicate-x, decreasing-x and nonfinite knot data",
+    "reject nonfinite query without floating-point exception under invalid traps",
+    "O0/O2 output identity",
+    "F-WOF28 rate-state view exact regression remains unchanged"
+  ],
+  "forbidden": [
+    "legacy fixed alternating x/y arrays as production storage",
+    "decreasing-x sentinel or unused tail in production table storage",
+    "parser metadata or crop-file paths",
+    "calendar or runtime state",
+    "WOFOST PGASS, maintenance, partitioning, death or leaf-growth equations",
+    "per-column duplication requirement for immutable tables"
+  ],
+  "affected_invariants": [2,3,4,5,6,8,16,21,25,27,29,30]
+}
