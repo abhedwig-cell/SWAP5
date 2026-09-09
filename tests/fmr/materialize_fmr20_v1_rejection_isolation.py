@@ -89,3 +89,5 @@ if runner.count('FMR20_V1_CROSS_COLUMN_ISOLATION=PASS') != 1:
 runner = runner.replace('FMR20_V1_CROSS_COLUMN_ISOLATION=PASS', 'FMR20_V1_CROSS_COLUMN_REJECTION_ISOLATION=PASS')
 RUNNER.write_text(runner)
 print('FMR20_V1_REJECT_G04_RUNNER_LOCK_AND_MARKER_UPDATE=PASS')
+
+# Trigger-only comment: the materialization logic above is unchanged.
