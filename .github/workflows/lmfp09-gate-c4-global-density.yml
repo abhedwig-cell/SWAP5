@@ -1,0 +1,60 @@
+name: F-LMFP09 Gate C4 Global Density
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - .github/workflows/lmfp09-gate-c4-global-density.yml
+      - experiments/lmfp/run_lmfp09_gate_c4_global_density.py
+      - integration/f-lmfp/F-LMFP09_GATE_C4_GLOBAL_DENSITY_CHARACTERIZATION_DESIGN.json
+  workflow_dispatch:
+
+jobs:
+  density-characterization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        class_id: [reference_sand_10, very_fast_5]
+        base_n: [33, 49, 65, 97]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve class
+        id: cls
+        shell: bash
+        run: |
+          case "${{ matrix.class_id }}" in
+            reference_sand_10)
+              echo "material=reference_sand" >> "$GITHUB_OUTPUT"
+              echo "length=10.0" >> "$GITHUB_OUTPUT"
+              ;;
+            very_fast_5)
+              echo "material=very_fast" >> "$GITHUB_OUTPUT"
+              echo "length=5.0" >> "$GITHUB_OUTPUT"
+              ;;
+            *) exit 2 ;;
+          esac
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run C4 density characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${{ matrix.class_id }}-n${{ matrix.base_n }}"
+          out="lmfp09-gate-c4-${tag}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c4_global_density.py \
+            "$out/F-LMFP09_GATE_C4_RESULT.json" \
+            "${{ steps.cls.outputs.material }}" \
+            "${{ steps.cls.outputs.length }}" \
+            "${{ matrix.base_n }}" \
+            | tee "$out/F-LMFP09_GATE_C4_STDOUT.json"
+      - name: Upload C4 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c4-${{ matrix.class_id }}-n${{ matrix.base_n }}
+          path: lmfp09-gate-c4-${{ matrix.class_id }}-n${{ matrix.base_n }}/
