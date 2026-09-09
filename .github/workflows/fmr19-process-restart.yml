@@ -1,0 +1,36 @@
+name: F-MR19 committed-boundary process restart
+
+on:
+  push:
+    branches:
+      - work/f-mr19-restricted-multiswap-process-restart
+    paths:
+      - 'src/runtime/mod_fmr_committed_restart.f90'
+      - 'src/runtime/mod_fmr_runtime_core.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'src/transaction/mod_transaction_reference.f90'
+      - 'tests/fmr/test_fmr19_process_restart.f90'
+      - 'tests/fmr/run_fmr19_process_restart_gate.sh'
+      - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
+      - 'integration/f-mr/F-MR19_RESTART_CONTRACT.json'
+      - 'integration/f-mr/F-MR19_STATUS.json'
+      - '.github/workflows/fmr19-process-restart.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-restricted-serialized-process-restart:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-MR19 committed-boundary process restart gate
+        run: bash tests/fmr/run_fmr19_process_restart_gate.sh
