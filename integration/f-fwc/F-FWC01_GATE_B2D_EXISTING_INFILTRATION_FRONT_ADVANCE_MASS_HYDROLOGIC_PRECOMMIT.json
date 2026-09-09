@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2D_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_HYDROLOGIC_TRAJECTORY",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": [
+    "A2 fixed-slot fail-closed transaction semantics qualified",
+    "B2B infiltration-front coordinate sort relaxation mass qualified",
+    "B2C source-reconciled Eq18",
+    "B2C-R2 grouped delta-K Eq18 numerical representation qualified and precision tuning stopped"
+  ],
+  "scope": {
+    "front_type": "already-existing infiltration front only",
+    "state": "front depth z in cm for one theta-bin increment",
+    "storage_identity": "W = (theta_d-theta_i)*z cm water",
+    "flux_identity": "F = (theta_d-theta_i)*dz/dt = K_d*(G_eff+h_p)/z + K_d-K_i",
+    "candidate_time_integrator": "explicit Euler",
+    "independent_reference": "analytic integral of dz/dt=A/z+B with deterministic bisection inversion",
+    "excluded": ["dry-bin creation","rainfall allocation","G_eff closure","front collision","front merge","groundwater interaction","falling-slug relaxation","explicit diffusion"]
+  },
+  "cases": {
+    "materials": ["B01","B12","O13","O14"],
+    "theta_bin_counts": [16,64,200],
+    "bin_fractions": [0.125,0.5,0.875,1.0],
+    "initial_front_depth_cm": [1.0,10.0,50.0],
+    "G_eff_cm": [1.0,10.0,100.0],
+    "ponding_head_cm": [0.0,5.0],
+    "candidate_step_counts": [1,2,4,8,16],
+    "horizon_policy": "T=min(0.01 day, 0.1*z0/v0) using the candidate/source Eq18 initial velocity; frozen dimensionless 10-percent initial-depth travel target"
+  },
+  "frozen_acceptance": {
+    "max_abs_step_mass_residual_cm": 1e-12,
+    "max_abs_horizon_mass_residual_cm": 1e-11,
+    "finest_relative_front_displacement_error": 0.001,
+    "finest_abs_equivalent_water_depth_error_cm": 0.0001,
+    "monotone_or_nonworsening_error_from_8_to_16_steps_factor": 1.05,
+    "nonfinite_count": 0,
+    "negative_velocity_count": 0,
+    "accepted_front_boundary_violation_count": 0,
+    "rejected_trial_committed_state_mutation_count": 0,
+    "rejected_trial_committed_ledger_mutation_count": 0,
+    "mass_repair_count": 0,
+    "clipping_repair_count": 0
+  },
+  "rejected_trial": {
+    "policy": "construct an oversized trial that would move z beyond a 100 cm restricted column; reject before commit",
+    "required_diagnostic": "FALLBACK_OR_RETRY_REQUIRED",
+    "water_discard_merge_clip": false
+  },
+  "hydrologic_relevance_policy": [
+    "Mass conservation is a hard gate and remains separate from trajectory tolerance.",
+    "Front and equivalent-water errors are judged at the finite hydrologic movement scale frozen by the 10-percent travel horizon.",
+    "No effort is spent reducing already-qualified Eq18 floating-point association error below hydrologically negligible levels."
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE",
+    "fail": "EXISTING_INFILTRATION_FRONT_ADVANCE_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "No post-result retuning of cases, horizon policy, step counts or thresholds.",
+    "No clipping, merge or water repair may be used to pass mass or boundary gates.",
+    "No dry-bin creation or rainfall allocation may be inferred from B2D.",
+    "No MultiSWAP admission follows from B2D."
+  ],
+  "relevant_invariants": [3,4,5,7,8,9,13,16,20,23,24,25,26,27,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
