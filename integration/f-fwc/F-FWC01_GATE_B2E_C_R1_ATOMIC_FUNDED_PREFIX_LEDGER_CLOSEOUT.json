@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_C_R1_ATOMIC_FUNDED_PREFIX_LEDGER_REPRESENTATION",
+  "workflow_run": 34393295809,
+  "workflow_head": "ac3f582ec6ffe1ed910b9a8ec3a42303d0ac934f",
+  "artifact_id": 10120485245,
+  "tested": true,
+  "qualified_restricted": true,
+  "production_implementation": false,
+  "decision": "QUALIFIED_RESTRICTED_ATOMIC_FUNDED_PREFIX_COMPOSED_INFILTRATION_MASS_PATH_READY_FOR_ZD_AND_RAINFALL_EVENT_QUALIFICATION",
+  "preserved_negative_evidence": {
+    "gate": "B2E_C_COMPOSED_EXISTING_FRONT_ADVANCE_AND_FULLY_FUNDED_CREATION",
+    "workflow_run": 34393034419,
+    "status": "FAIL_PRESERVED",
+    "reason": "six mathematically fully funded prefixes were false-rejected by sequential binary64 remaining-water comparisons at exact funding boundaries"
+  },
+  "generic_creation_parity_case_count": 8,
+  "generic_creation_parity_pass_count": 8,
+  "physical_case_count": 72,
+  "physical_case_pass_count": 72,
+  "positive_composed_case_count": 48,
+  "insufficient_existing_fail_closed_count": 12,
+  "insufficient_creation_fail_closed_count": 12,
+  "max_abs_composed_mass_residual_cm": 4.440892098500626e-16,
+  "max_abs_B2D_internal_step_mass_residual_cm": 2.7612776770458636e-17,
+  "funding_epsilon_used": false,
+  "physics_changed_from_B2D_R1": false,
+  "event_order_changed": false,
+  "partial_dry_bin_funding_qualified": false,
+  "water_clip_drop_merge_count": 0,
+  "new_persistent_state_bytes_beyond_front_state": 0,
+  "selected_representation": "ATOMIC_TOTAL_DEMAND_CERTIFICATE_THEN_ORDERED_PUBLICATION",
+  "interpretation": "Admission and surface remainder use the same certified total-demand scalar, eliminating binary64 false rejection at exact funded-prefix boundaries without epsilon, clipping, repair, or partial front creation.",
+  "hard_nonclaims": [
+    "No Green-Ampt Z_d calculation qualification.",
+    "No partial dry-bin funding semantics.",
+    "No redistribution, groundwater, crop, runtime or MultiSWAP production qualification."
+  ],
+  "next_action": "Qualify Z_d calculation/provenance and rainfall event semantics before broader FWC physical composition."
+}
