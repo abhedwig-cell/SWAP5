@@ -68,6 +68,7 @@ module mod_fmr_serialized_multiswap_runtime
   end type fmr_serialized_batch_diagnostics_t
 
   public :: fmr_run_serialized_physical_multiswap
+  public :: fmr_execute_serialized_physical_column
 
 contains
 
@@ -128,7 +129,7 @@ contains
       do pos = batch_start, batch_end
         idx = order(pos)
         results(idx)%dispatch_ordinal = pos
-        call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+        call fmr_execute_serialized_physical_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
              forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
              local_runtime, active_physical_calls)
       end do
@@ -211,7 +212,7 @@ contains
     valid = .true.
   end function registry_structure_valid
 
-  subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
+  subroutine fmr_execute_serialized_physical_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
                             state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
@@ -232,7 +233,7 @@ contains
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: kernel_diag
     type(fmr_serialized_physical_observation_t) :: observation
-    integer :: state_index, parameter_index, forcing_index, commit_status
+    integer :: state_index, parameter_index, forcing_index, commit_status, simultaneous_physical_calls
     logical :: checkpoint_ok, candidate_ready, did_commit
 
     if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
@@ -261,7 +262,10 @@ contains
     diagnostic%checkpoint_replays = 1
     diagnostic%runtime_attempts = 1
 
+    !$omp atomic capture
     active_physical_calls = active_physical_calls + 1
+    simultaneous_physical_calls = active_physical_calls
+    !$omp end atomic
     call backend%run_trial(column, templates(find_template_index(column%template_id, templates)), &
          parameter_registry(parameter_index), state_registry(state_index), forcing_registry(forcing_index), &
          numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
@@ -299,10 +303,12 @@ contains
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       if (output%solver_executed) then
         runtime%max_simultaneous_real_physical_solves = max( &
-             runtime%max_simultaneous_real_physical_solves, active_physical_calls)
+             runtime%max_simultaneous_real_physical_solves, simultaneous_physical_calls)
       end if
     end if
+    !$omp atomic update
     active_physical_calls = active_physical_calls - 1
+    !$omp end atomic
 
     if (.not. kernel_result%completed) then
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
@@ -344,7 +350,7 @@ contains
     diagnostic%failure_classification = 'NONE'
     diagnostic%unrounded_mass_residual = output%mass%residual
     call update_committed_provenance(state_registry(state_index), output, diagnostic)
-  end subroutine execute_column
+  end subroutine fmr_execute_serialized_physical_column
 
   logical function column_is_routable(column, templates, parameter_registry, forcing_registry) result(routable)
     type(fmr_logical_column_t), intent(in) :: column
