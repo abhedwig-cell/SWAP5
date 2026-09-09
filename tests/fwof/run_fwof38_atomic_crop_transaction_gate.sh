@@ -73,7 +73,7 @@ extra_decl = '''  type(kernel_committed_state_t) :: physical_committed
   class(transaction_state_t), allocatable :: crop_snapshot, candidate_snapshot1, candidate_snapshot2
   type(wofost_crop_owner_state_t) :: crop_snapshot_owner, candidate_snapshot_owner1, candidate_snapshot_owner2
   type(wofost_one_day_forcing_t) :: bad_crop_forcing
-  logical :: crop_initialized, crop_checkpoint_ok, snapshot_available, did_commit
+  logical :: crop_checkpoint_ok, snapshot_available, did_commit
   integer :: crop_status, crop_commit_status
   integer(kind=8) :: crop_revision_before
 '''
