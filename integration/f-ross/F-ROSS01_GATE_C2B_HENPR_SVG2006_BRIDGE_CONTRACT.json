@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_SWAPP_HENPR_SVG2006_LOGK_BRIDGE_CONSTITUTIVE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_CHARACTERIZATION",
+  "production_implementation": false,
+  "candidate_id": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "candidate_class": "CLASS_B_NEW_PHYSICAL_HYDRAULIC_CLOSURE",
+  "purpose": "Characterize a continuous near-saturation hydraulic closure that reuses the source-bound SWAP 4.3.1 H_ENPR finite-air-entry retention/matrix-conductivity base and replaces the incompatible legacy -2 cm linear-in-S KSATEXM extension by an endpoint-exact pressure-dependent log-conductivity bridge tied to Schaap and van Genuchten 2006.",
+  "identity_guards": [
+    "This candidate is not SWAP 4.3.1 exact KSATEXM.",
+    "This candidate is not verbatim published MMVG 2006 because SWAP H_ENPR retention uses its own rational wet-end continuation and because V1 maps existing SWAP conductivity parameters rather than refitting K_o and L.",
+    "This candidate is not the NHI/MetaSWAP conservative near-saturation variant; its exact mapping remains a separate unresolved lineage.",
+    "The closure is physical configuration, not RossFast solver policy, and must be callable identically by FullRichards and RossFast before any solver-equivalence claim."
+  ],
+  "source_lineage": {
+    "swap_henpr_reconciliation": "F-ROSS01_SWAPP431_HENPR_NEAR_SATURATION_SOURCE_RECONCILIATION.json",
+    "legacy_combination_finding": "F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json",
+    "literature": "Schaap MG, van Genuchten MT (2006), Vadose Zone Journal 5:27-34, doi:10.2136/vzj2005.0005",
+    "published_bridge_semantics": "R decreases from 1 at h=0 to 0 at h=-40 cm, with a slope break at h=-4 cm and R(-4)=0.25; K=K_m*(K_s/K_m)^R."
+  },
+  "frozen_v1_parameters_and_mapping": {
+    "H_ENPR_cm": -4.0,
+    "matrix_conductivity_scale_Ko_candidate": "KSATFIT",
+    "measured_saturated_target_Ks_candidate": "KSATEXM",
+    "pore_connectivity_candidate": "LEXP",
+    "retention_parameters": ["theta_r", "theta_s", "alpha", "n"],
+    "mapping_status": "SOURCE_SEMANTICALLY_MOTIVATED_NOT_EMPIRICALLY_RECALIBRATED",
+    "empirical_guard": "Passing C2B does not establish that existing KSATFIT and LEXP are statistically optimal K_o and L values for the new bridge."
+  },
+  "retention_law": {
+    "definition": "Use the exact SWAP 4.3.1 default-MvG H_ENPR theta(h) semantics with H_ENPR=-4 cm, including the normalized dry branch below h105=1.05*H_ENPR and the source rational continuation to theta_s above h105.",
+    "physics_change_relative_to_base_C1R": true,
+    "extra_dynamic_state": false
+  },
+  "matrix_conductivity_law": {
+    "f": "f(h)=(1+|alpha*h|^n)^(-m), m=1-1/n",
+    "s_entry": "f(H_ENPR)",
+    "for_h_below_entry": "se=f(h)/s_entry; K_m=KSATFIT*se^LEXP*((1-(1-f(h)^(1/m))^m)/(1-(1-s_entry^(1/m))^m))^2",
+    "for_h_at_or_above_entry": "K_m=KSATFIT",
+    "source_identity": "Exact SWAP 4.3.1 H_ENPR matrix-conductivity semantics, excluding legacy KSATEXM precedence."
+  },
+  "near_saturation_bridge": {
+    "coordinate": "pressure_head_cm",
+    "R_exact_endpoint_form": [
+      "R=0 for h<=-40 cm",
+      "R=(h+40)/144 for -40<h<-4 cm, giving exact R(-40)=0 and R(-4)=0.25",
+      "R=1+(3/16)*h for -4<=h<0 cm, giving exact R(-4)=0.25 and R(0)=1",
+      "R=1 for h>=0 cm"
+    ],
+    "relation_to_published_coefficients": "The paper prints rounded coefficients 0.2778+0.00694h and 1+0.1875h. V1 uses the explicitly stated endpoints and break value exactly, so it is a documented endpoint-exact reconstruction rather than a verbatim rounded transcription.",
+    "total_conductivity": "For h<0, K(h)=exp((1-R(h))*ln(K_m(h))+R(h)*ln(KSATEXM)); for h>=0, K(h)=KSATEXM.",
+    "expected_endpoint_properties": [
+      "K(-40)=K_m(-40)",
+      "K is continuous at -40 cm",
+      "K is continuous at -4 cm because R is continuous and K_m is continuous/flat from H_ENPR upward",
+      "K(0)=KSATEXM exactly",
+      "K remains positive for positive K_m and KSATEXM"
+    ],
+    "continuity_class_claim": "C0 only. One-sided derivative jumps at -40, -4 and 0 are allowed and must be quantified; V1 does not claim C1 continuity."
+  },
+  "characterization_catalog": {
+    "materials": "all 36 Staringreeks 2018 unimodal MvG rows",
+    "catalog": "F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "catalog_default_H_ENPR_is_ignored_for_this_research_candidate": true,
+    "imposed_H_ENPR_cm": -4.0,
+    "require_KSATEXM_gt_KSATFIT": true
+  },
+  "hard_constitutive_gates": {
+    "theta_finite": true,
+    "theta_within_theta_r_theta_s": true,
+    "theta_monotone_non_decreasing_with_head": true,
+    "theta_C0_at_h105_normalized_tolerance": 1e-11,
+    "theta_reaches_theta_s_at_h0_normalized_tolerance": 1e-12,
+    "K_positive_and_finite": true,
+    "K_not_above_KSATEXM_normalized_tolerance": 1e-12,
+    "K_monotone_non_decreasing_with_head": true,
+    "K_C0_at_minus40_normalized_tolerance": 1e-11,
+    "K_C0_at_minus4_normalized_tolerance": 1e-11,
+    "K_endpoint_at_h0_equals_KSATEXM_normalized_tolerance": 1e-12,
+    "MFP_finite_over_h_minus10000_to_0": true,
+    "MFP_monotone_non_decreasing_with_head": true,
+    "nan_or_inf_count": 0
+  },
+  "diagnostic_not_acceptance_metrics": [
+    "one-sided dK/dh and d(logK)/dh at h=-40,-4,0",
+    "maximum d(logK)/dh over h=[-40,0]",
+    "maximum K/C where C>0 over h=[-40,0]",
+    "MFP contribution from h=[-40,0] relative to h=[-10000,0]",
+    "comparison of wet-end stiffness with exact legacy KSATEXM and base H_ENPR/KSATFIT, without using either as a calibration target",
+    "difference between endpoint-exact R and the paper's printed rounded decimal form"
+  ],
+  "explicit_nonclaims": [
+    "No empirical goodness-of-fit claim for the 36 Staringreeks materials.",
+    "No Ross face-table accuracy claim.",
+    "No FullRichards transient accuracy or equivalence claim.",
+    "No saturation-transition, groundwater, response-tangent or MultiSWAP production claim.",
+    "No combination with explicit SWAP macropore physics."
+  ],
+  "exit_rule": {
+    "pass": "Persist constitutive characterization and open a separate steady-face representation characterization with predeclared table candidates and unchanged physical closure.",
+    "fail": "Fail-close V1 before any Ross table work. Any change to H_ENPR, parameter mapping, R(h), retention law or conductivity law is a new Class B physical-closure contract, not numerical retuning."
+  },
+  "relevant_invariants": [1, 3, 13, 20, 21, 23, 25, 27, 29, 30]
+}
