@@ -4,12 +4,14 @@
   "work_unit": "F-SI21",
   "title": "Nonstationary Prescribed-Head Temporal Estimator and Same-Endpoint Refinement Policy",
   "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
-  "status": "IN_PROGRESS_CANDIDATE_MATRIX_FREEZE_REQUIRED",
-  "phase": "SOURCE_BOUND_SEAM_AUDIT_COMPLETE_BEFORE_NUMERICAL_CHARACTERIZATION",
+  "status": "IN_PROGRESS_CHARACTERIZATION_HARNESS_IMPLEMENTATION",
+  "phase": "SOURCE_BOUND_CANDIDATE_MATRIX_FROZEN_BEFORE_NUMERICAL_EXECUTION",
   "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
   "contract": "integration/f-si/F-SI21_WORK_UNIT_CONTRACT.json",
   "seam_audit": "integration/f-si/F-SI21_SEAM_AUDIT.json",
   "seam_audit_commit": "591e7843594f5fe898307284249acf2a14d449db",
+  "candidate_matrix": "integration/f-si/F-SI21_CANDIDATE_MATRIX.json",
+  "candidate_matrix_commit": "c1fed78164b2965812bd2102b3b09afb4287a696",
   "trigger": {
     "f_si20": "C_SEPARATE_OWNER_RUNTIME_POLICY_REQUIRED_FOR_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE",
     "f_vq28": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED"
@@ -38,11 +40,11 @@
     "reserved": true,
     "persisted": true,
     "source_seam_audit_complete": true,
-    "candidate_matrix_frozen": false,
+    "candidate_matrix_frozen": true,
     "characterization_harness_implemented": false,
     "tested": false,
     "independently_qualified": false,
     "production_implemented": false
   },
-  "next_action": "Freeze the algorithmic candidate matrix before numerical execution. The matrix must preserve one physical origin and one target endpoint across nested refinement levels, preserve F-CI14 endpoint metric categories and scalarization, record hard mass and solver cost at every level, fail closed on nonmonotone/nonasymptotic decay, and measure normal-path cost separately from escalation/reference cost."
+  "next_action": "Implement the frozen test-only 72-trajectory same-endpoint characterization harness for N=1,2,4,8,16,32. Reuse source-locked F-VQ28 fixture/solver controls where possible. Emit component defects, decay ratios, solver cost and hard mass diagnostics. Do not modify production source or choose a temporal tolerance."
 }
