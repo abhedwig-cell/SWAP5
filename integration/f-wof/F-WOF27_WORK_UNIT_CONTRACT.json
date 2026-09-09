@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "Restricted Standard WOFOST One-Day Rate Evaluator Readiness & Provider Boundary",
+  "branch": "work/f-wof27-one-day-rate-evaluator-readiness",
+  "base": {
+    "commit": "428ad482d6b449e3e71d0c42bcc8521a98b9f2fe",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_STRUCTURAL_STATE_INTEGRATOR"
+  },
+  "source_provenance": {
+    "legacy_archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "primary_regions": [
+      "SWAP/wofost.f90:817-929 update_dvs_rate",
+      "SWAP/wofost.f90:933-1107 update_wofost",
+      "SWAP/wofost.f90:1348-1466 assimilation",
+      "SWAP/wofost.f90:1470-1622 totass/assim",
+      "SWAP/wofost.f90:1626-1848 partition/carbon/growth/death/GLAI helpers"
+    ],
+    "consumer_contract": "src/crop/mod_wofost_one_day_structural_evolution.f90::wofost_one_day_rate_packet_t"
+  },
+  "goal": "Determine and qualify the smallest source-bound parameter, state-view, forcing and accepted-process boundary required to produce the F-WOF26 one-day rate packet without legacy globals, persistent rate workspace, calendar coupling or unrelated WOFOST options.",
+  "mode": "ZERO_PRODUCTION_READINESS_FIRST",
+  "admitted_first_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrient_route": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false,
+    "soybean": false,
+    "grass": false,
+    "management_events": false,
+    "crop_window_days": 1.0
+  },
+  "required_provider_phases": {
+    "prepare_assimilation": {
+      "timing": "after F-WOF26 candidate-local day-start Tmin-history preparation and before soil-water substeps",
+      "required_output": ["actual PGASS or semantic equivalent"],
+      "reason": "B1.10 assimilation computes gross assimilation before the soil-water substeps; preserving this phase boundary keeps future same-window oxygen/root-respiration coupling possible even though that option is excluded from the first profile"
+    },
+    "finalize_rates": {
+      "timing": "after accepted IQROT/IPTRA are frozen for the crop window",
+      "required_output": "complete event-local wofost_one_day_rate_packet_t for the admitted profile",
+      "reason": "water stress affects GASS, leaf death and GLAI, so these rates cannot be finalized before accepted-process aggregation"
+    }
+  },
+  "architectural_rules": [
+    "the provider receives explicit immutable parameter DTOs or references, never legacy module globals",
+    "the provider receives read-only crop state/views and may not mutate committed or candidate crop state",
+    "all rates and algebraic intermediates remain call-local or worker scratch",
+    "solar geometry is explicit forcing; the provider does not call ASTRO(daynr,...)",
+    "the provider has no file I/O, weather cursor, calendar counter, MODFLOW or Richards-solver dependency",
+    "F-WOF26 remains the only owner of structural state integration and cohort mutation",
+    "accepted IQROT/IPTRA lineage remains a runtime/F-KT precondition and is not recreated inside the rate evaluator",
+    "reference-specific GLAIEXP carryover is read from the owner/reference view only when pre-event LAIEXP>=6; the producer must not invent a fresh rate in that regime"
+  ],
+  "rate_packet_fields_to_resolve": [
+    "temperature_sum_increment",
+    "development_rate before structural anthesis truncation",
+    "root_net_growth_rate",
+    "stem_net_growth_rate",
+    "storage_net_growth_rate",
+    "leaf_growth_rate",
+    "leaf_stress_death_rate excluding lifespan death handled structurally by F-WOF26",
+    "leaf_age_increment",
+    "youngest_specific_leaf_area",
+    "lai_exponential_growth_rate plus recomputed/carryover classification",
+    "relative_transpiration_used"
+  ],
+  "gates": {
+    "G01_complete_parameter_inventory": "REQUIRED",
+    "G02_complete_state_view_inventory": "REQUIRED",
+    "G03_prepare_vs_finalize_dependency_graph": "REQUIRED",
+    "G04_exact_mapping_to_F_WOF26_rate_packet": "REQUIRED",
+    "G05_no_persistent_rate_workspace": "REQUIRED",
+    "G06_no_hidden_calendar_or_IO": "REQUIRED",
+    "G07_restricted_SWRD1_root_rate_boundary": "REQUIRED",
+    "G08_reference_GLAIEXP_carryover_read_contract": "REQUIRED",
+    "G09_theory_code_discrepancies_and_fail_closed_validation": "REQUIRED",
+    "G10_invariant_audit": "REQUIRED"
+  },
+  "forbidden": [
+    "implementing broad production WOFOST rate physics before the input/parameter boundary is reconciled",
+    "copying WOFOST_param or WOFOST_rates legacy layout wholesale into persistent per-column state",
+    "calling ASTRO from the crop rate evaluator",
+    "using plant_interface, atmosphere_interface, MOD_integral or variables globals as new production dependencies",
+    "silently enabling IDSL=2, nutrients, oxygen, SWRD=3, soybean, grass or potential-shadow behavior"
+  ],
+  "affected_invariants": [2,3,4,5,6,7,9,13,16,21,23,25,27,28,29,30]
+}
