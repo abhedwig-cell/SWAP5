@@ -1,0 +1,29 @@
+name: F-MR20 parallel-v1 real-physics qualification
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parallel-v1-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-MR20 parallel-v1 qualification gate
+        run: bash tests/fmr/run_fmr20_parallel_v1_qualification.sh
