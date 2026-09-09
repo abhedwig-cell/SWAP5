@@ -21,6 +21,16 @@ new_fmt="""# VALID_ACCEPT and VALID_REJECT already assert C_h numerically in the
 assert s.count('FKT11_CH=') == 6"""
 assert s.count(old_fmt)==1, 'F-KT11 C_h formatting guard patch drift'
 s=s.replace(old_fmt,new_fmt,1)
+old_source="""assert 'self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available' in backend
+assert 'ieee_is_finite(config%model_temporal_indicator_budget)' in backend
+assert 'config%model_temporal_indicator_budget > 0.0_real64' in backend"""
+new_source="""assert 'self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available' in backend
+assert 'self%temporal_indicator_budget_valid = .false.' in backend
+assert 'self%temporal_indicator_budget = config%model_temporal_indicator_budget' in backend
+assert 'ieee_is_finite(self%temporal_indicator_budget)' in backend
+assert 'self%temporal_indicator_budget_valid = self%temporal_indicator_budget > 0.0_real64' in backend"""
+assert s.count(old_source)==1, 'F-KT11 remediated validity source guard patch drift'
+s=s.replace(old_source,new_source,1)
 p.write_text(s)
 PY
 bash "$TMP"
