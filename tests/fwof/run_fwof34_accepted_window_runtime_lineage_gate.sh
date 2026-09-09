@@ -9,7 +9,7 @@ BASE="b75342a6b9d1249ba7c87b4692acabc97d11ed13"
 MODULE="$ROOT/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90"
 CONTRACT="$ROOT/integration/f-wof/F-WOF34_WORK_UNIT_CONTRACT.json"
 TEST="$ROOT/tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90"
-COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -Wall -Wextra -Werror -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
 python3 - "$ROOT" "$BASE" <<'PY'
 import json, pathlib, subprocess, sys
@@ -27,7 +27,7 @@ print('FWOF34_PRODUCTION_DELTA_SINGLE_RUNTIME_LINEAGE_MODULE=PASS')
 PY
 
 python3 - "$MODULE" <<'PY'
-import pathlib, re, sys
+import pathlib, sys
 s=pathlib.Path(sys.argv[1]).read_text().lower()
 assert 'use mod_kernel_transactions, only: kernel_checkpoint_t, kernel_committed_state_t' in s
 assert 'use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t' in s
@@ -41,9 +41,7 @@ assert 'discard_wofost_trial_contribution' in s
 assert 'admit_wofost_accepted_trial' in s
 assert 'prepare_wofost_crop_event_delivery' in s
 assert 'commit_wofost_crop_event_delivery' in s
-for forbidden in ['open(', 'read(', 'write(', 'modflow', 'headcalc', 'jacobian', 'newton']:
-    if forbidden in ['write(']:
-        continue
+for forbidden in ['open(', 'read(', 'modflow', 'headcalc', 'jacobian', 'newton']:
     assert forbidden not in s, forbidden
 print('FWOF34_FKT_COMMIT_CERTIFICATE_AND_RUNTIME_BOUNDARY_STATIC=PASS')
 PY
