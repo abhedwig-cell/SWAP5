@@ -1,20 +1,37 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI21",
   "title": "Hydraulic Timescale and Retry-Translation Mechanism Characterization",
   "branch": "work/f-si21-hydraulic-timescale-retry-translation",
-  "status": "IN_PROGRESS_GATE_A_PLAN_PERSISTED",
-  "phase": "INITIAL_STATE_HYDRAULIC_DESCRIPTOR_GATE",
+  "status": "IN_PROGRESS_GATE_A_QUALIFIED_GATE_B_OBSERVATIONS_FROZEN_BEFORE_EXECUTION",
+  "phase": "DYNAMIC_LOCAL_HYDRAULIC_CHARACTERIZATION",
   "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
   "plan": "integration/f-si/F-SI21_WORK_UNIT_PLAN.json",
+  "gate_A_evidence": "integration/f-si/F-SI21_GATE_A_EVIDENCE.json",
+  "gate_B_observation_plan": "integration/f-si/F-SI21_GATE_B_OBSERVATION_PLAN.json",
+  "gate_A": {
+    "tested_head": "52709c1b40d0c6e474d41ed4117cf0df228216c4",
+    "workflow_run": 34304932000,
+    "workflow_job": 102319538196,
+    "conclusion": "success",
+    "decision": "B_INITIAL_STATE_TIMESCALE_INFORMATIVE_BUT_INSUFFICIENT_DYNAMIC_LOCAL_CHARACTERIZATION_REQUIRED",
+    "tau_spread": 22.863494085728213,
+    "initial_scalar_threshold_falsified": true,
+    "counterexample": "h0=-320 cm gives UCU for all four small bottom-head jumps",
+    "production_source_unchanged": true
+  },
   "state": {
     "plan_persisted": true,
     "frozen_matrix_reused": true,
-    "gate_A_implemented": false,
-    "gate_A_tested": false,
-    "gate_A_classified": false,
-    "dynamic_gate_B_allowed": false,
+    "gate_A_implemented": true,
+    "gate_A_tested": true,
+    "gate_A_classified": true,
+    "dynamic_gate_B_allowed": true,
+    "gate_B_observation_locations_frozen": true,
+    "gate_B_implemented": false,
+    "gate_B_tested": false,
+    "gate_B_classified": false,
     "production_source_modified": false,
     "production_metric_selected": false,
     "production_tolerance_selected": false,
@@ -28,7 +45,9 @@
     "production_temporal_tolerance": "NOT_SELECTED",
     "retry_policy_change": "NOT_ALLOWED",
     "solver_policy_change": "NOT_ALLOWED",
-    "mass_gate_relaxation": "NOT_ALLOWED"
+    "mass_gate_relaxation": "NOT_ALLOWED",
+    "F_KT_transaction_change": "NOT_ALLOWED"
   },
-  "next_action": "Implement test-only Gate A using production K(h) and C(h) evaluation at the committed T0 states, compute K/C and C*L^2/K descriptors for the three actual retry horizons, and compare them against the frozen F-VQ28 C/U/X patterns without fitting a threshold."
+  "regie_note": "A broader F-SI21 same-endpoint estimator/refinement-policy contract exists separately. This hydraulic-timescale branch is a mechanism-characterization substudy and must hand evidence back rather than independently define production policy.",
+  "next_action": "Implement test-only Gate B exactly at the predeclared checkpoint/full-endpoint/half-midpoint/two-half-endpoint observation locations on the frozen F-VQ28 Gate B matrix. Characterize dynamic h, theta, K, C, K/C and tau without fitting thresholds or changing production code."
 }
