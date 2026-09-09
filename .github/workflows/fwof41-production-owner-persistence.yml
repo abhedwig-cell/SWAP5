@@ -1,0 +1,40 @@
+name: F-WOF41 production owner persistence API
+
+on:
+  push:
+    branches:
+      - work/f-wof41-production-owner-persistence-api
+    paths:
+      - 'src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_transaction.f90'
+      - 'src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90'
+      - 'src/kernel/mod_kernel_transactions.f90'
+      - 'src/kernel/mod_kernel_committed_persistence.f90'
+      - 'tools/fwof40_materialize_persistence_candidate.py'
+      - 'tools/fwof40_order_external_adapter_validation.py'
+      - 'tests/fwof/run_fwof39_crop_event_lifecycle_gate.sh'
+      - 'tests/fwof/run_fwof41_production_owner_persistence_gate.sh'
+      - 'tests/fwof/mod_fwof40_restart_fixture.f90'
+      - 'tests/fwof/mod_fwof40_external_crop_restart_adapter.f90'
+      - 'tests/fwof/test_fwof40_reference.f90'
+      - 'tests/fwof/test_fwof40_producer.f90'
+      - 'tests/fwof/test_fwof40_consumer.f90'
+      - 'tests/fwof/test_fwof40_negative_probe.f90'
+      - 'integration/f-wof/F-WOF41_PRODUCTION_OWNER_PERSISTENCE_API_CONTRACT.json'
+      - '.github/workflows/fwof41-production-owner-persistence.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-production-owner-persistence-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF41 production owner persistence qualification
+        run: bash tests/fwof/run_fwof41_production_owner_persistence_gate.sh
