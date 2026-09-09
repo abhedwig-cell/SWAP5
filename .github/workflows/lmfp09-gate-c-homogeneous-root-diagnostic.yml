@@ -1,0 +1,32 @@
+name: F-LMFP09 Gate C Homogeneous Root Diagnostic
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+  workflow_dispatch:
+
+jobs:
+  homogeneous-root-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run homogeneous root diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="lmfp09-gate-c-homogeneous-root-diagnostic"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/lmfp/run_lmfp09_gate_c_homogeneous_root_diagnostic.py \
+            "$out/F-LMFP09_GATE_C_HOMOGENEOUS_ROOT_DIAGNOSTIC.json" \
+            | tee "$out/F-LMFP09_GATE_C_HOMOGENEOUS_ROOT_DIAGNOSTIC.stdout.json"
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c-homogeneous-root-diagnostic
+          path: lmfp09-gate-c-homogeneous-root-diagnostic/
