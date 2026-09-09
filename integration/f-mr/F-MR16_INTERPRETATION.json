@@ -1,0 +1,109 @@
+{
+  "workunit": "F-MR16",
+  "source_evidence_commit": "60931b9d440ca7c6f339e07018877900b4c76632",
+  "interpretation_status": "PERSISTED_SOURCE_BOUND_INTERPRETATION",
+  "question": "Does the measured full-step versus two-half-step Richards state discrepancy support a scientifically and dimensionally defensible production temporal-error signal without mixing mass, physics or execution policy?",
+  "answer_at_current_evidence": "NO_PRODUCTION_METRIC_YET_DEFENSIBLE",
+  "observations": {
+    "pressure_head": {
+      "dimension": "length; SWAP profile stimulus is expressed in cm",
+      "measured_quantity": "max_i abs(h_full(i)-h_two_half(i))",
+      "nonzero_range_cm": [4.263256414560601e-12, 7.243272648338461e-11],
+      "strictly_decreasing_cases": "2/4",
+      "final_below_dt1_cases": "4/4",
+      "apparent_order_from_successive_halvings": {
+        "definition": "p_app=-log2(D(dt/2)/D(dt)); diagnostic only, not a qualified method order",
+        "case_2_plus_3e_12": [0.0418808811307046, 3.50037716863621],
+        "case_3_minus_3e_12": [0.0330898256994310, 3.49503434357435],
+        "case_4_plus_1e_11": [1.52020467187670, -0.305434372976521],
+        "case_5_minus_1e_11": [1.52257046170880, -0.313435865009351]
+      },
+      "interpretation": "The ladder does not demonstrate a stable asymptotic fixed-order regime. The sign change of apparent order in cases 4 and 5 records nonmonotone discrepancy growth between dt=0.5 and dt=0.25 rather than a failure of the characterization."
+    },
+    "water_content": {
+      "dimension": "volumetric water content state; no cross-unit scalarization admitted here",
+      "measured_quantity": "max_i abs(theta_full(i)-theta_two_half(i))",
+      "nonzero_range": [4.107825191113079e-15, 6.961098364399732e-14],
+      "strictly_decreasing_cases": "2/4",
+      "final_below_dt1_cases": "4/4",
+      "apparent_order_from_successive_halvings": {
+        "case_2_plus_3e_12": [0.0408337175085776, 3.49790576645193],
+        "case_3_minus_3e_12": [0.0340274038001940, 3.50135306807040],
+        "case_4_plus_1e_11": [1.51753457320087, -0.302028537449658],
+        "case_5_minus_1e_11": [1.52183452215569, -0.313964716576945]
+      },
+      "head_theta_co_movement": "The rowwise max-theta/max-head ratio is approximately 9.57e-4 to 9.64e-4 for this probe, but the artifact does not record the maximizing node. Therefore it does not prove that the head and theta maxima are collocated or that either max norm is norm-equivalent to the other.",
+      "constitutive_source_fact": "HeadCalc updates theta from the constitutive hydraulic evaluation at the current pressure head, so theta is not an independent primary Newton variable on the observed route.",
+      "integrated_storage_implication": "NOT_MEASURED. The runtime storage definition is sum(dz*theta)+ponding_depth, plus snow storage when active. A signed sum(dz*(theta_full-theta_two_half)) cannot be reconstructed from max_abs_theta and must not be inferred."
+    },
+    "ponding_depth": {
+      "measured_delta": "zero for all recorded rows",
+      "interpretation": "No positive ponding temporal-discrepancy behavior was exercised. This profile cannot qualify inclusion, exclusion, scaling or tolerance semantics for ponding in a general Richards temporal metric."
+    },
+    "groundwater_level": {
+      "measured_delta": "zero for all recorded rows",
+      "interpretation": "No nonzero groundwater-level temporal discrepancy was exercised. This profile cannot qualify inclusion, exclusion, scaling or tolerance semantics for groundwater level in a general Richards temporal metric."
+    },
+    "optional_process_state": {
+      "snow": "inactive",
+      "macropores": "inactive",
+      "root_extraction": "inactive",
+      "interpretation": "No optional process-state temporal-error semantics are qualified by this probe."
+    }
+  },
+  "numerical_floor_risk": {
+    "probe_head_abs_tolerance": 1e-12,
+    "probe_head_rel_tolerance": 1e-12,
+    "headcalc_stopping_rule": "for abs(old_head)>=1, nonlinear head convergence tests abs(h-old_head)/abs(old_head) <= head_rel_tolerance",
+    "scale_at_head_75_cm": "approximately 7.5e-11 cm allowed nonlinear head change by the relative stopping test",
+    "comparison_to_measured_delta": "The measured max head discrepancies are approximately 4.3e-12 to 7.24e-11 cm, substantially overlapping the scale implied by the nonlinear stopping criterion.",
+    "consequence": "Current data do not separate temporal truncation error from nonlinear stopping, arithmetic, branch switching or solver-history effects. A step-doubling discrepancy can be observed, but it cannot yet be interpreted as a clean temporal-error estimator."
+  },
+  "time_discretization_source_read": {
+    "observed_equation_structure": "HeadCalc residuals contain the storage difference (theta-theta_previous)*dz/dt together with current-state flux terms.",
+    "formal_order_contract_found": false,
+    "richardson_or_step_doubling_factor_found": false,
+    "qualified_asymptotic_regime_found": false,
+    "interpretation": "The source suggests a one-step implicit temporal formulation, but F-MR16 does not infer or qualify a formal order from code shape alone. A production estimator that depends on method order requires an explicit model-owner theory/source contract and qualification evidence."
+  },
+  "normalization_decision": {
+    "observer_relative_head": "CHARACTERIZATION_ONLY_NOT_ADMISSIBLE",
+    "observer_relative_theta": "CHARACTERIZATION_ONLY_NOT_ADMISSIBLE",
+    "reason": "Their scales are instantaneous state magnitudes introduced by the nonproduction observer and have no source/theory/qualification basis as production error scales.",
+    "mixed_h_theta_scalar": "NOT_DEFENSIBLE_WITH_CURRENT_EVIDENCE",
+    "h_only_candidate": "PLAUSIBLE_RESEARCH_DIRECTION_NOT_ADMITTED",
+    "h_only_reason": "Pressure head is the variable directly tested by the HeadCalc nonlinear convergence logic and theta is constitutively updated from head on this route. However, a head-only temporal metric still lacks demonstrated asymptotic temporal behavior, a justified tolerance contract and separation from nonlinear stopping error."
+  },
+  "mass_separation": {
+    "authoritative_mass_gate_changed": false,
+    "storage_difference_as_soft_mass_error_admitted": false,
+    "rule": "Temporal accuracy and authoritative water balance remain separate acceptance gates. Any future integrated theta state-discrepancy diagnostic must not replace or soften mass completeness or mass residual requirements."
+  },
+  "current_retry_ladder_assessment": {
+    "dt_values": [1.0, 0.5, 0.25],
+    "informative_for": [
+      "showing that the binary comparator hides finite graded state discrepancies",
+      "showing that nonmonotonicity occurs on the qualified nonzero probe",
+      "showing that all four nonzero cases end with smaller h and theta maxima than at dt=1"
+    ],
+    "not_informative_enough_for": [
+      "identifying a stable asymptotic order",
+      "selecting a Richardson factor",
+      "separating temporal truncation from nonlinear stopping error",
+      "qualifying ponding or groundwater temporal controls",
+      "qualifying a cross-component scalar normalization"
+    ]
+  },
+  "required_evidence_before_metric_selection": [
+    "Model-owner statement of the Richards temporal discretization and the intended temporal error observable, including whether a method order is relied upon.",
+    "A characterization that separates temporal discrepancy from nonlinear-solver tolerance, for example by independently tightening solver convergence while holding physical stimulus and time-step ladder fixed, without changing physics.",
+    "A sufficiently extended dt ladder to establish or refute an asymptotic regime rather than assuming monotonicity from three points.",
+    "Nodewise signed and absolute pressure-head and water-content deltas, including location/spatial pattern of maxima.",
+    "If water-content/storage discrepancy is proposed as a temporal control, the signed dz-weighted integrated state difference, kept explicitly separate from the authoritative mass gate.",
+    "Explicit conditional semantics for ponding, groundwater level and optional process state, supported by profiles that actually activate those states or by a model-owner contract that excludes them.",
+    "A source/theory basis for every normalization or scalar combination. If no such basis exists, do not combine unlike units."
+  ],
+  "production_change_owner": "F-SI / soil-water model implementation",
+  "f_mr_role_after_owner_change": "bind and compose the model-owned metric into the existing F-KT scalar acceptance seam without redefining its scientific meaning",
+  "f_pe_state": "BLOCKED_FROM_REFERENCE_TAIL_AND_BOUNDED_COST_QUALIFICATION_PENDING_OWNER_QUALIFIED_ACCEPTED_NONTRIVIAL_RICHARDS_TEMPORAL_PATH"
+}
