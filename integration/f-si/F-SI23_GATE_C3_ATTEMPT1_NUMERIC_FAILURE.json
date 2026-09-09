@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C3_TRANSACTION_LOCAL_REFINEMENT",
+  "classification": "NUMERIC_EXECUTION_FAILURE_UNDER_FROZEN_CONTROLS",
+  "plan_commit": "0d20568e6c4843a59978d00a51660440d137d76f",
+  "tested_commit": "e2bc598c2161e88726f7e39d0c7245423eab9ac9",
+  "workflow_run": 34324752170,
+  "workflow_job": 102379335974,
+  "workflow_conclusion": "failure",
+  "prior_harness_only_failures": [
+    {
+      "run": 34324430163,
+      "job": 102378309599,
+      "cause": "bash set-u local-variable scoping before any model point",
+      "scientific_result": false
+    },
+    {
+      "run": 34324557223,
+      "job": 102378714232,
+      "cause": "Fortran machine-readable WRITE format mismatch after case-1 trajectories, before row emission",
+      "scientific_result": false
+    }
+  ],
+  "source_and_reference_controls": {
+    "production_source_lock": "PASS before numeric execution",
+    "reference_tridag": "PASS test-only SWAP 4.3.1 Thomas operation order",
+    "frozen_matrix_changed": false,
+    "solver_controls_changed": false,
+    "mass_tolerance_changed": false,
+    "interpretation_rules_changed": false
+  },
+  "observed_execution": {
+    "case_1": {
+      "initial_head_cm": -25.0,
+      "bottom_head_jump_cm": -0.1,
+      "all_10_retry_sizes_completed": true
+    },
+    "first_failing_case": {
+      "case": 2,
+      "initial_head_cm": -25.0,
+      "bottom_head_jump_cm": -0.01,
+      "completed_halvings": [0,1,2,3,4,5,6,7,8],
+      "first_uncompleted_halving": 9,
+      "attempt_dt_day": 0.00048828125,
+      "failure_marker": "FSI23_C3_FAIL C3 direct Richards solve converged",
+      "trajectory_step_count_at_failure": "NOT_YET_EXPOSED",
+      "substep_dt_day_at_failure": "NOT_YET_EXPOSED",
+      "step_index_at_failure": "NOT_YET_EXPOSED"
+    },
+    "case_2_pre_failure_R8_sequence": [
+      1659.701131823196,
+      1078.855446494343,
+      1235.668718228781,
+      349.6271695173415,
+      91.18263712667155,
+      43.856647811791596,
+      25.85740951160698,
+      9.957929752704136,
+      4.405910150581233
+    ],
+    "case_2_pre_failure_tail_fraction_sequence": [
+      1.2938951257649998e-05,
+      0.00035075099580914753,
+      0.03462788972112759,
+      0.14994697153451556,
+      0.1965235587076434,
+      0.19064713884349099,
+      0.16971345236849486,
+      0.1484565180129634,
+      0.17502164153737537
+    ],
+    "case_2_external_mass_residual_completed_rows": 0.0
+  },
+  "interpretation": [
+    "C3 has reached genuine numerical evidence; this failure is not attributed to the earlier shell or output-format harness defects.",
+    "The raw observer ratio substantially drops as retry size is reduced, supporting a large-dt stiffness component, but the observed sequence is not monotone over all completed levels.",
+    "The frozen C3 full-matrix completion gate is not satisfied because a required solve fails at the smallest retry size of case 2.",
+    "No production estimator, global scale, threshold, true-error bound, or certificate normalization is qualified from this partial ladder."
+  ],
+  "next_action": "Add diagnostic-only failure context to the C3 driver to expose which N1/N4/N8 trajectory, substep size, and substep index fails. Do not alter the frozen retry ladder, solver controls, constitutive physics, mass gate, or acceptance interpretation."
+}
