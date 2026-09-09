@@ -102,13 +102,19 @@ contains
 
     certificate = fmr_wofost_accepted_interval_certificate_t()
     status = FMR_WOFOST_LINEAGE_INVALID_CHECKPOINT
-    if (.not. checkpoint%ready() .or. .not. checkpoint%time_is_bound()) return
+    if (.not. checkpoint%ready()) return
+    if (.not. checkpoint%time_is_bound()) return
 
     status = FMR_WOFOST_LINEAGE_INVALID_COMMITTED
-    if (.not. committed_after%ready() .or. .not. committed_after%time_is_bound()) return
+    if (.not. committed_after%ready()) return
+    if (.not. committed_after%time_is_bound()) return
 
     lineage_id = checkpoint%current_lineage_id()
-    if (lineage_id <= 0_int64 .or. committed_after%current_lineage_id() /= lineage_id) then
+    if (lineage_id <= 0_int64) then
+      status = FMR_WOFOST_LINEAGE_COMMIT_NOT_PROVEN
+      return
+    end if
+    if (committed_after%current_lineage_id() /= lineage_id) then
       status = FMR_WOFOST_LINEAGE_COMMIT_NOT_PROVEN
       return
     end if
@@ -126,7 +132,11 @@ contains
 
     call checkpoint%current_time(t0, t0_available)
     call committed_after%current_time(t1, t1_available)
-    if (.not. t0_available .or. .not. t1_available) then
+    if (.not. t0_available) then
+      status = FMR_WOFOST_LINEAGE_COMMIT_NOT_PROVEN
+      return
+    end if
+    if (.not. t1_available) then
       status = FMR_WOFOST_LINEAGE_COMMIT_NOT_PROVEN
       return
     end if
@@ -154,22 +164,20 @@ contains
 
     trial = fmr_wofost_trial_contribution_t()
     status = FMR_WOFOST_LINEAGE_INVALID_CHECKPOINT
-    if (.not. checkpoint%ready() .or. .not. checkpoint%time_is_bound()) return
-
+    if (.not. checkpoint%ready()) return
+    if (.not. checkpoint%time_is_bound()) return
     call checkpoint%current_time(trial_t0, time_available)
     if (.not. time_available) return
-    if (.not. ieee_is_finite(trial_t0) .or. .not. ieee_is_finite(trial_t1) .or. trial_t1 <= trial_t0) then
-      status = FMR_WOFOST_LINEAGE_INVALID_TRIAL
-      return
-    end if
 
+    status = FMR_WOFOST_LINEAGE_INVALID_TRIAL
+    if (.not. ieee_is_finite(trial_t0) .or. .not. ieee_is_finite(trial_t1) .or. trial_t1 <= trial_t0) return
     trial%lineage_id = checkpoint%current_lineage_id()
     trial%origin_revision = checkpoint%origin_revision()
     if (trial%lineage_id <= 0_int64 .or. trial%origin_revision < 0_int64) then
-      status = FMR_WOFOST_LINEAGE_INVALID_TRIAL
       trial = fmr_wofost_trial_contribution_t()
       return
     end if
+
     trial%t0 = trial_t0
     trial%t1 = trial_t1
     trial%next_t = trial_t0
@@ -186,7 +194,8 @@ contains
     real(real64) :: dt, actual_add, potential_add, actual_new, potential_new
 
     status = FMR_WOFOST_LINEAGE_INVALID_TRIAL
-    if (.not. trial%ready() .or. trial%complete()) return
+    if (.not. trial%ready()) return
+    if (trial%complete()) return
     if (.not. ieee_is_finite(sub_t0) .or. .not. ieee_is_finite(sub_t1) .or. sub_t1 <= sub_t0) return
     if (.not. same_time(sub_t0, trial%next_t)) then
       status = FMR_WOFOST_LINEAGE_NONCONTIGUOUS
@@ -196,8 +205,11 @@ contains
       status = FMR_WOFOST_LINEAGE_NONCONTIGUOUS
       return
     end if
-    if (.not. valid_nonnegative(actual_root_uptake_rate) .or. &
-        .not. valid_nonnegative(potential_transpiration_rate)) then
+    if (.not. valid_nonnegative(actual_root_uptake_rate)) then
+      status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
+      return
+    end if
+    if (.not. valid_nonnegative(potential_transpiration_rate)) then
       status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
       return
     end if
@@ -207,8 +219,11 @@ contains
     potential_add = potential_transpiration_rate * dt
     actual_new = trial%actual_root_uptake_integral + actual_add
     potential_new = trial%potential_transpiration_integral + potential_add
-    if (.not. ieee_is_finite(actual_add) .or. .not. ieee_is_finite(potential_add) .or. &
-        .not. ieee_is_finite(actual_new) .or. .not. ieee_is_finite(potential_new)) then
+    if (.not. ieee_is_finite(actual_add) .or. .not. ieee_is_finite(potential_add)) then
+      status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
+      return
+    end if
+    if (.not. ieee_is_finite(actual_new) .or. .not. ieee_is_finite(potential_new)) then
       status = FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
       return
     end if
@@ -234,7 +249,8 @@ contains
 
     window = fmr_wofost_accepted_window_t()
     status = FMR_WOFOST_LINEAGE_INVALID_CHECKPOINT
-    if (.not. checkpoint%ready() .or. .not. checkpoint%time_is_bound()) return
+    if (.not. checkpoint%ready()) return
+    if (.not. checkpoint%time_is_bound()) return
     call checkpoint%current_time(window_t0, time_available)
     if (.not. time_available) return
 
@@ -246,6 +262,7 @@ contains
       window = fmr_wofost_accepted_window_t()
       return
     end if
+
     window%next_revision = window%start_revision
     window%t0 = window_t0
     window%t1 = window_t1
@@ -262,14 +279,20 @@ contains
     real(real64) :: actual_new, potential_new
 
     status = FMR_WOFOST_LINEAGE_INVALID_WINDOW
-    if (.not. window%ready() .or. window%event_delivered) return
+    if (.not. window%ready()) return
+    if (window%event_delivered) return
+
     status = FMR_WOFOST_LINEAGE_CERTIFICATE_MISMATCH
-    if (.not. certificate%ready() .or. .not. trial%ready() .or. .not. trial%complete()) return
-    if (certificate%lineage_id /= window%lineage_id .or. trial%lineage_id /= window%lineage_id) return
-    if (certificate%origin_revision /= window%next_revision .or. &
-        trial%origin_revision /= window%next_revision) return
+    if (.not. certificate%ready()) return
+    if (.not. trial%ready()) return
+    if (.not. trial%complete()) return
+    if (certificate%lineage_id /= window%lineage_id) return
+    if (trial%lineage_id /= window%lineage_id) return
+    if (certificate%origin_revision /= window%next_revision) return
+    if (trial%origin_revision /= window%next_revision) return
     if (certificate%committed_revision /= certificate%origin_revision + 1_int64) return
-    if (.not. same_time(certificate%t0, trial%t0) .or. .not. same_time(certificate%t1, trial%t1)) return
+    if (.not. same_time(certificate%t0, trial%t0)) return
+    if (.not. same_time(certificate%t1, trial%t1)) return
     if (.not. same_time(certificate%t0, window%covered_t)) then
       status = FMR_WOFOST_LINEAGE_NONCONTIGUOUS
       return
@@ -334,15 +357,19 @@ contains
     integer, intent(out) :: status
 
     status = FMR_WOFOST_LINEAGE_INVALID_WINDOW
-    if (.not. window%ready() .or. .not. window%complete()) return
+    if (.not. window%ready()) return
+    if (.not. window%complete()) return
     if (window%event_delivered) then
       status = FMR_WOFOST_LINEAGE_EVENT_ALREADY_DELIVERED
       return
     end if
+
     status = FMR_WOFOST_LINEAGE_EVENT_TOKEN_MISMATCH
     if (.not. token%ready()) return
-    if (token%lineage_id /= window%lineage_id .or. token%final_revision /= window%next_revision) return
-    if (.not. same_time(token%t0, window%t0) .or. .not. same_time(token%t1, window%t1)) return
+    if (token%lineage_id /= window%lineage_id) return
+    if (token%final_revision /= window%next_revision) return
+    if (.not. same_time(token%t0, window%t0)) return
+    if (.not. same_time(token%t1, window%t1)) return
     if (.not. same_real_bits(token%actual_root_uptake_integral, window%actual_root_uptake_integral)) return
     if (.not. same_real_bits(token%potential_transpiration_integral, &
          window%potential_transpiration_integral)) return
@@ -351,14 +378,14 @@ contains
     status = FMR_WOFOST_LINEAGE_OK
   end subroutine commit_wofost_crop_event_delivery
 
-  logical function certificate_ready(self) result(ready)
+  pure logical function certificate_ready(self) result(ready)
     class(fmr_wofost_accepted_interval_certificate_t), intent(in) :: self
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. &
          self%origin_revision >= 0_int64 .and. self%committed_revision == self%origin_revision + 1_int64 .and. &
          ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. self%t1 > self%t0
   end function certificate_ready
 
-  logical function trial_ready(self) result(ready)
+  pure logical function trial_ready(self) result(ready)
     class(fmr_wofost_trial_contribution_t), intent(in) :: self
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%origin_revision >= 0_int64 .and. &
          ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. ieee_is_finite(self%next_t) .and. &
@@ -367,12 +394,14 @@ contains
          self%next_t >= self%t0 .and. self%next_t <= self%t1
   end function trial_ready
 
-  logical function trial_complete(self) result(complete)
+  pure logical function trial_complete(self) result(complete)
     class(fmr_wofost_trial_contribution_t), intent(in) :: self
-    complete = self%ready() .and. same_time(self%next_t, self%t1)
+    complete = .false.
+    if (.not. self%ready()) return
+    complete = same_time(self%next_t, self%t1)
   end function trial_complete
 
-  logical function accepted_window_ready(self) result(ready)
+  pure logical function accepted_window_ready(self) result(ready)
     class(fmr_wofost_accepted_window_t), intent(in) :: self
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%start_revision >= 0_int64 .and. &
          self%next_revision >= self%start_revision .and. self%accepted_intervals >= 0 .and. &
@@ -382,31 +411,35 @@ contains
          self%covered_t >= self%t0 .and. self%covered_t <= self%t1
   end function accepted_window_ready
 
-  logical function accepted_window_complete(self) result(complete)
+  pure logical function accepted_window_complete(self) result(complete)
     class(fmr_wofost_accepted_window_t), intent(in) :: self
-    complete = self%ready() .and. same_time(self%covered_t, self%t1)
+    complete = .false.
+    if (.not. self%ready()) return
+    complete = same_time(self%covered_t, self%t1)
   end function accepted_window_complete
 
-  logical function accepted_window_event_due(self) result(due)
+  pure logical function accepted_window_event_due(self) result(due)
     class(fmr_wofost_accepted_window_t), intent(in) :: self
-    due = self%complete() .and. .not. self%event_delivered
+    due = .false.
+    if (.not. self%complete()) return
+    due = .not. self%event_delivered
   end function accepted_window_event_due
 
-  logical function accepted_window_delivery_committed(self) result(committed)
+  pure logical function accepted_window_delivery_committed(self) result(committed)
     class(fmr_wofost_accepted_window_t), intent(in) :: self
-    committed = self%ready() .and. self%event_delivered
+    committed = .false.
+    if (.not. self%ready()) return
+    committed = self%event_delivered
   end function accepted_window_delivery_committed
 
-  integer function accepted_window_interval_count(self) result(count)
+  pure integer function accepted_window_interval_count(self) result(count)
     class(fmr_wofost_accepted_window_t), intent(in) :: self
-    if (self%ready()) then
-      count = self%accepted_intervals
-    else
-      count = 0
-    end if
+    count = 0
+    if (.not. self%ready()) return
+    count = self%accepted_intervals
   end function accepted_window_interval_count
 
-  logical function crop_event_token_ready(self) result(ready)
+  pure logical function crop_event_token_ready(self) result(ready)
     class(fmr_wofost_crop_event_token_t), intent(in) :: self
     ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%final_revision >= 0_int64 .and. &
          ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. self%t1 > self%t0 .and. &
