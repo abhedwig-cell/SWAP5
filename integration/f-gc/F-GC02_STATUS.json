@@ -1,26 +1,43 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-GC",
   "work_unit": "F-GC02",
   "branch": "work/f-gc02-physical-coupling-seam",
   "start_head": "172ea7836d61840ac18cfb7512d71621ae46e1a6",
   "physical_seam_contract_commit": "7031174da0da44142cac3a0a3b118b6aba88589e",
-  "blocker_commit": "d92545ffede668cdd508796fe079007df02021ab",
-  "blocker_gate_commit": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
-  "blocker_resolution_commit": "f93cd47e488e167ffecac2950722e4d1a773a737",
-  "status": "IN_PROGRESS_PHYSICAL_PREDICTOR_CORRECTOR_COMPOSITION_AFTER_OWNER_RESOLUTION",
-  "physical_coupling_implemented": false,
-  "persisted": true,
-  "blocker_reproduction_tested": true,
-  "physical_coupling_tested": false,
-  "qualified": false,
+  "old_blocker_commit": "d92545ffede668cdd508796fe079007df02021ab",
+  "old_blocker_gate_commit": "f603db1c5dd2df427b7bbc80d3dcc65f44b91a0d",
+  "old_blocker_resolution_commit": "f93cd47e488e167ffecac2950722e4d1a773a737",
+  "last_failed_physical_head": "250b2a400984144405b427f968aa11949a7745fe",
+  "failure_diagnosis_commit": "9c5751a925fed8105fda5613846e99a6cdb7f8d9",
+  "status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED",
+  "phase": "FAIL_CLOSED_AFTER_SOURCE_BOUND_PHYSICAL_GATE_FAILURE",
+  "state": {
+    "physical_coupling_driver_persisted": true,
+    "physical_coupling_gate_persisted": true,
+    "physical_coupling_workflow_persisted": true,
+    "physical_coupling_implemented": false,
+    "physical_coupling_tested": true,
+    "physical_coupling_test_passed": false,
+    "qualified": false,
+    "old_bottom_head_owner_blocker_resolved": true,
+    "new_nonstationary_temporal_owner_blocker_open": true,
+    "production_source_modified_by_fgc02": false,
+    "new_temporal_tolerance_introduced": false,
+    "mass_requirement_relaxed": false
+  },
   "upstream_qualified_chain": {
     "F_SI16_closeout": "6591b2f481e1760f844514e63ef873e8deda301f",
     "F_SI16_production_postimage": "f143062051107c35162f5a28d7e87a88baab30bf",
     "F_MR11_closeout": "86924e93ee81f8c246c28e8277b8ade6079ebaa7",
     "F_MR11_production_candidate": "194f66d413fdfc3b75fc12125412539ea2fc7d2d",
     "F_VQ26_closeout": "a1d5ad9147e18301f68183822577b1ba8fca3de2",
-    "F_VQ26_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME_SCIENTIFIC_ADMISSION"
+    "F_VQ26_decision": "QUALIFIED_RESTRICTED_SERIALIZED_PRESCRIBED_BOTTOM_HEAD_RUNTIME_SCIENTIFIC_ADMISSION",
+    "F_VQ26_nonstationary_mode5_temporal_behavior": "NOT_ADMITTED_BY_FVQ26",
+    "F_MR15_status": "QUALIFIED_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_OWNER_COMPOSITION",
+    "F_VQ27_status": "QUALIFIED_INDEPENDENT_FMR15_PRESCRIBED_HEAD_INTERVAL_DIAGNOSTICS_SCIENTIFIC_ADMISSION",
+    "F_VQ27_nonstationary_mode5_temporal_behavior": "NOT_EXPANDED_BY_FVQ27",
+    "F_VQ19_nonstationary_scope": "ONE_CALL_DAILY_SERIALIZED_REFERENCE_SNOW_FIXTURE_ONLY"
   },
   "resolved_owner_blocker": {
     "former_status": "BLOCKED_OWNER_QUALIFIED_BOTTOM_HEAD_BOUNDARY_REQUIRED",
@@ -31,11 +48,21 @@
     "solver_qbot_sign": "positive into SWAP through the lower boundary; negative out",
     "serialized_runtime_only": true
   },
+  "failed_physical_gate": {
+    "workflow_run": 34282343201,
+    "workflow_job": 102249834183,
+    "failing_step": "F-GC02 source-bound physical coupling gate",
+    "fmr11_source_locks": "PASS",
+    "response_capable_tridag_fixture": "PASS",
+    "compile_and_link": "PASS_TO_EXECUTABLE",
+    "first_runtime_failure": "predictor_result%completed == false",
+    "failure_marker": "FGC02_PHYSICAL_COUPLING_FAIL predictor physical trial completed",
+    "runtime_rejection_subclassification": "NOT_DIRECTLY_OBSERVED_IN_EXISTING_LOG"
+  },
   "physical_coupling_contract": {
     "trial_signature": "swap_trial(checkpoint_T0, window, gw_head_candidate, base_boundary_conditions) -> trial_candidate",
     "groundwater_head_binding": "gw_head_candidate -> forcing%bottom_head",
     "authoritative_flux_binding": "q_swap = -solve_result%bottom_flux",
-    "interface_sign_reason": "F-SI/F-MR bottom_flux is positive into SWAP while F-GC q_swap is positive out of SWAP",
     "interface_flux_target": "q_swap + q_gw = 0",
     "head_target": "H_SWAP - H_GW = 0",
     "predictor_origin": "same committed T0 checkpoint",
@@ -46,18 +73,28 @@
     "coupling_interface_transfer_booked_once": true,
     "swap_interval_mass_owner": "F-KT/F-MR unchanged"
   },
-  "source_characterization": {
-    "F_GC01_coupler": "tests/fgc/fgc01_coupler.py",
-    "F_GC01_models": "tests/fgc/fgc01_models.py",
-    "F_GC01_orchestration": "predictor and optional corrector both call trial(checkpoint, head, t1); only accepted trial is committed",
-    "production_coupling_module_preexisting": false,
-    "composition_strategy": "replace deterministic SWAP trial provider with immutable F-MR11-backed physical trial provider while preserving F-GC01 orchestration"
+  "source_bound_failure_classification": {
+    "class": "C_UPSTREAM_CONTRACT_DEFECT",
+    "A_qualification_test_defect": false,
+    "B_fgc_composition_defect": false,
+    "C_upstream_contract_defect": true,
+    "D_scientific_coupling_discrepancy": false,
+    "reason": "The F-GC01 correction path requires a distinct predictor and corrector head candidate from the same T0 checkpoint. With the persisted physical fixture, the corrector is stationary at -75.0 cm and the predictor is -74.99 cm, so the predictor is a nonstationary prescribed-head mode-5 Richards workload. F-VQ26 and F-VQ27 explicitly do not admit nonstationary mode-5 temporal behavior. Making the two heads identical would remove the physical predictor/corrector property that F-GC02 must qualify."
+  },
+  "owner_blocker": {
+    "owner": "F-MR",
+    "required_capability": "independently qualifiable nonstationary prescribed-bottom-head mode-5 temporal acceptance on the restricted serialized REFERENCE route",
+    "independent_qualification_owner": "F-VQ",
+    "F_KT_change_required_now": false,
+    "F_KT_escalation": "Only if the owner resolution proves that generic transaction acceptance semantics must change. F-GC02 must not perform that change.",
+    "old_F_SI16_bottom_head_blocker_reopened": false
   },
   "architecture_holds": {
     "F_KT_transaction_algorithm_changed": false,
     "F_SI_physics_changed": false,
     "F_MR_scheduler_changed": false,
     "new_interface_tolerance_allowed": false,
+    "new_temporal_tolerance_allowed": false,
     "mass_tolerance_allowed": false,
     "parallel_physical_backend_admitted": false,
     "MODFLOW_package_in_scope": false,
@@ -65,5 +102,5 @@
     "response_tangent_production_in_scope": false,
     "two_tile_physical_coupling_in_scope": false
   },
-  "next_gate": "SOURCE_BOUND_FGC01_ORCHESTRATOR_TO_FMR11_TRIAL_COMPOSITION"
+  "next_action": "Stop F-GC02 fail-closed. Route a minimal owner work unit to F-MR to qualify or explicitly reject nonstationary mode-5 prescribed-head temporal acceptance for the restricted serialized REFERENCE runtime, followed by independent F-VQ. Resume this same F-GC02 branch only after that exact capability is independently admitted."
 }
