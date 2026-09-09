@@ -128,7 +128,7 @@ program test_fsi23_gate_c3_transaction_local_refinement
       end if
     end if
 
-    write(*,'(A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,ES26.17E3)') &
+    write(*,'(A,I0,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,A,A,ES26.17E3,A,ES26.17E3)') &
          'FSI23_C3_ROW:HALVING=',iattempt-1,':DT=',dt,':EOBS=',eobs,':E1_8=',e1_8,':D4_8=',d4_8, &
          ':RATIO_AVAILABLE=',yesno(ratio_available),':R8=',r8,':TAIL_AVAILABLE=',yesno(tail_available), &
          ':TAIL_FRACTION=',tail_fraction,':EOBS_GE_E1_8=',yesno(finite_consistent),':XEFF=',xeff, &
