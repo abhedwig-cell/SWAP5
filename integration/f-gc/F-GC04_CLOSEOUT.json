@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC04",
+  "title": "Independent Richards Head-Budget Scale Characterization from Disjoint Temporal Evidence",
+  "branch": "work/f-gc04-independent-head-budget-scale-characterization",
+  "start_head": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+  "tested_head": "24f5390dedb13accbbdc066e7293210e28335958",
+  "tested_tree": "f5c0d1b751790ffd88ffcb05ff39a0ac09ba6651",
+  "evidence_commit": "6cc682d86f36e18c5f994146f772454b7fdf95a7",
+  "evidence_blob": "e6edcb626cb0bc7fd5ddc4a0caf24ec6d7e80059",
+  "workflow_run": 34370975763,
+  "workflow_job": 102531798089,
+  "workflow_conclusion": "success",
+  "decision": "CHARACTERIZED_INDEPENDENT_INDICATOR_SCALE_APPLICATION_REQUIREMENT_STILL_MISSING",
+  "status": "COMPLETE_FAIL_CLOSED_WITH_USEFUL_INDEPENDENT_SCALE_CHARACTERIZATION",
+  "quantitative_summary": {
+    "independent_cases": 40,
+    "B_inf_min_cm": 0.028692867078547738,
+    "B_inf_median_cm": 0.07204361398412952,
+    "B_inf_max_cm": 0.17891001482513616,
+    "F_VQ30_B_inf_over_E1_512_min": 6.685266816523914,
+    "F_VQ30_B_inf_over_E1_512_max": 102.49832534208181,
+    "conservatism": "LARGE_AND_STATE_AND_HORIZON_DEPENDENT"
+  },
+  "qualified": {
+    "independent_indicator_scale_characterized": true,
+    "target_F_GC02_isolation_preserved": true,
+    "F_VQ29_negative_error_bound_evidence_preserved": true,
+    "indicator_scale_separated_from_application_accuracy_requirement": true,
+    "production_source_modified": false
+  },
+  "not_qualified_or_not_present": {
+    "numeric_application_H_budget": null,
+    "recommended_H_budget": null,
+    "universal_default_H_budget": null,
+    "B_inf_as_proven_nonlinear_true_error_bound": false,
+    "fixed_conversion_B_inf_to_true_error": false,
+    "monotonic_dt_claim": false,
+    "coupling_head_tolerance_equivalence": false,
+    "F_GC02_release": false,
+    "F_VQ35_authorization": false
+  },
+  "scientific_interpretation": "The independent evidence establishes the numerical scale of the qualified Richards temporal indicator over the frozen matrices, but not an application accuracy requirement. The observed relationship to the available finite-reference discrepancy varies by more than an order of magnitude and is state- and horizon-dependent. Selecting H_budget from these observations alone would therefore turn characterization into an unsupported target-independent-but-application-unanchored policy choice.",
+  "downstream_boundary": {
+    "F_GC03_provenance_contract": "SATISFIED_AS_POLICY_STRUCTURE_ONLY",
+    "missing_dependency": "A finite positive numeric H_budget with admissible independent application/runtime provenance, or a separately qualified versioned numerical policy template anchored to an explicit accuracy objective rather than indicator magnitude alone.",
+    "F_GC02": "REMAINS_FAIL_CLOSED_NOT_RELEASED",
+    "F_VQ35": "MUST_NOT_OPEN_FOR_TARGET_EXECUTION_UNTIL_MISSING_DEPENDENCY_IS_FROZEN",
+    "target_fixture_may_be_used_to_select_budget": false
+  },
+  "core_invariant_audit": {
+    "3_explicit_data_separation": "PASS",
+    "7_transactional_timesteps": "PASS",
+    "11_coupling_core_functionality": "PASS_WITHIN_SCOPE",
+    "13_mass_conservation_absolute": "PASS",
+    "23_physics_solver_policy_separated": "PASS",
+    "25_reference_mode_available": "PASS",
+    "26_runtime_diagnostics": "PASS_WITHIN_SCOPE",
+    "29_no_silent_dependencies": "PASS",
+    "30_architecture_change_audit": "PASS"
+  },
+  "next_action": "Do not tune or infer H_budget from F-GC02 or from the observed B_inf distribution. Either obtain an explicit external/application accuracy requirement, or open a separate pre-registered policy-template research unit whose accuracy objective and validation evidence are independent of F-GC02 and whose failure cannot be repaired post hoc by changing the numeric value."
+}
