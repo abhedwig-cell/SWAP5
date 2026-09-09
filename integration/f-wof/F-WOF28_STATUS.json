@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF28",
+  "title": "WOFOST One-Day Semantic Rate State View Assembly",
+  "branch": "work/f-wof28-rate-state-view-assembly",
+  "base": {
+    "commit": "3944fc59b1780586e91d31e1f632e458ea29ad23",
+    "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_RATE_EVALUATOR_READINESS"
+  },
+  "status": "QUALIFIED_WOFOST_ONE_DAY_SEMANTIC_RATE_STATE_VIEW",
+  "decision": "QUALIFIED_COMPACT_READ_ONLY_RATE_STATE_VIEW_READY_FOR_RESTRICTED_RATE_PROVIDER",
+  "tested_candidate": "3a16789326db47d50c4c65394389d53c32d10f3d",
+  "verification": {
+    "workflow": "F-WOF28 rate-state view",
+    "run_id": 34303687219,
+    "job_id": 102315802727,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "9b2b856922cc4b27a2edf24a3ca5a58924eaef40c0ad47c15bfb10d5be3c05c3",
+    "F_WOF26_structural_regression_exact_output": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_one_day_rate_state_view.f90"
+    ],
+    "persistent_state_added": false,
+    "rate_physics_added": false,
+    "owner_modified": false
+  },
+  "qualified_contract": {
+    "view_type": "wofost_one_day_rate_state_view_t",
+    "semantic_fields": {
+      "DVS": "development_stage",
+      "WRT": "actual_root_biomass",
+      "WST": "actual_stem_biomass",
+      "WSO": "actual_storage_biomass",
+      "WLV": "living_leaf_biomass",
+      "LAI": "actual_leaf_area_index",
+      "LAIEXP": "exponential_leaf_area_index"
+    },
+    "source": "authoritative wofost_crop_owner_state_t plus explicit SSA/SPA canopy coefficients",
+    "active_owner_mutation": false,
+    "leaf_cohort_arrays_copied": false,
+    "future_rate_provider_can_consume_view_without_direct_owner_biomass_access": true
+  },
+  "presence_and_validation": {
+    "inactive_crop": "available=false and zero view; active-only SSA/SPA are not inspected",
+    "active_crop": "available=true only after owner, canopy parameters and all seven semantic values validate",
+    "invalid_owner": "fails closed",
+    "negative_or_nonfinite_SSA_SPA": "fails closed for active crop",
+    "negative_active_DVS": "fails closed",
+    "nonfinite_validation": "explicit control flow avoids relying on Fortran logical short-circuit semantics"
+  },
+  "not_qualified": [
+    "WOFOST assimilation or growth-rate equations",
+    "immutable WOFOST rate parameter/table implementation",
+    "accepted IQROT/IPTRA provenance runtime binding",
+    "end-to-end crop-day rate production",
+    "nutrient, oxygen, SWRD=3, IDSL=2, potential-shadow, soybean or grass rate routes"
+  ],
+  "next": "implement the smallest immutable parameter/table substrate required by the restricted one-day rate provider before implementing PGASS or finalize-rate equations",
+  "affected_invariants": [2,3,4,5,6,7,8,9,16,21,27,29,30]
+}
