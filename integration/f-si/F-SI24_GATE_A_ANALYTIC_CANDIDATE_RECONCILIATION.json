@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "A_ANALYTIC_CANDIDATE_RECONCILIATION",
+  "production_implementation": false,
+  "scientific_tolerance_selected": false,
+  "references": [
+    {
+      "authors": "Kavetski, Binning, Sloan",
+      "title": "Adaptive backward Euler time stepping with truncation error control for numerical modelling of unsaturated fluid flow",
+      "journal": "International Journal for Numerical Methods in Engineering",
+      "volume": 53,
+      "pages": "1301-1322",
+      "year": 2002,
+      "doi": "10.1002/nme.329",
+      "relevance": "Embedded backward-Euler/Thomas-Gladwell derivative formulation; first- and second-order estimates can share a nonlinear system/derivative construction at minimal additional storage/cost in the published formulation."
+    },
+    {
+      "authors": "Kavetski, Binning, Sloan",
+      "title": "Noniterative time stepping schemes with adaptive truncation error control for the solution of Richards equation",
+      "journal": "Water Resources Research",
+      "volume": 38,
+      "issue": 10,
+      "year": 2002,
+      "doi": "10.1029/2001WR000720",
+      "relevance": "Derivative-predicted nonlinear coefficients followed by a single correction are a bounded-cost direction; the paper also states that intrinsically mass-conservative/chord-slope formulations complicate the formal second-order construction."
+    }
+  ],
+  "embedded_pair_identity": {
+    "backward_euler_update": "h_BE=h_n+dt*hdot_np1",
+    "thomas_gladwell_trapezoidal_derivative_update": "h_TG=h_n+0.5*dt*(hdot_n+hdot_np1)",
+    "difference": "h_BE-h_TG=0.5*dt*(hdot_np1-hdot_n)=e_h",
+    "conclusion": "The F-SI23 raw derivative-difference observer is algebraically the BE-versus-TG embedded output difference when both estimates share compatible derivative history. It is not a separate independent error oracle.",
+    "SWAP_principal_state_rule": "h_TG must not replace the mass-conservative principal BE candidate in F-SI24. Any companion is decision-only until independently qualified."
+  },
+  "single_linear_mode_analysis": {
+    "model": "u_dot=-lambda*u, x=lambda*dt, x>=0",
+    "backward_euler": "u_BE=u_n/(1+x)",
+    "derivatives": {
+      "udot_n": "-lambda*u_n",
+      "udot_np1_BE": "-lambda*u_n/(1+x)"
+    },
+    "raw_observer": "e_raw=0.5*x^2/(1+x)*u_n",
+    "exact_continuous_endpoint": "u_exact=exp(-x)*u_n",
+    "actual_BE_endpoint_error": "e_BE_exact=(1/(1+x)-exp(-x))*u_n",
+    "exact_scalar_correction_magnitude": "c_exact(x)=2*(1+x)/x^2*abs(1/(1+x)-exp(-x)), x>0",
+    "corrected_relation": "abs(e_BE_exact)=c_exact(x)*abs(e_raw)",
+    "limits": {
+      "x_to_zero": "c_exact(x)->1",
+      "x_to_infinity": "c_exact(x)~2/x^2"
+    },
+    "interpretation": "The raw BE/TG observer is asymptotically accurate for nonstiff/small-x modes but can become grossly conservative for strongly damped stiff modes. This analytically explains why F-SI23 C2/C3 can show very large raw observer ratios after a prescribed-head discontinuity without invalidating the exact small-step eigenmode relation."
+  },
+  "effective_scalar_stiffness_diagnostic": {
+    "pure_mode_identity": "If udot_n and udot_np1 are nonzero, same-sign derivatives of one scalar linear mode, x=udot_n/udot_np1-1 exactly.",
+    "generic_vector_limitation": [
+      "A Richards column contains multiple spatial modes/eigenvalues, so one component derivative ratio is generally a mixture of modes.",
+      "Derivative components may be zero, cross zero, change sign or be dominated by different modes at different nodes/times.",
+      "Using the bottom-node derivative ratio as a universal column stiffness number has no general source/theory guarantee.",
+      "F-SI23 C3 already showed non-monotone finite-comparator ratios during retry halving before the late decreasing regime."
+    ],
+    "decision": "REJECT_AS_UNIVERSAL_PRODUCTION_CORRECTION",
+    "retained_use": "ANALYTIC_DIAGNOSTIC_ONLY_FOR_SINGLE_MODE_AND_TEST_INTERPRETATION"
+  },
+  "stored_jacobian_reuse": {
+    "decision": "REJECT_AS_EXACT_OPERATOR",
+    "reason": "Current HeadCalc dfdh arrays are assembled at old_head before the final accepted Newton update and are not rebuilt after convergence.",
+    "allowed_future_use": "A lagged operator could only be reconsidered after independently bounding the iterate-lag effect; F-SI24 Gate A makes no such assumption."
+  },
+  "posthoc_single_resolvent_filter": {
+    "status": "NOT_ADMITTED_AS_DEFINED_CANDIDATE",
+    "reason": "A generic expression such as applying one final-state Jacobian inverse to e_h is not by itself a derived stiff local-error estimator. The required right-hand side/operator scaling must be derived from the semi-discrete equations; an arbitrary resolvent filter would be an empirical numerical policy change.",
+    "decision": "DO_NOT_IMPLEMENT_UNTIL_FORMULA_DERIVED"
+  },
+  "literature_backed_single_correction_companion": {
+    "id": "E_DERIVATIVE_PREDICTED_SINGLE_CORRECTION_COMPANION",
+    "shape": "Use accepted/committed derivative information to predict the nonlinear coefficient evaluation state and perform exactly one solver-owned linear correction under a source-bound semi-discrete operator, producing a decision-only embedded companion while leaving the principal mixed-form BE state unchanged.",
+    "normal_path_extra_full_nonlinear_solves": 0,
+    "normal_path_extra_linear_solves_maximum": 1,
+    "expected_extra_storage": "O(N) worker scratch plus already-required optional derivative history",
+    "literature_support": "The 2002 noniterative Richards work explicitly identifies time-derivative prediction followed by a single correction as the key bounded-cost strategy.",
+    "direct_transfer_to_SWAP_mixed_form_qualified": false,
+    "mass_rule": "The companion never replaces the principal state and never weakens the independent hard mass gate.",
+    "remaining_derivation_questions": [
+      "Which SWAP semi-discrete state/operator is predicted: pressure-form coefficients, mixed-form chord-slope storage operator, or a decision-only pressure-head linearization?",
+      "How is the prediction formed at initialization/restart/right-side boundary discontinuity without reusing an incompatible left derivative?",
+      "What exact companion difference is used as the scalar/vector indicator and what order/reliability statement is valid for SWAP's mixed-form storage treatment?",
+      "Can the restricted SwKimpl=0 final/predicted operator be obtained through a clean solver-owned interface without duplicating HeadCalc internals?",
+      "Does the construction remain robust when the derivative contains multiple stiff spatial modes?"
+    ],
+    "gate_A_decision": "RETAIN_FOR_FORMULA_RECONSTRUCTION_BEFORE_ANY_TEST_IMPLEMENTATION"
+  },
+  "candidate_decisions": {
+    "A_RAW_DERIVATIVE_OBSERVER": "RETAIN_AS_BASELINE_OBSERVABLE_NOT_PRODUCTION_CERTIFICATE",
+    "B_SCALAR_EFFECTIVE_STIFFNESS_CORRECTION": "REJECT_AS_UNIVERSAL_PRODUCTION_CORRECTION_RETAIN_DIAGNOSTIC_ONLY",
+    "C_FINAL_STATE_JACOBIAN_RESOLVENT": "NO_GENERIC_POSTHOC_FILTER_ADMITTED_FORMULA_REQUIRED",
+    "D_PREVIOUS_NEWTON_JACOBIAN_REUSE": "REJECT_AS_EXACT_OPERATOR",
+    "E_FULL_VS_TWO_HALF_OR_DEEP_REFINEMENT": "REJECT_NORMAL_PATH",
+    "F_DERIVATIVE_PREDICTED_SINGLE_CORRECTION_COMPANION": "RETAIN_AS_ONLY_GATE_A_BOUNDED_DIRECTION"
+  },
+  "gate_A_decision": "ONE_BOUNDED_DIRECTION_RETAINED_FORMULA_RECONSTRUCTION_REQUIRED_BEFORE_TESTING",
+  "qualification_boundary": {
+    "owner_candidate_selected_for_production": false,
+    "test_harness_authorized": false,
+    "production_seam_authorized": false,
+    "F_KT_change_authorized": false,
+    "F_VQ_followup_authorized": false
+  },
+  "next_action": "Freeze a Gate-B formulation contract for the derivative-predicted single-correction companion. It must specify the exact semi-discrete equations, predictor state, linear operator, right-hand side, discontinuity bootstrap semantics, companion output and failure/unavailability semantics before any executable test is written."
+}
