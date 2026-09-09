@@ -13,6 +13,7 @@ on:
       - 'tests/transaction/test_transaction_attempt_context.f90'
       - 'tests/transaction/test_transaction_reference.f90'
       - 'tests/fkt/test_fkt09_canonical_certificate_composition.f90'
+      - 'tests/fkt/test_fkt09_kernel_certificate_diagnostics.f90'
       - 'tests/fkt/run_fkt05_gate.sh'
       - 'tests/transaction/run_fkt09_model_certificate_gate.sh'
       - 'tests/transaction/run_a23bl_gate.sh'
@@ -30,5 +31,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
           gfortran --version
-      - name: Run F-KT09 transaction and canonical-runtime gate
+      - name: Run F-KT09 transaction, canonical-runtime and kernel gate
         run: bash tests/transaction/run_fkt09_model_certificate_gate.sh
