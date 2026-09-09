@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION",
+  "contract": "F-ROSS01_GATE_E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION_PRECOMMIT.json",
+  "workflow_run": 34407846536,
+  "workflow_head": "65a52054f1a5b7d89c95a0995d2ab10628933245",
+  "workflow_conclusion": "failure",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_UPPER_BRACKET_ONLY_WITH_CANDIDATE_DIAGNOSTIC",
+  "material_pass_count": 1,
+  "material_count": 2,
+  "pass": false,
+  "decision": "EXACT_PHYSICAL_UPPER_REFERENCE_BRACKET_MECHANISM_VALIDATED_BUT_B01_EXPOSES_REAL_KSAT_ENDPOINT_FALLBACK_CANDIDATE_DEFECT_REMEDIATION_REQUIRED",
+  "artifacts": {
+    "B01": {"id": 10126095763, "digest": "sha256:eb49210e04ad01d914b993a912230d910a789f9d5e5eacccf784d370d6abef74"},
+    "O14": {"id": 10126099630, "digest": "sha256:fdb32bd0582e5b087563318a62911bad8ff56ed621da7bd3eaad68c217964a18"}
+  },
+  "oracle_remediation_finding": {
+    "B01": {
+      "old_safety_residual_oracle_a_cm": 4.896627176887097e-12,
+      "old_safety_residual_oracle_b_cm": 4.896627177363116e-12,
+      "exact_upper_residual_oracle_a_cm": -1.0317550150523912e-13,
+      "exact_upper_residual_oracle_b_cm": -1.0317550102921964e-13,
+      "oracle_pair_q_difference_over_ksat": 1.602966723001637e-23,
+      "oracle_bracket_repaired": true
+    },
+    "O14": {
+      "old_safety_residual_oracle_a_cm": 2.6724331274490188e-12,
+      "old_safety_residual_oracle_b_cm": 2.672433128596688e-12,
+      "exact_upper_residual_oracle_a_cm": -2.3277489677129955e-12,
+      "exact_upper_residual_oracle_b_cm": -2.3277489665653264e-12,
+      "oracle_pair_q_difference_over_ksat": 1.7251613636320045e-23,
+      "oracle_bracket_repaired": true
+    },
+    "passing_controls_old_vs_exact_upper_unchanged": true,
+    "conclusion": "The fixed 1e-12 upper contraction caused both R2R2 reference failures. The exact physical upper bound is finite, nonsingular and restores independently agreeing roots without changing constitutive physics."
+  },
+  "candidate_diagnostic": {
+    "B01": {
+      "h_surface_cm": 0.8418598139923603,
+      "h_top_node_cm": -1.7857563818019415e-08,
+      "q_reference_cm_per_day": 36.48243334385413,
+      "q_candidate_cm_per_day": 31.225016,
+      "q_candidate_equals_ksat": true,
+      "candidate_hybrid_metric": 0.14409585442862793,
+      "candidate_abs_error_over_ksatfit": 0.16837196636998145,
+      "candidate_branch_cost": {"root_residual_evaluations": 2, "constitutive_K_evaluations": 530},
+      "candidate_pass": false
+    },
+    "O14": {
+      "h_surface_cm": 0.37579678846033,
+      "h_top_node_cm": -1.9219207863995577e-08,
+      "q_reference_cm_per_day": 2.683580563843753,
+      "q_candidate_cm_per_day": 2.683580563843841,
+      "candidate_hybrid_metric": 3.276275257179496e-14,
+      "candidate_abs_error_over_ksatfit": 3.5228456412506006e-14,
+      "candidate_pass": true
+    }
+  },
+  "source_bound_cause": {
+    "existing_endpoint_fallback": "On q-above-K bracket failure, E2C-R3 returns q=K(h_above). For a positive saturated surface head K(h_above)=KSAT.",
+    "B01_effect": "The fallback therefore collapses a physically near-upper-bound interior root to KSAT, losing the finite saturated-head gradient over most of the 5 cm face.",
+    "why_O14_did_not_fail_candidate": "Its existing bounded quadrature still resolved the ordinary interior root before the fallback was invoked."
+  },
+  "hard_nonclaims": [
+    "R2R2-R1 is not qualified overall because the frozen gate included candidate accuracy checks and B01 fails them.",
+    "The exact-upper oracle mechanism is characterized as valid on both failed witnesses but is not yet used to claim R2R2 success.",
+    "No thresholds, seeds or candidate implementation were changed inside R2R2-R1.",
+    "No Phi tuning, precomputed-table reopening or constitutive smoothing is justified.",
+    "No surface ledger, response tangent, runtime, MultiSWAP, groundwater or production admission follows."
+  ],
+  "next_gate": "E3E_R2R2_R2_ANALYTIC_SATURATED_SEGMENT_CANDIDATE_REMEDIATION",
+  "status": "ORACLE_FAILURE_RESOLVED_CANDIDATE_DEFECT_EXPOSED"
+}
