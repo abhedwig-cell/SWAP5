@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "LOCAL_STEP_DOUBLING_VERSUS_FINE_TRANSACTION_TRAJECTORY",
+  "scope": "nonproduction estimator characterization only; production temporal acceptance unchanged",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_source_changed": false
+  },
+  "workflow": {
+    "name": "F-SI20 fine-reference trajectory study",
+    "run": 34300431076,
+    "job": 102305980967,
+    "head": "bbf81cae7e8cc87c611a1c584d89d5352248e262",
+    "conclusion": "success",
+    "artifact_id": 10084720127,
+    "artifact_name": "fsi20-fine-reference-trajectory",
+    "artifact_digest": "sha256:fd70623a845272d6bd0d8e70e32ed85295e24a1973f85f5456f4fe91ebc2b506",
+    "repeat_o0": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "method": {
+    "local_candidate": "existing transaction two-half candidate materialized with a nonproduction huge temporal tolerance only",
+    "local_candidate_mass_gate": 1e-12,
+    "nonlinear_tolerance": 1e-14,
+    "fine_trajectory": "same production backend advanced transactionally with 256 equal outer segments over the 0.25 day base horizon; each segment remains mass-hard",
+    "coarse_reference_trajectory": "same construction with 128 equal outer segments",
+    "warning": "The 256-segment trajectory is a finite numerical reference, not an exact solution. At short prefix times the 128-versus-256 difference becomes material, so the fixed-horizon direct-solver study is the stronger asymptotic evidence."
+  },
+  "comparison_rows": [
+    {"dt_day":0.25,"step_doubling_dhead_cm":2.55242948426825933e-4,"two_half_to_ref256_dhead_cm":1.36643570257888314e-4,"ref128_to_ref256_dhead_cm":2.00403746930533089e-8,"d_over_two_half_endpoint_error":1.86794700947219261},
+    {"dt_day":0.125,"step_doubling_dhead_cm":5.59871162238323450e-4,"two_half_to_ref256_dhead_cm":5.71947537750361334e-4,"ref128_to_ref256_dhead_cm":2.58314580037222186e-6,"d_over_two_half_endpoint_error":0.978885518837028568},
+    {"dt_day":0.0625,"step_doubling_dhead_cm":7.30391936698993050e-4,"two_half_to_ref256_dhead_cm":1.08892951774919311e-3,"ref128_to_ref256_dhead_cm":2.04796730116640902e-5,"d_over_two_half_endpoint_error":0.670743078219337985},
+    {"dt_day":0.03125,"step_doubling_dhead_cm":6.60104606367895030e-4,"two_half_to_ref256_dhead_cm":8.89364327179009706e-4,"ref128_to_ref256_dhead_cm":3.88385532659185628e-5,"d_over_two_half_endpoint_error":0.742220692010092664},
+    {"dt_day":0.015625,"step_doubling_dhead_cm":6.05509121356817559e-4,"two_half_to_ref256_dhead_cm":5.90506669354340374e-4,"ref128_to_ref256_dhead_cm":4.35273166488059360e-5,"d_over_two_half_endpoint_error":1.02540606699477399},
+    {"dt_day":0.0078125,"step_doubling_dhead_cm":6.24908348925146129e-4,"two_half_to_ref256_dhead_cm":6.08715152694117023e-4,"ref128_to_ref256_dhead_cm":8.45256472814526205e-5,"d_over_two_half_endpoint_error":1.02660225584883102},
+    {"dt_day":0.00390625,"step_doubling_dhead_cm":5.31039300540214754e-4,"two_half_to_ref256_dhead_cm":5.13727482399417568e-4,"ref128_to_ref256_dhead_cm":1.84510517271974095e-4,"d_over_two_half_endpoint_error":1.03369844661597732}
+  ],
+  "nodewise_evidence": {
+    "persisted_in_actions_artifact": true,
+    "nodes_per_dt": 4,
+    "fields": [
+      "two_half_minus_ref256_pressure_head",
+      "two_half_minus_ref256_water_content",
+      "ref128_minus_ref256_pressure_head",
+      "ref128_minus_ref256_water_content"
+    ],
+    "spatial_finding": "The sign and maximizing node of the endpoint error change along the short-time prefix sequence; no single fixed spatial node controls all local retries."
+  },
+  "interpretation": {
+    "local_step_doubling_is_same_order_as_endpoint_error_on_this_probe": true,
+    "local_step_doubling_is_monotone_over_first_seven_retries": false,
+    "local_step_doubling_tends_to_zero_established_by_this_study": false,
+    "cross_unit_scalarization_needed_for_head_signal": false,
+    "production_head_metric_admitted": false,
+    "key_finding": "The raw pressure-head step-doubling discrepancy is not meaningless: on this prescribed-head startup it is generally the same order as the two-half endpoint error to the tested fine trajectory. However, across the first seven retry halvings both the physical endpoint time and the startup transient change, so this sequence does not supply a monotone acceptance ladder or a qualified asymptotic law."
+  },
+  "scientific_boundary": [
+    "Do not infer a Richardson factor from these ratios.",
+    "Do not choose a production tolerance merely because a particular retry would then pass.",
+    "Do not mix the signed storage-state discrepancy into the authoritative mass gate.",
+    "The next discriminator is an extended local startup retry ladder toward the existing minimum step duration, with no monotonicity assertion."
+  ]
+}
