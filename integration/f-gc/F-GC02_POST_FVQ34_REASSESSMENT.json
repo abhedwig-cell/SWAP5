@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC02",
+  "artifact": "POST_FVQ34_REASSESSMENT",
+  "purpose": "Reassess whether the exact frozen F-GC02 physical coupling trial can be admitted after independent qualification of the explicit Richards head-budget temporal certificate, without introducing a post-hoc application accuracy budget.",
+  "frozen_fgc02_source": {
+    "branch": "work/f-gc02-physical-coupling-seam",
+    "pre_reassessment_head": "9f5416835ad8f836f0ddd15778320d1e76108f70",
+    "physical_seam_contract_blob": "46e864c025e62282990ad91c2992fc0f36aa279a",
+    "failure_diagnosis_blob": "2ac62f9d87ee774d50ef48309ef1ac4c9a1ed466",
+    "status_blob": "6dd165f73b0675829c50b5dee561209135ba933d",
+    "driver_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "runner_blob": "1b448f8762e0ea3f8d1aa6a12a80547783bd60d7"
+  },
+  "exact_frozen_trial": {
+    "t0": 4100.125,
+    "t1": 4100.375,
+    "initial_profile_head_cm": -75.0,
+    "corrector_bottom_head_cm": -75.0,
+    "predictor_bottom_head_cm": -74.99,
+    "predictor_head_perturbation_cm": 0.01,
+    "old_transaction_temporal_tolerance": 0.0,
+    "hard_mass_gate": 1.0e-12,
+    "meaning": "The 0.01 cm predictor perturbation creates a distinct same-T0 prescribed-head predictor. It is an interface trial perturbation, not a temporal error budget. The legacy transaction temporal_tolerance=0 represented the rejected binary temporal-identity semantics and is not a Richards H_budget."
+  },
+  "new_qualified_upstream_capability": {
+    "F_KT11_owner_handoff_blob": "51890fca7138021385f3366167ade92ef6daffb4",
+    "F_VQ34_closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270",
+    "F_VQ34_candidate_source": "6e9a684baff6812c3e1be5286f48447a6b4bff76",
+    "F_VQ34_workflow_run": 34364081068,
+    "F_VQ34_workflow_job": 102508186542,
+    "F_VQ34_decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE",
+    "qualified_formula": "C_h=B_inf/H_budget",
+    "budget_owner": "explicit numerical configuration",
+    "default_H_budget": null,
+    "automatic_GC02_release": false
+  },
+  "budget_provenance_audit": {
+    "F_GC01_interface_contract_blob": "fb1d0df4c78cffb74dabaa7ef1c2ff1bf992763c",
+    "F_GC01_requires_explicit_head_tolerance": true,
+    "F_GC01_numeric_head_tolerance_present": false,
+    "F_GC02_numeric_Richards_H_budget_present_before_failure": false,
+    "F_GC02_0p01cm_predictor_perturbation_is_H_budget": false,
+    "old_zero_temporal_tolerance_is_H_budget": false,
+    "F_KT11_or_F_VQ34_select_application_budget": false,
+    "independent_pre_result_numeric_budget_found": false
+  },
+  "prohibited_post_hoc_transfers": [
+    "do not set H_budget equal to the 0.01 cm predictor perturbation",
+    "do not reinterpret the old zero temporal identity tolerance as a Richards H_budget",
+    "do not use B_inf, 2*B_inf, 0.5*B_inf or any F-VQ34 qualification-only construction as an application budget",
+    "do not choose a value after observing the F-GC02 B_inf or acceptance result",
+    "do not introduce a coupling or temporal tolerance merely to make the frozen F-GC02 trial pass",
+    "do not relax hard mass or interface mass conservation"
+  ],
+  "decision": "FAIL_CLOSED_MISSING_PREEXISTING_APPLICATION_RUNTIME_RICHARDS_HEAD_ACCURACY_BUDGET",
+  "state": {
+    "F_VQ34_remains_qualified": true,
+    "F_GC02_admitted": false,
+    "fresh_F_VQ35_execution_permitted_now": false,
+    "new_physical_execution_performed_by_this_reassessment": false,
+    "production_source_modified": false,
+    "mass_requirement_relaxed": false,
+    "post_result_budget_selected": false
+  },
+  "required_next_work": {
+    "owner_class": "application/runtime coupling policy, not Richards solver physics and not generic transaction acceptance",
+    "requirement": "Define and independently justify provenance for a finite positive Richards-native head-accuracy budget before any exact F-GC02 re-execution. The numeric requirement must be independent of the frozen F-GC02 B_inf/result and must remain distinguishable from coupling head residual tolerance and predictor perturbation amplitude.",
+    "suggested_work_unit": "F-GC03",
+    "suggested_title": "Coupling Head-Accuracy Budget Provenance and Temporal Error Allocation Policy",
+    "later_independent_gate": "Only after an independently frozen numeric H_budget exists may a fresh F-VQ workunit re-execute the exact frozen F-GC02 physical trial."
+  },
+  "invariant_audit": {
+    "3_explicit_data_separation": "PASS: no physical forcing or state value is repurposed as numerical H_budget.",
+    "7_transactional_timesteps": "PASS: the previously rejected trial remains rejected; no retrospective commit is allowed.",
+    "11_coupling_core_functionality": "PASS: coupling admission remains explicit and fail-closed until numerical accuracy provenance exists.",
+    "13_mass_conservation_absolute": "PASS: no mass tolerance or interface residual relaxation is introduced.",
+    "23_physics_solver_policy_separated": "PASS: missing numerical policy is not repaired by changing prescribed-head physics.",
+    "26_runtime_diagnostics": "PASS: future budget provenance must remain explicit and diagnosable.",
+    "29_no_silent_dependencies": "PASS: no hidden/default 0.01 cm or other implicit budget is introduced.",
+    "30_architecture_change_audit": "PASS: this reassessment changes evidence/status only and records the unresolved policy dependency explicitly."
+  }
+}
