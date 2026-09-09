@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR17",
+  "title": "Richards Transactional Temporal Refinement Semantics & Owner Resolution",
+  "branch": "work/f-mr17-richards-temporal-refinement-semantics",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED_BEFORE_CHARACTERIZATION",
+  "phase": "NONPRODUCTION_REFINEMENT_SEMANTICS_CHARACTERIZATION",
+  "base_head": "81919d5373fb1976e228b32ae213a4685c0e4f9b",
+  "contract": "integration/f-mr/F-MR17_CONTRACT.json",
+  "incoming_decisions": {
+    "fmr16": "CLOSED_READINESS_BLOCKED_FSI_SOURCE_THEORY_QUALIFIED_RICHARDS_TEMPORAL_ERROR_REQUIRED",
+    "fsi20": "NEGATIVE_FVQ28_HANDOFF_BOUND_SEPARATE_OWNER_RUNTIME_POLICY_WORKUNIT_REQUIRED",
+    "fvq28": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "fgc02_release": false,
+    "fpe_release": false
+  },
+  "current_decision": {
+    "existing_endpoint_shortening_retry_plus_raw_head_defect": "REJECTED_BY_FVQ28",
+    "same_horizon_nested_refinement": "PRIMARY_NONPRODUCTION_RESEARCH_CANDIDATE",
+    "embedded_or_multilevel_model_estimator": "SECONDARY_ONLY_IF_SOURCE_THEORY_SUPPORT_EXISTS",
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "production_semantic_change_authorized": false
+  },
+  "state": {
+    "contract_persisted": true,
+    "production_source_modified": false,
+    "characterization_harness_implemented": false,
+    "tested": false,
+    "research_candidate_selected": false,
+    "owner_handoff_ready": false,
+    "qualified": false
+  },
+  "hard_constraints": {
+    "physics_changed": false,
+    "mass_requirement_relaxed": false,
+    "transaction_semantics_changed": false,
+    "retry_policy_changed": false,
+    "solver_policy_changed": false,
+    "coupling_orchestration_changed": false,
+    "reference_mode_preserved": true,
+    "generic_time_preserved": true,
+    "fgc02_specific_tuning": false,
+    "balanced_throughput_fallback_admitted": false
+  },
+  "next_action": "Build a source-bound nonproduction comparative harness on the exact F-SI20/F-VQ28 handoff lineage. Reproduce the F-VQ28 held-out matrix and compare existing endpoint-shortening retry behavior against same-horizon nested refinement levels that all terminate at the same t1. Record same-endpoint state error, dimensional endpoint observables, solver cost, hard authoritative mass, determinism and failure class. Do not alter production source or choose a tolerance."
+}
