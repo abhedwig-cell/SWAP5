@@ -1,0 +1,36 @@
+name: F-VQ32 independent Richards head-budget normalization
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - qualification/f-vq32-richards-head-budget-normalization
+    paths:
+      - 'integration/f-vq/F-VQ32_QUALIFICATION_PLAN.json'
+      - 'tests/fvq/test_fvq32_head_budget_semantics.py'
+      - 'tests/fvq/run_fvq32_fresh_head_budget_normalization.sh'
+      - '.github/workflows/fvq32-richards-head-budget-normalization.yml'
+
+jobs:
+  independent-semantic-algebra:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run independent exact-linear and budget-semantics gate
+        run: python3 tests/fvq/test_fvq32_head_budget_semantics.py
+
+  fresh-nonlinear-production-normalization:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run fresh 12-case production normalization gate
+        run: bash tests/fvq/run_fvq32_fresh_head_budget_normalization.sh
