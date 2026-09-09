@@ -27,3 +27,5 @@ jobs:
           gfortran --version
       - name: Run F-MR20 parallel-v1 qualification gate
         run: bash tests/fmr/run_fmr20_parallel_v1_qualification.sh
+
+# Rerun checkpoint after persisted rejection-isolation strengthening.
