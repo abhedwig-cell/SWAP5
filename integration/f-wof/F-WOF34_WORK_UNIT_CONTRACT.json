@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF34",
+  "title": "Accepted-Window Runtime Lineage and Crop-Event Delivery Seam",
+  "branch": "work/f-wof34-accepted-window-runtime-lineage",
+  "base": {
+    "commit": "b75342a6b9d1249ba7c87b4692acabc97d11ed13",
+    "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD",
+    "exact_closeout_run": 34311841403,
+    "exact_closeout_conclusion": "success"
+  },
+  "goal": "Implement the smallest runtime-owned lineage seam that can collect IQROT/IPTRA-equivalent process integrals during a physical trial, admit them to one WOFOST crop window only after an F-KT commit has actually advanced the same lineage/revision/interval, freeze a complete accepted aggregate carrier for F-WOF33, and prevent more than one successfully committed crop-event delivery for that window.",
+  "architecture": {
+    "crop_kernel_transaction_knowledge_added": false,
+    "runtime_owner": true,
+    "F_KT_commit_authority_changed": false,
+    "persistent_physical_crop_state_added": false,
+    "worker_local_trial_scratch": true,
+    "active_window_runtime_metadata": true,
+    "calendar_midnight_dependency": false,
+    "solver_internal_dependency": false
+  },
+  "accepted_interval_certificate": {
+    "constructor_inputs": ["F-KT kernel_checkpoint_t captured before the interval", "F-KT kernel_committed_state_t observed after a successful commit"],
+    "required_proof": [
+      "checkpoint and committed state are ready and share the same positive lineage",
+      "committed revision equals checkpoint origin revision + 1",
+      "both time cursors are bound",
+      "committed post-time is strictly after checkpoint time"
+    ],
+    "forgery_boundary": "certificate components are private and there is no public constructor from an accepted boolean or caller-supplied revision pair",
+    "meaning": "F-KT has published exactly one continuation interval on this lineage between the checkpoint time and the committed post-time"
+  },
+  "trial_contribution": {
+    "ownership": "worker/job-local scratch; never committed column state",
+    "seed": "same F-KT checkpoint provenance as the candidate trial",
+    "accumulation": "for each process subinterval, IQROT-equivalent integral += actual_root_uptake_rate * dt and IPTRA-equivalent integral += potential_transpiration_rate * dt",
+    "requirements": [
+      "finite nonnegative rates",
+      "strictly positive finite subinterval",
+      "subintervals contiguous and wholly inside the trial interval",
+      "first subinterval starts at trial t0 and complete contribution ends at trial t1 before admission"
+    ],
+    "discard": "discarding/replacing a trial contribution cannot modify any accepted-window total"
+  },
+  "accepted_window": {
+    "seed": "F-KT checkpoint at crop-window t0 plus explicit generic window t1",
+    "identity": ["lineage id", "start revision", "t0", "t1"],
+    "admission": "trial contribution enters totals only when certificate lineage, origin revision and exact interval match the trial, and certificate origin revision equals the window next expected revision",
+    "coverage": "accepted intervals must be contiguous, non-overlapping and cannot pass the crop-window t1",
+    "aggregate_output": "wofost_accepted_window_aggregates_t using accepted integrals only",
+    "complete": "coverage end equals crop-window t1 within qualified time tolerance",
+    "rejected_trial_zero_contribution": "proven by mutation tests in which rejected/discarded trial contributions contain nonzero values but window totals remain unchanged"
+  },
+  "crop_event_delivery": {
+    "prepare": "a complete accepted window may produce a private provenance-bound event token plus a frozen aggregate carrier; preparation is read-only and repeatable for crop retry",
+    "commit_delivery": "after the runtime has successfully committed the corresponding crop candidate, the token may mark the window delivered exactly once",
+    "second_delivery": "rejected",
+    "retry_before_delivery_commit": "same complete window returns bitwise identical token/aggregates",
+    "calendar_scheduler": "not implemented; the runtime event condition is generic window completion rather than midnight"
+  },
+  "qualified_semantic_producer_relationships": {
+    "actual_root_uptake": "root_water_uptake_flux_result_t.actual_uptake_total exists for the qualified root-water-uptake process",
+    "potential_transpiration": "qualified ET/crop-root seams expose potential_transpiration as a current-process quantity",
+    "real_Richards_trial_binding_in_this_unit": false,
+    "reason": "F-WOF34 qualifies lineage/aggregation/delivery semantics; actual production process calls must be bound where the corresponding trial process outputs are already available, not invented by this seam"
+  },
+  "gates": {
+    "G01_F_KT_certificate_not_boolean": "REQUIRED",
+    "G02_rejected_trial_zero_contribution": "REQUIRED",
+    "G03_retry_same_checkpoint_only_accepted_trial_contributes": "REQUIRED",
+    "G04_lineage_revision_interval_mismatch_fail_closed_without_mutation": "REQUIRED",
+    "G05_multi_interval_contiguous_window_accumulation": "REQUIRED",
+    "G06_gap_overlap_and_overrun_rejected": "REQUIRED",
+    "G07_freeze_only_when_window_complete": "REQUIRED",
+    "G08_frozen_carrier_matches_F_WOF33_semantic_type": "REQUIRED",
+    "G09_crop_event_prepare_replay_bitwise_identity": "REQUIRED",
+    "G10_crop_event_delivery_exactly_once": "REQUIRED",
+    "G11_worker_trial_scratch_not_persistent_crop_state": "REQUIRED",
+    "G12_no_crop_kernel_solver_or_IO_delta": "REQUIRED",
+    "G13_O0_O2_identity": "REQUIRED",
+    "G14_F_WOF33_exact_regression": "REQUIRED",
+    "G15_invariant_audit": "REQUIRED"
+  },
+  "not_qualified": [
+    "actual Richards/root-uptake/ET production binding that invokes trial accumulation at every accepted physical process substep",
+    "full runtime ownership/lifetime of active crop-window metadata across restart or distributed execution",
+    "calendar-derived daily scheduler",
+    "full historical multi-day B1.10 crop trajectory equivalence",
+    "IALPWET oxygen aggregate",
+    "IDSL=2, SWRD=2/3, nutrients, potential crop trajectory, soybean or grass"
+  ],
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
+}
