@@ -114,8 +114,8 @@ insert = """final_extra = '''  ! F-WOF39 derived lifecycle retirement. The crop 
     call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
     call require(snapshot_available .and. same_owner(crop_snapshot_owner, candidate1), &
          'F-WOF39 replay owner unchanged')
-    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &
-         'F-WOF39 replay receipt unchanged')
+    call require(tx%receipt_ready(), 'F-WOF39 replay receipt still ready')
+    call require(tx%consumed_event(event_identity), 'F-WOF39 replay receipt unchanged')
   class default
     call require(.false., 'F-WOF39 replay committed state type')
   end select
