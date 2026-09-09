@@ -7,7 +7,7 @@ on:
     paths:
       - 'tests/fvq/test_fvq28_transaction_shape_matrix.f90'
       - 'tests/fvq/test_fvq28_transaction_shape_reference.f90'
-      - 'tests/fvq/run_fvq28_transaction_shape_gate.sh'
+      - 'tests/fvq/run_fvq28_transaction_shape_gate_v2.sh'
       - '.github/workflows/fvq28-transaction-shape-gate.yml'
       - 'integration/f-vq/F-VQ28_GATE_B_PLAN.json'
   workflow_dispatch:
@@ -25,4 +25,4 @@ jobs:
           sudo apt-get install -y gfortran
           gfortran --version
       - name: Run F-VQ28 transaction-shape Gate B
-        run: bash tests/fvq/run_fvq28_transaction_shape_gate.sh
+        run: bash tests/fvq/run_fvq28_transaction_shape_gate_v2.sh
