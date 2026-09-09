@@ -1,0 +1,64 @@
+{
+  "classes": [
+    {
+      "half_face_length_cm": 10.0,
+      "material": "reference_sand"
+    },
+    {
+      "half_face_length_cm": 5.0,
+      "material": "very_fast"
+    }
+  ],
+  "classifier": {
+    "dh_max_cm": 100000.0,
+    "g_max": 10000.0,
+    "k_ratio_max": 1000000.0,
+    "min_se": 1e-06
+  },
+  "gate": "C6B_UNSEEN_CORE_ENVELOPE_HOLDOUT",
+  "hard_rules": [
+    "No classifier threshold, provider density, sample seed, sample count or acceptance threshold may change after first C6b execution.",
+    "C6b passes only if both precommitted blocker classes pass independently.",
+    "Rows outside the classifier are fail-closed outside the candidate LayeredMFP core envelope; they are not solver failures.",
+    "A C6b failure does not license promotion of the 113-node provider on the same revealed holdout."
+  ],
+  "holdout": {
+    "filtering": "Only rows inside the fixed provider head envelope are formed; the frozen classifier is then applied before accuracy aggregation. Rejected rows are counted but cannot affect qualification metrics.",
+    "gradient_family": {
+      "g": "50% U[-6,8], 50% U[-24,24]",
+      "h_upper": "uniform in asinh(h/0.01) over [-1e6,100]",
+      "raw_cases": 240,
+      "seed": 7092026
+    },
+    "head_pair_family": {
+      "h_upper_and_lower": "independent uniform in asinh(h/0.01) over [-1e6,100]",
+      "raw_cases": 360,
+      "seed": 9102026
+    },
+    "minimum_active_admitted_cases_per_class": 60,
+    "minimum_admitted_cases_per_class": 100,
+    "revealed_C6a_or_C3b_rows_reused": false
+  },
+  "provider": {
+    "base_n": 33,
+    "expected_actual_axis_nodes": 49,
+    "family": "ANCHORED_HEAD_PAIR"
+  },
+  "qualification": true,
+  "schema_version": 1,
+  "scope_limit": "Hydraulic homogeneous-face representation only. No transient, root uptake, drainage, groundwater coupling, MODFLOW, response tangent or production admission.",
+  "status": "PRECOMMITTED_BEFORE_IMPLEMENTATION_OR_EXECUTION",
+  "unchanged_acceptance": {
+    "active_max_rel_error_lt": 0.3,
+    "active_p90_rel_error_lt": 0.02,
+    "active_p99_rel_error_lt": 0.1,
+    "corrected_p90_must_beat_plain_mfp": true,
+    "dormant_abs_error_over_ks_scale_lt": 1e-07,
+    "failures": 0,
+    "fraction_better_than_plain_mfp_on_informative_cases_ge": 0.75,
+    "near_saturation_p90_rel_error_lt": 0.02,
+    "sign_mismatches": 0,
+    "strong_gradient_p90_rel_error_lt": 0.02
+  },
+  "work_unit": "F-LMFP09"
+}

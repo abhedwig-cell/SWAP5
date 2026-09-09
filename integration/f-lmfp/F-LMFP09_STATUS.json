@@ -1,14 +1,9 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
   "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
-  "base": {
-    "work_unit": "F-LMFP08",
-    "commit": "7ce558267a7fd36ae508a5c2229f996c916ff61a",
-    "decision": "QUALIFIED_CONSTRAINED_CONTINUOUS_MFP_DARCIAN_RATIO_REPRESENTATION"
-  },
   "scope": {
     "production_implementation": false,
     "experimental_harness_only": true,
@@ -33,45 +28,32 @@
     "representation_shared_immutable": true,
     "fullrichards_reference_preserved": true
   },
-  "qualified_prior_evidence": {
-    "gate_A_coordinate": "QUALIFIED_ASINH_HSCALE_0P01_N128_FOUNDATIONAL_MFP_COORDINATE_WITH_SEPARATE_R_TABLE_DENSITY_REQUIRED",
-    "F_LMFP08_homogeneous_face_representation": "QUALIFIED_WITHIN_ITS_EARLIER_TESTED_HYDRAULIC_SCOPE",
-    "F_LMFP08_transient_mass": "QUALIFIED_TO_ROUNDOFF_WITHIN_EARLIER_TESTED_SCOPE",
-    "C2_composed_heterogeneous_interface": "PROMISING_WITH_ZERO_FAILURES_IN_1000_CASES_AND_EQUAL_FLUX_RESIDUAL_WITHIN_PRECOMMITTED_BOUND"
-  },
   "negative_representation_evidence": {
-    "C3b_49_node_anchored_head_pair": {
-      "decision": "REJECTED_FOR_GENERALIZATION",
-      "p90_relative_flux_error_range": [0.32469086381504836, 0.5577115982617433],
-      "worst_relative_flux_error_range": [14.425946026952689, 20.477924431644812],
-      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C3B_OFFGRID_HOLDOUT_RESULT.json"
-    },
-    "C4_global_head_pair_densification": {
-      "run": 34314877011,
-      "largest_actual_axis_nodes": 113,
-      "largest_values_per_class": 12769,
-      "largest_bytes_per_class_before_metadata": 102152,
-      "monotone_convergence": false,
-      "density_promoted": false,
-      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C4_GLOBAL_DENSITY_CHARACTERIZATION_RESULT.json"
-    },
-    "C5a_simple_mixed_state_bilinear": {
-      "run": 34316119729,
-      "values_per_class": 2958,
-      "bytes_per_class_before_metadata": 23664,
-      "reference_sand_p90": 1.2367408951748873,
-      "very_fast_p90": 5.700599002009445,
-      "candidate_promoted": false,
-      "evidence": "integration/f-lmfp/F-LMFP09_GATE_C5A_MIXED_STATE_TAIL_CHARACTERIZATION_RESULT.json"
-    }
+    "C3b_49_node_anchored_head_pair_general_envelope": "REJECTED_FOR_GENERALIZATION",
+    "C4_global_head_pair_densification": "NOT_PROMOTED",
+    "C5a_simple_mixed_state_bilinear": "NOT_PROMOTED"
+  },
+  "C6a": {
+    "run": 34318474571,
+    "head": "79ab249d466e732c11c8f49caf151fad360d19d8",
+    "qualification": false,
+    "shared_passing_classifiers_n49": 1176,
+    "shared_passing_classifiers_n113": 1176,
+    "nominated_classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "reference_sand_admitted_fraction": 0.5190562613430127,
+    "very_fast_admitted_fraction": 0.46819787985865724,
+    "provider_selection": "49_NODE_ANCHORED_HEAD_PAIR",
+    "provider_selection_reason": "same revealed admitted envelope as 113 nodes and all unchanged error rules pass, at 19208 versus 102152 bytes per class before metadata"
   },
   "current_gate": {
-    "name": "C6A_ADMISSIBLE_ENVELOPE_CLASSIFIER_CHARACTERIZATION",
-    "qualification": false,
-    "purpose": "test whether a simple explicit hydraulic core envelope can be recognized cheaply so that LayeredMFP is only admitted where the frozen cheap representation meets unchanged accuracy rules",
-    "candidate_providers": ["C3_49_NODE_ANCHORED_HEAD_PAIR", "C4_113_NODE_ANCHORED_HEAD_PAIR"],
-    "design": "integration/f-lmfp/F-LMFP09_GATE_C6A_ADMISSIBLE_ENVELOPE_CLASSIFIER_CHARACTERIZATION_DESIGN.json",
-    "qualification_rule": "any nominee requires a new precommitted C6b unseen holdout before qualification"
+    "name": "C6B_UNSEEN_CORE_ENVELOPE_HOLDOUT",
+    "qualification": true,
+    "provider_base_n": 33,
+    "expected_actual_axis_nodes": 49,
+    "classifier_frozen": true,
+    "holdout_seeds_frozen": [7092026, 9102026],
+    "design": "integration/f-lmfp/F-LMFP09_GATE_C6B_UNSEEN_HOLDOUT_DESIGN.json",
+    "status": "PRECOMMITTED_BEFORE_IMPLEMENTATION_OR_EXECUTION"
   },
   "separate_open_blockers": [
     "production hydraulic catalog admission remains open",
@@ -87,13 +69,11 @@
     "PERSISTED": true,
     "TESTED": true,
     "GATE_A_QUALIFIED": true,
-    "HETEROGENEOUS_INTERFACE_CONSTRUCTION_PROMISING": true,
-    "C3_49_NODE_REPRESENTATION_QUALIFIED": false,
-    "C4_GLOBAL_DENSITY_ROUTE_PROMOTED": false,
-    "C5A_MIXED_STATE_ROUTE_PROMOTED": false,
-    "C6A_DESIGN_PERSISTED": true,
+    "C6A_CHARACTERIZATION_COMPLETE": true,
+    "C6B_DESIGN_PERSISTED": true,
+    "C6B_EXECUTED": false,
     "OVERALL_QUALIFIED": false
   },
-  "decision": "RESEARCH_CONTINUES_WITH_EXPLICIT_ENVELOPE_PARTITIONING",
-  "status": "C4_AND_C5A_NEGATIVE_EVIDENCE_PERSISTED_C6A_ADMISSIBLE_ENVELOPE_CHARACTERIZATION_READY"
+  "decision": "N49_SIMPLE_CORE_ENVELOPE_READY_FOR_PRECOMMITTED_C6B_UNSEEN_HOLDOUT",
+  "status": "C6A_RECONCILED_C6B_PRECOMMITTED_BEFORE_IMPLEMENTATION"
 }

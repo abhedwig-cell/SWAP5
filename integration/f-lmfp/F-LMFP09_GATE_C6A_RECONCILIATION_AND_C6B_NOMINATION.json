@@ -1,0 +1,102 @@
+{
+  "artifacts": {
+    "reference_sand_n113": {
+      "digest": "sha256:cbb036823eccebbe1b84e75f35cc05f801f0dac2175aa8ca09c652b3a08b0ed0",
+      "id": 10091317827
+    },
+    "reference_sand_n49": {
+      "digest": "sha256:8aeb42aaf836650aba972fcf44467df70f9a1e726fa16202bfcd4dd7138ae630",
+      "id": 10091014432
+    },
+    "very_fast_n113": {
+      "digest": "sha256:6bcf6c699b95a78643e549298642e96c7ddee0e28621591ca3dc09b00c86e9a4",
+      "id": 10091401301
+    },
+    "very_fast_n49": {
+      "digest": "sha256:8c3fb82a6db0144deccf4c7717b11ed8b1b2e97099db781c8dae0a8ce25cc435",
+      "id": 10091031837
+    }
+  },
+  "candidate_classifier": {
+    "classifier_id": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "dh_max_cm": 100000.0,
+    "g_max": 10000.0,
+    "k_ratio_max": 1000000.0,
+    "min_se": 1e-06
+  },
+  "decision": "C6A_RECONCILED_N49_SIMPLE_CORE_ENVELOPE_NOMINATED_FOR_NEW_UNSEEN_C6B_ONLY",
+  "gate": "C6A_RECONCILIATION_AND_C6B_NOMINATION",
+  "provider_comparison": {
+    "n113": {
+      "actual_axis_nodes": 113,
+      "bytes_before_metadata": 102152,
+      "reference_sand": {
+        "active_rel_error": {
+          "maximum": 0.0017026894108178793,
+          "p90": 0.0006701782421312653,
+          "p99": 0.0013374166866610276
+        },
+        "admitted_cases": 286,
+        "admitted_fraction": 0.5190562613430127,
+        "characterization_cases": 551,
+        "strong_gradient_p90": 0.0006894889863913611
+      },
+      "shared_passing_classifiers": 1176,
+      "table_values": 12769,
+      "very_fast": {
+        "active_rel_error": {
+          "maximum": 0.003844942506819888,
+          "p90": 0.0009745892536950308,
+          "p99": 0.003807061954442314
+        },
+        "admitted_cases": 265,
+        "admitted_fraction": 0.46819787985865724,
+        "characterization_cases": 566,
+        "strong_gradient_p90": 0.0008804092559097771
+      }
+    },
+    "n49": {
+      "actual_axis_nodes": 49,
+      "bytes_before_metadata": 19208,
+      "reference_sand": {
+        "active_rel_error": {
+          "maximum": 0.008715778979366687,
+          "p90": 0.0048120796876644015,
+          "p99": 0.007044137336731642
+        },
+        "admitted_cases": 286,
+        "admitted_fraction": 0.5190562613430127,
+        "characterization_cases": 551,
+        "strong_gradient_p90": 0.005622577477975941
+      },
+      "shared_passing_classifiers": 1176,
+      "table_values": 2401,
+      "very_fast": {
+        "active_rel_error": {
+          "maximum": 0.02381647228901249,
+          "p90": 0.007223483228277536,
+          "p99": 0.019740958067072108
+        },
+        "admitted_cases": 265,
+        "admitted_fraction": 0.46819787985865724,
+        "characterization_cases": 566,
+        "strong_gradient_p90": 0.007223483228277536
+      }
+    }
+  },
+  "qualification": false,
+  "schema_version": 1,
+  "selection": {
+    "actual_axis_nodes": 49,
+    "base_n": 33,
+    "bytes_ratio_n113_over_n49": 5.31820074968763,
+    "holdout_rule": "If the 49-node nominee fails C6b, the 113-node provider may not be promoted using the revealed C6b data. Any 113-node promotion requires a separately precommitted new unseen holdout.",
+    "no_weighted_score_used": true,
+    "nominated_provider": "C3_49_NODE_ANCHORED_HEAD_PAIR",
+    "reason": "49 and 113 nodes admit the same characterization cases under the least restrictive shared passing classifier and have the same 1176 shared passing classifier IDs. The 49-node provider already passes all unchanged accuracy rules while using 19208 versus 102152 bytes per class before metadata. The 113-node accuracy margin is better but does not expand the revealed admissible envelope."
+  },
+  "source_head": "79ab249d466e732c11c8f49caf151fad360d19d8",
+  "source_run": 34318474571,
+  "status": "CHARACTERIZATION_COMPLETE_NOT_QUALIFIED",
+  "work_unit": "F-LMFP09"
+}
