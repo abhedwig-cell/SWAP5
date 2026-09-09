@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF33",
+  "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Composition",
+  "branch": "work/f-wof33-two-phase-crop-window-composition",
+  "base": {
+    "commit": "5c35f2c244a476819a673c46b6e926561ea99c84",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_PHASE_B_RATE_PROVIDER_WITH_RUNTIME_LINEAGE_HOLD"
+  },
+  "status": "QUALIFIED_RESTRICTED_TWO_PHASE_STANDARD_WOFOST_CROP_WINDOW_COMPOSITION_WITH_RUNTIME_PROVENANCE_HOLD",
+  "decision": "QUALIFIED_KERNEL_COMPOSITION_READY_FOR_ACCEPTED_WINDOW_RUNTIME_BINDING_NOT_END_TO_END_ADMITTED",
+  "tested_candidate": "626bd6e6671982847b3d72fa8c934ca4850deb86",
+  "verification": {
+    "workflow": "F-WOF33 two-phase crop window",
+    "run_id": 34311477183,
+    "job_id": 102338857838,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "cfb21d02eff5086f0f17abdfe1813b116765ffc22856fe8d0e1037a7e0fc693f",
+    "F_WOF31_prepare_assimilation_exact_regression": "PASS",
+    "F_WOF32_finalize_rates_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_two_phase_crop_window.f90"
+    ],
+    "persistent_column_state_added": false,
+    "commit_authority_added": false,
+    "scheduler_added": false,
+    "solver_or_process_accumulator_added": false,
+    "calendar_or_file_IO_dependency": false
+  },
+  "qualified_contract": {
+    "begin": "committed owner -> F-WOF26 prepare -> F-WOF28 frozen semantic view -> F-WOF31 PGASS -> worker-local context",
+    "complete": "worker-local context + frozen accepted aggregates -> F-WOF32 rate packet -> F-WOF26 structural candidate",
+    "trial_context": "prepared crop candidate plus small semantic/prepared context only; no immutable parameter bundle or accepted aggregate accumulator",
+    "failure_atomicity": "failed begin yields no ready context; failed complete returns phase-A prepared candidate rather than partial structural state",
+    "replay": "bitwise deterministic for qualified begin and complete fixtures",
+    "inactive_crop": "qualified exact no-op and skips all active-only dependencies",
+    "daily_cadence": "one successful complete invokes exactly one structural cohort shift/create"
+  },
+  "runtime_provenance_hold": {
+    "accepted_IQROT_IPTRA_accumulator_implemented": false,
+    "rejected_trial_zero_contribution_proven": false,
+    "same_window_same_accepted_trajectory_proven": false,
+    "runtime_scheduler_exactly_once_daily_event_proven": false,
+    "owner": "runtime/transaction layer outside crop kernel"
+  },
+  "not_qualified": [
+    "runtime accepted-window IQROT/IPTRA accumulation and lineage proof",
+    "end-to-end runtime scheduling of exactly one WOFOST daily event",
+    "historical full-trajectory B1.10 scientific equivalence",
+    "IDSL=2 vernalization",
+    "SWRD=2/3 root rate paths",
+    "nutrient and oxygen routes",
+    "potential trajectory",
+    "soybean and grass routes",
+    "arbitrary subdaily or multi-day WOFOST calls"
+  ],
+  "next": "F-WOF34 should implement the smallest runtime accepted-window aggregation and provenance seam. It must accumulate IQROT/IPTRA only from accepted process/soil-water contributions for one crop window, prove rollback/retry zero contribution and same-window lineage, and feed the frozen carrier to F-WOF33 without moving transaction logic into the crop kernel.",
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,26,27,28,29,30]
+}
