@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI22",
+  "evidence": "FIXED_HORIZON_NESTED_REFINEMENT_BAND_GATE_A",
+  "branch": "work/f-si22-richards-fixed-horizon-certificate",
+  "tested_head": "e8ea8182476d35527f0bfcac4640bb6854517751",
+  "workflow": {
+    "name": "F-SI22 fixed-horizon nested refinement band",
+    "run_id": 34310854032,
+    "job_id": 102337038883,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04",
+    "o0_o2_identity": "PASS",
+    "selected_repeat_determinism": "PASS"
+  },
+  "source_controls": {
+    "fsi22_base": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+    "richards_direct_solver_source_unchanged": true,
+    "fixed_horizon_driver_blob": "5c8ea89bfedd16a57fdfcf38d188a093a2999525",
+    "reference_tridag_operation_order": "SWAP_4_3_1_THOMAS",
+    "reference_tridag_test_only": true,
+    "production_richards_source_modified": false
+  },
+  "matrix": {
+    "case_count": 15,
+    "initial_uniform_pressure_heads_cm": [-25.0, -75.0, -250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1, -0.01, 0.001, 0.01, 0.1],
+    "fixed_horizon_day": 0.25,
+    "trajectory_steps": [1,2,4,8,16,32,64,128,256,512],
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12,
+    "fine_reference_warning": "N=512 is the finest tested same-horizon trajectory, not an exact solution."
+  },
+  "aggregate_results": {
+    "all_15_cases_completed_o0_and_o2": true,
+    "all_hard_mass_gates_passed": true,
+    "maximum_external_mass_residual": 0.0,
+    "cases_with_two_consecutive_resolved_dhead_decreases": 15,
+    "cases_with_three_consecutive_resolved_dhead_decreases": 15,
+    "cases_with_any_resolved_dhead_increase": 0,
+    "maximum_first_two_decrease_start_N": 1,
+    "maximum_first_three_decrease_start_N": 1,
+    "cases_reaching_machine_floor": 5,
+    "machine_floor_cases": "all five h0=-25 cm wet-state stimuli"
+  },
+  "state_classes": [
+    {
+      "initial_head_cm": -25.0,
+      "case_count": 5,
+      "fixed_horizon_contraction": "very rapid from N=1 until floating-point floor",
+      "resolved_contraction_ratio_envelope": [0.0005862551216708631, 0.0214579666307224],
+      "first_defect_ge_remaining_N512_error_N": 1,
+      "machine_floor_reached": true,
+      "interpretation": "Strong early contraction and early conservative relation to the finite N=512 endpoint reference. Later zero/O(e-15 cm) differences are floating-point-floor observations, not temporal-calibration evidence."
+    },
+    {
+      "initial_head_cm": -75.0,
+      "case_count": 5,
+      "fixed_horizon_contraction": "strictly decreasing over every resolved pair from N=1 through N=512",
+      "resolved_contraction_ratio_envelope": [0.20983787263111972, 0.4439881825764135],
+      "first_defect_ge_remaining_N512_error_N": 1,
+      "machine_floor_reached": false,
+      "interpretation": "Stable same-endpoint contraction over the complete tested ladder and conservative relation to the finite N=512 endpoint reference from N=1 in this state class."
+    },
+    {
+      "initial_head_cm": -250.0,
+      "case_count": 5,
+      "fixed_horizon_contraction": "strictly decreasing over every resolved pair from N=1 through N=512",
+      "resolved_contraction_ratio_envelope": [0.5014791579950465, 0.6758827891091881],
+      "first_defect_ge_remaining_N512_error_N": 16,
+      "machine_floor_reached": false,
+      "interpretation": "The same-endpoint defect contracts cleanly from N=1, but remains smaller than the remaining endpoint error to N=512 until N=16. Therefore contraction detection alone does not establish a conservative accuracy bound in the dry pre-asymptotic regime."
+    }
+  ],
+  "representative_dhead_sequences_cm": {
+    "wet_h0_minus25_jump_plus0p01": [
+      1.12284811743634805e-3,
+      2.40520813328259919e-5,
+      1.41921034924052947e-8,
+      1.00612851383630186e-11,
+      7.46069872548105195e-14,
+      0.0,
+      3.55271367880050093e-15,
+      3.55271367880050093e-15,
+      1.06581410364015028e-14
+    ],
+    "middle_h0_minus75_jump_plus0p01": [
+      2.55242948426825933e-4,
+      1.02942967401986607e-4,
+      2.76148633417960809e-5,
+      5.81177479830330412e-6,
+      1.25678275253449101e-6,
+      3.35562802433742036e-7,
+      1.12996772827500536e-7,
+      4.51642421239739633e-8,
+      2.00402894279250177e-8
+    ],
+    "dry_h0_minus250_jump_plus0p01": [
+      7.67275082409923925e-4,
+      5.18446145690631965e-4,
+      3.26821033240776160e-4,
+      1.83730668567250177e-4,
+      9.70076411874742917e-5,
+      4.97526425817795825e-5,
+      2.51817345997551456e-5,
+      1.26663269668370049e-5,
+      6.35191719311478664e-6
+    ]
+  },
+  "scientific_findings": {
+    "same_endpoint_nested_refinement_is_structurally_well_behaved_on_tested_envelope": true,
+    "outer_retry_horizon_shortening_is_needed_to_obtain_contraction": false,
+    "fixed_horizon_contraction_detected_from_N1_in_all_cases": true,
+    "contraction_alone_is_a_conservative_accuracy_certificate": false,
+    "reason_contraction_alone_is_insufficient": "All dry-state cases contract monotonically from the first nested comparison, yet the raw defect remains smaller than the finite-reference remaining endpoint error until N=16.",
+    "single_universal_defect_to_error_factor_qualified": false,
+    "single_universal_absolute_head_tolerance_qualified": false,
+    "universal_richardson_factor_qualified": false,
+    "state_normalization_qualified": false,
+    "production_certificate_indicator_selected": false,
+    "production_temporal_tolerance_selected": false
+  },
+  "gate_A_decision": {
+    "candidate_fixed_horizon_refinement_band_supported_as_owner_observable": true,
+    "candidate_supported_as_standalone_accuracy_certificate": false,
+    "decision_class": "A_STRUCTURAL_FIXED_HORIZON_BAND_SUPPORTED_BUT_NUMERIC_ACCURACY_PROFILE_REQUIRED",
+    "gate_B_direct_ratio_lt_one_certificate_rejected": true,
+    "reason": "A dimensionless contraction ratio <= 1 would pass all dry cases from N=1 even where the observed defect is still under-conservative relative to the finite same-horizon reference."
+  },
+  "owner_boundary": {
+    "F_SI_can_own": [
+      "same-endpoint nested refinement execution semantics",
+      "dimensional endpoint-difference observables",
+      "contraction diagnostics",
+      "machine-floor detection",
+      "attempt-local model-owned certificate computation once a qualified numeric profile is supplied"
+    ],
+    "requires_independent_numeric_profile_qualification": [
+      "how many nested levels are sufficient for production",
+      "accuracy normalization or scaling",
+      "state-dependent or restricted-envelope limits",
+      "admissible absolute/relative head error thresholds",
+      "mapping of observables to the F-KT09 dimensionless <=1 indicator"
+    ]
+  },
+  "invariant_assessment": {
+    "7_transactional_time_steps": "UNCHANGED",
+    "9_generic_time": "PASS; fixed horizon is arbitrary 0.25 d characterization, not a calendar contract",
+    "13_mass_conservation_absolute": "PASS",
+    "20_alternative_soil_water_solvers_open": "PASS; evidence is F-SI/Richards-owned, not embedded in F-KT",
+    "23_physics_and_solver_policy_separated": "PASS",
+    "24_predictable_compute_time": "OPEN; full reference ladder is not admitted as production cost",
+    "25_reference_mode_available": "PASS",
+    "26_runtime_diagnostics": "READINESS SUPPORTED",
+    "29_no_silent_dependencies": "PASS"
+  }
+}
