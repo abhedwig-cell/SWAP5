@@ -1,0 +1,29 @@
+name: F-MR20 parallel real-physics readiness
+
+on:
+  push:
+    branches:
+      - work/f-mr20-parallel-real-physics-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scheduling-readiness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-MR20 source-locked O0/O2 readiness gate
+        run: bash tests/fmr/run_fmr20_parallel_readiness_gate.sh
