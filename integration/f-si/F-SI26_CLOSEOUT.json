@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI26",
+  "title": "Scientific Normalization & Acceptance Semantics for the Bounded Richards Temporal Indicator",
+  "branch": "work/f-si26-richards-temporal-indicator-scientific-normalization",
+  "base_commit": "0053d5b0a523e494a7fbfcdc55190b946230aa56",
+  "owner_evidence": "integration/f-si/F-SI26_OWNER_EVIDENCE.json",
+  "tested_head": "d487641bee37940085df03bca07d956fc4a017a7",
+  "workflow_run": 34349176535,
+  "workflow_job": 102457927496,
+  "status": "COMPLETE_OWNER_QUALIFIED_SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "decision": "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "candidate": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "default_H_budget": null,
+    "H_budget_requirement": "explicit finite positive head-domain numerical/application accuracy budget in cm with independent provenance",
+    "certificate_unavailable_if_budget_invalid_or_indicator_unavailable": true
+  },
+  "what_is_qualified": [
+    "Scientific and dimensional coherence of the non-empirical normalization C_h=B_inf/H_budget.",
+    "Separation of estimator, normalization, application/numerical accuracy budget, transaction policy, hard mass gate and coupling residual tolerances.",
+    "Compatibility with F-KT09's generic dimensionless finite nonnegative <=1 model-owned certificate interface without changing F-KT09 semantics.",
+    "Exact-linear implication only in the previously qualified exact-linear theorem scope.",
+    "Fail-closed/unavailable semantics for invalid budget, invalid/unavailable indicator, unsupported operator envelope and unqualified continuation provenance.",
+    "Preservation of F-VQ28 and F-VQ29 negative evidence and F-VQ30 nonlinear finite-comparator qualification boundaries."
+  ],
+  "what_is_not_qualified": [
+    "Any numerical value of H_budget.",
+    "A universal or application-independent temporal head tolerance.",
+    "B_inf or C_h as a general nonlinear true-error upper bound/certificate.",
+    "Monotone improvement of C_h under shorter retry dt.",
+    "Production F-KT acceptance/retry binding.",
+    "Production initial bootstrap, arbitrary restart-history reconstruction or forcing/event/topology-discontinuity continuation.",
+    "Groundwater coupling, F-GC02 or F-PE release."
+  ],
+  "governance": {
+    "persist_early_test_second": true,
+    "contract_persisted_before_ci": true,
+    "semantic_assessment_persisted_before_ci": true,
+    "test_harness_schema_fix_occurred_before_first_ci_execution": true,
+    "first_ci_execution_success": true,
+    "post_result_tuning": false,
+    "production_src_changed": false
+  },
+  "next_required_work": [
+    "Open or resume an independent F-VQ workunit to qualify the fixed normalization semantics without selecting a default H_budget and without converting nonlinear transfer evidence into a true-error claim.",
+    "Independent qualification should include source-lock reproduction, exact-linear ratio semantics, invalid/unavailable fail-closed behavior, nonlinear composition/noninterference, budget scaling invariance and preservation of negative retry evidence.",
+    "Only after independent normalization qualification may a separate F-KT policy workunit bind an explicitly supplied H_budget/C_h certificate to bounded production acceptance and retry semantics.",
+    "A separate continuation-provenance/bootstrap qualification remains required before model-owned certificate mode can be relied on from initial no-history, arbitrary restart or discontinuity boundaries.",
+    "Resume existing F-GC02 only after scientific normalization, production F-KT binding and required continuity provenance are independently qualified."
+  ]
+}
