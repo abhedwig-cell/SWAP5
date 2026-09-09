@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source_workunit": "F-KT13",
+  "source_branch": "work/f-kt13-external-reconstruction",
+  "qualified_executable_head": "8b0cbad625501961842aaed2a444ec7145b43038",
+  "source_status_commit": "4e002524bf99e5048bce2c68aa78def94340484e",
+  "decision": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION",
+  "unblocked_capability": "dependent components may now qualify true process restart without adding persistence or serialization knowledge to the kernel",
+  "required_downstream_pattern": [
+    "component owner identifies its compact continuation-state surface",
+    "runtime/template layer assigns a stable qualified layout/template identity",
+    "adapter-owned codec serializes only continuation state plus provenance/reference metadata",
+    "producer process reaches an accepted committed boundary, persists, and terminates",
+    "a fresh consumer process reconstructs through the F-KT13 trusted seam and the F-KT12 typed restore path",
+    "continuous and restarted trajectories are compared through the next accepted boundary",
+    "mass conservation and owner-specific lifecycle/provenance invariants are hard gates"
+  ],
+  "priority_handoffs": [
+    {
+      "target": "WOFOST/crop owner restart",
+      "reason": "F-WOF39 previously closed with the generic F-KT persistence blocker still open; F-KT13 removes that generic blocker but does not itself serialize crop-owner continuation state",
+      "minimum_required_evidence": [
+        "accepted crop-window state persisted only after matching committed receipt",
+        "crop owner continuation state survives a real producer/consumer process boundary",
+        "retired legacy event cache does not reappear after restart",
+        "event_due remains false for already delivered accepted windows",
+        "crop lineage and committed revision remain exact",
+        "continuous versus restarted crop state and next accepted-window outputs match exactly where deterministic",
+        "no duplicate crop event or duplicate integral delivery"
+      ]
+    },
+    {
+      "target": "real SWAP continuation-state codecs",
+      "reason": "F-KT13 uses only the deterministic F-KT fixture codec; operational restart requires explicit codecs for actual persistent state owners",
+      "minimum_required_evidence": [
+        "owner-by-owner continuation-state inventory",
+        "no immutable parameter duplication where stable references suffice",
+        "optional feature state serialized only when active",
+        "schema/layout mismatch fails closed",
+        "roundtrip identity for each admitted owner type",
+        "no solver scratch, forcing or reporting-history leakage into persistent state"
+      ]
+    },
+    {
+      "target": "MultiSWAP checkpoint/restart",
+      "reason": "the logical per-column seam is now qualified, but batch/pool serialization, template grouping and partial failure recovery are not",
+      "minimum_required_evidence": [
+        "many-column producer/consumer process restart",
+        "per-column lineage/revision/time exact",
+        "template/layout identity exact",
+        "shared immutable parameters remain shared by reference",
+        "active optional state only",
+        "column-order or batch-layout changes do not corrupt ownership",
+        "mass closure per column and aggregate",
+        "bounded handling of one corrupt/incompatible column without silent cross-column contamination"
+      ]
+    },
+    {
+      "target": "coupled runtime restart",
+      "reason": "SWAP-MODFLOW and other coupled applications need restart at an accepted coupling boundary with both interface provenance and mass continuity preserved",
+      "minimum_required_evidence": [
+        "restart only from an accepted committed coupling boundary",
+        "no stale predictor/corrector trial promoted after restart",
+        "interface head/flux provenance restored consistently",
+        "no water loss or duplication at the component boundary",
+        "coupling window remains generic rather than day-bound"
+      ]
+    }
+  ],
+  "do_not_do_downstream": [
+    "do not add file paths, parsers or formats to the kernel",
+    "do not use the trusted reconstruction seam as an ordinary runtime state mutation API",
+    "do not add general revision, lineage or time setters",
+    "do not persist Newton vectors, Jacobians or worker warm starts as column state",
+    "do not infer codec compatibility from matching type names alone",
+    "do not claim cross-version compatibility without explicit migration qualification",
+    "do not reinterpret a bottom flux or component transfer during restart"
+  ],
+  "historical_note": "F-WOF39's closeout remains historically correct at its own commit. F-KT13 changes the current dependency graph; it does not retroactively alter the evidence state at F-WOF39 closeout."
+}
