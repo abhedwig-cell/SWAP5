@@ -63,7 +63,7 @@ for required in [
     assert required in code, required
 
 assert 'allocatable' not in code
-assert not re.search(r'leaf_biomass\s*\(', code)
+assert not re.search(r'\bleaf_biomass\s*\(', code)
 for forbidden in [
     'pgass', 'reltr', 'iqrot', 'iptra', 'afgen', 'totass', 'assim(',
     'daynr', 't1900', 'astro(', 'mod_integral', 'mod_meteo', 'headcalc', 'modflow', '.swp'
