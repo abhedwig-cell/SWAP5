@@ -1,7 +1,9 @@
 module mod_kernel_committed_persistence
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t, kernel_reconstruct_committed_state_trusted, &
+       KERNEL_TRUSTED_RECONSTRUCTION_OK, KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PROVENANCE, &
+       KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PHYSICAL, KERNEL_TRUSTED_RECONSTRUCTION_INVALID_TIME
   implicit none
   private
 
@@ -15,15 +17,20 @@ module mod_kernel_committed_persistence
   integer, parameter, public :: KERNEL_PERSISTENCE_LAYOUT_MISMATCH = 5
   integer, parameter, public :: KERNEL_PERSISTENCE_TARGET_ALREADY_INITIALIZED = 6
   integer, parameter, public :: KERNEL_PERSISTENCE_RESTORE_VALIDATION_FAILED = 7
+  integer, parameter, public :: KERNEL_PERSISTENCE_INVALID_PROVENANCE = 8
+  integer, parameter, public :: KERNEL_PERSISTENCE_INVALID_PHYSICAL_STATE = 9
+  integer, parameter, public :: KERNEL_PERSISTENCE_INVALID_TIME = 10
+  integer, parameter, public :: KERNEL_PERSISTENCE_RECONSTRUCTION_FAILED = 11
 
   ! Serialization-neutral, opaque committed-boundary persistence carrier.
   ! It contains only the already-committed continuation state and provenance.
   ! There is deliberately no file, path, byte-format or solver-scratch state.
   !
   ! The contained kernel_committed_state_t remains opaque: callers cannot set
-  ! lineage or revision independently. A later runtime/I/O adapter may map this
-  ! typed boundary to an external representation, but byte-level encoding is
-  ! outside F-KT and outside this module.
+  ! lineage or revision independently. A trusted adapter may reconstruct this
+  ! typed boundary atomically from one fully decoded provenance record plus one
+  ! physical continuation state. Parsing and byte-level encoding remain outside
+  ! F-KT and outside this module.
   type, public :: kernel_persistence_snapshot_t
     private
     type(kernel_committed_state_t) :: committed_copy
@@ -42,6 +49,7 @@ module mod_kernel_committed_persistence
   end type kernel_persistence_snapshot_t
 
   public :: export_kernel_committed_state
+  public :: reconstruct_kernel_persistence_snapshot_trusted
   public :: restore_kernel_committed_state
 
 contains
@@ -77,6 +85,73 @@ contains
     exported = .true.
     status = KERNEL_PERSISTENCE_OK
   end subroutine export_kernel_committed_state
+
+  ! Trusted adapter bridge. The adapter must already have parsed and validated
+  ! its external representation and decoded the concrete physical state. This
+  ! routine only reconstructs one atomic committed record and then routes it
+  ! through the normal F-KT12 export path. It never performs I/O and never
+  ! exposes an independent revision, lineage or time setter.
+  subroutine reconstruct_kernel_persistence_snapshot_trusted(schema_version, layout_id, lineage_id, revision, &
+       committed_time, time_bound, decoded_physical_state, snapshot, reconstructed, status)
+    integer, intent(in) :: schema_version
+    integer(int64), intent(in) :: layout_id
+    integer(int64), intent(in) :: lineage_id
+    integer(int64), intent(in) :: revision
+    real(real64), intent(in) :: committed_time
+    logical, intent(in) :: time_bound
+    class(transaction_state_t), allocatable, intent(in) :: decoded_physical_state
+    type(kernel_persistence_snapshot_t), intent(out) :: snapshot
+    logical, intent(out) :: reconstructed
+    integer, intent(out) :: status
+    type(kernel_committed_state_t) :: committed_candidate
+    logical :: committed_ok, exported
+    integer :: reconstruction_status, export_status
+
+    snapshot = kernel_persistence_snapshot_t()
+    reconstructed = .false.
+
+    status = KERNEL_PERSISTENCE_SCHEMA_MISMATCH
+    if (schema_version /= KERNEL_PERSISTENCE_SCHEMA_VERSION) return
+
+    status = KERNEL_PERSISTENCE_INVALID_LAYOUT
+    if (layout_id <= 0_int64) return
+
+    call kernel_reconstruct_committed_state_trusted(committed_candidate, lineage_id, revision, decoded_physical_state, &
+         committed_time, time_bound, committed_ok, reconstruction_status)
+    if (.not. committed_ok) then
+      select case (reconstruction_status)
+      case (KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PROVENANCE)
+        status = KERNEL_PERSISTENCE_INVALID_PROVENANCE
+      case (KERNEL_TRUSTED_RECONSTRUCTION_INVALID_PHYSICAL)
+        status = KERNEL_PERSISTENCE_INVALID_PHYSICAL_STATE
+      case (KERNEL_TRUSTED_RECONSTRUCTION_INVALID_TIME)
+        status = KERNEL_PERSISTENCE_INVALID_TIME
+      case default
+        status = KERNEL_PERSISTENCE_RECONSTRUCTION_FAILED
+      end select
+      return
+    end if
+
+    call export_kernel_committed_state(committed_candidate, layout_id, snapshot, exported, export_status)
+    if (.not. exported) then
+      snapshot = kernel_persistence_snapshot_t()
+      status = KERNEL_PERSISTENCE_RECONSTRUCTION_FAILED
+      return
+    end if
+    if (export_status /= KERNEL_PERSISTENCE_OK) then
+      snapshot = kernel_persistence_snapshot_t()
+      status = KERNEL_PERSISTENCE_RECONSTRUCTION_FAILED
+      return
+    end if
+    if (.not. snapshot%ready()) then
+      snapshot = kernel_persistence_snapshot_t()
+      status = KERNEL_PERSISTENCE_RECONSTRUCTION_FAILED
+      return
+    end if
+
+    reconstructed = .true.
+    status = KERNEL_PERSISTENCE_OK
+  end subroutine reconstruct_kernel_persistence_snapshot_trusted
 
   subroutine restore_kernel_committed_state(snapshot, expected_layout_id, committed, restored, status, &
        expected_schema_version)
