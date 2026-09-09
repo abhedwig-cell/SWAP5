@@ -15,7 +15,6 @@ import sys
 src = Path(sys.argv[1]).read_text(encoding='utf-8')
 src = src.replace('ARTIFACTS="$ROOT/.fci19-artifacts"', 'ARTIFACTS="$ROOT/fci19-artifacts"', 1)
 
-# Align with the live F-KT09 gate marker names without modifying that gate.
 start_anchor = "for marker in \\\n  'FKT09_TRANSACTION_REFERENCE=PASS'"
 end_anchor = "\ndone\necho 'FCI19_FKT09_PRESERVATION=PASS'"
 start = src.index(start_anchor)
@@ -33,7 +32,6 @@ replacement = """for marker in \\
 done"""
 src = src[:start] + replacement + src[end + len('\ndone'):]
 
-# F-VQ27 identifies the immutable F-SI19 oracle by Git blob identity, not SHA-256.
 old_hash = '''[[ "$(sha256sum "$BUILD/fsi19.f90" | cut -d' ' -f1)" == "275790181531838bed38f4013e5f9f51c3b19f7221e91e5b84cb72e8f11d7fa0" ]] || \\
   fail "F-SI19 historical oracle hash mismatch"'''
 new_hash = '''[[ "$(git hash-object "$BUILD/fsi19.f90")" == "bf8c9d85c98157d128086d2c2fb20f6129b98e63" ]] || \\
@@ -42,7 +40,6 @@ if old_hash not in src:
     raise SystemExit('expected F-SI19 hash block not found')
 src = src.replace(old_hash, new_hash, 1)
 
-# Use exactly the markers asserted by the original F-VQ27 independent admission gate.
 fsi_start_anchor = "  for marker in \\\n    'FSI19_DIRECT_ORIGINALB_LAYER_ORACLE=PASS'"
 fsi_end_anchor = "\n  done\ndone\ncmp \"$BUILD/fsi19-o0/out.txt\""
 fsi_start = src.index(fsi_start_anchor)
@@ -59,8 +56,6 @@ fsi_replacement = """  for marker in \\
   done"""
 src = src[:fsi_start] + fsi_replacement + src[fsi_end + len('\n  done'):]
 
-# Candidate A HeadCalc now imports mod_reference_linear_solver. The snow replay
-# must compile that owner module before HeadCalc. This changes only test build order.
 needle = '''  src/solver/mod_b110_source_sink_provider.f90
   src/legacy/b1_10_port/headcalc.f90'''
 replacement = '''  src/solver/mod_b110_source_sink_provider.f90
@@ -68,6 +63,19 @@ replacement = '''  src/solver/mod_b110_source_sink_provider.f90
   src/legacy/b1_10_port/headcalc.f90'''
 if needle not in src:
     raise SystemExit('expected snow compile-order anchor not found')
+src = src.replace(needle, replacement, 1)
+
+# Candidate A serialized backend also imports the later qualified B1.10 root-sink
+# provider. Compile it after the common solver contract and before the backend.
+needle = '''  src/adapter/mod_b110_serialized_context_binding.f90
+  src/process/mod_snow_process.f90
+  src/runtime/mod_fmr_serialized_reference_backend.f90'''
+replacement = '''  src/adapter/mod_b110_serialized_context_binding.f90
+  src/process/mod_snow_process.f90
+  src/solver/mod_b110_root_sink_provider.f90
+  src/runtime/mod_fmr_serialized_reference_backend.f90'''
+if needle not in src:
+    raise SystemExit('expected root-sink compile-order anchor not found')
 src = src.replace(needle, replacement, 1)
 
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
