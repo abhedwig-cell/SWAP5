@@ -13,6 +13,7 @@ on:
       - 'src/kernel/mod_kernel_committed_persistence.f90'
       - 'src/transaction/mod_transaction_reference.f90'
       - 'tests/fmr/test_fmr19_process_restart.f90'
+      - 'tests/fmr/test_fmr19_restart_contract_negative.f90'
       - 'tests/fmr/run_fmr19_process_restart_gate.sh'
       - 'tests/fmr/mod_fmr04_fixed_top_provider.f90'
       - 'integration/f-mr/F-MR19_RESTART_CONTRACT.json'
