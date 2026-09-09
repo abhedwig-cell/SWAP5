@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "subgate": "B2_SATURATION_ALIGNED_EXPANDED_REFERENCE_HOMOGENEOUS_MATRIX",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "run": 34300879811,
+  "head": "5a55f397cac16cad56d519a3867636bd45d45182",
+  "artifact": 10084987749,
+  "artifact_digest": "sha256:8d63980a59af1cc5e07d3dae9820c9047d3f4d1b49fd5d38f98cdff3ba6fbb2d",
+  "representation": "CONSTRAINED_CONTINUOUS_MFP_LOG_DARCIAN_RATIO_WITH_HLOWER_ZERO_ALIGNED_HEAD_KNOTS",
+  "selection_uses_validation_error": false,
+  "thresholds_changed_from_B1": false,
+  "ratio_representation": {
+    "base_head_nodes": 33,
+    "actual_head_nodes_range": [53, 55],
+    "gradient_nodes": 27,
+    "gradient_envelope": [-28.0, 28.0],
+    "upper_head_envelope_cm": [-1000000.0, 100.0],
+    "knot_rule": "add h_upper=-g*L for every fixed gradient node whose h_lower=0 crossing is inside the upper-head envelope",
+    "max_values_per_material_geometry_class": 1485,
+    "max_bytes_per_material_geometry_class_before_metadata": 11880,
+    "runtime_oracle_calls": 0
+  },
+  "classes": [
+    {
+      "material": "reference_sand",
+      "face_length_cm": 10.0,
+      "ratio_head_nodes": 55,
+      "corrected_p90_rel_error": 0.002647115025154825,
+      "corrected_p99_rel_error": 0.009186195423374404,
+      "corrected_max_rel_error": 0.03180097317603569,
+      "strong_gradient_p90_rel_error": 0.002855206403681962,
+      "near_saturation_p90_rel_error": 0.0002408277753424607,
+      "pass": true
+    },
+    {
+      "material": "reference_sand",
+      "face_length_cm": 20.0,
+      "ratio_head_nodes": 53,
+      "corrected_p90_rel_error": 0.005061507790833792,
+      "corrected_p99_rel_error": 0.027601029416761808,
+      "corrected_max_rel_error": 0.13580793593911333,
+      "strong_gradient_p90_rel_error": 0.0031627606792412697,
+      "near_saturation_p90_rel_error": 0.0031386164744415987,
+      "pass": true
+    },
+    {
+      "material": "reference_clay",
+      "face_length_cm": 10.0,
+      "ratio_head_nodes": 55,
+      "corrected_p90_rel_error": 0.0014068870023704616,
+      "corrected_p99_rel_error": 0.01089135023552239,
+      "corrected_max_rel_error": 0.05577094741617398,
+      "strong_gradient_p90_rel_error": 0.0007642679258130457,
+      "near_saturation_p90_rel_error": 0.0014032670845381971,
+      "pass": true
+    },
+    {
+      "material": "reference_clay",
+      "face_length_cm": 20.0,
+      "ratio_head_nodes": 53,
+      "corrected_p90_rel_error": 0.0026887322400730856,
+      "corrected_p99_rel_error": 0.03179957243962093,
+      "corrected_max_rel_error": 0.14457539180579473,
+      "strong_gradient_p90_rel_error": 0.0018827400183429731,
+      "near_saturation_p90_rel_error": 0.00037698495397231664,
+      "pass": true
+    }
+  ],
+  "offline_preparation_cost": {
+    "base_master_oracle_solves": 3564,
+    "extra_crossing_knot_oracle_solves": 2268
+  },
+  "scope": {
+    "reference_fixture_matrix": "QUALIFIED",
+    "near_saturation": "EXPLICITLY_TESTED_HOMOGENEOUS_REFERENCE_FIXTURES",
+    "h_zero_crossing": "EXPLICITLY_GEOMETRY_ALIGNED_AND_TESTED",
+    "positive_pressure_endpoint": "EXPLICITLY_SAMPLED_BUT_REFERENCE_FIXTURE_EVIDENCE_ONLY",
+    "corrected_face_upper_head_envelope_cm": [-1000000.0, 100.0],
+    "deeper_gate_A_mfp_tail_to_minus1e8_cm": "NOT_CORRECTED_FACE_ADMISSION; ratio lookup fails closed below -1e6 cm upper head",
+    "production_material_catalog": "NOT_ADMITTED",
+    "heterogeneous_interface": "NOT_ADMITTED",
+    "transient_regression": "NOT_RERUN_BY_THIS_GATE",
+    "tangent": "NOT_ADMITTED; local derivative jumps at piecewise-linear knot boundaries remain registered",
+    "groundwater": "NOT_ADMITTED",
+    "production_solver": "NOT_ADMITTED"
+  },
+  "architecture": {
+    "production_code_changed": false,
+    "physics_changed": false,
+    "mass_semantics_changed": false,
+    "shared_immutable_tables": true,
+    "per_column_tables": false,
+    "bounded_table_cardinality": true,
+    "runtime_lookup_remains_bounded": true,
+    "no_silent_extrapolation": true,
+    "no_silent_solver_switch": true,
+    "fullrichards_reference_preserved": true
+  },
+  "decision": "QUALIFIED_SATURATION_ALIGNED_EXPANDED_REFERENCE_HOMOGENEOUS_MATRIX_READY_FOR_PRODUCTION_CATALOG_AND_HETEROGENEOUS_INTERFACE_QUALIFICATION",
+  "production_admission": false
+}
