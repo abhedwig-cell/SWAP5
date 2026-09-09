@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C4_GLOBAL_ENDPOINT_DENSITY_CHARACTERIZATION",
+  "analysis_kind": "deterministic representation cost scaling from frozen C4 code, not a qualification result",
+  "candidate_family": "asinh endpoint-pair bilinear log(K_DAR/K_MFP) with fixed signed pressure-head decade anchors",
+  "density_rows": [
+    {"base_axis_nodes":33,"actual_axis_nodes_after_anchors":49,"table_values_per_class":2401,"bytes_per_class_before_metadata":19208},
+    {"base_axis_nodes":49,"actual_axis_nodes_after_anchors":65,"table_values_per_class":4225,"bytes_per_class_before_metadata":33800},
+    {"base_axis_nodes":65,"actual_axis_nodes_after_anchors":81,"table_values_per_class":6561,"bytes_per_class_before_metadata":52488},
+    {"base_axis_nodes":97,"actual_axis_nodes_after_anchors":113,"table_values_per_class":12769,"bytes_per_class_before_metadata":102152}
+  ],
+  "scaling": {
+    "runtime_lookup_per_face": "O(1) bilinear interpolation after shared immutable preparation",
+    "table_storage_per_material_geometry_class": "O(N_axis^2)",
+    "offline_table_cells_per_class": "O(N_axis^2)",
+    "offline_cell_generation": "each cell invokes the direct steady-Darcian oracle except exact special cases; oracle cost itself is not constant with hydraulic difficulty",
+    "C4_97_vs_C3_33_actual_table_value_ratio": 5.31820074968763,
+    "C4_97_vs_C3_33_byte_ratio": 5.31820074968763
+  },
+  "architecture_interpretation": [
+    "The table is immutable shared parameter/geometry data and therefore does not add per-column persistent state.",
+    "Quadratic class storage can still become material in MultiSWAP when many hydraulic-material and geometry classes are admitted.",
+    "Offline oracle generation cost is not production timestep cost, but excessive preparation cost or class cardinality can make template creation operationally unattractive.",
+    "No memory acceptance threshold is introduced here. C4 must first establish error convergence and later combine it with observed production catalog/geometry class cardinality.",
+    "If error convergence is slow relative to this quadratic growth, brute-force global density escalation should be stopped rather than justified by shared-memory ownership alone."
+  ],
+  "hard_rules": {
+    "thresholds_unchanged": true,
+    "no_claim_from_wall_clock_alone": true,
+    "no_production_admission": true,
+    "fullrichards_reference_preserved": true
+  },
+  "status": "PERSISTED_WHILE_C4_RUN_ACTIVE"
+}
