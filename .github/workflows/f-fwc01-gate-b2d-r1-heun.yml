@@ -1,0 +1,59 @@
+name: F-FWC01 Gate B2D-R1 Conservative Heun Front Policy
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2d-r1-heun.yml
+      - experiments/fwc/fwc01_gate_b2d_r1_conservative_heun_policy.py
+      - integration/f-fwc/F-FWC01_GATE_B2D_R1_CONSERVATIVE_HEUN_POLICY_PRECOMMIT.json
+      - experiments/fwc/fwc01_gate_b2d_existing_infiltration_front_advance.py
+      - integration/f-fwc/F-FWC01_GATE_B2D_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_HYDROLOGIC_PRECOMMIT.json
+      - integration/f-fwc/F-FWC01_GATE_B2A_MATERIAL_FIXTURE.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen B2D-R1 Heun policy gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2d-r1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2d_r1_conservative_heun_policy.py \
+            "$out/F-FWC01_GATE_B2D_R1_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2D_R1_STDOUT.txt"
+      - name: Assert frozen Heun qualification decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2d-r1/F-FWC01_GATE_B2D_R1_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_HEUN_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE'
+          assert r['physics_changed_from_B2D'] is False
+          assert r['max_abs_step_mass_residual_cm'] <= 1e-12
+          assert r['max_abs_horizon_mass_residual_cm'] <= 1e-11
+          assert r['max_finest_relative_front_displacement_error'] <= 0.001
+          assert r['max_finest_abs_equivalent_water_depth_error_cm'] <= 0.0001
+          assert r['max_meaningful_e16_over_e8'] <= 0.5
+          assert r['total_nonfinite_count'] == 0
+          assert r['total_negative_velocity_count'] == 0
+          assert r['total_accepted_boundary_violation_count'] == 0
+          assert r['rejected_trial_state_mutation_count'] == 0
+          assert r['rejected_trial_ledger_mutation_count'] == 0
+          assert r['persistent_extra_state_bytes'] == 0
+          assert r['predictor_owner'] == 'worker_scratch'
+          assert r['mass_repair_count'] == 0
+          assert r['clipping_repair_count'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2d-r1-heun
+          path: fwc01-gate-b2d-r1/
