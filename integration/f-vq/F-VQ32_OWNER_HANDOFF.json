@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ32",
+  "title": "Production policy binding handoff for independently qualified head-budget normalization",
+  "branch": "qualification/f-vq32-richards-head-budget-normalization",
+  "closeout_commit": "3515b4e3cef8dfdb389695b653fa131b1bfa49dc",
+  "decision": "QUALIFIED_INDEPENDENT_EXPLICIT_HEAD_BUDGET_NORMALIZATION_READY_FOR_SEPARATE_PRODUCTION_POLICY_BINDING",
+  "handoff": {
+    "target_work_unit": "F-KT11",
+    "suggested_title": "Explicit Richards Head-Budget Certificate Production Policy Binding",
+    "suggested_branch": "work/f-kt11-richards-head-budget-certificate-policy",
+    "branch_observed_free_before_handoff": true,
+    "reservation_created_by_this_artifact": false
+  },
+  "fixed_semantics": {
+    "formula": "C_h=B_inf/H_budget",
+    "H_budget_requirement": "explicit finite positive head-domain numerical/application accuracy budget in cm with independent provenance",
+    "default_H_budget": null,
+    "F_KT09_acceptance_surface": "certificate available, finite, nonnegative and C_h<=1",
+    "hard_mass_gate_independent": true,
+    "shorter_dt_monotonicity_assumed": false
+  },
+  "required_F_KT11_scope": [
+    "Bind an explicitly supplied valid H_budget to the F-SI25/F-KT10 production indicator path and emit dimensionless C_h through the already-qualified F-KT09 trial_outcome certificate fields.",
+    "Keep H_budget in numerical/application policy configuration, not physical parameters or persistent column state.",
+    "Do not hard-code, infer, calibrate or default H_budget.",
+    "Preserve F-KT09 exact checkpoint/retry/rollback/commit semantics and the independent hard-mass gate.",
+    "Preserve zero additional full nonlinear trajectories and no additional normalization solve beyond the already-qualified one-defect-TRIDAG indicator path.",
+    "Make invalid/missing H_budget or unavailable B_inf produce certificate unavailable/fail closed.",
+    "Expose diagnostics sufficient to distinguish raw B_inf, configured H_budget, dimensionless C_h and unavailable reason without reinterpreting B_inf as nonlinear true error."
+  ],
+  "continuation_blocker": {
+    "initial_no_history": "NOT_QUALIFIED",
+    "arbitrary_restart_history": "NOT_QUALIFIED",
+    "forcing_event_topology_discontinuity_right_side_history": "NOT_QUALIFIED",
+    "rule": "F-KT11 must fail closed when the indicator history/provenance is unavailable; it must not invent a bootstrap derivative or treat retry as a bootstrap mechanism.",
+    "separate_owner_and_independent_qualification_required_if_these_boundaries_must_be_operational": true
+  },
+  "must_not_admit": [
+    "a numerical H_budget value or universal tolerance",
+    "a nonlinear true-error bound",
+    "monotone retry improvement",
+    "coupling-specific normalization",
+    "groundwater/F-GC02/F-PE release",
+    "implicit restart or discontinuity provenance repair"
+  ],
+  "downstream_after_owner_F_KT11": [
+    "Independent F-VQ qualification of the actual production policy binding is required before release.",
+    "Continuation/bootstrap provenance must be separately qualified if production entry from no-history or discontinuity is required.",
+    "Resume the existing F-GC02 only when both production policy and required continuation dependencies are independently closed."
+  ]
+}
