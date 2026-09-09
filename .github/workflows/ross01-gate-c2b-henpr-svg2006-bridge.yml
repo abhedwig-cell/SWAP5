@@ -1,0 +1,39 @@
+name: F-ROSS01 Gate C2B H_ENPR SvG2006 Bridge
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-c2b-henpr-svg2006-bridge.yml
+      - experiments/ross/run_ross01_gate_c2b_henpr_svg2006_bridge.py
+      - integration/f-ross/F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_CONTRACT.json
+      - integration/f-ross/F-ROSS01_SWAPP431_HENPR_NEAR_SATURATION_SOURCE_RECONCILIATION.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen C2B constitutive characterization
+        run: |
+          set -euo pipefail
+          out="ross01-c2b-henpr-svg2006-bridge"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_c2b_henpr_svg2006_bridge.py \
+            "$out/F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-c2b-henpr-svg2006-bridge
+          path: ross01-c2b-henpr-svg2006-bridge/
