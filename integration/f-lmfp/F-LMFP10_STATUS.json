@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "title": "Hydraulic-Scale Normalized and Geometry-Aware Face Representation Feasibility",
+  "branch": "work/f-lmfp10-scale-normalized-geometry-aware-face",
+  "base_head": "8c17839a06b1e2b4606041aaa3e848e69b80978f",
+  "contract": "integration/f-lmfp/F-LMFP10_CONTRACT.json",
+  "contract_commit": "7d08a024e41d6ef4ad9240b19d1605a1859f95ce",
+  "production_implementation": false,
+  "qualification": false,
+  "A0": {
+    "name": "MATERIAL_SCALE_COORDINATE_SCREEN",
+    "design_persisted": true,
+    "implemented": false,
+    "executed": false,
+    "tested": false,
+    "candidate_families": ["A_ALPHA_NORMALIZED_ENDPOINTS", "B_H50_NORMALIZED_ENDPOINTS"],
+    "panel_materials": 15,
+    "face_lengths_cm": [10.0, 20.0],
+    "classes": 30,
+    "characterization_only": true
+  },
+  "scope_flags": {
+    "PERSISTED": true,
+    "EXPERIMENT_IMPLEMENTED": false,
+    "TESTED": false,
+    "QUALIFIED": false,
+    "PRODUCTION_IMPLEMENTED": false,
+    "TRANSIENT_ADMITTED": false,
+    "GROUNDWATER_ADMITTED": false,
+    "MODFLOW_ADMITTED": false
+  },
+  "hard_blockers": [
+    "No new representation has yet been characterized.",
+    "Conductivity-coordinate remains excluded while the inherited near-saturation K discontinuity owner seam is unresolved.",
+    "No transient work may begin before a new hydraulic face representation passes characterization, nomination, and a separate fresh unseen holdout."
+  ],
+  "decision": "A0_PRECOMMITTED_READY_FOR_IMPLEMENTATION",
+  "status": "PERSISTED_BEFORE_IMPLEMENTATION_OR_TESTING"
+}
