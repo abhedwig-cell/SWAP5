@@ -85,7 +85,6 @@ PY
 python3 "$LINEAR" | tee "$BUILD/exact_linear.txt"
 grep -Fq 'FVQ30_G02_EXACT_LINEAR_REGRESSION PASS' "$BUILD/exact_linear.txt" || fail 'independent exact-linear regression did not pass'
 
-git fetch --quiet --no-tags origin work/f-si18-reference-convergence-cliff:refs/remotes/origin/work-f-si18-reference-convergence-cliff 2>/dev/null || true
 git fetch --quiet --no-tags origin work/f-si18-reference-convergence-cliff:refs/remotes/origin/work/f-si18-reference-convergence-cliff
 [[ "$(git rev-parse "$FSI18_BRANCH:$FSI18_GENERATOR")" == "$FSI18_GENERATOR_BLOB" ]] || fail 'F-SI18 TRIDAG generator drift'
 git show "$FSI18_BRANCH:$FSI18_GENERATOR" > "$BUILD/make_reference_tridag.py"
@@ -132,7 +131,8 @@ MODULE_SRC=(
 )
 
 build_modules() {
-  local opt="$1" out="$2"
+  local opt="$1"
+  local out="$2"
   mkdir -p "$out"
   : > "$out/objects.txt"
   for src in "${MODULE_SRC[@]}"; do
@@ -143,7 +143,9 @@ build_modules() {
 }
 
 run_matrix() {
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   build_modules "$opt" "$out"
   mapfile -t objects < "$out/objects.txt"
   while IFS=$'\t' read -r cid h0 jump horizon; do
