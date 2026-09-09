@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "gate": "E3E_R2_5CM_REFERENCE_ORACLE_VALIDITY",
@@ -8,7 +8,7 @@
   "production_implementation": false,
   "qualification_use": false,
   "pass": false,
-  "decision": "R2_REFERENCE_ORACLE_HARNESS_NOT_QUALIFIED_ENDPOINT_SINGULARITY_REPAIR_REQUIRED",
+  "decision": "R2_REFERENCE_ORACLE_NOT_QUALIFIED_ENDPOINT_BRANCH_VS_NUMERICAL_PATHOLOGY_UNRESOLVED",
   "material_results": [
     {
       "material": "B01",
@@ -71,18 +71,20 @@
       }
     }
   ],
-  "common_failure_interpretation": {
-    "finding": "For B12, O13 and O14 the frozen split-adaptive oracle failed before producing a qualification result at the common control h_surface=0 cm, h_top=-100 cm. The lower q endpoint was machine-nextafter above KSAT, where K/(K-q) has a numerically singular endpoint layer. Direct adaptive head quadrature emitted convergence/roundoff warnings and returned same-sign bracket residuals.",
-    "classification": "REFERENCE_ORACLE_HARNESS_PATHOLOGY_NOT_PHYSICAL_ROSS_FALSIFICATION",
-    "required_repair": "Resolve q-KSAT in a logarithmic positive coordinate and use endpoint-robust, independently implemented path integrals before interpreting any 5 cm surface-to-unsaturated candidate discrepancy."
+  "endpoint_theory_reconciliation_before_r2r1_execution": {
+    "finding": "The same-sign lower/upper residuals for B12, O13 and O14 are not sufficient to classify the failure as a quadrature artifact. For van Genuchten-Mualem with a sharp but integrable near-saturation K(h) decline, the q -> KSAT+ unsaturated path-length limit can be finite. If that limiting unsaturated path is shorter than the 5 cm face, no strictly interior q>KSAT root exists; a q=KSAT endpoint/free-boundary solution with an h=0 saturated plateau is then a physically distinct possibility that R2 did not test.",
+    "numerical_issue_still_present": "R2 also evaluated the lower bracket at machine-nextafter above KSAT using direct adaptive head quadrature and emitted convergence/roundoff warnings, so the limiting path itself was not independently certified.",
+    "classification": "AMBIGUOUS_ENDPOINT_BRANCH_VS_NUMERICAL_ORACLE_FAILURE",
+    "required_repair": "R2R1 must independently evaluate the q->KSAT+ path-length limit before searching for an interior q>KSAT root. It must admit an endpoint q=KSAT branch only if two independent endpoint-robust evaluations agree that the limiting unsaturated path is shorter than the face."
   },
   "hard_nonclaims": [
-    "R2 does not falsify the inherited legacy steady_q reference.",
+    "R2 does not falsify or qualify the inherited legacy steady_q reference.",
     "R2 does not qualify or falsify the Ross candidate face.",
+    "R2 does not establish that an interior q>KSAT root must exist for every surface-to-unsaturated head pair.",
     "The prior 5 cm boundary-face failure remains binding until a valid independent oracle and fresh qualification exist.",
     "No finite-positive ponding-head, surface-process, runoff or production admission follows from R2.",
     "No R2 threshold is relaxed after observing the failures."
   ],
-  "next_gate": "E3E_R2R1_ENDPOINT_SINGULARITY_ORACLE_REPAIR",
-  "status": "FAILED_AS_FROZEN_WITH_HARNESS_PATHOLOGY_IDENTIFIED"
+  "next_gate": "E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR",
+  "status": "FAILED_AS_FROZEN_WITH_ENDPOINT_BRANCH_AMBIGUITY_IDENTIFIED"
 }
