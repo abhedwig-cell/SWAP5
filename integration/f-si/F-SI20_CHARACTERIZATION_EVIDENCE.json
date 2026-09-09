@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "FGC02_PRESCRIBED_HEAD_TEMPORAL_CHARACTERIZATION",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_src_diff_from_fvq27": "EMPTY_PASS"
+  },
+  "fixture": {
+    "t0": 4100.125,
+    "requested_t1": 4100.375,
+    "requested_dt_day": 0.25,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "bottom_mode": 5,
+    "top_flux_setup": "same stationary conductivity-balanced setup as F-GC02",
+    "optional_physics": "inactive",
+    "transaction_temporal_tolerance": 0.0,
+    "transaction_mass_tolerance": 1e-12,
+    "retry_scale": 0.5,
+    "max_retries": 6
+  },
+  "characterization_workflow": {
+    "run": 34299712399,
+    "job": 102303831300,
+    "head": "3cf24e2d1dc493f82ef4f36d1583dfd8dbb5ae3b",
+    "conclusion": "success",
+    "artifact_id": 10084458001,
+    "artifact_zip_digest": "sha256:dc3e0405bb6bfa91b2ae56190c65543003714e3caa4ead9903d8363b53bac03c",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "observer_copy_normalizes_exactly_to_production": "PASS"
+  },
+  "nonlinear_tolerance_axis": [1e-10, 1e-12, 1e-14],
+  "baseline_1e_12_temporal_rows": [
+    {"dt_day":0.25,"max_abs_head_cm":2.5524294842682593e-4,"max_head_node":3,"max_abs_theta":2.4525391251195572e-7,"max_theta_node":3,"signed_dz_theta_difference":-5.187546058826875e-7},
+    {"dt_day":0.125,"max_abs_head_cm":5.5987116223832345e-4,"max_head_node":2,"max_abs_theta":5.379571765828928e-7,"max_theta_node":2,"signed_dz_theta_difference":-1.3105121176026913e-6},
+    {"dt_day":0.0625,"max_abs_head_cm":7.303919366989931e-4,"max_head_node":2,"max_abs_theta":7.01797804536497e-7,"max_theta_node":2,"signed_dz_theta_difference":-1.780832436737434e-6},
+    {"dt_day":0.03125,"max_abs_head_cm":6.60104606367895e-4,"max_head_node":3,"max_abs_theta":6.34258496612361e-7,"max_theta_node":3,"signed_dz_theta_difference":-1.6498890679783607e-6},
+    {"dt_day":0.015625,"max_abs_head_cm":6.055091213568176e-4,"max_head_node":4,"max_abs_theta":5.818050303751932e-7,"max_theta_node":4,"signed_dz_theta_difference":-1.1852292437497525e-6},
+    {"dt_day":0.0078125,"max_abs_head_cm":6.249083489251461e-4,"max_head_node":4,"max_abs_theta":6.004401797987668e-7,"max_theta_node":4,"signed_dz_theta_difference":-7.755001066311884e-7},
+    {"dt_day":0.00390625,"max_abs_head_cm":5.310393005402148e-4,"max_head_node":4,"max_abs_theta":5.102419035063477e-7,"max_theta_node":4,"signed_dz_theta_difference":-4.840679257989144e-7}
+  ],
+  "baseline_apparent_head_orders_between_successive_halvings": [-1.133223767,-0.3835759667,0.1459761729,0.1245459728,-0.04549592222,0.2348259807],
+  "state_component_findings": {
+    "ponding_delta_all_rows": 0.0,
+    "groundwater_level_delta_all_rows": 0.0,
+    "maximizing_node_moves_with_dt": true,
+    "head_and_theta_max_nodes_collocated_on_this_fixture": true,
+    "nodewise_rows_per_comparison": 4,
+    "signed_integrated_theta_difference_measured": true
+  },
+  "nonlinear_tolerance_findings": {
+    "1e_10_vs_1e_12_vs_1e_14_materially_changes_temporal_signal": false,
+    "interpretation": "The prescribed-head step-doubling discrepancy is essentially invariant when the nonlinear head tolerance is tightened from 1e-10 through 1e-14. Unlike the earlier F-VQ24 characterization, the observed O(1e-4 cm) head discrepancy is not explained by the nonlinear stopping floor over this tested range."
+  },
+  "rejection_classification_workflow": {
+    "run": 34299889387,
+    "job": 102304350698,
+    "head": "10d1add46663f2feea336e795d96dccd28fe5d27",
+    "conclusion": "success",
+    "baseline_1e_12": {
+      "completed": false,
+      "attempts": 7,
+      "retries": 6,
+      "solver_rejections": 0,
+      "temporal_rejections": 7,
+      "mass_rejections": 0,
+      "accepted_substeps": 0,
+      "committed_revision_after_trial": 0,
+      "last_rejected_solver_bottom_flux": -0.16112823271486967
+    },
+    "classification": "TEMPORAL_ONLY_REJECTION",
+    "rejected_flux_is_not_admissible_as_coupling_output": true
+  },
+  "scientific_interpretation_at_this_stage": {
+    "binary_identity_comparator_is_direct_blocker": true,
+    "solver_convergence_is_direct_blocker": false,
+    "mass_acceptance_is_direct_blocker": false,
+    "stable_asymptotic_order_demonstrated": false,
+    "simple_monotone_dt_error_signal_demonstrated": false,
+    "production_temporal_tolerance_justified": false,
+    "production_metric_justified": false,
+    "decision_class": "B_MORE_THEORY_OR_NUMERICAL_REFERENCE_EVIDENCE_REQUIRED"
+  },
+  "next_evidence": "Construct a nonproduction, mass-hard fine-reference trajectory study on this exact prescribed-head fixture. Compare one-step/two-half step-doubling discrepancies against endpoint error to progressively refined accepted trajectories. Do not alter production acceptance."
+}
