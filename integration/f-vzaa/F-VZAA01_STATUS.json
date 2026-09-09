@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-VZAA",
   "work_unit": "F-VZAA01",
   "title": "Vadose Zone Analytical Algorithm Assessment, Conservation Repair & SWAP5 Suitability",
@@ -9,28 +9,30 @@
   "official_code_reproduced": false,
   "qualified": false,
   "final_classification": null,
-  "interim_decision": "PUBLISHED_VZAA_DIRECT_SOLVER_BLOCKED_STANDALONE_CONSERVATIVE_DERIVATIVE_DEPRIORITIZED_PENDING_DISTINCT_BENEFIT_DONOR_EXTRACTION_PRIORITIZED",
+  "interim_decision": "PUBLISHED_VZAA_DIRECT_SOLVER_BLOCKED_STANDALONE_CONSERVATIVE_DERIVATIVE_DEPRIORITIZED_D0_DONOR_SEPARABILITY_SPECIFIED",
   "primary_source": {
     "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467",
-    "doi": "10.1016/j.jhydrol.2026.135467"
+    "doi": "10.1016/j.jhydrol.2026.135467",
+    "pii": "S0022169426005640"
   },
   "source_capture": {
     "paper_inspected": true,
     "methodological_precursor_inspected": true,
     "doi_linked_matlab_supplement_directly_captured": false,
-    "published_case_reproduced": false
+    "published_case_reproduced": false,
+    "gate_B_status": "OPEN"
   },
-  "new_reconstruction_findings": {
+  "core_reconstruction": {
     "fixed_domain_eq8_conservation": "ALGEBRAICALLY_EXACT_APART_FROM_ROUNDOFF_UNDER_FIXED_LAYER_AND_IDENTICAL_LEDGER_ASSUMPTIONS",
     "reported_complete_method_residual_localization": "MUST_ARISE_OUTSIDE_NARROW_FIXED_DOMAIN_EQ8_IDENTITY_OR_FROM_IMPLEMENTATION_DETAIL_REQUIRES_SUPPLEMENTARY_CODE",
     "water_table_update": "SEPARATE_APPROXIMATE_STORAGE_OPERATOR_USING_EMPIRICAL_PHI_AND_SY_MIN_NOT_PROVEN_EXACT_FINITE_STEP_STORAGE_MAP",
     "literal_fractional_history_storage": "O_NLAYERS_X_NSTEPS",
     "literal_fractional_history_total_work": "O_NLAYERS_X_NSTEPS_SQUARED_BEFORE_LOCAL_SOLVE_MULTIPLIERS",
     "adaptive_substepping": "ADDITIONAL_RUNTIME_VARIABILITY",
-    "conservative_projection_derivative": "PLAUSIBLE_RESEARCH_CONCEPT_NOT_QUALIFIED_AND_NOT_PUBLISHED_VZAA"
+    "conservative_forward_backward_hypothesis": "PERSISTED_RESEARCH_HYPOTHESIS_NOT_QUALIFIED_AND_DEPRIORITIZED_PENDING_DISTINCT_BENEFIT"
   },
   "qualification_gates": {
-    "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_CORE_ALGEBRA_AND_COMPARATIVE_POSITIONING_RECONSTRUCTED",
+    "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_CORE_ALGEBRA_COMPARATIVE_POSITIONING_AND_DONOR_FALSIFICATION_PLAN_RECONSTRUCTED",
     "B_published_code_reproduction": "OPEN_SUPPLEMENT_NOT_CAPTURED",
     "C_exact_discrete_conservation": "FAIL_PUBLISHED_COMPLETE_FORMULATION_FIXED_LAYER_CORE_IS_ALGEBRAICALLY_CONSERVATIVE",
     "D_bottom_head_or_flux": "FAIL_PUBLISHED_FORMULATION",
@@ -39,7 +41,8 @@
     "G_transactional_trial_rollback": "CONDITIONALLY_PLAUSIBLE_HISTORY_STATE_OWNER_REQUIRED",
     "H_bounded_runtime": "FAIL_STRONG_BOUNDED_COST_CLAIM_FOR_LITERAL_FULL_HISTORY_FORMULATION",
     "I_modflow_response_tangent": "OPEN_NOT_PROVIDED_BOUNDED_SCALAR_RESPONSE_IS_ONLY_A_RESEARCH_PATH",
-    "J_swap_physics_interface": "OPEN"
+    "J_swap_physics_interface": "OPEN",
+    "D0_donor_separability": "SPECIFIED_EXECUTION_BLOCKED_ON_TIME_RESOLVED_REFERENCE_CAPTURE"
   },
   "comparative_positioning": {
     "layeredmfp": {
@@ -57,41 +60,42 @@
       "observed_head": "eebd347a486bf7597de9b5d5809ad91b19342084",
       "assessment": "STRONGER_PUBLISHED_CONSERVATION_AND_MOVING_WATER_TABLE_LINEAGE_THAN_VZAA_BUT_DYNAMIC_FRONT_STATE_COST_AND_GENERIC_SWAP_HYDRAULICS_REMAIN_OPEN"
     },
-    "vzaa_distinct_candidate_value": "HISTORY_AWARE_TRANSIENT_DIFFUSIVE_FLUX_AND_SURFACE_VERSUS_GROUNDWATER_CONTRIBUTION_AS_DONOR_PREDICTOR_NOT_AS_ACCEPTED_LEDGER",
+    "vzaa_distinct_candidate_value": "HISTORY_AWARE_TRANSIENT_DIFFUSIVE_LAYER_MIDPOINT_SIGNAL_AS_DIAGNOSTIC_OR_BOUNDED_DONOR_PROPOSAL_NOT_AS_ACCEPTED_LEDGER",
     "standalone_derivative_burden_of_proof": "MUST_SHOW_MATERIALLY_DISTINCT_ACCURACY_OR_APPLICABILITY_ENVELOPE_NOT_AVAILABLE_MORE_SIMPLY_INSIDE_LAYEREDMFP_COMMON_SOLVER_ARCHITECTURE"
   },
-  "direct_path": {
-    "production_admissible": false,
-    "reason": [
-      "published complete method reports non-zero accepted profile mass-balance residuals",
-      "published formulation cannot strictly impose a general lower prescribed-head or prescribed-flux boundary",
-      "published layered-soil case degrades because the analytical flux relation was derived for uniform soil",
-      "literal half-order history grows with the complete time history and does not satisfy compact persistent state or strong predictable-cost requirements"
-    ]
+  "donor_separability": {
+    "status": "D0_SPECIFIED_NOT_EXECUTED",
+    "reason_required": "VZAA_HISTORY_TERM_IS_LAYER_CENTERED_HISTORY_DEPENDENT_AND_COUPLED_TO_CANDIDATE_NEW_STORAGE_IN_EQ9_NOT_A_DROP_IN_LOCAL_FACE_CORRECTION",
+    "candidate_history_source": "CANDIDATE_COMMITTED_TRAJECTORY_ONLY_NO_FULLRICHARDS_REFERENCE_LEAKAGE",
+    "diagnostic_only": true,
+    "candidate_signal": "q_vzaa_mid = q_hist + q_steady",
+    "reference_signal": "q_ref_mid = 0.5*(q_ref_in + q_ref_out)",
+    "baseline_signal": "q_lmfp_mid = 0.5*(q_lmfp_in + q_lmfp_out)",
+    "warm_start_value_currently_weak": "CURRENT_F_LMFP07_F_LMFP08_EXPERIMENTAL_TRANSIENT_ROUTE_HAS_NO_GLOBAL_NONLINEAR_NEWTON_PROFILE_ITERATION_TO_WARM_START",
+    "execution_blocker": "CURRENT_FULLRICHARDS_AB_EVIDENCE_NEEDS_TIME_RESOLVED_LAYER_MOISTURE_HEAD_AND_FACE_FLUX_CAPTURE"
   },
   "research_paths_remaining": {
     "donor_extraction": {
-      "status": "PRIORITY_OPEN",
-      "candidate": "isolate the transient diffusive/history flux estimator and test as predictor or diagnostic inside an exactly conservative common/LayeredMFP-compatible harness",
-      "acceptance_rule": "raw VZAA prediction may never become committed transfer without exact conservative acceptance semantics"
+      "status": "PRIORITY_OPEN_D0_SPECIFIED",
+      "next_gate": "PROVE_DIAGNOSTIC_SIGNAL_BEFORE_ANY_BOUNDED_REPRESENTATION_OR_TRIAL_INFLUENCE",
+      "acceptance_rule": "RAW_VZAA_SIGNAL_MAY_NEVER_BECOME_COMMITTED_TRANSFER_WITHOUT_EXACT_CONSERVATIVE_ACCEPTANCE_SEMANTICS"
     },
     "conservative_derivative": {
       "status": "OPEN_BUT_DEPRIORITIZED",
-      "required_proof": "Demonstrate a materially distinct benefit over LayeredMFP or other common reduced-order machinery before a separate solver family is justified. Exact accepted-step ledger, explicit bottom interface and bounded correction count remain mandatory."
+      "artifact": "integration/f-vzaa/F-VZAA01_CONSERVATIVE_MODIFICATION_HYPOTHESIS.json",
+      "required_proof": "MATERIALLY_DISTINCT_BENEFIT_OVER_LAYEREDMFP_OR_COMMON_SOLVER_MACHINERY_BEFORE_SEPARATE_SOLVER_FAMILY_IS_JUSTIFIED"
     },
     "compressed_fractional_history": {
-      "status": "OPEN_ONLY_IF_DONOR_BENEFIT_JUSTIFIES_METHOD_COMPLEXITY",
-      "required_proof": "Error, restart, rollback, conservation interaction and performance must be qualified independently."
+      "status": "OPEN_ONLY_IF_D0_SIGNAL_JUSTIFIES_METHOD_COMPLEXITY",
+      "required_proof": "FIXED_MAX_STATE_BOUNDED_UPDATE_TRANSACTIONAL_ROLLBACK_RESTART_SUFFICIENCY_NONUNIFORM_TIME_SEMANTICS_AND_ERROR_VERSUS_LITERAL_HISTORY"
     }
   },
   "next_actions": [
-    "capture and provenance-check DOI-linked supplementary MATLAB appendices",
-    "reproduce a fixed-domain case and test Eq. 8 telescoping to roundoff",
-    "decompose moving-water-table residual into unsaturated storage, saturated storage, geometry crossing, clipping and lower-boundary terms",
-    "identify the actual Eq. 9 local solution method and count function evaluations",
-    "isolate the VZAA transient diffusive/history term as a donor candidate",
-    "design an isolated donor A/B against current LayeredMFP and FullRichards without changing production code",
-    "reject standalone derivative work unless a distinct accuracy/applicability advantage is demonstrated"
+    "identify the existing FullRichards reference-capture seam used by LayeredMFP",
+    "determine whether time-resolved face flux and moisture trajectories can be exposed in experiment-only evidence without production-kernel changes",
+    "define any cross-track evidence workunit only after that seam is source-bound",
+    "capture and provenance-check DOI-linked supplementary MATLAB appendices if an authoritative artifact becomes accessible",
+    "do not implement VZAA donor code on the current VZAA branch before D0 prerequisites are satisfied"
   ],
-  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_DONOR_EXTRACTION_NOW_PRIORITIZED"
+  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_D0_DONOR_SEPARABILITY_SPECIFIED_EXECUTION_BLOCKED_ON_REFERENCE_CAPTURE"
 }
