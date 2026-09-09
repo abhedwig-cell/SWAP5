@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01-D0",
+  "branch": "work/f-vzaa01-d0-donor-separability-evidence",
+  "source": {
+    "title": "Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge",
+    "authors": "Sadeghi et al.",
+    "journal": "Journal of Hydrology",
+    "volume": 673,
+    "article": "135467",
+    "year": 2026,
+    "doi": "10.1016/j.jhydrol.2026.135467",
+    "article_text_inspected": true,
+    "official_matlab_supplement_captured": false
+  },
+  "coordinate_and_flux_sign": {
+    "z": "positive downward",
+    "f": "positive downward as used in Eq. 1 and the D0 evidence convention",
+    "history_sign_check": "For wetting, theta increments are positive and Eq. 5 makes H negative; the Eq. 3 term -sqrt(cD)H is therefore positive/downward."
+  },
+  "bound_equations": {
+    "eq3": "f = -sqrt(c*D(theta))*H + Ks*(K(theta)-Kd)/(Ks-Kd)",
+    "eq5": "H(t_N) = -(1/sqrt(pi))*sum_j[(theta_(j+1)-theta_j)/sqrt(t_N-0.5*(t_(j+1)+t_j))]",
+    "eq6": "c=0.5 when H<=0; c=2 when H>0",
+    "eq15": "K(theta)=Ks*S^0.5*[1-(1-S^(1/m))^m]^2",
+    "eq17": "D(theta)=((1-m)*Ks)/(alpha*m*(theta_s-theta_r))*S^(0.5-1/m)*[(1-S^(1/m))^(-m)+(1-S^(1/m))^m-2]",
+    "effective_saturation": "S=(theta-theta_r)/(theta_s-theta_r)",
+    "shape_relation": "m=1-1/n"
+  },
+  "d0a_deep_groundwater_specialization": {
+    "Kd": "treated as negligible only for the D0-A deep-groundwater/free-drainage diagnostic",
+    "eq3_specialized": "q_vzaa_mid = -sqrt(c*D(theta))*H + K(theta)",
+    "claim_limit": "This specialization does not qualify shallow-groundwater or prescribed-head coupling; those remain D0-C or later."
+  },
+  "hydraulic_compatibility_with_lmfp04": {
+    "sand": {"theta_r":0.045,"theta_s":0.430,"Ks_cm_d":20.0,"alpha_cm_inv":0.040,"n":1.80,"m":"1-1/n","mualem_exponent":0.50},
+    "clay": {"theta_r":0.080,"theta_s":0.500,"Ks_cm_d":0.20,"alpha_cm_inv":0.010,"n":1.30,"m":"1-1/n","mualem_exponent":0.50},
+    "decision": "Use the published VG Eq. 15 and Eq. 17 directly for the VZAA diagnostic. Do not substitute a numerical K/C diffusivity reconstruction and do not use a post-hoc fitted hydraulic relation."
+  },
+  "domain_policy": {
+    "valid_effective_saturation": "0 < S < 1 for direct Eq. 17 evaluation",
+    "outside_or_singular": "record hydraulic-domain failure; do not clip to manufacture a finite donor value",
+    "nonfinite": "record diagnostic failure and retain the row in evidence"
+  },
+  "reproduction_label": "SOURCE_BOUND_EQUATION_RECONSTRUCTION_NOT_OFFICIAL_CODE_REPRODUCTION"
+}
