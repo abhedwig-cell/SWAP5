@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_A_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT",
+  "workflow_run": 34392178879,
+  "workflow_head": "32101803adf32ea8bb7722ac31923c0fdd7acd13",
+  "artifact_id": 10120063786,
+  "tested": true,
+  "qualified_restricted": true,
+  "production_implementation": false,
+  "decision": "QUALIFIED_RESTRICTED_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT_READY_FOR_ZD_PROVENANCE_AND_COMPOSED_INFILTRATION_GATE",
+  "case_count": 168,
+  "case_pass_count": 168,
+  "accepted_case_count": 120,
+  "insufficient_water_fail_closed_count": 24,
+  "slot_unavailable_fail_closed_count": 24,
+  "max_abs_mass_residual_cm": 0.0,
+  "water_clip_drop_merge_count": 0,
+  "new_persistent_state_bytes_beyond_front_state": 0,
+  "Z_d_owner": "immutable fixture outside per-column persistent state",
+  "partial_dry_bin_funding_qualified": false,
+  "source_scope": "Talbot and Ogden 2008 section 2.3 paragraphs 24-26: left-to-right water allocation, dry-bin front Z_d placement, corresponding volume debit, continuation until water exhausted or last bin",
+  "hard_nonclaims": [
+    "No Green-Ampt Z_d successive-approximation qualification.",
+    "No partial dry-bin funding semantics.",
+    "No composed existing-front plus creation trajectory qualification yet.",
+    "No redistribution, groundwater, runtime or MultiSWAP production qualification."
+  ],
+  "next_action": "Qualify Z_d provenance/calculation separately or compose B2D-R1 with B2E-A while keeping Z_d supplied and partial funding fail-closed."
+}
