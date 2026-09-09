@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1B_O01_CELL_SWITCH_DIAGNOSTIC",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "parent_failure_evidence": "F-ROSS01_GATE_J1B_INITIAL_EXECUTION_RESULT.json",
+  "purpose": "Localize the single O01 plus/minus finite-difference table-cell transition observed in the initial frozen J1B execution before defining any J1B-R1 rerun.",
+  "material": "O01",
+  "computation_frozen_from_parent": {
+    "geometries": [
+      ["wet_short", 2, -50.0],
+      ["mid", 4, -200.0],
+      ["dry", 16, -1000.0],
+      ["long_dry", 64, -3000.0]
+    ],
+    "q_fractions": [-0.02, 0.0, 0.02],
+    "fd_factors": [1e-05, 3e-05],
+    "table": "unchanged qualified C1R N241 float32 log-mobility representation",
+    "analytic_derivative": "unchanged qualified J1A face derivative",
+    "profile_generator": "unchanged J1B scalar face root construction"
+  },
+  "diagnostic_only": true,
+  "required_output": [
+    "geometry and q_fraction for every valid parent case",
+    "base/plus/minus cell signatures for each FD factor",
+    "per-head indices where base, plus and minus signatures differ",
+    "invalid parent fixture errors preserved",
+    "no change to any tangent threshold or FD perturbation size"
+  ],
+  "decision_rule": {
+    "localized": "Persist the exact switching case and determine whether it is an expected piecewise-interpolation boundary event. Do not average derivatives across the switch.",
+    "not_localized": "Keep J1B blocked and investigate diagnostic implementation before changing fixtures."
+  },
+  "hard_guards": [
+    "No table retuning.",
+    "No FD size tuning.",
+    "No fixture replacement in this diagnostic.",
+    "No smoothing across a table-node derivative jump.",
+    "No Class-B work.",
+    "No production admission."
+  ]
+}
