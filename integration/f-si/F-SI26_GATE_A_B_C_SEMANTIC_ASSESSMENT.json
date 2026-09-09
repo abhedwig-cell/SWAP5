@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI26",
+  "artifact": "GATE_A_B_C_SEMANTIC_ASSESSMENT",
+  "contract": "integration/f-si/F-SI26_WORK_UNIT_CONTRACT.json",
+  "assessment_type": "source-bound owner analysis; no production code change and no fitted numerical tolerance",
+  "evidence_reconciliation": {
+    "exact_linear": "F-SI24/F-VQ30 establish the theorem-derived factor-2 construction and an infinity-norm bound for the qualified linear dissipative problem.",
+    "nonlinear_transfer": "F-SI24 and F-VQ30 show no negative transfer against their persisted finite same-endpoint comparators, but the comparator is not truth and B_inf/comparator ratios are strongly state/horizon dependent.",
+    "nonlinear_conservatism": "F-VQ30 B_inf/E1_512 spans approximately 6.685 to 102.498; this rules out reading B_inf as a calibrated approximation of true nonlinear error.",
+    "raw_observer_history": "F-SI23 showed much larger state-dependent conservatism and no global multiplicative calibration.",
+    "retry_translation": "F-VQ28 showed that a fixed-horizon conservative relation for an earlier raw head observable did not survive the actual retry topology; smaller dt cannot be assumed to improve any new certificate monotonically without direct qualification.",
+    "true_reference": "F-VQ29 failed closed because the finite-refinement reference could not support a rigorous nonlinear error-bound qualification under frozen controls.",
+    "legacy_tolerance": "F-SI20 theory/source evidence rejects CritDevH nonlinear convergence criteria and legacy iteration-count timestep adaptation as temporal-accuracy contracts.",
+    "generic_transaction_contract": "F-KT09 requires only an explicit model-owned finite nonnegative dimensionless scalar <=1 and deliberately owns no Richards normalization or numerical limit."
+  },
+  "candidate_assessment": [
+    {
+      "id": "ABSOLUTE_HEAD_BUDGET_CONSUMPTION",
+      "decision": "SELECT_AS_CANDIDATE",
+      "definition": "C_h=B_inf/H_budget",
+      "requirements": [
+        "H_budget is explicit, finite, positive and has units cm pressure head.",
+        "H_budget is supplied by numerical/application policy and is not inferred from current or historical indicator results.",
+        "No universal default H_budget is selected by F-SI26.",
+        "Certificate is unavailable when B_inf or H_budget is unavailable/invalid."
+      ],
+      "defensible_meaning": "C_h is consumption of an explicitly configured head-domain temporal-indicator budget.",
+      "linear_scope_implication": "Within the exact linear scope where B_inf is a qualified infinity-norm upper bound, C_h<=1 also implies the exact qualified linear endpoint head error is <=H_budget.",
+      "nonlinear_scope_nonclaim": "For nonlinear Richards cases C_h<=1 does not prove exact-solution pressure-head error <=H_budget; it states only that the qualified bounded-stiffness-aware indicator is within the configured budget.",
+      "reason_selected": "Dimensionally exact, monotone, non-empirical, compatible with F-KT09, preserves the original indicator, and keeps the accuracy-budget choice outside the estimator."
+    },
+    {
+      "id": "BUILTIN_UNIVERSAL_HEAD_SCALE",
+      "decision": "REJECT",
+      "reason": "No authoritative scientific or application requirement supplies a universal cm scale. Deriving one from observed matrices, legacy CritDevH or the F-KT09 <=1 shape would be calibration/semantic overreach."
+    },
+    {
+      "id": "STATE_RELATIVE_HEAD_SCALE",
+      "decision": "REJECT_AS_UNIVERSAL_NORMALIZATION",
+      "reason": "Pressure-head magnitude is not a stable proxy for constitutive or interface sensitivity. A relative-to-|h| rule can permit increasing absolute deviations in dry states and has no source-bound scale law here. A future application may define a separate explicit mixed absolute/relative budget, but F-SI26 will not manufacture one."
+    },
+    {
+      "id": "M_OR_STORAGE_ONLY_SCALE",
+      "decision": "REJECT_AS_SOLE_ACCEPTANCE_NORMALIZATION",
+      "reason": "B_M is an M-weighted head norm, not a water-balance residual or direct storage error. M=C*dz is state dependent. Hard mass is independently enforced, and an M-only certificate would not establish head/interface accuracy."
+    },
+    {
+      "id": "COUPLING_RESIDUAL_SCALE",
+      "decision": "REJECT_AS_UNIVERSAL_SW_KERNEL_NORMALIZATION",
+      "reason": "Groundwater coupling head/flux residual targets belong to coupler/application semantics. Directly equating them to a Richards temporal-indicator budget would create a silent coupling dependency and conflate discretization error with interface convergence."
+    },
+    {
+      "id": "RANKING_OR_RETRY_ADVICE_ONLY",
+      "decision": "RETAIN_AS_FAIL_CLOSED_FALLBACK_POSITION",
+      "reason": "If independent qualification rejects the selected budget-consumption semantics or no application can provide a defensible H_budget, dimensional B_inf remains useful diagnostically without an acceptance certificate."
+    }
+  ],
+  "selected_candidate": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "unit": "dimensionless",
+    "valid_domain": "B_inf finite and >=0; H_budget finite and >0; F-SI25 indicator available in its qualified operator envelope; continuation provenance valid",
+    "acceptance_surface_for_later_F_KT": "candidate semantics are compatible with C_h<=1, but F-SI26 does not activate or qualify F-KT acceptance/retry",
+    "default_budget": null,
+    "budget_owner": "explicit numerical/application policy outside the F-SI25 estimator",
+    "parameter_class": "numerical accuracy configuration, not physical soil/crop/boundary parameter",
+    "mass_tolerance_relationship": "none; mass remains an independent absolute hard gate",
+    "nonlinear_solver_tolerance_relationship": "none; Newton/head convergence tolerance is not the temporal budget",
+    "coupling_residual_relationship": "none by default; any application-derived relationship must be separately explicit and qualified"
+  },
+  "retry_semantics": {
+    "monotone_with_shorter_dt_claimed": false,
+    "reason": "Existing negative evidence forbids assuming retry halving automatically improves the certificate on an evolving nonlinear trajectory.",
+    "downstream_requirement": "Any F-KT production binding must use bounded retry/fallback semantics and independently characterize actual retry behavior rather than relying on monotonicity."
+  },
+  "bootstrap_and_discontinuity": {
+    "initial_no_history": "certificate unavailable/fail closed",
+    "restricted_right_derivative_bootstrap_exists_as_prior_test_only_evidence": true,
+    "production_bootstrap_admitted_by_F_SI26": false,
+    "forcing_event_topology_discontinuity": "previous derivative must not be silently reused; certificate unavailable until a separately qualified right-side continuation/bootstrap is available",
+    "restart": "unrelated or unverifiable history is unavailable/fail closed"
+  },
+  "gate_results_so_far": {
+    "A_EVIDENCE_RECONCILIATION": "PASS",
+    "B_DIMENSIONAL_AND_SEMANTIC_VALIDITY": "PASS_FOR_SELECTED_CANDIDATE_AT_OWNER_ANALYSIS_LEVEL",
+    "C_NO_EMPIRICAL_RESCUE": "PASS_NO_SCALE_OR_DEFAULT_TOLERANCE_FITTED",
+    "D_ERROR_CLAIM_BOUNDARY": "PASS",
+    "E_APPLICATION_BUDGET_SEPARATION": "PASS_AS_CONTRACT_REQUIREMENT",
+    "F_RETRY_SEMANTIC_SAFETY": "PASS_NO_MONOTONICITY_CLAIM",
+    "G_EDGE_AND_DISCONTINUITY_BEHAVIOR": "PASS_AS_FAIL_CLOSED_SEMANTIC_REQUIREMENT",
+    "H_FKT09_COMPATIBILITY": "PASS_SEMANTICALLY_NOT_YET_PRODUCTION_BOUND",
+    "I_ARCHITECTURE_INVARIANTS": "PENDING_FINAL_OWNER_RECONCILIATION"
+  },
+  "owner_position": "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_FOCUSED_OWNER_ALGEBRA_AND_SOURCE_GATES_BEFORE_INDEPENDENT_F_VQ",
+  "production_source_modified": false,
+  "scientific_application_tolerance_selected": false,
+  "production_acceptance_enabled": false,
+  "F_GC02_release": false,
+  "F_PE_release": false
+}
