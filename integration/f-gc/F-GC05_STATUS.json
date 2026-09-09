@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC05",
+  "status": "BLOCKED_NO_INDEPENDENT_APPLICATION_HEAD_ACCURACY_REQUIREMENT",
+  "branch": "work/f-gc05-coupling-head-accuracy-policy",
+  "pre_registration_commit": "5e0d604917d925d8e5f8d9fb3c5c16a7be8b013c",
+  "research_evidence_commit": "6c7609858d7bf8b24e6ee717018194d13b85aae0",
+  "numeric_policy_qualified": false,
+  "numeric_H_budget_selected": false,
+  "policy_template_retained": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+  "blocking_requirement": "Application-specific, independently sourced H_app plus independently justified temporal/coupling error allocation.",
+  "GC02_release": false,
+  "FVQ35_handoff": false,
+  "production_source_changed": false,
+  "mass_policy_changed": false,
+  "decision": "BLOCKED_NO_INDEPENDENT_APPLICATION_HEAD_ACCURACY_REQUIREMENT"
+}
