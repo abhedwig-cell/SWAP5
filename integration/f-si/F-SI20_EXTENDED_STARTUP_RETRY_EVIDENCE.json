@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "EXTENDED_LOCAL_PRESCRIBED_HEAD_STARTUP_RETRY_TAIL",
+  "scope": "nonproduction characterization of the existing full-step versus two-half-step acceptance seam under exact F-GC02 solver controls",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_source_changed": false,
+    "committed_base_characterization_harness_changed": false
+  },
+  "workflow": {
+    "name": "F-SI20 extended startup retry ladder",
+    "run": 34301091553,
+    "job": 102307947261,
+    "head": "25fd96b1a2d4f411bcdfa7b4ffef01b4c12949ee",
+    "conclusion": "success",
+    "artifact_id": 10084944335,
+    "artifact_name": "fsi20-extended-startup-retry-ladder",
+    "artifact_digest": "sha256:95fa3b264dcdccf4f4010daa56b680985690623ab9c6395e10541cbc60137e3a",
+    "pipeline_failure_propagation": "PASS after explicit pipefail fix",
+    "independent_same_tail_reproduction": {
+      "workflow": "F-SI20 prescribed-head startup tail",
+      "run": 34301178894,
+      "job": 102308208166,
+      "head": "c91b5b19151e9ba7de67648a9aab61223ff4ec4e",
+      "conclusion": "success",
+      "same_12_pressure_head_rows": true
+    }
+  },
+  "physical_and_numerical_contract": {
+    "bottom_mode": 5,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "initial_attempt_dt_day": 0.25,
+    "retry_scale": 0.5,
+    "nonproduction_max_retries": 16,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1e-6,
+    "mass_tolerance": 1e-12,
+    "nonlinear_tolerance_cases": [1e-10,1e-12,1e-14],
+    "optional_physics": "inactive",
+    "ponding_delta": "zero on every valid comparison",
+    "groundwater_level_delta": "zero on every valid comparison"
+  },
+  "baseline_1e_12_rows": [
+    {"index":1,"dt_day":0.25,"max_abs_head_cm":2.55242948426825933e-4,"imax_head":3,"max_abs_theta":2.45253912511955718e-7,"signed_dz_theta_difference":-5.18754605882687514e-7,"apparent_order":null},
+    {"index":2,"dt_day":0.125,"max_abs_head_cm":5.59871162238323450e-4,"imax_head":2,"max_abs_theta":5.37957176582892771e-7,"signed_dz_theta_difference":-1.31051211760269126e-6,"apparent_order":-1.133223767},
+    {"index":3,"dt_day":0.0625,"max_abs_head_cm":7.30391936698993050e-4,"imax_head":2,"max_abs_theta":7.01797804536496983e-7,"signed_dz_theta_difference":-1.78083243673743397e-6,"apparent_order":-0.3835759667},
+    {"index":4,"dt_day":0.03125,"max_abs_head_cm":6.60104606367895030e-4,"imax_head":3,"max_abs_theta":6.34258496612361000e-7,"signed_dz_theta_difference":-1.64988906797836066e-6,"apparent_order":0.1459761729},
+    {"index":5,"dt_day":0.015625,"max_abs_head_cm":6.05509121356817559e-4,"imax_head":4,"max_abs_theta":5.81805030375193155e-7,"signed_dz_theta_difference":-1.18522924374975247e-6,"apparent_order":0.1245459728},
+    {"index":6,"dt_day":0.0078125,"max_abs_head_cm":6.24908348925146129e-4,"imax_head":4,"max_abs_theta":6.00440179798766849e-7,"signed_dz_theta_difference":-7.75500106631188402e-7,"apparent_order":-0.04549592222},
+    {"index":7,"dt_day":0.00390625,"max_abs_head_cm":5.31039300540214754e-4,"imax_head":4,"max_abs_theta":5.10241903506347683e-7,"signed_dz_theta_difference":-4.84067925798914445e-7,"apparent_order":0.2348259807},
+    {"index":8,"dt_day":0.001953125,"max_abs_head_cm":3.42613191421037300e-4,"imax_head":4,"max_abs_theta":3.29192037296088813e-7,"signed_dz_theta_difference":-2.62909299830749177e-7,"apparent_order":0.6322379346},
+    {"index":9,"dt_day":0.0009765625,"max_abs_head_cm":1.65183544154956508e-4,"imax_head":4,"max_abs_theta":1.58711438436043295e-7,"signed_dz_theta_difference":-1.15679529177903362e-7,"apparent_order":1.052510729},
+    {"index":10,"dt_day":0.00048828125,"max_abs_head_cm":6.21879778179845744e-5,"imax_head":4,"max_abs_theta":5.97509821620434423e-8,"signed_dz_theta_difference":-4.15182568880290148e-8,"apparent_order":1.409362360},
+    {"index":11,"dt_day":0.000244140625,"max_abs_head_cm":1.96552369260416526e-5,"imax_head":4,"max_abs_theta":1.88849170745797323e-8,"signed_dz_theta_difference":-1.28023188716852587e-8,"apparent_order":1.661721951},
+    {"index":12,"dt_day":0.0001220703125,"max_abs_head_cm":5.57745558182887180e-6,"imax_head":4,"max_abs_theta":5.35885336105934584e-9,"signed_dz_theta_difference":-3.58727020310922740e-9,"apparent_order":1.817234730}
+  ],
+  "termination": {
+    "all_three_nonlinear_tolerance_cases_same_classification": true,
+    "attempts": 17,
+    "retries": 16,
+    "valid_temporal_comparisons": 12,
+    "temporal_rejections": 12,
+    "solver_rejections": 5,
+    "mass_rejections": 0,
+    "accepted_substeps": 0,
+    "transaction_completed": false,
+    "interpretation": "The local tail becomes solver-limited after twelve finite temporal comparisons. Further refinement is not blocked by mass and is not evidence that the temporal discrepancy itself stopped decreasing."
+  },
+  "tail_characterization": {
+    "strictly_decreasing_suffix_length": 7,
+    "suffix_start_dt_day": 0.0078125,
+    "last_valid_dt_day": 0.0001220703125,
+    "last_over_first_head_discrepancy": 0.0218515560026444344,
+    "last_max_abs_head_cm": 5.57745558182887180e-6,
+    "maximizing_node_stabilizes_at": 4,
+    "nonlinear_tolerance_spread_cm": "0 to approximately 1.7e-13 over the 12 valid rows",
+    "apparent_order_warning": "The diagnostic apparent order rises toward 1.82 on the last valid row. This must not be interpreted as a qualified second-order temporal scheme; the documented production method remains an implicit backward finite-difference formulation and no Richardson factor is admitted."
+  },
+  "owner_interpretation": {
+    "pressure_head_observable": "max_i abs(h_full(i)-h_two_half(i))",
+    "units": "cm pressure head on the current solver route",
+    "dimensionally_defensible_direct_discrepancy": true,
+    "deterministic_on_tested_route": true,
+    "separated_from_nonlinear_tolerance_over_tested_range": true,
+    "event_start_nonmonotonicity_observed": true,
+    "reproducible_decay_regime_observed_before_solver_limit": true,
+    "formal_order_qualified": false,
+    "richardson_factor_qualified": false,
+    "production_tolerance_qualified": false,
+    "production_metric_admitted": false
+  },
+  "next_question": "Determine whether the five fine-step solver rejections are the already-characterized reference convergence cliff or a distinct mode-5 prescribed-head startup limitation. Do not relax the production iteration/backtracking policy merely to extend this tail."
+}
