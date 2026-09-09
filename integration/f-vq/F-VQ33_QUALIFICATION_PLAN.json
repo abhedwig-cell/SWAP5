@@ -10,6 +10,7 @@
   "owner_workflow_run": 34356407443,
   "owner_workflow_job": 102482099289,
   "frozen_before_execution": true,
+  "preexecution_revision_reason": "Case 12 was changed before any executable qualification from an induced real-Richards mass-failure probe to the exact C_h=1 boundary acceptance probe. Hard-mass precedence is qualified separately through the existing generic F-KT09 executable mass-failure oracle plus source-order lock, avoiding a test-only perturbation of physical Richards accounting.",
   "candidate_lock": {
     "formula": "C_h=B_inf/H_budget",
     "default_H_budget": null,
@@ -37,7 +38,7 @@
       {"case":9,"h0_cm":-80.0,"jump_cm":-0.025,"horizon_day":0.325,"policy_probe":"INVALID_NAN_BUDGET","budget_rule":"NaN supplied"},
       {"case":10,"h0_cm":-155.0,"jump_cm":0.025,"horizon_day":0.325,"policy_probe":"INVALID_POSITIVE_INFINITY_BUDGET","budget_rule":"+Inf supplied"},
       {"case":11,"h0_cm":-275.0,"jump_cm":-0.025,"horizon_day":0.325,"policy_probe":"INVALID_NEGATIVE_BUDGET","budget_rule":"-abs(direct_B_inf)"},
-      {"case":12,"h0_cm":-390.0,"jump_cm":0.025,"horizon_day":0.325,"policy_probe":"MASS_FAILURE_CANNOT_BE_OVERRIDDEN","budget_rule":"very large finite valid budget"}
+      {"case":12,"h0_cm":-390.0,"jump_cm":0.025,"horizon_day":0.325,"policy_probe":"BOUNDARY_ACCEPT","budget_rule":"direct_B_inf; expected C_h=1"}
     ],
     "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
     "exact_triplet_overlap_with_F_VQ30_matrix": 0,
@@ -46,11 +47,16 @@
     "exact_triplet_overlap_with_F_KT10_real_fixture": 0,
     "exact_triplet_overlap_with_F_KT11_owner_fixture": 0
   },
+  "hard_mass_precedence_oracle": {
+    "production_source_order_lock": true,
+    "executable_oracle": "existing F-KT09 generic model-certificate transaction mass-failure case",
+    "reason_for_separate_oracle": "do not corrupt or perturb real Richards mass accounting solely to force a qualification failure"
+  },
   "required_gates": {
     "G01_source_and_handoff_lock": true,
     "G02_numerical_configuration_ownership": true,
     "G03_direct_B_inf_equivalence": true,
-    "G04_valid_accept_reject_threshold_semantics": true,
+    "G04_valid_accept_reject_and_C_h_equals_1_boundary_semantics": true,
     "G05_missing_and_invalid_fail_closed": true,
     "G06_no_history_no_bootstrap": true,
     "G07_bounded_retry_exact_rollback": true,
