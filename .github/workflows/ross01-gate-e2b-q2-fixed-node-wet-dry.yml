@@ -1,0 +1,37 @@
+name: F-ROSS01 Gate E2B Q2 Fixed-Node WET_DRY Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e2b-q2-fixed-node-wet-dry.yml
+      - experiments/ross/run_ross01_gate_e2b_q2_fixed_node_wet_dry.py
+      - integration/f-ross/F-ROSS01_GATE_E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION_CONTRACT.json
+      - experiments/ross/run_ross01_gate_c1.py
+      - experiments/ross/run_ross01_face_table_characterization.py
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install characterization dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen Gate E2B Q2 fixed-node WET_DRY characterization
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e2b-q2"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e2b_q2_fixed_node_wet_dry.py \
+            "$out/F-ROSS01_GATE_E2B_Q2_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E2B_Q2_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e2b-q2-fixed-node-wet-dry
+          path: ross01-gate-e2b-q2/
