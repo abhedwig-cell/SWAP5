@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF29",
+  "title": "Compact Immutable WOFOST Rate Table Substrate",
+  "branch": "work/f-wof29-rate-table-substrate",
+  "base": {
+    "commit": "64e566590ff8fb4fd8aa194c92d16436f86ea02d",
+    "status": "QUALIFIED_WOFOST_ONE_DAY_SEMANTIC_RATE_STATE_VIEW"
+  },
+  "status": "QUALIFIED_COMPACT_IMMUTABLE_WOFOST_RATE_TABLE_SUBSTRATE",
+  "decision": "QUALIFIED_SOURCE_BOUND_AFGEN_SEMANTICS_READY_FOR_SHARED_WOFOST_PARAMETER_BUNDLE",
+  "tested_candidate": "b5f1763bad618ddb19f4224c6fab5c68961a8e43",
+  "verification": {
+    "workflow": "F-WOF29 rate table substrate",
+    "run_id": 34304134352,
+    "job_id": 102317172563,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "780387c7e71b1a72319f67e96f188fb95f2856bb30b941490fec9c7b09f161c8",
+    "F_WOF28_rate_state_view_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_rate_table.f90"
+    ],
+    "persistent_column_state_added": false,
+    "crop_rate_equations_added": false,
+    "parser_or_file_IO_added": false
+  },
+  "qualified_contract": {
+    "type": "wofost_rate_table_t",
+    "storage": "private allocatable active x/y knots only",
+    "construction": "construct_wofost_rate_table",
+    "post_construction_public_mutator": false,
+    "strictly_increasing_x": true,
+    "finite_active_knots": true,
+    "single_knot_constant_table": true,
+    "evaluation": "B1.10 AFGEN endpoint clamp and linear interpolation with legacy arithmetic order",
+    "intended_ownership": "shared immutable crop/template parameter data, never dynamic column state"
+  },
+  "source_bound_results": {
+    "full_fixed_table": "bitwise equivalent to local source transcript of legacy AFGEN",
+    "partially_filled_table_with_decreasing_x_sentinel": "bitwise equivalent after storing active knots only",
+    "legacy_sentinel_required_in_kernel": false,
+    "legacy_unused_tail_required_in_kernel": false,
+    "arithmetic_order_preserved": "slope=(y1-y0)/(x1-x0); y=y0+(x-x0)*slope"
+  },
+  "validation": {
+    "empty_table": "rejected",
+    "size_mismatch": "rejected",
+    "duplicate_x": "rejected",
+    "decreasing_x": "rejected",
+    "nonfinite_knot": "rejected",
+    "nonfinite_query": "rejected before comparison/interpolation under floating-point invalid traps",
+    "unconstructed_table": "cannot be evaluated"
+  },
+  "not_qualified": [
+    "restricted WOFOST scalar/table parameter bundle",
+    "PGASS assimilation evaluator",
+    "finalize-rate evaluator",
+    "legacy parser-to-compact-table adapter",
+    "accepted IQROT/IPTRA provenance runtime binding"
+  ],
+  "next": "implement the restricted shared immutable WOFOST rate parameter bundle using qualified compact tables and explicit fail-closed domain rules",
+  "affected_invariants": [2,3,4,5,6,8,16,21,25,27,29,30]
+}
