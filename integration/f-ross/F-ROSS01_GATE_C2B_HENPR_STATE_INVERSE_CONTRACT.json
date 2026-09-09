@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_ANALYTICAL_STATE_TO_HEAD_INVERSE",
+  "status": "CONTRACT_FROZEN_BEFORE_CHARACTERIZATION",
+  "production_implementation": false,
+  "purpose": "Qualify an exact non-iterative inverse theta->h for the SWAP 4.3.1 H_ENPR retention law used by C2B, including the rational wet-end continuation that legacy prhead does not invert.",
+  "physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "retention_source": "SWAP 4.3.1 MOD_MvG_functions.f90::watcon default-MvG H_ENPR branch",
+  "frozen_scope": {
+    "materials": "all 36 Staringreeks 2018 unimodal MvG rows",
+    "H_ENPR_cm": -4.0,
+    "h105_cm": -4.2,
+    "h_domain_cm": [-10000.0, 0.0],
+    "hysteresis": false,
+    "elastic_saturated_storage": false,
+    "runtime_root_finding_allowed": false
+  },
+  "forward_retention": {
+    "definitions": [
+      "m=1-1/n",
+      "f(h)=(1+|alpha*h|^n)^(-m)",
+      "s_entry=f(H_ENPR)",
+      "for h<h105: theta=theta_r+(theta_s-theta_r)*f(h)/s_entry",
+      "for h105<=h<0: theta=theta_s+AB*h/(1+A*h)",
+      "for h>=0: theta=theta_s"
+    ],
+    "A_AB": "Use the exact source-derived SWAP term_105_a and term_105_ab construction from the H_ENPR forward branch."
+  },
+  "candidate_inverse": {
+    "state_coordinate": "S=(theta-theta_r)/(theta_s-theta_r)",
+    "join_state": "S105=theta(h105) normalized by theta_r,theta_s",
+    "dry_branch": "f=S*s_entry; h=-(f^(-1/m)-1)^(1/n)/alpha for S<S105",
+    "wet_rational_branch": "y=theta-theta_s; h=y/(AB-A*y) for S105<=S<1",
+    "saturated_endpoint": "S=1 maps to h=0 for this bounded constitutive coordinate; positive saturated pressure is outside this inverse gate and belongs to a separate saturated-state/boundary representation.",
+    "runtime_complexity": "O(1)",
+    "iterations": 0
+  },
+  "legacy_prhead_diagnostic": {
+    "source": "SWAP 4.3.1 MOD_MvG_functions.f90::prhead",
+    "known_source_structure": "For default MvG with H_ENPR, prhead applies the normalized dry VG inverse whenever theta is not within 1e-6 of theta_s; it contains no inverse of watcon's rational h>=h105 branch.",
+    "role": "diagnostic only, not qualification oracle",
+    "question": "Quantify how far legacy prhead deviates from the exact forward watcon inverse on the rational wet branch."
+  },
+  "test_sets": {
+    "head_roundtrip": "dense deterministic heads plus exact joins and near-endpoints over [-10000,0] cm",
+    "state_roundtrip": "dense deterministic S values plus join-focused probes over the forward-retention image of [-10000,0] cm",
+    "material_count": 36
+  },
+  "hard_gates": {
+    "max_head_roundtrip_abs_error_cm": 1e-9,
+    "max_head_roundtrip_relative_scaled": 1e-11,
+    "max_state_roundtrip_normalized_error": 1e-12,
+    "branch_selection_mismatch_count": 0,
+    "inverse_nonmonotone_count": 0,
+    "nan_or_inf_count": 0,
+    "runtime_iterations": 0
+  },
+  "legacy_diagnostic_outputs": [
+    "max_abs_legacy_prhead_error_cm on h105<=h<0",
+    "p99_abs_legacy_prhead_error_cm on h105<=h<0",
+    "legacy error at representative h=-4,-2,-1,-0.1 cm where in domain",
+    "count exceeding 0.01 cm and 0.1 cm"
+  ],
+  "exit_rule": {
+    "pass": "Persist the analytical inverse as the C2B state-to-head mapping and allow steady-face representation characterization to use S directly without root finding.",
+    "fail": "Fail-close the mapping before any C2B Ross table characterization; do not introduce runtime root finding unless separately justified and contracted."
+  },
+  "scope_guard": "This gate qualifies only the unsaturated/zero-pressure H_ENPR retention inverse. It does not define positive saturated pressure head from theta_s, hysteresis inversion, elasticity, transient storage switching, groundwater coupling or FullRichards equivalence."
+}
