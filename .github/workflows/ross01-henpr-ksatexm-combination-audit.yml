@@ -1,0 +1,36 @@
+name: F-ROSS01 H_ENPR KSATEXM Combination Audit
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-henpr-ksatexm-combination-audit.yml
+      - experiments/ross/run_ross01_henpr_ksatexm_combination_audit.py
+      - integration/f-ross/F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run frozen combination audit
+        run: |
+          set -euo pipefail
+          out="ross01-henpr-ksatexm-combination-audit"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_henpr_ksatexm_combination_audit.py \
+            "$out/F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_RESULT.json" \
+            | tee "$out/F-ROSS01_HENPR_KSATEXM_COMBINATION_AUDIT_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-henpr-ksatexm-combination-audit
+          path: ross01-henpr-ksatexm-combination-audit/
