@@ -1,0 +1,33 @@
+name: F-SI25 reference indicator production seam
+
+on:
+  push:
+    branches:
+      - work/f-si25-accepted-state-operator-indicator-seam
+    paths:
+      - 'integration/f-si/F-SI25_WORK_UNIT_CONTRACT.json'
+      - 'integration/f-si/F-SI25_GATE_B_CONTRACT_EVIDENCE.json'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_fixed_flux_top_boundary_provider.f90'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'tests/fsi/test_fsi25_reference_indicator_production_seam.f90'
+      - 'tests/fsi/run_fsi25_reference_indicator_production_seam.sh'
+      - '.github/workflows/fsi25-reference-indicator-production-seam.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-SI25 production seam owner replay
+        run: bash tests/fsi/run_fsi25_reference_indicator_production_seam.sh
