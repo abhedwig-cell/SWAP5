@@ -1,0 +1,37 @@
+name: F-ROSS01 Gate E2C-R2 Endpoint-Clustered Local Face Solve
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e2c-r2-endpoint-clustered-local-face.yml
+      - experiments/ross/run_ross01_gate_e2c_r2_endpoint_clustered_local_face.py
+      - integration/f-ross/F-ROSS01_GATE_E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e2c_r1_segmented_local_face.py
+      - experiments/ross/run_ross01_gate_e2c_bounded_local_face_solve.py
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install characterization dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen E2C-R2 endpoint-clustered local face gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e2c-r2"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e2c_r2_endpoint_clustered_local_face.py \
+            "$out/F-ROSS01_GATE_E2C_R2_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E2C_R2_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e2c-r2-endpoint-clustered-local-face
+          path: ross01-gate-e2c-r2/
