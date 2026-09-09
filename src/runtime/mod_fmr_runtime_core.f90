@@ -10,6 +10,9 @@ module mod_fmr_runtime_core
   integer, parameter, public :: FMR_EXECUTION_DIFFICULT = 2
   integer, parameter, public :: FMR_EXECUTION_TERMINAL = 3
 
+  integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_NONE = 0_int64
+  integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY = 1_int64
+
   type, public :: fmr_logical_column_t
     integer(int64) :: column_id = 0_int64
     integer(int64) :: template_id = 0_int64
@@ -26,7 +29,11 @@ module mod_fmr_runtime_core
     integer(int64) :: vertical_layout_id = 0_int64
     integer(int64) :: state_layout_id = 0_int64
     integer(int64) :: solver_interface_id = 0_int64
+    ! Physical/feature-dependent optional state topology, e.g. snow.  F-KT
+    ! numerical continuation is deliberately a separate axis so solver policy
+    ! cannot overload or reinterpret the physical feature layout.
     integer(int64) :: optional_state_layout_id = 0_int64
+    integer(int64) :: numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
     integer :: compatible_backend_id = 0
   end type fmr_template_t
 

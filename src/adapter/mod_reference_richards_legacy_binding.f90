@@ -3,11 +3,14 @@ module mod_reference_richards_legacy_binding
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, &
-       SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, validate_soil_water_request
+       soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
+       SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
+       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
        reset_reference_workspace
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
        initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX
+  use mod_reference_richards_temporal_indicator, only: evaluate_reference_richards_temporal_indicator
   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, &
        a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
   use MOD_swap_base, only: swmacro
@@ -29,6 +32,7 @@ module mod_reference_richards_legacy_binding
      integer :: reserved = 0
    contains
      procedure :: solve => reference_richards_legacy_solve
+     procedure :: evaluate_temporal_indicator => reference_richards_evaluate_temporal_indicator
   end type reference_richards_legacy_solver_t
 
   public :: build_legacy_reference_request
@@ -179,6 +183,32 @@ contains
        result%diagnostics%route = 'legacy-workspace-type-error'
     end select
   end subroutine reference_richards_legacy_solve
+
+  subroutine reference_richards_evaluate_temporal_indicator(self, request, solve_result, indicator_request, &
+                                                            workspace, indicator_result)
+    class(reference_richards_legacy_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    type(soil_water_temporal_indicator_request_t), intent(in) :: indicator_request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
+
+    if (self%reserved /= 0) then
+       indicator_result = soil_water_temporal_indicator_result_t()
+       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+       indicator_result%route = 'invalid-legacy-solver-marker'
+       return
+    end if
+
+    select type (ws => workspace)
+    type is (reference_richards_legacy_workspace_t)
+       call evaluate_reference_richards_temporal_indicator(request, solve_result, indicator_request, indicator_result)
+    class default
+       indicator_result = soil_water_temporal_indicator_result_t()
+       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+       indicator_result%route = 'legacy-workspace-type-error'
+    end select
+  end subroutine reference_richards_evaluate_temporal_indicator
 
   subroutine materialize_prescribed_head_bottom_flux(request, richards, state)
     type(soil_water_solve_request_t), intent(in) :: request
