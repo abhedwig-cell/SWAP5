@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ29",
   "title": "Richards Fixed-Horizon Error-Bound Estimator Qualification",
@@ -18,12 +18,14 @@
     "contraction_ratio": "q_N = d_2N/d_N when both defects are above the numerical floor",
     "candidate_global_cap": "q_cap is derived only from the frozen calibration matrix as the maximum resolved q_N at and beyond a candidate minimum refinement depth Nmin",
     "two_trajectory_bound_target": "For x_2N, B_2N = q_cap/(1-q_cap) * d_N, conditional on the independently tested profile assumption that every future defect contracts by no more than q_cap.",
-    "qualification_test": "B_2N must upper-bound the observed max-head error of x_2N against a much finer same-horizon finite reference for every calibration and held-out case, while all future resolved q values also remain <= q_cap.",
+    "qualification_test": "B_2N must upper-bound the observed max-head error of x_2N against a much finer same-horizon finite reference for every resolved calibration and held-out case, while all future resolved q values also remain <= q_cap.",
+    "numerical_floor_branch": "If d_N is at or below the frozen machine floor, the case is not used to derive q_cap. At the candidate Nmin it passes only as floor-dominated when the observed x_2N-to-reference head error is also at or below that same floor; otherwise the candidate Nmin fails. No additive floor is silently inserted into B_2N.",
     "not_claimed": [
       "Nref is an exact analytical solution",
       "geometric contraction is a theorem for Richards flow",
       "q_cap is universal outside the frozen profile",
-      "B_2N is a scientific/application acceptance tolerance"
+      "B_2N is a scientific/application acceptance tolerance",
+      "floating-point floor is a scientific error tolerance"
     ]
   },
   "frozen_numerics": {
@@ -45,7 +47,7 @@
     "horizons_day": [0.125,0.25,0.5],
     "case_count": 54,
     "states_are_previously_observed": true,
-    "selection_rule": "For each candidate Nmin in [1,2,4,8,16,32,64], derive q_cap as the maximum resolved future contraction ratio over all calibration cases from Nmin onward. The first Nmin with finite q_cap<1 and conservative B_2N for every calibration case is the sole Gate B candidate. No rounding, safety factor or manually chosen margin may be added."
+    "selection_rule": "For each candidate Nmin in [1,2,4,8,16,32,64], derive q_cap as the maximum resolved future contraction ratio over all calibration cases from Nmin onward. The first Nmin with finite q_cap<1 and conservative B_2N for every resolved calibration case, plus the frozen floor-dominated rule for unresolved cases, is the sole Gate B candidate. No rounding, safety factor or manually chosen margin may be added."
   },
   "gate_B_held_out": {
     "role": "independent falsification of the frozen Gate A Nmin and q_cap",
@@ -60,8 +62,9 @@
       "all trajectories required for the test converge",
       "hard mass gate passes for every trajectory",
       "every resolved future q_N at and beyond frozen Nmin is <= frozen q_cap",
-      "B_2N computed only from d_N and frozen q_cap is >= observed max-head error of x_2N against N=2048 reference for every case",
-      "no held-out-dependent adjustment of Nmin, q_cap, matrix or formula"
+      "B_2N computed only from d_N and frozen q_cap is >= observed max-head error of x_2N against N=2048 reference for every resolved case",
+      "any d_N at numerical floor satisfies the separately frozen floor-dominated rule",
+      "no held-out-dependent adjustment of Nmin, q_cap, matrix, floor rule or formula"
     ]
   },
   "finite_reference_controls": {
