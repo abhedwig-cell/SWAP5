@@ -32,8 +32,9 @@ echo 'FMR20_G01_SOURCE_LOCK=PASS'
 
 git fetch --quiet --no-tags origin \
   qualification/f-mq23-fvq14-real-physics-runtime:refs/remotes/origin/qualification/f-mq23-fvq14-real-physics-runtime
-if git diff --name-only "$BASE_REF"...HEAD | grep -q '^src/'; then
-  git diff --name-only "$BASE_REF"...HEAD >&2
+git diff --name-only "$BASE_REF" HEAD > "$BUILD/changed.txt"
+if grep -q '^src/' "$BUILD/changed.txt"; then
+  cat "$BUILD/changed.txt" >&2
   fail 'readiness branch modifies production src'
 fi
 echo 'FMR20_G02_NO_PRODUCTION_SOURCE_CHANGE=PASS'
@@ -41,7 +42,9 @@ echo 'FMR20_G02_NO_PRODUCTION_SOURCE_CHANGE=PASS'
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
 build_run() {
-  local opt="$1" tag="$2" dir="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local dir="$BUILD/$tag"
   mkdir -p "$dir"
   gfortran "${COMMON[@]}" "$opt" -J "$dir" -I "$dir" \
     "$CORE" "$TEST" -o "$dir/fmr20_readiness"
