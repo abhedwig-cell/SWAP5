@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2B_CAPILLARY_RELAXATION_FRONT_SORT_MASS",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION_SOURCE_BOUND_2015_SECTION_3_3_AND_3_6",
+  "prerequisite": "QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES",
+  "source_contract": {
+    "doi": "10.1002/2015WR017126",
+    "scope": "infiltration-front and groundwater-front capillary relaxation only",
+    "infiltration_front_semantics": "sort z_j from maximum to minimum depth from left to right",
+    "groundwater_front_semantics": "sort H_j from maximum to minimum depth from left to right",
+    "physical_interpretation": "zero-dimensional internal pore-scale redistribution with no advection at or beyond the REV scale",
+    "mass_statement": "sorting changes no finite-volume water quantity because it is a permutation of equal-delta-theta front coordinates"
+  },
+  "candidate": {
+    "id": "EQUAL_DTHETA_FRONT_COORDINATE_STABLE_DESCENDING_SORT",
+    "theta_bin_counts": [16,64,200],
+    "front_types": ["INFILTRATION_Z","GROUNDWATER_H"],
+    "committed_representation": "one binary64 front coordinate per active equal-delta-theta bin",
+    "sort_scratch_owner": "worker",
+    "persistent_extra_state_bytes": 0,
+    "transaction_policy": "sort trial copy, validate, then commit; invalid/nonfinite trial leaves committed state unchanged"
+  },
+  "fixtures": {
+    "deterministic_patterns": ["already_sorted","reverse_sorted","single_shock","multi_shock","equal_value_plateaus","alternating_extremes"],
+    "deterministic_scrambled_cases_per_bin_count_and_front_type": 64,
+    "coordinate_domain_cm": [0.0,500.0]
+  },
+  "required_checks": [
+    "output is monotonically nonincreasing left to right",
+    "output binary64 multiset is exactly identical to input multiset",
+    "finite-volume storage before and after sorting closes within 64*binary64_epsilon scaled tolerance",
+    "no source/sink or boundary ledger changes during relaxation",
+    "already-sorted input remains bitwise identical",
+    "equal-value plateaus remain physically unchanged",
+    "nonfinite trial is rejected and committed coordinate bytes remain bitwise unchanged",
+    "no persistent scratch is introduced per column"
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_SOURCE_BOUND_INFILT_GW_FRONT_CAPILLARY_RELAXATION_SORT_MASS_READY_FOR_INFILTRATION_FRONT_CREATION_MASS_GATE",
+    "fail": "CAPILLARY_RELAXATION_FRONT_SORT_MASS_SUBGATE_FAILED"
+  },
+  "hard_nonclaims": [
+    "No falling-slug capillary-relaxation clip-and-move-left qualification.",
+    "No infiltration equation 18 trajectory qualification.",
+    "No groundwater equation 21 trajectory qualification.",
+    "No layered-soil interface relaxation qualification.",
+    "No explicit-diffusion qualification.",
+    "No hydraulic accuracy or MultiSWAP production admission."
+  ],
+  "hard_guards": [
+    "Do not generalize permutation conservation to unequal delta-theta bins without a separate weighted-volume proof.",
+    "Do not interpret sorting as vertical advection.",
+    "Falling-slug relaxation remains a separate algorithmic gate because the paper describes clipping and leftward transfer rather than a simple front-coordinate sort.",
+    "No clipping may discard water; the word clipping in the source is geometric redistribution, not numerical mass repair."
+  ],
+  "relevant_invariants": [4,5,7,13,20,23,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
