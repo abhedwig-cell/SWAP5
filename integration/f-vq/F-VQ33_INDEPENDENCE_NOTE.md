@@ -1,0 +1,1 @@
+F-VQ33 is an independent qualification branch. Owner test outputs are not imported as qualification results. The owner handoff is used only to lock candidate identity, required semantics and prohibited claims. Qualification evidence must be produced anew on this branch from the frozen disjoint matrix.
