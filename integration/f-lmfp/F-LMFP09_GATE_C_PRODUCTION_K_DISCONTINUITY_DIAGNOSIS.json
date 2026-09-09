@@ -39,26 +39,26 @@
     "osat": 0.529749,
     "alpha_per_cm": 0.016562,
     "n": 1.090671,
-    "m": 0.08313303869448997,
+    "m": 0.08313322716016103,
     "lambda": -4.493581,
     "ksatfit_cm_per_d": 2.245895,
     "relsat_shortcut_threshold": 0.999999,
-    "threshold_head_cm": -0.0015993631839145463,
-    "difference_from_failed_gate_c_midpoint_cm": 1.709015051614582e-13,
-    "mualem_k_immediately_below_threshold_cm_per_d": 0.8358527246036368,
-    "shortcut_k_immediately_above_threshold_cm_per_d": 2.245895,
-    "jump_factor": 2.686950536112952,
+    "threshold_head_cm": -0.0015993631837437272,
+    "absolute_difference_from_failed_gate_c_midpoint_cm": 8.239936510889834e-17,
+    "mualem_k_at_threshold_from_below_cm_per_d": 0.8358527246422537,
+    "shortcut_k_above_strict_threshold_cm_per_d": 2.245895,
+    "jump_factor": 2.686950623940655,
     "interpretation": "The failed Gate-C bisection midpoint coincides with the production conductivity shortcut threshold to floating-point scale. A continuous equal-flux root is therefore not guaranteed across this branch."
   },
   "catalog_characterization": {
-    "calculation": "For every Staring2018 row, solve production watcon(h) for relsat=0.999999 and compare the Mualem branch value just below the strict shortcut with ksatfit just above it.",
+    "calculation": "For every Staring2018 row, solve the production watcon(h) branch exactly by bisection for relsat=0.999999 and compare the Mualem conductivity at the threshold from below with ksatfit selected above the strict shortcut.",
     "classes_with_jump_factor_gt_1p10": 21,
     "classes_with_jump_factor_gt_1p50": 9,
     "classes_with_jump_factor_gt_2p00": 3,
     "largest": [
-      {"material": "O13", "threshold_head_cm": -0.0009331676140729162, "jump_factor": 3.143858533310346},
-      {"material": "B12", "threshold_head_cm": -0.0015993631839145463, "jump_factor": 2.686950536112952},
-      {"material": "B11", "threshold_head_cm": -0.0011805970137000002, "jump_factor": 2.232588203513069}
+      {"material": "O13", "threshold_head_cm": -0.0009331676141648816, "jump_factor": 3.1438601284435728},
+      {"material": "B12", "threshold_head_cm": -0.0015993631837437272, "jump_factor": 2.686950623940655},
+      {"material": "B11", "threshold_head_cm": -0.0011805970138127455, "jump_factor": 2.232589530663517}
     ]
   },
   "scope_and_nonclaims": {
