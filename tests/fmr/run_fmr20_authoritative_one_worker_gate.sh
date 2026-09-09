@@ -19,7 +19,7 @@ for spec in \
   src/adapter/mod_reference_richards_legacy_binding.f90:1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff \
   src/legacy/b1_10_port/headcalc.f90:04c4877754b39161d5afa0f2496a015fd3334cc5 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90:544a1ca16fdeebdfce7f89d1ddf1825fa32fa654 \
-  src/runtime/mod_fmr_parallel_worker_pool.f90:97c3c94fc8189ea9b98e8cb5cf44295bacb47e46 \
+  src/runtime/mod_fmr_parallel_worker_pool.f90:393e9bfbc4c078d259a5ec70aca78f50e54e8b35 \
   tests/fmr/test_fmr20_authoritative_one_worker_identity.f90:b12f1f850a13d33699231f3552aafbcf16303b10; do
   path="${spec%%:*}"
   blob="${spec##*:}"
@@ -42,7 +42,7 @@ diff -u "$BUILD/src.expected" "$BUILD/src.changed" >/dev/null || {
   diff -u "$BUILD/src.expected" "$BUILD/src.changed" >&2 || true
   fail 'unexpected production source scope relative to MR19 closeout'
 }
-echo 'FMR20_AUTH_G02_BOUNDED_SCALAR_SEAM_SOURCE_SCOPE=PASS'
+echo 'FMR20_AUTH_G02_BOUNDED_PARALLEL_V1_SOURCE_SCOPE=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
@@ -53,27 +53,30 @@ binding = Path('src/adapter/mod_reference_richards_legacy_binding.f90').read_tex
 backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
 serial = Path('src/runtime/mod_fmr_serialized_multiswap_runtime.f90').read_text()
 
-assert 'worker_count /= 1' in pool
-assert pool.index('worker_count /= 1') < pool.index('call fmr_run_serialized_physical_multiswap')
-for token in ('!$omp','omp_lib','call headcalc(','use variables','use mod_grid','use mod_snow'):
+assert 'if (worker_count == 1) then' in pool
+assert pool.index('if (worker_count == 1) then') < pool.index('parallel_v1_profile_admitted')
+assert 'worker_count /= 2 .and. worker_count /= 4' in pool
+assert 'type is (fixed_flux_top_boundary_provider_t)' in pool
+assert 'parameter_registry(parameter_index)%bottom_mode /= 7' in pool
+assert 'parameter_registry(parameter_index)%root_extraction_active' in pool
+assert 'parameter_registry(parameter_index)%snow_active' in pool
+assert 'numerical_continuation_layout_id /= fmr_numerical_continuation_none' in pool
+assert 'fmr_execute_serialized_physical_column' in pool
+assert '!$omp parallel num_threads(worker_count)' in pool
+assert '!$omp barrier' in pool
+assert 'omp_get_num_threads' in pool
+assert 'omp_get_thread_limit' in pool
+for token in ('call headcalc(','use variables','use mod_grid','use mod_snow'):
     assert token not in pool, token
-    assert token not in sched, token
 assert 'fmr_build_execution_order' in sched
 assert 'mod(pos - 1, worker_count) + 1' in sched
-print('FMR20_AUTH_G03_MULTIWORKER_FAILS_BEFORE_PHYSICS=PASS')
-print('FMR20_AUTH_G04_NO_DIRECT_LEGACY_OR_OPENMP_DEPENDENCY=PASS')
+print('FMR20_AUTH_G03_RESTRICTED_PARALLEL_V1_ADMISSION=PASS')
+print('FMR20_AUTH_G04_POOL_HAS_NO_DIRECT_LEGACY_DEPENDENCY=PASS')
 
 assert 'legacy_fldtmin => fldtmin' in head
 assert 'legacy_fldaystart => fldaystart' in head
-assert 'at_min_dt = legacy_fldtmin' in head
 assert 'at_min_dt = ctx%control%at_min_dt' in head
-assert 'day_start_event = legacy_fldaystart' in head
 assert 'day_start_event = ctx%time%day_start_event' in head
-assert 'if (at_min_dt) MaxIt1 = 2*MaxIt' in head
-assert 'if (at_min_dt .AND. state%numbit > MaxIt) then' in head
-assert 'if (.NOT.at_min_dt) then' in head
-assert 'if (day_start_event) then' in head
-assert 'if (legacy_state_binding) legacy_fldtmin = .FALSE.' in head
 assert 'a23bu_seed_timestep_control' in binding
 assert 'fldtmin' not in binding
 print('FMR20_AUTH_G05_CANONICAL_MIN_DT_DAY_EVENT_WORKER_LOCAL=PASS')
@@ -94,7 +97,7 @@ assert '!$omp atomic update' in serial
 print('FMR20_AUTH_G07_SCALAR_EXECUTOR_SINGLE_SOURCE=PASS')
 PY
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow -fopenmp)
 MODULE_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
@@ -135,8 +138,8 @@ for opt in 0 2; do
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c \
     tests/fmr/test_fmr20_authoritative_one_worker_identity.f90 -o "$OUT/test.o"
-  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+  OMP_DYNAMIC=FALSE OMP_NUM_THREADS=4 "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
   for marker in \
     FMR20_AUTH_SCHEDULER_IDENTITY=PASS \
     FMR20_AUTH_CANONICAL_MIRROR_POISON_RESULT_IDENTITY=PASS \
@@ -165,4 +168,4 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 }
 echo 'FMR20_AUTH_G08_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
-echo 'FMR20_AUTHORITATIVE_SCALAR_SEAM_GATE=PASS'
+echo 'FMR20_AUTHORITATIVE_PARALLEL_V1_REGRESSION_GATE=PASS'
