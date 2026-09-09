@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2A_R2_KSATEXM_HYBRID_S_U_CHARACTERIZATION",
+  "status": "REPRESENTATION_FROZEN_BEFORE_R2_CHARACTERIZATION",
+  "production_implementation": false,
+  "motivation": "R1 proved that exact seam alignment alone is insufficient. SWAP 4.3.1 defines the KSATEXM extension exactly linearly in relative saturation S, so R2 uses S itself as the wet-end table coordinate while retaining the already-qualified log-head coordinate on the dry side.",
+  "unchanged_physics": {
+    "conductivity_law": "source-bound SWAP 4.3.1 KSATEXM extension",
+    "h_thr_cm": -2.0,
+    "h_enpr_enabled": false,
+    "macropore_enabled": false,
+    "head_envelope_cm": [-10000.0, -1.0],
+    "face_length_cm": 10.0,
+    "homogeneous_faces_only": true
+  },
+  "representation": {
+    "node_count_per_axis": 241,
+    "seam_node_index_zero_based": 18,
+    "wet_interval_count": 18,
+    "dry_interval_count": 222,
+    "wet_region": {
+      "physical_range": "S from S(h=-1 cm) down to S_thr=S(h=-2 cm)",
+      "node_rule": "S_i=S_max-(i/18)*(S_max-S_thr), i=0..18",
+      "coordinate_meaning": "uniform relative saturation S, matching the exact variable of the linear KSATEXM conductivity extension",
+      "head_reconstruction": "qualified stable S-to-u mapping followed by h=-10^u, with exact endpoints h=-1 and h=-2"
+    },
+    "dry_region": {
+      "physical_range_cm": [-10000.0, -2.0],
+      "node_rule": "u_i=log10(2)+(i-18)*(4-log10(2))/222, i=18..240",
+      "coordinate_meaning": "uniform u=log10(-h/cm)"
+    },
+    "exact_shared_seam": "index 18 is exactly S_thr and h=-2 cm for both coordinate branches",
+    "stored_quantity": "IEEE754_float32 log mobility",
+    "interpolation": "bilinear in log mobility with float64 arithmetic in the local hybrid-axis cell",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(interpolated_log_mobility), with exact equal-head q=K(h)",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "persistent_axis_array_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "runtime_locator": {
+    "wet_state": "if S >= S_thr: x=18*(S_max-S)/(S_max-S_thr)",
+    "seam_state": "if S == S_thr: x=18 exactly",
+    "dry_state": "if S < S_thr: compute qualified u(S), then x=18+222*(u-log10(2))/(4-log10(2))",
+    "domain": "exact S domain corresponding to h=[-10000,-1] cm; no tolerance-based physical extension"
+  },
+  "characterization": {
+    "materials": ["B10", "O12", "O13", "B05", "O14", "O05"],
+    "probe_set": "reuse frozen C2A development characterization probes; no holdout has been accessed",
+    "candidate_count": 1,
+    "no_interval_count_tuning": true,
+    "reason_for_18_wet_intervals": "retain the same wet/dry interval budget and total N as R1; R2 changes only the wet coordinate variable, not density or memory"
+  },
+  "criteria": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "oracle": {
+    "same_source_bound_ksatexm_law": true,
+    "same_independent_steady_darcy_equation": true,
+    "quadrature_split_at_h_minus_2_cm": true,
+    "no_table_interpolation_inside_oracle": true
+  },
+  "exit_rule": {
+    "pass_all_six": "freeze R2 and create a fresh 36-material KSATEXM holdout before any C2A catalog qualification claim",
+    "any_fail": "reject R2 fail-closed. Only then investigate whether the wet region requires additional node density, a different stored quantity, or a separate analytic correction."
+  },
+  "scope_guard": "No h>-1 cm, no non-zero H_ENPR, no saturation switching, no heterogeneous profiles, no timestep qualification, no bottom boundary, no groundwater, no MultiSWAP production claim, no J1 response tangent and no FullRichards equivalence."
+}
