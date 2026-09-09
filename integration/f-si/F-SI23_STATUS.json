@@ -1,11 +1,11 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "workstream": "F-SI",
   "work_unit": "F-SI23",
   "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
   "branch": "work/f-si23-richards-embedded-temporal-estimator",
-  "status": "GATE_C2_POSITIVE_PHYSICAL_TRANSFER_WITH_STRONG_STATE_DEPENDENCE_READY_FOR_TRANSACTION_LOCAL_REFINEMENT_CHARACTERIZATION",
-  "phase": "RAW_OBSERVER_FAIL_SAFE_TRANSFER_SUPPORTED_PRODUCTION_EFFICIENCY_OPEN",
+  "status": "COMPLETE_PARTIAL_OWNER_FEASIBILITY_C3_FAIL_CLOSED_REFINEMENT_COMPARATOR_UNAVAILABLE",
+  "phase": "OBSERVER_MECHANICS_QUALIFIED_PRODUCTION_ERROR_CERTIFICATE_NOT_QUALIFIED",
   "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
   "gate_A_mapping": "integration/f-si/F-SI23_GATE_A_OWNER_MAPPING.json",
   "gate_A_reconciliation": "integration/f-si/F-SI23_GATE_A_LITERATURE_RECONCILIATION.json",
@@ -16,6 +16,9 @@
   "gate_C1B_evidence": "integration/f-si/F-SI23_GATE_C1B_EIGENMODE_EVIDENCE.json",
   "gate_C2_plan": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_PLAN.json",
   "gate_C2_evidence": "integration/f-si/F-SI23_GATE_C2_PHYSICAL_TRANSFER_EVIDENCE.json",
+  "gate_C3_plan": "integration/f-si/F-SI23_GATE_C3_TRANSACTION_LOCAL_REFINEMENT_PLAN.json",
+  "gate_C3_numeric_failure": "integration/f-si/F-SI23_GATE_C3_ATTEMPT1_NUMERIC_FAILURE.json",
+  "gate_C3_failure_attribution": "integration/f-si/F-SI23_GATE_C3_FAILURE_ATTRIBUTION.json",
   "gate_A_contract_run": 34320565144,
   "gate_B_qualified_commit": "beee6dfd9b0f56274a1ba64ef7ce9f0b0a29e7b6",
   "gate_B_workflow_run": 34322065842,
@@ -24,18 +27,23 @@
   "gate_C2_tested_commit": "20b6e33a10150b4d81ceaab1f30e11805108ecfc",
   "gate_C2_workflow_run": 34323642853,
   "gate_C2_workflow_job": 102375784027,
+  "gate_C3_tested_commit": "e2bc598c2161e88726f7e39d0c7245423eab9ac9",
+  "gate_C3_workflow_run": 34324752170,
+  "gate_C3_workflow_job": 102379335974,
+  "gate_C3_attribution_run": 34325020448,
+  "gate_C3_attribution_job": 102380179435,
   "current_candidate": {
     "name": "decision_only_backward_euler_pressure_head_error_observer",
     "formula": "e_h=0.5*dt*(hdot_np1-hdot_n)",
     "pressure_head_formula_source_bound": true,
+    "restricted_unsaturated_right_derivative_bootstrap_qualified": true,
     "exact_linear_hydraulic_eigenmode_relation_qualified": true,
     "nonlinear_B110_finite_reference_transfer_supported": true,
-    "nonlinear_B110_negative_transfer_cases": 0,
+    "nonlinear_B110_negative_transfer_cases_in_C2": 0,
+    "transaction_local_asymptotic_characterization_complete": false,
     "true_error_upper_bound_qualified": false,
     "raw_magnitude_production_efficiency_supported": false,
     "single_global_multiplicative_calibration_supported": false,
-    "principal_mass_conservative_BE_candidate_changed": false,
-    "Thomas_Gladwell_corrected_state_used": false,
     "production_allowed": false
   },
   "bootstrap_reconstruction": {
@@ -64,6 +72,46 @@
     "raw_observer_extremely_conservative_at_0p25_day": true,
     "N512_exact_reference": false
   },
+  "transaction_local_refinement": {
+    "frozen_case_count": 15,
+    "frozen_attempts_per_case": 10,
+    "full_matrix_completed": false,
+    "case_1_all_attempts_completed": true,
+    "first_failing_case": 2,
+    "first_failing_h0_cm": -25.0,
+    "first_failing_jump_cm": -0.01,
+    "first_uncompleted_halving": 9,
+    "first_uncompleted_attempt_dt_day": 0.00048828125,
+    "failing_required_comparator": "N8",
+    "failing_N8_substep_index": 5,
+    "failing_N8_substep_dt_day": 0.00006103515625,
+    "solver_status": "SW_SOLVE_RETRY_ADVISED",
+    "nonlinear_iterations": 8,
+    "backtracking_attempts": 20,
+    "N1_completed_at_failing_attempt": true,
+    "N4_completed_at_failing_attempt": true,
+    "N4_relabelled_as_reference": false,
+    "pre_failure_case2_R8_sequence": [1659.701131823196,1078.855446494343,1235.668718228781,349.6271695173415,91.18263712667155,43.856647811791596,25.85740951160698,9.957929752704136,4.405910150581233],
+    "pre_failure_sequence_monotone": false,
+    "late_sequence_strongly_decreasing": true,
+    "single_global_dt_convergence_cliff_supported": false,
+    "state_trajectory_dependent_convergence_ceiling_exposed": true
+  },
+  "qualified_findings": [
+    "The restricted unsaturated right-sided bootstrap is source-bound and test-only qualified.",
+    "The derivative-difference observer has the predeclared exact relation on the manufactured linear hydraulic eigenmode.",
+    "Across the C2 nonlinear B1.10 matrix the observer did not undercut the finite N512 endpoint difference in any of 15 cases, while remaining strongly state dependent and highly conservative.",
+    "Transaction-local retry refinement substantially reduces the raw observer ratio in the observed late sequence, supporting a large-dt stiffness component.",
+    "The deep finite-comparator trajectory itself becomes unavailable under frozen controls and its convergence ceiling depends on the evolving trajectory state, not only on nominal dt."
+  ],
+  "not_qualified": [
+    "A true or conservative upper bound on temporal pressure-head error for general nonlinear B1.10 Richards steps.",
+    "A complete transaction-local asymptotic relation over the frozen C3 matrix.",
+    "A universal scale factor, stiffness correction, scientific temporal tolerance or F-KT09 normalization.",
+    "N8, N512 or any other finite backward-Euler endpoint as exact truth.",
+    "A bounded production temporal certificate or production retry policy based on the observer.",
+    "General saturated/DAE derivative bootstrap semantics."
+  ],
   "hard_holds": {
     "production_source_modified": false,
     "physics_changed": false,
@@ -73,9 +121,28 @@
     "solver_iteration_budget_changed": false,
     "nonlinear_tolerance_changed": false,
     "transactional_derivative_history_implemented": false,
+    "N4_substitute_reference_admitted_after_C3_failure": false,
     "F_GC02_release": false,
     "F_PE_release": false,
     "F_VQ30_started": false
   },
-  "next_action": "Freeze a transaction-local dt-refinement characterization from one committed state. For each retry-sized dt, recompute the right-sided bootstrap and e_h against a finite same-endpoint refined trajectory for that shortened endpoint. Determine whether EOBS and its finite-reference ratio approach the exact-eigenmode asymptotic regime predictably as dt shrinks. Select no threshold, normalization or global scale, and do not start F-VQ30 yet."
+  "invariant_assessment": {
+    "7_transactional_timesteps": "PASS_UNCHANGED_NO_PRODUCTION_MUTATION",
+    "8_cheap_recompute_and_warm_start": "SUPPORTED_AS_REQUIREMENT_BUT_NO_NEW_PRODUCTION_PATH_ADMITTED",
+    "9_generic_time": "PASS_C3_USES_GENERIC_SUBDAY_RETRY_WINDOWS",
+    "13_mass_conservation": "PASS_FOR_ALL_COMPLETED_ROWS_EXTERNAL_RESIDUAL_ZERO_NO_RELAXATION",
+    "15_limit_coupling_cost": "PASS_NO_DEEP_REFINEMENT_CERTIFICATE_ADMITTED",
+    "23_physics_solver_policy_separation": "PASS_NO_PHYSICS_OR_POLICY_CHANGE",
+    "24_predictable_compute": "BLOCKER_EXPOSED_STATE_DEPENDENT_REFERENCE_TRAJECTORY_CONVERGENCE_CEILING",
+    "25_reference_mode": "PASS_PRESERVED",
+    "26_diagnostics": "PASS_QUALIFICATION_FAILURE_CONTEXT_PERSISTED",
+    "29_no_silent_dependencies": "PASS"
+  },
+  "release_decision": {
+    "F_SI23_observer_mechanics": "QUALIFIED_WITH_RESTRICTED_SCOPE",
+    "F_SI23_production_error_certificate": "NO_GO",
+    "scientific_temporal_tolerance": "NOT_SELECTED",
+    "F_VQ30_entry": "NOT_READY"
+  },
+  "next_action": "Do not continue C3 by weakening N8 to N4, enlarging nonlinear iteration/backtracking budgets, or changing the frozen retry matrix. If a production-compatible temporal indicator is still required, open a separate owner workunit for a bounded embedded construction that uses only one accepted candidate plus at most one cheap companion solve or already-available solver/Jacobian information. Explicitly reconcile that design with F-VQ28's negative raw retry/step-doubling translation evidence before any new qualification workunit is opened."
 }
