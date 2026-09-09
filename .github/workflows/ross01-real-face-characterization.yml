@@ -1,0 +1,41 @@
+name: F-ROSS01 Real Face Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-real-face-characterization.yml
+      - experiments/ross/run_ross01_face_table_characterization.py
+      - integration/f-ross/F-ROSS01_REAL_FACE_ORACLE_CONTRACT.json
+      - integration/f-ross/F-ROSS01_REAL_FACE_TABLE_DESIGN.json
+  workflow_dispatch:
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          python3 -m pip --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy scipy
+      - name: Run real face-table characterization
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="ross01-real-face-characterization"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_face_table_characterization.py \
+            "$out/F-ROSS01_REAL_FACE_TABLE_CHARACTERIZATION_RESULT.json" \
+            | tee "$out/F-ROSS01_REAL_FACE_TABLE_CHARACTERIZATION_STDOUT.json"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-real-face-characterization
+          path: ross01-real-face-characterization/
