@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "HYDRAULIC_STATE_FIXED_HORIZON_REFINEMENT",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "production_src_diff_from_fvq27": "EMPTY_PASS"
+  },
+  "workflow": {
+    "run": 34302303622,
+    "job": 102311614209,
+    "head": "25aca964d05549111304f1b568573cafb8ec3bc0",
+    "conclusion": "success",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "matrix": {
+    "soil_and_geometry": "same four-node F-GC02/F-SI20 homogeneous fixture",
+    "total_horizon_day": 0.25,
+    "prescribed_bottom_head_jump_cm": 0.01,
+    "initial_uniform_pressure_heads_cm": [-25.0,-75.0,-250.0],
+    "trajectory_steps": [1,2,4,8,16,32,64,128,256,512],
+    "bottom_mode": 5,
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12,
+    "reference_warning": "N=512 is the finest tested trajectory, not an exact solution."
+  },
+  "all_cases": {
+    "all_direct_trajectories_converged": true,
+    "all_external_mass_residuals_within_hard_gate": true,
+    "maximum_external_mass_residual": 0.0,
+    "exact_fgc02_outer_dhead_cm": 2.5524294842682593e-4,
+    "exact_fgc02_dhead_source_lock": "PASS"
+  },
+  "states": [
+    {
+      "initial_head_cm": -25.0,
+      "initial_conductivity_cm_per_day": 0.8384140685530811,
+      "successive_dhead_cm": [
+        1.122848117436348e-3,
+        2.4052081332825992e-5,
+        1.4192103492405295e-8,
+        1.0061285138363019e-11,
+        7.460698725481052e-14,
+        0.0,
+        3.552713678800501e-15,
+        3.552713678800501e-15,
+        1.0658141036401503e-14
+      ],
+      "coarse_dhead_over_remaining_endpoint_error": {
+        "N1": 46.656489001611135,
+        "N2": 1693.9948862818887,
+        "N4": 1403.1338250790307,
+        "N8": 166.58823529411765,
+        "N16": 4.2
+      },
+      "machine_floor_onset": "approximately N=16 to N=32",
+      "interpretation": "The physical refinement is extremely rapid. Later nonmonotonic zero and O(1e-15 cm) differences are floating-point floor behavior, not evidence of physical nonconvergence. The coarse raw defect is strongly conservative before the machine floor."
+    },
+    {
+      "initial_head_cm": -75.0,
+      "initial_conductivity_cm_per_day": 0.1626392064213146,
+      "successive_dhead_cm": [
+        2.5524294842682593e-4,
+        1.0294296740198661e-4,
+        2.761486334179608e-5,
+        5.811774798303304e-6,
+        1.256782752534491e-6,
+        3.3556280243374204e-7,
+        1.1299677282750054e-7,
+        4.516424212397396e-8,
+        2.0040289427925018e-8
+      ],
+      "dhead_over_remaining_endpoint_error": {
+        "N1": 1.8679470116091126,
+        "N2": 2.924750016332384,
+        "N4": 3.6420063126616795,
+        "N8": 3.28247443303742,
+        "N16": 2.4462252926353005,
+        "N32": 1.883054692570106,
+        "N64": 1.7329588931646833,
+        "N128": 2.2536721481197834
+      },
+      "interpretation": "The raw pressure-head defect decreases monotonically over all physically resolved tested levels and is conservative relative to the remaining N=512 endpoint error on this state."
+    },
+    {
+      "initial_head_cm": -250.0,
+      "initial_conductivity_cm_per_day": 0.0087839942407127,
+      "successive_dhead_cm": [
+        7.672750824099239e-4,
+        5.18446145690632e-4,
+        3.2682103324077616e-4,
+        1.8373066856725018e-4,
+        9.700764118747429e-5,
+        4.975264258177958e-5,
+        2.5181734599755146e-5,
+        1.2666326966837005e-5,
+        6.351917193114787e-6
+      ],
+      "dhead_over_remaining_endpoint_error": {
+        "N1": 0.6289355971350141,
+        "N2": 0.7390410599491709,
+        "N4": 0.8722416426909915,
+        "N8": 0.9621408461322459,
+        "N16": 1.0325166004137745,
+        "N32": 1.125625938696932,
+        "N64": 1.324083042996277,
+        "N128": 1.994095102588361
+      },
+      "first_tested_fixed_horizon_level_where_defect_exceeds_remaining_endpoint_error": 16,
+      "interpretation": "The raw head defect is pre-asymptotically under-conservative through N=8 and becomes conservative only after additional fixed-horizon refinement. This supports a state-dependent pre-asymptotic explanation rather than a fundamentally invalid observable."
+    }
+  ],
+  "scientific_findings": {
+    "raw_headnorm_state_dependence_is_material": true,
+    "dry_state_preasymptotic_underestimation_observed": true,
+    "dry_state_eventually_enters_conservative_fixed_horizon_regime": true,
+    "wet_state_machine_floor_contamination_after_rapid_convergence": true,
+    "single_global_defect_to_endpoint_error_factor_qualified": false,
+    "single_global_absolute_head_tolerance_qualified": false,
+    "current_fgc02_retry_budget_proven_to_reach_dry_conservative_regime": false,
+    "reason_retry_equivalence_not_proven": "Transaction retries shorten the current attempted endpoint from one committed T0 state, whereas N=16 here denotes a composed sixteen-substep trajectory over the full fixed horizon. These are not interchangeable semantics."
+  },
+  "hard_constraints": {
+    "production_source_modified": false,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
+    "normalization_selected": false,
+    "mass_requirement_changed": false,
+    "solver_policy_changed_in_production": false,
+    "fkt_transaction_semantics_changed": false,
+    "generic_time_preserved": true,
+    "reference_mode_preserved": true
+  },
+  "decision_class": "B_STATE_AWARE_ESTIMATOR_OR_BOUNDED_REFINEMENT_POLICY_REQUIRED",
+  "next_evidence": "Characterize physically motivated hydraulic-state scaling variables, beginning with constitutive capacity and conductivity at the tested initial states and the resulting characteristic diffusion timescale over the fixed geometry. Test explanatory correlation only. Do not select a normalization or production tolerance from three states alone."
+}
