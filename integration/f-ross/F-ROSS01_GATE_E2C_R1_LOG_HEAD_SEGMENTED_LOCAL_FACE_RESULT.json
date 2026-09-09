@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R1_DETERMINISTIC_LOG_HEAD_SEGMENTED_LOCAL_FACE_SOLVE",
+  "contract": "F-ROSS01_GATE_E2C_R1_LOG_HEAD_SEGMENTED_LOCAL_FACE_PRECOMMIT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34383168715,
+    "head": "6956a9678a410f4972e157f75450a31a7f99beab",
+    "conclusion": "failure_expected_from_scientific_gate",
+    "artifact_id": 10116677422,
+    "artifact_digest": "sha256:16400d3cc39e378f2a33b685d79abfa10e69d2b21905136248a3d4413211754a"
+  },
+  "candidate": "LOG_HEAD_QUARTER_DECADE_GL8_SEGMENTS_PLUS_64_BISECTION",
+  "material_count": 4,
+  "material_pass_count_as_executed": 0,
+  "total_bracket_failures": 196,
+  "total_nonfinite_count": 0,
+  "precommitted_max_constitutive_K_evaluations": 530,
+  "observed_reported_max_constitutive_K_evaluations": 530,
+  "max_root_residual_evaluations": 66,
+  "max_hybrid_metric_on_valid_bracketed_probes": 0.0009178403824106951,
+  "max_p99_hybrid_metric_on_valid_bracketed_probes": 0.0003686648913590133,
+  "max_abs_error_over_ksatfit_on_valid_bracketed_probes": 0.0002902687720364049,
+  "materials": {
+    "B12": {"valid_probe_count":537,"probe_count":622,"bracket_failure_count":85,"max_hybrid_metric":0.0009178403824106951,"p99_hybrid_metric":0.00031833807365439117,"max_abs_error_over_ksatfit":0.00028614096647185306},
+    "O13": {"valid_probe_count":511,"probe_count":622,"bracket_failure_count":111,"max_hybrid_metric":0.0007879906828886458,"p99_hybrid_metric":0.0003686648913590133,"max_abs_error_over_ksatfit":0.0002902687720364049},
+    "B01": {"valid_probe_count":621,"probe_count":621,"bracket_failure_count":0,"max_hybrid_metric":8.39948175097701e-09,"p99_hybrid_metric":8.589124351691839e-11,"max_abs_error_over_ksatfit":1.5218548751151048e-08},
+    "O14": {"valid_probe_count":621,"probe_count":621,"bracket_failure_count":0,"max_hybrid_metric":2.031244786148673e-07,"p99_hybrid_metric":1.882946363578257e-10,"max_abs_error_over_ksatfit":1.4172355193417127e-06}
+  },
+  "harness_discrepancy": {
+    "present": true,
+    "description": "The reused E2C run_material harness still asserted max_constitutive_K_evaluations <= 132 although the E2C-R1 precommit explicitly allowed <= 530. All four materials were therefore additionally marked failed on a stale harness bound even though observed 530 exactly equals the R1 precommit bound.",
+    "qualification_effect": "NONE_ON_GATE_DECISION_BECAUSE_B12_AND_O13_HAVE_REAL_PRECOMMITTED_BRACKET_FAILURES",
+    "repair_rule": "Future follow-up harness must bind the precommitted R1/R2 cost bound explicitly; R1 itself remains FAIL."
+  },
+  "interpretation": [
+    "Log-head segmentation removes the dominant accuracy failure seen in E2C for every successfully bracketed probe.",
+    "The valid-probe B12 and O13 accuracy metrics are all inside the frozen E2C-R1 thresholds.",
+    "B12 and O13 still have 85 and 111 bracket failures respectively, so the all-probe fail-closed gate is not qualified.",
+    "The remaining problem is localized to near-endpoint root bracketing/resolution when the physical root lies extremely close to the endpoint conductivity, not to broad WET_DRY path quadrature accuracy.",
+    "The stale 132-evaluation harness assertion is recorded as a test-harness defect, not as scientific negative evidence."
+  ],
+  "pass": false,
+  "decision": "SEGMENTED_LOCAL_FACE_SOLVE_NOT_QUALIFIED_NEAR_SATURATION_FALLBACK_RESEARCH_REQUIRED",
+  "hard_guards": [
+    "R1 remains FAIL despite the strong conditional accuracy evidence.",
+    "Do not weaken the zero-bracket-failure requirement.",
+    "Do not retune quarter-decade segmentation, GL8 order or acceptance thresholds inside R1.",
+    "A follow-up may change endpoint quadrature/root bracket treatment under a new frozen contract.",
+    "The near-saturation table line remains closed."
+  ],
+  "next_research_direction": "E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_SOLVE",
+  "status": "FAILED_ON_ENDPOINT_BRACKET_COMPLETENESS_WITH_ACCURACY_PROMISING_ON_VALID_PROBES"
+}
