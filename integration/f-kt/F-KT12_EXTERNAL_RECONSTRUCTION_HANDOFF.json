@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "source_work_unit": "F-KT12",
+  "source_branch": "work/f-kt12-generic-committed-state-restore",
+  "qualified_typed_restore_head": "eb7de82da18864cc4ed4d2e9a253499613fbe3b9",
+  "source_status_commit": "c3c883515b3029f4ce7eff068a40d861afde5798",
+  "handoff_title": "Trusted External Reconstruction and True Process-Boundary Restart Qualification",
+  "identifier": "NOT_ALLOCATED",
+  "problem": "F-KT12 qualifies opaque typed committed-state export and restore inside a live process, but the opaque carrier can only be constructed from a live ready kernel_committed_state_t. After total process loss there is no qualified adapter-facing path that reconstructs the carrier from an externally persisted representation.",
+  "why_this_is_separate": [
+    "F-KT12 contract explicitly keeps serialization adapters out of scope",
+    "kernel must remain free of filesystem, path, parser and byte-format knowledge",
+    "generic external reconstruction needs a trust boundary and physical-state codec/layout ownership that belong outside the numerical kernel",
+    "adding a public raw revision or lineage constructor to F-KT12 would violate the logical integrity requirement"
+  ],
+  "required_architecture": {
+    "kernel": [
+      "retain opaque committed-state ownership",
+      "retain no public raw revision setter",
+      "retain no public raw lineage setter",
+      "retain schema/layout/time validation",
+      "retain committed-boundary-only restore semantics",
+      "remain I/O-free"
+    ],
+    "runtime_or_adapter": [
+      "own external representation and serialization format",
+      "own physical-state codec registry keyed by qualified template/layout identity",
+      "validate schema version before reconstruction",
+      "validate layout/template identity before physical-state decoding",
+      "validate lineage, revision and committed-time metadata as one provenance record rather than independent setters",
+      "fail closed on missing, partial, duplicate or incompatible decoded state",
+      "do not persist forcing, solver scratch, Jacobians, Newton vectors or worker warm-start state",
+      "do not duplicate immutable parameter objects when a stable parameter/template reference is sufficient"
+    ],
+    "trust_model": {
+      "cryptographic_authenticity_required": false,
+      "logical_integrity_required": true,
+      "ordinary_API_must_not_offer_revision_assignment": true,
+      "adapter_is_explicit_trusted_boundary": true,
+      "note": "Without cryptographic authenticity, a kernel cannot distinguish a maliciously forged externally decoded revision from a legitimately persisted one. The intended requirement is therefore API and provenance integrity: only the trusted persistence adapter may perform reconstruction, and ordinary runtime callers must not receive a revision/lineage mutation API."
+    }
+  },
+  "recommended_process_boundary_test": {
+    "producer_executable": "construct deterministic committed state, advance T0->T1, export through qualified F-KT12 typed seam, serialize only in adapter layer, then exit",
+    "artifact": "adapter-owned versioned test artifact outside kernel source and APIs",
+    "consumer_executable": "start as a new process, decode and validate artifact through trusted adapter, reconstruct generic committed state, continue T1->T2",
+    "reference_executable": "continuous T0->T1->T2",
+    "expected": "exact deterministic endpoint identity and exact lineage/revision/time continuation",
+    "important": "The producer and consumer must be separate OS processes for the true crash/process-restart claim; simply deallocating an object inside one process is already covered by F-KT12 and is insufficient."
+  },
+  "required_gates": [
+    "exact continuous versus two-process split-run endpoint physical identity",
+    "stable lineage identity across processes",
+    "committed revision continuation across processes",
+    "committed time continuation across processes",
+    "next checkpoint origin revision exact",
+    "next candidate origin revision exact",
+    "pre-restart stale provenance remains stale where such provenance is deliberately persisted for the test",
+    "complete water mass ledger with no initial-storage double count",
+    "restore/reconstruction creates zero physical transfer",
+    "wrong schema fails closed",
+    "wrong template/layout fails closed",
+    "unknown physical-state codec fails closed",
+    "truncated or incomplete external representation fails closed",
+    "duplicate or inconsistent provenance fields fail closed",
+    "request, forcing and immutable parameter references remain nonmutated",
+    "O0/O2 identity for kernel continuation",
+    "F-KT12 gate remains green"
+  ],
+  "multiswap_requirements": [
+    "carrier remains compact per logical column",
+    "template/layout identity remains external to mutable physical state",
+    "shared immutable parameters are referenced rather than copied per column",
+    "optional continuation state is serialized only for active features",
+    "batch or pooled serialization may be added later without changing the per-column logical restore contract"
+  ],
+  "dependent_claims_unblocked_only_after_pass": [
+    "F-WOF true crop-window process restart",
+    "MultiSWAP checkpoint/restart",
+    "long-running standalone crash recovery",
+    "operational restart adapters"
+  ],
+  "do_not_do": [
+    "put file paths or file units in kernel",
+    "put JSON or binary parsing in kernel",
+    "add a general revision setter",
+    "add a general lineage setter",
+    "persist worker scratch",
+    "claim mid-transaction restart",
+    "claim arbitrary historical rollback",
+    "silently reinterpret incompatible schema or layout"
+  ],
+  "recommended_exit_if_qualified": "QUALIFIED_TRUSTED_EXTERNAL_RECONSTRUCTION_AND_TRUE_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_DEPENDENT_RUNTIME_QUALIFICATION"
+}
