@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gate": "G_OWNER_REPLAY",
+  "status": "PASS_TRANSACTIONAL_FROZEN_REPLAY",
+  "tested_head": "ad3407bea9230e20772235696d4f79919bc9f077",
+  "workflow": {
+    "name": "F-KT10 transactional F-VQ30 replay",
+    "run_id": 34346022633,
+    "job_id": 102447684199,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "gfortran": "13.3.0"
+  },
+  "source_lock": {
+    "frozen_plan": "integration/f-kt/F-KT10_GATE_G_TRANSACTIONAL_REPLAY_PLAN.json",
+    "F_VQ30_matrix_cases": 16,
+    "F_VQ30_expected_B_inf_changed": false,
+    "F_SI25_formula_changed": false,
+    "empirical_tuning": false,
+    "scientific_tolerance_selected": false,
+    "F_KT09_certificate_population": false
+  },
+  "results": {
+    "matrix_lock": "PASS",
+    "exact_linear_replay": "PASS",
+    "optional_seed_source_guard": "PASS",
+    "certificate_nonpromotion_source_guard": "PASS",
+    "reference_tridag_source": "PASS_SWAP_4_3_1_THOMAS_TEST_ONLY_CONTROL",
+    "O0_cases_pass": 16,
+    "O2_cases_pass": 16,
+    "O0_O2_output_identity": "PASS",
+    "transactional_frozen_cases": 16,
+    "max_B_inf_abs_diff": 0.0,
+    "max_step_mass_residual": 0.0,
+    "hard_mass_tolerance": 1e-12,
+    "additional_full_nonlinear_trajectories": 0,
+    "additional_defect_tridiagonal_solves": 1,
+    "headcalc_calls_per_frozen_case": 1,
+    "outer_transaction_result": "FAIL_CLOSED_TEMPORAL_CERTIFICATE_UNAVAILABLE_AS_REQUIRED",
+    "committed_state_after_rejection": "UNCHANGED_PHYSICAL_AND_CONTINUATION_HISTORY"
+  },
+  "cross_stream_same_head": {
+    "F_SI25_owner_replay_workflow_run": 34346022509,
+    "F_SI25_owner_replay": "PASS",
+    "F_MR06_optional_state_compat": "PASS",
+    "F_KT10_real_Richards_history_run": 34346022492,
+    "F_KT10_real_Richards_history": "PASS",
+    "F_KT10_compile_and_source_guard_run": 34346022511,
+    "F_KT10_compile_and_source_guards": "PASS"
+  },
+  "seed_scope": {
+    "default_without_seed": "history unavailable",
+    "valid_seed": "finite correctly-sized continuation vector embedded in committed transaction state",
+    "invalid_seed": "fail closed before committed-state initialization",
+    "arbitrary_restart_files_qualified": false,
+    "forcing_discontinuity_continuation_qualified": false
+  },
+  "hard_nonclaims": [
+    "B_inf is not a qualified general nonlinear true-error upper bound.",
+    "No scientific temporal normalization or tolerance is selected.",
+    "B_inf is not admitted as an F-KT09 dimensionless production certificate.",
+    "No production temporal acceptance or retry policy is qualified.",
+    "The optional seed does not qualify arbitrary restart files or forcing-discontinuity continuity provenance.",
+    "No F-GC02, groundwater-coupling or F-PE release follows."
+  ]
+}
