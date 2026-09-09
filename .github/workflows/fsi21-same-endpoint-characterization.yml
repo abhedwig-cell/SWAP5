@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   characterize:
@@ -22,4 +22,20 @@ jobs:
           sudo apt-get install -y gfortran
           gfortran --version
       - name: Run F-SI21 same-endpoint characterization
-        run: bash tests/fsi/run_fsi21_same_endpoint_characterization.sh
+        run: |
+          bash tests/fsi/run_fsi21_same_endpoint_characterization.sh | tee /tmp/fsi21-characterization.log
+          python3 tests/fsi/fsi21_emit_characterization_evidence.py \
+            /tmp/fsi21-characterization.log \
+            integration/f-si/F-SI21_CHARACTERIZATION_EVIDENCE.json
+          test -s integration/f-si/F-SI21_CHARACTERIZATION_EVIDENCE.json
+      - name: Persist F-SI21 characterization evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add integration/f-si/F-SI21_CHARACTERIZATION_EVIDENCE.json
+          if git diff --cached --quiet; then
+            echo 'FSI21_EVIDENCE_ALREADY_CURRENT=PASS'
+          else
+            git commit -m 'evidence(F-SI21): persist same-endpoint characterization [skip ci]'
+            git push origin HEAD:work/f-si21-nonstationary-temporal-estimator-policy
+          fi
