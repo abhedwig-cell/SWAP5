@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-WOF",
   "work_unit": "F-WOF25",
   "title": "SWAP core invariant audit for standard WOFOST evolution readiness",
@@ -7,89 +7,89 @@
   "audit": {
     "3_explicit_data_separation": {
       "status": "PASS",
-      "evidence": "parameters, committed crop state, event forcing, accepted cross-process aggregates, rates/workspace, results and diagnostics are explicitly separate"
+      "evidence": "immutable parameters, physical committed crop state, reference-oracle compatibility memory, event forcing, accepted aggregates, ordinary rates/workspace, results and diagnostics are explicitly distinguished"
     },
     "4_compact_persistent_state": {
       "status": "PASS",
-      "evidence": "common continuation is minimal; LAI/WLV/LASUM/ILV are derived; vernalization and adaptive root state are option-dependent; potential shadow is excluded"
+      "evidence": "physical continuation is minimal, derived LAI/WLV/LASUM/ILV are excluded, optional vernalization/root state scales with use, and exact-code compatibility uses at most narrow conditional scalars instead of the full WOFOST_rates object"
     },
     "5_scratch_per_worker": {
       "status": "PASS",
-      "evidence": "dtsum, dvr, daylp, vernrate and WOFOST_rates are event/worker-local rather than permanent per-column state"
+      "evidence": "ordinary dtsum/dvr/daylp and growth/death/allocation rates are event/worker-local; only the two proven cross-event SAVE exceptions are modeled as narrow reference compatibility memory"
     },
     "6_scalable_memory_layout": {
       "status": "PASS_DESIGN",
-      "evidence": "SoA/pools/batches and compact active cohort storage remain permitted; no object-per-column internal layout is required"
+      "evidence": "SoA/pools/batches, compact active cohorts and sparse/conditional compatibility sidecars remain permitted"
     },
     "7_transactional_time_steps": {
       "status": "PASS_DESIGN",
-      "evidence": "complete enabled crop continuation is candidate-only; prepare/aggregate/finalize phases do not create a second commit authority; F-KT owns publication and rollback"
+      "evidence": "complete enabled physical crop continuation and enabled exact-reference compatibility memory are candidate-local; F-KT remains the only publication/rollback authority"
     },
     "8_cheap_recalculation_and_warm_start": {
       "status": "PASS_DESIGN",
-      "evidence": "same crop checkpoint plus forcing and frozen accepted aggregates must replay identically; numerical warm starts cannot replace the committed physical origin"
+      "evidence": "same checkpoint, forcing, accepted aggregates and enabled compatibility memory must replay identically; worker warm starts cannot replace physical origin"
     },
     "9_generic_time": {
       "status": "PASS",
-      "evidence": "the kernel remains [t0,t1]-generic while standard WOFOST is admitted first as its own explicit one-day physical process cadence; arbitrary dt substitution is forbidden"
+      "evidence": "kernel time stays generic [t0,t1]; standard WOFOST first uses an explicit one-day process event; arbitrary dt substitution remains forbidden"
     },
     "10_flexible_coupling_windows": {
       "status": "PASS_DESIGN_WITH_RUNTIME_REQUIREMENT",
-      "evidence": "crop windows are runtime events and accepted aggregates may span smaller kernel/coupling intervals; no MODFLOW or midnight boundary is encoded in crop state",
+      "evidence": "crop windows are runtime events and accepted aggregates may span smaller kernel/coupling intervals without a MODFLOW or midnight primitive",
       "hold": "production runtime window-accumulator persistence across smaller commits is not implemented by F-WOF25"
     },
     "11_coupling_core_functionality": {
       "status": "PASS_NO_CONFLICT",
-      "evidence": "crop evolution consumes accepted process results and remains under the same transaction authority, so rollback/coupling composition is not bypassed"
+      "evidence": "crop evolution consumes only accepted process results under the common transaction lineage"
     },
     "13_absolute_mass_conservation": {
       "status": "PASS_NO_NEW_MASS_OWNER",
-      "evidence": "IQROT/IPTRA/IALPWET are read-only accepted aggregates for crop physics; root-water mass ownership remains exactly-once under F-KT/F-MR"
+      "evidence": "IQROT/IPTRA/IALPWET are read-only crop inputs after accepted accumulation; root-water mass remains exactly-once under F-KT/F-MR"
     },
     "16_MultiSWAP_primary_use_case": {
       "status": "PASS_DESIGN",
-      "evidence": "execution classes can group active standard WOFOST, IDSL2, root topology and oxygen-context requirements while sharing immutable parameter sets"
+      "evidence": "execution classes can group physical options and exact-reference compatibility requirements while sharing immutable crop parameters"
     },
     "21_reuse_SWAP_physics": {
       "status": "PASS",
-      "evidence": "the contracts preserve standard WOFOST assimilation, phenology, allocation, cohort and root semantics rather than replacing them with a reduced model"
+      "evidence": "source WOFOST assimilation, phenology, allocation, cohort and root semantics are preserved as the reference basis"
     },
     "23_physics_solver_policy_separation": {
       "status": "PASS",
-      "evidence": "IDSL/SWRD/SWRDC/oxygen are physical options; numerical reference/balanced/throughput policies do not alter them"
+      "evidence": "IDSL/SWRD/SWRDC/oxygen remain physical options. Reference compatibility memory belongs to the exact-code reference execution path and may not silently change physical configuration."
     },
     "25_reference_mode_available": {
-      "status": "PASS_WITH_QUALIFICATION_HOLD",
-      "evidence": "B1.10 one-day cadence remains the reference oracle",
-      "hold": "exact post-vernalised VERN diagnostic reproduction requires an explicit compatibility or expected-difference decision because legacy stale vernrate is not physical continuation state"
+      "status": "PASS_WITH_EXPLICIT_REFERENCE_COMPATIBILITY_CONTRACT",
+      "evidence": "B1.10 one-day cadence remains the reference oracle and the GLAIEXP/VERNRATE SAVE carryovers are now explicit rather than silently discarded",
+      "qualification_rule": "a candidate claiming exact code continuation must transport those narrow carryovers where applicable; a corrected-theory path must instead register and qualify the discrepancy"
     },
     "26_runtime_diagnostics": {
       "status": "PASS_DESIGN",
-      "evidence": "the event signature returns diagnostics and lineage/aggregate provenance is explicit",
-      "hold": "production diagnostic fields are deferred to the structural candidate"
+      "evidence": "event diagnostics and lineage/aggregate provenance are explicit; production fields remain for the structural candidate"
     },
     "27_optional_functionality_scales_with_use": {
       "status": "PASS",
-      "evidence": "IDSL2, adaptive root state, potential shadow and nutrient/grass state are not universally allocated"
+      "evidence": "IDSL2, adaptive root state, potential shadow, nutrient/grass state and exact-reference compatibility sidecars are only present where active"
     },
     "28_runtime_coupler_system_composition": {
       "status": "PASS",
-      "evidence": "crop scheduling, crop-window aggregation and calendar translation are runtime/provider responsibilities outside the crop kernel"
+      "evidence": "crop scheduling, crop-window aggregation and calendar translation remain outside the crop kernel"
     },
     "29_no_hidden_dependencies": {
       "status": "PASS",
-      "evidence": "no hidden daynr/t1900/calendar globals, .swp parsing, midnight assumption, MODFLOW dependency or Richards-substep-equals-crop-day assumption is admitted"
+      "evidence": "no hidden daynr/t1900/calendar globals, file assumptions, midnight dependency or Richards-substep-equals-crop-day rule is admitted"
     },
     "30_every_architecture_change_audited": {
       "status": "PASS",
-      "evidence": "F-WOF25 explicitly audits state, API/event cadence, transactions, MultiSWAP scaling and cross-process aggregation before production implementation"
+      "evidence": "state, compatibility memory, event API, cadence, transactions, MultiSWAP and cross-process aggregation are audited before production implementation"
     }
   },
   "overall": {
-    "architectural_readiness": "PASS_WITH_EXPLICIT_OPTION_AND_REFERENCE_HOLDS",
+    "architectural_readiness": "PASS_WITH_EXPLICIT_OPTION_AND_REFERENCE_CONTRACTS",
     "production_evolution_admitted": false,
     "mass_conservation_weakened": false,
     "generic_time_weakened": false,
-    "transaction_authority_changed": false
+    "transaction_authority_changed": false,
+    "full_legacy_rate_object_promoted_to_state": false
   }
 }
