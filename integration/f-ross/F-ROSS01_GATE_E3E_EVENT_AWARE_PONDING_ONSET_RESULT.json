@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_EVENT_AWARE_PONDING_ONSET_SATURATION_TRANSITION",
+  "contract": "F-ROSS01_GATE_E3E_EVENT_AWARE_PONDING_ONSET_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34399351982,
+    "head": "a8dc18198a988ed81bf66ecdef4cc45778f3b539",
+    "conclusion": "failure_expected_from_scientific_gate"
+  },
+  "materials": {
+    "B01": {
+      "pass": false,
+      "solver_failure_count": 0,
+      "unqualified_face_fallback_count": 0,
+      "reference_h0_crossing": false,
+      "candidate_h0_crossing": false,
+      "max_surface_storage_cm": 0.015387570641023963,
+      "max_abs_composed_step_residual_cm": 4.672301391270284e-12,
+      "max_abs_composed_horizon_residual_cm": 8.716936894526128e-12,
+      "max_head_difference_cm": 0.0035304082108648105,
+      "max_composed_storage_difference_cm": 3.211438340144923e-06,
+      "bottom_flux_difference_cm": 3.2114470553644414e-06,
+      "artifact_id": 10122846359,
+      "artifact_digest": "sha256:9bf216a2b6bfbec6b8064fe5d7a114dc120e02934691602006aa7f01be1d12f2"
+    },
+    "B12": {
+      "pass": false,
+      "solver_failure_count": 4,
+      "unqualified_face_fallback_count": 0,
+      "reference_h0_crossing": false,
+      "candidate_h0_crossing": false,
+      "max_surface_storage_cm": 0.0005614737499999272,
+      "max_abs_composed_step_residual_cm": 0.0001571681628302602,
+      "max_abs_composed_horizon_residual_cm": 3.472846603390714e-13,
+      "comparison_available": false,
+      "artifact_id": 10122864934,
+      "artifact_digest": "sha256:eda5ce620e377da52ace88535fe385c11be9775cd7c2c918487737e49212a210"
+    },
+    "O13": {
+      "pass": false,
+      "solver_failure_count": 4,
+      "unqualified_face_fallback_count": 0,
+      "reference_h0_crossing": false,
+      "candidate_h0_crossing": false,
+      "max_surface_storage_cm": 0.0012111613749999453,
+      "max_abs_composed_step_residual_cm": 0.0002564752957473918,
+      "max_abs_composed_horizon_residual_cm": 1.2582803180470614e-14,
+      "comparison_available": false,
+      "artifact_id": 10122859414,
+      "artifact_digest": "sha256:003a730d9ee0295c573ab214d41eb0a8bf139c1c33fa5923e7cd5b4af689de7a"
+    },
+    "O14": {
+      "pass": false,
+      "solver_failure_count": 0,
+      "unqualified_face_fallback_count": 0,
+      "reference_h0_crossing": false,
+      "candidate_h0_crossing": false,
+      "max_surface_storage_cm": 0.0011664769712380555,
+      "max_abs_composed_step_residual_cm": 2.6080327276751023e-11,
+      "max_abs_composed_horizon_residual_cm": 5.973952734404653e-11,
+      "max_head_difference_cm": 0.006529954777922065,
+      "max_composed_storage_difference_cm": 5.266089168287635e-06,
+      "bottom_flux_difference_cm": 5.266029454080098e-06,
+      "artifact_id": 10122836530,
+      "artifact_digest": "sha256:c36ac027ade6bcfd211401e4d0e2cde470c9fde86fddc9f707cbc9ba718cacbc"
+    }
+  },
+  "interpretation": [
+    "Adding an explicit separate surface-storage ledger removes the catastrophic first-trial flux-only mass/root failure for B01 and O14: both complete without solver failures and retain composed mass residuals far below 1e-9 cm.",
+    "B01 and O14 nevertheless do not produce a top-cell h=0 crossing with h_surface fixed at 0 cm. This frozen onset gate therefore fails its real-crossing requirement and remains negative evidence.",
+    "B12 and O13 still encounter qualification-solver failures near the boundary transition despite small external surface storage. Their failures may not be assigned to surface-ledger bookkeeping because composed ledger residuals are small on accepted work and no unqualified internal face fallback is reported.",
+    "A true positive soil pressure transition requires a separately qualified finite positive ponding-head boundary. The h_surface=0 onset gate may not be silently reinterpreted as finite-ponding qualification."
+  ],
+  "pass": false,
+  "decision": "EVENT_AWARE_PONDING_ONSET_SATURATION_TRANSITION_NOT_QUALIFIED_PRESERVE_FAILURE",
+  "next_dependency": "QUALIFY_5CM_SURFACE_TO_UNSAT_BOUNDARY_REFERENCE_AND_FACE_BEFORE_FINITE_POSITIVE_PONDING_HEAD_COMPOSITION",
+  "hard_guards": [
+    "Do not relax the frozen h=0 crossing requirement inside E3E.",
+    "Do not tune forcing or horizon inside E3E.",
+    "Surface storage remains outside Ross soil state and commits transactionally with it.",
+    "No finite positive ponding head or runoff qualification follows."
+  ],
+  "status": "FAILED_AS_FROZEN_WITH_POSITIVE_SURFACE_LEDGER_AND_B01_O14_STABILITY_EVIDENCE"
+}
