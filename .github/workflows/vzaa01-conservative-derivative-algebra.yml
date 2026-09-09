@@ -1,0 +1,36 @@
+name: F-VZAA01 Conservative Derivative Algebra
+
+on:
+  push:
+    branches:
+      - work/f-vzaa01-vadose-zone-analytical-assessment
+    paths:
+      - .github/workflows/vzaa01-conservative-derivative-algebra.yml
+      - experiments/vzaa/run_vzaa01_conservative_derivative_algebra.py
+      - integration/f-vzaa/F-VZAA01_CONSERVATIVE_DERIVATIVE_ALGEBRA_ACCEPTANCE.json
+  workflow_dispatch:
+
+jobs:
+  conservative-derivative-algebra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Run conservative derivative algebra gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="vzaa01-conservative-derivative-algebra"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/vzaa/run_vzaa01_conservative_derivative_algebra.py \
+            "$out/F-VZAA01_CONSERVATIVE_DERIVATIVE_ALGEBRA_RESULT.json" \
+            | tee "$out/F-VZAA01_CONSERVATIVE_DERIVATIVE_ALGEBRA_STDOUT.json"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vzaa01-conservative-derivative-algebra
+          path: vzaa01-conservative-derivative-algebra/
