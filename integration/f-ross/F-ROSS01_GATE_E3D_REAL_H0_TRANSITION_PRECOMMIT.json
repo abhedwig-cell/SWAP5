@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3D_REAL_H0_SATURATION_TRANSITION_COLUMN",
+  "production_implementation": false,
+  "upstream": [
+    "E1 unified persistent head state",
+    "C1R restricted unsaturated face route",
+    "E2C-R3 near-saturation endpoint-limit face fallback",
+    "E3A-R2 two-sided K endpoint-limit encountered-face composition",
+    "E3C tight qualification-only least-squares solver policy"
+  ],
+  "fixture_selection_basis": {
+    "method": "pre-execution top-cell storage-deficit bounding from the frozen MvG catalog, not post-run tuning",
+    "initial_heads_cm": [-0.2, -1.5, -5.0],
+    "top_flux_fraction_ksat": 1.5,
+    "bottom_head_cm": -15.0,
+    "horizon_day": 0.001,
+    "direction": "wetting",
+    "top_cell_storage_deficit_at_h_minus_0p2_cm_water": {
+      "B01": 0.000137,
+      "B12": 0.000852,
+      "O13": 0.001531,
+      "O14": 0.000011
+    },
+    "note": "The values above are design diagnostics only. Qualification requires the executable full-accuracy reference to cross h=0; the storage estimate is not an oracle."
+  },
+  "time_discretization": {
+    "candidate_step_counts": [4, 8, 16],
+    "reference_step_count": 64
+  },
+  "qualification_solver": {
+    "role": "qualification only, not production",
+    "method": "scipy.optimize.least_squares",
+    "xtol": 1e-14,
+    "ftol": 1e-14,
+    "gtol": 1e-14,
+    "x_scale": "jac",
+    "max_nfev": 200
+  },
+  "acceptance": {
+    "materials": ["B01", "B12", "O13", "O14"],
+    "top_cell_h0_crossing_required_in_reference": true,
+    "top_cell_h0_crossing_required_in_finest_candidate": true,
+    "candidate_transition_event_count_min": 1,
+    "reference_transition_event_count_min": 1,
+    "max_step_mass_residual_cm": 1e-9,
+    "max_horizon_mass_residual_cm": 1e-9,
+    "max_cumulative_bottom_flux_difference_cm": 0.001,
+    "max_total_storage_difference_cm": 0.001,
+    "max_cell_storage_difference_cm": 0.001,
+    "max_head_difference_cm": 0.25,
+    "max_transition_time_difference_day": 0.00025,
+    "max_trajectory_head_cm": 0.8,
+    "unqualified_face_fallback_count": 0,
+    "nonfinite_count": 0,
+    "qualification_solver_failure_count": 0,
+    "committed_state_mutation_on_rejected_trial_count": 0
+  },
+  "threshold_provenance": "All hydrologic and transition-time error limits are copied unchanged from the original frozen E3 executable contract. The only added criteria are a top-cell-specific real h=0 crossing and an upper-head guard to exclude solver-boundary saturation artifacts.",
+  "mass_policy": "Absolute. No clipping, repair, post-step rebalance or tolerance relaxation is permitted.",
+  "failure_policy": "If any material does not cross h=0 or violates a frozen threshold, preserve FAIL. Do not tune forcing, horizon or thresholds inside this gate.",
+  "hard_nonclaims": [
+    "No production nonlinear solver qualification.",
+    "No endpoint-limit response tangent qualification.",
+    "No heterogeneous profile qualification.",
+    "No production bottom-boundary or groundwater qualification.",
+    "No runtime or MultiSWAP production admission."
+  ],
+  "status": "PRECOMMITTED_READY_FOR_EXECUTION"
+}
