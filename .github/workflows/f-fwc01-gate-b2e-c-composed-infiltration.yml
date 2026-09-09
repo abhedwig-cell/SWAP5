@@ -1,0 +1,51 @@
+name: F-FWC01 Gate B2E-C Composed Infiltration Mass Path
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2e-c-composed-infiltration.yml
+      - experiments/fwc/fwc01_gate_b2e_c_composed_existing_front_and_creation.py
+      - integration/f-fwc/F-FWC01_GATE_B2E_C_COMPOSED_EXISTING_FRONT_AND_CREATION_PRECOMMIT.json
+      - experiments/fwc/fwc01_gate_b2d_r1_conservative_heun_policy.py
+      - experiments/fwc/fwc01_gate_b2e_a_fully_funded_dry_bin_creation_event.py
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen B2E-C gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2e-c"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2e_c_composed_existing_front_and_creation.py \
+            "$out/F-FWC01_GATE_B2E_C_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2E_C_STDOUT.txt"
+      - name: Assert frozen B2E-C decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2e-c/F-FWC01_GATE_B2E_C_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_RESTRICTED_COMPOSED_EXISTING_FRONT_AND_FULLY_FUNDED_CREATION_MASS_PATH_READY_FOR_ZD_AND_RAINFALL_EVENT_QUALIFICATION'
+          assert r['physics_changed_from_B2D_R1'] is False
+          assert r['generic_creation_parity_case_count'] == r['generic_creation_parity_pass_count']
+          assert r['physical_case_count'] == r['physical_case_pass_count']
+          assert r['max_abs_composed_mass_residual_cm'] <= 1e-12
+          assert r['max_abs_B2D_internal_step_mass_residual_cm'] <= 1e-12
+          assert r['water_clip_drop_merge_count'] == 0
+          assert r['new_persistent_state_bytes_beyond_front_state'] == 0
+          assert r['partial_dry_bin_funding_qualified'] is False
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2e-c-composed-infiltration
+          path: fwc01-gate-b2e-c/
