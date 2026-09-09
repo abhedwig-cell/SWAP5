@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "title": "Bounded Stiffness-Aware Embedded Richards Temporal Indicator Feasibility",
+  "branch": "work/f-si24-bounded-stiffness-aware-temporal-indicator",
+  "base_commit": "81185df08c5231d3990c9a941591d444e880a077",
+  "status": "RESERVED_GATE_A_SOURCE_AND_ANALYTIC_CANDIDATE_RECONCILIATION",
+  "trigger": {
+    "F_SI21": "CLOSED_BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND",
+    "F_VQ28": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+    "F_SI23": "COMPLETE_PARTIAL_OWNER_FEASIBILITY_C3_FAIL_CLOSED_REFINEMENT_COMPARATOR_UNAVAILABLE"
+  },
+  "problem_statement": "Determine whether the F-SI23 derivative-difference observer can be converted into a bounded-cost, stiffness-aware model-owned temporal indicator without deep same-endpoint refinement, without raw step-doubling/retry translation, and without changing the mass-conservative backward-Euler principal state.",
+  "hard_scope": {
+    "production_implementation": false,
+    "production_physics_change": false,
+    "solver_policy_change": false,
+    "scientific_temporal_tolerance_selection": false,
+    "F_KT09_certificate_normalization": false,
+    "F_VQ_followup_start": false,
+    "F_GC02_release": false,
+    "F_PE_release": false,
+    "normal_path_full_nonlinear_companion_solves_maximum": 0,
+    "allowed_test_only_reference_work": "Existing F-SI21/F-SI22/F-SI23/F-VQ evidence may be reused; new deep reference ladders are not a Gate-A requirement."
+  },
+  "binding_owner_evidence": {
+    "F_SI23_observer": "e_h=0.5*dt*(hdot_np1-hdot_n)",
+    "F_SI23_right_sided_bootstrap": "QUALIFIED_RESTRICTED_UNSATURATED_TEST_ONLY",
+    "F_SI23_exact_eigenmode_relation": "QUALIFIED",
+    "F_SI23_C2": "15_of_15_finite_N512_comparisons_consistent_but_raw_ratio_strongly_state_dependent",
+    "F_SI23_C3": "deep_N8_transaction_local_comparator_unavailable_under_frozen_controls_and_convergence_ceiling_state_trajectory_dependent",
+    "F_VQ28": "raw_fixed_horizon_head_defect_does_not_translate_safely_to_existing_retry_topology",
+    "F_SI21": "same_endpoint_refinement_shape_scientifically_useful_but_normal_path_cost_7_to_15_full_solve_equivalents_rejected"
+  },
+  "candidate_families_for_gate_A": [
+    {
+      "id": "A_RAW_DERIVATIVE_OBSERVER",
+      "construction": "Use F-SI23 e_h directly with no stiffness correction.",
+      "expected_cost": "O(N) arithmetic after one accepted/trial BE solve.",
+      "known_positive_evidence": "Exact eigenmode relation and nonlinear C2 finite-comparator consistency.",
+      "known_blocker": "Raw magnitude is extremely and strongly state dependent; no scientific tolerance or mixed-form true-error bound is qualified."
+    },
+    {
+      "id": "B_SCALAR_EFFECTIVE_STIFFNESS_CORRECTION",
+      "construction": "Infer a scalar effective stiffness from derivative evolution, e.g. a source-bound dimensionless ratio such as hdot_n/hdot_np1 where mathematically admissible, and analytically map the raw e_h magnitude through a linear backward-Euler model.",
+      "expected_cost": "O(N) arithmetic; no extra nonlinear solve.",
+      "known_positive_evidence": "F-SI23 C3 late-level scalar behavior became closer to the linear eigenmode expectation as dt decreased.",
+      "known_blocker": "Early/large-dt scalar predictions were poor, modes are spatially distributed, derivative components may cross zero, and no universal scalar correction is qualified."
+    },
+    {
+      "id": "C_FINAL_STATE_JACOBIAN_RESOLVENT",
+      "construction": "Reconstruct a Jacobian/operator at the accepted candidate state and use one additional O(N) tridiagonal linear action/solve to transport or damp the leading derivative-difference error vector, while leaving the principal BE state unchanged.",
+      "expected_cost": "One final-state coefficient/Jacobian reconstruction plus at most one tridiagonal linear solve; no extra full nonlinear Richards trajectory.",
+      "known_positive_evidence": "Reference workspace already owns tridiagonal Jacobian scratch and the linear solver is O(N); literature supports derivative-based adaptive control and single-correction implicit constructions as a bounded-cost direction.",
+      "known_blocker": "The Jacobian left by current HeadCalc is built on pre-update old_head, not exactly on the accepted final state, so direct reuse of existing dfdh arrays is not source-bound."
+    },
+    {
+      "id": "D_PREVIOUS_NEWTON_JACOBIAN_REUSE",
+      "construction": "Use the dfdh arrays already left in worker scratch without rebuilding at the accepted state.",
+      "expected_cost": "One additional tridiagonal solve only.",
+      "gate_A_prior": "REJECT_UNLESS_ERROR_FROM_ONE_ITERATE_LAG_IS_EXPLICITLY_BOUNDED",
+      "reason": "Source reading shows the matrix is assembled at old_head before the accepted Newton update and is not rebuilt after convergence."
+    },
+    {
+      "id": "E_FULL_VS_TWO_HALF_OR_DEEP_REFINEMENT",
+      "construction": "Use extra full nonlinear trajectories as normal temporal estimator.",
+      "gate_A_prior": "REJECT",
+      "reason": "Conflicts with F-SI21 cost gate, F-VQ28 runtime-translation evidence, F-SI23 C3 comparator availability and SWAP invariants on bounded coupling cost/predictable compute."
+    }
+  ],
+  "gate_A_questions": [
+    "What exact Jacobian/operator does HeadCalc expose after a converged solve, and at which iterate/state was it assembled?",
+    "Can a mathematically defined final-state tridiagonal operator be reconstructed from accepted candidate state plus existing parameter/provider information in O(N) without modifying physical state?",
+    "For the exact F-SI23 C1B eigenmode, what correction should each candidate family produce and does it recover the known analytic behavior?",
+    "Can any retained candidate be defined componentwise/vectorially without unsafe division by near-zero derivatives or a single dominant-mode assumption?",
+    "Does the candidate remain separate from the hard mass ledger and leave the accepted mixed-form backward-Euler state unchanged?",
+    "Can the candidate be computed transactionally from worker scratch and optional numerical history, with no update on rejected trial/rollback?",
+    "Is normal-path cost bounded to O(N) extra work and at most one tridiagonal linear solve, with zero extra full nonlinear Richards solves?"
+  ],
+  "gate_A_pass_condition": "At least one candidate must have a complete source-bound construction, an exact analytic interpretation on the manufactured linear eigenmode, no contradiction with F-VQ28 retry evidence, hard separation from mass acceptance, and bounded normal-path cost without relying on the stale pre-update Jacobian as if it were final-state exact.",
+  "gate_A_fail_condition": "If no candidate satisfies these conditions, close F-SI24 fail-closed rather than introduce an empirical scale/tolerance or an extra nonlinear refinement path.",
+  "candidate_progression_if_gate_A_passes": {
+    "Gate_B": "test-only exact/manufactured operator qualification, including vector/multimode cases and singular/near-zero derivative safeguards",
+    "Gate_C": "nonlinear B1.10 characterization against existing independent finite same-endpoint evidence; calibration and held-out matrices must be separated before execution",
+    "F_KT": "only after a concrete transaction lifecycle and unavailable-estimator semantics exist",
+    "F_VQ": "independent held-out qualification only after a specific owner candidate exists"
+  },
+  "invariant_focus": {
+    "5_scratch_per_worker": "Estimator Jacobian/resolvent scratch belongs to worker/job, not persistent column state.",
+    "7_transactional_timesteps": "No numerical history or certificate state changes before commit; rollback restores committed estimator history.",
+    "8_cheap_recompute_warm_start": "Estimator must not require a deep trajectory per retry.",
+    "9_generic_time": "All formulas use generic dt, no day/calendar assumption.",
+    "13_mass_conservation": "Mass ledger remains independent and hard; indicator may never compensate or excuse imbalance.",
+    "15_limit_coupling_cost": "Normal path has no extra full nonlinear Richards run and at most one O(N) linear companion action.",
+    "23_physics_solver_policy_separation": "Temporal indicator is numerical policy/evidence only; physics stays unchanged.",
+    "24_predictable_compute": "Estimator work must be bounded and must fail closed if required operator/history is unavailable.",
+    "25_reference_mode": "Full reference mode remains available and is not replaced by the estimator.",
+    "26_diagnostics": "Availability, correction route, raw/corrected magnitudes and fallback/rejection reason must be diagnosable if later implemented."
+  },
+  "next_action": "Complete Gate A source mapping of accepted-state versus stored-Jacobian semantics and derive exact manufactured-eigenmode behavior for candidate families B and C before implementing any F-SI24 test harness or production seam."
+}
