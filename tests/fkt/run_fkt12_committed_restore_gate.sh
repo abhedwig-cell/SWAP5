@@ -28,7 +28,7 @@ if src.count(marker) != 1:
 Path(sys.argv[2]).write_text(src.split(marker, 1)[0] + '\n', encoding='utf-8')
 PY
 
-COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace -fopenmp)
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -fopenmp)
 SOURCES=(
   src/transaction/mod_transaction_reference.f90
   src/runtime/mod_canonical_contracts.f90
