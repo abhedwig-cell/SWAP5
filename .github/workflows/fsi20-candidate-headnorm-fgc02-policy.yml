@@ -1,0 +1,31 @@
+name: F-SI20 candidate head-norm F-GC02 policy
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/test_fsi20_candidate_headnorm_fgc02_policy.f90'
+      - 'tests/fsi/run_fsi20_candidate_headnorm_fgc02_policy.sh'
+      - '.github/workflows/fsi20-candidate-headnorm-fgc02-policy.yml'
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run candidate head-norm under exact F-GC02 policy
+        run: bash tests/fsi/run_fsi20_candidate_headnorm_fgc02_policy.sh
