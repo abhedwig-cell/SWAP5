@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR20",
+  "stage": "CANONICAL_CONTEXT_ISOLATION_STAGE_2",
+  "base_stage1_evidence": "integration/f-mr/F-MR20_STAGE1_CONTEXT_ISOLATION_EVIDENCE.json",
+  "goal": "Remove the pre-solve mutable legacy-context mirror from the restricted canonical serialized Richards backend and ensure canonical HeadCalc startup does not read legacy configuration globals before overriding them.",
+  "source_bound_evidence": {
+    "state_binding": "initialize_reference_state_binding derives h/theta/hm1/thetm1/pond/gwl/qtop/qbot/hbot from the explicit solve request.",
+    "geometry": "HeadCalc grid_z/grid_dz/grid_disnod select parameter_set geometry whenever explicit state binding is active.",
+    "constitutive": "admitted canonical path requires evaluation_context%constitutive and routes core constitutive evaluations through that provider.",
+    "source_sink": "admitted canonical path requires explicit source_sink provider; root sink is provider-bound when active.",
+    "top_boundary": "admitted canonical path requires explicit top-boundary provider and returns before legacy boundtop bridge.",
+    "bottom_modes": [7, -2, 5],
+    "mirror_module_writes": [
+      "dt", "swbotb", "swkimpl", "swkmean", "dtmin", "maxit", "maxbacktr",
+      "CritDevBalCp", "CritDevBalTot", "critdevh2cp", "critdevh1cp", "critdevponddt",
+      "fldtmin", "qtop", "qbot", "hbot"
+    ]
+  },
+  "planned_production_changes": [
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "changes": [
+        "remove import of bind_b110_serialized_legacy_context",
+        "remove context_ok local",
+        "remove pre-solve bind_b110_serialized_legacy_context call and rejection"
+      ]
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "changes": [
+        "read legacy swmacro/bottom/time/numerical globals only inside legacy_state_binding branch",
+        "read worker/request values directly in explicit canonical branch",
+        "avoid t1900/i_instance warning-message construction for canonical_trial"
+      ]
+    }
+  ],
+  "retained_legacy_compatibility": [
+    "mod_b110_serialized_context_binding remains available for noncanonical/legacy consumers",
+    "legacy_state_binding path keeps legacy config and day/min-dt semantics",
+    "legacy warning text and swap_warning behavior remain unchanged for noncanonical calls"
+  ],
+  "non_goals": [
+    "no worker_count>1 admission yet",
+    "no OpenMP or thread runtime yet",
+    "no change to admitted physics or bottom modes",
+    "no new calendar policy",
+    "no removal of legacy-only branches inside HeadCalc",
+    "no change to mass or transaction acceptance rules"
+  ],
+  "required_tests": [
+    "stage-1 authoritative one-worker identity remains PASS O0/O2",
+    "canonical runtime result/state/mass invariant under poisoned mirror globals",
+    "canonical runtime invariant under poisoned legacy swmacro/melt/qrot guards after request construction",
+    "multiworker remains fail-closed before physical solve",
+    "source scope remains exact and auditable"
+  ],
+  "state_before_patch": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified_for_parallel_execution": false
+  }
+}
