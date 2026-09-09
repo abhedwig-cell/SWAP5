@@ -1,0 +1,1076 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Same-endpoint temporal characterization evidence",
+  "evidence_class": "TEST_ONLY_CHARACTERIZATION_NOT_PRODUCTION_ADMISSION",
+  "execution": {
+    "source_head_sha": "3435f242b769cbfc71d3b28ab65ebd91eed114c8",
+    "github_run_id": "34311266920",
+    "github_run_attempt": "1",
+    "github_workflow": "F-SI21 same-endpoint temporal characterization",
+    "log_sha256": "b607875fa9a08519e214c050624d483051ff9fe9a3e5ad5d5267b5e60870846a",
+    "repeat_o0": true,
+    "repeat_o2": true,
+    "o0_o2_identity": true,
+    "production_source_unchanged": true,
+    "source_and_candidate_matrix_lock": true,
+    "reference_tridag_lock": true
+  },
+  "matrix_observation": {
+    "cases": 24,
+    "trajectories": 72,
+    "rows": 432,
+    "levels": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "solver_failure_rows": 0,
+    "mass_failure_rows": 0,
+    "global_hard_mass_gate_pass": true,
+    "max_mass_residual_on_success": 6.776263578034403e-21,
+    "max_single_solve_nonlinear_iterations": 3,
+    "max_single_solve_backtracking_attempts": 3
+  },
+  "level_summary": [
+    {
+      "N": 1,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 72,
+      "total_nonlinear_iterations": 216
+    },
+    {
+      "N": 2,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 144,
+      "total_nonlinear_iterations": 430
+    },
+    {
+      "N": 4,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 288,
+      "total_nonlinear_iterations": 840
+    },
+    {
+      "N": 8,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 576,
+      "total_nonlinear_iterations": 1650
+    },
+    {
+      "N": 16,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 1152,
+      "total_nonlinear_iterations": 3168
+    },
+    {
+      "N": 32,
+      "success": 72,
+      "fail": 0,
+      "headcalc_calls": 2304,
+      "total_nonlinear_iterations": 5992
+    }
+  ],
+  "horizon_level_summary": [
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 1,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 2,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 4,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 8,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 16,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 1,
+      "target_horizon_day": 0.25,
+      "N": 32,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 1,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 2,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 4,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 8,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 16,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 2,
+      "target_horizon_day": 0.125,
+      "N": 32,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 1,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 2,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 4,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 8,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 16,
+      "success": 24,
+      "fail": 0
+    },
+    {
+      "horizon_id": 3,
+      "target_horizon_day": 0.0625,
+      "N": 32,
+      "success": 24,
+      "fail": 0
+    }
+  ],
+  "candidate_observation": {
+    "C1": {
+      "shape_pass": 72,
+      "shape_fail": 0,
+      "fixed_physical_solve_count": 7,
+      "normal_path_admission": "FORBIDDEN_BY_FROZEN_MATRIX"
+    },
+    "C2": {
+      "base_safe": 72,
+      "base_unsafe": 0,
+      "base_physical_solve_count": 3,
+      "numeric_trigger_selected": false
+    },
+    "C3": {
+      "persistent_decay_established_by_N32": 72,
+      "coverage_gap": 0,
+      "reference_only": true
+    },
+    "first_persistent_fine_N_distribution": {
+      "8": 72
+    },
+    "requires_fine_N_greater_than": {
+      "2": {
+        "count": 72,
+        "fraction": 1.0
+      },
+      "4": {
+        "count": 72,
+        "fraction": 1.0
+      }
+    }
+  },
+  "theoretical_physical_solve_cost": {
+    "C1_THROUGH_N4": 7,
+    "C2_BASE_N2": 3,
+    "C2_THROUGH_N4": 7,
+    "C2_THROUGH_N8": 15,
+    "C2_THROUGH_N16": 31,
+    "C2_THROUGH_N32": 63,
+    "C3_THROUGH_N32": 63
+  },
+  "actual_max_total_headcalc_calls_all_levels": 63,
+  "defect_aggregate": [
+    {
+      "N_coarse": 1,
+      "N_fine": 2,
+      "available_trajectories": 72,
+      "unavailable_trajectories": 0,
+      "head_sup_norm_cm": {
+        "count": 72,
+        "minimum": 0.00029117885445373304,
+        "median": 0.0011404221842745699,
+        "maximum": 0.004141122550436194
+      },
+      "theta_sup_norm": {
+        "count": 72,
+        "minimum": 1.533277670107136e-07,
+        "median": 7.73031661793766e-07,
+        "maximum": 3.960174964845464e-06
+      },
+      "ponding_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "gwl_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      }
+    },
+    {
+      "N_coarse": 2,
+      "N_fine": 4,
+      "available_trajectories": 72,
+      "unavailable_trajectories": 0,
+      "head_sup_norm_cm": {
+        "count": 72,
+        "minimum": 9.494665242471001e-06,
+        "median": 0.0005092011144469666,
+        "maximum": 0.0028819847263434895
+      },
+      "theta_sup_norm": {
+        "count": 72,
+        "minimum": 1.0994816501685989e-08,
+        "median": 3.1551998125323166e-07,
+        "maximum": 2.037624407869032e-06
+      },
+      "ponding_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "gwl_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      }
+    },
+    {
+      "N_coarse": 4,
+      "N_fine": 8,
+      "available_trajectories": 72,
+      "unavailable_trajectories": 0,
+      "head_sup_norm_cm": {
+        "count": 72,
+        "minimum": 2.8260028983595475e-07,
+        "median": 0.0002871707124896261,
+        "maximum": 0.0017480439926202962
+      },
+      "theta_sup_norm": {
+        "count": 72,
+        "minimum": 3.2725111509535054e-10,
+        "median": 1.836262408794198e-07,
+        "maximum": 1.1238073026609285e-06
+      },
+      "ponding_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "gwl_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      }
+    },
+    {
+      "N_coarse": 8,
+      "N_fine": 16,
+      "available_trajectories": 72,
+      "unavailable_trajectories": 0,
+      "head_sup_norm_cm": {
+        "count": 72,
+        "minimum": 1.5983324885837646e-08,
+        "median": 0.00015119762181114993,
+        "maximum": 0.0009521952045190574
+      },
+      "theta_sup_norm": {
+        "count": 72,
+        "minimum": 1.850875008813091e-11,
+        "median": 8.829121111997296e-08,
+        "maximum": 6.023012357747604e-07
+      },
+      "ponding_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "gwl_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      }
+    },
+    {
+      "N_coarse": 16,
+      "N_fine": 32,
+      "available_trajectories": 72,
+      "unavailable_trajectories": 0,
+      "head_sup_norm_cm": {
+        "count": 72,
+        "minimum": 4.2584247239574324e-10,
+        "median": 7.251805324415272e-05,
+        "maximum": 0.0004935468329279047
+      },
+      "theta_sup_norm": {
+        "count": 72,
+        "minimum": 4.931610675384945e-13,
+        "median": 4.407984610654836e-08,
+        "maximum": 3.2126380278274524e-07
+      },
+      "ponding_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      },
+      "gwl_abs_cm": {
+        "count": 72,
+        "minimum": 0.0,
+        "median": 0.0,
+        "maximum": 0.0
+      }
+    }
+  ],
+  "decay_aggregate": [
+    {
+      "from_fine_N": 2,
+      "to_fine_N": 4,
+      "component": "GWL",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 2,
+      "to_fine_N": 4,
+      "component": "H",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.013875677078756369,
+        "median": 0.5820247522085369,
+        "maximum": 0.6959428732771803
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.5229592080981481,
+        "median": 0.7808650504713112,
+        "maximum": 6.171298018720539
+      }
+    },
+    {
+      "from_fine_N": 2,
+      "to_fine_N": 4,
+      "component": "POND",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 2,
+      "to_fine_N": 4,
+      "component": "THETA",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.013875672683149737,
+        "median": 0.5820469218185039,
+        "maximum": 0.6959489245309886
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.5229466638560251,
+        "median": 0.7808103002914849,
+        "maximum": 6.171298475744787
+      }
+    },
+    {
+      "from_fine_N": 4,
+      "to_fine_N": 8,
+      "component": "GWL",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 4,
+      "to_fine_N": 8,
+      "component": "H",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.029744930968685444,
+        "median": 0.5251000368639507,
+        "maximum": 0.6304663802607521
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.6655086542692877,
+        "median": 0.9293851568190914,
+        "maximum": 5.071212359654592
+      }
+    },
+    {
+      "from_fine_N": 4,
+      "to_fine_N": 8,
+      "component": "POND",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 4,
+      "to_fine_N": 8,
+      "component": "THETA",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.02974504882267055,
+        "median": 0.5250983952991504,
+        "maximum": 0.630465354743168
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.6655110009611694,
+        "median": 0.929389693373693,
+        "maximum": 5.071206643486576
+      }
+    },
+    {
+      "from_fine_N": 8,
+      "to_fine_N": 16,
+      "component": "GWL",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 8,
+      "to_fine_N": 16,
+      "component": "H",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.05633987810237193,
+        "median": 0.5042954226066949,
+        "maximum": 0.5723252330300943
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.8050928801638906,
+        "median": 0.9877025865339344,
+        "maximum": 4.149699747490595
+      }
+    },
+    {
+      "from_fine_N": 8,
+      "to_fine_N": 16,
+      "component": "POND",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 8,
+      "to_fine_N": 16,
+      "component": "THETA",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.05633967267941068,
+        "median": 0.5042925962967377,
+        "maximum": 0.5723208558581312
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.805103914009803,
+        "median": 0.9877106855068432,
+        "maximum": 4.14970500776516
+      }
+    },
+    {
+      "from_fine_N": 16,
+      "to_fine_N": 32,
+      "component": "GWL",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 16,
+      "to_fine_N": 32,
+      "component": "H",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.0265135022879772,
+        "median": 0.49545574370648704,
+        "maximum": 0.5431917441901448
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.8804665422311703,
+        "median": 1.0131859457748085,
+        "maximum": 5.237128934893484
+      }
+    },
+    {
+      "from_fine_N": 16,
+      "to_fine_N": 32,
+      "component": "POND",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": null,
+      "observed_order": null
+    },
+    {
+      "from_fine_N": 16,
+      "to_fine_N": 32,
+      "component": "THETA",
+      "available_trajectories": 72,
+      "nonincreasing_trajectories": 72,
+      "ratio": {
+        "count": 72,
+        "minimum": 0.026514108491181288,
+        "median": 0.4954548523952389,
+        "maximum": 0.5431931445277814
+      },
+      "observed_order": {
+        "count": 72,
+        "minimum": 0.8804628229965142,
+        "median": 1.0131885383842658,
+        "maximum": 5.2370959495734395
+      }
+    }
+  ],
+  "solver_failures": [],
+  "trajectory_summary": [
+    {
+      "trajectory_id": 1,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 2,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 3,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 4,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 5,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 6,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 7,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 8,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 9,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 10,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 11,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 12,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 13,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 14,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 15,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 16,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 17,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 18,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 19,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 20,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 21,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 22,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 23,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 24,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 25,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 26,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 27,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 28,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 29,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 30,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 31,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 32,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 33,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 34,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 35,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 36,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 37,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 38,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 39,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 40,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 41,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 42,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 43,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 44,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 45,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 46,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 47,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 48,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 49,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 50,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 51,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 52,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 53,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 54,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 55,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 56,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 57,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 58,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 59,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 60,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 61,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 62,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 63,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 64,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 65,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 66,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 67,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 68,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 69,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 70,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 71,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    },
+    {
+      "trajectory_id": 72,
+      "c1_shape_pass": true,
+      "c2_base_safe": true,
+      "first_persistent_fine_N": 8
+    }
+  ],
+  "interpretation_guardrails": {
+    "production_temporal_metric_selected": false,
+    "production_temporal_tolerance_selected": false,
+    "f_ci14_scalarization_inferred": false,
+    "finite_refinement_level_treated_as_truth": false,
+    "hard_mass_relaxation_allowed": false,
+    "same_endpoint_production_transaction_semantics_admitted": false,
+    "independent_f_vq_qualification_required_before_admission": true
+  },
+  "decision": "CHARACTERIZATION_EVIDENCE_ONLY_NO_PRODUCTION_ADMISSION"
+}
