@@ -1,21 +1,22 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-VQ",
   "work_unit": "F-VQ28",
   "title": "Independent Richards Temporal Numeric-Profile Qualification",
   "branch": "qualification/f-vq28-richards-temporal-numeric-profile",
-  "status": "IN_PROGRESS_GATE_A_HELD_OUT_BOUNDED_PROFILE_PASSED_RUNTIME_SHAPE_TRANSLATION_REQUIRED",
-  "phase": "HELD_OUT_FIXED_HORIZON_PROFILE_TESTED_AND_PERSISTED",
+  "status": "COMPLETE_FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED",
+  "phase": "GATE_A_FIXED_HORIZON_VALIDATED_GATE_B_RUNTIME_TRANSLATION_REJECTED",
   "base_commit": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
   "plan": "integration/f-vq/F-VQ28_QUALIFICATION_PLAN.json",
   "gate_A_evidence": "integration/f-vq/F-VQ28_GATE_A_EVIDENCE.json",
+  "gate_B_plan": "integration/f-vq/F-VQ28_GATE_B_PLAN.json",
+  "gate_B_evidence": "integration/f-vq/F-VQ28_GATE_B_EVIDENCE.json",
   "owner_input": {
     "work_unit": "F-SI20",
     "raw_head_observable_characterized": true,
     "production_metric_selected": false,
     "production_tolerance_selected": false,
-    "owner_qualified": false,
-    "decision_class": "B_NUMERIC_PROFILE_CALIBRATION_VALIDATION_REQUIRED_AFTER_OWNER_OBSERVABLE_SEMANTICS"
+    "owner_qualified": false
   },
   "gate_A": {
     "workflow_run": 34303003171,
@@ -26,7 +27,6 @@
     "maximum_external_mass_residual": 5.42101086242752217e-20,
     "repeat_determinism": true,
     "o0_o2_identity": true,
-    "all_resolved_defect_curves_monotone": true,
     "bounded_fixed_horizon_profile_candidate": true,
     "maximum_persistent_conservative_entry_N": 16,
     "entry_N_by_initial_head_cm": {
@@ -37,35 +37,64 @@
       "-210": 16,
       "-320": 16
     },
-    "entry_invariant_across_tested_jump_sign_and_amplitude_within_each_state": true
+    "semantic_limit": "Fixed-horizon N is not a transaction retry count or internal-substep count."
   },
-  "interpretation": {
-    "raw_head_defect_is_reproducibly_state_dependent": true,
+  "gate_B": {
+    "workflow_run": 34304261930,
+    "workflow_job": 102317547585,
+    "workflow_step_conclusion": "success",
+    "held_out_cases": 24,
+    "actual_retry_attempts": 72,
+    "all_cases_exact_existing_retry_topology": true,
+    "same_endpoint_reference_available_attempts": 67,
+    "same_endpoint_reference_unavailable_attempts": 5,
+    "maximum_external_mass_residual": 2.71050543121376109e-20,
+    "hard_mass_gate": "PASS",
+    "transaction_direct_defect_identity": "PASS",
+    "underconservative_resolved_attempts": 36,
+    "cases_losing_previously_conservative_relation_on_retry": 10,
+    "decision": "FAIL_TRANSLATION_EXISTING_RETRY_TOPOLOGY_DOES_NOT_PRESERVE_CONSERVATIVE_RELATION"
+  },
+  "qualified_interpretation": {
+    "raw_head_defect_is_valid_dimensional_owner_observable": true,
+    "raw_head_defect_is_admitted_as_current_transaction_acceptance_metric": false,
+    "gate_A_fixed_horizon_behavior_remains_supported": true,
+    "existing_retry_shortening_is_safe_translation_of_gate_A": false,
     "universal_absolute_tolerance_admitted": false,
     "universal_defect_to_error_factor_admitted": false,
-    "bounded_fixed_horizon_refinement_behavior_supported": true,
-    "runtime_equivalence_established": false,
-    "critical_semantic_limit": "Fixed-horizon N is not a transaction retry count or a direct F-GC02 internal-substep count. Gate A cannot by itself define a production retry policy or tolerance."
+    "richardson_factor_admitted": false,
+    "state_normalization_admitted": false,
+    "current_fgc02_retry_budget_admitted_for_this_metric": false,
+    "failure_attributable_to_mass_gate": false,
+    "five_reference_ceilings_required_for_negative_decision": false,
+    "negative_decision_basis": "36 under-conservative resolved attempts and 10 held-out cases that lose a previously conservative relation during actual retry halving are sufficient to reject the existing runtime translation."
   },
   "state": {
     "plan_persisted": true,
-    "held_out_matrix_frozen": true,
-    "harness_implemented": true,
+    "held_out_matrix_frozen_before_execution": true,
     "gate_A_tested": true,
     "gate_A_evidence_persisted": true,
-    "runtime_shape_translation_tested": false,
-    "qualified": false,
+    "gate_B_plan_frozen_before_execution": true,
+    "gate_B_tested": true,
+    "gate_B_evidence_persisted": true,
+    "qualification_complete": true,
+    "fail_closed_rejection_qualified": true,
+    "production_profile_admitted": false,
+    "production_metric_selected": false,
+    "production_tolerance_selected": false,
     "production_source_modified": false
   },
   "holds": {
-    "F_SI20_owner_finalization": "WAITING_FOR_FVQ28_RUNTIME_SHAPE_TRANSLATION",
+    "F_SI20_owner_finalization": "RETURN_WITH_NEGATIVE_INDEPENDENT_QUALIFICATION",
     "F_GC02_release": "NOT_ALLOWED",
+    "F_PE_release": "NOT_ALLOWED",
     "production_temporal_tolerance": "NOT_SELECTED",
     "production_metric": "NOT_SELECTED",
     "state_normalization": "NOT_SELECTED",
-    "retry_policy_change": "NOT_ALLOWED_IN_FVQ28",
-    "mass_gate_relaxation": "NOT_ALLOWED"
+    "retry_policy_change": "NOT_ALLOWED_AND_NOT_PERFORMED",
+    "mass_gate_relaxation": "NOT_ALLOWED_AND_NOT_PERFORMED",
+    "F_KT_semantic_change": "NOT_PERFORMED"
   },
-  "current_decision_class": "A_FIXED_HORIZON_PROFILE_CANDIDATE_HELD_OUT_VALIDATED_BUT_RUNTIME_SEMANTICS_NOT_YET_TRANSLATED",
-  "next_action": "Freeze and run Gate B using the exact production transaction topology and F-GC02 numerical policy. Characterize the actually reachable retry/substep trajectories across held-out hydraulic states, without selecting a temporal tolerance and without changing retry, solver, mass, transaction or coupling policy. Decide whether the bounded fixed-horizon regime is representable by the existing runtime topology or requires a separate owner/runtime policy workunit."
+  "current_decision_class": "C_EXISTING_TRANSACTION_RETRY_TOPOLOGY_REJECTED_FOR_RAW_HEAD_DEFECT_TEMPORAL_PROFILE",
+  "next_action": "Return the negative qualification to F-SI20. Do not implement the raw head defect by merely replacing the current binary temporal metric or choosing an F-GC02-specific tolerance. If SWAP5 still requires a nonstationary prescribed-head temporal acceptance path, open a separate owner/runtime-policy workunit to define and independently qualify a different estimator or refinement semantic while preserving transactionality, generic time, unchanged hard mass conservation and a full reference mode."
 }
