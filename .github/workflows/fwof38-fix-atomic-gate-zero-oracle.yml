@@ -1,4 +1,4 @@
-name: F-WOF38 repair strict atomic gate harness
+name: F-WOF38 repair explicit ready evaluation semantics
 
 on:
   push:
@@ -11,39 +11,135 @@ permissions:
   contents: write
 
 jobs:
-  fix-test-only:
+  repair-production-semantics:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Remove unused generated-test declaration
+      - name: Replace compiler-dependent logical chains by explicit guards
         shell: bash
         run: |
           set -euo pipefail
-          TARGET=tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
+          TARGET=src/runtime/mod_fmr_wofost_crop_transaction.f90
           python3 - "$TARGET" <<'PY'
           from pathlib import Path
           import sys
           path = Path(sys.argv[1])
           src = path.read_text(encoding='utf-8')
-          old = '  logical :: crop_initialized, crop_checkpoint_ok, snapshot_available, did_commit\n'
-          new = '  logical :: crop_checkpoint_ok, snapshot_available, did_commit\n'
-          if src.count(old) != 1:
-              raise SystemExit(f'FWOF38 unused-variable anchor count={src.count(old)}')
-          path.write_text(src.replace(old, new, 1), encoding='utf-8')
+          replacements = [
+          ('''  logical function fmr_wofost_crop_transaction_state_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+              ready = self%initialized .and. self%owner%validate() == WOFOST_CROP_OWNER_OK
+            end function fmr_wofost_crop_transaction_state_ready
+          '''.replace('            ', ''),
+          '''  logical function fmr_wofost_crop_transaction_state_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+
+              ready = .false.
+              if (.not. self%initialized) return
+              ready = self%owner%validate() == WOFOST_CROP_OWNER_OK
+            end function fmr_wofost_crop_transaction_state_ready
+          '''.replace('            ', '')),
+          ('''  logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+              ready = self%ready() .and. self%last_consumed_event%ready()
+            end function fmr_wofost_crop_transaction_receipt_ready
+          '''.replace('            ', ''),
+          '''  logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+
+              ready = .false.
+              if (.not. self%ready()) return
+              ready = self%last_consumed_event%ready()
+            end function fmr_wofost_crop_transaction_receipt_ready
+          '''.replace('            ', '')),
+          ('''  logical function fmr_wofost_crop_transaction_consumed_event(self, identity) result(consumed)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+              type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
+              consumed = .false.
+              if (.not. self%receipt_ready() .or. .not. identity%ready()) return
+              consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
+            end function fmr_wofost_crop_transaction_consumed_event
+          '''.replace('            ', ''),
+          '''  logical function fmr_wofost_crop_transaction_consumed_event(self, identity) result(consumed)
+              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
+              type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
+
+              consumed = .false.
+              if (.not. self%receipt_ready()) return
+              if (.not. identity%ready()) return
+              consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
+            end function fmr_wofost_crop_transaction_consumed_event
+          '''.replace('            ', '')),
+          ('''  logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
+              ready = self%initialized .and. self%rate_parameters%ready() .and. &
+                   ieee_is_finite(self%stem_area_coefficient) .and. self%stem_area_coefficient >= 0.0_real64 .and. &
+                   ieee_is_finite(self%storage_area_coefficient) .and. self%storage_area_coefficient >= 0.0_real64 .and. &
+                   ieee_is_finite(self%update_parameters%development_stage_end) .and. &
+                   self%update_parameters%development_stage_end > 0.0_real64 .and. &
+                   ieee_is_finite(self%update_parameters%leaf_lifespan) .and. self%update_parameters%leaf_lifespan >= 0.0_real64
+            end function fmr_wofost_crop_transaction_parameters_ready
+          '''.replace('            ', ''),
+          '''  logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
+              class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
+
+              ready = .false.
+              if (.not. self%initialized) return
+              if (.not. self%rate_parameters%ready()) return
+              if (.not. ieee_is_finite(self%stem_area_coefficient)) return
+              if (self%stem_area_coefficient < 0.0_real64) return
+              if (.not. ieee_is_finite(self%storage_area_coefficient)) return
+              if (self%storage_area_coefficient < 0.0_real64) return
+              if (.not. ieee_is_finite(self%update_parameters%development_stage_end)) return
+              if (self%update_parameters%development_stage_end <= 0.0_real64) return
+              if (.not. ieee_is_finite(self%update_parameters%leaf_lifespan)) return
+              if (self%update_parameters%leaf_lifespan < 0.0_real64) return
+              ready = .true.
+            end function fmr_wofost_crop_transaction_parameters_ready
+          '''.replace('            ', '')),
+          ('''  logical function fmr_wofost_crop_event_forcing_ready(self) result(ready)
+              class(fmr_wofost_crop_event_forcing_t), intent(in) :: self
+              ready = self%initialized .and. self%event_identity%ready() .and. &
+                   ieee_is_finite(self%accepted_aggregates%actual_root_uptake) .and. &
+                   ieee_is_finite(self%accepted_aggregates%potential_transpiration) .and. &
+                   self%accepted_aggregates%actual_root_uptake >= 0.0_real64 .and. &
+                   self%accepted_aggregates%potential_transpiration >= 0.0_real64
+            end function fmr_wofost_crop_event_forcing_ready
+          '''.replace('            ', ''),
+          '''  logical function fmr_wofost_crop_event_forcing_ready(self) result(ready)
+              class(fmr_wofost_crop_event_forcing_t), intent(in) :: self
+
+              ready = .false.
+              if (.not. self%initialized) return
+              if (.not. self%event_identity%ready()) return
+              if (.not. ieee_is_finite(self%accepted_aggregates%actual_root_uptake)) return
+              if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
+              if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
+              if (self%accepted_aggregates%potential_transpiration < 0.0_real64) return
+              ready = .true.
+            end function fmr_wofost_crop_event_forcing_ready
+          '''.replace('            ', '')),
+          ]
+          for old, new in replacements:
+              if src.count(old) != 1:
+                  raise SystemExit(f'FWOF38 explicit-ready anchor count={src.count(old)} for {old.splitlines()[0]}')
+              src = src.replace(old, new, 1)
+          path.write_text(src, encoding='utf-8')
           PY
           test "$(git diff --name-only)" = "$TARGET"
           git diff --check
-          grep -Fq 'logical :: crop_checkpoint_ok, snapshot_available, did_commit' "$TARGET"
-          ! grep -Fq 'crop_initialized' "$TARGET"
-          echo 'FWOF38_TEST_ONLY_UNUSED_VARIABLE_FIX=PASS'
-      - name: Commit test-only correction
+          ! grep -Fq 'self%initialized .and. self%owner%validate()' "$TARGET"
+          ! grep -Fq 'self%initialized .and. self%rate_parameters%ready()' "$TARGET"
+          grep -Fq 'if (.not. self%rate_parameters%ready()) return' "$TARGET"
+          echo 'FWOF38_EXPLICIT_READY_EVALUATION_REPAIR=PASS'
+      - name: Commit production semantic repair
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'SWAP5 Qualification Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
-          git commit -m 'test(F-WOF38): remove unused generated-test variable'
+          git add src/runtime/mod_fmr_wofost_crop_transaction.f90
+          git commit -m 'fix(F-WOF38): make ready evaluation order explicit'
           git push origin HEAD:${GITHUB_REF_NAME}
