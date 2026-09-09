@@ -1,0 +1,44 @@
+name: F-LMFP09 Gate C6b Unseen Core Envelope
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - experiments/lmfp/run_lmfp09_gate_c6b_unseen_core_envelope.py
+      - .github/workflows/lmfp09-gate-c6b-unseen-core-envelope.yml
+  workflow_dispatch:
+
+jobs:
+  holdout:
+    name: unseen-core-holdout (${{ matrix.label }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - material: reference_sand
+            length: '10.0'
+            label: reference_sand_10_n49
+          - material: very_fast
+            length: '5.0'
+            label: very_fast_5_n49
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python --version
+      - name: Run precommitted C6b unseen core-envelope holdout
+        run: |
+          mkdir -p evidence/c6b
+          python experiments/lmfp/run_lmfp09_gate_c6b_unseen_core_envelope.py \
+            evidence/c6b/${{ matrix.label }}.json \
+            ${{ matrix.material }} \
+            ${{ matrix.length }}
+      - name: Upload C6b evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-gate-c6b-${{ matrix.label }}
+          path: evidence/c6b/${{ matrix.label }}.json
+          if-no-files-found: error
