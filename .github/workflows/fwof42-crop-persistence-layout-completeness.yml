@@ -15,6 +15,7 @@ on:
       - 'src/kernel/mod_kernel_committed_persistence.f90'
       - 'tools/fwof40_materialize_persistence_candidate.py'
       - 'tools/fwof40_order_external_adapter_validation.py'
+      - 'tools/fwof42_patch_bit_exact_oracle.py'
       - 'tests/fwof/mod_fwof40_external_crop_restart_adapter.f90'
       - 'tests/fwof/test_fwof42_crop_persistence_layouts.f90'
       - 'tests/fwof/run_fwof42_crop_persistence_layout_gate.sh'
