@@ -1,0 +1,49 @@
+name: F-KT11 diagnostic remediation patch
+
+on:
+  push:
+    branches:
+      - work/f-kt11-richards-head-budget-certificate-policy
+    paths:
+      - .github/workflows/fkt11-diagnostic-remediation-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-production-diagnostic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Preserve supplied native budget value without changing validity semantics
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('src/runtime/mod_fmr_serialized_reference_backend.f90')
+          s=p.read_text()
+          old="""    if (self%temporal_indicator_budget_valid) then
+              self%temporal_indicator_budget = config%model_temporal_indicator_budget
+            else
+              self%temporal_indicator_budget = 0.0_real64
+            end if"""
+          new="""    if (self%temporal_indicator_budget_supplied) then
+              ! Preserve the native supplied value for diagnostics even when it is
+              ! invalid.  The separate validity flag remains the sole guard on
+              ! normalization, so no invalid value can reach B_inf/H_budget.
+              self%temporal_indicator_budget = config%model_temporal_indicator_budget
+            else
+              self%temporal_indicator_budget = 0.0_real64
+            end if"""
+          if s.count(old) != 1:
+              raise SystemExit('F-KT11 diagnostic remediation source token drift')
+          p.write_text(s.replace(old,new,1))
+          PY
+          git diff --check
+          git diff -- src/runtime/mod_fmr_serialized_reference_backend.f90
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/runtime/mod_fmr_serialized_reference_backend.f90
+          git commit -m "fix(F-KT11): preserve supplied invalid native budget diagnostic"
+          git push origin HEAD:work/f-kt11-richards-head-budget-certificate-policy
