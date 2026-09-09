@@ -32,7 +32,7 @@ module mod_kernel_committed_persistence
     logical :: valid = .false.
   contains
     procedure, public :: ready => kernel_persistence_ready
-    procedure, public :: schema_version => kernel_persistence_schema_version
+    procedure, public :: schema_version => get_persistence_schema_version
     procedure, public :: layout_id => kernel_persistence_layout_id
     procedure, public :: current_lineage_id => kernel_persistence_lineage_id
     procedure, public :: current_revision => kernel_persistence_revision
@@ -140,14 +140,14 @@ contains
          self%layout_id_value > 0_int64 .and. self%committed_copy%ready()
   end function kernel_persistence_ready
 
-  integer function kernel_persistence_schema_version(self) result(value)
+  integer function get_persistence_schema_version(self) result(value)
     class(kernel_persistence_snapshot_t), intent(in) :: self
     if (self%ready()) then
       value = self%schema_version_value
     else
       value = 0
     end if
-  end function kernel_persistence_schema_version
+  end function get_persistence_schema_version
 
   integer(int64) function kernel_persistence_layout_id(self) result(value)
     class(kernel_persistence_snapshot_t), intent(in) :: self
