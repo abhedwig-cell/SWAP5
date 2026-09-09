@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "title": "Hydraulic Envelope and Representation Geometry Qualification",
+  "production_implementation": false,
+  "closeout": true,
+  "positive_evidence_retained": {
+    "C6b_hydraulic_core_envelope": "QUALIFIED",
+    "provider": "49_NODE_ANCHORED_HEAD_PAIR",
+    "classifier": "se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "scope": "Two precommitted blocker materials inside the frozen homogeneous hydraulic core envelope only"
+  },
+  "negative_evidence": {
+    "C7a_full_Staring2018_catalog": "NOT_QUALIFIED",
+    "run": 34325023479,
+    "aggregate_artifact_id": 10094521180,
+    "aggregate_digest": "sha256:64f8a49dac947a36d123299b08217b621dafa3c2d48f0e92bcb38678f293a8cc",
+    "result": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json",
+    "classes_qualified": 54,
+    "classes_tested": 72,
+    "failed_classes": 18,
+    "failed_materials": 10,
+    "structural_failures": 0,
+    "reference_oracle_failures": 0,
+    "sign_mismatches": 0,
+    "evidence_sufficiency_failures": 0,
+    "failure_type": "REPRESENTATION_ACCURACY_GENERALIZATION"
+  },
+  "precommitted_routing": {
+    "path": "integration/f-lmfp/F-LMFP09_C7A_POSTRESULT_ROUTING_PRECOMMIT.json",
+    "commit": "7c1bebcb16221c7c501e3d3580419307459a220c",
+    "primary_route": "R6_WIDESPREAD_MULTI_CHECK_REPRESENTATION_FAILURE",
+    "secondary_routes": [
+      "R3_STRONG_GRADIENT_GEOMETRY_DEPENDENT_ACCURACY_FAILURE",
+      "R4_MATERIAL_TRANSITION_SCALE_ACCURACY_FAILURE"
+    ],
+    "owner_overlap": "R5_NEAR_SATURATION_OR_CONSTITUTIVE_OWNER_FAILURE applies to a subset and must be separated before causation claims"
+  },
+  "interpretation": {
+    "frozen_n49_endpoint_pair_family_full_catalog_generalization": "REJECTED",
+    "C6b_core_envelope_erased_by_C7a": false,
+    "partial_catalog_production_admission": false,
+    "global_density_escalation_without_new_hypothesis": false,
+    "threshold_relaxation": false,
+    "material_specific_exception_ladder": false,
+    "transient_rescue_under_failed_C7a_contract": false,
+    "VZAA_history_donor_used": false
+  },
+  "architecture_check": {
+    "mass_conservation_hard_requirement": "PRESERVED",
+    "bounded_runtime_lookup_structure": "PRESERVED_IN_TESTED_PROVIDER",
+    "shared_immutable_hydraulic_data": "PRESERVED",
+    "per_column_heavy_solver_state": false,
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "EXPLICIT_FAILURE_MAP_PERSISTED"
+  },
+  "next_work": {
+    "required": "MATERIALLY_NEW_REPRESENTATION_FEASIBILITY_CHARACTERIZATION",
+    "transient_gate": "BLOCKED_UNTIL_A_NEW_HYDRAULIC_REPRESENTATION_IS_INDEPENDENTLY_QUALIFIED",
+    "recommended_hypothesis_family": "Characterize globally bounded coordinates that normalize material hydraulic transition scale and treat face geometry explicitly, while separating known constitutive-owner near-saturation effects. No candidate is preselected for qualification.",
+    "fresh_holdout_required_before_any_new_qualification": true
+  },
+  "overall_layeredmfp_decision": "RESEARCH_CONTINUES",
+  "status": "F_LMFP09_CLOSED_C6B_CORE_QUALIFIED_C7A_FULL_CATALOG_REJECTED"
+}
