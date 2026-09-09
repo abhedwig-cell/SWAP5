@@ -23,7 +23,6 @@ module mod_fmr_serialized_reference_backend
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t, bind_b110_source_sink_provider
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t, bind_b110_root_sink_provider
-  use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
   implicit none
@@ -667,7 +666,7 @@ contains
     type(soil_water_solve_result_t) :: solve_result
     real(real64), allocatable, target :: source_sink_root_zero(:)
     real(real64) :: step_duration
-    logical :: context_ok, snow_event_applied_this_call, temporal_history_ok
+    logical :: snow_event_applied_this_call, temporal_history_ok
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
@@ -747,8 +746,6 @@ contains
     class default
       return
     end select
-    call bind_b110_serialized_legacy_context(request, context_ok)
-    if (.not. context_ok) return
     call self%solver%solve(request, self%workspace, solve_result)
     self%last_observation%solver_executed = .true.
     self%last_observation%solver_status = solve_result%status

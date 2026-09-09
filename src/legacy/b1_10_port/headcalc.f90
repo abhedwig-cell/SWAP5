@@ -132,27 +132,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       state => local_state_binding
       call capture_legacy_state(state)
    end if
-   swmacro = legacy_swmacro
-   swbotb = legacy_swbotb
-   dt = legacy_dt
-   swkimpl = legacy_swkimpl
-   swkmean = legacy_swkmean
-   maxit = legacy_maxit
-   maxbacktr = legacy_maxbacktr
-   dtmin = legacy_dtmin
-   critdevh2cp = legacy_critdevh2cp
-   critdevh1cp = legacy_critdevh1cp
-   critdevponddt = legacy_critdevponddt
-   CritDevBalCp = legacy_CritDevBalCp
-   CritDevBalTot = legacy_CritDevBalTot
    if (legacy_state_binding) then
+      swmacro = legacy_swmacro
+      swbotb = legacy_swbotb
+      dt = legacy_dt
+      swkimpl = legacy_swkimpl
+      swkmean = legacy_swkmean
+      maxit = legacy_maxit
+      maxbacktr = legacy_maxbacktr
+      dtmin = legacy_dtmin
+      critdevh2cp = legacy_critdevh2cp
+      critdevh1cp = legacy_critdevh1cp
+      critdevponddt = legacy_critdevponddt
+      CritDevBalCp = legacy_CritDevBalCp
+      CritDevBalTot = legacy_CritDevBalTot
       at_min_dt = legacy_fldtmin
       day_start_event = legacy_fldaystart
    else
-      at_min_dt = ctx%control%at_min_dt
-      day_start_event = ctx%time%day_start_event
-   end if
-   if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
       if (physical_config%macropore_active) error stop 'HeadCalc: active explicit macropore route not admitted'
       swmacro = 0
@@ -172,6 +168,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       critdevh2cp = numerical_config%head_abs_tolerance
       critdevh1cp = numerical_config%head_rel_tolerance
       critdevponddt = numerical_config%ponding_tolerance
+      at_min_dt = ctx%control%at_min_dt
+      day_start_event = ctx%time%day_start_event
    end if
    provider_top_active = .false.
    provider_constitutive_active = .false.
@@ -377,10 +375,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !     in the rare case that TRIDAG fails, use alternative solution
       if (ierror /= 0) then
-         call dtdpst ('year-month-day', t1900+1.001d0, datetime)
-         write(cval,'(I10)') i_instance
-         message = cval//' Tri-band matrix in HeadCalc appeared to be singular at '//adjustl(trim(datetime))//' Alternative SOLVER chosen'
-         if (.NOT.canonical_trial) call swap_warning ('headcalc', message)
+         if (.NOT.canonical_trial) then
+            call dtdpst ('year-month-day', t1900+1.001d0, datetime)
+            write(cval,'(I10)') i_instance
+            message = cval//' Tri-band matrix in HeadCalc appeared to be singular at '//adjustl(trim(datetime))//' Alternative SOLVER chosen'
+            call swap_warning ('headcalc', message)
+         end if
          ctx%diagnostics%alternative_solver_calls = ctx%diagnostics%alternative_solver_calls + 1
          call alternative_solver()
       end if
@@ -630,10 +630,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     write warning to screen and log file
       if (hist%flwarn) then
          hist%iwarn = hist%iwarn + 1
-         call dtdpst('year-month-day,hour:minute:seconds',t1900,datetime)
-         write(cval,'(I10)') i_instance
-         message = cval//' No convergence was reached of Richards equation at '//datetime//' no more than 4 warnings per date - SWAP did continue!'
-         if (.NOT.canonical_trial) call swap_warning ('headcalc', message)
+         if (.NOT.canonical_trial) then
+            call dtdpst('year-month-day,hour:minute:seconds',t1900,datetime)
+            write(cval,'(I10)') i_instance
+            message = cval//' No convergence was reached of Richards equation at '//datetime//' no more than 4 warnings per date - SWAP did continue!'
+            call swap_warning ('headcalc', message)
+         end if
          if (hist%iwarn > 3) hist%flwarn = .FALSE.  
       end if
 
