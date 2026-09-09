@@ -66,15 +66,19 @@ echo 'FCI19_POSTIMAGE_GOVERNANCE_TREE_IDENTITY=PASS'
 
 # The governed postimage deliberately carries the CI19 governance/test tree, not
 # the later Candidate A qualification fixtures. For executable replay only,
-# overlay the exact tests/tools from the previously successful preservation head.
-# This is a disposable working-tree fixture overlay. It never changes src,
-# reference, the governed postimage commit or the qualification branch commit.
-git archive "$PRESERVATION_HEAD" tests tools | tar -x -C "$ROOT"
+# overlay the exact tests, tools and F-KT qualification-support contracts from
+# the previously successful preservation head. This is a disposable working-tree
+# fixture overlay. It never changes src, reference, the governed postimage commit
+# or the qualification branch commit.
+git archive "$PRESERVATION_HEAD" tests tools integration/f-kt | tar -x -C "$ROOT"
 [[ "$(git hash-object "$TMP_BASE")" == "$(git rev-parse "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate.sh")" ]] || \
   fail "preservation base harness overlay identity mismatch"
 [[ "$(git hash-object "$TMP_V2")" == "$(git rev-parse "$PRESERVATION_HEAD:tests/fci/run_fci19_candidate_a_preservation_gate_v2.sh")" ]] || \
   fail "preservation v2 harness overlay identity mismatch"
-echo 'FCI19_POSTIMAGE_EXACT_TEST_TOOL_OVERLAY=PASS'
+[[ "$(git hash-object integration/f-kt/F-KT03_OPAQUE_TRANSACTION_CARRIER_CONTRACT.json)" == \
+   "$(git rev-parse "$PRESERVATION_HEAD:integration/f-kt/F-KT03_OPAQUE_TRANSACTION_CARRIER_CONTRACT.json")" ]] || \
+  fail "F-KT qualification-support metadata overlay identity mismatch"
+echo 'FCI19_POSTIMAGE_EXACT_QUALIFICATION_SUPPORT_OVERLAY=PASS'
 
 # Reexecute the exact already-successful composition-preservation harness against
 # the postimage src/reference trees. Do not duplicate or weaken its oracles.
