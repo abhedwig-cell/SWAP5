@@ -1,0 +1,27 @@
+name: F-CI19 source lineage reachability
+
+on:
+  push:
+    branches:
+      - qualification/f-ci19-candidate-a-preservation
+    paths:
+      - 'tests/fci/run_fci19_source_lineage_reachability_gate.sh'
+      - '.github/workflows/fci19-source-lineage-reachability.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-CI19 source-lineage reachability gate
+        run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
+      - name: Upload lineage evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fci19-source-lineage-reachability
+          path: fci19-lineage-artifacts/
+          if-no-files-found: warn
