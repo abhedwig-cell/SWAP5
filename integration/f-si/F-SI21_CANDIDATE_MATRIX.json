@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Frozen algorithmic candidate matrix for same-endpoint temporal refinement characterization",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "freeze_basis": {
+    "seam_audit_commit": "591e7843594f5fe898307284249acf2a14d449db",
+    "status_after_seam_audit": "5c9ddff31c382957de59e0a510e1befea81eda1c",
+    "f_vq28_gate_a_evidence_blob": "3e0c189e8fc61db5541af013cc52302aec57245f",
+    "f_vq28_status_blob": "97f1dff93f1da8b443e8bd853f6e0c37ba9cf08c",
+    "production_source_change": false
+  },
+  "purpose": "Characterize whether a bounded same-endpoint refinement semantic can provide a scientifically useful temporal-error shape for nonstationary prescribed-bottom-head Richards execution. This matrix does not select production tolerances or admit a production estimator.",
+  "frozen_fixture_envelope": {
+    "soil_and_geometry": "source-locked four-node homogeneous F-GC02/F-SI20 fixture used by F-VQ28",
+    "bottom_mode": 5,
+    "optional_physics": "none",
+    "initial_heads_cm": [-40.0, -55.0, -110.0, -160.0, -210.0, -320.0],
+    "bottom_head_jumps_cm": [-0.05, -0.01, 0.01, 0.05],
+    "target_horizons_day": [0.25, 0.125, 0.0625],
+    "trajectory_count": 72,
+    "max_iterations": 8,
+    "max_backtracking": 4,
+    "min_step_duration_day": 1.0e-6,
+    "nonlinear_head_tolerance": 1.0e-12,
+    "hard_mass_tolerance": 1.0e-12,
+    "solver_controls_may_change_during_characterization": false
+  },
+  "same_endpoint_execution_rule": {
+    "physical_origin": "one frozen checkpoint for every refinement level of one trajectory",
+    "attempt_context_origin": "same frozen worker attempt context for every independent refinement level",
+    "target_endpoint": "t0 + target_horizon for every refinement level",
+    "partitions": [1, 2, 4, 8, 16, 32],
+    "partition_semantics": "N equal substeps over the same target horizon",
+    "committed_state_publication": false,
+    "production_transaction_layer_invoked_for_acceptance": false,
+    "test_only": true
+  },
+  "endpoint_observables": {
+    "primary_richards_components": [
+      "pressure_head_cm_per_node",
+      "water_content_per_node",
+      "ponding_depth_cm",
+      "groundwater_level_cm"
+    ],
+    "f_ci14_additional_components": ["volact_cm", "ldwet_cm", "spev_cm", "saev_cm"],
+    "additional_component_rule": "Record when materialized by the tested production state/result seam; do not fabricate missing values.",
+    "lagged_state": ["hm1_cm", "thetm1", "pondm1_cm", "gwlm1_cm"],
+    "lagged_state_rule": "diagnostic_only_not_acceptance_metric"
+  },
+  "defect_definitions": {
+    "componentwise": "absolute endpoint difference between U_N and U_2N, retaining each F-CI14 metric in its native unit",
+    "head_sup_norm": "max_i abs(h_N_i - h_2N_i)",
+    "theta_sup_norm": "max_i abs(theta_N_i - theta_2N_i)",
+    "scalarized_f_ci14_error": "NOT_COMPUTABLE_FOR_ADMISSION_UNTIL_PER_METRIC_LIMITS_ARE_INDEPENDENTLY_QUALIFIED",
+    "successive_decay_ratio": "d_2N / d_N for the same component when d_N > 0",
+    "observed_order_diagnostic": "log(d_N/d_2N)/log(2) when both defects are positive and finite",
+    "zero_defect_rule": "report exact zero and do not invent an order or ratio"
+  },
+  "candidate_families": {
+    "C1": {
+      "name": "THREE_LEVEL_SAME_ENDPOINT_DECAY_GUARD",
+      "levels": [1, 2, 4],
+      "normal_path_physical_solves": 7,
+      "role": "shape characterization only",
+      "advance_condition": "component defects are finite, all level mass gates pass, all level solvers succeed, and d_2_4 <= d_1_2 for every materialized primary component",
+      "reject_condition": "any required component grows, becomes nonfinite, solver fails, or hard mass gate fails",
+      "production_status": "NOT_ADMITTED",
+      "cost_warning": "Seven physical solves is too expensive as a mandatory normal path under invariant 15."
+    },
+    "C2": {
+      "name": "STAGED_TWO_LEVEL_WITH_BOUNDED_ESCALATION",
+      "base_levels": [1, 2],
+      "base_physical_solves": 3,
+      "escalation_levels": [4, 8, 16],
+      "role": "evaluate whether a cheap normal path plus selective same-endpoint escalation is structurally possible",
+      "trigger_policy": "NO_NUMERIC_TRIGGER_SELECTED_IN_F_SI21; characterize what information becomes available at each added level",
+      "reuse_rule": "previously computed U_2N may be retained as the coarser endpoint state for the next defect comparison, but finer trajectory integration still starts physically from the original checkpoint",
+      "production_status": "NOT_ADMITTED"
+    },
+    "C3": {
+      "name": "PERSISTENT_DECAY_REFERENCE_MODE",
+      "levels": [1, 2, 4, 8, 16, 32],
+      "role": "reference-mode characterization and escalation oracle candidate, not normal production path",
+      "persistent_decay_definition": "two consecutive finite nonincreasing component defects, d_2N <= d_N and d_4N <= d_2N",
+      "nonasymptotic_rule": "fail closed if persistent decay is not established within N <= 32",
+      "production_status": "REFERENCE_CHARACTERIZATION_ONLY"
+    }
+  },
+  "predeclared_characterization_outputs": [
+    "solver_success_by_trajectory_and_N",
+    "hard_mass_residual_by_trajectory_and_N",
+    "nonlinear_iterations_by_trajectory_and_N",
+    "backtracking_attempts_by_trajectory_and_N",
+    "headcalc_calls_by_trajectory_and_N",
+    "component_defect_by_trajectory_and_N_pair",
+    "component_decay_ratio_by_trajectory_and_N_pair",
+    "component_observed_order_diagnostic",
+    "first_N_where_two_consecutive_nonincreasing_defects_are_observed",
+    "fraction_of_trajectories_requiring_N_greater_than_2",
+    "fraction_of_trajectories_requiring_N_greater_than_4",
+    "worst_case_total_physical_solve_count_for_each_candidate_family"
+  ],
+  "predeclared_decision_rules": {
+    "C1": "May only be retained as a scientific shape candidate if every trajectory reaches N=4 and every materialized primary component satisfies nonincreasing successive defects. It cannot be selected as the normal production path because its fixed seven-solve cost already violates the bounded normal-path objective.",
+    "C2": "May advance to a separate policy-design step only if the N1/N2 pair is solver- and mass-safe on every trajectory and the characterization shows a bounded minority of trajectories needing escalation to establish persistent decay. No percentage threshold is interpreted as admission in this workunit; the measured distribution is evidence for a later bounded-cost policy decision.",
+    "C3": "May serve as a reference-mode algorithmic candidate only if persistent decay is established by N<=32 on every solver-reachable trajectory. Solver-unreachable trajectories are reported as reference-coverage gaps, not silently dropped.",
+    "global_fail_closed": "No candidate is promoted if any hard mass failure occurs. No production acceptance threshold is inferred from this characterization."
+  },
+  "reference_policy": {
+    "N256": "characterization_crosscheck_only_when_available_not_truth",
+    "N512": "finite_crosscheck_only_when_available_not_truth",
+    "known_N512_short_horizon_failures": 5,
+    "oracle_substitution_when_finer_level_fails": "FORBIDDEN",
+    "raising_solver_limits_to_create_oracle": "FORBIDDEN"
+  },
+  "independent_qualification_hold": {
+    "required": true,
+    "owner": "F-VQ",
+    "held_out_matrix_must_not_be_selected_after_viewing_F_SI21_results": true,
+    "per_metric_temporal_limits_must_be_source_bound_and_independently_justified": true,
+    "optional_physics_requires_separate_characterization": true
+  },
+  "decision": "CANDIDATE_MATRIX_FROZEN_BEFORE_NUMERICAL_EXECUTION",
+  "next_action": "Implement a test-only source-locked characterization harness that executes the frozen 72 trajectories at N=1,2,4,8,16,32 from one physical checkpoint per trajectory and emits the predeclared diagnostics without changing production source."
+}
