@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ28",
+  "gate": "B_TRANSACTION_SHAPE_TRANSLATION",
+  "decision": "FAIL_TRANSLATION_EXISTING_RETRY_TOPOLOGY_DOES_NOT_PRESERVE_CONSERVATIVE_RELATION",
+  "workflow": {
+    "run": 34304261930,
+    "job": 102317547585,
+    "head": "6d4c43a8a522a5169135abeb51ebcff5e5b12670",
+    "workflow_step_conclusion": "success",
+    "repeat_determinism": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "source_lock": {
+    "fsi20_handoff_base": "99f57db11ba30ffbc8b2bd44936b212f66cced9d",
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6",
+    "reference_tridag_control": "FSI18_GENERATED_TEST_ONLY_SWAP_4_3_1_THOMAS",
+    "production_src_diff_from_fvq27": "EMPTY_PASS",
+    "observer_normalizes_exactly_to_production_backend": "PASS"
+  },
+  "frozen_matrix": {
+    "initial_uniform_pressure_heads_cm": [-40.0,-55.0,-110.0,-160.0,-210.0,-320.0],
+    "prescribed_bottom_head_jumps_cm": [-0.05,-0.01,0.01,0.05],
+    "case_count": 24,
+    "actual_retry_attempt_durations_day": [0.25,0.125,0.0625],
+    "attempt_count": 72,
+    "same_endpoint_reference_steps": 512,
+    "bottom_mode": 5,
+    "optional_physics": "inactive"
+  },
+  "unchanged_production_transaction_shape": {
+    "retry_scale": 0.5,
+    "max_retries": 2,
+    "max_committed_substeps": 1,
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "nonlinear_head_tolerance": 1e-12,
+    "hard_mass_tolerance": 1e-12,
+    "production_binary_temporal_metric_retained": true,
+    "all_24_cases_actual_topology": {
+      "attempts": 3,
+      "retries": 2,
+      "solver_rejections": 0,
+      "temporal_rejections": 3,
+      "mass_rejections": 0,
+      "accepted_substeps": 0
+    }
+  },
+  "same_endpoint_reference": {
+    "available_attempts": 67,
+    "unavailable_attempts": 5,
+    "maximum_external_mass_residual": 2.71050543121376109e-20,
+    "hard_mass_gate": "PASS",
+    "transaction_vs_direct_same_horizon_defect_identity": "PASS",
+    "unavailable_due_to_nonlinear_solver_status_2": [
+      {"case":2,"initial_head_cm":-40.0,"jump_cm":-0.01,"attempt":3,"dt_day":0.0625,"reference_fail_step":101},
+      {"case":7,"initial_head_cm":-55.0,"jump_cm":0.01,"attempt":3,"dt_day":0.0625,"reference_fail_step":33},
+      {"case":8,"initial_head_cm":-55.0,"jump_cm":0.05,"attempt":3,"dt_day":0.0625,"reference_fail_step":11},
+      {"case":9,"initial_head_cm":-110.0,"jump_cm":-0.05,"attempt":3,"dt_day":0.0625,"reference_fail_step":162},
+      {"case":12,"initial_head_cm":-110.0,"jump_cm":0.05,"attempt":3,"dt_day":0.0625,"reference_fail_step":81}
+    ],
+    "reference_warning": "N=512 is a finite same-endpoint reference. Missing N=512 trajectories were not replaced by coarser references and solver controls were not relaxed."
+  },
+  "resolved_relationship": {
+    "resolved_attempts": 67,
+    "underconservative_attempts": 36,
+    "cases_losing_a_previously_conservative_relation_on_retry": 10,
+    "losing_case_ids": [5,6,9,10,11,12,21,22,23,24],
+    "pattern_legend": {
+      "C": "raw full-versus-two-half head defect >= remaining two-half-to-N512 same-endpoint head error",
+      "U": "raw defect < remaining same-endpoint head error",
+      "X": "N512 same-endpoint reference unavailable under unchanged solver controls"
+    },
+    "by_initial_state": [
+      {"initial_head_cm":-40.0,"case_patterns":["CCC","CCX","CCC","CCC"],"interpretation":"Available attempts remain conservative; one final retry reference is unavailable."},
+      {"initial_head_cm":-55.0,"case_patterns":["CCU","CCU","CCX","CCX"],"interpretation":"The final retry can lose a previously conservative relationship; two final references are additionally unavailable."},
+      {"initial_head_cm":-110.0,"case_patterns":["CUX","CUU","CUU","CUX"],"interpretation":"The first retry already becomes under-conservative for all four jump stimuli."},
+      {"initial_head_cm":-160.0,"case_patterns":["UUU","UUU","UUU","UUU"],"interpretation":"All resolved production-shaped attempts are under-conservative."},
+      {"initial_head_cm":-210.0,"case_patterns":["UUC","UUC","UUC","UUC"],"interpretation":"The production outer and first retry attempts are under-conservative; only the second retry enters the conservative relation."},
+      {"initial_head_cm":-320.0,"case_patterns":["UCU","UCU","UCU","UCU"],"interpretation":"The relation changes from under-conservative to conservative and back to under-conservative across the actual retry sequence."}
+    ]
+  },
+  "scientific_interpretation": {
+    "gate_A_fixed_horizon_result_remains_valid": true,
+    "fixed_horizon_refinement_level_can_be_interpreted_as_retry_count": false,
+    "existing_retry_shortening_preserves_conservative_defect_relation": false,
+    "raw_head_defect_is_invalid_as_a_dimensional_observable": false,
+    "raw_head_defect_is_admitted_as_existing_transaction_temporal_acceptance_metric": false,
+    "failure_is_not_caused_by_mass_gate": true,
+    "failure_is_not_resolved_by_current_retry_topology": true,
+    "five_reference_ceilings_change_the_rejection_to_inconclusive": false,
+    "reason": "The rejection is already demonstrated by 36 under-conservative resolved attempts and 10 held-out cases that lose a previously conservative relationship during actual retry halving. The five unavailable finite references only reduce evidence coverage; they are not needed for the negative conclusion."
+  },
+  "hard_constraints_preserved": {
+    "production_source_modified": false,
+    "production_temporal_tolerance_selected": false,
+    "state_normalization_selected": false,
+    "richardson_or_defect_multiplier_selected": false,
+    "retry_budget_changed": false,
+    "solver_controls_changed": false,
+    "mass_gate_relaxed": false,
+    "fkt_transaction_semantics_changed": false,
+    "fgc02_special_case_added": false
+  },
+  "qualification_result": "FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED_FOR_RAW_HEAD_DEFECT_PROFILE",
+  "next_owner": "F-SI temporal acceptance owner with runtime/transaction owner involvement if a different estimator or refinement semantic is proposed"
+}
