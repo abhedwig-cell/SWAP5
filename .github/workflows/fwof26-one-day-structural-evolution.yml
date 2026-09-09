@@ -1,0 +1,23 @@
+name: F-WOF26 one-day structural evolution
+
+on:
+  push:
+    branches:
+      - work/f-wof26-standard-one-day-structural-candidate
+  workflow_dispatch:
+
+jobs:
+  structural-evolution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run F-WOF26 gate
+        run: bash tests/fwof/run_fwof26_one_day_structural_evolution_gate.sh
