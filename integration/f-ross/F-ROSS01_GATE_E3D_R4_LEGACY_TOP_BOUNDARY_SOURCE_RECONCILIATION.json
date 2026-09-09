@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "evidence_unit": "E3D_R4_LEGACY_TOP_BOUNDARY_SOURCE_RECONCILIATION",
+  "source_provenance": {
+    "distribution": "SWAP_4.3.1(6).zip",
+    "nested_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "files": [
+      {
+        "path": "SWAP/boundtop.f90",
+        "sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04"
+      },
+      {
+        "path": "SWAP/headcalc.f90",
+        "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5"
+      },
+      {
+        "path": "SWAP/soilwater.f90",
+        "sha256": "027cfefc3ba7a010a256db1e43bd6e9c9facc4bf6edb4984578ddf1ef48acac8"
+      }
+    ]
+  },
+  "source_findings": [
+    {
+      "file": "SWAP/boundtop.f90",
+      "source_region": "module variables and boundtop around lines 6-15 and 99-166 in the extracted source",
+      "finding": "Legacy SWAP explicitly carries q0, hsurf, FlRunoff and ftoph. q0 is atmospheric net potential flux; the actual soil-surface flux is corrected for ponding and runoff."
+    },
+    {
+      "file": "SWAP/boundtop.f90",
+      "source_region": "boundtop around lines 113-148",
+      "finding": "The routine first forms the flux boundary demand q1, calculates a maximum conductivity assuming saturation at the ground surface, and predicts the surface head h0 implied by that flux. If h0 <= 1e-6 cm, the flux boundary remains active with ftoph=.FALSE. and qtop=q1. If h0 > 1e-6 cm, ponding is declared and ftoph=.TRUE.; the surface switches to a prescribed-head formulation instead of continuing an infeasible fixed flux."
+    },
+    {
+      "file": "SWAP/boundtop.f90",
+      "source_region": "pondrunoff around lines 174-320",
+      "finding": "When ponding/runoff is active, explicit surface-water storage pond and runoff runots are solved. hsurf is set from the ponding depth; runoff is activated relative to pondmx and the selected runoff law."
+    },
+    {
+      "file": "SWAP/headcalc.f90",
+      "source_region": "convergence checks around lines 325-340",
+      "finding": "For a prescribed top head, qtop is recomputed hydraulically and the water balance of the ponding layer is checked explicitly against precipitation, evaporation, runon, runoff and soil infiltration."
+    },
+    {
+      "file": "SWAP/headcalc.f90",
+      "source_region": "vector_F around lines 517-537",
+      "finding": "The nonlinear residual calls boundtop during iteration. If ftoph is active, the first-layer residual uses the Darcy flux from hsurf to h(1); otherwise it uses the imposed qtop flux. This is an explicit flux/head complementarity-style boundary switch inside the nonlinear solve."
+    }
+  ],
+  "reconciliation_with_e3d": {
+    "frozen_e3d_fixture": "Fixed q_top = 1.5 * KSAT with no explicit surface-water storage degree of freedom.",
+    "legacy_semantic_difference": "Legacy SWAP does not require that atmospheric excess remain a fixed soil-infiltration flux after the implied surface head becomes positive. It changes the active top-boundary formulation and accounts excess water in ponding/runoff.",
+    "interpretation": "The E3D 1.5*KSAT negative result is valid evidence that the simplified fixed-flux column cannot represent this saturation event, but it is not evidence that RossFast or legacy SWAP cannot traverse saturation.",
+    "consequence": "A production-relevant saturation-transition qualification must compose the soil-water solver with an explicit top-boundary contract that can change between admissible flux and prescribed surface-head/ponding states while conserving mass."
+  },
+  "architecture_invariant_check": {
+    "7_transactional_timesteps": "The active top-boundary state and ponding trial must participate in trial/retry and commit/rollback.",
+    "9_generic_time": "The switch is event/state driven, not tied to calendar boundaries.",
+    "13_mass_conservation_absolute": "Surface storage, runoff and soil infiltration must share one explicit conserved ledger.",
+    "20_alternative_soil_water_solvers": "The boundary contract should sit above the Richards/RossFast implementation so multiple soil-water solvers can use the same surface process semantics.",
+    "21_reuse_swap_physics": "Reuse the functional boundtop/pondrunoff physics rather than copying legacy module/global-variable structure.",
+    "23_physics_solver_policy_separated": "Whether ponding/runoff is physically active is not a numerical solver-policy choice.",
+    "28_runtime_coupler_composition": "Surface-process composition belongs in the kernel/process composition contract, not inside a RossFast table lookup."
+  },
+  "decision": "REAL_SATURATION_GATE_MUST_INCLUDE_TOP_BOUNDARY_COMPLEMENTARITY_AND_SURFACE_STORAGE_SEMANTICS",
+  "hard_nonclaims": [
+    "No claim that the legacy global/module architecture should be retained.",
+    "No qualification of the legacy nonlinear implementation itself.",
+    "No RossFast saturation-transition qualification yet.",
+    "No permission to hide ponding/runoff inside a numerical fallback.",
+    "No production admission."
+  ]
+}
