@@ -1,0 +1,84 @@
+name: F-ROSS01 Gate E3E-R2R2 Fresh 5cm Reference Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY_RESULT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r1_endpoint_limit_oracle_repair.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r1_endpoint_limit_oracle_repair_fastscan.py'
+      - 'experiments/ross/run_ross01_gate_e3e_5cm_surface_boundary_face.py'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_fresh_5cm_reference_characterization.py'
+      - '.github/workflows/ross01-gate-e3e-r2r2-fresh-5cm-reference-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Execute frozen fresh endpoint-aware characterization
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3e-r2r2-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r2r2_fresh_5cm_reference_characterization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R2R2_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R2R2_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen gate semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r2r2-{m}/F-ROSS01_GATE_E3E_R2R2_{m}_RESULT.json'
+          r=json.load(open(p))
+          mr=r['material_result']
+          assert r['gate']=='E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION'
+          assert r['production_implementation'] is False
+          assert r['inherited_steady_q_is_qualification_authority'] is False
+          assert r['fresh_probe_count']==80
+          assert mr['fresh_probe_count']==80
+          assert mr['fresh_overlap_count_with_original_e3e']==0
+          assert mr['reference_failure_count']==0
+          assert mr['candidate_unresolved_count']==0
+          assert mr['candidate_nonfinite_count']==0
+          assert mr['valid_probe_count']==80
+          assert len(mr['crosschecks'])==2
+          assert all(x['pass'] for x in mr['crosschecks'])
+          assert mr['wrong_sign_count']==0
+          assert mr['max_hybrid_metric']<=0.01
+          assert mr['p99_hybrid_metric']<=0.002
+          assert mr['max_abs_error_over_ksatfit']<=0.0005
+          assert mr['max_constitutive_K_evaluations']<=530
+          assert mr['max_root_residual_evaluations']<=66
+          assert mr['positive_surface_endpoint_case_count']==0
+          assert mr['endpoint_candidate_max_abs_error_over_ksat']<=1e-12
+          assert mr['pass'] is True
+          assert r['pass'] is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2r2-${{ matrix.material }}
+          path: ross01-gate-e3e-r2r2-${{ matrix.material }}/
