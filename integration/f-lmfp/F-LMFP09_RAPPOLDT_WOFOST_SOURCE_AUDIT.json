@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "source": {
+    "citation": "Rappoldt C, Boogaard HL, Brodsky L, Kodesova R, van Diepen CA (2012), Extension of the WOFOST soil water submodel; Comparison with SWAP and technical documentation, EcoCurves report 6",
+    "repository": "WUR eDepot",
+    "public_record": "687451",
+    "source_type": "technical report with WatFDGW source appendix"
+  },
+  "source_bound_method_elements_relevant_to_layeredmfp": [
+    {
+      "element": "layer water amount as a compact conserved state",
+      "evidence": "WATFDGW names WC, water amount per layer, as its main status variable; water content and hydraulic quantities are derived after each update",
+      "swap5_position": "RETAIN_CONCEPT_NOT_LEGACY_ARRAY_LAYOUT"
+    },
+    {
+      "element": "matric flux potential for dry unsaturated flow",
+      "evidence": "for equal soil type the dry interface-flow estimate is the MFP difference divided by centre distance; the report explicitly treats this as a stationary-flow approximation when matric suction dominates gravity",
+      "swap5_position": "RETAIN_AS_PHYSICS_INFORMED_REDUCED_ORDER_BUILDING_BLOCK"
+    },
+    {
+      "element": "equal-flux interface condition for heterogeneous soils",
+      "evidence": "the report states that MFP is discontinuous across material interfaces and solves for an interface suction/pF such that the two half-face fluxes are equal",
+      "swap5_position": "RETAIN_AND_GENERALISE_TO_SWAP_HYDRAULICS_SINGLE_REALIZED_FACE_FLUX"
+    },
+    {
+      "element": "bounded local interface solve",
+      "evidence": "historical WATFDGW uses robust local bisection with MaxFlowIter rather than a global profile Newton iteration",
+      "swap5_position": "RETAIN_PATTERN_BUT_REQUIRE_EXPLICIT_BOUND_COST_FAILURE_AND_ROLLBACK_SEMANTICS"
+    },
+    {
+      "element": "bidirectional dry flow",
+      "evidence": "the MFP-based dry estimate may be positive downward or negative upward",
+      "swap5_position": "RETAIN_SYMMETRIC_FACE_FLUX_GOAL"
+    },
+    {
+      "element": "layer-weighted/harmonic wet conductivity estimate",
+      "evidence": "wet unit-gradient limit uses thickness-weighted harmonic conductivity across adjacent layers",
+      "swap5_position": "USE_AS_REFERENCE_OR_LIMIT_CASE_NOT_AUTOMATIC_PRODUCTION_FLUX_LAW"
+    },
+    {
+      "element": "root uptake supplied as an external layer sink",
+      "evidence": "TRA is calculated by crop routine and passed to the water routine as a given sink",
+      "swap5_position": "RETAIN_ARCHITECTURAL_SEPARATION_COMPATIBLE_WITH_COMMON_SOIL_WATER_INTERFACE"
+    }
+  ],
+  "historical_implementation_details_not_to_inherit_as_method_requirements": [
+    {
+      "detail": "daily DELT=1 day integration assumption",
+      "reason": "SWAP5 time is generic and solver substeps must not be calendar-defined"
+    },
+    {
+      "detail": "field capacity as a hard transport regime boundary",
+      "reason": "this is a WOFOST reduced water-balance rule, not a general hydraulic identity"
+    },
+    {
+      "detail": "downward flux chosen as max(dry_MFP_estimate, wet_unit_gradient_estimate)",
+      "reason": "this asymmetric heuristic is not required by the MFP/equal-flux concept and must be qualified against full Richards if reused"
+    },
+    {
+      "detail": "upward dry flow capped at 0.50 of the equal-potential water transfer per daily step",
+      "reason": "the report introduces the 0.50 fraction to suppress day-step gradient reversal; it is timestep-specific stabilization rather than physical law"
+    },
+    {
+      "detail": "upward flow rejected or clipped according to field-capacity/groundwater cases",
+      "reason": "SWAP5 requires symmetric bidirectional exchange without hidden clipping"
+    },
+    {
+      "detail": "SUBSOL as separate groundwater-to-bottom-layer capillary-rise routine",
+      "reason": "SWAP5 direct groundwater coupling requires an explicit bottom head/flux interface and generic coupling windows"
+    },
+    {
+      "detail": "top-down filling to field capacity during initialization and wet redistribution",
+      "reason": "historical WOFOST bookkeeping choice, not a required LayeredMFP state representation"
+    },
+    {
+      "detail": "fixed interpolation tables and legacy Fortran record/array structures",
+      "reason": "SWAP5 may use shared immutable constitutive providers, SoA layouts and worker-local scratch"
+    }
+  ],
+  "important_source_limitations": [
+    "the report explicitly says MFP itself is discontinuous across soil-type interfaces; only suction/head is continuous",
+    "the dry MFP-gradient estimate neglects gravity and is justified mainly for dry conditions",
+    "the report acknowledges that its groundwater capillary-rise limitation may be too restrictive in realistic shallow-groundwater situations",
+    "the historical heterogeneous-interface bisection and separate equal-potential transfer bisection are local iterations; predictable runtime therefore depends on an explicit iteration cap rather than the label non-iterative",
+    "WOFOST was designed as an efficient crop water-availability model rather than a precise profile-physics replacement for SWAP"
+  ],
+  "layeredmfp_design_consequences": {
+    "primary_face_contract": "derive one conservative realized face flux from both endpoint states and both material hydraulic providers",
+    "heterogeneous_interface": "solve a bounded local equal-flux interface state or use a prequalified equivalent representation; never subtract MFP values across unlike materials directly",
+    "persistent_state_candidate": "layer water storage plus only genuinely required auxiliary physical state; no permanent root-finder scratch",
+    "forcing_and_sinks": "surface fluxes and distributed sinks remain external inputs to the soil-water step",
+    "time": "all transport/update rules scale with generic dt; no daily 0.5 equalisation rule",
+    "groundwater": "historical SUBSOL semantics are donor evidence only, not the SWAP5 bottom-interface contract",
+    "reference": "full Richards remains qualification reference for every retained reduced-order approximation"
+  },
+  "status": "RAPPOLDT_WOFOST_DONOR_ELEMENTS_SEPARATED_FROM_HISTORICAL_IMPLEMENTATION_POLICY"
+}
