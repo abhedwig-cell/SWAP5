@@ -266,18 +266,28 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_committed_state
 
-  subroutine fmr_new_b110_temporal_indicator_committed_state(committed, lineage_id, state, initial_time, ok)
+  subroutine fmr_new_b110_temporal_indicator_committed_state(committed, lineage_id, state, initial_time, ok, &
+                                                              initial_right_derivative)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
+    real(real64), intent(in), optional :: initial_right_derivative(:)
     class(transaction_state_t), allocatable :: carrier
+    logical :: seeded
+
+    ok = .false.
     allocate(fmr_b110_temporal_indicator_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_temporal_indicator_state_t)
       call copy_b110_physical_state(state, typed_carrier)
       call typed_carrier%temporal_history%clear()
+      if (present(initial_right_derivative)) then
+        if (state%active_nodes <= 0 .or. size(initial_right_derivative) /= state%active_nodes) return
+        call typed_carrier%temporal_history%replace(initial_right_derivative, seeded)
+        if (.not. seeded) return
+      end if
     end select
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_temporal_indicator_committed_state
