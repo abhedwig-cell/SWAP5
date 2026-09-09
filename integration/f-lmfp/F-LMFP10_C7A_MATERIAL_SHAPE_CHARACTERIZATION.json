@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "artifact": "C7A_MATERIAL_SHAPE_CHARACTERIZATION",
+  "qualification": false,
+  "production_implementation": false,
+  "data_basis": {
+    "c7a_result": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json",
+    "c7a_workflow_run": 34325023479,
+    "catalog": "SWAP_4.3.1/data/soil/Staringreeks_2018.csv",
+    "catalog_materials": 36,
+    "geometry_classes": 72,
+    "revealed_data": true
+  },
+  "derived_material_scales": {
+    "alpha_scale_cm": "1/ALFA",
+    "m": "1-1/NPAR",
+    "h50_scale_cm": "((2^(1/m)-1)^(1/NPAR))/ALFA",
+    "interpretation": "h50 is the absolute suction head at effective saturation Se=0.5 for the standard van Genuchten retention curve. It is used here only to characterize material transition scale, not as a qualified coordinate."
+  },
+  "observations": {
+    "h50_range_cm_across_catalog": [41.11895085455093, 209031.58899375354],
+    "materials_with_n_le_1p2": 9,
+    "materials_with_n_le_1p2_failing_C7a_any_geometry": 8,
+    "materials_with_n_le_1p2_passing_both_geometries": ["O12"],
+    "low_n_materials_failing_both_geometries": ["O13", "B12", "B11", "O11", "B10", "B17", "B18", "O07"],
+    "C7a_both_geometry_failure_materials": ["B10", "B11", "B12", "B17", "B18", "O07", "O11", "O13"],
+    "C7a_20cm_only_geometry_failures": ["O01", "O05"],
+    "contingency_n_le_1p2_vs_any_C7a_failure": {
+      "n_le_1p2": {"failed": 8, "passed": 1},
+      "n_gt_1p2": {"failed": 2, "passed": 25}
+    },
+    "spearman_material_level": {
+      "NPAR_vs_worst_active_max_error": -0.827542,
+      "NPAR_vs_worst_active_p99_error": -0.709910,
+      "h50_vs_worst_active_max_error": 0.727671,
+      "h50_vs_worst_active_p99_error": 0.578893
+    }
+  },
+  "low_n_detail": [
+    {"material":"O13","NPAR":1.079952,"h50_cm":209031.58899375354},
+    {"material":"B12","NPAR":1.090671,"h50_cm":126129.60014351696},
+    {"material":"B11","NPAR":1.106695,"h50_cm":30637.614889727247},
+    {"material":"O11","NPAR":1.126001,"h50_cm":17080.408515759176},
+    {"material":"B10","NPAR":1.13525,"h50_cm":13068.595534021984},
+    {"material":"B17","NPAR":1.136658,"h50_cm":8345.074310446773},
+    {"material":"B18","NPAR":1.150709,"h50_cm":4835.562285227618},
+    {"material":"O07","NPAR":1.153018,"h50_cm":7702.127300383185},
+    {"material":"O12","NPAR":1.158128,"h50_cm":9041.477456710025}
+  ],
+  "interpretation": {
+    "supported": [
+      "The persistent two-geometry C7a tail failures are strongly associated with low NPAR and very broad retention-transition scales.",
+      "The O01/O05 20cm-only strong-gradient failures form a distinct geometry-sensitive family and are not explained by the low-NPAR pattern.",
+      "A single scalar material normalization should not be assumed to solve both families without independent evidence."
+    ],
+    "not_supported": [
+      "NPAR<=1.2 as a production classifier",
+      "NPAR<=1.2 as a qualification threshold",
+      "h50 as a promoted coordinate",
+      "causation from correlation alone",
+      "deleting O12 because it is a counterexample",
+      "changing the already-running A0 nomination rule"
+    ]
+  },
+  "fresh_holdout_rule": "Any future candidate, classifier, regime split or coordinate motivated by this revealed characterization requires a separately precommitted fresh unseen holdout before qualification.",
+  "F_SI09_boundary": "This artifact characterizes the frozen legacy C7a basis. Any later SWAP5-admitted-provider qualification must reconcile against the exact qualified F-SI09 corrected B1.10 constitutive provider and must not treat legacy near-saturation findings as unresolved owner defects by default.",
+  "status": "POST_HOC_CHARACTERIZATION_PERSISTED_NO_NEW_ADMISSION"
+}
