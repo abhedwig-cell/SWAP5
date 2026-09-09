@@ -16,8 +16,8 @@ for spec in \
   src/runtime/mod_fmr_serialized_reference_backend.f90:f5cf46b4eb40e68704bc0dfcdb18bf0746504889 \
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90:7a60f8b8d18672098fed1c6890a95aac738ed21d \
   src/adapter/mod_b110_serialized_context_binding.f90:e21c964eac48d5feb91388cfd06a646c4002a497 \
-  src/adapter/mod_reference_richards_legacy_binding.f90:6eda1fec1bd03c03a1c0a8f2df29a273f70d962f \
-  src/legacy/b1_10_port/headcalc.f90:55893f1f5ccba2052ad681743aa155b69f351246 \
+  src/adapter/mod_reference_richards_legacy_binding.f90:1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff \
+  src/legacy/b1_10_port/headcalc.f90:e14733162da96399c8a247e5500b1d9e1ba95875 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90:544a1ca16fdeebdfce7f89d1ddf1825fa32fa654 \
   src/runtime/mod_fmr_parallel_worker_pool.f90:97c3c94fc8189ea9b98e8cb5cf44295bacb47e46 \
   tests/fmr/test_fmr20_authoritative_one_worker_identity.f90:d21c727427dc42c84cd4fcd90c4399001fcc5b5a; do
@@ -32,18 +32,23 @@ git fetch --quiet --no-tags --depth=1 origin \
 [[ "$(git rev-parse "$BASE_REF")" == "$BASE" ]] || fail 'live MR19 base drift'
 git diff --name-only "$BASE_REF" HEAD -- src > "$BUILD/src.changed"
 printf '%s\n' \
+  src/adapter/mod_reference_richards_legacy_binding.f90 \
+  src/legacy/b1_10_port/headcalc.f90 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90 \
   src/runtime/mod_fmr_parallel_worker_pool.f90 > "$BUILD/src.expected"
 diff -u "$BUILD/src.expected" "$BUILD/src.changed" >/dev/null || {
   diff -u "$BUILD/src.expected" "$BUILD/src.changed" >&2 || true
   fail 'unexpected production source scope relative to MR19 closeout'
 }
-echo 'FMR20_AUTH_G02_ONLY_ADDITIVE_MR20_SOURCE=PASS'
+echo 'FMR20_AUTH_G02_BOUNDED_STAGE1_SOURCE_SCOPE=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
 pool = Path('src/runtime/mod_fmr_parallel_worker_pool.f90').read_text().lower()
 sched = Path('src/runtime/mod_fmr_parallel_physical_scheduler.f90').read_text().lower()
+head = Path('src/legacy/b1_10_port/headcalc.f90').read_text()
+binding = Path('src/adapter/mod_reference_richards_legacy_binding.f90').read_text()
+
 assert 'worker_count /= 1' in pool
 assert pool.index('worker_count /= 1') < pool.index('call fmr_run_serialized_physical_multiswap')
 for token in ('!$omp','omp_lib','call headcalc(','use variables','use mod_grid','use mod_snow'):
@@ -53,6 +58,25 @@ assert 'fmr_build_execution_order' in sched
 assert 'mod(pos - 1, worker_count) + 1' in sched
 print('FMR20_AUTH_G03_MULTIWORKER_FAILS_BEFORE_PHYSICS=PASS')
 print('FMR20_AUTH_G04_NO_DIRECT_LEGACY_OR_OPENMP_DEPENDENCY=PASS')
+
+assert 'legacy_fldtmin => fldtmin' in head
+assert 'legacy_fldaystart => fldaystart' in head
+assert 'at_min_dt = legacy_fldtmin' in head
+assert 'at_min_dt = ctx%control%at_min_dt' in head
+assert 'day_start_event = legacy_fldaystart' in head
+assert 'day_start_event = ctx%time%day_start_event' in head
+assert 'if (at_min_dt) MaxIt1 = 2*MaxIt' in head
+assert 'if (at_min_dt .AND. state%numbit > MaxIt) then' in head
+assert 'if (.NOT.at_min_dt) then' in head
+assert 'if (day_start_event) then' in head
+assert 'if (legacy_state_binding) legacy_fldtmin = .FALSE.' in head
+for forbidden in ('if (fldtmin)', 'if (.NOT.fldtmin)', 'if (fldaystart)'):
+    assert forbidden not in head, forbidden
+assert 'a23bu_seed_timestep_control' in binding
+assert 'call a23bu_seed_timestep_control(ws%legacy_worker, request%step_duration' in binding
+assert 'fldtmin' not in binding
+assert 'legacy-min-dt-deferred' not in binding
+print('FMR20_AUTH_G05_CANONICAL_MIN_DT_DAY_EVENT_WORKER_LOCAL=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -121,6 +145,6 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
   fail 'O0/O2 output identity'
 }
-echo 'FMR20_AUTH_G05_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'FMR20_AUTH_G06_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
 echo 'FMR20_AUTHORITATIVE_ONE_WORKER_GATE=PASS'
