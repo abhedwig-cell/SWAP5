@@ -1,0 +1,1 @@
+The frozen matrix intentionally includes fresh nonlinear hydraulic triplets and separates policy probes across cases. Budget multiples of direct B_inf are oracle-only structural test values for threshold semantics and are not application budget recommendations.
