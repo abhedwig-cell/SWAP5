@@ -10,7 +10,7 @@ cd "$ROOT"
 CORE=src/runtime/mod_fmr_runtime_core.f90
 CORE_BLOB=543af573b34bfccd8fbdecf719af22994c5236b2
 READINESS=integration/f-mr/F-MR20_PARALLEL_READINESS.json
-READINESS_BLOB=de0bf5c778d9a2710eb486d289628faf411b6fbd
+READINESS_BLOB=6a7464843a596f33bf6046a7282ad8134d27bd21
 TEST=tests/fmr/test_fmr20_parallel_readiness.f90
 TEST_BLOB=4df4e8f8ed0aeced2671770d7b71675eb2d1d388
 MQ23_EVIDENCE=integration/f-mq/F-MQ23_QUALIFICATION_EVIDENCE.json
