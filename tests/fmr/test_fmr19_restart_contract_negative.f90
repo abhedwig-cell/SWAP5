@@ -1,3 +1,30 @@
+module mod_fmr19_negative_test_state
+  use, intrinsic :: iso_fortran_env, only: int64
+  use mod_transaction_reference, only: transaction_state_t
+  implicit none
+  private
+
+  type, extends(transaction_state_t), public :: negative_test_state_t
+    integer(int64) :: token = 0_int64
+  contains
+    procedure :: clone => clone_negative_test_state
+  end type negative_test_state_t
+
+contains
+
+  subroutine clone_negative_test_state(self, copy)
+    class(negative_test_state_t), intent(in) :: self
+    class(transaction_state_t), allocatable, intent(out) :: copy
+
+    allocate(negative_test_state_t :: copy)
+    select type (typed_copy => copy)
+    type is (negative_test_state_t)
+      typed_copy%token = self%token
+    end select
+  end subroutine clone_negative_test_state
+
+end module mod_fmr19_negative_test_state
+
 program test_fmr19_restart_contract_negative
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_transaction_reference, only: transaction_state_t
@@ -9,16 +36,11 @@ program test_fmr19_restart_contract_negative
        FMR_RESTART_STATE_NOT_COMMITTED, FMR_RESTART_KERNEL_PERSISTENCE_REJECTED, &
        FMR_RESTART_TARGET_ALREADY_INITIALIZED, FMR_RESTART_SCHEMA_MISMATCH, &
        FMR_RESTART_PARAMETER_SET_MISMATCH
+  use mod_fmr19_negative_test_state, only: negative_test_state_t
   implicit none
 
   integer(int64), parameter :: parameter_set_identity = 1905001_int64
   real(real64), parameter :: committed_time = 1234.5_real64
-
-  type, extends(transaction_state_t) :: negative_test_state_t
-    integer(int64) :: token = 0_int64
-  contains
-    procedure :: clone => clone_negative_test_state
-  end type negative_test_state_t
 
   type(fmr_logical_column_t), allocatable :: columns(:), bad_columns(:)
   type(fmr_template_t), allocatable :: templates(:), bad_templates(:)
@@ -160,17 +182,6 @@ program test_fmr19_restart_contract_negative
   write(*,'(A)') 'FMR19_RESTART_CONTRACT_NEGATIVE_TEST PASS'
 
 contains
-
-  subroutine clone_negative_test_state(self, copy)
-    class(negative_test_state_t), intent(in) :: self
-    class(transaction_state_t), allocatable, intent(out) :: copy
-
-    allocate(negative_test_state_t :: copy)
-    select type (typed_copy => copy)
-    type is (negative_test_state_t)
-      typed_copy%token = self%token
-    end select
-  end subroutine clone_negative_test_state
 
   subroutine configure_fixture(fixture_columns, fixture_templates, fixture_states)
     type(fmr_logical_column_t), intent(out) :: fixture_columns(:)
