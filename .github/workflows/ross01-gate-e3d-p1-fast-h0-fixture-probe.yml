@@ -1,0 +1,42 @@
+name: F-ROSS01 Gate E3D-P1 Fast H0 Fixture Probe
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'experiments/ross/run_ross01_gate_e3d_p1_fast_h0_fixture_probe.py'
+      - '.github/workflows/ross01-gate-e3d-p1-fast-h0-fixture-probe.yml'
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute fast h0 fixture probe
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3d-p1"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3d_p1_fast_h0_fixture_probe.py \
+            "$out/F-ROSS01_GATE_E3D_P1_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3D_P1_STDOUT.txt"
+      - name: Assert diagnostic semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3d-p1/F-ROSS01_GATE_E3D_P1_RESULT.json'))
+          assert r['qualification_use'] is False
+          assert r['production_implementation'] is False
+          assert r['initial_heads_cm'] == [-0.2,-1.5,-5.0]
+          PY
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3d-p1-fast-h0-fixture-probe
+          path: ross01-gate-e3d-p1/
