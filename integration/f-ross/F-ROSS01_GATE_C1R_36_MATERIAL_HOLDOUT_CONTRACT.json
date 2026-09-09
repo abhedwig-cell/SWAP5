@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_FRESH_36_MATERIAL_HOLDOUT",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "selected_candidate_artifact": "F-ROSS01_GATE_C1R_SELECTED_REPRESENTATION.json",
+  "selected_candidate": {
+    "N": 241,
+    "storage": "float32 log mobility",
+    "state_to_coordinate": "qualified direct S-to-u mapping",
+    "coordinate_axis": "uniform u on [0,4]",
+    "head_reconstruction": "h=-10^u cm with exact endpoints",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(bilinear_log_M)",
+    "shared_table_plus_metadata_bytes": 232356,
+    "memory_limit_bytes": 262144
+  },
+  "catalog": {
+    "artifact": "F-ROSS01_GATE_C1_MATERIAL_CATALOG.json",
+    "material_count": 36,
+    "constitutive_family": "unimodal Mualem-van Genuchten using KSATFIT with KSATEXM disabled"
+  },
+  "holdout_independence": {
+    "characterization_ordinary_seeds_reused": false,
+    "state_space_seed_rule": "uint32(first8hex(sha256('F-ROSS01-C1R-HOLDOUT-S:'+material)))",
+    "coordinate_space_seed_rule": "uint32(first8hex(sha256('F-ROSS01-C1R-HOLDOUT-U:'+material)))",
+    "candidate_or_density_tuning_after_holdout_access": false,
+    "failure_policy": "Any failure is fail-closed. Do not change N, storage type, mapping, thresholds or interpolation using holdout observations."
+  },
+  "probes_per_material": {
+    "ordinary_state_space_sobol": 512,
+    "ordinary_coordinate_space_sobol": 512,
+    "equal_head": 96,
+    "hydrostatic": 96,
+    "near_hydrostatic": 128,
+    "wet_dry_cross": 49,
+    "edge": 8,
+    "total": 1401,
+    "state_space_definition": "Sobol points uniformly mapped into material-specific [S_min,S_max]^2",
+    "coordinate_space_definition": "Sobol points uniformly mapped into [0,4]^2 then transformed by h=-10^u and S(h)",
+    "near_hydrostatic_definition": "64 log-spaced upper heads with lower head h_below=h_above+10+epsilon for epsilon in {-0.25,+0.25} cm",
+    "wet_dry_state_fractions": [0.005,0.02,0.1,0.5,0.9,0.98,0.995]
+  },
+  "acceptance_thresholds_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "shared_table_plus_metadata_bytes_max": 262144
+  },
+  "aggregate_decision_rule": "PASS only if all 36 materials pass every frozen per-material criterion. Any single failure rejects catalog qualification fail-closed.",
+  "valid_pass_decision": "C1R_N241_STARINGREEKS_UNIMODAL_MVG_CATALOG_QUALIFIED_READY_FOR_SEPARATE_KSATEXM_AND_OTHER_HYDRAULIC_FAMILY_GATES",
+  "valid_fail_decision": "C1R_N241_36_MATERIAL_HOLDOUT_FAILED_NO_CATALOG_QUALIFICATION",
+  "scope_guard": "Even a PASS qualifies only homogeneous unsaturated 10-cm faces in the frozen h=[-10000,-1] cm unimodal MvG KSATFIT catalog. It does not qualify KSATEXM, saturation switching, heterogeneous faces, transient timestep accuracy, other SWAP processes, bottom boundaries, groundwater coupling, MultiSWAP execution, response tangents or FullRichards equivalence."
+}
