@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "qualification_target": "ZERO_SURFACE_MIXED_SATURATED_UNSATURATED_FACE_ENDPOINT_SEMANTICS_ONLY",
+  "upstream": {
+    "reference_oracle_closeout": "F-ROSS01_GATE_E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR_RESULT.json",
+    "decision": "QUALIFIED_ENDPOINT_ROBUST_5CM_REFERENCE_WITNESSES_WITH_B12_O13_KSAT_ENDPOINT_DEGENERACY_FRESH_REFERENCE_CHARACTERIZATION_AND_ADMISSIBILITY_POLICY_REQUIRED"
+  },
+  "scope": {
+    "face_length_cm": 5.0,
+    "materials": ["B01", "B12", "O13", "O14"],
+    "constitutive_family": "UNIMODAL_MUALEM_VAN_GENUCHTEN_KSATFIT_HENPR_0_KSATEXM_DISABLED",
+    "surface_head_cm": 0.0,
+    "top_node_head_rule": "h_top < 0",
+    "orientation": "z positive downward",
+    "q_sign": "positive downward"
+  },
+  "governing_identity": {
+    "darcy_vertical": "q = K(h) * (1 - dh/dz)",
+    "saturated_plateau": "h=0, K=KSAT, dh/dz=0 therefore q=KSAT exactly",
+    "unsaturated_endpoint_path_cm": "L_u(h_top) = integral_{0}^{h_top} Kr(h)/(Kr(h)-1) dh at q=KSAT",
+    "vgm_near_saturation_asymptotic": "1-Kr ~ 2*(alpha*abs(h))^(n-1) as h -> 0-; therefore the q=KSAT endpoint path is locally integrable iff 1<n<2",
+    "q_gt_ksat_monotonicity": "For fixed h_surface=0 and h_top<0, dL/dq < 0 on every regular q>KSAT branch because the pointwise derivative of K/(K-q) with respect to q is positive while integration proceeds from 0 to negative h_top. Thus if lim_{q->KSAT+} L(q) < face length, no regular q>KSAT pure-unsaturated root can satisfy the full face length."
+  },
+  "policy_to_test": {
+    "endpoint_plateau_admissible_if": [
+      "h_surface is exactly 0 within the frozen boundary-state semantics",
+      "h_top < 0",
+      "1 < n < 2 so the endpoint path is finite",
+      "two independently implemented endpoint integrals agree within the frozen endpoint tolerance",
+      "0 <= L_u < face_length - endpoint_class_tolerance",
+      "plateau_length = face_length - L_u is finite and nonnegative",
+      "q is exactly KSAT",
+      "Darcy residual on the plateau is exactly zero under q=K*(1-dh/dz)",
+      "head is continuous at the plateau-to-unsaturated join h=0",
+      "the unsaturated-side dh/dz tends to 0 as h -> 0-",
+      "no water amount, constitutive parameter or physical state is altered to create the plateau"
+    ],
+    "endpoint_exact_if": "L_u equals face_length within endpoint_class_tolerance; q=KSAT and plateau_length=0",
+    "interior_root_if": "L_u > face_length + endpoint_class_tolerance or the endpoint integral diverges",
+    "positive_surface_head": "excluded from endpoint plateau admission; h_surface>0 requires the ordinary interior q>KSAT branch because the saturated head drop has finite positive length only for q>KSAT",
+    "failure_policy": "Any failed eligibility, nonfinite value, oracle disagreement or unsupported constitutive regime fails closed to the qualified reference/FullRichards route. Never clip, merge, smooth or change water to force endpoint admission."
+  },
+  "frozen_witnesses": {
+    "positive_endpoint_plateau": [
+      {"material": "B12", "h_surface_cm": 0.0, "h_top_cm": -100.0, "expected_endpoint_path_cm_approx": 1.2262487974582952},
+      {"material": "O13", "h_surface_cm": 0.0, "h_top_cm": -100.0, "expected_endpoint_path_cm_approx": 0.638495429434986}
+    ],
+    "negative_endpoint_controls": [
+      {"material": "B01", "h_surface_cm": 0.0, "h_top_cm": -100.0, "expected_endpoint_path_cm_approx": 60.12822903325322, "expected_branch": "INTERIOR_ROOT"},
+      {"material": "O14", "h_surface_cm": 0.0, "h_top_cm": -100.0, "expected_endpoint_path_cm_approx": 190.0829659117692, "expected_branch": "INTERIOR_ROOT"}
+    ]
+  },
+  "acceptance": {
+    "endpoint_oracle_pair_max_abs_difference_cm": 1e-9,
+    "endpoint_class_tolerance_cm": 1e-9,
+    "positive_witnesses_classify_as_plateau": true,
+    "negative_controls_classify_as_interior_root": true,
+    "plateau_length_closure_max_abs_cm": 1e-12,
+    "plateau_darcy_residual_max_abs_cm_per_day": 1e-14,
+    "join_head_discontinuity_max_abs_cm": 0.0,
+    "unsaturated_gradient_limit_check": "abs(1-1/Kr(h)) strictly decreases toward zero over h=-1e-2,-1e-4,-1e-8,-1e-12 cm in high precision for admitted witnesses",
+    "persistent_state_bytes": 0,
+    "new_constitutive_physics": false,
+    "mass_repair_or_clipping": false
+  },
+  "architecture_binding": {
+    "persistent_state": "none; plateau length is derived face-local geometry, not committed column state",
+    "scratch_owner": "worker",
+    "transaction_semantics": "candidate endpoint diagnostics are trial-local; rejected trials cannot alter committed state",
+    "mass_conservation": "hard requirement unchanged",
+    "solver_policy": "endpoint admissibility is numerical/face policy and does not modify physical hydraulic parameters",
+    "fallback": "fail closed to reference/FullRichards where eligibility is not proven"
+  },
+  "theory_sources": [
+    {"citation": "Ross 2011, Vadose Zone Journal, DOI 10.2136/vzj2010.0085", "use": "steady-state Darcy integration; saturated regions handled in head space and analytically along uniform paths"},
+    {"citation": "Ross 2003, Agronomy Journal, DOI 10.2134/agronj2003.1352", "use": "Ross mixed unsaturated/saturated state formulation"},
+    {"citation": "Schaap and van Genuchten 2006, Vadose Zone Journal, DOI 10.2136/vzj2005.0005", "use": "sharp VGM conductivity behavior immediately below saturation, especially low n"}
+  ],
+  "hard_nonclaims": [
+    "This gate does not qualify the complete 5 cm Ross candidate face.",
+    "This gate does not qualify h_surface>0 ponding or a surface-process ledger.",
+    "This gate does not qualify response tangents across q=KSAT endpoint switching.",
+    "This gate does not admit groundwater, runtime, MultiSWAP or production use.",
+    "This gate does not modify VGM with an air-entry smoothing head or any HENPR/SVG2006 bridge."
+  ],
+  "success_exit": "QUALIFIED_ZERO_SURFACE_KSAT_PLATEAU_AS_DERIVED_FACE_LOCAL_MIXED_ENDPOINT_SEMANTICS_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "failure_exit": "ZERO_SURFACE_KSAT_PLATEAU_NOT_ADMISSIBLE_ROUTE_CASES_TO_REFERENCE_SOLVER",
+  "next_if_success": "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+  "next_if_failure": "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION_WITH_ENDPOINT_CASES_EXCLUDED_AND_ROUTED_TO_REFERENCE"
+}
