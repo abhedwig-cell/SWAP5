@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR19",
+  "title": "Restricted MultiSWAP Committed-Boundary Process Restart Composition",
+  "scope": {
+    "runtime": "restricted serialized real-physics MultiSWAP only",
+    "parallel_real_physics": false,
+    "restart_boundary": "accepted committed boundary only",
+    "filesystem_or_file_format": false,
+    "kernel_io": false
+  },
+  "upstream": {
+    "F_KT12": "typed committed-state export/restore",
+    "F_KT13": "trusted reconstruction after external decode",
+    "F_MQ23": "restricted serialized real-physics MultiSWAP qualification oracle"
+  },
+  "composition": {
+    "physical_state_owner": "existing F-KT committed continuation state",
+    "runtime_identity_owner": "F-MR19 adapter-facing restart record",
+    "column_binding": "logical column_id, never array position",
+    "template_binding": "exact fmr_template_t identity including physics, vertical, state, solver, optional-state and numerical-continuation layout ids",
+    "parameter_binding": "immutable parameter reference identity only; parameter payload is not persisted per column",
+    "forcing": "reconstructed runtime input, not persisted in committed state",
+    "scratch": "not persisted",
+    "publication": "restore into temporary committed registry followed by atomic whole-registry publication only after all records validate"
+  },
+  "required_fail_closed_gates": [
+    "duplicate or missing logical column id",
+    "wrong template id",
+    "wrong physics topology id",
+    "wrong vertical layout id",
+    "wrong state layout id",
+    "wrong solver interface id",
+    "wrong optional-state layout id",
+    "wrong numerical-continuation layout id",
+    "wrong backend compatibility",
+    "wrong immutable parameter reference",
+    "schema mismatch",
+    "corrupt or non-reconstructable physical continuation state",
+    "restore into initialized target registry"
+  ],
+  "required_batch_matrix": [1, 2, 8, 17, 32],
+  "required_positive_evidence": [
+    "exact per-column lineage, revision and committed-time continuation",
+    "ordering-independent record restore",
+    "ordering-independent runtime continuation",
+    "cross-column contamination absent",
+    "exact continuous-vs-restarted endpoint physical identity",
+    "exact accepted-interval mass continuation",
+    "deterministic replay",
+    "no immutable parameter payload duplication",
+    "no worker/Newton/Jacobian scratch in restart records"
+  ],
+  "architecture_invariants": {
+    "2_kernel_separate_from_io": "required",
+    "3_explicit_data_separation": "required",
+    "4_compact_persistent_state": "required",
+    "5_scratch_per_worker": "required",
+    "7_transactional_timesteps": "committed boundary only",
+    "9_generic_time": "required",
+    "13_mass_conservation": "hard gate",
+    "16_multiswap_primary": "primary target",
+    "23_physics_solver_policy_separation": "template identity keeps physical and numerical axes explicit",
+    "28_runtime_coupler_composition": "restart composition remains outside kernel",
+    "29_no_silent_dependencies": "required",
+    "30_architecture_change_test": "required"
+  },
+  "forbidden_claims": [
+    "general SWAP persistence format",
+    "byte or file serialization qualification",
+    "parallel real-physics restart qualification",
+    "mid-transaction restart",
+    "worker scratch persistence",
+    "F-MQ25 readiness before an immutable tested MR19 candidate exists"
+  ],
+  "exit_condition": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ"
+}
