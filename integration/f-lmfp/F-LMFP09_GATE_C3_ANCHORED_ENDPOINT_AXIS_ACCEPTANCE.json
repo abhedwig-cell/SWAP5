@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C3_ANCHORED_ENDPOINT_AXIS_CHARACTERIZATION",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "purpose": "Test whether deterministic material-independent pressure-head decade anchors remove the Gate C2 extreme dry-to-wet endpoint interpolation failure without threshold relaxation or pair-specific tuning.",
+  "candidate": {
+    "base_coordinate": "x=asinh(h/0.01cm)",
+    "base_nodes": 33,
+    "extra_head_knots_cm": [-1000000.0,-100000.0,-10000.0,-1000.0,-100.0,-10.0,-1.0,-0.1,-0.01,-0.001,0.0,0.001,0.01,0.1,1.0,10.0,100.0],
+    "selection_rule": "fixed signed pressure-head decades within the already-qualified ratio envelope, independent of material, face pair, oracle error and validation result",
+    "pair_specific_tables": false,
+    "runtime_oracle_calls": 0,
+    "lookup_complexity_target": "O(1) bracket plus bilinear interpolation",
+    "production_code_changed": false
+  },
+  "scope": {
+    "characterization_materials": ["reference_sand","very_fast"],
+    "half_face_lengths_cm": [5.0,10.0],
+    "reason": "These are the four provider classes that failed Gate C2 self-check; this is a causal characterization before a full synthetic rerun.",
+    "extreme_tail_probes_retained": true,
+    "ordinary_probes_retained": true,
+    "heterogeneous_full_matrix_deferred_until_candidate_provider_pass": true
+  },
+  "unchanged_provider_acceptance": {
+    "failures": 0,
+    "sign_mismatches": 0,
+    "corrected_p90_rel_error_max": 0.02,
+    "corrected_p99_rel_error_max": 0.10,
+    "corrected_max_rel_error_max": 0.30,
+    "strong_gradient_p90_rel_error_max": 0.02,
+    "near_saturation_p90_rel_error_max": 0.02,
+    "dormant_scaled_abs_error_max": 1e-7,
+    "corrected_must_improve_p90_vs_plain_mfp": true,
+    "corrected_better_fraction_min": 0.75,
+    "identity_abs_error_max": 2e-10,
+    "hydrostatic_abs_flux_max": 2e-10,
+    "continuity_final_ratio_max": 0.35,
+    "explicit_fail_closed_required": true
+  },
+  "fail_closed_rules": [
+    "do not remove or reclassify the extreme dry-to-wet probes",
+    "do not widen the physical head envelope",
+    "do not relax error thresholds after observing results",
+    "do not create material-pair-specific or validation-case-specific knots",
+    "do not switch to a different solver silently on a failed lookup"
+  ],
+  "admission_rule": "Only if all four previously failing provider classes pass unchanged provider thresholds may the anchored axis proceed to the full synthetic heterogeneous C3 matrix.",
+  "status": "PERSISTED_BEFORE_TESTING"
+}
