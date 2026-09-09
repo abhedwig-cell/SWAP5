@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_R2_GROUPED_DELTA_K_EQ18_INDEPENDENT_HYDROLOGIC_RELEVANCE_QUALIFICATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": [
+    "B2C source Eq18 reconciliation preserved",
+    "B2C-R1 direct left-associated binary64 expression rejected",
+    "B2C-R1 grouped delta-K representation selected for independent qualification"
+  ],
+  "candidate": {
+    "equation": "dz/dt = [K_d*(G_eff+h_p)/z + (K_d-K_i)]/(theta_d-theta_i)",
+    "binary64_association": "form delta_theta=theta_d-theta_i and delta_K=K_d-K_i explicitly before adding capillary and gravity terms",
+    "persistent_extra_state_bytes": 0,
+    "delta_K_storage_policy": "local worker scalar or immutable shared parameter cache only; never per-column persistent state"
+  },
+  "independent_cases": {
+    "materials": ["B01","B12","O13","O14"],
+    "theta_bin_counts": [16,64,200],
+    "bin_fractions": [0.125,0.5,0.875,1.0],
+    "G_eff_cm": [1.0,10.0,100.0],
+    "ponding_head_cm": [0.0,1.0,5.0],
+    "front_depth_cm": [0.1,1.0,10.0,100.0],
+    "hydrologic_effect_dt_day": [1e-6,1e-4,1e-2],
+    "source_fixture": "integration/f-fwc/F-FWC01_GATE_B2A_MATERIAL_FIXTURE.json",
+    "reference": "Decimal80 evaluation of the same rounded binary64 endpoints and source equation"
+  },
+  "frozen_metrics": {
+    "max_normalized_forward_error": 1.4210854715202004e-14,
+    "cases_exceeding_forward_error_limit": 0,
+    "max_abs_front_displacement_error_cm_over_frozen_dt": 1e-6,
+    "max_abs_equivalent_water_depth_error_cm_over_frozen_dt": 1e-8,
+    "nonfinite_count": 0,
+    "negative_velocity_count": 0
+  },
+  "hydrologic_relevance_policy": [
+    "Mass conservation remains an exact ledger requirement and is not relaxed by this gate.",
+    "Representation errors smaller than the frozen front-displacement and equivalent-water-depth thresholds are considered hydrologically negligible for this algebra seam.",
+    "This gate does not qualify event creation, rainfall allocation, G_eff closure, front collision/merge, groundwater or long-run trajectory accuracy."
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_GROUPED_DELTA_K_EQ18_NUMERICAL_REPRESENTATION_READY_FOR_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_GATE",
+    "fail": "GROUPED_DELTA_K_EQ18_REPRESENTATION_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "No post-result tuning of cases, timesteps or thresholds.",
+    "Do not reinterpret a mass-ledger defect as hydrologically negligible.",
+    "Do not promote the direct left-associated expression rejected by B2C-R1.",
+    "Do not add per-column state to stabilize this algebra."
+  ],
+  "relevant_invariants": [3,4,5,7,13,16,23,25,26,27,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
