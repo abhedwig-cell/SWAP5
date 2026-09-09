@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "search_date": "2026-09-09",
+  "official_research_artifact": {
+    "repository": "University of Wyoming DataCorral",
+    "record_title": "A New General 1-D Vadose Zone Flow Solution Method",
+    "record_identifier": "M2WC70",
+    "article_doi": "10.1002/2015WR017126",
+    "resource_type": "dataset/source-code package",
+    "archive_name": "M2WC70.zip",
+    "reported_size": "230 MB",
+    "reported_language": "C",
+    "reported_example": "loam profile with groundwater table at 1 m under eight months of rainfall and evapotranspiration forcing from Panama",
+    "rights_statement": "DataCorral record states the associated work was dedicated to the public domain under CC0 to the extent allowed by law",
+    "download_locator_found": true,
+    "bytes_archived_into_SWAP5": false,
+    "checksum_captured": false,
+    "code_reproduced": false
+  },
+  "provenance_rule": "Do not vendor the 230 MB research archive into SWAP5. First capture checksum, file inventory, license text and minimal reproducibility evidence in a controlled external-source manifest. Any production implementation should be independently structured around the SWAP5 soil-water contract even when source inspection is used for algorithm reconstruction.",
+  "important_source_lineage_note": {
+    "original_2008_paper_has_correction": true,
+    "original_doi": "10.1029/2008WR006815",
+    "correction_doi": "10.1029/2008WR007455",
+    "rule": "Equation-level reconstruction must reconcile the correction before reproducing the 2008 algorithm."
+  },
+  "status": "OFFICIAL_PUBLIC_RESEARCH_CODE_ARTIFACT_IDENTIFIED_PROVENANCE_CAPTURE_AND_REPRODUCTION_STILL_OPEN"
+}
