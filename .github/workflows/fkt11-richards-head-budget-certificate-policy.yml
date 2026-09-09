@@ -12,7 +12,7 @@ permissions:
 jobs:
   owner-qualification:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,5 +22,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
           gfortran --version
-      - name: Run F-KT11 owner gate
+      - name: Run F-KT11 original owner gate
         run: bash tests/fkt/run_fkt11_owner_ci.sh
+      - name: Run F-KT11 invalid-budget diagnostic remediation gate
+        run: bash tests/fkt/run_fkt11_invalid_budget_diagnostic_remediation.sh
