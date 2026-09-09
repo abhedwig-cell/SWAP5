@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "title": "Primary-source hard-gate audit of published VZAA formulation",
+  "branch": "work/f-vzaa01-vadose-zone-analytical-assessment",
+  "source": {
+    "title": "Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge",
+    "authors": "Sadeghi et al.",
+    "journal": "Journal of Hydrology",
+    "volume": 673,
+    "article": "135467",
+    "year": 2026,
+    "doi": "10.1016/j.jhydrol.2026.135467"
+  },
+  "source_capture_status": {
+    "publisher_record_identified": true,
+    "article_text_inspected": true,
+    "article_reports_matlab_appendix_A_and_B": true,
+    "supplementary_matlab_artifact_directly_captured": false,
+    "official_code_reproduced": false,
+    "erratum_search_status": "NO_PRIMARY_CORRECTION_OR_ERRATUM_IDENTIFIED_IN_INITIAL_SEARCH_NOT_EXHAUSTIVE"
+  },
+  "published_algorithm_reconstruction": {
+    "flow_direction": "SEQUENTIAL_TOP_DOWN",
+    "external_boundary_input": "SURFACE_FLUX_ONLY_IN_PUBLISHED_FORMULATION",
+    "deepest_unsaturated_outflux_interpretation": "GROUNDWATER_RECHARGE",
+    "moving_water_table_updated_from_recharge": true,
+    "global_profile_iteration": false,
+    "mid_layer_flux_weighting": 0.5,
+    "groundwater_head_used_in_layer_flux": "PREVIOUS_TIME_STEP_DWT",
+    "empirical_flow_direction_correction": {
+      "wetting_downward_c": 0.5,
+      "drying_upward_c": 2.0
+    },
+    "hydraulic_model_statement": "Article states that any h-theta-K-D hydraulic model may be used; study uses van Genuchten relationships",
+    "important_derivation_approximations": [
+      "total moisture gradient decomposed into downward surface-flux and upward groundwater-flux contributions",
+      "diffusion equation used instead of full Richards equation to estimate moisture gradient",
+      "D(theta) treated as constant in the fractional-derivative derivation",
+      "steady upward-flow term derived assuming exponential K(h)"
+    ]
+  },
+  "published_mass_balance_evidence": {
+    "test_surface_flux_cm": 60.0,
+    "three_layer_ud_cumulative_error_cm": 19.88,
+    "three_layer_vzaa_cumulative_error_cm": -4.96,
+    "hundred_layer_vzaa_cumulative_error_cm": -0.37,
+    "reported_relative_interpretation": {
+      "three_layer_ud_percent": 33,
+      "three_layer_vzaa_percent": 8,
+      "hundred_layer_vzaa_percent": "below_1_percent"
+    },
+    "paper_statement": "non-negligible residuals remain for large spatial and temporal steps",
+    "swap5_interpretation": "REFINEMENT_TOWARD_SMALL_RESIDUAL_IS_NOT_EXACT_DISCRETE_CONSERVATION"
+  },
+  "published_bottom_boundary_evidence": {
+    "strict_zero_flux_enforceable": false,
+    "reason": "current non-iterative surface-driven formulation does not explicitly enforce a prescribed lower boundary",
+    "three_layer_vzaa_cumulative_bottom_inflow_cm": 46.97,
+    "hundred_layer_vzaa_cumulative_bottom_inflow_cm": 14.27,
+    "reference_surface_input_cm": 60.0,
+    "paper_interpretation": "non-zero residual bottom flux can create artificial gains or losses",
+    "swap5_interpretation": "INCOMPATIBLE_WITH_EXPLICIT_HEAD_OR_FLUX_BOTTOM_INTERFACE_AS_PUBLISHED"
+  },
+  "layered_soil_evidence": {
+    "published_uniform_soil_derivation": true,
+    "embedded_clay_tested": true,
+    "paper_reports_degraded_performance": true,
+    "paper_reports_relatively_large_deviations_from_hydrus": true,
+    "paper_attribution": "Eq. 3 analytical flux model was derived for uniform rather than layered soil",
+    "swap5_interpretation": "NO_BROAD_HETEROGENEOUS_INTERFACE_ADMISSION"
+  },
+  "gates": {
+    "A_scientific_reconstruction": "PARTIAL_PASS_SUFFICIENT_FOR_HARD_GATE_TRIAGE",
+    "B_published_code_reproduction": "OPEN_SUPPLEMENTARY_ARTIFACT_NOT_YET_CAPTURED",
+    "C_exact_discrete_conservation": "FAIL_PUBLISHED_FORMULATION_FOR_SWAP5",
+    "D_bottom_head_flux_boundary": "FAIL_PUBLISHED_FORMULATION_FOR_SWAP5",
+    "E_heterogeneous_material_interfaces": "NOT_QUALIFIED_PUBLISHED_LAYERED_CASE_DEGRADES",
+    "F_bidirectional_groundwater_exchange": "PARTIAL_PHYSICS_PRESENT_NOT_INTERFACE_QUALIFIED",
+    "G_transactional_trial_rollback": "OPEN_ARCHITECTURALLY_POSSIBLE_BUT_UNPROVEN",
+    "H_bounded_runtime": "OPEN_SEQUENTIAL_STRUCTURE_PROMISING_HISTORY_TERM_AND_LOCAL_SOLVES_REQUIRE_COST_AUDIT",
+    "I_modflow_response_tangent": "OPEN_NOT_PROVIDED_BY_PUBLISHED_FORMULATION",
+    "J_swap_physics_interface": "OPEN"
+  },
+  "hard_gate_decision": {
+    "published_vzaa_direct_production_admission": "BLOCKED",
+    "reason": [
+      "fails SWAP5 exact discrete mass-conservation requirement as published",
+      "fails SWAP5 explicit prescribed bottom head/flux boundary requirement as published"
+    ],
+    "conservative_modification_path": "OPEN_RESEARCH_NOT_YET_PROVEN",
+    "algorithmic_donor_path": "OPEN_AND_WORTH_INVESTIGATING",
+    "production_implementation_allowed": false
+  },
+  "next_required_actions": [
+    "capture and provenance-check the DOI-linked supplementary MATLAB appendices before claiming code reproduction",
+    "reproduce at least one published case without modifying the official code",
+    "write a layer-by-layer conservation ledger for the exact published update",
+    "prove or disprove whether one bounded correction can enforce an explicit bottom head or flux while preserving the same accepted-step mass ledger",
+    "test whether any correction remains O(N_layers) or bounded O(N_layers * N_corrections)",
+    "separate donor concepts from any claim that the published VZAA solver itself is admitted"
+  ],
+  "status": "PUBLISHED_VZAA_DIRECT_PATH_FAILS_HARD_GATES_C_AND_D_CONSERVATIVE_DERIVATIVE_RESEARCH_REMAINS_OPEN"
+}
