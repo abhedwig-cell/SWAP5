@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VZAA",
   "work_unit": "F-VZAA01",
   "title": "Vadose Zone Analytical Algorithm Assessment, Conservation Repair & SWAP5 Suitability",
@@ -9,50 +9,76 @@
   "official_code_reproduced": false,
   "qualified": false,
   "final_classification": null,
-  "interim_decision": "PUBLISHED_VZAA_DIRECT_PATH_BLOCKED_CONSERVATIVE_MODIFICATION_AND_DONOR_RESEARCH_OPEN",
+  "interim_decision": "PUBLISHED_VZAA_DIRECT_PATH_BLOCKED_CONSERVATIVE_DERIVATIVE_AND_DONOR_RESEARCH_OPEN",
   "primary_source": {
     "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467",
     "doi": "10.1016/j.jhydrol.2026.135467"
   },
-  "hard_gates": {
-    "A_exact_mass_conservation": "FAIL_FOR_PUBLISHED_FORMULATION",
-    "B_explicit_bottom_head_or_flux": "FAIL_FOR_PUBLISHED_FORMULATION",
-    "C_bidirectional_groundwater_exchange": "PARTIAL_PHYSICS_PRESENT_INTERFACE_NOT_QUALIFIED",
-    "D_transactional_trial_rollback": "OPEN",
-    "E_response_tangent": "OPEN"
+  "source_capture": {
+    "paper_inspected": true,
+    "methodological_precursor_inspected": true,
+    "doi_linked_matlab_supplement_directly_captured": false,
+    "published_case_reproduced": false
+  },
+  "new_reconstruction_findings": {
+    "fixed_domain_eq8_conservation": "ALGEBRAICALLY_EXACT_APART_FROM_ROUNDOFF_UNDER_FIXED_LAYER_AND_IDENTICAL_LEDGER_ASSUMPTIONS",
+    "reported_complete_method_residual_localization": "MUST_ARISE_OUTSIDE_NARROW_FIXED_DOMAIN_EQ8_IDENTITY_OR_FROM_IMPLEMENTATION_DETAIL_REQUIRES_SUPPLEMENTARY_CODE",
+    "water_table_update": "SEPARATE_APPROXIMATE_STORAGE_OPERATOR_USING_EMPIRICAL_PHI_AND_SY_MIN_NOT_PROVEN_EXACT_FINITE_STEP_STORAGE_MAP",
+    "literal_fractional_history_storage": "O_NLAYERS_X_NSTEPS",
+    "literal_fractional_history_total_work": "O_NLAYERS_X_NSTEPS_SQUARED_BEFORE_LOCAL_SOLVE_MULTIPLIERS",
+    "adaptive_substepping": "ADDITIONAL_RUNTIME_VARIABILITY",
+    "conservative_projection_derivative": "PLAUSIBLE_RESEARCH_CONCEPT_NOT_QUALIFIED_AND_NOT_PUBLISHED_VZAA"
+  },
+  "qualification_gates": {
+    "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_AND_CORE_ALGEBRA_RECONSTRUCTED",
+    "B_published_code_reproduction": "OPEN_SUPPLEMENT_NOT_CAPTURED",
+    "C_exact_discrete_conservation": "FAIL_PUBLISHED_COMPLETE_FORMULATION_FIXED_LAYER_CORE_IS_ALGEBRAICALLY_CONSERVATIVE",
+    "D_bottom_head_or_flux": "FAIL_PUBLISHED_FORMULATION",
+    "E_heterogeneous_material_interfaces": "NOT_QUALIFIED_PUBLISHED_LAYERED_CASE_DEGRADES",
+    "F_bidirectional_groundwater_exchange": "PARTIAL_PHYSICS_PRESENT_INTERFACE_NOT_QUALIFIED",
+    "G_transactional_trial_rollback": "CONDITIONALLY_PLAUSIBLE_HISTORY_STATE_OWNER_REQUIRED",
+    "H_bounded_runtime": "FAIL_STRONG_BOUNDED_COST_CLAIM_FOR_LITERAL_FULL_HISTORY_FORMULATION",
+    "I_modflow_response_tangent": "OPEN_NOT_PROVIDED_BOUNDED_SCALAR_RESPONSE_IS_ONLY_A_RESEARCH_PATH",
+    "J_swap_physics_interface": "OPEN"
   },
   "direct_path": {
     "production_admissible": false,
     "reason": [
-      "published coarse-layer examples retain non-negligible cumulative mass-balance residual",
-      "published formulation cannot strictly impose the lower zero-flux boundary and therefore does not provide the general prescribed-head/prescribed-flux contract required by SWAP5",
-      "published layered-soil case degrades because the analytical flux relation was derived for uniform soil"
+      "published complete method reports non-zero accepted profile mass-balance residuals",
+      "published formulation cannot strictly impose a general lower prescribed-head or prescribed-flux boundary",
+      "published layered-soil case degrades because the analytical flux relation was derived for uniform soil",
+      "literal half-order history grows with the complete time history and does not satisfy compact persistent state or strong predictable-cost requirements"
     ]
   },
   "research_paths_remaining": {
-    "conservative_modification": {
+    "conservative_derivative": {
       "status": "OPEN",
-      "required_proof": "A bounded correction must close the accepted-step ledger exactly while enforcing the lower interface condition without degenerating into an unbounded global Richards/Newton solve."
+      "required_proof": "Exact accepted-step ledger plus explicit bottom interface plus bounded correction count, while deviations from reference Richards remain qualified and diagnostics expose any fallback.",
+      "candidate_mechanism": "VZAA predictor followed by bounded conservative storage projection and reconstructed interface fluxes; prescribed-head mode may require a safeguarded scalar bottom-response solve."
+    },
+    "compressed_fractional_history": {
+      "status": "OPEN_SEPARATE_NUMERICAL_METHOD_CHANGE",
+      "required_proof": "Error, restart, rollback, conservation interaction and performance must be qualified independently before use."
     },
     "algorithmic_donor": {
       "status": "OPEN_PROMISING",
       "candidate_ideas": [
-        "closed-form or bounded analytical layer updates",
-        "sequential local solves",
-        "general constitutive evaluation",
-        "coarse vertical representation",
-        "pretabulated constitutive inversions",
-        "bounded predictor-corrector or conservation repair"
+        "sequential top-down local predictor",
+        "analytical moisture-flux donor relation",
+        "bounded scalar correction instead of global Newton where physically admissible",
+        "compressed transactional history modes",
+        "explicit conservative transfer ledger"
       ]
     }
   },
   "next_actions": [
     "capture and provenance-check DOI-linked supplementary MATLAB appendices",
-    "reproduce at least one published case without modifying the official implementation",
-    "write exact layer-by-layer storage and transfer ledger",
-    "construct the smallest conservative bottom-interface correction and prove mass closure algebraically before coding",
-    "bound correction count and runtime",
-    "only if mass and lower-boundary gates pass, compare against full Richards"
+    "reproduce a fixed-domain case and test Eq. 8 telescoping to roundoff",
+    "decompose moving-water-table residual into unsaturated storage, saturated storage, geometry crossing, clipping and lower-boundary terms",
+    "identify the actual Eq. 9 local solution method and count function evaluations",
+    "reconstruct adaptive time-step acceptance and establish bounded-cost or fallback policy",
+    "only then prototype a conservative derivative in an isolated harness",
+    "compare any derivative against reference Richards and LayeredMFP before production admission"
   ],
-  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_SWAP5_HARD_GATES_RESEARCH_CONTINUES_ONLY_AS_MODIFIED_OR_DONOR_METHOD"
+  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_RESEARCH_CONTINUES_ONLY_AS_EXPLICIT_DERIVATIVE_OR_DONOR"
 }
