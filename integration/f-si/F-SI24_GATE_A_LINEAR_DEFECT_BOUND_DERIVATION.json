@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "A_LINEAR_DEFECT_BOUND_DERIVATION",
+  "status": "ANALYTIC_BOUND_DERIVED_FOR_LINEAR_DISSIPATIVE_SEMI_DISCRETE_SCOPE",
+  "production_implementation": false,
+  "scientific_temporal_tolerance_selected": false,
+  "problem_class": {
+    "equation": "M*u_dot + A*u = 0",
+    "M": "constant symmetric positive definite; restricted SWAP manufactured/reference scope uses positive diagonal hydraulic storage weights",
+    "A": "constant symmetric positive semidefinite Darcy stiffness/operator",
+    "step": "backward Euler over dt>0",
+    "derivative_history": "u_dot_n is the compatible right derivative at the committed state; u_dot_np1 is the backward-Euler endpoint derivative",
+    "generalized_eigenstructure": "A*v_j=lambda_j*M*v_j with lambda_j>=0 and M-orthogonal eigenvectors"
+  },
+  "raw_observer": {
+    "vector": "e_raw=0.5*dt*(u_dot_np1-u_dot_n)",
+    "scalar_mode_x": "x=lambda*dt>=0",
+    "scalar_amplitude_relative_to_u_n": "R(x)=0.5*x^2/(1+x)",
+    "true_BE_local_endpoint_error_amplitude": "E(x)=1/(1+x)-exp(-x)>=0",
+    "bound": "E(x)<=R(x) for all x>=0",
+    "proof_sketch": [
+      "For x>=sqrt(2), 1-0.5*x^2<=0 while (1+x)*exp(-x)>0, so the rearranged inequality is immediate.",
+      "For 0<=x<sqrt(2), E<=R is equivalent to (1+x)*exp(-x)>=1-0.5*x^2.",
+      "Define g=ln(1+x)-x-ln(1-0.5*x^2). Then g(0)=0 and g'=x^2*(x+2)/((1+x)*(2-x^2))>=0, hence g>=0."
+    ]
+  },
+  "jacobian_transported_defect": {
+    "backward_euler_jacobian": "J_BE=M/dt+A",
+    "definition": "J_BE*delta=(M/dt)*e_raw = 0.5*M*(u_dot_np1-u_dot_n)",
+    "normal_path_extra_linear_solves": 1,
+    "normal_path_extra_full_nonlinear_solves": 0,
+    "scalar_amplitude_relative_to_u_n": "D(x)=0.5*x^2/(1+x)^2",
+    "two_times_bound": "E(x)<=2*D(x)=x^2/(1+x)^2 for all x>=0",
+    "proof_sketch": [
+      "For x>=(1+sqrt(5))/2, 1+x-x^2<=0 and the rearranged inequality is immediate.",
+      "For 0<=x<(1+sqrt(5))/2, E<=2D is equivalent to exp(x)*(1+x-x^2)<=(1+x)^2.",
+      "Define g=2*ln(1+x)-ln(1+x-x^2)-x. Then g(0)=0 and g'=x*(x^2+1)/((1+x)*(1+x-x^2))>=0, hence g>=0."
+    ],
+    "stiff_limit": "D(x) approaches 0.5*|u_n| while raw R(x) grows approximately 0.5*x*|u_n|; relative to the true BE error the defect route removes one power of stiff over-amplification."
+  },
+  "combined_linear_bound": {
+    "M_norm": "||v||_M=sqrt(v^T*M*v)",
+    "definition": "B_M=min(||e_raw||_M, 2*||delta||_M)",
+    "theorem": "For the stated constant linear dissipative problem, ||u_BE-u_exact||_M <= B_M.",
+    "reason": "Generalized M-orthogonal modal decomposition reduces each component to the scalar inequalities above; each candidate norm separately bounds the exact modal error norm, so their minimum also bounds it.",
+    "head_infinity_conversion_for_positive_diagonal_M": "||error||_inf <= ||error||_2 <= B_M/sqrt(m_min), where m_min=min_i M_ii>0.",
+    "head_infinity_bound": "B_inf=B_M/sqrt(m_min)",
+    "warning": "The M-norm/head-infinity conversion can become loose when hydraulic capacity/storage weights become very small; that looseness is diagnostic and may not be hidden by an empirical floor."
+  },
+  "connection_to_restricted_SWAP_swkimpl0": {
+    "linearized_storage": "M_ii=C_i*matrix_fraction_i*dz_i at the explicitly defined operator-evaluation state",
+    "darcy_operator": "With SwKimpl=0, fixed face conductivities and the admitted one-dimensional explicit-flux/prescribed-head boundary geometry, the tridiagonal Darcy contribution has symmetric off-diagonal conductance pairs and nonnegative boundary conductance contributions.",
+    "operator_evaluation_requirement": "The operator used for delta must be solver-owned and explicitly associated with the candidate/evaluation state; current stale final-Newton dfdh scratch may not be silently used as exact final-state J_BE.",
+    "nonlinear_claim": "NO_GENERAL_NONLINEAR_BOUND_YET"
+  },
+  "why_factor_two_is_not_empirical": "The factor 2 arises from a proven scalar-mode inequality for the backward-Euler error function and is fixed before any F-SI24 numerical test. It is not fitted to F-SI23 C2/C3 data.",
+  "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND",
+  "gate_A_decision": "PROMOTE_TO_GATE_B_EXACT_MANUFACTURED_QUALIFICATION",
+  "gate_B_required_axes": [
+    "single C1B generalized eigenmode over nonstiff through stiff lambda*dt values",
+    "multimode initial condition using the same M,A operator to test M-orthogonal modal superposition",
+    "machine-epsilon source/algebra checks for J_BE and the one tridiagonal defect solve",
+    "hard principal backward-Euler water ledger unchanged",
+    "O0/O2 identity",
+    "explicit demonstration that B_M bounds exact linear error while neither factor nor norm is calibrated from test outcomes"
+  ],
+  "not_yet_qualified": [
+    "nonlinear B1.10 bound",
+    "variable-in-time/state-dependent M or A bound",
+    "saturated/DAE states",
+    "macropores, root-sink Jacobians or SwKimpl=1",
+    "scientific temporal tolerance",
+    "F-KT09 normalization",
+    "production operator seam",
+    "production acceptance/retry policy"
+  ],
+  "next_action": "Freeze Gate B exact manufactured plan before executable code. Reuse the F-SI23 C1B linear hydraulic operator and add a predeclared multimode state; test e_raw, delta, B_M and B_inf against the exact matrix-exponential solution without changing production source."
+}
