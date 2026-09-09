@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC05",
+  "title": "Independent Coupling Head-Accuracy Objective Research Evidence",
+  "pre_registration_commit": "5e0d604917d925d8e5f8d9fb3c5c16a7be8b013c",
+  "target_leakage": false,
+  "numeric_H_budget_tested": false,
+  "GC02_executed": false,
+  "research_findings": [
+    {
+      "axis": "MODFLOW solver closure semantics",
+      "finding": "MODFLOW head-change criteria such as HCLOSE/DVCLOSE are iterative convergence controls in model length units. They are not, by definition, application prediction-error requirements and do not provide a universal groundwater-head accuracy target.",
+      "sources": [
+        "USGS MODFLOW-2005 PCG documentation: https://water.usgs.gov/ogw/modflow/MODFLOW-2005-Guide/pcg.htm",
+        "USGS MODFLOW Local Grid Refinement control documentation: https://water.usgs.gov/nrp/gwsoftware/modflow2000/Guide/lgr_control_file.htm"
+      ]
+    },
+    {
+      "axis": "interface convergence versus application error",
+      "finding": "MODFLOW-LGR defines separate interface head and flux convergence criteria between successive coupling iterations. This is direct evidence that interface-head convergence and interface-flux convergence are algorithmic coupling controls, not interchangeable with physical model error or a Richards temporal indicator.",
+      "sources": [
+        "USGS MODFLOW Local Grid Refinement control documentation: https://water.usgs.gov/nrp/gwsoftware/modflow2000/Guide/lgr_control_file.htm"
+      ]
+    },
+    {
+      "axis": "coupling error",
+      "finding": "Integrated surface-subsurface literature identifies coupling error from interface interpolation, sequential time matching and lagged exchange terms, and shows its magnitude depends on temporal/spatial coupling choices and process dynamics. The reviewed work does not establish a transferable absolute centimetre-scale interface-head accuracy requirement.",
+      "sources": [
+        "Fiorentini, Orlandini and Paniconi (2015), Water Resources Research, doi:10.1002/2014WR016816"
+      ]
+    },
+    {
+      "axis": "physical/model uncertainty versus numerical accuracy",
+      "finding": "Groundwater prediction uncertainty also arises from conceptualization, parameterization, observations, boundary conditions and discretization. These sources can contextualize an application accuracy objective but cannot be converted into permission for arbitrary numerical or coupling error.",
+      "sources": [
+        "USGS groundwater-model uncertainty and model-analysis guidance reviewed during F-GC05"
+      ]
+    },
+    {
+      "axis": "application sensitivity",
+      "finding": "A head tolerance becomes scientifically meaningful only relative to an application quantity of interest, observation/decision resolution, sensitivity to head perturbations, or independently qualified reference comparison. No repository or independent source reviewed in F-GC05 supplies one universal H_app for the broad direct SWAP-MODFLOW application class preregistered here."
+    }
+  ],
+  "semantic_separation": {
+    "coupling_head_residual_equals_B_inf": false,
+    "coupling_head_residual_equals_MODFLOW_solver_tolerance": false,
+    "MODFLOW_solver_tolerance_equals_physical_model_error": false,
+    "B_inf_equals_nonlinear_true_head_error": false,
+    "physical_uncertainty_may_define_arbitrary_numerical_tolerance": false
+  },
+  "policy_template_assessment": {
+    "template": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+    "structurally_defensible": true,
+    "numerically_instantiable_for_preregistered_general_application_class": false,
+    "missing_external_requirement": "A traceable application-specific H_app and independently justified error-allocation A_temporal.",
+    "absolute_cm_policy_supported": false,
+    "reason": "No independent scientific/application source found that defines a transferable absolute centimetre-scale prediction/coupling accuracy objective for the broad SWAP-MODFLOW application class."
+  },
+  "rejected_numeric_routes": [
+    "derive H_budget from F-GC04 B_inf magnitudes",
+    "tune H_budget until F-GC02 passes",
+    "reuse MODFLOW HCLOSE/DVCLOSE as H_budget",
+    "reuse a coupling interface residual threshold as H_budget",
+    "set H_budget from generic groundwater-model uncertainty magnitude",
+    "invent a fixed fraction A_temporal without independent application rationale"
+  ],
+  "result": "NO_INDEPENDENT_GENERAL_APPLICATION_HEAD_ACCURACY_REQUIREMENT_FOUND",
+  "architecture_invariants_checked": [7,9,10,11,12,13,15,23,25,26,28,29,30]
+}
