@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ31",
+  "artifact": "OWNER_HANDOFF",
+  "branch": "qualification/f-vq31-transaction-composed-richards-temporal-history",
+  "closeout_commit": "02fd95c7d92eed1c6d1e8783553d535b7568cb87",
+  "decision": "HANDOFF_INDEPENDENTLY_QUALIFIED_TRANSACTION_COMPOSITION_TO_SCIENTIFIC_TEMPORAL_ACCEPTANCE_SEMANTICS",
+  "source_status": "COMPLETE_INDEPENDENTLY_QUALIFIED_TRANSACTION_COMPOSITION_READY_FOR_SCIENTIFIC_ACCEPTANCE_WORK",
+  "destination": {
+    "workstream": "F-SI",
+    "suggested_work_unit": "F-SI26",
+    "suggested_title": "Scientific Normalization & Acceptance Semantics for the Bounded Richards Temporal Indicator",
+    "suggested_branch": "work/f-si26-richards-temporal-indicator-scientific-normalization",
+    "branch_existed_at_handoff_check": false,
+    "reservation_created": false,
+    "must_recheck_live_before_creation": true
+  },
+  "why_F_SI_owns_next_step": [
+    "F-VQ31 qualified production/composition correctness but deliberately did not select a scientific normalization or tolerance.",
+    "The remaining question is the scientific/numerical meaning of B_inf relative to an admissible error target, not transaction ownership or retry mechanics.",
+    "F-KT must not choose a normalization merely to fit its dimensionless <=1 certificate interface; a scientifically justified semantics must exist first.",
+    "F-VQ28 and F-VQ29 negative evidence and F-VQ30's strong state/horizon-dependent conservatism must remain authoritative constraints on any candidate."
+  ],
+  "required_F_SI26_questions": [
+    "Can B_inf be normalized using a physically and numerically defensible head/state scale without empirical fitting or hidden state-dependent rescue factors?",
+    "What quantity should a dimensionless temporal certificate represent: pressure-head error, storage-equivalent error, constitutive-state error, flux/interface error, or a documented multi-criterion combination?",
+    "Can one normalization remain meaningful across wet, dry and stiff states without silently changing physics or allowing large absolute errors in insensitive regimes?",
+    "How must application-specific accuracy targets be separated from the universal indicator semantics?",
+    "Does the available evidence support an actual acceptance threshold, only a ranking/retry signal, or no scientifically defensible production certificate yet?",
+    "What fail-closed behavior is required near constitutive singularities, very small capacities, events, boundary discontinuities or unsupported solver/operator envelopes?"
+  ],
+  "required_evidence_reconciliation": [
+    "F-VQ28 temporal numeric profile and its negative/limiting evidence.",
+    "F-VQ29 failure to obtain a qualified finite-reference error bound and its rejection of q_cap/Nmin/geometric-tail rescue as qualification evidence.",
+    "F-SI23 raw embedded derivative-difference observer and its extreme conservatism.",
+    "F-SI24 analytic bounded stiffness-aware construction and exact-linear factor 2.",
+    "F-VQ30 held-out transfer with B_inf/E1_512 approximately 6.69 to 102.50 and strong state/horizon dependence.",
+    "F-SI25 production operator semantics and bounded cost.",
+    "F-KT10/F-VQ31 transaction-composition correctness and fail-closed nonpromotion to F-KT09 certificate."
+  ],
+  "candidate_classes_to_assess_without_preselection": [
+    "fixed absolute head scale defined by an explicit application accuracy contract",
+    "local/state-dependent head scale derived from constitutive sensitivity, only if it does not become an empirical rescue factor",
+    "storage-equivalent normalization based on M-weighted quantities",
+    "interface/coupling-relevant normalization tied to flux/head coupling residual goals",
+    "multi-criterion acceptance in which B_inf is one diagnostic rather than the sole certificate",
+    "ranking-only or retry-advice use if no defensible absolute certificate can be established"
+  ],
+  "hard_holds": [
+    "Do not fit a factor to make previous cases pass.",
+    "Do not infer a true nonlinear error bound from N512 or finite-refinement agreement.",
+    "Do not introduce q_cap, Nmin, geometric-tail multipliers or state/material safety coefficients as empirical rescue.",
+    "Do not define scientific accuracy from the shape of the F-KT09 <=1 interface.",
+    "Do not change Richards physics, mass accounting, boundary semantics or the qualified F-SI24/F-SI25 indicator formula in this assessment.",
+    "Do not release production temporal acceptance/retry policy, F-GC02, groundwater coupling or F-PE from owner analysis alone.",
+    "If no normalization survives the scientific gates, close fail-closed rather than manufacturing a tolerance."
+  ],
+  "suggested_owner_outcomes": [
+    "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+    "INDICATOR_QUALIFIED_FOR_RANKING_OR_RETRY_ADVICE_ONLY_NOT_ACCEPTANCE",
+    "NO_DEFENSIBLE_SCIENTIFIC_NORMALIZATION_YET_FAIL_CLOSED"
+  ],
+  "downstream_if_candidate_survives": {
+    "independent_qualification": "use next live-free F-VQ number after rechecking, currently F-VQ32 observed free",
+    "policy_binding": "only after independent scientific qualification, use next live-free F-KT unit, currently F-KT11 observed free",
+    "coupling": "resume existing F-GC02 only after temporal acceptance itself is admitted and independently qualified"
+  },
+  "affected_architecture_invariants": [7,8,9,11,12,13,14,15,20,23,24,25,26,29,30]
+}
