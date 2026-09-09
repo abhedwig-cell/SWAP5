@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "title": "Vadose Zone Analytical Algorithm Assessment, Conservation Repair & SWAP5 Suitability",
+  "branch": "work/f-vzaa01-vadose-zone-analytical-assessment",
+  "production_implementation": false,
+  "persisted": true,
+  "official_code_reproduced": false,
+  "qualified": false,
+  "final_classification": null,
+  "interim_decision": "PUBLISHED_VZAA_DIRECT_PATH_BLOCKED_CONSERVATIVE_MODIFICATION_AND_DONOR_RESEARCH_OPEN",
+  "primary_source": {
+    "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467",
+    "doi": "10.1016/j.jhydrol.2026.135467"
+  },
+  "hard_gates": {
+    "A_exact_mass_conservation": "FAIL_FOR_PUBLISHED_FORMULATION",
+    "B_explicit_bottom_head_or_flux": "FAIL_FOR_PUBLISHED_FORMULATION",
+    "C_bidirectional_groundwater_exchange": "PARTIAL_PHYSICS_PRESENT_INTERFACE_NOT_QUALIFIED",
+    "D_transactional_trial_rollback": "OPEN",
+    "E_response_tangent": "OPEN"
+  },
+  "direct_path": {
+    "production_admissible": false,
+    "reason": [
+      "published coarse-layer examples retain non-negligible cumulative mass-balance residual",
+      "published formulation cannot strictly impose the lower zero-flux boundary and therefore does not provide the general prescribed-head/prescribed-flux contract required by SWAP5",
+      "published layered-soil case degrades because the analytical flux relation was derived for uniform soil"
+    ]
+  },
+  "research_paths_remaining": {
+    "conservative_modification": {
+      "status": "OPEN",
+      "required_proof": "A bounded correction must close the accepted-step ledger exactly while enforcing the lower interface condition without degenerating into an unbounded global Richards/Newton solve."
+    },
+    "algorithmic_donor": {
+      "status": "OPEN_PROMISING",
+      "candidate_ideas": [
+        "closed-form or bounded analytical layer updates",
+        "sequential local solves",
+        "general constitutive evaluation",
+        "coarse vertical representation",
+        "pretabulated constitutive inversions",
+        "bounded predictor-corrector or conservation repair"
+      ]
+    }
+  },
+  "next_actions": [
+    "capture and provenance-check DOI-linked supplementary MATLAB appendices",
+    "reproduce at least one published case without modifying the official implementation",
+    "write exact layer-by-layer storage and transfer ledger",
+    "construct the smallest conservative bottom-interface correction and prove mass closure algebraically before coding",
+    "bound correction count and runtime",
+    "only if mass and lower-boundary gates pass, compare against full Richards"
+  ],
+  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_SWAP5_HARD_GATES_RESEARCH_CONTINUES_ONLY_AS_MODIFIED_OR_DONOR_METHOD"
+}
