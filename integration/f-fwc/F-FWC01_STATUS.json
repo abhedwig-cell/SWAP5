@@ -1,5 +1,5 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "workstream": "F-FWC",
   "work_unit": "F-FWC01",
   "title": "Finite Water Content Soil-Water Solver Assessment",
@@ -10,7 +10,7 @@
   "tested": true,
   "reproduced": false,
   "qualified": false,
-  "decision": "FWC_BOUNDED_FAIL_CLOSED_ADVECTIVE_MASS_AND_EQ18_REPRESENTATION_SUBGATES_QUALIFIED_BROADER_PHYSICS_OPEN",
+  "decision": "FWC_BOUNDED_FAIL_CLOSED_AND_RESTRICTED_ADVECTIVE_FRONT_PHYSICS_FEASIBLE_EVENT_CREATION_AND_BROADER_HYDRAULICS_OPEN",
   "decision_is_final": false,
   "requested_positive_exit_reached": false,
   "primary_lineage": [
@@ -36,60 +36,75 @@
     "minimal_transaction_safe_finite_volume_ledger": "QUALIFIED"
   },
   "gate_a2": {
-    "evidence": "F-FWC01_GATE_A2_FIXED_SLOT_FAIL_CLOSED_BOUND_RESULT.json",
     "workflow_run": 34381244691,
-    "candidate": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
     "decision": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
+    "candidate": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
     "persistent_bytes_per_column": {"16":3328,"64":13312,"200":41600},
     "overflow_committed_state_bitwise_unchanged": true,
     "overflow_committed_ledger_exactly_unchanged": true,
     "overflow_water_merge_clip_drop": false
   },
   "gate_b2a": {
-    "evidence": "F-FWC01_GATE_B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_RESULT.json",
     "workflow_run": 34383285967,
     "decision": "QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES",
-    "materials": ["B01","B12","O13","O14"],
-    "theta_bin_counts": [16,64,200],
-    "dt_days": [1e-6,1e-5,1e-4,1e-3],
     "case_count": 48,
     "case_pass_count": 48,
     "maximum_abs_mass_residual_cm": 6.938893903907228e-18,
-    "mass_repair": false,
     "scope": "collision-free gravity-driven falling-slug advection using source-bound Eq. 19"
   },
   "gate_b2b": {
-    "evidence": "F-FWC01_GATE_B2B_CAPILLARY_RELAXATION_FRONT_SORT_MASS_RESULT.json",
     "workflow_run": 34385463627,
-    "workflow_head": "b7566fafa42b323460a53ed5b576b3fcc5a4b963",
     "decision": "QUALIFIED_SOURCE_BOUND_INFILT_GW_FRONT_CAPILLARY_RELAXATION_SORT_MASS_READY_FOR_INFILTRATION_FRONT_CREATION_MASS_GATE",
-    "front_types": ["INFILTRATION_Z","GROUNDWATER_H"],
-    "theta_bin_counts": [16,64,200],
     "case_count": 420,
     "case_pass_count": 420,
     "maximum_abs_mass_residual": 0.0,
-    "binary64_coordinate_multiset_preserved": true,
-    "nonfinite_trial_rollback": true,
     "persistent_extra_state_bytes": 0,
-    "scratch_owner": "worker",
-    "scope": "source-described equal-delta-theta front-coordinate sorting only"
+    "scope": "source-described equal-delta-theta infiltration and groundwater front-coordinate sorting only"
   },
   "gate_b2c": {
     "equation": "dz/dt = [K_d*(G_eff+h_p)/z + K_d-K_i]/(theta_d-theta_i)",
-    "provenance_result": "F-FWC01_GATE_B2C_EQ18_INFILTRATION_ODE_PROVENANCE_LIMITS_RESULT.json",
-    "classification": "SOURCE_RECONCILED_EQUATION_WITH_BINARY64_ASSOCIATION_CONDITIONING_SEPARATED_FROM_PHYSICS",
-    "direct_left_associated_expression": "REJECTED_AS_GENERAL_NUMERICAL_REPRESENTATION_BY_B2C_R1",
     "selected_representation": "GROUP_EXPLICIT_DELTA_THETA_AND_DELTA_K_BEFORE_TERM_ACCUMULATION",
-    "r2_evidence": "F-FWC01_GATE_B2C_R2_GROUPED_DELTA_K_EQ18_HYDROLOGIC_RELEVANCE_RESULT.json",
     "r2_workflow_run": 34388930640,
-    "r2_workflow_head": "749a21b619865dc5e0110071d52f17ffa9fa72e4",
     "r2_decision": "QUALIFIED_GROUPED_DELTA_K_EQ18_NUMERICAL_REPRESENTATION_READY_FOR_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_GATE",
     "r2_case_count": 1728,
     "r2_max_normalized_forward_error": 2.99091229740473e-16,
     "r2_max_front_displacement_error_cm": 7.588438553104934e-12,
     "r2_max_equivalent_water_depth_error_cm": 2.4498778455558557e-14,
     "persistent_extra_state_bytes": 0,
-    "hydrologic_interpretation": "Eq18 representation error is negligible on the frozen real-MvG bin set; stop precision tuning and move to actual front trajectory/mass qualification."
+    "hydrologic_interpretation": "Eq18 floating-point representation error is negligible on the frozen real-MvG bin set; further precision tuning is not justified."
+  },
+  "gate_b2d": {
+    "evidence": "F-FWC01_GATE_B2D_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_HYDROLOGIC_RESULT.json",
+    "workflow_run": 34389708800,
+    "candidate_numerical_policy": "EXPLICIT_EULER",
+    "decision": "EXISTING_INFILTRATION_FRONT_ADVANCE_NOT_QUALIFIED_RESEARCH_REQUIRED",
+    "case_count": 864,
+    "case_pass_count": 524,
+    "max_abs_step_mass_residual_cm": 1.249000902703301e-16,
+    "max_abs_horizon_mass_residual_cm": 1.93279164281754e-15,
+    "max_relative_front_error": 0.0027381664185878135,
+    "max_equivalent_water_error_cm": 0.00032067774820915274,
+    "interpretation": "Mass and transaction semantics passed; explicit Euler failed the frozen hydrologic trajectory thresholds with clean first-order error. Euler remains negative evidence."
+  },
+  "gate_b2d_r1": {
+    "evidence": "F-FWC01_GATE_B2D_R1_CONSERVATIVE_HEUN_POLICY_RESULT.json",
+    "workflow_run": 34390171098,
+    "workflow_head": "ad1442895d3659dbb4e2ea7dcdbb33a8d66cbbea",
+    "candidate_numerical_policy": "EXPLICIT_HEUN_RK2",
+    "physics_changed_from_B2D": false,
+    "decision": "QUALIFIED_RESTRICTED_EXISTING_INFILTRATION_FRONT_HEUN_MASS_AND_TRAJECTORY_READY_FOR_FRONT_CREATION_EVENT_GATE",
+    "case_count": 864,
+    "case_pass_count": 864,
+    "max_abs_step_mass_residual_cm": 1.6653345369377348e-16,
+    "max_abs_horizon_mass_residual_cm": 1.932791354596795e-15,
+    "max_relative_front_error": 9.739469198928658e-06,
+    "max_equivalent_water_error_cm": 2.107051814137506e-07,
+    "persistent_extra_state_bytes": 0,
+    "predictor_owner": "worker_scratch",
+    "mass_repair_count": 0,
+    "clipping_repair_count": 0,
+    "formal_order2_claim": false,
+    "order_note": "The precommitted convergence-rate subcheck was not exercised because all 8-step errors were already below its hydrologic relevance floor."
   },
   "admissibility": {
     "source_style_dynamic_list_primary_multiswap": "REJECTED",
@@ -97,9 +112,11 @@
     "physical_advective_falling_slug_mass": "QUALIFIED_RESTRICTED",
     "infiltration_and_groundwater_front_sort_relaxation_mass": "QUALIFIED_RESTRICTED",
     "eq18_grouped_delta_k_numerical_representation": "QUALIFIED_RESTRICTED",
+    "existing_infiltration_front_advance_heun_mass_and_trajectory": "QUALIFIED_RESTRICTED",
+    "explicit_euler_existing_front_policy": "REJECTED_FOR_FROZEN_TRAJECTORY_TARGETS",
     "falling_slug_capillary_relaxation_clip_move_left": "NOT_YET_QUALIFIED",
-    "existing_infiltration_front_advance_mass_and_trajectory": "NOT_YET_QUALIFIED",
     "infiltration_front_creation_and_rainfall_allocation": "NOT_YET_QUALIFIED",
+    "front_collision_and_merge": "NOT_YET_QUALIFIED",
     "groundwater_front_creation_and_trajectory": "NOT_YET_QUALIFIED",
     "physical_explicit_diffusion_FWC_equations": "NOT_YET_QUALIFIED",
     "full_physical_mass_conservation": "NOT_YET_QUALIFIED",
@@ -112,20 +129,20 @@
   "hard_guards": [
     "Fixed-slot overflow may reject/retry or route to a qualified fallback but may never discard, silently merge or clip water.",
     "Eight slots and 41.6 kB/column at 200 bins are not yet admitted as adequate MultiSWAP coverage/cost.",
-    "B2A may not be generalized beyond collision-free gravity-driven falling slugs.",
-    "B2B may not be generalized to falling-slug capillary relaxation; the source describes a different clip-and-transfer operation there.",
-    "B2C-R2 qualifies Eq18 numerical representation only; it does not qualify dry-bin creation, rainfall allocation, G_eff closure, front collision/merge or long-run hydraulics.",
-    "Do not spend further research effort reducing Eq18 association error below hydrologically negligible levels unless a later physical trajectory exposes a real effect.",
-    "Mass conservation remains a hard ledger condition regardless of the magnitude of hydraulic representation errors.",
+    "The B2D Euler FAIL remains preserved; do not loosen its tolerances after the fact.",
+    "B2D-R1 changes numerical policy only; Eq18 physics, cases, horizons and hydrologic thresholds are unchanged.",
+    "Do not infer dry-bin creation, rainfall allocation, G_eff closure, front collision/merge or groundwater physics from B2D-R1.",
+    "Do not spend research effort reducing already negligible Eq18 representation errors unless a later physical trajectory shows material effects.",
+    "Mass conservation remains a hard ledger condition regardless of hydraulic tolerance.",
     "Do not reconstruct the 2016 explicit-diffusion algebra from secondary summaries if equation-level primary provenance is unavailable.",
     "Do not start groundwater, crop or MultiSWAP production integration before broader physical mass and hydraulic gates pass."
   ],
   "next_action": {
-    "priority": "B2D_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_HYDROLOGIC_TRAJECTORY_GATE",
-    "instruction": "Use the source-reconciled Eq18 with the qualified grouped delta-K representation on already-existing infiltration fronts only. Freeze real MvG materials, front depths, forcing terms and timesteps before execution. Require exact finite-volume water accounting and transactional rollback, and compare front displacement and infiltrated water against a higher-precision/reference integration. Do not include dry-bin creation, rainfall allocation or front merge in B2D; those remain separate event gates.",
+    "priority": "B2E_RESTRICTED_INFILTRATION_FRONT_CREATION_AND_SURFACE_WATER_ALLOCATION_EVENT_GATE",
+    "instruction": "Qualify creation of a new infiltration front and the associated surface-water/rainfall allocation as a separate transactional event. Freeze the exact source ownership rule before execution. Require that water transferred from surface storage/forcing into new front storage is identical, rejected creation leaves both ledgers unchanged, and no front is silently created when the dry-bin or capacity conditions are not met. Keep G_eff closure and front collision/merge separate unless exact source semantics require them atomically.",
     "falling_slug_relaxation": "Qualify separately after exact geometric clip-and-left-transfer ownership is executable.",
     "explicit_diffusion": "Remain blocked until exact primary equation provenance is available.",
-    "runtime_cost_followup": "After broader physical feasibility, measure fallback incidence and event/substep cost."
+    "runtime_cost_followup": "After broader physical feasibility, measure slot overflow/fallback incidence and event/substep cost."
   },
-  "status": "A2_B2A_B2B_AND_B2C_R2_QUALIFIED_READY_FOR_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_GATE"
+  "status": "A2_B2A_B2B_B2C_R2_AND_B2D_R1_QUALIFIED_READY_FOR_RESTRICTED_INFILTRATION_FRONT_CREATION_EVENT_GATE"
 }
