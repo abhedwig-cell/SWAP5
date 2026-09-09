@@ -1,0 +1,63 @@
+name: F-WOF38 materialize event identity API
+
+on:
+  push:
+    branches:
+      - work/f-wof38-atomic-crop-owner-delivery-transaction
+    paths:
+      - '.github/workflows/fwof38-materialize-event-identity.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  materialize-qualified-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Materialize exactly the Gate A qualified transform
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET=src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
+          EXPECTED_BLOB=54e827c78dfa32daf72000fff8d477a5974aedce
+          [[ "$(git hash-object "$TARGET")" == "$EXPECTED_BLOB" ]] || {
+            echo 'FWOF38_MATERIALIZE_SOURCE_BLOB_CHANGED' >&2
+            exit 1
+          }
+          python3 - "$TARGET" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          src = path.read_text(encoding='utf-8')
+          anchor_type = '''  end type fmr_wofost_crop_event_token_t\n\n'''
+          insert_type = '''  end type fmr_wofost_crop_event_token_t\n\n  ! Compact opaque identity of one frozen accepted physical crop event.\n  ! This is provenance metadata, not crop physics and not a second commit owner.\n  type, public :: fmr_wofost_crop_event_identity_t\n    private\n    logical :: initialized = .false.\n    integer(int64) :: lineage_id = 0_int64\n    integer(int64) :: final_revision = -1_int64\n    real(real64) :: t0 = 0.0_real64\n    real(real64) :: t1 = 0.0_real64\n    real(real64) :: actual_root_uptake_integral = 0.0_real64\n    real(real64) :: potential_transpiration_integral = 0.0_real64\n  contains\n    procedure, public :: ready => crop_event_identity_ready\n  end type fmr_wofost_crop_event_identity_t\n\n'''
+          if src.count(anchor_type) != 1:
+              raise SystemExit(f'FWOF38 identity type anchor count={src.count(anchor_type)}')
+          src = src.replace(anchor_type, insert_type, 1)
+          anchor_public = '''  public :: commit_wofost_crop_event_delivery\n\ncontains\n'''
+          insert_public = '''  public :: commit_wofost_crop_event_delivery\n  public :: identify_wofost_crop_event\n  public :: same_wofost_crop_event_identity\n  public :: crop_event_identity_matches_interval\n\ncontains\n'''
+          if src.count(anchor_public) != 1:
+              raise SystemExit(f'FWOF38 identity public anchor count={src.count(anchor_public)}')
+          src = src.replace(anchor_public, insert_public, 1)
+          anchor_proc = '''  pure logical function crop_event_token_ready(self) result(ready)\n'''
+          insert_proc = '''  subroutine identify_wofost_crop_event(token, identity, status)\n    type(fmr_wofost_crop_event_token_t), intent(in) :: token\n    type(fmr_wofost_crop_event_identity_t), intent(out) :: identity\n    integer, intent(out) :: status\n\n    identity = fmr_wofost_crop_event_identity_t()\n    status = FMR_WOFOST_LINEAGE_EVENT_TOKEN_MISMATCH\n    if (.not. token%ready()) return\n\n    identity%lineage_id = token%lineage_id\n    identity%final_revision = token%final_revision\n    identity%t0 = token%t0\n    identity%t1 = token%t1\n    identity%actual_root_uptake_integral = token%actual_root_uptake_integral\n    identity%potential_transpiration_integral = token%potential_transpiration_integral\n    identity%initialized = .true.\n    status = FMR_WOFOST_LINEAGE_OK\n  end subroutine identify_wofost_crop_event\n\n  pure logical function crop_event_identity_ready(self) result(ready)\n    class(fmr_wofost_crop_event_identity_t), intent(in) :: self\n    ready = self%initialized .and. self%lineage_id > 0_int64 .and. self%final_revision >= 0_int64 .and. &\n         ieee_is_finite(self%t0) .and. ieee_is_finite(self%t1) .and. self%t1 > self%t0 .and. &\n         ieee_is_finite(self%actual_root_uptake_integral) .and. &\n         ieee_is_finite(self%potential_transpiration_integral) .and. &\n         self%actual_root_uptake_integral >= 0.0_real64 .and. &\n         self%potential_transpiration_integral >= 0.0_real64\n  end function crop_event_identity_ready\n\n  pure logical function same_wofost_crop_event_identity(left, right) result(matches)\n    type(fmr_wofost_crop_event_identity_t), intent(in) :: left, right\n    matches = .false.\n    if (.not. left%ready() .or. .not. right%ready()) return\n    matches = left%lineage_id == right%lineage_id .and. &\n         left%final_revision == right%final_revision .and. &\n         same_time(left%t0, right%t0) .and. same_time(left%t1, right%t1) .and. &\n         same_real_bits(left%actual_root_uptake_integral, right%actual_root_uptake_integral) .and. &\n         same_real_bits(left%potential_transpiration_integral, right%potential_transpiration_integral)\n  end function same_wofost_crop_event_identity\n\n  pure logical function crop_event_identity_matches_interval(identity, t0, t1) result(matches)\n    type(fmr_wofost_crop_event_identity_t), intent(in) :: identity\n    real(real64), intent(in) :: t0, t1\n    matches = .false.\n    if (.not. identity%ready()) return\n    matches = same_time(identity%t0, t0) .and. same_time(identity%t1, t1)\n  end function crop_event_identity_matches_interval\n\n  pure logical function crop_event_token_ready(self) result(ready)\n'''
+          if src.count(anchor_proc) != 1:
+              raise SystemExit(f'FWOF38 identity procedure anchor count={src.count(anchor_proc)}')
+          src = src.replace(anchor_proc, insert_proc, 1)
+          path.write_text(src, encoding='utf-8')
+          PY
+          test "$(git diff --name-only)" = "$TARGET"
+          git diff --check
+          echo 'FWOF38_MATERIALIZED_EXACT_GATE_A_TRANSFORM=PASS'
+      - name: Commit qualified source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'SWAP5 Qualification Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add src/runtime/mod_fmr_wofost_accepted_window_lineage.f90
+          git commit -m 'runtime(F-WOF38): add qualified accepted-event identity API'
+          git push origin HEAD:${GITHUB_REF_NAME}
