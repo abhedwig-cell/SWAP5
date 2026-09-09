@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT11",
+  "qualified_source": {
+    "commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "tree": "e3e941dcd7058728581f5488498ebcefb8973aa6"
+  },
+  "owner_workflow": {
+    "name": "F-KT11 Richards head-budget certificate policy",
+    "run_id": 34356407443,
+    "job_id": 102482099289,
+    "head_sha": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04"
+  },
+  "test_source_locks": {
+    "contract": {"path":"integration/f-kt/F-KT11_WORK_UNIT_CONTRACT.json","blob":"7861ed7e44368ab7cd0fbb1bcb423e3056799e47"},
+    "owner_driver_template": {"path":"tests/fkt/test_fkt11_richards_head_budget_policy.f90","blob":"b49a5ed4fa199d9f09933ff421d24cd0bb6738ee"},
+    "owner_runner": {"path":"tests/fkt/run_fkt11_richards_head_budget_policy.sh","blob":"0422624960a4c96b8ddf822725062b15c0d25df3"},
+    "ci_reconciliation_wrapper": {"path":"tests/fkt/run_fkt11_owner_ci.sh","blob":"d83e00aca7f2b0e42003f244f79ee66d6a292296"},
+    "workflow": {"path":".github/workflows/fkt11-richards-head-budget-certificate-policy.yml","blob":"2920b574afb79be9b43a13d98f5225e359bca396"},
+    "fsi25_direct_oracle_driver": {"path":"tests/fsi/test_fsi25_reference_indicator_production_seam.f90","blob":"c125c6a2ab706920b7e2a5c6f1c855520b192223"},
+    "fkt10_real_transaction_driver": {"path":"tests/fkt/test_fkt10_transactional_fvq30_replay.f90","blob":"c42765b89b5dd9140aa492ab56abbbf2077be50e"},
+    "transaction_core": {"path":"src/transaction/mod_transaction_reference.f90","blob":"2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"},
+    "richards_indicator": {"path":"src/solver/mod_reference_richards_temporal_indicator.f90","blob":"fe8f87d11257d4c6bc019f1d628ac41ba3106d4e"},
+    "canonical_numerical_config": {"path":"src/runtime/mod_canonical_contracts.f90","blob":"c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"},
+    "serialized_richards_backend": {"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"f5cf46b4eb40e68704bc0dfcdb18bf0746504889"},
+    "fvq32_handoff": {"path":"integration/f-vq/F-VQ32_OWNER_HANDOFF.json","blob":"f7b7cce171b3b1829d7005c5ab7abae7c44ba4a9"},
+    "fvq32_closeout": {"path":"integration/f-vq/F-VQ32_CLOSEOUT.json","blob":"51b075c6f72880897416bdcfd92549bd68d26b7b"},
+    "fkt09_contract": {"path":"integration/f-kt/F-KT09_DECISION_CONTRACT.json","blob":"7957c07ba3a1e31469f315b437f9ac3248a860e0"},
+    "fkt10_closeout": {"path":"integration/f-kt/F-KT10_CLOSEOUT.json","blob":"1a53f26c4c299080d2ae8f03304320d55cf8ae8b"}
+  },
+  "frozen_fixture": {
+    "initial_uniform_head_cm": -125.0,
+    "bottom_head_jump_cm": 0.03,
+    "attempt_dt_day": 0.3,
+    "bottom_mode": 5,
+    "hard_mass_tolerance": 1e-12,
+    "direct_B_inf_cm": 0.05758722731442157,
+    "valid_accept_structural_budget_cm": 0.11517445462884314,
+    "valid_reject_structural_budget_cm": 0.028793613657210785,
+    "bounded_retry_budget_cm": 1e-12
+  },
+  "owner_matrix": [
+    {"id":"VALID_ACCEPT","expected":"C_h=0.5, accepted, explicit candidate commit","result":"PASS"},
+    {"id":"VALID_REJECT","expected":"C_h=2, temporal rejection, exact rollback","result":"PASS"},
+    {"id":"MISSING_BUDGET","expected":"certificate unavailable, rejection","result":"PASS"},
+    {"id":"INVALID_ZERO_BUDGET","expected":"certificate unavailable, rejection","result":"PASS"},
+    {"id":"NO_HISTORY_WITH_VALID_BUDGET","expected":"history unavailable, rejection, no bootstrap commit","result":"PASS"},
+    {"id":"BOUNDED_RETRY_NO_MONOTONICITY_CLAIM","expected":"max_retries=2, exactly 3 attempts, 2 retries, 3 rollbacks, no monotonicity assertion","result":"PASS"}
+  ],
+  "gates": {
+    "A_source_and_semantic_locks":"PASS",
+    "B_config_ownership_and_separation":"PASS",
+    "C_valid_accept":"PASS",
+    "D_threshold_rejection_and_rollback":"PASS",
+    "E_missing_invalid_budget_fail_closed":"PASS",
+    "F_no_history_fail_closed":"PASS",
+    "G_bounded_retry":"PASS",
+    "H_mass_ordering_and_cost":"PASS",
+    "I_O0_O2_and_regressions":"PASS",
+    "J_diagnostics":"PASS",
+    "K_architecture_surfaces":"PASS"
+  },
+  "regressions": {
+    "F_KT09_generic_model_certificate":"PASS",
+    "F_KT10_transaction_history":"PASS",
+    "F_KT10_real_Richards_transaction_replay":"PASS",
+    "F_VQ32_semantic_source_lock":"PASS",
+    "O0_O2_owner_matrix_identity":"PASS",
+    "O0_O2_FKT10_real_replay_identity":"PASS"
+  },
+  "cost": {
+    "normalization_additional_full_nonlinear_solves": 0,
+    "normalization_additional_linear_solves": 0,
+    "indicator_additional_full_nonlinear_trajectories": 0,
+    "indicator_defect_tridiagonal_solves_with_accepted_history_per_attempt": 1,
+    "no_history_defect_tridiagonal_solves": 0
+  },
+  "mass_ordering": {
+    "source_bound_order": ["physical trial","hard mass qualification","model temporal certificate","transaction acceptance or rejection"],
+    "hard_mass_tolerance_changed": false,
+    "certificate_can_override_mass_failure": false,
+    "result": "PASS"
+  },
+  "diagnostics_verified": [
+    "raw B_inf",
+    "budget supplied",
+    "budget valid",
+    "native budget value",
+    "normalized C_h",
+    "certificate available",
+    "unavailable reason",
+    "attempt count",
+    "retry count",
+    "rollback count",
+    "hard mass rejection count",
+    "max absolute step mass residual"
+  ],
+  "test_harness_reconciliations": [
+    "The pre-F-KT11 F-KT09 runner emits FKT09_MODEL_CERTIFICATE_GATE=PASS, so the CI wrapper reconciles only that marker string.",
+    "The persisted owner-driver template originally over-asserted one defect TRIDAG for the no-history case. The source-locked CI wrapper deterministically corrects that test-only assertion to zero because the production indicator returns before the defect solve when previous history is unavailable.",
+    "The final parser no longer depends on compiler-specific ES exponent formatting. VALID_ACCEPT and VALID_REJECT retain compiled numerical assertions for C_h=0.5 and C_h=2."
+  ],
+  "hard_nonclaims": [
+    "No universal or application H_budget is selected.",
+    "No default H_budget exists.",
+    "B_inf is not claimed to be a proven nonlinear true-error upper bound.",
+    "No C_h monotonicity with decreasing dt is claimed.",
+    "No rejected trial bootstraps accepted derivative history.",
+    "No groundwater, MODFLOW, PE fallback, BALANCED, THROUGHPUT, restart-bootstrap or file-I/O scope is added.",
+    "F-KT11 does not release F-GC02."
+  ],
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "owner_tested": true,
+    "owner_verified": true,
+    "independently_production_qualified": false,
+    "next_required_gate": "F-VQ33"
+  }
+}
