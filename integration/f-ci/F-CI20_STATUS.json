@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI20",
+  "title": "Post-F-CI19 Candidate Integrity and Composition Admission",
+  "branch": "integration/f-ci20-post-fci19-candidate-convergence",
+  "canonical_base": {
+    "commit": "3144c35eb8c60f822cc363dc48c21591e14b4cf4",
+    "tree": "a0c1a4f135589b2b6304427b29341317e867c522"
+  },
+  "decision": "QUALIFIED_ADMISSION_DAG_AND_REPLAY_POLICY_COMPOSITION_DEFERRED",
+  "status": "CLOSED_ADMISSION_SCOPE_ONLY",
+  "qualified_scope": [
+    "exact canonical base lock",
+    "candidate source authority separation from mutable branch tips",
+    "F-WOF42 admission as later composition spine",
+    "F-MR18 transitive no-overlay classification",
+    "F-KT13 source-equivalent no-overlay classification for qualified kernel persistence/reconstruction production surfaces",
+    "F-KT11 dependency-bearing replay-required classification",
+    "F-SI25/F-SI26/F-VQ30/F-VQ31/F-VQ32/F-VQ34 evidence and replay classification",
+    "F-VQ33 permanent negative-evidence classification",
+    "mandatory later replay order and hard holds",
+    "admission-only repository scope guard"
+  ],
+  "not_qualified": [
+    "any F-KT11 production materialization onto F-WOF42",
+    "a minimal dependency-closed temporal production patch set",
+    "a composed production postimage",
+    "preservation of all predecessor qualifications on such a future postimage",
+    "canonical promotion",
+    "F-GC02 release",
+    "general groundwater coupling",
+    "production restart file format or general real-SWAP codec coverage"
+  ],
+  "artifacts": {
+    "lock_manifest": "integration/f-ci/F-CI20_CANDIDATE_LOCK_MANIFEST.json",
+    "replay_matrix": "integration/f-ci/F-CI20_CANDIDATE_REPLAY_MATRIX.md",
+    "integrity_verdict": "integration/f-ci/F-CI20_CANDIDATE_INTEGRITY_VERDICT.md",
+    "gate": "tests/fci/run_fci20_candidate_integrity_gate.sh",
+    "workflow": ".github/workflows/fci20-candidate-integrity.yml"
+  },
+  "qualification_gate": {
+    "tested_head_before_closeout_metadata": "e39b4725b96b8ce181d3d704c777c796083aedfc",
+    "workflow_name": "F-CI20 candidate integrity admission",
+    "run_id": 34386302062,
+    "conclusion": "success"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "admission_DAG_qualified": true,
+    "production_composition_performed": false,
+    "production_composition_qualified": false,
+    "canonical_ref_advanced": false,
+    "canonical_promotion_qualified": false,
+    "closed": true
+  },
+  "architecture_assessment": {
+    "single_kernel": "PASS_NO_NEW_KERNEL",
+    "kernel_io_separation": "PASS_NO_PRODUCTION_CHANGE",
+    "explicit_data_separation": "NO_CHANGE",
+    "compact_persistent_state": "NO_CHANGE",
+    "scratch_per_worker": "NO_CHANGE",
+    "transactional_timesteps": "PRESERVATION_REQUIRED_BY_REPLAY_POLICY",
+    "generic_time": "PRESERVATION_REQUIRED_BY_REPLAY_POLICY",
+    "mass_conservation": "HARD_GATE_PRESERVED",
+    "multiswap_primary": "NO_CONFLICT",
+    "alternative_solver_openness": "NO_CONFLICT",
+    "physics_solver_policy_separation": "HARD_HOLD_PRESERVED",
+    "predictable_cost": "TEMPORAL_BOUNDED_COST_REPLAY_REQUIRED",
+    "reference_mode": "PRESERVED",
+    "diagnostics": "INVALID_BUDGET_NATIVE_DIAGNOSTIC_REGRESSION_EXPLICITLY_RETAINED",
+    "no_silent_dependencies": "PASS_BY_DEPENDENCY_CLOSED_MATERIALIZATION_REQUIREMENT"
+  },
+  "next_required_work": "Open a separate controlled composition/materialization workunit from exact F-WOF42, enumerate the minimal dependency-closed F-KT11 temporal production postimage, persist that candidate before long tests, then execute the frozen replay chain before any canonical admission decision."
+}
