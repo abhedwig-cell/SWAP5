@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR20",
+  "branch": "work/f-mr20-concurrency-isolation",
+  "authoritative_base": "110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+  "green_pre_patch_checkpoint": "eeecb2c661672b42cf4c905a3dc12e6bebf37292",
+  "scope": "CANONICAL_EXPLICIT_RICHARDS_CONTEXT_ISOLATION_STAGE_1",
+  "goal": "Remove canonical-path dependence on legacy fldtmin/fldaystart by using already worker-owned numerical-control and execution-time state, without changing legacy-call semantics or physical/numerical policy.",
+  "source_bound_findings": {
+    "worker_min_dt_owner": "a23bu_worker_context_t%control%at_min_dt",
+    "worker_day_event_owner": "a23bu_worker_context_t%time%day_start_event",
+    "min_dt_seed_function": "a23bu_seed_timestep_control(worker, dt, dtmin)",
+    "canonical_headcalc_current_problem": [
+      "HeadCalc reads shared variables%fldtmin for iteration ceiling, backtracking limiter and nonconvergence branch.",
+      "reference adapter validate_legacy_request reads shared variables%fldtmin and can reject an otherwise explicit canonical request.",
+      "HeadCalc reads shared variables%fldaystart solely to reset warning history."
+    ]
+  },
+  "planned_production_changes": [
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "changes": [
+        "seed ws%legacy_worker%control from request step_duration/min_step_duration before HeadCalc",
+        "remove canonical validation dependency on shared fldtmin"
+      ]
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "changes": [
+        "retain legacy_fldtmin and legacy_fldaystart aliases for legacy_state_binding path",
+        "derive canonical at_min_dt from ctx%control%at_min_dt",
+        "derive canonical day_start_event from ctx%time%day_start_event",
+        "route all fldtmin algorithm branches through local at_min_dt",
+        "only write legacy fldtmin when legacy_state_binding is active"
+      ]
+    }
+  ],
+  "non_goals": [
+    "no worker_count>1 admission",
+    "no OpenMP introduction",
+    "no physics formula change",
+    "no numerical tolerance or retry-policy change",
+    "no removal yet of bind_b110_serialized_legacy_context",
+    "no legacy file-I/O change",
+    "no calendar semantics added to generic kernel time"
+  ],
+  "required_gates": [
+    "legacy path retains direct legacy fldtmin/fldaystart semantics",
+    "canonical path contains no semantic read/write of shared fldtmin/fldaystart",
+    "authoritative one-worker A/B identity O0 PASS",
+    "authoritative one-worker A/B identity O2 PASS",
+    "O0/O2 output identity PASS",
+    "hard mass gate PASS",
+    "multiworker remains fail-closed before physical solve"
+  ],
+  "architecture_invariants": {
+    "scratch_per_worker": "strengthened",
+    "transactional_state": "unchanged",
+    "generic_time": "strengthened: day-start is an explicit worker event, not inferred calendar coupling",
+    "physics_solver_policy_separation": "unchanged",
+    "mass_conservation": "must remain bit-identical in qualification fixture",
+    "multiswap": "removes shared mutable canonical solver context but does not itself admit parallel execution"
+  },
+  "state_before_patch": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  }
+}
