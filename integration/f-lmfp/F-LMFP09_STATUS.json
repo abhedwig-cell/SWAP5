@@ -1,5 +1,5 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -78,6 +78,7 @@
   "C7a": {
     "name": "PRODUCTION_CATALOG_COVERAGE",
     "qualification": false,
+    "full_catalog_qualification_already_impossible": true,
     "precommit_commit": "8da4df81dfe0f9eeb93998de12399dce9bc58e14",
     "precommit": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json",
     "implementation_commits": [
@@ -87,7 +88,7 @@
     ],
     "execution_run": 34325023479,
     "execution_head": "d50aae893c751b8f1526602f0f09e5c8dc57ec1d",
-    "execution_status_last_observed": "IN_PROGRESS_ALL_12_SHARDS_STARTED_OR_RUNNING",
+    "execution_status_last_observed": "IN_PROGRESS_1_OF_12_SHARDS_COMPLETE_REMAINDER_RUNNING",
     "tested": false,
     "result_persisted": false,
     "provider": "FROZEN_49_NODE_ANCHORED_HEAD_PAIR",
@@ -95,12 +96,34 @@
     "catalog": "36_STARING2018_MATERIALS_X_10_AND_20_CM_EQUALS_72_CLASSES",
     "raw_holdout_cases": 43200,
     "scientific_rule": "ALL_72_CLASSES_MUST_PASS_INHERITED_C6A_C6B_STRUCTURAL_EVIDENCE_SUFFICIENCY_AND_ACCURACY_RULES_NO_RETUNING",
+    "first_completed_shard": {
+      "shard": 7,
+      "materials": ["O04", "O05", "O06"],
+      "artifact_id": 10093775614,
+      "artifact_digest": "sha256:ef6f7bd073568741c7640a72aaf18371858e28d3a2fef3766a6f3d22d5fd1caa",
+      "classes_passed": 5,
+      "classes_total": 6,
+      "first_failed_class": "O05:20cm",
+      "failed_check": "strong_gradient_p90_lt_0p02",
+      "strong_gradient_p90_rel_error": 0.033027923762514434,
+      "active_p90_rel_error": 0.013741437168469118,
+      "active_p99_rel_error": 0.08728170630083112,
+      "active_max_rel_error": 0.10779635387939977,
+      "admitted_cases": 346,
+      "active_cases": 314,
+      "runtime_oracle_calls": 0,
+      "sign_mismatches": 0,
+      "structural_checks_all_pass": true,
+      "evidence_sufficiency_checks_all_pass": true,
+      "interpretation": "This single precommitted class failure is sufficient to rule out full-catalog C7a qualification. Remaining shards continue only to complete the failure localization map; no provider, classifier or threshold may be retuned on C7a holdout evidence."
+    },
     "production_admission": false
   },
   "transient_readiness_after_C7a": {
     "precommitted": false,
-    "reason": "C7a must qualify first. Existing transient reference matrix also contains synthetic material/geometry anchors not established by catalog coverage.",
-    "required_anchor_classes_before_transient_execution": {
+    "blocked_by_C7a_failure": true,
+    "reason": "C7a full-catalog qualification is already impossible. Even absent that failure, the existing transient reference matrix contains synthetic material/geometry anchors not established by catalog coverage.",
+    "required_anchor_classes_before_any_future_transient_execution": {
       "reference_sand_face_lengths_cm": [10.0, 11.3746, 12.0, 15.0, 20.0],
       "reference_clay_face_lengths_cm": [10.0, 15.0, 20.0]
     },
@@ -110,12 +133,13 @@
     "name": "C7A_PRODUCTION_CATALOG_COVERAGE",
     "qualification": false,
     "rule": "Frozen n49 provider and C6b classifier are evaluated without retuning across all 72 Staring2018 homogeneous material-geometry classes. Any class failure prevents full catalog qualification.",
-    "status": "PRECOMMITTED_IMPLEMENTED_EXECUTING_NOT_YET_TESTED_OR_QUALIFIED"
+    "status": "EXECUTION_CONTINUES_FOR_FAILURE_LOCALIZATION_FULL_CATALOG_QUALIFICATION_ALREADY_FAILED"
   },
   "separate_open_blockers": [
-    "production hydraulic catalog admission remains open until C7a completes and is persisted",
+    "complete C7a failure localization and persist aggregate result",
+    "production hydraulic catalog admission failed under the frozen C7a provider/classifier contract",
     "inherited near-saturation conductivity discontinuity in the catalog remains an owner-level constitutive issue",
-    "transient expanded-envelope regression remains blocked on C7a plus separate synthetic anchor face qualification",
+    "transient expanded-envelope regression is blocked; no C7b precommit under the failed C7a contract",
     "heterogeneous-interface qualification remains open",
     "bounded runtime fallback policy is not yet admitted",
     "root uptake, drainage, moving groundwater and MODFLOW coupling are outside F-LMFP09 current scope",
@@ -134,12 +158,13 @@
     "C7A_DESIGN_PRECOMMITTED": true,
     "C7A_EXPERIMENT_IMPLEMENTED": true,
     "C7A_EXECUTION_STARTED": true,
+    "C7A_FIRST_CLASS_FAILURE_PERSISTED": true,
     "C7A_EXECUTION_COMPLETE": false,
     "CATALOG_COVERAGE_QUALIFIED": false,
     "TRANSIENT_ANCHOR_GATE_PRECOMMITTED": false,
     "TRANSIENT_ENVELOPE_QUALIFIED": false,
     "OVERALL_QUALIFIED": false
   },
-  "decision": "C6B_QUALIFIED_C7A_PRECOMMITTED_IMPLEMENTED_AND_EXECUTING",
-  "status": "C7A_EXECUTING_RESULT_NOT_YET_AVAILABLE"
+  "decision": "C7A_FULL_CATALOG_QUALIFICATION_FAILED_EXECUTION_CONTINUES_FOR_LOCALIZATION",
+  "status": "C7A_NOT_QUALIFIED_PARTIAL_EVIDENCE_PERSISTED_AGGREGATE_PENDING"
 }
