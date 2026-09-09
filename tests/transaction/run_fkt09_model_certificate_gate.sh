@@ -11,6 +11,7 @@ TEST_CONTEXT="$ROOT/tests/transaction/test_transaction_attempt_context.f90"
 COMMON=(-std=f2008 -Wall -Wextra -Werror -fcheck=all -fbacktrace)
 
 bash "$ROOT/tests/transaction/run_a23bl_gate.sh"
+bash "$ROOT/tests/fkt/run_fkt01_gate.sh"
 
 gfortran "${COMMON[@]}" -O0 -J "$BUILD/o0" "$SRC" "$TEST_CERT" -o "$BUILD/cert_o0"
 "$BUILD/cert_o0" | tee "$BUILD/cert_o0.txt"
@@ -42,6 +43,7 @@ if ! grep -Fq 'outcome%temporal_certificate_available' "$SRC"; then
 fi
 
 echo 'FKT09_EXISTING_TRANSACTION_REGRESSION=PASS'
+echo 'FKT09_FKT01_KERNEL_REGRESSION=PASS'
 echo 'FKT09_MODEL_CERTIFICATE_O0_O2_IDENTITY=PASS'
 echo 'FKT09_ATTEMPT_CONTEXT_REGRESSION=PASS'
 echo 'FKT09_GENERICITY_GATE=PASS'
