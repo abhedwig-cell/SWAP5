@@ -1,0 +1,49 @@
+name: F-ROSS01 Gate E3A Encountered Transition Faces
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-e3a-encountered-transition-faces.yml
+      - experiments/ross/run_ross01_gate_e3a_encountered_transition_faces.py
+      - integration/f-ross/F-ROSS01_GATE_E3A_ENCOUNTERED_TRANSITION_FACE_SCOPE_PRECOMMIT.json
+      - experiments/ross/run_ross01_gate_e2c_r3_endpoint_limit_holdout.py
+      - experiments/ross/run_ross01_gate_e2c_r2_endpoint_clustered_local_face.py
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen E3A face-scope gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3a"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3a_encountered_transition_faces.py \
+            "$out/F-ROSS01_GATE_E3A_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3A_STDOUT.txt"
+      - name: Assert full face-scope qualification
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('ross01-gate-e3a/F-ROSS01_GATE_E3A_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_E3_ENCOUNTERED_NEAR_SATURATION_FACE_SCOPE_READY_FOR_EVENT_AND_SOLVER_REMEDIATION'
+          assert all(r['class_pass'].values())
+          assert r['new_persistent_state_bytes'] == 0
+          assert r['new_constitutive_physics'] is False
+          assert r['new_quadrature_or_root_tuning'] is False
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3a-encountered-transition-faces
+          path: ross01-gate-e3a/
