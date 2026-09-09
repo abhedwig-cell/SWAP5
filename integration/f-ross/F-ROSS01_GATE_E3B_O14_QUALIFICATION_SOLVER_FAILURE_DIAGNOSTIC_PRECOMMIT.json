@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3B_O14_QUALIFICATION_SOLVER_FAILURE_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "e3_run": 34389487999,
+    "e3_decision": "SATURATION_TRANSITION_PHYSICAL_COLUMN_NOT_QUALIFIED_RESEARCH_REQUIRED",
+    "e3a_r2_run": 34391513365,
+    "face_scope": "QUALIFIED_E3_ENCOUNTERED_FACE_SCOPE_WITH_TWO_SIDED_K_ENDPOINT_LIMIT_READY_FOR_EVENT_AND_SOLVER_REMEDIATION"
+  },
+  "target_material": "O14",
+  "frozen_failed_trials": [
+    {
+      "id": "REFERENCE_WETTING_STEP_8_OF_64",
+      "case": "WETTING_TOP_FLUX",
+      "candidate_faces": false,
+      "step_count": 64,
+      "accepted_steps_before_failure": 7
+    },
+    {
+      "id": "CANDIDATE_DRAINING_STEP_2_OF_16",
+      "case": "DRAINING_BOTTOM_HEAD",
+      "candidate_faces": true,
+      "step_count": 16,
+      "accepted_steps_before_failure": 1
+    }
+  ],
+  "diagnostic_solver_set": [
+    "ORIGINAL_LEAST_SQUARES_EXACT_REPRODUCTION",
+    "TIGHT_LEAST_SQUARES_DIAGNOSTIC_ONLY",
+    "SCIPY_ROOT_HYBR_DIAGNOSTIC_ONLY",
+    "SCIPY_ROOT_LM_DIAGNOSTIC_ONLY"
+  ],
+  "frozen_mass_certificate_cm": {
+    "max_abs_cell_residual": 1e-9,
+    "max_abs_global_residual": 1e-9,
+    "strong_diagnostic_target": 1e-12
+  },
+  "required_outputs": [
+    "exact old committed heads for each failed trial",
+    "original solver status, message, nfev, residuals and candidate heads",
+    "alternative diagnostic solver status and residuals",
+    "in-bounds root existence",
+    "best achieved cell and global mass residual",
+    "committed state unchanged during all diagnostic trials"
+  ],
+  "decision_rule": {
+    "qualification_solver_blocker": "an independent diagnostic solver finds an in-bounds root with cell/global residual <=1e-12 while the original solver reproduces failure",
+    "residual_or_physics_blocker": "no diagnostic solver finds an in-bounds root within the hard 1e-9 mass certificate",
+    "mixed": "only some frozen failed trials admit an independently resolved root"
+  },
+  "hard_guards": [
+    "Do not relax the 1e-9 mass acceptance gate.",
+    "Do not modify E3 physics, forcing, timestep, face formulas or committed state.",
+    "Alternative solvers are qualification diagnostics only and are not production candidates in this gate.",
+    "No E3 requalification follows directly from this diagnostic.",
+    "No runtime, tangent or MultiSWAP qualification."
+  ],
+  "relevant_invariants": [5,7,8,13,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
