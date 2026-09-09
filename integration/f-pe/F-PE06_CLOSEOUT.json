@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE06",
+  "title": "Bounded Temporal-Certificate Cost and Reference Runtime Overhead Characterization",
+  "status": "COMPLETE_QUALIFIED_BOUNDED_TEMPORAL_CERTIFICATE_COST_AND_REFERENCE_RUNTIME_OVERHEAD_CHARACTERIZATION",
+  "decision": "QUALIFIED_BOUNDED_REFERENCE_RICHARDS_TEMPORAL_CERTIFICATE_COST_CHARACTERIZATION_WITHIN_FROZEN_SCOPE",
+  "branch": "qualification/f-pe06-temporal-certificate-cost",
+  "base_branch": "qualification/f-vq34-remediated-richards-head-budget-certificate",
+  "base_head": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+  "qualified_dependency": {
+    "work_unit": "F-VQ34",
+    "artifact": "integration/f-vq/F-VQ34_CLOSEOUT.json",
+    "decision": "QUALIFIED_REMEDIATED_EXPLICIT_RICHARDS_HEAD_BUDGET_CERTIFICATE_POLICY_BINDING_WITHIN_FROZEN_SCOPE",
+    "H_budget_selection_inherited": false
+  },
+  "evidence": {
+    "measurement_protocol": "integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL.json",
+    "protocol_correction": "integration/f-pe/F-PE06_MEASUREMENT_PROTOCOL_CORRECTION_01.json",
+    "pretiming_results": "integration/f-pe/F-PE06_PRETIMING_RESULTS.json",
+    "timing_results": "integration/f-pe/F-PE06_RESULTS.json",
+    "memory_characterization": "integration/f-pe/F-PE06_MEMORY_COST_CHARACTERIZATION.json",
+    "pretiming_driver": "tests/fpe/test_fpe06_temporal_certificate_cost.f90",
+    "pretiming_runner": "tests/fpe/run_fpe06_pretiming_equivalence.sh",
+    "timing_driver": "tests/fpe/test_fpe06_temporal_certificate_timing.f90",
+    "timing_runner": "tests/fpe/run_fpe06_paired_timing.sh",
+    "workflow": ".github/workflows/fpe06-temporal-certificate-cost.yml"
+  },
+  "executable_qualification": {
+    "pretiming_tested_head": "9937ef9f0773b0e158a6d304f8b7e8181de70e48",
+    "pretiming_workflow_run": 34395435281,
+    "pretiming_workflow_job": 102613872338,
+    "pretiming_conclusion": "success",
+    "pretiming_matrix_cases": 12,
+    "pretiming_optimization_modes": ["O0", "O2"],
+    "pretiming_case_executions": 24,
+    "timing_tested_head": "a3fe000a3726f11e350ae7a1b3d3fbf63eefd514",
+    "timing_workflow_run": 34395935065,
+    "timing_pretiming_job": 102615527401,
+    "timing_pretiming_job_conclusion": "success",
+    "timing_job": 102615848957,
+    "timing_job_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04 image 20260907.300.1",
+    "timing_artifact_id": 10121539970,
+    "timing_artifact_sha256": "f8d642301630573e0fa818472054cfe34cfd0e2ca1dd173083e040cb3175e449"
+  },
+  "qualified_cost_shape": {
+    "benchmark_transaction_harness": "TX_TEMPORAL_EXTERNAL_FULL_HALF, full plus two-half branch, identical in A and B",
+    "principal_Richards_advances_per_trial": 3,
+    "additional_principal_Richards_advances_when_temporal_service_enabled": 0,
+    "additional_full_nonlinear_solves_per_temporal_service": 0,
+    "additional_reference_tridag_solves_per_temporal_service": 1,
+    "aggregate_linear_solve_delta_B_minus_A_per_three_service_trial": 3,
+    "principal_nonlinear_iterations_A_B_equal": true,
+    "principal_jacobian_builds_A_B_equal": true,
+    "principal_internal_retries_A_B_equal": true,
+    "principal_backtracking_A_B_equal": true,
+    "candidate_physical_state_A_B_bitwise_equal": true,
+    "strict_mass_result_A_B_bitwise_equal": true
+  },
+  "qualified_wall_clock_characterization": {
+    "matrix": "frozen 12-case F-VQ34 hydraulic matrix",
+    "ABBA_blocks_per_case": 9,
+    "repetitions_per_process": 30,
+    "warmup_per_process": 3,
+    "paired_blocks_per_optimization": 108,
+    "timed_run_trial_calls": 25920,
+    "O0": {
+      "median_A_microseconds_per_trial": 36.00445833333333,
+      "median_B_microseconds_per_trial": 47.23424166666666,
+      "median_delta_microseconds_per_trial": 11.1486,
+      "p95_delta_microseconds_per_trial": 13.040433333333331,
+      "max_delta_microseconds_per_trial": 28.382333333333335,
+      "median_delta_microseconds_per_temporal_service": 3.7162,
+      "median_B_over_A": 1.3116463446774018,
+      "positive_paired_blocks": 108,
+      "negative_paired_blocks": 0
+    },
+    "O2": {
+      "median_A_microseconds_per_trial": 19.78666666666667,
+      "median_B_microseconds_per_trial": 26.732616666666665,
+      "median_delta_microseconds_per_trial": 6.957058333333331,
+      "p95_delta_microseconds_per_trial": 8.703166666666668,
+      "max_delta_microseconds_per_trial": 20.70753333333333,
+      "median_delta_microseconds_per_temporal_service": 2.3190194444444437,
+      "median_B_over_A": 1.353133208006231,
+      "positive_paired_blocks": 107,
+      "negative_paired_blocks": 1,
+      "negative_block_min_delta_microseconds": -0.16933333333333194,
+      "all_twelve_case_median_deltas_positive": true
+    },
+    "interpretation": "Microsecond-scale incremental cost was observed on the stated GitHub runner. These values characterize this frozen implementation, fixture matrix, compiler and hardware environment; they are not universal time bounds."
+  },
+  "qualified_memory_characterization": {
+    "optional_persistent_numerical_history_payload": "8*n bytes of real64 payload",
+    "seeded_admitted_source_visible_peak_transient_payload": "152*n bytes of real64 payload",
+    "source_visible_peak_incremental_payload_including_optional_history": "160*n bytes",
+    "complexity": "O(n) in active vertical nodes",
+    "principal_solver_payload_excluded": true,
+    "allocator_descriptor_hidden_temporary_overhead_excluded": true,
+    "persistent_solver_scratch_added_by_PE06": false
+  },
+  "negative_evidence_and_correction": {
+    "failed_workflow_run": 34394714005,
+    "failed_workflow_job": 102611440755,
+    "falsified_assumption": "TX_TEMPORAL_NONE could be used as a valid one-trial acceptance-neutral benchmark route",
+    "source_reconciliation": "valid_policy admits only TX_TEMPORAL_EXTERNAL_FULL_HALF and TX_TEMPORAL_MODEL_CERTIFICATE",
+    "resolution": "The failed assumption is retained in the correction artifact; the benchmark was redesigned on the existing valid full/two-half route without weakening physical, mass or solve-equivalence gates."
+  },
+  "final_branch_diff_reconciliation": {
+    "compared_base": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "compared_head_before_closeout": "7856ec779dc1eaa3b37098d41b4f4950dd9adba6",
+    "merge_base": "df9b1123ba33ece022ce6649e70dcb538e44837f",
+    "ahead_by": 14,
+    "behind_by": 0,
+    "changed_files": 10,
+    "production_src_files_changed": 0,
+    "changed_file_families": [
+      ".github/workflows/fpe06-temporal-certificate-cost.yml",
+      "integration/f-pe/*",
+      "tests/fpe/*"
+    ],
+    "production_source_modified_by_F_PE06": false
+  },
+  "architecture_invariant_audit": {
+    "3_explicit_data_separation": "PASS: H_budget remains numerical configuration and derivative history remains optional numerical continuation data rather than physical storage.",
+    "4_compact_persistent_state": "PASS_WITHIN_SCOPE: only active temporal-history layouts carry one n-element history vector; inactive layouts carry none.",
+    "5_scratch_per_worker": "PASS_WITHIN_SCOPE: indicator arrays are transient, not committed state; PE06 adds no persistent solver scratch. Reusable worker-scratch optimization remains a future performance option.",
+    "7_transactional_timesteps": "PASS: correctness and timing use existing checkpoint/trial transaction machinery; rejected experimental benchmark assumptions never alter production semantics.",
+    "9_generic_time": "PASS_WITHIN_SCOPE: frozen VQ34 non-calendar horizons are reused; no day-boundary assumption is introduced.",
+    "13_mass_conservation_absolute": "PASS: hard mass gating remains active and A/B physical mass results are bitwise identical in the checked pre-timing matrix.",
+    "16_multiswap_primary_use": "PASS_AS_CHARACTERIZATION_ONLY: O(n) memory and microsecond service cost are quantified; no claim is made that current per-call allocation is already optimal for very large MultiSWAP batches.",
+    "23_physics_solver_policy_separated": "PASS: no physical option or reference-solver tolerance changes between A and B; benchmark temporal tolerance is identical scaffolding in both arms and is not a production policy.",
+    "24_predictable_compute": "PASS_FOR_BOUNDED_CHARACTERIZATION: incremental solve topology is fixed and executable-proven; median/p95/max observations are recorded without converting finite-run evidence into a universal wall-clock guarantee.",
+    "25_reference_mode_available": "PASS: the measured path is the full reference Richards implementation.",
+    "26_runtime_diagnostics": "PASS: existing diagnostics expose principal and incremental solve counts needed for attribution.",
+    "27_optional_functionality_scales_with_use": "PASS_WITHIN_SCOPE: history and indicator work occur only for the active temporal-history layout/service.",
+    "30_architecture_change_audit": "PASS: final pre-closeout diff contains no production source modifications and all applicable invariants are explicitly reconciled."
+  },
+  "hard_nonclaims": [
+    "F-PE06 does not select, recommend or qualify a numeric H_budget.",
+    "F-PE06 does not define or qualify BALANCED or THROUGHPUT policy.",
+    "F-PE06 does not establish a universal hardware-independent runtime bound.",
+    "F-PE06 does not claim that the full/two-half benchmark route is the production model-certificate execution route.",
+    "F-PE06 does not authorize any mass-conservation or physical-fidelity concession.",
+    "F-PE06 does not qualify parallel real-physics MultiSWAP scaling or worker-count scaling.",
+    "F-PE06 does not optimize the current per-call temporal-service allocations."
+  ],
+  "downstream_handoff": {
+    "cost_shape_available_for_runtime_design": true,
+    "reference_measurement_available_for_performance_policy_design": true,
+    "H_budget_policy_released": false,
+    "BALANCED_or_THROUGHPUT_policy_released": false,
+    "parallel_multiswap_performance_released": false,
+    "future_optimization_candidates": [
+      "remove one or both previous-derivative copies where interface ownership permits",
+      "reuse the sixteen indicator work vectors from worker scratch rather than allocate per call",
+      "re-run PE06-equivalent characterization after any such optimization against the unchanged reference-mode semantics"
+    ]
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "open": []
+  }
+}
