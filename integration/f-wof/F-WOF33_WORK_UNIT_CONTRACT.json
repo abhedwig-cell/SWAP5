@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-WOF",
   "work_unit": "F-WOF33",
   "title": "Restricted Standard-WOFOST Two-Phase Crop-Window Composition",
@@ -62,9 +62,9 @@
       "F-WOF32 finalize rate packet from the exact phase-A state snapshot and frozen phase-B forcing",
       "F-WOF26 finalize structural candidate from the prepared candidate, same accepted aggregates and generated packet"
     ],
-    "outputs": ["complete candidate only on success", "rate packet only on successful phase-B", "composition and structural diagnostics"],
+    "outputs": ["complete committable candidate only when status is WOFOST_CROP_WINDOW_OK and diagnostics.candidate_built is true", "on failure the phase-A prepared trial state may be returned for retry/inspection but is explicitly non-committable", "rate packet only on successful phase-B", "composition and structural diagnostics"],
     "commit_authority": false,
-    "on_failure": "candidate output is reset to default/unavailable; candidate-local Tmin history and any partial structural update remain confined to the worker-local context or failed call and cannot be mistaken for a commit candidate"
+    "on_failure": "status remains non-OK and diagnostics.candidate_built remains false; any returned prepared candidate is worker-local retry/warm-start material only and may not be committed. The original committed input is unchanged bitwise."
   },
   "trial_context_contract": {
     "ownership": "worker/job-local crop-window trial context, never persistent column state",
@@ -82,7 +82,8 @@
       "accepted aggregate accumulator",
       "calendar cursor or file state"
     ],
-    "replay": "same committed state + same forcing + same immutable parameters yields bitwise identical begin context; same context + same frozen accepted aggregates yields bitwise identical candidate, packet and diagnostics"
+    "replay": "same committed state + same forcing + same immutable parameters yields bitwise identical begin context; same context + same frozen accepted aggregates yields bitwise identical candidate, packet and diagnostics",
+    "failed_complete_reuse": "the same immutable window context remains reusable after a failed complete call; returned prepared trial state is not a commit result"
   },
   "accepted_window_provenance_hold": {
     "semantic_carrier": "wofost_accepted_window_aggregates_t",
@@ -113,7 +114,7 @@
     "G05_same_input_begin_replay_bitwise_identity": "REQUIRED",
     "G06_same_context_complete_replay_bitwise_identity": "REQUIRED",
     "G07_exactly_one_structural_cohort_shift_per_complete": "REQUIRED",
-    "G08_failure_exposes_no_candidate": "REQUIRED",
+    "G08_failed_complete_returns_only_noncommittable_prepared_trial_state": "REQUIRED",
     "G09_no_commit_scheduler_solver_or_aggregate_accumulator": "REQUIRED",
     "G10_O0_O2_identity": "REQUIRED",
     "G11_F_WOF31_and_F_WOF32_exact_regressions": "REQUIRED",
