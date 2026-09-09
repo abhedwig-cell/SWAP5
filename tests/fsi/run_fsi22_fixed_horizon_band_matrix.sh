@@ -77,7 +77,9 @@ build_modules() {
 }
 
 run_matrix() {
-  local opt="$1" tag="$2" out="$BUILD/$tag"
+  local opt="$1"
+  local tag="$2"
+  local out="$BUILD/$tag"
   build_modules "$opt" "$out"
   mapfile -t objects < "$out/objects.txt"
   local case_id=0
@@ -162,7 +164,6 @@ for cid,spec in enumerate(specs,1):
     d=[x[2] for x in comps]
     if not all(math.isfinite(x) and x>=0.0 for x in d): raise SystemExit(f'case {cid}: invalid dhead')
     floor=128.0*eps*max(1.0,abs(h0),abs(hb))
-    resolved=[x>floor for x in d]
     ratios=[]
     for a,b in zip(d[:-1],d[1:]):
         ratios.append(b/a if a>floor and b>floor else math.nan)
