@@ -56,7 +56,7 @@ for required in [
     'type, public :: wofost_one_day_rate_packet_t',
     'type, public :: wofost_accepted_window_aggregates_t',
     'real(real64), parameter :: b110_nihil = 1.0e-10_real64',
-    'lai_exp_carryover_threshold = 6.0_real64'
+    'laiexp_carryover_threshold = 6.0_real64'
 ]:
     assert required in evolution_code, required
 
