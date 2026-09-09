@@ -12,6 +12,15 @@ p=Path(sys.argv[1]); s=p.read_text()
 old="grep -Fq 'FKT09_MODEL_CERTIFICATE_RUNNER PASS' \"$BUILD/fkt09.txt\""
 new="grep -Fq 'FKT09_MODEL_CERTIFICATE_GATE=PASS' \"$BUILD/fkt09.txt\""
 assert s.count(old)==1, 'F-KT11 F-KT09 marker patch drift'
-p.write_text(s.replace(old,new,1))
+s=s.replace(old,new,1)
+old_fmt="""assert 'FKT11_CH= 5.00000000000000000E-001' in s or 'FKT11_CH= 5.000000000000' in s
+assert 'FKT11_CH= 2.00000000000000000E+000' in s or 'FKT11_CH= 2.000000000000' in s"""
+new_fmt="""# VALID_ACCEPT and VALID_REJECT already assert C_h numerically in the
+# compiled owner driver. Keep this parser diagnostic-only and independent of
+# compiler-specific ES exponent formatting.
+assert s.count('FKT11_CH=') == 6"""
+assert s.count(old_fmt)==1, 'F-KT11 C_h formatting guard patch drift'
+s=s.replace(old_fmt,new_fmt,1)
+p.write_text(s)
 PY
 bash "$TMP"
