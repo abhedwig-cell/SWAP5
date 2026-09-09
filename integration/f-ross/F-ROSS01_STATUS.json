@@ -1,5 +1,5 @@
 {
-  "schema_version": 7,
+  "schema_version": 8,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -14,167 +14,54 @@
   "decision_is_final": false,
   "primary_research_family": "STARINGREEKS_UNIMODAL_MVG_KSATFIT_BASE",
   "qualified_subgates": [
-    {
-      "gate": "A_CONTINUITY_ALGEBRA",
-      "run": 34314383222,
-      "head": "7d56fdee87cef995797f4f558bd69955703f482a",
-      "cases": 18,
-      "max_abs_mass_residual": 8.326672684688674e-17
-    },
-    {
-      "gate": "J0_RESPONSE_TANGENT_ALGEBRA",
-      "run": 34318919093,
-      "head": "5dd1e29fa71716c67a02ed2122a0191dbb1fe401",
-      "max_tangent_metric": 1.26885786529119e-10,
-      "cost_shape": "ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE"
-    },
-    {
-      "gate": "C1R_BASE_MVG_36_MATERIAL_FACE_CATALOG",
-      "run": 34339656739,
-      "head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
-      "candidate": "N241_FLOAT32_LOG_MOBILITY",
-      "material_count": 36,
-      "holdout_probe_count": 50436,
-      "pass_count": 36,
-      "max_abs_error_over_ksatfit": 0.00043924621324671555,
-      "max_hybrid_metric": 0.0005836322947071754,
-      "shared_table_plus_metadata_bytes": 232356,
-      "per_column_table_state_bytes": 0,
-      "scope": "Staringreeks 2018 unimodal MvG, KSATFIT, H_ENPR=0, KSATEXM disabled, homogeneous unsaturated 10 cm faces, h=[-10000,-1] cm"
-    },
-    {
-      "gate": "J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT",
-      "evidence": "F-ROSS01_GATE_J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_CLOSEOUT.json",
-      "decision": "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE",
-      "column_run": 34358497637,
-      "boundary_run": 34359202974,
-      "primary_quantity": "d_h_bottom_d_q_bottom",
-      "primary_units": "day",
-      "q_bottom_sign": "positive downward",
-      "max_smooth_tangent_metric": 3.419659398931413e-07,
-      "cost_shape": "ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE_NO_SECOND_NONLINEAR_TRAJECTORY"
-    },
-    {
-      "gate": "D_CONSERVATIVE_PHYSICAL_UNSATURATED_C1R_COLUMN",
-      "run": 34361029949,
-      "head": "c2bf7ad46652f38718a32262e935841c0dfb6a8e",
-      "decision": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE",
-      "trial_count": 972,
-      "max_abs_global_mass_residual_cm": 1.2769021679858578e-19,
-      "max_abs_cell_balance_residual_cm": 1.6263032587282567e-19
-    },
-    {
-      "gate": "F_R1_PIECEWISE_C1R_TIMESTEP_CONVERGENCE",
-      "run": 34365245795,
-      "head": "ac199f89ef41127bed01fb6b08f7e007be43daf7",
-      "decision": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
-      "base_cases": 108,
-      "piecewise_transition_routes": 8,
-      "scope": "restricted homogeneous unsaturated C1R timestep route; adjacent single-component single-node interpolation-cell transitions only"
-    },
-    {
-      "gate": "E0_SATURATION_STATE_AND_CLOSURE_ADMISSION",
-      "evidence": "F-ROSS01_GATE_E0_SATURATION_STATE_AND_CLOSURE_ADMISSION_RESULT.json",
-      "decision": "SATURATION_REQUIRES_EXPLICIT_HEAD_DOF_AND_SEPARATE_NEAR_SATURATION_CLOSURE_READY_FOR_E1_TRANSITION_DESIGN",
-      "material_count": 36,
-      "material_pass_count": 36,
-      "theta_only_state_is_noninjective_in_saturated_regime": true
-    },
-    {
-      "gate": "E1_UNIFIED_HEAD_PERSISTENT_STATE",
-      "evidence": "F-ROSS01_GATE_E1_UNIFIED_HEAD_PERSISTENT_STATE_RESULT.json",
-      "decision": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
-      "material_count": 36,
-      "material_pass_count": 36,
-      "selected_persistent_state": "UNIFIED_HEAD_PERSISTENT_STATE_WITH_ROSS_MIXED_WORKER_VARIABLES",
-      "max_head_roundtrip_error_cm": 1.478172136947492e-09
-    },
-    {
-      "gate": "C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION",
-      "evidence": "F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json",
-      "material_count": 36,
-      "pass_count": 36,
-      "scope": "constitutive admissibility only; face representation not qualified"
-    }
+    {"gate":"A_CONTINUITY_ALGEBRA","run":34314383222,"head":"7d56fdee87cef995797f4f558bd69955703f482a","cases":18,"max_abs_mass_residual":8.326672684688674e-17},
+    {"gate":"J0_RESPONSE_TANGENT_ALGEBRA","run":34318919093,"head":"5dd1e29fa71716c67a02ed2122a0191dbb1fe401","max_tangent_metric":1.26885786529119e-10,"cost_shape":"ONE_FACTORIZATION_PLUS_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE"},
+    {"gate":"C1R_BASE_MVG_36_MATERIAL_FACE_CATALOG","run":34339656739,"head":"ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a","candidate":"N241_FLOAT32_LOG_MOBILITY","material_count":36,"holdout_probe_count":50436,"pass_count":36,"max_abs_error_over_ksatfit":0.00043924621324671555,"max_hybrid_metric":0.0005836322947071754,"shared_table_plus_metadata_bytes":232356,"per_column_table_state_bytes":0,"scope":"Staringreeks 2018 unimodal MvG, KSATFIT, H_ENPR=0, KSATEXM disabled, homogeneous unsaturated 10 cm faces, h=[-10000,-1] cm"},
+    {"gate":"J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT","evidence":"F-ROSS01_GATE_J1_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_CLOSEOUT.json","decision":"QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE","column_run":34358497637,"boundary_run":34359202974,"primary_quantity":"d_h_bottom_d_q_bottom","primary_units":"day","q_bottom_sign":"positive downward","max_smooth_tangent_metric":3.419659398931413e-07,"cost_shape":"ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_TANGENT_BACKSOLVE_NO_SECOND_NONLINEAR_TRAJECTORY"},
+    {"gate":"D_CONSERVATIVE_PHYSICAL_UNSATURATED_C1R_COLUMN","run":34361029949,"head":"c2bf7ad46652f38718a32262e935841c0dfb6a8e","decision":"QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE","trial_count":972,"max_abs_global_mass_residual_cm":1.2769021679858578e-19,"max_abs_cell_balance_residual_cm":1.6263032587282567e-19},
+    {"gate":"F_R1_PIECEWISE_C1R_TIMESTEP_CONVERGENCE","run":34365245795,"head":"ac199f89ef41127bed01fb6b08f7e007be43daf7","decision":"QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE","base_cases":108,"piecewise_transition_routes":8,"scope":"restricted homogeneous unsaturated C1R timestep route; adjacent single-component single-node interpolation-cell transitions only"},
+    {"gate":"E0_SATURATION_STATE_AND_CLOSURE_ADMISSION","evidence":"F-ROSS01_GATE_E0_SATURATION_STATE_AND_CLOSURE_ADMISSION_RESULT.json","decision":"SATURATION_REQUIRES_EXPLICIT_HEAD_DOF_AND_SEPARATE_NEAR_SATURATION_CLOSURE_READY_FOR_E1_TRANSITION_DESIGN","material_count":36,"material_pass_count":36,"theta_only_state_is_noninjective_in_saturated_regime":true},
+    {"gate":"E1_UNIFIED_HEAD_PERSISTENT_STATE","evidence":"F-ROSS01_GATE_E1_UNIFIED_HEAD_PERSISTENT_STATE_RESULT.json","decision":"QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE","material_count":36,"material_pass_count":36,"selected_persistent_state":"UNIFIED_HEAD_PERSISTENT_STATE_WITH_ROSS_MIXED_WORKER_VARIABLES","max_head_roundtrip_error_cm":1.478172136947492e-09},
+    {"gate":"E2C_R3_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK","evidence":"F-ROSS01_GATE_E2C_R3_ENDPOINT_LIMIT_HOLDOUT_RESULT.json","run":34387271577,"head":"080aa69ef9ef487f5899ce620d32e4ee46617491","decision":"QUALIFIED_BOUNDED_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE","legacy_probe_count":2486,"independent_holdout_probe_count":4096,"endpoint_limit_count":37,"endpoint_limit_independent_holdout_count":9,"unresolved_failure_count":0,"max_abs_error_over_ksatfit":0.0002902687720364049,"max_hybrid_metric":0.00028492561960496895,"max_p99_hybrid_metric":2.114833975305732e-05,"endpoint_limit_max_abs_error_over_ksatfit":1.4926425424410582e-12,"endpoint_limit_max_hybrid_metric":4.536322266843834e-12,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66,"persistent_per_column_state_bytes":0,"scope":"base MvG/KSATFIT WET_DRY near-saturation face fallback only"},
+    {"gate":"C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION","evidence":"F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json","material_count":36,"pass_count":36,"scope":"constitutive admissibility only; face representation not qualified"}
   ],
   "negative_or_restricted_evidence": [
-    {
-      "gate": "C1_ORIGINAL_N129_GENERALISATION",
-      "status": "FAIL_PRESERVED"
-    },
-    {
-      "gate": "J1_PIECEWISE_DERIVATIVE_BOUNDARIES",
-      "status": "QUALIFIED_RESTRICTION",
-      "reason": "flux is continuous across tested table nodes while the normal derivative can jump strongly; no unique cross-branch tangent is invented"
-    },
-    {
-      "gate": "F_R1_PIECEWISE_TIMESTEP_ROUTE",
-      "status": "QUALIFIED_RESTRICTION",
-      "reason": "only one transitioning state component and one adjacent interpolation cell per accepted trial are qualified"
-    },
-    {
-      "gate": "E2A_DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION",
-      "status": "REJECTED",
-      "evidence": "F-ROSS01_GATE_E2A_NEAR_SATURATION_FACE_CHARACTERIZATION_RESULT.json",
-      "reason": "only 2/6 materials pass; B12/O13 show structural WET_DRY near-saturation error"
-    },
-    {
-      "gate": "E2A_R0_CAUSALITY",
-      "status": "CHARACTERIZED",
-      "evidence": "F-ROSS01_GATE_E2A_R0_CROSS_REGION_INTERPOLATION_CAUSALITY_RESULT.json",
-      "reason": "B12/O13 failure is wet-axis dominated and concentrates just below h=0"
-    },
-    {
-      "gate": "E2A_R1A_UNIFORM_S_WET_AXIS",
-      "status": "REJECTED",
-      "evidence": "F-ROSS01_GATE_E2A_R1A_ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZATION_RESULT.json",
-      "decision": "ROSS_MIXED_UNIFORM_S_WET_AXIS_REJECTED_NO_FULL_REGION_R1B"
-    },
-    {
-      "gate": "E2A_R2A_ASYMPTOTIC_WET_AXIS",
-      "status": "REJECTED",
-      "evidence": "F-ROSS01_GATE_E2A_R2A_ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZATION_RESULT.json",
-      "decision": "ASYMPTOTIC_WET_AXIS_REJECTED_STOP_NEAR_SATURATION_TABLE_LINE_AND_RECONSIDER_FACE_FORMULATION"
-    },
-    {
-      "gate": "E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION",
-      "status": "REJECTED_SCIENTIFIC_GATE",
-      "evidence": "F-ROSS01_GATE_E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION_RESULT.json",
-      "run": 34381026618,
-      "head": "b97313a380b17643c7360fc6cf403dcf7713e6f1",
-      "decision": "FIXED_NODE_Q2_REJECTED_STOP_PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_APPROACH",
-      "reason": "B12 max_abs_error_over_ksatfit=0.0009133155249703937 exceeds frozen 0.0005 although O13, B01 and O14 pass all criteria"
-    },
-    {
-      "gate": "C2A_EXACT_KSATEXM",
-      "status": "FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED"
-    },
-    {
-      "gate": "C2B_CLASS_B_FACE_REPRESENTATION",
-      "status": "NOT_YET_QUALIFIED_DEFERRED",
-      "decision": "STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING"
-    }
+    {"gate":"C1_ORIGINAL_N129_GENERALISATION","status":"FAIL_PRESERVED"},
+    {"gate":"J1_PIECEWISE_DERIVATIVE_BOUNDARIES","status":"QUALIFIED_RESTRICTION","reason":"flux is continuous across tested table nodes while the normal derivative can jump strongly; no unique cross-branch tangent is invented"},
+    {"gate":"F_R1_PIECEWISE_TIMESTEP_ROUTE","status":"QUALIFIED_RESTRICTION","reason":"only one transitioning state component and one adjacent interpolation cell per accepted trial are qualified"},
+    {"gate":"E2A_DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION","status":"REJECTED","evidence":"F-ROSS01_GATE_E2A_NEAR_SATURATION_FACE_CHARACTERIZATION_RESULT.json"},
+    {"gate":"E2A_R1A_UNIFORM_S_WET_AXIS","status":"REJECTED","evidence":"F-ROSS01_GATE_E2A_R1A_ROSS_MIXED_WET_AXIS_WET_DRY_CHARACTERIZATION_RESULT.json"},
+    {"gate":"E2A_R2A_ASYMPTOTIC_WET_AXIS","status":"REJECTED","evidence":"F-ROSS01_GATE_E2A_R2A_ASYMPTOTIC_WET_AXIS_WET_DRY_CHARACTERIZATION_RESULT.json"},
+    {"gate":"E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION","status":"REJECTED_SCIENTIFIC_GATE","evidence":"F-ROSS01_GATE_E2B_Q2_FIXED_NODE_WET_DRY_FACE_CHARACTERIZATION_RESULT.json","run":34381026618,"decision":"FIXED_NODE_Q2_REJECTED_STOP_PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_APPROACH"},
+    {"gate":"E2C_SINGLE_PANEL_T8_GL128_LOCAL_SOLVE","status":"REJECTED","evidence":"F-ROSS01_GATE_E2C_BOUNDED_LOCAL_FACE_SOLVE_RESULT.json","reason":"B12/O13 broad accuracy and endpoint bracketing failed"},
+    {"gate":"E2C_R1_SEGMENTED_LOCAL_SOLVE","status":"REJECTED","evidence":"F-ROSS01_GATE_E2C_R1_LOG_HEAD_SEGMENTED_LOCAL_FACE_RESULT.json","reason":"valid-probe accuracy passed but 196 q>K(h_above) endpoint brackets failed"},
+    {"gate":"E2C_R2_ENDPOINT_CLUSTERED_LOCAL_SOLVE","status":"REJECTED","evidence":"F-ROSS01_GATE_E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_RESULT.json","reason":"endpoint clustering reduced 196 failures to 28 but did not reach zero"},
+    {"gate":"E2C_R2B_SIMPLE_EXPONENT_ESCALATION","status":"REJECTED_RESEARCH_ROUTE","evidence":"F-ROSS01_GATE_E2C_R2B_ENDPOINT_CLUSTER_EXPONENT_DIAGNOSTIC_RESULT.json","reason":"restoration was non-monotone across t^8,t^12,t^16,t^24,t^32 due endpoint binary64 collapse; no common exponent restored all 28"},
+    {"gate":"C2A_EXACT_KSATEXM","status":"FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED"},
+    {"gate":"C2B_CLASS_B_FACE_REPRESENTATION","status":"NOT_YET_QUALIFIED_DEFERRED","decision":"STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING"}
   ],
   "admissibility": {
-    "base_MvG_KSATFIT_C1R_face": "QUALIFIED_RESTRICTED_UNSATURATED_H_LE_MINUS_1_CM",
-    "base_MvG_KSATFIT_response_tangent": "QUALIFIED_STRICT_INTERIOR_WITH_EXPLICIT_PIECEWISE_BRANCH_SEMANTICS",
-    "base_MvG_KSATFIT_conservative_unsaturated_trial_column": "QUALIFIED_RESTRICTED",
-    "timestep_accuracy": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05",
-    "saturation_state_representation": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE",
-    "near_saturation_precomputed_face_table": "REJECTED_LINE_CLOSED",
-    "saturation_transitions": "NOT_YET_QUALIFIED",
-    "heterogeneous_profiles": "NOT_YET_QUALIFIED",
-    "production_bottom_boundary": "NOT_YET_QUALIFIED",
-    "groundwater_solver": "NOT_ADMITTED",
-    "runtime": "NOT_ADMITTED",
-    "MultiSWAP": "NOT_ADMITTED",
-    "FullRichards_equivalence": "NOT_YET_QUALIFIED",
-    "exact_KSATEXM": "ROSSFAST_NOT_YET_QUALIFIED",
-    "Class_B_HENPR_SVG2006_face": "NOT_YET_QUALIFIED_DEFERRED"
+    "base_MvG_KSATFIT_C1R_face":"QUALIFIED_RESTRICTED_UNSATURATED_H_LE_MINUS_1_CM",
+    "base_MvG_KSATFIT_response_tangent":"QUALIFIED_STRICT_INTERIOR_WITH_EXPLICIT_PIECEWISE_BRANCH_SEMANTICS",
+    "base_MvG_KSATFIT_conservative_unsaturated_trial_column":"QUALIFIED_RESTRICTED",
+    "timestep_accuracy":"QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05",
+    "saturation_state_representation":"QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE",
+    "near_saturation_precomputed_face_table":"REJECTED_LINE_CLOSED",
+    "near_saturation_bounded_non_table_face_fallback":"QUALIFIED_RESTRICTED_R3_ENDPOINT_LIMIT",
+    "near_saturation_endpoint_limit_response_tangent":"NOT_YET_QUALIFIED",
+    "saturation_transitions":"NOT_YET_QUALIFIED",
+    "heterogeneous_profiles":"NOT_YET_QUALIFIED",
+    "production_bottom_boundary":"NOT_YET_QUALIFIED",
+    "groundwater_solver":"NOT_ADMITTED",
+    "runtime":"NOT_ADMITTED",
+    "MultiSWAP":"NOT_ADMITTED",
+    "FullRichards_equivalence":"NOT_YET_QUALIFIED",
+    "exact_KSATEXM":"ROSSFAST_NOT_YET_QUALIFIED",
+    "Class_B_HENPR_SVG2006_face":"NOT_YET_QUALIFIED_DEFERRED"
   },
   "open_gates_for_primary_base_family": [
-    "E2C_NON_TABLE_NEAR_SATURATION_FACE_FORMULATION",
-    "E_SATURATION_TRANSITIONS",
+    "E3_SATURATION_TRANSITION_COLUMN_PROTOTYPE",
+    "E4_ENDPOINT_LIMIT_TANGENT_POLICY_IF_REQUIRED",
     "G_HETEROGENEOUS_PROFILES",
     "H_BOTTOM_BOUNDARY",
     "I_GROUNDWATER",
@@ -184,14 +71,15 @@
   ],
   "hard_guards": [
     "Mass conservation remains absolute.",
-    "C1R may not be extrapolated above its qualified h=-1 cm upper envelope.",
+    "C1R may not be extrapolated above its qualified h=-1 cm upper envelope; E2C-R3 is the qualified restricted near-saturation fallback seam.",
     "Saturated pressure head may not be reconstructed from theta alone; unified persistent head state remains binding.",
-    "The near-saturation precomputed table line is closed after E2A, R1A, R2A and E2B. Do not continue with Q3, more nodes, new coordinates or relaxed thresholds as a hidden continuation.",
-    "A new E2C route must change the face formulation, for example a bounded local solve or another explicitly non-table method.",
-    "Unsupported near-saturation cases must fail closed to a qualified solver route.",
+    "The precomputed near-saturation table line remains closed. Do not reopen Q3, node-density, coordinate or Phi tuning as a hidden continuation.",
+    "The R3 endpoint limit may trigger only on the qualified q>K(h_above) bracket-failure class; other failures remain fail closed.",
+    "No unique response tangent is yet qualified across the endpoint-limit branch.",
+    "R3 is a bounded fallback face formulation, not yet a normal production RossFast face path.",
     "Class-B remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding.",
-    "No groundwater, MODFLOW, runtime or MultiSWAP admission follows from the current RossFast evidence."
+    "No groundwater, MODFLOW, runtime or MultiSWAP admission follows from R3."
   ],
-  "next_action": "Open E2C as a bounded non-table near-saturation face formulation feasibility gate. Prefer a local exact/controlled face solve that reuses the same constitutive closure and has an explicit finite cost bound. Freeze iteration/quadrature/root-solve budgets before execution, preserve antisymmetry and exact mass-flux identity, and fail closed when the budget cannot certify the requested face accuracy. Do not reopen table-density or Phi tuning.",
-  "status": "C1R_J1_D_F_E0_E1_QUALIFIED_NEAR_SATURATION_TABLE_LINE_REJECTED_READY_FOR_BOUNDED_NON_TABLE_E2C_RESEARCH"
+  "next_action": "Open E3 as a restricted physical saturation-transition column/timestep prototype using the E1 unified persistent head state, C1R/F-R1 unsaturated route below h=-1 cm, and E2C-R3 bounded near-saturation face fallback. Freeze transition cases and timestep policy before execution. Prove transaction safety, exact mass accounting, head continuity through h=0, no theta-only saturated-head reconstruction, bounded fallback diagnostics and convergence against a full-accuracy reference. Do not qualify response tangents across the endpoint-limit branch unless a separate E4 gate proves them.",
+  "status": "C1R_J1_D_F_E0_E1_AND_E2C_R3_QUALIFIED_READY_FOR_RESTRICTED_SATURATION_TRANSITION_COLUMN_PROTOTYPE"
 }
