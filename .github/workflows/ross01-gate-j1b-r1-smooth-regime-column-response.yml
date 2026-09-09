@@ -1,0 +1,48 @@
+name: F-ROSS01 Gate J1B-R1 Smooth-Regime Column Tangent
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - .github/workflows/ross01-gate-j1b-r1-smooth-regime-column-response.yml
+      - experiments/ross/run_ross01_gate_j1b_r1_smooth_regime_column_response.py
+      - integration/f-ross/F-ROSS01_GATE_J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE_CONTRACT.json
+      - experiments/ross/run_ross01_gate_j1b_same_factorization_column_response.py
+      - experiments/ross/run_ross01_gate_j1a_real_table_face_derivative.py
+      - experiments/ross/run_ross01_gate_j1a_r1_head_coordinate_oracle_repair.py
+      - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
+      - experiments/ross/run_ross01_gate_c1r_characterization.py
+      - experiments/ross/run_ross01_gate_c1.py
+      - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
+  workflow_dispatch:
+
+jobs:
+  tangent:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O01, O05, O14, O18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Run frozen J1B-R1 material response tangent qualification
+        run: |
+          set -euo pipefail
+          out="ross01-j1b-r1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_j1b_r1_smooth_regime_column_response.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_J1B_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_J1B_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-j1b-r1-${{ matrix.material }}
+          path: ross01-j1b-r1-${{ matrix.material }}/
