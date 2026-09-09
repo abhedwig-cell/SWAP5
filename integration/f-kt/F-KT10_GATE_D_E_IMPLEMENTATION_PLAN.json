@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gates": ["D_CHECKPOINT_EXTERNAL_COMMIT", "E_F_SI25_BINDING", "F_FEATURE_SCOPED_MULTISWAP", "G_OWNER_REPLAY"],
+  "plan_status": "FROZEN_BEFORE_REAL_RICHARDS_BINDING",
+  "source_head_before_binding": "e84a0feac2e02f3f6ce54b3d3e1da6b4f537b158",
+  "selected_runtime_layout": {
+    "inactive_optional_state_layout_id": 0,
+    "indicator_history_optional_state_layout_id": 1,
+    "constant": "FMR_OPTIONAL_STATE_RICHARDS_TEMPORAL_HISTORY",
+    "inactive_dynamic_state": "fmr_b110_physical_state_t",
+    "enabled_dynamic_state": "fmr_b110_temporal_indicator_state_t extends fmr_b110_physical_state_t",
+    "history_payload": "fkt_temporal_indicator_history_t"
+  },
+  "binding_semantics": {
+    "call_F_SI25": "only after SW_SOLVE_CONVERGED and before trial clone publication",
+    "previous_derivative": "snapshot from the trial-origin extended transaction state",
+    "bootstrap": "previous derivative unavailable is allowed; F-SI25 current_right_derivative is still retained if finite and correct-shape",
+    "history_advance": "replace history on the private trial clone only after a converged solve and valid current derivative",
+    "reject_behavior": "any rejected trial discards its history mutation with the clone",
+    "accepted_private_substep": "history moves with the accepted canonical state and becomes the origin for the next private substep",
+    "external_commit": "existing F-KT candidate move/publication commits physical plus continuation state atomically",
+    "storage_and_mass": "history is excluded from storage(), MassLedger and water-balance calculations",
+    "operator_cost": "F-SI25 additional_tridiagonal_solves is added to numerical linear-solve diagnostics; additional full nonlinear solves must remain zero"
+  },
+  "hard_nonactivation": {
+    "trial_outcome_temporal_certificate_available": false,
+    "trial_outcome_temporal_indicator_from_B_inf": false,
+    "B_inf_used_as_acceptance_threshold": false,
+    "scientific_normalization_or_tolerance": false,
+    "deep_refinement_trajectory": false
+  },
+  "fail_closed_rules": [
+    "Template optional_state_layout_id and committed-state dynamic type must match.",
+    "Unknown optional state layouts are not admitted by the serialized reference backend.",
+    "Indicator-enabled trial cannot be solver_ok if F-SI25 does not return a finite correct-shape current_right_derivative after convergence.",
+    "Model-owned certificate mode remains unavailable in F-KT10 even when B_inf is available."
+  ],
+  "qualification_matrix": [
+    "inactive base-state route remains behaviorally unchanged",
+    "indicator-enabled warmup accepted with history created and B_inf unavailable",
+    "second accepted step reads committed history and exposes F-SI25 B_inf",
+    "candidate rollback does not advance committed history",
+    "retry starts from unchanged origin history",
+    "template/state-layout mismatch rejects before physical publication",
+    "A-B-A enabled/inactive or two-enabled columns show no history leakage",
+    "hard mass unchanged enabled versus inactive for same physical trajectory",
+    "additional full nonlinear trajectories = 0",
+    "additional tridiagonal solve <= 1 per indicator evaluation",
+    "O0/O2 identity",
+    "F-SI25 frozen owner/F-VQ30 numerical replay remains exact where history is supplied"
+  ],
+  "scope_holds": {
+    "F_SI25_formula_changed": false,
+    "F_KT09_acceptance_semantics_changed": false,
+    "physics_changed": false,
+    "mass_accounting_changed": false,
+    "coupling_released": false
+  }
+}
