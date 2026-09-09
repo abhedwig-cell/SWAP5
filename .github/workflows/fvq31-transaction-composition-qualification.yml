@@ -1,0 +1,90 @@
+name: F-VQ31 independent transaction composition qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq31-transaction-composed-richards-temporal-history
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  disjoint-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen disjoint direct-vs-transaction matrix
+        run: bash tests/fvq/run_fvq31_disjoint_transaction_composition.sh
+
+  transaction-lifecycle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay F-KT10 transaction lifecycle
+        run: bash tests/fkt/run_fkt10_temporal_history_transaction.sh
+
+  real-richards-binding:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay compile and source guards
+        run: bash tests/fkt/run_fkt10_real_richards_binding_compile.sh
+      - name: Replay real Richards transactional history binding
+        run: bash tests/fkt/run_fkt10_real_richards_history_binding.sh
+
+  frozen-fvq30-regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay frozen F-VQ30 through transaction history
+        run: bash tests/fkt/run_fkt10_transactional_fvq30_replay.sh
+
+  cross-stream-regressions:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Replay F-SI25 production indicator owner matrix
+        run: bash tests/fsi/run_fsi25_reference_indicator_production_seam.sh
+      - name: Replay F-MR06 optional physical state compatibility
+        run: bash tests/fkt/run_fkt10_fmr06_snow_compat_regression.sh
