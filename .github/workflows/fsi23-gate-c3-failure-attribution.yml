@@ -1,0 +1,25 @@
+name: F-SI23 Gate C3 failure attribution
+
+on:
+  push:
+    branches:
+      - work/f-si23-richards-embedded-temporal-estimator
+    paths:
+      - 'tests/fsi/run_fsi23_gate_c3_failure_attribution.sh'
+      - '.github/workflows/fsi23-gate-c3-failure-attribution.yml'
+  workflow_dispatch:
+
+jobs:
+  failure-attribution:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Reproduce frozen C3 failure with diagnostic-only context
+        run: bash tests/fsi/run_fsi23_gate_c3_failure_attribution.sh
