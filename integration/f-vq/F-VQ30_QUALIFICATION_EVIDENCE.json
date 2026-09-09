@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ30",
+  "title": "Independent Held-Out Qualification Evidence for the Bounded Stiffness-Aware Richards Temporal Indicator",
+  "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
+  "plan": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
+  "plan_blob": "8bf40e19ba547ec93c4d8ce18d7ac6111707afe7",
+  "owner_head": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+  "tested_head": "c83abe23bff2005c6211cf45d0a1c46738e08b7e",
+  "workflow": {
+    "name": "F-VQ30 held-out bounded stiffness-aware Richards indicator",
+    "run": 34332303346,
+    "job": 102403487324,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "source_and_protocol_locks": {
+    "VQ30_G01_SOURCE_LOCK": "PASS",
+    "frozen_matrix_case_count": 16,
+    "exact_triplet_overlap_with_owner_matrix": 0,
+    "VQ30_G08_NO_EMPIRICAL_RESCUE_PRELOCK": "PASS",
+    "VQ30_G09_FVQ28_RECONCILIATION_PRELOCK": "PASS",
+    "production_source_unchanged": true
+  },
+  "exact_linear_regression": {
+    "VQ30_G02": "PASS",
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false,
+    "single_mode": [
+      {"point":1,"lambda_dt":0.025,"route":"RAW","combined_over_exact":1.0167886580680778},
+      {"point":2,"lambda_dt":0.1,"route":"RAW","combined_over_exact":1.0686409085462425},
+      {"point":3,"lambda_dt":0.4,"route":"RAW","combined_over_exact":1.2997154238127535},
+      {"point":4,"lambda_dt":1.6,"route":"DOUBLE_DEFECT","combined_over_exact":2.072573193211282},
+      {"point":5,"lambda_dt":6.4,"route":"DOUBLE_DEFECT","combined_over_exact":5.60403973924559}
+    ],
+    "multimode": [
+      {"point":1,"dt_day":0.0125,"combined_over_exact":1.1390965391368788,"raw_over_double_defect":0.5984705712176184},
+      {"point":2,"dt_day":0.05,"combined_over_exact":1.6584662296311474,"raw_over_double_defect":0.8921623917910476},
+      {"point":3,"dt_day":0.2,"combined_over_exact":2.75485835478501,"raw_over_double_defect":2.00585765571804},
+      {"point":4,"dt_day":0.8,"combined_over_exact":3.586711510833906,"raw_over_double_defect":5.462118131018917},
+      {"point":5,"dt_day":1.6,"combined_over_exact":4.961930727912633,"raw_over_double_defect":9.320007937118937}
+    ]
+  },
+  "bounded_cost_and_ownership": {
+    "VQ30_G04_BOUNDED_COST_OWNER_SHAPE": "PASS",
+    "VQ30_G07_OPERATOR_OWNERSHIP": "PASS",
+    "candidate_normal_path_full_nonlinear_solves": 1,
+    "candidate_additional_full_nonlinear_solves": 0,
+    "candidate_additional_tridiagonal_solves": 1,
+    "deep_refinement_in_candidate_normal_path": false,
+    "N128_N256_N512_role": "qualification comparator trajectories only"
+  },
+  "nonlinear_held_out": {
+    "VQ30_G03_HELD_OUT_NONLINEAR_TRANSFER": "PASS",
+    "case_count": 16,
+    "finite_comparator_cases": 16,
+    "negative_transfer_cases": 0,
+    "B_inf_over_E1_512_range": [6.685266816523914,102.49832534208181],
+    "raw_over_B_inf_range": [2.54217031177781,101.21256518294182],
+    "state_dependence_observed": true,
+    "horizon_dependence_observed": true,
+    "N512_exact_truth": false,
+    "nonlinear_true_error_bound_qualified": false,
+    "scientific_temporal_tolerance_selected": false,
+    "empirical_rescue_applied": false,
+    "rows": [
+      {"case":1,"h0_cm":-35.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512_cm":0.003355257162532155,"B_inf_cm":0.16583851340652198,"B_inf_over_E1_512":49.42646878409955,"raw_over_E1_512":1340.9413825553786,"raw_over_B_inf":27.1300259869416,"D128_256_cm":5.575600425800076e-09,"D256_512_cm":2.1484893863998877e-09,"machine_floor_cm":9.968914582714206e-13,"candidate_mass_residual":2.3314683517128287e-15,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":2,"h0_cm":-35.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512_cm":0.0033391026777422894,"B_inf_cm":0.16585552167417314,"B_inf_over_E1_512":49.670686313340674,"raw_over_E1_512":1347.428832166361,"raw_over_B_inf":27.127244098587486,"D128_256_cm":5.240607947598619e-09,"D256_512_cm":2.0131523115196615e-09,"machine_floor_cm":9.947598300641403e-13,"candidate_mass_residual":1.9984014443252818e-15,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":3,"h0_cm":-35.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512_cm":0.007639042582411548,"B_inf_cm":0.17889093046332208,"B_inf_over_E1_512":23.41797791194515,"raw_over_E1_512":2370.1936158654403,"raw_over_B_inf":101.21256518294182,"D128_256_cm":7.105427357601002e-15,"D256_512_cm":1.4210854715202004e-14,"machine_floor_cm":9.968914582714206e-13,"candidate_mass_residual":2.220446049250313e-15,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":4,"h0_cm":-35.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512_cm":0.00762308504626219,"B_inf_cm":0.17891001482513616,"B_inf_over_E1_512":23.469502667146642,"raw_over_E1_512":2375.1551848607833,"raw_over_B_inf":101.20176888901874,"D128_256_cm":7.105427357601002e-15,"D256_512_cm":7.105427357601002e-15,"machine_floor_cm":9.947598300641403e-13,"candidate_mass_residual":2.7755575615628914e-15,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":5,"h0_cm":-95.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512_cm":0.012104758717995878,"B_inf_cm":0.1281593241818406,"B_inf_over_E1_512":10.587515799989383,"raw_over_E1_512":89.42227813526472,"raw_over_B_inf":8.446011304687206,"D128_256_cm":5.107130274950578e-05,"D256_512_cm":2.539960875935776e-05,"machine_floor_cm":2.702194024095661e-12,"candidate_mass_residual":1.2212453270876722e-15,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":6,"h0_cm":-95.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512_cm":0.012131955448637655,"B_inf_cm":0.1282793047675744,"B_inf_over_E1_512":10.5736709395829,"raw_over_E1_512":89.2219112797065,"raw_over_B_inf":8.438120666844398,"D128_256_cm":5.098445417672792e-05,"D256_512_cm":2.535478454035456e-05,"machine_floor_cm":2.700062395888381e-12,"candidate_mass_residual":3.7470027081099033e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":7,"h0_cm":-95.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512_cm":0.0016148274640954696,"B_inf_cm":0.1655171107861864,"B_inf_over_E1_512":102.49832534208181,"raw_over_E1_512":2743.734354324983,"raw_over_B_inf":26.76857739058604,"D128_256_cm":1.0008108120018733e-08,"D256_512_cm":3.874916387758276e-09,"machine_floor_cm":2.702194024095661e-12,"candidate_mass_residual":8.465450562766819e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":8,"h0_cm":-95.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512_cm":0.001619762835474603,"B_inf_cm":0.16568302970036003,"B_inf_over_E1_512":102.2884499333593,"raw_over_E1_512":2735.374537750652,"raw_over_B_inf":26.741773284596086,"D128_256_cm":9.743203577272652e-09,"D256_512_cm":3.767496536966064e-09,"machine_floor_cm":2.700062395888381e-12,"candidate_mass_residual":6.522560269672795e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":9,"h0_cm":-185.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512_cm":0.012253159888359733,"B_inf_cm":0.08719848505871007,"B_inf_over_E1_512":7.116408000318919,"raw_over_E1_512":30.032340632682974,"raw_over_B_inf":4.220154413762827,"D128_256_cm":8.244798826240185e-05,"D256_512_cm":4.138352127824874e-05,"machine_floor_cm":5.260147872832021e-12,"candidate_mass_residual":2.5673907444456745e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":10,"h0_cm":-185.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512_cm":0.012288307963558509,"B_inf_cm":0.08726606477627394,"B_inf_over_E1_512":7.101552551829357,"raw_over_E1_512":29.94655007688941,"raw_over_B_inf":4.216901847635443,"D128_256_cm":8.274866263491276e-05,"D256_512_cm":4.1534728438819e-05,"machine_floor_cm":5.258016244624741e-12,"candidate_mass_residual":1.3877787807814457e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":11,"h0_cm":-185.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512_cm":0.010757402491094581,"B_inf_cm":0.1406940599631088,"B_inf_over_E1_512":13.078813410540427,"raw_over_E1_512":144.9799914633963,"raw_over_B_inf":11.085102823361222,"D128_256_cm":2.2192331641690544e-05,"D256_512_cm":1.0869322267126336e-05,"machine_floor_cm":5.260147872832021e-12,"candidate_mass_residual":2.949029909160572e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":12,"h0_cm":-185.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512_cm":0.010766832977708418,"B_inf_cm":0.14080198736777871,"B_inf_over_E1_512":13.077381961742534,"raw_over_E1_512":144.85307603909862,"raw_over_B_inf":11.076611240909052,"D128_256_cm":2.2122977185290438e-05,"D256_512_cm":1.0834397528469708e-05,"machine_floor_cm":5.258016244624741e-12,"candidate_mass_residual":5.377642775528102e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":13,"h0_cm":-300.0,"jump_cm":-0.075,"horizon_day":0.125,"E1_512_cm":0.008670323114756684,"B_inf_cm":0.06222845620413025,"B_inf_over_E1_512":7.177178448888357,"raw_over_E1_512":18.255411882958594,"raw_over_B_inf":2.5435360166899703,"D128_256_cm":4.171048368561969e-05,"D256_512_cm":2.0841745367761178e-05,"machine_floor_cm":8.528644457328482e-12,"candidate_mass_residual":3.3046482217358175e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":14,"h0_cm":-300.0,"jump_cm":0.075,"horizon_day":0.125,"E1_512_cm":0.00868032004041197,"B_inf_cm":0.062262312013967446,"B_inf_over_E1_512":7.17281295206858,"raw_over_E1_512":18.234512138684092,"raw_over_B_inf":2.54217031177781,"D128_256_cm":4.1808197863701935e-05,"D256_512_cm":2.089064031451926e-05,"machine_floor_cm":8.526512829121202e-12,"candidate_mass_residual":3.8163916471489756e-17,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":15,"h0_cm":-300.0,"jump_cm":-0.075,"horizon_day":0.5,"E1_512_cm":0.01673329216464481,"B_inf_cm":0.11192892136170506,"B_inf_over_E1_512":6.688995821049237,"raw_over_E1_512":42.237444967397,"raw_over_B_inf":6.3144672380392715,"D128_256_cm":9.308806829722016e-05,"D256_512_cm":4.6581421997871075e-05,"machine_floor_cm":8.528644457328482e-12,"candidate_mass_residual":2.714842239903703e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true},
+      {"case":16,"h0_cm":-300.0,"jump_cm":0.075,"horizon_day":0.5,"E1_512_cm":0.01675173998324908,"B_inf_cm":0.11198985142905195,"B_inf_over_E1_512":6.685266816523914,"raw_over_E1_512":42.19097961730199,"raw_over_B_inf":6.31103900191671,"D128_256_cm":9.315160491496499e-05,"D256_512_cm":4.661304052433479e-05,"machine_floor_cm":8.526512829121202e-12,"candidate_mass_residual":2.5066754227864863e-16,"maximum_reference_mass_residual":0.0,"finite_comparator_consistent":true}
+    ]
+  },
+  "mass": {
+    "VQ30_G05_HARD_MASS": "PASS",
+    "hard_mass_tolerance": 1e-12,
+    "maximum_candidate_mass_residual": 2.7755575615628914e-15,
+    "maximum_reference_mass_residual": 0.0,
+    "indicator_changed_candidate_state": false,
+    "indicator_changed_accepted_fluxes": false,
+    "indicator_changed_mass_accounting": false
+  },
+  "determinism": {
+    "VQ30_G06_O0_O2_IDENTITY": "PASS",
+    "machine_readable_outputs_bitwise_identical": true
+  },
+  "gate_result": "ALL_FROZEN_GATES_PASS",
+  "qualified_interpretation": [
+    "The fixed F-SI24 bounded stiffness-aware indicator transfers without negative finite-comparator cases on all 16 predeclared held-out B1.10 cases.",
+    "The candidate retains its bounded normal-path cost shape: one unchanged principal nonlinear Richards solve plus one additional tridiagonal defect solve and O(N) accepted-state operator evaluation.",
+    "Hard mass conservation remains unchanged and passes by a wide margin in the held-out principal attempts.",
+    "The indicator is materially less conservative than the raw derivative-difference observer, but its remaining conservatism is strongly state- and horizon-dependent."
+  ],
+  "not_qualified": [
+    "B_inf as a general nonlinear true-error upper bound.",
+    "N512 as exact truth.",
+    "A scientific application tolerance.",
+    "A production temporal acceptance or retry policy.",
+    "Groundwater coupling release, F-GC02 release or F-PE release.",
+    "Any empirical multiplier, safety factor, material coefficient, floor inflation or state normalization."
+  ]
+}
