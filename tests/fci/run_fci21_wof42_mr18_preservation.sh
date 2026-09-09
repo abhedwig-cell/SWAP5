@@ -22,9 +22,6 @@ check_blob() {
   [[ "$actual" == "$expected" ]] || fail "$label blob drift expected=$expected got=$actual"
 }
 
-# F-CI21 may differ from the exact F-WOF42 base only on the frozen temporal
-# production closure. Preservation-only commits below this point may add tests,
-# workflows and evidence, never additional src changes.
 cat > "$BUILD/expected-src-delta.txt" <<'EOF'
 src/adapter/mod_reference_richards_legacy_binding.f90
 src/runtime/mod_canonical_contracts.f90
@@ -39,8 +36,6 @@ git diff --name-only "$BASE"..HEAD -- src | sort > "$BUILD/actual-src-delta.txt"
 diff -u "$BUILD/expected-src-delta.txt" "$BUILD/actual-src-delta.txt" || fail "production delta no longer equals frozen F-CI21 temporal closure"
 echo 'FCI21_WOF42_MR18_PRODUCTION_DELTA_LOCK=PASS'
 
-# Freeze the historical qualification runners and both F-MR18 production
-# surfaces before translating only obsolete branch-lineage checks.
 check_blob tests/fwof/run_fwof42_crop_persistence_layout_gate.sh a20d69e9d0274c824d01102a223b97d1754d3010 fwof42_runner
 check_blob tests/fmr/run_fmr18_accepted_commit_receipt_gate.sh 21363a2e30e30a7e2803b0f0ead72f2890674b4f fmr18_ab_runner
 check_blob tests/fmr/run_fmr18_multiswap_receipt_gate.sh 729b5e679420f7e7e3badb3f092c029f3b5992c6 fmr18_c_runner
@@ -107,9 +102,17 @@ replacement = "# F-CI21 translation: exact MR18 production blobs and the complet
               "echo 'FCI21_MR18C_POSTIMAGE_LINEAGE_TRANSLATION=PASS'\n"
 src = src[:start] + replacement + src[end:]
 
-# F-CI21 adds a production dependency to the already-qualified legacy binding.
-# Add only the required compile predecessors to Gate C's disposable module list;
-# do not change its executable test program or any scientific/transaction oracle.
+# F-CI21 adds transaction-history and temporal-indicator compile dependencies
+# to surfaces used by the historical Gate C fixture. Add only those predecessors
+# to the disposable module list. The executable MR18 oracle itself is untouched.
+needle = "  src/transaction/mod_transaction_reference.f90\n  src/runtime/mod_canonical_contracts.f90\n"
+replacement = ("  src/transaction/mod_transaction_reference.f90\n"
+               "  src/transaction/mod_fkt_temporal_indicator_history.f90\n"
+               "  src/runtime/mod_canonical_contracts.f90\n")
+if src.count(needle) != 1:
+    raise SystemExit(f'F-CI21 MR18 C transaction-history compile anchor count={src.count(needle)}')
+src = src.replace(needle, replacement, 1)
+
 needle = "  src/legacy/b1_10_port/headcalc.f90\n  src/adapter/mod_reference_richards_legacy_binding.f90\n"
 replacement = ("  src/legacy/b1_10_port/headcalc.f90\n"
                "  src/solver/mod_fixed_flux_top_boundary_provider.f90\n"
@@ -120,11 +123,6 @@ if src.count(needle) != 1:
 src = src.replace(needle, replacement, 1)
 print('FCI21_MR18C_TEMPORAL_COMPILE_DEPENDENCY_TRANSLATION=PASS')
 
-# Gate C originally nested F-CI19 solely to prove composition preservation on
-# its then-current tree. On F-CI21 that historical source-lineage boundary is
-# obsolete. Replace only that trailing composition replay with the current
-# F-CI21 source/compile gate. All Gate C behavioral, mass-identity, transcript
-# and O0/O2 checks above this boundary remain byte-for-byte unchanged.
 start = src.find('# Reexecute F-CI19 composition preservation on the current tree.')
 if start < 0:
     raise SystemExit('F-CI21 MR18 C nested F-CI19 boundary not found')
