@@ -1,0 +1,28 @@
+name: F-VQ30 held-out bounded stiffness-aware Richards indicator
+
+on:
+  push:
+    branches:
+      - qualification/f-vq30-bounded-stiffness-aware-temporal-indicator
+    paths:
+      - 'integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json'
+      - 'tests/fvq/test_fvq30_exact_linear_regression.py'
+      - 'tests/fvq/run_fvq30_heldout_stiffness_indicator.sh'
+      - '.github/workflows/fvq30-heldout-stiffness-indicator.yml'
+  workflow_dispatch:
+
+jobs:
+  held-out-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-VQ30 qualification
+        run: bash tests/fvq/run_fvq30_heldout_stiffness_indicator.sh
