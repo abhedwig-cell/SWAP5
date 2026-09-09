@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C1R_FRESH_36_MATERIAL_HOLDOUT",
+  "contract": "F-ROSS01_GATE_C1R_36_MATERIAL_HOLDOUT_CONTRACT.json",
+  "selected_representation": "F-ROSS01_GATE_C1R_SELECTED_REPRESENTATION.json",
+  "state_coordinate_evidence": "F-ROSS01_STATE_COORDINATE_CONDITIONING_RESULT.json",
+  "candidate": {
+    "N": 241,
+    "storage": "IEEE754_float32_log_mobility",
+    "state_to_coordinate": "qualified direct S-to-u mapping",
+    "coordinate": "uniform u on [0,4]",
+    "head_reconstruction": "h=-10^u cm with exact frozen endpoints",
+    "runtime_flux": "q=(L+h_above-h_below)*exp(bilinear_interpolated_log_M)",
+    "shared_table_plus_metadata_bytes": 232356,
+    "per_column_table_state_bytes": 0,
+    "runtime_lookup_complexity": "O(1)"
+  },
+  "workflow": {
+    "run": 34339656739,
+    "head": "ea2bdb01c5bb17d66373b4f3cc05fad1ed86695a",
+    "conclusion": "success",
+    "groups": [
+      {
+        "group": "b01-b06",
+        "conclusion": "success",
+        "artifact": 10099403538,
+        "artifact_digest": "sha256:0d54ae68a4fc86e2fb0954a6e5f376d564db633ed560c40cbd57bf24d51628f7"
+      },
+      {
+        "group": "b07-b12",
+        "conclusion": "success",
+        "artifact": 10099406758,
+        "artifact_digest": "sha256:b7944b6cf274732d8cc152a1adf9409e92364681b102e14ff2b1020b9e165a0c"
+      },
+      {
+        "group": "b13-b18",
+        "conclusion": "success",
+        "artifact": 10099386032,
+        "artifact_digest": "sha256:f472fae62bb15d1989e0131529e01cb4b956ee02dfe513df17e912cec7afb0ea"
+      },
+      {
+        "group": "o01-o06",
+        "conclusion": "success",
+        "artifact": 10099319117,
+        "artifact_digest": "sha256:87addd5a30427291ba0469d18901b5685f4bf1ef44fdbd2356e2e1fb80a338fd"
+      },
+      {
+        "group": "o07-o12",
+        "conclusion": "success",
+        "artifact": 10099376745,
+        "artifact_digest": "sha256:ff98a76299cd40a18e54b6a0f242ce9d21820c05142abfa32f93bfa8d91565fa"
+      },
+      {
+        "group": "o13-o18",
+        "conclusion": "success",
+        "artifact": 10099386243,
+        "artifact_digest": "sha256:146afabfb53716a8c3708915fe82cfab837305d57ff050aa78a9d5e050314912"
+      }
+    ]
+  },
+  "holdout": {
+    "material_count": 36,
+    "probe_count_per_material": 1401,
+    "total_probe_count": 50436,
+    "pass_count": 36,
+    "fail_count": 0,
+    "failed_materials": [],
+    "new_state_space_sobol_per_material": 512,
+    "new_coordinate_space_sobol_per_material": 512,
+    "no_retuning_after_holdout_access": true
+  },
+  "aggregate_metrics": {
+    "max_abs_error_over_ksatfit": {
+      "value": 0.00043924621324671555,
+      "material": "O14",
+      "threshold": 0.0005
+    },
+    "max_hybrid_metric": {
+      "value": 0.0005836322947071754,
+      "material": "O05",
+      "threshold": 0.01
+    },
+    "max_p99_hybrid_metric": {
+      "value": 0.0005085815912726284,
+      "material": "O01",
+      "threshold": 0.002
+    },
+    "max_equal_head_relative_error": {
+      "value": 0.0,
+      "threshold": 0.005
+    },
+    "max_hydrostatic_abs_q_over_ksatfit": {
+      "value": 3.016461408681031e-14,
+      "material": "O14",
+      "threshold": 1e-5
+    },
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0
+  },
+  "notable_materials": {
+    "O01": {
+      "max_abs_error_over_ksatfit": 0.0002883030411776379,
+      "max_hybrid_metric": 0.0005802835111762668,
+      "p99_hybrid_metric": 0.0005085815912726284
+    },
+    "O05": {
+      "max_abs_error_over_ksatfit": 0.0003435339914097198,
+      "max_hybrid_metric": 0.0005836322947071754,
+      "p99_hybrid_metric": 0.0004435011884323332
+    },
+    "O14": {
+      "max_abs_error_over_ksatfit": 0.00043924621324671555,
+      "max_hybrid_metric": 0.00015457205913084221,
+      "p99_hybrid_metric": 0.00013351627941474338
+    }
+  },
+  "pass": true,
+  "decision": "C1R_N241_STARINGREEKS_UNIMODAL_MVG_CATALOG_QUALIFIED_READY_FOR_SEPARATE_KSATEXM_AND_OTHER_HYDRAULIC_FAMILY_GATES",
+  "production_implementation": false,
+  "scientific_interpretation": "The N=241 float32 log-mobility face-table representation with independently qualified direct S-to-u coordinate mapping passes the frozen fresh holdout for all 36 Staringreeks 2018 unimodal Mualem-van Genuchten materials using KSATFIT with KSATEXM disabled. The result qualifies this bounded face-flux representation for the frozen homogeneous unsaturated 10-cm face envelope only. It does not establish transient soil-column accuracy or equivalence to FullRichards.",
+  "architecture_invariant_check": {
+    "single_kernel_compatible": true,
+    "kernel_io_independent": true,
+    "compact_persistent_state": true,
+    "per_column_table_state_bytes": 0,
+    "shared_immutable_material_table": true,
+    "bounded_runtime_lookup": true,
+    "mass_conservation_claim": "not tested by this face-only gate and therefore not promoted",
+    "transactional_timestep_claim": "not tested by this face-only gate and therefore not promoted",
+    "multiswap_claim": "layout is compatible with shared material/execution-class tables but MultiSWAP performance is not qualified here"
+  },
+  "scope_guard": "Qualified scope is homogeneous unsaturated 10-cm faces, h in [-10000,-1] cm, Staringreeks 2018 unimodal MvG, KSATFIT conductivity, KSATEXM disabled. No qualification for KSATEXM, saturation switching, heterogeneous faces, alternative hydraulic laws, transient timestep accuracy, process physics, bottom boundaries, groundwater coupling, response tangents, MultiSWAP performance or FullRichards equivalence."
+}
