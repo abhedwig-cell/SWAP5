@@ -42,7 +42,7 @@ jobs:
           set -euo pipefail
           bash tests/fci/run_fci03_gate.sh | tee /tmp/fci03.out
           grep -Fq '"status": "PASS"' /tmp/fci03.out
-          grep -Fq 'FCI03_GATE PASS' /tmp/fci03.out
+          grep -Fq 'F-CI03_GATE PASS' /tmp/fci03.out
           echo 'FCI23_G06_FCI03_TRANSACTION_SUBSTRATE=PASS'
       - name: F-CI04 through F-CI18 canonical chain
         shell: bash
