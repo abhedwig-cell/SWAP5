@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
+  "branch": "work/f-si23-richards-embedded-temporal-estimator",
+  "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+  "trigger": {
+    "F_VQ29_status": "COMPLETE_FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION",
+    "F_VQ29_decision": "NO_GO",
+    "F_SI20_status": "BLOCKED_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_TEMPORAL_PROFILE",
+    "F_SI22_status": "QUALIFIED_FIXED_HORIZON_REFINEMENT_OWNER_OBSERVABLE_NUMERIC_ERROR_BOUND_PROFILE_REQUIRED"
+  },
+  "purpose": "Assess and reconstruct the smallest Richards-owner temporal error estimator/reference route that can be independently qualified without relying on an unavailable over-refined backward-Euler endpoint and without weakening hard mass conservation.",
+  "scope": {
+    "literature_and_algorithm_audit": true,
+    "source_bound_owner_interface_assessment": true,
+    "test_or_reference_only_prototype_allowed_after_gate_A": true,
+    "production_implementation": false,
+    "scientific_temporal_tolerance_selection": false,
+    "runtime_acceptance_policy_change": false,
+    "F_GC02_release": false,
+    "F_PE_release": false
+  },
+  "candidate_routes": [
+    {
+      "id": "A",
+      "name": "embedded_mass_conservative_temporal_estimator",
+      "primary_lineage": "Kavetski_Binning_Sloan_2001_2002",
+      "role": "PRIMARY_FEASIBILITY_CANDIDATE",
+      "required_properties": [
+        "pressure-head temporal error estimate is explicit and dimensional",
+        "principal state advance remains mass-conservative in water content/storage",
+        "estimator is model-owned rather than F-GC-specific",
+        "error estimate does not require an unavailable N1024/N2048 backward-Euler endpoint",
+        "attempt can be computed transactionally from committed state",
+        "bounded additional solve cost can be stated before production admission"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "residual_based_a_posteriori_richards_estimator",
+      "primary_lineage": "Baron_Coudiere_Sochala_2017_and_Mitra_Vohralik_2021",
+      "role": "THEORY_REFERENCE_AND_POSSIBLE_FALLBACK",
+      "required_properties": [
+        "time-discretization and linearization contributions are separable",
+        "norm and reliability statement are transferable or explicitly rederived for the SWAP discretization",
+        "no DDFV_or_finite_element_specific_constant is silently imported"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "method_of_manufactured_solutions",
+      "primary_lineage": "Roache_2002",
+      "role": "INDEPENDENT_CODE_VERIFICATION_AXIS_ONLY",
+      "required_properties": [
+        "known exact transient solution",
+        "manufactured source and boundary terms are explicit",
+        "mass accounting is checked against the manufactured source",
+        "MMS is not used by itself to claim production-physics estimator validity"
+      ]
+    }
+  ],
+  "pre_rejected_shortcuts": [
+    "increase production or qualification max_iterations solely to manufacture a deeper backward-Euler reference",
+    "increase max_backtracking solely to manufacture a deeper backward-Euler reference",
+    "relax nonlinear head tolerance to manufacture a reference",
+    "widen the F-VQ29 machine-floor rule after observing failure",
+    "relabel N512 as exact or sufficient reference contrary to F-VQ29",
+    "reuse F-VQ28 transaction retry shortening as equivalent to same-horizon refinement",
+    "choose a groundwater-coupling-specific temporal tolerance",
+    "use mass closure as a proxy for temporal accuracy"
+  ],
+  "gate_A_questions": [
+    "What exact temporal approximation and embedded error formula does candidate A require?",
+    "Can candidate A be expressed over the existing SWAP semi-discrete mixed Richards state without changing physical equations?",
+    "What additional history/scratch is required, and can it remain worker-local or attempt-local?",
+    "Does candidate A preserve exact ledger mass conservation independently of its error estimator?",
+    "Can candidate A provide an estimator from a bounded number of solves per attempted interval?",
+    "Which statements from candidate B are mathematically transferable to SWAP and which require rederivation?",
+    "Which MMS case can independently verify temporal order, estimator response and mass accounting before any physical-envelope qualification?"
+  ],
+  "exit_gates": {
+    "A_feasible": "A source- and literature-bound embedded estimator contract is reconstructed, its state/scratch/cost semantics fit SWAP invariants, and a test-only prototype plan can be frozen without choosing a scientific tolerance.",
+    "A_not_feasible": "The literature method depends on state variables, discretization properties or nonlinear solves that cannot be mapped without changing SWAP physics or violating bounded-cost/mass requirements.",
+    "no_production_admission_here": true,
+    "independent_followup_required": "Any implemented estimator must pass a later F-VQ held-out qualification before runtime acceptance can consume it."
+  },
+  "invariant_targets": {
+    "7_transactional_time_steps": "HARD",
+    "8_cheap_recompute_and_warm_start": "HARD",
+    "9_generic_time": "HARD",
+    "13_mass_conservation_absolute": "HARD",
+    "15_limit_coupling_cost": "HARD",
+    "20_alternative_soil_water_solvers_open": "HARD",
+    "23_physics_and_solver_policy_separated": "HARD",
+    "24_predictable_compute_time": "HARD",
+    "25_reference_mode_available": "HARD",
+    "26_runtime_diagnostics": "REQUIRED_IF_LATER_IMPLEMENTED",
+    "29_no_silent_dependencies": "HARD"
+  }
+}

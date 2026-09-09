@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "title": "Richards Embedded Mass-Conservative Temporal Estimator Feasibility and Reference Construction",
+  "branch": "work/f-si23-richards-embedded-temporal-estimator",
+  "status": "IN_PROGRESS_GATE_A_METHOD_RECONSTRUCTION_PERSISTED",
+  "phase": "OWNER_FEASIBILITY_BEFORE_ANY_PROTOTYPE",
+  "base_commit": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+  "contract": "integration/f-si/F-SI23_WORK_UNIT_CONTRACT.json",
+  "method_assessment": "docs/f-si/F-SI23_METHOD_ASSESSMENT.md",
+  "current_decision": {
+    "primary_candidate": "embedded_mass_conservative_temporal_estimator",
+    "primary_literature_lineage": "Kavetski_Binning_Sloan_2001_2002",
+    "residual_aposteriori_route": "THEORY_REFERENCE_OR_FALLBACK",
+    "MMS": "INDEPENDENT_CODE_VERIFICATION_AXIS_ONLY",
+    "F_VQ30_open_now": false,
+    "production_implementation_allowed_now": false,
+    "test_only_prototype_allowed_now": false,
+    "reason": "The embedded estimator must first be reconstructed at equation, state, startup, variable-step, mass and bounded-cost level and mapped to SWAP's existing semi-discrete Richards owner boundary."
+  },
+  "source_bound_findings": {
+    "fine_step_solver_cliff": "NONLINEAR_SOLVER_CEILING_NOT_DTMIN_NOT_MASS",
+    "tighter_nonlinear_tolerance_materially_changes_temporal_curve": false,
+    "same_horizon_endpoint_difference_owner_observable_qualified": true,
+    "same_horizon_geometric_error_bound_qualified": false,
+    "existing_transaction_retry_translation_qualified": false,
+    "over_refined_BE_reference_available_for_FVQ29": false
+  },
+  "literature_findings": {
+    "mixed_form_embedded_error_control_exists": true,
+    "published_method_estimates_local_temporal_error_in_pressure_head": true,
+    "published_method_keeps_principal_mass_conservative_time_approximation_in_moisture_content": true,
+    "published_method_is_directly_transferable_to_SWAP_without_rederivation": false,
+    "residual_based_Richards_aposteriori_error_estimation_exists": true,
+    "published_residual_constants_or_norms_directly_transferable_to_SWAP": false,
+    "MMS_can_supply_exact_test_truth": true,
+    "MMS_alone_can_qualify_physical_production_envelope": false
+  },
+  "open_gate_A_items": [
+    "obtain and reconstruct the exact Kavetski-Binning-Sloan discrete temporal formulas",
+    "map required primary and auxiliary states to SWAP pressure-head/water-content ownership",
+    "determine startup-step and variable-step semantics",
+    "determine whether the method needs one solve, embedded correction solves, or multistep history per accepted interval",
+    "separate persistent history from worker scratch",
+    "prove or explicitly test ledger mass conservation under candidate advance",
+    "define a test-only MMS verification case",
+    "define the later independent held-out physical-envelope qualification boundary"
+  ],
+  "hard_holds": {
+    "production_source_modified": false,
+    "physics_changed": false,
+    "mass_requirement_relaxed": false,
+    "scientific_temporal_tolerance_selected": false,
+    "nonlinear_tolerance_reinterpreted": false,
+    "solver_iteration_budget_changed": false,
+    "F_GC02_release": false,
+    "F_PE_release": false,
+    "F_VQ30_started": false
+  },
+  "next_action": "Reconstruct the primary candidate algorithm from original literature and audit the current SWAP HeadCalc/semi-discrete state interface against its required variables and operations. Persist a Gate A mapping before writing any estimator prototype."
+}
