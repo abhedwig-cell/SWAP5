@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E1_UNIFIED_HEAD_PERSISTENT_STATE_AND_MIXED_WORKER_TRANSITION",
+  "contract": "F-ROSS01_GATE_E1_UNIFIED_HEAD_PERSISTENT_STATE_AND_MIXED_WORKER_TRANSITION_CONTRACT.json",
+  "production_implementation": false,
+  "execution": {
+    "workflow_run": 34368953296,
+    "head": "f51d69a0ac3ad8e52e5bf033f02086df1a5507fa",
+    "artifact_id": 10111117206,
+    "artifact_name": "f-ross01-gate-e1-unified-head-persistent-state",
+    "artifact_sha256": "e6eba0d92e842370016e48226b42b4ec6623cb0dced3c314a0d643d6e5d1170c",
+    "raw_result_sha256": "97b5fc0eec19f7b560640db08e8382d5ecd640064741f5fbecab681e0a16dac8"
+  },
+  "material_count": 36,
+  "material_pass_count": 36,
+  "head_witnesses_cm": [-10000.0,-1000.0,-100.0,-10.0,-1.0,-0.1,-0.001,-1e-9,0.0,1e-9,0.001,0.1,1.0,10.0,100.0],
+  "transition_pairs_cm": [[-1.0,1.0],[-0.1,0.1],[-0.001,0.001],[-1e-9,1e-9],[1e-9,-1e-9],[0.001,-0.001],[0.1,-0.1],[1.0,-1.0]],
+  "max_head_roundtrip_error_cm": 1.478172136947492e-09,
+  "roundtrip_failure_count": 0,
+  "checkpoint_failure_count": 0,
+  "max_storage_representation_error_theta": 0.0,
+  "storage_representation_failure_count": 0,
+  "rollback_failure_count": 0,
+  "boundary_mode_failure_count": 0,
+  "max_forward_reverse_storage_antisymmetry_error_theta": 0.0,
+  "antisymmetry_failure_count": 0,
+  "nonfinite_count": 0,
+  "selected_persistent_state": "UNIFIED_HEAD_PERSISTENT_STATE_WITH_ROSS_MIXED_WORKER_VARIABLES",
+  "material_max_head_roundtrip_error_cm": {
+    "B01":1e-09,"B02":1.6078997052801698e-11,"B03":1e-09,"B04":1.2740857749477408e-10,"B05":1e-09,"B06":3.637978807091713e-12,"B07":7.275957614183426e-12,"B08":1.5693835879384598e-11,"B09":5.556141232987045e-12,"B10":1.8189894035458565e-12,"B11":7.958078640513122e-13,"B12":1.1368683772161603e-13,"B13":1.478172136947492e-09,"B14":9.615045490079435e-11,"B15":3.637978807091713e-12,"B16":6.4765648002915755e-12,"B17":3.637978807091713e-12,"B18":3.637978807091713e-12,
+    "O01":1.0965096346095965e-09,"O02":1e-09,"O03":1e-09,"O04":1e-09,"O05":1e-09,"O06":1.579101973538761e-11,"O07":1.59179990662697e-12,"O08":2.950047258360287e-11,"O09":1.8099990456425179e-10,"O10":1.0203420934569915e-11,"O11":3.637978807091713e-12,"O12":3.637978807091713e-12,"O13":1.0913936421275139e-11,"O14":1e-09,"O15":1.471853953397227e-11,"O16":5.706683422884118e-11,"O17":1.2359686181211319e-11,"O18":2.0977107823534173e-11
+  },
+  "pass": true,
+  "decision": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
+  "raw_evidence_note": "The complete 380626-byte per-witness and per-transition result is preserved in the recorded Actions artifact; this canonical result stores the aggregate qualification and cryptographic provenance."
+}
