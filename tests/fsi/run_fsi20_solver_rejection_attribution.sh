@@ -118,7 +118,7 @@ grep -Fq 'FSI20_SOLVE_OBSERVER' "$OUT/run.txt"
 
 python3 - "$OUT/run.txt" <<'PY'
 from pathlib import Path
-import math,re,sys
+import math,sys
 lines=Path(sys.argv[1]).read_text().splitlines()
 case=None; calls={1:[],2:[],3:[]}; ends={}
 for line in lines:
@@ -138,38 +138,63 @@ for cid in (1,2,3):
 
 base=calls[2]
 print('FSI20_SOLVER_ATTRIBUTION_BASELINE_CALLS='+str(len(base)))
-# Group calls by restart attempt. Each attempt starts at the exact committed t0.
-groups=[]; current=[]; origin=4100.125
-for c in base:
-    if current and abs(c['t0']-origin)<1e-12:
-        groups.append(current); current=[]
-    current.append(c)
-if current: groups.append(current)
+origin=4100.125
+base_dt=0.25
+max_attempts=17
 
-for i,g in enumerate(groups,1):
-    attempt_dt=g[0]['dt']
-    # Expected successful transaction trial: full dt, first half dt/2, second half dt/2.
-    labels=[]
-    for j,c in enumerate(g,1):
-        if j==1: leg='FULL'
-        elif j==2: leg='HALF1'
-        elif j==3: leg='HALF2'
-        else: leg=f'EXTRA{j}'
-        labels.append(leg)
-        print(f"FSI20_SOLVER_ATTRIBUTION_CALL:ATTEMPT={i}:ATTEMPT_DT={attempt_dt:.17e}:LEG={leg}:SOLVE_DT={c['dt']:.17e}:STATUS={c['status']}:NITER={c['nit']}:NJAC={c['njac']}:NLIN={c['nlin']}:NBACK={c['nback']}:MASS_RES={c['mass']:.17e}:QBOT={c['qbot']:.17e}")
-    first_fail=next(((labels[j],c) for j,c in enumerate(g) if c['status']!=1),None)
+def close(a,b,tol=2e-12):
+    return abs(a-b) <= tol*max(1.0,abs(a),abs(b))
+
+# Reconstruct each transaction attempt from the exact expected call geometry:
+# FULL [t0,t0+D], then HALF1 [t0,t0+D/2], then HALF2 [t0+D/2,t0+D].
+# A failed solver leg terminates that attempt immediately.
+groups=[]; pos=0
+for attempt in range(1,max_attempts+1):
+    D=base_dt/(2**(attempt-1))
+    if pos >= len(base): raise SystemExit(f'missing FULL call for attempt {attempt}')
+    full=base[pos]; pos+=1
+    if not (close(full['t0'],origin) and close(full['t1'],origin+D) and close(full['dt'],D)):
+        raise SystemExit(f'FULL geometry mismatch attempt {attempt}: {full}')
+    g=[('FULL',full)]
+    if full['status'] == 1:
+        if pos >= len(base): raise SystemExit(f'missing HALF1 call for attempt {attempt}')
+        half1=base[pos]; pos+=1
+        if not (close(half1['t0'],origin) and close(half1['t1'],origin+D/2) and close(half1['dt'],D/2)):
+            raise SystemExit(f'HALF1 geometry mismatch attempt {attempt}: {half1}')
+        g.append(('HALF1',half1))
+        if half1['status'] == 1:
+            if pos >= len(base): raise SystemExit(f'missing HALF2 call for attempt {attempt}')
+            half2=base[pos]; pos+=1
+            if not (close(half2['t0'],origin+D/2) and close(half2['t1'],origin+D) and close(half2['dt'],D/2)):
+                raise SystemExit(f'HALF2 geometry mismatch attempt {attempt}: {half2}')
+            g.append(('HALF2',half2))
+    groups.append((attempt,D,g))
+if pos != len(base): raise SystemExit(f'unconsumed solve calls: {len(base)-pos}')
+
+failed=[]
+for attempt,D,g in groups:
+    for leg,c in g:
+        mass='nan' if not math.isfinite(c['mass']) else f"{c['mass']:.17e}"
+        print(f"FSI20_SOLVER_ATTRIBUTION_CALL:ATTEMPT={attempt}:ATTEMPT_DT={D:.17e}:LEG={leg}:SOLVE_DT={c['dt']:.17e}:STATUS={c['status']}:NITER={c['nit']}:NJAC={c['njac']}:NLIN={c['nlin']}:NBACK={c['nback']}:MASS_RES={mass}:QBOT={c['qbot']:.17e}")
+    first_fail=next(((leg,c) for leg,c in g if c['status']!=1),None)
     if first_fail:
-        leg,c=first_fail
-        print(f"FSI20_SOLVER_ATTRIBUTION_ATTEMPT:INDEX={i}:DT={attempt_dt:.17e}:FIRST_FAILURE={leg}:STATUS={c['status']}:NITER={c['nit']}:NBACK={c['nback']}:MASS_RES={c['mass']:.17e}")
+        leg,c=first_fail; failed.append((attempt,D,leg,c))
+        mass='nan' if not math.isfinite(c['mass']) else f"{c['mass']:.17e}"
+        print(f"FSI20_SOLVER_ATTRIBUTION_ATTEMPT:INDEX={attempt}:DT={D:.17e}:FIRST_FAILURE={leg}:STATUS={c['status']}:NITER={c['nit']}:NBACK={c['nback']}:MASS_RES={mass}")
     else:
-        print(f"FSI20_SOLVER_ATTRIBUTION_ATTEMPT:INDEX={i}:DT={attempt_dt:.17e}:FIRST_FAILURE=NONE")
+        print(f"FSI20_SOLVER_ATTRIBUTION_ATTEMPT:INDEX={attempt}:DT={D:.17e}:FIRST_FAILURE=NONE")
 
-bad=[(i,g) for i,g in enumerate(groups,1) if any(c['status']!=1 for c in g)]
 print('FSI20_SOLVER_ATTRIBUTION_ATTEMPTS='+str(len(groups)))
-print('FSI20_SOLVER_ATTRIBUTION_FAILED_ATTEMPTS='+str(len(bad)))
-if bad:
-    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_ATTEMPT={bad[0][0]}')
-    print(f"FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_DT={bad[0][1][0]['dt']:.17e}")
+print('FSI20_SOLVER_ATTRIBUTION_FAILED_ATTEMPTS='+str(len(failed)))
+if failed:
+    a,D,leg,c=failed[0]
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_ATTEMPT={a}')
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_ATTEMPT_DT={D:.17e}')
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_LEG={leg}')
+    print(f"FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_SOLVE_DT={c['dt']:.17e}")
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_STATUS={c["status"]}')
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_NITER={c["nit"]}')
+    print(f'FSI20_SOLVER_ATTRIBUTION_FIRST_FAILED_NBACK={c["nback"]}')
 print('FSI20_SOLVER_ATTRIBUTION_MASS_GATE_CHANGED=NO')
 print('FSI20_SOLVER_ATTRIBUTION_SOLVER_CONTROLS_CHANGED=NO')
 print('FSI20_SOLVER_ATTRIBUTION_PRODUCTION_SOURCE_CHANGED=NO')
