@@ -12,6 +12,7 @@ BASELINE_GATE="$ROOT/experiments/lmfp/run_lmfp04_ab_gate.sh"
 PATCHER="$ROOT/experiments/vzaa/vzaa02_patch_trajectory.py"
 ANALYZER="$ROOT/experiments/vzaa/vzaa02_analyze_trajectory.py"
 LMFP_RECORDER="$ROOT/experiments/vzaa/vzaa02_record_lmfp_trajectory.py"
+FLUX_EVALUATOR="$ROOT/experiments/vzaa/vzaa02_evaluate_d0_flux.py"
 DRIVER="$ROOT/experiments/lmfp/test_lmfp04_fullrichards_reference.f90"
 INSTRUMENTED_DRIVER="$BUILD/test_vzaa02_fullrichards_trajectory.f90"
 LINEAR_PATCHER="$ROOT/experiments/lmfp/lmfp04_patch_linear_stubs.py"
@@ -21,8 +22,10 @@ TRAJECTORY="$OUTDIR/F-VZAA02_D0_FULLRICHARDS_TRAJECTORY.txt"
 EVIDENCE="$OUTDIR/F-VZAA02_D0_LEDGER_EVIDENCE.json"
 LMFP_TRAJECTORY="$OUTDIR/F-VZAA02_D0_LMFP08_TRAJECTORY.jsonl"
 LMFP_EVIDENCE="$OUTDIR/F-VZAA02_D0_LMFP08_TRAJECTORY_EVIDENCE.json"
+FLUX_EVIDENCE="$OUTDIR/F-VZAA02_D0_FLUX_EVIDENCE.json"
+FLUX_POINTS="$OUTDIR/F-VZAA02_D0_FLUX_POINTS.jsonl"
 
-python3 -m py_compile "$PATCHER" "$ANALYZER" "$LMFP_RECORDER"
+python3 -m py_compile "$PATCHER" "$ANALYZER" "$LMFP_RECORDER" "$FLUX_EVALUATOR"
 
 # The existing qualified reference gate remains authoritative for FullRichards
 # mass closure and A/B behavior. D0 only adds diagnostic trajectory evidence.
@@ -77,5 +80,13 @@ grep -Fq 'F-VZAA02_TRAJECTORY_LEDGER_PASS' "$OUTDIR/F-VZAA02_D0_LEDGER_EVIDENCE.
 python3 "$LMFP_RECORDER" "$TRAJECTORY" "$LMFP_TRAJECTORY" "$LMFP_EVIDENCE" \
   | tee "$OUTDIR/F-VZAA02_D0_LMFP08_TRAJECTORY_EVIDENCE.stdout.txt"
 grep -Fq 'F-VZAA02_LMFP_TRAJECTORY_PASS' "$OUTDIR/F-VZAA02_D0_LMFP08_TRAJECTORY_EVIDENCE.stdout.txt"
+
+# Evaluate the source-bound VZAA Eq. 3/5/6 diagnostic only after both accepted
+# trajectories have independently passed their structural gates. Scientific
+# falsification is a valid completed result and therefore does not make CI red;
+# structural or numerical failures still raise a non-zero exit status.
+python3 "$FLUX_EVALUATOR" "$TRAJECTORY" "$LMFP_TRAJECTORY" "$FLUX_EVIDENCE" "$FLUX_POINTS" \
+  | tee "$OUTDIR/F-VZAA02_D0_FLUX_EVIDENCE.stdout.txt"
+grep -Fq 'F-VZAA02_D0_FLUX_CHARACTERIZATION_COMPLETE' "$OUTDIR/F-VZAA02_D0_FLUX_EVIDENCE.stdout.txt"
 
 printf 'F-VZAA02_D0_GATE_PASS driver_sha256=%s\n' "$DRIVER_SHA_AFTER"
