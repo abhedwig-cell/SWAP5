@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_R0_CROSS_REGION_INTERPOLATION_CAUSALITY_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_E2A_R0_CROSS_REGION_INTERPOLATION_CAUSALITY_CONTRACT.json",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34372235716,
+    "head": "d3788ff315b3b84f19de6ad8dc408032124afa7b",
+    "conclusion": "success",
+    "artifact_id": 10112418273,
+    "artifact_digest": "sha256:1335cd48c8afca92dad6751186915d72e3d8ff2e5eb3cea15c8f9b22121f9e64"
+  },
+  "materials": {
+    "B12": {
+      "classification": "WET_AXIS_DOMINANT",
+      "p99_wet_only_logM": 1.3440076632515656,
+      "p99_dry_only_logM_u241": 4.476425936519253e-05,
+      "p99_full_bilinear_logM_u241": 1.3440022146013932,
+      "p99_full_bilinear_logM_u961": 1.3440066480894692,
+      "wet_only_over_dry_only_u241_p99": 30024.123761033996,
+      "full_u241_over_full_u961_p99": 0.99999670129007,
+      "dry_only_u241_over_uniformS241_p99": 0.01552903436796528,
+      "logM_u241_over_directM_u241_p99": 0.7317989003967523
+    },
+    "O13": {
+      "classification": "WET_AXIS_DOMINANT",
+      "p99_wet_only_logM": 1.9512495378845665,
+      "p99_dry_only_logM_u241": 4.3849614678420386e-05,
+      "p99_full_bilinear_logM_u241": 1.9512471365976602,
+      "p99_full_bilinear_logM_u961": 1.9512493917015605,
+      "wet_only_over_dry_only_u241_p99": 44498.67010678273,
+      "full_u241_over_full_u961_p99": 0.999998844276949,
+      "dry_only_u241_over_uniformS241_p99": 0.04366960405332052,
+      "logM_u241_over_directM_u241_p99": 0.7406890264483751
+    },
+    "B01": {
+      "classification": "MIXED_OR_NONSEPARABLE",
+      "p99_wet_only_logM": 5.887423987361375e-05,
+      "p99_dry_only_logM_u241": 5.746507183621215e-05,
+      "p99_full_bilinear_logM_u241": 6.316631306144132e-05,
+      "p99_full_bilinear_logM_u961": 5.950317814963196e-05
+    },
+    "O14": {
+      "classification": "MIXED_OR_NONSEPARABLE",
+      "p99_wet_only_logM": 1.571367211401221e-05,
+      "p99_dry_only_logM_u241": 5.7442522287971786e-05,
+      "p99_full_bilinear_logM_u241": 5.7313552062180114e-05,
+      "p99_full_bilinear_logM_u961": 1.573345779682435e-05
+    }
+  },
+  "causal_interpretation": [
+    "For B12 and O13, the dominant WET_DRY interpolation error comes from the near-saturation wet-head axis, not the dry u=log10(-h) axis.",
+    "Increasing the dry log-head resolution from 241 to 961 nodes leaves the full B12/O13 p99 error essentially unchanged.",
+    "For B12/O13, interpolating only the dry axis while keeping wet head exact already gives p99 errors of order 1e-5, while interpolating only the wet axis gives order-unity errors.",
+    "Uniform effective saturation is not supported as a replacement for the complete dry axis; it is worse than the existing dry log-head coordinate for these diagnostics.",
+    "Direct mobility interpolation does not solve the structural B12/O13 failure and is not selected.",
+    "The failure concentrates just below h=0 inside the old linear wet-head cell that spans approximately [-0.0625,0] cm."
+  ],
+  "decision": "WET_AXIS_CAUSALITY_CONFIRMED_FOR_STRUCTURAL_E2A_FAILURES_READY_FOR_SEPARATE_ROSS_MIXED_NEAR_SATURATION_AXIS_RESEARCH",
+  "hard_guards": [
+    "E2A DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION_REJECTED remains authoritative negative evidence.",
+    "R0 does not qualify any replacement representation.",
+    "No E2A threshold was relaxed and no physical hydraulic law was changed.",
+    "Class-B remains outside this line."
+  ]
+}
