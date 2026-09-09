@@ -43,7 +43,7 @@ for OPT in o0 o2; do
   FLAG=-O0
   [[ "$OPT" == o2 ]] && FLAG=-O2
   gfortran "${COMMON[@]}" "$FLAG" -J "$BUILD/$OPT" "${SOURCES[@]}" -o "$BUILD/test_$OPT"
-  "$BUILD/test_$OPT" > "$BUILD/output_$OPT.txt"
+  "$BUILD/test_$OPT" > "$BUILD/output_$OPT.txt" 2>&1 || { cat "$BUILD/output_$OPT.txt" >&2; exit 1; }
 done
 
 cmp "$BUILD/output_o0.txt" "$BUILD/output_o2.txt"
