@@ -52,6 +52,14 @@ module mod_fmr_serialized_multiswap_runtime
     type(canonical_mass_accounting_t) :: mass
   end type fmr_serialized_column_result_t
 
+  ! Sparse ephemeral receipt output. The explicit column id makes the
+  ! request/output association self-describing without adding any persistent
+  ! optional state to logical columns or committed physical state.
+  type, public :: fmr_serialized_commit_receipt_record_t
+    integer(int64) :: column_id = 0_int64
+    type(fmr_accepted_commit_receipt_t) :: receipt
+  end type fmr_serialized_commit_receipt_record_t
+
   ! F-MR05-specific composition diagnostics.  This is deliberately separate
   ! from the generic F-MR01 aggregate type so the strict serialized physical
   ! admission constraint does not leak into the logical runtime core.
@@ -93,7 +101,7 @@ contains
     integer, intent(out) :: dispatch_status
     type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
     integer(int64), intent(in), optional :: receipt_column_ids(:)
-    type(fmr_accepted_commit_receipt_t), allocatable, intent(out), optional :: commit_receipts(:)
+    type(fmr_serialized_commit_receipt_record_t), allocatable, intent(out), optional :: commit_receipts(:)
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
@@ -129,6 +137,9 @@ contains
       end if
       deallocate(commit_receipts)
       allocate(commit_receipts(size(receipt_column_ids)))
+      do receipt_slot = 1, size(receipt_column_ids)
+        commit_receipts(receipt_slot)%column_id = receipt_column_ids(receipt_slot)
+      end do
     end if
 
     if (batch_size <= 0 .or. t1 <= t0) then
@@ -163,7 +174,7 @@ contains
         if (receipt_slot > 0) then
           call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-               local_runtime, active_physical_calls, commit_receipts(receipt_slot))
+               local_runtime, active_physical_calls, commit_receipts(receipt_slot)%receipt)
         else
           call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
                forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
@@ -303,7 +314,7 @@ contains
     type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(inout) :: active_physical_calls
-    type(fmr_accepted_commit_receipt_t), intent(out), optional :: commit_receipt
+    type(fmr_accepted_commit_receipt_t), intent(inout), optional :: commit_receipt
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
@@ -418,6 +429,7 @@ contains
     if (.not. did_commit) then
       diagnostic%rejected = 1
       if (present(commit_receipt) .and. receipt_status /= FMR_COMMIT_RECEIPT_COMMIT_REJECTED) then
+        if (candidate%ready()) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
         diagnostic%failure_classification = 'RECEIPT_PREVALIDATION_REJECTED'
       else
         diagnostic%failure_classification = 'COMMIT_REJECTED'
