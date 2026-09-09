@@ -71,12 +71,13 @@ if src.count(anchor) != 1:
     raise SystemExit(f'F-WOF39 precommit anchor count={src.count(anchor)}')
 src = src.replace(anchor, insert, 1)
 
-anchor = "  print '(a)', 'FWOF38_OWNER_AND_EVENT_RECEIPT_COMMIT_IN_ONE_FKT_REVISION=PASS'\n  print '(a)', 'FWOF38_LEGACY_DELIVERY_BIT_NOT_SECOND_COMMIT_AUTHORITY=PASS'\n\n  ! Replaying the original event"
-insert = """  print '(a)', 'FWOF38_OWNER_AND_EVENT_RECEIPT_COMMIT_IN_ONE_FKT_REVISION=PASS'
-  print '(a)', 'FWOF38_LEGACY_DELIVERY_BIT_NOT_SECOND_COMMIT_AUTHORITY=PASS'
-
-  ! Only a matching already-committed crop receipt may retire the source
-  ! window. The committed crop carrier remains authoritative and immutable.
+# Run the lifecycle retirement only after all original F-WOF38 fixtures have
+# consumed the still-due source accepted window. This preserves the qualified
+# F-WOF38 test semantics while proving that the final stale cache can then be
+# retired from the already-committed receipt.
+anchor = "final_extra = '''  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'\n\ncontains\n'''"
+insert = """final_extra = '''  ! F-WOF39 derived lifecycle retirement. The crop publication already
+  ! happened above; only the source accepted-window delivery/cache bit may move.
   crop_revision_before = crop_committed%current_revision()
   call reconcile_committed_crop_event_receipt(accepted_window, crop_committed, lifecycle_retired, lifecycle_status)
   call require(lifecycle_status == FMR_WOF39_OK .and. lifecycle_retired, &
@@ -119,16 +120,26 @@ insert = """  print '(a)', 'FWOF38_OWNER_AND_EVENT_RECEIPT_COMMIT_IN_ONE_FKT_REV
     call require(.false., 'F-WOF39 replay committed state type')
   end select
   print '(a)', 'FWOF39_REPLAY_IDEMPOTENT_ZERO_MUTATION=PASS'
+  print '(a)', 'FWOF38_ATOMIC_CROP_TRANSACTION_GATE PASS'
 
-  ! Replaying the original event"""
+contains
+'''"""
 if src.count(anchor) != 1:
-    raise SystemExit(f'F-WOF39 postcommit anchor count={src.count(anchor)}')
+    raise SystemExit(f'F-WOF39 final lifecycle anchor count={src.count(anchor)}')
 src = src.replace(anchor, insert, 1)
 
 old = "  src/runtime/mod_fmr_wofost_crop_transaction.f90\n)"
 new = "  src/runtime/mod_fmr_wofost_crop_transaction.f90\n  src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90\n)"
 if src.count(old) != 1:
     raise SystemExit(f'F-WOF39 source-list anchor count={src.count(old)}')
+src = src.replace(old, new, 1)
+
+# Make redirected runtime assertion failures visible in CI without relaxing any
+# existing marker or O0/O2 identity requirement.
+old = "  ./test > output.txt 2>&1\n"
+new = "  ./test > output.txt 2>&1 || { cat output.txt >&2; exit 1; }\n"
+if src.count(old) != 1:
+    raise SystemExit(f'F-WOF39 runtime diagnostic anchor count={src.count(old)}')
 src = src.replace(old, new, 1)
 
 Path(sys.argv[2]).write_text(src, encoding='utf-8')
