@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "evidence": "GATE_B_RESTRICTED_RIGHT_DERIVATIVE_BOOTSTRAP",
+  "scope": "test-only qualification of right-sided pressure-head derivative bootstrap for the frozen restricted unsaturated SWBOTB=5 and explicit-top-flux matrix; no LTE observer, threshold, normalization or production admission",
+  "source_base": "394d064a0dad0a7f7852b129bae99713b9aeb4c0",
+  "frozen_plan": {
+    "path": "integration/f-si/F-SI23_GATE_B_BOOTSTRAP_PLAN.json",
+    "blob": "a7a1b8c426149ad6e390ca245d261fd0a358fc05",
+    "frozen_before_execution": true,
+    "initial_heads_cm": [-25.0, -75.0, -250.0],
+    "stimulus_signs": [-1, 1],
+    "stimulus_routes": ["BOTTOM_PRESCRIBED_HEAD", "TOP_EXPLICIT_FLUX"],
+    "dt_day": [0.001, 0.0005, 0.00025, 0.000125, 0.0000625],
+    "case_count": 12,
+    "point_count_per_optimization": 60,
+    "hard_external_mass_tolerance": 1e-12,
+    "strict_error_decrease_required": true,
+    "O0_O2_identity_required": true
+  },
+  "audit_trail": {
+    "attempt_0": {
+      "commit": "56496630e22546323a7a1a6b26ceda7fe6afd8e5",
+      "workflow_run": 34321189493,
+      "classification": "HARNESS_ONLY_FAILURE",
+      "finding": "Bash local tag variable was referenced before initialization under set -u; source and frozen-plan locks had already passed."
+    },
+    "attempt_1": {
+      "commit": "915895aa6c007c2bb308a123a2ba2dccdc921ddb",
+      "workflow_run": 34321363189,
+      "classification_at_observation": "APPARENT_NUMERIC_FAILURE",
+      "immutable_failure_evidence_commit": "69625eea534f70ad9ecbf44f9428dd2f86a8c398",
+      "immutable_failure_evidence": "integration/f-si/F-SI23_GATE_B_ATTEMPT1_FAILURE.json",
+      "case_1_old_boot_cm_per_day": -36.58276897072162,
+      "case_1_observed_BE_slopes_cm_per_day": [-24.87183608085886, -36.32356441104889, -48.02403711971692, -57.73600489595765, -64.44749199368971],
+      "mass_residuals": "all observed values exactly zero"
+    },
+    "diagnostic_attempt": {
+      "commit": "95f5f57fb3162101cae5022c1e14ed1c899e1b32",
+      "workflow_run": 34321848521,
+      "change_scope": "logging only: exposed BOOT and SLOPE",
+      "scientific_criteria_changed": false
+    },
+    "attribution": {
+      "classification": "TEST_SOURCE_MAPPING_DEFECT",
+      "incorrect_test_assumption": "bottom face distance used stub disnod(numnod+1)=1.0",
+      "authoritative_explicit_headcalc_geometry": "grid_disnod(numnod+1)=0.5*parameter_set%dz(numnod)",
+      "fixture_last_dz": 1.0,
+      "correct_bottom_face_distance": 0.5,
+      "effect": "bottom prescribed-head static residual and bootstrap had been underestimated by exactly factor two",
+      "physics_failure": false,
+      "solver_failure": false,
+      "mass_failure": false
+    },
+    "corrected_attempt": {
+      "commit": "beee6dfd9b0f56274a1ba64ef7ce9f0b0a29e7b6",
+      "workflow_run": 34322065842,
+      "workflow_job": 102370730493,
+      "conclusion": "success",
+      "compiler": "GNU Fortran 13.3.0",
+      "runner": "ubuntu-24.04"
+    }
+  },
+  "qualified_results": {
+    "source_and_plan_lock": "PASS",
+    "reference_tridag": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "all_12_cases_strict_derivative_error_decrease": true,
+    "all_direct_backward_Euler_reference_solves_converged": true,
+    "all_external_mass_residuals_within_1e_12": true,
+    "observed_external_mass_residuals": "0.0 for all 60 reported O0 points",
+    "production_Richards_runtime_source_unchanged_from_base": true,
+    "derivative_sign_agreement_at_smallest_dt": true,
+    "case_error_large_to_small_cm_per_day": [
+      [48.29370186058438, 8.718045947753524],
+      [48.29256962442710, 8.716866941690967],
+      [5.534507704111054, 0.5189313191763922],
+      [5.535101417690687, 0.5190419376063637],
+      [0.1921314438844575, 0.01298880822546655],
+      [0.1921575858601527, 0.01299082775845184],
+      [33.50086560260149, 5.692920498099141],
+      [33.49611309794324, 5.691567014800370],
+      [3.581345143330903, 0.3437158524799848],
+      [3.582305932013295, 0.3438300527274656],
+      [0.1262969064604862, 0.008649483037690864],
+      [0.1263252181210577, 0.008651512575117870]
+    ]
+  },
+  "gate_B_decision": "QUALIFIED_RESTRICTED_TEST_ONLY_RIGHT_SIDED_DERIVATIVE_BOOTSTRAP",
+  "what_is_qualified": [
+    "Within the frozen unsaturated SWBOTB=5 / explicit-top-flux fixture envelope, the source-bound right-sided semi-discrete pressure-head derivative is approached monotonically by the existing mass-conservative backward-Euler solve as dt is reduced over the frozen sequence.",
+    "The bootstrap construction is compatible with unchanged hard mass conservation and unchanged production source for this restricted envelope.",
+    "Startup or post-discontinuity derivative initialization is therefore no longer a blocker for test-only characterization inside this restricted envelope."
+  ],
+  "not_qualified": [
+    "the embedded e_h = 0.5*dt*(hdot_np1-hdot_n) observable as a reliable or conservative temporal-error estimator",
+    "any scalar normalization or dimensionless F-KT09 certificate mapping",
+    "any scientific temporal tolerance",
+    "saturated or singular-capacity DAE bootstrap",
+    "other bottom-boundary modes or active optional physics",
+    "production persistence of derivative history",
+    "transactional history implementation",
+    "F-GC02 release",
+    "F-PE release",
+    "F-VQ30 admission"
+  ],
+  "next_gate": "Freeze and execute an owner-side Gate C characterization of the derivative-difference pressure-head observable against an independent same-endpoint temporal-error reference within a source-bound envelope, preserving the principal mass-conservative backward-Euler state and choosing no production threshold."
+}
