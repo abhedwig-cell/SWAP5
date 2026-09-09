@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_R2_HIGH_PRECISION_FD_ORACLE",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "parent_failure": {
+    "evidence": "F-ROSS01_GATE_J1A_R1_HEAD_COORDINATE_ORACLE_REPAIR_RESULT.json",
+    "workflow_run": 34355379062,
+    "decision": "J1A_R1_FAIL_PRESERVED_TEST_HIGH_PRECISION_FD_WITH_IDENTICAL_PRECOMMITTED_STEPS"
+  },
+  "purpose": "Determine whether the remaining J1A discrepancy is double-precision cancellation in the symmetric finite-difference oracle while leaving the frozen C1R face representation and all precommitted perturbations unchanged.",
+  "frozen_candidate": {
+    "representation": "C1R N241 float32 bilinear log-mobility table in u=log10(-h)",
+    "analytic_derivative": "unchanged from J1A",
+    "table_values": "the exact generated float32 values, promoted without smoothing or refitting",
+    "probe_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "probe_seeds_and_locations": "identical to J1A and J1A-R1"
+  },
+  "finite_difference_precommit": {
+    "head_space_relative_factors": [1e-06, 3e-06],
+    "cell_boundary_cap": "0.05 times distance to nearest table-cell boundary",
+    "equal_head_branch_cap": "0.05 times |h_a-h_b|",
+    "explicit_rule": "Exactly the original J1A perturbations are reused. No perturbation-size tuning is permitted."
+  },
+  "high_precision_oracle": {
+    "arithmetic": "Python decimal.Decimal",
+    "decimal_precision_digits": 80,
+    "precision_is_precommitted": true,
+    "flux_law": "independent flux-only direct-head evaluation of the same bilinear log-mobility interpolation and driving-gradient law",
+    "table_promotion": "Decimal.from_float(float(float32_table_value)) so the qualified table values are preserved exactly as binary floats before high-precision arithmetic",
+    "perturbed_heads": "the exact binary64 h plus/minus step values used by the qualification probe, promoted with Decimal.from_float",
+    "derivative": "symmetric (q_plus-q_minus)/(2*delta) evaluated in 80-digit arithmetic",
+    "no_analytic_derivative_inside_oracle": true
+  },
+  "hard_gate": {
+    "metric": "abs(d_analytic-d_fd)/max(abs(d_analytic),abs(d_fd),1e-8*KSATFIT)",
+    "maximum_metric": 1e-06,
+    "both_original_fd_steps_must_pass": true,
+    "cell_change_count": 0,
+    "nonfinite_derivative_count": 0,
+    "base_table_mutated": false,
+    "base_high_precision_vs_production_lookup_scaled_error_max": 1e-12
+  },
+  "diagnostics": [
+    "record high-precision FD and direct-head binary64 FD side by side",
+    "record worst normalized and absolute derivative differences",
+    "record derivative magnitude controlling any residual failure"
+  ],
+  "exit_rule": {
+    "pass": "Classify original J1A/R1 failures as finite-difference oracle roundoff amplification, qualify the closed-form real C1R face derivative on strict table-cell interiors, and permit J1B same-factorization whole-column response tangent work.",
+    "fail": "Keep J1B closed. The remaining discrepancy cannot be attributed solely to binary64 finite-difference cancellation; investigate derivative algebra or interpolation semantics without table retuning."
+  },
+  "scope_guards": [
+    "No table retuning.",
+    "No FD-size tuning.",
+    "No Class-B C2B work.",
+    "No saturation, heterogeneous, groundwater or MODFLOW claim.",
+    "No production admission."
+  ],
+  "relevant_invariants": [5, 7, 11, 14, 15, 20, 23, 25, 30]
+}
