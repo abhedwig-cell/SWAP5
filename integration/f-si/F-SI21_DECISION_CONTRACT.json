@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Richards Temporal Runtime Policy and Model-Owned Accuracy Seam",
+  "branch": "work/f-si21-richards-temporal-runtime-policy",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "trigger": {
+    "owner_work_unit": "F-SI20",
+    "owner_status": "BLOCKED_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_TEMPORAL_PROFILE",
+    "independent_qualification": "F-VQ28",
+    "fvq28_closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "fvq28_decision": "QUALIFIED_NEGATIVE_EXISTING_TRANSACTION_SHAPE_TEMPORAL_PROFILE_NOT_ADMITTED",
+    "handoff": "integration/f-si/F-SI20_FVQ28_NEGATIVE_QUALIFICATION_HANDOFF.json"
+  },
+  "problem_statement": {
+    "retained_finding": "The raw full-versus-two-half Richards endpoint head defect is a useful dimensional diagnostic and fixed-horizon refinement can enter a bounded conservative regime.",
+    "rejected_semantics": "The existing outer transaction retry topology cannot safely translate that fixed-horizon relation into temporal acceptance. F-VQ28 observed under-conservative retry endpoints and cases that lost a previously conservative relation after retry halving.",
+    "consequence": "No production temporal tolerance, normalization factor, retry count or retry scale may be fitted onto the rejected topology."
+  },
+  "live_source_boundary": {
+    "kernel_transaction_owner": "F-KT",
+    "soil_water_solver_owner": "F-SI",
+    "independent_numeric_admission_owner": "F-VQ",
+    "kernel_entrypoint": "kernel_executor_t%advance_interval",
+    "canonical_runtime": "run_canonical_interval",
+    "outer_transaction": "execute_reference_interval",
+    "outer_temporal_interface": "transaction_model_t%temporal_error(full_state, half_state)",
+    "soil_water_interface": "soil_water_solver_t%solve(request, workspace, result)",
+    "current_soil_water_result_has_temporal_accuracy_certificate": false
+  },
+  "source_bound_findings": {
+    "outer_transaction_full_vs_two_half_is_both_estimator_and_retry_driver": true,
+    "outer_transaction_accepts_and_commits_two_half_route": true,
+    "retry_changes_attempt_endpoint": true,
+    "retry_does_not_change_outer_committed_physical_origin": true,
+    "hard_mass_gate_is_separate_from_temporal_gate": true,
+    "fci14_numeric_limits_exist": false,
+    "fci14_scalarization_contract_exists": true,
+    "fci14_endpoint_metrics_are_contract_level_not_a_qualified_richards_error_estimator": true,
+    "fsi_solver_contract_is_generic_across_soil_water_solver_implementations": true,
+    "fsi_solver_contract_already_returns_solver_diagnostics_and_mass_residual": true,
+    "transaction_temporal_error_interface_only_receives_endpoint_states": true,
+    "transaction_temporal_error_interface_cannot_directly_consume_per_solve_accuracy_diagnostics": true
+  },
+  "architecture_decision_question": "What bounded, model-owned temporal-accuracy semantic should a soil-water solver expose for one requested [t0,t1] advance, and what is the smallest generic transaction/runtime seam needed to consume it without making F-KT depend on Richards internals?",
+  "candidate_families": {
+    "A_MODEL_OWNED_SAME_ENDPOINT_REFINEMENT": {
+      "description": "Richards owns same-endpoint internal substepping/refinement over the requested [t0,t1] and returns a qualified temporal-accuracy certificate with the candidate.",
+      "potential_strength": "Directly aligns the estimator with the endpoint actually returned by the solver and preserves generic external time semantics.",
+      "known_risk": "Naive nested 1+2+4 refinement can be too expensive for MultiSWAP and coupling unless bounded or made incremental.",
+      "production_admitted": false
+    },
+    "B_SOLVER_INTEGRATED_EMBEDDED_ESTIMATOR": {
+      "description": "Richards derives a temporal-accuracy estimate from solver-local information such as an embedded discretization pair, residual/history information or reusable factorization data.",
+      "potential_strength": "Could reduce duplicated full solves and support bounded cost.",
+      "known_risk": "Scientifically and numerically more invasive; no qualified estimator currently exists.",
+      "production_admitted": false
+    },
+    "C_FIXED_BOUNDED_INTERNAL_SUBSTEPS_WITH_DIAGNOSTIC_ONLY_DEFECT": {
+      "description": "Use a deterministic bounded internal step schedule and keep D_h as diagnostic rather than as an acceptance oracle.",
+      "potential_strength": "Predictable cost and simple ownership.",
+      "known_risk": "Without a separately qualified accuracy envelope it does not provide a temporal-error guarantee and is therefore insufficient as the final reference acceptance policy.",
+      "production_admitted": false
+    },
+    "D_KEEP_EXISTING_OUTER_FULL_HALF_AND_ONLY_CHANGE_LIMIT": {
+      "description": "Retain the existing transaction topology and choose another scalar tolerance or normalization.",
+      "rejected_by_fvq28": true,
+      "production_admitted": false
+    }
+  },
+  "preferred_architectural_direction_before_numeric_qualification": {
+    "direction": "MODEL_OWNED_TEMPORAL_ACCURACY_CERTIFICATE_WITH_GENERIC_RUNTIME_CONSUMER",
+    "status": "ARCHITECTURAL_HYPOTHESIS_NOT_PRODUCTION_DECISION",
+    "reason": [
+      "F-SI owns soil-water solver implementation and its solver-local numerical policy.",
+      "F-KT should continue to own checkpoint, rollback, commit and generic admission semantics.",
+      "A certificate can keep Richards internals out of F-KT while avoiding misuse of endpoint-state comparison as the only estimator transport.",
+      "The existing soil_water_solve_result_t is already the natural F-SI-owned result carrier but does not yet contain such a certificate."
+    ]
+  },
+  "hard_constraints": {
+    "production_source_modified_before_policy_gate": false,
+    "richards_physics_changed": false,
+    "mass_tolerance_relaxed": false,
+    "solver_convergence_tolerance_reused_as_temporal_tolerance": false,
+    "fci14_numeric_limits_invented": false,
+    "retry_budget_changed_to_fit_evidence": false,
+    "calendar_day_assumption_added": false,
+    "coupling_window_assumption_added": false,
+    "persistent_column_state_may_store_estimator_scratch": false,
+    "reference_mode_must_remain_available": true,
+    "bounded_cost_required": true,
+    "multiswap_suitability_required": true,
+    "independent_fvq_required_before_production_admission": true
+  },
+  "required_gates": {
+    "gate_A": "Resolve whether a model-owned certificate can be represented behind the existing generic soil-water solver API without persistent-state pollution or Richards-specific F-KT coupling.",
+    "gate_B": "Characterize bounded-cost candidate estimators on F-VQ28 hydraulic states without selecting production limits.",
+    "gate_C": "If a transaction/runtime interface change is required, hand it to the owning F-KT/F-CI workstream rather than modifying that owner inside F-SI21.",
+    "gate_D": "Independent F-VQ qualification of the exact candidate estimator, limits, failure semantics and cost envelope before any production admission."
+  },
+  "current_decision": "OPEN_MODEL_OWNED_CERTIFICATE_ARCHITECTURAL_HYPOTHESIS",
+  "production_admitted": false
+}
