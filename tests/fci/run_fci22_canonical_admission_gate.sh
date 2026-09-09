@@ -17,6 +17,7 @@ EXPECTED_FCI21_STATUS_BLOB="3d0d891aee18744c998f9beedf2fa7851edc4c0a"
 EXPECTED_FCI21_CLOSEOUT_BLOB="57f670c02a58cd21fc442a076c7a2ad06087254a"
 EXPECTED_VQ33_RECONCILIATION_BLOB="70557a81132639b71739fe56a5f34f8bca92e3ef"
 EXPECTED_VQ34_REPLAY_BLOB="578fbfdd2a2b137a4119335beb648af0e90d283c"
+EXPECTED_PRESERVATION_BLOB="da3913a4104a95a7d3308f707327bfc448edf755"
 
 fail() {
   echo "FCI22_ADMISSION_FAIL $*" >&2
@@ -74,6 +75,7 @@ echo 'FCI22_CANONICAL_ROOT_MANIFEST_UNCHANGED=PASS'
 [[ "$(git rev-parse "HEAD:integration/f-ci/F-CI21_CLOSEOUT.json")" == "$EXPECTED_FCI21_CLOSEOUT_BLOB" ]] || fail "F-CI21 closeout artifact changed"
 [[ "$(git rev-parse "HEAD:integration/f-ci/F-CI21_VQ33_FAILURE_KT11_REMEDIATION_RECONCILIATION.json")" == "$EXPECTED_VQ33_RECONCILIATION_BLOB" ]] || fail "VQ33 reconciliation artifact changed"
 [[ "$(git rev-parse "HEAD:integration/f-ci/F-CI21_VQ34_REMEDIATED_CERTIFICATE_REPLAY_EVIDENCE.json")" == "$EXPECTED_VQ34_REPLAY_BLOB" ]] || fail "VQ34 replay artifact changed"
+[[ "$(git rev-parse "HEAD:integration/f-ci/F-CI21_WOF42_MR18_PRESERVATION_EVIDENCE.json")" == "$EXPECTED_PRESERVATION_BLOB" ]] || fail "WOF42/MR18 preservation artifact changed"
 echo 'FCI22_G05_FCI21_AUTHORITY_BLOBS=PASS'
 
 python3 - <<'PY'
@@ -128,8 +130,11 @@ chain = closeout['closed_qualified_chain']
 assert chain['F_WOF42_crop_persistence_preservation'] is True
 assert chain['F_MR18_accepted_commit_receipt_preservation'] is True
 assert chain['F_MR18_sparse_multiswap_receipt_preservation'] is True
-assert preserve['replay_result'] == 'PASS_MATERIALIZED_WOF42_AND_FMR18_BEHAVIOR_PRESERVED'
-assert preserve['production_source_changed_by_replay'] is False
+assert preserve['decision'] == 'PASS_F_WOF42_AND_F_MR18_POSTIMAGE_PRESERVATION_ON_F_CI21'
+assert preserve['production_scope']['production_source_changed_by_preservation_replay'] is False
+assert preserve['F_WOF42_preservation']['final_marker'] == 'FWOF42_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_GATE PASS'
+assert preserve['F_MR18_accepted_commit_receipt_preservation']['final_marker'] == 'FMR18_ACCEPTED_COMMIT_RECEIPT_GATE PASS'
+assert preserve['F_MR18_multiswap_preservation']['final_marker'] == 'FMR18_MULTISWAP_RECEIPT_GATE PASS'
 print('FCI22_G08_CARRIED_PRESERVATION_SCOPE=PASS')
 PY
 
