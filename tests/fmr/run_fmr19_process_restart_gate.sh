@@ -66,7 +66,9 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/solver/mod_reference_linear_solver.f90
+  src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
