@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF31",
+  "title": "Pure Phase-A WOFOST Prepare-Assimilation Qualification Evidence",
+  "base": {
+    "commit": "ba8a2bda14671488a5800c7791abdfc80e8219c5",
+    "status": "QUALIFIED_RESTRICTED_SHARED_IMMUTABLE_WOFOST_RATE_PARAMETER_BUNDLE"
+  },
+  "tested_candidate": "90c912f1d04ab67db7fb5c877e0200f5358a0c97",
+  "workflow": {
+    "name": "F-WOF31 prepare assimilation",
+    "run_id": 34305769015,
+    "job_id": 102322018969,
+    "conclusion": "success"
+  },
+  "markers": [
+    "FWOF31_PRODUCTION_DELTA_SINGLE_PREPARE_ASSIMILATION_MODULE=PASS",
+    "FWOF31_FWO30_CLOSEOUT_AND_PARAMETER_BOUNDARY_LOCK=PASS",
+    "FWOF31_EXACT_PHASE_A_STATE_PARAMETER_FORCING_BOUNDARY_STATIC=PASS",
+    "FWOF31_B110_FORMULA_AND_GAUSS_TRANSCRIPT_STATIC=PASS",
+    "FWOF31_HIDDEN_RAD_KDIF_GLOBALS_REMOVED_STATIC=PASS",
+    "FWOF31_NO_CALENDAR_IO_SOLVER_OR_ACCEPTED_AGGREGATE_DEPENDENCY=PASS",
+    "FWOF31_EFF_ZERO_DIRECT_BEAM_DISCREPANCY_PERSISTED=PASS",
+    "FWOF31_O0=PASS",
+    "FWOF31_O2=PASS",
+    "FWOF31_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FWOF31_B110_ACTUAL_PGASS_BITWISE_TRANSCRIPT_EQUIVALENCE=PASS",
+    "FWOF31_STATE_AND_PARAMETERS_READ_ONLY=PASS",
+    "FWOF31_ZERO_ASSIMILATION_SHORT_CIRCUITS=PASS",
+    "FWOF31_ACTIVE_SOLAR_DENOMINATORS_FAIL_CLOSED=PASS",
+    "FWOF31_ZERO_EFFC_DIRECT_BEAM_FAILS_CLOSED=PASS",
+    "FWOF31_SOURCE_BOUND_FORCING_AND_TABLE_RANGES=PASS",
+    "FWOF31_NONFINITE_STATE_FAILS_CLOSED_WITHOUT_ARITHMETIC=PASS",
+    "FWOF31_PREPARE_ASSIMILATION_TEST PASS",
+    "FWOF31_FWO30_PARAMETER_BUNDLE_EXACT_REGRESSION=PASS",
+    "FWOF31_PREPARE_ASSIMILATION_GATE PASS"
+  ],
+  "output_sha256": "d4ad755913eb884d5e764499a33fb7937114f82d61dee1a69b03dfb650003335",
+  "F_WOF30_reference_output_sha256": "16827a9cf83541accd0c5e659d59a0d8c13a8aa55bfcbed3993798ddc2da0cec",
+  "source_provenance": {
+    "archive": "SWAP 4.3.1 B1.10",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "actual_assimilation": "SWAP/wofost.f90:1348-1404",
+    "TOTASS": "SWAP/wofost.f90:1470-1529",
+    "ASSIM": "SWAP/wofost.f90:1533-1622",
+    "AFGEN": "SWAP/functions.f90",
+    "PI": "SWAP/variables.f90:41-45",
+    "CO2_factor_ranges": "SWAP/MOD_cropdevelopment.f90:829-839,887-907",
+    "RAD_range": "SWAP/MOD_meteo.f90:386-389"
+  },
+  "qualified_properties": [
+    "normal active actual_pgass is bitwise equal to a local source transcript",
+    "B1.10 Gauss points, weights, PI and arithmetic order are retained",
+    "legacy hidden RAD and KDIF globals are explicit inputs",
+    "provider has no calendar, file I/O, soil solver or accepted aggregate dependency",
+    "provider mutates neither state view nor shared parameter bundle",
+    "zero LAI, zero AMAX and zero RAD preserve exact zero-assimilation short circuits",
+    "active zero DSINBE or zero SINB fails closed before division",
+    "source-admissible zero effective EFF with direct beam fails closed instead of executing legacy 0/0",
+    "source-bound forcing and evaluated table ranges are enforced",
+    "nonfinite state or forcing fails closed under floating-point traps",
+    "F-WOF30 behavior remains exact"
+  ],
+  "source_bound_discrepancy": {
+    "id": "F-WOF31-EFF-ZERO-DIRECT-BEAM-SINGULARITY",
+    "evidence": "read_wofost permits EFF=0; B1.10 ASSIM direct-beam expression contains division by EFF*VISPP",
+    "disposition": "fail closed only when the singular direct-beam branch is active; no limiting scientific formula asserted"
+  },
+  "qualification_decision": "QUALIFY_RESTRICTED_PURE_WOFOST_ACTUAL_PGASS_PREPARE_PROVIDER",
+  "next_required_production_seam": "pure accepted-window phase-B finalize-rate provider"
+}
