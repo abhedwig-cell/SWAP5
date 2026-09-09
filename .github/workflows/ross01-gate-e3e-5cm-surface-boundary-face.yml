@@ -1,0 +1,60 @@
+name: F-ROSS01 Gate E3E 5cm Surface Boundary Face
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'experiments/ross/run_ross01_gate_e3e_5cm_surface_boundary_face.py'
+      - '.github/workflows/ross01-gate-e3e-5cm-surface-boundary-face.yml'
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_5CM_SURFACE_BOUNDARY_FACE_PRECOMMIT.json'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen 5cm surface boundary face gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3e-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_5cm_surface_boundary_face.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen gate semantics
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json
+          m='${{ matrix.material }}'
+          p=f'ross01-gate-e3e-{m}/F-ROSS01_GATE_E3E_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['gate']=='E3E_5CM_SURFACE_WET_TO_UNSAT_BOUNDARY_FACE'
+          assert r['face_length_cm']==5.0
+          assert r['surface_head_scope_cm']==[0.0,1.0]
+          assert r['top_node_head_scope_cm']==[-10000.0,0.0]
+          assert r['production_implementation'] is False
+          assert r['new_persistent_state_bytes']==0
+          assert r['material_result']['independent_holdout_probe_count']==512
+          assert r['material_result']['deterministic_probe_count']==96
+          assert r['material_result']['tests']['explicit_candidate_face_length_5cm'] is True
+          assert r['material_result']['tests']['explicit_reference_face_length_5cm'] is True
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3e-5cm-${{ matrix.material }}
+          path: ross01-gate-e3e-${{ matrix.material }}/
+          if-no-files-found: warn
