@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1C_C1R_BOUNDARY_DERIVATIVE_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_J1C_BOUNDARY_DERIVATIVE_CHARACTERIZATION_CONTRACT.json",
+  "execution": {
+    "run_id": 34359202974,
+    "head": "6f562b0099407f6c265f6d73d2e769788d847f4e",
+    "conclusion": "success"
+  },
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "material_pass_count": 6,
+  "material_count": 6,
+  "case_counts_per_material": {
+    "internal_node_one_sided": 12,
+    "tail_interior": 4,
+    "equal_head_limit": 4,
+    "hydrostatic": 3
+  },
+  "observed": {
+    "maximum_scaled_internal_node_flux_jump": 0.0,
+    "maximum_crossing_derivative_jump_metric": 0.9717107292190155,
+    "maximum_crossing_derivative_jump_material": "O14",
+    "maximum_crossing_derivative_jump_location": {
+      "node_index": 239,
+      "axis": "b",
+      "u_node": 3.9833333333333334,
+      "h_node_cm": -9623.506263980888,
+      "crossing_derivative_left": -8.938972125663261e-09,
+      "crossing_derivative_right": -3.159845368538758e-07,
+      "q_left": 3.5814791697968764,
+      "q_right": 3.5814791697968764
+    },
+    "maximum_transverse_derivative_jump_metric": 0.0,
+    "maximum_equal_head_generic_limit_vs_shortcut_relative_gap": 0.050994095632076394,
+    "maximum_equal_head_relative_gap_case": {
+      "material": "O01",
+      "u": 3.5083333333333333,
+      "h_cm": -3223.5420019524627,
+      "generic_bilinear_limit_q_cm_per_day": 5.199284269762237e-13,
+      "shortcut_q_cm_per_day": 4.947015679127465e-13,
+      "meaning": "large relative percentage only because both fluxes are extremely small"
+    },
+    "maximum_equal_head_flux_gap_over_KSATFIT_postprocessed": 8.312854692439826e-05,
+    "maximum_equal_head_flux_gap_over_KSATFIT_case": {
+      "material": "O01",
+      "u": 1.5083333333333333,
+      "h_cm": -32.235420019524625,
+      "generic_bilinear_limit_q_cm_per_day": 5.540704855547171,
+      "shortcut_q_cm_per_day": 5.542560463773413,
+      "absolute_gap_cm_per_day": 0.0018556082262426443,
+      "KSATFIT_cm_per_day": 22.322154
+    },
+    "maximum_equal_head_shortcut_vs_constitutive_K_relative_error": 1.7970057756467134e-14,
+    "maximum_hydrostatic_scaled_abs_q": 0.0,
+    "maximum_hydrostatic_scaled_derivative_antisymmetry": 0.0,
+    "all_characterization_values_finite": true,
+    "table_bitwise_unchanged_all": true,
+    "derivative_smoothing_or_averaging_used": false
+  },
+  "qualified_piecewise_semantics": {
+    "strict_cell_interior": "use qualified analytic C1R face derivative and J1B-R1 same-factorization response tangent",
+    "internal_node_line": "flux continuous but normal derivative may jump; no unique smooth derivative is claimed",
+    "trial_or_fd_crosses_node": "regime switch; retry, route or fallback without averaging derivatives across cells",
+    "localized_O01_node_205_transition": "consistent with this piecewise node policy and remains routed rather than smoothed",
+    "exact_equal_head_shortcut": "explicit separate branch; production shortcut matches constitutive K, but the strict-interior bilinear tangent is not claimed through the branch switch",
+    "hydrostatic_condition": "q=0 and endpoint derivatives antisymmetric in the frozen bilinear law",
+    "dry_tail_and_high_conductivity_interior": "finite strict-interior derivative behavior observed; head-envelope endpoints themselves remain excluded",
+    "head_envelope_endpoints": "no unique derivative claim; fail closed or use explicitly qualified one-sided semantics"
+  },
+  "pass": true,
+  "decision": "J1_BOUNDARY_BEHAVIOR_CHARACTERIZED_READY_FOR_J1_CLOSEOUT",
+  "scope_limit": "Characterization and tangent semantics for the C1R base MvG/KSATFIT face family only. No Class-B H_ENPR, KSATEXM, saturation, heterogeneity, groundwater or production admission."
+}
