@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF32",
+  "title": "Pure Phase-B Standard-WOFOST Finalize-Rate Provider",
+  "branch": "work/f-wof32-finalize-rate-provider",
+  "base": {
+    "commit": "90020b1d24a3142a86a8c2d5d835e6ae38084df4",
+    "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_ACTUAL_PGASS_PREPARE_PROVIDER"
+  },
+  "status": "QUALIFIED_RESTRICTED_PURE_WOFOST_PHASE_B_RATE_PROVIDER_WITH_RUNTIME_LINEAGE_HOLD",
+  "decision": "QUALIFIED_RATE_PACKET_PHYSICS_READY_FOR_TWO_PHASE_CROP_WINDOW_COMPOSITION_NOT_YET_END_TO_END_RUNTIME_ADMITTED",
+  "tested_candidate": "ba00e2fb1c795f3478bbd5edde0f3daeecc5a6d1",
+  "verification": {
+    "workflow": "F-WOF32 finalize rates",
+    "run_id": 34310772654,
+    "job_id": 102336803995,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "ba19ecb50b3365065244d6daf3483888875195e6d06ddf36432f5b84452c3584",
+    "F_WOF31_prepare_assimilation_exact_regression": "PASS"
+  },
+  "production": {
+    "implemented": true,
+    "source_files_changed_from_base": [
+      "src/crop/mod_wofost_finalize_rates.f90"
+    ],
+    "persistent_state_added": false,
+    "state_mutation": false,
+    "persistent_rate_workspace_added": false,
+    "calendar_or_file_IO_dependency": false,
+    "soil_solver_dependency": false,
+    "runtime_transaction_dependency": false
+  },
+  "qualified_contract": {
+    "provider": "finalize_wofost_one_day_rates",
+    "output": "wofost_one_day_rate_packet_t",
+    "prepared_input": "wofost_prepare_assimilation_result_t.actual_pgass",
+    "accepted_aggregate_input": "wofost_accepted_window_aggregates_t",
+    "state_reads": ["DVS", "WRT", "WST", "WSO", "WLV", "LAI", "LAIEXP"],
+    "forcing_reads": ["TAV", "DAYLP when IDSL=1"],
+    "IDSL": [0, 1],
+    "SWRD": 1,
+    "nutrients": false,
+    "oxygen_root_growth_suppression": false,
+    "potential_shadow": false
+  },
+  "source_equivalence": {
+    "full_restricted_rate_packet_fixture": "bitwise equal to local B1.10 transcript for every numeric packet field plus exact logical GLAIEXP recompute flag",
+    "RELTR_negligible_IPTRA": "exact B1.10 threshold semantics",
+    "CHCKPRT": "source arithmetic order and 1e-4 criterion preserved",
+    "CHCKCBL": "source arithmetic order and 1e-4 criterion preserved",
+    "GLAIEXP_boundary": "source recompute below 6 and saved-rate compatibility handoff at/above 6 preserved"
+  },
+  "qualified_fail_closed_strengthenings": {
+    "F_WOF32_CVO_ZERO_NONZERO_FO": "FO>0 with CVO<=0 rejected",
+    "F_WOF32_NEGATIVE_DTSUM_OUTSIDE_RESTRICTED_PACKET": "negative evaluated DTSUM rejected rather than clamped"
+  },
+  "runtime_lineage_hold": {
+    "accepted_IQROT_IPTRA_runtime_binding_implemented": false,
+    "rejected_trial_zero_contribution_proven_end_to_end": false,
+    "same_window_same_accepted_trajectory_binding_proven_end_to_end": false,
+    "owner": "runtime/transaction layer outside crop kernel"
+  },
+  "not_qualified": [
+    "end-to-end runtime provenance of accepted IQROT/IPTRA aggregation",
+    "complete two-phase crop-window orchestration from committed crop checkpoint to structural candidate",
+    "runtime scheduling of exactly one standard-WOFOST daily crop event",
+    "IDSL=2 vernalization",
+    "SWRD=2/3 root rate routes",
+    "nutrient and oxygen side routes",
+    "potential trajectory",
+    "soybean and grass routes"
+  ],
+  "next": "F-WOF33 should implement the smallest two-phase standard-WOFOST crop-window composition seam: prepare committed candidate and phase-A PGASS before soil-water, then consume a frozen accepted aggregate carrier to produce phase-B rates and the F-WOF26 structural candidate; runtime lineage binding remains a separately explicit gate and must not be faked inside the crop kernel.",
+  "affected_invariants": [2,3,4,5,7,8,9,16,21,23,25,26,27,28,29,30]
+}
