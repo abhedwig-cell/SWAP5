@@ -1,0 +1,27 @@
+name: F-SI20 reference TRIDAG temporal requalification
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_reference_tridag_requalification.sh'
+      - '.github/workflows/fsi20-reference-tridag-requalification.yml'
+  workflow_dispatch:
+
+jobs:
+  requalify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Requalify F-SI20 against reference TRIDAG control
+        shell: bash
+        run: bash tests/fsi/run_fsi20_reference_tridag_requalification.sh
