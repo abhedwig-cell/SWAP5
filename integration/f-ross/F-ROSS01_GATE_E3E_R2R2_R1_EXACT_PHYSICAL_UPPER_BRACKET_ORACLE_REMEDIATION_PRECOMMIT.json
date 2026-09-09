@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R1_EXACT_PHYSICAL_UPPER_BRACKET_ORACLE_REMEDIATION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_UPPER_BRACKET_ONLY",
+  "upstream_failed_gate": {
+    "file": "F-ROSS01_GATE_E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION_RESULT.json",
+    "decision": "R2R2_FAILED_AS_FROZEN_TWO_EXTREME_NEAR_SATURATION_REFERENCE_UPPER_BRACKET_CASES_REQUIRE_ORACLE_REMEDIATION_CANDIDATE_ACCURACY_NOT_FALSIFIED"
+  },
+  "failed_witnesses": [
+    {
+      "material": "B01",
+      "probe_id": "fresh_near_0023",
+      "h_surface_cm": 0.8418598139923603,
+      "h_top_node_cm": -1.7857563818019415e-08
+    },
+    {
+      "material": "O14",
+      "probe_id": "fresh_near_0003",
+      "h_surface_cm": 0.37579678846033,
+      "h_top_node_cm": -1.9219207863995577e-08
+    }
+  ],
+  "passing_controls": [
+    {"material": "B01", "probe_id": "fresh_near_0011"},
+    {"material": "O14", "probe_id": "fresh_near_0011"}
+  ],
+  "geometry": {
+    "face_length_cm": 5.0,
+    "physical_upper_delta": "delta_u=(h_surface-h_top)/L",
+    "physical_upper_flux": "q_u=KSAT*(1+delta_u)",
+    "nonsingularity_reason": "For all witnesses h_surface>0 and h_top<0, delta_u>0, so q_u>KSAT and K(h)-q_u is strictly nonzero throughout h<=0. The exact physical upper bound is therefore a valid oracle evaluation point."
+  },
+  "old_oracle_policy_under_test": {
+    "upper_delta": "delta_u*0.999999999999",
+    "purpose_original": "generic endpoint safety",
+    "hypothesis": "For ultra-thin near-saturated unsaturated intervals this fixed 1e-12 contraction is larger than the physical conductivity correction, leaving both scan endpoints on the same residual sign even though the physical root exists."
+  },
+  "remediated_oracle_policy": {
+    "upper_delta": "delta_u exactly",
+    "scan": "same deterministic 289-point reverse log10(delta) scan down to 1e-24, now starting at exact delta_u",
+    "root": "same 120-step bisection after first sign change",
+    "oracle_a": "100-digit adaptive t^8 stable-VGM path",
+    "oracle_b": "60-digit fixed GL256 t^12 stable-VGM path",
+    "no_constitutive_change": true,
+    "no_candidate_change": true
+  },
+  "acceptance_failed_witnesses": {
+    "old_safety_residual_positive_in_both_oracles": true,
+    "exact_physical_upper_residual_nonpositive_in_both_oracles": true,
+    "exact_upper_residual_finite": true,
+    "root_resolved_by_both_oracles": true,
+    "max_oracle_q_difference_over_ksat": 1e-9,
+    "max_oracle_a_path_residual_cm": 1e-10,
+    "max_oracle_b_path_residual_cm": 1e-8,
+    "root_strictly_above_ksat": true,
+    "root_not_above_physical_upper": true,
+    "existing_candidate_max_hybrid_metric": 0.01,
+    "existing_candidate_max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0
+  },
+  "acceptance_controls": {
+    "old_and_exact_upper_oracle_branch_same": true,
+    "max_old_vs_exact_upper_q_difference_over_ksat": 1e-9,
+    "independent_oracle_pair_max_q_difference_over_ksat": 1e-9
+  },
+  "frozen_guards": [
+    "Do not change R2R2 fresh seeds or probe coordinates.",
+    "Do not change any original E3E accuracy threshold.",
+    "Do not tune or modify the Ross candidate before this gate closes.",
+    "Do not use inherited steady_q as qualification authority.",
+    "If exact delta_u does not restore an independently agreed bracket, fail closed and continue oracle research."
+  ],
+  "hard_nonclaims": [
+    "This gate does not by itself qualify R2R2 or the complete 5 cm candidate face.",
+    "This is a qualification-reference repair only, not a production numerical policy.",
+    "No surface ledger, response tangent, runtime, MultiSWAP, groundwater or production admission follows."
+  ],
+  "success_exit": "QUALIFIED_EXACT_PHYSICAL_UPPER_REFERENCE_BRACKET_REMEDIATION_READY_FOR_IDENTICAL_FRESH_R2R2_RERUN",
+  "failure_exit": "EXACT_PHYSICAL_UPPER_REFERENCE_BRACKET_NOT_QUALIFIED_FURTHER_ORACLE_RESEARCH_REQUIRED"
+}
