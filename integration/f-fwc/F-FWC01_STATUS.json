@@ -18,6 +18,7 @@
     {"doi":"10.1029/2008WR006815","role":"finite-water-content infiltration and redistribution","correction_doi":"10.1029/2008WR007455"},
     {"doi":"10.1002/2015WR017126","role":"general 1-D vadose-zone solution method"},
     {"doi":"10.1002/2014WR016454","role":"moving-water-table validation"},
+    {"doi":"10.1016/j.jhydrol.2016.01.078","role":"explicit binwise diffusion extension"},
     {"doi":"10.1002/2017MS000931","role":"Soil Moisture Velocity Equation theoretical relation"}
   ],
   "official_code_artifact": {
@@ -29,15 +30,21 @@
     "checksum_captured": false,
     "reproduced": false
   },
+  "candidate_families": [
+    "FWC_ADVECTIVE",
+    "FWC_EXPLICIT_DIFFUSION"
+  ],
   "current_findings": [
     "published method is explicitly finite-volume and conservation-oriented",
     "published method is explicit and non-iterative",
     "published lineage includes layered soils and rising/falling groundwater-table validation",
-    "2015 approximate formulation neglects soil-water diffusivity",
-    "2017 SMVE shows the omitted contribution as a distinct diffusion-like physical term",
+    "2015 advective formulation neglects soil-water diffusivity",
+    "a 2016 explicit binwise extension restores a diffusion contribution without a global nonlinear solve",
+    "2017 SMVE identifies advection-like and diffusion-like physical contributions and clarifies their Richards relation",
+    "the diffusion extension improves profile shape but may require large bin counts and small time steps, so it needs a separate bounded-cost qualification",
     "dynamic front/event state size and branch cost remain unbounded until proven otherwise",
     "generic SWAP pressure-head and hydraulic-service fidelity remains open",
     "MODFLOW imposed-head/imposed-flux contract and response tangent remain open"
   ],
-  "status": "THEORY_CODE_PROVENANCE_AND_REPRESENTATION_TRIAGE_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
+  "status": "THEORY_CODE_PROVENANCE_STATE_CONTRACT_AND_DIFFUSION_CANDIDATE_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
 }
