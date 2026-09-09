@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3A_ENCOUNTERED_TRANSITION_FACE_SCOPE_QUALIFICATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": [
+    "E2C-R3 bounded endpoint-limit WET_DRY fallback qualified",
+    "E3 characterized FAIL preserved",
+    "E3 artifact reconciliation found exactly two missing accepted-trajectory face classes"
+  ],
+  "candidate": {
+    "algorithm": "reuse E2C-R3 endpoint_limit_candidate unchanged, but evaluate it on the two E3-observed face classes",
+    "new_persistent_state_bytes": 0,
+    "scratch_owner": "worker",
+    "new_constitutive_physics": false,
+    "new_quadrature_or_root_tuning": false
+  },
+  "face_classes": [
+    {
+      "id": "NEAR_UNSAT_NEAR_UNSAT",
+      "h_above_cm": [-1.0,0.0],
+      "h_below_cm": [-1.0,0.0],
+      "upper_zero_excluded_for_random_probes": true,
+      "e3_occurrence_count": 66
+    },
+    {
+      "id": "DRY_ABOVE_WET_BELOW_TRANSITION_BAND",
+      "h_above_cm": [-10.0,-1.0],
+      "h_below_cm": [-1.0,0.0],
+      "upper_and_lower_shared_minus1_boundary_targeted_separately": true,
+      "e3_occurrence_count": 4
+    }
+  ],
+  "probe_policy": {
+    "materials": ["B01","B12","O13","O14"],
+    "sobol_per_class_per_material": 512,
+    "targeted_boundary_and_order_cases_per_material_min": 12,
+    "independent_reference": "full-accuracy steady_q",
+    "no_probe_removal_after_results": true
+  },
+  "frozen_metrics": {
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "wrong_sign_count": 0,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "endpoint_limit_max_hybrid_metric": 0.002,
+    "endpoint_limit_max_abs_error_over_ksatfit": 0.0005,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_E3_ENCOUNTERED_NEAR_SATURATION_FACE_SCOPE_READY_FOR_EVENT_AND_SOLVER_REMEDIATION",
+    "partial": "CHARACTERIZED_E3_FACE_SCOPE_PARTIAL_GENERALIZATION_REQUIRES_CLASS_SPECIFIC_CLOSURE",
+    "fail": "E3_ENCOUNTERED_FACE_SCOPE_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "Do not change R3 quadrature, endpoint rule, root iterations or thresholds inside E3A.",
+    "Do not expand DRY_ABOVE_WET_BELOW beyond the frozen -10..-1 over -1..0 transition band from this gate.",
+    "No E3 column qualification follows until wetting-event admission and O14 qualification-solver blockers are separately resolved.",
+    "No response tangent, runtime or MultiSWAP qualification."
+  ],
+  "relevant_invariants": [4,5,13,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
