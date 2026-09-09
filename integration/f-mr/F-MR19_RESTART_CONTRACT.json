@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR19",
   "title": "Restricted MultiSWAP Committed-Boundary Process Restart Composition",
@@ -17,10 +17,10 @@
   },
   "composition": {
     "physical_state_owner": "existing F-KT committed continuation state",
-    "runtime_identity_owner": "F-MR19 adapter-facing restart record",
+    "runtime_identity_owner": "F-MR19 adapter-facing restart bundle plus per-column records",
     "column_binding": "logical column_id, never array position",
     "template_binding": "exact fmr_template_t identity including physics, vertical, state, solver, optional-state and numerical-continuation layout ids",
-    "parameter_binding": "immutable parameter reference identity only; parameter payload is not persisted per column",
+    "parameter_binding": "bundle-level stable immutable parameter_set_identity plus compact per-column parameter_ref; immutable parameter payload is reconstructed/shared outside the restart carrier",
     "forcing": "reconstructed runtime input, not persisted in committed state",
     "scratch": "not persisted",
     "publication": "restore into temporary committed registry followed by atomic whole-registry publication only after all records validate"
@@ -35,7 +35,8 @@
     "wrong optional-state layout id",
     "wrong numerical-continuation layout id",
     "wrong backend compatibility",
-    "wrong immutable parameter reference",
+    "wrong immutable parameter-set identity",
+    "wrong per-column immutable parameter reference",
     "schema mismatch",
     "corrupt or non-reconstructable physical continuation state",
     "restore into initialized target registry"
@@ -49,13 +50,14 @@
     "exact continuous-vs-restarted endpoint physical identity",
     "exact accepted-interval mass continuation",
     "deterministic replay",
-    "no immutable parameter payload duplication",
+    "one shared immutable parameter-set identity per restart bundle",
+    "no immutable parameter payload duplication per column",
     "no worker/Newton/Jacobian scratch in restart records"
   ],
   "architecture_invariants": {
     "2_kernel_separate_from_io": "required",
     "3_explicit_data_separation": "required",
-    "4_compact_persistent_state": "required",
+    "4_compact_persistent_state": "required: shared parameter-set identity plus compact per-column reference",
     "5_scratch_per_worker": "required",
     "7_transactional_timesteps": "committed boundary only",
     "9_generic_time": "required",
