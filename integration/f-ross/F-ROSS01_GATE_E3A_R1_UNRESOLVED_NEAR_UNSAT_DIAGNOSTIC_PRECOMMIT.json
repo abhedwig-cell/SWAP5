@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3A_R1_UNRESOLVED_NEAR_UNSAT_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "e3a_run": 34390856679,
+    "decision": "CHARACTERIZED_E3_FACE_SCOPE_PARTIAL_GENERALIZATION_REQUIRES_CLASS_SPECIFIC_CLOSURE",
+    "qualified_class": "DRY_ABOVE_WET_BELOW_TRANSITION_BAND",
+    "open_class": "NEAR_UNSAT_NEAR_UNSAT",
+    "observed_unresolved_counts": {"B12": 2, "O13": 5}
+  },
+  "purpose": "Identify the exact frozen E3A probes and numerical failure signatures causing the seven unresolved NEAR_UNSAT_NEAR_UNSAT candidate solves before proposing any closure.",
+  "frozen_scope": {
+    "materials": ["B12", "O13"],
+    "face_class": "NEAR_UNSAT_NEAR_UNSAT",
+    "probe_generator": "reuse E3A probes unchanged",
+    "candidate": "reuse E2C-R3 endpoint_limit_candidate unchanged",
+    "reference": "full-accuracy steady_q"
+  },
+  "required_diagnostics": [
+    "probe_id and kind",
+    "h_above and h_below",
+    "reference steady_q",
+    "K(h_above), K(h_below), KSATFIT",
+    "exception type and exact repr",
+    "whether q>K(h_above) endpoint-limit precondition is structurally applicable",
+    "head ordering and hydrostatic-gradient relation"
+  ],
+  "hard_guards": [
+    "No quadrature changes.",
+    "No root-iteration changes.",
+    "No tolerance changes.",
+    "No probe removal or replacement.",
+    "No new constitutive physics.",
+    "No qualification claim from this diagnostic alone."
+  ],
+  "relevant_invariants": [5,13,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
