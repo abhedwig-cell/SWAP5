@@ -1,0 +1,21 @@
+name: F-WOF30 rate parameter bundle
+
+on:
+  push:
+    branches:
+      - work/f-wof30-rate-parameter-bundle
+  workflow_dispatch:
+
+jobs:
+  rate-parameter-bundle:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Run F-WOF30 gate
+        run: bash tests/fwof/run_fwof30_rate_parameter_bundle_gate.sh
