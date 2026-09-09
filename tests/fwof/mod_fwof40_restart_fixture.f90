@@ -91,11 +91,13 @@ contains
     call committed%capture_checkpoint(checkpoint, ok)
     call fwof40_require(ok, 'physical checkpoint capture')
     call open_wofost_accepted_window(checkpoint, t1, window, status)
-    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK .and. window%ready(), 'accepted window open')
+    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK, 'accepted window open status')
+    call fwof40_require(window%ready(), 'accepted window ready')
     call begin_wofost_trial_contribution(checkpoint, t1, trial, status)
     call fwof40_require(status == FMR_WOFOST_LINEAGE_OK, 'accepted trial begin')
     call accumulate_wofost_trial_process_rate(trial, t0, t1, actual_integral/dt, potential_integral/dt, status)
-    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK .and. trial%complete(), 'accepted trial accumulate')
+    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK, 'accepted trial accumulate status')
+    call fwof40_require(trial%complete(), 'accepted trial complete')
 
     call kernel%advance_interval(parameters, committed, forcing, config, t0, t1, result, candidate, diagnostics, checkpoint)
     call fwof40_require(result%status == CANONICAL_STATUS_COMPLETED .and. result%completed, 'physical interval completes')
@@ -104,9 +106,11 @@ contains
     call fwof40_require(did_commit .and. commit_status == KERNEL_COMMIT_STATUS_COMMITTED, 'physical commit')
 
     call certify_fkt_accepted_interval(checkpoint, committed, certificate, status)
-    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK .and. certificate%ready(), 'accepted certificate')
+    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK, 'accepted certificate status')
+    call fwof40_require(certificate%ready(), 'accepted certificate ready')
     call admit_wofost_accepted_trial(window, certificate, trial, status)
-    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK .and. window%complete(), 'accepted trial admission')
+    call fwof40_require(status == FMR_WOFOST_LINEAGE_OK, 'accepted trial admission status')
+    call fwof40_require(window%complete(), 'accepted window complete')
   end subroutine fwof40_build_accepted_event
 
   subroutine fwof40_setup_crop_inputs(seed, parameters, config, daily_forcing)
@@ -125,7 +129,8 @@ contains
     update_parameters%leaf_lifespan = 10.0_real64
     call construct_fmr_wofost_crop_transaction_parameters(bundle, update_parameters, 0.005_real64, 0.002_real64, &
          parameters, status)
-    call fwof40_require(status == FMR_WOF38_OK .and. parameters%ready(), 'crop parameters ready')
+    call fwof40_require(status == FMR_WOF38_OK, 'crop parameters status')
+    call fwof40_require(parameters%ready(), 'crop parameters ready')
 
     config%transaction%temporal_mode = TX_TEMPORAL_MODEL_CERTIFICATE
     config%transaction%temporal_tolerance = 0.0_real64
@@ -147,7 +152,8 @@ contains
     integer :: status
 
     call initialize_fmr_wofost_crop_transaction_state(seed, initial_state, status)
-    call fwof40_require(status == FMR_WOF38_OK .and. initial_state%ready(), 'crop transaction initial state')
+    call fwof40_require(status == FMR_WOF38_OK, 'crop transaction initial state status')
+    call fwof40_require(initial_state%ready(), 'crop transaction initial state ready')
     allocate(fmr_wofost_crop_transaction_state_t :: physical)
     select type (typed => physical)
     type is (fmr_wofost_crop_transaction_state_t)
@@ -165,7 +171,8 @@ contains
     type(fmr_wofost_crop_event_forcing_t), intent(out) :: forcing
     integer :: status
     call prepare_fmr_wofost_crop_event_forcing(window, daily_forcing, forcing, status)
-    call fwof40_require(status == FMR_WOF38_OK .and. forcing%ready(), 'crop event forcing ready')
+    call fwof40_require(status == FMR_WOF38_OK, 'crop event forcing status')
+    call fwof40_require(forcing%ready(), 'crop event forcing ready')
   end subroutine fwof40_prepare_crop_forcing
 
   subroutine fwof40_commit_crop_event(kernel, model, parameters, config, committed, window, daily_forcing, t0, t1)
@@ -288,7 +295,8 @@ contains
     call constant_table(0.02_real64, tables%specific_leaf_area)
 
     call construct_wofost_rate_parameter_bundle(scalar, tables, bundle, status)
-    call fwof40_require(status == WOFOST_RATE_PARAMETER_OK .and. bundle%ready(), 'rate parameter bundle')
+    call fwof40_require(status == WOFOST_RATE_PARAMETER_OK, 'rate parameter bundle status')
+    call fwof40_require(bundle%ready(), 'rate parameter bundle ready')
   end subroutine make_bundle
 
   subroutine constant_table(value, table)
