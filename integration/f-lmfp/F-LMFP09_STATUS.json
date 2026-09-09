@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP09",
   "title": "Hydraulic Envelope and Representation Geometry Qualification",
@@ -31,7 +31,8 @@
   "negative_representation_evidence": {
     "C3b_49_node_anchored_head_pair_general_envelope": "REJECTED_FOR_GENERALIZATION",
     "C4_global_head_pair_densification": "NOT_PROMOTED",
-    "C5a_simple_mixed_state_bilinear": "NOT_PROMOTED"
+    "C5a_simple_mixed_state_bilinear": "NOT_PROMOTED",
+    "F_VZAA01_D0A_history_donor": "REJECTED_NO_COHERENT_HISTORY_DONOR_SIGNAL_NOT_USED_AS_C7A_PROVIDER_FALLBACK_OR_THRESHOLD_SOURCE"
   },
   "C6a": {
     "run": 34318474571,
@@ -74,16 +75,48 @@
     },
     "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED"
   },
-  "current_gate": {
-    "name": "CATALOG_COVERAGE_AND_TRANSIENT_ENVELOPE_QUALIFICATION",
+  "C7a": {
+    "name": "PRODUCTION_CATALOG_COVERAGE",
     "qualification": false,
-    "rule": "Frozen n49 provider family and C6b classifier may be evaluated across additional hydraulic classes, but classification thresholds and interpolation density remain unchanged. Production catalog admission requires explicit per-class coverage and accuracy evidence; transient admission additionally requires fail-closed handling of every face outside the qualified envelope.",
-    "status": "READY_FOR_PRECOMMIT"
+    "precommit_commit": "8da4df81dfe0f9eeb93998de12399dce9bc58e14",
+    "precommit": "integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json",
+    "implementation_commits": [
+      "26d8ac3aae456643f90b67cda597dda012a59b09",
+      "4fb6d96b634d1cb9e7bb5861b92014b6f920d4b9",
+      "d50aae893c751b8f1526602f0f09e5c8dc57ec1d"
+    ],
+    "execution_run": 34325023479,
+    "execution_head": "d50aae893c751b8f1526602f0f09e5c8dc57ec1d",
+    "execution_status_last_observed": "IN_PROGRESS_ALL_12_SHARDS_STARTED_OR_RUNNING",
+    "tested": false,
+    "result_persisted": false,
+    "provider": "FROZEN_49_NODE_ANCHORED_HEAD_PAIR",
+    "classifier": "FROZEN_se=1e-06|g=10000|dh=100000|kr=1e+06",
+    "catalog": "36_STARING2018_MATERIALS_X_10_AND_20_CM_EQUALS_72_CLASSES",
+    "raw_holdout_cases": 43200,
+    "scientific_rule": "ALL_72_CLASSES_MUST_PASS_INHERITED_C6A_C6B_STRUCTURAL_EVIDENCE_SUFFICIENCY_AND_ACCURACY_RULES_NO_RETUNING",
+    "production_admission": false
+  },
+  "transient_readiness_after_C7a": {
+    "precommitted": false,
+    "reason": "C7a must qualify first. Existing transient reference matrix also contains synthetic material/geometry anchors not established by catalog coverage.",
+    "required_anchor_classes_before_transient_execution": {
+      "reference_sand_face_lengths_cm": [10.0, 11.3746, 12.0, 15.0, 20.0],
+      "reference_clay_face_lengths_cm": [10.0, 15.0, 20.0]
+    },
+    "heterogeneous_face_route": "REMAINS_EXISTING_MFP_EQUAL_FLUX_INTERFACE_AND_IS_NOT_QUALIFIED_BY_C7A"
+  },
+  "current_gate": {
+    "name": "C7A_PRODUCTION_CATALOG_COVERAGE",
+    "qualification": false,
+    "rule": "Frozen n49 provider and C6b classifier are evaluated without retuning across all 72 Staring2018 homogeneous material-geometry classes. Any class failure prevents full catalog qualification.",
+    "status": "PRECOMMITTED_IMPLEMENTED_EXECUTING_NOT_YET_TESTED_OR_QUALIFIED"
   },
   "separate_open_blockers": [
-    "production hydraulic catalog admission remains open",
+    "production hydraulic catalog admission remains open until C7a completes and is persisted",
     "inherited near-saturation conductivity discontinuity in the catalog remains an owner-level constitutive issue",
-    "transient expanded-envelope regression remains open after representation qualification",
+    "transient expanded-envelope regression remains blocked on C7a plus separate synthetic anchor face qualification",
+    "heterogeneous-interface qualification remains open",
     "bounded runtime fallback policy is not yet admitted",
     "root uptake, drainage, moving groundwater and MODFLOW coupling are outside F-LMFP09 current scope",
     "response tangent not admitted"
@@ -98,10 +131,15 @@
     "C6B_DESIGN_PERSISTED": true,
     "C6B_EXECUTED": true,
     "C6B_HYDRAULIC_CORE_ENVELOPE_QUALIFIED": true,
+    "C7A_DESIGN_PRECOMMITTED": true,
+    "C7A_EXPERIMENT_IMPLEMENTED": true,
+    "C7A_EXECUTION_STARTED": true,
+    "C7A_EXECUTION_COMPLETE": false,
     "CATALOG_COVERAGE_QUALIFIED": false,
+    "TRANSIENT_ANCHOR_GATE_PRECOMMITTED": false,
     "TRANSIENT_ENVELOPE_QUALIFIED": false,
     "OVERALL_QUALIFIED": false
   },
-  "decision": "FROZEN_N49_HYDRAULIC_CORE_ENVELOPE_QUALIFIED_READY_FOR_CATALOG_COVERAGE_AND_TRANSIENT_QUALIFICATION",
-  "status": "C6B_QUALIFIED_NEXT_GATE_NOT_YET_PRECOMMITTED"
+  "decision": "C6B_QUALIFIED_C7A_PRECOMMITTED_IMPLEMENTED_AND_EXECUTING",
+  "status": "C7A_EXECUTING_RESULT_NOT_YET_AVAILABLE"
 }
