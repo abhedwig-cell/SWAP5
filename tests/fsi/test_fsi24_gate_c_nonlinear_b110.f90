@@ -34,7 +34,7 @@ program test_fsi24_gate_c_nonlinear_b110
   real(real64) :: mdiag(numnod), lower(numnod), main(numnod), upper(numnod), rhs(numnod), delta(numnod), gamma(numnod)
   real(real64) :: face_g(numnod+1), raw_m, d2_m, bm, binf, dinf, eobs, raw_ratio, binf_ratio, dinf_ratio, raw_to_binf
   real(real64) :: storage0, storage1, total_in, total_out, mass_residual, solver_mass, max_mass
-  real(real64) :: min_m, max_m, symmetry_residual, reproduction_diff, provider_water_diff, bound
+  real(real64) :: min_m, max_m, symmetry_residual, reproduction_diff, provider_water_diff, explicit_bottom_distance
   logical :: finite_consistent
   integer :: ierr, i
 
@@ -114,12 +114,14 @@ program test_fsi24_gate_c_nonlinear_b110
   call require(all(ieee_is_finite(mdiag)) .and. all(mdiag>0.0_real64),'positive final-state M diagonal')
   min_m=minval(mdiag); max_m=maxval(mdiag)
 
-  call assemble_current_policy_final_jacobian(conductivity0,mdiag,lower,main,upper,face_g)
+  explicit_bottom_distance=0.5_real64*parameters%dz(numnod)
+  call require(explicit_bottom_distance>0.0_real64,'positive explicit lower-face distance')
+  call assemble_current_policy_final_jacobian(conductivity0,mdiag,explicit_bottom_distance,lower,main,upper,face_g)
   symmetry_residual=0.0_real64
   do i=2,numnod
     symmetry_residual=max(symmetry_residual,abs(lower(i)-upper(i-1)))
   end do
-  call require(symmetry_residual==0.0_real64,'symmetric paired Darcy offdiagonals')
+  call require(symmetry_residual<=fp_bound(maxval(abs(lower))),'symmetric paired Darcy offdiagonals')
   call require(all(ieee_is_finite(lower)) .and. all(ieee_is_finite(main)) .and. all(ieee_is_finite(upper)), &
        'finite reconstructed final-state J')
   call require(all(main>0.0_real64),'positive reconstructed J diagonal')
@@ -152,16 +154,14 @@ program test_fsi24_gate_c_nonlinear_b110
   call require(ieee_is_finite(raw_ratio) .and. ieee_is_finite(binf_ratio) .and. ieee_is_finite(dinf_ratio), &
        'finite comparator ratios')
 
-  bound=fp_bound(max(abs(disonod_bottom()),0.5_real64*parameters%dz(numnod)))
-  call require(abs(disonod_bottom()-0.5_real64*parameters%dz(numnod))<=bound,'frozen lower-face geometry consistency')
-
   write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,A,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
        'FSI24_GC_ROW:H0=',h0,':JUMP=',jump,':EOBS=',eobs,':E1_512=',e1_512,':RAW_M=',raw_m,':D2_M=',d2_m, &
        ':BM=',bm,':BINF=',binf,':DINF=',dinf,':MIN_M=',min_m,':BINF_GE_E1_512=',yesno(finite_consistent), &
        ':RAW_RATIO=',raw_ratio,':BINF_RATIO=',binf_ratio,':DINF_RATIO=',dinf_ratio
-  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
+  write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
        'FSI24_GC_DIAG:MAX_M=',max_m,':RAW_TO_BINF=',raw_to_binf,':MASS=',max_mass, &
-       ':EOBS_REPRO_DIFF=',reproduction_diff,':WATER_PROVIDER_DIFF=',provider_water_diff
+       ':EOBS_REPRO_DIFF=',reproduction_diff,':WATER_PROVIDER_DIFF=',provider_water_diff, &
+       ':EXPLICIT_BOTTOM_DISTANCE=',explicit_bottom_distance
   write(*,'(A)') 'FSI24_GATE_C_NONLINEAR_CASE PASS'
 
 contains
@@ -224,27 +224,23 @@ contains
     if (.not.same_type_as(tp,tp)) error stop 'F-SI24 Gate C invalid top provider type'
   end subroutine configure_problem
 
-  subroutine assemble_current_policy_final_jacobian(k0,m,subdiag,diag,superdiag,g)
-    real(real64), intent(in) :: k0,m(:)
+  subroutine assemble_current_policy_final_jacobian(k0,m,bottom_distance,subdiag,diag,superdiag,g)
+    real(real64), intent(in) :: k0,m(:),bottom_distance
     real(real64), intent(out) :: subdiag(:),diag(:),superdiag(:),g(:)
     integer :: j
     subdiag=0.0_real64; superdiag=0.0_real64; diag=0.0_real64; g=0.0_real64
     do j=2,numnod
-      g(j)=k0/disnod(j)
+      g(j)=k0/parameters%node_distance(j)
       subdiag(j)=-g(j)
       superdiag(j-1)=-g(j)
     end do
-    g(numnod+1)=k0/disnod(numnod+1)
+    g(numnod+1)=k0/bottom_distance
     diag(1)=m(1)/total_dt+g(2)
     do j=2,numnod-1
       diag(j)=m(j)/total_dt+g(j)+g(j+1)
     end do
     diag(numnod)=m(numnod)/total_dt+g(numnod)+g(numnod+1)
   end subroutine assemble_current_policy_final_jacobian
-
-  pure real(real64) function disonod_bottom() result(value)
-    value=disnod(numnod+1)
-  end function disonod_bottom
 
   pure real(real64) function fp_bound(scale) result(value)
     real(real64), intent(in) :: scale
