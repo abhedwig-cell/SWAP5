@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2A_NEAR_SATURATION_FACE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisite": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
+  "purpose": "Characterize a bounded precomputed face representation that composes the qualified dry C1R envelope with a restricted near-saturation/saturated head envelope without extrapolating the C1R log-head coordinate to h=0.",
+  "physical_scope": {
+    "hydraulic_family": "Staringreeks 2018 unimodal MvG base",
+    "retention": "H_ENPR=0",
+    "conductivity": "KSATFIT base MvG",
+    "face_length_cm": 10.0,
+    "dry_head_envelope_cm": [-10000.0, -1.0],
+    "wet_head_envelope_cm": [-1.0, 1.0],
+    "positive_head_scope": "restricted transition research only; not groundwater or general saturated-column admission",
+    "heterogeneity": false,
+    "macropores": false
+  },
+  "representation_family": {
+    "dry_coordinate": "u=log10(-h), uniform 241-node axis [0,4], identical to C1R",
+    "wet_coordinate": "w=(h+1)/2, uniform axis for h in [-1,+1] cm",
+    "candidate_wet_node_counts": [17, 33],
+    "generation_rule": "Generate Nwet=33 once; Nwet=17 is the exact every-second-node nested subset.",
+    "stored_quantity": "IEEE754 float32 log mobility M=q/g, where g=L+h_above-h_below",
+    "runtime_interpolation": "binary64 bilinear interpolation after promotion of four float32 entries",
+    "equal_head_rule": "exact K(h), bypass table interpolation",
+    "hydrostatic_rule": "g=0 returns q=0; hydrostatic node mobility is the positive harmonic-path mobility from the same constitutive law",
+    "regions": [
+      "WET_WET: both heads in [-1,+1]",
+      "DRY_WET: h_above in [-10000,-1], h_below in [-1,+1]",
+      "WET_DRY: h_above in [-1,+1], h_below in [-10000,-1]"
+    ],
+    "dry_dry_rule": "delegate unchanged to qualified C1R; E2A does not regenerate or replace the dry-dry table",
+    "minus1_seam_rule": "Because the dry u-axis and physical node generator are identical to C1R and the wet axis contains h=-1 exactly, the DRY_WET first wet column and WET_DRY first wet row must be node-identical to the corresponding C1R boundary column/row before float32 storage."
+  },
+  "stress_materials": ["O01", "O05", "O14", "B01", "B12", "O13"],
+  "probe_families": {
+    "wet_wet_sobol": 256,
+    "dry_wet_sobol": 256,
+    "wet_dry_sobol": 256,
+    "wet_equal_head": 65,
+    "cross_hydrostatic": 33,
+    "cross_near_hydrostatic": 66,
+    "minus1_composition_seam": 40,
+    "zero_saturation_seam": 40,
+    "edge_and_corner": 12
+  },
+  "frozen_metrics_per_material": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "lookup_failures": 0,
+    "reference_failures": 0,
+    "nan_or_inf": 0,
+    "table_generation_failures": 0,
+    "minus1_boundary_node_logmobility_max_abs_difference": 0.0,
+    "incremental_shared_table_plus_axis_bytes_max": 73728
+  },
+  "saturation_seam_guard": {
+    "physics_claim": "Only C0 flux continuity is required. No unique cross-seam derivative is claimed at h=0.",
+    "probe_epsilon_cm": 1e-6,
+    "candidate_must_not_invent_jump": "For paired h=-epsilon/+epsilon probes, the candidate error relative to the steady-Darcy oracle is governed by the ordinary frozen error metrics; no smoothing or modified K(h) is introduced."
+  },
+  "selection_rule": {
+    "pass": "Select the smallest Nwet that passes every frozen metric for all six stress materials, then open a fresh 36-material holdout with untouched seeds.",
+    "fail": "If Nwet=33 fails any frozen metric, reject this direct-h piecewise table representation and open a new representation gate. Do not add nodes or change the coordinate after observing failures inside E2A."
+  },
+  "memory_accounting": {
+    "C1R_existing_shared_bytes_per_material": 232356,
+    "E2_increment_is_shared_immutable_parameter_data": true,
+    "per_column_table_state_bytes": 0,
+    "Nwet17_expected_increment_order_bytes": 36000,
+    "Nwet33_expected_increment_order_bytes": 70200,
+    "note": "The earlier C1R 256-KiB selection limit is not silently redefined. E2 records its incremental shared-table cost separately; later runtime/MultiSWAP admission must judge the combined shared footprint."
+  },
+  "explicit_nonclaims": [
+    "E2A is characterization, not 36-material qualification.",
+    "E2A does not qualify a transient saturation-crossing timestep.",
+    "E2A does not qualify h>+1 cm, groundwater, prescribed-head bottom boundaries, heterogeneous faces, Class-B hydraulics, macropores or MultiSWAP performance.",
+    "E2A does not modify theta(h), K(h), KSATFIT or the C1R dry-dry representation."
+  ],
+  "exit": {
+    "pass": "NEAR_SATURATION_FACE_REPRESENTATION_CHARACTERIZED_READY_FOR_FRESH_E2B_HOLDOUT",
+    "fail": "DIRECT_HEAD_NEAR_SATURATION_FACE_REPRESENTATION_REJECTED"
+  },
+  "relevant_invariants": [3,5,7,8,13,16,20,22,23,24,25,26,27,30]
+}
