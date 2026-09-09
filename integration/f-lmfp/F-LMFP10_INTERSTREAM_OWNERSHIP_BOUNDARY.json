@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "artifact": "INTERSTREAM_OWNERSHIP_BOUNDARY_BEFORE_A1",
+  "production_implementation": false,
+  "qualification": false,
+  "purpose": "Prevent duplicate or conflicting ownership while A0 characterization runs in parallel with other SWAP5 workstreams.",
+  "current_A0": {
+    "workflow_run": 34329612925,
+    "tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "status_at_boundary_write": "IN_PROGRESS",
+    "frozen_basis": "F-LMFP09 C7a revealed characterization rows and legacy SWAP 4.3.1 constitutive semantics",
+    "rule": "Do not change A0 candidate definitions, nomination groups, thresholds, probe rows or constitutive semantics after execution has begun."
+  },
+  "F_SI09_constitutive_owner": {
+    "branch": "work/f-si09-b110-constitutive-provider",
+    "qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+    "qualification": "integration/f-si/F-SI09_QUALIFICATION.json",
+    "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
+    "boundary": "A0 may retain its frozen legacy basis for historical characterization only. Any A1 or later physical qualification that claims compatibility with the admitted default-MvG SWAP5 route must explicitly rebase or cross-qualify against the exact F-SI09 provider/blob. B11/B12/O13 legacy near-saturation observations may not be treated as unresolved SWAP5 owner defects without that reconciliation.",
+    "no_copy_rule": "F-LMFP10 does not reinterpret or independently modify constitutive formulas owned by F-SI09."
+  },
+  "F_ROSS01_independent_face_oracle": {
+    "branch": "work/f-ross01-fast-mfp-feasibility",
+    "head_observed": "9afab5d7fdc3028789f359a07d6209bcadcaf3bc",
+    "contract": "integration/f-ross/F-ROSS01_REAL_FACE_ORACLE_CONTRACT.json",
+    "status": "ORACLE_CONTRACT_FROZEN_BEFORE_TABLE_CHARACTERIZATION",
+    "boundary": "F-ROSS01 owns its independent Ross-lineage steady-Darcy oracle implementation and explicitly forbids borrowing F-LMFP06-10 implementation internals. F-LMFP10 may compare later numerical evidence, but must not claim Ross oracle lineage or modify Ross table design.",
+    "shared_theory_is_not_shared_implementation": true
+  },
+  "F_VQ30_temporal_owner": {
+    "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
+    "head_observed": "0c3b974708fbb06b13cc3233736fb7aa18c78c76",
+    "plan": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
+    "boundary": "F-VQ30 qualifies a bounded stiffness-aware temporal indicator around the existing FullRichards owner. F-LMFP10 A0 is steady hydraulic representation characterization only and must not derive temporal acceptance, timestep policy or retry semantics from A0 results."
+  },
+  "F_VZAA02": {
+    "branch": "work/f-vzaa02-donor-separability",
+    "closeout_head": "80157dc2beb9bb2ceb0cbcf00c984eb2662317d9",
+    "status": "NEGATIVE_D0_DONOR_QUALIFICATION_CLOSED",
+    "boundary": "No VZAA donor signal, threshold or history representation is imported into F-LMFP10."
+  },
+  "pre_A1_required_reconciliation": [
+    "Persist complete A0 aggregate under the frozen nomination rule.",
+    "If A0 nominates a coordinate family, decide before A1 whether A1 is legacy-reference characterization or SWAP5-admitted-provider qualification.",
+    "For any SWAP5-admitted-provider claim, bind the exact F-SI09 constitutive provider/blob before new holdout generation.",
+    "Keep Ross face-oracle implementation independent; use only cross-evidence if both workstreams later expose comparable steady-Darcy cases.",
+    "Do not use F-VQ30 temporal outcomes to rescue or reject a hydraulic coordinate family."
+  ],
+  "architecture_invariants": {
+    "single_kernel": "UNCHANGED",
+    "kernel_io_separation": "UNCHANGED",
+    "mass_conservation": "HARD_REQUIREMENT_UNCHANGED",
+    "physics_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "alternative_solver_openness": "PRESERVED",
+    "no_hidden_cross_workstream_dependencies": true
+  },
+  "status": "BOUNDARY_PERSISTED_DURING_A0_WITHOUT_CHANGING_FROZEN_EXPERIMENT"
+}
