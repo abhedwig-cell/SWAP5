@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-KT",
+  "work_unit": "F-KT10",
+  "gate": "G_owner_replay",
+  "status": "PLAN_PERSISTED_BEFORE_GATE_G_SOURCE_CHANGE_AND_EXECUTION",
+  "reason": "The F-SI25 owner handoff explicitly requires the frozen 16-case F-VQ30 production replay to remain numerically identical when previous derivative history is supplied transactionally. Existing F-KT10 tests proved lifecycle and one real composition case but did not perform that frozen numerical replay through the transaction-owned carrier.",
+  "fixed_replay_semantics": {
+    "F_SI25_formula_changed": false,
+    "F_VQ30_frozen_matrix_changed": false,
+    "F_VQ30_expected_B_inf_changed": false,
+    "hard_mass_tolerance": 1e-12,
+    "empirical_tuning_allowed": false,
+    "scientific_tolerance_selected": false,
+    "F_KT09_certificate_population_allowed": false
+  },
+  "minimal_source_seam": {
+    "change": "Allow fmr_new_b110_temporal_indicator_committed_state to accept an optional finite, correctly-sized initial_right_derivative seed.",
+    "default_without_seed": "history remains unavailable exactly as before",
+    "purpose": "Represent a qualified restart/oracle origin whose continuation payload is already known, so Gate G can inject the frozen owner hdot_n into the transaction-owned state without exposing the private carrier or adding non-transactional mutation authority.",
+    "invalid_seed": "fail closed before committed-state initialization",
+    "mass_participation": false,
+    "physical_state_change": false,
+    "worker_state_change": false
+  },
+  "replay_execution": {
+    "transaction_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "why": "This executes exactly one full production Richards advance, matching each frozen F-VQ30 N1 production indicator case. F-KT10 must still refuse the external transaction because B_inf is not an admitted F-KT09 dimensionless certificate.",
+    "expected_transaction_result": "FAIL_CLOSED_TEMPORAL_CERTIFICATE_UNAVAILABLE",
+    "expected_indicator_result": "B_inf available diagnostically and numerically identical to frozen F-VQ30 expected value",
+    "expected_cost": "zero extra full nonlinear trajectories and exactly one additional defect TRIDAG",
+    "expected_mass": "principal trial passes hard 1e-12 mass gate before certificate rejection",
+    "expected_committed_state": "physical state and derivative history remain bitwise unchanged because the outer transaction is rejected"
+  },
+  "matrices": {
+    "F_SI24_owner_cases": 15,
+    "F_VQ30_frozen_cases": 16,
+    "exact_linear_formula_regression": "retain existing F-VQ30 exact-linear replay; not a Richards transaction fixture"
+  },
+  "hard_nonclaims": [
+    "An oracle/restart seed does not prove arbitrary restart files are qualified.",
+    "This does not select a temporal tolerance or admit B_inf as a production certificate.",
+    "This does not prove forcing-discontinuity continuation semantics; continuity provenance remains a separate concern if forcing changes across accepted boundaries.",
+    "No F-GC02 or F-PE release follows."
+  ]
+}
