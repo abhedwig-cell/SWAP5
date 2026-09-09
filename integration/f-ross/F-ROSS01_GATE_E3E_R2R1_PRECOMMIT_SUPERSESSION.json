@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "status": "SUPERSEDED_BEFORE_EXECUTION",
+  "superseded_precommit": "F-ROSS01_GATE_E3E_R2R1_ENDPOINT_SINGULARITY_ORACLE_REPAIR_PRECOMMIT.json",
+  "reason": "The first R2R1 design required every witness to have a strictly interior q>KSAT root. Pre-execution equation-level reconciliation showed that h_surface=0 cases may instead admit a q=KSAT endpoint/free-boundary solution when the q->KSAT+ unsaturated path-length limit is shorter than the face. No R2R1 execution occurred under the superseded contract.",
+  "replacement": "F-ROSS01_GATE_E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR_PRECOMMIT.json",
+  "governance": "Supersession occurred before any test result existed and therefore does not relax a failed acceptance criterion."
+}
