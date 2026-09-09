@@ -1,0 +1,136 @@
+{
+  "workunit": "F-CI19",
+  "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission Planning",
+  "generated_from_live_repository_reads_utc_date": "2026-09-09",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "immutable_f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "interpretation": "historical qualified canonical-development baseline; not replaced by moving branch heads"
+  },
+  "inventory_state": "PARTIAL_PRIORITY_FRONTIER_PINNED_FAIL_CLOSED",
+  "canonical_admission_allowed": false,
+  "nodes": [
+    {
+      "id": "F-CI18",
+      "branch": "integration/f-ci-canonical",
+      "head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+      "role": "IMMUTABLE_CANONICAL_BASE",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false
+    },
+    {
+      "id": "GOV-QUALITY-BACKPORT-20260908",
+      "branch": "governance/quality-backport-20260908",
+      "head": "a6b991b4702e061accd1b16f9450f99e18aba032",
+      "role": "DOCUMENTATION_GOVERNANCE_ONLY",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "notes": "PR 72 explicitly preserves F-CI18 as the historical production-qualification provenance reference."
+    },
+    {
+      "id": "F-GC02",
+      "branch": "work/f-gc02-physical-coupling-seam",
+      "head": "9f5416835ad8f836f0ddd15778320d1e76108f70",
+      "role": "GROUNDWATER_COUPLING",
+      "declared_tip_message": "status(F-GC02): bind blocker to active F-SI20 owner evidence",
+      "classification": "BLOCKED",
+      "admission_candidate": false,
+      "owner_dependencies": ["F-SI20"]
+    },
+    {
+      "id": "F-MR16",
+      "branch": "work/f-mr16-richards-temporal-error-readiness",
+      "head": "a19bf5ab988523f9ea8b6f9b03098603ede80b49",
+      "role": "RICHARDS_TEMPORAL_READINESS",
+      "declared_tip_message": "status(F-MR16): close readiness blocker at F-SI owner boundary [skip ci]",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "notes": "Owner-boundary readiness evidence, not standalone canonical merge authority."
+    },
+    {
+      "id": "F-MR17",
+      "branch": "work/f-mr17-richards-temporal-refinement-semantics",
+      "head": "411aa3097583145de0696bc6fcdca8e90d47165e",
+      "role": "RICHARDS_TEMPORAL_REFINEMENT_SEMANTICS",
+      "declared_tip_message": "status(F-MR17): close owner gate as superseded by F-KT09 and F-SI22",
+      "classification": "SUPERSEDED",
+      "admission_candidate": false,
+      "superseded_by": ["F-KT09", "F-SI22"]
+    },
+    {
+      "id": "F-SI22",
+      "branch": "work/f-si22-richards-fixed-horizon-certificate",
+      "head": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+      "role": "RICHARDS_FIXED_HORIZON_OWNER_CERTIFICATE",
+      "declared_tip_message": "status(F-SI22): close fixed-horizon owner characterization with numeric-profile handoff",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "downstream_dependencies": ["F-VQ29"],
+      "notes": "Owner characterization is closed, but numeric-profile qualification remains downstream."
+    },
+    {
+      "id": "F-VQ29",
+      "branch": "qualification/f-vq29-richards-fixed-horizon-error-bound",
+      "head": "1239650ea493f505fb250788e441f5656082bea3",
+      "role": "RICHARDS_FIXED_HORIZON_NUMERIC_QUALIFICATION",
+      "declared_tip_message": "evidence(F-VQ29): record overrefined finite-reference failure before calibration",
+      "classification": "BLOCKED",
+      "admission_candidate": false,
+      "owner_dependencies": ["F-SI22"],
+      "notes": "Current tip contains failure evidence before calibration; no release inference permitted."
+    },
+    {
+      "id": "F-LMFP09",
+      "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+      "head": "bb91442ee5888a40398986c8d05df1972990955b",
+      "role": "ALTERNATIVE_SOIL_WATER_SOLVER_CHARACTERIZATION",
+      "declared_tip_message": "ci(F-LMFP09): run C5a mixed-state tail characterization",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "notes": "Experimental characterization lineage; production implementation remains outside current admission scope."
+    },
+    {
+      "id": "F-WOF25",
+      "branch": "work/f-wof25-evolution-temporal-readiness",
+      "head": "342096ca6d44a8d83458209eda2039424db0d2d5",
+      "role": "WOFOST_TEMPORAL_READINESS",
+      "declared_tip_message": "closeout(F-WOF25): persist qualified one-day evolution readiness",
+      "classification": "EVIDENCE_ONLY",
+      "admission_candidate": false,
+      "notes": "Qualified readiness is not by itself canonical production-admission authority. Later WOFOST workunits exist and must be reconciled before any family-level admission decision."
+    }
+  ],
+  "edges": [
+    {
+      "from": "F-MR17",
+      "to": "F-SI22",
+      "type": "SUPERSEDED_BY_OWNER_LINEAGE",
+      "compatibility": "SHARED_OWNER_SERIALIZE"
+    },
+    {
+      "from": "F-SI22",
+      "to": "F-VQ29",
+      "type": "NUMERIC_PROFILE_HANDOFF",
+      "compatibility": "ORDERED_COMPOSABLE"
+    },
+    {
+      "from": "F-GC02",
+      "to": "F-SI20",
+      "type": "OWNER_BLOCKER",
+      "compatibility": "BLOCKED"
+    }
+  ],
+  "unresolved_required_inventory": [
+    "current authoritative F-KT family tip and F-KT09 status",
+    "current authoritative F-SI20/F-SI21 lineage relative to F-SI22",
+    "latest F-MR family production-composition candidate rather than readiness evidence",
+    "latest F-PE family admission state",
+    "latest F-PM family admission state",
+    "latest F-WOF family authoritative tip beyond F-WOF25",
+    "latest F-TA family state",
+    "current F-MQ/F-VQ release-level candidate relations",
+    "full file-overlap matrix versus F-CI18 and between admission candidates"
+  ],
+  "fail_closed_rule": "No node is a canonical admission candidate until its exact production-admission authority, owner closure, overlap classification and exact-postimage qualification are all evidenced."
+}
