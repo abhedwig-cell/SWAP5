@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "A_CONTINUITY_ALGEBRA",
+  "scope": "hydraulic-model-independent verification of the Ross 2003/2011 first-order face-flux linearization and tridiagonal continuity update",
+  "production_code_changed": false,
+  "acceptance": {
+    "mass_residual_abs_max": 1e-12,
+    "tridiagonal_residual_abs_max": 1e-12,
+    "base_state_bitwise_unchanged_after_trial": true,
+    "internal_face_flux_single_valued": true,
+    "global_nonlinear_iterations": 0,
+    "work_scaling": "O(N_cells)",
+    "test_cell_counts": [1,2,3,8,32,128],
+    "test_sigma": [0.0,0.5,1.0],
+    "heterogeneous_face_coefficients": true,
+    "nonzero_top_and_bottom_fluxes": true,
+    "distributed_sources_and_sinks": true
+  },
+  "interpretation_rules": [
+    "Passing this gate proves only continuity algebra, conservation and bounded linear solve structure.",
+    "It does not qualify Ross face physics, SWAP hydraulic functions, saturated-unsaturated switching, timestep accuracy, groundwater coupling or production use.",
+    "No acceptance threshold may be relaxed after seeing the run result without a new explicitly versioned gate."
+  ],
+  "status": "ACCEPTANCE_PERSISTED_BEFORE_IMPLEMENTATION"
+}
