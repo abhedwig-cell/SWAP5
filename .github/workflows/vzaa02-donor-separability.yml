@@ -1,0 +1,31 @@
+name: F-VZAA02 Donor Separability D0
+
+on:
+  push:
+    branches:
+      - work/f-vzaa02-donor-separability
+    paths:
+      - 'experiments/vzaa/**'
+      - '.github/workflows/vzaa02-donor-separability.yml'
+  workflow_dispatch:
+
+jobs:
+  d0-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Qualified LMFP04 baseline plus F-VZAA02 accepted-step ledger gate
+        run: bash experiments/vzaa/run_vzaa02_d0_gate.sh
+      - name: Upload F-VZAA02 D0 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-vzaa02-d0-evidence
+          path: |
+            vzaa02-artifacts/
+            lmfp04-artifacts/
+          if-no-files-found: warn
