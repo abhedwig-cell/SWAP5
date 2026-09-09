@@ -14,8 +14,11 @@ module mod_fmr_wofost_crop_transaction
        begin_wofost_one_day_crop_window, complete_wofost_one_day_crop_window, WOFOST_CROP_WINDOW_OK
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
        fmr_wofost_crop_event_token_t, fmr_wofost_crop_event_identity_t, &
+       fmr_wofost_crop_event_identity_persistence_t, &
        prepare_wofost_crop_event_delivery, identify_wofost_crop_event, &
-       same_wofost_crop_event_identity, crop_event_identity_matches_interval, FMR_WOFOST_LINEAGE_OK
+       same_wofost_crop_event_identity, crop_event_identity_matches_interval, FMR_WOFOST_LINEAGE_OK, &
+       export_wofost_crop_event_identity_persistence, &
+       reconstruct_wofost_crop_event_identity_from_persistence
   implicit none
   private
 
@@ -30,6 +33,11 @@ module mod_fmr_wofost_crop_transaction
   integer, parameter, public :: FMR_WOF38_CROP_COMPLETE_ERROR = 8
   integer, parameter, public :: FMR_WOF38_INVALID_TRANSACTION_STATE = 9
 
+  integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_OK = 0
+  integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE = 1
+  integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW = 2
+  integer, parameter, public :: FMR_WOFOST_CROP_PERSISTENCE_INVALID_RECEIPT = 3
+
   type, extends(transaction_state_t), public :: fmr_wofost_crop_transaction_state_t
     private
     logical :: initialized = .false.
@@ -42,6 +50,17 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
   end type fmr_wofost_crop_transaction_state_t
+
+  ! Compact physical continuation view. Parameters, forcing and retired
+  ! accepted-window cache are deliberately absent.
+  type, public :: fmr_wofost_crop_transaction_persistence_t
+    logical :: valid = .false.
+    type(wofost_crop_owner_state_t) :: owner
+    logical :: receipt_present = .false.
+    type(fmr_wofost_crop_event_identity_persistence_t) :: receipt
+  contains
+    procedure, public :: ready => fmr_wofost_crop_transaction_persistence_ready
+  end type fmr_wofost_crop_transaction_persistence_t
 
   type, extends(kernel_parameters_t), public :: fmr_wofost_crop_transaction_parameters_t
     private
@@ -88,8 +107,83 @@ module mod_fmr_wofost_crop_transaction
   public :: initialize_fmr_wofost_crop_transaction_state
   public :: construct_fmr_wofost_crop_transaction_parameters
   public :: prepare_fmr_wofost_crop_event_forcing
+  public :: export_fmr_wofost_crop_transaction_persistence
+  public :: reconstruct_fmr_wofost_crop_transaction_from_persistence
 
 contains
+
+  logical function fmr_wofost_crop_transaction_persistence_ready(self) result(ready)
+    class(fmr_wofost_crop_transaction_persistence_t), intent(in) :: self
+    ready = .false.
+    if (.not. self%valid) return
+    if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if (self%receipt_present) then
+      if (.not. self%receipt%ready()) return
+    else
+      if (self%receipt%valid) return
+    end if
+    ready = .true.
+  end function fmr_wofost_crop_transaction_persistence_ready
+
+  subroutine export_fmr_wofost_crop_transaction_persistence(state, view, exported, status)
+    type(fmr_wofost_crop_transaction_state_t), intent(in) :: state
+    type(fmr_wofost_crop_transaction_persistence_t), intent(out) :: view
+    logical, intent(out) :: exported
+    integer, intent(out) :: status
+    logical :: receipt_exported
+
+    view = fmr_wofost_crop_transaction_persistence_t()
+    exported = .false.
+    status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
+    if (.not. state%ready()) return
+    view%owner = state%owner
+    if (state%last_consumed_event%ready()) then
+      call export_wofost_crop_event_identity_persistence(state%last_consumed_event, view%receipt, receipt_exported)
+      if (.not. receipt_exported) then
+        status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_RECEIPT
+        return
+      end if
+      view%receipt_present = .true.
+    end if
+    view%valid = .true.
+    if (.not. view%ready()) then
+      view = fmr_wofost_crop_transaction_persistence_t()
+      status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
+      return
+    end if
+    exported = .true.
+    status = FMR_WOFOST_CROP_PERSISTENCE_OK
+  end subroutine export_fmr_wofost_crop_transaction_persistence
+
+  subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence(view, state, reconstructed, status)
+    type(fmr_wofost_crop_transaction_persistence_t), intent(in) :: view
+    type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
+    logical, intent(out) :: reconstructed
+    integer, intent(out) :: status
+    integer :: receipt_status
+
+    state = fmr_wofost_crop_transaction_state_t()
+    reconstructed = .false.
+    status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
+    if (.not. view%ready()) return
+    state%owner = view%owner
+    if (view%receipt_present) then
+      call reconstruct_wofost_crop_event_identity_from_persistence(view%receipt, state%last_consumed_event, receipt_status)
+      if (receipt_status /= FMR_WOFOST_LINEAGE_OK) then
+        state = fmr_wofost_crop_transaction_state_t()
+        status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_RECEIPT
+        return
+      end if
+    end if
+    state%initialized = .true.
+    if (.not. state%ready()) then
+      state = fmr_wofost_crop_transaction_state_t()
+      status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
+      return
+    end if
+    reconstructed = .true.
+    status = FMR_WOFOST_CROP_PERSISTENCE_OK
+  end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
   subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status)
     type(wofost_crop_owner_state_t), intent(in) :: owner
