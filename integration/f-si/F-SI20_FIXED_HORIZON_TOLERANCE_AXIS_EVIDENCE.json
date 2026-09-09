@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI20",
+  "evidence": "FIXED_HORIZON_NONLINEAR_TOLERANCE_AXIS",
+  "source_lock": {
+    "fvq27_closeout": "1dc8219beda37fbcd6fd4232c964208fa0f17c8f",
+    "serialized_backend_blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "production_src_diff_from_fvq27": "EMPTY_PASS",
+    "fgc02_fixture_blob": "d8c3863a1acb08eb60712c7dd58bafc4cc5de5a6"
+  },
+  "workflow": {
+    "run": 34301042015,
+    "job": 102307801671,
+    "head": "99ef7b3ab1e3bc9034b565a970531365cddbdb56",
+    "conclusion": "success",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS"
+  },
+  "fixture": {
+    "total_horizon_day": 0.25,
+    "initial_profile_head_cm": -75.0,
+    "prescribed_bottom_head_cm": -74.99,
+    "bottom_mode": 5,
+    "top_flux_setup": "same conductivity-balanced prescribed-head startup physics as F-GC02",
+    "optional_physics": "inactive",
+    "mass_tolerance": 1e-12,
+    "min_step_duration_day": 1e-6,
+    "trajectory_steps": [1,2,4,8,16,32,64,128,256,512,1024],
+    "nonlinear_head_and_ponding_tolerances": [1e-12,1e-13,1e-14],
+    "characterization_only_iteration_ceiling": {
+      "max_iterations": 16,
+      "max_backtracking": 8,
+      "reason": "Permit stricter stopping criteria without conflating tolerance sensitivity with the exact F-GC02 8/4 solver ceiling. Physics, boundary conditions, dtmin and hard mass gate remain unchanged."
+    }
+  },
+  "baseline_1e_12_successive_step_doubling_head_cm": [
+    2.5524294842682593e-4,
+    1.0294296740198661e-4,
+    2.7614863341796081e-5,
+    5.811774798303304e-6,
+    1.256782752534491e-6,
+    3.3556280243374204e-7,
+    1.1299677282750054e-7,
+    4.5164242123973963e-8,
+    2.0040289427925018e-8,
+    9.420048741048959e-9
+  ],
+  "cross_tolerance_findings": {
+    "maximum_endpoint_head_difference_1e_12_to_stricter_cm": 3.694822225952521e-13,
+    "maximum_endpoint_theta_difference_1e_12_to_stricter": 3.3306690738754696e-16,
+    "maximum_relative_spread_in_step_doubling_head_curve": 6.788589738367752e-5,
+    "outer_step_head_discrepancy_identical_across_all_three_tolerances": true,
+    "interpretation": "The fixed-horizon refinement curve is materially invariant when nonlinear head/ponding stopping tolerances are tightened from 1e-12 to 1e-14. The observed temporal convergence curve is therefore not explained by the tested nonlinear stopping floor."
+  },
+  "mass_findings": {
+    "all_trajectories_passed_hard_external_mass_gate": true,
+    "maximum_external_trajectory_mass_residual": 0.0,
+    "solver_unrounded_residual_remained_within_approximately_1e_12_at_finest_trajectory": true,
+    "mass_requirement_relaxed": false
+  },
+  "scientific_interpretation": {
+    "restricted_candidate_observable": "max_i |h_full_i - h_twohalf_i| in cm",
+    "fixed_horizon_time_convergence_demonstrated_on_exact_prescribed_head_fixture": true,
+    "nonlinear_stopping_axis_qualified_for_this_fixture": true,
+    "single_global_asymptotic_order_demonstrated": false,
+    "production_temporal_tolerance_justified": false,
+    "production_metric_globally_qualified": false,
+    "physical_envelope_beyond_this_fixture_qualified": false,
+    "decision_class": "A_RESTRICTED_HEAD_NORM_OBSERVABLE_NUMERICALLY_SUPPORTED_ON_EXACT_FIXTURE_BUT_PRODUCTION_TOLERANCE_AND_ENVELOPE_UNQUALIFIED"
+  },
+  "hard_constraints": {
+    "production_acceptance_changed": false,
+    "production_metric_selected": false,
+    "production_source_modified": false,
+    "mass_requirement_changed": false,
+    "fkt_transaction_semantics_changed": false,
+    "generic_time_preserved": true,
+    "reference_mode_preserved": true
+  },
+  "next_evidence": "Classify the exact F-GC02 8/4-control startup-tail termination below dt=1.220703125e-4 day. Distinguish solver convergence ceiling, dtmin/admission, mass rejection, and temporal rejection before calibrating any restricted production tolerance."
+}
