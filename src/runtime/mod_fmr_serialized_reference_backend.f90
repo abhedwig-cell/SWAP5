@@ -110,6 +110,12 @@ module mod_fmr_serialized_reference_backend
     logical :: temporal_indicator_available = .false.
     character(len=40) :: temporal_indicator_route = 'not-run'
     real(real64) :: temporal_head_inf_bound = 0.0_real64
+    logical :: temporal_head_budget_supplied = .false.
+    logical :: temporal_head_budget_valid = .false.
+    real(real64) :: temporal_head_budget = 0.0_real64
+    logical :: temporal_certificate_available = .false.
+    real(real64) :: temporal_normalized_indicator = 0.0_real64
+    character(len=48) :: temporal_certificate_unavailable_reason = 'not-evaluated'
     integer :: temporal_additional_tridiagonal_solves = 0
     integer :: temporal_additional_full_nonlinear_solves = 0
     logical :: snow_active = .false.
@@ -152,6 +158,9 @@ module mod_fmr_serialized_reference_backend
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
     logical :: temporal_indicator_history_enabled = .false.
+    logical :: temporal_indicator_budget_supplied = .false.
+    logical :: temporal_indicator_budget_valid = .false.
+    real(real64) :: temporal_indicator_budget = 0.0_real64
     logical :: snow_active = .false.
     logical :: snow_event_prepared = .false.
     real(real64) :: snow_outer_t0 = 0.0_real64
@@ -358,6 +367,9 @@ contains
     class(top_boundary_provider_t), target, intent(in) :: top_boundary
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
+    self%model%temporal_indicator_budget_supplied = .false.
+    self%model%temporal_indicator_budget_valid = .false.
+    self%model%temporal_indicator_budget = 0.0_real64
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
@@ -377,6 +389,9 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     self%model%temporal_indicator_history_enabled = .false.
+    self%model%temporal_indicator_budget_supplied = .false.
+    self%model%temporal_indicator_budget_valid = .false.
+    self%model%temporal_indicator_budget = 0.0_real64
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
@@ -489,6 +504,27 @@ contains
     self%forcing_admitted = .false.
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+    self%temporal_indicator_budget_supplied = config%model_temporal_indicator_budget_available
+    self%temporal_indicator_budget_valid = self%temporal_indicator_budget_supplied .and. &
+         ieee_is_finite(config%model_temporal_indicator_budget) .and. &
+         config%model_temporal_indicator_budget > 0.0_real64
+    if (self%temporal_indicator_budget_valid) then
+      self%temporal_indicator_budget = config%model_temporal_indicator_budget
+    else
+      self%temporal_indicator_budget = 0.0_real64
+    end if
+    self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
+    self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
+    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+    if (.not. self%temporal_indicator_history_enabled) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'history-service-disabled'
+    else if (.not. self%temporal_indicator_budget_supplied) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-not-supplied'
+    else if (.not. self%temporal_indicator_budget_valid) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-invalid'
+    else
+      self%last_observation%temporal_certificate_unavailable_reason = 'indicator-not-evaluated'
+    end if
     if (interval%t1 <= interval%t0 .or. config%max_committed_substeps <= 0) return
     if (.not. associated(self%soil_parameters)) return
     n = self%soil_parameters%active_nodes
@@ -551,6 +587,7 @@ contains
     type(soil_water_temporal_indicator_request_t) :: indicator_request
     type(soil_water_temporal_indicator_result_t) :: indicator_result
     real(real64), allocatable :: previous_derivative(:)
+    real(real64) :: normalized_indicator
     logical :: previous_available, replaced
     integer :: n
     ok = .false.
@@ -575,6 +612,11 @@ contains
     self%last_observation%temporal_indicator_available = indicator_result%available
     self%last_observation%temporal_indicator_route = indicator_result%route
     self%last_observation%temporal_head_inf_bound = indicator_result%head_inf_bound
+    self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
+    self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
+    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+    self%last_observation%temporal_certificate_available = .false.
+    self%last_observation%temporal_normalized_indicator = 0.0_real64
     self%last_observation%temporal_additional_tridiagonal_solves = indicator_result%additional_tridiagonal_solves
     self%last_observation%temporal_additional_full_nonlinear_solves = indicator_result%additional_full_nonlinear_solves
     outcome%linear_solves = outcome%linear_solves + indicator_result%additional_tridiagonal_solves
@@ -590,6 +632,29 @@ contains
       return
     end select
     self%last_observation%temporal_current_derivative_available = .true.
+
+    if (.not. previous_available) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'history-unavailable'
+    else if (.not. self%temporal_indicator_budget_supplied) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-not-supplied'
+    else if (.not. self%temporal_indicator_budget_valid) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-invalid'
+    else if (.not. indicator_result%available) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'indicator-unavailable'
+    else if (.not. ieee_is_finite(indicator_result%head_inf_bound) .or. indicator_result%head_inf_bound < 0.0_real64) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'indicator-invalid'
+    else
+      normalized_indicator = indicator_result%head_inf_bound / self%temporal_indicator_budget
+      if (ieee_is_finite(normalized_indicator) .and. normalized_indicator >= 0.0_real64) then
+        outcome%temporal_certificate_available = .true.
+        outcome%temporal_indicator = normalized_indicator
+        self%last_observation%temporal_certificate_available = .true.
+        self%last_observation%temporal_normalized_indicator = normalized_indicator
+        self%last_observation%temporal_certificate_unavailable_reason = 'available'
+      else
+        self%last_observation%temporal_certificate_unavailable_reason = 'normalized-indicator-invalid'
+      end if
+    end if
     ok = .true.
   end subroutine evaluate_temporal_history_service
 
@@ -606,6 +671,18 @@ contains
     outcome = trial_outcome_t()
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
+    self%last_observation%temporal_head_budget_supplied = self%temporal_indicator_budget_supplied
+    self%last_observation%temporal_head_budget_valid = self%temporal_indicator_budget_valid
+    self%last_observation%temporal_head_budget = self%temporal_indicator_budget
+    if (.not. self%temporal_indicator_history_enabled) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'history-service-disabled'
+    else if (.not. self%temporal_indicator_budget_supplied) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-not-supplied'
+    else if (.not. self%temporal_indicator_budget_valid) then
+      self%last_observation%temporal_certificate_unavailable_reason = 'budget-invalid'
+    else
+      self%last_observation%temporal_certificate_unavailable_reason = 'indicator-not-evaluated'
+    end if
     call populate_snow_observation(self)
     snow_event_applied_this_call = .false.
     if (.not. self%forcing_admitted .or. .not. associated(self%soil_parameters) .or. &
