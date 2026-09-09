@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "AB_BOUNDED_STATE_AND_EXACT_MASS_FALSIFICATION",
+  "precommit_commit": "f9300d4f4c065bbecc12d3e53308bc0dcab1d2c8",
+  "experiment_commit": "9f16331c83a22b813423895cfe547a73998e9985",
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "production_implementation": false,
+  "execution_environment": {
+    "python": "3.13.5",
+    "compiler_runtime": "GCC 14.2.0",
+    "platform": "Linux x86_64 glibc 2.41"
+  },
+  "official_code_provenance": {
+    "record": "University of Wyoming DataCorral M2WC70",
+    "archive": "M2WC70.zip",
+    "download_locator_verified": true,
+    "archive_obtained_in_execution_environment": false,
+    "checksum_captured": false,
+    "official_code_reproduced": false
+  },
+  "gate_A_bounded_state": {
+    "status": "FAIL_FOR_SOURCE_STYLE_DYNAMIC_LIST_PRIMARY_MULTISWAP",
+    "variants": {
+      "FWC_ADVECTIVE": "FAIL_FORCING_INDEPENDENT_BOUND_NOT_ESTABLISHED",
+      "FWC_EXPLICIT_DIFFUSION": "FAIL_FORCING_INDEPENDENT_BOUND_NOT_ESTABLISHED"
+    },
+    "source_style_topology_tested": "fixed theta bins with dynamically created detached falling-slug intervals; equal translation velocity for top and bottom; geometric-overlap merge only",
+    "single_active_bin_characterization": [
+      {
+        "pulse_period_residence": 0.25,
+        "max_simultaneous_objects_at_horizons_1_10_100": [4, 4, 4],
+        "creates_at_horizons_1_10_100": [5, 41, 401],
+        "boundary_removals_at_horizons_1_10_100": [1, 37, 397],
+        "merges_at_horizons_1_10_100": [0, 0, 0]
+      },
+      {
+        "pulse_period_residence": 0.0625,
+        "max_simultaneous_objects_at_horizons_1_10_100": [16, 16, 16],
+        "creates_at_horizons_1_10_100": [17, 161, 1601],
+        "boundary_removals_at_horizons_1_10_100": [1, 145, 1585],
+        "merges_at_horizons_1_10_100": [0, 0, 0]
+      },
+      {
+        "pulse_period_residence": 0.015625,
+        "max_simultaneous_objects_at_horizons_1_10_100": [64, 64, 64],
+        "creates_at_horizons_1_10_100": [65, 641, 6401],
+        "boundary_removals_at_horizons_1_10_100": [1, 577, 6337],
+        "merges_at_horizons_1_10_100": [0, 0, 0]
+      },
+      {
+        "pulse_period_residence": 0.00390625,
+        "max_simultaneous_objects_at_horizons_1_10_100": [256, 256, 256],
+        "creates_at_horizons_1_10_100": [257, 2561, 25601],
+        "boundary_removals_at_horizons_1_10_100": [1, 2305, 25345],
+        "merges_at_horizons_1_10_100": [0, 0, 0]
+      }
+    ],
+    "duration_result": "For each fixed pulse period and normalized residence time, simultaneous state reaches a finite plateau by one residence time. Cumulative create/remove event work continues to grow linearly with duration.",
+    "forcing_refinement_result": {
+      "coarsest_period_residence": 0.25,
+      "finest_period_residence": 0.00390625,
+      "single_bin_max_objects_coarsest": 4,
+      "single_bin_max_objects_finest": 256,
+      "object_count_growth_factor": 64.0,
+      "interpretation": "The finite-duration plateau is not a forcing-independent state bound. In the frozen topology stress it scales inversely with event period. No source-supported minimum event spacing, minimum slug thickness, heuristic merge or object cap is introduced."
+    },
+    "replicated_all_bins_storage_envelope_at_horizon_100": [
+      {
+        "theta_bins": 16,
+        "coarsest_period_max_objects": 64,
+        "coarsest_modeled_persistent_bytes_per_column": 1792,
+        "finest_period_max_objects": 4096,
+        "finest_modeled_persistent_bytes_per_column": 98560,
+        "persistent_byte_growth_factor": 55.0
+      },
+      {
+        "theta_bins": 32,
+        "coarsest_period_max_objects": 128,
+        "coarsest_modeled_persistent_bytes_per_column": 3584,
+        "finest_period_max_objects": 8192,
+        "finest_modeled_persistent_bytes_per_column": 197120,
+        "persistent_byte_growth_factor": 55.0
+      },
+      {
+        "theta_bins": 64,
+        "coarsest_period_max_objects": 256,
+        "coarsest_modeled_persistent_bytes_per_column": 7168,
+        "finest_period_max_objects": 16384,
+        "finest_modeled_persistent_bytes_per_column": 394240,
+        "persistent_byte_growth_factor": 55.0
+      },
+      {
+        "theta_bins": 128,
+        "coarsest_period_max_objects": 512,
+        "coarsest_modeled_persistent_bytes_per_column": 14336,
+        "finest_period_max_objects": 32768,
+        "finest_modeled_persistent_bytes_per_column": 788480,
+        "persistent_byte_growth_factor": 55.0
+      },
+      {
+        "theta_bins": 200,
+        "coarsest_period_max_objects": 800,
+        "coarsest_modeled_persistent_bytes_per_column": 22400,
+        "finest_period_max_objects": 51200,
+        "finest_modeled_persistent_bytes_per_column": 1232000,
+        "persistent_byte_growth_factor": 55.0
+      }
+    ],
+    "payload_scope_note": "Byte counts are an explicit packed SWAP5-oriented payload model from the frozen precommit, not sizeof() measurements of official FWC C structures.",
+    "explicit_diffusion_difference": {
+      "persistent_slug_topology": "same as advective reconstruction because no source-proven topology collapse is assumed",
+      "additional_worker_scratch_bytes_per_theta_bin": 16,
+      "scratch_persistent_per_column": false
+    },
+    "decision": "REJECT_SOURCE_STYLE_DYNAMIC_LINKED_LIST_AS_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION",
+    "bounded_followup": "A fixed dense-bin or fixed-slot representation remains research-eligible only with conservative fail-closed overflow and separate physical qualification."
+  },
+  "gate_B_exact_mass": {
+    "status": "PASS_MINIMAL_LEDGER_AND_TRANSACTION_FEASIBILITY",
+    "accepted_steps_per_case": 10000,
+    "mass_identity": "initial + inflow - outflow - final = residual",
+    "mass_tolerance_rule": "64 * binary64_epsilon * max(1, abs(initial)+abs(inflow)+abs(outflow)+abs(final))",
+    "mass_repair_applied": false,
+    "clipping_repair_applied": false,
+    "cases": [
+      {
+        "variant": "FWC_ADVECTIVE",
+        "theta_bins": 16,
+        "initial_storage": 0.033,
+        "cumulative_inflow": 0.129994,
+        "cumulative_outflow": 0.13395399999999885,
+        "final_storage": 0.029039999999998817,
+        "mass_residual": 2.3314683517128287e-15,
+        "mass_tolerance": 1.4210854715202004e-14,
+        "residual_over_tolerance": 0.1640625,
+        "minimum_storage": 0.0011250000000000001,
+        "rejected_trial_triggered": true,
+        "committed_state_bitwise_unchanged_after_reject": true,
+        "committed_ledger_exactly_unchanged_after_reject": true,
+        "pass": true
+      },
+      {
+        "variant": "FWC_ADVECTIVE",
+        "theta_bins": 64,
+        "initial_storage": 0.129,
+        "cumulative_inflow": 0.129994,
+        "cumulative_outflow": 0.14764332682812878,
+        "final_storage": 0.11135067317186917,
+        "mass_residual": 2.0539125955565396e-15,
+        "mass_tolerance": 1.4210854715202004e-14,
+        "residual_over_tolerance": 0.14453125,
+        "minimum_storage": 0.00103125,
+        "rejected_trial_triggered": true,
+        "committed_state_bitwise_unchanged_after_reject": true,
+        "committed_ledger_exactly_unchanged_after_reject": true,
+        "pass": true
+      },
+      {
+        "variant": "FWC_EXPLICIT_DIFFUSION",
+        "theta_bins": 16,
+        "initial_storage": 0.033,
+        "cumulative_inflow": 0.129994,
+        "cumulative_outflow": 0.1336473424650631,
+        "final_storage": 0.02934665753493681,
+        "mass_residual": 9.020562075079397e-17,
+        "mass_tolerance": 1.4210854715202004e-14,
+        "residual_over_tolerance": 0.00634765625,
+        "minimum_storage": 0.0011250000000000001,
+        "rejected_trial_triggered": true,
+        "committed_state_bitwise_unchanged_after_reject": true,
+        "committed_ledger_exactly_unchanged_after_reject": true,
+        "pass": true
+      },
+      {
+        "variant": "FWC_EXPLICIT_DIFFUSION",
+        "theta_bins": 64,
+        "initial_storage": 0.129,
+        "cumulative_inflow": 0.129994,
+        "cumulative_outflow": 0.14753107407295296,
+        "final_storage": 0.11146292592704693,
+        "mass_residual": 1.1102230246251565e-16,
+        "mass_tolerance": 1.4210854715202004e-14,
+        "residual_over_tolerance": 0.0078125,
+        "minimum_storage": 0.00103125,
+        "rejected_trial_triggered": true,
+        "committed_state_bitwise_unchanged_after_reject": true,
+        "committed_ledger_exactly_unchanged_after_reject": true,
+        "pass": true
+      }
+    ],
+    "decision": "QUALIFIED_MINIMAL_TRANSACTION_SAFE_FINITE_VOLUME_LEDGER_FEASIBILITY",
+    "nonclaim": "This proves exact-mass and transaction bookkeeping feasibility for the independent reconstruction only. It does not qualify FWC hydraulic equations or profile accuracy."
+  },
+  "overall": {
+    "requested_positive_exit_reached": false,
+    "source_style_dynamic_list_primary_multiswap": "NO_GO",
+    "bounded_fixed_slot_or_dense_bin_research_route": "REMAINS_ELIGIBLE_FOR_SEPARATE_PHYSICAL_QUALIFICATION",
+    "decision": "FWC_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_RESEARCH_CONTINUES"
+  },
+  "invariant_reconciliation": {
+    "invariant_4_compact_persistent_state": "Source-style dynamic linked-list state is not admitted because no forcing-independent object bound was established.",
+    "invariant_5_scratch_per_worker": "Explicit-diffusion temporary bin arrays are modeled as worker scratch, not persistent per-column state.",
+    "invariant_7_transactional_steps": "Intentional rejected trials leave committed state bitwise unchanged and committed ledgers exactly unchanged.",
+    "invariant_13_mass_absolute": "All four accepted finite-volume ledger cases close within the frozen binary64 roundoff tolerance without mass repair.",
+    "invariant_16_multiswap_primary": "The unbounded dynamic-list representation is rejected before any large-scale runtime implementation.",
+    "invariant_24_predictable_runtime": "No object cap or heuristic merge is silently introduced to manufacture predictability.",
+    "invariant_25_reference_mode": "Hydraulic reference qualification remains open; this gate cannot substitute for FullRichards comparison.",
+    "invariant_30_explicit_qualification": "Negative bounded-state evidence is preserved rather than hidden behind a fixed-duration plateau."
+  },
+  "hard_nonclaims": [
+    "No official FWC code reproduction.",
+    "No FullRichards equivalence.",
+    "No infiltration-profile accuracy qualification.",
+    "No groundwater, crop, SWAP runtime or MultiSWAP implementation admission.",
+    "No explicit-diffusion affordability qualification."
+  ]
+}
