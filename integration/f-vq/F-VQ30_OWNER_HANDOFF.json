@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ30",
+  "handoff_type": "IMMUTABLE_QUALIFICATION_OWNER_HANDOFF",
+  "decision": "QUALIFIED_HELD_OUT_TRANSFER_OF_BOUNDED_STIFFNESS_AWARE_RICHARDS_INDICATOR_READY_FOR_PRODUCTION_OPERATOR_SEAM",
+  "closeout_commit": "41cc1b653f16913326723af58c2fe1542e5a0f53",
+  "evidence_commit": "4db724064fd5ebb58ce9ac7f038333ce29d7d671",
+  "frozen_plan_commit": "c8f56d352cfd485f4bf33e3ce0a593a1a2ca2112",
+  "qualified_owner_source": {
+    "work_unit": "F-SI24",
+    "head": "52e53c956d575fc6fb16423a8ab0a566118b83df",
+    "candidate_id": "F_SI24_LINEAR_MNORM_MIN_RAW_OR_DOUBLE_DEFECT_BOUND"
+  },
+  "next_owner": {
+    "workstream": "F-SI",
+    "work_unit": "F-SI25",
+    "free_number_rechecked_live_immediately_before_handoff": true,
+    "branch_exists": false,
+    "suggested_branch": "work/f-si25-accepted-state-operator-indicator-seam",
+    "title": "Production Accepted-State Operator & Bounded Stiffness-Aware Indicator Seam",
+    "purpose": "Implement the smallest solver-owned production seam needed to evaluate the qualified F-SI24/F-VQ30 indicator from the accepted final Richards state without exposing HeadCalc internals."
+  },
+  "F_SI25_must_implement": [
+    "A soil-water-solver-owned accepted-state operator evaluation contract sufficient to form the candidate final-state J/operator semantics.",
+    "The fixed candidate e_raw = 0.5*dt*(hdot_np1-hdot_n).",
+    "One defect solve J*delta=(M/dt)*e_raw.",
+    "B_M=min(||e_raw||_M,2||delta||_M) and B_inf=B_M/sqrt(min_i M_i) with the analytic factor 2 unchanged.",
+    "A result/diagnostic surface that exposes the indicator without silently introducing an acceptance tolerance or retry policy.",
+    "Bounded normal cost: zero extra full nonlinear Richards trajectories and at most one additional tridiagonal solve for the indicator.",
+    "Hard mass non-interference: no change to accepted state, accepted fluxes or water balance accounting.",
+    "Transactional correctness: trial/retry evaluation must not mutate committed state and rollback must remain exact.",
+    "Generic time semantics over the actual interval dt, with no calendar/day assumption.",
+    "Worker/scratch ownership of temporary operator vectors and defect-solve workspace; no unnecessary persistent per-column state.",
+    "Reference-mode visibility and per-column diagnostics suitable for later runtime qualification."
+  ],
+  "F_SI25_must_not_do": [
+    "Do not expose, return or retain HeadCalc Jacobian/internal arrays outside the soil-water solver boundary.",
+    "Do not treat the current workspace dfdh array as the exact accepted-state J without a solver-owned reconstruction/evaluation contract.",
+    "Do not add N4/N8/N128/N256/N512 or any other deep refinement trajectory to the production normal path.",
+    "Do not fit a safety factor, global multiplier, material coefficient, floor inflation or temporal tolerance.",
+    "Do not turn B_inf into a production temporal acceptance criterion in F-SI25.",
+    "Do not claim B_inf is a true general nonlinear error upper bound.",
+    "Do not release F-GC02, groundwater coupling, F-PE or a production retry policy from this handoff alone.",
+    "Do not alter Richards physics, boundary physics or mass gates to make the indicator easier to satisfy."
+  ],
+  "qualification_replay_required_after_implementation": [
+    "Replay the exact F-VQ30 manufactured-linear regression against the production seam semantics.",
+    "Replay the frozen 16-case held-out matrix without changing its cases or qualification rules.",
+    "Verify O0/O2 deterministic identity under current conventions.",
+    "Verify hard mass and accepted-state/flux identity with the indicator disabled versus observer-enabled where applicable.",
+    "Verify actual production cost instrumentation shows no extra nonlinear trajectory and no more than one extra tridiagonal solve.",
+    "Independently qualify the production seam before any temporal tolerance or retry policy is admitted."
+  ],
+  "downstream_sequence_if_F_SI25_qualifies": [
+    "F-MR/F-KT composition using live free numbering at start time, currently observed F-MR18 and F-KT10 but not reserved.",
+    "Independent production/scientific VQ of the implemented seam and any later acceptance policy.",
+    "Resume the same existing F-GC02 coupling workunit only after its temporal acceptance dependency is actually qualified.",
+    "Allow F-PE to re-enter only after the relevant production path is admitted."
+  ],
+  "carried_nonclaims": [
+    "N512 is not exact truth.",
+    "No true general nonlinear error bound is qualified.",
+    "No scientific temporal tolerance is selected.",
+    "F-VQ28 negative retry-translation evidence remains valid.",
+    "F-VQ29 finite-reference-strength negative evidence remains valid.",
+    "Held-out B_inf/E1_512 conservatism remains large and state/horizon dependent, observed range 6.685266816523914 to 102.49832534208181."
+  ],
+  "branch_creation_requested_by_handoff": false,
+  "reservation_created": false
+}
