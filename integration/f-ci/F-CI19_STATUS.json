@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission Planning",
+  "status": "QUALIFIED_CANDIDATE_A_SOURCE_AND_COMPOSITION_READY_FOR_CANONICAL_POSTIMAGE_QUALIFICATION",
+  "phase": "SOURCE_LINEAGE_AND_REACHABILITY_QUALIFIED_POSTIMAGE_NOT_YET_QUALIFIED",
+  "candidate_a": {
+    "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "composition_preservation": "PASS",
+    "source_lineage_reachability": "PASS"
+  },
+  "decisive_evidence": {
+    "composition_workflow_run": 34319928251,
+    "composition_job": 102364081577,
+    "composition_artifact": 10091475248,
+    "composition_artifact_sha256": "cec8b32ae9da710405653611302d24b5e91fcec1c5736df3ccb6fb6a442b3eef",
+    "reachability_workflow_run": 34320967298,
+    "reachability_job": 102367277768,
+    "reachability_artifact": 10091832379,
+    "reachability_artifact_sha256": "49232f699cff28d2f479955093b1d4be7f4be89d8e69c0dccdd5c5bc86de4c96"
+  },
+  "frontier_reconciliation": {
+    "F_SI22": "EVIDENCE_ONLY_NO_PRODUCTION_DELTA",
+    "F_VQ28": "REJECTED_FAIL_CLOSED",
+    "F_VQ29": "NOT_PRODUCTION_ADMITTED",
+    "F_SI23": "EVIDENCE_ONLY_GATE_A_BOOTSTRAP_BLOCKS_PROTOTYPE_NO_PRODUCTION_DELTA",
+    "F_GC02": "BLOCKED_OWNER_DEPENDENCY",
+    "F_WOF34": "DIVERGED_SHARED_OWNER_REQUIRES_SEPARATE_COMPOSITION",
+    "F_LMFP09": "CHARACTERIZATION_ONLY",
+    "F_VZAA": "ASSESSMENT_OR_EVIDENCE_ONLY"
+  },
+  "hard_holds": [
+    "production Richards model-owned temporal certificate remains not admitted",
+    "general groundwater predictor-corrector coupling remains not admitted",
+    "WOFOST full physical production binding remains outside Candidate A",
+    "parallel real-physics execution remains not admitted",
+    "BALANCED THROUGHPUT and FALLBACK remain not admitted",
+    "subdaily and multiday active snow remain not admitted",
+    "active macropore and swkimpl=1 scope are not expanded",
+    "concrete crop-owner root-uptake composition is not inferred",
+    "irrigation process admission does not imply runtime composition",
+    "LayeredMFP and VZAA are not production solver admissions"
+  ],
+  "next": {
+    "action": "MATERIALIZE_AND_QUALIFY_EXACT_CANONICAL_POSTIMAGE_CANDIDATE",
+    "canonical_ref_move_allowed_now": false,
+    "reason": "The source postimage and inherited claims are qualified, but governance plus exact source/reference tree composition has not yet been tested as one exact postimage."
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "source_lineage_qualified": true,
+    "canonical_postimage_materialized": false,
+    "canonical_postimage_qualified": false,
+    "canonical_ref_advanced": false
+  }
+}
