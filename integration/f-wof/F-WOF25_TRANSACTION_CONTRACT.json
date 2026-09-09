@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "Standard-WOFOST crop-window transaction and replay contract",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true,
+    "transaction_authority_changed": false,
+    "authority": "F-KT"
+  },
+  "source_basis": [
+    "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json",
+    "integration/f-kt/F-KT05_REUSABLE_CHECKPOINT_CONTRACT.json",
+    "integration/f-wof/F-WOF20_COMMON_CROP_LIFECYCLE_STATE_CONTRACT.json",
+    "integration/f-wof/F-WOF21_SWRD2_ROOT_HISTORY_STATE_CONTRACT.json",
+    "integration/f-wof/F-WOF24_WOFOST_CROP_OWNER_COMPOSITE_CONTRACT.json",
+    "integration/f-wof/F-WOF25_TEMPORAL_EVENT_CONTRACT.json"
+  ],
+  "atomic_physical_crop_continuation": {
+    "required_common_WOFOST_state": [
+      "crop_emerged",
+      "DVS",
+      "TSUM",
+      "fl_anthesis",
+      "nofd",
+      "atmin7[7]",
+      "actual primary WOFOST biomass and active leaf cohorts"
+    ],
+    "optional_IDSL2_state": [
+      "vern",
+      "fl_vernalised",
+      "legacy_vernalization_rate_carryover only when required for exact B1.10 continuation"
+    ],
+    "conditional_oracle_compatibility_state": [
+      "legacy_lai_exponential_rate_carryover only in the LAIEXP carryover regime"
+    ],
+    "optional_root_history": {
+      "SWRD_1": [],
+      "SWRD_2": ["actual_root_depth", "potential_root_depth"],
+      "SWRD_3": [],
+      "SWRDC_1": "adaptive per-node root history or semantic equivalent if that physical option is included in a future candidate; not implemented or admitted by F-WOF25"
+    },
+    "atomicity_rule": "all enabled physical continuation belonging to the crop execution class must be represented inside one parent F-KT candidate lineage; no independent crop, phenology, biomass or root-history commit authority is allowed"
+  },
+  "checkpoint_trial_commit": {
+    "checkpoint_origin": "deep clone of the caller-supplied committed physical state under F-KT",
+    "prepare_phase_origin": "same crop checkpoint at t0",
+    "prepare_phase_can_modify_committed": false,
+    "soil_process_trials_can_modify_committed_crop_state": false,
+    "accepted_aggregate_carrier_is_committed_crop_state": false,
+    "finalize_phase_origin": "same crop checkpoint plus trial-local prepare context plus frozen accepted aggregates",
+    "candidate_created_only_after_complete_window": true,
+    "commit": "explicit F-KT commit only",
+    "rollback": "discard candidate and trial/window context; never restore by mutating committed state"
+  },
+  "no_trial_leakage": {
+    "rejected_soil_water_trial_into_IQROT_WINDOW": false,
+    "rejected_soil_water_trial_into_IPTRA_WINDOW": false,
+    "rejected_oxygen_trial_into_IALPWET_WINDOW": false,
+    "rejected_crop_prepare_into_nofd_or_atmin7_committed": false,
+    "rejected_crop_finalize_into_phenology_or_biomass_committed": false,
+    "rejected_crop_finalize_into_root_history_committed": false,
+    "rejected_crop_finalize_into_compatibility_memory_committed": false
+  },
+  "same_window_read_semantics": {
+    "soil_water_substeps_read_crop_geometry_from": "the parent crop checkpoint/current window start state, plus explicitly prepared same-window read-only process factors where source call order requires them",
+    "root_growth_applied_during_substeps": false,
+    "root_geometry_advanced_each_substep": false,
+    "reason": "legacy root extension/distribution is a day-end crop update after all soil-water substeps"
+  },
+  "accepted_aggregate_lineage": {
+    "window_identity_required": true,
+    "parent_candidate_lineage_required": true,
+    "exactly_once_booking_required": true,
+    "freeze_before_crop_finalize": true,
+    "reuse_after_parent_rollback": false,
+    "recompute_after_replay": "allowed and must reproduce the same frozen aggregate values for the same checkpoint, forcing and accepted substep history"
+  },
+  "discard_test_contract": {
+    "sequence": [
+      "capture crop/column checkpoint at T0",
+      "run crop-window prepare",
+      "run one or more soil/process trials and accepted contributions",
+      "run crop finalize to obtain a candidate",
+      "discard/rollback candidate"
+    ],
+    "required_exact_unchanged_committed_fields": [
+      "crop_emerged",
+      "DVS",
+      "TSUM",
+      "fl_anthesis",
+      "nofd",
+      "atmin7",
+      "vern/fl_vernalised when active",
+      "WRT/WST/WSO/LAIEXP",
+      "LV/SLA/LVAGE cohorts",
+      "optional root history",
+      "conditional legacy compatibility memory"
+    ]
+  },
+  "replay_test_contract": {
+    "sequence": [
+      "capture checkpoint at T0",
+      "run complete one-day crop window with forcing F and accepted process result history A",
+      "discard candidate",
+      "re-run from the same checkpoint with the same F and A"
+    ],
+    "required": [
+      "bitwise-identical candidate physical crop state",
+      "bitwise-identical active cohort ordering and values",
+      "bitwise-identical optional root history",
+      "bitwise-identical conditional compatibility memory",
+      "deterministic crop results and physical diagnostics"
+    ],
+    "warm_start_rule": "worker-local numerical warm-start data may differ or be reused, but cannot alter the checkpoint physical origin or accepted result"
+  },
+  "failure_semantics": {
+    "invalid_forcing": "fail closed before candidate publication",
+    "invalid_or_incomplete_accepted_aggregates": "fail closed before crop finalize or candidate publication",
+    "wrong_window_duration_for_initial_admission": "fail closed",
+    "stale_or_wrong_checkpoint": "F-KT fail closed",
+    "partial_crop_update_candidate_allowed": false
+  },
+  "owner_composition_hold": {
+    "current_F_WOF24_owner": "wofost_crop_owner_state_t owns lifecycle DVS plus optional actual biomass but does not yet contain F-WOF25 phenology/climate memory or optional SWRD=2 history",
+    "current_F_WOF21_owner": "SWRD=2 history exists as a qualified separate crop-lifecycle subtype",
+    "required_next_structural_step": "compose or extend these source-qualified state semantics into one option-aware WOFOST crop transaction shape without duplicating DVS/LAI/WRT/root depth",
+    "readiness_blocking": false,
+    "production_blocking": true
+  },
+  "gates": {
+    "WOF25_G07_transaction_semantics": "PASS_CONTRACT_ONLY",
+    "checkpoint_discard_replay_test_design": "DEFINED_NOT_EXECUTED_BECAUSE_F_WOF25_HAS_NO_PRODUCTION_EVOLUTION",
+    "production_evolution": "BLOCKED_ZERO_PRODUCTION_UNIT"
+  }
+}
