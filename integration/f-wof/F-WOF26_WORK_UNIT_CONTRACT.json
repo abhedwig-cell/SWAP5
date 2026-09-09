@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF26",
+  "title": "Restricted Standard WOFOST One-Day Structural Evolution Candidate",
+  "branch": "work/f-wof26-standard-one-day-structural-candidate",
+  "base": {
+    "commit": "342096ca6d44a8d83458209eda2039424db0d2d5",
+    "status": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE"
+  },
+  "source_authority": [
+    "integration/f-wof/F-WOF25_STATUS.json",
+    "integration/f-wof/F-WOF25_TEMPORAL_EVENT_CONTRACT.json",
+    "integration/f-wof/F-WOF25_TRANSACTION_CONTRACT.json",
+    "integration/f-wof/F-WOF25_RATE_LIFETIME_RECONCILIATION.json",
+    "B1.10 SWAP/wofost.f90:817-929,933-1107,1348-1466,1767-1943"
+  ],
+  "goal": "Implement the smallest production state-integration seam for one standard actual-WOFOST crop day without migrating the complete WOFOST rate evaluator in the same unit.",
+  "admitted_profile": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "window_duration_days": 1.0,
+    "IDSL": [0, 1],
+    "nutrient_route": false,
+    "soybean": false,
+    "grass": false,
+    "potential_shadow": false,
+    "oxygen_IALPWET_coupling": false,
+    "SWRD2_or_adaptive_root_history_update": false
+  },
+  "production_scope": {
+    "extend_owner_with_optional_common_evolution_continuation": true,
+    "day_start_minimum_temperature_history_update": true,
+    "accepted_IQROT_IPTRA_to_RELTR": true,
+    "anthesis_threshold_and_TSUMP_DVS_state_integration": true,
+    "actual_biomass_organ_state_integration_from_explicit_event_local_rates": true,
+    "leaf_stress_death_age_death_single_daily_cohort_shift": true,
+    "B110_GLAIEXP_carryover_sidecar": true,
+    "full_rate_evaluator": false,
+    "assimilation_photosynthesis_rate_calculation": false,
+    "partitioning_respiration_death_rate_calculation": false,
+    "root_extension_or_distribution_evolution": false,
+    "runtime_scheduler_composition": false
+  },
+  "architecture": {
+    "persistent_physical_state": [
+      "existing crop_emerged and DVS",
+      "existing actual biomass and active LV/SLA/LVAGE cohorts",
+      "optional common evolution continuation: TSUM, fl_anthesis, nofd, atmin7[7]"
+    ],
+    "reference_compatibility_state": [
+      "optional B1.10 GLAIEXP carryover sidecar only after the LAIEXP threshold requires it"
+    ],
+    "event_local_inputs": [
+      "explicit one-day weather/solar forcing DTO",
+      "accepted IQROT/IPTRA window aggregates",
+      "minimal state-update parameter DTO",
+      "minimal event-local rate packet produced by a later qualified rate evaluator"
+    ],
+    "forbidden_persistent_workspace": [
+      "full WOFOST_rates",
+      "DVR/DTSUM rate storage",
+      "PGASS/GASS/partitioning/respiration workspace",
+      "calendar or file I/O state"
+    ]
+  },
+  "transaction_rules": [
+    "prepare starts from caller-supplied crop checkpoint and mutates only a candidate",
+    "day-start nofd/atmin7 updates never mutate committed state directly",
+    "finalize produces a complete candidate owner state and never commits it",
+    "F-KT remains the only publication/rollback authority",
+    "same checkpoint plus same forcing, aggregates, parameters and rate packet must replay bitwise identically",
+    "discarded candidate must leave the checkpoint bitwise unchanged"
+  ],
+  "temporal_rules": [
+    "t0 and t1 are explicit real-valued kernel times",
+    "initial structural seam admits only t1-t0 equal to one day",
+    "no midnight, daynr or t1900 dependency is allowed",
+    "exactly one leaf cohort is inserted per admitted crop event even when its biomass increment is zero",
+    "multiple Richards substeps inside the crop day do not invoke additional crop shifts"
+  ],
+  "reference_rules": [
+    "RELTR follows B1.10: 1 when |IPTRA_WINDOW| < 1e-10, otherwise clamp(IQROT_WINDOW/IPTRA_WINDOW,0,1)",
+    "if pre-event LAIEXP < 6, the supplied event-local GLAIEXP is used and captured if the updated state enters the carryover regime",
+    "if pre-event LAIEXP >= 6, the structural seam uses the stored B1.10 carryover and fails closed when that sidecar is absent",
+    "silent reset of GLAIEXP at the threshold is forbidden"
+  ],
+  "gates": {
+    "G01_owner_extension_compact_and_optional": "REQUIRED",
+    "G02_one_day_prepare_no_committed_mutation": "REQUIRED",
+    "G03_accepted_aggregate_RELTR_binding": "REQUIRED",
+    "G04_single_cohort_shift_and_state_update_order": "REQUIRED",
+    "G05_GLAIEXP_reference_carryover": "REQUIRED",
+    "G06_checkpoint_discard_replay": "REQUIRED",
+    "G07_O0_O2_identity": "REQUIRED",
+    "G08_no_calendar_io_solver_dependency": "REQUIRED",
+    "G09_F_WOF25_contract_lock": "REQUIRED"
+  },
+  "qualification_boundary": "F-WOF26 can qualify the structural state integrator only. It must not claim full standard-WOFOST production physics until a separate source-bound rate evaluator is implemented and qualified.",
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,27,29,30]
+}
