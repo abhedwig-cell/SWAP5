@@ -1,6 +1,7 @@
 module mod_fmr_wofost_crop_event_lifecycle
   use mod_transaction_reference, only: transaction_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
        fmr_wofost_crop_event_token_t, fmr_wofost_crop_event_identity_t, &
        prepare_wofost_crop_event_delivery, identify_wofost_crop_event, &
@@ -36,6 +37,7 @@ contains
     integer, intent(out) :: status
     type(fmr_wofost_crop_event_token_t) :: token
     type(fmr_wofost_crop_event_identity_t) :: identity
+    type(wofost_accepted_window_aggregates_t) :: aggregates
     class(transaction_state_t), allocatable :: committed_snapshot
     logical :: event_available, snapshot_available
     integer :: lineage_status
@@ -57,8 +59,7 @@ contains
     if (.not. committed_crop%ready()) return
 
     ! Freeze the exact source event identity without mutating the window.
-    call prepare_wofost_crop_event_delivery(window, token=token, available=event_available, &
-         status=lineage_status, aggregates=unused_aggregates())
+    call prepare_wofost_crop_event_delivery(window, aggregates, token, event_available, lineage_status)
     if (lineage_status /= FMR_WOFOST_LINEAGE_OK .or. .not. event_available .or. .not. token%ready()) then
       status = FMR_WOF39_RETIREMENT_REJECTED
       return
@@ -97,13 +98,5 @@ contains
     retired = .true.
     status = FMR_WOF39_OK
   end subroutine reconcile_committed_crop_event_receipt
-
-  ! Small helper only to satisfy the existing delivery-token constructor while
-  ! keeping lifecycle code uninterested in the aggregate payload itself.
-  function unused_aggregates() result(value)
-    use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t
-    type(wofost_accepted_window_aggregates_t) :: value
-    value = wofost_accepted_window_aggregates_t()
-  end function unused_aggregates
 
 end module mod_fmr_wofost_crop_event_lifecycle
