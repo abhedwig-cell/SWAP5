@@ -1,0 +1,22 @@
+name: F-SI26 head-budget scientific normalization gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-si26-richards-temporal-indicator-scientific-normalization
+    paths:
+      - 'integration/f-si/F-SI26_WORK_UNIT_CONTRACT.json'
+      - 'integration/f-si/F-SI26_GATE_A_B_C_SEMANTIC_ASSESSMENT.json'
+      - 'tests/fsi/test_fsi26_head_budget_semantics.py'
+      - '.github/workflows/fsi26-head-budget-semantics.yml'
+
+jobs:
+  owner-semantic-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-SI26 owner scientific-normalization gate
+        run: python3 tests/fsi/test_fsi26_head_budget_semantics.py
