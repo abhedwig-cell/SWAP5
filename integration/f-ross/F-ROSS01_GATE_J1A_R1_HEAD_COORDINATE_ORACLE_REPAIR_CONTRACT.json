@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_R1_HEAD_COORDINATE_ORACLE_REPAIR",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "parent_failure": {
+    "evidence": "F-ROSS01_GATE_J1A_REAL_TABLE_FACE_DERIVATIVE_RESULT.json",
+    "workflow_run": 34353137046,
+    "decision": "J1A_FAIL_PRESERVED_DIAGNOSE_ORACLE_WITHOUT_CHANGING_TABLE_OR_PRECOMMITTED_FD_SIZES"
+  },
+  "purpose": "Test whether the failed J1A self-consistency metric was caused by finite-difference noise from the h->S->u roundtrip rather than by the closed-form derivative of the frozen C1R table law.",
+  "frozen_candidate": {
+    "representation": "C1R N241 float32 bilinear log-mobility table in u=log10(-h)",
+    "analytic_derivative": "unchanged from J1A",
+    "table_values": "unchanged",
+    "probe_materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "probe_seeds_and_locations": "identical to J1A"
+  },
+  "finite_difference_precommit": {
+    "head_space_relative_factors": [1e-06, 3e-06],
+    "cell_boundary_cap": "0.05 times distance to nearest table-cell boundary",
+    "equal_head_branch_cap": "0.05 times |h_a-h_b|",
+    "explicit_rule": "These are exactly the original J1A perturbations. No perturbation-size tuning is permitted in R1."
+  },
+  "oracle_repair": {
+    "independent_flux_evaluator": "Re-evaluate the frozen C1R bilinear table law directly from perturbed head coordinates. Do not call the analytic derivative routine and do not route the FD perturbation through s_of_h followed by state_to_u.",
+    "reason": "The derivative under test is dq/dh of the head-parameterized frozen face law. The original J1A FD path inserted an analytically cancelling h->S->u roundtrip whose floating-point error is divided by a very small FD step and can dominate near a zero endpoint derivative.",
+    "base_equivalence_check": "At every unperturbed probe, direct-head flux must match the production C1R state-based lookup to <=1e-12 scaled error.",
+    "same_cell_requirement": true,
+    "equal_head_shortcut_excluded": true
+  },
+  "hard_gate": {
+    "metric": "abs(d_analytic-d_fd)/max(abs(d_analytic),abs(d_fd),1e-8*KSATFIT)",
+    "maximum_metric": 1e-06,
+    "both_original_fd_steps_must_pass": true,
+    "cell_change_count": 0,
+    "nonfinite_derivative_count": 0,
+    "base_table_mutated": false,
+    "base_direct_head_vs_production_lookup_scaled_error_max": 1e-12
+  },
+  "diagnostics": [
+    "record original state-roundtrip FD metric beside repaired head-coordinate FD metric",
+    "record worst absolute derivative differences",
+    "record which endpoint and derivative magnitude controls any failure"
+  ],
+  "exit_rule": {
+    "pass": "Classify original J1A failure as finite-difference oracle roundoff amplification, qualify the real C1R face derivative on strict table-cell interiors, and permit J1B same-factorization whole-column tangent work.",
+    "fail": "Keep J1B closed and classify the remaining cause as derivative representation/discrete algebra/interpolation semantics rather than oracle roundoff alone."
+  },
+  "scope_guards": [
+    "No table retuning.",
+    "No FD-size tuning.",
+    "No Class-B C2B work.",
+    "No saturation, heterogeneous, groundwater or MODFLOW claim.",
+    "No production admission."
+  ],
+  "relevant_invariants": [5, 7, 11, 14, 15, 20, 23, 25, 30]
+}
