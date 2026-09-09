@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2C_R2_GROUPED_DELTA_K_EQ18_INDEPENDENT_HYDROLOGIC_RELEVANCE_QUALIFICATION",
+  "contract": "F-FWC01_GATE_B2C_R2_GROUPED_DELTA_K_EQ18_HYDROLOGIC_RELEVANCE_PRECOMMIT.json",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34388930640,
+    "head": "749a21b619865dc5e0110071d52f17ffa9fa72e4",
+    "conclusion": "success",
+    "artifact_id": 10118817701,
+    "artifact_digest": "sha256:d362e970b4c2f08e1605d8017076daceb78eeca1727fa9c012307757bfd60ec0",
+    "full_row_artifact_only": true,
+    "reason_full_rows_not_committed": "The full executable JSON is approximately 1.55 MB; this canonical result persists the frozen aggregate evidence and leaves all 1728 rows in the immutable workflow artifact."
+  },
+  "candidate": "GROUPED_BINARY64_DELTA_THETA_AND_DELTA_K_EQ18",
+  "reference": "DECIMAL80_SAME_ROUNDED_BINARY64_ENDPOINTS",
+  "case_count": 1728,
+  "materials": ["B01","B12","O13","O14"],
+  "theta_bin_counts": [16,64,200],
+  "grouped_delta_K": {
+    "max_normalized_forward_error": 2.99091229740473e-16,
+    "cases_exceeding_forward_error_limit": 0,
+    "max_abs_front_displacement_error_cm": 7.588438553104934e-12,
+    "front_effect_threshold_exceedance_count": 0,
+    "max_abs_equivalent_water_depth_error_cm": 2.4498778455558557e-14,
+    "water_effect_threshold_exceedance_count": 0,
+    "persistent_extra_state_bytes": 0
+  },
+  "direct_association_realistic_case_diagnostic": {
+    "max_normalized_forward_error": 1.1329311383878334e-15,
+    "cases_exceeding_forward_error_limit": 0,
+    "interpretation": "The realistic MvG-bin subset did not reproduce the synthetic B2C-R1 conditioning failures. This does not reverse the B2C-R1 rejection: grouped delta-K remains selected because it is at least as accurate here and removes the known cancellation hazard without persistent state."
+  },
+  "nonfinite_count": 0,
+  "negative_velocity_count": 0,
+  "hydrologic_interpretation": [
+    "The selected grouped representation is numerically stable on the frozen real-MvG bin set.",
+    "The representation error is many orders below the frozen hydrologic front-displacement and equivalent-water-depth thresholds.",
+    "No further precision tuning of Eq. 18 association is justified by this evidence.",
+    "Mass conservation remains a separate hard gate for actual front advance and is not inferred from this algebra qualification."
+  ],
+  "pass": true,
+  "decision": "QUALIFIED_GROUPED_DELTA_K_EQ18_NUMERICAL_REPRESENTATION_READY_FOR_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_GATE",
+  "hard_nonclaims": [
+    "No dry-bin creation or rainfall allocation qualification.",
+    "No G_eff closure qualification.",
+    "No front collision or merge qualification.",
+    "No groundwater interaction qualification.",
+    "No long-run hydraulic accuracy qualification."
+  ],
+  "next_action": "B2D_RESTRICTED_EXISTING_INFILTRATION_FRONT_ADVANCE_MASS_AND_HYDROLOGIC_TRAJECTORY_GATE"
+}
