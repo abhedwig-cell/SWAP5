@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F_R0_PIECEWISE_TRANSITION_ROUTE_CHARACTERIZATION",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "production_implementation": false,
+  "prerequisites": [
+    "QUALIFIED_REAL_C1R_HYDRAULIC_RESPONSE_TANGENT_READY_FOR_PHYSICAL_ROSS_COLUMN_PROTOTYPE",
+    "F_TIMESTEP_SMOOTH_GATE_FAIL_PIECEWISE_SEAM_POLICY_REQUIRED"
+  ],
+  "purpose": "Localize every table-cell transition in the unchanged initial Gate F candidate and determine whether the observed seam cases are compatible with an explicit one-sided piecewise transition route rather than timestep retuning or derivative averaging.",
+  "frozen_candidate": {
+    "source": "run_ross01_gate_f_timestep_convergence.py at 0c2269a066245800a4913905f2299607451d2584",
+    "sigma": 0.5,
+    "horizon_day": 0.0016,
+    "step_counts": [2,4,8,16],
+    "dt_days": [0.0008,0.0004,0.0002,0.0001],
+    "hydraulic_table": "unchanged qualified C1R N241 float32 bilinear log-mobility",
+    "jacobian_policy": "always assembled from the strict interpolation cells occupied by the accepted start state; never averaged across a node",
+    "candidate_algebra_changes": 0
+  },
+  "scope": {
+    "material": "O14",
+    "cases": [
+      {"profile":"wet_gradient","n_cells":4,"source_sink_pattern":"zero"},
+      {"profile":"wet_gradient","n_cells":4,"source_sink_pattern":"mixed_local_source_and_sink"}
+    ],
+    "reason": "These are the only cases that produced any table-cell transition in the frozen 108-case Gate F execution."
+  },
+  "required_localization": [
+    "accepted step index and start/end time",
+    "state component index",
+    "start and end pressure head",
+    "start and end N241 cell index",
+    "signed cell-index displacement",
+    "exact crossed node index and node pressure head when displacement magnitude is one",
+    "whether multiple state components cross in one trial",
+    "whether any component crosses more than one node in one trial",
+    "mass, domain, envelope and nonfinite diagnostics for the crossing trial"
+  ],
+  "route_hypothesis": {
+    "name": "EXPLICIT_ONE_SIDED_START_CELL_TRANSITION_ROUTE",
+    "meaning": "A trial that starts in a qualified strict interpolation cell may finish in the adjacent cell while using only the qualified one-sided start-cell derivative for that trial. The transition is an explicit runtime branch, not a smooth tangent claim. The next accepted step reassembles from the new cell.",
+    "no_cross_node_derivative": true,
+    "no_derivative_averaging": true,
+    "no_flux_table_retuning": true,
+    "no_sigma_or_dt_retuning": true,
+    "mass_ledger_unchanged": true
+  },
+  "predeclared_admissibility_signals": {
+    "adjacent_cell_only_per_transitioning_component": true,
+    "finite_candidate_state": true,
+    "candidate_remains_inside_MvG_domain": true,
+    "candidate_remains_inside_C1R_head_envelope": true,
+    "hard_mass_gate_remains_1e-12_cm": true,
+    "temporal_accuracy_is_not_rejudged_or_relaxed": "use the already frozen Gate F thresholds and evidence"
+  },
+  "fail_closed_conditions": [
+    "any component jumps over more than one table node in one trial",
+    "nonfinite state or flux",
+    "MvG domain failure",
+    "C1R head-envelope failure",
+    "mass residual above the frozen Gate F hard threshold",
+    "evidence that a cross-node derivative was averaged or invented"
+  ],
+  "explicit_nonclaims": [
+    "R0 does not yet qualify a production seam route.",
+    "R0 does not change the original Gate F FAIL into PASS.",
+    "R0 does not qualify saturation, heterogeneity, groundwater, H_ENPR or KSATEXM.",
+    "R0 does not select a smaller timestep after seeing O14."
+  ],
+  "exit": {
+    "compatible": "PIECEWISE_ADJACENT_CELL_ROUTE_CHARACTERIZED_READY_FOR_F_R1_POLICY_PRECOMMIT",
+    "incompatible": "PIECEWISE_ROUTE_NOT_ADMISSIBLE_USE_EVENT_SPLIT_OR_FALLBACK_RESEARCH"
+  },
+  "relevant_invariants": [5,7,8,9,13,14,15,23,24,25,26,30]
+}
