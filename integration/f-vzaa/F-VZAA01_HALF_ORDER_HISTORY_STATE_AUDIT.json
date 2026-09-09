@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "audit": "HALF_ORDER_DERIVATIVE_HISTORY_STATE_AND_RUNTIME",
+  "source": {
+    "citation": "Sadeghi M et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673:135467",
+    "doi": "10.1016/j.jhydrol.2026.135467",
+    "relevant_equations": [5,6]
+  },
+  "source_bound_findings": {
+    "history_quantity": "The VZAA flux relation uses H, a half-order time derivative of soil moisture.",
+    "published_discrete_evaluation": "Equation 5 evaluates H from the soil-moisture history from the initial time to the current time by a weighted sum over all prior time intervals.",
+    "history_length_symbol": "N is defined as the number of timesteps from the initial time to the current time.",
+    "flow_direction_switch": "Equation 6 switches the correction factor between c_w=0.5 for H<=0 and c_d=2 for H>0 in the presented implementation.",
+    "authors_future_work": "The discussion explicitly identifies efficient approximations of the half-order derivative that reduce dependence on long moisture histories as future work."
+  },
+  "direct_published_algorithm_cost": {
+    "persistent_history_if_stored_literally": "O(N_elapsed_steps) soil-moisture history per required layer/history signal",
+    "work_per_half_derivative_evaluation_if_summed_literally": "O(N_elapsed_steps)",
+    "total_simulation_work_implication": "can grow superlinearly with number of elapsed timesteps if the full history sum is recomputed repeatedly",
+    "bounded_cost_proven": false,
+    "compact_persistent_state_proven": false
+  },
+  "SWAP5_invariant_assessment": {
+    "invariant_4_compact_persistent_state": "FAILS_FOR_LITERAL_PUBLISHED_HISTORY_EVALUATION_ON_ARBITRARILY_LONG_RUNS",
+    "invariant_8_cheap_recomputation": "PROBLEMATIC_WITH_LONG_HISTORY_UNLESS_HISTORY_STATE_IS_EXPLICITLY_CHECKPOINTED_OR_RECONSTRUCTED",
+    "invariant_9_generic_time": "HISTORY_QUADRATURE_MUST_BE_REDERIVED_OR_QUALIFIED_FOR_NONUNIFORM_GENERIC_TIMESTEPS",
+    "invariant_16_MultiSWAP": "UNBOUNDED_HISTORY_PER_COLUMN_IS_NOT_ADMISSIBLE",
+    "invariant_24_predictable_runtime": "FAILS_FOR_LITERAL_FULL_HISTORY_SUM_WITH_UNBOUNDED_ELAPSED_STEP_COUNT",
+    "invariant_27_optional_functionality_scales_with_use": "HISTORY_COST_MUST_NOT ACCUMULATE WITHOUT A HARD BOUND"
+  },
+  "qualification_consequence": {
+    "published_VZAA_direct_production_admission": false,
+    "independent_of_mass_and_bottom_boundary_blockers": true,
+    "required_before_any_VZAA_derived_production_candidate": "replace the unbounded history evaluation by a scientifically qualified bounded-memory/bounded-work representation of the half-order derivative, or remove/rederive that term with independent evidence",
+    "silent_history_truncation_allowed": false,
+    "arbitrary_fixed_window_allowed": false,
+    "changing_correction_factor_or_history_semantics_is_physics_change": true
+  },
+  "research_options_not_yet_admitted": [
+    "bounded recursive or sum-of-exponentials approximation to the fractional-memory kernel",
+    "fixed-size state-space/rational approximation of the half-order derivative",
+    "analytical history compression with explicit error bound",
+    "alternative VZAA-derived local flux relation that no longer depends on full temporal history"
+  ],
+  "required_evidence_for_history_compression": [
+    "error against literal published history evaluation over wetting, drying and repeated reversal sequences",
+    "stability under nonuniform generic timesteps",
+    "bounded persistent bytes per column",
+    "bounded operations per layer per accepted internal step",
+    "transaction-safe checkpoint and rollback of all memory state",
+    "effect on flow-direction switching through H and c",
+    "effect on mass and groundwater exchange against FullRichards"
+  ],
+  "decision": "PUBLISHED_VZAA_HAS_ADDITIONAL_UNBOUNDED_HISTORY_STATE_RUNTIME_BLOCKER_ALGORITHMIC_DONOR_ONLY_REINFORCED",
+  "production_implementation": false,
+  "status": "SOURCE_BOUND_BLOCKER_PERSISTED"
+}
