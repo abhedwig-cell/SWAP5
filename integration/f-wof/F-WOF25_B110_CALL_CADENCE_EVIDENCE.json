@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF25",
+  "title": "B1.10 standard-WOFOST call ordering, cadence and threshold evidence",
+  "scope": {
+    "sw_wofost": 1,
+    "zero_production_readiness": true,
+    "legacy_daily_oracle": "B1.10"
+  },
+  "source_provenance": {
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+  },
+  "daily_driver_order": [
+    {
+      "order": 1,
+      "phase": "day_start",
+      "source": "SWAP/swap.f90:362-408",
+      "events": [
+        "TimeControl(2)",
+        "daily Meteo(2)",
+        "croprotation(2)",
+        "daily interception preparation",
+        "WOFOST assimilation() exactly once when the WOFOST crop is emerged"
+      ]
+    },
+    {
+      "order": 2,
+      "phase": "soil_water_substeps",
+      "source": "SWAP/swap.f90:410-472",
+      "events": [
+        "integral(2) resets day aggregates at day start",
+        "Meteo(3) selects current-substep atmospheric rates",
+        "RootExtraction(2) computes current root uptake/reduction quantities",
+        "SoilWater trial/retry loop may reduce dt",
+        "SoilWater(3) publishes the accepted timestep state",
+        "integral(3) books accepted timestep contributions",
+        "TimeControl(3) advances time"
+      ],
+      "cardinality": "one or many accepted soil-water substeps inside the crop day"
+    },
+    {
+      "order": 3,
+      "phase": "day_end_crop_evolution",
+      "source": "SWAP/swap.f90:474-514 and SWAP/MOD_cropdevelopment.f90:1001-1014",
+      "events": [
+        "cropdevelopment(3) exactly once for the emerged crop",
+        "wofost(3) updates phenology and potential/actual WOFOST trajectories",
+        "cropfactor/interception are updated",
+        "root extension and root distribution are updated after WOFOST using same-day crop/process results"
+      ]
+    },
+    {
+      "order": 4,
+      "phase": "day_end_harvest_check",
+      "source": "SWAP/swap.f90:509-514 and SWAP/wofost.f90:398-410",
+      "events": [
+        "cropdevelopment(4) checks harvest/end after the day's growth update",
+        "standard WOFOST can end when updated DVS reaches DVSEND or when the calendar end condition is met"
+      ]
+    }
+  ],
+  "day_start_assimilation_semantics": {
+    "source": "SWAP/wofost.f90:1348-1466",
+    "updates_persistent_candidate_memory": [
+      "nofd=min(nofd+1,7)",
+      "shift atmin7 and insert current TMN"
+    ],
+    "computes_window_local_values": [
+      "TMNR running minimum-temperature mean",
+      "DAYL/DAYLP and other solar geometry",
+      "potential PGASS",
+      "actual PGASS"
+    ],
+    "optional_same_day_soil_coupling": "when oxygen physics is active, assimilation also publishes max_resp_factor/q10_root/c_mroot/f_senes used by oxygen-stress/root-uptake physics later in the same day",
+    "transaction_implication": "day-start preparation must be trial-local inside the parent crop window; nofd/atmin7 may not become committed merely because later soil substeps need read-only outputs"
+  },
+  "day_end_standard_WOFOST_order": {
+    "source": "SWAP/wofost.f90:345-396",
+    "steps": [
+      "update_dvs_rate",
+      "update potential WOFOST trajectory",
+      "derive RELTR from IQROT_DAY/IPTRA_DAY",
+      "update actual WOFOST trajectory",
+      "update vernalization state for IDSL=2",
+      "nutrient demand only on the excluded nutrient route"
+    ],
+    "actual_route_note": "potential shadow exists in the legacy call order but is explicitly outside F-WOF25 scope; its omission from a future actual-only structural candidate requires an actual-route oracle rather than hidden allocation of potential state"
+  },
+  "intrinsic_daily_call_semantics": {
+    "fixed_delt": {
+      "source": "SWAP/wofost.f90:8",
+      "value": 1.0,
+      "finding": "legacy WOFOST state updates are written around a fixed one-day DELT"
+    },
+    "leaf_cohort_creation": {
+      "source": "SWAP/wofost.f90:1892-1917",
+      "finding": "lvshft shifts the cohort arrays 'with one day', ages all retained cohorts by FYSDEL*DELT, inserts one new youngest cohort and increments ILV once per call",
+      "temporal_consequence": "two half-day calls are not structurally equivalent to one daily call because they create two cohorts and change cohort ordering/ages"
+    },
+    "leaf_death_and_age_threshold": {
+      "source": "SWAP/wofost.f90:1767-1793 and 1852-1884",
+      "finding": "leaf death is applied to ordered cohorts and cohorts older than SPAN are removed before the daily shift",
+      "temporal_consequence": "event splitting can alter threshold crossing and which cohort is removed"
+    },
+    "LAIEXP_threshold": {
+      "source": "SWAP/wofost.f90:1824-1844 and 1072-1074",
+      "finding": "GLAIEXP is recomputed only while LAIEXP<6, but LAIEXP is updated from R%GLAIEXP after every standard update",
+      "temporal_consequence": "legacy saved-rate memory exists after the threshold and arbitrary call splitting is not source-equivalent"
+    }
+  },
+  "phenology_and_lifecycle_thresholds": [
+    {
+      "event": "emergence",
+      "source": "SWAP/MOD_cropdevelopment.f90:314-340,375-425 and SWAP/wofost.f90:704-767",
+      "semantics": "crop lifecycle logic sets fl_start_cropemergence and cropdevelopment(2) initializes WOFOST state before day-start assimilation of the active crop",
+      "future_event_splitting": "requires an explicit lifecycle event; must not be inferred from an arbitrary solver substep"
+    },
+    {
+      "event": "anthesis",
+      "source": "SWAP/wofost.f90:921-926",
+      "semantics": "if DVS+dvr crosses 1 for the first time, fl_anthesis becomes true and dvr is truncated so the daily update lands exactly on DVS=1",
+      "future_event_splitting": "crossing logic is discrete and call-order dependent"
+    },
+    {
+      "event": "vernalization completion",
+      "source": "SWAP/wofost.f90:853-865 and 379-393",
+      "semantics": "completion can be forced at VERNDVS during rate calculation or set after the day's WOFOST update when VERN reaches VERNSAT",
+      "future_event_splitting": "the ordering means completion after VERN accumulation normally affects the next daily development-rate evaluation"
+    },
+    {
+      "event": "maturity/harvest",
+      "source": "SWAP/wofost.f90:398-410",
+      "semantics": "harvest/end is checked after the day-end growth update and can be triggered by the newly updated DVS reaching DVSEND",
+      "future_event_splitting": "must preserve event ordering relative to the final day's biomass/root update"
+    },
+    {
+      "event": "root-depth/root-distribution update",
+      "source": "SWAP/MOD_cropdevelopment.f90:1001-1014 and 1887-1919",
+      "semantics": "root extension follows WOFOST growth and consumes current-day GRRT plus IPTRA_DAY/IQROT_DAY/IALPWET_DAY as configured",
+      "future_event_splitting": "must not be called once per Richards substep merely because soil water substeps are subdaily"
+    }
+  ],
+  "rate_lifetime_findings": {
+    "event_local_within_one_crop_window": [
+      "DTSUM",
+      "DVR",
+      "DAYLP",
+      "PGASS",
+      "RELTR",
+      "FR/FL/FS/FO",
+      "GASS/MRES/DMI/ADMI",
+      "GRRT/GRLV/GRST/GRSO",
+      "DSLV/DALV/DRLV/DRST/DRRT",
+      "GWRT/GWST/GWSO",
+      "SLAT/FYSDEL"
+    ],
+    "source_bound_saved_rate_exceptions": [
+      {
+        "name": "VERNRATE",
+        "reason": "not reassigned after FL_VERNALISED is already true, yet VERN=VERN+VERNRATE continues to execute on IDSL=2"
+      },
+      {
+        "name": "GLAIEXP",
+        "reason": "not reassigned after LAIEXP>=6, yet LAIEXP=LAIEXP+GLAIEXP*DELT continues to execute"
+      }
+    ],
+    "diagnostic_saved_rate_only": [
+      {
+        "name": "GLA",
+        "reason": "can remain stale when LAIEXP>=6 but no scoped standard-state feedback after the GLai call was found; treat as diagnostic unless a downstream consumer proves otherwise"
+      }
+    ],
+    "decision": "G03 cannot claim that every legacy saved rate is event-local. Exact B1.10 continuation requires either narrowly scoped carryover memory for the two source-bound exceptions or an explicitly qualified theory/code discrepancy correction."
+  },
+  "cadence_decision": {
+    "soil_water_solver_step_equals_crop_step": false,
+    "crop_update_once_per_richards_substep": false,
+    "qualified_initial_crop_window": "one explicit B1.10-equivalent day",
+    "kernel_day_primitive_required": false,
+    "runtime_event_scheduler_owns_crop_event_timing": true,
+    "arbitrary_interval_split_equivalence": "NOT_ESTABLISHED_AND_SOURCE_EVIDENCE_SHOWS_NON_EQUIVALENCE_RISKS"
+  },
+  "gates": {
+    "WOF25_G03_rates_are_not_state": "PARTIAL_PASS_TWO_SOURCE_BOUND_SAVED_RATE_EXCEPTIONS_REQUIRE_RESOLUTION",
+    "WOF25_G08_soil_water_cadence": "PASS_SOURCE_BOUND",
+    "WOF25_G09_threshold_event_semantics": "PASS_SOURCE_BOUND_FOR_ONE_DAY_READINESS; ARBITRARY_SPLITTING_NOT_QUALIFIED"
+  }
+}
