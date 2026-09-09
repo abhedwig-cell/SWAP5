@@ -164,12 +164,14 @@ contains
     ! Split path retains revision-zero provenance intentionally so it can be
     ! tested after the process-boundary carrier has been restored.
     call split%capture_checkpoint(stale_checkpoint, ok)
-    call expect_true(ok .and. stale_checkpoint%origin_revision() == 0_int64, &
-         'pre-restart checkpoint captured', failures)
+    call expect_true(ok, 'pre-restart checkpoint captured', failures)
+    call expect_true(stale_checkpoint%origin_revision() == 0_int64, &
+         'pre-restart checkpoint origin revision', failures)
     call advance_once(kernel_s, split, parameters_s, forcing_s, config_s, t0, t1, &
          stale_candidate, rejected_result, stale_diag)
-    call expect_true(stale_candidate%ready() .and. stale_candidate%origin_revision() == 0_int64, &
-         'pre-restart stale candidate captured', failures)
+    call expect_true(stale_candidate%ready(), 'pre-restart stale candidate captured', failures)
+    call expect_true(stale_candidate%origin_revision() == 0_int64, &
+         'pre-restart stale candidate origin revision', failures)
     call advance_once(kernel_s, split, parameters_s, forcing_s, config_s, t0, t1, &
          split_c1, result_s1, diag_s1)
     call expect_true(result_s1%status == CANONICAL_STATUS_COMPLETED, 'split T0-T1 completes', failures)
@@ -240,7 +242,8 @@ contains
     write(*,'(A)') 'FKT12_PRE_RESTART_STALE_PROVENANCE_REMAINS_REJECTED=PASS'
 
     call restored%capture_checkpoint(restored_checkpoint, ok)
-    call expect_true(ok .and. restored_checkpoint%origin_revision() == 1_int64, &
+    call expect_true(ok, 'next checkpoint captured after restore', failures)
+    call expect_true(restored_checkpoint%origin_revision() == 1_int64, &
          'next checkpoint starts at restored revision', failures)
     call restored_checkpoint%current_time(time_value, ok)
     call expect_true(ok, 'next checkpoint restored time available', failures)
@@ -307,7 +310,8 @@ contains
 
     call new_committed(source, 12002_int64, 2.0_real64, 20.0_real64)
     call export_kernel_committed_state(source, layout, valid_snapshot, ok, status)
-    call expect_true(ok .and. valid_snapshot%ready(), 'valid carrier fixture', failures)
+    call expect_true(ok, 'valid carrier export status', failures)
+    call expect_true(valid_snapshot%ready(), 'valid carrier fixture ready', failures)
 
     call restore_kernel_committed_state(invalid_snapshot, layout, empty_target, ok, status)
     call expect_true(.not. ok .and. status == KERNEL_PERSISTENCE_INVALID_CARRIER, 'missing carrier fails closed', failures)
