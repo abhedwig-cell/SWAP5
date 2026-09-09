@@ -1,11 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workunit": "F-CI19",
   "title": "Qualified Candidate Convergence, Compatibility & Canonical Admission",
-  "status": "QUALIFIED_RESTRICTED_GOVERNED_POSTIMAGE_READY_FOR_CANONICAL_FAST_FORWARD",
-  "phase": "CANONICAL_POSTIMAGE_MATERIALIZED_TESTED_AND_QUALIFIED",
+  "status": "QUALIFIED_RESTRICTED_CANONICAL_SOURCE_LINEAGE_ADVANCED",
+  "phase": "CLOSED_CANONICAL_PROMOTION_COMPLETE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_parent": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+  "previous_canonical_head": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
   "candidate_a": {
     "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
     "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
@@ -35,7 +35,19 @@
     "canonical_postimage_tested_head": "68ad047c17334b9b5aa4593a0c831111e331b376",
     "canonical_postimage_artifact": 10092198457,
     "canonical_postimage_artifact_sha256": "ea42b3d8985d0fd23dc8f5a50051d1bca1f62221d1200325f337d1d2397faf07",
-    "canonical_postimage_terminal_marker": "FCI19_CANONICAL_POSTIMAGE_GATE PASS_RESTRICTED_GOVERNED_CANDIDATE"
+    "canonical_postimage_terminal_marker": "FCI19_CANONICAL_POSTIMAGE_GATE PASS_RESTRICTED_GOVERNED_CANDIDATE",
+    "canonical_promotion_evidence_commit": "b0246b77a13593bc03cddb113dacbf2aa3e3ff8d"
+  },
+  "canonical_promotion": {
+    "qualified_closeout_head_promoted": "0beb324ccda1912ddfb707a0700670a3395c0444",
+    "method": "FAST_FORWARD_REF_UPDATE",
+    "force": false,
+    "pre_promotion_head_reverified": true,
+    "postimage_line_descendant_of_previous_canonical": true,
+    "ahead_by_at_promotion": 12,
+    "behind_by_at_promotion": 0,
+    "claim_scope": "RESTRICTED_ONLY",
+    "canonical_ref_advanced": true
   },
   "frontier_reconciliation": {
     "F_SI22": "EVIDENCE_ONLY_NO_PRODUCTION_DELTA",
@@ -59,14 +71,6 @@
     "irrigation process admission does not imply runtime composition",
     "LayeredMFP and VZAA are not production solver admissions"
   ],
-  "canonical_promotion": {
-    "current_canonical_head_verified": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
-    "postimage_line_is_descendant": true,
-    "fast_forward_required": true,
-    "force_update_allowed": false,
-    "canonical_ref_move_allowed_now": true,
-    "claim_scope": "RESTRICTED_ONLY"
-  },
   "state": {
     "implemented": true,
     "persisted": true,
@@ -74,7 +78,8 @@
     "source_lineage_qualified": true,
     "canonical_postimage_materialized": true,
     "canonical_postimage_qualified": true,
-    "canonical_ref_advanced": false
+    "canonical_ref_advanced": true,
+    "closed": true
   },
-  "next": "Fast-forward integration/f-ci-canonical to this qualified closeout line without force, then record the final canonical head and keep all hard holds explicit."
+  "next": "Treat the resulting integration/f-ci-canonical head as the authoritative restricted canonical source lineage. Future work must compose onto it explicitly and may not infer release of any hard-held scope."
 }
