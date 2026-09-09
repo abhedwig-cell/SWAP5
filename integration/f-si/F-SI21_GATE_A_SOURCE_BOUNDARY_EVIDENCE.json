@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI21",
+  "gate": "A_SOURCE_AND_OWNERSHIP_BOUNDARY",
+  "decision_contract_commit": "dc58c50fa75c0c54004a321ed518cb407c63c6e5",
+  "source_ref": "work/f-si21-richards-temporal-runtime-policy",
+  "source_files": {
+    "src/kernel/mod_kernel_transactions.f90": "af42c7d51ef545e20c76d3000f1ed1493690d68e",
+    "src/runtime/mod_canonical_contracts.f90": "0c2b15fc45011c580384cf6a618e7b378fdccf0a",
+    "src/runtime/mod_canonical_interval_runtime.f90": "f2cae79d533343db818c11e0b61b605ac5f6739d",
+    "src/transaction/mod_transaction_reference.f90": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f",
+    "src/solver/mod_soil_water_solver_contract.f90": "4271372085d800fd5da969a2ed073b00422d79c6",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "6f39d60a87c1987ae95d7faec2f55f865af90a08",
+    "integration/f-ci/F-CI14_TEMPORAL_POLICY_PROFILE.json": "068efba22b2e639a27cbb44576205b3d48cb0ead",
+    "integration/f-ci/F-CI14_STATUS.json": "54fe50931863d7c74ceb572bcab6db51924b79a5",
+    "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json": "db4ddfc681d1bec65041a8dff79b835d4f416fb5"
+  },
+  "observed_current_semantics": {
+    "transaction_model_temporal_callback_inputs": ["full_state", "half_state"],
+    "transaction_trial_outcome_contains_temporal_certificate": false,
+    "soil_water_solve_result_contains_temporal_certificate": false,
+    "execute_reference_interval_runs_full_trial": true,
+    "execute_reference_interval_runs_two_half_trial": true,
+    "execute_reference_interval_temporal_acceptance": "model%temporal_error(full_state, half_state) <= policy%temporal_tolerance",
+    "execute_reference_interval_retry_on_temporal_rejection": true,
+    "execute_reference_interval_retry_scale": "policy%retry_scale",
+    "execute_reference_interval_accepted_route": "TX_ROUTE_TWO_HALF",
+    "canonical_runtime_loops_accepted_subintervals_until_requested_t1": true,
+    "kernel_only_materializes_candidate_after_complete_requested_interval": true
+  },
+  "gate_A_findings": {
+    "richards_can_own_internal_temporal_accuracy_work_without_persistent_state": true,
+    "natural_fsi_carrier_is_soil_water_solve_result": true,
+    "existing_fsi_result_carrier_needs_extension_for_certificate": true,
+    "existing_transaction_temporal_callback_is_insufficient_for_clean_single_trial_certificate_consumption": true,
+    "storing_certificate_or_estimator_scratch_in_physical_column_state_is_rejected": true,
+    "using_backend_hidden_mutable_state_to_smuggle_certificate_into_temporal_error_is_rejected": true,
+    "setting_outer_temporal_tolerance_to_huge_or_other_bypass_value_is_rejected": true,
+    "reusing_solver_convergence_or_mass_tolerance_as_temporal_limit_is_rejected": true,
+    "generic_transaction_seam_change_required_for_clean_model_owned_certificate_mode": true,
+    "fsi21_may_define_required_semantics_but_must_not_implement_fkt_owned_change": true
+  },
+  "required_generic_runtime_semantics": {
+    "new_capability_is_not_richards_specific": true,
+    "conceptual_mode": "MODEL_OWNED_TEMPORAL_CERTIFICATE",
+    "trial_contract": {
+      "each_attempt_starts_from_correct_transaction_checkpoint": true,
+      "model_advance_returns_solver_ok": true,
+      "model_advance_may_return_temporal_certificate": true,
+      "certificate_must_be_attempt_local_not_persistent_state": true,
+      "certificate_unavailable_in_certificate_mode": "FAIL_CLOSED",
+      "mass_accounting_complete_required": true,
+      "hard_mass_residual_gate_remains_separate": true
+    },
+    "transaction_behavior_in_certificate_mode": {
+      "one_candidate_branch_per_attempt_is_architecturally_sufficient": true,
+      "temporal_rejection_may_shorten_attempt_dt": true,
+      "accepted_shorter_attempt_commits_only_to_private_interval_working_state": true,
+      "canonical_runtime_continues_from_that_private accepted state until external t1": true,
+      "external_kernel_candidate_exists_only_after_full requested interval": true,
+      "committed caller state_remains_unchanged_until_explicit_kernel_commit": true
+    },
+    "diagnostics_required": [
+      "temporal_certificate_available",
+      "temporal_certificate_accepted",
+      "temporal_indicator",
+      "temporal_rejections",
+      "accepted_dt",
+      "model_internal_substeps_or_refinements",
+      "nonlinear_iterations",
+      "mass_residual"
+    ]
+  },
+  "why_this_differs_from_rejected_fvq28_semantics": {
+    "rejected": "Use D(full,two-half) on an outer transaction attempt as an assumed proxy for remaining endpoint error, then infer safety from retry halving.",
+    "proposed_architecture": "The model certifies the accuracy of the actual candidate produced for that attempt under a separately qualified model-owned estimator. Outer retry only responds to certificate failure; it does not create the scientific error estimate.",
+    "numeric_estimator_selected_here": false,
+    "numeric_limits_selected_here": false
+  },
+  "gate_A": "PASS_REQUIRES_FKT_GENERIC_CERTIFICATE_CONSUMPTION_SEAM_BEFORE_PRODUCTION_PATH",
+  "production_source_modified": false,
+  "production_admitted": false,
+  "next_owner": "F-KT"
+}
