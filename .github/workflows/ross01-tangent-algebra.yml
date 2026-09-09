@@ -1,0 +1,31 @@
+name: F-ROSS01 Response Tangent Algebra
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - experiments/ross/run_ross01_tangent_algebra.py
+      - .github/workflows/ross01-tangent-algebra.yml
+      - integration/f-ross/F-ROSS01_TANGENT_ALGEBRA_ACCEPTANCE.json
+      - integration/f-ross/F-ROSS01_TANGENT_ALGEBRA_METRIC_CONTRACT.json
+  workflow_dispatch:
+
+jobs:
+  tangent-algebra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python --version
+      - name: Run response tangent algebra gate
+        run: |
+          mkdir -p evidence/ross01
+          python experiments/ross/run_ross01_tangent_algebra.py evidence/ross01/tangent-algebra.json
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-response-tangent-algebra
+          path: evidence/ross01/tangent-algebra.json
+          if-no-files-found: error
