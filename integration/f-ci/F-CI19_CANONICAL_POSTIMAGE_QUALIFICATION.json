@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "qualification_branch": "qualification/f-ci19-canonical-postimage",
+  "status": "PERSISTED_BEFORE_TESTING",
+  "governed_postimage": {
+    "commit": "ef3e3dc3ba9722a942f7296b089bccdd05d55b96",
+    "tree": "884fcc70d04e58e4a7a87c0c67b67d3bacbb56a7",
+    "governance_parent": "2c0a627906cf718452236dab27d3a92082329b1c",
+    "candidate_a_source_commit": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "expected_src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "expected_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "qualification_rules": [
+    "governed postimage differs from its CI19 governance parent only under src and reference",
+    "src tree is exactly Candidate A src tree",
+    "reference tree is exactly Candidate A reference tree",
+    "qualification commits do not modify src or reference",
+    "reexecute the exact previously successful Candidate A composition-preservation harness",
+    "reexecute the exact previously successful source-lineage reachability harness",
+    "preserve all F-CI19 hard scope holds",
+    "do not move integration/f-ci-canonical in this qualification work"
+  ],
+  "source_or_reference_modified_by_qualification": false,
+  "canonical_ref_advanced": false,
+  "outcome": "NOT_TESTED"
+}
