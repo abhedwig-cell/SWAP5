@@ -31,4 +31,4 @@ jobs:
       - name: Run F-WOF38 atomic crop transaction gate
         run: bash tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
 
-# Retriggered after explicit evaluation-order repair in the crop transaction adapter.
+# Retriggered after making strict test assertions evaluation-order safe.
