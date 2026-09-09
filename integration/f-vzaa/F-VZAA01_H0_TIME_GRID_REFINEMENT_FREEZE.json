@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "gate": "H0_LITERAL_EQ5_REFERENCE",
+  "purpose": "Freeze the exact nonuniform refinement families before H0 implementation and execution.",
+  "final_time": 100.0,
+  "step_counts": [32, 64, 128, 256, 512, 1024],
+  "uniform": {
+    "definition": "dt_i = T/N"
+  },
+  "alternating": {
+    "unnormalized_dt_factor": "0.5 for even zero-based interval index, 1.5 for odd zero-based interval index",
+    "normalization": "multiply all factors by T/sum(factors) so t_N=T exactly",
+    "reason": "preserves a persistent factor-three local timestep contrast while refining the whole grid"
+  },
+  "geometric": {
+    "ratio_formula": "r_N = 4^(1/(N-1))",
+    "unnormalized_dt": "dt_i = r_N^i for zero-based interval index i",
+    "normalization": "multiply all dt_i by T/sum(dt_i) so t_N=T exactly",
+    "maximum_adjacent_step_ratio_at_coarsest_N32": 1.0457341482224871,
+    "required_adjacent_step_ratio_upper_bound": 1.08,
+    "max_over_min_dt_ratio": 4.0,
+    "refinement_property": "r_N tends to 1 as N increases, so the largest interval also tends to zero rather than preserving a coarse tail interval"
+  },
+  "hard_rules": [
+    "No grid family or ratio formula may change after first H0 execution.",
+    "The source-faithful H0 operator remains the precommitted midpoint Eq. 5 sum; this file changes only the deterministic test-grid construction.",
+    "Analytic continuous half-order histories are comparison references and must not replace the published discrete midpoint sum."
+  ],
+  "status": "PRECOMMITTED_BEFORE_H0_IMPLEMENTATION_OR_EXECUTION"
+}
