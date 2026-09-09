@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "F_TIMESTEP_CONVERGENCE_SMOOTH_C1R",
+  "status": "FAIL_PRESERVED",
+  "production_implementation": false,
+  "run": 34362472467,
+  "head": "0c2269a066245800a4913905f2299607451d2584",
+  "contract": "F-ROSS01_GATE_F_TIMESTEP_CONVERGENCE_CONTRACT.json",
+  "material_count": 6,
+  "material_pass_count": 5,
+  "total_base_cases": 108,
+  "material_results": [
+    {"material":"B01","pass":true,"candidate_table_cell_transition_count":0,"max_reference_coarse_vs_fine_theta_span_normalized":1.3622568978011415e-15,"max_finest_candidate_theta_span_normalized_error":1.737742577826559e-10,"max_finest_candidate_state_change_relative_error":1.7420052534473345e-07,"minimum_observed_order_in_informative_cases":1.999138946533146,"median_observed_order_in_informative_cases":1.9998456153915354,"max_abs_step_mass_residual_cm":6.674619624363887e-19,"max_abs_horizon_mass_residual_cm":1.2409970978022821e-14},
+    {"material":"B12","pass":true,"candidate_table_cell_transition_count":0,"max_reference_coarse_vs_fine_theta_span_normalized":6.835441104841954e-15,"max_finest_candidate_theta_span_normalized_error":3.417720552420977e-15,"max_finest_candidate_state_change_relative_error":4.418166613061419e-08,"minimum_observed_order_in_informative_cases":null,"median_observed_order_in_informative_cases":null,"max_abs_step_mass_residual_cm":5.624828165360588e-21,"max_abs_horizon_mass_residual_cm":3.8049181067754053e-14},
+    {"material":"O01","pass":true,"candidate_table_cell_transition_count":0,"max_reference_coarse_vs_fine_theta_span_normalized":1.5599724384709674e-15,"max_finest_candidate_theta_span_normalized_error":6.802197419055114e-10,"max_finest_candidate_state_change_relative_error":3.8226105707839084e-07,"minimum_observed_order_in_informative_cases":1.9992792930217353,"median_observed_order_in_informative_cases":1.9994562805302665,"max_abs_step_mass_residual_cm":9.723938234479368e-19,"max_abs_horizon_mass_residual_cm":1.3733426288548012e-14},
+    {"material":"O05","pass":true,"candidate_table_cell_transition_count":0,"max_reference_coarse_vs_fine_theta_span_normalized":8.495711863639511e-16,"max_finest_candidate_theta_span_normalized_error":8.497241091774965e-12,"max_finest_candidate_state_change_relative_error":3.3982847454558036e-08,"minimum_observed_order_in_informative_cases":null,"median_observed_order_in_informative_cases":null,"max_abs_step_mass_residual_cm":4.3029273720518457e-19,"max_abs_horizon_mass_residual_cm":3.321914141332649e-15},
+    {"material":"O14","pass":false,"failed_metrics":["candidate_table_cell_transition_count"],"candidate_table_cell_transition_count":8,"max_reference_coarse_vs_fine_theta_span_normalized":5.811724474922376e-13,"max_finest_candidate_theta_span_normalized_error":4.3105881456334905e-09,"max_finest_candidate_state_change_relative_error":6.644015230360982e-06,"minimum_observed_order_in_informative_cases":1.9995042690639488,"median_observed_order_in_informative_cases":1.9998704097891853,"max_abs_step_mass_residual_cm":1.1130012926921506e-18,"max_abs_horizon_mass_residual_cm":4.436586206513259e-14},
+    {"material":"O18","pass":true,"candidate_table_cell_transition_count":0,"max_reference_coarse_vs_fine_theta_span_normalized":1.7521291758802566e-15,"max_finest_candidate_theta_span_normalized_error":1.0011194982912494e-09,"max_finest_candidate_state_change_relative_error":1.0948397847368848e-06,"minimum_observed_order_in_informative_cases":1.99913852059764,"median_observed_order_in_informative_cases":1.999859722464569,"max_abs_step_mass_residual_cm":4.70950318673391e-19,"max_abs_horizon_mass_residual_cm":6.703189029235238e-14}
+  ],
+  "failure_localization": {
+    "material": "O14",
+    "affected_base_cases": [
+      {"profile":"wet_gradient","n_cells":4,"source_sink_pattern":"zero","transition_count_by_candidate_step_count":{"2":1,"4":1,"8":1,"16":1}},
+      {"profile":"wet_gradient","n_cells":4,"source_sink_pattern":"mixed_local_source_and_sink","transition_count_by_candidate_step_count":{"2":1,"4":1,"8":1,"16":1}}
+    ],
+    "unaffected_O14_base_cases": 16,
+    "interpretation": "The same physical horizon crosses a C1R interpolation seam even at the finest precommitted dt=0.0001 day. This is not removable in principle by merely choosing a smaller fixed timestep; a piecewise seam-event or explicit branch-routing policy is required."
+  },
+  "positive_evidence_retained": {
+    "temporal_accuracy": "all frozen numerical error thresholds pass for O14 despite the seam transitions",
+    "reference_self_check": "passes",
+    "refinement_monotonicity": "passes",
+    "observed_order": "approximately second order in all informative O14 cases",
+    "mass_conservation": "passes hard step and horizon gates",
+    "constitutive_domain": "passes",
+    "head_envelope": "passes",
+    "nonfinite_count": 0,
+    "shared_table_bitwise_unchanged": true,
+    "initial_state_bitwise_unchanged_outside_trial_sequences": true
+  },
+  "failure_class": "PIECEWISE_INTERPOLATION_SEAM_TRANSITION_ONLY",
+  "not_classified_as": [
+    "temporal_accuracy_failure",
+    "reference_oracle_failure",
+    "convergence_order_failure",
+    "mass_failure",
+    "constitutive_domain_failure",
+    "head_envelope_failure"
+  ],
+  "policy_consequence": "Do not retune sigma, remove O14 cases, shrink the frozen timestep set, relax the seam gate or average derivatives across a table node. Design a separately precommitted transactional seam-crossing policy consistent with the qualified J1C piecewise derivative semantics.",
+  "pass": false,
+  "decision": "F_TIMESTEP_SMOOTH_GATE_FAIL_PIECEWISE_SEAM_POLICY_REQUIRED"
+}
