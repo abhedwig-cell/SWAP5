@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-FWC",
   "work_unit": "F-FWC01",
   "search_date": "2026-09-09",
@@ -10,21 +10,31 @@
     "article_doi": "10.1002/2015WR017126",
     "resource_type": "dataset/source-code package",
     "archive_name": "M2WC70.zip",
+    "download_locator": "https://pathfinder.arcc.uwyo.edu/publications/Computational_Hydrology/M2WC70/M2WC70.zip",
+    "download_locator_verified_on_official_record": true,
     "reported_size": "230 MB",
     "reported_language": "C",
     "reported_example": "loam profile with groundwater table at 1 m under eight months of rainfall and evapotranspiration forcing from Panama",
     "rights_statement": "DataCorral record states the associated work was dedicated to the public domain under CC0 to the extent allowed by law",
-    "download_locator_found": true,
     "bytes_archived_into_SWAP5": false,
+    "archive_obtained_in_current_execution_environment": false,
+    "archive_obtain_failure_class": "EXECUTION_ENVIRONMENT_EXTERNAL_BINARY_FETCH_UNAVAILABLE",
     "checksum_captured": false,
+    "file_inventory_captured": false,
     "code_reproduced": false
   },
-  "provenance_rule": "Do not vendor the 230 MB research archive into SWAP5. First capture checksum, file inventory, license text and minimal reproducibility evidence in a controlled external-source manifest. Any production implementation should be independently structured around the SWAP5 soil-water contract even when source inspection is used for algorithm reconstruction.",
+  "provenance_rule": "Do not vendor the 230 MB research archive into SWAP5. When retrieval becomes available, first capture checksum, file inventory, license text and minimal reproducibility evidence in a controlled external-source manifest. Until then every executable FWC prototype is labeled INDEPENDENT_RECONSTRUCTION and may not make official-code identity or behavior claims.",
   "important_source_lineage_note": {
     "original_2008_paper_has_correction": true,
     "original_doi": "10.1029/2008WR006815",
     "correction_doi": "10.1029/2008WR007455",
     "rule": "Equation-level reconstruction must reconcile the correction before reproducing the 2008 algorithm."
   },
-  "status": "OFFICIAL_PUBLIC_RESEARCH_CODE_ARTIFACT_IDENTIFIED_PROVENANCE_CAPTURE_AND_REPRODUCTION_STILL_OPEN"
+  "primary_source_topology_note": {
+    "source": "Ogden et al. 2015 Water Resources Research article text",
+    "finding": "The implementation lineage explicitly credits a linked-list methodology for falling slugs.",
+    "use_in_FWC01": "This supports a source-bound topology concern but does not substitute for inspection or checksum qualification of M2WC70 source code."
+  },
+  "current_executable_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "status": "OFFICIAL_PUBLIC_RESEARCH_CODE_LOCATOR_VERIFIED_ARCHIVE_NOT_OBTAINED_CHECKSUM_OPEN_INDEPENDENT_RECONSTRUCTION_REQUIRED"
 }
