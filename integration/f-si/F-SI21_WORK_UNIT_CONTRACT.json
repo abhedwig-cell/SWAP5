@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Nonstationary Prescribed-Head Temporal Estimator and Same-Endpoint Refinement Policy",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "base_commit": "631d80abf04915cc964b24144f3fde8ef937093f",
+  "trigger": {
+    "owner_work_unit": "F-SI20",
+    "owner_status": "BLOCKED_INDEPENDENT_QUALIFICATION_REJECTED_EXISTING_TRANSACTION_TEMPORAL_PROFILE",
+    "independent_qualification": "F-VQ28",
+    "fvq28_closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "fvq28_decision": "FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED_FOR_RAW_HEAD_DEFECT_PROFILE"
+  },
+  "objective": "Define and source-bound characterize the smallest alternative temporal estimator or refinement semantic that can control nonstationary prescribed-head Richards integration without treating outer retry shortening as equivalent to fixed-horizon refinement.",
+  "scope": {
+    "first_phase": "architecture_and_algorithmic_characterization_only",
+    "production_implementation_allowed": false,
+    "production_tolerance_selection_allowed": false,
+    "mass_tolerance_change_allowed": false,
+    "physics_change_allowed": false,
+    "fgc02_special_case_allowed": false,
+    "transaction_semantic_change_before_independent_qualification_allowed": false
+  },
+  "candidate_families_to_characterize_without_prior_selection": [
+    "same_endpoint_nested_step_doubling_using_multiple_refinement_levels",
+    "same_endpoint_successive_defect_decay_or_observed_order_guard",
+    "model_owned_multi_component_endpoint_metric_under_the_existing_fci14_scalarization_contract",
+    "qualified_fail_closed_fallback_to_finer_same_endpoint_reference_execution_when_asymptotic_behavior_is_not_established"
+  ],
+  "explicit_non_candidates_without_new_evidence": [
+    "simple_replacement_of_binary_identity_with_raw_max_head_defect",
+    "fgc02_specific_absolute_head_tolerance",
+    "assuming_retry_count_equals_fixed_horizon_refinement_level",
+    "relaxing_mass_conservation",
+    "raising_solver_iteration_or_backtracking_limits_to_make_a_reference_appear_available",
+    "using_n256_as_a_scientific_reference_only_because_it_is_universally_reachable"
+  ],
+  "required_questions": [
+    "Can refinement remain at the same physical endpoint while preserving checkpoint_trial_commit_or_rollback semantics?",
+    "Can a candidate estimator be bounded against an independently defined same-endpoint reference over held-out hydraulic states?",
+    "Can non-asymptotic or nonmonotone cases fail closed without silently changing physics?",
+    "Can the normal production path avoid structural six_to_nine full SWAP-equivalent executions per interval?",
+    "Can reference mode remain available and stricter than balanced or throughput policy?",
+    "Can runtime diagnostics expose estimator level, refinement count, accepted branch, solver work, and mass residual?"
+  ],
+  "architecture_invariants": [1,2,3,5,7,8,9,10,11,12,13,15,16,23,24,25,26,28,29,30],
+  "qualification_sequence": [
+    "persist_source_bound_seam_audit",
+    "freeze_algorithmic_candidate_matrix_before_numerical_execution",
+    "run_characterization_without_production_changes",
+    "independent_held_out_F_VQ_qualification",
+    "only_after_admission_consider_minimal_production_seam"
+  ],
+  "exit_states": [
+    "READY_FOR_INDEPENDENT_NUMERIC_QUALIFICATION_OF_A_SPECIFIC_SAME_ENDPOINT_CANDIDATE",
+    "BLOCKED_NO_BOUNDED_COST_CANDIDATE_FOUND",
+    "BLOCKED_REFERENCE_ORACLE_REQUIRED",
+    "BLOCKED_RUNTIME_TRANSACTION_CONTRACT_CHANGE_REQUIRES_F_KT_OWNER"
+  ]
+}
