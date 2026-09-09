@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-SI",
   "work_unit": "F-SI20",
   "title": "Richards Temporal-Error Semantics and Prescribed-Head Readiness",
@@ -16,8 +16,8 @@
     "fgc02_blocked_head": "70d15ecdfcda87beb5c35b758fb291d7f76f5a4f",
     "fgc02_status": "BLOCKED_OWNER_QUALIFIED_NONSTATIONARY_PRESCRIBED_HEAD_TEMPORAL_ACCEPTANCE_REQUIRED"
   },
-  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_EVIDENCE_BEFORE_IMPLEMENTATION",
-  "phase": "PERSISTED_PRE_CHARACTERIZATION",
+  "status": "IN_PROGRESS_OWNER_TEMPORAL_SEMANTICS_REFERENCE_EVIDENCE_REQUIRED",
+  "phase": "CHARACTERIZATION_TESTED_TEMPORAL_ONLY_REJECTION_PROVEN",
   "owner_scope": {
     "production_owner": "F-SI / soil-water model implementation",
     "fmr_role_after_owner_change": "bind and compose model-owned temporal signal into existing F-KT scalar acceptance seam",
@@ -28,29 +28,39 @@
     "current_binding": "fmr_serialized_reference_model_t%temporal_error => fmr_serialized_temporal_identity",
     "current_behavior": "0 for exact relevant final-state equality, huge(real64) otherwise",
     "fgc02_failure": "the -74.99 cm prescribed-head predictor from a -75.0 cm T0 profile is physically nonstationary and is rejected before a candidate completes",
+    "direct_rejection_classification": "TEMPORAL_ONLY",
     "scientific_gap": "no model-owned quantitative Richards temporal-error semantics have been qualified for nonstationary prescribed-head mode 5"
   },
-  "first_characterization_target": {
-    "source_fixture": "F-GC02 prescribed-head predictor",
-    "bottom_mode": 5,
-    "initial_profile_head_cm": -75.0,
-    "predictor_bottom_head_cm": -74.99,
-    "base_window": [4100.125, 4100.375],
-    "calendar_semantics": false,
-    "required_observables": [
-      "nodewise signed pressure-head full-minus-two-half differences",
-      "nodewise signed water-content full-minus-two-half differences",
-      "max absolute head and theta differences with maximizing node",
-      "signed dz-weighted theta storage-state difference",
-      "ponding-depth difference",
-      "groundwater-level difference",
-      "solver/temporal/mass rejection counters"
-    ],
-    "required_axes": [
-      "extended dt halving ladder",
-      "nonlinear head tolerance sensitivity with unchanged physics",
-      "O0/O2 deterministic replay"
-    ]
+  "tested_characterization": {
+    "evidence_file": "integration/f-si/F-SI20_CHARACTERIZATION_EVIDENCE.json",
+    "characterization_workflow_run": 34299712399,
+    "characterization_workflow_job": 102303831300,
+    "characterization_conclusion": "success",
+    "rejection_workflow_run": 34299889387,
+    "rejection_workflow_job": 102304350698,
+    "rejection_conclusion": "success",
+    "production_immutability_to_fvq27": "PASS",
+    "fgc02_predictor_provenance_lock": "PASS",
+    "repeat_determinism_o0": "PASS",
+    "repeat_determinism_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "nodewise_h_theta_deltas": "MEASURED",
+    "signed_dz_theta_difference": "MEASURED",
+    "nonlinear_tolerance_axis": [1e-10,1e-12,1e-14],
+    "temporal_signal_materially_sensitive_to_nonlinear_tolerance": false,
+    "stable_asymptotic_order_demonstrated": false,
+    "monotone_dt_halving_demonstrated": false
+  },
+  "exact_fgc02_baseline_rejection": {
+    "nonlinear_tolerance": 1e-12,
+    "attempts": 7,
+    "retries": 6,
+    "solver_rejections": 0,
+    "temporal_rejections": 7,
+    "mass_rejections": 0,
+    "accepted_substeps": 0,
+    "committed_revision": 0,
+    "meaning": "The current F-GC02 predictor failure is caused by the binary temporal identity gate alone on this fixture. Solver convergence and hard mass acceptance are not the rejecting gates."
   },
   "hard_constraints": {
     "production_metric_selected": false,
@@ -65,12 +75,14 @@
   },
   "state": {
     "persisted": true,
-    "characterization_harness_implemented": false,
-    "characterization_tested": false,
+    "characterization_harness_implemented": true,
+    "characterization_tested": true,
+    "rejection_classified": true,
     "metric_selected": false,
     "production_implemented": false,
     "owner_qualified": false,
     "independently_qualified": false
   },
-  "next_action": "Implement a nonproduction source-locked characterization harness for the exact F-GC02 prescribed-head predictor on the F-VQ27 postimage, then interpret the dt and nonlinear-tolerance dependence before selecting any production metric."
+  "current_decision_class": "B_MORE_THEORY_OR_NUMERICAL_REFERENCE_EVIDENCE_REQUIRED",
+  "next_action": "Construct a nonproduction mass-hard fine-reference trajectory study for the exact F-GC02 prescribed-head predictor. Test whether full-versus-two-half step-doubling discrepancy predicts endpoint error to progressively refined trajectories before selecting any model-owned temporal metric."
 }
