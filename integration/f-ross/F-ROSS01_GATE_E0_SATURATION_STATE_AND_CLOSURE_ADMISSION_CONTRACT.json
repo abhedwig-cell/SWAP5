@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E0_SATURATION_STATE_AND_CLOSURE_ADMISSION",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisite": "QUALIFIED_RESTRICTED_PIECEWISE_C1R_SIGMA05_TIMESTEP_READY_FOR_SATURATION_TRANSITION_GATE",
+  "purpose": "Establish the minimum physical-state and constitutive requirements before any RossFast unsaturated-to-saturated trajectory is implemented.",
+  "hydraulic_scope": {
+    "family": "Staringreeks 2018 unimodal MvG base",
+    "retention": "H_ENPR=0",
+    "conductivity": "KSATFIT base MvG",
+    "KSATEXM": false,
+    "materials": 36,
+    "heterogeneity": false,
+    "macropores": false
+  },
+  "precommitted_questions": [
+    "Is water content theta a one-to-one physical state coordinate once h reaches or exceeds zero?",
+    "Does saturated pressure head retain a physical degree of freedom even where theta and K have reached their saturated plateaus?",
+    "Is the already qualified C1R table sufficient up to the saturation boundary, or is there an unqualified near-saturation interval between its h=-1 cm upper envelope and h=0?",
+    "What minimum state information must survive checkpoint, rollback and restart for a cell that can become saturated?"
+  ],
+  "frozen_constitutive_semantics": {
+    "effective_saturation": "For the base MvG fixture, S(h)=1 for h>=0 and S(h)=(1+|alpha*h|^n)^(-m) for h<0, m=1-1/n.",
+    "theta": "theta=theta_r+(theta_s-theta_r)*S(h)",
+    "conductivity": "K(h)=KSATFIT when S>=1; otherwise the frozen base Mualem-VG closure used by C1R.",
+    "inverse_convention": "h(S=1)=0 is only a boundary convention; it cannot reconstruct arbitrary positive saturated pressure head from theta=theta_s.",
+    "qualified_C1R_upper_head_cm": -1.0,
+    "saturation_boundary_head_cm": 0.0
+  },
+  "precommitted_witness_heads_cm": [-1.0, -0.1, -0.001, 0.0, 1.0, 10.0, 100.0],
+  "hard_admission_tests": {
+    "all_materials_theta_at_h_ge_0_equals_theta_s": true,
+    "all_materials_K_at_h_ge_0_equals_KSATFIT": true,
+    "positive_head_witnesses_have_identical_theta_but_distinct_h": true,
+    "positive_head_witnesses_have_identical_K_but_distinct_total_head_when_elevation_is_fixed": true,
+    "inverse_theta_to_h_cannot_be_injective_for_saturated_states": true,
+    "C1R_does_not_cover_minus1_to_zero_near_saturation_interval": true,
+    "no_nonfinite_constitutive_values": true
+  },
+  "state_admission_rule": {
+    "pure_theta_only_persistent_state_across_saturation": "REJECT_IF_TESTS_CONFIRM_NONINJECTIVITY",
+    "minimum_requirement": "Any cell that may be saturated must retain a pressure-head degree of freedom either directly as unified head state or explicitly within a mixed Ross state plus mode information.",
+    "unified_head_state": "remains candidate, not selected by E0",
+    "mixed_Ross_state": "remains candidate, not selected by E0",
+    "selection_rule": "Do not choose between unified-head and mixed-state layouts on presumed performance. A later E1 transition-conservation gate must prove physical equivalence, exact storage accounting, deterministic mode switching and bounded cost."
+  },
+  "mass_and_transaction_rules": [
+    "No saturation mode switch may add or remove water outside the ordinary cell storage ledger.",
+    "A trial that discovers an unsupported saturation state must fail or fallback without mutating committed state.",
+    "Pressure head retained for a saturated cell is physical state, not solver scratch.",
+    "Constitutive intermediates, Jacobians and trial mode masks remain worker scratch until commit."
+  ],
+  "explicit_nonclaims": [
+    "E0 does not qualify the near-saturation face flux from h=-1 to 0 cm.",
+    "E0 does not qualify saturated-saturated or saturated-unsaturated face response.",
+    "E0 does not choose unified-head versus mixed-Ross production storage.",
+    "E0 does not qualify saturation-transition timesteps, groundwater, prescribed-head bottom boundaries or heterogeneity.",
+    "E0 does not extend C1R by extrapolation above h=-1 cm."
+  ],
+  "exit": {
+    "pass": "SATURATION_REQUIRES_EXPLICIT_HEAD_DOF_AND_SEPARATE_NEAR_SATURATION_CLOSURE_READY_FOR_E1_TRANSITION_DESIGN",
+    "fail": "SATURATION_STATE_ASSUMPTION_NOT_CONFIRMED_RECONCILE_CONSTITUTIVE_SEMANTICS_BEFORE_E1"
+  },
+  "relevant_invariants": [3,4,5,7,8,9,13,20,22,23,24,25,26,27,30]
+}
