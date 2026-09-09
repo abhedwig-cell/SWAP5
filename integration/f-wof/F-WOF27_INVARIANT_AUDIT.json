@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF27",
+  "title": "SWAP Core Invariant Audit for Restricted One-Day WOFOST Rate Evaluator Readiness",
+  "base_commit": "428ad482d6b449e3e71d0c42bcc8521a98b9f2fe",
+  "production_delta_expected": false,
+  "audit": [
+    {
+      "invariant": 2,
+      "name": "Kernel los van I/O",
+      "result": "PASS",
+      "basis": "provider contract contains no file, parser, unit or path dependency; legacy crop parsing remains adapter work"
+    },
+    {
+      "invariant": 3,
+      "name": "Expliciete datascheiding",
+      "result": "PASS",
+      "basis": "immutable parameters, dynamic state view, forcing/context, accepted aggregates and event-local output are separate contracts"
+    },
+    {
+      "invariant": 4,
+      "name": "Compacte persistente state",
+      "result": "PASS",
+      "basis": "rate evaluator adds no persistent rate state; seven-day Tmin memory remains the compact F-WOF26 continuation; post-threshold GLAIEXP compatibility remains one conditional scalar"
+    },
+    {
+      "invariant": 5,
+      "name": "Scratch per worker",
+      "result": "PASS",
+      "basis": "PGASS and all algebraic intermediates are event-local/worker scratch; no WOFOST_rates object is persisted per column"
+    },
+    {
+      "invariant": 6,
+      "name": "Schaalbare geheugenlayout",
+      "result": "PASS_BY_CONTRACT",
+      "basis": "logical DTOs do not prescribe AoS storage; immutable parameter sets are shareable by template/reference and event scratch can be worker-local"
+    },
+    {
+      "invariant": 7,
+      "name": "Transactionele tijdstappen",
+      "result": "PASS_BY_OWNER_BOUNDARY",
+      "basis": "provider is read-only; F-WOF26/F-KT retain checkpoint, candidate mutation, commit and rollback authority"
+    },
+    {
+      "invariant": 8,
+      "name": "Goedkope herberekening en warm start",
+      "result": "PASS_BY_CONTRACT",
+      "basis": "rate evaluation is deterministic from immutable parameters, the same pre-event view, forcing and accepted aggregates; no hidden mutable provider history exists"
+    },
+    {
+      "invariant": 9,
+      "name": "Tijd is generiek",
+      "result": "PASS_RESTRICTED_EVENT",
+      "basis": "F-WOF27 admits one explicit crop-day event because B1.10 crop evolution is daily, but provider has no calendar, midnight, month or year identity; subdaily soil/coupling steps remain independent"
+    },
+    {
+      "invariant": 13,
+      "name": "Massabehoud is absoluut",
+      "result": "NOT_DIRECTLY_APPLICABLE_BUT_NO_BYPASS",
+      "basis": "crop rate evaluation does not own water transfer; RELTR consumes accepted root-uptake/transpiration aggregates and cannot rewrite them"
+    },
+    {
+      "invariant": 16,
+      "name": "MultiSWAP is primaire use case",
+      "result": "PASS_BY_CONTRACT",
+      "basis": "parameters are shareable, state view is compact scalar data, rates are call-local and no heavy solver/provider instance is required per column"
+    },
+    {
+      "invariant": 21,
+      "name": "SWAP-fysica maximaal hergebruiken",
+      "result": "PASS",
+      "basis": "rate formulas are source-bound to B1.10 while legacy globals/types are deliberately not reused"
+    },
+    {
+      "invariant": 23,
+      "name": "Fysische opties en solverpolicy gescheiden",
+      "result": "PASS",
+      "basis": "IDSL/SWRD/nutrients/oxygen are explicit physical scope gates; no numerical performance policy changes crop physics"
+    },
+    {
+      "invariant": 25,
+      "name": "Reference mode blijft beschikbaar",
+      "result": "PASS_BY_DECISION",
+      "basis": "CFRDM, RELMF and B1.10 post-LAIEXP carryover are preserved in the restricted reference target instead of silently normalized to another WOFOST lineage"
+    },
+    {
+      "invariant": 27,
+      "name": "Optionele functionaliteit schaalt met gebruik",
+      "result": "PASS",
+      "basis": "nutrient, oxygen, SWRD=3, potential-shadow, soybean and grass inputs/state are absent from the admitted provider contract"
+    },
+    {
+      "invariant": 28,
+      "name": "Runtime/coupler organiseert systeemcompositie",
+      "result": "PASS",
+      "basis": "accepted IQROT/IPTRA provenance belongs to runtime/F-KT; crop provider sees only the semantic accepted-window values"
+    },
+    {
+      "invariant": 29,
+      "name": "Geen stille afhankelijkheden",
+      "result": "PASS",
+      "basis": "ASTRO/daynr, RAD global, KDIF global, Tmin module history, parser state and daily integral globals have all been surfaced as explicit inputs or owner contracts"
+    },
+    {
+      "invariant": 30,
+      "name": "Iedere architectuurwijziging toetsen",
+      "result": "PASS",
+      "basis": "this artifact records the explicit audit before production rate physics is admitted"
+    }
+  ],
+  "open_architectural_items": [
+    {
+      "item": "semantic read-only WOFOST rate-state view assembly",
+      "severity": "REQUIRED_BEFORE_BROAD_RATE_PROVIDER",
+      "reason": "current owner does not expose WST/WSO/WLV/LAIEXP through a dedicated semantic view; direct binding to owner%biomass internals would create an undesirable dependency"
+    },
+    {
+      "item": "accepted aggregate provenance token or runtime binding",
+      "severity": "REQUIRED_BEFORE_END_TO_END_RUNTIME_ADMISSION",
+      "reason": "scalar IQROT/IPTRA values cannot prove accepted-window lineage or exactly-once aggregation"
+    },
+    {
+      "item": "shared neutral rate contract module",
+      "severity": "OPTIONAL_FOR_FIRST_PROVIDER_BUT_RECOMMENDED_IF_MULTIPLE_RATE_PRODUCERS_APPEAR",
+      "reason": "wofost_one_day_rate_packet_t currently lives in the F-WOF26 structural module; importing it is acyclic but semantically consumer-owned"
+    }
+  ],
+  "overall": "PASS_READINESS_WITH_EXPLICIT_PREPRODUCTION_SEAMS",
+  "production_permission": "NO_BROAD_RATE_PHYSICS_IN_F_WOF27"
+}
