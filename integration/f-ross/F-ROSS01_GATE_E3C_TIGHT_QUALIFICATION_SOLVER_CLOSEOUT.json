@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3C_TIGHT_LEAST_SQUARES_QUALIFICATION_SOLVER_POLICY",
+  "production_implementation": false,
+  "qualification_solver_is_production_solver": false,
+  "workflow": {
+    "run": 34392416366,
+    "head": "4b4e8960fd79e3b7285664f03a2a86134b8853d5",
+    "conclusion": "success",
+    "artifact_id": 10120670213,
+    "artifact_digest": "sha256:4a80c715bcb8c59782c26c6b8b10b377c4fd50353974d10d3784d839e7cf4140"
+  },
+  "solver_policy": {
+    "method": "scipy.optimize.least_squares",
+    "xtol": 1e-14,
+    "ftol": 1e-14,
+    "gtol": 1e-14,
+    "x_scale": "jac",
+    "max_nfev": 200
+  },
+  "mass_certificate_cm": 1e-9,
+  "material_count": 4,
+  "material_pass_count": 4,
+  "solver_failure_count": 0,
+  "unqualified_face_fallback_count": 0,
+  "max_abs_step_mass_residual_cm": 6.684320794352744e-12,
+  "event_crossing_required": false,
+  "decision": "QUALIFIED_TIGHT_E3_QUALIFICATION_SOLVER_AND_ENCOUNTERED_FACE_COMPOSITION_READY_FOR_REAL_SATURATION_EVENT_FIXTURE",
+  "hard_nonclaims": [
+    "This does not qualify a production nonlinear solver.",
+    "This does not qualify a saturation transition because no h=0 event was required by E3C.",
+    "This does not qualify response tangents, runtime, groundwater or MultiSWAP."
+  ],
+  "next_gate": "E3D_REAL_H0_EVENT_FIXTURE_SEARCH_AND_PRECOMMIT",
+  "status": "QUALIFIED_READY_FOR_REAL_H0_EVENT_FIXTURE"
+}
