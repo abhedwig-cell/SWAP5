@@ -10,12 +10,15 @@ on:
       - experiments/ross/run_ross01_gate_c2b_state_coordinate_conditioning.py
       - integration/f-ross/F-ROSS01_GATE_C2B_STATE_COORDINATE_R1_CONTRACT.json
       - experiments/ross/run_ross01_gate_c2b_face_table_characterization.py
+      - experiments/ross/run_ross01_gate_c2b_face_table_seam_aligned_r1.py
       - experiments/ross/run_ross01_gate_c2b_henpr_svg2006_bridge.py
       - experiments/ross/run_ross01_gate_c1r_characterization_v4.py
       - experiments/ross/run_ross01_gate_c1r_characterization.py
       - experiments/ross/run_ross01_gate_c1.py
       - experiments/ross/run_ross01_face_table_characterization.py
       - integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_CHARACTERIZATION_CONTRACT.json
+      - integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_CHARACTERIZATION_RESULT.json
+      - integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_SEAM_ALIGNED_R1_CONTRACT.json
       - integration/f-ross/F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_CONTRACT.json
       - integration/f-ross/F-ROSS01_GATE_C1_MATERIAL_CATALOG.json
   workflow_dispatch:
@@ -46,7 +49,7 @@ jobs:
           name: f-ross01-c2b-state-coordinate-r1
           path: ross01-c2b-state-coordinate-r1/
 
-  face_characterize:
+  face_characterize_seam_r1:
     needs: qualify
     strategy:
       fail-fast: false
@@ -60,18 +63,18 @@ jobs:
         run: python3 --version
       - name: Install qualification dependencies
         run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
-      - name: Run frozen C2B N241 face material characterization
+      - name: Run frozen seam-aligned C2B N241 material characterization
         run: |
           set -euo pipefail
-          out="ross01-c2b-face-${{ matrix.material }}"
+          out="ross01-c2b-face-seam-r1-${{ matrix.material }}"
           rm -rf "$out"
           mkdir -p "$out"
-          python3 experiments/ross/run_ross01_gate_c2b_face_table_characterization.py \
-            "${{ matrix.material }}" "$out/F-ROSS01_C2B_FACE_${{ matrix.material }}_RESULT.json" \
-            | tee "$out/F-ROSS01_C2B_FACE_${{ matrix.material }}_STDOUT.txt"
-      - name: Upload face evidence
+          python3 experiments/ross/run_ross01_gate_c2b_face_table_seam_aligned_r1.py \
+            "${{ matrix.material }}" "$out/F-ROSS01_C2B_FACE_SEAM_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_C2B_FACE_SEAM_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Upload seam-aligned face evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: f-ross01-c2b-face-${{ matrix.material }}
-          path: ross01-c2b-face-${{ matrix.material }}/
+          name: f-ross01-c2b-face-seam-r1-${{ matrix.material }}
+          path: ross01-c2b-face-seam-r1-${{ matrix.material }}/
