@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1A_REAL_C1R_TABLE_FACE_DERIVATIVE",
+  "contract": "F-ROSS01_GATE_J1A_REAL_TABLE_FACE_DERIVATIVE_CONTRACT.json",
+  "workflow_run": 34353137046,
+  "head": "9b09b45ef3b23dbd360c927b7dacb1c902376171",
+  "status": "FAILED_PRESERVED_DO_NOT_OPEN_J1B",
+  "material_count": 6,
+  "pass_count": 1,
+  "failed_materials": ["B01", "O01", "O05", "O14", "O18"],
+  "passed_materials": ["B12"],
+  "observed": {
+    "maximum_self_consistency_metric": 8.160149210785064e-05,
+    "maximum_p99_self_consistency_metric": 1.945368335869292e-05,
+    "maximum_q_formula_vs_lookup_scaled_error": 8.415686809654214e-14,
+    "maximum_absolute_analytic_minus_fd_difference_in_each_materials_worst_self_row": 4.3357441376210075e-11,
+    "cell_change_count_total": 0,
+    "nonfinite_derivative_count_total": 0,
+    "table_bitwise_unchanged_all": true,
+    "finite_difference_factors": [1e-06, 3e-06]
+  },
+  "per_material": [
+    {"material":"B01","pass":false,"max_self_metric":2.117414047664152e-05,"p99_self_metric":1.1107606489279175e-05,"worst_self_abs_difference":4.3357441376210075e-11},
+    {"material":"B12","pass":true,"max_self_metric":1.6710883290915992e-07,"p99_self_metric":3.8927817849548596e-08,"worst_self_abs_difference":7.499613234904795e-14},
+    {"material":"O01","pass":false,"max_self_metric":4.7460433229204535e-05,"p99_self_metric":1.945368335869292e-05,"worst_self_abs_difference":1.059419099449021e-11},
+    {"material":"O05","pass":false,"max_self_metric":8.160149210785064e-05,"p99_self_metric":1.544157318863515e-05,"worst_self_abs_difference":1.4213759166865646e-11},
+    {"material":"O14","pass":false,"max_self_metric":4.759745513152872e-06,"p99_self_metric":1.2218627234386522e-06,"worst_self_abs_difference":1.041846922294618e-12},
+    {"material":"O18","pass":false,"max_self_metric":1.5835268224911561e-06,"p99_self_metric":2.1887466211442258e-07,"worst_self_abs_difference":5.8776333566414095e-12}
+  ],
+  "failure_characterization": {
+    "classification": "FINITE_DIFFERENCE_ORACLE_SCALE_INSTABILITY_SUSPECTED_NOT_YET_PROVEN",
+    "evidence": [
+      "All failed rows retain the frozen interpolation cells under both perturbations.",
+      "The analytic flux formula reproduces the production C1R lookup at the unperturbed point to near-double-precision roundoff.",
+      "Worst normalized failures occur on endpoint derivatives close to zero, where tiny absolute finite-difference noise is amplified by the relative metric.",
+      "No table mutation, branch crossing, nonfinite derivative or interpolation-cell transition was observed."
+    ],
+    "not_yet_excluded": [
+      "a derivative algebra defect visible only under perturbation",
+      "roundoff introduced by the h -> S -> u roundtrip in the finite-difference oracle",
+      "a scale-floor defect in the original admission metric"
+    ]
+  },
+  "decision": "J1A_FAIL_PRESERVED_DIAGNOSE_ORACLE_WITHOUT_CHANGING_TABLE_OR_PRECOMMITTED_FD_SIZES",
+  "next_action": "Open a narrowly scoped J1A-R1 oracle-repair diagnostic that keeps the same table, same analytic derivative and the same precommitted head perturbations, but finite-differences an independent head-coordinate evaluation of the frozen C1R table law. Do not open J1B unless that diagnostic proves the original failure was oracle roundoff rather than derivative representation or algebra.",
+  "scope_guards": [
+    "No Class-B C2B work.",
+    "No table retuning.",
+    "No finite-difference size tuning.",
+    "No J1B whole-column tangent while this original J1A gate remains unresolved.",
+    "No production or groundwater admission claim."
+  ]
+}
