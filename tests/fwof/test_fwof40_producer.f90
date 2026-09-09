@@ -37,7 +37,8 @@ program test_fwof40_producer
        100.0_real64, 101.0_real64)
   call fwof40_retire_window(window1, crop)
   call fwof40_require(crop%current_revision() == 1_int64, 'producer revision one')
-  call fwof40_require(window1%delivery_committed() .and. .not. window1%event_due(), 'producer cache retired')
+  call fwof40_require(window1%delivery_committed(), 'producer delivery cache retired')
+  call fwof40_require(.not. window1%event_due(), 'producer retired event not due')
   call write_fwof40_crop_restart_artifact(trim(path), crop, ok, status)
   call fwof40_require(ok .and. status == FWO40_EXTERNAL_OK, 'producer artifact write')
   write(*,'(A)') 'FWOF40_PRODUCER_COMMIT_RETIRE_WRITE_AND_EXIT=PASS'
