@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E2C_R1_DETERMINISTIC_LOG_HEAD_SEGMENTED_LOCAL_FACE_SOLVE",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "prerequisites": [
+    "FIXED_NODE_Q2_REJECTED_STOP_PRECOMPUTED_NEAR_SATURATION_FACE_TABLE_APPROACH",
+    "BOUNDED_LOCAL_FACE_SOLVE_NOT_YET_QUALIFIED_RESEARCH_REQUIRED"
+  ],
+  "candidate": {
+    "id": "LOG_HEAD_QUARTER_DECADE_GL8_SEGMENTS_PLUS_64_BISECTION",
+    "face_equation": "solve integral_h_above^h_below K(h)/(K(h)-q) dh = L for q",
+    "negative_head_breaks_cm": "-10^u for u=-12,-11.75,...,4 plus h=0 and exact face endpoints",
+    "segments_per_decade": 4,
+    "maximum_negative_head_decades": 16,
+    "maximum_segments_per_face": 66,
+    "quadrature_per_segment": "8-point Gauss-Legendre in pressure head h",
+    "root_solver": "64 fixed safeguarded bisection iterations using the same deterministic physical brackets as E2C",
+    "generic_max_constitutive_K_evaluations": 530,
+    "generic_max_root_residual_evaluations": 66,
+    "generic_max_quadrature_lane_arithmetic_evaluations": 34848,
+    "K_samples_reused_across_root_iterations": true,
+    "persistent_per_column_state_bytes": 0,
+    "scratch_owner": "worker",
+    "table_lookup": false,
+    "failure_policy": "FAIL_CLOSED_TO_QUALIFIED_REFERENCE_SOLVER_IF_BRACKET_OR_FINITE_CHECK_FAILS"
+  },
+  "why_this_is_not_E2C_retuning": "E2C used one global t^8 quadrature panel. R1 changes the integration representation to deterministic pressure-head segmentation aligned with orders of magnitude in the constitutive law. E2C remains preserved as FAIL.",
+  "materials": ["B12","O13","B01","O14"],
+  "scope": {
+    "constitutive_family": "Staringreeks 2018 unimodal MvG using KSATFIT, H_ENPR=0, KSATEXM disabled",
+    "face_class": "WET_DRY",
+    "wet_head_cm": [-1.0,1.0],
+    "dry_head_cm": [-10000.0,-1.0],
+    "homogeneous_face_length_cm": 10.0
+  },
+  "probe_policy": {
+    "reuse_exact_frozen_E2C_probe_builder": true,
+    "fresh_sobol_per_material": 512,
+    "retain_targeted_and_known_witness_cases": true,
+    "no_probe_removal_after_results": true
+  },
+  "frozen_metrics": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "nonfinite_count": 0,
+    "bracket_failure_count": 0,
+    "face_balance_antisymmetry_scaled_max": 1e-10,
+    "equal_head_relative_max": 1e-12,
+    "hydrostatic_abs_q_over_ksatfit_max": 1e-12
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_BOUNDED_SEGMENTED_LOCAL_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE",
+    "fail": "SEGMENTED_LOCAL_FACE_SOLVE_NOT_QUALIFIED_NEAR_SATURATION_FALLBACK_RESEARCH_REQUIRED"
+  },
+  "hard_nonclaims": [
+    "PASS does not make this route the normal fast face path.",
+    "PASS does not qualify a saturation-transition timestep or column.",
+    "PASS does not qualify runtime or MultiSWAP throughput.",
+    "PASS does not reopen the rejected table line or erase E2C failure."
+  ],
+  "hard_guards": [
+    "Quarter-decade segmentation, GL8 order, 64 bisection steps, probes and thresholds are frozen before execution.",
+    "No adaptive panel creation is permitted in R1.",
+    "No material-specific grid or tolerance is permitted.",
+    "Bracket or finite-check failure routes fail closed.",
+    "No principal state mutation occurs in the face solve."
+  ],
+  "relevant_invariants": [5,7,13,15,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
