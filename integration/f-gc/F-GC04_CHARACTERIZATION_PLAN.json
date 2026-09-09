@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC04",
+  "title": "Independent Richards Head-Budget Scale Characterization from Disjoint Temporal Evidence",
+  "branch": "work/f-gc04-independent-head-budget-scale-characterization",
+  "start_head": "ac123c51b1fb545ad19755bce04e79a80489cd74",
+  "purpose": "Characterize the numerical scale and limitations of candidate Richards temporal H_budget values using only previously executed evidence that is independent of the frozen F-GC02 target trial. This unit is evidence-only and must not select, recommend or authorize a production/application H_budget.",
+  "source_locks": {
+    "F_GC03_closeout_blob": "33e56ca3dd0c55fec1bdd70019cca0096e5d53c2",
+    "F_VQ29_status_blob": "d7bbeff65f9d506e5144b3b885930a835a1cef35",
+    "F_VQ30_held_out_evidence_blob": "39832173174271f4ad97278662467eb4dab13599",
+    "F_VQ30_closeout_blob": "6663bcc1149f07962bb9921840958d6d7de628a4",
+    "F_VQ31_independent_evidence_blob": "b68ba117ae470d4a6b2ca3b55b9c1697cbcd1923",
+    "F_VQ32_independent_evidence_blob": "f27cfd22f16cea16bee8c8a27e0c34b23c5dcc53",
+    "F_VQ32_closeout_blob": "51b075c6f72880897416bdcfd92549bd68d26b7b",
+    "F_VQ34_closeout_blob": "2bf2c2e790abac2ee4dc3cd6ee51c5e579859270"
+  },
+  "frozen_questions": [
+    "What B_inf magnitudes occur across independent temporal qualification matrices?",
+    "What reference-error or refinement evidence is actually available alongside B_inf, and what is not available?",
+    "Does the evidence support only an order-of-magnitude characterization, or a stronger versioned numerical policy candidate?",
+    "Which H_budget ranges would be obviously looser or tighter than the observed independent indicator scale, without using the F-GC02 target result?",
+    "Can any numeric value be justified as an application requirement from this evidence alone?"
+  ],
+  "analysis_rules": {
+    "no_FGC02_execution": true,
+    "no_FGC02_B_inf_read_or_derivation": true,
+    "no_target_trial_result_use": true,
+    "no_numeric_H_budget_selection": true,
+    "no_recommended_H_budget": true,
+    "no_universal_default": true,
+    "no_true_error_bound_claim": true,
+    "no_monotonic_dt_claim": true,
+    "no_coupling_tolerance_equivalence": true,
+    "existing_executed_evidence_only": true,
+    "distinguish_indicator_scale_from_application_accuracy_requirement": true
+  },
+  "required_outputs": {
+    "evidence_inventory": true,
+    "independent_B_inf_scale_summary_if_values_are_available": true,
+    "reference_error_relationship_summary_if_source_evidence_supports_it": true,
+    "limitations_and_negative_evidence": true,
+    "nonbinding_candidate_scale_bands_only_if_defensible": true,
+    "explicit_statement_whether_application_numeric_requirement_remains_missing": true,
+    "core_invariant_audit": true
+  },
+  "gates": {
+    "G01": "SOURCE_LOCKS_AND_TARGET_ISOLATION",
+    "G02": "NO_FGC02_TARGET_RESULT_ACCESS",
+    "G03": "QUANTITATIVE_EVIDENCE_EXTRACTED_WITHOUT_REINTERPRETATION",
+    "G04": "F_VQ29_NEGATIVE_ERROR_BOUND_EVIDENCE_PRESERVED",
+    "G05": "INDICATOR_SCALE_NOT_CONFLATED_WITH_APPLICATION_REQUIREMENT",
+    "G06": "NO_NUMERIC_SELECTION_OR_RECOMMENDATION",
+    "G07": "NO_TRUE_ERROR_OR_MONOTONICITY_OVERCLAIM",
+    "G08": "NEXT_DECISION_BOUNDARY_EXPLICIT",
+    "G09": "CORE_INVARIANT_AUDIT"
+  },
+  "allowed_exit_classes": [
+    "CHARACTERIZED_INDEPENDENT_INDICATOR_SCALE_APPLICATION_REQUIREMENT_STILL_MISSING",
+    "INDEPENDENT_EVIDENCE_SUPPORTS_SEPARATE_VERSIONED_POLICY_TEMPLATE_RESEARCH_BUT_NO_TARGET_RELEASE",
+    "INSUFFICIENT_QUANTITATIVE_EVIDENCE_FOR_USEFUL_SCALE_CHARACTERIZATION"
+  ],
+  "prohibited_exit_claims": [
+    "F-GC04 selects H_budget",
+    "F-GC04 recommends H_budget",
+    "F-GC04 releases F-GC02",
+    "F-GC04 authorizes F-VQ35",
+    "B_inf is a proven nonlinear true-error bound"
+  ]
+}
