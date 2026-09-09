@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_5CM_SURFACE_WET_TO_UNSAT_BOUNDARY_FACE_RECONCILIATION",
+  "workflow_run": 34398413753,
+  "workflow_head": "704678d3914e738a94b335ec41762113898b6461",
+  "decision": "FIVE_CM_SURFACE_BOUNDARY_FACE_NOT_QUALIFIED_PRESERVE_NEGATIVE_EVIDENCE",
+  "frozen_scope": {
+    "face_length_cm": 5.0,
+    "surface_head_cm": [0.0, 1.0],
+    "top_node_head_cm": [-10000.0, 0.0],
+    "probes_per_material": 608,
+    "independent_holdout_per_material": 512,
+    "thresholds_unchanged_from_endpoint_face_family": {
+      "max_hybrid_metric": 0.01,
+      "p99_hybrid_metric": 0.002,
+      "max_abs_error_over_ksatfit": 0.0005,
+      "wrong_sign_count": 0
+    }
+  },
+  "materials": [
+    {
+      "material": "B01",
+      "valid_probe_count": 608,
+      "unresolved_count": 0,
+      "p99_hybrid_metric": 0.00000985308725106511,
+      "max_hybrid_metric": 0.1333630056150052,
+      "max_abs_error_over_ksatfit": 0.1539010482817164,
+      "branch_counts": {"ENDPOINT_K_LIMIT": 1, "GENERIC_FIXED_BISECTION": 599, "SAT_SAT_ANALYTIC_5CM": 8},
+      "worst_probe": {
+        "h_surface_cm": 0.7695052395319549,
+        "h_top_node_cm": -1.8766271852337812e-9,
+        "q_candidate_cm_per_day": 31.225016,
+        "q_reference_cm_per_day": 36.03057869501337,
+        "branch": "ENDPOINT_K_LIMIT"
+      },
+      "pass": false
+    },
+    {
+      "material": "B12",
+      "valid_probe_count": 608,
+      "unresolved_count": 0,
+      "p99_hybrid_metric": 0.0004281608041165764,
+      "max_hybrid_metric": 0.00156657028767966,
+      "max_abs_error_over_ksatfit": 0.0018467528739850247,
+      "branch_counts": {"GENERIC_FIXED_BISECTION": 600, "SAT_SAT_ANALYTIC_5CM": 8},
+      "worst_probe": {
+        "h_surface_cm": 0.8837919082381909,
+        "h_top_node_cm": -0.009962848502903649,
+        "q_candidate_cm_per_day": 2.6432032548322955,
+        "q_reference_cm_per_day": 2.647350867878214,
+        "branch": "GENERIC_FIXED_BISECTION"
+      },
+      "pass": false
+    },
+    {
+      "material": "O13",
+      "valid_probe_count": 608,
+      "unresolved_count": 0,
+      "p99_hybrid_metric": 0.00048782619239498836,
+      "max_hybrid_metric": 0.0022594922769348276,
+      "max_abs_error_over_ksatfit": 0.002619893813493103,
+      "branch_counts": {"GENERIC_FIXED_BISECTION": 600, "SAT_SAT_ANALYTIC_5CM": 8},
+      "worst_probe": {
+        "h_surface_cm": 0.7833053261466696,
+        "h_top_node_cm": -0.013722375623542532,
+        "q_candidate_cm_per_day": 11.208432753954526,
+        "q_reference_cm_per_day": 11.23381766750256,
+        "branch": "GENERIC_FIXED_BISECTION"
+      },
+      "pass": false
+    },
+    {
+      "material": "O14",
+      "valid_probe_count": 608,
+      "unresolved_count": 0,
+      "p99_hybrid_metric": 0.000010896908781180175,
+      "max_hybrid_metric": 0.15418429409959022,
+      "max_abs_error_over_ksatfit": 0.18230887822643055,
+      "branch_counts": {"ENDPOINT_K_LIMIT": 1, "GENERIC_FIXED_BISECTION": 599, "SAT_SAT_ANALYTIC_5CM": 8},
+      "worst_probe": {
+        "h_surface_cm": 0.911544390759661,
+        "h_top_node_cm": -3.724819842771122e-10,
+        "q_candidate_cm_per_day": 2.495984,
+        "q_reference_cm_per_day": 2.951024043111119,
+        "branch": "ENDPOINT_K_LIMIT"
+      },
+      "pass": false
+    }
+  ],
+  "isolated_failure_modes": [
+    {
+      "id": "BOUNDARY_UPPER_ENDPOINT_LIMIT",
+      "materials": ["B01", "O14"],
+      "finding": "The inherited ENDPOINT_K_LIMIT returns K(h_surface)=KSAT for a positive ponding head and an almost-zero negative top-node head. The full-accuracy 5 cm flux instead approaches the saturated Darcy upper bracket KSAT*(1+(h_surface-h_top)/L).",
+      "B01_control": "31.225016*(1+(0.7695052395319549-(-1.8766271852337812e-9))/5)=36.03057869501337 cm/d, equal to the recorded full-accuracy reference at shown precision.",
+      "interpretation": "The existing lower K endpoint fallback is not geometry/domain-general and cannot be inherited for a ponded half-cell boundary face."
+    },
+    {
+      "id": "ZERO_ADJACENT_UNSAT_QUADRATURE",
+      "materials": ["B12", "O13"],
+      "finding": "The generic segmented candidate passes the hybrid maxima but misses the stricter absolute KSAT-scaled bound in the near-saturation holdout around h_surface about 0.8 cm and h_top about -0.01 cm.",
+      "source_reason": "R2 endpoint clustering is applied to segment index 0. With positive h_surface, segment 0 is the saturated h_surface-to-0 segment; the first unsaturated segment immediately below h=0 receives ordinary GL8 despite the strongest constitutive variation there for B12/O13.",
+      "interpretation": "A boundary-aware zero-adjacent unsaturated quadrature representation should be characterized before increasing all quadrature lanes or relaxing tolerances."
+    }
+  ],
+  "positive_evidence_preserved": [
+    "All 2432 material/probe evaluations produced finite candidate and reference values.",
+    "No candidate unresolved failures occurred.",
+    "No wrong-sign failure is indicated by the reported gate outputs.",
+    "The p99 hybrid metric passed for all four materials.",
+    "The failure is localized to endpoint and near-saturation accuracy rather than broad 5 cm instability."
+  ],
+  "hard_nonclaims": [
+    "No 5 cm boundary-face qualification.",
+    "No permission to relax the frozen error thresholds.",
+    "No permission to replace the endpoint fallback without independent qualification.",
+    "No surface-process, ponding, runoff or production admission."
+  ]
+}
