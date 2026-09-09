@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI19",
+  "title": "Full Candidate A Source-Lineage Admission Audit",
+  "audit_date_utc": "2026-09-09",
+  "canonical_reference": {
+    "f_ci18_closeout": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "qualified_production_source_head": "da5026d8b87ad2f3c7912360891839a120ecccb6",
+    "canonical_ref_advanced_by_f_ci19": false
+  },
+  "candidate_a": {
+    "exact_source_postimage": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "root_tree": "0d7313c3060f305b9e02c9a57ff25e48d1cbe13e",
+    "src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "origin": "F-KT09 qualified code head",
+    "decision": "QUALIFIED_RESTRICTED_SOURCE_POSTIMAGE_READY_FOR_CANONICAL_POSTIMAGE_MATERIALIZATION",
+    "direct_canonical_ref_advance_allowed": false
+  },
+  "composition_preservation_evidence": {
+    "qualification_branch": "qualification/f-ci19-candidate-a-preservation",
+    "tested_head": "5d5ece58b2b8e053a270992ded52377dd524f9c4",
+    "workflow_run": 34319928251,
+    "workflow_job": 102364081577,
+    "conclusion": "success",
+    "artifact_id": 10091475248,
+    "artifact_zip_sha256": "cec8b32ae9da710405653611302d24b5e91fcec1c5736df3ccb6fb6a442b3eef",
+    "qualified_claims": [
+      "F-KT09 generic transaction/model-certificate seam preserved",
+      "F-MR15 and F-VQ27 prescribed-head semantics preserved",
+      "F-SI19 reference linear-solver oracle preserved",
+      "F-MQ24/F-VQ17 restricted snow MultiSWAP semantics preserved",
+      "hard mass conservation preserved",
+      "rollback and deterministic replay preserved",
+      "O0/O2 identity preserved",
+      "F-CI18 governance ownership gate preserved"
+    ]
+  },
+  "source_lineage_reachability_evidence": {
+    "qualification_branch": "qualification/f-ci19-candidate-a-preservation",
+    "workflow_run": 34320967298,
+    "workflow_job": 102367277768,
+    "conclusion": "success",
+    "artifact_id": 10091832379,
+    "artifact_zip_sha256": "49232f699cff28d2f479955093b1d4be7f4be89d8e69c0dccdd5c5bc86de4c96",
+    "proved": [
+      "Candidate A production/reference source identity",
+      "qualified process and adapter blob identities",
+      "irrigation process has no in-src production importer",
+      "concrete crop-root adapter has no in-src production importer",
+      "dynamic root-water-uptake process does not silently reach serialized/canonical runtime",
+      "serialized runtime consumes explicit precomputed qssdi and qrot forcing",
+      "generic transaction seam remains Richards-free and calendar-free",
+      "F-SI22 adds no production/reference delta above Candidate A"
+    ]
+  },
+  "ordered_source_spine": [
+    {
+      "stage": "F-MQ23",
+      "classification": "INDEPENDENT_RESTRICTED_RUNTIME_ADMISSION",
+      "decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+      "scope": "exact F-VQ14 restricted real-physics profile, serialized physical execution only"
+    },
+    {
+      "stage": "F-MQ24",
+      "source_under_test": "ffab7d705928170db3e76a5d346caafeb560e605",
+      "qualification_closeout": "1938d95ab8a4bdf283b13c7efbdf1b6c659af69f",
+      "classification": "INDEPENDENT_RESTRICTED_SNOW_ADMISSION",
+      "scope": "one-call-daily active snow on restricted serialized real-physics route"
+    },
+    {
+      "stage": "F-VQ21",
+      "classification": "INDEPENDENT_PRECOMPUTED_ROOT_SINK_RUNTIME_ADMISSION",
+      "scope": "nonnegative precomputed qrot on restricted serialized reference route"
+    },
+    {
+      "stage": "F-VQ22",
+      "classification": "INDEPENDENT_PROCESS_ADMISSION",
+      "source_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+      "scope": "MACRO/Feddes drought-only root-water-uptake process",
+      "higher_runtime_composition": "NOT_IMPLIED_AND_NOT_REACHABLE_FROM_ADMITTED_SERIALIZED_RUNTIME"
+    },
+    {
+      "stage": "F-MR12",
+      "classification": "QUALIFIED_STRUCTURAL_ADAPTER_ONLY",
+      "source_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+      "scope": "shared crop-root-uptake input adapter",
+      "concrete_crop_provider": "NOT_ADMITTED",
+      "crop_host_integration": "NOT_ADMITTED",
+      "higher_runtime_composition": "ABSENT_BY_REACHABILITY_GATE"
+    },
+    {
+      "stage": "F-VQ18_AND_F-VQ20",
+      "classification": "INDEPENDENT_IRRIGATION_PROCESS_ADMISSION",
+      "current_process_blob": "c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+      "scope": "fixed-event plus restricted TCS7/DCS2 single-node SSDI process semantics",
+      "runtime_composition": "NOT_IMPLIED_AND_ABSENT_BY_REACHABILITY_GATE"
+    },
+    {
+      "stage": "F-VQ23_AND_F-VQ24",
+      "classification": "INDEPENDENT_FMR13_REFERENCE_SOLVER_ADMISSION",
+      "reference_linear_solver_blob": "b292d284e5549049eac1c80df4cc30008154eb96",
+      "scope": "F-SI19 linear solver seam and F-MR13 production-bound nonzero HeadCalc equivalence"
+    },
+    {
+      "stage": "F-VQ25",
+      "classification": "INDEPENDENT_FMR14_NO_CHANGE_ADMISSION",
+      "scope": "interval cost diagnostics only; decision-neutral; REFERENCE only"
+    },
+    {
+      "stage": "F-VQ26",
+      "classification": "INDEPENDENT_RESTRICTED_MODE5_ADMISSION",
+      "scope": "serialized prescribed bottom-head mode 5 with accepted qbot both signs and exactly-once mass"
+    },
+    {
+      "stage": "F-MR15_PLUS_F-VQ27",
+      "production_postimage": "af04ee6a2079569db1fde6ff3ac63076b22586",
+      "classification": "OWNER_COMPOSITION_PLUS_INDEPENDENT_SCIENTIFIC_ADMISSION",
+      "scope": "F-VQ25 base plus exact F-VQ26/F-MR11 incoming mode-5 delta"
+    },
+    {
+      "stage": "F-KT09",
+      "qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+      "classification": "QUALIFIED_GENERIC_TRANSACTION_SEAM",
+      "scope": "explicit opt-in model-owned certificate transport and transaction semantics only",
+      "production_richards_certificate": "NOT_ADMITTED"
+    },
+    {
+      "stage": "F-CI19",
+      "classification": "INDEPENDENT_COMPOSITION_PRESERVATION_AND_REACHABILITY_REQUALIFICATION",
+      "scope": "preserve inherited restricted scientific/runtime claims on exact Candidate A and prove held higher compositions are not silently active"
+    }
+  ],
+  "dormant_or_separately_callable_production_modules": [
+    {
+      "component": "scheduled/fixed irrigation process API",
+      "source": "src/process/mod_irrigation_process.f90",
+      "scientific_process_admission": true,
+      "admitted_serialized_runtime_import": false,
+      "interpretation": "present as independently qualified process building block; no implicit runtime composition claim"
+    },
+    {
+      "component": "dynamic drought-only root-water-uptake process API",
+      "source": "src/process/mod_root_water_uptake_process.f90",
+      "scientific_process_admission": true,
+      "admitted_serialized_runtime_import": false,
+      "interpretation": "present as independently qualified process building block; serialized runtime uses precomputed qrot instead"
+    },
+    {
+      "component": "shared crop-root input adapter",
+      "source": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+      "structural_admission": true,
+      "concrete_crop_provider_admission": false,
+      "admitted_serialized_runtime_import": false
+    }
+  ],
+  "evidence_only_or_blocked_descendants": [
+    {
+      "id": "F-SI22",
+      "head": "1ac759b39ee743bfa0992d6b9da09f2cfeda38b9",
+      "production_delta_from_candidate_a": false,
+      "classification": "EVIDENCE_ONLY"
+    },
+    {
+      "id": "F-VQ28",
+      "head": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+      "classification": "REJECTED_FAIL_CLOSED_TEMPORAL_PROFILE"
+    },
+    {
+      "id": "F-VQ29",
+      "classification": "BLOCKED_NUMERIC_QUALIFICATION",
+      "production_admission": false
+    },
+    {
+      "id": "F-SI23",
+      "head": "229d34f692bdeeb118a2e84c2d1cd1fcbb2d5faa",
+      "classification": "EVIDENCE_ONLY_GATE_A",
+      "production_delta_from_candidate_a": false,
+      "status": "GATE_A_OWNER_SHAPE_FEASIBLE_BOOTSTRAP_BLOCKS_PROTOTYPE",
+      "prototype_allowed": false,
+      "production_allowed": false
+    },
+    {
+      "id": "F-GC02",
+      "classification": "BLOCKED_OWNER_DEPENDENCY",
+      "production_admission": false
+    }
+  ],
+  "hard_scope_holds_carried_forward": [
+    "no production Richards model-owned temporal certificate",
+    "no general groundwater predictor-corrector coupling release",
+    "no WOFOST full physical production binding",
+    "no parallel real-physics reference execution",
+    "no BALANCED, THROUGHPUT or FALLBACK production admission",
+    "no subdaily or multiday active-snow admission",
+    "no active macropore real-physics admission in this source-spine claim",
+    "no swkimpl=1 expansion",
+    "no concrete crop-owner runtime composition through F-MR12",
+    "no irrigation runtime composition inferred from F-VQ18/F-VQ20",
+    "no LayeredMFP or VZAA production solver admission"
+  ],
+  "invariant_assessment": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "PRESERVED",
+    "explicit_data_separation": "PRESERVED_IN_INSPECTED_RUNTIME",
+    "compact_optional_state": "PRESERVED_WITH_SNOW_OPTIONAL_STATE_ONLY_WHEN_ACTIVE",
+    "scratch_per_worker": "PRESERVED_IN_QUALIFIED_SCOPE",
+    "transactional_timesteps": "PASS_EXECUTED_CI19_REPLAY",
+    "cheap_recompute_and_replay": "PASS_A_B_A_AND_ROLLBACK_EVIDENCE",
+    "generic_time": "PASS_NO_CALENDAR_DEPENDENCY_IN_GENERIC_TRANSACTION_SEAM",
+    "coupling_readiness": "HELD_NOT_RELEASED",
+    "mass_conservation": "PASS_HARD_GATE",
+    "alternative_solver_openness": "UNCHANGED",
+    "physics_solver_policy_separation": "PASS_WITH_NONREFERENCE_POLICIES_HELD",
+    "multiswap_primary": "PASS_RESTRICTED_SERIALIZED_PROFILE_ONLY",
+    "diagnostics_runtime": "PASS_FMR14_FVQ25_AND_CI19_REPLAY",
+    "no_silent_dependencies": "PASS_REACHABILITY_GATE_WITH_EXPLICIT_HELD_COMPOSITIONS"
+  },
+  "next_required_step": {
+    "action": "MATERIALIZE_CANONICAL_POSTIMAGE_CANDIDATE",
+    "rule": "Preserve F-CI19/F-CI18 governance tree while replacing only top-level src and reference trees with exact Candidate A trees, then qualify that exact composed postimage before any canonical ref advance.",
+    "candidate_src_tree": "b0a17a9610ee82ea1900a3ff3db3b5ba215443ca",
+    "candidate_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  }
+}
