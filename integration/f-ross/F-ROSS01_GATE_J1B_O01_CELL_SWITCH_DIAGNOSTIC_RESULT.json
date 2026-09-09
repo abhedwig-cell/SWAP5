@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1B_O01_CELL_SWITCH_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_J1B_O01_CELL_SWITCH_DIAGNOSTIC_CONTRACT.json",
+  "execution": {
+    "run_id": 34357951321,
+    "head": "bd0e5d65cf1f54c5a24de0b2cc1f65f28f418d22",
+    "conclusion": "success"
+  },
+  "material": "O01",
+  "valid_parent_case_count": 9,
+  "invalid_parent_case_count": 3,
+  "total_switch_count": 1,
+  "fd_factors_unchanged": [1e-05, 3e-05],
+  "localized_switch": {
+    "geometry": "long_dry",
+    "n_faces": 64,
+    "h_top_cm": -3000.0,
+    "q_fraction_of_K_top": 0.0,
+    "fd_factor": 3e-05,
+    "delta_q_cm_per_day": 6.6966462e-16,
+    "head_index": 39,
+    "base": {
+      "h_cm": -2610.0,
+      "cell_index": 204,
+      "cell_fraction": 0.9984304402968576,
+      "u_log10_negative_head": 3.416640507338281
+    },
+    "minus": {
+      "h_cm": -2609.8109250380794,
+      "cell_index": 204,
+      "cell_fraction": 0.9965426888703632,
+      "u_log10_negative_head": 3.416609044814506
+    },
+    "plus": {
+      "h_cm": -2610.189173163518,
+      "cell_index": 205,
+      "cell_fraction": 0.0003190353270667856,
+      "u_log10_negative_head": 3.4166719839221176
+    }
+  },
+  "invalid_parent_fixture": {
+    "geometry": "dry",
+    "n_faces": 16,
+    "h_top_cm": -1000.0,
+    "q_fractions": [-0.02, 0.0, 0.02],
+    "error": "ValueError('J1A analytic derivative requires strict cell interior')"
+  },
+  "classification": {
+    "o01_switch": "EXPECTED_PIECEWISE_INTERPOLATION_CELL_TRANSITION_IN_LARGE_FD_ORACLE",
+    "base_tangent": "BASE_STATE_REMAINS_STRICT_INTERIOR_AND_HAS_A_UNIQUE_LOCAL_DERIVATIVE",
+    "large_fd": "NOT_A_VALID_SMOOTH_REGIME_LOCAL_DERIVATIVE_ORACLE_BECAUSE_IT_CROSSES_A_TABLE_NODE",
+    "policy": "DO_NOT_AVERAGE_ACROSS_NODE_DO_NOT_SHRINK_PRECOMMITTED_DELTA_ROUTE_TRANSITION_TO_BOUNDARY_CHARACTERIZATION"
+  },
+  "table_bitwise_unchanged": true,
+  "pass": true,
+  "decision": "O01_SINGLE_FD_CELL_SWITCH_LOCALIZED_READY_FOR_J1B_R1_PRECOMMIT",
+  "production_implementation": false
+}
