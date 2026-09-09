@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI22",
+  "title": "Richards Fixed-Horizon Nested Refinement Certificate Characterization",
+  "branch": "work/f-si22-richards-fixed-horizon-certificate",
+  "base_commit": "0ffd4e304ac5cf66fe7738cac3a1c07308d6c687",
+  "upstream_qualified_seam": {
+    "work_unit": "F-KT09",
+    "status": "QUALIFIED_GENERIC_MODEL_OWNED_TEMPORAL_CERTIFICATE_TRANSACTION_SEAM",
+    "qualified_code_head": "4a792636ef73d25c671c5e0953cefd11978cd0ec",
+    "qualification_workflow_run": 34306247949
+  },
+  "scientific_trigger": {
+    "negative_work_unit": "F-VQ28",
+    "finding": "Changing the outer attempted endpoint during retry does not preserve a conservative relation between raw one-versus-two-step head defect and fine-reference error across the held-out hydraulic envelope.",
+    "source_evidence": "integration/f-si/F-SI20_FVQ28_NEGATIVE_QUALIFICATION_HANDOFF.json"
+  },
+  "source_bound_prior_evidence": {
+    "fixed_horizon_refinement": "integration/f-si/F-SI20_FIXED_HORIZON_REFERENCE_EVIDENCE.json",
+    "hydraulic_state_refinement": "integration/f-si/F-SI20_HYDRAULIC_STATE_REFINEMENT_EVIDENCE.json",
+    "physical_envelope": "integration/f-si/F-SI20_PHYSICAL_ENVELOPE_EVIDENCE.json",
+    "key_observation": "At fixed physical t1, successive Richards trajectories refine toward one another. The dry state is pre-asymptotically under-conservative for early raw defects but enters a conservative regime after further fixed-horizon refinement."
+  },
+  "candidate_semantics": {
+    "name": "FIXED_HORIZON_NESTED_REFINEMENT_BAND",
+    "attempt_origin": "single physical base state at attempt t0",
+    "attempt_endpoint": "single unchanged physical t1 for every internal refinement trajectory",
+    "nested_step_counts": [1,2,4,8,16,32,64,128],
+    "primary_dimensional_observable": "d_k = max_i abs(h_N_i - h_2N_i) at common final t1",
+    "secondary_dimensional_observables": [
+      "max_i abs(theta_N_i - theta_2N_i)",
+      "signed storage endpoint difference",
+      "ponding endpoint difference",
+      "groundwater-level endpoint difference"
+    ],
+    "candidate_band_question": "Does a bounded sequence of successive fixed-horizon endpoint defects enter and remain in a contracting, non-pathological regime across the prescribed-head hydraulic envelope?",
+    "certificate_indicator_selected": false,
+    "normalization_selected": false,
+    "numeric_acceptance_limit_selected": false
+  },
+  "gate_A": {
+    "type": "nonproduction characterization",
+    "matrix": {
+      "initial_uniform_pressure_heads_cm": [-25.0,-75.0,-250.0],
+      "prescribed_bottom_head_jumps_cm": [-0.1,-0.01,0.001,0.01,0.1],
+      "total_horizon_day": 0.25,
+      "bottom_mode": 5,
+      "optional_physics": "inactive",
+      "hard_mass_tolerance": 1e-12,
+      "solver_max_iterations": 8,
+      "solver_max_backtracking": 4,
+      "solver_min_step_duration_day": 1e-6
+    },
+    "required_outputs_per_case": [
+      "all nested trajectories converged or explicit solver-failure level",
+      "hard mass residual by trajectory",
+      "dhead sequence",
+      "dtheta sequence",
+      "contraction ratios where numerically resolved",
+      "first level with two consecutive decreases",
+      "first level with three consecutive decreases",
+      "machine-floor contamination flag",
+      "comparison against a finer same-horizon reference for characterization only"
+    ]
+  },
+  "gate_B_if_A_supports_candidate": {
+    "type": "certificate-shape experiment through qualified F-KT09 seam",
+    "restriction": "Still nonproduction. No scientific tolerance may be selected in F-SI22.",
+    "goal": "Prove that an F-SI-owned attempt-local certificate can be transported through MODEL_OWNED_CERTIFICATE mode while preserving rollback, hard mass gate, private internal substeps and explicit external commit."
+  },
+  "hard_holds": {
+    "production_source_modified_before_gate_A": false,
+    "raw_outer_retry_defect_reintroduced_as_acceptance_metric": false,
+    "universal_richardson_factor_assumed": false,
+    "universal_defect_to_error_multiplier_assumed": false,
+    "state_normalization_invented_without_evidence": false,
+    "numeric_temporal_tolerance_selected": false,
+    "mass_gate_relaxed": false,
+    "physics_changed": false,
+    "calendar_assumption_added": false,
+    "coupling_specific_logic_added": false,
+    "reference_mode_removed": false,
+    "independent_FVQ_required_before_production_admission": true
+  },
+  "cost_boundary": {
+    "gate_A_may_use_expensive_reference_refinement": true,
+    "production_path_may_not_structurally_require_full_1_2_4_8_16_32_64_128_ladder": true,
+    "bounded_cost_production_design_required_later": true
+  },
+  "possible_outcomes": [
+    "A_SUPPORTED_FIXED_HORIZON_BAND_CANDIDATE_READY_FOR_CERTIFICATE_SHAPE_TEST",
+    "B_STATE_OR_STIMULUS_RESTRICTED_CANDIDATE_ONLY",
+    "C_FIXED_HORIZON_BAND_NOT_RELIABLE_ENOUGH_REQUIRES_DIFFERENT_RICHARDS_ESTIMATOR"
+  ],
+  "production_richards_admitted": false
+}
