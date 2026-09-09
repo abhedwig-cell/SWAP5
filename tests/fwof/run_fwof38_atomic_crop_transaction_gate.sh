@@ -134,12 +134,15 @@ update_anchor = '''  update_parameters%development_stage_end = 2.0_real64
 '''
 setup_crop = update_anchor + '''
   call prepare_fmr_wofost_crop_event_forcing(accepted_window, forcing, crop_event_forcing, crop_status)
-  call require(crop_status == FMR_WOF38_OK .and. crop_event_forcing%ready(), 'F-WOF38 event forcing construction')
+  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 event forcing construction status')
+  call require(crop_event_forcing%ready(), 'F-WOF38 event forcing construction ready')
   call construct_fmr_wofost_crop_transaction_parameters(bundle, update_parameters, 0.005_real64, 0.002_real64, &
        crop_parameters, crop_status)
-  call require(crop_status == FMR_WOF38_OK .and. crop_parameters%ready(), 'F-WOF38 crop parameters')
+  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop parameters status')
+  call require(crop_parameters%ready(), 'F-WOF38 crop parameters ready')
   call initialize_fmr_wofost_crop_transaction_state(seed, crop_initial_state, crop_status)
-  call require(crop_status == FMR_WOF38_OK .and. crop_initial_state%ready(), 'F-WOF38 crop transaction state')
+  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop transaction state status')
+  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')
   call setup_crop_kernel_committed(crop_initial_state, crop_committed, 3801_int64, 100.0_real64)
   call setup_crop_config(crop_config)
   call crop_kernel%bind_model(crop_model)
@@ -160,8 +163,8 @@ setup_crop = update_anchor + '''
 
   call crop_kernel%advance_interval(crop_parameters, crop_committed, crop_event_forcing, crop_config, &
        100.0_real64, 101.0_real64, crop_result2, crop_kernel_candidate2, crop_diag2, crop_checkpoint)
-  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED .and. crop_kernel_candidate2%ready(), &
-       'F-WOF38 replay crop F-KT trial')
+  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED, 'F-WOF38 replay crop F-KT trial status')
+  call require(crop_kernel_candidate2%ready(), 'F-WOF38 replay crop F-KT candidate ready')
 
   call crop_committed%snapshot(crop_snapshot, snapshot_available)
   call require(snapshot_available, 'F-WOF38 committed crop snapshot before publication')
@@ -191,8 +194,8 @@ post_complete = first_complete + '''
     call tx%snapshot_owner(candidate_snapshot_owner1, snapshot_available)
     call require(snapshot_available .and. same_owner(candidate_snapshot_owner1, candidate1), &
          'F-WOF38 first F-KT owner equals direct F-WOF33 candidate')
-    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &
-         'F-WOF38 first candidate contains matching event receipt')
+    call require(tx%receipt_ready(), 'F-WOF38 first candidate receipt ready')
+    call require(tx%consumed_event(event_identity), 'F-WOF38 first candidate consumes matching event')
   class default
     call require(.false., 'F-WOF38 first candidate state type')
   end select
@@ -204,8 +207,8 @@ post_complete = first_complete + '''
     call tx%snapshot_owner(candidate_snapshot_owner2, snapshot_available)
     call require(snapshot_available .and. same_owner(candidate_snapshot_owner2, candidate1), &
          'F-WOF38 replay F-KT owner equals direct candidate')
-    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &
-         'F-WOF38 replay candidate contains same receipt')
+    call require(tx%receipt_ready(), 'F-WOF38 replay candidate receipt ready')
+    call require(tx%consumed_event(event_identity), 'F-WOF38 replay candidate consumes same event')
   class default
     call require(.false., 'F-WOF38 replay candidate state type')
   end select
@@ -221,8 +224,9 @@ post_complete = first_complete + '''
   select type (tx => crop_snapshot)
   type is (fmr_wofost_crop_transaction_state_t)
     call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
-    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &
-         'F-WOF38 rollback leaves owner and receipt uncommitted')
+    call require(snapshot_available, 'F-WOF38 rollback owner snapshot available')
+    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 rollback leaves owner at checkpoint')
+    call require(.not. tx%receipt_ready(), 'F-WOF38 rollback leaves receipt uncommitted')
   class default
     call require(.false., 'F-WOF38 rollback committed state type')
   end select
@@ -241,8 +245,8 @@ post_complete = first_complete + '''
     call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
     call require(snapshot_available .and. same_owner(crop_snapshot_owner, candidate1), &
          'F-WOF38 committed owner equals direct candidate')
-    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &
-         'F-WOF38 matching event receipt committed with owner')
+    call require(tx%receipt_ready(), 'F-WOF38 committed receipt ready with owner')
+    call require(tx%consumed_event(event_identity), 'F-WOF38 committed receipt matches event')
   class default
     call require(.false., 'F-WOF38 committed state type after publication')
   end select
@@ -256,14 +260,14 @@ post_complete = first_complete + '''
   crop_revision_before = crop_committed%current_revision()
   call crop_kernel%advance_interval(crop_parameters, crop_committed, crop_event_forcing, crop_config, &
        100.0_real64, 101.0_real64, crop_duplicate_result, crop_duplicate_candidate, crop_duplicate_diag)
-  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH .and. &
-       .not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval rejected')
+  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH, 'F-WOF38 duplicate original interval status')
+  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval no candidate')
   call require(crop_committed%current_revision() == crop_revision_before, &
        'F-WOF38 duplicate event leaves revision unchanged')
   call crop_kernel%advance_interval(crop_parameters, crop_committed, crop_event_forcing, crop_config, &
        101.0_real64, 102.0_real64, crop_duplicate_result, crop_duplicate_candidate, crop_duplicate_diag)
-  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. &
-       .not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot move to next crop interval')
+  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 stale next-interval event status')
+  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot materialize next-interval candidate')
   call require(crop_committed%current_revision() == crop_revision_before, &
        'F-WOF38 stale next-interval replay leaves revision unchanged')
   print '(a)', 'FWOF38_DUPLICATE_EVENT_ZERO_EXTRA_CROP_ADVANCEMENT=PASS'
@@ -273,24 +277,25 @@ post_complete = first_complete + '''
   bad_crop_forcing = forcing
   bad_crop_forcing%minimum_temperature = nanv
   call prepare_fmr_wofost_crop_event_forcing(accepted_window, bad_crop_forcing, bad_crop_event_forcing, crop_status)
-  call require(crop_status == FMR_WOF38_OK .and. bad_crop_event_forcing%ready(), &
-       'F-WOF38 bad crop event remains source-provenance valid')
+  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 bad crop event provenance status')
+  call require(bad_crop_event_forcing%ready(), 'F-WOF38 bad crop event remains source-provenance ready')
   call setup_crop_kernel_committed(crop_initial_state, bad_crop_committed, 3802_int64, 100.0_real64)
   call bad_crop_kernel%bind_model(bad_crop_model)
   call bad_crop_committed%capture_checkpoint(bad_crop_checkpoint, crop_checkpoint_ok)
   call require(crop_checkpoint_ok, 'F-WOF38 failure crop checkpoint')
   call bad_crop_kernel%advance_interval(crop_parameters, bad_crop_committed, bad_crop_event_forcing, crop_config, &
        100.0_real64, 101.0_real64, bad_crop_result, bad_crop_candidate, bad_crop_diag, bad_crop_checkpoint)
-  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. .not. bad_crop_candidate%ready(), &
-       'F-WOF38 crop failure no candidate')
+  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 crop failure status')
+  call require(.not. bad_crop_candidate%ready(), 'F-WOF38 crop failure no candidate')
   call require(bad_crop_committed%current_revision() == 0, 'F-WOF38 crop failure no revision')
   call bad_crop_committed%snapshot(crop_snapshot, snapshot_available)
   call require(snapshot_available, 'F-WOF38 failure committed snapshot')
   select type (tx => crop_snapshot)
   type is (fmr_wofost_crop_transaction_state_t)
     call tx%snapshot_owner(crop_snapshot_owner, snapshot_available)
-    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &
-         'F-WOF38 crop failure owner receipt unchanged')
+    call require(snapshot_available, 'F-WOF38 crop failure owner snapshot available')
+    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 crop failure owner unchanged')
+    call require(.not. tx%receipt_ready(), 'F-WOF38 crop failure receipt unchanged')
   class default
     call require(.false., 'F-WOF38 failure committed state type')
   end select
@@ -304,8 +309,8 @@ post_complete = first_complete + '''
   call policy_crop_kernel%bind_model(policy_crop_model)
   call policy_crop_kernel%advance_interval(crop_parameters, policy_crop_committed, crop_event_forcing, bad_policy_config, &
        100.0_real64, 101.0_real64, policy_crop_result, policy_crop_candidate, policy_crop_diag)
-  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED .and. .not. policy_crop_candidate%ready(), &
-       'F-WOF38 retry-shrinking policy rejected')
+  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED, 'F-WOF38 retry-shrinking policy status')
+  call require(.not. policy_crop_candidate%ready(), 'F-WOF38 retry-shrinking policy no candidate')
   call require(policy_crop_committed%current_revision() == 0, 'F-WOF38 invalid policy no crop mutation')
   print '(a)', 'FWOF38_FIXED_ONE_DAY_EVENT_FORBIDS_RETRY_DT_SHRINKING=PASS'
 '''
