@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_HENPR_SVG2006_N241_SEAM_ALIGNED_FACE_CHARACTERIZATION_R1",
+  "purpose": "Test whether the failed uniform-N241 C2B face representation is repaired by aligning the two physical C0 conductivity-derivative joins, without increasing table density, memory or runtime iteration count.",
+  "frozen_physical_closure": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "dependency": {
+    "state_coordinate_gate": "C2B_DIRECT_STATE_TO_LOG_HEAD_TABLE_COORDINATE_R1",
+    "state_coordinate_run": 34347476677,
+    "failed_uniform_face_result": "integration/f-ross/F-ROSS01_GATE_C2B_FACE_TABLE_CHARACTERIZATION_RESULT.json"
+  },
+  "candidate": {
+    "N": 241,
+    "storage": "float32_log_mobility",
+    "head_envelope_cm": [-10000.0, -1.0],
+    "u_definition": "u = log10(-h)",
+    "u_endpoints": [0.0, 4.0],
+    "exact_join_nodes": [0.6020599913279624, 1.6020599913279625],
+    "join_heads_cm": [-4.0, -40.0],
+    "piecewise_interval_counts": [36, 60, 144],
+    "piecewise_node_counts_with_shared_boundaries": [37, 61, 145],
+    "total_intervals": 240,
+    "total_nodes": 241,
+    "segment_cell_widths_u": [0.016723888647998956, 0.016666666666666666, 0.016652361171333594],
+    "uniform_N241_reference_cell_width_u": 0.016666666666666666,
+    "shared_table_plus_metadata_bytes_max": 262144,
+    "expected_shared_table_plus_metadata_bytes": 232356,
+    "lookup_cost": "O(1) piecewise segment selection plus bilinear interpolation",
+    "runtime_nonlinear_iterations": 0
+  },
+  "characterization_materials": ["B10", "O12", "O13", "B05", "O14", "O05", "B12"],
+  "probes": "Reuse the exact frozen C2B face-characterization probes, including explicit -40 cm and -4 cm join probes. This is characterization, not a holdout.",
+  "thresholds": {
+    "reference_failures": 0,
+    "lookup_failures": 0,
+    "nan_or_inf": 0,
+    "full_table_generation_failures": 0,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "near_zero_violation_count": 0,
+    "max_equal_head_relative_error": 0.005,
+    "max_hydrostatic_abs_q_over_ksatfit": 1e-5,
+    "shared_table_plus_metadata_bytes": 262144
+  },
+  "hard_rules": [
+    "Do not change the H_ENPR/SVG2006 physical closure.",
+    "Do not increase N above 241 in this gate.",
+    "Do not relax any C1R face-flux threshold.",
+    "Do not add runtime root finding or nonlinear iteration.",
+    "Do not treat characterization probes as a future holdout.",
+    "If R1 passes, freeze a separate fresh face-flux holdout before any qualification claim.",
+    "If R1 fails broadly away from the exact joins, stop seam-only refinement and investigate a different representation rather than silently densifying the table."
+  ],
+  "decision_if_all_pass": "C2B_SEAM_ALIGNED_N241_R1_CHARACTERIZATION_PASS_READY_TO_FREEZE_FRESH_HOLDOUT",
+  "decision_if_any_fail": "C2B_SEAM_ALIGNED_N241_R1_CHARACTERIZATION_FAIL_CLOSED",
+  "scope_guard": "Representation characterization only; no transient, groundwater, production or empirical hydraulic validation claim."
+}
