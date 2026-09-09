@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-MR",
   "work_unit": "F-MR20",
   "title": "Parallel Real-Physics MultiSWAP Execution Architecture & Bounded Scheduling Readiness",
-  "status": "READINESS_PERSISTED_PRODUCTION_IMPLEMENTATION_NOT_STARTED",
+  "status": "QUALIFIED_PARALLEL_REAL_PHYSICS_MULTISWAP_READINESS_READY_FOR_IMPLEMENTATION",
   "production_change": false,
   "source_bound_baseline": {
     "qualified_runtime_core": "src/runtime/mod_fmr_runtime_core.f90",
@@ -64,15 +64,29 @@
       "src/runtime/mod_fmr_serialized_reference_backend.f90",
       "src/kernel/mod_kernel_transactions.f90"
     ],
-    "explicit_no_overlap_with_active_F_MR19": [
+    "explicit_no_overlap_with_F_MR19_closeout": [
       "src/runtime/mod_fmr_committed_restart.f90",
       "integration/f-mr/F-MR19_*.json",
       "tests/fmr/*fmr19*",
       ".github/workflows/*fmr19*"
     ],
-    "shared_core_change_policy": "if implementation proves a shared-core change is unavoidable, stop and reconcile ownership after the active F-MR19 candidate is immutable; do not edit shared source concurrently"
+    "shared_core_change_policy": "if implementation proves a shared-core change is unavoidable, stop and reconcile ownership before editing shared source"
   },
-  "qualification_matrix": {
+  "readiness_evidence": {
+    "results": "integration/f-mr/F-MR20_READINESS_RESULTS.json",
+    "tested_head": "9287adc28f6c441cdfb25a4a20009e059e2c97dd",
+    "workflow_run": 34397614587,
+    "workflow_job": 102621088136,
+    "workers": [1, 2, 4, 8],
+    "columns": [1, 2, 8, 17, 31, 32, 64],
+    "matrix_combinations_per_optimization": 28,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true,
+    "no_production_src_change": true,
+    "scope": "deterministic scheduling and bounded numerical-lane architecture only"
+  },
+  "production_qualification_matrix_after_implementation": {
     "workers": [1, 2, 4, 8],
     "columns": [1, 2, 8, 17, 31, 32, 64],
     "required": [
@@ -89,14 +103,17 @@
       "no physical-config mutation when execution class changes",
       "memory scaling by columns versus workers",
       "O0/O2 identity where meaningful"
-    ]
+    ],
+    "status": "NOT_YET_EXECUTED_BECAUSE_PRODUCTION_PARALLEL_RUNTIME_DOES_NOT_EXIST"
   },
   "not_claimed": [
     "parallel real-physics implementation",
     "thread safety of legacy HeadCalc bindings",
     "parallel speedup",
     "production memory guarantee",
-    "qualified relaxed/fallback physical policy"
+    "qualified relaxed/fallback physical policy",
+    "multi-worker real-physics mass or state identity"
   ],
-  "exit_condition": "QUALIFIED_PARALLEL_REAL_PHYSICS_MULTISWAP_READINESS_READY_FOR_IMPLEMENTATION"
+  "exit_condition": "QUALIFIED_PARALLEL_REAL_PHYSICS_MULTISWAP_READINESS_READY_FOR_IMPLEMENTATION",
+  "exit_condition_achieved": true
 }
