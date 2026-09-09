@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ31",
+  "title": "Independent Qualification of Transaction-Composed Richards Temporal Indicator History",
+  "branch": "qualification/f-vq31-transaction-composed-richards-temporal-history",
+  "base_commit": "d8e2ac874fc395d8831e995714af553cee47b08b",
+  "frozen_before_execution": true,
+  "scope": "independent production/composition qualification only; no scientific tolerance or production temporal acceptance",
+  "source_locks": {
+    "F_KT10_closeout": {"path":"integration/f-kt/F-KT10_CLOSEOUT.json","blob":"1a53f26c4c299080d2ae8f03304320d55cf8ae8b","decision":"IMPLEMENTED_OWNER_VERIFIED_TRANSACTION_OWNED_RICHARDS_TEMPORAL_HISTORY_COMPOSITION_READY_FOR_INDEPENDENT_PRODUCTION_QUALIFICATION"},
+    "F_KT10_handoff": {"path":"integration/f-kt/F-KT10_OWNER_HANDOFF.json","blob":"24c257a8d44d7373095f3f5a27997cc89454d4d2"},
+    "F_SI25_closeout": {"path":"integration/f-si/F-SI25_CLOSEOUT.json","blob":"5bbb3613fe53ab68ec083e979dc7b062c117349c"},
+    "F_SI25_owner_evidence": {"path":"integration/f-si/F-SI25_OWNER_EVIDENCE.json","blob":"553e43d55f021dfb5efc9df4b9b8d96353a545d7"},
+    "F_VQ30_plan": {"path":"integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json","blob":"8bf40e19ba547ec93c4d8ce18d7ac6111707afe7"},
+    "F_VQ30_evidence": {"path":"integration/f-vq/F-VQ30_HELD_OUT_EVIDENCE.json","blob":"39832173174271f4ad97278662467eb4dab13599"},
+    "F_VQ30_closeout": {"path":"integration/f-vq/F-VQ30_CLOSEOUT.json","blob":"6663bcc1149f07962bb9921840958d6d7de628a4"}
+  },
+  "qualified_owner_envelope_locked": {
+    "solver": "reference Richards legacy binding",
+    "top_boundary": "explicit fixed flux",
+    "bottom_mode": 5,
+    "macropore_active": false,
+    "root_extraction_active": false,
+    "conductivity_implicit_mode": 0,
+    "conductivity_mean_method": 1,
+    "hard_mass_tolerance": 1e-12,
+    "candidate_formula_changed": false,
+    "analytic_factor": 2.0,
+    "empirical_factor_fitted": false
+  },
+  "independent_disjoint_composition_matrix": {
+    "role": "independent composition-equivalence matrix; not a scientific truth/error-bound matrix",
+    "frozen_before_execution": true,
+    "initial_uniform_heads_cm": [-55.0,-140.0,-240.0],
+    "prescribed_bottom_head_jumps_cm": [-0.04,0.04],
+    "horizons_day": [0.2,0.375],
+    "case_count": 12,
+    "cases": [
+      {"case":1,"h0_cm":-55.0,"jump_cm":-0.04,"horizon_day":0.2},
+      {"case":2,"h0_cm":-55.0,"jump_cm":0.04,"horizon_day":0.2},
+      {"case":3,"h0_cm":-55.0,"jump_cm":-0.04,"horizon_day":0.375},
+      {"case":4,"h0_cm":-55.0,"jump_cm":0.04,"horizon_day":0.375},
+      {"case":5,"h0_cm":-140.0,"jump_cm":-0.04,"horizon_day":0.2},
+      {"case":6,"h0_cm":-140.0,"jump_cm":0.04,"horizon_day":0.2},
+      {"case":7,"h0_cm":-140.0,"jump_cm":-0.04,"horizon_day":0.375},
+      {"case":8,"h0_cm":-140.0,"jump_cm":0.04,"horizon_day":0.375},
+      {"case":9,"h0_cm":-240.0,"jump_cm":-0.04,"horizon_day":0.2},
+      {"case":10,"h0_cm":-240.0,"jump_cm":0.04,"horizon_day":0.2},
+      {"case":11,"h0_cm":-240.0,"jump_cm":-0.04,"horizon_day":0.375},
+      {"case":12,"h0_cm":-240.0,"jump_cm":0.04,"horizon_day":0.375}
+    ],
+    "exact_triplet_overlap_with_F_SI24_owner_matrix": 0,
+    "exact_triplet_overlap_with_F_VQ30_matrix": 0,
+    "exact_triplet_overlap_with_F_KT10_single_real_fixture": 0,
+    "previous_derivative_rule": "compute the same stationary-prejump right derivative independently from the admitted B1.10 constitutive state and prescribed bottom-head jump, then supply exactly that vector to both comparison routes",
+    "direct_route": "reference Richards solve plus direct F-SI25 evaluate_temporal_indicator with explicit previous derivative",
+    "transaction_route": "same physical problem initialized with F-KT10 committed-state history seed and evaluated through the production transaction/runtime composition",
+    "comparison_rule": "direct and transaction routes must agree in B_inf and current derivative to strict deterministic floating-regression tolerance, while principal physical state/flux/mass and bounded-cost semantics remain unchanged",
+    "truth_claim": false,
+    "N512_required": false
+  },
+  "mandatory_regression_matrix": {
+    "F_VQ30_frozen_cases": 16,
+    "purpose": "prove no regression relative to independently qualified pre-production indicator transfer",
+    "matrix_or_expected_B_inf_may_change": false,
+    "deep_reference_rerun_required": false,
+    "required_result": "transaction-supplied history reproduces frozen production B_inf values with hard mass and bounded-cost shape unchanged"
+  },
+  "gates": {
+    "G01_SOURCE_LINEAGE_LOCK": "All source-lock blobs and owner decisions match this frozen plan.",
+    "G02_TRANSACTION_LIFECYCLE": "Independently replay warmup, accepted commit, temporal rejection, solver rejection, mass rejection, retry, rollback and committed-history reuse; rejected paths never mutate committed history.",
+    "G03_FEATURE_SCOPE_AND_A_B_A": "Inactive layouts have no derivative vector; A-B-A column execution has no history leakage.",
+    "G04_REAL_PRODUCTION_BINDING": "Reference Richards production seam uses transaction-owned history without changing physical state, accepted fluxes, mass accounting or principal solve status.",
+    "G05_FROZEN_F_VQ30_REPLAY": "All 16 frozen F-VQ30 production cases reproduce their frozen B_inf using transaction-supplied history with hard mass and bounded cost unchanged.",
+    "G06_DISJOINT_COMPOSITION_MATRIX": "All 12 frozen independent cases produce finite direct and transaction indicators and match each other under frozen comparison rules.",
+    "G07_BOUNDED_COST": "Normal indicator path adds zero full nonlinear trajectories and at most one defect tridiagonal solve.",
+    "G08_HARD_MASS_NONINTERFERENCE": "Hard 1e-12 mass gate passes and continuation plumbing does not alter physical state or accepted fluxes.",
+    "G09_O0_O2": "Focused machine-readable qualification output is bitwise identical under O0/O2 current convention.",
+    "G10_POLICY_FAIL_CLOSED": "B_inf is never promoted into F-KT09 dimensionless certificate; production temporal acceptance remains unavailable/fail-closed.",
+    "G11_SEED_CONTINUITY_BOUNDARY": "No-seed warmup remains unavailable; invalid seed fails closed; arbitrary restart and forcing/event discontinuity continuity are not admitted."
+  },
+  "pass_rules": [
+    "All G01-G11 pass as frozen.",
+    "No production candidate formula, physical fixture semantics, mass gate or F-KT09 certificate contract is changed after execution.",
+    "All 12 independent composition cases are retained regardless of outcome.",
+    "All 16 frozen F-VQ30 regression cases are retained regardless of outcome.",
+    "No empirical rescue factor, normalization or tolerance is introduced.",
+    "Any source-lock, finite-output, lifecycle, noninterference, hard-mass, cost or O0/O2 failure prevents PASS."
+  ],
+  "possible_pass_decision": "QUALIFIED_INDEPENDENT_TRANSACTION_COMPOSITION_OF_RICHARDS_TEMPORAL_INDICATOR_HISTORY_READY_FOR_SEPARATE_SCIENTIFIC_TEMPORAL_ACCEPTANCE_WORK",
+  "hard_nonclaims": [
+    "B_inf is not a qualified general nonlinear true-error upper bound.",
+    "No scientific temporal normalization or application tolerance is selected.",
+    "No production temporal acceptance or retry policy is admitted.",
+    "No arbitrary restart-file persistence is qualified.",
+    "No forcing/event/topology-discontinuity continuation is qualified.",
+    "No q_cap, Nmin, geometric-tail multiplier, fitted safety factor or deep production refinement trajectory is introduced.",
+    "F-GC02, groundwater coupling and F-PE remain unreleased."
+  ],
+  "persist_early_test_second": true,
+  "next_action": "After this plan commit, implement VQ-owned source guards and independent direct-vs-transaction composition harness, then execute exactly the frozen 12-case matrix plus mandatory frozen F-VQ30 regression."
+}
