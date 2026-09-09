@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-LMFP",
   "work_unit": "F-LMFP10",
   "artifact": "INTERSTREAM_OWNERSHIP_BOUNDARY_BEFORE_A1",
@@ -9,7 +9,7 @@
   "current_A0": {
     "workflow_run": 34329612925,
     "tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
-    "status_at_boundary_write": "IN_PROGRESS",
+    "status": "IN_PROGRESS_FULL_LOCALIZATION; NOMINATION_ALREADY_FAIL_CLOSED_IMPOSSIBLE",
     "frozen_basis": "F-LMFP09 C7a revealed characterization rows and legacy SWAP 4.3.1 constitutive semantics",
     "rule": "Do not change A0 candidate definitions, nomination groups, thresholds, probe rows or constitutive semantics after execution has begun."
   },
@@ -17,23 +17,30 @@
     "branch": "work/f-si09-b110-constitutive-provider",
     "qualified_head": "0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
     "qualification": "integration/f-si/F-SI09_QUALIFICATION.json",
+    "provider_source": "src/solver/mod_b110_default_mvg_provider.f90",
+    "provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
     "status": "QUALIFIED_CORRECTED_B110_DEFAULT_MVG_CONSTITUTIVE_PROVIDER",
-    "boundary": "A0 may retain its frozen legacy basis for historical characterization only. Any A1 or later physical qualification that claims compatibility with the admitted default-MvG SWAP5 route must explicitly rebase or cross-qualify against the exact F-SI09 provider/blob. B11/B12/O13 legacy near-saturation observations may not be treated as unresolved SWAP5 owner defects without that reconciliation.",
-    "no_copy_rule": "F-LMFP10 does not reinterpret or independently modify constitutive formulas owned by F-SI09."
+    "direct_code_reconciliation": {
+      "near_saturation_shortcut_still_present": true,
+      "source_semantics": "if relsat > 1-1e-6 then hconduc = c(3), otherwise use the Mualem expression for the default-MvG branch",
+      "interpretation": "F-SI09 qualification did not remove the shortcut diagnosed by F-LMFP09. The word corrected in F-SI09 refers to its qualified source lineage and does not by itself establish value continuity at this shortcut.",
+      "scientific_disposition_of_value_jump_by_F_SI09": "NOT_ESTABLISHED_AS_REPAIRED"
+    },
+    "boundary": "F-SI09 owns the admitted constitutive implementation. F-LMFP10 may diagnose how the retained shortcut affects face representation, but must not independently alter the constitutive formula or label it repaired. Any future qualification against the SWAP5 default-MvG route must bind the exact F-SI09 provider/blob and keep the constitutive seam explicit.",
+    "no_copy_rule": "F-LMFP10 does not independently modify constitutive formulas owned by F-SI09."
   },
   "F_ROSS01_independent_face_oracle": {
     "branch": "work/f-ross01-fast-mfp-feasibility",
-    "head_observed": "9afab5d7fdc3028789f359a07d6209bcadcaf3bc",
+    "latest_head_observed": "eb68ad0a870b4e2ecd55621d1e9bea5d2b799f27",
     "contract": "integration/f-ross/F-ROSS01_REAL_FACE_ORACLE_CONTRACT.json",
-    "status": "ORACLE_CONTRACT_FROZEN_BEFORE_TABLE_CHARACTERIZATION",
-    "boundary": "F-ROSS01 owns its independent Ross-lineage steady-Darcy oracle implementation and explicitly forbids borrowing F-LMFP06-10 implementation internals. F-LMFP10 may compare later numerical evidence, but must not claim Ross oracle lineage or modify Ross table design.",
+    "boundary": "F-ROSS01 owns its independent Ross-lineage steady-Darcy oracle and face-table implementation. F-LMFP10 may later compare evidence but must not import Ross implementation lineage.",
     "shared_theory_is_not_shared_implementation": true
   },
   "F_VQ30_temporal_owner": {
     "branch": "qualification/f-vq30-bounded-stiffness-aware-temporal-indicator",
     "head_observed": "0c3b974708fbb06b13cc3233736fb7aa18c78c76",
     "plan": "integration/f-vq/F-VQ30_QUALIFICATION_PLAN.json",
-    "boundary": "F-VQ30 qualifies a bounded stiffness-aware temporal indicator around the existing FullRichards owner. F-LMFP10 A0 is steady hydraulic representation characterization only and must not derive temporal acceptance, timestep policy or retry semantics from A0 results."
+    "boundary": "F-VQ30 qualifies a bounded stiffness-aware temporal indicator around FullRichards. F-LMFP10 remains steady hydraulic representation characterization and derives no temporal policy from A0."
   },
   "F_VZAA02": {
     "branch": "work/f-vzaa02-donor-separability",
@@ -41,12 +48,12 @@
     "status": "NEGATIVE_D0_DONOR_QUALIFICATION_CLOSED",
     "boundary": "No VZAA donor signal, threshold or history representation is imported into F-LMFP10."
   },
-  "pre_A1_required_reconciliation": [
-    "Persist complete A0 aggregate under the frozen nomination rule.",
-    "If A0 nominates a coordinate family, decide before A1 whether A1 is legacy-reference characterization or SWAP5-admitted-provider qualification.",
-    "For any SWAP5-admitted-provider claim, bind the exact F-SI09 constitutive provider/blob before new holdout generation.",
-    "Keep Ross face-oracle implementation independent; use only cross-evidence if both workstreams later expose comparable steady-Darcy cases.",
-    "Do not use F-VQ30 temporal outcomes to rescue or reject a hydraulic coordinate family."
+  "pre_next_gate_requirements": [
+    "Persist the complete A0 aggregate under the frozen nomination rule.",
+    "Do not start the predeclared A1 because A0 nomination is already mathematically impossible.",
+    "Any new representation hypothesis must be materially different and require a fresh unseen holdout.",
+    "For default-MvG SWAP5 claims, use exact F-SI09 provider semantics including the retained near-saturation shortcut unless a separate constitutive-owner qualification changes them.",
+    "Keep Ross implementation independent and F-VQ30 temporal semantics separate."
   ],
   "architecture_invariants": {
     "single_kernel": "UNCHANGED",
@@ -57,5 +64,5 @@
     "alternative_solver_openness": "PRESERVED",
     "no_hidden_cross_workstream_dependencies": true
   },
-  "status": "BOUNDARY_PERSISTED_DURING_A0_WITHOUT_CHANGING_FROZEN_EXPERIMENT"
+  "status": "BOUNDARY_CORRECTED_AFTER_DIRECT_F_SI09_PROVIDER_CODE_RECONCILIATION"
 }
