@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ33",
+  "title": "Independent Production Qualification of Richards Head-Budget Temporal Certificate",
+  "candidate_source_commit": "931809dbff3b6fed5ae4ef62ff22e127b4bb1da2",
+  "candidate_source_tree": "e3e941dcd7058728581f5488498ebcefb8973aa6",
+  "qualification_plan_commit": "bdf2ffe0351a974820b20c0e2b4e5973342c7501",
+  "matrix_frozen_before_execution": true,
+  "executable_cases_started": false,
+  "decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
+  "failed_gate": "G09_diagnostics_and_cost_shape",
+  "source_bound_finding": {
+    "contract_path": "integration/f-kt/F-KT11_WORK_UNIT_CONTRACT.json",
+    "contract_blob": "7861ed7e44368ab7cd0fbb1bcb423e3056799e47",
+    "required_diagnostic": "budget_native_value",
+    "production_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "production_blob": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889",
+    "behavior": "config.model_temporal_indicator_budget is copied into the backend budget carrier only when valid; otherwise the backend carrier and observation native budget diagnostic are set to 0.0_real64",
+    "consequence": "for supplied invalid negative, NaN or infinite budgets, diagnostics cannot expose the native supplied value as required by the frozen owner contract"
+  },
+  "scientific_semantics_affected": false,
+  "acceptance_formula_affected": false,
+  "mass_ordering_affected": false,
+  "rollback_semantics_affected": false,
+  "production_diagnostic_contract_affected": true,
+  "negative_transfer": false,
+  "gc02_release": false,
+  "required_owner_action": "reopen F-KT11 candidate ownership, preserve raw supplied budget for diagnostics separately from validated normalization value, extend owner invalid-budget matrix to negative/NaN/+Inf, rerun owner CI, and issue a superseding owner handoff",
+  "next_independent_unit": "a fresh independently frozen VQ unit after corrected owner candidate; do not reinterpret this failed F-VQ33 result as PASS"
+}
