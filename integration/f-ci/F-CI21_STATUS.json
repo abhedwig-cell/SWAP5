@@ -15,12 +15,23 @@
   },
   "qualification": {
     "closeout_evidence_commit": "aac82a9f5c73a7f99a73266e08bfe1fee28aa991",
-    "closeout_readiness_run": 34400337386,
-    "closeout_readiness_job": 102630371355,
-    "closeout_readiness_conclusion": "success",
-    "same_head_materialization_run": 34400337379,
-    "same_head_materialization_job": 102630371127,
-    "same_head_materialization_conclusion": "success"
+    "qualification_head_closeout_readiness_run": 34400337386,
+    "qualification_head_closeout_readiness_job": 102630371355,
+    "qualification_head_closeout_readiness_conclusion": "success",
+    "qualification_head_materialization_run": 34400337379,
+    "qualification_head_materialization_job": 102630371127,
+    "qualification_head_materialization_conclusion": "success"
+  },
+  "closeout": {
+    "path": "integration/f-ci/F-CI21_CLOSEOUT.json",
+    "commit": "543c911c436fe1ac94b658299119a5c94813bb4b",
+    "decision": "CLOSED_QUALIFIED_TEMPORAL_CERTIFICATE_MATERIALIZATION_CANONICAL_REF_UNCHANGED",
+    "closeout_head_readiness_run": 34400532381,
+    "closeout_head_readiness_job": 102631028056,
+    "closeout_head_readiness_conclusion": "success",
+    "closeout_head_materialization_run": 34400532437,
+    "closeout_head_materialization_job": 102631027699,
+    "closeout_head_materialization_conclusion": "success"
   },
   "component_status": {
     "production_materialized": true,
@@ -35,7 +46,8 @@
     "F_WOF42_crop_persistence_preserved": true,
     "F_MR18_accepted_commit_receipt_preserved": true,
     "F_MR18_sparse_multiswap_receipt_preserved": true,
-    "closeout_readiness_qualified": true
+    "closeout_readiness_qualified": true,
+    "formal_closeout_persisted": true
   },
   "negative_evidence": {
     "F_VQ33_decision": "COMPLETE_FAIL_CLOSED_SOURCE_CONTRADICTION_NATIVE_INVALID_BUDGET_DIAGNOSTIC_NOT_PRESERVED",
@@ -96,7 +108,7 @@
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "closed": false,
+    "closed": true,
     "canonical_modified": false
   },
   "decision": "QUALIFIED_DEPENDENCY_CLOSED_TEMPORAL_CERTIFICATE_MATERIALIZATION_READY_FOR_SEPARATE_CANONICAL_ADMISSION"
