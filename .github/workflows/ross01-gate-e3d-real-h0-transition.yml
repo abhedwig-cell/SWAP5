@@ -1,0 +1,60 @@
+name: F-ROSS01 Gate E3D Real H0 Saturation Transition
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3D_REAL_H0_TRANSITION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3d_real_h0_transition.py'
+      - '.github/workflows/ross01-gate-e3d-real-h0-transition.yml'
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Execute frozen real h0 transition gate
+        run: |
+          set -euo pipefail
+          out="ross01-gate-e3d-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3d_real_h0_transition.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3D_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3D_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen gate semantics
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3d-{m}/F-ROSS01_GATE_E3D_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['pass'] is True
+          assert r['material'] == m
+          assert r['original_e3_thresholds_unchanged'] is True
+          assert r['reference_top_cell_h0_crossing'] is True
+          assert r['finest_candidate_top_cell_h0_crossing'] is True
+          assert r['base_comparison']['unqualified_face_fallback_count'] == 0
+          assert r['base_comparison']['qualification_solver_failure_count'] == 0
+          assert r['base_comparison']['committed_state_mutation_on_rejected_trial_count'] == 0
+          assert r['base_comparison']['max_abs_step_mass_residual_cm'] <= 1e-9
+          assert r['base_comparison']['max_abs_horizon_mass_residual_cm'] <= 1e-9
+          PY
+        env:
+          MATERIAL: ${{ matrix.material }}
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-ross01-gate-e3d-real-h0-${{ matrix.material }}
+          path: ross01-gate-e3d-${{ matrix.material }}/
