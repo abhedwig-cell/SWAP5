@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "AB_BOUNDED_STATE_AND_EXACT_MASS_FALSIFICATION",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "gate_A": {
+    "source_style_dynamic_list_primary_multiswap": "NO_GO",
+    "advective": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST",
+    "explicit_diffusion": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST",
+    "reason": "Fixed-duration state plateaus exist, but no forcing-independent hard object bound is established. Under the frozen topology stress, simultaneous falling-slug objects grow from 4 to 256 per active bin as event period is refined 64x, with no permitted heuristic merge, minimum thickness or object cap.",
+    "algorithm_wide_FWC_rejection": false,
+    "bounded_redesign_route": "OPEN"
+  },
+  "gate_B": {
+    "minimal_exact_mass_and_transaction_feasibility": "QUALIFIED",
+    "cases": 4,
+    "accepted_steps_per_case": 10000,
+    "max_abs_mass_residual": 2.3314683517128287e-15,
+    "frozen_tolerance": 1.4210854715202004e-14,
+    "mass_repair": false,
+    "rejected_trial_state_unchanged": true,
+    "rejected_trial_ledger_unchanged": true,
+    "physical_FWC_equation_mass_qualification": "OPEN"
+  },
+  "workflow": {
+    "run": 34380354951,
+    "head": "6af5bdcf58ede363facb9690983ce15046bf79a2",
+    "conclusion": "success"
+  },
+  "requested_exit": "FWC_BOUNDED_STATE_AND_CONSERVATIVE_PROTOTYPE_FEASIBLE_READY_FOR_HYDRAULIC_AB",
+  "requested_exit_reached": false,
+  "decision": "FWC_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_RESEARCH_CONTINUES",
+  "next_gate": "QUALIFY_A_HARD_BOUNDED_FIXED_DENSE_OR_FIXED_SLOT_REPRESENTATION_WITH_CONSERVATIVE_FAIL_CLOSED_OVERFLOW_BEFORE_PHYSICAL_HYDRAULIC_AB",
+  "hard_rule": "Overflow may route to a qualified reference solver or reject/retry, but may never discard, silently merge, clip or otherwise alter water solely to satisfy the memory bound.",
+  "status": "GATE_AB_CLOSED_WITH_NEGATIVE_BOUNDED_STATE_EVIDENCE_AND_POSITIVE_MINIMAL_MASS_FEASIBILITY"
+}
