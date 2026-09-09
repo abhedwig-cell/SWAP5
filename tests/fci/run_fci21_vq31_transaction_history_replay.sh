@@ -9,6 +9,9 @@ esac
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
+AUTH_TMP="${TMPDIR:-/tmp}/swap5-fci21-vq31-authority-$$"
+mkdir -p "$AUTH_TMP"
+trap 'rm -rf "$AUTH_TMP"' EXIT
 
 SOURCE_COMMIT=a0331164a8dfc2642becdbe96cab969eabead392
 POSTIMAGE=integration/f-ci/F-CI21_MATERIALIZED_SOURCE_POSTIMAGE.json
@@ -66,9 +69,12 @@ check_auth tests/fmr/test_fmr06_snow_multiswap.f90 ed4b742b76e97ff0ad27b386850c1
 
 echo "FCI21_VQ31_AUTHORITY_BLOB_LOCK=PASS:MODE=$MODE"
 
-python3 - < <(git show "$AUTH_REF:integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json") <<'PY'
+git show "$AUTH_REF:integration/f-vq/F-VQ31_QUALIFICATION_PLAN.json" > "$AUTH_TMP/plan.json"
+git show "$AUTH_REF:integration/f-vq/F-VQ31_CLOSEOUT.json" > "$AUTH_TMP/closeout.json"
+
+python3 - "$AUTH_TMP/plan.json" <<'PY'
 import json,sys
-p=json.load(sys.stdin)
+p=json.load(open(sys.argv[1]))
 m=p['independent_disjoint_composition_matrix']
 assert p['frozen_before_execution'] is True
 assert m['frozen_before_execution'] is True
@@ -83,9 +89,9 @@ assert p['qualified_owner_envelope_locked']['empirical_factor_fitted'] is False
 print('FCI21_VQ31_FROZEN_CONTRACT=PASS:DISJOINT=12:FVQ30=16:OVERLAP=0')
 PY
 
-python3 - < <(git show "$AUTH_REF:integration/f-vq/F-VQ31_CLOSEOUT.json") <<'PY'
+python3 - "$AUTH_TMP/closeout.json" <<'PY'
 import json,sys
-c=json.load(sys.stdin)
+c=json.load(open(sys.argv[1]))
 expected='QUALIFIED_INDEPENDENT_TRANSACTION_COMPOSITION_OF_RICHARDS_TEMPORAL_INDICATOR_HISTORY_READY_FOR_SEPARATE_SCIENTIFIC_TEMPORAL_ACCEPTANCE_WORK'
 assert c['decision']==expected
 assert c['independently_qualified'] is True
