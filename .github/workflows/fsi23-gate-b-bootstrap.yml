@@ -1,0 +1,27 @@
+name: F-SI23 Gate B right-derivative bootstrap
+
+on:
+  push:
+    branches:
+      - work/f-si23-richards-embedded-temporal-estimator
+    paths:
+      - 'integration/f-si/F-SI23_GATE_B_BOOTSTRAP_PLAN.json'
+      - 'tests/fsi/test_fsi23_right_derivative_bootstrap.f90'
+      - 'tests/fsi/run_fsi23_gate_b_bootstrap.sh'
+      - '.github/workflows/fsi23-gate-b-bootstrap.yml'
+  workflow_dispatch:
+
+jobs:
+  bootstrap-characterization:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run frozen F-SI23 Gate B bootstrap characterization
+        run: bash tests/fsi/run_fsi23_gate_b_bootstrap.sh
