@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+  "head_under_test": "c4d0ae5a47ae6831452afb2cb2da4320a44857d8",
+  "workflow": {
+    "name": "F-LMFP09 Gate C2 Endpoint Pair",
+    "run_id": 34311445769,
+    "job_id": 102338764224,
+    "conclusion": "failure",
+    "artifact_id": 10088961316,
+    "artifact_digest": "sha256:bd12acfc5fc53fd021964ef43ad95e078878d725f40bd1526526dbfbcd312c5c"
+  },
+  "persisted_result": {
+    "status": "COMPLETED",
+    "decision": "GATE_C2_SYNTHETIC_ENDPOINT_PAIR_FAILED_LOCALIZE_WITHOUT_THRESHOLD_RELAXATION",
+    "structural_pass": false
+  },
+  "major_result": {
+    "heterogeneous_interface_matrix_pass": true,
+    "heterogeneous_cases": 1000,
+    "heterogeneous_failures": 0,
+    "active_cases": 692,
+    "active_relative_error": {
+      "median": 0.00036066537276617186,
+      "p90": 0.004377953524000742,
+      "p99": 0.02845864145791556,
+      "maximum": 0.13223252543078204
+    },
+    "equal_flux_scaled_residual_max": 9.998024630419877e-11,
+    "hydrostatic_abs_flux_max": 3.3065850940975847e-11,
+    "sign_mismatches": 0,
+    "root_iterations": {
+      "p50": 49,
+      "p90": 55,
+      "p99": 57,
+      "maximum": 57,
+      "acceptance_cap": 60
+    },
+    "explicit_fail_closed_pass": true,
+    "composed_continuity_pass": true,
+    "homogeneous_reduction_pass": true,
+    "homogeneous_reduction_active_p90": 0.011650699367926043,
+    "homogeneous_reduction_active_maximum": 0.025240659591511828
+  },
+  "failure_localization": {
+    "provider_self_check_pass": false,
+    "failing_provider_classes": [
+      {"material":"reference_sand","half_face_length_cm":5.0,"corrected_p90":0.0036845994695306693,"corrected_p99":0.7037738374293654,"corrected_maximum":0.840510905716046},
+      {"material":"reference_sand","half_face_length_cm":10.0,"corrected_p90":0.006478626094072654,"corrected_p99":0.7466739032501755,"corrected_maximum":0.851682278390455},
+      {"material":"very_fast","half_face_length_cm":5.0,"corrected_p90":0.009371426555878129,"corrected_p99":0.328192600462743,"corrected_maximum":0.34376019800054336},
+      {"material":"very_fast","half_face_length_cm":10.0,"corrected_p90":0.01202510956620425,"corrected_p99":0.2186237232486239,"corrected_maximum":0.26345995668009414,"strong_gradient_p90":0.02362078779915413}
+    ],
+    "dominant_error_location": "extreme dry-to-wet endpoint-pair tail probes with h_upper around -1e5 cm and h_lower between about -100 and +100 cm, corresponding to gradient magnitudes around 1e4 to 2e4 for the tested half-face lengths",
+    "representative_reference_sand_5cm_case": {
+      "h_upper_cm": -100000.0,
+      "h_lower_cm": 0.0,
+      "gradient": 20000.0,
+      "reference_flux": -23.26747742479931,
+      "candidate_flux": -3.7109089007535876,
+      "relative_error": 0.840510905716046
+    },
+    "ordinary_probe_matrix_without_explicit_extreme_tail_probes": {
+      "reference_sand_5cm": {"p90":0.003364149999651323,"p99":0.005514842452749859,"maximum":0.006876293504397663},
+      "reference_sand_10cm": {"p90":0.006469696526924385,"p99":0.013082841307339324,"maximum":0.016068497756609977},
+      "very_fast_5cm": {"p90":0.008352617679396311,"p99":0.021619867212281037,"maximum":0.03636303740430555},
+      "very_fast_10cm": {"p90":0.011127682846435021,"p99":0.05276546523617272,"maximum":0.05369084289118933}
+    },
+    "interpretation": "The endpoint-pair coordinate removes the earlier local-gradient root-coverage blocker for the composed synthetic interface matrix. The present Gate C2 failure is instead dominated by interpolation resolution across extreme dry-to-wet endpoint pairs. Removing the deliberately added tail probes is not an admissible repair; the tail evidence is used only to localize the error."
+  },
+  "architecture_and_mass_interpretation": {
+    "single_realized_face_flux_preserved": true,
+    "equal_flux_interface_conservation_preserved": true,
+    "runtime_root_iterations_bounded_in_test": true,
+    "current_table_density_qualified": false,
+    "threshold_relaxation_allowed": false,
+    "silent_extrapolation_allowed": false,
+    "pair_specific_tables_allowed": false,
+    "production_code_changed": false,
+    "persistent_column_state_added": false,
+    "separate_catalog_constitutive_discontinuity_blocker_remains": true
+  },
+  "next_gate": {
+    "name": "C3_ENDPOINT_PAIR_RESOLUTION_OR_ADAPTIVE_KNOT_QUALIFICATION",
+    "required_work": [
+      "characterize interpolation error against endpoint-pair coordinate cell geometry and constitutive curvature",
+      "test bounded globally shared density increases and/or deterministic adaptive knots without validation-driven per-pair tuning",
+      "retain exact equal-head and hydrostatic identities",
+      "retain explicit fail-closed head envelope",
+      "retain the existing fixed acceptance thresholds",
+      "re-run the same extreme tail probes rather than deleting them",
+      "keep lookup cost O(1) and quantify shared bytes per material-geometry class",
+      "only after synthetic C3 passes proceed to catalog admission, where the inherited near-saturation conductivity discontinuity remains a separate owner issue"
+    ]
+  },
+  "current_position": "RESEARCH_CONTINUES_GATE_C2_COMPOSITION_BLOCKER_REMOVED_BUT_ENDPOINT_PAIR_TABLE_RESOLUTION_NOT_YET_QUALIFIED"
+}
