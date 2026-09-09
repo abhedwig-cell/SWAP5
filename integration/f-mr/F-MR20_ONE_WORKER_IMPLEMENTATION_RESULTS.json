@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "evidence_stage": "ONE_WORKER_PRODUCTION_PARALLEL_API_SEAM",
+  "status": "TESTED_ONE_WORKER_PRODUCTION_SEAM_MULTIWORKER_REAL_PHYSICS_NOT_ADMITTED",
+  "decision": "F-MR20_ONE_WORKER_PRODUCTION_SEAM_TESTED_READY_FOR_CONCURRENCY_SAFETY_QUALIFICATION",
+  "baseline": {
+    "branch": "qualification/f-mq23-fvq14-real-physics-runtime",
+    "commit": "ff6c2b4f48dd9e76f5bec41281493f1d35d03d90",
+    "mq23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "serialized_runtime_blob": "e4f5bc0bf47e2721d689e62107b5224196a093d9",
+    "serialized_backend_blob": "ade399a1df4b582c9038442093ccacce034f923d",
+    "runtime_core_blob": "543af573b34bfccd8fbdecf719af22994c5236b2"
+  },
+  "production_candidate": {
+    "tested_head": "8b1d027eb8a0bb39f8bb1e7279bea1bdb09f26b8",
+    "scheduler": {
+      "path": "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "blob": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654"
+    },
+    "worker_pool": {
+      "path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "blob": "ee5ddff3312e400abfe84b31895711a7be0be923"
+    },
+    "source_scope_relative_to_mq23": [
+      "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "src/runtime/mod_fmr_parallel_worker_pool.f90"
+    ],
+    "shared_core_changed": false,
+    "mr19_owned_source_changed": false
+  },
+  "decisive_execution": {
+    "workflow": ".github/workflows/fmr20-parallel-real-physics.yml",
+    "workflow_name": "F-MR20 parallel physical implementation",
+    "run": 34399546898,
+    "job": 102627718048,
+    "head": "8b1d027eb8a0bb39f8bb1e7279bea1bdb09f26b8",
+    "conclusion": "success",
+    "platform": "Ubuntu 24.04.5",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "executable_results": {
+    "source_lock": "PASS",
+    "additive_source_scope_only": "PASS",
+    "no_direct_legacy_or_openmp_boundary_leak": "PASS",
+    "multiworker_rejection_precedes_serialized_physics": "PASS",
+    "optimization_modes": ["O0", "O2"],
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true,
+    "production_scheduler_canonical_identity": true,
+    "invalid_worker_schedule_fail_closed": true,
+    "one_worker_mq23_result_identity": true,
+    "one_worker_mq23_column_diagnostics_identity": true,
+    "one_worker_mq23_aggregate_diagnostics_identity": true,
+    "one_worker_mq23_runtime_diagnostics_identity": true,
+    "one_worker_mq23_committed_physical_state_identity": true,
+    "one_worker_hard_mass_gate": true,
+    "multiworker_real_physics_admitted": false,
+    "multiworker_physical_solve_count": 0,
+    "multiworker_commit_count": 0,
+    "multiworker_committed_state_nonmutation": true,
+    "zero_worker_fail_closed": true
+  },
+  "production_semantics": {
+    "scheduler_order": "canonical template_id,column_id order from existing fmr_build_execution_order",
+    "reference_assignment": "mod(canonical_position-1,worker_count)+1",
+    "worker_count_1": "delegates directly to qualified fmr_run_serialized_physical_multiswap without new physics or transaction logic",
+    "worker_count_gt_1": "fails closed before any serialized physical call",
+    "worker_count_le_0": "fails closed before any serialized physical call",
+    "physical_options_changed": false,
+    "numerical_policy_changed": false,
+    "mass_tolerance_changed": false
+  },
+  "architecture_invariant_audit": {
+    "1_one_kernel": "PASS: new runtime seam delegates to the existing kernel path.",
+    "4_compact_persistent_state": "PASS: no new committed per-column state was added.",
+    "5_scratch_per_worker": "PRESERVED_NOT_YET_MULTIWORKER_PROVEN: no heavy solver state was added per logical column; simultaneous worker ownership remains the next qualification question.",
+    "6_scalable_memory_layout": "PASS_FOR_SEAM: schedule metadata is separate from physical continuation state.",
+    "7_transactional_timesteps": "PASS: worker_count=1 delegates unchanged to MQ23 transaction orchestration; multiworker performs no transaction.",
+    "13_mass_conservation_absolute": "PASS_FOR_ONE_WORKER: hard mass gate is identical to MQ23; multiworker performs no physical work.",
+    "16_multiswap_primary": "PASS_FOR_SEAM: scheduler is many-column and worker-count generic while physical multiworker remains fail-closed.",
+    "23_physics_solver_policy_separated": "PASS: scheduler/worker-count metadata does not mutate physical configuration.",
+    "24_predictable_runtime": "NOT_YET_QUALIFIED_FOR_REAL_MULTIWORKER.",
+    "25_reference_mode_available": "PASS: MQ23 serialized reference remains the executable one-worker path.",
+    "26_diagnostics": "PASS_FOR_ONE_WORKER_IDENTITY; multiworker diagnostics remain future work.",
+    "30_change_audit": "PASS: production delta is exactly two additive MR20 runtime modules."
+  },
+  "not_qualified": [
+    "worker_count greater than one real-physics execution",
+    "thread safety of legacy HeadCalc/module globals",
+    "simultaneous worker-local scratch isolation",
+    "parallel committed-state and mass identity",
+    "parallel speedup",
+    "bounded real-physics difficult-tail runtime",
+    "production relaxed/fallback numerical policy",
+    "production memory scaling"
+  ],
+  "next_gate": {
+    "name": "CONCURRENCY_SAFETY_AND_CONTEXT_OWNERSHIP_QUALIFICATION",
+    "instruction": "Prove whether the restricted serialized HeadCalc binding can support simultaneous worker-owned execution contexts without shared mutable legacy state. If not, fail closed and identify the minimum source-bound isolation refactor before enabling worker_count>1."
+  },
+  "state": {
+    "production_scheduler_realized": true,
+    "production_scheduler_persisted": true,
+    "production_scheduler_tested": true,
+    "one_worker_pool_seam_realized": true,
+    "one_worker_pool_seam_persisted": true,
+    "one_worker_pool_seam_tested": true,
+    "multiworker_real_physics_realized": false,
+    "multiworker_real_physics_tested": false,
+    "multiworker_real_physics_qualified": false
+  }
+}
