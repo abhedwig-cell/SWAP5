@@ -27,10 +27,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install GNU Fortran
+      - name: Ensure GNU Fortran
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gfortran
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
           gfortran --version
       - name: Run F-MR19 committed-boundary process restart gate
         run: bash tests/fmr/run_fmr19_process_restart_gate.sh
