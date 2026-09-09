@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VZAA",
+  "work_unit": "F-VZAA01",
+  "gate": "CONSERVATIVE_DERIVATIVE_ALGEBRA",
+  "classification": "VZAA_DERIVED_ALGORITHMIC_RESEARCH_ONLY",
+  "purpose": "Test the conservation, boundary and transaction algebra required by the conservative derivative contract before coupling any reconstructed VZAA analytical predictor.",
+  "not_claimed": [
+    "published VZAA reproduction",
+    "VZAA hydraulic accuracy",
+    "production solver qualification",
+    "prescribed-head convergence",
+    "response-tangent qualification"
+  ],
+  "cases": [
+    "closed column with pairwise internal corrections",
+    "prescribed downward bottom flux",
+    "prescribed upward bottom flux",
+    "distributed sink/source with pairwise corrections",
+    "prescribed-head mode with explicit nonzero residual and no hidden compensating water",
+    "inadmissible correction trial rejected with committed base state unchanged"
+  ],
+  "acceptance": {
+    "accepted_mass_residual_abs_max": 2e-14,
+    "internal_pairwise_transfer_changes_total_storage_abs_max": 2e-14,
+    "prescribed_bottom_flux_realized_exactly": true,
+    "upward_bottom_flux_supported_without_clipping": true,
+    "head_residual_reported_separately_from_mass": true,
+    "no_hidden_bottom_flux_for_head_residual": true,
+    "rejected_trial_committed_state_bitwise_unchanged": true,
+    "post_update_clipping": false
+  },
+  "hard_rule": "A pass qualifies only the conservative correction algebra. It cannot upgrade published VZAA from ALGORITHMIC_DONOR_ONLY or admit the derivative as a physical solver.",
+  "status": "DESIGN_PERSISTED_BEFORE_EXECUTABLE_GATE"
+}
