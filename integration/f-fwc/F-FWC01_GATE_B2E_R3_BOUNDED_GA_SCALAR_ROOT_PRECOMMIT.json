@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_R3_BOUNDED_MONOTONE_GREEN_AMPT_SCALAR_ROOT_POLICY",
+  "production_implementation": false,
+  "upstream_negative_evidence": "F-FWC01_GATE_B2E_R2_DRY_BIN_GA_NUMERICAL_PROVENANCE_RESULT.json",
+  "equation": "g(F)=F-A*ln(1+F/A)-K*dt=0, A=psi*delta_theta, Z=F/delta_theta",
+  "mathematical_contract": {
+    "g_at_zero": "-K*dt < 0",
+    "derivative": "g'(F)=F/(A+F), nonnegative for F>=0 and strictly positive for F>0",
+    "large_F_limit": "+infinity",
+    "root_property": "exactly one positive root for K,dt,psi,delta_theta > 0"
+  },
+  "candidate_policy": {
+    "name": "DOUBLE_BRACKET_PLUS_FIXED_BISECTION",
+    "initial_lower_F_cm": 0.0,
+    "initial_upper_rule": "max(K*dt, A)",
+    "bracket_growth": "multiply upper bound by 2 while g(upper)<=0",
+    "max_bracket_expansions": 64,
+    "fixed_bisection_iterations": 80,
+    "seed_required": false
+  },
+  "oracle": {
+    "type": "mpmath high-precision monotone bisection",
+    "decimal_digits": 80,
+    "iterations": 240
+  },
+  "frozen_grid": {
+    "K_cm_per_day": [0.01, 0.1, 1.0, 10.0, 100.0],
+    "dt_day": [1e-05, 0.0001, 0.001, 0.01],
+    "psi_cm": [1.0, 10.0, 100.0, 1000.0],
+    "delta_theta": [0.001, 0.01, 0.05, 0.2]
+  },
+  "acceptance": {
+    "all_320_cases_pass": true,
+    "max_depth_error_vs_high_precision_cm": 1e-09,
+    "max_total_candidate_residual_evaluations": 145,
+    "invalid_nonpositive_inputs_fail_closed": true,
+    "dt_sensitivity_strictly_monotone": true,
+    "new_persistent_state_bytes": 0
+  },
+  "architecture_binding": {
+    "physical_parameter_mapping_changed": false,
+    "persistent_dynamic_state": false,
+    "candidate_cacheable": true,
+    "cache_key_must_include_dt": true,
+    "intended_owner": "shared/template-level derived numerical cache or worker scratch"
+  },
+  "hard_nonclaims": [
+    "No M2WC70 code-equivalence claim.",
+    "No physical mapping of K, psi or delta-theta to a specific 2015 FWC dry bin.",
+    "No rainfall allocation, partial dry-bin funding, capillary relaxation, runtime or MultiSWAP qualification.",
+    "A PASS qualifies a numerical root policy for the published equation, not the entire dry-bin creation process."
+  ],
+  "failure_policy": "Fail closed. Do not change the frozen grid, error limit or cost bound after execution.",
+  "status": "PRECOMMITTED_READY_FOR_EXECUTION"
+}
