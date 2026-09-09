@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-FWC",
   "work_unit": "F-FWC01",
   "title": "Finite Water Content Soil-Water Solver Assessment",
@@ -7,13 +7,17 @@
   "base_commit": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
   "production_implementation": false,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "reproduced": false,
   "qualified": false,
-  "decision": "FWC_RESEARCH_CONTINUES",
+  "decision": "FWC_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_RESEARCH_CONTINUES",
   "decision_is_final": false,
+  "requested_positive_exit_reached": false,
   "open_gates": ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"],
-  "hard_blockers_if_failed": ["C_BOUNDED_STATE_OR_QUALIFIED_MEMORY_CONTRACT", "D_DISCRETE_MASS_CONSERVATION"],
+  "hard_blockers_if_failed": [
+    "C_BOUNDED_STATE_OR_QUALIFIED_MEMORY_CONTRACT",
+    "D_DISCRETE_MASS_CONSERVATION"
+  ],
   "primary_lineage": [
     {"doi":"10.1029/2008WR006815","role":"finite-water-content infiltration and redistribution","correction_doi":"10.1029/2008WR007455"},
     {"doi":"10.1002/2015WR017126","role":"general 1-D vadose-zone solution method"},
@@ -24,9 +28,12 @@
   "official_code_artifact": {
     "repository": "University of Wyoming DataCorral",
     "record": "M2WC70",
+    "archive": "M2WC70.zip",
     "language": "C",
     "reported_size_mb": 230,
     "rights": "CC0/public-domain dedication as stated by repository",
+    "download_locator_verified": true,
+    "archive_obtained_in_current_execution_environment": false,
     "checksum_captured": false,
     "reproduced": false
   },
@@ -34,17 +41,57 @@
     "FWC_ADVECTIVE",
     "FWC_EXPLICIT_DIFFUSION"
   ],
+  "executable_gate_ab": {
+    "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+    "precommit_commit": "f9300d4f4c065bbecc12d3e53308bc0dcab1d2c8",
+    "experiment_commit": "9f16331c83a22b813423895cfe547a73998e9985",
+    "result_commit": "9a7465f582fad3b473103f7c6eae684173c6f597",
+    "workflow_head": "6af5bdcf58ede363facb9690983ce15046bf79a2",
+    "workflow_run": 34380354951,
+    "workflow_conclusion": "success",
+    "bounded_state": {
+      "source_style_dynamic_linked_list": "NO_GO_FOR_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION",
+      "finite_duration_plateau_observed": true,
+      "forcing_independent_hard_bound_established": false,
+      "frozen_single_bin_object_growth_under_event_refinement": "4_TO_256_OBJECTS_64X",
+      "frozen_200_bin_replicated_storage_envelope_finest_case_bytes": 1232000,
+      "byte_value_is_official_C_sizeof": false,
+      "advective": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST",
+      "explicit_diffusion": "NO_GO_SOURCE_STYLE_DYNAMIC_LIST"
+    },
+    "exact_mass": {
+      "minimal_finite_volume_ledger_feasibility": "QUALIFIED",
+      "cases": 4,
+      "accepted_steps_per_case": 10000,
+      "max_abs_mass_residual": 2.3314683517128287e-15,
+      "frozen_mass_tolerance": 1.4210854715202004e-14,
+      "mass_repair": false,
+      "rejected_trial_committed_state_bitwise_unchanged": true,
+      "rejected_trial_committed_ledger_exactly_unchanged": true,
+      "physical_FWC_equation_mass_qualification": "OPEN"
+    }
+  },
   "current_findings": [
-    "published method is explicitly finite-volume and conservation-oriented",
+    "published method is explicitly finite-volume and conservation-oriented, but the primary source warns that conservation depends on exact finite-volume bookkeeping rather than the ODEs being inherently conservative",
     "published method is explicit and non-iterative",
     "published lineage includes layered soils and rising/falling groundwater-table validation",
+    "the 2015 implementation lineage explicitly identifies a linked-list methodology for falling slugs",
+    "fixed theta-bin count bounds base arrays but does not establish a forcing-independent bound on dynamic falling-slug objects",
+    "the frozen topology falsification reaches a duration plateau for fixed event spacing but the plateau grows 64x when event period is refined 64x",
+    "source-style dynamic linked-list state is therefore rejected for primary MultiSWAP persistent representation",
+    "a bounded fixed-slot or dense-bin redesign remains research-eligible only with conservative fail-closed overflow and separate physical qualification",
     "2015 advective formulation neglects soil-water diffusivity",
     "a 2016 explicit binwise extension restores a diffusion contribution without a global nonlinear solve",
-    "2017 SMVE identifies advection-like and diffusion-like physical contributions and clarifies their Richards relation",
-    "the diffusion extension improves profile shape but may require large bin counts and small time steps, so it needs a separate bounded-cost qualification",
-    "dynamic front/event state size and branch cost remain unbounded until proven otherwise",
+    "the diffusion extension is not credited with an unproven topology-collapse rule and therefore shares the bounded-state no-go for source-style linked-list persistence",
+    "minimal advective and explicit-diffusion finite-volume ledger reconstructions close at binary64 roundoff scale without mass repair",
+    "intentional rejected trials leave committed base state and ledger unchanged",
     "generic SWAP pressure-head and hydraulic-service fidelity remains open",
     "MODFLOW imposed-head/imposed-flux contract and response tangent remain open"
   ],
-  "status": "THEORY_CODE_PROVENANCE_STATE_CONTRACT_AND_DIFFUSION_CANDIDATE_PERSISTED_PROTOTYPE_NOT_YET_ADMITTED"
+  "next_action": {
+    "priority": "BOUND_REPRESENTATION_BEFORE_HYDRAULIC_AB",
+    "instruction": "Do not start groundwater, crop, MultiSWAP runtime implementation or broad hydraulic A/B yet. First determine whether a fixed dense-bin or fixed-slot FWC representation can preserve all admitted water topology with a hard finite memory contract. Any slot overflow must fail closed or route conservatively to a qualified reference solver; it may not discard, merge or clip water to force boundedness. Then qualify physical FWC mass equations and only afterwards proceed to hydraulic comparison.",
+    "official_code_preference": "If M2WC70 becomes retrievable, capture checksum and exact front/slug structures before claiming source reproduction."
+  },
+  "status": "EXECUTABLE_BOUNDED_STATE_FALSIFICATION_AND_MINIMAL_MASS_LEDGER_GATE_COMPLETE_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_OPEN"
 }
