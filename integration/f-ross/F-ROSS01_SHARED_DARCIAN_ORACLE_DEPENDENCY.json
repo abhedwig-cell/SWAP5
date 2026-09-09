@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "dependency": "SHARED_STEADY_DARCIAN_FACE_REFERENCE",
+  "finding": "The RossFast workunit base does not contain the later F-LMFP06-09 experimental steady-Darcian face-oracle implementation. Copying that implementation into RossFast or rebasing RossFast onto an unmerged LayeredMFP experimental branch would create avoidable duplicate hydraulics or branch coupling.",
+  "architectural_rule": "RossFast and LayeredMFP should share a solver-neutral experimental/reference face-oracle contract once that code is extracted or otherwise made available from an authoritative common base. Production solvers must not own competing copies of SWAP hydraulic constitutive physics.",
+  "prototype_sequence": [
+    "reconstruct and test Ross2011 continuity/time-discretization algebra independently of hydraulic model details",
+    "use a minimal analytic hydraulic fixture only for algebraic mass and tridiagonal-solve tests",
+    "before SWAP-hydraulic qualification, depend on a common authoritative h(theta), theta(h), K(h) and steady-Darcian face reference rather than copying F-LMFP internals",
+    "cross-qualify Ross face tables against the same direct Darcian oracle used by LayeredMFP",
+    "keep offline table generation outside persistent per-column state"
+  ],
+  "not_a_blocker_for": [
+    "equation-level Ross 2003/2011 reconstruction",
+    "finite-volume mass proof",
+    "bounded tridiagonal cost-model prototype",
+    "transactional trial-state design"
+  ],
+  "blocker_for": [
+    "claiming full SWAP hydraulic-catalog generalisation",
+    "claiming direct quantitative equivalence of Ross tables and F-LMFP face tables on the latest envelope"
+  ],
+  "status": "DEPENDENCY_PERSISTED_NO_CODE_DUPLICATION"
+}
