@@ -1,0 +1,45 @@
+name: F-FWC01 Gate B2B Capillary Relaxation Front Sort Mass
+
+on:
+  push:
+    branches:
+      - work/f-fwc01-finite-water-content-assessment
+    paths:
+      - .github/workflows/f-fwc01-gate-b2b-capillary-relaxation.yml
+      - experiments/fwc/fwc01_gate_b2b_capillary_relaxation_sort_mass.py
+      - integration/f-fwc/F-FWC01_GATE_B2B_CAPILLARY_RELAXATION_FRONT_SORT_MASS_PRECOMMIT.json
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: python3 --version
+      - name: Execute frozen B2B capillary relaxation sort mass gate
+        run: |
+          set -euo pipefail
+          out="fwc01-gate-b2b"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/fwc/fwc01_gate_b2b_capillary_relaxation_sort_mass.py \
+            "$out/F-FWC01_GATE_B2B_RESULT.json" \
+            | tee "$out/F-FWC01_GATE_B2B_STDOUT.txt"
+      - name: Assert frozen B2B decision
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('fwc01-gate-b2b/F-FWC01_GATE_B2B_RESULT.json'))
+          assert r['pass'] is True
+          assert r['decision']=='QUALIFIED_SOURCE_BOUND_INFILT_GW_FRONT_CAPILLARY_RELAXATION_SORT_MASS_READY_FOR_INFILTRATION_FRONT_CREATION_MASS_GATE'
+          assert r['all_binary64_multisets_identical'] is True
+          assert r['all_outputs_monotone'] is True
+          assert r['all_rejection_checks_pass'] is True
+          assert r['persistent_extra_state_bytes'] == 0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-fwc01-gate-b2b-capillary-relaxation
+          path: fwc01-gate-b2b/
