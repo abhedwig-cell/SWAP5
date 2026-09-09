@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "B_REAL_FACE_TABLE",
+  "design": "F-ROSS01_REAL_FACE_TABLE_DESIGN.json",
+  "representation": "BILINEAR_Q_ON_POWER_DENSIFIED_EFFECTIVE_SATURATION_AXES",
+  "fixture": "B01 homogeneous unsaturated, path length 10 cm, head envelope [-10000,-1] cm",
+  "oracle": "F-ROSS01_REAL_FACE_ORACLE_CONTRACT.json",
+  "characterization_only": true,
+  "holdout_executed": false,
+  "early_falsification": {
+    "reason": "Every precommitted node-count/density candidate violates mandatory B3 equal-head gravity and B4 hydrostatic criteria on deterministic special probes. Ordinary B1 Sobol characterization is therefore not required to reject this representation family.",
+    "special_probe_count_equal_head": 41,
+    "special_probe_heads": "negative geometric spacing from -1 cm through -10000 cm",
+    "hydrostatic_probe_rule": "h_below=h_above+10 cm where both endpoints remain within the frozen envelope",
+    "B3_max_relative_error_allowed": 0.005,
+    "B4_max_abs_q_over_ksat_allowed": 1e-5
+  },
+  "candidate_results": [
+    {"nodes_per_axis":33,"wet_end_density_exponent":1.0,"B3_max_relative_error":8.318032715503172,"B4_max_abs_q_over_ksat":0.09050681081681167,"pass":false},
+    {"nodes_per_axis":33,"wet_end_density_exponent":0.75,"B3_max_relative_error":122.09914061109828,"B4_max_abs_q_over_ksat":0.06358443042320654,"pass":false},
+    {"nodes_per_axis":33,"wet_end_density_exponent":0.5,"B3_max_relative_error":3479.2070372786,"B4_max_abs_q_over_ksat":0.03879905384180336,"pass":false},
+    {"nodes_per_axis":65,"wet_end_density_exponent":1.0,"B3_max_relative_error":1.5936321322121096,"B4_max_abs_q_over_ksat":0.03942932988269775,"pass":false},
+    {"nodes_per_axis":65,"wet_end_density_exponent":0.75,"B3_max_relative_error":22.25247918056968,"B4_max_abs_q_over_ksat":0.03566542212548187,"pass":false},
+    {"nodes_per_axis":65,"wet_end_density_exponent":0.5,"B3_max_relative_error":854.0383954923166,"B4_max_abs_q_over_ksat":0.0289432411042177,"pass":false},
+    {"nodes_per_axis":97,"wet_end_density_exponent":1.0,"B3_max_relative_error":0.6752400746805014,"B4_max_abs_q_over_ksat":0.03650709595601053,"pass":false},
+    {"nodes_per_axis":97,"wet_end_density_exponent":0.75,"B3_max_relative_error":9.324123630809334,"B4_max_abs_q_over_ksat":0.028716510086125992,"pass":false},
+    {"nodes_per_axis":97,"wet_end_density_exponent":0.5,"B3_max_relative_error":389.9281496938608,"B4_max_abs_q_over_ksat":0.019746491192010992,"pass":false},
+    {"nodes_per_axis":129,"wet_end_density_exponent":1.0,"B3_max_relative_error":0.36007298261316006,"B4_max_abs_q_over_ksat":0.028631481585353377,"pass":false},
+    {"nodes_per_axis":129,"wet_end_density_exponent":0.75,"B3_max_relative_error":5.31277870354711,"B4_max_abs_q_over_ksat":0.022841388136488547,"pass":false},
+    {"nodes_per_axis":129,"wet_end_density_exponent":0.5,"B3_max_relative_error":227.88243762226168,"B4_max_abs_q_over_ksat":0.012546245003390239,"pass":false}
+  ],
+  "findings": [
+    "Raw bilinear interpolation in effective saturation does not preserve the equal-head gravity line sufficiently over the four-decade head envelope.",
+    "Wet-end-only power densification improves hydrostatic error but worsens dry-end equal-head relative accuracy because the conductivity varies over many orders of magnitude.",
+    "Increasing the raw S-grid to 129 nodes per axis is not close to the precommitted B3/B4 thresholds, so this is a representation failure rather than a marginal density miss.",
+    "No holdout information was used and no holdout has yet been frozen."
+  ],
+  "decision": "REJECT_RAW_BILINEAR_EFFECTIVE_SATURATION_TABLE_BEFORE_HOLDOUT",
+  "next_action": "Freeze and characterize a separate source-supported bounded-cost representation using a two-end smoothing coordinate and quadratic interpolation; do not alter this failed design retrospectively.",
+  "pass": false
+}
