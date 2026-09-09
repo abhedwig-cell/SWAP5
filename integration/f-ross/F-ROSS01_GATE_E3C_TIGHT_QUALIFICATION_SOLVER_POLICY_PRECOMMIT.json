@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3C_TIGHT_LEAST_SQUARES_QUALIFICATION_SOLVER_POLICY",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "e3b_run": 34391947303,
+    "e3b_decision": "QUALIFICATION_SOLVER_BLOCKER_CONFIRMED_BOTH_O14_TRIALS_HAVE_INDEPENDENT_STRONG_MASS_ROOT",
+    "e3a_r2_run": 34391513365,
+    "face_scope_decision": "QUALIFIED_E3_ENCOUNTERED_FACE_SCOPE_WITH_TWO_SIDED_K_ENDPOINT_LIMIT_READY_FOR_EVENT_AND_SOLVER_REMEDIATION"
+  },
+  "candidate_solver_policy": {
+    "method": "scipy.optimize.least_squares",
+    "bounds_cm": [-10000.0, 1.0],
+    "x_scale": "jac",
+    "xtol": 1e-14,
+    "ftol": 1e-14,
+    "gtol": 1e-14,
+    "max_nfev": 200,
+    "role": "qualification scaffolding only"
+  },
+  "frozen_matrix": {
+    "materials": ["B01","B12","O13","O14"],
+    "cases": ["WETTING_TOP_FLUX","DRAINING_BOTTOM_HEAD"],
+    "candidate_step_counts": [4,8,16],
+    "reference_step_count": 64,
+    "horizon_day": 0.002,
+    "column_cells": 3,
+    "cell_thickness_cm": 10.0
+  },
+  "face_policy": "C1R below -1 cm, saturated Darcy when both saturated, E3A-R2 bounded near-saturation closure for all face classes encountered by the frozen E3 matrix; anything else fails closed",
+  "frozen_acceptance": {
+    "max_abs_cell_mass_residual_cm": 1e-9,
+    "max_abs_global_step_mass_residual_cm": 1e-9,
+    "all_reference_and_candidate_steps_complete": true,
+    "unqualified_face_fallback_count": 0,
+    "max_finest_bottom_flux_difference_cm": 0.001,
+    "max_finest_total_storage_difference_cm": 0.001,
+    "max_finest_cell_storage_difference_cm": 0.001,
+    "max_finest_head_difference_cm": 0.25,
+    "committed_state_mutation_on_rejected_trial_count": 0
+  },
+  "event_semantics": {
+    "actual_h0_crossing_required": false,
+    "reason": "the original E3 wetting fixture is retained only to qualify solver/face composition; a later E3R gate will freeze a real h=0 event fixture before execution"
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_TIGHT_E3_QUALIFICATION_SOLVER_AND_ENCOUNTERED_FACE_COMPOSITION_READY_FOR_REAL_SATURATION_EVENT_FIXTURE",
+    "fail": "E3_QUALIFICATION_SOLVER_OR_FACE_COMPOSITION_NOT_READY_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "The 1e-9 mass certificate is unchanged.",
+    "The tighter least-squares settings are qualification scaffolding, not a production solver policy.",
+    "Do not claim saturation-transition qualification because this gate does not require an h=0 crossing.",
+    "Do not alter forcing, timestep matrix, constitutive physics or hydrologic tolerances after results.",
+    "No tangent, runtime or MultiSWAP qualification."
+  ],
+  "relevant_invariants": [5,7,8,13,20,23,24,25,26,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
