@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF26",
+  "title": "Restricted Standard WOFOST One-Day Structural Evolution Candidate",
+  "branch": "work/f-wof26-standard-one-day-structural-candidate",
+  "base": {
+    "commit": "342096ca6d44a8d83458209eda2039424db0d2d5",
+    "status": "QUALIFIED_STANDARD_WOFOST_ONE_DAY_EVOLUTION_READINESS_READY_FOR_STRUCTURAL_CANDIDATE"
+  },
+  "status": "QUALIFIED_RESTRICTED_STANDARD_WOFOST_ONE_DAY_STRUCTURAL_STATE_INTEGRATOR",
+  "decision": "QUALIFIED_PRODUCTION_STRUCTURAL_SEAM_NOT_FULL_WOFOST_PHYSICS",
+  "tested_candidate": "59c371ecb86fdfc9443c12af99fad2d3f9b6d361",
+  "verification": {
+    "workflow": "F-WOF26 one-day structural evolution",
+    "run_id": 34301817653,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "output_sha256": "e3ec4954bc2a98984eb232f41eb073f44474cb988f2e8c01cc71e375794fefa0",
+    "F_WOF24_owner_backward_compatibility": "PASS_O0_O2_IDENTITY"
+  },
+  "production": {
+    "implemented": true,
+    "production_files_changed": [
+      "src/crop/mod_wofost_crop_owner_state.f90",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90"
+    ],
+    "full_standard_WOFOST_rate_evaluator_implemented": false,
+    "runtime_scheduler_composed": false,
+    "accepted_aggregate_lineage_verifier_implemented": false
+  },
+  "qualified_scope": {
+    "sw_wofost": 1,
+    "actual_trajectory_only": true,
+    "IDSL": [0, 1],
+    "crop_event": "one explicit B1.10-equivalent day",
+    "owner_state": [
+      "existing crop_emerged and DVS",
+      "existing actual biomass and compact active leaf cohort history",
+      "optional TSUM/anthesis/minimum-temperature continuation",
+      "conditional one-scalar B1.10 GLAIEXP compatibility sidecar"
+    ],
+    "state_update": [
+      "candidate-local day-start Tmin history update",
+      "B1.10 RELTR binding from accepted IQROT/IPTRA values",
+      "leaf stress death and lifespan death",
+      "exactly one daily cohort shift/create operation",
+      "survivor physiological ageing",
+      "LAIEXP threshold carryover capture and reuse",
+      "root/stem/storage net biomass integration",
+      "anthesis threshold landing on DVS=1",
+      "TSUM and DVS update"
+    ],
+    "transaction": "F-KT checkpoint -> prepare -> finalize candidate -> discard/replay tested; F-WOF26 adds no commit authority",
+    "backward_compatibility": "F-WOF24 view-only owner semantics retained"
+  },
+  "not_qualified": [
+    "complete standard-WOFOST production trajectory from forcing alone",
+    "assimilation/photosynthesis rate evaluation",
+    "maintenance respiration and partitioning rate evaluation",
+    "organ and leaf rate evaluation",
+    "proof of accepted-window lineage inside the value-only aggregate DTO",
+    "runtime accumulation of IQROT/IPTRA/IALPWET",
+    "IDSL=2 vernalization path",
+    "oxygen IALPWET composition",
+    "SWRD=2 or adaptive root-history evolution",
+    "root extension/distribution evolution",
+    "potential WOFOST shadow",
+    "nutrient route",
+    "soybean specialization",
+    "grass route",
+    "arbitrary subdaily crop calls",
+    "multi-day single-call crop evolution"
+  ],
+  "critical_interface_preconditions": {
+    "rate_packet": "must come from a separately qualified source-bound one-day rate evaluator; F-WOF26 deliberately does not invent those rates",
+    "accepted_aggregates": "must be frozen accepted-window values with correct F-KT lineage and exactly-once provenance supplied by runtime/caller",
+    "time": "t1-t0 must equal exactly one admitted crop day; no calendar or midnight identity is required",
+    "reference": "post-LAIEXP-threshold exact B1.10 reference execution requires the stored GLAIEXP carryover sidecar"
+  },
+  "evidence": [
+    "integration/f-wof/F-WOF26_WORK_UNIT_CONTRACT.json",
+    "integration/f-wof/F-WOF26_QUALIFICATION_EVIDENCE.json",
+    "tests/fwof/test_fwof26_one_day_structural_evolution.f90",
+    "tests/fwof/run_fwof26_one_day_structural_evolution_gate.sh",
+    "tests/fwof/run_fwof26_fwof24_backward_compatibility.sh"
+  ],
+  "next": {
+    "dependency": "restricted source-bound one-day standard-WOFOST rate evaluator",
+    "recommended_sequencing": "inventory and qualify the rate-evaluator parameter/input boundary before implementing a broad production evaluator",
+    "reason": "the structural integrator is now a stable consumer contract; migrating all remaining WOFOST rate physics directly into this unit would mix state ownership, rate computation and qualification concerns"
+  },
+  "affected_invariants": [2,3,4,5,6,7,8,9,13,16,21,23,25,27,29,30]
+}
