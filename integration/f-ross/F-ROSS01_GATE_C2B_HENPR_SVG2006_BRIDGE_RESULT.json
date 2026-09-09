@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "C2B_SWAPP_HENPR_SVG2006_LOGK_BRIDGE_CONSTITUTIVE_CHARACTERIZATION",
+  "contract": "F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_CONTRACT.json",
+  "candidate_id": "SWAP5_HENPR_SVG2006_LOGK_BRIDGE_V1",
+  "status": "COMPLETE_PASS_CONSTITUTIVE_ONLY",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34345781092,
+    "head": "fe58e34c032eae1eeeb16aabc9e5309909b84d67",
+    "conclusion": "success",
+    "artifact": 10101621320,
+    "artifact_digest": "sha256:a14462532754f3845aae0c8618c6d6561a5298c57b99d020c2f9e6a24f057607"
+  },
+  "catalog": {
+    "material_count": 36,
+    "pass_count": 36,
+    "fail_count": 0,
+    "failed_materials": [],
+    "imposed_H_ENPR_cm": -4.0
+  },
+  "aggregate": {
+    "max_theta_h105_continuity_metric": 1.2548123419181553e-12,
+    "max_K_join_or_endpoint_continuity_metric": 4.469469467261534e-16,
+    "nan_or_inf_count": 0,
+    "candidate_over_legacy_max_abs_dlogKdh_ratio_range": [0.010415078682798793, 0.13672544362278194],
+    "max_endpoint_exact_R_difference_from_printed_rounded_R": 0.00019999999999997797
+  },
+  "notable_stiffness_diagnostics": {
+    "B10": {"candidate_max_abs_dlogKdh": 0.8216299947072514, "legacy_exact_KSATEXM_max_abs_dlogKdh": 66.59833634939683, "ratio": 0.01233709488472369},
+    "B12": {"candidate_max_abs_dlogKdh": 0.8216299947072514, "legacy_exact_KSATEXM_max_abs_dlogKdh": 75.18865539304942, "ratio": 0.010927579305843052},
+    "O12": {"candidate_max_abs_dlogKdh": 0.8216299947072514, "legacy_exact_KSATEXM_max_abs_dlogKdh": 60.563118695144055, "ratio": 0.013566507346543393},
+    "O13": {"candidate_max_abs_dlogKdh": 0.8216299947072514, "legacy_exact_KSATEXM_max_abs_dlogKdh": 78.88850576464957, "ratio": 0.010415078682798793},
+    "O05": {"candidate_max_abs_dlogKdh": 0.43173470576363115, "legacy_exact_KSATEXM_max_abs_dlogKdh": 11.280607465314429, "ratio": 0.03827229225829615},
+    "O14": {"candidate_max_abs_dlogKdh": 0.12996509648861232, "legacy_exact_KSATEXM_max_abs_dlogKdh": 0.9505553102989298, "ratio": 0.13672544362278194}
+  },
+  "hard_gate_results": {
+    "theta_finite_all": true,
+    "theta_bounds_all": true,
+    "theta_monotone_all": true,
+    "theta_C0_all": true,
+    "K_positive_finite_all": true,
+    "K_below_or_equal_KSATEXM_all": true,
+    "K_monotone_all": true,
+    "K_C0_at_minus40_minus4_and_0_all": true,
+    "MFP_finite_all": true,
+    "MFP_monotone_all": true
+  },
+  "scientific_interpretation": [
+    "V1 is mathematically and numerically well-defined across the frozen 36-material catalog for the imposed H_ENPR=-4 cm characterization.",
+    "The source-incompatible legacy H_ENPR plus KSATEXM branch jump is absent because V1 is one explicit continuous conductivity closure.",
+    "The much lower wet-end log-conductivity slope is diagnostic evidence that the candidate may be easier to represent compactly, but was not an acceptance criterion and is not a hydrologic accuracy result.",
+    "The large K/C diagnostics remain relevant for later transient timestep qualification even though the constitutive law is continuous."
+  ],
+  "science_guard": "Existing KSATFIT and LEXP were not empirically refitted as Schaap-van-Genuchten K_o and L. Therefore this pass does not establish empirical soil-hydraulic validity, improved field realism or production readiness.",
+  "next_action": "Qualify the exact inverse state-to-head mapping for the SWAP H_ENPR retention, then open a separately frozen steady-face representation characterization without changing the C2B physical closure.",
+  "decision": "C2B_V1_CONSTITUTIVE_CHARACTERIZATION_PASS_READY_FOR_STATE_COORDINATE_AND_STEADY_FACE_GATES"
+}
