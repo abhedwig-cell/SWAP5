@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR",
+  "contract": "F-ROSS01_GATE_E3E_R2R1_ENDPOINT_LIMIT_AND_INTERIOR_ROOT_ORACLE_REPAIR_PRECOMMIT.json",
+  "stable_constitutive_identity": "F-ROSS01_GATE_E3E_R2R1_STABLE_VGM_ENDPOINT_IDENTITY.json",
+  "workflow_run": 34405433702,
+  "workflow_head": "e4e5cfc636b74325876e2770e7991e60f0bc5808",
+  "workflow_conclusion": "success",
+  "production_implementation": false,
+  "qualification_target": "REFERENCE_ORACLE_NUMERICS_ONLY",
+  "material_count": 4,
+  "material_pass_count": 4,
+  "pass": true,
+  "decision": "QUALIFIED_ENDPOINT_ROBUST_5CM_REFERENCE_WITNESSES_WITH_B12_O13_KSAT_ENDPOINT_DEGENERACY_FRESH_REFERENCE_CHARACTERIZATION_AND_ADMISSIBILITY_POLICY_REQUIRED",
+  "artifacts": {
+    "B01": {"id": 10125220349, "digest": "sha256:63cd996b45afbfba54902c7009a6c8f9a939f6f7ff1ccf7f2d5549b0758da9ee"},
+    "B12": {"id": 10125141497, "digest": "sha256:65e7b2e292cf33749010f2728daa47764437b8476ae0a2f483682eb645ea1d19"},
+    "O13": {"id": 10125146694, "digest": "sha256:13b071d67592fc92b0293b97a45a577f102fed468d8b476c6d4d45490033d52e"},
+    "O14": {"id": 10125163468, "digest": "sha256:235338779f2566f997525bae10af134ec6296f52183d88ea637508f4556c6051"}
+  },
+  "materials": {
+    "B01": {
+      "pass": true,
+      "endpoint_branch_count": 0,
+      "interior_root_count": 3,
+      "deep_zero_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "endpoint_path_oracle_a_cm": 60.12822903325322,
+        "endpoint_path_oracle_b_cm": 60.12822903325323,
+        "q_oracle_a_cm_per_day": 101.77699815464219,
+        "q_oracle_b_cm_per_day": 101.77699815464209,
+        "oracle_pair_abs_error_over_ksat": 3.297247616788051e-15
+      },
+      "near_saturation_positive_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 36.90703446429088,
+        "q_oracle_b_cm_per_day": 36.90703446429088,
+        "oracle_pair_abs_error_over_ksat": 8.633425749579805e-18
+      },
+      "r2_legacy_worst_witness": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 37.0639205400272,
+        "q_oracle_b_cm_per_day": 37.0639205400272,
+        "oracle_pair_abs_error_over_ksat": 9.077123194571384e-18,
+        "known_legacy_q_cm_per_day": 37.0649174713324,
+        "known_legacy_path_residual_oracle_a_cm": -0.0008534309840438324
+      }
+    },
+    "B12": {
+      "pass": true,
+      "endpoint_branch_count": 1,
+      "interior_root_count": 2,
+      "deep_zero_surface_control": {
+        "branch": "ENDPOINT_KSAT_PLATEAU",
+        "endpoint_path_oracle_a_cm": 1.2262487974582952,
+        "endpoint_path_oracle_b_cm": 1.2262487974582943,
+        "saturated_plateau_oracle_a_cm": 3.7737512025417046,
+        "saturated_plateau_oracle_b_cm": 3.7737512025417055,
+        "q_cm_per_day": 2.245895
+      },
+      "near_saturation_positive_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 2.6504893020446656,
+        "q_oracle_b_cm_per_day": 2.6504893020446656,
+        "oracle_pair_abs_error_over_ksat": 4.480021648514434e-19
+      },
+      "r1_worst_witness": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 2.6432032548321307,
+        "q_oracle_b_cm_per_day": 2.6432032548321307,
+        "oracle_pair_abs_error_over_ksat": 4.401893945481107e-19,
+        "known_r1_candidate_q_cm_per_day": 2.6432032548322555,
+        "known_r1_candidate_path_residual_oracle_a_cm": -1.5667712370289963e-12,
+        "known_inherited_reference_q_cm_per_day": 2.647350867878214,
+        "known_inherited_reference_path_residual_oracle_a_cm": -0.05162379127470887
+      }
+    },
+    "O13": {
+      "pass": true,
+      "endpoint_branch_count": 1,
+      "interior_root_count": 2,
+      "deep_zero_surface_control": {
+        "branch": "ENDPOINT_KSAT_PLATEAU",
+        "endpoint_path_oracle_a_cm": 0.638495429434986,
+        "endpoint_path_oracle_b_cm": 0.6384954294349857,
+        "saturated_plateau_oracle_a_cm": 4.361504570565014,
+        "saturated_plateau_oracle_b_cm": 4.361504570565014,
+        "q_cm_per_day": 9.689291
+      },
+      "near_saturation_positive_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 11.434410051188339,
+        "q_oracle_b_cm_per_day": 11.434410051188339,
+        "oracle_pair_abs_error_over_ksat": 3.1742006420467167e-19
+      },
+      "r1_worst_witness": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 11.208432753954197,
+        "q_oracle_b_cm_per_day": 11.208432753954197,
+        "oracle_pair_abs_error_over_ksat": 3.5849549885736887e-19,
+        "known_r1_candidate_q_cm_per_day": 11.208432753954423,
+        "known_r1_candidate_path_residual_oracle_a_cm": -7.446819261036075e-13,
+        "known_inherited_reference_q_cm_per_day": 11.23381766750256,
+        "known_inherited_reference_path_residual_oracle_a_cm": -0.08212339155448081
+      }
+    },
+    "O14": {
+      "pass": true,
+      "endpoint_branch_count": 0,
+      "interior_root_count": 2,
+      "deep_zero_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "endpoint_path_oracle_a_cm": 190.0829659117692,
+        "endpoint_path_oracle_b_cm": 190.08296591176912,
+        "q_oracle_a_cm_per_day": 26.209521769088326,
+        "q_oracle_b_cm_per_day": 26.20952176908833,
+        "oracle_pair_abs_error_over_ksat": 1.8759131879302944e-15
+      },
+      "near_saturation_positive_surface_control": {
+        "branch": "INTERIOR_ROOT",
+        "q_oracle_a_cm_per_day": 2.9501850106741396,
+        "q_oracle_b_cm_per_day": 2.9501850106741396,
+        "oracle_pair_abs_error_over_ksat": 8.696837534447396e-18
+      }
+    }
+  },
+  "scientific_findings": [
+    "The algebraically stable VGM Kr-1 evaluation removes the subtractive near-saturation collapse without changing constitutive physics.",
+    "B12 and O13 have a finite q->KSAT+ unsaturated path shorter than the 5 cm zero-surface face and are therefore characterized by the two independent oracles as ENDPOINT_KSAT_PLATEAU witnesses.",
+    "B01 and O14 zero-surface deep controls remain strict INTERIOR_ROOT cases.",
+    "For the B12 and O13 positive-surface worst witnesses, the previously diagnosed R1 candidate agrees with the new independent oracle to approximately 1e-13 cm/d absolute flux scale and approximately 1e-12 cm path residual, while the inherited steady_q reference misses the path identity by approximately 0.052 cm and 0.082 cm respectively.",
+    "The prior B12/O13 5 cm candidate failures on those witnesses are therefore reference-oracle failures, not evidence that the R1 candidate is inaccurate there."
+  ],
+  "architectural_interpretation": {
+    "candidate_face": "NOT_YET_QUALIFIED",
+    "reference_oracle_witnesses": "QUALIFIED_WITH_ENDPOINT_BRANCH_AWARENESS",
+    "b12_o13_zero_surface_endpoint_branch": "CHARACTERIZED_NOT_ADMITTED",
+    "surface_process": "NOT_ADMITTED",
+    "runtime_or_multiswap": "NOT_ADMITTED",
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT"
+  },
+  "hard_nonclaims": [
+    "No 5 cm candidate-face qualification follows from witness qualification alone.",
+    "No broad inherited steady_q invalidation is claimed outside the demonstrated witnesses and domains.",
+    "The B12/O13 q=KSAT plateau characterization is not yet permission to use an endpoint branch in RossFast production.",
+    "No finite-positive ponding, runoff, groundwater, runtime, MultiSWAP or production admission follows.",
+    "No response tangent is qualified across the endpoint branch."
+  ],
+  "next_gates": [
+    "E3E_R2R2_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+    "E3E_R2P_KSAT_ENDPOINT_ADMISSIBILITY_POLICY"
+  ],
+  "status": "R2R1_WITNESSES_QUALIFIED_FRESH_REFERENCE_AND_ENDPOINT_POLICY_REQUIRED"
+}
