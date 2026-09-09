@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20",
+  "title": "Parallel Real-Physics MultiSWAP Execution Architecture & Bounded Scheduling Readiness",
+  "status": "READINESS_PERSISTED_PRODUCTION_IMPLEMENTATION_NOT_STARTED",
+  "production_change": false,
+  "source_bound_baseline": {
+    "qualified_runtime_core": "src/runtime/mod_fmr_runtime_core.f90",
+    "qualified_serial_reference": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "real_physics_backend": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "transaction_orchestrator": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+    "worker_context": "src/runtime/mod_a23bu_worker_execution_context.f90",
+    "MQ23_decision": "QUALIFIED_RESTRICTED_SERIALIZED_REAL_PHYSICS_MULTISWAP_RUNTIME",
+    "MQ23_real_physical_worker_count": 1,
+    "MQ23_parallel_real_physics_admitted": false,
+    "MQ23_generic_worker_counts_only": [1, 2, 4, 8]
+  },
+  "worker_model": {
+    "unit": "worker owns one reusable real-physics solver execution context and its scratch",
+    "per_column_heavy_solver": false,
+    "scratch_owner": "worker, never logical column",
+    "existing_scratch_carrier": "a23bu_worker_context_t / a23bu_headcalc_scratch_t",
+    "state_owner": "column committed-state registry",
+    "immutable_parameters": "shared registry references",
+    "forcing": "column/interval input references",
+    "candidate_state": "transaction-local and never published before accepted commit"
+  },
+  "memory_model": {
+    "logical_api": "may remain object-oriented",
+    "physical_layout": "batch/SoA or pooled layout allowed behind runtime boundary",
+    "persistent_per_column": "only logical metadata plus committed physical continuation state and active optional state",
+    "shared": ["immutable physical parameters", "model templates", "constitutive tables where applicable"],
+    "worker_local": ["Newton vectors", "Jacobian/tridiagonal arrays", "constitutive intermediates", "solver diagnostics scratch"],
+    "inactive_optional_feature_overhead": "must remain zero or demonstrably negligible metadata only"
+  },
+  "scheduling_contract": {
+    "reference_parallel_policy": "deterministic static partition over canonical template_id,column_id execution order",
+    "production_candidate_after_reference": "bounded dynamic queue/work stealing may be evaluated only after exact scientific and diagnostic equivalence to deterministic partitioning",
+    "collection_key": "column_id, never completion order",
+    "diagnostic_order": "canonical column-id order",
+    "aggregate_reduction": "deterministic stable reduction order independent of worker completion order",
+    "difficult_column_extraction": "after bounded normal-path cost/retry policy, move the same physical configuration to a qualified relaxed/fallback execution lane",
+    "execution_class_semantics": "numerical policy only; it may not silently alter physical modules, parameters, discretization or boundary conditions",
+    "tail_blocking": "one difficult column may not hold an otherwise completed batch indefinitely"
+  },
+  "template_contract": {
+    "batch_homogeneity": ["active physical modules", "vertical discretization structure", "soil-water solver interface", "state layout"],
+    "per_column_variation_allowed": ["parameter references", "forcing", "dynamic committed state"],
+    "different_physics": "different template/batch, not a hidden per-column branch inside a homogeneous execution class"
+  },
+  "future_implementation_source_ownership": {
+    "additive_owned_paths": [
+      "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "tests/fmr/test_fmr20_parallel_physical_*.f90",
+      "integration/f-mr/F-MR20_*.json",
+      ".github/workflows/fmr20-parallel-real-physics.yml"
+    ],
+    "read_only_dependencies_initially": [
+      "src/runtime/mod_fmr_runtime_core.f90",
+      "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/kernel/mod_kernel_transactions.f90"
+    ],
+    "explicit_no_overlap_with_active_F_MR19": [
+      "src/runtime/mod_fmr_committed_restart.f90",
+      "integration/f-mr/F-MR19_*.json",
+      "tests/fmr/*fmr19*",
+      ".github/workflows/*fmr19*"
+    ],
+    "shared_core_change_policy": "if implementation proves a shared-core change is unavoidable, stop and reconcile ownership after the active F-MR19 candidate is immutable; do not edit shared source concurrently"
+  },
+  "qualification_matrix": {
+    "workers": [1, 2, 4, 8],
+    "columns": [1, 2, 8, 17, 31, 32, 64],
+    "required": [
+      "single-worker identity to MQ23 serialized reference",
+      "worker-count independence",
+      "input-order and partition independence",
+      "A-B-A repeatability",
+      "exact committed-state and authoritative mass identity",
+      "cross-column checkpoint/rollback/commit isolation",
+      "worker scratch isolation under simultaneous real solves",
+      "shared immutable parameter integrity",
+      "deterministic diagnostics and aggregate reduction",
+      "bounded difficult-tail extraction",
+      "no physical-config mutation when execution class changes",
+      "memory scaling by columns versus workers",
+      "O0/O2 identity where meaningful"
+    ]
+  },
+  "not_claimed": [
+    "parallel real-physics implementation",
+    "thread safety of legacy HeadCalc bindings",
+    "parallel speedup",
+    "production memory guarantee",
+    "qualified relaxed/fallback physical policy"
+  ],
+  "exit_condition": "QUALIFIED_PARALLEL_REAL_PHYSICS_MULTISWAP_READINESS_READY_FOR_IMPLEMENTATION"
+}
