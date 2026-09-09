@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI21",
+  "title": "Nonstationary temporal estimator and same-endpoint refinement seam audit",
+  "branch": "work/f-si21-nonstationary-temporal-estimator-policy",
+  "audit_basis_head": "a8adb9ac46276157659dd823ad5418a31f367620",
+  "trigger": {
+    "f_si20_head": "631d80abf04915cc964b24144f3fde8ef937093f",
+    "f_vq28_closeout": "d8bcb1c90e897812ae8b91295be98e58023e10fb",
+    "f_vq28_decision": "FAIL_CLOSED_EXISTING_TRANSACTION_SHAPE_NOT_ADMITTED_FOR_RAW_HEAD_DEFECT_PROFILE"
+  },
+  "source_bindings": {
+    "transaction_reference": {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "b1878606ae6cb2b04a7b4b15e3e537deacf4477f"
+    },
+    "serialized_reference_backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "6f39d60a87c1987ae95d7faec2f55f865af90a08"
+    },
+    "canonical_contracts": {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob": "0c2b15fc45011c580384cf6a618e7b378fdccf0a"
+    },
+    "canonical_interval_runtime": {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob": "f2cae79d533343db818c11e0b61b605ac5f6739d"
+    },
+    "f_ci14_qualification": {
+      "path": "integration/f-ci/F-CI14_QUALIFICATION.md",
+      "blob": "5622353a794143558ea4d8b38c189aec4c5f03e2"
+    },
+    "f_ci14_temporal_policy_profile": {
+      "path": "integration/f-ci/F-CI14_TEMPORAL_POLICY_PROFILE.json",
+      "blob": "068efba22b2e639a27cbb44576205b3d48cb0ead"
+    },
+    "f_ci14_status": {
+      "path": "integration/f-ci/F-CI14_STATUS.json",
+      "blob": "54fe50931863d7c74ceb572bcab6db51924b79a5"
+    },
+    "f_kt01_kernel_transaction_contract": {
+      "path": "integration/f-kt/F-KT01_KERNEL_TRANSACTION_CONTRACT.json",
+      "blob": "db4ddfc681d1bec65041a8dff79b835d4f416fb5"
+    }
+  },
+  "qualified_existing_contracts": {
+    "f_ci14": {
+      "status": "QUALIFIED_CONTRACT_IMPLEMENTATION_REFERENCE_NUMERIC_PROFILE_BLOCKED",
+      "comparison": "full_vs_two_half_endpoint",
+      "endpoint_metrics": ["h", "theta", "pond", "gwl", "volact", "ldwet", "spev", "saev"],
+      "diagnostic_only_lagged_state": ["hm1", "thetm1", "pondm1", "gwlm1"],
+      "scalarization": "MAX_OF_PER_METRIC_SAME_UNIT_RATIOS",
+      "acceptance_threshold": 1.0,
+      "numeric_limits": "NONE_QUALIFIED",
+      "mass_policy_reuse_for_temporal_accuracy": false,
+      "solver_tolerance_reuse_for_temporal_accuracy": false
+    },
+    "f_kt01": {
+      "canonical_api_owner": "F-KT",
+      "transaction_lifecycle_owner": "F-KT",
+      "advance_origin": "caller_supplied_committed_state",
+      "rejected_trial_mutates_committed": false,
+      "incomplete_interval_creates_candidate": false,
+      "same_committed_state_replay_required": true,
+      "hard_mass_conservation": true,
+      "kernel_may_invent_temporal_tolerances": false
+    }
+  },
+  "observed_current_semantics": {
+    "transaction_attempt": {
+      "full_branch_origin": "clone_of_same_checkpoint_and_attempt_context",
+      "two_half_branch_origin": "clone_of_same_checkpoint_and_attempt_context",
+      "comparison_endpoint_within_attempt": "same_attempt_t1",
+      "accepted_route": "two_half"
+    },
+    "rejection": {
+      "rollback_to_checkpoint": true,
+      "attempt_dt_update": "attempt_dt = attempt_dt * retry_scale",
+      "next_attempt_endpoint": "t0 + reduced_attempt_dt",
+      "therefore_fixed_requested_endpoint_preserved_across_retries": false
+    },
+    "canonical_interval_runtime": {
+      "external_committed_state_unchanged_until_requested_interval_complete": true,
+      "accepted_shorter_transaction_becomes_private_internal_committed_substep": true,
+      "runtime_then_continues_from_accepted_t1_toward_requested_interval_t1": true,
+      "mass_is_aggregated_across_accepted_internal_transactions": true
+    },
+    "serialized_richards_temporal_error": {
+      "current_production_binding": "fmr_serialized_temporal_identity",
+      "semantics": "0_if_selected_endpoint_state_is_exactly_equal_else_huge",
+      "selected_state_includes": ["pressure_head", "water_content", "ponding_depth", "groundwater_level", "active_snow_state_when_allocated"],
+      "scientific_numeric_profile": "NOT_ADMITTED"
+    }
+  },
+  "audit_findings": {
+    "A01": {
+      "finding": "Checkpoint, trial isolation, rollback and hard mass accounting are structurally compatible with repeated same-origin characterization trials.",
+      "classification": "REUSE_EXISTING_SEAM"
+    },
+    "A02": {
+      "finding": "Outer retry shortening changes the physical comparison endpoint and therefore cannot be treated as another level of fixed-horizon temporal refinement.",
+      "classification": "CONFIRMED_SEMANTIC_MISMATCH"
+    },
+    "A03": {
+      "finding": "F-CI14 already fixes endpoint metric categories and scalarization. F-SI21 must not replace this with an FGC02-specific raw-head-only acceptance contract.",
+      "classification": "OWNER_CONTRACT_BOUNDARY"
+    },
+    "A04": {
+      "finding": "A same-endpoint nested refinement candidate can be implemented as test-only characterization by repeatedly cloning one physical checkpoint, restoring its worker attempt context, and executing multiple partitions that all terminate at the same target endpoint.",
+      "classification": "TEST_ONLY_CHARACTERIZATION_FEASIBLE_WITHOUT_PRODUCTION_SOURCE_CHANGE"
+    },
+    "A05": {
+      "finding": "Production adoption of a same-endpoint internal refinement ladder changes the transaction lifecycle and diagnostics semantics. F-KT owns that canonical API and lifecycle. F-SI21 may characterize the algorithm but may not unilaterally alter production transaction semantics.",
+      "classification": "PRODUCTION_OWNER_F_KT_REQUIRED"
+    },
+    "A06": {
+      "finding": "Independent numerical temporal limits and scientific admission remain F-VQ responsibilities. F-SI21 may produce characterization evidence, not final tolerance values.",
+      "classification": "INDEPENDENT_QUALIFICATION_REQUIRED"
+    },
+    "A07": {
+      "finding": "A naive always-on 1+2+4 same-endpoint hierarchy costs seven physical solves and would conflict with the bounded normal-path coupling/performance objective. Candidate design must distinguish a cheap normal path from bounded escalation or reference-only work.",
+      "classification": "COST_GATE_REQUIRED"
+    },
+    "A08": {
+      "finding": "The universally reachable N256 level observed in F-VQ28 is useful as a characterization level but is not a scientific oracle merely because N512 has five convergence-ceiling failures.",
+      "classification": "REFERENCE_ORACLE_HOLD"
+    }
+  },
+  "allowed_next_phase": {
+    "production_source_changes": false,
+    "test_only_harness": true,
+    "candidate_matrix_must_be_frozen_before_execution": true,
+    "same_endpoint_levels_may_be_characterized": true,
+    "qualified_tolerance_may_be_selected": false,
+    "f_kt_production_contract_may_be_changed": false,
+    "f_vq_independent_admission_may_be_claimed": false
+  },
+  "candidate_matrix_requirements": {
+    "same_physical_origin": true,
+    "same_target_endpoint_for_every_level": true,
+    "hard_mass_diagnostics_per_level": true,
+    "solver_status_and_cost_per_level": true,
+    "endpoint_metric_vector_before_scalarization": true,
+    "f_ci14_scalarization_preserved": true,
+    "at_least_three_nested_levels_for_decay_characterization": true,
+    "nonmonotone_or_nonasymptotic_decay_fails_closed": true,
+    "reference_unavailable_is_reported_not_imputed": true,
+    "normal_path_cost_must_be_measured_separately_from_escalation_cost": true
+  },
+  "invariant_assessment": {
+    "7": "PASS: test-only characterization can start every level from the same committed checkpoint without publication of failed trials",
+    "8": "PASS: repeated same-origin replay is directly supported by clone and attempt-context restore",
+    "9": "PASS: candidate is defined on generic [t0,t1] endpoints, not calendar days",
+    "13": "PASS_WITH_GATE: every candidate level retains hard mass diagnostics and no mass tolerance relaxation is permitted",
+    "15": "OPEN_GATE: naive seven-solve hierarchy is too expensive as a mandatory normal production path",
+    "23": "PASS: estimator policy remains numerical configuration, not physics",
+    "24": "OPEN_GATE: bounded escalation and fallback behavior must be characterized",
+    "25": "PASS_WITH_HOLD: reference mode remains available, but the finite oracle for difficult short horizons is unresolved",
+    "26": "OPEN_GATE: refinement level, branch, cost and mass diagnostics must be first-class before production adoption",
+    "30": "PASS_FOR_AUDIT: owner boundaries and invariant impacts are explicit"
+  },
+  "decision": "SEAM_AUDIT_COMPLETE_TEST_ONLY_SAME_ENDPOINT_CHARACTERIZATION_FEASIBLE_PRODUCTION_TRANSACTION_CHANGE_REQUIRES_F_KT",
+  "next_action": "Freeze a source-bound algorithmic candidate matrix for same-endpoint nested refinement before executing numerical characterization. Do not select production tolerances or modify transaction production source."
+}
