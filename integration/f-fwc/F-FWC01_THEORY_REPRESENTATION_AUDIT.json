@@ -12,13 +12,16 @@
       "correction": {
         "exists": true,
         "doi": "10.1029/2008WR007455",
-        "qualification_rule": "Any algorithm reconstruction must use the corrected publication lineage rather than the original paper in isolation."
+        "published": "2008-10-18",
+        "scope": "The correction states that equation (7) and the Holtan (1961) reference in the original paper were incorrect and supplies the corrected bin-average expression/reference.",
+        "qualification_rule": "Any algorithm reconstruction must use the corrected equation (7) lineage rather than the original paper in isolation."
       },
       "source_bound_findings": [
         "discretises moisture content rather than depth",
         "uses finite water-content bins with wetting and drying fronts",
         "front motion represents gravitational and capillary driving forces",
-        "inter-bin capillary redistribution satisfies water deficits created by advancing wetting fronts"
+        "inter-bin capillary redistribution satisfies water deficits created by advancing wetting fronts",
+        "the original publication claims unconditional mass conservation and reports infiltration-flux errors below 10 percent against its tested Richards reference cases"
       ]
     },
     {
@@ -109,7 +112,7 @@
     "reason": "FWC has unusually strong source support for conservation, explicit integration, layered soils and moving groundwater, but the omitted diffusion-like physics, front-state bounds, pressure-head service contract and MODFLOW interface are material unresolved gates."
   },
   "next_actions": [
-    "obtain and incorporate the 2008 correction into the equation-level reconstruction",
+    "reconstruct corrected 2008 equation (7) in the algorithm notebook/specification and trace where the 2015 method supersedes it",
     "enumerate exact persistent objects for infiltration fronts, falling slugs and groundwater fronts and prove or bound their maximum count",
     "write a conservative event ledger for front creation, merge, layer crossing, root extraction and water-table movement",
     "construct paired representation designs: native dynamic-front bookkeeping versus a bounded semi-fixed-bin/state layout",
