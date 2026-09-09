@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C2_BOUNDED_TRANSFORMED_ENDPOINT_PAIR_SYNTHETIC_QUALIFICATION",
+  "run": 34310464202,
+  "job": 102335883030,
+  "tested_head": "845a395dcb12f0e1bad3778f817864bb88a641d4",
+  "artifact": 10088424854,
+  "artifact_digest": "sha256:69fe33ff75f7c578c9d4a001b595beb1d6f9cbc6a96c4ec695b944e285a79c75",
+  "conclusion": "FAILURE_BEFORE_NUMERICAL_QUALIFICATION",
+  "failure_stage": "provider_self_check.provider_identity",
+  "exception": {
+    "type": "ValueError",
+    "value": ["axis_out_of_range", 9.903487555036127, -19.11382792451231, 9.903487555036126],
+    "source": "run_lmfp09_gate_c_endpoint_pair.py:bracket"
+  },
+  "physical_probe": {
+    "head_cm": 100.0,
+    "coordinate": "asinh(h/0.01 cm)",
+    "recomputed_x": 9.903487555036127,
+    "stored_last_axis_x": 9.903487555036126,
+    "difference": 1.7763568394002505e-15,
+    "classification": "FLOATING_POINT_ENDPOINT_RECONSTRUCTION_ROUNDOFF"
+  },
+  "interpretation": {
+    "candidate_accuracy_evaluated": false,
+    "provider_face_accuracy_evaluated": false,
+    "heterogeneous_interface_evaluated": false,
+    "homogeneous_reduction_evaluated": false,
+    "constitutive_jump_implicated": false,
+    "threshold_failure": false,
+    "reason": "The transformed coordinate reconstructed from the exact admitted upper head endpoint is one floating-point step above the stored terminal axis knot. The run aborts before qualification metrics are produced. This is a boundary-bracketing implementation defect, not evidence against the endpoint-pair representation."
+  },
+  "admitted_repair": {
+    "tolerant_endpoint_clamp_only": true,
+    "table_coordinates_changed": false,
+    "table_density_changed": false,
+    "oracle_changed": false,
+    "physics_changed": false,
+    "acceptance_thresholds_changed": false,
+    "root_policy_changed": false,
+    "catalog_owner_boundary_changed": false
+  },
+  "evidence_hardening_required": true,
+  "next_action": "Use ULP-scale tolerant bracketing at exact admitted axis endpoints and persist incremental evidence before provider preparation and after each qualification subgate, then rerun the unchanged C2 acceptance contract."
+}
