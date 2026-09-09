@@ -1,0 +1,23 @@
+name: F-WOF28 rate-state view
+
+on:
+  push:
+    branches:
+      - work/f-wof28-rate-state-view-assembly
+  workflow_dispatch:
+
+jobs:
+  rate-state-view:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+
+      - name: Run F-WOF28 gate
+        run: bash tests/fwof/run_fwof28_rate_state_view_gate.sh
