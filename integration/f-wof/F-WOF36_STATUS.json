@@ -1,16 +1,20 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-WOF",
   "work_unit": "F-WOF36",
   "branch": "work/f-wof36-physical-trial-accepted-integral-binding",
   "base": "db727db92e7d5b77eccd0103921c527fe6dd5ffc",
   "gate_A_handoff_head": "9f89d3dc9700378b80439e137ed64a95e5d575fa",
   "F_MR18_composed_closeout_head": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
-  "production_implementation": false,
+  "production_implementation": true,
+  "production_paths": [
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_physical_trial_binding.f90"
+  ],
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": true,
-  "qualification_scope": "GATE_A_OWNER_AND_ATOMICITY_PLUS_QUALIFIED_RUNTIME_OWNER_HANDOFF",
+  "qualification_scope": "GATES_A_B_RESTRICTED_PHYSICAL_TRIAL_PTRA_QROT_ACCEPTED_WINDOW_BINDING_WITH_QUALIFIED_F_MR18_RUNTIME_OWNER_HANDOFF",
   "gate_A": {
     "name": "EXECUTION_POINT_AND_COMPOSITION_ATOMICITY",
     "status": "QUALIFIED_NEGATIVE_SHARED_RUNTIME_OWNER_SEAM_REQUIRED",
@@ -26,6 +30,7 @@
     "workstream": "F-MR",
     "work_unit": "F-MR18",
     "status": "SATISFIED",
+    "closeout_head": "ebf051bbf7e57f77d115287a9ba02fc987a255bc",
     "evidence": "integration/f-wof/F-WOF36_FMR18_HANDOFF_RESUME_EVIDENCE.json",
     "F_MR18_status": "integration/f-mr/F-MR18_STATUS.json",
     "F_MR18_gate_C_evidence": "integration/f-mr/F-MR18_GATE_C_QUALIFICATION_EVIDENCE.json",
@@ -35,41 +40,71 @@
   },
   "gate_B": {
     "name": "PHYSICAL_TRIAL_PTRA_QROT_PAYLOAD_BINDING",
-    "status": "READY_NOT_IMPLEMENTED",
-    "required_before_implementation": [
-      "define a trial-local payload carrying exact PTRA and exact applied QROT rate",
-      "bind payload identity to the same checkpoint lineage/revision/t0/t1 used by the physical candidate",
-      "route payload only for sparse WOFOST-active columns requesting an F-MR18 receipt",
-      "prevalidate finite and nonnegative PTRA/QROT before physical commit",
-      "ensure every rejected or discarded physical trial contributes zero",
-      "use the qualified F-MR18 receipt as the only proof authorizing accepted-window contribution",
-      "do not recompute QROT from candidate post-state"
-    ],
-    "qualification_after_implementation": [
-      "same-checkpoint trial contribution identity",
-      "rejected and retried trial zero contribution",
-      "accepted retry exactly once",
-      "QROT integral equals exact applied root sink sum times accepted interval duration",
-      "PTRA integral equals same-trial PTRA times accepted interval duration",
-      "F-WOF34 exact semantic regression",
-      "F-WOF35 composition preservation regression",
-      "mass accounting unchanged",
-      "O0/O2 identity",
-      "single-column and MultiSWAP deterministic identity",
-      "inactive/non-WOFOST zero-cost functional path"
+    "status": "QUALIFIED",
+    "evidence": "integration/f-wof/F-WOF36_GATE_B_QUALIFICATION_EVIDENCE.json",
+    "compile_qualification": {
+      "workflow_run": 34339285383,
+      "workflow_job": 102425987768,
+      "conclusion": "success"
+    },
+    "real_physics_qualification": {
+      "tested_head": "43709fa2a34d9cc230dc0a59229f2d3875ea244f",
+      "workflow_run": 34343810174,
+      "workflow_job": 102440536097,
+      "conclusion": "success"
+    },
+    "composition_preservation": {
+      "tested_head": "ff156b2e891654d9959ec333a83c82b8d0e512f5",
+      "workflow_run": 34343434719,
+      "workflow_job": 102439337809,
+      "conclusion": "success",
+      "production_source_delta_after_preservation": false
+    },
+    "same_checkpoint_trial_contribution_identity": true,
+    "rejected_trial_zero_contribution": true,
+    "rejected_then_accepted_retry_exactly_once": true,
+    "duplicate_accepted_interval_zero_extra_contribution": true,
+    "QROT_integral_equals_exact_applied_root_sink_sum_times_interval_duration": true,
+    "PTRA_integral_equals_same_trial_PTRA_times_interval_duration": true,
+    "F_WOF34_exact_semantic_regression": true,
+    "F_WOF35_FCI19_composition_preservation": true,
+    "mass_accounting_unchanged": true,
+    "O0_O2_identity": true,
+    "true_single_column_multiswap_identity": true,
+    "batch_and_input_order_deterministic": true,
+    "A_B_A_replay_deterministic": true,
+    "inactive_non_WOFOST_empty_binding_physical_identity": true
+  },
+  "post_test_metadata_only": {
+    "definitive_real_physics_tested_head": "43709fa2a34d9cc230dc0a59229f2d3875ea244f",
+    "production_source_changed_after_definitive_test": false,
+    "metadata_files_added_or_updated_after_test": [
+      "integration/f-wof/F-WOF36_GATE_B_QUALIFICATION_EVIDENCE.json",
+      "integration/f-wof/F-WOF36_STATUS.json"
     ]
   },
   "scope_holds": {
-    "physical_PTRA_QROT_binding_implemented": false,
-    "accepted_window_publication_implemented": false,
+    "physical_PTRA_QROT_binding_implemented": true,
+    "accepted_window_trial_admission_implemented": true,
+    "crop_event_delivery_implementation_changed": false,
     "mass_accounting_changed": false,
     "root_uptake_physics_changed": false,
     "ET_physics_changed": false,
     "F_KT_commit_authority_changed": false,
     "persistent_column_optional_state_added": false,
+    "candidate_state_root_uptake_recomputation_added": false,
     "calendar_dependency_added": false,
     "canonical_promotion": false
   },
-  "decision": "RUNTIME_OWNER_BLOCKER_SATISFIED_PROCEED_TO_GATE_B_PHYSICAL_TRIAL_PAYLOAD_BINDING",
-  "status": "QUALIFIED_GATE_A_F_MR18_HANDOFF_SATISFIED_GATE_B_READY"
+  "not_qualified": [
+    "restart or crash atomicity across external persistence of an active accepted crop window",
+    "historical multi-day B1.10 crop trajectory equivalence",
+    "calendar-derived WOFOST scheduling",
+    "new or changed root-uptake or ET physics",
+    "oxygen IALPWET aggregate",
+    "nutrients, soybean, grass or potential-crop production binding",
+    "canonical promotion of the composed F-WOF36 source tree"
+  ],
+  "decision": "QUALIFIED_GATE_B_PHYSICAL_TRIAL_PTRA_QROT_ACCEPTED_WINDOW_BINDING",
+  "status": "QUALIFIED_GATES_A_B_RESTRICTED_PHYSICAL_BINDING_SCOPE_COMPLETE"
 }
