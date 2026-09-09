@@ -8,6 +8,11 @@ module mod_soil_water_solver_contract
   integer, parameter, public :: SW_SOLVE_RETRY_ADVISED = 2
   integer, parameter, public :: SW_SOLVE_FAILED = 3
 
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_NOT_RUN = 0
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_AVAILABLE = 1
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_UNAVAILABLE = 2
+  integer, parameter, public :: SW_TEMPORAL_INDICATOR_FAILED = 3
+
   type, public :: soil_water_parameter_set_t
      integer(int64) :: parameter_set_id = 0_int64
      integer :: active_nodes = 0
@@ -120,12 +125,32 @@ module mod_soil_water_solver_contract
      type(soil_water_interface_sensitivity_t) :: interface_sensitivity
   end type soil_water_solve_result_t
 
+  type, public :: soil_water_temporal_indicator_request_t
+     logical :: previous_right_derivative_available = .false.
+     real(real64), allocatable :: previous_right_derivative(:)
+  end type soil_water_temporal_indicator_request_t
+
+  type, public :: soil_water_temporal_indicator_result_t
+     integer :: status = SW_TEMPORAL_INDICATOR_NOT_RUN
+     logical :: available = .false.
+     character(len=40) :: route = 'not-run'
+     integer :: additional_full_nonlinear_solves = 0
+     integer :: additional_tridiagonal_solves = 0
+     real(real64) :: raw_m_norm = 0.0_real64
+     real(real64) :: defect_m_norm = 0.0_real64
+     real(real64) :: bounded_m_norm = 0.0_real64
+     real(real64) :: head_inf_bound = 0.0_real64
+     real(real64) :: min_mass_weight = 0.0_real64
+     real(real64), allocatable :: current_right_derivative(:)
+  end type soil_water_temporal_indicator_result_t
+
   type, abstract, public :: soil_water_solver_workspace_base_t
   end type soil_water_solver_workspace_base_t
 
   type, abstract, public :: soil_water_solver_t
    contains
      procedure(soil_water_solve_ifc), deferred :: solve
+     procedure :: evaluate_temporal_indicator => soil_water_temporal_indicator_unavailable
   end type soil_water_solver_t
 
   public :: validate_soil_water_request
@@ -135,10 +160,7 @@ module mod_soil_water_solver_contract
        import :: constitutive_hydraulics_provider_t, real64
        class(constitutive_hydraulics_provider_t), intent(in) :: self
        real(real64), intent(in) :: pressure_head(:)
-       real(real64), intent(out) :: water_content(:)
-       real(real64), intent(out) :: conductivity(:)
-       real(real64), intent(out) :: capacity(:)
-       real(real64), intent(out) :: dconductivity_dhead(:)
+       real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
      end subroutine constitutive_evaluate_ifc
 
      subroutine source_sink_evaluate_ifc(self, pressure_head, water_content, source, sink)
@@ -214,5 +236,33 @@ contains
     if (.not. associated(request%evaluation%constitutive)) return
     ok = .true.
   end subroutine validate_soil_water_request
+
+  subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+    class(soil_water_solver_t), intent(inout) :: self
+    type(soil_water_solve_request_t), intent(in) :: request
+    type(soil_water_solve_result_t), intent(in) :: solve_result
+    type(soil_water_temporal_indicator_request_t), intent(in) :: indicator_request
+    class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
+    type(soil_water_temporal_indicator_result_t), intent(out) :: indicator_result
+
+    ! Fail-closed common default. Alternative soil-water solvers are not
+    ! required to expose a Richards operator or to emulate this indicator.
+    ! Referencing otherwise unused dummies keeps strict compiler diagnostics
+    ! useful without introducing state changes or hidden work.
+    if (self%reserved_for_contract_use() .or. request%step_duration < 0.0_real64 .or. &
+        solve_result%status < SW_SOLVE_NOT_RUN .or. indicator_request%previous_right_derivative_available .and. &
+        .not. allocated(indicator_request%previous_right_derivative)) then
+       indicator_result = soil_water_temporal_indicator_result_t()
+       indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+       indicator_result%route = 'contract-invalid'
+       return
+    end if
+    select type (workspace)
+    class is (soil_water_solver_workspace_base_t)
+       indicator_result = soil_water_temporal_indicator_result_t()
+       indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+       indicator_result%route = 'solver-indicator-unavailable'
+    end select
+  end subroutine soil_water_temporal_indicator_unavailable
 
 end module mod_soil_water_solver_contract
