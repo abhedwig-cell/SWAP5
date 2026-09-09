@@ -1,0 +1,26 @@
+name: F-SI25 temporal indicator contract
+
+on:
+  push:
+    branches:
+      - work/f-si25-accepted-state-operator-indicator-seam
+    paths:
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'tests/fsi/test_fsi25_temporal_indicator_contract.f90'
+      - 'tests/fsi/run_fsi25_temporal_indicator_contract.sh'
+      - '.github/workflows/fsi25-temporal-indicator-contract.yml'
+  workflow_dispatch:
+
+jobs:
+  contract-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-SI25 Gate B
+        run: bash tests/fsi/run_fsi25_temporal_indicator_contract.sh
