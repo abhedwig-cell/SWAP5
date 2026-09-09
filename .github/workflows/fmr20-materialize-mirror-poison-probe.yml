@@ -1,0 +1,30 @@
+name: F-MR20 materialize canonical mirror-poison probe
+
+on:
+  push:
+    branches:
+      - work/f-mr20-concurrency-isolation
+    paths:
+      - .github/workflows/fmr20-materialize-mirror-poison-probe.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize mirror-poison identity probe
+        run: python3 tests/fmr/materialize_fmr20_mirror_poison_probe.py
+      - name: Persist test postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          test -n "$(git status --porcelain -- tests/fmr/test_fmr20_authoritative_one_worker_identity.f90)"
+          git add tests/fmr/test_fmr20_authoritative_one_worker_identity.f90
+          git commit -m 'test(F-MR20): add canonical mirror-poison identity probe'
+          git push origin HEAD:work/f-mr20-concurrency-isolation
