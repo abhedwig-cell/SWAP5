@@ -6,6 +6,8 @@ module mod_fmr_serialized_multiswap_runtime
        kernel_result_t, kernel_diagnostics_t, kernel_executor_t, KERNEL_STATUS_NOT_ADMITTED
   use mod_soil_water_solver_contract, only: top_boundary_provider_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_capture_checkpoint, fmr_commit_candidate, fmr_discard_candidate
+  use mod_fmr_accepted_commit_receipt, only: fmr_accepted_commit_receipt_t, fmr_commit_candidate_with_receipt, &
+       FMR_COMMIT_RECEIPT_OK, FMR_COMMIT_RECEIPT_COMMIT_REJECTED
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, fmr_build_execution_order, fmr_count_templates, &
        FMR_BACKEND_SERIALIZED_REFERENCE
@@ -18,6 +20,7 @@ module mod_fmr_serialized_multiswap_runtime
   integer, parameter, public :: FMR_SERIAL_DISPATCH_OK = 0
   integer, parameter, public :: FMR_SERIAL_DISPATCH_INVALID_REQUEST = 1
   integer, parameter, public :: FMR_SERIAL_DISPATCH_REGISTRY_REJECTED = 2
+  integer, parameter, public :: FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED = 3
 
   type, public :: fmr_serialized_column_result_t
     integer(int64) :: column_id = 0_int64
@@ -74,7 +77,7 @@ contains
   subroutine fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
                                                     state_registry, numerical_config, top_boundary, t0, t1, &
                                                     batch_size, results, diagnostics, aggregate, dispatch_status, &
-                                                    runtime_diagnostics)
+                                                    runtime_diagnostics, receipt_column_ids, commit_receipts)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
@@ -89,17 +92,44 @@ contains
     type(fmr_aggregate_diagnostics_t), intent(out) :: aggregate
     integer, intent(out) :: dispatch_status
     type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
+    integer(int64), intent(in), optional :: receipt_column_ids(:)
+    type(fmr_accepted_commit_receipt_t), allocatable, intent(out), optional :: commit_receipts(:)
 
     type(fmr_serialized_reference_backend_t), target :: backend
     type(kernel_executor_t) :: transaction_control
     type(fmr_serialized_batch_diagnostics_t) :: local_runtime
     integer, allocatable :: order(:)
-    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls
+    integer :: batch_start, batch_end, pos, idx, batches, active_physical_calls, receipt_slot
 
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
     active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
+    if (present(commit_receipts)) allocate(commit_receipts(0))
+
+    ! Receipt requests are optional feature-scoped runtime metadata. Validate
+    ! the complete sparse request before backend initialization or any physical
+    ! trial so every expected request error is transactionally precommit.
+    if (present(receipt_column_ids) .neqv. present(commit_receipts)) then
+      dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
+      call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
+      call build_aggregate(columns, diagnostics, 0, aggregate)
+      call finalize_runtime_diagnostics(results, local_runtime)
+      if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+      return
+    end if
+    if (present(receipt_column_ids)) then
+      if (.not. receipt_request_valid(columns, receipt_column_ids)) then
+        dispatch_status = FMR_SERIAL_DISPATCH_RECEIPT_REQUEST_REJECTED
+        call mark_all_rejected(diagnostics, 'RECEIPT_REQUEST_REJECTED')
+        call build_aggregate(columns, diagnostics, 0, aggregate)
+        call finalize_runtime_diagnostics(results, local_runtime)
+        if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
+        return
+      end if
+      deallocate(commit_receipts)
+      allocate(commit_receipts(size(receipt_column_ids)))
+    end if
 
     if (batch_size <= 0 .or. t1 <= t0) then
       dispatch_status = FMR_SERIAL_DISPATCH_INVALID_REQUEST
@@ -128,9 +158,17 @@ contains
       do pos = batch_start, batch_end
         idx = order(pos)
         results(idx)%dispatch_ordinal = pos
-        call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
-             forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
-             local_runtime, active_physical_calls)
+        receipt_slot = 0
+        if (present(receipt_column_ids)) receipt_slot = find_receipt_slot(columns(idx)%column_id, receipt_column_ids)
+        if (receipt_slot > 0) then
+          call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+               forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+               local_runtime, active_physical_calls, commit_receipts(receipt_slot))
+        else
+          call execute_column(backend, transaction_control, columns(idx), templates, parameter_registry, &
+               forcing_registry, state_registry, numerical_config, t0, t1, results(idx), diagnostics(idx), &
+               local_runtime, active_physical_calls)
+        end if
       end do
     end do
 
@@ -178,6 +216,44 @@ contains
     runtime%authoritative_aggregate_mass%missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
   end subroutine initialize_runtime_diagnostics
 
+  logical function receipt_request_valid(columns, receipt_column_ids) result(valid)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    integer(int64), intent(in) :: receipt_column_ids(:)
+    integer :: i, j
+
+    valid = .true.
+    do i = 1, size(receipt_column_ids)
+      if (receipt_column_ids(i) <= 0_int64) then
+        valid = .false.
+        return
+      end if
+      if (.not. any(columns%column_id == receipt_column_ids(i))) then
+        valid = .false.
+        return
+      end if
+      do j = i + 1, size(receipt_column_ids)
+        if (receipt_column_ids(j) == receipt_column_ids(i)) then
+          valid = .false.
+          return
+        end if
+      end do
+    end do
+  end function receipt_request_valid
+
+  integer function find_receipt_slot(column_id, receipt_column_ids) result(slot)
+    integer(int64), intent(in) :: column_id
+    integer(int64), intent(in) :: receipt_column_ids(:)
+    integer :: i
+
+    slot = 0
+    do i = 1, size(receipt_column_ids)
+      if (receipt_column_ids(i) == column_id) then
+        slot = i
+        return
+      end if
+    end do
+  end function find_receipt_slot
+
   logical function registry_structure_valid(columns, templates, states) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
@@ -212,7 +288,8 @@ contains
   end function registry_structure_valid
 
   subroutine execute_column(backend, transaction_control, column, templates, parameter_registry, forcing_registry, &
-                            state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls)
+                            state_registry, numerical_config, t0, t1, output, diagnostic, runtime, active_physical_calls, &
+                            commit_receipt)
     type(fmr_serialized_reference_backend_t), intent(inout) :: backend
     type(kernel_executor_t), intent(inout) :: transaction_control
     type(fmr_logical_column_t), intent(in) :: column
@@ -226,13 +303,14 @@ contains
     type(fmr_column_diagnostics_t), intent(inout) :: diagnostic
     type(fmr_serialized_batch_diagnostics_t), intent(inout) :: runtime
     integer, intent(inout) :: active_physical_calls
+    type(fmr_accepted_commit_receipt_t), intent(out), optional :: commit_receipt
 
     type(kernel_checkpoint_t) :: checkpoint
     type(kernel_result_t) :: kernel_result
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: kernel_diag
     type(fmr_serialized_physical_observation_t) :: observation
-    integer :: state_index, parameter_index, forcing_index, commit_status
+    integer :: state_index, parameter_index, forcing_index, commit_status, receipt_status
     logical :: checkpoint_ok, candidate_ready, did_commit
 
     if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
@@ -328,14 +406,28 @@ contains
       return
     end if
 
-    call fmr_commit_candidate(transaction_control, state_registry(state_index), candidate, kernel_diag, &
-         did_commit, commit_status)
+    if (present(commit_receipt)) then
+      call fmr_commit_candidate_with_receipt(transaction_control, checkpoint, state_registry(state_index), candidate, &
+           kernel_diag, did_commit, commit_receipt, receipt_status, commit_status)
+    else
+      receipt_status = FMR_COMMIT_RECEIPT_OK
+      call fmr_commit_candidate(transaction_control, state_registry(state_index), candidate, kernel_diag, &
+           did_commit, commit_status)
+    end if
     output%commit_status = commit_status
     if (.not. did_commit) then
       diagnostic%rejected = 1
-      diagnostic%failure_classification = 'COMMIT_REJECTED'
+      if (present(commit_receipt) .and. receipt_status /= FMR_COMMIT_RECEIPT_COMMIT_REJECTED) then
+        diagnostic%failure_classification = 'RECEIPT_PREVALIDATION_REJECTED'
+      else
+        diagnostic%failure_classification = 'COMMIT_REJECTED'
+      end if
       call update_committed_provenance(state_registry(state_index), output, diagnostic)
       return
+    end if
+    if (present(commit_receipt)) then
+      if (receipt_status /= FMR_COMMIT_RECEIPT_OK .or. .not. commit_receipt%ready()) &
+           error stop 'F-MR18: successful physical commit without ready accepted receipt'
     end if
 
     output%completed = .true.
