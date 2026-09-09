@@ -1,0 +1,26 @@
+name: F-SI20 fine-step solver rejection attribution
+
+on:
+  push:
+    branches:
+      - work/f-si20-richards-temporal-error-semantics
+    paths:
+      - 'tests/fsi/run_fsi20_solver_rejection_attribution.sh'
+      - '.github/workflows/fsi20-solver-rejection-attribution.yml'
+  workflow_dispatch:
+
+jobs:
+  attribute:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Attribute F-SI20 fine-step solver rejections
+        shell: bash
+        run: bash tests/fsi/run_fsi20_solver_rejection_attribution.sh
