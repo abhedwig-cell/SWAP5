@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP09",
+  "gate": "C5A_MIXED_STATE_TAIL_CHARACTERIZATION",
+  "qualification": false,
+  "purpose": "Characterize whether Ross-2011-style unsaturated state coordinates regularize the revealed C3b dry-to-wet tail better than head-by-head interpolation, without changing LayeredMFP time-integration semantics.",
+  "candidate": {
+    "quantity": "direct steady-Darcian face flux q",
+    "upper_unsaturated_coordinate": "effective saturation S_e",
+    "lower_unsaturated_coordinate": "effective saturation S_e",
+    "lower_saturated_coordinate": "positive pressure head h",
+    "S_e_uniform_increment": 0.02,
+    "S_e_nodes_nominal": 51,
+    "positive_head_knots_cm": [0.0,0.001,0.01,0.1,1.0,10.0,100.0],
+    "material_specific_knots": false,
+    "pair_specific_knots": false
+  },
+  "scope": {
+    "materials": ["reference_sand","very_fast"],
+    "half_face_lengths_cm": [10.0,5.0],
+    "probe_set": "revealed C3b dry-to-wet set, characterization only",
+    "upper_endpoint_must_be_unsaturated": true,
+    "lower_endpoint_may_be_unsaturated_or_saturated": true,
+    "UU_and_US_tables_only": true
+  },
+  "comparison": {
+    "reference": "same direct steady-Darcian oracle used by F-LMFP09",
+    "baseline": "C3/C4 head-by-head endpoint representation on the same revealed C3b set",
+    "metrics": ["median/p90/p99/max relative flux error","strong-gradient p90","sign mismatches","coverage failures","table values/bytes","offline oracle solves"]
+  },
+  "thresholds": "Use existing F-LMFP09 face-matrix thresholds only as diagnostics. A pass on the revealed C3b set is not qualification.",
+  "decision_rules": {
+    "material_tail_improvement": "C5A is promising only if tail metrics improve materially for both characterized classes without sign/coverage regressions.",
+    "qualification": "Any promoted candidate requires a new precommitted C5b holdout with different off-grid endpoints and seed.",
+    "failure": "If severe off-grid tail errors remain, do not tune S_e nodes to the revealed probes; move to local face solve or narrower envelope research."
+  },
+  "status": "DESIGN_PERSISTED_BEFORE_CHARACTERIZATION"
+}
