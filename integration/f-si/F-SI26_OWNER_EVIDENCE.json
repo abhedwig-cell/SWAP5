@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI26",
+  "title": "Scientific Normalization & Acceptance Semantics for the Bounded Richards Temporal Indicator",
+  "branch": "work/f-si26-richards-temporal-indicator-scientific-normalization",
+  "base_commit": "0053d5b0a523e494a7fbfcdc55190b946230aa56",
+  "tested_head": "d487641bee37940085df03bca07d956fc4a017a7",
+  "workflow": {
+    "name": "F-SI26 head-budget scientific normalization gate",
+    "run_id": 34349176535,
+    "job_id": 102457927496,
+    "runner": "ubuntu-24.04",
+    "conclusion": "success",
+    "first_execution_after_workflow_addition": true,
+    "post_result_harness_repair": false
+  },
+  "selected_candidate": {
+    "id": "F_SI26_EXPLICIT_HEAD_INDICATOR_BUDGET_RATIO",
+    "formula": "C_h=B_inf/H_budget",
+    "B_inf_unit": "cm pressure head",
+    "H_budget_unit": "cm pressure head",
+    "C_h_unit": "dimensionless",
+    "valid_B_inf": "finite and >=0",
+    "valid_H_budget": "finite and >0",
+    "default_H_budget": null,
+    "budget_owner": "explicit numerical/application accuracy policy outside the F-SI25 estimator",
+    "budget_parameter_class": "numerical accuracy configuration",
+    "empirically_fitted_scale": false,
+    "legacy_CritDevH_reused": false,
+    "mass_tolerance_reused": false,
+    "coupling_residual_tolerance_reused": false
+  },
+  "owner_gate_results": {
+    "A_EVIDENCE_RECONCILIATION": "PASS",
+    "B_DIMENSIONAL_AND_SEMANTIC_VALIDITY": "PASS",
+    "C_NO_EMPIRICAL_RESCUE": "PASS",
+    "D_ERROR_CLAIM_BOUNDARY": "PASS",
+    "E_APPLICATION_BUDGET_SEPARATION": "PASS",
+    "F_RETRY_SEMANTIC_SAFETY": "PASS_NO_MONOTONE_SHORTER_DT_ASSUMPTION",
+    "G_EDGE_AND_DISCONTINUITY_BEHAVIOR": "PASS_FAIL_CLOSED_CONTRACT",
+    "H_FKT09_COMPATIBILITY": "PASS",
+    "I_ARCHITECTURE_INVARIANTS": "PASS_WITH_EXPLICIT_NONCLAIMS"
+  },
+  "executed_checks": {
+    "source_lock_set": "PASS",
+    "exact_linear_single_mode_rows": 5,
+    "exact_linear_multimode_rows": 5,
+    "exact_linear_B_inf_upper_bound_reproduced": true,
+    "exact_linear_budget_implication": "C_h<=1 implies qualified exact-linear endpoint head error <= H_budget",
+    "synthetic_budget_ratio_monotonicity": "PASS",
+    "invalid_or_nonpositive_or_nonfinite_budget": "CERTIFICATE_UNAVAILABLE_FAIL_CLOSED",
+    "invalid_or_nonfinite_B_inf": "CERTIFICATE_UNAVAILABLE_FAIL_CLOSED",
+    "F_VQ28_underconservative_retry_attempts_preserved": 36,
+    "F_VQ28_shorter_dt_safe_translation_claim": false,
+    "F_VQ29_error_bound_qualification_preserved": "FAIL_CLOSED_FINITE_REFERENCE_NOT_STRONG_ENOUGH_FOR_ERROR_BOUND_QUALIFICATION",
+    "F_VQ30_nonlinear_positive_transfer_preserved": true,
+    "F_VQ30_B_inf_over_E1_512_range": [6.685266816523914, 102.49832534208181],
+    "F_KT09_generic_dimensionless_le_one_interface_compatible": true
+  },
+  "scientific_interpretation": {
+    "exact_linear_scope": "Within the already qualified exact-linear dissipative scope, B_inf retains its theorem-qualified infinity-norm bound meaning. Therefore C_h<=1 has a genuine exact-linear endpoint head-error implication relative to an externally supplied H_budget.",
+    "nonlinear_scope": "Within the currently qualified nonlinear Richards envelope, C_h is only normalized consumption of the bounded stiffness-aware indicator budget. C_h<=1 does not prove true nonlinear endpoint head error <=H_budget.",
+    "why_no_internal_tolerance": "Existing evidence does not provide a source-bound universal head scale, and deriving one from owner/held-out matrices, legacy convergence tolerances, finite refinement endpoints, or the F-KT09 <=1 interface would be empirical or semantic overreach.",
+    "why_no_M_only_normalization": "B_M is an M-weighted head norm, not a mass-balance residual; hard mass conservation remains a separate absolute gate.",
+    "retry_warning": "F-VQ28 forbids assuming that retry halving monotonically improves a temporal indicator on the evolving nonlinear trajectory."
+  },
+  "production_diff_from_base": {
+    "ahead_by": 5,
+    "changed_files": [
+      ".github/workflows/fsi26-head-budget-semantics.yml",
+      "integration/f-si/F-SI26_GATE_A_B_C_SEMANTIC_ASSESSMENT.json",
+      "integration/f-si/F-SI26_WORK_UNIT_CONTRACT.json",
+      "tests/fsi/test_fsi26_head_budget_semantics.py"
+    ],
+    "src_files_changed": 0,
+    "production_source_modified": false
+  },
+  "architecture_invariant_checks": {
+    "7_transactional_time_steps": "PASS_SEMANTICS_DO_NOT_MUTATE_TRANSACTION_STATE_OR_ACCEPTANCE_POLICY",
+    "8_cheap_recompute_and_warm_start": "PASS_NORMALIZATION_ADDS_SCALAR_O1_WORK_ONLY",
+    "9_generic_time": "PASS_NO_CALENDAR_OR_FIXED_DAY_SEMANTICS",
+    "11_coupling_core_functionality": "NO_RELEASE_CLAIM_AND_NO_COUPLING_DEPENDENCY_INTRODUCED",
+    "12_groundwater_interface_contract": "UNCHANGED_NOT_USED_AS_TEMPORAL_NORMALIZATION",
+    "13_mass_conservation_absolute": "PASS_MASS_GATE_REMAINS_INDEPENDENT_AND_UNCHANGED",
+    "15_limit_coupling_cost": "PASS_NO_EXTRA_NONLINEAR_TRAJECTORY_OR_REFINEMENT_LADDER",
+    "20_alternative_soil_water_solvers_open": "PASS_FKT09_GENERIC_INTERFACE_REMAINS_MODEL_AGNOSTIC",
+    "23_physics_solver_policy_separated": "PASS_H_BUDGET_IS_NUMERICAL_ACCURACY_CONFIG_NOT_PHYSICS",
+    "24_predictable_compute": "PASS_FOR_NORMALIZATION_ONLY; RETRY_POLICY_NOT_ADMITTED",
+    "25_reference_mode": "PASS_UNCHANGED",
+    "26_runtime_diagnostics": "REQUIREMENT_PRESERVED_C_H_AND_UNAVAILABLE_REASON_MUST_BE_DIAGNOSTIC_IF_LATER_BOUND",
+    "29_no_silent_dependencies": "PASS_EXPLICIT_BUDGET_PROVENANCE_AND_DISCONTINUITY_NONCLAIMS",
+    "30_architecture_change_explicitly_tested": "PASS"
+  },
+  "qualified": [
+    "The non-empirical dimensionless candidate C_h=B_inf/H_budget is scientifically and dimensionally coherent when H_budget is an explicit positive finite head-domain numerical/application budget with independent provenance.",
+    "No universal default H_budget is admitted by F-SI26.",
+    "The candidate is compatible with the already-qualified generic F-KT09 model-owned certificate surface without changing F-KT09 semantics.",
+    "Exact-linear true-bound implications are preserved only inside the already-qualified exact-linear scope.",
+    "Nonlinear Richards semantics remain explicitly weaker: indicator-budget consumption, not a proven nonlinear true-error guarantee.",
+    "Invalid budget, unavailable indicator, unsupported operator envelope, invalid continuation provenance, initial no-history, restart mismatch or discontinuity remain fail-closed/unavailable unless separately qualified."
+  ],
+  "hard_nonclaims": [
+    "No numeric H_budget value or scientific application tolerance is selected.",
+    "No general nonlinear true-error upper bound is claimed.",
+    "N512 or any finite refinement endpoint is not promoted to truth.",
+    "No empirical multiplier, safety factor, q_cap, Nmin, tail model, floor inflation or state coefficient is introduced.",
+    "No monotone shorter-dt certificate improvement is assumed.",
+    "No production temporal acceptance/retry policy is admitted.",
+    "No production bootstrap/restart/discontinuity continuation mechanism is admitted.",
+    "No F-GC02, groundwater-coupling or F-PE release follows."
+  ],
+  "owner_decision": "SCIENTIFIC_NORMALIZATION_CANDIDATE_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "realized": true,
+  "persisted": true,
+  "tested": true,
+  "owner_qualified": true,
+  "production_implemented": false,
+  "independent_qualification_required": true
+}
