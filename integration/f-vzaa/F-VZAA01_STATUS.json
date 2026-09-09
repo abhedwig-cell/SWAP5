@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-VZAA",
   "work_unit": "F-VZAA01",
   "title": "Vadose Zone Analytical Algorithm Assessment, Conservation Repair & SWAP5 Suitability",
@@ -9,7 +9,7 @@
   "official_code_reproduced": false,
   "qualified": false,
   "final_classification": null,
-  "interim_decision": "PUBLISHED_VZAA_DIRECT_PATH_BLOCKED_CONSERVATIVE_DERIVATIVE_AND_DONOR_RESEARCH_OPEN",
+  "interim_decision": "PUBLISHED_VZAA_DIRECT_SOLVER_BLOCKED_STANDALONE_CONSERVATIVE_DERIVATIVE_DEPRIORITIZED_PENDING_DISTINCT_BENEFIT_DONOR_EXTRACTION_PRIORITIZED",
   "primary_source": {
     "citation": "Sadeghi et al. (2026), Vadose zone analytical algorithm (VZAA): a non-iterative algorithm for vadose zone soil moisture and groundwater recharge, Journal of Hydrology 673, 135467",
     "doi": "10.1016/j.jhydrol.2026.135467"
@@ -30,7 +30,7 @@
     "conservative_projection_derivative": "PLAUSIBLE_RESEARCH_CONCEPT_NOT_QUALIFIED_AND_NOT_PUBLISHED_VZAA"
   },
   "qualification_gates": {
-    "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_AND_CORE_ALGEBRA_RECONSTRUCTED",
+    "A_scientific_reconstruction": "PARTIAL_PASS_HARD_GATE_CORE_ALGEBRA_AND_COMPARATIVE_POSITIONING_RECONSTRUCTED",
     "B_published_code_reproduction": "OPEN_SUPPLEMENT_NOT_CAPTURED",
     "C_exact_discrete_conservation": "FAIL_PUBLISHED_COMPLETE_FORMULATION_FIXED_LAYER_CORE_IS_ALGEBRAICALLY_CONSERVATIVE",
     "D_bottom_head_or_flux": "FAIL_PUBLISHED_FORMULATION",
@@ -40,6 +40,25 @@
     "H_bounded_runtime": "FAIL_STRONG_BOUNDED_COST_CLAIM_FOR_LITERAL_FULL_HISTORY_FORMULATION",
     "I_modflow_response_tangent": "OPEN_NOT_PROVIDED_BOUNDED_SCALAR_RESPONSE_IS_ONLY_A_RESEARCH_PATH",
     "J_swap_physics_interface": "OPEN"
+  },
+  "comparative_positioning": {
+    "layeredmfp": {
+      "observed_branch": "work/f-lmfp09-hydraulic-envelope-geometry",
+      "observed_head": "7d164e19cc70a831436cdb0a15514672f58179fd",
+      "assessment": "MOST_ADVANCED_SWAP5_SPECIFIC_REDUCED_ORDER_TRACK_CURRENT_F_LMFP08_SCOPE_ALREADY_HAS_ROUNDOFF_MASS_AND_BOUNDED_SHARED_FACE_REPRESENTATION"
+    },
+    "rossfast": {
+      "observed_branch": "work/f-ross01-fast-mfp-feasibility",
+      "observed_head": "a351de29183cb896f205e318af6522bc02bb95b3",
+      "assessment": "STRONG_INDEPENDENT_MFP_CANDIDATE_NO_INHERENT_FULL_TEMPORAL_HISTORY_BUT_SWAP5_HARD_GATES_REMAIN_OPEN"
+    },
+    "fwc": {
+      "observed_branch": "work/f-fwc01-finite-water-content-assessment",
+      "observed_head": "eebd347a486bf7597de9b5d5809ad91b19342084",
+      "assessment": "STRONGER_PUBLISHED_CONSERVATION_AND_MOVING_WATER_TABLE_LINEAGE_THAN_VZAA_BUT_DYNAMIC_FRONT_STATE_COST_AND_GENERIC_SWAP_HYDRAULICS_REMAIN_OPEN"
+    },
+    "vzaa_distinct_candidate_value": "HISTORY_AWARE_TRANSIENT_DIFFUSIVE_FLUX_AND_SURFACE_VERSUS_GROUNDWATER_CONTRIBUTION_AS_DONOR_PREDICTOR_NOT_AS_ACCEPTED_LEDGER",
+    "standalone_derivative_burden_of_proof": "MUST_SHOW_MATERIALLY_DISTINCT_ACCURACY_OR_APPLICABILITY_ENVELOPE_NOT_AVAILABLE_MORE_SIMPLY_INSIDE_LAYEREDMFP_COMMON_SOLVER_ARCHITECTURE"
   },
   "direct_path": {
     "production_admissible": false,
@@ -51,24 +70,18 @@
     ]
   },
   "research_paths_remaining": {
+    "donor_extraction": {
+      "status": "PRIORITY_OPEN",
+      "candidate": "isolate the transient diffusive/history flux estimator and test as predictor or diagnostic inside an exactly conservative common/LayeredMFP-compatible harness",
+      "acceptance_rule": "raw VZAA prediction may never become committed transfer without exact conservative acceptance semantics"
+    },
     "conservative_derivative": {
-      "status": "OPEN",
-      "required_proof": "Exact accepted-step ledger plus explicit bottom interface plus bounded correction count, while deviations from reference Richards remain qualified and diagnostics expose any fallback.",
-      "candidate_mechanism": "VZAA predictor followed by bounded conservative storage projection and reconstructed interface fluxes; prescribed-head mode may require a safeguarded scalar bottom-response solve."
+      "status": "OPEN_BUT_DEPRIORITIZED",
+      "required_proof": "Demonstrate a materially distinct benefit over LayeredMFP or other common reduced-order machinery before a separate solver family is justified. Exact accepted-step ledger, explicit bottom interface and bounded correction count remain mandatory."
     },
     "compressed_fractional_history": {
-      "status": "OPEN_SEPARATE_NUMERICAL_METHOD_CHANGE",
-      "required_proof": "Error, restart, rollback, conservation interaction and performance must be qualified independently before use."
-    },
-    "algorithmic_donor": {
-      "status": "OPEN_PROMISING",
-      "candidate_ideas": [
-        "sequential top-down local predictor",
-        "analytical moisture-flux donor relation",
-        "bounded scalar correction instead of global Newton where physically admissible",
-        "compressed transactional history modes",
-        "explicit conservative transfer ledger"
-      ]
+      "status": "OPEN_ONLY_IF_DONOR_BENEFIT_JUSTIFIES_METHOD_COMPLEXITY",
+      "required_proof": "Error, restart, rollback, conservation interaction and performance must be qualified independently."
     }
   },
   "next_actions": [
@@ -76,9 +89,9 @@
     "reproduce a fixed-domain case and test Eq. 8 telescoping to roundoff",
     "decompose moving-water-table residual into unsaturated storage, saturated storage, geometry crossing, clipping and lower-boundary terms",
     "identify the actual Eq. 9 local solution method and count function evaluations",
-    "reconstruct adaptive time-step acceptance and establish bounded-cost or fallback policy",
-    "only then prototype a conservative derivative in an isolated harness",
-    "compare any derivative against reference Richards and LayeredMFP before production admission"
+    "isolate the VZAA transient diffusive/history term as a donor candidate",
+    "design an isolated donor A/B against current LayeredMFP and FullRichards without changing production code",
+    "reject standalone derivative work unless a distinct accuracy/applicability advantage is demonstrated"
   ],
-  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_RESEARCH_CONTINUES_ONLY_AS_EXPLICIT_DERIVATIVE_OR_DONOR"
+  "status": "DIRECT_PUBLISHED_FORMULATION_FAILS_C_D_AND_STRONG_H_DONOR_EXTRACTION_NOW_PRIORITIZED"
 }
