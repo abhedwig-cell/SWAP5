@@ -35,9 +35,9 @@ driver.write_text(s)
 r=inner.read_text()
 old='tests/fsi/test_fsi20_prescribed_head_temporal_characterization.f90'
 new='tests/fsi/.fsi20_startup_tail_driver_tmp.f90'
-if r.count(old)!=2:
-    raise SystemExit(f'expected two inner driver references, got {r.count(old)}')
-r=r.replace(old,new)
+if r.count(old)!=1:
+    raise SystemExit(f'expected exactly one inner driver reference, got {r.count(old)}')
+r=r.replace(old,new,1)
 inner.write_text(r)
 PY
 
