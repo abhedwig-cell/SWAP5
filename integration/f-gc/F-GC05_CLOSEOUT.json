@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC05",
+  "title": "Independent Coupling Head-Accuracy Objective and Versioned Numerical Policy Template Qualification Closeout",
+  "decision": "BLOCKED_NO_INDEPENDENT_APPLICATION_HEAD_ACCURACY_REQUIREMENT",
+  "qualified": false,
+  "persisted": true,
+  "researched": true,
+  "pre_registered_before_numeric_testing": true,
+  "numeric_testing_performed": false,
+  "target_leakage_detected": false,
+  "production_source_changed": false,
+  "policy_template": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+  "template_status": "STRUCTURALLY_DEFENSIBLE_BUT_NOT_NUMERICALLY_INSTANTIATED",
+  "reason": "Independent source review supports strict separation of solver convergence, interface coupling convergence, temporal indicator magnitude, application prediction accuracy and physical/model uncertainty, but provides no transferable absolute head-accuracy requirement for the preregistered general SWAP-MODFLOW application class.",
+  "downstream": {
+    "F_GC02": "REMAINS_FAIL_CLOSED_NOT_RERUN",
+    "F_VQ35": "NOT_OPENED_NO_NUMERIC_POLICY_TO_QUALIFY",
+    "future_release_condition": "A narrower application class supplies an independently justified H_app and an independently justified allocation A_temporal before any target fixture is inspected."
+  },
+  "hard_nonclaims": [
+    "no universal centimetre-scale H_budget",
+    "no MODFLOW solver tolerance reused as application accuracy",
+    "no F-GC04 B_inf-derived budget",
+    "no GC02-tuned budget",
+    "no production coupling change",
+    "no mass-policy change"
+  ]
+}
