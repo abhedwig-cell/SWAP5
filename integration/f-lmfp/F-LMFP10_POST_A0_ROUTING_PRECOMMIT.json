@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-LMFP",
+  "work_unit": "F-LMFP10",
+  "artifact": "POST_A0_ROUTING_PRECOMMIT",
+  "qualification": false,
+  "production_implementation": false,
+  "timing": {
+    "A0_run": 34329612925,
+    "A0_tested_head": "c738347ae47e3b5788e54fa96d82ec20c8de4acb",
+    "full_A0_aggregate_revealed": false,
+    "nomination_already_mathematically_impossible": true,
+    "basis": "integration/f-lmfp/F-LMFP10_A0_EARLY_NOMINATION_IMPOSSIBILITY.json",
+    "reason": "Freeze interpretation and next-route boundaries before B10/O11/control results reveal the complete pattern."
+  },
+  "hard_rules": {
+    "A0_alpha_or_h50_candidate_may_be_rescued_by_retuning_on_A0_rows": false,
+    "A1_predeclared_geometry_axis_gate_may_start_without_A0_nomination": false,
+    "low_NPAR_threshold_may_be_derived_as_qualified_classifier_from_C7a_or_A0": false,
+    "failed_low_NPAR_materials_may_be_deleted_from_full_catalog_claim": false,
+    "O01_O05_geometry_improvement_may_be_promoted_as_isolated_production_patch": false,
+    "future_SWAPS_default_MvG_claim_must_reconcile_F_SI09": true,
+    "Ross_and_LMFP_implementation_lineage_must_remain_independent": true,
+    "fresh_unseen_holdout_required_for_any_materially_new_candidate": true,
+    "mass_conservation_remains_hard": true
+  },
+  "routing": {
+    "R1_STRUCTURAL_FAILURE_IF_REVEALED": {
+      "trigger": "Any remaining A0 class reveals failed exact identity, fail-closed behavior, nonzero runtime-oracle use, sign mismatch or provider construction failure.",
+      "route": "Treat as implementation/representation correctness first. Do not infer material-shape physics from a structurally invalid candidate."
+    },
+    "R2_SCALAR_NORMALIZATION_GENERALIZATION_FAILURE": {
+      "trigger": "The forced negative tail result remains the dominant pattern without structural failure.",
+      "route": "Reject one-scalar alpha or h50 endpoint normalization as the next full-catalog family. Do not repair it with material-specific scale factors selected from A0 rows."
+    },
+    "R3_MATERIAL_SHAPE_DEPENDENT_FAILURE": {
+      "trigger": "Remaining B10/O11 results align with the already revealed B17/B18/O07 low-NPAR/broad-transition pattern.",
+      "route": "A future hypothesis may represent constitutive curve shape explicitly rather than by one scale, but the coordinate/algorithm must be specified globally before testing. NPAR<=1.2 is characterization only and cannot become a threshold from these data.",
+      "permitted_future_hypothesis_classes_not_preselected": [
+        "analytically shape-aware endpoint coordinate using source hydraulic parameters without learned thresholds",
+        "globally specified bounded adaptive interpolation-defect placement independent of validation rows",
+        "higher-order constrained endpoint representation preserving exact hydraulic identities"
+      ],
+      "forbidden": "No material-name lookup, no hand-inserted knots at observed failing heads, no revealed-error-trained regime classifier."
+    },
+    "R4_GEOMETRY_SENSITIVE_SUBPATTERN": {
+      "trigger": "O01/O05 retain strong improvement while low-NPAR tail classes fail.",
+      "route": "Keep geometry sensitivity as a separate representation requirement. Do not assume the coordinate that fixes 20 cm strong gradients also generalizes material transition shape."
+    },
+    "R5_F_SI09_PROVIDER_RECONCILIATION": {
+      "trigger": "Before any new physical qualification against the admitted SWAP5 default-MvG route.",
+      "route": "Bind or independently cross-qualify against exact F-SI09 corrected B1.10 provider/blob. Recharacterize only what is needed to know whether legacy C7a/A0 failure localization survives the corrected provider; do not independently modify constitutive formulas in F-LMFP."
+    },
+    "R6_INDEPENDENT_ROSS_CROSS_EVIDENCE": {
+      "trigger": "F-ROSS01 independently closes a face-representation subgate with comparable hydraulic cases.",
+      "route": "Use only as cross-evidence after lineage is explicit. Do not copy Ross table/oracle implementation into F-LMFP or vice versa. If both streams converge on the same abstract provider requirements, route any shared production contract through a separate solver-neutral integration/owner workunit."
+    }
+  },
+  "control_panel_interpretation": {
+    "if_controls_remain_good": "Scalar normalization is not globally destructive but still fails the target low-NPAR tail family; this does not rescue A0.",
+    "if_controls_degrade": "Strengthens rejection of the scalar-normalization family; do not tune control-specific exceptions.",
+    "control_results_do_not_change_A0_decision": true
+  },
+  "next_workunit_rule": "Do not open a new representation implementation branch while F-ROSS01 is actively changing the same broad steady-face design space. First close A0 and review the then-current Ross and F-SI09 boundaries. A new F-LMFP workunit is justified only for a non-overlapping materially new hypothesis.",
+  "architecture_invariants": {
+    "single_kernel": "PRESERVED",
+    "solver_neutral_hydraulic_interface": "REQUIRED_FOR_ANY_SHARED_FUTURE_PROVIDER",
+    "immutable_shared_hydraulic_representation": "PRESERVED",
+    "per_column_heavy_solver_state": false,
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT",
+    "physics_vs_solver_policy": "SEPARATE",
+    "reference_mode": "PRESERVED",
+    "bounded_runtime": "REQUIRED",
+    "diagnostics": "FAILURE_ROUTE_EXPLICIT",
+    "alternative_solver_openness": "PRESERVED"
+  },
+  "status": "PRECOMMITTED_AFTER_LOGICAL_A0_FAILURE_BEFORE_FULL_AGGREGATE_REVEAL"
+}
