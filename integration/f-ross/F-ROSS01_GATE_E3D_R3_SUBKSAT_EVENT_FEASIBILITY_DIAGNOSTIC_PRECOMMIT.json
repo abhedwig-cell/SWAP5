@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "diagnostic": "E3D_R3_SUBKSAT_REFERENCE_EVENT_FEASIBILITY",
+  "status": "PRECOMMIT_FROZEN",
+  "purpose": "Determine whether the full-accuracy reference column has a mass-conserving one-step root that crosses top-cell h=0 under imposed top flux at or below KSAT, before attempting another candidate saturation-transition qualification fixture.",
+  "materials": ["B01", "B12", "O13", "O14"],
+  "initial_heads_cm": [-0.2, -1.5, -5.0],
+  "bottom_head_cm": -15.0,
+  "q_top_fraction_ksat": [0.25, 0.5, 0.75, 1.0],
+  "trial_dt_day": [0.001, 0.002, 0.004, 0.008, 0.016, 0.032],
+  "hard_mass_tolerance_cm": 1e-9,
+  "head_guard_cm": 0.8,
+  "selection_rule": "A shared feasible tuple must have accepted full-accuracy reference roots for all four materials, top-cell h crossing from -0.2 cm to >=0 in all four, mass residual <=1e-9 cm, finite heads, and max head <0.8 cm. Prefer lowest q fraction, then smallest dt.",
+  "efficiency_constraints": [
+    "Reference only.",
+    "No C1R table generation.",
+    "One implicit step per tuple/material.",
+    "Stop no earlier than full frozen grid evaluation; selection is deterministic after evaluation."
+  ],
+  "hard_nonclaims": [
+    "Not a saturation-transition qualification.",
+    "Not a candidate RossFast comparison.",
+    "Not a production top-boundary policy.",
+    "No forcing tuple may be promoted directly to qualification without a new frozen precommit."
+  ]
+}
