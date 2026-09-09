@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-FWC",
   "work_unit": "F-FWC01",
   "title": "Finite Water Content Soil-Water Solver Assessment",
@@ -10,7 +10,7 @@
   "tested": true,
   "reproduced": false,
   "qualified": false,
-  "decision": "FWC_BOUNDED_FAIL_CLOSED_REPRESENTATION_SEMANTICS_QUALIFIED_PHYSICAL_EQUATIONS_STILL_OPEN",
+  "decision": "FWC_BOUNDED_FAIL_CLOSED_AND_RESTRICTED_PHYSICAL_ADVECTIVE_MASS_SUBGATES_QUALIFIED_BROADER_PHYSICS_OPEN",
   "decision_is_final": false,
   "requested_positive_exit_reached": false,
   "primary_lineage": [
@@ -34,22 +34,18 @@
   },
   "candidate_families": ["FWC_ADVECTIVE","FWC_EXPLICIT_DIFFUSION"],
   "gate_ab": {
-    "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
     "workflow_run": 34380354951,
-    "workflow_head": "6af5bdcf58ede363facb9690983ce15046bf79a2",
     "workflow_conclusion": "success",
     "source_style_dynamic_linked_list": "NO_GO_FOR_PRIMARY_MULTISWAP_PERSISTENT_REPRESENTATION",
     "forcing_independent_hard_bound_established": false,
     "single_bin_object_growth_under_64x_event_refinement": "4_TO_256",
     "200_bin_finest_modeled_persistent_bytes": 1232000,
     "minimal_transaction_safe_finite_volume_ledger": "QUALIFIED",
-    "max_abs_mass_residual": 2.3314683517128287e-15,
-    "physical_FWC_equation_mass_qualification": "OPEN"
+    "max_abs_mass_residual": 2.3314683517128287e-15
   },
   "gate_a2": {
     "evidence": "F-FWC01_GATE_A2_FIXED_SLOT_FAIL_CLOSED_BOUND_RESULT.json",
     "workflow_run": 34381244691,
-    "workflow_head": "3587426bf43f5ccbe0d44805d52d7d36d5933d1e",
     "workflow_conclusion": "success",
     "candidate": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
     "decision": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
@@ -62,21 +58,37 @@
     "overflow_committed_state_bitwise_unchanged": true,
     "overflow_committed_ledger_exactly_unchanged": true,
     "overflow_water_merge_clip_drop": false,
-    "overflow_diagnostic": "FALLBACK_REQUIRED",
-    "explicit_diffusion_scratch_owner": "worker",
-    "important_nonclaims": [
-      "eight slots are not shown sufficient for useful hydrological coverage",
-      "41.6 kB persistent state at 200 bins is not admitted as acceptable MultiSWAP memory cost",
-      "runtime event-rate boundedness remains open",
-      "physical FWC hydraulic equations remain unqualified"
-    ]
+    "overflow_diagnostic": "FALLBACK_REQUIRED"
+  },
+  "gate_b2a": {
+    "evidence": "F-FWC01_GATE_B2A_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_RESULT.json",
+    "workflow_run": 34383285967,
+    "workflow_head": "17c879ad7e4027d416520e6078f155371d7db7ea",
+    "workflow_conclusion": "success",
+    "implementation_provenance": "INDEPENDENT_RECONSTRUCTION_SOURCE_BOUND_EQ19",
+    "decision": "QUALIFIED_PHYSICAL_ADVECTIVE_FALLING_SLUG_MASS_SUBGATE_READY_FOR_CAPILLARY_RELAXATION_AND_INFILTRATION_MASS_GATES",
+    "materials": ["B01","B12","O13","O14"],
+    "theta_bin_counts": [16,64,200],
+    "dt_days": [1e-6,1e-5,1e-4,1e-3],
+    "cases": 48,
+    "case_pass_count": 48,
+    "maximum_abs_mass_residual_cm": 6.938893903907228e-18,
+    "mass_repair": false,
+    "numerical_clipping_repair": false,
+    "partial_and_complete_bottom_outflow_ledgered": true,
+    "overflow_committed_state_bitwise_unchanged": true,
+    "overflow_committed_ledger_exactly_unchanged": true,
+    "scope": "collision-free gravity-driven falling-slug advection only; no capillary relaxation, infiltration front, groundwater front or explicit diffusion"
   },
   "admissibility": {
     "source_style_dynamic_list_primary_multiswap": "REJECTED",
     "hard_bounded_fixed_slot_transaction_semantics": "QUALIFIED",
-    "physical_advective_FWC_equations": "NOT_YET_QUALIFIED",
+    "physical_advective_falling_slug_mass": "QUALIFIED_RESTRICTED",
+    "capillary_relaxation_mass_and_trajectory": "NOT_YET_QUALIFIED",
+    "infiltration_front_mass_and_trajectory": "NOT_YET_QUALIFIED",
+    "groundwater_front_mass_and_trajectory": "NOT_YET_QUALIFIED",
     "physical_explicit_diffusion_FWC_equations": "NOT_YET_QUALIFIED",
-    "physical_mass_conservation": "NOT_YET_QUALIFIED",
+    "full_physical_mass_conservation": "NOT_YET_QUALIFIED",
     "hydraulic_accuracy_vs_FullRichards": "NOT_YET_QUALIFIED",
     "runtime_affordability": "NOT_YET_QUALIFIED",
     "groundwater_interface": "NOT_ADMITTED",
@@ -86,16 +98,17 @@
   "hard_guards": [
     "Do not restore source-style dynamic linked-list persistence as the primary MultiSWAP representation without a new forcing-independent bound proof.",
     "Fixed-slot overflow may reject/retry or route to a qualified fallback, but may never discard, silently merge or clip water.",
-    "A2 boundedness does not qualify eight slots as an adequate coverage policy.",
-    "A2 boundedness does not qualify the 200-bin memory cost or runtime event cost.",
-    "No physical FWC claim may be promoted from the synthetic topology and ledger probes.",
-    "Do not start groundwater, crop or MultiSWAP production integration before physical FWC mass and hydraulic gates pass.",
-    "If M2WC70 becomes retrievable, capture checksum and code structure before any official-code reproduction claim."
+    "A2 boundedness does not qualify eight slots as an adequate coverage policy or the 200-bin memory cost as acceptable.",
+    "B2A qualifies only gravity-driven collision-free falling-slug advection and may not be generalized to capillary relaxation, infiltration, groundwater or diffusion.",
+    "Do not infer full physical FWC mass conservation from B2A alone.",
+    "Do not reconstruct the 2016 explicit-diffusion algebra from secondary summaries if the primary equations are not available.",
+    "Do not start groundwater, crop or MultiSWAP production integration before the broader physical FWC mass and hydraulic gates pass."
   ],
   "next_action": {
-    "priority": "PHYSICAL_FWC_STATE_AND_MASS_EQUATION_GATE",
-    "instruction": "Freeze source-derived advective FWC equations and separately the explicit-diffusion extension. Implement the smallest physical conservative column using the qualified fixed-slot fail-closed transaction semantics. Require exact accepted-step mass closure, unchanged committed state on overflow/rejection, no clipping repair, and explicit separation of worker scratch. Only after this passes may hydraulic A/B against FullRichards begin.",
-    "runtime_cost_followup": "After physical feasibility, measure fallback incidence and event/substep cost. Memory boundedness alone is insufficient for MultiSWAP."
+    "priority": "CAPILLARY_RELAXATION_THEN_INFILTRATION_MASS_GATE",
+    "instruction": "Freeze a source-derived capillary-relaxation subgate separately from infiltration. Preserve the B2A finite-volume ownership and A2 fail-closed transactions. If the primary 2015 equations are not sufficient to reconstruct capillary relaxation exactly, stop rather than inventing it. After capillary relaxation closes, qualify infiltration-front creation and merger mass accounting before any broader column A/B against FullRichards.",
+    "explicit_diffusion": "Remain blocked until equation-level primary provenance is available.",
+    "runtime_cost_followup": "After physical feasibility, measure fallback incidence and event/substep cost; memory boundedness alone is insufficient for MultiSWAP."
   },
-  "status": "A2_HARD_BOUNDED_FAIL_CLOSED_SEMANTICS_QUALIFIED_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_EQUATION_GATE"
+  "status": "A2_AND_B2A_QUALIFIED_READY_FOR_SOURCE_DERIVED_CAPILLARY_RELAXATION_SUBGATE"
 }
