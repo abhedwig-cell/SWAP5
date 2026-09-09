@@ -1,0 +1,66 @@
+name: F-LMFP09 C7a production catalog coverage
+
+on:
+  push:
+    branches:
+      - work/f-lmfp09-hydraulic-envelope-geometry
+    paths:
+      - 'experiments/lmfp/**'
+      - 'integration/f-lmfp/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_DESIGN.json'
+      - '.github/workflows/lmfp09-c7a-production-catalog-coverage.yml'
+  workflow_dispatch:
+
+jobs:
+  catalog-shards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run frozen C7a catalog shard
+        run: |
+          mkdir -p evidence
+          python experiments/lmfp/run_lmfp09_gate_c7a_catalog_shard.py \
+            evidence/c7a-shard-${{ matrix.shard }}.json \
+            ${{ matrix.shard }}
+
+      - name: Upload shard evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: c7a-shard-${{ matrix.shard }}
+          path: evidence/c7a-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: catalog-shards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all shard evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: c7a-shard-*
+          path: evidence/shards
+          merge-multiple: true
+
+      - name: Aggregate and apply precommitted C7a decision rule
+        run: |
+          python experiments/lmfp/run_lmfp09_gate_c7a_aggregate.py \
+            evidence/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json \
+            evidence/shards/c7a-shard-*.json
+
+      - name: Upload aggregate C7a evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f-lmfp09-c7a-production-catalog-coverage
+          path: |
+            evidence/F-LMFP09_GATE_C7A_PRODUCTION_CATALOG_COVERAGE_RESULT.json
+            evidence/shards/c7a-shard-*.json
+          if-no-files-found: warn
