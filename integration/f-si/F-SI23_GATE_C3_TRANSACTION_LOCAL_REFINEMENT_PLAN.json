@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI23",
+  "gate": "C3_TRANSACTION_LOCAL_OBSERVER_REFINEMENT_CHARACTERIZATION",
+  "frozen_before_execution": true,
+  "owner_inputs": {
+    "gate_B": "QUALIFIED_RESTRICTED_TEST_ONLY_RIGHT_SIDED_DERIVATIVE_BOOTSTRAP",
+    "gate_C1B": "QUALIFIED_EXACT_MANUFACTURED_HYDRAULIC_EIGENMODE_OBSERVER_RELATION",
+    "gate_C2": "POSITIVE_PHYSICAL_TRANSFER_EVIDENCE_WITH_STRONG_STIFFNESS_OR_STATE_DEPENDENCE_AND_PRODUCTION_EFFICIENCY_BLOCKER",
+    "known_solver_cliff_direct_dt_day": 0.000030517578125
+  },
+  "purpose": "Characterize the raw derivative-difference observer under the actual retry semantic of shortening one attempt from the same committed state, and determine whether its finite-reference relation approaches a predictable asymptotic regime before the known fine-step solver cliff.",
+  "production_source_changes_allowed": false,
+  "threshold_selection_allowed": false,
+  "certificate_normalization_selection_allowed": false,
+  "global_scale_fit_allowed": false,
+  "F_VQ30_start_allowed": false,
+  "matrix": {
+    "initial_uniform_heads_cm": [-25.0,-75.0,-250.0],
+    "prescribed_bottom_head_jumps_cm": [-0.1,-0.01,0.001,0.01,0.1],
+    "case_count": 15,
+    "attempt_dt_day": [0.25,0.125,0.0625,0.03125,0.015625,0.0078125,0.00390625,0.001953125,0.0009765625,0.00048828125],
+    "retry_halvings": [0,1,2,3,4,5,6,7,8,9],
+    "same_endpoint_trajectory_steps": [1,4,8],
+    "smallest_reference_substep_day": 0.00006103515625,
+    "smallest_reference_substep_relation_to_known_cliff": "2x the first previously observed failed direct solve dt",
+    "bottom_mode": 5,
+    "top_flux": "conductivity-balanced initial flux -K(h0)",
+    "optional_physics": "inactive",
+    "solver_max_iterations": 8,
+    "solver_max_backtracking": 4,
+    "solver_min_step_duration_day": 1e-6,
+    "hard_mass_tolerance": 1e-12
+  },
+  "per_attempt_observables": {
+    "hdot_n": "right-sided semi-discrete bootstrap recomputed from the same committed h0 under the new bottom head",
+    "hdot_np1": "(h_N1-h0)/attempt_dt",
+    "EOBS": "max_i abs(0.5*attempt_dt*(hdot_np1-hdot_n))",
+    "E1_8": "max_i abs(h_N1-h_N8)",
+    "D4_8": "max_i abs(h_N4-h_N8)",
+    "R8": "EOBS/E1_8 when E1_8>0",
+    "tail_fraction": "D4_8/E1_8 when E1_8>0",
+    "bottom_effective_stiffness": "XEFF=hdot_n(bottom)/hdot_np1(bottom)-1 only when both derivatives have the same nonzero sign and the ratio is >=1",
+    "scalar_linear_R8_prediction": "0.5*x^2/(1+x) divided by abs(1/(1+x)-(1+x/8)^(-8)) when XEFF is available and positive"
+  },
+  "analytic_context_not_acceptance_rule": {
+    "exact_linear_eigenmode_R8_limit_as_dt_to_zero": 1.1428571428571428,
+    "reason": "For a first-order backward-Euler step compared with an eight-substep backward-Euler endpoint, the leading-order difference is 7/8 of the first-step local error while e_h has the full leading coefficient.",
+    "use": "context for observed approach only; nonlinear B1.10 data are not required to hit this value"
+  },
+  "predeclared_interpretation": {
+    "EOBS_lt_E1_8": "negative transfer evidence at that transaction-local retry level",
+    "EOBS_ge_E1_8": "finite-reference-consistent relation only, not a true-error proof",
+    "R8_decreases_toward_order_one_with_halving": "supports the hypothesis that C2 overconservatism is a large-dt stiffness effect rather than an irreducible state-dependent scale defect",
+    "R8_remains_large_or_nonmonotone": "supports a separate stiffness-aware estimator/normalization research gate before any production candidate",
+    "XEFF_linear_prediction_tracks_R8": "supports, but does not qualify, a source-bound stiffness-aware correction hypothesis",
+    "XEFF_unavailable": "report without substitution or clipping"
+  },
+  "harness_pass_rules": [
+    "All 15 cases complete all 10 retry-sized attempt intervals for N1, N4 and N8, or any failure is preserved and attributed without changing the frozen matrix.",
+    "Every completed substep passes the unchanged 1e-12 external hard mass gate.",
+    "EOBS, E1_8 and D4_8 are finite and nonnegative.",
+    "O0 and O2 machine-readable outputs are identical.",
+    "Production Richards/runtime source remains identical to the F-VQ29 base."
+  ],
+  "explicitly_not_harness_pass_rules": [
+    "EOBS>=E1_8",
+    "R8 monotone",
+    "R8 close to 8/7",
+    "XEFF available",
+    "scalar linear prediction accurate",
+    "a production retry count is acceptable"
+  ],
+  "hard_holds": {
+    "N8_exact_reference": false,
+    "true_error_bound_qualified": false,
+    "production_threshold_selected": false,
+    "dimensionless_certificate_mapping_selected": false,
+    "transactional_history_implemented": false,
+    "production_source_modified": false,
+    "F_GC02_release": false,
+    "F_PE_release": false,
+    "F_VQ30_started": false
+  },
+  "next_if_asymptotic_approach_is_clean": "Freeze an owner candidate profile that defines the raw observer validity envelope and required transaction-local history/bootstrap semantics, then design a separate held-out F-VQ workunit. If the approach is not clean, open a separate stiffness-aware observer research gate instead of fitting a global factor."
+}
