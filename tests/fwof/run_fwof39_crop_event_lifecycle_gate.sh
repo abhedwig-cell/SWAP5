@@ -20,6 +20,12 @@ from pathlib import Path
 import sys
 src = Path(sys.argv[1]).read_text(encoding='utf-8')
 
+old_root = 'ROOT="$(cd "$(dirname "$0")/../.." && pwd)"\n'
+new_root = 'ROOT="${FWOF39_ROOT:?FWOF39_ROOT not set}"\n'
+if src.count(old_root) != 1:
+    raise SystemExit(f'F-WOF39 donor root anchor count={src.count(old_root)}')
+src = src.replace(old_root, new_root, 1)
+
 old = "  use mod_fmr_wofost_crop_transaction\n  use mod_fwof34_test_model\n"
 new = "  use mod_fmr_wofost_crop_transaction\n  use mod_fmr_wofost_crop_event_lifecycle\n  use mod_fwof34_test_model\n"
 if src.count(old) != 1:
@@ -129,7 +135,7 @@ Path(sys.argv[2]).write_text(src, encoding='utf-8')
 PY
 chmod +x "$BUILD/run_fwof39_derived.sh"
 
-bash "$BUILD/run_fwof39_derived.sh" | tee "$BUILD/output.txt"
+FWOF39_ROOT="$ROOT" bash "$BUILD/run_fwof39_derived.sh" | tee "$BUILD/output.txt"
 for marker in \
   'FWOF39_PRECOMMIT_NO_MATCH_ZERO_MUTATION=PASS' \
   'FWOF39_MATCHING_RECEIPT_RETIREMENT_ONLY=PASS' \
