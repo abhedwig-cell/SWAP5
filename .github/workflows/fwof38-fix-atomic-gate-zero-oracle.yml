@@ -1,4 +1,4 @@
-name: F-WOF38 repair explicit ready evaluation semantics
+name: F-WOF38 repair strict assertion evaluation semantics
 
 on:
   push:
@@ -11,135 +11,71 @@ permissions:
   contents: write
 
 jobs:
-  repair-production-semantics:
+  repair-test-semantics:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Replace compiler-dependent logical chains by explicit guards
+      - name: Split assertions containing impure function calls
         shell: bash
         run: |
           set -euo pipefail
-          TARGET=src/runtime/mod_fmr_wofost_crop_transaction.f90
+          TARGET=tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
           python3 - "$TARGET" <<'PY'
           from pathlib import Path
           import sys
           path = Path(sys.argv[1])
           src = path.read_text(encoding='utf-8')
           replacements = [
-          ('''  logical function fmr_wofost_crop_transaction_state_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-              ready = self%initialized .and. self%owner%validate() == WOFOST_CROP_OWNER_OK
-            end function fmr_wofost_crop_transaction_state_ready
-          '''.replace('            ', ''),
-          '''  logical function fmr_wofost_crop_transaction_state_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-
-              ready = .false.
-              if (.not. self%initialized) return
-              ready = self%owner%validate() == WOFOST_CROP_OWNER_OK
-            end function fmr_wofost_crop_transaction_state_ready
-          '''.replace('            ', '')),
-          ('''  logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-              ready = self%ready() .and. self%last_consumed_event%ready()
-            end function fmr_wofost_crop_transaction_receipt_ready
-          '''.replace('            ', ''),
-          '''  logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-
-              ready = .false.
-              if (.not. self%ready()) return
-              ready = self%last_consumed_event%ready()
-            end function fmr_wofost_crop_transaction_receipt_ready
-          '''.replace('            ', '')),
-          ('''  logical function fmr_wofost_crop_transaction_consumed_event(self, identity) result(consumed)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-              type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
-              consumed = .false.
-              if (.not. self%receipt_ready() .or. .not. identity%ready()) return
-              consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
-            end function fmr_wofost_crop_transaction_consumed_event
-          '''.replace('            ', ''),
-          '''  logical function fmr_wofost_crop_transaction_consumed_event(self, identity) result(consumed)
-              class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-              type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
-
-              consumed = .false.
-              if (.not. self%receipt_ready()) return
-              if (.not. identity%ready()) return
-              consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
-            end function fmr_wofost_crop_transaction_consumed_event
-          '''.replace('            ', '')),
-          ('''  logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
-              ready = self%initialized .and. self%rate_parameters%ready() .and. &
-                   ieee_is_finite(self%stem_area_coefficient) .and. self%stem_area_coefficient >= 0.0_real64 .and. &
-                   ieee_is_finite(self%storage_area_coefficient) .and. self%storage_area_coefficient >= 0.0_real64 .and. &
-                   ieee_is_finite(self%update_parameters%development_stage_end) .and. &
-                   self%update_parameters%development_stage_end > 0.0_real64 .and. &
-                   ieee_is_finite(self%update_parameters%leaf_lifespan) .and. self%update_parameters%leaf_lifespan >= 0.0_real64
-            end function fmr_wofost_crop_transaction_parameters_ready
-          '''.replace('            ', ''),
-          '''  logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
-              class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
-
-              ready = .false.
-              if (.not. self%initialized) return
-              if (.not. self%rate_parameters%ready()) return
-              if (.not. ieee_is_finite(self%stem_area_coefficient)) return
-              if (self%stem_area_coefficient < 0.0_real64) return
-              if (.not. ieee_is_finite(self%storage_area_coefficient)) return
-              if (self%storage_area_coefficient < 0.0_real64) return
-              if (.not. ieee_is_finite(self%update_parameters%development_stage_end)) return
-              if (self%update_parameters%development_stage_end <= 0.0_real64) return
-              if (.not. ieee_is_finite(self%update_parameters%leaf_lifespan)) return
-              if (self%update_parameters%leaf_lifespan < 0.0_real64) return
-              ready = .true.
-            end function fmr_wofost_crop_transaction_parameters_ready
-          '''.replace('            ', '')),
-          ('''  logical function fmr_wofost_crop_event_forcing_ready(self) result(ready)
-              class(fmr_wofost_crop_event_forcing_t), intent(in) :: self
-              ready = self%initialized .and. self%event_identity%ready() .and. &
-                   ieee_is_finite(self%accepted_aggregates%actual_root_uptake) .and. &
-                   ieee_is_finite(self%accepted_aggregates%potential_transpiration) .and. &
-                   self%accepted_aggregates%actual_root_uptake >= 0.0_real64 .and. &
-                   self%accepted_aggregates%potential_transpiration >= 0.0_real64
-            end function fmr_wofost_crop_event_forcing_ready
-          '''.replace('            ', ''),
-          '''  logical function fmr_wofost_crop_event_forcing_ready(self) result(ready)
-              class(fmr_wofost_crop_event_forcing_t), intent(in) :: self
-
-              ready = .false.
-              if (.not. self%initialized) return
-              if (.not. self%event_identity%ready()) return
-              if (.not. ieee_is_finite(self%accepted_aggregates%actual_root_uptake)) return
-              if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
-              if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
-              if (self%accepted_aggregates%potential_transpiration < 0.0_real64) return
-              ready = .true.
-            end function fmr_wofost_crop_event_forcing_ready
-          '''.replace('            ', '')),
+            ("  call require(crop_status == FMR_WOF38_OK .and. crop_event_forcing%ready(), 'F-WOF38 event forcing construction')\n",
+             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 event forcing construction status')\n  call require(crop_event_forcing%ready(), 'F-WOF38 event forcing construction ready')\n"),
+            ("  call require(crop_status == FMR_WOF38_OK .and. crop_parameters%ready(), 'F-WOF38 crop parameters')\n",
+             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop parameters status')\n  call require(crop_parameters%ready(), 'F-WOF38 crop parameters ready')\n"),
+            ("  call require(crop_status == FMR_WOF38_OK .and. crop_initial_state%ready(), 'F-WOF38 crop transaction state')\n",
+             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 crop transaction state status')\n  call require(crop_initial_state%ready(), 'F-WOF38 crop transaction state ready')\n"),
+            ("  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED .and. crop_kernel_candidate2%ready(), &\n       'F-WOF38 replay crop F-KT trial')\n",
+             "  call require(crop_result2%status == CANONICAL_STATUS_COMPLETED, 'F-WOF38 replay crop F-KT trial status')\n  call require(crop_kernel_candidate2%ready(), 'F-WOF38 replay crop F-KT candidate ready')\n"),
+            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 first candidate contains matching event receipt')\n",
+             "    call require(tx%receipt_ready(), 'F-WOF38 first candidate receipt ready')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 first candidate consumes matching event')\n"),
+            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 replay candidate contains same receipt')\n",
+             "    call require(tx%receipt_ready(), 'F-WOF38 replay candidate receipt ready')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 replay candidate consumes same event')\n"),
+            ("    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &\n         'F-WOF38 rollback leaves owner and receipt uncommitted')\n",
+             "    call require(snapshot_available, 'F-WOF38 rollback owner snapshot available')\n    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 rollback leaves owner at checkpoint')\n    call require(.not. tx%receipt_ready(), 'F-WOF38 rollback leaves receipt uncommitted')\n"),
+            ("    call require(tx%receipt_ready() .and. tx%consumed_event(event_identity), &\n         'F-WOF38 matching event receipt committed with owner')\n",
+             "    call require(tx%receipt_ready(), 'F-WOF38 committed receipt ready with owner')\n    call require(tx%consumed_event(event_identity), 'F-WOF38 committed receipt matches event')\n"),
+            ("  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH .and. &\n       .not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval rejected')\n",
+             "  call require(crop_duplicate_result%status == KERNEL_STATUS_TIME_MISMATCH, 'F-WOF38 duplicate original interval status')\n  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 duplicate original interval no candidate')\n"),
+            ("  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. &\n       .not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot move to next crop interval')\n",
+             "  call require(crop_duplicate_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 stale next-interval event status')\n  call require(.not. crop_duplicate_candidate%ready(), 'F-WOF38 stale event cannot materialize next-interval candidate')\n"),
+            ("  call require(crop_status == FMR_WOF38_OK .and. bad_crop_event_forcing%ready(), &\n       'F-WOF38 bad crop event remains source-provenance valid')\n",
+             "  call require(crop_status == FMR_WOF38_OK, 'F-WOF38 bad crop event provenance status')\n  call require(bad_crop_event_forcing%ready(), 'F-WOF38 bad crop event remains source-provenance ready')\n"),
+            ("  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED .and. .not. bad_crop_candidate%ready(), &\n       'F-WOF38 crop failure no candidate')\n",
+             "  call require(bad_crop_result%status == CANONICAL_STATUS_TRANSACTION_FAILED, 'F-WOF38 crop failure status')\n  call require(.not. bad_crop_candidate%ready(), 'F-WOF38 crop failure no candidate')\n"),
+            ("    call require(snapshot_available .and. same_owner(crop_snapshot_owner, seed) .and. .not. tx%receipt_ready(), &\n         'F-WOF38 crop failure owner receipt unchanged')\n",
+             "    call require(snapshot_available, 'F-WOF38 crop failure owner snapshot available')\n    call require(same_owner(crop_snapshot_owner, seed), 'F-WOF38 crop failure owner unchanged')\n    call require(.not. tx%receipt_ready(), 'F-WOF38 crop failure receipt unchanged')\n"),
+            ("  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED .and. .not. policy_crop_candidate%ready(), &\n       'F-WOF38 retry-shrinking policy rejected')\n",
+             "  call require(policy_crop_result%status == KERNEL_STATUS_NOT_ADMITTED, 'F-WOF38 retry-shrinking policy status')\n  call require(.not. policy_crop_candidate%ready(), 'F-WOF38 retry-shrinking policy no candidate')\n"),
           ]
           for old, new in replacements:
-              if src.count(old) != 1:
-                  raise SystemExit(f'FWOF38 explicit-ready anchor count={src.count(old)} for {old.splitlines()[0]}')
+              count = src.count(old)
+              if count != 1:
+                  raise SystemExit(f'FWOF38 assertion anchor count={count}: {old.splitlines()[0]}')
               src = src.replace(old, new, 1)
           path.write_text(src, encoding='utf-8')
           PY
           test "$(git diff --name-only)" = "$TARGET"
           git diff --check
-          ! grep -Fq 'self%initialized .and. self%owner%validate()' "$TARGET"
-          ! grep -Fq 'self%initialized .and. self%rate_parameters%ready()' "$TARGET"
-          grep -Fq 'if (.not. self%rate_parameters%ready()) return' "$TARGET"
-          echo 'FWOF38_EXPLICIT_READY_EVALUATION_REPAIR=PASS'
-      - name: Commit production semantic repair
+          ! grep -Fq 'crop_event_forcing%ready(),' "$TARGET"
+          ! grep -Fq 'tx%receipt_ready() .and. tx%consumed_event' "$TARGET"
+          ! grep -Fq '.and. .not. crop_duplicate_candidate%ready()' "$TARGET"
+          echo 'FWOF38_TEST_ASSERTION_EVALUATION_ORDER_REPAIR=PASS'
+      - name: Commit test semantic repair
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'SWAP5 Qualification Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add src/runtime/mod_fmr_wofost_crop_transaction.f90
-          git commit -m 'fix(F-WOF38): make ready evaluation order explicit'
+          git add tests/fwof/run_fwof38_atomic_crop_transaction_gate.sh
+          git commit -m 'test(F-WOF38): split impure assertion calls'
           git push origin HEAD:${GITHUB_REF_NAME}
