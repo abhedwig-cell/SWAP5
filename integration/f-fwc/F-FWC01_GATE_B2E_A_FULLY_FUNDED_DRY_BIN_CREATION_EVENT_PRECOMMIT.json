@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "B2E_A_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "source_basis": {
+    "primary": "Talbot and Ogden 2008, WRR 44 W08453, DOI 10.1029/2008WR006815, section 2.3 paragraphs 24-26",
+    "source_semantics": [
+      "precipitation depth available to infiltrate equals surface flux times dt",
+      "bins are treated sequentially from the lowest-water-content left-most bin",
+      "for an unsaturated-at-surface dry bin a precomputed dry-bin front depth Z_d is set",
+      "the corresponding water volume is subtracted from the volume available for infiltration",
+      "the process continues through successive bins until water is exhausted or the last bin is reached",
+      "water remaining after satisfying the right-most bin belongs to surface ponding/runoff handling"
+    ]
+  },
+  "qualified_scope": {
+    "event": "creation of one or more fully funded dry-bin wetting fronts",
+    "dry_front_depth_Zd": "immutable supplied fixture; its Green-Ampt computation is not qualified here",
+    "existing_front_advance": "excluded; already isolated in B2D-R1",
+    "partial_dry_bin_funding": "not admitted",
+    "insufficient_water_policy": "fail closed before commit and route to an explicitly unqualified fallback path",
+    "front_slot_precondition": "one free bounded slot must be available for every newly created front"
+  },
+  "frozen_test_matrix": {
+    "theta_bin_counts": [16, 64, 200],
+    "fully_funded_prefix_lengths": [0, 1, 2, 4],
+    "surface_remainder_cases": ["ZERO", "POSITIVE_PONDING"],
+    "negative_controls": ["INSUFFICIENT_FOR_NEXT_DRY_BIN", "NO_FREE_SLOT"],
+    "transaction_repetitions_per_shape": 8
+  },
+  "frozen_acceptance": {
+    "max_abs_mass_residual_cm": 1e-12,
+    "accepted_created_front_storage_equals_debited_surface_water": true,
+    "strict_left_to_right_creation_order": true,
+    "accepted_surface_water_nonnegative": true,
+    "rejected_committed_state_bitwise_unchanged": true,
+    "rejected_committed_ledger_bitwise_unchanged": true,
+    "water_clip_drop_merge_count": 0,
+    "new_persistent_state_bytes_beyond_front_state": 0
+  },
+  "decision_rule": {
+    "pass": "QUALIFIED_RESTRICTED_FULLY_FUNDED_DRY_BIN_CREATION_MASS_EVENT_READY_FOR_ZD_PROVENANCE_AND_COMPOSED_INFILTRATION_GATE",
+    "fail": "DRY_BIN_CREATION_MASS_EVENT_NOT_QUALIFIED_RESEARCH_REQUIRED"
+  },
+  "hard_guards": [
+    "Do not infer a partial dry-bin front when available water is smaller than the full Z_d storage demand.",
+    "Do not qualify the Green-Ampt successive-approximation calculation of Z_d in this gate.",
+    "Do not silently consume rainfall on rejected trials; forcing remains external until commit/fallback.",
+    "Do not add per-column persistent copies of immutable Z_d fixture data.",
+    "Mass conservation is absolute and no clip, merge, or repair is allowed.",
+    "No redistribution, groundwater, crop, runtime, or MultiSWAP production qualification."
+  ],
+  "relevant_invariants": [3,4,5,7,8,9,13,16,20,23,25,26,27,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
