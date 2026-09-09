@@ -1,4 +1,4 @@
-name: F-MR20 parallel real-physics readiness
+name: F-MR20 parallel physical implementation
 
 on:
   push:
@@ -10,9 +10,9 @@ permissions:
   contents: read
 
 jobs:
-  scheduling-readiness:
+  one-worker-physical-identity:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,5 +25,5 @@ jobs:
             sudo apt-get install -y gfortran
           fi
           gfortran --version
-      - name: Run F-MR20 source-locked O0/O2 readiness gate
-        run: bash tests/fmr/run_fmr20_parallel_readiness_gate.sh
+      - name: Run F-MR20 source-locked one-worker physical identity gate
+        run: bash tests/fmr/run_fmr20_parallel_physical_one_worker_gate.sh
