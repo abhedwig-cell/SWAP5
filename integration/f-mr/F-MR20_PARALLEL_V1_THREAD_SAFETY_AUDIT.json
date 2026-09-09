@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR20",
+  "stage": "PARALLEL_V1_THREAD_SAFETY_AUDIT",
+  "authoritative_head_before_plan": "a2826637f077ac778456e85ff4fc9755389129d0",
+  "decision": "RESTRICTED_PARALLEL_V1_IMPLEMENTATION_ADMISSIBLE_BUT_NOT_YET_REALIZED",
+  "candidate_profile": {
+    "bottom_mode": 7,
+    "conductivity_implicit_mode": 0,
+    "constitutive": "b110_default_mvg_provider_t",
+    "top_boundary": "fixed_flux_top_boundary_provider_t only for first true-parallel qualification",
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_history": "not expanded by this first parallel candidate"
+  },
+  "active_path_ownership": {
+    "physical_committed_state": "unique per-column kernel_committed_state_t selected by unique state_handle",
+    "trial_candidate": "transaction-local",
+    "solver_workspace": "reference_richards_legacy_workspace_t owned by backend instance; must be one backend per worker",
+    "headcalc_worker_context": "a23bu_worker_context_t inside worker backend workspace",
+    "geometry": "explicit soil_water_parameter_set_t copied/bound inside worker backend; no MOD_grid read on admitted explicit path",
+    "constitutive": "b110_default_mvg_provider_t uses only provider-owned cofgen and step_duration; constitutive functions are pure",
+    "source_sink": "b110_source_sink_provider_t reads only forcing arrays through intent(in) pointers and writes caller output arrays",
+    "top_boundary": "fixed_flux_top_boundary_provider_t is stateless and evaluates from explicit requested boundary",
+    "numerical_config": "explicit request plus worker control",
+    "mass_and_commit": "existing F-KT checkpoint/candidate/commit path"
+  },
+  "remaining_headcalc_legacy_import_classification": {
+    "legacy_configuration_aliases": "legacy branch only after stage 2",
+    "MOD_grid": "legacy branch only; admitted explicit path uses parameter_set helpers",
+    "MOD_MvG_watcon_hconduc_moiscap_dhconduc_cofgen": "fallback/nonadmitted branches; admitted provider path bypasses these and swkimpl=1 is excluded",
+    "MOD_drain_qdra_and_MOD_irrigation_qssdi": "provider_source_sink_active is mandatory; legacy fallback branch is dead",
+    "qrot": "legacy root fallback only; provider source/sink path is mandatory and root extraction is false in v1",
+    "boundtop_and_legacy_surface_state": "explicit top provider is mandatory and returns before legacy boundtop bridge",
+    "macropore_state": "dead because explicit macropore is rejected and local swmacro=0",
+    "groundwater_mode_1_or_3_inputs": "dead because v1 bottom_mode is exactly 7",
+    "t1900_i_instance_warning_context": "stage 2 confines use to noncanonical warning construction",
+    "ponding_meteorology_globals": "not reached in fixed-flux provider v1 because provider sets ftoph false and macropores are off"
+  },
+  "parallel_execution_contract": {
+    "partition": "canonical template_id,column_id order with deterministic static round-robin worker assignment",
+    "worker_count": [2,4],
+    "worker_ownership": "one reusable backend/solver/workspace per worker; never one heavy solver per column",
+    "state_access": "each worker may mutate only state_registry(state_handle) values uniquely claimed by its assigned columns",
+    "shared_reads": ["templates", "immutable parameter registry", "forcing registry", "stateless fixed-flux top provider", "numerical config"],
+    "collection": "results and diagnostics stored by logical input index and reduced after join in canonical order",
+    "transaction_semantics": "unchanged checkpoint -> trial -> candidate -> commit/rollback per column",
+    "mass_semantics": "unchanged hard per-column and authoritative aggregate mass accounting"
+  },
+  "required_implementation_refactor": [
+    "Expose the already existing serialized per-column execute seam rather than duplicate transaction logic.",
+    "Use a shared atomic active-physical-solve counter only for concurrency diagnostics; it may not influence solver decisions.",
+    "Allocate one fmr_serialized_reference_backend_t and one kernel executor/control context per worker.",
+    "Keep worker_count=1 delegated to the qualified serialized path.",
+    "Reject multiworker requests outside the exact v1 physical/provider profile before any physical solve."
+  ],
+  "required_qualification": [
+    "1-vs-2-vs-4 worker exact result identity",
+    "exact committed physical state, lineage, revision and committed-time identity",
+    "exact per-column and authoritative aggregate mass identity",
+    "input-order independence",
+    "deterministic worker assignment and reduction",
+    "A-B-A replay",
+    "max_simultaneous_real_physical_solves >= 2 for a dedicated overlap fixture",
+    "cross-column state isolation",
+    "O0/O2 identity where meaningful",
+    "fail-closed unsupported provider/physics profile"
+  ],
+  "not_admitted": [
+    "bottom mode 5 parallel execution",
+    "bottom mode -2 parallel execution until separately replayed",
+    "snow parallel execution",
+    "root-uptake parallel execution",
+    "macropores",
+    "arbitrary top_boundary_provider_t implementations",
+    "dynamic work stealing",
+    "parallel speedup claim"
+  ],
+  "architecture_invariant_check": {
+    "worker_scratch": "satisfied by design",
+    "compact_column_state": "no new per-column solver scratch",
+    "transactional_steps": "reuses existing F-KT path",
+    "mass_conservation": "hard gate retained",
+    "multiswap_scaling": "one heavy backend per worker",
+    "physical_vs_numerical_policy": "unchanged",
+    "generic_time": "unchanged"
+  },
+  "state": {
+    "audit_persisted": true,
+    "parallel_v1_realized": false,
+    "parallel_v1_tested": false,
+    "parallel_v1_qualified": false
+  }
+}
