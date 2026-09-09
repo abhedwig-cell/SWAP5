@@ -13,14 +13,14 @@ fail() { echo "FMR20_AUTH_GATE_FAIL $*" >&2; exit 1; }
 
 for spec in \
   src/runtime/mod_fmr_runtime_core.f90:adc2b7514cc062c0cde4e71582ba8ed7776a7335 \
-  src/runtime/mod_fmr_serialized_reference_backend.f90:f5cf46b4eb40e68704bc0dfcdb18bf0746504889 \
+  src/runtime/mod_fmr_serialized_reference_backend.f90:e0432faa0e05a3c136ee5aed6fddb12ad631848d \
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90:7a60f8b8d18672098fed1c6890a95aac738ed21d \
   src/adapter/mod_b110_serialized_context_binding.f90:e21c964eac48d5feb91388cfd06a646c4002a497 \
   src/adapter/mod_reference_richards_legacy_binding.f90:1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff \
-  src/legacy/b1_10_port/headcalc.f90:e14733162da96399c8a247e5500b1d9e1ba95875 \
+  src/legacy/b1_10_port/headcalc.f90:04c4877754b39161d5afa0f2496a015fd3334cc5 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90:544a1ca16fdeebdfce7f89d1ddf1825fa32fa654 \
   src/runtime/mod_fmr_parallel_worker_pool.f90:97c3c94fc8189ea9b98e8cb5cf44295bacb47e46 \
-  tests/fmr/test_fmr20_authoritative_one_worker_identity.f90:d21c727427dc42c84cd4fcd90c4399001fcc5b5a; do
+  tests/fmr/test_fmr20_authoritative_one_worker_identity.f90:b12f1f850a13d33699231f3552aafbcf16303b10; do
   path="${spec%%:*}"
   blob="${spec##*:}"
   [[ "$(git rev-parse HEAD:"$path")" == "$blob" ]] || fail "source lock drift: $path"
@@ -35,12 +35,13 @@ printf '%s\n' \
   src/adapter/mod_reference_richards_legacy_binding.f90 \
   src/legacy/b1_10_port/headcalc.f90 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90 \
-  src/runtime/mod_fmr_parallel_worker_pool.f90 > "$BUILD/src.expected"
+  src/runtime/mod_fmr_parallel_worker_pool.f90 \
+  src/runtime/mod_fmr_serialized_reference_backend.f90 > "$BUILD/src.expected"
 diff -u "$BUILD/src.expected" "$BUILD/src.changed" >/dev/null || {
   diff -u "$BUILD/src.expected" "$BUILD/src.changed" >&2 || true
   fail 'unexpected production source scope relative to MR19 closeout'
 }
-echo 'FMR20_AUTH_G02_BOUNDED_STAGE1_SOURCE_SCOPE=PASS'
+echo 'FMR20_AUTH_G02_BOUNDED_STAGE2_SOURCE_SCOPE=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
@@ -48,6 +49,7 @@ pool = Path('src/runtime/mod_fmr_parallel_worker_pool.f90').read_text().lower()
 sched = Path('src/runtime/mod_fmr_parallel_physical_scheduler.f90').read_text().lower()
 head = Path('src/legacy/b1_10_port/headcalc.f90').read_text()
 binding = Path('src/adapter/mod_reference_richards_legacy_binding.f90').read_text()
+backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
 
 assert 'worker_count /= 1' in pool
 assert pool.index('worker_count /= 1') < pool.index('call fmr_run_serialized_physical_multiswap')
@@ -77,6 +79,19 @@ assert 'call a23bu_seed_timestep_control(ws%legacy_worker, request%step_duration
 assert 'fldtmin' not in binding
 assert 'legacy-min-dt-deferred' not in binding
 print('FMR20_AUTH_G05_CANONICAL_MIN_DT_DAY_EVENT_WORKER_LOCAL=PASS')
+
+assert 'mod_b110_serialized_context_binding' not in backend
+assert 'bind_b110_serialized_legacy_context' not in backend
+assert 'context_ok' not in backend
+assert head.count('if (.NOT.canonical_trial) then') >= 2
+assert 'if (.NOT.canonical_trial) call swap_warning' not in head
+legacy_start = head.index('   if (legacy_state_binding) then\n      swmacro = legacy_swmacro')
+explicit_start = head.index("   else\n      if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'", legacy_start)
+legacy_block = head[legacy_start:explicit_start]
+for token in ('legacy_swmacro','legacy_swbotb','legacy_dt','legacy_swkimpl','legacy_swkmean',
+              'legacy_maxit','legacy_maxbacktr','legacy_dtmin','legacy_CritDevBalCp','legacy_CritDevBalTot'):
+    assert token in legacy_block, token
+print('FMR20_AUTH_G06_CANONICAL_LEGACY_CONTEXT_MIRROR_REMOVED=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
@@ -101,7 +116,6 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
-  src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
@@ -110,6 +124,8 @@ MODULE_SRC=(
   tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
 
+# Deliberately do not compile mod_b110_serialized_context_binding here.  The
+# canonical restricted build must no longer require that mutable mirror module.
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   mkdir -p "$OUT"
@@ -125,6 +141,10 @@ for opt in 0 2; do
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
   for marker in \
     FMR20_AUTH_SCHEDULER_IDENTITY=PASS \
+    FMR20_AUTH_CANONICAL_MIRROR_POISON_RESULT_IDENTITY=PASS \
+    FMR20_AUTH_CANONICAL_MIRROR_POISON_DIAGNOSTIC_IDENTITY=PASS \
+    FMR20_AUTH_CANONICAL_MIRROR_POISON_STATE_TIME_IDENTITY=PASS \
+    FMR20_AUTH_CANONICAL_MIRROR_POISON_HARD_MASS_GATE=PASS \
     FMR20_AUTH_ONE_WORKER_RESULT_IDENTITY=PASS \
     FMR20_AUTH_ONE_WORKER_DIAGNOSTIC_IDENTITY=PASS \
     FMR20_AUTH_ONE_WORKER_AGGREGATE_IDENTITY=PASS \
@@ -145,6 +165,6 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
   fail 'O0/O2 output identity'
 }
-echo 'FMR20_AUTH_G06_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'FMR20_AUTH_G07_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
-echo 'FMR20_AUTHORITATIVE_ONE_WORKER_GATE=PASS'
+echo 'FMR20_AUTHORITATIVE_STAGE2_GATE=PASS'
