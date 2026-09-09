@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-FWC",
+  "work_unit": "F-FWC01",
+  "gate": "A2_FIXED_SLOT_FAIL_CLOSED_BOUND",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "implementation_provenance": "INDEPENDENT_RECONSTRUCTION",
+  "prerequisite": "FWC_DYNAMIC_LIST_PRIMARY_NO_GO_BOUNDED_REDESIGN_RESEARCH_CONTINUES",
+  "purpose": "Test whether a fixed-slot persistent representation can provide a forcing-independent hard memory bound without altering accepted topology or mass when capacity is exceeded.",
+  "candidate": {
+    "id": "FIXED_8_SLUG_SLOTS_PER_THETA_BIN_FAIL_CLOSED",
+    "theta_bin_counts": [16, 64, 200],
+    "falling_slug_slots_per_bin": 8,
+    "fixed_committed_coordinates_per_theta_bin_bytes": 16,
+    "falling_slug_interval_payload_bytes": 24,
+    "persistent_bytes_formula": "Nbins * (16 + 8*24)",
+    "persistent_bytes_by_bin_count": {"16": 3328, "64": 13312, "200": 41600},
+    "dynamic_allocation_during_trial": false,
+    "overflow_policy": "REJECT_TRIAL_AND_ROUTE_TO_QUALIFIED_REFERENCE_OR_FALLBACK",
+    "overflow_merge": false,
+    "overflow_clip": false,
+    "overflow_drop": false
+  },
+  "variants": ["FWC_ADVECTIVE", "FWC_EXPLICIT_DIFFUSION"],
+  "explicit_diffusion_worker_scratch": {
+    "bytes_per_theta_bin": 16,
+    "persistent_column_state": false,
+    "ownership": "worker"
+  },
+  "topology_oracle": {
+    "reference": "unbounded dynamic interval list used in Gate AB topology falsification",
+    "column_length_normalized": 1.0,
+    "falling_slug_velocity_normalized": 1.0,
+    "pulse_periods_in_residence_times": [0.25, 0.0625, 0.015625, 0.00390625],
+    "pulse_duty_fraction": 0.25,
+    "run_horizons_in_residence_times": [10.0, 100.0],
+    "merge_rule": "geometrical overlap only",
+    "bottom_rule": "physical removal on exiting the finite column"
+  },
+  "required_checks": [
+    "persistent allocation is exactly constant for a fixed template and independent of run duration and forcing event count",
+    "for every accepted no-overflow trial, ordered interval coordinates equal the dynamic reference exactly",
+    "on first overflow, committed packed state is bitwise identical before and after rejected trial",
+    "on first overflow, committed mass ledger is exactly unchanged",
+    "overflow never invokes merge, clipping or water deletion",
+    "overflow emits an explicit FALLBACK_REQUIRED diagnostic",
+    "advective and explicit-diffusion variants have identical persistent topology semantics",
+    "diffusion scratch is worker-owned and excluded from persistent bytes"
+  ],
+  "decision_rule": {
+    "pass": "QUALIFIED_HARD_BOUNDED_FIXED_SLOT_TRANSACTION_SEMANTICS_READY_FOR_PHYSICAL_FWC_STATE_AND_MASS_GATE",
+    "fail": "FWC_FIXED_SLOT_BOUND_REJECTED_REDESIGN_REQUIRED",
+    "important_nonclaim": "PASS proves a bounded fail-closed representation pattern only. It does not prove that eight slots are sufficient for useful FWC coverage, that 41.6 kB/column at 200 bins is acceptable, or that runtime cost is bounded under arbitrarily dense forcing events."
+  },
+  "hard_guards": [
+    "No topology approximation to avoid overflow.",
+    "No silent merge, clipping, deletion or water repair.",
+    "No physical FWC accuracy claim from this gate.",
+    "No FullRichards equivalence claim.",
+    "No MultiSWAP production admission from boundedness alone.",
+    "Slot count may not be retuned after execution in this gate.",
+    "Runtime event-rate boundedness remains a separate open gate even if memory boundedness passes."
+  ],
+  "relevant_invariants": [4,5,6,7,8,13,16,23,24,26,27,30],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
