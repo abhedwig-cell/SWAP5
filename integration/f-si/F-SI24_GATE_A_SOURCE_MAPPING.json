@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI24",
+  "gate": "A_SOURCE_MAPPING",
+  "base_commit": "81185df08c5231d3990c9a941591d444e880a077",
+  "scope": "Source-bound mapping only; no production implementation and no numerical acceptance threshold.",
+  "source_files": {
+    "headcalc": {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "55893f1f5ccba2052ad681743aa155b69f351246"
+    },
+    "workspace": {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "59ef9d037c1875610d45ac83387ebab9e917e0fe"
+    },
+    "linear_solver": {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "b292d284e5549049eac1c80df4cc30008154eb96"
+    },
+    "legacy_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "db432cac3f1156a179c636435a25f52cdececffc"
+    }
+  },
+  "accepted_state_vs_stored_jacobian": {
+    "newton_iteration_order": [
+      "copy current state%h to workspace old_head",
+      "evaluate constitutive capacity at old_head",
+      "assemble jacobian_F into dfdh arrays",
+      "solve tridiagonal correction",
+      "update state%h by full/backtracked correction",
+      "evaluate theta at updated state%h",
+      "recompute residual at updated state%h",
+      "test convergence",
+      "on convergence leave loop without another jacobian_F"
+    ],
+    "conclusion": "The dfdh arrays left in worker scratch after convergence are the Jacobian assembled at the pre-update old_head of the final Newton iteration, not an exactly rebuilt Jacobian at the accepted candidate state.",
+    "direct_reuse_as_exact_final_state_operator_allowed": false,
+    "one_iterate_lag_may_be_assumed_negligible": false
+  },
+  "restricted_swkimpl0_linearization": {
+    "scope": "Current F-SI23/F-SI24 unsaturated B1.10 reference route with SwKimpl=0, explicit top flux, bottom mode 5, macropores inactive and derivative-free frozen source/sink inputs.",
+    "conductivity_semantics": "Node and face conductivities are evaluated from the time-level-n/base head before the Newton loop and are not refreshed during Newton when SwKimpl=0.",
+    "off_diagonal_semantics": "dfdh_upper/lower are therefore fixed from base-time face conductivities and grid distances for the full solve.",
+    "main_diagonal_semantics": "Each Newton Jacobian rebuild changes the storage/capacity contribution dimoca*dz/dt while retaining the fixed off-diagonal conductivity terms; prescribed bottom head adds the frozen bottom-face conductance term.",
+    "accepted_state_operator_reconstructible_in_O_N": true,
+    "required_inputs": [
+      "base/committed pressure head",
+      "accepted candidate pressure head",
+      "step duration",
+      "grid z/dz/node distances",
+      "constitutive provider evaluated at base head for frozen conductivities",
+      "constitutive provider evaluated at accepted head for accepted-state capacity",
+      "boundary mode and prescribed bottom head semantics"
+    ],
+    "production_external_formula_duplication_allowed": false,
+    "reason": "Other modules must not depend on HeadCalc internal arrays or reproduce its numerical implementation; invariant 22 requires a solver-owned hydraulic/operator interface."
+  },
+  "workspace_and_cost": {
+    "worker_owned_arrays_available": [
+      "dfdh_lower",
+      "dfdh_main",
+      "dfdh_upper",
+      "residual",
+      "delta_head",
+      "tridag_gamma",
+      "provider_capacity",
+      "provider_k",
+      "provider_dkdh"
+    ],
+    "persistent_column_state_required_for_operator": false,
+    "reference_tridag_modifies_matrix_coefficients": false,
+    "reference_tridag_extra_solve_cost": "O(N) for a tridiagonal system",
+    "normal_path_full_nonlinear_companion_solve_required": false
+  },
+  "architectural_candidate_seam": {
+    "name": "solver_owned_linearized_operator_evaluation",
+    "purpose": "Allow the Richards solver itself to evaluate/reconstruct the linearized semi-discrete operator for an explicitly supplied state and numerical/boundary context, without exposing HeadCalc internal arrays to process modules.",
+    "logical_inputs": [
+      "parameter_set",
+      "base/committed state where the current linearization policy freezes required coefficients",
+      "evaluation state, normally accepted/trial candidate",
+      "step duration",
+      "boundary conditions",
+      "physical configuration",
+      "numerical configuration",
+      "hydraulic evaluation providers"
+    ],
+    "logical_outputs": [
+      "tridiagonal operator coefficients or an opaque linear-action/solve handle",
+      "availability/validity diagnostics",
+      "operator provenance identifying the state and policy at which it was built"
+    ],
+    "ownership": "solver/worker scratch",
+    "not_persistent_physical_state": true,
+    "production_status": "DESIGN_DIRECTION_ONLY_NOT_IMPLEMENTED"
+  },
+  "invariant_assessment": {
+    "5_scratch_per_worker": "PASS_DIRECTION_OPERATOR_SCRATCH_STAYS_WORKER_OWNED",
+    "7_transactionality": "PASS_DIRECTION_OPERATOR_EVALUATION_DOES_NOT_COMMIT_STATE",
+    "13_mass_conservation": "PASS_DIRECTION_PRINCIPAL_BE_STATE_AND_HARD_MASS_LEDGER_UNCHANGED",
+    "15_limit_coupling_cost": "PASS_DIRECTION_O_N_OPERATOR_BUILD_AND_LINEAR_SOLVE_NO_EXTRA_NONLINEAR_TRAJECTORY",
+    "22_no_headcalc_internal_coupling": "BLOCKS_EXTERNAL_DFDH_REUSE_OR_FORMULA_DUPLICATION; REQUIRES_SOLVER_OWNED_SEAM",
+    "23_physics_solver_policy_separation": "PASS_DIRECTION_TEMPORAL_ESTIMATOR_REMAINS_NUMERICAL",
+    "24_predictable_compute": "PASS_DIRECTION_IF_SEAM_COST_REMAINS_BOUNDED",
+    "29_no_silent_dependencies": "PASS_DIRECTION_EXPLICIT_STATE_DT_BOUNDARY_POLICY_INPUTS_REQUIRED"
+  },
+  "gate_A_source_decision": "SOURCE_BOUND_FINAL_STATE_OPERATOR_IS_FEASIBLE_IN_RESTRICTED_SWKIMPL0_SCOPE_BUT_NOT_BY_DIRECT_REUSE_OF_CURRENT_STALE_DFDH_SCRATCH",
+  "next_action": "Reconcile analytic candidate families. Reject stale-Jacobian reuse, test scalar stiffness correction only as an analytic diagnostic, and determine whether a solver-owned single-correction embedded companion can be specified without changing the mass-conservative principal state."
+}
