@@ -169,7 +169,10 @@ contains
 
   logical function fmr_wofost_crop_transaction_state_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-    ready = self%initialized .and. self%owner%validate() == WOFOST_CROP_OWNER_OK
+
+    ready = .false.
+    if (.not. self%initialized) return
+    ready = self%owner%validate() == WOFOST_CROP_OWNER_OK
   end function fmr_wofost_crop_transaction_state_ready
 
   subroutine fmr_wofost_crop_transaction_snapshot_owner(self, owner, available)
@@ -184,34 +187,50 @@ contains
 
   logical function fmr_wofost_crop_transaction_receipt_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
-    ready = self%ready() .and. self%last_consumed_event%ready()
+
+    ready = .false.
+    if (.not. self%ready()) return
+    ready = self%last_consumed_event%ready()
   end function fmr_wofost_crop_transaction_receipt_ready
 
   logical function fmr_wofost_crop_transaction_consumed_event(self, identity) result(consumed)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
     type(fmr_wofost_crop_event_identity_t), intent(in) :: identity
+
     consumed = .false.
-    if (.not. self%receipt_ready() .or. .not. identity%ready()) return
+    if (.not. self%receipt_ready()) return
+    if (.not. identity%ready()) return
     consumed = same_wofost_crop_event_identity(self%last_consumed_event, identity)
   end function fmr_wofost_crop_transaction_consumed_event
 
   logical function fmr_wofost_crop_transaction_parameters_ready(self) result(ready)
     class(fmr_wofost_crop_transaction_parameters_t), intent(in) :: self
-    ready = self%initialized .and. self%rate_parameters%ready() .and. &
-         ieee_is_finite(self%stem_area_coefficient) .and. self%stem_area_coefficient >= 0.0_real64 .and. &
-         ieee_is_finite(self%storage_area_coefficient) .and. self%storage_area_coefficient >= 0.0_real64 .and. &
-         ieee_is_finite(self%update_parameters%development_stage_end) .and. &
-         self%update_parameters%development_stage_end > 0.0_real64 .and. &
-         ieee_is_finite(self%update_parameters%leaf_lifespan) .and. self%update_parameters%leaf_lifespan >= 0.0_real64
+
+    ready = .false.
+    if (.not. self%initialized) return
+    if (.not. self%rate_parameters%ready()) return
+    if (.not. ieee_is_finite(self%stem_area_coefficient)) return
+    if (self%stem_area_coefficient < 0.0_real64) return
+    if (.not. ieee_is_finite(self%storage_area_coefficient)) return
+    if (self%storage_area_coefficient < 0.0_real64) return
+    if (.not. ieee_is_finite(self%update_parameters%development_stage_end)) return
+    if (self%update_parameters%development_stage_end <= 0.0_real64) return
+    if (.not. ieee_is_finite(self%update_parameters%leaf_lifespan)) return
+    if (self%update_parameters%leaf_lifespan < 0.0_real64) return
+    ready = .true.
   end function fmr_wofost_crop_transaction_parameters_ready
 
   logical function fmr_wofost_crop_event_forcing_ready(self) result(ready)
     class(fmr_wofost_crop_event_forcing_t), intent(in) :: self
-    ready = self%initialized .and. self%event_identity%ready() .and. &
-         ieee_is_finite(self%accepted_aggregates%actual_root_uptake) .and. &
-         ieee_is_finite(self%accepted_aggregates%potential_transpiration) .and. &
-         self%accepted_aggregates%actual_root_uptake >= 0.0_real64 .and. &
-         self%accepted_aggregates%potential_transpiration >= 0.0_real64
+
+    ready = .false.
+    if (.not. self%initialized) return
+    if (.not. self%event_identity%ready()) return
+    if (.not. ieee_is_finite(self%accepted_aggregates%actual_root_uptake)) return
+    if (.not. ieee_is_finite(self%accepted_aggregates%potential_transpiration)) return
+    if (self%accepted_aggregates%actual_root_uptake < 0.0_real64) return
+    if (self%accepted_aggregates%potential_transpiration < 0.0_real64) return
+    ready = .true.
   end function fmr_wofost_crop_event_forcing_ready
 
   subroutine fmr_wofost_crop_configure_parameters(self, parameters)
