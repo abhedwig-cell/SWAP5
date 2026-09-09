@@ -1,0 +1,115 @@
+{
+  "workunit": "F-KT12",
+  "title": "Generic Committed-State Restore, Persistence Boundary & Provenance Qualification",
+  "base": {
+    "branch": "work/f-kt11-richards-head-budget-certificate-policy",
+    "commit": "3b03632defd9945b59ed2f1120f87c7497b0c7b4"
+  },
+  "scope": "committed-boundary restart only",
+  "kernel_io_policy": {
+    "filesystem": false,
+    "file_formats": false,
+    "paths_or_file_units": false,
+    "serialization_adapters": "out_of_scope"
+  },
+  "source_bound_problem": {
+    "carrier": "kernel_committed_state_t",
+    "current_capabilities": [
+      "initialize revision zero",
+      "clone",
+      "physical snapshot",
+      "checkpoint capture"
+    ],
+    "missing_capability": "safe reconstruction of an already-advanced committed revision"
+  },
+  "selected_contract": {
+    "persistence_carrier": "opaque typed kernel_persistence_snapshot_t",
+    "carrier_contents": [
+      "cloned committed physical continuation state",
+      "stable lineage id",
+      "committed revision",
+      "committed time and time-bound flag",
+      "schema version",
+      "runtime-supplied persistence layout id"
+    ],
+    "excluded_contents": [
+      "forcing",
+      "solver scratch",
+      "Newton vectors",
+      "Jacobians",
+      "worker warm-start state",
+      "reporting history that is not continuation state"
+    ],
+    "construction": "only an already-ready kernel_committed_state_t may export the opaque carrier",
+    "restore": "only an uninitialized kernel_committed_state_t may restore from a ready carrier after schema and expected-layout validation",
+    "arbitrary_revision_setter": false,
+    "historical_rollback": false
+  },
+  "lineage_decision": {
+    "policy": "preserve stable lineage id across committed-boundary restart",
+    "reason": "existing checkpoint, candidate and accepted-window provenance bind to lineage plus revision; no generic safe provenance-rebind protocol exists, so lineage rotation would invalidate dependent carriers or require owner-specific rewriting"
+  },
+  "versioning": {
+    "schema_version": 1,
+    "layout_id": "positive runtime/template identity supplied at export and required exactly at restore",
+    "mismatch_policy": "fail closed",
+    "note": "layout identity is persistence provenance, not immutable parameter duplication and not solver scratch"
+  },
+  "integrity_boundary": {
+    "carrier_fields_private": true,
+    "restore_accepts_raw_revision": false,
+    "security_claim": "logical API integrity, not cryptographic authenticity",
+    "serialization_note": "a later trusted adapter may serialize a versioned representation; F-KT12 does not define byte-level import or a user-facing restart format"
+  },
+  "required_semantics": [
+    "restored physical state equals exported committed physical state",
+    "lineage preserved",
+    "revision preserved",
+    "committed time preserved",
+    "next checkpoint starts from restored revision and time",
+    "next candidate origin revision equals restored revision",
+    "commit continues monotonically at restored revision plus one",
+    "pre-restart stale candidates remain stale",
+    "pre-restart stale checkpoints remain stale",
+    "restore itself creates no physical transfer and no water-ledger reset",
+    "request, forcing and parameter objects remain nonmutated"
+  ],
+  "qualification": {
+    "split_run": "exact deterministic T0->T1->T2 versus T0->T1->export->destroy->restore->T2",
+    "optimization": ["O0", "O2"],
+    "negative_cases": [
+      "default or invalid carrier",
+      "wrong schema expectation",
+      "wrong layout expectation",
+      "restore into already initialized committed state",
+      "stale candidate",
+      "stale checkpoint"
+    ]
+  },
+  "scope_holds": [
+    "no filesystem",
+    "no restart file format",
+    "no mid-transaction restart",
+    "no in-flight candidate persistence",
+    "no distributed checkpoint storage",
+    "no MPI or cloud persistence",
+    "no arbitrary historical rollback"
+  ],
+  "architecture_invariants": {
+    "2_kernel_separate_from_io": "compatible",
+    "3_explicit_data_separation": "compatible",
+    "4_compact_persistent_state": "compatible",
+    "5_scratch_per_worker": "compatible",
+    "7_transactional_timesteps": "compatible",
+    "8_cheap_recompute_warm_start": "compatible",
+    "9_generic_time": "compatible",
+    "11_coupling_core": "compatible",
+    "13_mass_conservation": "hard gate",
+    "16_multiswap_primary": "compatible with per-column compact carrier and external template/layout identity",
+    "26_runtime_diagnostics": "no reporting-history persistence claim",
+    "28_runtime_coupler_composition": "serialization remains outside kernel",
+    "29_no_silent_dependencies": "explicit schema/layout/time/lineage contract",
+    "30_architecture_change_test": "required"
+  },
+  "preimplementation_status": "CONTRACT_PERSISTED_IMPLEMENTATION_NOT_YET_TESTED_OR_QUALIFIED"
+}
