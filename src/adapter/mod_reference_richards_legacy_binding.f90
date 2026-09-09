@@ -12,11 +12,11 @@ module mod_reference_richards_legacy_binding
        initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_temporal_indicator, only: evaluate_reference_richards_temporal_indicator
   use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, &
-       a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_reset_attempt_control
+       a23bu_initialize_worker, a23bu_reset_attempt_diagnostics, a23bu_seed_timestep_control
   use MOD_swap_base, only: swmacro
   use MOD_grid, only: numnod, z, dz, disnod
   use variables, only: h, theta, pond, gwl, dt, swbotb, maxit, maxbacktr, swkimpl, swkmean, &
-       dtmin, CritDevBalCp, CritDevBalTot, critdevh2cp, critdevh1cp, critdevponddt, fldtmin, &
+       dtmin, CritDevBalCp, CritDevBalTot, critdevh2cp, critdevh1cp, critdevponddt, &
        qtop, qbot, hbot
   implicit none
   private
@@ -129,7 +129,8 @@ contains
           call a23bu_initialize_worker(ws%legacy_worker, n)
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
-       call a23bu_reset_attempt_control(ws%legacy_worker)
+       call a23bu_seed_timestep_control(ws%legacy_worker, request%step_duration, &
+            request%numerical%min_step_duration)
        call initialize_reference_workspace(ws%richards, n)
        call reset_reference_workspace(ws%richards)
 
@@ -252,10 +253,6 @@ contains
     end if
     if (request%numerical%conductivity_implicit_mode /= 0) then
        route = 'legacy-implicit-k-deferred'
-       return
-    end if
-    if (fldtmin) then
-       route = 'legacy-min-dt-deferred'
        return
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &

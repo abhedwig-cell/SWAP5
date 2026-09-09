@@ -35,9 +35,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_top,            only: boundtop, pondrunoff, hsurf
    use MOD_drain,          only: qdra, nrlevs
    use MOD_irrigation,     only: qssdi, nird
-   use variables,          only: fldaystart, legacy_swbotb => swbotb, runon, epd, reva, pondm1, legacy_dt => dt, runots, t1900, thetm1, qrot,      &
+   use variables,          only: legacy_fldaystart => fldaystart, legacy_swbotb => swbotb, runon, epd, reva, pondm1, legacy_dt => dt, runots, t1900, thetm1, qrot,      &
                                  legacy_swkimpl => swkimpl, legacy_swkmean => swkmean, hplate, swbotb3impl, swbotb3resvert, deepgw, rimlay,              &
-                                 sw4, qbotab, fldtmin, legacy_maxit => maxit, legacy_maxbacktr => maxbacktr, legacy_critdevh2cp => critdevh2cp, legacy_critdevh1cp => critdevh1cp, legacy_critdevponddt => critdevponddt,    &
+                                 sw4, qbotab, legacy_fldtmin => fldtmin, legacy_maxit => maxit, legacy_maxbacktr => maxbacktr, legacy_critdevh2cp => critdevh2cp, legacy_critdevh1cp => critdevh1cp, legacy_critdevponddt => critdevponddt,    &
                                  legacy_dtmin => dtmin, nodgwl, gwlm1, hm1, legacy_CritDevBalCp => CritDevBalCp, legacy_CritDevBalTot => CritDevBalTot
    ! inout
    use variables,          only: h, theta, kmean, gwlinp, pond, dtold, qtop, qbot, hbot, itnumb
@@ -74,6 +74,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
    logical :: canonical_trial
+   logical :: at_min_dt, day_start_event
    integer                          :: numnod
    integer                          :: swmacro, swbotb, swkimpl, swkmean, maxit, maxbacktr
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
@@ -144,6 +145,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    critdevponddt = legacy_critdevponddt
    CritDevBalCp = legacy_CritDevBalCp
    CritDevBalTot = legacy_CritDevBalTot
+   if (legacy_state_binding) then
+      at_min_dt = legacy_fldtmin
+      day_start_event = legacy_fldaystart
+   else
+      at_min_dt = ctx%control%at_min_dt
+      day_start_event = ctx%time%day_start_event
+   end if
    if (.not. legacy_state_binding) then
       if (.not. present(physical_config)) error stop 'HeadCalc: explicit physical config required'
       if (physical_config%macropore_active) error stop 'HeadCalc: active explicit macropore route not admitted'
@@ -192,7 +200,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
-   if (fldaystart) then
+   if (day_start_event) then
       hist%flwarn = .TRUE.
       hist%iwarn  = 0
    end if
@@ -321,7 +329,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  start iteration loop, MaxIt specified in the input
    MaxIt1 = MaxIt
-   if (fldtmin) MaxIt1 = 2*MaxIt
+   if (at_min_dt) MaxIt1 = 2*MaxIt
    if (legacy_state_binding) then
       if (fldecmprat) MaxIt1 = 2*MaxIt
    else if (swmacro == 1) then
@@ -385,7 +393,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !        factor reduces the change of state%h (fsi_ws%delta_head) calculated as a full Newton Raphson step
 
 !        update state%h
-         if (fldtmin .AND. state%numbit > MaxIt) then              
+         if (at_min_dt .AND. state%numbit > MaxIt) then              
             factmax = 0.0d0
             do i = 1, NN
                if (dabs(fsi_ws%old_head(i) ) < 1.0d0 ) then
@@ -587,7 +595,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    state%numbit = solver_numbit
 
 !  Convergence could not been reached
-   if (.NOT.fldtmin) then
+   if (.NOT.at_min_dt) then
 
 !     reset soil state variables
       do j = 1, numnod
@@ -612,7 +620,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
       FlDecMpRat = .TRUE.
       state%dtold      = dt
-      fldtmin    = .FALSE.
+      at_min_dt = .FALSE.
+      if (legacy_state_binding) legacy_fldtmin = .FALSE.
 
       if (legacy_state_binding) call publish_legacy_state(state)
 
