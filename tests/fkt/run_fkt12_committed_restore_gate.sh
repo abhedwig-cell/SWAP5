@@ -28,6 +28,27 @@ if src.count(marker) != 1:
 Path(sys.argv[2]).write_text(src.split(marker, 1)[0] + '\n', encoding='utf-8')
 PY
 
+# F-KT05 deliberately leaves accounting completeness unspecified. F-KT12
+# requires a complete water-ledger fixture, but keeps exactly the same
+# deterministic state-transition algebra. Materialize the F-KT12 test with the
+# explicit complete-accounting subtype; the checked-in test remains readable
+# against the original donor names while this gate makes the qualification
+# fixture substitution explicit and source-bound.
+python3 - tests/fkt/test_fkt12_committed_restore.f90 "$BUILD/test_fkt12_committed_restore.f90" <<'PY'
+from pathlib import Path
+import sys
+src = Path(sys.argv[1]).read_text(encoding='utf-8')
+use_anchor = '  use mod_fkt05_test_model\n'
+type_anchor = '    type(fkt05_model_t), target :: model_c, model_s\n'
+if src.count(use_anchor) != 1:
+    raise SystemExit(f'F-KT12 mass-fixture use anchor count={src.count(use_anchor)}')
+if src.count(type_anchor) != 1:
+    raise SystemExit(f'F-KT12 mass-fixture type anchor count={src.count(type_anchor)}')
+src = src.replace(use_anchor, use_anchor + '  use mod_fkt12_mass_complete_test_model\n', 1)
+src = src.replace(type_anchor, '    type(fkt12_mass_complete_model_t), target :: model_c, model_s\n', 1)
+Path(sys.argv[2]).write_text(src, encoding='utf-8')
+PY
+
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -fopenmp)
 SOURCES=(
   src/transaction/mod_transaction_reference.f90
@@ -36,7 +57,8 @@ SOURCES=(
   src/kernel/mod_kernel_transactions.f90
   src/kernel/mod_kernel_committed_persistence.f90
   "$BUILD/mod_fkt05_test_model.f90"
-  tests/fkt/test_fkt12_committed_restore.f90
+  tests/fkt/mod_fkt12_mass_complete_test_model.f90
+  "$BUILD/test_fkt12_committed_restore.f90"
 )
 
 for OPT in o0 o2; do
