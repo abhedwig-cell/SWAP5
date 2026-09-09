@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-GC",
   "work_unit": "F-GC02",
   "diagnosis": "SOURCE_BOUND_PHYSICAL_COUPLING_GATE_FAILURE",
@@ -26,68 +26,86 @@
     "corrector_bottom_head_cm": -75.0,
     "predictor_bottom_head_cm": -74.99,
     "transaction_temporal_tolerance": 0.0,
-    "meaning": "The corrector is the stationary prescribed-head case. The predictor changes the prescribed lower head relative to the T0 profile and is therefore a nonstationary mode-5 Richards workload."
+    "meaning": "The corrector is stationary while the distinct predictor is a nonstationary mode-5 Richards workload from the same T0 checkpoint."
   },
   "contract_reconciliation": {
     "fgc01_requires_same_t0_predictor_and_corrector": true,
     "fgc01_corrector_is_exercised_only_after_nonzero_predictor_head_residual": true,
     "meaningful_corrector_requires_distinct_head_candidate": true,
-    "fvq26_admits_zero_tolerance_stationary_mode5_temporal_acceptance": true,
     "fvq26_nonstationary_mode5_temporal_behavior": "NOT_ADMITTED_BY_FVQ26",
     "fvq27_nonstationary_mode5_temporal_behavior": "NOT_EXPANDED_BY_FVQ27",
-    "fvq19_nonstationary_scope": "ONE_CALL_DAILY_SERIALIZED_REFERENCE_SNOW_FIXTURE_ONLY"
+    "weakening_to_identical_heads_allowed": false
   },
-  "live_owner_readiness": {
-    "work_unit": "F-MR16",
-    "branch": "work/f-mr16-richards-temporal-error-readiness",
-    "observed_head": "dacb043b968e79c3a849aad104008883124c090d",
-    "workflow_run": 34283246020,
-    "workflow_job": 102252746552,
-    "workflow_conclusion": "success",
-    "production_acceptance_changed": false,
-    "temporal_metric_selected": false,
-    "qualified": false,
-    "source_diagnosis": "The serialized Richards backend temporal error is binary bitwise identity only: zero for exact full-step versus two-half physical-state identity and huge(real64) otherwise.",
-    "characterization": {
-      "nonzero_Richards_component_deltas_finite": true,
-      "nonzero_cases_strictly_monotone_head_and_theta": "2/4",
-      "nonzero_cases_final_delta_below_initial_head_and_theta": "4/4",
-      "robust_monotone_dt_halving_signal": false,
-      "metric_selection_authorized": false
+  "owner_resolution_chain": {
+    "F_MR16": {
+      "branch": "work/f-mr16-richards-temporal-error-readiness",
+      "owner_handoff_commit": "26dca61a2459de5c592700ce8d80079510814717",
+      "invariant_audit_commit": "d60046f985382404e5c15b3ee6d3b8ab4e938440",
+      "decision_class": "B_MORE_QUALIFICATION_THEORY_EVIDENCE_REQUIRED",
+      "production_owner": "F-SI / soil-water model implementation",
+      "production_acceptance_changed": false,
+      "finding": "The existing F-KT scalar acceptance seam is sufficient as a mechanism, but the Richards model-owned temporal-error semantics are not scientifically defined by the current binary identity comparator."
     },
-    "ownership_recorded_by_F_MR16": {
-      "transaction_checkpoint_retry_commit": "F-KT",
-      "solver_internal_time_control_or_model_temporal_error": "F-SI_OR_MODEL_IMPLEMENTATION",
-      "serialized_runtime_composition": "F-MR"
+    "F_SI20": {
+      "branch": "work/f-si20-richards-temporal-error-semantics",
+      "characterization_evidence_commit": "e0df7ce0f45b3bb351f032e77a2cd21b56447583",
+      "status_commit": "1833c278ac12065f452a5ae0cac3c1f228d87606",
+      "characterization_workflow_run": 34299712399,
+      "characterization_workflow_job": 102303831300,
+      "rejection_workflow_run": 34299889387,
+      "rejection_workflow_job": 102304350698,
+      "production_source_modified": false,
+      "metric_selected": false
     }
+  },
+  "runtime_rejection_subclassification": {
+    "status": "DIRECTLY_PROVEN_BY_FSI20_SOURCE_LOCKED_REPLAY",
+    "baseline_nonlinear_tolerance": 1e-12,
+    "attempts": 7,
+    "retries": 6,
+    "solver_rejections": 0,
+    "temporal_rejections": 7,
+    "mass_rejections": 0,
+    "accepted_substeps": 0,
+    "committed_revision_after_trial": 0,
+    "classification": "TEMPORAL_ONLY_REJECTION",
+    "meaning": "The F-GC02 predictor is not failing because Richards fails to solve and not because the hard water-balance gate fails. Every retry is rejected only by the current binary temporal comparator."
+  },
+  "fsi20_scientific_characterization": {
+    "exact_fgc02_predictor_provenance_locked": true,
+    "nonlinear_tolerances_tested": [1e-10,1e-12,1e-14],
+    "step_doubling_head_discrepancy_order_cm": "O(1e-4)",
+    "material_nonlinear_tolerance_dependence_observed": false,
+    "stable_asymptotic_order_demonstrated": false,
+    "monotone_dt_halving_demonstrated": false,
+    "ponding_delta_on_fixture": 0.0,
+    "groundwater_level_delta_on_fixture": 0.0,
+    "o0_o2_identity": "PASS",
+    "repeat_determinism": "PASS",
+    "production_metric_justified": false,
+    "current_decision_class": "B_MORE_THEORY_OR_NUMERICAL_REFERENCE_EVIDENCE_REQUIRED"
   },
   "classification": {
     "A_qualification_test_defect": false,
     "B_fgc_composition_defect": false,
     "C_upstream_contract_defect": true,
     "D_scientific_coupling_discrepancy": false,
-    "reason": "Changing the fixture to make both physical trials stationary would remove the distinct predictor/corrector head path that F-GC02 is required to qualify. The independently admitted F-MR11/F-VQ26 capability is insufficient for the requested physical predictor-corrector composition, and live F-MR16 independently confirms that the current serialized Richards temporal comparator has no graded acceptance for genuinely evolving Richards states."
-  },
-  "runtime_rejection_subclassification": {
-    "status": "NOT_DIRECTLY_EXPOSED_BY_FGC02_HARNESS",
-    "claim_limit": "The F-GC02 workflow log proves only predictor_result%completed=false after source locks and compilation pass. It does not expose whether the first local rejection counter was solver, temporal or mass. F-GC02 therefore does not invent that counter-level attribution.",
-    "blocker_classification_depends_on_counter_subclassification": false
+    "reason": "The distinct physical predictor required by F-GC01 is a nonstationary prescribed-head Richards workload. F-SI20 now directly proves that the exact predictor solves with hard mass intact but is rejected on every retry solely by the current binary temporal identity comparator. The missing capability is therefore upstream model-owned temporal-error semantics, not an F-GC coupling repair."
   },
   "fail_closed_owner": {
-    "active_readiness_owner": "F-MR16",
-    "required_capability": "independently qualified nonstationary Richards temporal-error and acceptance contract usable by restricted serialized prescribed-bottom-head mode 5",
-    "metric_implementation_owner_if_required": "F-SI_OR_MODEL_IMPLEMENTATION, as recorded by F-MR16",
-    "runtime_composition_owner": "F-MR",
+    "active_owner_work_unit": "F-SI20",
+    "required_owner_exit": "scientifically defensible model-owned Richards temporal-error semantics for the restricted nonstationary prescribed-head route",
+    "runtime_composition_after_owner_exit": "F-MR",
     "independent_follow_on": "F-VQ",
     "F_GC_may_change_F_MR_F_SI_or_F_KT": false,
     "F_KT_change_required_by_current_evidence": false
   },
   "prohibited_repairs": [
-    "do not introduce a new temporal tolerance",
-    "do not reinterpret temporal_tolerance without an explicit owner contract",
-    "do not weaken the predictor/corrector test to identical head candidates",
-    "do not consume rejected physical trial flux as an accepted coupling result",
+    "do not introduce a temporal tolerance merely to make F-GC02 pass",
+    "do not weaken predictor/corrector to identical head candidates",
+    "do not consume rejected solver qbot as accepted coupling output",
+    "do not relax mass",
     "do not modify F-SI, F-MR or F-KT production source from F-GC02"
   ],
-  "next_action": "Keep F-GC02 fail-closed. Do not create a duplicate owner work unit while F-MR16 is active. Resume this same F-GC02 branch only after an exact nonstationary Richards temporal-error/acceptance capability applicable to prescribed-head mode 5 has owner qualification plus independent F-VQ admission."
+  "next_action": "Keep F-GC02 fail-closed while F-SI20 performs fine-reference temporal characterization. Resume this same F-GC02 branch only after F-SI owner qualification, F-MR composition and independent F-VQ scientific admission of the exact nonstationary prescribed-head temporal path."
 }
