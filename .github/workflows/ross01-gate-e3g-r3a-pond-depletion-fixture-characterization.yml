@@ -1,0 +1,89 @@
+name: F-ROSS01 Gate E3G-R3A Pond Depletion Fixture Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION_PREEXECUTION_SEED_ADDENDUM.json'
+      - 'experiments/ross/run_ross01_gate_e3g_r3a_pond_depletion_fixture_characterization.py'
+      - '.github/workflows/ross01-gate-e3g-r3a-pond-depletion-fixture-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install characterization dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_r3a_pond_depletion_fixture_characterization.py
+      - name: Assert qualified forward-event upstream and frozen seed policy
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION_RESULT.json'))
+          assert r['decision']=='QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES'
+          s=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION_PREEXECUTION_SEED_ADDENDUM.json'))
+          assert s['status']=='PREEXECUTION_ADDENDUM_FROZEN_BEFORE_EXECUTABLE_RUN'
+          assert s['seed_policy']['multistart'] is False
+          assert s['seed_policy']['post_failure_retuning_allowed'] is False
+          PY
+      - name: Execute frozen reference-only depletion fixture characterization
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-r3a-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_r3a_pond_depletion_fixture_characterization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3G_R3A_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_R3A_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen characterization semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-r3a-{m}/F-ROSS01_GATE_E3G_R3A_{m}_RESULT.json'
+          r=json.load(open(p)); mr=r['material_result']
+          assert r['gate']=='E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert r['reference_only'] is True
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          assert len(mr['scan'])==4
+          sel=mr['selected_fixture']
+          assert sel is not None
+          assert sel['supply_fraction_ksat']==max(x['supply_fraction_ksat'] for x in mr['scan'] if x['pass'])
+          assert sel['event']['accepted'] is True
+          assert sel['event']['surface_storage_cm']==0.0
+          assert sel['event']['q_top_minus_supply_cm_per_day']>sel['event']['roundoff_tolerance_cm_per_day']
+          assert sel['event']['committed_start_bitwise_unchanged'] is True
+          assert sel['dry_continuation']['accepted'] is True
+          assert sel['dry_continuation']['complementarity_admissible'] is True
+          assert sel['dry_continuation']['surface_storage_cm']==0.0
+          assert sel['dry_continuation']['committed_event_state_bitwise_unchanged_during_trial'] is True
+          assert sel['event']['mass_repair_or_clipping_used'] is False
+          assert sel['dry_continuation']['mass_repair_or_clipping_used'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-r3a-${{ matrix.material }}
+          path: ross01-gate-e3g-r3a-${{ matrix.material }}/
