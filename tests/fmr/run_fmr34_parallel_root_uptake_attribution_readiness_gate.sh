@@ -35,7 +35,7 @@ required_pool = [
     'allocate(backends(worker_count), transaction_controls(worker_count)',
     'call fmr_execute_serialized_physical_column(backends(w), transaction_controls(w)',
     'parameter_registry(parameter_index)%root_extraction_active .or.',
-    'any(abs(forcing_registry(forcing_index)%root_extraction_sink) > 0.0_real64) return',
+    'root_extraction_sink) > 0.0_real64)) return',
 ]
 for s in required_pool:
     if s not in pool:
