@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D3",
+  "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract Readiness Evidence",
+  "branch": "work/f-pm08d3-secondary-storage-availability-mass-readiness",
+  "activation_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "decisive_precloseout_head": "84d03d5e1609531ae797e052dfeacdb160fcf78f",
+  "decisive_ci": {
+    "run_id": 34524625054,
+    "job_id": 103030373634,
+    "conclusion": "success"
+  },
+  "provenance_and_scope": {
+    "readiness_only_file_delta": "PASS",
+    "no_production_source_delta": "PASS",
+    "no_reference_source_delta": "PASS",
+    "frozen_archive_identity": "PASS",
+    "frozen_surfacewater_identity": "PASS",
+    "F-PM08D2_closeout_locked": "PASS",
+    "F-PM08D2_not_misrepresented_as_production": "PASS",
+    "all_30_architecture_invariants_present": true,
+    "all_30_architecture_invariants_pass": true
+  },
+  "mass_contract_checks": {
+    "mass_conservation_absolute": "PASS",
+    "no_configurable_mass_concession": "PASS",
+    "stateless_limiter": "PASS",
+    "limiter_books_supply_mass": false,
+    "limiter_books_committed_mass": false,
+    "raw_WSCAP_is_physical_availability": false,
+    "q_supply_and_q_discharge_first_class": true,
+    "legacy_minus_0_1_cm_window_admitted_as_mass_tolerance": false,
+    "atomic_state_and_mass_ledger_commit_required": true,
+    "mixed_sign_initial_production_route_held": true
+  },
+  "oracle": {
+    "active_limiter_cases": 2188,
+    "inactive_limiter_cases": 9812,
+    "mixed_sign_active_cases": 1506,
+    "accepted_mass_cases": 5000,
+    "dry_floor_exact_cases": 2000,
+    "max_limiter_closure_abs_cm": 2.6645352591003757e-15,
+    "max_accepted_mass_residual_abs_cm": 1.1102230246251565e-15,
+    "raw_WSCAP_example_alpha": 1.0,
+    "resolved_zero_supply_capacity_alpha": 0.20000000000000001,
+    "legacy_dry_floor_gap_cm": 0.098999999999999977,
+    "legacy_required_supply_excess_cm_per_interval": 0.098999999999999977,
+    "positive_near_zero_projection_cm": 5.0000000001437783e-8,
+    "post_soil_negative_projection_cm": -0.050000000000000003,
+    "mixed_sign_scaling": "HELD_FOR_SCIENTIFIC_DISPOSITION",
+    "result": "PASS"
+  },
+  "source_risk_disposition": [
+    {
+      "id": "D3-RISK-01-PRELIMITER-WSCAP-VS-ACTUAL-SUPPLY-ENABLEMENT",
+      "status": "CHARACTERIZED_HELD",
+      "finding": "raw WSCAP can leave the limiter inactive while resolved interval supply availability is zero; raw capacity is not sufficient physical availability input"
+    },
+    {
+      "id": "D3-RISK-02-LEGACY-DRY-FLOOR-MASS-GAP",
+      "status": "CHARACTERIZED_FAIL_CLOSED",
+      "finding": "the frozen -0.1 cm tolerated negative projection can require supply above capacity if storage is forced to zero; it is not admitted as a SWAP5 mass tolerance"
+    },
+    {
+      "id": "D3-RISK-03-HIDDEN-ACTUAL-SUPPLY-FLUX",
+      "status": "CONTRACTED",
+      "finding": "actual q_supply must be a first-class accepted physical result, not inferred or assumed from capacity"
+    },
+    {
+      "id": "D3-RISK-04-MIXED-SIGN-PROPORTIONAL-SCALING",
+      "status": "CHARACTERIZED_HELD",
+      "finding": "legacy proportional scaling preserves total mass but reduces positive contributors; initial production admission is held pending separate scientific disposition"
+    },
+    {
+      "id": "D3-RISK-05-PRE-VS-POST-SOIL-BALANCE-ENVELOPE",
+      "status": "CONTRACTED",
+      "finding": "pre-solver limiter nonnegativity is not final acceptance because rapid drainage and top-surface exchange enter later"
+    },
+    {
+      "id": "D3-RISK-06-CAPACITY-VIOLATION-ON-NEGATIVE-FINAL-PROJECTION",
+      "status": "FAIL_CLOSED",
+      "finding": "a trial requiring q_supply above resolved physical capacity must be recomposed/retried rather than accepted"
+    },
+    {
+      "id": "D3-RISK-07-MASS-DOUBLE-BOOKING",
+      "status": "CONTRACTED",
+      "finding": "the limiter transforms trial exchange only; runtime books accepted physical transfers once and only once"
+    }
+  ],
+  "qualification_boundary": {
+    "readiness_qualified": true,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false,
+    "mass_conservation_concession_prequalified": false,
+    "future_candidate_requires_exact_capacity_respecting_mass_closure": true
+  },
+  "decision": "QUALIFIED_SECONDARY_STORAGE_AVAILABILITY_AND_EXPLICIT_MASS_CONTRACT_READINESS_WITH_NO_MASS_CONCESSION"
+}
