@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ44",
+  "title": "Independent Restricted Single-Level Linear Drainage Qualification Evidence",
+  "qualification_branch": "qualification/f-vq44-fpm08a-linear-drainage",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "owner": "F-PM08A",
+    "closeout": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
+    "source_path": "src/process/mod_drainage_process.f90",
+    "source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+  },
+  "legacy_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "drainage_excerpt_sha256": "86bede7fbf2547f3801a54afe1fd56c954dc6f7473dcdb7e7f29f84adb1da944",
+    "mod_drainage_excerpt_sha256": "0011000e2897bae2aae1b24fbcd959573b4ab0dce216b185ede434ca40fd4b59"
+  },
+  "qualified_candidate": {
+    "head": "91900a7bdb3ccf15be6429047684bc76f26f5ee2",
+    "workflow_run": 34465197202,
+    "workflow_job": 102832016800,
+    "conclusion": "success",
+    "summary_sha256": "92094c4594a37b0824f46a89b66a289527568d6d852794b7ead006742764c4a0"
+  },
+  "coverage": {
+    "legacy_valid_cases": 1200,
+    "positive_cases": 700,
+    "negative_head_difference_drainage_only_cases": 400,
+    "activation_kink_cases": 100,
+    "effective_head_clamped_cases": 653,
+    "effective_head_unclamped_cases": 547,
+    "active_finite_difference_cases": 700,
+    "inactive_finite_difference_cases": 400,
+    "max_flux_abs_error": 0.0,
+    "max_derivative_abs_error": 0.0,
+    "O0_O2_output_identity": true,
+    "stateless_A_B_A_repeatability": true,
+    "invalid_normalized_domain_fails_closed": true
+  },
+  "independence": {
+    "candidate_source_read_from_exact_owner_closeout": true,
+    "candidate_blob_bound": true,
+    "fpm08a_test_fixture_used_as_oracle": false,
+    "fpm08a_expected_output_used_as_oracle": false,
+    "equation_level_legacy_source_excerpt_persisted_separately": true,
+    "qualification_branch_src_delta": false,
+    "qualification_branch_reference_delta": false
+  },
+  "verifier_history": {
+    "first_run": {
+      "workflow_run": 34465069636,
+      "workflow_job": 102831606969,
+      "conclusion": "failure",
+      "classification": "VERIFIER_NUMERICAL_PERTURBATION_DEFECT",
+      "finding": "Finite-difference perturbation used 1e-6 of head difference, causing cancellation in subtraction of nearly equal oracle fluxes. Candidate flux equivalence and O0/O2 identity had already passed.",
+      "remediation": "Use a branch-internal perturbation equal to 25 percent of absolute head difference and tighten the finite-difference comparison; candidate, oracle, scientific scope and qualification exit were unchanged.",
+      "tolerance_relaxed": false
+    }
+  },
+  "qualified_scope": {
+    "law": "q=max(0,(groundwater_level-effective_drain_head)/drainage_resistance)",
+    "effective_drain_head": "already resolved external control, including legacy max(prescribed drain level,zbotdr) abstraction",
+    "active_derivative": "dq/dgwl=1/R",
+    "inactive_derivative": "dq/dgwl=0",
+    "activation_derivative": "undefined and explicitly diagnosed",
+    "persistent_process_state": false,
+    "authoritative_physical_transfer_returned": true
+  },
+  "not_qualified": [
+    "negative-side infiltration physics",
+    "OWLTAB parsing or time interpolation",
+    "DRAMET=1 or DRAMET=2",
+    "multiple drainage levels",
+    "empirical interflow",
+    "DIVDRA spatial distribution",
+    "surface-water storage/control",
+    "runtime mass-ledger composition",
+    "fully implicit trial-state drainage",
+    "solver Jacobian assembly or mutation",
+    "canonical admission"
+  ],
+  "decision": "QUALIFIED_RESTRICTED_SINGLE_LEVEL_LINEAR_DRAINAGE_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION"
+}
