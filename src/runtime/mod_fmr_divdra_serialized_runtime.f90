@@ -1,5 +1,5 @@
 module mod_fmr_divdra_serialized_runtime
-  use, intrinsic :: iso_fortran_env, only: int64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_soil_water_solver_contract, only: top_boundary_provider_t
@@ -36,7 +36,7 @@ contains
     type(kernel_committed_state_t), intent(inout) :: state_registry(:)
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     class(top_boundary_provider_t), target, intent(in) :: top_boundary
-    real(kind=kind(0.0d0)), intent(in) :: t0, t1
+    real(real64), intent(in) :: t0, t1
     integer, intent(in) :: batch_size
     type(fmr_divdra_serialized_column_request_t), intent(in) :: divdra_requests(:)
     type(drainage_distribution_parameters_t), intent(in) :: distribution_parameter_registry(:)
