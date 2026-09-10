@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MQ28",
+  "phase": "FROZEN_BEFORE_EXECUTION",
+  "candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+  "remediated_from": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+  "principle": "Independent requalification of the exact F-MR22 candidate. Reuse the immutable F-MQ26 scientific harness and canonical-order sentinel that previously rejected the old candidate.",
+  "immutable_prior_test_blobs": {
+    "parallel_matrix": "26cc6e0ace986dc40db7635de7192958a1c0b868",
+    "canonical_publication": "f2584b0236e85d4f6e8b687cee97981eaaa909c9"
+  },
+  "positive_matrix": {
+    "column_counts": [2, 7, 8, 17, 31, 32],
+    "batch_sizes_by_count": {
+      "2": [1, 2],
+      "7": [2, 3, 7],
+      "8": [3, 5],
+      "17": [4, 9],
+      "31": [7, 16],
+      "32": [8, 9, 17]
+    },
+    "worker_counts": [2, 4],
+    "ordering_attacks": ["identity", "reverse", "odd-even interleave", "cyclic left rotation"],
+    "required_checks": [
+      "serialized versus parallel exact scientific identity by column id",
+      "committed state identity",
+      "worker-count independence",
+      "2/4/2 deterministic replay",
+      "rejection isolation",
+      "unsupported profiles fail closed before physical solve",
+      "shared immutable parameter integrity",
+      "true multiworker overlap",
+      "per-column hard mass residual <= 1e-12",
+      "deterministic canonical aggregate reduction"
+    ]
+  },
+  "remediation_gate": {
+    "reversed_input_count": 7,
+    "batch_size": 3,
+    "workers": 4,
+    "required": "results and diagnostics are returned in canonical column order and the immutable F-MQ26 rejection sentinel now exits PASS"
+  },
+  "source_scope": "No src changes relative to exact F-MR22 candidate; F-MR22 itself may differ from rejected F-MR20 candidate only in src/runtime/mod_fmr_parallel_worker_pool.f90.",
+  "compiler_matrix": ["GNU Fortran O0 with OpenMP", "GNU Fortran O2 with OpenMP"],
+  "compiler_output_rule": "Exact O0/O2 qualification-output identity",
+  "early_exit_rule": "Any source drift, prior positive-gate regression, canonical-publication failure, worker-count dependence, cross-column mutation, unsupported-profile fail-open or hard-mass failure yields NOT_QUALIFIED.",
+  "pass_exit": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+  "explicit_nonclaims": [
+    "parallel speedup",
+    "worker counts other than 2 and 4",
+    "parallel restart",
+    "root extraction, snow, macropores, frost, hysteresis, tabulated hydraulics or elasticity",
+    "bottom modes other than 7",
+    "temporal continuation history"
+  ]
+}
