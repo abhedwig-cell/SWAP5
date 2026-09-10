@@ -1,0 +1,22 @@
+name: F-MQ29 independent parallel committed restart composition
+
+on:
+  push:
+    branches:
+      - qualification/f-mq29-parallel-committed-restart-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-composition-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MQ29 independent composition gate
+        run: bash tests/fmq/run_fmq29_parallel_committed_restart_composition.sh
