@@ -71,7 +71,9 @@ echo "PRODUCTION_DELTA_OK $BINDING"
 echo "REFERENCE_DELTA_OK"
 
 compile_and_run() {
-  local opt="$1" tag="$2" outdir="build/fmr33_${tag}"
+  local opt="$1"
+  local tag="$2"
+  local outdir="build/fmr33_${tag}"
   rm -rf "$outdir"
   mkdir -p "$outdir/mod"
   gfortran "$opt" -std=f2008 -Wall -Wextra -pedantic \
