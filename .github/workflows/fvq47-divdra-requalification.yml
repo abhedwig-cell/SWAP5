@@ -20,7 +20,7 @@ jobs:
       - name: Record compiler
         run: gfortran --version
       - name: Run F-VQ47 independent gate
-        run: integration/f-vq/fvq47/run_gate.sh
+        run: bash integration/f-vq/fvq47/run_gate.sh
       - name: Upload independent evidence
         if: always()
         uses: actions/upload-artifact@v4
