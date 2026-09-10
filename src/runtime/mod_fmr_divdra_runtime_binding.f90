@@ -3,7 +3,6 @@ module mod_fmr_divdra_runtime_binding
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, drainage_node_transfer_t, &
        drainage_distribution_diagnostics_t, distribute_single_level_positive_divdra, DRAIN_DIST_OK
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_forcing_t
   implicit none
   private
 
@@ -27,11 +26,12 @@ module mod_fmr_divdra_runtime_binding
 
 contains
 
-  subroutine fmr_bind_single_level_positive_divdra(parameters, hydraulic_view, scalar_transfer, forcing, diagnostics)
+  subroutine fmr_bind_single_level_positive_divdra(parameters, hydraulic_view, scalar_transfer, &
+       drainage_flux_by_level, diagnostics)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(in) :: scalar_transfer
-    type(fmr_b110_physical_forcing_t), intent(inout) :: forcing
+    real(real64), allocatable, intent(inout) :: drainage_flux_by_level(:,:)
     type(fmr_divdra_binding_diagnostics_t), intent(out) :: diagnostics
 
     type(drainage_node_transfer_t) :: node_transfer
@@ -41,9 +41,9 @@ contains
     diagnostics = fmr_divdra_binding_diagnostics_t()
     diagnostics%authoritative_scalar_transfer = scalar_transfer
 
-    ! Fail closed rather than overwrite forcing that another runtime component
-    ! has already materialized.
-    if (allocated(forcing%drainage_flux_by_level)) then
+    ! Fail closed rather than overwrite a drainage field already materialized
+    ! by another runtime component.
+    if (allocated(drainage_flux_by_level)) then
       diagnostics%status = FMR_DIVDRA_BIND_TARGET_ALREADY_BOUND
       return
     end if
@@ -72,8 +72,8 @@ contains
 
     ! Publication is deliberately last. The scalar remains the authoritative
     ! mass object; this layer neither renormalizes nor reconstructs it.
-    allocate(forcing%drainage_flux_by_level(1,n))
-    forcing%drainage_flux_by_level(1,:) = node_transfer%soil_to_drain_rate
+    allocate(drainage_flux_by_level(1,n))
+    drainage_flux_by_level(1,:) = node_transfer%soil_to_drain_rate
 
     diagnostics%status = FMR_DIVDRA_BIND_OK
     diagnostics%published = .true.
