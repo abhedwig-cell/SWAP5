@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI29",
+  "title": "Canonical Drift Reconciliation Before F-MR26 ptra Ownership Admission",
+  "initial_FCI28_closeout": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "transient_accidental_commit": "6d14f098ed59d26483c0d7dd350897cb829c3d47",
+  "transient_path": "__noop_should_not_exist",
+  "revert_commit_and_current_authority": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "net_content_diff_FCI28_to_current_authority": "empty",
+  "reconciliation_merge": "544a1bd65ec2e2cafd323ca9edfd6e871efaed6e",
+  "merge_first_parent": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "merge_second_parent": "966507a803400d0561de9f2798aa92dacf105ed5",
+  "merge_tree": "226ebf614282fdad0fc8247b8cac5c89d932d7c3",
+  "content_policy": "The accidental add and its explicit revert remain visible in canonical lineage. F-CI29 neither removes nor adopts unrelated content; it starts from the reverted live authority and requalifies its unchanged ptra postimage.",
+  "promotion_allowed_before_requalification": false,
+  "next_gate": "rerun F-CI29 admission and readiness on a descendant of reconciliation merge 544a1bd65ec2e2cafd323ca9edfd6e871efaed6e"
+}
