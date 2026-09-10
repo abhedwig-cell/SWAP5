@@ -66,6 +66,7 @@ def main() -> int:
 
     changed = [p for p in git("diff", "--name-only", f"{BASE}..HEAD").splitlines() if p]
     allowed = {
+        "integration/f-ci/F-CI33_STATUS.json",
         "integration/f-ci/F-CI33R_STATUS.json",
         "tools/fci/fci33_divdra_runtime_canonical_gate.py",
         "tools/fci/fci33r_current_postimage_gate.py",
