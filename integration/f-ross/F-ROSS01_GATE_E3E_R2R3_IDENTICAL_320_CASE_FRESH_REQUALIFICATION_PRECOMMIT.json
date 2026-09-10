@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "upstream_required": {
+    "R2P": "QUALIFIED_ZERO_SURFACE_KSAT_PLATEAU_AS_DERIVED_FACE_LOCAL_MIXED_ENDPOINT_SEMANTICS_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+    "R2R1": "QUALIFIED_ENDPOINT_LIMIT_AWARE_REFERENCE_ORACLE_WITNESSES_READY_FOR_FRESH_5CM_REFERENCE_CHARACTERIZATION",
+    "R3": "QUALIFIED_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP_READY_FOR_IDENTICAL_320_CASE_FRESH_RERUN"
+  },
+  "purpose": "Re-run the exact R2R2 fresh 320-case holdout after separately qualifying the reference upper-bracket repair and the physical-envelope-certified candidate remediation. No fresh-case, threshold or scoring changes are allowed.",
+  "identity_with_failed_R2R2": {
+    "probe_generator": "experiments/ross/run_ross01_gate_e3e_r2r2_fresh_5cm_reference_characterization.py::build_fresh",
+    "seed_token_prefix": "F-ROSS01-E3E-R2R2-FRESH-V1",
+    "materials": ["B01", "B12", "O13", "O14"],
+    "cases_per_material": {"zero_surface": 16, "positive_surface_dry": 32, "positive_surface_near_saturation": 32, "total": 80},
+    "total_cases": 320,
+    "crosscheck_probe_ids_per_material": ["fresh_zero_0003", "fresh_near_0011"],
+    "exact_pair_overlap_with_original_E3E_required": 0,
+    "rule": "No new seed, resampling, case deletion, case substitution or adaptive case selection is permitted. The formerly failing B01 fresh_near_0023 and O14 fresh_near_0003 remain in place."
+  },
+  "reference_policy": {
+    "h_surface_eq_0": "Unchanged R2P endpoint-aware reference: q=KSAT plus derived h=0 plateau only when endpoint path length is below 5 cm, otherwise regular interior root.",
+    "h_surface_gt_0": "R2R2-R1 repaired high-accuracy interior-root oracle using the exact physical q_upper=KSAT*(1+(h_surface-h_top_node)/L), not the superseded 0.999999999999 safety multiplier.",
+    "primary": "60-digit fixed GL256 t^12 oracle with exact physical upper bracket for positive surface heads.",
+    "crosscheck": "100-digit adaptive t^8 oracle on the same preselected two probes per material.",
+    "max_primary_path_residual_cm": 1e-8,
+    "max_crosscheck_q_difference_over_ksat": 1e-9,
+    "inherited_steady_q_is_qualification_authority": false
+  },
+  "candidate_policy": {
+    "h_surface_eq_0": "Unchanged existing endpoint candidate under R2P-qualified semantics.",
+    "h_surface_gt_0_gt_h_top": "R2 analytic saturated segment plus existing bounded negative-head quadrature; if and only if its exact-upper bracket has both finite residuals positive and the R3 analytic K<=KSAT physical root envelope certifies both frozen error gates, return q_upper.",
+    "no_other_candidate_changes": true,
+    "persistent_state_bytes": 0,
+    "scratch_owner": "worker"
+  },
+  "frozen_accuracy_thresholds_identical_to_R2R2": {
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric": 0.002,
+    "max_abs_error_over_ksatfit": 0.0005,
+    "wrong_sign_count": 0,
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66
+  },
+  "additional_endpoint_checks_identical_to_R2R2": {
+    "zero_surface_endpoint_reference_cases_candidate_abs_error_over_ksat_max": 1e-12,
+    "positive_surface_reference_endpoint_count": 0,
+    "reference_branch_explicit_for_every_case": true
+  },
+  "additional_R3_audit_checks": {
+    "every_snap_must_have_theorem_abs_bound_below": 0.0005,
+    "every_snap_must_have_theorem_hybrid_bound_below": 0.01,
+    "every_snap_actual_reference_error_must_be_inside_its_theorem_bound": true,
+    "B01_fresh_near_0023_must_not_return_KSAT": true,
+    "R2R2_former_reference_failures_must_now_be_valid": ["B01:fresh_near_0023", "O14:fresh_near_0003"]
+  },
+  "qualification_logic": {
+    "per_material": "All 80 original fresh probes valid; reference and candidate counts zero; all frozen accuracy/cost/endpoint checks pass; all preselected crosschecks pass.",
+    "overall": "All four materials independently pass. No pooled averaging or omission of a failed material is allowed.",
+    "failure": "Persist failure as frozen. Do not alter seeds, thresholds, candidate, reference or sample membership inside this gate."
+  },
+  "architecture_checks": {
+    "13_mass_conservation_absolute": "Face flux remains antisymmetric and no water is repaired, clipped or discarded.",
+    "20_alternative_solvers": "The 5 cm face remains an explicit solver-interface qualification object.",
+    "23_physics_solver_policy_separated": "VGM/KSAT physics are unchanged; endpoint/snap admission is numerical policy.",
+    "24_predictable_runtime": "Candidate remains within 530 K evaluations and 66 residual evaluations; expensive reference remains qualification-only.",
+    "25_reference_mode": "Independent high-accuracy reference remains available and separate.",
+    "27_optional_functionality": "No new persistent per-column state.",
+    "29_no_silent_dependencies": "5 cm geometry and surface-head scope are explicit."
+  },
+  "hard_nonclaims": [
+    "No full top-boundary composition yet.",
+    "No rainfall, evaporation, ponding-storage or runoff ledger qualification.",
+    "No response tangent across endpoint/snap branch switching.",
+    "No surface heads above 1 cm.",
+    "No production implementation, runtime, MultiSWAP or groundwater admission."
+  ],
+  "success_exit": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+  "failure_exit": "REMEDIATED_5CM_SURFACE_FACE_FRESH_REQUALIFICATION_FAILED_FURTHER_RESEARCH_REQUIRED"
+}
