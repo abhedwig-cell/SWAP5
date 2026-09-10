@@ -1,11 +1,11 @@
 {
-  "schema": "swap5.canonical_post_promotion_reconciliation_status.v1",
+  "schema": "swap5.canonical_post_promotion_reconciliation_status.v2",
   "work_unit": "F-CI34P",
   "title": "Root Attribution Post-Promotion Canonical Reconciliation",
   "branch": "qualification/f-ci34p-root-attribution-post-promotion-reconciliation",
   "base_canonical_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
-  "phase": "CHECKPOINT_PERSISTED_STALE_BROAD_CANONICAL_AUTHORITY_IDENTIFIED",
-  "decision": "NOT_YET_QUALIFIED_POST_PROMOTION_RECONCILIATION_IN_PROGRESS",
+  "phase": "PREPROMOTION_QUALIFIED_CLOSEOUT_EXACT_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI34P_GOVERNANCE_RECONCILIATION_READY_FOR_NON_FORCED_CANONICAL_PROMOTION_AFTER_EXACT_HEAD_RERUN",
   "candidate": {
     "owner_workunit": "F-MR31",
     "owner_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
@@ -14,25 +14,32 @@
     "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
     "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
   },
-  "observed_post_promotion_state": {
-    "f_ci34_dedicated_run": 34488927851,
-    "f_ci34_dedicated_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
-    "f_ci34_dedicated_conclusion": "success",
-    "broad_canonical_run": 34488927973,
-    "broad_canonical_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
-    "broad_canonical_conclusion": "failure",
-    "broad_failure_job": 102911134666,
-    "broad_failure_classification": "STALE_FCI33_CURRENT_POSTIMAGE_AUTHORITY_AFTER_FCI34_SOURCE_MOVE",
-    "historical_jobs_passing": 9,
-    "historical_jobs_total_before_current_postimage": 9,
-    "scientific_or_mass_regression_observed": false
+  "root_cause": {
+    "failed_broad_canonical_run": 34488927973,
+    "failed_job": 102911134666,
+    "classification": "STALE_MOVING_CANONICAL_GOVERNANCE_AFTER_VALID_FCI34_SOURCE_MOVE",
+    "production_regression": false,
+    "scientific_regression": false,
+    "mass_regression": false,
+    "additional_stale_triggers_retired": [
+      ".github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml",
+      ".github/workflows/fci33r-current-canonical-postimage-reconciliation.yml"
+    ]
   },
-  "f_ci34r_recomposition_authority": {
-    "closeout": "0960657594a987e03de7b8d77d86527f55d7bb91",
-    "exact_closeout_rerun": 34488917737,
-    "exact_closeout_rerun_conclusion": "success",
-    "promotion_of_diverged_f_ci34r_branch_allowed": false,
-    "reason": "current canonical already advanced independently from shared base"
+  "pre_closeout_evidence": {
+    "tested_head": "1d8aee8b9712dab889d8983b661f91a9a1c12e8a",
+    "workflow_run": 34490684618,
+    "job": 102916317004,
+    "conclusion": "success",
+    "artifact_id": 10157617447,
+    "artifact_digest": "sha256:deb5736e9925b62b04ed234c72f48689ec0e83729b07d41a2ac1d31c5621fbf7",
+    "zero_src_reference_delta": true,
+    "historical_gate_code_byte_identical": true,
+    "obsolete_moving_triggers_retired": true,
+    "historical_replay_paths_preserved": true,
+    "f_ci34_strong_replay": "PASS",
+    "current_divdra_o0_o2_identity": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA"
   },
   "current_postimage": {
     "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
@@ -40,38 +47,41 @@
     "f_ci33_divdra_runtime_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
     "f_ci34_root_attribution_runtime_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
   },
-  "planned_delta": {
+  "governance_delta": {
+    "broad_canonical_pointer_advanced_to_f_ci34": true,
+    "f_ci33_canonical_push_trigger_retired": true,
+    "f_ci33r_canonical_push_trigger_retired": true,
+    "historical_f_ci33_f_ci33r_gate_runner_code_modified": false,
+    "qualification_branch_replay_preserved": true,
+    "workflow_dispatch_preserved": true,
     "production_src_changes": 0,
     "reference_changes": 0,
     "kernel_changes": 0,
     "solver_changes": 0,
     "process_science_changes": 0,
-    "allowed_scope": [
-      ".github/workflows/fci-canonical.yml",
-      ".github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml",
-      "integration/f-ci/F-CI34P_STATUS.json",
-      "integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json"
-    ]
+    "mass_tolerance_changes": 0
   },
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
-    "canonical_source_admitted": true,
-    "broad_canonical_postimage_reconciled": false,
-    "architecture_audit_30_of_30_no_adverse_delta": false
+    "tested_precloseout": true,
+    "qualified_prepromotion": true,
+    "canonical_source_admitted_by_f_ci34": true,
+    "canonical_governance_reconciliation_promoted": false,
+    "broad_canonical_postimage_green_after_reconciliation": false,
+    "architecture_audit_30_of_30_no_adverse_delta": true,
+    "final_closeout_complete": false
   },
-  "fail_closed_contract": {
-    "no_src_or_reference_delta_from_base": true,
-    "preserve_f_ci33_divdra_runtime_blob": true,
-    "preserve_f_ci34_root_attribution_runtime_blob": true,
-    "replay_f_ci34_dedicated_gate": true,
-    "broad_canonical_workflow_must_become_f_ci34_aware": true,
-    "non_forced_fast_forward_only": true,
-    "canonical_must_equal_base_before_governance_promotion": true,
+  "closeout_contract": {
+    "exact_closeout_head_rerun_required": true,
+    "canonical_must_still_equal_base_immediately_before_promotion": true,
+    "promotion_must_be_non_forced_fast_forward": true,
+    "post_promotion_f_ci34_gate_required": true,
+    "post_promotion_f_ci34p_gate_required": true,
     "post_promotion_broad_canonical_gate_required": true,
-    "final_exact_head_requalification_required": true
+    "final_status_persistence_required": true,
+    "exact_final_status_head_reruns_required": true,
+    "no_src_or_reference_delta_allowed": true
   },
-  "next_required_step": "update broad canonical current-postimage authority without changing production or reference content"
+  "next_required_step": "run F-CI34P on the exact closeout head; if green and canonical remains exactly 2efba343d425770e5d581d8137cd60e83d8b7ac5, fast-forward canonical non-forced and require all post-promotion gates green"
 }
