@@ -1,0 +1,35 @@
+name: F-MR20R materialize canonical publication
+
+on:
+  push:
+    branches:
+      - work/f-mr20r-canonical-result-publication
+    paths:
+      - tests/fmr/materialize_fmr20r_canonical_publication.py
+      - .github/workflows/fmr20r-materialize-canonical-publication.yml
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize bounded publication remediation
+        run: python3 tests/fmr/materialize_fmr20r_canonical_publication.py
+      - name: Verify source scope and persist postimage
+        run: |
+          set -euo pipefail
+          git diff --name-only -- src > /tmp/fmr20r.changed
+          printf '%s\n' \
+            src/runtime/mod_fmr_parallel_worker_pool.f90 \
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90 > /tmp/fmr20r.expected
+          diff -u /tmp/fmr20r.expected /tmp/fmr20r.changed
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_parallel_worker_pool.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          git commit -m 'fix(F-MR20R): publish MultiSWAP outputs in canonical order'
+          git push origin HEAD:work/f-mr20r-canonical-result-publication
