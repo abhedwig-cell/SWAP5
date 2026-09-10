@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2",
+  "title": "Hooghoudt/Ernst IPOS 1..5 Domain Readiness Evidence",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b"
+  },
+  "frozen_characterization": {
+    "tested_head": "fd96f64722a7d04780b3177f7e223099f77dca9f",
+    "workflow_run": 34452069610,
+    "workflow_job": 102789834048,
+    "output_sha256": "ab36753a6e3a807ea34fd5f831121303d7e7e737b4ed07ecab4090f3f124c9d2"
+  },
+  "verified": {
+    "no_production_source_delta": "PASS",
+    "source_authority_locks": "PASS",
+    "response_family_split_explicit": "PASS",
+    "production_admission_absent": "PASS",
+    "IPOS1_stable_branch_tangent_vs_fd": "PASS",
+    "IPOS2_stable_branch_tangent_vs_fd": "PASS",
+    "IPOS3_stable_branch_tangent_vs_fd": "PASS",
+    "IPOS4_stable_branch_tangent_vs_fd": "PASS",
+    "IPOS5_stable_branch_tangent_vs_fd": "PASS",
+    "IPOS4_interface_kink": "PASS",
+    "equivalent_depth_x_1e_minus_6_effectively_continuous": "PASS",
+    "equivalent_depth_x_0_5_finite_branch_jump": "PASS",
+    "legacy_reader_invalid_edge_values": "PASS",
+    "IPOS5_kvbot_unused_in_normalized_form": "PASS"
+  },
+  "material_findings": [
+    "Legacy input admissibility is broader than mathematical evaluator admissibility and cannot be copied as the modern validity contract.",
+    "IPOS 1 is the smallest separately implementable Hooghoudt response family.",
+    "IPOS 2 and 3 share an equivalent-depth helper whose x=0.5 formula-family transition is not exactly continuous and must remain explicit in branch metadata.",
+    "IPOS 4 and 5 require stricter positive-divisor and logarithm-domain checks than the legacy reader enforces.",
+    "IPOS 4 has a hydraulic-response kink at gwl=zintf when kvtop differs from kvbot.",
+    "IPOS 5 does not use kvbot and a normalized IPOS5 parameter object should not retain that unused legacy field.",
+    "The legacy diffl=1e-10 activation cutoff remains a compatibility/branch-policy issue and is not normalized by this parent workunit."
+  ],
+  "required_children": ["F-PM08C2A", "F-PM08C2B", "F-PM08C2C"],
+  "qualification_boundary": {
+    "source_bound_domain_readiness_qualified": true,
+    "production_implementation_qualified": false,
+    "scientific_candidate_equivalence_qualified": false,
+    "runtime_composition_qualified": false,
+    "solver_jacobian_integration_qualified": false,
+    "canonical_admission_qualified": false
+  }
+}
