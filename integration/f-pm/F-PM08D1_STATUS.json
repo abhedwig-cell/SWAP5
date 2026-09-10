@@ -1,11 +1,12 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "workstream": "F-PM",
   "work_unit": "F-PM08D1",
   "title": "Surface-Water Storage Geometry & Compact State Readiness",
   "branch": "work/f-pm08d1-surface-water-storage-compact-state-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "TWO_FROZEN_FLOATING_SEAMS_CHARACTERIZED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_READINESS_QUALIFIED_WITH_EXPLICIT_FROZEN_ENDPOINT_SEAM_HOLDS",
+  "decision": "QUALIFIED_SURFACE_WATER_STORAGE_GEOMETRY_AND_COMPACT_STATE_READINESS_WITH_EXPLICIT_FROZEN_ENDPOINT_SEAM_HOLDS",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
@@ -51,19 +52,37 @@
       "id": "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
       "discovered_by_run": 34497343209,
       "job": 102939056054,
-      "production_disposition_required": true
+      "production_disposition_required": true,
+      "qualified_disposition": false
     },
     {
       "id": "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM",
       "discovered_by_run": 34497922787,
       "job": 102941011960,
-      "production_disposition_required": true
+      "production_disposition_required": true,
+      "qualified_disposition": false
     }
   ],
+  "decisive_evidence": {
+    "precloseout_head": "c06ef0708ebc760af03b87c450f30e6ef31213df",
+    "run_id": 34498693751,
+    "job_id": 102943649983,
+    "conclusion": "success",
+    "geometry_cases": 1200,
+    "roundtrip_probes": 19200,
+    "max_level_roundtrip_abs_cm": 4.2632564145606011e-14,
+    "max_storage_roundtrip_abs_cm": 5.6843418860808015e-14,
+    "bottom_knot_max_abs_offset_cm": 5.6843418860808015e-14,
+    "forward_knot_storage_mismatches": 18,
+    "forward_knot_inverse_domain_rejections": 10,
+    "fortran_O0_O2_bottom_knot_counts_identical": true,
+    "all_30_architecture_invariants_pass": true
+  },
   "deliverables": {
     "contract": "integration/f-pm/F-PM08D1_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D1_STORAGE_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D1_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D1_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d1_storage_geometry.py",
     "gate": "tools/fpm/fpm08d1_storage_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d1-storage-compact-state-readiness.yml"
@@ -79,13 +98,21 @@
     "source_risk_02_characterized": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "production_physics_qualified": false,
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "run the fully risk-aware persisted gate; readiness may qualify only with both frozen endpoint seams held for explicit downstream production disposition"
+  "downstream_handoff": {
+    "candidate_work_may_use_stable_interior_22_knot_mapping": true,
+    "candidate_work_must_dispose_D1_RISK_01": true,
+    "candidate_work_must_dispose_D1_RISK_02": true,
+    "no_endpoint_clamping_or_tolerance_policy_is_prequalified": true,
+    "next_parent_child": "F-PM08D2"
+  },
+  "next_required_step": "verify the readiness gate again on this exact closeout head and confirm the final branch delta remains free of src/ and reference/ changes; then F-PM08D2 may proceed independently from current canonical authority"
 }
