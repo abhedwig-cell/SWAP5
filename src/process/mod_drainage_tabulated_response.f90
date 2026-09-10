@@ -8,6 +8,7 @@ module mod_drainage_tabulated_response
   integer, parameter, public :: DRAIN_TAB_OK = 0
   integer, parameter, public :: DRAIN_TAB_INVALID_PARAMETERS = 1
   integer, parameter, public :: DRAIN_TAB_INVALID_HYDRAULIC_VIEW = 2
+  integer, parameter, public :: DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE = 3
 
   type, public :: drainage_tabulated_parameters_t
     real(real64), allocatable :: groundwater_depth(:)
@@ -59,11 +60,24 @@ contains
       return
     end if
 
-    diagnostics%evaluated = .true.
     diagnostics%groundwater_level = hydraulic_view%groundwater_level
     depth = abs(hydraulic_view%groundwater_level)
     diagnostics%groundwater_depth = depth
     n = size(parameters%groundwater_depth)
+
+    ! B1.10 accepts a one-element DRAMET=1 input array. When that single
+    ! groundwater-depth knot is zero, the legacy fixed qdrtab storage leaves
+    ! the remaining x entries at zero. AFGEN then returns the supplied value
+    ! only at depth zero and eventually falls through to qdrtab(50)=0 for any
+    ! positive depth. That storage-dependent artifact is not a normalized
+    ! response law. Reject the representation explicitly rather than silently
+    ! turning it into a constant process law or importing qdrtab padding here.
+    if (n == 1 .and. .not. (parameters%groundwater_depth(1) > 0.0_real64)) then
+      diagnostics%status = DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE
+      return
+    end if
+
+    diagnostics%evaluated = .true.
 
     if (n == 1) then
       response%signed_soil_to_drain_rate = parameters%signed_exchange_rate(1)
