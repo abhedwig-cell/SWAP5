@@ -1,0 +1,41 @@
+name: F-PE09 paired worker-cache timing
+
+on:
+  push:
+    branches:
+      - qualification/f-pe09-worker-cache-reuse
+    paths:
+      - .github/workflows/fpe09-paired-cache-timing.yml
+      - tests/fpe/run_fpe09_paired_cache_timing.sh
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run paired F-PE09 timing
+        env:
+          FPE09_OUTDIR: ${{ github.workspace }}/fpe09-evidence
+        run: bash tests/fpe/run_fpe09_paired_cache_timing.sh
+      - name: Upload F-PE09 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe09-paired-cache-timing-evidence
+          path: fpe09-evidence/
+          if-no-files-found: error
+          retention-days: 30
