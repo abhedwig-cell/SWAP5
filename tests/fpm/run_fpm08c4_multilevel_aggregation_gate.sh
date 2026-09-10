@@ -42,6 +42,7 @@ git show 702db051bf5dd0960a962be919ea0cfbf01895a4:integration/f-vq/F-VQ42_STATUS
 echo 'FPM08C4_UPSTREAM_RESPONSE_AUTHORITIES_LOCKED=PASS'
 
 python3 - <<'PY'
+import json
 from pathlib import Path
 src = Path('src/process/mod_drainage_multilevel_aggregation.f90').read_text()
 low = src.lower()
@@ -61,6 +62,15 @@ print('FPM08C4_DYNAMIC_ASSUMED_SHAPE_NO_LEGACY_CAPACITY=PASS')
 print('FPM08C4_DETERMINISTIC_LEVEL_ORDER_STATIC=PASS')
 print('FPM08C4_NO_IO_RUNTIME_SOLVER_OR_SPATIAL_DISTRIBUTION_LEAKAGE=PASS')
 print('FPM08C4_MASS_VIEW_AND_SENSITIVITY_SEPARATION_STATIC=PASS')
+
+audit = json.loads(Path('integration/f-pm/F-PM08C4_INVARIANT_AUDIT.json').read_text())
+assert audit['work_unit'] == 'F-PM08C4'
+assert audit['audit_result'] == 'PASS'
+items = audit['invariants']
+assert len(items) == 30
+assert [x['id'] for x in items] == list(range(1, 31))
+assert all(x['status'] == 'PASS' and x['rationale'].strip() for x in items)
+print('FPM08C4_30_INVARIANT_AUDIT=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror=compare-reals -fcheck=all -fbacktrace)
