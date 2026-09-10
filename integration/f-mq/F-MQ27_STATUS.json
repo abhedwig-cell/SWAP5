@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ27",
+  "branch": "qualification/f-mq27-fmr21-restart-schema-requalification",
+  "phase": "QUALIFIED_EXIT",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": true,
+  "qualification_only": true,
+  "production_source_changed_by_fmq27": false,
+  "rejected_pre_remediation_candidate": "dfffd8535b3345b105b2d71537d8149225f35c54",
+  "qualified_candidate": {
+    "commit": "9064004f815e81f95eb4bdee218af29cb95039c1",
+    "current_remediation_branch_head": "3a2fc8eb0dce16077535f0388bc32ac42671a513",
+    "current_head_source_equivalent": true,
+    "equivalence_note": "The current remediation head is one commit ahead solely because duplicate workflow .github/workflows/fmr21-restart-state-schema-binding.yml was removed; compare shows no src difference."
+  },
+  "qualification": {
+    "harness_head": "d0cb2472ece9f77e85ae95e2e6b92693aa653388",
+    "workflow_run": 34451553550,
+    "workflow_job": 102788210775,
+    "matrix": "integration/f-mq/F-MQ27_QUALIFICATION_MATRIX.json",
+    "invariant_audit": "integration/f-mq/F-MQ27_INVARIANT_AUDIT.json",
+    "compiler_matrix": ["GNU Fortran O0", "GNU Fortran O2"],
+    "o0_o2_output_identity": "PASS"
+  },
+  "qualified_evidence": {
+    "source_lock": "PASS",
+    "remediation_scope_restart_runtime_only": "PASS",
+    "generic_restart_layer_physics_type_agnostic": "PASS",
+    "declared_template_state_binding_present": "PASS",
+    "compact_record_no_solver_scratch": "PASS",
+    "atomic_publication_seam_present": "PASS",
+    "column_counts": [1, 2, 7, 8, 17, 31, 32],
+    "generic_time_window": [3100.125, 3100.4375, 3100.8125],
+    "continuous_vs_restarted_endpoint_identity": "PASS",
+    "exact_lineage_revision_time_continuation": "PASS",
+    "exact_interval_mass_continuation": "PASS",
+    "deterministic_replay": "PASS",
+    "malformed_concrete_state_rejected": "PASS",
+    "registered_wrong_state_family_rejected": "PASS",
+    "late_record_atomicity": "PASS",
+    "late_provenance_atomicity": "PASS",
+    "full_negative_matrix": "PASS",
+    "valid_production_restore": "PASS"
+  },
+  "qualified_scope": "Restricted serialized real-physics MultiSWAP committed-boundary process restart for the registered B1.10 base physical-state family, with exact continuation identity and fail-closed state-family admission.",
+  "explicit_nonclaims": [
+    "parallel restart",
+    "filesystem serialization format",
+    "unregistered backend state families",
+    "wider optional-state restart scope",
+    "general SWAP5 production release"
+  ],
+  "supersedes_failure_as_disposition_only": "F-MQ25 remains historical failure evidence for the rejected pre-remediation candidate; F-MQ27 qualifies the remediated candidate and does not rewrite that history.",
+  "closed": true
+}
