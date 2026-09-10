@@ -1,0 +1,31 @@
+name: F-PE10 forcing-view scientific qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-pe10-direct-immutable-registry-views
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'src/runtime/mod_fmr_parallel_worker_pool.f90'
+      - 'tests/fpe/run_fpe10_forcing_view_qualification.sh'
+      - 'tests/fpe/test_fpe10_target_lifetime_probe.f90'
+      - '.github/workflows/fpe10-forcing-view-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  forcing-view-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE10 forcing-view qualification
+        run: bash tests/fpe/run_fpe10_forcing_view_qualification.sh
