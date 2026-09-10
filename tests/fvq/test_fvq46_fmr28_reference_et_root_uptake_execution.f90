@@ -27,7 +27,7 @@ program test_fvq46_fmr28_reference_et_root_uptake_execution
          -200.0_real64,   -150.0_real64,  -100.0_real64,   -50.0_real64], [4,4])
 
   type(root_water_uptake_parameters_t) :: parameters
-  integer :: ih, ir, ip, is, cases
+  integer :: ih, cases
 
   call configure_parameters(parameters)
   cases = 0
@@ -259,19 +259,22 @@ contains
     x = crop_root_uptake_input_t()
     x%crop_emerged = .true.
     x%potential_transpiration = stale_ptra
-    allocate(x%cumulative_root_fraction(4))
     select case (root_case)
     case (1)
       x%rooted_nodes = 1
-      x%cumulative_root_fraction = [0.0_real64, 1.0_real64, 1.0_real64, 1.0_real64]
+      allocate(x%cumulative_root_fraction(2))
+      x%cumulative_root_fraction = [0.0_real64, 1.0_real64]
     case (2)
       x%rooted_nodes = 2
-      x%cumulative_root_fraction = [0.0_real64, 0.35_real64, 1.0_real64, 1.0_real64]
+      allocate(x%cumulative_root_fraction(3))
+      x%cumulative_root_fraction = [0.0_real64, 0.35_real64, 1.0_real64]
     case (3)
       x%rooted_nodes = 3
+      allocate(x%cumulative_root_fraction(4))
       x%cumulative_root_fraction = [0.0_real64, 0.10_real64, 0.55_real64, 1.0_real64]
     case (4)
       x%rooted_nodes = 3
+      allocate(x%cumulative_root_fraction(4))
       x%cumulative_root_fraction = [0.0_real64, 0.60_real64, 0.85_real64, 1.0_real64]
     case default
       error stop 2
