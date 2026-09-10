@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR27",
+  "branch": "work/f-mr27-parallel-current-canonical-recomposition",
+  "phase": "CLOSED_OWNER_QUALIFIED_READY_FOR_FCI30",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "owner_qualified": true,
+  "canonical_admitted": false,
+  "original_canonical_base": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "production_candidate": "151ad84b9ebb3bbb133fa0bf77f67797a3d5547e",
+  "production_src_tree": "6120672c3caaa640f902fdc20b43ae6ba722f38b",
+  "tested_head": "c8c51f3ff0dd5bc8aff790ba8deb5c03758ceea4",
+  "authoritative_workflow": {
+    "run_id": 34465412007,
+    "job_id": 102832710252,
+    "conclusion": "success"
+  },
+  "production_source_delta": [
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "key_result": {
+    "parallel_O0": "PASS",
+    "parallel_O2": "PASS",
+    "O0_O2_identity": "PASS",
+    "canonical_publication_order": "PASS",
+    "true_multiworker_overlap": "PASS",
+    "hard_mass_executed_matrix": "PASS",
+    "worker_count_independence": "PASS",
+    "input_order_independence": "PASS",
+    "rejection_isolation": "PASS",
+    "unsupported_profiles_fail_closed": "PASS",
+    "serialized_sparse_receipts_preserved": "PASS",
+    "restart_preserved": "PASS",
+    "ET_preserved": "PASS"
+  },
+  "remediated_owner_finding": "OPTIMIZATION_SENSITIVE_PARALLEL_OVERLAP_COUNTER_DATA_RACE",
+  "parallel_receipt_routing_qualified": false,
+  "parallel_restart_qualified": false,
+  "production_source_changed_after_candidate": false,
+  "evidence": "integration/f-mr/F-MR27_QUALIFICATION_EVIDENCE.json",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CURRENT_CANONICAL_RECOMPOSITION_READY_FOR_FCI30",
+  "status": "QUALIFIED_OWNER_SCOPE_COMPLETE_CANONICAL_ADMISSION_PENDING"
+}
