@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "title": "F-MR25 Restricted Restart Current-Canonical Admission",
+  "branch": "qualification/f-ci28-fmr25-restart-canonical-admission",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "candidate": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "owner": {
+    "workunit": "F-MR25",
+    "closeout": "510ccd90af6386e3239e71ff6585ed56d6ef5fdb",
+    "post_closeout_workflow_run": 34458295642,
+    "post_closeout_workflow_job": 102809788289,
+    "post_closeout_conclusion": "success"
+  },
+  "independent_qualification": {
+    "tested_head": "c77617c710b0684d964b5e0e8eeae009e3a7aacd",
+    "workflow_run": 34458668057,
+    "workflow_job": 102811014372,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "mass_and_continuation": "PASS",
+    "state_family_and_atomicity": "PASS",
+    "F_CI27_ET_runtime_preservation": "PASS",
+    "F_VQ36_grid_cases": 13824
+  },
+  "qualified_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart on the current F-CI27 ET-runtime canonical postimage",
+  "status": "QUALIFIED_INDEPENDENT_FMR25_RESTART_CURRENT_CANONICAL_POSTIMAGE_CANONICAL_READINESS_PENDING",
+  "decision": "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_readiness_passed": false,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_workflow_passed": false,
+    "production_source_admitted": false,
+    "closed": false
+  },
+  "next_action": "Add an F-CI28 canonical postimage gate and future canonical workflow that preserve F-CI24 and F-CI27 authorities while admitting exactly the two restart modules. Require pre-promotion readiness, live canonical lock and non-forced forward lineage before advancing canonical.",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No general backend/state-family restart admission.",
+    "No root-uptake or actual-ET ownership reconciliation.",
+    "No general SWAP5 release qualification."
+  ]
+}
