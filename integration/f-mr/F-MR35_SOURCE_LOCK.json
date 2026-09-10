@@ -20,14 +20,16 @@
     "root_attribution_binding":"F-CI34",
     "parallel_restart_root_inactive_only":"F-CI35"
   },
-  "locked_blobs":{
+  "locked_existing_production_blobs":{
     "src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
     "src/runtime/mod_fmr_serialized_multiswap_runtime.f90":"fe5a06c9af59308cdad86c5126379f413591b0cd",
     "src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9",
     "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90":"8ed7610144700f58d0b89482925471fcb2ff7d69"
   },
   "candidate_delta_policy":{
-    "allowed_production_paths":["src/runtime/mod_fmr_parallel_worker_pool.f90"],
+    "allowed_production_paths":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],
+    "existing_parallel_v1_source_blob_must_remain_exact":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
     "existing_parallel_v1_predicate_must_remain_root_inactive":true,
     "new_capability_must_be_explicitly_named":true,
     "kernel_changes":false,
