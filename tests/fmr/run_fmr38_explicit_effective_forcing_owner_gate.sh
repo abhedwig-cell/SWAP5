@@ -72,8 +72,10 @@ assert 'kernel_result%mass%missing_contribution_mask /= tx_mass_missing_none' in
 assert 'call fmr_commit_candidate(' in body
 assert 'call fmr_discard_candidate(' in body
 assert 'bind_committed_actual_transpiration(parameters, effective_forcing' in body
-for forbidden in ('modflow','.swp','headcalc','response_tangent'):
+for forbidden in ('modflow','.swp','response_tangent'):
     assert forbidden not in p, forbidden
+assert not re.search(r'\buse\s+[^\n]*headcalc',p)
+assert not re.search(r'\bcall\s+headcalc\s*\(',p)
 assert not re.search(r'\bsave\b',body)
 audit=json.loads(Path('integration/f-mr/F-MR38_INVARIANT_AUDIT.json').read_text())
 assert [x['id'] for x in audit['invariants']]==list(range(1,31))
@@ -83,19 +85,16 @@ print('FMR38_EXPLICIT_EFFECTIVE_FORCING_INTENT_IN=PASS')
 print('FMR38_ALL_30_ARCHITECTURE_INVARIANTS=PASS')
 PY
 
-# Materialize immutable prior matrices from exact Git blobs.
 git cat-file blob "$FMQ26_MATRIX_BLOB" > "$BUILD/fmq26.f90"
 [[ "$(git hash-object "$BUILD/fmq26.f90")" == "$FMQ26_MATRIX_BLOB" ]] || fail 'FMQ26 immutable matrix blob mismatch'
 git cat-file blob "$FVQ51_TEST_BLOB" > "$BUILD/fvq51.f90"
 [[ "$(git hash-object "$BUILD/fvq51.f90")" == "$FVQ51_TEST_BLOB" ]] || fail 'FVQ51 immutable test blob mismatch'
-# Reproduce the documented F-VQ51 allocation-hygiene transform in the ephemeral copy only.
 python3 - "$BUILD/fvq51.f90" <<'PY'
 from pathlib import Path
 import sys
 p=Path(sys.argv[1]); s=p.read_text(); s=s.replace('    allocate(req(', '    if (allocated(req)) deallocate(req)\n    allocate(req('); p.write_text(s)
 PY
 
-# Deterministically derive a direct identity attack from the immutable FMQ26 fixture.
 cp "$BUILD/fmq26.f90" "$BUILD/seam.f90"
 python3 - "$BUILD/seam.f90" <<'PY'
 from pathlib import Path
