@@ -1,0 +1,72 @@
+{
+  "schema": "swap5.independent_runtime_qualification_plan.v1",
+  "work_unit": "F-VQ49",
+  "title": "Independent Qualification of F-MR33 Restricted DIVDRA Runtime Binding",
+  "branch": "qualification/f-vq49-fmr33-divdra-runtime-binding",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "candidate": {
+    "owner_work_unit": "F-MR33",
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "materialization": "git show exact owner closeout into build-only path; qualification branch carries no candidate production source"
+  },
+  "independence": {
+    "owner_test_results_are_oracle": false,
+    "owner_fixture_values_reused": false,
+    "owner_expected_outputs_reused": false,
+    "scientific_divdra_equations_reopened": false,
+    "runtime_contract_reconstructed_from_candidate_source_and_current_canonical_interfaces": true
+  },
+  "authorities": {
+    "scientific_divdra_authority": "F-VQ47@9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "canonical_divdra_source_authority": "F-CI32@49863406a6112baa9956f9396b34e7188934e0d4",
+    "divdra_process_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "serialized_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac"
+  },
+  "qualification_question": "Does the exact F-MR33 candidate, without hidden state or backend capture, faithfully materialize the already-qualified DIVDRA node projection into the existing runtime drainage sink seam for the restricted single-level positive scope?",
+  "independent_matrix": {
+    "valid_runtime_cases": "independently generated combinations of node counts, layer geometries, conductivities, anisotropy, drain spacing, groundwater views and positive scalar transfers",
+    "required_node_counts": [1,2,3,5,8],
+    "required_valid_cases_minimum": 300,
+    "zero_transfer_cases": true,
+    "failure_classes": [
+      "invalid parameters",
+      "invalid hydraulic view",
+      "negative transfer",
+      "nonzero transfer at or below restricted 1e-10 magnitude",
+      "preallocated publication target"
+    ],
+    "repeatability": "fresh-target repeated calls must publish identical rows",
+    "consumer_composition": "current b110 source/sink provider must consume the published row unchanged as drainage sink",
+    "compiler_modes": ["-O0","-O2"]
+  },
+  "runtime_acceptance": [
+    "candidate source blob exactly e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "qualification branch has zero src/ and zero reference/ delta from clean_base",
+    "for each admitted independent case, binding status is OK and target shape is exactly 1 x active_nodes",
+    "for identical explicit inputs, published row is bit-identical to the canonical qualified process output",
+    "binding introduces zero additional mass error: ordered sum of published row is bit-identical to ordered sum of direct process row",
+    "source/sink provider sees exactly the published drainage row as positive sink when other sinks/sources are zero",
+    "failure paths publish nothing and propagate non-OK process status",
+    "preallocated target remains byte-for-byte unchanged and process is not evaluated",
+    "repeated calls with fresh targets are deterministic and show no persistent process state",
+    "candidate source contains no committed-state snapshot, backend import, HeadCalc internal, Jacobian mutation, file I/O, MODFLOW assumption or configurable tolerance",
+    "O0 and O2 verifier output byte-identical",
+    "all 30 architecture invariants independently audited"
+  ],
+  "mass_policy": "No configurable or physical mass tolerance. The runtime seam is accepted only if it copies the canonical process row exactly and therefore introduces no additional mass discrepancy.",
+  "not_qualified": [
+    "drainage exchange-law science",
+    "negative or infiltration distribution",
+    "multilevel drainage",
+    "surface-water-controlled drainage",
+    "fully implicit drainage response derivatives or Jacobian assembly",
+    "committed-versus-trial hydraulic-view provenance policy outside this explicit-input binding",
+    "canonical admission"
+  ],
+  "pass_decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION",
+  "next_if_pass": "separate F-CI canonical admission of the exact qualified F-MR33 runtime blob"
+}
