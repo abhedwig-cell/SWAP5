@@ -1,0 +1,20 @@
+name: F-PM08 drainage migration readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08-drainage-migration-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-PM08 source-bound drainage migration readiness gate
+        run: python3 tools/fpm/fpm08_drainage_migration_readiness_gate.py
