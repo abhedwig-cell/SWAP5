@@ -1,0 +1,18 @@
+{
+  "schema":"swap5.provisional_workunit_collision.v1",
+  "branch":"work/f-mr34-restricted-parallel-root-extraction",
+  "status":"SUPERSEDED_NON_AUTHORITATIVE_DO_NOT_QUALIFY_OR_ADMIT",
+  "reason":"A concurrently completed authoritative F-MR34 workunit already owns the identifier: work/f-mr34-parallel-root-uptake-attribution-readiness@02074061ade9e9399312c1758768090292046390.",
+  "authoritative_fmr34":{
+    "branch":"work/f-mr34-parallel-root-uptake-attribution-readiness",
+    "closeout":"02074061ade9e9399312c1758768090292046390",
+    "decision":"QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+    "next_structural_candidate":"F-MR35"
+  },
+  "provisional_findings_preserved":{
+    "production_experiment_blob":"20de332f6c13d91b02b26946bee25ddd77acd764",
+    "run_34500260314":"HARNESS_COMPILE_LIST_FAILURE_BEFORE_SCIENTIFIC_EXECUTION",
+    "run_34500445545":"OWNER_FIXTURE_SERIALIZED_REFERENCE_NOT_ACCEPTED; NO_PARALLEL_SCIENTIFIC_CONCLUSION"
+  },
+  "disposition":"Do not use this branch as candidate authority. Reconstruct any useful idea independently under F-MR35 from current canonical and the authoritative F-MR34 readiness contract."
+}
