@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D3",
+  "overall": "PASS_WITH_EXPLICIT_MASS_SOURCE_HOLDS",
+  "invariants": [
+    {"id":1,"status":"PASS","finding":"D3 defines a reusable limiter/mass contract for the common kernel, not a separate SWAP variant."},
+    {"id":2,"status":"PASS","finding":"No parsing, files, units or paths occur in the limiter contract."},
+    {"id":3,"status":"PASS","finding":"Storage state, exchange results, supply capacity/control, accepted fluxes and scratch are explicitly separated."},
+    {"id":4,"status":"PASS","finding":"D3 introduces no new persistent state; SWST remains D1-owned conserved state."},
+    {"id":5,"status":"PASS","finding":"QDRATIO and projected-storage temporaries are scratch/trial results."},
+    {"id":6,"status":"PASS","finding":"The limiter is scalar/batched arithmetic compatible with SoA MultiSWAP layouts."},
+    {"id":7,"status":"PASS","finding":"Limiter outputs are trial-only; rejected trials cannot alter SWST or the accepted mass ledger."},
+    {"id":8,"status":"PASS","finding":"The same committed S0 can be cheaply recomputed with changed exchange or resolved supply capacity."},
+    {"id":9,"status":"PASS","finding":"The contract uses generic dt/[t0,t1], not day or calendar boundaries."},
+    {"id":10,"status":"PASS","finding":"No fixed coupling-window duration is assumed."},
+    {"id":11,"status":"PASS","finding":"Final capacity-respecting mass closure is explicitly reserved for transactional runtime composition."},
+    {"id":12,"status":"PASS","finding":"D3 does not alter the SWAP-MODFLOW head/flux interface; lateral exchange remains signed physical mass."},
+    {"id":13,"status":"PASS","finding":"Mass conservation is hard: the legacy -0.1 cm dry-floor gap is explicitly not admitted as physical tolerance."},
+    {"id":14,"status":"PASS","finding":"D3 consumes physical exchange results; it does not hide or regularize D2 sensitivities."},
+    {"id":15,"status":"PASS","finding":"No extra full SWAP runs are introduced by the algebraic limiter."},
+    {"id":16,"status":"PASS","finding":"Limiter cost and state are O(1) per column plus per-level scaling only when active."},
+    {"id":17,"status":"PASS","finding":"No MODFLOW cell fraction or tile topology appears in the limiter."},
+    {"id":18,"status":"PASS","finding":"Deep-vadose transfer remains external and unrelated."},
+    {"id":19,"status":"PASS","finding":"All cross-component mass terms are explicit; no stored water may disappear during composition."},
+    {"id":20,"status":"PASS","finding":"Limiter arithmetic is independent of the chosen soil-water solver implementation."},
+    {"id":21,"status":"PASS","finding":"Qualified D2 exchange and existing drainage physics are reused rather than duplicated."},
+    {"id":22,"status":"PASS","finding":"No HeadCalc internals are referenced."},
+    {"id":23,"status":"PASS","finding":"Supply availability is physical control input; mass closure is not a solver-performance policy."},
+    {"id":24,"status":"PASS","finding":"Limiter work is bounded and deterministic; invalid capacity closure fails/retries rather than iterating without bound."},
+    {"id":25,"status":"PASS","finding":"Frozen proportional limiter semantics remain characterized while source mass gaps are explicitly held, not silently normalized."},
+    {"id":26,"status":"PASS","finding":"Limiter-active, alpha, capacity use, required actual supply and mass residual are runtime-diagnostic quantities."},
+    {"id":27,"status":"PASS","finding":"No optional persistent state is allocated by D3."},
+    {"id":28,"status":"PASS","finding":"Control components resolve supply enablement and runtime owns final system composition/ledger."},
+    {"id":29,"status":"PASS","finding":"No midnight, daily, legacy-file or direct MODFLOW assumptions are introduced."},
+    {"id":30,"status":"PASS","finding":"D3 readiness and each mass-source risk are explicitly checked against all invariants."}
+  ],
+  "mass_source_holds": [
+    "D3-RISK-01 raw WSCAP cannot stand in for resolved available supply on all control routes.",
+    "D3-RISK-02 the legacy dry-floor -0.1 cm window cannot authorize unmatched water creation/destruction.",
+    "D3-RISK-03 actual q_supply must be materialized as a first-class physical result.",
+    "D3-RISK-04 limiter-active mixed-sign per-level scaling is held from the initial production route.",
+    "D3-RISK-05 pre-solver availability limiting cannot certify final storage before QRapDra and top-surface exchange are known.",
+    "D3-RISK-06 a dry-floor state requiring supply above capacity is not an acceptable trial.",
+    "D3-RISK-07 limiter and runtime must not double-book the same physical transfer."
+  ],
+  "scope_holds": [
+    "No production candidate is admitted by D3 readiness.",
+    "Fixed-weir and automatic-weir evolution remain D4/D5.",
+    "Atomic commit/rollback and accepted-ledger implementation remain D6.",
+    "No mass-conservation tolerance is prequalified."
+  ]
+}
