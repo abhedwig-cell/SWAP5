@@ -1,0 +1,30 @@
+{
+  "schema":"swap5.fmq30_status.v1",
+  "work_unit":"F-MQ30",
+  "title":"Independent Restricted Parallel Root-Uptake Profile Scientific Qualification",
+  "phase":"CLOSED_QUALIFIED_READY_FOR_CANONICAL_ADMISSION_RECOMPOSITION",
+  "decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "owner":{"work_unit":"F-MR35","evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_blob":"c78c13997642617376b8d118122c86c60ca77189"},
+  "authoritative_qualification":{"tested_head":"84c6bd293686d20ff91028d53ab201c4116a4d5d","run":34528662051,"job":103043714223,"conclusion":"success"},
+  "state":{"implemented":true,"persisted":true,"tested":true,"independently_qualified":true,"architecture_invariants_reviewed":true,"canonical_admitted":false,"closed":true},
+  "qualification_only":true,
+  "production_delta_in_qualification_branch":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],
+  "production_change_authored_by_fmq30":false,
+  "reference_delta":[],
+  "qualified_scope":[
+    "restricted root-active real-physics MultiSWAP parallel execution through the explicit root-uptake pool",
+    "fixed-flux top boundary, bottom mode 7, SWKIMPL=0, SWSOPHY=0",
+    "2-worker and 4-worker execution",
+    "finite non-negative QROT including active-zero QROT",
+    "exact actual-transpiration attribution from the runtime forcing handle",
+    "deterministic canonical result and diagnostic publication",
+    "worker-owned heavy solver/runtime scratch",
+    "hard per-column mass residual <= 1e-12 cm with complete authoritative aggregate mass",
+    "O0/O2 exact qualification-output identity"
+  ],
+  "fail_closed_scope":["negative QROT","quiet-NaN QROT","root-inactive request on explicit root-active entry point","worker count 1","unsupported worker count 3","snow","bottom mode 5","temporal-history layout","macropore","frost","hysteresis","tabulated hydraulics","elasticity"],
+  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","parallel root-attribution persistence beyond returned result","other excluded parallel physics","performance speedup","general SWAP5 release qualification"],
+  "evidence":["integration/f-mq/F-MQ30_CANDIDATE_LOCK.json","integration/f-mq/F-MQ30_QUALIFICATION_MATRIX.json","integration/f-mq/F-MQ30_EVIDENCE.json","integration/f-mq/F-MQ30_ARCHITECTURE_AUDIT.json"],
+  "closeout_rule":"This metadata closeout head is authoritative only after the exact head re-runs the F-MQ30 workflow successfully. Canonical admission must recompose the exact immutable candidate blob onto the then-current canonical source authority; do not promote the F-MQ30 branch wholesale."
+}
