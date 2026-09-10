@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D3",
+  "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract",
+  "activation_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "parent_closeouts": {
+    "F-PM08D": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "F-PM08D1": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "F-PM08D2": "a0b11f68884f7593f000af1c34aa42de8956ecfd"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "limiter_location": "SWAP/surfacewater.f90:600-637",
+    "secondary_balance_location": "SWAP/surfacewater.f90:235-376",
+    "reader_supply_location": "SWAP/surfacewater.f90:897,940-944"
+  },
+  "mass_sign_convention": {
+    "equation": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange",
+    "q_drain_secondary": "positive soil/drainage system to secondary surface water; negative secondary surface water to soil",
+    "q_rapid": "positive into secondary surface water",
+    "q_supply": "positive external supply into secondary surface water",
+    "q_discharge": "positive external discharge out of secondary surface water",
+    "V_top_surface_exchange": "positive into secondary surface water; negative from secondary surface water to soil surface",
+    "mass_conservation_absolute": true,
+    "configurable_physical_mass_concession": false
+  },
+  "pre_solver_limiter_contract": {
+    "inputs": [
+      "committed or trial-start secondary storage S0",
+      "dt > 0",
+      "requested signed secondary per-level exchange rates q_i",
+      "resolved physically available external supply capacity q_supply_available >= 0"
+    ],
+    "requested_total": "q_req = sum(q_i)",
+    "projected_with_max_available_supply": "Smax = S0 + dt*(q_req + q_supply_available)",
+    "inactive_branch": "if Smax >= 0, alpha=1 and all requested q_i pass unchanged",
+    "active_branch": "if Smax < 0, q_limited_total = -(S0/dt + q_supply_available), alpha=q_limited_total/q_req, and reference-semantics scale every secondary q_i by the same alpha",
+    "algebraic_precondition_consequence": "with S0>=0, dt>0 and q_supply_available>=0, an active limiter implies q_req<0 and 0<alpha<1",
+    "output": [
+      "limited per-level q_i",
+      "limited total q_drain_secondary",
+      "alpha",
+      "limiter_active diagnostic",
+      "assumed available supply capacity used for the envelope"
+    ],
+    "persistent_state": false,
+    "books_supply_mass": false,
+    "books_any_committed_mass": false
+  },
+  "critical_supply_capacity_rule": {
+    "raw_WSCAP_is_not_sufficient_input": true,
+    "required_input": "resolved supply capacity actually enabled for this physical interval by the applicable control state/policy",
+    "reason": "frozen drainflux_extended always uses WSCAP in the pre-limiter, while WLEVBAL can later set WSMAX=0 when the supply target is at/below the deepest secondary bottom",
+    "owner_of_supply_enablement": "later fixed/automatic control component, not the D3 limiter"
+  },
+  "explicit_actual_flux_contract": {
+    "q_supply_and_q_discharge_are_results_not_inferred_scratch": true,
+    "actual_supply_from_balance": "q_supply = ((S1-S0)-V_top_surface_exchange)/dt - q_drain_secondary - q_rapid + q_discharge",
+    "actual_discharge_from_balance": "q_discharge = q_drain_secondary + q_rapid + q_supply + V_top_surface_exchange/dt - (S1-S0)/dt",
+    "supply_constraints": "0 <= q_supply <= q_supply_available for an accepted trial",
+    "discharge_constraint": "q_discharge >= 0 for the external-outflow convention",
+    "accepted_mass_ledger": "runtime books exactly the physical fluxes and amount used in the accepted storage update, once and only once",
+    "rejected_trial": "no supply, discharge, drainage or top-surface mass from a rejected trial is booked"
+  },
+  "dry_floor_contract": {
+    "physical_floor": "S1 >= 0",
+    "dry_state": "S1=0 only if explicit accepted fluxes close exactly to that state",
+    "for_no_discharge_dry_floor": "q_supply_required = -(S0 + V_top_surface_exchange)/dt - q_drain_secondary - q_rapid",
+    "acceptance": "accept only when 0 <= q_supply_required <= q_supply_available; otherwise the physical trial must be recomposed/retried/limited rather than creating water",
+    "legacy_negative_projection_tolerance_is_not_mass_policy": true,
+    "legacy_minus_0_1_cm_gap_not_admitted": true,
+    "positive_near_zero_projection": "may be mapped to S1=0 only by reducing actual q_supply so exact mass closure is preserved and supply remains within capacity"
+  },
+  "mixed_sign_reference_semantics": {
+    "legacy_behavior": "when limiter activates, one alpha scales every secondary q_i, including any positive drainage contributors",
+    "mass_closure": "total remains exact because sum(alpha*q_i)=alpha*sum(q_i)",
+    "scientific_issue": "positive local inflows are reduced even though the shortage arises from net infiltration",
+    "recommended_initial_candidate_domain": "limiter-active cases with all secondary q_i <= 0",
+    "mixed_sign_limiter_activation_production_admitted": false,
+    "future_route": "either independently qualify exact all-level proportional legacy scaling as intended physics or define a separately qualified remediated allocation rule"
+  },
+  "transaction_boundary": {
+    "limiter_runs_on_trial_values": true,
+    "full_balance_must_include_post_soil_q_rapid_and_V_top_surface_exchange": true,
+    "pre_solver_nonnegative_envelope_does_not_by_itself_guarantee_final_nonnegative_storage": true,
+    "final_trial_acceptance_requires_mass_closed_S1_and_capacity-respecting_actual_supply": true,
+    "commit_is_atomic_with_surface_water_state_and_mass_ledger": true,
+    "rollback_restores_exact_committed_storage": true
+  },
+  "source_risks": [
+    {
+      "id": "D3-RISK-01-PRELIMITER-WSCAP-VS-ACTUAL-SUPPLY-ENABLEMENT",
+      "hold": "do not feed raw WSCAP directly; supply availability must be physically resolved for the interval"
+    },
+    {
+      "id": "D3-RISK-02-LEGACY-DRY-FLOOR-MASS-GAP",
+      "hold": "the frozen -0.1 cm tolerated negative projection cannot be an accepted unmatched mass residual"
+    },
+    {
+      "id": "D3-RISK-03-HIDDEN-ACTUAL-SUPPLY-FLUX",
+      "hold": "actual q_supply must be a first-class result and accepted-ledger term"
+    },
+    {
+      "id": "D3-RISK-04-MIXED-SIGN-PROPORTIONAL-SCALING",
+      "hold": "initial production route should exclude limiter-active mixed-sign secondary exchanges pending scientific disposition"
+    },
+    {
+      "id": "D3-RISK-05-PRE-VS-POST-SOIL-BALANCE-ENVELOPE",
+      "hold": "pre-solver limiter cannot certify final storage because q_rapid and top-surface exchange enter later"
+    },
+    {
+      "id": "D3-RISK-06-CAPACITY-VIOLATION-ON-NEGATIVE-FINAL-PROJECTION",
+      "hold": "if exact dry-floor closure requires q_supply above available capacity, trial must not be accepted"
+    },
+    {
+      "id": "D3-RISK-07-MASS-DOUBLE-BOOKING",
+      "hold": "limiter only transforms trial exchange; runtime alone books accepted transfer and external supply/discharge"
+    }
+  ],
+  "cross_child_boundaries": {
+    "F-PM08D1": "owns storage geometry and SWST/WLS relation",
+    "F-PM08D2": "owns restricted constitutive per-level exchange law before availability limiting",
+    "F-PM08D4": "will own fixed-weir storage/discharge evolution and supply-target logic",
+    "F-PM08D5": "will own automatic-management target/control memory and event logic",
+    "F-PM08D6": "will own transactional ordering, final acceptance and committed mass ledger"
+  },
+  "hard_holds": [
+    "No production source modification in F-PM08D3 readiness.",
+    "No physical mass residual tolerance or water creation/destruction concession.",
+    "No raw WSCAP assumption where control disables supply.",
+    "No committed mass booking inside the limiter.",
+    "No mixed-sign limiter-active production admission without separate scientific qualification.",
+    "No fixed/automatic weir implementation in D3.",
+    "No calendar or file-I/O dependency in the limiter contract."
+  ]
+}
