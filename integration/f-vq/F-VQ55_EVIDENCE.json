@@ -1,0 +1,20 @@
+{
+  "schema":"swap5.independent_qualification_evidence.v1",
+  "work_unit":"F-VQ55",
+  "requested_identifier":"F-VQ53",
+  "identifier_reassignment_reason":"F-VQ53 was already occupied by persisted PM06E qualification work before this MR38 branch could be created; existing work was not overwritten",
+  "source_authority":"adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "source_tree":"ea5b54a971cf35ba0f49b1e283d13f7f69304654",
+  "owner_closeout":"eb7300829be05e1500ef94720673a13cb10cdeca",
+  "owner_decisive_run":34532295713,
+  "candidate":{"commit":"b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded","path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"f06a2eef7b47880e449cf9b201342d7bd1e197e1","direct_parent":"a818003a27ea7c9ba360f7227ebbe8c1525d2e21","source_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd"},
+  "materialized_candidate":"40c6da0a19f54434552d0e568a833bc712739899",
+  "source_composition":{"owner_source_authority_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","candidate_parent_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","current_canonical_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","status":"EXACT_BLOB_IDENTITY"},
+  "independent_oracles":{"parallel_v1_fixture_blob":"26cc6e0ace986dc40db7635de7192958a1c0b868","serialized_active_divdra_fixture_blob":"b8206e0388568f5e792304af9bf9bd889212a10c","serialized_active_divdra_expected_output_sha256":"a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87","heldout_executor_attack":"derived from immutable FMQ26 fixture, not copied from F-MR38 owner test"},
+  "required_matrix":{"resolved_forcing_registry_identity":"PENDING_GATE","changed_caller_order":"PENDING_GATE","multiple_columns":"PENDING_GATE","valid_effective_forcing":"PENDING_GATE","inactive_forcing_path":"PENDING_GATE","rejected_trial":"PENDING_GATE","rollback":"PENDING_GATE","forcing_handle_identity":"PENDING_GATE","forcing_registry_immutability":"PENDING_GATE","no_deep_copy_mutation":"PENDING_GATE","deterministic_replay":"PENDING_GATE","o0_o2":"PENDING_GATE","parallel_v1_replay":"PENDING_GATE","serialized_active_divdra_replay":"PENDING_GATE","hard_mass":"PENDING_GATE"},
+  "hard_holds":["no active parallel DIVDRA","no drainage-specific worker pool","no forcing-registry deep copy","no shared forcing mutation","no persistent effective-forcing state","no drainage science change","no canonical admission"],
+  "qualification_run":null,
+  "qualification_job":null,
+  "qualification_head":null,
+  "conclusion":"PENDING_FAIL_CLOSED"
+}
