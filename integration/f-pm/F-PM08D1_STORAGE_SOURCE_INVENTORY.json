@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "work_unit": "F-PM08D1",
   "title": "Frozen SWAP 4.3.1 Surface-Water Storage Geometry Source Inventory",
   "source_identity": {
@@ -43,14 +43,15 @@
     "above_surface_formula": "d=-zbotdr; base=d*(width+d/talud); breadth=width+2*d/talud; volume=base+breadth*level",
     "storage_contribution_cm": "volume/Lspacing",
     "aggregate_storage": "sum open-secondary-channel contributions at each knot",
-    "interpolation": "piecewise linear in the prepared knot table"
+    "interpolation": "piecewise linear in the prepared knot table",
+    "endpoint_evaluation_uses_interpolation_arithmetic": true
   },
   "forward_inverse_behavior": {
     "swstlev_level_domain": "[sttab(22,1), sttab(1,1)]",
     "wlevst_storage_domain": "[sttab(22,2), sttab(1,2)]",
     "outside_domain": "legacy swap_error; modern candidate must fail closed unless a separately qualified remediation changes a frozen seam",
     "interval_selection": "inclusive endpoints; first matching adjacent knot pair in descending table",
-    "inverse_validity_precondition": "prepared storage knots remain strictly monotone for reader-valid geometry; the lower knot can carry a tiny positive storage when knot 22 rounds above zbotdr"
+    "inverse_validity_precondition": "prepared storage knots remain strictly monotone for reader-valid geometry; exact interpolation arithmetic can nevertheless place an endpoint result a few ULP outside a stored endpoint bound"
   },
   "source_level_risks": [
     {
@@ -59,6 +60,13 @@
       "consequence": "When knot 22 rounds above zbotdr, a WLS exactly equal to the reader-admitted deepest secondary bottom can be rejected by SWSTLEV because its lower domain bound is STTAB(22,1), not zbotdr. The same rounding can create a tiny positive STTAB(22,2).",
       "classification": "frozen reference boundary seam, not configurable numerical tolerance",
       "readiness_disposition": "explicitly characterize and hold exact-bottom production behavior for a separate candidate/remediation decision; do not silently snap, smooth or widen the domain in D1 readiness"
+    },
+    {
+      "id": "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM",
+      "observation": "SWSTLEV and WLEVST evaluate the linear interpolation expression even at exact table knots rather than returning the stored knot value directly; finite-precision subtraction, multiplication and addition at interpolation fraction 0 or 1 can return a value a few ULP different from the stored endpoint.",
+      "consequence": "A forward SWSTLEV evaluation at a mathematically exact knot can produce storage just outside the stored WLEVST domain, including just above STTAB(1,2), so immediate inverse evaluation can fail even though the source level itself is a table knot.",
+      "classification": "frozen reference interpolation boundary seam, not configurable numerical tolerance",
+      "readiness_disposition": "characterize exact frozen arithmetic and require explicit production-candidate disposition; do not silently clamp, snap or widen the inverse domain in D1 readiness"
     }
   ],
   "state_classification": {
@@ -88,6 +96,7 @@
     "D1 does not qualify weir/supply/discharge evolution.",
     "D1 does not qualify automatic-management control memory implementation.",
     "D1 does not qualify runtime commit/rollback composition.",
-    "D1 does not silently remediate D1-RISK-01 bottom-knot rounding behavior."
+    "D1 does not silently remediate D1-RISK-01 bottom-knot rounding behavior.",
+    "D1 does not silently remediate D1-RISK-02 interpolation-endpoint rounding behavior."
   ]
 }
