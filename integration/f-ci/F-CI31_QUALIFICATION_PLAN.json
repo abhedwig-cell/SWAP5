@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-execution-canonical-admission",
+  "canonical_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "production_candidate": "764c291c70290b9956f7ce806b9e989601f25d0a",
+  "expected_production_delta": [
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "qualification_strategy": [
+    "prove the production delta from F-CI30 is exactly one source file and remains immutable after candidate creation",
+    "lock the F-CI30 parallel scheduler, worker pool, serialized MultiSWAP runtime and F-CI29 ptra binding blobs",
+    "rehydrate exact F-VQ46 independent oracle test blob 5ea862e6337992afa1af5b2eec50fd0ddbba45a7",
+    "replay the 192-case independent F-VQ46 oracle under O0 and O2 and require the qualified output SHA256 fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0",
+    "replay the full F-CI30 parallel, hard-mass, deterministic-publication, sparse-receipt, restart, ET and ptra admission matrix on the F-CI31 candidate while allowing only the one new F-MR28 source file",
+    "review all 30 SWAP architecture invariants before canonical promotion"
+  ],
+  "hard_scope": "stateless composition of canonical reference-ET ptra into restricted MACRO/Feddes drought-only precomputed-qrot root-water-uptake execution",
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction execution",
+    "oxygen/salinity/frost/compensation/MICRO/Jong-van-Lier/macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "exit_target": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_ON_FCI30_CANONICAL_READY_FOR_PROMOTION"
+}
