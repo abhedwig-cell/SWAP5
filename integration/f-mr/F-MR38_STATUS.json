@@ -1,0 +1,12 @@
+{
+  "schema":"swap5.fmr38_status.v1",
+  "work_unit":"F-MR38",
+  "branch":"work/f-mr38-explicit-effective-forcing-executor",
+  "phase":"PREIMPLEMENTATION_SCOPE_PERSISTED",
+  "decision":"IN_PROGRESS_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_STRUCTURAL_CANDIDATE",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "readiness_authority":"F-MR37@e21ae30a3f3a5cb2a4a34f00c74e5a46c67645d1",
+  "state":{"scope_persisted":true,"production_modified":false,"tests_persisted":false,"tested":false,"owner_qualified":false,"reference_modified":false,"closed":false},
+  "allowed_production_delta":["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+  "next_required_step":"implement the smallest common resolved-object executor and explicit-effective-forcing public seam, preserving the registry-facing wrapper and all current runtime paths"
+}
