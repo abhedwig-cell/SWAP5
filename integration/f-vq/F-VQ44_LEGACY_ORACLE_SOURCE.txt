@@ -1,0 +1,61 @@
+F-VQ44 independent legacy oracle source extraction
+Source archive: SWAP 4.3.1 nested SWAP.ZIP
+Archive SHA-256: 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
+Full SWAP/drainage.f90 SHA-256: 48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc
+Full SWAP/MOD_drainage.f90 SHA-256: cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255
+
+SWAP/drainage.f90:151-194 excerpt SHA-256: 86bede7fbf2547f3801a54afe1fd56c954dc6f7473dcdb7e7f29f84adb1da944
+
+! --- Drainage flux calculation using given drainage/infiltration resistance; multilevel
+      else if (dramet == 3) then
+         
+         do lev = 1,nrlevs
+
+            ! Water level in drain and head difference
+            drainl(lev) = afgen(owltab(lev, 1:2 * nowltab(lev)), 2 * nowltab(lev), t1900 + dt - 1.d0)
+            if (drainl(lev) < zbotdr(lev)) drainl(lev) = zbotdr(lev)
+            diffl(lev) = gwl - drainl(lev)
+            
+            ! Drainage basis for rapid drainage through macropores
+            if (swmacro == 1) then
+               if (swdrrap == 1) then
+                  if (lev == numlevrapdra .AND. swdtyp(lev) == 2) then
+                     zdrabas = drainl(lev)
+                  end if
+               end if
+            end if
+
+! ---       Drainage              
+            if (diffl(lev) >= 0.0d0) then
+
+               if ((lev == nrlevs) .AND. (swnrsrf == 1)) then ! Interflow
+                  qdrain(lev) = cofintfl * diffl(lev)**expintfl              
+               else
+                  qdrain(lev) = diffl(lev) / drares(lev)
+               end if
+               
+               if (swallo(lev) == 2) qdrain(lev) = 0.0d0
+
+! ---       Infiltration
+            else
+
+               ! Limit the infiltration head (-dh, dh<0. here) to the waterdepth in the channel
+               if (swdtyp(lev) == 2 .AND. swliminf == 1) then
+                  diffl(lev) = max(diffl(lev), (zbotdr(lev) - drainl(lev)))
+               end if
+
+               qdrain(lev) = diffl(lev) / infres(lev)
+               
+               if (swallo(lev) == 3 .OR. zbotdr(lev) >= drainl(lev)) qdrain(lev) = 0.0d0
+            end if
+            
+         end do
+
+SWAP/MOD_drainage.f90:84-89 excerpt SHA-256: 0011000e2897bae2aae1b24fbcd959573b4ab0dce216b185ede434ca40fd4b59
+
+   ! dramet == 3
+   integer, dimension(madr),        save ::   nowltab         = 0    ! Number of input dates in for prescribed drain water levels
+   integer, dimension(madr),        save ::   swallo          = 0    ! Switch to allow all (1), only infiltration (2) or only drainage (3) for each drainage level
+   real(8), dimension(madr),        save ::   drares          = 0.d0 ! Array with drainage resistance (T) for each drainage level
+   real(8), dimension(madr),        save ::   infres          = 0.d0 ! Array with infiltration resistance (T) for each drainage level
+   real(8), dimension(madr,2*maowl),save ::   owltab          = 0.d0 ! Table with prescribed drain water levels
