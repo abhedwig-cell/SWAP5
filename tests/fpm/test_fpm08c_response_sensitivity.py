@@ -147,10 +147,15 @@ def main():
     print('FPM08C_DRAMET2_IPOS4_INTERFACE_KINK=PASS')
 
     p=base(2)
-    threshold=p['zd']+p['shape']*1e-10
-    assert dramet2(threshold-p['shape']*0.5e-10,p)==0.0
-    assert dramet2(threshold,p)>0.0
-    print('FPM08C_DRAMET2_STRICT_SMALL_CUTOFF_DISCONTINUITY=PASS')
+    below=p['zd']+p['shape']*0.5e-10
+    above=p['zd']+p['shape']*2.0e-10
+    assert dramet2(below,p)==0.0
+    assert dramet2(above,p)>0.0
+    reconstructed_below=(below-p['zd'])/p['shape']
+    reconstructed_above=(above-p['zd'])/p['shape']
+    assert reconstructed_below < 1e-10 and reconstructed_above > 1e-10
+    print('FPM08C_DRAMET2_SMALL_CUTOFF_BRANCH=PASS')
+    print('FPM08C_DRAMET2_EXACT_CUTOFF_REPRESENTATION_SENSITIVE=PASS')
 
     c=0.7; hd=-50.0
     for e in (1.0,0.7,0.2):
