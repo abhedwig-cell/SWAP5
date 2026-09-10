@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08C1R",
+  "problem": "F-VQ39 proved that the structurally qualified DRAMET=1 candidate silently changes B1.10 behavior for an input-grammar-admissible one-point table whose only groundwater-depth knot is zero.",
+  "source_observable_counterexample": {
+    "normalized_depth": [0.0],
+    "signed_exchange": [2.75],
+    "legacy_at_abs_gwl_0": 2.75,
+    "legacy_at_positive_abs_gwl": 0.0,
+    "candidate_at_all_abs_gwl": 2.75
+  },
+  "remediation_policy": {
+    "kernel_behavior": "fail closed for any normalized one-point table with its only groundwater-depth knot at zero",
+    "diagnostic": "dedicated unsupported-legacy-degenerate status",
+    "response_on_rejection": "default zero-valued result with derivative unavailable and evaluated=false; this is an error result, not a physical zero-flux substitute",
+    "single_point_positive_depth": "remain valid constant response because B1.10 AFGEN clamps to that value on both sides",
+    "two_or_more_strictly_increasing_knots_starting_at_zero": "remain valid",
+    "compatibility_replay": "if exact replay of the zero-filled B1.10 storage artifact is ever required, implement it outside the kernel in a separately qualified compatibility adapter"
+  },
+  "required_regression_checks": [
+    "all original F-PM08C1 structural tests remain green",
+    "one-point depth-zero input returns dedicated fail-closed status and evaluated=false",
+    "one-point positive-depth table remains constant with zero derivative",
+    "two-point table starting at zero remains valid and interpolates normally",
+    "O0 and O2 output identity",
+    "production delta remains exactly src/process/mod_drainage_tabulated_response.f90",
+    "no HeadCalc, AFGEN storage, file I/O, solver or runtime dependency is introduced"
+  ],
+  "invariant_audit": {
+    "2_kernel_separate_from_io": "PASS_BY_DESIGN",
+    "3_explicit_data_separation": "PASS_BY_DESIGN",
+    "4_compact_persistent_state": "PASS_NO_PROCESS_STATE",
+    "13_mass_conservation": "PASS_ERROR_RESULT_CANNOT_BE_COMMITTED_AS_TRANSFER",
+    "14_interface_sensitivities": "PASS_VALID_CASE_DERIVATIVE_CONTRACT_UNCHANGED",
+    "22_no_headcalc_internals": "PASS_BY_DESIGN",
+    "23_physics_solver_policy_separation": "PASS_BY_DESIGN",
+    "25_reference_mode": "PASS_B110_SOURCE_REMAINS_AUTHORITY",
+    "26_runtime_diagnostics": "PASS_DEDICATED_STATUS_EXPOSED",
+    "27_optional_functionality_scales": "PASS_NO_NEW_STATE_OR_SCRATCH",
+    "29_no_silent_dependencies": "PASS_NO_IO_CALENDAR_OR_MODFLOW_ASSUMPTION",
+    "30_change_audited": "PASS_THIS_CONTRACT"
+  },
+  "holds": [
+    "No legacy zero-filled qdrtab emulation in process physics.",
+    "No runtime/canonical admission in this workunit.",
+    "No solver Jacobian integration.",
+    "No expansion to DRAMET=2, empirical interflow, multi-level exchange or surface-water control."
+  ]
+}
