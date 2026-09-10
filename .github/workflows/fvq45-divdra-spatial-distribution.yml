@@ -1,0 +1,20 @@
+name: F-VQ45 independent DIVDRA spatial distribution qualification and disposition
+
+on:
+  push:
+    branches:
+      - qualification/f-vq45-fpm08b-spatial-distribution
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-disposition:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-VQ45 independent DIVDRA disposition gate
+        run: bash tests/fvq/run_fvq45_divdra_spatial_distribution_gate.sh
