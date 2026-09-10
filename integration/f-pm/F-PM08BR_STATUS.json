@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08BR",
+  "title": "Restricted DIVDRA Lev2Comp Boundary-Seam Remediation",
+  "branch": "work/f-pm08br-lev2comp-boundary-seam-remediation",
+  "status": "IN_PROGRESS_CHECKPOINT_PERSISTED",
+  "source_candidate": {
+    "work_unit": "F-PM08B",
+    "closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
+    "production_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe"
+  },
+  "blocking_qualification": {
+    "work_unit": "F-VQ45",
+    "closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
+    "decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+    "stable_domain_cases_qualified": 900,
+    "boundary_seam_cases": 21,
+    "boundary_seam_mismatch_cases": 9,
+    "summary_sha256": "7054a2d89f1b9b18fa7b9411390d10e5e6bd71c12058177acda6da958bfec316"
+  },
+  "frozen_legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "legacy_rule": "do while (lev > -zbotcp(icplev)+1.d-10)"
+  },
+  "remediation_scope": {
+    "reproduce_internal_compartment_boundary_seam": true,
+    "legacy_seam_cm": 1e-10,
+    "preserve_profile_bottom_fail_closed": true,
+    "preserve_positive_drainage_only": true,
+    "preserve_small_transfer_hold": true,
+    "preserve_mass_authority_and_last_node_roundoff_closure": true,
+    "no_runtime_change": true,
+    "no_solver_change": true,
+    "no_reference_change": true,
+    "no_scope_broadening": true
+  },
+  "state": {
+    "checkpoint_persisted": true,
+    "production_patch_persisted": false,
+    "tests_extended": false,
+    "tested": false,
+    "structurally_qualified": false,
+    "scientifically_requalified": false
+  },
+  "next_required_step": "apply the minimal internal Lev2Comp +1e-10 seam patch and add exact boundary regression tests before CI"
+}
