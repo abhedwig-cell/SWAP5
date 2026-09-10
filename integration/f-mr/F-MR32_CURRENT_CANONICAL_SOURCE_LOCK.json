@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.parallel_committed_restart_current_canonical_source_lock.v1",
+  "work_unit": "F-MR32",
+  "title": "Parallel Committed-Boundary Restart Composition Current-Canonical Rebind",
+  "branch": "work/f-mr32-current-canonical-parallel-committed-restart-composition",
+  "canonical_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "prior_plan_checkpoint": {
+    "branch": "work/f-mr32-parallel-committed-restart-composition",
+    "head": "63d5e357c9b8471a5a72a3f49b9621103e6a221d",
+    "base_parent": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "disposition": "DESIGN_CHECKPOINT_ONLY_NOT_CURRENT_SOURCE_AUTHORITY"
+  },
+  "required_upstream_admissions": {
+    "restart": {
+      "work_unit": "F-CI28",
+      "status_path": "integration/f-ci/F-CI28_STATUS.json",
+      "status_blob": "48beb278216d7d1c417ed874c653a47ecdcab8de",
+      "candidate_lock_path": "integration/f-ci/F-CI28_CANDIDATE_LOCK.json",
+      "candidate_lock_blob": "00b25b34d492577943dd583d2f97d2df5ae6487c",
+      "decision": "QUALIFIED_CLOSED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION",
+      "scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart"
+    },
+    "parallel_v1": {
+      "work_unit": "F-CI30",
+      "status_path": "integration/f-ci/F-CI30_STATUS.json",
+      "status_blob": "6e33ed079e6d0f4a2b201a3296692068a7bd3cac",
+      "source_lock_path": "integration/f-ci/F-CI30_SOURCE_LOCK.json",
+      "source_lock_blob": "3c2f1118696ec2cb91c3de32b28e9d4954857124",
+      "decision": "QUALIFIED_CLOSED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_ADMISSION",
+      "scope": "restricted parallel real-physics MultiSWAP V1"
+    },
+    "current_serialized_postimage": {
+      "work_unit": "F-CI34",
+      "status_path": "integration/f-ci/F-CI34_STATUS.json",
+      "status_blob": "b21b6bd58e45a8734b24517f24bfec5a7640c4b8",
+      "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+      "reason_for_binding": "F-CI34 validly superseded the serialized-runtime preimage used at F-CI30 admission; F-MR32 must qualify the actual current composed postimage"
+    }
+  },
+  "current_production_blob_locks": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "recomposition_finding": {
+    "f_ci28_restart_blobs_preserved_on_current_canonical": true,
+    "f_ci30_parallel_scheduler_blob_preserved_on_current_canonical": true,
+    "f_ci30_parallel_worker_pool_blob_preserved_on_current_canonical": true,
+    "f_ci30_serialized_runtime_preimage": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "current_serialized_runtime_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "serialized_runtime_change_authority": "F-CI34",
+    "classification": "CURRENT_CANONICAL_REBIND_REQUIRED_NO_UPSTREAM_AUTHORITY_CONFLICT_OBSERVED"
+  },
+  "source_authority_rule": "All F-MR32 qualification work is bound to this exact current-canonical source image. No production source modification is permitted inside F-MR32. If a hard composition gate demonstrates a production defect, F-MR32 closes NOT_READY and routes the exact defect to a separate owner remediation workunit.",
+  "production_change_expected": false,
+  "qualification_first": true
+}
