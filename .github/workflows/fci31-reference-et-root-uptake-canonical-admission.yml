@@ -7,6 +7,7 @@ on:
     paths:
       - .github/workflows/fci31-reference-et-root-uptake-canonical-admission.yml
       - tests/fci/run_fci31_reference_et_root_uptake_canonical_admission.sh
+      - tests/fci/run_fci31_reference_et_root_uptake_canonical_admission_v2.sh
       - integration/f-ci/F-CI31_QUALIFICATION_PLAN.json
 
 permissions:
@@ -22,4 +23,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-CI31 source-bound canonical admission gate
-        run: bash tests/fci/run_fci31_reference_et_root_uptake_canonical_admission.sh
+        run: bash tests/fci/run_fci31_reference_et_root_uptake_canonical_admission_v2.sh
