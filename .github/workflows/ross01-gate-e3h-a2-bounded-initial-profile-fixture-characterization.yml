@@ -1,0 +1,85 @@
+name: F-ROSS01 Gate E3H-A2 Bounded Initial Profile Fixture Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A2_BOUNDED_INITIAL_PROFILE_FIXTURE_CHARACTERIZATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a2_bounded_initial_profile_fixture_characterization.py'
+      - '.github/workflows/ross01-gate-e3h-a2-bounded-initial-profile-fixture-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a2_bounded_initial_profile_fixture_characterization.py
+      - name: Assert A1 frozen failure preserved
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-ross/F-ROSS01_GATE_E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION_RESULT.json'))
+          assert r['decision']=='TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_FOR_ALL_MATERIALS_INITIAL_PROFILE_RESEARCH_REQUIRED'
+          assert r['B01']['outcome']=='CHARACTERIZED'
+          assert r['B12']['failure_class']=='SECOND_CELL_NEAR_SATURATION_SCOPE_BOUND_ACTIVE'
+          assert r['O13']['failure_class']=='SECOND_CELL_NEAR_SATURATION_SCOPE_BOUND_ACTIVE'
+          assert r['O14']['failure_class']=='EVENT_TIME_LOWER_BOUND_ACTIVE'
+          PY
+      - name: Execute frozen A2 characterization
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a2-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a2_bounded_initial_profile_fixture_characterization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3H_A2_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A2_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen characterization semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3h-a2-{m}/F-ROSS01_GATE_E3H_A2_{m}_RESULT.json'
+          r=json.load(open(p)); mr=r['material_result']; sf=mr['selected_fixture']
+          assert r['gate']=='E3H_A2_BOUNDED_INITIAL_PROFILE_FIXTURE_CHARACTERIZATION'
+          assert r['production_implementation'] is False and r['qualification_use'] is False
+          assert r['pass'] is True and mr['pass'] is True
+          assert mr['case_count']==24
+          assert sf is not None
+          assert sf['profile_id'] in ('P0_A1_CONTROL','P1_DRIER_SUBSOIL','P2_DRIER_TOP_AND_SUBSOIL','P3_STRONG_DRY_SEPARATION')
+          assert sf['supply_fraction_ksat'] in (1.5,2.0,3.0,5.0,8.0,12.0)
+          assert sf['candidate_event_heads_cm'][0]==0.0 and sf['reference_event_heads_cm'][0]==0.0
+          assert sf['candidate_event_heads_cm'][1]<=-1.0 and sf['reference_event_heads_cm'][1]<=-1.0
+          assert 0.0<sf['candidate_surface_storage_cm']<1.0 and 0.0<sf['reference_surface_storage_cm']<1.0
+          assert sf['candidate_max_abs_balance_residual_cm']<=1e-9
+          assert sf['reference_max_abs_balance_residual_cm']<=1e-9
+          assert sf['event_time_difference_day']<=2.5e-4
+          assert sf['max_head_difference_cm']<=0.25
+          assert sf['surface_storage_difference_cm']<=1e-3
+          if m=='B01':
+              assert sf['profile_id']=='P0_A1_CONTROL' and sf['supply_fraction_ksat']==5.0
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a2-${{ matrix.material }}
+          path: ross01-gate-e3h-a2-${{ matrix.material }}/
