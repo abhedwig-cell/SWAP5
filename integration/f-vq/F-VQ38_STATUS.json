@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ38",
   "title": "Independent DRAMET=2 Hooghoudt/Ernst Response-Family Scientific Equivalence Qualification",
   "branch": "qualification/f-vq38-fpm08c2-hooghoudt-ernst",
-  "status": "IN_PROGRESS_INDEPENDENT_SOURCE_BOUND_QUALIFICATION",
+  "status": "QUALIFIED_CLOSED",
   "clean_base": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
   "candidate_closeouts": {
     "F-PM08C2A": "5417799834775293fd459cd3f7ba5be3d3e5723e",
@@ -16,9 +16,42 @@
     "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
     "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
   },
-  "review_principle": "candidate fixtures and authoring conclusions are evidence inputs only; independent oracle and candidate execution determine disposition",
+  "qualified_candidate_head": "db3e527a26ddc2bcc2adba0009f67b147dd1a9bf",
+  "workflow_run": 34455746652,
+  "workflow_job": 102801592247,
+  "evidence": "integration/f-vq/F-VQ38_QUALIFICATION_EVIDENCE.json",
+  "review_principle": "candidate fixtures and authoring conclusions are evidence inputs only; independent oracle and exact closeout candidate execution determine disposition",
+  "qualification": {
+    "DRAMET2_IPOS1_to_5_scalar_response_family": true,
+    "normalized_mathematically_valid_domain": true,
+    "independent_flux_oracle": true,
+    "all_three_equivalent_depth_branches": true,
+    "stable_branch_response_tangents": true,
+    "IPOS4_interface_derivative_semantics": true,
+    "negative_radial_resistance_with_positive_total_resistance": true,
+    "B110_cutoff_sidedness": true,
+    "O0_O2_candidate_output_identity": true
+  },
+  "quantitative_summary": {
+    "cases_total": 148,
+    "derivative_fd_checks": 132,
+    "max_flux_abs_error": 2.220446049250313e-16,
+    "max_flux_rel_error": 3.202709152201663e-16,
+    "max_derivative_rel_error": 6.587607348428564e-10,
+    "summary_sha256": "246f8c19b6717e01bfc6b03e48f5885504a08b07107c12dd9bda7ab0bc07b1a7"
+  },
   "production_source_changes": false,
   "persisted": true,
-  "tested": false,
-  "qualified": false
+  "tested": true,
+  "qualified": true,
+  "decision": "QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN",
+  "holds": [
+    "No DIVDRA qualification.",
+    "No multi-level aggregation qualification.",
+    "No surface-water-controlled drainage qualification.",
+    "No runtime/source-sink binding qualification.",
+    "No solver Jacobian chain-rule or fully implicit drainage qualification.",
+    "No canonical admission in F-VQ38.",
+    "No qualification of legacy reader-admitted singular or mathematically undefined parameter combinations."
+  ]
 }
