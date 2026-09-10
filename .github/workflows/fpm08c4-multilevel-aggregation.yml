@@ -1,0 +1,20 @@
+name: F-PM08C4 multi-level drainage aggregation qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08c4-multilevel-exchange-aggregation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C4 multi-level aggregation gate
+        run: bash tests/fpm/run_fpm08c4_multilevel_aggregation_gate.sh
