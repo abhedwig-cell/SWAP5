@@ -1,18 +1,86 @@
 {
-  "schema":"swap5.fci37_status.v1",
-  "work_unit":"F-CI37",
-  "title":"F-MR35 Restricted Parallel Root-Uptake Current-Canonical Source Admission",
-  "phase":"PRE_ADMISSION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY",
-  "decision":"QUALIFIED_PRE_ADMISSION_PENDING_EXACT_METADATA_HEAD_REPLAY_AND_CANONICAL_PROMOTION",
-  "canonical_base":"8fa79a70a9faccaf8b63826df607a685eb75b046",
-  "owner":{"work_unit":"F-MR35","evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_blob":"c78c13997642617376b8d118122c86c60ca77189"},
-  "independent":{"work_unit":"F-MQ30","closeout":"48ee2841d783ee023c29391a7ea1e5d7ee0d20e0","decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE","closeout_run":34530999773},
-  "pre_admission":{"tested_head":"7d44b47651a2689d9c7eaee03a59da9583d53b86","run":34531453811,"job":103052889522,"conclusion":"success"},
-  "production_delta":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],
-  "production_blob":"c78c13997642617376b8d118122c86c60ca77189",
-  "reference_delta":[],
-  "state":{"recomposed":true,"persisted":true,"pre_admission_tested":true,"independent_qualification_replayed":true,"architecture_invariants_reviewed":true,"metadata_head_requalified":false,"canonical_ref_advanced":false,"post_promotion_replay_passed":false,"broad_canonical_passed":false,"canonical_admitted":false,"closed":false},
-  "qualified_scope":["restricted root-active real-physics MultiSWAP parallel execution through explicit root-uptake pool","fixed-flux top boundary; bottom mode 7; SWKIMPL=0; SWSOPHY=0","2-worker and 4-worker execution","finite non-negative QROT including active-zero","exact actual-transpiration attribution from runtime forcing","deterministic canonical publication","worker-owned heavy scratch","hard per-column mass residual <=1e-12 cm and complete authoritative aggregate mass","O0/O2 exact output identity"],
-  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","other excluded parallel physics","performance speedup","general SWAP5 release qualification"],
-  "next_gate":"Exact metadata-head must pass F-CI37 workflow. Then recheck canonical equals the pinned base before non-forced fast-forward. After promotion both dedicated F-CI37 and broad canonical qualification must pass before closeout."
+  "schema": "swap5.fci37_status.v2",
+  "work_unit": "F-CI37",
+  "title": "F-MR35 Restricted Parallel Root-Uptake Current-Canonical Source Admission",
+  "phase": "SOURCE_ADMITTED_POSTPROMOTION_GREEN_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "decision": "QUALIFIED_FCI37_PARALLEL_ROOT_UPTAKE_CANONICAL_SOURCE_ADMISSION_PENDING_EXACT_FINAL_GOVERNANCE_HEAD_REQUALIFICATION",
+  "canonical_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "source_admitted_head": "f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "governance_reconciled_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+  "owner": {
+    "work_unit": "F-MR35",
+    "evidence_head": "996038433690bb4c19f36774a633e485daa7f0db",
+    "scientific_candidate": "6b9e47df37513705d3db13edc2c7035526c9c0de",
+    "candidate_blob": "c78c13997642617376b8d118122c86c60ca77189"
+  },
+  "independent": {
+    "work_unit": "F-MQ30",
+    "closeout": "48ee2841d783ee023c29391a7ea1e5d7ee0d20e0",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE",
+    "closeout_run": 34530999773
+  },
+  "production_delta": [
+    "src/runtime/mod_fmr_parallel_root_uptake_pool.f90"
+  ],
+  "production_blob": "c78c13997642617376b8d118122c86c60ca77189",
+  "reference_delta": [],
+  "postpromotion_evidence": {
+    "dedicated_fci37_source_admission_run_on_source_head": 34531764198,
+    "dedicated_fci37_source_admission_conclusion": "success",
+    "governance_reconciliation": "F-CI37P",
+    "governance_reconciled_canonical_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+    "fci37p_canonical_run": 34532521552,
+    "fci37p_canonical_conclusion": "success",
+    "broad_canonical_run": 34532521391,
+    "broad_canonical_conclusion": "success",
+    "broad_current_postimage_job": 103056961433,
+    "broad_current_postimage_job_conclusion": "success",
+    "exact_fci37_source_gate_replayed_in_broad_current_postimage": true,
+    "exact_fci37_postimage_and_prior_authority_recheck": "PASS"
+  },
+  "state": {
+    "recomposed": true,
+    "persisted": true,
+    "pre_admission_tested": true,
+    "independent_qualification_replayed": true,
+    "architecture_invariants_reviewed": true,
+    "canonical_ref_advanced": true,
+    "canonical_source_admitted": true,
+    "governance_reconciled": true,
+    "post_promotion_source_gate_replayed": true,
+    "broad_canonical_passed": true,
+    "final_governance_status_persisted": true,
+    "exact_final_governance_head_requalified": false,
+    "final_closeout_complete": false
+  },
+  "qualified_scope": [
+    "restricted root-active real-physics MultiSWAP parallel execution through explicit root-uptake pool",
+    "fixed-flux top boundary; bottom mode 7; SWKIMPL=0; SWSOPHY=0",
+    "2-worker and 4-worker execution",
+    "finite non-negative QROT including active-zero",
+    "exact actual-transpiration attribution from runtime forcing",
+    "deterministic canonical publication",
+    "worker-owned heavy scratch",
+    "hard per-column mass residual <=1e-12 cm and complete authoritative aggregate mass",
+    "O0/O2 exact output identity"
+  ],
+  "nonclaims": [
+    "root-active committed-boundary restart",
+    "mid-transaction restart",
+    "time-varying QROT within accepted substeps",
+    "other excluded parallel physics",
+    "performance speedup",
+    "general SWAP5 release qualification"
+  ],
+  "final_gate": {
+    "exact_final_fci37p_branch_head_must_pass": true,
+    "canonical_must_still_equal_governance_reconciled_head_before_final_fast_forward": true,
+    "final_governance_fast_forward_must_be_non_forced": true,
+    "final_canonical_dedicated_fci37_must_pass": true,
+    "final_canonical_fci37p_must_pass": true,
+    "final_broad_canonical_must_pass": true,
+    "no_src_reference_science_or_tolerance_change_permitted": true,
+    "no_further_status_mutation_required_after_green_final_head": true
+  },
+  "next_gate": "Qualify the exact governance-only status head on F-CI37P. If green and canonical is still 3ee96e9d00be7a01d21302cc79288af64c963708, fast-forward that head non-forced to canonical and require dedicated F-CI37, F-CI37P, and broad canonical workflows all green on the exact final head."
 }
