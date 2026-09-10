@@ -1,0 +1,29 @@
+{
+  "schema": "swap5.et_surface_evaporation_structural_source_lock.v1",
+  "work_unit": "F-PM06C",
+  "branch": "work/f-pm06c-restricted-surface-evaporation-structural-candidate",
+  "canonical_base": {
+    "commit": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "tree": "e172e973ac7cf3e5e2932eb896be25cba0246646"
+  },
+  "readiness": {
+    "work_unit": "F-PM06B",
+    "closeout": "64fbe2b93c52bfc1865e3c381884e692dcc04764",
+    "status_blob": "2c245b74552d52e3220f5e183da5679edbb3a4ad"
+  },
+  "typed_hydraulic_authority": {
+    "process_view_path": "src/solver/mod_process_hydraulic_view.f90",
+    "process_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "solver_contract_path": "src/solver/mod_soil_water_solver_contract.f90",
+    "solver_contract_blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "ponding_depth_available": true,
+    "evaporation_capacity_available": false
+  },
+  "architecture_decision": {
+    "emax_must_not_be_read_from_headcalc_internals": true,
+    "generic_solver_contract_must_not_be_widened_in_this_workunit": true,
+    "process_specific_evaporation_capacity_input_required": true,
+    "runtime_materialization_deferred": true
+  },
+  "production_source_immutability_rule": "after the candidate production commit, later owner-evidence commits may not modify src"
+}
