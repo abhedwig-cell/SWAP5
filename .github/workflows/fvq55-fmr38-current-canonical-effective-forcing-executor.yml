@@ -19,4 +19,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-VQ55 independent qualification
-        run: bash tests/fvq/run_fvq55_fmr38_effective_forcing_executor_qualification.sh
+        run: bash tests/fvq/run_fvq55_fmr38_effective_forcing_executor_qualification_v2.sh
