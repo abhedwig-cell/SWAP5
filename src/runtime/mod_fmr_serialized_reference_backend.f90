@@ -137,7 +137,6 @@ module mod_fmr_serialized_reference_backend
     real(real64), pointer :: qdra(:,:) => null()
     real(real64), pointer :: qssdi(:) => null()
     real(real64), pointer :: qrot(:) => null()
-    logical :: direct_forcing_views_enabled = .false.
     integer :: bottom_mode = 7
     integer :: swkimpl = 0
     integer :: swkmean = 1
@@ -362,22 +361,9 @@ contains
     end select
   end subroutine prepare_snow_outer_event
 
-  subroutine fmr_serialized_backend_initialize(self, top_boundary, enable_direct_forcing_views)
+  subroutine fmr_serialized_backend_initialize(self, top_boundary)
     class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
     class(top_boundary_provider_t), target, intent(in) :: top_boundary
-    logical, intent(in), optional :: enable_direct_forcing_views
-    logical :: requested_direct_views
-    requested_direct_views = .false.
-    if (present(enable_direct_forcing_views)) requested_direct_views = enable_direct_forcing_views
-    if (requested_direct_views .and. .not. self%model%direct_forcing_views_enabled) then
-      if (associated(self%model%qdra)) deallocate(self%model%qdra)
-      if (associated(self%model%qssdi)) deallocate(self%model%qssdi)
-      if (associated(self%model%qrot)) deallocate(self%model%qrot)
-    end if
-    self%model%direct_forcing_views_enabled = requested_direct_views
-    if (self%model%direct_forcing_views_enabled) then
-      nullify(self%model%qdra, self%model%qssdi, self%model%qrot)
-    end if
     self%model%top_boundary => top_boundary
     self%model%temporal_indicator_history_enabled = .false.
     self%model%temporal_indicator_budget_supplied = .false.
@@ -394,7 +380,7 @@ contains
     type(fmr_template_t), intent(in) :: template
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed
-    type(fmr_b110_physical_forcing_t), target, intent(in) :: forcing
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
     type(canonical_numerical_config_t), intent(in) :: config
     real(real64), intent(in) :: t0, t1
     type(kernel_checkpoint_t), intent(in) :: checkpoint
@@ -405,9 +391,6 @@ contains
     self%model%temporal_indicator_budget_supplied = .false.
     self%model%temporal_indicator_budget_valid = .false.
     self%model%temporal_indicator_budget = 0.0_real64
-    if (self%model%direct_forcing_views_enabled) then
-      nullify(self%model%qdra, self%model%qssdi, self%model%qrot)
-    end if
     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
@@ -431,30 +414,9 @@ contains
       diagnostics%admission_rejections = 1
       return
     end select
-    if (self%model%direct_forcing_views_enabled) then
-      if (parameters%bottom_mode /= 7 .or. parameters%swkimpl /= 0 .or. parameters%swsophy /= 0 .or. &
-          parameters%root_extraction_active .or. parameters%snow_active .or. parameters%macropore_active .or. &
-          parameters%frost_active .or. parameters%hysteresis_active .or. &
-          parameters%tabulated_hydraulics_active .or. parameters%elasticity_active .or. &
-          allocated(parameters%snow) .or. .not. allocated(forcing%drainage_flux_by_level) .or. &
-          .not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) then
-        result = kernel_result_t()
-        result%status = KERNEL_STATUS_NOT_ADMITTED
-        candidate = kernel_candidate_state_t()
-        diagnostics = kernel_diagnostics_t()
-        diagnostics%admission_rejections = 1
-        return
-      end if
-      self%model%qdra => forcing%drainage_flux_by_level
-      self%model%qssdi => forcing%subsurface_irrigation_source
-      self%model%qrot => forcing%root_extraction_sink
-    end if
     call prepare_snow_outer_event(self%model, parameters, committed, forcing, t0, t1)
     call fmr_trial_from_checkpoint(self%kernel, parameters, committed, forcing, config, t0, t1, checkpoint, &
          result, candidate, diagnostics)
-    if (self%model%direct_forcing_views_enabled) then
-      nullify(self%model%qdra, self%model%qssdi, self%model%qrot)
-    end if
   end subroutine fmr_serialized_backend_run_trial
 
   function fmr_serialized_backend_observation(self) result(obs)
@@ -593,27 +555,21 @@ contains
       else
         if (allocated(forcing%snow)) return
       end if
-      if (self%direct_forcing_views_enabled) then
-        if (.not. associated(self%qdra) .or. .not. associated(self%qssdi) .or. .not. associated(self%qrot)) return
-        if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n .or. &
-            size(self%qssdi) /= n .or. size(self%qrot) /= n) return
-      else
-        if (associated(self%qdra)) then
-          if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) deallocate(self%qdra)
-        end if
-        if (associated(self%qssdi)) then
-          if (size(self%qssdi) /= n) deallocate(self%qssdi)
-        end if
-        if (associated(self%qrot)) then
-          if (size(self%qrot) /= n) deallocate(self%qrot)
-        end if
-        if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
-        if (.not. associated(self%qssdi)) allocate(self%qssdi(n))
-        if (.not. associated(self%qrot)) allocate(self%qrot(n))
-        self%qdra = forcing%drainage_flux_by_level
-        self%qssdi = forcing%subsurface_irrigation_source
-        self%qrot = forcing%root_extraction_sink
+      if (associated(self%qdra)) then
+        if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) deallocate(self%qdra)
       end if
+      if (associated(self%qssdi)) then
+        if (size(self%qssdi) /= n) deallocate(self%qssdi)
+      end if
+      if (associated(self%qrot)) then
+        if (size(self%qrot) /= n) deallocate(self%qrot)
+      end if
+      if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
+      if (.not. associated(self%qssdi)) allocate(self%qssdi(n))
+      if (.not. associated(self%qrot)) allocate(self%qrot(n))
+      self%qdra = forcing%drainage_flux_by_level
+      self%qssdi = forcing%subsurface_irrigation_source
+      self%qrot = forcing%root_extraction_sink
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
       if (self%snow_active) self%top_flux = self%base_top_flux - self%snow_melt_rate

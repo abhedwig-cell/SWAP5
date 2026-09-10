@@ -219,7 +219,7 @@ contains
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
-    type(fmr_b110_physical_forcing_t), target, intent(in) :: forcing_registry(:)
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
     type(kernel_committed_state_t), intent(inout) :: state_registry(:)
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     real(real64), intent(in) :: t0, t1
