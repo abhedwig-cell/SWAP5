@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION",
+  "status": "HARNESS_FAILURE_RECONCILED_NO_SCIENTIFIC_DECISION",
+  "production_implementation": false,
+  "frozen_scientific_precommit": "F-ROSS01_GATE_E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION_PRECOMMIT.json",
+  "failed_run": {
+    "run": 34447917022,
+    "head": "b1f96e9bffa20cd526d2aed68872890d8dff1210",
+    "conclusion": "failure",
+    "jobs": {
+      "B01": 102776711188,
+      "O14": 102776711316
+    }
+  },
+  "failure": {
+    "exception": "AttributeError: module 'run_ross01_gate_e3g_physical_top_boundary_switch_composition' has no attribute 'N_CELLS'",
+    "location": "full_interval_balance",
+    "expression": "for i in range(e3g.N_CELLS)",
+    "correct_namespace": "e3g.e3.N_CELLS",
+    "stage": "final full-interval balance reporting after event corrector and ponded remainder had already been evaluated",
+    "classification": "QUALIFICATION_HARNESS_NAMESPACE_ERROR"
+  },
+  "scientific_interpretation": [
+    "Both material jobs passed syntax and upstream fixture-evidence guards before execution.",
+    "The exception is deterministic and identical for B01 and O14.",
+    "The failure occurs in the final balance helper and therefore is not evidence that the event corrector, ponded remainder, mass balance, candidate/reference agreement, or transaction semantics pass or fail.",
+    "No scientific result from run 34447917022 may be qualified or rejected from this infrastructure failure."
+  ],
+  "remediation": {
+    "method": "A separate wrapper shall import the frozen R2 module, expose the already existing e3g.e3.N_CELLS value as the missing e3g.N_CELLS harness alias, and call the unchanged frozen R2 main().",
+    "scientific_code_changed": false,
+    "fixtures_changed": false,
+    "thresholds_changed": false,
+    "solver_policy_changed": false,
+    "event_algorithm_changed": false,
+    "candidate_or_reference_physics_changed": false
+  },
+  "hard_guards": [
+    "Preserve run 34447917022 as harness-failure evidence.",
+    "Do not alter the frozen R2 script, fixtures, tolerances or precommit for this remediation.",
+    "If the rerun reaches a scientific FAIL, preserve it and do not retune inside R2-R1."
+  ],
+  "next_gate": "E3G_R2_R1_HARNESS_REPAIR_IDENTICAL_SCIENTIFIC_RERUN"
+}
