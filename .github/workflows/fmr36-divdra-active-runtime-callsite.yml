@@ -19,10 +19,10 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Run F-MR36 source-bound runtime gate
+      - name: Run F-MR36 source-bound corrected runtime gate
         env:
           FMR36_EVIDENCE_DIR: _fmr36_evidence
-        run: bash tests/fmr/run_fmr36_divdra_active_runtime_callsite_gate.sh
+        run: bash tests/fmr/run_fmr36_divdra_active_runtime_callsite_gate_v2.sh
       - name: Upload F-MR36 evidence
         if: always()
         uses: actions/upload-artifact@v4
