@@ -74,17 +74,23 @@ for opt in 0 2; do
   set -e
   cat "$OUT/output.txt"
   [[ $rc -eq 25 ]] || { echo "FMQ25_O${opt}_UNEXPECTED_SENTINEL_RC=$rc"; exit 4; }
-  grep -Fq 'FMQ25_LATE_RECORD_ATOMIC_CONTROL=PASS' "$OUT/output.txt"
-  grep -Fq 'FMQ25_MALFORMED_CONCRETE_STATE_REJECTED=FAIL' "$OUT/output.txt"
-  grep -Fq 'FMQ25_OBSERVED_RESTORE_STATUS=0' "$OUT/output.txt"
-  grep -Fq 'FMQ25_OBSERVED_RESTORED=T' "$OUT/output.txt"
-  grep -Fq 'FMQ25_TARGET1_READY=T' "$OUT/output.txt"
-  grep -Fq 'FMQ25_TARGET2_READY=T' "$OUT/output.txt"
+  for marker in \
+    'FMQ25_LATE_RECORD_ATOMIC_CONTROL=PASS' \
+    'FMQ25_MALFORMED_CONCRETE_STATE_REJECTED=FAIL' \
+    'FMQ25_OBSERVED_RESTORE_STATUS=0' \
+    'FMQ25_OBSERVED_RESTORED=T' \
+    'FMQ25_TARGET1_READY=T' \
+    'FMQ25_TARGET2_READY=T'; do
+    grep -Fq "$marker" "$OUT/output.txt"
+  done
+  grep '^FMQ25_' "$OUT/output.txt" > "$OUT/scientific_markers.txt"
   echo "FMQ25_O${opt}_MALFORMED_STATE_FAIL_OPEN_REPRODUCED=PASS"
 done
 
-cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
-echo 'FMQ25_O0_O2_DEFECT_REPRODUCTION_IDENTITY=PASS'
+# Compiler backtraces and warning ordering are not scientific output. Compare
+# only the candidate-observation markers emitted by the independent harness.
+cmp "$BUILD/o0/scientific_markers.txt" "$BUILD/o2/scientific_markers.txt"
+echo 'FMQ25_O0_O2_DEFECT_OBSERVATION_IDENTITY=PASS'
 echo 'FMQ25_CANDIDATE_HARD_NEGATIVE_VIOLATION=OBSERVED'
 echo 'FMQ25_DECISION=NOT_QUALIFIED'
 exit 25
