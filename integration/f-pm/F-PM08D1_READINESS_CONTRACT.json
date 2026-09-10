@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-PM08D1",
   "title": "Surface-Water Storage Geometry & Compact State Readiness Contract",
   "activation_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
@@ -10,7 +10,7 @@
     "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"
   },
   "reference_equations": {
-    "level_knots": "STTAB(1,1)=100 cm; STTAB(2,1)=0; STTAB(i,1)=zbotdr(1+nrpri)*(i-2)/20 for i=3..22",
+    "level_knots": "STTAB(1,1)=100 cm; STTAB(2,1)=0; STTAB(i,1)=zbotdr(1+nrpri)*(i-2)/20 for i=3..22, preserving frozen multiply-then-divide operation order",
     "storage_sum": "for every knot and each secondary level ilev=1+nrpri..nrlevs with SWDTYP=2 and level>zbotdr(ilev), add open-channel cross-section volume divided by LSPACING(ilev)",
     "below_or_at_surface_volume": "wdepth=level-zbotdr; wvolum=wdepth*(widthr+wdepth/taludr)",
     "above_surface_volume": "base_depth=-zbotdr; base_volume=base_depth*(widthr+base_depth/taludr); breadth=widthr+2*base_depth/taludr; wvolum=base_volume+breadth*level",
@@ -22,11 +22,21 @@
     "deepest_secondary_level_index": "1+nrpri",
     "deepest_secondary_must_be_open_channel": true,
     "open_channel_width_positive": true,
-    "spacing_positive_after_input conversion": true,
-    "table_level_domain": "[zbotdr(1+nrpri), 100 cm]",
+    "spacing_positive_after_input_conversion": true,
+    "reader_initial_wls_domain": "[zbotdr(1+nrpri), 0 cm]",
+    "swstlev_table_level_domain": "[STTAB(22,1), STTAB(1,1)]",
     "storage_domain": "[STTAB(22,2), STTAB(1,2)]",
-    "outside_domain_fails_closed": true
+    "outside_table_domain_fails_closed": true,
+    "reader_vs_table_bottom_boundary_can_differ_by_floating_rounding": true
   },
+  "source_risk_holds": [
+    {
+      "id": "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
+      "rule": "STTAB(22,1)=zbotdr*20/20.0d0 is mathematically the bottom but not guaranteed bit-identical to zbotdr",
+      "qualification_rule": "characterize exact frozen behavior; do not silently snap the knot to zbotdr and do not add a configurable tolerance",
+      "production_disposition_required": true
+    }
+  ],
   "state_ownership": {
     "SWST": {
       "classification": "committed physical state only for SWSEC=2 simulated secondary surface water",
@@ -63,7 +73,8 @@
     "reference_piecewise_linear_relation_is_physical_reference_semantics": true,
     "analytic_channel_geometry_between_knots_is_not_silent_reference_replacement": true,
     "alternative_exact_geometry_may_only_be_introduced_as_separately_qualified_physical_option": true,
-    "no_solver_policy_parameters_in_storage_geometry": true
+    "no_solver_policy_parameters_in_storage_geometry": true,
+    "bottom_knot_rounding_seam_is_not_solver_tolerance": true
   },
   "transaction_requirements": {
     "trial_swst_isolated_from_committed_swst": true,
@@ -83,14 +94,15 @@
     "No automatic-management implementation in F-PM08D1.",
     "No runtime transaction composition implementation in F-PM08D1.",
     "No file parsing or calendar logic in kernel/component code.",
-    "No production source modification in this readiness workunit."
+    "No production source modification in this readiness workunit.",
+    "No silent remediation of D1-RISK-01; exact-bottom behavior requires explicit child disposition."
   ],
   "readiness_exit": [
     "frozen source identity reverified",
     "exact 22-knot construction independently reconstructed",
-    "strict monotonic storage relation demonstrated over valid source domain",
+    "strict monotonic storage relation demonstrated over valid table domain",
     "forward and inverse interpolation mutually consistent within floating arithmetic",
-    "endpoint and outside-domain behavior characterized",
+    "endpoint and outside-domain behavior characterized including D1-RISK-01",
     "SWST/WLS/WLSTAR/WLSBAK/NUMADJ ownership separated",
     "MultiSWAP sharing and optional-state consequences explicit",
     "all 30 architecture invariants audited",
