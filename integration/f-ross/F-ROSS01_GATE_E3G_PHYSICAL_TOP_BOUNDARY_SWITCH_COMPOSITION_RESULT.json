@@ -1,0 +1,190 @@
+{
+  "common_findings": {
+    "B01_O13_O14_dry_predictors_hit_negative_head_upper_scope_and_fail_mass_trial_validity": true,
+    "B12_dry_predictor_remains_numerically_valid_despite_physical_inadmissibility": true,
+    "all_four_dry_predictors_complementarity_inadmissible_in_switch_scenario": true,
+    "candidate_and_reference_share_same_failure_class": true,
+    "dry_admissible_scenario_pass_materials": [
+      "B01",
+      "B12",
+      "O13",
+      "O14"
+    ],
+    "ponded_continuation_scenario_pass_materials": [
+      "B01",
+      "B12",
+      "O13",
+      "O14"
+    ],
+    "switch_scenario_fail_materials": [
+      "B01",
+      "O13",
+      "O14"
+    ],
+    "switch_scenario_pass_materials": [
+      "B12"
+    ]
+  },
+  "decision": "E3G_FAILED_AS_FROZEN_OPEN_E3G_R1_INITIAL_BOUNDARY_ADMISSION_BEFORE_INVALID_DRY_SOLVE",
+  "gate": "E3G_RESTRICTED_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+  "hard_guards": [
+    "Original E3G failure remains authoritative negative evidence.",
+    "Mass conservation tolerance is not relaxed.",
+    "No accepted dry state may be fabricated by clipping top head or residual.",
+    "Candidate and reference must use the same admission logic but remain independently evaluated.",
+    "R1 may only bypass the dry soil solve when the committed-state h_surface=0 face proves the dry mode inadmissible at t0.",
+    "Finite-time within-step ponding onset remains outside R1 and requires a later event-localization gate."
+  ],
+  "interpretation": [
+    "The frozen E3G gate incorrectly made successful construction of a full dry-flux soil trial a prerequisite for discovering that the dry boundary mode is physically inadmissible.",
+    "For B01, O13 and O14 the dry predictor is driven to the frozen top-head upper bound near -1e-8 cm and cannot satisfy the frozen mass residual tolerance; both candidate and reference show the same mechanism.",
+    "B12 is a useful negative control: it can construct a numerically valid dry full-step trial, but the resulting trial is still complementarity-inadmissible and is therefore rejected before the ponded solve.",
+    "The physical boundary admission question must be separated from whether a numerically valid state can be forced inside an already-inadmissible dry mode.",
+    "Do not weaken the original E3G gate. Preserve it as negative evidence and test the corrected admission ordering in a separate E3G-R1 gate."
+  ],
+  "materials": {
+    "B01": {
+      "artifact_digest": "sha256:a2db15060e60d8cfc59d65530701bb999d04fc594ba61dd7836db54b92baa762",
+      "artifact_id": 10138951586,
+      "candidate": {
+        "dry_predictor_abs_composed_residual_cm": 0.002737646181605799,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 0.0026102377900099195,
+        "dry_predictor_q_surface_capacity_cm_per_day": 31.22501606245003,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.0000000001200901e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.0029791577213357416,
+        "post_predictor_ponded_trial_top_head_cm": -0.20894578539903957
+      },
+      "conclusion": "failure",
+      "job": 102764071928,
+      "material_pass": false,
+      "max_abs_mass_residual_all_scenarios_cm": 1.657094600426845e-15,
+      "reference": {
+        "dry_predictor_abs_composed_residual_cm": 0.0027377073949033603,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 0.002610228279399386,
+        "dry_predictor_q_surface_capacity_cm_per_day": 31.225016062449566,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.000000000065424e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.0029791556740017505,
+        "post_predictor_ponded_trial_top_head_cm": -0.20894846554911833
+      },
+      "switch_scenario_pass": false
+    },
+    "B12": {
+      "artifact_digest": "sha256:78d6a0b48ec83a8e9fbad5765ddd64b5f8ebf0b76317c0f8bc67f2f829335073",
+      "artifact_id": 10138960985,
+      "candidate": {
+        "dry_predictor_abs_composed_residual_cm": 5.618986179123375e-15,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": true,
+        "dry_predictor_max_abs_cell_residual_cm": 4.734602467026949e-15,
+        "dry_predictor_q_surface_capacity_cm_per_day": 2.245895000000292,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -0.07026694385925228,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.0002245691772380458,
+        "post_predictor_ponded_trial_top_head_cm": -0.11956847245654273
+      },
+      "conclusion": "success",
+      "job": 102764071946,
+      "material_pass": true,
+      "max_abs_mass_residual_all_scenarios_cm": 1.2492638217301288e-14,
+      "reference": {
+        "dry_predictor_abs_composed_residual_cm": 5.619419859992369e-16,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": true,
+        "dry_predictor_max_abs_cell_residual_cm": 6.086473827108391e-16,
+        "dry_predictor_q_surface_capacity_cm_per_day": 2.2458950000002242,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -0.07026694385823995,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.00022456917723803467,
+        "post_predictor_ponded_trial_top_head_cm": -0.11956847282343938
+      },
+      "switch_scenario_pass": true
+    },
+    "O13": {
+      "artifact_digest": "sha256:d863475de274fce5259d1c653c56ffd5a6aae565f26e15917353fc719a34f42f",
+      "artifact_id": 10138969301,
+      "candidate": {
+        "dry_predictor_abs_composed_residual_cm": 4.785927295488648e-05,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 4.785927293020744e-05,
+        "dry_predictor_q_surface_capacity_cm_per_day": 9.689291000000441,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.0000000000000592e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.0009685534661404852,
+        "post_predictor_ponded_trial_top_head_cm": -0.008614856165445937
+      },
+      "conclusion": "failure",
+      "job": 102764071913,
+      "material_pass": false,
+      "max_abs_mass_residual_all_scenarios_cm": 1.5675178169360926e-13,
+      "reference": {
+        "dry_predictor_abs_composed_residual_cm": 4.7859272917085555e-05,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 4.785927292839682e-05,
+        "dry_predictor_q_surface_capacity_cm_per_day": 9.689291000015299,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.0000000000000592e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.0009685534661404923,
+        "post_predictor_ponded_trial_top_head_cm": -0.008614856165494008
+      },
+      "switch_scenario_pass": false
+    },
+    "O14": {
+      "artifact_digest": "sha256:0e662ca5b4e90d2c6c2d65cc56321f4b81cf985aab41ab8deac8187889df0803",
+      "artifact_id": 10138942818,
+      "candidate": {
+        "dry_predictor_abs_composed_residual_cm": 0.00019995306620367587,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 0.0001821950795271967,
+        "dry_predictor_q_surface_capacity_cm_per_day": 2.495984004992014,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.0000092224234569e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.00022593890247358926,
+        "post_predictor_ponded_trial_top_head_cm": -0.32911068155681356
+      },
+      "conclusion": "failure",
+      "job": 102764071794,
+      "material_pass": false,
+      "max_abs_mass_residual_all_scenarios_cm": 1.2549389424767327e-14,
+      "reference": {
+        "dry_predictor_abs_composed_residual_cm": 0.0001999529770599147,
+        "dry_predictor_accepted_as_dry_flux": false,
+        "dry_predictor_complementarity_admissible": false,
+        "dry_predictor_local_trial_valid": false,
+        "dry_predictor_max_abs_cell_residual_cm": 0.000182194534198009,
+        "dry_predictor_q_surface_capacity_cm_per_day": 2.4959840049911493,
+        "dry_predictor_solver_success": true,
+        "dry_predictor_top_head_cm": -1.0000273035732222e-08,
+        "post_predictor_ponded_trial_surface_storage_cm": 0.00022593872668919766,
+        "post_predictor_ponded_trial_top_head_cm": -0.32911287069350864
+      },
+      "switch_scenario_pass": false
+    }
+  },
+  "next_gate": "E3G_R1_INITIAL_SURFACE_COMPLEMENTARITY_ADMISSION",
+  "production_implementation": false,
+  "schema_version": 1,
+  "status": "FAILED_AS_FROZEN_PRESERVED",
+  "work_unit": "F-ROSS01",
+  "workflow": {
+    "head": "8e13e053aea43e4a6bc356e0b0578af19c80f2c9",
+    "overall": "3_FAILURE_1_SUCCESS",
+    "run": 34443785544
+  },
+  "workstream": "F-ROSS"
+}
