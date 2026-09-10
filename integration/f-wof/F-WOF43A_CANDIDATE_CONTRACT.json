@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-WOF43A",
+  "title": "Restricted Crop-to-ET Canopy View Provider Candidate",
+  "branch": "work/f-wof43a-crop-et-canopy-view-provider",
+  "base": "4ebbbb6563132a80c26a22124d9261928fe2ffbf",
+  "readiness_authority": "F-WOF43",
+  "restricted_profile": {
+    "consumer": "F-PM06A restricted stateless reference ET demand",
+    "SWETR": 1,
+    "SWCF": 1,
+    "SWINTER": 0,
+    "crop_models_compatible": ["fixed", "WOFOST"],
+    "runtime_binding": false
+  },
+  "input_contract": {
+    "state_view": ["crop_emerged", "development_stage", "leaf_area_index"],
+    "immutable_parameters": ["KDIR", "KDIF", "CFTB"],
+    "optional_immutable_parameters": ["CO2TRATB when CO2 correction enabled"],
+    "optional_forcing": ["atmospheric_CO2_ppm when CO2 correction enabled"]
+  },
+  "output_contract": [
+    "crop_emerged",
+    "vegetation_cover_fraction",
+    "crop_factor",
+    "co2_transpiration_factor",
+    "crop_specific_factors_valid"
+  ],
+  "source_equations": {
+    "vcover": "1-exp(-KDIR*KDIF*LAI)",
+    "CF": "AFGEN(CFTB,DVS)",
+    "fco2tra_disabled": "1",
+    "fco2tra_enabled": "AFGEN(CO2TRATB,CO2)"
+  },
+  "dependency_rules": {
+    "LAI_KDIR_KDIF_consumed_regardless_of_emergence": true,
+    "DVS_CFTB_consumed_only_when_emerged": true,
+    "CO2_forcing_and_CO2TRATB_consumed_only_when_emerged_and_enabled": true,
+    "nonemerged_vcover_forced_to_zero": false
+  },
+  "storage": {
+    "persistent_process_state": false,
+    "derived_view_persistent": false,
+    "parameter_tables": "shared immutable active knots via qualified F-WOF29 table substrate",
+    "per_column_table_copy_required": false
+  },
+  "transaction": {
+    "input_state_read_only": true,
+    "forcing_read_only": true,
+    "view_ephemeral": true,
+    "rejected_trial_mutation": false,
+    "snapshot_lineage_binding_deferred_to_runtime": true
+  },
+  "time": {
+    "calendar_lookup_inside_provider": false,
+    "kernel_day_assumption": false,
+    "CO2_forcing_validity_owned_by_runtime_adapter": true
+  },
+  "mass": {
+    "authoritative_water_flux": false,
+    "mass_ledger_contribution": false
+  },
+  "held_scope": [
+    "runtime composition",
+    "reference ET computation",
+    "root uptake",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "interception",
+    "Penman-Monteith",
+    "SWREDU",
+    "legacy file parsing",
+    "calendar-year CO2 lookup"
+  ],
+  "required_gate": [
+    "single new production module delta",
+    "F-WOF29 table source lock",
+    "crop owner source lock",
+    "root uptake source lock",
+    "F-PM06A ET source lock",
+    "B1.10 source-equation oracle",
+    "AFGEN interpolation and endpoint cases",
+    "non-emerged nonzero cover",
+    "inactive DVS/CO2 dependency minimality",
+    "CO2 disabled forcing independence",
+    "active invalid input fail closed",
+    "O0/O2 identity",
+    "A-B-A stateless replay"
+  ]
+}
