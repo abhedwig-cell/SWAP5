@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.canonical_source_admission_status.v1",
+  "work_unit": "F-CI32",
+  "title": "Remediated Restricted DIVDRA Spatial Distribution Canonical Source Admission",
+  "branch": "qualification/f-ci32-fpm08br-divdra-canonical-admission",
+  "phase": "PRETEST_SOURCE_ADMISSION_PREPARED",
+  "decision": "PENDING_FCI32_ADMISSION_QUALIFICATION",
+  "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "candidate": {
+    "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "scientific_administrative_head": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "dependency": {
+    "path": "src/solver/mod_process_hydraulic_view.f90",
+    "canonical_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "owner_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "resolved": true
+  },
+  "state": {
+    "live_authorities_rechecked": true,
+    "clean_branch_created_from_current_canonical": true,
+    "plan_persisted": true,
+    "pretest_status_persisted": true,
+    "candidate_source_persisted": false,
+    "admission_gate_persisted": false,
+    "workflow_persisted": false,
+    "architecture_audit_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_ci_passed": false,
+    "runtime_bound": false
+  },
+  "scope_guard": {
+    "scientific_scope_reopened": false,
+    "new_drainage_physics": false,
+    "runtime_binding": false,
+    "existing_production_source_modification_allowed": false,
+    "reference_source_modification_allowed": false
+  }
+}
