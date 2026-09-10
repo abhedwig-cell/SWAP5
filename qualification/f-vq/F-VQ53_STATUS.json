@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.fvq_workunit_status.v1",
+  "work_unit": "F-VQ53",
+  "title": "Independent F-PM06E Restricted B1.10 Surface-Evaporation Capacity Requalification",
+  "branch": "qualification/f-vq53-fpm06e-surface-evaporation-capacity",
+  "source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "owner_closeout": "adeb61197695b765f43268249cdf86313ca9a13d",
+  "candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+  "phase": "INDEPENDENT_QUALIFICATION_PENDING",
+  "decision": "PENDING_FAIL_CLOSED",
+  "scope": {
+    "hydraulic_family": "B1.10_DEFAULT_MVG",
+    "conductivity_mean_policies": [1,2,3,4,5,6],
+    "swkmean_7": "HELD_NOT_QUALIFIED",
+    "frost": "OFF_ONLY",
+    "macropore_surface_scaling": "OFF_ONLY",
+    "runtime_composition": false,
+    "canonical_admission": false
+  },
+  "state": {
+    "persisted": true,
+    "tested": false,
+    "independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "qualification": {
+    "workflow": "F-VQ53 independent F-PM06E surface evaporation capacity qualification",
+    "run": null,
+    "job": null,
+    "expected_gate": "FVQ53_GATE=PASS"
+  },
+  "architecture": {
+    "invariants": "30_OF_30_NO_ADVERSE_DELTA_IF_GATE_GREEN",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "next_required_step": "run the independent exact-head gate and fail closed; only after green qualification may a separate canonical-admission workunit be considered"
+}
