@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI28",
+  "title": "F-MR25 Restart Canonical Admission Candidate Lock",
+  "branch": "qualification/f-ci28-fmr25-restart-canonical-admission",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "candidate_commit": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "owner_workunit": "F-MR25",
+  "owner_closeout": "510ccd90af6386e3239e71ff6585ed56d6ef5fdb",
+  "owner_closeout_post_run": {"run":34458295642,"job":102809788289,"conclusion":"success"},
+  "candidate_production_delta": ["src/runtime/mod_fmr_committed_restart.f90","src/runtime/mod_fmr_restart_state_contract.f90"],
+  "candidate_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "current_canonical_preservation_locks": {
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "source_authority_rule": "Qualification remains source-bound to the exact immutable candidate and current F-CI27 canonical base. No production source modification is allowed on this branch.",
+  "canonical_promotion_allowed": false
+}
