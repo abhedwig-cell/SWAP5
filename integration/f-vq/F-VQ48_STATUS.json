@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ48",
+  "title": "Independent F-MR30 Accepted Root-Uptake Attribution Receipt Qualification",
+  "branch": "qualification/f-vq48-fmr30-root-uptake-attribution-receipt",
+  "owner_handoff": "c908621d10868b5e265a8835ea2c0c56ee202ef6",
+  "owner_candidate": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+  "candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "status": "INDEPENDENT_EVIDENCE_PERSISTED_PENDING_GATE",
+  "decision": "PENDING_INDEPENDENT_EVIDENCE",
+  "state": {
+    "source_authority_frozen": true,
+    "candidate_blob_pinned": true,
+    "independent_model_persisted": true,
+    "independent_oracle_persisted": true,
+    "independent_gate_persisted": true,
+    "tested": false,
+    "scientifically_qualified": false,
+    "closed": false
+  },
+  "independent_review_focus": {
+    "positive_semantics": "correctly paired immutable qrot should reconcile with independently booked root mass_out after real generic commit receipt",
+    "negative_semantics": "determine whether a different but valid qrot vector can be silently paired with the same candidate and commit receipt",
+    "admission_rule": "fail closed for standalone admission if exact forcing/candidate pairing is only caller discipline and is not enforced or compositionally bound"
+  },
+  "production_source_modified_by_F_VQ48": false,
+  "next_if_pairing_gap_confirmed": "separate F-MR31 runtime composition binding using the exact forcing object/handle at the candidate-commit seam, followed by independent qualification before canonical admission"
+}
