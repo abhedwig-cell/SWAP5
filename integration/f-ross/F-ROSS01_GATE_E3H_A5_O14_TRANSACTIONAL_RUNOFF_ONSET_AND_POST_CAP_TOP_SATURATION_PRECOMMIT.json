@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "purpose": "Starting from each independently characterized A4 surface-cap event state, test whether a later top-node h0=0 event exists after runoff onset when surface storage is held at the 1 cm cap and excess atmospheric supply is transferred explicitly to a runoff ledger. This is an event-topology and transaction diagnostic, not production runoff qualification.",
+  "upstream": {
+    "A4_result_commit": "ef4d5c36ea08443085d2826c7917c9b7b6052db5",
+    "A4_decision": "O14_SURFACE_CAP_PRECEDES_TOP_SATURATION_CHARACTERIZED_READY_FOR_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_CONTINUATION_DIAGNOSTIC",
+    "E3F_surface_ledger": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+    "R2_finite_time_ponding": "QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES",
+    "R3_pond_depletion": "QUALIFIED_RESTRICTED_BRACKETED_POND_DEPLETION_HEAD_TO_FLUX_EVENT_READY_FOR_TOP_NODE_SATURATION_AND_EVENT_DETECTION_GATES"
+  },
+  "frozen_cap_states": {
+    "P0_A1_CONTROL": {"cap_event_time_day":0.03644773984112319,"heads_cm":[-0.14612442301092474,-3.4365807674561273,-8.231314064881142]},
+    "P1_DRIER_SUBSOIL": {"cap_event_time_day":0.0365014276959812,"heads_cm":[-0.23356049032180035,-3.7808381225488468,-8.689972381245196]},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"cap_event_time_day":0.03664790671376539,"heads_cm":[-0.47697860016578836,-4.718962776786451,-10.022018575369172]},
+    "P3_STRONG_DRY_SEPARATION": {"cap_event_time_day":0.03723734776750273,"heads_cm":[-1.472189253257072,-8.509653922626015,-16.120819017592716]}
+  },
+  "forcing_and_boundary": {
+    "supply_fraction_of_ksat": 12.0,
+    "surface_storage_cap_cm": 1.0,
+    "surface_head_cm_after_cap": 1.0,
+    "bottom_head_cm": -15.0,
+    "surface_face_length_cm": 5.0,
+    "internal_face_length_cm": 10.0,
+    "top_saturation_event_head_cm": 0.0,
+    "no_forcing_change_after_cap": true
+  },
+  "event_equations": {
+    "unknowns": ["h1_event", "h2_event", "tau_after_cap"],
+    "fixed_h0_event_cm": 0.0,
+    "fixed_surface_storage_cm": 1.0,
+    "qtop_event": "For the event state with h_surface=1 cm and h0=0, use exact saturated Darcy qtop = KSAT*(1+(1-0)/5).",
+    "soil_equations": "Three conservative backward-Euler cell balances from the committed A4 cap heads to [0,h1_event,h2_event] over tau_after_cap.",
+    "runoff_amount_cm": "tau_after_cap*(q_supply-qtop_event); must be finite and nonnegative.",
+    "surface_balance": "0 = tau_after_cap*(q_supply-qtop_event) - runoff_amount; no clipping or hidden sink.",
+    "system_balance": "Delta soil storage + runoff_amount + tau_after_cap*q_bottom - tau_after_cap*q_supply = 0."
+  },
+  "search_and_reference_policy": {
+    "search_internal_fluxes": "Use the already bounded Ross candidate internal-face routes only as deterministic search aid. No UNQUALIFIED route is allowed in a counted search root.",
+    "evidence_internal_fluxes": "Recompute all soil balances with the independent reference internal-face path before a root can count as evidence.",
+    "surface_flux": "Analytic saturated Darcy at h_surface=1,h0=0 is common to search and evidence and is not an extrapolation of the 5 cm unsaturated face candidate.",
+    "search_candidate_is_not_qualification_authority": true
+  },
+  "deterministic_multistart": {
+    "head_start_transforms_from_each_cap_state": ["CAP_H1_H2", "HALF_CAP_H1_H2", "QUARTER_CAP_H1_H2", "FIXED_MINUS1_MINUS5"],
+    "tau_starts_day": [0.001, 0.02, 0.1],
+    "starts_per_profile": 12,
+    "profile_count": 4,
+    "total_search_solves": 48,
+    "tau_bounds_day": [1e-8, 0.5],
+    "head_bounds_cm": [-10000.0, -1e-8],
+    "solver": "scipy least_squares",
+    "xtol": 1e-13,
+    "ftol": 1e-13,
+    "gtol": 1e-13,
+    "max_nfev": 300
+  },
+  "valid_root_requirements": {
+    "solver_success": true,
+    "all_finite": true,
+    "independent_reference_max_abs_cell_or_system_balance_residual_cm": 1e-9,
+    "tau_after_cap_strictly_inside_bounds": true,
+    "physical_head_order": "0 >= h1_event >= h2_event",
+    "runoff_amount_cm_nonnegative": true,
+    "committed_cap_state_bitwise_unchanged_during_trial": true,
+    "mass_repair_or_clipping": false
+  },
+  "reproducibility": {
+    "minimum_starts_in_same_cluster": 2,
+    "cluster_max_abs_h1_h2_difference_cm": 0.001,
+    "cluster_max_abs_tau_difference_day": 1e-6,
+    "record_all_distinct_clusters": true
+  },
+  "transaction_checks": {
+    "cap_state_is_checkpoint": true,
+    "search_trials_are_worker_scratch": true,
+    "runoff_ledger_is_zero_at_cap_onset": true,
+    "post_cap_runoff_is_explicit_transfer": true,
+    "synthetic_reject_after_valid_event_must_restore_cap_state_and_zero_runoff_ledger": true,
+    "event_time_or_event_state_persisted_per_column": false
+  },
+  "decision_logic": {
+    "all_four_profiles_reproducible": "O14_POST_CAP_TOP_SATURATION_REPRODUCIBLY_ESTABLISHED_READY_FOR_TRANSACTIONAL_RUNOFF_CONTINUATION_QUALIFICATION",
+    "partial_or_none": "O14_POST_CAP_TOP_SATURATION_NOT_UNIVERSALLY_ESTABLISHED_PRESERVE_PROFILE_SPECIFIC_EVENT_TOPOLOGY"
+  },
+  "hard_guards": [
+    "Do not alter the four A4 cap states or 12*KSAT forcing.",
+    "Do not raise the 1 cm surface cap or change O14 hydraulic parameters.",
+    "Runoff is a conservative ledger transfer, never surface-storage clipping.",
+    "Do not count a candidate-search root unless independent reference balances pass 1e-9 cm.",
+    "Do not claim production runoff or top-node saturation physics from this diagnostic alone.",
+    "Do not persist event time/state as new per-column state.",
+    "Do not infer response tangents across runoff or h0=0 switching."
+  ],
+  "architecture_checks": {
+    "3_explicit_data_separation": "Committed cap state, forcing, scratch event solve, runoff ledger diagnostics and result remain distinct.",
+    "4_compact_persistent_state": "No A5 event-specific persistent state is added.",
+    "5_scratch_per_worker": "All multistart vectors and trial runoff values are worker scratch.",
+    "7_transactional_timesteps": "Cap state remains immutable until a later gate explicitly qualifies commit; synthetic reject must restore it exactly.",
+    "9_generic_time": "tau_after_cap is a generic offset, not a calendar unit.",
+    "13_mass_conservation_absolute": "Independent-reference balance 1e-9 cm is hard; no mass repair.",
+    "24_predictable_runtime": "48 fixed search solves; no adaptive profile or forcing expansion.",
+    "28_runtime_composition": "Runoff ownership is outside the soil-face kernel."
+  },
+  "positive_exit": "O14_POST_CAP_TOP_SATURATION_DIAGNOSTIC_COMPLETE_READY_FOR_RESTRICTED_TRANSACTIONAL_RUNOFF_CONTINUATION_GATE",
+  "negative_exit": "O14_POST_CAP_EVENT_TOPOLOGY_REMAINS_PROFILE_DEPENDENT_FURTHER_CHARACTERIZATION_REQUIRED",
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
