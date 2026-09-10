@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D4",
+  "title": "Restricted Fixed-Weir Secondary Balance Readiness Evidence",
+  "tested_head": "1874051b81d455d1139124b9b8a58eab8bef269d",
+  "workflow": {
+    "run_id": 34526914975,
+    "job_id": 103037941144,
+    "conclusion": "success"
+  },
+  "provenance_and_architecture": {
+    "readiness_only_file_delta": true,
+    "production_source_delta": false,
+    "reference_source_delta": false,
+    "frozen_archive_identity": true,
+    "frozen_surfacewater_identity": true,
+    "all_upstream_commits_exist": true,
+    "all_30_architecture_invariants_pass": true,
+    "all_nine_source_risks_bound": true
+  },
+  "restricted_route": {
+    "SWSEC": 2,
+    "SWMAN": 1,
+    "SWQHR": 1,
+    "SWQHR2_qualified": false,
+    "automatic_management_qualified": false,
+    "production_physics_qualified": false
+  },
+  "equation_oracle": {
+    "branch_counts": {
+      "infeasible_dry": 2032,
+      "max_supply": 2030,
+      "no_supply_no_discharge": 2013,
+      "overflow": 1905,
+      "partial_supply": 2010,
+      "power_discharge": 2010
+    },
+    "total_targeted_branch_cases": 12000,
+    "generic_dt_min": 0.00010004896245394796,
+    "generic_dt_max": 3.1546960226138383,
+    "max_accepted_mass_residual_abs": 1.405890126537912e-10,
+    "max_accepted_mass_residual_rel": 4.2583584925979415e-16,
+    "max_rating_residual_abs": 2.9752263799309731e-06,
+    "max_rating_residual_rel": 8.5826469182870737e-12,
+    "mass_interpretation": "absolute physical mass closure is enforced by publishing the same q_supply and q_discharge used to compute S1; reported nonzero residual is floating-point roundoff from recomputation, not an admitted mass concession",
+    "rating_interpretation": "rating/storage solve residual is a distinct numerical consistency diagnostic and may be governed by a versioned numerical policy"
+  },
+  "legacy_bisection_characterization": {
+    "cases": 6000,
+    "cases_with_storage_level_inconsistency_above_1e_minus_10_cm": 6000,
+    "inverse_storage_domain_rejections": 1,
+    "max_storage_relation_gap_cm": 6.8415708603235998,
+    "max_head_inverse_gap_cm": 23.131689566208195,
+    "source_rule": "legacy stops when the head bracket width is <=0.001 cm, then assigns WLS=WLSI and SWST=SWSTN separately",
+    "disposition": "not admitted as modern committed-state semantics; S remains authoritative and h must be derived consistently from S inside the qualified D1 domain"
+  },
+  "crest_sensitivity": {
+    "sublinear_beta_0p5_secant_slope_growth_ratio_from_1e_minus_4_to_1e_minus_8": 100.0,
+    "linear_beta_1_secant_slope": 2.5,
+    "superlinear_beta_2_secant_slope_at_1e_minus_8": 2.5000000000000002e-08,
+    "disposition": "beta<1 has singular right tangent at the crest; no hidden regularization is qualified"
+  },
+  "source_holds": [
+    "D4-RISK-01-LEGACY-0P001CM-BISECTION-CAN-LEAVE-S-AND-WLS-INCONSISTENT",
+    "D4-RISK-02-MASS-RESIDUAL-MUST-NOT-BE-CONFLATED-WITH-RATING-ROOT-RESIDUAL",
+    "D4-RISK-03-POWER-RATING-CREST-TANGENT-SINGULAR-FOR-BETA-LT-1",
+    "D4-RISK-04-D1-STORAGE-MAPPING-ENDPOINT-SEAMS",
+    "D4-RISK-05-NO-FEASIBLE-RATING-STATE-OVERFLOW",
+    "D4-RISK-06-LEGACY-CALENDAR-MANAGEMENT-PERIOD-SELECTION",
+    "D4-RISK-07-WLSBAK-AND-PONDING-DT-LOGIC-ARE-NUMERICAL-POLICY",
+    "D4-RISK-08-D3-DRY-FLOOR-AND-RAW-WSCAP-MASS-GAPS-MUST-NOT-RETURN",
+    "D4-RISK-09-SWQHR2-THRESHOLD-DERIVED-HBWEIR-EXCLUDED"
+  ],
+  "decision_support": "The restricted SWSEC=2, SWMAN=1, SWQHR=1 fixed-weir balance is ready for subsequent candidate work only with authoritative storage, explicit supply/discharge mass transfers, bracketed monotone reference solving, separate rating residual diagnostics and all inherited/source holds preserved."
+}
