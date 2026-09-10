@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT14",
+  "purpose": "Reconcile the exact qualified F-SI28 producer dependency before adding transactional result transport.",
+  "canonical_branch_base": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+  "physical_source_tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
+  "governance_overlay": "F-CI38",
+  "qualified_f_si28": {
+    "production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
+    "production_tree": "e2a7768d99096ad58843f6936958310696bf2fa1",
+    "final_head": "5b514e678d0d794e5837f161033b0bac58385707",
+    "decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+    "merge_base_with_current_canonical_lineage": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "materialization": {
+    "commit": "eb11531e6339751647133a42599076e4b0784871",
+    "mode": "exact Git blob reuse",
+    "files": [
+      {
+        "path": "src/solver/mod_soil_water_solver_contract.f90",
+        "blob": "fce00f4fe5f5dfc905986278a4d239182ea049ca"
+      },
+      {
+        "path": "src/solver/mod_reference_richards_workspace.f90",
+        "blob": "74f99556005ae39614f9df678467b1e19097bae2"
+      },
+      {
+        "path": "src/solver/mod_reference_linear_solver.f90",
+        "blob": "5b6ecd2341b315967bcfac6b879c3afe227fb245"
+      },
+      {
+        "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "blob": "f8acd89e54b410fe70792ddee29ddd47134a401d"
+      }
+    ]
+  },
+  "reconciliation": {
+    "canonical_contained_interface_sensitivity_result_type_before_materialization": true,
+    "canonical_contained_full_qualified_opt_in_producer_before_materialization": false,
+    "qualified_producer_materialized_byte_exact": true,
+    "later_canonical_changes_since_merge_base_touched_these_four_paths": false,
+    "claims_f_si28_was_already_canonical": false,
+    "production_physics_changed_by_f_kt14_transport_work": false
+  },
+  "preserved_limits": [
+    "transaction_result_sensitivity_transport remains to be implemented by F-KT14",
+    "canonical interval whole-window derivative composition is not admitted",
+    "MODFLOW sign transformation is not admitted",
+    "MODFLOW coupling is not admitted",
+    "solver scratch and tangent state remain worker-owned and non-persistent"
+  ]
+}
