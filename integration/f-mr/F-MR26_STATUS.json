@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR26",
+  "title": "Reference-ET Potential-Transpiration Root-Uptake Input Ownership Binding",
+  "branch": "work/f-mr26-reference-et-ptra-root-uptake-binding",
+  "status": "IN_PROGRESS_SOURCE_BOUND_OWNERSHIP_SEAM_PERSISTED",
+  "decision": "IN_PROGRESS_SOURCE_BOUND_OWNERSHIP_SEAM_PERSISTED",
+  "base_canonical_head": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "ownership": {
+    "runtime_ptra_authority": "F-MR23 reference_et_demand_result_t%potential_transpiration_cm_per_day",
+    "crop_root_input_ptra": "transport field only",
+    "F_MR12": "downstream consumer/adapter",
+    "F_WOF18": "historical formula-equivalence evidence only"
+  },
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "owner_gate_passed": false,
+    "independently_qualified": false,
+    "canonical_admitted": false,
+    "closed": false
+  },
+  "scope": {
+    "ptra_ownership_reconciled": true,
+    "stateless_root_input_binding": true,
+    "new_ET_physics": false,
+    "root_uptake_execution": false,
+    "mass_ledger_binding": false,
+    "persistent_state": false,
+    "crop_state_advancement": false
+  },
+  "next_action": "Implement the smallest stateless binding source and source-bound owner gate. The binding must copy only the authoritative F-MR23 ptra into the existing crop_root_uptake_input_t and must not recompute ET physics."
+}
