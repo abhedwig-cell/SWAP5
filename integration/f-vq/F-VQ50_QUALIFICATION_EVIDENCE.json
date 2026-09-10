@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ50",
+  "title": "Independent F-MR31 Root-Uptake Attribution Exact-Forcing Binding Requalification",
+  "qualification_branch": "qualification/f-vq50-fmr31-root-attribution-forcing-binding-requalification",
+  "qualification_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "49863406a6112baa9956f9396b34e7188934e0d4"
+  },
+  "current_canonical_at_closeout": {
+    "commit": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "note": "canonical advanced through F-CI33 after the F-VQ50 source freeze; this evidence qualifies the exact pinned F-MR31 candidate and does not itself authorize canonical admission"
+  },
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "owner_branch": "work/f-mr31-root-attribution-forcing-binding-current-canonical",
+    "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "acquisition": "exact commit:path materialization into temporary build space only"
+  },
+  "independence": {
+    "owner_oracle_compiled": false,
+    "owner_oracle_used_as_scientific_evidence": false,
+    "qualification_local_transaction_backend": "tests/fvq/mod_fvq50_independent_runtime_backend.f90",
+    "qualification_local_primary_oracle": "tests/fvq/test_fvq50_independent_root_attribution_requalification.f90",
+    "candidate_runtime_copied_into_qualification_src": false,
+    "qualification_branch_production_src_delta": false
+  },
+  "authoritative_workflow": {
+    "run": 34485954675,
+    "job": 102900155283,
+    "head": "b62ba2ae2153566e645e9246ee9a922b2aca5f05",
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "prior_non_authoritative_run": {
+    "run": 34485520730,
+    "job": 102898683579,
+    "head": "acccc9fb2dd6b0170c505f100f95e5d38a53c035",
+    "conclusion": "failure",
+    "classification": "TEST_HARNESS_COMPILE_FAILURE_NOT_CANDIDATE_FAILURE",
+    "detail": "gfortran rejected direct component selection on result_for_id(...) function results before any independent scientific executable ran; candidate source/static gates had already passed",
+    "candidate_scientific_failure_observed": false
+  },
+  "source_and_provenance_gates": {
+    "clean_canonical_qualification_branch": "PASS",
+    "exact_pinned_candidate_blob": "PASS",
+    "former_HN1_detached_repair_path_absent": "PASS",
+    "same_resolved_forcing_index_by_construction": "PASS",
+    "postcommit_publication_shape": "PASS",
+    "generic_mass_ledger_source_delta_absent": "PASS"
+  },
+  "independent_transaction_oracle": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_scientific_output_identity": "PASS",
+    "matrix": {
+      "columns": 7,
+      "batch_sizes": [1, 2, 5, 7],
+      "orders": ["forward", "reverse", "permuted", "forward"],
+      "fresh_replay": "PASS",
+      "shared_and_distinct_forcing_handles": "PASS"
+    },
+    "hard_findings": {
+      "attribution_not_derived_from_total_mass_out": "PASS",
+      "active_zero_root_attribution_available_zero": "PASS",
+      "root_inactive_committed_attribution_unavailable": "PASS",
+      "noncommitted_attribution_unavailable": "PASS",
+      "no_second_mass_booking": "PASS",
+      "hard_mass_balance": "PASS",
+      "postrun_forcing_tamper_resistance": "PASS",
+      "exact_forcing_handle_association": "PASS"
+    },
+    "causal_separation": "the independent backend adds a non-root background outflux, so physical mass.total_out differs from actual_transpiration_amount; the candidate still returns the exact qrot integral bound through the column forcing handle"
+  },
+  "real_headcalc_preservation": {
+    "oracle_authority": "F-VQ21@f7cdccf11d21c31494b328251b001d474170c0c7",
+    "oracle_path": "tests/fmr/test_fmr09_root_sink_runtime.f90",
+    "oracle_blob": "38251f62c3a9617230171b69d29a233ce8165ce1",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "root_expected_out": 0.08,
+    "root_authoritative_total_out_delta": 0.08,
+    "root_sink_exactly_once": "PASS",
+    "balanced_root_ssdi_state_identity": "PASS",
+    "hard_mass_balance": "PASS",
+    "observed_control_mass_residual": 0.0,
+    "observed_balanced_mass_residual": 0.0
+  },
+  "architecture_invariant_assessment": {
+    "transactional_commit_boundary": "PASS: attribution published only after successful physical commit",
+    "generic_time": "PASS: non-calendar [t0,t1] interval used",
+    "mass_conservation": "PASS: attribution is metadata only and does not modify authoritative mass accounting",
+    "compact_state": "PASS: no new committed process state",
+    "kernel_io_separation": "UNCHANGED",
+    "physics_solver_policy_separation": "UNCHANGED",
+    "multiswap_runtime_composition": "PASS within frozen serialized scope",
+    "parallel_scope": "NOT_CLAIMED"
+  },
+  "scope": {
+    "qualified": [
+      "serialized real-physics MultiSWAP result attribution after accepted commit",
+      "exact column forcing-handle association",
+      "finite nonnegative fixed root_extraction_sink over the requested outer interval",
+      "generic non-calendar interval",
+      "batch/order deterministic attribution by column id",
+      "root-active zero forcing",
+      "root-inactive committed and noncommitted fail-safe publication semantics"
+    ],
+    "not_claimed": [
+      "parallel root-attribution publication",
+      "time-varying qrot re-evaluation inside accepted substeps",
+      "persistent crop accounting",
+      "canonical source admission",
+      "cross-version persistence"
+    ]
+  },
+  "decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE"
+}
