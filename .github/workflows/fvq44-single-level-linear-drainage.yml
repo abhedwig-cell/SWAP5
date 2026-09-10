@@ -1,0 +1,20 @@
+name: F-VQ44 independent restricted single-level linear drainage qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq44-fpm08a-linear-drainage
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-VQ44 independent restricted linear drainage gate
+        run: bash tests/fvq/run_fvq44_single_level_linear_drainage_gate.sh
