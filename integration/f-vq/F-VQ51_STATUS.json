@@ -3,17 +3,24 @@
   "work_unit": "F-VQ51",
   "title": "Independent Qualification of F-MR36 Restricted Serialized DIVDRA Active Runtime Callsite",
   "branch": "qualification/f-vq51-fmr36-divdra-active-runtime-callsite",
-  "phase": "PRETEST_PLAN_PERSISTED",
+  "phase": "INDEPENDENT_PRETEST_CANDIDATE_PERSISTED",
   "decision": "IN_PROGRESS_INDEPENDENT_FMR36_DIVDRA_ACTIVE_RUNTIME_CALLSITE_QUALIFICATION",
   "clean_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
   "owner_closeout": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+  "candidate": {
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+  },
   "state": {
     "live_name_checked_free": true,
     "branch_created_from_current_canonical": true,
     "plan_persisted": true,
-    "candidate_overlay_persisted": false,
-    "independent_verifier_persisted": false,
-    "workflow_persisted": false,
+    "candidate_overlay_persisted": true,
+    "candidate_blob_identity_verified": true,
+    "independent_verifier_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
+    "architecture_audit_persisted": true,
     "tested": false,
     "independently_qualified": false,
     "canonical_admitted": false
@@ -23,8 +30,15 @@
     "owner_fixture_values_reused": false,
     "owner_expected_values_reused": false,
     "owner_output_hash_used_as_acceptance_oracle": false,
+    "fresh_time_ids_heads_views_transfers": true,
     "f_vq47_science_reopened": false,
     "f_vq49_binding_science_reopened": false
   },
-  "next_required_step": "overlay only the two exact F-MR36 production candidate blobs, then construct a fresh independent runtime verifier"
+  "qualification_matrix": {
+    "fresh_single_active_cases_planned": 12,
+    "two_active_column_case_planned": true,
+    "fail_closed_matrix_planned": true,
+    "o0_o2_identity_required": true
+  },
+  "next_required_step": "run the persisted independent gate; fail closed on any candidate, transaction, mass, provenance, isolation or optimization-level discrepancy"
 }
