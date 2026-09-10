@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION_OR_QUALIFICATION_EXECUTION",
+  "parent_result": "F-ROSS01_GATE_J1D_SWAP_QBOT_INTERFACE_MAPPING_RESULT.json",
+  "ross_parent_head": "25362cdc890f260f3f25254cb85424ba7ab36258",
+  "canonical_source_head": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "purpose": "Qualify the already J1D-qualified native SWAP qbot response tangent through the real canonical prescribed-bottom-flux, transaction and public-result lifecycle, with accepted-only publication, exact rollback semantics and no second production nonlinear trajectory.",
+  "scope": {
+    "physical_family": "qualified C1R base MvG/KSATFIT family only",
+    "boundary_control": "native SWAP prescribed bottom flux qbot, positive upward / inflow from below",
+    "primary_quantity": "d_h_bottom_d_qbot_swap",
+    "units": "day",
+    "production_implementation_required": true,
+    "modflow_coupling_qualification": false,
+    "class_b_or_c2b": false
+  },
+  "required_source_authorities": {
+    "soil_water_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob_sha": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0"
+    },
+    "reference_richards_binding": {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob_sha": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f"
+    },
+    "transaction_reference": {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob_sha": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+    },
+    "canonical_contracts": {
+      "path": "src/runtime/mod_canonical_contracts.f90",
+      "blob_sha": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"
+    },
+    "canonical_interval_runtime": {
+      "path": "src/runtime/mod_canonical_interval_runtime.f90",
+      "blob_sha": "55f3d271aa6200a994fd0144d6fce0701c918a74"
+    },
+    "kernel_transactions": {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob_sha": "f1acff10dd99c308a00f434440d6a9ef14632f0d"
+    }
+  },
+  "hard_gates": [
+    "the canonical production reference path admits an explicit prescribed-qbot bottom-boundary control compatible with the J1D native SWAP qbot coordinate",
+    "the production solve computes d_h_bottom_d_qbot_swap from the accepted Newton Jacobian/factorization without a second nonlinear trajectory",
+    "the production Jacobian sign convention and tangent right-hand side are derived from and tested against the implemented residual convention rather than inferred from the J1D harness matrix sign convention",
+    "rejected or retried trials cannot publish a sensitivity produced by a rejected trajectory",
+    "rollback restores worker-local sensitivity context consistently with the physical trial context",
+    "the tangent and any factorization remain result/worker scratch and are absent from committed per-column physical state",
+    "the public sensitivity has an explicit availability flag and method/provenance classification",
+    "accepted sensitivity is transported through transaction/canonical/kernel result boundaries without an implicit qbot sign conversion",
+    "requesting the tangent leaves accepted physical state and mass accounting unchanged",
+    "the normal production tangent path adds no full nonlinear trajectory and at most the already qualified same-factorization tangent backsolve",
+    "columns or calls that do not request an interface sensitivity incur no persistent per-column state and no tangent backsolve",
+    "interval-level sensitivity semantics are explicitly defined when a requested interval contains more than one accepted internal substep",
+    "finite-difference trajectories, when used for qualification, start from the identical committed physical state and cannot substitute for the normal production tangent path"
+  ],
+  "transactional_acceptance_semantics": {
+    "accepted_only_publication": true,
+    "rejected_trial_publication": false,
+    "committed_state_contains_sensitivity": false,
+    "worker_scratch_may_hold_factorization": true,
+    "warm_start_may_be_reused_numerically": true,
+    "physical_reference_state_for_corrector_or_fd_replay": "correct committed state"
+  },
+  "boundary_seam_policy": {
+    "smooth_prescribed_flux_regime": "ordinary response tangent may be qualified",
+    "boundary_active_set_change": "classify and route; do not score as an ordinary smooth derivative mismatch",
+    "RossFast_internal_node_or_envelope_seam": "retain the qualified J1C/J1D piecewise policy; do not smooth or average"
+  },
+  "prohibited": [
+    "C2B or Phi tuning",
+    "MFP normalization-line tuning",
+    "new RossFast table fitting as part of J1E",
+    "finite-difference production tangent as the normal path",
+    "putting tangent vectors, Jacobians or factorizations in committed column state",
+    "silently changing physical bottom-boundary semantics to obtain a tangent",
+    "claiming MODFLOW coupling qualification from J1E alone",
+    "claiming production admission before live qualification evidence passes"
+  ],
+  "exit_rule": {
+    "pass": "J1E_REAL_TRANSACTIONAL_QBOT_TANGENT_INTEGRATION_QUALIFIED",
+    "blocked": "J1E_BLOCKED_WITH_EXPLICIT_CANONICAL_GAP_CLASSIFICATION",
+    "fail": "J1E_REJECTED_WITH_CAUSAL_FAILURE_CLASSIFICATION"
+  },
+  "relevant_invariants": [4, 5, 7, 8, 11, 12, 13, 14, 15, 16, 20, 22, 23, 25, 26, 27, 28, 29, 30]
+}
