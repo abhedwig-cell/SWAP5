@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.surface_evaporation_capacity_candidate_source_lock.v1",
+  "work_unit": "F-PM06E",
+  "branch": "work/f-pm06e-restricted-surface-evaporation-capacity-candidate",
+  "canonical_source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "canonical_source_tree": "ea5b54a971cf35ba0f49b1e283d13f7f69304654",
+  "fpm06d_readiness_authority": "3ec07cf0d88e52d7503098a4de19f699acf7e9e1",
+  "fpm06d_decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_HYDRAULIC_MATERIALIZATION_READINESS_READY_FOR_SCALAR_CAPACITY_CANDIDATE",
+  "rebase_reconciliation": {
+    "result": "4_OF_4_LOCKED_HYDRAULIC_SOURCE_BLOBS_BYTE_IDENTICAL_ON_CURRENT_CANONICAL",
+    "soil_water_solver_contract": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "process_hydraulic_view": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "b110_default_mvg_provider_before_candidate": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "serialized_reference_backend": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "production_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+  "production_blobs": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+  },
+  "legacy_b110_source": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "boundtop_f90_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+    "atmospheric_head_cm": -275000.0,
+    "emax_equation": "-k1Atm*((hatm-h1)/disnod1+1)",
+    "source_bound_mean_policies": [1,2,3,4,5,6],
+    "held_mean_policy": 7,
+    "held_reason": "legacy policy 7 delegates to sub_Kavg_Szym and no clean modern Szymkiewicz hydraulic capability is present"
+  },
+  "downstream_structural_authority": {
+    "fpm06c_candidate": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "fpm06c_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "fvq52_authority": "003209963ead7f14e375fca7f7d5d4b2a1996ae8"
+  }
+}

@@ -1,0 +1,24 @@
+name: F-PM06E restricted surface evaporation capacity candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm06e-restricted-surface-evaporation-capacity-candidate
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-PM06E restricted scalar capacity gate
+        run: bash tests/fpm/run_fpm06e_restricted_surface_evaporation_capacity_gate.sh
