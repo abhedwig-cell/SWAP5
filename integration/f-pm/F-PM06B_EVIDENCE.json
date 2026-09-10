@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.et_surface_evaporation_readiness_evidence.v1",
+  "work_unit": "F-PM06B",
+  "tested_head": "5ac5b61c0ecffc664c122061c60938e04b021856",
+  "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "workflow_run": 34523370124,
+  "job": 103026152203,
+  "conclusion": "success",
+  "checks": {
+    "zero_production_reference_delta": "PASS",
+    "canonical_source_lock": "PASS",
+    "b1_10_boundary_equation_provenance": "PASS",
+    "demand_vs_actual_ownership": "PASS",
+    "mass_contract": "PASS",
+    "generic_time_contract": "PASS",
+    "transaction_contract": "PASS",
+    "optionality_contract": "PASS",
+    "hydraulic_abstraction": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA"
+  },
+  "scientific_boundary": {
+    "potential_soil_evaporation_owner": "ET atmospheric-demand process",
+    "potential_pond_evaporation_owner": "ET atmospheric-demand process",
+    "actual_soil_evaporation_owner": "surface-hydraulic/top-boundary process",
+    "actual_pond_evaporation_owner": "surface-hydraulic/top-boundary process",
+    "authoritative_mass_exchange": "accepted solver-returned external top flux",
+    "double_booking_permitted": false
+  },
+  "legacy_restricted_behavior": {
+    "dry_surface_swredu0": "reva = min(peva,max(0,Emax)); epd = 0",
+    "ponded_surface": "reva = 0; epd = epond",
+    "hydraulic_limit_owner": "top-boundary/hydraulic implementation"
+  },
+  "candidate_direction": "typed structural top-boundary request/result contract before B1.10 atmospheric boundary implementation",
+  "production_modified": false
+}
