@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Wall-Clock Scaling & Worker-Cost Characterization Closeout",
+  "status": "COMPLETE_QUALIFIED_RESTRICTED_PARALLEL_V1_WALL_CLOCK_SCALING_CHARACTERIZATION",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_V1_WALL_CLOCK_SCALING_CHARACTERIZATION_WITHIN_FROZEN_PROFILE",
+  "base": {
+    "work_unit": "F-MR20",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "closeout_parent_head": "a86a35221cec672d565906c1db46f1063237999d",
+  "results": {
+    "path": "integration/f-pe/F-PE07_RESULTS.json",
+    "blob": "b20ba936415490b200824da7e3c1ed54e812e651",
+    "schema_version": 2
+  },
+  "measurement_series": {
+    "frozen_after_replicate": "R3",
+    "automatic_measurement_trigger_disabled_after_R3": true,
+    "workflow_freeze_commit": "e79c5c71112109f19e67774153e7b2d47c35d675",
+    "replicates": [
+      {
+        "label": "R1",
+        "run": 34445731011,
+        "job": 102769994782,
+        "artifact_id": 10139574248,
+        "artifact_sha256": "6bd892bc361c473eb77e9171706ad8aecf3fb9f3dbe12cc3f3a391b25ef13dfd",
+        "conclusion": "success"
+      },
+      {
+        "label": "R2",
+        "run": 34445757581,
+        "job": 102770073516,
+        "artifact_id": 10139584485,
+        "artifact_sha256": "5b6b70de715e9f7269aa26ad873033898171de9d95a9512009ff12916872a22e",
+        "conclusion": "success"
+      },
+      {
+        "label": "R3",
+        "run": 34446066746,
+        "job": 102771013219,
+        "artifact_id": 10139693278,
+        "artifact_sha256": "05a6953862c49574b4557328e6e34ae0f666db3b6a56e31c329201abb198565c",
+        "conclusion": "success"
+      }
+    ],
+    "all_source_locks_passed": true,
+    "all_no_production_source_change_gates_passed": true,
+    "all_F_MR20_scientific_preflights_passed": true,
+    "all_O0_timing_gates_passed": true,
+    "all_O2_timing_gates_passed": true
+  },
+  "qualified_characterization": {
+    "fixture": "32 logical columns, batch_size 9, exact F-MR20 frozen V1 physical profile",
+    "W2": {
+      "classification": "REPRODUCIBLE_POSITIVE_SCALING_WITHIN_FROZEN_FIXTURE",
+      "median_speedup_range_across_O0_O2_R1_R3": [1.6585457519181832, 1.6801520451711023],
+      "median_parallel_efficiency_range": [0.8292728759590916, 0.8400760225855511],
+      "paired_blocks_with_speedup_gt_1": 60,
+      "paired_blocks_total": 60
+    },
+    "W4": {
+      "classification": "POSITIVE_BUT_NOT_ROBUST_SCALING_WITHIN_FROZEN_FIXTURE",
+      "median_speedup_range_across_O0_O2_R1_R3": [1.2533711110530559, 1.8095376555726792],
+      "median_parallel_efficiency_range": [0.31334277776326397, 0.4523844138931698],
+      "paired_blocks_with_speedup_gt_1": 60,
+      "paired_blocks_total": 60,
+      "negative_evidence": "R3 O2 produced only 1.253x median speedup despite true four-way overlap; W4 tails are host/runtime sensitive on this small workload."
+    },
+    "scientific_fidelity": "UNCHANGED_FROM_FMR20",
+    "mass_policy": "UNCHANGED_HARD_1E-12_GATE",
+    "production_source_changed": false
+  },
+  "governance_note": "The initial two-replicate interpretation suggested a narrow approximately 1.74-1.80x W4 band. The third source-identical replicate falsified that robustness claim. Results were corrected before closeout and the negative evidence is retained explicitly.",
+  "architecture_invariant_assessment": {
+    "4_compact_persistent_state": "UNAFFECTED",
+    "5_scratch_per_worker": "UNCHANGED_FROM_QUALIFIED_FMR20",
+    "6_scalable_memory_layout": "NOT_QUALIFIED_BY_THIS_TIMING_WORKUNIT",
+    "13_mass_conservation_absolute": "PASS",
+    "16_multiswap_primary_use_case": "BOUNDED_CHARACTERIZATION_ONLY_FOR_32_COLUMNS",
+    "23_physics_solver_policy_separation": "PASS",
+    "24_predictable_runtime": "PARTIAL: W2 stable; W4 variability explicitly demonstrates remaining scheduling/tail sensitivity",
+    "25_reference_mode": "PASS",
+    "26_runtime_diagnostics": "PASS",
+    "27_optional_functionality_scales_with_use": "UNAFFECTED",
+    "30_explicit_architecture_review": "PASS"
+  },
+  "not_claimed": [
+    "universal hardware-independent speedup",
+    "production runtime guarantee or SLA",
+    "large-scale MultiSWAP scaling",
+    "worker_count=8",
+    "other column counts",
+    "other batch sizes",
+    "other physical profiles",
+    "near-linear four-worker scaling",
+    "robust four-worker speedup magnitude",
+    "performance-based physics or tolerance changes",
+    "mass or fidelity concession"
+  ],
+  "downstream_handoff": {
+    "F_MR20_reopened": false,
+    "performance_policy_released": false,
+    "recommended_next_research": "Before drawing large-scale scaling conclusions, first scientifically qualify a larger-column frozen fixture and then characterize it. If optimizing the existing 32-column path instead, isolate W4 team/barrier/dispatch overhead in a separate measurement-only workunit.",
+    "do_not_do": "Do not widen physics admission or relax mass/fidelity policy based on F-PE07 timing data."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  }
+}
