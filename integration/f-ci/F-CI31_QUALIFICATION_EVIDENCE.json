@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission Evidence",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-execution-canonical-admission",
+  "canonical_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "production_candidate": "764c291c70290b9956f7ce806b9e989601f25d0a",
+  "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "production_delta": [
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "qualification_head": "2b633afd00a9d54fdab3224b5a3693fd2cf09619",
+  "authoritative_workflow": {
+    "run_id": 34471271742,
+    "job_id": 102851473229,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "Ubuntu 24.04"
+  },
+  "source_integrity": {
+    "candidate_is_descended_from_exact_fci30_canonical": true,
+    "production_delta_from_fci30_is_exactly_one_file": true,
+    "production_source_unchanged_after_candidate_commit": true,
+    "exact_fmr28_donor_blob_preserved": true,
+    "reference_tree_preserved": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "independent_fvq46_replay": {
+    "test_blob": "5ea862e6337992afa1af5b2eec50fd0ddbba45a7",
+    "qualified_output_sha256": "fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0",
+    "held_out_active_cases": 192,
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "explicit_chain_oracle": "PASS",
+    "stale_ptra_independence": "PASS",
+    "upstream_et_rejection_contained": "PASS",
+    "invalid_root_geometry_contained": "PASS",
+    "active_unavailable_committed_state_fail_closed": "PASS",
+    "inactive_dependency_free_zero_route": "PASS",
+    "stateless_a_b_a_identity": "PASS"
+  },
+  "fci30_preservation_replay": {
+    "full_parallel_mass_restart_et_ptra_preservation": "PASS",
+    "parallel_o0": "PASS",
+    "parallel_o2": "PASS",
+    "parallel_o0_o2_output_identity": "PASS",
+    "true_multiworker_overlap_control": "PASS",
+    "hard_mass_all_cases": "PASS",
+    "worker_count_independence": "PASS",
+    "deterministic_replay": "PASS",
+    "canonical_publication_order": "PASS",
+    "serialized_sparse_receipt_semantics": "PASS",
+    "fci28_restart_and_fci27_et": "PASS",
+    "fci29_ptra_ownership": "PASS"
+  },
+  "static_architecture_checks": {
+    "stateless_composition_boundary": "PASS",
+    "no_et_or_root_physics_reimplementation": "PASS",
+    "no_hydraulic_internal_access": "PASS",
+    "no_mass_ledger_access": "PASS"
+  },
+  "superseded_runs": [
+    {
+      "run_id": 34469117667,
+      "job_id": 102844609765,
+      "conclusion": "failure",
+      "qualification_basis": false,
+      "classification": "HARNESS_PATH_RESOLUTION_FAILURE_AFTER_FVQ46_PASS",
+      "candidate_scientific_failure": false
+    },
+    {
+      "run_id": 34470785983,
+      "job_id": 102849944402,
+      "conclusion": "failure",
+      "qualification_basis": false,
+      "classification": "NESTED_FCI28_HISTORICAL_IMMUTABILITY_CLAUSE_NOT_YET_REBOUND",
+      "candidate_scientific_failure": false,
+      "passed_before_failure": [
+        "F-VQ46 O0/O2 and qualified output SHA",
+        "F-CI30 parallel O0/O2",
+        "hard mass",
+        "canonical publication",
+        "serialized sparse receipts",
+        "F-CI29 ptra ownership"
+      ]
+    },
+    {
+      "run_id": 34471017392,
+      "job_id": 102850676452,
+      "conclusion": "failure",
+      "qualification_basis": false,
+      "classification": "TEMPORARY_PATCHER_PYTHON_QUOTING_SYNTAX_FAILURE",
+      "candidate_scientific_failure": false
+    }
+  ],
+  "qualified_scope": "STATELESS_REFERENCE_ET_PTRA_TO_RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT_ROOT_WATER_UPTAKE_EXECUTION_COMPOSITION",
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction execution",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_ON_FCI30_CANONICAL_READY_FOR_PROMOTION"
+}
