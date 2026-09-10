@@ -65,13 +65,11 @@ contains
     diagnostics%groundwater_depth = depth
     n = size(parameters%groundwater_depth)
 
-    ! B1.10 accepts a one-element DRAMET=1 input array. When that single
-    ! groundwater-depth knot is zero, the legacy fixed qdrtab storage leaves
-    ! the remaining x entries at zero. AFGEN then returns the supplied value
-    ! only at depth zero and eventually falls through to qdrtab(50)=0 for any
-    ! positive depth. That storage-dependent artifact is not a normalized
-    ! response law. Reject the representation explicitly rather than silently
-    ! turning it into a constant process law or importing qdrtab padding here.
+    ! The legacy representation admits a one-element table at depth zero whose
+    ! observable response depends on fixed-storage padding rather than on the
+    ! supplied response point alone. That artifact is not a normalized process
+    ! law. Reject it explicitly rather than silently making it constant or
+    ! importing representation-dependent padding into process physics.
     if (n == 1 .and. .not. (parameters%groundwater_depth(1) > 0.0_real64)) then
       diagnostics%status = DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE
       return
