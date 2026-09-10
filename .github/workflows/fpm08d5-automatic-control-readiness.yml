@@ -1,0 +1,20 @@
+name: F-PM08D5 automatic-weir event and hydraulic-control readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D5 readiness gate
+        run: python3 tools/fpm/fpm08d5_automatic_control_readiness_gate.py
