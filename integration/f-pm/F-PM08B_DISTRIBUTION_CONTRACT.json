@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08B",
+  "title": "Restricted Drainage Spatial Distribution Contract",
+  "source_authority": {
+    "fpm08_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "legacy_divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "legacy_primary_partition": "SWAP/divdra.f90:237-250",
+    "legacy_discharge_layer_construction": "SWAP/divdra.f90:104-235"
+  },
+  "admitted_scope": {
+    "single_level": true,
+    "positive_drainage_only": true,
+    "swdivd": 1,
+    "swdivdinf": 0,
+    "swnrsrf": 0,
+    "swdislay": 0,
+    "transmissivity_weighted_distribution": true,
+    "scalar_exchange_supplied_externally": true,
+    "exchange_law_implemented_here": false,
+    "surface_water_state": false,
+    "persistent_process_state": false,
+    "scratch_owner": "worker/job"
+  },
+  "inputs": {
+    "dynamic_hydraulic": ["groundwater_level"],
+    "immutable_profile": [
+      "active_nodes",
+      "compartment_thickness dz",
+      "compartment_bottom zbotcp",
+      "saturated_conductivity by node",
+      "horizontal anisotropy factor by node",
+      "drain spacing"
+    ],
+    "physical_transfer": ["positive scalar soil-to-drain exchange rate"]
+  },
+  "outputs": {
+    "physical_projection": "per-node soil-to-drain rate vector",
+    "authoritative_mass_object": "input scalar transfer",
+    "required_identity": "ordered sum(node rates) equals scalar transfer for admitted fixtures",
+    "diagnostics": [
+      "water table node",
+      "saturated top-node thickness",
+      "discharge bottom node and thickness",
+      "profile anisotropy factor",
+      "discharge layer bottom depth",
+      "discharge transmissivity",
+      "raw partition sum",
+      "closure correction"
+    ]
+  },
+  "legacy_mapping": {
+    "Khor": "KSATCP * COFANI(layer)",
+    "Kver": "KSATCP",
+    "profile_anisotropy": "sqrt(KverAv/KhorAv)",
+    "maximum_discharge_depth": "groundwater_depth + 0.25 * drain_spacing * profile_anisotropy",
+    "principal_node_weight": "active_saturated_thickness * Khor / KDdr",
+    "single_compartment_special_case": "entire scalar transfer assigned to water-table compartment"
+  },
+  "mass_policy": {
+    "legacy_warning_tolerance_is_authoritative": false,
+    "scalar_transfer_remains_authoritative": true,
+    "last_active_node_receives_roundoff_closure_residual": true,
+    "reconstruct_scalar_from_independent_reporting_sum": false
+  },
+  "explicit_holds": [
+    "0 < abs(q) <= 1e-10 legacy Small interval",
+    "negative infiltration and SWDIVDINF=1",
+    "interflow special top discharge layer",
+    "SWDISLAY=1 or 2 top-boundary redistribution",
+    "multi-level drainage ordering and overlapping discharge layers",
+    "trial-state nonlocal response derivatives",
+    "solver Jacobian assembly",
+    "F-PM08A exchange-law scientific qualification",
+    "surface-water storage/control"
+  ],
+  "architectural_invariants": {
+    "kernel_io_free": true,
+    "persistent_state_compact": true,
+    "scratch_per_worker": true,
+    "mass_conservation_hard": true,
+    "solver_internals_hidden": true,
+    "physical_options_separate_from_solver_policy": true,
+    "runtime_coupler_owns_composition": true
+  }
+}
