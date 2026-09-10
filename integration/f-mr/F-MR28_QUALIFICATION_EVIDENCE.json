@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR28",
+  "title": "Reference-ET ptra to Restricted Root-Uptake Execution Composition",
+  "branch": "work/f-mr28-reference-et-root-uptake-execution-composition",
+  "canonical_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "tested_head": "7cd18f03293ebd94fce4bb4430bc78ba13e7e237",
+  "production_source": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+  "production_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "owner_authorities": {
+    "F_CI29_ptra_binding_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "F_MR12_crop_root_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "F_MR10_root_uptake_binding_blob": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+    "F_PM05_FVQ22_root_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "crop_root_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "reference_et_process_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "reference_et_runtime_blob": "8c679f911c9a82c498258224d83f5fce3cb09163"
+  },
+  "successful_owner_gate": {
+    "workflow_run_id": 34465690293,
+    "workflow_job_id": 102833611178,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": true,
+    "output_sha256": "cdabbb5e952a875ee8910d5cbdfb80c6ae5faa946eba91fb8d6cc8ea1136ef72",
+    "new_source_strict_warnings": "PASS_BOTH_O0_O2",
+    "markers": [
+      "FMR28_EXPLICIT_FCI29_FMR12_FMR10_CHAIN_BITWISE_IDENTITY=PASS",
+      "FMR28_STALE_INCOMING_PTRA_CANNOT_AFFECT_ROOT_UPTAKE=PASS",
+      "FMR28_UPSTREAM_ET_REJECTION_BLOCKS_ROOT_EXECUTION=PASS",
+      "FMR28_INVALID_ROOT_GEOMETRY_BLOCKS_ROOT_EXECUTION=PASS",
+      "FMR28_INACTIVE_CROP_DEPENDENCY_FREE_ZERO_ROUTE=PASS",
+      "FMR28_COMMITTED_STATE_READ_ONLY=PASS",
+      "FMR28_STATELESS_A_B_A_IDENTITY=PASS",
+      "FMR28_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_COMPOSITION_TEST PASS"
+    ]
+  },
+  "pre_green_runs": [
+    {
+      "workflow_run_id": 34464808906,
+      "classification": "HARNESS_ONLY",
+      "reason": "existing canonical dependency warnings were initially promoted to errors",
+      "production_defect": false
+    },
+    {
+      "workflow_run_id": 34464934681,
+      "classification": "HARNESS_ONLY",
+      "reason": "current HeadCalc compile order omitted mod_reference_linear_solver",
+      "production_defect": false
+    },
+    {
+      "workflow_run_id": 34465068414,
+      "classification": "HARNESS_ONLY",
+      "reason": "legacy binding compile order omitted mod_reference_richards_temporal_indicator",
+      "production_defect": false
+    },
+    {
+      "workflow_run_id": 34465254091,
+      "workflow_job_id": 102832202343,
+      "classification": "HARNESS_ONLY",
+      "reason": "serialized backend compile order omitted mod_fkt_temporal_indicator_history",
+      "production_defect": false
+    }
+  ],
+  "harness_reconciliation": "Final gate mirrors the already qualified F-CI28 serialized-backend dependency ordering. Existing dependency warnings remain warnings; only the new F-MR28 source and its oracle are compiled with -Werror.",
+  "architecture": {
+    "single_kernel": "PASS_REUSES_EXISTING_OWNERS",
+    "kernel_io_separation": "PASS_NO_IO",
+    "explicit_data_separation": "PASS_ET_RESULT_TO_ROOT_INPUT_TO_PROCESS_RESULT",
+    "compact_persistent_state": "PASS_ZERO_NEW_PERSISTENT_STATE",
+    "scratch_per_worker": "PASS_NO_NEW_PERSISTENT_SCRATCH",
+    "transactional_timesteps": "PASS_COMMITTED_VIEW_READ_ONLY_NO_MUTATION",
+    "cheap_replay": "PASS_STATELESS_A_B_A",
+    "generic_time": "PASS_NO_NEW_CLOCK_OR_DAY_SEMANTICS",
+    "mass_conservation": "PASS_SCOPE_HAS_NO_MASS_LEDGER_BOOKING",
+    "hydraulic_interface": "PASS_NO_HEADCALC_NEWTON_JACOBIAN_ACCESS",
+    "physics_reuse": "PASS_NO_ET_OR_ROOT_PHYSICS_REIMPLEMENTATION",
+    "physics_solver_policy_separation": "PASS",
+    "multiswap_scaling": "PASS_STATELESS_COMPOSITION_ZERO_NEW_COLUMN_STATE",
+    "diagnostics": "PASS_CHILD_AND_COMPOSITION_STATUS_EXPLICIT",
+    "no_silent_dependencies": "PASS_OWNER_BLOBS_AND_SCOPE_LOCKED",
+    "all_project_invariants_reviewed": true
+  },
+  "qualified_scope": "Composition of canonical authoritative ptra with the existing restricted MACRO/Feddes drought-only committed root-water-uptake execution path.",
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration or exactly-once booking",
+    "oxygen, salinity, frost, compensation, MICRO/Jong-van-Lier or macropore uptake",
+    "dynamic SWKIMPL=1 root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "decision": "QUALIFIED_REFERENCE_ET_PTRA_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_INDEPENDENT_QUALIFICATION"
+}
