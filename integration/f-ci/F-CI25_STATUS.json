@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI25",
+  "title": "MultiSWAP Runtime Canonical Admission Readiness",
+  "branch": "qualification/f-ci25-multiswap-runtime-admission-readiness",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "phase": "CLOSED_READINESS_DISPOSITION",
+  "decision": "SPLIT_CANONICAL_ADMISSION_REQUIRED",
+  "status": "FAIL_CLOSED_NO_PRODUCTION_PROMOTION",
+  "readiness_disposition_complete": true,
+  "production_qualified": false,
+  "canonical_ref_advanced": false,
+  "production_source_changed": false,
+  "authorities": {
+    "restart": "F-MQ27@33beccd7b38f5a3c29131025e1b06166026851e3",
+    "parallel_v1": "F-MQ28@0ba69eaeb8609e631d4c405d3c26064a53702fe4"
+  },
+  "findings": {
+    "F_MR21": "READY_FOR_FRESH_CANONICAL_SOURCE_BOUND_RECOMPOSITION_AND_REQUALIFICATION",
+    "F_MR22": "BLOCKED_ON_CURRENT_CANONICAL_WORKER_EXECUTION_SEAM",
+    "F_MR20R": "NOT_A_CURRENT_CANONICAL_SOLUTION"
+  },
+  "next_work": [
+    "Recompose only the qualified F-MR21 restart boundary onto the current canonical source and run a fresh current-source-bound independent restart qualification before any canonical promotion.",
+    "Separately define a worker-safe per-column execution seam inside the current accepted-commit-receipt-aware serialized runtime, then requalify parallel-v1 against that exact composition."
+  ],
+  "evidence": [
+    "integration/f-ci/F-CI25_READINESS.json",
+    "integration/f-ci/F-CI25_SOURCE_RECONCILIATION.json",
+    "integration/f-ci/F-CI25_INVARIANT_AUDIT.json"
+  ],
+  "nonclaims": [
+    "No F-MR21 canonical admission.",
+    "No F-MR22 canonical admission.",
+    "No parallel restart qualification.",
+    "No performance qualification.",
+    "No general SWAP5 release qualification."
+  ],
+  "closed": true
+}
