@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2C",
+  "title": "IPOS4/5 Prepared Two-Layer Ernst Structural Candidate Evidence",
+  "branch": "work/f-pm08c2c-ipos45-ernst-response",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+  },
+  "tested_candidate": {
+    "head": "33486ba6eccb5d5b7038f5afa2f1d573708c98b4",
+    "workflow_run": 34454995755,
+    "job": 102799204012,
+    "workflow_path": ".github/workflows/fpm08c2c-ipos45-ernst-response.yml",
+    "conclusion": "success",
+    "candidate_output_sha256": "39ef426e37c672ab68cf5199e195b2f66918d8b7aab6be5b3c11fbc2527ab4bf"
+  },
+  "frozen_blobs": {
+    "src/process/mod_drainage_ernst_ipos45_preparation.f90": "fa1d5d400bb32be42e78889c0ff2a3bcab335142",
+    "src/process/mod_drainage_ernst_ipos45_response.f90": "b00ef0ae1f10182af2d0a8ea636d10b196e93379",
+    "tests/fpm/test_fpm08c2c_ipos45_ernst_response.f90": "d74097fa1872a3eef34d808e631fa7eee7d050c4",
+    "tests/fpm/run_fpm08c2c_ipos45_ernst_response_gate.sh": "ef4eb75b7f0b77bac6dd6aa378ef0cbdd58c84c3"
+  },
+  "protected_owner_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/solver/mod_b110_source_sink_provider.f90": "d6c57add72387e5c0022a44319fff08046194aac"
+  },
+  "verified_markers": [
+    "FPM08C2C_PRODUCTION_DELTA_TWO_PROCESS_MODULES=PASS",
+    "FPM08C2C_PROTECTED_OWNER_SOURCE_LOCKS=PASS",
+    "FPM08C2C_PREPARED_GEOMETRY_BOUNDARY_STATIC=PASS",
+    "FPM08C2C_IPOS5_UNUSED_KVBOT_OMITTED=PASS",
+    "FPM08C2C_NEGATIVE_RRAD_POLICY_STATIC=PASS",
+    "FPM08C2C_DYNAMIC_RESPONSE_GWL_ONLY=PASS",
+    "FPM08C2C_IPOS4_KINK_UNSMOOTHED=PASS",
+    "FPM08C2C_STATELESS_MASS_OWNERSHIP_STATIC=PASS",
+    "FPM08C2C_NO_IO_HEADCALC_RUNTIME_LEAKAGE=PASS",
+    "FPM08C2C_CANDIDATE_O0=PASS",
+    "FPM08C2C_CANDIDATE_O2=PASS",
+    "FPM08C2C_NEW_PRODUCTION_COMPARE_REAL_WARNING_CLEAN=PASS",
+    "FPM08C2C_CANDIDATE_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FPM08C2C_IPOS4_SOURCE_EQUATION=PASS",
+    "FPM08C2C_IPOS5_SOURCE_EQUATION=PASS",
+    "FPM08C2C_IPOS4_STABLE_BRANCH_TANGENTS_FD=PASS",
+    "FPM08C2C_IPOS5_TANGENT_FD=PASS",
+    "FPM08C2C_IPOS4_INTERFACE_KINK_EXPLICIT=PASS",
+    "FPM08C2C_NEGATIVE_RADIAL_RESISTANCE_ADMISSIBLE=PASS",
+    "FPM08C2C_POSITIVE_TOTAL_RESISTANCE_FAIL_CLOSED=PASS",
+    "FPM08C2C_EXACT_B110_CUTOFF_BRANCH_EXPLICIT=PASS",
+    "FPM08C2C_STATELESS_A_B_A_IDENTITY=PASS",
+    "FPM08C2C_STATE_AND_MASS_OWNERSHIP=PASS",
+    "FPM08C2C_IPOS45_ERNST_RESPONSE_TEST PASS",
+    "FPM08C2C_IPOS45_ERNST_RESPONSE_GATE PASS"
+  ],
+  "compiler_note": {
+    "new_production_modules": "compare-real warning clean and enforced with -Werror=compare-reals",
+    "remaining_warnings": "unchanged solver-contract unused-dummy warnings and test-only exact real equality checks are outside the new production modules"
+  },
+  "qualification_boundary": {
+    "structural_response_candidate": true,
+    "source_formula_checks": true,
+    "stable_branch_tangent_fd_checks": true,
+    "state_and_mass_ownership_checks": true,
+    "scientific_b110_equivalence": false,
+    "runtime_source_sink_binding": false,
+    "solver_jacobian_chain_rule_binding": false,
+    "canonical_admission": false
+  },
+  "holds": [
+    "No smoothing of the IPOS4 interface kink.",
+    "No requirement that radial resistance itself be positive.",
+    "No DIVDRA or surface-water composition.",
+    "No runtime/source-sink binding or solver Jacobian assembly.",
+    "No scientific B1.10 equivalence or canonical admission before independent verification."
+  ]
+}
