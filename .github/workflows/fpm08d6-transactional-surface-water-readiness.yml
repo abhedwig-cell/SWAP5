@@ -1,0 +1,25 @@
+name: F-PM08D6 transactional surface-water readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d6-transactional-surface-water-runtime-readiness
+    paths:
+      - 'integration/f-pm/F-PM08D6_*'
+      - 'tests/fpm/test_fpm08d6_transactional_surface_water.py'
+      - 'tools/fpm/fpm08d6_transactional_surface_water_readiness_gate.py'
+      - '.github/workflows/fpm08d6-transactional-surface-water-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D6 readiness gate
+        run: python3 tools/fpm/fpm08d6_transactional_surface_water_readiness_gate.py
