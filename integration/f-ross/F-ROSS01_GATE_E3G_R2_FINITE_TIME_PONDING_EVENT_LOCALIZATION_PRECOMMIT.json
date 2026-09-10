@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "upstream": {
+    "R1": "QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE",
+    "R2A": "NO_VALID_CONSTANT_SUPPLY_FINITE_TIME_FIXTURE_IN_FROZEN_SCAN_RESEARCH_REQUIRED",
+    "R2B": "CHARACTERIZED_DRY_PROFILE_FINITE_TIME_PONDING_FIXTURES_READY_FOR_R2_QUALIFICATION_PRECOMMIT"
+  },
+  "purpose": "Qualify a transaction-safe finite-time dry-to-ponded boundary event for real soil physics without repeated event-search trajectories. After an initially dry-admissible interval is predicted to cross complementarity, solve event time and event soil state together, then continue the remainder under ponded/head mode. Publish only one final atomic interval commit.",
+  "frozen_positive_fixtures_from_R2B": {
+    "B01": {
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "surface_storage_initial_cm": 0.0,
+      "bottom_head_cm": -15.0,
+      "KSAT_cm_per_day": 31.225016,
+      "q_supply_cm_per_day": 84.13900261598157,
+      "q_supply_over_ksat": 2.6946023859837758,
+      "event_bracket_day": [0.01,0.05],
+      "interval_end_day_offset": 0.05
+    },
+    "O14": {
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "surface_storage_initial_cm": 0.0,
+      "bottom_head_cm": -15.0,
+      "KSAT_cm_per_day": 2.495984,
+      "q_supply_cm_per_day": 20.281137326816246,
+      "q_supply_over_ksat": 8.125507746370268,
+      "event_bracket_day": [0.005,0.01],
+      "interval_end_day_offset": 0.01
+    }
+  },
+  "domain_controls": {
+    "B12_O13": "R2A remains authoritative: 0.995 KSAT is no-event and 1.005 KSAT is immediate R1 at the prior committed profile. R2 shall not manufacture a finite-time event for these materials.",
+    "R2_execution_materials": ["B01","O14"]
+  },
+  "frozen_geometry_and_scope": {
+    "surface_face_length_cm": 5.0,
+    "internal_face_length_cm": 10.0,
+    "surface_storage_scope_cm": [0.0,1.0],
+    "top_soil_head_scope_cm": [-10000.0,-1.0e-8],
+    "generic_time": true,
+    "forcing": "constant q_supply over the entire interval",
+    "runoff": false,
+    "evaporation": false,
+    "snow": false,
+    "irrigation": false,
+    "macropore_surface_bypass": false
+  },
+  "transactional_algorithm": {
+    "step_1_initial_admission": "At t0 evaluate qcap0 at h_surface=0 from the committed top-node state. Require q_supply<qcap0 beyond roundoff, proving this is not an R1 immediate event.",
+    "step_2_predictor": "Solve one full-interval dry-flux trial with q_top=q_supply from the original committed state. This predictor is never committed. Require its endpoint to indicate that dry complementarity no longer admits the full interval; local trial diagnostics remain visible.",
+    "step_3_event_corrector": "Solve one 4-unknown constrained nonlinear problem for [h1,h2,h3,t_event]. The three soil equations are the same conservative implicit dry-step balances from the original committed state over t_event. The fourth equation is q_supply=qcap(h_surface=0,h1). t_event is bounded by the frozen R2B bracket.",
+    "event_residual_scaling": "Scale the flux complementarity residual by the frozen event-bracket width so all four least-squares residuals have units cm.",
+    "step_4_ponded_remainder": "From the uncommitted event state with surface storage exactly zero, solve the remaining interval [t_event,t1] in ponded/head mode. Event state and remainder remain part of one outer trial.",
+    "step_5_commit": "Only if event solve, ponded remainder, face-scope guards and the complete interval water balance all pass may the final state be published once. Any failure rolls back to the original committed state.",
+    "warm_start": "The full dry predictor may seed the event corrector numerically, but all event residuals are evaluated from the original committed physical state."
+  },
+  "candidate_reference_policy": {
+    "candidate_internal_faces": "existing qualified bounded RossFast C1R/R3 face family",
+    "reference_internal_faces": "full-accuracy E3 reference faces",
+    "candidate_event_capacity": "qualified 5 cm endpoint-aware/remediated bounded surface-face",
+    "reference_event_capacity": "independent endpoint-aware high-accuracy 5 cm surface-face reference",
+    "ponded_remainder_surface_component": "Use the already separately qualified bounded 5 cm surface-face contract in both composed trajectories to isolate event/internal-soil composition; crosscheck accepted candidate and reference final surface fluxes against the independent high-accuracy surface oracle.",
+    "reference_mode_remains_separate": true
+  },
+  "solver_policy": {
+    "nonlinear_method": "qualification-only scipy least_squares, same 1e-13 xtol/ftol/gtol and 120 nfev cap as E3G/R1",
+    "candidate_full_soil_trajectory_count": 3,
+    "trajectory_count_breakdown": ["one dry full-interval predictor","one event-constrained corrector","one ponded remainder solve"],
+    "event_search_bisection_trajectory_count": 0,
+    "persistent_state_bytes_added": 0,
+    "event_state_owner": "worker/trial scratch",
+    "production_runtime_admission": false
+  },
+  "mass_and_event_acceptance": {
+    "max_abs_cell_residual_cm_each_segment": 1.0e-9,
+    "max_abs_event_scaled_complementarity_residual_cm": 1.0e-9,
+    "max_abs_surface_balance_residual_cm_ponded_segment": 1.0e-9,
+    "max_abs_full_interval_composed_balance_residual_cm": 1.0e-9,
+    "mass_repair_or_clipping_allowed": false,
+    "event_time_must_be_strictly_inside_frozen_bracket": true,
+    "event_surface_storage_cm": 0.0,
+    "final_surface_storage_must_be_strictly_positive_and_below_1cm": true,
+    "event_top_node_must_remain_negative": true,
+    "all_trial_and_intermediate_work_must_leave_original_committed_state_bitwise_unchanged_until_final_accept": true,
+    "synthetic_post_event_reject_must_restore_original_committed_state": true
+  },
+  "candidate_reference_comparison": {
+    "max_event_time_difference_day": 2.5e-4,
+    "max_event_state_head_difference_cm": 0.25,
+    "max_final_head_difference_cm": 0.25,
+    "max_final_surface_storage_difference_cm": 0.001,
+    "max_full_interval_bottom_transfer_difference_cm": 0.001,
+    "max_surface_face_crosscheck_abs_error_over_ksat": 0.0005,
+    "mode_sequence_must_match": ["DRY_FLUX_TRIAL_REJECTED","EVENT_AT_HSURFACE_ZERO","PONDED_HEAD_REMAINDER"]
+  },
+  "architecture_checks": {
+    "3_explicit_data_separation": "Committed state, forcing, event diagnostics, numerical scratch and final results remain distinct.",
+    "4_compact_persistent_state": "No persistent event-time or event-head copy is added to a column.",
+    "5_scratch_per_worker": "Predictor, event corrector and remainder vectors are worker-owned scratch.",
+    "7_transactional_timesteps": "Predictor and event state are uncommitted; only the fully accepted composed interval publishes once.",
+    "8_warm_start": "Predictor information may seed the corrector but does not redefine the physical start state.",
+    "9_generic_time": "t_event is a generic offset inside [t0,t1].",
+    "13_mass_conservation_absolute": "Both segments and the whole interval must close without repair.",
+    "20_alternative_soil_water_solvers": "The boundary event consumes generic soil-step and surface-face contracts rather than HeadCalc internals.",
+    "23_physics_solver_policy_separated": "Complementarity and storage are physical; event-corrector method/tolerances are numerical policy.",
+    "24_predictable_runtime": "The candidate uses a fixed three-trajectory composition, not an unbounded retry/bisection loop.",
+    "25_reference_mode": "Independent full-accuracy event/internal-soil references remain available.",
+    "26_diagnostics_runtime": "Predictor reason, bracket, t_event, residuals, solver counts and balance terms are explicit.",
+    "29_no_silent_dependencies": "No midnight/day/file/MODFLOW assumptions are introduced."
+  },
+  "hard_nonclaims": [
+    "No production runtime cost qualification; the three-trajectory candidate is a restricted qualification composition.",
+    "No top soil-node h=0 or positive-head state qualification.",
+    "No pond-depletion head-to-flux back-switch.",
+    "No runoff with real soil state.",
+    "No response tangent across the boundary switch.",
+    "No B12/O13 finite-time event claim.",
+    "No MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "success_exit": "QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES",
+  "failure_exit": "FINITE_TIME_PONDING_EVENT_LOCALIZATION_NOT_QUALIFIED_PRESERVE_FAILURE_AND_RESEARCH_CAUSE"
+}
