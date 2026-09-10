@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR24",
+  "title": "Canonical Restart Runtime Recomposition",
+  "branch": "work/f-mr24-canonical-restart-recomposition",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "canonical_base_authority": "F-CI24",
+  "trigger": {
+    "readiness_workunit": "F-CI25",
+    "reason": "F-MR21/F-MQ27 restart semantics were qualified on an F-CI18-derived line and therefore require source-bound recomposition against current canonical before any admission decision."
+  },
+  "source_authority": {
+    "F_MR21_qualified_source_head": "9064004f815e81f95eb4bdee218af29cb95039c1",
+    "F_MQ27_closeout": "33beccd7b38f5a3c29131025e1b06166026851e3",
+    "production_blobs": {
+      "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+      "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+    }
+  },
+  "recomposition_rule": {
+    "copy_exact_qualified_blobs": true,
+    "modify_existing_canonical_source": false,
+    "kernel_changes": false,
+    "physics_changes": false,
+    "solver_changes": false,
+    "io_changes": false,
+    "per_column_state_expansion": false,
+    "scope_expansion": false
+  },
+  "required_owner_gates": [
+    "exact two-file source delta against F-CI24",
+    "exact blob identity to F-MR21 qualified source",
+    "compile against current canonical source",
+    "restricted serialized restart positive matrix",
+    "malformed physical state rejection",
+    "registered wrong-family rejection",
+    "late-record whole-registry atomicity",
+    "late-provenance whole-registry atomicity",
+    "exact lineage/revision/time continuation",
+    "continuous versus restarted endpoint identity",
+    "mass continuation identity",
+    "O0/O2 output identity"
+  ],
+  "hard_holds": [
+    "No parallel restart qualification.",
+    "No filesystem serialization-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No wider optional-state restart qualification.",
+    "No canonical promotion from owner evidence alone. Independent F-MQ requalification remains mandatory."
+  ],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false
+  }
+}
