@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MQ25",
+  "phase": "FROZEN_BEFORE_EXECUTION",
+  "candidate": "dfffd8535b3345b105b2d71537d8149225f35c54",
+  "principle": "Independent admission of the exact immutable F-MR19 candidate; owner conclusions are evidence input only.",
+  "positive_matrix": {
+    "column_counts": [1, 2, 7, 8, 17, 31, 32],
+    "generic_time_window": {
+      "t0": 3100.125,
+      "restart_boundary": 3100.4375,
+      "t1": 3100.8125,
+      "calendar_boundary_required": false
+    },
+    "checks_each_count": [
+      "continuous-versus-restarted canonical result identity by column id",
+      "endpoint committed physical-state identity by column id",
+      "exact lineage continuation",
+      "exact committed revision continuation",
+      "bitwise committed-time continuation",
+      "per-column mass-accounting identity",
+      "aggregate mass-accounting identity",
+      "hard mass residual <= 1e-12 for all committed intervals",
+      "deterministic replay"
+    ],
+    "ordering_attacks": [
+      {
+        "name": "reverse-records-distinct-runtime-permutation",
+        "counts": [7, 31],
+        "record_order": "reverse",
+        "runtime_column_order": "cyclic-left-by-2"
+      },
+      {
+        "name": "reverse-runtime-distinct-record-permutation",
+        "counts": [8, 32],
+        "record_order": "cyclic-right-by-3",
+        "runtime_column_order": "reverse"
+      }
+    ],
+    "identity_attack": "Column IDs are deliberately non-consecutive in array order and result/state comparisons are performed by column ID rather than position.",
+    "parameter_reference_attack": "At least two logical columns share immutable parameter references; parameter payload identity is checked before/after and restart records are structurally checked to contain references only.",
+    "scratch_attack": "Restart record and bundle declarations are source-inspected for absence of worker/Newton/Jacobian/warm-start payloads."
+  },
+  "negative_matrix": [
+    "missing column record",
+    "duplicate column record",
+    "unknown serialized column id",
+    "unknown reconstructed runtime column id",
+    "wrong template id",
+    "wrong physics topology identity",
+    "wrong vertical layout identity",
+    "wrong state layout identity",
+    "wrong solver interface identity",
+    "wrong optional-state layout identity",
+    "wrong numerical-continuation layout identity",
+    "wrong backend compatibility identity",
+    "wrong parameter reference",
+    "wrong parameter-set identity",
+    "bundle schema mismatch",
+    "record schema mismatch",
+    "kernel schema mismatch",
+    "missing decoded physical state",
+    "malformed decoded physical state of an incompatible concrete dynamic type",
+    "invalid reconstruction provenance",
+    "invalid/non-finite committed time",
+    "non-fresh restore target"
+  ],
+  "atomicity": {
+    "late_record_corruption_required": true,
+    "requirement": "A defect in the last record must leave every target state uninitialized; no partial registry publication is permitted."
+  },
+  "mass": {
+    "restore_flux": 0.0,
+    "hard_gate": 1e-12,
+    "starting_storage_rule": "Second-interval restarted mass accounting must be bitwise identical to continuous execution; restart must not inject or double-count storage."
+  },
+  "compiler_matrix": ["GNU Fortran O0", "GNU Fortran O2"],
+  "compiler_output_rule": "Exact O0/O2 qualification-output identity",
+  "early_exit_rule": "Any hard negative, atomicity, source-lock or mass failure is sufficient for NOT_QUALIFIED; do not modify production source in F-MQ25.",
+  "pass_exit": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART"
+}
