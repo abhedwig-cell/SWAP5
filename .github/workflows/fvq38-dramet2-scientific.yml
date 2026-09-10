@@ -1,0 +1,20 @@
+name: F-VQ38 independent DRAMET2 scientific qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq38-fpm08c2-hooghoudt-ernst
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-scientific-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-VQ38 independent DRAMET2 scientific gate
+        run: bash tests/fvq/run_fvq38_dramet2_scientific_gate.sh
