@@ -1,0 +1,19 @@
+name: F-MQ28 parallel V1 requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq28-fmr22-parallel-v1-requalification
+  workflow_dispatch:
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-MQ28 requalification
+        run: bash tests/fmq/run_fmq28_parallel_v1_requalification.sh
