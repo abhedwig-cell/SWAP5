@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.current_canonical_recomposition_status.v1",
+  "work_unit": "F-CI34R",
+  "title": "F-MR31 Root Attribution Current-Canonical Recomposition",
+  "branch": "qualification/f-ci34r-current-canonical-root-attribution-recomposition",
+  "base": "545e07c65338b9fe61b963468675c41f3e931816",
+  "phase": "QUALIFIED_RECOMPOSITION_CLOSED_EXACT_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI34R_CURRENT_CANONICAL_ROOT_ATTRIBUTION_RECOMPOSITION_READY_FOR_NON_FORCED_CANONICAL_PROMOTION",
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "owner_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "independent_workunit": "F-VQ50",
+    "independent_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "canonical_drift": {
+    "prior_f_ci34_base": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "current_source_authority": "545e07c65338b9fe61b963468675c41f3e931816",
+    "src_delta_between_bases": [],
+    "classification": "GOVERNANCE_ONLY_NO_PRODUCTION_SOURCE_DRIFT",
+    "old_base_promotion_forbidden": true
+  },
+  "pre_closeout_evidence": {
+    "tested_head": "29e902fbe8478044e6ef57abcab667df62f464b3",
+    "workflow_run": 34488123151,
+    "job": 102907547808,
+    "conclusion": "success",
+    "exact_one_source_delta": true,
+    "exact_candidate_blob": true,
+    "f_vq50_replay_o0": "PASS",
+    "f_vq50_replay_o2": "PASS",
+    "f_vq50_o0_o2_identity": "PASS",
+    "real_headcalc_replay_o0": "PASS",
+    "real_headcalc_replay_o2": "PASS",
+    "real_headcalc_o0_o2_identity": "PASS",
+    "hard_mass_balance": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested_precloseout": true,
+    "independently_qualified_upstream": true,
+    "qualified_for_current_canonical_recomposition": true,
+    "canonical_source_admitted": false,
+    "architecture_audit_30_of_30_no_violation": true
+  },
+  "scope_guard": {
+    "scientific_requalification_in_f_ci34r": false,
+    "scientific_authority": "F-VQ50",
+    "kernel_change": false,
+    "solver_change": false,
+    "process_science_change": false,
+    "reference_change": false,
+    "mass_ledger_change": false,
+    "mass_tolerance_relaxation": false,
+    "parallel_root_attribution_claimed": false,
+    "time_varying_qrot_within_substeps_claimed": false,
+    "persistent_crop_accounting_claimed": false,
+    "cross_version_persistence_claimed": false
+  },
+  "closeout_contract": {
+    "exact_closeout_rerun_required": true,
+    "exact_closeout_rerun_required_result": "success",
+    "final_diff_must_have_exactly_one_src_delta": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "final_target_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "canonical_must_still_equal_base_immediately_before_promotion": true,
+    "promotion_must_be_non_forced_fast_forward": true,
+    "post_promotion_dedicated_f_ci34r_qualification_required": true,
+    "post_promotion_broad_canonical_qualification_required": true,
+    "final_canonical_status_head_requalification_required": true,
+    "further_status_mutation_before_exact_closeout_rerun": false
+  },
+  "nonclaim": "F-CI34R only qualifies current-canonical source recomposition of the already independently qualified serialized root-attribution runtime change. It does not widen scientific scope or claim parallel attribution, substep-varying qrot, persistent crop accounting, or cross-version persistence."
+}
