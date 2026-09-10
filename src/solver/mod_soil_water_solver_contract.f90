@@ -96,6 +96,7 @@ module mod_soil_water_solver_contract
      type(soil_water_numerical_config_t) :: numerical
      type(hydraulic_evaluation_context_t) :: evaluation
      real(real64) :: step_duration = 0.0_real64
+     logical :: request_interface_sensitivity = .false.
   end type soil_water_solve_request_t
 
   type, public :: soil_water_solver_diagnostics_t
@@ -105,6 +106,7 @@ module mod_soil_water_solver_contract
      integer :: backtracking_attempts = 0
      integer :: alternative_solver_calls = 0
      integer :: internal_retries = 0
+     integer :: interface_sensitivity_backsolves = 0
      character(len=32) :: route = 'not-run'
   end type soil_water_solver_diagnostics_t
 
