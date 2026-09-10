@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR31",
+  "title": "Root-Uptake Attribution Exact-Forcing Binding Remediation",
+  "branch": "work/f-mr31-root-attribution-forcing-binding-current-canonical",
+  "canonical_source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "tree": "1bb0abac5d85abaef4aeac9a728e1cf95a351eed"
+  },
+  "supersedes_stale_start": {
+    "branch": "work/f-mr31-root-attribution-forcing-binding",
+    "head": "be5831460ab4e1d727fd589b3e711c1d89e1a2d0",
+    "old_canonical_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "reason": "F-CI32 advanced canonical before F-MR31 production work; F-CI32 changed drainage only and did not touch the root-attribution/runtime seam"
+  },
+  "failed_candidate_authority": {
+    "owner_workunit": "F-MR30",
+    "candidate_commit": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+    "production_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
+    "production_blob": "886d251908126693b6fe035e065a872ce5ff4e29"
+  },
+  "independent_failure_authority": {
+    "workunit": "F-VQ48",
+    "branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+    "status_head": "2274f683fe71379d44a03867ccaffaef2ce5ebce",
+    "workflow_run": 34479246369,
+    "workflow_job": 102877592656,
+    "failed_gate": "HN1_FORCING_CANDIDATE_BINDING",
+    "decision": "NOT_QUALIFIED_RESTRICTED_ACCEPTED_ROOT_UPTAKE_ATTRIBUTION_RECEIPT"
+  },
+  "pinned_current_source_blobs": {
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d"
+  },
+  "expected_production_delta": [
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "hard_constraints": [
+    "no second generic mass_out booking",
+    "no generic transaction-core change",
+    "no process-specific persistent committed state",
+    "no public API that accepts an already-created candidate plus independently supplied root forcing",
+    "publication only after successful physical commit",
+    "generic [t0,t1] semantics",
+    "parallel composition remains separately qualified"
+  ],
+  "governance": {
+    "persist_early_test_second": true,
+    "independent_requalification_required": true,
+    "canonical_admission_not_authorized_by_owner_gate": true
+  }
+}
