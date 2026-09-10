@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ26",
+  "candidate": {
+    "commit": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+    "tree": "04cb3dc2f6254c7fdcd368bfd7b28a781cdda3cf"
+  },
+  "qualification_branch": "qualification/f-mq26-parallel-real-physics-v1-admission",
+  "qualification_only": true,
+  "production_source_changed": false,
+  "runner": {
+    "os": "Ubuntu 24.04.4 LTS",
+    "image": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "baseline_independent_run": {
+    "workflow_run_id": 34448791559,
+    "workflow_job_id": 102779454340,
+    "conclusion": "success",
+    "coverage": "full independently frozen positive, rejection-isolation and unsupported-profile matrix before the stricter publication-order gate was added"
+  },
+  "authoritative_run": {
+    "workflow_run_id": 34449032091,
+    "workflow_job_id": 102780217462,
+    "conclusion": "failure_by_design_after_candidate_contract_violation"
+  },
+  "structural_gates": {
+    "candidate_source_lock": "PASS",
+    "worker_owned_heavy_solver_workspace": "PASS",
+    "no_per_column_heavy_solver_ownership": "PASS",
+    "canonical_scheduler_and_reduction_seam_present": "PASS"
+  },
+  "positive_matrix": {
+    "status": "PASS_O0_AND_O2",
+    "column_counts": [2, 7, 8, 17, 31, 32],
+    "cases": [
+      {"columns":2,"batch":1,"order":0},
+      {"columns":2,"batch":2,"order":1},
+      {"columns":7,"batch":2,"order":2},
+      {"columns":7,"batch":3,"order":3},
+      {"columns":7,"batch":7,"order":0},
+      {"columns":8,"batch":3,"order":1},
+      {"columns":8,"batch":5,"order":2},
+      {"columns":17,"batch":4,"order":3},
+      {"columns":17,"batch":9,"order":0},
+      {"columns":31,"batch":7,"order":1},
+      {"columns":31,"batch":16,"order":2},
+      {"columns":32,"batch":8,"order":3},
+      {"columns":32,"batch":9,"order":0},
+      {"columns":32,"batch":17,"order":1}
+    ],
+    "serialized_vs_2_workers": "PASS_BITWISE_BY_COLUMN_ID",
+    "serialized_vs_4_workers": "PASS_BITWISE_BY_COLUMN_ID",
+    "worker_count_independence": "PASS",
+    "aba_2_4_2_fresh_state_replay": "PASS",
+    "input_order_scientific_identity_by_column_id": "PASS",
+    "rejection_at_batch_boundary": "PASS",
+    "rejection_interior": "PASS",
+    "two_rejections_assigned_to_different_workers": "PASS",
+    "shared_immutable_parameter_integrity": "PASS",
+    "true_multiworker_overlap_control": "PASS",
+    "per_column_hard_mass_gate": "PASS",
+    "o0_o2_positive_output_identity": "PASS"
+  },
+  "unsupported_profiles": {
+    "workers_tested": [2,4],
+    "root_extraction": "PASS_FAIL_CLOSED_BEFORE_PHYSICAL_SOLVE",
+    "snow": "PASS_FAIL_CLOSED_BEFORE_PHYSICAL_SOLVE",
+    "bottom_mode_5": "PASS_FAIL_CLOSED_BEFORE_PHYSICAL_SOLVE",
+    "temporal_continuation_history": "PASS_FAIL_CLOSED_BEFORE_PHYSICAL_SOLVE",
+    "macropores": "PASS_FAIL_CLOSED_BEFORE_PHYSICAL_SOLVE"
+  },
+  "failed_gate": {
+    "name": "DETERMINISTIC_CANONICAL_PUBLISHED_RESULT_ORDER",
+    "requirement": "Published results and diagnostics remain in deterministic canonical column order independent of input ordering and parallel completion ordering.",
+    "attack": "Seven admitted real-physics columns supplied in exact reverse input order, batch size 3, four workers.",
+    "expected_first_canonical_column_id": 926537,
+    "observed_first_result_column_id": 926759,
+    "observed_first_diagnostic_column_id": 926759,
+    "observed_first_result_dispatch_ordinal": 7,
+    "o0_result": "VIOLATION_REPRODUCED",
+    "o2_result": "VIOLATION_REPRODUCED",
+    "o0_o2_defect_identity": "PASS"
+  },
+  "source_interpretation": {
+    "canonical_execution_order": "fmr_build_execution_order sorts assignments by template_id then column_id",
+    "publication_initialization": "parallel outputs are allocated in input-array shape and results(i)%column_id plus diagnostics(i)%column_id are assigned from columns(i)%column_id",
+    "execution_storage": "canonical assignments retain column_index and execution writes into results(column_index) and diagnostics(column_index)",
+    "post_execution_publication_reorder": "ABSENT",
+    "effect": "parallel completion order is controlled for reduction, but raw published result and diagnostic arrays preserve caller input order rather than canonical column order"
+  },
+  "mass_note": "The independent positive matrix passed its existing per-column hard mass gate and exact aggregate identity comparisons. Because the explicit publication-order admission gate failed, F-MQ26 is rejected without claiming a broader aggregate-threshold admission beyond the executed checks.",
+  "decision": "NOT_QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+  "route_back": {
+    "workstream": "F-MR",
+    "required_remediation": "Define and implement one unambiguous publication contract. For the requested F-MQ26 admission, materialize returned results and diagnostics in canonical column order after execution without changing per-column physics, transaction identity or deterministic aggregate reduction.",
+    "scope_warning": "The same input-index publication pattern also exists in the serialized runtime, so remediation should be checked as a shared MultiSWAP result-materialization contract rather than patched only in OpenMP execution.",
+    "requalification_rule": "Provide a new exact immutable production candidate and rerun independent F-MQ qualification; do not modify production source in F-MQ26."
+  }
+}
