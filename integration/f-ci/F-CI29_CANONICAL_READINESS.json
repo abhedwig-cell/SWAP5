@@ -4,21 +4,29 @@
   "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
   "branch": "qualification/f-ci29-fmr26-ptra-ownership-canonical-admission",
   "status": "QUALIFIED_FMR26_PTRA_OWNERSHIP_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD",
-  "canonical_base_expected": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
-  "tested_readiness_head": "7b473cb4cbfc6ccbaf277f924f5fb898852183c8",
+  "canonical_base_expected": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "reconciliation_merge": "544a1bd65ec2e2cafd323ca9edfd6e871efaed6e",
+  "requalified_head_before_metadata": "3db52fdfa5efc0a894d3c51290170d6f8df5672a",
   "production_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
   "post_src_tree": "223c54d5fd309f86ef50f9efd28e2c511e175577",
   "qualification": {
     "F_VQ41_closed": true,
     "F_VQ41_active_cases": 2304,
     "F_VQ41_output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f",
+    "reconciled_FCI29_admission_run": 34462047739,
+    "reconciled_FCI29_admission_job": 102821908198,
     "FCI29_admission_gate_green": true,
+    "reconciled_readiness_run": 34462047672,
+    "current_FCI29_job": 102821907352,
+    "frozen_FCI28_job": 102821907607,
     "FCI29_readiness_current_postimage_green": true,
-    "FCI28_frozen_authority_replay_green": true
+    "FCI28_frozen_authority_replay_green": true,
+    "transient_canonical_add_revert_net_content_identity": true
   },
   "promotion_preconditions": [
-    "integration/f-ci-canonical must still resolve to 06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+    "integration/f-ci-canonical must still resolve to 4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
     "this branch must be strictly ahead of that head with behind_by=0",
+    "the branch source tree must remain 223c54d5fd309f86ef50f9efd28e2c511e175577",
     "promotion must use a non-forced ref update",
     "post-promotion canonical workflow must pass on the promoted postimage"
   ],
