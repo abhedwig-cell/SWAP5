@@ -8,7 +8,7 @@ trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
 BASE=186df3daa27d7b3541da694190d6f8ec9fab7da6
-EXPECTED_SOURCE_BLOB=b77993bd903539282cd91df1f6d8ffc3af41b046
+EXPECTED_SOURCE_BLOB=1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a
 
 changed_src="$(git diff --name-only "$BASE" -- src)"
 [[ "$changed_src" == "src/process/mod_drainage_spatial_distribution.f90" ]] || {
@@ -42,7 +42,7 @@ assert 'LEGACY_LEVEL_TO_COMPARTMENT_OFFSET = 1.0e-10_real64' in p
 assert 'wlev > -parameters%zbotcp(wt_node) + LEGACY_LEVEL_TO_COMPARTMENT_OFFSET' in p
 assert 'wlev >= -parameters%zbotcp(n)' in p
 assert 'wt_node == n .and. dz_top_sat <= 0.0_real64' in p
-assert 'wt_node < n .and. dz_top_sat < -LEGACY_LEVEL_TO_COMPARTMENT_OFFSET' in p
+assert 'wt_node < n .and. dz_top_sat < -LEGACY_LEVEL_TO_COMPARTMENT_OFFSET' not in p
 assert 'scalar_transfer - sum_previous' in p
 assert 'LEGACY_ACTIVE_MAGNITUDE = 1.0e-10_real64' in p
 for forbidden in ['HeadCalc', 'headcalc', 'MOD_drainage', 'DIVDRA(', 'open(', 'read(', 'write(unit', 'drainage_resistance', 'drain_head']:
@@ -51,6 +51,7 @@ assert 'SAVE' not in p.upper()
 assert 'pressure_head' not in p
 assert 'water_content' not in p
 print('FPM08BR_EXPLICIT_FROZEN_LEV2COMP_SEAM_STATIC=PASS')
+print('FPM08BR_NO_NONLEGACY_INTERNAL_SEAM_GUARD=PASS')
 print('FPM08BR_PROFILE_BOTTOM_HOLD_STATIC=PASS')
 print('FPM08BR_MASS_CLOSURE_PATH_UNCHANGED_STATIC=PASS')
 print('FPM08BR_NO_SCOPE_BROADENING_STATIC=PASS')
