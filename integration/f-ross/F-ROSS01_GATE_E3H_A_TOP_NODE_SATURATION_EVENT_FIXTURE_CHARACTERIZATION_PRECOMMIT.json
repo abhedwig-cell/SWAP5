@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "purpose": "Characterize deterministic ponded initial-state fixtures for a true top-soil-node h=0 saturation event without yet qualifying positive top-node continuation.",
+  "upstream": {
+    "surface_face": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+    "surface_ledger": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+    "initial_admission": "QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE",
+    "finite_time_ponding": "QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES",
+    "pond_depletion": "QUALIFIED_RESTRICTED_BRACKETED_POND_DEPLETION_HEAD_TO_FLUX_EVENT_READY_FOR_TOP_NODE_SATURATION_AND_EVENT_DETECTION_GATES"
+  },
+  "materials": ["B01", "B12", "O13", "O14"],
+  "frozen_initial_committed_state": {
+    "soil_heads_cm": [-0.2, -1.5, -5.0],
+    "surface_storage_cm": 0.02,
+    "bottom_head_cm": -15.0
+  },
+  "frozen_supply_grid_fraction_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+  "event_definition": {
+    "condition": "top soil node reaches h_top = 0 from an initially negative committed head while surface storage remains strictly positive",
+    "event_unknowns": ["h_cell2", "h_cell3", "surface_storage", "tau_event"],
+    "top_head_fixed_cm": 0.0,
+    "discrete_balance": "Backward-Euler event-state balance from the original committed state over tau_event using event-state face fluxes.",
+    "event_time_domain_day": [1e-8, 0.05],
+    "surface_storage_domain_cm": [1e-12, 1.0],
+    "cell2_and_cell3_head_domain_cm": [-10000.0, -1.0]
+  },
+  "candidate_face_scope": {
+    "surface_to_top_at_event": "exact saturated Darcy over 5 cm because h_surface>0 and h_top=0",
+    "top_to_cell2": "existing qualified 10 cm E2C-R3 mixed near-saturation face, with h_top=0 and h_cell2<=-1",
+    "cell2_to_cell3_and_bottom": "existing C1R or already qualified restricted face routes",
+    "new_face_physics_added": false
+  },
+  "reference_policy": {
+    "surface_to_top_at_event": "same exact saturated Darcy identity",
+    "internal_faces": "existing full-accuracy qualification reference functions",
+    "selection_requires_candidate_and_reference_valid": true
+  },
+  "valid_fixture_requirements": {
+    "candidate_and_reference_solver_success": true,
+    "candidate_and_reference_max_abs_balance_residual_cm": 1e-9,
+    "surface_storage_strictly_positive_and_below_1cm": true,
+    "cell2_and_cell3_remain_at_or_below_minus_1cm": true,
+    "event_time_strictly_inside_frozen_domain": true,
+    "candidate_reference_event_time_difference_day_max": 2.5e-4,
+    "candidate_reference_max_head_difference_cm": 0.25,
+    "candidate_reference_surface_storage_difference_cm_max": 1e-3,
+    "committed_state_bitwise_unchanged_during_characterization": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "deterministic_selection_rule": "For each material, choose the lowest frozen KSAT-scaled supply fraction that satisfies every valid-fixture requirement for both candidate and reference. If no supply fraction qualifies, characterization fails for that material. No grid extension or retuning inside this gate.",
+  "architecture_checks": {
+    "3_data_separation": "Fixture forcing, committed state, solver scratch and diagnostics are separate.",
+    "4_compact_state": "No event time or event state becomes persistent column state.",
+    "5_worker_scratch": "All nonlinear vectors are characterization scratch.",
+    "7_transactional": "Original committed state is never mutated by fixture search.",
+    "9_generic_time": "tau_event is a generic offset inside an interval.",
+    "13_mass_conservation": "Every accepted characterization root must satisfy cell, surface and composed balances without repair.",
+    "20_alternative_solver_interface": "Only face and soil-step contracts are used.",
+    "23_physics_policy_separation": "The h_top=0 event is physical; supply-grid and least_squares settings are characterization policy.",
+    "24_predictable_cost": "Finite frozen supply grid, no adaptive expansion.",
+    "30_change_assessment": "No new physics is admitted by characterization alone."
+  },
+  "positive_exit": "CHARACTERIZED_TRUE_TOP_NODE_H0_EVENT_FIXTURES_READY_FOR_E3H_QUALIFICATION",
+  "negative_exit": "TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_RESEARCH_REQUIRED",
+  "hard_nonclaims": [
+    "No positive top-node state continuation qualification.",
+    "No second soil node near-saturation transition.",
+    "No automatic runtime event detection or bracket discovery.",
+    "No runoff, evaporation, snow, irrigation, macropore bypass, response tangent, MultiSWAP or groundwater admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
