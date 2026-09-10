@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2",
+  "title": "Hooghoudt/Ernst IPOS 1..5 Response and Domain Readiness",
+  "branch": "work/f-pm08c2-hooghoudt-ernst-response-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_DOMAIN_QUALIFICATION",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b"
+  },
+  "legacy_family": "DRAMET=2",
+  "target_ipos": [1,2,3,4,5],
+  "principle": "qualify mathematical parameter and branch domains before any production implementation",
+  "known_source_bound_risks": [
+    "legacy reader accepts wetper=0 although IPOS 2..5 can evaluate logarithms containing wetper",
+    "legacy reader accepts zero conductivities although several IPOS formulas divide by or take square roots of them",
+    "IPOS 2/3 share an equivalent-depth helper with x<1e-6, intermediate, and x>0.5 formula branches",
+    "IPOS 4 has a derivative kink at gwl=zintf when kvtop differs from kvbot",
+    "IPOS 5 requires additional geometry/log-domain conditions not enforced directly by the legacy reader",
+    "legacy diffl<1e-10 cutoff is representation-sensitive and is not yet a modern normalized branch policy"
+  ],
+  "production_source_changes": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false
+}
