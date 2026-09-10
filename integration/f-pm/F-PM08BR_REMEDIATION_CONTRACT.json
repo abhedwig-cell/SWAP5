@@ -7,12 +7,13 @@
     "fpm08b_closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
     "fvq45_closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
     "fvq45_decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
     "legacy_divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
   },
   "candidate_delta": {
     "path": "src/process/mod_drainage_spatial_distribution.f90",
     "pre_remediation_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe",
-    "remediated_blob": "b77993bd903539282cd91df1f6d8ffc3af41b046"
+    "final_remediated_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
   },
   "legacy_boundary_rule": {
     "equation": "do while (lev > -zbotcp(icplev)+1.d-10)",
@@ -24,12 +25,22 @@
     "internal_node_selection_condition": "wlev > -zbotcp(wt_node) + 1e-10",
     "internal_zero_or_small_negative_top_thickness_admitted": true,
     "profile_bottom_exact_or_deeper_remains_invalid": true,
-    "offset_is_physical_reference_seam_not_solver_tolerance": true,
+    "offset_is_frozen_reference_seam_not_solver_tolerance": true,
     "offset_is_configurable": false,
     "persistent_state_added": false,
     "runtime_dependency_added": false,
     "solver_dependency_added": false,
     "io_dependency_added": false
+  },
+  "prequalification_correction_history": {
+    "initial_remediation_blob": "b77993bd903539282cd91df1f6d8ffc3af41b046",
+    "initial_guard": "reject internal dz_top_sat < -1e-10",
+    "initial_ci_run": 34467665533,
+    "initial_ci_job": 102839935167,
+    "initial_result": "FAIL_AT_EXACT_1E_MINUS_10_SEAM",
+    "cause": "the extra internal negative-thickness guard was not present in frozen Lev2Comp and could reject the exact seam after floating subtraction cancellation",
+    "resolution": "remove the nonlegacy internal guard; retain the independent hard profile-bottom rejection",
+    "scientific_scope_or_tolerance_relaxed": false
   },
   "preserved_contracts": {
     "positive_scalar_soil_to_drain_transfer_only": true,
