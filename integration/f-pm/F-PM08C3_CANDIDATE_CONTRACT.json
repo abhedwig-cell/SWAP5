@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C3",
+  "title": "Empirical Interflow Response and Singular-Tangent Policy",
+  "branch": "work/f-pm08c3-empirical-interflow-response",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "response_source": "SWAP/drainage.f90:171-179",
+    "parameter_source": "SWAP/drainage.f90:347-352"
+  },
+  "physics_scope": {
+    "legacy_option": "DRAMET=3 highest-level interflow when SWINTFL/SWNRSRF=1",
+    "contribution_only": "interflow drainage-side contribution, not the complete DRAMET=3 level exchange",
+    "activation_difference": "difference = groundwater_level - drain_head",
+    "active_flux": "q = coefficient * difference**exponent for difference > 0",
+    "activation_flux": "q = 0 at difference = 0",
+    "inactive_contribution": "q = 0 for difference < 0; negative-side infiltration belongs outside this candidate",
+    "coefficient_domain": "0.01 <= coefficient <= 10.0",
+    "exponent_domain": "0.1 <= exponent <= 1.0"
+  },
+  "data_separation": {
+    "immutable_parameters": ["coefficient", "exponent"],
+    "interval_control": ["drain_head"],
+    "hydraulic_view": ["groundwater_level"],
+    "persistent_process_state": [],
+    "results": ["signed_soil_to_drain_rate", "dq_dgroundwater_level", "derivative_defined"],
+    "legacy_owltab_date_parsing": "adapter/runtime concern, excluded from process kernel"
+  },
+  "derivative_contract": {
+    "active_branch": "dq/dgwl = coefficient * exponent * difference**(exponent-1)",
+    "inactive_branch": "dq/dgwl = 0 for the interflow contribution",
+    "exact_activation": "full derivative unavailable because activation is a branch boundary",
+    "activation_for_exponent_lt_1": "right-hand drainage tangent diverges; singular_activation_tangent=true",
+    "activation_for_exponent_eq_1": "right-hand drainage tangent is finite and equals coefficient, but full two-sided derivative remains unavailable",
+    "near_activation": "return exact finite analytic tangent whenever representable; no process-side smoothing, cap, tolerance or hidden threshold",
+    "unrepresentable_tangent": "fail closed as numerical domain, never publish infinity/NaN as usable derivative",
+    "solver_ownership": "solver/numerical policy decides whether and how to consume a finite process tangent and owns any bounded-cost fallback"
+  },
+  "mass_and_transaction_contract": {
+    "sign": "positive q is water leaving soil toward drainage receiver",
+    "mass_role": "response is an authoritative proposed external-transfer contribution; accepted ledger booking remains runtime-owned",
+    "rejected_trials": "must never alter committed state or committed ledger",
+    "double_booking": "forbidden"
+  },
+  "hard_holds": [
+    "No negative-side infiltration/reverse exchange implementation in F-PM08C3.",
+    "No DIVDRA or spatial distribution implementation.",
+    "No multi-level aggregation; that remains F-PM08C4.",
+    "No surface-water storage/control; that remains F-PM08D.",
+    "No solver Jacobian mutation and no HeadCalc internals in process code.",
+    "No process-side tangent smoothing, clipping, epsilon activation band or configurable mass tolerance.",
+    "No runtime or canonical admission claim in this structural/scientific candidate workunit."
+  ],
+  "required_tests": [
+    "legacy flux identity across coefficient/exponent bounds and positive activation differences spanning multiple scales",
+    "analytic derivative versus independent finite difference away from activation",
+    "inactive contribution q=0 and derivative=0 below activation",
+    "exact activation q=0 with derivative unavailable",
+    "singular activation diagnostic for exponent<1",
+    "finite drainage-side activation diagnostic for exponent=1 without claiming a full derivative",
+    "nonfinite and out-of-domain inputs fail closed",
+    "no persistent process state or I/O/HeadCalc leakage",
+    "O0/O2 output identity"
+  ],
+  "success_decision": "QUALIFIED_EMPIRICAL_INTERFLOW_RESPONSE_READY_FOR_INDEPENDENT_SCIENTIFIC_QUALIFICATION"
+}
