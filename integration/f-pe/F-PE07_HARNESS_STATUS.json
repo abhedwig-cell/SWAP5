@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE07",
+  "status": "TIMING_HARNESS_PERSISTED_EXECUTION_PENDING",
+  "base_fmr20_closeout": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+  "production_source_changed": false,
+  "measurement_protocol": {
+    "path": "integration/f-pe/F-PE07_MEASUREMENT_PROTOCOL.json",
+    "blob": "a88298c8fd3e87e8b3a038a6acc5bc11f33a8c76"
+  },
+  "timing_driver": {
+    "path": "tests/fpe/test_fpe07_parallel_v1_timing.f90",
+    "blob": "9083b98ab6b9889a79a67d71c62f49f2cd258a83"
+  },
+  "runner": {
+    "path": "tests/fpe/run_fpe07_parallel_v1_timing.sh",
+    "blob": "c31e185cbb9ab6094e50afe963c60bc7368b7b76"
+  },
+  "workflow": ".github/workflows/fpe07-parallel-v1-scaling.yml",
+  "scientific_preflight": "tests/fmr/run_fmr20_parallel_v1_qualification.sh",
+  "timing_arms": [1, 2, 4],
+  "columns": 32,
+  "batch_size": 9,
+  "optimizations": ["O0", "O2"],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "execute source-locked scientific preflight",
+      "execute O0/O2 timings",
+      "inspect raw and summarized timing evidence",
+      "persist characterization result"
+    ]
+  }
+}
