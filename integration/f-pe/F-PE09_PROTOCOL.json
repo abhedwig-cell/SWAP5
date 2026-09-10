@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE09",
+  "title": "Canonical Worker Parameter/Forcing Cache Reuse and Allocation-Churn Qualification",
+  "status": "PROTOCOL_PERSISTED_IMPLEMENTATION_NOT_STARTED",
+  "base": {
+    "work_unit": "F-PE08",
+    "branch": "qualification/f-pe08-canonical-worker-scratch-dedup",
+    "head": "0c136148fb5a53db3804070ac74fc8cef55d81f3",
+    "decision": "QUALIFIED_CANONICAL_A23BU_HEADCALC_SCRATCH_DEDUP_WITHIN_FROZEN_FMR20_V1_SCOPE"
+  },
+  "source_preimages": {
+    "backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "e0432faa0e05a3c136ee5aed6fddb12ad631848d"
+    },
+    "mvg_provider": {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2"
+    },
+    "solver_contract": {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+      "ownership": "read-only for F-PE09"
+    }
+  },
+  "source_bound_problem": {
+    "parameter_cache": "configure_parameters deallocates and reallocates soil geometry, MvG cache and provider objects on every kernel advance, even when the next column has the same cache shapes",
+    "forcing_cache": "prepare_interval deallocates and reallocates qdra/qssdi/qrot on every interval preparation, even when the next column has the same cache shapes",
+    "kernel_call_frequency": "kernel_advance_interval calls model%configure_parameters once per requested kernel interval; run_canonical_interval calls model%prepare_interval once before transaction/substep execution",
+    "existing_worker_ownership": "one backend/model/workspace per worker, so reuse can remain worker-local and introduces no per-column cache state"
+  },
+  "selected_candidate": {
+    "strategy": "exact-shape reusable worker-owned allocation capacity",
+    "parameter_behavior": [
+      "allocate soil parameter/provider cache objects only when absent",
+      "reuse z/dz/node_distance allocation when active_nodes shape is unchanged",
+      "reallocate those arrays only when shape changes",
+      "recompute and overwrite all MvG cached values for every configure_parameters call",
+      "do not skip data copy or constitutive preprocessing based only on parameter_set_id"
+    ],
+    "forcing_behavior": [
+      "reuse qdra/qssdi/qrot only when their exact extents match the new forcing",
+      "reallocate on any extent change",
+      "overwrite all values on every prepare_interval call"
+    ],
+    "memory_semantics": "exact-shape reuse must not retain a larger previous capacity after a shape change; current-shape dynamic payload remains unchanged relative to F-PE08",
+    "direct_immutable_views": "DEFERRED: current solver-contract/lifetime ownership does not yet provide a sufficiently explicit direct registry-view lifetime contract for this optimization",
+    "same_parameter_id_shortcut": "PROHIBITED in F-PE09 because registry uniqueness/content identity is not independently qualified here"
+  },
+  "allowed_production_scope": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90"
+  ],
+  "forbidden_changes": [
+    "soil-water public solver contract ownership semantics",
+    "HeadCalc physics or algebra",
+    "transaction checkpoint/trial/commit/rollback semantics",
+    "mass acceptance policy or tolerance",
+    "F-MR20 parallel admission scope",
+    "worker-count policy",
+    "physical configuration",
+    "persistent per-column state"
+  ],
+  "qualification_gates": {
+    "source_scope": "only the two allowed production files may change relative to F-PE08",
+    "cache_semantics": [
+      "same-shape parameter refresh reuses allocation while fully overwriting/recomputing cache values",
+      "changed-shape parameter refresh reallocates to exact new shape",
+      "same-shape forcing refresh reuses allocation while fully overwriting values",
+      "changed-shape forcing refresh reallocates to exact new shape"
+    ],
+    "scientific_regression": [
+      "full F-MR20 restricted V1 scientific matrix retained",
+      "serialized-vs-2-worker bit identity retained",
+      "serialized-vs-4-worker bit identity retained",
+      "2-vs-4 worker-count independence retained",
+      "A-B-A and input-order independence retained",
+      "cross-column rejection/rollback isolation retained",
+      "hard 1e-12 water-mass gate retained",
+      "true 2-worker and 4-worker overlap retained",
+      "O0/O2 output identity retained"
+    ],
+    "PE08_regression": "canonical A23BU scratch remains disabled on the explicit reference workspace and PE08 scientific equivalence remains intact",
+    "performance": "measure allocation-reuse behavior first; any runtime comparison is characterization only and cannot create a speedup guarantee"
+  },
+  "architecture_invariants_explicitly_checked": [1, 3, 4, 5, 6, 7, 13, 16, 23, 25, 26, 27, 30],
+  "explicit_nonclaims": [
+    "lower worker payload bytes than F-PE08",
+    "RSS reduction",
+    "universal runtime speedup",
+    "direct immutable parameter/forcing views",
+    "parameter_set_id as a content hash",
+    "parallel physics expansion beyond F-MR20 V1",
+    "production worker-count policy"
+  ],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "implement exact-shape MvG and backend cache reuse",
+      "add executable cache-reuse oracle",
+      "run F-MR20 V1 scientific regression under O0/O2",
+      "persist results and close only if all gates pass"
+    ]
+  }
+}
