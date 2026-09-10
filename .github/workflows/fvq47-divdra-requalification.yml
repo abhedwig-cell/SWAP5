@@ -1,0 +1,34 @@
+name: F-VQ47 independent DIVDRA requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq47-fpm08br-spatial-distribution-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full source history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record compiler
+        run: gfortran --version
+      - name: Run F-VQ47 independent gate
+        run: integration/f-vq/fvq47/run_gate.sh
+      - name: Upload independent evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-VQ47-independent-requalification-evidence
+          path: |
+            build/fvq47/F-VQ47_SUMMARY.json
+            build/fvq47/F-VQ47_O0.txt
+            build/fvq47/F-VQ47_O2.txt
+            build/fvq47/verifier_stdout.jsonl
+          if-no-files-found: error
