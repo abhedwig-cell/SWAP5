@@ -1,0 +1,78 @@
+name: F-ROSS01 Gate E3H-A7-R1 Instrumentation-Repair Rerun
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A7_R1_HARNESS_COST_CONTAMINATION_RECONCILIATION.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a7_r1_harness_repair_runner.py'
+      - '.github/workflows/ross01-gate-e3h-a7-r1-instrumentation-repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [P0_A1_CONTROL, P1_DRIER_SUBSOIL, P2_DRIER_TOP_AND_SUBSOIL, P3_STRONG_DRY_SEPARATION]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: |
+          python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a7_o14_ross_postcap_runoff_continuation.py
+          python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a7_r1_harness_repair_runner.py
+      - name: Execute frozen A7 through instrumentation-repaired runner
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a7-r1-${{ matrix.profile }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a7_r1_harness_repair_runner.py \
+            "${{ matrix.profile }}" \
+            "$out/F-ROSS01_GATE_E3H_A7_R1_${{ matrix.profile }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A7_R1_${{ matrix.profile }}_STDOUT.txt"
+      - name: Assert unchanged frozen A7 semantics
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          path=f'ross01-gate-e3h-a7-r1-{p}/F-ROSS01_GATE_E3H_A7_R1_{p}_RESULT.json'
+          r=json.load(open(path))
+          pr=r['profile_result']; c=pr['candidate']; ref=pr['reference']; cmp=pr['comparison']
+          assert r['gate']=='E3H_A7_O14_RESTRICTED_ROSS_CANDIDATE_POST_CAP_RUNOFF_CONTINUATION'
+          assert r['pass'] is True and pr['pass'] is True
+          assert c['complete'] is True and c['accepted_step_count']==40
+          assert ref['complete'] is True and ref['accepted_step_count']==40
+          assert c['max_abs_balance_residual_cm']<=1e-9
+          assert ref['max_abs_balance_residual_cm']<=1e-9
+          assert c['max_top_head_cm'] < -0.001
+          assert ref['max_top_head_cm'] < -0.001
+          assert c['max_surface_q_abs_error_over_ksat']<=0.0005
+          assert c['max_surface_constitutive_K_evaluations']<=530
+          assert c['max_surface_root_residual_evaluations']<=66
+          assert cmp['max_trajectory_head_difference_cm']<=0.25
+          assert cmp['cumulative_runoff_difference_cm']<=0.001
+          assert cmp['cumulative_bottom_transfer_difference_cm']<=0.001
+          assert cmp['final_soil_storage_change_difference_cm']<=0.001
+          assert cmp['candidate_final_to_independent_attractor_max_abs_head_difference_cm']<=0.005
+          assert cmp['reference_final_to_independent_attractor_max_abs_head_difference_cm']<=0.005
+          assert all(pr['tests'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a7-r1-${{ matrix.profile }}
+          path: ross01-gate-e3h-a7-r1-${{ matrix.profile }}/
