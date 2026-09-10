@@ -1,11 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D2",
   "title": "Restricted Extended Drainage Exchange-Law Readiness",
   "branch": "work/f-pm08d2-restricted-extended-drainage-exchange-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_READINESS_QUALIFIED_WITH_EXPLICIT_SOURCE_SEAM_HOLDS",
+  "decision": "QUALIFIED_RESTRICTED_EXTENDED_DRAINAGE_EXCHANGE_LAW_READINESS_WITH_EXPLICIT_SOURCE_SEAM_HOLDS",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -62,10 +63,23 @@
     "aggregation_science_owner": "F-VQ43/F-PM08C4",
     "spatial_distribution_owner": "F-PM08B/F-VQ47"
   },
+  "decisive_evidence": {
+    "precloseout_head": "765d8ee07f0a4b8a65c46adc2f5e397fad31adae",
+    "run_id": 34523725989,
+    "job_id": 103027409796,
+    "conclusion": "success",
+    "value_cases": 1170,
+    "derivative_checks": 3510,
+    "max_value_abs_error": 0.0,
+    "max_derivative_relative_error": 6.47344202208381e-9,
+    "all_eight_source_risks_bound": true,
+    "all_30_architecture_invariants_pass": true
+  },
   "deliverables": {
     "contract": "integration/f-pm/F-PM08D2_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D2_EXCHANGE_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D2_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D2_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d2_extended_exchange.py",
     "gate": "tools/fpm/fpm08d2_extended_exchange_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d2-extended-exchange-readiness.yml"
@@ -80,13 +94,23 @@
     "test_oracle_persisted": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "production_physics_qualified": false,
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "execute the fully persisted source-bound F-PM08D2 readiness gate under CI; fail closed on any provenance, source-risk, branch-sensitivity, scope or architecture inconsistency"
+  "downstream_handoff": {
+    "future_candidate_may_implement_only_restricted_deterministic_route": true,
+    "future_candidate_must_be_branch_aware": true,
+    "future_candidate_must_preserve_finite_mass_if_tangent_unavailable": true,
+    "no_swsrf1_admission": true,
+    "no_negative_power_interflow_admission": true,
+    "no_seam_smoothing_prequalified": true,
+    "next_parent_child": "F-PM08D3"
+  },
+  "next_required_step": "verify the same readiness gate again on this exact closeout head and confirm the final base-to-closeout delta remains free of src/ and reference/ changes; then F-PM08D3 may proceed independently from current canonical authority"
 }
