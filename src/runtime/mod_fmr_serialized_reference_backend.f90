@@ -463,15 +463,25 @@ contains
     select type (parameters)
     type is (fmr_b110_physical_parameters_t)
       n = parameters%active_nodes
-      if (associated(self%soil_parameters)) deallocate(self%soil_parameters)
-      if (associated(self%hydraulic_parameters)) deallocate(self%hydraulic_parameters)
-      if (associated(self%constitutive)) deallocate(self%constitutive)
-      if (associated(self%source_sink)) deallocate(self%source_sink)
-      if (associated(self%root_sink)) deallocate(self%root_sink)
-      allocate(self%soil_parameters, self%hydraulic_parameters, self%constitutive, self%source_sink, self%root_sink)
+      if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
+      if (.not. associated(self%hydraulic_parameters)) allocate(self%hydraulic_parameters)
+      if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%source_sink)) allocate(self%source_sink)
+      if (.not. associated(self%root_sink)) allocate(self%root_sink)
       self%soil_parameters%parameter_set_id = parameters%parameter_set_id
       self%soil_parameters%active_nodes = n
-      allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))
+      if (allocated(self%soil_parameters%z)) then
+        if (size(self%soil_parameters%z) /= n) deallocate(self%soil_parameters%z)
+      end if
+      if (allocated(self%soil_parameters%dz)) then
+        if (size(self%soil_parameters%dz) /= n) deallocate(self%soil_parameters%dz)
+      end if
+      if (allocated(self%soil_parameters%node_distance)) then
+        if (size(self%soil_parameters%node_distance) /= n) deallocate(self%soil_parameters%node_distance)
+      end if
+      if (.not. allocated(self%soil_parameters%z)) allocate(self%soil_parameters%z(n))
+      if (.not. allocated(self%soil_parameters%dz)) allocate(self%soil_parameters%dz(n))
+      if (.not. allocated(self%soil_parameters%node_distance)) allocate(self%soil_parameters%node_distance(n))
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
@@ -545,10 +555,18 @@ contains
       else
         if (allocated(forcing%snow)) return
       end if
-      if (associated(self%qdra)) deallocate(self%qdra)
-      if (associated(self%qssdi)) deallocate(self%qssdi)
-      if (associated(self%qrot)) deallocate(self%qrot)
-      allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n), self%qssdi(n), self%qrot(n))
+      if (associated(self%qdra)) then
+        if (size(self%qdra,1) /= size(forcing%drainage_flux_by_level,1) .or. size(self%qdra,2) /= n) deallocate(self%qdra)
+      end if
+      if (associated(self%qssdi)) then
+        if (size(self%qssdi) /= n) deallocate(self%qssdi)
+      end if
+      if (associated(self%qrot)) then
+        if (size(self%qrot) /= n) deallocate(self%qrot)
+      end if
+      if (.not. associated(self%qdra)) allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n))
+      if (.not. associated(self%qssdi)) allocate(self%qssdi(n))
+      if (.not. associated(self%qrot)) allocate(self%qrot(n))
       self%qdra = forcing%drainage_flux_by_level
       self%qssdi = forcing%subsurface_irrigation_source
       self%qrot = forcing%root_extraction_sink

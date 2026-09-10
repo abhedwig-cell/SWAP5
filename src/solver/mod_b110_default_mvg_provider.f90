@@ -25,9 +25,10 @@ module mod_b110_default_mvg_provider
 
 contains
 
-  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input)
-    type(b110_default_mvg_parameters_t), intent(out) :: parameters
+  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, storage_reused)
+    type(b110_default_mvg_parameters_t), intent(inout) :: parameters
     real(real64), intent(in) :: cofgen_input(:,:)
+    logical, intent(out), optional :: storage_reused
     integer :: i, n
     real(real64) :: h105, t105, c105, a, b, alfa
 
@@ -35,7 +36,15 @@ contains
     n = size(cofgen_input,2)
     if (n <= 0) error stop 'B1.10 default MvG provider: active_nodes must be positive'
     parameters%active_nodes = n
-    allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))
+    if (present(storage_reused)) storage_reused = .false.
+    if (allocated(parameters%cofgen)) then
+       if (size(parameters%cofgen,1) /= B110_MCOF_REQUIRED .or. size(parameters%cofgen,2) /= n) then
+          deallocate(parameters%cofgen)
+       else
+          if (present(storage_reused)) storage_reused = .true.
+       end if
+    end if
+    if (.not. allocated(parameters%cofgen)) allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))
     parameters%cofgen = 0.0_real64
     parameters%cofgen(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:) = &
          cofgen_input(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:)
