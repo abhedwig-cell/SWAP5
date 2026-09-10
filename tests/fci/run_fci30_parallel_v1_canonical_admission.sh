@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 BUILD="${TMPDIR:-/tmp}/swap5-fci30-$$"
 mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"; rm -f "$ROOT/tests/fmr/.fci30-fmr18-replay-$$.sh" "$ROOT/tests/fci/.fci30-fci28-replay-$$.sh' EXIT
+trap 'rm -rf "$BUILD"; rm -f "$ROOT/tests/fmr/.fci30-fmr18-replay-$$.sh" "$ROOT/tests/fci/.fci30-fci28-replay-$$.sh"' EXIT
 cd "$ROOT"
 
 fail() { echo "FCI30_GATE_FAIL $*" >&2; exit 1; }
