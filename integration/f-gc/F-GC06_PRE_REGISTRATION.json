@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC06",
+  "title": "Narrow Application-Class Groundwater Head-Accuracy Requirement Qualification",
+  "status": "PRE_REGISTERED_INDEPENDENT_RESEARCH_IN_PROGRESS",
+  "branch": "work/f-gc06-narrow-application-head-accuracy",
+  "research_only": true,
+  "production_source_changed": false,
+  "upstream": {
+    "work_unit": "F-GC05",
+    "closeout_head": "12d829474870216b7b14fc452cdef54836255bd4",
+    "decision": "BLOCKED_NO_INDEPENDENT_APPLICATION_HEAD_ACCURACY_REQUIREMENT"
+  },
+  "production_context_pin": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "observed_head_before_registration": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "authority_note": "Context only. F-GC06 inherits its research-policy lineage from the exact F-GC05 closeout and does not modify or qualify production source."
+  },
+  "policy_template": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+  "application_classes": [
+    {
+      "id": "AC01_SHALLOW_GW_CROP_WATER",
+      "scope": "Agricultural applications in which shallow groundwater regime or groundwater depth drives crop water stress, oxygen stress, capillary supply or yield response at field to regional scale.",
+      "decision_or_output_quantity": "Crop-water or crop-yield response, not groundwater head by itself.",
+      "required_independent_basis": "An externally justified acceptable error for the crop-water or yield quantity plus a source-bound or independently qualified sensitivity that converts that allowance to a groundwater-head allowance.",
+      "numeric_H_app_preregistered": false,
+      "numeric_A_temporal_preregistered": false
+    },
+    {
+      "id": "AC02_GW_MANAGEMENT_HEAD_THRESHOLD",
+      "scope": "Groundwater-management applications with an externally imposed minimum, maximum or drawdown head threshold at specified control locations and times, where groundwater head itself is a decision variable.",
+      "decision_or_output_quantity": "Head or drawdown relative to an externally defined management or compliance threshold.",
+      "required_independent_basis": "A project, regulatory or decision requirement that states acceptable predictive error or decision margin independently of SWAP-MODFLOW numerical behavior.",
+      "numeric_H_app_preregistered": false,
+      "numeric_A_temporal_preregistered": false
+    },
+    {
+      "id": "AC03_RECHARGE_WATER_BALANCE_PRIMARY",
+      "scope": "Applications whose primary reported quantity is cumulative recharge or water-balance flux and for which groundwater head is an internal coupled state rather than the decision output.",
+      "decision_or_output_quantity": "Recharge or cumulative water-balance flux.",
+      "required_independent_basis": "An externally justified recharge or water-balance error allowance plus an independently justified head-to-flux sensitivity or equivalent propagation relation.",
+      "numeric_H_app_preregistered": false,
+      "numeric_A_temporal_preregistered": false
+    }
+  ],
+  "research_hierarchy": [
+    "define the application decision or reported quantity",
+    "identify an independent acceptable application error or decision margin",
+    "derive H_app only when the application error can defensibly be expressed or propagated as a head allowance",
+    "justify A_temporal independently as the fraction allocated to Richards temporal coupling error",
+    "derive H_budget only when both H_app and A_temporal are independently defensible",
+    "only after policy freeze may a later VQ inspect or test GC02 target behavior"
+  ],
+  "target_leakage_lock": {
+    "GC02_result_may_select_any_number": false,
+    "GC02_fixture_may_be_inspected_before_policy_freeze": false,
+    "B_inf_distribution_may_select_any_number": false,
+    "MODFLOW_solver_tolerance_may_define_H_app_or_H_budget": false,
+    "release_convenience_may_define_any_number": false,
+    "failed_holdout_may_trigger_threshold_tuning": false
+  },
+  "flux_and_mass_contract": {
+    "interface_flux_contract": "q_SWAP = -q_MF",
+    "mass_conservation": "ABSOLUTE_NOT_ALLOCATABLE_AS_ERROR_BUDGET",
+    "head_accuracy_may_relax_flux_conservation": false
+  },
+  "qualification_rule": "QUALIFY only an application class for which both an independent H_app basis and an independent A_temporal allocation are traceable and defensible before any GC02 inspection. Otherwise fail that class closed.",
+  "hard_nonclaims": [
+    "no universal groundwater-head accuracy requirement",
+    "no numeric H_app selected at preregistration",
+    "no numeric A_temporal selected at preregistration",
+    "no numeric H_budget selected at preregistration",
+    "no GC02 inspection or rerun",
+    "no production source, kernel, runtime, solver or coupler changes"
+  ],
+  "architecture_invariants_checked": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
