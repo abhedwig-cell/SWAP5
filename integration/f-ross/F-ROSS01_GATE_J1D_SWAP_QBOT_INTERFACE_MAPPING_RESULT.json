@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1D_SWAP_QBOT_INTERFACE_MAPPING",
+  "contract": "F-ROSS01_GATE_J1D_SWAP_QBOT_INTERFACE_MAPPING_CONTRACT.json",
+  "execution": {
+    "run_id": 34486860476,
+    "head": "452538d9b51b5a2541d698da6d4a9d2e2f556b69",
+    "conclusion": "success",
+    "material_jobs_success": 6,
+    "material_jobs_total": 6
+  },
+  "persistence": {
+    "contract_commit": "6499afb43830f449789a8fc9a789724cb7f1757e",
+    "runner_commit": "9cc09cec13ee78ef9ce1f5b81782ccd89b124bf4",
+    "workflow_commit": "452538d9b51b5a2541d698da6d4a9d2e2f556b69"
+  },
+  "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+  "material_pass_count": 6,
+  "material_count": 6,
+  "base_case_count": 72,
+  "base_case_error_count": 0,
+  "finite_difference_comparison_count": 144,
+  "smooth_symmetric_qbot_fd_comparison_count": 143,
+  "routed_known_node_crossing_count": 1,
+  "unexpected_fd_cell_switch_count": 0,
+  "coordinate_mapping": {
+    "q_down_harness_sign": "positive downward",
+    "qbot_swap_sign": "positive upward / inflow from below",
+    "mapping": "q_down = -qbot_swap",
+    "response_mapping": "d(h_bottom)/d(qbot_swap) = -d(h_bottom)/d(q_down)",
+    "same_factorization_qbot_tangent_rhs_last_entry": -1.0,
+    "observed_max_abs_q_down_plus_qbot": 0.0
+  },
+  "legacy_source_authority": {
+    "nested_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "headcalc_f90_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "boundbottom_f90_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+    "fluxes_f90_sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+    "sign_evidence": [
+      "headcalc.f90 line 606: free drainage qbot = -K",
+      "headcalc.f90 lines 607 and 622: bottom residual subtracts qbot",
+      "boundbottom.f90 line 137: free drainage qbot = -K"
+    ]
+  },
+  "observed": {
+    "maximum_smooth_qbot_tangent_metric": 3.419659398931413e-07,
+    "maximum_smooth_qbot_tangent_metric_material": "O01",
+    "tangent_metric_threshold": 1e-05,
+    "maximum_scaled_base_flux_continuity_residual": 2.4437408376474047e-13,
+    "continuity_threshold": 1e-10,
+    "maximum_normal_linear_residual": 1.6155871338926322e-27,
+    "maximum_qbot_tangent_linear_residual": 5.684341886080802e-14,
+    "linear_residual_threshold": 1e-11,
+    "nonpositive_qbot_tangent_count": 0,
+    "nonfinite_count": 0,
+    "base_state_bitwise_unchanged_all": true,
+    "table_bitwise_unchanged_all": true,
+    "matrix_factorizations_per_case": [1],
+    "normal_backsolves_per_case": [1],
+    "additional_qbot_tangent_backsolves_per_case": [1],
+    "production_nonlinear_trajectories_for_tangent": [0]
+  },
+  "per_material_maximum_smooth_qbot_tangent_metric": {
+    "B01": 2.523531088805488e-07,
+    "B12": 1.4064545035911197e-07,
+    "O01": 3.419659398931413e-07,
+    "O05": 3.28958200093766e-07,
+    "O14": 1.9612613906905817e-07,
+    "O18": 1.9345853591844295e-07
+  },
+  "routed_known_transition": {
+    "material": "O01",
+    "geometry": "long_dry",
+    "q_down_fraction_of_K_top": 0.0,
+    "fd_factor": 3e-05,
+    "delta_qbot_cm_per_day": 6.6966462e-16,
+    "head_index": 39,
+    "base_cell": 204,
+    "qbot_plus_cell": 204,
+    "qbot_minus_cell": 205,
+    "policy": "not scored as a smooth central-FD derivative comparison; retained unchanged and routed under the J1C piecewise boundary policy"
+  },
+  "artifact_evidence": {
+    "B01": {"artifact_id": 10156013505, "sha256": "c737735f18173461c6323f06baa8b506d66dc00a0664a79c93c6576dc1f48312"},
+    "B12": {"artifact_id": 10156025966, "sha256": "3cb8e3cad06d3c5e4acd605f459c8320e4e60e6de5185803283def420586baa4"},
+    "O01": {"artifact_id": 10156045307, "sha256": "c2c3ee25e068cfa3350fe95841ee18e356572758a771f64b95cccd882165e3bf"},
+    "O05": {"artifact_id": 10156035270, "sha256": "cefcdb012b0a3579d490b4f37645f1f26f3f74100f813a64522b3c6dccc7c62a"},
+    "O14": {"artifact_id": 10156058407, "sha256": "d9fc6b2f1d50808799f7adcfaac1eb3e5f106f1c11fb7a15bf6f6af2b2e13410"},
+    "O18": {"artifact_id": 10156026529, "sha256": "526605a32d8c1e6f6ddc17c3bb9b371fd7c94d54467814b28385001acb5887a3"}
+  },
+  "primary_quantity": {
+    "name": "d_h_bottom_d_qbot_swap",
+    "definition": "local derivative of bottom pressure head with respect to native SWAP qbot, positive upward/inflow from below, for the frozen homogeneous C1R face chain at fixed top head",
+    "units": "day",
+    "observed_sign": "positive in all 72 base cases"
+  },
+  "cost_shape": "ONE_FACTORIZATION_PLUS_ONE_NORMAL_BACKSOLVE_PLUS_ONE_ADDITIONAL_QBOT_TANGENT_BACKSOLVE_NO_SECOND_NONLINEAR_TRAJECTORY",
+  "mass_noninterference": {
+    "steady_serial_face_continuity_passed": true,
+    "base_state_bitwise_unchanged": true,
+    "shared_table_bitwise_unchanged": true,
+    "tangent_is_diagnostic_only": true
+  },
+  "pass": true,
+  "decision": "J1D_SWAP_QBOT_INTERFACE_MAPPING_QUALIFIED_READY_FOR_REAL_TRANSACTIONAL_BOUNDARY_INTEGRATION_QUALIFICATION",
+  "scope_limit": "C1R base MvG/KSATFIT only; homogeneous unsaturated 10 cm faces; coordinate/sign mapping only. This does not qualify transactional kernel integration, full Richards timestep integration, MODFLOW coupling, Class-B H_ENPR/KSATEXM, saturation, heterogeneity, groundwater switching, crop/process physics or production admission.",
+  "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
+}
