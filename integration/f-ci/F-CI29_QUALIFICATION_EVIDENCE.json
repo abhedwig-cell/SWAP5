@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI29",
+  "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
+  "branch": "qualification/f-ci29-fmr26-ptra-ownership-canonical-admission",
+  "phase": "PRE_PROMOTION_EVIDENCE",
+  "canonical_base": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "tested_readiness_head": "7b473cb4cbfc6ccbaf277f924f5fb898852183c8",
+  "owner": {
+    "workunit": "F-MR26",
+    "closeout": "e99e144b4f2bedcbb93d06af578cb409dc76f6c7",
+    "candidate_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "candidate_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "candidate_source_staging_commit": "2a8bc4992f6478518fa6085720a4e17f04c5e7a9"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ41",
+    "closeout": "e0d6c9993d46bb858d84524bb290f3bb12e82ce4",
+    "qualified_candidate_head": "9a13c599e7e45d4717c681a7800a9f88730c73e1",
+    "frozen_test_blob": "dfd1ddb9f1a4ce1a919311645fb727f2994d2f22",
+    "active_grid_cases": 2304,
+    "workflow_run_id": 34460907655,
+    "workflow_job_id": 102818253052,
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f",
+    "decision": "QUALIFIED_REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_CANONICAL_ADMISSION"
+  },
+  "postimage": {
+    "pre_src_tree": "3fe4ccff367479e54ab5db106e5faf8b480d8ec0",
+    "post_src_tree": "223c54d5fd309f86ef50f9efd28e2c511e175577",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "production_delta": ["src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90"]
+  },
+  "admission_gate": {
+    "workflow_run_id": 34461436182,
+    "workflow_job_id": 102819953436,
+    "conclusion": "success",
+    "exact_single_source_postimage": true,
+    "FCI27_and_FCI28_authorities_preserved": true,
+    "frozen_FVQ41_test_exact": true,
+    "frozen_FVQ41_O0_pass": true,
+    "frozen_FVQ41_O2_pass": true,
+    "O0_O2_output_identity": true,
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
+  },
+  "readiness": {
+    "workflow_run_id": 34461436232,
+    "current_FCI29_job_id": 102819953583,
+    "current_FCI29_conclusion": "success",
+    "frozen_FCI28_job_id": 102819953704,
+    "frozen_FCI28_conclusion": "success",
+    "canonical_workflow_transition_static": true,
+    "frozen_FCI28_replay_complete": true
+  },
+  "architecture": {
+    "single_kernel": "PASS",
+    "kernel_io_separation": "PASS",
+    "explicit_data_separation": "PASS_ET_RESULT_TO_ROOT_INPUT_ONLY",
+    "compact_persistent_state": "PASS_ZERO_NEW_STATE",
+    "scratch_per_worker": "PASS_NO_SCRATCH",
+    "transactional_timesteps": "PASS_STATELESS_NO_COMMITTED_MUTATION",
+    "cheap_replay": "PASS_STATELESS",
+    "generic_time": "PASS_INHERITS_FMR23_GENERIC_INTERVAL",
+    "mass_conservation": "PASS_NO_MASS_BOOKING_POTENTIAL_DEMAND_ONLY",
+    "multiswap_scaling": "PASS_STATELESS_LIGHTWEIGHT_BINDING",
+    "physics_solver_policy_separation": "PASS",
+    "runtime_diagnostics": "PASS_EXPLICIT_UPSTREAM_GEOMETRY_AND_ASSEMBLY_STATUS",
+    "no_silent_dependencies": "PASS",
+    "all_project_invariants_reviewed": true
+  },
+  "nonclaims": [
+    "root-water uptake execution",
+    "actual transpiration",
+    "mass-ledger booking",
+    "interval integration",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "decision": "QUALIFIED_FMR26_PTRA_OWNERSHIP_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD"
+}

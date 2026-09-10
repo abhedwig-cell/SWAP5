@@ -107,6 +107,25 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI27_FROZEN_REFERENCE_ET_RUNTIME_AUTHORITY=PASS'
 
+  frozen-fci28-restart-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06658d0b83206008dcaefba3b8d7e5c7f0c77538
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact admitted F-CI28 restart postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci28_restart_canonical_gate.py --mode canonical
+          bash tests/fci/run_fci28_restart_current_canonical_admission.sh
+          test "$(git rev-parse HEAD:src)" = 3fe4ccff367479e54ab5db106e5faf8b480d8ec0
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI28_FROZEN_RESTRICTED_RESTART_AUTHORITY=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
@@ -114,6 +133,7 @@ jobs:
       - frozen-fci19-source-lineage
       - frozen-fci24-reference-et-authority
       - frozen-fci27-reference-et-runtime-authority
+      - frozen-fci28-restart-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -121,16 +141,13 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI28 forward-lineage restart authority gate
-        run: python tools/fci/fci28_restart_canonical_gate.py --mode canonical
-      - name: Reexecute independent F-CI28 restart and F-CI27 preservation qualification
-        run: bash tests/fci/run_fci28_restart_current_canonical_admission.sh
+      - name: Current F-CI29 ptra ownership authority gate
+        run: bash tests/fci/run_fci29_ptra_ownership_canonical_admission.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          python tools/fci/fci28_restart_canonical_gate.py --mode canonical
-          test "$(git rev-parse HEAD:src)" = 3fe4ccff367479e54ab5db106e5faf8b480d8ec0
+          test "$(git rev-parse HEAD:src)" = 223c54d5fd309f86ef50f9efd28e2c511e175577
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI28_CANONICAL_RESTRICTED_RESTART_ADMISSION=PASS'
+          echo 'FCI29_CANONICAL_PTRA_OWNERSHIP_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'

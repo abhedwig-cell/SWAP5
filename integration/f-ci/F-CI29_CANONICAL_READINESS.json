@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI29",
+  "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
+  "branch": "qualification/f-ci29-fmr26-ptra-ownership-canonical-admission",
+  "status": "QUALIFIED_FMR26_PTRA_OWNERSHIP_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD",
+  "canonical_base_expected": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "tested_readiness_head": "7b473cb4cbfc6ccbaf277f924f5fb898852183c8",
+  "production_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+  "post_src_tree": "223c54d5fd309f86ef50f9efd28e2c511e175577",
+  "qualification": {
+    "F_VQ41_closed": true,
+    "F_VQ41_active_cases": 2304,
+    "F_VQ41_output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f",
+    "FCI29_admission_gate_green": true,
+    "FCI29_readiness_current_postimage_green": true,
+    "FCI28_frozen_authority_replay_green": true
+  },
+  "promotion_preconditions": [
+    "integration/f-ci-canonical must still resolve to 06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+    "this branch must be strictly ahead of that head with behind_by=0",
+    "promotion must use a non-forced ref update",
+    "post-promotion canonical workflow must pass on the promoted postimage"
+  ],
+  "canonical_admitted": false,
+  "closed": false
+}
