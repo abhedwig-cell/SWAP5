@@ -1,0 +1,38 @@
+name: F-PE07 restricted parallel-v1 scaling characterization
+
+on:
+  push:
+    branches:
+      - performance/f-pe07-parallel-v1-scaling-characterization
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  timing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE07 source-locked scaling characterization
+        env:
+          FPE07_EVIDENCE_DIR: ${{ github.workspace }}/fpe07-evidence
+        run: bash tests/fpe/run_fpe07_parallel_v1_timing.sh
+      - name: Upload F-PE07 timing evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe07-parallel-v1-scaling-evidence
+          path: fpe07-evidence/
+          if-no-files-found: error
+          retention-days: 30
