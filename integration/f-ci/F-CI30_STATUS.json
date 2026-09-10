@@ -4,26 +4,41 @@
   "title": "F-MR27 Restricted Parallel Real-Physics MultiSWAP V1 Current-Canonical Admission",
   "branch": "qualification/f-ci30-fmr27-parallel-v1-canonical-admission",
   "canonical_branch": "integration/f-ci-canonical",
-  "status": "QUALIFIED_PENDING_CANONICAL_PROMOTION",
-  "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_ON_FCI29_CANONICAL_READY_FOR_CANONICAL_PROMOTION",
+  "status": "QUALIFIED_CLOSED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_CLOSED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_ADMISSION",
   "canonical_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
-  "owner_candidate": "151ad84b9ebb3bbb133fa0bf77f67797a3d5547e",
-  "qualified_composed_candidate": "16df96690fdc9dfedfa9744c47ddff5242c903a5",
-  "qualified_candidate_src_tree": "d6fa88b076d39fa0ffd924ce08ae4d978649dc85",
-  "qualification_head": "290c103660e91cac5501fcae25df8e680a67f69e",
-  "authoritative_workflow": {
-    "run_id": 34467682945,
-    "job_id": 102839989896,
-    "conclusion": "success",
-    "compiler": "GNU Fortran 13.3.0",
-    "runner": "Ubuntu 24.04.5"
+  "owner": {
+    "workunit": "F-MR27",
+    "owner_closeout": "49901f91d4121fb2a34c520dad9b714d82ea1da6",
+    "owner_candidate": "151ad84b9ebb3bbb133fa0bf77f67797a3d5547e",
+    "owner_workflow_run": 34465412007,
+    "owner_workflow_job": 102832710252
+  },
+  "independent_parallel_qualification": {
+    "workunit": "F-MQ28",
+    "qualified_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "workflow_run": 34451313186,
+    "workflow_job": 102787470502,
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1"
+  },
+  "canonical_admission": {
+    "qualified_composed_candidate": "16df96690fdc9dfedfa9744c47ddff5242c903a5",
+    "qualified_candidate_src_tree": "d6fa88b076d39fa0ffd924ce08ae4d978649dc85",
+    "qualification_head": "290c103660e91cac5501fcae25df8e680a67f69e",
+    "authoritative_workflow_run": 34467682945,
+    "authoritative_workflow_job": 102839989896,
+    "source_promotion_head": "755a626712be38ca360c5217334b73b5297f76f2",
+    "post_promotion_workflow_run": 34468087086,
+    "post_promotion_workflow_job": 102841290853,
+    "post_promotion_conclusion": "success"
   },
   "superseded_harness_run": {
     "run_id": 34466204734,
     "job_id": 102835273797,
     "scientific_gates": "PASS_BEFORE_EXIT_CLEANUP",
     "workflow_conclusion": "failure",
-    "qualification_basis": false
+    "qualification_basis": false,
+    "classification": "HARNESS_CLEANUP_FAILURE_ONLY"
   },
   "state": {
     "realized": true,
@@ -31,10 +46,11 @@
     "tested": true,
     "qualified": true,
     "canonical_readiness_passed": true,
-    "canonical_ref_advanced": false,
-    "post_promotion_canonical_workflow_passed": false,
-    "production_source_admitted": false,
-    "closed": false
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "production_source_admitted": true,
+    "closed": true,
+    "final_governance_head_requalification_pending": true
   },
   "qualified_scope": "RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_ONLY",
   "production_delta": [
@@ -42,6 +58,11 @@
     "src/runtime/mod_fmr_parallel_worker_pool.f90",
     "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
   ],
+  "production_blobs": {
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528"
+  },
   "preserved_authorities": [
     "F-CI29 reference-ET ptra/root-input ownership",
     "F-CI28 committed-boundary process restart",
@@ -62,10 +83,44 @@
     "performance speedup admission",
     "general SWAP5 release qualification"
   ],
+  "architecture_invariants": {
+    "single_kernel": "PASS",
+    "kernel_io_separation": "PASS_NOT_TOUCHED",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS_NO_NEW_PER_COLUMN_SOLVER_SCRATCH",
+    "scratch_per_worker": "PASS_WORKER_OWNED_HEAVY_RUNTIME",
+    "scalable_memory_layout": "PASS_WORKER_POOL_NOT_PER_COLUMN_SOLVER",
+    "transactional_timesteps": "PASS_SERIALIZED_RECEIPT_AND_RESTART_PRESERVED",
+    "cheap_recompute_and_warm_start": "PASS_NOT_REGRESSED",
+    "generic_time": "PASS_FCI28_GENERIC_WINDOWS_PRESERVED",
+    "flexible_coupling_windows": "PASS_NO_NEW_TIME_ASSUMPTION",
+    "coupling_core_functionality": "PASS_NO_TRANSACTIONAL_CONFLICT",
+    "explicit_groundwater_interface_contract": "PASS_NOT_TOUCHED",
+    "mass_conservation": "PASS_HARD_MASS_GATE_ALL_PARALLEL_CASES",
+    "interface_sensitivities": "PASS_NOT_TOUCHED",
+    "coupling_cost": "PASS_NOT_TOUCHED",
+    "multiswap_primary_use_case": "PASS_PRIMARY_SCOPE",
+    "no_required_one_to_one_MODFLOW_relation": "PASS_NOT_TOUCHED",
+    "deep_vadose_optional_component": "PASS_NOT_TOUCHED",
+    "mass_conserving_component_transition": "PASS_NOT_TOUCHED",
+    "alternative_soil_water_solvers": "PASS_NO_NEW_SOLVER_COUPLING",
+    "reuse_SWAP_physics": "PASS_SAME_SERIALIZED_PHYSICS_KERNEL",
+    "other_modules_not_bound_to_HeadCalc_internals": "PASS",
+    "physics_solver_policy_separation": "PASS",
+    "predictable_runtime": "PASS_REJECTED_COLUMNS_ISOLATED_AND_BOUNDED_PROFILE",
+    "reference_mode_available": "PASS_SERIALIZED_REFERENCE_ROUTE_PRESERVED",
+    "runtime_diagnostics": "PASS_DETERMINISTIC_DIAGNOSTIC_PUBLICATION",
+    "optional_functionality_scales_with_use": "PASS_UNSUPPORTED_FAMILIES_FAIL_CLOSED",
+    "runtime_coupler_system_composition": "PASS_RUNTIME_LAYER_OWNS_PARALLELISM",
+    "no_silent_dependencies": "PASS_EXPLICIT_PROFILE_ADMISSION",
+    "important_architecture_changes_explicitly_checked": true,
+    "all_30_invariants_reviewed": true
+  },
   "evidence": [
     "integration/f-ci/F-CI30_SOURCE_LOCK.json",
     "integration/f-ci/F-CI30_RECOMPOSITION_NOTE.json",
-    "integration/f-ci/F-CI30_QUALIFICATION_EVIDENCE.json"
+    "integration/f-ci/F-CI30_QUALIFICATION_EVIDENCE.json",
+    "integration/f-ci/F-CI30_POST_PROMOTION.json"
   ],
-  "next_action": "Recheck live canonical authority, perform a non-forced promotion of the exact qualified three-source postimage only if the F-CI29 base remains current, run post-promotion canonical verification, then close F-CI30."
+  "next_action": "F-MR28/F-VQ46 reference-ET-to-restricted-root-uptake execution may now be recomposed onto this canonical authority. Actual-transpiration accounting, accepted-window integration and mass-ledger booking remain separate qualification scopes."
 }
