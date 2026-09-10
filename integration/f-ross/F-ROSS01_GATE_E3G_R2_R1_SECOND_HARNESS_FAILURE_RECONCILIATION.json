@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2_R1_HARNESS_REPAIR_IDENTICAL_SCIENTIFIC_RERUN",
+  "status": "SECOND_HARNESS_NAMESPACE_FAILURE_RECONCILED_NO_SCIENTIFIC_DECISION",
+  "failed_run": {
+    "run": 34448631196,
+    "head": "a59e9ddf38bb00e1b63931725ec9bfbc17df601a",
+    "material_jobs": ["B01","O14"],
+    "conclusion": "failure"
+  },
+  "first_repair": "Added only e3g.N_CELLS = e3g.e3.N_CELLS through an external wrapper.",
+  "second_failure": {
+    "exception": "AttributeError: module 'run_ross01_gate_e3g_physical_top_boundary_switch_composition' has no attribute 'DZ'",
+    "location": "full_interval_balance",
+    "next_expression_in_same_helper": "e3g.theta_of_h(...) also refers to an implementation owned by e3g.e3",
+    "classification": "QUALIFICATION_HARNESS_NAMESPACE_EXPORT_INCOMPLETE"
+  },
+  "complete_harness_export_set": {
+    "N_CELLS": "e3g.e3.N_CELLS",
+    "DZ": "e3g.e3.DZ",
+    "theta_of_h": "e3g.e3.theta_of_h"
+  },
+  "scientific_interpretation": [
+    "Both jobs again passed syntax and all frozen upstream fixture guards.",
+    "The exception again occurs only in final whole-interval balance reporting after the event and remainder calculations have been invoked.",
+    "No scientific PASS or FAIL may be inferred from run 34448631196.",
+    "The next rerun shall expose only the complete already-existing namespace set and execute the frozen R2 module unchanged."
+  ],
+  "hard_guards": [
+    "Do not alter the R2 precommit, fixture profiles, supplies, event brackets, nonlinear tolerances, mass limits or comparison thresholds.",
+    "Do not alter the event corrector or ponded remainder algorithms.",
+    "If the complete-alias rerun reaches a scientific failure, preserve it as such."
+  ]
+}
