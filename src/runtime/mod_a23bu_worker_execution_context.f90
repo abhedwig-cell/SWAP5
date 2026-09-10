@@ -79,36 +79,42 @@ module mod_a23bu_worker_execution_context
 
 contains
 
-  subroutine a23bu_initialize_worker(worker, active_nodes, worker_id)
+  subroutine a23bu_initialize_worker(worker, active_nodes, worker_id, allocate_headcalc_scratch)
     type(a23bu_worker_context_t), intent(inout) :: worker
     integer, intent(in) :: active_nodes
     integer, intent(in), optional :: worker_id
+    logical, intent(in), optional :: allocate_headcalc_scratch
+    logical :: allocate_scratch
 
     if (active_nodes <= 0) error stop 'A23BU worker: active_nodes must be positive'
+    allocate_scratch = .true.
+    if (present(allocate_headcalc_scratch)) allocate_scratch = allocate_headcalc_scratch
     call a23bu_release_worker(worker)
     worker%active_nodes = active_nodes
     if (present(worker_id)) worker%worker_id = worker_id
-    allocate(worker%headcalc%dfdhl(active_nodes), worker%headcalc%dfdhm(active_nodes), &
-             worker%headcalc%dfdhu(active_nodes), worker%headcalc%difh(active_nodes), &
-             worker%headcalc%residual(active_nodes), worker%headcalc%sink(active_nodes), &
-             worker%headcalc%source(active_nodes), worker%headcalc%dkdh(active_nodes), &
-             worker%headcalc%hold(active_nodes), worker%headcalc%qv(active_nodes+1), &
-             worker%headcalc%hgrad(active_nodes+1), worker%headcalc%flnonconv1(active_nodes), &
-             worker%headcalc%flnonconv2(active_nodes))
-    worker%headcalc%dfdhl = 0.0_real64
-    worker%headcalc%dfdhm = 0.0_real64
-    worker%headcalc%dfdhu = 0.0_real64
-    worker%headcalc%difh = 0.0_real64
-    worker%headcalc%residual = 0.0_real64
-    worker%headcalc%sink = 0.0_real64
-    worker%headcalc%source = 0.0_real64
-    worker%headcalc%dkdh = 0.0_real64
-    worker%headcalc%hold = 0.0_real64
-    worker%headcalc%qv = 0.0_real64
-    worker%headcalc%hgrad = 0.0_real64
-    worker%headcalc%flnonconv1 = .false.
-    worker%headcalc%flnonconv2 = .false.
-    worker%headcalc%flunsatok = .false.
+    if (allocate_scratch) then
+      allocate(worker%headcalc%dfdhl(active_nodes), worker%headcalc%dfdhm(active_nodes), &
+               worker%headcalc%dfdhu(active_nodes), worker%headcalc%difh(active_nodes), &
+               worker%headcalc%residual(active_nodes), worker%headcalc%sink(active_nodes), &
+               worker%headcalc%source(active_nodes), worker%headcalc%dkdh(active_nodes), &
+               worker%headcalc%hold(active_nodes), worker%headcalc%qv(active_nodes+1), &
+               worker%headcalc%hgrad(active_nodes+1), worker%headcalc%flnonconv1(active_nodes), &
+               worker%headcalc%flnonconv2(active_nodes))
+      worker%headcalc%dfdhl = 0.0_real64
+      worker%headcalc%dfdhm = 0.0_real64
+      worker%headcalc%dfdhu = 0.0_real64
+      worker%headcalc%difh = 0.0_real64
+      worker%headcalc%residual = 0.0_real64
+      worker%headcalc%sink = 0.0_real64
+      worker%headcalc%source = 0.0_real64
+      worker%headcalc%dkdh = 0.0_real64
+      worker%headcalc%hold = 0.0_real64
+      worker%headcalc%qv = 0.0_real64
+      worker%headcalc%hgrad = 0.0_real64
+      worker%headcalc%flnonconv1 = .false.
+      worker%headcalc%flnonconv2 = .false.
+      worker%headcalc%flunsatok = .false.
+    end if
     worker%history = a23bu_solver_history_t()
     worker%diagnostics = a23bu_solver_diagnostics_t()
     worker%control = a23bu_numerical_control_t()

@@ -126,7 +126,7 @@ contains
     select type (ws => workspace)
     type is (reference_richards_legacy_workspace_t)
        if (ws%legacy_worker%active_nodes /= n) then
-          call a23bu_initialize_worker(ws%legacy_worker, n)
+          call a23bu_initialize_worker(ws%legacy_worker, n, allocate_headcalc_scratch=.false.)
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
        call a23bu_seed_timestep_control(ws%legacy_worker, request%step_duration, &
