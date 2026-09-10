@@ -1,0 +1,94 @@
+name: F-ROSS01 Gate E3G-R2 Finite-Time Ponding Event Localization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3g_r2_finite_time_ponding_event_localization.py'
+      - '.github/workflows/ross01-gate-e3g-r2-finite-time-ponding-event-localization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_r2_finite_time_ponding_event_localization.py
+      - name: Assert upstream fixture evidence
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_R2B_DRY_INITIAL_PROFILE_EVENT_FIXTURE_CHARACTERIZATION_RESULT.json'))
+          assert r['decision']=='CHARACTERIZED_DRY_PROFILE_FINITE_TIME_PONDING_FIXTURES_READY_FOR_R2_QUALIFICATION_PRECOMMIT'
+          assert r['selected_fixtures']['B01']['initial_profile_id']=='UNIFORM_DRY_100'
+          assert r['selected_fixtures']['O14']['initial_profile_id']=='UNIFORM_DRY_100'
+          assert r['selected_fixtures']['B01']['lambda']==0.75
+          assert r['selected_fixtures']['O14']['lambda']==0.75
+          PY
+      - name: Execute frozen R2 material qualification
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-r2-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_r2_finite_time_ponding_event_localization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3G_R2_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_R2_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen R2 semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-r2-{m}/F-ROSS01_GATE_E3G_R2_{m}_RESULT.json'
+          r=json.load(open(p)); mr=r['material_result']
+          assert r['gate']=='E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is True
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          assert mr['candidate']['mode_sequence']==['DRY_FLUX_TRIAL_REJECTED','EVENT_AT_HSURFACE_ZERO','PONDED_HEAD_REMAINDER']
+          assert mr['reference']['mode_sequence']==mr['candidate']['mode_sequence']
+          assert mr['candidate']['nonlinear_trajectory_count']==3
+          assert mr['reference']['nonlinear_trajectory_count']==3
+          assert mr['candidate']['dry_predictor_rejected_without_commit'] is True
+          assert mr['reference']['dry_predictor_rejected_without_commit'] is True
+          assert mr['candidate']['event_corrector']['strictly_inside_bracket'] is True
+          assert mr['reference']['event_corrector']['strictly_inside_bracket'] is True
+          assert mr['candidate']['event_corrector']['surface_storage_cm']==0.0
+          assert mr['reference']['event_corrector']['surface_storage_cm']==0.0
+          assert abs(mr['candidate']['full_interval_composed_balance_residual_cm'])<=1e-9
+          assert abs(mr['reference']['full_interval_composed_balance_residual_cm'])<=1e-9
+          assert mr['candidate']['synthetic_post_event_reject_restores_original_committed_state'] is True
+          assert mr['reference']['synthetic_post_event_reject_restores_original_committed_state'] is True
+          assert mr['candidate']['original_committed_state_bitwise_unchanged_until_final_accept'] is True
+          assert mr['reference']['original_committed_state_bitwise_unchanged_until_final_accept'] is True
+          assert mr['comparison']['event_time_difference_day']<=2.5e-4
+          assert mr['comparison']['max_event_head_difference_cm']<=0.25
+          assert mr['comparison']['max_final_head_difference_cm']<=0.25
+          assert mr['comparison']['final_surface_storage_difference_cm']<=0.001
+          assert mr['comparison']['full_interval_bottom_transfer_difference_cm']<=0.001
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-r2-${{ matrix.material }}
+          path: ross01-gate-e3g-r2-${{ matrix.material }}/
