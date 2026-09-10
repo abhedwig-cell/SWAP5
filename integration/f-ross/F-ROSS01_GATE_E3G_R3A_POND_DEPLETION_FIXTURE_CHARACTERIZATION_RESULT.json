@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION",
+  "status": "CHARACTERIZATION_COMPLETE_READY_FOR_R3_PRECOMMIT",
+  "production_implementation": false,
+  "qualification_use": false,
+  "reference_only": true,
+  "workflow": {
+    "run": 34449566557,
+    "head": "2f56e30e0b88a8cc78425bd5c369a767f4427c83",
+    "conclusion": "success",
+    "material_jobs_passed": 2,
+    "material_jobs_total": 2
+  },
+  "artifacts": {
+    "B01": {"id":10140999820,"digest":"sha256:98f3332e8360bcc86ad86e8d6d401d296bd91d6e9dfd251a10b857b9fb8ce67d"},
+    "O14": {"id":10140996970,"digest":"sha256:1a3f7ec3f447b382793c7782eb5415a50cb0e67b68d2e416bde097a232798d64"}
+  },
+  "scan_identity": {
+    "supply_fractions_of_ksat": [0.0,0.25,0.5,0.75],
+    "selection_rule": "highest passing supply fraction",
+    "B01_passing_fraction_count": 4,
+    "O14_passing_fraction_count": 4
+  },
+  "selected_fixtures": {
+    "B01": {
+      "starting_t_day": 2.425,
+      "starting_heads_cm": [-4.299242078690873,-34.413158005349246,-56.56069262268569],
+      "starting_surface_storage_cm": 0.8393321374175227,
+      "supply_fraction_ksat": 0.75,
+      "q_supply_cm_per_day": 23.418762,
+      "reference_event_time_day": 0.06836931754833565,
+      "event_heads_cm": [-1.1354445351508053,-6.808242394244965,-15.035266450439329],
+      "event_qtop_cm_per_day": 35.69520657360764,
+      "event_qtop_minus_supply_cm_per_day": 12.276444573607641,
+      "event_max_abs_cell_residual_cm": 1.2212453270876722e-15,
+      "event_surface_balance_residual_cm": 2.220446049250313e-16,
+      "event_composed_balance_residual_cm": -3.3306690738754696e-16,
+      "event_nfev": 15,
+      "dry_continuation_dt_day": 0.005,
+      "dry_continuation_heads_cm": [-3.403657162138876,-6.2536846515034155,-12.574620813145097],
+      "dry_continuation_qcap_cm_per_day": 44.497774977952744,
+      "dry_continuation_max_abs_mass_residual_cm": 2.445960101127298e-16,
+      "dry_continuation_nfev": 7
+    },
+    "O14": {
+      "starting_t_day": 2.385,
+      "starting_heads_cm": [-45.88800284752272,-87.53789121305483,-77.42958217413684],
+      "starting_surface_storage_cm": 0.011992883907773078,
+      "supply_fraction_ksat": 0.75,
+      "q_supply_cm_per_day": 1.871988,
+      "reference_event_time_day": 0.0008581682271833274,
+      "event_heads_cm": [-41.83751774890712,-86.00992840327523,-75.59342251992845],
+      "event_qtop_cm_per_day": 15.846968112158223,
+      "event_qtop_minus_supply_cm_per_day": 13.974980112158223,
+      "event_max_abs_cell_residual_cm": 3.5908775952719907e-16,
+      "event_surface_balance_residual_cm": 1.734723475976807e-18,
+      "event_composed_balance_residual_cm": 5.811323644522304e-17,
+      "event_nfev": 8,
+      "dry_continuation_dt_day": 0.00021454205679583184,
+      "dry_continuation_heads_cm": [-42.17443115469892,-85.6310796452846,-75.1352042447509],
+      "dry_continuation_qcap_cm_per_day": 15.928028136589337,
+      "dry_continuation_max_abs_mass_residual_cm": 1.068155980332719e-15,
+      "dry_continuation_nfev": 4
+    }
+  },
+  "interpretation": [
+    "Both physically generated R2 reference end states admit depletion under every frozen lower-supply case.",
+    "The deterministic highest-passing rule selects 0.75 KSAT for both materials, so the future qualification does not rely on the trivial zero-supply limit.",
+    "At each selected event qtop exceeds supply by a large physical margin, and a subsequent zero-surface dry step is complementarity-admissible and mass-conservative.",
+    "This is fixture characterization only; no RossFast depletion candidate is qualified by these reference-only results."
+  ],
+  "decision": "CHARACTERIZED_POND_DEPLETION_FIXTURES_READY_FOR_R3_QUALIFICATION_PRECOMMIT",
+  "next_gate": "E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION"
+}
