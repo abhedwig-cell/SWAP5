@@ -1,0 +1,20 @@
+name: F-PM08C2A restricted IPOS1 Hooghoudt response
+
+on:
+  push:
+    branches:
+      - work/f-pm08c2a-ipos1-hooghoudt-response
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C2A restricted IPOS1 response gate
+        run: bash tests/fpm/run_fpm08c2a_ipos1_hooghoudt_response_gate.sh
