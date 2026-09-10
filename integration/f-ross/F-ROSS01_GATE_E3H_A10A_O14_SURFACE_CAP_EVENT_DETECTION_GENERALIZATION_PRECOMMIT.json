@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A10A_O14_SURFACE_CAP_EVENT_DETECTION_GENERALIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "purpose": "Test whether the A9 seed-free direct surface-cap detector generalizes across multiple cap heights entirely inside the independently qualified 0-1 cm surface-face envelope. This gate stops at cap-event detection/localization; generalized post-cap runoff continuation is a separate later gate.",
+  "upstream": {
+    "A8": "QUALIFIED_RESTRICTED_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_READY_FOR_SURFACE_EVENT_DETECTION_AND_CAP_GENERALIZATION_RESEARCH",
+    "A9": "QUALIFIED_RESTRICTED_SEED_FREE_O14_SURFACE_CAP_EVENT_DETECTION_READY_FOR_CAP_GENERALIZATION_AND_EVENT_DETECTOR_ROBUSTNESS_RESEARCH",
+    "A9_result_commit": "082cc1f3cf2df490f8e7174b6074097406a35fcc",
+    "surface_face_scope": "QUALIFIED_RESTRICTED_HSURF_0_TO_1_CM"
+  },
+  "frozen_profiles": {
+    "P0_A1_CONTROL": [-0.2,-1.5,-5.0],
+    "P1_DRIER_SUBSOIL": [-0.5,-5.0,-10.0],
+    "P2_DRIER_TOP_AND_SUBSOIL": [-1.0,-10.0,-20.0],
+    "P3_STRONG_DRY_SEPARATION": [-2.0,-20.0,-50.0]
+  },
+  "frozen_caps_cm": [0.10,0.25,0.50,0.75,1.00],
+  "frozen_physical_identity": {
+    "initial_surface_storage_cm": 0.02,
+    "positive_event_supply_fraction_of_ksat": 12.0,
+    "negative_control_supply_fractions_of_ksat": [0.25,0.50],
+    "bottom_head_cm": -15.0,
+    "detection_horizon_day": 0.05,
+    "soil_cell_count": 3,
+    "soil_cell_thickness_cm": 10.0,
+    "surface_face_length_cm": 5.0,
+    "positive_event_case_count": 20,
+    "negative_control_case_count": 40
+  },
+  "candidate_policy": {
+    "same_A9_seed_rule": "For each cap, evaluate q_top0 once at the committed S0/top-head and set tau_seed=(S_cap-S0)/(q_supply-q_top0).",
+    "same_committed_head_seed": true,
+    "event_corrector_count_per_positive_case": 1,
+    "full_trajectory_predictor_count": 0,
+    "trajectory_bisection_count": 0,
+    "candidate_access_to_reference_event_state": false,
+    "no_event_rule": "If S0+max(q_supply,0)*DeltaT < S_cap, certify no cap event with zero nonlinear solves.",
+    "persistent_detector_state_bytes": 0
+  },
+  "reference_policy": {
+    "surface_flux": "independent high-accuracy exact surface-face reference at the tested cap",
+    "internal_fluxes": "existing full-accuracy qualification reference",
+    "dual_start_A": "committed soil heads plus the same algebraic tau_seed",
+    "dual_start_B": "heads halfway from committed values toward zero plus tau_seed*1.05 clipped to the open interval",
+    "accept_reference_case_only_if": "both reference starts converge to finite physically ordered strict-interior roots, each closes mass below 1e-9 cm, and the two reference roots agree within the frozen reference-pair gates",
+    "candidate_does_not_see_reference_roots": true
+  },
+  "frozen_acceptance": {
+    "all_20_positive_cases_candidate_accept": true,
+    "all_20_positive_cases_dual_reference_accept": true,
+    "reference_pair_event_time_difference_day": 1e-7,
+    "reference_pair_max_head_difference_cm": 1e-4,
+    "candidate_event_time_difference_day_vs_reference": 0.00025,
+    "candidate_event_max_head_difference_cm_vs_reference": 0.25,
+    "candidate_event_bottom_transfer_difference_cm_vs_reference": 0.001,
+    "candidate_event_surface_q_abs_error_over_ksat": 0.0005,
+    "candidate_and_reference_max_abs_balance_residual_cm": 1e-9,
+    "candidate_surface_face_max_constitutive_K_evaluations": 530,
+    "candidate_surface_face_max_root_residual_evaluations": 66,
+    "candidate_event_corrector_count_per_positive_case": 1,
+    "candidate_full_trajectory_predictor_count": 0,
+    "candidate_trajectory_bisection_count": 0,
+    "all_40_negative_controls_supply_volume_certified": true,
+    "negative_control_nonlinear_trajectory_count": 0,
+    "all_committed_state_unchanged_until_accept": true,
+    "all_negative_control_and_synthetic_reject_runoff_ledgers_zero": true,
+    "mass_repair_or_clipping": false
+  },
+  "hard_guards": [
+    "Caps are frozen before execution and all lie within the already qualified 0-1 cm surface-face range.",
+    "Do not add caps above 1 cm or below/equal to the initial 0.02 cm surface storage.",
+    "Do not remove a cap/profile combination after execution.",
+    "Do not use an A4/A8/A9 event root as candidate seed or lookup.",
+    "Do not add full-trajectory event search or multi-start candidate logic after execution.",
+    "Do not relax A9 candidate/reference accuracy, mass or face-cost gates.",
+    "A10A does not qualify generalized runoff continuation after the cap event.",
+    "Do not add other materials, top-node saturation, endpoint response tangents, runtime, MultiSWAP or groundwater."
+  ],
+  "decision_logic": {
+    "pass": "QUALIFIED_RESTRICTED_O14_SEED_FREE_SURFACE_CAP_EVENT_DETECTION_ACROSS_0P1_TO_1CM_READY_FOR_GENERALIZED_RUNOFF_CONTINUATION_GATE",
+    "fail": "O14_SURFACE_CAP_EVENT_DETECTION_GENERALIZATION_NOT_QUALIFIED_PRESERVE_A9_AND_CHARACTERIZE_CAP_DEPENDENCE"
+  },
+  "architecture_checks": {
+    "4_compact_state": "No cap-event time or detector state is persistent.",
+    "5_worker_scratch": "Event seeds and nonlinear vectors remain worker-local.",
+    "7_transactionality": "Event state is unpublished until accepted; failed/no-event controls leave committed state and runoff ledger untouched.",
+    "9_generic_time": "Event tau is generic within the explicit 0.05 d interval.",
+    "13_mass_conservation": "Every accepted candidate/reference event closes below 1e-9 cm with no repair.",
+    "24_predictable_runtime": "Exactly one candidate event corrector per positive case, zero nonlinear solves for algebraically impossible controls.",
+    "28_runtime_composition": "Cap height is an external surface/runtime parameter; no cap logic enters the Ross face kernel."
+  },
+  "hard_nonclaims": [
+    "No cap-dependent runoff continuation qualification.",
+    "No automatic detector robustness for inconclusive direct-corrector failures.",
+    "No caps above 1 cm.",
+    "No material other than O14.",
+    "No production, runtime or MultiSWAP admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
