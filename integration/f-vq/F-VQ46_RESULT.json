@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ46",
+  "title": "Independent Qualification of F-MR28 Reference-ET to Restricted Root-Uptake Execution Composition",
+  "owner_workunit": "F-MR28",
+  "owner_closeout": "840a43ab51b6c5eb903c43efc33b6d735b0a1872",
+  "qualified_candidate_head": "7cd18f03293ebd94fce4bb4430bc78ba13e7e237",
+  "candidate_source": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "workflow_run": 34466381015,
+  "workflow_job": 102835836610,
+  "output_sha256": "fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0",
+  "evidence": {
+    "production_source_immutable": "PASS",
+    "frozen_owner_authorities": "PASS",
+    "composition_boundary_static": "PASS",
+    "no_physics_reimplementation_or_mass_booking": "PASS",
+    "strict_compile_O0": "PASS",
+    "strict_compile_O2": "PASS",
+    "independent_oracle_O0": "PASS",
+    "independent_oracle_O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "held_out_active_cases": 192,
+    "explicit_chain_oracle": "PASS",
+    "stale_ptra_independence": "PASS",
+    "upstream_et_rejection_contained": "PASS",
+    "invalid_root_geometry_contained": "PASS",
+    "active_unavailable_committed_fail_closed": "PASS",
+    "inactive_dependency_free_zero_route": "PASS",
+    "stateless_A_B_A_identity": "PASS"
+  },
+  "scope": "restricted MACRO/Feddes drought-only precomputed-qrot root-water-uptake execution fed by canonical authoritative reference-ET ptra",
+  "nonclaims": [
+    "no actual-transpiration mass-ledger admission",
+    "no accepted-window integration",
+    "no oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake qualification",
+    "no SWKIMPL=1 dynamic root-sink reevaluation",
+    "no crop lifecycle advancement",
+    "no general release qualification"
+  ],
+  "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_CANONICAL_ADMISSION"
+}
