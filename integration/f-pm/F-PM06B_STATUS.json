@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.et_surface_evaporation_readiness_status.v1",
+  "work_unit": "F-PM06B",
+  "title": "Restricted Surface Evaporation & Top-Boundary Readiness",
+  "branch": "work/f-pm06b-restricted-surface-evaporation-boundary-readiness",
+  "source_authority": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "phase": "READINESS_CLOSED",
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_BOUNDARY_READINESS_READY_FOR_STRUCTURAL_CONTRACT_CANDIDATE",
+  "state": {
+    "decomposed": true,
+    "source_bound": true,
+    "persisted": true,
+    "tested": true,
+    "production_modified": false,
+    "canonical_admitted": false,
+    "closed": true
+  },
+  "authoritative_gate": {
+    "tested_head": "5ac5b61c0ecffc664c122061c60938e04b021856",
+    "workflow_run": 34523370124,
+    "job": 103026152203,
+    "conclusion": "success"
+  },
+  "qualified_scope": {
+    "swinter": 0,
+    "swredu": 0,
+    "includes": [
+      "peva/epond demand versus reva/epd actual ownership",
+      "B1.10 Emax hydraulic limitation ownership",
+      "dry versus ponded evaporation partition",
+      "top-boundary result decomposition requirement",
+      "exact-once mass attribution rule",
+      "generic-time and rollback contract",
+      "optional-state exclusion"
+    ],
+    "excludes": [
+      "production implementation",
+      "SWINTER 1/2/3",
+      "SWREDU 1/2",
+      "new runoff or macropore physics",
+      "snow interaction widening",
+      "canonical admission"
+    ]
+  },
+  "next_required_workunit": {
+    "kind": "restricted structural contract candidate",
+    "rule": "start from then-current integration/f-ci-canonical, not from this readiness branch",
+    "minimum_goal": "replace the too-narrow net-flux-only top-boundary request/result seam with explicit trial-safe surface evaporation result semantics, without yet migrating all B1.10 BoundTop physics"
+  },
+  "architecture": {
+    "invariants_audited": 30,
+    "result": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  }
+}
