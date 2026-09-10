@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C4",
+  "title": "Multi-Level Drainage Exchange Aggregation and Branch Composition",
+  "branch": "work/f-pm08c4-multilevel-exchange-aggregation",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED",
+  "source_base": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "state": {
+    "contract_persisted": true,
+    "production_candidate_implemented": false,
+    "tested": false,
+    "structurally_qualified": false,
+    "scientifically_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "architecture": {
+    "dynamic_level_count": true,
+    "persistent_process_state": false,
+    "kernel_io_separated": true,
+    "mass_total_is_derived_view": true,
+    "tangent_unavailability_preserves_flux": true,
+    "response_dispatch_outside_aggregator": true,
+    "divdra_outside_scope": true,
+    "solver_jacobian_owned_by_process": false
+  },
+  "next_required_step": "implement pure deterministic multi-level aggregation module and structural gate"
+}
