@@ -1,0 +1,34 @@
+name: F-PE10 materialize forcing-only direct view
+
+on:
+  push:
+    branches:
+      - qualification/f-pe10-direct-immutable-registry-views
+    paths:
+      - 'tests/fpe/materialize_fpe10_forcing_view_candidate.py'
+      - '.github/workflows/fpe10-materialize-forcing-view.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize forcing-view candidate
+        run: python3 tests/fpe/materialize_fpe10_forcing_view_candidate.py
+      - name: Persist production postimage
+        run: |
+          set -euo pipefail
+          test -n "$(git status --porcelain -- src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90 src/runtime/mod_fmr_parallel_worker_pool.f90)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_serialized_reference_backend.f90 \
+                  src/runtime/mod_fmr_serialized_multiswap_runtime.f90 \
+                  src/runtime/mod_fmr_parallel_worker_pool.f90
+          git commit -m 'perf(F-PE10): prototype trial-scoped direct forcing views'
+          git push origin HEAD:qualification/f-pe10-direct-immutable-registry-views
