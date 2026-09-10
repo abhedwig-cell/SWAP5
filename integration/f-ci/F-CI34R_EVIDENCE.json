@@ -1,0 +1,107 @@
+{
+  "schema": "swap5.current_canonical_recomposition_evidence.v1",
+  "work_unit": "F-CI34R",
+  "title": "F-MR31 Root Attribution Current-Canonical Recomposition Evidence",
+  "branch": "qualification/f-ci34r-current-canonical-root-attribution-recomposition",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "545e07c65338b9fe61b963468675c41f3e931816",
+    "target_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "pre_candidate_blob": "7bfb4a269256f0f1d50c32a20fd42479cf033528"
+  },
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "owner_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+    "independent_workunit": "F-VQ50",
+    "independent_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "independent_decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE"
+  },
+  "prior_stale_base_checkpoint": {
+    "workunit": "F-CI34",
+    "branch": "qualification/f-ci34-fmr31-root-attribution-canonical-admission",
+    "tested_head": "71754563308cf7bfe568b696c6c5e372dcad0d01",
+    "run": 34486999170,
+    "job": 102903717149,
+    "conclusion": "success",
+    "disposition": "SCIENTIFICALLY_VALID_PREPROMOTION_CHECKPOINT_NOT_PROMOTABLE_AFTER_CANONICAL_MOVED"
+  },
+  "canonical_drift_reconciliation": {
+    "from": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "to": "545e07c65338b9fe61b963468675c41f3e931816",
+    "src_delta": [],
+    "classification": "GOVERNANCE_ONLY_NO_PRODUCTION_SOURCE_DRIFT",
+    "production_regression_indicated": false
+  },
+  "authoritative_precloseout_run": {
+    "tested_head": "29e902fbe8478044e6ef57abcab667df62f464b3",
+    "run": 34488123151,
+    "job": 102907547808,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "passed_gates": [
+    "FCI34R_CURRENT_CANONICAL_SOURCE_AUTHORITY=PASS",
+    "FCI34R_EXACT_ONE_CURRENT_CANONICAL_SOURCE_DELTA=PASS",
+    "FCI34R_EXACT_FMR31_RUNTIME_BLOB=PASS",
+    "FCI34_EXACT_ONE_PRODUCTION_SOURCE_DELTA=PASS",
+    "FCI34_EXACT_FMR31_RUNTIME_BLOB=PASS",
+    "FCI34_FVQ50_QUALIFICATION_AUTHORITY=PASS",
+    "FCI34_ALL_30_ARCHITECTURE_INVARIANTS=PASS",
+    "FCI34_FVQ50_INDEPENDENT_ORACLE_SOURCE_LOCK=PASS",
+    "FCI34_FVQ50_REPLAY_O0=PASS",
+    "FCI34_FVQ50_REPLAY_O2=PASS",
+    "FCI34_FVQ50_O0_O2_IDENTITY=PASS",
+    "FCI34_FVQ21_REAL_ROOT_ORACLE_SOURCE_LOCK=PASS",
+    "FCI34_REAL_ROOT_REPLAY_O0=PASS",
+    "FCI34_REAL_ROOT_REPLAY_O2=PASS",
+    "FCI34_REAL_ROOT_O0_O2_IDENTITY=PASS",
+    "FVQ50_ATTRIBUTION_NOT_DERIVED_FROM_TOTAL_MASS_OUT=PASS",
+    "FVQ50_ACTIVE_ZERO_ATTRIBUTION_AVAILABLE=PASS",
+    "FVQ50_ROOT_INACTIVE_ATTRIBUTION_UNAVAILABLE=PASS",
+    "FVQ50_NONCOMMITTED_ATTRIBUTION_UNAVAILABLE=PASS",
+    "FVQ50_NO_SECOND_MASS_BOOKING=PASS",
+    "FVQ50_HARD_MASS_BALANCE=PASS",
+    "FVQ50_A_B_A_REPLAY=PASS",
+    "FVQ50_BY_VALUE_POSTRUN_FORCING_TAMPER_RESISTANCE=PASS",
+    "FVQ50_EXACT_FORCING_HANDLE_ASSOCIATION=PASS",
+    "FMR09_ROOT_SINK_EXACTLY_ONCE=PASS",
+    "FMR09_BALANCED_ROOT_SSDI_STATE_IDENTITY=PASS",
+    "FMR09_HARD_MASS_BALANCE=PASS",
+    "FCI34_PREPROMOTION_CANONICAL_ADMISSION_GATE=PASS",
+    "FCI34R_CURRENT_CANONICAL_RECOMPOSITION_GATE=PASS"
+  ],
+  "real_headcalc_preservation": {
+    "control_total_out": 0.0813196032106573,
+    "root_enabled_total_out": 0.1613196032106573,
+    "expected_root_out_delta": 0.08,
+    "observed_root_out_delta": 0.08,
+    "hard_mass_balance": "PASS"
+  },
+  "architecture": {
+    "invariants_checked": 30,
+    "invariants_with_adverse_delta": 0,
+    "mass_conservation_absolute": true,
+    "new_persistent_state": false,
+    "new_solver_or_kernel_semantics": false,
+    "parallel_scope_widened": false,
+    "time_varying_qrot_scope_widened": false
+  },
+  "source_delta": {
+    "relative_to_canonical_head": "545e07c65338b9fe61b963468675c41f3e931816",
+    "production_paths_changed": ["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+    "target_blob_exact": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "reference_source_changed": false,
+    "kernel_changed": false,
+    "solver_changed": false,
+    "process_science_changed": false
+  },
+  "qualification_interpretation": {
+    "science_reopened": false,
+    "scientific_authority_remains": "F-VQ50",
+    "recomposition_purpose": "bind the already independently qualified production blob to the live canonical source authority",
+    "canonical_admission_claimed_here": false
+  }
+}
