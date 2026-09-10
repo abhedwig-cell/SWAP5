@@ -2,9 +2,10 @@
   "schema": "swap5.canonical_source_admission_status.v1",
   "work_unit": "F-CI32",
   "title": "Remediated Restricted DIVDRA Spatial Distribution Canonical Source Admission",
-  "branch": "qualification/f-ci32-fpm08br-divdra-canonical-admission",
-  "phase": "QUALIFIED_READY_FOR_EXACT_HEAD_RECHECK_AND_CANONICAL_FAST_FORWARD",
-  "decision": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_CANONICAL_SOURCE_ADMISSION_READY_FOR_FAST_FORWARD",
+  "qualification_branch": "qualification/f-ci32-fpm08br-divdra-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "phase": "QUALIFIED_CLOSED_CANONICAL_SOURCE_ADMISSION_REQUIRES_FINAL_GOVERNANCE_HEAD_RECHECK",
+  "decision": "QUALIFIED_CLOSED_REMEDIATED_RESTRICTED_DIVDRA_CANONICAL_SOURCE_ADMISSION",
   "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
   "candidate": {
     "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
@@ -30,9 +31,30 @@
     "canonical_workflow_preparation_run": 34479433026,
     "canonical_workflow_preparation_job": 102878203256,
     "canonical_workflow_preparation_conclusion": "success",
+    "exact_promotion_head": "1d3f0f64771e593264ea037485030cd27a6958ee",
+    "exact_promotion_head_run": 34479550209,
+    "exact_promotion_head_job": 102878593444,
+    "exact_promotion_head_conclusion": "success",
     "O0_O2_smoke_output_identical": true,
     "exact_source_delta_verified": true,
     "zero_reference_delta_verified": true
+  },
+  "canonical_admission": {
+    "pre_admission_head": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "promoted_head": "1d3f0f64771e593264ea037485030cd27a6958ee",
+    "promotion_method": "non_forced_fast_forward",
+    "post_promotion_run": 34479613064,
+    "post_promotion_conclusion": "success",
+    "frozen_fci31_job": 102879044431,
+    "frozen_fci31_conclusion": "success",
+    "current_fci32_postimage_job": 102879337095,
+    "current_fci32_postimage_conclusion": "success",
+    "promoted_source_delta": [
+      "src/process/mod_drainage_spatial_distribution.f90"
+    ],
+    "existing_production_source_modified": false,
+    "reference_tree_modified": false,
+    "runtime_binding_added": false
   },
   "state": {
     "live_authorities_rechecked": true,
@@ -48,17 +70,24 @@
     "architecture_audited_all_30": true,
     "tested": true,
     "qualified": true,
-    "canonical_ref_advanced": false,
-    "post_promotion_canonical_ci_passed": false,
-    "runtime_bound": false
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_ci_passed": true,
+    "production_source_admitted": true,
+    "runtime_bound": false,
+    "scientific_scope_reopened": false,
+    "new_drainage_physics": false,
+    "reference_source_modified": false,
+    "closed": true,
+    "final_governance_head_requalification_pending": true
   },
   "scope_guard": {
+    "canonical_source_admission_only": true,
     "scientific_scope_reopened": false,
     "new_drainage_physics": false,
     "runtime_binding": false,
+    "runtime_composition": false,
     "existing_production_source_modified": false,
     "reference_source_modified": false
   },
-  "promotion_requirement": "rerun identical F-CI32 admission gate on this exact head, recheck live canonical still equals clean_base, then non-forced fast-forward integration/f-ci-canonical; require full post-promotion canonical lineage CI before final closeout",
-  "next_stage_after_final_closeout": "separate DIVDRA runtime binding/composition workunit followed by independent runtime qualification"
+  "next_stage": "separate DIVDRA runtime binding/composition workunit followed by genuinely independent runtime qualification; do not infer runtime consumption from F-CI32 source admission"
 }
