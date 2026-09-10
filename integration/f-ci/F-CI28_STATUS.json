@@ -25,21 +25,33 @@
     "F_CI27_ET_runtime_preservation": "PASS",
     "F_VQ36_grid_cases": 13824
   },
+  "pre_promotion_requalification": {
+    "head": "be9aa5962de16e8a19c33784573e55475fab237f",
+    "independent_run": 34459160143,
+    "independent_job": 102812577222,
+    "independent_conclusion": "success",
+    "canonical_readiness_run": 34459160273,
+    "canonical_readiness_conclusion": "success",
+    "frozen_F_CI24": "PASS",
+    "frozen_F_CI27": "PASS",
+    "current_F_CI28_postimage": "PASS"
+  },
   "qualified_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart on the current F-CI27 ET-runtime canonical postimage",
-  "status": "QUALIFIED_INDEPENDENT_FMR25_RESTART_CURRENT_CANONICAL_POSTIMAGE_CANONICAL_READINESS_PENDING",
+  "status": "QUALIFIED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION_READY_FOR_NONFORCED_FAST_FORWARD",
   "decision": "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE",
   "state": {
     "realized": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonical_readiness_passed": false,
+    "canonical_readiness_passed": true,
     "canonical_ref_advanced": false,
     "post_promotion_canonical_workflow_passed": false,
     "production_source_admitted": false,
     "closed": false
   },
-  "next_action": "Add an F-CI28 canonical postimage gate and future canonical workflow that preserve F-CI24 and F-CI27 authorities while admitting exactly the two restart modules. Require pre-promotion readiness, live canonical lock and non-forced forward lineage before advancing canonical.",
+  "readiness_evidence": "integration/f-ci/F-CI28_CANONICAL_READINESS.json",
+  "next_action": "Requalify this metadata-only readiness head. If both F-CI28 workflows remain green and the live canonical ref is still exactly 0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d with strict forward lineage to this head, advance integration/f-ci-canonical by non-forced fast-forward only; then require the canonical workflow to pass before closeout.",
   "nonclaims": [
     "No parallel restart qualification.",
     "No filesystem persistence-format qualification.",
