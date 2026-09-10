@@ -3,32 +3,67 @@
   "work_unit": "F-VQ49",
   "title": "Independent Qualification of F-MR33 Restricted DIVDRA Runtime Binding",
   "branch": "qualification/f-vq49-fmr33-divdra-runtime-binding",
-  "phase": "PRETEST_CONTRACT_PERSISTED",
-  "decision": "OPEN_INDEPENDENT_RUNTIME_QUALIFICATION",
+  "phase": "QUALIFIED_CLOSED_PENDING_EXACT_HEAD_RERUN",
+  "decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION",
   "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
   "candidate": {
     "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
     "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
     "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
   },
+  "qualification": {
+    "decisive_precloseout_head": "2ebc1ae925e8b00abc133be59bdb344606ee717e",
+    "workflow_run": 34482856728,
+    "workflow_job": 102889702972,
+    "conclusion": "success",
+    "valid_runtime_cases": 400,
+    "consumer_composition_cases": 400,
+    "fresh_target_repeat_cases": 400,
+    "zero_transfer_cases": 5,
+    "process_rejection_cases": 20,
+    "preallocated_target_guards": 5,
+    "O0_output_sha256": "417d2a7fcc44b5744bb02028ac3b719e0e135b80e60d293c20a8fbb0c8c23321",
+    "O2_output_sha256": "417d2a7fcc44b5744bb02028ac3b719e0e135b80e60d293c20a8fbb0c8c23321",
+    "summary_sha256": "1c9354b6f95bcfbafc38018551a51f386408ed17042bbfd67d1ad9de8f61e35a",
+    "artifact_id": 10154324094,
+    "artifact_digest": "sha256:79f550161bd27959574b656234d89ba0fcf5fbddd821ffb80daf1bcebf69b4de",
+    "architecture_invariants_audited": 30,
+    "architecture_violations": 0
+  },
   "state": {
     "live_name_checked_free": true,
     "branch_created_from_current_canonical": true,
     "plan_persisted": true,
     "pretest_status_persisted": true,
-    "independent_verifier_persisted": false,
-    "gate_persisted": false,
-    "workflow_persisted": false,
-    "architecture_audit_persisted": false,
-    "tested": false,
-    "independently_qualified": false,
+    "independent_verifier_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
+    "architecture_audit_persisted": true,
+    "evidence_persisted": true,
+    "tested": true,
+    "independently_qualified": true,
+    "exact_closeout_head_rerun_pending": true,
     "canonical_admitted": false
   },
   "independence_guard": {
     "owner_tests_used_as_oracle": false,
+    "owner_fixture_values_reused": false,
     "owner_expected_values_reused": false,
     "f_vq47_science_reopened": false,
-    "qualification_branch_production_candidate_copied": false
+    "qualification_branch_production_candidate_copied": false,
+    "qualification_branch_src_delta_zero": true,
+    "qualification_branch_reference_delta_zero": true
   },
-  "pass_decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION"
+  "qualified_scope": "RESTRICTED_SINGLE_LEVEL_POSITIVE_DIVDRA_SPATIAL_DISTRIBUTION_RUNTIME_MATERIALIZATION_FROM_EXPLICIT_PROCESS_HYDRAULIC_VIEW_AND_EXTERNAL_SCALAR_TRANSFER",
+  "not_qualified": [
+    "drainage exchange-law science",
+    "negative or infiltration distribution",
+    "multilevel drainage",
+    "surface-water-controlled drainage",
+    "fully implicit drainage derivatives or Jacobian assembly",
+    "policy choosing committed versus trial hydraulic-view provenance outside this explicit-input binding",
+    "canonical admission"
+  ],
+  "closeout_requirement": "The identical persisted F-VQ49 gate must pass on this exact status closeout head with the same O0/O2 output hashes and zero src/reference delta. No further qualification commit is required after that successful exact-head rerun.",
+  "next_if_exact_head_passes": "separate canonical admission workunit for exact runtime blob e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
 }
