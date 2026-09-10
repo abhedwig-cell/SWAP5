@@ -1,0 +1,61 @@
+{
+  "schema": "swap5.independent_runtime_qualification_plan.v1",
+  "work_unit": "F-VQ51",
+  "title": "Independent Qualification of F-MR36 Restricted Serialized DIVDRA Active Runtime Callsite",
+  "clean_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "owner_authority": {
+    "work_unit": "F-MR36",
+    "branch": "work/f-mr36-divdra-active-runtime-callsite",
+    "owner_closeout_head": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+    "owner_decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION",
+    "exact_head_ci_run": 34523786791,
+    "exact_head_ci_conclusion": "success"
+  },
+  "candidate": [
+    {
+      "path": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+      "blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5"
+    },
+    {
+      "path": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+      "blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+    }
+  ],
+  "qualification_question": "Does the exact two-file F-MR36 candidate correctly and transactionally compose already-qualified restricted DIVDRA node distribution into the existing serialized real-physics runtime, preserving caller forcing, existing mass accounting, explicit hydraulic-view provenance and column isolation?",
+  "independence": {
+    "owner_tests_as_oracle": false,
+    "owner_expected_values_reused": false,
+    "owner_fixture_values_reused": false,
+    "owner_green_output_hash_used_as_acceptance_oracle": false,
+    "fresh_independent_runtime_cases_required": true,
+    "clean_canonical_base_then_exact_candidate_overlay": true,
+    "f_vq47_science_reopened": false,
+    "f_vq49_binding_science_reopened": false
+  },
+  "proof_obligations": [
+    "exact candidate blob identity",
+    "exact two-file src delta from clean canonical base",
+    "zero reference delta",
+    "generic serialized runtime byte identity",
+    "fresh manual-FMR33-binding versus active-callsite real-physics equivalence over multiple scalar transfers and explicit groundwater-level views",
+    "inactive route exact identity",
+    "two-column distinct-forcing no-cross-contamination composition",
+    "shared-forcing ownership fail-closed before physical mutation",
+    "negative and restricted-threshold transfer rejection before physical mutation",
+    "preallocated drainage target not overwritten",
+    "caller forcing restored after successful active execution",
+    "existing source/sink mass ledger remains the only water-accounting path",
+    "O0/O2 output identity",
+    "all 30 SWAP architecture invariants audited"
+  ],
+  "hard_holds": [
+    "no drainage exchange-law derivation",
+    "no fully implicit or trial-state drainage qualification",
+    "no hidden committed hydraulic-view substitution",
+    "no surface-water-controlled drainage",
+    "no parallel active DIVDRA qualification",
+    "no HeadCalc/Jacobian drainage mutation",
+    "no second water-mass booking",
+    "no canonical admission in F-VQ51"
+  ]
+}
