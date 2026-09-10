@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D2",
+  "title": "Restricted Extended Drainage Exchange-Law Readiness",
+  "branch": "work/f-pm08d2-restricted-extended-drainage-exchange-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
+  "phase": "CHECKPOINT_PERSISTED_BEFORE_EXECUTABLE_QUALIFICATION",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "exact_branch_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "parent_authorities": {
+    "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "fvq42_empirical_interflow": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
+    "fvq43_multilevel_aggregation": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "scope": {
+    "stateless_per_level_extended_exchange": true,
+    "explicit_resolved_surface_water_head_input": true,
+    "signed_soil_to_surface_water_flux": true,
+    "physical_response_sensitivities": true,
+    "SWSRF_1_route": false,
+    "storage_availability_limiter": false,
+    "multilevel_aggregation_implementation": false,
+    "DIVDRA": false,
+    "surface_water_storage_balance": false,
+    "weir_control": false,
+    "runtime_composition": false,
+    "production_changes_allowed": false
+  },
+  "source_risk_holds": [
+    "D2-RISK-01-SWSRF1-UNINITIALIZED-WL",
+    "D2-RISK-02-NEGATIVE-POWER-INTERFLOW",
+    "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY",
+    "D2-RISK-04-CHANNEL-ACTIVATION-SEAM",
+    "D2-RISK-05-GWLINF-DERIVATIVE-KINK",
+    "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK"
+  ],
+  "state": {
+    "branch_created": true,
+    "checkpoint_persisted": true,
+    "source_equations_reconstructed": false,
+    "risk_inventory_complete": false,
+    "sensitivity_contract_complete": false,
+    "test_oracle_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "reference_source_changed": false
+  },
+  "next_required_step": "persist exact per-level frozen exchange equations, explicit domain restrictions, branch/singularity metadata and independent equation-level probes before any production candidate"
+}
