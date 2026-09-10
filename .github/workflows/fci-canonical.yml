@@ -67,11 +67,32 @@ jobs:
       - name: Replay frozen F-CI19 source lineage and reachability
         run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
 
+  frozen-fci24-reference-et-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f49e17c6627717d5dea181808a122f2e35960739
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay admitted F-CI24 reference ET authority on its qualified postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
+          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
+          bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
+          test "$(git rev-parse HEAD:src)" = 3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI24_FROZEN_REFERENCE_ET_AUTHORITY=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
       - frozen-fci19-candidate-preservation
       - frozen-fci19-source-lineage
+      - frozen-fci24-reference-et-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -81,10 +102,6 @@ jobs:
         run: gfortran --version
       - name: Current F-CI27 forward-lineage authority gate
         run: python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-      - name: Reexecute admitted F-PM06A structural candidate
-        run: bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
-      - name: Reexecute admitted F-VQ35 scientific qualification
-        run: bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
       - name: Reexecute admitted F-MR23 runtime binding owner gate
         run: bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
       - name: Reexecute admitted F-VQ36 independent runtime qualification
