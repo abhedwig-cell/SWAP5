@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "upstream": {
+    "restricted_surface_face_result": "F-ROSS01_GATE_E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION_RESULT.json",
+    "restricted_surface_face_commit": "f27acb1b6587c2819b6beb28dc210c3977192608",
+    "restricted_surface_face_decision": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION"
+  },
+  "purpose": "Qualify the smallest exact transaction-safe surface-water storage and runoff ledger seam around a generic soil-face flux. This gate proves atomic accounting and event/retry semantics only; it does not qualify the full atmospheric top-boundary physics.",
+  "legacy_semantic_anchor": {
+    "surface_storage": "pond / pondm1",
+    "legacy_update": "pond = pondm1 + (arflux - qtop) * dt",
+    "legacy_runoff_transfer": "runots = max(pond - pondmx, 0); pond = min(pond, pondmx)",
+    "required_modern_interpretation": "The excess above Smax is an explicit conservative transfer to runoff before the committed surface state is bounded. Bounding surface storage is never permission to discard or repair mass.",
+    "legacy_retry_anchor": "surfacewater may set fldecdt and return; the driver retries with a reduced or event-localized dt"
+  },
+  "frozen_scope": {
+    "time_contract": "generic [t0,t1], calendar-free",
+    "surface_persistent_physical_state": ["surface_storage_cm"],
+    "test_harness_only_state": ["synthetic_soil_receiver_storage_cm"],
+    "forcing": ["net_surface_supply_rate_cm_per_day"],
+    "soil_interface": "SoilFaceResult(q_top_rate_cm_per_day), q_top positive downward",
+    "result_ledger": ["supply_amount_cm", "top_transfer_amount_cm", "runoff_amount_cm", "surface_balance_residual_cm", "system_balance_residual_cm"],
+    "committed_diagnostics": ["cumulative_supply_cm", "cumulative_top_transfer_cm", "cumulative_runoff_cm"],
+    "trial_scratch_owner": "worker",
+    "max_surface_storage_cm": 1.0,
+    "real_richards_state_update": false,
+    "post_event_boundary_resolve": false
+  },
+  "mass_identities": {
+    "surface": "S1 - S0 = Qsup - Qtop - R",
+    "synthetic_system": "(S1 - S0) + (Soil1 - Soil0) + R = Qsup",
+    "synthetic_soil_receiver": "Soil1 - Soil0 = Qtop",
+    "tolerance": "64 * binary64_epsilon * max(1, abs(S0)+abs(S1)+abs(Qsup)+abs(Qtop)+abs(R)+abs(Soil0)+abs(Soil1))",
+    "repair_or_clipping_allowed": false
+  },
+  "transaction_policy": {
+    "checkpoint": "Committed input state is immutable.",
+    "ordinary_accept": "Compute all trial state and ledgers locally, verify bounds and both mass identities, then atomically publish one new committed state.",
+    "surface_overflow": "If raw_surface > Smax, set runoff = raw_surface - Smax and S1 = raw_surface - runoff. This is an explicit conservative transfer, not clipping.",
+    "surface_underflow": "If raw_surface < 0 and q_top_rate > supply_rate, reject the full trial and return dt_event = S0/(q_top_rate-supply_rate). The committed state, time and ledgers remain bitwise unchanged.",
+    "event_retry": "A retry exactly to dt_event may commit S1=0 if all balances pass.",
+    "post_event_rule": "Continuation beyond a depletion event with the pre-event q_top is forbidden. The physical top-boundary problem must be re-solved after the event in a later gate.",
+    "injected_solver_rejection": "An otherwise valid locally computed trial can be rejected before publication; committed state and ledgers must remain bitwise unchanged."
+  },
+  "deterministic_scenarios": [
+    {"id":"ordinary_accept","t0_day":2.375,"S0_cm":0.25,"Smax_cm":1.0,"supply_rate":0.5,"qtop_rate":0.25,"dt_day":0.5,"expect":{"t1_day":2.875,"S1_cm":0.375,"Qsup_cm":0.25,"Qtop_cm":0.125,"runoff_cm":0.0}},
+    {"id":"exact_fill","t0_day":2.0,"S0_cm":0.5,"Smax_cm":1.0,"supply_rate":1.0,"qtop_rate":0.0,"dt_day":0.5,"expect":{"S1_cm":1.0,"runoff_cm":0.0}},
+    {"id":"overflow_conservative_transfer","t0_day":2.0,"S0_cm":0.75,"Smax_cm":1.0,"supply_rate":1.0,"qtop_rate":0.25,"dt_day":0.5,"expect":{"raw_surface_cm":1.125,"S1_cm":1.0,"runoff_cm":0.125}},
+    {"id":"underflow_reject","t0_day":2.0,"S0_cm":0.25,"Smax_cm":1.0,"supply_rate":0.25,"qtop_rate":0.75,"dt_day":1.0,"expect":{"accepted":false,"dt_event_day":0.5,"committed_bitwise_unchanged":true}},
+    {"id":"underflow_event_retry","t0_day":2.0,"S0_cm":0.25,"Smax_cm":1.0,"supply_rate":0.25,"qtop_rate":0.75,"dt_day":0.5,"expect":{"accepted":true,"S1_cm":0.0,"Qsup_cm":0.125,"Qtop_cm":0.375}},
+    {"id":"injected_reject","t0_day":2.375,"S0_cm":0.25,"Smax_cm":1.0,"supply_rate":0.5,"qtop_rate":0.25,"dt_day":0.5,"expect":{"accepted":false,"committed_bitwise_unchanged":true}},
+    {"id":"partition_invariance","definition":"ordinary_accept one dt=0.5 versus two sequential accepted dt=0.25 trials with identical forcing and qtop; require bit-identical final committed state"},
+    {"id":"overflow_partition_invariance","definition":"one overflow dt=0.5 versus two sequential dt=0.25 trials with identical forcing and qtop; require bit-identical final state and cumulative runoff"}
+  ],
+  "frozen_pass_conditions": {
+    "all_scenarios_pass": true,
+    "all_accepted_surface_states_within_bounds": true,
+    "all_accepted_surface_balance_residuals_within_frozen_tolerance": true,
+    "all_accepted_system_balance_residuals_within_frozen_tolerance": true,
+    "overflow_runoff_is_exact_excess": true,
+    "underflow_rejection_bitwise_unchanged": true,
+    "injected_rejection_bitwise_unchanged": true,
+    "underflow_event_dt_day": 0.5,
+    "event_retry_surface_storage_cm": 0.0,
+    "generic_non_midnight_final_time_day": 2.875,
+    "partition_invariance_bitwise": true,
+    "post_event_stale_qtop_continuation_allowed": false,
+    "mass_repair_or_clipping_used": false,
+    "persistent_surface_physical_state_scalar_count": 1,
+    "asymptotic_cost": "O(1)"
+  },
+  "architecture_checks": {
+    "2_kernel_io_separation": "Experiment contract contains no files, units or parser behavior in the calculation API.",
+    "3_explicit_data_separation": "Committed physical state, forcing, soil-face result, trial scratch and result ledger are distinct.",
+    "4_compact_persistent_state": "Only one physical surface scalar is persistent in this gate.",
+    "5_scratch_per_worker": "Raw trial storage, event calculation and balance intermediates are nonpersistent.",
+    "7_transactional_timesteps": "Rejected trials never alter committed state, time or cumulative ledgers.",
+    "9_generic_time": "The calculation accepts arbitrary t0 and dt; a non-midnight scenario is mandatory.",
+    "13_mass_conservation_absolute": "Both surface and composed-system identities must close to frozen roundoff tolerance without repair.",
+    "20_alternative_soil_water_solvers": "Only a generic SoilFaceResult is consumed; no Richards implementation internals are visible.",
+    "22_no_headcalc_internals": "Top-boundary composition knows qtop only through the soil-face contract.",
+    "23_physics_solver_policy_separated": "Storage capacity is physical configuration; retry/accept logic is numerical transaction policy.",
+    "24_predictable_runtime": "Ledger update and event localization are O(1).",
+    "26_diagnostics_runtime": "Accept/reject reason, event dt and exact mass residuals are explicit outputs.",
+    "27_optional_functionality_scales": "No optional surface modules are allocated in this restricted gate.",
+    "29_no_silent_dependencies": "No midnight/day/file/MODFLOW assumption.",
+    "30_change_explicitly_checked": "This precommit freezes the architecture tests before execution."
+  },
+  "hard_nonclaims": [
+    "No real Richards state update is implemented or qualified in this gate.",
+    "No physical decomposition of precipitation, interception, snow, runon, irrigation or evaporation is qualified.",
+    "No post-event top-boundary mode re-solve is implemented.",
+    "No response tangent across a surface-storage or endpoint branch switch is qualified.",
+    "No full top-boundary composition, production runtime, MultiSWAP or groundwater admission follows from this gate.",
+    "The synthetic soil receiver exists only to close an executable composed mass identity and is not production state."
+  ],
+  "positive_exit": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+  "negative_exit": "TRANSACTIONAL_SURFACE_WATER_LEDGER_NOT_QUALIFIED"
+}
