@@ -1,0 +1,116 @@
+{
+  "schema": "swap5.parallel_committed_restart_composition_plan.v2",
+  "work_unit": "F-MR32",
+  "title": "Parallel Committed-Boundary Restart Composition",
+  "branch": "work/f-mr32-current-canonical-parallel-committed-restart-composition",
+  "source_lock": "integration/f-mr/F-MR32_CURRENT_CANONICAL_SOURCE_LOCK.json",
+  "clean_current_canonical_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "prior_plan_checkpoint": {
+    "branch": "work/f-mr32-parallel-committed-restart-composition",
+    "head": "63d5e357c9b8471a5a72a3f49b9621103e6a221d",
+    "disposition": "PLAN_PROVENANCE_ONLY"
+  },
+  "prerequisites": {
+    "restart": {
+      "work_unit": "F-CI28",
+      "decision": "QUALIFIED_CLOSED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION"
+    },
+    "parallel": {
+      "work_unit": "F-CI30",
+      "decision": "QUALIFIED_CLOSED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_ADMISSION"
+    },
+    "current_serialized_runtime": {
+      "work_unit": "F-CI34",
+      "blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+    }
+  },
+  "goal": "Qualify the smallest current-canonical composition in which a committed MultiSWAP registry can be exported/restored and then continued through the already-admitted restricted real parallel runtime without changing scientific results, mass accounting, transaction identity, deterministic publication or failure isolation.",
+  "scope": {
+    "parallel_committed_boundary_restart_composition": true,
+    "serialized_restart_only": false,
+    "mid_transaction_restart": false,
+    "trial_state_restart": false,
+    "solver_scratch_persistence": false,
+    "new_restart_file_format": false,
+    "cross_version_migration": false,
+    "new_parallel_physics_family": false,
+    "scientific_kernel_change": false,
+    "production_change_expected": false,
+    "qualification_first": true
+  },
+  "composition_contract": {
+    "restore_committed_registry_before_parallel_dispatch": true,
+    "whole_registry_atomic_publication": true,
+    "restart_lineage_revision_time_preserved": true,
+    "shared_immutable_parameter_identities_preserved": true,
+    "parallel_worker_scratch_rebuilt_after_restore": true,
+    "no_worker_or_solver_scratch_persisted": true,
+    "canonical_published_result_order_preserved": true,
+    "worker_count_independent_scientific_outputs": true,
+    "input_order_independent_scientific_outputs_by_column_id": true,
+    "hard_per_column_mass_balance_retained": true,
+    "hard_aggregate_mass_balance_retained": true,
+    "rejected_column_isolation_retained": true,
+    "unsupported_parallel_profiles_fail_closed_before_physical_solve": true,
+    "no_silent_serialization_fallback": true
+  },
+  "required_matrix": {
+    "column_counts": [1, 2, 7, 8, 17, 31, 32],
+    "batch_patterns": ["unit", "divisor", "non_divisor", "cross_boundary"],
+    "workers": [2, 4],
+    "orders": ["canonical", "reverse", "interleaved"],
+    "restart_record_orders": ["canonical", "reverse"],
+    "opt_levels": ["O0", "O2"],
+    "controls": [
+      "fresh serialized baseline",
+      "fresh parallel baseline",
+      "serialized restart then parallel continuation",
+      "parallel-origin committed restart then parallel continuation",
+      "A/B/A deterministic replay",
+      "late-record invalid lineage atomic rollback",
+      "malformed physical-state identity atomic rollback",
+      "rejected/problem-column isolation",
+      "shared parameter registry fingerprint unchanged"
+    ]
+  },
+  "hard_gates": [
+    "exact current canonical prerequisite lock",
+    "exact F-CI28 restart decision and blob lock",
+    "exact F-CI30 parallel decision and blob lock",
+    "exact F-CI34 current serialized-runtime blob lock",
+    "zero production source delta",
+    "no persisted worker/Newton/Jacobian/solver scratch",
+    "future-target restart identity preserved",
+    "whole-registry atomic restore before any parallel solve",
+    "serialized-versus-parallel-restart scientific identity",
+    "parallel-origin restart versus uninterrupted parallel continuation identity",
+    "2-versus-4 worker scientific identity",
+    "canonical publication order",
+    "input-order identity by column id",
+    "per-column and aggregate hard mass balance",
+    "deterministic replay",
+    "problem-column isolation",
+    "unsupported profiles fail closed before physical solve",
+    "O0/O2 scientific identity",
+    "all 30 architecture invariants audited"
+  ],
+  "execution_policy": {
+    "persist_qualification_harness_before_long_test_runs": true,
+    "fail_closed_on_first_hard_contract_violation": true,
+    "do_not_modify_production_source_to_make_fmr32_pass": true,
+    "do_not_claim_unexecuted_matrix_cases": true,
+    "qualification_output_must_distinguish_realized_persisted_tested_qualified": true
+  },
+  "routing_rule": "IF ANY HARD GATE REVEALS A PRODUCTION DEFECT, CLOSE F-MR32 AS NOT_READY AND ROUTE THE EXACT DEFECT TO A NEW OWNER REMEDIATION WORK UNIT BEFORE ANY INDEPENDENT OR CANONICAL ADMISSION.",
+  "nonclaims": [
+    "mid-transaction restart",
+    "trial-state persistence",
+    "worker scratch persistence",
+    "new restart file format",
+    "cross-version migration",
+    "new parallel physics scope",
+    "performance speedup claim",
+    "general SWAP5 release qualification"
+  ],
+  "next_if_pass": "Freeze an immutable F-MR32 composition candidate and route it to a genuinely independent F-MQ/F-VQ qualification workunit before any canonical admission."
+}
