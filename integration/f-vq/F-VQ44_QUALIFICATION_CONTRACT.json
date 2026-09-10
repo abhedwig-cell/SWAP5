@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ44",
+  "title": "Independent Restricted Single-Level Linear Drainage Qualification",
+  "branch": "qualification/f-vq44-fpm08a-linear-drainage",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "owner": "F-PM08A",
+    "closeout": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
+    "source_path": "src/process/mod_drainage_process.f90",
+    "source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+  },
+  "legacy_authority": {
+    "model": "SWAP 4.3.1 B1.10",
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "drainage_excerpt_lines": "151-194",
+    "drainage_excerpt_sha256": "86bede7fbf2547f3801a54afe1fd56c954dc6f7473dcdb7e7f29f84adb1da944",
+    "mod_drainage_excerpt_lines": "84-89",
+    "mod_drainage_excerpt_sha256": "0011000e2897bae2aae1b24fbcd959573b4ab0dce216b185ede434ca40fd4b59"
+  },
+  "restricted_switch_scope": {
+    "SWDRA": 1,
+    "DRAMET": 3,
+    "NRLEVS": 1,
+    "SWALLO": 3,
+    "SWNRSRF": 0,
+    "SWDIVD": 0,
+    "SWMACRO": 0,
+    "SWSOLU": 0
+  },
+  "independent_source_reduction": [
+    "legacy effective drain head is max(resolved prescribed drain level, zbotdr)",
+    "diffl = gwl - effective_drain_head",
+    "with SWNRSRF=0 the non-interflow drainage branch is q=diffl/drares when diffl>=0",
+    "with SWALLO=3 the negative-diffl infiltration branch is forced to q=0",
+    "therefore the restricted physical law is q=max(0,(gwl-effective_drain_head)/drares)"
+  ],
+  "qualification_claims": {
+    "flux_equivalence": "candidate must reproduce the restricted legacy law over normalized finite positive-resistance domain",
+    "effective_drain_head_abstraction": "candidate control.drain_head is qualified only as the already-resolved effective drain head, not as OWLTAB parsing/interpolation",
+    "sensitivity": "stable active branch dq/dgwl=1/R; stable inactive branch dq/dgwl=0; activation point is explicitly nondifferentiable",
+    "state": "candidate is stateless and must not mutate committed state",
+    "mass": "returned soil_to_drain_rate is one authoritative physical transfer; runtime booking is not qualified here",
+    "time": "instantaneous law has no fundamental day/calendar assumption; resolution of time-varying drain head is external",
+    "solver": "no fully implicit trial-state drainage or solver Jacobian assembly is qualified"
+  },
+  "independence_rules": [
+    "Do not use F-PM08A test fixtures or F-PM08A expected outputs as oracle.",
+    "Read the exact candidate source from the frozen F-PM08A closeout and bind its blob SHA.",
+    "Construct independent randomized and boundary cases from the source-reduced legacy law.",
+    "Qualification branch must contain no src/ or reference/ delta relative to clean base."
+  ],
+  "hard_holds": [
+    "reverse exchange/infiltration",
+    "DRAMET=1",
+    "DRAMET=2",
+    "multiple drainage levels",
+    "empirical interflow",
+    "DIVDRA spatial distribution",
+    "surface-water storage/control",
+    "macropore and solute interaction",
+    "runtime mass-ledger composition",
+    "fully implicit trial-state drainage",
+    "solver Jacobian mutation",
+    "canonical admission"
+  ],
+  "exit_if_pass": "QUALIFIED_RESTRICTED_SINGLE_LEVEL_LINEAR_DRAINAGE_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION"
+}
