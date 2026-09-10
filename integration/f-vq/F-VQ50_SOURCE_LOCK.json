@@ -1,0 +1,64 @@
+{
+  "schema_version": 2,
+  "workunit": "F-VQ50",
+  "title": "Independent F-MR31 Exact Runtime-Forcing-Bound Root-Uptake Attribution Requalification",
+  "branch": "qualification/f-vq50-fmr31-root-attribution-forcing-binding-requalification",
+  "source_authority": "integration/f-ci-canonical@49863406a6112baa9956f9396b34e7188934e0d4",
+  "branch_hygiene": {
+    "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "owner_branch_not_used_as_history_authority": "work/f-mr31-root-attribution-forcing-binding-current-canonical",
+    "reason": "genuinely independent requalification must reconstruct evidence from canonical source plus the exact pinned production candidate, not inherit owner test/evidence history"
+  },
+  "owner_workunit": "F-MR31",
+  "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
+  "owner_closeout_workflow": 34484443970,
+  "owner_closeout_workflow_conclusion": "success",
+  "owner_candidate": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+  "candidate_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+  "candidate_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+  "candidate_acquisition": "materialize only from exact owner_candidate:candidate_path into qualification build space and verify blob identity; do not copy candidate production source into the qualification branch",
+  "prior_failure_authority": {
+    "workunit": "F-VQ48",
+    "branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+    "decision": "NOT_QUALIFIED_RESTRICTED_ACCEPTED_ROOT_UPTAKE_ATTRIBUTION_RECEIPT",
+    "hard_negative": "HN1_FORCING_CANDIDATE_BINDING",
+    "counterexample": "physical candidate created from forcing A booked 2.40625 root mass_out, while detached repair with valid forcing B published 4.125 attribution"
+  },
+  "qualification_rule": "independent oracle and independent runtime/transaction fixture; F-MR31 owner oracle is not qualification evidence and need not be compiled",
+  "frozen_scope": [
+    "serialized MultiSWAP runtime path",
+    "nonnegative finite root_extraction_sink vectors",
+    "one immutable root-extraction vector per outer interval [t0,t1]",
+    "actual transpiration is attribution of already-booked root extraction and is never a second mass booking",
+    "publication only after successful commit",
+    "root-inactive and noncommitted columns publish no attribution",
+    "active zero root extraction may publish an available zero amount"
+  ],
+  "hard_negative_gates": [
+    "the former F-VQ48 valid-wrong-forcing repair path must be structurally absent from the public candidate interface",
+    "per-column attribution must follow the exact resolved forcing_handle even when registry order, column order and execution order differ",
+    "changing or inspecting another valid forcing after a committed result exists must not be able to alter or recompute that result attribution",
+    "no attribution may publish for a noncommitted column",
+    "no additional generic mass_out booking may be introduced"
+  ],
+  "independent_matrix": [
+    "permuted forcing registry identities with nonmatching column order",
+    "shared forcing handle across multiple columns",
+    "distinct valid forcing handles with deliberately different integrals",
+    "generic non-calendar interval",
+    "active zero root extraction",
+    "root-inactive route",
+    "not-admitted route",
+    "batch sizes 1, 2, 5 and reversed input order",
+    "A-B-A replay",
+    "by-value result persistence after unrelated forcing object mutation",
+    "O0/O2 deterministic output identity",
+    "real production backend compatibility and root-mass preservation"
+  ],
+  "nonclaims": [
+    "time-varying qrot within an accepted outer interval",
+    "parallel worker publication qualification",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "canonical admission"
+  ]
+}
