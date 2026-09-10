@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D2",
+  "title": "Restricted Extended Drainage Exchange-Law Readiness Evidence",
+  "branch": "work/f-pm08d2-restricted-extended-drainage-exchange-readiness",
+  "activation_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "decisive_precloseout_head": "765d8ee07f0a4b8a65c46adc2f5e397fad31adae",
+  "decisive_ci": {
+    "run_id": 34523725989,
+    "job_id": 103027409796,
+    "conclusion": "success"
+  },
+  "provenance_checks": {
+    "readiness_only_file_delta": "PASS",
+    "no_production_source_delta": "PASS",
+    "no_reference_source_delta": "PASS",
+    "frozen_archive_identity": "PASS",
+    "frozen_surfacewater_identity": "PASS",
+    "frozen_drainage_identity": "PASS",
+    "F-PM08D_closeout_locked": "PASS",
+    "F-PM08D1_closeout_locked": "PASS",
+    "F-VQ42_closeout_locked": "PASS",
+    "F-VQ43_closeout_locked": "PASS"
+  },
+  "architecture_and_scope_checks": {
+    "SWSRF_2_3_only": "PASS",
+    "SWSRF_1_held": "PASS",
+    "negative_power_interflow_held": "PASS",
+    "availability_limiter_outside_law": "PASS",
+    "multilevel_aggregation_outside_law": "PASS",
+    "DIVDRA_outside_law": "PASS",
+    "generic_time_no_calendar_logic": "PASS",
+    "stateless_process": "PASS",
+    "authoritative_signed_mass_transfer": "PASS",
+    "finite_flux_survives_unavailable_tangent": "PASS",
+    "solver_chain_rule_outside_process": "PASS",
+    "no_hidden_smoothing": "PASS",
+    "all_eight_source_risks_contracted": "PASS",
+    "all_eight_source_risks_inventoried": "PASS",
+    "all_30_architecture_invariants_pass": true
+  },
+  "equation_oracle": {
+    "value_cases": 1170,
+    "derivative_checks": 3510,
+    "max_value_abs_error": 0.0,
+    "max_derivative_relative_error": 6.47344202208381e-9,
+    "branch_counts": {
+      "cap": 150,
+      "normal_negative": 369,
+      "normal_positive": 531,
+      "power": 120
+    },
+    "negative_power_interflow": "HELD_FAIL_CLOSED",
+    "result": "PASS"
+  },
+  "explicit_source_seam_characterization": {
+    "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY": {
+      "probe_jump": 0.20000000000009965,
+      "classification": "demonstrated finite flux discontinuity for nonzero ponding"
+    },
+    "D2-RISK-04-CHANNEL-ACTIVATION-SEAM": {
+      "probe_jump": 0.00010000001000065595,
+      "classification": "demonstrated finite activation jump"
+    },
+    "D2-RISK-05-GWLINF-DERIVATIVE-KINK": {
+      "one_sided_dq_dgwl": [0.0, 0.049999999918171056],
+      "classification": "demonstrated derivative kink"
+    },
+    "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK": {
+      "one_sided_slopes": [2.499998743576981, 0.49999999873762135],
+      "classification": "demonstrated derivative kink"
+    },
+    "D2-RISK-07-DRAINAGE-INFILTRATION-RESISTANCE-SEAM": {
+      "one_sided_slopes": [0.049999999873762142, 0.099999999747524285],
+      "classification": "continuous zero flux with unequal one-sided slopes"
+    },
+    "D2-RISK-08-PONDING-SILL-SUPPRESSION-SEAM": {
+      "probe_jump": 0.50000005000000003,
+      "classification": "demonstrated suppression discontinuity"
+    }
+  },
+  "held_without_deterministic_production_admission": [
+    "D2-RISK-01-SWSRF1-UNINITIALIZED-WL",
+    "D2-RISK-02-NEGATIVE-POWER-INTERFLOW",
+    "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY",
+    "D2-RISK-04-CHANNEL-ACTIVATION-SEAM",
+    "D2-RISK-05-GWLINF-DERIVATIVE-KINK",
+    "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK",
+    "D2-RISK-07-DRAINAGE-INFILTRATION-RESISTANCE-SEAM",
+    "D2-RISK-08-PONDING-SILL-SUPPRESSION-SEAM"
+  ],
+  "qualification_boundary": {
+    "readiness_qualified": true,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false,
+    "future_candidate_must_be_branch_aware": true,
+    "future_candidate_may_not_hide_seams_with_solver_tolerance_or_smoothing": true
+  },
+  "decision": "QUALIFIED_RESTRICTED_EXTENDED_DRAINAGE_EXCHANGE_LAW_READINESS_WITH_EXPLICIT_SOURCE_SEAM_HOLDS"
+}
