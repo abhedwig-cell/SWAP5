@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.independent_runtime_qualification_evidence.v1",
+  "work_unit": "F-VQ49",
+  "title": "Independent Qualification of F-MR33 Restricted DIVDRA Runtime Binding",
+  "candidate": {
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "qualification_materialization": "build-only git show from exact owner closeout"
+  },
+  "decisive_ci": {
+    "tested_head": "2ebc1ae925e8b00abc133be59bdb344606ee717e",
+    "run": 34482856728,
+    "job": 102889702972,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0 on ubuntu-24.04",
+    "artifact_id": 10154324094,
+    "artifact_digest": "sha256:79f550161bd27959574b656234d89ba0fcf5fbddd821ffb80daf1bcebf69b4de",
+    "O0_output_sha256": "417d2a7fcc44b5744bb02028ac3b719e0e135b80e60d293c20a8fbb0c8c23321",
+    "O2_output_sha256": "417d2a7fcc44b5744bb02028ac3b719e0e135b80e60d293c20a8fbb0c8c23321",
+    "summary_sha256": "1c9354b6f95bcfbafc38018551a51f386408ed17042bbfd67d1ad9de8f61e35a",
+    "O0_O2_byte_identical": true
+  },
+  "independent_matrix": {
+    "node_counts": [1,2,3,5,8],
+    "valid_runtime_cases": 400,
+    "consumer_composition_cases": 400,
+    "fresh_target_repeat_cases": 400,
+    "zero_transfer_cases": 5,
+    "process_rejection_cases": 20,
+    "preallocated_target_guards": 5,
+    "deterministic_checksum": 5862.25
+  },
+  "independent_findings": {
+    "candidate_owner_blob_lock_exact": true,
+    "candidate_build_materialization_blob_exact": true,
+    "qualification_branch_src_delta_zero": true,
+    "qualification_branch_reference_delta_zero": true,
+    "runtime_target_shape_exactly_one_by_active_nodes": true,
+    "published_row_bit_identical_to_canonical_process_row_for_all_valid_cases": true,
+    "binding_adds_zero_ordered_sum_mass_discrepancy": true,
+    "current_source_sink_provider_consumes_published_row_unchanged": true,
+    "zero_transfer_path_preserved": true,
+    "non_ok_process_status_propagated": true,
+    "failure_paths_publish_nothing": true,
+    "preallocated_target_preserved_without_process_evaluation": true,
+    "fresh_target_repeatability_bit_identical": true,
+    "hidden_committed_state_capture_absent": true,
+    "serialized_backend_import_absent": true,
+    "HeadCalc_or_Jacobian_internal_access_absent": true,
+    "file_io_or_MODFLOW_assumption_absent": true,
+    "configurable_mass_tolerance_absent": true,
+    "architecture_invariants_audited": 30,
+    "architecture_violations": 0
+  },
+  "independence": {
+    "owner_tests_used_as_oracle": false,
+    "owner_fixture_values_reused": false,
+    "owner_expected_output_values_reused": false,
+    "owner_evidence_used_for_scientific_truth": false,
+    "candidate_identity_taken_from_owner_closeout": true,
+    "runtime_contract_reconstructed_independently": true,
+    "scientific_divdra_scope_reopened": false
+  },
+  "qualified_scope": "RESTRICTED_SINGLE_LEVEL_POSITIVE_DIVDRA_SPATIAL_DISTRIBUTION_RUNTIME_MATERIALIZATION_FROM_EXPLICIT_PROCESS_HYDRAULIC_VIEW_AND_EXTERNAL_SCALAR_TRANSFER",
+  "not_qualified": [
+    "drainage exchange-law science",
+    "negative or infiltration distribution",
+    "multilevel drainage",
+    "surface-water-controlled drainage",
+    "fully implicit drainage derivatives or Jacobian assembly",
+    "policy choosing committed versus trial hydraulic-view provenance outside this explicit-input binding",
+    "canonical admission"
+  ],
+  "decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION"
+}
