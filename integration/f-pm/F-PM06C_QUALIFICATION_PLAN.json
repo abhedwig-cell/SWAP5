@@ -1,5 +1,5 @@
 {
-  "schema": "swap5.et_surface_evaporation_structural_candidate_plan.v1",
+  "schema": "swap5.et_surface_evaporation_structural_candidate_plan.v2",
   "work_unit": "F-PM06C",
   "title": "Restricted Surface Evaporation Structural Contract Candidate",
   "branch": "work/f-pm06c-restricted-surface-evaporation-structural-candidate",
@@ -15,7 +15,7 @@
     "swinter": 0,
     "dry_rule": "reva=min(peva,max(0,Emax)); epd=0",
     "ponded_rule": "reva=0; epd=epond",
-    "ponded_discriminator": "process_hydraulic_view_t.ponding_depth > 0",
+    "ponding_semantics": "surface_is_ponded is an accepted hydraulic classification supplied by the caller; this process does not apply a solver tolerance or inspect raw solver state",
     "emax_semantics": "accepted nonpersistent hydraulic capacity input supplied by caller",
     "accepted_external_top_flux_remains_mass_authority": true,
     "reva_epd_are_mass_ledger_entries": false
@@ -26,11 +26,13 @@
     "worker_scratch_required": false,
     "solver_contract_modified": false,
     "process_hydraulic_view_modified": false,
+    "direct_solver_view_dependency_required": false,
     "headcalc_dependency_allowed": false,
     "newton_or_jacobian_dependency_allowed": false,
     "calendar_or_day_assumption_allowed": false,
     "mass_ledger_booking_allowed": false,
-    "runtime_emax_materialization_in_scope": false
+    "runtime_emax_materialization_in_scope": false,
+    "runtime_ponding_materialization_in_scope": false
   },
   "production_delta_limit": {
     "maximum_new_process_source_files": 1,
@@ -41,16 +43,18 @@
     "ponded formula",
     "negative Emax clamps to zero",
     "active zero-demand behavior",
-    "invalid nonfinite input fails closed",
+    "invalid nonfinite rate input fails closed",
     "A-B-A stateless replay",
     "O0/O2 identical output",
     "no direct HeadCalc/Newton/Jacobian dependency",
+    "no solver tolerance or raw ponding-depth classification in process code",
     "no mass booking",
     "generic-time rate semantics",
     "30-invariant audit"
   ],
   "nonclaims": [
     "Emax runtime or solver materialization",
+    "surface_is_ponded runtime materialization",
     "full B1.10 BoundTop migration",
     "SWREDU 1 or 2",
     "interception or wet-canopy evaporation",
