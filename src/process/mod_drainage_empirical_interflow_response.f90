@@ -40,6 +40,7 @@ module mod_drainage_empirical_interflow_response
     logical :: singular_activation_tangent = .false.
     logical :: drainage_side_activation_tangent_defined = .false.
     real(real64) :: drainage_side_activation_tangent = 0.0_real64
+    logical :: tangent_numerically_unrepresentable = .false.
     real(real64) :: groundwater_level = 0.0_real64
     real(real64) :: drain_head = 0.0_real64
     real(real64) :: activation_difference = 0.0_real64
@@ -114,19 +115,23 @@ contains
     end if
 
     flux = parameters%coefficient * difference**parameters%exponent
-    tangent = parameters%coefficient * parameters%exponent * difference**(parameters%exponent - 1.0_real64)
-
-    if (.not. ieee_is_finite(flux) .or. .not. ieee_is_finite(tangent)) then
+    if (.not. ieee_is_finite(flux)) then
       diagnostics%status = INTERFLOW_NUMERICAL_DOMAIN
       diagnostics%evaluated = .false.
-      response = empirical_interflow_response_t()
       return
     end if
 
     response%signed_soil_to_drain_rate = flux
+    diagnostics%active = .true.
+
+    tangent = parameters%coefficient * parameters%exponent * difference**(parameters%exponent - 1.0_real64)
+    if (.not. ieee_is_finite(tangent)) then
+      diagnostics%tangent_numerically_unrepresentable = .true.
+      return
+    end if
+
     response%dq_dgroundwater_level = tangent
     response%derivative_defined = .true.
-    diagnostics%active = .true.
   end subroutine evaluate_empirical_interflow_response
 
   logical function valid_parameters(parameters) result(valid)
