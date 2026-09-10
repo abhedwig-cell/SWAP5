@@ -1,0 +1,35 @@
+name: F-PE10 paired forcing-view timing
+
+on:
+  push:
+    branches:
+      - qualification/f-pe10-direct-immutable-registry-views
+    paths:
+      - 'tests/fpe/run_fpe10_paired_forcing_view_timing.sh'
+      - '.github/workflows/fpe10-paired-forcing-view-timing.yml'
+  workflow_dispatch:
+
+jobs:
+  paired-timing:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run paired timing
+        env:
+          FPE10_OUTDIR: ${{ github.workspace }}/fpe10-evidence
+        run: bash tests/fpe/run_fpe10_paired_forcing_view_timing.sh
+      - name: Upload timing evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpe10-forcing-view-timing-evidence
+          path: fpe10-evidence/
+          if-no-files-found: error
