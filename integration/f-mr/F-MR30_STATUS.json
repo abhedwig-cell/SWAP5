@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workunit": "F-MR30",
   "title": "Restricted Accepted Root-Uptake Attribution Receipt",
   "branch": "work/f-mr30-restricted-root-uptake-attribution-receipt",
@@ -7,16 +7,45 @@
   "production_candidate": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
   "production_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
   "production_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
-  "status": "IMPLEMENTED_PERSISTED_PENDING_OWNER_GATE",
-  "decision": "ATOMIC_POSTCOMMIT_ROOT_UPTAKE_ATTRIBUTION_RECEIPT_CANDIDATE_READY_FOR_OWNER_GATE",
+  "status": "OWNER_GATE_QUALIFIED_PENDING_INDEPENDENT_F_VQ",
+  "decision": "ATOMIC_POSTCOMMIT_ROOT_UPTAKE_ATTRIBUTION_RECEIPT_OWNER_VERIFIED_READY_FOR_INDEPENDENT_QUALIFICATION",
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "owner_gate_passed": true,
+    "independently_qualified": false,
     "production_source_modified_after_candidate": false,
+    "canonical_admitted": false,
     "closed": false
   },
+  "owner_gate": {
+    "path": "tests/fmr/run_fmr30_root_uptake_attribution_receipt_gate.sh",
+    "successful_run": 34475709403,
+    "successful_job": 102865818754,
+    "successful_head": "9870e757aeeecb1ffdb0f8a127ccfb61f32aa535",
+    "conclusion": "success",
+    "verified_markers": [
+      "FMR30_EXACT_ONE_SOURCE_PRODUCTION_DELTA=PASS",
+      "FMR30_PRODUCTION_SOURCE_IMMUTABLE_AFTER_CANDIDATE=PASS",
+      "FMR30_ATTRIBUTION_ONLY_NO_MASS_LEDGER_MUTATION=PASS",
+      "FMR30_RECEIPT_ALLOCATION_FREE=PASS",
+      "FMR30_NO_IO_OR_SOLVER_INTERNAL_DEPENDENCY=PASS",
+      "FMR30_O0_O2_ORACLE_IDENTITY=PASS",
+      "FMR30_REAL_CANONICAL_BACKEND_STRICT_COMPILE=PASS",
+      "FMR30_RESTRICTED_ROOT_UPTAKE_ATTRIBUTION_RECEIPT_GATE PASS"
+    ]
+  },
+  "harness_history": [
+    {
+      "run": 34475577246,
+      "job": 102865397164,
+      "conclusion": "failure",
+      "classification": "TEST_HARNESS_COMPILE_FAILURE_NOT_PRODUCTION_FAILURE",
+      "cause": "GNU Fortran -Werror=function-elimination rejected two test-only .and. expressions containing impure kernel_candidate_state_t%ready calls",
+      "remediation": "split the two test assertions; no src file changed"
+    }
+  ],
   "architecture": {
     "prepared_object": "worker-local precommit validation and scalar attribution scratch",
     "publication_object": "typed postcommit receipt",
@@ -27,19 +56,25 @@
     "transaction_core_changed": false,
     "root_physics_changed": false
   },
-  "owner_gate": "tests/fmr/run_fmr30_root_uptake_attribution_receipt_gate.sh",
-  "required_before_closeout": [
-    "O0/O2 transaction oracle identity",
+  "owner_verified_properties": [
     "real kernel candidate and real generic commit receipt",
-    "precommit publication rejection",
-    "provenance and time mismatch fail-closed",
-    "attribution equals already-booked root mass_out in controlled oracle",
-    "strict compile against real canonical serialized backend"
+    "precommit publication rejected",
+    "invalid negative root forcing rejected",
+    "lineage/revision provenance mismatch rejected",
+    "origin-interval mismatch rejected",
+    "attribution equals already-booked root-only transaction mass_out in controlled oracle",
+    "O0/O2 oracle output identical",
+    "strict production-module compile against real canonical serialized backend"
   ],
+  "required_next": {
+    "workunit": "F-VQ48",
+    "kind": "genuinely independent qualification",
+    "candidate_authority": "exact F-MR30 production blob 886d251908126693b6fe035e065a872ce5ff4e29",
+    "rule": "do not use the owner oracle as sole evidence"
+  },
   "deferred": [
     "serialized MultiSWAP sparse attribution routing",
     "parallel root-extraction execution",
-    "independent scientific/runtime qualification",
     "F-CI32 canonical admission"
   ]
 }
