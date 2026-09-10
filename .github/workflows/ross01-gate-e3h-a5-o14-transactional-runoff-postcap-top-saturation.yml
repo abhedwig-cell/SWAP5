@@ -1,0 +1,75 @@
+name: F-ROSS01 Gate E3H-A5 O14 Post-Cap Runoff to Top Saturation
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a5_o14_transactional_runoff_postcap_top_saturation.py'
+      - '.github/workflows/ross01-gate-e3h-a5-o14-transactional-runoff-postcap-top-saturation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - P0_A1_CONTROL
+          - P1_DRIER_SUBSOIL
+          - P2_DRIER_TOP_AND_SUBSOIL
+          - P3_STRONG_DRY_SEPARATION
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a5_o14_transactional_runoff_postcap_top_saturation.py
+      - name: Execute frozen A5 profile diagnostic
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a5-${{ matrix.profile }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a5_o14_transactional_runoff_postcap_top_saturation.py \
+            "${{ matrix.profile }}" \
+            "$out/F-ROSS01_GATE_E3H_A5_${{ matrix.profile }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A5_${{ matrix.profile }}_STDOUT.txt"
+      - name: Assert frozen A5 diagnostic semantics
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          f=f'ross01-gate-e3h-a5-{p}/F-ROSS01_GATE_E3H_A5_{p}_RESULT.json'
+          r=json.load(open(f))
+          pr=r['profile_result']
+          assert r['gate']=='E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_DIAGNOSTIC'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert r['pass'] is True
+          assert pr['pass'] is True
+          assert pr['search_solve_count']==12
+          assert pr['reproducible_cluster_count']>=1
+          rep=pr['representative_event']
+          assert rep is not None
+          assert rep['max_abs_independent_reference_cell_or_system_residual_cm']<=1e-9
+          assert rep['runoff_amount_cm']>0.0
+          assert rep['q_top_cm_per_day']>0.0
+          assert all(pr['tests'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a5-${{ matrix.profile }}
+          path: ross01-gate-e3h-a5-${{ matrix.profile }}/
