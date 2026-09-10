@@ -1,0 +1,98 @@
+name: F-ROSS01 Gate E3F Transactional Surface Water Ledger
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3f_transactional_surface_water_ledger.py'
+      - '.github/workflows/ross01-gate-e3f-transactional-surface-water-ledger.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Execute frozen transaction ledger experiment
+        run: |
+          set -o pipefail
+          rm -rf ross01-gate-e3f
+          mkdir -p ross01-gate-e3f
+          python3 experiments/ross/run_ross01_gate_e3f_transactional_surface_water_ledger.py \
+            ross01-gate-e3f/F-ROSS01_GATE_E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER_RESULT.json \
+            | tee ross01-gate-e3f/stdout.txt
+      - name: Assert frozen transaction semantics
+        run: |
+          python3 - <<'PY'
+          import json
+          p='ross01-gate-e3f/F-ROSS01_GATE_E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER_RESULT.json'
+          r=json.load(open(p))
+          assert r['gate']=='E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER'
+          assert r['production_implementation'] is False
+          assert r['pass'] is True
+          assert all(r['scenario_pass'].values())
+          assert r['persistent_surface_physical_state_scalar_count']==1
+          assert r['trial_scratch_owner']=='worker'
+          assert r['soil_receiver_is_test_harness_only'] is True
+          assert r['post_event_stale_qtop_continuation_allowed'] is False
+          assert r['mass_repair_or_clipping_used'] is False
+          assert r['real_richards_state_update'] is False
+          assert r['physical_boundary_switch_implemented'] is False
+
+          s=r['scenarios']
+          ordinary=s['ordinary_accept']['outcome']
+          assert ordinary['accepted'] is True
+          assert ordinary['committed']['t_day']==2.875
+          assert ordinary['committed']['surface_storage_cm']==0.375
+          assert ordinary['diagnostics']['supply_amount_cm']==0.25
+          assert ordinary['diagnostics']['top_transfer_amount_cm']==0.125
+          assert ordinary['diagnostics']['runoff_amount_cm']==0.0
+
+          overflow=s['overflow_conservative_transfer']['outcome']
+          assert overflow['accepted'] is True
+          assert overflow['diagnostics']['raw_surface_storage_cm']==1.125
+          assert overflow['committed']['surface_storage_cm']==1.0
+          assert overflow['diagnostics']['runoff_amount_cm']==0.125
+
+          under=s['underflow_reject']['outcome']
+          assert under['accepted'] is False
+          assert under['reason']=='SURFACE_DEPLETION_EVENT_RETRY_REQUIRED'
+          assert under['recommended_event_dt_day']==0.5
+          assert under['committed_bitwise_unchanged'] is True
+          assert under['post_event_stale_qtop_continuation_allowed'] is False
+
+          retry=s['underflow_event_retry']['outcome']
+          assert retry['accepted'] is True
+          assert retry['committed']['surface_storage_cm']==0.0
+          assert retry['diagnostics']['supply_amount_cm']==0.125
+          assert retry['diagnostics']['top_transfer_amount_cm']==0.375
+
+          injected=s['injected_reject']['outcome']
+          assert injected['accepted'] is False
+          assert injected['committed_bitwise_unchanged'] is True
+          assert injected['local_trial_diagnostics']['balance_ok'] is True
+
+          assert s['partition_invariance']['tests']['bitwise_final_state'] is True
+          assert s['overflow_partition_invariance']['tests']['bitwise_final_state'] is True
+          assert s['overflow_partition_invariance']['tests']['cumulative_runoff_exact'] is True
+
+          for name in ('ordinary_accept','exact_fill','overflow_conservative_transfer','underflow_event_retry'):
+              d=s[name]['outcome']['diagnostics']
+              assert abs(d['surface_balance_residual_cm']) <= d['mass_tolerance_cm']
+              assert abs(d['system_balance_residual_cm']) <= d['mass_tolerance_cm']
+              assert d['mass_repair_or_clipping_used'] is False
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3f-transactional-surface-water-ledger
+          path: ross01-gate-e3f/
