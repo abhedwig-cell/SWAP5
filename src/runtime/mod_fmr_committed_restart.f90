@@ -6,9 +6,8 @@ module mod_fmr_committed_restart
        KERNEL_PERSISTENCE_SCHEMA_VERSION, KERNEL_PERSISTENCE_OK, &
        export_kernel_committed_state, reconstruct_kernel_persistence_snapshot_trusted, &
        restore_kernel_committed_state
-  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
-       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t
+  use mod_fmr_restart_state_contract, only: fmr_restart_state_matches_template
   implicit none
   private
 
@@ -29,8 +28,8 @@ module mod_fmr_committed_restart
   !
   ! This is not a file format and it does not define byte-level persistence.
   ! The runtime adapter may encode/decode an equivalent representation outside
-  ! the kernel.  Physical committed continuation state is deliberately kept
-  ! separate from stable runtime identity.  Immutable parameter data, forcing,
+  ! the kernel. Physical committed continuation state is deliberately kept
+  ! separate from stable runtime identity. Immutable parameter data, forcing,
   ! solver/Newton/Jacobian scratch and worker warm starts are not components.
   type, public :: fmr_committed_restart_record_t
     integer :: schema_version = 0
@@ -46,7 +45,7 @@ module mod_fmr_committed_restart
   end type fmr_committed_restart_record_t
 
   ! One stable identity binds all compact per-column parameter_ref values to the
-  ! externally reconstructed immutable parameter registry.  The immutable
+  ! externally reconstructed immutable parameter registry. The immutable
   ! parameter payload itself is shared runtime configuration and is therefore
   ! neither duplicated per column nor embedded in physical continuation state.
   type, public :: fmr_committed_restart_bundle_t
@@ -130,8 +129,8 @@ contains
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
-      if (.not. restart_physical_state_matches_template(candidate_records(i)%physical_state, &
-                                                         templates(template_index))) then
+      if (.not. fmr_restart_state_matches_template(candidate_records(i)%physical_state, &
+                                                    templates(template_index))) then
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
@@ -220,8 +219,8 @@ contains
         status = FMR_RESTART_STATE_NOT_COMMITTED
         return
       end if
-      if (.not. restart_physical_state_matches_template(bundle%records(record_index)%physical_state, &
-                                                         templates(template_index))) then
+      if (.not. fmr_restart_state_matches_template(bundle%records(record_index)%physical_state, &
+                                                    templates(template_index))) then
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
@@ -247,7 +246,7 @@ contains
     end do
 
     ! Atomic publication: no target state is changed until every record and
-    ! every identity check has succeeded.  Intrinsic assignment deep-copies the
+    ! every identity check has succeeded. Intrinsic assignment deep-copies the
     ! committed physical continuation states into the fresh runtime registry.
     state_registry = candidate_states
     restored = .true.
@@ -266,23 +265,6 @@ contains
          left%numerical_continuation_layout_id == right%numerical_continuation_layout_id .and. &
          left%compatible_backend_id == right%compatible_backend_id
   end function fmr_restart_template_identity_matches
-
-  logical function restart_physical_state_matches_template(state, template) result(matches)
-    class(transaction_state_t), intent(in) :: state
-    type(fmr_template_t), intent(in) :: template
-
-    matches = .false.
-    if (template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
-    if (template%optional_state_layout_id /= 0_int64) return
-    if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
-
-    select type (state)
-    type is (fmr_b110_physical_state_t)
-      matches = .true.
-    class default
-      matches = .false.
-    end select
-  end function restart_physical_state_matches_template
 
   logical function registry_structure_valid(columns, templates, states, allow_uninitialized) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
