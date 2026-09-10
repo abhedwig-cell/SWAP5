@@ -4,8 +4,8 @@
   "title": "Parallel Root-Uptake & Actual-Transpiration Publication Readiness",
   "branch": "work/f-mr34-parallel-root-uptake-attribution-readiness",
   "source_authority": "integration/f-ci-canonical@c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
-  "status": "CONTRACT_FROZEN_PENDING_SOURCE_BOUND_GATE",
-  "decision": "EXPLICIT_ROOT_ACTIVE_PARALLEL_PROFILE_REQUIRED; EXISTING_PARALLEL_V1_MUST_REMAIN_ROOT_INACTIVE",
+  "status": "QUALIFIED_READINESS_CLOSED",
+  "decision": "QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
   "state": {
     "source_authority_persisted": true,
     "dependency_map_persisted": true,
@@ -18,8 +18,16 @@
     "production_source_modified": false,
     "reference_modified": false,
     "readiness_gate_persisted": true,
-    "readiness_gate_tested": false,
-    "closed": false
+    "readiness_gate_tested": true,
+    "closed": true
+  },
+  "readiness_gate": {
+    "authoritative_run": 34500021933,
+    "authoritative_job": 102948160993,
+    "tested_head": "7ee8a33f37ff3c35d827803372cfcc5f985cf82c",
+    "conclusion": "success",
+    "earlier_run": 34499878574,
+    "earlier_failure_classification": "HARNESS_ONLY_EXACT_STRING_MATCHER_ERROR"
   },
   "authorities": {
     "root_uptake_science": "F-VQ22@1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
@@ -27,14 +35,15 @@
     "current_parallel_restart": "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1",
     "canonical_parallel_capability": "F-CI35@c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
   },
-  "key_readiness_findings": {
-    "parallel_worker_executor": "reuses fmr_execute_serialized_physical_column",
-    "actual_transpiration_binding": "already postcommit and exact-forcing-bound inside shared serialized executor",
-    "current_blocker": "parallel_v1_profile_admitted explicitly rejects root_extraction_active and nonzero root_extraction_sink",
-    "required_design": "new explicit root-active parallel physical profile/capability; no silent relaxation of existing parallel-v1",
-    "mass_semantics": "actual transpiration remains attribution of existing mass_out root sink; never a second booking",
-    "time_semantics": "restricted qualification requires root_extraction_sink invariant over outer [t0,t1]",
-    "restart_semantics": "F-CI35 restart qualification does not transfer automatically to root-active parallel profile"
+  "qualified_architecture": {
+    "parallel_worker_executor": "reuse fmr_execute_serialized_physical_column",
+    "actual_transpiration_binding": "reuse existing F-MR31/F-VQ50 postcommit exact-forcing-bound result publication",
+    "root_uptake_owner": "existing F-VQ22-qualified root-water-uptake and B1.10 root-sink provider chain",
+    "new_parallel_boundary": "explicit distinct root-active physical profile/capability",
+    "existing_parallel_v1": "must remain root-inactive and behavior-compatible",
+    "mass_semantics": "root extraction remains booked exactly once in authoritative mass_out; actual transpiration is attribution only",
+    "time_semantics": "root_extraction_sink invariant over requested outer [t0,t1] in restricted scope",
+    "restart_semantics": "new root-active profile requires separate committed-boundary restart requalification"
   },
   "next_workunits": {
     "structural_candidate": "F-MR35",
@@ -53,6 +62,7 @@
     "integration/f-mr/F-MR34_SOURCE_LOCK.json",
     "integration/f-mr/F-MR34_READINESS_CONTRACT.md",
     "integration/f-mr/F-MR34_INVARIANT_AUDIT.json",
+    "integration/f-mr/F-MR34_EVIDENCE.json",
     "tests/fmr/run_fmr34_parallel_root_uptake_attribution_readiness_gate.sh"
   ]
 }
