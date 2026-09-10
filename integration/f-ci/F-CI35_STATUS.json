@@ -1,0 +1,20 @@
+{
+  "schema":"swap5.fci35_status.v1",
+  "work_unit":"F-CI35",
+  "title":"Parallel Committed-Boundary Restart Composition Current-Canonical Admission",
+  "branch":"qualification/f-ci35-parallel-committed-restart-current-canonical-admission",
+  "phase":"PRE_ADMISSION_READY_FOR_CANONICAL_REF_ADVANCE_PENDING_METADATA_HEAD_REQUALIFICATION",
+  "decision":"READY_FOR_CANONICAL_CAPABILITY_ADMISSION_PENDING_EXACT_METADATA_HEAD_GREEN",
+  "canonical_base":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "independent_authority":"F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+  "owner_authority":"F-MR32@1e27f2758d9dbed11350aec5a089662921826d21",
+  "pre_admission_head":"692db28996832bdd2a569148bdc45fd98c7612fe",
+  "pre_admission_workflow":{"run":34497825051,"job":102940675165,"conclusion":"success"},
+  "failed_attempt":{"run":34497466250,"job":102939467747,"classification":"HARNESS_OBSERVABILITY_DEFECT","canonical_ref_advanced":false},
+  "state":{"realized":true,"persisted":true,"tested":true,"independent_qualification_replayed":true,"architecture_invariants_reviewed":true,"canonical_readiness_passed":true,"canonical_ref_advanced":false,"post_promotion_replay_passed":false,"closed":false},
+  "production_delta":[],
+  "reference_delta":[],
+  "admission_scope":"RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_COMMITTED_BOUNDARY_RESTART_COMPOSITION_WITH_SERIALIZED_OR_PARALLEL_ORIGIN_AND_2_4_WORKER_CONTINUATION",
+  "nonclaims":["mid-transaction restart","trial-state persistence","worker/Newton/Jacobian/warm-start persistence","restart file format","cross-version migration","new parallel physics family","performance-scale claim","general SWAP5 release qualification"],
+  "next_action":"Requalify the exact metadata head containing this status, evidence, attempt classification and invariant review. Only if green and canonical remains at the pinned base may integration/f-ci-canonical fast-forward to that exact head."
+}

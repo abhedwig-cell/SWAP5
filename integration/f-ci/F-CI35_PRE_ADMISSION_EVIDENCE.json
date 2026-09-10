@@ -1,0 +1,29 @@
+{
+  "schema":"swap5.fci35_pre_admission_evidence.v1",
+  "work_unit":"F-CI35",
+  "title":"Parallel Committed-Boundary Restart Current-Canonical Capability Admission Evidence",
+  "canonical_base":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "independent_authority":{"work_unit":"F-MQ29","closeout":"5ea88d81a63e6c706c87e99ac360f91f08711fc1","decision":"QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION","qualification_run":34496804763,"closeout_run":34497122833},
+  "owner_authority":{"work_unit":"F-MR32","candidate":"1e27f2758d9dbed11350aec5a089662921826d21","closeout":"eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4"},
+  "tested_admission_head":"692db28996832bdd2a569148bdc45fd98c7612fe",
+  "authoritative_pre_admission_run":{"run":34497825051,"job":102940675165,"conclusion":"success","compiler":"GNU Fortran 13.3.0","runner":"ubuntu-24.04"},
+  "passed_markers":[
+    "FCI35_EXACT_CURRENT_CANONICAL_POSTIMAGE=PASS",
+    "FCI35_METADATA_ONLY_PRODUCTION_REFERENCE_IMMUTABLE=PASS",
+    "FCI35_EXACT_FMQ29_QUALIFICATION_AUTHORITY=PASS",
+    "FCI35_FMQ29_DECISION_AND_SCOPE_LOCK=PASS",
+    "FCI35_HELDOUT_CASES_VERIFIED_BY_PINNED_REPLAY_INTERNAL_GATES=PASS",
+    "FCI35_EXACT_FMQ29_REPLAY_ON_CURRENT_CANONICAL=PASS",
+    "FCI35_HELDOUT_CROSS_WORKER_RESTART_REPLAY=PASS",
+    "FCI35_HARD_MASS_AND_CANONICAL_PUBLICATION_REPLAY=PASS",
+    "FCI35_PRODUCTION_CHANGE=NONE",
+    "FCI35_DECISION=READY_FOR_CANONICAL_CAPABILITY_ADMISSION"
+  ],
+  "replayed_scientific_scope":{"held_out_counts":[3,5,9,16,23,33],"origin_routes":["serialized","parallel_2","parallel_4"],"continuation_workers":[2,4],"cross_worker_routes":["2_to_4","4_to_2"],"restart_record_orders":["reverse","odd_even_interleave"],"changed_caller_order_after_restart":true,"restart_negative_matrix":true,"parallel_preservation_matrix":true,"canonical_publication":true,"hard_per_column_mass_gate_cm":1e-12,"authoritative_aggregate_mass":true,"optimization_levels":["O0","O2"]},
+  "production_source_delta":0,
+  "reference_delta":0,
+  "production_defect_observed":false,
+  "attempt_1":"integration/f-ci/F-CI35_ATTEMPT1_CLASSIFICATION.json",
+  "admission_type":"METADATA_CAPABILITY_ADMISSION_OF_ALREADY_CURRENT_CANONICAL_SOURCE_COMPOSITION",
+  "decision":"READY_FOR_CANONICAL_REF_ADVANCE_AFTER_THIS_METADATA_HEAD_REQUALIFIES_GREEN"
+}
