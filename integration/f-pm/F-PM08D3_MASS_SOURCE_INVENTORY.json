@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D3",
+  "title": "Frozen SWAP 4.3.1 Secondary Availability and Mass Attribution Inventory",
+  "source_identity": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+  },
+  "source_locations": {
+    "pre_solver_limiter": "SWAP/surfacewater.f90:600-637",
+    "qdrd_aggregation": "SWAP/surfacewater.f90:497-587",
+    "supply_target_capacity_resolution": "SWAP/surfacewater.f90:235-246",
+    "dry_and_supply_balance_branches": "SWAP/surfacewater.f90:248-294",
+    "automatic_discharge": "SWAP/surfacewater.f90:300-323",
+    "rating_curve_discharge_balance": "SWAP/surfacewater.f90:325-373",
+    "WSCAP_reader": "SWAP/surfacewater.f90:897",
+    "fixed_weir_supply_reader_guard": "SWAP/surfacewater.f90:940-944"
+  },
+  "frozen_pre_solver_limiter": {
+    "applies_when": "SWSEC=2 and SWSRF>=2",
+    "management_period_resolution": "calendar/day-dependent IMPER lookup inside drainflux_extended; modern D3 receives resolved interval control instead",
+    "projected_storage": "SWSTMAX = SWST + (QDRD + WSCAP(IMPER))*DT",
+    "trigger": "SWSTMAX < 0",
+    "limited_total": "QDRDM = -(SWST + WSCAP(IMPER)*DT)/DT",
+    "ratio": "QDRATIO = QDRDM/QDRD",
+    "source_error_guard": "QDRATIO must be in [0,1]",
+    "allocation": "multiply every secondary QDRAIN(level), including positive contributors, by QDRATIO",
+    "published_total": "QDRD = QDRDM",
+    "algebraic_observation": "for SWST>=0, WSCAP>=0 and DT>0, a triggered limiter necessarily has QDRD<0 and mathematically gives 0<QDRATIO<1"
+  },
+  "supply_capacity_semantics": {
+    "WSCAP_reader_range_cm_per_day": [0.0, 10.0],
+    "pre_limiter_uses_WSCAP_unconditionally_within_management_period": true,
+    "WLEVBAL_resolved_WSMAX": "WSCAP only when WLSTARA > ZBOTDR(1+NRPRI)+1e-4; otherwise zero",
+    "fixed_weir_reader_guard": "for SWMAN=1 with WSCAP>1e-7, HBWEIR-WLDIP below the secondary bottom is rejected",
+    "automatic_management_equivalent_reader_guard_found": false,
+    "consequence": "raw WSCAP and physically available supply capacity are not interchangeable for all source-admitted control routes"
+  },
+  "frozen_wlevbal_low_storage_branches": [
+    {
+      "branch": "projected_with_max_supply_below_1e-7",
+      "projection": "SWSTMAX=SWST+(QDRD+QRapDra+WSMAX)*DT+RUNOTS",
+      "legacy_error_only_if": "SWSTMAX < -0.1 cm",
+      "legacy_update": "WDIS=0; SWST=0; WLS=deepest secondary bottom",
+      "comment_claim": "surface-water supply set to maximum",
+      "actual_q_supply_published": false,
+      "mass_consequence": "if actual supply is WSMAX, setting SWST to zero leaves an unmatched residual of -SWSTMAX; for negative SWSTMAX this would require supply above WSMAX to close exactly"
+    },
+    {
+      "branch": "0 <= projected_with_max_supply < supply_target_storage",
+      "legacy_update": "WDIS=0; SWST=SWSTMAX",
+      "mass_interpretation": "actual q_supply is WSMAX and balance can close exactly"
+    },
+    {
+      "branch": "no_supply_projection <= supply_target_storage",
+      "legacy_update": "WDIS=0; SWST=SWSTTARA; WLS=WLSTARA",
+      "mass_interpretation": "actual q_supply is the exact rate needed to reach SWSTTARA, generally between zero and WSMAX, but is not exposed as first-class output"
+    },
+    {
+      "branch": "no_supply_projection <= target_storage",
+      "legacy_update": "WDIS=0; SWST=no-supply projection",
+      "mass_interpretation": "actual q_supply=0"
+    }
+  ],
+  "legacy_dry_floor_mass_gap": {
+    "accepted_source_window_cm": "-0.1 <= SWSTMAX < 1e-7",
+    "negative_part_can_require_supply_above_capacity": true,
+    "maximum_unmatched_negative_projection_magnitude_cm": 0.1,
+    "mass_conservation_disposition": "not admissible as a physical mass tolerance in SWAP5",
+    "modern_rule": "derive actual q_supply from the mass equation; if required q_supply exceeds resolved capacity, reject/recompose/retry rather than force storage to zero"
+  },
+  "explicit_modern_mass_terms": {
+    "equation": "S1-S0 = DT*(QDRD + QRapDra + q_supply - q_discharge) + RUNOTS",
+    "QDRD": "signed secondary drainage exchange total after any D3 limiter",
+    "QRapDra": "rapid macropore drainage into secondary water",
+    "RUNOTS": "signed top-surface amount over the interval, not a rate",
+    "q_supply": "must be explicit accepted external inflow result",
+    "q_discharge": "must be explicit accepted external outflow result",
+    "WDIS": "legacy local discharge scratch; cannot substitute for an accepted-ledger contract"
+  },
+  "mixed_sign_scaling_observation": {
+    "possible": true,
+    "source_behavior": "one net-shortage ratio scales all secondary level fluxes",
+    "positive_level_fluxes_are_reduced_when_present": true,
+    "mass_closure_preserved": true,
+    "local_constitutive_response_preserved": false,
+    "recommended_initial_candidate_restriction": "when limiter is active, require all secondary requested q_i <= 0 until mixed-sign scaling receives independent scientific disposition"
+  },
+  "pre_post_soil_composition": {
+    "pre_solver_known": ["SWST", "requested QDRD", "raw WSCAP", "DT"],
+    "post_soil_additional_terms": ["QRapDra", "RUNOTS"],
+    "consequence": "a pre-solver nonnegative envelope does not prove the final surface-water storage will remain nonnegative",
+    "modern_requirement": "D6 must perform final trial mass closure using all actual transfers before commit and retry/recompose if the storage floor or supply capacity would be violated"
+  },
+  "state_classification": {
+    "SWST": "committed conserved state owned by D1 storage component",
+    "requested_and_limited_QDRAIN": "trial results, not state",
+    "QDRATIO": "trial diagnostic/scratch, not state",
+    "QDRDM": "trial limited-total result, not state",
+    "WSCAP": "immutable/control parameter capacity, not actual mass flux",
+    "resolved_q_supply_available": "dynamic physical control input to limiter envelope",
+    "q_supply": "trial/accepted physical result",
+    "q_discharge": "trial/accepted physical result"
+  }
+}
