@@ -1,0 +1,23 @@
+name: F-CI34R current-canonical root-attribution admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci34r-current-canonical-root-attribution-recomposition
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-current-canonical-source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI34R current-canonical exact-source gate
+        run: bash tests/fci/run_fci34r_current_canonical_root_attribution.sh

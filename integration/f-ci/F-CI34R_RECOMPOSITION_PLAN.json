@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.current_canonical_recomposition_plan.v1",
+  "work_unit": "F-CI34R",
+  "title": "F-MR31 Root Attribution Current-Canonical Recomposition",
+  "branch": "qualification/f-ci34r-current-canonical-root-attribution-recomposition",
+  "source_authority": "integration/f-ci-canonical@545e07c65338b9fe61b963468675c41f3e931816",
+  "prior_admission_branch": "qualification/f-ci34-fmr31-root-attribution-canonical-admission@71754563308cf7bfe568b696c6c5e372dcad0d01",
+  "prior_prepromotion_run": 34486999170,
+  "reason": "canonical advanced after the F-CI34 prepromotion gate through F-CI33R/F-CI33 governance closeout; no src path changed in that drift, but admission is rebound to the live source authority rather than promoted from a stale base",
+  "canonical_drift": {
+    "from": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+    "to": "545e07c65338b9fe61b963468675c41f3e931816",
+    "src_delta": [],
+    "production_regression_indicated": false
+  },
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "owner_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "independent_qualification": "F-VQ50",
+    "independent_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "production_delta_rule": "exactly one src path relative to 545e07c65338b9fe61b963468675c41f3e931816, and its blob must equal the independently qualified F-MR31 blob",
+  "qualification": [
+    "replay F-VQ50 independent forcing-provenance oracle under O0 and O2",
+    "replay F-VQ21 real HeadCalc root-sink preservation under O0 and O2",
+    "verify all 30 SWAP architecture invariants",
+    "verify no second generic mass booking",
+    "verify exact forcing-handle association and postcommit-only attribution"
+  ],
+  "promotion": {
+    "canonical_must_still_equal_source_authority_immediately_before_promotion": true,
+    "non_forced_fast_forward_only": true,
+    "postpromotion_exact_head_rerun_required": true
+  }
+}
