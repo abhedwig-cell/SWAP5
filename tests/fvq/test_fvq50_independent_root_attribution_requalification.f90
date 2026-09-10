@@ -23,6 +23,7 @@ program test_fvq50_independent_root_attribution_requalification
   type(fmr_aggregate_diagnostics_t) :: aga, agb, agc, agd, aga2
   type(fmr_serialized_batch_diagnostics_t) :: rta, rtb, rtc, rtd, rta2
   type(kernel_committed_state_t), allocatable :: sa(:), sb(:), sc(:), sd(:), sa2(:)
+  type(fmr_serialized_column_result_t) :: left_result, right_result
   integer :: status
 
   call run_case(1, 0, a, da, aga, rta, sa, status)
@@ -55,12 +56,18 @@ program test_fvq50_independent_root_attribution_requalification
 
   call tamper_after_return()
 
-  call require(same_bits(result_for_id(a,50001_int64)%actual_transpiration_amount, &
-       result_for_id(a,50003_int64)%actual_transpiration_amount), 'shared B handle identity')
-  call require(same_bits(result_for_id(a,50002_int64)%actual_transpiration_amount, &
-       result_for_id(a,50004_int64)%actual_transpiration_amount), 'shared A handle identity')
-  call require(.not. same_bits(result_for_id(a,50001_int64)%actual_transpiration_amount, &
-       result_for_id(a,50002_int64)%actual_transpiration_amount), 'distinct handle distinction')
+  left_result = result_for_id(a,50001_int64)
+  right_result = result_for_id(a,50003_int64)
+  call require(same_bits(left_result%actual_transpiration_amount, right_result%actual_transpiration_amount), &
+       'shared B handle identity')
+  left_result = result_for_id(a,50002_int64)
+  right_result = result_for_id(a,50004_int64)
+  call require(same_bits(left_result%actual_transpiration_amount, right_result%actual_transpiration_amount), &
+       'shared A handle identity')
+  left_result = result_for_id(a,50001_int64)
+  right_result = result_for_id(a,50002_int64)
+  call require(.not. same_bits(left_result%actual_transpiration_amount, right_result%actual_transpiration_amount), &
+       'distinct handle distinction')
   write(*,'(A)') 'FVQ50_EXACT_FORCING_HANDLE_ASSOCIATION=PASS'
   write(*,'(A)') 'FVQ50_INDEPENDENT_ROOT_ATTRIBUTION_REQUALIFICATION PASS'
 
