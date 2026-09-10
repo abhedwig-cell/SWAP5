@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR26",
+  "title": "Reference-ET Potential-Transpiration Root-Uptake Input Ownership Binding",
+  "branch": "work/f-mr26-reference-et-ptra-root-uptake-binding",
+  "base": {
+    "canonical_ref": "integration/f-ci-canonical",
+    "canonical_head_at_start": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+    "F_CI27_decision": "QUALIFIED_CLOSED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION",
+    "ET_process_source": "src/process/mod_reference_et_demand_process.f90",
+    "ET_process_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "ET_runtime_source": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "ET_runtime_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "crop_root_contract_source": "src/crop/mod_crop_root_uptake_input_contract.f90",
+    "crop_root_contract_source_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "downstream_adapter_source": "src/runtime/mod_fmr_crop_root_uptake_input_adapter.f90",
+    "downstream_adapter_source_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b"
+  },
+  "goal": "Resolve potential_transpiration ownership without duplicating ET physics: the canonically admitted F-MR23 reference-ET demand result is the authoritative runtime ptra source; a small stateless seam copies only that value into the existing canonical crop_root_uptake_input_t before the already admitted F-MR12 adapter consumes it.",
+  "ownership_decision": {
+    "authoritative_runtime_ptra_source": "reference_et_demand_result_t%potential_transpiration_cm_per_day produced through F-MR23",
+    "crop_root_uptake_input_ptra_role": "transport field only after this binding, not an independent producer",
+    "F_MR12_role": "downstream adapter/consumer only",
+    "historical_F_WOF18_role": "frozen formula-equivalence evidence only; not runtime authority and not imported into canonical source",
+    "preexisting_base_input_ptra": "ignored as a source and overwritten after validating the non-ptra crop/root geometry view",
+    "ET_formula_recomputed_in_binding": false
+  },
+  "contract": {
+    "input_ET_result": "reference_et_demand_result_t from a successful F-MR23 evaluation",
+    "input_ET_diagnostics": "fmr_reference_et_binding_diagnostics_t with status OK and result_produced=true",
+    "input_root_object": "existing crop_root_uptake_input_t carrying crop emergence and root geometry; its preexisting ptra is non-authoritative",
+    "active_nodes": "explicit positive integer used by the existing crop-root contract",
+    "output": "canonical crop_root_uptake_input_t with all non-ptra fields preserved and ptra replaced by the authoritative F-MR23 result",
+    "persistent_state": "none",
+    "transaction_semantics": "purely derived stateless composition; no committed state mutation",
+    "mass_semantics": "ptra remains a potential demand rate; no withdrawal, integration or ledger booking occurs"
+  },
+  "fail_closed_rules": [
+    "reject unsuccessful or non-produced F-MR23 ET result",
+    "reject invalid active_nodes",
+    "validate crop/root geometry after neutralizing the non-authoritative incoming ptra",
+    "reject a final assembled root-input object that violates the existing canonical contract",
+    "produce a default empty output on rejection"
+  ],
+  "qualification_requirements": [
+    "authoritative ptra is copied exactly from F-MR23 output",
+    "incoming ptra cannot influence output ptra, including stale, negative, nonfinite and conflicting finite values",
+    "crop_emerged, rooted_nodes and cumulative_root_fraction are preserved exactly on accepted inputs",
+    "inactive-crop canonical semantics remain valid",
+    "upstream ET rejection fails closed",
+    "invalid root geometry fails closed",
+    "A-B-A and repeated-call identity",
+    "O0/O2 output identity",
+    "binding source contains no ET formula or ET forcing/canopy-factor recomputation",
+    "no persistent state, mass ledger, root-water withdrawal, crop advancement, file I/O or hydraulic internals"
+  ],
+  "architecture_invariants": {
+    "single_kernel": "preserved; composition uses existing shared process/runtime contracts",
+    "kernel_IO_separation": "no I/O added",
+    "explicit_data_separation": "ET result is consumed as a result object; root geometry stays in its existing contract",
+    "compact_persistent_state": "zero new persistent state",
+    "scratch_per_worker": "no solver scratch introduced",
+    "transactional_timesteps": "no committed-state mutation",
+    "cheap_recompute": "stateless rebinding",
+    "generic_time": "inherits the qualified F-MR23 interval/forcing contract without adding calendar assumptions",
+    "mass_conservation": "no mass is booked or removed",
+    "multiswap": "constant-size stateless operation per column and no heavyweight per-column solver object",
+    "physics_solver_policy_separation": "no numerical solver policy involved",
+    "no_silent_dependencies": "authority and status preconditions are explicit"
+  },
+  "nonclaims": [
+    "actual root water uptake",
+    "actual transpiration",
+    "water-ledger contribution",
+    "accepted-interval rate integration",
+    "crop lifecycle advancement",
+    "root geometry production",
+    "historical F-WOF18 canonical admission",
+    "new ET physics",
+    "MODFLOW coupling"
+  ],
+  "exit_target": "REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_INDEPENDENT_QUALIFICATION"
+}
