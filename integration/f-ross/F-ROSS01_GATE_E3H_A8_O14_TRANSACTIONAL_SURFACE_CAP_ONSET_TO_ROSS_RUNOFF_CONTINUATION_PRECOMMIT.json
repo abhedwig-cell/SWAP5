@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A8_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "purpose": "Close the missing restricted composition seam from a pre-cap ponded O14 committed state through the 1 cm surface-cap event into the already-qualified Ross post-cap runoff continuation. Candidate and independent reference must each solve one constrained cap-event corrector from the same committed state and then continue for exactly 1 day after cap onset with explicit runoff ownership.",
+  "upstream": {
+    "A4_event_ordering": "O14_SURFACE_CAP_PRECEDES_TOP_SATURATION_CHARACTERIZED_READY_FOR_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_CONTINUATION_DIAGNOSTIC",
+    "A6_R1_reference_topology": "QUALIFIED_RESTRICTED_O14_POST_CAP_UNSATURATED_ATTRACTOR_WITHIN_FROZEN_1CM_SURFACE_CAP_TOPOLOGY_READY_FOR_RUNOFF_CONTINUATION_COMPOSITION",
+    "A7_candidate_continuation": "QUALIFIED_RESTRICTED_O14_ROSS_POST_CAP_RUNOFF_CONTINUATION_READY_FOR_BROADER_SURFACE_CAP_AND_EVENT_COMPOSITION",
+    "surface_ledger": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+    "surface_face": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION"
+  },
+  "frozen_profiles": {
+    "P0_A1_CONTROL": {"initial_heads_cm":[-0.2,-1.5,-5.0],"A4_seed_heads_cm":[-0.14612442301092474,-3.4365807674561273,-8.231314064881142],"A4_seed_event_time_day":0.03644773984112319},
+    "P1_DRIER_SUBSOIL": {"initial_heads_cm":[-0.5,-5.0,-10.0],"A4_seed_heads_cm":[-0.23356049032180035,-3.7808381225488468,-8.689972381245196],"A4_seed_event_time_day":0.0365014276959812},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"initial_heads_cm":[-1.0,-10.0,-20.0],"A4_seed_heads_cm":[-0.47697860016578836,-4.718962776786451,-10.022018575369172],"A4_seed_event_time_day":0.03664790671376539},
+    "P3_STRONG_DRY_SEPARATION": {"initial_heads_cm":[-2.0,-20.0,-50.0],"A4_seed_heads_cm":[-1.472189253257072,-8.509653922626015,-16.120819017592716],"A4_seed_event_time_day":0.03723734776750273}
+  },
+  "frozen_physical_identity": {
+    "initial_surface_storage_cm": 0.02,
+    "surface_cap_cm": 1.0,
+    "surface_head_at_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat": 12.0,
+    "event_time_bounds_day": [0.02,0.05],
+    "post_cap_partition_count": 40,
+    "post_cap_dt_day": 0.025,
+    "post_cap_horizon_day": 1.0,
+    "soil_cell_count": 3,
+    "soil_cell_thickness_cm": 10.0,
+    "surface_face_length_cm": 5.0
+  },
+  "event_corrector_policy": {
+    "candidate": "one constrained nonlinear solve of [h0,h1,h2,tau] using the qualified 5 cm candidate surface face plus qualified candidate internal faces; A4 representative cap root is warm-start only",
+    "reference": "one constrained nonlinear solve of [h0,h1,h2,tau] using independent high-accuracy surface and internal face references; same A4 seed",
+    "surface_equation": "S_cap-S0 = tau*(q_supply-q_top)",
+    "soil_equations": "DZ*(theta_i_event-theta_i_initial) = tau*(q_i-q_i+1)",
+    "event_detection_claimed": false,
+    "repeated_full_trajectory_bisection": false,
+    "candidate_event_full_nonlinear_trajectory_count": 1,
+    "reference_event_full_nonlinear_trajectory_count": 1,
+    "event_state_persisted_before_accept": false
+  },
+  "post_cap_policy": {
+    "candidate": "exact A7-R1 instrumentation-separated Ross continuation policy",
+    "reference": "exact A6-R1 independent reference continuation policy",
+    "surface_storage_change": 0.0,
+    "runoff_rate": "q_supply-q_top, must be nonnegative",
+    "stale_pre_cap_qtop_allowed": false,
+    "post_cap_candidate_full_trajectory_count": 1,
+    "post_cap_reference_full_trajectory_count": 1
+  },
+  "whole_path_mass_identity": "Delta_S_soil_total + (S_cap-S0) + Q_runoff_postcap + Q_bottom_precap + Q_bottom_postcap - q_supply*(tau_cap+1 day) = 0",
+  "frozen_acceptance": {
+    "all_four_profiles_pass": true,
+    "candidate_and_reference_event_time_inside_bounds": true,
+    "candidate_reference_event_time_difference_day": 0.00025,
+    "candidate_reference_event_head_difference_cm": 0.25,
+    "candidate_reference_event_bottom_transfer_difference_cm": 0.001,
+    "candidate_event_surface_q_abs_error_over_ksat": 0.0005,
+    "candidate_surface_face_max_constitutive_K_evaluations": 530,
+    "candidate_surface_face_max_root_residual_evaluations": 66,
+    "event_max_abs_cell_surface_or_composed_balance_residual_cm": 1e-9,
+    "candidate_and_reference_postcap_complete_40_steps": true,
+    "candidate_reference_postcap_max_trajectory_head_difference_cm": 0.25,
+    "candidate_reference_postcap_cumulative_runoff_difference_cm": 0.001,
+    "candidate_reference_postcap_cumulative_bottom_transfer_difference_cm": 0.001,
+    "candidate_reference_final_soil_storage_change_difference_cm": 0.001,
+    "candidate_reference_whole_path_balance_residual_cm": 1e-9,
+    "candidate_reference_final_head_difference_cm": 0.25,
+    "candidate_final_to_independent_attractor_cm": 0.005,
+    "reference_final_to_independent_attractor_cm": 0.005,
+    "candidate_unqualified_face_route_count": 0,
+    "runoff_nonnegative": true,
+    "original_precap_committed_state_bitwise_unchanged_until_event_accept": true,
+    "synthetic_reject_after_event_corrector_restores_original_committed_state_and_zero_runoff_ledger": true,
+    "mass_repair_or_clipping": false
+  },
+  "cost_and_state_guards": {
+    "candidate_event_correctors_per_profile": 1,
+    "candidate_postcap_trajectories_per_profile": 1,
+    "extra_candidate_full_trajectories_for_event_search_or_error_estimation": 0,
+    "event_time_persistent_state_bytes": 0,
+    "event_state_duplicate_persistent_bytes": 0,
+    "runoff": "runtime/result ledger, not soil-kernel state",
+    "surface_storage": "existing single physical scalar",
+    "nonlinear_vectors": "worker scratch"
+  },
+  "decision_logic": {
+    "pass": "QUALIFIED_RESTRICTED_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_READY_FOR_SURFACE_EVENT_DETECTION_AND_CAP_GENERALIZATION_RESEARCH",
+    "fail": "O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_NOT_QUALIFIED_PRESERVE_A4_A6R1_A7_SEPARATE_AUTHORITIES"
+  },
+  "hard_guards": [
+    "Do not change A4 profile states, A4 seed roots, 1 cm cap, 12*KSAT supply, -15 cm bottom head, event bounds or A7 40x0.025 d continuation after execution.",
+    "A4 seeds are qualification fixtures only; PASS does not qualify automatic event detection or bracket discovery.",
+    "Do not force top-node h=0. A4/A5/A6 established that cap onset precedes top saturation and the post-cap attractor remains unsaturated in this topology.",
+    "Do not publish event scratch state before all event mass, route and reference checks pass.",
+    "Do not carry pre-cap qtop across the cap event; post-cap qtop must be recomputed from the committed cap state.",
+    "Do not clip surface water at 1 cm; all post-cap surplus must enter the explicit runoff ledger.",
+    "Do not add other materials, caps, forcing, bottom boundaries, response tangents, runtime, MultiSWAP or groundwater to A8."
+  ],
+  "architecture_checks": {
+    "3_data_separation": "forcing, committed state, event scratch, runoff result ledger and diagnostics remain separate",
+    "4_compact_state": "no event-time or duplicate cap-state persistence",
+    "5_worker_scratch": "event and step nonlinear vectors are worker-local",
+    "7_transactionality": "pre-cap committed state remains immutable until accepted cap event; synthetic event rejection rolls back all state and ledger changes",
+    "8_warm_start": "A4 cap roots may seed the corrector but event equations originate from the true pre-cap committed state",
+    "9_generic_time": "tau is a generic offset inside [t0,t1]; post-cap continuation uses explicit intervals without calendar assumptions",
+    "13_mass_conservation": "hard 1e-9 cm event and whole-path balances; no repair/clipping",
+    "24_predictable_runtime": "one event corrector plus one fixed post-cap candidate trajectory; no repeated full-trajectory event search",
+    "25_reference_mode": "independent event and continuation references remain qualification-only",
+    "28_runtime_composition": "surface cap and runoff remain outside the soil-face kernel"
+  },
+  "hard_nonclaims": [
+    "No automatic event detection or bracket discovery.",
+    "No surface caps other than 1 cm and no material other than O14.",
+    "No top-node saturation event qualification.",
+    "No response tangent through cap onset or runoff continuation.",
+    "No production implementation, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
