@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C4",
+  "title": "Multi-Level Drainage Exchange Aggregation Structural Qualification Evidence",
+  "branch": "work/f-pm08c4-multilevel-exchange-aggregation",
+  "source_base": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "qualified_candidate_head": "3fb3802e6619fad9ffa49d126912d52824004097",
+  "production": {
+    "path": "src/process/mod_drainage_multilevel_aggregation.f90",
+    "blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb",
+    "only_src_delta": true,
+    "reference_delta": false
+  },
+  "upstream_authorities": {
+    "F_PM08": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "F_PM08C": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "F_VQ38": "49728b999b884a37643908c1dad40269f4e2db9b",
+    "F_VQ40": "f5f567c6af4879bf80107a7579dd342de6d5afe0",
+    "F_VQ42": "702db051bf5dd0960a962be919ea0cfbf01895a4"
+  },
+  "workflow": {
+    "run_id": 34462875197,
+    "job_id": 102824557020,
+    "conclusion": "success",
+    "candidate_output_sha256": "9a65c22d938c17cdfc60e64544a9b45d6aa426be12493625e22a1bf3ff3741c0"
+  },
+  "verified_claims": {
+    "single_level_identity": true,
+    "deterministic_level_order_flux_sum": true,
+    "all_defined_derivative_sum": true,
+    "mixed_signed_transfer_arithmetic": true,
+    "total_is_derived_mass_view": true,
+    "unavailable_tangent_preserves_flux": true,
+    "nonfinite_tangent_preserves_flux_and_degrades_sensitivity": true,
+    "branch_boundary_union": true,
+    "singular_tangent_union": true,
+    "invalid_flux_fails_closed": true,
+    "level_identity_mismatch_fails_closed": true,
+    "empty_collection_fails_closed": true,
+    "dynamic_level_count_above_legacy_capacity": true,
+    "aggregate_derivative_overflow_preserves_flux": true,
+    "stateless_A_B_A_identity": true,
+    "O0_O2_output_identity": true,
+    "no_IO_runtime_solver_or_DIVDRA_leakage": true,
+    "explicit_30_invariant_audit": true
+  },
+  "scope_limitations": {
+    "negative_Dramet3_infiltration_physics_qualified": false,
+    "response_law_dispatch_qualified": false,
+    "DIVDRA_qualified": false,
+    "surface_water_control_qualified": false,
+    "runtime_ledger_qualified": false,
+    "solver_Jacobian_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_EXCHANGE_AGGREGATION_STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ"
+}
