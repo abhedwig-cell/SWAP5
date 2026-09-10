@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08B",
+  "title": "Drainage Spatial Distribution and DIVDRA Migration Qualification",
+  "branch": "work/f-pm08b-drainage-spatial-distribution",
+  "status": "IN_PROGRESS_SOURCE_BOUND_QUALIFICATION",
+  "lineage": {
+    "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "candidate_sibling_fpm08a": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
+    "fpm08a_required_for_this_workunit": false
+  },
+  "scope": {
+    "migration_object": "DRAINAGE_SPATIAL_DISTRIBUTION",
+    "legacy_source": "SWAP/divdra.f90",
+    "restricted_first_route": "single-level positive drainage, transmissivity-weighted saturated-zone distribution, no separate infiltration distribution, no top-discharge-layer redistribution",
+    "scalar_exchange_is_input": true,
+    "exchange_law_is_out_of_scope": true,
+    "persistent_process_state": false,
+    "scratch_per_worker": true,
+    "exact_scalar_to_node_mass_identity_required": true
+  },
+  "held": [
+    "negative infiltration with SWDIVDINF=1",
+    "interflow special top layer",
+    "SWDISLAY top-boundary redistribution",
+    "multi-level ordering interactions",
+    "fully implicit nonlocal derivative assembly",
+    "surface-water storage/control"
+  ],
+  "persisted": true,
+  "source_reviewed": true,
+  "tested": false,
+  "qualified": false
+}
