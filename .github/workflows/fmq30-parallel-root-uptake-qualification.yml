@@ -7,7 +7,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_parallel_root_uptake_pool.f90'
       - 'integration/f-mq/F-MQ30_*.json'
-      - 'tests/fmq/run_fmq30_parallel_root_uptake_qualification.sh'
+      - 'tests/fmq/run_fmq30_parallel_root_uptake_qualification*.sh'
       - '.github/workflows/fmq30-parallel-root-uptake-qualification.yml'
   workflow_dispatch:
 
@@ -22,4 +22,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-MQ30 independent root-active parallel scientific gate
-        run: bash tests/fmq/run_fmq30_parallel_root_uptake_qualification.sh
+        run: bash tests/fmq/run_fmq30_parallel_root_uptake_qualification_v2.sh
