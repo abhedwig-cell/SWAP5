@@ -1,0 +1,78 @@
+name: F-ROSS01 Gate E3E-R2R2-R3 Physical Envelope Upper Snap
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R2_R3_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r2_r3_physical_envelope_upper_snap.py'
+      - '.github/workflows/ross01-gate-e3e-r2r2-r3-physical-envelope-upper-snap.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Execute frozen physical-envelope gate
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3e-r2r2-r3-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r2r2_r3_physical_envelope_upper_snap.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R2R2_R3_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R2R2_R3_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen gate semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r2r2-r3-{m}/F-ROSS01_GATE_E3E_R2R2_R3_{m}_RESULT.json'
+          r=json.load(open(p))
+          mr=r['material_result']
+          assert r['gate']=='E3E_R2R2_R3_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP'
+          assert r['production_implementation'] is False
+          assert r['roundoff_only_hypothesis_retired'] is True
+          assert r['certificate_kind']=='ANALYTIC_PHYSICAL_ROOT_ENVELOPE'
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          assert mr['wrong_sign_count']==0
+          assert mr['max_hybrid_metric']<=0.01
+          assert mr['max_abs_error_over_ksatfit']<=0.0005
+          assert mr['max_constitutive_K_evaluations']<=530
+          assert mr['max_root_residual_evaluations']<=66
+          assert all(row['physical_envelope']['abs_error_bound_over_ksat']<=0.0005 for row in mr['rows'])
+          assert all(row['physical_envelope']['hybrid_error_bound']<=0.01 for row in mr['rows'])
+          assert all(row['tests']['reference_inside_physical_envelope'] for row in mr['rows'])
+          assert all(row['tests']['actual_error_inside_theorem_abs_bound'] for row in mr['rows'])
+          assert all(row['tests']['actual_error_inside_theorem_hybrid_bound'] for row in mr['rows'])
+          if m=='B01':
+              assert mr['snap_count']==1
+              defect=next(x for x in mr['rows'] if x['probe_id']=='fresh_near_0023')
+              assert defect['candidate_branch']=='SURFACE_SATURATED_PHYSICAL_ENVELOPE_UPPER_SNAP'
+              assert defect['physical_envelope']['abs_error_bound_over_ksat']<4e-9
+              assert defect['abs_error_over_ksatfit']<=defect['physical_envelope']['abs_error_bound_over_ksat']+1e-14
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2r2-r3-${{ matrix.material }}
+          path: ross01-gate-e3e-r2r2-r3-${{ matrix.material }}/
