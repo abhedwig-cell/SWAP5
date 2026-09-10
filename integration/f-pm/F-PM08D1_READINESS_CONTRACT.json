@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D1",
+  "title": "Surface-Water Storage Geometry & Compact State Readiness Contract",
+  "activation_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "parent_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"
+  },
+  "reference_equations": {
+    "level_knots": "STTAB(1,1)=100 cm; STTAB(2,1)=0; STTAB(i,1)=zbotdr(1+nrpri)*(i-2)/20 for i=3..22",
+    "storage_sum": "for every knot and each secondary level ilev=1+nrpri..nrlevs with SWDTYP=2 and level>zbotdr(ilev), add open-channel cross-section volume divided by LSPACING(ilev)",
+    "below_or_at_surface_volume": "wdepth=level-zbotdr; wvolum=wdepth*(widthr+wdepth/taludr)",
+    "above_surface_volume": "base_depth=-zbotdr; base_volume=base_depth*(widthr+base_depth/taludr); breadth=widthr+2*base_depth/taludr; wvolum=base_volume+breadth*level",
+    "forward_storage_from_level": "piecewise-linear interpolation SWSTLEV over the 22 prepared knots",
+    "inverse_level_from_storage": "piecewise-linear interpolation WLEVST over the same 22 prepared knots"
+  },
+  "source_domain": {
+    "levels_ordered_deepest_first": true,
+    "deepest_secondary_level_index": "1+nrpri",
+    "deepest_secondary_must_be_open_channel": true,
+    "open_channel_width_positive": true,
+    "spacing_positive_after_input conversion": true,
+    "table_level_domain": "[zbotdr(1+nrpri), 100 cm]",
+    "storage_domain": "[STTAB(22,2), STTAB(1,2)]",
+    "outside_domain_fails_closed": true
+  },
+  "state_ownership": {
+    "SWST": {
+      "classification": "committed physical state only for SWSEC=2 simulated secondary surface water",
+      "authoritative": true,
+      "conserved": true
+    },
+    "WLS": {
+      "classification": "derived quantity for SWSEC=2; external forcing/control for SWSEC=1",
+      "committed_independent_state": false
+    },
+    "WLSTAR": {
+      "classification": "conditional automatic-management control memory",
+      "storage_state_member": false,
+      "owner_child": "F-PM08D5"
+    },
+    "WLSBAK": {
+      "classification": "numerical continuation history",
+      "physical_state_member": false
+    },
+    "NUMADJ": {
+      "classification": "diagnostic counter",
+      "physical_state_member": false
+    }
+  },
+  "modern_storage_parameterization": {
+    "reference_mode": "prepared immutable 22-knot level/storage relation equivalent to frozen STTAB semantics",
+    "sharing": "share prepared relation by parameter ID/reference across columns using identical surface-water geometry",
+    "per_column_persistent_payload": "only SWST when simulated secondary surface water is active",
+    "wls_recomputed_from_swst": true,
+    "no_per_column_duplicate_sttab": true,
+    "no_storage_state_for_inactive_option": true
+  },
+  "physics_policy_separation": {
+    "reference_piecewise_linear_relation_is_physical_reference_semantics": true,
+    "analytic_channel_geometry_between_knots_is_not_silent_reference_replacement": true,
+    "alternative_exact_geometry_may_only_be_introduced_as_separately_qualified_physical_option": true,
+    "no_solver_policy_parameters_in_storage_geometry": true
+  },
+  "transaction_requirements": {
+    "trial_swst_isolated_from_committed_swst": true,
+    "rejected_trial_cannot_mutate_committed_swst": true,
+    "commit_of_swst_must_be_atomic_with_accepted_mass_ledger_in_later_runtime_child": true,
+    "rollback_restores_exact_committed_swst": true
+  },
+  "time_requirements": {
+    "storage_relation_itself_time_independent": true,
+    "day_or_midnight_assumption": false,
+    "component_advance_interval": "[t0,t1] in later balance child"
+  },
+  "hard_holds": [
+    "No drainage exchange law in F-PM08D1.",
+    "No availability limiter in F-PM08D1.",
+    "No supply/discharge or weir balance in F-PM08D1.",
+    "No automatic-management implementation in F-PM08D1.",
+    "No runtime transaction composition implementation in F-PM08D1.",
+    "No file parsing or calendar logic in kernel/component code.",
+    "No production source modification in this readiness workunit."
+  ],
+  "readiness_exit": [
+    "frozen source identity reverified",
+    "exact 22-knot construction independently reconstructed",
+    "strict monotonic storage relation demonstrated over valid source domain",
+    "forward and inverse interpolation mutually consistent within floating arithmetic",
+    "endpoint and outside-domain behavior characterized",
+    "SWST/WLS/WLSTAR/WLSBAK/NUMADJ ownership separated",
+    "MultiSWAP sharing and optional-state consequences explicit",
+    "all 30 architecture invariants audited",
+    "no src or reference delta"
+  ]
+}
