@@ -1,0 +1,20 @@
+name: F-PM08C2B prepared equivalent-depth IPOS2-3 response
+
+on:
+  push:
+    branches:
+      - work/f-pm08c2b-ipos23-equivalent-depth-response
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C2B prepared equivalent-depth IPOS2-3 gate
+        run: bash tests/fpm/run_fpm08c2b_ipos23_equivalent_depth_response_gate.sh
