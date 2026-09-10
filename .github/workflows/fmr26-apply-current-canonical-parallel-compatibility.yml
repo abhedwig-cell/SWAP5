@@ -1,0 +1,36 @@
+name: F-MR26 apply current-canonical parallel compatibility
+
+on:
+  push:
+    branches:
+      - work/f-mr26-parallel-current-canonical-recomposition
+    paths:
+      - '.github/workflows/fmr26-apply-current-canonical-parallel-compatibility.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply exact source-locked compatibility composition
+        run: python tools/fmr/fmr26_apply_current_canonical_parallel_compatibility.py
+      - name: Verify and persist source-only production candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected=$'src/runtime/mod_fmr_parallel_physical_scheduler.f90\nsrc/runtime/mod_fmr_parallel_worker_pool.f90\nsrc/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+          actual="$(git diff --name-only -- src | sort)"
+          test "$actual" = "$expected"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_parallel_physical_scheduler.f90 \
+                  src/runtime/mod_fmr_parallel_worker_pool.f90 \
+                  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+          test "$(git diff --cached --name-only | sort)" = "$expected"
+          git commit -m 'compose(F-MR26): bind parallel V1 to current canonical runtime'
+          git push origin HEAD:work/f-mr26-parallel-current-canonical-recomposition
