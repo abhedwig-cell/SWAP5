@@ -65,6 +65,8 @@ import sys
 src = Path(sys.argv[1]).read_text()
 src = src.replace('program test_fsi27_explicit_prescribed_qbot',
                   'program test_fsi28_interface_sensitivity', 1)
+src = src.replace('end program test_fsi27_explicit_prescribed_qbot',
+                  'end program test_fsi28_interface_sensitivity', 1)
 
 call_marker = '  ! D: nearby unowned mode remains fail closed.'
 if call_marker not in src:
@@ -162,8 +164,10 @@ proc = r'''contains
 
 '''
 src = src.replace(contains_marker, proc, 1)
-src = src.replace('FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS',
-                  'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS\nFSI28_INTERFACE_SENSITIVITY_GATE PASS', 1)
+pass_stmt = "  write(*,'(A)') 'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS'"
+if pass_stmt not in src:
+    raise SystemExit('FSI28_TRANSFORM_FAIL pass marker missing')
+src = src.replace(pass_stmt, pass_stmt + "\n  write(*,'(A)') 'FSI28_INTERFACE_SENSITIVITY_GATE PASS'", 1)
 Path(sys.argv[2]).write_text(src)
 PY
 
