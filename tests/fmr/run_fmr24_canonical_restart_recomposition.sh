@@ -18,6 +18,7 @@ fail() { echo "FMR24_OWNER_GATE_FAIL $*" >&2; exit 1; }
 [[ "$(git rev-parse HEAD:src/kernel/mod_kernel_committed_persistence.f90)" == "ffd886c3401fc12739a456fe60a8741c12b9848b" ]] || fail 'canonical persistence contract drift'
 [[ "$(git rev-parse HEAD:src/kernel/mod_kernel_transactions.f90)" == "f1acff10dd99c308a00f434440d6a9ef14632f0d" ]] || fail 'canonical transaction kernel drift'
 [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4" ]] || fail 'canonical transaction reference drift'
+[[ "$(git rev-parse HEAD:src/runtime/mod_fmr_accepted_commit_receipt.f90)" == "6798b3296b426950bf028814585c3f5de9be950b" ]] || fail 'canonical accepted commit receipt drift'
 [[ "$(git rev-parse HEAD:tests/fmr/test_fmr19_process_restart.f90)" == "c9f42747a00b317797a3a42859cab50d921c26fc" ]] || fail 'F-MQ27 process test provenance drift'
 [[ "$(git rev-parse HEAD:tests/fmq/test_fmq27_restart_contract_requalification.f90)" == "cb5e6973a8a5d207e6dffa657d2539224826072d" ]] || fail 'F-MQ27 negative test provenance drift'
 [[ "$(git rev-parse HEAD:$UPSTREAM_SCRIPT)" == "bc286201b40722b40ddb6083666603872c6fa065" ]] || fail 'F-MQ27 runner provenance drift'
@@ -31,6 +32,7 @@ rm -f "${TMP_SCRIPT}.src" "${TMP_SCRIPT}.expected"
 echo 'FMR24_EXACT_CANONICAL_TWO_FILE_RECOMPOSITION=PASS'
 echo 'FMR24_EXACT_FMR21_PRODUCTION_BLOB_IDENTITY=PASS'
 echo 'FMR24_CANONICAL_CORE_DEPENDENCY_LOCK=PASS'
+echo 'FMR24_CANONICAL_RECEIPT_DEPENDENCY_LOCK=PASS'
 echo 'FMR24_EXACT_FMQ27_TEST_PROVENANCE=PASS'
 
 cp "$UPSTREAM_SCRIPT" "$TMP_SCRIPT"
@@ -39,6 +41,16 @@ sed -i \
   -e 's/OLD=dfffd8535b3345b105b2d71537d8149225f35c54/OLD=f49e17c6627717d5dea181808a122f2e35960739/' \
   -e 's/"$CANDIDATE":tests\/fmr\/test_fmr19_process_restart.f90/HEAD:tests\/fmr\/test_fmr19_process_restart.f90/' \
   "$TMP_SCRIPT"
+python3 - "$TMP_SCRIPT" <<'PY'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text()
+needle = '  src/runtime/mod_fmr_serialized_multiswap_runtime.f90\n'
+assert s.count(needle) == 1, 'unexpected serialized runtime occurrence count'
+s = s.replace(needle, '  src/runtime/mod_fmr_accepted_commit_receipt.f90\n' + needle)
+p.write_text(s)
+PY
 chmod +x "$TMP_SCRIPT"
 
 bash "$TMP_SCRIPT"
