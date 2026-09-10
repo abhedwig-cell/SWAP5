@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR26",
+  "title": "Parallel Real-Physics V1 Current-Canonical Compatibility Seam & Recomposition",
+  "branch": "work/f-mr26-parallel-current-canonical-recomposition",
+  "canonical_base": {
+    "branch": "integration/f-ci-canonical",
+    "head": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+    "src_tree": "3fe4ccff367479e54ab5db106e5faf8b480d8ec0",
+    "status": "QUALIFIED_CLOSED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION"
+  },
+  "historical_parallel_authority": {
+    "F_MR22_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "F_MR22_decision": "QUALIFIED_SHARED_MULTISWAP_CANONICAL_PUBLICATION_READY_FOR_INDEPENDENT_FMQ_REQUALIFICATION",
+    "F_MQ28_decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "F_MQ28_workflow": 34451436554,
+    "parallel_restart_qualified": false
+  },
+  "qualified_historical_parallel_sources": {
+    "worker_pool": {
+      "path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "blob": "f9a31effda51a298b7db74fdba492fc6b6047339",
+      "present_on_current_canonical": false
+    },
+    "scheduler": {
+      "path": "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "blob": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+      "present_on_current_canonical": false
+    }
+  },
+  "dependency_reconciliation": {
+    "runtime_core": {
+      "historical_blob": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+      "current_blob": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+      "classification": "IDENTICAL"
+    },
+    "serialized_multiswap_runtime": {
+      "historical_blob": "be4005a97e35c498ffc40297409a75efe65ff5df",
+      "current_blob": "6559237c887e9a8476beb479546becdfe9339920",
+      "classification": "CHANGED_INCOMPATIBLE_PUBLIC_COLUMN_EXECUTOR_NAME_VISIBILITY",
+      "historical_worker_import": "fmr_execute_serialized_physical_column",
+      "current_internal_executor": "execute_column",
+      "current_public_column_executor_available": false,
+      "change_authority": "F-MR18 accepted-commit receipt integration"
+    },
+    "serialized_reference_backend": {
+      "historical_blob": "e0432faa0e05a3c136ee5aed6fddb12ad631848d",
+      "current_blob": "9af5a494526810324dc00706b444e448e770cba9",
+      "classification": "CHANGED_CURRENT_SERIALIZED_CONTEXT_BINDING_PRESENT_PUBLIC_BACKEND_SEAM_PRESERVED"
+    }
+  },
+  "selected_remediation_design": {
+    "classification": "COMPATIBILITY_REMEDIATION_PLUS_RECOMPOSITION_NOT_PURE_TRANSPLANT",
+    "strategy": "Preserve the exact F-MQ28-qualified worker-pool and scheduler source blobs. Add the smallest explicit no-receipt public column-execution wrapper in the current serialized runtime; the wrapper delegates to the current execute_column implementation without requesting a receipt.",
+    "why": [
+      "Do not duplicate checkpoint, mass, commit or rollback logic in the parallel worker pool.",
+      "Do not revert or bypass F-MR18 accepted-commit receipt semantics.",
+      "Retain one authoritative serialized column transaction implementation.",
+      "Keep parallel V1 receipt routing out of scope until independently qualified."
+    ]
+  },
+  "hard_scope": {
+    "parallel_real_physics_v1": true,
+    "worker_counts": [2, 4],
+    "historical_parallel_profile_only": true,
+    "canonical_publication_order_required": true,
+    "hard_mass_conservation_required": true,
+    "current_F_CI27_ET_runtime_must_be_preserved": true,
+    "current_F_CI28_serialized_restart_must_be_preserved": true,
+    "parallel_restart": false,
+    "parallel_commit_receipt_routing": false,
+    "new_physics": false,
+    "new_numerical_policy": false,
+    "speed_claim": false
+  },
+  "governance": {
+    "persist_early_test_second": true,
+    "production_candidate_must_be_immutable_before_owner_qualification": true,
+    "independent_F_CI29_required_before_canonical_admission": true,
+    "all_30_architecture_invariants_must_be_rechecked": true
+  }
+}
