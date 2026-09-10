@@ -13,6 +13,7 @@
   },
   "source_pins": {
     "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_reference_linear_solver.f90": "b292d284e5549049eac1c80df4cc30008154eb96",
     "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
     "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
     "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
@@ -27,7 +28,7 @@
     "transaction_restores_checkpoint_context_on_rejection": true,
     "accepted_worker_context_is_restored_before_physical_commit": true,
     "worker_attempt_context_is_not_persistent_column_state": true,
-    "conclusion": "The existing transaction architecture is compatible in principle with accepted-only result sensitivity, but the required prescribed-qbot solve and publication path is not implemented at this source authority."
+    "conclusion": "The existing transaction architecture is compatible in principle with accepted-only result sensitivity, but the required prescribed-qbot solve, reusable-factorization tangent and publication path are not implemented at this source authority."
   },
   "findings": [
     {
@@ -73,6 +74,13 @@
       "required_resolution": "Transport the accepted canonical sensitivity through kernel_result_t without implicit sign conversion or committed-state mutation."
     },
     {
+      "id": "J1E-B7",
+      "severity": "BLOCKING",
+      "component": "reference tridiagonal linear solver",
+      "finding": "reference_tridag performs elimination and back substitution in one call. It retains gamma but keeps each eliminated diagonal value only in the local scalar bet, so the normal tridiagonal path exposes no complete reusable factorization for a second tangent right-hand side.",
+      "required_resolution": "Introduce a worker-owned reusable tridiagonal factorization/backsolve seam, or an equivalent qualified factorization object, so the normal Newton correction and qbot tangent use one factorization and separate backsolves without persistent per-column solver state."
+    },
+    {
       "id": "J1E-D1",
       "severity": "DESIGN_REQUIRED",
       "component": "coupling-window semantics",
@@ -87,6 +95,18 @@
       "required_resolution": "Pin and test the production residual derivative with respect to native qbot and verify the same-factorization backsolve against independent finite-difference reference trajectories from identical committed state."
     }
   ],
+  "ownership_reconciliation": {
+    "F_SI13_decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+    "F_SI13_admitted_common_bottom_modes": [7, -2],
+    "F_SI27_branch_or_issue_found_at_inspection": false,
+    "F_KT14_branch_found_at_inspection": false,
+    "recommended_serial_decomposition": [
+      "F-SI27: explicit prescribed-qbot production boundary admission",
+      "F-SI28: optional reusable-factorization interface sensitivity production solve",
+      "F-KT14 or later authority-confirmed transaction/runtime workunit: accepted-only sensitivity transport through transaction, canonical and kernel result seams",
+      "F-ROSS01 J1E: independent end-to-end qualification against this frozen contract"
+    ]
+  },
   "preserved_qualified_evidence": {
     "j1d_result_commit": "25362cdc890f260f3f25254cb85424ba7ab36258",
     "j1d_decision": "J1D_SWAP_QBOT_INTERFACE_MAPPING_QUALIFIED_READY_FOR_REAL_TRANSACTIONAL_BOUNDARY_INTEGRATION_QUALIFICATION",
@@ -97,6 +117,7 @@
   "minimum_engineering_entry_criteria": [
     "prescribed native qbot is an admitted canonical reference-solver boundary control",
     "interface sensitivity is explicitly requestable and optional",
+    "worker-owned reusable linear factorization can serve the normal Newton and tangent right-hand sides without a second factorization",
     "same-factorization tangent is produced by the accepted real solve",
     "rejected and retried sensitivities are never externally visible",
     "sensitivity remains result/worker data and not committed physical state",
@@ -107,7 +128,7 @@
     "normal production tangent requires zero additional nonlinear trajectories"
   ],
   "pass": false,
-  "decision": "J1E_BLOCKED_ON_CANONICAL_PRESCRIBED_QBOT_AND_ACCEPTED_TANGENT_RESULT_LIFECYCLE",
-  "next_action": "Perform the missing production plumbing on a source-bound engineering workunit based on current canonical authority, then return to this frozen J1E contract for live qualification. Do not implement those canonical changes directly on the stale ROSS research branch.",
+  "decision": "J1E_BLOCKED_ON_CANONICAL_PRESCRIBED_QBOT_REUSABLE_FACTORIZATION_AND_ACCEPTED_TANGENT_RESULT_LIFECYCLE",
+  "next_action": "Implement the missing seams as small source-bound engineering workunits based on current canonical authority, beginning with prescribed-qbot boundary admission. Do not implement canonical changes directly on the stale ROSS research branch.",
   "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
 }
