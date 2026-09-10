@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_DIAGNOSTIC",
+  "status": "HARNESS_FAILURE_NO_SCIENTIFIC_DECISION",
+  "failed_run": 34464684134,
+  "failed_head": "67223abe6da52494b6095b6530672ede8c9886a5",
+  "cause": "ModuleNotFoundError: No module named 'mpmath' during import of the already existing surface-face qualification dependency chain, before any A5 solve executed.",
+  "scientific_gate_executed": false,
+  "scientific_precommit_changed": false,
+  "fixture_changed": false,
+  "equations_changed": false,
+  "thresholds_changed": false,
+  "allowed_repair": "Add mpmath to the workflow dependency installation only and rerun the identical frozen A5 executable and matrix.",
+  "forbidden_interpretation": "Do not count this run as evidence for or against post-cap O14 top saturation.",
+  "decision": "RERUN_IDENTICAL_FROZEN_A5_AFTER_DEPENDENCY_ONLY_HARNESS_REPAIR"
+}
