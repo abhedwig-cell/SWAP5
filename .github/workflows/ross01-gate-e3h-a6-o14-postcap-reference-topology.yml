@@ -1,0 +1,74 @@
+name: F-ROSS01 Gate E3H-A6 O14 Post-Cap Reference Topology
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A6_O14_POST_CAP_FIXED_HEAD_TRAJECTORY_AND_ASYMPTOTIC_TOPOLOGY_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a6_o14_postcap_reference_topology.py'
+      - '.github/workflows/ross01-gate-e3h-a6-o14-postcap-reference-topology.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - P0_A1_CONTROL
+          - P1_DRIER_SUBSOIL
+          - P2_DRIER_TOP_AND_SUBSOIL
+          - P3_STRONG_DRY_SEPARATION
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a6_o14_postcap_reference_topology.py
+      - name: Execute frozen A6 profile diagnostic
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a6-${{ matrix.profile }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a6_o14_postcap_reference_topology.py \
+            "${{ matrix.profile }}" \
+            "$out/F-ROSS01_GATE_E3H_A6_${{ matrix.profile }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A6_${{ matrix.profile }}_STDOUT.txt"
+      - name: Assert frozen A6 semantics
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          f=f'ross01-gate-e3h-a6-{p}/F-ROSS01_GATE_E3H_A6_{p}_RESULT.json'
+          r=json.load(open(f)); pr=r['profile_result']
+          assert r['gate']=='E3H_A6_O14_POST_CAP_FIXED_HEAD_TRAJECTORY_AND_ASYMPTOTIC_TOPOLOGY_DIAGNOSTIC'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert pr['diagnostic_complete'] is True
+          assert pr['transient_summary']['accepted_step_count']==56
+          assert pr['transient_summary']['max_abs_balance_residual_cm']<=1e-9
+          assert pr['steady']['representative'] is not None
+          assert all(pr['tests'].values())
+          assert r['pass'] is True
+          assert pr['unsaturated_attractor_evidence'] is True
+          assert pr['initial_tendency']['top_initially_dries_or_neutral'] is True
+          assert pr['transient_summary']['top_saturation_approach_count']==0
+          assert pr['steady']['representative']['heads_cm'][0] < -1e-4
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a6-${{ matrix.profile }}
+          path: ross01-gate-e3h-a6-${{ matrix.profile }}/
