@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC06",
+  "title": "Narrow Application-Class Groundwater Head-Accuracy Requirement Qualification Closeout",
+  "decision": "FAIL_CLOSED_NO_NARROW_APPLICATION_CLASS_HAS_COMPLETE_INDEPENDENT_H_APP_AND_A_TEMPORAL",
+  "qualified": false,
+  "persisted": true,
+  "researched": true,
+  "pre_registered_before_target_inspection": true,
+  "target_leakage_detected": false,
+  "GC02_inspected": false,
+  "GC02_executed": false,
+  "production_source_changed": false,
+  "pre_registration_commit": "99765128178a6df1c2b35d0b5812bafa10e6a268",
+  "research_evidence_commit": "bb1792a53c41c77b95e4977b2c3c0ddef80d9e0e",
+  "policy_template": "H_budget(version, application_class) = A_temporal(version, application_class) * H_app(application_class)",
+  "class_dispositions": {
+    "AC01_SHALLOW_GW_CROP_WATER": "FAIL_CLOSED_NO_TRACEABLE_HEAD_ACCURACY_AND_TEMPORAL_ALLOCATION",
+    "AC02_GW_MANAGEMENT_HEAD_THRESHOLD": "FAIL_CLOSED_REQUIRES_PROJECT_OR_REGULATORY_DECISION_MARGIN",
+    "AC03_RECHARGE_WATER_BALANCE_PRIMARY": "FAIL_CLOSED_HEAD_NOT_PRIMARY_QOI_AND_NO_ERROR_PROPAGATION"
+  },
+  "reason": "Independent literature supports defining adequacy from application purpose, decision consequence, prediction uncertainty and temporal-resolution sensitivity, but none of the preregistered narrow classes supplies both a transferable numerical H_app and an independently justified temporal-coupling allocation A_temporal. Therefore no H_budget may be instantiated and no policy VQ may inspect GC02 yet.",
+  "important_rejection": "The Australian Groundwater Modelling Guidelines statement that iterative convergence should be one or two orders smaller than required head-prediction accuracy is not a temporal-coupling allocation rule and is not reused as A_temporal.",
+  "downstream": {
+    "policy_VQ_ready": false,
+    "GC02": "REMAINS_LOCKED_FROM_POLICY_SELECTION_OR_TESTING",
+    "future_research_condition": "Start from a concrete externally governed application with a traceable acceptable decision/prediction error, then independently qualify the mapping to H_app and the allocation to temporal coupling error before any GC02 inspection.",
+    "potential_future_unit": "F-GC07_CONCRETE_APPLICATION_REQUIREMENT_BINDING_ONLY_IF_EXTERNAL_REQUIREMENT_EXISTS"
+  },
+  "flux_and_mass_contract": {
+    "interface_flux_contract": "q_SWAP = -q_MF",
+    "mass_conservation": "ABSOLUTE_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "not QUALIFIED_NARROW_APPLICATION_CLASS_HEAD_ACCURACY_REQUIREMENT_READY_FOR_POLICY_VQ",
+    "no universal or narrow-class numeric centimetre tolerance",
+    "no solver convergence criterion reused as application accuracy",
+    "no B_inf-derived or GC02-derived threshold",
+    "no production coupling change",
+    "no mass-policy change"
+  ],
+  "architecture_invariants_checked": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
