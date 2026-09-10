@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ45",
+  "title": "Independent Restricted DIVDRA Spatial Distribution Qualification & Boundary-Seam Disposition Evidence",
+  "qualification_branch": "qualification/f-vq45-fpm08b-spatial-distribution",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "work_unit": "F-PM08B",
+    "closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe"
+  },
+  "frozen_legacy_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_path": "SWAP/divdra.f90",
+    "divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "lev2comp_boundary_semantics": "legacy compartment selection includes +1e-10 cm seam offset"
+  },
+  "decisive_tested_head": "8be0b5662380e3dda02f815d727a08f65cdb1035",
+  "decisive_ci": {
+    "workflow_run": 34466410079,
+    "job": 102835925016,
+    "conclusion": "success",
+    "summary_sha256": "7054a2d89f1b9b18fa7b9411390d10e5e6bd71c12058177acda6da958bfec316"
+  },
+  "optimization_diagnostic": {
+    "workflow_run": 34466217467,
+    "conclusion": "success",
+    "finding": "O0 and O2 parsed candidate results are exactly identical; textual output differs only by +0.0 versus -0.0 signed-zero rendering",
+    "structural_mismatch_count": 0,
+    "max_numeric_difference": 0.0
+  },
+  "stable_domain_evidence": {
+    "cases": 900,
+    "truncated_discharge_layer_cases": 710,
+    "full_profile_cases": 190,
+    "single_compartment_cases": 670,
+    "stable_domain_scientific_equivalence": true,
+    "max_hydraulic_geometry_abs_difference": 0.0,
+    "max_node_abs_difference_vs_raw_legacy": 1.0658141036401503e-14,
+    "max_legacy_raw_mass_closure_abs": 1.0658141036401503e-14,
+    "max_candidate_last_node_closure_correction_abs": 1.0658141036401503e-14,
+    "mass_interpretation": "input scalar transfer remains authoritative; candidate closes only machine-roundoff residual in the last active node"
+  },
+  "boundary_seam_evidence": {
+    "targeted_cases": 21,
+    "mismatch_cases": 9,
+    "equivalent": false,
+    "representative_mismatches": [
+      {
+        "boundary_cm": 10.0,
+        "offset_cm": 0.0,
+        "legacy_water_table_node": 1,
+        "candidate_status": 2,
+        "candidate_water_table_node": 0
+      },
+      {
+        "boundary_cm": 10.0,
+        "offset_cm": 5e-11,
+        "legacy_water_table_node": 1,
+        "candidate_status": 0,
+        "candidate_water_table_node": 2
+      },
+      {
+        "boundary_cm": 25.0,
+        "offset_cm": 1e-10,
+        "legacy_water_table_node": 2,
+        "candidate_status": 0,
+        "candidate_water_table_node": 3
+      }
+    ],
+    "scientific_interpretation": "the stable-domain equations are equivalent, but the candidate does not reproduce the frozen legacy Lev2Comp +1e-10 compartment-boundary seam"
+  },
+  "held_scope_confirmed": {
+    "negative_infiltration": false,
+    "small_positive_transfer_interval_le_1e-10": false,
+    "interflow_special_top_layer": false,
+    "top_boundary_redistribution_swdislay_1_or_2": false,
+    "multilevel_overlap_semantics": false,
+    "trial_state_nonlocal_derivatives": false,
+    "solver_jacobian_assembly": false,
+    "runtime_mass_booking": false,
+    "surface_water_storage_control": false
+  },
+  "branch_integrity": {
+    "production_source_modified_by_qualification": false,
+    "reference_source_modified_by_qualification": false,
+    "candidate_source_modified": false,
+    "independent_oracle_used_candidate_test_fixture": false
+  },
+  "decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+  "qualification_state": {
+    "stable_domain_qualified": true,
+    "boundary_seam_equivalent": false,
+    "full_fpm08b_scientifically_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "required_next_step": "create a separate F-PM08B remediation workunit that reproduces the frozen Lev2Comp +1e-10 boundary semantics without broadening the admitted physics or weakening hard mass conservation"
+}
