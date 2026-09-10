@@ -1,0 +1,20 @@
+name: F-PM08D4 fixed-weir secondary-balance readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d4-fixed-weir-secondary-balance-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D4 readiness gate
+        run: python3 tools/fpm/fpm08d4_fixed_weir_readiness_gate.py
