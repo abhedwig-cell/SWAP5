@@ -126,6 +126,24 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI28_FROZEN_RESTRICTED_RESTART_AUTHORITY=PASS'
 
+  frozen-fci29-ptra-ownership-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact admitted F-CI29 ptra ownership postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci29_ptra_ownership_canonical_admission.sh
+          test "$(git rev-parse HEAD:src)" = 223c54d5fd309f86ef50f9efd28e2c511e175577
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI29_FROZEN_PTRA_OWNERSHIP_AUTHORITY=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
@@ -134,6 +152,7 @@ jobs:
       - frozen-fci24-reference-et-authority
       - frozen-fci27-reference-et-runtime-authority
       - frozen-fci28-restart-authority
+      - frozen-fci29-ptra-ownership-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -141,13 +160,13 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI29 ptra ownership authority gate
-        run: bash tests/fci/run_fci29_ptra_ownership_canonical_admission.sh
+      - name: Current F-CI30 restricted parallel V1 authority gate
+        run: bash tests/fci/run_fci30_parallel_v1_canonical_admission_v2.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = 223c54d5fd309f86ef50f9efd28e2c511e175577
+          test "$(git rev-parse HEAD:src)" = d6fa88b076d39fa0ffd924ce08ae4d978649dc85
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI29_CANONICAL_PTRA_OWNERSHIP_ADMISSION=PASS'
+          echo 'FCI30_CANONICAL_RESTRICTED_PARALLEL_V1_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
