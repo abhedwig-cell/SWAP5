@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ48",
+  "candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "ordering": "hard-negative gates execute before the wider positive matrix",
+  "hard_negative_phase": [
+    {
+      "id": "HN1_FORCING_CANDIDATE_BINDING",
+      "setup": "physically create a ready candidate with immutable nonnegative qrot vector A; prepare attribution for that same candidate using different immutable nonnegative qrot vector B; commit the original candidate through the real generic accepted-commit receipt",
+      "required": "the attribution layer must not publish an OK receipt carrying B-derived transpiration for an A-derived physical candidate",
+      "failure_meaning": "silent process-attribution corruption while generic transaction mass remains correct",
+      "exit": "hard fail and stop qualification"
+    },
+    {
+      "id": "HN2_PRECOMMIT_PUBLICATION",
+      "required": "no attribution receipt before accepted generic commit receipt",
+      "exit": "hard fail and stop qualification"
+    },
+    {
+      "id": "HN3_INVALID_FORCING",
+      "vectors": ["unallocated", "empty", "negative", "NaN", "positive-overflow sum"],
+      "required": "fail closed",
+      "exit": "hard fail and stop qualification"
+    },
+    {
+      "id": "HN4_PROVENANCE_TIME",
+      "variants": ["wrong lineage", "wrong origin revision", "wrong interval outside shared numeric identity tolerance"],
+      "required": "fail closed",
+      "exit": "hard fail and stop qualification"
+    }
+  ],
+  "positive_phase": [
+    "root-only zero/singleton/sparse/uneven/tiny/larger qrot",
+    "non-root coexisting mass_out remains outside the attributed amount",
+    "generic irregular and non-calendar intervals",
+    "external full-half accepted route",
+    "model-certificate accepted route",
+    "solver-retry/substep completion with one immutable outer-interval qrot",
+    "A-B-A prepared-object independence",
+    "shared 64-epsilon time-identity boundary behavior",
+    "O0/O2 output identity",
+    "real canonical backend strict compilation",
+    "owner-gate preservation replay"
+  ],
+  "mass_rule": "actual-transpiration attribution is a named subset of already-booked transaction total_out and is never added to total_out",
+  "publication_rule": "only postcommit receipts may become authoritative",
+  "early_exit_rule": "after any hard-negative fail-open the remaining entries are recorded UNRUN; they are not classified as failures"
+}
