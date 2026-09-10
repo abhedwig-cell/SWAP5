@@ -4,20 +4,73 @@
   "work_unit": "F-PM08C",
   "title": "Drainage Response-Law Family and Sensitivity Qualification",
   "branch": "work/f-pm08c-drainage-response-family-sensitivity",
-  "status": "IN_PROGRESS_SOURCE_BOUND_CHARACTERIZATION",
+  "status": "QUALIFIED_RESPONSE_FAMILY_DECOMPOSITION_READY_FOR_CHILDREN",
+  "phase": "SOURCE_BOUND_SENSITIVITY_CHARACTERIZED_NO_PRODUCTION_ADMISSION",
   "lineage": {
     "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "qualified_characterization_head": "d9e3d495f0956ce15935df1b316d6bc58eccde2f",
+    "decisive_workflow_run": 34450613961,
+    "decisive_workflow_job": 102785264808,
+    "decisive_output_sha256": "b8b55b82b2aa0e01b2f2306ea93de4015ce555f97ec270a8701a810fd8c56293",
     "fpm08a_required": false,
     "fpm08b_required": false
   },
-  "target_families": [
-    "DRAMET=1 tabulated groundwater-level response",
-    "DRAMET=2 Hooghoudt/Ernst IPOS 1..5",
-    "DRAMET=3 empirical power interflow",
-    "DRAMET=3 multi-level aggregation"
+  "state": {
+    "source_reviewed": true,
+    "tested": true,
+    "characterization_qualified": true,
+    "production_implemented": false,
+    "production_qualified": false,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_source_modified": false
+  },
+  "qualified_findings": {
+    "DRAMET1": "piecewise-linear abs(gwl) response with explicit knot and possible gwl=0 nonsmoothness",
+    "DRAMET2": "analytic stable-branch dq/dgwl verified against finite difference for IPOS 1..5",
+    "DRAMET2_IPOS4": "vertical-resistance derivative changes at the layer interface when kvtop differs from kvbot",
+    "DRAMET2_small_cutoff": "legacy 1e-10 branch exists but exact equality reconstructed from head/shape is floating-representation-sensitive",
+    "DRAMET2_parameter_domain": "legacy input ranges are wider than the mathematically valid domain of formulas using division and logarithms",
+    "DRAMET3_interflow": "for legacy-admitted exponent below one, the right-hand activation tangent diverges",
+    "DRAMET3_multilevel": "stable-branch total derivative is the sum of per-level derivatives; nonsmooth points compose as the union of level branch points"
+  },
+  "required_children": [
+    {
+      "work_unit": "F-PM08C1",
+      "scope": "tabulated DRAMET=1 response semantics and derivative metadata"
+    },
+    {
+      "work_unit": "F-PM08C2",
+      "scope": "Hooghoudt/Ernst DRAMET=2 IPOS 1..5 response, mathematical domain and analytic sensitivity"
+    },
+    {
+      "work_unit": "F-PM08C3",
+      "scope": "empirical interflow singular-tangent policy and bounded-cost solver interaction"
+    },
+    {
+      "work_unit": "F-PM08C4",
+      "scope": "multi-level exchange aggregation and branch composition"
+    }
   ],
-  "principle": "characterize and split by response/sensitivity class before production implementation",
-  "persisted": true,
-  "tested": false,
-  "qualified": false
+  "hard_holds": [
+    "No production response-law implementation in F-PM08C parent.",
+    "No fully implicit empirical-interflow tangent at or arbitrarily near activation without a separately qualified branch-aware policy.",
+    "No DRAMET=2 production admission before mathematically valid parameter-domain rules are explicit and tested.",
+    "No normalized replacement for the legacy diffl=1e-10 cutoff is qualified here.",
+    "No solver Jacobian mutation by process code.",
+    "No surface-water storage/control scope; that remains F-PM08D."
+  ],
+  "artifacts": [
+    "integration/f-pm/F-PM08C_STATUS.json",
+    "integration/f-pm/F-PM08C_RESPONSE_SENSITIVITY_CHARACTERIZATION.json",
+    "integration/f-pm/F-PM08C_CHARACTERIZATION_EVIDENCE.json",
+    "tests/fpm/test_fpm08c_response_sensitivity.py",
+    "tests/fpm/run_fpm08c_response_sensitivity_gate.sh",
+    ".github/workflows/fpm08c-response-sensitivity.yml"
+  ],
+  "next": {
+    "recommended_child": "F-PM08C1",
+    "reason": "smallest independently qualifiable stateless response family; immutable table data and explicit derivative/kink metadata can be separated from legacy AFGEN parsing and I/O"
+  }
 }
