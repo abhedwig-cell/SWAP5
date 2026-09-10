@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "upstream": {
+    "R2": "QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES",
+    "R3A": "CHARACTERIZED_POND_DEPLETION_FIXTURES_READY_FOR_R3_QUALIFICATION_PRECOMMIT"
+  },
+  "qualification_scope": "Given a precharacterized finite event bracket, qualify transactional PONDED_HEAD -> EVENT_AT_SURFACE_ZERO -> DRY_FLUX composition for the selected B01 and O14 fixtures. Event detection/bracket discovery is outside this gate.",
+  "fixtures": {
+    "B01": {
+      "t0_day": 2.425,
+      "initial_heads_cm": [-4.299242078690873,-34.413158005349246,-56.56069262268569],
+      "initial_surface_storage_cm": 0.8393321374175227,
+      "q_supply_cm_per_day": 23.418762,
+      "supply_fraction_ksat": 0.75,
+      "event_bracket_day": [0.06,0.071],
+      "t_end_day_offset": 0.073
+    },
+    "O14": {
+      "t0_day": 2.385,
+      "initial_heads_cm": [-45.88800284752272,-87.53789121305483,-77.42958217413684],
+      "initial_surface_storage_cm": 0.011992883907773078,
+      "q_supply_cm_per_day": 1.871988,
+      "supply_fraction_ksat": 0.75,
+      "event_bracket_day": [0.00075,0.00095],
+      "t_end_day_offset": 0.00105
+    }
+  },
+  "candidate_algorithm": {
+    "initial_admission": "Confirm S0>0 and qtop(S0,h1_0)>q_supply, so the committed state starts in ponded/head mode and is physically depleting. This is a face evaluation only, not a soil nonlinear trajectory.",
+    "trajectory_1_event_corrector": "Solve [h1,h2,h3,t_event] from the original committed state with S_event=0, three conservative soil equations, and -S0-t_event*(q_supply-qtop_event)=0. t_event is bounded by the frozen characterization bracket.",
+    "trajectory_2_dry_remainder": "From the uncommitted event state, solve the remaining interval with qtop=q_supply and S=0. Require dry complementarity at the accepted remainder state.",
+    "nonlinear_trajectory_count": 2,
+    "event_search_trajectory_bisection": false,
+    "event_state_persisted": false,
+    "event_bracket_is_input_from_characterization": true
+  },
+  "reference_algorithm": "Same two-trajectory event/remainder composition using independent full-accuracy internal faces and endpoint-aware high-accuracy 5 cm surface-face references.",
+  "transaction_contract": {
+    "checkpoint": "Original positive-surface committed state.",
+    "event_corrector": "Worker scratch only; never publish event state independently.",
+    "dry_remainder": "Starts physically from the event state but remains part of the same outer trial.",
+    "synthetic_post_event_reject": "Must restore the original pre-event committed state bitwise, not retain the event state.",
+    "commit": "Publish only final dry state after event, remainder, conservation and comparison gates pass."
+  },
+  "frozen_acceptance": {
+    "event_time_strictly_inside_bracket": true,
+    "event_surface_storage_cm": 0.0,
+    "event_top_node_head_cm_max": -1.0e-8,
+    "event_qtop_minus_supply_must_exceed_roundoff": true,
+    "event_max_abs_cell_mass_residual_cm": 1.0e-9,
+    "event_abs_surface_balance_residual_cm": 1.0e-9,
+    "event_abs_composed_balance_residual_cm": 1.0e-9,
+    "dry_remainder_surface_storage_cm": 0.0,
+    "dry_remainder_complementarity_admissible": true,
+    "dry_remainder_max_abs_mass_residual_cm": 1.0e-9,
+    "whole_interval_abs_composed_balance_residual_cm": 1.0e-9,
+    "candidate_reference_event_time_difference_day": 2.5e-4,
+    "candidate_reference_max_event_head_difference_cm": 0.25,
+    "candidate_reference_max_final_head_difference_cm": 0.25,
+    "candidate_reference_full_interval_bottom_transfer_difference_cm": 0.001,
+    "candidate_surface_face_abs_error_over_ksat_max": 0.0005,
+    "mass_repair_or_clipping_allowed": false,
+    "unqualified_internal_face_fallback_allowed": false
+  },
+  "bounded_cost": {
+    "candidate_nonlinear_trajectories_per_path": 2,
+    "reference_nonlinear_trajectories_per_path": 2,
+    "no_full_trajectory_event_bisection": true,
+    "event_corrector_max_nfev": 160,
+    "dry_remainder_max_nfev": 160,
+    "persistent_state_bytes_added": 0
+  },
+  "architecture_checks": {
+    "4_compact_persistent_state": "Only ordinary soil heads and the existing surface-storage scalar are persistent. Event time/state are scratch.",
+    "5_scratch_per_worker": "Event and remainder nonlinear vectors belong to worker scratch.",
+    "7_transactional_timesteps": "Outer checkpoint survives both subtrajectories until final commit; rejected event/remainder restores original state.",
+    "8_warm_start": "Event state may initialize the remainder, but the event solve itself originates physically from the committed ponded state.",
+    "9_generic_time": "Event is an offset inside [t0,t1], not a day boundary.",
+    "13_mass_conservation_absolute": "Segment and whole-interval balances must independently close; no water is clipped when surface storage reaches zero.",
+    "20_alternative_soil_water_solvers": "Composition uses soil-step and surface-face contracts, not HeadCalc arrays.",
+    "23_physics_solver_policy_separated": "S=0 and complementarity define the physical switch; nonlinear tolerances are numerical policy.",
+    "24_predictable_runtime": "Exactly two nonlinear trajectories are required once the event bracket is available.",
+    "25_reference_mode": "Reference composition remains independently executable.",
+    "26_diagnostics_runtime": "Event bracket/time, mode sequence, nfev, balances and rollback status are outputs."
+  },
+  "hard_nonclaims": [
+    "No automatic runtime event detection or bracket discovery is qualified.",
+    "No top soil-node h=0 or positive-head state is qualified.",
+    "No runoff, evaporation, snow, irrigation or macropore bypass.",
+    "No response tangent through event switching.",
+    "No B12/O13 depletion qualification.",
+    "No production runtime, MultiSWAP, groundwater or MODFLOW admission."
+  ],
+  "success_exit": "QUALIFIED_RESTRICTED_BRACKETED_POND_DEPLETION_HEAD_TO_FLUX_EVENT_READY_FOR_TOP_NODE_SATURATION_AND_EVENT_DETECTION_GATES",
+  "failure_exit": "BRACKETED_POND_DEPLETION_EVENT_NOT_QUALIFIED_PRESERVE_FAILURE"
+}
