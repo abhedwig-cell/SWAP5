@@ -94,9 +94,10 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
+
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmq/test_fmq26_parallel_v1_admission.f90 -o "$OUT/test.o"
   gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
-  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt executable"; }
+  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt positive executable"; }
 
   while read -r n b o; do
     grep -Fq "FMQ26_POSITIVE_N${n}_B${b}_O${o}=PASS" "$OUT/output.txt" || fail "missing O$opt positive n=$n b=$b order=$o"
@@ -130,13 +131,36 @@ CASES
     'FMQ26_PARALLEL_V1_ADMISSION_TEST PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || fail "missing O$opt marker: $marker"
   done
-  echo "FMQ26_O${opt}=PASS"
+  echo "FMQ26_O${opt}_POSITIVE_MATRIX=PASS"
+
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmq/test_fmq26_canonical_publication_order.f90 -o "$OUT/publication.o"
+  gfortran -fopenmp -O"$opt" "${objects[@]}" "$OUT/publication.o" -o "$OUT/publication"
+  set +e
+  "$OUT/publication" > "$OUT/publication_output.txt" 2>&1
+  rc=$?
+  set -e
+  cat "$OUT/publication_output.txt"
+  [[ $rc -eq 26 ]] || fail "O$opt publication-order sentinel rc=$rc"
+  for marker in \
+    FMQ26_CANONICAL_PUBLICATION_ORDER=FAIL \
+    FMQ26_INPUT_ORDER_LEAKS_INTO_PUBLISHED_ARRAY_ORDER=OBSERVED; do
+    grep -Fq "$marker" "$OUT/publication_output.txt" || fail "missing O$opt publication marker: $marker"
+  done
+  grep '^FMQ26_' "$OUT/publication_output.txt" > "$OUT/publication_markers.txt"
+  echo "FMQ26_O${opt}_PUBLICATION_ORDER_VIOLATION_REPRODUCED=PASS"
 done
 
 cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
   diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true
-  fail 'O0/O2 output identity'
+  fail 'positive O0/O2 output identity'
 }
-echo 'FMQ26_O0_O2_OUTPUT_IDENTITY=PASS'
+echo 'FMQ26_O0_O2_POSITIVE_OUTPUT_IDENTITY=PASS'
+cmp -s "$BUILD/o0/publication_markers.txt" "$BUILD/o2/publication_markers.txt" || {
+  diff -u "$BUILD/o0/publication_markers.txt" "$BUILD/o2/publication_markers.txt" >&2 || true
+  fail 'publication-defect O0/O2 identity'
+}
+echo 'FMQ26_O0_O2_PUBLICATION_DEFECT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
-echo 'FMQ26_GATE=PASS'
+echo 'FMQ26_CANDIDATE_CANONICAL_PUBLICATION_ORDER_VIOLATION=OBSERVED'
+echo 'FMQ26_DECISION=NOT_QUALIFIED'
+exit 26
