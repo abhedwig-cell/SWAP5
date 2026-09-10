@@ -1,11 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D6",
   "title": "Transactional Surface-Water Runtime Composition Readiness",
   "branch": "work/f-pm08d6-transactional-surface-water-runtime-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "TRANSACTIONAL_SURFACE_WATER_COMPOSITION_READINESS_QUALIFIED_WITH_COMPLETE_MASS_AND_HELD_AUTOMATIC_CAPACITY_ROUTES",
+  "decision": "QUALIFIED_TRANSACTIONAL_SURFACE_WATER_COMPOSITION_READINESS_WITH_ATOMIC_STATE_MASS_CONTRACT_AND_HELD_AUTOMATIC_CAPACITY_ROUTES",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "8fa79a70a9faccaf8b63826df607a685eb75b046",
@@ -16,28 +17,65 @@
     "fpm08d4_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
     "fpm08d5_closeout": "90f8aee150df928b2cc98938c98766f037658114",
     "fci36_final_canonical_head": "8fa79a70a9faccaf8b63826df607a685eb75b046",
-    "fci36_exact_head_run": 34527338720
+    "fci36_exact_head_run": 34527338720,
+    "fci36_exact_head_conclusion": "success"
   },
-  "readiness_findings": {
+  "qualified_readiness_findings": {
     "existing_FKT_commit_authority_must_be_reused": true,
+    "checkpoint_candidate_commit_rollback_ordering_ready": true,
     "SWST_authoritative_fixed_weir_state": true,
     "WLSTAR_conditional_automatic_control_state": true,
     "WLS_derived_only": true,
     "accepted_mass_complete_must_be_true": true,
     "missing_mass_mask_must_be_zero": true,
     "mass_tolerance_is_numeric_verification_only": true,
+    "same_quantities_drive_state_and_accepted_ledger": true,
     "DIVDRA_scalar_transfer_booked_once": true,
+    "DIVDRA_node_field_is_not_additional_mass": true,
     "rejected_trial_mass_publication_zero": true,
     "explicit_events_subdivide_generic_intervals": true,
+    "automatic_control_WLSTAR_transaction_subset_ready": true,
     "automatic_capacity_policy_admitted": false,
     "SWQHR2_admitted": false,
     "mixed_sign_active_limiter_admitted": false,
     "runtime_may_own_second_commit_authority": false
   },
+  "decisive_evidence": {
+    "tested_head": "cdc37c41e9f24954de1ab2c697edcbe2ec41b496",
+    "run_id": 34532341659,
+    "job_id": 103055823586,
+    "conclusion": "success",
+    "fixed_weir_accepted_cases": 10000,
+    "fixed_weir_attempts": 11699,
+    "missing_mass_failclosed_cases": 2000,
+    "event_split_cases": 5000,
+    "automatic_WLSTAR_accepted_control_only_cases": 2000,
+    "automatic_capacity_held_WLSTAR_rollback_cases": 2000,
+    "DIVDRA_single_booking_cases": 5000,
+    "held_route_rejections": 4000,
+    "max_accepted_mass_residual_abs": 1.3600232051658168e-14,
+    "max_accepted_mass_residual_rel": 2.1539519953936236e-16,
+    "max_DIVDRA_distribution_residual_abs": 1.7763568394002505e-15,
+    "all_30_architecture_invariants_pass": true
+  },
+  "explicit_holds": [
+    "D6-HOLD-01-AUTOMATIC-DISCHARGE-CAPACITY-POLICY-NOT-QUALIFIED",
+    "D6-HOLD-02-SWQHR2-NOT-QUALIFIED",
+    "D6-HOLD-03-D3-LIMITER-ACTIVE-MIXED-SIGN-SECONDARY-EXCHANGE-NOT-QUALIFIED",
+    "D6-HOLD-04-MISSING-MASS-CONTRIBUTION-CANNOT-BE-HIDDEN-BY-MASS-TOLERANCE",
+    "D6-HOLD-05-DIVDRA-NODE-FIELD-CANNOT-BE-DOUBLE-BOOKED-WITH-AUTHORITATIVE-SCALAR",
+    "D6-HOLD-06-REJECTED-TRIAL-MUST-NOT-MUTATE-SWST-WLSTAR-OR-ACCEPTED-LEDGER",
+    "D6-HOLD-07-WLS-CANNOT-BECOME-INDEPENDENT-COMMITTED-STATE",
+    "D6-HOLD-08-D4-LEGACY-SWST-WLS-INCONSISTENCY-CANNOT-RETURN",
+    "D6-HOLD-09-CALENDAR-TRIGGERS-MUST-BE-EXTERNAL-EXPLICIT-EVENTS",
+    "D6-HOLD-10-MULTILEVEL-NEGATIVE-OR-SURFACE-WATER-CONTROLLED-DIVDRA-NOT-ADMITTED",
+    "D6-HOLD-11-RUNTIME-MUST-NOT-OWN-SECOND-COMMIT-AUTHORITY"
+  ],
   "deliverables": {
     "contract": "integration/f-pm/F-PM08D6_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D6_RUNTIME_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D6_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D6_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d6_transactional_surface_water.py",
     "gate": "tools/fpm/fpm08d6_transactional_surface_water_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d6-transactional-surface-water-readiness.yml"
@@ -52,8 +90,9 @@
     "test_oracle_persisted": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "runtime_implementation_qualified": false,
@@ -61,5 +100,16 @@
     "SWQHR2_production_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "execute the fully persisted D6 readiness gate under CI and fail closed on any source-lock, transaction, rollback, mass-completeness, DIVDRA single-booking, held-route or architecture inconsistency"
+  "downstream_handoff": {
+    "next_candidate_may_implement_restricted_fixed_weir_transactional_surface_water_runtime": true,
+    "must_use_existing_FKT_commit_authority": true,
+    "must_require_complete_mass_accounting_before_acceptance": true,
+    "must_book_authoritative_DIVDRA_scalar_once": true,
+    "must_rollback_SWST_and_conditional_WLSTAR_atomically": true,
+    "automatic_capacity_dependent_routes_remain_held": true,
+    "SWQHR2_remains_held": true,
+    "mixed_sign_active_limiter_remains_held": true,
+    "independent_scientific_or_runtime_qualification_still_required_for_any_production_candidate": true
+  },
+  "next_required_step": "verify this exact closeout head with the same D6 readiness gate and confirm the final base-to-closeout delta contains only D6 readiness/test artifacts with no src/ or reference/ changes"
 }
