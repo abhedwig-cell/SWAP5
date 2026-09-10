@@ -1,13 +1,15 @@
 {
-  "schema": "swap5.canonical_post_promotion_reconciliation_status.v2",
+  "schema": "swap5.canonical_post_promotion_reconciliation_status.v3",
   "work_unit": "F-CI34P",
   "title": "Root Attribution Post-Promotion Canonical Reconciliation",
   "branch": "qualification/f-ci34p-root-attribution-post-promotion-reconciliation",
   "base_canonical_head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
-  "phase": "PREPROMOTION_QUALIFIED_CLOSEOUT_EXACT_HEAD_RERUN_REQUIRED",
-  "decision": "QUALIFIED_FCI34P_GOVERNANCE_RECONCILIATION_READY_FOR_NON_FORCED_CANONICAL_PROMOTION_AFTER_EXACT_HEAD_RERUN",
+  "governance_promoted_canonical_head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+  "phase": "POSTPROMOTION_RECONCILED_FINAL_STATUS_HEAD_REQUALIFICATION_REQUIRED",
+  "decision": "QUALIFIED_FCI34P_POST_PROMOTION_GOVERNANCE_RECONCILIATION_PENDING_EXACT_FINAL_STATUS_HEAD_REQUALIFICATION",
   "candidate": {
     "owner_workunit": "F-MR31",
+    "owner_closeout": "c84894c335b699f0dcf2c46019be0ce7a97f2910",
     "owner_production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
     "independent_workunit": "F-VQ50",
     "independent_closeout": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
@@ -21,25 +23,39 @@
     "production_regression": false,
     "scientific_regression": false,
     "mass_regression": false,
-    "additional_stale_triggers_retired": [
+    "obsolete_historical_moving_triggers": [
       ".github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml",
       ".github/workflows/fci33r-current-canonical-postimage-reconciliation.yml"
     ]
   },
-  "pre_closeout_evidence": {
+  "prepromotion_qualification": {
     "tested_head": "1d8aee8b9712dab889d8983b661f91a9a1c12e8a",
     "workflow_run": 34490684618,
     "job": 102916317004,
     "conclusion": "success",
     "artifact_id": 10157617447,
-    "artifact_digest": "sha256:deb5736e9925b62b04ed234c72f48689ec0e83729b07d41a2ac1d31c5621fbf7",
-    "zero_src_reference_delta": true,
-    "historical_gate_code_byte_identical": true,
-    "obsolete_moving_triggers_retired": true,
-    "historical_replay_paths_preserved": true,
-    "f_ci34_strong_replay": "PASS",
-    "current_divdra_o0_o2_identity": "PASS",
-    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA"
+    "artifact_digest": "sha256:deb5736e9925b62b04ed234c72f48689ec0e83729b07d41a2ac1d31c5621fbf7"
+  },
+  "prepromotion_closeout": {
+    "head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+    "exact_head_run": 34491063898,
+    "conclusion": "success",
+    "promotion": "NON_FORCED_FAST_FORWARD_CONFIRMED_BY_CANONICAL_LINEAGE"
+  },
+  "postpromotion_evidence": {
+    "canonical_head": "e900e6115a6bf8b65af8460eb3e336257be4d1bf",
+    "f_ci34_dedicated_run": 34491196078,
+    "f_ci34_dedicated_conclusion": "success",
+    "f_ci34p_dedicated_run": 34491196113,
+    "f_ci34p_dedicated_conclusion": "success",
+    "broad_canonical_run": 34491196226,
+    "broad_canonical_conclusion": "success",
+    "broad_current_postimage_job": 102918661579,
+    "broad_current_postimage_job_conclusion": "success",
+    "historical_and_frozen_jobs_green": 9,
+    "historical_and_frozen_jobs_total": 9,
+    "current_postimage_pointer": "F-CI34",
+    "stale_f_ci33_current_pointer_removed": true
   },
   "current_postimage": {
     "src_tree": "02aa1516a6f452d311ea03c195cbeaf271d3db28",
@@ -61,27 +77,43 @@
     "process_science_changes": 0,
     "mass_tolerance_changes": 0
   },
+  "scientific_replay": {
+    "f_ci34_strong_replay": "PASS",
+    "f_vq50_forcing_provenance_oracle": "PASS",
+    "real_headcalc_root_oracle": "PASS",
+    "o0_o2_identity": "PASS",
+    "hard_mass_balance": "PASS",
+    "no_second_mass_booking": "PASS",
+    "current_divdra_o0_o2_identity": "PASS"
+  },
+  "architecture": {
+    "invariants_audited": 30,
+    "invariants_no_adverse_delta": 30,
+    "audit": "integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json",
+    "mass_conservation": "UNCHANGED_HARD_REQUIREMENT"
+  },
   "state": {
     "realized": true,
     "persisted": true,
-    "tested_precloseout": true,
+    "tested_prepromotion": true,
     "qualified_prepromotion": true,
     "canonical_source_admitted_by_f_ci34": true,
-    "canonical_governance_reconciliation_promoted": false,
-    "broad_canonical_postimage_green_after_reconciliation": false,
+    "canonical_governance_reconciliation_promoted": true,
+    "broad_canonical_postimage_reconciled": true,
+    "postpromotion_gate_set_green": true,
     "architecture_audit_30_of_30_no_adverse_delta": true,
+    "final_status_persisted": true,
+    "exact_final_status_head_requalified": false,
     "final_closeout_complete": false
   },
-  "closeout_contract": {
-    "exact_closeout_head_rerun_required": true,
-    "canonical_must_still_equal_base_immediately_before_promotion": true,
-    "promotion_must_be_non_forced_fast_forward": true,
-    "post_promotion_f_ci34_gate_required": true,
-    "post_promotion_f_ci34p_gate_required": true,
-    "post_promotion_broad_canonical_gate_required": true,
-    "final_status_persistence_required": true,
-    "exact_final_status_head_reruns_required": true,
-    "no_src_or_reference_delta_allowed": true
+  "final_gate": {
+    "require_exact_final_branch_head_f_ci34p_success": true,
+    "canonical_must_equal_e900e611_before_final_governance_fast_forward": true,
+    "final_governance_fast_forward_must_be_non_forced": true,
+    "require_final_canonical_f_ci34_success": true,
+    "require_final_canonical_f_ci34p_success": true,
+    "require_final_broad_canonical_success": true,
+    "no_further_status_mutation_required_after_green_final_head": true
   },
-  "next_required_step": "run F-CI34P on the exact closeout head; if green and canonical remains exactly 2efba343d425770e5d581d8137cd60e83d8b7ac5, fast-forward canonical non-forced and require all post-promotion gates green"
+  "next_required_step": "qualify the exact branch head containing this final status and F-CI34_STATUS; if green and canonical remains e900e6115a6bf8b65af8460eb3e336257be4d1bf, fast-forward that governance-only head non-forced and require F-CI34, F-CI34P and broad canonical workflows all green"
 }
