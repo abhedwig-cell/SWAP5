@@ -1,0 +1,37 @@
+{
+  "schema":"swap5.fmr38_evidence.v1",
+  "work_unit":"F-MR38",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "readiness_authority":"F-MR37@e21ae30a3f3a5cb2a4a34f00c74e5a46c67645d1",
+  "production_candidate":{"commit":"b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded","path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"f06a2eef7b47880e449cf9b201342d7bd1e197e1"},
+  "production_delta":["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+  "reference_delta":[],
+  "decisive_owner_ci":{"head":"28f7709eff1e9901ce27ebe40b479b7e95c41176","run":34532295713,"job":103055670599,"conclusion":"success","compiler":"GNU Fortran 13.3.0"},
+  "replay_evidence":{
+    "f_mq26_parallel_v1":"PASS",
+    "f_mq26_output_sha256":"eebe0f6fa0c89a52d195aa142d7921ddd00686c370ab39598a1889867cdec83c",
+    "resolved_registry_identity":"PASS",
+    "resolved_seam_output_sha256":"ddd9be26d5d329140552ce64ddad62ab2d8f2c237e4bc0ed480f6cc715cfa7bf",
+    "f_vq51_serialized_active_divdra":"PASS",
+    "f_vq51_output_sha256":"a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87",
+    "f_vq51_historical_hash_preserved":true,
+    "o0_o2_text_identity":true,
+    "single_mass_transaction_path":"PASS",
+    "all_30_architecture_invariants":"PASS"
+  },
+  "candidate_cleanliness":"candidate source alone compiled under -Wall -Wextra -Werror -fcheck=all; warnings visible in the job are from unchanged legacy/canonical dependencies and immutable historical fixtures, not the F-MR38 candidate",
+  "failure_history":[
+    {"run":34531871341,"classification":"HARNESS_ONLY_OVERBROAD_HEADCALC_STATIC_MATCHER_BEFORE_COMPILE","production_implication":"NONE"},
+    {"run":34532018012,"classification":"HARNESS_ONLY_DERIVED_PROGRAM_NAME_SUBSTRING_COUNT_BEFORE_COMPILE","production_implication":"NONE"},
+    {"run":34532243454,"classification":"HARNESS_ONLY_MISSING_REGEX_IMPORT_IN_TEMPORARY_DERIVATION_BEFORE_COMPILE","production_implication":"NONE"}
+  ],
+  "qualified_owner_scope":"GENERIC_RESOLVED_COLUMN_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_SEAM_WITH_EXISTING_REGISTRY_FACING_CALLER_PRESERVATION",
+  "nonclaims":[
+    "parallel active DIVDRA is not implemented or qualified",
+    "no drainage-specific worker pool is admitted",
+    "no forcing-registry deep copy is admitted",
+    "no drainage science, exchange law, multilevel or infiltration behavior is qualified here",
+    "no canonical admission is claimed",
+    "independent qualification is still required"
+  ]
+}
