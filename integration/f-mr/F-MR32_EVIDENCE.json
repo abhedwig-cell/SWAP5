@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.fmr32_owner_composition_evidence.v1",
+  "work_unit": "F-MR32",
+  "title": "Parallel Committed-Boundary Restart Composition Owner Evidence",
+  "branch": "work/f-mr32-current-canonical-parallel-committed-restart-composition",
+  "source_authority": {
+    "canonical_head": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "source_lock": "integration/f-mr/F-MR32_CURRENT_CANONICAL_SOURCE_LOCK.json",
+    "matrix": "integration/f-mr/F-MR32_QUALIFICATION_MATRIX.json",
+    "production_source_delta": 0,
+    "reference_delta": 0
+  },
+  "tested_candidate_head": "697f7e1669cc842d4c5d91b716f92a64cb1e455e",
+  "authoritative_owner_run": {
+    "run": 34495422397,
+    "job": 102932520136,
+    "workflow": "F-MR32 parallel committed restart composition",
+    "conclusion": "success",
+    "runner_os": "ubuntu-24.04"
+  },
+  "runner_contract": {
+    "entrypoint": "tests/fmr/run_fmr32_parallel_committed_restart_composition_v2.sh",
+    "base_runner": "tests/fmr/run_fmr32_parallel_committed_restart_composition.sh",
+    "midpoint_oracle_strengthening": "v2 requires exact committed midpoint-state identity and fails if the former always-true assertion remains",
+    "fail_closed_exit": 32,
+    "success_semantics": "The workflow step can succeed only after every required source lock, structural assertion, marker grep, dynamic composition comparison and O0/O2 cmp in the runner has succeeded."
+  },
+  "executed_evidence": {
+    "current_canonical_source_lock": "PASS",
+    "zero_production_reference_delta": "PASS",
+    "persisted_matrix_lock": "PASS",
+    "restart_record_excludes_worker_solver_scratch": "PASS",
+    "whole_registry_atomic_restore_seam": "PASS",
+    "parallel_scratch_rebuilt_after_admission": "PASS",
+    "canonical_publication_seam": "PASS",
+    "restart_negative_matrix": "PASS_O0_O2",
+    "malformed_concrete_state_rejected_atomically": "PASS_O0_O2",
+    "late_record_provenance_atomicity": "PASS_O0_O2",
+    "registered_wrong_state_family_rejected": "PASS_O0_O2",
+    "independent_parallel_v1_matrix": "PASS_O0_O2",
+    "parallel_worker_count_independence": "PASS_O0_O2",
+    "input_order_scientific_identity_by_column_id": "PASS_O0_O2",
+    "problem_column_isolation": "PASS_O0_O2",
+    "unsupported_profiles_fail_closed": "PASS_O0_O2",
+    "true_multiworker_overlap": "PASS_O0_O2",
+    "canonical_publication_order": "PASS_O0_O2",
+    "serialized_origin_to_parallel_restart_continuation": "PASS_O0_O2",
+    "parallel_origin_to_parallel_restart_continuation": "PASS_O0_O2",
+    "reverse_restart_record_order": "PASS_O0_O2",
+    "composition_counts": [1,2,7,8,17,31,32],
+    "continuation_workers": [2,4],
+    "hard_per_column_mass_gate_cm": 1e-12,
+    "hard_mass_gate": "PASS_O0_O2",
+    "authoritative_aggregate_mass_complete_and_identity": "PASS_O0_O2",
+    "endpoint_committed_state_identity": "PASS_O0_O2",
+    "lineage_revision_identity": "PASS_O0_O2",
+    "shared_parameter_registry_identity": "PASS_O0_O2",
+    "o0_o2_scientific_output_identity": "PASS"
+  },
+  "qualification_interpretation": {
+    "owner_composition_gate": "PASS",
+    "production_defect_observed": false,
+    "production_change_required": false,
+    "production_source_modified_by_fmr32": false,
+    "ready_for_independent_qualification_after_exact_metadata_head_rerun": true
+  },
+  "limitations": [
+    "No mid-transaction or trial-state restart was tested or claimed.",
+    "No persistence of worker/Newton/Jacobian/warm-start scratch was tested or allowed.",
+    "No cross-version migration or byte/file-format persistence was tested.",
+    "No new parallel physics family was admitted.",
+    "The largest dynamic qualification fixture contains 32 columns; this is composition qualification, not a scale-performance claim.",
+    "The first owner run did not upload a separate stdout artifact; exact marker satisfaction is enforced by the persisted fail-closed runner and the successful workflow step. Independent qualification must replay independently rather than inherit this conclusion."
+  ]
+}
