@@ -1,0 +1,20 @@
+name: F-PM08C drainage response sensitivity
+
+on:
+  push:
+    branches:
+      - work/f-pm08c-drainage-response-family-sensitivity
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterization:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C source-bound response sensitivity gate
+        run: bash tests/fpm/run_fpm08c_response_sensitivity_gate.sh
