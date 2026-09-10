@@ -347,7 +347,7 @@ contains
     type(kernel_candidate_state_t) :: candidate
     type(kernel_diagnostics_t) :: kernel_diag
     type(fmr_serialized_physical_observation_t) :: observation
-    integer :: state_index, parameter_index, forcing_index, commit_status, receipt_status
+    integer :: state_index, parameter_index, forcing_index, commit_status, receipt_status, simultaneous_physical_calls
     logical :: checkpoint_ok, candidate_ready, did_commit
 
     if (.not. column_is_routable(column, templates, parameter_registry, forcing_registry)) then
@@ -376,7 +376,10 @@ contains
     diagnostic%checkpoint_replays = 1
     diagnostic%runtime_attempts = 1
 
+    !$omp atomic capture
     active_physical_calls = active_physical_calls + 1
+    simultaneous_physical_calls = active_physical_calls
+    !$omp end atomic
     call backend%run_trial(column, templates(find_template_index(column%template_id, templates)), &
          parameter_registry(parameter_index), state_registry(state_index), forcing_registry(forcing_index), &
          numerical_config, t0, t1, checkpoint, kernel_result, candidate, kernel_diag)
@@ -414,10 +417,12 @@ contains
       output%solver_iterations = observation%solver_diagnostics%nonlinear_iterations
       if (output%solver_executed) then
         runtime%max_simultaneous_real_physical_solves = max( &
-             runtime%max_simultaneous_real_physical_solves, active_physical_calls)
+             runtime%max_simultaneous_real_physical_solves, simultaneous_physical_calls)
       end if
     end if
+    !$omp atomic update
     active_physical_calls = active_physical_calls - 1
+    !$omp end atomic
 
     if (.not. kernel_result%completed) then
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
