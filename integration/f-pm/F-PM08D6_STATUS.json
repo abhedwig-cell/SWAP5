@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D6",
+  "title": "Transactional Surface-Water Runtime Composition Readiness",
+  "branch": "work/f-pm08d6-transactional-surface-water-runtime-readiness",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED_PRETEST",
+  "phase": "TRANSACTION_AND_MASS_OWNERSHIP_BOUND_BEFORE_EXECUTABLE_ORACLE",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "exact_branch_base": "8fa79a70a9faccaf8b63826df607a685eb75b046"
+  },
+  "parent_authorities": {
+    "fpm08d3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "fpm08d4_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
+    "fpm08d5_closeout": "90f8aee150df928b2cc98938c98766f037658114",
+    "fci36_final_canonical_head": "8fa79a70a9faccaf8b63826df607a685eb75b046"
+  },
+  "readiness_findings": {
+    "existing_FKT_commit_authority_must_be_reused": true,
+    "SWST_authoritative_fixed_weir_state": true,
+    "WLSTAR_conditional_automatic_control_state": true,
+    "WLS_derived_only": true,
+    "accepted_mass_complete_must_be_true": true,
+    "missing_mass_mask_must_be_zero": true,
+    "mass_tolerance_is_numeric_verification_only": true,
+    "DIVDRA_scalar_transfer_booked_once": true,
+    "rejected_trial_mass_publication_zero": true,
+    "automatic_capacity_policy_admitted": false,
+    "SWQHR2_admitted": false,
+    "mixed_sign_active_limiter_admitted": false
+  },
+  "state": {
+    "branch_created": true,
+    "clean_base_rechecked": true,
+    "contract_persisted": true,
+    "checkpoint_persisted": true,
+    "runtime_source_inventory_persisted": false,
+    "architecture_audited_all_30": false,
+    "test_oracle_persisted": false,
+    "gate_persisted": false,
+    "workflow_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "runtime_implementation_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "next_required_step": "persist exact runtime source inventory, all-30 invariant audit and an executable transaction oracle before any CI qualification claim"
+}
