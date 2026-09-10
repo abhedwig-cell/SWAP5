@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.scientific_requalification_status.v1",
+  "work_unit": "F-VQ47",
+  "title": "Independent Remediated DIVDRA Spatial Distribution & Lev2Comp Boundary-Seam Requalification",
+  "branch": "qualification/f-vq47-fpm08br-spatial-distribution-requalification",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED_PRETEST",
+  "phase": "CLEAN_BASE_AND_INDEPENDENT_ORACLE_RECONSTRUCTION",
+  "clean_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "candidate_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+  "candidate_source_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+  "owner_final_ci": {
+    "workflow_run": 34468040129,
+    "job": 102841137327,
+    "conclusion": "success",
+    "output_sha256": "25da3c31d894eba3ac2cab613dc20bb0fd112611d912abafbc7d8fab8ca63709",
+    "scientific_oracle": false
+  },
+  "blocking_review_closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
+  "frozen_legacy": {
+    "nested_source_archive_sha256_verified": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_f90_sha256_verified": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "lev2comp_condition_reconstructed": "lev > -zbotcp(icplev)+1.d-10"
+  },
+  "state": {
+    "live_authorities_rechecked": true,
+    "clean_branch_created_from_current_canonical": true,
+    "qualification_contract_persisted": true,
+    "independent_legacy_oracle_persisted": false,
+    "independent_verifier_persisted": false,
+    "gate_persisted": false,
+    "workflow_persisted": false,
+    "tested": false,
+    "scientifically_qualified": false,
+    "architecture_audited": false,
+    "closeout_rerun_complete": false,
+    "production_source_modified_by_qualification": false,
+    "reference_source_modified_by_qualification": false
+  },
+  "next_required_step": "persist an independently implemented frozen-legacy oracle and verifier without importing F-PM08B/F-PM08BR authoring tests or F-VQ45 expected outputs"
+}
