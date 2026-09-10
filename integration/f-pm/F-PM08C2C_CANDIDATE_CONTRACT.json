@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2C",
+  "title": "IPOS4/5 Prepared Two-Layer Ernst Response Contract",
+  "source_authority": {
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+    "legacy_drainage_file_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "common": {
+    "effective_base_level": "max(impermeable_base_level,drain_bottom_level-0.25*drain_spacing)",
+    "depth_below_drain": "drain_bottom_level-effective_base_level",
+    "difference": "(groundwater_level-drain_bottom_level)/shape_factor",
+    "compatibility_cutoff": "difference < 1e-10 returns zero exchange before resistance evaluation",
+    "active_exchange": "q=difference/total_resistance",
+    "sign": "q>0 means water leaves soil toward drainage receiver",
+    "persistent_process_state": false
+  },
+  "IPOS4": {
+    "normalized_parameters": ["drain_spacing", "shape_factor", "drain_bottom_level", "impermeable_base_level", "interface_level", "horizontal_conductivity_bottom", "vertical_conductivity_top", "vertical_conductivity_bottom", "wetted_perimeter", "entry_resistance"],
+    "geometry_domain": ["drain_spacing>0", "shape_factor>0", "impermeable_base_level<drain_bottom_level", "drain_bottom_level<=interface_level", "Kh_bottom>0", "Kv_top>0", "Kv_bottom>0", "wetted_perimeter>0", "entry_resistance>=0"],
+    "prepared_terms": {
+      "horizontal_resistance": "L^2/(8*Kh_bottom*depth_below_drain)",
+      "radial_resistance": "L/(pi*sqrt(Kh_bottom*Kv_bottom))*log(depth_below_drain/wetted_perimeter)",
+      "fixed_resistance": "horizontal_resistance+radial_resistance+entry_resistance"
+    },
+    "dynamic_vertical_resistance": "max(gwl-interface_level,0)/Kv_top + (min(interface_level,gwl)-drain_bottom_level)/Kv_bottom",
+    "stable_branch_resistance_derivative": "1/Kv_bottom below interface, 1/Kv_top above interface",
+    "interface_derivative": "unavailable exactly at gwl=interface_level when Kv_top!=Kv_bottom; available when both conductivities are identical",
+    "total_resistance_rule": "must be finite and >0 at evaluation; radial resistance is not separately required to be positive"
+  },
+  "IPOS5": {
+    "normalized_parameters": ["drain_spacing", "shape_factor", "drain_bottom_level", "impermeable_base_level", "interface_level", "horizontal_conductivity_top", "horizontal_conductivity_bottom", "vertical_conductivity_top", "wetted_perimeter", "geometry_factor", "entry_resistance"],
+    "explicitly_omitted_legacy_field": "vertical_conductivity_bottom, because B1.10 IPOS5 never uses kvbot",
+    "geometry_domain": ["drain_spacing>0", "shape_factor>0", "impermeable_base_level<=drain_bottom_level", "drain_bottom_level>interface_level", "Kh_top>0", "Kh_bottom>=0", "Kv_top>0", "wetted_perimeter>0", "geometry_factor>0", "entry_resistance>=0", "horizontal-resistance denominator>0", "radial logarithm argument>0"],
+    "prepared_terms": {
+      "horizontal_resistance": "L^2/(8*Kh_top*(drain_bottom_level-interface_level)+8*Kh_bottom*(interface_level-effective_base_level))",
+      "radial_resistance": "L/(pi*sqrt(Kh_top*Kv_top))*log(geometry_factor*(drain_bottom_level-interface_level)/wetted_perimeter)",
+      "fixed_resistance": "horizontal_resistance+radial_resistance+entry_resistance"
+    },
+    "dynamic_vertical_resistance": "(gwl-drain_bottom_level)/Kv_top",
+    "resistance_derivative": "1/Kv_top",
+    "total_resistance_rule": "must be finite and >0 at evaluation; radial resistance is not separately required to be positive"
+  },
+  "ownership": {
+    "prepared_terms": "shared immutable derived parameter/cache per matching parameter set",
+    "dynamic_scratch": ["difference", "vertical_resistance", "total_resistance"],
+    "authoritative_transfer_output": "signed_soil_to_drain_rate",
+    "time_integration_and_commit_ledger": "runtime/coupler responsibility",
+    "solver_jacobian_chain_rule": "soil-water solver responsibility"
+  },
+  "holds": [
+    "No smoothing of the IPOS4 interface kink.",
+    "No requirement that radial resistance itself be positive.",
+    "No IPOS1/2/3 logic.",
+    "No DIVDRA or surface-water composition.",
+    "No runtime/source-sink binding or solver Jacobian assembly.",
+    "No legacy I/O or calendar semantics.",
+    "No promotion of the 1e-10 compatibility cutoff to generic drainage physics.",
+    "No scientific B1.10 equivalence or canonical admission before independent verification."
+  ]
+}
