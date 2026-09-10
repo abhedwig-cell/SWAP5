@@ -1,0 +1,28 @@
+name: F-PE08 canonical worker scratch dedup qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-pe08-canonical-worker-scratch-dedup
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE08 qualification
+        run: bash tests/fpe/run_fpe08_scratch_dedup_qualification.sh
