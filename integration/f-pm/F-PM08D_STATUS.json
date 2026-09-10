@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D",
+  "title": "Surface-Water-Controlled Drainage Composition Readiness",
+  "branch": "work/f-pm08d-surface-water-control-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
+  "phase": "OPENED_PERSISTED_NOT_YET_TESTED_OR_QUALIFIED",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+    "exact_branch_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5"
+  },
+  "upstream_authorities": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fvq47_verified_status_head": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "fvq47_scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "fvq47_decision": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
+    "current_canonical_divdra_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "legacy_source_authority": {
+    "nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "scope": {
+    "family": "SURFACE_WATER_STORAGE_AND_CONTROL",
+    "legacy_focus": "SWDRA=2 surface-water-controlled drainage composition",
+    "readiness_and_decomposition_only_initially": true,
+    "separate_surface_water_state_from_drainage_exchange": true,
+    "runtime_coupler_owns_composition": true,
+    "transactional_surface_water_state_required": true,
+    "generic_time_and_event_subdivision_required": true,
+    "accepted_mass_ledger_required": true
+  },
+  "hard_holds": [
+    "No migration of the complete legacy MOD_drainage namespace into one state object.",
+    "No direct HeadCalc-internal dependency.",
+    "No calendar-day or midnight assumption in the kernel/component contract.",
+    "No file-format or parser dependency in kernel/process/component code.",
+    "No runtime topology or MODFLOW tile knowledge inside SWAP process physics.",
+    "No rejected trial may mutate committed surface-water storage or book committed mass.",
+    "No configurable concession on water mass conservation.",
+    "No silent mixing of physical surface-water options with numerical solver policy.",
+    "No production implementation before state/control/event ownership is source-bound and qualified."
+  ],
+  "state": {
+    "branch_created": true,
+    "checkpoint_persisted": true,
+    "legacy_source_reconstructed": false,
+    "state_inventory_complete": false,
+    "control_policy_inventory_complete": false,
+    "transaction_ordering_defined": false,
+    "mass_contract_defined": false,
+    "child_decomposition_defined": false,
+    "production_source_changed": false,
+    "tested": false,
+    "qualified": false
+  },
+  "next_required_step": "reconstruct frozen SWAP 4.3.1 surfacewater task/control/state semantics and produce an explicit state-control-event-mass decomposition before any production candidate"
+}
