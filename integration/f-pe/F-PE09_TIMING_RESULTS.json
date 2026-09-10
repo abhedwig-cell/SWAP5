@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE09",
+  "title": "Paired Same-Runner Worker Cache Reuse Timing Characterization",
+  "status": "COMPLETE_RUNNER_BOUND_CHARACTERIZATION",
+  "comparison": {
+    "baseline": {
+      "work_unit": "F-PE08",
+      "head": "0c136148fb5a53db3804070ac74fc8cef55d81f3",
+      "MvG_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+      "backend_blob": "e0432faa0e05a3c136ee5aed6fddb12ad631848d"
+    },
+    "candidate": {
+      "head_under_measurement": "96157c86cbc5bb8fb38e35de49ef1d65a824cb85",
+      "MvG_blob": "ffd4701740dceb2df12f05e9cad73e81eeb55b43",
+      "backend_blob": "64c3d9581c71fc7bf5e5f3764995d41280312a2e"
+    },
+    "all_other_compiled_sources": "identical within the same candidate checkout"
+  },
+  "protocol": {
+    "runner": "GitHub-hosted ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization": "-O2",
+    "openmp": true,
+    "logical_columns": 32,
+    "batch_size": 9,
+    "worker_counts": [1, 2, 4],
+    "paired_process_rounds": 4,
+    "driver_measured_blocks_per_process": 12,
+    "repetitions_per_arm_per_block": 8,
+    "raw_observations": 2304,
+    "process_order": [
+      "baseline-1", "candidate-1",
+      "candidate-2", "baseline-2",
+      "baseline-3", "candidate-3",
+      "candidate-4", "baseline-4"
+    ],
+    "timed_region": "complete 32-column runtime call only; fixture/state reconstruction remains outside the system_clock interval as in F-PE07 driver",
+    "OMP_DYNAMIC": false,
+    "OMP_THREAD_LIMIT": 4,
+    "OMP_PROC_BIND": "spread",
+    "OMP_PLACES": "cores"
+  },
+  "raw_distribution_summary_us_per_32_column_call": {
+    "1_worker": {
+      "baseline": {"median": 391.4605, "p95": 480.06145, "min": 334.135, "max": 530.179},
+      "candidate": {"median": 365.2685, "p95": 432.90795, "min": 320.59, "max": 443.928}
+    },
+    "2_workers": {
+      "baseline": {"median": 235.836, "p95": 260.2545, "min": 215.452, "max": 289.555},
+      "candidate": {"median": 221.277, "p95": 246.94965, "min": 202.195, "max": 501.507}
+    },
+    "4_workers": {
+      "baseline": {"median": 209.373, "p95": 270.5878, "min": 193.513, "max": 300.109},
+      "candidate": {"median": 196.5035, "p95": 256.0309, "min": 184.577, "max": 3191.372}
+    }
+  },
+  "paired_round_baseline_over_candidate_ratio": {
+    "1_worker": {
+      "ratios": [1.0609060714688066, 1.0643837720222182, 1.0897889754118362, 1.1044419486171557],
+      "median": 1.077086373717027,
+      "min": 1.0609060714688066,
+      "max": 1.1044419486171557,
+      "candidate_faster_rounds": 4,
+      "candidate_slower_rounds": 0,
+      "median_ratio_equivalent_candidate_runtime_reduction_percent": 7.1569351909
+    },
+    "2_workers": {
+      "ratios": [1.0647598121443376, 1.0679309759547384, 1.067964230539361, 1.0635744251332682],
+      "median": 1.066345394049538,
+      "min": 1.0635744251332682,
+      "max": 1.067964230539361,
+      "candidate_faster_rounds": 4,
+      "candidate_slower_rounds": 0,
+      "median_ratio_equivalent_candidate_runtime_reduction_percent": 6.2217546416
+    },
+    "4_workers": {
+      "ratios": [1.0592532116578537, 1.0621090077499684, 1.0678187748523116, 1.06948604962632],
+      "median": 1.06496389130114,
+      "min": 1.0592532116578537,
+      "max": 1.06948604962632,
+      "candidate_faster_rounds": 4,
+      "candidate_slower_rounds": 0,
+      "median_ratio_equivalent_candidate_runtime_reduction_percent": 6.1001027201
+    }
+  },
+  "interpretation": {
+    "result": "The exact-shape cache-reuse candidate was faster in all four paired process rounds for each tested worker count on this one runner and frozen 32-column fixture.",
+    "effect_scale": "paired median ratios correspond to approximately 6.1-7.2 percent lower candidate runtime in this characterization",
+    "outliers": "Retained without clipping. Candidate 4-worker maximum 3191.372 us demonstrates hosted-runner noise despite lower candidate median and p95.",
+    "structural_effect": "Allocation/deallocation churn is reduced while the current-shape dynamic payload remains unchanged from F-PE08.",
+    "production_meaning": "Supports retaining the exact-shape cache-reuse implementation within the frozen qualified scope; does not define a runtime policy or guarantee portable speedup."
+  },
+  "evidence": {
+    "workflow_run": 34444038261,
+    "workflow_job": 102764845556,
+    "head": "96157c86cbc5bb8fb38e35de49ef1d65a824cb85",
+    "conclusion": "success",
+    "artifact_name": "fpe09-paired-cache-timing-evidence",
+    "artifact_id": 10138969567,
+    "artifact_size_bytes": 53406,
+    "artifact_sha256": "b8798ba322157c55f7b40e801df02d6789db190bda550d03523e8f5021c330e0",
+    "markers": [
+      "FPE09_TIMING_G01_BASE_AND_CANDIDATE_LOCK=PASS",
+      "FPE09_TIMING_G02_DUAL_BUILD=PASS",
+      "FPE09_TIMING_G03_BALANCED_SAME_RUNNER_EXECUTION=PASS",
+      "FPE09_TIMING_G04_PAIRED_CHARACTERIZATION=PASS",
+      "FPE09_PAIRED_TIMING_GATE=PASS"
+    ]
+  },
+  "hard_nonclaims": [
+    "no universal hardware-independent speedup",
+    "no production throughput SLA",
+    "no portable worker-count recommendation",
+    "no memory-payload reduction beyond F-PE08",
+    "no direct immutable registry views",
+    "no physics or admission-scope expansion"
+  ]
+}
