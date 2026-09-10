@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A4_O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_E3H_A4_O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_PRECOMMIT.json",
+  "status": "DIAGNOSTIC_COMPLETE_SURFACE_CAP_PRECEDES_TOP_SATURATION_ON_ALL_FROZEN_PROFILES",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "workflow": {
+    "run": 34463296060,
+    "head": "bab0524d13316ff5dbe51320a00bb92e0b9889b1",
+    "conclusion": "success",
+    "meaning": "All four frozen profile diagnostics completed and passed diagnostic-completeness assertions; workflow success is not production qualification."
+  },
+  "frozen_identity": {
+    "profiles": {
+      "P0_A1_CONTROL": [-0.2, -1.5, -5.0],
+      "P1_DRIER_SUBSOIL": [-0.5, -5.0, -10.0],
+      "P2_DRIER_TOP_AND_SUBSOIL": [-1.0, -10.0, -20.0],
+      "P3_STRONG_DRY_SEPARATION": [-2.0, -20.0, -50.0]
+    },
+    "supply_fractions_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "cases_per_profile": 6,
+    "total_cases": 24,
+    "starts_per_case": 12,
+    "total_search_solves": 288,
+    "surface_cap_cm": 1.0,
+    "initial_surface_storage_cm": 0.02,
+    "tau_bounds_day": [1e-8, 0.05]
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id": 10146461041, "digest": "sha256:14db2561e9f103d9de8b2f5c0622075c195a94b856392b22a1a3f95dea2ac6a7"},
+    "P1_DRIER_SUBSOIL": {"id": 10146470405, "digest": "sha256:e1262c698b391594541a3d4c2dcf217501c4037bb079cb585ee1fce2a7eed295"},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id": 10146460787, "digest": "sha256:61d83655193d07690308d5d9b547da26c4213494a361d4241b0e3399aac926f8"},
+    "P3_STRONG_DRY_SEPARATION": {"id": 10146469242, "digest": "sha256:ad8aa54892d9e2779a1513276cd9850a73393fa6d13614f5102c66b8c2a6e2e7"}
+  },
+  "per_profile": {
+    "P0_A1_CONTROL": {
+      "reproducible_case_count": 1,
+      "event_class": "SURFACE_CAP_PRECEDES_TOP_SATURATION",
+      "selected_supply_fraction_of_ksat": 12.0,
+      "cluster_member_count": 12,
+      "event_time_day": 0.03644773984112319,
+      "event_heads_cm": [-0.14612442301092474, -3.4365807674561273, -8.231314064881142],
+      "q_top_exact_reference_cm_per_day": 3.063995359988544,
+      "representative_independent_reference_balance_residual_cm": 1.284523770445252e-15,
+      "max_cluster_independent_reference_balance_residual_cm": 1.5273139063144356e-15
+    },
+    "P1_DRIER_SUBSOIL": {
+      "reproducible_case_count": 1,
+      "event_class": "SURFACE_CAP_PRECEDES_TOP_SATURATION",
+      "selected_supply_fraction_of_ksat": 12.0,
+      "cluster_member_count": 12,
+      "event_time_day": 0.0365014276959812,
+      "event_heads_cm": [-0.23356049032180035, -3.7808381225488468, -8.689972381245196],
+      "q_top_exact_reference_cm_per_day": 3.103543100271223,
+      "representative_independent_reference_balance_residual_cm": 9.284023202993374e-16,
+      "max_cluster_independent_reference_balance_residual_cm": 1.366133700169683e-11
+    },
+    "P2_DRIER_TOP_AND_SUBSOIL": {
+      "reproducible_case_count": 1,
+      "event_class": "SURFACE_CAP_PRECEDES_TOP_SATURATION",
+      "selected_supply_fraction_of_ksat": 12.0,
+      "cluster_member_count": 12,
+      "event_time_day": 0.03664790671376539,
+      "event_heads_cm": [-0.47697860016578836, -4.718962776786451, -10.022018575369172],
+      "q_top_exact_reference_cm_per_day": 3.2108536624388475,
+      "representative_independent_reference_balance_residual_cm": 1.1696237511502061e-15,
+      "max_cluster_independent_reference_balance_residual_cm": 1.9020565287727886e-15
+    },
+    "P3_STRONG_DRY_SEPARATION": {
+      "reproducible_case_count": 1,
+      "event_class": "SURFACE_CAP_PRECEDES_TOP_SATURATION",
+      "selected_supply_fraction_of_ksat": 12.0,
+      "cluster_member_count": 12,
+      "event_time_day": 0.03723734776750273,
+      "event_heads_cm": [-1.472189253257072, -8.509653922626015, -16.120819017592716],
+      "q_top_exact_reference_cm_per_day": 3.6341441825126326,
+      "representative_independent_reference_balance_residual_cm": 6.661338147750939e-16,
+      "max_cluster_independent_reference_balance_residual_cm": 8.881784197001252e-16
+    }
+  },
+  "aggregate": {
+    "profiles_with_reproducible_surface_cap_before_top_saturation": 4,
+    "profiles_total": 4,
+    "reproducible_cases_total": 4,
+    "all_reproducible_cases_at_supply_fraction_of_ksat": 12.0,
+    "all_clusters_use_all_12_starts": true,
+    "top_head_range_at_surface_cap_cm": [-1.472189253257072, -0.14612442301092474],
+    "max_independent_reference_balance_residual_cm": 1.366133700169683e-11,
+    "coevent_cases": 0,
+    "committed_state_mutation": false,
+    "mass_repair_or_clipping_used": false
+  },
+  "interpretation": [
+    "Across the complete frozen A2 O14 profile set, the first reproducibly established competing event is the 1 cm surface-storage cap, not isolated top-node h0=0 saturation.",
+    "The top node remains materially negative at cap onset in every representative root, from -0.146 cm to -1.472 cm; these are not near-simultaneous top-saturation coevents under the frozen classification.",
+    "All 12 deterministic starts converge into the same reproducible cap-event cluster for the one passing 12*KSAT case in each profile, making the event ordering robust to the frozen start topology.",
+    "Independent high-accuracy surface-reference recomputation closes the water balances within 1.37e-11 cm worst-case, well inside the unchanged 1e-9 cm gate.",
+    "This explains why A2/A3 could not establish an isolated O14 h0=0 event inside the pre-runoff S<1 cm topology. It does not yet qualify runoff continuation or the later top-saturation event after runoff starts."
+  ],
+  "decision": "O14_SURFACE_CAP_PRECEDES_TOP_SATURATION_CHARACTERIZED_READY_FOR_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_CONTINUATION_DIAGNOSTIC",
+  "positive_exit_reached": true,
+  "next_gate": "E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_CONTINUATION_TO_TOP_SATURATION_DIAGNOSTIC",
+  "hard_guards": [
+    "Preserve A3 negative isolated-h0 event evidence; do not reinterpret it as solver failure.",
+    "Do not alter the frozen O14 material parameters or qualified 5 cm surface-face law.",
+    "Runoff onset must be a conservative transfer, never clipping of surface storage.",
+    "A5 must checkpoint at the cap event, then continue from the committed cap state with S fixed at the cap and explicit runoff ledger ownership.",
+    "Rejected post-cap trials may not mutate the committed cap state or runoff ledger.",
+    "Do not assume the later top-saturation event exists until independently demonstrated after runoff onset."
+  ],
+  "architecture_checks": {
+    "transactionality": "All A4 trials are scratch-only and leave committed state unchanged.",
+    "mass_conservation": "Independent-reference balances remain below 1e-9 cm with no mass repair.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "physics_solver_policy_separation": "Only event ordering was changed; Ross physics and forcing cases remained frozen.",
+    "runtime_composition": "The result identifies surface-cap/runoff onset as a runtime/coupler event outside the soil-face kernel."
+  },
+  "hard_nonclaims": [
+    "No production runoff implementation qualification.",
+    "No post-cap runoff trajectory qualification.",
+    "No later O14 top-node saturation event qualification.",
+    "No response tangent, MultiSWAP, runtime or groundwater admission."
+  ]
+}
