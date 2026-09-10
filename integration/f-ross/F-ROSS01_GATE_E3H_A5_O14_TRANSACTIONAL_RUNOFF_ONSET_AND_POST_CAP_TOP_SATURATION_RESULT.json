@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_DIAGNOSTIC",
+  "status": "FAILED_AS_FROZEN_EVENT_NOT_ESTABLISHED",
+  "production_implementation": false,
+  "qualification_use": false,
+  "frozen_precommit": "F-ROSS01_GATE_E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_PRECOMMIT.json",
+  "scientific_run": {
+    "run": 34464776281,
+    "head": "80eed437cfc0a28c649a5e2867b437d8977b9ef9",
+    "conclusion": "failure_expected_from_frozen_diagnostic",
+    "profile_jobs": 4,
+    "profile_pass_count": 0
+  },
+  "superseded_harness_run": {
+    "run": 34464684134,
+    "head": "67223abe6da52494b6095b6530672ede8c9886a5",
+    "classification": "HARNESS_FAILURE_NO_SCIENTIFIC_DECISION",
+    "cause": "missing mpmath dependency before A5 execution",
+    "reconciliation": "F-ROSS01_GATE_E3H_A5_HARNESS_FAILURE_RECONCILIATION.json"
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id":10147072644,"digest":"sha256:c72f4bb01ebc35079442d6a11fdccfb843be181ff907ee8b82dce5affec9334b"},
+    "P1_DRIER_SUBSOIL": {"id":10147050293,"digest":"sha256:58db8e2089d505267bfe83cfeeeac38cb7ca8e66d9434dc393f900d6f5e37c90"},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id":10147067805,"digest":"sha256:78a31a73736df91c36867209175622374047f68ae43112365915497ffa98d593"},
+    "P3_STRONG_DRY_SEPARATION": {"id":10147068566,"digest":"sha256:0d42f4d82743573fb075d553ced2ef6d7b7621708143479f4a1535c586a34c3a"}
+  },
+  "aggregate": {
+    "frozen_profile_count": 4,
+    "starts_per_profile": 12,
+    "total_search_solves": 48,
+    "solver_success_count": 48,
+    "valid_root_count": 0,
+    "reproducible_cluster_count": 0,
+    "tau_after_cap_min_day": 1.0000000000000002e-8,
+    "tau_after_cap_max_day": 1.0000690361907168e-8,
+    "tau_lower_bound_day": 1e-8,
+    "min_independent_reference_residual_cm": 6.328679852987666e-6,
+    "max_independent_reference_residual_cm": 2.64856442859851e-4,
+    "all_physical_head_order": true,
+    "all_runoff_nonnegative": true,
+    "all_candidate_search_routes_qualified": true,
+    "all_cap_checkpoints_bitwise_unchanged": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "profile_diagnostics": {
+    "P0_A1_CONTROL": {
+      "cap_heads_cm": [-0.14612442301092474,-3.4365807674561273,-8.231314064881142],
+      "q_top_at_forced_h0_zero_cm_per_day": 2.9951808,
+      "q01_at_lower_bound_root_neighborhood_cm_per_day": 3.1086410863,
+      "q_top_minus_q01_cm_per_day": -0.1134602863,
+      "independent_reference_residual_cm_order": 6.33e-6
+    },
+    "P1_DRIER_SUBSOIL": {
+      "cap_heads_cm": [-0.23356049032180035,-3.7808381225488468,-8.689972381245196],
+      "q_top_at_forced_h0_zero_cm_per_day": 2.9951808,
+      "q01_at_lower_bound_root_neighborhood_cm_per_day": 3.1730050232,
+      "q_top_minus_q01_cm_per_day": -0.1778242232,
+      "independent_reference_residual_cm_order": 1.35e-5
+    },
+    "P2_DRIER_TOP_AND_SUBSOIL": {
+      "cap_heads_cm": [-0.47697860016578836,-4.718962776786451,-10.022018575369172],
+      "q_top_at_forced_h0_zero_cm_per_day": 2.9951808,
+      "q01_at_lower_bound_root_neighborhood_cm_per_day": 3.3473719146,
+      "q_top_minus_q01_cm_per_day": -0.3521911146,
+      "independent_reference_residual_cm_order": 4.28e-5
+    },
+    "P3_STRONG_DRY_SEPARATION": {
+      "cap_heads_cm": [-1.472189253257072,-8.509653922626015,-16.120819017592716],
+      "q_top_at_forced_h0_zero_cm_per_day": 2.9951808,
+      "q01_at_lower_bound_root_neighborhood_cm_per_day": 4.0323622640,
+      "q_top_minus_q01_cm_per_day": -1.0371814640,
+      "independent_reference_residual_cm_order": 2.65e-4
+    }
+  },
+  "interpretation": [
+    "The dependency-repaired A5 run executed all 48 frozen multistarts scientifically; every nonlinear solve reported solver success but none satisfied the independent-reference event equations.",
+    "All 48 solutions collapse to the frozen tau lower bound. This is a coherent event-equation pathology, not random nonconvergence.",
+    "At the forced h0=0 event state q_top is fixed by the saturated 5 cm Darcy segment at 1.2*KSAT. In every profile the reference q01 in the lower-bound solution neighborhood exceeds q_top, while saturating the top cell from the committed cap state requires positive storage change and therefore q_top>q01 over positive tau.",
+    "A5 therefore does not establish top-node saturation as the next post-cap event. The result must not be repaired by extending tau, changing starts, changing cap states or loosening the mass gate inside A5.",
+    "The next diagnostic should follow the post-cap fixed-head trajectory or characterize its steady/asymptotic state with reference authority before imposing h0=0 as an event constraint."
+  ],
+  "decision": "O14_POST_CAP_TOP_SATURATION_NOT_ESTABLISHED_FROZEN_DIRECT_EVENT_FORMULATION_REJECTED_POST_CAP_TRAJECTORY_TOPOLOGY_DIAGNOSTIC_REQUIRED",
+  "next_gate": "E3H_A6_O14_POST_CAP_FIXED_HEAD_TRAJECTORY_AND_ASYMPTOTIC_TOPOLOGY_DIAGNOSTIC",
+  "hard_guards": [
+    "Preserve all four A4 cap states and 12*KSAT forcing.",
+    "Do not reinterpret solver success at tau lower bound as a valid event root.",
+    "Do not expand A5 tau bounds, starts or tolerances after this result.",
+    "Runoff remains explicit conservative transfer; never clip surface storage.",
+    "Use independent reference fluxes as the physical authority in A6.",
+    "Do not claim that O14 top saturation never occurs until a post-cap trajectory/asymptotic diagnostic establishes the reachable state set."
+  ],
+  "architecture_checks": {
+    "transactionality": "All 48 trials left the committed cap checkpoint bitwise unchanged.",
+    "mass_conservation": "No mass repair or clipping; invalid roots are rejected rather than corrected.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "runtime_composition": "Runoff remains outside the soil-face kernel and is ledger-owned."
+  },
+  "hard_nonclaims": [
+    "No production runoff qualification.",
+    "No proof that top saturation is impossible for all future time.",
+    "No automatic event detection admission.",
+    "No response tangent, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ]
+}
