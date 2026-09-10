@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR29",
+  "title": "Actual-Transpiration Accounting & Mass-Attribution Readiness",
+  "branch": "work/f-mr29-actual-transpiration-mass-accounting-readiness",
+  "source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "tree": "ab1fbdb979a1d7e93b5d12cbc01c820046c47c36"
+  },
+  "pinned_source_blobs": {
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+    "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "src/runtime/mod_fmr_root_uptake_process_binding.f90": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+  },
+  "scope": {
+    "in_scope": [
+      "trace qrot from restricted root-uptake production through Richards execution and transaction mass accounting",
+      "define one authoritative actual-transpiration attribution contract without duplicate water accounting",
+      "determine the smallest first-class result/diagnostic seam for accepted actual transpiration",
+      "qualify rollback/retry semantics for any proposed accounting metadata"
+    ],
+    "out_of_scope": [
+      "new root-uptake physics",
+      "parallel root-extraction execution",
+      "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+      "crop lifecycle advancement",
+      "accepted-window crop-event integration",
+      "general release qualification"
+    ]
+  },
+  "governance": {
+    "persist_early_test_second": true,
+    "production_source_changes_before_contract_freeze": false,
+    "mass_conservation_is_hard_gate": true
+  }
+}
