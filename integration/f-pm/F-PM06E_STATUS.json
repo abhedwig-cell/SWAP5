@@ -7,8 +7,8 @@
   "source_tree": "ea5b54a971cf35ba0f49b1e283d13f7f69304654",
   "upstream_readiness": "F-PM06D@3ec07cf0d88e52d7503098a4de19f699acf7e9e1",
   "production_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
-  "phase": "OWNER_QUALIFICATION_PENDING",
-  "decision": "RESTRICTED_SCALAR_CAPACITY_CANDIDATE_PERSISTED_PENDING_OWNER_CI",
+  "phase": "OWNER_QUALIFIED_READY_FOR_INDEPENDENT_FVQ",
+  "decision": "QUALIFIED_RESTRICTED_B110_SURFACE_EVAPORATION_CAPACITY_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
   "scope": {
     "hydraulic_family": "B1.10_DEFAULT_MVG",
     "atmospheric_head_cm": -275000.0,
@@ -21,24 +21,34 @@
     "accepted_flux_publication": false,
     "persistent_state_added": false
   },
+  "production_blobs": {
+    "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+  },
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "owner_qualified": false,
+    "tested": true,
+    "owner_qualified": true,
     "independently_qualified": false,
     "canonical_admitted": false
   },
   "qualification": {
     "owner_workflow": "F-PM06E restricted surface evaporation capacity candidate",
-    "owner_run": null,
-    "owner_job": null,
-    "expected_gate": "FPM06E_OWNER_GATE=PASS",
+    "owner_run": 34539346493,
+    "owner_job": 103078219838,
+    "owner_head": "99af9db0ad8661847543b969222708161e2e0154",
+    "owner_conclusion": "success",
+    "gate": "FPM06E_OWNER_GATE=PASS",
+    "o0_o2_identity": "PASS",
+    "architecture_invariants": "30_OF_30_PASS",
+    "mass_conservation": "HARD_UNCHANGED",
     "independent_fvq_required": true
   },
-  "architecture": {
-    "invariants": "30_OF_30_NO_ADVERSE_DELTA",
-    "mass_conservation": "HARD_UNCHANGED"
+  "closeout_gate": {
+    "require_exact_status_head_ci_green": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
   },
-  "next_required_step": "obtain a green exact-head F-PM06E owner qualification, then hand the exact production candidate and blobs to a separate independent F-VQ workunit before runtime composition or canonical admission"
+  "next_required_step": "start a separate independent F-VQ qualification from the current canonical authority, fetch only the exact F-PM06E production candidate and blobs through this closeout, and fail closed before any runtime composition or canonical admission"
 }
