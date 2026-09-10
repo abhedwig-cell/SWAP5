@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "purpose": "Current-canonical recomposition after metadata-only F-CI30 authority advancement",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-current-canonical-recomposition",
+  "canonical_base": "8c16ea58946092024e4b394db87acf91f3fd4abf",
+  "canonical_drift_from_previous_base": {
+    "previous_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+    "classification": "METADATA_ONLY_FCI30_STATUS_CLOSEOUT",
+    "changed_files": ["integration/f-ci/F-CI30_STATUS.json"],
+    "production_source_changed": false
+  },
+  "production_candidate": "9492d99e6291dd21ba2c5b394a79b3f877fed0e2",
+  "expected_production_delta": ["src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"],
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "frozen_successful_fci31_base_gate_blob": "7dae081b3c57694abb76a25d577380912e7915e6",
+  "frozen_successful_fci31_v4_wrapper_blob": "c01b469451e7485907e94a7a59860476ab7a8e78",
+  "frozen_fvq46_test_blob": "5ea862e6337992afa1af5b2eec50fd0ddbba45a7",
+  "frozen_fvq46_output_sha256": "fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0",
+  "rule": "Rehydrate the exact already-green F-CI31 qualification harness from immutable Git blobs and change only the canonical base and recomposed candidate SHAs before replay."
+}
