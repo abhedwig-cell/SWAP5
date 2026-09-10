@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ26R",
+  "title": "Independent Canonical Parallel Publication Requalification",
+  "qualification_branch": "qualification/f-mq26r-canonical-parallel-publication",
+  "qualification_only": true,
+  "production_source_changed_by_fmq26r": false,
+  "candidate": {
+    "owner_work_unit": "F-MR22",
+    "commit": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "tree": "4837be78f93c203f5d4ac4823f7a4eaeff137a2b",
+    "owner_status": "REMEDIATION_IMPLEMENTED_TESTED_NOT_INDEPENDENTLY_QUALIFIED",
+    "owner_workflow_run": 34450391155,
+    "owner_workflow_job": 102784559630
+  },
+  "predecessor_qualification": {
+    "work_unit": "F-MQ26",
+    "candidate_commit": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+    "decision": "NOT_QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "failed_gate": "DETERMINISTIC_CANONICAL_PUBLISHED_RESULT_ORDER",
+    "note": "The historical F-MQ26 rejection remains valid for its original immutable candidate; F-MQ26R evaluates only the remediated F-MR22 candidate."
+  },
+  "authoritative_run": {
+    "workflow_run_id": 34451696382,
+    "workflow_job_id": 102788662785,
+    "head_sha": "7650b5fbed51c0493fc4a3d8c6e133c1e07a302e",
+    "conclusion": "success",
+    "runner_image": "ubuntu-24.04",
+    "runner_os": "Ubuntu 24.04.5 LTS",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "source_provenance_gates": {
+    "exact_remediation_ancestry": "PASS",
+    "qualification_source_isolation": "PASS",
+    "qualification_src_diff_above_candidate": "EMPTY",
+    "fmr22_regression_gate": "PASS"
+  },
+  "independent_publication_matrix": {
+    "columns": 7,
+    "batch_size": 3,
+    "workers": [2, 4],
+    "input_orders": ["reversed", "nontrivial_permutation"],
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "reversed_2_workers_canonical_publication": "PASS",
+    "permuted_2_workers_canonical_publication": "PASS",
+    "reversed_4_workers_canonical_publication": "PASS",
+    "permuted_4_workers_canonical_publication": "PASS",
+    "result_array_canonical_column_order": "PASS",
+    "diagnostic_array_canonical_column_order": "PASS",
+    "all_columns_committed": "PASS",
+    "aggregate_mass_complete": "PASS",
+    "aggregate_mass_missing_mask_zero": "PASS",
+    "hard_aggregate_mass_gate": "PASS_LE_1E-12",
+    "aggregate_mass_input_order_independence": "PASS",
+    "aggregate_mass_worker_count_independence": "PASS"
+  },
+  "remediation_scope_verified": {
+    "publication_contract_fixed": true,
+    "physics_changed": false,
+    "solver_changed": false,
+    "state_handle_semantics_changed": false,
+    "aggregate_reduction_changed": false,
+    "mass_accounting_changed": false,
+    "batching_changed": false,
+    "worker_assignment_changed": false
+  },
+  "decision": "QUALIFIED_REMEDIATED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_PUBLICATION_WITHIN_FROZEN_SCOPE",
+  "qualification_scope": "Canonical outward publication of the previously F-MQ26-tested restricted parallel real-physics MultiSWAP V1, bound to exact F-MR22 candidate e8858ce4816fc6ddfaf9ec252832c76cd3094705. The independent requalification specifically closes the noncanonical result/diagnostic publication defect while retaining the frozen restricted physical and numerical admission scope.",
+  "not_claimed": [
+    "physics outside the previously restricted parallel V1 admission profile",
+    "snow, root-uptake, macropore, frost, temporal-history or bottom-mode-5 multiworker admission",
+    "parallel restart qualification",
+    "performance or speedup qualification",
+    "hardware-independent scaling",
+    "any relaxation of hard mass conservation"
+  ],
+  "architecture_invariant_assessment": {
+    "invariant_5_worker_scratch": "preserved from independently tested F-MQ26 scope",
+    "invariant_7_transactionality": "preserved; publication remediation is post-execution materialization only",
+    "invariant_13_mass_conservation": "PASS; hard aggregate gate <= 1e-12 and exact aggregate publication independence in executed sentinel",
+    "invariant_16_multiswap": "PASS within restricted 2/4-worker V1 scope",
+    "invariant_23_physics_solver_policy_separation": "preserved; publication order does not mutate physics or numerical policy",
+    "invariant_26_diagnostics": "PASS; diagnostics are now canonically published with results",
+    "invariant_30_explicit_requalification": "PASS through independent F-MQ26R gate"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "open": []
+  }
+}
