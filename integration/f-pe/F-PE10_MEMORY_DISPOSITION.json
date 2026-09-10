@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "title": "Worker Memory and Copy-Elimination Disposition for Direct Forcing Views",
+  "candidate": "8f6902c4eb2aa21694e83876579725914043e3dc",
+  "scope": "F-MR20 V1 parallel workers only",
+  "removed_worker_owned_payload": {
+    "arrays": ["qdra(drainage_levels,n)", "qssdi(n)", "qrot(n)"],
+    "real_kind_bytes": 8,
+    "payload_formula_bytes_per_active_worker": "8 * n * (drainage_levels + 2)",
+    "allocator_and_pointer_descriptor_overhead_included": false,
+    "persistent_per_column_saving_bytes": 0,
+    "scaling_axis": "workers, not logical columns"
+  },
+  "examples": [
+    {"active_nodes": 4, "drainage_levels": 1, "payload_saved_bytes_per_worker": 96},
+    {"active_nodes": 100, "drainage_levels": 1, "payload_saved_bytes_per_worker": 2400},
+    {"active_nodes": 100, "drainage_levels": 5, "payload_saved_bytes_per_worker": 5600}
+  ],
+  "interpretation": {
+    "benefit": "The candidate removes three value-refresh copies per prepared interval and removes their worker-owned payload while the direct view is active.",
+    "multiswap_significance": "The saving does not multiply by hundreds of thousands of logical columns because these buffers are already worker-owned and reused in F-PE09.",
+    "architecture_cost": "The candidate introduces explicit TARGET/alias lifetime semantics and an additional backend mode with fail-closed lifetime obligations.",
+    "tradeoff": "Within the frozen V1 design the memory saving is bounded and worker-scaled, while paired timing shows no attributable runtime benefit. This does not justify adding alias-lifetime complexity to the production default solely for performance."
+  },
+  "invariant_assessment": {
+    "04_compact_persistent_state": "NEUTRAL; no per-column persistent state changes",
+    "05_scratch_per_worker": "PASS; existing forcing caches were worker-owned and direct views remain worker-scoped",
+    "06_scalable_memory_layout": "SMALL_BOUNDED_IMPROVEMENT_PER_WORKER",
+    "07_transactional_steps": "PASS in scientific qualification, but requires explicit view lifetime discipline",
+    "16_multiswap_primary": "BENEFIT_DOES_NOT_SCALE_WITH_COLUMN_COUNT",
+    "27_optional_scales_with_use": "PASS",
+    "29_no_silent_dependencies": "MORE_COMPLEX; safe only with explicit TARGET/view lifetime contract",
+    "30_architecture_review": "PASS; tradeoff explicitly characterized"
+  },
+  "decision": "MEMORY_COPY_ELIMINATION_IS_REAL_BUT_TOO_SMALL_AND_WORKER_SCALED_TO_JUSTIFY_PRODUCTION_DEFAULT_WITHOUT_RUNTIME_BENEFIT",
+  "recommended_disposition": "DO_NOT_RETAIN_CANDIDATE_PRODUCTION_SOURCE; preserve scientific and timing evidence, restore PE09 production postimage"
+}
