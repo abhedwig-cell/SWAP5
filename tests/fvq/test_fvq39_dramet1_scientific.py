@@ -2,7 +2,6 @@
 import hashlib
 import json
 import math
-import os
 import random
 import subprocess
 import sys
@@ -102,13 +101,14 @@ def probe_levels(knots):
 
 def write_sources(tmp, candidate_source):
     Path(tmp, "mod_process_hydraulic_view.f90").write_text(
-        """module mod_process_hydraulic_view\n"
-        "  use, intrinsic :: iso_fortran_env, only: real64\n"
-        "  implicit none\n"
-        "  type :: process_hydraulic_view_t\n"
-        "    real(real64) :: groundwater_level = 0.0_real64\n"
-        "  end type process_hydraulic_view_t\n"
-        "end module mod_process_hydraulic_view\n"""
+        """module mod_process_hydraulic_view
+  use, intrinsic :: iso_fortran_env, only: real64
+  implicit none
+  type :: process_hydraulic_view_t
+    real(real64) :: groundwater_level = 0.0_real64
+  end type process_hydraulic_view_t
+end module mod_process_hydraulic_view
+"""
     )
     Path(tmp, "candidate.f90").write_text(candidate_source)
     Path(tmp, "driver.f90").write_text(
@@ -159,7 +159,12 @@ def compile_driver(tmp, opt):
 
 
 def run_case(exe, knots, values, probes):
-    payload = [str(len(knots)), " ".join(f"{x:.17g}" for x in knots), " ".join(f"{y:.17g}" for y in values), str(len(probes))]
+    payload = [
+        str(len(knots)),
+        " ".join(f"{x:.17g}" for x in knots),
+        " ".join(f"{y:.17g}" for y in values),
+        str(len(probes)),
+    ]
     payload.extend(f"{g:.17g}" for g in probes)
     cp = sh(str(exe), input_text="\n".join(payload) + "\n")
     rows = []
