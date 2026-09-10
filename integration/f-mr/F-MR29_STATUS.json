@@ -4,8 +4,8 @@
   "title": "Actual-Transpiration Accounting & Mass-Attribution Readiness",
   "branch": "work/f-mr29-actual-transpiration-mass-accounting-readiness",
   "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
-  "status": "CONTRACT_FROZEN_PENDING_SOURCE_BOUND_GATE",
-  "decision": "NO_NEW_MASS_BOOKING_REQUIRED; POSTCOMMIT_SOLVER_FORCING_ATTRIBUTION_IS_THE_SMALLEST_SAFE_IMPLEMENTATION",
+  "status": "QUALIFIED_READINESS_CLOSED",
+  "decision": "NO_NEW_MASS_BOOKING_REQUIRED; POSTCOMMIT_SOLVER_FORCING_ATTRIBUTION_READY_FOR_SEPARATE_IMPLEMENTATION",
   "state": {
     "source_authority_persisted": true,
     "mass_flow_traced": true,
@@ -15,10 +15,16 @@
     "implementation_contract_persisted": true,
     "production_source_modified": false,
     "readiness_gate_persisted": true,
-    "readiness_gate_tested": false,
-    "closed": false
+    "readiness_gate_tested": true,
+    "closed": true
   },
-  "qualified_architecture_hypothesis": {
+  "readiness_gate": {
+    "workflow_run": 34474425501,
+    "workflow_job": 102861670296,
+    "head": "d9f0a2c5592e8d74e51052b604cc3ae6ab3de452",
+    "conclusion": "success"
+  },
+  "qualified_architecture": {
     "physical_root_sink_owner": "fmr_b110_physical_forcing_t%root_extraction_sink(:)",
     "mass_ledger_owner": "existing transaction mass_out booking in account_external_fluxes",
     "actual_transpiration_publication": "derived postcommit attribution only",
