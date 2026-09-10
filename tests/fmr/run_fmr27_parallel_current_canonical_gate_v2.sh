@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SOURCE="$ROOT/tests/fmr/run_fmr27_parallel_current_canonical_gate.sh"
-TMP="${TMPDIR:-/tmp}/fmr27-owner-v2-$$.sh"
+TMP="$ROOT/tests/fmr/.fmr27-owner-v2-$$.sh"
 trap 'rm -f "$TMP"' EXIT
 cp "$SOURCE" "$TMP"
 
