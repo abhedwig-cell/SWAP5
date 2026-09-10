@@ -7,6 +7,7 @@ EVIDENCE_DIR="${FMR34_EVIDENCE_DIR:-}"
 BASE="c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
 HELPER="src/runtime/mod_fmr_divdra_serialized_composition.f90"
 RUNTIME="src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+TEST="tests/fmr/test_fmr34_divdra_active_runtime_callsite_v2.f90"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
@@ -18,9 +19,6 @@ check_blob() {
   [[ "$actual" == "$expected" ]] || fail "trusted dependency drift: $path expected=$expected actual=$actual"
 }
 
-# F-MR34 is a current-canonical source-bound owner candidate. Exactly two new
-# feature-specific runtime files are permitted; the generic orchestrator and all
-# process/solver/reference sources remain byte-identical to the canonical base.
 git merge-base --is-ancestor "$BASE" HEAD || fail 'HEAD not descended from current canonical F-CI35 authority'
 printf '%s\n' "$HELPER" "$RUNTIME" | sort > "$BUILD/expected-src.txt"
 git diff --name-only "$BASE"..HEAD -- src | sort > "$BUILD/actual-src.txt"
@@ -49,43 +47,21 @@ helper = Path('src/runtime/mod_fmr_divdra_serialized_composition.f90').read_text
 runtime = Path('src/runtime/mod_fmr_divdra_serialized_runtime.f90').read_text(encoding='utf-8').lower()
 combined = helper + '\n' + runtime
 flat = ' '.join(combined.split())
-
-for token in (
-    'fmr_preflight_serialized_divdra',
-    'fmr_bind_single_level_positive_divdra',
-    'fmr_run_serialized_physical_multiswap',
-    'cleanup_materialized_divdra',
-    'distribution_parameter_ref',
-    'hydraulic_view_ref',
-    'scalar_transfer',
-):
+for token in ('fmr_preflight_serialized_divdra','fmr_bind_single_level_positive_divdra',
+              'fmr_run_serialized_physical_multiswap','cleanup_materialized_divdra',
+              'distribution_parameter_ref','hydraulic_view_ref','scalar_transfer'):
     assert token in flat, f'missing required composition token: {token}'
-
-for forbidden in (
-    'fmr_build_committed_process_hydraulic_view',
-    'headcalc',
-    'modflow',
-    '.swp',
-    'predictor',
-    'corrector',
-    'jacobian',
-    'response_tangent',
-):
+for forbidden in ('fmr_build_committed_process_hydraulic_view','headcalc','modflow','.swp',
+                  'predictor','corrector','jacobian','response_tangent'):
     assert forbidden not in combined, f'forbidden scope coupling: {forbidden}'
-
-# No second mass ledger and no hidden exchange-law derivation.
 assert not re.search(r'%mass%[a-z0-9_]+\s*=', combined), 'F-MR34 mutates transaction mass accounting'
-for forbidden in ('drainage resistance', 'exchange_law', 'qdrain =', 'mass_out = mass_out +', 'total_out = total_out +'):
+for forbidden in ('drainage resistance','exchange_law','qdrain =','mass_out = mass_out +','total_out = total_out +'):
     assert forbidden not in combined, f'forbidden exchange/mass reconstruction: {forbidden}'
-
-# Generic runtime remains outside this feature and no whole forcing registry is copied.
 assert 'forcing_registry =' not in runtime, 'whole forcing registry copy/mutation detected'
 assert 'effective_forcing_registry' not in runtime, 'full registry shadow copy detected'
-assert 'forcing_use_count' in helper, 'O(N) shared forcing ownership preflight missing'
-assert 'forcing_use_count(forcing_index) /= 1' in helper, 'shared forcing fail-closed gate missing'
-assert runtime.count('call fmr_run_serialized_physical_multiswap(') == 1, 'unexpected generic runtime call count'
-assert runtime.find('call fmr_preflight_serialized_divdra') < runtime.find('call fmr_run_serialized_physical_multiswap('), \
-       'preflight must precede core runtime'
+assert 'forcing_use_count' in helper and 'forcing_use_count(forcing_index) /= 1' in helper
+assert runtime.count('call fmr_run_serialized_physical_multiswap(') == 1
+assert runtime.find('call fmr_preflight_serialized_divdra') < runtime.find('call fmr_run_serialized_physical_multiswap(')
 assert runtime.find('cleanup_materialized_divdra') >= 0
 print('FMR34_PREFLIGHT_BEFORE_CORE_RUNTIME=PASS')
 print('FMR34_NO_HIDDEN_COMMITTED_VIEW_SUBSTITUTION=PASS')
@@ -136,20 +112,17 @@ for opt in 0 2; do
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
-
   for src in "$HELPER" "$RUNTIME"; do
     obj="$OUT/$(basename "${src%.*}").o"
     gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
-
   obj="$OUT/mod_fmr04_fixed_top_provider.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/mod_fmr04_fixed_top_provider.f90 -o "$obj"
   objects+=("$obj")
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr34_divdra_active_runtime_callsite.f90 -o "$OUT/test.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$TEST" -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt executable"; }
-
   for marker in \
     'FMR34_INACTIVE_GENERIC_RUNTIME_IDENTITY=PASS' \
     'FMR34_MANUAL_BINDING_RUNTIME_EQUIVALENCE=PASS' \
@@ -174,7 +147,6 @@ HASH="$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo "FMR34_O0_O2_OUTPUT_SHA256=$HASH"
 echo 'FMR34_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
-
 if [[ -n "$EVIDENCE_DIR" ]]; then
   mkdir -p "$EVIDENCE_DIR"
   cp "$BUILD/o0/output.txt" "$EVIDENCE_DIR/o0-output.txt"
@@ -184,5 +156,4 @@ if [[ -n "$EVIDENCE_DIR" ]]; then
   git rev-parse "HEAD:$HELPER" > "$EVIDENCE_DIR/helper-blob.txt"
   git rev-parse "HEAD:$RUNTIME" > "$EVIDENCE_DIR/runtime-blob.txt"
 fi
-
 echo 'FMR34_OWNER_GATE=PASS'
