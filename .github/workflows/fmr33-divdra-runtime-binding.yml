@@ -1,0 +1,35 @@
+name: F-MR33 DIVDRA runtime binding
+
+on:
+  push:
+    branches:
+      - work/f-mr33-divdra-runtime-binding
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-binding-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-MR33 exact-authority gate
+        run: bash integration/f-mr/fmr33/run_gate.sh
+
+      - name: Upload deterministic gate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-MR33-divdra-runtime-binding-evidence
+          if-no-files-found: warn
+          path: |
+            F-MR33_O0.txt
+            F-MR33_O2.txt
