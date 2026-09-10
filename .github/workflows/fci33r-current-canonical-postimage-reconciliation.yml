@@ -1,0 +1,30 @@
+name: F-CI33R current canonical postimage reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci33r-current-canonical-postimage-reconciliation
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+jobs:
+  current-postimage-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout source lineage
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run F-CI33R reconciliation gate
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "integration/f-ci-canonical" ]]; then
+            export FCI33R_MODE=canonical
+          else
+            export FCI33R_MODE=repair
+          fi
+          bash tests/fci/run_fci33_current_postimage_reconciliation.sh
