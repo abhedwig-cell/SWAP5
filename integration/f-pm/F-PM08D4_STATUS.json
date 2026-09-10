@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D4",
   "title": "Restricted Fixed-Weir Secondary Surface-Water Balance Readiness",
   "branch": "work/f-pm08d4-fixed-weir-secondary-balance-readiness",
-  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
-  "phase": "CONTRACT_AND_SOURCE_INVENTORY_PERSISTED_BEFORE_TEST",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -15,7 +15,8 @@
     "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
     "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
     "fpm08d2_closeout": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
-    "fpm08d3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344"
+    "fpm08d3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "fpm08d3_decision": "QUALIFIED_SECONDARY_STORAGE_AVAILABILITY_AND_EXPLICIT_MASS_CONTRACT_READINESS_WITH_NO_MASS_CONCESSION"
   },
   "frozen_source": {
     "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
@@ -29,6 +30,20 @@
     "automatic_management": false,
     "production_changes_allowed": false
   },
+  "readiness_findings": {
+    "fixed_weir_requires_no_control_memory": true,
+    "SWST_is_only_persistent_physical_state": true,
+    "WLS_is_derived_from_SWST": true,
+    "actual_q_supply_and_q_discharge_first_class": true,
+    "mass_residual_is_not_a_root_solver_tolerance": true,
+    "power_rating_root_is_monotone_on_restricted_domain": true,
+    "legacy_0p001cm_bisection_can_leave_SWST_WLS_inconsistent": true,
+    "beta_lt_1_crest_tangent_is_singular": true,
+    "SWQHR2_requires_separate_disposition": true,
+    "D1_endpoint_holds_inherited": true,
+    "D3_mass_gaps_not_admitted": true,
+    "calendar_period_selection_external": true
+  },
   "source_risk_holds": [
     "D4-RISK-01-LEGACY-0P001CM-BISECTION-CAN-LEAVE-S-AND-WLS-INCONSISTENT",
     "D4-RISK-02-MASS-RESIDUAL-MUST-NOT-BE-CONFLATED-WITH-RATING-ROOT-RESIDUAL",
@@ -40,18 +55,26 @@
     "D4-RISK-08-D3-DRY-FLOOR-AND-RAW-WSCAP-MASS-GAPS-MUST-NOT-RETURN",
     "D4-RISK-09-SWQHR2-THRESHOLD-DERIVED-HBWEIR-EXCLUDED"
   ],
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D4_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D4_FIXED_WEIR_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D4_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d4_fixed_weir_balance.py",
+    "gate": "tools/fpm/fpm08d4_fixed_weir_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d4-fixed-weir-readiness.yml"
+  },
   "state": {
     "branch_created": true,
     "checkpoint_persisted": true,
     "fixed_weir_source_equations_reconstructed": true,
     "state_ownership_defined": true,
     "mass_vs_rating_residual_separation_defined": true,
-    "legacy_bisection_state_consistency_characterized": false,
-    "crest_tangent_characterized": false,
-    "architecture_audited_all_30": false,
-    "test_oracle_persisted": false,
-    "gate_persisted": false,
-    "workflow_persisted": false,
+    "legacy_bisection_state_consistency_characterized": true,
+    "crest_tangent_characterized": true,
+    "architecture_audited_all_30": true,
+    "test_oracle_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
@@ -60,5 +83,5 @@
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "persist an independent equation-level fixed-weir oracle covering supply, no-discharge, power-discharge, overflow, crest sensitivity and legacy 0.001-cm state-consistency characterization; then audit all 30 invariants and gate under CI"
+  "next_required_step": "execute the fully persisted D4 readiness gate under CI; fail closed on any provenance, mass/root-residual separation, fixed-weir branch, crest-sensitivity, legacy state-consistency or architecture inconsistency"
 }
