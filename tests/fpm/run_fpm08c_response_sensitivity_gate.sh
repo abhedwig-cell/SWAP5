@@ -13,6 +13,14 @@ changed_src="$(git diff --name-only "$BASE" -- src)"
 }
 echo 'FPM08C_NO_PRODUCTION_SOURCE_DELTA=PASS'
 
+changed_ref="$(git diff --name-only "$BASE" -- reference)"
+[[ -z "$changed_ref" ]] || {
+  echo 'FPM08C_UNEXPECTED_REFERENCE_DELTA' >&2
+  printf '%s\n' "$changed_ref" >&2
+  exit 1
+}
+echo 'FPM08C_NO_REFERENCE_SOURCE_DELTA=PASS'
+
 python3 - <<'PY'
 import json
 from pathlib import Path
@@ -25,7 +33,38 @@ assert len(p['recommended_child_split'])==4
 print('FPM08C_SOURCE_AUTHORITY_LOCKS=PASS')
 print('FPM08C_FOUR_RESPONSE_CLASSES_EXPLICIT=PASS')
 print('FPM08C_NO_PRODUCTION_ADMISSION=PASS')
+
+r=json.loads(Path('integration/f-pm/F-PM08C_CHILD_COMPLETION_RECONCILIATION.json').read_text())
+assert r['parent_decomposition_closeout']=='3553c63e753bbf714378cd0dff5047769ad3185b'
+assert len(r['children'])==4
+assert r['scope_reconciliation']['all_four_required_children_completed'] is True
+assert r['scope_reconciliation']['negative_side_DRAMET3_infiltration_qualified'] is False
+assert r['scope_reconciliation']['production_family_composition_qualified'] is False
+assert r['scope_reconciliation']['runtime_binding_qualified'] is False
+assert r['scope_reconciliation']['canonical_admission_qualified'] is False
+assert r['decision']=='QUALIFIED_FPM08C_REQUIRED_CHILD_SET_COMPLETE_WITH_EXPLICIT_NEGATIVE_DRAMET3_AND_RUNTIME_HOLDS'
+print('FPM08C_CHILD_COMPLETION_SCOPE_RECONCILIATION=PASS')
+print('FPM08C_NEGATIVE_DRAMET3_HOLD_EXPLICIT=PASS')
+print('FPM08C_COORDINATION_ONLY_CLOSEOUT=PASS')
 PY
+
+for authority in \
+  f5f567c6af4879bf80107a7579dd342de6d5afe0 \
+  49728b999b884a37643908c1dad40269f4e2db9b \
+  702db051bf5dd0960a962be919ea0cfbf01895a4 \
+  3542ff83f38a9dd8de407ceca65ed968407559f5; do
+  git cat-file -e "$authority^{commit}"
+done
+
+git show f5f567c6af4879bf80107a7579dd342de6d5afe0:integration/f-vq/F-VQ40_STATUS.json | \
+  grep -Fq 'QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE'
+git show 49728b999b884a37643908c1dad40269f4e2db9b:integration/f-vq/F-VQ38_STATUS.json | \
+  grep -Fq 'QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN'
+git show 702db051bf5dd0960a962be919ea0cfbf01895a4:integration/f-vq/F-VQ42_STATUS.json | \
+  grep -Fq 'QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY'
+git show 3542ff83f38a9dd8de407ceca65ed968407559f5:integration/f-vq/F-VQ43_STATUS.json | \
+  grep -Fq 'QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION'
+echo 'FPM08C_FOUR_INDEPENDENT_CHILD_AUTHORITIES_LOCKED=PASS'
 
 python3 tests/fpm/test_fpm08c_response_sensitivity.py | tee /tmp/fpm08c-output.txt
 for marker in \
