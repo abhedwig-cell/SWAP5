@@ -1,0 +1,24 @@
+name: F-MR32 parallel committed restart composition
+
+on:
+  push:
+    branches:
+      - work/f-mr32-current-canonical-parallel-committed-restart-composition
+    paths:
+      - 'integration/f-mr/F-MR32_*.json'
+      - 'tests/fmr/run_fmr32_parallel_committed_restart_composition*.sh'
+      - '.github/workflows/fmr32-parallel-committed-restart-composition.yml'
+  workflow_dispatch:
+
+jobs:
+  composition-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR32 current-canonical composition qualification
+        run: bash tests/fmr/run_fmr32_parallel_committed_restart_composition_v2.sh
