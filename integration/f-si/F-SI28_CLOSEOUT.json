@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI28",
+  "title": "Optional Same-Factorization Native-qbot Interface Sensitivity Production Solve",
+  "status": "CLOSEOUT_PERSISTED_PENDING_SELF_VERIFICATION",
+  "decision_candidate": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+  "branch": "work/f-si28-interface-sensitivity-production-solve",
+  "source_authority": {
+    "frozen_canonical_branch": "integration/f-ci-canonical",
+    "frozen_canonical_head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "qualified_branch_head_before_closeout": "85dbe882aa967d19021174066c95105d8cf838ea",
+    "qualified_branch_tree_before_closeout": "e2a7768d99096ad58843f6936958310696bf2fa1",
+    "headcalc_blob_unchanged": "55893f1f5ccba2052ad681743aa155b69f351246"
+  },
+  "production_postimage_blobs": {
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "f8acd89e54b410fe70792ddee29ddd47134a401d",
+    "src/solver/mod_reference_linear_solver.f90": "5b6ecd2341b315967bcfac6b879c3afe227fb245",
+    "src/solver/mod_reference_richards_workspace.f90": "74f99556005ae39614f9df678467b1e19097bae2",
+    "src/solver/mod_soil_water_solver_contract.f90": "fce00f4fe5f5dfc905986278a4d239182ea049ca"
+  },
+  "upstream_authority": {
+    "F_SI27_fixture_head": "f7b891ce636b63bdae7e43f0ed54195f067f8bcc",
+    "F_SI27_materialization": "5dfd4528245e63a087426197b0d8cb28598deae8",
+    "F_SI27_adapter_blob": "2cb1126397147b9e447634b131c93932c097177d",
+    "F_SI27_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
+    "F_SI19_linear_solver_oracle_closeout": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+    "F_SI19_oracle_blob": "bf8c9d85c98157d128086d2c2fb20f6129b98e63"
+  },
+  "qualification_execution": {
+    "tested_head": "85dbe882aa967d19021174066c95105d8cf838ea",
+    "workflow_run": 34531952031,
+    "workflow_job": 103054531050,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "O0_O2_observable_identity": true
+  },
+  "numeric_evidence": {
+    "finite_difference_step_cm_per_day": 1.0e-5,
+    "frozen_scaled_relative_metric_limit": 1.0e-6,
+    "cases": [
+      {
+        "label": "equilibrium",
+        "analytic_day": 90.23410406038435,
+        "fd_day": 90.23410406285846,
+        "metric": 2.7418788401701933e-11
+      },
+      {
+        "label": "fsi27-perturbed",
+        "analytic_day": 90.15099979650157,
+        "fd_day": 90.15099979592377,
+        "metric": 6.40923720395083e-12
+      },
+      {
+        "label": "symmetric-neighbor",
+        "analytic_day": 90.317424518368,
+        "fd_day": 90.31742451810486,
+        "metric": 2.913528570654121e-12
+      },
+      {
+        "label": "zero-qbot",
+        "analytic_day": 82.96815480741245,
+        "fd_day": 82.96815480939301,
+        "metric": 2.3871409774120695e-11
+      },
+      {
+        "label": "positive-qbot-minimal",
+        "analytic_day": 82.90599835053706,
+        "fd_day": 82.90599835234502,
+        "metric": 2.180736998791259e-11
+      }
+    ],
+    "worst_observed_metric": 2.7418788401701933e-11,
+    "max_F_SI27_external_mass_residual_cm": 1.8735013540549517e-16,
+    "max_solver_mass_residual_cm": 8.326672684688674e-17
+  },
+  "qualified_scope": {
+    "boundary_mode": 2,
+    "boundary_coordinate": "native SWAP qbot; positive upward/inflow from below",
+    "quantity": "dh_bottom_dq_bottom",
+    "units": "day",
+    "linearized_equation": "J * (partial h / partial qbot) = e_N",
+    "request_is_explicit_opt_in": true,
+    "accepted_normal_path_additional_tangent_backsolves": 1,
+    "accepted_normal_path_additional_nonlinear_trajectories": 0,
+    "accepted_normal_path_additional_jacobian_builds": 0,
+    "normal_state_flux_mass_on_off_bitwise_identical": true,
+    "factorization_scratch_worker_owned_and_released": true,
+    "persistent_column_state_change": false,
+    "same_worker_A_B_A_stale_tangent_leakage": false,
+    "retry_status_observed": "SW_SOLVE_RETRY_ADVISED",
+    "retry_nonlinear_iterations_observed": 1,
+    "retry_tangent_backsolves_observed": 0,
+    "retry_candidate_state_restored_to_base_bitwise": true,
+    "cross_sign_native_qbot_covered": true,
+    "nonprescribed_modes_5_7_minus2_publish_tangent": false,
+    "nonprescribed_modes_5_7_minus2_tangent_backsolves": 0
+  },
+  "fallback_safety_evidence": {
+    "classification": "COMPOSITIONAL_CONTROL_FLOW_SAFETY",
+    "dynamic_real_physics_fallback_reachability_exercised": false,
+    "reason_dynamic_reachability_not_fabricated": "No existing valid real-physics HeadCalc singularity fixture was found; an unphysical hydraulic column or production test hook was deliberately not introduced solely to force the rare fallback.",
+    "current_linear_solver_singular_routes_reexecuted": ["IERROR_1000", "IERROR_1002"],
+    "band_solver_oracle_reexecuted": true,
+    "linear_solver_oracle_O0_O2_identity": true,
+    "headcalc_ierror_increments_alternative_solver_calls_before_fallback": true,
+    "adapter_tangent_publication_requires_zero_alternative_solver_calls": true,
+    "default_sensitivity_is_unavailable": true,
+    "fallback_implies_zero_tangent_backsolve_by_control_flow": true,
+    "qualified_claim": "If the production HeadCalc TRIDAG route takes the existing alternative-solver fallback, F-SI28 does not publish a prescribed-qbot tangent and performs no tangent backsolve. This does not qualify fallback reachability, frequency, or fallback-trajectory hydraulic accuracy."
+  },
+  "explicit_nonclaims": {
+    "transaction_result_sensitivity_transport_qualified": false,
+    "canonical_interval_sensitivity_aggregation_qualified": false,
+    "kernel_public_result_sensitivity_transport_qualified": false,
+    "whole_coupling_window_derivative_composition_qualified": false,
+    "MODFLOW_sign_transformation_qualified": false,
+    "MODFLOW_coupling_admitted": false,
+    "alternative_solver_fallback_reachability_or_frequency_qualified": false,
+    "C2B_Phi_MFP_normalization_reopened": false
+  },
+  "architecture_invariant_reconciliation": {
+    "3_explicit_data_separation": "PASS: request/result sensitivity is not committed physical state",
+    "4_compact_persistent_state": "PASS: no tangent or factorization added to persistent column state",
+    "5_scratch_per_worker": "PASS: captured TRIDAG factors and tangent vectors are worker scratch",
+    "7_transactional_steps": "PASS_WITH_FSI28_SCOPE: retry path publishes no tangent and restores candidate physical state; transaction-result transport remains held",
+    "11_coupling_core": "PASS_AS_SOLVER_PRIMITIVE_ONLY: first-class native-qbot tangent primitive is available",
+    "12_groundwater_interface_contract": "NO_COUPLING_ADMISSION: native SWAP qbot sign retained; MODFLOW mapping remains downstream",
+    "13_mass_conservation": "PASS: sensitivity ON/OFF leaves accepted mass result bitwise unchanged and hard mass evidence remains green",
+    "14_interface_sensitivities_first_class": "PASS_AT_SOLVER_RESULT_LAYER: dh_bottom_dq_bottom is explicit result output",
+    "15_limit_coupling_cost": "PASS_AT_SOLVER_PRIMITIVE_LAYER: one extra backsolve, no extra nonlinear Richards solve",
+    "20_alternative_soil_solvers": "PASS: sensitivity is optional contract output and unavailable by default",
+    "22_no_headcalc_internal_coupling": "PASS: consumer-facing quantity is on the solver result contract",
+    "23_physics_solver_policy_separation": "PASS: request flag affects only optional tangent work, not physical trajectory",
+    "25_reference_mode": "PASS: reference physical solution is bitwise preserved",
+    "26_runtime_diagnostics": "PASS_AT_SOLVER_LAYER: tangent backsolve cost is explicit in solve diagnostics",
+    "27_optional_functionality_scales_with_use": "PASS: unrequested solves perform zero tangent backsolves and retain compact scratch",
+    "29_no_silent_dependencies": "PASS: sensitivity is explicit request behavior for mode 2",
+    "30_architecture_change_review": "PASS_WITH_EXPLICIT_HELD_DOWNSTREAM_SEAMS"
+  },
+  "downstream_handoff": {
+    "owner": "F-ROSS01",
+    "stage": "J1E",
+    "disposition": "SOLVER_PRODUCTION_TANGENT_PRIMITIVE_READY_FOR_TRANSACTIONAL_RESULT_TRANSPORT_QUALIFICATION",
+    "next_requirement": "Compose this exact solver postimage through accepted transactional runtime/canonical/kernel result publication, proving rejected trials cannot publish stale sensitivity and preserving hard mass conservation."
+  }
+}
