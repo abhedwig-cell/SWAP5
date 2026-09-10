@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C",
+  "title": "Drainage Response-Family Child Completion Reconciliation",
+  "parent_branch": "work/f-pm08c-drainage-response-family-sensitivity",
+  "parent_decomposition_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "readiness_authority": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+  "closure_mode": "coordination-only; no child production code is merged or rebased into the parent branch",
+  "children": [
+    {
+      "work_unit": "F-PM08C1",
+      "final_route": "F-PM08C1R + F-VQ40",
+      "qualification_closeout": "f5f567c6af4879bf80107a7579dd342de6d5afe0",
+      "decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE",
+      "scope": "DRAMET=1 tabulated response and derivative metadata on the admitted normalized domain; one legacy degenerate singleton-depth-zero input is fail-closed"
+    },
+    {
+      "work_unit": "F-PM08C2",
+      "final_route": "F-VQ38",
+      "qualification_closeout": "49728b999b884a37643908c1dad40269f4e2db9b",
+      "decision": "QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN",
+      "scope": "DRAMET=2 Hooghoudt/Ernst IPOS 1..5 response family and sensitivity within explicit mathematically valid parameter domain"
+    },
+    {
+      "work_unit": "F-PM08C3",
+      "final_route": "F-VQ42",
+      "qualification_closeout": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+      "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
+      "scope": "highest-level empirical interflow drainage-side contribution; activation singularity explicit; negative-side DRAMET3 infiltration not included"
+    },
+    {
+      "work_unit": "F-PM08C4",
+      "final_route": "F-VQ43",
+      "qualification_closeout": "3542ff83f38a9dd8de407ceca65ed968407559f5",
+      "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION",
+      "scope": "legacy level-order aggregation for 1..25 levels plus conservative sensitivity composition; >25 dynamic capacity is architecture extension, not legacy equivalence"
+    }
+  ],
+  "scope_reconciliation": {
+    "all_four_required_children_completed": true,
+    "F_PM08A_required_by_parent": false,
+    "F_PM08B_required_by_parent": false,
+    "ordinary_linear_DRAMET3_drainage_branch_owner": "F-PM08A, separate from the four-child F-PM08C decomposition",
+    "negative_side_DRAMET3_infiltration_qualified": false,
+    "negative_side_hold_is_explicit": true,
+    "production_family_composition_qualified": false,
+    "runtime_binding_qualified": false,
+    "DIVDRA_qualified_here": false,
+    "surface_water_storage_control_qualified_here": false,
+    "fully_implicit_solver_Jacobian_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "architecture_reconciliation": {
+    "single_kernel_preserved": true,
+    "kernel_IO_separation_preserved": true,
+    "persistent_state_not_added_by_parent": true,
+    "mass_conservation_not_relaxed": true,
+    "sensitivities_first_class_with_explicit_unavailability": true,
+    "physics_solver_policy_separation_preserved": true,
+    "generic_time_preserved": true,
+    "MultiSWAP_scalability_preserved": true,
+    "HeadCalc_internals_not_exposed": true,
+    "runtime_coupler_composition_ownership_preserved": true
+  },
+  "decision": "QUALIFIED_FPM08C_REQUIRED_CHILD_SET_COMPLETE_WITH_EXPLICIT_NEGATIVE_DRAMET3_AND_RUNTIME_HOLDS"
+}
