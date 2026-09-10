@@ -1,29 +1,76 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C4",
   "title": "Multi-Level Drainage Exchange Aggregation and Branch Composition",
   "branch": "work/f-pm08c4-multilevel-exchange-aggregation",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED",
+  "status": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_INDEPENDENTLY_QUALIFIED",
   "source_base": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
   "state": {
     "contract_persisted": true,
-    "production_candidate_implemented": false,
-    "tested": false,
-    "structurally_qualified": false,
+    "production_candidate_implemented": true,
+    "production_candidate_persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
     "scientifically_qualified": false,
     "runtime_qualified": false,
     "canonical_admission_qualified": false
   },
-  "architecture": {
-    "dynamic_level_count": true,
-    "persistent_process_state": false,
-    "kernel_io_separated": true,
-    "mass_total_is_derived_view": true,
-    "tangent_unavailability_preserves_flux": true,
-    "response_dispatch_outside_aggregator": true,
-    "divdra_outside_scope": true,
-    "solver_jacobian_owned_by_process": false
+  "lineage": {
+    "F_PM08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "F_PM08C_parent_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "F_VQ38_DRAMET2_closeout": "49728b999b884a37643908c1dad40269f4e2db9b",
+    "F_VQ40_DRAMET1_closeout": "f5f567c6af4879bf80107a7579dd342de6d5afe0",
+    "F_VQ42_interflow_closeout": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+    "qualified_candidate_head": "3fb3802e6619fad9ffa49d126912d52824004097",
+    "production_source_blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb",
+    "decisive_workflow_run": 34462875197,
+    "decisive_workflow_job": 102824557020,
+    "decisive_output_sha256": "9a65c22d938c17cdfc60e64544a9b45d6aa426be12493625e22a1bf3ff3741c0"
   },
-  "next_required_step": "implement pure deterministic multi-level aggregation module and structural gate"
+  "qualified_structure": {
+    "dynamic_level_count": true,
+    "deterministic_physical_level_order": true,
+    "persistent_process_state": false,
+    "mass_total_is_derived_view": true,
+    "invalid_flux_fails_closed": true,
+    "tangent_unavailability_preserves_valid_flux": true,
+    "branch_and_singularity_metadata_composed_conservatively": true,
+    "response_dispatch_outside_aggregator": true,
+    "DIVDRA_outside_scope": true,
+    "solver_Jacobian_owned_outside_process": true,
+    "explicit_30_invariant_audit": true,
+    "O0_O2_output_identity": true
+  },
+  "production_scope": {
+    "added_source": ["src/process/mod_drainage_multilevel_aggregation.f90"],
+    "runtime_modified": false,
+    "solver_modified": false,
+    "reference_modified": false,
+    "legacy_IO_modified": false,
+    "spatial_distribution_modified": false
+  },
+  "explicit_holds": [
+    "Independent scientific/source-semantic qualification of the aggregation candidate.",
+    "Negative-side DRAMET=3 infiltration physics is not qualified by signed arithmetic support.",
+    "Response-law dispatch and highest-level interflow selection remain outside the aggregator.",
+    "DIVDRA/node allocation remains F-PM08B scope.",
+    "Surface-water storage/control remains F-PM08D scope.",
+    "Runtime ledger publication and double-booking prevention require runtime composition qualification.",
+    "Solver Jacobian chain rule and fully implicit drainage remain separately held.",
+    "Canonical admission is not claimed."
+  ],
+  "artifacts": [
+    "integration/f-pm/F-PM08C4_CANDIDATE_CONTRACT.json",
+    "integration/f-pm/F-PM08C4_CANDIDATE_EVIDENCE.json",
+    "integration/f-pm/F-PM08C4_INVARIANT_AUDIT.json",
+    "integration/f-pm/F-PM08C4_STATUS.json",
+    "src/process/mod_drainage_multilevel_aggregation.f90",
+    "tests/fpm/test_fpm08c4_multilevel_aggregation.f90",
+    "tests/fpm/run_fpm08c4_multilevel_aggregation_gate.sh",
+    ".github/workflows/fpm08c4-multilevel-aggregation.yml"
+  ],
+  "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_EXCHANGE_AGGREGATION_STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "next": "Open a genuinely independent F-VQ workunit from a clean non-candidate base and verify the exact production blob against frozen B1.10 level-order aggregation semantics."
 }
