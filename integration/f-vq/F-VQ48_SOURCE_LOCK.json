@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ48",
+  "title": "Independent F-MR30 Accepted Root-Uptake Attribution Receipt Qualification",
+  "branch": "qualification/f-vq48-fmr30-root-uptake-attribution-receipt",
+  "owner_workunit": "F-MR30",
+  "owner_handoff": "c908621d10868b5e265a8835ea2c0c56ee202ef6",
+  "owner_candidate": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+  "candidate_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
+  "candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "candidate_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "qualification_rule": "independent oracle and independent transaction model; owner test is preservation evidence only",
+  "frozen_scope": [
+    "nonnegative root_extraction_sink forcing",
+    "one immutable forcing vector per outer candidate interval",
+    "prepared attribution is non-publishing worker-local scratch",
+    "public attribution requires successful generic accepted-commit receipt",
+    "attributed amount is reconciliation metadata and never a second mass booking"
+  ],
+  "required_independent_checks": [
+    "exact candidate blob and one-file production delta",
+    "zero, sparse, uneven, tiny and larger nonnegative qrot vectors",
+    "several generic t0/t1 intervals and lineages",
+    "precommit rejection",
+    "invalid forcing rejection",
+    "wrong lineage/revision rejection",
+    "wrong interval rejection",
+    "postcommit amount equals independently booked qrot mass_out",
+    "A-B-A prepared-context independence",
+    "O0/O2 deterministic output identity",
+    "real canonical backend compile compatibility",
+    "owner gate preservation replay"
+  ],
+  "nonclaims": [
+    "serialized MultiSWAP sparse attribution routing",
+    "parallel root-extraction execution",
+    "dynamic qrot changes within one outer candidate interval",
+    "SWKIMPL=1 dynamic root-sink recomputation",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "F-CI32 canonical admission"
+  ]
+}
