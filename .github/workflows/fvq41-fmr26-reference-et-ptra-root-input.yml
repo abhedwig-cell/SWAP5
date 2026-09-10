@@ -1,0 +1,25 @@
+name: F-VQ41 independent F-MR26 reference ET ptra root-input
+
+on:
+  push:
+    branches:
+      - qualification/f-vq41-fmr26-reference-et-ptra-root-input
+    paths-ignore:
+      - integration/f-vq/F-VQ41_QUALIFICATION.json
+      - integration/f-vq/F-VQ41_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ41 independent F-MR26 ptra ownership qualification
+        run: bash tests/fvq/run_fvq41_fmr26_reference_et_ptra_root_input_qualification.sh
