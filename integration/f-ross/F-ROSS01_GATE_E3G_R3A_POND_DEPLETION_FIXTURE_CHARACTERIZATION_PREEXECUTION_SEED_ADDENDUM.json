@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION",
+  "status": "PREEXECUTION_ADDENDUM_FROZEN_BEFORE_EXECUTABLE_RUN",
+  "reason": "The primary precommit froze the nonlinear method and time bounds but did not state the initial event-time seed. Freeze it now before any executable characterization result exists.",
+  "seed_policy": {
+    "qtop0": "Evaluate the independent high-accuracy 5 cm surface-face reference at the frozen starting surface storage/head S0 and top-node head h1_0.",
+    "raw_time_seed_day": "S0 / (qtop0 - q_supply) when qtop0>q_supply",
+    "bounded_time_seed_day": "clip(raw_time_seed, t_lo+0.1*(t_hi-t_lo), t_hi-0.1*(t_hi-t_lo))",
+    "head_seed": "exact frozen starting soil heads",
+    "multistart": false,
+    "post_failure_retuning_allowed": false
+  },
+  "hard_guard": "A failed supply fraction remains failed under this characterization; do not introduce a second seed or modify the frozen time window after observing results."
+}
