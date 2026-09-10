@@ -88,18 +88,9 @@ contains
       return
     end if
 
-    ! B1.10 MOD_meteo ETpot, restricted route:
-    ! SWETR=1, SWMETDETAIL=0, SWCFBS=0, SWINTER=0.
-    ! etr, es0, ep0 and et0 are in mm/day; public demands are cm/day.
-    uncovered_reference_et_mm_per_day = forcing%reference_et_mm_per_day * &
-                                         (1.0_real64 - canopy%vegetation_cover_fraction)
-    result%potential_soil_evaporation_cm_per_day = max(uncovered_reference_et_mm_per_day * 0.1_real64, 0.0_real64)
-    result%potential_pond_evaporation_cm_per_day = max(uncovered_reference_et_mm_per_day * &
-                                                       parameters%pond_evaporation_factor * 0.1_real64, 0.0_real64)
-
-    ! The legacy bare-soil and pond demands use vcover independently of the
-    ! crop-emergence flag. Crop-specific CF and fco2tra are consumed only for
-    ! the emerged-crop transpiration route.
+    ! Crop-specific inputs are intentionally not consumed for a non-emerged
+    ! crop. Surface demands still consume the current vegetation-cover view,
+    ! matching B1.10 ETpot.
     if (canopy%crop_emerged) then
       diagnostics%crop_specific_factors_consumed = .true.
 
@@ -120,7 +111,18 @@ contains
         diagnostics%status = REF_ET_DEMAND_INVALID_CO2_FACTOR
         return
       end if
+    end if
 
+    ! B1.10 MOD_meteo ETpot, restricted route:
+    ! SWETR=1, SWMETDETAIL=0, SWCFBS=0, SWINTER=0.
+    ! etr, es0, ep0 and et0 are in mm/day; public demands are cm/day.
+    uncovered_reference_et_mm_per_day = forcing%reference_et_mm_per_day * &
+                                         (1.0_real64 - canopy%vegetation_cover_fraction)
+    result%potential_soil_evaporation_cm_per_day = max(uncovered_reference_et_mm_per_day * 0.1_real64, 0.0_real64)
+    result%potential_pond_evaporation_cm_per_day = max(uncovered_reference_et_mm_per_day * &
+                                                       parameters%pond_evaporation_factor * 0.1_real64, 0.0_real64)
+
+    if (canopy%crop_emerged) then
       transpiration_reference_et_mm_per_day = forcing%reference_et_mm_per_day * &
                                                canopy%vegetation_cover_fraction * canopy%crop_factor
       result%potential_transpiration_cm_per_day = max(transpiration_reference_et_mm_per_day * 0.1_real64, &
