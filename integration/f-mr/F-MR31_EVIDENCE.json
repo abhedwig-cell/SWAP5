@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR31",
+  "title": "Exact Runtime-Forcing-Bound Accepted Root-Uptake Attribution",
+  "branch": "work/f-mr31-root-attribution-forcing-binding-current-canonical",
+  "problem_authority": {
+    "failed_candidate_workunit": "F-MR30",
+    "independent_failure_workunit": "F-VQ48",
+    "independent_failure_branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+    "failure_class": "DETACHED_CANDIDATE_FORCING_REPAIRING_API_PERMITS_VALID_REPAIR_WITH_WRONG_FORCING",
+    "observed_counterexample": {
+      "physically_booked_root_mass_out": 2.40625,
+      "published_mismatched_attribution": 4.125
+    },
+    "remediation_target": "make accepted actual-transpiration attribution a by-construction result of the same resolved runtime forcing handle used for the accepted trial, with no post-hoc forcing repair seam"
+  },
+  "base": {
+    "canonical_head": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "source_lock": "integration/f-mr/F-MR31_CURRENT_CANONICAL_SOURCE_LOCK.json",
+    "runtime_trace": "integration/f-mr/F-MR31_RUNTIME_TRACE.md"
+  },
+  "candidate": {
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "source_delta_from_base": [
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "production_source_modified_after_candidate": false
+  },
+  "runtime_binding": {
+    "trial_forcing": "forcing_registry(forcing_index)",
+    "trial_parameters": "parameter_registry(parameter_index)",
+    "publication_forcing": "the same forcing_registry(forcing_index) in the same execute_column invocation",
+    "publication_parameters": "the same parameter_registry(parameter_index) in the same execute_column invocation",
+    "publication_time": "only after did_commit is true",
+    "published_fields": [
+      "fmr_serialized_column_result_t%actual_transpiration_available",
+      "fmr_serialized_column_result_t%actual_transpiration_amount"
+    ],
+    "restricted_amount_definition": "sum(root_extraction_sink(:)) * (t1 - t0)",
+    "mass_ledger_mutation_added": false,
+    "persistent_column_state_added": false,
+    "transaction_core_changed": false,
+    "root_uptake_physics_changed": false,
+    "detached_prepare_finalize_api_used": false
+  },
+  "owner_gate": {
+    "path": "tests/fmr/run_fmr31_exact_root_attribution_binding_gate.sh",
+    "workflow": ".github/workflows/fmr31-exact-root-attribution-binding.yml",
+    "successful_run": 34483932561,
+    "successful_job": 102893332461,
+    "successful_head": "c6412cf16e1af44ab85bb81bd3fae5a9ba968cc4",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "verified_markers": [
+      "FMR31_CURRENT_CANONICAL_SOURCE_LOCK=PASS",
+      "FMR31_EXACT_ONE_PRODUCTION_SOURCE_DELTA=PASS",
+      "FMR31_HN1_DETACHED_REPAIRING_API_ABSENT=PASS",
+      "FMR31_POSTCOMMIT_EXACT_FORCING_BINDING_SHAPE=PASS",
+      "FMR31_NO_GENERIC_MASS_LEDGER_DELTA=PASS",
+      "FMR31_TRANSACTION_ORACLE_O0=PASS",
+      "FMR31_TRANSACTION_ORACLE_O2=PASS",
+      "FMR31_TRANSACTION_ORACLE_O0_O2_IDENTITY=PASS",
+      "FMR31_ATTRIBUTION_EQUALS_ALREADY_BOOKED_ROOT_MASS=PASS",
+      "FMR31_ACTIVE_ZERO_ROOT_ATTRIBUTION_AVAILABLE=PASS",
+      "FMR31_ROOT_INACTIVE_ATTRIBUTION_UNAVAILABLE=PASS",
+      "FMR31_NONCOMMITTED_ATTRIBUTION_UNAVAILABLE=PASS",
+      "FMR31_FORCING_HANDLE_BATCH_ORDER_IDENTITY=PASS",
+      "FMR31_A_B_A_RUNTIME_ATTRIBUTION_IDENTITY=PASS",
+      "FMR31_EXACT_COLUMN_FORCING_ASSOCIATION=PASS",
+      "FMR31_FVQ21_REAL_ROOT_ORACLE_SOURCE_LOCK=PASS",
+      "FMR31_REAL_ROOT_RUNTIME_O0=PASS",
+      "FMR31_REAL_ROOT_RUNTIME_O2=PASS",
+      "FMR31_REAL_ROOT_RUNTIME_O0_O2_IDENTITY=PASS",
+      "FMR09_ROOT_SINK_EXACTLY_ONCE=PASS",
+      "FMR09_BALANCED_ROOT_SSDI_STATE_IDENTITY=PASS",
+      "FMR09_HARD_MASS_BALANCE=PASS",
+      "FMR31_OWNER_GATE=PASS"
+    ]
+  },
+  "harness_history": [
+    {
+      "run": 34483064134,
+      "conclusion": "failure",
+      "classification": "TEST_HARNESS_COMPILE_FAILURE_NOT_PRODUCTION_FAILURE",
+      "cause": "test-only Fortran provider/function-result constructs were not accepted by the CI compiler",
+      "remediation": "reuse concrete fixed-top test provider and standard-conforming local result variables; no src file changed"
+    },
+    {
+      "run": 34483663823,
+      "conclusion": "failure",
+      "classification": "PRESERVATION_HARNESS_PATH_FAILURE_NOT_PRODUCTION_FAILURE",
+      "cause": "the historical F-MR09 test source is no longer carried on current canonical",
+      "remediation": "pin F-VQ21 closeout f7cdccf11d21c31494b328251b001d474170c0c7 and exact historical test blob 38251f62c3a9617230171b69d29a233ce8165ce1; no src file changed"
+    }
+  ],
+  "owner_verified_properties": [
+    "different logical columns bind to their own forcing handles",
+    "two columns sharing the same forcing handle publish identical attribution",
+    "different valid forcing handles publish different attribution",
+    "batch size and reversed input order do not change per-column attribution",
+    "A-B-A replay preserves attribution identity",
+    "active zero root extraction publishes an available zero attribution",
+    "root-inactive execution publishes no attribution",
+    "noncommitted execution publishes no attribution",
+    "focused oracle attribution equals independently booked root mass_out",
+    "real production HeadCalc root sink remains booked exactly once",
+    "real production root SSDI state identity remains preserved",
+    "real production hard mass balance remains preserved",
+    "O0 and O2 outputs are identical"
+  ],
+  "scope_limits": [
+    "qrot/root_extraction_sink is treated as immutable over the outer runtime interval [t0,t1]",
+    "the result is an attribution of already-booked root extraction, not an additional water-balance term",
+    "no claim is made for time-varying qrot within accepted substeps",
+    "no claim is made for parallel publication beyond the serialized runtime path qualified here",
+    "no canonical admission is claimed",
+    "owner qualification is not independent scientific qualification"
+  ],
+  "architecture_invariants_checked": {
+    "kernel_io_separation": "PASS: no kernel or I/O change",
+    "explicit_data_separation": "PASS: attribution is a result field, not committed state or forcing mutation",
+    "compact_persistent_state": "PASS: no persistent column state added",
+    "transactional_timesteps": "PASS: attribution remains unavailable until commit succeeds",
+    "generic_time": "PASS_WITH_RESTRICTED_SCOPE: uses generic [t0,t1] duration without calendar assumptions",
+    "mass_conservation": "PASS: no generic mass-ledger mutation and real hard mass gate preserved",
+    "multiswap_primary_use_case": "PASS_FOR_SERIALIZED_ROUTE: forcing-handle, batch/order and shared-handle routing tested",
+    "runtime_system_composition": "PASS: binding is owned by the runtime execution seam",
+    "no_silent_dependencies": "PASS_WITH_DECLARED_PRECONDITION: immutable qrot over the outer interval is explicit"
+  },
+  "decision": "EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_OWNER_VERIFIED_READY_FOR_INDEPENDENT_REQUALIFICATION"
+}
