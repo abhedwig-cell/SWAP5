@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08",
+  "exact_branch_base": "df435824de175e3f868b680aab2cd0a395aa19ff",
+  "scope": "process-boundary and migration-readiness qualification only; no production drainage implementation",
+  "required_decision": "QUALIFIED_DRAINAGE_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+  "source_locks": {
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "divdra_f90_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "current_source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "current_solver_contract_blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "current_process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "current_committed_view_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf"
+  },
+  "boundary_rules": {
+    "legacy_drainage_is_one_migration_object": false,
+    "exchange_law_is_process_physics": true,
+    "spatial_distribution_is_separately_qualifiable": true,
+    "surface_water_storage_control_is_separate_stateful_component": true,
+    "runtime_coupler_owns_system_composition": true,
+    "headcalc_internal_access_allowed": false,
+    "process_jacobian_mutation_allowed": false
+  },
+  "mass_rules": {
+    "positive_exchange_means_out_of_soil": true,
+    "single_transfer_object_for_state_and_ledger": true,
+    "rejected_trial_committed_booking_allowed": false,
+    "double_booking_allowed": false,
+    "configurable_mass_tolerance_allowed": false
+  },
+  "derivative_rules": {
+    "process_owns_physical_response_derivative": true,
+    "solver_owns_jacobian_assembly": true,
+    "solver_owns_chain_rule_to_solver_unknowns": true,
+    "nonsmooth_branch_must_be_diagnostic": true,
+    "fully_implicit_drainage_admitted_now": false
+  },
+  "time_rules": {
+    "fundamental_daily_step": false,
+    "kernel_interval_is_generic_t0_t1": true,
+    "calendar_and_file_table_resolution_outside_kernel": true,
+    "control_event_may_force_runtime_subdivision": true
+  },
+  "selected_candidate": {
+    "child": "F-PM08A",
+    "scope": "SWDRA=1; DRAMET=3; NRLEVS=1; drainage-only; linear resistance; no interflow; no DIVDRA; no surface-water storage; no macropore; no solute",
+    "frozen_within_soil_water_solve": true,
+    "persistent_process_state": false,
+    "required_hydraulic_field": "groundwater_level",
+    "required_external_control": "drain_head",
+    "law": "max(0,(groundwater_level-drain_head)/drainage_resistance)"
+  },
+  "hard_holds": [
+    "No full legacy MOD_drainage namespace migration as one object.",
+    "No DIVDRA admission in F-PM08A.",
+    "No DRAMET=1 or DRAMET=2 response-law claim in F-PM08A.",
+    "No power-interflow claim in F-PM08A.",
+    "No infiltration/reverse-exchange claim in F-PM08A.",
+    "No surface-water storage/control migration in F-PM08A.",
+    "No fully implicit q_drain(h) claim until trial hydraulic-summary and derivative seams are independently qualified.",
+    "No production src or frozen reference changes in F-PM08 readiness work."
+  ],
+  "child_workunits_required": ["F-PM08A", "F-PM08B", "F-PM08C", "F-PM08D"]
+}
