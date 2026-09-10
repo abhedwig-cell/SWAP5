@@ -1,0 +1,22 @@
+name: F-VQ55 independent current-canonical effective-forcing executor qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq55-fmr38-current-canonical-effective-forcing-executor
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ55 independent qualification
+        run: bash tests/fvq/run_fvq55_fmr38_effective_forcing_executor_qualification.sh
