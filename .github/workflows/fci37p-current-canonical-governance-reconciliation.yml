@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - qualification/f-ci37p-current-canonical-postimage-governance-reconciliation
-      - integration/f-ci-canonical
     paths:
       - '.github/workflows/fci-canonical.yml'
       - '.github/workflows/fci37p-current-canonical-governance-reconciliation.yml'

@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission
-      - integration/f-ci-canonical
     paths:
       - 'src/runtime/mod_fmr_divdra_serialized_composition.f90'
       - 'src/runtime/mod_fmr_divdra_serialized_runtime.f90'

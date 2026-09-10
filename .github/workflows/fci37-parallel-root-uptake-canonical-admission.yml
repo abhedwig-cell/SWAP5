@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - qualification/f-ci37-fmr35-parallel-root-uptake-canonical-admission
-      - integration/f-ci-canonical
     paths:
       - 'src/runtime/mod_fmr_parallel_root_uptake_pool.f90'
       - 'tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh'

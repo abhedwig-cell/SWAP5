@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - qualification/f-ci35-parallel-committed-restart-current-canonical-admission
-      - integration/f-ci-canonical
     paths:
       - 'integration/f-ci/F-CI35_*.json'
       - 'tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh'

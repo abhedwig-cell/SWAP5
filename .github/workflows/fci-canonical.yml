@@ -188,6 +188,26 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI31_FROZEN_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_AUTHORITY=PASS'
 
+  frozen-fci34-root-attribution-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: e900e6115a6bf8b65af8460eb3e336257be4d1bf
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact admitted F-CI34 root-attribution authority
+        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
+      - name: Freeze F-CI34 qualified postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
+          echo 'FCI34_FROZEN_ROOT_ATTRIBUTION_AUTHORITY=PASS'
+
   frozen-fci36-divdra-active-runtime-authority:
     runs-on: ubuntu-24.04
     steps:
@@ -209,10 +229,36 @@ jobs:
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_serialized_runtime.f90)" = 9a384658ec37b68d2ef911e741aa89707dcb3e77
           echo 'FCI36_FROZEN_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_AUTHORITY=PASS'
 
-  current-restricted-canonical-postimage:
+  frozen-fci37-parallel-root-uptake-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact final F-CI37 root-uptake authority
+        env:
+          FCI37_EVIDENCE_DIR: _fci37_frozen_evidence
+        run: bash tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh
+      - name: Freeze F-CI37 final authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^{tree})" = bca9d2d4dd3c8c42edf635b0887ee62b475b5abd
+          test "$(git rev-parse HEAD:src)" = 6aa66da28255fc31c2891ee89716c62569a8c068
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_parallel_root_uptake_pool.f90)" = c78c13997642617376b8d118122c86c60ca77189
+          echo 'FCI37_FROZEN_FINAL_PARALLEL_ROOT_UPTAKE_AUTHORITY=PASS'
+
+  current-restricted-canonical-preservation:
     needs:
       - frozen-fci31-reference-et-root-uptake-authority
+      - frozen-fci34-root-attribution-authority
       - frozen-fci36-divdra-active-runtime-authority
+      - frozen-fci37-parallel-root-uptake-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -220,20 +266,58 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI37 parallel root-uptake canonical source authority gate
-        run: bash tests/fci/run_fci37_fmr35_parallel_root_uptake_canonical_admission.sh
-      - name: Final exact F-CI37 postimage and prior-authority preservation recheck
+      - name: Moving-current preservation without historical admission assumptions
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = 6aa66da28255fc31c2891ee89716c62569a8c068
-          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_serialized_composition.f90)" = 5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_serialized_runtime.f90)" = 9a384658ec37b68d2ef911e741aa89707dcb3e77
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_reference_et_root_uptake_composition.f90)" = 8ed7610144700f58d0b89482925471fcb2ff7d69
-          test "$(git rev-parse HEAD:src/runtime/mod_fmr_parallel_root_uptake_pool.f90)" = c78c13997642617376b8d118122c86c60ca77189
-          echo 'FCI36_CANONICAL_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_AUTHORITY_PRESERVED=PASS'
-          echo 'FCI37_CANONICAL_RESTRICTED_PARALLEL_ROOT_UPTAKE_AUTHORITY=PASS'
+          AUTH=85e17bb7ca26d2df070f99b2bf16ecf0abebec19
+          git merge-base --is-ancestor "$AUTH" HEAD
+          dependency_surface=(
+            src/runtime/mod_a23bu_worker_execution_context.f90
+            src/transaction/mod_transaction_reference.f90
+            src/transaction/mod_fkt_temporal_indicator_history.f90
+            src/runtime/mod_canonical_contracts.f90
+            src/runtime/mod_canonical_interval_runtime.f90
+            src/kernel/mod_kernel_transactions.f90
+            src/runtime/mod_fmr_runtime_core.f90
+            src/runtime/mod_fmr_checkpoint_orchestrator.f90
+            src/runtime/mod_fmr_accepted_commit_receipt.f90
+            src/solver/mod_soil_water_solver_contract.f90
+            src/solver/mod_reference_richards_workspace.f90
+            src/solver/mod_reference_richards_state_binding.f90
+            src/solver/mod_b110_default_mvg_provider.f90
+            src/solver/mod_b110_source_sink_provider.f90
+            src/solver/mod_b110_root_sink_provider.f90
+            src/solver/mod_fixed_flux_top_boundary_provider.f90
+            src/solver/mod_reference_linear_solver.f90
+            src/solver/mod_reference_richards_temporal_indicator.f90
+            src/legacy/b1_10_port/headcalc.f90
+            src/adapter/mod_reference_richards_legacy_binding.f90
+            src/adapter/mod_b110_serialized_context_binding.f90
+            src/process/mod_snow_process.f90
+            src/runtime/mod_fmr_serialized_reference_backend.f90
+            src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+            src/runtime/mod_fmr_parallel_physical_scheduler.f90
+            src/runtime/mod_fmr_parallel_worker_pool.f90
+            src/runtime/mod_fmr_parallel_root_uptake_pool.f90
+            src/runtime/mod_fmr_committed_restart.f90
+            src/runtime/mod_fmr_restart_state_contract.f90
+            src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
+            src/solver/mod_process_hydraulic_view.f90
+            src/process/mod_drainage_spatial_distribution.f90
+            src/runtime/mod_fmr_divdra_runtime_binding.f90
+            src/runtime/mod_fmr_divdra_serialized_composition.f90
+            src/runtime/mod_fmr_divdra_serialized_runtime.f90
+          )
+          for path in "${dependency_surface[@]}"; do
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$AUTH:$path")" || {
+              echo "FCI_CANONICAL_PRESERVATION_FAIL admitted dependency drift: $path" >&2
+              exit 38
+            }
+          done
+          echo 'FCI34_MOVING_ROOT_ATTRIBUTION_PRESERVATION=PASS'
+          echo 'FCI35_MOVING_PARALLEL_RESTART_DEPENDENCY_PRESERVATION=PASS'
+          echo 'FCI36_MOVING_DIVDRA_ACTIVE_RUNTIME_PRESERVATION=PASS'
+          echo 'FCI37_MOVING_PARALLEL_ROOT_UPTAKE_PRESERVATION=PASS'
+          echo 'FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
