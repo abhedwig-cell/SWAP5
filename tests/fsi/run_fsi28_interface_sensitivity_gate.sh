@@ -67,6 +67,8 @@ src = src.replace('program test_fsi27_explicit_prescribed_qbot',
                   'program test_fsi28_interface_sensitivity', 1)
 src = src.replace('end program test_fsi27_explicit_prescribed_qbot',
                   'end program test_fsi28_interface_sensitivity', 1)
+src = src.replace('soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_FAILED',
+                  'soil_water_solve_request_t, soil_water_solve_result_t, SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED', 1)
 
 call_marker = '  ! D: nearby unowned mode remains fail closed.'
 if call_marker not in src:
@@ -79,6 +81,11 @@ call_block = r'''  ! F-SI28 stays inside the locally qualified F-SI27 mode-2 nei
   call check_fsi28_tangent(qeq, qeq, 'equilibrium')
   call check_fsi28_tangent(qeq, qpert, 'fsi27-perturbed')
   call check_fsi28_tangent(qeq, 1.01_real64*qeq, 'symmetric-neighbor')
+
+  ! Transactional seam: first publish a valid tangent, then force the same
+  ! F-SI27 C physics through a one-Newton-iteration policy. The retry result
+  ! must fail closed and may not leak the preceding accepted sensitivity.
+  call check_fsi28_retry(qeq, qpert)
 
 '''
 src = src.replace(call_marker, call_block + call_marker, 1)
@@ -164,6 +171,37 @@ proc = r'''contains
          'FSI28_TANGENT:',trim(label),':ANALYTIC=',tangent,':FD=',fd_tangent,':METRIC=',metric
   end subroutine check_fsi28_tangent
 
+  subroutine check_fsi28_retry(qtop_case, qbot_case)
+    real(real64), intent(in) :: qtop_case, qbot_case
+    type(soil_water_solve_request_t) :: req_accepted, req_retry
+    type(soil_water_solve_result_t) :: res_accepted, res_retry
+    type(reference_richards_legacy_workspace_t) :: ws
+
+    call configure_request(req_accepted, parameters, constitutive, source_sink, top_provider, initial_state, &
+         qtop_case, qbot_case)
+    req_accepted%request_interface_sensitivity = .true.
+    call solver%solve(req_accepted, ws, res_accepted)
+    call require(res_accepted%status == SW_SOLVE_CONVERGED, 'retry seam accepted precursor converged')
+    call require(res_accepted%interface_sensitivity%available, 'retry seam accepted precursor tangent available')
+    call require(res_accepted%diagnostics%interface_sensitivity_backsolves == 1, &
+         'retry seam accepted precursor exactly one tangent backsolve')
+
+    req_retry = req_accepted
+    req_retry%numerical%max_iterations = 1
+    call solver%solve(req_retry, ws, res_retry)
+    call require(res_retry%status == SW_SOLVE_RETRY_ADVISED, 'retry seam returns RETRY_ADVISED')
+    call require(res_retry%retry_advised, 'retry seam retry flag set')
+    call require(.not.res_retry%interface_sensitivity%available, 'retry seam publishes no stale tangent')
+    call require(res_retry%diagnostics%interface_sensitivity_backsolves == 0, 'retry seam performs no tangent backsolve')
+    call require_states_bitwise_equal(res_retry%candidate_state, initial_state, 'retry seam candidate rolled back to base state')
+    call require_state_unchanged(req_retry%base_state, initial_state, 'retry seam request/base state unchanged')
+    call require(size(ws%richards%tridag_gamma) == numnod, 'retry seam factorization scratch released')
+
+    write(*,'(A,I0,A,I0,A,I0)') 'FSI28_RETRY_SEAM:STATUS=',res_retry%status, &
+         ':NONLINEAR=',res_retry%diagnostics%nonlinear_iterations, &
+         ':TANGENT_BACKSOLVES=',res_retry%diagnostics%interface_sensitivity_backsolves
+  end subroutine check_fsi28_retry
+
 '''
 src = src.replace(contains_marker, proc, 1)
 pass_stmt = "  write(*,'(A)') 'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS'"
@@ -208,6 +246,7 @@ compile_and_run() {
   grep -Fq 'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS' "$out/output.txt" || fail "O${opt} F-SI27 fixture regression failed"
   grep -Fq 'FSI28_INTERFACE_SENSITIVITY_GATE PASS' "$out/output.txt" || fail "O${opt} F-SI28 marker missing"
   [[ "$(grep -c '^FSI28_TANGENT:' "$out/output.txt")" == 3 ]] || fail "O${opt} expected three tangent cases"
+  [[ "$(grep -c '^FSI28_RETRY_SEAM:' "$out/output.txt")" == 1 ]] || fail "O${opt} expected one retry seam case"
   cat "$out/output.txt"
   echo "FSI28_O${opt}=PASS"
 }
