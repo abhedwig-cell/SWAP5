@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D5",
+  "title": "Frozen SWAP 4.3.1 Automatic-Weir Event and Hydraulic-Control Source Inventory",
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+  },
+  "source_semantics": {
+    "previous_target_memory": {
+      "location": "SWAP/surfacewater.f90:160-162",
+      "equation": "WLSTARB=WLSTAR before target evaluation",
+      "classification": "WLSTAR is continuation-critical control memory for SWMAN=2 because it is reused between events"
+    },
+    "management_period_selection": {
+      "location": "SWAP/surfacewater.f90:163-174",
+      "equation": "increment IMPER until t1900-1+1e-11 <= IMPEND(IMPER)",
+      "classification": "legacy calendar/event resolution; translate outside kernel to explicit active-period/event data"
+    },
+    "adjustment_event": {
+      "location": "SWAP/surfacewater.f90:187-193",
+      "equation": "rday=(T+1)/INTWL; adjust if abs(rday-int(rday))<1e-5 OR tcum<1e-10",
+      "classification": "legacy day-indexed trigger; modern runtime supplies explicit event instant and an explicit initial evaluation"
+    },
+    "phase_selection": {
+      "location": "SWAP/surfacewater.f90:194-213",
+      "algorithm": [
+        "start iphase=NPHASE",
+        "decrement while GWL > GWLCRIT(iphase) and iphase>1",
+        "compute VTAIR=sum(max(0,THETAS-THETA)*abs(DZ))",
+        "decrement while VTAIR < VCRIT(iphase) and iphase>1",
+        "decrement while H(NODHD) > HCRIT(iphase) and iphase>1",
+        "requested target WLSMAN(iphase)"
+      ],
+      "modern_hydraulic_view": "control policy receives scalar groundwater_level, total_air_volume and selected_pressure_head; it does not own THETA/THETAS/DZ/H arrays"
+    },
+    "between_events": {
+      "location": "SWAP/surfacewater.f90:214-218",
+      "equation": "WLSTX=WLSTARB",
+      "consequence": "committed target is exactly retained when no adjustment event occurs"
+    },
+    "drop_rate": {
+      "location": "SWAP/surfacewater.f90:220-227",
+      "equation": "if requested target < current WLSTAR and DROPR>0.001: WLSTAR=max(requested,WLSTAR-DROPR*dt); else WLSTAR=requested",
+      "seams": [
+        "downward changes only",
+        "DROPR<=0.001 disables limiting rather than nearly freezing the weir",
+        "trial dt directly affects target movement and therefore must rollback with rejected trials"
+      ]
+    },
+    "adjustment_counter": {
+      "location": "SWAP/surfacewater.f90:230-233",
+      "equation": "NUMADJ increments if abs(WLSTAR-WLSTARB)>1e-5",
+      "classification": "diagnostic counter, not physical/control state required to continue physics"
+    },
+    "automatic_discharge_requirement": {
+      "location": "SWAP/surfacewater.f90:300-305",
+      "equation": "WDIS=(SWST-SWSTTAR+(QDRD+QRapDra)*dt+RUNOTS)/dt",
+      "precondition": "no-supply projection exceeds target storage, so positive discharge is required to hold target"
+    },
+    "capacity_asymmetry": {
+      "location": "SWAP/surfacewater.f90:307-323",
+      "SWQHR1": "WOVER=WLS-HBWEIR; DISCAP=ALPHAW*WOVER^BETAW",
+      "SWQHR2": "DISCAP=FUN_QHTAB(IMPER,WLSTAR)",
+      "comparison": "DISCAP>WDIS means capacity sufficient; equality is treated as overflow",
+      "risk": "two rating families evaluate capacity at different heads; SWQHR1 can evaluate a negative WOVER if current WLS lies below the fixed crest even though the automatic target lies above it"
+    },
+    "overflow_fallback": {
+      "location": "SWAP/surfacewater.f90:321-373",
+      "behavior": "insufficient automatic-weir capacity sets OVERFL=.TRUE. and falls through to the general q-h balance/bisection",
+      "inheritance": "D4 showed the frozen 0.001-cm stop can commit mutually inconsistent SWST/WLS; future automatic overflow fallback must use consistent authoritative storage semantics"
+    },
+    "reader_period_data": {
+      "location": "SWAP/surfacewater.f90:889-915",
+      "parameters": ["IMPER/IMPEND","SWMAN","WSCAP","WLDIP","INTWL"],
+      "bounds": "INTWL read as integer 1..31",
+      "architecture": "reader/calendar representation remains outside kernel"
+    },
+    "reader_automatic_data": {
+      "location": "SWAP/surfacewater.f90:1026-1117",
+      "parameters": ["DROPR","HDEPTH","NODHD prepared from vertical grid","NPHASE","WLSMAN","GWLCRIT","HCRIT","VCRIT"],
+      "phase_constraints": [
+        "phase-1 GWLCRIT,VCRIT,HCRIT approximately zero",
+        "WLSMAN nondecreasing with phase",
+        "GWLCRIT nonincreasing with phase",
+        "HCRIT nonincreasing with phase",
+        "VCRIT nondecreasing with phase",
+        "automatic WLSMAN may not lie below deepest secondary channel bottom",
+        "HBWEIR at least about 1 cm below WLSMAN phase 1"
+      ],
+      "modern_preparation": "HDEPTH-to-node or equivalent sampling location is prepared outside the control policy and the policy receives the resulting selected pressure-head scalar"
+    }
+  },
+  "capacity_discrepancy_examples": {
+    "fractional_beta": {
+      "current_WLS_cm": -20.0,
+      "HBWEIR_cm": -10.0,
+      "BETAW": 0.5,
+      "WOVER_cm": -10.0,
+      "real_power_domain": "undefined"
+    },
+    "even_integer_beta": {
+      "current_WLS_cm": -20.0,
+      "HBWEIR_cm": -10.0,
+      "BETAW": 2.0,
+      "WOVER_cm": -10.0,
+      "source_effect": "positive ALPHAW*100 capacity despite water level below crest",
+      "physical_disposition": "not accepted as an automatic capacity policy by D5"
+    },
+    "target_head_contrast": {
+      "automatic_target_WLSTAR_cm": -5.0,
+      "HBWEIR_cm": -10.0,
+      "target_overflow_head_cm": 5.0,
+      "observation": "SWQHR2 samples this target head through FUN_QHTAB while SWQHR1 samples current WLS"
+    }
+  },
+  "source_risks": [
+    {"id":"D5-RISK-01-LEGACY-DAY-AND-CALENDAR-EVENT-ARITHMETIC","disposition":"translate to explicit runtime events; no kernel calendar arithmetic"},
+    {"id":"D5-RISK-02-INITIAL-TCUM-IMPLICIT-ADJUSTMENT-TRIGGER","disposition":"explicit initialization event required"},
+    {"id":"D5-RISK-03-WLSTAR-IS-CONDITIONAL-COMMITTED-CONTROL-MEMORY","disposition":"allocate only for SWMAN=2 and rollback transactionally"},
+    {"id":"D5-RISK-04-DROPR-0P001-ACTIVATION-SEAM","disposition":"preserve as explicit source seam until production policy qualification"},
+    {"id":"D5-RISK-05-SWQHR1-CURRENT-WLS-VS-SWQHR2-TARGET-WLSTAR-CAPACITY-ASYMMETRY","disposition":"source discrepancy; no silent reconciliation"},
+    {"id":"D5-RISK-06-SWQHR1-NEGATIVE-WOVER-POWER-DOMAIN","disposition":"fail closed for direct production migration"},
+    {"id":"D5-RISK-07-STRICT-DISCAP-GREATER-THAN-WDIS-EQUALITY-SEAM","disposition":"branch seam explicit; production inequality policy requires qualification"},
+    {"id":"D5-RISK-08-D4-OVERFLOW-FALLBACK-STATE-INCONSISTENCY-MUST-NOT-RETURN","disposition":"authoritative S and derived WLS required"},
+    {"id":"D5-RISK-09-HEAD-DEPTH-TO-NODE-MAPPING-MUST-NOT-COUPLE-CONTROL-TO-SOLVER-INTERNALS","disposition":"clean scalar hydraulic-control view"},
+    {"id":"D5-RISK-10-WLSBAK-OSSWLM-NUMERICAL-HISTORY-SEPARATE-FROM-CONTROL-STATE","disposition":"runtime numerical policy/history only"},
+    {"id":"D5-RISK-11-SWQHR2-HBWEIR-THRESHOLD-SEAM-REMAINS-UNQUALIFIED","disposition":"retain D4 hold; do not admit SWQHR2 production physics here"}
+  ]
+}
