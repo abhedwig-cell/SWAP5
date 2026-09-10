@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION",
+  "status": "QUALIFIED_RESTRICTED_BRACKETED_REVERSE_EVENT",
+  "production_implementation": false,
+  "qualification_use": true,
+  "event_detection_qualified": false,
+  "workflow": {
+    "run": 34450064006,
+    "head": "3ac9ab075f66040263e2ed918ea43d580bc72d55",
+    "conclusion": "success",
+    "material_jobs_passed": 2,
+    "material_jobs_total": 2
+  },
+  "artifacts": {
+    "B01": {"id":10141216075,"digest":"sha256:1da44ad97b392f33c87b64d4dddc8093a088baa656e051b9b6f91e19d0c6e81d"},
+    "O14": {"id":10141204439,"digest":"sha256:b4167f36f4b3864c152cb12f473796e0b5d4efab382bcbc5cdd487ace2ba5d14"}
+  },
+  "qualified_fixtures": {
+    "B01": {
+      "initial_surface_storage_cm": 0.8393321374175227,
+      "q_supply_cm_per_day": 23.418762,
+      "event_bracket_day": [0.06,0.071],
+      "t_end_day_offset": 0.073,
+      "candidate_event_time_day": 0.06837307761019476,
+      "reference_event_time_day": 0.06836931754833557,
+      "event_time_difference_day": 3.760061859189867e-6,
+      "candidate_event_heads_cm": [-1.1352801914015433,-6.807436984341308,-15.034135538256372],
+      "reference_event_heads_cm": [-1.135444535150808,-6.808242394244968,-15.035266450439337],
+      "max_event_head_difference_cm": 0.00113091218296546,
+      "candidate_final_heads_cm": [-3.3577856484801085,-6.266483493947342,-12.703924127795284],
+      "reference_final_heads_cm": [-3.3586891934999543,-6.267122025489615,-12.703659576135943],
+      "max_final_head_difference_cm": 0.0009035450198457973,
+      "full_interval_bottom_transfer_difference_cm": 1.1796005366604412e-5,
+      "candidate_event_max_abs_cell_residual_cm": 1.5654144647214707e-14,
+      "candidate_event_composed_balance_residual_cm": 1.4432899320127035e-15,
+      "candidate_whole_interval_balance_residual_cm": 3.3306690738754696e-16,
+      "reference_whole_interval_balance_residual_cm": -1.1102230246251565e-15,
+      "candidate_event_nfev": 13,
+      "candidate_dry_remainder_nfev": 7,
+      "reference_event_nfev": 13,
+      "reference_dry_remainder_nfev": 6,
+      "pass": true
+    },
+    "O14": {
+      "initial_surface_storage_cm": 0.011992883907773078,
+      "q_supply_cm_per_day": 1.871988,
+      "event_bracket_day": [0.00075,0.00095],
+      "t_end_day_offset": 0.00105,
+      "candidate_event_time_day": 0.0008581695630478564,
+      "reference_event_time_day": 0.0008581682271768858,
+      "event_time_difference_day": 1.3358709705915336e-9,
+      "candidate_event_heads_cm": [-41.837427508482406,-86.0099937759001,-75.59352179289519],
+      "reference_event_heads_cm": [-41.83751774893733,-86.00992840328807,-75.59342251994177],
+      "max_event_head_difference_cm": 9.927295342038178e-5,
+      "candidate_final_heads_cm": [-42.13938474790275,-85.67086109669249,-75.18354817030422],
+      "reference_final_heads_cm": [-42.13949578045264,-85.67077912426241,-75.18342015329455],
+      "max_final_head_difference_cm": 0.00012801700967202123,
+      "full_interval_bottom_transfer_difference_cm": 3.722636046244593e-7,
+      "candidate_event_max_abs_cell_residual_cm": 7.225123277443402e-15,
+      "candidate_event_composed_balance_residual_cm": -9.177467813481499e-14,
+      "candidate_whole_interval_balance_residual_cm": -9.249545573908335e-14,
+      "reference_whole_interval_balance_residual_cm": -9.162288983066702e-14,
+      "candidate_event_nfev": 6,
+      "candidate_dry_remainder_nfev": 4,
+      "reference_event_nfev": 6,
+      "reference_dry_remainder_nfev": 4,
+      "pass": true
+    }
+  },
+  "global_metrics": {
+    "max_event_time_difference_day": 3.760061859189867e-6,
+    "max_event_time_difference_seconds": 0.3248693446340045,
+    "max_event_head_difference_cm": 0.00113091218296546,
+    "max_final_head_difference_cm": 0.0009035450198457973,
+    "max_full_interval_bottom_transfer_difference_cm": 1.1796005366604412e-5,
+    "max_abs_whole_interval_balance_residual_cm": 9.249545573908335e-14,
+    "candidate_nonlinear_trajectory_count_per_path": 2,
+    "event_search_bisection_trajectory_count": 0,
+    "persistent_state_bytes_added": 0,
+    "mode_sequence": ["PONDED_HEAD","EVENT_AT_SURFACE_ZERO","DRY_FLUX_REMAINDER"],
+    "mass_repair_or_clipping_used": false,
+    "rollback_guards_pass": true
+  },
+  "qualified_claim": "Given the frozen event brackets characterized independently in R3A, B01 and O14 can execute a transaction-safe PONDED_HEAD to exact S_surface=0 event to DRY_FLUX remainder with two nonlinear trajectories per candidate path, no repeated full-trajectory event search, no event-state persistence, and whole-interval mass closure far below the 1e-9 cm gate.",
+  "architecture_checks": {
+    "compact_state": "No event time/state is persisted; only normal soil heads and the existing surface scalar remain committed state.",
+    "worker_scratch": "Event and dry-remainder nonlinear vectors are worker-local scratch.",
+    "transactionality": "Original committed ponded state remains bitwise unchanged until final accept; synthetic post-event rejection restores the original state.",
+    "generic_time": "Event times are offsets inside explicit [t0,t1] intervals.",
+    "mass_conservation": "Worst whole-interval residual is 9.25e-14 cm without repair or clipping.",
+    "bounded_cost": "Exactly two nonlinear trajectories once a valid event bracket is supplied.",
+    "reference_mode": "Independent reference event/remainder composition remains available."
+  },
+  "decision": "QUALIFIED_RESTRICTED_BRACKETED_POND_DEPLETION_HEAD_TO_FLUX_EVENT_READY_FOR_TOP_NODE_SATURATION_AND_EVENT_DETECTION_GATES",
+  "next_gates": [
+    "TOP_NODE_H_EQ_0_SATURATION_TRANSITION_GATE",
+    "SURFACE_EVENT_DETECTION_AND_BRACKET_DISCOVERY_GATE_IF_REQUIRED_FOR_RUNTIME"
+  ],
+  "hard_nonclaims": [
+    "No automatic event detection or bracket discovery qualification.",
+    "No top soil-node h=0 or positive-head state qualification.",
+    "No runoff, evaporation, snow, irrigation or macropore bypass.",
+    "No response tangent across event switching.",
+    "No B12/O13 reverse-event qualification.",
+    "No production runtime, MultiSWAP, groundwater or MODFLOW admission."
+  ]
+}
