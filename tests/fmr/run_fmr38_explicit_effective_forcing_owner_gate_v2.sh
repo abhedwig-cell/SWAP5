@@ -14,7 +14,8 @@ src, dst = map(Path, sys.argv[1:])
 s = src.read_text()
 old1 = "one('program test_fmq26_parallel_v1_admission','program test_fmr38_resolved_seam_identity','program')"
 old2 = "one('end program test_fmq26_parallel_v1_admission','end program test_fmr38_resolved_seam_identity','end program')"
-replacement = """def line(old,new,label):
+replacement = """import re
+def line(old,new,label):
     global s
     pattern=r'(?m)^'+re.escape(old)+r'$'
     s2,n=re.subn(pattern,new,s)
