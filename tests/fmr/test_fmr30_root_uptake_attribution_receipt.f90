@@ -43,7 +43,8 @@ program test_fmr30_root_uptake_attribution_receipt
   call committed%capture_checkpoint(checkpoint, ok)
   call assert_true(ok, 'checkpoint capture')
   call kernel%advance_interval(parameters, committed, forcing, config, t0, t1, result, candidate, diagnostics, checkpoint)
-  call assert_true(result%completed .and. candidate%ready(), 'candidate completion')
+  call assert_true(result%completed, 'candidate result completion')
+  call assert_true(candidate%ready(), 'candidate ready')
   call assert_close(result%mass%total_out, expected, 'transaction root mass_out')
   call assert_close(result%mass%residual, 0.0_real64, 'transaction hard mass residual')
 
@@ -137,7 +138,8 @@ contains
     call assert_true(local_ok, 'other checkpoint')
     call local_kernel%advance_interval(parameters, local_committed, local_forcing, config, start_time, end_time, &
          local_result, local_candidate, local_diag, local_checkpoint)
-    call assert_true(local_result%completed .and. local_candidate%ready(), 'other candidate')
+    call assert_true(local_result%completed, 'other candidate result completion')
+    call assert_true(local_candidate%ready(), 'other candidate ready')
     call fmr_commit_candidate_with_receipt(local_kernel, local_checkpoint, local_committed, local_candidate, local_diag, &
          local_commit, receipt, local_receipt_status, local_commit_status)
     call assert_true(local_commit .and. local_receipt_status == FMR_COMMIT_RECEIPT_OK .and. receipt%ready(), 'other receipt')
