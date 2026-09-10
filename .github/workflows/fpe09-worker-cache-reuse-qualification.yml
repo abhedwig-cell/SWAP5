@@ -1,0 +1,35 @@
+name: F-PE09 worker cache reuse qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-pe09-worker-cache-reuse
+    paths:
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - src/solver/mod_b110_default_mvg_provider.f90
+      - tests/fpe/test_fpe09_cache_reuse.f90
+      - tests/fpe/run_fpe09_worker_cache_reuse_qualification.sh
+      - .github/workflows/fpe09-worker-cache-reuse-qualification.yml
+      - integration/f-pe/F-PE09_*.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE09 qualification
+        run: bash tests/fpe/run_fpe09_worker_cache_reuse_qualification.sh
