@@ -1,0 +1,33 @@
+name: F-MR34 DIVDRA active runtime callsite
+
+on:
+  push:
+    branches:
+      - work/f-mr34-divdra-active-runtime-callsite
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-active-callsite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-MR34 source-bound runtime gate
+        env:
+          FMR34_EVIDENCE_DIR: _fmr34_evidence
+        run: bash tests/fmr/run_fmr34_divdra_active_runtime_callsite_gate.sh
+      - name: Upload F-MR34 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-MR34-divdra-active-runtime-callsite-evidence
+          path: _fmr34_evidence
+          if-no-files-found: warn
