@@ -8,6 +8,7 @@ BACKEND="src/runtime/mod_fmr_serialized_reference_backend.f90"
 SOURCESINK="src/solver/mod_b110_source_sink_provider.f90"
 BINDING="src/runtime/mod_fmr_divdra_runtime_binding.f90"
 TEST="integration/f-mr/fmr33/test_fmr33_divdra_runtime_binding.f90"
+AUDIT="integration/f-mr/F-MR33_ARCHITECTURE_AUDIT.json"
 
 expect_blob() {
   local path="$1" expected="$2" actual
@@ -32,10 +33,26 @@ if grep -q 'mod_fmr_serialized_reference_backend' "$BINDING"; then
   echo "BACKEND_COUPLING_FAIL" >&2
   exit 1
 fi
-if grep -Eq 'jacobian|HeadCalc|headcalc|\.dra|MODFLOW|modflow' "$BINDING"; then
-  echo "FORBIDDEN_BINDING_DEPENDENCY_FAIL" >&2
+if grep -Eq 'jacobian|HeadCalc|headcalc|\.dra|MODFLOW|modflow|tolerance' "$BINDING"; then
+  echo "FORBIDDEN_BINDING_DEPENDENCY_OR_POLICY_FAIL" >&2
   exit 1
 fi
+
+python3 - <<'PY'
+import json
+from pathlib import Path
+p = Path('integration/f-mr/F-MR33_ARCHITECTURE_AUDIT.json')
+data = json.loads(p.read_text())
+items = data['invariants']
+ids = [x['id'] for x in items]
+assert ids == list(range(1, 31)), ids
+assert data['summary']['violations'] == 0
+assert data['summary']['scientific_scope_reopened'] is False
+assert data['summary']['persistent_state_added'] is False
+assert data['summary']['solver_internal_dependency_added'] is False
+assert data['summary']['configurable_mass_tolerance_added'] is False
+print('ARCHITECTURE_AUDIT_OK 30/30')
+PY
 
 test -z "$(git diff --name-only "$BASE" HEAD -- reference)" || {
   echo "REFERENCE_DELTA_FAIL" >&2
