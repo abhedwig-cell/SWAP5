@@ -8,8 +8,8 @@ module mod_fmr_parallel_worker_pool
   use mod_soil_water_solver_contract, only: top_boundary_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, fmr_count_templates, FMR_BACKEND_SERIALIZED_REFERENCE, &
-       FMR_NUMERICAL_CONTINUATION_NONE
+       fmr_aggregate_diagnostics_t, fmr_count_templates, fmr_build_execution_order, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
@@ -64,17 +64,20 @@ contains
     if (schedule_status /= FMR_PARALLEL_SCHEDULE_OK) then
       call initialize_rejected_outputs(columns, t0, t1, 'INVALID_WORKER_COUNT', &
            results, diagnostics, aggregate, local_runtime)
+      call canonicalize_publication(columns, results, diagnostics)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
     ! The already-qualified single-worker route remains an exact delegation to
-    ! the serialized reference runtime.  F-MR20 V1 only opens a deliberately
-    ! narrow multiworker profile below.
+    ! the serialized reference runtime.  The worker-pool API nevertheless owns
+    ! one publication contract, so its returned arrays are materialized in the
+    ! same canonical order as admitted multiworker runs.
     if (worker_count == 1) then
       call fmr_run_serialized_physical_multiswap(columns, templates, parameter_registry, forcing_registry, &
            state_registry, numerical_config, top_boundary, t0, t1, batch_size, results, diagnostics, aggregate, &
            serialized_dispatch_status, local_runtime)
+      call canonicalize_publication(columns, results, diagnostics)
       pool_status = FMR_PARALLEL_POOL_OK
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
@@ -87,6 +90,7 @@ contains
       pool_status = FMR_PARALLEL_POOL_MULTIWORKER_NOT_ADMITTED
       call initialize_rejected_outputs(columns, t0, t1, 'MULTIWORKER_NOT_ADMITTED', &
            results, diagnostics, aggregate, local_runtime)
+      call canonicalize_publication(columns, results, diagnostics)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
@@ -132,12 +136,14 @@ contains
       if (allocated(diagnostics)) deallocate(diagnostics)
       call initialize_rejected_outputs(columns, t0, t1, 'OPENMP_TEAM_NOT_ADMITTED', &
            results, diagnostics, aggregate, local_runtime)
+      call canonicalize_publication(columns, results, diagnostics)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
     call build_parallel_aggregate(columns, diagnostics, assignments, batch_size, worker_count, aggregate)
     call finalize_parallel_runtime(results, assignments, worker_runtime, t0, t1, local_runtime)
+    call canonicalize_publication(columns, results, diagnostics)
     serialized_dispatch_status = FMR_SERIAL_DISPATCH_OK
     pool_status = FMR_PARALLEL_POOL_OK
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
@@ -404,6 +410,29 @@ contains
       allocate(diagnostics(i)%worker_assignments(0))
     end do
   end subroutine initialize_rejected_outputs
+
+  subroutine canonicalize_publication(columns, results, diagnostics)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(inout) :: results(:)
+    type(fmr_column_diagnostics_t), allocatable, intent(inout) :: diagnostics(:)
+    type(fmr_serialized_column_result_t), allocatable :: canonical_results(:)
+    type(fmr_column_diagnostics_t), allocatable :: canonical_diagnostics(:)
+    integer, allocatable :: order(:)
+    integer :: pos, idx
+
+    if (.not. allocated(results) .or. .not. allocated(diagnostics)) return
+    if (size(results) /= size(columns) .or. size(diagnostics) /= size(columns)) return
+
+    call fmr_build_execution_order(columns, order)
+    allocate(canonical_results(size(results)), canonical_diagnostics(size(diagnostics)))
+    do pos = 1, size(order)
+      idx = order(pos)
+      canonical_results(pos) = results(idx)
+      canonical_diagnostics(pos) = diagnostics(idx)
+    end do
+    call move_alloc(canonical_results, results)
+    call move_alloc(canonical_diagnostics, diagnostics)
+  end subroutine canonicalize_publication
 
   integer function find_template_index(template_id, templates) result(index)
     integer(int64), intent(in) :: template_id
