@@ -1,0 +1,19 @@
+name: F-MQ27 restart requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq27-fmr21-restart-schema-requalification
+  workflow_dispatch:
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-MQ27 requalification
+        run: bash tests/fmq/run_fmq27_restart_requalification.sh
