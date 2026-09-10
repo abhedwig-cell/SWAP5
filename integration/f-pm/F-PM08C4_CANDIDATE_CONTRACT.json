@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C4",
+  "title": "Multi-Level Drainage Exchange Aggregation and Branch-Composition Structural Candidate",
+  "branch": "work/f-pm08c4-multilevel-exchange-aggregation",
+  "source_base": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "authorities": {
+    "F_PM08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "F_PM08C_parent_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "F_VQ38_DRAMET2_closeout": "49728b999b884a37643908c1dad40269f4e2db9b",
+    "F_VQ40_DRAMET1_closeout": "f5f567c6af4879bf80107a7579dd342de6d5afe0",
+    "F_VQ42_empirical_interflow_closeout": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "legacy_semantics": {
+    "scope": "DRAMET=3 multi-level exchange aggregation after each level response has been evaluated",
+    "level_loop": "legacy drainage.f90 evaluates lev=1..nrlevs and later drainage_basic accumulates qdrtot by qdrtot=qdrtot+qdrain(level) in level order",
+    "shared_hydraulic_summary": "all DRAMET=3 levels use the same groundwater-level summary for a calculation point",
+    "per_level_controls": "drain head and allow-direction semantics are level-specific",
+    "highest_level_special_case": "empirical interflow selection for lev==nrlevs is response-law composition upstream of this aggregator, not aggregation logic",
+    "legacy_capacity": "MADR is a compile-time array capacity, not a physical invariant and is not propagated into the modern contract"
+  },
+  "modern_contract": {
+    "input": "ordered assumed-shape array of already-evaluated drainage_level_exchange_t records",
+    "level_identity": "input record level_index must equal its one-based array position; ordering is physical drainage-level order",
+    "flux_semantics": "signed_soil_to_drain_rate > 0 leaves soil; < 0 enters soil; aggregation itself is sign-agnostic",
+    "total_flux": "deterministic sequential level-order sum of the authoritative per-level rates",
+    "derivative": "aggregate dq/dgwl is published only when every level derivative is defined and finite; otherwise aggregate derivative is unavailable while the valid flux sum is preserved",
+    "branch_composition": "branch-boundary and singular-tangent diagnostics are unioned conservatively across levels",
+    "nonsmooth_cancellation": "never inferred; if any level derivative is unavailable, the aggregate derivative remains unavailable unless a future separately qualified proof supplies stronger information",
+    "persistent_state": false,
+    "allocation": "no heap allocation required by aggregation hot path",
+    "level_count": "dynamic; no legacy MADR=5/25 limit in the kernel contract"
+  },
+  "mass_and_transaction_contract": {
+    "per_level_rates": "authoritative constituent physical transfers",
+    "aggregate_total": "derived view of exactly those transfers, never an additional transfer",
+    "double_booking": "forbidden: a committed ledger may book constituent levels or their total representation according to its schema, but must not count both as separate water transfers",
+    "invalid_level": "fails closed; an invalid or nonfinite constituent may not be silently skipped",
+    "tangent_unavailable": "must not invalidate or zero an otherwise valid physical flux sum",
+    "rejected_trial": "aggregation is pure and creates no committed mutation or ledger booking"
+  },
+  "ownership": {
+    "response_law_owner": "evaluates each level physics and derivative metadata before aggregation",
+    "aggregator_owner": "preserves level identity, forms total transfer view and composes derivative/branch availability",
+    "spatial_distribution_owner": "F-PM08B; not touched here",
+    "solver_owner": "residual/Jacobian assembly and any chain rule to solver unknowns",
+    "runtime_coupler_owner": "accepted-transfer ledger publication, rollback/commit, receiver wiring and interval composition"
+  },
+  "required_tests": [
+    "one-level identity",
+    "two-level and multi-level deterministic signed flux summation",
+    "mixed positive/negative constituent support without claiming negative-branch physics qualification",
+    "all-defined derivative summation",
+    "one or more unavailable derivatives preserve total flux and make aggregate derivative unavailable",
+    "branch-boundary and singular-tangent diagnostics compose as a union/count",
+    "invalid or nonfinite constituent fails closed and is never skipped",
+    "level-index/order mismatch fails closed",
+    "dynamic level counts including counts above legacy MultiSWAP and standalone MADR capacities",
+    "A/B/A stateless identity",
+    "O0/O2 output identity",
+    "no I/O, calendar, MODFLOW topology, HeadCalc, solver Jacobian, DIVDRA or persistent-state leakage"
+  ],
+  "hard_holds": [
+    "No response-law dispatch or highest-level interflow selection inside the aggregator.",
+    "No qualification of negative-side DRAMET=3 infiltration physics merely because signed negative inputs can be aggregated.",
+    "No DIVDRA/node-distribution work; F-PM08B owns spatial distribution.",
+    "No surface-water storage/control; F-PM08D owns that component.",
+    "No runtime ledger implementation or canonical admission.",
+    "No solver Jacobian mutation or process-side fallback/smoothing.",
+    "No fixed MADR limit in modern kernel code."
+  ],
+  "success_decision": "QUALIFIED_MULTILEVEL_DRAINAGE_EXCHANGE_AGGREGATION_STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ"
+}
