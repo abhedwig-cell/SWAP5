@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workunit": "F-MR30",
   "title": "Restricted Accepted Root-Uptake Attribution Receipt",
   "branch": "work/f-mr30-restricted-root-uptake-attribution-receipt",
@@ -21,8 +21,15 @@
     "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
   },
   "production_scope": [
-    "new typed root-uptake attribution receipt and worker-local prepared attribution",
-    "serialized runtime optional sparse attribution routing at the existing candidate/commit seam"
+    "one new typed root-uptake attribution receipt module",
+    "one worker-local prepared attribution object that cannot publish before commit"
+  ],
+  "production_paths_expected": [
+    "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90"
+  ],
+  "deferred_composition_scope": [
+    "serialized runtime optional sparse attribution routing",
+    "binding attribution output to the existing execute_column forcing/candidate/commit seam"
   ],
   "hard_constraints": [
     "no change to transaction mass_in/mass_out or canonical mass accounting",
@@ -34,6 +41,6 @@
   ],
   "governance": {
     "persist_early_test_second": true,
-    "independent_qualification_required_before_F_CI32": true
+    "independent_qualification_required_before_runtime_composition_or_F_CI32": true
   }
 }
