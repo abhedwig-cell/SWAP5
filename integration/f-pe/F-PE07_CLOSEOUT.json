@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Runtime & Worker-Memory Scaling Characterization Closeout",
+  "status": "COMPLETE_QUALIFIED_RESTRICTED_PARALLEL_V1_RUNTIME_AND_WORKER_MEMORY_SCALING_CHARACTERIZATION",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_V1_RUNTIME_AND_WORKER_MEMORY_SCALING_CHARACTERIZATION_WITHIN_FROZEN_SCOPE",
+  "base": {
+    "work_unit": "F-MR20",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "artifacts": {
+    "protocol": "integration/f-pe/F-PE07_MEASUREMENT_PROTOCOL.json",
+    "results": "integration/f-pe/F-PE07_RESULTS.json",
+    "worker_memory": "integration/f-pe/F-PE07_WORKER_MEMORY_CHARACTERIZATION.json",
+    "timing_driver": "tests/fpe/test_fpe07_parallel_v1_timing.f90",
+    "memory_probe": "tests/fpe/test_fpe07_worker_memory.f90",
+    "runner": "tests/fpe/run_fpe07_parallel_v1_timing.sh",
+    "workflow": ".github/workflows/fpe07-parallel-v1-scaling.yml"
+  },
+  "qualified_findings": {
+    "scientific_precondition": "full F-MR20 V1 qualification repeatedly passed on the frozen production postimage before timing",
+    "production_source_change": false,
+    "true_parallel_overlap": {
+      "workers_2": "observed exactly 2 simultaneous real physical solves in all timing observations",
+      "workers_4": "observed exactly 4 simultaneous real physical solves in the two principal persisted timing runs"
+    },
+    "runtime_observation": {
+      "runner_1_T1_over_T2_median": 2.0547855790194367,
+      "runner_1_T1_over_T4_median": 2.1820616816703766,
+      "runner_2_T1_over_T2_median": 1.9003702204188695,
+      "runner_2_T1_over_T4_median": 2.0762262578678325,
+      "all_principal_paired_blocks_faster_than_worker1": true,
+      "principal_paired_blocks_per_worker_count": 24,
+      "interpretation": "observational result for the exact frozen 32-column fixture on sampled GitHub-hosted runners, not a portable speedup guarantee"
+    },
+    "cross_runner_variability": {
+      "worker1_median_runtime_change_percent_run2_vs_run1": 8.253823227180357,
+      "worker2_median_runtime_change_percent_run2_vs_run1": 1.9689032688801733,
+      "worker4_median_runtime_change_percent_run2_vs_run1": -1.5099193343109607,
+      "conclusion": "host/runtime variation is material enough that absolute timings and ratios must remain runner-bound"
+    },
+    "memory": {
+      "known_dynamic_payload_formula_per_worker": "RB*((81+L)*n+4) + IB*n + LB*(4*n+6)",
+      "four_node_two_drainage_level_fixture_bytes_per_worker": 2792,
+      "executable_components_bytes": {
+        "reference_richards_workspace": 812,
+        "A23BU_headcalc_scratch": 412,
+        "backend_parameter_and_forcing_caches": 1568
+      },
+      "scaling": "known heavy dynamic solver/cache payload scales O(worker_count), not O(logical_column_count)",
+      "RSS_claim": false
+    }
+  },
+  "validation_lineage": {
+    "principal_timing_run_1": {
+      "run": 34441745757,
+      "job": 102758039785,
+      "head": "28d6b1f7dc75d564164e235999dd4d6ceb9c3198",
+      "artifact_id": 10138180364,
+      "artifact_sha256": "3712c0b158d7ac1dc2183a930ba236555cc4bbbf1c7c0606765e5f61332774e8",
+      "conclusion": "success"
+    },
+    "principal_timing_run_2": {
+      "run": 34441929525,
+      "job": 102758593636,
+      "head": "a335e531433cedcf41efabdab5dad04095208942",
+      "artifact_id": 10138244515,
+      "artifact_sha256": "d3b87e5fd8cabd697e18d0171199e46542523e49c4a719553607e814d419b170",
+      "conclusion": "success"
+    },
+    "results_persisted_recheck": {
+      "run": 34442111381,
+      "job": 102759140364,
+      "head": "48bdd3e4909c3d9d5941b7c2d194753b48a6a93b",
+      "conclusion": "success"
+    },
+    "executable_memory_gate": {
+      "run": 34442271208,
+      "job": 102759612961,
+      "head": "025c700c7ada37c7ae7609e40cd013fa7f6ad2cf",
+      "conclusion": "success"
+    },
+    "memory_evidence_reconciled_recheck": {
+      "run": 34442356891,
+      "job": 102759863959,
+      "head": "22324d1309c484b599d4c960e144ef432328114b",
+      "conclusion": "success"
+    }
+  },
+  "architecture_invariant_assessment": {
+    "1_one_kernel": "PASS",
+    "4_compact_persistent_state": "PASS_WITHIN_SCOPE",
+    "5_scratch_per_worker": "PASS",
+    "6_scalable_memory_layout": "PASS_WITHIN_SCOPE",
+    "13_mass_conservation_absolute": "PASS",
+    "16_multiswap_primary": "PASS_WITHIN_SCOPE",
+    "23_physics_solver_policy_separation": "PASS",
+    "24_predictable_cost": "CHARACTERIZED_ONLY_NOT_POLICY_QUALIFIED",
+    "25_reference_mode": "PASS",
+    "26_runtime_diagnostics": "PASS",
+    "27_optional_cost_scales_with_use": "PASS_WITHIN_FROZEN_V1_SCOPE",
+    "30_explicit_architecture_review": "PASS"
+  },
+  "explicit_nonclaims": [
+    "universal hardware-independent speedup",
+    "parallel efficiency guarantee",
+    "production throughput SLA",
+    "optimal production worker count",
+    "worker counts above 4 or 8-worker scaling",
+    "general parallel SWAP beyond the qualified F-MR20 V1 profile",
+    "performance-policy qualification",
+    "bounded difficult-column fallback performance",
+    "RSS or total process-memory bound",
+    "transaction-local peak memory bound",
+    "realistic large-node-count memory peak"
+  ],
+  "downstream_handoff": {
+    "parallel_v1_cost_shape_available": true,
+    "runner_bound_reference_measurements_available": true,
+    "worker_memory_formula_available": true,
+    "redundant_A23BU_scratch_optimization_candidate_identified": true,
+    "worker_cache_reuse_optimization_candidate_identified": true,
+    "production_worker_count_policy_released": false,
+    "balanced_or_throughput_policy_released": false,
+    "difficult_tail_policy_released": false,
+    "out_of_scope_physics_parallelization_released": false
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  }
+}
