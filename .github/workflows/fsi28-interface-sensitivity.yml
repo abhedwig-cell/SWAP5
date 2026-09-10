@@ -25,4 +25,22 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-SI28 pinned F-SI27 same-factorization qbot tangent gate
-        run: bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
+        run: |
+          # Diagnostic-only runner instrumentation: preserve the checked-in gate
+          # logic and thresholds, but surface its captured executable output when
+          # ERROR STOP makes the shell return before the normal cat step.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('tests/fsi/run_fsi28_interface_sensitivity_gate.sh')
+          s = p.read_text()
+          old = '  timeout 60s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fsi28" > "$out/output.txt"\n'
+          new = '''  if ! timeout 60s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fsi28" > "$out/output.txt" 2>&1; then
+            cat "$out/output.txt"
+            fail "O${opt} executable failed"
+          fi
+          '''
+          if old not in s:
+              raise SystemExit('FSI28 diagnostic instrumentation target missing')
+          p.write_text(s.replace(old, new, 1))
+          PY
+          bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
