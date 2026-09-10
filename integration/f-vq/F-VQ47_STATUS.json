@@ -3,8 +3,8 @@
   "work_unit": "F-VQ47",
   "title": "Independent Remediated DIVDRA Spatial Distribution & Lev2Comp Boundary-Seam Requalification",
   "branch": "qualification/f-vq47-fpm08br-spatial-distribution-requalification",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED_PRETEST",
-  "phase": "CLEAN_BASE_AND_INDEPENDENT_ORACLE_RECONSTRUCTION",
+  "status": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
+  "phase": "INDEPENDENTLY_REQUALIFIED_CLOSED_REQUIRES_IDENTICAL_GATE_ON_EXACT_CLOSEOUT_HEAD",
   "clean_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
   "candidate_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
   "candidate_source_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
@@ -19,22 +19,65 @@
   "frozen_legacy": {
     "nested_source_archive_sha256_verified": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
     "divdra_f90_sha256_verified": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
-    "lev2comp_condition_reconstructed": "lev > -zbotcp(icplev)+1.d-10"
+    "lev2comp_condition_reconstructed": "lev > -zbotcp(icplev)+1.d-10",
+    "seam_is_configurable_policy": false
+  },
+  "decisive_independent_ci": {
+    "tested_head": "e6026f4fc33a1340403c95e994becf057b6646ae",
+    "workflow_run": 34474012577,
+    "job": 102860324182,
+    "conclusion": "success",
+    "artifact_id": 10150698013,
+    "artifact_digest": "sha256:360d3698681422a372a0ee2b90757672da7225db57ff653ce85c6877d1da28ab",
+    "summary_sha256": "45f9a8190307abf82da8b225f5ee939bb4f7693a1dbb394fa4026d0be7fef27a",
+    "o0_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805",
+    "o2_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805"
+  },
+  "scientific_result": {
+    "stable_equivalence_cases": 1804,
+    "dmax_truncated_multi": 800,
+    "full_profile_multi": 400,
+    "single_compartment": 600,
+    "seam_cases": 16,
+    "internal_boundaries": 4,
+    "profile_bottom_fail_closed_cases": 2,
+    "total_candidate_cases": 1824,
+    "max_geometry_or_diagnostic_abs_difference": 3.552713678800501e-15,
+    "max_node_abs_difference_vs_raw_legacy": 4.218847493575595e-15,
+    "max_raw_legacy_partition_mass_error": 3.552713678800501e-15,
+    "max_candidate_mass_error": 3.552713678800501e-15,
+    "max_candidate_closure_correction_abs": 4.218847493575595e-15,
+    "o0_o2_byte_identical": true,
+    "mass_tolerance_configurable": false
+  },
+  "infrastructure_incident": {
+    "affected_runs": [34473926206, 34473956370],
+    "disposition": "VERIFIER_INFRASTRUCTURE_ONLY",
+    "cause": "Contents-API-created shell gate had non-executable mode and was initially invoked directly",
+    "fix": "invoke unchanged gate using bash",
+    "candidate_modified": false,
+    "legacy_oracle_modified": false,
+    "scientific_exit_criteria_modified": false
   },
   "state": {
     "live_authorities_rechecked": true,
     "clean_branch_created_from_current_canonical": true,
     "qualification_contract_persisted": true,
-    "independent_legacy_oracle_persisted": false,
-    "independent_verifier_persisted": false,
-    "gate_persisted": false,
-    "workflow_persisted": false,
-    "tested": false,
-    "scientifically_qualified": false,
-    "architecture_audited": false,
-    "closeout_rerun_complete": false,
+    "independent_legacy_oracle_persisted": true,
+    "independent_verifier_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
+    "evidence_persisted": true,
+    "tested": true,
+    "scientifically_qualified": true,
+    "architecture_audited_all_30": true,
     "production_source_modified_by_qualification": false,
-    "reference_source_modified_by_qualification": false
+    "reference_source_modified_by_qualification": false,
+    "runtime_modified_by_qualification": false,
+    "solver_modified_by_qualification": false,
+    "kernel_modified_by_qualification": false,
+    "runtime_admission_qualified": false,
+    "canonical_admission_qualified": false
   },
-  "next_required_step": "persist an independently implemented frozen-legacy oracle and verifier without importing F-PM08B/F-PM08BR authoring tests or F-VQ45 expected outputs"
+  "post_closeout_requirement": "run the identical persisted F-VQ47 gate on this exact closeout head and verify zero src/reference delta; do not perform runtime or canonical admission in F-VQ47"
 }
