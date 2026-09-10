@@ -1,14 +1,17 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C2A",
   "title": "Restricted IPOS1 Homogeneous Hooghoudt Response Structural Candidate",
   "branch": "work/f-pm08c2a-ipos1-hooghoudt-response",
-  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "status": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_RESTRICTED_IPOS1_HOOGHOUDT_RESPONSE_STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
   "lineage": {
     "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
     "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
-    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+    "tested_candidate_head": "fa73fecb7690ad04b60a769d8bf93fee78ddf045",
+    "tested_production_blob": "89f26e2d2b77bef5bdd0c5fdb2ce9ca1f03206fa"
   },
   "scope": {
     "legacy_family": "DRAMET=2 IPOS=1 only",
@@ -25,18 +28,47 @@
   "compatibility_branch": {
     "legacy_difference": "diffl=(groundwater_level-drain_bottom_level)/shape_factor",
     "legacy_cutoff": "diffl < 1e-10 returns zero exchange",
-    "policy": "retain exact B1.10 comparison as explicit compatibility semantics for this restricted candidate; do not promote it to generic drainage physics",
+    "policy": "exact B1.10 comparison retained only as visible restricted compatibility semantics",
+    "inactive_branch_derivative": "zero",
+    "stable_active_branch_derivative": "analytic and verified against finite difference",
     "at_exact_cutoff_derivative": "unavailable"
   },
   "normalization": {
     "legacy_basegw_or_dbot_precheck_in_parameter_object": false,
-    "reason": "basegw and dbot do not enter the IPOS1 response equation; any legacy pre-dispatch compatibility validation is outside this normalized response-law object",
     "legacy_reader_zero_khtop_admitted": false,
-    "reason_zero_khtop": "the evaluator divides by khtop, so the normalized response domain requires khtop>0"
+    "mathematical_domain": "finite L>0, shape>0, khtop>0, drain bottom finite, entry resistance>=0"
   },
-  "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "structurally_qualified": false,
-  "scientifically_qualified": false
+  "mass_and_transaction_boundary": {
+    "authoritative_exchange_output": "signed_soil_to_drain_rate",
+    "positive_sign": "water leaves soil toward drainage receiver",
+    "time_integration": "runtime/coupler responsibility",
+    "accepted_ledger_publication": "runtime/coupler responsibility",
+    "rejected_trial_commit": false
+  },
+  "qualification": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "scientific_B110_equivalence_qualified": false,
+    "legacy_pre_dispatch_validation_equivalence_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "evidence": {
+    "workflow_run": 34452596209,
+    "workflow_job": 102791518483,
+    "candidate_output_sha256": "e4661ece7fa31ea82288f6e52fda9b2bec72a988b4b7be302ba48e8cabc6817f",
+    "evidence_file": "integration/f-pm/F-PM08C2A_CANDIDATE_EVIDENCE.json"
+  },
+  "holds": [
+    "No IPOS2/3 equivalent-depth logic.",
+    "No IPOS4/5 two-layer resistance logic.",
+    "No runtime/source-sink binding or DIVDRA composition.",
+    "No soil-water Jacobian assembly from dq/dgwl.",
+    "No claim that the legacy basegw/dbot pre-dispatch validation is reproduced by this normalized response law.",
+    "No promotion of the 1e-10 compatibility cutoff to generic drainage physics.",
+    "No scientific B1.10 equivalence or canonical admission before independent verification."
+  ],
+  "next_required_step": "independent F-VQ over the frozen IPOS1 production blob and compatibility boundary"
 }
