@@ -4,7 +4,8 @@
   "work_unit": "F-PM08BR",
   "title": "Restricted DIVDRA Lev2Comp Boundary-Seam Remediation",
   "branch": "work/f-pm08br-lev2comp-boundary-seam-remediation",
-  "status": "IN_PROGRESS_REMEDIATION_PERSISTED_PRETEST",
+  "status": "STRUCTURAL_REMEDIATION_READY_FOR_INDEPENDENT_REQUALIFICATION",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_INDEPENDENTLY_SCIENTIFICALLY_REQUALIFIED",
   "source_candidate": {
     "work_unit": "F-PM08B",
     "closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
@@ -26,9 +27,17 @@
   },
   "remediated_candidate": {
     "production_path": "src/process/mod_drainage_spatial_distribution.f90",
-    "production_blob": "b77993bd903539282cd91df1f6d8ffc3af41b046",
+    "production_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
     "legacy_level_to_compartment_offset_cm": 1e-10,
-    "profile_bottom_remains_fail_closed": true
+    "profile_bottom_remains_fail_closed": true,
+    "nonlegacy_internal_thickness_guard_present": false
+  },
+  "decisive_structural_test": {
+    "tested_head": "ab75ae6f912e12c2b0e798c80ec0f7e409bcee7d",
+    "workflow_run": 34467822132,
+    "job": 102840430641,
+    "conclusion": "success",
+    "output_sha256": "25da3c31d894eba3ac2cab613dc20bb0fd112611d912abafbc7d8fab8ca63709"
   },
   "remediation_scope": {
     "reproduce_internal_compartment_boundary_seam": true,
@@ -38,6 +47,7 @@
     "preserve_mass_authority_and_last_node_roundoff_closure": true,
     "no_runtime_change": true,
     "no_solver_change": true,
+    "no_kernel_change": true,
     "no_reference_change": true,
     "no_scope_broadening": true
   },
@@ -48,9 +58,27 @@
     "tests_extended": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "structurally_qualified": false,
-    "scientifically_requalified": false
+    "evidence_persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "independently_scientifically_requalified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_modified": false
   },
-  "next_required_step": "run the persisted F-PM08BR structural remediation gate under CI; do not modify F-VQ45 or claim independent scientific requalification"
+  "explicit_nonclaims": [
+    "negative infiltration qualification",
+    "0 < abs(q) <= 1e-10 qualification",
+    "interflow special top discharge layer qualification",
+    "SWDISLAY=1 or 2 qualification",
+    "multi-level overlapping discharge-layer qualification",
+    "trial-state nonlocal derivative qualification",
+    "solver Jacobian qualification",
+    "runtime mass-booking qualification",
+    "surface-water storage/control qualification"
+  ],
+  "next_required_step": "independent requalification of exact remediated blob 1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a; this authoring workunit must not self-qualify"
 }
