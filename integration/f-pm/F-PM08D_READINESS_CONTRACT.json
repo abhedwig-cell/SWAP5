@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D",
+  "title": "Surface-Water-Controlled Drainage Composition Readiness Contract",
+  "activation_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "purpose": "Reconstruct and qualify the ownership boundaries needed for SWDRA=2 surface-water-controlled drainage without migrating the legacy surfacewater/MOD_drainage namespace as one object.",
+  "authoritative_upstream": {
+    "fpm08": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fvq47_status": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "fvq47_scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "divdra_production_blob_in_activation_base": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "frozen_legacy": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"
+  },
+  "mandatory_data_separation": {
+    "immutable_parameters": [
+      "storage-level geometry/relation",
+      "weir or discharge relation",
+      "drain/channel geometry and resistances",
+      "management thresholds, capacities and rule parameters"
+    ],
+    "persistent_state_only_if_required_for_continuation": [
+      "secondary surface-water storage when simulated",
+      "control memory only when exact legacy management semantics require history"
+    ],
+    "dynamic_forcing_and_external_controls": [
+      "prescribed primary or secondary water levels",
+      "management/event controls",
+      "external supply/discharge boundary data"
+    ],
+    "trial_scratch": [
+      "temporary target water level",
+      "trial storage relation values",
+      "temporary discharge/supply calculations",
+      "trial-only control branch diagnostics"
+    ],
+    "results": [
+      "resolved drain control head(s)",
+      "surface-water storage change",
+      "external supply/discharge fluxes",
+      "accepted mass-ledger contributions",
+      "control diagnostics"
+    ]
+  },
+  "provisional_decomposition_to_verify_against_frozen_source": [
+    {
+      "id": "EXTENDED_DRAINAGE_EXCHANGE",
+      "ownership": "drainage process physics",
+      "stateful": false,
+      "role": "compute signed soil-to-surface-water exchange from explicit hydraulic summaries, immutable channel parameters and resolved control head"
+    },
+    {
+      "id": "SURFACE_WATER_STORAGE",
+      "ownership": "separate stateful component",
+      "stateful": true,
+      "role": "own the minimum committed storage/control memory needed to continue secondary surface-water dynamics"
+    },
+    {
+      "id": "SURFACE_WATER_CONTROL_POLICY",
+      "ownership": "physical control component, separate from numerical solver policy",
+      "stateful": "only where source semantics require history",
+      "role": "resolve target/control levels, supply/discharge actions and event boundaries"
+    },
+    {
+      "id": "SURFACE_WATER_RUNTIME_COMPOSITION",
+      "ownership": "runtime/coupler",
+      "stateful": false,
+      "role": "order checkpoint -> trial/retry -> commit/rollback, compose drainage exchange with storage/control, subdivide at physical events and publish accepted mass ledger"
+    }
+  ],
+  "transaction_contract": {
+    "committed_state_immutable_during_trial": true,
+    "trial_state_isolated": true,
+    "rejected_trial_books_mass": false,
+    "commit_is_atomic_across_composed_surface_water_state_and_mass_ledger": true,
+    "rollback_restores_exact_committed_surface_water_state": true,
+    "warm_start_may_reuse_numerical_trial_guess_but_physical_corrector_starts_from_committed_state": true
+  },
+  "time_contract": {
+    "kernel_interval": "[t0,t1]",
+    "day_is_fundamental_unit": false,
+    "midnight_is_implicit_boundary": false,
+    "management_or_rating_curve_events_may_subdivide_interval": true,
+    "coupling_window_may_be_independent_of_surface_water_event_intervals": true
+  },
+  "mass_contract": {
+    "mass_conservation_absolute": true,
+    "configurable_mass_concession_allowed": false,
+    "one_physical_transfer_one_authoritative_signed_flux": true,
+    "accepted_mass_ledger_owned_by_runtime": true,
+    "surface_water_storage_change_must_close_with_all_accepted_inflows_and_outflows": true
+  },
+  "architecture_holds": {
+    "single_swap_kernel": true,
+    "kernel_has_no_io": true,
+    "no_headcalc_internal_dependency": true,
+    "scratch_not_persistent_per_column": true,
+    "optional_surface_water_state_allocated_only_when_active": true,
+    "multiswap_batching_must_remain_possible": true,
+    "runtime_coupler_owns_external_topology_and_tile_fractions": true,
+    "no_modflow_awareness_inside_surface_water_or_drainage_process": true,
+    "reference_mode_must_remain_available": true,
+    "diagnostics_are_runtime_output": true
+  },
+  "readiness_exit_before_any_production_candidate": [
+    "reconstruct exact SurfaceWater task ordering and WLEVBAL semantics from frozen source",
+    "classify every legacy variable as immutable parameter, committed state, forcing/control, result or scratch",
+    "prove which water-level quantities are derivable from storage and which require persistent memory",
+    "map all supply/discharge/runoff/drainage terms into one signed mass convention",
+    "identify exact physical event boundaries without assuming daily execution",
+    "define rollback-safe runtime ordering with drainage exchange and soil-water trial state",
+    "split subsequent implementation children so exchange physics, stateful storage/control and runtime composition can be qualified independently",
+    "audit the resulting decomposition against all 30 SWAP architecture invariants"
+  ],
+  "production_changes_allowed_in_this_initial_readiness_phase": false
+}
