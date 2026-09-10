@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2",
+  "source_authority": {
+    "fpm08c_parent": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "legacy_drainage_file_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "legacy_common": {
+    "diffl": "(gwl-zbotdr)/shape",
+    "active_condition": "diffl >= 1e-10 in B1.10; smaller values return q=0",
+    "active_flux": "q=diffl/totres",
+    "zimp": "max(basegw,zbotdr-0.25*L)",
+    "dbot": "zbotdr-zimp",
+    "reader_ranges": {
+      "L_after_m_to_cm_conversion": "100..100000 cm",
+      "shape": "1e-6..1",
+      "wetper": "0..1000 cm",
+      "entres": "0..1000 d",
+      "basegw": "-10000..0 cm",
+      "conductivities": "0..1000 cm/d",
+      "geofac_IPOS5": "0..100"
+    }
+  },
+  "families": {
+    "IPOS1": {
+      "law": "R=L^2/(4*khtop*diffl)+entres on the active branch",
+      "minimum_mathematical_domain": ["L>0", "shape>0", "khtop>0", "entres>=0", "diffl>0"],
+      "derivative": "analytic and smooth away from the activation cutoff"
+    },
+    "IPOS2_3": {
+      "equivalent_depth_x": "2*pi*dbot/L",
+      "equivalent_depth_branches": ["x<1e-6: eqd=dbot", "1e-6<=x<=0.5: asymptotic formula", "x>0.5: exponential series formula", "finally eqd=min(eqd,dbot)"],
+      "minimum_uniform_domain": ["L>0", "shape>0", "basegw<=zbotdr", "khtop>0", "wetper>0 when a logarithmic branch is reachable", "equivalent-depth denominator>0", "entres>=0"],
+      "IPOS3_additional": ["khbot>=0 is algebraically admissible because it is multiplicative in the denominator, not a divisor"],
+      "branch_findings": ["x=1e-6 is effectively clipped to dbot by the final min in representative finite-precision probes", "x=0.5 changes formula family and has a finite response jump in representative probes"],
+      "derivative": "analytic only inside a stable equivalent-depth formula branch"
+    },
+    "IPOS4": {
+      "geometry": "legacy requires zbotdr<=zintf; production-uniform evaluation also needs dbot>0",
+      "law_parts": ["rver=max(gwl-zintf,0)/kvtop + (min(zintf,gwl)-zbotdr)/kvbot", "rhor=L^2/(8*khbot*dbot)", "rrad=L/(pi*sqrt(khbot*kvbot))*log(dbot/wetper)"],
+      "minimum_uniform_domain": ["L>0", "shape>0", "basegw<zbotdr", "zbotdr<=zintf", "khbot>0", "kvtop>0", "kvbot>0", "wetper>0", "rhor+rrad+entres>0"],
+      "nonsmooth_set": "gwl=zintf when kvtop differs from kvbot"
+    },
+    "IPOS5": {
+      "geometry": "legacy rejects zbotdr<zintf, but log-domain validity requires the stricter zbotdr>zintf",
+      "law_parts": ["rver=(gwl-zbotdr)/kvtop", "rhor=L^2/(8*khtop*(zbotdr-zintf)+8*khbot*(zintf-zimp))", "rrad=L/(pi*sqrt(khtop*kvtop))*log(geofac*(zbotdr-zintf)/wetper)"],
+      "minimum_uniform_domain": ["L>0", "shape>0", "khtop>0", "kvtop>0", "khbot>=0", "wetper>0", "geofac>0", "zbotdr>zintf", "horizontal-resistance denominator>0", "rhor+rrad+entres>0"],
+      "unused_legacy_input_note": "kvbot is read for IPOS>=4 but is not used by the IPOS5 formula and should not be forced into a normalized IPOS5 parameter object"
+    }
+  },
+  "modern_policy_findings": [
+    "legacy reader admissibility is not mathematical evaluator admissibility",
+    "a modern evaluator must fail closed on invalid divisors, logarithm arguments and nonpositive total resistance instead of depending on floating exceptions",
+    "the legacy diffl=1e-10 comparison is retained only as source evidence; no normalized activation policy is qualified by this workunit",
+    "response and derivative branch identity must be explicit around IPOS2/3 equivalent-depth branches and the IPOS4 layer-interface kink"
+  ],
+  "recommended_child_split": [
+    "F-PM08C2A: IPOS1 homogeneous response structural candidate",
+    "F-PM08C2B: IPOS2/3 equivalent-depth helper and response qualification",
+    "F-PM08C2C: IPOS4/5 two-layer Ernst response and geometry-domain qualification"
+  ],
+  "production_implementation_admitted": false
+}
