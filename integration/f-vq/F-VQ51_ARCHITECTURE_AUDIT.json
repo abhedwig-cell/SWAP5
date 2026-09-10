@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.architecture_invariant_audit.v1",
+  "work_unit": "F-VQ51",
+  "candidate_scope": "independent qualification of restricted serialized DIVDRA active runtime callsite composition",
+  "result": "NO_ADVERSE_ARCHITECTURE_DELTA_WITHIN_RESTRICTED_SCOPE",
+  "invariants": {
+    "1": "one existing SWAP kernel/runtime path is used; no drainage-specific kernel fork",
+    "2": "candidate adds no file, format, parser, path or legacy I/O knowledge to the kernel",
+    "3": "distribution parameters, hydraulic view, scalar forcing, numerical config and results remain separate typed data",
+    "4": "no persistent drainage process state is introduced; immutable distribution parameters are registry referenced",
+    "5": "materialized drainage rows are transient runtime composition scratch, not column state",
+    "6": "sparse requests and shared immutable registries preserve scalable MultiSWAP layout options",
+    "7": "complete DIVDRA preflight occurs before existing checkpoint/trial/commit execution; qualification verifies premutation rejection",
+    "8": "repeated execution can rebuild the same forcing projection from external scalar and explicit hydraulic view without committed-state mutation",
+    "9": "runtime remains generic over t0,t1; no day/month/year assumption is introduced",
+    "10": "no fixed MODFLOW or daily coupling window is introduced",
+    "11": "existing transactional coupling-capable kernel contracts remain unchanged",
+    "12": "no groundwater interface conservation contract is weakened or redefined",
+    "13": "drainage enters only through the existing source/sink mass ledger; no second booking or tunable conservation concession exists",
+    "14": "candidate claims no interface response tangent and does not block future first-class sensitivities",
+    "15": "one existing serialized physical runtime call is made per composed batch; no structural multi-run coupling cost",
+    "16": "independent two-column tests verify sparse per-column routing without heavy solver-per-column ownership",
+    "17": "no MODFLOW cell/tile one-to-one assumption or area fraction is present",
+    "18": "no deep-vadose semantics are added",
+    "19": "no transition-storage semantics are added",
+    "20": "DIVDRA process binding remains outside the soil-water solver implementation and alternative solver seams remain open",
+    "21": "already-qualified SWAP drainage distribution physics is reused rather than copied from legacy globals",
+    "22": "only process_hydraulic_view_t is consumed; HeadCalc internals remain hidden",
+    "23": "no solver-policy switch changes physical drainage behavior",
+    "24": "invalid composition requests have bounded preflight cost and fail before physical execution",
+    "25": "the reference serialized runtime remains byte-identical and available",
+    "26": "typed composition status and binding diagnostics are exposed per active request",
+    "27": "inactive columns allocate no DIVDRA materialization; active scratch is removed after successful execution",
+    "28": "request-to-registry composition belongs to runtime; kernel is unaware of MODFLOW/tile/system composition",
+    "29": "no midnight, one-day, .dra/.swp or direct MODFLOW dependency is introduced",
+    "30": "all thirty invariants are explicitly reviewed by this independent qualification"
+  },
+  "independent_checks": {
+    "owner_test_used_as_oracle": false,
+    "fresh_case_values": true,
+    "two_active_columns_with_distinct_views_and_transfers": true,
+    "premutation_failure_matrix": true,
+    "o0_o2_required": true
+  },
+  "holds": [
+    "no exchange-law qualification",
+    "no fully implicit or trial-state drainage qualification",
+    "no surface-water-control qualification",
+    "no parallel active DIVDRA qualification",
+    "no scientific reopening of F-VQ47 or F-VQ49",
+    "no canonical admission in F-VQ51"
+  ]
+}
