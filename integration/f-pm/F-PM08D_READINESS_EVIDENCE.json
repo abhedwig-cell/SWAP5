@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D",
+  "title": "Surface-Water-Controlled Drainage Composition Readiness Evidence",
+  "activation_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "tested_head": "e167c2e422aa4119da337b21894ac9b12d7b966b",
+  "workflow": ".github/workflows/fpm08d-surface-water-control-readiness.yml",
+  "decisive_ci": {
+    "workflow_run": 34496180266,
+    "job": 102935094303,
+    "conclusion": "success"
+  },
+  "verified_authorities": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fvq47_verified_status_head": "12fef763fbf664972a9f26a02b666def5009fc1a",
+    "fvq47_scientific_closeout": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "canonical_remediated_divdra_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "frozen_source_identity": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "swap_f90_sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+    "boundtop_f90_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04"
+  },
+  "green_gate_claims": {
+    "readiness_only_file_delta": true,
+    "production_source_delta": false,
+    "reference_source_delta": false,
+    "absolute_mass_conservation": true,
+    "configurable_mass_concession": false,
+    "rejected_trial_books_mass": false,
+    "day_is_fundamental_unit": false,
+    "implicit_midnight_boundary": false,
+    "compact_physical_state_classified": true,
+    "wls_not_duplicated_as_committed_state": true,
+    "numerical_history_separated": true,
+    "explicit_surface_water_mass_equation": true,
+    "q_supply_first_class": true,
+    "q_discharge_first_class": true,
+    "source_risks_fail_closed": true,
+    "child_decomposition_locked": true,
+    "recommended_first_child_is_fpm08d1": true,
+    "architecture_invariants_present": 30,
+    "architecture_invariants_pass": 30
+  },
+  "readiness_scientific_findings": {
+    "authoritative_simulated_secondary_storage_state": "SWST",
+    "derived_secondary_water_level": "WLS for SWSEC=2",
+    "prescribed_secondary_water_level_role": "WLS forcing for SWSEC=1",
+    "conditional_physical_control_memory": "WLSTAR for SWMAN=2 between adjustment events",
+    "numerical_history_not_physical_state": "WLSBAK(4)",
+    "diagnostic_not_state": "NUMADJ",
+    "authoritative_modern_balance": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange",
+    "availability_limiter_classification": "state-dependent physical coupling limiter, separate from constitutive drainage law and solver policy"
+  },
+  "source_level_holds": [
+    "D-RISK-01-SWSRF1-UNINITIALIZED-WL",
+    "D-RISK-02-QHR1-QHR2-CAPACITY-HEAD-ASYMMETRY",
+    "D-RISK-03-HIDDEN-SUPPLY-DISCHARGE-FLUXES",
+    "D-RISK-04-LEGACY-DAY-CADENCE",
+    "D-RISK-05-PHYSICAL-VS-NUMERICAL-HISTORY"
+  ],
+  "child_decomposition": [
+    "F-PM08D1",
+    "F-PM08D2",
+    "F-PM08D3",
+    "F-PM08D4",
+    "F-PM08D5",
+    "F-PM08D6"
+  ],
+  "verifier_incident": {
+    "affected_run": 34492806100,
+    "disposition": "GATE_BINDING_ONLY",
+    "cause": "gate searched prose critical_modernization for literal q_supply/q_discharge names although the structured signed-mass map already contained both first-class terms",
+    "fix": "gate now verifies q_supply and q_discharge in the structured secondary_storage_balance.signs contract",
+    "source_inventory_changed": false,
+    "scientific_scope_changed": false,
+    "mass_equation_changed": false,
+    "exit_criteria_changed": false
+  },
+  "qualification_scope": {
+    "readiness_and_decomposition_qualified": true,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
+  }
+}
