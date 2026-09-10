@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "workunit": "F-MR31",
+  "title": "Exact Runtime-Forcing-Bound Accepted Root-Uptake Attribution Remediation",
+  "branch": "work/f-mr31-root-attribution-forcing-binding-current-canonical",
+  "canonical_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "production_candidate": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+  "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+  "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+  "status": "OWNER_GATE_QUALIFIED_PENDING_INDEPENDENT_F_VQ",
+  "decision": "EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_OWNER_VERIFIED_READY_FOR_INDEPENDENT_REQUALIFICATION",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "owner_gate_passed": true,
+    "independently_qualified": false,
+    "production_source_modified_after_candidate": false,
+    "canonical_admitted": false,
+    "closed": false
+  },
+  "defect_remediated": {
+    "source": "F-VQ48 clean independent failure of F-MR30",
+    "defect": "detached candidate/forcing repairing API allowed a valid accepted candidate to be paired with a different valid qrot forcing",
+    "remediation": "actual-transpiration attribution is now published by value from the exact runtime-resolved forcing handle in the same execute_column call, only after successful commit",
+    "detached_F_MR30_prepare_finalize_API_used": false
+  },
+  "owner_gate": {
+    "path": "tests/fmr/run_fmr31_exact_root_attribution_binding_gate.sh",
+    "workflow": ".github/workflows/fmr31-exact-root-attribution-binding.yml",
+    "successful_run": 34483932561,
+    "successful_job": 102893332461,
+    "successful_head": "c6412cf16e1af44ab85bb81bd3fae5a9ba968cc4",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "evidence": "integration/f-mr/F-MR31_EVIDENCE.json"
+  },
+  "architecture": {
+    "publication_object": "fmr_serialized_column_result_t by-value actual-transpiration attribution",
+    "publication_authority": "successful commit in private serialized execute_column runtime seam",
+    "forcing_authority": "same resolved forcing_registry(forcing_index) used for the accepted trial",
+    "amount": "sum(root_extraction_sink(:)) * (t1 - t0) within restricted immutable-qrot outer-interval scope",
+    "mass_ledger_mutation": false,
+    "persistent_column_state_added": false,
+    "transaction_core_changed": false,
+    "root_physics_changed": false,
+    "calendar_assumption_added": false
+  },
+  "owner_verified_properties": [
+    "exact per-column forcing-handle association",
+    "shared forcing-handle identity",
+    "different forcing-handle distinction",
+    "batch/input-order identity",
+    "A-B-A identity",
+    "active-zero attribution availability",
+    "root-inactive attribution unavailability",
+    "noncommitted attribution unavailability",
+    "attribution equals independently booked root mass_out in focused transaction oracle",
+    "real production root sink remains booked exactly once",
+    "real production root SSDI state identity",
+    "real production hard mass balance",
+    "O0/O2 identity"
+  ],
+  "scope_limits": [
+    "serialized runtime path only",
+    "qrot is immutable over the outer interval",
+    "attribution is not a second physical mass term",
+    "no time-varying qrot substep claim",
+    "no independent qualification claim",
+    "no canonical admission claim"
+  ],
+  "required_next": {
+    "kind": "genuinely independent requalification",
+    "candidate_authority": "exact F-MR31 production blob fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "required_attack": "independently reconstruct column-to-forcing provenance and explicitly attack the former F-VQ48 valid-wrong-forcing repair path without relying on the owner oracle as sole evidence"
+  }
+}
