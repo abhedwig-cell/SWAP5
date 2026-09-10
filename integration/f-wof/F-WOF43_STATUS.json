@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-WOF",
+  "work_unit": "F-WOF43",
+  "title": "Crop-to-ET Canopy View Ownership & Reconstruction Readiness",
+  "branch": "work/f-wof43-crop-et-canopy-view-readiness",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "status": "QUALIFIED_CROP_ET_CANOPY_VIEW_READINESS_READY_FOR_RESTRICTED_PROVIDER_CANDIDATE",
+  "decision": "QUALIFIED_CROP_ET_CANOPY_VIEW_READINESS_READY_FOR_RESTRICTED_PROVIDER_CANDIDATE",
+  "phase": "SOURCE_BOUND_OWNER_AND_DATA_READINESS_NO_PRODUCTION_IMPLEMENTATION",
+  "authorities": {
+    "F_WOF18": "QUALIFIED_RESTRICTED_SWETR1_NOINTERCEPTION_POTENTIAL_TRANSPIRATION_PRODUCER",
+    "F_WOF19": "QUALIFIED_OWNER_CLASSIFICATION_BLOCKED_TRANSACTIONAL_CROP_LIFECYCLE_HOST_REQUIRED",
+    "F_WOF29": "QUALIFIED_COMPACT_IMMUTABLE_WOFOST_RATE_TABLE_SUBSTRATE",
+    "F_WOF42": "QUALIFIED_CROP_PERSISTENCE_LAYOUT_COMPLETENESS_READY_FOR_NEXT_RUNTIME/CANONICAL_COMPOSITION",
+    "F_CI24_canonical_head_at_start": "f49e17c6627717d5dea181808a122f2e35960739"
+  },
+  "frozen_source": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf"
+  },
+  "qualified_reconstruction": {
+    "crop_emerged": "READ_FROM_EXACT_CROP_OWNER_SNAPSHOT",
+    "vegetation_cover_fraction": "1-exp(-KDIR*KDIF*LAI)",
+    "crop_factor": "AFGEN(CFTB,DVS)",
+    "co2_transpiration_factor_disabled": "1.0",
+    "co2_transpiration_factor_enabled": "AFGEN(CO2TRATB,ATMOSPHERIC_CO2_PPM)",
+    "AFGEN_substrate": "REUSE_F_WOF29_WOFOST_RATE_TABLE"
+  },
+  "data_boundary": {
+    "persistent_crop_state": ["crop_emerged", "DVS", "LAI"],
+    "immutable_shared_parameters": ["KDIR", "KDIF", "CFTB", "CO2 correction configuration", "CO2TRATB when active"],
+    "forcing": ["atmospheric CO2 concentration when CO2 correction is active"],
+    "derived_ephemeral_view": ["vcover", "CF", "fco2tra"],
+    "ET_owned_state_added": []
+  },
+  "canonical_parameter_substrate": {
+    "KDIF_already_present": true,
+    "missing": ["KDIR", "CFTB", "CO2TRATB"],
+    "resolution": "ADD_MINIMAL_SHARED_IMMUTABLE_CROP_CANOPY_PARAMETER_CONTRACT_IN_PROVIDER_CANDIDATE",
+    "does_not_require_full_WOFOST_bundle_duplication": true
+  },
+  "semantic_holds": {
+    "vcover_must_not_be_forced_zero_by_ET_when_crop_not_emerged": true,
+    "inactive_crop_route_must_not_require_CF_or_fco2tra": true,
+    "legacy_calendar_year_selection_must_not_enter_kernel_contract": true,
+    "derived_factors_must_not_be_persisted_per_column": true,
+    "ET_must_not_own_crop_factor_or_CO2_response_physics": true,
+    "runtime_binding_is_not_qualified": true,
+    "actual_evaporation_is_not_qualified": true,
+    "interception_is_not_qualified": true,
+    "Penman_Monteith_is_not_qualified": true
+  },
+  "transaction_contract": {
+    "view_construction_mutates_crop_state": false,
+    "rejected_trial_mutates_crop_state": false,
+    "snapshot_lineage_must_match_ET_evaluation": true,
+    "forcing_advance_on_rejected_trial": false
+  },
+  "time_contract": {
+    "kernel_day_required": false,
+    "kernel_year_lookup_required": false,
+    "crop_event_boundaries_explicit": true,
+    "CO2_forcing_validity_explicit": true
+  },
+  "mass_contract": {
+    "view_mass_contribution": "NONE",
+    "ptra_peva_epond_are_potential_demands": true,
+    "authoritative_actual_flux_accounting_deferred_to_actual_process_owners": true
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "source_bound_reconciliation_complete": true,
+    "readiness_qualified": true,
+    "production_source_changed": false,
+    "runtime_source_changed": false,
+    "executable_candidate_exists": false,
+    "compiler_oracle_test_applicable": false,
+    "canonical_modified": false,
+    "closed": true
+  },
+  "next": {
+    "work_unit": "F-WOF43A",
+    "scope": "restricted pure crop-to-ET canopy view provider with minimal shared immutable KDIR/KDIF/CFTB/CO2TRATB parameter substrate, atmospheric CO2 forcing input, reuse of F-WOF29 AFGEN tables, and no runtime binding",
+    "qualification_after_candidate": "independent F-VQ source-level qualification before canonical admission",
+    "runtime_after_admission": "F-MR23 or later composition into F-PM06A and existing root-uptake seam"
+  },
+  "affected_invariants": [1,2,3,4,6,7,8,9,16,21,23,27,29,30]
+}
