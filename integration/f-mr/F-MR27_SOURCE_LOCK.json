@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR27",
+  "title": "Restricted Parallel Real-Physics MultiSWAP V1 Current-Canonical Recomposition",
+  "branch": "work/f-mr27-parallel-current-canonical-recomposition",
+  "numbering_reconciliation": {
+    "abandoned_parallel_reservation": "work/f-mr26-parallel-current-canonical-recomposition",
+    "reason": "F-MR26 and F-CI29 are already in active use for the independent reference-ET -> ptra/root-uptake ownership line; the parallel continuation is therefore renumbered F-MR27 with intended independent canonical admission F-CI30."
+  },
+  "current_canonical": {
+    "branch": "integration/f-ci-canonical",
+    "head": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+    "src_tree": "3fe4ccff367479e54ab5db106e5faf8b480d8ec0",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "authority": "QUALIFIED_CLOSED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION"
+  },
+  "frozen_parallel_authority": {
+    "F_MR22_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "F_MQ28_closeout": "0ba69eaeb8609e631d4c405d3c26064a53702fe4",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "scheduler_blob": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "worker_pool_blob": "0e700797cbaed4aaab7f04db0054f72faddcfc15"
+  },
+  "current_canonical_dependency_lock": {
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "6559237c887e9a8476beb479546becdfe9339920",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+    "src/legacy/b1_10_port/headcalc.f90": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c",
+    "src/runtime/mod_fmr_reference_et_demand_binding.f90": "8c679f911c9a82c498258224d83f5fce3cb09163"
+  },
+  "source_evolution_finding": {
+    "old_parallel_candidate_is_ancestor_of_current_canonical": false,
+    "old_parallel_candidate_and_current_canonical_are_diverged": true,
+    "transplant_must_not_replace_current_canonical_dependencies": true,
+    "required_new_source_delta": [
+      "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "src/runtime/mod_fmr_parallel_worker_pool.f90"
+    ]
+  },
+  "qualification_policy": {
+    "reuse_frozen_FMQ28_attack_logic": true,
+    "rerun_against_current_canonical_dependencies": true,
+    "O0_O2_identity_required": true,
+    "worker_counts": [2, 4],
+    "hard_mass_gate_required": true,
+    "canonical_publication_order_required": true,
+    "rejection_isolation_required": true,
+    "unsupported_profiles_fail_closed_required": true,
+    "true_multiworker_overlap_required": true,
+    "preserve_FCI27_ET_runtime_authority": true,
+    "preserve_FCI28_serialized_restart_authority": true
+  },
+  "explicit_nonclaims": [
+    "parallel restart",
+    "parallel speedup",
+    "worker counts other than 2 and 4",
+    "root extraction",
+    "snow",
+    "macropores",
+    "frost",
+    "hysteresis",
+    "tabulated hydraulics",
+    "elasticity",
+    "bottom modes other than 7",
+    "temporal continuation history",
+    "general SWAP5 production release"
+  ],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  }
+}
