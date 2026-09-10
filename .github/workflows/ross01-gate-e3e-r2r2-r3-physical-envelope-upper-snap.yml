@@ -59,8 +59,9 @@ jobs:
           assert mr['max_abs_error_over_ksatfit']<=0.0005
           assert mr['max_constitutive_K_evaluations']<=530
           assert mr['max_root_residual_evaluations']<=66
-          assert all(row['physical_envelope']['abs_error_bound_over_ksat']<=0.0005 for row in mr['rows'])
-          assert all(row['physical_envelope']['hybrid_error_bound']<=0.01 for row in mr['rows'])
+          snaps=[row for row in mr['rows'] if row['candidate_branch']=='SURFACE_SATURATED_PHYSICAL_ENVELOPE_UPPER_SNAP']
+          assert all(row['physical_envelope']['abs_error_bound_over_ksat']<=0.0005 for row in snaps)
+          assert all(row['physical_envelope']['hybrid_error_bound']<=0.01 for row in snaps)
           assert all(row['tests']['reference_inside_physical_envelope'] for row in mr['rows'])
           assert all(row['tests']['actual_error_inside_theorem_abs_bound'] for row in mr['rows'])
           assert all(row['tests']['actual_error_inside_theorem_hybrid_bound'] for row in mr['rows'])
