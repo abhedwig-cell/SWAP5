@@ -1,0 +1,26 @@
+{
+  "schema":"swap5.fmr37_source_lock.v1",
+  "work_unit":"F-MR37",
+  "title":"Generic Effective-Forcing Boundary & Parallel DIVDRA Composition Readiness",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "canonical_sources":{
+    "parallel_worker_pool":{"path":"src/runtime/mod_fmr_parallel_worker_pool.f90","blob":"0e700797cbaed4aaab7f04db0054f72faddcfc15"},
+    "parallel_scheduler":{"path":"src/runtime/mod_fmr_parallel_physical_scheduler.f90","blob":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654"},
+    "serialized_runtime":{"path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"fe5a06c9af59308cdad86c5126379f413591b0cd"},
+    "serialized_backend":{"path":"src/runtime/mod_fmr_serialized_reference_backend.f90","blob":"9af5a494526810324dc00706b444e448e770cba9"},
+    "divdra_distribution":{"path":"src/process/mod_drainage_spatial_distribution.f90","blob":"1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"},
+    "divdra_binding":{"path":"src/runtime/mod_fmr_divdra_runtime_binding.f90","blob":"e4737fb6f00a11ed16e34bee44b3442ac84b31aa"},
+    "serialized_divdra_composition":{"path":"src/runtime/mod_fmr_divdra_serialized_composition.f90","blob":"5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5"},
+    "serialized_divdra_runtime":{"path":"src/runtime/mod_fmr_divdra_serialized_runtime.f90","blob":"9a384658ec37b68d2ef911e741aa89707dcb3e77"}
+  },
+  "parallel_root_precedent":{
+    "readiness_branch":"work/f-mr34-parallel-root-uptake-attribution-readiness",
+    "readiness_decision":"QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE",
+    "structural_branch":"work/f-mr35-restricted-parallel-root-uptake-profile",
+    "structural_head":"996038433690bb4c19f36774a633e485daa7f0db",
+    "structural_candidate_path":"src/runtime/mod_fmr_parallel_root_uptake_pool.f90",
+    "structural_candidate_blob":"c78c13997642617376b8d118122c86c60ca77189",
+    "interpretation":"F-MR35 demonstrates that a separate feature-specific parallel pool is possible, but its 432-line duplicated worker route is not adopted as the generic DIVDRA direction."
+  },
+  "production_delta_policy":{"allowed_src_delta":[],"reference_delta":false,"readiness_only":true}
+}
