@@ -4,16 +4,22 @@
   "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission",
   "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-current-canonical-recomposition",
   "canonical_branch": "integration/f-ci-canonical",
-  "status": "QUALIFIED_PENDING_CANONICAL_PROMOTION",
-  "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_ON_CURRENT_FCI30_CANONICAL_READY_FOR_PROMOTION",
+  "status": "CLOSED_SUBJECT_TO_EXACT_STATUS_HEAD_CANONICAL_GATE",
+  "decision": "QUALIFIED_AND_CANONICALLY_ADMITTED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION",
   "canonical_base": "8c16ea58946092024e4b394db87acf91f3fd4abf",
   "production_candidate": "9492d99e6291dd21ba2c5b394a79b3f877fed0e2",
   "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
   "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
   "qualification_head": "aee653ea4809728a34485e5a0f59821c147c9fa6",
-  "authoritative_workflow": {
+  "authoritative_pre_promotion_workflow": {
     "run_id": 34471934727,
     "job_id": 102853611567,
+    "conclusion": "success"
+  },
+  "canonical_promotion_head": "c5d7344730eb73dadcc5c1dfd2d14f7132155f61",
+  "post_promotion_canonical_workflow": {
+    "run_id": 34472416374,
+    "current_postimage_job_id": 102855382069,
     "conclusion": "success"
   },
   "state": {
@@ -23,10 +29,17 @@
     "qualified": true,
     "architecture_invariants_reviewed": true,
     "canonical_readiness_passed": true,
-    "canonical_ref_advanced": false,
-    "post_promotion_canonical_workflow_passed": false,
-    "production_source_admitted": false,
-    "closed": false
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "production_source_admitted": true,
+    "closed": true
+  },
+  "final_governance_head_validation_contract": {
+    "required": true,
+    "rule": "After this status-bearing commit is fast-forwarded to integration/f-ci-canonical, the F-CI canonical qualification workflow attached to that exact commit must succeed.",
+    "evidence_location": "GitHub Actions checks attached to the exact final status-bearing canonical commit",
+    "run_id_embedded": false,
+    "reason": "Embedding the run id would create a new commit and therefore a new self-referential validation target."
   },
   "qualified_scope": "STATELESS_REFERENCE_ET_PTRA_TO_RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT_ROOT_WATER_UPTAKE_EXECUTION_COMPOSITION",
   "production_delta": ["src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"],
@@ -42,7 +55,8 @@
   "evidence": [
     "integration/f-ci/F-CI31_CURRENT_CANONICAL_SOURCE_LOCK.json",
     "integration/f-ci/F-CI31_CURRENT_CANONICAL_REQUALIFICATION_EVIDENCE.json",
-    "integration/f-ci/F-CI31_INVARIANT_REVIEW.json"
+    "integration/f-ci/F-CI31_INVARIANT_REVIEW.json",
+    "integration/f-ci/F-CI31_POST_PROMOTION_EVIDENCE.json"
   ],
   "nonclaims": [
     "actual-transpiration mass-ledger admission",
@@ -53,5 +67,5 @@
     "crop lifecycle advancement",
     "general SWAP5 release qualification"
   ],
-  "next_action": "Advance the central lineage-aware gate on this branch, recheck live canonical seriality, non-force fast-forward only from exact base 8c16ea58946092024e4b394db87acf91f3fd4abf, then require a green canonical post-promotion run before closeout."
+  "next_action": "Fast-forward the canonical ref over this metadata-only closeout commit and require the exact status-bearing head to pass the central canonical qualification. Do not start F-CI32 before that succeeds."
 }
