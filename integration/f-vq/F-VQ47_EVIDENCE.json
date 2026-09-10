@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.scientific_requalification_evidence.v1",
+  "work_unit": "F-VQ47",
+  "tested_head": "e6026f4fc33a1340403c95e994becf057b6646ae",
+  "candidate": {
+    "closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "decisive_ci": {
+    "workflow_run": 34474012577,
+    "job": 102860324182,
+    "conclusion": "success",
+    "artifact_id": 10150698013,
+    "artifact_digest": "sha256:360d3698681422a372a0ee2b90757672da7225db57ff653ce85c6877d1da28ab",
+    "summary_sha256": "45f9a8190307abf82da8b225f5ee939bb4f7693a1dbb394fa4026d0be7fef27a",
+    "o0_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805",
+    "o2_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805"
+  },
+  "coverage": {
+    "stable_equivalence_cases": 1804,
+    "dmax_truncated_multi": 800,
+    "full_profile_multi": 400,
+    "single_compartment": 600,
+    "explicit_stable_physics": 4,
+    "seam_cases": 16,
+    "internal_boundaries": 4,
+    "seam_offsets_cm": [0.0, 5e-11, 1e-10, 2e-10],
+    "negative_top_saturated_thickness_seam_cases": 8,
+    "profile_bottom_fail_closed_cases": 2,
+    "restricted_transfer_guard_cases": 2,
+    "total_candidate_cases": 1824
+  },
+  "floating_point_characterization": {
+    "max_geometry_or_diagnostic_abs_difference": 3.552713678800501e-15,
+    "max_node_abs_difference_vs_raw_legacy": 4.218847493575595e-15,
+    "max_raw_legacy_partition_mass_error": 3.552713678800501e-15,
+    "max_raw_legacy_partition_mass_roundoff_bound": 1.514494000672089e-12,
+    "max_candidate_mass_error": 3.552713678800501e-15,
+    "max_candidate_mass_roundoff_bound": 4.782612633701278e-13,
+    "max_candidate_closure_correction_abs": 4.218847493575595e-15
+  },
+  "verified": {
+    "stable_domain_equivalence": true,
+    "lev2comp_exact_and_near_boundary_seam": true,
+    "multiple_internal_boundaries": true,
+    "profile_bottom_fail_closed_separately": true,
+    "horizontal_anisotropy": true,
+    "dmax_truncation": true,
+    "full_profile_distribution": true,
+    "single_compartment_distribution": true,
+    "transmissivity_weighting": true,
+    "legacy_admitted_positive_transfer_domain": true,
+    "o0_o2_numeric_identity": true,
+    "o0_o2_byte_identical_output": true,
+    "scalar_to_node_mass_conservation": true,
+    "configurable_mass_tolerance_used": false
+  },
+  "infrastructure_incident": {
+    "affected_runs": [34473926206, 34473956370],
+    "cause": "Contents-API-created run_gate.sh had non-executable file mode while workflow attempted direct execution",
+    "remediation": "workflow invokes the unchanged gate through bash",
+    "candidate_changed": false,
+    "legacy_oracle_changed": false,
+    "scientific_exit_criteria_changed": false
+  },
+  "decision": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
+  "runtime_admission": false,
+  "canonical_admission": false
+}
