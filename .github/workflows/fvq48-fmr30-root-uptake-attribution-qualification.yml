@@ -1,0 +1,22 @@
+name: F-VQ48 independent F-MR30 root-uptake attribution qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq48-fmr30-root-uptake-attribution-receipt
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ48 independent qualification evidence gate
+        run: bash tests/fvq/run_fvq48_fmr30_root_uptake_attribution_qualification.sh
