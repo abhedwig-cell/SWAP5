@@ -1,0 +1,20 @@
+name: F-PM08C2C IPOS4-5 Ernst response qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08c2c-ipos45-ernst-response
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C2C IPOS4-5 Ernst qualification gate
+        run: bash tests/fpm/run_fpm08c2c_ipos45_ernst_response_gate.sh
