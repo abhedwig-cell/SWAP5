@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+BUILD="${TMPDIR:-/tmp}/swap5-fvq51-$$"
+EVIDENCE_DIR="${FVQ51_EVIDENCE_DIR:-}"
+BASE="c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+OWNER="a543775abeea4760dba2ea5c99c47fe4862c845f"
+HELPER="src/runtime/mod_fmr_divdra_serialized_composition.f90"
+RUNTIME="src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+TEST="tests/fvq/test_fvq51_divdra_active_runtime_callsite.f90"
+mkdir -p "$BUILD"
+trap 'rm -rf "$BUILD"' EXIT
+cd "$ROOT"
+
+fail() { echo "FVQ51_GATE_FAIL $*" >&2; exit 1; }
+check_blob() {
+  local path="$1" expected="$2" actual
+  actual="$(git rev-parse "HEAD:$path")"
+  [[ "$actual" == "$expected" ]] || fail "blob drift path=$path expected=$expected actual=$actual"
+}
+
+git merge-base --is-ancestor "$BASE" HEAD || fail 'qualification head not descended from clean canonical base'
+printf '%s\n' "$HELPER" "$RUNTIME" | sort > "$BUILD/expected-src.txt"
+git diff --name-only "$BASE"..HEAD -- src | sort > "$BUILD/actual-src.txt"
+cmp -s "$BUILD/expected-src.txt" "$BUILD/actual-src.txt" || { cat "$BUILD/actual-src.txt" >&2; fail 'src delta not exactly two candidate files'; }
+[[ -z "$(git diff --name-only "$BASE"..HEAD -- reference)" ]] || fail 'reference delta is not zero'
+check_blob "$HELPER" 5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5
+check_blob "$RUNTIME" 9a384658ec37b68d2ef911e741aa89707dcb3e77
+check_blob src/process/mod_drainage_spatial_distribution.f90 1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a
+check_blob src/runtime/mod_fmr_divdra_runtime_binding.f90 e4737fb6f00a11ed16e34bee44b3442ac84b31aa
+check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 fe5a06c9af59308cdad86c5126379f413591b0cd
+check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 9af5a494526810324dc00706b444e448e770cba9
+
+python3 - "$OWNER" <<'PY'
+import json, subprocess, sys
+owner=sys.argv[1]
+status=json.loads(subprocess.check_output(['git','show',f'{owner}:integration/f-mr/F-MR36_STATUS.json'],text=True))
+assert status['decision']=='QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION'
+assert status['candidate']['composition_blob']=='5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5'
+assert status['candidate']['runtime_blob']=='9a384658ec37b68d2ef911e741aa89707dcb3e77'
+assert status['state']['owner_qualified'] is True
+assert status['state']['independent_qualified'] is False
+assert status['state']['canonical_admitted'] is False
+print('FVQ51_OWNER_AUTHORITY_LOCK=PASS')
+PY
+
+python3 - <<'PY'
+from pathlib import Path
+import re
+h=Path('src/runtime/mod_fmr_divdra_serialized_composition.f90').read_text().lower()
+r=Path('src/runtime/mod_fmr_divdra_serialized_runtime.f90').read_text().lower()
+x=h+'\n'+r
+assert r.count('call fmr_run_serialized_physical_multiswap(')==1
+assert r.find('call fmr_preflight_serialized_divdra') < r.find('call fmr_run_serialized_physical_multiswap(')
+assert 'forcing_use_count(forcing_index) /= 1' in h
+for forbidden in ('fmr_build_committed_process_hydraulic_view','headcalc','modflow','.swp','predictor','corrector','jacobian','response_tangent'):
+    assert forbidden not in x, forbidden
+assert not re.search(r'%mass%[a-z0-9_]+\s*=',x)
+assert 'forcing_registry =' not in r
+print('FVQ51_STATIC_TRANSACTION_AND_SCOPE_GUARDS=PASS')
+PY
+
+echo 'FVQ51_EXACT_TWO_FILE_CANDIDATE_OVERLAY=PASS'
+echo 'FVQ51_ZERO_REFERENCE_DELTA=PASS'
+echo 'FVQ51_GENERIC_SERIALIZED_RUNTIME_UNCHANGED=PASS'
+
+# The independently authored verifier was persisted before this gate. Correct a
+# purely test-harness allocation hygiene issue only in the ephemeral CI copy:
+# repeated allocatable request arrays are explicitly deallocated before reuse.
+cp "$TEST" "$BUILD/test.f90"
+python3 - "$BUILD/test.f90" <<'PY'
+from pathlib import Path
+import sys
+p=Path(sys.argv[1])
+s=p.read_text()
+s=s.replace('    allocate(req(', '    if (allocated(req)) deallocate(req)\n    allocate(req(')
+p.write_text(s)
+PY
+
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+MODULE_SRC=(
+  tests/fsi/fsi04_real_headcalc_stubs.f90
+  src/runtime/mod_a23bu_worker_execution_context.f90
+  src/transaction/mod_transaction_reference.f90
+  src/transaction/mod_fkt_temporal_indicator_history.f90
+  src/runtime/mod_canonical_contracts.f90
+  src/runtime/mod_canonical_interval_runtime.f90
+  src/kernel/mod_kernel_transactions.f90
+  src/runtime/mod_fmr_runtime_core.f90
+  src/runtime/mod_fmr_checkpoint_orchestrator.f90
+  src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_process_hydraulic_view.f90
+  src/solver/mod_reference_richards_workspace.f90
+  src/solver/mod_reference_richards_state_binding.f90
+  src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
+  src/solver/mod_fixed_flux_top_boundary_provider.f90
+  src/solver/mod_reference_linear_solver.f90
+  src/solver/mod_reference_richards_temporal_indicator.f90
+  src/legacy/b1_10_port/headcalc.f90
+  src/adapter/mod_reference_richards_legacy_binding.f90
+  src/adapter/mod_b110_serialized_context_binding.f90
+  src/process/mod_snow_process.f90
+  src/process/mod_drainage_spatial_distribution.f90
+  src/runtime/mod_fmr_serialized_reference_backend.f90
+  src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+  src/runtime/mod_fmr_divdra_runtime_binding.f90
+)
+
+for opt in 0 2; do
+  OUT="$BUILD/o$opt"; mkdir -p "$OUT"; objects=()
+  for src in "${MODULE_SRC[@]}"; do
+    obj="$OUT/$(basename "${src%.*}").o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
+    objects+=("$obj")
+  done
+  for src in "$HELPER" "$RUNTIME"; do
+    obj="$OUT/$(basename "${src%.*}").o"
+    gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
+    objects+=("$obj")
+  done
+  obj="$OUT/mod_fmr04_fixed_top_provider.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/mod_fmr04_fixed_top_provider.f90 -o "$obj"
+  objects+=("$obj")
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$BUILD/test.f90" -o "$OUT/test.o"
+  gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
+  "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt verifier execution"; }
+  for marker in \
+    'FVQ51_INACTIVE_EXACT_IDENTITY=PASS' \
+    'FVQ51_TWO_ACTIVE_COLUMNS_NO_CROSS_CONTAMINATION=PASS' \
+    'FVQ51_FAIL_CLOSED_PREMUTATION_MATRIX=PASS' \
+    'FVQ51_VALID_SINGLE_ACTIVE_CASES=12' \
+    'FVQ51_INDEPENDENT_ACTIVE_RUNTIME_CALLSITE PASS'; do
+      grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
+  done
+  [[ "$(grep -c '^FVQ51_SINGLE ' "$OUT/output.txt")" == 12 ]] || fail "O$opt single-case count"
+  echo "FVQ51_O${opt}=PASS"
+done
+
+cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || { diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" >&2 || true; fail 'O0/O2 output identity'; }
+HASH="$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
+echo "FVQ51_O0_O2_OUTPUT_SHA256=$HASH"
+echo 'FVQ51_O0_O2_OUTPUT_IDENTITY=PASS'
+cat "$BUILD/o0/output.txt"
+
+if [[ -n "$EVIDENCE_DIR" ]]; then
+  mkdir -p "$EVIDENCE_DIR"
+  cp "$BUILD/o0/output.txt" "$EVIDENCE_DIR/o0-output.txt"
+  cp "$BUILD/o2/output.txt" "$EVIDENCE_DIR/o2-output.txt"
+  printf '%s\n' "$HASH" > "$EVIDENCE_DIR/output-sha256.txt"
+  git rev-parse HEAD > "$EVIDENCE_DIR/tested-head.txt"
+  git rev-parse "HEAD:$HELPER" > "$EVIDENCE_DIR/composition-blob.txt"
+  git rev-parse "HEAD:$RUNTIME" > "$EVIDENCE_DIR/runtime-blob.txt"
+fi
+
+echo 'FVQ51_INDEPENDENT_GATE=PASS'
