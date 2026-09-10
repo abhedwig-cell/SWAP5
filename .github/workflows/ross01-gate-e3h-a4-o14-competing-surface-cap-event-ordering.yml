@@ -1,0 +1,84 @@
+name: F-ROSS01 Gate E3H-A4 O14 Competing Surface-Cap Event Ordering
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A4_O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a4_o14_competing_surface_cap_event_ordering.py'
+      - '.github/workflows/ross01-gate-e3h-a4-o14-competing-surface-cap-event-ordering.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [P0_A1_CONTROL, P1_DRIER_SUBSOIL, P2_DRIER_TOP_AND_SUBSOIL, P3_STRONG_DRY_SEPARATION]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install diagnostic dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a4_o14_competing_surface_cap_event_ordering.py
+      - name: Assert preserved A3 negative authority
+        run: |
+          python3 - <<'PY'
+          import json
+          p='integration/f-ross/F-ROSS01_GATE_E3H_A3_O14_REFERENCE_ROOT_EXISTENCE_AND_EVENT_TOPOLOGY_DIAGNOSTIC_RESULT.json'
+          r=json.load(open(p))
+          assert r['decision']=='O14_REFERENCE_EVENT_ROOT_NOT_REPRODUCIBLY_ESTABLISHED_EVENT_FORMULATION_RESEARCH_REQUIRED'
+          assert r['aggregate_result']['reproducible_reference_root_cases']==0
+          assert r['aggregate_result']['reference_solves_complete']==288
+          PY
+      - name: Execute frozen competing-event diagnostic
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a4-${{ matrix.profile }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a4_o14_competing_surface_cap_event_ordering.py \
+            "${{ matrix.profile }}" \
+            "$out/F-ROSS01_GATE_E3H_A4_${{ matrix.profile }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A4_${{ matrix.profile }}_STDOUT.txt"
+      - name: Assert frozen diagnostic completeness
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          f=f'ross01-gate-e3h-a4-{p}/F-ROSS01_GATE_E3H_A4_{p}_RESULT.json'
+          r=json.load(open(f))
+          pr=r['profile_result']
+          assert r['gate']=='E3H_A4_O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_DIAGNOSTIC'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert r['surface_cap_cm']==1.0
+          assert r['diagnostic_complete'] is True
+          assert pr['profile_id']==p
+          assert pr['case_count']==6
+          assert pr['total_search_solves']==72
+          assert all(c['start_count']==12 for c in pr['cases'])
+          assert all(a['committed_state_bitwise_unchanged'] is True for c in pr['cases'] for a in c['attempts'])
+          assert all(a['mass_repair_or_clipping_used'] is False for c in pr['cases'] for a in c['attempts'])
+          for c in pr['cases']:
+              for a in c['attempts']:
+                  if a.get('valid'):
+                      assert a['max_abs_independent_reference_balance_residual_cm'] <= 1e-9
+                      assert a['physical_head_order'] is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a4-${{ matrix.profile }}
+          path: ross01-gate-e3h-a4-${{ matrix.profile }}/
