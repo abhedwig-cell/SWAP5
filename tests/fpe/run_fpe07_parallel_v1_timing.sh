@@ -15,13 +15,17 @@ for spec in \
   src/runtime/mod_fmr_runtime_core.f90:adc2b7514cc062c0cde4e71582ba8ed7776a7335 \
   src/runtime/mod_fmr_serialized_reference_backend.f90:e0432faa0e05a3c136ee5aed6fddb12ad631848d \
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90:be4005a97e35c498ffc40297409a75efe65ff5df \
+  src/runtime/mod_a23bu_worker_execution_context.f90:2a190d206200ad201c37c9a82d3e32e651d37a37 \
+  src/solver/mod_reference_richards_workspace.f90:59ef9d037c1875610d45ac83387ebab9e917e0fe \
+  src/solver/mod_b110_default_mvg_provider.f90:97d67eb373073b183be6d1bf5b756ecb5125dde2 \
   src/adapter/mod_reference_richards_legacy_binding.f90:1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff \
   src/legacy/b1_10_port/headcalc.f90:04c4877754b39161d5afa0f2496a015fd3334cc5 \
   src/runtime/mod_fmr_parallel_physical_scheduler.f90:544a1ca16fdeebdfce7f89d1ddf1825fa32fa654 \
   src/runtime/mod_fmr_parallel_worker_pool.f90:393e9bfbc4c078d259a5ec70aca78f50e54e8b35 \
   tests/fmr/test_fmr20_parallel_v1_qualification.f90:bfebfde94b3931367d69d502a6fc7b1deb8f2ad6 \
   tests/fmr/run_fmr20_parallel_v1_qualification.sh:3fd1da2c10923adc1f5acf0d4e044e5e8c7236e3 \
-  tests/fpe/test_fpe07_parallel_v1_timing.f90:fe9b7b79477b9164609c3da9fc30f3d816a8e055; do
+  tests/fpe/test_fpe07_parallel_v1_timing.f90:fe9b7b79477b9164609c3da9fc30f3d816a8e055 \
+  tests/fpe/test_fpe07_worker_memory.f90:fa41c8c8a5b18a3552ce8cfa697210f63e95e9d8; do
   path="${spec%%:*}"
   blob="${spec##*:}"
   [[ "$(git rev-parse HEAD:"$path")" == "$blob" ]] || fail "source lock drift: $path"
@@ -37,6 +41,25 @@ fi
 }
 echo 'FPE07_G02_NO_PRODUCTION_SOURCE_CHANGE=PASS'
 
+python3 - <<'PY'
+from pathlib import Path
+workspace = Path('src/solver/mod_reference_richards_workspace.f90').read_text()
+a23 = Path('src/runtime/mod_a23bu_worker_execution_context.f90').read_text()
+backend = Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
+mvg = Path('src/solver/mod_b110_default_mvg_provider.f90').read_text()
+pool = Path('src/runtime/mod_fmr_parallel_worker_pool.f90').read_text()
+assert 'public :: reference_workspace_payload_bytes' in workspace
+assert 'nreal = nreal + size(workspace%band_matrix' in workspace
+assert 'public :: a23bu_scratch_payload_bytes' in a23
+assert 'size(worker%headcalc%qv)' in a23
+assert 'B110_MCOF_REQUIRED = 42' in mvg
+assert 'allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))' in mvg
+assert 'allocate(self%soil_parameters%z(n), self%soil_parameters%dz(n), self%soil_parameters%node_distance(n))' in backend
+assert 'allocate(self%qdra(size(forcing%drainage_flux_by_level,1),n), self%qssdi(n), self%qrot(n))' in backend
+assert 'allocate(backends(worker_count), transaction_controls(worker_count), worker_runtime(worker_count))' in pool
+print('FPE07_G03_MEMORY_SOURCE_FORMULA_LOCK=PASS')
+PY
+
 # Re-run the complete F-MR20 scientific qualification on the exact frozen
 # production postimage before collecting performance observations.
 bash tests/fmr/run_fmr20_parallel_v1_qualification.sh > "$OUTDIR/F-PE07_SCIENTIFIC_PRECONDITION.log" 2>&1 || {
@@ -45,7 +68,7 @@ bash tests/fmr/run_fmr20_parallel_v1_qualification.sh > "$OUTDIR/F-PE07_SCIENTIF
 }
 grep -Fq 'FMR20_PARALLEL_V1_QUALIFICATION_GATE=PASS' "$OUTDIR/F-PE07_SCIENTIFIC_PRECONDITION.log" || \
   fail 'missing F-MR20 qualification marker'
-echo 'FPE07_G03_SCIENTIFIC_PRECONDITION=PASS'
+echo 'FPE07_G04_SCIENTIFIC_PRECONDITION=PASS'
 
 COMMON=(-std=f2008 -ffree-line-length-none -fbacktrace -fopenmp -O2)
 MODULE_SRC=(
@@ -82,6 +105,23 @@ for src in "${MODULE_SRC[@]}"; do
   gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c "$src" -o "$obj"
   objects+=("$obj")
 done
+
+gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe07_worker_memory.f90 -o "$BUILD/memory_test.o"
+gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/memory_test.o" -o "$BUILD/memory_test"
+"$BUILD/memory_test" > "$OUTDIR/F-PE07_MEMORY_PROBE.log" 2>&1 || {
+  cat "$OUTDIR/F-PE07_MEMORY_PROBE.log" >&2
+  fail 'worker memory probe'
+}
+for marker in \
+  'FPE07_MEMORY_REFERENCE_WORKSPACE_BYTES=812' \
+  'FPE07_MEMORY_A23BU_SCRATCH_BYTES=412' \
+  'FPE07_MEMORY_BACKEND_CACHE_BYTES=1568' \
+  'FPE07_MEMORY_KNOWN_DYNAMIC_BYTES_PER_WORKER=2792' \
+  'FPE07_WORKER_MEMORY_PROBE PASS'; do
+  grep -Fq "$marker" "$OUTDIR/F-PE07_MEMORY_PROBE.log" || fail "missing memory marker: $marker"
+done
+echo 'FPE07_G05_WORKER_MEMORY_CHARACTERIZATION=PASS'
+
 gfortran "${COMMON[@]}" -J "$BUILD" -I "$BUILD" -c tests/fpe/test_fpe07_parallel_v1_timing.f90 -o "$BUILD/test.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/test.o" -o "$BUILD/test"
 
@@ -193,5 +233,5 @@ gfortran --version > "$OUTDIR/compiler.txt"
 printf '%s\n' '-std=f2008 -ffree-line-length-none -fbacktrace -fopenmp -O2' > "$OUTDIR/build_flags.txt"
 
 cat "$OUTDIR/F-PE07_TIMING_SUMMARY.json"
-echo 'FPE07_G04_TIMING_CHARACTERIZATION=PASS'
+echo 'FPE07_G06_TIMING_CHARACTERIZATION=PASS'
 echo 'FPE07_TIMING_GATE=PASS'
