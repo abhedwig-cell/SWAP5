@@ -15,6 +15,9 @@ module mod_reference_richards_workspace
      real(real64), allocatable :: residual(:)
      real(real64), allocatable :: delta_head(:)
      real(real64), allocatable :: tridag_gamma(:)
+     real(real64), allocatable :: tridag_beta(:)
+     logical :: tridag_factorization_capture_requested = .false.
+     logical :: tridag_factorization_valid = .false.
      real(real64), allocatable :: sink(:)
      real(real64), allocatable :: source(:)
      real(real64), allocatable :: provider_theta(:)
@@ -43,6 +46,8 @@ module mod_reference_richards_workspace
   public :: poison_reference_workspace
   public :: release_reference_workspace
   public :: reference_workspace_payload_bytes
+  public :: prepare_reference_tridag_factorization_capture
+  public :: release_reference_tridag_factorization_capture
 
 contains
 
@@ -82,6 +87,9 @@ contains
     workspace%residual = 0.0_real64
     workspace%delta_head = 0.0_real64
     workspace%tridag_gamma = 0.0_real64
+    if (allocated(workspace%tridag_beta)) workspace%tridag_beta = 0.0_real64
+    workspace%tridag_factorization_capture_requested = .false.
+    workspace%tridag_factorization_valid = .false.
     workspace%sink = 0.0_real64
     workspace%source = 0.0_real64
     workspace%provider_theta = 0.0_real64
@@ -106,6 +114,27 @@ contains
     workspace%poisoned = .false.
   end subroutine reset_reference_workspace
 
+  subroutine prepare_reference_tridag_factorization_capture(workspace)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+
+    if (workspace%active_nodes <= 0) error stop 'TRIDAG factorization capture requires initialized workspace'
+    if (allocated(workspace%tridag_beta)) then
+       if (size(workspace%tridag_beta) /= workspace%active_nodes) deallocate(workspace%tridag_beta)
+    end if
+    if (.not. allocated(workspace%tridag_beta)) allocate(workspace%tridag_beta(workspace%active_nodes))
+    workspace%tridag_beta = 0.0_real64
+    workspace%tridag_factorization_capture_requested = .true.
+    workspace%tridag_factorization_valid = .false.
+  end subroutine prepare_reference_tridag_factorization_capture
+
+  subroutine release_reference_tridag_factorization_capture(workspace)
+    type(reference_richards_workspace_t), intent(inout) :: workspace
+
+    if (allocated(workspace%tridag_beta)) deallocate(workspace%tridag_beta)
+    workspace%tridag_factorization_capture_requested = .false.
+    workspace%tridag_factorization_valid = .false.
+  end subroutine release_reference_tridag_factorization_capture
+
   subroutine poison_reference_workspace(workspace)
     type(reference_richards_workspace_t), intent(inout) :: workspace
     real(real64) :: qnan
@@ -119,6 +148,9 @@ contains
     workspace%residual = qnan
     workspace%delta_head = qnan
     workspace%tridag_gamma = qnan
+    if (allocated(workspace%tridag_beta)) workspace%tridag_beta = qnan
+    workspace%tridag_factorization_capture_requested = .false.
+    workspace%tridag_factorization_valid = .false.
     workspace%sink = qnan
     workspace%source = qnan
     workspace%provider_theta = qnan
@@ -152,6 +184,7 @@ contains
     if (allocated(workspace%residual)) deallocate(workspace%residual)
     if (allocated(workspace%delta_head)) deallocate(workspace%delta_head)
     if (allocated(workspace%tridag_gamma)) deallocate(workspace%tridag_gamma)
+    if (allocated(workspace%tridag_beta)) deallocate(workspace%tridag_beta)
     if (allocated(workspace%sink)) deallocate(workspace%sink)
     if (allocated(workspace%source)) deallocate(workspace%source)
     if (allocated(workspace%provider_theta)) deallocate(workspace%provider_theta)
@@ -174,6 +207,8 @@ contains
     workspace%poisoned = .false.
     workspace%has_warm_start = .false.
     workspace%unsaturated_flags = .false.
+    workspace%tridag_factorization_capture_requested = .false.
+    workspace%tridag_factorization_valid = .false.
     workspace%diagnostics = soil_water_solver_diagnostics_t()
   end subroutine release_reference_workspace
 
@@ -191,6 +226,7 @@ contains
     if (allocated(workspace%residual)) nreal = nreal + size(workspace%residual, kind=int64)
     if (allocated(workspace%delta_head)) nreal = nreal + size(workspace%delta_head, kind=int64)
     if (allocated(workspace%tridag_gamma)) nreal = nreal + size(workspace%tridag_gamma, kind=int64)
+    if (allocated(workspace%tridag_beta)) nreal = nreal + size(workspace%tridag_beta, kind=int64)
     if (allocated(workspace%sink)) nreal = nreal + size(workspace%sink, kind=int64)
     if (allocated(workspace%source)) nreal = nreal + size(workspace%source, kind=int64)
     if (allocated(workspace%provider_theta)) nreal = nreal + size(workspace%provider_theta, kind=int64)
@@ -209,7 +245,7 @@ contains
     if (allocated(workspace%band_pivots)) ninteger = ninteger + size(workspace%band_pivots, kind=int64)
     if (allocated(workspace%nonconverged_balance)) nlogical = nlogical + size(workspace%nonconverged_balance, kind=int64)
     if (allocated(workspace%nonconverged_head)) nlogical = nlogical + size(workspace%nonconverged_head, kind=int64)
-    nlogical = nlogical + 3_int64
+    nlogical = nlogical + 5_int64
     nbytes = nreal * int(storage_size(0.0_real64)/8, int64) + &
              nlogical * int(storage_size(.false.)/8, int64) + &
              ninteger * int(storage_size(0)/8, int64)
