@@ -7,7 +7,7 @@ on:
     paths:
       - 'src/runtime/mod_fmr_parallel_root_uptake_pool.f90'
       - 'integration/f-mr/F-MR35_*.json'
-      - 'tests/fmr/run_fmr35_parallel_root_uptake_owner_gate.sh'
+      - 'tests/fmr/run_fmr35_parallel_root_uptake_owner_gate*.sh'
       - '.github/workflows/fmr35-parallel-root-uptake-owner.yml'
   workflow_dispatch:
 
@@ -22,4 +22,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-MR35 real-physics root-active parallel owner gate
-        run: bash tests/fmr/run_fmr35_parallel_root_uptake_owner_gate.sh
+        run: bash tests/fmr/run_fmr35_parallel_root_uptake_owner_gate_v2.sh
