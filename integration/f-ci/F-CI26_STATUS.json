@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI26",
+  "title": "F-MR24 Restart Current-Canonical Requalification",
+  "branch": "qualification/f-ci26-fmr21-restart-canonical-requalification",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "phase": "INDEPENDENT_REQUALIFICATION_COMPLETE_OWNER_CLOSEOUT_PENDING",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_RESTART_COMPOSITION_PENDING_OWNER_CLOSEOUT",
+  "status": "PASS_NOT_YET_CANONICALLY_ADMITTED",
+  "production_composition_commit": "4d52ea05cf6c8f4307d7bf1eae62315c5b517e0f",
+  "tested_head": "32296426e3b52c4c59b176cb6b15f5e7cca39ab5",
+  "workflow_run": 34453605329,
+  "workflow_job": 102794739950,
+  "qualification": {
+    "current_canonical_source_bound": true,
+    "exact_F_MR24_source_blob_identity": true,
+    "frozen_independent_F_MQ27_attacks_reused_exactly": true,
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "mass_continuation": "PASS",
+    "state_family_fail_closed": "PASS",
+    "whole_registry_atomicity": "PASS",
+    "accepted_commit_receipt_api_preserved": "PASS"
+  },
+  "owner": {
+    "workunit": "F-MR24",
+    "observed_source_head": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+    "source_equivalence": "EXACT_BLOB_IDENTITY",
+    "owner_workflow_runs_at_last_check": 0,
+    "owner_closeout_complete": false
+  },
+  "canonical_ref_advanced": false,
+  "production_source_on_canonical_changed": false,
+  "promotion_allowed_now": false,
+  "promotion_hold": "F-MR24_RECOMPOSITION_CONTRACT requires owner gates and an owner closeout before downstream canonical admission. F-CI26 therefore remains qualification evidence, not canonical authority, until that requirement is satisfied or formally superseded.",
+  "hard_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No general backend/state-family restart admission.",
+    "No general SWAP5 release qualification."
+  ],
+  "closed": false
+}
