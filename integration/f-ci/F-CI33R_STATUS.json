@@ -1,0 +1,40 @@
+{
+  "schema": "swap5.canonical_postimage_reconciliation_status.v1",
+  "work_unit": "F-CI33R",
+  "title": "F-CI33 Current Canonical Postimage Governance Reconciliation",
+  "branch": "qualification/f-ci33r-current-canonical-postimage-reconciliation",
+  "base": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+  "phase": "INCIDENT_PERSISTED_PRE_REMEDIATION",
+  "decision": "OPEN_CANONICAL_POSTIMAGE_POINTER_RECONCILIATION",
+  "incident": {
+    "post_promotion_run": 34484827984,
+    "failed_job": 102897008639,
+    "failed_job_name": "current-restricted-canonical-postimage",
+    "failed_step": "Current F-CI32 remediated DIVDRA canonical source authority gate",
+    "failure": "FCI32_FAIL G05_EXACT_ONE_SOURCE_DELTA",
+    "classification": "STALE_MOVING_CANONICAL_GOVERNANCE_POINTER",
+    "scientific_failure": false,
+    "runtime_binding_failure": false,
+    "production_regression_indicated": false,
+    "cause": "The moving current canonical postimage job still replayed F-CI32. F-CI32 correctly freezes its own historical one-source admission and therefore rejects the later F-CI33 source addition."
+  },
+  "remediation_contract": {
+    "modify_src": false,
+    "modify_reference": false,
+    "modify_historical_fci32_gate": false,
+    "modify_fci33_candidate": false,
+    "update_only_moving_current_postimage_authority": true,
+    "current_authority_target": "F-CI33",
+    "expected_src_tree": "7576837368e4244c3c2a1bbf9867df8d4e58811a",
+    "expected_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "candidate_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "required_before_promotion": [
+    "repair branch contains zero src and zero reference delta from 8c02470d",
+    "historical F-CI32 gate remains byte-identical",
+    "moving current postimage job invokes F-CI33 canonical gate",
+    "F-CI33 gate allowlist admits only the canonical aggregator and F-CI33R governance artifacts in addition to original F-CI33 scope",
+    "dedicated F-CI33R gate passes on exact remediation closeout",
+    "live canonical remains 8c02470d immediately before non-forced fast-forward"
+  ]
+}
