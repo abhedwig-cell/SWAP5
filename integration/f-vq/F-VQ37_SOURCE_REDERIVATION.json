@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ37",
+  "title": "Independent Frozen-Source Rederivation for F-WOF43A Crop-to-ET Canopy View",
+  "reviewed_candidate": "df72af4d2dc5b3255777733f8a725dca20583785",
+  "reviewed_production_blob": "1234bcb8e3b47ebe8e67b0bac6af35e09e9056da",
+  "independence": {
+    "owner_test_used_as_oracle": false,
+    "owner_qualification_conclusion_assumed": false,
+    "source_equations_rederived_from_frozen_SW4_3_1": true,
+    "production_source_modified": false
+  },
+  "frozen_authority": {
+    "outer_archive": "/mnt/data/SWAP_4.3.1(6).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_path": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_SWAP_ZIP_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
+  },
+  "rederived_source": [
+    {
+      "file": "SWAP/MOD_cropdevelopment.f90",
+      "file_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "source_line": 343,
+      "legacy_statement": "vcover = 1.d0 - dexp(-1.d0 * kdir * kdif * lai)",
+      "normalized_equation": "vcover = 1 - exp(-KDIR*KDIF*LAI)"
+    },
+    {
+      "file": "SWAP/MOD_cropdevelopment.f90",
+      "file_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "source_line": 1232,
+      "legacy_statement": "cf = afgen (cftb, macroptb, dvs)",
+      "normalized_equation": "CF = AFGEN(CFTB,DVS)"
+    },
+    {
+      "file": "SWAP/MOD_cropdevelopment.f90",
+      "file_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "source_lines": [887, 891, 907],
+      "normalized_equation": "fco2tra = 1 when correction is inactive; fco2tra = AFGEN(CO2TRATB,CO2) when active"
+    }
+  ],
+  "rederived_domains": {
+    "KDIR": {
+      "domain": [0.0, 2.0],
+      "fixed_source": "SWAP/fixed.f90:141",
+      "wofost_source": "SWAP/wofost.f90:551"
+    },
+    "KDIF": {
+      "domain": [0.0, 2.0],
+      "fixed_source": "SWAP/fixed.f90:140",
+      "wofost_source": "SWAP/wofost.f90:550"
+    },
+    "CFTB": {
+      "x_domain_DVS": [0.0, 2.0],
+      "y_domain_CF": [0.0, 2.0],
+      "source": "SWAP/MOD_cropdevelopment.f90:1172"
+    },
+    "CO2TRATB": {
+      "x_domain_ppm": [0.0, 3000.0],
+      "y_domain_factor": [0.0, 2.0],
+      "source": "SWAP/MOD_cropdevelopment.f90:839"
+    },
+    "active_atmospheric_CO2": {
+      "domain_ppm": [10.0, 3000.0],
+      "sources": ["SWAP/MOD_cropdevelopment.f90:850", "SWAP/MOD_cropdevelopment.f90:879"]
+    }
+  },
+  "architectural_interpretation": {
+    "persistent_state": ["crop_emerged", "DVS", "LAI remain crop-owner state, not provider-owned state"],
+    "immutable_shared_parameters": ["KDIR", "KDIF", "CFTB", "CO2TRATB when enabled"],
+    "forcing": ["atmospheric CO2 when enabled"],
+    "derived_ephemeral_view": ["vcover", "CF", "fco2tra"],
+    "calendar_year_selection_inside_kernel": false,
+    "water_mass_contribution": false
+  },
+  "scope_limit": "This rederivation verifies equations and domains only. It does not qualify fixed/WOFOST parser adapters, runtime crop-snapshot binding, F-PM06A composition, root uptake, actual ET fluxes, or canonical admission."
+}
