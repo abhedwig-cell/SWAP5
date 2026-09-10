@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D4",
+  "title": "Frozen SWAP 4.3.1 Fixed-Weir Secondary Balance Source Inventory",
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+  },
+  "source_semantics": {
+    "fixed_target": {
+      "location": "SWAP/surfacewater.f90:175-181",
+      "equation": "SWMAN=1 => WLSTAR = HBWEIR",
+      "modern_classification": "derived physical control target for the active interval; no continuation memory required"
+    },
+    "target_storages": {
+      "location": "SWAP/surfacewater.f90:235-246",
+      "equations": [
+        "SWSTTAR = SWSTLEV(WLSTAR)",
+        "WLSTARA = WLSTAR - WLDIP",
+        "if WLSTARA > zbotdr(1+nrpri)+1e-4 then SWSTTARA=SWSTLEV(WLSTARA), WSMAX=WSCAP else SWSTTARA=0, WSMAX=0"
+      ],
+      "modern_classification": "derived trial targets; WSCAP is capacity, not an accepted mass flux"
+    },
+    "first_projection": {
+      "location": "SWAP/surfacewater.f90:248-273",
+      "equation": "SWSTMAX = SWST + (QDRD + QRapDra + WSMAX)*DT + RUNOTS",
+      "branches": [
+        "SWSTMAX < 1e-7: legacy dry-system branch",
+        "0 <= SWSTMAX < SWSTTARA: maximum supply is implicitly assumed and storage becomes SWSTMAX"
+      ],
+      "modern_disposition": "dry-floor semantics are governed by D3 and may not create or destroy water; actual q_supply must be explicit"
+    },
+    "second_projection_without_supply": {
+      "location": "SWAP/surfacewater.f90:275-294",
+      "equation": "SWSTMAX = SWST + (QDRD + QRapDra)*DT + RUNOTS",
+      "branches": [
+        "SWSTMAX <= SWSTTARA: storage forced to SWSTTARA, implying exactly the supply needed to reach the supply target",
+        "SWSTTARA < SWSTMAX <= SWSTTAR: no supply and no discharge; storage equals the no-supply projection"
+      ],
+      "modern_disposition": "materialize actual supply as a first-class result and preserve the exact storage mass equation"
+    },
+    "fixed_weir_discharge_branch": {
+      "location": "SWAP/surfacewater.f90:325-373",
+      "entry": "SWMAN=1 after the no-supply projection exceeds SWSTTAR",
+      "SWQHR1_rating": "Q(h) = ALPHAW*(h-HBWEIR)^BETAW",
+      "top_capacity_check": "SWSTN = SWST + (QDRD + QRapDra - Q(top))*DT + RUNOTS; if SWSTN > S(top), legacy raises overflow",
+      "implicit_balance": "find h between HBWEIR and +100 cm such that S(h) approximately equals SWST + (QDRD + QRapDra - Q(h))*DT + RUNOTS",
+      "legacy_iteration_stop": "head bracket width <= 0.001 cm",
+      "legacy_final_assignment": "WLS=WLSI; SWST=SWSTN; WDIS=WDISI",
+      "risk": "SWSTN is mass-consistent with WDISI but need not equal SWSTLEV(WLSI) at the stopping point; storage and level can therefore become mutually inconsistent"
+    },
+    "SWQHR1_reader": {
+      "location": "SWAP/surfacewater.f90:917-955",
+      "bounds": {
+        "HBWEIR": "deepest-secondary-bottom .. +100 cm after datum conversion",
+        "ALPHAW_input": "0.1 .. 50",
+        "BETAW": "0.5 .. 3.0"
+      },
+      "unit_conversion": "ALPHAW_internal = ALPHAW_input * (8.64*100^(1-BETAW)/SOFCU)",
+      "consistency": "HBWEIR may not lie below the deepest secondary channel bottom; when SWMAN=1 and supply capacity is nonzero, HBWEIR-WLDIP must remain above the secondary bottom plus the source threshold"
+    },
+    "SWQHR2_exclusion": {
+      "location": "SWAP/surfacewater.f90:957-1022 and 409-432",
+      "observation": "for table discharge, HBWEIR is assigned at the first table entry with Q<1e-4 while the table is only required to reach Q<1e-6; the nominal crest can therefore correspond to small but nonzero tabulated discharge",
+      "disposition": "SWQHR=2 is excluded from D4 and requires a separate source/equation disposition"
+    },
+    "storage_relation": {
+      "location": "SWAP/surfacewater.f90:1121-1213",
+      "semantics": "22-knot piecewise-linear level-to-storage and inverse relation qualified only for stable interior use by D1",
+      "D1_holds": [
+        "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
+        "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM"
+      ]
+    },
+    "numerical_history_outside_physical_balance": {
+      "location": "SWAP/surfacewater.f90:378-404",
+      "items": [
+        "ponding-driven timestep reduction",
+        "WLSBAK oscillation history",
+        "OSSWLM oscillation policy"
+      ],
+      "disposition": "numerical policy/runtime diagnostics; not additional fixed-weir physical state"
+    }
+  },
+  "derived_modern_reference_equations": {
+    "B": "S0 + dt*(q_drain_secondary + q_rapid) + V_top_surface",
+    "supply_if_needed": "q_supply = min(q_supply_capacity, max(0,(S_supply-B)/dt))",
+    "post_supply_projection": "B_supply = B + dt*q_supply",
+    "zero_discharge_condition": "B_supply <= S_target",
+    "power_discharge_condition": "B > S_target",
+    "power_root": "R(h)=S(h)+dt*alpha*(h-h_weir)^beta-B=0",
+    "overflow_infeasibility": "B > S_top + dt*alpha*(S_top_head-h_weir)^beta",
+    "accepted_mass_identity": "S1-S0=dt*(q_drain_secondary+q_rapid+q_supply-q_discharge)+V_top_surface"
+  },
+  "scientific_and_numerical_seams": [
+    {
+      "id": "D4-RISK-01-LEGACY-0P001CM-BISECTION-CAN-LEAVE-S-AND-WLS-INCONSISTENT",
+      "type": "legacy numerical/state consistency"
+    },
+    {
+      "id": "D4-RISK-02-MASS-RESIDUAL-MUST-NOT-BE-CONFLATED-WITH-RATING-ROOT-RESIDUAL",
+      "type": "mass/numerical-policy separation"
+    },
+    {
+      "id": "D4-RISK-03-POWER-RATING-CREST-TANGENT-SINGULAR-FOR-BETA-LT-1",
+      "type": "physical sensitivity seam"
+    },
+    {
+      "id": "D4-RISK-04-D1-STORAGE-MAPPING-ENDPOINT-SEAMS",
+      "type": "upstream qualified hold"
+    },
+    {
+      "id": "D4-RISK-05-NO-FEASIBLE-RATING-STATE-OVERFLOW",
+      "type": "physical domain failure"
+    },
+    {
+      "id": "D4-RISK-06-LEGACY-CALENDAR-MANAGEMENT-PERIOD-SELECTION",
+      "type": "generic-time architecture"
+    },
+    {
+      "id": "D4-RISK-07-WLSBAK-AND-PONDING-DT-LOGIC-ARE-NUMERICAL-POLICY",
+      "type": "physics/numerics separation"
+    },
+    {
+      "id": "D4-RISK-08-D3-DRY-FLOOR-AND-RAW-WSCAP-MASS-GAPS-MUST-NOT-RETURN",
+      "type": "mass-conservation inheritance"
+    },
+    {
+      "id": "D4-RISK-09-SWQHR2-THRESHOLD-DERIVED-HBWEIR-EXCLUDED",
+      "type": "excluded source route"
+    }
+  ]
+}
