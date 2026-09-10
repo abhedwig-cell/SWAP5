@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D2",
+  "title": "Restricted Extended Drainage Exchange-Law Readiness Contract",
+  "activation_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "parent_closeouts": {
+    "F-PM08D": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "F-PM08D1": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499"
+  },
+  "qualified_supporting_science": {
+    "F-VQ42": {
+      "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
+      "scope_use": "positive-side power interflow response and explicit activation singularity semantics only"
+    },
+    "F-VQ43": {
+      "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION",
+      "scope_use": "aggregation is downstream and must not be reimplemented inside the per-level exchange law"
+    }
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "frozen_source_location": "SWAP/surfacewater.f90:468-641",
+  "modern_component_boundary": {
+    "role": "stateless per-level extended drainage exchange evaluator",
+    "persistent_state": false,
+    "input_categories": {
+      "immutable_parameters": [
+        "zbotdr",
+        "swdtyp",
+        "widthr",
+        "taludr",
+        "lspacing",
+        "rdrain",
+        "rinfi",
+        "rentry",
+        "rexit",
+        "gwlinf",
+        "highest-level surface mode and its parameters",
+        "pondmx"
+      ],
+      "dynamic_hydraulic_input": [
+        "groundwater_level",
+        "ponding_depth",
+        "resolved_surface_water_control_head"
+      ],
+      "trial_results": [
+        "signed_exchange_rate",
+        "resolved_drain_level",
+        "effective_head_difference",
+        "branch diagnostics",
+        "physical response sensitivities when defined"
+      ],
+      "scratch": [
+        "wet_perimeter",
+        "temporary drainage/infiltration resistance",
+        "temporary entry/exit resistance",
+        "raw head difference"
+      ]
+    }
+  },
+  "sign_convention": {
+    "q_external": "positive soil/drainage system to surface water; negative surface water to soil",
+    "mass_authority": "the returned signed exchange is the only physical transfer for this law; later aggregation derives totals and runtime books accepted mass exactly once"
+  },
+  "resolved_control_head_contract": {
+    "SWSRF_2": "caller supplies secondary water level derived from SWST or prescribed forcing according to SWSEC",
+    "SWSRF_3_primary_level": "caller supplies prescribed primary water level",
+    "SWSRF_3_secondary_levels": "caller supplies secondary water level",
+    "SWSRF_1": "not admitted in D2 because frozen drainflux_extended reads local WL without source-defined assignment",
+    "component_knows_SWSRF_topology": false
+  },
+  "frozen_equation_sequence": [
+    "If neither resolved water level nor groundwater level is below PONDMX, exchange is zero.",
+    "A channel/drain medium is active only if groundwater level or resolved water level is strictly greater than ZBOTDR+0.001 cm.",
+    "If active and resolved water level <= ZBOTDR+0.001 cm, resolved drain level is ZBOTDR and open-channel wetted perimeter is WIDTHR.",
+    "If active and resolved water level > ZBOTDR+0.001 cm, resolved drain level is the water level and open-channel wetted perimeter is WIDTHR + 2*sqrt(depth^2 + (depth/TALUDR)^2).",
+    "Raw head difference is GWL-DRAINL; add POND only when GWL>-0.1 cm.",
+    "For negative raw head difference with GWL<GWLINF, replace the groundwater contribution by GWLINF so effective difference is GWLINF-DRAINL.",
+    "For highest-level SWNRSRF=2, frozen extended drainage applies COFINTFL*DIFFL**EXPINTFL without a negative-side guard; D2 admits only nonnegative effective difference for this branch.",
+    "Otherwise positive effective difference uses RDRAIN/RENTRY, negative or zero effective difference uses RINFI/REXIT.",
+    "Highest-level SWNRSRF=1 positive drainage replaces RDRAIN by max(RSURFDEEP-DIFFL, RSURFSHALLOW).",
+    "For open channels q=DIFFL/(R + Rextra*LSPACING/WETPER); for tube drains q=DIFFL/R."
+  ],
+  "restricted_admitted_domain_for_future_candidate": {
+    "legacy_surface_water_routes": [2, 3],
+    "SWSRF_1_admitted": false,
+    "resolved_control_head_required": true,
+    "reader_valid_geometry_and_resistance_ranges_required": true,
+    "negative_power_interflow_admitted": false,
+    "availability_limiter_inside_exchange_law": false,
+    "multilevel_aggregation_inside_exchange_law": false,
+    "DIVDRA_inside_exchange_law": false,
+    "calendar_or_management_period_logic_inside_exchange_law": false
+  },
+  "physical_sensitivity_contract": {
+    "first_class_inputs": ["groundwater_level", "resolved_surface_water_control_head", "ponding_depth"],
+    "outputs": ["dq_dgroundwater_level", "dq_dcontrol_head", "dq_dponding_depth"],
+    "defined_only_away_from_branch_seams": true,
+    "undefined_or_one_sided_metadata_required_at_nonsmooth_points": true,
+    "finite_flux_must_not_be_erased_when_a_tangent_is_unavailable": true,
+    "solver_chain_rule_owned_outside_process": true,
+    "no_hidden_smoothing_or_epsilon_band": true
+  },
+  "source_risks": [
+    {
+      "id": "D2-RISK-01-SWSRF1-UNINITIALIZED-WL",
+      "type": "undefined legacy value dependency",
+      "hold": "SWSRF=1 excluded from D2 and any direct production migration"
+    },
+    {
+      "id": "D2-RISK-02-NEGATIVE-POWER-INTERFLOW",
+      "type": "mathematically undefined fractional power for negative effective head",
+      "hold": "SWNRSRF=2 admitted only for effective head difference >=0; negative side requires separate disposition"
+    },
+    {
+      "id": "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY",
+      "type": "physical formula discontinuity",
+      "source_seam": "GWL>-0.1 cm adds POND abruptly",
+      "hold": "publish branch metadata; no smoothing"
+    },
+    {
+      "id": "D2-RISK-04-CHANNEL-ACTIVATION-SEAM",
+      "type": "activation/control-head seam",
+      "source_seam": "strict ZBOTDR+0.001 cm active-medium and drain-level switch",
+      "hold": "branch-exact reference behavior must be characterized before production"
+    },
+    {
+      "id": "D2-RISK-05-GWLINF-DERIVATIVE-KINK",
+      "type": "continuous value with sensitivity change",
+      "source_seam": "negative infiltration head becomes independent of GWL below GWLINF",
+      "hold": "tangent metadata must mark cap transition"
+    },
+    {
+      "id": "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK",
+      "type": "continuous value with sensitivity change",
+      "source_seam": "max(RSURFDEEP-DIFFL,RSURFSHALLOW)",
+      "hold": "piecewise tangent only; no regularization"
+    },
+    {
+      "id": "D2-RISK-07-DRAINAGE-INFILTRATION-RESISTANCE-SEAM",
+      "type": "zero-flux branch point with generally unequal one-sided slopes",
+      "source_seam": "DIFFL>0 selects drainage resistances, DIFFL<=0 selects infiltration resistances",
+      "hold": "full two-sided tangent unavailable unless the two one-sided slopes coincide"
+    },
+    {
+      "id": "D2-RISK-08-PONDING-SILL-SUPPRESSION-SEAM",
+      "type": "conditional exchange suppression seam",
+      "source_seam": "exchange is forced to zero when both WL and GWL are at or above PONDMX",
+      "hold": "explicit suppression branch and branch metadata required"
+    }
+  ],
+  "cross_child_boundaries": {
+    "F-PM08D1": "owns storage geometry and authoritative SWST/derived WLS relation, not exchange",
+    "F-PM08D3": "owns storage-availability limiting and explicit external mass attribution",
+    "F-PM08C4_F-VQ43": "owns scientifically qualified deterministic multilevel summation semantics",
+    "F-PM08B_F-VQ47": "owns qualified DIVDRA spatial distribution seam",
+    "F-PM08D4_D5_D6": "own storage balance, control policy and transactional runtime composition"
+  },
+  "hard_holds": [
+    "No production source modification in F-PM08D2 readiness.",
+    "No SWSRF=1 candidate without separate undefined-WL disposition.",
+    "No negative fractional power-interflow evaluation.",
+    "No storage-availability scaling inside the constitutive evaluator.",
+    "No persistent WETPER, DRAINL or DIFFL state.",
+    "No direct SWST/WLSTAR ownership inside the exchange law.",
+    "No HeadCalc-internal dependency.",
+    "No hidden branch smoothing or mass-conservation concession."
+  ]
+}
