@@ -114,8 +114,6 @@ jobs:
         with:
           ref: 06658d0b83206008dcaefba3b8d7e5c7f0c77538
           fetch-depth: 0
-      - name: Compiler identity
-        run: gfortran --version
       - name: Replay exact admitted F-CI28 restart postimage
         shell: bash
         run: |
@@ -200,16 +198,19 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI34 root-attribution canonical source authority gate
-        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
-      - name: Final exact F-CI34 postimage and prior-authority preservation recheck
+      - name: Current F-CI36 DIVDRA active-runtime canonical source authority gate
+        run: bash tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh
+      - name: Final exact F-CI36 postimage and prior-authority preservation recheck
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
+          test "$(git rev-parse HEAD:src)" = 91afa55dfcfdeedd2dd166f804a2dc91c5ee3e30
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_serialized_composition.f90)" = 5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_serialized_runtime.f90)" = 9a384658ec37b68d2ef911e741aa89707dcb3e77
           echo 'FCI33_CANONICAL_RESTRICTED_DIVDRA_RUNTIME_SOURCE_AUTHORITY_PRESERVED=PASS'
-          echo 'FCI34_CANONICAL_ROOT_ATTRIBUTION_SOURCE_ADMISSION=PASS'
+          echo 'FCI34_CANONICAL_ROOT_ATTRIBUTION_SOURCE_ADMISSION_PRESERVED=PASS'
+          echo 'FCI36_CANONICAL_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
