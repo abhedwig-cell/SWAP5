@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM07",
+  "title": "Soil Temperature Process Boundary, State and Migration Readiness",
+  "decision": "QUALIFIED_SOIL_TEMPERATURE_MIGRATION_READINESS",
+  "qualified_readiness": true,
+  "production_qualified": false,
+  "readiness_only": true,
+  "source_inventory_commit": "6c498e9c835519a498f9f15b3d75f73cded03434",
+  "readiness_commit": "2f856cfed1691075c0a1639011162a5c42a4d5c6",
+  "reservation_base_was_stale": true,
+  "reservation_base": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "production_context_head_observed": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+  "later_implementation_must_start_from_then_current_canonical": true,
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "persistent_state_by_mode": {
+    "inactive": "none",
+    "analytic": "none expected; profile is materialized from time/depth/parameters",
+    "numerical": "temperature_profile[1:n_active_nodes]"
+  },
+  "scratch_policy": "Tridiagonal vectors, previous-temperature work copies, derived heat capacity/conductivity, interval-average water content and interpolation cursors are not permanent per-column state.",
+  "temporal_finding": "Numerical temperature advances after each accepted soil-water timestep, not on a fundamental daily cadence. Legacy analytic mode uses daynr internally and must be represented as provider-specific calendar semantics over generic kernel time.",
+  "thermal_hydraulic_ordering": "Reference ordering is lagged: hydraulic/frost/root processes consume committed temperature for the water trial; accepted water content then feeds the temperature trial.",
+  "frost_disposition": "SEPARATE_FROST_HYDRAULIC_MODIFIER_OWNER_REQUIRED",
+  "energy_disposition": "EXPLICIT_ENERGY_ACCOUNTING_REQUIRES_CHILD_QUALIFICATION_BEFORE_PRODUCTION",
+  "hydraulic_boundary": "PROCESS_FACING_WATER_CONTENT_AND_TEMPERATURE_VIEWS_ONLY_NO_HEADCALC_OR_SOLVER_WORKSPACE_INTERNALS",
+  "transaction_requirement": "Rejected interval trials never mutate committed temperature state.",
+  "child_workunits": [
+    "F-PM07A_THERMAL_DATA_CONTRACT",
+    "F-PM07B_TEMPERATURE_STATE_TRANSACTION_RESTART",
+    "F-PM07C_NUMERICAL_HEAT_PROVIDER_CANDIDATE",
+    "F-PM07D_FROST_HYDRAULIC_MODIFIER_BOUNDARY",
+    "F-PM07E_SNOW_THERMAL_BOUNDARY_CONTRACT",
+    "F-PM07F_TEMPERATURE_CONSUMER_VIEWS",
+    "F-PM07G_THERMAL_ENERGY_ACCOUNTING_QUALIFICATION",
+    "F-PM07H_MULTISWAP_THERMAL_LAYOUT_QUALIFICATION",
+    "F-VQ-PM07_INDEPENDENT_PRODUCTION_QUALIFICATION"
+  ],
+  "hard_nonclaims": [
+    "no migrated temperature implementation qualified",
+    "no frost physics change qualified",
+    "no thermodynamic freeze-thaw or latent-heat claim",
+    "no production admission",
+    "no src or reference changes"
+  ],
+  "architecture_invariants_checked": [1,2,3,4,5,6,7,8,9,16,20,21,22,23,24,25,26,27,29,30]
+}
