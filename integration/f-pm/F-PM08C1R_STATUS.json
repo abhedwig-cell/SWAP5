@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C1R",
   "title": "Tabulated Drainage Legacy-Degenerate Input Remediation",
   "branch": "work/f-pm08c1r-tabulated-drainage-remediation",
-  "status": "IN_PROGRESS_REMEDIATION",
+  "status": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_TABULATED_DRAINAGE_LEGACY_DEGENERATE_REMEDIATION_READY_FOR_INDEPENDENT_REQUALIFICATION",
   "base_candidate_closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
   "triggering_qualification": {
     "work_unit": "F-VQ39",
@@ -15,17 +16,38 @@
   },
   "scope": {
     "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a",
     "change": "explicitly reject normalized one-point groundwater-depth table at depth zero",
+    "dedicated_status": "DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE",
     "single_point_positive_depth": "retain constant response semantics",
+    "multi_point_starting_at_zero": "unchanged",
     "legacy_zero_fill_artifact_reproduced_in_kernel": false,
     "persistent_process_state": false,
     "io_changes": false,
     "solver_changes": false,
     "runtime_changes": false
   },
-  "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "structurally_qualified": false,
-  "scientifically_requalified": false
+  "qualification": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "scientifically_requalified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "evidence": {
+    "tested_head": "8e0b7192820f35ba521d5bc38394bba6b822adbf",
+    "workflow_run": 34458730214,
+    "workflow_job": 102811209012,
+    "focused_output_sha256": "f7296be7f6521ad2b44f1f482d4c64a95b3e1ebe97fbc739baaeeb05683b342d",
+    "evidence_file": "integration/f-pm/F-PM08C1R_REMEDIATION_EVIDENCE.json"
+  },
+  "holds": [
+    "No runtime or canonical admission before a new independent scientific F-VQ requalification.",
+    "No reproduction of legacy fixed-storage padding in process physics.",
+    "No solver Jacobian integration, HeadCalc coupling or I/O migration in this remediation.",
+    "No expansion to DRAMET=2, empirical interflow, multi-level exchange or surface-water control."
+  ],
+  "next_required_step": "independent scientific requalification of the exact remediated production blob"
 }
