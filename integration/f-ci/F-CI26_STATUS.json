@@ -4,13 +4,16 @@
   "title": "F-MR24 Restart Current-Canonical Requalification",
   "branch": "qualification/f-ci26-fmr21-restart-canonical-requalification",
   "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
-  "phase": "INDEPENDENT_REQUALIFICATION_COMPLETE_OWNER_CLOSEOUT_PENDING",
-  "decision": "QUALIFIED_CURRENT_CANONICAL_RESTART_COMPOSITION_PENDING_OWNER_CLOSEOUT",
-  "status": "PASS_NOT_YET_CANONICALLY_ADMITTED",
+  "phase": "OWNER_CLOSEOUT_CONFIRMED_CANONICAL_ADMISSION_GATE_READY",
+  "decision": "QUALIFIED_CURRENT_CANONICAL_RESTART_COMPOSITION_READY_FOR_CANONICAL_ADMISSION",
+  "status": "PASS_READY_FOR_NON_FORCED_CANONICAL_ADMISSION",
   "production_composition_commit": "4d52ea05cf6c8f4307d7bf1eae62315c5b517e0f",
   "tested_head": "32296426e3b52c4c59b176cb6b15f5e7cca39ab5",
-  "workflow_run": 34453605329,
-  "workflow_job": 102794739950,
+  "independent_workflow": {
+    "run": 34453605329,
+    "job": 102794739950,
+    "conclusion": "success"
+  },
   "qualification": {
     "current_canonical_source_bound": true,
     "exact_F_MR24_source_blob_identity": true,
@@ -25,15 +28,26 @@
   },
   "owner": {
     "workunit": "F-MR24",
-    "observed_source_head": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+    "production_source_head": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+    "closeout_head": "52f281b162077ccc9dfa42c8ed133dd1d26c6a21",
     "source_equivalence": "EXACT_BLOB_IDENTITY",
-    "owner_workflow_runs_at_last_check": 0,
-    "owner_closeout_complete": false
+    "owner_primary_gate_run": 34454622796,
+    "owner_primary_gate_job": 102798023003,
+    "owner_primary_gate_conclusion": "success",
+    "owner_post_closeout_run": 34454973221,
+    "owner_post_closeout_conclusion": "success",
+    "owner_closeout_complete": true,
+    "owner_invariant_audit_complete": true
   },
   "canonical_ref_advanced": false,
   "production_source_on_canonical_changed": false,
-  "promotion_allowed_now": false,
-  "promotion_hold": "F-MR24_RECOMPOSITION_CONTRACT requires owner gates and an owner closeout before downstream canonical admission. F-CI26 therefore remains qualification evidence, not canonical authority, until that requirement is satisfied or formally superseded.",
+  "promotion_allowed_now": true,
+  "promotion_requirements": [
+    "Recheck integration/f-ci-canonical is still exactly f49e17c6627717d5dea181808a122f2e35960739.",
+    "Requalify this status head with the F-CI26 source-bound workflow.",
+    "Require a non-forced fast-forward only; fail closed on any canonical divergence.",
+    "After promotion require the canonical branch gate to pass before final closeout."
+  ],
   "hard_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart",
   "nonclaims": [
     "No parallel restart qualification.",
