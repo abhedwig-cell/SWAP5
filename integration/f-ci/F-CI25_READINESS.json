@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI25",
+  "title": "MultiSWAP Runtime Canonical Admission Readiness",
+  "branch": "qualification/f-ci25-multiswap-runtime-admission-readiness",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "canonical_base_authority": "F-CI24",
+  "phase": "SOURCE_RECONCILIATION",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "canonical_ref_advanced": false
+  },
+  "inputs": {
+    "F_MQ27_closeout": "33beccd7b38f5a3c29131025e1b06166026851e3",
+    "F_MQ27_decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+    "F_MQ28_closeout": "0ba69eaeb8609e631d4c405d3c26064a53702fe4",
+    "F_MQ28_decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "F_MR21_source_candidate": "9064004f815e81f95eb4bdee218af29cb95039c1",
+    "F_MR21_current_branch_head": "3a2fc8eb0dce16077535f0388bc32ac42671a513",
+    "F_MR22_source_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705"
+  },
+  "initial_findings": {
+    "candidate_lineages_diverge_from_current_canonical": true,
+    "common_merge_base_with_current_canonical": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "direct_fast_forward_of_F_MR21_or_F_MR22_to_canonical_allowed": false,
+    "canonical_has_serialized_multiswap_runtime": true,
+    "canonical_missing_mod_fmr_committed_restart": true,
+    "canonical_missing_mod_fmr_restart_state_contract": true,
+    "canonical_missing_mod_fmr_parallel_physical_scheduler": true,
+    "canonical_missing_mod_fmr_parallel_worker_pool": true
+  },
+  "gate": "Do not promote any production source until the exact dependency closure is reconciled against F-CI24 canonical source and a fresh canonical-source-bound qualification matrix passes.",
+  "nonclaims": [
+    "No F-MR21 canonical admission yet.",
+    "No F-MR22 canonical admission yet.",
+    "No parallel restart qualification.",
+    "No performance qualification.",
+    "No general SWAP5 production release."
+  ]
+}
