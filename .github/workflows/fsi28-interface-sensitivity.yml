@@ -8,6 +8,7 @@ on:
       - 'integration/f-si/F-SI28_*'
       - 'tests/fsi/run_fsi28_interface_sensitivity_gate.sh'
       - 'tests/fsi/run_fsi28_cross_sign_gate.sh'
+      - 'tests/fsi/run_fsi28_fallback_failclosed_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/mod_soil_water_solver_contract.f90'
       - 'src/solver/mod_reference_linear_solver.f90'
@@ -29,3 +30,5 @@ jobs:
         run: bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
       - name: F-SI28 frozen cross-sign native-qbot tangent gate
         run: bash tests/fsi/run_fsi28_cross_sign_gate.sh
+      - name: F-SI28 alternative-solver fallback fail-closed composition gate
+        run: bash tests/fsi/run_fsi28_fallback_failclosed_gate.sh
