@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08BR",
+  "title": "Restricted DIVDRA Lev2Comp Boundary-Seam Remediation Evidence",
+  "lineage": {
+    "owner_candidate_work_unit": "F-PM08B",
+    "owner_candidate_closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
+    "blocking_qualification_work_unit": "F-VQ45",
+    "blocking_qualification_closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
+    "blocking_decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED"
+  },
+  "frozen_legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "lev2comp_rule": "do while (lev > -zbotcp(icplev)+1.d-10)"
+  },
+  "production_candidate": {
+    "path": "src/process/mod_drainage_spatial_distribution.f90",
+    "pre_remediation_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe",
+    "final_remediated_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "prequalification_failure_and_correction": {
+    "failed_run": 34467665533,
+    "failed_job": 102839935167,
+    "failure_point": "full seam below boundary accepted",
+    "cause": "a remediation-added internal dz_top_sat negative-thickness guard was not part of frozen legacy semantics and rejected the exact 1e-10 seam under floating subtraction cancellation",
+    "candidate_or_scope_failure": false,
+    "correction": "removed only the nonlegacy internal guard while retaining hard profile-bottom rejection",
+    "scientific_tolerance_relaxed": false,
+    "physics_scope_broadened": false
+  },
+  "decisive_structural_test": {
+    "tested_head": "ab75ae6f912e12c2b0e798c80ec0f7e409bcee7d",
+    "workflow_run": 34467822132,
+    "job": 102840430641,
+    "conclusion": "success",
+    "output_sha256": "25da3c31d894eba3ac2cab613dc20bb0fd112611d912abafbc7d8fab8ca63709"
+  },
+  "passed_checks": [
+    "FPM08BR_SINGLE_PRODUCTION_FILE_DELTA",
+    "FPM08BR_NO_RUNTIME_SOLVER_KERNEL_REFERENCE_DELTA",
+    "FPM08BR_REMEDIATED_SOURCE_BLOB",
+    "FPM08BR_EXPLICIT_FROZEN_LEV2COMP_SEAM_STATIC",
+    "FPM08BR_NO_NONLEGACY_INTERNAL_SEAM_GUARD",
+    "FPM08BR_PROFILE_BOTTOM_HOLD_STATIC",
+    "FPM08BR_MASS_CLOSURE_PATH_UNCHANGED_STATIC",
+    "FPM08BR_NO_SCOPE_BROADENING_STATIC",
+    "FPM08BR_PARENT_FPM08B_REGRESSION_GATE",
+    "FPM08BR_REMEDIATION_O0",
+    "FPM08BR_REMEDIATION_O2",
+    "FPM08BR_O0_O2_OUTPUT_IDENTITY",
+    "FPM08BR_EXACT_INTERNAL_BOUNDARY_SHALLOWER_COMPARTMENT",
+    "FPM08BR_HALF_SEAM_BELOW_BOUNDARY_SHALLOWER_COMPARTMENT",
+    "FPM08BR_FULL_SEAM_BELOW_BOUNDARY_SHALLOWER_COMPARTMENT",
+    "FPM08BR_BEYOND_SEAM_NEXT_COMPARTMENT",
+    "FPM08BR_GENERIC_INTERNAL_BOUNDARY_SEAM",
+    "FPM08BR_PROFILE_BOTTOM_REMAINS_FAIL_CLOSED",
+    "FPM08BR_EXACT_SCALAR_TO_NODE_MASS_IDENTITY",
+    "FPM08BR_LEV2COMP_BOUNDARY_SEAM_GATE"
+  ],
+  "regression_and_architecture": {
+    "original_fpm08b_gate_green": true,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_modified": false,
+    "persistent_state_added": false,
+    "io_dependency_added": false,
+    "mass_authority_changed": false,
+    "last_node_roundoff_closure_changed": false,
+    "scope_broadened": false
+  },
+  "compiler_observation": {
+    "candidate_owned_warnings_observed": false,
+    "inherited_warning_source": "src/solver/mod_soil_water_solver_contract.f90: soil_water_temporal_indicator_unavailable unused dummy arguments"
+  },
+  "qualification_state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "independently_scientifically_requalified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "decision": "STRUCTURAL_REMEDIATION_READY_FOR_INDEPENDENT_REQUALIFICATION"
+}
