@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR28",
+  "title": "Reference-ET ptra to Restricted Root-Uptake Execution Composition",
+  "branch": "work/f-mr28-reference-et-root-uptake-execution-composition",
+  "canonical_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "goal": "Compose the canonical F-CI29 authoritative potential-transpiration binding with the already qualified shared crop/root adapter and restricted committed root-water-uptake execution path, without adding ET physics, crop physics, persistent state, accepted-window integration, or mass-ledger booking.",
+  "authorities": {
+    "F_CI29_ptra_binding_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "F_MR12_crop_root_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "F_MR10_root_uptake_binding_blob": "2fc348f18e8561096fa34dd3c11c64b359583f11",
+    "F_PM05_FVQ22_root_process_blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+    "crop_root_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521"
+  },
+  "composition": [
+    "validate and bind authoritative ptra with fmr_bind_reference_et_ptra_to_root_input",
+    "pass the bound canonical crop_root_uptake_input_t to fmr_evaluate_shared_crop_root_uptake",
+    "return existing nodewise root_extraction_sink, actual_uptake_total, child diagnostics and explicit composition diagnostics",
+    "on any upstream rejection return fail-closed zero/default outputs and do not call the downstream execution stage"
+  ],
+  "qualified_physics_target": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT only",
+  "transaction_contract": "read committed hydraulic state only; no revision change, no committed mutation, no persistent composition state",
+  "mass_contract": "root uptake flux result is a process result only in F-MR28; no authoritative water-ledger booking and no accepted-window integration are introduced",
+  "time_contract": "no new clock or day semantics; potential-transpiration rate semantics and committed-state evaluation are inherited from the admitted owners",
+  "hard_nonclaims": [
+    "no actual-transpiration mass-ledger admission",
+    "no interval integration or exactly-once accepted booking",
+    "no oxygen, salinity, frost, compensation, MICRO/Jong-van-Lier or macropore uptake expansion",
+    "no dynamic SWKIMPL=1 root-sink reevaluation",
+    "no crop lifecycle advancement",
+    "no HeadCalc/Newton/Jacobian access",
+    "no general SWAP5 release qualification"
+  ],
+  "tests": [
+    "single new production-source delta from exact canonical base",
+    "protected owner blobs remain byte-identical",
+    "active composition bitwise-equals explicit F-CI29 then F-MR12/F-MR10 chain",
+    "incoming stale ptra cannot affect root uptake",
+    "upstream ET rejection prevents root execution",
+    "invalid root geometry prevents root execution",
+    "inactive crop zero route remains fail-safe",
+    "committed revision and physical snapshot remain unchanged",
+    "A-B-A determinism",
+    "O0/O2 output identity"
+  ],
+  "exit_target": "QUALIFIED_REFERENCE_ET_PTRA_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_INDEPENDENT_QUALIFICATION"
+}
