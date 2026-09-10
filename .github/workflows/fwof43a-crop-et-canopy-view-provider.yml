@@ -10,6 +10,8 @@ on:
       - 'tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90'
       - 'tests/fwof/run_fwof43a_crop_et_canopy_view_provider_gate.sh'
       - 'integration/f-wof/F-WOF43A_CANDIDATE_CONTRACT.json'
+      - 'integration/f-wof/F-WOF43A_QUALIFICATION_EVIDENCE.json'
+      - 'integration/f-wof/F-WOF43A_STATUS.json'
       - '.github/workflows/fwof43a-crop-et-canopy-view-provider.yml'
   workflow_dispatch:
 
