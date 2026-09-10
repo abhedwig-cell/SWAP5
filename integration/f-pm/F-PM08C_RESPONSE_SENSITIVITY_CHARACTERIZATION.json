@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C",
+  "source_authority": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "legacy_drainage_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "legacy_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+  },
+  "families": {
+    "DRAMET1": {
+      "legacy_law": "q = AFGEN(qdrtab,50,abs(gwl))",
+      "state": "none",
+      "immutable_data": "piecewise-linear depth-to-flux table",
+      "sensitivity": "inside a nonflat table segment and away from gwl=0, dq/dgwl = sign(gwl)*dq/d|gwl|; outside table range derivative is zero because AFGEN clamps to endpoint values",
+      "nonsmooth_sets": ["table knots with unequal adjacent slopes", "gwl=0 when first active table slope is nonzero"],
+      "migration_note": "AFGEN semantics are adapter/shared interpolation semantics and should not be hidden inside drainage state"
+    },
+    "DRAMET2": {
+      "legacy_law": "diffl=(gwl-zbotdr)/shape; if diffl<1e-10 then q=0 else q=diffl/R_total",
+      "state": "none",
+      "ipos": [1,2,3,4,5],
+      "sensitivity_form": "dq/dgwl = ((1/shape)*R_total - diffl*dR_total/dgwl)/(R_total^2) on a stable active branch",
+      "nonsmooth_sets": [
+        "strict legacy cutoff diffl=1e-10",
+        "IPOS=4 at gwl=zintf when kvtop differs from kvbot",
+        "equivalent-depth internal branch x=0.5 and x=1e-6 are formula branches requiring continuity checks"
+      ],
+      "domain_findings": [
+        "legacy reader permits zero khtop/khbot/kvtop/kvbot in ranges although selected formulas may divide by them",
+        "legacy reader permits wetper=0 although log(L/wetper) or log(dbot/wetper) may be evaluated",
+        "IPOS=5 permits geofac=0 although log(geofac*(zbotdr-zintf)/wetper) may be evaluated"
+      ],
+      "migration_note": "production migration needs explicit mathematically valid parameter-domain checks; do not silently rely on floating exceptions"
+    },
+    "DRAMET3_INTERFLOW": {
+      "legacy_law": "q = cofintfl*diffl^expintfl for the highest drainage level when interflow is enabled and diffl>=0",
+      "input_range": {"cofintfl": [0.01,10.0], "expintfl": [0.1,1.0]},
+      "active_sensitivity": "dq/dgwl = cofintfl*expintfl*diffl^(expintfl-1)",
+      "activation_finding": "for every admitted expintfl<1 the right-hand derivative diverges as diffl approaches zero from above; at expintfl=1 it is finite",
+      "migration_note": "a fully implicit production path cannot assume a bounded tangent at activation; branch-aware fallback/frozen evaluation is required unless separately qualified"
+    },
+    "DRAMET3_MULTILEVEL": {
+      "legacy_law": "evaluate each drainage level against shared gwl and level-specific resolved drain/control head, then aggregate",
+      "state": "none when control levels are external",
+      "sensitivity": "on a stable branch, derivative of total exchange with respect to gwl is the sum of the admitted per-level derivatives",
+      "nonsmooth_sets": "union of all level activation/deactivation and interflow branch points",
+      "architecture": "per-level exchange objects remain independent physical transfers; aggregation is composition, not shared hidden process state"
+    }
+  },
+  "recommended_child_split": [
+    "F-PM08C1: AFGEN-backed tabulated response semantics and derivative metadata",
+    "F-PM08C2: Hooghoudt/Ernst IPOS 1..5 response and analytic sensitivity qualification",
+    "F-PM08C3: empirical interflow singular-tangent policy qualification",
+    "F-PM08C4: multi-level exchange aggregation and branch-composition qualification"
+  ],
+  "production_implementation_admitted_by_this_artifact": false
+}
