@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R1_INITIAL_SURFACE_COMPLEMENTARITY_ADMISSION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "upstream": {
+    "E3F": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+    "E3E_R2R3": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+    "E3G": "E3G_FAILED_AS_FROZEN_OPEN_E3G_R1_INITIAL_BOUNDARY_ADMISSION_BEFORE_INVALID_DRY_SOLVE",
+    "E3G_failure_result": "F-ROSS01_GATE_E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION_RESULT.json"
+  },
+  "purpose": "Qualify corrected ordering of the physical top-boundary complementarity decision for an immediate-at-t0 ponding case. A dry-flux soil solve is not a prerequisite when the committed-state h_surface=0 face already proves the dry mode inadmissible.",
+  "frozen_physical_scope": {
+    "materials": ["B01", "B12", "O13", "O14"],
+    "initial_heads_cm": [-0.2, -1.5, -5.0],
+    "bottom_head_cm": -15.0,
+    "surface_storage_max_cm": 1.0,
+    "dt_day": 0.0002,
+    "top_soil_head_scope_cm": [-10000.0, -1.0e-8],
+    "surface_head_scope_cm": [0.0, 1.0],
+    "surface_face_length_cm": 5.0,
+    "internal_face_length_cm": 10.0,
+    "scenarios_identical_to_E3G": [
+      {"id":"DRY_FLUX_ADMISSIBLE","S0_cm":0.0,"supply_fraction_ksat":0.25,"expected_mode":"DRY_FLUX"},
+      {"id":"DRY_FLUX_TO_PONDED_HEAD_SWITCH","S0_cm":0.0,"supply_fraction_ksat":1.5,"expected_mode":"PONDED_HEAD"},
+      {"id":"PONDED_HEAD_CONTINUATION","S0_cm":0.02,"supply_fraction_ksat":1.25,"expected_mode":"PONDED_HEAD"}
+    ]
+  },
+  "r1_admission_rule": {
+    "capacity_definition": "q_cap0 is the qualified 5 cm surface-to-top-node face flux evaluated at h_surface=0 using the committed top-node head at t0.",
+    "dry_admissible_at_t0": "q_supply <= q_cap0 + roundoff_tolerance",
+    "immediate_ponding_at_t0": "q_supply > q_cap0 + roundoff_tolerance",
+    "immediate_ponding_action": "Do not execute a dry-flux soil trajectory. Keep committed time, heads, surface storage and ledgers unchanged and solve the same interval directly under the ponded/head branch.",
+    "dry_admissible_action": "Execute the existing dry-flux soil solve and retain all existing E3G mass/complementarity checks.",
+    "roundoff_tolerance": "64*binary64_epsilon*max(1,abs(q_supply),abs(q_cap0))",
+    "physical_basis": "With S=0, h_surface=0 is the limiting nonpositive surface-head state in this restricted boundary contract. If supply already exceeds that face capacity at the committed state, ponding starts at t0 rather than after a fictitious dry full-step trajectory."
+  },
+  "frozen_R1_change_only": [
+    "Change the ordering of initial boundary-mode admission in the immediate-ponding scenario.",
+    "Do not change constitutive physics, C1R tables, near-saturation face algorithms, 5 cm surface-face algorithms, solver tolerances, timestep, forcing, material set or comparison thresholds.",
+    "Do not relax the original E3G requirement or rewrite its failed evidence."
+  ],
+  "required_switch_scenario_evidence": {
+    "candidate_and_reference_both_classify_immediate_ponding_at_t0": true,
+    "dry_predictor_executed": false,
+    "dry_predictor_nonlinear_solve_count": 0,
+    "committed_state_bitwise_unchanged_before_ponded_solve": true,
+    "ponded_solve_starts_from_original_committed_state": true,
+    "ponded_solution_accepted": true,
+    "surface_storage_strictly_positive": true,
+    "top_node_remains_negative_within_frozen_scope": true,
+    "no_mass_repair_or_clipping": true,
+    "B12_required_as_negative_control": "B12 must also take initial admission even though its original E3G dry predictor was numerically valid; the R1 route may not be triggered by dry-solver failure."
+  },
+  "reference_checks": {
+    "candidate_qcap0_crosschecked_against_full_accuracy_surface_reference": true,
+    "full_accuracy_reference_remains_separate": true,
+    "candidate_reference_mode_match_required": true,
+    "max_head_difference_cm": 0.25,
+    "max_surface_storage_difference_cm": 0.001,
+    "max_bottom_transfer_difference_cm": 0.001,
+    "surface_face_candidate_abs_error_over_ksat_max": 0.0005
+  },
+  "mass_and_transaction_checks": {
+    "max_abs_cell_residual_cm": 1.0e-9,
+    "max_abs_surface_balance_residual_cm": 1.0e-9,
+    "max_abs_composed_balance_residual_cm": 1.0e-9,
+    "rejected_or_bypassed_dry_trial_may_change_committed_state": false,
+    "mass_repair_or_clipping_allowed": false,
+    "single_atomic_commit_per_accepted_interval": true
+  },
+  "performance_checks": {
+    "switch_case_dry_full_nonlinear_trajectory_count": 0,
+    "switch_case_ponded_full_nonlinear_trajectory_count": 1,
+    "extra_boundary_capacity_evaluation_allowed": true,
+    "persistent_state_bytes_added": 0,
+    "trial_scratch_owner": "worker"
+  },
+  "architecture_checks": {
+    "3_explicit_data_separation": "Committed soil/surface state, forcing, boundary admission result, worker scratch and result diagnostics remain distinct.",
+    "4_compact_persistent_state": "No new persistent state is introduced.",
+    "5_scratch_per_worker": "Admission and nonlinear trial intermediates are worker-local.",
+    "7_transactional_timesteps": "Mode selection happens before publication; bypassed or rejected work cannot mutate committed state.",
+    "9_generic_time": "The interval remains generic and non-calendar based.",
+    "13_mass_conservation_absolute": "All accepted physical paths retain the frozen exact mass checks without repair.",
+    "20_alternative_soil_water_solvers": "Boundary admission consumes the generic surface-face contract, not HeadCalc internals.",
+    "22_no_headcalc_internals": "No solver arrays are exposed to top-boundary policy.",
+    "23_physics_solver_policy_separated": "Surface capacity is physical face behavior; admission ordering is numerical/runtime policy.",
+    "24_predictable_runtime": "An already-inadmissible dry mode does not consume a wasted full nonlinear trajectory.",
+    "25_reference_mode": "Reference surface face and reference soil trajectory remain available independently.",
+    "26_diagnostics_runtime": "Admission reason, q_supply, q_cap0, bypass count and solver counts are explicit.",
+    "29_no_silent_dependencies": "No day boundary, file format or MODFLOW dependency is introduced."
+  },
+  "hard_nonclaims": [
+    "No finite-time within-step ponding onset event localization is qualified by R1.",
+    "No pond-depletion head-to-flux switch is qualified.",
+    "No top soil-node h=0 or positive-head state is qualified.",
+    "No runoff with real soil state is qualified.",
+    "No response tangent across a boundary-mode switch is qualified.",
+    "No production runtime, MultiSWAP, groundwater or MODFLOW admission follows."
+  ],
+  "success_exit": "QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE",
+  "failure_exit": "INITIAL_COMPLEMENTARITY_ADMISSION_NOT_QUALIFIED_PRESERVE_R1_FAILURE"
+}
