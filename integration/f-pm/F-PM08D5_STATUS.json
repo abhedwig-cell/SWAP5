@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D5",
+  "title": "Automatic-Weir Event & Hydraulic-Control Readiness",
+  "branch": "work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
+  "phase": "CONTRACT_AND_SOURCE_DISCREPANCY_PERSISTED_BEFORE_TEST",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d",
+    "exact_branch_base": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d"
+  },
+  "parent_authorities": {
+    "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "fpm08d3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "fpm08d4_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+  },
+  "readiness_findings": {
+    "WLSTAR_is_conditional_control_memory": true,
+    "target_selection_can_use_clean_three_scalar_hydraulic_summary": true,
+    "legacy_INTWL_calendar_trigger_must_be_externalized": true,
+    "explicit_initial_control_event_required": true,
+    "DROPR_has_0p001_activation_seam": true,
+    "SWQHR1_SWQHR2_capacity_head_asymmetry_confirmed": true,
+    "SWQHR1_negative_WOVER_power_domain_risk_confirmed": true,
+    "capacity_policy_production_formula_selected": false,
+    "SWQHR2_production_admitted": false
+  },
+  "source_risk_holds": [
+    "D5-RISK-01-LEGACY-DAY-AND-CALENDAR-EVENT-ARITHMETIC",
+    "D5-RISK-02-INITIAL-TCUM-IMPLICIT-ADJUSTMENT-TRIGGER",
+    "D5-RISK-03-WLSTAR-IS-CONDITIONAL-COMMITTED-CONTROL-MEMORY",
+    "D5-RISK-04-DROPR-0P001-ACTIVATION-SEAM",
+    "D5-RISK-05-SWQHR1-CURRENT-WLS-VS-SWQHR2-TARGET-WLSTAR-CAPACITY-ASYMMETRY",
+    "D5-RISK-06-SWQHR1-NEGATIVE-WOVER-POWER-DOMAIN",
+    "D5-RISK-07-STRICT-DISCAP-GREATER-THAN-WDIS-EQUALITY-SEAM",
+    "D5-RISK-08-D4-OVERFLOW-FALLBACK-STATE-INCONSISTENCY-MUST-NOT-RETURN",
+    "D5-RISK-09-HEAD-DEPTH-TO-NODE-MAPPING-MUST-NOT-COUPLE-CONTROL-TO-SOLVER-INTERNALS",
+    "D5-RISK-10-WLSBAK-OSSWLM-NUMERICAL-HISTORY-SEPARATE-FROM-CONTROL-STATE",
+    "D5-RISK-11-SWQHR2-HBWEIR-THRESHOLD-SEAM-REMAINS-UNQUALIFIED"
+  ],
+  "state": {
+    "branch_created": true,
+    "checkpoint_persisted": true,
+    "source_equations_reconstructed": true,
+    "capacity_discrepancy_characterized": true,
+    "generic_event_contract_defined": true,
+    "control_state_ownership_defined": true,
+    "architecture_audited_all_30": false,
+    "test_oracle_persisted": false,
+    "gate_persisted": false,
+    "workflow_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "reference_source_changed": false,
+    "automatic_capacity_policy_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "next_required_step": "persist independent phase/event/drop-rate and capacity-discrepancy oracle, audit all 30 invariants, then execute a readiness-only CI gate"
+}
