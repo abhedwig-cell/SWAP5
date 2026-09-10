@@ -1,0 +1,12 @@
+{
+  "schema":"swap5.fci37p_architecture_audit.v1",
+  "work_unit":"F-CI37P",
+  "overall":"GOVERNANCE_ONLY_NO_ADVERSE_ARCHITECTURE_DELTA",
+  "base":"f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "src_delta":[],
+  "reference_delta":[],
+  "invariants":[
+    {"id":1,"status":"PASS_NOT_TOUCHED"},{"id":2,"status":"PASS_NOT_TOUCHED"},{"id":3,"status":"PASS_NOT_TOUCHED"},{"id":4,"status":"PASS_NOT_TOUCHED"},{"id":5,"status":"PASS_NOT_TOUCHED"},{"id":6,"status":"PASS_NOT_TOUCHED"},{"id":7,"status":"PASS_NOT_TOUCHED"},{"id":8,"status":"PASS_NOT_TOUCHED"},{"id":9,"status":"PASS_NOT_TOUCHED"},{"id":10,"status":"PASS_NOT_TOUCHED"},{"id":11,"status":"PASS_NOT_TOUCHED"},{"id":12,"status":"PASS_NOT_TOUCHED"},{"id":13,"status":"PASS_PRESERVED_HARD_MASS_REPLAY"},{"id":14,"status":"PASS_NOT_TOUCHED"},{"id":15,"status":"PASS_NOT_TOUCHED"},{"id":16,"status":"PASS_PRESERVED_MULTISWAP_AUTHORITY"},{"id":17,"status":"PASS_NOT_TOUCHED"},{"id":18,"status":"PASS_NOT_TOUCHED"},{"id":19,"status":"PASS_NOT_TOUCHED"},{"id":20,"status":"PASS_NOT_TOUCHED"},{"id":21,"status":"PASS_NOT_TOUCHED"},{"id":22,"status":"PASS_NOT_TOUCHED"},{"id":23,"status":"PASS_NO_PHYSICS_POLICY_CHANGE"},{"id":24,"status":"PASS_NOT_TOUCHED"},{"id":25,"status":"PASS_REFERENCE_AUTHORITIES_FROZEN"},{"id":26,"status":"PASS_GOVERNANCE_DIAGNOSTIC_IMPROVED"},{"id":27,"status":"PASS_NOT_TOUCHED"},{"id":28,"status":"PASS_RUNTIME_SCIENCE_UNCHANGED"},{"id":29,"status":"PASS_MOVING_AUTHORITY_MADE_EXPLICIT"},{"id":30,"status":"PASS_ALL_30_REVIEWED"}
+  ],
+  "note":"F-CI37P changes only canonical qualification governance: F-CI36 becomes a frozen historical authority and the moving current-postimage gate advances to F-CI37. Scientific runners, production source, reference source, tolerances and physics are unchanged."
+}
