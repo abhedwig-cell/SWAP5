@@ -1,21 +1,48 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ44",
   "title": "Independent Restricted Single-Level Linear Drainage Qualification",
   "branch": "qualification/f-vq44-fpm08a-linear-drainage",
-  "status": "IN_PROGRESS_VERIFIER_PERSISTED_PRETEST",
+  "status": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_RESTRICTED_SINGLE_LEVEL_LINEAR_DRAINAGE_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION",
   "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
-  "candidate_closeout": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
-  "candidate_source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa",
+  "candidate": {
+    "owner": "F-PM08A",
+    "closeout": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
+    "source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+  },
+  "qualification_candidate": {
+    "head": "91900a7bdb3ccf15be6429047684bc76f26f5ee2",
+    "workflow_run": 34465197202,
+    "workflow_job": 102832016800,
+    "conclusion": "success",
+    "summary_sha256": "92094c4594a37b0824f46a89b66a289527568d6d852794b7ead006742764c4a0"
+  },
   "state": {
     "legacy_oracle_source_persisted": true,
     "qualification_contract_persisted": true,
     "independent_verifier_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "runtime_qualified": false,
-    "canonical_admission_qualified": false
+    "canonical_admission_qualified": false,
+    "production_source_modified_by_qualification": false,
+    "reference_source_modified_by_qualification": false
+  },
+  "qualified_findings": {
+    "flux_equivalence_cases": 1200,
+    "max_flux_abs_error": 0.0,
+    "max_derivative_abs_error": 0.0,
+    "active_derivative_fd_cases": 700,
+    "inactive_derivative_fd_cases": 400,
+    "activation_kink_cases": 100,
+    "effective_drain_head_clamped_cases": 653,
+    "effective_drain_head_unclamped_cases": 547,
+    "O0_O2_identity": true,
+    "stateless_A_B_A": true,
+    "effective_drain_head_is_resolved_external_control": true
   },
   "scope_holds": {
     "negative_side_infiltration_qualified": false,
@@ -23,7 +50,19 @@
     "runtime_mass_booking_qualified": false,
     "fully_implicit_solver_coupling_qualified": false,
     "divdra_qualified": false,
-    "surface_water_control_qualified": false
+    "surface_water_control_qualified": false,
+    "canonical_admission_qualified": false
   },
-  "next_required_step": "run independent qualification gate and fail closed on any source, structural or numerical discrepancy"
+  "verifier_history": {
+    "initial_failed_run": 34465069636,
+    "initial_failed_job": 102831606969,
+    "failure_class": "VERIFIER_NUMERICAL_PERTURBATION_DEFECT",
+    "candidate_or_scope_changed": false,
+    "qualification_tolerance_relaxed": false
+  },
+  "next": {
+    "recommended_work_unit": "F-VQ45",
+    "scope": "Independent restricted F-PM08B drainage spatial-distribution scientific qualification",
+    "reason": "F-PM08B remains structurally qualified but not independently scientifically qualified; complete that seam before opening surface-water-controlled drainage composition."
+  }
 }
