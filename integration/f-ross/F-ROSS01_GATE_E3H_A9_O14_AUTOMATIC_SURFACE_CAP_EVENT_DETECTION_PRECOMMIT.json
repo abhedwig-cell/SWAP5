@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A9_O14_AUTOMATIC_SURFACE_CAP_EVENT_DETECTION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "purpose": "Qualify the smallest seed-free automatic detector for the already-qualified O14 1 cm surface-cap event. The candidate may use only the committed pre-cap state, forcing, cap, horizon and qualified face contracts. Frozen A4/A8 event roots may be used only after the candidate solve as qualification reference, never as candidate seed or detector input.",
+  "upstream": {
+    "A8": "QUALIFIED_RESTRICTED_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_READY_FOR_SURFACE_EVENT_DETECTION_AND_CAP_GENERALIZATION_RESEARCH",
+    "A8_result_commit": "2ae0f5f1dddd792b126e0da9a36934b1d0c435a9",
+    "surface_face": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+    "surface_ledger": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION"
+  },
+  "frozen_profiles": {
+    "P0_A1_CONTROL": [-0.2,-1.5,-5.0],
+    "P1_DRIER_SUBSOIL": [-0.5,-5.0,-10.0],
+    "P2_DRIER_TOP_AND_SUBSOIL": [-1.0,-10.0,-20.0],
+    "P3_STRONG_DRY_SEPARATION": [-2.0,-20.0,-50.0]
+  },
+  "frozen_physical_identity": {
+    "initial_surface_storage_cm": 0.02,
+    "surface_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "positive_event_supply_fraction_of_ksat": 12.0,
+    "negative_control_supply_fractions_of_ksat": [1.5,3.0,5.0],
+    "detection_horizon_day": 0.05,
+    "soil_cell_count": 3,
+    "soil_cell_thickness_cm": 10.0,
+    "surface_face_length_cm": 5.0
+  },
+  "candidate_detection_policy": {
+    "step_1_no_event_certificate": "If S0 + max(q_supply,0)*DeltaT < S_cap, cap onset is impossible even with zero infiltration. Return NO_CAP_EVENT_SUPPLY_VOLUME_CERTIFIED with zero nonlinear soil/event trajectories.",
+    "step_2_initial_surface_flux": "Otherwise evaluate the qualified candidate 5 cm surface face once at the committed S0 and committed top-node head to obtain q_top0.",
+    "step_3_event_seed": "Require q_supply > q_top0. Set tau_seed=(S_cap-S0)/(q_supply-q_top0). Candidate fails closed if tau_seed is nonfinite or outside (0,DeltaT).",
+    "step_4_single_event_corrector": "Solve [h0,h1,h2,tau] once with the exact A8 cap-event mass equations, bounds h_i in [-10000,-1e-8] cm and tau in (0,DeltaT). Initial heads are exactly the committed heads; tau initial guess is tau_seed. No A4/A8 event head or event-time seed is available to the candidate.",
+    "step_5_acceptance": "Accept only a finite strict-interior event root with negative top-node head, physical head ordering, no unqualified face route, hard mass closure and qualified surface-face cost/accuracy. Until acceptance the committed state and runoff ledger remain unchanged.",
+    "event_corrector_count_positive_case": 1,
+    "full_trajectory_predictor_count": 0,
+    "event_search_bisection_trajectory_count": 0,
+    "candidate_access_to_A4_or_A8_event_roots": false
+  },
+  "reference_policy": {
+    "positive_event": "A8 independent high-accuracy event corrector using the already frozen A4 root only as qualification-oracle seed. This reference seed is not exposed to candidate detection.",
+    "negative_controls": "Supply-volume impossibility is an algebraic certificate and requires no reference trajectory."
+  },
+  "frozen_acceptance": {
+    "all_four_positive_profiles_detect_event": true,
+    "all_twelve_negative_controls_certify_no_event_without_nonlinear_solve": true,
+    "candidate_event_time_difference_day_vs_A8_reference": 0.00025,
+    "candidate_event_max_head_difference_cm_vs_A8_reference": 0.25,
+    "candidate_event_bottom_transfer_difference_cm_vs_A8_reference": 0.001,
+    "candidate_event_surface_q_abs_error_over_ksat": 0.0005,
+    "candidate_event_max_abs_balance_residual_cm": 1e-9,
+    "reference_event_max_abs_balance_residual_cm": 1e-9,
+    "candidate_surface_face_max_constitutive_K_evaluations": 530,
+    "candidate_surface_face_max_root_residual_evaluations": 66,
+    "candidate_positive_event_corrector_count": 1,
+    "candidate_positive_full_trajectory_predictor_count": 0,
+    "negative_control_nonlinear_trajectory_count": 0,
+    "original_committed_state_bitwise_unchanged_until_event_accept": true,
+    "negative_control_committed_state_bitwise_unchanged": true,
+    "negative_control_runoff_ledger_exact_zero": true,
+    "synthetic_reject_after_candidate_event_corrector_restores_original_state_and_zero_runoff": true,
+    "mass_repair_or_clipping": false
+  },
+  "cost_and_state_guards": {
+    "persistent_event_time_bytes": 0,
+    "persistent_detector_state_bytes": 0,
+    "surface_storage": "existing one physical scalar",
+    "nonlinear_vectors": "worker scratch",
+    "candidate_positive_path": "one initial surface-face evaluation plus one constrained event corrector",
+    "candidate_negative_control_path": "O(1) algebraic supply-volume certificate only"
+  },
+  "decision_logic": {
+    "pass": "QUALIFIED_RESTRICTED_SEED_FREE_O14_SURFACE_CAP_EVENT_DETECTION_READY_FOR_CAP_GENERALIZATION_AND_EVENT_DETECTOR_ROBUSTNESS_RESEARCH",
+    "fail": "SEED_FREE_O14_SURFACE_CAP_EVENT_DETECTION_NOT_QUALIFIED_PRESERVE_A8_AND_CHARACTERIZE_DETECTOR_FAILURE"
+  },
+  "hard_guards": [
+    "Do not use A4 or A8 event heads/times as candidate seed, bracket, lookup or hidden initialization.",
+    "Do not add a full-interval predictor, repeated trajectory bisection or multi-start search after execution.",
+    "Do not alter the four profiles, 1 cm cap, 12*KSAT positive forcing, negative-control forcing, -15 cm bottom head or 0.05 d horizon after execution.",
+    "Do not relax event, mass, face-cost or reference-agreement thresholds.",
+    "Do not publish event scratch before all acceptance checks pass.",
+    "Do not interpret the supply-volume no-event certificate as sufficient when it is inconclusive; inconclusive cases remain outside A9 scope and must fail closed or route to later detector research.",
+    "Do not add other materials, cap heights, top-node saturation, response tangents, runtime, MultiSWAP or groundwater to A9."
+  ],
+  "architecture_checks": {
+    "4_compact_state": "No event-time or detector persistence.",
+    "5_worker_scratch": "Event corrector vectors and seed are worker-local.",
+    "7_transactionality": "Detection and correction are scratch-only until accepted event commit; no-event and synthetic reject paths preserve state and ledger.",
+    "8_warm_start": "Seed derives only from committed state and forcing, not an externally supplied event trajectory.",
+    "9_generic_time": "tau is a generic offset in [0,DeltaT].",
+    "13_mass_conservation": "Accepted event must close below 1e-9 cm with no repair.",
+    "24_predictable_runtime": "One event corrector for positive cases; zero nonlinear solves for algebraically impossible controls.",
+    "25_reference_mode": "A8 reference is qualification-only and invisible to candidate initialization.",
+    "28_runtime_composition": "Event detector composes surface and soil contracts; it does not enter the Ross face kernel."
+  },
+  "hard_nonclaims": [
+    "No generic bracket discovery for cases where the supply-volume certificate is inconclusive and the direct corrector fails.",
+    "No cap generalization yet.",
+    "No material other than O14.",
+    "No production event detector, runtime or MultiSWAP admission.",
+    "No response tangent through event detection."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
