@@ -1,0 +1,25 @@
+name: F-MR26 reference ET ptra root-input binding
+
+on:
+  push:
+    branches:
+      - work/f-mr26-reference-et-ptra-root-uptake-binding
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90'
+      - 'tests/fmr/test_fmr26_reference_et_ptra_root_input_binding.f90'
+      - 'tests/fmr/run_fmr26_reference_et_ptra_root_input_binding_gate.sh'
+      - 'integration/f-mr/F-MR26_*.json'
+      - '.github/workflows/fmr26-reference-et-ptra-root-input-binding.yml'
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-MR26 source-bound ownership gate
+        run: bash tests/fmr/run_fmr26_reference_et_ptra_root_input_binding_gate.sh
