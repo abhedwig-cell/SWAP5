@@ -3,7 +3,7 @@ program test_fmr31_exact_root_attribution_binding
   use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
-  use mod_soil_water_solver_contract, only: top_boundary_provider_t, soil_water_boundary_conditions_t
+  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
        fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE
   use mod_fmr_serialized_reference_backend, only: fmr31_test_physical_state_t, &
@@ -16,12 +16,8 @@ program test_fmr31_exact_root_attribution_binding
   real(real64), parameter :: t0 = 731.3125_real64
   real(real64), parameter :: t1 = 732.84375_real64
 
-  type, extends(top_boundary_provider_t) :: dummy_top_provider_t
-  contains
-    procedure :: evaluate => dummy_top_evaluate
-  end type dummy_top_provider_t
-
   type(fmr_serialized_column_result_t), allocatable :: a_results(:), b_results(:), a2_results(:)
+  type(fmr_serialized_column_result_t) :: result_a, result_b, result_a_shared
   type(fmr_column_diagnostics_t), allocatable :: a_diag(:), b_diag(:), a2_diag(:)
   type(fmr_aggregate_diagnostics_t) :: a_aggregate, b_aggregate, a2_aggregate
   type(kernel_committed_state_t), allocatable :: a_states(:), b_states(:), a2_states(:)
@@ -46,10 +42,13 @@ program test_fmr31_exact_root_attribution_binding
        a2_aggregate%aggregate_unrounded_mass_residual), 'A-B-A aggregate residual identity')
   print '(a)', 'FMR31_A_B_A_RUNTIME_ATTRIBUTION_IDENTITY=PASS'
 
-  call require(same_bits(result_for_id(a_results,31001_int64)%actual_transpiration_amount, &
-       result_for_id(a_results,31003_int64)%actual_transpiration_amount), 'shared A forcing identity')
-  call require(.not. same_bits(result_for_id(a_results,31001_int64)%actual_transpiration_amount, &
-       result_for_id(a_results,31002_int64)%actual_transpiration_amount), 'A/B forcing distinction')
+  result_a = result_for_id(a_results, 31001_int64)
+  result_b = result_for_id(a_results, 31002_int64)
+  result_a_shared = result_for_id(a_results, 31003_int64)
+  call require(same_bits(result_a%actual_transpiration_amount, &
+       result_a_shared%actual_transpiration_amount), 'shared A forcing identity')
+  call require(.not. same_bits(result_a%actual_transpiration_amount, &
+       result_b%actual_transpiration_amount), 'A/B forcing distinction')
   print '(a)', 'FMR31_EXACT_COLUMN_FORCING_ASSOCIATION=PASS'
   print '(a)', 'FMR31_ROOT_ATTRIBUTION_BINDING_TEST PASS'
 
@@ -68,7 +67,7 @@ contains
     type(fmr_b110_physical_parameters_t) :: parameters(3)
     type(fmr_b110_physical_forcing_t) :: forcings(3)
     type(canonical_numerical_config_t) :: config
-    type(dummy_top_provider_t), target :: top
+    type(fmr04_fixed_flux_top_provider_t), target :: top
     integer :: i, left, right
 
     call configure_case(columns, templates, parameters, forcings, states, config)
@@ -252,18 +251,6 @@ contains
     end do
     error stop 'F-MR31 result id not found'
   end function result_for_id
-
-  subroutine dummy_top_evaluate(self, pressure_head_top, water_content_top, requested, actual_top_flux, surface_head, runoff_flux)
-    class(dummy_top_provider_t), intent(in) :: self
-    real(real64), intent(in) :: pressure_head_top, water_content_top
-    type(soil_water_boundary_conditions_t), intent(in) :: requested
-    real(real64), intent(out) :: actual_top_flux, surface_head, runoff_flux
-    if (.not. same_type_as(self,self) .or. pressure_head_top /= pressure_head_top .or. &
-        water_content_top /= water_content_top) error stop 'F-MR31 dummy top invalid input'
-    actual_top_flux = requested%top_flux
-    surface_head = 0.0_real64
-    runoff_flux = 0.0_real64
-  end subroutine dummy_top_evaluate
 
   pure logical function same_bits(a, b) result(equal)
     real(real64), intent(in) :: a, b
