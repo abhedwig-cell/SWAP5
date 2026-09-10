@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2B",
+  "title": "IPOS2/3 Equivalent-Depth Preparation and Response Structural Candidate",
+  "branch": "work/f-pm08c2b-ipos23-equivalent-depth-response",
+  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+  },
+  "scope": {
+    "legacy_family": ["DRAMET=2 IPOS=2", "DRAMET=2 IPOS=3"],
+    "persistent_process_state": false,
+    "surface_water": false,
+    "DIVDRA": false,
+    "IPOS1": false,
+    "IPOS4_5": false,
+    "runtime_composition": false,
+    "solver_jacobian_assembly": false
+  },
+  "architecture": {
+    "equivalent_depth_preparation": "immutable geometry preparation performed once per shared parameter set",
+    "dynamic_response": "per hydraulic evaluation consumes prepared equivalent depth plus groundwater level",
+    "worker_scratch": "no persistent column allocation for equivalent-depth temporaries",
+    "branch_metadata": "x<1e-6, 1e-6<=x<=0.5 and x>0.5 remain explicit; no smoothing"
+  },
+  "compatibility_branch": {
+    "legacy_difference_cutoff": "diffl < 1e-10 returns zero exchange",
+    "policy": "retain only as visible restricted B1.10 compatibility semantics",
+    "at_exact_cutoff_derivative": "unavailable"
+  },
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_qualified": false
+}
