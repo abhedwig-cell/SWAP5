@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "canonical_branch": "integration/f-ci-canonical",
+  "promoted_head": "c5d7344730eb73dadcc5c1dfd2d14f7132155f61",
+  "production_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+  "canonical_workflow": {
+    "run_id": 34472416374,
+    "current_postimage_job_id": 102855382069,
+    "conclusion": "success"
+  },
+  "verified": [
+    "historical F-CI03 through F-CI18 authority",
+    "F-CI19 source lineage and Candidate A preservation",
+    "F-CI24 reference ET authority",
+    "F-CI27 reference ET runtime authority",
+    "F-CI28 restart authority",
+    "F-CI29 ptra ownership authority",
+    "final F-CI30 restricted parallel V1 governance authority",
+    "F-CI31 current-canonical frozen-harness qualification",
+    "exact F-CI31 src tree",
+    "exact frozen reference tree"
+  ],
+  "result": "FCI31_CANONICAL_POST_PROMOTION_PASS"
+}
