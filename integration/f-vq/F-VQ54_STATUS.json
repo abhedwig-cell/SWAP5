@@ -1,0 +1,35 @@
+{
+  "schema": "swap5.fvq_workunit_status.v1",
+  "work_unit": "F-VQ54",
+  "title": "Independent F-PM06E Restricted Scalar Surface-Evaporation Hydraulic Capacity Qualification",
+  "branch": "qualification/f-vq54-fpm06e-surface-evaporation-capacity",
+  "source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "owner_authority": "F-PM06E@13ce03cdd01440090a71a82a9e3409f764a7bdd2",
+  "owner_exact_head_run": 34540196376,
+  "candidate": {
+    "commit": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
+    "parent": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "production_blobs": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "src/solver/mod_surface_evaporation_capacity_contract.f90": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+    }
+  },
+  "numbering_note": "F-VQ53 was already persisted for an earlier PM06E qualification attempt and is not reused; F-VQ54 is the clean authoritative handoff workunit.",
+  "phase": "INDEPENDENT_QUALIFICATION_NOT_STARTED",
+  "decision": "PENDING_FAIL_CLOSED",
+  "state": {
+    "handoff_persisted": true,
+    "production_materialized": false,
+    "tested": false,
+    "independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "hard_holds": [
+    "no runtime composition",
+    "no accepted-flux publication",
+    "no canonical admission",
+    "Emax remains capacity only and is never a second mass booking"
+  ],
+  "next_required_step": "independently materialize only the immutable candidate blobs on this clean canonical branch and qualify the frozen scope before any admission"
+}
