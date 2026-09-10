@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE08",
+  "title": "Canonical Worker Scratch De-duplication Optimization & Restricted Parallel V1 Equivalence Qualification",
+  "status": "PROTOCOL_PERSISTED_IMPLEMENTATION_PENDING",
+  "base": {
+    "work_unit": "F-PE07",
+    "head": "5a78543cc744f8ff547575b3bdbbb56615dd9cc3",
+    "production_baseline": "F-MR20@1a249cde0c088e8023cd603d30239ce0d30bf4d7"
+  },
+  "source_bound_observation": {
+    "headcalc_blob": "04c4877754b39161d5afa0f2496a015fd3334cc5",
+    "a23bu_blob": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+    "legacy_binding_blob": "1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff",
+    "finding": "canonical explicit HeadCalc uses reference_richards_workspace scratch and contains no ctx%headcalc references, while reference_richards_legacy_solve currently initializes full A23BU headcalc scratch per worker",
+    "fpe07_known_redundant_payload_four_node_fixture_bytes_per_worker": 412
+  },
+  "implementation_contract": {
+    "owned_source_changes": [
+      "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "a23bu_api_change": "add optional allocate_headcalc_scratch argument to a23bu_initialize_worker with default true",
+    "default_behavior": "unchanged: all existing callers without the new argument allocate the same scratch as before",
+    "canonical_binding_behavior": "reference_richards_legacy_solve explicitly initializes ws%legacy_worker with allocate_headcalc_scratch=false",
+    "headcalc_behavior": "unchanged",
+    "transaction_behavior": "unchanged",
+    "physics_behavior": "unchanged",
+    "mass_policy": "unchanged and hard"
+  },
+  "required_gates": [
+    "default A23BU initializer still reports original scratch payload",
+    "no-scratch initializer reports zero A23BU headcalc scratch payload",
+    "canonical reference solve leaves A23BU headcalc scratch unallocated",
+    "F-MR20 serialized-vs-2-vs-4 scientific identity remains bit-exact",
+    "true overlap remains observed for 2 and 4 workers",
+    "hard mass gate remains PASS",
+    "O0/O2 scientific output identity",
+    "production diff limited to exactly two owned source files",
+    "updated F-PE07-equivalent known worker payload becomes 2380 bytes for n=4,L=2"
+  ],
+  "expected_memory_effect": {
+    "removed_payload_formula_per_worker": "RB*(11*n+2) + LB*(2*n+3)",
+    "four_node_fixture_removed_bytes_per_worker": 412,
+    "four_node_fixture_known_dynamic_payload_before_bytes_per_worker": 2792,
+    "four_node_fixture_known_dynamic_payload_after_bytes_per_worker": 2380,
+    "not_RSS": true
+  },
+  "explicit_nonclaims": [
+    "general HeadCalc scratch removal for legacy execution",
+    "RSS reduction guarantee",
+    "runtime speedup guarantee",
+    "physics expansion beyond F-MR20 V1",
+    "worker counts above 4",
+    "removal of reference_richards_workspace scratch"
+  ],
+  "architecture_invariants": [4,5,6,13,16,23,25,27,30],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": ["materialize bounded source patch", "build executable gates", "qualify scientific equivalence", "close"]
+  }
+}
