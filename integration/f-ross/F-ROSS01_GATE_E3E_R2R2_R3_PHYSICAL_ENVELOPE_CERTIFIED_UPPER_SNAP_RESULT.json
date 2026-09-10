@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R3_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP",
+  "contract": "F-ROSS01_GATE_E3E_R2R2_R3_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP_PRECOMMIT.json",
+  "status": "QUALIFIED_FOCUSED_GATE",
+  "production_implementation": false,
+  "roundoff_only_hypothesis_retired": true,
+  "certificate_kind": "ANALYTIC_PHYSICAL_ROOT_ENVELOPE",
+  "workflow": {
+    "qualified_run": 34439941373,
+    "head": "67e8de5a18015113c987d79a9d7503b9c6b034d7",
+    "conclusion": "success",
+    "material_jobs_passed": 4,
+    "material_jobs_total": 4,
+    "superseded_ci_plumbing_run": {
+      "run": 34439873613,
+      "interpretation": "The scientific experiment passed for the already-completed B12/O13 jobs, but a workflow assertion incorrectly required the narrow snap-admission envelope on ordinary non-snap bisection controls. Only that assertion scope was corrected; experiment code, frozen contract, physics, seeds and thresholds were unchanged."
+    }
+  },
+  "artifacts": {
+    "B01": {"id": 10137562243, "digest": "sha256:5a6429148b67ab82f4c0d1b26a0fa86011a85e2bdca9f7e5f2c28e3f7b7c0a89"},
+    "B12": {"id": 10137551184, "digest": "sha256:6be2636453dd93b1c88628b2b87f7fa9cfd8c6a5286d15492be6d4ae61fa1e83"},
+    "O13": {"id": 10137551649, "digest": "sha256:84a827abc1b2e953dae799230a4ca681d2ceb9aae65874ac0ea4824a0ca877ad"},
+    "O14": {"id": 10137566871, "digest": "sha256:e8461c4ca02502ff0827b4f88153d2c00262df27e705b7439dbfdd9a34bef899"}
+  },
+  "B01_defect_witness": {
+    "probe_id": "fresh_near_0023",
+    "h_surface_cm": 0.8418598139923603,
+    "h_top_node_cm": -1.7857563818019415e-08,
+    "candidate_branch": "SURFACE_SATURATED_PHYSICAL_ENVELOPE_UPPER_SNAP",
+    "q_candidate_cm_per_day": 36.48243334385423,
+    "q_reference_a_cm_per_day": 36.48243334385413,
+    "q_reference_b_cm_per_day": 36.48243334385413,
+    "oracle_pair_abs_error_over_ksat": 0.0,
+    "candidate_abs_error_over_ksatfit": 3.1857784478449596e-15,
+    "candidate_hybrid_metric": 2.7264483355488774e-15,
+    "physical_envelope": {
+      "q_lower_cm_per_day": 36.4824332323337,
+      "q_upper_cm_per_day": 36.48243334385423,
+      "width_cm_per_day": 1.1152053502883064e-07,
+      "max_abs_error_over_ksatfit": 3.571512763603883e-09,
+      "max_hybrid_metric": 3.05656693297986e-09
+    },
+    "binary64_upper_residual_cm": 5.329070518200751e-15,
+    "root_residual_evaluations": 2,
+    "constitutive_K_evaluations": 152,
+    "interpretation": "The former catastrophic q=KSAT fallback is removed. The exact physical upper flux is admitted only because the analytic K<=KSAT envelope independently proves the true root is closer than the already frozen E3E error budget."
+  },
+  "focused_metrics": {
+    "B01_max_abs_error_over_ksatfit_all_three_witnesses": 1.357938063393914e-12,
+    "B01_max_hybrid_metric_all_three_witnesses": 1.3575850794879345e-12,
+    "B01_max_constitutive_K_evaluations": 520,
+    "B01_max_root_residual_evaluations": 66,
+    "B01_snap_count": 1,
+    "all_material_wrong_sign_count": 0
+  },
+  "qualified_claim": "For the frozen 5 cm positive-surface to unsaturated face scope, an R2 analytic saturated-segment candidate may fail closed to q_upper only when the exact physical K<=KSAT root envelope itself certifies both frozen error metrics. The previously masked B01 witness and all focused controls satisfy this rule without changing constitutive physics or numerical tolerances.",
+  "architecture_checks": {
+    "persistent_state_bytes": 0,
+    "scratch_owner": "worker",
+    "mass_conservation": "single antisymmetric face flux only; no mass repair or clipping",
+    "bounded_cost": "snap is O(1) after bounded split-bracket evaluation and remains within 530 K / 66 residual caps",
+    "physics_policy_separation": "K<=KSAT and geometry establish the root envelope; admission thresholds remain numerical policy"
+  },
+  "decision": "QUALIFIED_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP_READY_FOR_IDENTICAL_320_CASE_FRESH_RERUN",
+  "hard_nonclaims": [
+    "No claim that the former residual-sign disagreement was pure binary64 roundoff.",
+    "No unconditional upper snap.",
+    "No new constitutive physics, Phi tuning, table, smoothing or residual-tolerance relaxation.",
+    "No h_surface=0 endpoint change; R2P remains authoritative.",
+    "No 320-case requalification yet.",
+    "No top-boundary composition, surface ledger, response tangent, runtime, MultiSWAP, groundwater or production admission."
+  ],
+  "next_gate": "E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION"
+}
