@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2A_CONSTANT_SUPPLY_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "purpose": "Characterize which frozen real-soil materials can exhibit a genuine finite-time dry-to-ponded onset under constant supply, before freezing the R2 event-localization qualification fixture. This is fixture research only and may not qualify event localization.",
+  "upstream": {
+    "R1": "QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE",
+    "status_head_at_precommit": "4b779d369e4fd8f502895b023ce054508fe0bb09"
+  },
+  "frozen_common_scope": {
+    "initial_heads_cm": [-0.2, -1.5, -5.0],
+    "surface_storage_cm": 0.0,
+    "bottom_head_cm": -15.0,
+    "surface_head_for_capacity_cm": 0.0,
+    "surface_face_length_cm": 5.0,
+    "internal_face_length_cm": 10.0,
+    "top_soil_head_upper_bound_cm": -1.0e-8,
+    "materials": ["B01", "B12", "O13", "O14"],
+    "mass_tolerance_cm": 1.0e-9,
+    "solver_policy": "same qualification-only least_squares tolerances and bounds as E3G/R1",
+    "reference_soil_faces": "full-accuracy E3 reference faces",
+    "capacity_reference": "endpoint-aware 5 cm full-accuracy surface-face reference already qualified upstream"
+  },
+  "B01_O14_interior_event_scan": {
+    "materials": ["B01", "O14"],
+    "supply_fractions_of_KSAT": [1.005, 1.01, 1.015, 1.02],
+    "sample_times_day": [0.0, 1.0e-5, 2.0e-5, 5.0e-5, 1.0e-4, 2.0e-4, 5.0e-4, 1.0e-3],
+    "event_function": "g(t)=q_supply-q_cap(h_surface=0,h_top_dry_reference(t))",
+    "required_fixture_signature": [
+      "g(0)<0 beyond roundoff, so R1 immediate admission does not apply",
+      "there exist adjacent sampled positive times t_a<t_b with both dry reference trials mass-valid and g(t_a)<0<=g(t_b)",
+      "the top node remains inside the frozen negative-head domain at both bracket endpoints",
+      "no unqualified face fallback or mass repair is used"
+    ],
+    "selection_rule_if_multiple": "Choose the smallest supply fraction, then the earliest valid bracket, independently for each material. A later qualification may use separate material fixtures; no requirement is imposed that B01 and O14 share one onset time."
+  },
+  "B12_O13_controls": {
+    "materials": ["B12", "O13"],
+    "supply_fractions_of_KSAT": [0.995, 1.005],
+    "required": {
+      "0.995": "initial dry admission and no forced finite-time onset claim within this characterization",
+      "1.005": "immediate-at-t0 ponding classification under R1, not a finite-time R2 event"
+    },
+    "hard_guard": "Do not tune an artificial constant-supply finite-time event for B12/O13 when the qualified h_surface=0 endpoint semantics already classify supply above KSAT as immediate ponding."
+  },
+  "interpretation_rules": {
+    "valid_event_bracket": "Scientific evidence that an interior finite-time onset fixture exists for that material under the frozen reference composition. It is not yet an event-localization qualification.",
+    "dry_solver_invalid_before_sign_change": "No fixture from that supply/time sequence. Do not infer event time from an invalid state.",
+    "no_sign_change": "No interior onset fixture established in the scanned horizon.",
+    "B12_or_O13_immediate": "Positive control for R1-domain separation, not R2 failure.",
+    "post_result_tuning_inside_R2A": false
+  },
+  "architecture_checks": {
+    "7_transactional_timesteps": "Every sampled dry trajectory is computed from the same immutable committed state and is never committed.",
+    "9_generic_time": "All sample times are offsets in a generic [t0,t1] interval, with no day-boundary semantics.",
+    "13_mass_conservation_absolute": "Only mass-valid dry reference samples can establish a bracket.",
+    "23_physics_solver_policy_separated": "The event function is physical complementarity; the sampling grid is qualification-only policy.",
+    "24_predictable_runtime": "This is bounded fixture characterization, not a production search algorithm.",
+    "25_reference_mode": "Only independently qualified reference physics establishes the fixture class.",
+    "29_no_silent_dependencies": "All geometry, heads, forcing fractions and times are explicit."
+  },
+  "hard_nonclaims": [
+    "No event time is qualified by R2A.",
+    "No candidate event locator is tested.",
+    "No production event-search cadence follows from the sample grid.",
+    "No finite-time event is required for B12/O13.",
+    "No top-node positive head, pond depletion, runoff, response tangent, runtime, MultiSWAP or MODFLOW admission."
+  ],
+  "positive_exit": "CHARACTERIZED_PHYSICALLY_VALID_FINITE_TIME_PONDING_FIXTURE_CLASS_READY_FOR_R2_PRECOMMIT",
+  "negative_exit": "NO_VALID_CONSTANT_SUPPLY_FINITE_TIME_FIXTURE_IN_FROZEN_SCAN_RESEARCH_REQUIRED"
+}
