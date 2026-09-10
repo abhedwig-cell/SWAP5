@@ -1,0 +1,32 @@
+name: F-MR36 DIVDRA active runtime callsite
+
+on:
+  push:
+    branches:
+      - work/f-mr36-divdra-active-runtime-callsite
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-active-callsite:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-MR36 source-bound runtime gate
+        env:
+          FMR36_EVIDENCE_DIR: _fmr36_evidence
+        run: bash tests/fmr/run_fmr36_divdra_active_runtime_callsite_gate.sh
+      - name: Upload F-MR36 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-MR36-divdra-active-runtime-callsite-evidence
+          path: _fmr36_evidence
+          if-no-files-found: warn
