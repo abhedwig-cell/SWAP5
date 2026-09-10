@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ50",
+  "title": "Independent F-MR31 Root-Uptake Attribution Exact-Forcing Binding Requalification",
+  "phase": "CLOSED_QUALIFIED_EXACT_PINNED_CANDIDATE",
+  "branch": "qualification/f-vq50-fmr31-root-attribution-forcing-binding-requalification",
+  "source_authority": "integration/f-ci-canonical@49863406a6112baa9956f9396b34e7188934e0d4",
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "authoritative_workflow": {
+    "run": 34485954675,
+    "job": 102900155283,
+    "head": "b62ba2ae2153566e645e9246ee9a922b2aca5f05",
+    "conclusion": "success"
+  },
+  "state": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "CLOSED": true,
+    "PRODUCTION_SOURCE_MODIFIED_BY_QUALIFICATION": false,
+    "CANONICAL_ADMITTED": false
+  },
+  "hard_gates": {
+    "HN1_FORMER_WRONG_FORCING_REPAIR_PATH": "PASS",
+    "HN2_EXACT_RESOLVED_FORCING_HANDLE": "PASS",
+    "HN3_POSTCOMMIT_ONLY": "PASS",
+    "HN4_NO_SECOND_MASS_BOOKING": "PASS",
+    "HN5_BY_VALUE_TAMPER_RESISTANCE": "PASS",
+    "HN6_REAL_BACKEND_PRESERVATION": "PASS",
+    "O0_O2_IDENTITY": "PASS"
+  },
+  "first_workflow_run": {
+    "run": 34485520730,
+    "job": 102898683579,
+    "conclusion": "failure",
+    "classification": "TEST_HARNESS_COMPILE_FAILURE_NOT_CANDIDATE_FAILURE",
+    "scientific_cases_executed": false
+  },
+  "current_canonical_at_closeout": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
+  "canonical_reconciliation_required_before_admission": true,
+  "qualified_scope": "restricted serialized exact forcing-bound accepted root-uptake attribution with fixed root_extraction_sink over generic [t0,t1]",
+  "nonclaims": [
+    "parallel root-attribution publication",
+    "time-varying qrot within accepted substeps",
+    "persistent crop accounting",
+    "canonical admission",
+    "cross-version persistence"
+  ],
+  "decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE",
+  "next_route": "canonical source recomposition/admission against the live post-F-CI33 authority, with no widening of the qualified scientific scope"
+}
