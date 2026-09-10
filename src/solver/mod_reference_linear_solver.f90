@@ -20,8 +20,11 @@ contains
     real(real64), parameter :: small = 0.3e-37_real64
     integer :: i
     real(real64) :: bet
+    logical :: capture_in_gamma
 
     call require_vector_sizes(n, a, b, c, r, u, gamma)
+    capture_in_gamma = size(gamma) >= 2*n
+    if (capture_in_gamma) gamma(n+1:2*n) = 0.0_real64
     if (present(beta_factor)) then
        if (size(beta_factor) < n) error stop 'reference_tridag: beta factor shape mismatch'
        beta_factor(1:n) = 0.0_real64
@@ -34,6 +37,7 @@ contains
        return
     else
        bet = b(1)
+       if (capture_in_gamma) gamma(n+1) = bet
        if (present(beta_factor)) beta_factor(1) = bet
        u(1) = r(1) / bet
        do i = 2, n
@@ -43,6 +47,7 @@ contains
              ierror = 1000 + i
              return
           end if
+          if (capture_in_gamma) gamma(n+i) = bet
           if (present(beta_factor)) beta_factor(i) = bet
           u(i) = (r(i) - a(i) * u(i-1)) / bet
        end do
