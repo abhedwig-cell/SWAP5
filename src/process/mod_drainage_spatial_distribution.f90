@@ -12,6 +12,7 @@ module mod_drainage_spatial_distribution
   integer, parameter, public :: DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE = 4
 
   real(real64), parameter :: LEGACY_ACTIVE_MAGNITUDE = 1.0e-10_real64
+  real(real64), parameter :: LEGACY_LEVEL_TO_COMPARTMENT_OFFSET = 1.0e-10_real64
 
   type, public :: drainage_distribution_parameters_t
     integer :: active_nodes = 0
@@ -104,8 +105,11 @@ contains
     khor = parameters%saturated_conductivity * parameters%horizontal_anisotropy_factor
     kver = parameters%saturated_conductivity
 
+    ! Frozen SWAP 4.3.1 Lev2Comp semantics deliberately retain the shallower
+    ! compartment until the level is more than 1e-10 cm below its bottom.
+    ! This is an explicit reference seam, not a configurable solver tolerance.
     wt_node = 1
-    do while (wlev > -parameters%zbotcp(wt_node))
+    do while (wlev > -parameters%zbotcp(wt_node) + LEGACY_LEVEL_TO_COMPARTMENT_OFFSET)
       wt_node = wt_node + 1
       if (wt_node > n) then
         diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW
@@ -114,7 +118,11 @@ contains
     end do
 
     dz_top_sat = -parameters%zbotcp(wt_node) - wlev
-    if (dz_top_sat <= 0.0_real64) then
+    if (wt_node == n .and. dz_top_sat <= 0.0_real64) then
+      diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW
+      return
+    end if
+    if (wt_node < n .and. dz_top_sat < -LEGACY_LEVEL_TO_COMPARTMENT_OFFSET) then
       diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW
       return
     end if
