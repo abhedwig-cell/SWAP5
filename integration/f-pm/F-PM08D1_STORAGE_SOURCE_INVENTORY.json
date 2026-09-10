@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D1",
+  "title": "Frozen SWAP 4.3.1 Surface-Water Storage Geometry Source Inventory",
+  "source_identity": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"
+  },
+  "source_locations": {
+    "extended_reader_and_initialization": "SWAP/surfacewater.f90:644-1177",
+    "sttab_levels": "SWAP/surfacewater.f90:1121-1131",
+    "sttab_storage": "SWAP/surfacewater.f90:1133-1155",
+    "initial_storage": "SWAP/surfacewater.f90:1157-1158",
+    "wlevst_inverse": "SWAP/surfacewater.f90:434-463",
+    "swstlev_forward": "SWAP/surfacewater.f90:1182-1213",
+    "legacy_storage_declarations": "SWAP/MOD_drainage.f90:91-134"
+  },
+  "reader_domain": {
+    "drainage_levels_order": "deepest first",
+    "ordering_check": "zbotdr(i) must not be below zbotdr(i-1) for i>1",
+    "swsrf_2_nrpri": 0,
+    "swsrf_3_nrpri": 1,
+    "nrsec": "nrlevs-nrpri",
+    "deepest_secondary_index_fortran": "1+nrpri",
+    "deepest_secondary_open_required": true,
+    "open_channel_code": 2,
+    "tube_code": 1,
+    "open_channel_width_lower_guard_cm": 0.0001,
+    "initial_simulated_wls_domain": "[zbotdr(1+nrpri), 0 cm]"
+  },
+  "sttab_reference_semantics": {
+    "number_of_knots": 22,
+    "knot_1_level_cm": 100.0,
+    "knot_2_level_cm": 0.0,
+    "knots_3_to_22": "zbotdr(1+nrpri)*(i-2)/20 for i=3..22",
+    "deepest_secondary_bottom_is_knot_22": true,
+    "secondary_levels_only": "ilev=1+nrpri..nrlevs",
+    "open_channels_only_contribute_storage": true,
+    "activation_condition": "sttab(i,1) > zbotdr(ilev)",
+    "at_or_below_surface_formula": "d=level-zbotdr; volume=d*(width+d/talud)",
+    "above_surface_formula": "d=-zbotdr; base=d*(width+d/talud); breadth=width+2*d/talud; volume=base+breadth*level",
+    "storage_contribution_cm": "volume/Lspacing",
+    "aggregate_storage": "sum open-secondary-channel contributions at each knot",
+    "interpolation": "piecewise linear in the prepared knot table"
+  },
+  "forward_inverse_behavior": {
+    "swstlev_level_domain": "[sttab(22,1), sttab(1,1)]",
+    "wlevst_storage_domain": "[sttab(22,2), sttab(1,2)]",
+    "outside_domain": "legacy swap_error; modern candidate must fail closed",
+    "interval_selection": "inclusive endpoints; first matching adjacent knot pair in descending table",
+    "inverse_validity_precondition": "prepared storage knots are strictly monotone over reader-valid geometry because the deepest secondary level is an open channel with positive width and spacing"
+  },
+  "state_classification": {
+    "SWST": "authoritative conserved physical storage state only for SWSEC=2",
+    "WLS": "derived from SWST by WLEVST for SWSEC=2; prescribed forcing for SWSEC=1",
+    "STTAB": "prepared immutable parameter data shared by geometry identity; never dynamic state",
+    "WLSTAR": "automatic-management control memory; not member of the storage-state object; routed to F-PM08D5",
+    "WLSBAK": "numerical oscillation history; not physical state",
+    "NUMADJ": "diagnostic counter; not physical state"
+  },
+  "reference_mode_consequence": {
+    "retain_22_knot_piecewise_linear_semantics": true,
+    "analytic_open_channel_formula_between_knots_is_reference_equivalent": false,
+    "reason": "below the surface the exact channel-area relation is quadratic in water level whereas frozen SWSTLEV linearly interpolates precomputed knot storage",
+    "allowed_future_route": "an exact analytic geometry option may be investigated only as separately named and qualified physical behavior, never as a numerical-policy optimization"
+  },
+  "multiswap_layout": {
+    "prepared_relation_shared": true,
+    "shared_by": "immutable parameter ID/reference",
+    "per_column_table_copy_required": false,
+    "persistent_reals_per_active_simulated_column_for_storage_only": 1,
+    "inactive_columns_storage_state_bytes": 0
+  },
+  "holds": [
+    "D1 does not qualify drainage exchange.",
+    "D1 does not qualify dry-system availability limiting.",
+    "D1 does not qualify weir/supply/discharge evolution.",
+    "D1 does not qualify automatic-management control memory implementation.",
+    "D1 does not qualify runtime commit/rollback composition."
+  ]
+}
