@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20R",
+  "title": "Canonical Published Result Ordering Remediation Results",
+  "branch": "work/f-mr20r-canonical-result-publication",
+  "trigger_review": {
+    "work_unit": "F-MQ26",
+    "closeout": "3f7babe8253c15ecf4fdfd71c568e4c7fa5103bc",
+    "rejected_candidate": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+    "failed_gate": "DETERMINISTIC_CANONICAL_PUBLISHED_RESULT_ORDER"
+  },
+  "production_fix": {
+    "commit": "952922a2c6f014f5e20291bc1f775650bddf17da",
+    "changed_source_files": [
+      "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+    ],
+    "serialized_runtime_blob": "139c7f5e4e6c4337fb8d41af2e7a83056ebc9bcf",
+    "parallel_worker_pool_blob": "b2adb1118df40fcba42e191eb098b78a2c57e802",
+    "source_change_summary": "Publish results and diagnostics in canonical execution order only after execution and deterministic aggregate/runtime finalization.",
+    "physics_changed": false,
+    "solver_changed": false,
+    "worker_partition_changed": false,
+    "mass_reduction_changed": false,
+    "state_handle_mapping_changed": false
+  },
+  "tested_head": "fbd8440cea109fa7ea6dd3624ca4a45bc0ca027c",
+  "tested_tree": "ce382774d675a3aa49f6cf22c5cea0d9c6053d81",
+  "workflow": {
+    "run": 34451865615,
+    "job": 102789195370,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimizations": ["O0", "O2"]
+  },
+  "independent_test_provenance_reused_without_modification": {
+    "branch": "qualification/f-mq26-parallel-real-physics-v1-admission",
+    "positive_matrix_test": {
+      "path": "tests/fmq/test_fmq26_parallel_v1_admission.f90",
+      "blob": "26cc6e0ace986dc40db7635de7192958a1c0b868"
+    },
+    "canonical_publication_test": {
+      "path": "tests/fmq/test_fmq26_canonical_publication_order.f90",
+      "blob": "f2584b0236e85d4f6e8b687cee97981eaaa909c9"
+    }
+  },
+  "gates": {
+    "exact_postimage_source_lock": "PASS",
+    "exact_two_file_source_delta_vs_rejected_candidate": "PASS",
+    "publication_after_aggregate_and_runtime_finalization": "PASS",
+    "execution_and_scheduler_seams_preserved": "PASS",
+    "exact_independent_fmq26_test_provenance": "PASS",
+    "fmq26_positive_matrix_O0": "PASS",
+    "fmq26_positive_matrix_O2": "PASS",
+    "fmq26_original_canonical_publication_reproducer_O0": "PASS",
+    "fmq26_original_canonical_publication_reproducer_O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "preserved_properties_from_independent_positive_matrix": [
+    "input-order scientific identity",
+    "rejection at batch boundary isolation",
+    "interior rejection isolation",
+    "two-worker separated rejection isolation",
+    "unsupported profiles fail closed",
+    "true multiworker overlap control",
+    "hard mass gate for all cases",
+    "worker-count independence",
+    "deterministic replay"
+  ],
+  "defect_disposition": {
+    "previous_observation": "reversed input leaked into published results/diagnostics array order",
+    "current_observation": "exact F-MQ26 defect reproducer emits FMQ26_CANONICAL_PUBLICATION_ORDER=PASS under O0 and O2",
+    "owner_decision": "REMEDIATED_CANONICAL_PUBLICATION_ORDER_READY_FOR_INDEPENDENT_REQUALIFICATION"
+  },
+  "qualification": {
+    "owner_regression_passed": true,
+    "independent_requalification_completed": false,
+    "qualified": false,
+    "reason": "F-MR20R is an owner remediation. Independent F-MQ requalification is still required."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "closed": false,
+    "open": ["independent requalification of exact remediated candidate"]
+  }
+}
