@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ42",
+  "title": "Independent Empirical Interflow Response Scientific Qualification Evidence",
+  "branch": "qualification/f-vq42-fpm08c3-empirical-interflow",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "candidate": {
+    "work_unit": "F-PM08C3",
+    "closeout": "66199567e95369f42bbc75b1b279aa959050a733",
+    "production_path": "src/process/mod_drainage_empirical_interflow_response.f90",
+    "production_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "equation_scope": "SWAP/drainage.f90 empirical interflow drainage-side branch"
+  },
+  "qualification_candidate_head": "bd2f9b10d201ad32c0c378c699ed8df13e6eb151",
+  "workflow": {
+    "run_id": 34461038906,
+    "job_id": 102818667156,
+    "conclusion": "success"
+  },
+  "independence": {
+    "qualification_branch_inherits_candidate_code": false,
+    "candidate_authoring_tests_used_as_oracle": false,
+    "candidate_evidence_used_as_oracle": false,
+    "candidate_source_fetched_by_exact_closeout_and_blob": true,
+    "legacy_response_reconstructed_independently": true,
+    "production_or_reference_delta_on_qualification_branch": false
+  },
+  "results": {
+    "active_cases": 1404,
+    "derivative_formula_checks": 1404,
+    "finite_difference_checks": 6,
+    "inactive_contribution_checks": 8,
+    "activation_checks": 4,
+    "max_flux_abs_error": 0.0,
+    "max_flux_rel_error": 0.0,
+    "max_derivative_abs_error": 0.0,
+    "max_derivative_rel_error": 0.0,
+    "max_fd_relative_error": 5.762629586188275e-11,
+    "o0_o2_consistent": true,
+    "summary_sha256": "550fde3d0de7330ccce48455ebe822087f5fd276606019aab52de96b5097ab66"
+  },
+  "qualified_scope": {
+    "active_power_law_flux": true,
+    "active_analytic_tangent": true,
+    "inactive_interflow_contribution_below_activation": true,
+    "sublinear_activation_singular_right_tangent_metadata": true,
+    "linear_activation_finite_right_tangent_two_sided_unavailable": true,
+    "negative_side_dramet3_infiltration": false,
+    "multilevel_aggregation": false,
+    "divdra": false,
+    "runtime_binding": false,
+    "canonical_admission": false
+  },
+  "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY"
+}
