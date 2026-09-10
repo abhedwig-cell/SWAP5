@@ -4,22 +4,28 @@ module mod_reference_linear_solver
   private
 
   public :: reference_tridag
+  public :: reference_tridag_backsolve
   public :: reference_band_solve
 
 contains
 
-  subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror)
+  subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror, beta_factor)
     integer, intent(in) :: n
     real(real64), intent(in) :: a(:), b(:), c(:), r(:)
     real(real64), intent(out) :: u(:)
     real(real64), intent(inout) :: gamma(:)
     integer, intent(out) :: ierror
+    real(real64), intent(out), optional :: beta_factor(:)
 
     real(real64), parameter :: small = 0.3e-37_real64
     integer :: i
     real(real64) :: bet
 
     call require_vector_sizes(n, a, b, c, r, u, gamma)
+    if (present(beta_factor)) then
+       if (size(beta_factor) < n) error stop 'reference_tridag: beta factor shape mismatch'
+       beta_factor(1:n) = 0.0_real64
+    end if
 
     ierror = 0
 
@@ -28,6 +34,7 @@ contains
        return
     else
        bet = b(1)
+       if (present(beta_factor)) beta_factor(1) = bet
        u(1) = r(1) / bet
        do i = 2, n
           gamma(i) = c(i-1) / bet
@@ -36,6 +43,7 @@ contains
              ierror = 1000 + i
              return
           end if
+          if (present(beta_factor)) beta_factor(i) = bet
           u(i) = (r(i) - a(i) * u(i-1)) / bet
        end do
 
@@ -44,6 +52,39 @@ contains
        end do
     end if
   end subroutine reference_tridag
+
+  subroutine reference_tridag_backsolve(n, a, r, gamma, beta_factor, u, ierror)
+    integer, intent(in) :: n
+    real(real64), intent(in) :: a(:), r(:), gamma(:), beta_factor(:)
+    real(real64), intent(out) :: u(:)
+    integer, intent(out) :: ierror
+
+    real(real64), parameter :: small = 0.3e-37_real64
+    integer :: i
+
+    if (n <= 0) error stop 'reference_tridag_backsolve requires n > 0'
+    if (size(a) < n .or. size(r) < n .or. size(gamma) < n .or. size(beta_factor) < n .or. size(u) < n) &
+         error stop 'reference_tridag_backsolve: vector shape mismatch'
+
+    ierror = 0
+    if (abs(beta_factor(1)) < small) then
+       ierror = 1000
+       return
+    end if
+
+    u(1) = r(1) / beta_factor(1)
+    do i = 2, n
+       if (abs(beta_factor(i)) < small) then
+          ierror = 1000 + i
+          return
+       end if
+       u(i) = (r(i) - a(i) * u(i-1)) / beta_factor(i)
+    end do
+
+    do i = n-1, 1, -1
+       u(i) = u(i) - gamma(i+1) * u(i+1)
+    end do
+  end subroutine reference_tridag_backsolve
 
   subroutine reference_band_solve(a, al, indx, b)
     real(real64), intent(inout) :: a(:,:)
