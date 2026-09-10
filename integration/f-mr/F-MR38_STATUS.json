@@ -2,11 +2,14 @@
   "schema":"swap5.fmr38_status.v1",
   "work_unit":"F-MR38",
   "branch":"work/f-mr38-explicit-effective-forcing-executor",
-  "phase":"PREIMPLEMENTATION_SCOPE_PERSISTED",
+  "phase":"PRETEST_STRUCTURAL_CANDIDATE_PERSISTED",
   "decision":"IN_PROGRESS_EXPLICIT_EFFECTIVE_FORCING_EXECUTOR_STRUCTURAL_CANDIDATE",
   "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
   "readiness_authority":"F-MR37@e21ae30a3f3a5cb2a4a34f00c74e5a46c67645d1",
-  "state":{"scope_persisted":true,"production_modified":false,"tests_persisted":false,"tested":false,"owner_qualified":false,"reference_modified":false,"closed":false},
+  "candidate":{"commit":"b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded","path":"src/runtime/mod_fmr_serialized_multiswap_runtime.f90","blob":"f06a2eef7b47880e449cf9b201342d7bd1e197e1"},
+  "state":{"scope_persisted":true,"production_modified":true,"tests_persisted":true,"architecture_audit_persisted":true,"workflow_persisted":true,"tested":false,"owner_qualified":false,"reference_modified":false,"closed":false},
   "allowed_production_delta":["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
-  "next_required_step":"implement the smallest common resolved-object executor and explicit-effective-forcing public seam, preserving the registry-facing wrapper and all current runtime paths"
+  "owner_test_matrix":["immutable F-MQ26 parallel V1 replay","immutable independent F-VQ51 serialized active DIVDRA replay with historical output hash","direct registry-wrapper versus resolved-seam exact identity derived from immutable F-MQ26 fixture","resolved-seam mismatched-template premutation rejection","O0/O2 identity","all 30 architecture invariants"],
+  "hard_holds":["no active parallel DIVDRA","no drainage-specific worker pool","no forcing-registry deep copy","no shared forcing mutation","no persistent effective-forcing state","no drainage science change","no canonical admission"],
+  "next_required_step":"run exact owner CI on this persisted candidate; classify any failure before remediation"
 }
