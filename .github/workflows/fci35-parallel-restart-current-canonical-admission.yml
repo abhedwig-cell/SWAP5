@@ -1,0 +1,25 @@
+name: F-CI35 parallel committed restart canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci35-parallel-committed-restart-current-canonical-admission
+      - integration/f-ci-canonical
+    paths:
+      - 'integration/f-ci/F-CI35_*.json'
+      - 'tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh'
+      - '.github/workflows/fci35-parallel-restart-current-canonical-admission.yml'
+  workflow_dispatch:
+
+jobs:
+  canonical-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI35 current-canonical capability admission
+        run: bash tests/fci/run_fci35_parallel_restart_current_canonical_admission.sh
