@@ -10,7 +10,7 @@ program test_fpm08a_single_level_linear_drainage
   type(drainage_linear_parameters_t) :: parameters, bad_parameters
   type(drainage_control_t) :: control, bad_control
   type(process_hydraulic_view_t) :: view, view_b, bad_view
-  type(drainage_transfer_t) :: transfer_a1, transfer_a2, transfer_b, transfer, plus_transfer, minus_transfer
+  type(drainage_transfer_t) :: transfer_a1, transfer_a2, transfer_b, flux, plus_transfer, minus_transfer
   type(drainage_diagnostics_t) :: diag_a1, diag_a2, diag_b, diag, plus_diag, minus_diag
   real(real64), parameter :: tol = 2048.0_real64*epsilon(1.0_real64)
   real(real64), parameter :: delta = 1.0e-5_real64
@@ -33,26 +33,26 @@ program test_fpm08a_single_level_linear_drainage
 
   bad_view = process_hydraulic_view_t()
   bad_view%groundwater_level = -20.0_real64
-  call evaluate_single_level_linear_drainage(parameters, bad_view, control, transfer, diag)
-  call require(diag%status == DRAINAGE_OK .and. close(transfer%soil_to_drain_rate, 0.3_real64), &
+  call evaluate_single_level_linear_drainage(parameters, bad_view, control, flux, diag)
+  call require(diag%status == DRAINAGE_OK .and. close(flux%soil_to_drain_rate, 0.3_real64), &
        'groundwater-only hydraulic dependency')
   call require(.not. allocated(bad_view%pressure_head) .and. .not. allocated(bad_view%water_content), &
        'unrelated hydraulic arrays remain unnecessary')
   write(*,'(A)') 'FPM08A_GROUNDWATER_ONLY_HYDRAULIC_VIEW=PASS'
 
   view%groundwater_level = control%drain_head - 10.0_real64
-  call evaluate_single_level_linear_drainage(parameters, view, control, transfer, diag)
+  call evaluate_single_level_linear_drainage(parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_OK .and. diag%evaluated .and. .not. diag%active, 'inactive route')
-  call require(transfer%soil_to_drain_rate == 0.0_real64, 'inactive route zero transfer')
-  call require(transfer%derivative_defined .and. transfer%dq_dgroundwater_level == 0.0_real64, &
+  call require(flux%soil_to_drain_rate == 0.0_real64, 'inactive route zero transfer')
+  call require(flux%derivative_defined .and. flux%dq_dgroundwater_level == 0.0_real64, &
        'inactive route zero derivative')
   write(*,'(A)') 'FPM08A_DRAINAGE_ONLY_NO_REVERSE_EXCHANGE=PASS'
 
   view%groundwater_level = control%drain_head
-  call evaluate_single_level_linear_drainage(parameters, view, control, transfer, diag)
+  call evaluate_single_level_linear_drainage(parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_OK .and. diag%activation_kink, 'activation kink diagnostic')
-  call require(transfer%soil_to_drain_rate == 0.0_real64, 'activation kink zero flux')
-  call require(.not. transfer%derivative_defined, 'activation kink derivative unavailable')
+  call require(flux%soil_to_drain_rate == 0.0_real64, 'activation kink zero flux')
+  call require(.not. flux%derivative_defined, 'activation kink derivative unavailable')
   write(*,'(A)') 'FPM08A_NONSMOOTH_ACTIVATION_DIAGNOSTIC=PASS'
 
   view%groundwater_level = -20.0_real64 + delta
@@ -87,29 +87,29 @@ program test_fpm08a_single_level_linear_drainage
 
   bad_parameters = parameters
   bad_parameters%drainage_resistance = 0.0_real64
-  call evaluate_single_level_linear_drainage(bad_parameters, view, control, transfer, diag)
+  call evaluate_single_level_linear_drainage(bad_parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_INVALID_PARAMETERS .and. .not. diag%evaluated, 'zero resistance rejected')
 
   bad_parameters = parameters
   bad_parameters%drainage_resistance = -1.0_real64
-  call evaluate_single_level_linear_drainage(bad_parameters, view, control, transfer, diag)
+  call evaluate_single_level_linear_drainage(bad_parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_INVALID_PARAMETERS, 'negative resistance rejected')
 
   bad_control = control
   bad_control%drain_head = ieee_value(0.0_real64, ieee_quiet_nan)
-  call evaluate_single_level_linear_drainage(parameters, view, bad_control, transfer, diag)
+  call evaluate_single_level_linear_drainage(parameters, view, bad_control, flux, diag)
   call require(diag%status == DRAINAGE_INVALID_CONTROL, 'nonfinite drain head rejected')
 
   bad_view = process_hydraulic_view_t()
   bad_view%groundwater_level = ieee_value(0.0_real64, ieee_quiet_nan)
-  call evaluate_single_level_linear_drainage(parameters, bad_view, control, transfer, diag)
+  call evaluate_single_level_linear_drainage(parameters, bad_view, control, flux, diag)
   call require(diag%status == DRAINAGE_INVALID_HYDRAULIC_VIEW, 'nonfinite groundwater level rejected')
   write(*,'(A)') 'FPM08A_INVALID_DOMAIN_FAIL_CLOSED=PASS'
 
   view%groundwater_level = -20.0_real64
-  call evaluate_single_level_linear_drainage(parameters, view, control, transfer, diag)
-  call require(transfer%soil_to_drain_rate >= 0.0_real64, 'candidate transfer cannot inject soil water')
-  call require(close(transfer%soil_to_drain_rate*2.5_real64, 0.75_real64), 'external ledger rate integrates once')
+  call evaluate_single_level_linear_drainage(parameters, view, control, flux, diag)
+  call require(flux%soil_to_drain_rate >= 0.0_real64, 'candidate transfer cannot inject soil water')
+  call require(close(flux%soil_to_drain_rate*2.5_real64, 0.75_real64), 'external ledger rate integrates once')
   write(*,'(A)') 'FPM08A_AUTHORITATIVE_TRANSFER_SIGN_AND_RATE=PASS'
 
   write(*,'(A)') 'FPM08A_SINGLE_LEVEL_LINEAR_DRAINAGE_TEST PASS'
@@ -132,17 +132,17 @@ contains
   logical function same_transfer_bits(a,b) result(equal)
     type(drainage_transfer_t), intent(in) :: a,b
     equal = same_bits(a%soil_to_drain_rate,b%soil_to_drain_rate) .and. &
-         a%derivative_defined .eqv. b%derivative_defined .and. &
+         (a%derivative_defined .eqv. b%derivative_defined) .and. &
          same_bits(a%dq_dgroundwater_level,b%dq_dgroundwater_level)
   end function same_transfer_bits
 
   logical function same_diag_bits(a,b) result(equal)
     type(drainage_diagnostics_t), intent(in) :: a,b
-    equal = a%status == b%status .and. a%evaluated .eqv. b%evaluated .and. &
-         a%active .eqv. b%active .and. a%activation_kink .eqv. b%activation_kink .and. &
+    equal = a%status == b%status .and. (a%evaluated .eqv. b%evaluated) .and. &
+         (a%active .eqv. b%active) .and. (a%activation_kink .eqv. b%activation_kink) .and. &
          same_bits(a%groundwater_level,b%groundwater_level) .and. &
          same_bits(a%drain_head,b%drain_head) .and. same_bits(a%head_difference,b%head_difference) .and. &
-         a%mass_is_authoritative_external_transfer .eqv. b%mass_is_authoritative_external_transfer
+         (a%mass_is_authoritative_external_transfer .eqv. b%mass_is_authoritative_external_transfer)
   end function same_diag_bits
 
   subroutine require(condition,label)
