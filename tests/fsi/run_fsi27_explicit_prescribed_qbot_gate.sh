@@ -43,7 +43,7 @@ grep -Fq 'request%boundary%bottom_flux = qbot' src/adapter/mod_reference_richard
   fail 'legacy request qbot mapping missing'
 grep -Fq 'result%bottom_flux = state_binding%qbot' src/adapter/mod_reference_richards_legacy_binding.f90 || \
   fail 'result qbot publication missing'
-grep -Fq 'F(NN) = F(NN) - state%qbot' src/legacy/b1_10_port/headcalc.f90 || \
+grep -Fq 'fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot' src/legacy/b1_10_port/headcalc.f90 || \
   fail 'native prescribed qbot residual missing'
 
 echo 'FSI27_STATIC_SOURCE_LOCK=PASS'
