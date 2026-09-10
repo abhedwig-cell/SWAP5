@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C3",
   "title": "Empirical Interflow Response and Singular-Tangent Policy",
@@ -36,12 +36,13 @@
     "activation_for_exponent_lt_1": "right-hand drainage tangent diverges; singular_activation_tangent=true",
     "activation_for_exponent_eq_1": "right-hand drainage tangent is finite and equals coefficient, but full two-sided derivative remains unavailable",
     "near_activation": "return exact finite analytic tangent whenever representable; no process-side smoothing, cap, tolerance or hidden threshold",
-    "unrepresentable_tangent": "fail closed as numerical domain, never publish infinity/NaN as usable derivative",
+    "unrepresentable_tangent": "preserve any finite physical flux, publish derivative unavailable plus explicit diagnostic, and never publish infinity/NaN as a usable derivative",
     "solver_ownership": "solver/numerical policy decides whether and how to consume a finite process tangent and owns any bounded-cost fallback"
   },
   "mass_and_transaction_contract": {
     "sign": "positive q is water leaving soil toward drainage receiver",
     "mass_role": "response is an authoritative proposed external-transfer contribution; accepted ledger booking remains runtime-owned",
+    "tangent_failure_does_not_erase_finite_flux": true,
     "rejected_trials": "must never alter committed state or committed ledger",
     "double_booking": "forbidden"
   },
@@ -62,8 +63,10 @@
     "singular activation diagnostic for exponent<1",
     "finite drainage-side activation diagnostic for exponent=1 without claiming a full derivative",
     "nonfinite and out-of-domain inputs fail closed",
+    "finite physical flux remains authoritative if only derivative availability fails",
     "no persistent process state or I/O/HeadCalc leakage",
-    "O0/O2 output identity"
+    "O0/O2 output identity",
+    "explicit audit against all 30 SWAP core architecture invariants"
   ],
   "success_decision": "QUALIFIED_EMPIRICAL_INTERFLOW_RESPONSE_READY_FOR_INDEPENDENT_SCIENTIFIC_QUALIFICATION"
 }
