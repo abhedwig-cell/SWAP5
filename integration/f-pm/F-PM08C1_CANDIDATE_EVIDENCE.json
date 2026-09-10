@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C1",
+  "title": "Restricted Tabulated Drainage Response Structural Candidate Evidence",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b"
+  },
+  "frozen_candidate": {
+    "tested_head": "075e52173cfd46d19c598edb2df8f8b62325ee12",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "79084d69a81d6752ae5402b9f2d717ea20a48cbc",
+    "workflow_run": 34451516127,
+    "workflow_job": 102788100038,
+    "candidate_output_sha256": "84abd427a0e2a964f6e491625bd971862da08363a7716134d540b8949983c481"
+  },
+  "verified": {
+    "production_delta_single_process_module": "PASS",
+    "protected_owner_source_locks": "PASS",
+    "normalized_variable_length_table_boundary": "PASS",
+    "no_legacy_afgen_storage_io_or_calendar": "PASS",
+    "groundwater_only_hydraulic_input": "PASS",
+    "stateless_derivative_metadata": "PASS",
+    "negative_groundwater_open_segment": "PASS",
+    "legacy_abs_groundwater_level_parity": "PASS",
+    "analytic_derivative_open_segment": "PASS",
+    "production_tangent_against_finite_difference": "PASS",
+    "endpoint_clamping": "PASS",
+    "signed_exchange_values_preserved": "PASS",
+    "table_knot_derivative_unavailable": "PASS",
+    "single_point_constant_table": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "stateless_A_B_A_identity": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "ownership": {
+    "persistent_process_state": false,
+    "immutable_table_data": true,
+    "mass_transfer": "signed_soil_to_drain_rate is the authoritative physical exchange output; integration and accepted-ledger publication remain runtime responsibilities",
+    "solver_jacobian": "not assembled here; candidate only exposes dq_dgroundwater_level when derivative_defined=true"
+  },
+  "qualification_boundary": {
+    "structural_response_candidate_qualified": true,
+    "scientific_legacy_equivalence_qualified": false,
+    "runtime_composition_qualified": false,
+    "solver_jacobian_integration_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "required_next_gate": "independent F-VQ scientific/source-bound verification before runtime or canonical admission"
+}
