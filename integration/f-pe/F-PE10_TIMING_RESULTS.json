@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "title": "Paired Runtime Characterization of Trial-Scoped Direct Forcing Views",
+  "comparison": {
+    "baseline": {
+      "work_unit": "F-PE09",
+      "commit": "485003c1be6e55521297b7b6bdc0195a15ca0f4f",
+      "description": "exact-shape worker parameter/forcing cache reuse"
+    },
+    "candidate": {
+      "production_postimage": "8f6902c4eb2aa21694e83876579725914043e3dc",
+      "timing_head": "6aeed71787042e59bad7f87d2833acde65ab232b",
+      "description": "forcing-only trial-scoped direct immutable views on 2/4-worker F-MR20 V1 route"
+    }
+  },
+  "workflow": {
+    "run": 34460248389,
+    "job": 102816114012,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "artifact": {
+      "name": "fpe10-forcing-view-timing-evidence",
+      "id": 10145216129,
+      "size_bytes": 53948,
+      "sha256": "2b12207584c4730155e84ab99e711f4ed6fa05efa696e6e23e2b7d19c66eca0b"
+    }
+  },
+  "protocol": {
+    "logical_columns": 32,
+    "batch_size": 9,
+    "workers": [1, 2, 4],
+    "optimization": "O2",
+    "paired_rounds": 4,
+    "raw_observations": 2304,
+    "same_runner_balanced_order": true,
+    "worker_1_role": "negative control because direct forcing views are not enabled on the one-worker serialized delegation"
+  },
+  "paired_round_base_over_candidate": {
+    "1": {
+      "ratios": [1.232948621827606, 1.1745376134042247, 1.014885384610073, 1.0620112928912697],
+      "median": 1.1182744531477473,
+      "min": 1.014885384610073,
+      "max": 1.232948621827606,
+      "candidate_faster_rounds": 4,
+      "candidate_slower_rounds": 0
+    },
+    "2": {
+      "ratios": [0.9801146143409676, 1.0032746501403096, 0.9974306998197143, 1.0021891488965817],
+      "median": 0.999809924358148,
+      "min": 0.9801146143409676,
+      "max": 1.0032746501403096,
+      "candidate_faster_rounds": 2,
+      "candidate_slower_rounds": 2
+    },
+    "4": {
+      "ratios": [0.9981376782737874, 0.9878480281169773, 0.9960082871944809, 0.99729605022509],
+      "median": 0.9966521687097855,
+      "min": 0.9878480281169773,
+      "max": 0.9981376782737874,
+      "candidate_faster_rounds": 0,
+      "candidate_slower_rounds": 4
+    }
+  },
+  "aggregate_observation_medians_us": {
+    "baseline": {"1": 517.0265, "2": 218.141, "4": 209.159},
+    "candidate": {"1": 424.234, "2": 219.578, "4": 210.081}
+  },
+  "aggregate_p95_us": {
+    "baseline": {"1": 548.61215, "2": 296.54015, "4": 314.203},
+    "candidate": {"1": 549.1135, "2": 260.3487, "4": 297.5332}
+  },
+  "interpretation": {
+    "one_worker_control": "The candidate executable appears materially faster even though the one-worker code path does not enable direct forcing views. This demonstrates substantial hosted-runner/process-order noise and prevents attributing raw aggregate median differences to the F-PE10 optimization.",
+    "two_workers": "No attributable performance benefit: paired median base/candidate ratio is approximately 0.99981, with candidate faster in 2 of 4 rounds and slower in 2 of 4 rounds.",
+    "four_workers": "No performance benefit: candidate was slower in all 4 paired rounds; paired median base/candidate ratio is approximately 0.99665, corresponding to about 0.34 percent candidate slowdown on this runner.",
+    "causal_performance_conclusion": "NO_MEASURED_RUNTIME_BENEFIT_ATTRIBUTABLE_TO_DIRECT_FORCING_VIEWS",
+    "portable_speedup_claim": false,
+    "production_throughput_claim": false
+  },
+  "decision": "TIMING_DOES_NOT_SUPPORT_RELEASING_DIRECT_FORCING_VIEWS_AS_A_PERFORMANCE_OPTIMIZATION",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "timing_characterized": true,
+    "performance_benefit_qualified": false
+  }
+}
