@@ -1,7 +1,7 @@
 module mod_canonical_contracts
   use, intrinsic :: iso_fortran_env, only: real64, int64
   use mod_transaction_reference, only: transaction_state_t, transaction_model_t, transaction_policy_t, &
-       TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE
+       transaction_interface_sensitivity_t, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_NONE
   implicit none
   private
 
@@ -85,6 +85,7 @@ module mod_canonical_contracts
     real(real64) :: completed_t = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
     type(canonical_run_diagnostics_t) :: diagnostics
+    type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type canonical_result_t
 
   type, abstract, extends(transaction_model_t), public :: canonical_physical_model_t
