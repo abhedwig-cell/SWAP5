@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08A",
+  "title": "Restricted Single-Level Linear Drainage Structural Candidate Evidence",
+  "candidate_base": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+  "tested_candidate_head": "8ae63af5555ea5d8bf33d6294a04f7ad5148f193",
+  "production_source": {
+    "path": "src/process/mod_drainage_process.f90",
+    "blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa"
+  },
+  "decisive_ci": {
+    "workflow_run": 34448908440,
+    "workflow_job": 102779815508,
+    "conclusion": "success",
+    "candidate_output_sha256": "f91cfb45f36d417321eedb2922e31f0322d4cb1cff5a05dd6d806faf7f17d487"
+  },
+  "checks": {
+    "single_production_module_delta": "PASS",
+    "protected_owner_source_locks": "PASS",
+    "source_boundary_static": "PASS",
+    "groundwater_summary_only": "PASS",
+    "no_calendar_io_or_solver_internals": "PASS",
+    "hard_holds_static": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "active_linear_drainage_law": "PASS",
+    "groundwater_only_hydraulic_view": "PASS",
+    "drainage_only_no_reverse_exchange": "PASS",
+    "nonsmooth_activation_diagnostic": "PASS",
+    "active_derivative_finite_difference": "PASS",
+    "inactive_derivative_finite_difference": "PASS",
+    "stateless_A_B_A_identity": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "authoritative_transfer_sign_and_rate": "PASS"
+  },
+  "compiler_observation": {
+    "candidate_owned_test_warnings": 0,
+    "candidate_owned_process_warnings_observed": 0,
+    "inherited_warnings": [
+      "src/solver/mod_soil_water_solver_contract.f90 unused dummy arguments in soil_water_temporal_indicator_unavailable"
+    ],
+    "inherited_warnings_affect_candidate_decision": false
+  },
+  "scientific_equivalence": {
+    "independently_qualified": false,
+    "required_next": true
+  },
+  "decision": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ"
+}
