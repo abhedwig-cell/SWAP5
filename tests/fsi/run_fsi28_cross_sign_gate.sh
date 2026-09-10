@@ -45,7 +45,9 @@ if s.count(call_anchor) != 1:
 s = s.replace(call_anchor, call_insert, 1)
 
 proc_anchor = "  end subroutine check_fsi28_retry\n\n'''\n"
-proc_insert = r'''  end subroutine check_fsi28_retry
+# Use a double-quoted Python raw literal here because the replacement itself
+# deliberately contains the base runner's triple-single-quote terminator.
+proc_insert = r"""  end subroutine check_fsi28_retry
 
   subroutine check_fsi28_nonprescribed_modes(qtop_case, qbot_case)
     real(real64), intent(in) :: qtop_case, qbot_case
@@ -83,6 +85,7 @@ proc_insert = r'''  end subroutine check_fsi28_retry
   end subroutine check_fsi28_nonprescribed_modes
 
 '''
+"""
 if s.count(proc_anchor) != 1:
     raise SystemExit('FSI28_NONPRESCRIBED_TRANSFORM_FAIL procedure anchor mismatch')
 s = s.replace(proc_anchor, proc_insert, 1)
