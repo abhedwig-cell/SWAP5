@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ40",
+  "title": "Independent Requalification Evidence for Remediated DRAMET=1 Tabulated Drainage Response",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "candidate": {
+    "remediation_closeout": "d87e21c9603063add7a7440a0aebe6fbac326d03",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a"
+  },
+  "triggering_fail_closed_history": {
+    "work_unit": "F-VQ39",
+    "decision": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
+    "fail_closed_replay_head": "55e7f5180fdcfcbdb0b3923b841353f5fea46a68"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "decisive_run": {
+    "tested_qualification_head": "52094abfc64152bae5f470df94dd838afcab6274",
+    "workflow_run": 34459112281,
+    "workflow_job": 102812421759,
+    "conclusion": "success",
+    "summary_sha256": "739c1119e1cd74f214d221101c0616d39302ef344c558ea6c77726ce8c3f7679"
+  },
+  "coverage": {
+    "valid_normalized_probes": 5531,
+    "derivative_checks": 3714,
+    "positive_singleton_probes": 14,
+    "legacy_degenerate_rejection_checks": 20,
+    "max_flux_abs_error": 1.7763568394002505e-15,
+    "max_flux_rel_error": 9.351168499292018e-16,
+    "max_derivative_abs_error": 0.0,
+    "max_derivative_rel_error": 0.0
+  },
+  "verified": {
+    "no_production_or_reference_delta": "PASS",
+    "independent_oracle_static_separation": "PASS",
+    "frozen_drainage_source_identity": "PASS",
+    "frozen_afgen_source_identity": "PASS",
+    "remediated_candidate_blob_identity": "PASS",
+    "explicit_degenerate_status_static": "PASS",
+    "abs_gwl_static_binding": "PASS",
+    "no_io_or_headcalc_leakage": "PASS",
+    "candidate_O0_O2_output_identity": "PASS",
+    "broad_valid_normalized_domain_coverage": "PASS",
+    "positive_depth_singleton_legacy_equivalence": "PASS",
+    "normalized_afgen_flux_equivalence": "PASS",
+    "positive_negative_abs_gwl_parity": "PASS",
+    "endpoint_knot_and_interpolation_equivalence": "PASS",
+    "open_segment_derivative_independent_check": "PASS",
+    "knot_derivative_unavailable_conservative": "PASS",
+    "zero_depth_singleton_fail_closed_policy": "PASS"
+  },
+  "degenerate_policy_evidence": {
+    "legacy_examples": [
+      {"value": -3.25, "legacy": [-3.25, 0.0, 0.0, 0.0, 0.0]},
+      {"value": 0.0, "legacy": [0.0, 0.0, 0.0, 0.0, 0.0]},
+      {"value": 2.75, "legacy": [2.75, 0.0, 0.0, 0.0, 0.0]},
+      {"value": 9.0, "legacy": [9.0, 0.0, 0.0, 0.0, 0.0]}
+    ],
+    "qualified_modern_policy": "explicit fail-closed rejection rather than importing representation-dependent legacy padding into process physics",
+    "error_result_is_physical_zero_flux": false
+  },
+  "decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE",
+  "production_changes_in_FVQ40": false,
+  "remaining_holds": [
+    "No runtime composition qualified here.",
+    "No canonical admission qualified here.",
+    "No solver Jacobian integration qualified here.",
+    "No DRAMET=2, empirical interflow, multi-level exchange or surface-water control claim is implied."
+  ]
+}
