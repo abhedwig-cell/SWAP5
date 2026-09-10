@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ39",
+  "title": "Independent DRAMET=1 Tabulated Drainage Response Scientific Qualification Evidence",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "candidate": {
+    "closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "79084d69a81d6752ae5402b9f2d717ea20a48cbc"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "runs": {
+    "non_decisive_infrastructure_run": {
+      "workflow_run": 34457968457,
+      "workflow_job": 102808726935,
+      "head": "09d0d46721604151a6ab7733be024ef9dc121244",
+      "conclusion": "failure",
+      "reason": "qualification harness generated an invalid minimal Fortran hydraulic-view stub; no scientific disposition taken"
+    },
+    "decisive_scientific_run": {
+      "workflow_run": 34458080389,
+      "workflow_job": 102809086791,
+      "head": "22404e1b8e02f06722043cd9f33ba72c88bcd665",
+      "conclusion": "failure_expected_fail_closed",
+      "exit_code": 2,
+      "summary_sha256": "b5c9857f9fac9a38ee44bb1fa16620e3befdc1d98106f8b3c851fd9fef28330a"
+    }
+  },
+  "verified_passes": {
+    "no_production_or_reference_delta": true,
+    "independent_oracle_static_separation": true,
+    "frozen_drainage_source_identity": true,
+    "frozen_afgen_source_identity": true,
+    "candidate_closeout_blob_identity": true,
+    "candidate_abs_gwl_static_binding": true,
+    "no_io_or_headcalc_leakage": true,
+    "candidate_O0_O2_output_identity": true,
+    "normalized_afgen_flux_equivalence": true,
+    "positive_negative_abs_gwl_parity": true,
+    "endpoint_clamping_and_interpolation": true,
+    "open_segment_derivative_independent_check": true,
+    "knot_derivative_unavailable_conservative": true,
+    "degenerate_case_O0_O2_identity": true
+  },
+  "normal_domain_summary": {
+    "cases": 1716,
+    "derivative_checks": 907,
+    "max_flux_abs_error": 8.881784197001252e-16,
+    "max_flux_rel_error": 4.1129452379560325e-14,
+    "max_derivative_abs_error": 0.0,
+    "max_derivative_rel_error": 0.0
+  },
+  "decisive_counterexample": {
+    "legacy_input_is_grammar_admissible": true,
+    "normalized_knots": [0.0],
+    "signed_exchange_values": [2.75],
+    "groundwater_level_probes": [0.0, 1.0, -1.0, 100.0],
+    "legacy_AFGEN_output": [2.75, 0.0, 0.0, 0.0],
+    "candidate_output": [2.75, 2.75, 2.75, 2.75],
+    "source_mechanism": "read_drainage_basic populates only qdrtab(1:2); remaining zero-initialized x entries equal the first x=0, so AFGEN finds no strictly decreasing partial-table terminator and ultimately returns qdrtab(50)=0 for any positive abs(gwl)",
+    "scientific_result": "source-observable mismatch"
+  },
+  "disposition": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
+  "remediation_constraint": "Do not reproduce the legacy zero-filled storage artifact as kernel physics. A modern normalized process must explicitly reject/quarantine the one-point depth-zero legacy-degenerate representation unless a separately qualified compatibility adapter is introduced.",
+  "production_changes_in_FVQ39": false
+}
