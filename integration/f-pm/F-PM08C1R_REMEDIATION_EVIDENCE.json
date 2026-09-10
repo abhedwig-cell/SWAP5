@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C1R",
+  "title": "Tabulated Drainage Legacy-Degenerate Input Remediation Evidence",
+  "base_candidate_closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
+  "triggering_qualification": {
+    "work_unit": "F-VQ39",
+    "decision": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
+    "fail_closed_replay_head": "55e7f5180fdcfcbdb0b3923b841353f5fea46a68"
+  },
+  "tested_candidate": {
+    "head": "8e0b7192820f35ba521d5bc38394bba6b822adbf",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a",
+    "workflow_run": 34458730214,
+    "workflow_job": 102811209012,
+    "conclusion": "success",
+    "focused_output_sha256": "f7296be7f6521ad2b44f1f482d4c64a95b3e1ebe97fbc739baaeeb05683b342d"
+  },
+  "verified": {
+    "production_delta_single_process_module": "PASS",
+    "reference_delta_none": "PASS",
+    "degenerate_rejection_static": "PASS",
+    "no_legacy_storage_or_io_leakage": "PASS",
+    "stateless_mass_boundary_static": "PASS",
+    "original_C1_regression": "PASS",
+    "focused_O0": "PASS",
+    "focused_O2": "PASS",
+    "focused_O0_O2_output_identity": "PASS",
+    "zero_depth_singleton_fail_closed": "PASS",
+    "positive_depth_singleton_constant": "PASS",
+    "multi_point_zero_start_unchanged": "PASS",
+    "state_and_mass_boundary_unchanged": "PASS"
+  },
+  "remediation_semantics": {
+    "zero_depth_singleton": "DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE with evaluated=false; result remains default and cannot be treated as an accepted physical transfer",
+    "positive_depth_singleton": "valid constant response with zero derivative",
+    "multi_point_table_starting_at_zero": "unchanged normalized interpolation semantics",
+    "legacy_padding_artifact_in_kernel": false
+  },
+  "qualification_boundary": {
+    "structural_remediation_tested": true,
+    "scientific_requalification": false,
+    "runtime_composition": false,
+    "canonical_admission": false
+  },
+  "required_next_gate": "new independent F-VQ scientific requalification of exact remediated production blob"
+}
