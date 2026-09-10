@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "object": "FORCING_ONLY_DIRECT_VIEW_PROTOTYPE_SPEC",
+  "status": "PERSISTED_BEFORE_PRODUCTION_CHANGE",
+  "base_head": "94f2273fdd9ef4597479d0dc9907f04a8a86d7ba",
+  "production_preimage_locks": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "64c3d9581c71fc7bf5e5f3764995d41280312a2e",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "be4005a97e35c498ffc40297409a75efe65ff5df",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "393e9bfbc4c078d259a5ec70aca78f50e54e8b35"
+  },
+  "candidate_scope": {
+    "zero_copy_payload": [
+      "fmr_b110_physical_forcing_t%drainage_flux_by_level",
+      "fmr_b110_physical_forcing_t%subsurface_irrigation_source",
+      "fmr_b110_physical_forcing_t%root_extraction_sink"
+    ],
+    "still_copied_or_cached": [
+      "all parameter geometry",
+      "raw and derived MvG parameter storage",
+      "forcing scalar boundary values",
+      "all physical committed state",
+      "all candidate state",
+      "all worker solver scratch"
+    ],
+    "activation": "only the already-admitted F-MR20 V1 2/4-worker path requests direct forcing views",
+    "serialized_reference_default": "unchanged PE09 exact-shape copy/cache path"
+  },
+  "lifetime_mechanism": {
+    "outer_target": "parallel runtime forcing_registry is TARGET for the active pool call",
+    "scalar_target": "fmr_execute_serialized_physical_column forcing_registry is TARGET for the nested column call",
+    "backend_target": "fmr_serialized_backend_run_trial forcing dummy is TARGET",
+    "association_point": "backend run_trial immediately before fmr_trial_from_checkpoint",
+    "release_point": "backend run_trial immediately after fmr_trial_from_checkpoint returns",
+    "generic_kernel_interface_change_required": false,
+    "view_may_escape_run_trial": false,
+    "view_is_persistent_worker_state": false
+  },
+  "backend_design": [
+    "add optional enable_direct_forcing_views to backend initialize; default false",
+    "model stores a mode flag and a pointer to the current fmr_b110_physical_forcing_t only while one run_trial is active",
+    "prepare_interval validates the same forcing shapes but skips qdra/qssdi/qrot allocation/copy in direct mode",
+    "advance binds source/sink providers to current forcing-view arrays in direct mode and to PE09 worker caches otherwise",
+    "external-flux accounting reads the same selected source arrays",
+    "run_trial nullifies any stale view before work and nullifies the active view on normal return",
+    "parallel V1 initializes worker backends with direct forcing views enabled; one-worker serialized delegation remains unchanged"
+  ],
+  "negative_requirements": [
+    "direct mode without an associated active forcing view fails closed before solve",
+    "unsupported multiworker profiles remain rejected before physical solves",
+    "no parameter_set_id or forcing_handle shortcut is used as content identity",
+    "view target cannot be committed state, result or scratch",
+    "no view persists between columns or intervals"
+  ],
+  "qualification_required_before_admission": [
+    "compile/source-lock gate",
+    "explicit view association-and-release instrumentation/probe",
+    "full frozen F-MR20/F-MQ28 scientific matrix serialized versus candidate",
+    "2 and 4 worker true-overlap retained",
+    "input-order and worker-count independence retained",
+    "rejection/rollback isolation retained",
+    "bit-identical committed state/results/diagnostics/mass",
+    "hard per-column mass residual <= 1e-12",
+    "O0/O2 output identity",
+    "paired timing only after all scientific gates pass"
+  ],
+  "nonclaims": [
+    "parameter zero-copy",
+    "geometry zero-copy",
+    "direct MvG registry views",
+    "production speedup",
+    "workers beyond 2 and 4",
+    "parallel physics beyond F-MR20 V1"
+  ]
+}
