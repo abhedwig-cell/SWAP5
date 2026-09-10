@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C",
+  "title": "Drainage Response-Law Family and Sensitivity Qualification",
+  "branch": "work/f-pm08c-drainage-response-family-sensitivity",
+  "status": "IN_PROGRESS_SOURCE_BOUND_CHARACTERIZATION",
+  "lineage": {
+    "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08a_required": false,
+    "fpm08b_required": false
+  },
+  "target_families": [
+    "DRAMET=1 tabulated groundwater-level response",
+    "DRAMET=2 Hooghoudt/Ernst IPOS 1..5",
+    "DRAMET=3 empirical power interflow",
+    "DRAMET=3 multi-level aggregation"
+  ],
+  "principle": "characterize and split by response/sensitivity class before production implementation",
+  "persisted": true,
+  "tested": false,
+  "qualified": false
+}
