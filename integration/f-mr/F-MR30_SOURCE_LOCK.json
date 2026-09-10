@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR30",
+  "title": "Restricted Accepted Root-Uptake Attribution Receipt",
+  "branch": "work/f-mr30-restricted-root-uptake-attribution-receipt",
+  "source_authority": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "tree": "ab1fbdb979a1d7e93b5d12cbc01c820046c47c36"
+  },
+  "upstream_readiness": {
+    "workunit": "F-MR29",
+    "closeout": "03d979a8cdece32653c6156529a7ece89cad5efb",
+    "decision": "NO_NEW_MASS_BOOKING_REQUIRED; POSTCOMMIT_SOLVER_FORCING_ATTRIBUTION_READY_FOR_SEPARATE_IMPLEMENTATION"
+  },
+  "pinned_source_blobs": {
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+    "src/process/mod_root_water_uptake_process.f90": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3"
+  },
+  "production_scope": [
+    "new typed root-uptake attribution receipt and worker-local prepared attribution",
+    "serialized runtime optional sparse attribution routing at the existing candidate/commit seam"
+  ],
+  "hard_constraints": [
+    "no change to transaction mass_in/mass_out or canonical mass accounting",
+    "no persistent column state",
+    "no root-uptake physics change",
+    "no transaction-core change",
+    "no publication before successful generic accepted-commit receipt",
+    "parallel root-extraction execution remains out of scope"
+  ],
+  "governance": {
+    "persist_early_test_second": true,
+    "independent_qualification_required_before_F_CI32": true
+  }
+}
