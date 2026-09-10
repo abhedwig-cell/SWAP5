@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR25",
+  "title": "F-CI27 Restart Recomposition Owner Results",
+  "branch": "work/f-mr25-fci27-restart-recomposition",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "production_composition_commit": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "tested_head": "f6b47f09a1f89fed8b376f8a91c2f50107a9ad30",
+  "workflow": {
+    "run": 34457985209,
+    "job": 102808780069,
+    "conclusion": "success",
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "production_delta": [
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "production_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "gates": {
+    "fci27_source_lock": "PASS",
+    "exact_fmr24_restart_blob_identity": "PASS",
+    "fci27_et_runtime_blobs_preserved": "PASS",
+    "frozen_restart_attack_provenance": "PASS",
+    "restart_state_family_binding": "PASS",
+    "restart_atomic_publication_seam": "PASS",
+    "restart_compact_no_solver_scratch": "PASS",
+    "et_runtime_scope_separation_preserved": "PASS",
+    "restart_matrix_1_2_7_8_17_31_32": "PASS",
+    "generic_time_window_5100_125_5100_4375_5100_8125": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS",
+    "parameter_set_identity_fail_closed": "PASS",
+    "template_layout_identity_fail_closed": "PASS",
+    "per_column_parameter_ref_fail_closed": "PASS",
+    "duplicate_column_fail_closed": "PASS",
+    "reverse_record_order": "PASS",
+    "reverse_runtime_order": "PASS",
+    "exact_lineage_revision_time_continuation": "PASS",
+    "exact_interval_mass_continuation": "PASS",
+    "continuous_vs_restarted_endpoint_identity": "PASS",
+    "deterministic_replay": "PASS",
+    "malformed_concrete_state_rejected": "PASS",
+    "registered_wrong_family_rejected": "PASS",
+    "late_record_atomicity": "PASS",
+    "late_provenance_atomicity": "PASS",
+    "valid_production_restore": "PASS",
+    "fci27_et_runtime_owner_preservation": "PASS",
+    "fci27_et_runtime_independent_oracle_preservation": "PASS",
+    "fvq36_independent_grid_cases": 13824
+  },
+  "warnings": {
+    "classification": "PREEXISTING_NON_FATAL_COMPILER_WARNINGS_IN_RESTART_DEPENDENCIES",
+    "admission_effect": "NONE",
+    "note": "The ET preservation path retained -Werror and passed. No warning was introduced as a claimed F-MR25 production delta."
+  },
+  "scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart on the F-CI27 canonical postimage",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No root-uptake, actual-ET or mass-ledger ownership change.",
+    "No canonical admission is claimed by owner evidence."
+  ],
+  "decision": "OWNER_FCI27_RESTART_RECOMPOSITION_GATE_PASS"
+}

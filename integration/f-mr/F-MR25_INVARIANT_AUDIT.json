@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR25",
+  "title": "Architecture Invariant Audit — F-CI27 Restart Recomposition",
+  "scope": "exact two-file qualified restart recomposition on current F-CI27 canonical source",
+  "evidence": {
+    "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+    "production_composition_commit": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+    "tested_head": "f6b47f09a1f89fed8b376f8a91c2f50107a9ad30",
+    "owner_workflow_run": 34457985209
+  },
+  "invariants": {
+    "01_single_calculation_kernel": "PASS_UNCHANGED; restart restores the existing canonical committed state and adds no alternate physics kernel.",
+    "02_kernel_separate_from_IO": "PASS; restart records remain serialization-neutral and introduce no file/path/parser dependency into the kernel.",
+    "03_explicit_data_separation": "PASS; committed physical continuation, runtime identity, parameter references and provenance remain distinct.",
+    "04_compact_persistent_state": "PASS_IN_SCOPE; continuation records exclude immutable parameter payloads and solver scratch.",
+    "05_scratch_per_worker": "PASS; worker/Newton/Jacobian/warm-start data are absent from restart records.",
+    "06_scalable_memory_layout": "PASS_NOT_REQUALIFIED_GLOBALLY; registry-based many-column restore remains intact and no heavy per-column solver ownership is added.",
+    "07_transactional_timesteps": "PASS_IN_SCOPE; only committed-boundary state is exported/restored and publication is atomic after complete validation.",
+    "08_cheap_recompute_and_warm_start": "PASS_UNCHANGED; restored committed state is a valid recomputation base; no trial state is promoted.",
+    "09_generic_time": "PASS_IN_SCOPE; non-calendar time window 5100.125 -> 5100.4375 -> 5100.8125 and exact continuation pass.",
+    "10_flexible_coupling_windows": "PASS_NOT_MODIFIED; no midnight/day-window assumption is introduced.",
+    "11_coupling_core_functionality": "PASS_NOT_MODIFIED; transactional committed-state semantics are preserved without claiming a coupling qualification.",
+    "12_explicit_groundwater_interface_contract": "PASS_NOT_MODIFIED; no head/flux interface semantics are changed.",
+    "13_absolute_mass_conservation": "PASS_IN_SCOPE; exact interval mass continuation and continuous-vs-restarted endpoint identity pass.",
+    "14_interface_sensitivities_first_class": "PASS_NOT_MODIFIED; no tangent/Jacobian output contract changes.",
+    "15_limit_coupling_cost": "PASS_NOT_MODIFIED; restart adds no normal-path repeated physics solves.",
+    "16_multiswap_primary_use_case": "PASS_IN_SCOPE; restart is exercised for 1,2,7,8,17,31,32 logical columns.",
+    "17_no_required_one_to_one_MODFLOW_relation": "PASS_NOT_MODIFIED; restart records logical column identity only.",
+    "18_deep_vadose_optional_external_component": "PASS_NOT_MODIFIED; no transfer-zone state or routing is introduced.",
+    "19_mass_conserving_component_transition": "PASS_NOT_MODIFIED; no component transition is added; committed water-state identity is retained.",
+    "20_alternative_soil_water_solvers_open": "PASS_IN_SCOPE; restart admission is explicit by backend/state family and unknown families fail closed.",
+    "21_maximum_SWAP_physics_reuse": "PASS_UNCHANGED; no physical process implementation is duplicated.",
+    "22_no_other_modules_coupled_to_HeadCalc_internals": "PASS; restart uses committed-state/runtime contracts rather than HeadCalc internal arrays.",
+    "23_physics_options_separate_from_solver_policy": "PASS; template/layout/state-family checks remain explicit and no numerical policy changes physics.",
+    "24_predictable_runtime": "PASS_BOUNDED_IN_SCOPE; validation is finite and fail-closed before whole-registry publication; no fallback policy is altered.",
+    "25_reference_mode_available": "PASS_UNCHANGED; reference runtime remains present and is the tested real-physics backend.",
+    "26_runtime_diagnostics": "PASS_NOT_MODIFIED; existing runtime diagnostics are preserved; restart does not remove retry/mass/mode information.",
+    "27_optional_functionality_scales_with_use": "PASS_IN_SCOPE; only explicitly admitted state families carry restart continuation state.",
+    "28_runtime_coupler_organizes_system_composition": "PASS; restart registry/template composition stays outside the kernel and contains no tile/MODFLOW mapping.",
+    "29_no_silent_dependencies": "PASS; state family, template/layout, parameter identity, lineage/revision/time and target freshness are explicit/fail-closed.",
+    "30_every_architecture_change_explicitly_tested": "PASS; exact source locks, O0/O2 matrix, negative attacks, mass/identity checks and F-CI27 ET preservation are recorded."
+  },
+  "composition_preservation": {
+    "F_CI27_reference_ET_runtime_binding": "PASS",
+    "F_MR23_owner_semantics": "PASS_ON_COMPOSED_POSTIMAGE",
+    "F_VQ36_independent_oracle": "PASS_ON_COMPOSED_POSTIMAGE_13824_CASES"
+  },
+  "overall": "PASS_WITH_EXPLICIT_SCOPE_BOUNDARIES",
+  "scope_boundaries": [
+    "restricted serialized real-physics MultiSWAP restart only",
+    "committed boundaries only",
+    "parallel restart excluded",
+    "filesystem format excluded",
+    "unregistered state families excluded",
+    "MODFLOW/coupling correctness is not newly qualified",
+    "canonical admission requires independent F-CI governance"
+  ]
+}

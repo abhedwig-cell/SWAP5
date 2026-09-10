@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR25",
+  "title": "F-CI27 Restart Recomposition Owner Closeout",
+  "branch": "work/f-mr25-fci27-restart-recomposition",
+  "canonical_base": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "production_composition_commit": "594f3e2acd80ff5c2caeb596ae52688adf0d3bd7",
+  "owner_tested_head": "f6b47f09a1f89fed8b376f8a91c2f50107a9ad30",
+  "owner_workflow": {
+    "run": 34457985209,
+    "job": 102808780069,
+    "conclusion": "success"
+  },
+  "findings": [
+    "The qualified restart implementation was recomposed on exact F-CI27 canonical source by adding only two production files.",
+    "Both production blobs are byte-for-byte identical to the F-MR24/F-CI26-qualified restart implementation.",
+    "All restart-relevant canonical dependency blobs remained unchanged across F-CI27.",
+    "The F-CI27 reference-ET runtime binding remained byte-identical and passed both its owner behavior test and the 13,824-case independent F-VQ36 oracle on the composed postimage.",
+    "Restart O0/O2 execution, irregular MultiSWAP batch matrix, exact mass/time/lineage continuation, deterministic replay and fail-closed state-family/atomicity attacks all passed.",
+    "No production source was changed after the production composition commit."
+  ],
+  "qualified_owner_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart composed with the admitted F-CI27 reference-ET runtime postimage",
+  "nonclaims": [
+    "No independent F-CI28 qualification is claimed here.",
+    "No canonical admission is claimed here.",
+    "No parallel restart qualification.",
+    "No filesystem persistence-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No root-uptake or actual-ET ownership reconciliation."
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "owner_gate_passed": true,
+    "qualified_owner_side": true,
+    "independently_qualified_on_fci27": false,
+    "canonical_admitted": false,
+    "closed": true
+  },
+  "next_action": "Start a genuinely separate F-CI28 qualification from exact production composition 594f3e2acd80ff5c2caeb596ae52688adf0d3bd7. Recheck live canonical immediately before any promotion and never force a divergent canonical ref.",
+  "decision": "QUALIFIED_CLOSED_OWNER_FCI27_RESTART_RECOMPOSITION_READY_FOR_F_CI28"
+}
