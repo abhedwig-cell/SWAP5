@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D7",
+  "title": "Restricted Fixed-Weir Transactional Surface-Water Runtime Candidate",
+  "branch": "work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate",
+  "status": "IN_PROGRESS_CONTRACT_PERSISTED_BEFORE_PRODUCTION",
+  "phase": "TERMINAL_CANONICAL_AUTHORITY_BOUND_AND_RESTRICTED_CANDIDATE_CONTRACT_PERSISTED",
+  "source_authority": {
+    "canonical_head": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "fci37_run": 34533272982,
+    "fci37_job": 103058847430,
+    "fci37p_run": 34533272987,
+    "fci37p_job": 103058848103,
+    "broad_canonical_run": 34533272990,
+    "all_terminal_conclusions": "success"
+  },
+  "candidate_scope": {
+    "fixed_weir_SWSEC2_SWMAN1_SWQHR1": true,
+    "single_level_positive_DIVDRA": true,
+    "qrapid_zero": true,
+    "V_top_surface_exchange_zero": true,
+    "automatic_capacity": false,
+    "SWQHR2": false,
+    "macropore": false,
+    "mixed_sign_active_limiter": false
+  },
+  "new_source_bound_finding": {
+    "combined_storage_requires_secondary_drainage_internalization": true,
+    "current_backend_counts_all_qdra_as_external": true,
+    "candidate_must_not_suppress_unrelated_external_drainage": true,
+    "authoritative_scalar_transfer_must_be_preserved": true
+  },
+  "state": {
+    "branch_created": true,
+    "contract_persisted": true,
+    "checkpoint_persisted": true,
+    "production_source_started": false,
+    "production_source_persisted": false,
+    "tests_persisted": false,
+    "tested": false,
+    "structurally_qualified": false,
+    "scientifically_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false,
+    "reference_source_changed": false
+  },
+  "next_required_step": "implement the smallest restricted process/state/runtime candidate while preserving authoritative scalar drainage and reclassifying only the explicitly coupled drainage transfer from external to internal mass"
+}
