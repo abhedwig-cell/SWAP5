@@ -154,6 +154,15 @@ contains
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
        end if
 
+       ! SWBOTB=2 prescribes qbot directly. For an accepted solve the final
+       ! unrounded compartment residual vector is already the exact vector used
+       ! by HeadCalc's total-balance convergence criterion. Publish its sum as
+       ! the solver mass diagnostic without changing state, fluxes, or physics.
+       if (request%boundary%bottom_mode == 2 .and. .not. state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+       end if
+
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
        result%candidate_state%pressure_head = state_binding%h
@@ -259,7 +268,7 @@ contains
        return
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
-        request%boundary%bottom_mode /= 5) then
+        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if
