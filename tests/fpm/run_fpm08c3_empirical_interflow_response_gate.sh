@@ -39,6 +39,7 @@ check_blob src/solver/mod_b110_source_sink_provider.f90 d6c57add72387e5c0022a443
 echo 'FPM08C3_PROTECTED_OWNER_SOURCE_LOCKS=PASS'
 
 python3 - <<'PY'
+import json
 from pathlib import Path
 p=Path('src/process/mod_drainage_empirical_interflow_response.f90').read_text()
 low=p.lower()
@@ -48,8 +49,8 @@ for required in ['empirical_interflow_parameters_t','empirical_interflow_control
                  'coefficient','exponent','drain_head','hydraulic_view%groundwater_level',
                  'signed_soil_to_drain_rate','dq_dgroundwater_level','derivative_defined',
                  'singular_activation_tangent','drainage_side_activation_tangent_defined',
-                 'negative_side_exchange_out_of_scope','persistent_process_state',
-                 'process_side_tangent_regularization']:
+                 'tangent_numerically_unrepresentable','negative_side_exchange_out_of_scope',
+                 'persistent_process_state','process_side_tangent_regularization']:
     assert required in low, required
 assert 'save' not in p.upper()
 assert 'difference**parameters%exponent' in low
@@ -57,7 +58,13 @@ assert 'difference**(parameters%exponent - 1.0_real64)' in low
 print('FPM08C3_PARAMETER_CONTROL_HYDRAULIC_SEPARATION_STATIC=PASS')
 print('FPM08C3_NO_IO_HEADCALC_OR_SOLVER_MUTATION=PASS')
 print('FPM08C3_NO_PROCESS_SIDE_TANGENT_REGULARIZATION=PASS')
+print('FPM08C3_FINITE_FLUX_SURVIVES_TANGENT_UNAVAILABLE_STATIC=PASS')
 print('FPM08C3_STATELESS_MASS_SCOPE_STATIC=PASS')
+
+audit=json.loads(Path('integration/f-pm/F-PM08C3_INVARIANT_AUDIT.json').read_text())['audit']
+assert len(audit)==30, len(audit)
+assert all(str(v).startswith('PASS:') for v in audit.values())
+print('FPM08C3_30_INVARIANT_AUDIT=PASS')
 PY
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror=compare-reals -fcheck=all -fbacktrace)
