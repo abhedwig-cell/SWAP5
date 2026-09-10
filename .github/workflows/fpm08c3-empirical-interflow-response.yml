@@ -1,0 +1,20 @@
+name: F-PM08C3 empirical interflow response qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08c3-empirical-interflow-response
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C3 empirical interflow response gate
+        run: bash tests/fpm/run_fpm08c3_empirical_interflow_response_gate.sh
