@@ -1,0 +1,32 @@
+name: F-MR20R canonical publication regression
+
+on:
+  push:
+    branches:
+      - work/f-mr20r-canonical-result-publication
+    paths:
+      - src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+      - src/runtime/mod_fmr_parallel_worker_pool.f90
+      - tests/fmr/run_fmr20r_canonical_publication_regression.sh
+      - .github/workflows/fmr20r-canonical-publication-regression.yml
+
+permissions:
+  contents: read
+
+jobs:
+  owner-remediation-regression:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo rm -f /etc/apt/sources.list.d/google-chrome.list
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-MR20R canonical publication remediation gate
+        run: bash tests/fmr/run_fmr20r_canonical_publication_regression.sh
