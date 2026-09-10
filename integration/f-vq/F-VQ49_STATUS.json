@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.independent_runtime_qualification_status.v1",
+  "work_unit": "F-VQ49",
+  "title": "Independent Qualification of F-MR33 Restricted DIVDRA Runtime Binding",
+  "branch": "qualification/f-vq49-fmr33-divdra-runtime-binding",
+  "phase": "PRETEST_CONTRACT_PERSISTED",
+  "decision": "OPEN_INDEPENDENT_RUNTIME_QUALIFICATION",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "candidate": {
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "state": {
+    "live_name_checked_free": true,
+    "branch_created_from_current_canonical": true,
+    "plan_persisted": true,
+    "pretest_status_persisted": true,
+    "independent_verifier_persisted": false,
+    "gate_persisted": false,
+    "workflow_persisted": false,
+    "architecture_audit_persisted": false,
+    "tested": false,
+    "independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "independence_guard": {
+    "owner_tests_used_as_oracle": false,
+    "owner_expected_values_reused": false,
+    "f_vq47_science_reopened": false,
+    "qualification_branch_production_candidate_copied": false
+  },
+  "pass_decision": "QUALIFIED_INDEPENDENT_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_COMPOSITION"
+}
