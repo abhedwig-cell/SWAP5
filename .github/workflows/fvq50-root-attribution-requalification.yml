@@ -1,0 +1,22 @@
+name: F-VQ50 independent root-attribution requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq50-fmr31-root-attribution-forcing-binding-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-independent-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ50 independent exact-candidate gate
+        run: bash tests/fvq/run_fvq50_root_attribution_requalification.sh
