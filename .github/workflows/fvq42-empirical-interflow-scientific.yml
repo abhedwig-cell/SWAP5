@@ -1,0 +1,20 @@
+name: F-VQ42 independent empirical interflow scientific qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq42-fpm08c3-empirical-interflow
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-scientific-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-VQ42 independent empirical interflow gate
+        run: bash tests/fvq/run_fvq42_empirical_interflow_scientific_gate.sh
