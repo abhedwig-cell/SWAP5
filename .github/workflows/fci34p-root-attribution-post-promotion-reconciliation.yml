@@ -1,0 +1,93 @@
+name: F-CI34P root-attribution post-promotion reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci34p-root-attribution-post-promotion-reconciliation
+      - integration/f-ci-canonical
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml'
+      - 'integration/f-ci/F-CI34P_STATUS.json'
+      - 'integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json'
+      - 'integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json'
+  pull_request:
+    paths:
+      - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml'
+      - 'integration/f-ci/F-CI34P_STATUS.json'
+      - 'integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json'
+      - 'integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json'
+
+jobs:
+  post-promotion-reconciliation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Fail closed on production or reference drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=2efba343d425770e5d581d8137cd60e83d8b7ac5
+          if git diff --name-only "$BASE"..HEAD -- src reference | grep -q .; then
+            echo 'FCI34P_FAIL unexpected src/reference delta' >&2
+            git diff --name-only "$BASE"..HEAD -- src reference >&2
+            exit 34
+          fi
+          test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
+          echo 'FCI34P_ZERO_SRC_REFERENCE_DELTA=PASS'
+          echo 'FCI34P_FCI33_DIVDRA_AUTHORITY_PRESERVED=PASS'
+          echo 'FCI34P_FCI34_ROOT_ATTRIBUTION_AUTHORITY_PRESERVED=PASS'
+      - name: Verify reconciled broad canonical authority definition
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'run_fci34_fmr31_root_attribution_canonical_admission.sh' .github/workflows/fci-canonical.yml
+          grep -Fq '02aa1516a6f452d311ea03c195cbeaf271d3db28' .github/workflows/fci-canonical.yml
+          grep -Fq 'e4737fb6f00a11ed16e34bee44b3442ac84b31aa' .github/workflows/fci-canonical.yml
+          grep -Fq 'fe5a06c9af59308cdad86c5126379f413591b0cd' .github/workflows/fci-canonical.yml
+          echo 'FCI34P_BROAD_CANONICAL_AUTHORITY_RECONCILED=PASS'
+      - name: Replay exact F-CI34 scientific and source admission authority
+        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
+      - name: Verify 30 architecture invariants remain no-adverse-delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          with open('integration/f-ci/F-CI34_ARCHITECTURE_AUDIT.json', encoding='utf-8') as f:
+              a=json.load(f)
+          assert a['overall']=='NO_ADVERSE_ARCHITECTURE_DELTA_WITHIN_FROZEN_SCOPE'
+          inv=a['invariants']
+          assert [x['id'] for x in inv] == list(range(1,31))
+          assert all(x['status'] in ('NO_ADVERSE_DELTA','SATISFIED','SATISFIED_WITHIN_SERIALIZED_SCOPE') for x in inv)
+          print('FCI34P_ARCHITECTURE_INVARIANTS_30_OF_30_NO_ADVERSE_DELTA=PASS')
+          PY
+      - name: Write reconciliation evidence summary
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          {
+            echo "work_unit=F-CI34P"
+            echo "head=$(git rev-parse HEAD)"
+            echo "base=2efba343d425770e5d581d8137cd60e83d8b7ac5"
+            echo "src_tree=$(git rev-parse HEAD:src)"
+            echo "reference_tree=$(git rev-parse HEAD:reference)"
+            echo "fci33_divdra_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)"
+            echo "fci34_root_attribution_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+            echo "result=PASS_FCI34P_POST_PROMOTION_RECONCILIATION_GATE"
+          } > evidence/F-CI34P_SUMMARY.txt
+          cat evidence/F-CI34P_SUMMARY.txt
+      - name: Upload F-CI34P evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI34P-post-promotion-reconciliation-evidence
+          path: evidence/F-CI34P_SUMMARY.txt
