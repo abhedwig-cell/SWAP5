@@ -1,0 +1,48 @@
+{
+  "schema":"swap5.fmq30_qualification_matrix.v1",
+  "work_unit":"F-MQ30",
+  "candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de",
+  "profile":"restricted root-active real-physics MultiSWAP; fixed-flux top; bottom mode 7; SWKIMPL=0; SWSOPHY=0; no snow/macropore/frost/hysteresis/tabulated/elasticity/temporal-history",
+  "held_out_positive_cases":[
+    {"n":3,"batch":2,"order":3},
+    {"n":5,"batch":4,"order":1},
+    {"n":9,"batch":5,"order":2},
+    {"n":16,"batch":7,"order":0},
+    {"n":23,"batch":11,"order":3},
+    {"n":33,"batch":17,"order":1}
+  ],
+  "workers":[2,4],
+  "positive_oracles":[
+    "serialized reference versus 2-worker versus 4-worker exact scientific result identity by column id",
+    "exact committed endpoint state identity",
+    "exact lineage/revision/time continuation identity",
+    "actual_transpiration_available true for every committed root-active column including active-zero QROT",
+    "actual_transpiration_amount equals exact integral sum(root_extraction_sink)*(t1-t0)",
+    "actual transpiration is attribution only and does not create a second mass booking",
+    "per-column hard water-mass residual <= 1e-12 cm",
+    "authoritative aggregate mass complete and semantically identical",
+    "input-order independence and deterministic canonical publication order",
+    "2-worker/4-worker independence and A/B/A deterministic replay",
+    "true simultaneous multiworker physical execution observed"
+  ],
+  "negative_oracles":[
+    "negative QROT rejects complete requested profile before physical solve and before committed-state mutation",
+    "quiet-NaN QROT rejects complete requested profile before sign comparison can trap, physical solve, or state mutation",
+    "root-inactive parameters reject the explicit root-active entry point before physical solve",
+    "worker_count=1 rejects this explicit parallel-root capability without silent serialized fallback",
+    "unsupported worker count rejects before physical solve",
+    "snow, bottom mode 5, temporal-history layout, macropore, frost, hysteresis, tabulated hydraulics and elasticity remain outside scope and fail closed",
+    "a solver-rejected/problem column cannot alter successfully committed sibling-column science"
+  ],
+  "regression_oracles":[
+    "existing F-CI30 root-inactive parallel V1 production blob remains byte-identical",
+    "existing V1 still rejects root-active requests",
+    "F-CI36 DIVDRA source remains unchanged by qualification overlay",
+    "no reference source modification"
+  ],
+  "build_modes":["O0","O2"],
+  "required_cross_build_identity":"exact test-output identity",
+  "hard_mass_gate_cm":1e-12,
+  "early_exit":"Any hard negative fail-open, mass violation, state/result divergence, attribution mismatch, old-V1 regression or candidate-source drift closes F-MQ30 NOT_QUALIFIED; do not patch production source in F-MQ30.",
+  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","other excluded parallel physics","performance speedup","general SWAP5 release qualification"]
+}

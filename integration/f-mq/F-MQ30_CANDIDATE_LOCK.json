@@ -1,0 +1,14 @@
+{
+  "schema":"swap5.fmq30_candidate_lock.v1",
+  "work_unit":"F-MQ30",
+  "title":"Independent Restricted Parallel Root-Uptake Profile Scientific Qualification",
+  "branch":"qualification/f-mq30-fmr35-parallel-root-uptake",
+  "canonical_source_authority":{"head":"8fa79a70a9faccaf8b63826df607a685eb75b046","tree":"e172e973ac7cf3e5e2932eb896be25cba0246646","authority":"F-CI36 final canonical head; exact-head workflows completed successfully"},
+  "readiness_authority":{"work_unit":"F-MR34","closeout":"02074061ade9e9399312c1758768090292046390","decision":"QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"},
+  "owner_authority":{"work_unit":"F-MR35","owner_evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","owner_evidence_head_replay":{"run":34523685090,"conclusion":"success"},"scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_tree":"8016f6a541ca10ca7175722233c40138b4ec24b0","decision":"QUALIFIED_OWNER_RESTRICTED_PARALLEL_ROOT_UPTAKE_READY_FOR_INDEPENDENT_FMQ30"},
+  "candidate_overlay":{"path":"src/runtime/mod_fmr_parallel_root_uptake_pool.f90","blob":"c78c13997642617376b8d118122c86c60ca77189","mode":"100644","status_on_canonical_base":"absent","overlay_semantics":"exact immutable production blob only; qualification branch is based on current canonical, not on the owner branch"},
+  "preserved_current_canonical_authorities":{"src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15","src/runtime/mod_fmr_parallel_physical_scheduler.f90":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654","src/runtime/mod_fmr_serialized_multiswap_runtime.f90":"fe5a06c9af59308cdad86c5126379f413591b0cd","src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9","src/runtime/mod_fmr_reference_et_root_uptake_composition.f90":"8ed7610144700f58d0b89482925471fcb2ff7d69"},
+  "independence":{"owner_test_conclusions_imported":false,"owner_generated_root_active_fixture_imported":false,"prior_independent_fmq26_fixture_blob_used_only_as_neutral_real_physics_scaffold":"26cc6e0ace986dc40db7635de7192958a1c0b868","held_out_cases_required":true,"candidate_source_modification_permitted":false},
+  "production_scope":{"allowed_overlay":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],"all_other_src_must_match_current_canonical":true,"reference_delta_permitted":false},
+  "qualification_only":true
+}
