@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MQ27",
+  "phase": "FROZEN_BEFORE_EXECUTION",
+  "candidate": "9064004f815e81f95eb4bdee218af29cb95039c1",
+  "remediated_from": "dfffd8535b3345b105b2d71537d8149225f35c54",
+  "principle": "Independent requalification of the exact F-MR21 restart candidate. Owner tests are supporting evidence; qualification adds its own production-state negative matrix and extends the real-physics process-restart matrix to the previously frozen F-MQ25 counts.",
+  "positive_matrix": {
+    "column_counts": [1, 2, 7, 8, 17, 31, 32],
+    "generic_time_window": {
+      "t0": 3100.125,
+      "restart_boundary": 3100.4375,
+      "t1": 3100.8125,
+      "calendar_boundary_required": false
+    },
+    "checks_each_count": [
+      "continuous-versus-restarted canonical result identity by column id",
+      "endpoint committed physical-state identity by column id",
+      "exact lineage and revision continuation",
+      "bitwise committed-time continuation",
+      "per-column and aggregate mass-accounting identity",
+      "hard mass residual <= 1e-12",
+      "deterministic replay"
+    ],
+    "ordering_attacks": ["reverse restart-record order", "reverse reconstructed runtime order"],
+    "parameter_reference_rule": "Immutable parameter payload remains outside the restart record; parameter-set and per-column references are validated independently."
+  },
+  "qualification_owned_negative_matrix": [
+    "wrong parameter-set identity",
+    "missing/unknown column record",
+    "duplicate column record",
+    "bundle schema mismatch",
+    "record schema mismatch",
+    "kernel schema mismatch",
+    "missing decoded physical state",
+    "malformed decoded physical state with unrelated concrete dynamic type",
+    "registered temporal-history state supplied to a base-state template",
+    "invalid reconstruction lineage provenance",
+    "non-finite committed time",
+    "wrong per-column parameter reference",
+    "wrong template id",
+    "wrong physics topology identity",
+    "wrong vertical layout identity",
+    "wrong state layout identity",
+    "wrong solver interface identity",
+    "wrong optional-state layout identity",
+    "wrong numerical-continuation layout identity",
+    "wrong backend compatibility identity",
+    "non-fresh restore target"
+  ],
+  "state_family_contract": {
+    "base_serialized_reference": "exact fmr_b110_physical_state_t",
+    "richards_temporal_history": "exact fmr_b110_temporal_indicator_state_t",
+    "unknown_backend_or_layout": "FAIL_CLOSED",
+    "self_describing_payload_not_sufficient": true
+  },
+  "atomicity": "Every negative restore must leave all fresh target states uninitialized. Late-record malformed-state and provenance attacks are mandatory.",
+  "source_scope": "No src changes relative to exact F-MR21 candidate. Relative to rejected F-MR19 candidate only mod_fmr_committed_restart.f90 and mod_fmr_restart_state_contract.f90 may differ.",
+  "compiler_matrix": ["GNU Fortran O0", "GNU Fortran O2"],
+  "compiler_output_rule": "Exact O0/O2 qualification-output identity",
+  "early_exit_rule": "Any source drift, malformed-state fail-open, partial publication, process-restart identity regression, hard-mass failure or state-family discriminator failure yields NOT_QUALIFIED.",
+  "pass_exit": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "explicit_nonclaims": ["parallel restart", "filesystem serialization format", "unregistered backend state families", "wider optional-state restart scope"]
+}
