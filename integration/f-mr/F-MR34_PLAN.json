@@ -1,0 +1,51 @@
+{
+  "schema":"swap5.fmr34_plan.v1",
+  "work_unit":"F-MR34",
+  "goal":"Admit the already-canonical restricted precomputed root-extraction sink in 2-worker and 4-worker MultiSWAP execution without changing root-uptake physics or transaction semantics.",
+  "frozen_profile":{
+    "soil_water_solver":"reference Richards",
+    "top_boundary":"fixed flux",
+    "bottom_mode":7,
+    "swkimpl":0,
+    "swsophy":0,
+    "root_extraction":"precomputed nonnegative finite QROT only",
+    "root_sink_time_behavior":"constant over the requested [t0,t1] physical call",
+    "snow":false,
+    "macropores":false,
+    "frost":false,
+    "hysteresis":false,
+    "tabulated_hydraulics":false,
+    "elasticity":false,
+    "temporal_history":false,
+    "worker_counts":[2,4]
+  },
+  "required_semantics":[
+    "active root extraction requires allocated finite nonnegative root_extraction_sink with active-node length",
+    "inactive root extraction continues to require an exactly zero root_extraction_sink",
+    "serialized, 2-worker and 4-worker scientific state/flux/mass/result identity by column id",
+    "actual_transpiration attribution remains derived from the exact runtime forcing and does not create a second mass booking",
+    "deterministic canonical publication remains unchanged",
+    "rejected columns do not contaminate accepted columns",
+    "worker-local backend/root-sink provider/workspace ownership is preserved",
+    "hard water mass conservation remains mandatory"
+  ],
+  "independent_owner_test_matrix":{
+    "column_counts":[2,7,17,32],
+    "worker_counts":[2,4],
+    "caller_orders":["canonical","reverse","deterministic_permutation"],
+    "root_profiles":["all-active","mixed-active-inactive"],
+    "negative_cases":["negative-qrot","nan-qrot","inactive-nonzero-qrot","unsupported-snow","unsupported-macropore"]
+  },
+  "nonclaims":[
+    "dynamic root-sink reevaluation within SWKIMPL=1 Newton iterations",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "time-varying QROT within accepted substeps",
+    "crop lifecycle advancement",
+    "persistent crop accounting",
+    "parallel commit receipts",
+    "performance speedup",
+    "general SWAP5 release qualification"
+  ],
+  "architecture_invariants_focus":[3,4,5,6,7,9,13,16,21,23,24,26,27,29,30],
+  "persist_before_test":true
+}

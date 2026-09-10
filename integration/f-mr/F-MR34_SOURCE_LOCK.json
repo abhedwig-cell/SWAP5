@@ -1,0 +1,28 @@
+{
+  "schema":"swap5.fmr34_source_lock.v1",
+  "work_unit":"F-MR34",
+  "title":"Restricted Parallel Root-Extraction Execution Composition",
+  "branch":"work/f-mr34-restricted-parallel-root-extraction",
+  "canonical_source_authority":"c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "canonical_tree":"ec8ed8199d2d168bdc1961368361cc198f3f91f2",
+  "upstream_authorities":{
+    "parallel_runtime":{"work_unit":"F-CI30","decision":"QUALIFIED_CLOSED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_ADMISSION"},
+    "root_uptake_execution":{"work_unit":"F-CI31","decision":"QUALIFIED_CLOSED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_CANONICAL_ADMISSION"},
+    "root_attribution":{"work_unit":"F-CI34","admitted_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd"},
+    "parallel_restart":{"work_unit":"F-CI35","decision":"QUALIFIED_CLOSED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION_CANONICAL_CAPABILITY_ADMISSION"}
+  },
+  "locked_production_blobs":{
+    "src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90":"fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90":"8ed7610144700f58d0b89482925471fcb2ff7d69"
+  },
+  "candidate_delta_policy":{
+    "allowed_production_paths":["src/runtime/mod_fmr_parallel_worker_pool.f90"],
+    "kernel_changes":false,
+    "solver_changes":false,
+    "root_uptake_physics_changes":false,
+    "mass_ledger_semantics_changes":false,
+    "persistent_state_changes":false
+  }
+}
