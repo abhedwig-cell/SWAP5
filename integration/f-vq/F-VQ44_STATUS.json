@@ -4,14 +4,14 @@
   "work_unit": "F-VQ44",
   "title": "Independent Restricted Single-Level Linear Drainage Qualification",
   "branch": "qualification/f-vq44-fpm08a-linear-drainage",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED",
+  "status": "IN_PROGRESS_VERIFIER_PERSISTED_PRETEST",
   "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
   "candidate_closeout": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
   "candidate_source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa",
   "state": {
     "legacy_oracle_source_persisted": true,
     "qualification_contract_persisted": true,
-    "independent_verifier_persisted": false,
+    "independent_verifier_persisted": true,
     "tested": false,
     "qualified": false,
     "runtime_qualified": false,
@@ -25,5 +25,5 @@
     "divdra_qualified": false,
     "surface_water_control_qualified": false
   },
-  "next_required_step": "persist independent executable verifier and run qualification gate"
+  "next_required_step": "run independent qualification gate and fail closed on any source, structural or numerical discrepancy"
 }
