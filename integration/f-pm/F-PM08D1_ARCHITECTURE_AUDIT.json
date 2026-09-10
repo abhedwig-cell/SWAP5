@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D1",
+  "overall": "PASS_WITH_CHILD_SCOPE_HOLDS",
+  "invariants": [
+    {"id":1,"status":"PASS","finding":"one SWAP kernel; D1 defines reusable storage substrate only"},
+    {"id":2,"status":"PASS","finding":"no file parsing or I/O in storage component contract"},
+    {"id":3,"status":"PASS","finding":"prepared parameters, SWST state, forcing WLS and results are separated"},
+    {"id":4,"status":"PASS","finding":"only SWST persists for simulated storage; WLS is derived"},
+    {"id":5,"status":"PASS","finding":"interpolation temporaries are scratch, not column state"},
+    {"id":6,"status":"PASS","finding":"22-knot relation is shareable immutable data by parameter reference"},
+    {"id":7,"status":"PASS","finding":"trial SWST isolation and rollback are explicit requirements"},
+    {"id":8,"status":"PASS","finding":"recomputation derives WLS cheaply from the same committed SWST"},
+    {"id":9,"status":"PASS","finding":"storage geometry is time independent and has no daily unit assumption"},
+    {"id":10,"status":"PASS","finding":"no coupling-window assumption is introduced"},
+    {"id":11,"status":"PASS","finding":"later runtime composition remains compatible with transactional coupling"},
+    {"id":12,"status":"PASS","finding":"D1 does not alter groundwater-interface contracts"},
+    {"id":13,"status":"PASS","finding":"SWST is identified as authoritative conserved storage; no mass concession"},
+    {"id":14,"status":"PASS","finding":"D1 introduces no hidden hydraulic sensitivity contract"},
+    {"id":15,"status":"PASS","finding":"no extra SWAP reruns or coupling iterations are introduced"},
+    {"id":16,"status":"PASS","finding":"per-column state is one real only when active; shared relation supports MultiSWAP"},
+    {"id":17,"status":"PASS","finding":"no MODFLOW cell/tile topology appears in storage physics"},
+    {"id":18,"status":"PASS","finding":"deep-vadose remains external and unrelated"},
+    {"id":19,"status":"PASS","finding":"no cross-component transition storage is modified"},
+    {"id":20,"status":"PASS","finding":"storage substrate does not bind the soil-water solver implementation"},
+    {"id":21,"status":"PASS","finding":"surface-water storage physics can be reused with all soil-water solvers"},
+    {"id":22,"status":"PASS","finding":"no HeadCalc or soil-solver internals are referenced"},
+    {"id":23,"status":"PASS","finding":"reference 22-knot physics is separated from numerical solver policy"},
+    {"id":24,"status":"PASS","finding":"O(22) preparation/lookup is bounded and predictable"},
+    {"id":25,"status":"PASS","finding":"frozen 22-knot piecewise-linear semantics remain available as reference mode"},
+    {"id":26,"status":"PASS","finding":"future component diagnostics can report domain/interval selection without hidden state"},
+    {"id":27,"status":"PASS","finding":"inactive columns allocate no surface-water storage state"},
+    {"id":28,"status":"PASS","finding":"runtime/coupler remains owner of system composition and external topology"},
+    {"id":29,"status":"PASS","finding":"no midnight, day, .dra or direct MODFLOW dependency is introduced"},
+    {"id":30,"status":"PASS","finding":"D1 readiness changes were explicitly checked against all invariants"}
+  ],
+  "scope_holds": [
+    "No production candidate is admitted by this audit.",
+    "WLSTAR remains separate control-state ownership for F-PM08D5.",
+    "Mass-balance evolution remains for F-PM08D3/D4/D6.",
+    "Extended drainage exchange remains for F-PM08D2."
+  ]
+}
