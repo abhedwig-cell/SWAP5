@@ -1,14 +1,20 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C2B",
   "title": "IPOS2/3 Equivalent-Depth Preparation and Response Structural Candidate",
   "branch": "work/f-pm08c2b-ipos23-equivalent-depth-response",
-  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "status": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_IPOS23_PREPARED_EQDEPTH_RESPONSE_STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
   "lineage": {
     "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
     "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
-    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+    "tested_candidate_head": "03394c97595b3fa0d93447f113c8059bfa7744df",
+    "tested_production_blobs": {
+      "equivalent_depth_preparation": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108",
+      "ipos23_response": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164"
+    }
   },
   "scope": {
     "legacy_family": ["DRAMET=2 IPOS=2", "DRAMET=2 IPOS=3"],
@@ -21,19 +27,58 @@
     "solver_jacobian_assembly": false
   },
   "architecture": {
-    "equivalent_depth_preparation": "immutable geometry preparation performed once per shared parameter set",
-    "dynamic_response": "per hydraulic evaluation consumes prepared equivalent depth plus groundwater level",
-    "worker_scratch": "no persistent column allocation for equivalent-depth temporaries",
-    "branch_metadata": "x<1e-6, 1e-6<=x<=0.5 and x>0.5 remain explicit; no smoothing"
+    "equivalent_depth_preparation": "derived once from immutable geometry and shareable across columns using the same parameter set",
+    "dynamic_response": "uses prepared equivalent depth plus current groundwater level",
+    "per_column_persistent_equivalent_depth_state": false,
+    "branch_metadata": "SHALLOW x<1e-6, ASYMPTOTIC 1e-6<=x<=0.5 and SERIES x>0.5 are explicit and unsmoothed",
+    "x_0_5_behavior": "finite source-formula branch jump retained explicitly",
+    "x_1e_minus_6_behavior": "branch retained; representative response is effectively continuous after final min clip"
   },
-  "compatibility_branch": {
-    "legacy_difference_cutoff": "diffl < 1e-10 returns zero exchange",
-    "policy": "retain only as visible restricted B1.10 compatibility semantics",
-    "at_exact_cutoff_derivative": "unavailable"
+  "response_and_derivative": {
+    "IPOS2": "8*Ktop*eqd + 4*Ktop*abs(difference)",
+    "IPOS3": "8*Kbottom*eqd + 4*Ktop*abs(difference)",
+    "legacy_difference_cutoff": "difference < 1e-10 returns zero exchange",
+    "cutoff_policy": "visible restricted B1.10 compatibility semantics only",
+    "inactive_derivative": "zero",
+    "stable_active_derivative": "analytic dq/dgroundwater_level verified against finite difference",
+    "exact_cutoff_derivative": "unavailable"
   },
-  "persisted": true,
-  "implemented": false,
-  "tested": false,
-  "structurally_qualified": false,
-  "scientifically_qualified": false
+  "domain": {
+    "prepared_geometry": "finite positive spacing and wetted perimeter, base<=drain bottom, finite nonnegative equivalent depth, positive logarithmic formula denominator where used",
+    "IPOS2": "shape>0, Ktop>0, entry resistance>=0",
+    "IPOS3": "shape>0, Ktop>0, Kbottom>=0, entry resistance>=0",
+    "fail_closed_on_invalid_domain": true
+  },
+  "mass_and_transaction_boundary": {
+    "authoritative_exchange_output": "signed_soil_to_drain_rate",
+    "positive_sign": "water leaves soil toward drainage receiver",
+    "time_integration": "runtime/coupler responsibility",
+    "accepted_ledger_publication": "runtime/coupler responsibility",
+    "rejected_trial_commit": false
+  },
+  "qualification": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "scientific_B110_equivalence_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "evidence": {
+    "workflow_run": 34453054781,
+    "workflow_job": 102792995876,
+    "candidate_output_sha256": "6295cd74018a264fe128d6ddd00f3d264fef7f31e483d367d5984ac081850c3d",
+    "evidence_file": "integration/f-pm/F-PM08C2B_CANDIDATE_EVIDENCE.json"
+  },
+  "holds": [
+    "No smoothing or interpolation across the x=0.5 equivalent-depth formula-family transition.",
+    "No IPOS1 or IPOS4/5 admission.",
+    "No runtime/source-sink binding or DIVDRA composition.",
+    "No soil-water Jacobian assembly from dq/dgroundwater_level.",
+    "No legacy file parsing or calendar semantics.",
+    "No promotion of the 1e-10 compatibility cutoff to generic drainage physics.",
+    "No scientific B1.10 equivalence or canonical admission before independent verification."
+  ],
+  "next_required_step": "independent F-VQ over both frozen production blobs and their branch/domain semantics"
 }
