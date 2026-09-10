@@ -13,6 +13,7 @@ program test_fpm06e_restricted_surface_evaporation_capacity
   implicit none
 
   integer, parameter :: n = 2
+  real(real64), parameter :: ponding_threshold_cm = 1.0e-10_real64
   real(real64), parameter :: heads(5) = [0.0_real64, -0.1_real64, -100.0_real64, &
        -10000.0_real64, -300000.0_real64]
   type(soil_water_parameter_set_t), target :: geometry
@@ -23,7 +24,7 @@ program test_fpm06e_restricted_surface_evaporation_capacity
   type(surface_evaporation_capacity_result_t) :: result, dry_result
   real(real64) :: cofgen(24,n), all_heads(n), water(n), conductivity(n), capacity(n), dkdh(n)
   real(real64) :: scalar_k, k_atm, k_top, k_face, expected, fingerprint, saved_head, saved_pond
-  real(real64) :: nan_value
+  real(real64) :: nan_value, replay_capacity
   logical :: ok
   integer :: i, method
 
@@ -73,24 +74,64 @@ program test_fpm06e_restricted_surface_evaporation_capacity
     end do
   end do
 
-  ! Negative Emax is physically meaningful at a head below the atmospheric limiting head and must remain signed.
+  ! Explicit positive capacity on a dry committed base state.
   call bind_b110_surface_evaporation_capacity_provider(capacity_provider, geometry, hydraulics, &
        1, .false., .false., ok)
+  call require(ok, 'positive-capacity provider binds')
+  state%pressure_head(1) = -100.0_real64
+  state%ponding_depth = 0.0_real64
+  call capacity_provider%evaluate(state, dry_result)
+  call require(dry_result%status == SURFACE_EVAP_CAPACITY_AVAILABLE, 'dry positive-capacity case available')
+  call require(dry_result%evaporation_capacity > 0.0_real64, 'positive Emax preserved')
+
+  ! Exact zero capacity where the B1.10 hydraulic-gradient factor is zero.
+  state%pressure_head(1) = B110_SURFACE_ATMOSPHERIC_HEAD_CM + geometry%node_distance(1)
+  call capacity_provider%evaluate(state, result)
+  call require(result%status == SURFACE_EVAP_CAPACITY_AVAILABLE, 'zero-capacity case available')
+  call require(result%evaporation_capacity == 0.0_real64, 'exact zero Emax preserved')
+
+  ! Negative Emax is physically meaningful at a head below the atmospheric limiting head and must remain signed.
   state%pressure_head(1) = -300000.0_real64
   state%ponding_depth = 0.0_real64
   call capacity_provider%evaluate(state, result)
   call require(result%status == SURFACE_EVAP_CAPACITY_AVAILABLE, 'negative-capacity case available')
   call require(result%evaporation_capacity < 0.0_real64, 'negative Emax is not clamped')
 
-  ! Ponding classification belongs to the downstream structural process, not to this hydraulic capability.
+  ! Ponding classification belongs to the downstream structural process. The F-PM06D boundary is strictly > 1e-10 cm.
   state%pressure_head(1) = -100.0_real64
   state%ponding_depth = 0.0_real64
   call capacity_provider%evaluate(state, dry_result)
+  call require(.not. (state%ponding_depth > ponding_threshold_cm), 'zero ponding is dry')
+  state%ponding_depth = ponding_threshold_cm
+  call capacity_provider%evaluate(state, result)
+  call require(.not. (state%ponding_depth > ponding_threshold_cm), 'exact ponding threshold remains dry')
+  call require(transfer(result%evaporation_capacity,0_int64) == &
+       transfer(dry_result%evaporation_capacity,0_int64), 'Emax unchanged at exact ponding threshold')
+  state%ponding_depth = 1.000001e-10_real64
+  call capacity_provider%evaluate(state, result)
+  call require(state%ponding_depth > ponding_threshold_cm, 'ponding just above threshold is ponded')
+  call require(transfer(result%evaporation_capacity,0_int64) == &
+       transfer(dry_result%evaporation_capacity,0_int64), 'Emax independent of ponding classification boundary')
   state%ponding_depth = 0.5_real64
   call capacity_provider%evaluate(state, result)
   call require(result%status == SURFACE_EVAP_CAPACITY_AVAILABLE, 'finite ponded base state accepted')
   call require(transfer(result%evaporation_capacity,0_int64) == &
-       transfer(dry_result%evaporation_capacity,0_int64), 'Emax independent of ponding classification')
+       transfer(dry_result%evaporation_capacity,0_int64), 'Emax independent of finite ponding depth')
+
+  ! Rejected-trial semantics: discard one result and replay from the exact same base state.
+  state%ponding_depth = 0.0_real64
+  state%pressure_head(1) = -100.0_real64
+  saved_head = state%pressure_head(1)
+  saved_pond = state%ponding_depth
+  call capacity_provider%evaluate(state, result)
+  call require(result%status == SURFACE_EVAP_CAPACITY_AVAILABLE, 'trial capacity available before rejection')
+  replay_capacity = result%evaporation_capacity
+  ! result is intentionally treated as rejected and not persisted anywhere.
+  call capacity_provider%evaluate(state, dry_result)
+  call require(transfer(dry_result%evaporation_capacity,0_int64) == transfer(replay_capacity,0_int64), &
+       'rejected-trial replay identity')
+  call require(state%pressure_head(1) == saved_head .and. state%ponding_depth == saved_pond, &
+       'rejected trial leaves committed physical state unchanged')
 
   ! Szymkiewicz mean policy 7 is deliberately fail-closed until its own clean hydraulic capability exists.
   call bind_b110_surface_evaporation_capacity_provider(capacity_provider, geometry, hydraulics, &
