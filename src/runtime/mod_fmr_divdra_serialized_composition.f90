@@ -35,7 +35,6 @@ module mod_fmr_divdra_serialized_composition
   end type fmr_divdra_serialized_binding_record_t
 
   public :: fmr_preflight_serialized_divdra
-  public :: fmr_materialize_serialized_divdra_forcing
 
 contains
 
@@ -138,42 +137,5 @@ contains
       records(slot)%composition_status = FMR_DIVDRA_COMPOSE_OK
     end do
   end subroutine fmr_preflight_serialized_divdra
-
-  subroutine fmr_materialize_serialized_divdra_forcing(source_forcing, request, distribution_parameters, hydraulic_views, &
-       effective_forcing, diagnostics, status)
-    type(fmr_b110_physical_forcing_t), intent(in) :: source_forcing
-    type(fmr_divdra_serialized_column_request_t), intent(in) :: request
-    type(drainage_distribution_parameters_t), intent(in) :: distribution_parameters(:)
-    type(process_hydraulic_view_t), intent(in) :: hydraulic_views(:)
-    type(fmr_b110_physical_forcing_t), intent(out) :: effective_forcing
-    type(fmr_divdra_binding_diagnostics_t), intent(out) :: diagnostics
-    integer, intent(out) :: status
-
-    integer :: parameter_index, view_index
-
-    effective_forcing = source_forcing
-    diagnostics = fmr_divdra_binding_diagnostics_t()
-    status = FMR_DIVDRA_COMPOSE_OK
-
-    if (.not. request%active) return
-
-    if (request%distribution_parameter_ref < 1_int64 .or. &
-        request%distribution_parameter_ref > int(size(distribution_parameters), int64)) then
-      status = FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
-      return
-    end if
-    parameter_index = int(request%distribution_parameter_ref)
-
-    if (request%hydraulic_view_ref < 1_int64 .or. &
-        request%hydraulic_view_ref > int(size(hydraulic_views), int64)) then
-      status = FMR_DIVDRA_COMPOSE_INVALID_HYDRAULIC_VIEW_REF
-      return
-    end if
-    view_index = int(request%hydraulic_view_ref)
-
-    call fmr_bind_single_level_positive_divdra(distribution_parameters(parameter_index), hydraulic_views(view_index), &
-         request%scalar_transfer, effective_forcing%drainage_flux_by_level, diagnostics)
-    if (diagnostics%status /= FMR_DIVDRA_BIND_OK) status = FMR_DIVDRA_COMPOSE_BIND_REJECTED
-  end subroutine fmr_materialize_serialized_divdra_forcing
 
 end module mod_fmr_divdra_serialized_composition
