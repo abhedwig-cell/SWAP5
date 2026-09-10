@@ -1,0 +1,32 @@
+name: F-VQ51 Independent DIVDRA Active Runtime Callsite
+
+on:
+  push:
+    branches:
+      - qualification/f-vq51-fmr36-divdra-active-runtime-callsite
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact qualification head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run independent F-VQ51 gate
+        env:
+          FVQ51_EVIDENCE_DIR: _fvq51_evidence
+        run: bash tests/fvq/run_fvq51_divdra_active_runtime_callsite.sh
+      - name: Upload F-VQ51 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-VQ51-divdra-active-runtime-callsite-evidence
+          path: _fvq51_evidence
+          if-no-files-found: warn
