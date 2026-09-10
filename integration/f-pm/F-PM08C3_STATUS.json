@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C3",
+  "title": "Empirical Interflow Singular-Tangent Policy Structural Candidate",
+  "branch": "work/f-pm08c3-empirical-interflow-tangent-policy",
+  "status": "IN_PROGRESS_SOURCE_BOUND_STRUCTURAL_CANDIDATE",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "upstream": {
+    "F-PM08": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "F-PM08C": "3553c63e753bbf714378cd0dff5047769ad3185b"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "formula_lines": "SWAP/drainage.f90:151-194",
+    "reader_lines": "SWAP/drainage.f90:345-385"
+  },
+  "scope": {
+    "legacy_family": "DRAMET=3 highest-level empirical interflow drainage-side branch",
+    "law": "q = cofintfl * max(gwl - resolved_drain_head,0)^expintfl for the interflow contribution",
+    "cofintfl_legacy_range": [0.01, 10.0],
+    "expintfl_legacy_range": [0.1, 1.0],
+    "negative_diffl_infiltration_branch": "OUT_OF_SCOPE",
+    "multi_level_aggregation": "OUT_OF_SCOPE_F-PM08C4",
+    "persistent_process_state": false,
+    "io_or_calendar": false,
+    "solver_jacobian_assembly": false
+  },
+  "policy": {
+    "smoothing": false,
+    "arbitrary_activation_distance": false,
+    "strictly_active_tangent": "exact analytic derivative when representable",
+    "activation_exp_lt_1": "derivative unavailable; right tangent singular",
+    "activation_exp_eq_1": "two-sided derivative unavailable; finite right tangent exposed explicitly",
+    "solver_fallback": "owned by solver/runtime policy, not by process law"
+  },
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_qualified": false
+}
