@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D2",
+  "title": "Frozen SWAP 4.3.1 Extended Drainage Exchange Source Inventory",
+  "source_identity": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "source_locations": {
+    "extended_exchange": "SWAP/surfacewater.f90:468-589",
+    "availability_limiter_excluded": "SWAP/surfacewater.f90:600-637",
+    "extended_reader": "SWAP/surfacewater.f90:752-839",
+    "basic_Dramet3_comparison_only": "SWAP/drainage.f90:151-195",
+    "legacy_global_declarations": "SWAP/MOD_drainage.f90:48-55,61,82,105-111,134"
+  },
+  "reader_normalized_domain": {
+    "swdtyp_after_normalization": [1, 2],
+    "tube_code": 1,
+    "open_channel_code": 2,
+    "lspacing_input_range_m": [1.0, 100000.0],
+    "lspacing_internal_conversion": "multiply by 100 to cm",
+    "rdrain_range_days": [1.0, 100000.0],
+    "rinfi_range_days": [1.0, 100000.0],
+    "rentry_range_days": [0.0, 10.0],
+    "rexit_range_days": [0.0, 10.0],
+    "taludr_range": [0.01, 5.0],
+    "open_channel_width_positive_guard_cm": 0.0001,
+    "gwlinf_constraint": "GWLINF <= ZBOTDR per level",
+    "swnrsrf_range": [0, 2],
+    "rsurfdeep_range_days": [0.001, 1000.0],
+    "rsurfshallow_range_days": [0.001, 1000.0],
+    "cofintfl_range": [0.01, 10.0],
+    "expintfl_range": [0.1, 1.0],
+    "swsrf_reader_range": [1, 3]
+  },
+  "exact_per_level_sequence": {
+    "water_level_resolution": "for SWSRF>=2, secondary levels use WLS and primary levels use WLP",
+    "ponding_sill_gate": "evaluate exchange only if WL<PONDMX OR GWL<PONDMX; otherwise QDRAIN=0",
+    "active_medium_gate": "active if GWL>ZBOTDR+0.001 OR WL>ZBOTDR+0.001",
+    "dry_control_head_branch": "if WL<=ZBOTDR+0.001, DRAINL=ZBOTDR; for open channels WETPER=WIDTHR",
+    "wet_control_head_branch": "if WL>ZBOTDR+0.001, DRAINL=WL; for open channels WETPER=WIDTHR+2*sqrt((WL-ZBOTDR)^2+((WL-ZBOTDR)/TALUDR)^2)",
+    "raw_difference": "DIFFL=GWL-DRAINL",
+    "pond_addition": "if GWL>-0.1 then DIFFL=DIFFL+POND",
+    "infiltration_head_cap": "if DIFFL<0 and GWL<GWLINF then DIFFL=GWLINF-DRAINL",
+    "highest_power_interflow": "if highest level and SWNRSRF=2, QDRAIN=COFINTFL*DIFFL**EXPINTFL without sign guard",
+    "normal_positive_branch": "DIFFL>0 selects RDRAIN and RENTRY",
+    "normal_nonpositive_branch": "DIFFL<=0 selects RINFI and REXIT",
+    "highest_surface_drainage": "if highest level, SWNRSRF=1 and DIFFL>0, RD=max(RSURFDEEP-DIFFL,RSURFSHALLOW)",
+    "open_channel_flux": "QDRAIN=DIFFL/(RD+RE*LSPACING/WETPER)",
+    "tube_flux": "QDRAIN=DIFFL/RD"
+  },
+  "SWSRF1_undefined_value_characterization": {
+    "source_fact": "local WL is assigned only inside IF(SWSRF>=2) but WL is read by the ponding-sill condition for SWSRF=1",
+    "local_declaration": "WL is a local REAL(8) in drainflux_extended",
+    "save_statement_present": true,
+    "explicit_initialization_present": false,
+    "reader_returns_early_for_SWSRF1": true,
+    "consequence": "the frozen SWSRF=1 extended route can depend on undefined/stale local WL and cannot be source-equivalently migrated as a deterministic production law without separate disposition",
+    "D2_admission": false
+  },
+  "power_interflow_difference_from_basic_Dramet3": {
+    "basic_Dramet3": "tests DIFFL>=0 before power interflow and routes DIFFL<0 to infiltration",
+    "extended": "highest SWNRSRF=2 executes the power expression before any sign-specific resistance branch",
+    "consequence": "F-VQ42 positive-side power-law science is reusable, but negative extended SWNRSRF=2 is not covered and remains held"
+  },
+  "nonsmooth_and_discontinuous_seams": [
+    {
+      "id": "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY",
+      "condition": "GWL=-0.1 cm",
+      "behavior": "strictly above the threshold POND is added to DIFFL; at/below it is not",
+      "classification": "flux can be discontinuous when POND is nonzero"
+    },
+    {
+      "id": "D2-RISK-04-CHANNEL-ACTIVATION-SEAM",
+      "condition": "GWL or WL crosses ZBOTDR+0.001 cm while the other remains at/below",
+      "behavior": "branch jumps between exact zero and an exchange evaluation whose head difference need not tend to zero",
+      "classification": "potential flux discontinuity"
+    },
+    {
+      "id": "D2-RISK-05-GWLINF-DERIVATIVE-KINK",
+      "condition": "negative exchange near GWL=GWLINF",
+      "behavior": "below GWLINF the effective head is GWLINF-DRAINL and has zero GWL derivative; above it the raw head has unit GWL derivative",
+      "classification": "continuous value under ordinary admissible geometry, derivative kink"
+    },
+    {
+      "id": "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK",
+      "condition": "DIFFL=RSURFDEEP-RSURFSHALLOW on highest SWNRSRF=1 positive branch",
+      "behavior": "RD switches from RSURFDEEP-DIFFL to RSURFSHALLOW",
+      "classification": "continuous resistance/flux, derivative kink"
+    },
+    {
+      "id": "D2-RISK-07-DRAINAGE-INFILTRATION-RESISTANCE-SEAM",
+      "condition": "DIFFL=0 outside power-interflow branch",
+      "behavior": "source selects infiltration resistance at zero and drainage resistance for positive DIFFL",
+      "classification": "zero flux is continuous but one-sided slopes generally differ"
+    },
+    {
+      "id": "D2-RISK-08-PONDING-SILL-SUPPRESSION-SEAM",
+      "condition": "both WL and GWL reach PONDMX",
+      "behavior": "source suppresses QDRAIN to zero instead of continuing the constitutive expression",
+      "classification": "potential flux discontinuity"
+    }
+  ],
+  "smooth_branch_sensitivity_equations": {
+    "definitions": {
+      "e": "effective DIFFL after ponding and GWLINF cap",
+      "D": "effective resistance denominator",
+      "P": "open-channel wetted perimeter",
+      "q": "e/D for non-power branches"
+    },
+    "head_derivative_before_cap": "de/dGWL=1 away from GWL=-0.1; de/dWL=-d(DRAINL)/dWL; de/dPOND=1 only on GWL>-0.1 branch",
+    "head_derivative_under_gwlinf_cap": "de/dGWL=0; de/dWL=-d(DRAINL)/dWL; de/dPOND=0",
+    "drain_level_derivative": "d(DRAINL)/dWL=0 on WL<=ZBOTDR+0.001 branch and 1 on WL>ZBOTDR+0.001 branch",
+    "wet_perimeter_derivative": "for open wet branch with depth d=WL-ZBOTDR>0, dP/dWL=2*d*(1+1/TALUDR^2)/sqrt(d^2+(d/TALUDR)^2); otherwise 0",
+    "normal_flux_derivative": "dq/dx=(de/dx*D-e*dD/dx)/D^2",
+    "open_channel_denominator_derivative": "dD/dx=dRD/dx - RE*LSPACING*dP/dx/P^2",
+    "surface_drainage_RD_derivative": "dRD/de=-1 on RSURFDEEP-e>RSURFSHALLOW branch and 0 on the capped shallow-resistance branch; undefined at equality",
+    "power_interflow_derivative": "for e>0, dq/dx=COFINTFL*EXPINTFL*e^(EXPINTFL-1)*de/dx; at e=0 use explicit one-sided/singularity metadata per F-VQ42"
+  },
+  "state_and_mass_classification": {
+    "persistent_state": [],
+    "legacy_DRAINL": "trial result/scratch, not persistent state",
+    "legacy_DIFFL": "trial result/scratch, not persistent state",
+    "legacy_WETPER": "scratch, not persistent state",
+    "legacy_QDRAIN": "authoritative signed trial transfer result",
+    "legacy_QDRD": "secondary-level derived aggregate; separate aggregation/composition concern",
+    "availability_scaling": "state-dependent limiter owned by F-PM08D3, excluded from D2 constitutive law"
+  },
+  "canonical_context_at_activation": {
+    "canonical_head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "canonical_divdra_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "canonical_extended_exchange_module_present": false,
+    "consequence": "D2 is readiness-only and must not imply a currently admitted extended-exchange production provider"
+  }
+}
