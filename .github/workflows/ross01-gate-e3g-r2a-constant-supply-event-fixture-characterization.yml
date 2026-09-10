@@ -1,0 +1,76 @@
+name: F-ROSS01 Gate E3G-R2A Constant Supply Event Fixture Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R2A_CONSTANT_SUPPLY_EVENT_FIXTURE_CHARACTERIZATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3g_r2a_constant_supply_event_fixture_characterization.py'
+      - '.github/workflows/ross01-gate-e3g-r2a-constant-supply-event-fixture-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install characterization dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_r2a_constant_supply_event_fixture_characterization.py
+      - name: Execute frozen R2A material characterization
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-r2a-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_r2a_constant_supply_event_fixture_characterization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3G_R2A_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_R2A_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert characterization semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-r2a-{m}/F-ROSS01_GATE_E3G_R2A_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['gate']=='E3G_R2A_CONSTANT_SUPPLY_EVENT_FIXTURE_CHARACTERIZATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert r['pass'] is True
+          mr=r['material_result']
+          if m in ('B01','O14'):
+              assert mr['classification_role']=='INTERIOR_FINITE_TIME_EVENT_CANDIDATE'
+              s=mr['selected_fixture_candidate']
+              assert s is not None
+              assert s['t_left_day'] < s['t_right_day']
+              assert s['g_left_cm_per_day'] < 0.0
+              assert s['g_right_cm_per_day'] >= 0.0 or abs(s['g_right_cm_per_day']) < 1e-12
+              assert all(x['all_samples_committed_state_unchanged'] for x in mr['fractions'])
+              assert not any(x['mass_repair_or_clipping_used'] for x in mr['fractions'])
+          else:
+              assert mr['classification_role']=='R1_AND_NO_EVENT_CONTROL'
+              assert mr['tests']['sub_ksat_no_event_certificate'] is True
+              assert mr['tests']['super_ksat_immediate_R1'] is True
+              assert mr['tests']['no_soil_trajectory_for_classification'] is True
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-r2a-${{ matrix.material }}
+          path: ross01-gate-e3g-r2a-${{ matrix.material }}/
