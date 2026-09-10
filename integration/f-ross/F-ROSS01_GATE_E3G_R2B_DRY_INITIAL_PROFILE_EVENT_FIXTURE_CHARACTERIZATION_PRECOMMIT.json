@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2B_DRY_INITIAL_PROFILE_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "purpose": "Find a physically appropriate finite-time rainfall-ponding fixture after R2A showed that the E3G wet-top profile dries under sub-capacity forcing. R2B changes only the initial hydraulic profile class, not solver tolerances or event semantics.",
+  "upstream": {
+    "R1": "QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE",
+    "R2A": "NO_VALID_CONSTANT_SUPPLY_FINITE_TIME_FIXTURE_IN_FROZEN_SCAN_RESEARCH_REQUIRED",
+    "R2A_result": "F-ROSS01_GATE_E3G_R2A_CONSTANT_SUPPLY_EVENT_FIXTURE_CHARACTERIZATION_RESULT.json"
+  },
+  "frozen_scope": {
+    "materials": ["B01", "O14"],
+    "initial_profiles_cm": [
+      {"id":"UNIFORM_DRY_10","heads":[-10.0,-10.0,-10.0]},
+      {"id":"UNIFORM_DRY_100","heads":[-100.0,-100.0,-100.0]}
+    ],
+    "bottom_head_cm": -15.0,
+    "surface_storage_cm": 0.0,
+    "surface_head_for_capacity_cm": 0.0,
+    "surface_face_length_cm": 5.0,
+    "internal_face_length_cm": 10.0,
+    "top_soil_head_upper_bound_cm": -1.0e-8,
+    "mass_tolerance_cm": 1.0e-9,
+    "reference_soil_faces": "same full-accuracy E3 reference faces",
+    "capacity_reference": "same endpoint-aware full-accuracy 5 cm surface-face reference",
+    "sample_times_day": [0.0,1.0e-4,5.0e-4,1.0e-3,5.0e-3,1.0e-2,5.0e-2,1.0e-1]
+  },
+  "forcing_policy": {
+    "definition": "For each material/profile compute qcap0 from the committed top-node head. Then q_supply = KSAT + lambda*(qcap0-KSAT).",
+    "lambda_values": [0.25,0.5,0.75],
+    "physical_guards": [
+      "Require qcap0>KSAT beyond roundoff.",
+      "Every lambda forcing is strictly above KSAT and strictly below qcap0 at t0.",
+      "No material-specific numerical forcing constants are introduced."
+    ]
+  },
+  "event_signature": {
+    "event_function": "g(t)=q_supply-q_cap(h_surface=0,h_top_dry_reference(t))",
+    "valid_bracket": "Two adjacent sampled times t_a<t_b with both dry reference states solver-successful, mass-valid and inside the negative-head scope, with g(t_a)<-tol_a and g(t_b)>=-tol_b.",
+    "required_wetting_direction": "h_top(t_b)>h_top(t_a), so the event is approached by wetting rather than the R2A drying mechanism.",
+    "all_samples_are_trials_from_same_committed_state": true,
+    "no_sample_is_committed": true
+  },
+  "deterministic_fixture_selection_if_multiple": {
+    "primary_score": "maximize min(abs(g_left),abs(g_right))/KSAT over valid adjacent brackets",
+    "tie_break_1": "prefer UNIFORM_DRY_10 over UNIFORM_DRY_100",
+    "tie_break_2": "prefer lambda closest to 0.5",
+    "tie_break_3": "prefer earliest t_right",
+    "meaning": "Selection rewards a numerically robust sign bracket without changing the physical event criterion."
+  },
+  "interpretation_rules": {
+    "pass_per_material": "At least one valid wetting-direction finite-time bracket exists in the frozen profile/forcing/time grid.",
+    "fail_per_material": "No finite-time fixture is admitted from this grid; do not add profiles or times inside R2B after seeing results.",
+    "qualification_effect": "None. R2B only selects a physical fixture for a later separately precommitted event-localization qualification."
+  },
+  "architecture_checks": {
+    "7_transactional_timesteps": "All trajectory samples are immutable trials from the same committed state.",
+    "9_generic_time": "Sample times are generic offsets, not calendar boundaries.",
+    "13_mass_conservation_absolute": "Only states within the existing 1e-9 cm mass gate can bracket an event.",
+    "23_physics_solver_policy_separated": "Dry initial profiles and supply are physical fixtures; the finite sample grid is qualification-only policy.",
+    "24_predictable_runtime": "The characterization grid is finite and bounded; it is not proposed as production event search.",
+    "25_reference_mode": "Fixture selection is established by full-accuracy reference physics only.",
+    "29_no_silent_dependencies": "Profiles, bottom boundary, face lengths, times and forcing construction are explicit."
+  },
+  "hard_nonclaims": [
+    "No finite-time event localization is qualified by R2B.",
+    "No candidate event locator or production search policy is tested.",
+    "No claim that either dry profile is a universal production initialization.",
+    "No B12/O13 finite-time event is sought; their R1/no-event separation remains authoritative.",
+    "No top-node positive head, depletion switch, runoff, tangent, runtime, MultiSWAP or MODFLOW admission."
+  ],
+  "positive_exit": "CHARACTERIZED_DRY_PROFILE_FINITE_TIME_PONDING_FIXTURES_READY_FOR_R2_QUALIFICATION_PRECOMMIT",
+  "negative_exit": "DRY_PROFILE_FINITE_TIME_PONDING_FIXTURE_NOT_ESTABLISHED_FURTHER_EVENT_RESEARCH_REQUIRED"
+}
