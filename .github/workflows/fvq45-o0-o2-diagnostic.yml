@@ -1,0 +1,20 @@
+name: F-VQ45 O0 O2 diagnostic
+
+on:
+  push:
+    branches:
+      - qualification/f-vq45-fpm08b-spatial-distribution
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Diagnose candidate O0/O2 output differences
+        run: python3 tests/fvq/diagnose_fvq45_o0_o2.py
