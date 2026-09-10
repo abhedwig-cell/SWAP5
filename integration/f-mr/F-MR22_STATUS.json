@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR22",
+  "title": "Canonical MultiSWAP Result Publication Remediation",
+  "branch": "work/f-mr22-canonical-result-publication",
+  "base_candidate": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+  "phase": "CANDIDATE_READY_FOR_INDEPENDENT_REQUALIFICATION",
+  "status": "REMEDIATION_IMPLEMENTED_TESTED_NOT_INDEPENDENTLY_QUALIFIED",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": false,
+  "production_source_change": "src/runtime/mod_fmr_parallel_worker_pool.f90 only",
+  "authoritative_workflow_run": 34450391155,
+  "authoritative_workflow_job": 102784559630,
+  "observations": {
+    "fmr20_positive_matrix_o0": "PASS",
+    "fmr20_positive_matrix_o2": "PASS",
+    "o0_o2_identity": "PASS",
+    "canonical_publication_sentinel": "PASS",
+    "first_published_column_id": 926537,
+    "last_published_column_id": 926759,
+    "reduction_occurs_before_publication_reorder": true,
+    "internal_execution_indexing_preserved": true
+  },
+  "scope": "worker-pool public result and diagnostic materialization only; no physics, solver, state-handle, aggregation, mass, batching or worker-assignment changes",
+  "handoff": "Create a fresh independent F-MQ26 requalification bound to the final F-MR22 head and rerun the complete independent matrix including reversed-input publication order.",
+  "closed": false
+}
