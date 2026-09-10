@@ -1,0 +1,20 @@
+name: F-PM08B drainage spatial distribution
+
+on:
+  push:
+    branches:
+      - work/f-pm08b-drainage-spatial-distribution
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-distributor:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08B source-bound distribution gate
+        run: bash tests/fpm/run_fpm08b_drainage_spatial_distribution_gate.sh
