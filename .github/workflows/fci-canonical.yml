@@ -87,12 +87,33 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI24_FROZEN_REFERENCE_ET_AUTHORITY=PASS'
 
+  frozen-fci27-reference-et-runtime-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact admitted F-CI27 ET runtime postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
+          bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
+          bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
+          test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI27_FROZEN_REFERENCE_ET_RUNTIME_AUTHORITY=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
       - frozen-fci19-candidate-preservation
       - frozen-fci19-source-lineage
       - frozen-fci24-reference-et-authority
+      - frozen-fci27-reference-et-runtime-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -100,18 +121,16 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI27 forward-lineage authority gate
-        run: python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-      - name: Reexecute admitted F-MR23 runtime binding owner gate
-        run: bash tests/fmr/run_fmr23_reference_et_runtime_binding_gate.sh
-      - name: Reexecute admitted F-VQ36 independent runtime qualification
-        run: bash tests/fvq/run_fvq36_fmr23_reference_et_runtime_qualification.sh
+      - name: Current F-CI28 forward-lineage restart authority gate
+        run: python tools/fci/fci28_restart_canonical_gate.py --mode canonical
+      - name: Reexecute independent F-CI28 restart and F-CI27 preservation qualification
+        run: bash tests/fci/run_fci28_restart_current_canonical_admission.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          python tools/fci/fci27_reference_et_runtime_canonical_gate.py --mode canonical
-          test "$(git rev-parse HEAD:src)" = 4121255813971a360949efc3fb17ab6c8f87a799
+          python tools/fci/fci28_restart_canonical_gate.py --mode canonical
+          test "$(git rev-parse HEAD:src)" = 3fe4ccff367479e54ab5db106e5faf8b480d8ec0
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI27_CANONICAL_REFERENCE_ET_RUNTIME_ADMISSION=PASS'
+          echo 'FCI28_CANONICAL_RESTRICTED_RESTART_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
