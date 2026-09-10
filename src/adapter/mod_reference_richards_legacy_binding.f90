@@ -113,11 +113,12 @@ contains
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
     type(reference_richards_state_binding_t) :: state_binding
-    integer :: n, tangent_ierror
+    integer :: n, tangent_ierror, interface_sensitivity_backsolves
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
     result%unrounded_mass_balance_residual = ieee_value(0.0_real64, ieee_quiet_nan)
+    interface_sensitivity_backsolves = 0
     call validate_legacy_request(request, ok, result%diagnostics%route)
     if (.not. ok) then
        result%status = SW_SOLVE_FAILED
@@ -184,8 +185,7 @@ contains
            size(ws%richards%tridag_gamma) >= 2*n) then
           ws%richards%band_rhs(1:n) = 0.0_real64
           ws%richards%band_rhs(n) = 1.0_real64
-          ws%legacy_worker%diagnostics%interface_sensitivity_backsolves = &
-               ws%legacy_worker%diagnostics%interface_sensitivity_backsolves + 1
+          interface_sensitivity_backsolves = interface_sensitivity_backsolves + 1
           call reference_tridag_backsolve(n, ws%richards%dfdh_upper, ws%richards%band_rhs, &
                ws%richards%tridag_gamma(1:n), ws%richards%tridag_gamma(n+1:2*n), &
                ws%richards%delta_head, tangent_ierror)
@@ -210,8 +210,7 @@ contains
        result%diagnostics%backtracking_attempts = ws%legacy_worker%diagnostics%backtracking_attempts
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
-       result%diagnostics%interface_sensitivity_backsolves = &
-            ws%legacy_worker%diagnostics%interface_sensitivity_backsolves
+       result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 
