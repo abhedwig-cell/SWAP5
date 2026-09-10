@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ43",
+  "title": "Independent Multi-Level Drainage Exchange Aggregation Qualification Evidence",
+  "branch": "qualification/f-vq43-fpm08c4-multilevel-aggregation",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "work_unit": "F-PM08C4",
+    "closeout": "61dc2ee0e5e2344a855e429e8e3d49a04ffe007e",
+    "production_path": "src/process/mod_drainage_multilevel_aggregation.f90",
+    "production_blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "aggregation_oracle": "independently reconstructed sequential qdrain(level) reduction in physical level order"
+  },
+  "qualification_candidate_head": "70df1afbfcaf6809101034257e6b4c5c4a66fe73",
+  "workflow": {
+    "run_id": 34463859341,
+    "job_id": 102827728459,
+    "conclusion": "success",
+    "summary_sha256": "37909dadb1b480863fdc2a55be5cb6ac9a4713d7c57dc9d4becbfa7f1f9891d3"
+  },
+  "independence": {
+    "candidate_branch_inherited": false,
+    "candidate_authoring_tests_used_as_oracle": false,
+    "candidate_evidence_used_as_oracle": false,
+    "candidate_invariant_audit_used_as_oracle": false,
+    "candidate_source_loaded_by_exact_closeout_and_blob": true,
+    "legacy_reduction_reconstructed_independently": true,
+    "production_or_reference_delta_on_qualification_branch": false
+  },
+  "results": {
+    "legacy_equivalence_cases": 500,
+    "legacy_constituent_values": 6500,
+    "legacy_level_count_min": 1,
+    "legacy_level_count_max": 25,
+    "multiswap_legacy_capacity_covered": 5,
+    "standalone_legacy_capacity_covered": 25,
+    "mixed_sign_cases": 443,
+    "max_flux_abs_error": 0.0,
+    "max_derivative_abs_error": 0.0,
+    "o0_o2_candidate_output_identity": true,
+    "scalability_extension_level_count": 64,
+    "scalability_extension_is_not_legacy_equivalence": true
+  },
+  "qualified_claims": {
+    "legacy_level_order_flux_aggregation_equivalence": true,
+    "one_level_identity": true,
+    "all_defined_sensitivity_sequential_sum": true,
+    "unavailable_tangent_preserves_valid_flux": true,
+    "nonfinite_tangent_preserves_valid_flux_and_degrades_sensitivity": true,
+    "branch_and_singularity_metadata_composed_conservatively": true,
+    "invalid_flux_fails_closed": true,
+    "level_identity_mismatch_fails_closed": true,
+    "empty_collection_fails_closed": true,
+    "aggregate_derivative_overflow_preserves_valid_flux": true,
+    "flux_sum_overflow_fails_closed": true,
+    "dynamic_level_count_above_legacy_capacity_supported": true,
+    "aggregate_total_is_derived_mass_view": true
+  },
+  "scope_limitations": {
+    "negative_constituent_arithmetic_qualifies_negative_response_physics": false,
+    "response_law_dispatch_qualified": false,
+    "DIVDRA_qualified": false,
+    "surface_water_storage_control_qualified": false,
+    "runtime_mass_ledger_qualified": false,
+    "rollback_commit_composition_qualified": false,
+    "solver_Jacobian_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
+}
