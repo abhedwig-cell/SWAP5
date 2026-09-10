@@ -1,11 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D3",
   "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract",
   "branch": "work/f-pm08d3-secondary-storage-availability-mass-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_READINESS_QUALIFIED_WITH_EXPLICIT_MASS_SOURCE_HOLDS",
+  "decision": "QUALIFIED_SECONDARY_STORAGE_AVAILABILITY_AND_EXPLICIT_MASS_CONTRACT_READINESS_WITH_NO_MASS_CONCESSION",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -53,10 +54,26 @@
     "pre_solver_envelope_is_not_final_acceptance": true,
     "runtime_books_accepted_mass_once": true
   },
+  "decisive_evidence": {
+    "precloseout_head": "84d03d5e1609531ae797e052dfeacdb160fcf78f",
+    "run_id": 34524625054,
+    "job_id": 103030373634,
+    "conclusion": "success",
+    "active_limiter_cases": 2188,
+    "inactive_limiter_cases": 9812,
+    "mixed_sign_active_cases": 1506,
+    "accepted_mass_cases": 5000,
+    "dry_floor_exact_cases": 2000,
+    "max_limiter_closure_abs_cm": 2.6645352591003757e-15,
+    "max_accepted_mass_residual_abs_cm": 1.1102230246251565e-15,
+    "legacy_dry_floor_gap_cm": 0.098999999999999977,
+    "all_30_architecture_invariants_pass": true
+  },
   "deliverables": {
     "contract": "integration/f-pm/F-PM08D3_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D3_MASS_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D3_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D3_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d3_availability_mass.py",
     "gate": "tools/fpm/fpm08d3_availability_mass_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d3-availability-mass-readiness.yml"
@@ -72,13 +89,23 @@
     "test_oracle_persisted": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "production_physics_qualified": false,
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "execute the fully persisted D3 readiness gate under CI; fail closed on any provenance, limiter algebra, explicit mass closure, capacity or architecture inconsistency"
+  "downstream_handoff": {
+    "fixed_weir_balance_owner": "F-PM08D4",
+    "automatic_control_owner": "F-PM08D5",
+    "transactional_final_acceptance_and_mass_ledger_owner": "F-PM08D6",
+    "actual_supply_must_be_first_class": true,
+    "raw_capacity_is_not_mass": true,
+    "no_mass_residual_tolerance_prequalified": true,
+    "mixed_sign_limiter_active_route_remains_held": true
+  },
+  "next_required_step": "verify the same readiness gate again on this exact closeout head and confirm the final base-to-closeout delta remains free of src/ and reference/ changes; then F-PM08D4 may proceed independently from current canonical authority"
 }
