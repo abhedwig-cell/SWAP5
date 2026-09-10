@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A7_R1_QUALIFICATION_INSTRUMENTATION_REPAIR",
+  "status": "PREEXECUTION_HARNESS_REPAIR_ONLY",
+  "production_implementation": false,
+  "upstream_gate": "E3H_A7_O14_RESTRICTED_ROSS_CANDIDATE_POST_CAP_RUNOFF_CONTINUATION",
+  "upstream_precommit": "F-ROSS01_GATE_E3H_A7_O14_RESTRICTED_ROSS_CANDIDATE_POST_CAP_RUNOFF_CONTINUATION_PRECOMMIT.json",
+  "original_run": 34472889054,
+  "problem": "The first A7 harness called the independent high-accuracy surface reference from candidate_flux_state, and candidate_flux_state was also used inside every candidate nonlinear residual evaluation. The reference value did not affect the residual or candidate flux, but contaminated qualification wall-clock cost and caused unnecessary expensive oracle calls.",
+  "repair": "Use the identical candidate surface/internal flux algebra inside the nonlinear residual without any high-accuracy diagnostic oracle. After the nonlinear candidate trial has converged, call the high-accuracy surface reference once at the accepted candidate state to compute the frozen surface-q qualification metric.",
+  "scientific_identity_unchanged": {
+    "cap_states": true,
+    "surface_head_cm": 1.0,
+    "surface_storage_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat": 12.0,
+    "time_partition": "40 x 0.025 day",
+    "candidate_flux_formulas": true,
+    "reference_trajectory": true,
+    "mass_tolerance_cm": 1e-9,
+    "head_difference_tolerance_cm": 0.25,
+    "runoff_difference_tolerance_cm": 0.001,
+    "bottom_difference_tolerance_cm": 0.001,
+    "storage_difference_tolerance_cm": 0.001,
+    "final_attractor_tolerance_cm": 0.005,
+    "surface_q_error_over_ksat_tolerance": 0.0005,
+    "surface_candidate_cost_caps": "530 constitutive K evaluations and 66 root residual evaluations"
+  },
+  "why_numerical_solution_is_unchanged": "The removed high-accuracy call was diagnostic-only. Its return values were never used in the candidate residual, candidate qtop, internal fluxes, Jacobian approximation or nonlinear acceptance state. Moving it after convergence changes instrumentation timing only.",
+  "decision_rule": "The repaired runner must satisfy the original frozen A7 precommit. No threshold or fixture may change.",
+  "hard_guards": [
+    "Do not use this repair to alter any scientific acceptance threshold.",
+    "Do not suppress a candidate/reference mismatch or solver failure.",
+    "Do not count qualification-only oracle time as production RossFast candidate cost.",
+    "Preserve the original A7 run and its eventual conclusion as provenance."
+  ],
+  "architecture_checks": {
+    "5_worker_scratch": "Qualification diagnostics remain worker-local.",
+    "15_coupling_cost": "No hidden reference calculation is placed in the normal candidate residual path.",
+    "23_policy_separation": "Reference diagnostics are separated from candidate numerical physics.",
+    "24_predictable_runtime": "Candidate residual cost is again bounded by candidate face operations rather than qualification oracle latency.",
+    "25_reference_mode": "High-accuracy reference remains available outside the candidate path."
+  }
+}
