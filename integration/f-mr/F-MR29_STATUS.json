@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR29",
+  "title": "Actual-Transpiration Accounting & Mass-Attribution Readiness",
+  "branch": "work/f-mr29-actual-transpiration-mass-accounting-readiness",
+  "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "status": "CONTRACT_FROZEN_PENDING_SOURCE_BOUND_GATE",
+  "decision": "NO_NEW_MASS_BOOKING_REQUIRED; POSTCOMMIT_SOLVER_FORCING_ATTRIBUTION_IS_THE_SMALLEST_SAFE_IMPLEMENTATION",
+  "state": {
+    "source_authority_persisted": true,
+    "mass_flow_traced": true,
+    "duplicate_booking_hazard_resolved": true,
+    "accepted_interval_semantics_resolved": true,
+    "rollback_retry_semantics_resolved": true,
+    "implementation_contract_persisted": true,
+    "production_source_modified": false,
+    "readiness_gate_persisted": true,
+    "readiness_gate_tested": false,
+    "closed": false
+  },
+  "qualified_architecture_hypothesis": {
+    "physical_root_sink_owner": "fmr_b110_physical_forcing_t%root_extraction_sink(:)",
+    "mass_ledger_owner": "existing transaction mass_out booking in account_external_fluxes",
+    "actual_transpiration_publication": "derived postcommit attribution only",
+    "derived_amount": "sum(exact candidate root_extraction_sink(:)) * committed receipt interval duration",
+    "trial_accumulator": "not required in frozen serialized scope",
+    "generic_transaction_core_change": "not required",
+    "persistent_column_state_change": "not required"
+  },
+  "evidence": [
+    "integration/f-mr/F-MR29_SOURCE_LOCK.json",
+    "integration/f-mr/F-MR29_MASS_FLOW_TRACE.md",
+    "integration/f-mr/F-MR29_ACCEPTED_ATTRIBUTION_CONTRACT.json",
+    "tests/fmr/run_fmr29_actual_transpiration_readiness_gate.sh"
+  ],
+  "invariant_disposition": {
+    "3_explicit_data_separation": "PASS_BY_DESIGN",
+    "4_compact_persistent_state": "PASS_NO_NEW_STATE",
+    "5_scratch_per_worker": "PASS_NO_TRIAL_ACCUMULATOR",
+    "7_transactional_timesteps": "PASS_PUBLICATION_AFTER_COMMIT_ONLY",
+    "8_cheap_recomputation": "PASS_NO_COMMITTED_ATTRIBUTION_MUTATION_BEFORE_COMMIT",
+    "9_generic_time": "PASS_USES_RECEIPT_T0_T1",
+    "13_mass_conservation": "PASS_NO_DUPLICATE_BOOKING",
+    "16_multiswap": "NO_NEW_PER_COLUMN_STATE; PARALLEL_ROOT_EXTRACTION_REMAINS_OUT_OF_SCOPE",
+    "23_physics_solver_policy_separation": "PASS_ATTRIBUTION_ONLY",
+    "26_diagnostics_runtime": "NEXT_IMPLEMENTATION_RETURNS_TYPED_ATTRIBUTION_RECEIPT",
+    "29_no_silent_dependencies": "PASS_NO_CALENDAR_OR_FILE_ASSUMPTION",
+    "30_architecture_change_review": "PASS_READINESS_REVIEWED_EXPLICITLY"
+  },
+  "recommended_next_workunit": {
+    "id": "F-MR30",
+    "title": "Restricted Accepted Root-Uptake Attribution Receipt",
+    "production_scope": "small postcommit runtime helper that derives accepted actual transpiration from exact solver forcing and successful generic accepted-commit receipt",
+    "required_independent_followup": "independent qualification before any F-CI32 canonical admission"
+  },
+  "nonclaims": [
+    "parallel root-extraction execution",
+    "dynamic root-sink reevaluation inside an outer interval",
+    "SWKIMPL=1 root-sink recomputation",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "accepted-window crop lifecycle integration",
+    "general flux attribution framework"
+  ]
+}
