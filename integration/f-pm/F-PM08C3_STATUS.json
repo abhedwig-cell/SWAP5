@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C3",
+  "title": "Empirical Interflow Response and Singular-Tangent Policy",
+  "branch": "work/f-pm08c3-empirical-interflow-response",
+  "status": "IN_PROGRESS_SOURCE_BOUND_STRUCTURAL_CANDIDATE",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "state": {
+    "contract_persisted": true,
+    "production_implemented": false,
+    "tested": false,
+    "structurally_qualified": false,
+    "scientifically_qualified": false,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "architecture": {
+    "kernel_io_separated": true,
+    "parameter_control_state_separated": true,
+    "persistent_process_state": false,
+    "solver_jacobian_owned_by_process": false,
+    "mass_conservation_relaxed": false,
+    "generic_time_contract_preserved": true,
+    "bounded_cost_policy_owned_outside_physics": true
+  },
+  "next_required_step": "implement the single stateless interflow response module and source-bound qualification gate"
+}
