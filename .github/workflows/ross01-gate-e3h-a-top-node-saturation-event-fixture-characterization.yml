@@ -1,0 +1,77 @@
+name: F-ROSS01 Gate E3H-A Top Node Saturation Event Fixture Characterization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a_top_node_saturation_event_fixture_characterization.py'
+      - '.github/workflows/ross01-gate-e3h-a-top-node-saturation-event-fixture-characterization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a_top_node_saturation_event_fixture_characterization.py
+      - name: Execute frozen fixture characterization
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a_top_node_saturation_event_fixture_characterization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3H_A_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen characterization semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3h-a-{m}/F-ROSS01_GATE_E3H_A_{m}_RESULT.json'
+          r=json.load(open(p))
+          mr=r['material_result']
+          assert r['gate']=='E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is False
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          sf=mr['selected_fixture']
+          assert sf is not None
+          assert sf['supply_fraction_ksat'] in (1.5,2.0,3.0,5.0,8.0,12.0)
+          assert sf['candidate_event_heads_cm'][0] == 0.0
+          assert sf['reference_event_heads_cm'][0] == 0.0
+          assert sf['candidate_event_heads_cm'][1] <= -1.0
+          assert sf['reference_event_heads_cm'][1] <= -1.0
+          assert 0.0 < sf['candidate_surface_storage_cm'] < 1.0
+          assert 0.0 < sf['reference_surface_storage_cm'] < 1.0
+          assert sf['candidate_max_abs_balance_residual_cm'] <= 1e-9
+          assert sf['reference_max_abs_balance_residual_cm'] <= 1e-9
+          assert sf['event_time_difference_day'] <= 2.5e-4
+          assert sf['max_head_difference_cm'] <= 0.25
+          assert sf['surface_storage_difference_cm'] <= 1e-3
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a-${{ matrix.material }}
+          path: ross01-gate-e3h-a-${{ matrix.material }}/
