@@ -1,0 +1,23 @@
+name: F-CI34 F-MR31 root-attribution canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci34-fmr31-root-attribution-canonical-admission
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-canonical-source:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI34 exact-source admission gate
+        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
