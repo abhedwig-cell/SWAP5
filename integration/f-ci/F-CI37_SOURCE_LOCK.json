@@ -1,0 +1,12 @@
+{
+  "schema":"swap5.fci37_source_lock.v1",
+  "work_unit":"F-CI37",
+  "title":"F-MR35 Restricted Parallel Root-Uptake Current-Canonical Source Admission",
+  "branch":"qualification/f-ci37-fmr35-parallel-root-uptake-canonical-admission",
+  "canonical_base":{"head":"8fa79a70a9faccaf8b63826df607a685eb75b046","tree":"e172e973ac7cf3e5e2932eb896be25cba0246646","authority":"F-CI36 closed canonical active DIVDRA runtime admission"},
+  "owner_authority":{"work_unit":"F-MR35","owner_evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_blob":"c78c13997642617376b8d118122c86c60ca77189"},
+  "independent_authority":{"work_unit":"F-MQ30","closeout":"48ee2841d783ee023c29391a7ea1e5d7ee0d20e0","initial_authoritative_run":34528662051,"initial_authoritative_job":103043714223,"closeout_exact_head_run":34530999773,"decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE"},
+  "production_overlay":{"path":"src/runtime/mod_fmr_parallel_root_uptake_pool.f90","blob":"c78c13997642617376b8d118122c86c60ca77189","base_status":"absent","allowed_src_delta_count":1},
+  "preservation":{"all_other_src_must_match_base":true,"reference_delta_permitted":false,"kernel_delta_permitted":false,"solver_delta_permitted":false,"existing_parallel_v1_source_must_remain_byte_identical":true,"fci36_divdra_source_must_remain_unchanged":true},
+  "admission_rule":"Pre-admission exact-head replay, non-forced canonical fast-forward, post-promotion dedicated replay, and broad canonical qualification must all pass. Do not promote the F-MQ30 branch wholesale."
+}
