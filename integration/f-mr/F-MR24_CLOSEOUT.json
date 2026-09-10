@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR24",
+  "title": "Canonical Restart Runtime Recomposition Closeout",
+  "branch": "work/f-mr24-canonical-restart-recomposition",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "production_composition_commit": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+  "owner_tested_head": "75cb0521580b13598db848be3daa760ab004d40f",
+  "owner_workflow": {
+    "run": 34454622796,
+    "job": 102798023003,
+    "conclusion": "success"
+  },
+  "independent_authority": {
+    "workunit": "F-CI26",
+    "branch": "qualification/f-ci26-fmr21-restart-canonical-requalification",
+    "status_head_observed_before_owner_closeout": "bc64d525a02b372f44e9de13bdb543d7938877bc",
+    "workflow_run": 34453605329,
+    "workflow_job": 102794739950,
+    "conclusion": "success",
+    "decision_at_observation": "QUALIFIED_CURRENT_CANONICAL_RESTART_COMPOSITION_PENDING_OWNER_CLOSEOUT"
+  },
+  "closeout_findings": [
+    "The F-MR21 restart runtime was recomposed on exact F-CI24 current canonical source by adding only its two qualified production blobs.",
+    "No existing canonical production source was replaced or reverted.",
+    "The later accepted-commit-receipt dependency is retained and included in current-canonical compile qualification.",
+    "Owner O0/O2 restart regression is green and matches the frozen F-MQ27 attack semantics.",
+    "Independent F-CI26 current-canonical requalification is green for the exact same production blobs.",
+    "The two earlier owner workflow failures were harness-only and did not expose a production defect."
+  ],
+  "qualified_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart on F-CI24 source",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem serialization-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No general SWAP5 release qualification.",
+    "F-MR24 does not itself advance the canonical ref."
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "owner_gate_passed": true,
+    "independently_requalified": true,
+    "qualified_for_canonical_admission_decision": true,
+    "canonical_admitted": false,
+    "closed": true
+  },
+  "next_action": "F-CI26 may remove its owner-closeout hold after verifying this closeout commit and may then perform a fresh canonical-head check and the repository-governed canonical admission gate. F-MR22 remains a separate receipt-aware parallel recomposition problem.",
+  "decision": "QUALIFIED_CLOSED_OWNER_CANONICAL_RESTART_RECOMPOSITION_READY_FOR_F_CI26_ADMISSION"
+}

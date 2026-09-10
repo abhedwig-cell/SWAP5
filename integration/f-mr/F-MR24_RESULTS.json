@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR24",
+  "title": "Canonical Restart Runtime Recomposition Results",
+  "branch": "work/f-mr24-canonical-restart-recomposition",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "production_composition_commit": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+  "production_delta": [
+    "src/runtime/mod_fmr_committed_restart.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90"
+  ],
+  "production_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "canonical_dependency_locks": {
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/kernel/mod_kernel_committed_persistence.f90": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b"
+  },
+  "owner_gate": {
+    "tested_head": "75cb0521580b13598db848be3daa760ab004d40f",
+    "workflow_run": 34454622796,
+    "workflow_job": 102798023003,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_modes": ["O0", "O2"],
+    "gates": {
+      "exact_canonical_two_file_recomposition": "PASS",
+      "exact_F_MR21_production_blob_identity": "PASS",
+      "canonical_core_dependency_lock": "PASS",
+      "canonical_accepted_commit_receipt_dependency_lock": "PASS",
+      "exact_F_MQ27_test_provenance": "PASS",
+      "O0": "PASS",
+      "O2": "PASS",
+      "O0_O2_output_identity": "PASS",
+      "batch_matrix_1_2_7_8_17_31_32": "PASS",
+      "generic_time_window": "PASS",
+      "exact_lineage_revision_time_continuation": "PASS",
+      "exact_interval_mass_continuation": "PASS",
+      "continuous_vs_restarted_endpoint_identity": "PASS",
+      "deterministic_replay": "PASS",
+      "malformed_concrete_state_rejected": "PASS",
+      "registered_wrong_family_rejected": "PASS",
+      "late_record_whole_registry_atomicity": "PASS",
+      "late_provenance_whole_registry_atomicity": "PASS",
+      "valid_production_restore": "PASS"
+    }
+  },
+  "earlier_owner_runs": [
+    {
+      "run": 34454188507,
+      "conclusion": "failure",
+      "classification": "HARNESS_ORCHESTRATION_ONLY",
+      "cause": "temporary copied F-MQ27 runner was outside the repository and resolved its relative ROOT incorrectly",
+      "production_defect_observed": false
+    },
+    {
+      "run": 34454418154,
+      "conclusion": "failure",
+      "classification": "HARNESS_DEPENDENCY_LIST_STALE",
+      "cause": "historical F-MQ27 compile list predated the canonical accepted-commit-receipt module",
+      "production_defect_observed": false
+    }
+  ],
+  "independent_requalification": {
+    "workunit": "F-CI26",
+    "branch": "qualification/f-ci26-fmr21-restart-canonical-requalification",
+    "status_head_observed": "bc64d525a02b372f44e9de13bdb543d7938877bc",
+    "tested_head": "32296426e3b52c4c59b176cb6b15f5e7cca39ab5",
+    "workflow_run": 34453605329,
+    "workflow_job": 102794739950,
+    "conclusion": "success",
+    "source_equivalence": "EXACT_FMR24_PRODUCTION_BLOB_IDENTITY",
+    "accepted_commit_receipt_api_preserved": true
+  },
+  "qualified_owner_scope": "restricted serialized real-physics MultiSWAP committed-boundary process restart recomposed against F-CI24 current canonical source",
+  "nonclaims": [
+    "No parallel restart qualification.",
+    "No filesystem serialization-format qualification.",
+    "No unregistered backend or state-family restart admission.",
+    "No wider optional-state restart qualification.",
+    "No canonical admission is claimed by F-MR24 owner evidence alone."
+  ],
+  "decision": "OWNER_RECOMPOSITION_TESTED_READY_FOR_F_CI26_CANONICAL_ADMISSION_DECISION"
+}
