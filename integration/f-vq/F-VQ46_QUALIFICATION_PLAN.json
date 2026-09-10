@@ -13,8 +13,8 @@
     "potential_transpiration_cm_per_day": [0.0, 0.03, 0.17, 0.61],
     "incoming_stale_ptra": [-2.0, 0.0, 7.5],
     "root_geometries": [
-      "rooted_nodes=1,cumulative=[0,1,1,1]",
-      "rooted_nodes=2,cumulative=[0,0.35,1,1]",
+      "rooted_nodes=1,cumulative=[0,1]",
+      "rooted_nodes=2,cumulative=[0,0.35,1]",
       "rooted_nodes=3,cumulative=[0,0.10,0.55,1]",
       "rooted_nodes=3,cumulative=[0,0.60,0.85,1]"
     ],
@@ -26,6 +26,7 @@
     ],
     "active_cases": 192
   },
+  "review_correction_before_first_run": "Root-distribution vectors for rooted_nodes=1 and rooted_nodes=2 were corrected to the canonical rooted_nodes+1 size before any F-VQ46 workflow was run. This is a qualification-test design correction, not a production-source defect.",
   "additional_attacks": [
     "upstream ET diagnostics rejected before root execution",
     "malformed cumulative-root geometry rejected before root execution",
