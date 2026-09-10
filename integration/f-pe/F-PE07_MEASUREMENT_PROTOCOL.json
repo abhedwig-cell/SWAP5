@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Runtime & Worker-Memory Scaling Characterization",
+  "status": "PROTOCOL_PERSISTED_MEASUREMENT_PENDING",
+  "base": {
+    "work_unit": "F-MR20",
+    "branch": "work/f-mr20-concurrency-isolation",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "purpose": [
+    "characterize observed runtime of the qualified restricted parallel-v1 path relative to the serialized reference on one GitHub-hosted runner",
+    "characterize source-visible heavy worker-owned memory scaling with worker count",
+    "provide evidence for later runtime design without defining or qualifying a performance policy"
+  ],
+  "frozen_scientific_scope": {
+    "logical_columns": 32,
+    "batch_size": 9,
+    "worker_counts": [1, 2, 4],
+    "workers_1_semantics": "qualified serialized-reference delegation",
+    "workers_2_4_semantics": "qualified F-MR20 restricted parallel-v1 execution",
+    "top_boundary": "stateless fixed-flux production provider",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false,
+    "hard_mass_gate": 1e-12
+  },
+  "timing_protocol": {
+    "clock": "Fortran system_clock inside one process",
+    "timed_region": "only repeated complete 32-column runtime calls on preconstructed immutable fixtures; committed-state registries are freshly reconstructed outside the timed call for each repetition",
+    "excluded": [
+      "process startup",
+      "compiler startup",
+      "fixture definition",
+      "source checkout",
+      "result serialization"
+    ],
+    "optimization": "-O2 only for primary performance characterization; O0/O2 scientific identity is already a qualification property from F-MR20",
+    "warmup_blocks": 2,
+    "measured_blocks": 12,
+    "repetitions_per_arm_per_block": 8,
+    "balanced_arm_orders": ["1-2-4", "4-2-1", "2-1-4", "4-1-2", "2-4-1", "1-4-2"],
+    "primary_observation_unit": "paired block median runtime per complete 32-column call",
+    "reported_metrics": [
+      "median microseconds per 32-column call by worker count",
+      "p95 microseconds per 32-column call by worker count",
+      "median observed ratio T1/Tw",
+      "p05 and p95 observed ratio T1/Tw",
+      "median microseconds per column",
+      "observed max_simultaneous_real_physical_solves"
+    ],
+    "raw_evidence_required": true,
+    "negative_values_or_slowdowns": "retain; never clip or reinterpret as speedup"
+  },
+  "scientific_precondition": {
+    "before_timing": [
+      "all 32 columns committed",
+      "hard mass gate passes",
+      "worker 2 and worker 4 scientific results/state/mass bit-identical to worker 1 for the timed fixture",
+      "true overlap observed for worker counts 2 and 4"
+    ],
+    "failure_policy": "if any scientific precondition fails, do not publish timing characterization"
+  },
+  "memory_protocol": {
+    "method": "source-bound payload characterization, not RSS measurement",
+    "persistent_per_column": "no new heavy solver/workspace state relative to F-MR20 qualification",
+    "worker_owned": [
+      "fmr_serialized_reference_backend_t",
+      "kernel_executor_t",
+      "reference Richards workspace reachable through backend/model",
+      "A23BU worker execution context and solver scratch"
+    ],
+    "report": [
+      "which heavy objects scale with workers",
+      "which data scale with logical columns",
+      "which immutable objects remain shared",
+      "source-visible array payload formulas where exact extents can be established",
+      "allocator/descriptors/compiler temporaries explicitly excluded"
+    ]
+  },
+  "hard_nonclaims": [
+    "universal hardware-independent speedup",
+    "parallel efficiency guarantee",
+    "production throughput SLA",
+    "performance qualification for physics outside the exact F-MR20 V1 scope",
+    "worker counts other than 1, 2 and 4",
+    "8-worker scaling",
+    "performance-policy selection",
+    "bounded difficult-column fallback performance",
+    "RSS or total process-memory bound"
+  ],
+  "architecture_invariants_explicitly_checked": [1, 4, 5, 6, 13, 16, 23, 24, 25, 26, 27, 30],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "implement timing harness",
+      "run scientific precondition",
+      "run timing characterization",
+      "persist raw and summary timing evidence",
+      "persist source-bound worker-memory characterization",
+      "close characterization"
+    ]
+  }
+}
