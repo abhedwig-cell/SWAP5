@@ -67,11 +67,32 @@ jobs:
       - name: Replay frozen F-CI19 source lineage and reachability
         run: bash tests/fci/run_fci19_source_lineage_reachability_gate.sh
 
+  frozen-fci24-reference-et-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f49e17c6627717d5dea181808a122f2e35960739
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact F-CI24 canonical reference-ET admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
+          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
+          bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
+          test "$(git rev-parse HEAD:src)" = 3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI24_FROZEN_CANONICAL_REFERENCE_ET_ADMISSION=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
       - frozen-fci19-candidate-preservation
       - frozen-fci19-source-lineage
+      - frozen-fci24-reference-et-admission
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -79,18 +100,19 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI24 forward-lineage authority gate
-        run: python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
-      - name: Reexecute admitted F-PM06A structural candidate
-        run: bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
-      - name: Reexecute admitted F-VQ35 scientific qualification
-        run: bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
-      - name: Final exact postimage and authority recheck
+      - name: Reexecute current F-CI26 restart canonical qualification
+        run: bash tests/fci/run_fci26_restart_canonical_requalification.sh
+      - name: Reexecute preserved current reference-ET gates
         shell: bash
         run: |
           set -euo pipefail
-          python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
-          test "$(git rev-parse HEAD:src)" = 3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba
+          bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
+          bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
+      - name: Final exact F-CI26 postimage and authority recheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src)" = c52fb60f61091ee40897b30d0e257110d1ecacc5
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI24_CANONICAL_REFERENCE_ET_ADMISSION=PASS'
+          echo 'FCI26_CANONICAL_RESTART_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
