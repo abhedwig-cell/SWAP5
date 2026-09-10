@@ -1,0 +1,19 @@
+name: F-PM08D2 restricted extended-exchange readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d2-restricted-extended-drainage-exchange-readiness
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D2 readiness gate
+        run: python3 tools/fpm/fpm08d2_extended_exchange_readiness_gate.py
