@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ43",
+  "title": "Independent Multi-Level Drainage Exchange Aggregation Qualification",
+  "branch": "qualification/f-vq43-fpm08c4-multilevel-aggregation",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "work_unit": "F-PM08C4",
+    "closeout": "61dc2ee0e5e2344a855e429e8e3d49a04ffe007e",
+    "production_path": "src/process/mod_drainage_multilevel_aggregation.f90",
+    "production_blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "aggregation_semantics": "qdrtot initialized to zero and accumulated qdrain(level) sequentially for level=1..nrlevs",
+    "legacy_capacity_context": "MADR is a compile-time capacity, historically 5 for MultiSWAP and 25 standalone; it is not a physical law"
+  },
+  "independence": {
+    "candidate_branch_inherited": false,
+    "candidate_authoring_tests_as_oracle": false,
+    "candidate_evidence_as_oracle": false,
+    "candidate_invariant_audit_as_oracle": false,
+    "candidate_source_must_be_loaded_by_exact_closeout_and_blob": true,
+    "aggregation_oracle": "independent sequential level-order reduction"
+  },
+  "qualification_scope": {
+    "legacy_equivalence": "ordered total-flux aggregation for legacy-admitted level counts, with exact constituent values supplied to the aggregator",
+    "modern_sensitivity_composition": "sum dq/dgwl only when all constituent derivatives are defined and finite; otherwise preserve valid flux and mark derivative unavailable",
+    "branch_metadata": "conservative union/count of branch-boundary and singular-tangent metadata",
+    "scalability_extension": "dynamic counts above legacy MADR are architecture qualification only, not B1.10 equivalence",
+    "mass_semantics": "aggregate total is a derived view of constituent transfers and does not authorize double ledger booking"
+  },
+  "required_checks": [
+    "exact candidate closeout production blob",
+    "frozen drainage source identity from manifest",
+    "no src/reference changes on qualification branch",
+    "independent randomized legacy-range sequential summation for level counts 1..25, including 1..5 MultiSWAP range",
+    "one-level identity",
+    "mixed signed constituent arithmetic without qualifying the generating negative-side physics",
+    "all-defined derivative sequential summation",
+    "unavailable or nonfinite constituent tangent preserves valid flux and makes aggregate derivative unavailable",
+    "branch-boundary and singular-tangent metadata compose conservatively",
+    "invalid level ordering fails closed",
+    "dynamic level counts above 25 are supported as a scalability extension",
+    "O0/O2 candidate execution consistency"
+  ],
+  "holds": [
+    "No qualification of DRAMET=3 negative-side infiltration response physics.",
+    "No response-law dispatch qualification.",
+    "No DIVDRA/node-distribution qualification.",
+    "No runtime mass-ledger or rollback/commit qualification.",
+    "No surface-water storage/control qualification.",
+    "No solver Jacobian or fully implicit drainage qualification.",
+    "No canonical admission."
+  ],
+  "success_decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
+}
