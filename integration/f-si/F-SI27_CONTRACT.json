@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI27",
+  "title": "Explicit prescribed native qbot bottom-flux boundary admission",
+  "status": "CONTRACT_FROZEN_BEFORE_IMPLEMENTATION",
+  "branch": "work/f-si27-explicit-prescribed-qbot-boundary",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36"
+  },
+  "upstream": {
+    "F_SI13_decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+    "F_SI16_decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+    "F_ROSS01_J1E_blocker_commit": "b5d5c2ba612da12010513fd8ce6bfd9407c09644",
+    "reason": "F-ROSS01 J1E requires a real canonical prescribed-qbot control path before any response-tangent integration can be qualified."
+  },
+  "scope": {
+    "admit_bottom_mode": 2,
+    "meaning": "explicit prescribed regional/native SWAP lower-boundary flux qbot",
+    "request_field": "soil_water_solve_request_t%boundary%bottom_flux",
+    "units": "cm d-1",
+    "sign": "positive qbot enters the simulated soil profile through the lower boundary; negative qbot leaves the profile",
+    "reference_solver": "B1.10 reference Richards common solver path",
+    "tangent_computation": false,
+    "transaction_result_plumbing": false,
+    "modflow_coupling_admission": false
+  },
+  "implementation_constraint": {
+    "minimum_change": "admit the already explicit request bottom_flux into the existing SWBOTB=2 HeadCalc residual path only if exact legacy identity and isolation can be proved",
+    "do_not_change_physics": true,
+    "do_not_change_numerical_policy": true,
+    "do_not_change_transaction_semantics": true,
+    "do_not_add_persistent_column_state": true,
+    "do_not_read_legacy_global_qbot_after_explicit_request_materialization": true
+  },
+  "qualification_gates": [
+    "source characterization proves the exact B1.10 SWBOTB=2 residual and native qbot sign convention",
+    "explicit request bottom_flux is authoritative after request construction",
+    "poisoning legacy global qbot after request construction cannot affect the common solver result",
+    "multiple positive, zero and negative prescribed qbot values are exercised",
+    "candidate pressure head and water content match an independent exact B1.10 oracle within the predeclared comparison policy",
+    "authoritative qbot output equals the prescribed request value for accepted SWBOTB=2 solves",
+    "O0 and O2 results satisfy the existing reference reproducibility requirement",
+    "serialized worker isolation is demonstrated for representative 1, 2, 4 and 8-column orderings",
+    "ABA replay, scratch poisoning and request immutability pass",
+    "unrounded focused equation residual and whole-step mass accounting remain valid",
+    "unsupported bottom modes continue to fail closed",
+    "F-SI13 and F-SI16 pinned regression coverage remains green"
+  ],
+  "holds": [
+    "interface response tangent remains NOT_IMPLEMENTED_BY_F_SI27",
+    "reusable linear factorization remains NOT_IMPLEMENTED_BY_F_SI27",
+    "accepted sensitivity transaction/canonical/kernel result transport remains NOT_IMPLEMENTED_BY_F_SI27",
+    "groundwater coupling remains NOT_ADMITTED",
+    "active macropores remain outside this workunit",
+    "SWKIMPL=1 remains outside this workunit unless already independently admitted by current source authority"
+  ],
+  "exit_decisions": {
+    "pass": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
+    "blocked": "BLOCKED_EXPLICIT_PRESCRIBED_QBOT_REQUIRES_ADDITIONAL_SOURCE_REMEDIATION",
+    "fail": "REJECTED_EXPLICIT_PRESCRIBED_QBOT_BOUNDARY_ADMISSION"
+  },
+  "relevant_invariants": [1, 2, 3, 4, 5, 7, 8, 12, 13, 14, 16, 20, 22, 23, 25, 26, 27, 29, 30]
+}
