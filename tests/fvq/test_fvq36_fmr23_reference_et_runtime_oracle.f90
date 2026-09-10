@@ -47,7 +47,7 @@ contains
     real(real64), parameter :: span_lengths(3) = [0.5_real64, 1.0_real64, 2.75_real64]
     real(real64), parameter :: left_fraction(4) = [0.0_real64, 0.1_real64, 0.2_real64, 0.9_real64]
     real(real64), parameter :: right_fraction(4) = [1.0_real64, 0.4_real64, 0.8_real64, 1.0_real64]
-    integer :: ie, iv, ip, ic, ico2, is, il, iroute
+    integer :: ie, iv, ip, ic, ico2, is, il, iemerge, itime
     logical :: emerged
     type(canonical_interval_t) :: interval
     type(fmr_reference_et_forcing_span_t) :: span
@@ -68,8 +68,8 @@ contains
           do iv = 1, size(cover_values)
             do ip = 1, size(pond_values)
               parameters%pond_evaporation_factor = pond_values(ip)
-              do iroute = 0, 1
-                emerged = iroute == 1
+              do iemerge = 0, 1
+                emerged = iemerge == 1
                 do ic = 1, size(crop_values)
                   do ico2 = 1, size(co2_values)
                     canopy%crop_emerged = emerged
@@ -88,9 +88,9 @@ contains
                     end if
 
                     baseline_set = .false.
-                    do iroute = 1, size(left_fraction)
-                      interval%t0 = span%t0 + span_lengths(il) * left_fraction(iroute)
-                      interval%t1 = span%t0 + span_lengths(il) * right_fraction(iroute)
+                    do itime = 1, size(left_fraction)
+                      interval%t0 = span%t0 + span_lengths(il) * left_fraction(itime)
+                      interval%t1 = span%t0 + span_lengths(il) * right_fraction(itime)
                       call fmr_evaluate_reference_et_demand(interval, span, parameters, canopy, result, &
                                                             process_diagnostics, diagnostics)
                       grid_cases = grid_cases + 1
