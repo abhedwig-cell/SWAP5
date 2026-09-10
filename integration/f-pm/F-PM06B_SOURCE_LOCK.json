@@ -1,0 +1,48 @@
+{
+  "schema": "swap5.et_surface_evaporation_readiness_source_lock.v1",
+  "work_unit": "F-PM06B",
+  "title": "Restricted Surface Evaporation & Top-Boundary Readiness",
+  "branch": "work/f-pm06b-restricted-surface-evaporation-boundary-readiness",
+  "canonical_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "head_message": "status(F-CI35): close canonical parallel restart capability admission",
+    "f_ci34_to_f_ci35_src_delta": 0
+  },
+  "canonical_blobs": {
+    "src/process/mod_reference_et_demand_process.f90": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": "fb226f133bd48d8ab945f111c76897aeff49facf",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "upstream_readiness": {
+    "work_unit": "F-PM06",
+    "head": "2113dd20c2f20c77c3191c65be2f994955202037",
+    "readiness_blob": "f44fe13eb256de298a801b9c7f2ce35d9ab73896",
+    "variable_classification_blob": "83332a0e6327e3f50919cf68896d04c674b20ed9"
+  },
+  "frozen_b1_10": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_meteo_f90_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+    "boundtop_f90_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+    "headcalc_f90_sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "integral_f90_sha256": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174"
+  },
+  "restricted_scope": {
+    "swinter": 0,
+    "swredu": 0,
+    "purpose": "decompose actual bare-soil and pond evaporation ownership before any production implementation",
+    "explicit_nonclaims": [
+      "SWINTER 1/2/3 interception",
+      "SWREDU 1 Black reduction",
+      "SWREDU 2 Boesten-Stroosnijder reduction",
+      "snow-mediated evaporation changes",
+      "macropore surface exchange changes",
+      "runoff-law migration",
+      "production admission"
+    ]
+  },
+  "rule": "No production source is modified in F-PM06B. Any structural candidate must be a separate workunit from the then-current canonical authority."
+}
