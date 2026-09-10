@@ -1,0 +1,28 @@
+name: F-SI28 interface sensitivity production solve
+
+on:
+  push:
+    branches:
+      - work/f-si28-interface-sensitivity-production-solve
+    paths:
+      - 'integration/f-si/F-SI28_*'
+      - 'tests/fsi/run_fsi28_interface_sensitivity_gate.sh'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/mod_soil_water_solver_contract.f90'
+      - 'src/solver/mod_reference_linear_solver.f90'
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - '.github/workflows/fsi28-interface-sensitivity.yml'
+  workflow_dispatch:
+
+jobs:
+  same-factorization-qbot-tangent:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI28 pinned F-SI27 same-factorization qbot tangent gate
+        run: bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
