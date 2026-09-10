@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "title": "Direct Immutable Parameter/Forcing View Source-Bound Feasibility Disposition",
+  "base": "485003c1be6e55521297b7b6bdc0195a15ca0f4f",
+  "source_locks": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "64c3d9581c71fc7bf5e5f3764995d41280312a2e",
+    "src/solver/mod_b110_default_mvg_provider.f90": "ffd4701740dceb2df12f05e9cad73e81eeb55b43",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/kernel/mod_kernel_transactions.f90": "source-bound on F-PE09 closeout",
+    "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144"
+  },
+  "observed_current_copying": {
+    "geometry": [
+      "worker model owns soil_parameters%z",
+      "worker model owns soil_parameters%dz",
+      "worker model owns soil_parameters%node_distance",
+      "configure_parameters refreshes all three arrays from fmr_b110_physical_parameters_t"
+    ],
+    "hydraulics": [
+      "worker model owns b110_default_mvg_parameters_t%cofgen",
+      "raw input rows are copied into the worker buffer",
+      "derived B1.10/MvG rows 25:42 are recomputed into that worker buffer"
+    ],
+    "forcing": [
+      "worker model owns qdra/qssdi/qrot pointer targets allocated by the backend",
+      "prepare_interval refreshes those targets from forcing registry arrays",
+      "source/sink and root providers then bind read-only pointers to the worker-owned copies"
+    ]
+  },
+  "feasibility_findings": {
+    "forcing_zero_copy_data_semantics": "PROMISING",
+    "forcing_zero_copy_contract_semantics": "NOT_CURRENTLY_ADMISSIBLE",
+    "geometry_zero_copy": "REQUIRES_COMMON_SOIL_WATER_PARAMETER_CONTRACT_CHANGE",
+    "raw_cofgen_zero_copy": "INSUFFICIENT_BY_ITSELF_BECAUSE_DERIVED_ROWS_25_42_ARE_REQUIRED",
+    "derived_cofgen": "MUST_REMAIN_RECOMPUTED_OR_BECOME_EXPLICIT_SHARED_IMMUTABLE_PRECOMPUTED_PARAMETER_DATA",
+    "parameter_set_id_cache_shortcut": "NOT_ADMISSIBLE_WITHOUT_CONTENT_IDENTITY_CONTRACT"
+  },
+  "blocking_contract_facts": [
+    "kernel configure_parameters_iface receives class(kernel_parameters_t), intent(in) without an explicit target/view lifetime contract",
+    "canonical prepare_interval_iface receives class(canonical_forcing_t), intent(in) without an explicit target/view lifetime contract",
+    "the current callbacks do not state that a model may retain aliases to caller-owned objects after callback return",
+    "soil_water_parameter_set_t owns allocatable geometry arrays and validate_soil_water_request explicitly validates those owned allocatables",
+    "there is no versioned immutable registry object or generation token that proves a retained view remains valid and unchanged for the complete trial/retry lifetime"
+  ],
+  "architecture_disposition": {
+    "direct_pointer_retention_in_current_contract": "REJECTED_FAIL_CLOSED",
+    "reason": "It would create a hidden lifetime/mutation dependency on caller-owned registry storage, violating explicit ownership and no-silent-dependency invariants.",
+    "safe_future_shape": [
+      "runtime-owned immutable parameter storage with explicit lifetime spanning all worker trials that reference it",
+      "runtime-owned immutable forcing snapshot/storage for the complete interval/coupling window",
+      "versioned/generation-bound view handles rather than raw undocumented pointer retention",
+      "shared immutable precomputed hydraulic parameter object for raw plus derived MvG coefficients, or worker-local derived cache with an explicit immutable raw view",
+      "solver request contract that distinguishes owned arrays from immutable views without changing physics",
+      "view invalidation only outside active trial/retry windows"
+    ]
+  },
+  "invariant_check": {
+    "04_compact_persistent_state": "future immutable sharing is aligned, but no unsafe shortcut is admitted",
+    "05_scratch_per_worker": "current worker-local derived/copy buffers remain compliant",
+    "06_scalable_memory_layout": "opportunity identified, not yet safely realized",
+    "07_transactional_steps": "retained views must remain stable through full trial/retry lifecycle",
+    "16_multiswap_primary": "copy overhead is relevant, but correctness precedes optimization",
+    "23_physics_vs_solver_policy": "no physics change proposed",
+    "25_reference_mode": "preserved",
+    "27_optional_scales_with_use": "preserved",
+    "29_no_silent_dependencies": "PASS only because raw retained aliases are rejected under current callback contracts",
+    "30_architecture_change_tested": "no production change admitted in F-PE10 feasibility phase"
+  },
+  "decision": "DIRECT_IMMUTABLE_REGISTRY_VIEWS_REQUIRE_EXPLICIT_LIFETIME_AND_IDENTITY_CONTRACT_BEFORE_IMPLEMENTATION",
+  "production_source_changed": false,
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "open": [
+      "define explicit immutable registry/view lifetime contract",
+      "decide shared precomputed hydraulic parameter representation",
+      "only then implement and scientifically qualify zero-copy candidate"
+    ]
+  }
+}
