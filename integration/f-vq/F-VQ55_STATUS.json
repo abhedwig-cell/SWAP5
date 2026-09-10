@@ -1,0 +1,21 @@
+{
+  "schema":"swap5.fvq_workunit_status.v1",
+  "work_unit":"F-VQ55",
+  "requested_work_unit":"F-VQ53",
+  "title":"Independent Current-Canonical Effective-Forcing Executor Qualification",
+  "branch":"qualification/f-vq55-fmr38-current-canonical-effective-forcing-executor",
+  "source_authority":"adf79478f55458c05444ad9b90e52644e6cf36b6",
+  "owner":"F-MR38@eb7300829be05e1500ef94720673a13cb10cdeca",
+  "candidate":"b2e31bc8993075bc346f80ad7eb9dc4d92ff7ded",
+  "materialized_candidate":"40c6da0a19f54434552d0e568a833bc712739899",
+  "phase":"INDEPENDENT_QUALIFICATION_PENDING",
+  "decision":"PENDING_FAIL_CLOSED",
+  "numbering_note":"F-VQ53 already contained persisted PM06E qualification work and was not overwritten; F-VQ55 is the clean MR38 qualification authority.",
+  "production_scope":["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+  "production_blob":"f06a2eef7b47880e449cf9b201342d7bd1e197e1",
+  "state":{"immutable_candidate_materialized":true,"qualification_evidence_persisted":true,"tested":false,"independently_qualified":false,"canonical_admitted":false},
+  "hard_holds":["no active parallel DIVDRA","no drainage-specific worker pool","no forcing-registry deep copy","no shared forcing mutation","no persistent effective-forcing state","no drainage science change","no canonical admission"],
+  "mass":"ONLY_ACCEPTED_PHYSICAL_TRANSFERS_ENTER_AUTHORITATIVE_LEDGER",
+  "qualification":{"workflow":"F-VQ55 independent current-canonical effective-forcing executor qualification","run":null,"job":null,"head":null,"conclusion":null,"expected_gate":"FVQ55_GATE=PASS"},
+  "next_required_step":"run independent exact-head qualification; production remediation inside F-VQ55 is forbidden"
+}
