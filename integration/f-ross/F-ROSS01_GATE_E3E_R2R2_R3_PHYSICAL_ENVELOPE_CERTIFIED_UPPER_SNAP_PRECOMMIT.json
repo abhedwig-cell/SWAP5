@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R2_R3_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP",
+  "status": "PRECOMMIT_FROZEN",
+  "purpose": "Replace the too-narrow roundoff-only R3 hypothesis with a stronger constitutive-independent physical root envelope for the positive-surface to unsaturated 5 cm face, and qualify a bounded exact-upper snap only when that envelope alone proves the flux error is inside the already frozen E3E accuracy budget.",
+  "upstream": {
+    "R2_failed_as_frozen_commit": "dc86802ec47b55269cd5e9f4deec5e085bf6c750",
+    "R2_decision": "ANALYTIC_SATURATED_SEGMENT_REMEDIATION_REMOVES_KSAT_FALLBACK_DEFECT_BUT_B01_EXACT_UPPER_SIGN_IS_BINARY64_ROUNDOFF_LIMITED_CERTIFIED_SNAP_RESEARCH_REQUIRED",
+    "revision_of_previous_hypothesis": "The observed sign disagreement cannot honestly be attributed to binary64 arithmetic alone because the bounded candidate and high-precision reference also use different quadrature. R3 therefore uses a stronger exact physical flux envelope rather than an epsilon residual threshold. This is a strengthening, not a relaxation."
+  },
+  "scope": {
+    "face_length_cm": 5.0,
+    "materials": ["B01", "B12", "O13", "O14"],
+    "trigger_geometry": "h_surface > 0 > h_top_node",
+    "constitutive_requirement": "0 < K(h) <= KSAT on h_top_node <= h <= 0",
+    "normal_candidate": "R2 analytic saturated-segment split plus existing bounded negative-head quadrature and fixed bisection",
+    "snap_trigger": "Only after the R2 split returns split_bracket_failure with both finite residuals positive at lo=nextafter(KSAT,+inf) and hi=KSAT*(1+(h_surface-h_top_node)/L)."
+  },
+  "theorem": {
+    "delta_definition": "delta = q/KSAT - 1 > 0",
+    "path_identity": "P(q) = h_surface/delta + integral[h_top_node,0] K(h)/(q-K(h)) d|h|",
+    "integrand_bound": "For q>KSAT and 0<K(h)<=KSAT: 0 < K(h)/(q-K(h)) < KSAT/(q-KSAT) = 1/delta.",
+    "path_bound": "h_surface/delta < P(q) < (h_surface-h_top_node)/delta.",
+    "root_bound": "At P(q*)=L: KSAT*(1+h_surface/L) < q* < KSAT*(1+(h_surface-h_top_node)/L).",
+    "upper_snap_abs_error_bound_over_KSAT": "(q_upper-q*)/KSAT < -h_top_node/L.",
+    "upper_snap_hybrid_error_bound": "(q_upper-q*)/(q*+1e-4*KSAT) < (-h_top_node/L)/(1+h_surface/L+1e-4).",
+    "meaning": "The snap error bound does not depend on the sign or accuracy of the bounded quadrature residual at q_upper and therefore remains valid when that final residual sign is numerically ambiguous."
+  },
+  "frozen_admission_limits": {
+    "max_abs_error_over_ksatfit": 0.0005,
+    "max_hybrid_metric": 0.01,
+    "p99_hybrid_metric_later_full_rerun": 0.002,
+    "wrong_sign_count": 0,
+    "max_constitutive_K_evaluations": 530,
+    "max_root_residual_evaluations": 66,
+    "rule": "A physical-envelope snap is admitted only when BOTH theorem-derived error bounds are within the existing frozen E3E limits. No residual tolerance is enlarged."
+  },
+  "focused_witnesses": {
+    "B01_defect": {
+      "probe_id": "fresh_near_0023",
+      "h_surface_cm": 0.8418598139923603,
+      "h_top_node_cm": -1.7857563818019415e-08,
+      "expected_abs_envelope_over_ksat_order": "3.6e-9",
+      "require": "snap branch, two independent high-precision reference oracles agree, actual candidate error inside theorem bound and frozen metrics"
+    },
+    "O14_negative_control": {
+      "probe_id": "fresh_near_0003",
+      "h_surface_cm": 0.37579678846033,
+      "h_top_node_cm": -1.9219207863995577e-08,
+      "require": "either ordinary split solve or theorem-certified snap remains inside frozen metrics"
+    },
+    "ordinary_controls": ["fresh_near_0011", "fresh_dry_0007"]
+  },
+  "architecture_checks": {
+    "5_scratch_per_worker": "No new persistent state. The theorem uses face-local geometry and parameters only.",
+    "13_mass_conservation_absolute": "The gate changes only a single antisymmetric face flux candidate. No water is clipped, repaired, or discarded.",
+    "20_alternative_soil_water_solvers": "The theorem is a face-contract property and does not expose HeadCalc internals.",
+    "23_physics_solver_policy_separated": "K<=KSAT and face geometry are physical facts; the snap admission limits are numerical policy.",
+    "24_predictable_runtime": "The snap is O(1) after an already bounded failed split bracket and adds no iterative trajectory.",
+    "29_no_silent_dependencies": "L=5 cm is explicit in this gate and no 10 cm table or hidden calendar/I/O assumption is used."
+  },
+  "hard_nonclaims": [
+    "No claim that the R2 sign disagreement was pure binary64 roundoff.",
+    "No Phi tuning, conductivity smoothing, table fit, heavier quadrature or constitutive change.",
+    "No unconditional q_upper snap outside the theorem-derived narrow error envelope.",
+    "No h_surface=0 change; R2P remains authoritative there.",
+    "No 320-case requalification until this focused R3 gate passes.",
+    "No full top-boundary, surface ledger, response tangent, runtime, MultiSWAP, groundwater or production admission."
+  ],
+  "positive_exit": "QUALIFIED_PHYSICAL_ENVELOPE_CERTIFIED_UPPER_SNAP_READY_FOR_IDENTICAL_320_CASE_FRESH_RERUN",
+  "negative_exit": "PHYSICAL_ENVELOPE_UPPER_SNAP_NOT_QUALIFIED_FURTHER_SURFACE_FACE_RESEARCH_REQUIRED"
+}
