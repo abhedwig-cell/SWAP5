@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE09",
+  "title": "Canonical Worker Parameter/Forcing Exact-Shape Cache Reuse & Paired Runtime Characterization Closeout",
+  "status": "COMPLETE_QUALIFIED_EXACT_SHAPE_WORKER_CACHE_REUSE",
+  "decision": "QUALIFIED_EXACT_SHAPE_WORKER_PARAMETER_FORCING_CACHE_REUSE_WITHIN_FROZEN_FMR20_V1_SCOPE",
+  "base": {
+    "F_PE08_closeout": "0c136148fb5a53db3804070ac74fc8cef55d81f3",
+    "F_PE08_decision": "QUALIFIED_CANONICAL_A23BU_HEADCALC_SCRATCH_DEDUP_WITHIN_FROZEN_FMR20_V1_SCOPE"
+  },
+  "artifacts": {
+    "protocol": "integration/f-pe/F-PE09_PROTOCOL.json",
+    "scientific_results": "integration/f-pe/F-PE09_RESULTS.json",
+    "timing_results": "integration/f-pe/F-PE09_TIMING_RESULTS.json",
+    "cache_probe": "tests/fpe/test_fpe09_cache_reuse.f90",
+    "qualification_runner": "tests/fpe/run_fpe09_worker_cache_reuse_qualification.sh",
+    "timing_runner": "tests/fpe/run_fpe09_paired_cache_timing.sh",
+    "qualification_workflow": ".github/workflows/fpe09-worker-cache-reuse-qualification.yml",
+    "timing_workflow": ".github/workflows/fpe09-paired-cache-timing.yml"
+  },
+  "production_postimage": {
+    "materialized_commit": "c0d62321a24fbd41275138ec2a2ff6d9b040a661",
+    "source_files_changed": 2,
+    "files": {
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "64c3d9581c71fc7bf5e5f3764995d41280312a2e",
+      "src/solver/mod_b110_default_mvg_provider.f90": "ffd4701740dceb2df12f05e9cad73e81eeb55b43"
+    },
+    "other_production_source_changed": false
+  },
+  "qualified_effect": {
+    "ownership": "reuse remains worker-local; no persistent per-column cache state",
+    "same_shape_parameter_storage_reused": true,
+    "same_shape_parameter_values_fully_refreshed": true,
+    "same_shape_MvG_derived_values_recomputed": true,
+    "shape_change_reallocates_exact_shape": true,
+    "same_shape_forcing_storage_reused": true,
+    "same_shape_forcing_values_fully_refreshed": true,
+    "parameter_set_id_shortcut": false,
+    "direct_registry_views": false,
+    "known_dynamic_payload_per_current_shape": "unchanged from F-PE08",
+    "physics_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_policy_changed": false,
+    "F_MR20_parallel_admission_scope_changed": false
+  },
+  "scientific_qualification": {
+    "primary": {
+      "run": 34443811540,
+      "job": 102764153459,
+      "head": "25284ecba4fb181366e23cb08921a06457c6a9fa",
+      "conclusion": "success"
+    },
+    "timing_results_head_recheck": {
+      "run": 34444242240,
+      "job": 102765468395,
+      "head": "c84d01c1e5e6f411cc755a16f18b16170daa88a6",
+      "conclusion": "success"
+    },
+    "optimization_levels": ["O0", "O2"],
+    "O0_O2_output_identity": true,
+    "full_F_MR20_V1_scientific_matrix_retained": true,
+    "true_overlap_2_workers_retained": true,
+    "true_overlap_4_workers_retained": true,
+    "hard_mass_behavior_retained": true
+  },
+  "timing_characterization": {
+    "run": 34444038261,
+    "job": 102764845556,
+    "head": "96157c86cbc5bb8fb38e35de49ef1d65a824cb85",
+    "artifact_id": 10138969567,
+    "artifact_sha256": "b8798ba322157c55f7b40e801df02d6789db190bda550d03523e8f5021c330e0",
+    "raw_observations": 2304,
+    "workers": [1, 2, 4],
+    "paired_rounds": 4,
+    "candidate_faster_rounds_all_worker_counts": true,
+    "paired_median_base_over_candidate_ratio": {
+      "1": 1.077086373717027,
+      "2": 1.066345394049538,
+      "4": 1.06496389130114
+    },
+    "runner_bound_runtime_reduction_percent": {
+      "1": 7.1569351909,
+      "2": 6.2217546416,
+      "4": 6.1001027201
+    },
+    "interpretation": "supports retaining exact-shape reuse in frozen scope; not a portable speedup guarantee"
+  },
+  "architecture_invariants": {
+    "1_single_kernel": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "4_compact_persistent_state": "PASS",
+    "5_scratch_per_worker": "PASS",
+    "6_scalable_memory_layout": "IMPROVED_WITHIN_SCOPE",
+    "7_transactional_steps": "PASS",
+    "13_mass_conservation_absolute": "PASS",
+    "16_multiswap_primary": "IMPROVED_WITHIN_FROZEN_V1_SCOPE",
+    "23_physics_solver_policy_separation": "PASS",
+    "25_reference_mode": "PASS",
+    "26_diagnostics": "PASS",
+    "27_optional_scales_with_use": "PASS",
+    "30_architecture_review": "PASS"
+  },
+  "explicit_nonclaims": [
+    "universal hardware-independent runtime speedup",
+    "production throughput SLA",
+    "portable worker-count recommendation",
+    "RSS reduction guarantee",
+    "lower current-shape worker payload than F-PE08",
+    "direct immutable parameter or forcing registry views",
+    "parameter_set_id as a content hash or cache-validity key",
+    "parallel physics expansion beyond F-MR20 V1",
+    "workers above 4"
+  ],
+  "downstream_handoff": {
+    "exact_shape_worker_cache_reuse_released": true,
+    "F_MR20_V1_scientific_scope_retained": true,
+    "runner_bound_timing_characterization_available": true,
+    "direct_immutable_view_optimization_released": false,
+    "production_worker_policy_released": false
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  }
+}
