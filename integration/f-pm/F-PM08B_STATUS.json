@@ -4,32 +4,89 @@
   "work_unit": "F-PM08B",
   "title": "Drainage Spatial Distribution and DIVDRA Migration Qualification",
   "branch": "work/f-pm08b-drainage-spatial-distribution",
-  "status": "IN_PROGRESS_SOURCE_BOUND_QUALIFICATION",
+  "status": "STRUCTURAL_DISTRIBUTOR_READY_FOR_INDEPENDENT_FVQ",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_SCIENTIFICALLY_QUALIFIED",
   "lineage": {
     "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
     "candidate_sibling_fpm08a": "97c5f4fd7cbc2024248a6b3df927ca4fa6b6dee7",
-    "fpm08a_required_for_this_workunit": false
+    "fpm08a_required_for_this_workunit": false,
+    "tested_candidate_head": "d9bf7fc28ca39b9bf451573db7c150db49daac4d",
+    "tested_candidate_production_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe",
+    "decisive_workflow_run": 34449808085,
+    "decisive_workflow_job": 102782733397,
+    "decisive_output_sha256": "5146c63786cfde21523e88dbf4b06676cea6aa57f31ea54f087da7e845f07e9c"
   },
   "scope": {
     "migration_object": "DRAINAGE_SPATIAL_DISTRIBUTION",
     "legacy_source": "SWAP/divdra.f90",
-    "restricted_first_route": "single-level positive drainage, transmissivity-weighted saturated-zone distribution, no separate infiltration distribution, no top-discharge-layer redistribution",
+    "restricted_route": "single-level positive drainage, SWDIVD=1, SWDIVDINF=0, SWNRSRF=0, SWDISLAY=0",
     "scalar_exchange_is_input": true,
     "exchange_law_is_out_of_scope": true,
     "persistent_process_state": false,
     "scratch_per_worker": true,
     "exact_scalar_to_node_mass_identity_required": true
   },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
+    "scientifically_qualified": false,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_source_modified": false
+  },
+  "structural_evidence": {
+    "principal_transmissivity_partition": "PASS",
+    "spacing_limited_discharge_layer": "PASS",
+    "anisotropy_discharge_depth": "PASS",
+    "exact_scalar_to_node_mass_identity": "PASS",
+    "zero_transfer_dependency_free_route": "PASS",
+    "held_transfer_domains_fail_closed": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "stateless_A_B_A": "PASS",
+    "worker_scratch_boundary": "PASS",
+    "no_exchange_law_or_solver_internal_access": "PASS",
+    "O0_O2_identity": "PASS",
+    "protected_owner_blobs_unchanged": "PASS"
+  },
+  "mass_policy": {
+    "authoritative_quantity": "input scalar soil-to-drain transfer",
+    "node_vector_role": "mass-preserving spatial projection",
+    "roundoff_policy": "last active discharge node receives scalar minus ordered preceding node sum",
+    "legacy_warning_tolerance_promoted_to_acceptance_policy": false
+  },
   "held": [
-    "negative infiltration with SWDIVDINF=1",
-    "interflow special top layer",
-    "SWDISLAY top-boundary redistribution",
-    "multi-level ordering interactions",
+    "independent scientific equivalence against canonical B1.10 DIVDRA for the restricted route",
+    "0 < abs(q) <= 1e-10 legacy Small interval",
+    "negative infiltration and SWDIVDINF=1",
+    "interflow special top discharge layer",
+    "SWDISLAY=1 or 2 top-boundary redistribution",
+    "multi-level ordering and overlapping discharge layers",
     "fully implicit nonlocal derivative assembly",
-    "surface-water storage/control"
+    "solver Jacobian assembly",
+    "surface-water storage/control",
+    "scientific qualification of sibling F-PM08A exchange law"
   ],
-  "persisted": true,
-  "source_reviewed": true,
-  "tested": false,
-  "qualified": false
+  "production_scope": {
+    "added_source": ["src/process/mod_drainage_spatial_distribution.f90"],
+    "runtime_composition_added": false,
+    "solver_internal_modified": false,
+    "legacy_IO_modified": false,
+    "authoritative_mass_owner_modified": false
+  },
+  "artifacts": [
+    "integration/f-pm/F-PM08B_STATUS.json",
+    "integration/f-pm/F-PM08B_DISTRIBUTION_CONTRACT.json",
+    "integration/f-pm/F-PM08B_CANDIDATE_EVIDENCE.json",
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "tests/fpm/test_fpm08b_drainage_spatial_distribution.f90",
+    "tests/fpm/run_fpm08b_drainage_spatial_distribution_gate.sh",
+    ".github/workflows/fpm08b-drainage-spatial-distribution.yml"
+  ],
+  "downstream": {
+    "owner": "F-VQ",
+    "instruction": "Independently verify the exact frozen F-PM08B production blob against canonical SWAP 4.3.1 B1.10 DIVDRA semantics for the restricted single-level positive-drainage route. Reconstruct independent fixtures from the frozen legacy source, verify water-table compartment selection, partial saturated thickness, Khor/Kver averaging, anisotropy, dmax truncation, KDdr construction, node weights, the single-compartment special case and scalar-to-node mass conservation. Do not use F-PM08A as an oracle, do not modify the candidate production source, and do not broaden into infiltration, SWDISLAY, interflow, multi-level or solver-Jacobian scope. Select the next live-free F-VQ number because F-VQ35 is already occupied."
+  }
 }
