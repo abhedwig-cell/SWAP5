@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D1",
   "title": "Surface-Water Storage Geometry & Compact State Readiness",
   "branch": "work/f-pm08d1-surface-water-storage-compact-state-readiness",
-  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
-  "phase": "CHECKPOINT_PERSISTED_BEFORE_TEST",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
@@ -31,16 +31,40 @@
     "runtime_composition": false,
     "production_changes_allowed": false
   },
+  "readiness_findings": {
+    "reference_relation": "frozen 22-knot STTAB piecewise-linear storage-level mapping",
+    "authoritative_storage_state": "SWST for SWSEC=2",
+    "wls_is_derived_state": true,
+    "wlstar_is_storage_state": false,
+    "wlstar_owner_child": "F-PM08D5",
+    "wlsbak_is_physical_state": false,
+    "numadj_is_physical_state": false,
+    "sttab_shared_immutable_parameter": true,
+    "per_column_sttab_copy_required": false,
+    "inactive_option_storage_state_bytes": 0,
+    "analytic_geometry_is_silent_reference_substitute": false
+  },
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D1_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D1_STORAGE_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D1_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d1_storage_geometry.py",
+    "gate": "tools/fpm/fpm08d1_storage_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d1-storage-compact-state-readiness.yml"
+  },
   "state": {
     "branch_created": true,
     "checkpoint_persisted": true,
-    "source_equations_reconstructed": false,
-    "state_ownership_qualified": false,
-    "test_oracle_persisted": false,
+    "source_equations_reconstructed": true,
+    "state_ownership_defined": true,
+    "test_oracle_persisted": true,
+    "architecture_audited_all_30": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
     "reference_source_changed": false
   },
-  "next_required_step": "persist exact frozen STTAB/SWSTLEV/WLEVST equations, state ownership and independent executable geometry/inverse checks before any production candidate"
+  "next_required_step": "execute the persisted F-PM08D1 readiness gate under CI and fail closed on any source, geometry, state-ownership or architecture mismatch"
 }
