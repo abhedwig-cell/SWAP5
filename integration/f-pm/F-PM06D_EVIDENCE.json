@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.surface_evaporation_hydraulic_materialization_readiness_evidence.v1",
+  "work_unit": "F-PM06D",
+  "canonical_source_authority": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "authoritative_readiness_run": 34531676647,
+  "authoritative_readiness_job": 103053627682,
+  "conclusion": "success",
+  "source_integrity": {
+    "src_delta": 0,
+    "reference_delta": 0,
+    "soil_water_solver_contract_blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "b110_default_mvg_provider_blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "serialized_reference_backend_blob": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "findings": {
+    "committed_base_ponding_authority": "PASS",
+    "ponding_rule": "base_state.ponding_depth > 1e-10 cm",
+    "scalar_Emax_capability_missing_in_current_common_contract": "PASS_CONFIRMED_GAP",
+    "current_constitutive_api_is_full_vector": "PASS_CONFIRMED",
+    "concrete_b110_constitutive_provider_has_step_duration_binding": "PASS_CONFIRMED",
+    "runtime_owns_swkmean_frost_macropore_flags": "PASS_CONFIRMED",
+    "f_vq52_structural_surface_evaporation_authority": "PASS",
+    "signed_negative_finite_Emax_remains_valid": true,
+    "mass_transaction_time_optionality_contract": "PASS",
+    "architecture_invariants": "30_OF_30_PASS",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "design_disposition": {
+    "Emax_owner": "soil hydraulics / soil-water implementation capability",
+    "surface_process_must_not_read_solver_internals": true,
+    "public_surface_process_api_should_not_reuse_full_vector_constitutive_evaluate_for_scalar_capacity": true,
+    "first_candidate_frost_active": false,
+    "first_candidate_macropore_surface_scaling_active": false,
+    "new_persistent_state_required": false,
+    "full_BoundTop_migration_authorized": false
+  },
+  "next_candidate": "restricted scalar B1.10 surface evaporation capacity provider behind a clean hydraulic capability, followed by independent B1.10 qualification before runtime composition"
+}
