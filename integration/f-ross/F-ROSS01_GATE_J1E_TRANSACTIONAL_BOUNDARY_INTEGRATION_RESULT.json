@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION",
+  "contract": "F-ROSS01_GATE_J1E_TRANSACTIONAL_BOUNDARY_INTEGRATION_CONTRACT.json",
+  "inspection": {
+    "mode": "STATIC_PRODUCTION_SOURCE_RECONCILIATION_BEFORE_IMPLEMENTATION",
+    "ross_parent_head": "25362cdc890f260f3f25254cb85424ba7ab36258",
+    "contract_commit": "f4b2d34511d4adeb2b20ec05f076bef9f46dbaf4",
+    "canonical_source_head": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "qualification_execution_performed": false
+  },
+  "source_pins": {
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/runtime/mod_canonical_contracts.f90": "c06aa869a0bd479df4c7d6e1d0b4f5c07a207144",
+    "src/runtime/mod_canonical_interval_runtime.f90": "55f3d271aa6200a994fd0144d6fce0701c918a74",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d"
+  },
+  "positive_architecture_evidence": {
+    "soil_water_result_has_interface_sensitivity_carrier": true,
+    "soil_water_sensitivity_fields": ["available", "dh_bottom_dq_bottom", "method"],
+    "canonical_interval_uses_private_working_state_until_full_interval_completion": true,
+    "transaction_restores_checkpoint_context_before_independent_trials": true,
+    "transaction_restores_checkpoint_context_on_rejection": true,
+    "accepted_worker_context_is_restored_before_physical_commit": true,
+    "worker_attempt_context_is_not_persistent_column_state": true,
+    "conclusion": "The existing transaction architecture is compatible in principle with accepted-only result sensitivity, but the required prescribed-qbot solve and publication path is not implemented at this source authority."
+  },
+  "findings": [
+    {
+      "id": "J1E-B1",
+      "severity": "BLOCKING",
+      "component": "reference Richards production binding",
+      "finding": "validate_legacy_request admits only bottom modes 7, -2 and 5. It therefore has no admitted explicit prescribed-qbot bottom-flux control path on which the J1D native qbot response tangent can be exercised.",
+      "required_resolution": "Add and independently qualify an explicit prescribed-bottom-flux production boundary route without changing native SWAP qbot sign semantics."
+    },
+    {
+      "id": "J1E-B2",
+      "severity": "BLOCKING",
+      "component": "reference Richards production solve",
+      "finding": "soil_water_solve_result_t contains interface_sensitivity, but reference_richards_legacy_solve never populates it, so the current production reference solver always leaves the sensitivity unavailable.",
+      "required_resolution": "Populate the sensitivity from the accepted production Jacobian/factorization and prove one additional tangent backsolve with no second nonlinear trajectory."
+    },
+    {
+      "id": "J1E-B3",
+      "severity": "BLOCKING",
+      "component": "soil-water request contract",
+      "finding": "At the pinned canonical source, soil_water_solve_request_t has no request_interface_sensitivity or equivalent opt-in control. The result carrier exists, but optional execution cost is not expressible through the solver request contract.",
+      "required_resolution": "Introduce an explicit solver/runtime request for interface sensitivity so unused columns do not pay tangent-backsolve cost or acquire persistent state."
+    },
+    {
+      "id": "J1E-B4",
+      "severity": "BLOCKING",
+      "component": "transaction result lifecycle",
+      "finding": "trial_outcome_t and transaction_result_t have no generic accepted interface-sensitivity carrier. The transaction core can restore model attempt context correctly, but it cannot publish a qualified sensitivity as part of its accepted result contract.",
+      "required_resolution": "Define accepted-only sensitivity transport or an equivalent typed model-result seam that cannot expose rejected/retried trial sensitivity."
+    },
+    {
+      "id": "J1E-B5",
+      "severity": "BLOCKING",
+      "component": "canonical runtime result",
+      "finding": "canonical_result_t contains status, timing, mass and diagnostics only. run_canonical_interval aggregates only transaction mass and diagnostics and therefore has no sensitivity publication path.",
+      "required_resolution": "Add an availability-qualified canonical sensitivity result with explicitly defined semantics for intervals containing one or multiple accepted internal substeps."
+    },
+    {
+      "id": "J1E-B6",
+      "severity": "BLOCKING",
+      "component": "kernel public result",
+      "finding": "kernel_result_t contains no interface sensitivity and map_runtime_result copies only status, timing and mass. The coupling-facing kernel boundary therefore cannot expose d_h_bottom_d_qbot_swap.",
+      "required_resolution": "Transport the accepted canonical sensitivity through kernel_result_t without implicit sign conversion or committed-state mutation."
+    },
+    {
+      "id": "J1E-D1",
+      "severity": "DESIGN_REQUIRED",
+      "component": "coupling-window semantics",
+      "finding": "When run_canonical_interval accepts multiple internal substeps, the meaning of a single interval-level d_h_bottom_d_qbot_swap is not yet specified. Publishing only the final substep local tangent would be an unqualified semantic assumption.",
+      "required_resolution": "Specify whether the coupling contract requires a whole-window response derivative, a final-boundary local derivative, or another explicitly composed quantity, then qualify that definition."
+    },
+    {
+      "id": "J1E-D2",
+      "severity": "VERIFICATION_REQUIRED",
+      "component": "Jacobian sign convention",
+      "finding": "J1D qualifies the native qbot coordinate mapping in its frozen harness, but production J1E must derive the tangent right-hand side from the actual production residual/Jacobian sign convention. Harness matrix sign must not be copied blindly into HeadCalc or a replacement solver.",
+      "required_resolution": "Pin and test the production residual derivative with respect to native qbot and verify the same-factorization backsolve against independent finite-difference reference trajectories from identical committed state."
+    }
+  ],
+  "preserved_qualified_evidence": {
+    "j1d_result_commit": "25362cdc890f260f3f25254cb85424ba7ab36258",
+    "j1d_decision": "J1D_SWAP_QBOT_INTERFACE_MAPPING_QUALIFIED_READY_FOR_REAL_TRANSACTIONAL_BOUNDARY_INTEGRATION_QUALIFICATION",
+    "j1d_invalidated_by_this_result": false,
+    "c1r_representation_reopened": false,
+    "c2b_or_phi_reopened": false
+  },
+  "minimum_engineering_entry_criteria": [
+    "prescribed native qbot is an admitted canonical reference-solver boundary control",
+    "interface sensitivity is explicitly requestable and optional",
+    "same-factorization tangent is produced by the accepted real solve",
+    "rejected and retried sensitivities are never externally visible",
+    "sensitivity remains result/worker data and not committed physical state",
+    "transaction, canonical and kernel result contracts transport availability, value and method/provenance",
+    "interval-level sensitivity semantics across internal substeps are frozen before qualification execution",
+    "production residual/Jacobian qbot sign is independently verified",
+    "mass accounting and accepted physical state are identical with sensitivity request on versus off apart from solver diagnostics/cost counters",
+    "normal production tangent requires zero additional nonlinear trajectories"
+  ],
+  "pass": false,
+  "decision": "J1E_BLOCKED_ON_CANONICAL_PRESCRIBED_QBOT_AND_ACCEPTED_TANGENT_RESULT_LIFECYCLE",
+  "next_action": "Perform the missing production plumbing on a source-bound engineering workunit based on current canonical authority, then return to this frozen J1E contract for live qualification. Do not implement those canonical changes directly on the stale ROSS research branch.",
+  "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
+}
