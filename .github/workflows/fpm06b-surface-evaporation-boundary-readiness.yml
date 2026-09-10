@@ -1,0 +1,20 @@
+name: F-PM06B restricted surface evaporation boundary readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm06b-restricted-surface-evaporation-boundary-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-PM06B source-bound readiness gate
+        run: bash tests/fpm/run_fpm06b_surface_evaporation_boundary_readiness.sh
