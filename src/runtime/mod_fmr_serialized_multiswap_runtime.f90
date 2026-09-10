@@ -69,6 +69,7 @@ module mod_fmr_serialized_multiswap_runtime
 
   public :: fmr_run_serialized_physical_multiswap
   public :: fmr_execute_serialized_physical_column
+  public :: fmr_publish_canonical_column_outputs
 
 contains
 
@@ -99,6 +100,7 @@ contains
 
     call initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     call initialize_runtime_diagnostics(size(columns), t0, t1, local_runtime)
+    call fmr_build_execution_order(columns, order)
     active_physical_calls = 0
     dispatch_status = FMR_SERIAL_DISPATCH_OK
 
@@ -107,6 +109,7 @@ contains
       call mark_all_rejected(diagnostics, 'INVALID_DISPATCH_REQUEST')
       call build_aggregate(columns, diagnostics, 0, aggregate)
       call finalize_runtime_diagnostics(results, local_runtime)
+      call fmr_publish_canonical_column_outputs(results, diagnostics, order)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
@@ -116,12 +119,12 @@ contains
       call mark_all_rejected(diagnostics, 'REGISTRY_STRUCTURE_REJECTED')
       call build_aggregate(columns, diagnostics, 0, aggregate)
       call finalize_runtime_diagnostics(results, local_runtime)
+      call fmr_publish_canonical_column_outputs(results, diagnostics, order)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
     call backend%initialize(top_boundary)
-    call fmr_build_execution_order(columns, order)
     batches = 0
     do batch_start = 1, size(columns), batch_size
       batches = batches + 1
@@ -138,8 +141,30 @@ contains
     local_runtime%deterministic_collection = .true.
     call build_aggregate(columns, diagnostics, batches, aggregate, order)
     call finalize_runtime_diagnostics(results, local_runtime, order)
+    call fmr_publish_canonical_column_outputs(results, diagnostics, order)
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
   end subroutine fmr_run_serialized_physical_multiswap
+
+  subroutine fmr_publish_canonical_column_outputs(results, diagnostics, order)
+    type(fmr_serialized_column_result_t), allocatable, intent(inout) :: results(:)
+    type(fmr_column_diagnostics_t), allocatable, intent(inout) :: diagnostics(:)
+    integer, intent(in) :: order(:)
+    type(fmr_serialized_column_result_t), allocatable :: canonical_results(:)
+    type(fmr_column_diagnostics_t), allocatable :: canonical_diagnostics(:)
+    integer :: pos
+
+    if (size(order) /= size(results) .or. size(order) /= size(diagnostics)) &
+         error stop 'F-MR20R canonical publication order shape mismatch'
+    allocate(canonical_results(size(results)), canonical_diagnostics(size(diagnostics)))
+    do pos = 1, size(order)
+      if (order(pos) < 1 .or. order(pos) > size(results)) &
+           error stop 'F-MR20R canonical publication order index invalid'
+      canonical_results(pos) = results(order(pos))
+      canonical_diagnostics(pos) = diagnostics(order(pos))
+    end do
+    call move_alloc(canonical_results, results)
+    call move_alloc(canonical_diagnostics, diagnostics)
+  end subroutine fmr_publish_canonical_column_outputs
 
   subroutine initialize_outputs(columns, t0, t1, results, diagnostics, aggregate)
     type(fmr_logical_column_t), intent(in) :: columns(:)

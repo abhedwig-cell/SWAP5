@@ -8,13 +8,13 @@ module mod_fmr_parallel_worker_pool
   use mod_soil_water_solver_contract, only: top_boundary_provider_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, fmr_count_templates, FMR_BACKEND_SERIALIZED_REFERENCE, &
+       fmr_aggregate_diagnostics_t, fmr_count_templates, fmr_build_execution_order, FMR_BACKEND_SERIALIZED_REFERENCE, &
        FMR_NUMERICAL_CONTINUATION_NONE
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
        fmr_serialized_reference_backend_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, &
-       fmr_execute_serialized_physical_column, FMR_SERIAL_DISPATCH_OK
+       fmr_execute_serialized_physical_column, fmr_publish_canonical_column_outputs, FMR_SERIAL_DISPATCH_OK
   use mod_fmr_parallel_physical_scheduler, only: fmr_parallel_assignment_t, fmr_build_parallel_schedule, &
        FMR_PARALLEL_SCHEDULE_OK
   implicit none
@@ -50,6 +50,7 @@ contains
     type(fmr_serialized_batch_diagnostics_t), intent(out), optional :: runtime_diagnostics
 
     type(fmr_parallel_assignment_t), allocatable :: assignments(:)
+    integer, allocatable :: publication_order(:)
     type(fmr_serialized_reference_backend_t), allocatable :: backends(:)
     type(kernel_executor_t), allocatable :: transaction_controls(:)
     type(fmr_serialized_batch_diagnostics_t), allocatable :: worker_runtime(:)
@@ -60,10 +61,12 @@ contains
     serialized_dispatch_status = -1
     pool_status = FMR_PARALLEL_POOL_INVALID_WORKER_COUNT
 
+    call fmr_build_execution_order(columns, publication_order)
     call fmr_build_parallel_schedule(columns, worker_count, assignments, schedule_status)
     if (schedule_status /= FMR_PARALLEL_SCHEDULE_OK) then
       call initialize_rejected_outputs(columns, t0, t1, 'INVALID_WORKER_COUNT', &
            results, diagnostics, aggregate, local_runtime)
+      call fmr_publish_canonical_column_outputs(results, diagnostics, publication_order)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
@@ -87,6 +90,7 @@ contains
       pool_status = FMR_PARALLEL_POOL_MULTIWORKER_NOT_ADMITTED
       call initialize_rejected_outputs(columns, t0, t1, 'MULTIWORKER_NOT_ADMITTED', &
            results, diagnostics, aggregate, local_runtime)
+      call fmr_publish_canonical_column_outputs(results, diagnostics, publication_order)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
@@ -132,12 +136,14 @@ contains
       if (allocated(diagnostics)) deallocate(diagnostics)
       call initialize_rejected_outputs(columns, t0, t1, 'OPENMP_TEAM_NOT_ADMITTED', &
            results, diagnostics, aggregate, local_runtime)
+      call fmr_publish_canonical_column_outputs(results, diagnostics, publication_order)
       if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
       return
     end if
 
     call build_parallel_aggregate(columns, diagnostics, assignments, batch_size, worker_count, aggregate)
     call finalize_parallel_runtime(results, assignments, worker_runtime, t0, t1, local_runtime)
+    call fmr_publish_canonical_column_outputs(results, diagnostics, publication_order)
     serialized_dispatch_status = FMR_SERIAL_DISPATCH_OK
     pool_status = FMR_PARALLEL_POOL_OK
     if (present(runtime_diagnostics)) runtime_diagnostics = local_runtime
