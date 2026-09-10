@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-execution-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "status": "QUALIFIED_PENDING_CANONICAL_PROMOTION",
+  "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_ON_FCI30_CANONICAL_READY_FOR_PROMOTION",
+  "canonical_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "production_candidate": "764c291c70290b9956f7ce806b9e989601f25d0a",
+  "production_candidate_src_tree": "d33c525c6d6f4d2ab19bec8341d732b98d6daebf",
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "qualification_run_head": "2b633afd00a9d54fdab3224b5a3693fd2cf09619",
+  "authoritative_workflow": {
+    "run_id": 34471271742,
+    "job_id": 102851473229,
+    "conclusion": "success"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "architecture_invariants_reviewed": true,
+    "canonical_readiness_passed": true,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_workflow_passed": false,
+    "production_source_admitted": false,
+    "closed": false
+  },
+  "qualified_scope": "STATELESS_REFERENCE_ET_PTRA_TO_RESTRICTED_MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT_ROOT_WATER_UPTAKE_EXECUTION_COMPOSITION",
+  "production_delta": [
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "preserved_authorities": [
+    "F-CI30 restricted parallel real-physics MultiSWAP V1",
+    "hard mass conservation",
+    "deterministic canonical publication",
+    "serialized sparse accepted-commit receipt semantics",
+    "F-CI28 committed-boundary process restart",
+    "F-CI27 reference ET runtime behavior",
+    "F-CI29 reference-ET ptra/root-input ownership"
+  ],
+  "evidence": [
+    "integration/f-ci/F-CI31_QUALIFICATION_PLAN.json",
+    "integration/f-ci/F-CI31_QUALIFICATION_EVIDENCE.json",
+    "integration/f-ci/F-CI31_INVARIANT_REVIEW.json"
+  ],
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction execution",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ],
+  "next_action": "Recheck live canonical authority and absence of a later F-CI workunit, update the central lineage-aware canonical gate to freeze F-CI30 and admit F-CI31 as current, then non-force fast-forward the canonical ref and require a green post-promotion canonical workflow before closeout."
+}
