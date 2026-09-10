@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2C",
+  "title": "IPOS4/5 Two-Layer Ernst Prepared Geometry and Response Structural Candidate",
+  "branch": "work/f-pm08c2c-ipos45-ernst-response",
+  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+  },
+  "scope": {
+    "legacy_family": ["DRAMET=2 IPOS=4", "DRAMET=2 IPOS=5"],
+    "persistent_process_state": false,
+    "IPOS1_2_3": false,
+    "surface_water": false,
+    "DIVDRA": false,
+    "runtime_composition": false,
+    "solver_jacobian_assembly": false
+  },
+  "architecture": {
+    "immutable_preparation": "precompute effective base, depth below drain, horizontal and radial resistance terms once per shared parameter set",
+    "dynamic_response": "compute only groundwater-dependent vertical resistance, total resistance, exchange and stable-branch derivative",
+    "IPOS4_branch": "vertical-resistance derivative changes at groundwater_level=interface_level; derivative unavailable exactly there when branch-sensitive",
+    "IPOS5_branch": "vertical resistance is linear in groundwater level with derivative 1/Kv_top",
+    "radial_resistance_policy": "may be negative when logarithm argument is between zero and one; validity is based on finite legal operations and positive finite total resistance at evaluation"
+  },
+  "compatibility_branch": {
+    "legacy_difference_cutoff": "diffl < 1e-10 returns zero exchange before resistance evaluation",
+    "policy": "retain only as explicit restricted B1.10 compatibility semantics",
+    "at_exact_cutoff_derivative": "unavailable"
+  },
+  "normalization": {
+    "IPOS4_requires": ["drain_bottom_level<=interface_level", "effective depth below drain>0", "Kh_bottom>0", "Kv_top>0", "Kv_bottom>0", "wetted_perimeter>0"],
+    "IPOS5_requires": ["drain_bottom_level>interface_level", "Kh_top>0", "Kh_bottom>=0", "Kv_top>0", "wetted_perimeter>0", "geometry_factor>0", "positive horizontal-resistance denominator"],
+    "IPOS5_omits_unused_kv_bottom": true
+  },
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_qualified": false
+}
