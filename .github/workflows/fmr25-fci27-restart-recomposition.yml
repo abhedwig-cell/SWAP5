@@ -1,0 +1,19 @@
+name: F-MR25 F-CI27 restart recomposition owner gate
+
+on:
+  push:
+    branches:
+      - work/f-mr25-fci27-restart-recomposition
+  workflow_dispatch:
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run source-bound restart plus ET-preservation gate
+        run: bash tests/fmr/run_fmr25_fci27_restart_recomposition_gate.sh
