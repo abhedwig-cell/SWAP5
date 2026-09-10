@@ -7,7 +7,7 @@ cd "$ROOT"
 BASE=f49e17c6627717d5dea181808a122f2e35960739
 PRODUCTION=8109946c462286ef75d2ad33bbbb9faa782d19fa
 UPSTREAM_SCRIPT=tests/fmq/run_fmq27_restart_requalification.sh
-TMP_SCRIPT="${TMPDIR:-/tmp}/swap5-fmr24-fmq27-$$.sh"
+TMP_SCRIPT="$ROOT/tests/fmq/.fmr24-fmq27-$$.sh"
 trap 'rm -f "$TMP_SCRIPT"' EXIT
 
 fail() { echo "FMR24_OWNER_GATE_FAIL $*" >&2; exit 1; }
