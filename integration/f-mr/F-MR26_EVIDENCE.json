@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR26",
+  "tested_head": "1bf33a2af1b51c3963c18257b30a4c710ff1b98b",
+  "workflow_run_id": 34459201833,
+  "workflow_job_id": 102812713309,
+  "conclusion": "success",
+  "output_sha256": "ee3892953d58b20682548597ce7e86891bf9ee95e68ba15765e642b4af155de5",
+  "candidate": {
+    "runtime_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "runtime_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "base_canonical_head": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d"
+  },
+  "protected_authorities": {
+    "F_MR23_ET_runtime_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "reference_ET_process_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "crop_root_input_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "F_MR12_downstream_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "historical_F_WOF18_formula_evidence_blob": "497b42f2450a003a070dbc4020573866d1ef93b0"
+  },
+  "verified": {
+    "single_production_source_delta": true,
+    "F_MR23_ptra_exact_authority": true,
+    "incoming_ptra_ignored": true,
+    "non_ptra_fields_bit_preserved": true,
+    "upstream_rejection_fail_closed": true,
+    "invalid_root_geometry_fail_closed": true,
+    "nonemerged_semantics": true,
+    "assembled_contract_fail_closed": true,
+    "stateless_A_B_A_identity": true,
+    "O0_O2_output_identity": true,
+    "no_ET_formula_recomputation": true,
+    "no_root_uptake_execution": true,
+    "no_mass_booking": true,
+    "no_persistent_state": true
+  },
+  "first_run_note": {
+    "workflow_run_id": 34459080916,
+    "conclusion": "failure",
+    "classification": "TEST_ONLY_COMPARE_REALS_WARNING",
+    "production_source_checks_passed_before_failure": true,
+    "production_source_changed_during_remediation": false
+  }
+}
