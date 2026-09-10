@@ -77,6 +77,7 @@ contains
 
     status = FMR_ROOT_ATTRIBUTION_INVALID_FORCING
     if (.not. allocated(forcing%root_extraction_sink)) return
+    if (size(forcing%root_extraction_sink) <= 0) return
     if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
     if (any(forcing%root_extraction_sink < 0.0_real64)) return
 
