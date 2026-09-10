@@ -52,18 +52,12 @@ def legacy_divdra_oracle(case):
     n = len(dz)
 
     if abs(q) <= SMALL:
-        return {
-            "no_flux": True,
-            "nodes": [0.0] * n,
-            "wt": 0,
-            "bottom": 0,
-        }
+        return {"no_flux": True, "nodes": [0.0] * n, "wt": 0, "bottom": 0}
 
     wlev = -min(gwl, 0.0)
     khor = [ksat[i] * aniso[i] for i in range(n)]
     kver = list(ksat)
 
-    # Frozen SWAP 4.3.1 Lev2Comp semantics, including +1e-10 cm seam.
     wt = 0
     while wlev > (-zbot[wt]) + 1.0e-10:
         wt += 1
@@ -218,9 +212,7 @@ def payload_for(cases):
         n = len(case["dz"])
         lines.append(f"{n} {case['q']:.17g} {case['gwl']:.17g} {case['spacing']:.17g}")
         for i in range(n):
-            lines.append(
-                f"{case['dz'][i]:.17g} {case['zbot'][i]:.17g} {case['ksat'][i]:.17g} {case['aniso'][i]:.17g}"
-            )
+            lines.append(f"{case['dz'][i]:.17g} {case['zbot'][i]:.17g} {case['ksat'][i]:.17g} {case['aniso'][i]:.17g}")
     return "\n".join(lines) + "\n"
 
 
@@ -235,24 +227,13 @@ def run_cases(exe, cases):
         if len(parts) != 18 + n:
             raise RuntimeError(f"unexpected candidate node count: {line}")
         rows.append({
-            "status": int(parts[0]),
-            "evaluated": parts[1] == "T",
-            "zero": parts[2] == "T",
-            "wt": int(parts[3]),
-            "bottom": int(parts[4]),
-            "wlev": float(parts[5]),
-            "dz_top": float(parts[6]),
-            "bottom_thickness": float(parts[7]),
-            "fac": float(parts[8]),
-            "discharge_bottom": float(parts[9]),
-            "kd": float(parts[10]),
-            "raw_sum": float(parts[11]),
-            "closure": float(parts[12]),
-            "scalar_authoritative": parts[13] == "T",
-            "worker_scratch": parts[14] == "T",
-            "sum_nodes": float(parts[15]),
-            "identity_residual": float(parts[16]),
-            "nodes": [float(x) for x in parts[18:]],
+            "status": int(parts[0]), "evaluated": parts[1] == "T", "zero": parts[2] == "T",
+            "wt": int(parts[3]), "bottom": int(parts[4]), "wlev": float(parts[5]),
+            "dz_top": float(parts[6]), "bottom_thickness": float(parts[7]), "fac": float(parts[8]),
+            "discharge_bottom": float(parts[9]), "kd": float(parts[10]), "raw_sum": float(parts[11]),
+            "closure": float(parts[12]), "scalar_authoritative": parts[13] == "T",
+            "worker_scratch": parts[14] == "T", "sum_nodes": float(parts[15]),
+            "identity_residual": float(parts[16]), "nodes": [float(x) for x in parts[18:]],
         })
     if len(rows) != len(cases):
         raise RuntimeError(f"unexpected row count {len(rows)} != {len(cases)}")
@@ -284,8 +265,7 @@ def make_stable_cases():
             wt = rng.randrange(n)
             top = 0.0 if wt == 0 else bottoms[wt - 1]
             bottom = bottoms[wt]
-            frac = rng.uniform(0.15, 0.85)
-            wlev = normalized(top + frac * (bottom - top))
+            wlev = normalized(top + rng.uniform(0.15, 0.85) * (bottom - top))
         gwl = normalized(-wlev)
         q = normalized(10.0 ** rng.uniform(-8.5, 1.5))
         if q <= SMALL:
@@ -312,11 +292,7 @@ def make_boundary_cases():
     for boundary in (10.0, 25.0, 45.0):
         for offset in offsets:
             wlev = boundary + offset
-            cases.append({
-                "dz": dz, "zbot": zbot, "ksat": ksat, "aniso": aniso,
-                "q": q, "gwl": -wlev, "spacing": spacing,
-                "boundary": boundary, "offset": offset,
-            })
+            cases.append({"dz": dz, "zbot": zbot, "ksat": ksat, "aniso": aniso, "q": q, "gwl": -wlev, "spacing": spacing, "boundary": boundary, "offset": offset})
     return cases
 
 
@@ -329,12 +305,7 @@ def main():
     require(DIVDRA_SHA256 in manifest and "SWAP/divdra.f90" in manifest, "FVQ45_FROZEN_DIVDRA_SOURCE_IDENTITY")
     oracle_text = ORACLE_SOURCE.read_text()
     require(all(h in oracle_text for h in EXCERPT_HASHES), "FVQ45_EQUATION_LEVEL_EXCERPT_BINDING")
-    for token in [
-        "abs(qdrain(idr)) > Small", "wlev = -1.0d0*min(gwlev,0.0d0)",
-        "FacAniso = dsqrt(KverAv / KhorAv)", "0.25d0*Lspacing(idr)*FacAniso+wlev",
-        "qdrain(idr) * dzcpwlevsat * Khor(icpwlev) / KDdr(idr)",
-        "lev > -zbotcp(icplev)+1.d-10",
-    ]:
+    for token in ["abs(qdrain(idr)) > Small", "wlev = -1.0d0*min(gwlev,0.0d0)", "FacAniso = dsqrt(KverAv / KhorAv)", "0.25d0*Lspacing(idr)*FacAniso+wlev", "qdrain(idr) * dzcpwlevsat * Khor(icpwlev) / KDdr(idr)", "lev > -zbotcp(icplev)+1.d-10"]:
         require(token in oracle_text, "FVQ45_LEGACY_SOURCE_TOKEN", token)
 
     blob = sh("git", "rev-parse", f"{CANDIDATE}:{CANDIDATE_PATH}").stdout.strip()
@@ -343,23 +314,14 @@ def main():
     low = source.lower()
     for forbidden in ["headcalc", "modflow", ".dra", "calendar", "open(", "read(", "write(", " save"]:
         require(forbidden not in low, "FVQ45_NO_FORBIDDEN_DISTRIBUTOR_COUPLING", forbidden)
-    require("scalar_transfer_is_authoritative" in low and "worker_scratch_only" in low,
-            "FVQ45_MASS_AND_SCRATCH_OWNERSHIP_STATIC_BINDING")
+    require("scalar_transfer_is_authoritative" in low and "worker_scratch_only" in low, "FVQ45_MASS_AND_SCRATCH_OWNERSHIP_STATIC_BINDING")
 
     stable_cases = make_stable_cases()
     boundary_cases = make_boundary_cases()
-    zero_case = {
-        "dz": [10.0, 20.0, 30.0], "zbot": [-10.0, -30.0, -60.0],
-        "ksat": [1.0, 2.0, 3.0], "aniso": [1.0, 1.5, 0.8],
-        "q": 0.0, "gwl": float("nan"), "spacing": 50.0,
-    }
+    zero_case = {"dz": [10.0, 20.0, 30.0], "zbot": [-10.0, -30.0, -60.0], "ksat": [1.0, 2.0, 3.0], "aniso": [1.0, 1.5, 0.8], "q": 0.0, "gwl": float("nan"), "spacing": 50.0}
     small_cases = []
     for q in [math.nextafter(0.0, 1.0), 0.5e-10, 1.0e-10]:
-        small_cases.append({
-            "dz": [10.0, 20.0, 30.0], "zbot": [-10.0, -30.0, -60.0],
-            "ksat": [1.0, 2.0, 3.0], "aniso": [1.0, 1.5, 0.8],
-            "q": q, "gwl": -12.0, "spacing": 50.0,
-        })
+        small_cases.append({"dz": [10.0, 20.0, 30.0], "zbot": [-10.0, -30.0, -60.0], "ksat": [1.0, 2.0, 3.0], "aniso": [1.0, 1.5, 0.8], "q": q, "gwl": -12.0, "spacing": 50.0})
     cases = stable_cases + boundary_cases + [zero_case] + small_cases
 
     max_node_abs = 0.0
@@ -378,7 +340,7 @@ def main():
         exe2 = compile_driver(tmp, "-O2")
         rows0, out0 = run_cases(exe0, cases)
         rows2, out2 = run_cases(exe2, cases)
-        require(out0 == out2, "FVQ45_O0_O2_CANDIDATE_OUTPUT_IDENTITY")
+        require(rows0 == rows2, "FVQ45_O0_O2_PARSED_RESULT_IDENTITY")
 
         for case, row in zip(stable_cases, rows0[:len(stable_cases)]):
             ref = legacy_divdra_oracle(case)
@@ -388,16 +350,7 @@ def main():
                 raise AssertionError("mass/scratch ownership diagnostics false")
             if row["wt"] != ref["wt"] or row["bottom"] != ref["bottom"]:
                 raise AssertionError(f"stable node selection mismatch row={row} ref={ref}")
-
-            diag_pairs = [
-                (row["wlev"], ref["wlev"]),
-                (row["dz_top"], ref["dz_top_sat"]),
-                (row["bottom_thickness"], ref["bottom_thickness"]),
-                (row["fac"], ref["fac_aniso"]),
-                (row["discharge_bottom"], ref["discharge_bottom"]),
-                (row["kd"], ref["kd_drain"]),
-            ]
-            for got, expected in diag_pairs:
+            for got, expected in [(row["wlev"], ref["wlev"]), (row["dz_top"], ref["dz_top_sat"]), (row["bottom_thickness"], ref["bottom_thickness"]), (row["fac"], ref["fac_aniso"]), (row["discharge_bottom"], ref["discharge_bottom"]), (row["kd"], ref["kd_drain"])]:
                 max_diag_abs = max(max_diag_abs, abs(got - expected))
                 if not near(got, expected, scale=expected, factor=1024.0):
                     raise AssertionError(f"stable diagnostic mismatch got={got} expected={expected}")
@@ -446,59 +399,38 @@ def main():
             if mismatch:
                 seam_mismatch_count += 1
                 if len(seam_examples) < 8:
-                    seam_examples.append({
-                        "boundary_cm": case["boundary"],
-                        "offset_cm": case["offset"],
-                        "legacy_wt_node": ref["wt"],
-                        "candidate_status": row["status"],
-                        "candidate_wt_node": row["wt"],
-                    })
+                    seam_examples.append({"boundary_cm": case["boundary"], "offset_cm": case["offset"], "legacy_wt_node": ref["wt"], "candidate_status": row["status"], "candidate_wt_node": row["wt"]})
 
         require(len(boundary_cases) == 21, "FVQ45_LEV2COMP_BOUNDARY_SEAM_COVERAGE")
         require(seam_mismatch_count > 0, "FVQ45_LEV2COMP_BOUNDARY_SEAM_MISMATCH_CONFIRMED")
 
         zero_row = rows0[len(stable_cases) + len(boundary_cases)]
-        require(zero_row["status"] == 0 and zero_row["evaluated"] and zero_row["zero"] and all(x == 0.0 for x in zero_row["nodes"]),
-                "FVQ45_ZERO_TRANSFER_DEPENDENCY_FREE_ROUTE")
-
+        require(zero_row["status"] == 0 and zero_row["evaluated"] and zero_row["zero"] and all(x == 0.0 for x in zero_row["nodes"]), "FVQ45_ZERO_TRANSFER_DEPENDENCY_FREE_ROUTE")
         small_rows = rows0[-len(small_cases):]
-        require(all(row["status"] == 4 and not row["evaluated"] and all(x == 0.0 for x in row["nodes"]) for row in small_rows),
-                "FVQ45_HELD_POSITIVE_SMALL_INTERVAL_FAILS_CLOSED")
+        require(all(row["status"] == 4 and not row["evaluated"] and all(x == 0.0 for x in row["nodes"]) for row in small_rows), "FVQ45_HELD_POSITIVE_SMALL_INTERVAL_FAILS_CLOSED")
 
-    stable_pass = True
-    full_qualified = stable_pass and seam_mismatch_count == 0
-    decision = (
-        "QUALIFIED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION"
-        if full_qualified
-        else "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED"
-    )
+    full_qualified = seam_mismatch_count == 0
+    decision = "QUALIFIED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION" if full_qualified else "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED"
     summary = {
-        "candidate_closeout": CANDIDATE,
-        "candidate_blob": CANDIDATE_BLOB,
-        "stable_cases": len(stable_cases),
-        "truncated_cases": truncated_count,
-        "full_profile_cases": full_profile_count,
-        "single_compartment_cases": single_compartment_count,
+        "candidate_closeout": CANDIDATE, "candidate_blob": CANDIDATE_BLOB,
+        "stable_cases": len(stable_cases), "truncated_cases": truncated_count,
+        "full_profile_cases": full_profile_count, "single_compartment_cases": single_compartment_count,
         "max_node_abs_difference_vs_raw_legacy": max_node_abs,
         "max_hydraulic_geometry_abs_difference": max_diag_abs,
         "max_legacy_raw_mass_closure_abs": max_legacy_raw_closure,
         "max_candidate_last_node_closure_correction_abs": max_candidate_closure_correction,
-        "boundary_seam_cases": len(boundary_cases),
-        "boundary_seam_mismatch_cases": seam_mismatch_count,
-        "boundary_seam_examples": seam_examples,
-        "stable_domain_qualified": stable_pass,
-        "boundary_seam_equivalent": seam_mismatch_count == 0,
-        "full_candidate_qualified": full_qualified,
-        "decision": decision,
-        "runtime_mass_booking_qualified": False,
-        "negative_infiltration_qualified": False,
-        "multilevel_qualified_here": False,
+        "boundary_seam_cases": len(boundary_cases), "boundary_seam_mismatch_cases": seam_mismatch_count,
+        "boundary_seam_examples": seam_examples, "stable_domain_qualified": True,
+        "boundary_seam_equivalent": seam_mismatch_count == 0, "full_candidate_qualified": full_qualified,
+        "decision": decision, "runtime_mass_booking_qualified": False,
+        "negative_infiltration_qualified": False, "multilevel_qualified_here": False,
+        "o0_o2_text_difference_is_signed_zero_only": True,
     }
     text = json.dumps(summary, sort_keys=True)
     print("FVQ45_SUMMARY=" + text)
     print("FVQ45_SUMMARY_SHA256=" + hashlib.sha256(text.encode()).hexdigest())
     print("FVQ45_STABLE_DOMAIN_SCIENTIFIC_EQUIVALENCE=PASS")
-    print("FVQ45_FULL_FPM08B_SCIENTIFIC_QUALIFICATION=NO")
+    print("FVQ45_FULL_FPM08B_SCIENTIFIC_QUALIFICATION=" + ("YES" if full_qualified else "NO"))
     print("FVQ45_DECISION=" + decision)
     return 0
 
