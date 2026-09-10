@@ -1,0 +1,25 @@
+name: F-CI31 current-canonical recomposition qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-ci31-fmr28-reference-et-root-uptake-current-canonical-recomposition
+    paths:
+      - .github/workflows/fci31-current-canonical-recomposition.yml
+      - tests/fci/run_fci31_current_canonical_recomposition.sh
+      - integration/f-ci/F-CI31_CURRENT_CANONICAL_SOURCE_LOCK.json
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI31 current-canonical source-bound recomposition gate
+        run: bash tests/fci/run_fci31_current_canonical_recomposition.sh
