@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI25",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "purpose": "Determine whether qualified F-MR21 restart and F-MR22 parallel-v1 runtime work can be admitted onto the current F-CI24 canonical source without importing stale runtime postimages.",
+  "decision": "SPLIT_CANONICAL_ADMISSION_REQUIRED",
+  "production_source_changed": false,
+  "canonical_ref_advanced": false,
+  "F_MR21": {
+    "qualification_authority": "F-MQ27@33beccd7b38f5a3c29131025e1b06166026851e3",
+    "qualified_source_candidate": "9064004f815e81f95eb4bdee218af29cb95039c1",
+    "current_candidate_branch_head": "3a2fc8eb0dce16077535f0388bc32ac42671a513",
+    "status": "READY_FOR_FRESH_CANONICAL_SOURCE_BOUND_RECOMPOSITION_AND_REQUALIFICATION",
+    "canonical_missing_sources": [
+      "src/runtime/mod_fmr_committed_restart.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90"
+    ],
+    "blob_identity_checks": {
+      "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+      "src/kernel/mod_kernel_committed_persistence.f90": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+      "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+      "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4"
+    },
+    "blob_identity_result": "The four generic contracts used by the restart composition are byte-identical between the qualified F-MR21 source and F-CI24 canonical.",
+    "serialized_backend_note": "The complete serialized backend blob has advanced on canonical, but the fmr_b110_physical_state_t and fmr_b110_temporal_indicator_state_t declarations consumed by the restart type contract remain structurally unchanged in the inspected source.",
+    "admission_rule": "Do not inherit F-MQ27 as proof of the F-CI24 composition. Recompose the two runtime restart sources on the current canonical base and execute a fresh canonical-source-bound restart matrix including malformed-state, wrong-family, atomicity, continuation identity and mass gates."
+  },
+  "F_MR22": {
+    "qualification_authority": "F-MQ28@0ba69eaeb8609e631d4c405d3c26064a53702fe4",
+    "qualified_source_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "status": "BLOCKED_ON_CURRENT_CANONICAL_WORKER_EXECUTION_SEAM",
+    "canonical_missing_sources": [
+      "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+      "src/runtime/mod_fmr_parallel_worker_pool.f90"
+    ],
+    "compatible_core": {
+      "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335"
+    },
+    "qualified_candidate_serialized_runtime_blob": "be4005a97e35c498ffc40297409a75efe65ff5df",
+    "current_canonical_serialized_runtime_blob": "6559237c887e9a8476beb479546becdfe9339920",
+    "blocking_interface_change": "The qualified parallel worker pool calls public fmr_execute_serialized_physical_column. Current F-CI24 serialized runtime does not export that seam and instead contains the later accepted-commit-receipt API.",
+    "forbidden_shortcut": "Do not copy the old serialized runtime postimage from F-MR22 or F-MR20R onto canonical. That would replace the newer receipt-aware canonical runtime and regress an already admitted contract.",
+    "required_next_step": "Create a fresh current-canonical runtime composition that exposes a worker-safe one-column execution seam while preserving the accepted-commit-receipt public API and semantics, then independently requalify the complete restricted parallel-v1 matrix and canonical publication ordering."
+  },
+  "F_MR20R_crosscheck": {
+    "branch_head": "7643c55d636dd7dc19b14e7d6bc530570a1f70a5",
+    "merge_base_with_F_CI24": "7f906fcc53a4133b0e410eac7cf79fbb4eb672ab",
+    "status": "NOT_A_CURRENT_CANONICAL_SOLUTION",
+    "reason": "F-MR20R is also F-CI18-lineage work. Its production remediation changes both mod_fmr_serialized_multiswap_runtime and mod_fmr_parallel_worker_pool, and its serialized runtime exposes the pre-receipt API. It therefore cannot serve as the current F-CI24 worker-seam composition."
+  },
+  "admission_order": [
+    "First, recompose and requalify F-MR21 restart against the current canonical runtime independently of parallel-v1.",
+    "Separately, repair the parallel worker execution seam against the receipt-aware canonical serialized runtime.",
+    "Only after each current-source-bound gate passes may a canonical promotion workunit be considered."
+  ],
+  "fail_closed": true
+}
