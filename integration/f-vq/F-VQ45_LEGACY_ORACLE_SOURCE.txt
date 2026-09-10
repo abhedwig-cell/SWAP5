@@ -1,0 +1,88 @@
+F-VQ45 independent legacy oracle source extraction
+Source archive: SWAP 4.3.1 nested SWAP.ZIP
+Archive SHA-256: 1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151
+Full SWAP/divdra.f90 SHA-256: d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91
+
+Relevant exact excerpt hashes from the frozen source:
+- lines 38-60, no-flux threshold, groundwater-depth conversion, Lev2Comp call:
+  6f29f55d478c1b8a6d7c0f132ebe3613927be602f7c79790133eca04046412e9
+- lines 104-132, profile anisotropy and maximum discharge depth:
+  860fb3a73802e53a8f24534aa74e4e786214a34f956140701508f5a14da3393a
+- lines 166-194, first-order discharge-layer construction:
+  37a881fb5b5067f2b8b1666777e65e0b0c666063d25eb452e28a882bf5517368
+- lines 237-250, drainage-flux distribution:
+  4b425062ce3806c102e617a70fac42c6ca58407ef82080a6b442d681217a3ca7
+- lines 388-412, Lev2Comp geometry helper:
+  d275f71fdff7d85fb04716e68a17d6c28ae9f539fa9742e53ec8373633a23669
+
+Source-bound equations and branch semantics used by the independent oracle:
+
+DIVDRA lines 38-60:
+  qdra(1:nrlevs,1:numnod) = 0.0d0
+  flNoFlux = .TRUE.
+  do idr=1,nrlevs
+     if (abs(qdrain(idr)) > Small) flNoFlux = .FALSE.
+  end do
+  if (flNoFlux) return
+  wlev = -1.0d0*min(gwlev,0.0d0)
+  Khor(1:numnod) = ksatcp(1:numnod) * cofani(layer(1:numnod))
+  Kver(1:numnod) = ksatcp(1:numnod)
+  call Lev2Comp(wlev,icpwlev,dzcpwlevuns,dzcpwlevsat)
+
+DIVDRA lines 104-132:
+  KDhor = dzcpwlevsat * Khor(icpwlev)
+  KDver = dzcpwlevsat / Kver(icpwlev)
+  dzhlp = dzcpwlevsat
+  do icp=icpwlev+1,numnod
+     KDhor = KDhor + dz(icp) * Khor(icp)
+     KDver = KDver + dz(icp) / Kver(icp)
+     dzhlp = dzhlp + dz(icp)
+  end do
+  KhorAv   = KDhor / dzhlp
+  KverAv   = dzhlp / KDver
+  FacAniso = dsqrt(KverAv / KhorAv)
+  dmaxdislay(idr) = 0.25d0*Lspacing(idr)*FacAniso+wlev
+  dmaxdislay(idr) = min(dmaxdislay(idr), dzhlp+wlev)
+
+DIVDRA lines 166-194, single-level first-order layer:
+  KDdr(idr)          = KDhor
+  zbotdislay(idr)    = -zbotcp(numnod)
+  icpbotdislay(idr)  = numnod
+  dzcpbotdislay(idr) = dz(numnod)
+  if (abs(qdrain(idr)) > Small) then
+     if (zbotdislay(idr) > dmaxdislay(idr)) then
+        zbotdislay(idr) = dmaxdislay(idr)
+        icp = icpwlev
+        dzhlp = dzcpwlevsat
+        KDdr(idr) = dzcpwlevsat * Khor(icpwlev)
+        dzdislay = zbotdislay(idr)-wlev
+        do while (dzdislay > dzhlp)
+           icp = icp + 1
+           dzhlp = dzhlp + dz(icp)
+           KDdr(idr) = KDdr(idr) + dz(icp) * Khor(icp)
+        end do
+        KDdr(idr) = KDdr(idr) - (dzhlp - dzdislay) * Khor(icp)
+        dzcpbotdislay(idr) = dz(icp) - (dzhlp - dzdislay)
+        icpbotdislay(idr) = icp
+     end if
+  end if
+
+DIVDRA lines 237-250, positive drainage with SWDIVDINF=0:
+  qdra(idr,icpwlev) = qdrain(idr) * dzcpwlevsat * Khor(icpwlev) / KDdr(idr)
+  do icp=icpwlev+1,icpbotdislay(idr)-1
+     qdra(idr,icp) = qdrain(idr) * dz(icp) * Khor(icp) / KDdr(idr)
+  end do
+  qdra(idr,icpbotdislay(idr)) = qdrain(idr) * dzcpbotdislay(idr) * Khor(icpbotdislay(idr)) / KDdr(idr)
+  if (icpwlev == icpbotdislay(idr)) qdra(idr,icpwlev) = qdrain(idr)
+
+Lev2Comp lines 400-409, exact legacy boundary seam:
+  icplev = 1
+  do while (lev > -zbotcp(icplev)+1.d-10)
+     icplev = icplev + 1
+     if (icplev > numnod) call swap_error ('lev2comp', 'icplev > numnod')
+  end do
+  dzblwlev = -zbotcp(icplev) - lev
+  dzabvlev = dz(icplev) - dzblwlev
+
+Independent review note:
+The +1.d-10 term in Lev2Comp is equation-level legacy semantics. It means that at an internal compartment bottom and for levels up to 1e-10 cm below that bottom, legacy still identifies the upper compartment. This can yield dzcpwlevsat equal to zero or slightly negative in that seam. F-VQ45 treats this as a separately tested scientific/numerical boundary seam rather than silently removing it.
