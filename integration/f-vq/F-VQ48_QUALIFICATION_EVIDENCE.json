@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ48",
+  "title": "Independent F-MR30 Accepted Root-Uptake Attribution Receipt Qualification",
+  "candidate": {
+    "owner_workunit": "F-MR30",
+    "owner_handoff": "c908621d10868b5e265a8835ea2c0c56ee202ef6",
+    "candidate_commit": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+    "candidate_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
+    "candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+    "canonical_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3"
+  },
+  "qualification_authority": {
+    "branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+    "head": "7ca765aa9d2cd6cbae406bff7e386df9cc2f5a19",
+    "workflow_run": 34479246369,
+    "workflow_job": 102877592656,
+    "workflow_conclusion": "failure_by_design_after_reproduced_hard_negative",
+    "runner": "ubuntu-24.04"
+  },
+  "source_controls": {
+    "clean_canonical_branch_no_src_delta": "PASS",
+    "exact_pinned_candidate_blob": "PASS",
+    "owner_candidate_exact_one_source_production_delta": "PASS",
+    "o0_o2_sentinel_output_identity": "PASS"
+  },
+  "positive_control": {
+    "description": "candidate physically advanced with forcing A and attribution prepared from the same forcing A",
+    "forcing_a": [0.125, 0.25, 0.5],
+    "t0": 1.25,
+    "t1": 4.0,
+    "physical_candidate_root_mass_out": 2.40625,
+    "physical_candidate_mass_residual": 0.0,
+    "matching_forcing_attribution": "PASS",
+    "meaning": "generic transaction mass accounting and the correctly paired attribution path are sound in this controlled oracle"
+  },
+  "hard_negative": {
+    "id": "HN1_FORCING_CANDIDATE_BINDING",
+    "setup": "create physical candidate with forcing A; call public attribution prepare on the same ready candidate using different individually valid forcing B; commit the original A candidate through the real generic accepted-commit receipt; finalize B-prepared attribution against that valid commit receipt",
+    "forcing_b": [0.25, 0.5, 0.75],
+    "b_derived_amount": 4.125,
+    "wrong_forcing_prepare_accepted": true,
+    "wrong_forcing_postcommit_published": true,
+    "observed_outcome": "FAIL_OPEN",
+    "finding": "VALID_COMMIT_RECEIPT_CAN_PUBLISH_ATTRIBUTION_FROM_QROT_NOT_USED_BY_PHYSICAL_CANDIDATE",
+    "scientific_effect": "process attribution provenance can be wrong while the generic physical transaction and hard water-balance ledger remain correct"
+  },
+  "root_cause": {
+    "candidate_contract": "kernel_candidate_state_t binds state, lineage, origin revision, interval and generic mass accounting but carries no identity for the physical forcing used to create it",
+    "fmr30_prepare_contract": "fmr_prepare_root_uptake_attribution accepts forcing and candidate as independent public arguments and derives the amount from the supplied forcing",
+    "commit_receipt_contract": "fmr_accepted_commit_receipt_t authenticates accepted candidate lineage/revision/interval but cannot authenticate which qrot vector generated the candidate",
+    "caller_discipline_dependency": "the candidate therefore relies silently on the caller to pair the exact original qrot forcing with the candidate"
+  },
+  "mass_disposition": {
+    "generic_mass_conservation": "PASS_IN_CONTROL",
+    "duplicate_mass_booking": "NOT_OBSERVED_AND_NOT_THE_FAILURE",
+    "failed_property": "ROOT_UPTAKE_ATTRIBUTION_PROVENANCE",
+    "warning": "do not classify this finding as a generic mass-conservation failure"
+  },
+  "remaining_matrix": {
+    "status": "UNRUN_AFTER_HARD_NEGATIVE",
+    "reason": "frozen early-exit rule: a reproduced fail-open hard negative is sufficient to deny independent admission and further cases cannot reverse that decision",
+    "not_failed": true
+  },
+  "recommended_remediation": {
+    "principle": "bind attribution preparation to the exact forcing object used for physical candidate creation by construction, without adding root uptake to the generic mass ledger",
+    "preferred_minimal_route": "trusted runtime/orchestration wrapper receives forcing once, invokes kernel advance and creates the nonpublishing prepared attribution from that exact same forcing/candidate pair; raw arbitrary forcing-plus-candidate preparation should not remain a public misuse surface",
+    "generic_kernel_forcing_fingerprint": "not recommended unless a later general attribution architecture demonstrates reusable need",
+    "dynamic_qrot": "remains out of frozen scope"
+  },
+  "invariant_assessment": {
+    "3_explicit_data_separation": "FAIL_CURRENT_PAIRING_PROVENANCE_NOT_EXPLICITLY_BOUND",
+    "7_transactional_timesteps": "FAIL_ATTRIBUTION_PUBLICATION_CAN_REFER_TO_INPUT_NOT_USED_BY_ACCEPTED_TRIAL",
+    "13_mass_conservation": "PASS_GENERIC_LEDGER; ATTRIBUTION_RECONCILIATION_FAILS",
+    "23_physics_solver_policy_separation": "PASS_NO_SOLVER_POLICY_COUPLING_FOUND",
+    "26_runtime_diagnostics": "FAIL_TYPED_ATTRIBUTION_RECEIPT_CAN_BE_FACTUALLY_WRONG",
+    "29_no_silent_dependencies": "FAIL_EXACT_FORCING_PAIRING_DEPENDS_ON_UNENFORCED_CALLER_DISCIPLINE",
+    "30_architecture_change_review": "FAIL_CLOSED_ROUTE_BACK_REQUIRED"
+  },
+  "decision": "NOT_QUALIFIED_RESTRICTED_ACCEPTED_ROOT_UPTAKE_ATTRIBUTION_RECEIPT"
+}
