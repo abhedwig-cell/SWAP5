@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION",
+  "status": "QUALIFIED_RESTRICTED_FINITE_TIME_EVENT",
+  "production_implementation": false,
+  "qualification_use": true,
+  "frozen_precommit": "F-ROSS01_GATE_E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION_PRECOMMIT.json",
+  "scientific_run": {
+    "run": 34448876341,
+    "head": "0b45ceba118102b991500c7c5282cb68fcee74e3",
+    "conclusion": "success",
+    "workflow": "F-ROSS01 Gate E3G-R2-R1 Harness Repair Identical Rerun",
+    "scientific_code_identity": "The frozen R2 module, fixtures, equations, nonlinear policy and thresholds are unchanged. A wrapper only exports N_CELLS, DZ and theta_of_h from the already authoritative e3g.e3 namespace for final balance reporting."
+  },
+  "superseded_harness_runs": [
+    {
+      "run": 34447917022,
+      "head": "b1f96e9bffa20cd526d2aed68872890d8dff1210",
+      "classification": "HARNESS_FAILURE_NO_SCIENTIFIC_DECISION",
+      "error": "missing e3g.N_CELLS alias"
+    },
+    {
+      "run": 34448631196,
+      "head": "a59e9ddf38bb00e1b63931725ec9bfbc17df601a",
+      "classification": "HARNESS_FAILURE_NO_SCIENTIFIC_DECISION",
+      "error": "missing e3g.DZ alias after first narrow repair"
+    }
+  ],
+  "artifacts": {
+    "B01": {"id":10140749608,"digest":"sha256:130caff9d906c019addd50fb4b3b4d1030f06201e3d08e6da4a77bee72a08084"},
+    "O14": {"id":10140737900,"digest":"sha256:809803d2c31f016512568d1993551a68e9928c9efb1135744c1a289c599acae3"}
+  },
+  "qualified_fixtures": {
+    "B01": {
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "q_supply_cm_per_day": 84.13900261598157,
+      "interval_day": 0.05,
+      "frozen_event_bracket_day": [0.01,0.05],
+      "candidate_event_time_day": 0.022103726645838234,
+      "reference_event_time_day": 0.022104280702335114,
+      "event_time_difference_day": 5.540564968799233e-7,
+      "candidate_event_top_head_cm": -22.69485237305533,
+      "candidate_final_surface_storage_cm": 0.8393696211484978,
+      "reference_final_surface_storage_cm": 0.8393321374175227,
+      "final_surface_storage_difference_cm": 3.748373097511859e-5,
+      "max_event_head_difference_cm": 0.0028409784462013477,
+      "max_final_head_difference_cm": 0.003083570066728214,
+      "full_interval_bottom_transfer_difference_cm": 4.766807846134924e-5,
+      "candidate_full_interval_mass_residual_cm": -2.220446049250313e-16,
+      "reference_full_interval_mass_residual_cm": -2.220446049250313e-16,
+      "candidate_event_scaled_complementarity_residual_cm": 0.0,
+      "candidate_event_nfev": 7,
+      "reference_event_nfev": 8,
+      "candidate_remainder_nfev": 10,
+      "reference_remainder_nfev": 9,
+      "candidate_surface_q_reference_error_over_ksat": 3.6408896546799536e-15,
+      "pass": true
+    },
+    "O14": {
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "q_supply_cm_per_day": 20.281137326816246,
+      "interval_day": 0.01,
+      "frozen_event_bracket_day": [0.005,0.01],
+      "candidate_event_time_day": 0.006547732982077908,
+      "reference_event_time_day": 0.006547808567955115,
+      "event_time_difference_day": 7.558587720654653e-8,
+      "candidate_event_top_head_cm": -62.47156230737506,
+      "candidate_final_surface_storage_cm": 0.011993649815092213,
+      "reference_final_surface_storage_cm": 0.011992883907773078,
+      "final_surface_storage_difference_cm": 7.659073191345483e-7,
+      "max_event_head_difference_cm": 0.000880595557262609,
+      "max_final_head_difference_cm": 0.001070168585954434,
+      "full_interval_bottom_transfer_difference_cm": 3.2768520297349335e-6,
+      "candidate_full_interval_mass_residual_cm": -3.747002708109903e-15,
+      "reference_full_interval_mass_residual_cm": 2.3592239273284576e-16,
+      "candidate_event_scaled_complementarity_residual_cm": 2.6822988274943782e-15,
+      "candidate_event_nfev": 7,
+      "reference_event_nfev": 7,
+      "candidate_remainder_nfev": 6,
+      "reference_remainder_nfev": 6,
+      "candidate_surface_q_reference_error_over_ksat": 2.846743952525738e-15,
+      "pass": true
+    }
+  },
+  "global_findings": {
+    "material_count": 2,
+    "material_pass_count": 2,
+    "max_event_time_difference_day": 5.540564968799233e-7,
+    "max_event_time_difference_seconds": 0.04787048133042537,
+    "max_event_head_difference_cm": 0.0028409784462013477,
+    "max_final_head_difference_cm": 0.003083570066728214,
+    "max_final_surface_storage_difference_cm": 3.748373097511859e-5,
+    "max_full_interval_bottom_transfer_difference_cm": 4.766807846134924e-5,
+    "max_abs_full_interval_mass_residual_cm": 3.747002708109903e-15,
+    "max_surface_face_crosscheck_abs_error_over_ksat": 3.6408896546799536e-15,
+    "nonlinear_trajectory_count_per_path": 3,
+    "event_search_bisection_trajectory_count": 0,
+    "persistent_state_bytes_added": 0,
+    "mode_sequence": ["DRY_FLUX_TRIAL_REJECTED","EVENT_AT_HSURFACE_ZERO","PONDED_HEAD_REMAINDER"],
+    "all_original_committed_states_bitwise_unchanged_until_final_accept": true,
+    "all_synthetic_post_event_rejects_restore_original_committed_state": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "qualified_claim": "For the frozen B01 and O14 dry-profile constant-supply fixtures, an initially dry-admissible interval that becomes complementarity-inadmissible can be handled transactionally with one dry full-interval predictor, one constrained event-state/event-time corrector and one ponded remainder solve. The event is localized strictly inside the frozen bracket, the event state has h_surface=0 and negative soil heads, only the final composed interval is published, and complete mass balance closes far below the frozen 1e-9 cm gate without repair.",
+  "architecture_checks": {
+    "3_explicit_data_separation": "Committed state, forcing, event diagnostics, scratch and results remain separate.",
+    "4_compact_persistent_state": "No event-time or duplicate event-state is persisted per column.",
+    "5_scratch_per_worker": "Predictor, event corrector and remainder vectors are worker-owned scratch.",
+    "7_transactional_timesteps": "Predictor and event state are uncommitted; synthetic post-event rejection restores the original committed state; final publication occurs once.",
+    "8_warm_start": "Predictor may seed the event corrector, while event residuals originate from the original committed physical state.",
+    "9_generic_time": "Event times are generic offsets inside [t0,t1], not calendar boundaries.",
+    "13_mass_conservation_absolute": "Worst accepted whole-interval residual is 3.75e-15 cm; no repair or clipping.",
+    "20_alternative_soil_water_solvers": "Event composition uses soil-step and surface-face contracts rather than HeadCalc internals.",
+    "23_physics_solver_policy_separated": "Complementarity defines the physical event; least_squares and fixed trajectory count are qualification numerical policy.",
+    "24_predictable_runtime": "Exactly three nonlinear trajectories per candidate path; no repeated full-trajectory bisection event search.",
+    "25_reference_mode": "Independent reference trajectory remains available.",
+    "26_diagnostics_runtime": "Event bracket/time, residuals, nfev, mode sequence and balances are explicit."
+  },
+  "decision": "QUALIFIED_RESTRICTED_FINITE_TIME_PONDING_EVENT_LOCALIZATION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_GATES",
+  "next_gates": [
+    "E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION",
+    "TOP_NODE_H_EQ_0_SATURATION_TRANSITION_GATE"
+  ],
+  "hard_nonclaims": [
+    "No production runtime cost qualification; three trajectories are only a restricted bounded qualification path.",
+    "No top soil-node h=0 or positive-head state qualification.",
+    "No pond-depletion head-to-flux back-switch qualification.",
+    "No runoff with real soil state.",
+    "No response tangent across the boundary switch.",
+    "No B12/O13 finite-time event claim.",
+    "No MultiSWAP, MODFLOW or groundwater admission."
+  ]
+}
