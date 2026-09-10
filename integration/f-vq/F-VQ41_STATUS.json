@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ41",
+  "title": "Independent Qualification of F-MR26 Reference-ET ptra Root-Input Ownership Binding",
+  "branch": "qualification/f-vq41-fmr26-reference-et-ptra-root-input",
+  "status": "QUALIFIED_REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_CANONICAL_ADMISSION",
+  "owner_closeout": "e99e144b4f2bedcbb93d06af578cb409dc76f6c7",
+  "qualified_candidate_head": "9a13c599e7e45d4717c681a7800a9f88730c73e1",
+  "candidate_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+  "candidate_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+  "evidence": {
+    "workflow_run_id": 34460907655,
+    "workflow_job_id": 102818253052,
+    "active_grid_cases": 2304,
+    "O0_O2_output_identity": true,
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "independently_qualified": true,
+    "canonical_admitted": false,
+    "closed": true
+  },
+  "scope": {
+    "F_MR23_is_runtime_ptra_authority": true,
+    "incoming_crop_root_ptra_is_transport_only": true,
+    "root_geometry_preserved": true,
+    "new_ET_physics": false,
+    "root_uptake_execution": false,
+    "mass_ledger_binding": false,
+    "persistent_state": false,
+    "crop_state_advancement": false
+  },
+  "plan_correction": "Initial draft count 4608 corrected to 2304 because the unchanged matrix dimensions multiply to 2304. No qualification dimension was removed.",
+  "next_action": "Perform a source-bound canonical-admission workunit against the then-current integration/f-ci-canonical head. Do not assume the F-MR26 starting canonical head is still current."
+}
