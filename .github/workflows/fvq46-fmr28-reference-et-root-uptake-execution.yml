@@ -1,0 +1,27 @@
+name: F-VQ46 F-MR28 reference ET root uptake execution qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq46-fmr28-reference-et-root-uptake-execution
+    paths-ignore:
+      - integration/f-vq/F-VQ46_QUALIFICATION_EVIDENCE.json
+      - integration/f-vq/F-VQ46_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Independent F-VQ46 qualification gate
+        run: bash tests/fvq/run_fvq46_fmr28_reference_et_root_uptake_execution_gate.sh
