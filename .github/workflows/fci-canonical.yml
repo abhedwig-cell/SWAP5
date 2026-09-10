@@ -79,15 +79,18 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current lineage authority gate
-        run: python tools/fci/fci23_current_lineage_authority_gate.py
-      - name: Reexecute current F-CI21 closeout semantics
-        run: bash tests/fci/run_fci21_closeout_readiness_gate.sh
+      - name: Current F-CI24 forward-lineage authority gate
+        run: python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
+      - name: Reexecute admitted F-PM06A structural candidate
+        run: bash tests/fpm/run_fpm06a_reference_et_demand_candidate_gate.sh
+      - name: Reexecute admitted F-VQ35 scientific qualification
+        run: bash tests/fvq/run_fvq35_reference_et_demand_qualification.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          python tools/fci/fci23_current_lineage_authority_gate.py
-          test "$(git rev-parse HEAD:src)" = 3446aa1d0d80861b22f7e74c7ad51bcedef4f479
+          python tools/fci/fci24_reference_et_canonical_gate.py --mode canonical
+          test "$(git rev-parse HEAD:src)" = 3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI24_CANONICAL_REFERENCE_ET_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
