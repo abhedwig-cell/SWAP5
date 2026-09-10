@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ38",
+  "title": "Independent DRAMET=2 IPOS1..5 Scientific Equivalence Qualification Evidence",
+  "branch": "qualification/f-vq38-fpm08c2-hooghoudt-ernst",
+  "clean_base": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+  "candidate_closeouts": {
+    "F-PM08C2A": "5417799834775293fd459cd3f7ba5be3d3e5723e",
+    "F-PM08C2B": "4f1ff62ce6bf0b391760acb3b4677e475931c4e8",
+    "F-PM08C2C": "e92807165e674b48600e8ec2ae132d1dfc85a798"
+  },
+  "qualified_candidate_head": "db3e527a26ddc2bcc2adba0009f67b147dd1a9bf",
+  "workflow": {
+    "run_id": 34455746652,
+    "job_id": 102801592247,
+    "conclusion": "success",
+    "workflow_path": ".github/workflows/fvq38-dramet2-scientific.yml"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "independence": {
+    "authoring_fixtures_reused_as_oracle": false,
+    "candidate_sources_extracted_from_exact_closeout_commits": true,
+    "candidate_blob_identity_checked_before_compile": true,
+    "independent_python_formula_oracle": true,
+    "independent_oracle_finite_difference_tangents": true,
+    "qualification_branch_production_or_reference_delta": false
+  },
+  "quantitative_summary": {
+    "cases_total": 148,
+    "cases_by_ipos": {
+      "1": 32,
+      "2": 24,
+      "3": 24,
+      "4": 35,
+      "5": 33
+    },
+    "derivative_fd_checks": 132,
+    "equivalent_depth_branches": [1, 2, 3],
+    "max_derivative_rel_error": 6.587607348428564e-10,
+    "max_flux_abs_error": 2.220446049250313e-16,
+    "max_flux_rel_error": 3.202709152201663e-16,
+    "tags": {
+      "above_cutoff": 5,
+      "below_cutoff": 5,
+      "eqdepth": 32,
+      "exact_cutoff": 5,
+      "interface_equal": 1,
+      "interface_kink": 1,
+      "negative_rrad": 2,
+      "stable": 97
+    },
+    "summary_sha256": "246f8c19b6717e01bfc6b03e48f5885504a08b07107c12dd9bda7ab0bc07b1a7"
+  },
+  "verified_markers": [
+    "FVQ38_NO_PRODUCTION_OR_REFERENCE_DELTA=PASS",
+    "FVQ38_INDEPENDENT_ORACLE_STATIC_SEPARATION=PASS",
+    "FVQ38_FROZEN_DRAINAGE_SOURCE_IDENTITY=PASS",
+    "FVQ38_CANDIDATE_CLOSEOUT_BLOB_IDENTITY=PASS",
+    "FVQ38_CANDIDATE_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FVQ38_IPOS1_TO_5_INDEPENDENT_FLUX_ORACLE=PASS",
+    "FVQ38_EQDEPTH_ALL_THREE_BRANCHES=PASS",
+    "FVQ38_IPOS4_INTERFACE_DERIVATIVE_SEMANTICS=PASS",
+    "FVQ38_NEGATIVE_RADIAL_RESISTANCE_PARITY=PASS",
+    "FVQ38_B110_CUTOFF_SIDEDNESS_ALL_IPOS=PASS",
+    "FVQ38_RESPONSE_TANGENTS_VS_INDEPENDENT_ORACLE_FD=PASS",
+    "FVQ38_DRAMET2_SCIENTIFIC_EQUIVALENCE PASS",
+    "FVQ38_DRAMET2_SCIENTIFIC_GATE PASS"
+  ],
+  "qualified_scope": {
+    "DRAMET2_IPOS1_to_5_scalar_response_family": true,
+    "normalized_mathematically_valid_domain": true,
+    "equivalent_depth_formula_branches": true,
+    "stable_branch_response_tangents": true,
+    "IPOS4_interface_derivative_semantics": true,
+    "negative_radial_resistance_when_total_resistance_positive": true,
+    "B110_cutoff_sidedness": true
+  },
+  "not_qualified": [
+    "DIVDRA spatial distribution",
+    "multi-level aggregation",
+    "surface-water-controlled drainage",
+    "runtime/source-sink binding",
+    "solver Jacobian chain-rule binding or fully implicit drainage",
+    "canonical admission",
+    "legacy reader-admitted singular or mathematically undefined parameter combinations"
+  ]
+}
