@@ -122,10 +122,6 @@ contains
       diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW
       return
     end if
-    if (wt_node < n .and. dz_top_sat < -LEGACY_LEVEL_TO_COMPARTMENT_OFFSET) then
-      diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW
-      return
-    end if
 
     kd_hor = dz_top_sat * khor(wt_node)
     kd_ver = dz_top_sat / kver(wt_node)
