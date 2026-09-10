@@ -7,17 +7,25 @@ on:
       - integration/f-ci-canonical
     paths:
       - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml'
+      - '.github/workflows/fci33r-current-canonical-postimage-reconciliation.yml'
       - '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml'
       - 'integration/f-ci/F-CI34P_STATUS.json'
       - 'integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json'
       - 'integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json'
+      - 'integration/f-ci/F-CI34P_EVIDENCE.json'
+      - 'integration/f-ci/F-CI34_STATUS.json'
   pull_request:
     paths:
       - '.github/workflows/fci-canonical.yml'
+      - '.github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml'
+      - '.github/workflows/fci33r-current-canonical-postimage-reconciliation.yml'
       - '.github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml'
       - 'integration/f-ci/F-CI34P_STATUS.json'
       - 'integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json'
       - 'integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json'
+      - 'integration/f-ci/F-CI34P_EVIDENCE.json'
+      - 'integration/f-ci/F-CI34_STATUS.json'
 
 jobs:
   post-promotion-reconciliation:
@@ -28,7 +36,7 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Fail closed on production or reference drift
+      - name: Fail closed on production, reference, or out-of-scope drift
         shell: bash
         run: |
           set -euo pipefail
@@ -38,13 +46,55 @@ jobs:
             git diff --name-only "$BASE"..HEAD -- src reference >&2
             exit 34
           fi
+          mapfile -t changed < <(git diff --name-only "$BASE"..HEAD)
+          for path in "${changed[@]}"; do
+            case "$path" in
+              .github/workflows/fci-canonical.yml|\
+              .github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml|\
+              .github/workflows/fci33r-current-canonical-postimage-reconciliation.yml|\
+              .github/workflows/fci34p-root-attribution-post-promotion-reconciliation.yml|\
+              integration/f-ci/F-CI34P_STATUS.json|\
+              integration/f-ci/F-CI34P_QUALIFICATION_PLAN.json|\
+              integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json|\
+              integration/f-ci/F-CI34P_EVIDENCE.json|\
+              integration/f-ci/F-CI34_STATUS.json) ;;
+              *) echo "FCI34P_FAIL out-of-scope delta: $path" >&2; exit 34 ;;
+            esac
+          done
           test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
           echo 'FCI34P_ZERO_SRC_REFERENCE_DELTA=PASS'
+          echo 'FCI34P_SCOPE_DELTA=PASS'
           echo 'FCI34P_FCI33_DIVDRA_AUTHORITY_PRESERVED=PASS'
           echo 'FCI34P_FCI34_ROOT_ATTRIBUTION_AUTHORITY_PRESERVED=PASS'
+      - name: Verify historical F-CI33 gate code is byte-identical and moving triggers are retired
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE=2efba343d425770e5d581d8137cd60e83d8b7ac5
+          for path in \
+            tools/fci/fci33_divdra_runtime_canonical_gate.py \
+            tests/fci/run_fci33_divdra_runtime_canonical_admission.sh \
+            tools/fci/fci33r_current_postimage_gate.py \
+            tests/fci/run_fci33_current_postimage_reconciliation.sh; do
+            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$BASE:$path")"
+          done
+          for wf in \
+            .github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml \
+            .github/workflows/fci33r-current-canonical-postimage-reconciliation.yml; do
+            if grep -Fq -- '- integration/f-ci-canonical' "$wf"; then
+              echo "FCI34P_FAIL stale moving canonical trigger remains in $wf" >&2
+              exit 34
+            fi
+            grep -Fq 'workflow_dispatch:' "$wf"
+          done
+          grep -Fq -- '- qualification/f-ci33-fmr33-divdra-runtime-canonical-admission' .github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml
+          grep -Fq -- '- qualification/f-ci33r-current-canonical-postimage-reconciliation' .github/workflows/fci33r-current-canonical-postimage-reconciliation.yml
+          echo 'FCI34P_FCI33_FCI33R_GATE_RUNNER_CODE_BYTE_IDENTICAL=PASS'
+          echo 'FCI34P_OBSOLETE_MOVING_TRIGGERS_RETIRED=PASS'
+          echo 'FCI34P_HISTORICAL_REPLAY_PATHS_PRESERVED=PASS'
       - name: Verify reconciled broad canonical authority definition
         shell: bash
         run: |
@@ -56,6 +106,31 @@ jobs:
           echo 'FCI34P_BROAD_CANONICAL_AUTHORITY_RECONCILED=PASS'
       - name: Replay exact F-CI34 scientific and source admission authority
         run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
+      - name: Replay current DIVDRA O0 and O2 smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD="${RUNNER_TEMP}/fci34p-divdra"
+          mkdir -p "$BUILD/o0" "$BUILD/o2"
+          compile_smoke() {
+            local opt="$1"
+            local dir="$2"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" -c src/solver/mod_soil_water_solver_contract.f90 -o "$dir/contract.o"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" -c src/solver/mod_process_hydraulic_view.f90 -o "$dir/view.o"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" -c src/process/mod_drainage_spatial_distribution.f90 -o "$dir/divdra.o"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" -c src/runtime/mod_fmr_divdra_runtime_binding.f90 -o "$dir/binding.o"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" -c src/solver/mod_b110_source_sink_provider.f90 -o "$dir/source_sink.o"
+            gfortran -std=f2008 -Wall -Wextra "$opt" -J"$dir" -I"$dir" tests/fci/fci33_divdra_runtime_admission_smoke.f90 \
+              "$dir/contract.o" "$dir/view.o" "$dir/divdra.o" "$dir/binding.o" "$dir/source_sink.o" -o "$dir/smoke"
+            "$dir/smoke" > "$dir/output.txt"
+            grep -Fxq 'FCI33_DIVDRA_RUNTIME_ADMISSION_SMOKE=PASS' "$dir/output.txt"
+          }
+          compile_smoke -O0 "$BUILD/o0"
+          compile_smoke -O2 "$BUILD/o2"
+          diff -u "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
+          echo 'FCI34P_CURRENT_DIVDRA_O0=PASS'
+          echo 'FCI34P_CURRENT_DIVDRA_O2=PASS'
+          echo 'FCI34P_CURRENT_DIVDRA_O0_O2_IDENTITY=PASS'
       - name: Verify 30 architecture invariants remain no-adverse-delta
         shell: bash
         run: |
@@ -68,6 +143,12 @@ jobs:
           inv=a['invariants']
           assert [x['id'] for x in inv] == list(range(1,31))
           assert all(x['status'] in ('NO_ADVERSE_DELTA','SATISFIED','SATISFIED_WITHIN_SERIALIZED_SCOPE') for x in inv)
+          if __import__('os').path.exists('integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json'):
+              with open('integration/f-ci/F-CI34P_ARCHITECTURE_AUDIT.json', encoding='utf-8') as f:
+                  p=json.load(f)
+              assert p['overall']=='NO_ADVERSE_ARCHITECTURE_DELTA_GOVERNANCE_ONLY'
+              assert [x['id'] for x in p['invariants']] == list(range(1,31))
+              assert all(x['status']=='NO_ADVERSE_DELTA_GOVERNANCE_ONLY' for x in p['invariants'])
           print('FCI34P_ARCHITECTURE_INVARIANTS_30_OF_30_NO_ADVERSE_DELTA=PASS')
           PY
       - name: Write reconciliation evidence summary
@@ -83,6 +164,9 @@ jobs:
             echo "reference_tree=$(git rev-parse HEAD:reference)"
             echo "fci33_divdra_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)"
             echo "fci34_root_attribution_blob=$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)"
+            echo "historical_fci33_gate_code=BYTE_IDENTICAL"
+            echo "obsolete_fci33_moving_triggers=RETIRED"
+            echo "divdra_o0_o2=PASS_IDENTICAL"
             echo "result=PASS_FCI34P_POST_PROMOTION_RECONCILIATION_GATE"
           } > evidence/F-CI34P_SUMMARY.txt
           cat evidence/F-CI34P_SUMMARY.txt
