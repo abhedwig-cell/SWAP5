@@ -34,10 +34,12 @@ serial=Path('src/runtime/mod_fmr_serialized_multiswap_runtime.f90').read_text().
 divrt=Path('src/runtime/mod_fmr_divdra_serialized_runtime.f90').read_text().lower()
 backend=Path('src/runtime/mod_fmr_serialized_reference_backend.f90').read_text().lower()
 
-# Current parallel boundary: shared forcing registry is read-only and workers
-# route through the serialized per-column executor.
+# Current parallel boundary: scheduling is forcing-agnostic; the worker pool
+# receives the shared forcing registry read-only and routes each assigned
+# column through the serialized per-column executor.
 assert re.search(r'type\(fmr_b110_physical_forcing_t\),\s*intent\(in\)\s*::\s*forcing_registry\(:\)', worker)
-assert re.search(r'type\(fmr_b110_physical_forcing_t\),\s*intent\(in\)\s*::\s*forcing_registry\(:\)', sched)
+assert 'forcing_registry' not in sched
+assert 'public :: fmr_build_parallel_schedule' in sched
 assert 'fmr_execute_serialized_physical_column' in worker
 
 # Registry is a lookup boundary, not a physics requirement: the executor
