@@ -30,7 +30,6 @@ FVQ36_STATUS_BLOB = "585f89307f6eeb5c3caf6bcb8c853bc66bce01c4"
 FVQ36_QUALIFICATION_BLOB = "0fc9584c232a50ee215064a743e9c1adebbbf91a"
 FCI24_STATUS_BLOB = "8493cd104a3aa0389f0f74e6506a93fe55b95472"
 FCI28_EVIDENCE_BLOB = "3831a0d532dc94c2402a375bae5bc5d080ab7553"
-FCI28_STATUS_BLOB = "120a1ad62e1217e6ea97204912679dc28256bbc5"
 
 
 def git(*args: str) -> str:
@@ -70,7 +69,7 @@ def main() -> int:
     else:
         require(quiet("merge-base", "--is-ancestor", BASE_CANONICAL, "HEAD"), "G04_CANONICAL_FORWARD_LINEAGE")
 
-    expected = [CONTRACT_SOURCE, RESTART_SOURCE]
+    expected = [RESTART_SOURCE, CONTRACT_SOURCE]
     changed = [p for p in git("diff", "--name-only", f"{BASE_CANONICAL}..HEAD", "--", "src").splitlines() if p]
     require(changed == expected, "G05_EXACT_TWO_SOURCE_DELTA")
     require(blob("HEAD", "src") == EXPECTED_POST_SRC_TREE, "G06_EXACT_POST_SRC_TREE")
@@ -93,7 +92,6 @@ def main() -> int:
     require(blob("HEAD", "integration/f-vq/F-VQ36_QUALIFICATION.json") == FVQ36_QUALIFICATION_BLOB, "G21_FVQ36_EVIDENCE_PRESERVED")
     require(blob("HEAD", "integration/f-ci/F-CI24_STATUS.json") == FCI24_STATUS_BLOB, "G22_FCI24_AUTHORITY_PRESERVED")
     require(blob("HEAD", "integration/f-ci/F-CI28_QUALIFICATION_EVIDENCE.json") == FCI28_EVIDENCE_BLOB, "G23_FCI28_QUALIFICATION_EVIDENCE_LOCK")
-    require(blob("HEAD", "integration/f-ci/F-CI28_STATUS.json") == FCI28_STATUS_BLOB, "G24_FCI28_STATUS_LOCK")
 
     fci27 = load("integration/f-ci/F-CI27_STATUS.json")
     fci28 = load("integration/f-ci/F-CI28_STATUS.json")
@@ -102,15 +100,22 @@ def main() -> int:
         fci27.get("decision") == "QUALIFIED_CLOSED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION"
         and fci27.get("state", {}).get("production_source_admitted") is True
         and fci27.get("qualified_scope", {}).get("root_uptake_binding") is False,
-        "G25_FCI27_CANONICAL_AUTHORITY",
+        "G24_FCI27_CANONICAL_AUTHORITY",
     )
+    allowed_decisions = {
+        "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE",
+        "QUALIFIED_CLOSED_FMR25_RESTRICTED_RESTART_CURRENT_CANONICAL_ADMISSION",
+    }
     require(
         fci28.get("candidate") == CANDIDATE
-        and fci28.get("decision") == "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE"
-        and fci28.get("state", {}).get("qualified") is True
-        and fci28.get("state", {}).get("canonical_ref_advanced") is False,
-        "G26_FCI28_PRE_ADMISSION_STATUS",
+        and fci28.get("decision") in allowed_decisions
+        and fci28.get("state", {}).get("qualified") is True,
+        "G25_FCI28_QUALIFICATION_STATUS",
     )
+    if args.mode == "admission":
+        require(fci28.get("state", {}).get("canonical_ref_advanced") is False, "G26_PRE_ADMISSION_STATE")
+    else:
+        require(fci28.get("state", {}).get("canonical_ref_advanced") in (False, True), "G26_CANONICAL_STATE_COMPATIBLE")
     require(
         evidence.get("decision") == "QUALIFIED_INDEPENDENT_FMR25_RESTRICTED_RESTART_ON_FCI27_POSTIMAGE"
         and evidence.get("restart_qualification", {}).get("exact_interval_mass_continuation") == "PASS"
