@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Wall-Clock Scaling & Worker-Cost Characterization",
+  "status": "PROTOCOL_PERSISTED_TIMING_NOT_STARTED",
+  "base": {
+    "work_unit": "F-MR20",
+    "branch": "work/f-mr20-concurrency-isolation",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "purpose": "Characterize wall-clock scaling and incremental worker cost of the already-qualified F-MR20 parallel-v1 path without changing physics, admission, solver policy, mass tolerances or production source.",
+  "production_change": false,
+  "hard_source_rule": "No file under src/ may differ from the exact F-MR20 closeout base for F-PE07 measurement or closeout.",
+  "frozen_physical_profile": {
+    "logical_columns": 32,
+    "batch_size": 9,
+    "top_boundary": "stateless fixed_flux_top_boundary_provider_t",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false,
+    "hard_mass_gate": 1e-12,
+    "state_handle_contract": "one unique committed-state handle per logical column",
+    "parameter_contract": "shared immutable parameter registry reference",
+    "forcing_contract": "per-column forcing registry entries"
+  },
+  "timing_arms": [
+    {
+      "name": "W1",
+      "worker_count": 1,
+      "route": "fmr_run_parallel_physical_multiswap single-worker delegation to serialized reference"
+    },
+    {
+      "name": "W2",
+      "worker_count": 2,
+      "route": "qualified restricted parallel-v1"
+    },
+    {
+      "name": "W4",
+      "worker_count": 4,
+      "route": "qualified restricted parallel-v1"
+    }
+  ],
+  "timing_design": {
+    "compiler": "GNU Fortran on GitHub-hosted Ubuntu 24.04",
+    "optimization_builds": ["O0", "O2"],
+    "openmp": true,
+    "measurement_clock": "Fortran system_clock around only the runtime dispatch call",
+    "excluded_from_timed_region": [
+      "fixture construction",
+      "committed-state initialization/reset",
+      "post-run correctness and mass checks",
+      "compiler/process startup"
+    ],
+    "included_in_timed_region": [
+      "parallel/serialized runtime dispatch",
+      "backend initialization performed by the runtime",
+      "result/diagnostic allocation inside the runtime",
+      "checkpoint/trial/commit-discard execution",
+      "batch barriers and OpenMP team management for W2/W4",
+      "deterministic aggregate reduction"
+    ],
+    "warmups_per_arm": 3,
+    "balanced_block_order": ["W1", "W2", "W4", "W4", "W2", "W1"],
+    "blocks": 10,
+    "timed_repetitions_per_arm_occurrence": 10,
+    "raw_observations_per_optimization": 60,
+    "runtime_dispatches_per_optimization": 600,
+    "column_interval_solves_per_optimization": 19200,
+    "aggregation": {
+      "primary": "median per-arm wall time and derived median speedup W1/W2 and W1/W4",
+      "tail": "p95 per-arm wall time and p95 paired block-normalized ratios",
+      "raw_preservation": true,
+      "negative_or_counterintuitive_observations": "retain; do not clip"
+    }
+  },
+  "pre_timing_hard_gates": [
+    "exact F-MR20 closeout source blobs",
+    "no src/ changes relative to F-MR20 closeout",
+    "existing F-MR20 parallel-v1 scientific qualification remains green",
+    "all timed arms commit all 32 columns on every measured dispatch",
+    "hard per-column mass residual <= 1e-12",
+    "W2 shows at least two simultaneous real physical solves",
+    "W4 shows at least two simultaneous real physical solves",
+    "scientific state/result identity is not weakened for timing"
+  ],
+  "reported_metrics": [
+    "wall time per 32-column interval",
+    "wall time per committed column",
+    "W2 speedup relative to W1",
+    "W4 speedup relative to W1",
+    "parallel efficiency W2 = speedup/2",
+    "parallel efficiency W4 = speedup/4",
+    "incremental wall-clock overhead or benefit relative to W1",
+    "observed simultaneous real physical solve count"
+  ],
+  "interpretation_limits": [
+    "GitHub-hosted runner timings are environment-specific characterization, not universal hardware guarantees",
+    "F-PE07 does not qualify worker_count=8",
+    "F-PE07 does not qualify other column counts or batch sizes",
+    "F-PE07 does not widen the frozen F-MR20 physical profile",
+    "F-PE07 does not alter solver tolerances, physics or mass policy to obtain speedup",
+    "a speedup below 1 is valid negative evidence and must be persisted",
+    "timing results do not by themselves prove large-scale MultiSWAP scaling"
+  ],
+  "architecture_invariants_explicitly_guarded": [4,5,6,13,16,23,24,25,26,27,30],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "implement timing harness",
+      "run pre-timing scientific gates",
+      "collect O0/O2 timing evidence",
+      "persist results and interpretation",
+      "close characterization"
+    ]
+  }
+}
