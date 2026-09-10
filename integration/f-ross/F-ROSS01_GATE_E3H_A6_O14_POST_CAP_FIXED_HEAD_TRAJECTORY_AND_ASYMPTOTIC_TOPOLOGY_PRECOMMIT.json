@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A6_O14_POST_CAP_FIXED_HEAD_TRAJECTORY_AND_ASYMPTOTIC_TOPOLOGY_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "purpose": "Determine the physically reachable post-runoff topology before imposing another h0=0 event equation. Starting from the four frozen A4 surface-cap checkpoints, use independent reference fluxes only to measure the initial top-cell tendency, follow a bounded conservative fixed-head trajectory, and solve the common post-cap unsaturated steady state under h_surface=1 cm and h_bottom=-15 cm.",
+  "upstream": {
+    "A4_decision": "O14_SURFACE_CAP_PRECEDES_TOP_SATURATION_CHARACTERIZED_READY_FOR_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_CONTINUATION_DIAGNOSTIC",
+    "A5_result": "F-ROSS01_GATE_E3H_A5_O14_TRANSACTIONAL_RUNOFF_ONSET_AND_POST_CAP_TOP_SATURATION_RESULT.json",
+    "A5_decision": "O14_POST_CAP_TOP_SATURATION_NOT_ESTABLISHED_FROZEN_DIRECT_EVENT_FORMULATION_REJECTED_POST_CAP_TRAJECTORY_TOPOLOGY_DIAGNOSTIC_REQUIRED"
+  },
+  "frozen_cap_states": {
+    "P0_A1_CONTROL": [-0.14612442301092474,-3.4365807674561273,-8.231314064881142],
+    "P1_DRIER_SUBSOIL": [-0.23356049032180035,-3.7808381225488468,-8.689972381245196],
+    "P2_DRIER_TOP_AND_SUBSOIL": [-0.47697860016578836,-4.718962776786451,-10.022018575369172],
+    "P3_STRONG_DRY_SEPARATION": [-1.472189253257072,-8.509653922626015,-16.120819017592716]
+  },
+  "fixed_post_cap_boundary": {
+    "surface_storage_cm": 1.0,
+    "surface_head_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat_for_runoff_ledger": 12.0,
+    "meaning": "Once the surface cap is active, atmospheric excess changes the runoff ledger; the soil trajectory is governed by the fixed 1 cm surface head and bottom head."
+  },
+  "reference_authority": {
+    "surface_face": "Independent high-accuracy 5 cm surface reference for h_surface=1 and h0<0.",
+    "internal_faces": "Independent reference internal-face fluxes on 10 cm faces.",
+    "candidate_ross_routes_used": false,
+    "reason": "A6 diagnoses physical reachability/topology, not candidate accuracy."
+  },
+  "part_A_initial_tendency": {
+    "evaluate_at_each_exact_A4_cap_state": true,
+    "top_storage_rate_sign": "sign(q_top-q_01)",
+    "interpretation": "q_top-q_01<0 means the top cell initially loses water after cap onset; >0 means it initially wets."
+  },
+  "part_B_transient": {
+    "method": "reference-only conservative backward Euler in head state",
+    "schedule": [
+      {"count":20,"dt_day":0.0005},
+      {"count":18,"dt_day":0.005},
+      {"count":18,"dt_day":0.05}
+    ],
+    "total_steps_per_profile": 56,
+    "total_horizon_day": 1.0,
+    "head_bounds_cm": [-10000.0,-1e-8],
+    "least_squares_xtol": 1e-13,
+    "least_squares_ftol": 1e-13,
+    "least_squares_gtol": 1e-13,
+    "max_nfev_per_step": 200,
+    "max_abs_cell_balance_residual_cm": 1e-9,
+    "hard_event_check": "Any accepted step with h0>=-1e-6 cm is recorded as TOP_SATURATION_APPROACH and prevents an unsaturated-attractor conclusion.",
+    "no_step_failure_omission": true
+  },
+  "part_C_steady_state": {
+    "unknowns": ["h0","h1","h2"],
+    "equations": ["q_top-q01=0","q01-q12=0","q12-qbottom=0"],
+    "head_bounds_cm": [-10000.0,-1e-8],
+    "deterministic_starts": [
+      [-0.2,-3.0,-8.0],
+      [-1.0,-5.0,-10.0],
+      [-5.0,-10.0,-12.0],
+      [-0.05,-1.0,-5.0],
+      [-10.0,-12.0,-14.0]
+    ],
+    "minimum_reproducible_starts": 2,
+    "cluster_max_abs_head_difference_cm": 0.001,
+    "max_abs_flux_continuity_residual_cm_per_day": 1e-8,
+    "steady_top_head_must_remain_below_cm_for_unsaturated_attractor": -1e-4
+  },
+  "runoff_accounting": {
+    "runoff_rate_each_transient_step": "q_supply-q_top; must be nonnegative while S=1 cm",
+    "cumulative_runoff_is_diagnostic_ledger": true,
+    "surface_storage_clipping": false,
+    "mass_repair": false
+  },
+  "decision_logic": {
+    "unsaturated_attractor": "All four initial top tendencies are nonpositive, all 56-step trajectories remain below h0=-1e-6 with conservative reference balances, and a reproducible unsaturated steady root exists with h0<-1e-4. Then isolated post-cap h0=0 is not the next reachable event under this frozen O14 boundary topology.",
+    "top_saturation_reachable": "Any conservative trajectory approaches/crosses the frozen h0 threshold or no reproducible unsaturated steady root exists. Then preserve the relevant profile/time evidence and design an event gate from the actual trajectory rather than from A5 direct-event algebra.",
+    "inconclusive": "Any reference-step/root failure prevents a physical conclusion; diagnose the reference trajectory/steady solver without changing the frozen states or boundary."
+  },
+  "hard_guards": [
+    "Do not change the four A4 cap states, O14 hydraulics, h_surface=1 cm or h_bottom=-15 cm.",
+    "Do not use the failed A5 direct h0=0 equation as evidence of impossibility by itself.",
+    "Do not infer production solver performance from this reference-only diagnostic.",
+    "Do not add or persist event time/state per column.",
+    "Runoff remains an explicit external ledger transfer, never hidden clipping.",
+    "Do not tune the transient schedule or steady starts after seeing results inside A6."
+  ],
+  "architecture_checks": {
+    "3_explicit_data_separation": "Committed cap heads, fixed boundary, transient scratch, runoff ledger and diagnostics remain separate.",
+    "4_compact_persistent_state": "No A6-specific persistent state.",
+    "5_scratch_per_worker": "Step/root vectors are qualification-worker scratch.",
+    "7_transactional_timesteps": "Every diagnostic step is solved from the previous accepted reference state; failed trial states are not substituted or clipped.",
+    "9_generic_time": "All times are generic day-valued intervals, not calendar boundaries.",
+    "13_mass_conservation_absolute": "Every accepted transient step must close each cell within 1e-9 cm without repair.",
+    "25_reference_mode": "A6 is explicitly reference-only.",
+    "28_runtime_composition": "Runoff ownership remains outside the soil kernel."
+  },
+  "positive_exit": "O14_POST_CAP_UNSATURATED_ATTRACTOR_CHARACTERIZED_NO_FORCED_TOP_SATURATION_EVENT_REQUIRED_IN_FROZEN_CAP_TOPOLOGY",
+  "alternative_exit": "O14_POST_CAP_TOP_SATURATION_REACHABLE_FROM_REFERENCE_TRAJECTORY_READY_FOR_EVENT_GATE",
+  "inconclusive_exit": "O14_POST_CAP_REFERENCE_TRAJECTORY_OR_STEADY_DIAGNOSTIC_INCOMPLETE",
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
