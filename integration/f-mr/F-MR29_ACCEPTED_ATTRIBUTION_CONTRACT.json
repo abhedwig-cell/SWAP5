@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR29",
+  "title": "Accepted Actual-Transpiration Attribution Contract",
+  "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "decision": "ROOT_EXTRACTION_IS_ALREADY_PHYSICALLY_BOOKED_ONCE; ACCEPTED_TRANSPIRATION_IS_POSTCOMMIT_ATTRIBUTION_ONLY",
+  "authoritative_physical_sink": {
+    "field": "fmr_b110_physical_forcing_t%root_extraction_sink(:)",
+    "backend_copy": "fmr_serialized_prepare_interval -> self%qrot(:)",
+    "solver_binding": "bind_b110_root_sink_provider(self%root_sink, self%qrot)",
+    "mass_booking": "account_external_fluxes -> sum(max(qrot,0)*step_duration) into mass_out",
+    "duplicate_booking_forbidden": true
+  },
+  "frozen_scope_semantics": {
+    "root_extraction_nonnegative_when_active": true,
+    "qrot_constant_over_one_outer_canonical_interval": true,
+    "prepare_interval_called_once_before_internal_committed_substep_loop": true,
+    "candidate_materialized_only_after_full_requested_interval_completed": true,
+    "candidate_origin_interval_equals_requested_outer_interval": true,
+    "accepted_commit_receipt_exists_only_after_successful_kernel_commit": true
+  },
+  "accepted_actual_transpiration": {
+    "unit_semantics": "integrated water amount over the committed candidate interval",
+    "formula": "sum(root_extraction_sink(:)) * (receipt_t1 - receipt_t0)",
+    "source_of_rate": "the exact solver forcing used to produce the committed candidate, not a separately recomputed process value",
+    "publication_gate": "successful fmr_accepted_commit_receipt_t only",
+    "mass_ledger_effect": "none",
+    "reconciliation": "the attributed amount is a named subset of already-booked accepted total_out and must never be added to total_out again"
+  },
+  "rollback_and_retry": {
+    "trial_level_accumulator_required": false,
+    "reason": "qrot is immutable over the outer interval and no candidate exists unless the full outer interval completes",
+    "rejected_full_trial_publishes": false,
+    "rejected_half_trial_publishes": false,
+    "retry_exhaustion_publishes": false,
+    "discarded_candidate_publishes": false,
+    "failed_commit_publishes": false
+  },
+  "recommended_implementation_seam": {
+    "next_workunit": "F-MR30",
+    "kind": "small runtime postcommit attribution helper",
+    "inputs": [
+      "the exact fmr_b110_physical_forcing_t used for the candidate",
+      "the successful fmr_accepted_commit_receipt_t"
+    ],
+    "output": "typed accepted root-water-uptake/transpiration attribution receipt with lineage, revision, [t0,t1] and integrated amount",
+    "must_not_modify": [
+      "mod_transaction_reference",
+      "canonical_mass_accounting_t totals",
+      "kernel committed state",
+      "soil-water solver physics",
+      "root-water-uptake physics"
+    ]
+  },
+  "nonclaims": [
+    "parallel root-extraction execution",
+    "dynamic root-sink reevaluation inside one outer interval",
+    "SWKIMPL=1 root-sink recomputation",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "crop lifecycle advancement",
+    "general process-attribution framework for every flux family"
+  ]
+}
