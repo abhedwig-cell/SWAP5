@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-WOF43",
+  "title": "Restricted Crop-to-ET Canopy View Data Classification",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "frozen_source": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_swap_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "MOD_cropdevelopment_f90_sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+    "interface_plant_f90_sha256": "2295a17a9597f016ed8ec538eede7c9400da0819914e96f7d641597ce71f64df",
+    "fixed_f90_sha256": "1d57e86f0bf067e8432da69f46cd19e0df6768b9c6bcf560d2221248f3b12f75",
+    "wofost_f90_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b"
+  },
+  "fields": [
+    {
+      "legacy": "fl_cropemergence",
+      "semantic": "crop_emerged",
+      "class": "committed_or_trial_crop_lifecycle_state",
+      "owner": "crop_owner",
+      "persistent": true,
+      "derivation": null
+    },
+    {
+      "legacy": "dvs",
+      "semantic": "development_stage",
+      "class": "committed_or_trial_crop_state",
+      "owner": "crop_owner",
+      "persistent": true,
+      "consumed_by": ["crop_factor_derivation"]
+    },
+    {
+      "legacy": "lai",
+      "semantic": "leaf_area_index",
+      "class": "committed_or_trial_crop_state",
+      "owner": "crop_owner",
+      "persistent": true,
+      "consumed_by": ["vegetation_cover_derivation"]
+    },
+    {
+      "legacy": "kdir",
+      "semantic": "direct_visible_light_extinction_coefficient",
+      "class": "immutable_shared_crop_parameter",
+      "owner": "crop_parameter_contract",
+      "persistent_per_column": false,
+      "legacy_domain": [0.0, 2.0]
+    },
+    {
+      "legacy": "kdif",
+      "semantic": "diffuse_visible_light_extinction_coefficient",
+      "class": "immutable_shared_crop_parameter",
+      "owner": "crop_parameter_contract",
+      "persistent_per_column": false,
+      "legacy_domain": [0.0, 2.0],
+      "canonical_note": "already present as diffuse_extinction_coefficient in wofost_rate_scalar_parameters_t"
+    },
+    {
+      "legacy": "cftb",
+      "semantic": "crop_factor_by_development_stage",
+      "class": "immutable_shared_crop_parameter_table",
+      "owner": "crop_parameter_contract",
+      "persistent_per_column": false,
+      "legacy_x_domain": [0.0, 2.0],
+      "legacy_y_domain": [0.0, 2.0],
+      "recommended_substrate": "qualified F-WOF29 wofost_rate_table_t"
+    },
+    {
+      "legacy": "sw_co2",
+      "semantic": "co2_transpiration_correction_enabled",
+      "class": "immutable_physical_crop_configuration",
+      "owner": "crop_parameter_contract",
+      "persistent_per_column": false
+    },
+    {
+      "legacy": "co2tratb",
+      "semantic": "transpiration_factor_by_atmospheric_co2",
+      "class": "optional_immutable_shared_crop_parameter_table",
+      "owner": "crop_parameter_contract",
+      "required_when": "co2_transpiration_correction_enabled",
+      "persistent_per_column": false,
+      "legacy_x_domain_ppm": [0.0, 3000.0],
+      "legacy_y_domain": [0.0, 2.0],
+      "recommended_substrate": "qualified F-WOF29 wofost_rate_table_t"
+    },
+    {
+      "legacy": "co2",
+      "semantic": "atmospheric_co2_concentration_ppm",
+      "class": "optional_forcing",
+      "owner": "forcing_runtime_or_adapter",
+      "required_when": "co2_transpiration_correction_enabled",
+      "legacy_selection_note": "legacy year/file lookup is not kernel-facing semantics"
+    },
+    {
+      "legacy": "vcover",
+      "semantic": "vegetation_cover_fraction",
+      "class": "derived_ephemeral_crop_canopy_view",
+      "owner": "crop_to_et_view_provider",
+      "persistent": false,
+      "derivation": "1-exp(-KDIR*KDIF*LAI)",
+      "emergence_gated": false
+    },
+    {
+      "legacy": "cf",
+      "semantic": "crop_factor",
+      "class": "derived_ephemeral_crop_canopy_view",
+      "owner": "crop_to_et_view_provider",
+      "persistent": false,
+      "derivation": "AFGEN(CFTB,DVS)",
+      "active_for_restricted_route": "crop_emerged and SWETR=1/SWCF=1"
+    },
+    {
+      "legacy": "fco2tra",
+      "semantic": "co2_transpiration_factor",
+      "class": "derived_ephemeral_crop_canopy_view",
+      "owner": "crop_to_et_view_provider",
+      "persistent": false,
+      "derivation_disabled": "1.0",
+      "derivation_enabled": "AFGEN(CO2TRATB, atmospheric_CO2_ppm)",
+      "active_downstream_dependency": "crop_emerged"
+    }
+  ],
+  "explicit_nonowners": {
+    "ET_process": ["crop lifecycle state", "DVS evolution", "LAI evolution", "CFTB", "CO2TRATB", "CO2 time selection"],
+    "root_uptake_process": ["vcover", "CF", "fco2tra derivation"],
+    "hydraulic_solver": ["all crop-to-ET canopy fields"]
+  },
+  "canonical_parameter_gap": {
+    "existing_wofost_rate_bundle_has_KDIF": true,
+    "missing_from_existing_bundle": ["KDIR", "CFTB", "CO2TRATB"],
+    "classification": "IMPLEMENTATION_PARAMETER_SUBSTRATE_GAP_NOT_OWNERSHIP_BLOCKER"
+  }
+}
