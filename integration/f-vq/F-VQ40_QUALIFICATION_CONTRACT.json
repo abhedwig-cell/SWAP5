@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ40",
+  "scope": "independent scientific/source-bound requalification of the F-PM08C1R remediated DRAMET=1 tabulated response",
+  "candidate": {
+    "closeout": "d87e21c9603063add7a7440a0aebe6fbac326d03",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a"
+  },
+  "required_scientific_checks": [
+    "reconstruct B1.10 fixed-table plus AFGEN response independently from frozen source semantics",
+    "verify flux equivalence over normalized strictly increasing nonnegative tables with at least two knots",
+    "verify one-point positive-depth tables are legacy-equivalent constant responses",
+    "verify positive and negative groundwater levels both use abs(gwl) for flux",
+    "verify endpoint clamping, interpolation and exact-knot fluxes",
+    "independently verify analytic derivative on open smooth segments",
+    "accept conservative derivative-unavailable metadata at knots",
+    "verify one-point zero-depth normalized representation is explicitly rejected with DRAIN_TAB_UNSUPPORTED_LEGACY_DEGENERATE and evaluated=false",
+    "verify rejection holds independently of the supplied singleton exchange value and groundwater-level probe",
+    "verify O0/O2 output identity"
+  ],
+  "qualification_interpretation": {
+    "valid_normalized_domain": "scientific equivalence to B1.10 is required",
+    "legacy_degenerate_zero_depth_singleton": "exact replay is not required in the process kernel; explicit fail-closed rejection is required because B1.10 observable behavior depends on representation padding",
+    "compatibility_adapter": "may be separately qualified in future if exact replay of that legacy storage artifact is needed"
+  },
+  "architecture_constraints": [
+    "qualification branch modifies no src/ or reference/ file",
+    "candidate source is retrieved from the exact remediation closeout",
+    "no candidate authoring fixture is used as the scientific oracle",
+    "no I/O, HeadCalc, solver Jacobian or persistent state is introduced",
+    "error result for rejected legacy-degenerate input must not be interpreted as accepted zero-flux physics"
+  ],
+  "success_decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE"
+}
