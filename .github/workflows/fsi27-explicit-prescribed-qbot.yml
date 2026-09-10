@@ -14,6 +14,8 @@ on:
       - 'tests/fsi/mod_fsi27_b110_oracle_fixture.f90'
       - 'tests/fsi/test_fsi27_b110_qbot_oracle_common.F90'
       - 'tests/fsi/run_fsi27_b110_qbot_oracle_gate.sh'
+      - 'tests/fsi/test_fsi27_fsi13_fsi16_preservation.F90'
+      - 'tests/fsi/run_fsi27_fsi13_fsi16_preservation_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/**'
       - 'src/legacy/b1_10_port/headcalc.f90'
@@ -36,3 +38,5 @@ jobs:
         run: bash tests/fsi/run_fsi27_qualification_matrix_gate.sh
       - name: F-SI27 independent exact B1.10 qbot oracle
         run: bash tests/fsi/run_fsi27_b110_qbot_oracle_gate.sh
+      - name: F-SI27 pinned F-SI13 F-SI16 preservation
+        run: bash tests/fsi/run_fsi27_fsi13_fsi16_preservation_gate.sh
