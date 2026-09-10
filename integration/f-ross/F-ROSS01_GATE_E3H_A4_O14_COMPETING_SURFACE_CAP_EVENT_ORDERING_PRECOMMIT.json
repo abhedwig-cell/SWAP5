@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A4_O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "purpose": "Test whether the missing isolated O14 h0=0 event root is explained by a competing surface-storage cap/runoff-onset event occurring first. This changes event topology only; it does not change Ross physics, material parameters, forcing cases, tau floor or the qualified surface-face law.",
+  "upstream": {
+    "A2_result": "TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_FOR_ALL_MATERIALS_RESEARCH_REQUIRED",
+    "A3_result_commit": "03b1880a43840db62d9a59918d8cfbd5b1ffad39",
+    "A3_decision": "O14_REFERENCE_EVENT_ROOT_NOT_REPRODUCIBLY_ESTABLISHED_EVENT_FORMULATION_RESEARCH_REQUIRED",
+    "A3_observation": "0 reproducible isolated h0=0 roots across 24 frozen cases and 288 deterministic reference-only multistarts even after allowing h1,h2 up to -1e-8 cm."
+  },
+  "preserved_controls_from_A2": {
+    "B01_top_h0_event_surface_storage_cm": 0.26322912518747177,
+    "B12_top_h0_event_surface_storage_cm": 0.4219032749199192,
+    "O13_top_h0_event_surface_storage_cm": 0.5552093180208715,
+    "surface_cap_cm": 1.0,
+    "meaning": "The three already characterized positive materials reach h0=0 well before the 1 cm surface cap. A4 is therefore an O14-specific competing-event diagnostic, not a universal change to event ordering."
+  },
+  "case_identity": {
+    "reuse_exact_A2_profiles": {
+      "P0_A1_CONTROL": [-0.2, -1.5, -5.0],
+      "P1_DRIER_SUBSOIL": [-0.5, -5.0, -10.0],
+      "P2_DRIER_TOP_AND_SUBSOIL": [-1.0, -10.0, -20.0],
+      "P3_STRONG_DRY_SEPARATION": [-2.0, -20.0, -50.0]
+    },
+    "reuse_exact_A2_supply_fractions_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "case_count": 24,
+    "no_new_fixture_grid": true
+  },
+  "competing_event_equations": {
+    "event": "surface storage reaches Smax=1 cm with runoff still exactly zero at onset",
+    "unknowns": ["h0", "h1", "h2", "tau"],
+    "fixed_surface_storage_cm": 1.0,
+    "initial_surface_storage_cm": 0.02,
+    "soil_equations": "Three unchanged conservative backward-Euler cell balances over tau.",
+    "surface_equation": "(1.0-S0) - tau*(q_supply-q_top) = 0; runoff is zero exactly at onset.",
+    "bottom_head_cm": -15.0,
+    "head_bounds_cm": [-10000.0, -1e-8],
+    "event_time_bounds_day": [1e-8, 0.05],
+    "physical_head_order": "h0 >= h1 >= h2"
+  },
+  "surface_flux_authority": {
+    "search_flux": "Use the already restricted-qualified bounded 5 cm surface-face candidate only as a deterministic root-search aid.",
+    "evidence_flux": "At every candidate event root recompute q_top with the independent high-accuracy exact 5 cm surface reference and recompute all four balances. Only the independent-reference residual may qualify a root as diagnostic evidence.",
+    "search_candidate_is_not_qualification_authority": true
+  },
+  "deterministic_multistart": {
+    "head_starts_cm": [
+      [-0.2, -1.5, -5.0],
+      [-0.05, -0.5, -2.0],
+      [-0.8, -2.0, -5.0],
+      [-2.0, -10.0, -20.0]
+    ],
+    "tau_starts_day": [0.001, 0.01, 0.04],
+    "starts_per_case": 12,
+    "total_search_solves": 288,
+    "solver": "scipy least_squares",
+    "xtol": 1e-13,
+    "ftol": 1e-13,
+    "gtol": 1e-13,
+    "max_nfev": 250
+  },
+  "valid_root_requirements": {
+    "solver_success": true,
+    "all_finite": true,
+    "independent_reference_max_abs_balance_residual_cm": 1e-9,
+    "strict_event_time_interior": "tau > 2e-8 d and tau < 0.049 d",
+    "physical_head_order": "h0 >= h1 >= h2",
+    "committed_state_mutation": false,
+    "mass_repair_or_clipping": false
+  },
+  "event_order_classification": {
+    "SURFACE_CAP_PRECEDES_TOP_SATURATION": "reproducible root with h0 < -1e-6 cm",
+    "SURFACE_CAP_AND_TOP_SATURATION_COEVENT": "reproducible root with -1e-6 <= h0 <= -1e-8 cm",
+    "NO_REPRODUCIBLE_SURFACE_CAP_ROOT": "no reproducible independently verified surface-cap root"
+  },
+  "reproducibility": {
+    "minimum_starts_in_same_cluster": 2,
+    "cluster_max_abs_head_difference_cm": 0.001,
+    "cluster_max_abs_event_time_difference_day": 1e-7,
+    "multiple_distinct_clusters": "Record all; do not silently choose one."
+  },
+  "decision_logic": {
+    "surface_cap_precedes": "The A3 isolated h0 event is not the first admissible event for those O14 cases. Next gate must compose runoff onset first, then continue toward top saturation transactionally.",
+    "coevent": "Surface cap and top saturation must be treated as a coupled event; next gate must solve/commit both event consequences atomically.",
+    "no_surface_cap_root": "The missing O14 event is not explained by the 1 cm cap under this frozen discretization; investigate a more general complementarity/trajectory formulation rather than extending grids or lowering tau."
+  },
+  "hard_guards": [
+    "Do not modify the 24 A2 O14 profile x supply cases.",
+    "Do not lower the 1e-8 d tau floor or enlarge the 1 cm surface-storage scope.",
+    "Do not alter O14 hydraulics, Ross face physics, numerical accuracy gates or bottom boundary.",
+    "Do not count a search-solver root unless the independent high-accuracy surface reference closes the balances within 1e-9 cm.",
+    "Do not qualify production behavior from A4.",
+    "Do not infer that runoff must occur for B01/B12/O13; their preserved A2 top-saturation fixtures remain authoritative."
+  ],
+  "architecture_checks": {
+    "transactionality": "All search trials are scratch only; committed soil and surface state are immutable.",
+    "mass_conservation": "Independent-reference recomputed balances remain a hard 1e-9 cm gate.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "physics_solver_policy_separation": "Only the competing event constraint changes; physics and forcing remain frozen.",
+    "bounded_cost": "24 fixed cases x 12 fixed starts; no adaptive case generation."
+  },
+  "positive_exit": "O14_COMPETING_SURFACE_CAP_EVENT_ORDERING_CHARACTERIZED_READY_FOR_TARGETED_TRANSACTIONAL_FOLLOWUP",
+  "negative_exit": "O14_SURFACE_CAP_DOES_NOT_EXPLAIN_EVENT_PATHOLOGY_GENERAL_COMPLEMENTARITY_TRAJECTORY_RESEARCH_REQUIRED",
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
