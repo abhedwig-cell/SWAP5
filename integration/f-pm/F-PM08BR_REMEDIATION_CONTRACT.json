@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08BR",
+  "title": "Restricted DIVDRA Lev2Comp Boundary-Seam Remediation Contract",
+  "authorities": {
+    "fpm08b_closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
+    "fvq45_closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
+    "fvq45_decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+    "legacy_divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
+  },
+  "candidate_delta": {
+    "path": "src/process/mod_drainage_spatial_distribution.f90",
+    "pre_remediation_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe",
+    "remediated_blob": "b77993bd903539282cd91df1f6d8ffc3af41b046"
+  },
+  "legacy_boundary_rule": {
+    "equation": "do while (lev > -zbotcp(icplev)+1.d-10)",
+    "offset_cm": 1e-10,
+    "semantic_effect": "an internal boundary and levels no more than 1e-10 cm below it remain assigned to the shallower compartment",
+    "may_yield_zero_or_small_negative_saturated_top_thickness": true
+  },
+  "remediation_design": {
+    "internal_node_selection_condition": "wlev > -zbotcp(wt_node) + 1e-10",
+    "internal_zero_or_small_negative_top_thickness_admitted": true,
+    "profile_bottom_exact_or_deeper_remains_invalid": true,
+    "offset_is_physical_reference_seam_not_solver_tolerance": true,
+    "offset_is_configurable": false,
+    "persistent_state_added": false,
+    "runtime_dependency_added": false,
+    "solver_dependency_added": false,
+    "io_dependency_added": false
+  },
+  "preserved_contracts": {
+    "positive_scalar_soil_to_drain_transfer_only": true,
+    "scalar_transfer_authoritative": true,
+    "last_active_node_receives_roundoff_closure": true,
+    "small_positive_transfer_le_1e-10_held": true,
+    "negative_infiltration_held": true,
+    "swdislay_1_or_2_held": true,
+    "multilevel_overlap_held": true,
+    "interflow_special_layer_held": true,
+    "runtime_mass_booking_held": true,
+    "surface_water_control_held": true
+  },
+  "required_structural_tests": [
+    "existing F-PM08B regression gate remains green",
+    "exact internal compartment boundary selects shallower legacy compartment",
+    "5e-11 cm below internal boundary selects shallower legacy compartment",
+    "1e-10 cm below internal boundary selects shallower legacy compartment",
+    "more than 1e-10 cm below internal boundary selects next compartment",
+    "profile bottom remains fail-closed",
+    "accepted seam cases preserve exact scalar-to-node mass identity",
+    "O0 and O2 remediation test output identity"
+  ],
+  "scientific_exit": {
+    "same_workunit_scientific_requalification_allowed": false,
+    "independent_requalification_required": true,
+    "candidate_must_not_claim_fpm08b_full_scientific_qualification": true
+  }
+}
