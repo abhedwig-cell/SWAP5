@@ -1,0 +1,22 @@
+name: F-VQ52 independent surface evaporation requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq52-fpm06c-surface-evaporation-structural-requalification
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-VQ52 source-bound independent qualification
+        run: bash tests/fvq/run_fvq52_surface_evaporation_requalification.sh
