@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.independent_surface_evaporation_qualification_plan.v1",
+  "work_unit": "F-VQ52",
+  "title": "Independent Restricted Surface Evaporation Structural Requalification",
+  "independence": "Do not reuse F-PM06C expected values or owner-test outputs as scientific oracle. Reconstruct the restricted B1.10 dry/ponded relations from F-PM06B source-bound readiness and test the immutable production blob directly.",
+  "candidate": {
+    "owner": "F-PM06C",
+    "owner_closeout": "1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+    "production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "production_blob": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "oracle": {
+    "dry": "expected_reva=min(peva,max(0,Emax)); expected_epd=0",
+    "ponded": "expected_reva=0; expected_epd=epond",
+    "potential_demands_are_not_mass_booking": true,
+    "candidate_is_stateless_trial_decomposition": true
+  },
+  "matrix": {
+    "peva_values": 8,
+    "epond_values": 7,
+    "capacity_values": 9,
+    "ponded_states": 2,
+    "active_cases": 1008,
+    "includes_zero_tiny_typical_large_and_negative_capacity": true
+  },
+  "negative_tests": [
+    "negative peva rejected fail-closed",
+    "negative epond rejected fail-closed",
+    "NaN and Inf demand/capacity rejected fail-closed",
+    "invalid result carries zero evaporation components",
+    "A-B-A evaluation is bit-identical",
+    "ponded route never emits bare-soil evaporation",
+    "dry route never emits pond evaporation"
+  ],
+  "source_guards": [
+    "qualification branch src tree unchanged from base",
+    "candidate blob exact",
+    "no files or I/O",
+    "no SAVE/module persistent process state",
+    "no HeadCalc/Newton/Jacobian internals",
+    "no mass-ledger mutation",
+    "no day/month/year assumptions"
+  ],
+  "compiler_gate": ["-O0", "-O2", "byte-identical transcript"],
+  "architecture_invariants_audited": 30,
+  "exit_if_green": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_STRUCTURAL_CANDIDATE_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
+  "nonclaims": [
+    "runtime evaporation-capacity materialization",
+    "runtime ponding classification materialization",
+    "full BoundTop migration",
+    "SWREDU 1 or 2",
+    "interception or wet-canopy evaporation",
+    "canonical admission"
+  ]
+}
