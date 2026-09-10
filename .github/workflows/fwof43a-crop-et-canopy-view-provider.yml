@@ -1,0 +1,29 @@
+name: F-WOF43A crop-to-ET canopy view provider
+
+on:
+  push:
+    branches:
+      - work/f-wof43a-crop-et-canopy-view-provider
+    paths:
+      - 'src/crop/mod_crop_et_canopy_view_provider.f90'
+      - 'src/crop/mod_wofost_rate_table.f90'
+      - 'tests/fwof/test_fwof43a_crop_et_canopy_view_provider.f90'
+      - 'tests/fwof/run_fwof43a_crop_et_canopy_view_provider_gate.sh'
+      - 'integration/f-wof/F-WOF43A_CANDIDATE_CONTRACT.json'
+      - '.github/workflows/fwof43a-crop-et-canopy-view-provider.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-crop-et-canopy-view-provider:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          gfortran --version
+      - name: Run F-WOF43A crop-to-ET canopy provider gate
+        run: bash tests/fwof/run_fwof43a_crop_et_canopy_view_provider_gate.sh
