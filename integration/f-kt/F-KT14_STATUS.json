@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT14",
+  "title": "Accepted Interface Sensitivity Result Transport",
+  "branch": "work/f-kt14-interface-sensitivity-result-transport",
+  "phase": "IMPLEMENTATION_STARTED",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "branch_base_commit": "adf79478f55458c05444ad9b90e52644e6cf36b6",
+    "physical_source_authority": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "physical_source_tree": "bca9d2d4dd3c8c42edf635b0887ee62b475b5abd",
+    "governance_overlay": "F-CI38",
+    "governance_overlay_note": "F-CI38 changes admission-gate governance only; it does not replace the F-CI37 physical/scientific source authority."
+  },
+  "upstream": {
+    "F_SI28_final_head": "5b514e678d0d794e5837f161033b0bac58385707",
+    "F_SI28_qualified_production_head": "85dbe882aa967d19021174066c95105d8cf838ea",
+    "F_SI28_decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE"
+  },
+  "scope": [
+    "accepted-only transaction interface-sensitivity transport",
+    "rollback/retry stale-sensitivity exclusion",
+    "canonical interval publication with explicit local-terminal provenance",
+    "kernel public result transport",
+    "mass-accounting preservation",
+    "SWAP-native bottom-flux sign preservation"
+  ],
+  "frozen_semantics": {
+    "published_quantity": "accepted local-terminal dh_bottom_dq_bottom",
+    "two_half_route_source": "terminal second-half accepted trial only",
+    "single_substep_full_interval_coverage": true,
+    "multi_substep_whole_window_derivative_claim": false,
+    "multi_substep_rule": "publish only the final accepted local-terminal tangent with its exact originating subinterval",
+    "failed_interval_publication": "unavailable",
+    "modflow_sign_transformation": false
+  },
+  "non_goals": [
+    "whole-coupling-window derivative composition",
+    "MODFLOW sign conversion",
+    "persistent tangent or solver-scratch state",
+    "new nonlinear trajectories or Jacobian builds",
+    "F-ROSS01 J1E qualification"
+  ],
+  "hard_gates": [
+    "rejected and retried trial sensitivities are never externally visible",
+    "two-half acceptance publishes half2 sensitivity, never full or half1",
+    "canonical failure after earlier accepted internal substeps publishes no sensitivity",
+    "multi-substep success is explicitly local-terminal and not mislabelled whole-window",
+    "kernel value and provenance match canonical result exactly without sign conversion",
+    "water-balance accounting is unchanged"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "production_src_changed": false,
+    "committed_physical_state_changed": false,
+    "solver_scratch_persisted": false
+  },
+  "overall": "F_KT14_IMPLEMENTATION_IN_PROGRESS_F_ROSS01_J1E_REMAINS_OPEN"
+}
