@@ -50,12 +50,9 @@ for forbidden in (
     'mod_fmr_root_uptake_attribution_receipt',
 ):
     assert forbidden not in s, f'unsafe detached F-MR30 API dependency survived: {forbidden}'
-# Binding must occur only after the did_commit rejection block. This is the
-# core by-construction provenance property that closes F-VQ48 HN1.
 commit_guard = s.index('if (.not. did_commit) then')
 bind_call = s.index('call bind_committed_actual_transpiration(')
 assert bind_call > commit_guard, 'attribution binding occurs before commit success is known'
-# No second water-balance booking may be introduced by F-MR31.
 base = __import__('subprocess').check_output(['git','show','49863406a6112baa9956f9396b34e7188934e0d4:src/runtime/mod_fmr_serialized_multiswap_runtime.f90'], text=True).lower()
 for token in ('%mass%total_out', '%mass%total_in', '%mass%storage_change', '%mass%residual'):
     assert s.count(token) == base.count(token), f'F-MR31 changed generic mass-ledger references: {token}'
@@ -68,8 +65,7 @@ PY
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 
-# A compact independent-of-HeadCalc transaction oracle attacks forcing-handle,
-# batch/order and rejected-column routing directly.
+# Compact transaction oracle attacking forcing-handle, batch/order and rejected-column routing.
 for opt in 0 2; do
   OUT="$BUILD/oracle-o$opt"
   mkdir -p "$OUT"
@@ -115,10 +111,17 @@ cmp -s "$BUILD/oracle-o0/output.txt" "$BUILD/oracle-o2/output.txt" || {
 }
 echo 'FMR31_TRANSACTION_ORACLE_O0_O2_IDENTITY=PASS'
 
-# Real production-backend regression: reuse the already-qualified F-MR09
-# balanced root-sink/SSDI fixture against the remediated current runtime. This
-# proves the result-field extension does not break real HeadCalc root physics or
-# the hard mass gate.
+# Real production-backend regression. The historical F-MR09 test source is not
+# carried on current canonical, so materialize its exact independently-qualified
+# F-VQ21 blob and compile it against the current production stack plus F-MR31.
+FVQ21_CLOSEOUT="f7cdccf11d21c31494b328251b001d474170c0c7"
+FVQ21_TEST_PATH="tests/fmr/test_fmr09_root_sink_runtime.f90"
+FVQ21_TEST_BLOB="38251f62c3a9617230171b69d29a233ce8165ce1"
+[[ "$(git rev-parse "$FVQ21_CLOSEOUT:$FVQ21_TEST_PATH")" == "$FVQ21_TEST_BLOB" ]] || fail 'F-VQ21 historical root oracle blob drift'
+FVQ21_TEST="$BUILD/test_fmr09_root_sink_runtime.f90"
+git show "$FVQ21_CLOSEOUT:$FVQ21_TEST_PATH" > "$FVQ21_TEST"
+echo 'FMR31_FVQ21_REAL_ROOT_ORACLE_SOURCE_LOCK=PASS'
+
 REAL_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
@@ -130,6 +133,7 @@ REAL_SRC=(
   src/runtime/mod_fmr_runtime_core.f90
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
+  src/solver/mod_process_hydraulic_view.f90
   src/solver/mod_reference_richards_workspace.f90
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_b110_default_mvg_provider.f90
@@ -158,7 +162,7 @@ for opt in 0 2; do
     gfortran "${flags[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fmr/test_fmr09_root_sink_runtime.f90 -o "$OUT/test.o"
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$FVQ21_TEST" -o "$OUT/test.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "real root runtime O$opt"; }
   grep -Fq 'FMR09_ROOT_SINK_EXACTLY_ONCE=PASS' "$OUT/output.txt"
