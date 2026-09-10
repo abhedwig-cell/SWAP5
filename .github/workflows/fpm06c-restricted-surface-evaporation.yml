@@ -1,0 +1,22 @@
+name: F-PM06C restricted surface evaporation structural candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm06c-restricted-surface-evaporation-structural-candidate
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PM06C source-bound owner gate
+        run: bash tests/fpm/run_fpm06c_restricted_surface_evaporation_gate.sh
