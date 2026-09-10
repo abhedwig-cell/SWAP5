@@ -1,0 +1,20 @@
+name: F-VQ43 independent multi-level drainage aggregation qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq43-fpm08c4-multilevel-aggregation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-VQ43 independent multi-level aggregation gate
+        run: bash tests/fvq/run_fvq43_multilevel_drainage_aggregation_gate.sh
