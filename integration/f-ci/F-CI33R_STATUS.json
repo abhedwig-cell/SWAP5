@@ -4,8 +4,8 @@
   "title": "F-CI33 Current Canonical Postimage Governance Reconciliation",
   "branch": "qualification/f-ci33r-current-canonical-postimage-reconciliation",
   "base": "8c02470ddd9afbc2965ed2a92d23493c0d768bfd",
-  "phase": "INCIDENT_PERSISTED_PRE_REMEDIATION",
-  "decision": "OPEN_CANONICAL_POSTIMAGE_POINTER_RECONCILIATION",
+  "phase": "QUALIFIED_RECONCILIATION_CLOSED_EXACT_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FCI33_CURRENT_CANONICAL_POSTIMAGE_GOVERNANCE_RECONCILIATION_READY_FOR_NON_FORCED_CANONICAL_PROMOTION",
   "incident": {
     "post_promotion_run": 34484827984,
     "failed_job": 102897008639,
@@ -18,7 +18,7 @@
     "production_regression_indicated": false,
     "cause": "The moving current canonical postimage job still replayed F-CI32. F-CI32 correctly freezes its own historical one-source admission and therefore rejects the later F-CI33 source addition."
   },
-  "remediation_contract": {
+  "remediation": {
     "modify_src": false,
     "modify_reference": false,
     "modify_historical_fci32_gate": false,
@@ -29,12 +29,28 @@
     "expected_reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
     "candidate_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
   },
-  "required_before_promotion": [
-    "repair branch contains zero src and zero reference delta from 8c02470d",
-    "historical F-CI32 gate remains byte-identical",
-    "moving current postimage job invokes F-CI33 canonical gate",
-    "F-CI33 gate allowlist admits only the canonical aggregator and F-CI33R governance artifacts in addition to original F-CI33 scope",
-    "dedicated F-CI33R gate passes on exact remediation closeout",
-    "live canonical remains 8c02470d immediately before non-forced fast-forward"
-  ]
+  "pre_closeout_evidence": {
+    "tested_head": "c31cf6bd7b3d9e7163c4e89b2686f7b463ee30be",
+    "workflow_run": 34486125643,
+    "job": 102900747573,
+    "conclusion": "success",
+    "zero_src_delta_from_base": true,
+    "zero_reference_delta_from_base": true,
+    "historical_fci32_gate_unchanged": true,
+    "historical_fci32_runner_unchanged": true,
+    "current_pointer_is_fci33": true,
+    "o0_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "o2_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "runtime_output_identical_to_fci33": true
+  },
+  "closeout_contract": {
+    "exact_closeout_rerun_required": true,
+    "exact_closeout_rerun_must_reproduce_runtime_hash": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "final_diff_must_have_zero_src_delta": true,
+    "final_diff_must_have_zero_reference_delta": true,
+    "canonical_must_still_equal_base_immediately_before_promotion": true,
+    "promotion_must_be_non_forced_fast_forward": true,
+    "post_promotion_broad_canonical_qualification_required": true,
+    "final_fci33_status_governance_head_requalification_required": true
+  }
 }
