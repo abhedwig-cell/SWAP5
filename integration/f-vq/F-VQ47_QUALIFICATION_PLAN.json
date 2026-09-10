@@ -1,0 +1,103 @@
+{
+  "schema": "swap5.scientific_requalification_plan.v1",
+  "work_unit": "F-VQ47",
+  "title": "Independent Remediated DIVDRA Spatial Distribution & Lev2Comp Boundary-Seam Requalification",
+  "branch": "qualification/f-vq47-fpm08br-spatial-distribution-requalification",
+  "clean_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+  "candidate": {
+    "owner_work_unit": "F-PM08BR",
+    "owner_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "retrieval_rule": "retrieve only from exact owner closeout; never use owner branch head as scientific authority"
+  },
+  "blocking_review": {
+    "work_unit": "F-VQ45",
+    "closeout": "26c6f98899c1970af6aa1477b00081ecd97935a5",
+    "decision": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+    "use": "provenance and scope context only; conclusions are not an oracle"
+  },
+  "frozen_legacy_authority": {
+    "nested_source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_f90_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "oracle_rule": "reconstruct equations independently from frozen SWAP/divdra.f90"
+  },
+  "legacy_semantics": {
+    "lev2comp_source_condition": "do while (lev > -zbotcp(icplev)+1.d-10)",
+    "internal_boundary_rule": "exact boundary and levels no more than approximately 1e-10 cm below remain in the shallower compartment according to source floating-point semantics",
+    "top_saturated_thickness_may_be_zero_or_slightly_negative": true,
+    "seam_is_configurable_tolerance": false,
+    "profile_bottom_rule": "modern remediated candidate remains fail-closed and is verified separately"
+  },
+  "restricted_scientific_scope": {
+    "single_level_positive_divdra": true,
+    "positive_transfer_magnitude_gt_1e-10": true,
+    "swdislay_1_or_2": false,
+    "separate_negative_infiltration_distribution": false,
+    "interflow_special_top_discharge_layer": false,
+    "multi_level_overlapping_discharge_layers": false,
+    "solver_jacobian": false,
+    "runtime_mass_booking": false,
+    "surface_water_storage_control": false
+  },
+  "required_verification": [
+    "broad deterministic/randomized stable-domain spatial-distribution equivalence",
+    "water-table compartment selection",
+    "partial saturation of water-table compartment",
+    "horizontal anisotropy",
+    "dmax truncation",
+    "full-profile discharge layers",
+    "single-compartment discharge layers",
+    "transmissivity-weighted node partitioning",
+    "legacy-admitted positive drainage-transfer domain",
+    "exact internal compartment boundary",
+    "0.5e-10 cm below boundary",
+    "1.0e-10 cm below boundary",
+    "2e-10 cm below boundary",
+    "multiple internal boundaries",
+    "profile-bottom fail-closed behavior",
+    "O0/O2 numerical and structural consistency",
+    "scalar-to-node water conservation"
+  ],
+  "mass_rules": {
+    "raw_legacy_partitioning_compared_separately": true,
+    "raw_partition_sum_difference_allowed": "floating roundoff only",
+    "candidate_scalar_transfer_authoritative": true,
+    "candidate_last_node_closure_is_roundoff_closure_only": true,
+    "configurable_mass_balance_tolerance_forbidden": true,
+    "mass_conservation_absolute": true
+  },
+  "independence": {
+    "owner_tests_imported_or_called": false,
+    "owner_expected_vectors_copied": false,
+    "f_vq45_expected_outputs_used": false,
+    "candidate_changes_allowed": false,
+    "oracle_changes_after_failures_to_obtain_green": false,
+    "scope_narrowing_after_failures": false,
+    "fail_closed_on_unexplained_difference": true
+  },
+  "branch_integrity": {
+    "src_delta_allowed": false,
+    "reference_delta_allowed": false,
+    "runtime_solver_kernel_production_delta_allowed": false
+  },
+  "architecture_audit": {
+    "all_30_invariants_required": true,
+    "lev2comp_seam_must_not_become_solver_policy": true
+  },
+  "workflow": [
+    "live source/head check",
+    "clean qualification branch",
+    "persist contract and pretest status",
+    "persist independent legacy oracle",
+    "persist verifier gate and workflow",
+    "execute CI",
+    "investigate failures fail-closed",
+    "freeze exact tested candidate SHA/blob and run/job evidence",
+    "close status",
+    "rerun identical gate on exact closeout head",
+    "verify zero production/reference delta"
+  ],
+  "qualification_decision_if_all_hold": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
+  "next_step_if_qualified": "F-PM08D may be considered only after formal F-VQ47 closeout; no runtime/canonical admission in F-VQ47"
+}
