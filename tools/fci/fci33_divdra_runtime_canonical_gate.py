@@ -60,13 +60,19 @@ def show_json(rev: str, path: str) -> dict:
 def allowed_delta(path: str) -> bool:
     if path == CANDIDATE:
         return True
-    if path.startswith("integration/f-ci/F-CI33_"):
+    if path.startswith("integration/f-ci/F-CI33_") or path.startswith("integration/f-ci/F-CI33R_"):
         return True
     if path.startswith("tests/fci/fci33_") or path.startswith("tests/fci/run_fci33_"):
         return True
     if path == "tools/fci/fci33_divdra_runtime_canonical_gate.py":
         return True
+    if path == "tools/fci/fci33r_current_postimage_gate.py":
+        return True
     if path == ".github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml":
+        return True
+    if path == ".github/workflows/fci33r-current-canonical-postimage-reconciliation.yml":
+        return True
+    if path == ".github/workflows/fci-canonical.yml":
         return True
     return False
 
