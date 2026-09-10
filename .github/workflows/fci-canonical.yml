@@ -162,7 +162,7 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI30_FROZEN_RESTRICTED_PARALLEL_V1_AUTHORITY=PASS'
 
-  current-restricted-canonical-postimage:
+  frozen-fci31-reference-et-root-uptake-authority:
     needs:
       - historical-fci03-through-fci18
       - frozen-fci19-candidate-preservation
@@ -176,16 +176,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: e3964ec0ef312f974461aeac70fb9bc5720803e3
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI31 reference ET to restricted root-uptake execution authority gate
+      - name: Replay exact admitted F-CI31 current-canonical authority
         run: bash tests/fci/run_fci31_current_canonical_recomposition.sh
-      - name: Final exact postimage and authority recheck
+      - name: Freeze F-CI31 postimage
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD:src)" = d33c525c6d6f4d2ab19bec8341d732b98d6daebf
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI31_CANONICAL_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_ADMISSION=PASS'
+          echo 'FCI31_FROZEN_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_AUTHORITY=PASS'
+
+  current-restricted-canonical-postimage:
+    needs:
+      - frozen-fci31-reference-et-root-uptake-authority
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Current F-CI32 remediated DIVDRA canonical source authority gate
+        env:
+          FCI32_MODE: canonical
+        run: bash tests/fci/run_fci32_divdra_canonical_admission.sh
+      - name: Final exact postimage and authority recheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD:src)" = f18948aef9a8755903951475078f218024ad3c42
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI32_CANONICAL_REMEDIATED_DIVDRA_SOURCE_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
