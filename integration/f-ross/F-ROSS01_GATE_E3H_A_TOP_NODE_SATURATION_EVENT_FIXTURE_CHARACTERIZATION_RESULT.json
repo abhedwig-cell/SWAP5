@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "CHARACTERIZED_MIXED_FAILURE_PRESERVED",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34451252240,
+    "head": "30ad6db8b61f2c905c498730fa174fdd808f1a77",
+    "conclusion": "failure",
+    "material_jobs_passed": 1,
+    "material_jobs_total": 4
+  },
+  "artifacts": {
+    "B01": {"id": 10141661121, "digest": "sha256:dce5ebfaf255997b49b4406339d57cef2c8e6a5e069dfb1cf571d2f56fad5cae"},
+    "B12": {"id": 10141667519, "digest": "sha256:702b612f8e684996119bf4662c942c8e60c23dcf40dca6e344c736b3cd61f64d"},
+    "O13": {"id": 10141668578, "digest": "sha256:64382d99f08bdc82b40a7a8f3f2896a545ad5d061e90cc5d56d1ab023b76e4e7"},
+    "O14": {"id": 10141651455, "digest": "sha256:e6e3d43c754f60be833d836ca4ffc60d1996736ea85b8a3c2ac07a3acc37844f"}
+  },
+  "frozen_scope": {
+    "initial_heads_cm": [-0.2, -1.5, -5.0],
+    "initial_surface_storage_cm": 0.02,
+    "supply_fractions_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "event_time_domain_day": [1e-8, 0.05],
+    "cell2_and_cell3_required_head_cm_max": -1.0,
+    "mass_tolerance_cm": 1e-9
+  },
+  "B01": {
+    "outcome": "CHARACTERIZED",
+    "lowest_passing_supply_fraction_ksat": 5.0,
+    "candidate_event_time_day": 0.0019733622371372545,
+    "reference_event_time_day": 0.001973597333465752,
+    "event_time_difference_day": 2.3509632849760126e-7,
+    "candidate_event_heads_cm": [0.0, -1.265956599855886, -4.770518939134954],
+    "reference_event_heads_cm": [0.0, -1.26608365068444, -4.770724123595839],
+    "candidate_surface_storage_cm": 0.26322912518747676,
+    "reference_surface_storage_cm": 0.2632577494691654,
+    "candidate_max_abs_balance_residual_cm": 1.0269562977782698e-15,
+    "reference_max_abs_balance_residual_cm": 1.9229409731202907e-15,
+    "additional_passing_supply_fractions_ksat": [8.0, 12.0]
+  },
+  "B12": {
+    "outcome": "NO_ISOLATED_TOP_NODE_FIXTURE_IN_FROZEN_GRID",
+    "failure_class": "SECOND_CELL_NEAR_SATURATION_SCOPE_BOUND_ACTIVE",
+    "all_supply_cases_solver_success": true,
+    "all_supply_cases_cell2_head_cm": -1.0000000000000002,
+    "candidate_max_abs_balance_residual_cm_range": [0.0008197425462155301, 0.0008389765103673795],
+    "reference_max_abs_balance_residual_cm_range": [0.0008197424327309783, 0.0008389764806731847],
+    "interpretation": "The constrained event root pushes cell2 to the frozen -1 cm boundary for every supply factor. The requested isolated top-node event is therefore not established for this initial profile; extending supply alone would not address the active scope constraint."
+  },
+  "O13": {
+    "outcome": "NO_ISOLATED_TOP_NODE_FIXTURE_IN_FROZEN_GRID",
+    "failure_class": "SECOND_CELL_NEAR_SATURATION_SCOPE_BOUND_ACTIVE",
+    "all_supply_cases_solver_success": true,
+    "all_supply_cases_cell2_head_cm": -1.0000000000000002,
+    "candidate_max_abs_balance_residual_cm_range": [0.0014554686624051753, 0.001508599164512198],
+    "reference_max_abs_balance_residual_cm_range": [0.0014554684874754566, 0.001508599131892678],
+    "interpretation": "As for B12, cell2 reaches the frozen -1 cm boundary in every case. This is a simultaneous/preceding second-cell near-saturation issue, not evidence that top-node h=0 physics is invalid."
+  },
+  "O14": {
+    "outcome": "NO_INTERIOR_EVENT_TIME_IN_FROZEN_GRID",
+    "failure_class": "EVENT_TIME_LOWER_BOUND_ACTIVE",
+    "all_supply_cases_solver_success": true,
+    "candidate_event_time_day_order": 1e-8,
+    "reference_event_time_day_order": 1e-8,
+    "candidate_max_abs_balance_residual_cm_order": 1.0512e-5,
+    "reference_max_abs_balance_residual_cm_order": 1.0512e-5,
+    "interpretation": "All frozen supply cases collapse onto the lower event-time bound. The initial top head -0.2 cm is too close to saturation for this material/ponded state to furnish a resolved interior event in the frozen time domain. More supply is not the appropriate remedy."
+  },
+  "decision": "TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_FOR_ALL_MATERIALS_INITIAL_PROFILE_RESEARCH_REQUIRED",
+  "next_gate": "E3H_A2_BOUNDED_INITIAL_PROFILE_FIXTURE_CHARACTERIZATION",
+  "hard_guards": [
+    "Preserve B01 as positive control; do not retune it.",
+    "Do not extend supply alone to repair B12/O13 because the active constraint is cell2=-1 cm.",
+    "Do not lower the event-time floor inside E3H-A because O14 failure is frozen evidence.",
+    "A2 may vary initial committed profile under a new precommit, but no physics, mass tolerance or candidate/reference equations may change.",
+    "No top-node saturation qualification follows from characterization alone."
+  ],
+  "architecture_assessment": {
+    "mass_conservation": "No failed root is accepted or repaired; B01 accepted fixtures close near machine roundoff.",
+    "transactionality": "Characterization leaves the original committed state unchanged.",
+    "physics_policy_separation": "Initial-profile selection is qualification fixture policy, not a constitutive change.",
+    "bounded_cost": "The failed frozen grid is closed; any follow-up must precommit a finite profile grid."
+  }
+}
