@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "work_unit": "F-PM08D1",
   "title": "Surface-Water Storage Geometry & Compact State Readiness Contract",
   "activation_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
@@ -14,8 +14,8 @@
     "storage_sum": "for every knot and each secondary level ilev=1+nrpri..nrlevs with SWDTYP=2 and level>zbotdr(ilev), add open-channel cross-section volume divided by LSPACING(ilev)",
     "below_or_at_surface_volume": "wdepth=level-zbotdr; wvolum=wdepth*(widthr+wdepth/taludr)",
     "above_surface_volume": "base_depth=-zbotdr; base_volume=base_depth*(widthr+base_depth/taludr); breadth=widthr+2*base_depth/taludr; wvolum=base_volume+breadth*level",
-    "forward_storage_from_level": "piecewise-linear interpolation SWSTLEV over the 22 prepared knots",
-    "inverse_level_from_storage": "piecewise-linear interpolation WLEVST over the same 22 prepared knots"
+    "forward_storage_from_level": "piecewise-linear interpolation SWSTLEV over the 22 prepared knots; interpolation arithmetic is evaluated at endpoints rather than replaced by direct stored-knot return",
+    "inverse_level_from_storage": "piecewise-linear interpolation WLEVST over the same 22 prepared knots with its own stored-domain bounds"
   },
   "source_domain": {
     "levels_ordered_deepest_first": true,
@@ -27,13 +27,20 @@
     "swstlev_table_level_domain": "[STTAB(22,1), STTAB(1,1)]",
     "storage_domain": "[STTAB(22,2), STTAB(1,2)]",
     "outside_table_domain_fails_closed": true,
-    "reader_vs_table_bottom_boundary_can_differ_by_floating_rounding": true
+    "reader_vs_table_bottom_boundary_can_differ_by_floating_rounding": true,
+    "forward_endpoint_result_can_differ_from_stored_storage_endpoint_by_floating_rounding": true
   },
   "source_risk_holds": [
     {
       "id": "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
       "rule": "STTAB(22,1)=zbotdr*20/20.0d0 is mathematically the bottom but not guaranteed bit-identical to zbotdr",
       "qualification_rule": "characterize exact frozen behavior; do not silently snap the knot to zbotdr and do not add a configurable tolerance",
+      "production_disposition_required": true
+    },
+    {
+      "id": "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM",
+      "rule": "SWSTLEV/WLEVST use interpolation arithmetic at exact knots, so the evaluated result is not guaranteed bit-identical to the stored knot value and may fall a few ULP outside the opposite mapping domain",
+      "qualification_rule": "characterize exact frozen behavior; do not silently clamp, snap or widen the domain and do not add a configurable tolerance",
       "production_disposition_required": true
     }
   ],
@@ -74,7 +81,8 @@
     "analytic_channel_geometry_between_knots_is_not_silent_reference_replacement": true,
     "alternative_exact_geometry_may_only_be_introduced_as_separately_qualified_physical_option": true,
     "no_solver_policy_parameters_in_storage_geometry": true,
-    "bottom_knot_rounding_seam_is_not_solver_tolerance": true
+    "bottom_knot_rounding_seam_is_not_solver_tolerance": true,
+    "interpolation_endpoint_rounding_seam_is_not_solver_tolerance": true
   },
   "transaction_requirements": {
     "trial_swst_isolated_from_committed_swst": true,
@@ -95,14 +103,15 @@
     "No runtime transaction composition implementation in F-PM08D1.",
     "No file parsing or calendar logic in kernel/component code.",
     "No production source modification in this readiness workunit.",
-    "No silent remediation of D1-RISK-01; exact-bottom behavior requires explicit child disposition."
+    "No silent remediation of D1-RISK-01; exact-bottom behavior requires explicit candidate disposition.",
+    "No silent remediation of D1-RISK-02; exact interpolation-endpoint behavior requires explicit candidate disposition."
   ],
   "readiness_exit": [
     "frozen source identity reverified",
     "exact 22-knot construction independently reconstructed",
     "strict monotonic storage relation demonstrated over valid table domain",
-    "forward and inverse interpolation mutually consistent within floating arithmetic",
-    "endpoint and outside-domain behavior characterized including D1-RISK-01",
+    "forward and inverse interpolation mutually consistent over stable interior points within floating arithmetic",
+    "endpoint and outside-domain behavior characterized including D1-RISK-01 and D1-RISK-02",
     "SWST/WLS/WLSTAR/WLSBAK/NUMADJ ownership separated",
     "MultiSWAP sharing and optional-state consequences explicit",
     "all 30 architecture invariants audited",
