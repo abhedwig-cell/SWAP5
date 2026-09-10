@@ -1,20 +1,50 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ43",
   "title": "Independent Multi-Level Drainage Exchange Aggregation Qualification",
   "branch": "qualification/f-vq43-fpm08c4-multilevel-aggregation",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "INDEPENDENTLY_TESTED_AND_QUALIFIED_NOT_RUNTIME_OR_CANONICAL_ADMISSION",
   "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
   "candidate_closeout": "61dc2ee0e5e2344a855e429e8e3d49a04ffe007e",
   "candidate_blob": "70d35512ef7c5958f7e4bf284cba104a7b641fdb",
+  "qualification_candidate_head": "70df1afbfcaf6809101034257e6b4c5c4a66fe73",
+  "decisive_workflow_run": 34463859341,
+  "decisive_workflow_job": 102827728459,
+  "decisive_summary_sha256": "37909dadb1b480863fdc2a55be5cb6ac9a4713d7c57dc9d4becbfa7f1f9891d3",
   "state": {
     "contract_persisted": true,
-    "verifier_persisted": false,
-    "tested": false,
-    "qualified": false,
+    "verifier_persisted": true,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "runtime_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "persist independent verifier and run qualification gate"
+  "qualified_scope": {
+    "legacy_level_order_aggregation_equivalence": true,
+    "legacy_level_counts_1_to_25": true,
+    "multiswap_legacy_capacity_1_to_5_covered": true,
+    "all_defined_sensitivity_sequential_sum": true,
+    "conservative_sensitivity_unavailability_composition": true,
+    "mass_preserving_sensitivity_failure_semantics": true,
+    "dynamic_64_level_scalability_extension": true,
+    "scalability_extension_claimed_as_legacy_equivalence": false,
+    "negative_side_Dramet3_response_physics": false,
+    "runtime_ledger": false,
+    "DIVDRA": false,
+    "surface_water_control": false,
+    "solver_Jacobian": false
+  },
+  "results": {
+    "legacy_equivalence_cases": 500,
+    "legacy_constituent_values": 6500,
+    "mixed_sign_cases": 443,
+    "max_flux_abs_error": 0.0,
+    "max_derivative_abs_error": 0.0,
+    "O0_O2_output_identity": true
+  },
+  "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION",
+  "next": "Reconcile F-PM08C parent completion without implying runtime or canonical drainage admission."
 }
