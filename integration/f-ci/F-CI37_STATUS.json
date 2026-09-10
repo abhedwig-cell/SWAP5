@@ -1,0 +1,18 @@
+{
+  "schema":"swap5.fci37_status.v1",
+  "work_unit":"F-CI37",
+  "title":"F-MR35 Restricted Parallel Root-Uptake Current-Canonical Source Admission",
+  "phase":"PRE_ADMISSION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY",
+  "decision":"QUALIFIED_PRE_ADMISSION_PENDING_EXACT_METADATA_HEAD_REPLAY_AND_CANONICAL_PROMOTION",
+  "canonical_base":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "owner":{"work_unit":"F-MR35","evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_blob":"c78c13997642617376b8d118122c86c60ca77189"},
+  "independent":{"work_unit":"F-MQ30","closeout":"48ee2841d783ee023c29391a7ea1e5d7ee0d20e0","decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE","closeout_run":34530999773},
+  "pre_admission":{"tested_head":"7d44b47651a2689d9c7eaee03a59da9583d53b86","run":34531453811,"job":103052889522,"conclusion":"success"},
+  "production_delta":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],
+  "production_blob":"c78c13997642617376b8d118122c86c60ca77189",
+  "reference_delta":[],
+  "state":{"recomposed":true,"persisted":true,"pre_admission_tested":true,"independent_qualification_replayed":true,"architecture_invariants_reviewed":true,"metadata_head_requalified":false,"canonical_ref_advanced":false,"post_promotion_replay_passed":false,"broad_canonical_passed":false,"canonical_admitted":false,"closed":false},
+  "qualified_scope":["restricted root-active real-physics MultiSWAP parallel execution through explicit root-uptake pool","fixed-flux top boundary; bottom mode 7; SWKIMPL=0; SWSOPHY=0","2-worker and 4-worker execution","finite non-negative QROT including active-zero","exact actual-transpiration attribution from runtime forcing","deterministic canonical publication","worker-owned heavy scratch","hard per-column mass residual <=1e-12 cm and complete authoritative aggregate mass","O0/O2 exact output identity"],
+  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","other excluded parallel physics","performance speedup","general SWAP5 release qualification"],
+  "next_gate":"Exact metadata-head must pass F-CI37 workflow. Then recheck canonical equals the pinned base before non-forced fast-forward. After promotion both dedicated F-CI37 and broad canonical qualification must pass before closeout."
+}
