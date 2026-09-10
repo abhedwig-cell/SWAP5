@@ -1,0 +1,23 @@
+name: F-MQ26 parallel V1 admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq26-parallel-real-physics-v1-admission
+    paths:
+      - '.github/workflows/fmq26-parallel-v1-admission.yml'
+      - 'tests/fmq/test_fmq26_parallel_v1_admission.f90'
+      - 'tests/fmq/run_fmq26_parallel_v1_admission.sh'
+      - 'integration/f-mq/F-MQ26_*.json'
+
+jobs:
+  independent-parallel-v1-admission:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-MQ26 matrix
+        run: bash tests/fmq/run_fmq26_parallel_v1_admission.sh
