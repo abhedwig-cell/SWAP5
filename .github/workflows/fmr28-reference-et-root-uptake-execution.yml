@@ -1,0 +1,27 @@
+name: F-MR28 reference ET root uptake execution composition
+
+on:
+  push:
+    branches:
+      - work/f-mr28-reference-et-root-uptake-execution-composition
+    paths-ignore:
+      - integration/f-mr/F-MR28_QUALIFICATION_EVIDENCE.json
+      - integration/f-mr/F-MR28_STATUS.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: F-MR28 reference ET root uptake execution composition gate
+        run: bash tests/fmr/run_fmr28_reference_et_root_uptake_execution_gate.sh
