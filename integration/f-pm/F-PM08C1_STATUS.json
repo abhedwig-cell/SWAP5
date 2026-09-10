@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C1",
+  "title": "Restricted Tabulated Drainage Response Structural Candidate",
+  "branch": "work/f-pm08c1-tabulated-drainage-response",
+  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b"
+  },
+  "scope": {
+    "legacy_family": "DRAMET=1",
+    "hydraulic_input": "groundwater_level",
+    "normalized_table_coordinate": "nonnegative groundwater depth abs(gwl)",
+    "table_data": "immutable variable-length strictly increasing depth knots with signed exchange values",
+    "persistent_process_state": false,
+    "legacy_fixed_length_afgen_storage": false,
+    "io_or_parsing": false,
+    "runtime_composition": false,
+    "solver_jacobian_assembly": false
+  },
+  "derivative_policy": {
+    "inside_open_linear_segment": "analytic slope times sign(gwl)",
+    "outside_table_domain": "zero because endpoint response is clamped",
+    "at_any_table_knot": "derivative unavailable, fail-conservative even when adjacent slopes happen to match"
+  },
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_qualified": false
+}
