@@ -9,9 +9,11 @@ program test_fpm08c1_tabulated_drainage_response
 
   type(drainage_tabulated_parameters_t) :: p, p_signed, p_bad, p_single
   type(process_hydraulic_view_t) :: view, view_b, bad_view
-  type(drainage_tabulated_result_t) :: a1, a2, b, r
-  type(drainage_tabulated_diagnostics_t) :: da1, da2, db, d
+  type(drainage_tabulated_result_t) :: a1, a2, b, r, r_plus, r_minus
+  type(drainage_tabulated_diagnostics_t) :: da1, da2, db, d, d_plus, d_minus
   real(real64), parameter :: tol = 4096.0_real64*epsilon(1.0_real64)
+  real(real64), parameter :: delta = 1.0e-5_real64
+  real(real64) :: analytic_derivative, fd_derivative
 
   call configure_base(p)
 
@@ -37,7 +39,17 @@ program test_fpm08c1_tabulated_drainage_response
   call require(close(r%signed_soil_to_drain_rate,0.1_real64), 'first segment interpolation')
   call require(r%derivative_defined .and. close(r%dq_dgroundwater_level,-0.004_real64), &
        'first segment derivative')
+  analytic_derivative = r%dq_dgroundwater_level
   write(*,'(A)') 'FPM08C1_OPEN_SEGMENT_ANALYTIC_DERIVATIVE=PASS'
+
+  view%groundwater_level = -25.0_real64 + delta
+  call evaluate_tabulated_drainage_response(p,view,r_plus,d_plus)
+  view%groundwater_level = -25.0_real64 - delta
+  call evaluate_tabulated_drainage_response(p,view,r_minus,d_minus)
+  fd_derivative = (r_plus%signed_soil_to_drain_rate-r_minus%signed_soil_to_drain_rate)/(2.0_real64*delta)
+  call require(d_plus%segment_index == 1 .and. d_minus%segment_index == 1, 'finite difference remains on segment')
+  call require(close(fd_derivative,analytic_derivative), 'production derivative finite difference')
+  write(*,'(A)') 'FPM08C1_ANALYTIC_DERIVATIVE_FINITE_DIFFERENCE=PASS'
 
   view%groundwater_level = -150.0_real64
   call evaluate_tabulated_drainage_response(p,view,r,d)
