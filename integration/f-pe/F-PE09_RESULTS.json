@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE09",
+  "title": "Canonical Worker Parameter/Forcing Cache Reuse Qualification Results",
+  "status": "SCIENTIFIC_AND_CACHE_SEMANTICS_GATES_PASS_TIMING_CHARACTERIZATION_PENDING",
+  "base": {
+    "F_PE08_closeout": "0c136148fb5a53db3804070ac74fc8cef55d81f3"
+  },
+  "production_postimage": {
+    "materialized_commit": "c0d6232",
+    "files": {
+      "src/solver/mod_b110_default_mvg_provider.f90": "ffd4701740dceb2df12f05e9cad73e81eeb55b43",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "64c3d9581c71fc7bf5e5f3764995d41280312a2e"
+    },
+    "source_files_changed": 2,
+    "other_production_source_changed": false
+  },
+  "qualified_so_far": {
+    "MvG_first_materialization_allocates": true,
+    "MvG_same_shape_storage_reused": true,
+    "MvG_same_shape_input_fully_refreshed": true,
+    "MvG_same_shape_derived_cache_recomputed": true,
+    "MvG_shape_change_reallocated_to_exact_shape": true,
+    "legacy_two_argument_initializer_call_retained": true,
+    "backend_parameter_provider_objects_reused_when_present": true,
+    "backend_geometry_arrays_reused_only_at_exact_shape": true,
+    "backend_forcing_arrays_reused_only_at_exact_shape": true,
+    "backend_cached_values_overwritten_each call": true,
+    "parameter_set_id_shortcut": false,
+    "direct_registry_views": false,
+    "F_PE08_canonical_lean_scratch_retained": true,
+    "F_MR20_full_parallel_v1_scientific_matrix_retained": true,
+    "true_overlap_2_workers_retained": true,
+    "true_overlap_4_workers_retained": true,
+    "hard_mass_behavior_retained": true,
+    "O0_O2_output_identity": true
+  },
+  "validation": {
+    "run": 34443811540,
+    "job": 102764153459,
+    "head": "25284ecba4fb181366e23cb08921a06457c6a9fa",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "markers": [
+      "FPE09_G01_SOURCE_LOCK=PASS",
+      "FPE09_G02_BOUNDED_PRODUCTION_SCOPE=PASS",
+      "FPE09_G03_EXACT_SHAPE_REUSE_SOURCE_SEMANTICS=PASS",
+      "FPE09_G04_NO_PARAMETER_ID_SHORTCUT_OR_DIRECT_VIEW=PASS",
+      "FPE09_CACHE_FIRST_ALLOCATION=PASS",
+      "FPE09_CACHE_SAME_SHAPE_REUSE_AND_REFRESH=PASS",
+      "FPE09_CACHE_SHAPE_CHANGE_REALLOCATION=PASS",
+      "FPE09_CACHE_SECOND_SHAPE_REUSE=PASS",
+      "FPE09_CACHE_LEGACY_CALL_FORM=PASS",
+      "FPE08_CANONICAL_LEAN_SCRATCH_BYTES=0",
+      "FPE08_KNOWN_WORKER_PAYLOAD_AFTER_BYTES=2380",
+      "FMR20_V1_REAL_OVERLAP_2_WORKERS=PASS",
+      "FMR20_V1_REAL_OVERLAP_4_WORKERS=PASS",
+      "FMR20_V1_SERIAL_VS_2_WORKER_IDENTITY=PASS",
+      "FMR20_V1_SERIAL_VS_4_WORKER_IDENTITY=PASS",
+      "FMR20_V1_WORKER_COUNT_INDEPENDENCE=PASS",
+      "FMR20_V1_A_B_A_REPEATABILITY=PASS",
+      "FMR20_V1_INPUT_ORDER_INDEPENDENCE=PASS",
+      "FMR20_V1_CROSS_COLUMN_REJECTION_ISOLATION=PASS",
+      "FMR20_V1_NEGATIVE_PROFILE_FAIL_CLOSED=PASS",
+      "FMR20_V1_SHARED_PARAMETER_INTEGRITY=PASS",
+      "FPE09_G05_O0_O2_OUTPUT_IDENTITY=PASS",
+      "FPE09_WORKER_CACHE_REUSE_QUALIFICATION_GATE=PASS"
+    ]
+  },
+  "memory_interpretation": {
+    "known_dynamic_payload_per_current_worker_shape": "unchanged from F-PE08",
+    "four_node_fixture_bytes_per_worker": 2380,
+    "reason": "F-PE09 changes allocation lifecycle, not current-shape array extents",
+    "larger_shape_retention": false,
+    "shape_change_policy": "deallocate and allocate exact new shape"
+  },
+  "performance_claim": "PENDING paired same-runner preimage/postimage timing; no runtime benefit claimed yet",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "open": [
+      "paired same-runner timing characterization against F-PE08 preimage",
+      "persist timing interpretation",
+      "close or reject optimization"
+    ]
+  }
+}
