@@ -3,9 +3,17 @@
   "workunit": "F-CI29",
   "title": "F-MR26 Reference-ET ptra Root-Input Ownership Canonical Admission",
   "branch": "qualification/f-ci29-fmr26-ptra-ownership-canonical-admission",
-  "phase": "PRE_PROMOTION_EVIDENCE",
-  "canonical_base": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
-  "tested_readiness_head": "7b473cb4cbfc6ccbaf277f924f5fb898852183c8",
+  "phase": "PRE_PROMOTION_EVIDENCE_RECONCILED",
+  "canonical_base_at_initial_branch_creation": "06658d0b83206008dcaefba3b8d7e5c7f0c77538",
+  "canonical_base_current_authority": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+  "reconciliation": {
+    "transient_accidental_commit": "6d14f098ed59d26483c0d7dd350897cb829c3d47",
+    "revert_commit": "4a2b7a82287a209dc8150dcb70c6c2d6e459c592",
+    "net_content_diff_vs_FCI28_closeout": "empty",
+    "merge_commit": "544a1bd65ec2e2cafd323ca9edfd6e871efaed6e",
+    "merge_first_parent_current_canonical": true,
+    "requalified_descendant_head": "3db52fdfa5efc0a894d3c51290170d6f8df5672a"
+  },
   "owner": {
     "workunit": "F-MR26",
     "closeout": "e99e144b4f2bedcbb93d06af578cb409dc76f6c7",
@@ -30,10 +38,11 @@
     "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
     "production_delta": ["src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90"]
   },
-  "admission_gate": {
-    "workflow_run_id": 34461436182,
-    "workflow_job_id": 102819953436,
+  "reconciled_admission_gate": {
+    "workflow_run_id": 34462047739,
+    "workflow_job_id": 102821908198,
     "conclusion": "success",
+    "canonical_drift_revert_net_content_identity": true,
     "exact_single_source_postimage": true,
     "FCI27_and_FCI28_authorities_preserved": true,
     "frozen_FVQ41_test_exact": true,
@@ -42,11 +51,11 @@
     "O0_O2_output_identity": true,
     "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
   },
-  "readiness": {
-    "workflow_run_id": 34461436232,
-    "current_FCI29_job_id": 102819953583,
+  "reconciled_readiness": {
+    "workflow_run_id": 34462047672,
+    "current_FCI29_job_id": 102821907352,
     "current_FCI29_conclusion": "success",
-    "frozen_FCI28_job_id": 102819953704,
+    "frozen_FCI28_job_id": 102821907607,
     "frozen_FCI28_conclusion": "success",
     "canonical_workflow_transition_static": true,
     "frozen_FCI28_replay_complete": true
