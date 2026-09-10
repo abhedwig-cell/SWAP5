@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ25",
+  "title": "Restricted Serialized MultiSWAP Committed-Boundary Process Restart Admission",
+  "branch": "qualification/f-mq25-restricted-multiswap-restart-admission",
+  "candidate_commit": "dfffd8535b3345b105b2d71537d8149225f35c54",
+  "phase": "CLOSED_NOT_QUALIFIED_ROUTE_BACK_TO_FMR",
+  "status": "NOT_QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "decision": "NOT_QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": false,
+  "qualification_only": true,
+  "production_source_changed_by_fmq25": false,
+  "authoritative_evidence": "integration/f-mq/F-MQ25_QUALIFICATION_EVIDENCE.json",
+  "authoritative_workflow_run": 34448477968,
+  "authoritative_workflow_job": 102778457645,
+  "failed_gate": "MALFORMED_DECODED_PHYSICAL_STATE_MUST_FAIL_CLOSED",
+  "finding": "The exact candidate accepts and publishes a restart record whose decoded polymorphic physical_state has an incompatible concrete dynamic type while all declared metadata identities remain valid.",
+  "observed_candidate_behavior": {
+    "restore_status": 0,
+    "restored": true,
+    "whole_registry_published": true,
+    "reproduced_under_o0": true,
+    "reproduced_under_o2": true
+  },
+  "passed_controls": [
+    "exact source lock",
+    "qualification branch contains no src changes relative to candidate",
+    "late-record invalid-provenance rejection is whole-registry atomic",
+    "restart record structurally excludes worker/Newton/Jacobian/warm-start payload",
+    "O0/O2 defect observation identity"
+  ],
+  "remaining_matrix_status": "NOT_REACHED_AFTER_FROZEN_HARD_NEGATIVE_EARLY_EXIT",
+  "scope_not_admitted": [
+    "restricted serialized many-column committed-boundary process restart candidate dfffd8535b3345b105b2d71537d8149225f35c54",
+    "any wider restart scope",
+    "parallel restart"
+  ],
+  "required_owner_action": "Route to F-MR for production remediation of decoded physical-state type/schema compatibility validation before publication, then provide a new exact candidate for independent requalification.",
+  "closed": true
+}
