@@ -78,7 +78,7 @@ def write_sources(tmp, candidate_source):
     end do
 
     call aggregate_drainage_levels(levels, aggregate, diagnostics)
-    write(*,'(I0,1X,L1,1X,I0,1X,I0,1X,I0,1X,I0,1X,I0,1X,I0,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,L1,1X,ES26.17E3,1X,ES26.17E3)') &
+    write(*,'(*(g0,1x))') &
       diagnostics%status, diagnostics%evaluated, diagnostics%level_count, diagnostics%invalid_level_index, &
       diagnostics%derivative_unavailable_level_count, diagnostics%derivative_nonfinite_level_count, &
       diagnostics%branch_boundary_level_count, diagnostics%singular_tangent_level_count, &
