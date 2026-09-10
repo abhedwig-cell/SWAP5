@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI24",
+  "title": "F-PM06A Restricted Reference-ET Demand Canonical Admission",
+  "branch": "qualification/f-ci24-fpm06a-reference-et-canonical-admission",
+  "candidate": {
+    "F_PM06A_closeout": "c1bbe73cd0deced17f979a601fd6169036d7076b",
+    "F_VQ35_closeout": "a978fa20fb42ce7d83b052cda9d8246111df05a5",
+    "production_source": "src/process/mod_reference_et_demand_process.f90",
+    "production_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "post_src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "canonical_pre_admission": {
+    "branch": "integration/f-ci-canonical",
+    "pinned_head": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "strict_linear_descendant": true,
+    "force_update_allowed": false
+  },
+  "qualification": {
+    "initial_success_head": "7e8d0ca82bba181fceb73297695d7b9fb7645dc5",
+    "initial_success_run": 34450760680,
+    "evidence_head": "bfd4f1fe0223737f2b2f9864389a294a6c9d4f24",
+    "evidence_head_run": 34450880295,
+    "evidence_head_conclusion": "success",
+    "evidence_head_baseline_job": 102786101725,
+    "evidence_head_candidate_job": 102786189303,
+    "terminal_marker": "FCI24_CANONICAL_ADMISSION_GATE PASS_FPM06A_REFERENCE_ET_POSTIMAGE_READY_FOR_FAST_FORWARD_DECISION"
+  },
+  "qualified_scope": {
+    "restricted_stateless_reference_ET_demand_provider": true,
+    "potential_transpiration": true,
+    "potential_soil_evaporation": true,
+    "potential_pond_evaporation": true,
+    "runtime_binding": false,
+    "actual_evaporation": false,
+    "root_uptake_scope_expansion": false,
+    "interception": false,
+    "SWREDU_stateful_methods": false,
+    "Penman_Monteith": false,
+    "mass_ledger_binding": false
+  },
+  "architecture_invariants": {
+    "single_kernel": "PASS",
+    "kernel_IO_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS_ZERO_ET_PROCESS_STATE_IN_SCOPE",
+    "scratch_per_worker": "PASS_NO_ET_SOLVER_SCRATCH",
+    "transactional_timesteps": "PASS_BY_STATELESS_PROVIDER_SEMANTICS",
+    "cheap_recompute": "PASS",
+    "generic_time": "PASS_RATE_PROVIDER_WITH_EXPLICIT_FORCING_SPAN",
+    "mass_conservation": "PASS_POTENTIAL_DEMAND_NOT_AUTHORITATIVE_WITHDRAWAL",
+    "hydraulic_interface": "PASS_NO_HYDRAULIC_INTERNAL_ACCESS",
+    "crop_physics_reuse": "PASS_NO_DUPLICATED_CROP_OWNER_STATE",
+    "root_uptake_reuse": "PASS_NO_DUPLICATED_ROOT_UPTAKE_PHYSICS",
+    "physics_solver_policy_separation": "PASS",
+    "no_silent_dependencies": "PASS_RESTRICTED_PROFILE_EXPLICIT"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_for_canonical_fast_forward": true,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_workflow_passed": false,
+    "closed": false
+  },
+  "next_required_action": "Requalify this exact persisted status head, recheck the live canonical ref and strict fast-forward relation, then advance integration/f-ci-canonical with force=false only if all checks pass. After promotion require the canonical F-CI workflow to pass before closing F-CI24.",
+  "decision": "QUALIFIED_FPM06A_RESTRICTED_REFERENCE_ET_POSTIMAGE_READY_FOR_CANONICAL_FAST_FORWARD_PENDING_FINAL_STATUS_HEAD_REPLAY"
+}
