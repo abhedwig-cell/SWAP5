@@ -3,32 +3,47 @@
   "workunit": "F-MR26",
   "title": "Reference-ET Potential-Transpiration Root-Uptake Input Ownership Binding",
   "branch": "work/f-mr26-reference-et-ptra-root-uptake-binding",
-  "status": "IN_PROGRESS_SOURCE_BOUND_OWNERSHIP_SEAM_PERSISTED",
-  "decision": "IN_PROGRESS_SOURCE_BOUND_OWNERSHIP_SEAM_PERSISTED",
+  "status": "REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "decision": "REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_INDEPENDENT_QUALIFICATION",
   "base_canonical_head": "0aa4f7ca88a1cd2f3cf7333a35946c4415d9258d",
+  "candidate": {
+    "tested_head": "1bf33a2af1b51c3963c18257b30a4c710ff1b98b",
+    "runtime_source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "runtime_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca"
+  },
+  "qualification": {
+    "workflow_run_id": 34459201833,
+    "workflow_job_id": 102812713309,
+    "conclusion": "success",
+    "output_sha256": "ee3892953d58b20682548597ce7e86891bf9ee95e68ba15765e642b4af155de5",
+    "O0_O2_output_identity": true
+  },
   "ownership": {
     "runtime_ptra_authority": "F-MR23 reference_et_demand_result_t%potential_transpiration_cm_per_day",
-    "crop_root_input_ptra": "transport field only",
+    "crop_root_input_ptra": "transport field only after binding",
+    "preexisting_crop_root_input_ptra": "non-authoritative and ignored",
     "F_MR12": "downstream consumer/adapter",
-    "F_WOF18": "historical formula-equivalence evidence only"
-  },
-  "state": {
-    "realized": false,
-    "persisted": true,
-    "tested": false,
-    "owner_gate_passed": false,
-    "independently_qualified": false,
-    "canonical_admitted": false,
-    "closed": false
+    "F_WOF18": "historical formula-equivalence evidence only; not canonical runtime authority"
   },
   "scope": {
     "ptra_ownership_reconciled": true,
     "stateless_root_input_binding": true,
+    "non_ptra_fields_preserved": true,
     "new_ET_physics": false,
     "root_uptake_execution": false,
     "mass_ledger_binding": false,
     "persistent_state": false,
     "crop_state_advancement": false
   },
-  "next_action": "Implement the smallest stateless binding source and source-bound owner gate. The binding must copy only the authoritative F-MR23 ptra into the existing crop_root_uptake_input_t and must not recompute ET physics."
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "owner_gate_passed": true,
+    "independently_qualified": false,
+    "canonical_admitted": false,
+    "closed": false
+  },
+  "evidence": "integration/f-mr/F-MR26_EVIDENCE.json",
+  "next_action": "Independently qualify the exact source blob and ownership semantics. Do not expand the qualification into root-water uptake execution, water accounting or crop lifecycle composition."
 }
