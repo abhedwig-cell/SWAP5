@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "J1D_SWAP_QBOT_INTERFACE_MAPPING",
+  "status": "CONTRACT_FROZEN_BEFORE_EXECUTION",
+  "parents": [
+    "F-ROSS01_GATE_J1B_R1_SMOOTH_REGIME_COLUMN_RESPONSE_CONTRACT.json",
+    "F-ROSS01_GATE_J1C_BOUNDARY_DERIVATIVE_CHARACTERIZATION_CONTRACT.json"
+  ],
+  "purpose": "Qualify the coordinate and sign mapping from the already qualified J1B-R1 downward-positive Ross harness response tangent to the native SWAP 4.3.1 qbot convention, without changing the frozen C1R face family, fixtures, finite-difference factors, seam policy, or production cost model.",
+  "scope": {
+    "production_implementation": false,
+    "interface_mapping_only": true,
+    "physical_family": "qualified C1R base MvG/KSATFIT face family only",
+    "materials": ["B01", "B12", "O01", "O05", "O14", "O18"],
+    "geometries": [
+      ["wet_short", 2, -50.0],
+      ["mid", 4, -200.0],
+      ["dry_midcell", 16, -1019.3734859388727],
+      ["long_dry", 64, -3000.0]
+    ],
+    "q_down_fractions_of_K_top": [-0.02, 0.0, 0.02],
+    "fd_factors": [1e-05, 3e-05]
+  },
+  "legacy_source_authority": {
+    "package": "SWAP_4.3.1(6).zip / SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "files": {
+      "SWAP/headcalc.f90": {
+        "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+        "relevant_statements": [
+          "line 606: qbot = -1.0d0 * kmean(numnod+1) for free drainage",
+          "line 607: F(NN) = F(NN) - qbot",
+          "line 622: F(NN) = F(NN) - qbot for flux bottom boundary"
+        ]
+      },
+      "SWAP/boundbottom.f90": {
+        "sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e",
+        "relevant_statements": [
+          "line 137: qbot = -1.0d0 * kmean(numnod+1) for free drainage",
+          "line 150: h(numnod) = hbot - (qbot/kbot + 1.0d0) * disnod(numnod+1)"
+        ]
+      },
+      "SWAP/fluxes.f90": {
+        "sha256": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550"
+      }
+    },
+    "sign_conclusion": "native SWAP qbot is positive upward / inflow from below and negative for downward free drainage"
+  },
+  "coordinate_mapping": {
+    "j1b_harness_flux": "q_down, positive downward",
+    "swap_interface_flux": "qbot, positive upward / inflow from below",
+    "mapping": "q_down = -qbot",
+    "response_mapping": "d(h_bottom)/d(qbot) = -d(h_bottom)/d(q_down)",
+    "expected_fixed_top_smooth_sign": "positive",
+    "j1b_harness_residual_last": "q_face_down - q_down",
+    "swap_qbot_tangent_rhs_last_entry": -1.0,
+    "derivation": "J1B solves J dh/dq_down = +e_N. Since q_down=-qbot, J dh/dqbot = -e_N."
+  },
+  "frozen_seam_policy": {
+    "strict_cell_interior": "use analytic same-factorization response",
+    "internal_node_line": "no unique smooth tangent claim",
+    "trial_crosses_node": "route or fallback; do not average",
+    "exact_equal_head_shortcut": "separate branch; no cross-branch tangent claim",
+    "head_envelope_endpoint": "no unique derivative claim",
+    "known_routed_case": {
+      "material": "O01",
+      "geometry": "long_dry",
+      "q_down_fraction_of_K_top": 0.0,
+      "fd_factor": 3e-05,
+      "head_index": 39,
+      "expected_base_cell": 204,
+      "expected_qbot_plus_cell": 204,
+      "expected_qbot_minus_cell": 205
+    }
+  },
+  "expected_counts": {
+    "base_cases": 72,
+    "finite_difference_comparisons_total": 144,
+    "routed_known_regime_switch_comparisons": 1,
+    "smooth_finite_difference_comparisons": 143,
+    "unexpected_regime_switches": 0
+  },
+  "hard_gates": [
+    "all 72 frozen J1B-R1 base cases remain valid",
+    "q_down = -qbot is applied exactly and only at the external interface coordinate",
+    "all 143 smooth symmetric finite differences are performed directly in native SWAP qbot coordinates and satisfy tangent metric <= 1e-5",
+    "the one frozen O01 node crossing is reproduced with the qbot plus/minus directions reversed relative to J1B-R1 and is excluded from the smooth metric",
+    "no additional table-cell transition occurs",
+    "d_h_bottom/d_qbot is positive in all 72 smooth base cases",
+    "steady serial-face continuity <= 1e-10 scaled residual",
+    "normal and qbot-tangent linear residuals <= 1e-11",
+    "base profiles and shared tables remain bitwise unchanged",
+    "production candidate cost remains exactly one factorization, one normal backsolve and one additional qbot-tangent backsolve per base case",
+    "no extra nonlinear trajectory is required to obtain the production qbot tangent"
+  ],
+  "prohibited": [
+    "changing J1B-R1 geometries",
+    "changing q fractions",
+    "changing either FD factor",
+    "table retuning",
+    "derivative smoothing",
+    "averaging across the O01 node crossing",
+    "dropping any frozen base case",
+    "Class-B or C2B work",
+    "Phi tuning or MFP normalization-line work",
+    "claiming transactional kernel integration",
+    "claiming MODFLOW coupling qualification",
+    "production admission"
+  ],
+  "exit_rule": {
+    "pass": "J1D_SWAP_QBOT_INTERFACE_MAPPING_QUALIFIED_READY_FOR_REAL_TRANSACTIONAL_BOUNDARY_INTEGRATION_QUALIFICATION",
+    "fail": "Keep J1 interface mapping incomplete and classify the failure without tuning the C1R representation or frozen perturbations."
+  },
+  "relevant_invariants": [7, 8, 11, 12, 13, 14, 15, 20, 23, 25, 26, 29, 30]
+}
