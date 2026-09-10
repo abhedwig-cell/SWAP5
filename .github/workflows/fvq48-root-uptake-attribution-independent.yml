@@ -1,0 +1,23 @@
+name: F-VQ48 independent root-uptake attribution qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt
+    paths:
+      - 'integration/f-vq/F-VQ48_*'
+      - 'tests/fvq/mod_fvq48_independent_root_attribution_backend.f90'
+      - 'tests/fvq/test_fvq48_forcing_candidate_binding.f90'
+      - 'tests/fvq/run_fvq48_forcing_candidate_binding_gate.sh'
+      - '.github/workflows/fvq48-root-uptake-attribution-independent.yml'
+  workflow_dispatch:
+
+jobs:
+  independent-hard-negative:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independent source-bound F-MR30 forcing-candidate binding gate
+        run: bash tests/fvq/run_fvq48_forcing_candidate_binding_gate.sh
