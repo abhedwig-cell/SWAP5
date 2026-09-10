@@ -1,0 +1,100 @@
+name: F-ROSS01 Gate E3H-A8 O14 Surface-Cap to Ross Runoff Composition
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A8_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a8_o14_transactional_surface_cap_to_runoff.py'
+      - '.github/workflows/ross01-gate-e3h-a8-o14-surface-cap-to-runoff.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [P0_A1_CONTROL, P1_DRIER_SUBSOIL, P2_DRIER_TOP_AND_SUBSOIL, P3_STRONG_DRY_SEPARATION]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: |
+          python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a8_o14_transactional_surface_cap_to_runoff.py
+          python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a7_r1_harness_repair_runner.py
+      - name: Execute frozen A8 profile gate
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a8-${{ matrix.profile }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a8_o14_transactional_surface_cap_to_runoff.py \
+            "${{ matrix.profile }}" \
+            "$out/F-ROSS01_GATE_E3H_A8_${{ matrix.profile }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A8_${{ matrix.profile }}_STDOUT.txt"
+      - name: Assert frozen A8 semantics
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          path=f'ross01-gate-e3h-a8-{p}/F-ROSS01_GATE_E3H_A8_{p}_RESULT.json'
+          r=json.load(open(path)); pr=r['profile_result']
+          ce=pr['candidate_event']; re=pr['reference_event']; ec=pr['event_comparison']
+          cp=pr['candidate_postcap']; rp=pr['reference_postcap']; pc=pr['postcap_comparison']
+          cw=pr['candidate_whole_path']; rw=pr['reference_whole_path']
+          assert r['gate']=='E3H_A8_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION'
+          assert r['production_implementation'] is False
+          assert r['material']=='O14'
+          assert r['pass'] is True and pr['pass'] is True
+          assert ce['accepted'] is True and re['accepted'] is True
+          assert 0.02 < ce['event_time_day'] < 0.05
+          assert 0.02 < re['event_time_day'] < 0.05
+          assert ce['surface_storage_cm']==1.0 and re['surface_storage_cm']==1.0
+          assert ce['heads_cm'][0] < 0.0 and re['heads_cm'][0] < 0.0
+          assert ce['diagnostics']['max_abs_balance_residual_cm']<=1e-9
+          assert re['diagnostics']['max_abs_balance_residual_cm']<=1e-9
+          assert ce['surface_q_abs_error_over_ksat']<=0.0005
+          assert ce['surface_cost_ok'] is True
+          assert ce['no_unqualified_face_route'] is True
+          assert ce['original_committed_state_bitwise_unchanged_during_trial'] is True
+          assert re['original_committed_state_bitwise_unchanged_during_trial'] is True
+          assert ce['synthetic_reject_after_event_corrector_restores_original_state'] is True
+          assert re['synthetic_reject_after_event_corrector_restores_original_state'] is True
+          assert ce['synthetic_reject_runoff_ledger_cm']==0.0
+          assert re['synthetic_reject_runoff_ledger_cm']==0.0
+          assert ec['event_time_difference_day']<=0.00025
+          assert ec['max_event_head_difference_cm']<=0.25
+          assert ec['event_bottom_transfer_difference_cm']<=0.001
+          assert cp['complete'] is True and cp['accepted_step_count']==40
+          assert rp['complete'] is True and rp['accepted_step_count']==40
+          assert cp['max_abs_balance_residual_cm']<=1e-9
+          assert rp['max_abs_balance_residual_cm']<=1e-9
+          assert pc['max_trajectory_head_difference_cm']<=0.25
+          assert pc['cumulative_runoff_difference_cm']<=0.001
+          assert pc['cumulative_bottom_transfer_difference_cm']<=0.001
+          assert pc['final_soil_storage_change_difference_cm']<=0.001
+          assert pc['candidate_final_to_attractor_cm']<=0.005
+          assert pc['reference_final_to_attractor_cm']<=0.005
+          assert abs(cw['whole_path_balance_residual_cm'])<=1e-9
+          assert abs(rw['whole_path_balance_residual_cm'])<=1e-9
+          assert pr['postcap_qtop_recomputed_from_cap_state'] is True
+          assert pr['precap_qtop_reused_after_cap'] is False
+          assert all(pr['tests'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a8-${{ matrix.profile }}
+          path: ross01-gate-e3h-a8-${{ matrix.profile }}/
