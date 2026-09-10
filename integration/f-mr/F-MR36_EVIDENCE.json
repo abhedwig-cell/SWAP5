@@ -1,0 +1,66 @@
+{
+  "schema": "swap5.runtime_composition_evidence.v1",
+  "work_unit": "F-MR36",
+  "candidate_scope": "restricted serialized DIVDRA active runtime callsite composition",
+  "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "tested_head": "fc7952a410e714d6c7ef25e28a5cc4ba2359c84b",
+  "production_candidate": {
+    "composition_source": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "runtime_source": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+    "generic_serialized_runtime_blob_unchanged": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "trusted_authorities": {
+    "divdra_distribution_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "fmr33_binding_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "fvq21_closeout": "f7cdccf11d21c31494b328251b001d474170c0c7",
+    "fvq21_real_physics_test_path": "tests/fmr/test_fmr09_root_sink_runtime.f90",
+    "fvq21_real_physics_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1",
+    "corrected_fmr36_test_path": "tests/fmr/test_fmr36_divdra_active_runtime_callsite_v2.f90",
+    "corrected_fmr36_test_blob": "825c4aea9306087534d0a46514bc40c254aebfd4"
+  },
+  "decisive_ci": {
+    "workflow_run": 34523538504,
+    "job": 103026765860,
+    "conclusion": "success",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": true,
+    "output_sha256": "b89deb68e978e5f5f4ace3e6a68ebafdefc1196d8d131abc57c3e7d8d0785a9f",
+    "artifact_id": 10170617347,
+    "artifact_name": "F-MR36-divdra-active-runtime-callsite-evidence",
+    "artifact_zip_sha256": "f9b763b584f9644f1828b4d6bfbc24a127c1778fbed622cf71927cde812a90f3"
+  },
+  "proved": {
+    "fvq21_control_replay_on_current_dependencies": true,
+    "inactive_wrapper_exact_runtime_identity": true,
+    "manual_fmr33_binding_equals_active_callsite_result_state_and_mass": true,
+    "existing_mass_ledger_used_exactly_once": true,
+    "caller_forcing_restored_after_active_return": true,
+    "explicit_hydraulic_view_controls_distribution": true,
+    "water_table_nodes_observed": [1, 3],
+    "zero_transfer_accepted": true,
+    "negative_transfer_rejected_precommit": true,
+    "restricted_seam_transfer_rejected_precommit": true,
+    "prebound_target_not_overwritten": true,
+    "shared_forcing_handle_rejected_precommit": true,
+    "generic_serialized_runtime_unchanged": true,
+    "reference_source_unchanged": true
+  },
+  "superseded_failed_fixture_evidence": {
+    "classification": "TEST_FIXTURE_FAILURES_NOT_PRODUCTION_CANDIDATE_DEFECTS",
+    "basis": "failures occurred before active callsite invocation or from test-only compilation defects; corrected F-VQ21-source-bound fixture passes with identical production blobs",
+    "production_changed_to_obtain_green_result": false
+  },
+  "nonclaims": [
+    "no drainage exchange-law qualification",
+    "no fully implicit or trial-state drainage qualification",
+    "no surface-water-controlled drainage qualification",
+    "no parallel active DIVDRA callsite qualification",
+    "no scientific reopening of F-VQ47",
+    "no independent qualification",
+    "no canonical admission"
+  ],
+  "owner_decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION"
+}
