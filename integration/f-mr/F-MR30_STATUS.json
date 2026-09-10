@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR30",
+  "title": "Restricted Accepted Root-Uptake Attribution Receipt",
+  "branch": "work/f-mr30-restricted-root-uptake-attribution-receipt",
+  "canonical_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "production_candidate": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+  "production_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
+  "production_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "status": "IMPLEMENTED_PERSISTED_PENDING_OWNER_GATE",
+  "decision": "ATOMIC_POSTCOMMIT_ROOT_UPTAKE_ATTRIBUTION_RECEIPT_CANDIDATE_READY_FOR_OWNER_GATE",
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "production_source_modified_after_candidate": false,
+    "closed": false
+  },
+  "architecture": {
+    "prepared_object": "worker-local precommit validation and scalar attribution scratch",
+    "publication_object": "typed postcommit receipt",
+    "publication_authority": "successful generic fmr_accepted_commit_receipt_t",
+    "amount": "sum(exact candidate root_extraction_sink(:)) * receipt interval duration",
+    "mass_ledger_mutation": false,
+    "persistent_column_state_added": false,
+    "transaction_core_changed": false,
+    "root_physics_changed": false
+  },
+  "owner_gate": "tests/fmr/run_fmr30_root_uptake_attribution_receipt_gate.sh",
+  "required_before_closeout": [
+    "O0/O2 transaction oracle identity",
+    "real kernel candidate and real generic commit receipt",
+    "precommit publication rejection",
+    "provenance and time mismatch fail-closed",
+    "attribution equals already-booked root mass_out in controlled oracle",
+    "strict compile against real canonical serialized backend"
+  ],
+  "deferred": [
+    "serialized MultiSWAP sparse attribution routing",
+    "parallel root-extraction execution",
+    "independent scientific/runtime qualification",
+    "F-CI32 canonical admission"
+  ]
+}
