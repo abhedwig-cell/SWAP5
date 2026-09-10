@@ -1,0 +1,19 @@
+name: F-PM08D1 storage compact-state readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d1-surface-water-storage-compact-state-readiness
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D1 readiness gate
+        run: python3 tools/fpm/fpm08d1_storage_readiness_gate.py
