@@ -78,30 +78,36 @@ program test_fpm06c_restricted_surface_evaporation
 
 contains
 
+  subroutine fail(label)
+    character(len=*), intent(in) :: label
+    write(*,'(a)') 'FPM06C_FAIL=' // trim(label)
+    error stop 1
+  end subroutine fail
+
   subroutine assert_available(r, expected_reva, expected_epd, label)
     type(surface_evaporation_result_t), intent(in) :: r
     real(real64), intent(in) :: expected_reva, expected_epd
     character(len=*), intent(in) :: label
-    if (r%status /= SURFACE_EVAP_AVAILABLE) error stop label
-    if (transfer(r%bare_soil_evaporation, 0_int64) /= transfer(expected_reva, 0_int64)) error stop label
-    if (transfer(r%ponded_water_evaporation, 0_int64) /= transfer(expected_epd, 0_int64)) error stop label
+    if (r%status /= SURFACE_EVAP_AVAILABLE) call fail(label)
+    if (transfer(r%bare_soil_evaporation, 0_int64) /= transfer(expected_reva, 0_int64)) call fail(label)
+    if (transfer(r%ponded_water_evaporation, 0_int64) /= transfer(expected_epd, 0_int64)) call fail(label)
   end subroutine assert_available
 
   subroutine assert_invalid(r, label)
     type(surface_evaporation_result_t), intent(in) :: r
     character(len=*), intent(in) :: label
-    if (r%status /= SURFACE_EVAP_INVALID_INPUT) error stop label
-    if (transfer(r%bare_soil_evaporation, 0_int64) /= transfer(0.0_real64, 0_int64)) error stop label
-    if (transfer(r%ponded_water_evaporation, 0_int64) /= transfer(0.0_real64, 0_int64)) error stop label
+    if (r%status /= SURFACE_EVAP_INVALID_INPUT) call fail(label)
+    if (transfer(r%bare_soil_evaporation, 0_int64) /= transfer(0.0_real64, 0_int64)) call fail(label)
+    if (transfer(r%ponded_water_evaporation, 0_int64) /= transfer(0.0_real64, 0_int64)) call fail(label)
   end subroutine assert_invalid
 
   subroutine assert_same(x, y, label)
     type(surface_evaporation_result_t), intent(in) :: x, y
     character(len=*), intent(in) :: label
-    if (x%status /= y%status) error stop label
-    if (x%route /= y%route) error stop label
-    if (transfer(x%bare_soil_evaporation, 0_int64) /= transfer(y%bare_soil_evaporation, 0_int64)) error stop label
-    if (transfer(x%ponded_water_evaporation, 0_int64) /= transfer(y%ponded_water_evaporation, 0_int64)) error stop label
+    if (x%status /= y%status) call fail(label)
+    if (x%route /= y%route) call fail(label)
+    if (transfer(x%bare_soil_evaporation, 0_int64) /= transfer(y%bare_soil_evaporation, 0_int64)) call fail(label)
+    if (transfer(x%ponded_water_evaporation, 0_int64) /= transfer(y%ponded_water_evaporation, 0_int64)) call fail(label)
   end subroutine assert_same
 
 end program test_fpm06c_restricted_surface_evaporation
