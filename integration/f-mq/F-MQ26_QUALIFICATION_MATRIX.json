@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MQ26",
+  "phase": "FROZEN_BEFORE_EXECUTION",
+  "candidate": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+  "principle": "Independent scientific admission of the exact F-MR20 parallel V1 candidate; correctness, isolation and hard mass are primary gates, performance is explicitly out of scope.",
+  "positive_matrix": {
+    "column_counts": [2, 7, 8, 17, 31, 32],
+    "batch_sizes_by_count": {
+      "2": [1, 2],
+      "7": [2, 3, 7],
+      "8": [3, 5],
+      "17": [4, 9],
+      "31": [7, 16],
+      "32": [8, 9, 17]
+    },
+    "worker_counts": [2, 4],
+    "reference": "serialized reference runtime",
+    "checks_each_case": [
+      "canonical result identity by column id",
+      "committed-state identity by column id",
+      "semantic and deterministic diagnostic identity",
+      "transaction revision identity",
+      "canonical aggregate mass/result identity",
+      "per-column hard mass residual <= 1e-12",
+      "aggregate hard mass identity",
+      "worker-count independence",
+      "deterministic canonical collection"
+    ],
+    "ordering_attacks": [
+      "identity order",
+      "full reverse order",
+      "odd-even interleave",
+      "cyclic left rotation"
+    ],
+    "repeatability": "A/B/A execution where A is 2 workers and B is 4 workers, starting from independently cloned identical committed states.",
+    "batch_boundary_attack": "Cases deliberately place canonical column order across different batch boundaries for the same logical population."
+  },
+  "isolation_matrix": {
+    "rejected_problem_columns": [
+      "single locally rejected forcing at an interior canonical position",
+      "single locally rejected forcing at a batch boundary",
+      "two rejected columns assigned to different workers"
+    ],
+    "requirements": [
+      "unaffected columns remain bit-identical to serialized reference",
+      "rejected column committed state remains at pre-trial revision/state",
+      "one worker rejection cannot mutate another worker's column",
+      "shared immutable parameter registry remains bit-identical",
+      "heavy backend/executor/workspace ownership is per worker, not per column and not shared mutable state"
+    ]
+  },
+  "unsupported_profile_negative_matrix": [
+    "root extraction active",
+    "snow active",
+    "bottom mode 5",
+    "temporal continuation history active",
+    "macropores active"
+  ],
+  "unsupported_profile_rule": "Must fail closed before any physical solve; no silent serialized fallback is accepted as parallel admission.",
+  "determinism": {
+    "published_order": "canonical column order independent of input/completion order",
+    "aggregate_reduction": "deterministic canonical reduction",
+    "o0_o2": "exact qualification-output identity"
+  },
+  "compiler_matrix": ["GNU Fortran O0 with OpenMP", "GNU Fortran O2 with OpenMP"],
+  "source_lock": "No src/ change relative to immutable candidate is allowed in F-MQ26.",
+  "early_exit_rule": "Any worker-count dependence, cross-column mutation, pre-solve fail-open, hard-mass failure or source drift is sufficient for NOT_QUALIFIED and must route back to F-MR.",
+  "pass_exit": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+  "explicit_nonclaims": [
+    "parallel speedup",
+    "worker counts other than 2 and 4",
+    "parallel restart",
+    "root extraction, snow, macropores, frost, hysteresis, tabulated hydraulics or elasticity",
+    "bottom modes other than 7",
+    "temporal continuation history"
+  ]
+}
