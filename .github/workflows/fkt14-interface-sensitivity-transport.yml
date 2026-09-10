@@ -1,0 +1,35 @@
+name: F-KT14 Interface Sensitivity Transport
+
+on:
+  push:
+    branches:
+      - work/f-kt14-interface-sensitivity-result-transport
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Fortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Build F-KT14 focused harness
+        run: |
+          set -euo pipefail
+          mkdir -p build/fkt14/${{ matrix.opt }}
+          gfortran -std=f2008 -ffree-line-length-none -${{ matrix.opt }} \
+            -Jbuild/fkt14/${{ matrix.opt }} -Ibuild/fkt14/${{ matrix.opt }} \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/kernel/mod_kernel_transactions.f90 \
+            tests/fkt/test_fkt14_interface_sensitivity_transport.f90 \
+            -o build/fkt14/${{ matrix.opt }}/test_fkt14
+      - name: Run F-KT14 focused harness
+        run: build/fkt14/${{ matrix.opt }}/test_fkt14
