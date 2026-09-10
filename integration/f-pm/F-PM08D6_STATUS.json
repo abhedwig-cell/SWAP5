@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D6",
   "title": "Transactional Surface-Water Runtime Composition Readiness",
   "branch": "work/f-pm08d6-transactional-surface-water-runtime-readiness",
-  "status": "IN_PROGRESS_CONTRACT_PERSISTED_PRETEST",
-  "phase": "TRANSACTION_AND_MASS_OWNERSHIP_BOUND_BEFORE_EXECUTABLE_ORACLE",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "8fa79a70a9faccaf8b63826df607a685eb75b046",
@@ -15,7 +15,8 @@
     "fpm08d3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
     "fpm08d4_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
     "fpm08d5_closeout": "90f8aee150df928b2cc98938c98766f037658114",
-    "fci36_final_canonical_head": "8fa79a70a9faccaf8b63826df607a685eb75b046"
+    "fci36_final_canonical_head": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "fci36_exact_head_run": 34527338720
   },
   "readiness_findings": {
     "existing_FKT_commit_authority_must_be_reused": true,
@@ -27,26 +28,38 @@
     "mass_tolerance_is_numeric_verification_only": true,
     "DIVDRA_scalar_transfer_booked_once": true,
     "rejected_trial_mass_publication_zero": true,
+    "explicit_events_subdivide_generic_intervals": true,
     "automatic_capacity_policy_admitted": false,
     "SWQHR2_admitted": false,
-    "mixed_sign_active_limiter_admitted": false
+    "mixed_sign_active_limiter_admitted": false,
+    "runtime_may_own_second_commit_authority": false
+  },
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D6_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D6_RUNTIME_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D6_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d6_transactional_surface_water.py",
+    "gate": "tools/fpm/fpm08d6_transactional_surface_water_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d6-transactional-surface-water-readiness.yml"
   },
   "state": {
     "branch_created": true,
     "clean_base_rechecked": true,
     "contract_persisted": true,
     "checkpoint_persisted": true,
-    "runtime_source_inventory_persisted": false,
-    "architecture_audited_all_30": false,
-    "test_oracle_persisted": false,
-    "gate_persisted": false,
-    "workflow_persisted": false,
+    "runtime_source_inventory_persisted": true,
+    "architecture_audited_all_30": true,
+    "test_oracle_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
     "reference_source_changed": false,
     "runtime_implementation_qualified": false,
+    "automatic_capacity_policy_qualified": false,
+    "SWQHR2_production_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "persist exact runtime source inventory, all-30 invariant audit and an executable transaction oracle before any CI qualification claim"
+  "next_required_step": "execute the fully persisted D6 readiness gate under CI and fail closed on any source-lock, transaction, rollback, mass-completeness, DIVDRA single-booking, held-route or architecture inconsistency"
 }
