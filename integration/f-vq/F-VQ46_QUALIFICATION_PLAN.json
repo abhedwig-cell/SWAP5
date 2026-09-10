@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ46",
+  "title": "Independent Qualification of F-MR28 Reference-ET to Restricted Root-Uptake Execution Composition",
+  "branch": "qualification/f-vq46-fmr28-reference-et-root-uptake-execution",
+  "owner_workunit": "F-MR28",
+  "owner_closeout": "840a43ab51b6c5eb903c43efc33b6d735b0a1872",
+  "qualified_candidate_head": "7cd18f03293ebd94fce4bb4430bc78ba13e7e237",
+  "candidate_source": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+  "candidate_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "independence_policy": "Do not use the F-MR28 owner test output as the scientific oracle. Independently compose the frozen canonical ptra binder with the frozen F-MR12/F-MR10 execution chain and compare F-MR28 against that explicit chain over a held-out matrix. Production source is immutable on this branch.",
+  "held_out_matrix": {
+    "potential_transpiration_cm_per_day": [0.0, 0.03, 0.17, 0.61],
+    "incoming_stale_ptra": [-2.0, 0.0, 7.5],
+    "root_geometries": [
+      "rooted_nodes=1,cumulative=[0,1,1,1]",
+      "rooted_nodes=2,cumulative=[0,0.35,1,1]",
+      "rooted_nodes=3,cumulative=[0,0.10,0.55,1]",
+      "rooted_nodes=3,cumulative=[0,0.60,0.85,1]"
+    ],
+    "hydraulic_profiles": [
+      "very_dry=[-20000,-17000,-9000,-3000]",
+      "mixed=[-17000,-8000,-600,-100]",
+      "transition=[-1200,-800,-400,-100]",
+      "wet=[-200,-150,-100,-50]"
+    ],
+    "active_cases": 192
+  },
+  "additional_attacks": [
+    "upstream ET diagnostics rejected before root execution",
+    "malformed cumulative-root geometry rejected before root execution",
+    "active crop with unavailable committed state fails closed downstream",
+    "inactive crop with unavailable committed state remains dependency-free zero route",
+    "committed revision and physical state remain byte-identical",
+    "A-B-A deterministic replay",
+    "O0/O2 output identity"
+  ],
+  "hard_scope": "restricted MACRO/Feddes drought-only precomputed-qrot root-water-uptake execution fed by canonical authoritative reference-ET ptra",
+  "nonclaims": [
+    "no actual-transpiration mass-ledger admission",
+    "no accepted-window integration",
+    "no oxygen/salinity/frost/compensation/MICRO/Jong-van-Lier/macropore uptake",
+    "no SWKIMPL=1 dynamic root-sink reevaluation",
+    "no crop lifecycle advancement",
+    "no general release qualification"
+  ],
+  "exit_target": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_CANONICAL_ADMISSION"
+}
