@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.independent_runtime_qualification_status.v1",
+  "work_unit": "F-VQ51",
+  "title": "Independent Qualification of F-MR36 Restricted Serialized DIVDRA Active Runtime Callsite",
+  "branch": "qualification/f-vq51-fmr36-divdra-active-runtime-callsite",
+  "phase": "PRETEST_PLAN_PERSISTED",
+  "decision": "IN_PROGRESS_INDEPENDENT_FMR36_DIVDRA_ACTIVE_RUNTIME_CALLSITE_QUALIFICATION",
+  "clean_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "owner_closeout": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+  "state": {
+    "live_name_checked_free": true,
+    "branch_created_from_current_canonical": true,
+    "plan_persisted": true,
+    "candidate_overlay_persisted": false,
+    "independent_verifier_persisted": false,
+    "workflow_persisted": false,
+    "tested": false,
+    "independently_qualified": false,
+    "canonical_admitted": false
+  },
+  "independence_guard": {
+    "owner_tests_used_as_oracle": false,
+    "owner_fixture_values_reused": false,
+    "owner_expected_values_reused": false,
+    "owner_output_hash_used_as_acceptance_oracle": false,
+    "f_vq47_science_reopened": false,
+    "f_vq49_binding_science_reopened": false
+  },
+  "next_required_step": "overlay only the two exact F-MR36 production candidate blobs, then construct a fresh independent runtime verifier"
+}
