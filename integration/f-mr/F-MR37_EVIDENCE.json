@@ -1,0 +1,63 @@
+{
+  "schema":"swap5.fmr37_evidence.v1",
+  "work_unit":"F-MR37",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "qualified_readiness_scope":"GENERIC_RESOLVED_COLUMN_EXPLICIT_EFFECTIVE_FORCING_EXECUTION_SEAM_DIRECTION_FOR_PARALLEL_OPTIONAL_PROCESS_COMPOSITION",
+  "production_delta":[],
+  "reference_delta":[],
+  "decisive_tested_head":"b9fab8b68640735a821ef34f55ff79bd74293157",
+  "decisive_run":34530534432,
+  "decisive_job":103049884237,
+  "decisive_conclusion":"success",
+  "gate_observations":[
+    "FMR37_SOURCE_AUTHORITY_AND_ZERO_PRODUCTION_DELTA=PASS",
+    "FMR37_CURRENT_RUNTIME_CAUSALITY_RECONSTRUCTED=PASS",
+    "FMR37_ADJACENT_FMR35_SEPARATE_POOL_LINES=432",
+    "FMR37_FEATURE_SPECIFIC_POOL_DUPLICATION_NOT_SELECTED=PASS",
+    "FMR37_GENERIC_EFFECTIVE_FORCING_CONTRACT=PASS",
+    "FMR37_ALL_30_ARCHITECTURE_INVARIANTS=PASS",
+    "FMR37_READINESS_GATE=PASS"
+  ],
+  "attempt_history":[
+    {
+      "run":34528423424,
+      "head":"31e135512c6e7224e216b6fdeb70116efd91a3f8",
+      "classification":"HARNESS_ONLY_STATIC_ASSERTION_ERROR_BEFORE_BUILD_OR_PHYSICS"
+    },
+    {
+      "run":34528457546,
+      "head":"134488e8d8ba954305b8ac62d67f839458313b56",
+      "job":103043039702,
+      "classification":"HARNESS_ONLY_SCHEDULER_FORCING_OWNERSHIP_ASSERTION_ERROR_BEFORE_BUILD_OR_PHYSICS",
+      "detail":"gate incorrectly expected forcing_registry in mod_fmr_parallel_physical_scheduler; canonical scheduler is correctly forcing-agnostic"
+    },
+    {
+      "remediation":"b9fab8b68640735a821ef34f55ff79bd74293157",
+      "classification":"MATCHER_ONLY_CORRECTION",
+      "detail":"require read-only forcing_registry in worker pool and require scheduler to remain forcing-agnostic; no production/reference or readiness-direction change"
+    }
+  ],
+  "source_bound_findings":{
+    "parallel_scheduler":"forcing-agnostic column-to-worker assignment only",
+    "parallel_worker_pool":"shared fmr_b110_physical_forcing_t registry is intent(in)",
+    "serialized_column_executor":"forcing handle resolves to one forcing object; physical trial consumes that selected object",
+    "serialized_divdra":"requires mutable registry only to materialize and clean one drainage_flux_by_level row around generic runtime",
+    "fmr35_adjacent_precedent":"feature-specific separate root-uptake pool is 432 lines and therefore evidence against cloning worker machinery for each optional process"
+  },
+  "qualified_direction":{
+    "step_1":"separate registry resolution from the transaction/backend per-column executor",
+    "step_2":"provide a generic executor seam receiving one explicit effective fmr_b110_physical_forcing_t object",
+    "step_3":"ordinary callers pass canonical forcing unchanged",
+    "step_4":"optional processes may construct only worker/job-local effective forcing overrides",
+    "step_5":"DIVDRA parallel composition is a later dependent workunit, not admitted here"
+  },
+  "hard_holds":[
+    "no active parallel DIVDRA implementation",
+    "no full forcing-registry deep copy",
+    "no drainage-specific parallel worker-pool clone",
+    "no shared forcing mutation",
+    "no persistent per-column effective-forcing state",
+    "no drainage science expansion",
+    "no mass-ledger duplication"
+  ]
+}
