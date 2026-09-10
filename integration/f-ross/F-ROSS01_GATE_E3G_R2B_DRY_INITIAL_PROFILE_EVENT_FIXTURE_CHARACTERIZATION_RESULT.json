@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2B_DRY_INITIAL_PROFILE_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "CHARACTERIZED_FIXTURES_READY_FOR_QUALIFICATION_PRECOMMIT",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34447290929,
+    "head": "306202639272b2f134dd3542ecc177d0c18433df",
+    "conclusion": "success",
+    "material_jobs_passed": 2,
+    "material_jobs_total": 2
+  },
+  "artifacts": {
+    "B01": {"id":10140136234,"digest":"sha256:bb130586e3ac32205d7cc09c8039a6b3e5320254aed5a94f60666a027187969a"},
+    "O14": {"id":10140135121,"digest":"sha256:a789e97c2dc0961b84f87e7384fcd21b0c3b9fe1ebb5361aacee9dde6557d7f3"}
+  },
+  "selected_fixtures": {
+    "B01": {
+      "initial_profile_id": "UNIFORM_DRY_100",
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "KSAT_cm_per_day": 31.225016,
+      "qcap0_cm_per_day": 101.77699815464209,
+      "qcap0_over_ksat": 3.2594698479783673,
+      "lambda": 0.75,
+      "q_supply_cm_per_day": 84.13900261598157,
+      "q_supply_over_ksat": 2.6946023859837758,
+      "event_bracket_day": [0.01,0.05],
+      "g_left_cm_per_day": -14.004719856252095,
+      "g_right_cm_per_day": 46.4475266455747,
+      "h_top_left_cm": -51.787323976639975,
+      "h_top_right_cm": -1.6260211075396067,
+      "normalized_sign_margin": 0.44850961345390805
+    },
+    "O14": {
+      "initial_profile_id": "UNIFORM_DRY_100",
+      "initial_heads_cm": [-100.0,-100.0,-100.0],
+      "KSAT_cm_per_day": 2.495984,
+      "qcap0_cm_per_day": 26.20952176908833,
+      "qcap0_over_ksat": 10.500676995160358,
+      "lambda": 0.75,
+      "q_supply_cm_per_day": 20.281137326816246,
+      "q_supply_over_ksat": 8.125507746370268,
+      "event_bracket_day": [0.005,0.01],
+      "g_left_cm_per_day": -1.5325679542403705,
+      "g_right_cm_per_day": 3.740838773479382,
+      "h_top_left_cm": -70.8524627053074,
+      "h_top_right_cm": -44.762721911959574,
+      "normalized_sign_margin": 0.6140135330356167
+    }
+  },
+  "additional_valid_brackets": {
+    "B01": [
+      {"profile":"UNIFORM_DRY_10","lambda":0.5,"event_bracket_day":[0.001,0.005]},
+      {"profile":"UNIFORM_DRY_10","lambda":0.75,"event_bracket_day":[0.001,0.005]},
+      {"profile":"UNIFORM_DRY_100","lambda":0.5,"event_bracket_day":[0.01,0.05]}
+    ],
+    "O14": [
+      {"profile":"UNIFORM_DRY_10","lambda":0.5,"event_bracket_day":[0.001,0.005]},
+      {"profile":"UNIFORM_DRY_10","lambda":0.75,"event_bracket_day":[0.0005,0.001]}
+    ]
+  },
+  "interpretation": "Unlike the rejected R2A wet-top profile, both frozen dry-profile materials show genuine mass-valid wetting-direction sign changes under constant supply. The deterministic precommitted robustness ranking independently selects the same UNIFORM_DRY_100 profile and lambda=0.75 forcing construction for B01 and O14. Only the event bracket duration differs by material.",
+  "decision": "CHARACTERIZED_DRY_PROFILE_FINITE_TIME_PONDING_FIXTURES_READY_FOR_R2_QUALIFICATION_PRECOMMIT",
+  "next_gate": "E3G_R2_FINITE_TIME_PONDING_EVENT_LOCALIZATION",
+  "hard_guards": [
+    "The selected profile, lambda, supplies and event brackets are frozen for the next qualification gate.",
+    "Do not substitute the easier additional brackets after seeing R2 results.",
+    "R2 must preserve R2A negative evidence and the B12/O13 R1/no-event domain separation.",
+    "Only mass-valid states and explicit complementarity may define the event."
+  ],
+  "hard_nonclaims": [
+    "No event time or event-localization algorithm is qualified by R2B.",
+    "No production initial profile or rainfall regime is implied.",
+    "No top-node positive head, pond depletion, runoff, response tangent, runtime, MultiSWAP or MODFLOW admission."
+  ]
+}
