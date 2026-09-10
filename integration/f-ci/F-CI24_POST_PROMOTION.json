@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI24",
+  "record_type": "post_promotion_canonical_closeout",
+  "title": "F-PM06A Restricted Reference-ET Demand Canonical Admission Post-Promotion Record",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_pre_admission_head": "df435824de175e3f868b680aab2cd0a395aa19ff",
+  "qualified_pre_promotion_status_head": "bed5e1e34d66cc7c797e01967a8a4fa14ed67942",
+  "promotion": {
+    "method": "NON_FORCED_FAST_FORWARD",
+    "force": false,
+    "promoted_head": "bed5e1e34d66cc7c797e01967a8a4fa14ed67942",
+    "verified_on_canonical": true
+  },
+  "post_promotion_canonical_qualification": {
+    "workflow": "F-CI canonical qualification",
+    "run_id": 34451131367,
+    "event": "push",
+    "historical_F_CI03_through_F_CI18_job": 102786895805,
+    "frozen_F_CI19_source_lineage_job": 102786895915,
+    "frozen_F_CI19_candidate_preservation_job": 102786895968,
+    "current_F_CI24_postimage_job": 102787109571,
+    "all_jobs_conclusion": "success",
+    "current_postimage_replayed_F_PM06A": true,
+    "current_postimage_replayed_F_VQ35": true
+  },
+  "canonical_postimage": {
+    "src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+    "new_ET_source": "src/process/mod_reference_et_demand_process.f90",
+    "new_ET_source_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "runtime_binding_added": false,
+    "mass_ledger_binding_added": false
+  },
+  "admitted_scope": "SWETR1_SWMETDETAIL0_SWDIVIDE0_SWINTER0_SWEVAP1_SWREDU0_SWCFBS0_STATELESS_PTRA_PEVA_EPOND_DEMAND_PROVIDER_SOURCE",
+  "state": {
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "production_source_canonically_admitted": true,
+    "runtime_bound": false,
+    "closed": true
+  },
+  "hard_nonclaims": [
+    "runtime ET composition",
+    "actual soil evaporation",
+    "actual pond evaporation",
+    "actual root uptake",
+    "interception",
+    "SWREDU=1 or 2",
+    "Penman-Monteith",
+    "SWCFBS=1",
+    "mass-ledger integration of potential demands"
+  ],
+  "decision": "QUALIFIED_CLOSED_FPM06A_RESTRICTED_REFERENCE_ET_DEMAND_SOURCE_CANONICALLY_ADMITTED_RUNTIME_BINDING_NOT_YET_QUALIFIED",
+  "next_action": "Start a separate runtime composition workunit that consumes the canonically admitted stateless ET demand provider through read-only crop/canopy views and hands potential transpiration and evaporation demands to already-owned downstream processes without duplicating root uptake or hydraulic boundary physics."
+}
