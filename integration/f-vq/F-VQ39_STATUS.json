@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ39",
   "title": "Independent DRAMET=1 Tabulated Drainage Response Scientific Equivalence Qualification",
   "branch": "qualification/f-vq39-fpm08c1-tabulated-drainage",
-  "status": "IN_PROGRESS_INDEPENDENT_SOURCE_BOUND_QUALIFICATION",
+  "status": "QUALIFIED_FAIL_CLOSED",
+  "decision": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
   "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
   "candidate_closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
   "candidate_production_file": "src/process/mod_drainage_tabulated_response.f90",
@@ -15,9 +16,35 @@
     "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
     "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
   },
-  "review_principle": "candidate authoring fixtures are evidence inputs only; independent reconstruction of legacy qdrtab plus AFGEN semantics determines disposition",
-  "production_source_changes": false,
-  "persisted": true,
-  "tested": false,
-  "qualified": false
+  "qualification": {
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "fail_closed_disposition_qualified": true,
+    "normal_normalized_domain_equivalence": true,
+    "full_candidate_scope_equivalence": false,
+    "production_source_changes": false
+  },
+  "decisive_evidence": {
+    "workflow_run": 34458080389,
+    "workflow_job": 102809086791,
+    "tested_head": "22404e1b8e02f06722043cd9f33ba72c88bcd665",
+    "summary_sha256": "b5c9857f9fac9a38ee44bb1fa16620e3befdc1d98106f8b3c851fd9fef28330a",
+    "normal_cases": 1716,
+    "derivative_checks": 907,
+    "counterexample": "one normalized knot at groundwater depth 0.0 with nonzero exchange: legacy B1.10 is nonconstant for positive abs(gwl), current candidate is constant"
+  },
+  "remediation_required": {
+    "required": true,
+    "preferred_policy": "explicitly fail closed on the one-point depth-zero normalized representation rather than importing the legacy qdrtab zero-fill artifact into kernel physics",
+    "single_point_positive_depth": "may remain a constant normalized response, subject to independent requalification",
+    "compatibility_adapter": "optional future separately qualified adapter if exact legacy-degenerate replay is ever required"
+  },
+  "holds": [
+    "No canonical or runtime admission of F-PM08C1 candidate edff81f4 until remediation and independent requalification.",
+    "Do not reinterpret the legacy zero-filled qdrtab artifact as modern process physics.",
+    "No production change on the F-VQ39 qualification branch.",
+    "No solver Jacobian or HeadCalc coupling change as part of this remediation route."
+  ],
+  "next_required_step": "separate F-PM08C1R production remediation followed by a new independent F-VQ requalification"
 }
