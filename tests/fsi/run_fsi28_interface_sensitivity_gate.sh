@@ -199,7 +199,10 @@ compile_and_run() {
     objects+=("$obj")
   done
   gfortran "${FLAGS[@]}" -O"$opt" "${objects[@]}" -o "$out/test_fsi28"
-  timeout 60s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fsi28" > "$out/output.txt"
+  if ! timeout 60s env OMP_NUM_THREADS=1 OMP_DYNAMIC=false "$out/test_fsi28" > "$out/output.txt"; then
+    cat "$out/output.txt"
+    fail "O${opt} executable failed"
+  fi
   grep -Fq 'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS' "$out/output.txt" || fail "O${opt} F-SI27 fixture regression failed"
   grep -Fq 'FSI28_INTERFACE_SENSITIVITY_GATE PASS' "$out/output.txt" || fail "O${opt} F-SI28 marker missing"
   [[ "$(grep -c '^FSI28_TANGENT:' "$out/output.txt")" == 3 ]] || fail "O${opt} expected three tangent cases"
