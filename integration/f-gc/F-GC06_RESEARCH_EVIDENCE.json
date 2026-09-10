@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC06",
+  "title": "Narrow Application-Class Groundwater Head-Accuracy Requirement Research Evidence",
+  "pre_registration_commit": "99765128178a6df1c2b35d0b5812bafa10e6a268",
+  "target_leakage": false,
+  "GC02_inspected": false,
+  "GC02_executed": false,
+  "numeric_H_budget_tested": false,
+  "production_source_changed": false,
+  "independent_sources": [
+    {
+      "id": "USGS_REILLY_HARBAUGH_2004",
+      "citation": "Reilly, T.E. and Harbaugh, A.W. (2004), Guidelines for Evaluating Ground-Water Flow Models, USGS SIR 2004-5038, doi:10.3133/sir20045038",
+      "url": "https://pubs.usgs.gov/publication/sir20045038",
+      "relevance": "Model adequacy must be judged against explicitly stated study objectives and intended use; solver accuracy and model adequacy are separate evaluation questions."
+    },
+    {
+      "id": "USGS_HILL_TIEDEMAN_2007",
+      "citation": "Hill, M.C. and Tiedeman, C.R. (2007), Effective Groundwater Model Calibration: With Analysis of Data, Sensitivities, Predictions, and Uncertainty",
+      "url": "https://www.usgs.gov/publications/effective-groundwater-model-calibration-analysis-data-sensitivities-predictions-and",
+      "relevance": "Prediction uncertainty and sensitivity are tied to predictions and decisions rather than a universal residual or head-tolerance number."
+    },
+    {
+      "id": "USGS_HUNT_2012",
+      "citation": "Hunt, R.J. (2012), Uncertainty",
+      "url": "https://www.usgs.gov/publications/uncertainty",
+      "relevance": "Uncertainty analysis should be commensurate with decision consequences; no universal acceptable head-prediction error is prescribed."
+    },
+    {
+      "id": "BARNETT_ET_AL_2012",
+      "citation": "Barnett et al. (2012), Australian Groundwater Modelling Guidelines, National Water Commission, Waterlines Report Series No. 82",
+      "url": "https://www.researchgate.net/publication/258245391_Australian_Groundwater_Modelling_Guidelines",
+      "relevance": "Performance measures should be agreed before calibration and be problem- and purpose-specific. The guideline explicitly distinguishes required prediction accuracy from iteration convergence. Temporal discretisation should reflect dynamics and required outputs and be sensitivity-tested."
+    },
+    {
+      "id": "STOWA_WWL_2021_48",
+      "citation": "STOWA (2021), Validatie Waterwijzer Landbouw. Vergelijking modelresultaten met Groenmonitor, GRAM en HELP, report 2021-48",
+      "url": "https://www.stowa.nl/publicaties/validatie-waterwijzer-landbouw-vergelijking-modelresultaten-met-groenmonitor-gram-en",
+      "relevance": "For agricultural applications the intended outputs are crop drought/oxygen stress and yield-related response. Validation is against crop or vegetation response, not an absolute groundwater-head error threshold."
+    },
+    {
+      "id": "STOWA_WWL_VALIDATION_PROGRAM",
+      "citation": "STOWA, Validatie (Meta)SWAP-WOFOST en Waterwijzer Landbouw",
+      "url": "https://www.stowa.nl/onderwerpen/klimaatadaptatie/zoetwatertekort-droogte/validatie-metaswap-wofost-en-waterwijzer",
+      "relevance": "Water management suitability is evaluated through agricultural response and fit-for-purpose validation. It does not prescribe a universal head accuracy."
+    },
+    {
+      "id": "FIORENTINI_ET_AL_2015",
+      "citation": "Fiorentini, Orlandini and Paniconi (2015), Control of coupling mass balance error in a process-based numerical model of surface-subsurface flow interaction, Water Resources Research, doi:10.1002/2014WR016816",
+      "url": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014WR016816",
+      "relevance": "Sequential coupling error depends on time matching, time step and interface exchange treatment. The paper motivates explicit coupling-error control but does not define an application-independent head-error allocation fraction."
+    }
+  ],
+  "class_findings": [
+    {
+      "id": "AC01_SHALLOW_GW_CROP_WATER",
+      "decision_or_output_quantity": "crop-water stress or yield response",
+      "independent_application_basis_found": true,
+      "numeric_acceptable_application_error_found": false,
+      "head_error_propagation_relation_found": false,
+      "numeric_H_app_defensible": false,
+      "numeric_A_temporal_defensible": false,
+      "result": "FAIL_CLOSED_NO_TRACEABLE_HEAD_ACCURACY_AND_TEMPORAL_ALLOCATION",
+      "reason": "Independent sources establish the application quantity and demonstrate sensitivity of crop response to hydrologic conditions, but the reviewed Waterwijzer/SWAP application literature does not prescribe a transferable acceptable crop-error allowance that can be propagated to a head allowance, nor a temporal-coupling fraction."
+    },
+    {
+      "id": "AC02_GW_MANAGEMENT_HEAD_THRESHOLD",
+      "decision_or_output_quantity": "head or drawdown relative to a management threshold",
+      "independent_application_basis_found": true,
+      "numeric_acceptable_application_error_found": false,
+      "numeric_H_app_defensible": false,
+      "numeric_A_temporal_defensible": false,
+      "result": "FAIL_CLOSED_REQUIRES_PROJECT_OR_REGULATORY_DECISION_MARGIN",
+      "reason": "Groundwater guidance supports defining model adequacy from intended use and decision risk, but it does not supply one transferable head-prediction error for this class. A concrete project/regulatory threshold and acceptable predictive margin are required."
+    },
+    {
+      "id": "AC03_RECHARGE_WATER_BALANCE_PRIMARY",
+      "decision_or_output_quantity": "cumulative recharge or water-balance flux",
+      "independent_application_basis_found": true,
+      "numeric_recharge_error_requirement_found": false,
+      "head_to_flux_error_propagation_found": false,
+      "numeric_H_app_defensible": false,
+      "numeric_A_temporal_defensible": false,
+      "result": "FAIL_CLOSED_HEAD_NOT_PRIMARY_QOI_AND_NO_ERROR_PROPAGATION",
+      "reason": "A head budget cannot be inferred from a flux-output application without an independent flux accuracy requirement and a qualified head-to-flux sensitivity or propagation bound."
+    }
+  ],
+  "rejected_numeric_routes": [
+    {
+      "route": "Use Australian guideline statement that iteration convergence should be one or two orders smaller than required head-prediction accuracy as A_temporal = 0.1 or 0.01",
+      "rejected_because": "The statement concerns iterative solver convergence, not Richards temporal integration or SWAP-MODFLOW sequential coupling error. Reusing it would violate semantic separation and the hard rule against deriving the budget from solver convergence criteria."
+    },
+    {
+      "route": "Use 5 percent or 10 percent SRMS calibration guidance as H_app",
+      "rejected_because": "The same guideline says such calibration-fit targets are only meaningful for a known problem/environment and are not equivalent to predictive head accuracy."
+    },
+    {
+      "route": "Use generic centimetre or millimetre wording as a head requirement",
+      "rejected_because": "Those magnitudes describe typical solver convergence relative to an already known prediction-accuracy requirement; they do not establish that requirement."
+    },
+    {
+      "route": "Use Waterwijzer validation agreement as a numerical head tolerance",
+      "rejected_because": "The validation target is crop/vegetation response and does not provide a traceable mapping to an absolute groundwater-head error."
+    },
+    {
+      "route": "Use coupling mass-balance tolerances from integrated-model literature to relax the SWAP-MODFLOW flux contract",
+      "rejected_because": "F-GC06 retains q_SWAP = -q_MF and absolute mass conservation. Literature on nonzero coupling mass residuals cannot weaken that architecture invariant."
+    }
+  ],
+  "cross_class_finding": {
+    "H_app_numeric_ready_for_any_class": false,
+    "A_temporal_numeric_ready_for_any_class": false,
+    "H_budget_numeric_ready_for_any_class": false,
+    "scientific_interpretation": "The narrow-class framing is supported, but generic class labels still do not create an external decision tolerance. The next scientifically defensible route is to bind a future policy unit to a concrete application requirement or contractual/regulatory decision margin, then independently qualify error propagation and temporal allocation before target testing."
+  },
+  "flux_and_mass_contract": {
+    "interface_flux_contract": "q_SWAP = -q_MF",
+    "mass_conservation": "ABSOLUTE",
+    "weakened": false
+  },
+  "architecture_invariants_checked": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
