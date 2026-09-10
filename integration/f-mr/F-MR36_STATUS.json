@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.runtime_composition_status.v1",
+  "work_unit": "F-MR36",
+  "phase": "RENAMED_CONTINUATION_AFTER_CONCURRENT_ID_COLLISION",
+  "decision": "IN_PROGRESS_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE",
+  "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "continuation_from": {
+    "historical_branch": "work/f-mr34-divdra-active-runtime-callsite",
+    "historical_head": "45d97240824ede49d2ef3c1a2bec81613ab7f339",
+    "reason": "concurrent independent work created other F-MR34 branches; drainage work continues under unique F-MR36 identifier",
+    "production_candidate_byte_identical": true
+  },
+  "candidate": {
+    "composition_source": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "runtime_source": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "production_implemented": true,
+    "production_compile_reached": true,
+    "runtime_tested": false,
+    "qualified": false,
+    "canonical_admitted": false
+  },
+  "known_evidence": {
+    "static_scope_gates_passed": true,
+    "production_compile_passed_before_fixture_failure": true,
+    "prior_runtime_failures_classified_as_fixture_baseline_failures_before_new_callsite_invocation": true
+  },
+  "scope": {
+    "serialized_real_physics_only": true,
+    "explicit_hydraulic_view_only": true,
+    "external_scalar_transfer_only": true,
+    "active_runtime_callsite": true,
+    "parallel_active_callsite": false,
+    "fully_implicit_drainage": false,
+    "surface_water_control": false
+  },
+  "mass_governance": {
+    "scalar_transfer_authoritative": true,
+    "existing_source_sink_mass_ledger_only": true,
+    "second_mass_booking_forbidden": true,
+    "mass_conservation_hard": true
+  },
+  "next_required_step": "qualify against an exact two-column F-MR31-derived proven runtime fixture; do not change production code unless failure crosses the new callsite"
+}
