@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR20R",
+  "title": "Canonical Published Result Ordering Remediation",
+  "branch": "work/f-mr20r-canonical-result-publication",
+  "base_candidate": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+  "base_tree": "04cb3dc2f6254c7fdcd368bfd7b28a781cdda3cf",
+  "trigger": {
+    "independent_review": "F-MQ26",
+    "review_closeout": "3f7babe8253c15ecf4fdfd71c568e4c7fa5103bc",
+    "decision": "NOT_QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "failed_gate": "DETERMINISTIC_CANONICAL_PUBLISHED_RESULT_ORDER"
+  },
+  "defect": "Internal scientific outcomes are deterministic by column_id, but returned results(:) and diagnostics(:) remain in caller input order. Reversed input therefore changes published array order even though dispatch_ordinal is canonical.",
+  "remediation_contract": {
+    "publication_order": "canonical fmr_build_execution_order(template_id,column_id)",
+    "internal_execution_indexing": "unchanged caller-index/state-handle mapping during execution",
+    "publication_timing": "only after transaction execution, aggregate reduction and runtime diagnostics are finalized",
+    "serialized_and_parallel": "same shared publication helper",
+    "rejected_outputs": "publish canonically whenever column identities are available",
+    "physics_change": false,
+    "solver_change": false,
+    "mass_reduction_change": false,
+    "worker_partition_change": false,
+    "state_handle_mapping_change": false
+  },
+  "bounded_source_scope": [
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90"
+  ],
+  "preimage_blobs": {
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "be4005a97e35c498ffc40297409a75efe65ff5df",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "393e9bfbc4c078d259a5ec70aca78f50e54e8b35",
+    "tests/fmr/test_fmr20_parallel_v1_qualification.f90": "bfebfde94b3931367d69d502a6fc7b1deb8f2ad6"
+  },
+  "required_gates": [
+    "reversed-input serialized outputs canonical",
+    "reversed-input 2-worker outputs canonical",
+    "reversed-input 4-worker outputs canonical",
+    "results and diagnostics have identical canonical column-id sequence",
+    "dispatch_ordinal equals published position for admitted canonical outputs",
+    "scientific state/result/mass identity to pre-remediation candidate by column_id",
+    "existing 2/4-worker overlap and fail-closed profile gates remain green",
+    "O0/O2 output identity"
+  ],
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": ["production patch", "owner regression", "new independent qualification candidate"]
+  }
+}
