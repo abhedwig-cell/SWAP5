@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A7_O14_RESTRICTED_ROSS_CANDIDATE_POST_CAP_RUNOFF_CONTINUATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "purpose": "Qualify the bounded Ross candidate, not just the independent reference, for continuation after the 1 cm surface cap while excess atmospheric supply is routed through an explicit conservative runoff ledger. Compare candidate and independent-reference trajectories from the same four A4 cap checkpoints over the independently confirmed A6-R1 time partition.",
+  "upstream": {
+    "A6_R1_result_commit": "4f6cdca782d05aaef2f22fd417e89f3f7fb03a99",
+    "A6_R1_decision": "QUALIFIED_RESTRICTED_O14_POST_CAP_UNSATURATED_ATTRACTOR_WITHIN_FROZEN_1CM_SURFACE_CAP_TOPOLOGY_READY_FOR_RUNOFF_CONTINUATION_COMPOSITION",
+    "surface_face_decision": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+    "surface_ledger_decision": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION"
+  },
+  "frozen_physical_identity": {
+    "cap_states": "exactly the four A4/A6/A6-R1 O14 cap checkpoints",
+    "surface_head_cm": 1.0,
+    "surface_storage_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat": 12.0,
+    "time_partition_count": 40,
+    "dt_day": 0.025,
+    "horizon_day": 1.0,
+    "soil_cell_count": 3,
+    "soil_cell_thickness_cm": 10.0,
+    "surface_face_length_cm": 5.0
+  },
+  "candidate_authority": {
+    "surface_face": "qualified E3E-R2R3 bounded 5 cm candidate including R2P endpoint semantics and R3 physical-envelope-certified snap",
+    "internal_faces": "existing qualified C1R/R3 bounded candidate routes only",
+    "c1r_table": "generated once per profile as shared immutable qualification fixture; not per-column persistent state",
+    "surface_face_max_constitutive_K_evaluations": 530,
+    "surface_face_max_root_residual_evaluations": 66,
+    "unqualified_face_route_allowed": false
+  },
+  "reference_authority": {
+    "surface_face": "independent endpoint-aware high-accuracy 5 cm reference used by A6-R1",
+    "internal_faces": "independent 10 cm steady-Darcy reference used by A6-R1",
+    "candidate_tables_or_candidate_fluxes_used": false
+  },
+  "per_step_water_identity": {
+    "surface_storage_change_cm": 0.0,
+    "runoff_rate": "q_runoff = q_supply - q_top",
+    "soil_cells": "Delta S_i = dt * (q_i - q_{i+1})",
+    "system": "Delta S_soil + Q_runoff + Q_bottom - Q_supply = 0",
+    "rule": "runoff must be nonnegative; excess supply is never reapplied as soil forcing and surface storage is never clipped as an unbooked loss"
+  },
+  "frozen_acceptance": {
+    "all_four_candidate_and_reference_profiles_complete_40_steps": true,
+    "max_abs_step_cell_or_system_balance_residual_cm": 1e-9,
+    "candidate_and_reference_top_head_must_remain_below_cm": -0.001,
+    "candidate_reference_max_trajectory_head_difference_cm": 0.25,
+    "candidate_reference_cumulative_runoff_difference_cm": 0.001,
+    "candidate_reference_cumulative_bottom_transfer_difference_cm": 0.001,
+    "candidate_reference_final_soil_storage_change_difference_cm": 0.001,
+    "candidate_final_to_independent_attractor_max_abs_head_difference_cm": 0.005,
+    "reference_final_to_independent_attractor_max_abs_head_difference_cm": 0.005,
+    "candidate_surface_face_q_abs_error_over_ksat_at_each_accepted_state": 0.0005,
+    "candidate_surface_face_cost_caps_hold": true,
+    "candidate_unqualified_face_route_count": 0,
+    "runoff_nonnegative": true,
+    "committed_input_state_bitwise_unchanged_during_each_trial": true,
+    "mass_repair_or_clipping": false
+  },
+  "cost_and_state_guards": {
+    "candidate_full_nonlinear_trajectories_per_profile": 1,
+    "reference_full_nonlinear_trajectories_per_profile": 1,
+    "extra_candidate_full_trajectory_for_error_estimation": false,
+    "new_persistent_attractor_or_event_state_bytes": 0,
+    "runoff": "result/ledger transfer owned outside soil-face kernel",
+    "nonlinear_vectors": "worker scratch"
+  },
+  "decision_logic": {
+    "pass": "QUALIFIED_RESTRICTED_O14_ROSS_POST_CAP_RUNOFF_CONTINUATION_READY_FOR_BROADER_SURFACE_CAP_AND_EVENT_COMPOSITION",
+    "fail": "O14_ROSS_POST_CAP_RUNOFF_CONTINUATION_NOT_QUALIFIED_PRESERVE_REFERENCE_ONLY_ATTRACTOR_QUALIFICATION"
+  },
+  "hard_guards": [
+    "Do not change the four cap states, 1 cm cap, 12*KSAT supply, bottom head, 40x0.025 d partition or frozen tolerances after execution.",
+    "Do not force h0=0; A6/A6-R1 established an unsaturated attractor in this topology.",
+    "Do not use the independent reference as a production path or as a second candidate trajectory.",
+    "Do not add new persistent state to remember the attractor.",
+    "Do not clip negative runoff or surface storage; any such case fails closed.",
+    "Do not infer other materials or other surface caps from this O14-only gate."
+  ],
+  "architecture_checks": {
+    "4_compact_state": "No new attractor-specific persistent state.",
+    "5_worker_scratch": "Candidate/reference nonlinear vectors are qualification-worker scratch.",
+    "7_transactionality": "Each solve reads a committed immutable input state and commits only after all mass/route checks pass.",
+    "9_generic_time": "Generic 1 day horizon partitioned into 40 explicit intervals, no calendar assumptions.",
+    "13_mass_conservation": "1e-9 cm hard gate with explicit runoff and bottom transfers; no repair/clipping.",
+    "15_coupling_cost": "No duplicated candidate trajectory for comparison; expensive reference is qualification-only.",
+    "23_solver_policy": "Ross candidate numerical route remains separate from runoff physical composition.",
+    "25_reference_mode": "Independent reference trajectory remains available and separate.",
+    "28_runtime_composition": "Surface cap and runoff ledger are outside the soil-face kernel."
+  },
+  "hard_nonclaims": [
+    "No automatic detection of runoff onset or changing surface cap.",
+    "No caps other than 1 cm, no forcing other than frozen 12*KSAT and no other material than O14.",
+    "No response tangent qualification during runoff continuation.",
+    "No production implementation, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
