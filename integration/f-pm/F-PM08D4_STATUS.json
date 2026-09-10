@@ -1,11 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D4",
   "title": "Restricted Fixed-Weir Secondary Surface-Water Balance Readiness",
   "branch": "work/f-pm08d4-fixed-weir-secondary-balance-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_READINESS_QUALIFIED_WITH_EXPLICIT_FIXED_WEIR_AND_LEGACY_STATE_HOLDS",
+  "decision": "QUALIFIED_RESTRICTED_FIXED_WEIR_SECONDARY_BALANCE_READINESS_WITH_EXACT_MASS_AND_EXPLICIT_ROOT_STATE_HOLDS",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -30,7 +31,7 @@
     "automatic_management": false,
     "production_changes_allowed": false
   },
-  "readiness_findings": {
+  "qualified_readiness_findings": {
     "fixed_weir_requires_no_control_memory": true,
     "SWST_is_only_persistent_physical_state": true,
     "WLS_is_derived_from_SWST": true,
@@ -38,11 +39,31 @@
     "mass_residual_is_not_a_root_solver_tolerance": true,
     "power_rating_root_is_monotone_on_restricted_domain": true,
     "legacy_0p001cm_bisection_can_leave_SWST_WLS_inconsistent": true,
+    "legacy_state_inconsistency_is_not_modern_committed_state_semantics": true,
     "beta_lt_1_crest_tangent_is_singular": true,
     "SWQHR2_requires_separate_disposition": true,
     "D1_endpoint_holds_inherited": true,
     "D3_mass_gaps_not_admitted": true,
     "calendar_period_selection_external": true
+  },
+  "decisive_evidence": {
+    "precloseout_head": "1874051b81d455d1139124b9b8a58eab8bef269d",
+    "run_id": 34526914975,
+    "job_id": 103037941144,
+    "conclusion": "success",
+    "targeted_branch_cases": 12000,
+    "legacy_bisection_cases": 6000,
+    "legacy_inconsistent_state_cases": 6000,
+    "legacy_inverse_domain_rejections": 1,
+    "max_legacy_storage_relation_gap_cm": 6.8415708603235998,
+    "max_legacy_head_inverse_gap_cm": 23.131689566208195,
+    "max_accepted_mass_residual_abs": 1.405890126537912e-10,
+    "max_accepted_mass_residual_rel": 4.2583584925979415e-16,
+    "max_rating_residual_abs": 2.9752263799309731e-06,
+    "max_rating_residual_rel": 8.5826469182870737e-12,
+    "generic_dt_min": 0.00010004896245394796,
+    "generic_dt_max": 3.1546960226138383,
+    "all_30_architecture_invariants_pass": true
   },
   "source_risk_holds": [
     "D4-RISK-01-LEGACY-0P001CM-BISECTION-CAN-LEAVE-S-AND-WLS-INCONSISTENT",
@@ -59,6 +80,7 @@
     "contract": "integration/f-pm/F-PM08D4_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D4_FIXED_WEIR_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D4_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D4_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d4_fixed_weir_balance.py",
     "gate": "tools/fpm/fpm08d4_fixed_weir_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d4-fixed-weir-readiness.yml"
@@ -75,13 +97,24 @@
     "test_oracle_persisted": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "production_physics_qualified": false,
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "execute the fully persisted D4 readiness gate under CI; fail closed on any provenance, mass/root-residual separation, fixed-weir branch, crest-sensitivity, legacy state-consistency or architecture inconsistency"
+  "downstream_handoff": {
+    "automatic_control_owner": "F-PM08D5",
+    "transactional_runtime_owner": "F-PM08D6",
+    "candidate_must_keep_SWST_authoritative": true,
+    "candidate_must_derive_WLS_consistently_from_SWST": true,
+    "candidate_must_publish_actual_supply_and_discharge": true,
+    "candidate_must_keep_mass_and_rating_residuals_separate": true,
+    "candidate_must_preserve_D1_D3_and_D4_holds": true,
+    "SWQHR2_not_admitted": true
+  },
+  "next_required_step": "verify this exact closeout head with the same readiness gate and confirm the final branch delta remains free of src/ and reference/ changes; then F-PM08D5 may proceed independently from current canonical authority"
 }
