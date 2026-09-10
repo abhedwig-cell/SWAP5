@@ -1,7 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-PM08D1",
   "overall": "PASS_WITH_CHILD_SCOPE_HOLDS",
+  "source_risk_holds": [
+    "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
+    "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM"
+  ],
   "invariants": [
     {"id":1,"status":"PASS","finding":"one SWAP kernel; D1 defines reusable storage substrate only"},
     {"id":2,"status":"PASS","finding":"no file parsing or I/O in storage component contract"},
@@ -25,17 +29,19 @@
     {"id":20,"status":"PASS","finding":"storage substrate does not bind the soil-water solver implementation"},
     {"id":21,"status":"PASS","finding":"surface-water storage physics can be reused with all soil-water solvers"},
     {"id":22,"status":"PASS","finding":"no HeadCalc or soil-solver internals are referenced"},
-    {"id":23,"status":"PASS","finding":"reference 22-knot physics is separated from numerical solver policy"},
+    {"id":23,"status":"PASS","finding":"reference 22-knot physics is separated from numerical solver policy; both floating endpoint seams are frozen source behavior and not tunable solver tolerances"},
     {"id":24,"status":"PASS","finding":"O(22) preparation/lookup is bounded and predictable"},
-    {"id":25,"status":"PASS","finding":"frozen 22-knot piecewise-linear semantics remain available as reference mode"},
-    {"id":26,"status":"PASS","finding":"future component diagnostics can report domain/interval selection without hidden state"},
+    {"id":25,"status":"PASS","finding":"frozen 22-knot piecewise-linear semantics remain available as reference mode; D1-RISK-01 and D1-RISK-02 are preserved as explicit reference seams pending production disposition"},
+    {"id":26,"status":"PASS","finding":"future component diagnostics can report table-domain, interpolation interval and floating seam encounter without hidden state"},
     {"id":27,"status":"PASS","finding":"inactive columns allocate no surface-water storage state"},
     {"id":28,"status":"PASS","finding":"runtime/coupler remains owner of system composition and external topology"},
-    {"id":29,"status":"PASS","finding":"no midnight, day, .dra or direct MODFLOW dependency is introduced"},
-    {"id":30,"status":"PASS","finding":"D1 readiness changes were explicitly checked against all invariants"}
+    {"id":29,"status":"PASS","finding":"no midnight, day, .dra or direct MODFLOW dependency is introduced; neither source seam is generalized into a silent numerical assumption"},
+    {"id":30,"status":"PASS","finding":"D1 readiness changes and both discovered source seams were explicitly re-audited against all invariants"}
   ],
   "scope_holds": [
     "No production candidate is admitted by this audit.",
+    "D1-RISK-01 exact bottom-knot behavior requires explicit production disposition.",
+    "D1-RISK-02 exact interpolation-endpoint behavior requires explicit production disposition.",
     "WLSTAR remains separate control-state ownership for F-PM08D5.",
     "Mass-balance evolution remains for F-PM08D3/D4/D6.",
     "Extended drainage exchange remains for F-PM08D2."
