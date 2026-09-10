@@ -1,0 +1,123 @@
+name: F-ROSS01 Gate E3G-R1 Initial Surface Complementarity Admission
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R1_INITIAL_SURFACE_COMPLEMENTARITY_ADMISSION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION_RESULT.json'
+      - 'experiments/ross/run_ross01_gate_e3g_r1_initial_surface_complementarity_admission.py'
+      - 'experiments/ross/run_ross01_gate_e3g_physical_top_boundary_switch_composition.py'
+      - '.github/workflows/ross01-gate-e3g-r1-initial-surface-complementarity-admission.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_r1_initial_surface_complementarity_admission.py
+      - name: Assert preserved E3G failure classification
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          r=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION_RESULT.json'))
+          assert r['status']=='FAILED_AS_FROZEN_PRESERVED'
+          assert r['decision']=='E3G_FAILED_AS_FROZEN_OPEN_E3G_R1_INITIAL_BOUNDARY_ADMISSION_BEFORE_INVALID_DRY_SOLVE'
+          assert r['materials'][m]['candidate']['dry_predictor_complementarity_admissible'] is False
+          assert r['materials'][m]['reference']['dry_predictor_complementarity_admissible'] is False
+          if m=='B12':
+              assert r['materials'][m]['candidate']['dry_predictor_local_trial_valid'] is True
+              assert r['materials'][m]['reference']['dry_predictor_local_trial_valid'] is True
+          else:
+              assert r['materials'][m]['candidate']['dry_predictor_local_trial_valid'] is False
+              assert r['materials'][m]['reference']['dry_predictor_local_trial_valid'] is False
+          PY
+      - name: Execute frozen E3G-R1 material gate
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-r1-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_r1_initial_surface_complementarity_admission.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3G_R1_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_R1_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen R1 admission and conservation semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-r1-{m}/F-ROSS01_GATE_E3G_R1_{m}_RESULT.json'
+          r=json.load(open(p))
+          mr=r['material_result']
+          assert r['gate']=='E3G_R1_INITIAL_SURFACE_COMPLEMENTARITY_ADMISSION'
+          assert r['production_implementation'] is False
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          assert mr['max_abs_mass_residual_cm'] <= 1e-9
+          assert mr['max_abs_head_difference_cm'] <= 0.25
+          assert mr['max_abs_surface_storage_difference_cm'] <= 0.001
+          assert mr['max_abs_bottom_transfer_difference_cm'] <= 0.001
+
+          rows={x['scenario']['id']:x for x in mr['rows']}
+          dry=rows['DRY_FLUX_ADMISSIBLE']
+          sw=rows['DRY_FLUX_TO_PONDED_HEAD_SWITCH']
+          pond=rows['PONDED_HEAD_CONTINUATION']
+
+          for side in ('candidate','reference'):
+              d=dry[side]
+              assert d['accepted'] is True
+              assert d['mode']=='DRY_FLUX'
+              assert d['initial_admission']['dry_flux_admissible_at_t0'] is True
+              assert d['dry_predictor_executed'] is True
+              assert d['dry_predictor_nonlinear_solve_count']==1
+
+              s=sw[side]
+              assert s['accepted'] is True
+              assert s['mode']=='PONDED_HEAD'
+              assert s['initial_admission']['immediate_ponding_at_t0'] is True
+              assert s['initial_admission']['q_supply_cm_per_day'] > s['initial_admission']['q_cap0_cm_per_day']
+              assert s['initial_admission']['q_cap0_abs_error_over_ksat'] <= 0.0005
+              assert s['initial_admission']['committed_state_bitwise_unchanged'] is True
+              assert s['dry_predictor_executed'] is False
+              assert s['dry_predictor_nonlinear_solve_count']==0
+              assert s['ponded_nonlinear_solve_count']==1
+              assert s['ponded_solve_started_from_original_committed_state'] is True
+              assert s['surface_storage_cm'] > 0.0
+              assert s['mass_repair_or_clipping_used'] is False
+
+              q=pond[side]
+              assert q['accepted'] is True
+              assert q['mode']=='PONDED_HEAD'
+              assert q['initial_admission']['classification']=='PONDED_STATE_ALREADY_ACTIVE'
+              assert q['dry_predictor_executed'] is False
+
+          assert sw['comparison']['pass'] is True
+          assert r['decision']=='QUALIFIED_INITIAL_COMPLEMENTARITY_ADMISSION_AND_IMMEDIATE_PONDING_SWITCH_READY_FOR_FINITE_TIME_EVENT_LOCALIZATION_GATE'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-r1-${{ matrix.material }}
+          path: ross01-gate-e3g-r1-${{ matrix.material }}/
