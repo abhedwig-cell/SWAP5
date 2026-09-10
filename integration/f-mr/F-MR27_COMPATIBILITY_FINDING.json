@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR27",
+  "branch": "work/f-mr27-parallel-current-canonical-recomposition",
+  "finding": "CURRENT_CANONICAL_SERIALIZED_RUNTIME_NO_LONGER_EXPOSES_HISTORICAL_NO_RECEIPT_PER_COLUMN_WORKER_ENTRYPOINT",
+  "finding_stage": "PRE_OWNER_TEST_STATIC_SOURCE_REVIEW",
+  "not_an_observed_compile_failure": true,
+  "current_candidate_before_compatibility_remediation": "875b7bf5998035c3922eb392c30fe0e215f0dbb5",
+  "frozen_parallel_worker_pool_blob": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+  "current_serialized_runtime_blob": "6559237c887e9a8476beb479546becdfe9339920",
+  "historical_serialized_runtime_blob": "be4005a97e35c498ffc40297409a75efe65ff5df",
+  "source_observation": {
+    "historical_public_entrypoint": "fmr_execute_serialized_physical_column",
+    "historical_parallel_worker_pool_imports_entrypoint": true,
+    "current_public_batch_entrypoint": "fmr_run_serialized_physical_multiswap",
+    "current_internal_executor": "execute_column",
+    "current_internal_executor_receipt_argument": "optional fmr_accepted_commit_receipt_t",
+    "current_historical_worker_entrypoint_public": false
+  },
+  "upstream_F_MR18_contract": {
+    "qualified_scope": "SERIALIZED_MULTISWAP_OPTIONAL_SPARSE_ACCEPTED_COMMIT_RECEIPT_ROUTING",
+    "receipt_requests_feature_scoped": true,
+    "receipt_output_ephemeral": true,
+    "persistent_optional_column_state_added": false,
+    "no_receipt_serialized_route_preserved": true,
+    "parallel_receipt_routing_qualified": false,
+    "physics_changed": false,
+    "mass_accounting_changed": false
+  },
+  "selected_minimal_remediation": {
+    "serialized_runtime_change": "Add an explicit public no-receipt per-column worker wrapper named fmr_execute_serialized_physical_column with the historical argument contract. The wrapper delegates to the current private execute_column without supplying the optional commit_receipt argument.",
+    "duplicate_transaction_logic": false,
+    "make_private_execute_column_public": false,
+    "parallel_receipt_support_added": false,
+    "parallel_worker_pool_source_rewritten": false,
+    "parallel_scheduler_source_rewritten": false
+  },
+  "amended_expected_source_delta_from_current_canonical": [
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  ],
+  "required_preservation_gates": [
+    "F-MQ28 parallel V1 scientific/concurrency attack matrix on current dependencies",
+    "canonical result and diagnostic publication order",
+    "F-MR18 serialized sparse accepted-commit receipt semantics",
+    "F-CI28 restricted serialized committed-boundary restart semantics",
+    "F-CI27 restricted reference-ET runtime semantics",
+    "O0/O2 output identity",
+    "hard per-column mass closure"
+  ],
+  "explicit_nonclaims": [
+    "parallel accepted-commit receipt routing",
+    "parallel restart",
+    "parallel speedup",
+    "worker counts other than 2 and 4",
+    "parallel root extraction",
+    "parallel snow",
+    "parallel macropores",
+    "parallel frost",
+    "parallel hysteresis",
+    "parallel tabulated hydraulics",
+    "parallel elasticity",
+    "parallel temporal continuation history"
+  ]
+}
