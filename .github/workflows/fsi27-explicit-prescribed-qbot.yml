@@ -1,0 +1,28 @@
+name: F-SI27 explicit prescribed qbot
+
+on:
+  push:
+    branches:
+      - work/f-si27-explicit-prescribed-qbot-boundary
+    paths:
+      - 'integration/f-si/F-SI27_*'
+      - 'tests/fsi/test_fsi27_explicit_prescribed_qbot.f90'
+      - 'tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/solver/**'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - '.github/workflows/fsi27-explicit-prescribed-qbot.yml'
+  workflow_dispatch:
+
+jobs:
+  prescribed-qbot:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-SI27 source-bound prescribed qbot gate
+        run: bash tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh
