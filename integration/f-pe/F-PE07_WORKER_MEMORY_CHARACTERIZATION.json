@@ -1,9 +1,9 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PE",
   "work_unit": "F-PE07",
   "title": "Restricted Parallel V1 Worker-Memory Scaling Characterization",
-  "status": "SOURCE_BOUND_CHARACTERIZATION_COMPLETE",
+  "status": "QUALIFIED_SOURCE_BOUND_AND_EXECUTABLE_CHARACTERIZATION_WITHIN_FROZEN_SCOPE",
   "base_fmr20_head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
   "production_change": false,
   "source_evidence": {
@@ -21,6 +21,11 @@
       "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
       "blob": "2a190d206200ad201c37c9a82d3e32e651d37a37",
       "helper": "a23bu_scratch_payload_bytes"
+    },
+    "mvg_provider": {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "blob": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+      "finding": "worker-local hydraulic parameter cache allocates 42*n real64 cofgen values"
     },
     "backend": {
       "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
@@ -66,21 +71,31 @@
   "fpe07_fixture": {
     "active_nodes": 4,
     "drainage_levels": 2,
-    "compiler_storage_assumption_for_numeric_example": {
-      "RB": 8,
-      "IB": 4,
-      "LB": 4
-    },
+    "compiler_storage_observed": {"RB": 8, "IB": 4, "LB": 4},
+    "reference_workspace_bytes": 812,
+    "a23bu_scratch_bytes": 412,
+    "backend_parameter_and_forcing_cache_bytes": 1568,
     "known_dynamic_payload_bytes_per_worker": 2792,
-    "known_dynamic_payload_bytes": {
-      "workers_1": 2792,
-      "workers_2": 5584,
-      "workers_4": 11168
-    },
-    "increment_relative_to_one_worker_bytes": {
-      "workers_2": 2792,
-      "workers_4": 8376
-    }
+    "known_dynamic_payload_bytes": {"workers_1": 2792, "workers_2": 5584, "workers_4": 11168},
+    "increment_relative_to_one_worker_bytes": {"workers_2": 2792, "workers_4": 8376}
+  },
+  "executable_evidence": {
+    "test": "tests/fpe/test_fpe07_worker_memory.f90",
+    "test_blob": "fa41c8c8a5b18a3552ce8cfa697210f63e95e9d8",
+    "runner": "tests/fpe/run_fpe07_parallel_v1_timing.sh",
+    "qualified_run": 34442271208,
+    "qualified_job": 102759612961,
+    "qualified_head": "025c700c7ada37c7ae7609e40cd013fa7f6ad2cf",
+    "conclusion": "success",
+    "markers": [
+      "FPE07_G03_MEMORY_SOURCE_FORMULA_LOCK=PASS",
+      "FPE07_MEMORY_REFERENCE_WORKSPACE_BYTES=812",
+      "FPE07_MEMORY_A23BU_SCRATCH_BYTES=412",
+      "FPE07_MEMORY_BACKEND_CACHE_BYTES=1568",
+      "FPE07_MEMORY_KNOWN_DYNAMIC_BYTES_PER_WORKER=2792",
+      "FPE07_WORKER_MEMORY_PROBE PASS",
+      "FPE07_G05_WORKER_MEMORY_CHARACTERIZATION=PASS"
+    ]
   },
   "column_scaled_payload": {
     "committed_physical_state_minimum_array_scalar_payload": "2*n+2 real64 values per column for pressure head, water content, ponding depth and groundwater level in the no-snow V1 state",
@@ -110,7 +125,7 @@
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true
   }
 }
