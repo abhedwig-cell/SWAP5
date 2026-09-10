@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI26",
+  "title": "F-MR24 Current-Canonical Restart Source Binding",
+  "canonical_base": "f49e17c6627717d5dea181808a122f2e35960739",
+  "owner_workunit": "F-MR24",
+  "owner_branch": "work/f-mr24-canonical-restart-recomposition",
+  "owner_source_head_observed": "8109946c462286ef75d2ad33bbbb9faa782d19fa",
+  "owner_contract": "integration/f-mr/F-MR24_RECOMPOSITION_CONTRACT.json",
+  "owner_contract_blob": "02f6951e1e8fe7d31dcbb68a96d57ff83733f4b3",
+  "owner_source_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "fci26_composition_commit": "4d52ea05cf6c8f4307d7bf1eae62315c5b517e0f",
+  "fci26_source_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "19ea410e0ed48e65b5d73887a8e1dba59c7c4f37",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "f1359f97d02408d8b700b0c93fe961a6ba46742c"
+  },
+  "source_equivalence": "EXACT_BLOB_IDENTITY",
+  "source_scope_equivalence": "Both compositions are based on F-CI24 and introduce exactly the same two restart production modules without modifying existing canonical source.",
+  "qualification_role": "F-CI26 independently exercises the exact F-MR24 production source against current canonical dependencies using frozen F-MQ27 attacks plus current-canonical source locks.",
+  "governance_hold": "F-MR24 owner contract requires owner gates and explicitly forbids canonical promotion from owner evidence alone. At observation time F-MR24 has no workflow runs and no owner test closeout. F-CI26 therefore cannot close canonical admission until that owner phase is complete or formally superseded by governance.",
+  "canonical_ref_advanced": false
+}
