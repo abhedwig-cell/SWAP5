@@ -3,12 +3,12 @@
   "work_unit":"F-MR37",
   "title":"Generic Effective-Forcing Boundary & Parallel DIVDRA Composition Readiness",
   "branch":"work/f-mr37-effective-forcing-parallel-readiness",
-  "phase":"PRETEST_READINESS_CONTRACT_PERSISTED",
+  "phase":"COMPLETE_PRETEST_READINESS_CANDIDATE_PERSISTED",
   "decision":"IN_PROGRESS_GENERIC_EFFECTIVE_FORCING_PARALLEL_READINESS",
   "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
   "problem_statement":"Canonical parallel workers share forcing_registry as read-only input, while serialized DIVDRA composes a temporary drainage row into mutable forcing. Whole-registry copying or a separate DIVDRA worker-pool is rejected as the intended scalable production direction.",
   "selected_direction":"Introduce in a later structural candidate a generic resolved-column explicit-effective-forcing execution seam below registry lookup and above the existing transaction/backend path; ordinary callers pass canonical forcing unchanged and optional processes may provide worker-local sparse overrides.",
-  "state":{"source_lock_persisted":true,"readiness_contract_persisted":true,"architecture_invariants_reviewed":true,"readiness_gate_persisted":false,"workflow_persisted":false,"tested":false,"qualified_readiness":false,"production_source_modified":false,"reference_modified":false,"closed":false},
+  "state":{"source_lock_persisted":true,"readiness_contract_persisted":true,"architecture_invariants_reviewed":true,"readiness_gate_persisted":true,"workflow_persisted":true,"tested":false,"qualified_readiness":false,"production_source_modified":false,"reference_modified":false,"closed":false},
   "hard_holds":["no active parallel DIVDRA implementation","no full forcing-registry deep copy","no drainage-specific parallel worker-pool clone","no shared forcing mutation","no persistent per-column effective-forcing state","no drainage science expansion","no mass-ledger duplication"],
-  "next_required_step":"persist and run a source-bound readiness gate proving the current runtime facts, zero production/reference delta, the selected generic seam direction, and all 30 invariants"
+  "next_required_step":"run the persisted source-bound readiness gate; if green, close readiness and hand off a separate structural candidate for the generic resolved-column explicit-effective-forcing executor seam"
 }
