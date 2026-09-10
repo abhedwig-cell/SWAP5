@@ -7,6 +7,9 @@ EVIDENCE_DIR="${FMR36_EVIDENCE_DIR:-}"
 BASE="c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
 HELPER="src/runtime/mod_fmr_divdra_serialized_composition.f90"
 RUNTIME="src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+FVQ21_CLOSEOUT="f7cdccf11d21c31494b328251b001d474170c0c7"
+FVQ21_TEST="tests/fmr/test_fmr09_root_sink_runtime.f90"
+FVQ21_TEST_BLOB="38251f62c3a9617230171b69d29a233ce8165ce1"
 mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
@@ -27,7 +30,10 @@ check_blob src/runtime/mod_fmr_serialized_multiswap_runtime.f90 fe5a06c9af59308c
 check_blob src/runtime/mod_fmr_serialized_reference_backend.f90 9af5a494526810324dc00706b444e448e770cba9
 check_blob src/solver/mod_process_hydraulic_view.f90 d7d85fe71ced0d94b29c8d9395859ae1834f7dd6
 check_blob src/solver/mod_b110_source_sink_provider.f90 d6c57add72387e5c0022a44319fff08046194aac
+[[ "$(git rev-parse "$FVQ21_CLOSEOUT:$FVQ21_TEST")" == "$FVQ21_TEST_BLOB" ]] || fail 'F-VQ21 real-physics oracle provenance drift'
 [[ -z "$(git diff --name-only "$BASE"..HEAD -- reference)" ]] || fail 'reference source changed'
+
+echo 'FMR36_FVQ21_REAL_PHYSICS_ORACLE_SOURCE_LOCK=PASS'
 
 python3 - <<'PY'
 from pathlib import Path
@@ -107,12 +113,13 @@ for opt in 0 2; do
   gfortran -O"$opt" "${objects[@]}" "$OUT/test.o" -o "$OUT/test"
   "$OUT/test" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; fail "O$opt executable"; }
   for marker in \
-    'FMR36_INACTIVE_FMR31_RUNTIME_IDENTITY=PASS' \
+    'FMR36_FVQ21_CONTROL_REPLAY=PASS' \
+    'FMR36_INACTIVE_FVQ21_RUNTIME_IDENTITY=PASS' \
     'FMR36_MANUAL_BINDING_RUNTIME_EQUIVALENCE=PASS' \
     'FMR36_EXISTING_MASS_LEDGER_EXACTLY_ONCE_EQUIVALENCE=PASS' \
     'FMR36_CALLER_FORCING_RESTORED=PASS' \
-    'FMR36_INACTIVE_NEIGHBOR_UNCHANGED=PASS' \
     'FMR36_EXPLICIT_HYDRAULIC_VIEW_NOT_SUBSTITUTED=PASS' \
+    'FMR36_ZERO_TRANSFER_ACTIVE_CALLSITE=PASS' \
     'FMR36_INVALID_TRANSFER_PRECOMMIT_REJECTION=PASS' \
     'FMR36_PREBOUND_TARGET_NO_OVERWRITE=PASS' \
     'FMR36_SHARED_FORCING_NO_CROSS_COLUMN_LEAKAGE=PASS' \
