@@ -1,25 +1,37 @@
 {
   "schema": "swap5.fpm_workunit_status.v1",
   "work_unit": "F-PM06E",
-  "title": "Restricted B1.10 Surface-Evaporation Hydraulic Capacity Candidate",
+  "title": "Restricted Scalar Surface-Evaporation Hydraulic Capacity Candidate",
   "branch": "work/f-pm06e-restricted-surface-evaporation-capacity-candidate",
   "source_authority": "adf79478f55458c05444ad9b90e52644e6cf36b6",
   "source_tree": "ea5b54a971cf35ba0f49b1e283d13f7f69304654",
   "upstream_readiness": "F-PM06D@3ec07cf0d88e52d7503098a4de19f699acf7e9e1",
   "production_candidate": "41628858477d6fa8d6a46de8ff1a9e69459c2eb0",
   "phase": "OWNER_QUALIFIED_READY_FOR_INDEPENDENT_FVQ",
-  "decision": "QUALIFIED_RESTRICTED_B110_SURFACE_EVAPORATION_CAPACITY_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "decision": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY_READY_FOR_INDEPENDENT_FVQ",
   "scope": {
     "hydraulic_family": "B1.10_DEFAULT_MVG",
     "atmospheric_head_cm": -275000.0,
     "conductivity_mean_policies": [1,2,3,4,5,6],
     "swkmean_7": "FAIL_CLOSED_NOT_QUALIFIED",
+    "swinter": 0,
+    "swredu": 0,
     "frost": "FAIL_CLOSED_INACTIVE_ONLY",
-    "macropore": "FAIL_CLOSED_INACTIVE_ONLY",
+    "macropore_surface_scaling": "FAIL_CLOSED_INACTIVE_ONLY",
     "top_boundary_materialization": false,
     "runtime_composition": false,
     "accepted_flux_publication": false,
     "persistent_state_added": false
+  },
+  "boundary": {
+    "ponding_classification_owner": "DOWNSTREAM_STRUCTURAL_PROCESS",
+    "ponding_source": "EXACT_TRIAL_BASE_COMMITTED_PONDING_DEPTH",
+    "ponding_threshold_cm": 1.0e-10,
+    "ponded_rule": "ponding_depth > 1.0e-10_cm",
+    "emax_owner": "SOIL_HYDRAULICS_CAPABILITY",
+    "emax_signed": true,
+    "finite_negative_emax_valid": true,
+    "accepted_top_flux_is_mass_authority": true
   },
   "production_blobs": {
     "src/solver/mod_b110_default_mvg_provider.f90": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
@@ -36,12 +48,22 @@
   },
   "qualification": {
     "owner_workflow": "F-PM06E restricted surface evaporation capacity candidate",
-    "owner_run": 34539346493,
-    "owner_job": 103078219838,
-    "owner_head": "99af9db0ad8661847543b969222708161e2e0154",
+    "owner_run": 34539957574,
+    "owner_job": 103080151577,
+    "owner_head": "198074bc47802e6fe30d9078ae0060bead591f9b",
     "owner_conclusion": "success",
     "gate": "FPM06E_OWNER_GATE=PASS",
-    "o0_o2_identity": "PASS",
+    "matrix": {
+      "dry_surface": "PASS",
+      "ponding_classification_exact_threshold_and_above": "PASS",
+      "positive_capacity": "PASS",
+      "zero_capacity": "PASS",
+      "negative_finite_capacity": "PASS",
+      "replay": "PASS",
+      "rejected_trial_nonmutation": "PASS",
+      "o0_o2_identity": "PASS",
+      "hard_mass_noninterference": "PASS"
+    },
     "architecture_invariants": "30_OF_30_PASS",
     "mass_conservation": "HARD_UNCHANGED",
     "independent_fvq_required": true
@@ -50,5 +72,5 @@
     "require_exact_status_head_ci_green": true,
     "no_further_status_mutation_required_after_green_exact_head": true
   },
-  "next_required_step": "start a separate independent F-VQ qualification from the current canonical authority, fetch only the exact F-PM06E production candidate and blobs through this closeout, and fail closed before any runtime composition or canonical admission"
+  "next_required_step": "hand the immutable production candidate and exact blobs to a separate independent F-VQ workunit from the current canonical authority; do not imply runtime composition or canonical admission"
 }
