@@ -1,0 +1,93 @@
+name: F-ROSS01 Gate E3G Physical Top Boundary Switch Composition
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3g_physical_top_boundary_switch_composition.py'
+      - '.github/workflows/ross01-gate-e3g-physical-top-boundary-switch-composition.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_physical_top_boundary_switch_composition.py
+      - name: Execute frozen E3G material gate
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-${MATERIAL}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_physical_top_boundary_switch_composition.py \
+            "$MATERIAL" \
+            "$out/F-ROSS01_GATE_E3G_${MATERIAL}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_${MATERIAL}_STDOUT.txt"
+      - name: Assert frozen E3G semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-{m}/F-ROSS01_GATE_E3G_{m}_RESULT.json'
+          r=json.load(open(p))
+          assert r['gate']=='E3G_RESTRICTED_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION'
+          assert r['production_implementation'] is False
+          assert r['material']==m
+          assert r['pass'] is True
+          mr=r['material_result']
+          assert mr['pass'] is True
+          assert len(mr['rows'])==3
+          assert mr['max_abs_head_difference_cm']<=0.25
+          assert mr['max_abs_surface_storage_difference_cm']<=0.001
+          assert mr['max_abs_bottom_transfer_difference_cm']<=0.001
+          assert mr['max_abs_mass_residual_cm']<=1e-9
+          byid={x['scenario']['id']:x for x in mr['rows']}
+          dry=byid['DRY_FLUX_ADMISSIBLE']
+          assert dry['candidate']['mode']=='DRY_FLUX'
+          assert dry['reference']['mode']=='DRY_FLUX'
+          assert dry['candidate']['surface_storage_cm']==0.0
+          switch=byid['DRY_FLUX_TO_PONDED_HEAD_SWITCH']
+          for side in ('candidate','reference'):
+              x=switch[side]
+              assert x['mode']=='PONDED_HEAD'
+              assert x['dry_flux_predictor']['local_trial_valid'] is True
+              assert x['dry_flux_predictor']['complementarity_admissible'] is False
+              assert x['dry_flux_predictor_rejected_without_commit'] is True
+              assert x['surface_storage_cm']>0.0
+              assert max(x['heads_cm'])<=-1e-8
+              assert x['mass_repair_or_clipping_used'] is False
+          pond=byid['PONDED_HEAD_CONTINUATION']
+          for side in ('candidate','reference'):
+              x=pond[side]
+              assert x['mode']=='PONDED_HEAD'
+              assert x['dry_flux_predictor'] is None
+              assert x['surface_storage_cm']>0.0
+              assert max(x['heads_cm'])<=-1e-8
+          assert all(x['pass'] for x in mr['rows'])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-${{ matrix.material }}
+          path: ross01-gate-e3g-${{ matrix.material }}/
