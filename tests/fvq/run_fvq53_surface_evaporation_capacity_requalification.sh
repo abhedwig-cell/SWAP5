@@ -74,7 +74,9 @@ compile_and_run() {
   local opt="$1"
   local dir="$2"
   local flags=(-std=f2008 -Wall -Wextra -Werror -pedantic "$opt" -ffree-line-length-none -J"$dir" -I"$dir")
-  gfortran "${flags[@]}" -c src/solver/mod_soil_water_solver_contract.f90 -o "$dir/contract.o"
+  # The canonical contract predates F-VQ53 and intentionally contains unavailable-interface dummies.
+  # Keep warnings fatal for the candidate and oracle, but do not let that pre-existing warning classify the candidate.
+  gfortran "${flags[@]}" -Wno-error=unused-dummy-argument -c src/solver/mod_soil_water_solver_contract.f90 -o "$dir/contract.o"
   gfortran "${flags[@]}" -c "$BUILD/candidate/mod_b110_default_mvg_provider.f90" -o "$dir/mvg.o"
   gfortran "${flags[@]}" -c "$BUILD/candidate/mod_surface_evaporation_capacity_contract.f90" -o "$dir/cap_contract.o"
   gfortran "${flags[@]}" -c "$BUILD/candidate/mod_b110_surface_evaporation_capacity_provider.f90" -o "$dir/cap_provider.o"
