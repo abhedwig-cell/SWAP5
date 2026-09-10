@@ -1,0 +1,20 @@
+name: F-MR34 parallel root-uptake attribution readiness
+
+on:
+  push:
+    branches:
+      - work/f-mr34-parallel-root-uptake-attribution-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-bound-readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-MR34 source-bound readiness gate
+        run: bash tests/fmr/run_fmr34_parallel_root_uptake_attribution_readiness_gate.sh
