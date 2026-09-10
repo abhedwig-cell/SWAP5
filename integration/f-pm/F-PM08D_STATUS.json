@@ -1,11 +1,11 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D",
   "title": "Surface-Water-Controlled Drainage Composition Readiness",
   "branch": "work/f-pm08d-surface-water-control-readiness",
-  "status": "SOURCE_BOUND_DECOMPOSITION_PERSISTED_PRETEST",
-  "phase": "READINESS_INVENTORY_COMPLETE_GATE_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_READINESS_QUALIFIED_CHILD_DECOMPOSITION_READY",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
@@ -67,8 +67,22 @@
     "contract": "integration/f-pm/F-PM08D_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D_SURFACE_WATER_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D_READINESS_EVIDENCE.json",
     "gate": "tools/fpm/fpm08d_surface_water_control_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d-surface-water-control-readiness.yml"
+  },
+  "decisive_readiness_ci": {
+    "tested_head": "e167c2e422aa4119da337b21894ac9b12d7b966b",
+    "workflow_run": 34496180266,
+    "job": 102935094303,
+    "conclusion": "success"
+  },
+  "verifier_incident": {
+    "affected_run": 34492806100,
+    "disposition": "GATE_BINDING_ONLY",
+    "candidate_or_production_modified": false,
+    "scientific_scope_modified": false,
+    "mass_contract_modified": false
   },
   "state": {
     "branch_created": true,
@@ -82,10 +96,15 @@
     "architecture_audited_all_30": true,
     "gate_persisted": true,
     "workflow_persisted": true,
+    "evidence_persisted": true,
     "production_source_changed": false,
     "reference_source_changed": false,
-    "tested": false,
-    "qualified": false
+    "tested": true,
+    "qualified": true,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
   },
-  "next_required_step": "run the persisted source-bound F-PM08D readiness gate under CI; fail closed on any provenance, decomposition, mass or architecture inconsistency before opening F-PM08D1"
+  "decision": "QUALIFIED_SURFACE_WATER_CONTROLLED_DRAINAGE_COMPOSITION_READINESS_READY_FOR_FPM08D1",
+  "next_required_step": "start F-PM08D1 as a separate source-bound child from the current canonical authority; do not inherit the F-PM08D readiness branch as production source authority"
 }
