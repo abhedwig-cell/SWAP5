@@ -1,0 +1,23 @@
+name: F-MQ25 restart admission
+
+on:
+  push:
+    branches:
+      - qualification/f-mq25-restricted-multiswap-restart-admission
+    paths:
+      - '.github/workflows/fmq25-restart-admission.yml'
+      - 'tests/fmq/test_fmq25_restart_malformed_state.f90'
+      - 'tests/fmq/run_fmq25_hard_negative_gate.sh'
+      - 'integration/f-mq/F-MQ25_*.json'
+
+jobs:
+  independent-hard-negative:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent malformed-state and atomicity gate
+        run: bash tests/fmq/run_fmq25_hard_negative_gate.sh
