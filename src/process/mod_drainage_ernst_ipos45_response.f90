@@ -122,7 +122,7 @@ contains
       return
     end if
 
-    branch_sensitive = prepared%vertical_conductivity_top /= prepared%vertical_conductivity_bottom
+    branch_sensitive = abs(prepared%vertical_conductivity_top - prepared%vertical_conductivity_bottom) > 0.0_real64
     if (at_interface .and. branch_sensitive) return
 
     dd_dgwl = 1.0_real64 / prepared%shape_factor
