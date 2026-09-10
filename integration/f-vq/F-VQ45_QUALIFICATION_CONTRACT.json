@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ45",
+  "title": "Independent Restricted DIVDRA Spatial Distribution Qualification & Boundary-Seam Disposition",
+  "branch": "qualification/f-vq45-fpm08b-spatial-distribution",
+  "clean_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "candidate": {
+    "owner": "F-PM08B",
+    "closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
+    "source_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "source_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe"
+  },
+  "legacy_authority": {
+    "model": "SWAP 4.3.1 B1.10",
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "divdra_f90_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "source_excerpt_hashes": {
+      "lines_38_60": "6f29f55d478c1b8a6d7c0f132ebe3613927be602f7c79790133eca04046412e9",
+      "lines_104_132": "860fb3a73802e53a8f24534aa74e4e786214a34f956140701508f5a14da3393a",
+      "lines_166_194": "37a881fb5b5067f2b8b1666777e65e0b0c666063d25eb452e28a882bf5517368",
+      "lines_237_250": "4b425062ce3806c102e617a70fac42c6ca58407ef82080a6b442d681217a3ca7",
+      "lines_388_412": "d275f71fdff7d85fb04716e68a17d6c28ae9f539fa9742e53ec8373633a23669"
+    }
+  },
+  "restricted_scope": {
+    "single_level": true,
+    "positive_drainage_only": true,
+    "SWDIVD": 1,
+    "SWDIVDINF": 0,
+    "SWNRSRF": 0,
+    "SWDISLAY": 0,
+    "scalar_transfer_is_external_input": true,
+    "scalar_transfer_must_exceed_legacy_Small_for_active_route": true,
+    "legacy_Small": 1e-10,
+    "persistent_process_state": false,
+    "exchange_law_out_of_scope": true
+  },
+  "independent_stable_domain_claims": [
+    "water-table compartment selection away from the legacy Lev2Comp boundary seam",
+    "partial saturated thickness of the water-table compartment",
+    "Khor=KSAT*anisotropy and Kver=KSAT",
+    "profile equivalent horizontal and vertical conductivity and anisotropy factor",
+    "dmax=groundwater_depth+0.25*spacing*anisotropy, capped at profile bottom",
+    "first-order discharge-layer bottom node, thickness and KDdr",
+    "transmissivity-weighted node partition",
+    "single-compartment special case",
+    "candidate exact scalar-to-node mass closure with only last active node used for roundoff closure"
+  ],
+  "mandatory_boundary_seam_claim": {
+    "legacy_semantics": "Lev2Comp advances while lev > -zbotcp(icplev)+1e-10",
+    "candidate_semantics": "candidate advances while groundwater_depth > -zbotcp(wt_node) and rejects saturated_top_thickness<=0",
+    "probe_offsets_cm_relative_to_each_internal_bottom": [-2e-10,-5e-11,0.0,5e-11,1e-10,1.5e-10,2e-10],
+    "qualification_rule": "Any branch or node-allocation mismatch attributable to the unqualified +1e-10 legacy seam prevents full F-PM08B scientific qualification."
+  },
+  "mass_rule": {
+    "authoritative_quantity": "input scalar soil-to-drain transfer",
+    "legacy_raw_partition_is_reference_physics": true,
+    "candidate_last_node_roundoff_closure_is_allowed_only_if_non-bottom weights and physical layer selection match legacy and closure correction is roundoff-scale",
+    "configurable_mass_tolerance_allowed": false,
+    "candidate_ordered_node_sum_must_equal_authoritative_scalar": true
+  },
+  "independence_rules": [
+    "Do not use F-PM08B tests, expected outputs or candidate evidence as the scientific oracle.",
+    "Read the exact candidate source from the frozen F-PM08B closeout and bind its blob SHA.",
+    "Reconstruct legacy DIVDRA equations independently from the frozen source excerpts.",
+    "Qualification branch must contain no src/ or reference/ delta relative to clean base.",
+    "Do not patch the candidate or narrow the frozen scientific scope in response to a failing seam."
+  ],
+  "hard_holds": [
+    "0 < abs(q) <= 1e-10 active-route semantics",
+    "negative infiltration and SWDIVDINF=1",
+    "interflow special top discharge layer",
+    "SWDISLAY=1 or 2",
+    "multi-level drainage ordering and overlapping discharge layers",
+    "trial-state nonlocal derivatives",
+    "solver Jacobian assembly or mutation",
+    "surface-water storage/control",
+    "runtime mass-ledger composition",
+    "canonical admission"
+  ],
+  "decision_logic": {
+    "full_pass": "QUALIFIED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_SCIENTIFIC_EQUIVALENCE_READY_FOR_RUNTIME_COMPOSITION",
+    "stable_pass_boundary_seam_fail": "NOT_QUALIFIED_FPM08B_LEV2COMP_BOUNDARY_SEAM_REMEDIATION_REQUIRED",
+    "stable_domain_fail": "NOT_QUALIFIED_FPM08B_BROADER_SPATIAL_DISTRIBUTION_REMEDIATION_REQUIRED"
+  }
+}
