@@ -200,16 +200,16 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI33 restricted DIVDRA runtime canonical source authority gate
-        env:
-          FCI33_MODE: canonical
-        run: bash tests/fci/run_fci33_divdra_runtime_canonical_admission.sh
-      - name: Final exact postimage and authority recheck
+      - name: Current F-CI34 root-attribution canonical source authority gate
+        run: bash tests/fci/run_fci34_fmr31_root_attribution_canonical_admission.sh
+      - name: Final exact F-CI34 postimage and prior-authority preservation recheck
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = 7576837368e4244c3c2a1bbf9867df8d4e58811a
+          test "$(git rev-parse HEAD:src)" = 02aa1516a6f452d311ea03c195cbeaf271d3db28
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
-          echo 'FCI33_CANONICAL_RESTRICTED_DIVDRA_RUNTIME_SOURCE_ADMISSION=PASS'
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_multiswap_runtime.f90)" = fe5a06c9af59308cdad86c5126379f413591b0cd
+          echo 'FCI33_CANONICAL_RESTRICTED_DIVDRA_RUNTIME_SOURCE_AUTHORITY_PRESERVED=PASS'
+          echo 'FCI34_CANONICAL_ROOT_ATTRIBUTION_SOURCE_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
