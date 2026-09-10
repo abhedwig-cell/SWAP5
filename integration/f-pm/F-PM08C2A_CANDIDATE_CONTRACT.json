@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2A",
+  "title": "Restricted IPOS1 Homogeneous Hooghoudt Response Contract",
+  "source_authority": {
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+    "legacy_drainage_file_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+  },
+  "equation": {
+    "difference": "d=(gwl-z_drain)/shape",
+    "compatibility_cutoff": "if d < 1e-10 then q=0",
+    "active_resistance": "R=L^2/(4*K_h*abs(d))+R_entry",
+    "active_exchange": "q=d/R",
+    "sign": "q>0 means water leaves the soil toward the drainage receiver"
+  },
+  "parameter_domain": {
+    "drain_spacing": "finite and >0",
+    "shape_factor": "finite and >0",
+    "drain_bottom_level": "finite",
+    "horizontal_conductivity_top": "finite and >0",
+    "entry_resistance": "finite and >=0"
+  },
+  "hydraulic_input": {
+    "required": ["groundwater_level"],
+    "must_be_finite": true,
+    "forbidden_solver_internals": ["pressure_head array", "water_content array", "HeadCalc residual", "HeadCalc Jacobian"]
+  },
+  "derivative": {
+    "owner": "drainage response law",
+    "stable_inactive_branch": "dq/dgwl=0",
+    "stable_active_branch": "dq/dgwl=((1/shape)*R-d*dR/dgwl)/R^2 with dR/dgwl=-(L^2/(4*K_h))*((1/shape)/d^2)",
+    "exact_compatibility_cutoff": "derivative unavailable",
+    "solver_chain_rule": "outside this workunit"
+  },
+  "state_and_mass": {
+    "persistent_process_state": false,
+    "scratch": ["difference", "resistance", "resistance derivative"],
+    "authoritative_transfer_output": "signed_soil_to_drain_rate",
+    "time_integration": "runtime/coupler responsibility",
+    "accepted_mass_ledger": "runtime/coupler responsibility",
+    "rejected_trial_commit": false
+  },
+  "compatibility_boundary": {
+    "cutoff_is_generic_physics": false,
+    "cutoff_is_exact_B110_compatibility_semantics": true,
+    "legacy_basegw_dbot_precheck_in_process_object": false,
+    "legacy_reader_zero_conductivity_admitted": false,
+    "legacy_io_calendar_or_file_semantics": false
+  },
+  "holds": [
+    "No IPOS2/3 equivalent-depth logic.",
+    "No IPOS4/5 two-layer resistance logic.",
+    "No runtime/source-sink binding.",
+    "No solver Jacobian assembly.",
+    "No DIVDRA distribution.",
+    "No scientific B1.10 equivalence claim before independent F-VQ.",
+    "No promotion of the 1e-10 compatibility cutoff to a generic drainage policy."
+  ]
+}
