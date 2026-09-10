@@ -93,9 +93,18 @@
   },
   "canonical_branching_hold": {
     "active": true,
-    "reason": "The observed integration/f-ci-canonical head is an F-CI37P pre-promotion governance reconciliation state. J1E downstream production remediation must not fork from a moving interim canonical authority.",
+    "reason": "The observed integration/f-ci-canonical head is the active F-CI37P pre-promotion governance reconciliation state and is explicitly not closed. J1E downstream production remediation must not fork from this moving interim authority.",
+    "F_CI37P_head": "3ee96e9d00be7a01d21302cc79288af64c963708",
+    "F_CI37P_phase": "RECONCILIATION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY",
+    "F_CI37P_decision": "QUALIFIED_GOVERNANCE_RECONCILIATION_PENDING_EXACT_METADATA_HEAD_REPLAY",
+    "F_CI37P_closed": false,
+    "F_CI37P_metadata_head_requalified": false,
+    "F_CI37P_post_promotion_passed": false,
+    "F_CI37_post_promotion_passed": false,
+    "broad_canonical_passed": false,
+    "F_CI37P_next_gate": "Exact final F-CI37P metadata head must pass the dedicated reconciliation workflow; canonical must still equal the pinned base before non-forced fast-forward; post-promotion F-CI37P, F-CI37 and broad canonical workflows must all pass before closeout.",
     "F_KT14_branch_found_at_reconciliation": false,
-    "required_source_authority": "Definitive post-F-CI37 canonical authority after the active admission/governance cycle is closed."
+    "required_source_authority": "Definitive post-F-CI37 canonical authority after F-CI37P is closed and required post-promotion canonical gates are green."
   },
   "next_owner": {
     "suggested_work_unit": "F-KT14_OR_LATER_AUTHORIZED_TRANSACTION_RUNTIME_INTERFACE_SENSITIVITY_TRANSPORT",
