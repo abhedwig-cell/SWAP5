@@ -34,12 +34,11 @@ needle = "echo 'FMR27_FROZEN_PARALLEL_ATTACK_BLOBS=PASS'\n"
 assert needle in s
 s = s.replace(needle, needle + "echo 'FMR27_ATOMIC_OVERLAP_REMEDIATION_REBOUND=PASS'\n", 1)
 
-# The historical F-MR18 Gate-C replay predates two current dependencies of the
-# legacy binding path. Rebind only the compile order in the disposable replay:
-# fixed-flux provider first, then temporal indicator, then legacy binding.
-# Receipt test logic and expected scientific markers remain unchanged.
+# The historical F-MR18 Gate-C replay predates current solver/runtime
+# dependencies. Rebind only compile order in that disposable replay. Receipt
+# assertions, physical fixture construction and expected markers stay frozen.
 inner_anchor = "needle='cat \"$BUILD/o0/out.txt\"\\n'\n"
-inner_patch = """dep='  src/adapter/mod_reference_richards_legacy_binding.f90'\nwith_dep=('  src/solver/mod_fixed_flux_top_boundary_provider.f90\\n'\n          '  src/solver/mod_reference_richards_temporal_indicator.f90\\n'+dep)\nif with_dep not in s:\n    count=s.count(dep)\n    if count != 1:\n        raise SystemExit(f'F-MR27 F-MR18 solver dependency anchor count={count}')\n    s=s.replace(dep,with_dep,1)\nprint('FMR27_FMR18_CURRENT_SOLVER_DEPENDENCIES_REBOUND=PASS')\n"""
+inner_patch = """tx='  src/transaction/mod_transaction_reference.f90'\nwith_history=tx+'\\n  src/transaction/mod_fkt_temporal_indicator_history.f90'\nif with_history not in s:\n    count=s.count(tx)\n    if count != 1:\n        raise SystemExit(f'F-MR27 F-MR18 temporal-history anchor count={count}')\n    s=s.replace(tx,with_history,1)\ndep='  src/adapter/mod_reference_richards_legacy_binding.f90'\nwith_dep=('  src/solver/mod_fixed_flux_top_boundary_provider.f90\\n'\n          '  src/solver/mod_reference_richards_temporal_indicator.f90\\n'+dep)\nif with_dep not in s:\n    count=s.count(dep)\n    if count != 1:\n        raise SystemExit(f'F-MR27 F-MR18 solver dependency anchor count={count}')\n    s=s.replace(dep,with_dep,1)\nprint('FMR27_FMR18_CURRENT_RUNTIME_DEPENDENCIES_REBOUND=PASS')\n"""
 if inner_anchor not in s:
     raise SystemExit('F-MR27 V2 missing inner F-MR18 replay anchor')
 s = s.replace(inner_anchor, inner_patch + inner_anchor, 1)
