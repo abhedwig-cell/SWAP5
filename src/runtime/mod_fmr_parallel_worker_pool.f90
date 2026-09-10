@@ -35,7 +35,7 @@ contains
     type(fmr_logical_column_t), intent(in) :: columns(:)
     type(fmr_template_t), intent(in) :: templates(:)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameter_registry(:)
-    type(fmr_b110_physical_forcing_t), intent(in) :: forcing_registry(:)
+    type(fmr_b110_physical_forcing_t), target, intent(in) :: forcing_registry(:)
     type(kernel_committed_state_t), intent(inout) :: state_registry(:)
     type(canonical_numerical_config_t), intent(in) :: numerical_config
     class(top_boundary_provider_t), target, intent(in) :: top_boundary
@@ -94,7 +94,7 @@ contains
     call initialize_parallel_outputs(columns, assignments, t0, t1, results, diagnostics, aggregate)
     allocate(backends(worker_count), transaction_controls(worker_count), worker_runtime(worker_count))
     do w = 1, worker_count
-      call backends(w)%initialize(top_boundary)
+      call backends(w)%initialize(top_boundary, enable_direct_forcing_views=.true.)
       worker_runtime(w) = fmr_serialized_batch_diagnostics_t()
     end do
 
