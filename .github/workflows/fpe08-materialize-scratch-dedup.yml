@@ -1,0 +1,34 @@
+name: F-PE08 materialize canonical worker scratch dedup
+
+on:
+  push:
+    branches:
+      - qualification/f-pe08-canonical-worker-scratch-dedup
+    paths:
+      - .github/workflows/fpe08-materialize-scratch-dedup.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Materialize bounded source patch
+        run: python3 tests/fpe/materialize_fpe08_scratch_dedup.py
+      - name: Persist production postimage
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          changed="$(git status --porcelain -- src/runtime/mod_a23bu_worker_execution_context.f90 src/adapter/mod_reference_richards_legacy_binding.f90)"
+          test -n "$changed"
+          extra="$(git status --porcelain --untracked-files=no | grep -v -E 'src/runtime/mod_a23bu_worker_execution_context.f90|src/adapter/mod_reference_richards_legacy_binding.f90' || true)"
+          test -z "$extra"
+          git add src/runtime/mod_a23bu_worker_execution_context.f90 src/adapter/mod_reference_richards_legacy_binding.f90
+          git commit -m 'perf(F-PE08): avoid redundant canonical A23BU headcalc scratch'
+          git push origin HEAD:qualification/f-pe08-canonical-worker-scratch-dedup
