@@ -1,0 +1,209 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI27",
+  "title": "Explicit prescribed native qbot bottom-flux boundary admission",
+  "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
+  "status": "QUALIFIED",
+  "branch": "work/f-si27-explicit-prescribed-qbot-boundary",
+  "basis": {
+    "frozen_canonical_source_authority": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "frozen_contract": "integration/f-si/F-SI27_CONTRACT.json",
+    "frozen_contract_blob": "59e4f291ceb3cb9d1a572ab7bdb493842a77d217",
+    "ross01_j1e_blocker_commit": "b5d5c2ba612da12010513fd8ce6bfd9407c09644",
+    "owner_reason": "F-ROSS01 J1E requires a real canonical prescribed-qbot control path before real response-tangent integration can be qualified."
+  },
+  "production_postimage": {
+    "commit": "3b942c6777412e0d28ed46941778e4482f6bffaa",
+    "adapter_blob": "2cb1126397147b9e447634b131c93932c097177d",
+    "headcalc_blob": "55893f1f5ccba2052ad681743aa155b69f351246",
+    "production_files_changed_relative_to_frozen_canonical": [
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "production_delta": "admit mode 2 in the explicit common-route allowlist and publish the final unrounded residual sum for accepted prescribed-qbot solves",
+    "headcalc_changed_by_fsi27": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "persistent_column_state_changed": false
+  },
+  "source_characterization": {
+    "legacy_route": "B1.10 HeadCalc SWBOTB=2 prescribed regional/native lower-boundary flux",
+    "request_field": "soil_water_solve_request_t%boundary%bottom_flux",
+    "input_units": "cm d-1",
+    "native_sign": "positive qbot enters the simulated soil profile through the lower boundary; negative qbot leaves the profile",
+    "bottom_residual_dependency": "F_N(h,qbot)=other_terms-qbot",
+    "partial_F_partial_qbot": "-e_N",
+    "future_native_tangent_equation": "J * (partial h / partial qbot) = e_N",
+    "bottom_head_for_mode_2": "not an active boundary control",
+    "accepted_qbot_output": "exact prescribed request bottom_flux",
+    "mass_diagnostic": "sum of the exact final unrounded compartment residual vector already used by HeadCalc total-balance convergence"
+  },
+  "qualification_evidence": {
+    "tested_candidate_head": "f7b891ce636b63bdae7e43f0ed54195f067f8bcc",
+    "workflow_run": 34523277467,
+    "workflow_job": 103025830980,
+    "workflow_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "runner": "ubuntu-24.04",
+    "frozen_gate_matrix": {
+      "exact_b110_swbotb2_residual_and_sign_characterization": "PASS",
+      "explicit_request_bottom_flux_authority": "PASS",
+      "legacy_qbot_global_poisoning_after_request_construction": "PASS",
+      "positive_zero_negative_qbot_coverage": "PASS",
+      "independent_exact_b110_candidate_head_and_water_content_identity": "PASS",
+      "authoritative_qbot_output_equals_prescribed_request": "PASS",
+      "o0_o2_reproducibility": "PASS",
+      "serialized_worker_isolation_1_2_4_8": "PASS",
+      "aba_replay": "PASS",
+      "scratch_poisoning": "PASS",
+      "request_immutability": "PASS",
+      "unrounded_focused_equation_residual": "PASS",
+      "whole_step_mass_accounting": "PASS",
+      "unsupported_bottom_modes_fail_closed": "PASS",
+      "fsi13_pinned_regression": "PASS",
+      "fsi16_pinned_regression": "PASS"
+    },
+    "focused_production_gate": {
+      "result": "PASS",
+      "equilibrium_qbot_cm_per_day": -0.162639206421314603,
+      "perturbed_qbot_cm_per_day": -0.161012814357101464,
+      "nontrivial_pressure_head_response_cm": 0.146688421420563486,
+      "max_external_mass_residual_cm": 1.87350135405495166e-16,
+      "max_solver_unrounded_mass_residual_cm": 8.32667268468867405e-17,
+      "o0_o2_identity": true
+    },
+    "qualification_matrix": {
+      "result": "PASS",
+      "cases": [
+        {"qtop_cm_per_day": -0.8, "qbot_cm_per_day": 0.2, "nonlinear_iterations": 2, "external_mass_residual_cm": 1.11889664200504058e-16},
+        {"qtop_cm_per_day": -0.6, "qbot_cm_per_day": 0.0, "nonlinear_iterations": 2, "external_mass_residual_cm": 1.56016692620664088e-16},
+        {"qtop_cm_per_day": -0.7, "qbot_cm_per_day": -0.4, "nonlinear_iterations": 2, "external_mass_residual_cm": 1.89030648772847698e-16}
+      ],
+      "nontrivial_response_cm": 0.734883720930227469,
+      "serialized_worker_counts": [1, 2, 4, 8],
+      "unsupported_modes_rejected_before_headcalc": [1, 3, 6, 8, 9],
+      "o0_o2_identity": true
+    },
+    "independent_exact_b110_oracle": {
+      "result": "PASS",
+      "oracle_source_head": "e1f8e810a4b3018ef2901b9f35137e4381a0970e",
+      "relationship_to_current_canonical": "independent historical qualification line; not assumed to be canonical ancestry",
+      "reconstruction": "runtime git show from the exact pinned historical commit",
+      "comparison_policy": "bitwise_no_scientific_tolerance",
+      "qbot_cases_cm_per_day": [0.2, 0.0, -0.4],
+      "matched_outputs": [
+        "candidate pressure head",
+        "candidate water content",
+        "authoritative qbot",
+        "nonlinear iteration count"
+      ],
+      "o0_exact_common_identity": true,
+      "o2_exact_common_identity": true,
+      "exact_o0_o2_identity": true,
+      "common_o0_o2_identity": true,
+      "decoded_source_sha256": {
+        "headcalc": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+        "watstor": "f82ad4d35f98b7e9d7591762a0a986e0a070cfec13ec1ee1edb02f01fadd9b97",
+        "fluxes": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
+        "tridag_b15": "87b9b1cd6de65e6ee1d7c1775cddff6093c12d4d0744ffcde70844f5f28c6e7a"
+      },
+      "self_oracle_used": false
+    },
+    "upstream_preservation": {
+      "result": "PASS",
+      "fsi13": {
+        "record_head": "485d702c720cd9532addf9cba8cf2c5bd3b3ee43",
+        "record_blob": "f9a1dda7819f6b769e8b7cd9ac0319af436e0499",
+        "decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE",
+        "current_source_modes_replayed": [7, -2],
+        "current_source_qbot_cm_per_day": [-1.0, -1.0],
+        "current_source_identity": "PASS"
+      },
+      "fsi16": {
+        "record_head": "6591b2f481e1760f844514e63ef873e8deda301f",
+        "record_blob": "73d6b78ee244fd94f5891e26c44b5147020a9034",
+        "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5",
+        "equilibrium_qbot_cm_per_day": -1.0,
+        "perturbed_mode5_pressure_head_response_cm": 0.994076830200000927,
+        "current_source_identity": "PASS"
+      },
+      "o0_o2_identity": true
+    }
+  },
+  "audit_trail": {
+    "early_test_harness_failures": [
+      {"workflow_run": 34499834875, "failure_class": "STATIC_SOURCE_GREP_TOO_SPECIFIC", "production_change_required": false},
+      {"workflow_run": 34501470196, "workflow_job": 102953026659, "failure_class": "QUALIFICATION_MATRIX_COMPILE_DEPENDENCY_ORDER", "production_change_required": false},
+      {"workflow_run": 34522376861, "workflow_job": 103022771121, "failure_class": "QUALIFICATION_FIXTURE_ZERO_SIZE_PROVIDER_GUARD", "production_change_required": false}
+    ],
+    "production_diagnostic_gap": {
+      "finding": "initial mode-2 admission left unrounded_mass_balance_residual NaN",
+      "disposition": "REMEDIATED_BEFORE_QUALIFICATION",
+      "remediation_postimage": "3b942c6777412e0d28ed46941778e4482f6bffaa",
+      "physics_changed": false,
+      "reason": "publish the accepted final HeadCalc residual sum already used for convergence"
+    }
+  },
+  "scope_flags": {
+    "IMPLEMENTED": true,
+    "PERSISTED": true,
+    "TESTED": true,
+    "QUALIFIED": true,
+    "bottom_mode_2_admitted": true,
+    "native_qbot_control_available": true,
+    "authoritative_qbot_result_available": true,
+    "unrounded_mass_diagnostic_available": true,
+    "interface_response_tangent_available": false,
+    "reusable_linear_factorization_available": false,
+    "accepted_sensitivity_transaction_transport_available": false,
+    "groundwater_coupling_admitted": false,
+    "parallel_reference_backend_newly_admitted": false,
+    "physics_changed": false,
+    "numerical_policy_changed": false,
+    "transaction_semantics_changed": false,
+    "persistent_column_state_changed": false
+  },
+  "holds": {
+    "interface_response_tangent": "NOT_IMPLEMENTED_BY_F_SI27",
+    "reusable_linear_factorization": "NOT_IMPLEMENTED_BY_F_SI27",
+    "accepted_sensitivity_canonical_kernel_result_transport": "NOT_IMPLEMENTED_BY_F_SI27",
+    "groundwater_coupling": "NOT_ADMITTED",
+    "active_macropores": "OUTSIDE_F_SI27_SCOPE",
+    "parallel_reference_backend": "NOT_NEWLY_ADMITTED",
+    "swkimpl1": "NOT_NEWLY_ADMITTED_BY_F_SI27"
+  },
+  "invariant_assessment": {
+    "single_kernel": "PRESERVED",
+    "kernel_io_separation": "PRESERVED",
+    "explicit_data_separation": "IMPROVED_BY_EXPLICIT_QBOT_REQUEST_AUTHORITY",
+    "compact_persistent_state": "PRESERVED_NO_NEW_PERSISTENT_STATE",
+    "scratch_per_worker": "PRESERVED_AND_SERIALIZED_ISOLATION_TESTED",
+    "transactional_time_steps": "PRESERVED_UNCHANGED",
+    "cheap_recalculation_and_warm_start": "UNCHANGED",
+    "generic_time": "PRESERVED",
+    "coupling_readiness": "IMPROVED_WITHOUT_ADMITTING_COUPLING",
+    "groundwater_interface_contract": "NATIVE_QBOT_SIGN_EXPLICIT; MODFLOW_SIGN_MAPPING_REMAINS_COUPLER_WORK",
+    "mass_conservation": "PRESERVED_AND_HARD_TESTED",
+    "interface_sensitivity": "CONTROL_PREREQUISITE_QUALIFIED; TANGENT_ITSELF_STILL_HELD",
+    "multiswap_scalability": "PRESERVED_NO_PER_COLUMN_SOLVER_STATE_ADDED",
+    "alternative_soilwater_solver_interface": "PRESERVED",
+    "headcalc_internal_isolation": "PRESERVED",
+    "physics_vs_solver_policy_separation": "PRESERVED",
+    "reference_mode": "PRESERVED",
+    "runtime_diagnostics": "IMPROVED_BY_FINITE_MODE2_UNROUNDED_MASS_RESIDUAL",
+    "optional_functionality_cost": "PRESERVED",
+    "runtime_coupler_composition": "UNCHANGED",
+    "no_silent_dependencies_added": true
+  },
+  "downstream_handoff": {
+    "next_owner": "F-ROSS01",
+    "next_stage": "J1E",
+    "action": "resume real production qbot response-tangent integration using the now-qualified prescribed SWBOTB=2 control path",
+    "native_linearized_boundary_equation": "J * (partial h / partial qbot) = e_N",
+    "must_use_same_accepted_newton_jacobian_or_factorization_when_qualified": true,
+    "must_not_require_two_extra_full_nonlinear_trajectories_in_normal_production": true,
+    "transaction_isolation_and_mass_conservation_remain_hard": true,
+    "fsi27_does_not_qualify_the_response_tangent": true
+  }
+}
