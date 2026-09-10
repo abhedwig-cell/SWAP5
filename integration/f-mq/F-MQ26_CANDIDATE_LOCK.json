@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ26",
+  "title": "Restricted Parallel Real-Physics MultiSWAP V1 Scientific Admission",
+  "branch": "qualification/f-mq26-parallel-real-physics-v1-admission",
+  "qualification_only": true,
+  "production_source_modification_allowed": false,
+  "owner": {
+    "work_unit": "F-MR20",
+    "branch": "work/f-mr20-concurrency-isolation",
+    "closeout_head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "immutable_candidate": {
+    "commit": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+    "tree": "04cb3dc2f6254c7fdcd368bfd7b28a781cdda3cf"
+  },
+  "source_blobs": {
+    "src/runtime/mod_fmr_runtime_core.f90": "adc2b7514cc062c0cde4e71582ba8ed7776a7335",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "e0432faa0e05a3c136ee5aed6fddb12ad631848d",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "be4005a97e35c498ffc40297409a75efe65ff5df",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "1c7be9119986eb8ad3bd3c00b0b3b3afb4ed68ff",
+    "src/legacy/b1_10_port/headcalc.f90": "04c4877754b39161d5afa0f2496a015fd3334cc5",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "393e9bfbc4c078d259a5ec70aca78f50e54e8b35"
+  },
+  "source_scope_rule": "git diff candidate..qualification-head -- src must remain empty",
+  "frozen_physics_profile": {
+    "top_boundary": "fixed flux",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction": false,
+    "snow": false,
+    "macropores": false,
+    "frost": false,
+    "hysteresis": false,
+    "tabulated_hydraulics": false,
+    "elasticity": false,
+    "temporal_continuation_history": false,
+    "hard_mass_gate": 1e-12
+  },
+  "status": "LOCKED_BEFORE_INDEPENDENT_EXECUTION"
+}
