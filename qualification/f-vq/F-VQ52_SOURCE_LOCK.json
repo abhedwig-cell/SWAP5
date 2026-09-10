@@ -1,0 +1,22 @@
+{
+  "schema": "swap5.independent_surface_evaporation_source_lock.v1",
+  "work_unit": "F-VQ52",
+  "branch": "qualification/f-vq52-fpm06c-surface-evaporation-structural-requalification",
+  "qualification_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "owner_work_unit": "F-PM06C",
+  "owner_closeout": "1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+  "owner_production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+  "production_path": "src/process/mod_restricted_surface_evaporation.f90",
+  "production_blob": "a213af4deec2fe854d79120899827852a57237d1",
+  "readiness_authority": "64fbe2b93c52bfc1865e3c381884e692dcc04764",
+  "readiness_decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_BOUNDARY_READINESS_READY_FOR_STRUCTURAL_CONTRACT_CANDIDATE",
+  "qualified_restricted_physics": {
+    "swinter": 0,
+    "swredu": 0,
+    "dry_relation": "reva = min(peva, max(0, Emax)); epd = 0",
+    "ponded_relation": "reva = 0; epd = epond",
+    "mass_rule": "reva/epd are decomposition results only; accepted solver-returned external top flux remains sole authoritative top water-mass contribution"
+  },
+  "branch_src_must_remain_equal_to_qualification_base": true,
+  "candidate_must_be_materialized_only_from_exact_pinned_blob": true
+}
