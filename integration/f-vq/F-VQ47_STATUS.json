@@ -4,10 +4,11 @@
   "title": "Independent Remediated DIVDRA Spatial Distribution & Lev2Comp Boundary-Seam Requalification",
   "branch": "qualification/f-vq47-fpm08br-spatial-distribution-requalification",
   "status": "QUALIFIED_REMEDIATED_RESTRICTED_DIVDRA_SPATIAL_DISTRIBUTION_AND_LEV2COMP_BOUNDARY_SEAM_EQUIVALENCE",
-  "phase": "INDEPENDENTLY_REQUALIFIED_CLOSED_REQUIRES_IDENTICAL_GATE_ON_EXACT_CLOSEOUT_HEAD",
+  "phase": "INDEPENDENTLY_REQUALIFIED_CLOSED_AND_EXACT_CLOSEOUT_HEAD_VERIFIED",
   "clean_base": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
   "candidate_closeout": "70a66a768e64760ecfd43702535a848b6d834d61",
   "candidate_source_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+  "scientific_closeout_head": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
   "owner_final_ci": {
     "workflow_run": 34468040129,
     "job": 102841137327,
@@ -32,6 +33,24 @@
     "summary_sha256": "45f9a8190307abf82da8b225f5ee939bb4f7693a1dbb394fa4026d0be7fef27a",
     "o0_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805",
     "o2_output_sha256": "500081af745727932bfc306b16bab42a9601c4f2e63b4826e3879775e7ede805"
+  },
+  "closeout_verification": {
+    "tested_head": "9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "workflow_run": 34474189471,
+    "job": 102860911031,
+    "conclusion": "success",
+    "gate_conclusion": "success",
+    "evidence_upload_conclusion": "success",
+    "artifact_id": 10150792610,
+    "artifact_digest": "sha256:2b26fffc6cdb9a780f252994713cd82100ed043ea6343e5ab5a3b31d52e5c5f5",
+    "base_to_closeout_compare_status": "ahead",
+    "base_to_closeout_ahead_by": 11,
+    "base_to_closeout_behind_by": 0,
+    "changed_files": 9,
+    "src_delta_files": 0,
+    "reference_delta_files": 0,
+    "production_source_untouched": true,
+    "reference_source_untouched": true
   },
   "scientific_result": {
     "stable_equivalence_cases": 1804,
@@ -71,6 +90,8 @@
     "tested": true,
     "scientifically_qualified": true,
     "architecture_audited_all_30": true,
+    "closeout_rerun_complete": true,
+    "final_base_to_closeout_diff_verified": true,
     "production_source_modified_by_qualification": false,
     "reference_source_modified_by_qualification": false,
     "runtime_modified_by_qualification": false,
@@ -79,5 +100,5 @@
     "runtime_admission_qualified": false,
     "canonical_admission_qualified": false
   },
-  "post_closeout_requirement": "run the identical persisted F-VQ47 gate on this exact closeout head and verify zero src/reference delta; do not perform runtime or canonical admission in F-VQ47"
+  "next_required_step": "none within F-VQ47; any runtime or canonical admission requires a separate governed workunit"
 }
