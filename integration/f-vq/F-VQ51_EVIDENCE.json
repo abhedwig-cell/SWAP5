@@ -1,0 +1,93 @@
+{
+  "schema": "swap5.independent_runtime_qualification_evidence.v1",
+  "work_unit": "F-VQ51",
+  "title": "Independent Qualification of F-MR36 Restricted Serialized DIVDRA Active Runtime Callsite",
+  "clean_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "owner_authority": {
+    "work_unit": "F-MR36",
+    "owner_closeout_head": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+    "owner_decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION",
+    "owner_exact_head_ci_run": 34523786791,
+    "owner_exact_head_ci_conclusion": "success"
+  },
+  "exact_candidate": {
+    "composition_source": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "runtime_source": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+    "generic_serialized_runtime_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "divdra_distribution_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "fmr33_binding_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "independence": {
+    "clean_canonical_base_then_exact_candidate_overlay": true,
+    "owner_tests_used_as_acceptance_oracle": false,
+    "owner_fixture_values_reused": false,
+    "owner_expected_values_reused": false,
+    "owner_output_hash_used_as_acceptance_oracle": false,
+    "fresh_time_ids_heads_views_transfers": true,
+    "f_vq47_science_reopened": false,
+    "f_vq49_binding_science_reopened": false
+  },
+  "decisive_independent_ci": {
+    "tested_head": "e6c345992c8437210bac2430371fe40256e84445",
+    "workflow_run": 34524524861,
+    "job": 103030036399,
+    "conclusion": "success",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": true,
+    "output_sha256": "a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87",
+    "artifact_id": 10170984342,
+    "artifact_name": "F-VQ51-divdra-active-runtime-callsite-evidence",
+    "artifact_file_count": 6,
+    "artifact_zip_sha256": "596b8f4f0bebfc1daf9612294847dc0bf60f58b90b2bed2cbf9ea4b2c1bd3933"
+  },
+  "single_active_matrix": {
+    "case_count": 12,
+    "groundwater_levels": [-0.20, -0.85, -1.80],
+    "scalar_transfers": [0.0, 0.0002, 0.0075, 0.0325],
+    "observed_positive_transfer_water_table_nodes": {
+      "-0.20": 1,
+      "-0.85": 2,
+      "-1.80": 3
+    },
+    "zero_transfer_water_table_node": 0,
+    "manual_fmr33_binding_equals_active_callsite_result": true,
+    "manual_fmr33_binding_equals_active_callsite_committed_state": true,
+    "hard_mass_gate_passed": true,
+    "caller_forcing_restored": true
+  },
+  "multi_column_and_failure_evidence": {
+    "inactive_exact_identity": true,
+    "two_active_columns_with_distinct_views_and_transfers": true,
+    "two_active_columns_no_cross_contamination": true,
+    "request_shape_mismatch_rejected_precommit": true,
+    "column_id_mismatch_rejected_precommit": true,
+    "negative_transfer_rejected_precommit": true,
+    "restricted_threshold_transfer_rejected_precommit": true,
+    "preallocated_target_not_overwritten": true,
+    "shared_forcing_handle_rejected_precommit": true,
+    "invalid_parameter_ref_rejected_precommit": true,
+    "invalid_hydraulic_view_ref_rejected_precommit": true
+  },
+  "mass_and_architecture": {
+    "existing_source_sink_mass_ledger_only": true,
+    "second_mass_booking_detected": false,
+    "reference_source_delta": false,
+    "generic_serialized_runtime_delta": false,
+    "all_30_invariants_reviewed": true,
+    "architecture_result": "NO_ADVERSE_ARCHITECTURE_DELTA_WITHIN_RESTRICTED_SCOPE"
+  },
+  "nonclaims": [
+    "no drainage exchange-law qualification",
+    "no fully implicit or trial-state drainage qualification",
+    "no hidden committed hydraulic-view substitution",
+    "no surface-water-controlled drainage qualification",
+    "no parallel active DIVDRA qualification",
+    "no HeadCalc/Jacobian drainage mutation qualification",
+    "no scientific reopening of F-VQ47 or F-VQ49",
+    "no canonical admission in F-VQ51"
+  ],
+  "independent_decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_FOR_CANONICAL_ADMISSION"
+}
