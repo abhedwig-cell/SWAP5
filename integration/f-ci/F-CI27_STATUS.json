@@ -2,9 +2,10 @@
   "schema_version": 1,
   "workunit": "F-CI27",
   "title": "F-MR23 Restricted Reference-ET Generic-Time Runtime Binding Canonical Admission",
-  "branch": "qualification/f-ci27-fmr23-reference-et-runtime-canonical-admission",
-  "status": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD",
-  "decision": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD",
+  "authoring_branch": "qualification/f-ci27-fmr23-reference-et-runtime-canonical-admission",
+  "canonical_branch": "integration/f-ci-canonical",
+  "status": "QUALIFIED_CLOSED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION",
+  "decision": "QUALIFIED_CLOSED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION",
   "candidate": {
     "F_MR23_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
     "F_VQ36_closeout": "9f39d3d621bc3254063af86efb4abd64525ef07f",
@@ -14,13 +15,47 @@
     "post_src_tree": "4121255813971a360949efc3fb17ab6c8f87a799",
     "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
   },
-  "qualification": {
-    "tested_head": "bf2f3963c9910155e4321f1a2c1ba8d8a9024527",
-    "workflow_run_id": 34455248516,
+  "pre_promotion_qualification": {
+    "tested_head": "0bdd4767fd387b9f6916c0736d2636f48bf7f4e1",
+    "workflow_run_id": 34455347752,
     "workflow_conclusion": "success",
-    "pre_admission_job_id": 102800012230,
-    "postimage_job_id": 102800066137,
     "independent_grid_cases": 13824
+  },
+  "canonical_promotion": {
+    "previous_head": "f49e17c6627717d5dea181808a122f2e35960739",
+    "promoted_head": "0bdd4767fd387b9f6916c0736d2636f48bf7f4e1",
+    "method": "NON_FORCED_FAST_FORWARD",
+    "force": false,
+    "ahead_by": 20,
+    "behind_by": 0,
+    "merge_base": "f49e17c6627717d5dea181808a122f2e35960739"
+  },
+  "post_promotion_gate_history": {
+    "first_push_run": {
+      "run_id": 34455444773,
+      "head": "0bdd4767fd387b9f6916c0736d2636f48bf7f4e1",
+      "conclusion": "failure",
+      "classification": "CANONICAL_GATE_COMPOSITION_ERROR_NOT_PRODUCTION_OR_SCIENTIFIC_FAILURE",
+      "fci27_authority_gate": "PASS",
+      "failed_step": "F-PM06A owner gate replayed outside its candidate-scoped source-delta context"
+    },
+    "gate_remediation_commit": "76eab7a3f37ccce875c11bda312ec264394922b8",
+    "gate_remediation_source_changed": false,
+    "remediated_push_run": {
+      "run_id": 34455713171,
+      "head": "76eab7a3f37ccce875c11bda312ec264394922b8",
+      "conclusion": "success"
+    },
+    "persisted_evidence_head": "516ab9183c42ea10086950ed765ed440bbf3f799",
+    "persisted_evidence_push_run": {
+      "run_id": 34455874187,
+      "conclusion": "success",
+      "historical_fci03_through_fci18": "PASS",
+      "frozen_fci19_candidate_preservation": "PASS",
+      "frozen_fci19_source_lineage": "PASS",
+      "frozen_fci24_reference_et_authority": "PASS",
+      "current_fci27_fmr23_fvq36_postimage": "PASS"
+    }
   },
   "qualified_scope": {
     "restricted_reference_ET_runtime_binding": true,
@@ -55,12 +90,16 @@
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonical_ref_advanced": false,
-    "post_promotion_canonical_workflow_passed": false,
-    "production_source_admitted": false,
-    "closed": false
+    "canonical_ref_advanced": true,
+    "post_promotion_canonical_workflow_passed": true,
+    "production_source_admitted": true,
+    "closed": true,
+    "final_governance_head_requalification_pending": true
   },
   "blocking_architecture_issue_for_root_uptake_composition": "crop_root_uptake_input_t already contains potential_transpiration. Canonical admission of the ET runtime evaluator does not select an authoritative ptra producer. A separate ownership reconciliation is mandatory before root-uptake composition.",
-  "evidence": "integration/f-ci/F-CI27_QUALIFICATION_EVIDENCE.json",
-  "next_action": "Requalify this exact status head. If green and the live canonical ref is still f49e17c6627717d5dea181808a122f2e35960739 with a strict forward lineage to this head, advance canonical by non-forced fast-forward only, then require the canonical workflow to pass before closeout."
+  "evidence": [
+    "integration/f-ci/F-CI27_QUALIFICATION_EVIDENCE.json",
+    "integration/f-ci/F-CI27_POST_PROMOTION.json"
+  ],
+  "next_action": "Run the canonical workflow on this metadata-only closeout head. After that governance replay is green, start a separate ptra ownership-reconciliation unit. Do not connect the canonical ET runtime evaluator directly to root uptake before that reconciliation."
 }
