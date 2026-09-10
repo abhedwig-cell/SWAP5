@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "title": "Direct Immutable Parameter/Forcing View Feasibility & Qualification",
+  "base": {
+    "branch": "qualification/f-pe09-worker-cache-reuse",
+    "commit": "485003c1be6e55521297b7b6bdc0195a15ca0f4f",
+    "decision": "QUALIFIED_EXACT_SHAPE_WORKER_PARAMETER_FORCING_CACHE_REUSE_WITHIN_FROZEN_FMR20_V1_SCOPE"
+  },
+  "goal": "Determine whether the qualified F-MR20 V1 worker path can replace worker-local parameter/forcing value refresh copies with read-only direct registry views without changing physics, state, transaction semantics, mass accounting, deterministic publication or parallel admission scope.",
+  "hard_constraints": [
+    "single SWAP kernel remains unchanged",
+    "no persistent per-column cache state",
+    "worker scratch remains worker-owned",
+    "registry-backed views are read-only for the full solve lifetime",
+    "no parameter_set_id shortcut unless separately proven as a content-validity key",
+    "no alias to committed dynamic state",
+    "no alias to mutable result or solver scratch",
+    "no physics or numerical-policy change",
+    "no F-MR20 V1 admission widening",
+    "hard mass conservation unchanged",
+    "serialized reference mode remains available"
+  ],
+  "qualification_plan": {
+    "phase_A_source_ownership_audit": "Map all parameter/forcing copies and pointer lifetimes from runtime registry through backend/provider bindings; classify immutable versus mutable/recomputed payload.",
+    "phase_B_feasibility_probe": "Test read-only view binding only where lifetime and mutation rules are source-proven. Fail closed for derived MvG data or any payload requiring worker-local recomputation.",
+    "phase_C_scientific_gate": "Run full frozen F-MR20 V1 scientific matrix under O0/O2 and require exact serialized/candidate state, result, diagnostics and mass identity plus true 2/4-worker overlap.",
+    "phase_D_timing": "Only after scientific PASS, run paired timing against F-PE09 exact-shape cache reuse. Timing is runner-bound characterization, never a portable speedup guarantee."
+  },
+  "initial_hypothesis": {
+    "geometry_arrays": "candidate for direct immutable view if registry lifetime is stable",
+    "raw_cofgen": "candidate only if provider can separate immutable raw input from worker-local derived coefficients without mutating registry storage",
+    "forcing_arrays": "candidate for direct immutable view if all admitted providers read-only and forcing lifetime spans the solve",
+    "derived_MvG_coefficients": "not assumed directly viewable; currently require recomputation/cache semantics until proven otherwise"
+  },
+  "state": {
+    "realized": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "closed": false,
+    "open": ["source ownership audit", "feasibility decision", "scientific qualification", "timing characterization if feasible"]
+  }
+}
