@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR34",
+  "title": "Parallel Root-Uptake & Actual-Transpiration Publication Readiness",
+  "branch": "work/f-mr34-parallel-root-uptake-attribution-readiness",
+  "source_authority": "integration/f-ci-canonical@c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "status": "CONTRACT_FROZEN_PENDING_SOURCE_BOUND_GATE",
+  "decision": "EXPLICIT_ROOT_ACTIVE_PARALLEL_PROFILE_REQUIRED; EXISTING_PARALLEL_V1_MUST_REMAIN_ROOT_INACTIVE",
+  "state": {
+    "source_authority_persisted": true,
+    "dependency_map_persisted": true,
+    "data_classification_persisted": true,
+    "mass_contract_persisted": true,
+    "generic_time_contract_persisted": true,
+    "transaction_contract_persisted": true,
+    "restart_boundary_persisted": true,
+    "architecture_invariants_reviewed": true,
+    "production_source_modified": false,
+    "reference_modified": false,
+    "readiness_gate_persisted": true,
+    "readiness_gate_tested": false,
+    "closed": false
+  },
+  "authorities": {
+    "root_uptake_science": "F-VQ22@1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+    "serialized_actual_transpiration": "F-VQ50@55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "current_parallel_restart": "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1",
+    "canonical_parallel_capability": "F-CI35@c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "key_readiness_findings": {
+    "parallel_worker_executor": "reuses fmr_execute_serialized_physical_column",
+    "actual_transpiration_binding": "already postcommit and exact-forcing-bound inside shared serialized executor",
+    "current_blocker": "parallel_v1_profile_admitted explicitly rejects root_extraction_active and nonzero root_extraction_sink",
+    "required_design": "new explicit root-active parallel physical profile/capability; no silent relaxation of existing parallel-v1",
+    "mass_semantics": "actual transpiration remains attribution of existing mass_out root sink; never a second booking",
+    "time_semantics": "restricted qualification requires root_extraction_sink invariant over outer [t0,t1]",
+    "restart_semantics": "F-CI35 restart qualification does not transfer automatically to root-active parallel profile"
+  },
+  "next_workunits": {
+    "structural_candidate": "F-MR35",
+    "independent_parallel_qualification": "F-MQ30",
+    "restart_requalification": "separate workunit after F-MQ30",
+    "canonical_admission": "only after all required independent qualifications"
+  },
+  "nonclaims": [
+    "root-active parallel execution is not yet admitted",
+    "parallel actual-transpiration publication is not yet qualified",
+    "time-varying root extraction within accepted substeps is not qualified",
+    "root-active committed-boundary restart is not qualified by F-CI35",
+    "no production performance or speedup claim"
+  ],
+  "evidence": [
+    "integration/f-mr/F-MR34_SOURCE_LOCK.json",
+    "integration/f-mr/F-MR34_READINESS_CONTRACT.md",
+    "integration/f-mr/F-MR34_INVARIANT_AUDIT.json",
+    "tests/fmr/run_fmr34_parallel_root_uptake_attribution_readiness_gate.sh"
+  ]
+}
