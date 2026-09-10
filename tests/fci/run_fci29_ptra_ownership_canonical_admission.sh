@@ -7,13 +7,23 @@ mkdir -p "$BUILD"
 trap 'rm -rf "$BUILD"' EXIT
 cd "$ROOT"
 
-BASE=06658d0b83206008dcaefba3b8d7e5c7f0c77538
+ORIGINAL_FCI28=06658d0b83206008dcaefba3b8d7e5c7f0c77538
+BASE=4a2b7a82287a209dc8150dcb70c6c2d6e459c592
 FVQ41=e0d6c9993d46bb858d84524bb290f3bb12e82ce4
 EXPECTED_PRE_SRC=3fe4ccff367479e54ab5db106e5faf8b480d8ec0
 EXPECTED_POST_SRC=223c54d5fd309f86ef50f9efd28e2c511e175577
 EXPECTED_REFERENCE=9d08625217d7c0a7385df9da6a04183bcd9cb9e6
 EXPECTED_FVQ41_TEST_BLOB=dfd1ddb9f1a4ce1a919311645fb727f2994d2f22
 EXPECTED_OUTPUT_SHA=a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f
+
+git diff --quiet "$ORIGINAL_FCI28" "$BASE" -- || {
+  echo 'FCI29_CANONICAL_DRIFT_REVERT_NOT_NET_IDENTICAL' >&2
+  git diff --name-status "$ORIGINAL_FCI28" "$BASE" -- >&2
+  exit 1
+}
+test "$(git rev-parse "$BASE":src)" = "$EXPECTED_PRE_SRC"
+test "$(git rev-parse "$BASE":reference)" = "$EXPECTED_REFERENCE"
+echo 'FCI29_CANONICAL_DRIFT_REVERT_NET_CONTENT_IDENTITY=PASS'
 
 changed_src="$(git diff --name-only "$BASE" -- src)"
 [[ "$changed_src" == "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90" ]] || {
@@ -22,7 +32,6 @@ changed_src="$(git diff --name-only "$BASE" -- src)"
   exit 1
 }
 
-test "$(git rev-parse "$BASE":src)" = "$EXPECTED_PRE_SRC"
 test "$(git rev-parse HEAD:src)" = "$EXPECTED_POST_SRC"
 test "$(git rev-parse HEAD:reference)" = "$EXPECTED_REFERENCE"
 echo 'FCI29_EXACT_SINGLE_SOURCE_POSTIMAGE=PASS'
