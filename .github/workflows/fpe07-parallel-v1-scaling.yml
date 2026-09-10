@@ -1,9 +1,9 @@
 name: F-PE07 restricted parallel-v1 scaling characterization
 
+# The automatic characterization series was deliberately frozen after three
+# successful source-identical replicates (R1-R3). Evidence/closeout commits
+# must not silently add statistical samples. Re-run only by explicit dispatch.
 on:
-  push:
-    branches:
-      - performance/f-pe07-parallel-v1-scaling-characterization
   workflow_dispatch:
 
 permissions:
