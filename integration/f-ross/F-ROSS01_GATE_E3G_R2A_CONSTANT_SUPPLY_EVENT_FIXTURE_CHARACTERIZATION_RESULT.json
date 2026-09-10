@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R2A_CONSTANT_SUPPLY_EVENT_FIXTURE_CHARACTERIZATION",
+  "status": "CHARACTERIZED_NEGATIVE_FIXTURE_EVIDENCE",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34446912517,
+    "head": "895ca827f33cec7bac538bf38d5c17619bd731ce",
+    "conclusion": "failure_expected_from_frozen_characterization",
+    "material_outcomes": {"B01":"NO_VALID_EVENT_BRACKET","O14":"NO_VALID_EVENT_BRACKET","B12":"CONTROL_PASS","O13":"CONTROL_PASS"}
+  },
+  "artifacts": {
+    "B01": {"id":10139994862,"digest":"sha256:b4cac260e5f968166f22d4214d04301c5e52b75bbc15c12398937fb0945e1a62"},
+    "O14": {"id":10139994669,"digest":"sha256:e3a99b93053860a58df0db732217bf22ee0ff8cdcaf0535989e8b5568e21a5d2"},
+    "B12": {"id":10139988762,"digest":"sha256:0fcc65c3f9a951f367c449f667596ccbdc6ba49a808a2c1ef307f9a9f2ba7f3e"},
+    "O13": {"id":10139988879,"digest":"sha256:e3de1ff87db86d73df0354fa46dbef5b452310a969b32db849b8f415f747d3e0"}
+  },
+  "B01": {
+    "initial_qcap_cm_per_day": 31.875649010644093,
+    "initial_qcap_over_ksat": 1.020836938427385,
+    "scanned_supply_fractions_ksat": [1.005,1.01,1.015,1.02],
+    "valid_event_bracket_count": 0,
+    "key_observation": "For every scanned supply the dry-reference top node becomes more negative, not wetter. At 1.02 KSAT h_top moves from -0.2 cm to about -0.223019 cm by 0.001 d and g=q_supply-q_cap moves from -0.02613 to -0.11478 cm/d. Capacity therefore moves away from the supply rather than toward a ponding threshold.",
+    "mass_validity": "The reported dry states are generally well inside the 1e-9 cm mass gate; the negative result is not explained by mass failure."
+  },
+  "O14": {
+    "initial_qcap_cm_per_day": 2.5630416827844256,
+    "initial_qcap_over_ksat": 1.026866224941693,
+    "scanned_supply_fractions_ksat": [1.005,1.01,1.015,1.02],
+    "valid_event_bracket_count": 0,
+    "key_observation": "For every scanned supply the dry-reference top node also becomes more negative. At 1.02 KSAT h_top moves from -0.2 cm to about -0.879331 cm by 0.001 d and g moves from -0.01714 to -0.29457 cm/d. The capacity rises strongly instead of declining to the supply threshold.",
+    "minor_solver_note": "Some isolated early samples near 2e-5 d marginally miss the 1e-9 cm mass gate for lower supply fractions, but later mass-valid samples retain the same monotone drying/capacity-increase pattern; this does not create a hidden event bracket."
+  },
+  "controls": {
+    "B12": {
+      "qcap0_cm_per_day": 2.245895,
+      "sub_ksat_0_995": "DRY_AT_T0_WITH_PHYSICAL_NO_EVENT_CERTIFICATE",
+      "super_ksat_1_005": "IMMEDIATE_R1",
+      "soil_nonlinear_trajectory_count_for_classification": 0
+    },
+    "O13": {
+      "qcap0_cm_per_day": 9.689291,
+      "sub_ksat_0_995": "DRY_AT_T0_WITH_PHYSICAL_NO_EVENT_CERTIFICATE",
+      "super_ksat_1_005": "IMMEDIATE_R1",
+      "soil_nonlinear_trajectory_count_for_classification": 0
+    }
+  },
+  "physical_interpretation": "The frozen E3G initial profile [-0.2,-1.5,-5] cm is wetter at the top than below. Under the scanned sub-capacity supplies the top therefore drains/drys rather than following the classical rainfall-wetting trajectory in which infiltration capacity decreases toward a super-KSAT supply. The absence of a finite-time ponding bracket is a fixture-physics result, not a reason to increase forcing resolution or relax solver tolerances.",
+  "decision": "NO_VALID_CONSTANT_SUPPLY_FINITE_TIME_FIXTURE_IN_FROZEN_SCAN_RESEARCH_REQUIRED",
+  "next_research_direction": "E3G_R2B_DRY_INITIAL_PROFILE_EVENT_FIXTURE_CHARACTERIZATION",
+  "hard_guards": [
+    "Do not add finer supply fractions to the same wet-top profile merely to manufacture an event.",
+    "Do not reinterpret B12/O13 immediate-R1 cases as finite-time events.",
+    "Choose future dry-profile candidates before execution and preserve this negative evidence.",
+    "Only mass-valid dry reference states may bracket a future finite-time event."
+  ],
+  "hard_nonclaims": [
+    "No finite-time event localization is qualified.",
+    "No candidate event locator was tested.",
+    "No production event-search policy follows from R2A."
+  ]
+}
