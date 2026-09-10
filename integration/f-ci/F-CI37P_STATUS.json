@@ -1,0 +1,16 @@
+{
+  "schema":"swap5.fci37p_status.v1",
+  "work_unit":"F-CI37P",
+  "title":"Current-Canonical Postimage Governance Pointer Reconciliation after F-CI37",
+  "phase":"RECONCILIATION_PASS_PENDING_EXACT_METADATA_HEAD_REPLAY",
+  "decision":"QUALIFIED_GOVERNANCE_RECONCILIATION_PENDING_EXACT_METADATA_HEAD_REPLAY",
+  "base":"f4074feea33cc8eac370dc5272f8e9d763530c53",
+  "triggering_failure":{"run":34531764237,"job":103054424135,"classification":"STALE_FCI36_MOVING_CANONICAL_GOVERNANCE_POINTER_NOT_SCIENTIFIC_REGRESSION"},
+  "reconciliation":{"tested_head":"327f97178e9cb3bd0ac61ee6ebf26c6391eb6dc3","run":34532304321,"job":103055697148,"conclusion":"success"},
+  "state":{"classification_persisted":true,"governance_fix_persisted":true,"tested":true,"architecture_invariants_reviewed":true,"metadata_head_requalified":false,"canonical_ref_advanced":false,"post_promotion_fci37p_passed":false,"post_promotion_fci37_passed":false,"broad_canonical_passed":false,"closed":false},
+  "src_delta":[],
+  "reference_delta":[],
+  "science_delta":false,
+  "governance_change":"Freeze F-CI36 on its exact qualified head and advance only the moving current-postimage gate to F-CI37.",
+  "next_gate":"Exact final F-CI37P metadata head must pass the dedicated reconciliation workflow. Then canonical must still equal the pinned base before non-forced fast-forward. Post-promotion F-CI37P, F-CI37 and broad canonical workflows must all pass before closeout."
+}
