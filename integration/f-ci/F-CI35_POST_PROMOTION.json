@@ -1,0 +1,53 @@
+{
+  "schema": "swap5.fci35_post_promotion_evidence.v1",
+  "work_unit": "F-CI35",
+  "title": "Parallel Committed-Boundary Restart Composition Canonical Capability Admission",
+  "source_admission_type": "METADATA_CAPABILITY_ADMISSION_OF_ALREADY_CURRENT_CANONICAL_SOURCE_COMPOSITION",
+  "canonical_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "promoted_head": "43790409c689c8ceca372794a1ff3244254c04e5",
+  "promotion": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "non_forced_fast_forward": true,
+    "production_source_delta": 0,
+    "reference_delta": 0
+  },
+  "authorities": {
+    "owner": "F-MR32@eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4",
+    "owner_candidate": "1e27f2758d9dbed11350aec5a089662921826d21",
+    "independent_qualification": "F-MQ29@5ea88d81a63e6c706c87e99ac360f91f08711fc1"
+  },
+  "post_promotion_runs": {
+    "dedicated_f_ci35": {
+      "run": 34498274424,
+      "head": "43790409c689c8ceca372794a1ff3244254c04e5",
+      "event": "push",
+      "conclusion": "success"
+    },
+    "broad_canonical": {
+      "run": 34498274709,
+      "head": "43790409c689c8ceca372794a1ff3244254c04e5",
+      "event": "push",
+      "conclusion": "success"
+    }
+  },
+  "admitted_capability": "RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_COMMITTED_BOUNDARY_RESTART_COMPOSITION_WITH_SERIALIZED_OR_PARALLEL_ORIGIN_AND_2_4_WORKER_CONTINUATION",
+  "preserved": {
+    "hard_mass_conservation": true,
+    "whole_registry_atomic_restore": true,
+    "canonical_publication_order": true,
+    "worker_scratch_rebuilt_not_persisted": true,
+    "f_ci34_serialized_actual_transpiration_scope_not_widened_to_parallel": true,
+    "production_and_reference_trees_unchanged_by_f_ci35": true
+  },
+  "nonclaims": [
+    "mid-transaction restart",
+    "trial-state persistence",
+    "worker/Newton/Jacobian/warm-start persistence",
+    "restart file format",
+    "cross-version migration",
+    "new parallel physics family",
+    "performance-scale qualification",
+    "general SWAP5 release qualification"
+  ],
+  "next_gate": "Persist final F-CI35 status on the qualification branch, requalify that exact final branch head, fast-forward canonical non-forced if still serial, then require dedicated F-CI35 and broad canonical success on the exact final canonical head. No further status mutation is required after those exact-head gates are green."
+}
