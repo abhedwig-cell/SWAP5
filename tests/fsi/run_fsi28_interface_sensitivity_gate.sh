@@ -71,12 +71,14 @@ src = src.replace('end program test_fsi27_explicit_prescribed_qbot',
 call_marker = '  ! D: nearby unowned mode remains fail closed.'
 if call_marker not in src:
     raise SystemExit('FSI28_TRANSFORM_FAIL call insertion marker missing')
-call_block = r'''  ! F-SI28: use the same qualified F-SI27 physical fixture for three
-  ! native-qbot response points. Finite-difference replays start from the
-  ! identical base state; the production tangent itself is never FD-derived.
-  call check_fsi28_tangent(-0.8_real64,  0.2_real64, 'positive-qbot')
-  call check_fsi28_tangent(-0.6_real64,  0.0_real64, 'zero-qbot')
-  call check_fsi28_tangent(-0.7_real64, -0.4_real64, 'negative-qbot')
+call_block = r'''  ! F-SI28 stays inside the locally qualified F-SI27 mode-2 neighborhood:
+  ! exact A equilibrium, exact C 0.99*qeq perturbation, and the fixed symmetric
+  ! 1.01*qeq companion. This is a scope binding, not convergence/tolerance tuning.
+  ! Finite-difference replays start from the identical base state; the production
+  ! tangent itself is never FD-derived.
+  call check_fsi28_tangent(qeq, qeq, 'equilibrium')
+  call check_fsi28_tangent(qeq, qpert, 'fsi27-perturbed')
+  call check_fsi28_tangent(qeq, 1.01_real64*qeq, 'symmetric-neighbor')
 
 '''
 src = src.replace(call_marker, call_block + call_marker, 1)
