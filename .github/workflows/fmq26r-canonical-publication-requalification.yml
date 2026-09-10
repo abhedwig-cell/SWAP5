@@ -1,0 +1,19 @@
+name: F-MQ26R canonical publication requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq26r-canonical-parallel-publication
+  workflow_dispatch:
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-MQ26R gate
+        run: bash tests/fmq/run_fmq26r_canonical_publication_requalification.sh
