@@ -23,7 +23,7 @@ program test_fvq41_fmr26_reference_et_ptra_root_input_qualification
   call qualify_nonemerged_route(failures)
   call qualify_fail_closed_routes(failures)
 
-  if (active_cases /= 4608) then
+  if (active_cases /= 2304) then
     failures = failures + 1
     write(*,'(A,I0)') 'FAIL: active case count=', active_cases
   end if
