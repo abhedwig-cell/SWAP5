@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_RESTRICTED_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+  "status": "PRECOMMIT_FROZEN",
+  "production_implementation": false,
+  "upstream_required": {
+    "surface_face": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+    "surface_ledger": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+    "persistent_soil_state": "QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE",
+    "internal_unsaturated_column": "QUALIFIED_C1R_CONSERVATIVE_PHYSICAL_UNSATURATED_COLUMN_READY_FOR_TIMESTEP_GATE"
+  },
+  "purpose": "Qualify the smallest real-soil composition in which a dry prescribed-flux top boundary is accepted only while physically admissible and an inadmissible dry-flux trial is rolled back and recomputed from the same committed soil/surface state under a finite positive ponding-head boundary. Also qualify already-ponded continuation. This gate deliberately stops before top-node h=0 crossing and before physical pond-depletion back-switch qualification.",
+  "frozen_physical_scope": {
+    "materials": ["B01", "B12", "O13", "O14"],
+    "soil_cells": 3,
+    "cell_thickness_cm": 10.0,
+    "surface_to_top_node_face_length_cm": 5.0,
+    "initial_soil_heads_cm": [-0.2, -1.5, -5.0],
+    "bottom_head_cm": -15.0,
+    "surface_storage_equals_surface_head": true,
+    "surface_storage_capacity_cm": 1.0,
+    "top_node_upper_qualification_bound_cm": -1e-8,
+    "surface_head_qualified_interval_cm": [0.0, 1.0],
+    "q_top_sign": "positive downward",
+    "runoff_active": false,
+    "evaporation_active": false,
+    "interception_snow_runon_irrigation_decomposition": false,
+    "forcing_basis": "net_surface_supply_rate only",
+    "time_contract": "generic [t0,t1], no calendar semantics"
+  },
+  "frozen_scenarios_per_material": [
+    {
+      "id": "DRY_FLUX_ADMISSIBLE",
+      "surface_storage_start_cm": 0.0,
+      "supply_fraction_ksat": 0.25,
+      "dt_day": 0.0002,
+      "required_exit_mode": "DRY_FLUX",
+      "required_surface_storage_end_cm": 0.0
+    },
+    {
+      "id": "DRY_FLUX_TO_PONDED_HEAD_SWITCH",
+      "surface_storage_start_cm": 0.0,
+      "supply_fraction_ksat": 1.5,
+      "dt_day": 0.0002,
+      "required_flux_predictor": "REJECTED_NOT_COMMITTED_IF_INADMISSIBLE",
+      "required_exit_mode": "PONDED_HEAD",
+      "required_surface_storage_end": "strictly_positive_and_below_1_cm"
+    },
+    {
+      "id": "PONDED_HEAD_CONTINUATION",
+      "surface_storage_start_cm": 0.02,
+      "supply_fraction_ksat": 1.25,
+      "dt_day": 0.0002,
+      "required_entry_mode": "PONDED_HEAD",
+      "required_exit_mode": "PONDED_HEAD",
+      "required_surface_storage_end": "strictly_positive_and_below_1_cm"
+    }
+  ],
+  "boundary_complementarity_contract": {
+    "dry_flux_trial": "Solve the real three-cell finite-volume soil trial with q_top=q_supply and S=0. After the solve, evaluate the qualified h_surface=0 surface-face capacity against the solved top-node head. The dry trial is admissible only if the imposed supply does not exceed that capacity within roundoff and the top node remains inside the qualified negative-head scope.",
+    "inadmissible_flux_trial": "Must not publish any soil head, surface state, time, cumulative ledger or diagnostic total. The ponded/head solve starts again from the exact same committed state.",
+    "ponded_head_trial": "Solve soil heads and S1 simultaneously. Set h_surface=S1 and q_top from the qualified 5 cm surface-face relation. Enforce S1-S0 = dt*(q_supply-q_top) together with all three soil finite-volume balances.",
+    "already_ponded": "If S0>0, enter the ponded/head solve directly; do not run a dry prescribed-flux predictor merely as a numerical convenience.",
+    "stale_flux_rule": "No q_top calculated under the rejected dry-flux branch may be reused as the physical top flux of the accepted ponded branch.",
+    "top_node_saturation_rule": "Any trial with h_top_node > -1e-8 cm fails closed in E3G. Qualification of h_top_node=0 or positive belongs to a later explicit gate.",
+    "depletion_rule": "If a ponded trial would deplete S below zero, E3G fails closed and reports a later event-localized back-switch gate as required. No clipping to S=0 and no stale ponded q_top continuation is allowed."
+  },
+  "candidate_and_reference": {
+    "candidate_surface_face": "E3E-R2R3 bounded remediated 5 cm surface face including analytic saturated segment and certified physical-envelope snap where qualified",
+    "reference_surface_face": "E3E-R2R3 endpoint-aware high-accuracy reference; positive h_surface uses exact-physical-upper high-precision oracle",
+    "candidate_internal_faces": "existing qualified C1R and E2C-R3 routes only; any UNQUALIFIED_FACE_FALLBACK is a gate failure",
+    "reference_internal_faces": "full-accuracy steady Darcy reference already used in E3 qualification",
+    "qualification_solver": "bounded scipy least_squares harness; qualification-only, not production implementation"
+  },
+  "mass_and_transaction_contract": {
+    "soil_cell_identity": "dS_i = dt*(q_in_i-q_out_i)",
+    "surface_identity": "S1-S0 = dt*(q_supply-q_top)",
+    "composed_identity": "delta_soil_storage + delta_surface_storage = dt*(q_supply-q_bottom)",
+    "mass_tolerance_cm": 1e-9,
+    "repair_or_clipping_allowed": false,
+    "committed_state_includes": ["time", "three soil heads", "surface_storage"],
+    "rejected_flux_predictor_bitwise_unchanged_required": true,
+    "worker_local_trial_scratch_required": true
+  },
+  "candidate_reference_thresholds": {
+    "max_abs_head_difference_cm": 0.25,
+    "max_abs_surface_storage_difference_cm": 0.001,
+    "max_abs_bottom_transfer_difference_cm": 0.001,
+    "candidate_unqualified_internal_face_fallback_count": 0,
+    "candidate_nonfinite_count": 0,
+    "candidate_solver_failure_count": 0,
+    "reference_solver_failure_count": 0,
+    "branch_mode_match_required": true
+  },
+  "frozen_pass_conditions": {
+    "material_count": 4,
+    "scenario_count_per_material": 3,
+    "all_12_candidate_scenarios_accepted": true,
+    "all_12_reference_scenarios_accepted": true,
+    "all_mass_residuals_within_tolerance": true,
+    "all_surface_states_within_0_to_1_cm": true,
+    "all_top_node_heads_at_or_below_minus_1e_8_cm": true,
+    "dry_admissible_cases_remain_flux_mode": true,
+    "switch_cases_reject_dry_predictor_without_commit_then_accept_ponded_mode": true,
+    "already_ponded_cases_enter_head_mode_directly": true,
+    "all_candidate_reference_thresholds_pass": true,
+    "no_mass_repair_or_clipping": true
+  },
+  "architecture_checks": {
+    "2_kernel_io_separation": "composition API is calculation-only; no file/path/parser semantics",
+    "3_explicit_data_separation": "soil committed state, surface committed state, forcing, face result, trial scratch and result ledger are distinct",
+    "4_compact_persistent_state": "surface adds one scalar only when surface storage physics is active; Ross mixed variables remain worker-local",
+    "5_scratch_per_worker": "nonlinear vectors, face costs and rejected predictors are trial/worker scratch",
+    "7_transactional_timesteps": "inadmissible flux predictors and failed ponded solves may not mutate committed state",
+    "9_generic_time": "dt is generic and independent of day boundaries",
+    "13_mass_conservation_absolute": "soil plus surface plus bottom exchange must close without repair",
+    "20_alternative_soil_water_solvers": "surface process consumes a soil-face contract; this qualification instantiates RossFast but does not make the process Ross-specific",
+    "21_reuse_swap_physics": "functional flux/head complementarity and ponding semantics are reused without legacy globals",
+    "22_no_headcalc_internals": "surface composition sees face flux/capacity results, not internal solver arrays",
+    "23_physics_solver_policy_separated": "ponding is a physical state/mode; least-squares/retry policy is numerical",
+    "24_predictable_runtime": "at most one rejected dry predictor plus one accepted ponded solve in the switch scenario",
+    "25_reference_mode": "full-accuracy reference remains separate from bounded candidate",
+    "26_diagnostics_runtime": "mode, rejected predictor, face route, solve cost and mass residuals are explicit",
+    "27_optional_functionality_scales": "surface storage scalar is absent when this physical component is inactive",
+    "29_no_silent_dependencies": "5 cm geometry, head interval and dt are explicit",
+    "30_change_explicitly_checked": "this precommit freezes claims and thresholds before execution"
+  },
+  "hard_nonclaims": [
+    "No top soil-node h=0 or positive-head qualification.",
+    "No physical pond-depletion head-to-flux back-switch qualification.",
+    "No runoff with real soil state; runoff remains qualified only at the E3F ledger seam.",
+    "No evaporation, interception, snow, runon or irrigation decomposition.",
+    "No response tangent across top-boundary mode or endpoint/snap switching.",
+    "No production implementation, runtime, MultiSWAP, MODFLOW or groundwater admission.",
+    "No surface head above 1 cm.",
+    "No exact-KSATEXM or Class-B admission."
+  ],
+  "positive_exit": "QUALIFIED_RESTRICTED_REAL_SOIL_DRY_FLUX_TO_PONDED_HEAD_SWITCH_COMPOSITION_READY_FOR_TOP_NODE_SATURATION_AND_DEPLETION_EVENT_GATES",
+  "negative_exit": "RESTRICTED_REAL_SOIL_TOP_BOUNDARY_SWITCH_COMPOSITION_NOT_QUALIFIED_PRESERVE_FAILURE"
+}
