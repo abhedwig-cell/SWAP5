@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C2B",
+  "title": "Prepared Equivalent-Depth IPOS2/3 Structural Candidate Evidence",
+  "lineage": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "fpm08c2_domain_readiness_closeout": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1"
+  },
+  "frozen_candidate": {
+    "tested_head": "03394c97595b3fa0d93447f113c8059bfa7744df",
+    "production_files": {
+      "src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108",
+      "src/process/mod_drainage_hooghoudt_ipos23_response.f90": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164"
+    },
+    "workflow_run": 34453054781,
+    "workflow_job": 102792995876,
+    "candidate_output_sha256": "6295cd74018a264fe128d6ddd00f3d264fef7f31e483d367d5984ac081850c3d"
+  },
+  "verified": {
+    "two_process_module_delta": "PASS",
+    "protected_owner_source_locks": "PASS",
+    "prepared_equivalent_depth_boundary": "PASS",
+    "equivalent_depth_branches_unsmoothed": "PASS",
+    "dynamic_response_groundwater_only": "PASS",
+    "shared_immutable_cache_and_stateless_response": "PASS",
+    "no_io_headcalc_or_ipos45_leakage": "PASS",
+    "equivalent_depth_source_equation": "PASS",
+    "equivalent_depth_repeat_identity": "PASS",
+    "x_1e_minus_6_effective_continuity": "PASS",
+    "x_0_5_finite_branch_jump": "PASS",
+    "equivalent_depth_domain_fail_closed": "PASS",
+    "IPOS2_source_equation": "PASS",
+    "IPOS3_source_equation": "PASS",
+    "IPOS2_3_analytic_tangents_vs_finite_difference": "PASS",
+    "IPOS3_zero_bottom_conductivity_admissible": "PASS",
+    "response_domain_fail_closed": "PASS",
+    "exact_cutoff_branch_explicit": "PASS",
+    "stateless_A_B_A_identity": "PASS",
+    "state_and_mass_ownership": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "architecture_findings": [
+    "Equivalent depth depends only on immutable drainage geometry and is therefore a shared prepared parameter/cache, not dynamic column state.",
+    "The legacy x=0.5 equivalent-depth formula-family jump remains explicit and is not smoothed.",
+    "IPOS2 and IPOS3 dynamic responses consume the prepared object and groundwater level without re-evaluating logarithms or exponentials per hydraulic trial.",
+    "The process response remains stateless and exposes dq/dgroundwater_level only on stable branches.",
+    "The B1.10 diffl=1e-10 branch is retained only as explicit restricted compatibility semantics."
+  ],
+  "qualification_boundary": {
+    "structural_candidate_qualified": true,
+    "scientific_B110_equivalence_qualified": false,
+    "runtime_composition_qualified": false,
+    "solver_jacobian_integration_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "required_next_gate": "independent scientific/source-bound F-VQ over both frozen production blobs and branch semantics"
+}
