@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "title": "Forcing-Only Trial-Scoped Direct Immutable View Scientific Qualification",
+  "candidate_production_commit": "8f6902c4eb2aa21694e83876579725914043e3dc",
+  "qualification_head": "fd5c7f4f5f77eaa1ccd190a3074f5433f4845973",
+  "base": {
+    "work_unit": "F-PE09",
+    "commit": "485003c1be6e55521297b7b6bdc0195a15ca0f4f",
+    "decision": "QUALIFIED_EXACT_SHAPE_WORKER_PARAMETER_FORCING_CACHE_REUSE_WITHIN_FROZEN_FMR20_V1_SCOPE"
+  },
+  "workflow": {
+    "run": 34460027331,
+    "job": 102815399225,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "success"
+  },
+  "production_scope": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90"
+  ],
+  "candidate": {
+    "serialized_one_worker": "unchanged PE09 copy/cache default",
+    "parallel_two_four_worker": "explicit opt-in to direct forcing-array views",
+    "direct_view_arrays": [
+      "drainage_flux_by_level",
+      "subsurface_irrigation_source",
+      "root_extraction_sink"
+    ],
+    "view_lifetime": "associated immediately before nested trial execution and explicitly nullified immediately after trial return",
+    "parameters_and_geometry": "unchanged PE09 worker cache/copy semantics",
+    "admission_scope": "not widened beyond frozen F-MR20 V1"
+  },
+  "gates": {
+    "source_lock": "PASS",
+    "bounded_three_file_production_scope": "PASS",
+    "trial_scoped_associate_call_release_order": "PASS",
+    "parallel_only_explicit_opt_in": "PASS",
+    "direct_view_profile_fail_closed": "PASS",
+    "PE09_serial_cache_regression": "PASS",
+    "PE08_worker_memory_regression": "PASS",
+    "FMR20_serial_reference": "PASS",
+    "FMR20_real_overlap_2_workers": "PASS",
+    "FMR20_real_overlap_4_workers": "PASS",
+    "FMR20_serial_vs_2_worker_identity": "PASS",
+    "FMR20_serial_vs_4_worker_identity": "PASS",
+    "FMR20_worker_count_independence": "PASS",
+    "FMR20_A_B_A_repeatability": "PASS",
+    "FMR20_input_order_independence": "PASS",
+    "FMR20_cross_column_rejection_isolation": "PASS",
+    "FMR20_negative_profile_fail_closed": "PASS",
+    "FMR20_shared_parameter_integrity": "PASS",
+    "target_lifetime_nested_view": "PASS",
+    "target_lifetime_explicit_release": "PASS",
+    "target_lifetime_immutable_target": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "scientific_decision": "QUALIFIED_FORCING_ONLY_TRIAL_SCOPED_DIRECT_IMMUTABLE_VIEWS_WITHIN_FROZEN_FMR20_V1_SCOPE",
+  "timing": "NOT_YET_EXECUTED",
+  "nonclaims": [
+    "parameter or geometry zero-copy",
+    "shared precomputed hydraulic/MvG parameter views",
+    "workers beyond 2 and 4",
+    "physics outside F-MR20 V1",
+    "universal or production speedup"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_scientifically": true,
+    "timing_characterized": false,
+    "closed": false,
+    "open": ["paired timing versus exact F-PE09 baseline", "final performance disposition"]
+  }
+}
