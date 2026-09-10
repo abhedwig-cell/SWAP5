@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08B",
+  "title": "Restricted Drainage Spatial Distribution Candidate Evidence",
+  "tested_candidate": {
+    "head": "d9bf7fc28ca39b9bf451573db7c150db49daac4d",
+    "production_source": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "9e4a196eecf971698b16d4a882f5aa8b32b66ebe",
+    "workflow_run": 34449808085,
+    "workflow_job": 102782733397,
+    "output_sha256": "5146c63786cfde21523e88dbf4b06676cea6aa57f31ea54f087da7e845f07e9c"
+  },
+  "source_authority": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "legacy_divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+    "protected_source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+    "protected_solver_contract_blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "protected_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6"
+  },
+  "verified_by_owner_gate": {
+    "production_delta_single_process_module": "PASS",
+    "protected_owner_source_locks": "PASS",
+    "source_boundary_static": "PASS",
+    "no_exchange_law_or_solver_internals": "PASS",
+    "groundwater_summary_only_dynamic_hydraulic_input": "PASS",
+    "worker_scratch_state_boundary_static": "PASS",
+    "principal_transmissivity_partition": "PASS",
+    "exact_scalar_to_node_mass_identity": "PASS",
+    "spacing_limited_discharge_layer": "PASS",
+    "anisotropy_discharge_depth": "PASS",
+    "zero_transfer_no_hydraulic_dependency": "PASS",
+    "held_transfer_domains_fail_closed": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "stateless_A_B_A_identity": "PASS",
+    "scalar_authority_worker_scratch_boundary": "PASS",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_output_identity": "PASS"
+  },
+  "qualification_boundary": {
+    "structural_candidate_evidence": true,
+    "independent_scientific_legacy_equivalence": false,
+    "full_DIVDRA_equivalence": false,
+    "runtime_composition": false,
+    "solver_jacobian_integration": false
+  },
+  "known_existing_compile_warnings": [
+    "unused dummy arguments in src/solver/mod_soil_water_solver_contract.f90; protected source and outside F-PM08B delta"
+  ]
+}
