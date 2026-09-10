@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.fmr34_readiness_evidence.v1",
+  "work_unit": "F-MR34",
+  "source_authority": "integration/f-ci-canonical@c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "authoritative_readiness_run": {
+    "run": 34500021933,
+    "job": 102948160993,
+    "tested_head": "7ee8a33f37ff3c35d827803372cfcc5f985cf82c",
+    "conclusion": "success"
+  },
+  "historical_runs": [
+    {
+      "run": 34499878574,
+      "job": 102947675941,
+      "head": "0b7af27252c65d037961542abcf9e4cec9c61283",
+      "conclusion": "failure",
+      "classification": "HARNESS_ONLY_EXACT_STRING_MATCHER_ERROR",
+      "production_or_reference_source_changed_for_remediation": false
+    }
+  ],
+  "source_bound_results": {
+    "production_delta": 0,
+    "reference_delta": 0,
+    "source_locks": "PASS",
+    "parallel_executor_reuse": "PASS",
+    "current_root_inactive_parallel_v1_boundary": "PASS",
+    "exact_forcing_postcommit_attribution_seam": "PASS",
+    "root_provider_worker_binding_shape": "PASS",
+    "no_silent_parallel_v1_physics_relaxation": "PASS",
+    "no_second_mass_booking_contract": "PASS",
+    "generic_time_frozen_qrot_scope": "PASS",
+    "root_active_restart_requalification_required": "PASS",
+    "architecture_invariants": "30_OF_30_REVIEWED"
+  },
+  "readiness_conclusion": "EXPLICIT_ROOT_ACTIVE_PARALLEL_PHYSICAL_PROFILE_CAN_BE_DEVELOPED_AS_A_SEPARATE_STRUCTURAL_CANDIDATE; CURRENT_PARALLEL_V1_MUST_REMAIN_UNCHANGED"
+}
