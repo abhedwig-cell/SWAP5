@@ -252,22 +252,26 @@ def main():
                 max_derivative_abs = max(max_derivative_abs, abs(row["dq"] - dqref))
                 if not row["active"] or not row["derivative_defined"] or row["dq"] != dqref or row["kink"]:
                     raise AssertionError(f"active derivative/diagnostic mismatch: {row}")
-                eps = max(abs(diffl) * 1.0e-6, 1.0e-9)
-                if gwl - eps > head:
-                    qplus = max(0.0, ((gwl + eps) - head) / resistance)
-                    qminus = max(0.0, ((gwl - eps) - head) / resistance)
-                    fd = (qplus - qminus) / (2.0 * eps)
-                    if not math.isclose(row["dq"], fd, rel_tol=3.0e-6, abs_tol=2.0e-10):
+                eps = abs(diffl) * 0.25
+                upper = gwl + eps
+                lower = gwl - eps
+                if eps > 0.0 and upper > gwl and lower < gwl and lower > head:
+                    qplus = max(0.0, (upper - head) / resistance)
+                    qminus = max(0.0, (lower - head) / resistance)
+                    fd = (qplus - qminus) / (upper - lower)
+                    if not math.isclose(row["dq"], fd, rel_tol=3.0e-12, abs_tol=2.0e-12):
                         raise AssertionError(f"active FD mismatch dq={row['dq']} fd={fd}")
                     active_fd_cases += 1
             elif diffl < 0.0:
                 if row["active"] or not row["derivative_defined"] or row["dq"] != 0.0 or row["kink"]:
                     raise AssertionError(f"inactive derivative/diagnostic mismatch: {row}")
-                eps = max(abs(diffl) * 1.0e-6, 1.0e-9)
-                if gwl + eps < head:
-                    qplus = max(0.0, ((gwl + eps) - head) / resistance)
-                    qminus = max(0.0, ((gwl - eps) - head) / resistance)
-                    fd = (qplus - qminus) / (2.0 * eps)
+                eps = abs(diffl) * 0.25
+                upper = gwl + eps
+                lower = gwl - eps
+                if eps > 0.0 and upper > gwl and lower < gwl and upper < head:
+                    qplus = max(0.0, (upper - head) / resistance)
+                    qminus = max(0.0, (lower - head) / resistance)
+                    fd = (qplus - qminus) / (upper - lower)
                     if fd != 0.0:
                         raise AssertionError(f"inactive FD mismatch fd={fd}")
                     inactive_fd_cases += 1
