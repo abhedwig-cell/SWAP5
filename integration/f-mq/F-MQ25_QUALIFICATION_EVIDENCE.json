@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ25",
+  "candidate": {
+    "commit": "dfffd8535b3345b105b2d71537d8149225f35c54",
+    "tree": "81b521a5d173910575e74f3be43812e62d79124a"
+  },
+  "qualification_branch": "qualification/f-mq25-restricted-multiswap-restart-admission",
+  "qualification_only": true,
+  "production_source_changed": false,
+  "authoritative_run": {
+    "workflow_run_id": 34448477968,
+    "workflow_job_id": 102778457645,
+    "runner": "ubuntu-24.04",
+    "compiler": "GNU Fortran 13.3.0",
+    "conclusion": "failure_by_design_after_candidate_hard_negative_violation"
+  },
+  "structural_gates": {
+    "candidate_source_lock": "PASS",
+    "solver_scratch_absent_from_restart_record": "PASS",
+    "temporary_registry_publication_seam_present": "PASS"
+  },
+  "independent_hard_negative": {
+    "name": "malformed_decoded_physical_state_incompatible_dynamic_type",
+    "construction": "The final restart record preserved schema, column, parameter, template, layout, lineage, revision and committed-time metadata, but its decoded polymorphic physical_state was replaced by a different concrete transaction_state_t subtype.",
+    "required_behavior": "Reject before authoritative registry publication and leave every fresh target state uninitialized.",
+    "observed_behavior_o0": {
+      "restore_status": 0,
+      "restored": true,
+      "target_1_ready": true,
+      "target_2_ready": true,
+      "result": "FAIL_OPEN_REPRODUCED"
+    },
+    "observed_behavior_o2": {
+      "restore_status": 0,
+      "restored": true,
+      "target_1_ready": true,
+      "target_2_ready": true,
+      "result": "FAIL_OPEN_REPRODUCED"
+    },
+    "o0_o2_scientific_observation_identity": "PASS"
+  },
+  "atomicity_control": {
+    "attack": "invalid lineage in final record",
+    "result": "PASS",
+    "observation": "Late-record reconstruction rejection left the complete fresh target registry uninitialized."
+  },
+  "source_interpretation": {
+    "restart_record_payload_type": "class(transaction_state_t), allocatable",
+    "trusted_reconstruction_validation": "validates provenance, allocation, time and cloneability, but does not bind the decoded concrete physical-state dynamic type to the declared template/backend/layout identity",
+    "publication_effect": "Once every opaque reconstruction returns success, candidate_states is assigned wholesale to state_registry, so the incompatible dynamic type becomes authoritative committed state."
+  },
+  "frozen_early_exit_applied": true,
+  "not_executed_after_hard_negative": [
+    "full positive column-count matrix 1,2,7,8,17,31,32",
+    "all independent record/runtime ordering permutations",
+    "remaining negative matrix items already covered by owner evidence"
+  ],
+  "not_executed_reason": "The qualification matrix froze any hard-negative fail-open as sufficient for NOT_QUALIFIED. Continuing the mechanical matrix cannot reverse this admission failure.",
+  "decision": "NOT_QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
+  "route_back": {
+    "workstream": "F-MR",
+    "required_remediation": "Bind decoded physical continuation state to an explicit qualified physical-state identity/schema associated with the declared template/backend/layout, and reject incompatible decoded state before any registry publication.",
+    "requalification_rule": "Independent F-MQ must qualify a new exact immutable candidate after owner remediation; F-MQ25 must not patch production source."
+  }
+}
