@@ -1,0 +1,49 @@
+{
+  "schema":"swap5.fmr38_plan.v1",
+  "work_unit":"F-MR38",
+  "title":"Generic Resolved-Column Explicit Effective-Forcing Executor Structural Candidate",
+  "branch":"work/f-mr38-explicit-effective-forcing-executor",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "readiness_authority":{"work_unit":"F-MR37","closeout":"e21ae30a3f3a5cb2a4a34f00c74e5a46c67645d1","decision":"QUALIFIED_GENERIC_RESOLVED_COLUMN_EXPLICIT_EFFECTIVE_FORCING_SEAM_READY_FOR_STRUCTURAL_CANDIDATE"},
+  "goal":"Introduce only the generic execution seam required by F-MR37: registry-facing callers resolve handles, while one shared transaction/backend executor consumes one resolved parameter object, one explicit effective forcing object and the selected committed state. Preserve every currently admitted execution path; do not activate parallel DIVDRA.",
+  "allowed_production_delta":["src/runtime/mod_fmr_serialized_multiswap_runtime.f90"],
+  "locked_unchanged_production":{
+    "src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90":"544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90":"5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90":"9a384658ec37b68d2ef911e741aa89707dcb3e77",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90":"e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "src/process/mod_drainage_spatial_distribution.f90":"1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a"
+  },
+  "semantic_candidate":{
+    "registry_wrapper":"existing fmr_execute_serialized_physical_column remains source compatible and resolves forcing_handle from forcing_registry",
+    "new_seam":"new public worker-oriented procedure accepts one explicit fmr_b110_physical_forcing_t after registry resolution",
+    "shared_executor":"existing checkpoint -> trial -> mass-completeness -> candidate -> commit/discard path is factored once and receives resolved template/parameter/forcing/state inputs",
+    "base_forcing_mutation":false,
+    "persistent_effective_forcing_state":false,
+    "parallel_divdra_active":false,
+    "mass_booking_changes":false
+  },
+  "required_proofs":[
+    "existing registry-facing serialized per-column executor remains behavior-compatible",
+    "new explicit-forcing seam is behavior-identical when passed the canonical selected forcing object",
+    "parallel V1 still routes through the unchanged registry-facing wrapper and remains behavior-compatible",
+    "canonically admitted serialized active DIVDRA remains behavior-compatible",
+    "new seam takes effective forcing intent(in) and does not own or persist it",
+    "no second transaction path or second mass booking is introduced",
+    "all predictable routing failures occur before physical trial",
+    "all 30 SWAP architecture invariants are explicitly audited"
+  ],
+  "hard_holds":[
+    "no active parallel DIVDRA",
+    "no drainage-specific worker pool",
+    "no forcing-registry deep copy",
+    "no shared forcing mutation",
+    "no change to drainage science",
+    "no HeadCalc/Jacobian drainage coupling",
+    "no new persistent column state",
+    "no canonical admission in F-MR38"
+  ],
+  "qualification_handoff":"independent F-VQ53 if still free after owner closeout"
+}
