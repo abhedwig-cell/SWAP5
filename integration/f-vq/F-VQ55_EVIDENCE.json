@@ -11,10 +11,13 @@
   "materialized_candidate":"40c6da0a19f54434552d0e568a833bc712739899",
   "source_composition":{"owner_source_authority_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","candidate_parent_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","current_canonical_blob":"fe5a06c9af59308cdad86c5126379f413591b0cd","status":"EXACT_BLOB_IDENTITY"},
   "independent_oracles":{"parallel_v1_fixture_blob":"26cc6e0ace986dc40db7635de7192958a1c0b868","serialized_active_divdra_fixture_blob":"b8206e0388568f5e792304af9bf9bd889212a10c","serialized_active_divdra_expected_output_sha256":"a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87","heldout_executor_attack":"derived from immutable FMQ26 fixture, not copied from F-MR38 owner test"},
-  "required_matrix":{"resolved_forcing_registry_identity":"PENDING_GATE","changed_caller_order":"PENDING_GATE","multiple_columns":"PENDING_GATE","valid_effective_forcing":"PENDING_GATE","inactive_forcing_path":"PENDING_GATE","rejected_trial":"PENDING_GATE","rollback":"PENDING_GATE","forcing_handle_identity":"PENDING_GATE","forcing_registry_immutability":"PENDING_GATE","no_deep_copy_mutation":"PENDING_GATE","deterministic_replay":"PENDING_GATE","o0_o2":"PENDING_GATE","parallel_v1_replay":"PENDING_GATE","serialized_active_divdra_replay":"PENDING_GATE","hard_mass":"PENDING_GATE"},
+  "required_matrix":{"resolved_forcing_registry_identity":"PASS","changed_caller_order":"PASS","multiple_columns":"PASS","valid_effective_forcing":"PASS","inactive_forcing_path":"PASS","rejected_trial":"PASS","rollback":"PASS","forcing_handle_identity":"PASS","forcing_registry_immutability":"PASS","no_deep_copy_mutation":"PASS","deterministic_replay":"PASS","o0_o2":"PASS","parallel_v1_replay":"PASS","serialized_active_divdra_replay":"PASS","hard_mass":"PASS"},
+  "qualification_outputs":{"fmq26_output_sha256":"eebe0f6fa0c89a52d195aa142d7921ddd00686c370ab39598a1889867cdec83c","heldout_effective_forcing_output_sha256":"efbd5e11b11864281b2486b96bf2b5ccf1d087e35eaa9484bfbe23a97b51c387","serialized_active_divdra_output_sha256":"a2e8056d5d1ab9e2ae52204b5dd3418a253603300726a51660db86f050895f87"},
+  "qualification_markers":["FVQ55_CURRENT_CANONICAL_SOURCE_COMPOSITION=PASS","FVQ55_IMMUTABLE_CANDIDATE_MATERIALIZATION=PASS","FVQ55_RESOLVED_SEAM_STATIC_BOUNDARY=PASS","FVQ55_NO_SECOND_MASS_BOOKING_PATH=PASS","FVQ55_CHANGED_CALLER_ORDER=PASS","FVQ55_MULTIPLE_COLUMNS=PASS","FVQ55_REJECTED_TRIAL_ROLLBACK=PASS","FVQ55_FORCING_HANDLE_IDENTITY=PASS","FVQ55_FORCING_REGISTRY_IMMUTABILITY=PASS","FVQ55_NO_SHARED_FORCING_MUTATION=PASS","FVQ55_VALID_EFFECTIVE_FORCING=PASS","FVQ55_INACTIVE_FORCING_PATH=PASS","FVQ55_DETERMINISTIC_REPLAY=PASS","FVQ55_PARALLEL_V1_REPLAY=PASS","FVQ55_SERIALIZED_ACTIVE_DIVDRA_REPLAY=PASS","FVQ55_HARD_MASS=PASS","FVQ55_O0_O2_IDENTITY=PASS","FVQ55_GATE=PASS"],
   "hard_holds":["no active parallel DIVDRA","no drainage-specific worker pool","no forcing-registry deep copy","no shared forcing mutation","no persistent effective-forcing state","no drainage science change","no canonical admission"],
-  "qualification_run":null,
-  "qualification_job":null,
-  "qualification_head":null,
-  "conclusion":"PENDING_FAIL_CLOSED"
+  "architecture_invariant_audit":"30_OF_30_PASS",
+  "qualification_run":34540807677,
+  "qualification_job":103082801167,
+  "qualification_head":"c4038cbd071308b5f2e8840a9336423aa2198339",
+  "conclusion":"success"
 }
