@@ -34,6 +34,16 @@ needle = "echo 'FMR27_FROZEN_PARALLEL_ATTACK_BLOBS=PASS'\n"
 assert needle in s
 s = s.replace(needle, needle + "echo 'FMR27_ATOMIC_OVERLAP_REMEDIATION_REBOUND=PASS'\n", 1)
 
+# The historical F-MR18 Gate-C replay predates the current legacy binding's
+# temporal-indicator module dependency. Rebind only that compile dependency in
+# the disposable F-MR18 replay; receipt test logic and expected markers remain
+# unchanged.
+inner_anchor = "needle='cat \"$BUILD/o0/out.txt\"\\n'\n"
+inner_patch = """dep='  src/adapter/mod_reference_richards_legacy_binding.f90'\nwith_dep='  src/solver/mod_reference_richards_temporal_indicator.f90\\n'+dep\nif with_dep not in s:\n    count=s.count(dep)\n    if count != 1:\n        raise SystemExit(f'F-MR27 F-MR18 temporal dependency anchor count={count}')\n    s=s.replace(dep,with_dep,1)\nprint('FMR27_FMR18_TEMPORAL_DEPENDENCY_REBOUND=PASS')\n"""
+if inner_anchor not in s:
+    raise SystemExit('F-MR27 V2 missing inner F-MR18 replay anchor')
+s = s.replace(inner_anchor, inner_patch + inner_anchor, 1)
+
 p.write_text(s, encoding='utf-8')
 PY
 
