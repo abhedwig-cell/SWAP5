@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.et_surface_evaporation_structural_candidate_status.v1",
+  "work_unit": "F-PM06C",
+  "title": "Restricted Surface Evaporation Structural Contract Candidate",
+  "branch": "work/f-pm06c-restricted-surface-evaporation-structural-candidate",
+  "phase": "OWNER_GATE_QUALIFIED_PENDING_INDEPENDENT_F_VQ",
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_STRUCTURAL_CANDIDATE_PENDING_INDEPENDENT_F_VQ",
+  "canonical_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "readiness_authority": "64fbe2b93c52bfc1865e3c381884e692dcc04764",
+  "candidate": {
+    "production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "production_path": "src/process/mod_restricted_surface_evaporation.f90",
+    "production_blob": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "owner_evidence": {
+    "authoritative_run": 34529414139,
+    "authoritative_job": 103046183864,
+    "conclusion": "success",
+    "output_sha256": "7ed528842f469c10ec810c1c0af3c963c4f8cd5ce4408572fee36aef8888b7d0",
+    "architecture_invariants": "30_OF_30_PASS"
+  },
+  "historical_harness_failure": {
+    "run": 34529246256,
+    "job": 103045630205,
+    "classification": "TEST_HARNESS_FORTRAN2008_NONCONSTANT_ERROR_STOP",
+    "candidate_defect": false,
+    "production_source_changed": false
+  },
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "owner_gate_qualified": true,
+    "owner_workunit_closed": true,
+    "independently_qualified": false,
+    "canonical_admitted": false,
+    "runtime_materialized": false
+  },
+  "qualified_scope": "restricted stateless SWREDU=0 dry/ponded surface evaporation decomposition from atmospheric demand plus accepted hydraulic classification/capacity inputs",
+  "mass_contract": "reva and epd are decomposition results only; accepted solver-returned external top flux remains the sole authoritative water-mass contribution",
+  "nonclaims": [
+    "evaporation-capacity runtime materialization",
+    "surface ponding-classification runtime materialization",
+    "full BoundTop migration",
+    "SWREDU 1 or 2",
+    "interception or wet-canopy evaporation",
+    "canonical admission"
+  ],
+  "next_required_step": "genuinely independent F-VQ qualification of the immutable production candidate; do not admit canonically or bind to active runtime before that qualification"
+}
