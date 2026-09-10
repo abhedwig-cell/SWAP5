@@ -1,0 +1,27 @@
+name: F-PE10 target lifetime probe
+
+on:
+  push:
+    branches:
+      - qualification/f-pe10-direct-immutable-registry-views
+    paths:
+      - 'tests/fpe/test_fpe10_target_lifetime_probe.f90'
+      - 'tests/fpe/run_fpe10_target_lifetime_probe.sh'
+      - '.github/workflows/fpe10-target-lifetime-probe.yml'
+      - 'integration/f-pe/F-PE10_*.json'
+  workflow_dispatch:
+
+jobs:
+  target-lifetime-probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure gfortran
+        run: |
+          if ! command -v gfortran >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y gfortran
+          fi
+          gfortran --version
+      - name: Run F-PE10 target lifetime probe
+        run: bash tests/fpe/run_fpe10_target_lifetime_probe.sh
