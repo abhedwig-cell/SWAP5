@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.independent_surface_evaporation_qualification_status.v1",
+  "work_unit": "F-VQ52",
+  "title": "Independent Restricted Surface Evaporation Structural Requalification",
+  "branch": "qualification/f-vq52-fpm06c-surface-evaporation-structural-requalification",
+  "phase": "QUALIFIED_CLOSEOUT_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_STRUCTURAL_CANDIDATE_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
+  "candidate": {
+    "owner": "F-PM06C",
+    "owner_closeout": "1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+    "production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "production_path": "src/process/mod_restricted_surface_evaporation.f90",
+    "production_blob": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "qualification": {
+    "initial_run": 34530786223,
+    "initial_job": 103050705479,
+    "initial_conclusion": "success",
+    "active_cases": 1008,
+    "O0_O2_identity": "PASS",
+    "architecture_invariants": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "state": {
+    "candidate_immutable": true,
+    "qualification_src_delta": false,
+    "independently_qualified": true,
+    "status_persisted": true,
+    "exact_status_head_requalified": false,
+    "canonical_admitted": false,
+    "runtime_materialized": false
+  },
+  "qualified_scope": "restricted stateless SWINTER=0 SWREDU=0 dry/ponded surface evaporation decomposition from atmospheric demand plus already accepted hydraulic ponding classification and evaporation capacity",
+  "mass_contract": "reva and epd are decomposition results only; no second mass booking; accepted solver-returned external top flux remains authoritative",
+  "nonclaims": [
+    "runtime evaporation-capacity materialization",
+    "runtime ponding-classification materialization",
+    "full BoundTop migration",
+    "SWREDU 1 or 2",
+    "interception or wet-canopy evaporation",
+    "canonical admission"
+  ],
+  "final_gate": {
+    "exact_status_head_same_candidate_blob": true,
+    "qualification_branch_src_unchanged": true,
+    "same_independent_oracle_must_pass": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "after exact status-head rerun succeeds, start a separate runtime-materialization readiness/composition unit for hydraulic evaporation capacity and committed/base ponding classification; do not widen directly to full BoundTop"
+}
