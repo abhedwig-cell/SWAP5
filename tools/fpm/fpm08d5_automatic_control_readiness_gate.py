@@ -91,7 +91,7 @@ def main():
     mark("NO_PRODUCTION_CHANGE_ALLOWED", scope["production_source_changes_allowed"] is False)
 
     ev = contract["event_translation"]
-    mark("CALENDAR_EXTERNALIZED", "outside kernel" in ev["modern_rule"])
+    mark("CALENDAR_EXTERNALIZED", "before kernel execution" in ev["modern_rule"])
     mark("EVENT_SUBDIVISION_REQUIRED", "subdivide interval" in ev["event_inside_interval"])
     target = contract["target_selection"]
     mark("INITIAL_EVENT_EXPLICIT", "explicit initial" in target["initialization"])
