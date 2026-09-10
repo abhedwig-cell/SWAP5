@@ -1,0 +1,12 @@
+{
+  "schema":"swap5.fmq29_candidate_lock.v1",
+  "work_unit":"F-MQ29",
+  "title":"Independent Parallel Committed-Boundary Restart Composition Qualification",
+  "qualification_branch":"qualification/f-mq29-parallel-committed-restart-composition",
+  "qualification_base":{"branch":"integration/f-ci-canonical","head":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36"},
+  "owner":{"work_unit":"F-MR32","branch":"work/f-mr32-current-canonical-parallel-committed-restart-composition","candidate":"1e27f2758d9dbed11350aec5a089662921826d21","candidate_tree":"4410569d672f9dd3c57fa5468f8c0f6f1dea9e2c","closeout":"eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4","owner_candidate_run":34495850322,"owner_closeout_run":34496185047,"owner_decision":"QUALIFIED_OWNER_COMPOSITION_PARALLEL_COMMITTED_BOUNDARY_RESTART_READY_FOR_INDEPENDENT_FMQ"},
+  "candidate_source_semantics":{"production_source_delta_from_canonical":0,"reference_delta_from_canonical":0,"qualification_target":"current canonical composition semantics using exact F-CI28/F-CI30/F-CI34 production blobs"},
+  "independence_rule":"Do not import owner scientific conclusions or owner generated composition fixture as qualification evidence. Reconstruct the composition attack independently from canonical production and previously independent restart/parallel fixtures.",
+  "production_modification_allowed":false,
+  "fail_closed":true
+}
