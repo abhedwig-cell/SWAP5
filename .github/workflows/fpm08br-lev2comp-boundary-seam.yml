@@ -1,0 +1,20 @@
+name: F-PM08BR Lev2Comp boundary seam remediation
+
+on:
+  push:
+    branches:
+      - work/f-pm08br-lev2comp-boundary-seam-remediation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-remediation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08BR remediation gate
+        run: bash tests/fpm/run_fpm08br_lev2comp_boundary_seam_gate.sh
