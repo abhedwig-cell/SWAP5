@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR28",
+  "title": "Reference-ET ptra to Restricted Root-Uptake Execution Composition",
+  "branch": "work/f-mr28-reference-et-root-uptake-execution-composition",
+  "status": "QUALIFIED_REFERENCE_ET_PTRA_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_INDEPENDENT_QUALIFICATION",
+  "canonical_base": "b982d4d0c8686e5c5fcb965633d34a4e0ba46fcf",
+  "qualified_candidate_head": "7cd18f03293ebd94fce4bb4430bc78ba13e7e237",
+  "production_source": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+  "production_source_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69",
+  "owner_gate": {
+    "workflow_run_id": 34465690293,
+    "workflow_job_id": 102833611178,
+    "conclusion": "success",
+    "O0_O2_output_identity": true,
+    "output_sha256": "cdabbb5e952a875ee8910d5cbdfb80c6ae5faa946eba91fb8d6cc8ea1136ef72"
+  },
+  "qualified_physics": "MACRO_FEDDES_DROUGHT_ONLY_PRECOMPUTED_QROT",
+  "composition_boundary": "authoritative reference-ET ptra binding followed by existing shared crop/root adapter and committed restricted root-water-uptake execution",
+  "persistent_state_added": false,
+  "mass_ledger_booking_added": false,
+  "accepted_window_integration_added": false,
+  "production_code_mutated_after_initial_candidate": false,
+  "independent_qualification_required": true,
+  "canonical_admitted": false,
+  "closed": true
+}
