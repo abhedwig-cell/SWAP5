@@ -1,0 +1,34 @@
+name: F-PE10 restore PE09 production postimage
+
+on:
+  push:
+    branches:
+      - qualification/f-pe10-direct-immutable-registry-views
+    paths:
+      - 'tests/fpe/materialize_fpe10_restore_pe09_production.py'
+      - '.github/workflows/fpe10-restore-pe09-production.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Restore exact PE09 production postimage
+        run: python3 tests/fpe/materialize_fpe10_restore_pe09_production.py
+      - name: Persist production restitution
+        run: |
+          set -euo pipefail
+          test -n "$(git status --porcelain -- src/runtime/mod_fmr_serialized_reference_backend.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90 src/runtime/mod_fmr_parallel_worker_pool.f90)"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/runtime/mod_fmr_serialized_reference_backend.f90 \
+                  src/runtime/mod_fmr_serialized_multiswap_runtime.f90 \
+                  src/runtime/mod_fmr_parallel_worker_pool.f90
+          git commit -m 'revert(F-PE10): restore qualified PE09 production postimage'
+          git push origin HEAD:qualification/f-pe10-direct-immutable-registry-views
