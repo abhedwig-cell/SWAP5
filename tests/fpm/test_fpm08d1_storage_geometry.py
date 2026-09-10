@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import math
 import random
+import subprocess
+import tempfile
+from pathlib import Path
 
 SEED = 20260910
 CASES = 1200
@@ -14,6 +17,7 @@ def build_sttab(nrpri, zbotdr, swdtyp, widthr, taludr, spacing):
     sec0 = nrpri
     assert swdtyp[sec0] == 2
     zdeep = zbotdr[sec0]
+    # Preserve frozen source operation order: zbotdr * integer / 20.0d0.
     levels = [100.0, 0.0] + [zdeep * (i - 2) / 20.0 for i in range(3, 23)]
     storage = []
     for level in levels:
@@ -71,8 +75,6 @@ def make_case(rng, case_id):
     n = nrpri + nrsec
     deepest = rng.uniform(80.0, 500.0)
     shallowest = rng.uniform(10.0, min(70.0, deepest - 1.0))
-    depths = sorted([rng.uniform(shallowest, deepest) for _ in range(n)], reverse=True)
-    # enforce strict deepest-first order with comfortable separations
     depths = [deepest - k * (deepest - shallowest) / max(1, n - 1) for k in range(n)]
     zbot = [-d for d in depths]
     swdtyp = [2 if rng.random() < 0.7 else 1 for _ in range(n)]
@@ -83,13 +85,52 @@ def make_case(rng, case_id):
     return nrpri, zbot, swdtyp, width, talud, spacing
 
 
+def fortran_bottom_knot_characterization(optflag):
+    src = r'''program p
+  use iso_fortran_env, only: real64
+  implicit none
+  integer :: i, pos, neg, eq
+  real(real64) :: z, knot, d, maxd
+  pos=0; neg=0; eq=0; maxd=0.0_real64
+  do i=1,100000
+    z = -(80.0_real64 + 420.0_real64*real(i,real64)/100001.0_real64)
+    knot = z * 20 / 20.0_real64
+    d = knot-z
+    if (d > 0.0_real64) then
+      pos=pos+1
+    else if (d < 0.0_real64) then
+      neg=neg+1
+    else
+      eq=eq+1
+    end if
+    maxd=max(maxd,abs(d))
+  end do
+  write(*,'(3(I0,1X),ES24.16E3)') pos,neg,eq,maxd
+end program p
+'''
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        f = td / "bottom_knot.f90"
+        exe = td / "probe"
+        f.write_text(src)
+        subprocess.check_call(["gfortran", optflag, str(f), "-o", str(exe)])
+        fields = subprocess.check_output([str(exe)], text=True).split()
+    return int(fields[0]), int(fields[1]), int(fields[2]), float(fields[3])
+
+
 def main():
     rng = random.Random(SEED)
     max_level_roundtrip = 0.0
     max_storage_roundtrip = 0.0
+    max_bottom_knot_abs_offset = 0.0
+    max_bottom_storage = 0.0
     total_probes = 0
     single_secondary_cases = 0
     mixed_open_tube_cases = 0
+    bottom_knot_above = 0
+    bottom_knot_below = 0
+    bottom_knot_exact = 0
+    exact_zbot_initialization_rejected = 0
 
     for case_id in range(CASES):
         data = make_case(rng, case_id)
@@ -99,10 +140,31 @@ def main():
         assert len(levels) == 22 and len(storage) == 22
         assert levels[0] == 100.0
         assert levels[1] == 0.0
-        assert levels[-1] == zbot[nrpri]
-        assert storage[-1] == 0.0
+        bottom_offset = levels[-1] - zbot[nrpri]
+        max_bottom_knot_abs_offset = max(max_bottom_knot_abs_offset, abs(bottom_offset))
+        assert abs(bottom_offset) <= 2.0 * math.ulp(zbot[nrpri])
+        if bottom_offset > 0.0:
+            bottom_knot_above += 1
+        elif bottom_offset < 0.0:
+            bottom_knot_below += 1
+        else:
+            bottom_knot_exact += 1
+        assert storage[-1] >= 0.0 and math.isfinite(storage[-1])
+        max_bottom_storage = max(max_bottom_storage, storage[-1])
         assert all(levels[i] > levels[i + 1] for i in range(21))
         assert all(storage[i] > storage[i + 1] for i in range(21))
+
+        # Frozen SWSTLEV uses STTAB(22,1), while the reader admits WLS down to
+        # zbotdr(1+nrpri). If STTAB(22,1) rounded upward by one ULP, an input
+        # exactly at zbotdr is reader-admitted but rejected by SWSTLEV.
+        if zbot[nrpri] < levels[-1]:
+            try:
+                swstlev(levels, storage, zbot[nrpri])
+                raise AssertionError("expected exact-zbot endpoint rejection")
+            except ValueError:
+                exact_zbot_initialization_rejected += 1
+        else:
+            swstlev(levels, storage, zbot[nrpri])
 
         if len(zbot) - nrpri == 1:
             single_secondary_cases += 1
@@ -125,7 +187,7 @@ def main():
         except ValueError:
             pass
         try:
-            wlevst(levels, storage, storage[-1] - 1e-12)
+            wlevst(levels, storage, storage[-1] - max(1e-12, math.ulp(storage[-1])))
             raise AssertionError("below-storage domain accepted")
         except ValueError:
             pass
@@ -150,8 +212,8 @@ def main():
             assert err_s <= 2e-11 * max(1.0, abs(target_s))
             total_probes += 1
 
-    # Explicitly prove that replacing the frozen 22-knot interpolation by the
-    # analytic trapezoid formula between knots changes reference physics.
+    # Explicitly prove that replacing frozen interpolation by the analytic
+    # trapezoid formula between knots changes reference physics.
     data = (0, [-200.0], [2], [100.0], [2.0], [1000.0])
     levels, storage = build_sttab(*data)
     probe_level = -95.0
@@ -165,6 +227,13 @@ def main():
     no_tube = build_sttab(0, [-200.0], [2], [50.0], [2.0], [1000.0])
     assert open_only == no_tube
 
+    # Reproduce the exact source expression with GNU Fortran under O0/O2.
+    f_o0 = fortran_bottom_knot_characterization("-O0")
+    f_o2 = fortran_bottom_knot_characterization("-O2")
+    assert f_o0 == f_o2
+    assert f_o0[0] > 0 and f_o0[1] > 0 and f_o0[2] > 0
+    assert f_o0[3] > 0.0
+
     print(f"FPM08D1_GEOMETRY_CASES={CASES}")
     print(f"FPM08D1_ROUNDTRIP_PROBES={total_probes}")
     print(f"FPM08D1_SINGLE_SECONDARY_CASES={single_secondary_cases}")
@@ -172,6 +241,16 @@ def main():
     print(f"FPM08D1_MAX_LEVEL_ROUNDTRIP_ABS={max_level_roundtrip:.17g}")
     print(f"FPM08D1_MAX_STORAGE_ROUNDTRIP_ABS={max_storage_roundtrip:.17g}")
     print(f"FPM08D1_ANALYTIC_VS_REFERENCE_DELTA={analytic_delta:.17g}")
+    print(f"FPM08D1_BOTTOM_KNOT_ABOVE_ZBOT={bottom_knot_above}")
+    print(f"FPM08D1_BOTTOM_KNOT_BELOW_ZBOT={bottom_knot_below}")
+    print(f"FPM08D1_BOTTOM_KNOT_EXACT_ZBOT={bottom_knot_exact}")
+    print(f"FPM08D1_EXACT_ZBOT_INITIALIZATION_REJECTED={exact_zbot_initialization_rejected}")
+    print(f"FPM08D1_MAX_BOTTOM_KNOT_ABS_OFFSET={max_bottom_knot_abs_offset:.17g}")
+    print(f"FPM08D1_MAX_BOTTOM_STORAGE={max_bottom_storage:.17g}")
+    print(f"FPM08D1_FORTRAN_O0_BOTTOM_KNOT_COUNTS={f_o0[0]},{f_o0[1]},{f_o0[2]}")
+    print(f"FPM08D1_FORTRAN_O2_BOTTOM_KNOT_COUNTS={f_o2[0]},{f_o2[1]},{f_o2[2]}")
+    print(f"FPM08D1_FORTRAN_MAX_BOTTOM_KNOT_ABS_OFFSET={f_o0[3]:.17g}")
+    print("FPM08D1_BOTTOM_KNOT_ROUNDING_SEAM=CHARACTERIZED")
     print("FPM08D1_ENDPOINT_DOMAIN_CHECKS=PASS")
     print("FPM08D1_STRICT_MONOTONICITY=PASS")
     print("FPM08D1_TUBE_EXCLUSION=PASS")
