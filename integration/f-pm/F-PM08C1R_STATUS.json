@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C1R",
+  "title": "Tabulated Drainage Legacy-Degenerate Input Remediation",
+  "branch": "work/f-pm08c1r-tabulated-drainage-remediation",
+  "status": "IN_PROGRESS_REMEDIATION",
+  "base_candidate_closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
+  "triggering_qualification": {
+    "work_unit": "F-VQ39",
+    "fail_closed_head": "55e7f5180fdcfcbdb0b3923b841353f5fea46a68",
+    "decision": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
+    "decisive_run": 34458080389,
+    "decisive_job": 102809086791
+  },
+  "scope": {
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "change": "explicitly reject normalized one-point groundwater-depth table at depth zero",
+    "single_point_positive_depth": "retain constant response semantics",
+    "legacy_zero_fill_artifact_reproduced_in_kernel": false,
+    "persistent_process_state": false,
+    "io_changes": false,
+    "solver_changes": false,
+    "runtime_changes": false
+  },
+  "persisted": true,
+  "implemented": false,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_requalified": false
+}
