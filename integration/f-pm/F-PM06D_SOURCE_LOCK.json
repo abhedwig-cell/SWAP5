@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.surface_evaporation_hydraulic_materialization_source_lock.v1",
+  "work_unit": "F-PM06D",
+  "branch": "work/f-pm06d-surface-evaporation-hydraulic-materialization-readiness",
+  "canonical_authority": {
+    "branch": "integration/f-ci-canonical",
+    "head": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "head_message": "close(F-CI36): record canonical active DIVDRA runtime admission"
+  },
+  "canonical_blobs": {
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/solver/mod_b110_default_mvg_provider.f90": "97d67eb373073b183be6d1bf5b756ecb5125dde2",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "surface_evaporation_authority": {
+    "readiness": "F-PM06B@64fbe2b93c52bfc1865e3c381884e692dcc04764",
+    "structural_owner": "F-PM06C@1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+    "structural_candidate_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "structural_candidate_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "independent_qualification": "F-VQ52@003209963ead7f14e375fca7f7d5d4b2a1996ae8",
+    "independent_decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_STRUCTURAL_CANDIDATE_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE"
+  },
+  "frozen_b1_10": {
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_source_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "boundtop_f90_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04"
+  },
+  "legacy_equations": {
+    "atmospheric_head_cm": -275000.0,
+    "surface_conductivity": "ksurf = katm*rfcp(1) + hconode_vsmall*(1-rfcp(1)); if swmacro==1 multiply by FrArMtrx(1)",
+    "face_conductivity": "k1Atm = hcomean(swkmean,ksurf,k(1),dz(1),dz(1),0,hatm,h(1))",
+    "evaporation_capacity": "Emax = -k1Atm*((hatm-h(1))/disnod(1)+1)",
+    "ponded_classification": "pondm1 > 1e-10 cm"
+  },
+  "readiness_only": true,
+  "production_changes_allowed": false
+}
