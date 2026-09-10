@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08",
+  "title": "Drainage Process Boundary & Migration Readiness",
+  "branch": "work/f-pm08-drainage-migration-readiness",
+  "reservation_head_before_activation": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "reservation_was_content_free": true,
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "exact_branch_base": "df435824de175e3f868b680aab2cd0a395aa19ff"
+  },
+  "legacy_source_authority": {
+    "name": "SWAP 4.3.1 B0 expanded-source manifest / B1.10 drainage implementation",
+    "canonical_nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "files": {
+      "SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+      "SWAP/MOD_drainage.f90": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+      "SWAP/divdra.f90": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
+    },
+    "local_equation_level_copy_hashes_match_manifest": true
+  },
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "state": "IN_PROGRESS_SOURCE_BOUND_DRAINAGE_DECOMPOSITION"
+}
