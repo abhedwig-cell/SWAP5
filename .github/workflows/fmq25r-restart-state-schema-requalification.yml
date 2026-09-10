@@ -1,0 +1,19 @@
+name: F-MQ25R restart state-schema requalification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq25r-restart-state-schema-remediation
+  workflow_dispatch:
+
+jobs:
+  independent-requalification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler provenance
+        run: gfortran --version
+      - name: Run independent F-MQ25R gate
+        run: bash tests/fmq/run_fmq25r_restart_state_schema_requalification.sh
