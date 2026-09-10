@@ -1,0 +1,20 @@
+name: F-PM08C1 tabulated drainage response
+
+on:
+  push:
+    branches:
+      - work/f-pm08c1-tabulated-drainage-response
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C1 source-bound tabulated response gate
+        run: bash tests/fpm/run_fpm08c1_tabulated_drainage_response_gate.sh
