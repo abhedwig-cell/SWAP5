@@ -200,15 +200,16 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI32 remediated DIVDRA canonical source authority gate
+      - name: Current F-CI33 restricted DIVDRA runtime canonical source authority gate
         env:
-          FCI32_MODE: canonical
-        run: bash tests/fci/run_fci32_divdra_canonical_admission.sh
+          FCI33_MODE: canonical
+        run: bash tests/fci/run_fci33_divdra_runtime_canonical_admission.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = f18948aef9a8755903951475078f218024ad3c42
+          test "$(git rev-parse HEAD:src)" = 7576837368e4244c3c2a1bbf9867df8d4e58811a
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI32_CANONICAL_REMEDIATED_DIVDRA_SOURCE_ADMISSION=PASS'
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_divdra_runtime_binding.f90)" = e4737fb6f00a11ed16e34bee44b3442ac84b31aa
+          echo 'FCI33_CANONICAL_RESTRICTED_DIVDRA_RUNTIME_SOURCE_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
