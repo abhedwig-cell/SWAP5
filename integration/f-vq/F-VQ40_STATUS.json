@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-VQ",
   "work_unit": "F-VQ40",
   "title": "Independent Requalification of Remediated DRAMET=1 Tabulated Drainage Response",
   "branch": "qualification/f-vq40-fpm08c1r-tabulated-drainage",
-  "status": "IN_PROGRESS_INDEPENDENT_SOURCE_BOUND_REQUALIFICATION",
+  "status": "QUALIFIED_CLOSED",
+  "decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE",
   "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
   "remediated_candidate_closeout": "d87e21c9603063add7a7440a0aebe6fbac326d03",
   "candidate_production_file": "src/process/mod_drainage_tabulated_response.f90",
@@ -20,8 +21,31 @@
     "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
     "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
   },
-  "production_source_changes": false,
-  "persisted": true,
-  "tested": false,
-  "qualified": false
+  "qualification": {
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "scientific_equivalence_valid_normalized_domain": true,
+    "explicit_fail_closed_legacy_degenerate": true,
+    "runtime_qualified": false,
+    "canonical_admission_qualified": false,
+    "production_source_changes_on_qualification_branch": false
+  },
+  "evidence": {
+    "tested_qualification_head": "52094abfc64152bae5f470df94dd838afcab6274",
+    "workflow_run": 34459112281,
+    "workflow_job": 102812421759,
+    "summary_sha256": "739c1119e1cd74f214d221101c0616d39302ef344c558ea6c77726ce8c3f7679",
+    "valid_normalized_probes": 5531,
+    "derivative_checks": 3714,
+    "legacy_degenerate_rejection_checks": 20,
+    "evidence_file": "integration/f-vq/F-VQ40_QUALIFICATION_EVIDENCE.json"
+  },
+  "holds": [
+    "No runtime composition or canonical admission is qualified by F-VQ40.",
+    "The rejected one-point zero-depth representation remains an explicit error path, not a zero-flux physical branch.",
+    "No solver Jacobian assembly is qualified here.",
+    "No DRAMET=2, empirical interflow, multi-level exchange or surface-water control claim is implied."
+  ],
+  "next": "Proceed with remaining response-family child F-PM08C3 empirical interflow singular-tangent policy before multi-level aggregation F-PM08C4."
 }
