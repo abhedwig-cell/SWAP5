@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "object": "PRODUCTION_RESTITUTION_SPEC",
+  "status": "PERSISTED_BEFORE_RESTITUTION",
+  "reason": "The forcing-view candidate is scientifically equivalent within frozen F-MR20 V1 scope but paired timing shows no attributable runtime benefit; its bounded memory benefit scales with workers rather than logical columns and does not justify additional alias-lifetime complexity in the production default.",
+  "candidate_production_commit": "8f6902c4eb2aa21694e83876579725914043e3dc",
+  "scientific_decision": "QUALIFIED_FORCING_ONLY_TRIAL_SCOPED_DIRECT_IMMUTABLE_VIEWS_WITHIN_FROZEN_FMR20_V1_SCOPE",
+  "timing_decision": "TIMING_DOES_NOT_SUPPORT_RELEASING_DIRECT_FORCING_VIEWS_AS_A_PERFORMANCE_OPTIMIZATION",
+  "restore_authority": {
+    "work_unit": "F-PE09",
+    "commit": "485003c1be6e55521297b7b6bdc0195a15ca0f4f",
+    "decision": "QUALIFIED_EXACT_SHAPE_WORKER_PARAMETER_FORCING_CACHE_REUSE_WITHIN_FROZEN_FMR20_V1_SCOPE"
+  },
+  "candidate_preimage_locks": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "605593edf96a510a291695356f47390caf17d01c",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "e2993e171c9203f4c66e35cab2889130591d3b05",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "d1881ac6dd18363c731c4f57a078433883b2bb63"
+  },
+  "required_restored_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "64c3d9581c71fc7bf5e5f3764995d41280312a2e",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "be4005a97e35c498ffc40297409a75efe65ff5df",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "393e9bfbc4c078d259a5ec70aca78f50e54e8b35"
+  },
+  "post_restitution_requirements": [
+    "git diff F-PE09..HEAD -- src is empty",
+    "F-PE09 scientific qualification runner remains green under O0/O2",
+    "full F-MR20 V1 2/4-worker scientific matrix remains green",
+    "all F-PE10 protocol, candidate, scientific, timing and memory evidence remains in history/tree"
+  ],
+  "release_disposition": "DO_NOT_RELEASE_DIRECT_FORCING_VIEWS_AS_PRODUCTION_DEFAULT",
+  "research_value_retained": true
+}
