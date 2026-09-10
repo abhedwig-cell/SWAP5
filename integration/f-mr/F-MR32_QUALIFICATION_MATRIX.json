@@ -1,0 +1,64 @@
+{
+  "schema": "swap5.parallel_committed_restart_composition_matrix.v1",
+  "work_unit": "F-MR32",
+  "source_authority": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "fixture_authority": {
+    "parallel_attack_blob": "26cc6e0ace986dc40db7635de7192958a1c0b868",
+    "publication_order_attack_blob": "f2584b0236e85d4f6e8b687cee97981eaaa909c9",
+    "restart_negative_attack": "tests/fmq/test_fmq27_restart_contract_requalification.f90",
+    "restart_process_fixture": "tests/fmr/test_fmr19_process_restart.f90"
+  },
+  "composition_cases": [
+    {"n":1,"batch":1,"order":0},
+    {"n":2,"batch":2,"order":1},
+    {"n":7,"batch":3,"order":2},
+    {"n":8,"batch":5,"order":3},
+    {"n":17,"batch":9,"order":0},
+    {"n":31,"batch":16,"order":1},
+    {"n":32,"batch":17,"order":2}
+  ],
+  "for_each_composition_case": {
+    "restart_origins": ["serialized_first_interval", "parallel_first_interval"],
+    "continuation_workers": [2,4],
+    "restart_record_order": "reverse",
+    "runtime_column_order": "case_order",
+    "required_identity": [
+      "second_interval result values by column id",
+      "second_interval committed state",
+      "lineage revision and committed time",
+      "aggregate unrounded mass residual",
+      "authoritative aggregate mass ledger",
+      "canonical returned result order",
+      "shared immutable parameter registry"
+    ]
+  },
+  "preservation_replays": [
+    "full F-CI28 current-canonical restart admission gate",
+    "full F-CI30 restricted parallel V1 canonical admission gate"
+  ],
+  "negative_restart_gates": [
+    "malformed concrete physical state rejected atomically",
+    "late-record provenance failure rejected atomically",
+    "wrong registered state family rejected",
+    "duplicate and unknown column identities rejected",
+    "wrong template layout and parameter identity rejected",
+    "non-fresh target rejected"
+  ],
+  "parallel_gates": [
+    "2-versus-4 worker scientific identity",
+    "input-order scientific identity by column id",
+    "canonical publication order",
+    "A-B-A deterministic replay",
+    "problem-column isolation",
+    "unsupported profile fail-closed before physical solve",
+    "true multiworker overlap",
+    "no silent serialization fallback"
+  ],
+  "mass": {
+    "column_abs_residual_max_cm": 1e-12,
+    "aggregate_identity_required": true,
+    "mass_conservation_is_hard_gate": true
+  },
+  "optimization_levels": ["O0","O2"],
+  "hard_stop": "FIRST_COMPOSITION_OR_PRESERVATION_CONTRACT_VIOLATION_CLOSES_FMR32_NOT_READY; DO_NOT MODIFY PRODUCTION SOURCE"
+}
