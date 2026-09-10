@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER",
+  "contract": "F-ROSS01_GATE_E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER_PRECOMMIT.json",
+  "status": "QUALIFIED_RESTRICTED_TRANSACTION_SEAM",
+  "production_implementation": false,
+  "workflow": {
+    "run": 34442560108,
+    "head": "d20d0fa456fce2c6905556a5740394c12423359f",
+    "job": 102760466695,
+    "conclusion": "success",
+    "artifact_id": 10138457049,
+    "artifact_digest": "sha256:6243d76f563ef377995b169bc49a243dd0d8d0c4513a6ee09c2c066fc3aa19af"
+  },
+  "qualified_scope": {
+    "time": "generic [t0,t1], calendar-free",
+    "persistent_surface_physical_state_scalar_count": 1,
+    "persistent_surface_physical_state": "surface_storage_cm",
+    "soil_face_contract": "SoilFaceResult(q_top_rate_cm_per_day), positive downward",
+    "trial_scratch_owner": "worker",
+    "synthetic_soil_receiver_is_test_harness_only": true,
+    "asymptotic_ledger_cost": "O(1)",
+    "mass_repair_or_clipping_used": false,
+    "post_event_stale_qtop_continuation_allowed": false
+  },
+  "mass_identities": {
+    "surface": "S1-S0 = Qsup-Qtop-R",
+    "composed_test_system": "(S1-S0)+(Soil1-Soil0)+R = Qsup",
+    "synthetic_soil_receiver": "Soil1-Soil0 = Qtop",
+    "tolerance": "64*binary64_epsilon*max(1,sum(abs(relevant terms)))",
+    "max_observed_surface_balance_residual_cm": 0.0,
+    "max_observed_system_balance_residual_cm": 0.0
+  },
+  "scenario_results": {
+    "ordinary_accept": {
+      "pass": true,
+      "t0_day": 2.375,
+      "dt_day": 0.5,
+      "t1_day": 2.875,
+      "S0_cm": 0.25,
+      "S1_cm": 0.375,
+      "Qsup_cm": 0.25,
+      "Qtop_cm": 0.125,
+      "runoff_cm": 0.0
+    },
+    "exact_fill": {
+      "pass": true,
+      "S0_cm": 0.5,
+      "S1_cm": 1.0,
+      "runoff_cm": 0.0
+    },
+    "overflow_conservative_transfer": {
+      "pass": true,
+      "raw_surface_cm": 1.125,
+      "S1_cm": 1.0,
+      "runoff_cm": 0.125,
+      "interpretation": "The storage bound is reached by explicit mass transfer to runoff, not by hidden clipping."
+    },
+    "underflow_reject": {
+      "pass": true,
+      "raw_surface_cm": -0.25,
+      "accepted": false,
+      "reason": "SURFACE_DEPLETION_EVENT_RETRY_REQUIRED",
+      "event_dt_day": 0.5,
+      "committed_bitwise_unchanged": true,
+      "post_event_stale_qtop_continuation_allowed": false
+    },
+    "underflow_event_retry": {
+      "pass": true,
+      "accepted": true,
+      "dt_day": 0.5,
+      "S1_cm": 0.0,
+      "Qsup_cm": 0.125,
+      "Qtop_cm": 0.375
+    },
+    "injected_solver_reject": {
+      "pass": true,
+      "accepted": false,
+      "local_trial_mass_valid": true,
+      "committed_bitwise_unchanged": true
+    },
+    "ordinary_partition_invariance": {
+      "pass": true,
+      "single_dt_day": 0.5,
+      "split_dt_days": [0.25, 0.25],
+      "final_committed_state_bitwise_identical": true
+    },
+    "overflow_partition_invariance": {
+      "pass": true,
+      "single_dt_day": 0.5,
+      "split_dt_days": [0.25, 0.25],
+      "final_committed_state_bitwise_identical": true,
+      "final_cumulative_runoff_cm": 0.125
+    }
+  },
+  "transaction_claim": "For the frozen restricted surface-water seam, accepted trials publish surface state and diagnostic ledgers atomically after exact balance checks; depletion and injected rejection leave committed time, physical state and cumulative ledgers bitwise unchanged. Surface overflow is an explicit conservative runoff transfer. Continuation beyond a depletion event with stale qtop is forbidden.",
+  "architecture_checks": {
+    "2_kernel_io_separation": "qualified seam is calculation-only and I/O-free",
+    "3_explicit_data_separation": "state, forcing, soil-face result, trial scratch and result ledger are separate",
+    "4_compact_persistent_state": "one surface physical scalar",
+    "5_scratch_per_worker": "all trial intermediates are worker-local",
+    "7_transactional_timesteps": "reject rollback is bitwise exact in both frozen rejection routes",
+    "9_generic_time": "non-midnight t0=2.375 d passes",
+    "13_mass_conservation_absolute": "surface and composed test-system balances close exactly in all accepted dyadic cases",
+    "20_alternative_soil_water_solvers": "only the generic soil-face flux result is consumed",
+    "22_no_headcalc_internals": "no solver internal arrays are exposed",
+    "23_physics_solver_policy_separated": "storage capacity and fluxes are physical inputs; retry/commit is transaction policy",
+    "24_predictable_runtime": "O(1) ledger and event calculation",
+    "26_diagnostics_runtime": "accept/reject reason, event dt, transfers and residuals are explicit",
+    "27_optional_functionality_scales": "no optional top-boundary modules are allocated",
+    "29_no_silent_dependencies": "no calendar, file, midnight or coupling assumption"
+  },
+  "hard_nonclaims": [
+    "No real Richards state update is implemented or qualified in E3F.",
+    "No physical decomposition of precipitation, interception, snow, runon, irrigation or evaporation is qualified.",
+    "No post-event top-boundary mode re-solve is implemented.",
+    "No response tangent across a surface-storage or endpoint switch is qualified.",
+    "No full top-boundary composition, production runtime, MultiSWAP or groundwater admission follows from E3F.",
+    "The synthetic soil receiver is qualification scaffolding only and is not production persistent state."
+  ],
+  "decision": "QUALIFIED_TRANSACTION_SAFE_EXACT_SURFACE_WATER_LEDGER_SEAM_READY_FOR_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION",
+  "next_gate": "E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION"
+}
