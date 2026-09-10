@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE10",
+  "object": "PROPOSED_WINDOW_SCOPED_IMMUTABLE_REGISTRY_VIEW_CONTRACT",
+  "status": "DESIGN_ONLY_NOT_YET_ADMITTED",
+  "scope": "forcing views only; parameter/geometry/hydraulic zero-copy remains deferred",
+  "lifetime": {
+    "owner": "runtime/caller-owned forcing registry",
+    "view_holder": "worker-local physical model/provider",
+    "valid_from": "successful prepare_interval binding for one active canonical interval",
+    "valid_through": "all full/half/retry transaction advances for that same canonical interval",
+    "invalid_after": "return from the enclosing canonical interval execution or explicit rebind/invalidation",
+    "persistent_column_state": false,
+    "restart_payload": false,
+    "mass_state": false
+  },
+  "immutability": {
+    "registry_payload_must_not_change_during_active_view": true,
+    "view_is_read_only": true,
+    "worker_may_not_write_through_view": true,
+    "other_workers_may_share_same_view_target": true,
+    "mutation_or_reallocation_allowed_only_outside_active_interval": true
+  },
+  "identity_and_generation": {
+    "raw_pointer_address_is_not_identity": true,
+    "parameter_set_id_is_not_a_forcing_generation_key": true,
+    "future_production_contract_should_expose_generation_or_snapshot_identity": true,
+    "stale_generation_must_fail_closed": true
+  },
+  "transaction_rules": {
+    "checkpoint_does_not_copy_forcing_view": true,
+    "rollback_does_not_mutate_forcing_target": true,
+    "retry_reuses_same_immutable_interval_forcing_snapshot": true,
+    "corrector_or_recomputation_with_changed_forcing_requires_explicit_rebind": true,
+    "no_rejected_trial_may_change_registry_storage": true
+  },
+  "parallel_rules": {
+    "shared_target_is_allowed_only_if_immutable": true,
+    "provider_objects_remain_worker_local": true,
+    "solver_scratch_remains_worker_local": true,
+    "no_pointer_to_committed_state": true,
+    "no_pointer_to_result_or_candidate_state": true
+  },
+  "required_implementation_preconditions": [
+    "the canonical forcing callback chain must explicitly support a retained view for the active interval lifetime",
+    "the outer runtime call must own or target-stabilize the forcing registry for the complete parallel region",
+    "all exit paths must leave the worker model unable to dereference an expired view",
+    "the F-MR20 V1 source/sink providers must remain read-only with respect to forcing arrays",
+    "negative tests must prove view invalidation/rebind behavior",
+    "full frozen scientific and mass qualification must pass before timing"
+  ],
+  "deferred_parameter_contract": {
+    "reason": "soil_water_parameter_set_t currently owns allocatable geometry and the MvG provider requires derived coefficient rows 25:42",
+    "preferred_future_shape": "shared immutable precomputed hydraulic parameter object plus explicit read-only geometry views, or an equivalent versioned immutable parameter registry contract",
+    "worker_local_derived_cache_remains_valid_fallback": true
+  },
+  "architecture_invariants": {
+    "04_compact_state": "aligned because view metadata is not column state",
+    "05_worker_scratch": "preserved",
+    "07_transactional_steps": "forcing target immutable across trial/retry",
+    "08_cheap_recompute": "changed forcing requires explicit rebind; same forcing may reuse view",
+    "13_mass_absolute": "unchanged",
+    "16_multiswap_primary": "shared immutable targets can reduce worker copy cost",
+    "23_physics_solver_policy_separation": "unchanged",
+    "27_optional_scales_with_use": "unchanged",
+    "29_no_silent_dependencies": "explicit lifetime/generation rules are mandatory",
+    "30_change_qualification": "production use forbidden until executable negative and scientific gates exist"
+  },
+  "decision": "CONTRACT_SHAPE_ACCEPTABLE_FOR_FUTURE_PROTOTYPE_BUT_NOT_PRODUCTION_ADMITTED"
+}
