@@ -1,0 +1,31 @@
+{
+  "schema": "swap5.runtime_composition_status.v1",
+  "work_unit": "F-MR34",
+  "phase": "CONTRACT_PERSISTED_BEFORE_PRODUCTION_CHANGE",
+  "decision": "IN_PROGRESS_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE",
+  "base_canonical_head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "state": {
+    "realized": true,
+    "contract_persisted": true,
+    "production_implemented": false,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false
+  },
+  "scope": {
+    "serialized_real_physics_only": true,
+    "explicit_hydraulic_view_only": true,
+    "external_scalar_transfer_only": true,
+    "active_runtime_callsite": true,
+    "parallel_active_callsite": false,
+    "fully_implicit_drainage": false,
+    "surface_water_control": false
+  },
+  "mass_governance": {
+    "scalar_transfer_authoritative": true,
+    "existing_source_sink_ledger_only": true,
+    "second_mass_booking_forbidden": true,
+    "mass_conservation_hard": true
+  },
+  "next_required_step": "implement the smallest production callsite on this persisted contract and test it before owner closeout"
+}
