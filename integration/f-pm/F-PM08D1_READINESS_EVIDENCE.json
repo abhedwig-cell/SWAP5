@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D1",
+  "title": "Surface-Water Storage Geometry & Compact State Readiness Evidence",
+  "branch": "work/f-pm08d1-surface-water-storage-compact-state-readiness",
+  "activation_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "parent_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+  "decisive_precloseout_head": "c06ef0708ebc760af03b87c450f30e6ef31213df",
+  "decisive_ci": {
+    "run_id": 34498693751,
+    "job_id": 102943649983,
+    "conclusion": "success"
+  },
+  "gate_result": "PASS",
+  "source_and_scope_checks": {
+    "readiness_only_file_delta": "PASS",
+    "no_production_source_delta": "PASS",
+    "no_reference_source_delta": "PASS",
+    "frozen_archive_identity": "PASS",
+    "frozen_surfacewater_identity": "PASS",
+    "frozen_mod_drainage_identity": "PASS",
+    "parent_decision_locked": "PASS",
+    "parent_readiness_qualified": "PASS",
+    "all_30_architecture_invariants_present": true,
+    "all_30_architecture_invariants_pass": true
+  },
+  "state_and_layout_findings": {
+    "authoritative_conserved_state": "SWST",
+    "WLS_is_independent_committed_state": false,
+    "WLSTAR_is_storage_state": false,
+    "WLSTAR_owner_child": "F-PM08D5",
+    "WLSBAK_is_physical_state": false,
+    "NUMADJ_is_physical_state": false,
+    "STTAB_is_shared_immutable_parameter_data": true,
+    "per_column_STTAB_copy_required": false,
+    "persistent_reals_per_active_simulated_column_for_storage_only": 1,
+    "inactive_option_storage_state_bytes": 0
+  },
+  "executable_oracle": {
+    "geometry_cases": 1200,
+    "roundtrip_probes": 19200,
+    "single_secondary_cases": 209,
+    "mixed_open_tube_cases": 621,
+    "max_level_roundtrip_abs_cm": 4.2632564145606011e-14,
+    "max_storage_roundtrip_abs_cm": 5.6843418860808015e-14,
+    "analytic_vs_frozen_piecewise_reference_delta_cm": 0.012499999999999289,
+    "endpoint_domain_checks": "PASS",
+    "strict_monotonicity": "PASS",
+    "tube_exclusion": "PASS",
+    "reference_piecewise_linear_semantics": "PASS",
+    "storage_geometry_oracle": "PASS"
+  },
+  "frozen_floating_point_seams": [
+    {
+      "id": "D1-RISK-01-BOTTOM-KNOT-ROUNDING-SEAM",
+      "description": "Frozen STTAB(22,1)=zbotdr*20/20 can differ from the nominal deepest-secondary zbotdr by floating-point rounding.",
+      "matrix_counts": {
+        "bottom_knot_above_zbot": 75,
+        "bottom_knot_below_zbot": 64,
+        "bottom_knot_exact_zbot": 1061,
+        "exact_zbot_initialization_rejected": 75
+      },
+      "max_bottom_knot_abs_offset_cm": 5.6843418860808015e-14,
+      "max_bottom_storage_cm": 2.4536244860624102e-14,
+      "independent_fortran_characterization": {
+        "probe_count": 100000,
+        "O0_counts_above_below_exact": [7287, 7283, 85430],
+        "O2_counts_above_below_exact": [7287, 7283, 85430],
+        "max_abs_offset_cm": 5.6843418860808015e-14
+      },
+      "status": "CHARACTERIZED",
+      "production_disposition_required": true,
+      "not_a_solver_tolerance": true
+    },
+    {
+      "id": "D1-RISK-02-INTERPOLATION-ENDPOINT-ROUNDING-SEAM",
+      "description": "Frozen endpoint interpolation arithmetic can return a knot storage value differing by a few ULP from the stored endpoint, including values outside the inverse WLEVST domain.",
+      "forward_knot_storage_mismatches": 18,
+      "forward_knot_inverse_domain_rejections": 10,
+      "max_forward_knot_storage_abs_difference_cm": 2.8421709430404007e-14,
+      "status": "CHARACTERIZED",
+      "production_disposition_required": true,
+      "not_a_solver_tolerance": true
+    }
+  ],
+  "qualification_boundary": {
+    "readiness_qualified": true,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false,
+    "stable_interior_storage_level_mapping_ready_for_candidate_work": true,
+    "exact_endpoint_semantics_ready_for_candidate_work_without_disposition": false
+  },
+  "decision": "QUALIFIED_SURFACE_WATER_STORAGE_GEOMETRY_AND_COMPACT_STATE_READINESS_WITH_EXPLICIT_FROZEN_ENDPOINT_SEAM_HOLDS"
+}
