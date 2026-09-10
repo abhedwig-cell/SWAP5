@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION",
+  "contract": "F-ROSS01_GATE_E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION_PRECOMMIT.json",
+  "status": "QUALIFIED_RESTRICTED_FACE_SCOPE",
+  "production_implementation": false,
+  "qualification_use": true,
+  "fresh_case_identity": "EXACT_R2R2_FRESH_V1_GENERATOR_AND_SEEDS",
+  "scope": {
+    "face_length_cm": 5.0,
+    "surface_head_cm": [0.0, 1.0],
+    "top_node_head_cm": [-10000.0, -1e-8],
+    "materials": ["B01", "B12", "O13", "O14"],
+    "cases_per_material": 80,
+    "total_cases": 320,
+    "exact_overlap_with_original_E3E": 0,
+    "resampled_or_deleted_cases": 0,
+    "former_R2R2_failures_retained": ["B01:fresh_near_0023", "O14:fresh_near_0003"]
+  },
+  "workflow": {
+    "run": 34440208150,
+    "head": "735fb09957cd54ee96c39e7a17b018f790511ab1",
+    "status": "completed",
+    "conclusion": "success",
+    "material_jobs_passed": 4,
+    "material_jobs_total": 4
+  },
+  "artifacts": {
+    "B01": {"id": 10137690779, "digest": "sha256:fb4204f7a1ac3c3b23b267ed7eb36df034ddc02136d18e0575909499f62f649d"},
+    "B12": {"id": 10137669842, "digest": "sha256:51249f85d33646adfd41beffd4d9847ae8be7d44e20e68e8085f3c796594885e"},
+    "O13": {"id": 10137657977, "digest": "sha256:9345febe3717eff81a67b0c988fd52c6c75f8815572bef5273f810d67ef7b2c3"},
+    "O14": {"id": 10137679318, "digest": "sha256:6bdcda84518dd507ef5f8b593921e37a9ca8c83f9688318add9051ced83ae50b"}
+  },
+  "per_material": {
+    "B01": {
+      "valid_probe_count": 80,
+      "reference_failure_count": 0,
+      "candidate_unresolved_count": 0,
+      "candidate_nonfinite_count": 0,
+      "snap_count": 1,
+      "max_hybrid_metric": 7.0641486137404715e-9,
+      "p99_hybrid_metric": 6.390757935087114e-9,
+      "max_abs_error_over_ksatfit": 7.064855103734076e-9,
+      "max_constitutive_K_evaluations": 522,
+      "max_root_residual_evaluations": 66,
+      "wrong_sign_count": 0,
+      "pass": true
+    },
+    "B12": {
+      "valid_probe_count": 80,
+      "reference_failure_count": 0,
+      "candidate_unresolved_count": 0,
+      "candidate_nonfinite_count": 0,
+      "snap_count": 0,
+      "max_hybrid_metric": 1.8683925477149653e-13,
+      "p99_hybrid_metric": 1.8664198293723982e-13,
+      "max_abs_error_over_ksatfit": 1.8685838087190593e-13,
+      "max_constitutive_K_evaluations": 522,
+      "max_root_residual_evaluations": 66,
+      "wrong_sign_count": 0,
+      "pass": true
+    },
+    "O13": {
+      "valid_probe_count": 80,
+      "reference_failure_count": 0,
+      "candidate_unresolved_count": 0,
+      "candidate_nonfinite_count": 0,
+      "snap_count": 0,
+      "max_hybrid_metric": 5.3894210744063947e-14,
+      "p99_hybrid_metric": 5.3894210744063947e-14,
+      "max_abs_error_over_ksatfit": 5.3899600165138355e-14,
+      "max_constitutive_K_evaluations": 522,
+      "max_root_residual_evaluations": 66,
+      "wrong_sign_count": 0,
+      "pass": true
+    },
+    "O14": {
+      "valid_probe_count": 80,
+      "reference_failure_count": 0,
+      "candidate_unresolved_count": 0,
+      "candidate_nonfinite_count": 0,
+      "snap_count": 0,
+      "max_hybrid_metric": 4.295431298735291e-8,
+      "p99_hybrid_metric": 1.7842235072448022e-8,
+      "max_abs_error_over_ksatfit": 4.2958611338249624e-8,
+      "max_constitutive_K_evaluations": 522,
+      "max_root_residual_evaluations": 66,
+      "wrong_sign_count": 0,
+      "pass": true
+    }
+  },
+  "global_metrics": {
+    "valid_probe_count": 320,
+    "reference_failure_count": 0,
+    "candidate_unresolved_count": 0,
+    "candidate_nonfinite_count": 0,
+    "wrong_sign_count": 0,
+    "physical_envelope_snap_count": 1,
+    "max_hybrid_metric": 4.295431298735291e-8,
+    "max_p99_hybrid_metric": 1.7842235072448022e-8,
+    "max_abs_error_over_ksatfit": 4.2958611338249624e-8,
+    "max_constitutive_K_evaluations": 522,
+    "max_root_residual_evaluations": 66,
+    "frozen_limits": {
+      "max_hybrid_metric": 0.01,
+      "p99_hybrid_metric": 0.002,
+      "max_abs_error_over_ksatfit": 0.0005,
+      "max_constitutive_K_evaluations": 530,
+      "max_root_residual_evaluations": 66
+    }
+  },
+  "former_failure_witnesses": {
+    "B01_fresh_near_0023": {
+      "h_surface_cm": 0.8418598139923603,
+      "h_top_node_cm": -1.7857563818019415e-8,
+      "reference_branch": "INTERIOR_ROOT",
+      "candidate_branch": "SURFACE_SATURATED_PHYSICAL_ENVELOPE_UPPER_SNAP",
+      "q_reference_cm_per_day": 36.48243334385413,
+      "q_candidate_cm_per_day": 36.48243334385423,
+      "reference_path_residual_cm": -3.219627737586961e-37,
+      "abs_error_over_ksatfit": 3.1857784478449596e-15,
+      "hybrid_metric": 2.7264483355488774e-15,
+      "certified_max_abs_error_over_ksatfit": 3.571512763603883e-9,
+      "certified_max_hybrid_metric": 3.05656693297986e-9,
+      "root_residual_evaluations": 2,
+      "constitutive_K_evaluations": 152,
+      "pass": true
+    },
+    "O14_fresh_near_0003": {
+      "h_surface_cm": 0.37579678846033,
+      "h_top_node_cm": -1.9219207863995577e-8,
+      "reference_branch": "INTERIOR_ROOT",
+      "candidate_branch": "SURFACE_SATURATED_ANALYTIC_SPLIT_BISECTION",
+      "q_reference_cm_per_day": 2.683580563843753,
+      "q_candidate_cm_per_day": 2.683580563843841,
+      "reference_path_residual_cm": -2.9021508428867034e-37,
+      "abs_error_over_ksatfit": 3.5228456412506006e-14,
+      "hybrid_metric": 3.276275257179496e-14,
+      "root_residual_evaluations": 66,
+      "constitutive_K_evaluations": 152,
+      "pass": true
+    }
+  },
+  "qualified_claim": "Within the frozen 5 cm surface-to-top-node face scope, all 320 original R2R2 fresh probes now pass against endpoint-aware high-accuracy reference oracles with unchanged accuracy and cost thresholds. The formerly masked B01 candidate defect is repaired by the separately qualified analytic-saturated-segment plus physical-envelope-certified upper-snap policy; the former O14 reference failure resolves as an ordinary interior split solve. No fresh probe was removed or resampled.",
+  "architecture_checks": {
+    "persistent_state_bytes_added": 0,
+    "scratch_owner": "worker",
+    "mass_conservation": "Face candidate produces one antisymmetric interface flux; no water repair, clipping or hidden storage is introduced.",
+    "bounded_cost": "All 320 candidate evaluations remain within the frozen 530 K / 66 residual caps.",
+    "reference_mode": "High-accuracy reference remains qualification-only and separate from the bounded candidate path.",
+    "physics_solver_policy_separation": "VGM/KSAT physics are unchanged; endpoint and certified-snap handling are numerical face policy."
+  },
+  "decision": "QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION",
+  "hard_nonclaims": [
+    "No full top-boundary composition qualification.",
+    "No rainfall, evaporation, ponding-storage, infiltration-capacity switching or runoff-ledger qualification.",
+    "No response tangent qualification across endpoint or snap switching.",
+    "No surface heads above 1 cm.",
+    "No production implementation, runtime, MultiSWAP or groundwater admission."
+  ],
+  "next_gate": "TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION_WITH_EXACT_SURFACE_WATER_LEDGER"
+}
