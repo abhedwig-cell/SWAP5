@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION",
+  "status": "PREEXECUTION_ADDENDUM_FROZEN_BEFORE_EXECUTABLE_RUN",
+  "event_seed_policy": {
+    "event_time_seed": "exact midpoint of the frozen material event bracket",
+    "event_head_seed": "exact committed starting soil heads",
+    "same_seed_policy_candidate_and_reference": true,
+    "multistart": false,
+    "post_failure_retuning_allowed": false
+  },
+  "dry_remainder_seed_policy": {
+    "heads": "accepted uncommitted event heads",
+    "surface_storage_cm": 0.0,
+    "multistart": false
+  },
+  "hard_guard": "Do not alter the event bracket, t_end, seed, nonlinear policy or acceptance thresholds after observing R3 results."
+}
