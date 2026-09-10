@@ -1,11 +1,12 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "workstream": "F-PM",
   "work_unit": "F-PM08D5",
   "title": "Automatic-Weir Event & Hydraulic-Control Readiness",
   "branch": "work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness",
-  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
-  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "SOURCE_BOUND_EVENT_AND_CONTROL_READINESS_QUALIFIED_WITH_AUTOMATIC_CAPACITY_POLICY_HELD_FAIL_CLOSED",
+  "decision": "QUALIFIED_AUTOMATIC_WEIR_EVENT_AND_HYDRAULIC_CONTROL_READINESS_WITH_CAPACITY_POLICY_FAIL_CLOSED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d",
@@ -21,18 +22,52 @@
     "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
     "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
   },
-  "readiness_findings": {
+  "qualified_readiness_findings": {
     "WLSTAR_is_conditional_control_memory": true,
     "target_selection_can_use_clean_three_scalar_hydraulic_summary": true,
-    "legacy_INTWL_calendar_trigger_must_be_externalized": true,
+    "legacy_INTWL_calendar_trigger_externalized_to_explicit_events": true,
     "explicit_initial_control_event_required": true,
-    "DROPR_has_0p001_activation_seam": true,
+    "between_events_WLSTAR_is_reused_exactly": true,
+    "trial_WLSTAR_must_rollback_on_rejected_trials": true,
+    "DROPR_0p001_activation_seam_is_explicit": true,
+    "phase_selection_source_order_equivalence_qualified": true,
+    "integer_day_trigger_mapping_characterized_for_translation": true,
     "SWQHR1_SWQHR2_capacity_head_asymmetry_confirmed": true,
     "SWQHR1_negative_WOVER_power_domain_risk_confirmed": true,
     "strict_capacity_equality_seam_confirmed": true,
-    "D4_overflow_fallback_hold_inherited": true,
+    "D4_overflow_fallback_state_hold_inherited": true,
     "capacity_policy_production_formula_selected": false,
+    "automatic_capacity_policy_qualified": false,
     "SWQHR2_production_admitted": false
+  },
+  "decisive_evidence": {
+    "tested_head": "74fab42428788461b9404e08a957dea471545f6a",
+    "run_id": 34527879585,
+    "job_id": 103041124369,
+    "conclusion": "success",
+    "phase_equivalence_cases": 20000,
+    "integer_day_trigger_mapping_cases": 31000,
+    "event_state_cases": 20000,
+    "no_event_WLSTAR_hold_cases": 7913,
+    "downward_drop_rate_limited_cases": 6139,
+    "downward_unlimited_at_or_below_DROPR_seam_cases": 2,
+    "upward_immediate_cases": 5946,
+    "DROPR_0p001_seam_jump_cm": 19.998999998999999,
+    "capacity_discrepancy_cases": 20000,
+    "negative_WOVER_cases": 13799,
+    "undefined_fractional_negative_WOVER_cases": 7946,
+    "even_power_positive_capacity_below_crest_cases": 2018,
+    "defined_current_head_capacity_cases": 6201,
+    "max_relative_current_vs_target_head_capacity_difference": 0.99999999997956868,
+    "all_30_architecture_invariants_pass": true
+  },
+  "prior_nondecisive_failure": {
+    "run_id": 34527771271,
+    "job_id": 103040770456,
+    "failed_marker": "FPM08D5_CALENDAR_EXTERNALIZED",
+    "cause": "gate wording assertion mismatch only",
+    "remediation_commit": "74fab42428788461b9404e08a957dea471545f6a",
+    "physics_or_oracle_changed": false
   },
   "source_risk_holds": [
     "D5-RISK-01-LEGACY-DAY-AND-CALENDAR-EVENT-ARITHMETIC",
@@ -51,6 +86,7 @@
     "contract": "integration/f-pm/F-PM08D5_READINESS_CONTRACT.json",
     "source_inventory": "integration/f-pm/F-PM08D5_AUTOMATIC_CONTROL_SOURCE_INVENTORY.json",
     "architecture_audit": "integration/f-pm/F-PM08D5_ARCHITECTURE_AUDIT.json",
+    "evidence": "integration/f-pm/F-PM08D5_READINESS_EVIDENCE.json",
     "oracle": "tests/fpm/test_fpm08d5_automatic_control.py",
     "gate": "tools/fpm/fpm08d5_automatic_control_readiness_gate.py",
     "workflow": ".github/workflows/fpm08d5-automatic-control-readiness.yml"
@@ -66,13 +102,25 @@
     "test_oracle_persisted": true,
     "gate_persisted": true,
     "workflow_persisted": true,
-    "tested": false,
-    "qualified": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified": true,
     "production_source_changed": false,
     "reference_source_changed": false,
     "automatic_capacity_policy_qualified": false,
+    "SWQHR2_production_qualified": false,
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "execute the fully persisted D5 readiness gate under CI; fail closed on any provenance, event, WLSTAR state, phase-selection, drop-rate, capacity-discrepancy or architecture inconsistency"
+  "downstream_handoff": {
+    "transactional_runtime_owner": "F-PM08D6",
+    "runtime_may_compose_target_selection_and_WLSTAR_state": true,
+    "runtime_must_externalize_event_schedule": true,
+    "runtime_must_rollback_trial_WLSTAR": true,
+    "runtime_must_not_infer_automatic_capacity_formula": true,
+    "runtime_must_preserve_D3_mass_contract": true,
+    "runtime_must_preserve_D4_authoritative_storage_and_overflow_holds": true,
+    "automatic_capacity_dependent_routes_remain_held": true
+  },
+  "next_required_step": "verify this exact closeout head with the same readiness gate and confirm the final branch delta remains free of src/ and reference/ changes; only then may F-PM08D6 consume the qualified D5 event/control subset"
 }
