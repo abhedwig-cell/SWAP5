@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A6_O14_POST_CAP_FIXED_HEAD_TRAJECTORY_AND_ASYMPTOTIC_TOPOLOGY_DIAGNOSTIC",
+  "status": "FAILED_AS_FROZEN_SIGN_HYPOTHESIS_FALSE_BUT_REFERENCE_TOPOLOGY_CHARACTERIZED",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34465516982,
+    "head": "af5344c1ffa4b11a382d2d0cf56e69020773818e",
+    "conclusion": "failure_expected_from_frozen_decision_rule",
+    "profile_jobs": 4,
+    "profile_job_pass_count": 0,
+    "all_profile_diagnostics_complete": true
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id":10147443465,"digest":"sha256:4e88a22b814bde0cd05337abd4980670943409134f03fe73e93941eb45cccfc4"},
+    "P1_DRIER_SUBSOIL": {"id":10147467941,"digest":"sha256:7fe2edff0f7503640f1d3e16d26627a76cc464bd4b2e2d1da2c4ecf86c15f8dd"},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id":10147401321,"digest":"sha256:55a3960897129197d3e8069ce25ccad7720d7d7932b525633b74770d39b0b7d4"},
+    "P3_STRONG_DRY_SEPARATION": {"id":10147466561,"digest":"sha256:7ff12776dadfa3c2a8fc45ca791db82f6295007039dbcf78edcf276531f2aeb9"}
+  },
+  "common_reference_steady_state": {
+    "heads_cm": [-0.19725877123808,-3.64171590246372,-8.52184708961730],
+    "q_cm_per_day": 3.08721523348340,
+    "valid_starts_per_profile": 5,
+    "reproducible_clusters_per_profile": 1,
+    "max_flux_continuity_residual_cm_per_day": 8.44e-15,
+    "surface_head_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "top_head_saturation_margin_cm": 0.19725877123808
+  },
+  "per_profile": {
+    "P0_A1_CONTROL": {
+      "cap_h0_cm": -0.14612442301092474,
+      "initial_top_storage_rate_cm_per_day": 0.00011473983690546419,
+      "trajectory_accepted_steps": 56,
+      "trajectory_horizon_day": 1.0,
+      "trajectory_max_h0_cm": -0.14612442301092474,
+      "trajectory_final_heads_cm": [-0.19725877123806987,-3.6417159024636754,-8.52184708961726],
+      "max_abs_balance_residual_cm": 4.915602647148631e-12,
+      "cumulative_runoff_cm": 26.864694706584096
+    },
+    "P1_DRIER_SUBSOIL": {
+      "cap_h0_cm": -0.23356049032180035,
+      "initial_top_storage_rate_cm_per_day": 0.0008964014243040275,
+      "trajectory_accepted_steps": 56,
+      "trajectory_horizon_day": 1.0,
+      "trajectory_max_h0_cm": -0.19725877123808291,
+      "trajectory_final_heads_cm": [-0.19725877123808727,-3.6417159024637042,-8.52184708961729],
+      "max_abs_balance_residual_cm": 2.793838077552735e-12,
+      "cumulative_runoff_cm": 26.864526784279665
+    },
+    "P2_DRIER_TOP_AND_SUBSOIL": {
+      "cap_h0_cm": -0.47697860016578836,
+      "initial_top_storage_rate_cm_per_day": 0.0026988328148989105,
+      "trajectory_accepted_steps": 56,
+      "trajectory_horizon_day": 1.0,
+      "trajectory_max_h0_cm": -0.1972587712380962,
+      "trajectory_final_heads_cm": [-0.1972587712380962,-3.6417159024637127,-8.521847089617305],
+      "max_abs_balance_residual_cm": 3.1610878845067525e-11,
+      "cumulative_runoff_cm": 26.864005830265345
+    },
+    "P3_STRONG_DRY_SEPARATION": {
+      "cap_h0_cm": -1.472189253257072,
+      "initial_top_storage_rate_cm_per_day": 0.00455816759254235,
+      "trajectory_accepted_steps": 56,
+      "trajectory_horizon_day": 1.0,
+      "trajectory_max_h0_cm": -0.19725877123812838,
+      "trajectory_final_heads_cm": [-0.19725877123812838,-3.641715902463852,-8.52184708961747],
+      "max_abs_balance_residual_cm": 1.6319445794721332e-12,
+      "cumulative_runoff_cm": 26.86107007421199
+    }
+  },
+  "frozen_failure_reason": {
+    "failed_precommit_assumption": "All four initial top tendencies must be nonpositive for the unsaturated-attractor decision.",
+    "observed": "All four initial q_top-q01 storage rates are small but positive.",
+    "why_not_a_physical_failure": "Every reference trajectory completed, stayed well below h0=0, closed mass, and converged to the same independently reproducible unsaturated steady state.",
+    "why_not_relabel_A6_pass": "The precommitted sign requirement is preserved exactly; A6 therefore remains FAIL as frozen rather than being changed after seeing results."
+  },
+  "hydrologic_interpretation": [
+    "O14 does not approach top-node saturation after the 1 cm surface cap under the frozen 12*KSAT forcing. Excess atmospheric supply is routed to runoff while the soil evolves under the fixed h_surface=1 cm boundary.",
+    "The top cell can initially receive a small positive net flux and still remain unsaturated because the coupled lower-profile evolution changes q01; all four profiles converge to the same negative-head fixed point.",
+    "The closest observed h0 to saturation is -0.146124 cm, many orders larger than numerical tolerances. This is hydrologically substantive rather than a machine-precision endpoint effect.",
+    "A5 failed because it imposed h0=0 as a required next event even though the post-cap dynamics possess an unsaturated attractor under this frozen boundary topology."
+  ],
+  "decision": "O14_POST_CAP_UNSATURATED_ATTRACTOR_STRONGLY_CHARACTERIZED_A6_FROZEN_SIGN_RULE_FAILED_READY_FOR_INDEPENDENT_ATTRACTOR_CONFIRMATION",
+  "next_gate": "E3H_A6_R1_O14_INDEPENDENT_POST_CAP_UNSATURATED_ATTRACTOR_CONFIRMATION",
+  "hard_guards": [
+    "Do not retroactively change A6 to PASS.",
+    "Do not force an h0=0 event for O14 under the frozen 1 cm cap topology unless independent evidence later contradicts the attractor characterization.",
+    "Keep runoff as an explicit conservative ledger transfer.",
+    "Use an independent time partition and independent steady-start set for confirmation rather than reusing A6 decision logic.",
+    "Do not infer the same event topology for B01, B12 or O13; their earlier h0=0 fixtures remain separate evidence."
+  ],
+  "hard_nonclaims": [
+    "No theorem of impossibility for all O14 forcings, surface caps or discretizations.",
+    "No Ross candidate performance qualification in A6.",
+    "No production runoff admission.",
+    "No response tangent, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ]
+}
