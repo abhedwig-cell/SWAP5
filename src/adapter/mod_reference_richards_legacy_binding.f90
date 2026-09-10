@@ -7,7 +7,9 @@ module mod_reference_richards_legacy_binding
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
-       reset_reference_workspace
+       reset_reference_workspace, prepare_reference_tridag_factorization_capture, &
+       release_reference_tridag_factorization_capture
+  use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
        initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_richards_temporal_indicator, only: evaluate_reference_richards_temporal_indicator
@@ -108,10 +110,10 @@ contains
     class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
     type(soil_water_solve_result_t), intent(out) :: result
 
-    logical :: ok
+    logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
     type(reference_richards_state_binding_t) :: state_binding
-    integer :: n
+    integer :: n, tangent_ierror
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
@@ -138,6 +140,12 @@ contains
        ! hydraulic intermediates in worker-owned scratch/state.
        call initialize_reference_state_binding(state_binding, request)
 
+       ! Only the qualified prescribed-qbot route needs reusable-factor capture.
+       ! Expanding the existing gamma scratch is temporary worker state; the
+       ! normal no-sensitivity path keeps the exact compact allocation.
+       sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
+       if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
+
        call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
@@ -163,6 +171,31 @@ contains
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
        end if
 
+       ! Native SWAP prescribed-qbot enters the implemented bottom residual as
+       ! F_N(...,qbot)=...-qbot. Therefore dF/dqbot=-e_N and implicit
+       ! differentiation gives J * dh/dqbot = +e_N. Reuse the final normal
+       ! TRIDAG factorization: one extra backsolve, no Jacobian rebuild and no
+       ! second nonlinear trajectory. Any retry or alternative-solver use is
+       ! fail-closed because the captured normal TRIDAG factorization is then
+       ! not a qualified accepted-path authority.
+       if (sensitivity_capture .and. .not. state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction .and. &
+           ws%legacy_worker%diagnostics%alternative_solver_calls == 0 .and. &
+           size(ws%richards%tridag_gamma) >= 2*n) then
+          ws%richards%band_rhs(1:n) = 0.0_real64
+          ws%richards%band_rhs(n) = 1.0_real64
+          ws%legacy_worker%diagnostics%interface_sensitivity_backsolves = &
+               ws%legacy_worker%diagnostics%interface_sensitivity_backsolves + 1
+          call reference_tridag_backsolve(n, ws%richards%dfdh_upper, ws%richards%band_rhs, &
+               ws%richards%tridag_gamma(1:n), ws%richards%tridag_gamma(n+1:2*n), &
+               ws%richards%delta_head, tangent_ierror)
+          if (tangent_ierror == 0) then
+             result%interface_sensitivity%available = .true.
+             result%interface_sensitivity%dh_bottom_dq_bottom = ws%richards%delta_head(n)
+             result%interface_sensitivity%method = 'same-tridag-factor'
+          end if
+       end if
+
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
        result%candidate_state%pressure_head = state_binding%h
@@ -177,6 +210,10 @@ contains
        result%diagnostics%backtracking_attempts = ws%legacy_worker%diagnostics%backtracking_attempts
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
+       result%diagnostics%interface_sensitivity_backsolves = &
+            ws%legacy_worker%diagnostics%interface_sensitivity_backsolves
+
+       if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 
        if (state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
           result%status = SW_SOLVE_RETRY_ADVISED
