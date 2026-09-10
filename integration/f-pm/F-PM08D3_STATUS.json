@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D3",
   "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract",
   "branch": "work/f-pm08d3-secondary-storage-availability-mass-readiness",
-  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
-  "phase": "CHECKPOINT_PERSISTED_BEFORE_TEST",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -14,7 +14,8 @@
   "parent_authorities": {
     "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
     "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
-    "fpm08d2_closeout": "a0b11f68884f7593f000af1c34aa42de8956ecfd"
+    "fpm08d2_closeout": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
+    "fpm08d2_decision": "QUALIFIED_RESTRICTED_EXTENDED_DRAINAGE_EXCHANGE_LAW_READINESS_WITH_EXPLICIT_SOURCE_SEAM_HOLDS"
   },
   "frozen_source": {
     "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
@@ -31,17 +32,53 @@
     "runtime_commit_rollback_implementation": false,
     "production_changes_allowed": false
   },
+  "source_risk_holds": [
+    "D3-RISK-01-PRELIMITER-WSCAP-VS-ACTUAL-SUPPLY-ENABLEMENT",
+    "D3-RISK-02-LEGACY-DRY-FLOOR-MASS-GAP",
+    "D3-RISK-03-HIDDEN-ACTUAL-SUPPLY-FLUX",
+    "D3-RISK-04-MIXED-SIGN-PROPORTIONAL-SCALING",
+    "D3-RISK-05-PRE-VS-POST-SOIL-BALANCE-ENVELOPE",
+    "D3-RISK-06-CAPACITY-VIOLATION-ON-NEGATIVE-FINAL-PROJECTION",
+    "D3-RISK-07-MASS-DOUBLE-BOOKING"
+  ],
+  "readiness_findings": {
+    "limiter_is_stateless": true,
+    "raw_WSCAP_is_not_actual_supply": true,
+    "resolved_supply_capacity_required": true,
+    "q_supply_and_q_discharge_are_first_class_physical_results": true,
+    "legacy_minus_0_1_cm_dry_gap_is_not_admitted_mass_tolerance": true,
+    "positive_near_zero_floor_requires_adjusted_actual_supply": true,
+    "negative_final_projection_requiring_supply_above_capacity_fails_closed": true,
+    "mixed_sign_limiter_active_initial_production_route_held": true,
+    "pre_solver_envelope_is_not_final_acceptance": true,
+    "runtime_books_accepted_mass_once": true
+  },
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D3_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D3_MASS_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D3_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d3_availability_mass.py",
+    "gate": "tools/fpm/fpm08d3_availability_mass_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d3-availability-mass-readiness.yml"
+  },
   "state": {
     "branch_created": true,
     "checkpoint_persisted": true,
-    "source_equations_reconstructed": false,
-    "mass_gap_characterized": false,
-    "limiter_algebra_verified": false,
-    "architecture_audited_all_30": false,
+    "source_equations_reconstructed": true,
+    "mass_gap_characterized": true,
+    "limiter_contract_defined": true,
+    "explicit_mass_contract_defined": true,
+    "architecture_audited_all_30": true,
+    "test_oracle_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
-    "reference_source_changed": false
+    "reference_source_changed": false,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
   },
-  "next_required_step": "persist exact frozen limiter and dry-storage balance semantics, identify all mass-attribution gaps, and prove a no-concession explicit mass contract before any production candidate"
+  "next_required_step": "execute the fully persisted D3 readiness gate under CI; fail closed on any provenance, limiter algebra, explicit mass closure, capacity or architecture inconsistency"
 }
