@@ -1,0 +1,85 @@
+name: F-ROSS01 Gate E3E-R2R3 Identical 320 Case Requalification
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3e_r2r3_identical_320_case_requalification.py'
+      - '.github/workflows/ross01-gate-e3e-r2r3-identical-320-case-requalification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, B12, O13, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Execute identical 80-case material rerun
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3e-r2r3-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3e_r2r3_identical_320_case_requalification.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3E_R2R3_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3E_R2R3_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen requalification semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3e-r2r3-{m}/F-ROSS01_GATE_E3E_R2R3_{m}_RESULT.json'
+          r=json.load(open(p))
+          mr=r['material_result']
+          assert r['gate']=='E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION'
+          assert r['fresh_case_identity']=='EXACT_R2R2_FRESH_V1_GENERATOR_AND_SEEDS'
+          assert r['production_implementation'] is False
+          assert r['inherited_steady_q_is_qualification_authority'] is False
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          assert mr['fresh_probe_count']==80
+          assert mr['fresh_overlap_count_with_original_e3e']==0
+          assert mr['valid_probe_count']==80
+          assert mr['reference_failure_count']==0
+          assert mr['candidate_unresolved_count']==0
+          assert mr['candidate_nonfinite_count']==0
+          assert len(mr['crosschecks'])==2
+          assert all(x['pass'] for x in mr['crosschecks'])
+          assert mr['wrong_sign_count']==0
+          assert mr['max_hybrid_metric']<=0.01
+          assert mr['p99_hybrid_metric']<=0.002
+          assert mr['max_abs_error_over_ksatfit']<=0.0005
+          assert mr['max_constitutive_K_evaluations']<=530
+          assert mr['max_root_residual_evaluations']<=66
+          assert mr['positive_surface_endpoint_case_count']==0
+          assert mr['endpoint_candidate_max_abs_error_over_ksat']<=1e-12
+          assert all(all(x['snap_tests'].values()) for x in mr['snap_rows'])
+          if m in ('B01','O14'):
+              assert mr['former_R2R2_failure_row'] is not None
+          if m=='B01':
+              f=mr['former_R2R2_failure_row']
+              assert f['probe_id']=='fresh_near_0023'
+              assert f['candidate_branch']=='SURFACE_SATURATED_PHYSICAL_ENVELOPE_UPPER_SNAP'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3e-r2r3-${{ matrix.material }}
+          path: ross01-gate-e3e-r2r3-${{ matrix.material }}/
