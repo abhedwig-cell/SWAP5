@@ -1,0 +1,63 @@
+{
+  "schema": "swap5.runtime_composition_plan.v1",
+  "work_unit": "F-MR34",
+  "title": "Restricted Serialized DIVDRA Active Runtime Callsite Composition",
+  "branch": "work/f-mr34-divdra-active-runtime-callsite",
+  "base_canonical_head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "goal": "Activate the already qualified restricted DIVDRA runtime binding in the serialized production runtime without reopening drainage science or adding implicit drainage semantics.",
+  "authorities": {
+    "process_source_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "runtime_binding_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "runtime_binding_owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "runtime_binding_independent_closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6",
+    "f_ci33_source_admission": "545e07c65338b9fe61b963468675c41f3e931816",
+    "current_canonical_authority": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "design": {
+    "runtime_scope": "restricted serialized real-physics composition only",
+    "callsite": "serialized runtime precommit forcing preparation",
+    "request_layout": "optional column-aligned compact request array with shared distribution-parameter and hydraulic-view registries",
+    "forcing_semantics": "copy only the selected column forcing object, bind DIVDRA into that ephemeral copy, then execute the existing transaction path",
+    "caller_forcing_mutated": false,
+    "persistent_state_added": false,
+    "scalar_transfer_authoritative": true,
+    "preflight_before_backend_execution": true,
+    "shared_forcing_handle_policy": "fail closed for an active DIVDRA request when its forcing handle is shared by another logical column",
+    "inactive_feature_cost": "no drainage request arrays and no forcing copy when DIVDRA composition is absent"
+  },
+  "production_candidate": {
+    "new_helper": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "modified_orchestrator": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90"
+  },
+  "required_proofs": [
+    "legacy serialized runtime path is unchanged when DIVDRA composition is absent",
+    "valid positive scalar transfer is distributed by the exact admitted F-MR33 binding before solver execution",
+    "zero transfer is admitted and publishes a zero row",
+    "negative or sub-threshold positive transfer fails closed before any solver or committed-state mutation",
+    "pre-existing drainage forcing is never silently overwritten",
+    "caller forcing registry remains unchanged",
+    "two distinct explicit hydraulic views produce their corresponding distinct node distributions",
+    "shared forcing handles cannot leak one column's drainage projection into another column",
+    "existing source/sink mass accounting consumes the prepared row exactly once",
+    "O0 and O2 runtime output is identical",
+    "all 30 SWAP architecture invariants have no adverse delta"
+  ],
+  "hard_holds": [
+    "no drainage exchange-law calculation",
+    "no committed-state hydraulic-view substitution",
+    "no claim of trial-state or fully implicit drainage",
+    "no HeadCalc-internal access",
+    "no source/sink Jacobian or response tangent",
+    "no negative drainage infiltration",
+    "no interflow or multi-level drainage",
+    "no surface-water-controlled drainage; F-PM08D remains reserved for that scope",
+    "no parallel active DIVDRA callsite qualification in this workunit",
+    "no new mass tolerance or configurable mass-conservation concession",
+    "no I/O, calendar, MODFLOW-cell or tile-fraction assumption"
+  ],
+  "qualification_path": {
+    "owner_structural_and_runtime_evidence": "F-MR34",
+    "independent_runtime_qualification_required": true,
+    "canonical_admission_in_this_workunit": false
+  }
+}
