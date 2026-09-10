@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.et_surface_evaporation_structural_owner_evidence.v1",
+  "work_unit": "F-PM06C",
+  "branch": "work/f-pm06c-restricted-surface-evaporation-structural-candidate",
+  "canonical_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "readiness_authority": {
+    "work_unit": "F-PM06B",
+    "closeout": "64fbe2b93c52bfc1865e3c381884e692dcc04764"
+  },
+  "candidate": {
+    "production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "production_path": "src/process/mod_restricted_surface_evaporation.f90",
+    "production_blob": "a213af4deec2fe854d79120899827852a57237d1",
+    "existing_src_files_changed": 0,
+    "new_src_files": 1,
+    "src_drift_after_candidate": false
+  },
+  "run_history": [
+    {
+      "run": 34529246256,
+      "job": 103045630205,
+      "conclusion": "failure",
+      "classification": "TEST_HARNESS_FORTRAN2008_NONCONSTANT_ERROR_STOP",
+      "candidate_defect": false,
+      "production_changed_after_failure": false,
+      "precompile_source_and_architecture_guards": "PASS"
+    },
+    {
+      "run": 34529414139,
+      "job": 103046183864,
+      "tested_head": "6f5c67dad7a70a99bf3d4acae8d9e2ca04a99fb9",
+      "conclusion": "success",
+      "authoritative_owner_run": true
+    }
+  ],
+  "owner_gate": {
+    "source_lock": "PASS",
+    "single_production_delta": "PASS",
+    "no_solver_internal_dependency": "PASS",
+    "no_solver_tolerance_classification": "PASS",
+    "no_mass_booking": "PASS",
+    "generic_time_rate_semantics": "PASS",
+    "architecture_invariants": "30_OF_30_PASS",
+    "restricted_surface_evaporation_oracle": "PASS",
+    "aba_stateless_replay": "PASS",
+    "fail_closed_invalid_input": "PASS",
+    "o0_o2_identity": "PASS",
+    "output_sha256": "7ed528842f469c10ec810c1c0af3c963c4f8cd5ce4408572fee36aef8888b7d0"
+  },
+  "qualified_structural_scope": {
+    "swredu": 0,
+    "swinter": 0,
+    "dry_rule": "reva=min(peva,max(0,Emax)); epd=0",
+    "ponded_rule": "reva=0; epd=epond",
+    "surface_is_ponded": "accepted hydraulic classification supplied by caller",
+    "evaporation_capacity": "accepted nonpersistent hydraulic input supplied by caller",
+    "negative_capacity": "clamped to zero",
+    "negative_or_nonfinite_atmospheric_demand": "fail closed",
+    "mass_authority": "accepted solver-returned external top flux only"
+  },
+  "nonclaims": [
+    "Emax runtime materialization",
+    "surface_is_ponded runtime materialization",
+    "full BoundTop migration",
+    "SWREDU 1 or 2",
+    "interception or wet-canopy evaporation",
+    "runoff, macropore or snow widening",
+    "canonical admission"
+  ],
+  "architecture_audit": {
+    "path": "integration/f-pm/F-PM06C_ARCHITECTURE_AUDIT.json",
+    "result": "30_OF_30_NO_ADVERSE_DELTA_WITHIN_RESTRICTED_STRUCTURAL_SCOPE",
+    "mass_conservation": "HARD_UNCHANGED"
+  }
+}
