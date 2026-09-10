@@ -1,0 +1,56 @@
+{
+  "schema": "swap5.fmr32_status.v1",
+  "work_unit": "F-MR32",
+  "title": "Parallel Committed-Boundary Restart Composition",
+  "branch": "work/f-mr32-current-canonical-parallel-committed-restart-composition",
+  "phase": "OWNER_CLOSED_READY_FOR_INDEPENDENT_FMQ",
+  "decision": "QUALIFIED_OWNER_COMPOSITION_PARALLEL_COMMITTED_BOUNDARY_RESTART_READY_FOR_INDEPENDENT_FMQ",
+  "canonical_source_authority": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "immutable_owner_candidate": {
+    "commit": "1e27f2758d9dbed11350aec5a089662921826d21",
+    "tree": "4410569d672f9dd3c57fa5468f8c0f6f1dea9e2c",
+    "production_source_delta": 0,
+    "reference_delta": 0
+  },
+  "authoritative_owner_evidence_run": {
+    "run": 34495850322,
+    "conclusion": "success",
+    "exact_head": "1e27f2758d9dbed11350aec5a089662921826d21"
+  },
+  "previous_owner_gate_run": {
+    "run": 34495422397,
+    "job": 102932520136,
+    "conclusion": "success",
+    "exact_head": "697f7e1669cc842d4c5d91b716f92a64cb1e455e"
+  },
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "owner_qualified": true,
+  "independently_qualified": false,
+  "canonical_admitted": false,
+  "production_change_required": false,
+  "production_source_modified_by_fmr32": false,
+  "qualified_scope": [
+    "committed-boundary MultiSWAP restart followed by restricted parallel real-physics continuation",
+    "serialized-origin committed restart to 2/4-worker continuation",
+    "parallel-origin committed restart to 2/4-worker continuation",
+    "whole-registry atomic restore before parallel execution",
+    "worker scratch rebuilt after restore",
+    "canonical publication order",
+    "per-column and aggregate hard mass preservation",
+    "irregular qualification batches 1,2,7,8,17,31,32 columns",
+    "O0/O2 identity within the frozen restricted profile"
+  ],
+  "nonclaims": [
+    "mid-transaction restart",
+    "trial-state persistence",
+    "worker/Newton/Jacobian/warm-start scratch persistence",
+    "new restart file format",
+    "cross-version migration",
+    "new parallel physics family",
+    "performance speedup or production-scale throughput",
+    "general SWAP5 release qualification"
+  ],
+  "required_next_step": "A genuinely independent F-MQ qualification must start from the current canonical source authority, pin this exact owner candidate and reconstruct the composition evidence independently. Do not branch qualification from the owner candidate."
+}
