@@ -1,0 +1,70 @@
+{
+  "schema": "swap5.runtime_composition_plan.v1",
+  "work_unit": "F-MR33",
+  "title": "Restricted DIVDRA Spatial Distribution Runtime Binding",
+  "branch": "work/f-mr33-divdra-runtime-binding",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "goal": "Bind the already-qualified single-level positive DIVDRA spatial distribution process to the current runtime forcing seam without reopening drainage science.",
+  "authorities": {
+    "canonical_source_admission": "F-CI32@49863406a6112baa9956f9396b34e7188934e0d4",
+    "scientific_qualification": "F-VQ47@9aa52a6e6e3b85119434fc97f056f4c9918447fd",
+    "process_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "process_blob": "1f538174b7451aaa7a3c50d6078b7c1fc3ad8f5a",
+    "hydraulic_view_path": "src/solver/mod_process_hydraulic_view.f90",
+    "hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "serialized_backend_path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "serialized_backend_blob": "9af5a494526810324dc00706b444e448e770cba9",
+    "source_sink_provider_path": "src/solver/mod_b110_source_sink_provider.f90",
+    "source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac"
+  },
+  "binding_contract": {
+    "inputs": [
+      "drainage_distribution_parameters_t",
+      "explicit process_hydraulic_view_t supplied by runtime/caller",
+      "externally computed nonnegative scalar soil-to-drain transfer"
+    ],
+    "output": "exactly one drainage level row compatible with fmr_b110_physical_forcing_t%drainage_flux_by_level",
+    "mass_authority": "input scalar transfer remains authoritative",
+    "state": "no persistent drainage state",
+    "scratch": "temporary process result and matrix are call/job local",
+    "mutation_rule": "materialize into temporary storage and publish only after DRAIN_DIST_OK; reject if target drainage forcing is already allocated",
+    "hydraulic_view_rule": "no committed-state lookup inside the binding; provenance of the explicit hydraulic view remains external",
+    "solver_rule": "no solver Jacobian access or mutation"
+  },
+  "admitted_scope": {
+    "single_level": true,
+    "positive_drainage_only": true,
+    "swdivd": 1,
+    "swdivdinf": 0,
+    "swnrsrf": 0,
+    "swdislay": 0,
+    "exchange_law_inside_binding": false,
+    "surface_water_control": false,
+    "multilevel_drainage": false,
+    "fully_implicit_drainage_derivative": false
+  },
+  "exit_gates": [
+    "exact authority blob locks",
+    "clean compile at -O0 and -O2",
+    "runtime materialization has shape 1 x active_nodes",
+    "materialized node row is bit-identical to direct call of the qualified process for the same explicit inputs",
+    "current source/sink provider consumes the materialized row unchanged as a positive sink",
+    "zero scalar path is admitted and materializes zero row",
+    "process failure status propagates without publishing target forcing",
+    "preallocated target drainage forcing is rejected without overwrite",
+    "different explicit hydraulic views produce the corresponding process outputs without committed-state capture",
+    "O0 and O2 test output identical",
+    "all 30 SWAP architecture invariants audited",
+    "no reference source delta and no production delta outside the new runtime binding"
+  ],
+  "non_goals": [
+    "requalify DIVDRA equations or Lev2Comp seam",
+    "compute a drainage exchange law",
+    "read committed state inside the binding",
+    "add trial-state response derivatives",
+    "modify the Richards solver or source/sink provider",
+    "canonical admission in this workunit"
+  ],
+  "owner_closeout_target": "READY_FOR_INDEPENDENT_DIVDRA_RUNTIME_BINDING_QUALIFICATION",
+  "next_after_owner_closeout": "independent runtime qualification, then separate canonical admission if qualified"
+}
