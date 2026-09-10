@@ -1,0 +1,25 @@
+name: F-MR35 restricted parallel root-uptake owner gate
+
+on:
+  push:
+    branches:
+      - work/f-mr35-restricted-parallel-root-uptake-profile
+    paths:
+      - 'src/runtime/mod_fmr_parallel_root_uptake_pool.f90'
+      - 'integration/f-mr/F-MR35_*.json'
+      - 'tests/fmr/run_fmr35_parallel_root_uptake_owner_gate.sh'
+      - '.github/workflows/fmr35-parallel-root-uptake-owner.yml'
+  workflow_dispatch:
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR35 real-physics root-active parallel owner gate
+        run: bash tests/fmr/run_fmr35_parallel_root_uptake_owner_gate.sh
