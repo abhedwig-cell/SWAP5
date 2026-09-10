@@ -87,9 +87,10 @@ require(derived["WLS"]["classification"] == "derived_from_SWST_when_SWSEC_2; for
 numhist = {x["legacy"]: x for x in inv["variable_classification"]["numerical_history"]}
 require(numhist["WLSBAK(4)"]["not_physical_state"] is True, "NUMERICAL_HISTORY_SEPARATED")
 
-require(inv["secondary_storage_balance"]["authoritative_modern_balance"] == "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange", "EXPLICIT_SURFACE_WATER_MASS_EQUATION")
-require("q_supply" in inv["secondary_storage_balance"]["critical_modernization"], "SUPPLY_FIRST_CLASS_MASS_RESULT")
-require("q_discharge" in inv["secondary_storage_balance"]["critical_modernization"], "DISCHARGE_FIRST_CLASS_MASS_RESULT")
+balance = inv["secondary_storage_balance"]
+require(balance["authoritative_modern_balance"] == "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange", "EXPLICIT_SURFACE_WATER_MASS_EQUATION")
+require("q_supply" in balance["signs"], "SUPPLY_FIRST_CLASS_MASS_RESULT")
+require("q_discharge" in balance["signs"], "DISCHARGE_FIRST_CLASS_MASS_RESULT")
 
 risk_ids = {x["id"] for x in inv["source_level_risks_requiring_child_disposition"]}
 expected_risks = {
