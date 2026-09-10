@@ -1,0 +1,36 @@
+name: F-CI36 DIVDRA Active Runtime Canonical Admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_fmr_divdra_serialized_composition.f90'
+      - 'src/runtime/mod_fmr_divdra_serialized_runtime.f90'
+      - 'tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh'
+      - 'integration/f-ci/F-CI36_*.json'
+      - '.github/workflows/fci36-divdra-active-runtime-canonical-admission.yml'
+      - '.github/workflows/fci-canonical.yml'
+  workflow_dispatch:
+
+jobs:
+  canonical-admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact F-CI36 head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI36 source-bound canonical admission gate
+        env:
+          FCI36_EVIDENCE_DIR: _fci36_evidence
+        run: bash tests/fci/run_fci36_fmr36_divdra_active_runtime_canonical_admission.sh
+      - name: Upload F-CI36 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-CI36-divdra-active-runtime-canonical-admission-evidence
+          path: _fci36_evidence
+          if-no-files-found: error
