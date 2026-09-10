@@ -1,0 +1,36 @@
+name: F-VQ49 independent F-MR33 DIVDRA runtime binding qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-vq49-fmr33-divdra-runtime-binding
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-runtime-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout qualification branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: gfortran --version
+
+      - name: Run independent F-VQ49 gate
+        run: bash integration/f-vq/fvq49/run_gate.sh
+
+      - name: Upload independent qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: F-VQ49-independent-divdra-runtime-binding-evidence
+          if-no-files-found: warn
+          path: |
+            F-VQ49_O0.txt
+            F-VQ49_O2.txt
+            F-VQ49_SUMMARY.json
