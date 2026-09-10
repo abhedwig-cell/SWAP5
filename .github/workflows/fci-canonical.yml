@@ -144,6 +144,24 @@ jobs:
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
           echo 'FCI29_FROZEN_PTRA_OWNERSHIP_AUTHORITY=PASS'
 
+  frozen-fci30-restricted-parallel-v1-authority:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 42b11df9b863afe9bfe2c24a6556293c04bbe555
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Replay exact admitted F-CI30 restricted parallel V1 postimage
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/fci/run_fci30_parallel_v1_canonical_admission_v2.sh
+          test "$(git rev-parse HEAD:src)" = d6fa88b076d39fa0ffd924ce08ae4d978649dc85
+          test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
+          echo 'FCI30_FROZEN_RESTRICTED_PARALLEL_V1_AUTHORITY=PASS'
+
   current-restricted-canonical-postimage:
     needs:
       - historical-fci03-through-fci18
@@ -153,6 +171,7 @@ jobs:
       - frozen-fci27-reference-et-runtime-authority
       - frozen-fci28-restart-authority
       - frozen-fci29-ptra-ownership-authority
+      - frozen-fci30-restricted-parallel-v1-authority
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -160,13 +179,13 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Current F-CI30 restricted parallel V1 authority gate
-        run: bash tests/fci/run_fci30_parallel_v1_canonical_admission_v2.sh
+      - name: Current F-CI31 reference ET to restricted root-uptake execution authority gate
+        run: bash tests/fci/run_fci31_reference_et_root_uptake_canonical_admission_v4.sh
       - name: Final exact postimage and authority recheck
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD:src)" = d6fa88b076d39fa0ffd924ce08ae4d978649dc85
+          test "$(git rev-parse HEAD:src)" = d33c525c6d6f4d2ab19bec8341d732b98d6daebf
           test "$(git rev-parse HEAD:reference)" = 9d08625217d7c0a7385df9da6a04183bcd9cb9e6
-          echo 'FCI30_CANONICAL_RESTRICTED_PARALLEL_V1_ADMISSION=PASS'
+          echo 'FCI31_CANONICAL_REFERENCE_ET_ROOT_UPTAKE_EXECUTION_ADMISSION=PASS'
           echo 'FCI_CANONICAL_LINEAGE_AWARE_GATE PASS'
