@@ -96,7 +96,7 @@ contains
     call assert_true(bound%rooted_nodes == base%rooted_nodes, 'rooted nodes preserved', failures)
     call assert_true(allocated(bound%cumulative_root_fraction), 'root distribution allocated', failures)
     if (allocated(bound%cumulative_root_fraction)) then
-      call assert_true(all(bound%cumulative_root_fraction == base%cumulative_root_fraction), &
+      call assert_true(same_real_vector_bits(bound%cumulative_root_fraction, base%cumulative_root_fraction), &
                        'root distribution preserved', failures)
     end if
     call assert_same_real_bits(base%potential_transpiration, -123.0_real64, 'base not mutated', failures)
@@ -222,7 +222,8 @@ contains
 
   logical function is_default_root_input(input)
     type(crop_root_uptake_input_t), intent(in) :: input
-    is_default_root_input = (.not. input%crop_emerged) .and. input%potential_transpiration == 0.0_real64 .and. &
+    is_default_root_input = (.not. input%crop_emerged) .and. &
+                            real_bits(input%potential_transpiration) == real_bits(0.0_real64) .and. &
                             input%rooted_nodes == 0 .and. .not. allocated(input%cumulative_root_fraction)
   end function is_default_root_input
 
@@ -236,11 +237,22 @@ contains
            real_bits(a%potential_transpiration) == real_bits(b%potential_transpiration) .and. &
            (allocated(a%cumulative_root_fraction) .eqv. allocated(b%cumulative_root_fraction))
     if (same .and. allocated(a%cumulative_root_fraction)) then
-      same = size(a%cumulative_root_fraction) == size(b%cumulative_root_fraction)
-      if (same) same = all(a%cumulative_root_fraction == b%cumulative_root_fraction)
+      same = same_real_vector_bits(a%cumulative_root_fraction, b%cumulative_root_fraction)
     end if
     call assert_true(same, label, failures)
   end subroutine assert_root_input_equal
+
+  logical function same_real_vector_bits(a, b)
+    real(real64), intent(in) :: a(:), b(:)
+    integer :: i
+
+    same_real_vector_bits = .false.
+    if (size(a) /= size(b)) return
+    do i = 1, size(a)
+      if (real_bits(a(i)) /= real_bits(b(i))) return
+    end do
+    same_real_vector_bits = .true.
+  end function same_real_vector_bits
 
   subroutine assert_same_real_bits(a, b, label, failures)
     real(real64), intent(in) :: a, b
