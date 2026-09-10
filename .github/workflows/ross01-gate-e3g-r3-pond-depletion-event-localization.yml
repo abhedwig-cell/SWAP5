@@ -1,0 +1,102 @@
+name: F-ROSS01 Gate E3G-R3 Pond Depletion Event Localization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION_PRECOMMIT.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R3_POND_DEPLETION_PREEXECUTION_SEED_ADDENDUM.json'
+      - 'integration/f-ross/F-ROSS01_GATE_E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION_RESULT.json'
+      - 'experiments/ross/run_ross01_gate_e3g_r3_pond_depletion_event_localization.py'
+      - '.github/workflows/ross01-gate-e3g-r3-pond-depletion-event-localization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        material: [B01, O14]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3g_r3_pond_depletion_event_localization.py
+      - name: Assert frozen R3A fixture authority and seed policy
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_R3A_POND_DEPLETION_FIXTURE_CHARACTERIZATION_RESULT.json'))
+          assert r['decision']=='CHARACTERIZED_POND_DEPLETION_FIXTURES_READY_FOR_R3_QUALIFICATION_PRECOMMIT'
+          assert r['selected_fixtures']['B01']['supply_fraction_ksat']==0.75
+          assert r['selected_fixtures']['O14']['supply_fraction_ksat']==0.75
+          s=json.load(open('integration/f-ross/F-ROSS01_GATE_E3G_R3_POND_DEPLETION_PREEXECUTION_SEED_ADDENDUM.json'))
+          assert s['status']=='PREEXECUTION_ADDENDUM_FROZEN_BEFORE_EXECUTABLE_RUN'
+          assert s['event_seed_policy']['same_seed_policy_candidate_and_reference'] is True
+          assert s['event_seed_policy']['multistart'] is False
+          assert s['event_seed_policy']['post_failure_retuning_allowed'] is False
+          PY
+      - name: Execute frozen bracketed depletion-event qualification
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3g-r3-${{ matrix.material }}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3g_r3_pond_depletion_event_localization.py \
+            "${{ matrix.material }}" \
+            "$out/F-ROSS01_GATE_E3G_R3_${{ matrix.material }}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3G_R3_${{ matrix.material }}_STDOUT.txt"
+      - name: Assert frozen R3 semantics
+        env:
+          MATERIAL: ${{ matrix.material }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          m=os.environ['MATERIAL']
+          p=f'ross01-gate-e3g-r3-{m}/F-ROSS01_GATE_E3G_R3_{m}_RESULT.json'
+          r=json.load(open(p)); mr=r['material_result']
+          assert r['gate']=='E3G_R3_POND_DEPLETION_HEAD_TO_FLUX_EVENT_LOCALIZATION'
+          assert r['production_implementation'] is False
+          assert r['qualification_use'] is True
+          assert r['event_detection_qualified'] is False
+          assert r['pass'] is True
+          assert mr['pass'] is True
+          for side in ('candidate','reference'):
+              x=mr[side]
+              assert x['mode_sequence']==['PONDED_HEAD','EVENT_AT_SURFACE_ZERO','DRY_FLUX_REMAINDER']
+              assert x['nonlinear_trajectory_count']==2
+              assert x['event_search_bisection_trajectory_count']==0
+              assert x['initial_ponded_and_depleting'] is True
+              assert x['event_corrector']['accepted'] is True
+              assert x['event_corrector']['strictly_inside_bracket'] is True
+              assert x['event_corrector']['surface_storage_cm']==0.0
+              assert x['event_corrector']['q_top_minus_supply_cm_per_day']>x['event_corrector']['roundoff_tolerance_cm_per_day']
+              assert x['dry_remainder']['accepted'] is True
+              assert x['dry_remainder']['surface_storage_cm']==0.0
+              assert x['dry_remainder']['complementarity_admissible'] is True
+              assert abs(x['full_interval_composed_balance_residual_cm'])<=1e-9
+              assert x['synthetic_post_event_reject_restores_original_committed_state'] is True
+              assert x['original_committed_state_bitwise_unchanged_until_final_accept'] is True
+              assert x['mass_repair_or_clipping_used'] is False
+          c=mr['comparison']
+          assert c['pass'] is True
+          assert c['event_time_difference_day']<=2.5e-4
+          assert c['max_event_head_difference_cm']<=0.25
+          assert c['max_final_head_difference_cm']<=0.25
+          assert c['full_interval_bottom_transfer_difference_cm']<=0.001
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3g-r3-${{ matrix.material }}
+          path: ross01-gate-e3g-r3-${{ matrix.material }}/
