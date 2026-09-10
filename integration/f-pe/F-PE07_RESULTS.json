@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Wall-Clock Scaling & Worker-Cost Characterization Results",
+  "status": "QUALIFIED_CHARACTERIZATION_RESULTS_PERSISTED_CLOSEOUT_PENDING",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_V1_WALL_CLOCK_SCALING_CHARACTERIZATION_WITHIN_FROZEN_PROFILE",
+  "production_change": false,
+  "base": {
+    "work_unit": "F-MR20",
+    "branch": "work/f-mr20-concurrency-isolation",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "source_scope": {
+    "src_changed_relative_to_base": false,
+    "measurement_protocol": "integration/f-pe/F-PE07_MEASUREMENT_PROTOCOL.json",
+    "measurement_protocol_blob": "a88298c8fd3e87e8b3a038a6acc5bc11f33a8c76",
+    "timing_driver": "tests/fpe/test_fpe07_parallel_v1_timing.f90",
+    "timing_driver_blob": "9083b98ab6b9889a79a67d71c62f49f2cd258a83",
+    "runner": "tests/fpe/run_fpe07_parallel_v1_timing.sh",
+    "runner_blob": "c31e185cbb9ab6094e50afe963c60bc7368b7b76"
+  },
+  "frozen_profile": {
+    "logical_columns": 32,
+    "batch_size": 9,
+    "workers": [1, 2, 4],
+    "top_boundary": "stateless fixed_flux_top_boundary_provider_t",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false,
+    "hard_mass_gate": 1e-12
+  },
+  "measurement_design": {
+    "compiler": "GNU Fortran 13.3.0",
+    "platform": "GitHub-hosted Ubuntu 24.04",
+    "optimization_builds": ["O0", "O2"],
+    "warmups_per_arm": 3,
+    "balanced_block_order": ["W1", "W2", "W4", "W4", "W2", "W1"],
+    "blocks": 10,
+    "timed_dispatches_per_observation": 10,
+    "observations_per_optimization": 60,
+    "observations_per_arm_per_optimization": 20,
+    "timed_region": "fmr_run_parallel_physical_multiswap dispatch only",
+    "state_initialization_outside_clock": true,
+    "correctness_checks_outside_clock": true,
+    "timing_runtime_checks_disabled": true,
+    "scientific_preflight_with_runtime_checks": true,
+    "openmp": {
+      "OMP_DYNAMIC": false,
+      "OMP_THREAD_LIMIT": 4,
+      "OMP_PROC_BIND": "spread",
+      "OMP_PLACES": "cores"
+    }
+  },
+  "replicates": [
+    {
+      "label": "R1",
+      "head": "a61edc3afa7e3342afefefc3576d4567dfe8c715",
+      "workflow_run": 34445731011,
+      "job": 102769994782,
+      "conclusion": "success",
+      "artifact": {
+        "id": 10139574248,
+        "name": "fpe07-parallel-v1-scaling-evidence",
+        "size_bytes": 4468,
+        "sha256": "6bd892bc361c473eb77e9171706ad8aecf3fb9f3dbe12cc3f3a391b25ef13dfd"
+      },
+      "gates": {
+        "source_lock": "PASS",
+        "no_production_source_change": "PASS",
+        "F_MR20_scientific_preflight": "PASS",
+        "O0_timing": "PASS",
+        "O2_timing": "PASS"
+      },
+      "O0": {
+        "W1_median_seconds": 0.00057547715,
+        "W2_median_seconds": 0.0003487373,
+        "W4_median_seconds": 0.00032128115,
+        "W1_p95_seconds": 0.00059893397,
+        "W2_p95_seconds": 0.000354638265,
+        "W4_p95_seconds": 0.00037833483,
+        "W2_median_speedup": 1.661031138718848,
+        "W2_median_efficiency": 0.830515569359424,
+        "W2_speedup_p05": 1.6271529062248213,
+        "W2_speedup_p95": 1.7971556308065102,
+        "W4_median_speedup": 1.7941114776957663,
+        "W4_median_efficiency": 0.44852786942394157,
+        "W4_speedup_p05": 1.5532529436635714,
+        "W4_speedup_p95": 1.9652384328170371,
+        "paired_blocks_with_speedup_gt_1_W2": 10,
+        "paired_blocks_with_speedup_gt_1_W4": 10,
+        "observed_overlap": {"W1": 1, "W2": 2, "W4": 4}
+      },
+      "O2": {
+        "W1_median_seconds": 0.0003502409,
+        "W2_median_seconds": 0.0002098064,
+        "W4_median_seconds": 0.0001952123,
+        "W1_p95_seconds": 0.00036437685,
+        "W2_p95_seconds": 0.000216374685,
+        "W4_p95_seconds": 0.000200632635,
+        "W2_median_speedup": 1.6724114772195557,
+        "W2_median_efficiency": 0.8362057386097779,
+        "W2_speedup_p05": 1.624695687336184,
+        "W2_speedup_p95": 1.7874792292411876,
+        "W4_median_speedup": 1.803800571454477,
+        "W4_median_efficiency": 0.45095014286361923,
+        "W4_speedup_p05": 1.76540137090327,
+        "W4_speedup_p95": 1.9399682254388697,
+        "paired_blocks_with_speedup_gt_1_W2": 10,
+        "paired_blocks_with_speedup_gt_1_W4": 10,
+        "observed_overlap": {"W1": 1, "W2": 2, "W4": 4}
+      }
+    },
+    {
+      "label": "R2",
+      "head": "a4d69ed3b941a576647c37015310078b755561c5",
+      "workflow_run": 34445757581,
+      "job": 102770073516,
+      "conclusion": "success",
+      "artifact": {
+        "id": 10139584485,
+        "name": "fpe07-parallel-v1-scaling-evidence",
+        "size_bytes": 4507,
+        "sha256": "5b6b70de715e9f7269aa26ad873033898171de9d95a9512009ff12916872a22e"
+      },
+      "gates": {
+        "source_lock": "PASS",
+        "no_production_source_change": "PASS",
+        "F_MR20_scientific_preflight": "PASS",
+        "O0_timing": "PASS",
+        "O2_timing": "PASS"
+      },
+      "O0": {
+        "W1_median_seconds": 0.00072343175,
+        "W2_median_seconds": 0.0004339445,
+        "W4_median_seconds": 0.00040878335,
+        "W1_p95_seconds": 0.000744501515,
+        "W2_p95_seconds": 0.000446958195,
+        "W4_p95_seconds": 0.000750914625,
+        "W2_median_speedup": 1.6585457519181832,
+        "W2_median_efficiency": 0.8292728759590916,
+        "W2_speedup_p05": 1.6320663700103766,
+        "W2_speedup_p95": 1.8440533352130877,
+        "W4_median_speedup": 1.7423121507604482,
+        "W4_median_efficiency": 0.43557803769011205,
+        "W4_speedup_p05": 1.233760002815027,
+        "W4_speedup_p95": 1.9553010215508129,
+        "paired_blocks_with_speedup_gt_1_W2": 10,
+        "paired_blocks_with_speedup_gt_1_W4": 10,
+        "observed_overlap": {"W1": 1, "W2": 2, "W4": 4}
+      },
+      "O2": {
+        "W1_median_seconds": 0.0004069636,
+        "W2_median_seconds": 0.00024195325,
+        "W4_median_seconds": 0.00023028595,
+        "W1_p95_seconds": 0.000421102025,
+        "W2_p95_seconds": 0.00024538962,
+        "W4_p95_seconds": 0.00023928183,
+        "W2_median_speedup": 1.6801520451711023,
+        "W2_median_efficiency": 0.8400760225855511,
+        "W2_speedup_p05": 1.657163830561129,
+        "W2_speedup_p95": 1.8586174269653202,
+        "W4_median_speedup": 1.7578161892274733,
+        "W4_median_efficiency": 0.4394540473068683,
+        "W4_speedup_p05": 1.7143491809434983,
+        "W4_speedup_p95": 1.940607679372678,
+        "paired_blocks_with_speedup_gt_1_W2": 10,
+        "paired_blocks_with_speedup_gt_1_W4": 10,
+        "observed_overlap": {"W1": 1, "W2": 2, "W4": 4}
+      }
+    }
+  ],
+  "replicate_reconciliation": {
+    "absolute_host_time_variation_percent_R2_vs_R1": {
+      "O0_W1_median": 25.710,
+      "O0_W2_median": 24.433,
+      "O0_W4_median": 27.235,
+      "O2_W1_median": 16.195,
+      "O2_W2_median": 15.322,
+      "O2_W4_median": 17.967
+    },
+    "paired_speedup_variation_percent_R2_vs_R1": {
+      "O0_W2": -0.150,
+      "O0_W4": -2.887,
+      "O2_W2": 0.463,
+      "O2_W4": -2.549
+    },
+    "interpretation": "Absolute wall time is visibly host-dependent, while balanced within-run speedup ratios reproduce substantially better. Relative paired ratios are therefore the primary characterization metric."
+  },
+  "bounded_characterization": {
+    "W2": {
+      "observed_median_speedup_range_O0_O2_across_replicates": [1.6585, 1.6802],
+      "observed_median_efficiency_range": [0.8293, 0.8401],
+      "summary": "Two workers provide a repeatable approximately 1.66-1.68x median speedup in this frozen 32-column fixture, with about 83-84 percent median parallel efficiency."
+    },
+    "W4": {
+      "observed_median_speedup_range_O0_O2_across_replicates": [1.7423, 1.8038],
+      "observed_median_efficiency_range": [0.4356, 0.4510],
+      "summary": "Four workers are faster than W1 in every paired block in both replicates but only modestly faster than W2; median efficiency is about 44-45 percent, showing strong diminishing returns for this small workload."
+    },
+    "tail_observation": "R2 O0 W4 p95 wall time (0.000750914625 s) is far above its median (0.00040878335 s) and is retained as host/scheduler-tail evidence rather than clipped."
+  },
+  "architecture_assessment": {
+    "4_compact_persistent_state": "UNAFFECTED: measurement-only workunit",
+    "5_scratch_per_worker": "SUPPORTED_BY_FMR20_AND_UNCHANGED",
+    "6_scalable_memory_layout": "NOT_PERFORMANCE_QUALIFIED_HERE",
+    "13_mass_conservation_absolute": "PASS: F-MR20 scientific preflight and every timed dispatch retain the 1e-12 hard mass gate",
+    "16_multiswap_primary": "CHARACTERIZED_WITHIN_32_COLUMN_FROZEN_FIXTURE_ONLY",
+    "23_physics_solver_policy_separation": "PASS: no physical or numerical policy changed for timing",
+    "24_predictable_runtime": "PARTIAL_EVIDENCE_ONLY: W4 O0 tail shows host/runtime variance remains relevant",
+    "25_reference_mode": "PASS: W1 remains exact serialized-reference delegation",
+    "26_diagnostics": "PASS: overlap and completion diagnostics checked for every timed dispatch",
+    "27_optional_functionality": "UNCHANGED",
+    "30_explicit_review": "PASS: source lock, no-src-diff gate, scientific preflight and replicated timing are persisted"
+  },
+  "explicit_nonclaims": [
+    "universal hardware-independent speedup",
+    "large-scale MultiSWAP scaling",
+    "worker_count=8 qualification or characterization",
+    "other column counts",
+    "other batch sizes",
+    "other physical profiles",
+    "near-linear four-worker scaling",
+    "production SLA or runtime bound",
+    "performance-policy change",
+    "mass or fidelity concession"
+  ],
+  "downstream_recommendation": {
+    "preferred_next_step": "Do not tune physics or widen admission from these timings. If more performance work is needed, first characterize larger already-scientifically-qualified column counts or isolate W4 team/barrier/dispatch overhead in a separate measurement-only workunit.",
+    "reason": "W2 scaling is strong and reproducible; W4 shows diminishing returns and host-sensitive tail behavior on the very small 32-column workload."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": false,
+    "open": [
+      "persist formal characterization closeout",
+      "reconcile final evidence head with source-lock/scientific-preflight workflow"
+    ]
+  }
+}
