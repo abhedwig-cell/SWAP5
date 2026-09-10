@@ -1,0 +1,28 @@
+name: F-MR38 Explicit Effective-Forcing Executor Owner Gate
+
+on:
+  push:
+    branches:
+      - work/f-mr38-explicit-effective-forcing-executor
+    paths:
+      - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
+      - 'integration/f-mr/F-MR38_*.json'
+      - 'tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate.sh'
+      - '.github/workflows/fmr38-explicit-effective-forcing-executor.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact owner head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-MR38 owner gate
+        run: bash tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate.sh
