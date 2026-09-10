@@ -55,7 +55,7 @@ ppos = pool.index('call finalize_parallel_runtime(results, assignments, worker_r
 ppub = pool.index('call fmr_publish_canonical_column_outputs(results, diagnostics, publication_order)', ppos)
 assert ppub > ppos
 # No second execution/physics path was introduced by remediation.
-assert serial.count('subroutine fmr_execute_serialized_physical_column') == 1
+assert serial.count('\n  subroutine fmr_execute_serialized_physical_column(') == 1
 assert 'fmr_build_parallel_schedule' in pool
 assert '!$omp parallel num_threads(worker_count)' in pool
 print('FMR20R_G03_PUBLICATION_AFTER_FINALIZATION=PASS')
