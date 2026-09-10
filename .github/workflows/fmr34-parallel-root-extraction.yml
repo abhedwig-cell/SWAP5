@@ -1,0 +1,22 @@
+name: F-MR34 restricted parallel root-extraction owner gate
+
+on:
+  push:
+    branches:
+      - work/f-mr34-restricted-parallel-root-extraction
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  owner-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR34 restricted parallel root-extraction gate
+        run: bash tests/fmr/run_fmr34_parallel_root_extraction.sh
