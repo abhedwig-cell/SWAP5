@@ -1,0 +1,57 @@
+{
+  "schema": "swap5.independent_surface_evaporation_evidence.v1",
+  "work_unit": "F-VQ52",
+  "candidate": {
+    "owner": "F-PM06C",
+    "owner_closeout": "1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+    "production_commit": "c6cabe84272fef1829243e4271b2b1314233b634",
+    "production_path": "src/process/mod_restricted_surface_evaporation.f90",
+    "production_blob": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "qualification_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "authoritative_initial_run": 34530786223,
+  "authoritative_initial_job": 103050705479,
+  "authoritative_initial_conclusion": "success",
+  "verified_by_job_steps": {
+    "checkout": "success",
+    "compiler_identity": "success",
+    "source_bound_independent_qualification": "success"
+  },
+  "independent_oracle": {
+    "active_cases": 1008,
+    "dry_relation": "PASS",
+    "ponded_relation": "PASS",
+    "negative_finite_capacity_clamps_to_zero": "PASS",
+    "negative_demands_fail_closed": "PASS",
+    "nan_inf_inputs_fail_closed": "PASS",
+    "invalid_results_zero_components": "PASS",
+    "dry_never_emits_pond_evaporation": "PASS",
+    "ponded_never_emits_bare_soil_evaporation": "PASS",
+    "stateless_A_B_A": "PASS",
+    "O0_O2_transcript_identity": "PASS"
+  },
+  "source_integrity": {
+    "qualification_branch_src_unchanged_from_base": true,
+    "exact_candidate_blob_materialized": true,
+    "owner_closeout_blob_matches_candidate": true,
+    "no_IO": true,
+    "no_SAVE_state": true,
+    "no_HeadCalc_Newton_Jacobian_access": true,
+    "no_mass_ledger_mutation": true,
+    "no_calendar_day_assumption": true
+  },
+  "architecture": {
+    "audit": "qualification/f-vq/F-VQ52_ARCHITECTURE_AUDIT.json",
+    "invariants": "30_OF_30_NO_ADVERSE_DELTA_WITHIN_FROZEN_SCOPE",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "scientific_interpretation": "Within SWINTER=0 and SWREDU=0, the immutable candidate reproduces the restricted B1.10 dry/ponded surface-evaporation decomposition when supplied with already accepted hydraulic ponding classification and evaporation capacity. It remains a structural process contract only and does not establish runtime materialization of those hydraulic inputs.",
+  "nonclaims": [
+    "runtime evaporation-capacity materialization",
+    "runtime surface-ponding classification materialization",
+    "full BoundTop migration",
+    "SWREDU 1 or 2",
+    "interception or wet-canopy evaporation",
+    "canonical admission"
+  ]
+}
