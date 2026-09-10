@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE08",
+  "title": "Canonical Worker Scratch De-duplication Optimization Results",
+  "status": "QUALIFIED_RESULTS_PERSISTED_CLOSEOUT_PENDING",
+  "decision": "QUALIFIED_CANONICAL_A23BU_HEADCALC_SCRATCH_DEDUP_WITHIN_FROZEN_FMR20_V1_SCOPE",
+  "base": {
+    "F_PE07_closeout": "5a78543cc744f8ff547575b3bdbbb56615dd9cc3",
+    "F_MR20_production_baseline": "1a249cde0c088e8023cd603d30239ce0d30bf4d7"
+  },
+  "production_patch": {
+    "materialized_commit": "ca2dda5",
+    "files": [
+      "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90"
+    ],
+    "new_blobs": {
+      "src/runtime/mod_a23bu_worker_execution_context.f90": "0ecb09bfa318a284e7841749d474d2f871363c81",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "1e3a227883cb2a0f79e40a22f016e7953d5fbab1"
+    },
+    "headcalc_changed": false,
+    "parallel_worker_pool_changed": false,
+    "transaction_core_changed": false,
+    "physics_configuration_changed": false
+  },
+  "implementation": {
+    "API": "a23bu_initialize_worker gains optional allocate_headcalc_scratch with default true",
+    "backward_compatibility": "all existing callers omitting the new argument preserve full scratch allocation",
+    "canonical_reference_binding": "reference_richards_legacy_solve passes allocate_headcalc_scratch=false",
+    "why_safe_in_frozen_scope": "canonical HeadCalc contains no ctx%headcalc references and receives separate reference_richards_workspace scratch; the preinitialized worker active_nodes prevents HeadCalc from falling back to default full initialization"
+  },
+  "memory_effect": {
+    "removed_per_worker_formula": "RB*(11*n+2) + LB*(2*n+3)",
+    "new_known_dynamic_payload_formula_per_worker": "RB*((70+L)*n+2) + IB*n + LB*(2*n+3)",
+    "four_node_two_drainage_level_fixture": {
+      "A23BU_scratch_before_bytes": 412,
+      "A23BU_scratch_after_bytes": 0,
+      "known_worker_payload_before_bytes": 2792,
+      "known_worker_payload_after_bytes": 2380,
+      "removed_bytes_per_worker": 412,
+      "known_payload_reduction_percent": 14.756446991404011,
+      "removed_bytes_at_2_workers": 824,
+      "removed_bytes_at_4_workers": 1648
+    },
+    "not_RSS": true
+  },
+  "qualification": {
+    "workflow_run": 34442856975,
+    "workflow_job": 102761338773,
+    "tested_head": "c59c77fbc0cbc5b93cc363575d85940a7d672e00",
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimizations": ["O0", "O2"],
+    "gates": [
+      "source lock PASS",
+      "production source scope exactly two owned files PASS",
+      "default-on initializer API PASS",
+      "canonical opt-out binding PASS",
+      "HeadCalc canonical scratch non-use PASS",
+      "default four-node scratch payload remains 412 bytes PASS",
+      "canonical lean A23BU scratch payload is 0 bytes PASS",
+      "known four-node worker payload 2792 to 2380 bytes PASS",
+      "F-MR20 serialized reference PASS",
+      "real overlap at 2 workers PASS",
+      "real overlap at 4 workers PASS",
+      "serialized versus 2-worker bit identity PASS",
+      "serialized versus 4-worker bit identity PASS",
+      "2 versus 4 worker-count independence PASS",
+      "A-B-A repeatability PASS",
+      "input-order independence PASS",
+      "cross-column rejection isolation PASS",
+      "negative profile fail-closed PASS",
+      "shared immutable parameter integrity PASS",
+      "O0/O2 complete output identity PASS",
+      "hard mass behavior retained PASS"
+    ]
+  },
+  "architecture_assessment": {
+    "invariant_4_compact_persistent_state": "PASS: no per-column state added",
+    "invariant_5_scratch_per_worker": "IMPROVED_WITHIN_SCOPE: unused worker scratch removed from canonical worker path",
+    "invariant_6_scalable_memory_layout": "IMPROVED_WITHIN_SCOPE: known heavy worker payload reduced without column scaling",
+    "invariant_13_mass_conservation": "PASS",
+    "invariant_16_multiswap_primary": "PASS_WITHIN_FROZEN_V1_SCOPE",
+    "invariant_23_physics_solver_policy_separation": "PASS",
+    "invariant_25_reference_mode": "PASS: legacy/default initializer behavior retained",
+    "invariant_27_optional_cost_scales_with_use": "PASS",
+    "invariant_30_explicit_review": "PASS"
+  },
+  "explicit_nonclaims": [
+    "RSS reduction guarantee",
+    "runtime speedup guarantee",
+    "general removal of A23BU scratch from legacy HeadCalc execution",
+    "physics expansion beyond F-MR20 V1",
+    "worker counts above 4",
+    "removal of reference_richards_workspace scratch",
+    "transaction-local peak-memory qualification"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": false,
+    "open": ["reconcile results-persisted head", "persist formal closeout"]
+  }
+}
