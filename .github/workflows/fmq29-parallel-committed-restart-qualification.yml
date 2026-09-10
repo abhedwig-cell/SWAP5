@@ -1,0 +1,24 @@
+name: F-MQ29 independent parallel committed restart qualification
+
+on:
+  push:
+    branches:
+      - qualification/f-mq29-parallel-committed-restart-composition
+    paths:
+      - 'integration/f-mq/F-MQ29_*.json'
+      - 'tests/fmq/run_fmq29_parallel_committed_restart_qualification.sh'
+      - '.github/workflows/fmq29-parallel-committed-restart-qualification.yml'
+  workflow_dispatch:
+
+jobs:
+  independent-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MQ29 independent held-out qualification
+        run: bash tests/fmq/run_fmq29_parallel_committed_restart_qualification.sh
