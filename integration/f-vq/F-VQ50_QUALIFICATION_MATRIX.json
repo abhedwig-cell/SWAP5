@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ50",
+  "candidate": {
+    "owner_workunit": "F-MR31",
+    "production_commit": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "production_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "production_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
+  "qualification_branch_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "principle": "reconstruct the forcing-to-accepted-result provenance independently; do not compile or call the F-MR31 owner oracle",
+  "hard_gates": [
+    {
+      "id": "HN1_FORMER_WRONG_FORCING_REPAIR_PATH",
+      "pass_condition": "candidate exposes no detached candidate-plus-forcing attribution repair operation and a committed result cannot be rebound to another valid forcing"
+    },
+    {
+      "id": "HN2_EXACT_RESOLVED_FORCING_HANDLE",
+      "pass_condition": "for every committed column, attribution equals the integral of the exact forcing handle used by the independent physical trial, including permuted and shared handles"
+    },
+    {
+      "id": "HN3_POSTCOMMIT_ONLY",
+      "pass_condition": "rejected or otherwise noncommitted columns retain unavailable zero attribution"
+    },
+    {
+      "id": "HN4_NO_SECOND_MASS_BOOKING",
+      "pass_condition": "focused physical oracle has attribution equal to already-booked root mass_out, never twice that amount, and aggregate mass is unchanged by attribution publication"
+    },
+    {
+      "id": "HN5_BY_VALUE_TAMPER_RESISTANCE",
+      "pass_condition": "after the runtime returns, mutation of an unrelated or formerly referenced forcing object cannot change the already-published result value"
+    },
+    {
+      "id": "HN6_REAL_BACKEND_PRESERVATION",
+      "pass_condition": "exact independently qualified F-VQ21 real HeadCalc root-sink oracle still proves exactly-once root mass, SSDI-balanced state identity and hard mass balance"
+    }
+  ],
+  "positive_matrix": {
+    "interval": [731.3125, 732.84375],
+    "forcing_integrals": [0.35, 0.55, 0.0],
+    "column_count": 7,
+    "cases": [
+      {"batch_size": 1, "order": "forward"},
+      {"batch_size": 2, "order": "reverse"},
+      {"batch_size": 5, "order": "permuted"},
+      {"batch_size": 7, "order": "forward"}
+    ],
+    "routing_features": [
+      "two columns share forcing A",
+      "two columns share forcing B",
+      "one active column uses zero forcing",
+      "one root-inactive committed column",
+      "one not-admitted noncommitted column"
+    ]
+  },
+  "determinism": [
+    "A-B-A fresh-state replay",
+    "per-column comparison by column_id across batch/order variants",
+    "O0/O2 textual scientific output identity"
+  ],
+  "static_candidate_checks": [
+    "qualification branch contains no src delta from canonical base",
+    "exact candidate blob is materialized only into build space",
+    "candidate attribution call occurs after successful commit branch",
+    "candidate uses forcing_registry(forcing_index) for both trial and attribution publication",
+    "no F-MR30 prepare/finalize attribution API dependency",
+    "no new generic mass-ledger mutation"
+  ],
+  "real_backend_replay": {
+    "authority": "F-VQ21 closeout f7cdccf11d21c31494b328251b001d474170c0c7",
+    "historical_test_path": "tests/fmr/test_fmr09_root_sink_runtime.f90",
+    "historical_test_blob": "38251f62c3a9617230171b69d29a233ce8165ce1",
+    "compile_against": "current canonical production dependencies with the exact F-MR31 runtime candidate substituted in build space"
+  },
+  "early_exit_rule": "any hard-gate fail closes F-VQ50 NOT_QUALIFIED; unexecuted later cases must be reported as unrun, not failed",
+  "pass_decision": "QUALIFIED_REMEDIATED_EXACT_RUNTIME_FORCING_BOUND_ROOT_UPTAKE_ATTRIBUTION_WITHIN_FROZEN_SERIALIZED_SCOPE",
+  "fail_decision": "NOT_QUALIFIED_REMEDIATED_ROOT_UPTAKE_ATTRIBUTION_ROUTE_BACK_TO_FMR"
+}
