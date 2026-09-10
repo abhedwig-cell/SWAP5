@@ -16,4 +16,4 @@ jobs:
       - name: Compiler provenance
         run: gfortran --version
       - name: Run source-bound parallel, receipt, restart and ET preservation gate
-        run: bash tests/fmr/run_fmr27_parallel_current_canonical_gate.sh
+        run: bash tests/fmr/run_fmr27_parallel_current_canonical_gate_v2.sh
