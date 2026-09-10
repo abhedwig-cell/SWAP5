@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A2_BOUNDED_INITIAL_PROFILE_FIXTURE_CHARACTERIZATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "upstream_failure": {
+    "evidence": "F-ROSS01_GATE_E3H_A_TOP_NODE_SATURATION_EVENT_FIXTURE_CHARACTERIZATION_RESULT.json",
+    "result_commit": "97d0d57c67501f68934883fa33b128756be59651",
+    "classification": {
+      "B01": "positive control: original profile has valid fixtures from 5 KSAT",
+      "B12": "cell2=-1 cm scope bound active at all frozen supplies",
+      "O13": "cell2=-1 cm scope bound active at all frozen supplies",
+      "O14": "tau=1e-8 d lower bound active at all frozen supplies"
+    }
+  },
+  "purpose": "Determine whether isolated top-node h=0 events can be characterized for all four materials by changing only the committed qualification fixture profile under a finite precommitted grid, while preserving the exact A1 equations, face physics, event domain, supply grid, tolerances and transaction semantics.",
+  "materials": ["B01", "B12", "O13", "O14"],
+  "frozen_initial_profiles_cm": [
+    {"id": "P0_A1_CONTROL", "heads": [-0.2, -1.5, -5.0]},
+    {"id": "P1_DRIER_SUBSOIL", "heads": [-0.5, -5.0, -10.0]},
+    {"id": "P2_DRIER_TOP_AND_SUBSOIL", "heads": [-1.0, -10.0, -20.0]},
+    {"id": "P3_STRONG_DRY_SEPARATION", "heads": [-2.0, -20.0, -50.0]}
+  ],
+  "profile_order_is_frozen": true,
+  "frozen_surface_storage_cm": 0.02,
+  "frozen_bottom_head_cm": -15.0,
+  "frozen_supply_grid_fraction_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+  "event_definition_unchanged_from_A1": {
+    "top_head_fixed_cm": 0.0,
+    "event_unknowns": ["h_cell2", "h_cell3", "surface_storage", "tau_event"],
+    "discrete_balance": "Backward-Euler event-state balance from the selected committed profile over tau_event using event-state face fluxes.",
+    "event_time_domain_day": [1e-8, 0.05],
+    "surface_storage_domain_cm": [1e-12, 1.0],
+    "cell2_and_cell3_head_domain_cm": [-10000.0, -1.0]
+  },
+  "unchanged_acceptance": {
+    "candidate_and_reference_solver_success": true,
+    "max_abs_balance_residual_cm": 1e-9,
+    "surface_storage_strictly_between_0_and_1_cm": true,
+    "cell2_and_cell3_at_or_below_minus_1_cm": true,
+    "event_time_strictly_inside_domain": true,
+    "candidate_reference_event_time_difference_day_max": 2.5e-4,
+    "candidate_reference_max_head_difference_cm": 0.25,
+    "candidate_reference_surface_storage_difference_cm_max": 1e-3,
+    "committed_state_bitwise_unchanged": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "deterministic_selection": "For each material evaluate profiles in P0,P1,P2,P3 order and supplies in 1.5,2,3,5,8,12 KSAT order. Select the first profile/supply pair satisfying every unchanged A1 validity requirement for both candidate and reference. All 24 combinations are still executed and reported; selection does not stop evaluation.",
+  "required_controls": {
+    "B01_P0_lowest_passing_supply_must_remain_5ksat": true,
+    "A1_failure_rows_are_not_reclassified": true,
+    "no_profile_or_supply_added_after_results": true
+  },
+  "architecture_checks": {
+    "3_data_separation": "Initial committed fixture, forcing, event scratch and diagnostics remain distinct.",
+    "4_compact_state": "Profile choice is qualification data, not persistent production state.",
+    "5_worker_scratch": "Nonlinear vectors and event state remain worker scratch.",
+    "7_transactional": "No characterization trial mutates the committed fixture.",
+    "9_generic_time": "Event time is an offset inside [t0,t1].",
+    "13_mass_conservation": "No accepted root may exceed 1e-9 cm balance residual; no repair.",
+    "20_alternative_solver_interface": "Existing face/soil contracts only.",
+    "23_physics_policy_separation": "Changing a qualification initial profile does not change constitutive physics.",
+    "24_predictable_cost": "Exactly 24 frozen profile/supply combinations per material; no adaptive expansion.",
+    "30_change_assessment": "A2 only seeks fixtures and cannot itself qualify positive top-node continuation."
+  },
+  "positive_exit": "CHARACTERIZED_BOUNDED_TRUE_TOP_NODE_H0_EVENT_FIXTURES_ALL_MATERIALS_READY_FOR_E3H_QUALIFICATION",
+  "negative_exit": "BOUNDED_INITIAL_PROFILE_GRID_DID_NOT_ESTABLISH_ALL_TOP_NODE_H0_FIXTURES_RESEARCH_REQUIRED",
+  "hard_nonclaims": [
+    "No top-node saturation transition qualification.",
+    "No h_top>0 continuation qualification.",
+    "No simultaneous second-node near-saturation qualification.",
+    "No automatic event detection/bracket discovery.",
+    "No runtime, MultiSWAP, groundwater or MODFLOW admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
