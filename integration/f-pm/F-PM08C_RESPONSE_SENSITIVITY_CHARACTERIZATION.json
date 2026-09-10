@@ -22,7 +22,7 @@
       "ipos": [1,2,3,4,5],
       "sensitivity_form": "dq/dgwl = ((1/shape)*R_total - diffl*dR_total/dgwl)/(R_total^2) on a stable active branch",
       "nonsmooth_sets": [
-        "strict legacy cutoff diffl=1e-10",
+        "strict legacy cutoff comparison at diffl=1e-10; constructing that exact value from gwl,zbotdr,shape is floating-representation-sensitive",
         "IPOS=4 at gwl=zintf when kvtop differs from kvbot",
         "equivalent-depth internal branch x=0.5 and x=1e-6 are formula branches requiring continuity checks"
       ],
