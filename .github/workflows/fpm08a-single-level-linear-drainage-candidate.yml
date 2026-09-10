@@ -1,0 +1,23 @@
+name: F-PM08A single-level linear drainage candidate
+
+on:
+  push:
+    branches:
+      - work/f-pm08a-single-level-linear-drainage-candidate
+    paths:
+      - 'src/process/mod_drainage_process.f90'
+      - 'tests/fpm/test_fpm08a_single_level_linear_drainage.f90'
+      - 'tests/fpm/run_fpm08a_single_level_linear_drainage_gate.sh'
+      - 'integration/f-pm/F-PM08A_*.json'
+      - '.github/workflows/fpm08a-single-level-linear-drainage-candidate.yml'
+  workflow_dispatch:
+
+jobs:
+  structural-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08A source-bound structural candidate gate
+        run: bash tests/fpm/run_fpm08a_single_level_linear_drainage_gate.sh
