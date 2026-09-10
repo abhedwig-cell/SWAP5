@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "workunit": "F-MR31",
+  "title": "Root-Uptake Attribution Exact-Forcing Binding Remediation",
+  "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "source_authority_current_recheck": {
+    "observed_head": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "movement_since_freeze": "F-CI32 DIVDRA admission only",
+    "relevant_runtime_or_root_uptake_source_changed": false,
+    "disposition": "continue exact source-bound remediation from frozen authority"
+  },
+  "failed_candidate": "F-MR30@95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+  "failed_candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "independent_failure": "F-VQ48 HN1_FORCING_CANDIDATE_BINDING",
+  "runtime_trace": {
+    "physical_forcing_binding": "mod_fmr_serialized_reference_backend:fmr_serialized_prepare_interval copies forcing%root_extraction_sink into worker-local self%qrot before the physical solve",
+    "candidate_creation": "mod_fmr_serialized_multiswap_runtime:execute_column passes forcing_registry(forcing_index) directly into backend%run_trial and receives the candidate in the same stack frame",
+    "commit_boundary": "the same execute_column stack frame commits that candidate and optionally obtains fmr_accepted_commit_receipt_t",
+    "forcing_identity_available": "forcing_index remains bound to column%forcing_handle throughout that transaction",
+    "persistent_state_needed": false,
+    "generic_kernel_change_needed": false
+  },
+  "remediation_design": {
+    "shape": "trusted serialized-runtime composition wrapper",
+    "public_api_rule": "no public API may accept an already-created candidate together with an independently supplied qrot forcing",
+    "execution_rule": "the wrapper invokes the existing serialized physical runtime and derives root-uptake attribution only from the same forcing_registry supplied to that invocation and only for ready accepted-commit receipts returned by it",
+    "publication_rule": "attribution is postcommit reconciliation metadata only and is never added to generic mass_out",
+    "state_rule": "receipt state is ephemeral output; no committed column state or solver scratch is added",
+    "scope": "restricted serialized real physics; parallel root-extraction execution remains excluded"
+  },
+  "owner_gates": [
+    "positive committed root-uptake amount equals exact qrot integral",
+    "F-VQ48 candidate/forcing re-pairing seam no longer exists in the production API",
+    "two different forcing cases each publish their own exact amount without cross-contamination",
+    "rejected/uncommitted requested column emits no ready attribution",
+    "invalid sparse attribution requests fail before physical mutation through the existing receipt-request gate",
+    "attribution amount is a subset of existing mass_out and does not alter mass diagnostics",
+    "arbitrary non-midnight [t0,t1] interval",
+    "O0/O2 scientific marker identity"
+  ],
+  "architecture_invariants_checked": [3,4,5,7,8,9,13,16,23,26,27,29,30],
+  "production_source_expected": [
+    "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90"
+  ],
+  "generic_kernel_source_expected_to_change": false,
+  "existing_serialized_runtime_source_expected_to_change": false,
+  "independent_requalification_required": true
+}
