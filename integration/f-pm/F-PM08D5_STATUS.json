@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D5",
   "title": "Automatic-Weir Event & Hydraulic-Control Readiness",
   "branch": "work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness",
-  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
-  "phase": "CONTRACT_AND_SOURCE_DISCREPANCY_PERSISTED_BEFORE_TEST",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d",
@@ -29,6 +29,8 @@
     "DROPR_has_0p001_activation_seam": true,
     "SWQHR1_SWQHR2_capacity_head_asymmetry_confirmed": true,
     "SWQHR1_negative_WOVER_power_domain_risk_confirmed": true,
+    "strict_capacity_equality_seam_confirmed": true,
+    "D4_overflow_fallback_hold_inherited": true,
     "capacity_policy_production_formula_selected": false,
     "SWQHR2_production_admitted": false
   },
@@ -45,6 +47,14 @@
     "D5-RISK-10-WLSBAK-OSSWLM-NUMERICAL-HISTORY-SEPARATE-FROM-CONTROL-STATE",
     "D5-RISK-11-SWQHR2-HBWEIR-THRESHOLD-SEAM-REMAINS-UNQUALIFIED"
   ],
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D5_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D5_AUTOMATIC_CONTROL_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D5_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d5_automatic_control.py",
+    "gate": "tools/fpm/fpm08d5_automatic_control_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d5-automatic-control-readiness.yml"
+  },
   "state": {
     "branch_created": true,
     "checkpoint_persisted": true,
@@ -52,10 +62,10 @@
     "capacity_discrepancy_characterized": true,
     "generic_event_contract_defined": true,
     "control_state_ownership_defined": true,
-    "architecture_audited_all_30": false,
-    "test_oracle_persisted": false,
-    "gate_persisted": false,
-    "workflow_persisted": false,
+    "architecture_audited_all_30": true,
+    "test_oracle_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
@@ -64,5 +74,5 @@
     "runtime_composition_qualified": false,
     "canonical_admission_qualified": false
   },
-  "next_required_step": "persist independent phase/event/drop-rate and capacity-discrepancy oracle, audit all 30 invariants, then execute a readiness-only CI gate"
+  "next_required_step": "execute the fully persisted D5 readiness gate under CI; fail closed on any provenance, event, WLSTAR state, phase-selection, drop-rate, capacity-discrepancy or architecture inconsistency"
 }
