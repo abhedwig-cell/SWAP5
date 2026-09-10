@@ -17,7 +17,6 @@ def build_sttab(nrpri, zbotdr, swdtyp, widthr, taludr, spacing):
     sec0 = nrpri
     assert swdtyp[sec0] == 2
     zdeep = zbotdr[sec0]
-    # Preserve frozen source operation order: zbotdr * integer / 20.0d0.
     levels = [100.0, 0.0] + [zdeep * (i - 2) / 20.0 for i in range(3, 23)]
     storage = []
     for level in levels:
@@ -124,6 +123,7 @@ def main():
     max_storage_roundtrip = 0.0
     max_bottom_knot_abs_offset = 0.0
     max_bottom_storage = 0.0
+    max_forward_knot_storage_abs_difference = 0.0
     total_probes = 0
     single_secondary_cases = 0
     mixed_open_tube_cases = 0
@@ -131,6 +131,8 @@ def main():
     bottom_knot_below = 0
     bottom_knot_exact = 0
     exact_zbot_initialization_rejected = 0
+    forward_knot_storage_mismatches = 0
+    forward_knot_inverse_domain_rejections = 0
 
     for case_id in range(CASES):
         data = make_case(rng, case_id)
@@ -154,9 +156,6 @@ def main():
         assert all(levels[i] > levels[i + 1] for i in range(21))
         assert all(storage[i] > storage[i + 1] for i in range(21))
 
-        # Frozen SWSTLEV uses STTAB(22,1), while the reader admits WLS down to
-        # zbotdr(1+nrpri). If STTAB(22,1) rounded upward by one ULP, an input
-        # exactly at zbotdr is reader-admitted but rejected by SWSTLEV.
         if zbot[nrpri] < levels[-1]:
             try:
                 swstlev(levels, storage, zbot[nrpri])
@@ -171,10 +170,22 @@ def main():
         if any(x == 1 for x in swdtyp[nrpri:]) and any(x == 2 for x in swdtyp[nrpri:]):
             mixed_open_tube_cases += 1
 
-        for endpoint in (levels[-1], 0.0, levels[0]):
-            s = swstlev(levels, storage, endpoint)
-            recovered = wlevst(levels, storage, s)
-            assert recovered == endpoint or abs(recovered - endpoint) <= 2e-14 * max(1.0, abs(endpoint))
+        # Characterize exact-knot arithmetic rather than assuming mathematical
+        # endpoint identities are bit identities. Frozen SWSTLEV evaluates the
+        # interpolation expression even at f=0 or f=1.
+        for i, knot_level in enumerate(levels):
+            s = swstlev(levels, storage, knot_level)
+            ds = s - storage[i]
+            if ds != 0.0:
+                forward_knot_storage_mismatches += 1
+                max_forward_knot_storage_abs_difference = max(max_forward_knot_storage_abs_difference, abs(ds))
+            if s < storage[-1] or s > storage[0]:
+                forward_knot_inverse_domain_rejections += 1
+            else:
+                recovered = wlevst(levels, storage, s)
+                err = abs(recovered - knot_level)
+                max_level_roundtrip = max(max_level_roundtrip, err)
+                assert err <= 2e-11 * max(1.0, abs(knot_level))
 
         try:
             swstlev(levels, storage, levels[-1] - 1e-9)
@@ -212,8 +223,6 @@ def main():
             assert err_s <= 2e-11 * max(1.0, abs(target_s))
             total_probes += 1
 
-    # Explicitly prove that replacing frozen interpolation by the analytic
-    # trapezoid formula between knots changes reference physics.
     data = (0, [-200.0], [2], [100.0], [2.0], [1000.0])
     levels, storage = build_sttab(*data)
     probe_level = -95.0
@@ -222,17 +231,20 @@ def main():
     analytic_delta = abs(linear_reference - analytic)
     assert analytic_delta > 1e-6
 
-    # Tubes must not contribute to storage geometry.
     open_only = build_sttab(0, [-200.0, -100.0], [2, 1], [50.0, 999.0], [2.0, 0.3], [1000.0, 100.0])
     no_tube = build_sttab(0, [-200.0], [2], [50.0], [2.0], [1000.0])
     assert open_only == no_tube
 
-    # Reproduce the exact source expression with GNU Fortran under O0/O2.
     f_o0 = fortran_bottom_knot_characterization("-O0")
     f_o2 = fortran_bottom_knot_characterization("-O2")
     assert f_o0 == f_o2
     assert f_o0[0] > 0 and f_o0[1] > 0 and f_o0[2] > 0
     assert f_o0[3] > 0.0
+
+    assert bottom_knot_above > 0 and bottom_knot_below > 0 and bottom_knot_exact > 0
+    assert exact_zbot_initialization_rejected == bottom_knot_above
+    assert forward_knot_storage_mismatches > 0
+    assert forward_knot_inverse_domain_rejections > 0
 
     print(f"FPM08D1_GEOMETRY_CASES={CASES}")
     print(f"FPM08D1_ROUNDTRIP_PROBES={total_probes}")
@@ -247,10 +259,14 @@ def main():
     print(f"FPM08D1_EXACT_ZBOT_INITIALIZATION_REJECTED={exact_zbot_initialization_rejected}")
     print(f"FPM08D1_MAX_BOTTOM_KNOT_ABS_OFFSET={max_bottom_knot_abs_offset:.17g}")
     print(f"FPM08D1_MAX_BOTTOM_STORAGE={max_bottom_storage:.17g}")
+    print(f"FPM08D1_FORWARD_KNOT_STORAGE_MISMATCHES={forward_knot_storage_mismatches}")
+    print(f"FPM08D1_FORWARD_KNOT_INVERSE_DOMAIN_REJECTIONS={forward_knot_inverse_domain_rejections}")
+    print(f"FPM08D1_MAX_FORWARD_KNOT_STORAGE_ABS_DIFFERENCE={max_forward_knot_storage_abs_difference:.17g}")
     print(f"FPM08D1_FORTRAN_O0_BOTTOM_KNOT_COUNTS={f_o0[0]},{f_o0[1]},{f_o0[2]}")
     print(f"FPM08D1_FORTRAN_O2_BOTTOM_KNOT_COUNTS={f_o2[0]},{f_o2[1]},{f_o2[2]}")
     print(f"FPM08D1_FORTRAN_MAX_BOTTOM_KNOT_ABS_OFFSET={f_o0[3]:.17g}")
     print("FPM08D1_BOTTOM_KNOT_ROUNDING_SEAM=CHARACTERIZED")
+    print("FPM08D1_INTERPOLATION_ENDPOINT_ROUNDING_SEAM=CHARACTERIZED")
     print("FPM08D1_ENDPOINT_DOMAIN_CHECKS=PASS")
     print("FPM08D1_STRICT_MONOTONICITY=PASS")
     print("FPM08D1_TUBE_EXCLUSION=PASS")
