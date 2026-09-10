@@ -1,0 +1,20 @@
+name: F-PM06D surface evaporation hydraulic materialization readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm06d-surface-evaporation-hydraulic-materialization-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: F-PM06D source-bound readiness gate
+        run: bash tests/fpm/run_fpm06d_surface_evaporation_hydraulic_materialization_readiness.sh
