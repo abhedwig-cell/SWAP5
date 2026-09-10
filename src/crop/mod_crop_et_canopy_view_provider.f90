@@ -159,7 +159,7 @@ contains
       diagnostics%status = CROP_ET_CANOPY_INVALID_PARAMETER
       return
     end if
-    if (extinction_product > 0.0_real64) then
+    if (extinction_product > 1.0_real64) then
       if (state%leaf_area_index > huge(1.0_real64) / extinction_product) then
         diagnostics%status = CROP_ET_CANOPY_INVALID_STATE
         return
