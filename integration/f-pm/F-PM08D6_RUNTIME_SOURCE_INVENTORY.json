@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D6",
+  "activation_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "canonical_runtime_sources": [
+    {
+      "path": "src/kernel/mod_kernel_transactions.f90",
+      "blob": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+      "relevant_semantics": ["committed physical state is private", "checkpoint is temporary immutable physical clone plus lineage/revision/time", "candidate provenance is opaque", "kernel executor is sole physical commit/rollback authority"]
+    },
+    {
+      "path": "src/transaction/mod_transaction_reference.f90",
+      "blob": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+      "relevant_semantics": ["full and two-half trials originate from same checkpoint", "worker attempt context is restored on retry", "mass residual is checked before commit", "accepted_mass_complete and missing contribution mask are published", "transaction_policy contains mass_tolerance"]
+    },
+    {
+      "path": "src/runtime/mod_fmr_checkpoint_orchestrator.f90",
+      "blob": "232875e7192f995930c102609cee08dc8938c86a",
+      "relevant_semantics": ["runtime delegates checkpoint/trial/commit/rollback to F-KT", "no second state publication authority"]
+    },
+    {
+      "path": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+      "blob": "6798b3296b426950bf028814585c3f5de9be950b",
+      "relevant_semantics": ["receipt validates checkpoint/candidate lineage revision and time before commit", "failed commit yields no receipt", "successful receipt identifies one accepted revision and interval"]
+    },
+    {
+      "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+      "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+      "relevant_semantics": ["authoritative scalar transfer is retained", "spatial field publication is last", "target already bound fails closed", "runtime does not renormalize scalar mass"]
+    },
+    {
+      "path": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+      "blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+      "relevant_semantics": ["complete DIVDRA preflight occurs before generic runtime checkpoint", "only feature-active rows materialized", "temporary forcing field is cleaned after runtime", "scope is restricted serialized active DIVDRA"]
+    }
+  ],
+  "upstream_readiness_sources": [
+    {"work_unit":"F-PM08D3","closeout":"eb57bd2ffa9ee33a3d198e8424edc91556957344","role":"explicit mass equation, availability limiter and accepted-ledger ownership"},
+    {"work_unit":"F-PM08D4","closeout":"d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e","role":"restricted fixed-weir SWQHR1 balance, SWST authority and WLS derivation"},
+    {"work_unit":"F-PM08D5","closeout":"90f8aee150df928b2cc98938c98766f037658114","role":"explicit event translation, conditional WLSTAR state and automatic-capacity hold"},
+    {"work_unit":"F-CI36","canonical_final_head":"8fa79a70a9faccaf8b63826df607a685eb75b046","role":"restricted serialized single-level positive active DIVDRA callsite"}
+  ],
+  "runtime_risks": [
+    {"id":"D6-RISK-01-PARTIAL-STATE-PUBLICATION","hold":"SWST and conditional WLSTAR may not commit separately from the accepted physical candidate"},
+    {"id":"D6-RISK-02-PARTIAL-MASS-PUBLICATION","hold":"rejected or incomplete trials publish no accepted ledger contribution"},
+    {"id":"D6-RISK-03-MASS-TOLERANCE-AS-PHYSICS-CONCESSION","hold":"numeric mass_tolerance cannot excuse missing mass terms or physical clipping"},
+    {"id":"D6-RISK-04-DIVDRA-DOUBLE-BOOKING","hold":"book authoritative scalar drainage transfer once; node distribution is not extra water"},
+    {"id":"D6-RISK-05-WLSTAR-ROLLBACK","hold":"trial event/control changes must roll back exactly with rejected physical trial"},
+    {"id":"D6-RISK-06-WLS-DUPLICATE-STATE","hold":"fixed-weir WLS remains derived from SWST and cannot be an independently committed state"},
+    {"id":"D6-RISK-07-AUTOMATIC-CAPACITY-LEAKAGE","hold":"no route that needs the unqualified D5 automatic capacity decision may be accepted"},
+    {"id":"D6-RISK-08-SWQHR2-LEAKAGE","hold":"tabular SWQHR2 remains outside D6"},
+    {"id":"D6-RISK-09-MIXED-SIGN-LIMITER-LEAKAGE","hold":"D3 limiter-active mixed-sign secondary exchange remains excluded"},
+    {"id":"D6-RISK-10-CALENDAR-IN-KERNEL","hold":"runtime must split on externally supplied explicit events; calendar arithmetic is not a kernel dependency"},
+    {"id":"D6-RISK-11-SECOND-COMMIT-AUTHORITY","hold":"surface-water runtime cannot bypass F-KT checkpoint/candidate/commit lineage authority"},
+    {"id":"D6-RISK-12-DIVDRA-SCOPE-CREEP","hold":"multilevel, negative/infiltration or surface-water-controlled DIVDRA are not inferred from F-CI36"}
+  ],
+  "source_conclusion": "existing canonical transaction and runtime seams are structurally sufficient for a surface-water composition candidate; F-PM08D6 is readiness-only and does not modify those sources"
+}
