@@ -259,7 +259,7 @@ contains
        return
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
-        request%boundary%bottom_mode /= 5) then
+        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if
