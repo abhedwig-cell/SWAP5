@@ -1,0 +1,22 @@
+{
+  "schema":"swap5.fmq29_status.v1",
+  "work_unit":"F-MQ29",
+  "title":"Independent Parallel Committed-Boundary Restart Composition Qualification",
+  "phase":"CLOSED_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "decision":"QUALIFIED_PARALLEL_COMMITTED_BOUNDARY_RESTART_COMPOSITION",
+  "qualification_branch":"qualification/f-mq29-parallel-committed-restart-composition",
+  "canonical_source_authority":"6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+  "owner_candidate":"1e27f2758d9dbed11350aec5a089662921826d21",
+  "owner_closeout":"eef9cfa2cdb6b272ae9c0dd1f4ad0c90153953f4",
+  "authoritative_qualification_run":{"run":34496804763,"job":102937217405,"exact_head":"0d12ae06bd49b21540c403a29ced55add4c531bd","conclusion":"success"},
+  "implemented":true,
+  "persisted":true,
+  "tested":true,
+  "independently_qualified":true,
+  "canonical_admitted":false,
+  "production_change_required":false,
+  "production_source_modified_by_fmq29":false,
+  "qualified_scope":["restricted committed-boundary restart followed by restricted parallel real-physics MultiSWAP continuation","serialized/2-worker/4-worker committed restart origins","2/4-worker continuation including 2-to-4 and 4-to-2 transitions","whole-registry atomic restore","worker scratch reconstruction","canonical publication after changed caller order","hard per-column and aggregate mass preservation","held-out 3,5,9,16,23,33-column qualification","O0/O2 exact output identity"],
+  "nonclaims":["mid-transaction restart","trial-state persistence","worker/Newton/Jacobian/warm-start persistence","cross-version restart migration","restart file format","new parallel physics family","production-scale performance","general SWAP5 release qualification"],
+  "required_next_step":"Canonical admission may proceed only from the then-current integration/f-ci-canonical authority, replaying this exact independent evidence and preserving all current source blobs. F-CI35 is the next free canonical admission number at this closeout."
+}
