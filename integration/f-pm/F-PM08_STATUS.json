@@ -1,9 +1,15 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08",
   "title": "Drainage Process Boundary & Migration Readiness",
   "branch": "work/f-pm08-drainage-migration-readiness",
+  "status": "QUALIFIED_CLOSED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_migration_performed": false,
   "reservation_head_before_activation": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
   "reservation_was_content_free": true,
   "source_authority": {
@@ -21,7 +27,54 @@
     },
     "local_equation_level_copy_hashes_match_manifest": true
   },
+  "deliverables": {
+    "inventory": "integration/f-pm/F-PM08_DRAINAGE_INVENTORY.json",
+    "contract": "integration/f-pm/F-PM08_READINESS_CONTRACT.json",
+    "design_note": "integration/f-pm/F-PM08_DRAINAGE_MIGRATION_READINESS.md",
+    "evidence": "integration/f-pm/F-PM08_READINESS_EVIDENCE.json",
+    "gate": "tools/fpm/fpm08_drainage_migration_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08-drainage-migration-readiness.yml"
+  },
+  "qualification_candidate": {
+    "head": "0c127433f0f0932a4df2eba38afeedc8a41d736c",
+    "workflow_run": 34448090073,
+    "job_id": 102777256528,
+    "conclusion": "success"
+  },
+  "architecture_findings": {
+    "legacy_drainage_is_single_migration_object": false,
+    "families": [
+      "DRAINAGE_EXCHANGE_LAW",
+      "DRAINAGE_SPATIAL_DISTRIBUTION",
+      "SURFACE_WATER_STORAGE_AND_CONTROL"
+    ],
+    "current_kernel_consumes_precomputed_drainage_flux": true,
+    "current_generic_sink_derivative_contract_available": false,
+    "current_committed_hydraulic_view_contains_groundwater_level": true,
+    "fully_implicit_drainage_held": true
+  },
+  "selected_first_candidate": {
+    "child": "F-PM08A",
+    "title": "Restricted Single-Level Linear-Resistance Drainage Structural Candidate",
+    "scope": "SWDRA=1; DRAMET=3; NRLEVS=1; drainage-only; no interflow; no DIVDRA; no surface-water storage; no macropore; no solute",
+    "persistent_process_state": false,
+    "legacy_faithful_frozen_flux_within_soil_water_solve": true
+  },
+  "child_workunits": [
+    "F-PM08A restricted single-level linear-resistance drainage structural candidate",
+    "F-PM08B drainage spatial distribution and DIVDRA migration qualification",
+    "F-PM08C drainage response-law family and sensitivity qualification",
+    "F-PM08D surface-water-controlled drainage composition readiness"
+  ],
+  "hard_holds": [
+    "No full MOD_drainage namespace migration as one state object.",
+    "No DIVDRA, DRAMET=1, DRAMET=2, power interflow, reverse exchange or surface-water storage claim in F-PM08A.",
+    "No fully implicit head-dependent drainage until trial hydraulic-summary/GWL and source/sink derivative seams are separately qualified.",
+    "No process access to HeadCalc internals and no process mutation of a solver Jacobian.",
+    "No configurable drainage mass-conservation tolerance.",
+    "No daily, midnight, .dra-file or MODFLOW assumption in the drainage process contract."
+  ],
   "production_source_changed": false,
   "reference_source_changed": false,
-  "state": "IN_PROGRESS_SOURCE_BOUND_DRAINAGE_DECOMPOSITION"
+  "decision": "QUALIFIED_DRAINAGE_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"
 }
