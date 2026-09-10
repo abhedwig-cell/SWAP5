@@ -48,7 +48,7 @@ assert 'process_hydraulic_view_t' in r
 assert 'hydraulic_view%groundwater_level' in r
 assert 'DRAIN_ERNST_B110_DIFFL_CUTOFF = 1.0e-10_real64' in r
 assert 'gwl > prepared%interface_level' in r
-assert 'prepared%vertical_conductivity_top /= prepared%vertical_conductivity_bottom' in r
+assert 'abs(prepared%vertical_conductivity_top - prepared%vertical_conductivity_bottom) > 0.0_real64' in r
 assert 'total_resistance > 0.0_real64' in r
 assert 'prepared_geometry_is_shared_immutable = .true.' in r
 assert 'mass_is_authoritative_external_transfer = .true.' in r
@@ -70,8 +70,8 @@ for opt in 0 2; do
   mkdir -p "$OUT"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/mod_soil_water_solver_contract.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_process_hydraulic_view.f90 -o "$OUT/mod_process_hydraulic_view.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_drainage_ernst_ipos45_preparation.f90 -o "$OUT/mod_drainage_ernst_ipos45_preparation.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_drainage_ernst_ipos45_response.f90 -o "$OUT/mod_drainage_ernst_ipos45_response.o"
+  gfortran "${COMMON[@]}" -Werror=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_drainage_ernst_ipos45_preparation.f90 -o "$OUT/mod_drainage_ernst_ipos45_preparation.o"
+  gfortran "${COMMON[@]}" -Werror=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_drainage_ernst_ipos45_response.f90 -o "$OUT/mod_drainage_ernst_ipos45_response.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/fpm/test_fpm08c2c_ipos45_ernst_response.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "$OUT/mod_soil_water_solver_contract.o" "$OUT/mod_process_hydraulic_view.o" \
     "$OUT/mod_drainage_ernst_ipos45_preparation.o" "$OUT/mod_drainage_ernst_ipos45_response.o" "$OUT/test.o" -o "$OUT/test_fpm08c2c"
@@ -92,6 +92,7 @@ for opt in 0 2; do
   done
   echo "FPM08C2C_CANDIDATE_O${opt}=PASS"
 done
+echo 'FPM08C2C_NEW_PRODUCTION_COMPARE_REAL_WARNING_CLEAN=PASS'
 cmp "$BUILD/o0/output.txt" "$BUILD/o2/output.txt"
 echo 'FPM08C2C_CANDIDATE_O0_O2_OUTPUT_IDENTITY=PASS'
 cat "$BUILD/o0/output.txt"
