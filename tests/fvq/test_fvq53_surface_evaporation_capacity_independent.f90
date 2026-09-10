@@ -1,6 +1,6 @@
 program test_fvq53_surface_evaporation_capacity_independent
   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_physical_state_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, &
        initialize_b110_default_mvg_parameters, evaluate_b110_default_mvg_conductivity
@@ -78,10 +78,10 @@ program test_fvq53_surface_evaporation_capacity_independent
         expected = -k_face*((hatm-heads(ih))/geometry%node_distance(1) + 1.0_real64)
         call require_close(result%evaporation_capacity, expected, 536)
 
-        call require(all(state%pressure_head == head_before), 537)
-        call require(all(state%water_content == theta_before), 538)
-        call require(state%ponding_depth == pond_before, 539)
-        call require(state%groundwater_level == gw_before, 540)
+        call require(all_same_real_bits(state%pressure_head, head_before), 537)
+        call require(all_same_real_bits(state%water_content, theta_before), 538)
+        call require(same_real_bits(state%ponding_depth, pond_before), 539)
+        call require(same_real_bits(state%groundwater_level, gw_before), 540)
         oracle_cases = oracle_cases + 1
       end do
 
@@ -116,14 +116,14 @@ program test_fvq53_surface_evaporation_capacity_independent
 
   call unbound_provider%evaluate(state, result)
   call require(result%status == SURFACE_EVAP_CAPACITY_INVALID_INPUT, 547)
-  call require(result%evaporation_capacity == 0.0_real64, 548)
+  call require(same_real_bits(result%evaporation_capacity, 0.0_real64), 548)
 
   call bind_b110_surface_evaporation_capacity_provider(provider, geometry, candidate_hydraulics, &
        7, .false., .false., ok)
   call require(ok, 549)
   call provider%evaluate(state, result)
   call require(result%status == SURFACE_EVAP_CAPACITY_UNSUPPORTED_CONFIGURATION, 550)
-  call require(result%evaporation_capacity == 0.0_real64, 551)
+  call require(same_real_bits(result%evaporation_capacity, 0.0_real64), 551)
 
   call bind_b110_surface_evaporation_capacity_provider(provider, geometry, candidate_hydraulics, &
        0, .false., .false., ok)
@@ -364,6 +364,22 @@ contains
       kmean=-huge(1.0_real64)
     end select
   end function oracle_hcomean
+
+  pure logical function same_real_bits(a, b) result(equal)
+    real(real64), intent(in) :: a, b
+    equal = transfer(a, 0_int64) == transfer(b, 0_int64)
+  end function same_real_bits
+
+  pure logical function all_same_real_bits(a, b) result(equal)
+    real(real64), intent(in) :: a(:), b(:)
+    integer :: i
+    equal = .false.
+    if (size(a) /= size(b)) return
+    do i = 1, size(a)
+      if (.not. same_real_bits(a(i), b(i))) return
+    end do
+    equal = .true.
+  end function all_same_real_bits
 
   subroutine require_close(actual, expected_value, code)
     real(real64), intent(in) :: actual, expected_value
