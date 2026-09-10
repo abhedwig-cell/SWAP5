@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A3_O14_REFERENCE_ROOT_EXISTENCE_AND_EVENT_TOPOLOGY_DIAGNOSTIC",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "purpose": "Determine whether the E3H-A2 O14 tau-floor collapse is a local solver/bound artifact or evidence that an isolated top-node h=0 event requires a different near-saturation event topology. This is reference-only diagnosis, not Ross candidate qualification.",
+  "upstream": {
+    "A2_result_commit": "88aa8bf55ea75b46c7b0ca3f329fc4bce65a1cc0",
+    "A2_decision": "TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_FOR_ALL_MATERIALS_RESEARCH_REQUIRED",
+    "A2_O14_observation": "All 24 frozen profile x supply cases collapse to tau approximately 1e-8 d; drier profiles increase the unresolved balance residual."
+  },
+  "case_identity": {
+    "reuse_exact_A2_profiles": {
+      "P0_A1_CONTROL": [-0.2, -1.5, -5.0],
+      "P1_DRIER_SUBSOIL": [-0.5, -5.0, -10.0],
+      "P2_DRIER_TOP_AND_SUBSOIL": [-1.0, -10.0, -20.0],
+      "P3_STRONG_DRY_SEPARATION": [-2.0, -20.0, -50.0]
+    },
+    "reuse_exact_A2_supply_fractions_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "case_count": 24,
+    "no_new_fixture_grid": true
+  },
+  "event_equations": {
+    "reuse": "Exact E3H-A event residual: h0 fixed at 0 cm; three conservative cell balances plus exact surface-storage balance; bottom head unchanged at -15 cm.",
+    "surface_initial_storage_cm": 0.02,
+    "surface_storage_bounds_cm": [1e-12, 1.0],
+    "event_time_bounds_day": [1e-8, 0.05],
+    "reference_only": true,
+    "candidate_runs": 0
+  },
+  "only_diagnostic_scope_change": {
+    "A2_lower_node_upper_bound_cm": -1.0,
+    "A3_lower_node_upper_bound_cm": -1e-8,
+    "meaning": "Allow h1 and h2 to enter the already characterized near-saturation region while retaining negative head. No positive lower-node head is allowed."
+  },
+  "deterministic_multistart": {
+    "topology_starts_h1_h2_cm": [
+      [-1.0, -2.0],
+      [-0.8, -2.0],
+      [-0.2, -1.0],
+      [-0.02, -0.2]
+    ],
+    "surface_tau_starts": [
+      {"surface_cm": 0.02, "tau_day": 0.0001},
+      {"surface_cm": 0.45, "tau_day": 0.005},
+      {"surface_cm": 0.90, "tau_day": 0.03}
+    ],
+    "starts_per_case": 12,
+    "total_reference_solves": 288,
+    "solver": "scipy least_squares",
+    "xtol": 1e-13,
+    "ftol": 1e-13,
+    "gtol": 1e-13,
+    "max_nfev": 300,
+    "bounded_cost_note": "A3 is qualification-only diagnostic scratch; this cost is not a production candidate cost claim."
+  },
+  "valid_root_requirements": {
+    "solver_success": true,
+    "all_finite": true,
+    "max_abs_mass_or_surface_balance_residual_cm": 1e-9,
+    "strict_event_time_interior": "tau > 2e-8 d and tau < 0.049 d",
+    "strict_surface_interior": "surface > 1e-10 cm and surface < 0.999999 cm",
+    "physical_head_order": "0 >= h1 >= h2",
+    "committed_state_mutation": false,
+    "mass_repair_or_clipping": false
+  },
+  "reproducibility": {
+    "minimum_starts_in_same_cluster": 2,
+    "cluster_max_abs_h1_h2_difference_cm": 0.001,
+    "cluster_max_abs_surface_difference_cm": 1e-6,
+    "cluster_max_abs_event_time_difference_day": 1e-7,
+    "multiple_distinct_clusters": "Record all; do not select one silently."
+  },
+  "topology_classification": {
+    "ISOLATED_TOP_NODE": "h1 <= -1 cm and h2 <= -1 cm",
+    "SECOND_NODE_NEAR_SATURATION": "-1 < h1 < -1e-6 cm and h2 <= -1 cm",
+    "SECOND_NODE_AT_H0_BOUNDARY": "h1 >= -1e-6 cm and h2 <= -1 cm",
+    "MULTIPLE_LOWER_NODES_NEAR_SATURATION": "h2 > -1 cm",
+    "NO_REPRODUCIBLE_REFERENCE_ROOT": "No cluster satisfies the frozen validity and reproducibility rules."
+  },
+  "decision_logic": {
+    "isolated_root_found": "A2 O14 failure is primarily fixture-solver/bound related; next gate may investigate isolated-event solver policy without changing physics.",
+    "near_saturation_root_found": "The intended event is not isolated under the frozen O14 cases; next gate must characterize the corresponding multi-node/near-saturation event topology.",
+    "no_root_found": "Do not lower tau floor or extend the A2 grid. Investigate whether the event condition itself must be reformulated as a coupled complementarity/co-event problem."
+  },
+  "hard_guards": [
+    "Do not alter the 24 A2 O14 profile x supply cases.",
+    "Do not lower the 1e-8 d event-time floor.",
+    "Do not enlarge the 1 cm surface-storage/head scope.",
+    "Do not run or modify the Ross candidate in A3.",
+    "Do not treat a single-start least-squares solution as physical evidence.",
+    "Do not introduce positive h1/h2 in this diagnostic.",
+    "Do not qualify production behavior from A3."
+  ],
+  "architecture_checks": {
+    "transactionality": "Committed state is immutable throughout all diagnostic trials.",
+    "mass_conservation": "Only roots satisfying the unchanged 1e-9 cm conservative residual gate are evidence.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "physics_solver_policy_separation": "A3 changes only diagnostic bounds and starting guesses; physical equations, material parameters and forcing cases are unchanged.",
+    "bounded_cost": "12 fixed starts x 24 fixed cases; no adaptive case generation."
+  },
+  "positive_exit": "O14_REFERENCE_EVENT_ROOT_TOPOLOGY_CHARACTERIZED_READY_FOR_TARGETED_E3H_FOLLOWUP",
+  "negative_exit": "O14_REFERENCE_EVENT_ROOT_NOT_REPRODUCIBLY_ESTABLISHED_EVENT_FORMULATION_RESEARCH_REQUIRED",
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
