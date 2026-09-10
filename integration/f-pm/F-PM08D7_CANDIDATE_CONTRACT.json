@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D7",
+  "title": "Restricted Fixed-Weir Transactional Surface-Water Runtime Candidate",
+  "branch": "work/f-pm08d7-restricted-fixed-weir-transactional-runtime-candidate",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "exact_branch_base": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "terminal_requalification": {
+      "fci37_run": 34533272982,
+      "fci37_job": 103058847430,
+      "fci37_conclusion": "success",
+      "fci37p_run": 34533272987,
+      "fci37p_job": 103058848103,
+      "fci37p_conclusion": "success",
+      "broad_canonical_run": 34533272990,
+      "broad_canonical_conclusion": "success"
+    }
+  },
+  "authoritative_upstream": {
+    "F-PM08D1": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "F-PM08D3": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "F-PM08D4": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
+    "F-PM08D5": "90f8aee150df928b2cc98938c98766f037658114",
+    "F-PM08D6": "c6dfa29edd4b7dff6d89c06a83b9b449c20f67e9",
+    "F-CI36_restricted_DIVDRA_authority": "8fa79a70a9faccaf8b63826df607a685eb75b046"
+  },
+  "candidate_scope": {
+    "SWSEC": 2,
+    "SWMAN": 1,
+    "SWQHR": 1,
+    "single_level_positive_DIVDRA_only": true,
+    "surface_water_controlled_drainage": false,
+    "negative_or_infiltration_DIVDRA": false,
+    "multilevel_DIVDRA": false,
+    "automatic_management": false,
+    "SWQHR2": false,
+    "q_rapid_required_zero": true,
+    "V_top_surface_exchange_required_zero": true,
+    "macropore_active": false,
+    "top_boundary_semantics_unchanged": true,
+    "calendar_logic_inside_kernel": false,
+    "file_IO_inside_kernel": false
+  },
+  "physical_state": {
+    "surface_water_active_is_optional": true,
+    "persistent_payload_when_active": ["SWST"],
+    "WLS_is_derived": true,
+    "WLSTAR_absent_in_D7_fixed_weir_scope": true,
+    "inactive_columns_allocate_no_surface_water_state": true
+  },
+  "immutable_parameters": {
+    "prepared_D1_level_storage_relation": "shared through parameter registry entry, never duplicated per logical column",
+    "weir_head": "h_weir",
+    "rating_coefficient": "alpha",
+    "rating_exponent": "beta",
+    "supply_dip": "WLDIP",
+    "surface_water_option": "fixed-weir SWQHR1"
+  },
+  "trial_inputs": {
+    "authoritative_secondary_drainage_rate": "signed scalar q_drain_secondary; restricted candidate requires nonnegative single-level positive route",
+    "DIVDRA_node_field": "spatial distribution of the same scalar transfer and not additional mass",
+    "resolved_supply_capacity": "q_supply_available >= 0",
+    "rapid_drainage": 0,
+    "top_surface_exchange_volume": 0
+  },
+  "mass_system_boundary": {
+    "combined_transaction_storage": "soil water + ponding + optional snow + secondary SWST",
+    "secondary_drainage_classification": "internal soil-to-secondary-surface-water transfer",
+    "secondary_drainage_global_external_mass": false,
+    "supply_classification": "external inflow",
+    "fixed_weir_discharge_classification": "external outflow",
+    "accepted_global_mass_identity": "Delta(S_soil+ponding+snow+SWST) = other_external_in - other_external_out + dt*(q_supply-q_discharge)",
+    "surface_water_subbalance": "SWST1-SWST0 = dt*(q_drain_secondary+q_supply-q_discharge)",
+    "double_booking_forbidden": true,
+    "mass_tolerance": "numerical verification only; complete accounting is mandatory"
+  },
+  "fixed_weir_operator": {
+    "base_projection": "B = SWST0 + dt*q_drain_secondary",
+    "supply_target_storage": "S_supply = S(h_weir-WLDIP)",
+    "supply_rule": "if B<S_supply, q_supply=min(q_supply_available,max(0,(S_supply-B)/dt))",
+    "target_storage": "S_target=S(h_weir)",
+    "no_discharge_rule": "after actual supply, if B_after_supply<=S_target then q_discharge=0 and SWST1=B_after_supply",
+    "discharge_residual": "R(h)=S(h)+dt*alpha*(h-h_weir)^beta-B_after_supply",
+    "rating": "q_discharge=alpha*(h-h_weir)^beta",
+    "reference_solver": "monotone bracket/bisection on qualified D1 domain",
+    "state_result": "SWST1=S(h1) from the solved physical state; WLS derived from SWST1",
+    "mass_residual_and_rating_residual_separate": true,
+    "legacy_0p001cm_bisection_stop_rule_reproduced": false
+  },
+  "D1_mapping_policy": {
+    "22_knot_piecewise_linear_relation": true,
+    "strict_order_and_monotonicity_required": true,
+    "outside_domain_fail_closed": true,
+    "bottom_knot_rounding_not_silently_snapped": true,
+    "endpoint_interpolation_rounding_not_silently_clamped": true
+  },
+  "transaction_composition": {
+    "existing_FKT_is_only_commit_authority": true,
+    "surface_water_trial_updates_candidate_only": true,
+    "surface_water_storage_is_in_same_candidate_as_soil_state": true,
+    "rejected_trial_restores_exact_SWST": true,
+    "accepted_mass_complete_required": true,
+    "missing_mass_mask_zero_required": true,
+    "accepted_supply_discharge_diagnostics_published_only_from_accepted_trial": true
+  },
+  "temporal_scope": {
+    "generic_interval": "[t0,t1]",
+    "dt_positive": true,
+    "no_day_or_midnight_assumption": true,
+    "surface_water_balance_evaluated_on_each physical trial segment": true,
+    "surface_water_temporal_error_or_certificate_not_prequalified_by_D7": true,
+    "production_runtime_admission_requires_independent_followup_qualification": true
+  },
+  "hard_holds": [
+    "D7-HOLD-01-AUTOMATIC-CAPACITY-AND-WLSTAR-OUT-OF-SCOPE",
+    "D7-HOLD-02-SWQHR2-OUT-OF-SCOPE",
+    "D7-HOLD-03-RAPID-MACROPORE-DRAINAGE-REQUIRED-ZERO",
+    "D7-HOLD-04-TOP-SURFACE-EXCHANGE-RUNOTS-REQUIRED-ZERO",
+    "D7-HOLD-05-MIXED-SIGN-LIMITER-ROUTE-OUT-OF-SCOPE",
+    "D7-HOLD-06-NEGATIVE-MULTILEVEL-OR-SURFACE-WATER-CONTROLLED-DIVDRA-OUT-OF-SCOPE",
+    "D7-HOLD-07-DIVDRA-SCALAR-AND-NODE-FIELD-MAY-NOT-BE-DOUBLE-BOOKED",
+    "D7-HOLD-08-DRAINAGE-TO-SWST-MUST-BE-INTERNAL-IN-COMBINED-MASS-ACCOUNTING",
+    "D7-HOLD-09-D1-ENDPOINT-SEAMS-FAIL-CLOSED-NO-SILENT-CLAMP",
+    "D7-HOLD-10-LEGACY-D4-SWST-WLS-INCONSISTENCY-MAY-NOT-RETURN",
+    "D7-HOLD-11-NO-SECOND-COMMIT-AUTHORITY",
+    "D7-HOLD-12-NO-INDEPENDENT-SCIENTIFIC-RUNTIME-OR-CANONICAL-ADMISSION-CLAIM"
+  ],
+  "candidate_exit_criteria": [
+    "persist candidate before test",
+    "one explicit fixed-weir process operator with exact mass outputs",
+    "feature-optional SWST integrated in transactional physical-state clone/storage/completeness lifecycle",
+    "restricted runtime receives authoritative q_drain_secondary scalar and matching DIVDRA field",
+    "coupled qdra is removed from combined external-mass accounting exactly once",
+    "actual q_supply and q_discharge enter accepted external mass exactly once",
+    "all held routes fail closed",
+    "O0/O2 and deterministic A/B/A tests",
+    "rollback and accepted-ledger tests",
+    "all 30 architecture invariants audited",
+    "no reference source changes",
+    "independent qualification still required"
+  ]
+}
