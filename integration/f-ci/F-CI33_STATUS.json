@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.canonical_runtime_source_admission_status.v1",
+  "work_unit": "F-CI33",
+  "title": "F-MR33 Restricted DIVDRA Runtime Binding Canonical Source Admission",
+  "branch": "qualification/f-ci33-fmr33-divdra-runtime-canonical-admission",
+  "phase": "PRETEST_CONTRACT_PERSISTED",
+  "decision": "OPEN_FMR33_DIVDRA_RUNTIME_CANONICAL_ADMISSION",
+  "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
+  "candidate": {
+    "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
+    "qualification_closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6",
+    "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "upstream": {
+    "f_ci32_exact_canonical_head_requalified": true,
+    "f_ci32_exact_head_successful_workflow_runs": 4,
+    "f_vq49_exact_closeout_rerun_success": true,
+    "f_vq49_exact_closeout_run": 34483080296,
+    "f_vq49_exact_closeout_job": 102890456097
+  },
+  "state": {
+    "live_name_checked_free": true,
+    "live_canonical_rechecked": true,
+    "branch_created_from_exact_canonical": true,
+    "plan_persisted": true,
+    "pretest_status_persisted": true,
+    "candidate_source_persisted": false,
+    "candidate_blob_exact": false,
+    "admission_gate_persisted": false,
+    "workflow_persisted": false,
+    "architecture_audit_persisted": false,
+    "tested": false,
+    "qualified_for_fast_forward": false,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_ci_passed": false,
+    "final_governance_head_requalified": false
+  },
+  "scope_guard": {
+    "scientific_requalification": false,
+    "independent_runtime_requalification": false,
+    "process_source_change": false,
+    "solver_or_kernel_change": false,
+    "reference_change": false,
+    "runtime_callsite_composition": false,
+    "automatic_execution_claimed": false
+  },
+  "pass_decision": "QUALIFIED_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_CANONICAL_SOURCE_ADMISSION_READY_FOR_FAST_FORWARD"
+}
