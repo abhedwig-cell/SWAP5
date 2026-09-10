@@ -1,13 +1,24 @@
 {
-  "schema": "swap5.runtime_composition_status.v1",
+  "schema": "swap5.runtime_composition_status.v2",
   "work_unit": "F-MR34",
-  "phase": "CONTRACT_PERSISTED_BEFORE_PRODUCTION_CHANGE",
-  "decision": "IN_PROGRESS_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE",
+  "phase": "COMPLETE_PRETEST_CANDIDATE_PERSISTED",
+  "decision": "IN_PROGRESS_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_OWNER_GATE",
   "base_canonical_head": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "production_candidate": {
+    "composition_path": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "active_runtime_path": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "active_runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77",
+    "generic_serialized_runtime_blob_unchanged": "fe5a06c9af59308cdad86c5126379f413591b0cd"
+  },
   "state": {
     "realized": true,
     "contract_persisted": true,
-    "production_implemented": false,
+    "design_amendment_persisted": true,
+    "production_implemented": true,
+    "test_harness_persisted": true,
+    "architecture_audit_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "canonical_admitted": false
@@ -17,6 +28,7 @@
     "explicit_hydraulic_view_only": true,
     "external_scalar_transfer_only": true,
     "active_runtime_callsite": true,
+    "generic_runtime_source_modified": false,
     "parallel_active_callsite": false,
     "fully_implicit_drainage": false,
     "surface_water_control": false
@@ -27,5 +39,16 @@
     "second_mass_booking_forbidden": true,
     "mass_conservation_hard": true
   },
-  "next_required_step": "implement the smallest production callsite on this persisted contract and test it before owner closeout"
+  "preflight_governance": {
+    "complete_request_set_checked_before_core_runtime": true,
+    "shared_forcing_handle_active_request_rejected": true,
+    "preexisting_drainage_target_rejected": true,
+    "invalid_process_request_rejected_before_checkpoint": true
+  },
+  "architecture": {
+    "audit": "integration/f-mr/F-MR34_ARCHITECTURE_AUDIT.json",
+    "invariants_audited": 30,
+    "invariants_no_adverse_delta": 30
+  },
+  "next_required_step": "run the persisted F-MR34 owner CI gate; classify any failure before changing production code"
 }
