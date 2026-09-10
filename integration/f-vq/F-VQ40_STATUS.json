@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "workstream": "F-VQ",
+  "work_unit": "F-VQ40",
+  "title": "Independent Requalification of Remediated DRAMET=1 Tabulated Drainage Response",
+  "branch": "qualification/f-vq40-fpm08c1r-tabulated-drainage",
+  "status": "IN_PROGRESS_INDEPENDENT_SOURCE_BOUND_REQUALIFICATION",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "remediated_candidate_closeout": "d87e21c9603063add7a7440a0aebe6fbac326d03",
+  "candidate_production_file": "src/process/mod_drainage_tabulated_response.f90",
+  "candidate_production_blob": "738f57c334910ab73bc8870e3aa8dda1c1a48c7a",
+  "triggering_fail_closed_qualification": {
+    "work_unit": "F-VQ39",
+    "decision": "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION",
+    "fail_closed_replay_head": "55e7f5180fdcfcbdb0b3923b841353f5fea46a68"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "functions_f90_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "production_source_changes": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false
+}
