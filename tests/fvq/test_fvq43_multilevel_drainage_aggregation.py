@@ -97,7 +97,7 @@ end program fvq43_driver
 def compile_driver(tmp, optimization):
     exe = Path(tmp, f"driver_{optimization.replace('-', '')}")
     cp = sh(
-        "gfortran", "-std=f2008", "-Wall", "-Wextra", "-Werror=compare-reals", optimization,
+        "gfortran", "-std=f2008", "-ffree-line-length-none", "-Wall", "-Wextra", "-Werror=compare-reals", optimization,
         "-J", tmp, "-I", tmp, str(Path(tmp, "candidate.f90")), str(Path(tmp, "driver.f90")),
         "-o", str(exe), check=False,
     )
@@ -255,8 +255,7 @@ def main():
             dq_values = [x["dq"] for x in levels]
             q_ref = sequential_sum(q_values)
             dq_ref = sequential_sum(dq_values)
-            require_condition = row["status"] == 0 and row["evaluated"] and row["derivative_defined"]
-            if not require_condition:
+            if not (row["status"] == 0 and row["evaluated"] and row["derivative_defined"]):
                 raise AssertionError(f"legacy-range valid aggregation rejected n={len(levels)} row={row}")
             qerr = abs(row["q"] - q_ref)
             dqerr = abs(row["dq"] - dq_ref)
