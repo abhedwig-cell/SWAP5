@@ -1,19 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C3",
   "title": "Empirical Interflow Response and Singular-Tangent Policy",
   "branch": "work/f-pm08c3-empirical-interflow-response",
-  "status": "IN_PROGRESS_SOURCE_BOUND_STRUCTURAL_CANDIDATE",
+  "status": "QUALIFIED_CLOSED",
   "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "tested_candidate_head": "fde8b2a6d87ba9eeddcae105c62665c62ef5e84c",
+  "candidate_production_file": "src/process/mod_drainage_empirical_interflow_response.f90",
+  "candidate_production_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
   "state": {
     "contract_persisted": true,
-    "production_implemented": false,
-    "tested": false,
-    "structurally_qualified": false,
+    "production_implemented": true,
+    "persisted": true,
+    "tested": true,
+    "structurally_qualified": true,
     "scientifically_qualified": false,
     "runtime_qualified": false,
     "canonical_admission_qualified": false
+  },
+  "qualification": {
+    "workflow_run_id": 34460539542,
+    "job_id": 102817058752,
+    "conclusion": "success",
+    "candidate_output_sha256": "e0e0f437cee9bc7090d1fdc4cd9c65935ea2969c4494e42011b4c7a054dedb3f",
+    "invariant_audit_count": 30
   },
   "architecture": {
     "kernel_io_separated": true,
@@ -21,8 +32,20 @@
     "persistent_process_state": false,
     "solver_jacobian_owned_by_process": false,
     "mass_conservation_relaxed": false,
+    "finite_flux_preserved_when_only_tangent_unavailable": true,
     "generic_time_contract_preserved": true,
     "bounded_cost_policy_owned_outside_physics": true
   },
-  "next_required_step": "implement the single stateless interflow response module and source-bound qualification gate"
+  "holds": {
+    "full_dramet3_exchange": true,
+    "negative_side_infiltration": true,
+    "multi_level_composition": true,
+    "divdra": true,
+    "surface_water_control": true,
+    "fully_implicit_activation_singularity": true,
+    "runtime_admission": true,
+    "canonical_admission": true
+  },
+  "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_RESPONSE_READY_FOR_INDEPENDENT_SCIENTIFIC_QUALIFICATION",
+  "next_required_step": "independent source-bound scientific qualification of the exact closeout production blob"
 }
