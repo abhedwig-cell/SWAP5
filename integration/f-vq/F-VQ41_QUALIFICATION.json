@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ41",
+  "title": "Independent Qualification of F-MR26 Reference-ET ptra Root-Input Ownership Binding",
+  "branch": "qualification/f-vq41-fmr26-reference-et-ptra-root-input",
+  "decision": "QUALIFIED_REFERENCE_ET_PTRA_ROOT_INPUT_OWNERSHIP_BINDING_READY_FOR_CANONICAL_ADMISSION",
+  "owner_closeout": "e99e144b4f2bedcbb93d06af578cb409dc76f6c7",
+  "qualified_head": "9a13c599e7e45d4717c681a7800a9f88730c73e1",
+  "candidate": {
+    "source": "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90",
+    "blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
+    "production_source_changed_by_qualification": false
+  },
+  "frozen_dependencies": {
+    "F_MR23_runtime_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "reference_ET_process_blob": "f5e88ec5089fd3b57ac111065fab2aa32dde0fae",
+    "crop_root_input_contract_blob": "cc5594f6c7a91ac2ff37af611d40c740b7f25521",
+    "F_MR12_adapter_blob": "9105126c219cbd06fadfa7757ba95d7b7bd0499b",
+    "F_WOF18_role": "historical formula-equivalence evidence only"
+  },
+  "independent_oracle": {
+    "active_grid_cases": 2304,
+    "dimensions": {
+      "reference_ET_rates": 4,
+      "vegetation_cover_fractions": 4,
+      "crop_factors": 3,
+      "CO2_factors": 3,
+      "incoming_ptra_variants": 4,
+      "root_geometries": 2,
+      "generic_interval_locations": 2
+    },
+    "formula": "max(ETr*cover*cf*0.1,0)*fco2tra",
+    "incoming_ptra_variants": ["conflicting finite", "negative", "zero", "NaN"],
+    "fail_closed_cases": ["upstream status rejected", "result_produced false", "invalid active_nodes", "invalid root geometry", "forged nonemerged nonzero ptra", "nonfinite authoritative ptra", "negative authoritative ptra"]
+  },
+  "qualification": {
+    "workflow_run_id": 34460907655,
+    "workflow_job_id": 102818253052,
+    "conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0",
+    "O0_pass": true,
+    "O2_pass": true,
+    "O0_O2_output_identity": true,
+    "output_sha256": "a9707200f4cbb258a502baf45f1ac9aa5d9d5a78205a56efc54bb1b63694b78f"
+  },
+  "verified_claims": {
+    "F_MR23_result_matches_independent_frozen_formula": true,
+    "F_MR26_forwards_F_MR23_ptra_exactly": true,
+    "incoming_crop_root_ptra_is_non_authoritative": true,
+    "root_geometry_preserved_exactly": true,
+    "nonemerged_route_produces_zero_ptra": true,
+    "invalid_inputs_fail_closed": true,
+    "candidate_recomputes_ET_physics": false,
+    "candidate_executes_root_uptake": false,
+    "candidate_books_mass": false,
+    "candidate_adds_persistent_state": false
+  },
+  "plan_correction": {
+    "initial_incorrect_case_count": 4608,
+    "correct_case_count": 2304,
+    "reason": "4*4*3*3*4*2*2 = 2304",
+    "qualification_dimension_removed": false,
+    "scientific_scope_weakened": false
+  },
+  "nonclaims": [
+    "root-water uptake execution",
+    "actual transpiration",
+    "mass-ledger booking",
+    "interval integration",
+    "crop lifecycle advancement",
+    "canonical admission"
+  ]
+}
