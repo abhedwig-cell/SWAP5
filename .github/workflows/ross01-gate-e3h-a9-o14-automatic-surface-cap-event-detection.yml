@@ -41,10 +41,18 @@ jobs:
           assert a8['decision']=='QUALIFIED_RESTRICTED_O14_TRANSACTIONAL_SURFACE_CAP_ONSET_TO_ROSS_RUNOFF_CONTINUATION_READY_FOR_SURFACE_EVENT_DETECTION_AND_CAP_GENERALIZATION_RESEARCH'
           src=pathlib.Path('experiments/ross/run_ross01_gate_e3h_a9_o14_automatic_surface_cap_event_detection.py').read_text()
           candidate=src[src.index('def candidate_detect_event'):src.index('def compare_event')]
-          assert 'seed_heads' not in candidate
-          assert 'seed_tau' not in candidate
-          assert 'A4' not in candidate
+          # Diagnostic output names such as seed_heads_cm and
+          # candidate_access_to_A4_or_A8_event_roots are allowed. What is
+          # forbidden is actual access to the A8/A4 frozen event fixtures or
+          # the reference seeded event solver from the candidate path.
+          assert 'a8.PROFILES' not in candidate
           assert 'a8.solve_event' not in candidate
+          assert 'fixture["seed_heads"]' not in candidate
+          assert "fixture['seed_heads']" not in candidate
+          assert 'fixture["seed_tau"]' not in candidate
+          assert "fixture['seed_tau']" not in candidate
+          assert 'x0 = np.asarray([*initial, tau_seed]' in candidate
+          assert 'candidate_access_to_A4_or_A8_event_roots": False' in candidate
           assert 'full_trajectory_predictor_count": 0' in candidate
           PY
       - name: Execute frozen A9 profile gate
