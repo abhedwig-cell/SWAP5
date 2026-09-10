@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A3_O14_REFERENCE_ROOT_EXISTENCE_AND_EVENT_TOPOLOGY_DIAGNOSTIC",
+  "contract": "F-ROSS01_GATE_E3H_A3_O14_REFERENCE_ROOT_EXISTENCE_AND_EVENT_TOPOLOGY_DIAGNOSTIC_PRECOMMIT.json",
+  "status": "DIAGNOSTIC_COMPLETE_NEGATIVE_ROOT_EXISTENCE_EVIDENCE",
+  "production_implementation": false,
+  "qualification_use": false,
+  "material": "O14",
+  "workflow": {
+    "run": 34462264532,
+    "head": "e745ac46bd5c262a553818bf2e8c7403375d2f7f",
+    "conclusion": "success",
+    "meaning": "All frozen diagnostic work completed; workflow success is not a positive physical qualification."
+  },
+  "frozen_case_identity": {
+    "profiles": ["P0_A1_CONTROL", "P1_DRIER_SUBSOIL", "P2_DRIER_TOP_AND_SUBSOIL", "P3_STRONG_DRY_SEPARATION"],
+    "supply_fractions_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "cases": 24,
+    "starts_per_case": 12,
+    "total_reference_solves": 288,
+    "candidate_runs": 0,
+    "event_time_bounds_day": [1e-8, 0.05],
+    "surface_storage_bounds_cm": [1e-12, 1.0],
+    "lower_node_upper_bound_cm": -1e-8,
+    "event_constraint": "h0 = 0 cm with three conservative cell balances plus exact surface-storage balance"
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id": 10146075324, "digest": "sha256:fde0daf7faccee726676b1635762e15704a051dabb96126fa1b1d66ecc56ad12", "reference_solves": 72, "reproducible_cases": 0},
+    "P1_DRIER_SUBSOIL": {"id": 10146071114, "digest": "sha256:713328a1276721c5af59ed85f217f2bfbe56c0faa09bdd22adb7eabe26c7b206", "reference_solves": 72, "reproducible_cases": 0},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id": 10146070446, "digest": "sha256:7b63bf4af7d8762a28bae7ab892932ddd8213b6193fd95109d7c82c3843cf3b7", "reference_solves": 72, "reproducible_cases": 0},
+    "P3_STRONG_DRY_SEPARATION": {"id": 10146070938, "digest": "sha256:adc27d339435ac448ece17809af694e7ce6582507f963a96d12546bd9e38d945", "reference_solves": 72, "reproducible_cases": 0}
+  },
+  "aggregate_result": {
+    "profiles_complete": 4,
+    "cases_complete": 24,
+    "reference_solves_complete": 288,
+    "reproducible_reference_root_cases": 0,
+    "topology_case_counts": {},
+    "all_committed_state_bitwise_unchanged": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "interpretation": [
+    "Relaxing the A2 lower-node upper bound from -1 cm to -1e-8 cm does not reveal a reproducible conservative O14 root in any of the 24 frozen profile x supply cases.",
+    "Twelve deterministic starts per case, spanning four lower-node topology starts and three surface/time starts, do not rescue the isolated h0=0 event formulation.",
+    "Therefore the A2 O14 pathology is not adequately explained by one poor starting guess or by the former h1,h2<=-1 cm diagnostic bound.",
+    "This remains negative evidence about the isolated event formulation, not a falsification of Ross physics or of the already qualified surface-face flux law.",
+    "The next scientific question is whether the physically correct event is a coupled complementarity/co-event condition rather than an isolated top-node equality h0=0 imposed together with a strictly positive surface-storage unknown."
+  ],
+  "decision": "O14_REFERENCE_EVENT_ROOT_NOT_REPRODUCIBLY_ESTABLISHED_EVENT_FORMULATION_RESEARCH_REQUIRED",
+  "positive_exit_reached": false,
+  "next_gate": "E3H_A4_O14_COUPLED_SURFACE_SOIL_COMPLEMENTARITY_EVENT_FORMULATION_DIAGNOSTIC",
+  "hard_guards": [
+    "Do not lower the 1e-8 d event-time floor.",
+    "Do not extend or retune the A2 profile/supply grid.",
+    "Do not change O14 material physics or the qualified 5 cm surface-face law.",
+    "Do not infer production candidate failure from this reference-only diagnostic.",
+    "A4 must change the event formulation explicitly and preserve exact conservative bookkeeping and committed-state immutability."
+  ],
+  "architecture_checks": {
+    "transactionality": "All 288 trials leave committed state unchanged.",
+    "mass_conservation": "Only roots meeting the unchanged 1e-9 cm balance requirement could count; none did.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "physics_solver_policy_separation": "No physics or forcing was changed; A3 only changed diagnostic bounds and deterministic starts.",
+    "bounded_cost": "Fixed 24 cases x 12 starts; no adaptive case generation."
+  },
+  "hard_nonclaims": [
+    "No claim that an O14 top-node saturation event is physically impossible.",
+    "No simultaneous multi-node saturation topology has yet been qualified.",
+    "No production, runtime, MultiSWAP, response-tangent or groundwater admission."
+  ]
+}
