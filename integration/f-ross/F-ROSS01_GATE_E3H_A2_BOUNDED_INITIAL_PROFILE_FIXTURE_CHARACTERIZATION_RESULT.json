@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A2_BOUNDED_INITIAL_PROFILE_FIXTURE_CHARACTERIZATION",
+  "status": "CHARACTERIZED_MIXED_3_OF_4_NOT_QUALIFIED",
+  "production_implementation": false,
+  "qualification_use": false,
+  "workflow": {
+    "run": 34460466236,
+    "head": "a45cc591ec0a6e6ea6c3b500919302cafaee316f",
+    "conclusion": "failure_as_frozen",
+    "material_jobs_passed": 3,
+    "material_jobs_total": 4
+  },
+  "frozen_search_identity": {
+    "profiles": {
+      "P0": [-0.2, -1.5, -5.0],
+      "P1": [-0.5, -5.0, -20.0],
+      "P2": [-1.0, -10.0, -40.0],
+      "P3": [-2.0, -20.0, -80.0]
+    },
+    "supply_fractions_of_ksat": [1.5, 2.0, 3.0, 5.0, 8.0, 12.0],
+    "cases_per_material": 24,
+    "total_cases": 96,
+    "tau_bounds_day": [1e-8, 0.05],
+    "surface_storage_bounds_cm": [1e-12, 1.0],
+    "event_constraint": "top node h0 = 0 cm",
+    "lower_node_scope_in_this_characterization": "h1,h2 <= -1 cm",
+    "selection_rule": "first passing fixture in P0..P3 then ascending frozen supply order"
+  },
+  "artifacts": {
+    "B01": {"id": 10145339541, "digest": "sha256:337227755207ceb7698ba4549b795680863025cc5e09e670b5eb9ea0a525deef"},
+    "B12": {"id": 10145370798, "digest": "sha256:3983aad1a4cdcb2fd5b96dec6c22f8027888461139885627f6ba9c27ea8a5d41"},
+    "O13": {"id": 10145352345, "digest": "sha256:d17b8f93525bff27f8c22817a3e1e298efc9262f6e1574ac0c8d9ff9e5408735"},
+    "O14": {"id": 10145346732, "digest": "sha256:efa4cc96c6f006392412d9ac3ea1a862222f1aaa8853337a239a2ca9c612cd21"}
+  },
+  "per_material": {
+    "B01": {
+      "pass": true,
+      "valid_fixture_count": 10,
+      "selected_profile_id": "P0",
+      "selected_initial_heads_cm": [-0.2, -1.5, -5.0],
+      "selected_supply_fraction_of_ksat": 5.0,
+      "candidate_event_time_day": 0.010526565032302275,
+      "reference_event_time_day": 0.010526282511282626,
+      "event_time_abs_difference_day": 2.825210196485017e-7,
+      "max_abs_head_difference_cm": 0.003950252720143376,
+      "max_abs_surface_storage_difference_cm": 2.6187731530105125e-5,
+      "selected_max_abs_balance_residual_cm": 9.992007221626409e-16,
+      "interpretation": "Preserves the E3H-A positive-control fixture exactly."
+    },
+    "B12": {
+      "pass": true,
+      "valid_fixture_count": 5,
+      "selected_profile_id": "P2",
+      "selected_initial_heads_cm": [-1.0, -10.0, -40.0],
+      "selected_supply_fraction_of_ksat": 8.0,
+      "candidate_event_time_day": 0.02587623027259322,
+      "reference_event_time_day": 0.025876230354319896,
+      "event_time_abs_difference_day": 8.172667681937141e-11,
+      "candidate_event_lower_heads_cm": [-1.242120248854399, -36.04815339733282],
+      "candidate_surface_storage_cm": 0.10091015226889377,
+      "max_abs_head_difference_cm": 6.785132455888966e-9,
+      "max_abs_surface_storage_difference_cm": 7.298961990143571e-11,
+      "selected_max_abs_balance_residual_cm": 2.7755575615628914e-16,
+      "interpretation": "The A1 second-node -1 cm scope collision is removed by the frozen drier-profile search without changing event physics or tolerances."
+    },
+    "O13": {
+      "pass": true,
+      "valid_fixture_count": 7,
+      "selected_profile_id": "P2",
+      "selected_initial_heads_cm": [-1.0, -10.0, -40.0],
+      "selected_supply_fraction_of_ksat": 8.0,
+      "candidate_event_time_day": 0.008018219173566143,
+      "reference_event_time_day": 0.008018219173269185,
+      "event_time_abs_difference_day": 2.969568479116169e-13,
+      "candidate_event_lower_heads_cm": [-1.345810690377919, -38.32769933925772],
+      "candidate_surface_storage_cm": 0.23045337359986234,
+      "max_abs_head_difference_cm": 2.429132450520788e-9,
+      "max_abs_surface_storage_difference_cm": 1.0498485416567942e-12,
+      "selected_max_abs_balance_residual_cm": 2.609024107869118e-15,
+      "interpretation": "The A1 second-node -1 cm scope collision is removed by the frozen drier-profile search without changing event physics or tolerances."
+    },
+    "O14": {
+      "pass": false,
+      "valid_fixture_count": 0,
+      "selected_fixture": null,
+      "failure_class": "EVENT_TIME_COLLAPSES_TO_FROZEN_LOWER_BOUND_FOR_ALL_24_CASES",
+      "observed_event_time_order_day": 1.0000001e-8,
+      "max_candidate_balance_residual_by_profile_cm": {
+        "P0": 1.05472e-5,
+        "P1": 4.62179e-5,
+        "P2": 1.41720e-4,
+        "P3": 4.34627e-4
+      },
+      "supply_grid_sensitivity": "weak; changing 1.5..12 KSAT does not remove the lower-bound pathology",
+      "local_balance_observation": "At representative lower-bound trials q01 exceeds qtop, so the fixed h0=0 top-cell event would require storage gain while the local flux difference drives storage loss; the optimizer therefore collapses tau toward zero.",
+      "important_nonconclusion": "This does not prove that an isolated O14 top-node h=0 event root is physically impossible. For P0 the maximum allowed surface-face flux within the 0..1 cm surface-head scope exceeds the representative q01, so root existence remains an open topology/solver question."
+    }
+  },
+  "global_interpretation": [
+    "The finite initial-profile search resolves the prior B12 and O13 fixture-scope failures and preserves B01 as an unchanged positive control.",
+    "O14 fails all 24 frozen cases at the event-time lower bound and becomes worse as the frozen profile is made drier.",
+    "Therefore extending the profile grid, lowering the tau floor, or changing the supply grid is not justified by A2 evidence.",
+    "The next step must be reference-only O14 root-existence/event-topology diagnosis before any Ross candidate or qualification policy changes."
+  ],
+  "decision": "TOP_NODE_H0_EVENT_FIXTURE_NOT_ESTABLISHED_FOR_ALL_MATERIALS_RESEARCH_REQUIRED",
+  "positive_exit_reached": false,
+  "preserved_positive_subscope": ["B01", "B12", "O13"],
+  "next_gate": "E3H_A3_O14_REFERENCE_ROOT_EXISTENCE_AND_EVENT_TOPOLOGY_DIAGNOSTIC",
+  "hard_guards": [
+    "Do not lower the 1e-8 day event-time floor based on this result.",
+    "Do not extend or tune the A2 profile/supply grids after observing O14.",
+    "Do not treat the O14 fixture failure as a Ross-physics falsification.",
+    "Do not alter the already qualified B01/B12/O13 fixtures in A3.",
+    "A3 is diagnostic/reference-only and may not qualify a production candidate."
+  ],
+  "architecture_checks": {
+    "mass_conservation": "All selected B01/B12/O13 fixtures close within the frozen mass gate; invalid O14 trials are not committed.",
+    "transactionality": "Committed input state remains unchanged during all characterization trials.",
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "physics_solver_policy_separation": "No material-specific physics or tolerance changes were introduced; only a frozen fixture grid was characterized."
+  },
+  "hard_nonclaims": [
+    "No all-material top-node saturation-event qualification.",
+    "No O14 root-existence conclusion.",
+    "No simultaneous multi-node saturation topology qualification.",
+    "No production, runtime, MultiSWAP, response-tangent or groundwater admission."
+  ]
+}
