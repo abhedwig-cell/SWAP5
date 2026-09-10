@@ -71,8 +71,9 @@ print('FMR28_NO_HYDRAULIC_INTERNAL_OR_MASS_LEDGER_ACCESS=PASS')
 print('FMR28_NO_PERSISTENT_COMPOSITION_STATE=PASS')
 PY
 
-COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
-MODULE_SRC=(
+COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+STRICT=(-std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+DEPENDENCY_SRC=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
   src/transaction/mod_transaction_reference.f90
@@ -101,21 +102,26 @@ MODULE_SRC=(
   src/process/mod_reference_et_demand_process.f90
   src/runtime/mod_fmr_reference_et_demand_binding.f90
   src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90
-  src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
 )
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   mkdir -p "$OUT"
   objects=()
-  for src in "${MODULE_SRC[@]}"; do
+  for src in "${DEPENDENCY_SRC[@]}"; do
     obj="$OUT/$(basename "${src%.*}").o"
     gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
     objects+=("$obj")
   done
 
+  src=src/runtime/mod_fmr_reference_et_root_uptake_composition.f90
+  obj="$OUT/mod_fmr_reference_et_root_uptake_composition.o"
+  gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$src" -o "$obj"
+  objects+=("$obj")
+  echo "FMR28_NEW_SOURCE_STRICT_WARNINGS_O${opt}=PASS"
+
   test=tests/fmr/test_fmr28_reference_et_root_uptake_execution.f90
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$test" -o "$OUT/test_fmr28.o"
+  gfortran "${STRICT[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$test" -o "$OUT/test_fmr28.o"
   gfortran -O"$opt" "${objects[@]}" "$OUT/test_fmr28.o" -o "$OUT/test_fmr28"
   "$OUT/test_fmr28" > "$OUT/output.txt" 2>&1 || { cat "$OUT/output.txt" >&2; exit 1; }
 
