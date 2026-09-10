@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08D6",
+  "branch": "work/f-pm08d6-transactional-surface-water-runtime-readiness",
+  "activation_base": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "decisive_precloseout": {
+    "head": "cdc37c41e9f24954de1ab2c697edcbe2ec41b496",
+    "run_id": 34532341659,
+    "job_id": 103055823586,
+    "conclusion": "success"
+  },
+  "upstream_live_rechecks": {
+    "F-CI36_final_governance_head": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "F-CI36_exact_head_run": 34527338720,
+    "F-CI36_exact_head_conclusion": "success",
+    "F-PM08D3_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "F-PM08D4_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
+    "F-PM08D5_closeout": "90f8aee150df928b2cc98938c98766f037658114"
+  },
+  "gate_results": {
+    "readiness_only_file_delta": "PASS",
+    "no_production_source_delta": "PASS",
+    "no_reference_source_delta": "PASS",
+    "all_runtime_blob_locks": "PASS",
+    "all_upstream_closeout_locks": "PASS",
+    "F-CI36_restricted_scope_lock": "PASS",
+    "fixed_weir_scope_lock": "PASS",
+    "automatic_capacity_not_admitted": "PASS",
+    "SWQHR2_not_admitted": "PASS",
+    "mass_equation_bound": "PASS",
+    "mass_complete_required": "PASS",
+    "missing_mask_zero_required": "PASS",
+    "authoritative_scalar_DIVDRA_single_booking": "PASS",
+    "mass_tolerance_numeric_only": "PASS",
+    "compact_state_SWST_and_conditional_WLSTAR": "PASS",
+    "rollback_all_physical_state": "PASS",
+    "all_30_architecture_invariants": "PASS",
+    "existing_FKT_commit_authority_reused": "PASS",
+    "DIVDRA_preflight_before_runtime": "PASS",
+    "DIVDRA_temporary_field_cleanup": "PASS",
+    "executable_transaction_oracle": "PASS"
+  },
+  "oracle_summary": {
+    "fixed_weir_accepted_cases": 10000,
+    "fixed_weir_attempts": 11699,
+    "missing_mass_failclosed_cases": 2000,
+    "event_split_cases": 5000,
+    "automatic_WLSTAR_accepted_control_only_cases": 2000,
+    "automatic_capacity_held_WLSTAR_rollback_cases": 2000,
+    "DIVDRA_single_booking_cases": 5000,
+    "held_route_rejections": 4000,
+    "max_accepted_mass_residual_abs": 1.3600232051658168e-14,
+    "max_accepted_mass_residual_rel": 2.1539519953936236e-16,
+    "max_DIVDRA_distribution_residual_abs": 1.7763568394002505e-15
+  },
+  "scientific_and_architecture_conclusions": [
+    "surface-water accepted mass must be complete before any numeric residual threshold is considered",
+    "the exact scalar secondary drainage transfer is booked once; its DIVDRA node distribution is not additional water",
+    "fixed-weir persistent physical state remains SWST and WLS remains derived",
+    "automatic-control persistent state adds WLSTAR only when SWMAN=2 is active",
+    "a rejected trial leaves SWST, WLSTAR and accepted ledger unchanged",
+    "explicit control events subdivide generic time intervals before trial execution",
+    "existing F-KT checkpoint/candidate/commit authority is sufficient and must not be duplicated",
+    "automatic discharge-capacity-dependent physical routes, SWQHR2, limiter-active mixed-sign exchange and unqualified DIVDRA remain fail-closed"
+  ],
+  "production_changes": false,
+  "reference_changes": false,
+  "runtime_implementation_qualified": false,
+  "canonical_admission_qualified": false
+}
