@@ -5,34 +5,65 @@
   "title": "Restart Physical-State Schema Binding Remediation",
   "branch": "work/f-mr21-restart-state-schema-binding",
   "base_candidate": "dfffd8535b3345b105b2d71537d8149225f35c54",
-  "phase": "CANDIDATE_READY_FOR_INDEPENDENT_REQUALIFICATION",
-  "status": "REMEDIATION_IMPLEMENTED_TESTED_NOT_INDEPENDENTLY_QUALIFIED",
+  "phase": "CLOSED_QUALIFIED_BY_FMQ27",
+  "status": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART",
   "IMPLEMENTED": true,
   "PERSISTED": true,
   "TESTED": true,
-  "QUALIFIED": false,
+  "QUALIFIED": true,
   "production_source_changes": [
     "src/runtime/mod_fmr_committed_restart.f90",
     "src/runtime/mod_fmr_restart_state_contract.f90"
   ],
-  "authoritative_workflow_run": 34450883442,
-  "authoritative_workflow_job": 102786111729,
+  "remediation_source_head": "9064004f815e81f95eb4bdee218af29cb95039c1",
+  "current_pre_closeout_head": "3a2fc8eb0dce16077535f0388bc32ac42671a513",
+  "source_equivalence": {
+    "verified": true,
+    "comparison": "9064004f815e81f95eb4bdee218af29cb95039c1..3a2fc8eb0dce16077535f0388bc32ac42671a513",
+    "src_differences": 0,
+    "only_difference": "removal of duplicate .github/workflows/fmr21-restart-state-schema-binding.yml"
+  },
+  "remediation_test_evidence": {
+    "workflow_run": 34451088551,
+    "workflow_job": 102786767686,
+    "result": "PASS"
+  },
+  "independent_qualification": {
+    "work_unit": "F-MQ27",
+    "branch": "qualification/f-mq27-fmr21-restart-schema-requalification",
+    "qualified_candidate": "9064004f815e81f95eb4bdee218af29cb95039c1",
+    "closeout_head": "33beccd7b38f5a3c29131025e1b06166026851e3",
+    "workflow_run": 34452200801,
+    "workflow_job": 102790257745,
+    "result": "PASS",
+    "status_file": "integration/f-mq/F-MQ27_STATUS.json",
+    "invariant_audit": "integration/f-mq/F-MQ27_INVARIANT_AUDIT.json"
+  },
   "observations": {
     "source_scope_runtime_restart_only": "PASS",
     "generic_restart_module_no_b110_coupling": "PASS",
     "runtime_contract_registry_fail_closed": "PASS",
     "no_extra_per_column_state_or_solver_scratch": "PASS",
     "no_kernel_or_restart_io": "PASS",
-    "fmr19_process_restart_matrix_o0": "PASS",
-    "fmr19_process_restart_matrix_o2": "PASS",
+    "real_process_restart_counts_1_2_7_8_17_31_32": "PASS",
     "malformed_concrete_state_rejected": "PASS",
-    "malformed_state_whole_registry_atomicity": "PASS",
-    "valid_production_b110_restore": "PASS",
-    "base_vs_temporal_continuation_discriminator": "PASS",
-    "unknown_backend_rejection": "PASS",
+    "registered_wrong_state_family_rejected": "PASS",
+    "late_record_whole_registry_atomicity": "PASS",
+    "late_provenance_atomicity": "PASS",
+    "exact_lineage_revision_time_continuation": "PASS",
+    "exact_interval_mass_continuation": "PASS",
+    "continuous_vs_restarted_endpoint_identity": "PASS",
+    "deterministic_replay": "PASS",
     "o0_o2_output_identity": "PASS"
   },
-  "scope": "runtime restart state-family validation using existing shared template backend and numerical-continuation identity; no kernel, physics, solver, I/O, parameter ownership or per-column state expansion",
-  "handoff": "Create a fresh independent F-MQ restart requalification bound to the final F-MR21 head. Rerun the full committed-boundary restart matrix plus malformed decoded-state and registered/unregistered state-family negatives.",
-  "closed": false
+  "scope": "Restricted serialized real-physics MultiSWAP committed-boundary process restart for registered B1.10 base physical state; runtime-owned fail-closed state-family validation; no kernel, physics, solver, I/O, parameter ownership or per-column state expansion.",
+  "historical_failure": "F-MQ25 remains valid rejection evidence for the pre-remediation F-MR19 candidate dfffd8535b3345b105b2d71537d8149225f35c54.",
+  "hard_holds": [
+    "No parallel restart qualification.",
+    "No filesystem serialization-format qualification.",
+    "No unregistered backend/state-family admission.",
+    "No wider optional-state restart qualification.",
+    "No general SWAP5 production release."
+  ],
+  "closed": true
 }
