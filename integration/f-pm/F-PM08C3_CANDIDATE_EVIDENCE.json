@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C3",
+  "title": "Empirical Interflow Response Structural Candidate Evidence",
+  "branch": "work/f-pm08c3-empirical-interflow-response",
+  "clean_base": "3553c63e753bbf714378cd0dff5047769ad3185b",
+  "tested_candidate_head": "fde8b2a6d87ba9eeddcae105c62665c62ef5e84c",
+  "production_file": "src/process/mod_drainage_empirical_interflow_response.f90",
+  "production_blob": "eb53096b678d08b76d3fb1adb2247bc2a58ee748",
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "response_source": "SWAP/drainage.f90:171-179",
+    "parameter_source": "SWAP/drainage.f90:347-352"
+  },
+  "qualification_run": {
+    "workflow_run_id": 34460539542,
+    "job_id": 102817058752,
+    "conclusion": "success",
+    "candidate_output_sha256": "e0e0f437cee9bc7090d1fdc4cd9c65935ea2969c4494e42011b4c7a054dedb3f"
+  },
+  "verified_markers": [
+    "FPM08C3_PRODUCTION_DELTA_SINGLE_PROCESS_MODULE=PASS",
+    "FPM08C3_REFERENCE_DELTA_NONE=PASS",
+    "FPM08C3_PROTECTED_OWNER_SOURCE_LOCKS=PASS",
+    "FPM08C3_PARAMETER_CONTROL_HYDRAULIC_SEPARATION_STATIC=PASS",
+    "FPM08C3_NO_IO_HEADCALC_OR_SOLVER_MUTATION=PASS",
+    "FPM08C3_NO_PROCESS_SIDE_TANGENT_REGULARIZATION=PASS",
+    "FPM08C3_FINITE_FLUX_SURVIVES_TANGENT_UNAVAILABLE_STATIC=PASS",
+    "FPM08C3_STATELESS_MASS_SCOPE_STATIC=PASS",
+    "FPM08C3_30_INVARIANT_AUDIT=PASS",
+    "FPM08C3_CANDIDATE_O0=PASS",
+    "FPM08C3_CANDIDATE_O2=PASS",
+    "FPM08C3_CANDIDATE_O0_O2_OUTPUT_IDENTITY=PASS",
+    "FPM08C3_ACTIVE_LEGACY_POWER_RESPONSE=PASS",
+    "FPM08C3_ANALYTIC_TANGENT_FINITE_DIFFERENCE=PASS",
+    "FPM08C3_NEGATIVE_SIDE_INTERFLOW_CONTRIBUTION_INACTIVE=PASS",
+    "FPM08C3_SUBLINEAR_ACTIVATION_SINGULAR_TANGENT=PASS",
+    "FPM08C3_LINEAR_ACTIVATION_ONE_SIDED_TANGENT_DIAGNOSTIC=PASS",
+    "FPM08C3_EXPONENT_ONE_ACTIVE_BRANCH=PASS",
+    "FPM08C3_NO_PROCESS_SIDE_NEAR_ACTIVATION_CAP=PASS",
+    "FPM08C3_PARAMETER_BOUND_RESPONSE=PASS",
+    "FPM08C3_INVALID_AND_NUMERICAL_DOMAIN_FAIL_CLOSED=PASS",
+    "FPM08C3_STATELESS_A_B_A_IDENTITY=PASS",
+    "FPM08C3_STATE_MASS_AND_SCOPE_OWNERSHIP=PASS",
+    "FPM08C3_EMPIRICAL_INTERFLOW_RESPONSE_GATE PASS"
+  ],
+  "parallel_candidate_resolution": {
+    "observed_branch": "work/f-pm08c3-empirical-interflow-tangent-policy",
+    "observed_head": "22f87868845bca92920e9afca0a494e04f8fa101",
+    "relationship": "diverged from the same clean parent and was not used as admission authority",
+    "incorporated_after_independent_review": "finite physical flux is preserved if only its tangent is numerically unavailable"
+  },
+  "scope_limits": [
+    "This evidence qualifies a structural candidate, not independent scientific equivalence.",
+    "The response is only the drainage-side empirical interflow contribution, not the full DRAMET=3 exchange.",
+    "Negative-side infiltration, multi-level composition, DIVDRA and surface-water control remain outside scope.",
+    "No runtime or canonical admission is claimed.",
+    "No fully implicit solver admission is claimed at the activation singularity."
+  ],
+  "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_RESPONSE_READY_FOR_INDEPENDENT_SCIENTIFIC_QUALIFICATION"
+}
