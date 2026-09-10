@@ -8,6 +8,7 @@ on:
       - 'src/runtime/mod_fmr_serialized_multiswap_runtime.f90'
       - 'integration/f-mr/F-MR38_*.json'
       - 'tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate.sh'
+      - 'tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate_v2.sh'
       - '.github/workflows/fmr38-explicit-effective-forcing-executor.yml'
   workflow_dispatch:
 
@@ -24,5 +25,5 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
-      - name: Run F-MR38 owner gate
-        run: bash tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate.sh
+      - name: Run F-MR38 owner gate with anchored fixture derivation
+        run: bash tests/fmr/run_fmr38_explicit_effective_forcing_owner_gate_v2.sh
