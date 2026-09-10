@@ -1,0 +1,55 @@
+{
+  "schema":"swap5.fmr35_plan.v1",
+  "work_unit":"F-MR35",
+  "goal":"Introduce an explicit restricted root-active parallel physical capability while preserving the existing root-inactive parallel V1 entrypoint and physics boundary.",
+  "implementation_contract":{
+    "existing_entrypoint":"fmr_run_parallel_physical_multiswap remains root-inactive and retains its current admission predicate semantics",
+    "new_entrypoint":"add a distinctly named root-active parallel MultiSWAP entrypoint/capability",
+    "worker_execution":"reuse fmr_execute_serialized_physical_column with worker-owned backend and transaction control",
+    "root_physics":"reuse existing B1.10 root-sink provider; no Feddes/root-water-uptake reimplementation",
+    "actual_transpiration":"reuse existing F-MR31 postcommit exact-forcing-bound publication",
+    "mass":"root sink remains booked exactly once by existing authoritative transaction mass_out",
+    "time":"root_extraction_sink invariant over outer [t0,t1]",
+    "restart":"explicit nonclaim until separate post-F-MQ30 requalification"
+  },
+  "frozen_profile":{
+    "workers":[2,4],
+    "soil_water_solver":"reference Richards",
+    "top_boundary":"fixed flux",
+    "bottom_mode":7,
+    "swkimpl":0,
+    "swsophy":0,
+    "root_extraction_active":true,
+    "root_extraction_sink":"allocated, active-node length, finite, nonnegative; zero vector allowed",
+    "snow":false,
+    "macropores":false,
+    "frost":false,
+    "hysteresis":false,
+    "tabulated_hydraulics":false,
+    "elasticity":false,
+    "temporal_history":false
+  },
+  "owner_evidence_matrix":{
+    "production_fixture":"F-VQ21 production B1.10 root fixture pattern: heterogeneous QROT paired nodewise with equal QSSDI to isolate root mass/attribution from hydraulic-state differences",
+    "column_counts":[2,7,17,32],
+    "batch_sizes":"multiple including boundaries not aligned to worker count",
+    "caller_orders":["canonical","reverse","deterministic permutation"],
+    "forcing_handles":["shared","distinct"],
+    "sequences":["A-B-A"],
+    "special_cases":["active-zero QROT","invalid negative QROT","NaN QROT","rejected parameter/profile column","root-inactive call through old V1 path"],
+    "comparisons":["serialized vs root-active parallel 2 workers","serialized vs root-active parallel 4 workers","O0 vs O2 exact scientific markers"],
+    "hard_gates":["per-column mass","aggregate mass","canonical publication","actual-transpiration exact forcing pairing","no second mass booking","worker overlap/isolation"]
+  },
+  "nonclaims":[
+    "SWKIMPL=1 dynamic root sink reevaluation",
+    "time-varying QROT inside accepted substeps",
+    "oxygen/salinity/frost/compensation/MICRO/Jong-van-Lier/macropore uptake",
+    "root-active committed-boundary restart",
+    "crop lifecycle advancement",
+    "performance speedup",
+    "general SWAP5 release qualification"
+  ],
+  "required_next":"F-MQ30 independent qualification before any canonical admission",
+  "architecture_invariants_review_focus":[3,4,5,6,7,9,13,16,21,22,23,24,26,27,29,30],
+  "persist_before_test":true
+}

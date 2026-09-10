@@ -1,0 +1,40 @@
+{
+  "schema":"swap5.fmr35_source_lock.v1",
+  "work_unit":"F-MR35",
+  "title":"Restricted Parallel Root-Uptake Physical Profile",
+  "branch":"work/f-mr35-restricted-parallel-root-uptake-profile",
+  "canonical_source_authority":"c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "canonical_tree":"ec8ed8199d2d168bdc1961368361cc198f3f91f2",
+  "readiness_authority":{
+    "work_unit":"F-MR34",
+    "branch":"work/f-mr34-parallel-root-uptake-attribution-readiness",
+    "closeout":"02074061ade9e9399312c1758768090292046390",
+    "decision":"QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"
+  },
+  "scientific_authorities":{
+    "root_sink_runtime":"F-VQ21 qualified production B1.10 root-sink runtime oracle",
+    "root_uptake_science":"F-VQ22@1b94f3d1d57a8c2b5e5b44b72174b8a746d851ce",
+    "serialized_actual_transpiration":"F-VQ50@55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "parallel_runtime":"F-CI30",
+    "canonical_root_execution":"F-CI31",
+    "root_attribution_binding":"F-CI34",
+    "parallel_restart_root_inactive_only":"F-CI35"
+  },
+  "locked_blobs":{
+    "src/runtime/mod_fmr_parallel_worker_pool.f90":"0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90":"fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90":"9af5a494526810324dc00706b444e448e770cba9",
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90":"8ed7610144700f58d0b89482925471fcb2ff7d69"
+  },
+  "candidate_delta_policy":{
+    "allowed_production_paths":["src/runtime/mod_fmr_parallel_worker_pool.f90"],
+    "existing_parallel_v1_predicate_must_remain_root_inactive":true,
+    "new_capability_must_be_explicitly_named":true,
+    "kernel_changes":false,
+    "solver_changes":false,
+    "root_uptake_physics_changes":false,
+    "actual_transpiration_formula_changes":false,
+    "mass_booking_changes":false,
+    "restart_semantics_changes":false
+  }
+}
