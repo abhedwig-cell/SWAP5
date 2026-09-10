@@ -6,21 +6,25 @@ module mod_fsi27_qualification_fixture
   private
 
   type, extends(constitutive_hydraulics_provider_t), public :: fsi27_constitutive_t
+     integer :: marker = 0
    contains
      procedure :: evaluate => evaluate_constitutive
   end type fsi27_constitutive_t
 
   type, extends(source_sink_provider_t), public :: fsi27_source_sink_t
+     integer :: marker = 0
    contains
      procedure :: evaluate => evaluate_source_sink
   end type fsi27_source_sink_t
 
   type, extends(root_sink_provider_t), public :: fsi27_root_sink_t
+     integer :: marker = 0
    contains
      procedure :: evaluate => evaluate_root_sink
   end type fsi27_root_sink_t
 
   type, extends(top_boundary_provider_t), public :: fsi27_top_t
+     integer :: marker = 0
    contains
      procedure :: evaluate => evaluate_top
   end type fsi27_top_t
@@ -31,7 +35,7 @@ contains
     class(fsi27_constitutive_t), intent(in) :: self
     real(real64), intent(in) :: pressure_head(:)
     real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
-    if (storage_size(self) <= 0) error stop 'invalid fixture object'
+    if (self%marker /= 0) error stop 'invalid fixture object'
     water_content = 0.30_real64 + 0.001_real64*(pressure_head + 75.0_real64)
     conductivity = 1.0_real64
     capacity = 0.001_real64
@@ -42,7 +46,7 @@ contains
     class(fsi27_source_sink_t), intent(in) :: self
     real(real64), intent(in) :: pressure_head(:), water_content(:)
     real(real64), intent(out) :: source(:), sink(:)
-    if (size(pressure_head) /= size(water_content) .or. storage_size(self) <= 0) error stop 'bad source fixture'
+    if (size(pressure_head) /= size(water_content) .or. self%marker /= 0) error stop 'bad source fixture'
     source = 0.0_real64
     sink = 0.0_real64
   end subroutine evaluate_source_sink
@@ -51,7 +55,7 @@ contains
     class(fsi27_root_sink_t), intent(in) :: self
     real(real64), intent(in) :: pressure_head(:), water_content(:)
     real(real64), intent(out) :: root_sink(:)
-    if (size(pressure_head) /= size(water_content) .or. storage_size(self) <= 0) error stop 'bad root fixture'
+    if (size(pressure_head) /= size(water_content) .or. self%marker /= 0) error stop 'bad root fixture'
     root_sink = 0.0_real64
   end subroutine evaluate_root_sink
 
@@ -60,7 +64,7 @@ contains
     real(real64), intent(in) :: pressure_head_top, water_content_top
     type(soil_water_boundary_conditions_t), intent(in) :: requested
     real(real64), intent(out) :: actual_top_flux, surface_head, runoff_flux
-    if (storage_size(self) <= 0 .or. pressure_head_top > huge(pressure_head_top) .or. &
+    if (self%marker /= 0 .or. pressure_head_top > huge(pressure_head_top) .or. &
         water_content_top > huge(water_content_top)) error stop 'bad top fixture'
     actual_top_flux = requested%top_flux
     surface_head = 0.0_real64
@@ -130,9 +134,10 @@ program test_fsi27_qualification_matrix
          ':ITER=',ref_result(i)%diagnostics%nonlinear_iterations,':MASS=',max_mass
   end do
 
-  call require(qbot_values(1) > 0.0_real64 .and. qbot_values(2) == 0.0_real64 .and. qbot_values(3) < 0.0_real64, &
+  call require(qbot_values(1) > 0.0_real64 .and. same_bits(qbot_values(2),0.0_real64) .and. qbot_values(3) < 0.0_real64, &
        'positive zero negative qbot coverage', failures)
-  call require(all(qtop_values /= qbot_values), 'top and bottom flux independently prescribed', failures)
+  call require(.not. any([(same_bits(qtop_values(i),qbot_values(i)), i=1,ncases)]), &
+       'top and bottom flux independently prescribed', failures)
   state_response = maxval(abs(ref_result(1)%candidate_state%pressure_head - request(1)%base_state%pressure_head))
   call require(state_response > 1024.0_real64*epsilon(1.0_real64), 'nontrivial nonlinear state update', failures)
   call require(ref_result(1)%diagnostics%nonlinear_iterations > 0, 'nontrivial case has nonlinear iteration', failures)
