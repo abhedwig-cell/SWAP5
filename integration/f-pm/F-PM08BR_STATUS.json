@@ -4,7 +4,7 @@
   "work_unit": "F-PM08BR",
   "title": "Restricted DIVDRA Lev2Comp Boundary-Seam Remediation",
   "branch": "work/f-pm08br-lev2comp-boundary-seam-remediation",
-  "status": "IN_PROGRESS_CHECKPOINT_PERSISTED",
+  "status": "IN_PROGRESS_REMEDIATION_PERSISTED_PRETEST",
   "source_candidate": {
     "work_unit": "F-PM08B",
     "closeout": "186df3daa27d7b3541da694190d6f8ec9fab7da6",
@@ -24,9 +24,14 @@
     "divdra_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
     "legacy_rule": "do while (lev > -zbotcp(icplev)+1.d-10)"
   },
+  "remediated_candidate": {
+    "production_path": "src/process/mod_drainage_spatial_distribution.f90",
+    "production_blob": "b77993bd903539282cd91df1f6d8ffc3af41b046",
+    "legacy_level_to_compartment_offset_cm": 1e-10,
+    "profile_bottom_remains_fail_closed": true
+  },
   "remediation_scope": {
     "reproduce_internal_compartment_boundary_seam": true,
-    "legacy_seam_cm": 1e-10,
     "preserve_profile_bottom_fail_closed": true,
     "preserve_positive_drainage_only": true,
     "preserve_small_transfer_hold": true,
@@ -38,11 +43,14 @@
   },
   "state": {
     "checkpoint_persisted": true,
-    "production_patch_persisted": false,
-    "tests_extended": false,
+    "remediation_contract_persisted": true,
+    "production_patch_persisted": true,
+    "tests_extended": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "structurally_qualified": false,
     "scientifically_requalified": false
   },
-  "next_required_step": "apply the minimal internal Lev2Comp +1e-10 seam patch and add exact boundary regression tests before CI"
+  "next_required_step": "run the persisted F-PM08BR structural remediation gate under CI; do not modify F-VQ45 or claim independent scientific requalification"
 }
