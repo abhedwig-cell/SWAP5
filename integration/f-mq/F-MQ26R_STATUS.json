@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ26R",
+  "title": "Independent Canonical Parallel Publication Requalification",
+  "qualification_branch": "qualification/f-mq26r-canonical-parallel-publication",
+  "qualification_candidate": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+  "qualification_candidate_tree": "4837be78f93c203f5d4ac4823f7a4eaeff137a2b",
+  "owner_work_unit": "F-MR22",
+  "predecessor_qualification": {
+    "work_unit": "F-MQ26",
+    "candidate": "4b6807c1d78c0c7d8bfe0f7a03a4c6c07d4444b9",
+    "decision": "NOT_QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1",
+    "historical_disposition_retained": true
+  },
+  "phase": "CLOSED_QUALIFIED",
+  "status": "QUALIFIED_REMEDIATED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_CANONICAL_PUBLICATION_WITHIN_FROZEN_SCOPE",
+  "IMPLEMENTED": true,
+  "PERSISTED": true,
+  "TESTED": true,
+  "QUALIFIED": true,
+  "production_source_change_by_qualifier": false,
+  "qualification_evidence": "integration/f-mq/F-MQ26R_QUALIFICATION_EVIDENCE.json",
+  "authoritative_workflow_run": 34472566024,
+  "authoritative_workflow_job": 102855637250,
+  "tested_head": "e01bd4d6de7d2de2273a817d50ee12c9900e1d54",
+  "gates": {
+    "exact_remediation_ancestry": "PASS",
+    "qualification_source_isolation": "PASS",
+    "fmr22_regression_gate": "PASS",
+    "o0": "PASS",
+    "o2": "PASS",
+    "o0_o2_output_identity": "PASS",
+    "reversed_2_worker_canonical_publication": "PASS",
+    "permuted_2_worker_canonical_publication": "PASS",
+    "reversed_4_worker_canonical_publication": "PASS",
+    "permuted_4_worker_canonical_publication": "PASS",
+    "aggregate_mass_publication_independence": "PASS",
+    "hard_mass_conservation": "PASS_LE_1E-12"
+  },
+  "frozen_scope": "F-MR22 canonical outward result/diagnostic publication remediation for the previously restricted 2/4-worker parallel real-physics MultiSWAP V1 profile. No additional physics, numerical policy, restart, performance or scaling scope is admitted here.",
+  "disposition": "The F-MR22 remediated candidate is independently qualified for canonical outward result and diagnostic publication within the frozen restricted parallel V1 scope. The original F-MQ26 rejection remains the immutable disposition of its original candidate and is not overwritten.",
+  "not_claimed": [
+    "additional multiworker physics profiles",
+    "snow, root uptake, macropore, frost, temporal-history or bottom-mode-5 multiworker admission",
+    "parallel process restart qualification",
+    "speedup or performance qualification",
+    "hardware-independent scaling",
+    "any mass-balance concession"
+  ],
+  "closed": true
+}
