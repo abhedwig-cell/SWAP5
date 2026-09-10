@@ -35,7 +35,7 @@ check_blob src/solver/mod_b110_default_mvg_provider.f90 97d67eb373073b183be6d1bf
 check_blob src/solver/mod_b110_source_sink_provider.f90 d6c57add72387e5c0022a44319fff08046194aac
 check_blob src/solver/mod_fixed_flux_top_boundary_provider.f90 fb226f133bd48d8ab945f111c76897aeff49facf
 check_blob src/legacy/b1_10_port/headcalc.f90 55893f1f5ccba2052ad681743aa155b69f351246
-check_blob src/adapter/mod_reference_richards_legacy_binding.f90 ea94a4ffb6a79caf1fa8fd8531a6af2ea6bf680c
+check_blob src/adapter/mod_reference_richards_legacy_binding.f90 2cb1126397147b9e447634b131c93932c097177d
 
 grep -Fq 'request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2' \
   src/adapter/mod_reference_richards_legacy_binding.f90 || fail 'mode 2 admission guard missing'
@@ -43,6 +43,8 @@ grep -Fq 'request%boundary%bottom_flux = qbot' src/adapter/mod_reference_richard
   fail 'legacy request qbot mapping missing'
 grep -Fq 'result%bottom_flux = state_binding%qbot' src/adapter/mod_reference_richards_legacy_binding.f90 || \
   fail 'result qbot publication missing'
+grep -Fq 'request%boundary%bottom_mode == 2' src/adapter/mod_reference_richards_legacy_binding.f90 || \
+  fail 'mode 2 mass diagnostic publication missing'
 grep -Fq 'fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot' src/legacy/b1_10_port/headcalc.f90 || \
   fail 'native prescribed qbot residual missing'
 
@@ -83,7 +85,7 @@ compile_and_run() {
     fail "O${opt} gate marker missing"
   }
   grep -Fq 'FSI27_ROW:' "$out/output.txt" || fail "O${opt} diagnostic row missing"
-  grep -Fq 'FSI27_SOLVER_MASS_RESIDUAL_FINITE=' "$out/output.txt" || fail "O${opt} solver mass observation missing"
+  grep -Fq 'FSI27_SOLVER_MASS_RESIDUAL_FINITE=T' "$out/output.txt" || fail "O${opt} solver mass diagnostic not finite"
   cat "$out/output.txt"
   echo "FSI27_O${opt}=PASS"
 }
