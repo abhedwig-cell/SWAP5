@@ -1,5 +1,6 @@
 module mod_fmr_serialized_multiswap_runtime
   use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED
   use mod_canonical_contracts, only: canonical_mass_accounting_t, canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t, kernel_checkpoint_t, kernel_candidate_state_t, &
@@ -49,6 +50,8 @@ module mod_fmr_serialized_multiswap_runtime
     integer(int64) :: final_revision = -1_int64
     real(real64) :: final_committed_time = 0.0_real64
     logical :: final_committed_time_bound = .false.
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
   end type fmr_serialized_column_result_t
 
@@ -473,6 +476,8 @@ contains
            error stop 'F-MR18: successful physical commit without ready accepted receipt'
     end if
 
+    call bind_committed_actual_transpiration(parameter_registry(parameter_index), forcing_registry(forcing_index), &
+         t0, t1, output)
     output%completed = .true.
     output%committed = .true.
     diagnostic%accepted = 1
@@ -480,6 +485,31 @@ contains
     diagnostic%unrounded_mass_residual = output%mass%residual
     call update_committed_provenance(state_registry(state_index), output, diagnostic)
   end subroutine execute_column
+
+  subroutine bind_committed_actual_transpiration(parameters, forcing, t0, t1, output)
+    type(fmr_b110_physical_parameters_t), intent(in) :: parameters
+    type(fmr_b110_physical_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: t0, t1
+    type(fmr_serialized_column_result_t), intent(inout) :: output
+    real(real64) :: amount
+
+    output%actual_transpiration_available = .false.
+    output%actual_transpiration_amount = 0.0_real64
+
+    if (.not. parameters%root_extraction_active) return
+    if (parameters%active_nodes <= 0) return
+    if (.not. allocated(forcing%root_extraction_sink)) return
+    if (size(forcing%root_extraction_sink) /= parameters%active_nodes) return
+    if (any(.not. ieee_is_finite(forcing%root_extraction_sink))) return
+    if (any(forcing%root_extraction_sink < 0.0_real64)) return
+    if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1 <= t0) return
+
+    amount = sum(forcing%root_extraction_sink) * (t1 - t0)
+    if (.not. ieee_is_finite(amount) .or. amount < 0.0_real64) return
+
+    output%actual_transpiration_amount = amount
+    output%actual_transpiration_available = .true.
+  end subroutine bind_committed_actual_transpiration
 
   logical function column_is_routable(column, templates, parameter_registry, forcing_registry) result(routable)
     type(fmr_logical_column_t), intent(in) :: column
