@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "workstream": "F-SI",
+  "work_unit": "F-SI27",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
+  "branch": "work/f-si27-explicit-prescribed-qbot-boundary",
+  "qualification_record": {
+    "commit": "0d8c776bad779b6094d8afbd56b721038f758a77",
+    "path": "integration/f-si/F-SI27_QUALIFICATION.json",
+    "blob": "120131d9ac6c270002c745de6f9d22fda8b23698"
+  },
+  "production_authority": {
+    "frozen_canonical_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "production_postimage": "3b942c6777412e0d28ed46941778e4482f6bffaa",
+    "adapter_blob": "2cb1126397147b9e447634b131c93932c097177d",
+    "headcalc_blob": "55893f1f5ccba2052ad681743aa155b69f351246"
+  },
+  "qualification_execution": {
+    "candidate_tested_head": "f7b891ce636b63bdae7e43f0ed54195f067f8bcc",
+    "candidate_workflow_run": 34523277467,
+    "candidate_workflow_job": 103025830980,
+    "candidate_conclusion": "success",
+    "qualification_record_self_verification_head": "0d8c776bad779b6094d8afbd56b721038f758a77",
+    "qualification_record_self_verification_run": 34523583796,
+    "qualification_record_self_verification_job": 103026915238,
+    "qualification_record_self_verification_conclusion": "success",
+    "compiler": "GNU Fortran 13.3.0"
+  },
+  "qualified_scope": {
+    "bottom_mode": 2,
+    "request_control": "soil_water_solve_request_t%boundary%bottom_flux",
+    "units": "cm d-1",
+    "sign": "positive qbot enters through lower boundary; negative qbot leaves",
+    "authoritative_result_qbot": true,
+    "finite_unrounded_mass_residual": true,
+    "independent_exact_b110_identity": true,
+    "serialized_worker_isolation": true,
+    "fsi13_fsi16_preservation": true
+  },
+  "explicit_nonclaims": {
+    "interface_response_tangent_qualified": false,
+    "reusable_newton_factorization_qualified": false,
+    "sensitivity_transaction_transport_qualified": false,
+    "modflow_coupling_admitted": false,
+    "parallel_reference_backend_newly_admitted": false
+  },
+  "downstream_handoff": {
+    "owner": "F-ROSS01",
+    "stage": "J1E",
+    "disposition": "QBOT_CONTROL_BLOCKER_CLOSED_RESUME_REAL_PRODUCTION_TANGENT_INTEGRATION",
+    "native_tangent_equation": "J * (partial h / partial qbot) = e_N",
+    "qualification_requirement": "reuse the accepted Newton Jacobian/factorization where available; preserve committed-state isolation and hard mass conservation"
+  }
+}
