@@ -1,0 +1,20 @@
+name: F-PM08C2 Hooghoudt-Ernst domain qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08c2-hooghoudt-ernst-response-readiness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  domain-qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C2 source-bound domain qualification gate
+        run: bash tests/fpm/run_fpm08c2_hooghoudt_ernst_domain_gate.sh
