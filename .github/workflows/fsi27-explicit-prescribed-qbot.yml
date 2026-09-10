@@ -10,6 +10,10 @@ on:
       - 'tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh'
       - 'tests/fsi/test_fsi27_qualification_matrix.f90'
       - 'tests/fsi/run_fsi27_qualification_matrix_gate.sh'
+      - 'tests/fsi/test_fsi27_exact_b110_qbot_oracle.F90'
+      - 'tests/fsi/mod_fsi27_b110_oracle_fixture.f90'
+      - 'tests/fsi/test_fsi27_b110_qbot_oracle_common.F90'
+      - 'tests/fsi/run_fsi27_b110_qbot_oracle_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/**'
       - 'src/legacy/b1_10_port/headcalc.f90'
@@ -30,3 +34,5 @@ jobs:
         run: bash tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh
       - name: F-SI27 frozen qualification matrix
         run: bash tests/fsi/run_fsi27_qualification_matrix_gate.sh
+      - name: F-SI27 independent exact B1.10 qbot oracle
+        run: bash tests/fsi/run_fsi27_b110_qbot_oracle_gate.sh
