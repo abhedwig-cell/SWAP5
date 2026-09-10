@@ -1,0 +1,25 @@
+name: F-CI31 reference ET root-uptake canonical admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci31-fmr28-reference-et-root-uptake-execution-canonical-admission
+    paths:
+      - .github/workflows/fci31-reference-et-root-uptake-canonical-admission.yml
+      - tests/fci/run_fci31_reference_et_root_uptake_canonical_admission.sh
+      - integration/f-ci/F-CI31_QUALIFICATION_PLAN.json
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI31 source-bound canonical admission gate
+        run: bash tests/fci/run_fci31_reference_et_root_uptake_canonical_admission.sh
