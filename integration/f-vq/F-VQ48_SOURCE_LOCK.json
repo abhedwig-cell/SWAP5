@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "workunit": "F-VQ48",
+  "title": "Independent F-MR30 Accepted Root-Uptake Attribution Receipt Qualification",
+  "branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+  "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "branch_hygiene": {
+    "clean_base": "e3964ec0ef312f974461aeac70fb9bc5720803e3",
+    "superseded_owner_history_bearing_branch": "qualification/f-vq48-fmr30-root-uptake-attribution-receipt",
+    "reason": "genuinely independent qualification must not use the F-MR30 owner branch as its source-history authority"
+  },
+  "owner_workunit": "F-MR30",
+  "owner_handoff": "c908621d10868b5e265a8835ea2c0c56ee202ef6",
+  "owner_candidate": "95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c",
+  "candidate_path": "src/runtime/mod_fmr_root_uptake_attribution_receipt.f90",
+  "candidate_blob": "886d251908126693b6fe035e065a872ce5ff4e29",
+  "candidate_acquisition": "materialize only from exact pinned owner_candidate:candidate_path and verify git blob identity before compilation; candidate is not copied into qualification production source",
+  "qualification_rule": "independent oracle and independent transaction model; owner tests are preservation evidence only",
+  "frozen_scope": [
+    "nonnegative root_extraction_sink forcing",
+    "one immutable root-extraction vector per outer candidate interval",
+    "prepared attribution is non-publishing worker/job-local scratch",
+    "public attribution requires successful generic accepted-commit receipt",
+    "attributed amount is reconciliation metadata and never a second mass booking",
+    "restricted serialized single-column real-physics orchestration semantics only"
+  ],
+  "hard_negative_gates": [
+    "a prepared attribution must not silently bind a different qrot vector than the one physically used to create the candidate",
+    "no attribution may publish without an accepted commit receipt",
+    "lineage, origin revision and interval identity must fail closed on mismatch",
+    "invalid/nonfinite/negative root forcing must fail closed"
+  ],
+  "required_independent_checks_if_no_hard_gate_fails": [
+    "zero, singleton, sparse, uneven, tiny and larger nonnegative qrot vectors",
+    "generic non-calendar t0/t1 intervals",
+    "external full-half route",
+    "model-certificate route",
+    "retry-driven accepted substeps with immutable qrot",
+    "coexistence with independent non-root mass_out",
+    "A-B-A prepared-object independence",
+    "numeric time-identity seam around the shared 64-epsilon rule",
+    "O0/O2 deterministic output identity",
+    "real canonical backend strict compile compatibility",
+    "owner-gate preservation replay"
+  ],
+  "early_exit_rule": "any reproduced hard-negative fail-open closes F-VQ48 NOT_QUALIFIED; remaining matrix entries are UNRUN, not failed",
+  "nonclaims": [
+    "serialized MultiSWAP sparse attribution routing",
+    "parallel root-extraction execution",
+    "dynamic qrot changes within one outer candidate interval",
+    "SWKIMPL=1 dynamic root-sink recomputation",
+    "oxygen, salinity, frost, compensation, MICRO, Jong-van-Lier or macropore uptake",
+    "F-CI32 canonical admission"
+  ]
+}
