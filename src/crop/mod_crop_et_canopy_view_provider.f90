@@ -148,7 +148,11 @@ contains
       return
     end if
 
-    if (.not. ieee_is_finite(state%leaf_area_index) .or. state%leaf_area_index < 0.0_real64) then
+    if (.not. ieee_is_finite(state%leaf_area_index)) then
+      diagnostics%status = CROP_ET_CANOPY_INVALID_STATE
+      return
+    end if
+    if (state%leaf_area_index < 0.0_real64) then
       diagnostics%status = CROP_ET_CANOPY_INVALID_STATE
       return
     end if
