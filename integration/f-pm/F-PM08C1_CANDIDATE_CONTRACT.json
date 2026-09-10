@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C1",
+  "title": "Restricted Normalized Tabulated Drainage Response Contract",
+  "source_authority": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "fpm08c_characterization_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
+    "legacy_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_drainage_file_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "legacy_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+  },
+  "legacy_semantics": {
+    "response_law": "qdrain(1)=AFGEN(qdrtab,50,abs(gwl))",
+    "table_construction": "x=abs(gwl_input); y=qdrain_input",
+    "qdrain_input_range": [-100.0,1000.0],
+    "interpolation": "linear between bracketing knots",
+    "below_first_knot": "first response value",
+    "above_last_filled_knot": "last response value"
+  },
+  "normalized_candidate": {
+    "fixed_legacy_array_length": false,
+    "explicit_pair_count": true,
+    "groundwater_depth_knots": "finite, nonnegative, strictly increasing",
+    "response_values": "finite signed scalar exchange rates",
+    "hydraulic_input": "finite groundwater_level only",
+    "coordinate_transform": "depth=abs(groundwater_level)",
+    "persistent_process_state": false,
+    "file_or_calendar_dependency": false
+  },
+  "sign_contract": {
+    "positive": "soil to drain",
+    "negative": "drain or external drainage system to soil",
+    "candidate_may_silently_clip_negative_values": false
+  },
+  "derivative_contract": {
+    "open_linear_segment": "analytic table slope multiplied by sign(groundwater_level)",
+    "below_first_or_above_last_knot": "zero derivative because response is clamped",
+    "single_point_table": "constant response with zero derivative",
+    "exact_table_knot": "derivative_defined=false; fail-conservative branch metadata",
+    "solver_assembly_owner": "solver, not process"
+  },
+  "explicit_holds": [
+    "legacy fixed-length partially-filled AFGEN sentinel representation",
+    "non-increasing normalized depth knots",
+    "calendar or file parsing",
+    "runtime composition",
+    "solver Jacobian mutation",
+    "DRAMET=2 Hooghoudt/Ernst",
+    "DRAMET=3 resistance/interflow/multilevel",
+    "surface-water storage/control"
+  ],
+  "architectural_invariants": {
+    "kernel_io_free": true,
+    "parameters_state_forcing_separated": true,
+    "persistent_state_compact": true,
+    "interface_sensitivity_first_class": true,
+    "solver_internals_hidden": true,
+    "physical_response_not_changed_by_solver_policy": true
+  }
+}
