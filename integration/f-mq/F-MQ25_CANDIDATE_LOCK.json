@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MQ",
+  "work_unit": "F-MQ25",
+  "title": "Restricted Serialized MultiSWAP Committed-Boundary Process Restart Admission",
+  "branch": "qualification/f-mq25-restricted-multiswap-restart-admission",
+  "qualification_only": true,
+  "production_source_modification_allowed": false,
+  "owner": {
+    "work_unit": "F-MR19",
+    "branch": "work/f-mr19-restricted-multiswap-process-restart",
+    "closeout_head": "110440d28ff2b585763ad8fd4eedb88e7d112eeb",
+    "decision": "QUALIFIED_RESTRICTED_SERIALIZED_MULTISWAP_COMMITTED_BOUNDARY_PROCESS_RESTART_READY_FOR_INDEPENDENT_FMQ",
+    "workflow_run": 34391094044
+  },
+  "immutable_candidate": {
+    "commit": "dfffd8535b3345b105b2d71537d8149225f35c54",
+    "tree": "81b521a5d173910575e74f3be43812e62d79124a"
+  },
+  "source_blobs": {
+    "src/runtime/mod_fmr_committed_restart.f90": "bb4d0e27b8131f62ae4860660addbc39e0fc125a",
+    "src/kernel/mod_kernel_committed_persistence.f90": "ffd886c3401fc12739a456fe60a8741c12b9848b",
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7a60f8b8d18672098fed1c6890a95aac738ed21d",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "f5cf46b4eb40e68704bc0dfcdb18bf0746504889"
+  },
+  "source_scope_rule": "git diff candidate..qualification-head -- src must remain empty",
+  "scope": {
+    "serialized_real_physics": true,
+    "committed_boundary_only": true,
+    "parallel_restart": false,
+    "mid_transaction_restart": false,
+    "trial_candidate_restart": false,
+    "solver_scratch_persistence": false,
+    "user_facing_file_format": false,
+    "cross_version_migration": false
+  },
+  "status": "LOCKED_BEFORE_INDEPENDENT_EXECUTION"
+}
