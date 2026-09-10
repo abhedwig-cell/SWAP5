@@ -1,0 +1,25 @@
+name: F-MR31 root-attribution exact-forcing binding
+
+on:
+  push:
+    branches:
+      - work/f-mr31-root-attribution-forcing-binding
+    paths:
+      - 'src/runtime/mod_fmr_root_uptake_attribution_receipt.f90'
+      - 'tests/fmr/test_fmr31_root_attribution_forcing_binding.f90'
+      - 'tests/fmr/run_fmr31_root_attribution_forcing_binding_gate.sh'
+      - 'integration/f-mr/F-MR31_*'
+      - '.github/workflows/fmr31-root-attribution-forcing-binding.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-owner-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR31 source-bound owner gate
+        run: bash tests/fmr/run_fmr31_root_attribution_forcing_binding_gate.sh
