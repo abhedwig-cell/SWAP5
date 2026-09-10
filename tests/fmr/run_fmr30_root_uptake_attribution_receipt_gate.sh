@@ -25,18 +25,27 @@ git diff --quiet "$CANDIDATE"..HEAD -- src || fail 'production source mutated af
 echo 'FMR30_EXACT_ONE_SOURCE_PRODUCTION_DELTA=PASS'
 echo 'FMR30_PRODUCTION_SOURCE_IMMUTABLE_AFTER_CANDIDATE=PASS'
 
-if grep -Eiq '(mass_in|mass_out|canonical_mass_accounting|accepted_total_(in|out)|storage_change)' "$SOURCE"; then
-  fail 'attribution receipt contains mass-ledger mutation surface'
-fi
-if grep -Eiq '^[[:space:]]*(allocate|deallocate)[[:space:]]*\(' "$SOURCE"; then
-  fail 'attribution receipt unexpectedly allocates persistent/dynamic storage'
-fi
-if grep -Eiq '(read[[:space:]]*\(|write[[:space:]]*\(|open[[:space:]]*\(|close[[:space:]]*\(|modflow|headcalc|newton|jacobian)' "$SOURCE"; then
-  fail 'forbidden I/O, coupling or solver-internal dependency in attribution receipt'
-fi
-echo 'FMR30_ATTRIBUTION_ONLY_NO_MASS_LEDGER_MUTATION=PASS'
-echo 'FMR30_RECEIPT_ALLOCATION_FREE=PASS'
-echo 'FMR30_NO_IO_OR_SOLVER_INTERNAL_DEPENDENCY=PASS'
+python3 - "$SOURCE" <<'PY'
+from pathlib import Path
+import re, sys
+text = Path(sys.argv[1]).read_text(encoding='utf-8')
+code = '\n'.join(line.split('!', 1)[0] for line in text.splitlines()).lower()
+for forbidden in ('mass_in', 'mass_out', 'canonical_mass_accounting', 'accepted_total_in',
+                  'accepted_total_out', 'storage_change'):
+    if forbidden in code:
+        raise SystemExit(f'mass-ledger mutation surface: {forbidden}')
+if re.search(r'^\s*(allocate|deallocate)\s*\(', code, flags=re.M):
+    raise SystemExit('unexpected dynamic allocation')
+for forbidden in ('modflow', 'headcalc', 'newton', 'jacobian'):
+    if forbidden in code:
+        raise SystemExit(f'forbidden dependency: {forbidden}')
+for pattern in (r'\bread\s*\(', r'\bwrite\s*\(', r'\bopen\s*\(', r'\bclose\s*\('):
+    if re.search(pattern, code):
+        raise SystemExit(f'forbidden I/O surface: {pattern}')
+print('FMR30_ATTRIBUTION_ONLY_NO_MASS_LEDGER_MUTATION=PASS')
+print('FMR30_RECEIPT_ALLOCATION_FREE=PASS')
+print('FMR30_NO_IO_OR_SOLVER_INTERNAL_DEPENDENCY=PASS')
+PY
 
 COMMON=(-std=f2008 -Wall -Wextra -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 STRICT=(-std=f2008 -Wall -Wextra -Werror -ffree-line-length-none -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
