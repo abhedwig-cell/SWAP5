@@ -1,0 +1,92 @@
+{
+  "schema": "swap5.current_canonical_postimage_governance_reconciliation_plan.v1",
+  "work_unit": "F-CI34G",
+  "title": "F-CI34 Current-Canonical Postimage Governance Reconciliation",
+  "branch": "qualification/f-ci34g-current-canonical-postimage-governance",
+  "canonical_branch": "integration/f-ci-canonical",
+  "clean_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "purpose": "Reconcile moving canonical governance after the exact independently-qualified F-MR31 root-attribution source was already promoted, without changing production or reference source.",
+  "canonical_source_authority": {
+    "head": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+    "root_attribution_path": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "root_attribution_blob": "fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "divdra_path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "divdra_blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "scientific_authorities": {
+    "F_MR31": "21bb6745e8fcca47b924cdcb8f77245d5dea94c9",
+    "F_VQ50": "55ccc132b0405cf4ee13336f08730aa94b24ad19",
+    "F_CI34_dedicated_canonical_run": 34488927851,
+    "F_CI34_dedicated_canonical_conclusion": "success",
+    "science_reopened": false
+  },
+  "governance_incident": {
+    "broad_canonical_run": 34488927973,
+    "failed_job": 102911134666,
+    "failure": "FCI33_FAIL G03_EXACT_ONE_NEW_SOURCE_PATH",
+    "f_ci33_dedicated_run": 34488927996,
+    "f_ci33r_dedicated_run": 34488927866,
+    "classification": "STALE_MOVING_CANONICAL_GOVERNANCE_POINTER",
+    "scientific_failure": false,
+    "root_attribution_failure": false,
+    "divdra_failure": false,
+    "mass_conservation_failure": false,
+    "production_regression_indicated": false,
+    "evidence": "All frozen historical jobs in broad canonical passed. F-CI34 dedicated canonical admission passed on the exact same head. The failing broad job stopped at F-CI33 G03 before scientific replay because the historical exact-one-source admission gate was still used as the moving current-postimage assertion."
+  },
+  "governance_changes_allowed": [
+    ".github/workflows/fci-canonical.yml",
+    ".github/workflows/fci33-fmr33-divdra-runtime-canonical-admission.yml",
+    ".github/workflows/fci33r-current-canonical-postimage-reconciliation.yml",
+    ".github/workflows/fci34g-current-canonical-postimage-governance.yml",
+    "tools/fci/fci34g_current_postimage_gate.py",
+    "tests/fci/run_fci34g_current_postimage_reconciliation.sh",
+    "integration/f-ci/F-CI34G_RECONCILIATION_PLAN.json",
+    "integration/f-ci/F-CI34G_EVIDENCE.json",
+    "integration/f-ci/F-CI34G_STATUS.json",
+    "integration/f-ci/F-CI34_STATUS.json"
+  ],
+  "governance_design": {
+    "historical_f_ci33_gate_code_modified": false,
+    "historical_f_ci33r_gate_code_modified": false,
+    "retire_f_ci33_as_moving_canonical_trigger": true,
+    "retire_f_ci33r_as_moving_canonical_trigger": true,
+    "preserve_manual_and_qualification_branch_replay": true,
+    "broad_canonical_current_pointer": "F-CI34G",
+    "current_postimage_anchor": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+    "current_postimage_requires_zero_src_delta_after_anchor": true,
+    "current_postimage_requires_zero_reference_delta_after_anchor": true,
+    "root_attribution_blob_lock": true,
+    "divdra_blob_lock": true,
+    "replay_f_ci34_strong_oracles": true,
+    "replay_current_divdra_smoke": true
+  },
+  "required_gates": [
+    "clean base is exact current canonical 2efba343",
+    "zero src delta from clean base",
+    "zero reference delta from clean base",
+    "exact F-MR31 root-attribution blob remains canonical",
+    "exact F-MR33 DIVDRA runtime blob remains canonical",
+    "historical F-CI33 and F-CI33R gate/runner code remain byte-unchanged",
+    "F-CI33 and F-CI33R workflows no longer trigger automatically on moving canonical",
+    "broad canonical current-postimage pointer invokes F-CI34G rather than historical F-CI33 exact-one-source gate",
+    "F-CI34 strong independent/real-HeadCalc O0/O2 gate replays successfully",
+    "current DIVDRA runtime smoke compiles and passes O0/O2 identically",
+    "qualification closeout exact-head rerun succeeds",
+    "live canonical remains exact base before non-forced promotion",
+    "post-promotion F-CI34 dedicated workflow succeeds",
+    "post-promotion F-CI34G workflow succeeds",
+    "broad canonical workflow has all jobs successful",
+    "final canonical status head is requalified without further mutation"
+  ],
+  "source_guard": {
+    "src_changes_allowed": false,
+    "reference_changes_allowed": false,
+    "kernel_changes_allowed": false,
+    "solver_changes_allowed": false,
+    "process_science_changes_allowed": false,
+    "mass_tolerance_changes_allowed": false,
+    "mass_conservation_absolute": true
+  },
+  "nonclaim": "This workunit repairs moving canonical governance only. It neither changes nor requalifies SWAP physics and does not widen the F-VQ50 serialized root-attribution scope."
+}
