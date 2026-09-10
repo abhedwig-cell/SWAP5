@@ -1,0 +1,41 @@
+{
+  "schema": "swap5.runtime_composition_design_amendment.v1",
+  "work_unit": "F-MR34",
+  "supersedes_plan_detail": "modify src/runtime/mod_fmr_serialized_multiswap_runtime.f90 and copy selected forcing object inside execute_column",
+  "reason": "A dedicated serialized composition entrypoint preserves the generic runtime source byte-identically and avoids any full forcing-registry deep copy. Only feature-active drainage rows are materialized.",
+  "revised_production_candidate": [
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
+  ],
+  "generic_orchestrator_modified": false,
+  "runtime_callsite_active": true,
+  "algorithm": [
+    "preflight the complete column-aligned request set before backend execution",
+    "reject active requests whose forcing handle is shared or whose target is already bound",
+    "materialize one drainage row only for each active request using the exact canonical F-MR33 binding",
+    "invoke the unchanged canonical fmr_run_serialized_physical_multiswap runtime",
+    "deallocate only the rows materialized by this composition before normal return"
+  ],
+  "scaling": {
+    "inactive_runtime_path": "existing generic runtime; zero F-MR34 feature allocation",
+    "active_memory": "one drainage row per active requested forcing handle plus compact request/diagnostic metadata",
+    "no_full_forcing_registry_copy": true,
+    "shared_immutable_distribution_parameters_via_registry_refs": true,
+    "hydraulic_views_via_registry_refs": true
+  },
+  "transaction_semantics": {
+    "committed_state_modified_before_core_runtime": false,
+    "caller_forcing_observably_changed_after_normal_return": false,
+    "preflight_failure_calls_core_runtime": false,
+    "binding_failure_calls_core_runtime": false
+  },
+  "scope_unchanged": [
+    "restricted serialized only",
+    "explicit supplied hydraulic view only",
+    "external nonnegative scalar transfer only",
+    "no exchange law",
+    "no fully implicit drainage",
+    "no parallel active callsite",
+    "no surface-water control"
+  ]
+}
