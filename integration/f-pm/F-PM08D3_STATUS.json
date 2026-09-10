@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D3",
+  "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract",
+  "branch": "work/f-pm08d3-secondary-storage-availability-mass-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
+  "phase": "CHECKPOINT_PERSISTED_BEFORE_TEST",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "exact_branch_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "parent_authorities": {
+    "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "fpm08d2_closeout": "a0b11f68884f7593f000af1c34aa42de8956ecfd"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e"
+  },
+  "scope": {
+    "pre_solver_secondary_storage_availability_limiter": true,
+    "explicit_mass_flux_contract": true,
+    "q_supply_first_class": true,
+    "q_discharge_first_class_contract_only": true,
+    "top_surface_transfer_first_class": true,
+    "fixed_weir_balance": false,
+    "automatic_weir_control": false,
+    "runtime_commit_rollback_implementation": false,
+    "production_changes_allowed": false
+  },
+  "state": {
+    "branch_created": true,
+    "checkpoint_persisted": true,
+    "source_equations_reconstructed": false,
+    "mass_gap_characterized": false,
+    "limiter_algebra_verified": false,
+    "architecture_audited_all_30": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "reference_source_changed": false
+  },
+  "next_required_step": "persist exact frozen limiter and dry-storage balance semantics, identify all mass-attribution gaps, and prove a no-concession explicit mass contract before any production candidate"
+}
