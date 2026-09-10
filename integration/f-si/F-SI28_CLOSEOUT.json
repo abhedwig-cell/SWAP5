@@ -3,8 +3,8 @@
   "workstream": "F-SI",
   "work_unit": "F-SI28",
   "title": "Optional Same-Factorization Native-qbot Interface Sensitivity Production Solve",
-  "status": "CLOSEOUT_PERSISTED_PENDING_SELF_VERIFICATION",
-  "decision_candidate": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
+  "status": "CLOSED_QUALIFIED",
+  "decision": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
   "branch": "work/f-si28-interface-sensitivity-production-solve",
   "source_authority": {
     "frozen_canonical_branch": "integration/f-ci-canonical",
@@ -36,40 +36,26 @@
     "optimization_modes": ["O0", "O2"],
     "O0_O2_observable_identity": true
   },
+  "closeout_self_verification": {
+    "persisted_closeout_head": "aad39f752099c6c7392ce5b9795e5ec3a42806bd",
+    "workflow_run": 34532208415,
+    "workflow_job": 103055386101,
+    "conclusion": "success",
+    "all_three_gates": [
+      "same-factorization-qbot-tangent",
+      "cross-sign-and-nonprescribed-boundaries",
+      "alternative-solver-fallback-failclosed-composition"
+    ]
+  },
   "numeric_evidence": {
     "finite_difference_step_cm_per_day": 1.0e-5,
     "frozen_scaled_relative_metric_limit": 1.0e-6,
     "cases": [
-      {
-        "label": "equilibrium",
-        "analytic_day": 90.23410406038435,
-        "fd_day": 90.23410406285846,
-        "metric": 2.7418788401701933e-11
-      },
-      {
-        "label": "fsi27-perturbed",
-        "analytic_day": 90.15099979650157,
-        "fd_day": 90.15099979592377,
-        "metric": 6.40923720395083e-12
-      },
-      {
-        "label": "symmetric-neighbor",
-        "analytic_day": 90.317424518368,
-        "fd_day": 90.31742451810486,
-        "metric": 2.913528570654121e-12
-      },
-      {
-        "label": "zero-qbot",
-        "analytic_day": 82.96815480741245,
-        "fd_day": 82.96815480939301,
-        "metric": 2.3871409774120695e-11
-      },
-      {
-        "label": "positive-qbot-minimal",
-        "analytic_day": 82.90599835053706,
-        "fd_day": 82.90599835234502,
-        "metric": 2.180736998791259e-11
-      }
+      {"label": "equilibrium", "analytic_day": 90.23410406038435, "fd_day": 90.23410406285846, "metric": 2.7418788401701933e-11},
+      {"label": "fsi27-perturbed", "analytic_day": 90.15099979650157, "fd_day": 90.15099979592377, "metric": 6.40923720395083e-12},
+      {"label": "symmetric-neighbor", "analytic_day": 90.317424518368, "fd_day": 90.31742451810486, "metric": 2.913528570654121e-12},
+      {"label": "zero-qbot", "analytic_day": 82.96815480741245, "fd_day": 82.96815480939301, "metric": 2.3871409774120695e-11},
+      {"label": "positive-qbot-minimal", "analytic_day": 82.90599835053706, "fd_day": 82.90599835234502, "metric": 2.180736998791259e-11}
     ],
     "worst_observed_metric": 2.7418788401701933e-11,
     "max_F_SI27_external_mass_residual_cm": 1.8735013540549517e-16,
