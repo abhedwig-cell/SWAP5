@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "workunit": "F-VQ48",
+  "title": "Independent F-MR30 Accepted Root-Uptake Attribution Receipt Qualification",
+  "branch": "qualification/f-vq48-clean-fmr30-root-uptake-attribution-receipt",
+  "source_authority": "integration/f-ci-canonical@e3964ec0ef312f974461aeac70fb9bc5720803e3",
+  "candidate_authority": "F-MR30@95e31ca4aa7d9a6a3cfe5f563c2a5ef02255125c:src/runtime/mod_fmr_root_uptake_attribution_receipt.f90@886d251908126693b6fe035e065a872ce5ff4e29",
+  "status": "CLOSED_NOT_QUALIFIED_ROUTE_BACK_TO_FMR",
+  "decision": "NOT_QUALIFIED_RESTRICTED_ACCEPTED_ROOT_UPTAKE_ATTRIBUTION_RECEIPT",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "closed": true,
+    "production_source_modified": false
+  },
+  "authoritative_workflow": {
+    "run": 34479246369,
+    "job": 102877592656,
+    "head": "7ca765aa9d2cd6cbae406bff7e386df9cc2f5a19",
+    "conclusion": "failure_by_design_after_hard_negative",
+    "intentional_exit_code": 48
+  },
+  "passed_controls": [
+    "CLEAN_CANONICAL_QUALIFICATION_BRANCH_NO_SRC_DELTA",
+    "EXACT_PINNED_FMR30_CANDIDATE_BLOB",
+    "OWNER_CANDIDATE_EXACT_ONE_SOURCE_PRODUCTION_DELTA",
+    "O0_O2_SENTINEL_OUTPUT_IDENTITY",
+    "MATCHING_FORCING_A_POSITIVE_CONTROL",
+    "GENERIC_TRANSACTION_HARD_MASS_BALANCE_IN_POSITIVE_CONTROL"
+  ],
+  "failed_gate": {
+    "id": "HN1_FORCING_CANDIDATE_BINDING",
+    "classification": "FAIL_OPEN",
+    "physical_candidate_a_root_mass_out": 2.40625,
+    "mismatched_forcing_b_derived_amount": 4.125,
+    "wrong_forcing_prepare_accepted": true,
+    "wrong_forcing_postcommit_published": true,
+    "finding": "a valid accepted commit receipt can authorize publication of a root-uptake attribution computed from a different qrot vector than the one physically used to create that candidate"
+  },
+  "scientific_disposition": {
+    "generic_mass_ledger": "PASS_CONTROL; NOT THE FAILED PROPERTY",
+    "root_attribution_provenance": "FAIL_OPEN",
+    "remaining_frozen_matrix": "UNRUN_AFTER_HARD_NEGATIVE",
+    "remaining_cases_are_failed": false
+  },
+  "route_back": {
+    "owner_family": "F-MR",
+    "required_change": "make exact physical-forcing/candidate pairing enforceable by construction before postcommit attribution publication",
+    "preferred_boundary": "runtime/orchestration seam around candidate creation and attribution preparation",
+    "must_not_do": [
+      "do not add actual transpiration as a second generic mass_out booking",
+      "do not make root uptake process-specific state part of generic committed kernel state merely to patch this defect",
+      "do not rely on caller discipline as the production provenance contract"
+    ]
+  },
+  "evidence": [
+    "integration/f-vq/F-VQ48_SOURCE_LOCK.json",
+    "integration/f-vq/F-VQ48_QUALIFICATION_MATRIX.json",
+    "integration/f-vq/F-VQ48_QUALIFICATION_EVIDENCE.json",
+    "tests/fvq/mod_fvq48_independent_root_attribution_backend.f90",
+    "tests/fvq/test_fvq48_forcing_candidate_binding.f90",
+    "tests/fvq/run_fvq48_forcing_candidate_binding_gate.sh",
+    ".github/workflows/fvq48-root-uptake-attribution-independent.yml"
+  ]
+}
