@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI31",
+  "title": "F-MR28 Reference-ET to Restricted Root-Uptake Execution Canonical Admission",
+  "branch": "qualification/f-ci31-fmr28-reference-et-root-uptake-execution-canonical-admission",
+  "canonical_base": {
+    "workunit": "F-CI30",
+    "head": "42b11df9b863afe9bfe2c24a6556293c04bbe555",
+    "src_tree": "d6fa88b076d39fa0ffd924ce08ae4d978649dc85"
+  },
+  "owner": {
+    "workunit": "F-MR28",
+    "owner_closeout": "840a43ab51b6c5eb903c43efc33b6d735b0a1872",
+    "production_source": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+    "production_blob": "8ed7610144700f58d0b89482925471fcb2ff7d69"
+  },
+  "independent_qualification": {
+    "workunit": "F-VQ46",
+    "result_commit": "32b47d9a8082a422b104eda252692d05393b4a07",
+    "workflow_run": 34466381015,
+    "workflow_job": 102835836610,
+    "output_sha256": "fa86ec802b10d520a3984ad1553ffcee347af6bb26ca44cb136636b95c6187b0",
+    "decision": "QUALIFIED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_COMPOSITION_READY_FOR_CANONICAL_ADMISSION"
+  },
+  "expected_production_delta": [
+    "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90"
+  ],
+  "preserve_exact": {
+    "src/runtime/mod_fmr_parallel_physical_scheduler.f90": "544a1ca16fdeebdfce7f89d1ddf1825fa32fa654",
+    "src/runtime/mod_fmr_parallel_worker_pool.f90": "0e700797cbaed4aaab7f04db0054f72faddcfc15",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "7bfb4a269256f0f1d50c32a20fd42479cf033528",
+    "src/runtime/mod_fmr_reference_et_ptra_root_input_binding.f90": "11ef6182414af4fbe67eebec3d6f14742df04aca"
+  },
+  "scope": "Canonical admission of the already-qualified stateless composition that binds authoritative reference-ET ptra into the restricted MACRO/Feddes drought-only precomputed-qrot root-water-uptake execution path.",
+  "nonclaims": [
+    "actual-transpiration mass-ledger admission",
+    "accepted-window integration",
+    "parallel root-extraction physics",
+    "oxygen/salinity/frost/compensation/MICRO/Jong-van-Lier/macropore uptake",
+    "SWKIMPL=1 dynamic root-sink reevaluation",
+    "crop lifecycle advancement",
+    "general SWAP5 release qualification"
+  ]
+}
