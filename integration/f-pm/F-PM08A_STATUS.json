@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08A",
+  "title": "Restricted Single-Level Linear Drainage Structural Candidate",
+  "branch": "work/f-pm08a-single-level-linear-drainage-candidate",
+  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "lineage": {
+    "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "candidate_base": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "canonical_source_under_readiness": "df435824de175e3f868b680aab2cd0a395aa19ff"
+  },
+  "scope": {
+    "swdra": 1,
+    "dramet": 3,
+    "nrlevs": 1,
+    "drainage_only": true,
+    "linear_resistance": true,
+    "interflow": false,
+    "divdra": false,
+    "surface_water_storage": false,
+    "macropore": false,
+    "solute": false,
+    "persistent_process_state": false,
+    "frozen_within_soil_water_solve": true
+  },
+  "target_law": "max(0,(groundwater_level-drain_head)/drainage_resistance)",
+  "held": [
+    "reverse exchange/infiltration",
+    "DRAMET=1 table response",
+    "DRAMET=2 Hooghoudt/Ernst",
+    "multiple drainage levels",
+    "power interflow",
+    "DIVDRA transmissivity distribution",
+    "surface-water storage/control",
+    "macropore interaction",
+    "fully implicit trial-state drainage"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "structurally_qualified": false,
+  "scientifically_qualified": false
+}
