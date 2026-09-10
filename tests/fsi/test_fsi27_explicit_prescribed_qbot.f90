@@ -29,7 +29,7 @@ program test_fsi27_explicit_prescribed_qbot
   type(soil_water_solve_result_t) :: result_a, result_b, result_c, result_bad
   real(real64), allocatable, target :: drainage(:,:), subsurface(:), root_sink(:)
   real(real64), allocatable :: cofgen(:,:)
-  real(real64) :: k0, qeq, qpert, mass_a, mass_b, mass_c, response
+  real(real64) :: k0, qeq, qpert, mass_a, mass_b, mass_c, response, solver_mass_max
   logical :: solver_mass_finite
 
   call configure_problem(parameters, hydraulic_parameters, constitutive, source_sink, initial_state, &
@@ -101,11 +101,16 @@ program test_fsi27_explicit_prescribed_qbot
   solver_mass_finite = ieee_is_finite(result_a%unrounded_mass_balance_residual) .and. &
        ieee_is_finite(result_b%unrounded_mass_balance_residual) .and. &
        ieee_is_finite(result_c%unrounded_mass_balance_residual)
+  call require(solver_mass_finite, 'accepted mode 2 solver mass diagnostics finite')
+  solver_mass_max = max(abs(result_a%unrounded_mass_balance_residual), &
+       abs(result_b%unrounded_mass_balance_residual), abs(result_c%unrounded_mass_balance_residual))
+  call require(solver_mass_max <= hard_mass_gate, 'accepted mode 2 solver mass diagnostics within hard gate')
 
   write(*,'(A,ES26.17E3,A,ES26.17E3,A,ES26.17E3,A,ES26.17E3)') &
        'FSI27_ROW:QEQ=',qeq,':QPERT=',qpert,':RESPONSE=',response,':MAX_EXTERNAL_MASS=', &
        max(abs(mass_a),abs(mass_b),abs(mass_c))
-  write(*,'(A,L1)') 'FSI27_SOLVER_MASS_RESIDUAL_FINITE=',solver_mass_finite
+  write(*,'(A,L1,A,ES26.17E3)') 'FSI27_SOLVER_MASS_RESIDUAL_FINITE=',solver_mass_finite, &
+       ':MAX_SOLVER_MASS=',solver_mass_max
   write(*,'(A)') 'FSI27_EXPLICIT_PRESCRIBED_QBOT_GATE PASS'
 
 contains
