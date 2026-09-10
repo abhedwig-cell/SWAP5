@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM07",
+  "title": "Soil Temperature Source Inventory and Authority Pin",
+  "status": "READINESS_SOURCE_INVENTORY_PERSISTED",
+  "branch": "work/f-pm07-soil-temperature-readiness",
+  "reservation_branch_head_before_work": "fafeebdece209abcc320b24a3c8c2757800b2e0e",
+  "reservation_branch_is_production_source_authority": false,
+  "production_context": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "observed_head": "85e17bb7ca26d2df070f99b2bf16ecf0abebec19",
+    "note": "Read-only context pin. Any later implementation must resolve the then-current canonical authority again."
+  },
+  "current_process_hydraulic_view": {
+    "path": "src/solver/mod_process_hydraulic_view.f90",
+    "blob_sha": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "available_fields_relevant_here": ["water_content", "pressure_head", "ponding_depth", "groundwater_level"],
+    "temperature_target_rule": "Consume a process-facing hydraulic/water-content view. Do not import HeadCalc or soil-water solver internals."
+  },
+  "legacy_archive_pin": {
+    "outer_archive": "SWAP_4.3.1(6).zip",
+    "outer_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "inner_source_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "inner_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "note": "The current canonical repository snapshot does not contain the full legacy soil-temperature source. This archive is therefore pinned as the audited legacy source artifact for readiness evidence, not as production source authority."
+  },
+  "legacy_files": [
+    {
+      "path": "SWAP/temperature.f90",
+      "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+      "role": "MOD_SoilTemperature, analytic and numerical soil-temperature formulations, De Vries thermal properties and thermal boundary input"
+    },
+    {
+      "path": "SWAP/frozencond.f90",
+      "sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+      "role": "MOD_frost, temperature-derived hydraulic reduction factors and frozen drainage/bottom-boundary modification"
+    },
+    {
+      "path": "SWAP/swap.f90",
+      "sha256": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "role": "Legacy process ordering and temporal cadence"
+    },
+    {
+      "path": "SWAP/swapoutput.f90",
+      "role": "Restart serialization evidence: TSOIL is written/read when SWHEA > 0"
+    },
+    {
+      "path": "SWAP/readswap.f90",
+      "sha256": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+      "role": "Frost/snow/heat switches and compatibility constraints"
+    },
+    {
+      "path": "SWAP/rootextraction.f90",
+      "sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "role": "Root-uptake and oxygen/frost consumers of soil temperature"
+    },
+    {
+      "path": "SWAP/MOD_cropdevelopment.f90",
+      "sha256": "c2df137291357553541d4d7026b8859242c32565affe173c66a685d565190ccf",
+      "role": "Crop development/sowing consumer of soil temperature"
+    }
+  ],
+  "source_bound_findings": {
+    "numeric_cadence": "SoilTemperature(2) is called after the accepted SoilWater loop on each successful model timestep, before solute and final time advancement. It is not intrinsically daily.",
+    "analytic_cadence": "The analytic profile is materialized when SoilTemperature is called but is a function of integer daynr and depth, creating a legacy calendar-day dependency that must not become a kernel time-unit assumption.",
+    "numeric_persistent_state": "tsoil(1:numnod) is the continuation state. On swinco=3, numerical initialization preserves the restored profile.",
+    "restart_evidence": "swapoutput serializes TSOIL when SWHEA > 0. Frost reduction arrays/depths are not serialized and are recomputable from temperature plus current hydraulic/configuration inputs.",
+    "water_dependency": "Numerical thermal properties use the average of current and previous volumetric water content, 0.5*(theta+thetm1).",
+    "snow_dependency": "When snow storage is present, the top soil boundary temperature is derived from air temperature, top-node temperature and snow thermal resistance.",
+    "ice_dependency": "No explicit ice-content state or latent-heat term was found in MOD_SoilTemperature. Legacy frost effects are applied separately as hydraulic reductions.",
+    "frost_ownership": "MOD_frost is a separate process family. It consumes tsoil/tetop and modifies hydraulic conductivity, drainage and bottom flux. It currently imports hydraulic/drainage internals and therefore needs a separate migration boundary rather than being absorbed into the soil-temperature owner.",
+    "energy_accounting": "The numerical conduction solve uses heat capacity, conductivity and top/bottom boundary terms but no explicit persistent/cumulative energy ledger was found. Energy-balance qualification therefore remains a child task before production implementation.",
+    "direct_headcalc_dependency_in_temperature": false,
+    "direct_solver_internal_dependency_in_frost": true
+  },
+  "write_scope": {
+    "src_modified": false,
+    "reference_modified": false,
+    "documentation_and_evidence_only": true
+  }
+}
