@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A9_O14_AUTOMATIC_SURFACE_CAP_EVENT_DETECTION",
+  "contract": "F-ROSS01_GATE_E3H_A9_O14_AUTOMATIC_SURFACE_CAP_EVENT_DETECTION_PRECOMMIT.json",
+  "status": "QUALIFIED_RESTRICTED_SEED_FREE_DETECTOR",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "workflow": {
+    "scientific_run": 34475569449,
+    "scientific_head": "e3dbf408c6f2e7029ed57524fb307299191f433c",
+    "conclusion": "success",
+    "profile_jobs_passed": 4,
+    "profile_jobs_total": 4,
+    "superseded_harness_run": {
+      "run": 34475340921,
+      "head": "640c6795ac80f82ddb64ab39fdf0b36c7f1639ed",
+      "classification": "HARNESS_FAILURE_NO_SCIENTIFIC_DECISION",
+      "reason": "The static candidate-isolation guard searched for the generic substring seed_heads and therefore matched the diagnostic output field seed_heads_cm before any A9 scientific experiment executed. Only the guard was narrowed; precommit, experiment, physics, candidate initialization and thresholds were unchanged."
+    }
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id": 10151368872, "digest": "sha256:a1780d5565e59833fcc80e469012d383bb6cdbe4174d389fb6cec4f15985c692"},
+    "P1_DRIER_SUBSOIL": {"id": 10151350049, "digest": "sha256:10bd2d079ea0c1eb55ade52ba4c8ad81abc97ee1195fedc3a49f0b3b02fc8dda"},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id": 10151346384, "digest": "sha256:719c180eb6b5bb2ec7e58bab46354a0e37006c1a2c76ce9133d2ed42d0d145ff"},
+    "P3_STRONG_DRY_SEPARATION": {"id": 10151347191, "digest": "sha256:9af855e9ae505ea675c8b54b2962ee9cc29aa40f561bc82534885ba87c6a54de"}
+  },
+  "frozen_identity": {
+    "profiles": {
+      "P0_A1_CONTROL": [-0.2,-1.5,-5.0],
+      "P1_DRIER_SUBSOIL": [-0.5,-5.0,-10.0],
+      "P2_DRIER_TOP_AND_SUBSOIL": [-1.0,-10.0,-20.0],
+      "P3_STRONG_DRY_SEPARATION": [-2.0,-20.0,-50.0]
+    },
+    "initial_surface_storage_cm": 0.02,
+    "surface_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "positive_event_supply_fraction_of_ksat": 12.0,
+    "negative_control_supply_fractions_of_ksat": [1.5,3.0,5.0],
+    "detection_horizon_day": 0.05
+  },
+  "candidate_policy_qualified": {
+    "candidate_access_to_A4_or_A8_event_roots": false,
+    "initial_event_seed": "tau_seed=(S_cap-S0)/(q_supply-q_top0), where q_top0 is one qualified candidate surface-face evaluation at the committed pre-cap state",
+    "initial_head_seed": "exact committed soil heads",
+    "positive_event_corrector_count_per_profile": 1,
+    "full_trajectory_predictor_count": 0,
+    "event_search_bisection_trajectory_count": 0,
+    "negative_control_nonlinear_trajectory_count": 0,
+    "persistent_event_time_bytes": 0,
+    "persistent_detector_state_bytes": 0
+  },
+  "per_profile": {
+    "P0_A1_CONTROL": {
+      "tau_seed_day": 0.035798920302804696,
+      "candidate_event_time_day": 0.036447719235829415,
+      "reference_event_time_day": 0.036447739841123185,
+      "event_time_difference_day": 2.0605293769848654e-08,
+      "max_event_head_difference_cm": 0.0001743074506421749,
+      "event_bottom_transfer_difference_cm": 8.311814550659991e-07,
+      "candidate_event_nfev": 8,
+      "candidate_max_abs_balance_residual_cm": 4.26481766568898e-15,
+      "reference_max_abs_balance_residual_cm": 2.000590177460987e-16,
+      "candidate_surface_q_abs_error_over_ksat": 1.672462072108871e-14,
+      "candidate_surface_constitutive_K_evaluations": 368,
+      "candidate_surface_root_residual_evaluations": 53,
+      "pass": true
+    },
+    "P1_DRIER_SUBSOIL": {
+      "tau_seed_day": 0.03595591549015182,
+      "candidate_event_time_day": 0.03650139255779911,
+      "reference_event_time_day": 0.0365014276959812,
+      "event_time_difference_day": 3.51381820862251e-08,
+      "max_event_head_difference_cm": 0.00022861539178276047,
+      "event_bottom_transfer_difference_cm": 1.3559756786019062e-06,
+      "candidate_event_nfev": 8,
+      "candidate_max_abs_balance_residual_cm": 4.292139560435615e-15,
+      "reference_max_abs_balance_residual_cm": 2.220446049250313e-16,
+      "candidate_surface_q_abs_error_over_ksat": 1.2810347786365822e-14,
+      "candidate_surface_constitutive_K_evaluations": 376,
+      "candidate_surface_root_residual_evaluations": 66,
+      "pass": true
+    },
+    "P2_DRIER_TOP_AND_SUBSOIL": {
+      "tau_seed_day": 0.03623046748777485,
+      "candidate_event_time_day": 0.03664788414364049,
+      "reference_event_time_day": 0.03664790671376538,
+      "event_time_difference_day": 2.257012489403909e-08,
+      "max_event_head_difference_cm": 0.00014659482823375924,
+      "event_bottom_transfer_difference_cm": 8.966927456943719e-07,
+      "candidate_event_nfev": 8,
+      "candidate_max_abs_balance_residual_cm": 3.073929999430902e-15,
+      "reference_max_abs_balance_residual_cm": 1.1102230246251565e-15,
+      "candidate_surface_q_abs_error_over_ksat": 3.5584299406571725e-16,
+      "candidate_surface_constitutive_K_evaluations": 384,
+      "candidate_surface_root_residual_evaluations": 52,
+      "pass": true
+    },
+    "P3_STRONG_DRY_SEPARATION": {
+      "tau_seed_day": 0.03679624991711999,
+      "candidate_event_time_day": 0.03723729477749461,
+      "reference_event_time_day": 0.03723734776750272,
+      "event_time_difference_day": 5.2990008110598286e-08,
+      "max_event_head_difference_cm": 0.00018453062199874637,
+      "event_bottom_transfer_difference_cm": 1.8068899053716447e-06,
+      "candidate_event_nfev": 10,
+      "candidate_max_abs_balance_residual_cm": 3.701899897734506e-15,
+      "reference_max_abs_balance_residual_cm": 2.220446049250313e-16,
+      "candidate_surface_q_abs_error_over_ksat": 3.380508443624314e-15,
+      "candidate_surface_constitutive_K_evaluations": 400,
+      "candidate_surface_root_residual_evaluations": 53,
+      "pass": true
+    }
+  },
+  "negative_control_certificate": {
+    "profiles": 4,
+    "supply_cases_per_profile": 3,
+    "case_count": 12,
+    "all_certified_no_cap_event": true,
+    "nonlinear_trajectory_count": 0,
+    "surface_storage_upper_bound_cm_at_1_5_ksat": 0.2071988,
+    "surface_storage_upper_bound_cm_at_3_ksat": 0.3943976,
+    "surface_storage_upper_bound_cm_at_5_ksat": 0.643996,
+    "cap_cm": 1.0,
+    "all_committed_states_unchanged": true,
+    "all_runoff_ledgers_cm": 0.0
+  },
+  "global_findings": {
+    "profile_count": 4,
+    "profile_pass_count": 4,
+    "max_event_time_difference_day": 5.2990008110598286e-08,
+    "max_event_time_difference_seconds": 0.004578336700755692,
+    "max_event_head_difference_cm": 0.00022861539178276047,
+    "max_event_bottom_transfer_difference_cm": 1.8068899053716447e-06,
+    "max_candidate_event_abs_balance_residual_cm": 4.292139560435615e-15,
+    "max_reference_event_abs_balance_residual_cm": 1.1102230246251565e-15,
+    "max_candidate_surface_q_abs_error_over_ksat": 1.672462072108871e-14,
+    "max_candidate_event_nfev": 10,
+    "max_candidate_surface_constitutive_K_evaluations": 400,
+    "max_candidate_surface_root_residual_evaluations": 66,
+    "positive_event_correctors_total": 4,
+    "positive_full_trajectory_predictors_total": 0,
+    "event_search_bisection_trajectories_total": 0,
+    "negative_control_nonlinear_trajectories_total": 0,
+    "mass_repair_or_clipping_used": false
+  },
+  "qualified_claim": "For the four frozen O14 pre-cap profiles, the 1 cm surface-cap event under 12*KSAT supply can be detected and localized from the committed physical state without A4/A8 event-root seeds, full-interval predictor trajectories or trajectory-bisection search. One initial surface-face evaluation supplies a physical tau seed and one constrained event corrector converges to the independently qualified A8 cap event with mass, state and face-accuracy diagnostics far inside the frozen gates. For the twelve frozen lower-supply controls, a conservative zero-infiltration upper bound proves the cap cannot be reached within the 0.05 d interval, so no nonlinear solve is performed.",
+  "decision": "QUALIFIED_RESTRICTED_SEED_FREE_O14_SURFACE_CAP_EVENT_DETECTION_READY_FOR_CAP_GENERALIZATION_AND_EVENT_DETECTOR_ROBUSTNESS_RESEARCH",
+  "architecture_checks": {
+    "compact_state": "No detector or event-time persistence is added.",
+    "scratch": "tau seed and event corrector are worker-local.",
+    "transactionality": "Candidate event state remains scratch until accepted; synthetic reject and all no-event controls preserve original committed state and zero runoff ledger.",
+    "generic_time": "tau is an offset inside the explicit 0.05 d interval.",
+    "mass_conservation": "Worst candidate event balance residual is 4.30e-15 cm; no repair or clipping.",
+    "bounded_cost": "One event corrector for positive cases; zero nonlinear solves for algebraically impossible controls; no full-trajectory event search.",
+    "runtime_composition": "Detector composes surface ledger and soil/face contracts outside the Ross face kernel."
+  },
+  "hard_nonclaims": [
+    "No generic bracket discovery for inconclusive cases where the direct physical seed/corrector fails.",
+    "No surface-cap generalization beyond 1 cm.",
+    "No material other than O14.",
+    "No top-node h=0 saturation-event qualification.",
+    "No response tangent through event detection.",
+    "No production implementation, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "next_gates": [
+    "E3H_A10_SURFACE_CAP_GENERALIZATION_RESEARCH",
+    "E3H_A9R_EVENT_DETECTOR_ROBUSTNESS_FOR_INCONCLUSIVE_CASES_IF_NEEDED"
+  ]
+}
