@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "workstream": "F-MR",
+  "work_unit": "F-MR32",
+  "title": "Restricted Parallel MultiSWAP Committed-Boundary Restart Composition",
+  "branch": "work/f-mr32-parallel-committed-restart-composition",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_start": "49863406a6112baa9956f9396b34e7188934e0d4",
+    "canonical_closeout": "F-CI32",
+    "restart_authority": "F-CI28",
+    "parallel_authority": "F-CI30"
+  },
+  "goal": "Qualify composition of the already-canonical restricted parallel real-physics MultiSWAP V1 execution path with the already-canonical committed-boundary process restart contract, without adding new physics or a second transaction implementation.",
+  "frozen_parallel_profile": {
+    "worker_counts": [2, 4],
+    "top_boundary": "stateless fixed-flux production provider",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false
+  },
+  "composition_matrix": {
+    "column_counts": [2, 7, 8, 17, 31, 32],
+    "batch_sizes": [1, 3, 9],
+    "pre_restart_workers": [2, 4],
+    "post_restart_workers": [2, 4],
+    "required_worker_transitions": ["2->2", "2->4", "4->2", "4->4"],
+    "time_windows": "generic non-calendar [t0,t1] then [t1,t2]",
+    "ordering_attacks": ["identity", "reverse runtime columns", "reverse restart records", "reverse both", "state-handle permutation"]
+  },
+  "hard_gates": [
+    "continuous parallel two-window execution equals parallel restart continuation by column id",
+    "serialized restart continuation remains unchanged",
+    "worker-count transition across restart does not enter persistent state",
+    "exact lineage/revision/committed-time continuation",
+    "exact committed physical-state endpoint identity",
+    "hard per-window and cumulative mass continuation",
+    "restart bundle contains no worker assignment, solver workspace or scratch",
+    "fresh-runtime restore is atomic and fail closed",
+    "one bad late record leaves all target committed states uninitialized",
+    "unsupported parallel physics fails before physical solve after restore",
+    "deterministic canonical publication after restart",
+    "O0/O2 output identity"
+  ],
+  "source_policy": {
+    "production_change_expected": false,
+    "reason": "F-CI28 restart and F-CI30 parallel execution are already canonical; this workunit is composition qualification first.",
+    "if_source_change_becomes_necessary": "stop, persist blocker, reconcile ownership, and do not silently modify canonical production source"
+  },
+  "explicit_nonclaims": [
+    "mid-transaction restart",
+    "filesystem serialization format",
+    "parallel receipt routing",
+    "root-extraction/snow/macropore/frost or other excluded parallel physics",
+    "worker counts other than 2 and 4",
+    "parallel speedup",
+    "general SWAP5 release"
+  ],
+  "state": {
+    "branch_created": true,
+    "plan_persisted": true,
+    "source_locked": false,
+    "harness_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "closed": false
+  }
+}
