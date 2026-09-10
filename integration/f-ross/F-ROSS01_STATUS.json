@@ -1,5 +1,5 @@
 {
-  "schema_version": 8,
+  "schema_version": 9,
   "workstream": "F-ROSS",
   "work_unit": "F-ROSS01",
   "title": "RossFast Non-Iterative Fast Richards Solver",
@@ -23,6 +23,7 @@
     {"gate":"E0_SATURATION_STATE_AND_CLOSURE_ADMISSION","evidence":"F-ROSS01_GATE_E0_SATURATION_STATE_AND_CLOSURE_ADMISSION_RESULT.json","decision":"SATURATION_REQUIRES_EXPLICIT_HEAD_DOF_AND_SEPARATE_NEAR_SATURATION_CLOSURE_READY_FOR_E1_TRANSITION_DESIGN","material_count":36,"material_pass_count":36,"theta_only_state_is_noninjective_in_saturated_regime":true},
     {"gate":"E1_UNIFIED_HEAD_PERSISTENT_STATE","evidence":"F-ROSS01_GATE_E1_UNIFIED_HEAD_PERSISTENT_STATE_RESULT.json","decision":"QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE_WITH_MIXED_ROSS_WORKER_VARIABLES_READY_FOR_E2_NEAR_SATURATION_FACE_GATE","material_count":36,"material_pass_count":36,"selected_persistent_state":"UNIFIED_HEAD_PERSISTENT_STATE_WITH_ROSS_MIXED_WORKER_VARIABLES","max_head_roundtrip_error_cm":1.478172136947492e-09},
     {"gate":"E2C_R3_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK","evidence":"F-ROSS01_GATE_E2C_R3_ENDPOINT_LIMIT_HOLDOUT_RESULT.json","run":34387271577,"head":"080aa69ef9ef487f5899ce620d32e4ee46617491","decision":"QUALIFIED_BOUNDED_ENDPOINT_LIMIT_NEAR_SATURATION_FACE_FALLBACK_READY_FOR_E_SATURATION_TRANSITION_PROTOTYPE","legacy_probe_count":2486,"independent_holdout_probe_count":4096,"endpoint_limit_count":37,"endpoint_limit_independent_holdout_count":9,"unresolved_failure_count":0,"max_abs_error_over_ksatfit":0.0002902687720364049,"max_hybrid_metric":0.00028492561960496895,"max_p99_hybrid_metric":2.114833975305732e-05,"endpoint_limit_max_abs_error_over_ksatfit":1.4926425424410582e-12,"endpoint_limit_max_hybrid_metric":4.536322266843834e-12,"max_constitutive_K_evaluations":530,"max_root_residual_evaluations":66,"persistent_per_column_state_bytes":0,"scope":"base MvG/KSATFIT WET_DRY near-saturation face fallback only"},
+    {"gate":"E3E_R2R3_REMEDIATED_5CM_SURFACE_FACE","evidence":"F-ROSS01_GATE_E3E_R2R3_IDENTICAL_320_CASE_FRESH_REQUALIFICATION_RESULT.json","run":34440208150,"head":"735fb09957cd54ee96c39e7a17b018f790511ab1","decision":"QUALIFIED_RESTRICTED_ENDPOINT_AWARE_AND_PHYSICAL_ENVELOPE_REMEDIATED_5CM_SURFACE_FACE_READY_FOR_TRANSACTIONAL_TOP_BOUNDARY_COMPOSITION","materials":["B01","B12","O13","O14"],"case_count":320,"reference_failure_count":0,"candidate_unresolved_count":0,"wrong_sign_count":0,"max_hybrid_metric":4.295431298735291e-8,"max_abs_error_over_ksatfit":4.2958611338249624e-8,"max_constitutive_K_evaluations":522,"max_root_residual_evaluations":66,"persistent_state_bytes_added":0,"scope":"5 cm surface-to-top-node face, h_surface=[0,1] cm, h_top_node=[-10000,-1e-8] cm"},
     {"gate":"C2B_CLASS_B_CONSTITUTIVE_CHARACTERIZATION","evidence":"F-ROSS01_GATE_C2B_HENPR_SVG2006_BRIDGE_RESULT.json","material_count":36,"pass_count":36,"scope":"constitutive admissibility only; face representation not qualified"}
   ],
   "negative_or_restricted_evidence": [
@@ -37,6 +38,7 @@
     {"gate":"E2C_R1_SEGMENTED_LOCAL_SOLVE","status":"REJECTED","evidence":"F-ROSS01_GATE_E2C_R1_LOG_HEAD_SEGMENTED_LOCAL_FACE_RESULT.json","reason":"valid-probe accuracy passed but 196 q>K(h_above) endpoint brackets failed"},
     {"gate":"E2C_R2_ENDPOINT_CLUSTERED_LOCAL_SOLVE","status":"REJECTED","evidence":"F-ROSS01_GATE_E2C_R2_ENDPOINT_CLUSTERED_SEGMENTED_LOCAL_FACE_RESULT.json","reason":"endpoint clustering reduced 196 failures to 28 but did not reach zero"},
     {"gate":"E2C_R2B_SIMPLE_EXPONENT_ESCALATION","status":"REJECTED_RESEARCH_ROUTE","evidence":"F-ROSS01_GATE_E2C_R2B_ENDPOINT_CLUSTER_EXPONENT_DIAGNOSTIC_RESULT.json","reason":"restoration was non-monotone across t^8,t^12,t^16,t^24,t^32 due endpoint binary64 collapse; no common exponent restored all 28"},
+    {"gate":"E3E_EVENT_AWARE_PONDING_ONSET","status":"FAILED_AS_FROZEN_PRESERVED","evidence":"F-ROSS01_GATE_E3E_EVENT_AWARE_PONDING_ONSET_RESULT.json","reason":"h_surface=0 onset gate did not produce the frozen h=0 crossing requirement; finite positive ponding required separate surface-face qualification"},
     {"gate":"C2A_EXACT_KSATEXM","status":"FAIL_CLOSED_ROSSFAST_NOT_YET_QUALIFIED"},
     {"gate":"C2B_CLASS_B_FACE_REPRESENTATION","status":"NOT_YET_QUALIFIED_DEFERRED","decision":"STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING"}
   ],
@@ -48,8 +50,10 @@
     "saturation_state_representation":"QUALIFIED_UNIFIED_HEAD_PERSISTENT_STATE",
     "near_saturation_precomputed_face_table":"REJECTED_LINE_CLOSED",
     "near_saturation_bounded_non_table_face_fallback":"QUALIFIED_RESTRICTED_R3_ENDPOINT_LIMIT",
+    "surface_to_top_node_5cm_face":"QUALIFIED_RESTRICTED_HSURF_0_TO_1_CM",
+    "transactional_surface_water_ledger":"PRECOMMIT_FROZEN_EXECUTION_PENDING",
     "near_saturation_endpoint_limit_response_tangent":"NOT_YET_QUALIFIED",
-    "saturation_transitions":"NOT_YET_QUALIFIED",
+    "saturation_transitions":"NOT_YET_QUALIFIED_FULL_COMPOSITION_PENDING",
     "heterogeneous_profiles":"NOT_YET_QUALIFIED",
     "production_bottom_boundary":"NOT_YET_QUALIFIED",
     "groundwater_solver":"NOT_ADMITTED",
@@ -60,7 +64,8 @@
     "Class_B_HENPR_SVG2006_face":"NOT_YET_QUALIFIED_DEFERRED"
   },
   "open_gates_for_primary_base_family": [
-    "E3_SATURATION_TRANSITION_COLUMN_PROTOTYPE",
+    "E3F_TRANSACTIONAL_SURFACE_WATER_LEDGER",
+    "E3G_PHYSICAL_TOP_BOUNDARY_SWITCH_COMPOSITION_AFTER_E3F",
     "E4_ENDPOINT_LIMIT_TANGENT_POLICY_IF_REQUIRED",
     "G_HETEROGENEOUS_PROFILES",
     "H_BOTTOM_BOUNDARY",
@@ -71,15 +76,16 @@
   ],
   "hard_guards": [
     "Mass conservation remains absolute.",
-    "C1R may not be extrapolated above its qualified h=-1 cm upper envelope; E2C-R3 is the qualified restricted near-saturation fallback seam.",
+    "C1R may not be extrapolated above its qualified h=-1 cm upper envelope; E2C-R3 and E3E-R2R3 provide the qualified restricted near-saturation and 5 cm surface-face seams.",
     "Saturated pressure head may not be reconstructed from theta alone; unified persistent head state remains binding.",
     "The precomputed near-saturation table line remains closed. Do not reopen Q3, node-density, coordinate or Phi tuning as a hidden continuation.",
-    "The R3 endpoint limit may trigger only on the qualified q>K(h_above) bracket-failure class; other failures remain fail closed.",
-    "No unique response tangent is yet qualified across the endpoint-limit branch.",
-    "R3 is a bounded fallback face formulation, not yet a normal production RossFast face path.",
-    "Class-B remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding.",
-    "No groundwater, MODFLOW, runtime or MultiSWAP admission follows from R3."
+    "The R3 endpoint limit may trigger only on its qualified bracket-failure class; other failures remain fail closed.",
+    "No unique response tangent is yet qualified across endpoint-limit, endpoint or physical-envelope snap branch switching.",
+    "The 5 cm surface-face qualification does not itself qualify rainfall, evaporation, ponding storage, runoff, full top-boundary switching or a saturated column transition.",
+    "Surface storage belongs to the physical transaction and must commit or roll back exactly once with soil state and interval accounting.",
+    "No groundwater, MODFLOW, runtime or MultiSWAP admission follows from the 5 cm face or E3F precommit.",
+    "Class-B remains deferred and STOP_MFP_NORMALIZATION_LINE_NO_MORE_PHI_TUNING remains binding."
   ],
-  "next_action": "Open E3 as a restricted physical saturation-transition column/timestep prototype using the E1 unified persistent head state, C1R/F-R1 unsaturated route below h=-1 cm, and E2C-R3 bounded near-saturation face fallback. Freeze transition cases and timestep policy before execution. Prove transaction safety, exact mass accounting, head continuity through h=0, no theta-only saturated-head reconstruction, bounded fallback diagnostics and convergence against a full-accuracy reference. Do not qualify response tangents across the endpoint-limit branch unless a separate E4 gate proves them.",
-  "status": "C1R_J1_D_F_E0_E1_AND_E2C_R3_QUALIFIED_READY_FOR_RESTRICTED_SATURATION_TRANSITION_COLUMN_PROTOTYPE"
+  "next_action": "Execute the already-frozen E3F transactional surface-water ledger gate at commit 262306de0b3aca1e21804aa5e7be36837265e414. Prove ordinary accept, exact fill, conservative overflow-to-runoff transfer, underflow reject plus event-localized retry, injected solver rejection, partition invariance, generic non-midnight time, and exactly-once cumulative ledger publication. Rejected trials must leave committed time, physical surface storage and cumulative ledgers bitwise unchanged. Do not continue beyond a surface-depletion event with stale qtop; physical boundary re-solve belongs to a later E3G gate.",
+  "status": "C1R_J1_D_F_E0_E1_E2C_R3_AND_E3E_R2R3_QUALIFIED_E3F_PRECOMMIT_FROZEN_READY_FOR_TRANSACTIONAL_SURFACE_LEDGER_EXECUTION"
 }
