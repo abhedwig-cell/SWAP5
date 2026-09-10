@@ -1,0 +1,30 @@
+name: F-CI34G current canonical postimage governance reconciliation
+
+on:
+  push:
+    branches:
+      - qualification/f-ci34g-current-canonical-postimage-governance
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  current-postimage-governance:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-CI34G reconciliation gate
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "integration/f-ci-canonical" ]]; then
+            export FCI34G_MODE=canonical
+          else
+            export FCI34G_MODE=repair
+          fi
+          bash tests/fci/run_fci34g_current_postimage_reconciliation.sh
