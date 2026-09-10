@@ -1,0 +1,26 @@
+{
+  "schema":"swap5.fmr35_owner_evidence.v1",
+  "work_unit":"F-MR35",
+  "title":"Restricted Parallel Root-Uptake Profile Owner Evidence",
+  "branch":"work/f-mr35-restricted-parallel-root-uptake-profile",
+  "canonical_source_authority":"c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "readiness_authority":{"work_unit":"F-MR34","closeout":"02074061ade9e9399312c1758768090292046390","decision":"QUALIFIED_PARALLEL_ROOT_UPTAKE_ATTRIBUTION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"},
+  "initial_structural_candidate":"040e34dfb169058932583431052e471dd10bd8cc",
+  "qualified_owner_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de",
+  "tested_owner_head":"9cde9abf846492b59b016c6ea5c1972eda73d40e",
+  "production_delta":["src/runtime/mod_fmr_parallel_root_uptake_pool.f90"],
+  "attempt_history":[
+    {"run":34522627048,"job":103023598043,"classification":"HARNESS_FIXTURE_DERIVATION_MATCHER_FAILURE_BEFORE_COMPILATION_OR_SCIENCE"},
+    {"run":34522751398,"job":103024012246,"classification":"REAL_CANDIDATE_FAIL_CLOSED_DEFECT_NONFINITE_QROT_SIGN_COMPARISON_SIGFPE"},
+    {"remediation":"6b9e47df37513705d3db13edc2c7035526c9c0de","classification":"MINIMAL_PRODUCTION_REMEDIATION_SEQUENTIAL_FINITE_THEN_SIGN_VALIDATION"},
+    {"run":34523117024,"job":103025248380,"classification":"EXPECTED_SOURCE_LOCK_REJECTION_AFTER_REMEDIATION"},
+    {"run":34523223567,"job":103025640930,"classification":"TRANSITIONAL_WORKFLOW_STALE_V2_CANDIDATE_PIN"},
+    {"run":34523243203,"job":103025722193,"classification":"AUTHORITATIVE_OWNER_GATE_PASS"}
+  ],
+  "authoritative_owner_gate":{"run":34523243203,"job":103025722193,"runner_os":"ubuntu-24.04","compiler":"GNU Fortran 13.3.0","optimization_levels":["O0","O2"],"conclusion":"success"},
+  "executed_gates":{"source_lock":"PASS","existing_parallel_v1_byte_preserved":"PASS","explicit_root_active_capability":"PASS","worker_owned_scratch":"PASS","serialized_2w_4w_state_mass_attribution_identity":"PASS","input_order_independence":"PASS","problem_column_isolation":"PASS","negative_qrot_fail_pre_solve":"PASS","nan_qrot_fail_pre_solve":"PASS_AFTER_REMEDIATION","active_zero_qrot":"PASS","true_multiworker_overlap":"PASS","worker_count_independence":"PASS","deterministic_replay":"PASS","hard_mass_gate_cm":1e-12,"o0_o2_exact_output_identity":"PASS","existing_v1_regression":"NONE_OBSERVED"},
+  "decision":"QUALIFIED_OWNER_RESTRICTED_PARALLEL_ROOT_UPTAKE_READY_FOR_INDEPENDENT_FMQ30",
+  "independent_qualification":false,
+  "canonical_admitted":false,
+  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","other excluded parallel physics","performance speedup","general SWAP5 release qualification"]
+}
