@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ39",
+  "scope": "independent scientific/source-bound verification of F-PM08C1 DRAMET=1 tabulated response",
+  "candidate": {
+    "closeout": "edff81f4c784ec62bfbee5f131d7c0c71eba0d58",
+    "production_file": "src/process/mod_drainage_tabulated_response.f90",
+    "production_blob": "79084d69a81d6752ae5402b9f2d717ea20a48cbc"
+  },
+  "legacy_semantics": {
+    "reader": "read_drainage_basic reads 1..25 gwl/qdrain pairs; qdrtab(2*i-1)=abs(gwl_in(i)); qdrtab(2*i)=qdrain_in(i); remaining qdrtab entries retain zero initialization",
+    "evaluation": "qdrain(1)=AFGEN(qdrtab,50,abs(gwl))",
+    "afgen": "endpoint clamp, linear interpolation, and first strictly decreasing x pair as partial-table terminator",
+    "normalized_admissible_domain": "strictly increasing nonnegative depth knots, with legacy-observable degenerate one-point depth-zero case tested separately rather than hidden"
+  },
+  "required_checks": [
+    "frozen drainage.f90 and functions.f90 source identities are present in B0 manifest",
+    "candidate production blob is exactly frozen closeout blob",
+    "qualification branch changes no src/ or reference/ file",
+    "candidate is executed from exact closeout source, not copied from qualification branch",
+    "independent AFGEN reconstruction matches candidate flux for normalized admissible tables",
+    "positive and negative groundwater levels both follow abs(gwl) flux semantics",
+    "endpoint clamping and open-segment interpolation are verified",
+    "analytic derivative is independently checked on open smooth segments",
+    "table knots are allowed to expose derivative-unavailable conservatively",
+    "legacy one-point depth-zero behavior is explicitly tested",
+    "any source-observable mismatch fails qualification"
+  ],
+  "architecture_constraints": [
+    "no legacy file parsing or fixed qdrtab storage in process kernel",
+    "no solver Jacobian mutation by drainage process",
+    "no persistent process state for tabulated response",
+    "mass output remains one signed external transfer; runtime owns integration and accepted-ledger publication",
+    "no silent qualification of legacy-degenerate inputs that differ from B1.10"
+  ],
+  "possible_dispositions": [
+    "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITHIN_FROZEN_SCOPE",
+    "FAIL_CLOSED_DRAMET1_SOURCE_OBSERVABLE_MISMATCH_REQUIRES_REMEDIATION"
+  ]
+}
