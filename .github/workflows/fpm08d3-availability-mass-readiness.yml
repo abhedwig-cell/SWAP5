@@ -1,0 +1,19 @@
+name: F-PM08D3 availability and exact-mass readiness
+
+on:
+  push:
+    branches:
+      - work/f-pm08d3-secondary-storage-availability-mass-readiness
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08D3 readiness gate
+        run: python3 tools/fpm/fpm08d3_availability_mass_readiness_gate.py
