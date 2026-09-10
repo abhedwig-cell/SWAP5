@@ -1,0 +1,60 @@
+{
+  "schema": "swap5.fci36_plan.v1",
+  "work_unit": "F-CI36",
+  "title": "Restricted Serialized DIVDRA Active Runtime Callsite Canonical Admission",
+  "branch": "qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission",
+  "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "owner_authority": {
+    "work_unit": "F-MR36",
+    "closeout": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+    "decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION"
+  },
+  "independent_authority": {
+    "work_unit": "F-VQ51",
+    "closeout": "716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+    "decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_FOR_CANONICAL_ADMISSION",
+    "exact_head_ci_run": 34526033453,
+    "exact_head_ci_conclusion": "success"
+  },
+  "candidate": [
+    {
+      "path": "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+      "blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5"
+    },
+    {
+      "path": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+      "blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+    }
+  ],
+  "goal": "Canonically admit only the independently qualified restricted serialized DIVDRA active runtime callsite composition and runtime entrypoint, without reopening drainage science or changing the generic serialized runtime.",
+  "required_proofs": [
+    "canonical base remains exact until promotion",
+    "candidate paths are absent on canonical base",
+    "candidate overlay is exactly the two F-MR36/F-VQ51 blobs",
+    "no other src delta",
+    "zero reference delta",
+    "generic serialized runtime remains blob fe5a06c9af59308cdad86c5126379f413591b0cd",
+    "F-VQ51 exact independent authority is green",
+    "F-VQ51 independent runtime verifier replays O0/O2 with identical output",
+    "hard mass and caller-forcing restoration remain enforced",
+    "all 30 SWAP architecture invariants reviewed",
+    "broad canonical moving-current gate is advanced directly to F-CI36 before promotion"
+  ],
+  "nonclaims": [
+    "no drainage exchange-law science",
+    "no fully implicit/trial-state drainage response",
+    "no surface-water-controlled drainage",
+    "no parallel active DIVDRA execution",
+    "no negative/infiltration or multilevel drainage",
+    "no HeadCalc/Jacobian drainage mutation",
+    "no modification of reference sources",
+    "no modification of generic serialized runtime"
+  ],
+  "promotion_policy": {
+    "persist_before_test": true,
+    "exact_closeout_head_rerun_required": true,
+    "live_canonical_recheck_immediately_before_promotion": true,
+    "promotion_non_forced_fast_forward_only": true,
+    "post_promotion_dedicated_and_broad_canonical_replays_required": true
+  }
+}
