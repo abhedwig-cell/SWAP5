@@ -78,7 +78,7 @@ contains
       return
     end if
 
-    if (scalar_transfer == 0.0_real64) then
+    if (scalar_transfer <= 0.0_real64) then
       diagnostics%evaluated = .true.
       diagnostics%zero_transfer = .true.
       return
