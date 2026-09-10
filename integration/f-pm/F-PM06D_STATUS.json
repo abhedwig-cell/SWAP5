@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.surface_evaporation_hydraulic_materialization_readiness_status.v1",
+  "work_unit": "F-PM06D",
+  "title": "Surface Evaporation Hydraulic Materialization Readiness",
+  "branch": "work/f-pm06d-surface-evaporation-hydraulic-materialization-readiness",
+  "canonical_source_authority": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "phase": "READINESS_CLOSED_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_HYDRAULIC_MATERIALIZATION_READINESS_READY_FOR_SCALAR_CAPACITY_CANDIDATE",
+  "authorities": {
+    "F_PM06B": "64fbe2b93c52bfc1865e3c381884e692dcc04764",
+    "F_PM06C": "1e0616b89a52393b5aa709d0742ee64b7ec32e7c",
+    "F_VQ52": "003209963ead7f14e375fca7f7d5d4b2a1996ae8",
+    "F_PM06C_candidate_blob": "a213af4deec2fe854d79120899827852a57237d1"
+  },
+  "readiness_evidence": {
+    "run": 34531676647,
+    "job": 103053627682,
+    "conclusion": "success",
+    "architecture_invariants": "30_OF_30_PASS",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "boundary_decisions": {
+    "ponding_classification_authority": "exact trial base committed ponding_depth",
+    "ponding_threshold_cm": 1.0e-10,
+    "Emax_owner": "soil hydraulics capability",
+    "Emax_signed": true,
+    "negative_finite_Emax_valid": true,
+    "raw_solver_arrays_exposed_to_ET": false,
+    "new_persistent_state": false,
+    "full_vector_constitutive_api_is_public_surface_Emax_interface": false,
+    "accepted_top_flux_remains_mass_authority": true
+  },
+  "first_candidate_scope": {
+    "swinter": 0,
+    "swredu": 0,
+    "frost_active": false,
+    "macropore_surface_scaling_active": false,
+    "full_boundtop": false,
+    "runtime_surface_result_publication": false
+  },
+  "state": {
+    "decomposed": true,
+    "source_bound": true,
+    "persisted": true,
+    "tested": true,
+    "production_modified": false,
+    "canonical_admitted": false,
+    "closed": true,
+    "exact_status_head_requalified": false
+  },
+  "final_gate": {
+    "same_source_locks": true,
+    "zero_src_reference_delta": true,
+    "same_readiness_gate_must_pass": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "start a separate restricted scalar B1.10 surface-evaporation-capacity production candidate from the then-current canonical authority; independently qualify it before runtime composition"
+}
