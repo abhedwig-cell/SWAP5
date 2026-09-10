@@ -1,0 +1,101 @@
+name: F-ROSS01 Gate E3H-A10A O14 Surface-Cap Detection Generalization
+
+on:
+  push:
+    branches:
+      - work/f-ross01-fast-mfp-feasibility
+    paths:
+      - 'integration/f-ross/F-ROSS01_GATE_E3H_A10A_O14_SURFACE_CAP_EVENT_DETECTION_GENERALIZATION_PRECOMMIT.json'
+      - 'experiments/ross/run_ross01_gate_e3h_a10a_o14_surface_cap_event_detection_generalization.py'
+      - '.github/workflows/ross01-gate-e3h-a10a-o14-surface-cap-generalization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [P0_A1_CONTROL, P1_DRIER_SUBSOIL, P2_DRIER_TOP_AND_SUBSOIL, P3_STRONG_DRY_SEPARATION]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Runtime identity
+        run: |
+          python3 --version
+          git rev-parse HEAD
+      - name: Install qualification dependencies
+        run: python3 -m pip install --disable-pip-version-check --quiet numpy scipy mpmath
+      - name: Syntax guard
+        run: python3 -m py_compile experiments/ross/run_ross01_gate_e3h_a10a_o14_surface_cap_event_detection_generalization.py
+      - name: Assert frozen cap scope and A9 authority
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          c=json.load(open('integration/f-ross/F-ROSS01_GATE_E3H_A10A_O14_SURFACE_CAP_EVENT_DETECTION_GENERALIZATION_PRECOMMIT.json'))
+          a9=json.load(open('integration/f-ross/F-ROSS01_GATE_E3H_A9_O14_AUTOMATIC_SURFACE_CAP_EVENT_DETECTION_RESULT.json'))
+          assert c['precommit_frozen'] is True
+          assert c['frozen_caps_cm']==[0.1,0.25,0.5,0.75,1.0]
+          assert min(c['frozen_caps_cm'])>0.02 and max(c['frozen_caps_cm'])<=1.0
+          assert c['frozen_physical_identity']['positive_event_case_count']==20
+          assert c['frozen_physical_identity']['negative_control_case_count']==40
+          assert a9['decision']=='QUALIFIED_RESTRICTED_SEED_FREE_O14_SURFACE_CAP_EVENT_DETECTION_READY_FOR_CAP_GENERALIZATION_AND_EVENT_DETECTOR_ROBUSTNESS_RESEARCH'
+          src=pathlib.Path('experiments/ross/run_ross01_gate_e3h_a10a_o14_surface_cap_event_detection_generalization.py').read_text()
+          assert 'CAPS = (0.10, 0.25, 0.50, 0.75, 1.00)' in src
+          assert 'PROFILES = {' in src
+          PY
+      - name: Execute frozen A10A profile gate
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          set -o pipefail
+          out="ross01-gate-e3h-a10a-${PROFILE}"
+          rm -rf "$out"
+          mkdir -p "$out"
+          python3 experiments/ross/run_ross01_gate_e3h_a10a_o14_surface_cap_event_detection_generalization.py \
+            "$PROFILE" \
+            "$out/F-ROSS01_GATE_E3H_A10A_${PROFILE}_RESULT.json" \
+            | tee "$out/F-ROSS01_GATE_E3H_A10A_${PROFILE}_STDOUT.txt"
+      - name: Assert frozen A10A semantics
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          p=os.environ['PROFILE']
+          f=f'ross01-gate-e3h-a10a-{p}/F-ROSS01_GATE_E3H_A10A_{p}_RESULT.json'
+          r=json.load(open(f)); pr=r['profile_result']
+          assert r['gate']=='E3H_A10A_O14_SURFACE_CAP_EVENT_DETECTION_GENERALIZATION'
+          assert r['material']=='O14'
+          assert r['production_implementation'] is False
+          assert r['pass'] is True and pr['pass'] is True
+          assert len(pr['cases'])==5
+          assert [x['cap_cm'] for x in pr['cases']]==[0.1,0.25,0.5,0.75,1.0]
+          assert all(x['pass'] for x in pr['cases'])
+          assert all(x['candidate']['accepted'] for x in pr['cases'])
+          assert all(x['reference_A']['accepted'] and x['reference_B']['accepted'] for x in pr['cases'])
+          assert all(x['reference_pair']['pass'] for x in pr['cases'])
+          assert all(x['candidate_reference']['pass'] for x in pr['cases'])
+          assert pr['max_candidate_reference_event_time_difference_day']<=0.00025
+          assert pr['max_candidate_reference_head_difference_cm']<=0.25
+          assert pr['max_candidate_reference_bottom_transfer_difference_cm']<=0.001
+          assert pr['max_reference_pair_event_time_difference_day']<=1e-7
+          assert pr['max_reference_pair_head_difference_cm']<=1e-4
+          assert pr['max_candidate_mass_residual_cm']<=1e-9
+          assert pr['max_candidate_surface_q_abs_error_over_ksat']<=0.0005
+          assert pr['max_candidate_surface_constitutive_K_evaluations']<=530
+          assert pr['max_candidate_surface_root_residual_evaluations']<=66
+          assert len(pr['negative_controls'])==10
+          assert all(x['event_impossible'] for x in pr['negative_controls'])
+          assert all(x['nonlinear_trajectory_count']==0 for x in pr['negative_controls'])
+          assert all(x['committed_state_bitwise_unchanged'] for x in pr['negative_controls'])
+          assert all(x['runoff_ledger_cm']==0.0 for x in pr['negative_controls'])
+          assert all(pr['tests'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f-ross01-gate-e3h-a10a-${{ matrix.profile }}
+          path: ross01-gate-e3h-a10a-${{ matrix.profile }}/
