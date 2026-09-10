@@ -8,6 +8,8 @@ on:
       - 'integration/f-si/F-SI27_*'
       - 'tests/fsi/test_fsi27_explicit_prescribed_qbot.f90'
       - 'tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh'
+      - 'tests/fsi/test_fsi27_qualification_matrix.f90'
+      - 'tests/fsi/run_fsi27_qualification_matrix_gate.sh'
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'src/solver/**'
       - 'src/legacy/b1_10_port/headcalc.f90'
@@ -26,3 +28,5 @@ jobs:
         run: gfortran --version
       - name: F-SI27 source-bound prescribed qbot gate
         run: bash tests/fsi/run_fsi27_explicit_prescribed_qbot_gate.sh
+      - name: F-SI27 frozen qualification matrix
+        run: bash tests/fsi/run_fsi27_qualification_matrix_gate.sh
