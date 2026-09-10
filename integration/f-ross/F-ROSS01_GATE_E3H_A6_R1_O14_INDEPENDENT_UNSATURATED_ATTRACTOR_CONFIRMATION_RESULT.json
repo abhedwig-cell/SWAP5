@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A6_R1_O14_INDEPENDENT_POST_CAP_UNSATURATED_ATTRACTOR_CONFIRMATION",
+  "contract": "F-ROSS01_GATE_E3H_A6_R1_O14_INDEPENDENT_UNSATURATED_ATTRACTOR_CONFIRMATION_PRECOMMIT.json",
+  "status": "QUALIFIED_RESTRICTED_REFERENCE_TOPOLOGY",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "workflow": {
+    "run": 34466184185,
+    "head": "58a32f86dcfb3a957a075fe55d44aa0e839640ee",
+    "conclusion": "success",
+    "profile_jobs_passed": 4,
+    "profile_jobs_total": 4
+  },
+  "artifacts": {
+    "P0_A1_CONTROL": {"id":10147659704,"digest":"sha256:c1f8efcaeaaa21bae3fb97419fa1e86731884652dc7a72b234315816f9c038b2"},
+    "P1_DRIER_SUBSOIL": {"id":10147659095,"digest":"sha256:2d6b9b74fc34359630af9d35d522c66b7ceca1140794db0684d61c2f8a1dbea8"},
+    "P2_DRIER_TOP_AND_SUBSOIL": {"id":10147663973,"digest":"sha256:b01ced34d0fc042102c1b7252256f01c68e9a07fe92da41a64d002b3212c8d77"},
+    "P3_STRONG_DRY_SEPARATION": {"id":10147670526,"digest":"sha256:e7db648231f884bb0c3968097dc34e8cdf26546ba945af447eb7af2ac94de134"}
+  },
+  "frozen_physical_identity": {
+    "surface_head_cm": 1.0,
+    "surface_storage_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat_for_runoff_ledger": 12.0,
+    "time_partition_count": 40,
+    "dt_day": 0.025,
+    "horizon_day": 1.0,
+    "candidate_ross_routes_used": false
+  },
+  "common_independent_steady_state": {
+    "heads_cm": [-0.19725877123808083,-3.641715902463716,-8.5218470896173],
+    "q_cm_per_day": 3.087215233483394,
+    "independent_steady_starts_per_profile": 4,
+    "reproducible_cluster_count_per_profile": 1,
+    "max_flux_continuity_residual_cm_per_day": 6.217248937900877e-15,
+    "top_head_saturation_margin_cm": 0.19725877123808083
+  },
+  "per_profile": {
+    "P0_A1_CONTROL": {
+      "accepted_steps": 40,
+      "max_top_head_cm": -0.14612442301092474,
+      "final_heads_cm": [-0.19725877123807334,-3.641715902463677,-8.521847089617236],
+      "final_to_steady_max_abs_head_difference_cm": 6.394884621840902e-14,
+      "max_abs_balance_residual_cm": 1.021405181331655e-15,
+      "cumulative_runoff_cm": 26.864694778776258,
+      "pass": true
+    },
+    "P1_DRIER_SUBSOIL": {
+      "accepted_steps": 40,
+      "max_top_head_cm": -0.19725877123809799,
+      "final_heads_cm": [-0.19725877123809799,-3.6417159024637313,-8.521847089617328],
+      "final_to_steady_max_abs_head_difference_cm": 2.842170943040401e-14,
+      "max_abs_balance_residual_cm": 8.881784197001252e-16,
+      "cumulative_runoff_cm": 26.864526813109688,
+      "pass": true
+    },
+    "P2_DRIER_TOP_AND_SUBSOIL": {
+      "accepted_steps": 40,
+      "max_top_head_cm": -0.19725877123815397,
+      "final_heads_cm": [-0.19725877123815397,-3.6417159024639485,-8.521847089617589],
+      "final_to_steady_max_abs_head_difference_cm": 2.8954616482224083e-13,
+      "max_abs_balance_residual_cm": 2.3314683517128287e-15,
+      "cumulative_runoff_cm": 26.864007818895946,
+      "pass": true
+    },
+    "P3_STRONG_DRY_SEPARATION": {
+      "accepted_steps": 40,
+      "max_top_head_cm": -0.1972587712380987,
+      "final_heads_cm": [-0.1972587712380987,-3.6417159024637327,-8.521847089617328],
+      "final_to_steady_max_abs_head_difference_cm": 2.842170943040401e-14,
+      "max_abs_balance_residual_cm": 1.609823385706477e-14,
+      "cumulative_runoff_cm": 26.86111287316249,
+      "pass": true
+    }
+  },
+  "aggregate": {
+    "profile_count": 4,
+    "profile_pass_count": 4,
+    "accepted_step_count_total": 160,
+    "max_abs_balance_residual_cm": 1.609823385706477e-14,
+    "max_observed_top_head_cm": -0.14612442301092474,
+    "max_final_to_steady_abs_head_difference_cm": 2.8954616482224083e-13,
+    "all_top_saturation_approach_counts_zero": true,
+    "all_runoff_nonnegative": true,
+    "all_steady_roots_reproducible_from_four_new_starts": true,
+    "mass_repair_or_clipping_used": false
+  },
+  "scientific_interpretation": [
+    "A6 remains failed as frozen because its precommitted instantaneous-tendency sign hypothesis was false; this result does not relabel A6.",
+    "The independent 40 x 0.025 day partition reproduces the same negative-head fixed point from all four A4 cap checkpoints.",
+    "Four independent steady starts per profile collapse to one common unsaturated root with q continuity at roundoff scale.",
+    "The closest observed top head is -0.146124423 cm, far from numerical endpoint tolerances; the lack of top saturation is hydrologically substantive within this frozen 1 cm cap topology.",
+    "Excess atmospheric supply belongs to the explicit runoff ledger after the surface cap and is not reapplied as soil forcing."
+  ],
+  "architecture_checks": {
+    "persistent_state_added": 0,
+    "scratch_owner": "qualification worker",
+    "transactionality": "Each accepted reference step advances from the prior committed diagnostic state; no failed step substitution.",
+    "mass_conservation": "Hard 1e-9 cm gate passed by more than four orders of magnitude with no repair or clipping.",
+    "generic_time": "Fixed generic [t0,t1] partition without calendar assumptions.",
+    "runtime_composition": "Runoff remains ledger-owned outside the soil-face kernel."
+  },
+  "decision": "QUALIFIED_RESTRICTED_O14_POST_CAP_UNSATURATED_ATTRACTOR_WITHIN_FROZEN_1CM_SURFACE_CAP_TOPOLOGY_READY_FOR_RUNOFF_CONTINUATION_COMPOSITION",
+  "hard_nonclaims": [
+    "No claim for surface caps other than 1 cm, different bottom boundary, forcing or O14 parameterization.",
+    "No production Ross candidate continuation qualification yet.",
+    "No automatic runoff event detection qualification.",
+    "No theorem that O14 can never saturate under other boundary conditions.",
+    "No response tangent, runtime, MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "next_gate": "E3H_A7_O14_RESTRICTED_ROSS_CANDIDATE_POST_CAP_RUNOFF_CONTINUATION_COMPOSITION"
+}
