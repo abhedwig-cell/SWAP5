@@ -6,7 +6,9 @@ module mod_fmr_committed_restart
        KERNEL_PERSISTENCE_SCHEMA_VERSION, KERNEL_PERSISTENCE_OK, &
        export_kernel_committed_state, reconstruct_kernel_persistence_snapshot_trusted, &
        restore_kernel_committed_state
-  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t
   implicit none
   private
 
@@ -128,6 +130,11 @@ contains
         status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
         return
       end if
+      if (.not. restart_physical_state_matches_template(candidate_records(i)%physical_state, &
+                                                         templates(template_index))) then
+        status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
+        return
+      end if
     end do
 
     bundle%schema_version = FMR_RESTART_SCHEMA_VERSION
@@ -213,6 +220,11 @@ contains
         status = FMR_RESTART_STATE_NOT_COMMITTED
         return
       end if
+      if (.not. restart_physical_state_matches_template(bundle%records(record_index)%physical_state, &
+                                                         templates(template_index))) then
+        status = FMR_RESTART_KERNEL_PERSISTENCE_REJECTED
+        return
+      end if
 
       call reconstruct_kernel_persistence_snapshot_trusted( &
            bundle%records(record_index)%kernel_schema_version, &
@@ -254,6 +266,23 @@ contains
          left%numerical_continuation_layout_id == right%numerical_continuation_layout_id .and. &
          left%compatible_backend_id == right%compatible_backend_id
   end function fmr_restart_template_identity_matches
+
+  logical function restart_physical_state_matches_template(state, template) result(matches)
+    class(transaction_state_t), intent(in) :: state
+    type(fmr_template_t), intent(in) :: template
+
+    matches = .false.
+    if (template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE) return
+    if (template%optional_state_layout_id /= 0_int64) return
+    if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
+
+    select type (state)
+    type is (fmr_b110_physical_state_t)
+      matches = .true.
+    class default
+      matches = .false.
+    end select
+  end function restart_physical_state_matches_template
 
   logical function registry_structure_valid(columns, templates, states, allow_uninitialized) result(valid)
     type(fmr_logical_column_t), intent(in) :: columns(:)
