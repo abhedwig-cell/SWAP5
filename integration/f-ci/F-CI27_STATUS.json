@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "workunit": "F-CI27",
+  "title": "F-MR23 Restricted Reference-ET Generic-Time Runtime Binding Canonical Admission",
+  "branch": "qualification/f-ci27-fmr23-reference-et-runtime-canonical-admission",
+  "status": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD",
+  "decision": "QUALIFIED_FMR23_RESTRICTED_REFERENCE_ET_GENERIC_TIME_RUNTIME_CANONICAL_ADMISSION_READY_FOR_FAST_FORWARD",
+  "candidate": {
+    "F_MR23_closeout": "a0cf508581677d1af100d754bc9cb5e5d67ac84d",
+    "F_VQ36_closeout": "9f39d3d621bc3254063af86efb4abd64525ef07f",
+    "production_source": "src/runtime/mod_fmr_reference_et_demand_binding.f90",
+    "production_source_blob": "8c679f911c9a82c498258224d83f5fce3cb09163",
+    "pre_src_tree": "3f701f4b9e04eaf96f5ac44bba22b8e9879ebcba",
+    "post_src_tree": "4121255813971a360949efc3fb17ab6c8f87a799",
+    "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6"
+  },
+  "qualification": {
+    "tested_head": "bf2f3963c9910155e4321f1a2c1ba8d8a9024527",
+    "workflow_run_id": 34455248516,
+    "workflow_conclusion": "success",
+    "pre_admission_job_id": 102800012230,
+    "postimage_job_id": 102800066137,
+    "independent_grid_cases": 13824
+  },
+  "qualified_scope": {
+    "restricted_reference_ET_runtime_binding": true,
+    "generic_contained_interval_binding": true,
+    "explicit_forcing_validity_span": true,
+    "potential_ET_rates_only": true,
+    "persistent_state": false,
+    "root_uptake_binding": false,
+    "ptra_ownership_reconciled": false,
+    "mass_ledger_binding": false,
+    "accepted_interval_rate_integration": false,
+    "actual_evaporation": false,
+    "interception": false
+  },
+  "architecture_invariants": {
+    "single_kernel": "PASS",
+    "kernel_IO_separation": "PASS",
+    "explicit_data_separation": "PASS",
+    "compact_persistent_state": "PASS_ZERO_RUNTIME_BINDING_STATE",
+    "transactional_timesteps": "PASS_BY_STATELESS_EVALUATION",
+    "cheap_recompute": "PASS",
+    "generic_time": "PASS_EXPLICIT_CONTAINED_T0_T1_AND_FORCING_SPAN",
+    "mass_conservation": "PASS_POTENTIAL_DEMAND_NOT_AUTHORITATIVE_WITHDRAWAL",
+    "hydraulic_interface": "PASS_NO_HYDRAULIC_INTERNAL_ACCESS",
+    "crop_physics_reuse": "PASS_NO_CROP_STATE_ADVANCEMENT",
+    "root_uptake_reuse": "PASS_NOT_YET_BOUND",
+    "physics_solver_policy_separation": "PASS",
+    "no_silent_dependencies": "PASS"
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_ref_advanced": false,
+    "post_promotion_canonical_workflow_passed": false,
+    "production_source_admitted": false,
+    "closed": false
+  },
+  "blocking_architecture_issue_for_root_uptake_composition": "crop_root_uptake_input_t already contains potential_transpiration. Canonical admission of the ET runtime evaluator does not select an authoritative ptra producer. A separate ownership reconciliation is mandatory before root-uptake composition.",
+  "evidence": "integration/f-ci/F-CI27_QUALIFICATION_EVIDENCE.json",
+  "next_action": "Requalify this exact status head. If green and the live canonical ref is still f49e17c6627717d5dea181808a122f2e35960739 with a strict forward lineage to this head, advance canonical by non-forced fast-forward only, then require the canonical workflow to pass before closeout."
+}
