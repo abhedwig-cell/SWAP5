@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PM08A",
+  "title": "Restricted Single-Level Linear Drainage Structural Candidate Contract",
+  "branch": "work/f-pm08a-single-level-linear-drainage-candidate",
+  "lineage": {
+    "readiness_owner": "F-PM08",
+    "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "candidate_base": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "canonical_source_under_readiness": "df435824de175e3f868b680aab2cd0a395aa19ff"
+  },
+  "legacy_authority": {
+    "oracle": "SWAP 4.3.1 B1.10",
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+    "source_ranges": [
+      "SWAP/drainage.f90:151-194",
+      "SWAP/MOD_drainage.f90:84-89"
+    ],
+    "restricted_switch_identity": {
+      "SWDRA": 1,
+      "DRAMET": 3,
+      "NRLEVS": 1,
+      "SWALLO": 3,
+      "SWINTFL": 0,
+      "SWDIVD": 0
+    },
+    "source_reduction": [
+      "legacy effective drain level is resolved before the exchange law and is represented by control.drain_head",
+      "SWALLO=3 permits drainage and suppresses the negative-head-difference infiltration branch",
+      "SWINTFL=0 suppresses the nonlinear highest-level interflow law",
+      "therefore q=max(0,(gwl-drain_head)/DRARES) for the admitted subset"
+    ]
+  },
+  "process_api": {
+    "module": "src/process/mod_drainage_process.f90",
+    "entry": "evaluate_single_level_linear_drainage",
+    "immutable_parameters": ["drainage_resistance"],
+    "committed_persistent_state": [],
+    "external_control": ["effective drain_head"],
+    "hydraulic_view": ["groundwater_level"],
+    "physical_output": ["soil_to_drain_rate"],
+    "sensitivity_output": ["dq_dgroundwater_level", "derivative_defined"],
+    "diagnostics": ["head_difference", "active", "activation_kink", "evaluated", "status"],
+    "scratch": ["local head difference only"]
+  },
+  "physics": {
+    "law": "q=max(0,(groundwater_level-drain_head)/drainage_resistance)",
+    "positive_q_meaning": "external transfer from soil water to drain",
+    "reverse_exchange_admitted": false,
+    "active_derivative": "dq/dgwl=1/drainage_resistance",
+    "inactive_derivative": "dq/dgwl=0",
+    "activation_point_derivative": "undefined; must be diagnosed, not silently smoothed"
+  },
+  "time_contract": {
+    "process_is_instantaneous_rate_law": true,
+    "fundamental_day_assumption": false,
+    "calendar_table_interpolation_inside_process": false,
+    "runtime_or_adapter_resolves_effective_drain_head_for_control_interval": true,
+    "frozen_during_one_admitted_soil_water_solve": true
+  },
+  "mass_contract": {
+    "process_mutates_committed_state": false,
+    "process_books_mass_ledger": false,
+    "returned_soil_to_drain_rate_is_single_authoritative_physical_transfer": true,
+    "later_state_update_and_ledger_must_use_same_accepted_transfer": true,
+    "rejected_trial_booking_allowed": false,
+    "mass_tolerance_allowed": false
+  },
+  "solver_contract": {
+    "headcalc_internal_access": false,
+    "solver_jacobian_mutation": false,
+    "process_owns_physical_dq_dgwl": true,
+    "solver_owns_future_chain_rule_and_jacobian_assembly": true,
+    "fully_implicit_trial_state_drainage_admitted": false,
+    "node_distribution_admitted": false
+  },
+  "hard_holds": [
+    "reverse drainage infiltration",
+    "DRAMET=1 groundwater-flux table",
+    "DRAMET=2 Hooghoudt/Ernst response laws",
+    "NRLEVS>1",
+    "power interflow",
+    "DIVDRA transmissivity distribution and any node allocation claim",
+    "surface-water storage or management control",
+    "macropore drainage interaction",
+    "solute transport coupling",
+    "fully implicit q_drain evaluation from trial hydraulic state",
+    "direct mutation of a solver Jacobian"
+  ],
+  "exit_if_structural_gate_passes": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "scientific_qualification_in_this_workunit": false
+}
