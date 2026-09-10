@@ -8,12 +8,13 @@
   "candidate_source_blob": "11ef6182414af4fbe67eebec3d6f14742df04aca",
   "independent_claim": "F-MR26 makes the canonically admitted F-MR23 ET result the sole runtime ptra authority at the root-input seam, ignores any incoming ptra source value, preserves root geometry, and adds no ET recomputation, state, uptake or water booking.",
   "oracle": {
-    "active_grid": "4608 cases = 4 ETr x 4 cover x 3 crop factor x 3 CO2 factor x 4 incoming-ptra variants x 2 root geometries x 2 generic interval locations",
+    "active_grid": "2304 cases = 4 ETr x 4 cover x 3 crop factor x 3 CO2 factor x 4 incoming-ptra variants x 2 root geometries x 2 generic interval locations",
     "reference_ptra": "independently evaluated frozen restricted formula max(ETr*cover*cf*0.1,0)*fco2tra",
     "incoming_ptra_variants": ["conflicting finite", "negative", "zero", "NaN"],
     "additional_fail_closed_cases": ["upstream status rejected", "result_produced false", "invalid active_nodes", "invalid root geometry", "forged nonemerged nonzero ptra", "nonfinite authoritative ptra", "negative authoritative ptra"],
     "optimization_replay": ["O0", "O2"]
   },
+  "plan_correction": "The initial draft incorrectly stated 4608 active cases. The listed dimensions multiply to 2304: 4*4*3*3*4*2*2. The count was corrected after the first qualification run exposed the bookkeeping error; no qualification dimension was removed or weakened.",
   "source_constraints": [
     "qualification adds no src changes",
     "candidate source blob is exact",
