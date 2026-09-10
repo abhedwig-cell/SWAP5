@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Worker-Memory Scaling Characterization",
+  "status": "SOURCE_BOUND_CHARACTERIZATION_COMPLETE",
+  "base_fmr20_head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+  "production_change": false,
+  "source_evidence": {
+    "worker_pool": {
+      "path": "src/runtime/mod_fmr_parallel_worker_pool.f90",
+      "blob": "393e9bfbc4c078d259a5ec70aca78f50e54e8b35",
+      "finding": "backends(worker_count), transaction_controls(worker_count) and worker_runtime(worker_count) are allocated by worker count, not logical-column count"
+    },
+    "reference_workspace": {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "59ef9d037c1875610d45ac83387ebab9e917e0fe",
+      "helper": "reference_workspace_payload_bytes"
+    },
+    "a23bu_worker_context": {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "2a190d206200ad201c37c9a82d3e32e651d37a37",
+      "helper": "a23bu_scratch_payload_bytes"
+    },
+    "backend": {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "blob": "e0432faa0e05a3c136ee5aed6fddb12ad631848d",
+      "finding": "each worker backend materializes one current soil-geometry/MvG parameter cache and one current forcing cache; caches are replaced between columns"
+    }
+  },
+  "payload_formula": {
+    "symbols": {
+      "n": "active soil nodes",
+      "L": "drainage levels",
+      "RB": "bytes per real(real64)",
+      "IB": "bytes per default integer",
+      "LB": "bytes per default logical"
+    },
+    "reference_richards_workspace": {
+      "real_elements": "23*n + 2",
+      "integer_elements": "n",
+      "logical_elements": "2*n + 3",
+      "bytes": "RB*(23*n+2) + IB*n + LB*(2*n+3)"
+    },
+    "a23bu_headcalc_scratch": {
+      "real_elements": "11*n + 2",
+      "logical_elements": "2*n + 3",
+      "bytes": "RB*(11*n+2) + LB*(2*n+3)"
+    },
+    "backend_parameter_cache": {
+      "soil_geometry_real_elements": "3*n",
+      "mvg_cofgen_real_elements": "42*n",
+      "total_real_elements": "45*n"
+    },
+    "backend_forcing_cache": {
+      "real_elements": "(L+2)*n",
+      "components": ["drainage_flux_by_level(L,n)", "subsurface_irrigation_source(n)", "root_extraction_sink(n)"]
+    },
+    "combined_known_dynamic_payload_per_worker": {
+      "real_elements": "(81+L)*n + 4",
+      "integer_elements": "n",
+      "logical_elements": "4*n + 6",
+      "bytes": "RB*((81+L)*n+4) + IB*n + LB*(4*n+6)"
+    }
+  },
+  "fpe07_fixture": {
+    "active_nodes": 4,
+    "drainage_levels": 2,
+    "compiler_storage_assumption_for_numeric_example": {
+      "RB": 8,
+      "IB": 4,
+      "LB": 4
+    },
+    "known_dynamic_payload_bytes_per_worker": 2792,
+    "known_dynamic_payload_bytes": {
+      "workers_1": 2792,
+      "workers_2": 5584,
+      "workers_4": 11168
+    },
+    "increment_relative_to_one_worker_bytes": {
+      "workers_2": 2792,
+      "workers_4": 8376
+    }
+  },
+  "column_scaled_payload": {
+    "committed_physical_state_minimum_array_scalar_payload": "2*n+2 real64 values per column for pressure head, water content, ponding depth and groundwater level in the no-snow V1 state",
+    "logical_column_metadata": "separate compact fmr_logical_column_t metadata; no heavy Richards workspace is stored per column",
+    "immutable_parameters": "registry-owned and logically shared across columns; worker backend currently copies only the active parameter set into its reusable worker-local cache"
+  },
+  "important_interpretation": [
+    "known_dynamic_payload is not RSS and is not a total memory bound",
+    "allocatable descriptors, pointer descriptors, allocator bookkeeping, scalar derived-type storage and compiler/runtime/OpenMP overhead are excluded",
+    "transaction-local checkpoint/candidate/result temporaries can coexist across active workers and are not quantified here",
+    "the numeric 2792-byte example is deliberately tiny because the frozen qualification fixture has only four soil nodes",
+    "production memory growth with active soil nodes is represented by the formula, not by the four-node byte count",
+    "A23BU HeadCalc scratch is still allocated per worker although the canonical explicit HeadCalc route primarily operates on reference_richards_workspace scratch; eliminating redundant scratch requires a separate qualified optimization"
+  ],
+  "architecture_assessment": {
+    "invariant_4_compact_persistent_state": "PASS_WITHIN_SCOPE: no heavy solver workspace is persisted per logical column",
+    "invariant_5_scratch_per_worker": "PASS: identified heavy solver scratch scales by worker count",
+    "invariant_6_scalable_memory_layout": "PASS_WITHIN_SCOPE: heavy workspace count is O(workers), not O(columns)",
+    "invariant_16_multiswap_primary": "PASS_WITHIN_SCOPE: worker ownership avoids one heavy solver instance per column",
+    "invariant_27_optional_scales_with_use": "PASS_WITHIN_V1_SCOPE: excluded optional physics carries no admitted parallel runtime payload beyond generic metadata"
+  },
+  "optimization_candidates_not_implemented": [
+    "remove or avoid allocating redundant A23BU HeadCalc scratch on the canonical explicit route after dedicated qualification",
+    "reduce per-column parameter/forcing cache reallocation by worker-owned reusable capacity or immutable direct views where ownership permits",
+    "characterize transaction-local transient peak memory separately on realistic vertical node counts"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  }
+}
