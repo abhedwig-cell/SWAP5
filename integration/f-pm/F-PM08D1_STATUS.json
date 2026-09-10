@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D1",
+  "title": "Surface-Water Storage Geometry & Compact State Readiness",
+  "branch": "work/f-pm08d1-surface-water-storage-compact-state-readiness",
+  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
+  "phase": "CHECKPOINT_PERSISTED_BEFORE_TEST",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36",
+    "exact_branch_base": "6318f04bd4d7dd8f9a587f03decaaea63d4f5f36"
+  },
+  "parent_authority": {
+    "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "decision": "QUALIFIED_SURFACE_WATER_CONTROLLED_DRAINAGE_COMPOSITION_READINESS_READY_FOR_FPM08D1"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "mod_drainage_f90_sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255"
+  },
+  "scope": {
+    "reference_storage_geometry": true,
+    "prepared_immutable_storage_level_relation": true,
+    "compact_committed_storage_state": true,
+    "drainage_exchange": false,
+    "availability_limiter": false,
+    "fixed_weir_balance": false,
+    "automatic_management": false,
+    "runtime_composition": false,
+    "production_changes_allowed": false
+  },
+  "state": {
+    "branch_created": true,
+    "checkpoint_persisted": true,
+    "source_equations_reconstructed": false,
+    "state_ownership_qualified": false,
+    "test_oracle_persisted": false,
+    "tested": false,
+    "qualified": false,
+    "production_source_changed": false,
+    "reference_source_changed": false
+  },
+  "next_required_step": "persist exact frozen STTAB/SWSTLEV/WLEVST equations, state ownership and independent executable geometry/inverse checks before any production candidate"
+}
