@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D5",
+  "title": "Automatic-Weir Event & Hydraulic-Control Readiness Evidence",
+  "decisive_tested_head": "74fab42428788461b9404e08a957dea471545f6a",
+  "workflow": {
+    "run_id": 34527879585,
+    "job_id": 103041124369,
+    "conclusion": "success"
+  },
+  "prior_gate_failure_disposition": {
+    "run_id": 34527771271,
+    "job_id": 103040770456,
+    "failed_marker": "FPM08D5_CALENDAR_EXTERNALIZED",
+    "cause": "static gate text assertion expected the literal phrase 'outside kernel' while the persisted contract stated the equivalent requirement 'before kernel execution'",
+    "remediation_commit": "74fab42428788461b9404e08a957dea471545f6a",
+    "remediation_scope": "gate assertion wording only",
+    "contract_changed": false,
+    "source_inventory_changed": false,
+    "oracle_changed": false,
+    "physics_scope_changed": false,
+    "qualification_scope_changed": false
+  },
+  "provenance_and_architecture": {
+    "readiness_only_file_delta": true,
+    "production_source_delta": false,
+    "reference_source_delta": false,
+    "frozen_archive_identity": true,
+    "frozen_surfacewater_identity": true,
+    "upstream_commits_exist": true,
+    "activation_base_locked": true,
+    "all_30_architecture_invariants_present": true,
+    "all_30_architecture_invariants_pass": true,
+    "all_11_source_risks_contracted_and_inventoried": true
+  },
+  "qualified_readiness_scope": {
+    "SWMAN2_target_selection": true,
+    "generic_explicit_event_translation": true,
+    "conditional_WLSTAR_control_memory": true,
+    "clean_three_scalar_hydraulic_view": true,
+    "drop_rate_trial_semantics": true,
+    "rollback_requirement_at_contract_level": true,
+    "automatic_capacity_policy_qualified": false,
+    "SWQHR2_production_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
+  },
+  "equation_oracle": {
+    "phase_equivalence_cases": 20000,
+    "integer_day_trigger_mapping_cases": 31000,
+    "event_state_cases": 20000,
+    "no_event_WLSTAR_hold_cases": 7913,
+    "downward_drop_rate_limited_cases": 6139,
+    "downward_unlimited_at_or_below_DROPR_seam_cases": 2,
+    "upward_immediate_cases": 5946,
+    "max_trial_target_drop_cm": 42.218710383166716,
+    "DROPR_0p001_seam_jump_cm": 19.998999998999999
+  },
+  "capacity_discrepancy_characterization": {
+    "cases": 20000,
+    "negative_WOVER_cases": 13799,
+    "undefined_fractional_negative_WOVER_cases": 7946,
+    "even_power_positive_capacity_below_crest_cases": 2018,
+    "defined_current_head_capacity_cases": 6201,
+    "max_relative_current_vs_target_head_capacity_difference": 0.99999999997956868,
+    "strict_DISCAP_greater_than_WDIS_equality_seam_confirmed": true,
+    "scientific_disposition": "fail closed: D5 does not select or qualify an automatic-weir discharge-capacity production formula because frozen SWQHR1 and SWQHR2 use different evaluation heads and SWQHR1 can leave the real-valued power domain below crest"
+  },
+  "source_risk_holds": [
+    "D5-RISK-01-LEGACY-DAY-AND-CALENDAR-EVENT-ARITHMETIC",
+    "D5-RISK-02-INITIAL-TCUM-IMPLICIT-ADJUSTMENT-TRIGGER",
+    "D5-RISK-03-WLSTAR-IS-CONDITIONAL-COMMITTED-CONTROL-MEMORY",
+    "D5-RISK-04-DROPR-0P001-ACTIVATION-SEAM",
+    "D5-RISK-05-SWQHR1-CURRENT-WLS-VS-SWQHR2-TARGET-WLSTAR-CAPACITY-ASYMMETRY",
+    "D5-RISK-06-SWQHR1-NEGATIVE-WOVER-POWER-DOMAIN",
+    "D5-RISK-07-STRICT-DISCAP-GREATER-THAN-WDIS-EQUALITY-SEAM",
+    "D5-RISK-08-D4-OVERFLOW-FALLBACK-STATE-INCONSISTENCY-MUST-NOT-RETURN",
+    "D5-RISK-09-HEAD-DEPTH-TO-NODE-MAPPING-MUST-NOT-COUPLE-CONTROL-TO-SOLVER-INTERNALS",
+    "D5-RISK-10-WLSBAK-OSSWLM-NUMERICAL-HISTORY-SEPARATE-FROM-CONTROL-STATE",
+    "D5-RISK-11-SWQHR2-HBWEIR-THRESHOLD-SEAM-REMAINS-UNQUALIFIED"
+  ],
+  "decision_support": "Automatic target selection, explicit event translation, compact WLSTAR control memory and the clean hydraulic-control view are ready for downstream runtime composition. Automatic discharge-capacity physics remains explicitly unqualified and must not be inferred from this readiness result."
+}
