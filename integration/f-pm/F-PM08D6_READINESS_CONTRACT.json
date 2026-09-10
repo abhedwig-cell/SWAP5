@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D6",
+  "title": "Transactional Surface-Water Runtime Composition Readiness",
+  "branch": "work/f-pm08d6-transactional-surface-water-runtime-readiness",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "exact_branch_base": "8fa79a70a9faccaf8b63826df607a685eb75b046"
+  },
+  "authoritative_upstream": {
+    "F-PM08D3": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "F-PM08D4": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e",
+    "F-PM08D5": "90f8aee150df928b2cc98938c98766f037658114",
+    "F-CI36_canonical_final_governance_head": "8fa79a70a9faccaf8b63826df607a685eb75b046",
+    "F-CI36_exact_head_run": 34527338720
+  },
+  "canonical_runtime_blobs": {
+    "src/kernel/mod_kernel_transactions.f90": "f1acff10dd99c308a00f434440d6a9ef14632f0d",
+    "src/transaction/mod_transaction_reference.f90": "2fd932b74dbd0ffc0ec089f49e632b7ac8852df4",
+    "src/runtime/mod_fmr_checkpoint_orchestrator.f90": "232875e7192f995930c102609cee08dc8938c86a",
+    "src/runtime/mod_fmr_accepted_commit_receipt.f90": "6798b3296b426950bf028814585c3f5de9be950b",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+  },
+  "scope": {
+    "readiness_only": true,
+    "production_source_changes_allowed": false,
+    "reference_source_changes_allowed": false,
+    "fixed_weir_physical_route": {
+      "SWSEC_2": true,
+      "SWMAN_1": true,
+      "SWQHR_1": true,
+      "D3_mass_contract_required": true,
+      "D4_storage_and_fixed_weir_balance_required": true
+    },
+    "automatic_control_transaction_subset": {
+      "SWMAN_2_event_and_WLSTAR_transaction_semantics": true,
+      "physical_interval_admission_requiring_automatic_capacity_policy": false,
+      "SWQHR_2": false
+    },
+    "DIVDRA_runtime_subset": "restricted serialized single-level positive DIVDRA only, using one authoritative scalar transfer and a non-authoritative spatial distribution field",
+    "multilevel_negative_or_surface_water_controlled_DIVDRA": false
+  },
+  "mass_contract": {
+    "equation": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange",
+    "same_quantities_rule": "the exact physical quantities used to form candidate S1 are the only quantities eligible for accepted-ledger publication",
+    "q_drain_secondary_scalar_is_authoritative": true,
+    "DIVDRA_node_field_is_not_additional_mass": true,
+    "q_supply_first_class_actual_flux": true,
+    "q_discharge_first_class_actual_flux": true,
+    "q_rapid_first_class_mass_contribution": true,
+    "V_top_surface_exchange_first_class_mass_contribution": true,
+    "accepted_mass_complete_required": true,
+    "missing_contribution_mask_must_be_zero": true,
+    "physical_mass_conservation_absolute": true,
+    "configurable_physical_mass_concession": false,
+    "mass_tolerance_role": "numeric verification threshold only after all physical contributions are present; never permission to omit, invent, clip or double-book water"
+  },
+  "transaction_order": [
+    "runtime subdivides [t0,t1] at every explicit control event before starting a physical trial",
+    "capture one committed kernel checkpoint including physical surface-water continuation state",
+    "derive WLS from authoritative SWST; never commit WLS as an independent fixed-weir physical state",
+    "for SWMAN=2 control-only subset, create trial WLSTAR from explicit event semantics or reuse committed WLSTAR exactly between events",
+    "resolve physically enabled q_supply_available before the D3 availability limiter; raw WSCAP alone is insufficient",
+    "apply only admitted D3 limiter domain; limiter-active mixed-sign secondary exchange remains held",
+    "evaluate trial drainage and soil/surface contributions without publishing mass",
+    "compose D4 fixed-weir SWQHR=1 balance for physical fixed-weir route and obtain candidate SWST plus actual q_supply and q_discharge",
+    "verify finite values, SWST>=0, 0<=q_supply<=q_supply_available, q_discharge>=0, complete contribution mask and exact physical mass identity within numeric roundoff verification",
+    "publish candidate through existing F-KT commit authority only after solver, temporal and mass acceptance",
+    "publish accepted mass ledger and accepted diagnostics exactly once with the same committed candidate",
+    "on rejection restore exact committed SWST and, when active, committed WLSTAR; publish zero accepted mass from that rejected trial"
+  ],
+  "state_ownership": {
+    "persistent_fixed_weir_state": ["SWST"],
+    "persistent_automatic_control_state_when_SWMan2_active": ["SWST", "WLSTAR"],
+    "derived_not_persistent": ["WLS"],
+    "runtime_trial_objects_not_column_state": ["checkpoint", "candidate ledger delta", "mass residual", "rating residual", "DIVDRA node field", "solver scratch", "WLSBAK", "OSSWLM", "NUMADJ"],
+    "rollback_requirement": "rejected trials must leave committed SWST, conditional WLSTAR, lineage, revision, committed time and accepted ledger unchanged"
+  },
+  "acceptance_contract": {
+    "all_required": [
+      "physical solver/trial route succeeded",
+      "temporal acceptance succeeded under the active numerical policy",
+      "surface-water state is internally consistent",
+      "accepted_mass_complete is true",
+      "missing contribution mask equals zero",
+      "mass residual passes numeric roundoff verification",
+      "all physical capacity and sign constraints pass",
+      "no held automatic-capacity, SWQHR2, mixed-sign-limiter or unqualified DIVDRA branch was traversed"
+    ],
+    "failure_action": "reject/retry or return fail-closed; never partially publish state or mass",
+    "commit_atomicity": "surface-water physical state and accepted mass publication are one accepted transaction outcome"
+  },
+  "explicit_holds": [
+    "D6-HOLD-01-AUTOMATIC-DISCHARGE-CAPACITY-POLICY-NOT-QUALIFIED",
+    "D6-HOLD-02-SWQHR2-NOT-QUALIFIED",
+    "D6-HOLD-03-D3-LIMITER-ACTIVE-MIXED-SIGN-SECONDARY-EXCHANGE-NOT-QUALIFIED",
+    "D6-HOLD-04-MISSING-MASS-CONTRIBUTION-CANNOT-BE-HIDDEN-BY-MASS-TOLERANCE",
+    "D6-HOLD-05-DIVDRA-NODE-FIELD-CANNOT-BE-DOUBLE-BOOKED-WITH-AUTHORITATIVE-SCALAR",
+    "D6-HOLD-06-REJECTED-TRIAL-MUST-NOT-MUTATE-SWST-WLSTAR-OR-ACCEPTED-LEDGER",
+    "D6-HOLD-07-WLS-CANNOT-BECOME-INDEPENDENT-COMMITTED-STATE",
+    "D6-HOLD-08-D4-LEGACY-SWST-WLS-INCONSISTENCY-CANNOT-RETURN",
+    "D6-HOLD-09-CALENDAR-TRIGGERS-MUST-BE-EXTERNAL-EXPLICIT-EVENTS",
+    "D6-HOLD-10-MULTILEVEL-NEGATIVE-OR-SURFACE-WATER-CONTROLLED-DIVDRA-NOT-ADMITTED",
+    "D6-HOLD-11-RUNTIME-MUST-NOT-OWN-SECOND-COMMIT-AUTHORITY"
+  ],
+  "nonclaims": [
+    "no production surface-water runtime implementation",
+    "no scientific qualification of drainage exchange-law physics",
+    "no automatic discharge-capacity formula",
+    "no SWQHR2 table route",
+    "no multilevel or negative DIVDRA",
+    "no canonical admission"
+  ]
+}
