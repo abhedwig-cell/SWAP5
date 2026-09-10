@@ -1,76 +1,91 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08C",
   "title": "Drainage Response-Law Family and Sensitivity Qualification",
   "branch": "work/f-pm08c-drainage-response-family-sensitivity",
-  "status": "QUALIFIED_RESPONSE_FAMILY_DECOMPOSITION_READY_FOR_CHILDREN",
-  "phase": "SOURCE_BOUND_SENSITIVITY_CHARACTERIZED_NO_PRODUCTION_ADMISSION",
+  "status": "QUALIFIED_CLOSED",
+  "phase": "REQUIRED_CHILD_SET_COMPLETE_COORDINATION_ONLY_NO_PRODUCTION_ADMISSION",
+  "decision": "QUALIFIED_FPM08C_REQUIRED_CHILD_SET_COMPLETE_WITH_EXPLICIT_NEGATIVE_DRAMET3_AND_RUNTIME_HOLDS",
   "lineage": {
     "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "parent_decomposition_closeout": "3553c63e753bbf714378cd0dff5047769ad3185b",
     "qualified_characterization_head": "d9e3d495f0956ce15935df1b316d6bc58eccde2f",
-    "decisive_workflow_run": 34450613961,
-    "decisive_workflow_job": 102785264808,
-    "decisive_output_sha256": "b8b55b82b2aa0e01b2f2306ea93de4015ce555f97ec270a8701a810fd8c56293",
-    "fpm08a_required": false,
-    "fpm08b_required": false
+    "characterization_workflow_run": 34450613961,
+    "characterization_workflow_job": 102785264808,
+    "characterization_output_sha256": "b8b55b82b2aa0e01b2f2306ea93de4015ce555f97ec270a8701a810fd8c56293",
+    "child_completion_candidate": "d334fb283fdca0eee5bc05e088fa1e7013243b24",
+    "child_completion_workflow_run": 34464207316,
+    "child_completion_workflow_job": 102828829345
   },
   "state": {
     "source_reviewed": true,
     "tested": true,
     "characterization_qualified": true,
-    "production_implemented": false,
-    "production_qualified": false,
-    "runtime_modified": false,
+    "required_child_set_complete": true,
+    "parent_coordination_closed": true,
+    "production_implemented_by_parent": false,
+    "production_family_composition_qualified": false,
+    "runtime_binding_qualified": false,
     "solver_modified": false,
     "kernel_modified": false,
-    "reference_source_modified": false
+    "reference_source_modified": false,
+    "canonical_admission_qualified": false
   },
-  "qualified_findings": {
-    "DRAMET1": "piecewise-linear abs(gwl) response with explicit knot and possible gwl=0 nonsmoothness",
-    "DRAMET2": "analytic stable-branch dq/dgwl verified against finite difference for IPOS 1..5",
-    "DRAMET2_IPOS4": "vertical-resistance derivative changes at the layer interface when kvtop differs from kvbot",
-    "DRAMET2_small_cutoff": "legacy 1e-10 branch exists but exact equality reconstructed from head/shape is floating-representation-sensitive",
-    "DRAMET2_parameter_domain": "legacy input ranges are wider than the mathematically valid domain of formulas using division and logarithms",
-    "DRAMET3_interflow": "for legacy-admitted exponent below one, the right-hand activation tangent diverges",
-    "DRAMET3_multilevel": "stable-branch total derivative is the sum of per-level derivatives; nonsmooth points compose as the union of level branch points"
-  },
-  "required_children": [
-    {
-      "work_unit": "F-PM08C1",
-      "scope": "tabulated DRAMET=1 response semantics and derivative metadata"
+  "qualified_child_authorities": {
+    "F-PM08C1": {
+      "route": "F-PM08C1R + F-VQ40",
+      "qualification_closeout": "f5f567c6af4879bf80107a7579dd342de6d5afe0",
+      "decision": "QUALIFIED_DRAMET1_TABULATED_RESPONSE_SCIENTIFIC_EQUIVALENCE_WITH_EXPLICIT_FAIL_CLOSED_LEGACY_DEGENERATE"
     },
-    {
-      "work_unit": "F-PM08C2",
-      "scope": "Hooghoudt/Ernst DRAMET=2 IPOS 1..5 response, mathematical domain and analytic sensitivity"
+    "F-PM08C2": {
+      "route": "F-VQ38",
+      "qualification_closeout": "49728b999b884a37643908c1dad40269f4e2db9b",
+      "decision": "QUALIFIED_DRAMET2_IPOS1_TO_5_RESPONSE_FAMILY_SCIENTIFIC_EQUIVALENCE_WITHIN_NORMALIZED_VALID_DOMAIN"
     },
-    {
-      "work_unit": "F-PM08C3",
-      "scope": "empirical interflow singular-tangent policy and bounded-cost solver interaction"
+    "F-PM08C3": {
+      "route": "F-VQ42",
+      "qualification_closeout": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+      "decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY"
     },
-    {
-      "work_unit": "F-PM08C4",
-      "scope": "multi-level exchange aggregation and branch composition"
+    "F-PM08C4": {
+      "route": "F-VQ43",
+      "qualification_closeout": "3542ff83f38a9dd8de407ceca65ed968407559f5",
+      "decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
     }
-  ],
+  },
+  "scope_boundaries": {
+    "F_PM08A_required_by_parent": false,
+    "F_PM08B_required_by_parent": false,
+    "ordinary_linear_DRAMET3_drainage_branch_owner": "F-PM08A",
+    "negative_side_DRAMET3_infiltration_qualified": false,
+    "DIVDRA_qualified_here": false,
+    "surface_water_storage_control_qualified_here": false,
+    "fully_implicit_solver_Jacobian_qualified": false
+  },
   "hard_holds": [
-    "No production response-law implementation in F-PM08C parent.",
-    "No fully implicit empirical-interflow tangent at or arbitrarily near activation without a separately qualified branch-aware policy.",
-    "No DRAMET=2 production admission before mathematically valid parameter-domain rules are explicit and tested.",
-    "No normalized replacement for the legacy diffl=1e-10 cutoff is qualified here.",
+    "No production response-family composition is admitted by the F-PM08C parent.",
+    "No negative-side DRAMET=3 infiltration qualification is claimed.",
+    "No fully implicit empirical-interflow tangent at or arbitrarily near activation without separately qualified branch-aware policy.",
+    "No DRAMET=2 use outside the explicit mathematically valid normalized parameter domain.",
+    "No normalized replacement for the legacy diffl=1e-10 cutoff is implied beyond separately qualified child scope.",
     "No solver Jacobian mutation by process code.",
-    "No surface-water storage/control scope; that remains F-PM08D."
+    "No DIVDRA scope here; that remains F-PM08B.",
+    "No surface-water storage/control scope here; that remains F-PM08D.",
+    "No runtime or canonical admission is implied by child scientific qualification."
   ],
   "artifacts": [
     "integration/f-pm/F-PM08C_STATUS.json",
     "integration/f-pm/F-PM08C_RESPONSE_SENSITIVITY_CHARACTERIZATION.json",
     "integration/f-pm/F-PM08C_CHARACTERIZATION_EVIDENCE.json",
+    "integration/f-pm/F-PM08C_CHILD_COMPLETION_RECONCILIATION.json",
     "tests/fpm/test_fpm08c_response_sensitivity.py",
     "tests/fpm/run_fpm08c_response_sensitivity_gate.sh",
     ".github/workflows/fpm08c-response-sensitivity.yml"
   ],
   "next": {
-    "recommended_child": "F-PM08C1",
-    "reason": "smallest independently qualifiable stateless response family; immutable table data and explicit derivative/kink metadata can be separated from legacy AFGEN parsing and I/O"
+    "recommended_work_unit": "F-PM08D",
+    "scope": "Surface-Water-Controlled Drainage Composition Readiness",
+    "reason": "It is the remaining architecturally distinct F-PM08 drainage responsibility family after exchange-law and spatial-distribution decomposition; it must remain a separate stateful runtime/coupler-composed component."
   }
 }
