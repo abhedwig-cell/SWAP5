@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D",
+  "title": "Frozen SWAP 4.3.1 Surface-Water State, Control, Exchange and Mass Inventory",
+  "activation_base": "2efba343d425770e5d581d8137cd60e83d8b7ac5",
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "manifest": "reference/swap-4.3.1/b0/file-manifest.sha256",
+    "files": {
+      "SWAP/surfacewater.f90": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+      "SWAP/MOD_drainage.f90": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+      "SWAP/swap.f90": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "SWAP/boundtop.f90": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04"
+    }
+  },
+  "legacy_execution_order": {
+    "pre_soil_water": "SurfaceWater task 2 evaluates drainflux_extended, optional DIVDRA and qdrtot before SoilWater",
+    "soil_water_trial": "SoilWater task 2 consumes the resulting drainage distribution and may alter runoff/rapid-drainage terms",
+    "post_soil_water": "SurfaceWater task 3 resolves prescribed water levels or advances WLEVBAL after SoilWater",
+    "retry_behavior": "legacy timestep reduction can cause the loop to repeat; modern composition must ensure rejected trials do not commit surface-water state or mass",
+    "source_locations": [
+      "SWAP/swap.f90:433-457",
+      "SWAP/surfacewater.f90:27-75"
+    ]
+  },
+  "variable_classification": {
+    "immutable_parameters": [
+      {
+        "legacy": ["SWSRF", "SWSEC", "NRPRI", "NRSEC"],
+        "modern_role": "surface-water topology/mode configuration supplied from outside the kernel; not dynamic state"
+      },
+      {
+        "legacy": ["WIDTHR", "TALUDR", "LSPACING", "ZBOTDR", "RDrain", "RInfi", "REntry", "RExit", "GWLINF"],
+        "modern_role": "immutable per-level channel and exchange parameters"
+      },
+      {
+        "legacy": ["STTAB"],
+        "modern_role": "prepared immutable storage-level relation; legacy 22-point table is derived from channel geometry and is not state"
+      },
+      {
+        "legacy": ["NMPER", "IMPEND", "SWMAN", "WSCAP", "WLDIP", "INTWL", "HBWEIR", "ALPHAW", "BETAW", "HQHTAB", "QQHTAB", "DROPR", "NPHASE", "GWLCRIT", "HCRIT", "VCRIT", "WLSMAN", "NODHD"],
+        "modern_role": "physical management/control parameters and event schedule description; calendar parsing remains outside kernel"
+      },
+      {
+        "legacy": ["OSSWLM"],
+        "modern_role": "numerical oscillation-detection policy parameter, explicitly separate from physical surface-water configuration"
+      }
+    ],
+    "committed_physical_state": [
+      {
+        "legacy": "SWST",
+        "required_when": "SWSEC=2 simulated secondary surface water",
+        "modern_role": "authoritative conserved secondary-system storage",
+        "notes": "primary physical state; storage change must close exactly with accepted transfers"
+      },
+      {
+        "legacy": "WLSTAR",
+        "required_when": "automatic management SWMAN=2 can retain previous target between adjustment events",
+        "modern_role": "conditional physical control-memory state",
+        "notes": "continuation-critical because the legacy branch reuses the previous target between adjustment events"
+      }
+    ],
+    "derived_or_forced_hydraulic_quantities": [
+      {
+        "legacy": "WLS",
+        "classification": "derived_from_SWST_when_SWSEC_2; forcing_when_SWSEC_1",
+        "modern_rule": "do not duplicate SWST and WLS as independent committed physical states; derive level from authoritative storage for simulated mode"
+      },
+      {
+        "legacy": "WLP",
+        "classification": "forcing/control",
+        "modern_rule": "prescribed primary-system water level resolved by adapter/runtime at the requested interval time"
+      }
+    ],
+    "numerical_history": [
+      {
+        "legacy": "WLSBAK(4)",
+        "modern_role": "optional numerical-policy continuation history for oscillation detection",
+        "not_physical_state": true,
+        "transactional_requirement": "if reference numerical-route continuity requires it, it must rollback with rejected trials and remain separate from physical state"
+      }
+    ],
+    "diagnostics_not_state": [
+      {
+        "legacy": "NUMADJ",
+        "modern_role": "diagnostic adjustment counter; not needed to continue physical state"
+      }
+    ],
+    "trial_results_or_scratch": [
+      {
+        "legacy": ["QDRD", "QDRAIN", "QDRA", "QDRTOT"],
+        "modern_role": "signed trial transfer results, never persistent physical state"
+      },
+      {
+        "legacy": ["WDIS", "WSTARA", "SWSTTAR", "SWSTTARA", "DVMax", "SWSTMAX", "DISCAP", "WLSI", "SWSTI", "SWSTN"],
+        "modern_role": "trial balance/control scratch and explicit result values where physically meaningful"
+      }
+    ]
+  },
+  "storage_level_relation": {
+    "legacy_construction": "STTAB has 22 levels: +100 cm, 0 cm, then 20 evenly spaced levels to the deepest secondary channel bottom; storage is accumulated from open-channel geometry divided by spacing",
+    "forward_relation": "SWSTLEV(level) uses piecewise-linear interpolation in STTAB",
+    "inverse_relation": "WLEVST(storage) uses piecewise-linear inverse interpolation in the same table",
+    "source_locations": [
+      "SWAP/surfacewater.f90:1121-1158",
+      "SWAP/surfacewater.f90:1182-1213",
+      "SWAP/surfacewater.f90:434-463"
+    ],
+    "architectural_consequence": "the prepared relation belongs to immutable parameter/preparation data; only SWST needs to be conserved for simulated secondary water"
+  },
+  "extended_exchange_physics": {
+    "surface_water_head_selection": "secondary levels use WLS and primary levels use WLP when SWSRF>=2",
+    "active_channel_condition": "exchange evaluated when either groundwater or surface-water level is sufficiently above channel bottom and the ponding-sill condition allows the route",
+    "head_difference": "diffl = gwl - resolved drain level, with ponding added when gwl > -0.1 cm",
+    "infiltration_cap": "if diffl<0 and gwl<GWLINF, legacy replaces gwl contribution by GWLINF before computing infiltration",
+    "open_channel_resistance": "for SWDTYP=2, entry/exit resistance is scaled by channel spacing / wetted perimeter",
+    "rapid_surface_drainage": "highest-level SWNRSRF=1 varies drainage resistance between RSURFDEEP and RSURFSHALLOW",
+    "power_interflow": "highest-level SWNRSRF=2 uses COFINTFL*diffl**EXPINTFL",
+    "source_location": "SWAP/surfacewater.f90:468-641",
+    "stateful": false,
+    "holds": [
+      "Do not combine availability limiting with the constitutive exchange law.",
+      "Do not claim negative/undefined power-interflow behavior outside separately qualified domain.",
+      "Do not expose legacy global WETPER/DRAINL scratch as process state."
+    ]
+  },
+  "availability_limiter": {
+    "legacy_behavior": "before SoilWater, simulated secondary storage may proportionally scale secondary-system drainage/infiltration transfers when projected storage plus maximum supply would fall below zero",
+    "formula_basis": "projected storage = SWST + (QDRD + WSCAP)*dt; if negative, set QDRD to exactly the available withdrawal rate and scale all secondary level transfers by one ratio",
+    "source_location": "SWAP/surfacewater.f90:600-637",
+    "classification": "state-dependent physical coupling limiter, not constitutive drainage resistance and not numerical solver policy",
+    "modern_requirement": "preserve one authoritative limited signed transfer and expose the limiter decision in diagnostics; no hidden renormalization after mass booking"
+  },
+  "secondary_storage_balance": {
+    "legacy_inputs": [
+      "current SWST",
+      "QDRD drainage/infiltration exchange rate",
+      "QRapDra rapid macropore drainage rate",
+      "RUNOTS signed top-surface transfer amount",
+      "management supply capacity",
+      "discharge relation",
+      "current/target control levels"
+    ],
+    "authoritative_modern_balance": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface_exchange",
+    "signs": {
+      "q_drain_secondary": "positive soil/drainage system to secondary surface water; negative secondary surface water to soil",
+      "q_rapid": "positive into secondary surface water",
+      "q_supply": "positive external supply into secondary surface water",
+      "q_discharge": "positive external discharge out of secondary surface water",
+      "V_top_surface_exchange": "positive soil-surface/runoff amount into secondary surface water; negative inundation amount from secondary surface water to soil surface"
+    },
+    "source_locations": [
+      "SWAP/surfacewater.f90:248-375",
+      "SWAP/boundtop.f90:292-320"
+    ],
+    "critical_modernization": "legacy WDIS is local scratch and actual supply is not published as a first-class flux; modern implementation must explicitly return supply and discharge so accepted mass ledger closure is observable rather than inferred"
+  },
+  "management_policy": {
+    "fixed_weir": "SWMAN=1 uses HBWEIR as target and a level-discharge relation to resolve overflow/discharge",
+    "automatic_weir": "SWMAN=2 periodically selects a target level using groundwater level, total soil air volume, selected-node pressure head and management thresholds, with a maximum target drop rate",
+    "target_memory": "between adjustment events automatic management reuses prior WLSTAR",
+    "event_sources": [
+      "management-period boundaries IMPEND",
+      "automatic adjustment cadence INTWL",
+      "externally prescribed WLP/WLS table breakpoints"
+    ],
+    "generic_time_requirement": "legacy day/calendar expressions must be translated to explicit event times outside the kernel; no implicit midnight/day stepping is allowed",
+    "hydraulic_view_requirement": "automatic control may use GWL, water content/air-volume summary and a selected pressure head through a clean qualified view; it must not depend on HeadCalc internals"
+  },
+  "transactional_composition": {
+    "required_trial_order": [
+      "capture committed soil-water and optional surface-water/control state",
+      "resolve forcing and physical control events for [t0,t1]",
+      "derive WLS from committed/trial SWST when simulated and resolve WLP/WLS forcing when prescribed",
+      "evaluate stateless extended drainage exchange",
+      "apply state-dependent secondary-storage availability limiter before publishing soil drainage source/sink",
+      "spatially distribute the authoritative limited exchange through the qualified DIVDRA seam when active",
+      "solve soil-water trial, including signed top-surface exchange and optional rapid drainage",
+      "advance trial surface-water storage/control balance using the same accepted trial transfers",
+      "if either soil-water or surface-water policy requests retry, discard all trial physical state, numerical history and uncommitted mass",
+      "on acceptance, atomically commit soil-water state, surface-water state/control memory and accepted mass-ledger entries"
+    ],
+    "rollback_requirement": "no rejected trial may alter SWST, WLSTAR, any reference numerical history, or the accepted mass ledger",
+    "warm_start_requirement": "numerical guesses may be reused, but the physical trial must restart from the correct committed state"
+  },
+  "source_level_risks_requiring_child_disposition": [
+    {
+      "id": "D-RISK-01-SWSRF1-UNINITIALIZED-WL",
+      "observation": "drainflux_extended assigns local WL only when SWSRF>=2 but subsequently evaluates a condition containing WL also on the SWSRF=1 route; local variables are SAVE'd but WL has no explicit initialization",
+      "risk": "potential undefined-value dependence in a legacy-admitted route",
+      "disposition": "hold SWSRF=1 extended route from direct production migration until independently characterized"
+    },
+    {
+      "id": "D-RISK-02-QHR1-QHR2-CAPACITY-HEAD-ASYMMETRY",
+      "observation": "automatic-weir capacity check uses current WLS for SWQHR=1 but WLSTAR for SWQHR=2",
+      "risk": "source-level branch asymmetry may be intentional or a legacy discrepancy",
+      "disposition": "require theory/source/equation-level qualification before automatic-weir candidate"
+    },
+    {
+      "id": "D-RISK-03-HIDDEN-SUPPLY-DISCHARGE-FLUXES",
+      "observation": "WDIS is local and actual supply is not materialized as a persistent/public flux even where storage is assigned using supply assumptions",
+      "risk": "legacy output structure obscures explicit external mass attribution",
+      "disposition": "modern component must emit first-class q_supply and q_discharge and prove balance closure branch-by-branch"
+    },
+    {
+      "id": "D-RISK-04-LEGACY-DAY-CADENCE",
+      "observation": "automatic-management adjustment cadence is expressed using integer day arithmetic and management-period dates",
+      "risk": "direct migration would violate generic-time invariant",
+      "disposition": "translate to explicit event schedule outside kernel and qualify equivalent event timing"
+    },
+    {
+      "id": "D-RISK-05-PHYSICAL-VS-NUMERICAL-HISTORY",
+      "observation": "WLSBAK/OSSWLM affect timestep reduction through oscillation detection but are not physical storage/control state",
+      "risk": "copying them into surface-water physical state would mix physics and numerical policy",
+      "disposition": "separate optional numerical continuation history from committed physical state"
+    }
+  ],
+  "child_decomposition": [
+    {
+      "id": "F-PM08D1",
+      "title": "Surface-Water Storage Geometry & Compact State Readiness",
+      "goal": "qualify STTAB-equivalent storage/level preparation, SWST authority, derived WLS, and conditional WLSTAR continuation state",
+      "production_candidate_allowed_after": "independent source/equation verification"
+    },
+    {
+      "id": "F-PM08D2",
+      "title": "Restricted Extended Drainage Exchange-Law Readiness",
+      "goal": "separate and qualify stateless SWDRA=2 exchange physics for a deliberately restricted well-defined route before state/control composition",
+      "holds": ["SWSRF=1 undefined-WL risk", "negative power-interflow outside qualified domain", "availability limiter is not part of constitutive law"]
+    },
+    {
+      "id": "F-PM08D3",
+      "title": "Secondary Storage Availability Limiter & Explicit Mass Flux Contract",
+      "goal": "qualify dry-system limiting and explicit q_supply/q_discharge/top-surface mass attribution without configurable mass tolerance"
+    },
+    {
+      "id": "F-PM08D4",
+      "title": "Fixed-Weir Secondary Surface-Water Balance",
+      "goal": "qualify the smallest stateful SWSEC=2 + SWMAN=1 storage/control evolution before automatic management"
+    },
+    {
+      "id": "F-PM08D5",
+      "title": "Automatic-Weir Event & Hydraulic-Control Readiness",
+      "goal": "qualify SWMAN=2 target-memory, event schedule and clean hydraulic-control view, including QHR asymmetry disposition"
+    },
+    {
+      "id": "F-PM08D6",
+      "title": "Transactional Surface-Water Runtime Composition",
+      "goal": "compose qualified exchange, DIVDRA, top-surface transfer and stateful storage/control under checkpoint/trial/retry/commit/rollback with accepted mass ledger"
+    }
+  ],
+  "recommended_first_child": "F-PM08D1",
+  "reason_for_first_child": "storage geometry and compact continuation state are prerequisite contracts for availability limiting, fixed-weir evolution, restart and MultiSWAP layout while containing no drainage exchange-law duplication"
+}
