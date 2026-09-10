@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MR27",
+  "finding": "OPTIMIZATION_SENSITIVE_PARALLEL_OVERLAP_COUNTER_DATA_RACE",
+  "owner_workflow": {
+    "run_id": 34462997500,
+    "job_id": 102824954385,
+    "tested_head": "a662818404a71887933d208436a5cd2ca8e0760e",
+    "compiler": "GNU Fortran 13.3.0",
+    "platform": "Ubuntu 24.04",
+    "conclusion": "failure"
+  },
+  "observed": {
+    "O0_parallel_matrix": "PASS",
+    "O2_positive_14_case_matrix_before_overlap": "PASS",
+    "O2_input_order_independence": "PASS",
+    "O2_rejection_isolation": "PASS",
+    "O2_unsupported_profiles_fail_closed": "PASS",
+    "O2_overlap_gate": "FAIL_OVERLAP_WORKER_BOUND"
+  },
+  "source_diagnosis": {
+    "current_executor": "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+    "current_behavior": "active_physical_calls increment/read/decrement are unsynchronized while the counter is shared by OpenMP workers",
+    "qualified_pre_FMR18_authority": "e8858ce4816fc6ddfaf9ec252832c76cd3094705",
+    "prior_behavior": "explicit OpenMP atomic capture/update with local simultaneous_physical_calls snapshot",
+    "classification": "CONCURRENCY_DIAGNOSTIC_REGRESSION_DURING_RECEIPT_EXECUTOR_EVOLUTION"
+  },
+  "constraints": {
+    "do_not_weaken_overlap_gate": true,
+    "do_not_change_physics": true,
+    "do_not_change_mass_accounting": true,
+    "do_not_change_FMR18_sparse_receipt_semantics": true,
+    "parallel_receipt_routing_remains_out_of_scope": true,
+    "requalification_required_after_remediation": true
+  }
+}
