@@ -3,14 +3,24 @@
   "work_unit": "F-CI33",
   "title": "F-MR33 Restricted DIVDRA Runtime Binding Canonical Source Admission",
   "branch": "qualification/f-ci33-fmr33-divdra-runtime-canonical-admission",
-  "phase": "COMPLETE_PRETEST_ASSETS_PERSISTED",
-  "decision": "OPEN_FMR33_DIVDRA_RUNTIME_CANONICAL_ADMISSION",
+  "phase": "QUALIFIED_READY_FOR_EXACT_HEAD_RECHECK_AND_CANONICAL_FAST_FORWARD",
+  "decision": "QUALIFIED_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_CANONICAL_SOURCE_ADMISSION_READY_FOR_FAST_FORWARD",
   "clean_base": "49863406a6112baa9956f9396b34e7188934e0d4",
   "candidate": {
     "owner_closeout": "419c463b06de72e2d8b659b03354aa03ffc114e2",
     "qualification_closeout": "290f627c7a2b61e7de96c2e9659baa533e5526c6",
     "path": "src/runtime/mod_fmr_divdra_runtime_binding.f90",
     "blob": "e4737fb6f00a11ed16e34bee44b3442ac84b31aa"
+  },
+  "qualification_evidence": {
+    "tested_head": "b25055348e5e69d36510a94b8c7fb4bdf560e450",
+    "workflow_run": 34484545373,
+    "workflow_job": 102895399258,
+    "conclusion": "success",
+    "O0_output_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "O2_output_sha256": "f4643471accfb5ec067c7f38d845c3addc1e9d94be7fae82e3208b60c6cb99ce",
+    "artifact_id": 10155023754,
+    "artifact_digest": "sha256:78921e6cf8192763dbf0d0ce5233228c987d24d8b3614c2b8acda0ccd35d4038"
   },
   "upstream": {
     "f_ci32_exact_canonical_head_requalified": true,
@@ -30,8 +40,10 @@
     "admission_gate_persisted": true,
     "workflow_persisted": true,
     "architecture_audit_persisted": true,
-    "tested": false,
-    "qualified_for_fast_forward": false,
+    "evidence_persisted": true,
+    "tested": true,
+    "qualified_for_fast_forward": true,
+    "exact_closeout_head_rerun_pending": true,
     "canonical_ref_advanced": false,
     "post_promotion_canonical_ci_passed": false,
     "final_governance_head_requalified": false
@@ -45,5 +57,7 @@
     "runtime_callsite_composition": false,
     "automatic_execution_claimed": false
   },
-  "pass_decision": "QUALIFIED_FMR33_RESTRICTED_DIVDRA_RUNTIME_BINDING_CANONICAL_SOURCE_ADMISSION_READY_FOR_FAST_FORWARD"
+  "closeout_requirement": "The identical persisted F-CI33 admission gate must pass on this exact qualification closeout head with the same O0/O2 output hashes, exact candidate blob, exactly one src delta and zero reference delta. Immediately before promotion the live canonical ref must still equal the clean base; promotion must be non-forced.",
+  "post_promotion_requirement": "All relevant workflows must pass on the exact promoted canonical head. A canonical closeout record may then be committed, and that final governance head must itself be requalified before F-CI33 is fully closed.",
+  "nonclaim": "The source is qualified for canonical availability only. No active runtime orchestrator callsite is admitted or claimed by F-CI33."
 }
