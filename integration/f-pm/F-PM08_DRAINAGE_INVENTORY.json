@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08",
+  "title": "Drainage Process Boundary & Migration Readiness Inventory",
+  "exact_branch_base": "df435824de175e3f868b680aab2cd0a395aa19ff",
+  "source_basis": {
+    "legacy_oracle": "SWAP 4.3.1 B1.10",
+    "canonical_nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_files": {
+      "SWAP/drainage.f90": {
+        "sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+        "role": "basic drainage exchange laws and basic partition dispatch"
+      },
+      "SWAP/MOD_drainage.f90": {
+        "sha256": "cb354ea13a099422c9f3b9c87a60ccbe440c0dd3c83ba0502108da8ca70ff255",
+        "role": "legacy drainage option, parameter, state and flux storage plus dispatcher"
+      },
+      "SWAP/divdra.f90": {
+        "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91",
+        "role": "transmissivity-based vertical distribution of lateral exchange"
+      },
+      "SWAP/headcalc.f90": {
+        "sha256": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+        "role": "legacy soil-water residual consumer"
+      },
+      "SWAP/surfacewater.f90": {
+        "sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+        "role": "extended drainage exchange plus secondary surface-water storage and controls"
+      }
+    },
+    "current_canonical": {
+      "branch": "integration/f-ci-canonical",
+      "head": "df435824de175e3f868b680aab2cd0a395aa19ff",
+      "source_sink_provider_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "soil_water_solver_contract_blob": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+      "process_hydraulic_view_blob": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+      "committed_hydraulic_view_binding_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf"
+    }
+  },
+  "architectural_decomposition": {
+    "single_legacy_process_family": false,
+    "families": [
+      {
+        "id": "DRAINAGE_EXCHANGE_LAW",
+        "ownership": "process physics",
+        "purpose": "compute signed lateral soil-to-drain exchange per drainage level from hydraulic summary, immutable parameters and external control"
+      },
+      {
+        "id": "DRAINAGE_SPATIAL_DISTRIBUTION",
+        "ownership": "process/soil-water seam, separately qualified",
+        "purpose": "map a level-integrated lateral exchange to per-node soil-water sink/source contributions while preserving the scalar exchange exactly"
+      },
+      {
+        "id": "SURFACE_WATER_STORAGE_AND_CONTROL",
+        "ownership": "runtime/coupler composition with a separate stateful surface-water component",
+        "purpose": "own secondary surface-water storage, water level, management controls, supply/discharge and event cadence"
+      }
+    ],
+    "anti_pattern": "Do not migrate the legacy MOD_drain SAVE namespace as one drainage process object."
+  },
+  "option_matrix": [
+    {
+      "id": "BASIC_DRAMET1_TABLE",
+      "legacy_switch": "SWDRA=1, DRAMET=1",
+      "legacy_equation": "q_drain = AFGEN(qdrtab, abs(gwl))",
+      "legacy_source": "SWAP/drainage.f90:74-77",
+      "hydraulic_dependence": ["groundwater_level"],
+      "immutable_parameters": ["qdrtab groundwater-level/flux interpolation table"],
+      "committed_persistent_state": [],
+      "external_control_forcing": [],
+      "hydraulic_view": ["groundwater_level"],
+      "output_flux": ["signed lateral exchange rate"],
+      "derivative_sensitivity": "piecewise table slope with explicit knot and abs(gwl) convention; not required for frozen explicit parity route",
+      "diagnostics": ["interpolation segment", "input groundwater level", "signed exchange"],
+      "scratch": ["interpolation temporaries"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "HELD_FOR_CHILD_RESPONSE_LAW_QUALIFICATION"
+    },
+    {
+      "id": "BASIC_DRAMET2_HOOGHOUDT_ERNST",
+      "legacy_switch": "SWDRA=1, DRAMET=2",
+      "legacy_equation": "q_drain = diffl / total_resistance after IPOS-specific Hooghoudt/Ernst resistance construction",
+      "legacy_source": "SWAP/drainage.f90:79-149",
+      "hydraulic_dependence": ["groundwater_level", "drain_bottom_level", "profile geometry and hydraulic conductivities"],
+      "immutable_parameters": ["IPOS", "BASEGW", "ENTRES", "GEOFAC", "KHBOT", "KHTOP", "KVBOT", "KVTOP", "SHAPE", "WETPER", "ZINTF", "drain spacing", "drain bottom level"],
+      "committed_persistent_state": [],
+      "external_control_forcing": [],
+      "hydraulic_view": ["groundwater_level"],
+      "output_flux": ["nonnegative lateral drainage rate"],
+      "derivative_sensitivity": "piecewise nonlinear dq/dgwl; IPOS 4 and 5 include groundwater-dependent resistance; threshold at diffl < 1e-10 is nonsmooth",
+      "diagnostics": ["IPOS route", "diffl", "equivalent depth", "resistance components", "total resistance", "active threshold"],
+      "scratch": ["zimp", "dbot", "x", "fx", "eqd", "rver", "rhor", "rrad", "total resistance"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "HELD_FOR_CHILD_RESPONSE_LAW_QUALIFICATION"
+    },
+    {
+      "id": "BASIC_DRAMET3_LINEAR_RESISTANCE",
+      "legacy_switch": "SWDRA=1, DRAMET=3",
+      "legacy_equation": "diffl = gwl - drain_level; drainage q=diffl/DRARES, infiltration q=diffl/INFRES subject to direction and channel limits",
+      "legacy_source": "SWAP/drainage.f90:151-194",
+      "hydraulic_dependence": ["groundwater_level", "externally resolved drain water level"],
+      "immutable_parameters": ["DRARES per level", "INFRES per level when infiltration is admitted", "SWALLO direction policy", "SWDTYP", "ZBOTDR", "SWLIMINF"],
+      "committed_persistent_state": [],
+      "external_control_forcing": ["drain water level per level over the current control interval"],
+      "hydraulic_view": ["groundwater_level"],
+      "output_flux": ["signed lateral exchange rate per level"],
+      "derivative_sensitivity": "active linear branch dq/dgwl = 1/R; inactive branch 0; branch kink must be reported rather than smoothed silently",
+      "diagnostics": ["raw head difference", "effective drain level", "direction", "allowed/blocked direction", "active branch", "clamping"],
+      "scratch": ["diffl"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "SELECTED_RESTRICTED_SUBSET"
+    },
+    {
+      "id": "BASIC_DRAMET3_POWER_INTERFLOW",
+      "legacy_switch": "SWDRA=1, DRAMET=3, highest level, SWNRSRF=1",
+      "legacy_equation": "q = COFINTFL * diffl**EXPINTFL",
+      "legacy_source": "SWAP/drainage.f90:170-179",
+      "hydraulic_dependence": ["groundwater_level", "drain level"],
+      "immutable_parameters": ["COFINTFL", "EXPINTFL", "highest-level definition"],
+      "committed_persistent_state": [],
+      "external_control_forcing": ["drain water level"],
+      "hydraulic_view": ["groundwater_level"],
+      "output_flux": ["nonlinear lateral drainage rate"],
+      "derivative_sensitivity": "dq/dgwl = COFINTFL*EXPINTFL*diffl**(EXPINTFL-1) on the positive branch; singular/steep behavior near zero requires explicit qualification",
+      "diagnostics": ["diffl", "power-law route", "coefficient", "exponent"],
+      "scratch": ["diffl"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "HELD_FOR_CHILD_RESPONSE_LAW_QUALIFICATION"
+    },
+    {
+      "id": "MULTILEVEL_RESISTANCE_DRAINAGE",
+      "legacy_switch": "SWDRA=1, DRAMET=3, NRLEVS>1",
+      "legacy_equation": "independent level exchange laws combined as total lateral exchange before optional spatial distribution",
+      "legacy_source": "SWAP/drainage.f90:151-194",
+      "hydraulic_dependence": ["shared groundwater_level", "per-level drain levels"],
+      "immutable_parameters": ["per-level resistances", "per-level direction policies", "per-level bottom levels", "level ordering/topology"],
+      "committed_persistent_state": [],
+      "external_control_forcing": ["per-level drain water levels"],
+      "hydraulic_view": ["groundwater_level"],
+      "output_flux": ["signed exchange rate per level", "total signed exchange"],
+      "derivative_sensitivity": "per-level derivative plus exact aggregation; still stateless if drain levels are external controls",
+      "diagnostics": ["per-level branch and exchange", "aggregate exchange"],
+      "scratch": ["per-level head differences"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "HELD_UNTIL_SINGLE_LEVEL_ROUTE_QUALIFIED"
+    },
+    {
+      "id": "DIVDRA_TRANSMISSIVITY_DISTRIBUTION",
+      "legacy_switch": "SWDIVD=1 with optional SWDIVDINF/SWDISLAY/SWTOPDISLAY controls",
+      "legacy_equation": "distribute each level-integrated exchange over model compartments using saturated/transmissivity discharge layers and optional separate infiltration distribution",
+      "legacy_source": "SWAP/divdra.f90:1-388; principal drainage partition SWAP/divdra.f90:237-250",
+      "hydraulic_dependence": ["groundwater_level", "grid geometry", "saturated conductivity profile", "layer anisotropy", "drain spacing", "exchange rates"],
+      "immutable_parameters": ["grid dz/zbotcp/layer mapping", "KSATCP references", "COFANI", "LSPACING", "distribution switches and top-layer controls"],
+      "committed_persistent_state": [],
+      "external_control_forcing": [],
+      "hydraulic_view": ["groundwater_level", "advanced route may require trial profile summary"],
+      "output_flux": ["per-level per-node soil-water exchange vector"],
+      "derivative_sensitivity": "potentially nonlocal because groundwater-level-dependent active saturated thickness changes weights; separate seam qualification required",
+      "diagnostics": ["active drainage order", "discharge-layer depth", "transmissivity totals", "per-level sum identity"],
+      "scratch": ["drnseq", "icpbotdislay", "zbotdislay", "FlowDrDisch", "HelpFl", "dmaxdislay", "dzcpbotdislay", "KDdr", "FDisInf", "Khor", "Kver", "KD", "cumulative transmissivity temporaries"],
+      "migration_family": "DRAINAGE_SPATIAL_DISTRIBUTION",
+      "readiness": "HELD_FOR_SEPARATE_CHILD"
+    },
+    {
+      "id": "EXTENDED_SURFACE_WATER_EXCHANGE",
+      "legacy_switch": "SWDRA=2, SurfaceWater task 2 / drainflux_extended",
+      "legacy_equation": "signed exchange from groundwater/surface-water head difference with channel geometry, entry/exit resistances, infiltration cap and optional nonlinear rapid drainage",
+      "legacy_source": "SWAP/surfacewater.f90:468-641",
+      "hydraulic_dependence": ["groundwater_level", "ponding near surface", "primary or secondary surface-water level", "channel geometry"],
+      "immutable_parameters": ["RDrain/RInfi", "REntry/RExit", "GWLINF", "width/talud/wet perimeter parameters", "drain spacing", "bottom levels", "surface drainage law parameters"],
+      "committed_persistent_state": [],
+      "external_control_forcing": ["resolved surface-water level when owned externally"],
+      "hydraulic_view": ["groundwater_level", "ponding_depth"],
+      "output_flux": ["signed exchange per level"],
+      "derivative_sensitivity": "head-dependent and branch-dependent; may depend on geometry and effective resistance",
+      "diagnostics": ["surface-water head source", "wet perimeter", "head difference", "direction", "dry-channel condition", "exchange"],
+      "scratch": ["wl", "swdepth", "swexbrd", "rd", "re", "diffl"],
+      "migration_family": "DRAINAGE_EXCHANGE_LAW",
+      "readiness": "HELD_WITH_SURFACE_WATER_COMPOSITION_CHILD"
+    },
+    {
+      "id": "EXTENDED_SURFACE_WATER_STORAGE_CONTROL",
+      "legacy_switch": "SWDRA=2, SurfaceWater task 3, SWSEC/SWSRF/SWMAN/SWQHR",
+      "legacy_equation": "secondary surface-water storage and water-level balance plus management, supply/discharge and dry-system constraints",
+      "legacy_source": "SWAP/surfacewater.f90:5-75 and nested WLEVBAL; state declarations SWAP/MOD_drainage.f90:91-134",
+      "hydraulic_dependence": ["drainage exchange", "groundwater/control criteria", "surface runoff/supply/discharge inputs depending on active management route"],
+      "immutable_parameters": ["storage-level relation", "weir/discharge relation", "management rules", "capacities and thresholds"],
+      "committed_persistent_state": ["secondary surface-water storage SWST when simulated", "secondary surface-water level WLS or derivable storage representation", "target/control memory WLSTAR when rule semantics require continuation", "control adjustment history/counter only if required by exact management semantics"],
+      "external_control_forcing": ["primary water level when prescribed", "secondary water level when prescribed", "management/event controls", "supply/discharge boundary data"],
+      "hydraulic_view": ["only explicit qualified summaries required by each control policy; no HeadCalc internals"],
+      "output_flux": ["surface-water storage change", "external supply/discharge", "resolved drain control heads"],
+      "derivative_sensitivity": "system-composition issue, not a direct soil-water process Jacobian mutation contract",
+      "diagnostics": ["storage", "water level", "management period/event", "control action", "dry-system limiter", "mass ledger"],
+      "scratch": ["temporary target-level and discharge relation calculations", "trial-only control temporaries"],
+      "migration_family": "SURFACE_WATER_STORAGE_AND_CONTROL",
+      "readiness": "HELD_FOR_RUNTIME_COUPLER_CHILD"
+    }
+  ],
+  "legacy_solver_interaction": {
+    "pre_solve_order": "SWAP/swap.f90:437-447 evaluates drainage before SoilWater and updates surface-water balance after SoilWater for SWDRA=2",
+    "soil_water_consumer": "SWAP/headcalc.f90:82-91 sums qdra into sink and labels sink terms constant for the current time step",
+    "legacy_drainage_derivative_in_jacobian": false,
+    "jacobian_source": "SWAP/headcalc.f90:632-691",
+    "modern_current_consumer": "src/solver/mod_b110_source_sink_provider.f90 accepts precomputed drainage_flux_by_level(level,node) and adds it to sink",
+    "implication": "A restricted structural candidate may preserve source-bound semi-explicit behavior by evaluating drainage from committed/start-of-trial hydraulic state and holding it fixed during one admitted soil-water solve."
+  },
+  "target_hydraulic_interface": {
+    "exchange_law_reads": ["generic interval/control", "immutable drainage parameters", "hydraulic summary such as groundwater_level", "external resolved drain/control head"],
+    "exchange_law_returns": ["signed q_external_by_level with positive sign defined as water leaving the soil", "optional physical response derivative such as dq_dgwl", "branch/validity diagnostics"],
+    "spatial_distributor_reads": ["scalar exchange by level", "qualified hydraulic/profile view", "immutable grid/soil distribution parameters"],
+    "spatial_distributor_returns": ["per-node signed soil-water exchange whose exact aggregate equals the scalar exchange", "optional derivative metadata"],
+    "solver_owns": ["residual assembly", "Jacobian assembly", "chain rule from hydraulic summary sensitivities to solver unknowns", "Newton/trial scratch"],
+    "process_must_not": ["read HeadCalc internals", "mutate solver residual arrays", "mutate solver Jacobian arrays", "own Newton vectors or Jacobians"]
+  },
+  "mass_contract": {
+    "sign_convention": "q_external > 0 means water leaves the soil column toward the drainage receiver; q_external < 0 means water enters the soil column from the receiver",
+    "state_update_booking": "The exact same accepted integrated exchange used in the soil-water state update is the sole drainage transfer quantity eligible for the mass ledger.",
+    "accepted_positive_exchange": "mass_out += integral(q_external dt)",
+    "accepted_negative_exchange": "mass_in += integral(-q_external dt)",
+    "trial_policy": "Trial results may carry proposed integrated exchange for reconciliation, but rejected trials never advance committed state or committed mass ledger.",
+    "double_booking_forbidden": true,
+    "configurable_mass_tolerance_allowed": false,
+    "legacy_warning_tolerance_is_not_architectural_permission": "SWAP/drainage.f90:46-50 warns at 1e-5; SWAP5 must instead construct the distribution and ledger from one exchange object so missing/double booking is structurally impossible."
+  },
+  "derivative_contract": {
+    "physical_derivative_owner": "drainage exchange law",
+    "solver_jacobian_owner": "soil-water solver",
+    "first_candidate": {
+      "law": "q = max(0, (gwl - h_drain)/R_drain)",
+      "active_branch_dq_dgwl": "1/R_drain",
+      "inactive_branch_dq_dgwl": "0",
+      "at_kink": "report branch/nondifferentiability explicitly; no silent smoothing"
+    },
+    "chain_rule": "If an implicit route needs dq/dh_i, the solver/hydraulic-summary owner supplies dgwl/dh_i and the solver assembles dq/dh_i=(dq/dgwl)*(dgwl/dh_i).",
+    "current_gap": [
+      "current source_sink_provider evaluate signature returns source and sink only, not response derivatives",
+      "current committed process hydraulic view contains groundwater_level, but the generic source/sink provider trial callback receives pressure_head and water_content without an explicit trial groundwater summary"
+    ],
+    "qualification_effect": "Fully implicit groundwater-level-dependent drainage is held. This does not block the legacy-faithful frozen-flux restricted structural candidate."
+  },
+  "time_contract": {
+    "kernel_interval": "generic [t0,t1]",
+    "basic_dramet3_legacy_time_use": "OWLTAB is sampled using legacy t1900/dt representation; in SWAP5 parsing/calendar lookup remains outside the process kernel and a resolved drain control head is supplied for the active interval",
+    "event_rule": "If a control changes inside [t0,t1], runtime subdivides at the event or the control provider supplies a qualified interval representation; no midnight or one-day assumption is introduced.",
+    "extended_hold": "Legacy INTWL management uses day-based cadence and calendar management periods; migration must first translate these into generic runtime events/control intervals."
+  },
+  "selected_first_candidate": {
+    "child": "F-PM08A",
+    "name": "Restricted Single-Level Linear-Resistance Drainage Structural Candidate",
+    "legacy_scope": ["SWDRA=1", "DRAMET=3", "NRLEVS=1", "SWALLO=3 drainage-only", "SWNRSRF=0", "SWDIVD=0", "SWMACRO=0", "SWSOLU=0"],
+    "law": "q_external = max(0, (groundwater_level - drain_head)/drainage_resistance)",
+    "drain_head_rule": "externally resolved for the generic interval and clipped/validated against drain-bottom semantics before or within the pure exchange law according to the source-bound candidate contract",
+    "persistent_process_state_required": false,
+    "hydraulic_view_required": ["groundwater_level"],
+    "forcing_required": ["drain_head valid for the current control interval"],
+    "distribution": "restricted bottom-node lumping / precomputed sink seam only; DIVDRA is not admitted",
+    "solver_coupling": "evaluate once from committed/start-of-trial hydraulic view, then hold exchange fixed during one soil-water solve to preserve B1.10 structural ordering",
+    "why_selected": "It is the smallest physically interpretable source-bound drainage response law with explicit head difference and resistance, no process continuation state, no surface-water storage and no nonlinear analytical submodel."
+  },
+  "child_workunits": [
+    {
+      "id": "F-PM08A",
+      "title": "Restricted Single-Level Linear-Resistance Drainage Structural Candidate",
+      "scope": "implement and qualify selected frozen-flux single-level drainage-only route"
+    },
+    {
+      "id": "F-PM08B",
+      "title": "Drainage Spatial Distribution and DIVDRA Migration Qualification",
+      "scope": "qualify transmissivity-based per-node distribution, exact scalar-to-vector mass identity and any required response sensitivities"
+    },
+    {
+      "id": "F-PM08C",
+      "title": "Drainage Response-Law Family and Sensitivity Qualification",
+      "scope": "qualify DRAMET=1 table, DRAMET=2 Hooghoudt/Ernst, power interflow, multi-level aggregation and piecewise derivatives"
+    },
+    {
+      "id": "F-PM08D",
+      "title": "Surface-Water-Controlled Drainage Composition Readiness",
+      "scope": "separate stateful surface-water storage/control from drainage exchange and qualify runtime/coupler composition without making SWAP aware of external system topology"
+    }
+  ],
+  "owner_dependencies": [
+    {
+      "owner": "F-SI / soil-water interface owner",
+      "need": "Before any fully implicit head-dependent drainage route, qualify a trial hydraulic-summary/GWL seam and a source/sink response derivative contract."
+    },
+    {
+      "owner": "F-MR / runtime-coupler owner",
+      "need": "For F-PM08D, own component composition, transaction ordering, event subdivision and accepted mass-ledger publication."
+    }
+  ],
+  "decision": "QUALIFIED_DRAINAGE_MIGRATION_READINESS_READY_FOR_RESTRICTED_STRUCTURAL_CANDIDATE"
+}
