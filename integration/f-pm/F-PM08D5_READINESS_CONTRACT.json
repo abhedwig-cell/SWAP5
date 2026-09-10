@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D5",
+  "title": "Automatic-Weir Event & Hydraulic-Control Readiness",
+  "branch": "work/f-pm08d5-automatic-weir-event-hydraulic-control-readiness",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d",
+    "exact_branch_base": "9e13bdcfd4b9ec6c93a2050e95cc8bad127aca6d"
+  },
+  "authoritative_upstream": {
+    "fpm08d_parent_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d1_storage_readiness_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "fpm08d3_mass_readiness_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344",
+    "fpm08d4_fixed_weir_readiness_closeout": "d45b5b09cb8143a9b7c01fe3021630aa5a4bf49e"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "source_locations": [
+      "SWAP/surfacewater.f90:160-233",
+      "SWAP/surfacewater.f90:295-325",
+      "SWAP/surfacewater.f90:889-915",
+      "SWAP/surfacewater.f90:1026-1117"
+    ]
+  },
+  "scope": {
+    "SWMAN_2_target_selection": true,
+    "explicit_generic_event_schedule": true,
+    "conditional_WLSTAR_control_memory": true,
+    "clean_scalar_hydraulic_control_view": true,
+    "drop_rate_semantics": true,
+    "automatic_discharge_capacity_source_discrepancy_characterization": true,
+    "automatic_capacity_production_policy_admission": false,
+    "SWQHR_2_production_admission": false,
+    "surface_water_balance_implementation": false,
+    "transactional_runtime_implementation": false,
+    "production_source_changes_allowed": false
+  },
+  "control_inputs": {
+    "physical_hydraulic_summary": [
+      "groundwater_level",
+      "total_air_volume",
+      "selected_pressure_head"
+    ],
+    "forbidden_dependencies": [
+      "HeadCalc internal arrays",
+      "direct THETA/THETAS/DZ traversal inside the control policy",
+      "calendar parsing inside kernel",
+      "implicit midnight or integer-day execution"
+    ],
+    "immutable_period_parameters": [
+      "ordered WLSMAN phases",
+      "GWLCRIT thresholds",
+      "VCRIT thresholds",
+      "HCRIT thresholds",
+      "drop-rate DROPR",
+      "explicit event schedule translated from management periods and INTWL",
+      "selected-head location metadata prepared outside the policy"
+    ]
+  },
+  "target_selection": {
+    "legacy_phase_start": "iphase=NPHASE",
+    "groundwater_filter": "while groundwater_level > GWLCRIT[iphase] and iphase>1: iphase--",
+    "air_volume_filter": "while total_air_volume < VCRIT[iphase] and iphase>1: iphase--",
+    "pressure_head_filter": "while selected_pressure_head > HCRIT[iphase] and iphase>1: iphase--",
+    "requested_target": "WLSMAN[iphase]",
+    "between_adjustment_events": "reuse committed WLSTAR exactly",
+    "initialization": "runtime must schedule an explicit initial control evaluation; tcum<1e-10 is not a kernel invariant"
+  },
+  "drop_rate": {
+    "legacy_equation": "if requested_target < old_WLSTAR and DROPR > 0.001 then trial_WLSTAR=max(requested_target,old_WLSTAR-DROPR*dt) else trial_WLSTAR=requested_target",
+    "upward_change_is_unlimited": true,
+    "DROPR_at_or_below_0p001_means_no_limiting_in_frozen_source": true,
+    "dt_is_generic_interval_duration": true,
+    "rejected_trial_must_not_advance_WLSTAR": true
+  },
+  "event_translation": {
+    "legacy_trigger": "abs((T+1)/INTWL - int((T+1)/INTWL)) < 1e-5 or tcum<1e-10",
+    "modern_rule": "adapter/runtime translates management-period boundaries and recurring INTWL adjustment instants into explicit event times before kernel execution",
+    "kernel_receives": "is_adjustment_event plus active immutable management-period parameters for [t0,t1]",
+    "event_inside_interval": "subdivide interval; do not smear target selection across the event"
+  },
+  "control_state": {
+    "persistent_physical_control_memory": ["WLSTAR only when SWMAN=2"],
+    "not_physical_state": ["NUMADJ","WLSBAK","OSSWLM","rday","intday","iphase scratch","VTAIR scratch"],
+    "transactional_requirement": "trial WLSTAR must rollback exactly with rejected trials; D6 owns atomic commit"
+  },
+  "capacity_discrepancy": {
+    "source_SWQHR1": "discap=ALPHAW*(WLS-HBWEIR)^BETAW using current WLS",
+    "source_SWQHR2": "discap=FUN_QHTAB(WLSTAR) using target WLSTAR",
+    "source_branch_test": "if discap > wdis capacity is sufficient; equality falls to overflow",
+    "risk_current_WLS_below_crest": "SWQHR1 base can be negative; fractional BETAW is outside real-valued power domain and integer/even powers can produce nonphysical positive capacity below crest",
+    "disposition": "no automatic-weir capacity production formula is admitted by D5; require separate theory/source/scientific qualification of a versioned physical capacity-head policy",
+    "overflow_fallback": "future runtime may use the D4-qualified consistent rating/balance route, but must not reproduce legacy inconsistent SWST/WLS bisection state"
+  },
+  "explicit_source_holds": [
+    "D5-RISK-01-LEGACY-DAY-AND-CALENDAR-EVENT-ARITHMETIC",
+    "D5-RISK-02-INITIAL-TCUM-IMPLICIT-ADJUSTMENT-TRIGGER",
+    "D5-RISK-03-WLSTAR-IS-CONDITIONAL-COMMITTED-CONTROL-MEMORY",
+    "D5-RISK-04-DROPR-0P001-ACTIVATION-SEAM",
+    "D5-RISK-05-SWQHR1-CURRENT-WLS-VS-SWQHR2-TARGET-WLSTAR-CAPACITY-ASYMMETRY",
+    "D5-RISK-06-SWQHR1-NEGATIVE-WOVER-POWER-DOMAIN",
+    "D5-RISK-07-STRICT-DISCAP-GREATER-THAN-WDIS-EQUALITY-SEAM",
+    "D5-RISK-08-D4-OVERFLOW-FALLBACK-STATE-INCONSISTENCY-MUST-NOT-RETURN",
+    "D5-RISK-09-HEAD-DEPTH-TO-NODE-MAPPING-MUST-NOT-COUPLE-CONTROL-TO-SOLVER-INTERNALS",
+    "D5-RISK-10-WLSBAK-OSSWLM-NUMERICAL-HISTORY-SEPARATE-FROM-CONTROL-STATE",
+    "D5-RISK-11-SWQHR2-HBWEIR-THRESHOLD-SEAM-REMAINS-UNQUALIFIED"
+  ],
+  "exit_criteria": [
+    "prove phase-selection equation equivalence for valid ordered threshold tables",
+    "prove between-event WLSTAR persistence and explicit-event replacement of legacy day arithmetic",
+    "prove drop-rate trial evolution for arbitrary positive dt and exact rollback semantics at contract level",
+    "characterize SWQHR1/SWQHR2 capacity-head asymmetry and negative-WOVER domain without silently choosing a replacement formula",
+    "define clean scalar hydraulic-control view without HeadCalc internals",
+    "audit all 30 architecture invariants",
+    "keep src/ and reference/ unchanged"
+  ]
+}
