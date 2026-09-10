@@ -1,44 +1,103 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08A",
   "title": "Restricted Single-Level Linear Drainage Structural Candidate",
   "branch": "work/f-pm08a-single-level-linear-drainage-candidate",
-  "status": "IN_PROGRESS_SOURCE_BOUND_IMPLEMENTATION",
+  "status": "STRUCTURAL_CANDIDATE_READY_FOR_INDEPENDENT_FVQ",
+  "phase": "IMPLEMENTED_PERSISTED_TESTED_STRUCTURALLY_QUALIFIED_NOT_SCIENTIFICALLY_QUALIFIED",
+  "state": {
+    "readiness_unblocked": true,
+    "production_candidate_implemented": true,
+    "production_candidate_persisted": true,
+    "production_candidate_tested": true,
+    "structurally_qualified": true,
+    "scientifically_qualified": false,
+    "runtime_modified": false,
+    "solver_modified": false,
+    "kernel_modified": false,
+    "reference_source_modified": false
+  },
   "lineage": {
     "readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
     "candidate_base": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
-    "canonical_source_under_readiness": "df435824de175e3f868b680aab2cd0a395aa19ff"
+    "canonical_source_under_readiness": "df435824de175e3f868b680aab2cd0a395aa19ff",
+    "tested_candidate_head": "8ae63af5555ea5d8bf33d6294a04f7ad5148f193",
+    "production_source_blob": "dbacd49da3bb0b94f822f9ee0478d15183e9c0fa",
+    "decisive_workflow_run": 34448908440,
+    "decisive_workflow_job": 102779815508,
+    "decisive_output_sha256": "f91cfb45f36d417321eedb2922e31f0322d4cb1cff5a05dd6d806faf7f17d487"
   },
-  "scope": {
-    "swdra": 1,
-    "dramet": 3,
-    "nrlevs": 1,
-    "drainage_only": true,
-    "linear_resistance": true,
-    "interflow": false,
-    "divdra": false,
-    "surface_water_storage": false,
-    "macropore": false,
-    "solute": false,
+  "implemented_profile": {
+    "name": "SINGLE_LEVEL_LINEAR_DRAINAGE_ONLY",
+    "legacy_switches": {
+      "SWDRA": 1,
+      "DRAMET": 3,
+      "NRLEVS": 1,
+      "SWALLO": 3,
+      "SWINTFL": 0,
+      "SWDIVD": 0
+    },
     "persistent_process_state": false,
-    "frozen_within_soil_water_solve": true
+    "immutable_parameters": ["drainage_resistance"],
+    "external_control": ["effective drain_head"],
+    "hydraulic_input": "groundwater_level only",
+    "physical_output": "nonnegative soil_to_drain_rate",
+    "sensitivity_output": "dq_dgroundwater_level with explicit undefined flag at activation kink",
+    "frozen_within_one_admitted_soil_water_solve": true
   },
-  "target_law": "max(0,(groundwater_level-drain_head)/drainage_resistance)",
-  "held": [
+  "structural_evidence": {
+    "legacy_restricted_switch_reduction": "SOURCE_BOUND_CONTRACTED_FOR_INDEPENDENT_FVQ",
+    "active_linear_law": "PASS",
+    "inactive_no_reverse_exchange": "PASS",
+    "activation_kink_diagnostic": "PASS",
+    "active_derivative_finite_difference": "PASS",
+    "inactive_derivative_finite_difference": "PASS",
+    "groundwater_only_hydraulic_dependency": "PASS",
+    "stateless_A_B_A": "PASS",
+    "invalid_domain_fail_closed": "PASS",
+    "authoritative_external_transfer_sign": "PASS",
+    "O0_O2_identity": "PASS",
+    "protected_owner_blobs_unchanged": "PASS",
+    "candidate_owned_compile_warnings": "NONE_OBSERVED"
+  },
+  "production_scope": {
+    "added_source": ["src/process/mod_drainage_process.f90"],
+    "runtime_composition_in_production_added": false,
+    "solver_internal_modified": false,
+    "kernel_modified": false,
+    "legacy_IO_modified": false,
+    "reference_modified": false,
+    "authoritative_mass_owner_modified": false,
+    "node_distribution_implemented": false
+  },
+  "explicit_holds": [
+    "independent scientific equivalence to canonical SWAP 4.3.1 B1.10 DRAMET=3 restricted switches",
     "reverse exchange/infiltration",
-    "DRAMET=1 table response",
+    "DRAMET=1 groundwater-flux table",
     "DRAMET=2 Hooghoudt/Ernst",
     "multiple drainage levels",
     "power interflow",
-    "DIVDRA transmissivity distribution",
+    "DIVDRA transmissivity distribution and node allocation",
     "surface-water storage/control",
     "macropore interaction",
-    "fully implicit trial-state drainage"
+    "solute coupling",
+    "fully implicit trial-state drainage",
+    "solver Jacobian mutation"
   ],
-  "implemented": false,
-  "persisted": true,
-  "tested": false,
-  "structurally_qualified": false,
-  "scientifically_qualified": false
+  "artifacts": [
+    "integration/f-pm/F-PM08A_CANDIDATE_CONTRACT.json",
+    "integration/f-pm/F-PM08A_CANDIDATE_EVIDENCE.json",
+    "integration/f-pm/F-PM08A_STATUS.json",
+    "src/process/mod_drainage_process.f90",
+    "tests/fpm/test_fpm08a_single_level_linear_drainage.f90",
+    "tests/fpm/run_fpm08a_single_level_linear_drainage_gate.sh",
+    ".github/workflows/fpm08a-single-level-linear-drainage-candidate.yml"
+  ],
+  "downstream": {
+    "owner": "F-VQ",
+    "suggested_next_unit_if_still_unallocated": "F-VQ35",
+    "suggested_branch_if_still_unallocated": "qualification/f-vq35-fpm08a-linear-drainage",
+    "instruction": "Independently verify the exact F-PM08A production source blob against canonical SWAP 4.3.1 B1.10 drainage.f90 DRAMET=3 semantics for SWDRA=1, NRLEVS=1, SWALLO=3, SWINTFL=0, SWDIVD=0. Verify the effective-drain-head abstraction, active and inactive branches, sign convention, derivative and activation kink, statelessness, groundwater-only dependency, generic-time boundary and the fact that no node-distribution, runtime mass-booking or fully implicit claim is made. Do not modify the candidate source and do not broaden scope. Recheck workunit/branch availability live before creation."
+  }
 }
