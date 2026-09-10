@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "workstream": "F-ROSS",
+  "work_unit": "F-ROSS01",
+  "gate": "E3H_A6_R1_O14_INDEPENDENT_POST_CAP_UNSATURATED_ATTRACTOR_CONFIRMATION",
+  "status": "PRECOMMIT_FROZEN_BEFORE_EXECUTION",
+  "production_implementation": false,
+  "qualification_use": true,
+  "material": "O14",
+  "purpose": "Independently confirm the A6-characterized post-cap unsaturated attractor without reusing the false A6 requirement on the sign of the instantaneous top-cell tendency. Use a different fixed time partition and different steady-state starts while preserving the same four A4 cap checkpoints and physical boundary.",
+  "upstream": {
+    "A6_result_commit": "ed9b7049104a503c3c6251e53382065c3eeafbf0",
+    "A6_status": "FAILED_AS_FROZEN_SIGN_HYPOTHESIS_FALSE_BUT_REFERENCE_TOPOLOGY_CHARACTERIZED",
+    "A6_characterized_steady_heads_cm": [-0.19725877123808,-3.64171590246372,-8.52184708961730]
+  },
+  "frozen_physical_identity": {
+    "cap_states": "exactly the four A4/A6 cap checkpoints, unchanged",
+    "surface_head_cm": 1.0,
+    "surface_storage_cap_cm": 1.0,
+    "bottom_head_cm": -15.0,
+    "supply_fraction_of_ksat_for_runoff_ledger": 12.0,
+    "material_parameters": "unchanged O14 Staringreeks 2018 MvG/KSATFIT scope"
+  },
+  "independent_time_partition": {
+    "method": "reference-only conservative backward Euler",
+    "count": 40,
+    "dt_day": 0.025,
+    "horizon_day": 1.0,
+    "different_from_A6": true,
+    "no_adaptive_step_selection": true,
+    "max_nfev_per_step": 200,
+    "mass_tolerance_cm": 1e-9
+  },
+  "independent_steady_starts": [
+    [-0.3,-4.0,-9.0],
+    [-0.8,-4.5,-9.5],
+    [-2.0,-7.0,-12.0],
+    [-0.1,-2.0,-6.0]
+  ],
+  "reference_authority": {
+    "surface_face": "same independent high-accuracy 5 cm surface reference as A6",
+    "internal_faces": "same independent reference 10 cm internal faces as A6",
+    "candidate_ross_routes_used": false
+  },
+  "frozen_acceptance": {
+    "all_four_profiles_complete_40_steps": true,
+    "max_abs_step_or_system_balance_residual_cm": 1e-9,
+    "no_top_saturation_approach_h0_must_remain_below_cm": -0.001,
+    "steady_top_head_must_remain_below_cm": -0.01,
+    "minimum_reproducible_steady_starts_per_profile": 2,
+    "steady_cluster_head_tolerance_cm": 0.001,
+    "final_to_steady_max_abs_head_difference_cm": 0.005,
+    "common_steady_across_four_profiles_max_abs_head_difference_cm": 0.001,
+    "runoff_nonnegative": true,
+    "mass_repair_or_clipping": false,
+    "initial_top_tendency_sign_is_not_an_admission_criterion": true
+  },
+  "decision_logic": {
+    "pass": "QUALIFIED_RESTRICTED_O14_POST_CAP_UNSATURATED_ATTRACTOR_WITHIN_FROZEN_1CM_SURFACE_CAP_TOPOLOGY_READY_FOR_RUNOFF_CONTINUATION_COMPOSITION",
+    "fail": "O14_POST_CAP_UNSATURATED_ATTRACTOR_NOT_INDEPENDENTLY_CONFIRMED_PRESERVE_A6_CHARACTERIZATION_ONLY"
+  },
+  "hard_guards": [
+    "Do not alter cap states, surface cap/head, bottom head or forcing.",
+    "Do not reuse A6's mixed time schedule or its steady-start vectors.",
+    "Do not require initial drying; A6 proved that assumption false.",
+    "Do not use candidate Ross fluxes in this physical-topology confirmation.",
+    "Do not treat excess supply as soil forcing after cap; it belongs to the explicit runoff ledger.",
+    "Do not tune the 40-step partition or tolerances after execution."
+  ],
+  "architecture_checks": {
+    "4_compact_state": "No attractor/event-specific persistent state.",
+    "5_worker_scratch": "All nonlinear vectors are reference qualification scratch.",
+    "7_transactionality": "Each accepted reference step advances from the prior committed diagnostic state; failed steps are not substituted.",
+    "9_generic_time": "Fixed generic [t0,t1] partition, no calendar dependence.",
+    "13_mass_conservation": "1e-9 cm remains hard with no repair/clipping.",
+    "25_reference_mode": "Physical topology confirmation is reference-only.",
+    "28_runtime_composition": "Runoff remains external ledger ownership."
+  },
+  "hard_nonclaims": [
+    "No claim for surface caps other than 1 cm or different O14 boundaries.",
+    "No production Ross candidate continuation qualification yet.",
+    "No automatic runoff event detection qualification.",
+    "No response tangent, MultiSWAP, MODFLOW or groundwater admission."
+  ],
+  "precommit_frozen": true,
+  "post_result_tuning_allowed": false
+}
