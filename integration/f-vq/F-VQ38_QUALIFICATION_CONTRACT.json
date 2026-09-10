@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-VQ38",
+  "qualification_object": "DRAMET=2 IPOS 1..5 response-family scientific equivalence within normalized valid domain",
+  "clean_base": "3e21bffdf8e8c354c336d0b4898fdf77db320bf1",
+  "candidate_closeouts": {
+    "F-PM08C2A": "5417799834775293fd459cd3f7ba5be3d3e5723e",
+    "F-PM08C2B": "4f1ff62ce6bf0b391760acb3b4677e475931c4e8",
+    "F-PM08C2C": "e92807165e674b48600e8ec2ae132d1dfc85a798"
+  },
+  "expected_candidate_blobs": {
+    "F-PM08C2A:src/process/mod_drainage_hooghoudt_ipos1_response.f90": "89f26e2d2b77bef5bdd0c5fdb2ce9ca1f03206fa",
+    "F-PM08C2B:src/process/mod_drainage_hooghoudt_equivalent_depth.f90": "6b7b2bb1fd259879d3f26c46abfc071ea2b2f108",
+    "F-PM08C2B:src/process/mod_drainage_hooghoudt_ipos23_response.f90": "5637ddb4d33141f00b4ebf737d1c7f7fe1824164",
+    "F-PM08C2C:src/process/mod_drainage_ernst_ipos45_preparation.f90": "fa1d5d400bb32be42e78889c0ff2a3bcab335142",
+    "F-PM08C2C:src/process/mod_drainage_ernst_ipos45_response.f90": "b00ef0ae1f10182af2d0a8ea636d10b196e93379"
+  },
+  "legacy_authority": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "drainage_f90_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "manifest_path": "reference/swap-4.3.1/b0/file-manifest.sha256"
+  },
+  "independence_rules": [
+    "Do not import or execute F-PM08C2A/B/C authoring tests as the scientific oracle.",
+    "Extract exact production sources from candidate closeout commits with git show.",
+    "Verify candidate blob identities before compiling.",
+    "Compute expected fluxes and equivalent-depth quantities in an independently authored Python oracle.",
+    "Check candidate response tangents against finite differences of the independent oracle on stable branches.",
+    "Treat branch boundaries explicitly instead of smoothing them."
+  ],
+  "required_coverage": {
+    "IPOS1": ["multiple spacings", "shape factors", "conductivities", "entry resistances", "active and cutoff branches"],
+    "IPOS2_3": ["all equivalent-depth branches", "x=1e-6 neighborhood", "x=0.5 neighborhood", "IPOS2 and IPOS3 response", "stable tangents"],
+    "IPOS4": ["below and above interface", "exact interface with unequal Kv", "exact interface with equal Kv", "negative radial resistance", "stable tangents"],
+    "IPOS5": ["layered horizontal resistance", "negative radial resistance", "stable tangent", "cutoff branch"],
+    "optimization": ["O0", "O2", "candidate-output identity within exact printed representation"]
+  },
+  "scientific_domain": "normalized mathematically valid domain represented by the candidates; legacy reader-admitted singular/undefined parameter combinations are not qualified as valid physics",
+  "mass_scope": "response sign and scalar transfer identity only; runtime ledger publication and spatial distribution are outside F-VQ38",
+  "holds": [
+    "No DIVDRA qualification.",
+    "No multi-level aggregation qualification.",
+    "No surface-water-controlled drainage qualification.",
+    "No runtime/source-sink binding qualification.",
+    "No solver Jacobian chain-rule or fully implicit drainage qualification.",
+    "No canonical admission in this workunit."
+  ]
+}
