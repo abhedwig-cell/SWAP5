@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08C",
+  "title": "Drainage Response-Law Family and Sensitivity Characterization Evidence",
+  "frozen_characterization": {
+    "head": "d9e3d495f0956ce15935df1b316d6bc58eccde2f",
+    "workflow_run": 34450613961,
+    "workflow_job": 102785264808,
+    "output_sha256": "b8b55b82b2aa0e01b2f2306ea93de4015ce555f97ec270a8701a810fd8c56293"
+  },
+  "source_authority": {
+    "fpm08_readiness_closeout": "3ce245e3cac068268bdff2f0af0fdcdf022c82aa",
+    "legacy_drainage_sha256": "48e4792acd0a129a6939009317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_drainage_file_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "legacy_functions_sha256": "b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527"
+  },
+  "verified_characterization": {
+    "no_production_source_delta": "PASS",
+    "source_authority_locks": "PASS",
+    "four_response_classes_explicit": "PASS",
+    "production_admission_absent": "PASS",
+    "DRAMET1_piecewise_linear_sensitivity": "PASS",
+    "DRAMET1_knot_nonsmoothness": "PASS",
+    "DRAMET2_IPOS1_analytic_tangent_vs_fd": "PASS",
+    "DRAMET2_IPOS2_analytic_tangent_vs_fd": "PASS",
+    "DRAMET2_IPOS3_analytic_tangent_vs_fd": "PASS",
+    "DRAMET2_IPOS4_analytic_tangent_vs_fd": "PASS",
+    "DRAMET2_IPOS5_analytic_tangent_vs_fd": "PASS",
+    "DRAMET2_IPOS4_interface_kink": "PASS",
+    "DRAMET2_small_cutoff_branch": "PASS",
+    "DRAMET2_exact_cutoff_representation_sensitive": "PASS",
+    "interflow_active_tangent_vs_fd": "PASS",
+    "interflow_sublinear_activation_tangent_diverges": "PASS",
+    "multilevel_stable_branch_derivative_sum": "PASS"
+  },
+  "material_findings": [
+    "DRAMET=1 is piecewise linear in abs(gwl), with derivative discontinuities at unequal-slope knots and potentially at gwl=0.",
+    "DRAMET=2 admits analytic stable-branch sensitivities for IPOS 1..5, but IPOS=4 has an interface kink when kvtop differs from kvbot.",
+    "The legacy diffl=1e-10 cutoff is representation-sensitive when reconstructed from gwl, zbotdr and shape; no modern normalized cutoff policy is qualified here.",
+    "Legacy DRAMET=2 input ranges admit zero values for parameters used in division/logarithms; a production candidate requires stricter mathematical-domain validation.",
+    "For empirical interflow with admitted exponent below one, dq/dgwl diverges as activation is approached from above; no uniformly bounded implicit tangent exists on that legacy domain.",
+    "For multi-level drainage, stable-branch total sensitivity is the sum of per-level sensitivities, while nonsmoothness is the union of level branch points."
+  ],
+  "required_children": ["F-PM08C1", "F-PM08C2", "F-PM08C3", "F-PM08C4"],
+  "qualification_boundary": {
+    "source_bound_characterization_qualified": true,
+    "production_implementation_qualified": false,
+    "scientific_candidate_equivalence_qualified": false,
+    "runtime_composition_qualified": false,
+    "solver_jacobian_integration_qualified": false
+  }
+}
