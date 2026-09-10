@@ -1,8 +1,8 @@
 {
   "schema": "swap5.runtime_composition_status.v1",
   "work_unit": "F-MR36",
-  "phase": "RENAMED_CONTINUATION_AFTER_CONCURRENT_ID_COLLISION",
-  "decision": "IN_PROGRESS_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE",
+  "phase": "OWNER_QUALIFIED_READY_FOR_INDEPENDENT_REQUALIFICATION",
+  "decision": "QUALIFIED_RESTRICTED_DIVDRA_ACTIVE_RUNTIME_CALLSITE_READY_FOR_INDEPENDENT_REQUALIFICATION",
   "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
   "continuation_from": {
     "historical_branch": "work/f-mr34-divdra-active-runtime-callsite",
@@ -21,14 +21,20 @@
     "persisted": true,
     "production_implemented": true,
     "production_compile_reached": true,
-    "runtime_tested": false,
-    "qualified": false,
+    "runtime_tested": true,
+    "owner_qualified": true,
+    "independent_qualified": false,
     "canonical_admitted": false
   },
-  "known_evidence": {
-    "static_scope_gates_passed": true,
-    "production_compile_passed_before_fixture_failure": true,
-    "prior_runtime_failures_classified_as_fixture_baseline_failures_before_new_callsite_invocation": true
+  "owner_evidence": {
+    "tested_head": "fc7952a410e714d6c7ef25e28a5cc4ba2359c84b",
+    "workflow_run": 34523538504,
+    "job": 103026765860,
+    "conclusion": "success",
+    "o0_o2_output_identity": true,
+    "output_sha256": "b89deb68e978e5f5f4ace3e6a68ebafdefc1196d8d131abc57c3e7d8d0785a9f",
+    "evidence_file": "integration/f-mr/F-MR36_EVIDENCE.json",
+    "final_governance_head_recheck_pending": true
   },
   "scope": {
     "serialized_real_physics_only": true,
@@ -45,5 +51,18 @@
     "second_mass_booking_forbidden": true,
     "mass_conservation_hard": true
   },
-  "next_required_step": "qualify against an exact two-column F-MR31-derived proven runtime fixture; do not change production code unless failure crosses the new callsite"
+  "architecture_audit": {
+    "all_30_invariants_reviewed": true,
+    "result": "NO_ADVERSE_ARCHITECTURE_DELTA_WITHIN_RESTRICTED_SCOPE"
+  },
+  "nonclaims": {
+    "drainage_science_reopened": false,
+    "exchange_law_qualified": false,
+    "fully_implicit_trial_state_drainage_qualified": false,
+    "surface_water_control_qualified": false,
+    "parallel_active_callsite_qualified": false,
+    "independent_qualification_complete": false,
+    "canonical_admission_complete": false
+  },
+  "next_required_step": "complete exact governance-head CI recheck, then perform genuinely independent runtime-composition qualification without reopening F-VQ47 drainage science"
 }
