@@ -1,0 +1,20 @@
+name: F-PM08C1R tabulated drainage remediation qualification
+
+on:
+  push:
+    branches:
+      - work/f-pm08c1r-tabulated-drainage-remediation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  remediation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run F-PM08C1R remediation gate
+        run: bash tests/fpm/run_fpm08c1r_tabulated_drainage_remediation_gate.sh
