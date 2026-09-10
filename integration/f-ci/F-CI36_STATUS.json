@@ -1,0 +1,38 @@
+{
+  "schema": "swap5.fci36_status.v1",
+  "work_unit": "F-CI36",
+  "title": "Restricted Serialized DIVDRA Active Runtime Callsite Canonical Admission",
+  "branch": "qualification/f-ci36-fmr36-divdra-active-runtime-canonical-admission",
+  "phase": "PRETEST_PLAN_PERSISTED",
+  "decision": "IN_PROGRESS_FMR36_DIVDRA_ACTIVE_RUNTIME_CANONICAL_ADMISSION",
+  "canonical_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+  "owner_closeout": "a543775abeea4760dba2ea5c99c47fe4862c845f",
+  "independent_closeout": "716d0952c2a9580b213cd22d8c3c1dc824f53dff",
+  "candidate": {
+    "composition_blob": "5cc7bd8674e24e4642f3ad909e6c93b8259a1cf5",
+    "runtime_blob": "9a384658ec37b68d2ef911e741aa89707dcb3e77"
+  },
+  "state": {
+    "plan_persisted": true,
+    "pretest_status_persisted": true,
+    "candidate_overlay_persisted": false,
+    "gate_persisted": false,
+    "workflow_persisted": false,
+    "architecture_audit_persisted": false,
+    "tested": false,
+    "qualified_for_fast_forward": false,
+    "canonical_ref_advanced": false,
+    "post_promotion_replays_passed": false,
+    "closed": false
+  },
+  "nonclaims": [
+    "no drainage exchange-law science",
+    "no fully implicit or trial-state drainage response",
+    "no surface-water-controlled drainage",
+    "no parallel active DIVDRA",
+    "no HeadCalc/Jacobian mutation",
+    "no reference source modification",
+    "no generic serialized runtime modification"
+  ],
+  "next_required_step": "materialize the exact two independently qualified production blobs and verify byte identity before building the admission gate"
+}
