@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PM",
+  "work_unit": "F-PM08D4",
+  "title": "Restricted Fixed-Weir Secondary Surface-Water Balance Readiness",
+  "branch": "work/f-pm08d4-fixed-weir-secondary-balance-readiness",
+  "source_authority": {
+    "canonical_branch": "integration/f-ci-canonical",
+    "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
+    "exact_branch_base": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a"
+  },
+  "authoritative_upstream": {
+    "fpm08d_parent_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d1_storage_readiness_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
+    "fpm08d2_extended_exchange_readiness_closeout": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
+    "fpm08d3_availability_mass_readiness_closeout": "eb57bd2ffa9ee33a3d198e8424edc91556957344"
+  },
+  "frozen_source": {
+    "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "surfacewater_f90_sha256": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "source_locations": [
+      "SWAP/surfacewater.f90:80-137",
+      "SWAP/surfacewater.f90:175-181",
+      "SWAP/surfacewater.f90:235-376",
+      "SWAP/surfacewater.f90:409-432",
+      "SWAP/surfacewater.f90:917-955",
+      "SWAP/surfacewater.f90:1121-1213"
+    ]
+  },
+  "restricted_scope": {
+    "SWSEC": 2,
+    "SWMAN": 1,
+    "SWQHR": 1,
+    "simulated_secondary_surface_water": true,
+    "fixed_weir_target": true,
+    "power_rating_curve": true,
+    "tabulated_SWQHR_2": false,
+    "automatic_SWMan_2": false,
+    "legacy_day_or_management_period_selection_inside_kernel": false,
+    "D3_availability_limiter_implementation": false,
+    "D2_exchange_law_implementation": false,
+    "DIVDRA": false,
+    "runtime_commit_rollback_implementation": false,
+    "production_source_changes_allowed": false
+  },
+  "ownership": {
+    "immutable_parameters": [
+      "prepared storage-level relation from D1",
+      "weir crest h_weir",
+      "power-rating coefficient alpha",
+      "power-rating exponent beta",
+      "supply dip WLDIP",
+      "resolved physical supply-capacity bound for the interval"
+    ],
+    "persistent_physical_state": [
+      "secondary surface-water storage S only"
+    ],
+    "derived_quantities": [
+      "secondary water level h = H(S)",
+      "fixed target level = h_weir",
+      "supply target level = h_weir - WLDIP"
+    ],
+    "forcing_or_upstream_trial_transfers": [
+      "authoritative signed q_drain_secondary from qualified upstream composition",
+      "q_rapid into secondary water",
+      "top-surface transfer volume over [t0,t1]",
+      "resolved supply availability for [t0,t1]"
+    ],
+    "physical_results": [
+      "actual q_supply",
+      "actual q_discharge",
+      "trial S1",
+      "derived h1",
+      "branch diagnostics",
+      "rating/storage residual diagnostic"
+    ],
+    "numerical_policy_not_physical_state": [
+      "root-solver tolerance",
+      "bracketing iteration budget",
+      "legacy WLSBAK oscillation history",
+      "ponding-driven timestep reduction"
+    ]
+  },
+  "mass_and_balance_equations": {
+    "base_projection": "B = S0 + dt*(q_drain_secondary + q_rapid) + V_top_surface",
+    "supply_target_storage": "S_supply = S(h_weir - WLDIP) when the target lies inside the qualified D1 mapping; otherwise the route is held or supply is disabled according to explicit policy",
+    "weir_target_storage": "S_target = S(h_weir)",
+    "supply_branch": "when B < S_supply, q_supply = min(q_supply_capacity, max(0,(S_supply-B)/dt)); no hidden capacity-to-flux substitution is allowed",
+    "no_discharge_branch": "after actual supply, if projected storage <= S_target then q_discharge = 0 and S1 follows the exact mass equation",
+    "discharge_branch_residual": "R(h) = S(h) + dt*alpha*(h-h_weir)^beta - B for h >= h_weir",
+    "discharge_feasibility": "a solution exists inside the qualified domain only if B <= S_top + dt*q_discharge(S_top)",
+    "accepted_mass_identity": "S1-S0 = dt*(q_drain_secondary + q_rapid + q_supply - q_discharge) + V_top_surface",
+    "mass_concession": "none"
+  },
+  "rating_curve": {
+    "equation": "q_discharge(h) = alpha*(h-h_weir)^beta for h >= h_weir",
+    "parameter_bounds_from_frozen_reader": {
+      "alpha_input_before_legacy_unit_conversion": "0.1..50",
+      "beta": "0.5..3.0"
+    },
+    "interior_derivative": "dq/dh = alpha*beta*(h-h_weir)^(beta-1)",
+    "crest_derivative": {
+      "beta_lt_1": "right tangent diverges; full derivative unavailable",
+      "beta_eq_1": "right tangent = alpha",
+      "beta_gt_1": "right tangent = 0"
+    },
+    "hidden_smoothing_allowed": false
+  },
+  "nonlinear_solve_contract": {
+    "preferred_physical_unknown": "authoritative storage S1 with h1 derived from the D1 relation, or an equivalent bracketed head solve that preserves the same mass identity",
+    "mass_residual_is_solver_tolerance": false,
+    "rating_storage_residual_may_have_versioned_numerical_tolerance": true,
+    "root_residual_and_mass_residual_must_be_reported_separately": true,
+    "bracketed_monotone_solution_required_as_reference_route": true,
+    "newton_only_dependency_forbidden": true,
+    "d1_endpoint_seams_must_not_be_silently_clamped": true
+  },
+  "generic_time_contract": {
+    "kernel_interval": "[t0,t1]",
+    "dt_positive_and_generic": true,
+    "day_is_fundamental_unit": false,
+    "management_period_selection_owned_outside_kernel": true,
+    "parameter_or_control_event_subdivides_interval": true
+  },
+  "transaction_contract": {
+    "trial_balance_does_not_mutate_committed_S": true,
+    "rejected_trial_books_no_mass": true,
+    "accepted_S_and_mass_ledger_commit_atomically_in_D6_runtime": true,
+    "D4_itself_does_not_own_commit_or_rollback": true
+  },
+  "explicit_source_holds": [
+    "D4-RISK-01-LEGACY-0P001CM-BISECTION-CAN-LEAVE-S-AND-WLS-INCONSISTENT",
+    "D4-RISK-02-MASS-RESIDUAL-MUST-NOT-BE-CONFLATED-WITH-RATING-ROOT-RESIDUAL",
+    "D4-RISK-03-POWER-RATING-CREST-TANGENT-SINGULAR-FOR-BETA-LT-1",
+    "D4-RISK-04-D1-STORAGE-MAPPING-ENDPOINT-SEAMS",
+    "D4-RISK-05-NO-FEASIBLE-RATING-STATE-OVERFLOW",
+    "D4-RISK-06-LEGACY-CALENDAR-MANAGEMENT-PERIOD-SELECTION",
+    "D4-RISK-07-WLSBAK-AND-PONDING-DT-LOGIC-ARE-NUMERICAL-POLICY",
+    "D4-RISK-08-D3-DRY-FLOOR-AND-RAW-WSCAP-MASS-GAPS-MUST-NOT-RETURN",
+    "D4-RISK-09-SWQHR2-THRESHOLD-DERIVED-HBWEIR-EXCLUDED"
+  ],
+  "exit_criteria": [
+    "reconstruct the fixed-weir branch equations from the frozen source",
+    "prove exact first-class supply/discharge mass closure over deterministic branch coverage",
+    "characterize the legacy 0.001-cm bisection state-consistency defect without admitting it as modern state semantics",
+    "prove monotone root feasibility and overflow detection for SWQHR=1",
+    "characterize crest sensitivity for beta below/equal/above one",
+    "bind all nine source holds explicitly",
+    "audit all 30 architecture invariants",
+    "keep src/ and reference/ unchanged"
+  ]
+}
