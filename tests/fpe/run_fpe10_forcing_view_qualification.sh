@@ -24,7 +24,7 @@ for spec in \
   tests/fmr/test_fmr20_parallel_v1_qualification.f90:bfebfde94b3931367d69d502a6fc7b1deb8f2ad6 \
   tests/fpe/test_fpe08_scratch_dedup.f90:3b9ae676b5e38a782336af80cfd6515f30bac848 \
   tests/fpe/test_fpe09_cache_reuse.f90:ce067bb5dc68874e18a9afd89f31eb092a09f74b \
-  tests/fpe/test_fpe10_target_lifetime_probe.f90:2e261ca09a2d595ae3a76ac23e98ff49b213537a; do
+  tests/fpe/test_fpe10_target_lifetime_probe.f90:ac87ff89d7073c7a94fb5d4f1bad8a8798987f74; do
   path="${spec%%:*}"
   blob="${spec##*:}"
   [[ "$(git rev-parse HEAD:"$path")" == "$blob" ]] || fail "source lock drift: $path"
@@ -75,13 +75,11 @@ print('FPE10_G03_TRIAL_SCOPED_ASSOCIATE_CALL_RELEASE_ORDER=PASS')
 assert 'type(fmr_b110_physical_forcing_t), target, intent(in) :: forcing_registry(:)' in serial
 assert 'type(fmr_b110_physical_forcing_t), target, intent(in) :: forcing_registry(:)' in pool
 assert 'call backends(w)%initialize(top_boundary, enable_direct_forcing_views=.true.)' in pool
-# Single-worker reference remains the old call and does not opt in.
 single = pool[pool.index('if (worker_count == 1) then'):pool.index('if ((worker_count /= 2 .and. worker_count /= 4)')]
 assert 'enable_direct_forcing_views' not in single
 assert 'fmr_run_serialized_physical_multiswap' in single
 print('FPE10_G04_PARALLEL_ONLY_EXPLICIT_OPT_IN=PASS')
 
-# Direct mode is explicitly narrower than the generic backend; no admission widening.
 direct_guard = backend[backend.index('if (self%model%direct_forcing_views_enabled) then', call_pos-3000):call_pos]
 for token in ('parameters%bottom_mode /= 7','parameters%swkimpl /= 0','parameters%swsophy /= 0',
               'parameters%root_extraction_active','parameters%snow_active','parameters%macropore_active',
