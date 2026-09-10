@@ -43,15 +43,15 @@ program test_fpm08a_single_level_linear_drainage
   view%groundwater_level = control%drain_head - 10.0_real64
   call evaluate_single_level_linear_drainage(parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_OK .and. diag%evaluated .and. .not. diag%active, 'inactive route')
-  call require(flux%soil_to_drain_rate == 0.0_real64, 'inactive route zero transfer')
-  call require(flux%derivative_defined .and. flux%dq_dgroundwater_level == 0.0_real64, &
+  call require(same_bits(flux%soil_to_drain_rate, 0.0_real64), 'inactive route zero transfer')
+  call require(flux%derivative_defined .and. same_bits(flux%dq_dgroundwater_level, 0.0_real64), &
        'inactive route zero derivative')
   write(*,'(A)') 'FPM08A_DRAINAGE_ONLY_NO_REVERSE_EXCHANGE=PASS'
 
   view%groundwater_level = control%drain_head
   call evaluate_single_level_linear_drainage(parameters, view, control, flux, diag)
   call require(diag%status == DRAINAGE_OK .and. diag%activation_kink, 'activation kink diagnostic')
-  call require(flux%soil_to_drain_rate == 0.0_real64, 'activation kink zero flux')
+  call require(same_bits(flux%soil_to_drain_rate, 0.0_real64), 'activation kink zero flux')
   call require(.not. flux%derivative_defined, 'activation kink derivative unavailable')
   write(*,'(A)') 'FPM08A_NONSMOOTH_ACTIVATION_DIAGNOSTIC=PASS'
 
@@ -69,7 +69,7 @@ program test_fpm08a_single_level_linear_drainage
   view%groundwater_level = -80.0_real64 - delta
   call evaluate_single_level_linear_drainage(parameters, view, control, minus_transfer, minus_diag)
   fd = (plus_transfer%soil_to_drain_rate - minus_transfer%soil_to_drain_rate) / (2.0_real64*delta)
-  call require(fd == 0.0_real64, 'inactive derivative finite difference')
+  call require(close(fd, 0.0_real64), 'inactive derivative finite difference')
   call require(.not. plus_diag%active .and. .not. minus_diag%active, 'inactive finite-difference probes stay inactive')
   write(*,'(A)') 'FPM08A_INACTIVE_DERIVATIVE_FINITE_DIFFERENCE=PASS'
 
