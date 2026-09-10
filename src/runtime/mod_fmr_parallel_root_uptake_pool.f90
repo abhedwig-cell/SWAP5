@@ -216,8 +216,8 @@ contains
           size(forcing_registry(forcing_index)%drainage_flux_by_level,2) /= n .or. &
           size(forcing_registry(forcing_index)%subsurface_irrigation_source) /= n .or. &
           size(forcing_registry(forcing_index)%root_extraction_sink) /= n) return
-      if (any(.not. ieee_is_finite(forcing_registry(forcing_index)%root_extraction_sink)) .or. &
-          any(forcing_registry(forcing_index)%root_extraction_sink < 0.0_real64)) return
+      if (any(.not. ieee_is_finite(forcing_registry(forcing_index)%root_extraction_sink))) return
+      if (any(forcing_registry(forcing_index)%root_extraction_sink < 0.0_real64)) return
 
       if (columns(i)%state_handle < 1_int64 .or. columns(i)%state_handle > int(size(state_registry), int64)) return
       state_index = int(columns(i)%state_handle)
