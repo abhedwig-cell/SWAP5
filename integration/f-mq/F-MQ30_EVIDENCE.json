@@ -1,0 +1,19 @@
+{
+  "schema":"swap5.fmq30_independent_evidence.v1",
+  "work_unit":"F-MQ30",
+  "title":"Independent Restricted Parallel Root-Uptake Profile Scientific Qualification Evidence",
+  "branch":"qualification/f-mq30-fmr35-parallel-root-uptake",
+  "canonical_source_authority":"8fa79a70a9faccaf8b63826df607a685eb75b046",
+  "owner_authority":{"work_unit":"F-MR35","owner_evidence_head":"996038433690bb4c19f36774a633e485daa7f0db","scientific_candidate":"6b9e47df37513705d3db13edc2c7035526c9c0de","candidate_blob":"c78c13997642617376b8d118122c86c60ca77189"},
+  "tested_qualification_head":"84c6bd293686d20ff91028d53ab201c4116a4d5d",
+  "authoritative_workflow":{"run":34528662051,"job":103043714223,"conclusion":"success","runner_os":"ubuntu-24.04","compiler":"GNU Fortran 13.3.0","optimization_levels":["O0","O2"]},
+  "independence":{"owner_test_conclusions_imported":false,"owner_generated_root_active_fixture_imported":false,"prior_independent_v1_scaffold_blob":"26cc6e0ace986dc40db7635de7192958a1c0b868","root_active_attack_derived_independently":true},
+  "source_scope":{"qualification_base_ahead_by":5,"qualification_base_behind_by":0,"only_src_delta":"src/runtime/mod_fmr_parallel_root_uptake_pool.f90","all_existing_parallel_v1_blobs_preserved":true,"reference_delta":0},
+  "executed_gates":{"current_canonical_source_lock":"PASS","exact_fmr35_candidate_blob":"PASS","owner_harness_not_imported":"PASS","existing_parallel_v1_byte_preserved":"PASS","persisted_matrix_lock":"PASS","explicit_distinct_root_active_capability":"PASS","nonfinite_check_precedes_sign_check":"PASS","worker_owned_heavy_runtime":"PASS","old_v1_still_root_inactive":"PASS","held_out_positive_cases":["n3_b2_o3","n5_b4_o1","n9_b5_o2","n16_b7_o0","n23_b11_o3","n33_b17_o1"],"serialized_vs_2w_vs_4w_exact_scientific_identity":"PASS","exact_committed_endpoint_state_identity":"PASS","lineage_revision_time_identity":"PASS","exact_qrot_integral_attribution":"PASS","active_zero_qrot_attribution_available":"PASS","input_order_independence":"PASS","problem_column_isolation":"PASS","negative_qrot_fail_pre_solve":"PASS","quiet_nan_qrot_fail_pre_solve":"PASS","root_inactive_explicit_entry_rejected_pre_solve":"PASS","worker_count_1_and_3_fail_closed_no_fallback":"PASS","other_excluded_physics_fail_closed":"PASS","canonical_publication_order":"PASS","true_multiworker_overlap":"PASS","worker_count_independence":"PASS","deterministic_replay":"PASS","hard_per_column_mass_gate_cm":1e-12,"authoritative_aggregate_mass_complete_and_semantically_identical":"PASS","o0_o2_exact_output_identity":"PASS","existing_v1_regression":"NONE_OBSERVED"},
+  "compiler_warning_disposition":"Warnings observed are compile diagnostics in existing/shared code and generated qualification scaffolds; no warning caused a failed scientific assertion or altered the exact O0/O2 identity result. They are not used as positive evidence and do not widen scope.",
+  "decision":"QUALIFIED_RESTRICTED_PARALLEL_ROOT_UPTAKE_PROFILE",
+  "qualification_only":true,
+  "production_source_modified_by_fmq30":false,
+  "canonical_admitted":false,
+  "nonclaims":["root-active committed-boundary restart","mid-transaction restart","time-varying QROT within accepted substeps","other excluded parallel physics","performance speedup","general SWAP5 release qualification"]
+}
