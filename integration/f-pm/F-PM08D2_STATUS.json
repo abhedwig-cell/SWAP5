@@ -1,11 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "workstream": "F-PM",
   "work_unit": "F-PM08D2",
   "title": "Restricted Extended Drainage Exchange-Law Readiness",
   "branch": "work/f-pm08d2-restricted-extended-drainage-exchange-readiness",
-  "status": "IN_PROGRESS_SOURCE_BOUND_READINESS",
-  "phase": "CHECKPOINT_PERSISTED_BEFORE_EXECUTABLE_QUALIFICATION",
+  "status": "SOURCE_BOUND_READINESS_PERSISTED_PRETEST",
+  "phase": "CONTRACT_INVENTORY_ORACLE_AUDIT_GATE_WORKFLOW_PERSISTED_NOT_YET_QUALIFIED",
   "source_authority": {
     "canonical_branch": "integration/f-ci-canonical",
     "canonical_head_at_activation": "c0fc660c1e68064f77f4ec4f3376d385fbe88b4a",
@@ -13,9 +13,13 @@
   },
   "parent_authorities": {
     "fpm08d_closeout": "4fc92f14baa5ae289839826032f9aa66776e2192",
+    "fpm08d_decision": "QUALIFIED_SURFACE_WATER_CONTROLLED_DRAINAGE_COMPOSITION_READINESS_READY_FOR_FPM08D1",
     "fpm08d1_closeout": "dc523f6510e4fb14cdd09ce2ec26f0b3f613f499",
-    "fvq42_empirical_interflow": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
-    "fvq43_multilevel_aggregation": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
+    "fpm08d1_decision": "QUALIFIED_SURFACE_WATER_STORAGE_GEOMETRY_AND_COMPACT_STATE_READINESS_WITH_EXPLICIT_FROZEN_ENDPOINT_SEAM_HOLDS",
+    "fvq42_closeout": "702db051bf5dd0960a962be919ea0cfbf01895a4",
+    "fvq42_decision": "QUALIFIED_EMPIRICAL_INTERFLOW_DRAINAGE_SIDE_RESPONSE_AND_SENSITIVITY_WITH_EXPLICIT_ACTIVATION_SINGULARITY",
+    "fvq43_closeout": "3542ff83f38a9dd8de407ceca65ed968407559f5",
+    "fvq43_decision": "QUALIFIED_MULTILEVEL_DRAINAGE_AGGREGATION_LEGACY_ORDER_EQUIVALENCE_AND_CONSERVATIVE_SENSITIVITY_COMPOSITION"
   },
   "frozen_source": {
     "archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
@@ -42,19 +46,47 @@
     "D2-RISK-03-PONDING-HEAD-SWITCH-DISCONTINUITY",
     "D2-RISK-04-CHANNEL-ACTIVATION-SEAM",
     "D2-RISK-05-GWLINF-DERIVATIVE-KINK",
-    "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK"
+    "D2-RISK-06-SURFACE-DRAINAGE-RESISTANCE-KINK",
+    "D2-RISK-07-DRAINAGE-INFILTRATION-RESISTANCE-SEAM",
+    "D2-RISK-08-PONDING-SILL-SUPPRESSION-SEAM"
   ],
+  "readiness_findings": {
+    "per_level_process_is_stateless": true,
+    "resolved_control_head_is_explicit_dynamic_input": true,
+    "component_knows_legacy_SWSRF_topology": false,
+    "authoritative_signed_flux_returned": true,
+    "finite_flux_survives_tangent_unavailability": true,
+    "sensitivity_inputs": ["groundwater_level", "resolved_surface_water_control_head", "ponding_depth"],
+    "no_hidden_smoothing": true,
+    "availability_limiter_owner": "F-PM08D3",
+    "aggregation_science_owner": "F-VQ43/F-PM08C4",
+    "spatial_distribution_owner": "F-PM08B/F-VQ47"
+  },
+  "deliverables": {
+    "contract": "integration/f-pm/F-PM08D2_READINESS_CONTRACT.json",
+    "source_inventory": "integration/f-pm/F-PM08D2_EXCHANGE_SOURCE_INVENTORY.json",
+    "architecture_audit": "integration/f-pm/F-PM08D2_ARCHITECTURE_AUDIT.json",
+    "oracle": "tests/fpm/test_fpm08d2_extended_exchange.py",
+    "gate": "tools/fpm/fpm08d2_extended_exchange_readiness_gate.py",
+    "workflow": ".github/workflows/fpm08d2-extended-exchange-readiness.yml"
+  },
   "state": {
     "branch_created": true,
     "checkpoint_persisted": true,
-    "source_equations_reconstructed": false,
-    "risk_inventory_complete": false,
-    "sensitivity_contract_complete": false,
-    "test_oracle_persisted": false,
+    "source_equations_reconstructed": true,
+    "risk_inventory_complete": true,
+    "sensitivity_contract_complete": true,
+    "architecture_audited_all_30": true,
+    "test_oracle_persisted": true,
+    "gate_persisted": true,
+    "workflow_persisted": true,
     "tested": false,
     "qualified": false,
     "production_source_changed": false,
-    "reference_source_changed": false
+    "reference_source_changed": false,
+    "production_physics_qualified": false,
+    "runtime_composition_qualified": false,
+    "canonical_admission_qualified": false
   },
-  "next_required_step": "persist exact per-level frozen exchange equations, explicit domain restrictions, branch/singularity metadata and independent equation-level probes before any production candidate"
+  "next_required_step": "execute the fully persisted source-bound F-PM08D2 readiness gate under CI; fail closed on any provenance, source-risk, branch-sensitivity, scope or architecture inconsistency"
 }
