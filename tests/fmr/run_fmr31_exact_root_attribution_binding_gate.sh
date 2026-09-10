@@ -50,7 +50,7 @@ for forbidden in (
     'mod_fmr_root_uptake_attribution_receipt',
 ):
     assert forbidden not in s, f'unsafe detached F-MR30 API dependency survived: {forbidden}'
-# Binding must occur only after the did_commit rejection block.  This is the
+# Binding must occur only after the did_commit rejection block. This is the
 # core by-construction provenance property that closes F-VQ48 HN1.
 commit_guard = s.index('if (.not. did_commit) then')
 bind_call = s.index('call bind_committed_actual_transpiration(')
@@ -82,6 +82,7 @@ for opt in 0 2; do
     src/runtime/mod_fmr_runtime_core.f90 \
     src/runtime/mod_fmr_checkpoint_orchestrator.f90 \
     src/solver/mod_soil_water_solver_contract.f90 \
+    tests/fmr/mod_fmr04_fixed_top_provider.f90 \
     tests/fmr/mod_fmr31_root_attribution_test_backend.f90 \
     src/runtime/mod_fmr_accepted_commit_receipt.f90; do
       obj="$OUT/$(basename "${src%.*}").o"
@@ -115,7 +116,7 @@ cmp -s "$BUILD/oracle-o0/output.txt" "$BUILD/oracle-o2/output.txt" || {
 echo 'FMR31_TRANSACTION_ORACLE_O0_O2_IDENTITY=PASS'
 
 # Real production-backend regression: reuse the already-qualified F-MR09
-# balanced root-sink/SSDI fixture against the remediated current runtime.  This
+# balanced root-sink/SSDI fixture against the remediated current runtime. This
 # proves the result-field extension does not break real HeadCalc root physics or
 # the hard mass gate.
 REAL_SRC=(
