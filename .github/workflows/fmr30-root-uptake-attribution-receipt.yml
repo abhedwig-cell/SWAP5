@@ -1,0 +1,26 @@
+name: F-MR30 root-uptake attribution receipt
+
+on:
+  push:
+    branches:
+      - work/f-mr30-restricted-root-uptake-attribution-receipt
+    paths:
+      - 'src/runtime/mod_fmr_root_uptake_attribution_receipt.f90'
+      - 'tests/fmr/mod_fmr30_root_attribution_test_backend.f90'
+      - 'tests/fmr/test_fmr30_root_uptake_attribution_receipt.f90'
+      - 'tests/fmr/run_fmr30_root_uptake_attribution_receipt_gate.sh'
+      - 'integration/f-mr/F-MR30_*'
+      - '.github/workflows/fmr30-root-uptake-attribution-receipt.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify-owner-candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-MR30 source-bound owner gate
+        run: bash tests/fmr/run_fmr30_root_uptake_attribution_receipt_gate.sh
