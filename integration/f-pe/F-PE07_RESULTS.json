@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE07",
+  "title": "Restricted Parallel V1 Runtime & Worker-Memory Scaling Characterization Results",
+  "status": "QUALIFIED_CHARACTERIZATION_RESULTS_PERSISTED_CLOSEOUT_PENDING",
+  "decision": "QUALIFIED_RESTRICTED_PARALLEL_V1_RUNTIME_AND_WORKER_MEMORY_SCALING_CHARACTERIZATION_WITHIN_FROZEN_SCOPE",
+  "base": {
+    "work_unit": "F-MR20",
+    "branch": "work/f-mr20-concurrency-isolation",
+    "head": "1a249cde0c088e8023cd603d30239ce0d30bf4d7",
+    "decision": "QUALIFIED_RESTRICTED_PARALLEL_REAL_PHYSICS_MULTISWAP_V1_WITHIN_FROZEN_PROFILE"
+  },
+  "production_change": false,
+  "frozen_scope": {
+    "logical_columns": 32,
+    "batch_size": 9,
+    "worker_counts": [1, 2, 4],
+    "optimization": "O2",
+    "top_boundary": "stateless fixed-flux production provider",
+    "bottom_mode": 7,
+    "swkimpl": 0,
+    "swsophy": 0,
+    "root_extraction_active": false,
+    "snow_active": false,
+    "macropore_active": false,
+    "frost_active": false,
+    "hysteresis_active": false,
+    "tabulated_hydraulics_active": false,
+    "elasticity_active": false,
+    "temporal_continuation_history_active": false,
+    "hard_mass_gate": 1e-12
+  },
+  "measurement_protocol": "integration/f-pe/F-PE07_MEASUREMENT_PROTOCOL.json",
+  "worker_memory_characterization": "integration/f-pe/F-PE07_WORKER_MEMORY_CHARACTERIZATION.json",
+  "scientific_precondition": {
+    "gate": "full F-MR20 parallel-v1 qualification rerun before every timing characterization",
+    "run_1": "PASS",
+    "run_2": "PASS",
+    "mass_conservation": "PASS",
+    "true_overlap_workers_2": "PASS",
+    "true_overlap_workers_4": "PASS"
+  },
+  "timing_runs": [
+    {
+      "run": 34441745757,
+      "job": 102758039785,
+      "head": "28d6b1f7dc75d564164e235999dd4d6ceb9c3198",
+      "runner_region": "westus2",
+      "conclusion": "success",
+      "artifact": {
+        "id": 10138180364,
+        "name": "fpe07-parallel-v1-scaling-evidence",
+        "size_bytes": 10354,
+        "sha256": "3712c0b158d7ac1dc2183a930ba236555cc4bbbf1c7c0606765e5f61332774e8"
+      },
+      "raw_observations": 288,
+      "paired_blocks": 12,
+      "repetitions_per_arm_per_block": 8,
+      "workers": {
+        "1": {"median_us_per_call": 430.134, "p95_us_per_call": 599.0475, "median_us_per_column": 13.4416875, "min_us": 370.63, "max_us": 645.758, "overlap": 1},
+        "2": {"median_us_per_call": 233.658, "p95_us_per_call": 265.45075, "median_us_per_column": 7.3018125, "min_us": 222.727, "max_us": 298.852, "overlap": 2},
+        "4": {"median_us_per_call": 221.9655, "p95_us_per_call": 311.7775, "median_us_per_column": 6.936421875, "min_us": 214.952, "max_us": 332.317, "overlap": 4}
+      },
+      "paired_ratio_T1_over_Tw": {
+        "2": {"median": 2.0547855790194367, "p05": 1.634294137147256, "p95": 2.520563786390963, "min": 1.6143564228815963, "max": 2.556647618883758, "blocks_above_1": 12, "blocks_below_1": 0},
+        "4": {"median": 2.1820616816703766, "p05": 1.7168030599688509, "p95": 2.665714813151731, "min": 1.715571343449863, "max": 2.672329338665551, "blocks_above_1": 12, "blocks_below_1": 0}
+      }
+    },
+    {
+      "run": 34441929525,
+      "job": 102758593636,
+      "head": "a335e531433cedcf41efabdab5dad04095208942",
+      "runner_region": "northcentralus",
+      "conclusion": "success",
+      "artifact": {
+        "id": 10138244515,
+        "name": "fpe07-parallel-v1-scaling-evidence",
+        "size_bytes": 10320,
+        "sha256": "d3b87e5fd8cabd697e18d0171199e46542523e49c4a719553607e814d419b170"
+      },
+      "raw_observations": 288,
+      "paired_blocks": 12,
+      "repetitions_per_arm_per_block": 8,
+      "workers": {
+        "1": {"median_us_per_call": 465.6365, "p95_us_per_call": 543.6985, "median_us_per_column": 14.551140625, "min_us": 376.678, "max_us": 552.963, "overlap": 1},
+        "2": {"median_us_per_call": 238.2585, "p95_us_per_call": 266.479, "median_us_per_column": 7.445578125, "min_us": 231.199, "max_us": 287.412, "overlap": 2},
+        "4": {"median_us_per_call": 218.614, "p95_us_per_call": 305.472, "median_us_per_column": 6.8316875, "min_us": 212.69, "max_us": 335.636, "overlap": 4}
+      },
+      "paired_ratio_T1_over_Tw": {
+        "2": {"median": 1.9003702204188695, "p05": 1.617138108805416, "p95": 2.276052728217291, "min": 1.6151649263820573, "max": 2.2823687837981135, "blocks_above_1": 12, "blocks_below_1": 0},
+        "4": {"median": 2.0762262578678325, "p05": 1.7605970644173792, "p95": 2.4258873976361475, "min": 1.744147161010464, "max": 2.452775609323116, "blocks_above_1": 12, "blocks_below_1": 0}
+      }
+    }
+  ],
+  "cross_runner_characterization": {
+    "median_runtime_change_run2_vs_run1_percent": {
+      "workers_1": 8.253823227180357,
+      "workers_2": 1.9689032688801733,
+      "workers_4": -1.5099193343109607
+    },
+    "paired_ratio_medians": {
+      "T1_over_T2": [2.0547855790194367, 1.9003702204188695],
+      "T1_over_T4": [2.1820616816703766, 2.0762262578678325]
+    },
+    "directional_consistency": "all 24 paired worker-2 blocks and all 24 paired worker-4 blocks had T1/Tw > 1 across the two runners",
+    "important_variability": "paired block ratios show distinct lower and higher clusters within each run; host/order/runtime phase effects are material and are retained rather than smoothed away",
+    "interpretation": "the qualified finding is that this exact frozen 32-column V1 fixture showed lower elapsed time with 2 and 4 workers than with the worker-1 arm on both sampled GitHub-hosted runners; the numeric ratios are not portable performance guarantees"
+  },
+  "worker_memory": {
+    "known_dynamic_payload_formula_per_worker": "RB*((81+L)*n+4) + IB*n + LB*(4*n+6)",
+    "fixture_active_nodes": 4,
+    "fixture_drainage_levels": 2,
+    "fixture_known_dynamic_payload_bytes_per_worker": 2792,
+    "fixture_known_dynamic_payload_bytes": {"workers_1": 2792, "workers_2": 5584, "workers_4": 11168},
+    "scaling": "known heavy dynamic payload is O(worker_count), not O(logical_column_count)",
+    "not_RSS": true,
+    "transaction_local_peak_not_quantified": true
+  },
+  "architecture_findings": {
+    "one_kernel": "PASS",
+    "compact_persistent_column_state": "PASS_WITHIN_SCOPE",
+    "scratch_per_worker": "PASS",
+    "heavy_solver_instances_scale_with_workers": "PASS",
+    "mass_conservation_absolute": "PASS",
+    "reference_mode_available": "PASS",
+    "physics_solver_policy_separation": "PASS",
+    "diagnostics_available": "PASS"
+  },
+  "optimization_candidates_not_implemented": [
+    "avoid redundant A23BU HeadCalc scratch allocation on the canonical explicit route after separate qualification",
+    "reuse worker parameter/forcing cache capacity or immutable direct views where ownership permits",
+    "characterize transaction-local transient peak memory for realistic vertical node counts",
+    "evaluate larger homogeneous batches before choosing a production worker-count policy"
+  ],
+  "explicit_nonclaims": [
+    "universal hardware-independent speedup",
+    "parallel efficiency guarantee",
+    "production throughput SLA",
+    "optimal worker count",
+    "worker counts above 4",
+    "8-worker scaling",
+    "general parallel SWAP outside the frozen F-MR20 V1 profile",
+    "performance-policy qualification",
+    "bounded difficult-column fallback performance",
+    "RSS or total process-memory bound",
+    "realistic large-n vertical memory peak"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": false,
+    "open": [
+      "reconcile results-persisted head with executable characterization gate",
+      "persist formal closeout"
+    ]
+  }
+}
