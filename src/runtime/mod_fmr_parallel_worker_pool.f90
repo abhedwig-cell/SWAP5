@@ -210,7 +210,6 @@ contains
       if (parameter_registry(parameter_index)%bottom_mode /= 7 .or. &
           parameter_registry(parameter_index)%swkimpl /= 0 .or. &
           parameter_registry(parameter_index)%swsophy /= 0 .or. &
-          parameter_registry(parameter_index)%root_extraction_active .or. &
           parameter_registry(parameter_index)%snow_active .or. &
           parameter_registry(parameter_index)%macropore_active .or. &
           parameter_registry(parameter_index)%hysteresis_active .or. &
@@ -229,8 +228,12 @@ contains
           size(forcing_registry(forcing_index)%drainage_flux_by_level,2) /= n .or. &
           size(forcing_registry(forcing_index)%subsurface_irrigation_source) /= n .or. &
           size(forcing_registry(forcing_index)%root_extraction_sink) /= n) return
-      if (any(.not. ieee_is_finite(forcing_registry(forcing_index)%root_extraction_sink)) .or. &
-          any(abs(forcing_registry(forcing_index)%root_extraction_sink) > 0.0_real64)) return
+      if (any(.not. ieee_is_finite(forcing_registry(forcing_index)%root_extraction_sink))) return
+      if (parameter_registry(parameter_index)%root_extraction_active) then
+        if (any(forcing_registry(forcing_index)%root_extraction_sink < 0.0_real64)) return
+      else
+        if (any(abs(forcing_registry(forcing_index)%root_extraction_sink) > 0.0_real64)) return
+      end if
 
       if (columns(i)%state_handle < 1_int64 .or. columns(i)%state_handle > int(size(state_registry), int64)) return
       state_index = int(columns(i)%state_handle)
