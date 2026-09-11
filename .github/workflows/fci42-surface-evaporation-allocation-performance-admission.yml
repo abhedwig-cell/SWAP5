@@ -1,0 +1,24 @@
+name: F-CI42 surface evaporation allocation performance admission
+
+on:
+  push:
+    branches:
+      - qualification/f-ci42-fpe11-surface-evaporation-allocation-canonical-admission
+      - qualification/f-ci42p-current-canonical-postimage-governance-reconciliation
+      - integration/f-ci-canonical
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-CI42 source-bound canonical performance admission
+        run: bash tests/fci/run_fci42_surface_evaporation_allocation_performance_admission.sh
