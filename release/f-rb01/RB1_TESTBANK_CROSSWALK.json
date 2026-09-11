@@ -1,0 +1,73 @@
+{
+  "schema": "swap5.frb01_testbank_crosswalk.v1",
+  "work_unit": "F-RB01",
+  "stage": "PERSISTED",
+  "testbank_authority": {
+    "work_unit": "F-TB01",
+    "closeout": "1d039292d5768496c4550a8e1b35a92c6f836504",
+    "registry": "testbank/manifests/F-TB01_CASE_REGISTRY.json",
+    "registry_blob": "4b4fcaa20e09a915428e459922d7b6b2a6a381b7",
+    "decision": "QUALIFIED_RICH_TESTBANK_REGISTRY_ARCHITECTURE"
+  },
+  "hydraulic_catalog_authority": {
+    "work_unit": "F-TB02",
+    "closeout": "549531e2e233cccab1416dba04edb266653a5da5",
+    "role": "qualified hydraulic/constitutive catalog foundation; RB1 does not wait for future catalog expansion"
+  },
+  "policy": {
+    "central_registry_modified_by_frb01": false,
+    "second_test_governance_system_created": false,
+    "historical_owner_oracles_reinterpreted": false,
+    "rb1_release_suite_role": "precursor fragment for the future Release Qualification Bank",
+    "future_adoption": "After RB1 closeout, F-TB may adopt bounded F-RB01 release fragments without changing their frozen scientific authority."
+  },
+  "crosswalk": [
+    {
+      "rb1_family": "Full Richards / constitutive reference",
+      "ftb01_case_id": "SWAP5-TB-SOLVER-B110-0001-v1",
+      "rb1_execution": "immutable F-CI03..F-CI18 authority plus current production preservation",
+      "relationship": "REUSE_PINNED_ORACLE_AND_RELEASE_PROFILE"
+    },
+    {
+      "rb1_family": "serialized committed-boundary restart",
+      "ftb01_case_id": "SWAP5-TB-RESTART-0001-v1",
+      "rb1_execution": "current-head F-CI28 scientific attack rebound only for moving-current source governance",
+      "relationship": "REUSE_PINNED_SCIENTIFIC_ATTACK_CURRENT_PRESERVATION"
+    },
+    {
+      "rb1_family": "restricted parallel V1",
+      "ftb01_case_id": "SWAP5-TB-MULTISWAP-PARALLEL-0001-v1",
+      "rb1_execution": "current-head F-MQ30-derived independent attack also preserves neutral parallel V1 regression matrix",
+      "relationship": "REUSE_AND_COMPOSE_IN_RELEASE_PROFILE"
+    },
+    {
+      "rb1_family": "parallel committed-boundary restart",
+      "ftb01_case_id": null,
+      "rb1_fragment_id": "FRB01-RELEASE-PARALLEL-RESTART-0001-v1",
+      "rb1_execution": "current-head exact F-MQ29 independent held-out attack",
+      "relationship": "BOUNDED_RELEASE_FRAGMENT_PENDING_FTB_ADOPTION"
+    },
+    {
+      "rb1_family": "parallel restricted root uptake",
+      "ftb01_case_id": null,
+      "rb1_fragment_id": "FRB01-RELEASE-PARALLEL-ROOT-0001-v1",
+      "rb1_execution": "current-head exact F-MQ30 independent attack",
+      "relationship": "BOUNDED_RELEASE_FRAGMENT_PENDING_FTB_ADOPTION"
+    },
+    {
+      "rb1_family": "restricted surface evaporation SWINTER=0 SWREDU=0",
+      "ftb01_case_id": null,
+      "rb1_fragment_id": "FRB01-RELEASE-SURFACE-EVAP-0001-v1",
+      "rb1_execution": "F-PE11 runner replays immutable F-VQ56/F-CI41P scientific oracle against current postimage",
+      "relationship": "BOUNDED_RELEASE_FRAGMENT_PENDING_FTB_ADOPTION"
+    },
+    {
+      "rb1_family": "all-30 architecture invariant release audit",
+      "ftb01_case_id": null,
+      "rb1_fragment_id": "FRB01-RELEASE-ARCHITECTURE-0001-v1",
+      "rb1_execution": "release/f-rb01/RB1_ARCHITECTURE_INVARIANT_AUDIT.json plus decisive static/dynamic guards",
+      "relationship": "BOUNDED_RELEASE_FRAGMENT_PENDING_FTB_ADOPTION"
+    }
+  ],
+  "nonclaim": "F-RB01 does not edit the F-TB01 central registry and does not claim that new RB1 fragment IDs are already permanent testbank case IDs."
+}
