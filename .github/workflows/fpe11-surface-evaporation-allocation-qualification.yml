@@ -1,0 +1,22 @@
+name: F-PE11 surface evaporation allocation qualification
+
+on:
+  push:
+    branches:
+      - performance/f-pe11-surface-evaporation-allocation-scaling
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: F-PE11 source-bound functional qualification
+        run: bash tests/fpe/run_fpe11_surface_evaporation_allocation_qualification.sh
