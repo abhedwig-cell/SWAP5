@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swap5.invalid/schemas/project_accuracy_contract_evidence_v1.schema.json",
+  "title": "SWAP5 Project Accuracy Contract Evidence Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "packet_id",
+    "packet_version",
+    "project",
+    "application_requirement",
+    "temporal_policy",
+    "forbidden_substitution_attestations",
+    "canonical_mapping"
+  ],
+  "properties": {
+    "schema_id": {"const": "SWAP5_PROJECT_ACCURACY_CONTRACT_EVIDENCE_V1"},
+    "packet_id": {"type": "string", "minLength": 1},
+    "packet_version": {"type": "integer", "minimum": 1},
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_id", "name", "jurisdiction", "decision_context", "qoi_kind", "spatial_scope", "time_horizon"],
+      "properties": {
+        "project_id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "jurisdiction": {"type": "string", "minLength": 1},
+        "decision_context": {"type": "string", "minLength": 1},
+        "qoi_kind": {"enum": ["GROUNDWATER_HEAD", "GROUNDWATER_DRAWDOWN"]},
+        "spatial_scope": {"type": "string", "minLength": 1},
+        "time_horizon": {"type": "string", "minLength": 1}
+      }
+    },
+    "application_requirement": {"$ref": "#/$defs/applicationRequirement"},
+    "temporal_policy": {"$ref": "#/$defs/temporalPolicy"},
+    "forbidden_substitution_attestations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "not_physical_impact_threshold_only",
+        "not_calibration_metric_only",
+        "not_model_generated_uncertainty_only",
+        "not_monitoring_trigger_only",
+        "not_swap_numerical_behavior",
+        "not_model_timestep_schedule"
+      ],
+      "properties": {
+        "not_physical_impact_threshold_only": {"const": true},
+        "not_calibration_metric_only": {"const": true},
+        "not_model_generated_uncertainty_only": {"const": true},
+        "not_monitoring_trigger_only": {"const": true},
+        "not_swap_numerical_behavior": {"const": true},
+        "not_model_timestep_schedule": {"const": true}
+      }
+    },
+    "canonical_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "contract_version", "application_provenance_id", "temporal_allocation_provenance_id"],
+      "properties": {
+        "contract_id": {"type": "integer", "minimum": 1},
+        "contract_version": {"type": "integer", "minimum": 1},
+        "application_provenance_id": {"type": "integer", "minimum": 1},
+        "temporal_allocation_provenance_id": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provenance_id",
+        "claim_id",
+        "issuer",
+        "document_title",
+        "document_version",
+        "clause",
+        "locator",
+        "governance_status",
+        "claim_type",
+        "external_to_swap_numerical_behavior"
+      ],
+      "properties": {
+        "provenance_id": {"type": "integer", "minimum": 1},
+        "claim_id": {"type": "string", "minLength": 1},
+        "issuer": {"type": "string", "minLength": 1},
+        "document_title": {"type": "string", "minLength": 1},
+        "document_version": {"type": "string", "minLength": 1},
+        "clause": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "governance_status": {
+          "enum": ["REGULATOR_APPROVED", "CONTRACTUALLY_APPROVED", "PROJECT_GOVERNANCE_APPROVED", "FORMALLY_ADOPTED"]
+        },
+        "claim_type": {
+          "enum": [
+            "APPLICATION_PREDICTION_ACCURACY_REQUIREMENT",
+            "TEMPORAL_ERROR_ALLOCATION_FRACTION",
+            "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET"
+          ]
+        },
+        "external_to_swap_numerical_behavior": {"const": true}
+      }
+    },
+    "applicationRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "externally_qualified", "value_cm", "requirement_semantics", "provenance"],
+      "properties": {
+        "available": {"type": "boolean"},
+        "externally_qualified": {"type": "boolean"},
+        "value_cm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "requirement_semantics": {
+          "enum": ["MAX_ABSOLUTE_PREDICTION_ERROR", "OTHER_EXPLICIT_NUMERICAL_PREDICTION_ERROR_LIMIT"]
+        },
+        "provenance": {"anyOf": [{"$ref": "#/$defs/provenance"}, {"type": "null"}]}
+      }
+    },
+    "temporalPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "externally_qualified", "mode", "allocation_fraction", "direct_budget_cm", "provenance"],
+      "properties": {
+        "available": {"type": "boolean"},
+        "externally_qualified": {"type": "boolean"},
+        "mode": {"enum": ["FRACTION_OF_APPLICATION_REQUIREMENT", "DIRECT_HEAD_ERROR_BUDGET_CM"]},
+        "allocation_fraction": {"type": ["number", "null"], "exclusiveMinimum": 0, "maximum": 1},
+        "direct_budget_cm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "provenance": {"anyOf": [{"$ref": "#/$defs/provenance"}, {"type": "null"}]}
+      }
+    }
+  }
+}
