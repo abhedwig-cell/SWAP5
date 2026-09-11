@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC09",
+  "title": "RB1 Full Richards REFERENCE route bounded T11 verification evidence graph",
+  "capability": "RB1-SW-REFERENCE",
+  "base_authority": {
+    "work_unit": "F-DOC08",
+    "commit": "8e5863510004ec11ab377b5bc9d3bd5df6d69777"
+  },
+  "purpose": "Consolidate source-bound verification evidence that already exists for the frozen RB1 Full Richards REFERENCE route and make residual T11 gaps explicit. This is an evidence graph, not reconstruction of missing theory, formulation or discretisation authority.",
+  "governance": {
+    "production_change_permitted": false,
+    "reference_change_permitted": false,
+    "scientific_requalification_permitted": false,
+    "theory_reconstruction_from_code_permitted": false,
+    "release_pass_may_replace_missing_equation_test_edges": false,
+    "complete_full_richards_equation_to_test_graph_claimed": false,
+    "fully_traced_claimed": false,
+    "status_a_ready_claimed": false,
+    "status_a_compliant_claimed": false,
+    "status_aa_compliant_claimed": false
+  },
+  "release_scope": {
+    "solver": "Full Richards REFERENCE route",
+    "swkimpl": 0,
+    "swsophy": 0,
+    "macropore_active": false,
+    "frozen_reference_profile_only": true,
+    "rossfast_excluded": true,
+    "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "release_authority": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "source_pins": {
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "6eda1fec1bd03c03a1c0a8f2df29a273f70d962f",
+    "src/solver/mod_soil_water_solver_contract.f90": "dc7b14a06f64c8ab0af9747f707b3394a5f5cbe0",
+    "src/solver/mod_reference_linear_solver.f90": "b292d284e5549049eac1c80df4cc30008154eb96",
+    "src/solver/mod_reference_richards_state_binding.f90": "e68d88382c6502c571713cc97fddd4e18434e271",
+    "src/solver/mod_reference_richards_temporal_indicator.f90": "fe8f87d11257d4c6bc019f1d628ac41ba3106d4e",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9af5a494526810324dc00706b444e448e770cba9"
+  },
+  "authorities": {
+    "F_SI13": {
+      "authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "record": "integration/f-si/F-SI13_QUALIFICATION.json",
+      "record_blob": "f9a1dda7819f6b769e8b7cd9ac0319af436e0499",
+      "decision": "QUALIFIED_EXPLICIT_BOTTOM_MODE_FREE_DRAINAGE"
+    },
+    "F_SI14": {
+      "authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "record": "integration/f-si/F-SI14_QUALIFICATION.json",
+      "record_blob": "a54aa26e6cfac710648f876a619da7f84ab3d0d5",
+      "decision": "QUALIFIED_REQUEST_GRID_GEOMETRY_AUTHORITY"
+    },
+    "F_SI15": {
+      "authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "record": "integration/f-si/F-SI15_QUALIFICATION.json",
+      "record_blob": "9dd06140d624c18d1a282bf10a30c737f61ab1ea",
+      "decision": "QUALIFIED_EXPLICIT_INACTIVE_MACROPORE_OPTION_AUTHORITY"
+    },
+    "F_SI16": {
+      "authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "record": "integration/f-si/F-SI16_QUALIFICATION.json",
+      "record_blob": "7ee1b26a7ccdf6c4ae0d2b6c95a44a984e80fc57",
+      "decision": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_HEAD_BOUNDARY_SWBOTB5"
+    },
+    "F_SI18": {
+      "authority": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "status_record": "integration/f-si/F-SI18_STATUS.json",
+      "status_blob": "ba36fc155c769beea5d2829211b88feb3c628323",
+      "reference_tridag_record": "integration/f-si/F-SI18_REFERENCE_TRIDAG_EVIDENCE.json",
+      "reference_tridag_blob": "bf433c7adff71ce9d10463d53a55a92fe4599655",
+      "classification": "DIAGNOSTIC_TEST_ARCHITECTURE_SUPPORT_ONLY"
+    },
+    "F_SI19": {
+      "closeout_head": "d3a1bc8eef243b6109af8871398c06e1840fb367",
+      "candidate_head": "8e6121ecfcdfb71c79a111153835d4400d37ff89",
+      "qualification_run": 34258568803,
+      "status_record": "integration/f-si/F-SI19_STATUS.json",
+      "status_blob": "14f6458d87c518f38206de68a91305c0d37b0408",
+      "evidence_record": "integration/f-si/F-SI19_QUALIFICATION_EVIDENCE.json",
+      "evidence_blob": "b60be218fffc2255087b7bbb636745d99d6c8df9",
+      "decision": "QUALIFIED_REFERENCE_LINEAR_SOLVER_SEAM_SOURCE_BOUND_LEGACY_EQUIVALENT"
+    },
+    "F_RB01": {
+      "commit": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "workflow_run": 34570204719,
+      "runner": "tests/frb01/run_frb01_release_qualification.sh",
+      "runner_blob": "fce077b67d9dfed4e8889894615dab37c97ebb0f"
+    }
+  },
+  "verification_relations": [
+    {
+      "id": "R01",
+      "subject": "explicit free-drainage bottom-boundary route",
+      "verified_semantics": ["request bottom-mode authority for modes 7 and -2", "focused unrounded equation residual", "unsupported modes fail closed", "legacy-direct identity"],
+      "evidence": ["F_SI13"],
+      "classification": "QUALIFIED_SCOPED_VERIFICATION"
+    },
+    {
+      "id": "R02",
+      "subject": "explicit request-owned grid geometry",
+      "verified_semantics": ["active-node/z/dz/node-distance authority", "legacy-grid poison isolation", "same-geometry identity", "focused unrounded equation residual", "worker-owned provider scratch"],
+      "evidence": ["F_SI14"],
+      "classification": "QUALIFIED_SCOPED_VERIFICATION"
+    },
+    {
+      "id": "R03",
+      "subject": "inactive-macropore physical-option branch",
+      "verified_semantics": ["request physical-config authority", "inactive legacy-macropore poison isolation", "active macropore fail-closed before HeadCalc", "focused unrounded equation residual", "route identity"],
+      "evidence": ["F_SI15"],
+      "classification": "QUALIFIED_SCOPED_VERIFICATION"
+    },
+    {
+      "id": "R04",
+      "subject": "prescribed bottom-head SWBOTB=5 and authoritative qbot",
+      "verified_semantics": ["lower-face Darcy pressure-head gradient", "multiple prescribed heads", "positive and negative bottom flux", "unrounded equation residual", "authoritative qbot continuity identity", "direct B1.10 numeric identity"],
+      "evidence": ["F_SI16"],
+      "classification": "QUALIFIED_SCOPED_VERIFICATION"
+    },
+    {
+      "id": "R05",
+      "subject": "reference linear-solver seam",
+      "verified_semantics": ["direct legacy oracle", "TRIDAG success and error routes", "band-solver no-pivot and forced-pivot cases", "O0/O2 identity", "HeadCalc F-SI18 reference-control identity"],
+      "evidence": ["F_SI19"],
+      "classification": "QUALIFIED_SCOPED_VERIFICATION"
+    },
+    {
+      "id": "R06",
+      "subject": "deterministic and isolation properties of qualified reference subroutes",
+      "verified_semantics": ["O0/O2 identity", "ABA order independence where exercised", "scratch poisoning resistance", "request immutability", "serialized worker isolation where exercised"],
+      "evidence": ["F_SI13", "F_SI14", "F_SI15", "F_SI16", "F_SI19"],
+      "classification": "QUALIFIED_CROSS_CUTTING_VERIFICATION"
+    },
+    {
+      "id": "R07",
+      "subject": "transaction and mass boundary regression around reference solver seams",
+      "verified_semantics": ["F-KT transaction-boundary regressions retained", "hard mass not relaxed", "qbot exact-once accounting contract preserved"],
+      "evidence": ["F_SI13", "F_SI14", "F_SI15", "F_SI16", "F_SI19"],
+      "classification": "QUALIFIED_CROSS_CUTTING_VERIFICATION"
+    },
+    {
+      "id": "R08",
+      "subject": "frozen RB1 source and release preservation",
+      "verified_semantics": ["frozen source/reference trees", "historical admission replay", "current serialized physical execution", "release qualification without scientific denominator expansion"],
+      "evidence": ["F_RB01"],
+      "classification": "RELEASE_PRESERVATION_VERIFICATION_NOT_EQUATION_AUTHORITY"
+    }
+  ],
+  "diagnostic_support": [
+    {
+      "id": "D01",
+      "authority": "F_SI18",
+      "finding": "A zero-correction TRIDAG test double created an artificial convergence cliff; a test-only SWAP 4.3.1 Thomas/TRIDAG control removed it and produced deterministic accepted higher-cost Newton routes.",
+      "positive_scientific_admission": false,
+      "use": "Harness-fidelity and interpretation guard only."
+    }
+  ],
+  "residual_gap_nodes": [
+    {
+      "id": "G01",
+      "tier": "T1",
+      "gap": "No single controlled complete Full Richards scientific-theory authority is identified for the frozen RB1 route.",
+      "blocks": ["FULLY_TRACED", "READY_FOR_STATUS_A_REVIEW"]
+    },
+    {
+      "id": "G02",
+      "tiers": ["T3", "T4", "T5"],
+      "gap": "No controlled complete inventory links every formal Richards equation, closure, source/sink and boundary relation to the exact SWAP-specific/computational formulation used by RB1.",
+      "blocks": ["COMPLETE_EQUATION_TO_TEST_GRAPH", "FULLY_TRACED"]
+    },
+    {
+      "id": "G03",
+      "tiers": ["T6", "T7", "T8"],
+      "gap": "No single controlled graph exhaustively maps the full spatial/time discretisation, nonlinear residual/Jacobian, damping/convergence/retry procedure and algorithmic state transitions of the complete reference route.",
+      "blocks": ["COMPLETE_EQUATION_TO_TEST_GRAPH", "FULLY_TRACED"]
+    },
+    {
+      "id": "G04",
+      "tier": "T11",
+      "gap": "This workunit does not claim exhaustive equation-level mapping for all interior residual/Jacobian terms, constitutive closures, top boundary, drainage/irrigation and root-sink contributions, even where component qualifications exist elsewhere.",
+      "blocks": ["COMPLETE_EQUATION_TO_TEST_GRAPH"]
+    },
+    {
+      "id": "G05",
+      "tier": "T12",
+      "gap": "Independent application validation remains outside this bounded verification-evidence graph.",
+      "blocks": ["STATUS_A_OR_AA_COMPLIANCE_CLAIM"]
+    }
+  ],
+  "coverage": {
+    "bounded_verification_relation_nodes": 8,
+    "qualified_scoped_relation_nodes": 7,
+    "release_preservation_relation_nodes": 1,
+    "diagnostic_support_nodes": 1,
+    "residual_gap_nodes": 5,
+    "bounded_reference_route_evidence_inventory_complete": true,
+    "complete_full_richards_equation_to_test_graph": false,
+    "T1_complete": false,
+    "T3_T8_complete": false,
+    "T11_complete_for_entire_reference_route": false,
+    "T12_complete": false,
+    "fully_traced": false,
+    "ready_for_status_a_review": false
+  },
+  "hard_nonclaims": [
+    "F-DOC09 does not create or infer a missing Full Richards T1 theory authority from production code, legacy behavior or release PASS.",
+    "F-DOC09 does not claim a complete equation-to-test graph for the entire Full Richards REFERENCE route.",
+    "F-DOC09 does not promote F-SI18 diagnostic fixture evidence into positive scientific admission.",
+    "F-DOC09 does not establish Status A readiness, Status A compliance or Status AA compliance.",
+    "F-DOC09 does not close T12 application validation or controlled-source reconciliation gaps.",
+    "F-DOC09 does not alter RB1 production source, reference data, physics, solver behavior, tolerances, mass criteria, temporal acceptance or release scope.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ]
+}
