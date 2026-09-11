@@ -18,3 +18,12 @@ jobs:
         run: gfortran --version
       - name: Run F-SI30 ABI/adapter compile gate
         run: bash tests/fsi/run_fsi30_abi_adapter_compile_gate.sh
+
+  headcalc-bridge-compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI30 HeadCalc bridge compile gate
+        run: bash tests/fsi/run_fsi30_headcalc_compile_gate.sh
