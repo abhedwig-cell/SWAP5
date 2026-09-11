@@ -1,0 +1,113 @@
+{
+  "schema": "swap5.fci47_preregistration.v1",
+  "work_unit": "F-CI47",
+  "title": "Moving Canonical Preservation Authority Reconciliation After F-CI41 Through F-CI46",
+  "status": "PRE_REGISTERED",
+  "branch": "qualification/f-ci47-moving-preservation-authority-reconciliation",
+  "canonical_base": "e765d96ee80af0629fb399e18bf58124dade7641",
+  "governance_authority": {
+    "F_CI38_scope_separation": "integration/f-ci/F-CI38_GOVERNANCE.json",
+    "current_fci_canonical_workflow_blob": "734d2452eef7f8581a1d5be2209ad58fc6e060f0",
+    "stale_moving_preservation_authority": "d81ef430ebaa601469a165dfc5b9866b813b71aa",
+    "target_moving_preservation_authority": "e765d96ee80af0629fb399e18bf58124dade7641"
+  },
+  "problem_statement": "The F-CI38 moving-preservation job still compares the current restricted dependency surface against F-CI40. Later qualified admissions F-CI41 through F-CI46 legitimately changed or added restricted capability files, so the moving-preservation job is red on both pre-F-CI46 F-CI45P canonical and the F-CI46P canonical. F-CI47 reconciles that moving authority without rewriting any historical admission authority or production source.",
+  "mechanical_precondition": {
+    "src_delta_F_CI40_to_F_CI46P_exactly": [
+      "src/process/mod_restricted_soil_temperature.f90",
+      "src/process/mod_restricted_surface_evaporation.f90",
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+      "src/runtime/mod_coupling_application_accuracy_contract.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+    ],
+    "already_in_old_dependency_surface": [
+      "src/runtime/mod_fmr_restart_state_contract.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "new_dependency_surface_additions_exactly": [
+      "src/process/mod_restricted_soil_temperature.f90",
+      "src/process/mod_restricted_surface_evaporation.f90",
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/runtime/mod_coupling_application_accuracy_adapter.f90",
+      "src/runtime/mod_coupling_application_accuracy_contract.f90",
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+    ]
+  },
+  "admission_provenance": {
+    "F_CI41": {
+      "decision": "QUALIFIED_RESTRICTED_SURFACE_EVAPORATION_RUNTIME_MATERIALIZATION_FOR_CURRENT_CANONICAL_ADMISSION_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
+      "files": [
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+      ]
+    },
+    "F_CI42": {
+      "decision": "QUALIFIED_FPE11_SURFACE_EVAPORATION_ALLOCATION_PERFORMANCE_ADMITTED_TO_CURRENT_CANONICAL",
+      "files": [
+        "src/runtime/mod_fmr_process_hydraulic_view_binding.f90",
+        "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90"
+      ]
+    },
+    "F_CI43": {
+      "decision": "QUALIFIED_FPM07B_RESTRICTED_SOIL_TEMPERATURE_FOR_CURRENT_CANONICAL_ADMISSION",
+      "files": [
+        "src/process/mod_soil_temperature_contract.f90",
+        "src/process/mod_restricted_soil_temperature.f90"
+      ]
+    },
+    "F_CI44": {
+      "decision": "QUALIFIED_FGC10_APPLICATION_ACCURACY_CONTRACT_FOR_CURRENT_CANONICAL_ADMISSION",
+      "files": ["src/runtime/mod_coupling_application_accuracy_contract.f90"]
+    },
+    "F_CI45": {
+      "decision": "QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_FOR_CURRENT_CANONICAL_ADMISSION",
+      "files": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90"
+      ]
+    },
+    "F_CI46": {
+      "decision": "QUALIFIED_FGC14_EXTERNAL_ACCURACY_RUNTIME_ADAPTER_FOR_CURRENT_CANONICAL_ADMISSION",
+      "files": ["src/runtime/mod_coupling_application_accuracy_adapter.f90"]
+    }
+  },
+  "frozen_scope": {
+    "allowed_workflow_change": ".github/workflows/fci-canonical.yml current-restricted-canonical-preservation job only",
+    "allowed_moving_authority_change": "d81ef430ebaa601469a165dfc5b9866b813b71aa -> e765d96ee80af0629fb399e18bf58124dade7641",
+    "allowed_dependency_surface_change": "add exactly seven declared later-admitted paths; remove none",
+    "historical_frozen_job_mutation": false,
+    "production_src_change": false,
+    "reference_change": false,
+    "scientific_tolerance_change": false,
+    "historical_decision_rewrite": false,
+    "mass_policy_change": false,
+    "RB1_reopen": false
+  },
+  "qualification_requirements": [
+    "live canonical must remain exactly e765d96ee80af0629fb399e18bf58124dade7641 during prepromotion qualification",
+    "F-CI40 to F-CI46P src delta must remain exactly the nine declared files",
+    "every changed/new file must be bound to an explicit qualified admission status and exact current blob",
+    "all historical/frozen portions of fci-canonical.yml before current-restricted-canonical-preservation must remain byte-identical",
+    "old dependency-surface entries may not be removed",
+    "exactly seven declared paths must be added",
+    "candidate moving-preservation logic must pass against the target authority",
+    "src and reference trees must be byte-unchanged",
+    "all 30 architecture invariants must be explicitly audited",
+    "exact-head CI required before promotion",
+    "post-promotion broad canonical qualification required"
+  ],
+  "hard_nonclaims": [
+    "F-CI47 does not qualify new science, physics, solver behavior or performance",
+    "F-CI47 does not weaken or disable moving preservation",
+    "F-CI47 does not change immutable historical admission authorities",
+    "F-CI47 does not clear any failure by changing production source",
+    "F-CI47 does not qualify a numeric H_app or A_temporal",
+    "F-CI47 does not admit production SWAP-MODFLOW coupling",
+    "F-CI47 does not relax mass conservation"
+  ]
+}
