@@ -3,8 +3,10 @@
   "work_unit": "F-DOC01",
   "title": "SWAP5 Status A/AA Scientific Documentation and Theory-Code Traceability Architecture",
   "branch": "work/f-doc01-status-a-aa-theory-code-traceability",
-  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "stage": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_SCIENTIFIC_DOCUMENTATION_TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION",
   "decision_if_green": "QUALIFIED_SCIENTIFIC_DOCUMENTATION_TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION",
+  "validity_rule": "Final only when .github/workflows/fdoc01-traceability-architecture.yml concludes success with head_sha equal to the exact commit containing this status file.",
   "source_authority": {
     "ref": "integration/f-ci-canonical",
     "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
@@ -37,6 +39,21 @@
     "compliance_state": "BLOCKED_PENDING_CONTROLLED_2024_CRITERIA_RECONCILIATION_AND_EVIDENCE_COMPLETION",
     "maximum_claim_after_fdoc01": "TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION"
   },
+  "precloseout_validation": {
+    "head": "6c5052e6b7ae7afd1ed05af66f541ab82a0b51cb",
+    "tree": "550532db6454bc4cf86b4cacc7262b297a46f4bd",
+    "exact_head_run": 34588962203,
+    "conclusion": "success",
+    "evidence_artifact": 10194789661,
+    "evidence_digest": "sha256:8287dace0e5bf1ebfa46f29f500ab37ffdf1373934570ef070d5ac0ff1d0ab7e"
+  },
+  "architecture_audit": {
+    "path": "integration/f-doc/F-DOC01_INVARIANT_AUDIT.json",
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "mass_conservation": "HARD_UNCHANGED"
+  },
   "scope_holds": {
     "production_source_changed": false,
     "reference_changed": false,
@@ -58,16 +75,20 @@
     "organisational ownership and maintenance evidence",
     "user-facing generated documentation views"
   ],
+  "follow_on_rule": "Future work may populate scoped traceability and evidence registries, but READY_FOR_STATUS_A_REVIEW or compliance language requires controlled WR-QA-2024 reconciliation, evidence completion and the competent WUR audit path. Historical qualification authority must remain pinned and immutable.",
   "state": {
     "realized": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
+    "status_a_ready": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "scientific_scope_reopened": false,
     "open": [
-      "fail-closed machine validation",
-      "30-invariant no-adverse-delta audit",
-      "exact-head CI",
-      "final self-bound closeout"
+      "WR-QA-2024 controlled-copy reconciliation",
+      "incremental scientific traceability population",
+      "evidence completion before Status A review"
     ]
   }
 }
