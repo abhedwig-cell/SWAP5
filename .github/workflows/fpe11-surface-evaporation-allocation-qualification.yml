@@ -20,3 +20,5 @@ jobs:
         run: gfortran --version
       - name: F-PE11 source-bound functional qualification
         run: bash tests/fpe/run_fpe11_surface_evaporation_allocation_qualification.sh
+      - name: F-PE11 paired surface materialization timing
+        run: bash tests/fpe/run_fpe11_paired_surface_evaporation_timing.sh
