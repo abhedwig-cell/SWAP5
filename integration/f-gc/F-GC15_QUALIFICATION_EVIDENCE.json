@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.fgc15_qualification_evidence.v1",
+  "work_unit": "F-GC15",
+  "frozen_catalog_base": "82280e350ea7514cc9f394db882d5cb3ef25b18c",
+  "current_canonical_rechecked": "0b284b5f4e224c5f76d7d78b9dbb51c99514479d",
+  "qualification_history": [
+    {
+      "head": "ea2185cf3e19e4bd81d541dcd60d4340c1191c99",
+      "run": 34649283857,
+      "job": 103427391007,
+      "conclusion": "success",
+      "purpose": "first complete machine-checkable gap catalog"
+    },
+    {
+      "head": "c7e5c0780ca84cf9781ed6bbe1a16b35cf65167f",
+      "run": 34649463525,
+      "job": 103427971241,
+      "conclusion": "success",
+      "purpose": "F-CI48 live canonical source recheck"
+    },
+    {
+      "head": "7eafacc77ec2cf656c9e3ca2949c3d4b811653b0",
+      "run": 34649702686,
+      "job": 103428717143,
+      "conclusion": "success",
+      "purpose": "downstream F-KT14/F-KT15 ownership reconciliation"
+    }
+  ],
+  "qualified_oracles": [
+    "FGC15_NO_PRODUCTION_SOURCE_DELTA=PASS",
+    "FGC15_GAP_GRAPH=PASS",
+    "FGC15_ARCHITECTURE_INVARIANTS_30_OF_30=PASS",
+    "FGC15_NO_EXISTING_PRODUCTION_GW_ORCHESTRATOR=PASS",
+    "FGC15_ACCEPTED_SENSITIVITY_TRANSPORT_GAP=PASS",
+    "FGC15_CANONICAL_PRIMITIVE_BLOBS=PASS",
+    "FGC15_UPSTREAM_NONCLAIMS_PINNED=PASS",
+    "FGC15_FCI48_LIVE_CANONICAL_RECHECK=PASS",
+    "FGC15_PRODUCTION_COUPLING_READINESS_DECISION=PASS",
+    "FGC15_PRODUCTION_COUPLING_GAP_CATALOG PASS"
+  ],
+  "downstream_existing_work_evidence": {
+    "F_KT14": {
+      "head": "2f7995df362c65916671278a5552ed9976ed39b3",
+      "exact_head_run": 34545458355,
+      "conclusion": "success",
+      "jobs": {
+        "qualified_FSI28_producer_replay": 103096982192,
+        "O2_transport_and_bridge": 103096982447,
+        "O0_transport_and_bridge": 103096982489
+      },
+      "effective_decision_after_green": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED",
+      "canonical_admission": false
+    },
+    "F_KT15": {
+      "head": "eacdacb60524221d0c286571444271089347dbcc",
+      "phase": "SOURCE_RECONCILED_IMPLEMENTATION_OPEN",
+      "decision": "F_KT15_SOURCE_RECONCILED_IMPLEMENTATION_OPEN_NOT_YET_TESTED_OR_QUALIFIED",
+      "implemented": false,
+      "tested": false,
+      "qualified": false,
+      "recorded_canonical_authority": "c7379b6b5b5f529ff96de3087379712bd665276a"
+    }
+  },
+  "qualified_conclusions": {
+    "production_groundwater_coupling_runtime_ready": false,
+    "production_coupling_admitted": false,
+    "gap_count": 9,
+    "first_gap_in_current_canonical": "GC15-G01",
+    "G01_transport_semantics_have_existing_qualified_donor": true,
+    "G01_real_B110_production_composition_qualified": false,
+    "new_F_GC16_duplicate_needed": false,
+    "next_owner": "F-KT15 current-canonical recomposition/implementation/qualification",
+    "mass_conservation_relaxed": false
+  },
+  "exact_head_requirement": "The commit introducing this evidence file must itself pass the F-GC15 workflow before closeout is written."
+}
