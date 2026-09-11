@@ -1,0 +1,71 @@
+{
+  "schema": "swap5.fci_workunit_status.v1",
+  "work_unit": "F-CI45",
+  "title": "F-MR39 Restricted Soil-Temperature Runtime Canonical Admission",
+  "branch": "qualification/f-ci45-fmr39-soil-temperature-runtime-canonical-admission",
+  "phase": "QUALIFIED_PREPROMOTION_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_FMR39_RESTRICTED_SOIL_TEMPERATURE_RUNTIME_FOR_CURRENT_CANONICAL_ADMISSION",
+  "canonical_base": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "composition_head": "97515d75c96e9766f3b8697a7b40b28ec237118f",
+  "first_green_candidate_head": "de1bb42e096a870141db543654b05732d13dd4b8",
+  "donor_source_authority": "F-MR39@87b553094b66980006b69f5ba8b53d70ccd0a8e0",
+  "donor_closeout_authority": "F-MR39@843af75b8545b0644aece5cf58b5f499d7b5b600",
+  "scientific_authority": "F-VQ58@5e81e14ad613cff7a72fc3f9cddcebc6696290d7",
+  "corroborating_current_canonical_requalification": "F-MR40R@e9a7aeb1632ab9ce9ba7d0d56730f05a1ee7834a",
+  "production_blobs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "07877429f94ccf07c353fa5f8ba969c341ad88dd",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "bb2c37efce37a73441181f14d15847c652ab45ea"
+  },
+  "first_green_admission": {
+    "head": "de1bb42e096a870141db543654b05732d13dd4b8",
+    "run": 34633372426,
+    "job": 103375339565,
+    "conclusion": "success",
+    "runtime_output_sha256": "cb08b8dc528f9a1dfc11db9ffffad5598fa9c4584b12feada1d129e47a236942"
+  },
+  "state": {
+    "composition_realized": true,
+    "exact_FMR39_runtime_oracle_replayed": true,
+    "exact_F_VQ58_scientific_oracle_replayed": true,
+    "FMR19_disabled_path_preserved": true,
+    "reference_unchanged": true,
+    "water_mass_path_relaxed": false,
+    "FCI44P_postimage_preserved": true,
+    "all_30_architecture_invariants_reconciled": true,
+    "canonical_promoted": false,
+    "RB1_modified_or_reopened": false
+  },
+  "qualified_scope": {
+    "runtime_profile": "restricted sensible-heat soil-temperature runtime composed with the serialized reference physical backend",
+    "persistent_state": "optional active-node thermal profile inside committed physical state",
+    "scratch": "thermal workspace remains worker/backend-local",
+    "transaction": "Richards plus thermal update is one atomic outer transaction",
+    "restart": "existing polymorphic committed-state persistence carries the optional thermal substate",
+    "mass": "water mass remains hard and excludes thermal energy; thermal process retains separate qualified energy closure",
+    "time": "generic numeric [t0,t1]",
+    "multiswap": "restricted serialized active/inactive isolation qualified"
+  },
+  "hard_holds": [
+    "no new soil-temperature science",
+    "no frost or latent-heat phase-change physics",
+    "no snow plus soil-temperature combined profile",
+    "no new combined water plus thermal timestep acceptance policy",
+    "no parallel-throughput or large-batch performance claim",
+    "no production SWAP-MODFLOW admission",
+    "no numeric application-accuracy policy",
+    "no mass-conservation relaxation",
+    "no RB1 modification or reopening"
+  ],
+  "architecture_audit": "integration/f-ci/F-CI45_ARCHITECTURE_AUDIT.json",
+  "evidence": "integration/f-ci/F-CI45_EVIDENCE.json",
+  "promotion_gate": {
+    "require_current_canonical_still_exactly_base": true,
+    "require_exact_status_head_F_CI45_success": true,
+    "require_exact_two_production_blobs": true,
+    "require_reference_tree_unchanged": true,
+    "require_true_two_parent_merge_commit": true,
+    "force_update_forbidden": true,
+    "post_promotion_reconciliation_required": true
+  },
+  "next_required_step": "Run the full F-CI45 gate on this exact status/evidence head. Only if green while canonical remains exactly pinned may canonical be advanced by a true two-parent merge, followed by separate F-CI45P postimage reconciliation."
+}
