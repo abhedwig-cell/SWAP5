@@ -1,0 +1,94 @@
+{
+  "schema": "swap5.fdoc11_status.v1",
+  "work_unit": "F-DOC11",
+  "title": "RB1 Controlled Theory/Formal Gap Decomposition",
+  "branch": "work/f-doc11-rb1-controlled-theory-formal-gap-decomposition",
+  "base": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_CONTROLLED_THEORY_FORMAL_GAP_DECOMPOSITION_WITH_ZERO_TIER_PROMOTION",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc11-rb1-controlled-theory-formal-gap-decomposition.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC11_CLOSEOUT.json. The first-green run qualifies the persisted decomposition; no metadata rewrite is required after a successful exact-final-head run.",
+  "first_green_qualification": {
+    "head": "7b9f11662dfc6e46ee5a349f1a7374cd2443f26f",
+    "workflow_run": 34645098152,
+    "job": 103413855346,
+    "conclusion": "success",
+    "artifact": 10281707028,
+    "artifact_name": "fdoc11-controlled-theory-formal-gap-decomposition-evidence-7b9f11662dfc6e46ee5a349f1a7374cd2443f26f",
+    "artifact_digest": "sha256:353186772c87f342ec6c74d8d2b16c4962762365ff1c458f9ff76c72ccea2ad2"
+  },
+  "scope": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "tier_scope": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    "physical_science": 3,
+    "numerical_method": 1,
+    "runtime_architecture": 9,
+    "hybrid": 2,
+    "resolved_t0_t7_by_fdoc11": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "scientific_authority_invented": false,
+    "universal_H_budget_claimed": false,
+    "universal_temporal_tolerance_claimed": false,
+    "universal_groundwater_head_accuracy_budget_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "decomposition_result": {
+    "PHYSICAL_SCIENCE": ["RB1-SW-REFERENCE", "RB1-ET-ROOT-SERIAL", "RB1-SURFACE-EVAP-RESTRICTED"],
+    "NUMERICAL_METHOD": ["RB1-TIME-REFERENCE"],
+    "RUNTIME_ARCHITECTURE": ["RB1-CORE-INTERVAL", "RB1-CORE-DATA", "RB1-CORE-TRANSACTION", "RB1-CORE-DIAGNOSTICS", "RB1-STANDALONE-N1", "RB1-MULTISWAP-SERIAL", "RB1-MULTISWAP-PARALLEL-V1", "RB1-RESTART-SERIAL", "RB1-RESTART-PARALLEL"],
+    "HYBRID": ["RB1-CORE-MASS", "RB1-ROOT-PARALLEL"]
+  },
+  "remaining_gap_state": {
+    "controlled_T0_T7_theory_formal": "OPEN_DECOMPOSED_NOT_RESOLVED",
+    "complete_T11_graphs_program_wide": "OPEN_NARROWED",
+    "T12_application_validation": "OPEN",
+    "WR_QA_2024_controlled_copy": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "application_temporal_H_budget": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "surface_evaporation_performance": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "mass_criterion_delta": "NONE",
+    "temporal_acceptance_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Controlled T0-T7 authority remains to be materialised or explicitly classified N/A in later bounded workunits",
+      "Complete program-wide T11 equation-to-test graphs",
+      "T12 independent application validation",
+      "Controlled WR-QA-2024 copy and exact reconciliation",
+      "Application-specific temporal/groundwater H_budget policy",
+      "Surface-evaporation throughput/scaling and call-local allocation performance"
+    ]
+  }
+}
