@@ -1,0 +1,113 @@
+name: F-DOC12 RB1 runtime architecture tier applicability
+
+on:
+  push:
+    branches:
+      - work/f-doc12-rb1-runtime-architecture-tier-applicability
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  runtime-architecture-tier-applicability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch exact authority lineages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            refs/heads/work/f-doc11-rb1-controlled-theory-formal-gap-decomposition:refs/remotes/origin/work/f-doc11-rb1-controlled-theory-formal-gap-decomposition \
+            refs/heads/work/f-doc03-rb1-core-capability-traceability:refs/remotes/origin/work/f-doc03-rb1-core-capability-traceability \
+            refs/heads/work/f-doc05-rb1-execution-restart-traceability:refs/remotes/origin/work/f-doc05-rb1-execution-restart-traceability \
+            refs/heads/integration/f-ci-canonical:refs/remotes/origin/integration/f-ci-canonical \
+            refs/heads/release/f-rb01-restricted-production-baseline-v1:refs/remotes/origin/release/f-rb01-restricted-production-baseline-v1 \
+            refs/heads/release/f-rb02-restricted-production-baseline-v1-final-authority:refs/remotes/origin/release/f-rb02-restricted-production-baseline-v1-final-authority
+          for sha in \
+            df438f8d0eaa4117e3e6df13a7061985fe233a16 \
+            0c25d97bd180378a916fbb14a1e45768af9ec63a \
+            919f228d8aedc1029b5080bb019fbe61d2e1d7c6 \
+            0aeb0a2ed4096e1f9493d3dabc70962ea5270182 \
+            aeb74560d801c4ac7314df7b8845fcc5daf8bba6 \
+            b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0; do
+            git cat-file -e "${sha}^{commit}"
+          done
+          test "$(git merge-base df438f8d0eaa4117e3e6df13a7061985fe233a16 HEAD)" = "df438f8d0eaa4117e3e6df13a7061985fe233a16"
+
+      - name: Verify immutable upstream workflow evidence live
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            '34645268266 df438f8d0eaa4117e3e6df13a7061985fe233a16 .github/workflows/fdoc11-rb1-controlled-theory-formal-gap-decomposition.yml' \
+            '34596210450 0c25d97bd180378a916fbb14a1e45768af9ec63a .github/workflows/fdoc03-rb1-core-traceability.yml' \
+            '34612402892 919f228d8aedc1029b5080bb019fbe61d2e1d7c6 .github/workflows/fdoc05-rb1-execution-restart-traceability.yml' \
+            '34570204719 aeb74560d801c4ac7314df7b8845fcc5daf8bba6 .github/workflows/frb01-release-qualification.yml' \
+            '34586202805 b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0 .github/workflows/frb02-final-release-authority.yml'; do
+            set -- $spec
+            run="$1"; sha="$2"; path="$3"
+            curl -fsSL \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${run}" \
+              > "_fdoc12_run_${run}.json"
+            python3 - "$run" "$sha" "$path" <<'PY'
+          import json, pathlib, sys
+          run, sha, path = sys.argv[1:]
+          x = json.loads(pathlib.Path(f'_fdoc12_run_{run}.json').read_text())
+          assert x['head_sha'] == sha, (x['head_sha'], sha)
+          assert x['status'] == 'completed', x['status']
+          assert x['conclusion'] == 'success', x['conclusion']
+          assert x['path'] == path, (x['path'], path)
+          print(f'FDOC12_UPSTREAM_RUN_{run}=PASS')
+          PY
+          done
+
+      - name: Validate bounded runtime architecture authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/docs/validate_fdoc12_runtime_architecture_tier_applicability.py | tee _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_CAPABILITIES_9_EXACT=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_T0_T7_ALL_DISPOSED=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_FDOC03_CARRY_FORWARD_EXACT=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_FIVE_RUNTIME_SEMANTICS_MATERIALISED=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_SOURCE_PINS_EXACT=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_BOUNDED_CHANGED_PATHS=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_ZERO_PRODUCTION_DELTA=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_ZERO_REFERENCE_DELTA=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_NO_FULLY_TRACED_PROMOTION=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_NO_STATUS_A_PROMOTION=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_INVARIANTS_30_OF_30_PASS=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_HARD_MASS_UNCHANGED=PASS' _fdoc12_validator_stdout.txt
+          grep -Fq 'FDOC12_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_RB1_RUNTIME_ARCHITECTURE_T0_T7_APPLICABILITY_AND_STATE_TRANSITION_AUTHORITY_WITH_ZERO_SCIENTIFIC_PROMOTION' _fdoc12_validator_stdout.txt
+
+      - name: Preserve exact-head evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fdoc12-runtime-architecture-tier-applicability-evidence-${{ github.sha }}
+          path: |
+            _fdoc12_run_34645268266.json
+            _fdoc12_run_34596210450.json
+            _fdoc12_run_34612402892.json
+            _fdoc12_run_34570204719.json
+            _fdoc12_run_34586202805.json
+            _fdoc12_validator_stdout.txt
+            _fdoc12_runtime_architecture_evidence.json
+            docs/scientific/registries/rb1-runtime-architecture-tier-applicability.json
+            docs/scientific/F-DOC12_RB1_RUNTIME_ARCHITECTURE_TIER_APPLICABILITY.md
+            integration/f-doc/F-DOC12_STATUS.json
+            integration/f-doc/F-DOC12_INVARIANT_AUDIT.json
+            integration/f-doc/F-DOC12_CLOSEOUT.json
+          if-no-files-found: warn
+          retention-days: 90
