@@ -110,6 +110,7 @@ echo 'FPM06G_O0_O2_PUBLICATION_ORACLE_IDENTITY=PASS'
 # candidate source tree. This protects the already-admitted upstream behavior
 # while F-PM06G adds only an orthogonal postcommit metadata seam.
 git show ${FVQ56}:tests/fvq/test_fvq56_surface_evaporation_runtime_materialization_independent.f90 > "$BUILD/fvq56.f90"
+sed -i 's/test_fvq56_surface_evaporation_runtime_materialization_independent/fpm06g_fvq56/g' "$BUILD/fvq56.f90"
 FVQ_MODULES=(
   tests/fsi/fsi04_real_headcalc_stubs.f90
   src/runtime/mod_a23bu_worker_execution_context.f90
