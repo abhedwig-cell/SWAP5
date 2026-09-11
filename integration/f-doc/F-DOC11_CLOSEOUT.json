@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.fdoc11_closeout.v1",
+  "work_unit": "F-DOC11",
+  "title": "RB1 Controlled Theory/Formal Gap Decomposition",
+  "base": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+  "decision": "QUALIFIED_RB1_CONTROLLED_THEORY_FORMAL_GAP_DECOMPOSITION_WITH_ZERO_TIER_PROMOTION",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc11-rb1-controlled-theory-formal-gap-decomposition.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC11_STATUS.json. After that successful exact-final-head run, no metadata rewrite is required or allowed absent a genuine defect.",
+  "decomposition_result": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0,
+    "tier_scope": ["T0", "T1", "T2", "T3", "T4", "T5", "T6", "T7"],
+    "family_counts": {
+      "PHYSICAL_SCIENCE": 3,
+      "NUMERICAL_METHOD": 1,
+      "RUNTIME_ARCHITECTURE": 9,
+      "HYBRID": 2
+    },
+    "resolved_t0_t7_by_fdoc11": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false
+  },
+  "authority_classes": {
+    "PHYSICAL_SCIENCE": "Requires controlled phenomenon, theory, conceptual/formal model and SWAP-specific/numerical lineage; verification or release PASS is not a substitute.",
+    "NUMERICAL_METHOD": "Requires controlled formal numerical and acceptance semantics; application accuracy policy remains distinct.",
+    "RUNTIME_ARCHITECTURE": "Requires controlled architecture/state-transition semantics and explicit applicability decisions for physical-theory tiers.",
+    "HYBRID": "Requires both scientific/numerical and runtime authority strands without collapsing one into the other."
+  },
+  "first_green_evidence": {
+    "head": "7b9f11662dfc6e46ee5a349f1a7374cd2443f26f",
+    "workflow_run": 34645098152,
+    "job": 103413855346,
+    "conclusion": "success",
+    "artifact": 10281707028,
+    "artifact_name": "fdoc11-controlled-theory-formal-gap-decomposition-evidence-7b9f11662dfc6e46ee5a349f1a7374cd2443f26f",
+    "artifact_digest": "sha256:353186772c87f342ec6c74d8d2b16c4962762365ff1c458f9ff76c72ccea2ad2"
+  },
+  "authorities": {
+    "F_DOC10": "ef34a9f5a01d78ff9c2628315b484c5a8ff4f717",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "remaining_gap_state": {
+    "GAP-CONTROLLED-THEORY-FORMAL": "OPEN_DECOMPOSED_NOT_RESOLVED",
+    "GAP-T11-COMPLETE-GRAPHS": "OPEN_NARROWED",
+    "GAP-T12-APPLICATION-VALIDATION": "OPEN",
+    "GAP-WR-QA-2024-CONTROLLED-COPY": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "GAP-APPLICATION-TEMPORAL-H-BUDGET": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "GAP-SURFACE-EVAP-PERFORMANCE": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_criterion": "NONE",
+    "temporal_acceptance": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "F-DOC11 resolves no T0-T7 tier and does not mark any such tier NOT_APPLICABLE.",
+    "F-DOC11 promotes no capability to FULLY_TRACED and does not establish Status A or Status AA readiness/compliance.",
+    "F-DOC11 does not invent scientific theory, formal equations, discretisation or numerical method from release qualification.",
+    "F-DOC11 does not reopen immutable RB1 science or release authority.",
+    "F-DOC11 does not change production source, reference data, physics, solver, tolerances, mass criteria, temporal acceptance or performance policy.",
+    "F-DOC11 does not establish a universal H_budget, temporal tolerance or groundwater-head accuracy budget.",
+    "Surface-evaporation throughput/scaling and call-local allocation performance remain separate work."
+  ]
+}
