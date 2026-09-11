@@ -2,7 +2,7 @@
   "schema": "swap5.fdoc03_status.v1",
   "work_unit": "F-DOC03",
   "title": "RB1 Core Capability Traceability Population",
-  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "stage": "COMPLETE_SUBJECT_TO_EXACT_HEAD_CI_GREEN",
   "base": "18942fee83eb385fccc1663230772ae03dcc9ae6",
   "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
   "rb1_qualification_authority": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
@@ -16,8 +16,22 @@
   ],
   "realized": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
+  "qualification_validity_rule": "qualified=true is valid only when the F-DOC03 workflow succeeds with head_sha equal to the exact commit containing this status",
+  "prior_green_runs": [
+    {
+      "run": 34595787407,
+      "head": "dc781a51e5e0b3b9f8a15a9a0db13c6d32dd5033",
+      "purpose": "first corrected qualification"
+    },
+    {
+      "run": 34595857212,
+      "head": "a495b886854a7e23eadcf8194c121aefdc052ec4",
+      "purpose": "closeout-head qualification before final status reconciliation"
+    }
+  ],
+  "closeout": "integration/f-doc/F-DOC03_CLOSEOUT.json",
   "scope_holds": {
     "production_delta": "NONE",
     "reference_delta": "NONE",
