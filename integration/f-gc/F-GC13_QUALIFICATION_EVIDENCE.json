@@ -3,23 +3,30 @@
   "workstream": "F-GC",
   "work_unit": "F-GC13",
   "title": "Project Accuracy Contract Evidence Ingestion & Governance Template Qualification Evidence",
-  "status": "QUALIFIED_PRE_CLOSEOUT",
+  "status": "QUALIFIED_PRE_CLOSEOUT_WITH_EXPLICIT_EXTERNAL_DIGEST_ASSURANCE_BOUNDARY",
   "authority": {
     "canonical_base": "c7379b6b5b5f529ff96de3087379712bd665276a",
     "canonical_stage": "F-CI45P",
     "canonical_application_accuracy_contract_blob": "c07d573d21e7d013ab962c0a9d28102ab7b5cdfc",
     "pre_registration_commit": "11c70850de1f5569a9aebf25fbe0de920b465da9",
-    "qualified_head": "1da98c5f34c795e4352dad8c2b6de7074dc77d85",
-    "workflow_run": 34643009577,
-    "workflow_job": 103407033602,
-    "workflow_conclusion": "success"
+    "first_qualified_head": "1da98c5f34c795e4352dad8c2b6de7074dc77d85",
+    "first_workflow_run": 34643009577,
+    "first_workflow_job": 103407033602,
+    "first_workflow_conclusion": "success",
+    "qualification_evidence_initial_commit": "0ad1cbc781764a776248cd62bed8c4a9fde5889d",
+    "qualification_evidence_initial_exact_head_run": 34643132839,
+    "qualification_evidence_initial_exact_head_job": 103407434431,
+    "qualification_evidence_initial_exact_head_conclusion": "success",
+    "assurance_boundary_profile_commit": "20e22ffdcf0fe583511170e91e483df7f10100a2",
+    "assurance_boundary_gate_commit": "0ffd79c3a4a1f854797b45625393d8eb5d78c613"
   },
   "qualification_results": {
     "canonical_contract_lock": "PASS",
     "production_source_delta": "PASS_NONE",
     "json_artifacts": "PASS",
     "schema_profile_consistency": "PASS",
-    "classified_immutable_provenance": "PASS",
+    "classified_digest_identified_provenance": "PASS",
+    "external_source_digest_assurance_boundary": "PASS: validator checks presence and lexical SHA-256 form only; exact external source-byte digest verification is explicitly assigned to upstream evidence governance/reviewer and is required before real-project admission",
     "positive_mapping_oracles": "PASS",
     "rejection_matrix": "PASS_19_OF_19",
     "forbidden_policy_substitutions": "PASS",
@@ -35,7 +42,7 @@
       "synthetic_A_temporal": 0.25,
       "expected_temporal_budget_cm": 2.0,
       "result": "PASS",
-      "note": "Synthetic qualification-only values; not project defaults or policy recommendations."
+      "note": "Synthetic qualification-only values and synthetic digest identifiers; not project defaults, source-authenticity evidence or policy recommendations."
     },
     {
       "fixture": "accepted_direct_budget_packet.json",
@@ -45,7 +52,7 @@
       "expected_reparameterized_A_temporal": 0.2,
       "expected_temporal_budget_cm": 2.0,
       "result": "PASS",
-      "note": "The fraction is a deterministic representation of an externally supplied direct budget; SWAP does not select the fraction."
+      "note": "The fraction is a deterministic representation of an externally supplied direct budget; SWAP does not select the fraction. Synthetic digest identifiers test packet structure only."
     }
   ],
   "adversarial_rejection_oracles": [
@@ -74,7 +81,10 @@
     "temporal_fraction_requires_explicit_temporal_allocation_rule": true,
     "direct_temporal_budget_requires_explicit_direct_budget_rule": true,
     "claim_basis_classification_required": true,
-    "source_digest_sha256_required": true,
+    "source_digest_sha256_identifier_required": true,
+    "validator_rehashes_external_source_bytes": false,
+    "real_project_source_digest_content_match_verification_owner": "upstream external evidence governance/reviewer",
+    "real_project_source_digest_content_match_verification_required": true,
     "application_and_temporal_claim_ids_distinct": true,
     "application_and_temporal_provenance_ids_distinct": true,
     "same_governing_document_allowed_with_distinct_clause_level_claims": true,
@@ -86,6 +96,8 @@
     "no real project H_app is qualified",
     "no real project A_temporal is qualified",
     "synthetic fixture numbers are not defaults",
+    "synthetic fixture digest strings are not real external source hashes",
+    "the packet validator does not independently establish authenticity or source-byte correctness of an external document digest",
     "no project policy is selected by SWAP",
     "no production SWAP-MODFLOW admission",
     "no production source change",
@@ -93,5 +105,5 @@
     "no mass-conservation relaxation",
     "F-GC07 through F-GC12 are not reopened"
   ],
-  "exact_head_requirement": "The commit introducing this qualification evidence must itself pass the F-GC13 workflow before closeout is written."
+  "exact_head_requirement": "The final closeout head must pass the F-GC13 workflow including the explicit external source-digest assurance-boundary assertions."
 }
