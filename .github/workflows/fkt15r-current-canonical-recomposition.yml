@@ -1,0 +1,142 @@
+name: F-KT15R current-canonical transaction composition recomposition
+
+on:
+  push:
+    branches:
+      - work/f-kt15r-current-canonical-transaction-composition
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance-and-architecture:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact donor composition and invariant gate
+        run: bash tests/fkt/run_fkt15r_current_canonical_recomposition.sh
+
+  fkt14-candidate-transport-replay:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [0, 2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Materialize exact F-KT14 test artifacts and replay against candidate source
+        run: |
+          set -euo pipefail
+          AUTH=2f7995df362c65916671278a5552ed9976ed39b3
+          git cat-file -e "$AUTH^{commit}" 2>/dev/null || git fetch --no-tags origin "$AUTH"
+          mkdir -p tests/fkt build/fkt15r/o${{ matrix.opt }}
+          for path in \
+            tests/fkt/test_fkt14_interface_sensitivity_transport.f90 \
+            tests/fkt/test_fkt14_solver_result_bridge.f90; do
+            git show "$AUTH:$path" > "$path"
+          done
+          out=build/fkt15r/o${{ matrix.opt }}
+          gfortran -std=f2008 -ffree-line-length-none -O${{ matrix.opt }} \
+            -J"$out" -I"$out" \
+            src/transaction/mod_transaction_reference.f90 \
+            src/runtime/mod_canonical_contracts.f90 \
+            src/runtime/mod_canonical_interval_runtime.f90 \
+            src/kernel/mod_kernel_transactions.f90 \
+            tests/fkt/test_fkt14_interface_sensitivity_transport.f90 \
+            -o "$out/test_fkt14"
+          "$out/test_fkt14"
+          gfortran -std=f2008 -ffree-line-length-none -O${{ matrix.opt }} \
+            -J"$out" -I"$out" \
+            src/solver/mod_soil_water_solver_contract.f90 \
+            src/transaction/mod_transaction_reference.f90 \
+            src/adapter/mod_soil_water_transaction_result_bridge.f90 \
+            tests/fkt/test_fkt14_solver_result_bridge.f90 \
+            -o "$out/test_fkt14_bridge"
+          "$out/test_fkt14_bridge"
+          echo "FKT15R_FKT14_CANDIDATE_REPLAY_O${{ matrix.opt }}=PASS"
+
+  fsi30-candidate-dynamic-top-replay:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Materialize exact F-SI30 test artifacts
+        run: |
+          set -euo pipefail
+          AUTH=27b10ac0bca17a68e2746431b4c6a986e3910175
+          git cat-file -e "$AUTH^{commit}" 2>/dev/null || git fetch --no-tags origin "$AUTH"
+          mkdir -p tests/fsi
+          for path in \
+            tests/fsi/run_fsi30_abi_adapter_compile_gate.sh \
+            tests/fsi/run_fsi30_headcalc_compile_gate.sh \
+            tests/fsi/run_fsi30_adapter_identity_gate.sh \
+            tests/fsi/run_fsi30_dynamic_headcalc_execution_gate.sh \
+            tests/fsi/fsi04_real_headcalc_stubs.f90 \
+            tests/fsi/test_fsi30_adapter_identity.f90 \
+            tests/fsi/test_fsi30_dynamic_headcalc_execution.f90; do
+            git show "$AUTH:$path" > "$path"
+          done
+      - name: Replay F-SI30 ABI and adapter gates against candidate
+        run: |
+          bash tests/fsi/run_fsi30_abi_adapter_compile_gate.sh
+          bash tests/fsi/run_fsi30_adapter_identity_gate.sh
+      - name: Replay F-SI30 real HeadCalc dynamic gates against candidate
+        run: |
+          bash tests/fsi/run_fsi30_headcalc_compile_gate.sh
+          bash tests/fsi/run_fsi30_dynamic_headcalc_execution_gate.sh
+          echo 'FKT15R_FSI30_CANDIDATE_REPLAY=PASS'
+
+  fsi28-qualified-producer-preservation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Lock candidate producer blobs to exact qualified F-SI28 authority
+        run: |
+          set -euo pipefail
+          AUTH=85dbe882aa967d19021174066c95105d8cf838ea
+          FSI27_FIXTURE=f7b891ce636b63bdae7e43f0ed54195f067f8bcc
+          FSI27_MATERIALIZATION=5dfd4528245e63a087426197b0d8cb28598deae8
+          BASE=c0fc660c1e68064f77f4ec4f3376d385fbe88b4a
+          for rev in "$AUTH" "$FSI27_FIXTURE" "$FSI27_MATERIALIZATION" "$BASE"; do
+            git cat-file -e "$rev^{commit}" 2>/dev/null || git fetch --no-tags origin "$rev"
+          done
+          for path in \
+            src/adapter/mod_reference_richards_legacy_binding.f90 \
+            src/solver/mod_reference_linear_solver.f90 \
+            src/solver/mod_reference_richards_workspace.f90 \
+            src/solver/mod_soil_water_solver_contract.f90 \
+            src/legacy/b1_10_port/headcalc.f90; do
+            test "$(git rev-parse HEAD:$path)" = "$(git rev-parse $AUTH:$path)" || {
+              echo "FKT15R F-SI28 producer blob drift: $path" >&2
+              exit 1
+            }
+          done
+          echo 'FKT15R_FSI28_PRODUCER_BLOB_LOCK=PASS'
+      - name: Replay exact qualified F-SI28 authority gates
+        run: |
+          set -euo pipefail
+          AUTH=85dbe882aa967d19021174066c95105d8cf838ea
+          WORKTREE="${RUNNER_TEMP}/fkt15r-fsi28-qualified"
+          git worktree add --detach "$WORKTREE" "$AUTH"
+          trap 'git worktree remove --force "$WORKTREE" >/dev/null 2>&1 || true' EXIT
+          (
+            cd "$WORKTREE"
+            bash tests/fsi/run_fsi28_interface_sensitivity_gate.sh
+            bash tests/fsi/run_fsi28_cross_sign_gate.sh
+            bash tests/fsi/run_fsi28_fallback_failclosed_gate.sh
+          )
+          echo 'FKT15R_FSI28_QUALIFIED_REPLAY=PASS'
