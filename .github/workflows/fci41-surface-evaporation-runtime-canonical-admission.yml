@@ -20,4 +20,4 @@ jobs:
       - name: Compiler identity
         run: gfortran --version
       - name: F-CI41 source-bound canonical admission qualification
-        run: bash tests/fci/run_fci41_surface_evaporation_runtime_canonical_admission.sh
+        run: bash tests/fci/run_fci41_surface_evaporation_runtime_canonical_admission_v2.sh
