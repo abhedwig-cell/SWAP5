@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE11",
+  "title": "Surface-Evaporation Call-Local Allocation and Copy Elimination Functional Qualification Results",
+  "status": "PASS",
+  "source_authority": {
+    "authority": "F-CI41P",
+    "branch": "integration/f-ci-canonical",
+    "head": "3c5f5bd3686e1632058b906be21abd73883e30ef"
+  },
+  "qualified_candidate_head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+  "qualification": {
+    "workflow_run": 34553936421,
+    "job": 103122441847,
+    "conclusion": "success",
+    "runner": "GitHub-hosted ubuntu-24.04, Ubuntu 24.04.5, image 20260907.300.1, Azure westus",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization_levels": ["O0", "O2"],
+    "independent_oracle_authority": {
+      "workunit": "F-VQ56",
+      "commit": "0cdbc193976c73bef208a82547b3c9ea81c4102c",
+      "test": "tests/fvq/test_fvq56_surface_evaporation_runtime_materialization_independent.f90"
+    }
+  },
+  "production_delta": {
+    "source_files_changed": 2,
+    "files": {
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": {
+        "preimage_blob": "37f5968ffe00b1ff56f824f77ab94d3825171acf",
+        "postimage_blob": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02"
+      },
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": {
+        "preimage_blob": "afd2de6893aced7b48eac33f6b3a51876b2c1d12",
+        "postimage_blob": "bc40bc6b121f56071d2b811195759f86130defeb"
+      }
+    },
+    "other_production_source_changed": false,
+    "scientific_process_blob_changed": false,
+    "capacity_contract_blob_changed": false,
+    "capacity_provider_blob_changed": false,
+    "public_runtime_surface_changed": false
+  },
+  "candidate_mechanism": {
+    "committed_snapshot_clone_retained": true,
+    "direct_alias_into_committed_state": false,
+    "downstream_profile_ownership_transfer": "move_alloc from detached snapshot into existing owning hydraulic view, then from that view into the private capacity base state",
+    "explicit_downstream_profile_allocate_in_two_changed_runtime_files": false,
+    "expected_full_profile_copy_path": "committed snapshot clone remains; three downstream full-profile copies in this materialization path are eliminated",
+    "persistent_per_column_state_added": false
+  },
+  "functional_gates": {
+    "frozen_scientific_authority": "PASS",
+    "exact_two_file_runtime_scope": "PASS",
+    "public_surface_identity": "PASS",
+    "detached_ownership_transfer_source_guard": "PASS",
+    "no_downstream_explicit_profile_allocate": "PASS",
+    "F_CI41P_observable_identity": "PASS",
+    "O0_O2_identity": "PASS",
+    "committed_state_immutability": "PASS",
+    "A_B_A_determinism": "PASS",
+    "real_B110_dry_integration": "PASS",
+    "real_B110_ponded_integration": "PASS",
+    "no_authoritative_mass_booking": "PASS"
+  },
+  "oracle_output": {
+    "baseline_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4",
+    "candidate_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4",
+    "exact_identity": true
+  },
+  "candidate_remediation_history": {
+    "initial_broader_candidate_rejected": true,
+    "rejected_feature": "new public fmr_detach_committed_soil_water_state routine and direct materializer bypass of the established hydraulic-view seam",
+    "reason": "broader public/runtime API change than required for the performance objective",
+    "history_rewritten": false,
+    "final_tree_qualified_after_forward_remediation": true
+  },
+  "architecture_invariants": {
+    "1_single_kernel": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "5_scratch_per_worker_or_call": "PASS",
+    "6_scalable_memory_layout": "IMPROVED_WITHIN_LOCAL_PATH",
+    "7_transactional_steps": "PASS",
+    "13_mass_conservation_absolute": "PASS_NO_MASS_PATH_CHANGED",
+    "16_multiswap_primary": "NO_REGRESSION_BUT_NO_MULTISWAP_SPEEDUP_CLAIM",
+    "20_alternative_soil_water_solvers": "PASS_CONTRACT_UNCHANGED",
+    "22_no_headcalc_internal_coupling": "PASS",
+    "23_physics_solver_policy_separation": "PASS",
+    "25_reference_mode": "PASS",
+    "26_diagnostics": "PASS_UNCHANGED",
+    "27_optional_functionality_scales_with_use": "PASS",
+    "30_explicit_architecture_review": "PASS"
+  },
+  "explicit_nonclaims": [
+    "whole-SWAP runtime speedup",
+    "MultiSWAP runtime speedup",
+    "portable hardware-independent speedup",
+    "reduced committed-state snapshot clone cost",
+    "new scientific qualification of surface evaporation",
+    "expanded physical option scope",
+    "canonical admission or promotion"
+  ]
+}

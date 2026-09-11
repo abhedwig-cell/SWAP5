@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE11",
+  "title": "Surface-Evaporation Materialization Paired Profile-Scaling Timing Results",
+  "status": "PASS_RUNNER_BOUND_LOCAL_PERFORMANCE_BENEFIT",
+  "source_authority": "F-CI41P@3c5f5bd3686e1632058b906be21abd73883e30ef",
+  "candidate_head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+  "workflow": {
+    "run": 34553936421,
+    "job": 103122441847,
+    "conclusion": "success",
+    "runner": "GitHub-hosted ubuntu-24.04, Ubuntu 24.04.5, image 20260907.300.1, Azure westus",
+    "compiler": "GNU Fortran 13.3.0",
+    "optimization": "O2"
+  },
+  "method": {
+    "comparison": "exact F-CI41P baseline versus candidate on the same hosted runner",
+    "process_order": "balanced B-C, C-B, B-C, C-B",
+    "paired_rounds_per_profile_size": 4,
+    "arms_run_as_separate_processes": true,
+    "profile_nodes": [2, 20, 60, 200, 1000],
+    "calls_per_process": {
+      "2": 300000,
+      "20": 250000,
+      "60": 200000,
+      "200": 120000,
+      "1000": 40000
+    },
+    "benchmark_scope": "restricted surface-evaporation runtime materialization microkernel with a deliberately cheap abstract capacity provider that consumes both profile arrays and both hydraulic scalars",
+    "full_multiswap_path_measured": false
+  },
+  "raw_seconds": {
+    "2": {
+      "baseline": [0.086011530, 0.081561167, 0.077765797, 0.080945197],
+      "candidate": [0.059640876, 0.050232464, 0.050427370, 0.049945433]
+    },
+    "20": {
+      "baseline": [0.076258719, 0.076158240, 0.076060806, 0.077240177],
+      "candidate": [0.050972979, 0.050428292, 0.049295147, 0.049307812]
+    },
+    "60": {
+      "baseline": [0.080298910, 0.081731368, 0.081635597, 0.079662060],
+      "candidate": [0.055344633, 0.055434693, 0.054557029, 0.055311471]
+    },
+    "200": {
+      "baseline": [0.106974148, 0.107031857, 0.107573577, 0.107330429],
+      "candidate": [0.070012393, 0.070651046, 0.070300336, 0.070058830]
+    },
+    "1000": {
+      "baseline": [0.122708938, 0.122572230, 0.123612159, 0.126594186],
+      "candidate": [0.080758666, 0.080447850, 0.081334771, 0.080693022]
+    }
+  },
+  "profile_results": {
+    "2": {
+      "baseline_median_seconds": 0.081253182,
+      "candidate_median_seconds": 0.050329917,
+      "baseline_over_candidate": 1.614411,
+      "candidate_runtime_reduction_percent": 38.058,
+      "paired_rounds_candidate_faster": "4/4",
+      "checksum_identity": "PASS"
+    },
+    "20": {
+      "baseline_median_seconds": 0.076208480,
+      "candidate_median_seconds": 0.049868052,
+      "baseline_over_candidate": 1.528202,
+      "candidate_runtime_reduction_percent": 34.564,
+      "paired_rounds_candidate_faster": "4/4",
+      "checksum_identity": "PASS"
+    },
+    "60": {
+      "baseline_median_seconds": 0.080967254,
+      "candidate_median_seconds": 0.055328052,
+      "baseline_over_candidate": 1.463403,
+      "candidate_runtime_reduction_percent": 31.666,
+      "paired_rounds_candidate_faster": "4/4",
+      "checksum_identity": "PASS"
+    },
+    "200": {
+      "baseline_median_seconds": 0.107181143,
+      "candidate_median_seconds": 0.070179583,
+      "baseline_over_candidate": 1.527241,
+      "candidate_runtime_reduction_percent": 34.522,
+      "paired_rounds_candidate_faster": "4/4",
+      "checksum_identity": "PASS"
+    },
+    "1000": {
+      "baseline_median_seconds": 0.123160548,
+      "candidate_median_seconds": 0.080725844,
+      "baseline_over_candidate": 1.525664,
+      "candidate_runtime_reduction_percent": 34.455,
+      "paired_rounds_candidate_faster": "4/4",
+      "checksum_identity": "PASS"
+    }
+  },
+  "aggregate": {
+    "candidate_median_faster_all_profile_sizes": true,
+    "candidate_faster_paired_rounds": "20/20",
+    "checksum_identity_all_profiles": true,
+    "runner_bound_candidate_runtime_reduction_percent_range": [31.666, 38.058],
+    "interpretation": "Strong evidence for retaining the ownership-transfer candidate as a local surface-materialization performance improvement on this runner. The measurement does not establish whole-SWAP, MultiSWAP or portable hardware-independent speedup."
+  },
+  "explicit_nonclaims": [
+    "whole-SWAP speedup",
+    "MultiSWAP speedup",
+    "portable hardware-independent speedup guarantee",
+    "production throughput SLA",
+    "linear scaling with soil profile size"
+  ]
+}

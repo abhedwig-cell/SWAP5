@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "workstream": "F-PE",
+  "work_unit": "F-PE11",
+  "title": "Surface-Evaporation Call-Local Allocation and Scaling Qualification Closeout",
+  "status": "COMPLETE_QUALIFIED_LOCAL_SURFACE_MATERIALIZATION_OWNERSHIP_TRANSFER",
+  "decision": "QUALIFIED_RETAIN_OWNERSHIP_TRANSFER_CANDIDATE_FOR_FUTURE_CANONICAL_PERFORMANCE_ADMISSION",
+  "base": {
+    "authority": "F-CI41P",
+    "branch": "integration/f-ci-canonical",
+    "head": "3c5f5bd3686e1632058b906be21abd73883e30ef"
+  },
+  "artifacts": {
+    "protocol": "integration/f-pe/F-PE11_PROTOCOL.json",
+    "functional_results": "integration/f-pe/F-PE11_RESULTS.json",
+    "timing_results": "integration/f-pe/F-PE11_TIMING_RESULTS.json",
+    "functional_runner": "tests/fpe/run_fpe11_surface_evaporation_allocation_qualification.sh",
+    "timing_driver": "tests/fpe/test_fpe11_surface_evaporation_timing.f90",
+    "timing_runner": "tests/fpe/run_fpe11_paired_surface_evaporation_timing.sh",
+    "workflow": ".github/workflows/fpe11-surface-evaporation-allocation-qualification.yml"
+  },
+  "production_postimage": {
+    "qualified_head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+    "source_files_changed": 2,
+    "files": {
+      "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "67b346251ba21be62c6ed3077f2c71ddd2c8dd02",
+      "src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90": "bc40bc6b121f56071d2b811195759f86130defeb"
+    },
+    "other_production_source_changed": false
+  },
+  "qualified_effect": {
+    "committed_snapshot_clone_retained": true,
+    "downstream_full_profile_copy_churn_removed": true,
+    "public_runtime_surface_preserved": true,
+    "capacity_provider_contract_preserved": true,
+    "surface_evaporation_scientific_equations_changed": false,
+    "transaction_semantics_changed": false,
+    "mass_policy_changed": false,
+    "persistent_per_column_state_added": false,
+    "direct_alias_into_private_committed_state": false
+  },
+  "functional_qualification": {
+    "run": 34553936421,
+    "job": 103122441847,
+    "head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+    "conclusion": "success",
+    "F_CI41P_exact_observable_identity": true,
+    "O0_O2_identity": true,
+    "committed_state_immutability": true,
+    "A_B_A_determinism": true,
+    "real_B110_dry_and_ponded_integration": true,
+    "no_authoritative_mass_booking": true,
+    "public_surface_identity": true,
+    "oracle_sha256": "af1bad1ec0c4867043c0d304f39a3f1d5cc3bc30a966d2a45041b1ba21042ab4"
+  },
+  "timing_characterization": {
+    "run": 34553936421,
+    "job": 103122441847,
+    "head": "a0b810bf68d5b5228da5f39ce9e30fc41ddd6954",
+    "conclusion": "success",
+    "method": "paired same-runner balanced-order O2 microkernel timing",
+    "profile_sizes_nodes": [2, 20, 60, 200, 1000],
+    "paired_rounds_per_profile": 4,
+    "candidate_faster_paired_rounds": "20/20",
+    "candidate_median_faster_all_profile_sizes": true,
+    "runner_bound_runtime_reduction_percent_range": [31.666, 38.058],
+    "checksum_identity": true,
+    "interpretation": "supports retention as a local surface-materialization performance improvement; not a portable or whole-model speedup guarantee"
+  },
+  "multiswap_disposition": {
+    "surface_evaporation_materializer_present_in_current_production_multiswap_loop": false,
+    "full_multiswap_speedup_measured": false,
+    "multiswap_speedup_claim": false,
+    "future_requirement": "When surface evaporation is composed into the production MultiSWAP execution path, qualify end-to-end MultiSWAP timing and scaling separately before making a MultiSWAP performance claim."
+  },
+  "candidate_history_disposition": {
+    "initial_public_detach_API_candidate": "REJECTED_AS_TOO_BROAD",
+    "final_candidate": "ownership transfer behind unchanged public hydraulic-view and materializer seams",
+    "history_rewritten": false,
+    "forward_remediation_qualified": true
+  },
+  "architecture_invariants": {
+    "1_single_kernel": "PASS",
+    "3_explicit_data_separation": "PASS",
+    "5_scratch_per_worker_or_call": "PASS",
+    "6_scalable_memory_layout": "IMPROVED_WITHIN_LOCAL_PATH",
+    "7_transactional_steps": "PASS",
+    "13_mass_conservation_absolute": "PASS",
+    "16_multiswap_primary": "PASS_AS_NONCLAIM_FUTURE_END_TO_END_QUALIFICATION_REQUIRED",
+    "20_alternative_soil_water_solvers": "PASS",
+    "22_no_headcalc_internal_coupling": "PASS",
+    "23_physics_solver_policy_separation": "PASS",
+    "25_reference_mode": "PASS",
+    "26_diagnostics": "PASS",
+    "27_optional_functionality_scales_with_use": "PASS",
+    "30_architecture_review": "PASS"
+  },
+  "explicit_nonclaims": [
+    "whole-SWAP runtime speedup",
+    "MultiSWAP runtime speedup",
+    "portable hardware-independent speedup guarantee",
+    "production throughput SLA",
+    "scientific expansion of surface evaporation",
+    "canonical promotion"
+  ],
+  "downstream_handoff": {
+    "performance_candidate_retained": true,
+    "ready_for_separate_current-canonical_performance_admission_workunit": true,
+    "canonical_promotion_performed_here": false,
+    "requalification_required_if_canonical_source_authority_moves_before_admission": true,
+    "future_multiswap_end_to_end_performance_qualification_required": true
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "closed": true,
+    "open": []
+  }
+}
