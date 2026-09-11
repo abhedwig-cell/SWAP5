@@ -1,0 +1,82 @@
+name: F-TB03 RB1 release qualification bank adoption
+
+on:
+  push:
+    branches:
+      - work/f-tb03-rb1-release-qualification-bank
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  rb1-release-bank-adoption:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact upstream authorities
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, urllib.request
+
+          repo=os.environ['GITHUB_REPOSITORY']
+          token=os.environ['GH_TOKEN']
+          checks={
+            34559093286: ('549531e2e233cccab1416dba04edb266653a5da5', '.github/workflows/ftb02-hydraulic-case-catalog.yml'),
+            34570204719: ('aeb74560d801c4ac7314df7b8845fcc5daf8bba6', '.github/workflows/frb01-release-qualification.yml'),
+            34586202805: ('b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0', '.github/workflows/frb02-final-release-authority.yml'),
+          }
+          evidence={}
+          for run,(head,path) in checks.items():
+              req=urllib.request.Request(
+                  f'https://api.github.com/repos/{repo}/actions/runs/{run}',
+                  headers={
+                      'Authorization': f'Bearer {token}',
+                      'Accept':'application/vnd.github+json',
+                      'X-GitHub-Api-Version':'2022-11-28',
+                  })
+              with urllib.request.urlopen(req) as r:
+                  data=json.load(r)
+              assert data['head_sha']==head, (run,data['head_sha'])
+              assert data['path']==path, (run,data['path'])
+              assert data['conclusion']=='success', (run,data['conclusion'])
+              evidence[str(run)]={'head_sha':head,'path':path,'conclusion':'success'}
+          with open('_ftb03_upstream_runs.json','w',encoding='utf-8') as f:
+              json.dump(evidence,f,indent=2); f.write('\n')
+          print('FTB03_FTB02_EXACT_HEAD_RUN=PASS')
+          print('FTB03_FRB01_EXACT_HEAD_RUN=PASS')
+          print('FTB03_FRB02_EXACT_HEAD_RUN=PASS')
+          PY
+
+      - name: Validate permanent RB1 release-bank fragment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 testbank/runners/validate_ftb03_rb1_release_bank.py | tee _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_EXACT_FOUR_RELEASE_CASES=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_ZERO_PRODUCTION_DELTA=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_ZERO_REFERENCE_DELTA=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_EXACT_FOUR_PRECURSOR_FRAGMENTS=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_RB1_SCIENCE_REMAINS_CLOSED=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_SURFACE_EVAP_THROUGHPUT_NONCLAIM=PASS' _ftb03_validator_stdout.txt
+          grep -Fq 'FTB03_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_RB1_RELEASE_BANK_FRAGMENT_PERMANENTLY_ADOPTED' _ftb03_validator_stdout.txt
+
+      - name: Preserve exact-head adoption evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ftb03-rb1-release-bank-evidence-${{ github.sha }}
+          path: |
+            _ftb03_upstream_runs.json
+            _ftb03_validator_stdout.txt
+            _ftb03_release_bank_evidence.json
+          if-no-files-found: warn
+          retention-days: 90
