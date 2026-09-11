@@ -107,7 +107,8 @@ require(node["properties"]["tier"]["pattern"] == "^T(?:[0-9]|1[0-4])$", "TRACEAB
 # Public mapping baseline is complete as a mapping, while formal 2024 authority remains blocked.
 auth = text(AUTH)
 req = text(REQ)
-require("formal_project_criterion_authority" in text(SCI / "F-DOC01_STATUS_A_AA_AUTHORITY.md"), "FORMAL_AUTHORITY_EXPLICIT")
+authority_doc = text(SCI / "F-DOC01_STATUS_A_AA_AUTHORITY.md")
+require("Formal project criterion authority" in authority_doc, "FORMAL_AUTHORITY_EXPLICIT")
 require("direct_controlled_copy: null" in auth, "CONTROLLED_COPY_NOT_FABRICATED")
 require("compliance_gate: BLOCKED_UNTIL_CONTROLLED_COPY_RECONCILED" in auth, "COMPLIANCE_GATE_FAIL_CLOSED")
 for prohibited in ("STATUS_A_COMPLIANT", "STATUS_AA_COMPLIANT", "SWAP5_HAS_STATUS_A", "STATUS_A_QUALIFIED"):
