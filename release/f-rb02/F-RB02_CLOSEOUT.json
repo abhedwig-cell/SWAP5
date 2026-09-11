@@ -1,0 +1,98 @@
+{
+  "schema": "swap5.frb02_closeout.v1",
+  "work_unit": "F-RB02",
+  "title": "SWAP5 Restricted Production Baseline v1 Final Release Authority & Immutable Release Freeze",
+  "release_id": "SWAP5-RB1-v1",
+  "created_utc_date": "2026-09-11",
+  "status": "COMPLETE_RELEASE_AUTHORITY_ESTABLISHED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED",
+  "branch": "release/f-rb02-restricted-production-baseline-v1-final-authority",
+  "validity_rule": "This closeout is final only when .github/workflows/frb02-final-release-authority.yml concludes success with head_sha equal to the exact commit containing this closeout file.",
+  "authorities": {
+    "RB1_SCIENTIFIC_SOURCE_AUTHORITY": {
+      "sha": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+      "tree": "c77ac75aea522ac20a60da012595af9166efcff6",
+      "src_tree": "8ceeb70a64012631ebba295f5c045ea908b0681f",
+      "reference_tree": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
+      "closeout": "F-CI42P"
+    },
+    "RB1_QUALIFICATION_AUTHORITY": {
+      "frozen_release_candidate": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+      "frb01_final_head": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+      "frb01_final_tree": "71a5b96f550b21567685884b5405b43820f865bf",
+      "frb01_final_exact_head_run": 34570204719,
+      "frb01_final_exact_head_conclusion": "success",
+      "frb01_final_evidence_artifact": 10187525352,
+      "frb01_final_evidence_digest": "sha256:796b14b15fc7780455f8d9a4b308a668d793a4c46eace73368d0289db168c644"
+    },
+    "RB1_RELEASE_METADATA_AUTHORITY": {
+      "binding": "The exact commit containing this closeout file is the final RB1 release metadata authority only when the F-RB02 exact-head workflow is green for that same commit.",
+      "precloseout_manifest_head": "8e6b2d7e726bf7520b2b6780d6897a16df22748e",
+      "precloseout_manifest_tree": "1441895ebc21ee66a2b3a8078811cb9c518a1900",
+      "precloseout_exact_head_run": 34586011698,
+      "precloseout_exact_head_conclusion": "success",
+      "precloseout_evidence_artifact": 10193598895,
+      "precloseout_evidence_digest": "sha256:c4e03b47b31bfeb3bf2e435b92fc8449583a3dd126145a9d5f6e2a83697cc545"
+    }
+  },
+  "frozen_release": {
+    "scope_file": "release/f-rb01/RESTRICTED_PRODUCTION_BASELINE_V1_SCOPE.json",
+    "scope_blob": "09df8417fe12bcc2eca9d9320117264737ffc83a",
+    "capability_matrix_file": "release/f-rb01/RB1_CAPABILITY_MATRIX.json",
+    "capability_matrix_blob": "e20e0b2cae1cfde91c8736ad632059b4fe480d88",
+    "required_capabilities": 15,
+    "required_pass": 15,
+    "required_gap": 0,
+    "optional_admitted": 2,
+    "moving_denominator_forbidden": true
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 24,
+    "not_applicable_to_rb1": 6,
+    "fail": 0,
+    "applicable_failures": 0
+  },
+  "immutability": {
+    "production_delta_by_frb02": "NONE",
+    "reference_delta_by_frb02": "NONE",
+    "scope_delta_by_frb02": "NONE",
+    "acceptance_threshold_delta_by_frb02": "NONE",
+    "physics_delta_by_frb02": "NONE",
+    "solver_delta_by_frb02": "NONE",
+    "performance_delta_by_frb02": "NONE",
+    "scientific_authority_reopened": false
+  },
+  "explicit_nonclaims": [
+    "not complete SWAP 4.3.1 functionality",
+    "not all physical options",
+    "not universal MODFLOW coupling accuracy",
+    "not production RossFast",
+    "not Status A",
+    "not Status AA",
+    "not universal performance superiority",
+    "not validation for every application domain",
+    "surface-evaporation functional MultiSWAP compatibility is qualified but throughput/scaling remains a separate performance workunit"
+  ],
+  "canonical_relationship": "SWAP5-RB1-v1 is immutable. Later integration/f-ci-canonical development does not alter RB1. A future release must enumerate its delta from RB1 and qualify its own candidate.",
+  "handoffs": {
+    "documentation": ["F-DOC01", "F-DOC02"],
+    "testbank": ["F-TB01", "F-TB03"],
+    "handoffs_may_reopen_rb1_science": false
+  },
+  "publication": {
+    "github_tag_or_release_created": false,
+    "publication_required_for_in_repository_authority": false,
+    "allowed_future_tag_target": "the exact final metadata-authority commit containing this closeout after its exact-head CI succeeds",
+    "note": "The active GitHub connector exposes no tag/release write action. A later tag may cite the final authority but may not move or reinterpret RB1."
+  },
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "release_authority_established": true,
+    "scientific_scope_closed": true,
+    "open": ["optional external GitHub tag/release publication only"]
+  }
+}
