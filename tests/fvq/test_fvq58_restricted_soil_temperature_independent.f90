@@ -34,7 +34,6 @@ program test_fvq58_restricted_soil_temperature_independent
   call test_transaction_restart_and_views(parameters, numerical)
   call test_fail_closed(parameters, numerical)
   call test_multiswap_isolation(parameters, numerical)
-
   print '(a)', 'FVQ58_INDEPENDENT_ORACLE=PASS'
 
 contains
@@ -42,56 +41,37 @@ contains
   subroutine test_dense_scientific_oracle(params, num)
     type(soil_temperature_parameters_t), intent(in) :: params
     type(soil_temperature_numerical_config_t), intent(in) :: num
-    real(real64) :: theta0(n), theta1(n), old_temperature(n)
-    real(real64) :: surface_temperature, dt
+    real(real64) :: theta0(n), theta1(n), old_temperature(n), surface_temperature, dt
     integer :: case_id
 
     old_temperature = [12.0_real64, 11.0_real64, 10.0_real64, 9.0_real64, 8.0_real64]
     do case_id = 1, 6
       select case (case_id)
       case (1)
-        theta0 = 0.01_real64
-        theta1 = 0.01_real64
-        surface_temperature = 20.0_real64
-        dt = 0.03_real64
+        theta0 = 0.01_real64; theta1 = 0.01_real64; surface_temperature = 20.0_real64; dt = 0.03_real64
       case (2)
-        theta0 = 0.02_real64
-        theta1 = 0.02_real64
-        surface_temperature = 5.0_real64
-        dt = 0.11_real64
+        theta0 = 0.02_real64; theta1 = 0.02_real64; surface_temperature = 5.0_real64; dt = 0.11_real64
       case (3)
-        theta0 = 0.035_real64
-        theta1 = 0.035_real64
-        surface_temperature = 18.0_real64
-        dt = 0.20_real64
+        theta0 = 0.035_real64; theta1 = 0.035_real64; surface_temperature = 18.0_real64; dt = 0.20_real64
       case (4)
-        theta0 = 0.05_real64
-        theta1 = 0.05_real64
-        surface_temperature = 3.0_real64
-        dt = 0.37_real64
+        theta0 = 0.05_real64; theta1 = 0.05_real64; surface_temperature = 3.0_real64; dt = 0.37_real64
       case (5)
-        theta0 = 0.25_real64
-        theta1 = 0.25_real64
-        surface_temperature = 25.0_real64
-        dt = 0.80_real64
+        theta0 = 0.25_real64; theta1 = 0.25_real64; surface_temperature = 25.0_real64; dt = 0.80_real64
       case (6)
         theta0 = [0.010_real64, 0.018_real64, 0.030_real64, 0.060_real64, 0.200_real64]
         theta1 = [0.015_real64, 0.022_real64, 0.040_real64, 0.100_real64, 0.300_real64]
-        surface_temperature = -2.0_real64
-        dt = 0.15_real64
+        surface_temperature = -2.0_real64; dt = 0.15_real64
       end select
-      call compare_candidate_to_dense_oracle(params, num, theta0, theta1, old_temperature, &
-           surface_temperature, dt, case_id)
+      call compare_candidate_to_dense_oracle(params, num, theta0, theta1, old_temperature, surface_temperature, dt)
     end do
     print '(a)', 'FVQ58_DENSE_ORACLE_CASES=6'
     print '(a)', 'FVQ58_LEGACY_DEVRIES_DENSE_ORACLE=PASS'
   end subroutine test_dense_scientific_oracle
 
-  subroutine compare_candidate_to_dense_oracle(params, num, theta0, theta1, old_temperature, surface_temperature, dt, case_id)
+  subroutine compare_candidate_to_dense_oracle(params, num, theta0, theta1, old_temperature, surface_temperature, dt)
     type(soil_temperature_parameters_t), intent(in) :: params
     type(soil_temperature_numerical_config_t), intent(in) :: num
     real(real64), intent(in) :: theta0(n), theta1(n), old_temperature(n), surface_temperature, dt
-    integer, intent(in) :: case_id
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
     type(soil_temperature_state_t) :: committed, trial
     type(soil_temperature_workspace_t) :: workspace
@@ -112,7 +92,6 @@ contains
     call check(result%status == SOIL_TEMP_OK .and. result%produced, 'oracle case candidate trial')
     call copy_soil_temperature_profile(trial, candidate_profile, s)
     call check(s == SOIL_TEMP_OK, 'oracle case candidate profile')
-
     call independent_heat_step(theta0, theta1, old_temperature, surface_temperature, dt, &
          oracle_profile, oracle_flux, oracle_storage, oracle_boundary, oracle_residual)
 
@@ -125,7 +104,6 @@ contains
     call check(diagnostics%energy_accounting_complete, 'candidate energy accounting complete')
     call check(diagnostics%zero_bottom_heat_flux_used, 'candidate zero bottom marker')
     call check(diagnostics%prescribed_surface_temperature_used, 'candidate top boundary marker')
-    call check(case_id >= 1 .and. case_id <= 6, 'case id')
   end subroutine compare_candidate_to_dense_oracle
 
   subroutine test_zero_gradient_and_flux_sign(params, num)
@@ -138,26 +116,42 @@ contains
     type(soil_temperature_result_t) :: result
     type(soil_temperature_diagnostics_t) :: diagnostics
     real(real64), allocatable :: profile(:)
+    real(real64) :: theta_uniform(n), old_uniform(n), oracle_profile(n)
+    real(real64) :: heat_capacity(n), conductivity(n), oracle_flux, oracle_storage, oracle_boundary, oracle_residual
+    real(real64) :: roundoff_flux_bound, flux_scale
     integer :: s
 
-    call make_hydraulic_view([0.20_real64,0.20_real64,0.20_real64,0.20_real64,0.20_real64], h0)
-    call make_hydraulic_view([0.20_real64,0.20_real64,0.20_real64,0.20_real64,0.20_real64], h1)
-    call initialize_soil_temperature_state([10.0_real64,10.0_real64,10.0_real64,10.0_real64,10.0_real64], committed, s)
+    theta_uniform = 0.20_real64
+    old_uniform = 10.0_real64
+    call make_hydraulic_view(theta_uniform, h0)
+    call make_hydraulic_view(theta_uniform, h1)
+    call initialize_soil_temperature_state(old_uniform, committed, s)
     forcing%prescribed_surface_temperature_c = 10.0_real64
     call trial_restricted_soil_temperature(params, num, forcing, h0, h1, committed, 0.0_real64, 0.4_real64, &
          workspace, trial, result, diagnostics)
     call check(result%status == SOIL_TEMP_OK, 'zero gradient trial')
     call copy_soil_temperature_profile(trial, profile, s)
-    call check(maxval(abs(profile-10.0_real64)) < 1.0e-12_real64, 'zero gradient profile')
-    call check(abs(result%top_heat_flux_into_soil_j_cm2_day) < 1.0e-12_real64, 'zero gradient flux')
+    call check(s == SOIL_TEMP_OK, 'zero gradient profile copy')
+    call independent_heat_step(theta_uniform, theta_uniform, old_uniform, 10.0_real64, 0.4_real64, &
+         oracle_profile, oracle_flux, oracle_storage, oracle_boundary, oracle_residual)
+    call independent_devries(theta_uniform, heat_capacity, conductivity)
+    flux_scale = maxval(conductivity)*maxval(abs(old_uniform))/minval(dist)
+    roundoff_flux_bound = 512.0_real64*epsilon(1.0_real64)*max(1.0_real64, flux_scale)
+    call check(maxval(abs(profile-oracle_profile)) < 5.0e-10_real64, 'zero gradient independent profile oracle')
+    call check(maxval(abs(profile-old_uniform)) < 1.0e-12_real64, 'zero gradient profile identity')
+    call check(abs(result%top_heat_flux_into_soil_j_cm2_day-oracle_flux) < roundoff_flux_bound, 'zero gradient flux oracle')
+    call check(abs(result%top_heat_flux_into_soil_j_cm2_day) < roundoff_flux_bound, 'zero gradient candidate roundoff bound')
+    call check(abs(oracle_flux) < roundoff_flux_bound, 'zero gradient dense roundoff bound')
+    call check(abs(oracle_storage) < 1.0e-9_real64 .and. abs(oracle_boundary) < 1.0e-9_real64 .and. &
+         abs(oracle_residual) < 1.0e-9_real64, 'zero gradient energy identity')
 
-    call initialize_soil_temperature_state([10.0_real64,10.0_real64,10.0_real64,10.0_real64,10.0_real64], committed, s)
+    call initialize_soil_temperature_state(old_uniform, committed, s)
     forcing%prescribed_surface_temperature_c = 30.0_real64
     call trial_restricted_soil_temperature(params, num, forcing, h0, h1, committed, 1.0_real64, 1.2_real64, &
          workspace, trial, result, diagnostics)
     call check(result%status == SOIL_TEMP_OK .and. result%top_heat_flux_into_soil_j_cm2_day > 0.0_real64, 'hot surface flux sign')
 
-    call initialize_soil_temperature_state([10.0_real64,10.0_real64,10.0_real64,10.0_real64,10.0_real64], committed, s)
+    call initialize_soil_temperature_state(old_uniform, committed, s)
     forcing%prescribed_surface_temperature_c = -5.0_real64
     call trial_restricted_soil_temperature(params, num, forcing, h0, h1, committed, 2.0_real64, 2.2_real64, &
          workspace, trial, result, diagnostics)
@@ -172,14 +166,11 @@ contains
     type(soil_temperature_numerical_config_t), intent(in) :: num
     real(real64), allocatable :: p1(:), p2(:), p4(:), p8(:)
     real(real64) :: e12, e24, e48
-
     call integrate_candidate(params, num, 1, 1.6_real64, 24.0_real64, p1)
     call integrate_candidate(params, num, 2, 1.6_real64, 24.0_real64, p2)
     call integrate_candidate(params, num, 4, 1.6_real64, 24.0_real64, p4)
     call integrate_candidate(params, num, 8, 1.6_real64, 24.0_real64, p8)
-    e12 = maxval(abs(p1-p2))
-    e24 = maxval(abs(p2-p4))
-    e48 = maxval(abs(p4-p8))
+    e12 = maxval(abs(p1-p2)); e24 = maxval(abs(p2-p4)); e48 = maxval(abs(p4-p8))
     call check(e12 > 0.0_real64, 'temporal refinement nontrivial')
     call check(e24 < e12 .and. e48 < e24, 'temporal refinement monotone')
     print '(a)', 'FVQ58_TEMPORAL_REFINEMENT=PASS'
@@ -197,7 +188,6 @@ contains
     type(soil_temperature_forcing_t) :: forcing
     real(real64) :: step_dt
     integer :: k, s
-
     call make_hydraulic_view([0.18_real64,0.22_real64,0.27_real64,0.16_real64,0.31_real64], h0)
     call make_hydraulic_view([0.18_real64,0.22_real64,0.27_real64,0.16_real64,0.31_real64], h1)
     call initialize_soil_temperature_state([8.0_real64,9.0_real64,10.0_real64,11.0_real64,12.0_real64], state, s)
@@ -232,7 +222,6 @@ contains
     call initialize_soil_temperature_state([7.0_real64,8.0_real64,9.0_real64,10.0_real64,11.0_real64], continuous, s)
     call initialize_soil_temperature_state([7.0_real64,8.0_real64,9.0_real64,10.0_real64,11.0_real64], split, s)
     forcing%prescribed_surface_temperature_c = 16.0_real64
-
     do k = 1, 4
       call advance_and_commit(params, num, forcing, h0, h1, continuous, real(k-1,real64)*0.2_real64, real(k,real64)*0.2_real64, wc)
     end do
@@ -268,7 +257,6 @@ contains
     class default
       call check(.false., 'transaction clone type')
     end select
-
     call build_soil_temperature_field_view(restored, view, s)
     call check(s == SOIL_TEMP_OK .and. view%active_nodes == n, 'semantic field view')
     call check(maxval(abs(view%temperature_c-before)) < 1.0e-15_real64, 'semantic field view values')
@@ -289,7 +277,6 @@ contains
     type(soil_temperature_result_t) :: result
     type(soil_temperature_diagnostics_t) :: diagnostics
     integer :: s
-
     call make_hydraulic_view([0.15_real64,0.18_real64,0.20_real64,0.16_real64,0.25_real64], h0)
     call make_hydraulic_view([0.16_real64,0.19_real64,0.21_real64,0.17_real64,0.26_real64], h1)
     call initialize_soil_temperature_state([10.0_real64,10.0_real64,10.0_real64,10.0_real64,10.0_real64], committed, s)
@@ -297,7 +284,6 @@ contains
     call trial_restricted_soil_temperature(params, num, forcing, h0, h1, committed, 3.0_real64, 3.0_real64, &
          workspace, trial, result, diagnostics)
     call check(result%status == SOIL_TEMP_INVALID_INTERVAL .and. .not. result%produced, 'invalid interval fail closed')
-
     bad = h1
     bad%water_content(3) = theta_sat(3) + 0.01_real64
     call trial_restricted_soil_temperature(params, num, forcing, h0, bad, committed, 3.0_real64, 3.2_real64, &
@@ -316,7 +302,6 @@ contains
     real(real64), allocatable :: pi(:), pr(:)
     real(real64) :: initial_value(4), surface_value(4)
     integer :: i, k, s
-
     call make_hydraulic_view([0.10_real64,0.14_real64,0.18_real64,0.12_real64,0.22_real64], h0)
     call make_hydraulic_view([0.11_real64,0.15_real64,0.19_real64,0.13_real64,0.23_real64], h1)
     initial_value = [4.0_real64, 8.0_real64, 12.0_real64, 16.0_real64]
@@ -328,7 +313,6 @@ contains
       call check(s == SOIL_TEMP_OK, 'multiswap reference init')
       forcing(i)%prescribed_surface_temperature_c = surface_value(i)
     end do
-
     do k = 1, 5
       do i = 1, 4
         call advance_and_commit(params, num, forcing(i), h0, h1, interleaved(i), real(k-1,real64)*0.07_real64, &
@@ -340,10 +324,8 @@ contains
         call advance_and_commit(params, num, forcing(i), h0, h1, reference(i), real(k-1,real64)*0.07_real64, &
              real(k,real64)*0.07_real64, reference_workspace(i))
       end do
-      call copy_soil_temperature_profile(interleaved(i), pi, s)
-      call check(s == SOIL_TEMP_OK, 'multiswap interleaved profile')
-      call copy_soil_temperature_profile(reference(i), pr, s)
-      call check(s == SOIL_TEMP_OK, 'multiswap reference profile')
+      call copy_soil_temperature_profile(interleaved(i), pi, s); call check(s == SOIL_TEMP_OK, 'multiswap interleaved profile')
+      call copy_soil_temperature_profile(reference(i), pr, s); call check(s == SOIL_TEMP_OK, 'multiswap reference profile')
       call check(maxval(abs(pi-pr)) < 1.0e-15_real64, 'multiswap interleaving isolation')
       deallocate(pi, pr)
     end do
@@ -362,7 +344,6 @@ contains
     type(soil_temperature_result_t) :: result
     type(soil_temperature_diagnostics_t) :: diagnostics
     integer :: s
-
     call trial_restricted_soil_temperature(params, num, forcing, h0, h1, state, t0, t1, workspace, trial, result, diagnostics)
     call check(result%status == SOIL_TEMP_OK .and. result%produced, 'advance trial')
     call check(.not. diagnostics%committed_state_mutated, 'advance committed immutable')
@@ -382,26 +363,21 @@ contains
        new_temperature, top_flux, storage_change, boundary_energy, residual)
     real(real64), intent(in) :: theta_start(n), theta_end(n), old_temperature(n), surface_temperature, dt
     real(real64), intent(out) :: new_temperature(n), top_flux, storage_change, boundary_energy, residual
-    real(real64) :: theta(n), heat_capacity(n), conductivity(n), face(n)
-    real(real64) :: matrix(n,n), rhs(n)
+    real(real64) :: theta(n), heat_capacity(n), conductivity(n), face(n), matrix(n,n), rhs(n)
     real(real64) :: lower_coefficient, upper_coefficient
     integer :: i
-
     theta = 0.5_real64*(theta_start+theta_end)
     call independent_devries(theta, heat_capacity, conductivity)
     face(1) = conductivity(1)
     do i = 2, n
       face(i) = 0.5_real64*(conductivity(i-1)+conductivity(i))
     end do
-
-    matrix = 0.0_real64
-    rhs = 0.0_real64
+    matrix = 0.0_real64; rhs = 0.0_real64
     lower_coefficient = -dt*face(1)/(dz(1)*dist(1))
     upper_coefficient = -dt*face(2)/(dz(1)*dist(2))
     matrix(1,1) = heat_capacity(1)-lower_coefficient-upper_coefficient
     matrix(1,2) = upper_coefficient
     rhs(1) = heat_capacity(1)*old_temperature(1)-lower_coefficient*surface_temperature
-
     do i = 2, n-1
       lower_coefficient = -dt*face(i)/(dz(i)*dist(i))
       upper_coefficient = -dt*face(i+1)/(dz(i)*dist(i+1))
@@ -410,12 +386,10 @@ contains
       matrix(i,i+1) = upper_coefficient
       rhs(i) = heat_capacity(i)*old_temperature(i)
     end do
-
     lower_coefficient = -dt*face(n)/(dz(n)*dist(n))
     matrix(n,n-1) = lower_coefficient
     matrix(n,n) = heat_capacity(n)-lower_coefficient
     rhs(n) = heat_capacity(n)*old_temperature(n)
-
     call dense_solve(matrix, rhs, new_temperature)
     storage_change = sum(heat_capacity*dz*(new_temperature-old_temperature))
     top_flux = face(1)*(surface_temperature-new_temperature(1))/dist(1)
@@ -438,7 +412,6 @@ contains
     real(real64) :: fkk_dry, fk_dry, fkk_wet, fk_wet
     real(real64) :: f_air, g_air, g_air_dry, k_aw, numerator, denominator, k_dry, k_wet
     integer :: i
-
     k_qw = weighting(k_quartz, k_water, g_quartz)
     k_cw = weighting(k_clay, k_water, g_clay)
     k_ow = weighting(k_organic, k_water, g_organic)
@@ -446,12 +419,10 @@ contains
     k_qa = weighting(k_quartz, k_air, g_quartz)
     k_ca = weighting(k_clay, k_air, g_clay)
     k_oa = weighting(k_organic, k_air, g_organic)
-
     do i = 1, n
       f_air = max(0.0_real64, theta_sat(i)-theta(i))
       heat_capacity(i) = (fq(i)*rho_quartz*c_quartz + fc(i)*rho_clay*c_clay + fo(i)*rho_organic*c_organic + &
            theta(i)*rho_water*c_water + f_air*rho_air*c_air)*1.0e-6_real64
-
       if (theta(i) > theta_dry) then
         g_air = 0.333_real64-f_air/theta_sat(i)*0.298_real64
       else
@@ -459,12 +430,10 @@ contains
         g_air = 0.013_real64+theta(i)/theta_dry*(g_air_dry-0.013_real64)
       end if
       k_aw = weighting(k_air, k_water, g_air)
-
       fkk_dry = fq(i)*(k_qa*k_quartz)+fc(i)*(k_ca*k_clay)+fo(i)*(k_oa*k_organic)
       fk_dry = fq(i)*k_qa+fc(i)*k_ca+fo(i)*k_oa
       fkk_wet = fq(i)*(k_qw*k_quartz)+fc(i)*(k_cw*k_clay)+fo(i)*(k_ow*k_organic)
       fk_wet = fq(i)*k_qw+fc(i)*k_cw+fo(i)*k_ow
-
       if (theta(i) <= theta_dry) then
         numerator = fkk_dry+f_air*k_air+theta(i)*(k_wa*k_water)
         denominator = fk_dry+f_air+theta(i)*k_wa
@@ -498,9 +467,7 @@ contains
     real(real64), intent(out) :: x(n)
     real(real64) :: a(n,n), b(n), row_tmp(n), scalar_tmp, factor
     integer :: i, j, k, pivot
-
-    a = a_input
-    b = b_input
+    a = a_input; b = b_input
     do k = 1, n-1
       pivot = k
       do i = k+1, n
@@ -508,16 +475,11 @@ contains
       end do
       call check(abs(a(pivot,k)) > 1.0e-20_real64, 'dense pivot')
       if (pivot /= k) then
-        row_tmp = a(k,:)
-        a(k,:) = a(pivot,:)
-        a(pivot,:) = row_tmp
-        scalar_tmp = b(k)
-        b(k) = b(pivot)
-        b(pivot) = scalar_tmp
+        row_tmp = a(k,:); a(k,:) = a(pivot,:); a(pivot,:) = row_tmp
+        scalar_tmp = b(k); b(k) = b(pivot); b(pivot) = scalar_tmp
       end if
       do i = k+1, n
-        factor = a(i,k)/a(k,k)
-        a(i,k) = 0.0_real64
+        factor = a(i,k)/a(k,k); a(i,k) = 0.0_real64
         do j = k+1, n
           a(i,j) = a(i,j)-factor*a(k,j)
         end do
