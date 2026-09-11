@@ -150,7 +150,7 @@ contains
     if (.not. ieee_is_finite(storage_change) .or. .not. ieee_is_finite(top_flux) .or. .not. ieee_is_finite(residual)) then
       result%status=SOIL_TEMP_ENERGY_CLOSURE_FAILURE; diagnostics%status=result%status; return
     end if
-    if (numerical%require_energy_closure .and. abs(residual)>numerical%energy_abs_tolerance_j_cm2) then
+    if (abs(residual)>numerical%energy_abs_tolerance_j_cm2) then
       result%status=SOIL_TEMP_ENERGY_CLOSURE_FAILURE; diagnostics%status=result%status; return
     end if
     call materialize_soil_temperature_trial_state(workspace%solution,trial_state,status)
