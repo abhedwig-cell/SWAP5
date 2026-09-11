@@ -1,0 +1,66 @@
+name: F-RB02 final RB1 v1 release authority
+
+on:
+  push:
+    branches:
+      - release/f-rb02-restricted-production-baseline-v1-final-authority
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  final-release-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify F-RB01 final exact-head authority
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/34570204719" \
+            > _frb01_final_run.json
+          python3 - <<'PY'
+          import json
+          r = json.load(open('_frb01_final_run.json', encoding='utf-8'))
+          assert r['head_sha'] == 'aeb74560d801c4ac7314df7b8845fcc5daf8bba6', r['head_sha']
+          assert r['conclusion'] == 'success', r['conclusion']
+          assert r['path'] == '.github/workflows/frb01-release-qualification.yml', r['path']
+          print('FRB02_FRB01_FINAL_EXACT_HEAD_RUN=PASS')
+          PY
+
+      - name: Validate immutable RB1 release authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 release/f-rb02/validate_release_authority.py | tee _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_HEAD_SRC_TREE_IDENTITY=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_HEAD_REFERENCE_TREE_IDENTITY=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_CAPABILITY_MATRIX_15_OF_15=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_ARCHITECTURE_30_ZERO_FAIL=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_ZERO_OPEN_RB1_BLOCKERS=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_FRB02_ZERO_SCIENTIFIC_DELTA_DECLARATION=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_SURFACE_EVAP_THROUGHPUT_NONCLAIM=PASS' _frb02_validator_stdout.txt
+          grep -Fq 'FRB02_DECISION_IF_WORKFLOW_GREEN=QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_RELEASE_AUTHORITY_ESTABLISHED' _frb02_validator_stdout.txt
+
+      - name: Preserve exact-head authority evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frb02-release-authority-evidence-${{ github.sha }}
+          path: |
+            _frb01_final_run.json
+            _frb02_validator_stdout.txt
+            _frb02_release_authority_evidence.json
+          if-no-files-found: warn
+          retention-days: 90
