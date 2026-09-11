@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-SI29",
+  "artifact": "LEGACY_BOUNDARY_ORACLE_PROVENANCE",
+  "qualification": false,
+  "purpose": "Pin the independent legacy source authority used to qualify the restricted dynamic top-boundary component without making the candidate implementation its own oracle.",
+  "source_archive": {
+    "outer_archive": "SWAP_4.3.1(6).zip",
+    "outer_archive_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+    "nested_archive": "SWAP_4.3.1/tools/SWAP/source/SWAP.ZIP",
+    "nested_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "legacy_source": "SWAP/boundtop.f90",
+    "legacy_source_sha256": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+    "legacy_version_id": "$Id: boundtop.f90 368 2018-01-11 15:44:15Z heine003 $"
+  },
+  "oracle_rule": "The executable oracle independently re-expresses the restricted BoundTop/PondRunoff algebra from the pinned legacy source while reusing only already-qualified lower-level constitutive and restricted surface-evaporation primitives. It must not call evaluate_b110_dynamic_top_boundary internally.",
+  "restricted_legacy_mapping": {
+    "hatm_cm": -275000.0,
+    "ponded_threshold_cm": 1.0e-10,
+    "surface_head_switch_cm": 1.0e-6,
+    "runoff_zero_threshold_cm": 1.0e-6,
+    "macropore": "inactive; ArMpSs=0 and QMpLatSs absent",
+    "frost": "inactive; rfcp=1",
+    "ksat_extension": "disabled; saturated surface conductivity is the admitted default-MvG Ksat",
+    "swredu": 0,
+    "swdra2_surface_water_coupling": "excluded",
+    "time_dependent_pondmx": "excluded",
+    "active_runoff": "linear rsroexp=1 with rsro>=1e-3 day",
+    "conductivity_mean_methods": [1,2,3,4,5,6]
+  },
+  "legacy_equations_pinned": [
+    "Emax = -k1Atm*((hatm-h_top)/disnod_top + 1)",
+    "pondm1>1e-10 => reva=0 and epd=epond; otherwise reva=min(peva,max(0,Emax)) and epd=0 in the admitted swredu=0 profile",
+    "q0 = precipitation + irrigation + snowmelt + runon - reva - epd",
+    "q1 = -q0 - pondm1/dt",
+    "q1>=0 and q1>Emax => atmospheric prescribed-head regime",
+    "h0 = h_top - disnod_top*(q1/k1max + 1); h0<=1e-6 => flux regime",
+    "otherwise prescribed-head ponding with h0max = (pondm1 + q0*dt - k1max*dt + p1*h_top)/(p1+1)",
+    "h0max<=pondmx => no runoff; otherwise use legacy trial-local runoff test and the analytic linear-runoff update when active runoff is non-negligible"
+  ],
+  "hard_nonclaims": [
+    "No nonlinear runoff exponent is qualified.",
+    "No macropore, frost, Ksat-extension, swdra=2 or time-dependent pondmx behavior is qualified.",
+    "This oracle does not by itself qualify HeadCalc replacement, transaction composition or accepted-state publication.",
+    "Lower-level default-MvG conductivity and restricted surface-evaporation capabilities remain their own upstream authorities."
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false
+  }
+}
