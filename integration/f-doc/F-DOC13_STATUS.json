@@ -1,0 +1,77 @@
+{
+  "schema": "swap5.fdoc13_status.v1",
+  "work_unit": "F-DOC13",
+  "title": "RB1 TIME-REFERENCE Restricted Numerical/Formal T0-T7 Authority",
+  "branch": "work/f-doc13-rb1-time-reference-numerical-formal-authority",
+  "base": "e34caabe225986db3c60551f4168869f3e4cc2a2",
+  "source_authority": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+  "rb1_qualification": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+  "rb1_release": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0",
+  "status": "COMPLETE_QUALIFIED_WHEN_EXACT_HEAD_CI_GREEN",
+  "decision": "QUALIFIED_RB1_TIME_REFERENCE_RESTRICTED_T0_T7_NUMERICAL_FORMAL_AUTHORITY_WITH_EXPLICIT_APPLICATION_ACCURACY_NONCLAIM",
+  "validity_rule": "Final qualification and closure require .github/workflows/fdoc13-rb1-time-reference-numerical-formal-authority.yml to complete successfully with head_sha equal to the exact final branch head containing this status and F-DOC13_CLOSEOUT.json. After a successful exact-final-head run no metadata rewrite is required or allowed absent a genuine defect.",
+  "scope": {
+    "capability": "RB1-TIME-REFERENCE",
+    "family": "NUMERICAL_METHOD",
+    "tier_scope": ["T0","T1","T2","T3","T4","T5","T6","T7"],
+    "explicit_dispositions": 8,
+    "unresolved_t0_t7_after_fdoc13": 0,
+    "exact_linear_true_error_theorem_scope": true,
+    "general_nonlinear_true_error_bound": false,
+    "numeric_H_budget_selected": false,
+    "universal_H_budget": false,
+    "groundwater_head_accuracy_budget": false,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "status_a_compliant": false,
+    "status_aa_compliant": false
+  },
+  "remaining_gap_state": {
+    "application_specific_H_budget_and_total_error_budget": "OPEN_EXTERNAL_POLICY_APPLICATION_EVIDENCE",
+    "T12_application_validation": "OPEN",
+    "controlled_WR_QA_2024_copy_and_reconciliation": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "physical_science_and_hybrid_T0_T7_authority": "OPEN_SEPARATE_FAMILIES",
+    "remaining_T8_T10_and_complete_T11_obligations": "OPEN_AS_GOVERNED_BY_EXISTING_TRACEABILITY_REGISTRIES",
+    "surface_evaporation_performance": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "scope_holds": {
+    "production_delta": "NONE",
+    "reference_delta": "NONE",
+    "physics_delta": "NONE",
+    "solver_delta": "NONE",
+    "scientific_tolerance_delta": "NONE",
+    "mass_criterion_delta": "NONE",
+    "temporal_acceptance_delta": "NONE",
+    "performance_delta": "NONE",
+    "rb1_denominator_changed": false,
+    "scientific_authority_reopened": false,
+    "release_authority_reopened": false,
+    "universal_H_budget_claimed": false,
+    "universal_groundwater_head_accuracy_claimed": false,
+    "general_nonlinear_true_error_bound_claimed": false,
+    "surface_evaporation_throughput_scaling_claimed": false
+  },
+  "architecture_invariants": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "work_state": {
+    "realized": true,
+    "persisted": true,
+    "tested": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "qualified": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "closed": "TRUE_WHEN_EXACT_HEAD_CI_GREEN",
+    "scientific_scope_reopened": false,
+    "open": [
+      "Application-specific H_budget and total temporal/groundwater accuracy budget",
+      "T12 independent application validation",
+      "Controlled WR-QA-2024 copy and reconciliation",
+      "Physical-science and hybrid T0-T7 authority families",
+      "Remaining T8-T10 and complete T11 obligations",
+      "Surface-evaporation throughput/scaling and call-local allocation performance"
+    ]
+  }
+}
