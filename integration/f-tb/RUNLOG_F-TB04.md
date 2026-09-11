@@ -6,7 +6,7 @@
 - F-TB03 live closeout remained exactly `65d5e5202446212390dbdd84b06e6b2a80e7121c`.
 - Current canonical source authority is `0aeb0a2ed4096e1f9493d3dabc70962ea5270182`; repository `main` is not the current canonical authority.
 - F-TB01, F-TB02 and F-TB03 testbank registries were inspected and retained unchanged.
-- Immutable RB1 archive and historical evidence remain read-only.
+- Immutable RB1 authorities and historical evidence remain read-only.
 
 ## Composition baseline
 
@@ -31,7 +31,20 @@ The FCI30 FMQ26 parallel fixture uses one parameter reference. FMR18 confirms mu
 - Determinism is explicitly split between `BIT_IDENTITY_REQUIRED` and `NUMERICAL_EQUIVALENCE_REQUIRED`.
 - No new scientific nonzero tolerance was introduced. Existing `1e-12` hard water-mass qualification is inherited unchanged where applicable.
 - Required architecture-invariant mapping includes 3, 4, 5, 6, 7, 8, 9, 13, 16, 23, 24, 26, 27, 29 and 30.
+- A separate 30-invariant no-adverse-delta audit is persisted at `integration/f-tb/F-TB04_INVARIANT_AUDIT.json`.
 
-## Defect status before execution
+## First execution and harness remediation
 
-No production-source defect has been established by the F-TB04 buildout itself. Any defect found by qualification will be persisted and routed to a separate owner workunit rather than patched here.
+The first FAST push run, `34602863572` at `f1b4e1298be992f41d06939980747af51b3d6af0`, failed before any scientific or production test because the new F-TB04 validator referred to a non-existent `testbank/rb1` subtree on the immutable F-TB03 closeout.
+
+Live inspection of F-TB03 showed that RB1 permanence is represented by exact scientific, qualification and release-metadata authorities, not by a copied `testbank/rb1` directory. The validator alone was corrected at `0a77bc04061d2bf3dc267d073770ea2203781ac4` to lock the exact RB1 source/reference trees, qualification tree, release-metadata tree, closeout blob, testbank crosswalk blob and architecture-audit blob. No production or reference source changed.
+
+The corrected FAST run `34609684896` on `0a77bc04061d2bf3dc267d073770ea2203781ac4` concluded `success`. It established catalog schema/counts, invariant mapping, determinism-class separation, no-new-tolerance policy, current-canonical source immutability, RB1 authority immutability, prior-testbank authority immutability, transaction semantics and O0/O2 transaction transcript identity.
+
+## Defect status
+
+No production-source defect was discovered. The only observed failure was the F-TB04 validator path error described above and was remediated strictly inside the testbank harness. No separate production owner workunit is therefore required.
+
+## Final exact-head rule
+
+F-TB04 follows the established F-TB03 closeout pattern. The final decision is valid only if the F-TB04 workflow concludes success with `head_sha` equal to the exact commit containing the final qualification status. That exact-head run must execute both FAST and RELEASE. RELEASE includes FCI28 restart qualification, FCI30 serialized/parallel qualification, the F-TB04 heterogeneous-parameter-reference MultiSWAP case, and FCI35 cross-worker committed-boundary restart qualification. DEEP remains explicit and is not required for closeout because the historical VQ31 replay performs a test-only overlay commit in its isolated checkout.
