@@ -1,0 +1,70 @@
+name: F-MR39 closeout evidence integrity
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - work/f-mr39-restricted-soil-temperature-runtime-composition
+    paths:
+      - .github/workflows/fmr39-closeout-evidence.yml
+
+permissions:
+  contents: read
+
+jobs:
+  closeout-integrity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify qualified source authority is preserved
+        run: |
+          CANDIDATE=87b553094b66980006b69f5ba8b53d70ccd0a8e0
+          BASE=d201904a85f3b595e028242978e52c02f5122a09
+          git merge-base --is-ancestor "$CANDIDATE" HEAD
+          test -z "$(git diff --name-only "$CANDIDATE"..HEAD -- src)"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" = "07877429f94ccf07c353fa5f8ba969c341ad88dd"
+          test "$(git rev-parse HEAD:src/runtime/mod_fmr_restart_state_contract.f90)" = "bb2c37efce37a73441181f14d15847c652ab45ea"
+          mapfile -t SRC_DELTA < <(git diff --name-only "$BASE".."$CANDIDATE" -- src | sort)
+          printf '%s\n' "${SRC_DELTA[@]}" > /tmp/fmr39-src.txt
+          printf '%s\n' src/runtime/mod_fmr_restart_state_contract.f90 src/runtime/mod_fmr_serialized_reference_backend.f90 | sort > /tmp/fmr39-expected.txt
+          cmp -s /tmp/fmr39-src.txt /tmp/fmr39-expected.txt
+          echo "FMR39_CLOSEOUT_SOURCE_AUTHORITY_PRESERVED=PASS:$CANDIDATE"
+          echo "FMR39_CLOSEOUT_BOUNDED_SOURCE_DELTA=PASS"
+      - name: Validate closeout evidence
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          status=json.loads(Path('integration/f-mr/F-MR39_QUALIFICATION_STATUS.json').read_text())
+          audit=json.loads(Path('integration/f-mr/F-MR39_INVARIANT_AUDIT.json').read_text())
+          candidate='87b553094b66980006b69f5ba8b53d70ccd0a8e0'
+          assert status['status']=='CLOSED_QUALIFIED'
+          assert status['decision']=='QUALIFIED_RESTRICTED_SOIL_TEMPERATURE_TRANSACTIONAL_RUNTIME_COMPOSITION'
+          assert status['candidate_source_authority']==candidate
+          assert status['qualification_evidence']['exact_immutable_candidate_run']==34631572194
+          assert status['qualification_evidence']['exact_candidate_head_assertion']=='PASS'
+          assert status['downstream_recomposition_requirement']['required'] is True
+          assert audit['candidate_source_authority']==candidate
+          inv=audit['invariants']
+          assert len(inv)==30
+          assert sorted(x['id'] for x in inv)==list(range(1,31))
+          assert all(x['status'] in {'PASS','PASS_RESTRICTED','PRESERVED_BOUNDARY'} for x in inv)
+          runlog=Path('integration/f-mr/RUNLOG_F-MR39.md').read_text()
+          assert candidate in runlog and '34631572194' in runlog and 'FMR39_GATE=PASS' in runlog
+          print('FMR39_CLOSEOUT_STATUS_JSON=PASS')
+          print('FMR39_CLOSEOUT_30_INVARIANT_AUDIT=PASS')
+          print('FMR39_CLOSEOUT_RUNLOG_BINDING=PASS')
+          PY
+      - name: Recheck canonical movement boundary
+        run: |
+          BASE=d201904a85f3b595e028242978e52c02f5122a09
+          git fetch origin integration/f-ci-canonical
+          CURRENT="$(git rev-parse origin/integration/f-ci-canonical)"
+          git merge-base --is-ancestor "$BASE" "$CURRENT"
+          test "$CURRENT" != "$BASE"
+          echo "FMR39_CURRENT_CANONICAL_RECOMPOSITION_REQUIRED=PASS:$CURRENT"
+      - name: Closeout gate
+        run: |
+          echo "FMR39_CLOSEOUT_EVIDENCE_INTEGRITY=PASS:$(git rev-parse HEAD)"
