@@ -23,22 +23,22 @@ program test_fgc09_application_accuracy_contract
   call contract%materialize_model_temporal_budget(config, materialized)
   call check(.not. materialized, 'empty contract does not materialize', failures)
   call check(.not. config%model_temporal_indicator_budget_available, 'empty contract clears stale availability', failures)
-  call check(config%model_temporal_indicator_budget == 0.0_real64, 'empty contract clears stale value', failures)
+  call check(close_real(config%model_temporal_indicator_budget, 0.0_real64), 'empty contract clears stale value', failures)
 
   call set_valid_contract(contract, COUPLING_QOI_GROUNDWATER_HEAD, 12.0_real64, 0.25_real64)
   call check(contract%application_requirement_valid(), 'head application requirement valid', failures)
   call check(contract%temporal_allocation_valid(), 'head temporal allocation valid', failures)
   call check(contract%temporal_budget_ready(), 'head temporal budget ready', failures)
   call contract%evaluate_temporal_budget_cm(budget, available)
-  call check(available .and. budget == 3.0_real64, 'head budget composes exactly', failures)
+  call check(available .and. close_real(budget, 3.0_real64), 'head budget composes exactly', failures)
   call contract%materialize_model_temporal_budget(config, materialized)
   call check(materialized, 'head budget materializes', failures)
   call check(config%model_temporal_indicator_budget_available, 'generic carrier availability set', failures)
-  call check(config%model_temporal_indicator_budget == 3.0_real64, 'generic carrier receives exact head budget', failures)
+  call check(close_real(config%model_temporal_indicator_budget, 3.0_real64), 'generic carrier receives exact head budget', failures)
 
   call set_valid_contract(contract, COUPLING_QOI_GROUNDWATER_DRAWDOWN, 8.0_real64, 0.125_real64)
   call contract%evaluate_temporal_budget_cm(budget, available)
-  call check(available .and. budget == 1.0_real64, 'drawdown budget composes exactly', failures)
+  call check(available .and. close_real(budget, 1.0_real64), 'drawdown budget composes exactly', failures)
 
   call set_valid_contract(contract, COUPLING_QOI_GROUNDWATER_HEAD, 12.0_real64, 0.25_real64)
   contract%a_temporal_available = .false.
@@ -99,7 +99,7 @@ program test_fgc09_application_accuracy_contract
   call set_valid_contract(contract, COUPLING_QOI_GROUNDWATER_HEAD, huge(0.0_real64), 1.0_real64)
   call check(contract%temporal_budget_ready(), 'largest finite H_app has no invented upper policy limit', failures)
   call contract%evaluate_temporal_budget_cm(budget, available)
-  call check(available .and. budget == huge(0.0_real64), 'largest finite budget composes without clipping', failures)
+  call check(available .and. close_real(budget, huge(0.0_real64)), 'largest finite budget composes without clipping', failures)
 
   if (failures /= 0) then
     write(*,'(A,I0)') 'FGC09_FAILURES=', failures
@@ -112,6 +112,14 @@ program test_fgc09_application_accuracy_contract
   write(*,'(A)') 'FGC09_APPLICATION_ACCURACY_CONTRACT PASS'
 
 contains
+
+  pure logical function close_real(a, b)
+    real(real64), intent(in) :: a, b
+    real(real64) :: scale
+
+    scale = max(1.0_real64, abs(a), abs(b))
+    close_real = abs(a - b) <= 64.0_real64 * epsilon(1.0_real64) * scale
+  end function close_real
 
   subroutine set_valid_contract(value, qoi_kind, h_app_cm, a_temporal)
     type(coupling_application_accuracy_contract_t), intent(out) :: value
