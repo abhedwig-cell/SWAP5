@@ -15,32 +15,59 @@
       "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
     }
   },
-  "numbering_note": "F-VQ53 remains a non-authoritative earlier qualification attempt; F-VQ54 is the clean authoritative handoff workunit.",
-  "phase": "INDEPENDENT_QUALIFICATION_PENDING",
-  "decision": "PENDING_FAIL_CLOSED",
+  "numbering_note": "F-VQ53 remains a non-authoritative earlier qualification attempt; F-VQ54 is the clean authoritative qualification workunit.",
+  "phase": "QUALIFIED_CLOSEOUT_EXACT_STATUS_HEAD_RERUN_REQUIRED",
+  "decision": "QUALIFIED_RESTRICTED_SCALAR_SURFACE_EVAPORATION_HYDRAULIC_CAPACITY_WITHIN_FROZEN_SWINTER0_SWREDU0_SCOPE",
   "state": {
     "handoff_persisted": true,
     "qualification_persisted": true,
     "production_materialized": false,
-    "tested": false,
-    "independently_qualified": false,
+    "tested": true,
+    "independently_qualified": true,
     "canonical_admitted": false
   },
   "qualification": {
     "workflow": "F-VQ54 independent F-PM06E surface evaporation capacity qualification",
-    "run": null,
-    "job": null,
-    "expected_gate": "FVQ54_GATE=PASS"
+    "initial_run": 34544671633,
+    "initial_job": 103094595543,
+    "initial_head": "7e8eca563280a40d50129926537f8fb38c1e036e",
+    "initial_conclusion": "success",
+    "gate": "FVQ54_GATE=PASS",
+    "independent_emax_oracle_cases": 180,
+    "independent_constitutive_oracle_cases": 30,
+    "o0_o2_identity": "PASS",
+    "output_sha256": "e77388e86bf1726e486165606ef80edaef25361f7b7ad4ae1a2f8e1fcdbccbaa"
   },
   "architecture": {
-    "invariants": "30_OF_30_NO_ADVERSE_DELTA_IF_GATE_GREEN",
+    "invariants": "30_OF_30_NO_ADVERSE_DELTA",
     "mass_conservation": "HARD_UNCHANGED"
   },
+  "qualified_scope": {
+    "hydraulic_family": "B1.10_DEFAULT_MVG",
+    "conductivity_mean_policies": [1, 2, 3, 4, 5, 6],
+    "atmospheric_head_cm": -275000.0,
+    "swinter": 0,
+    "swredu": 0,
+    "frost_active": false,
+    "macropore_surface_scaling_active": false,
+    "emax_signed": true,
+    "finite_negative_emax_valid": true,
+    "capacity_is_read_only_non_committing": true
+  },
   "hard_holds": [
+    "SWKMEAN=7 remains unqualified and fail-closed",
     "no runtime composition",
     "no accepted-flux publication",
+    "no full BOUNDTOP migration",
     "no canonical admission",
     "Emax remains capacity only and is never a second mass booking"
   ],
-  "next_required_step": "run the exact-head independent gate and fail closed; only after green qualification may a separate canonical-admission workunit be considered"
+  "final_gate": {
+    "exact_status_head_same_candidate_blobs": true,
+    "qualification_branch_src_unchanged": true,
+    "qualification_branch_reference_unchanged": true,
+    "same_independent_oracle_must_pass": true,
+    "no_further_status_mutation_required_after_green_exact_head": true
+  },
+  "next_required_step": "after the exact closeout-head rerun succeeds, preserve F-VQ54 as immutable independent qualification authority; any runtime composition or canonical admission requires a separate workunit"
 }
