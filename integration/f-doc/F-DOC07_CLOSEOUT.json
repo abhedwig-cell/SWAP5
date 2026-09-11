@@ -1,0 +1,58 @@
+{
+  "schema": "swap5.fdoc07_closeout.v1",
+  "work_unit": "F-DOC07",
+  "base": "c20c0fd4c53ef65f3c8d375362908a25f0855a4b",
+  "decision": "QUALIFIED_COMPLETE_RB1_REQUIRED_CAPABILITY_POPULATION_COVERAGE_WITH_EXPLICIT_MATURITY_GAPS",
+  "closeout_state": "PENDING_EXACT_HEAD_CI",
+  "coverage": {
+    "required_denominator": 15,
+    "covered_exactly_once": 15,
+    "duplicate_assignments": 0,
+    "unassigned_required_capabilities": 0
+  },
+  "authorities": {
+    "F-DOC03": {"head":"0c25d97bd180378a916fbb14a1e45768af9ec63a","run":34596210450},
+    "F-DOC04": {"head":"a703747ce1991c5601b76a84f04969b602298268","run":34610822444},
+    "F-DOC05": {"head":"919f228d8aedc1029b5080bb019fbe61d2e1d7c6","run":34612402892},
+    "F-DOC06": {"head":"c20c0fd4c53ef65f3c8d375362908a25f0855a4b","run":34620809727}
+  },
+  "maturity_boundary": {
+    "fully_traced": false,
+    "status_a_ready": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "t12_application_validation_complete": false,
+    "external_audit_performed": false
+  },
+  "remaining_gap_classes": [
+    "controlled T0-T7 evidence completion",
+    "complete T11 equation-to-test graphs",
+    "T12 application validation",
+    "WR-QA-2024 controlled-copy reconciliation",
+    "application-specific temporal/groundwater H_budget",
+    "surface-evaporation throughput/scaling and call-local allocation performance"
+  ],
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "acceptance_threshold": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "evidence": {
+    "first_green_head": null,
+    "first_green_workflow_run": null,
+    "first_green_artifact": null,
+    "first_green_artifact_digest": null
+  }
+}
