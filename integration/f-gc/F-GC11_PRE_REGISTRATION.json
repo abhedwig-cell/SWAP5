@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "workstream": "F-GC",
+  "work_unit": "F-GC11",
+  "title": "NSW SSD/SSI Application-Class Accuracy Instantiation and Temporal Allocation Qualification",
+  "starting_canonical_authority": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2",
+  "upstream_contract_authority": {
+    "F_GC10_closeout": "a1201dc870e4f5088f50b8d00e92e83457743174",
+    "F_CI44P_final_canonical": "e342f4f9c9d45e2ec2d23a6be6032cc0498d98e2"
+  },
+  "application_class": {
+    "id": "AC03_NSW_SSD_SSI_AQUIFER_INTERFERENCE_DRAWDOWN_DECISION",
+    "jurisdiction": "New South Wales, Australia",
+    "decision_context": "State Significant Development / State Significant Infrastructure aquifer-interference impact assessment",
+    "quantity_of_interest": "GROUNDWATER_DRAWDOWN",
+    "scope_boundary": "A jurisdictional application class, not a claim about every individual NSW project or receptor."
+  },
+  "purpose": "Attempt one real external application-class instantiation of the canonical coupling application-accuracy contract. Qualify a numerical H_app and a numerical temporal allocation only if independently governed external evidence actually supplies those meanings. Otherwise fail closed without inventing policy.",
+  "hard_scope": {
+    "production_source_changes_allowed": false,
+    "new_physics_allowed": false,
+    "new_solver_allowed": false,
+    "scientific_tolerance_relaxation_allowed": false,
+    "F_GC02_inspection_or_execution_allowed": false,
+    "F_GC06_through_F_GC10_reopen_allowed": false,
+    "RB1_reopen_allowed": false
+  },
+  "admission_rules": {
+    "H_app": [
+      "Must be an externally governed numerical prediction-accuracy requirement or explicit numerical decision margin for the stated groundwater drawdown quantity of interest.",
+      "A physical impact threshold is not H_app merely because it is expressed in metres of drawdown.",
+      "Calibration residual targets, normalised RMSE targets, measurement uncertainty and solver closure tolerances are not H_app.",
+      "F-GC07 measured coupling error may not select H_app."
+    ],
+    "A_temporal": [
+      "Must be independently supplied by an external application, regulator, project accuracy budget or governed decision rule as the permitted share of application prediction error allocated to coupling temporal error.",
+      "Stress-period or time-step guidance without an error allocation is not A_temporal.",
+      "F-GC07 convergence behaviour may test a supplied allocation but may not choose it."
+    ],
+    "H_temporal_budget": "May be materialized only when both H_app and A_temporal pass their independent provenance gates; then H_temporal_budget = H_app * A_temporal.",
+    "mass_conservation": "Absolute and outside any accuracy trade-off."
+  },
+  "explicitly_rejected_shortcuts": [
+    "NSW Level-1 0.2 m or 2 m drawdown threshold reused as H_app",
+    "5-10 percent normalised RMS calibration folklore reused as H_app",
+    "instrument or observation accuracy reused as prediction accuracy without a governed decision rule",
+    "arbitrary 10, 20, 25 or 50 percent temporal-error allocation",
+    "using coupling-window convergence itself to back-calculate the application budget"
+  ],
+  "decision_logic": {
+    "success": "QUALIFIED_AC03_NUMERIC_APPLICATION_ACCURACY_AND_TEMPORAL_ALLOCATION",
+    "fail_H_app_missing": "FAIL_CLOSED_AC03_NO_INDEPENDENT_NUMERIC_PREDICTION_ACCURACY_REQUIREMENT",
+    "fail_A_temporal_missing": "FAIL_CLOSED_AC03_NO_INDEPENDENT_NUMERIC_TEMPORAL_ALLOCATION",
+    "fail_both_missing": "FAIL_CLOSED_AC03_NO_INDEPENDENT_NUMERIC_H_APP_OR_TEMPORAL_ALLOCATION"
+  },
+  "architecture_invariants_to_audit": [9,10,11,12,13,14,15,23,25,26,28,29,30]
+}
