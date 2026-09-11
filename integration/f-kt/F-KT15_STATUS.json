@@ -1,28 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "work_unit": "F-KT15",
   "title": "Production Soil-Water Solver-Service Transaction Composition",
   "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
-  "phase": "BLOCKED_PREDECESSOR_REMEDIATION_REQUIRED",
+  "phase": "SOURCE_RECONCILED_IMPLEMENTATION_OPEN",
   "source_authority": {
-    "canonical_base": "1fab3e1b27d774f2869a003876d035b07c601ccf",
-    "production_source_authority": "c9a73f2f37c9306e7a6fbf60b713b66d82c4a372",
-    "governance_overlay": "F-CI39",
-    "source_reconciliation_evidence": "integration/f-kt/F-KT15_SOURCE_RECONCILIATION.json"
+    "current_canonical": "c7379b6b5b5f529ff96de3087379712bd665276a",
+    "qualified_F_SI30_closeout": "27b10ac0bca17a68e2746431b4c6a986e3910175",
+    "canonical_merge_commit": "7008e116f451483477e4209177eb9c31b7cf3006",
+    "FSI30_merge_commit": "5cf83669bae383ede039589c92a6029bcf8fc4e4",
+    "reconciliation_checkpoint": "0d820017f195ee999786263316473c52f184dec9",
+    "reconciliation_evidence": "integration/f-kt/F-KT15_FSI30_CANONICAL_RECONCILIATION_RESOLVED.json"
   },
   "upstream": {
     "F_SI27": "QUALIFIED_EXPLICIT_PRESCRIBED_BOTTOM_FLUX_SWBOTB2",
     "F_SI28": "QUALIFIED_OPTIONAL_SAME_FACTORIZATION_NATIVE_QBOT_INTERFACE_SENSITIVITY_PRODUCTION_SOLVE",
     "F_KT14": "QUALIFIED_ACCEPTED_LOCAL_TERMINAL_INTERFACE_SENSITIVITY_RESULT_TRANSPORT_AND_FSI28_SOLVER_RESULT_BRIDGE_WITH_LEGACY_DIRECT_COMPOSITION_EXCLUDED",
-    "F_SI29": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER"
+    "F_SI29": "QUALIFIED_RESTRICTED_B110_DYNAMIC_ATMOSPHERIC_TOP_BOUNDARY_PROVIDER",
+    "F_SI30": "QUALIFIED_DYNAMIC_TOP_BOUNDARY_SOLVER_INTERFACE_AND_HEADCALC_PROVIDER_BRIDGE"
   },
-  "problem": "The B1.10 physical transaction still calls HeadCalc directly. F-SI29 removes the scientific dynamic-top component blocker, but the common top-boundary provider interface cannot transport the selected flux-versus-prescribed-head regime. HeadCalc currently forces ftoph=false for every explicit provider, so F-SI29 head regimes cannot yet be composed through the typed solver service without changing physics.",
-  "current_blocker": {
-    "artifact": "integration/f-kt/F-KT15_DYNAMIC_TOP_REGIME_INTERFACE_BLOCKER.json",
-    "status": "BLOCKED_ON_EXPLICIT_TOP_BOUNDARY_REGIME_TRANSPORT",
-    "required_predecessor": "F-SI30 or equivalent",
-    "required_scope": "Explicit top-boundary regime transport from provider result into HeadCalc residual routing, preserving F-SI29 physics."
+  "resolved_predecessor_blocker": {
+    "former_artifact": "integration/f-kt/F-KT15_DYNAMIC_TOP_REGIME_INTERFACE_BLOCKER.json",
+    "former_status": "BLOCKED_ON_EXPLICIT_TOP_BOUNDARY_REGIME_TRANSPORT",
+    "resolution": "F-SI30 is qualified and its exact source postimage has been merged after the exact current-canonical forward sync; all frozen F-SI30 source blob guards and F-CI45 runtime blob guards checked at the merged postimage."
   },
+  "current_problem": "The B1.10 physical transaction still calls legacy SoilWater/HeadCalc directly. F-KT15 must now compose the already-qualified typed reference Richards solver service into the real SoilWater task-2 transaction for the restricted admitted predicate, while preserving direct HeadCalc for unsupported configurations and preserving SoilWater task-3 bookkeeping ownership.",
   "hard_constraints": [
     "Do not add interface-tangent computation to legacy HeadCalc.",
     "Do not run a second nonlinear trajectory merely to obtain a tangent.",
@@ -32,9 +34,9 @@
     "Preserve worker-owned scratch and compact committed physical state.",
     "Do not add MODFLOW sign conversion.",
     "Do not claim a local-terminal tangent is a whole-coupling-window derivative.",
-    "Do not collapse F-SI29 dynamic prescribed-head regimes into a fixed-flux approximation."
+    "Do not broaden F-SI30 dynamic top-boundary physics or silently approximate head regimes as fixed flux."
   ],
-  "planned_evidence_after_predecessor": [
+  "implementation_evidence_required": [
     "task-2 direct-HeadCalc versus typed-service physical postimage identity",
     "dynamic flux/head top-boundary switching identity",
     "task-3 ownership and call-count identity",
@@ -42,16 +44,18 @@
     "accepted sensitivity reaches trial_outcome_t through F-KT14",
     "retry/rollback stale-result exclusion",
     "zero additional nonlinear tangent trajectories and zero additional Jacobian builds",
+    "unsupported configurations retain direct HeadCalc and publish no typed sensitivity",
     "O0/O2 and 1/2/4/8 worker isolation"
   ],
   "state": {
     "realized": true,
     "persisted": true,
     "source_reconciled": true,
+    "predecessor_blocker_closed": true,
     "implemented": false,
     "tested": false,
     "qualified": false
   },
-  "decision": "F_KT15_BLOCKED_PENDING_TYPED_DYNAMIC_TOP_REGIME_TRANSPORT_QUALIFICATION",
+  "decision": "F_KT15_SOURCE_RECONCILED_IMPLEMENTATION_OPEN_NOT_YET_TESTED_OR_QUALIFIED",
   "overall_f_ross01_status": "ROSSFAST_REQUIRES_FURTHER_RESEARCH"
 }
