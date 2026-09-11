@@ -1,0 +1,62 @@
+{
+  "schema": "swap5.fdoc12_closeout.v1",
+  "work_unit": "F-DOC12",
+  "title": "RB1 Runtime Architecture T0-T7 Applicability and State-Transition Authority",
+  "base": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+  "decision": "QUALIFIED_RB1_RUNTIME_ARCHITECTURE_T0_T7_APPLICABILITY_AND_STATE_TRANSITION_AUTHORITY_WITH_ZERO_SCIENTIFIC_PROMOTION",
+  "closeout_state": "FINAL_WHEN_EXACT_HEAD_CI_GREEN",
+  "finality_rule": "Final only when .github/workflows/fdoc12-rb1-runtime-architecture-tier-applicability.yml succeeds with head_sha equal to the exact final branch head containing this closeout and F-DOC12_STATUS.json. No metadata rewrite is required after that exact-final-head success.",
+  "result": {
+    "runtime_architecture_capabilities": 9,
+    "tier_scope": ["T0","T1","T2","T3","T4","T5","T6","T7"],
+    "carried_forward_from_fdoc03": 4,
+    "newly_materialised_runtime_semantics": 5,
+    "unresolved_T0_T7_within_runtime_family": 0,
+    "fully_traced_promotions": 0,
+    "status_a_readiness_promotions": 0,
+    "scientific_theory_created": false
+  },
+  "authorities": {
+    "F_DOC11": "df438f8d0eaa4117e3e6df13a7061985fe233a16",
+    "F_DOC03": "0c25d97bd180378a916fbb14a1e45768af9ec63a",
+    "F_DOC05": "919f228d8aedc1029b5080bb019fbe61d2e1d7c6",
+    "canonical_scientific_source": "0aeb0a2ed4096e1f9493d3dabc70962ea5270182",
+    "F_RB01": "aeb74560d801c4ac7314df7b8845fcc5daf8bba6",
+    "F_RB02": "b52e4dc5ff1c16ccaf11853cc085c7099e17ccc0"
+  },
+  "remaining_gap_state": {
+    "GAP-CONTROLLED-THEORY-FORMAL-RUNTIME-ARCHITECTURE": "CLOSED_T0_T7_BOUNDED",
+    "GAP-CONTROLLED-THEORY-FORMAL-PHYSICAL-HYBRID": "OPEN_SEPARATE_FAMILIES",
+    "GAP-CONTROLLED-THEORY-FORMAL-TIME-REFERENCE": "OPEN_SEPARATE_NUMERICAL_FAMILY",
+    "GAP-T11-COMPLETE-GRAPHS": "OPEN_NARROWED",
+    "GAP-T12-APPLICATION-VALIDATION": "OPEN",
+    "GAP-WR-QA-2024-CONTROLLED-COPY": "OPEN_EXTERNAL_AUTHORITY_DEPENDENCY",
+    "GAP-APPLICATION-TEMPORAL-H-BUDGET": "OPEN_EXTERNAL_POLICY_DEPENDENCY",
+    "GAP-SURFACE-EVAP-PERFORMANCE": "OPEN_SEPARATE_PERFORMANCE_WORK"
+  },
+  "delta": {
+    "production": "NONE",
+    "reference": "NONE",
+    "physics": "NONE",
+    "solver": "NONE",
+    "scientific_tolerance": "NONE",
+    "mass_criterion": "NONE",
+    "temporal_acceptance": "NONE",
+    "performance_policy": "NONE",
+    "rb1_denominator": "UNCHANGED_15_REQUIRED"
+  },
+  "architecture": {
+    "total": 30,
+    "pass": 30,
+    "fail": 0,
+    "overall": "30_OF_30_NO_ADVERSE_DELTA",
+    "mass_conservation": "HARD_UNCHANGED"
+  },
+  "hard_nonclaims": [
+    "F-DOC12 resolves no physical-science or hybrid theory authority and does not alter RB1-TIME-REFERENCE numerical authority.",
+    "F-DOC12 promotes no capability to FULLY_TRACED and establishes no Status A or Status AA readiness/compliance.",
+    "F-DOC12 changes no production source, reference data, physics, solver, tolerance, mass criterion, temporal acceptance or performance policy.",
+    "F-DOC12 does not establish a universal H_budget, temporal tolerance or groundwater-head accuracy budget.",
+    "F-DOC12 does not claim surface-evaporation throughput/scaling or resolve call-local allocation performance."
+  ]
+}
