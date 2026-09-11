@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "F-DOC01",
+  "title": "SWAP5 Status A/AA Scientific Documentation and Theory-Code Traceability Architecture",
+  "branch": "work/f-doc01-status-a-aa-theory-code-traceability",
+  "stage": "PERSISTED_PENDING_EXACT_HEAD_CI",
+  "decision_if_green": "QUALIFIED_SCIENTIFIC_DOCUMENTATION_TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION",
+  "source_authority": {
+    "ref": "integration/f-ci-canonical",
+    "commit": "3c5f5bd3686e1632058b906be21abd73883e30ef",
+    "tree": "6baaf40271497db831698c5a01de355b5d296dbe"
+  },
+  "external_quality_authority": {
+    "current_process": "WR-QA-PROCESS-CURRENT",
+    "formal_project_criterion": "WR-QA-2024",
+    "public_mapping_baseline": "WR-QA-PUBLIC-22",
+    "formal_2024_controlled_copy": "NOT_OBTAINED",
+    "formal_2024_reconciliation": "PENDING_CONTROLLED_COPY"
+  },
+  "architecture": {
+    "traceability_spine": "T0_THROUGH_T14",
+    "status_a_public_requirement_count": 22,
+    "perspectives": 3,
+    "themes": 7,
+    "scientific_ids_versioned": true,
+    "theory_code_evidence_discrepancies_first_class": true,
+    "historical_evidence_authority_preserved": true,
+    "production_implementation_must_be_exact_source_bound": true,
+    "missing_evidence_remains_explicit_gap": true
+  },
+  "status_a_boundary": {
+    "is_status_a_dossier": false,
+    "ready_for_status_a_review": false,
+    "status_a_compliant": false,
+    "status_aa_compliant": false,
+    "external_audit_performed": false,
+    "compliance_state": "BLOCKED_PENDING_CONTROLLED_2024_CRITERIA_RECONCILIATION_AND_EVIDENCE_COMPLETION",
+    "maximum_claim_after_fdoc01": "TRACEABILITY_ARCHITECTURE_READY_FOR_INCREMENTAL_POPULATION"
+  },
+  "scope_holds": {
+    "production_source_changed": false,
+    "reference_changed": false,
+    "physics_changed": false,
+    "solver_changed": false,
+    "numerical_policy_changed": false,
+    "scientific_qualification_reopened": false,
+    "historical_evidence_reinterpreted": false,
+    "status_a_or_aa_certification_claimed": false
+  },
+  "known_gaps": [
+    "controlled copy and exact reconciliation of Revised checklist Status A/AA, 2024",
+    "complete scientific theory authority and T1-T11 mappings for production capabilities",
+    "complete parameter and calibration registry population",
+    "complete raw-input provenance registry population",
+    "application-class validation registry and explicit unvalidated scope",
+    "sensitivity and uncertainty evidence coverage",
+    "fitness-for-purpose records",
+    "organisational ownership and maintenance evidence",
+    "user-facing generated documentation views"
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "open": [
+      "fail-closed machine validation",
+      "30-invariant no-adverse-delta audit",
+      "exact-head CI",
+      "final self-bound closeout"
+    ]
+  }
+}
