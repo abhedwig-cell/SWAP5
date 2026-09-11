@@ -1,13 +1,13 @@
 {
-  "schema": "swap5.frb01_release_candidate.v3",
+  "schema": "swap5.frb01_release_candidate.v4",
   "work_unit": "F-RB01",
   "checkpoint": 4,
   "stage": "PERSISTED",
   "candidate_frozen": true,
-  "release_candidate_sha": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
-  "release_candidate_tree": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
-  "RB1_RELEASE_CANDIDATE_SHA": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
-  "RB1_RELEASE_CANDIDATE_TREE": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
+  "release_candidate_sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+  "release_candidate_tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
+  "RB1_RELEASE_CANDIDATE_SHA": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+  "RB1_RELEASE_CANDIDATE_TREE": "3716898eae3c33bf62616e43a2690e9aeb71d434",
   "RB1_RELEASE_CANDIDATE_SRC_TREE": "8ceeb70a64012631ebba295f5c045ea908b0681f",
   "RB1_RELEASE_CANDIDATE_REFERENCE_TREE": "9d08625217d7c0a7385df9da6a04183bcd9cb9e6",
   "production_source_authority": {
@@ -21,8 +21,8 @@
     "exact_broad_canonical_conclusion": "success"
   },
   "release_harness_authority": {
-    "sha": "bc444d2a0af9be698c359e47a3fddad35f787ee9",
-    "tree": "3103e3d54793fb60e5b16aed7a8d455644f5389e",
+    "sha": "0c4f7eee9fcadd49268350e477799b5a34e30e3b",
+    "tree": "3716898eae3c33bf62616e43a2690e9aeb71d434",
     "decisive_workflow": ".github/workflows/frb01-release-qualification.yml",
     "integrated_runner": "tests/frb01/run_frb01_release_qualification_v2.sh",
     "temporal_runner": "tests/frb01/run_frb01_temporal_authority.sh"
@@ -37,7 +37,14 @@
       "workflow_run": 34569233381,
       "conclusion": "failure",
       "failure_classification": "HARNESS_GOVERNANCE_LINEAGE_ASSERTION_DEFECT",
-      "detail": "The wrapper incorrectly required the F-MR35 owner candidate commit itself to be an ancestor of canonical. Correct governance is the admitted F-CI37 final authority in canonical lineage plus exact current candidate blob identity. Temporal authority and all gates reached before this assertion were green; no production/reference/scientific source changed."
+      "detail": "The wrapper incorrectly required the F-MR35 owner candidate commit itself to be an ancestor of canonical. Correct governance is the admitted F-CI37 final authority in canonical lineage plus exact current candidate blob identity. Temporal authority was green and no production/reference/scientific source changed."
+    },
+    {
+      "descriptor": "swap5.frb01_release_candidate.v3",
+      "workflow_run": 34569400262,
+      "conclusion": "failure",
+      "failure_classification": "HARNESS_OBSERVABILITY_MARKER_DEFECT",
+      "detail": "The independent F-MQ30 runner passed its internal held-out, fail-closed, worker-count, publication-order, O0/O2 and hard-mass gates and exported its summary PASS markers, but the outer RB1 wrapper incorrectly required internal per-case markers that the runner intentionally does not publish to stdout. The same latent wrapper defect was pre-emptively corrected for F-MQ29. No independent scientific attack, production source, reference source or acceptance threshold was changed."
     }
   ],
   "immutability_rule": "During decisive qualification, src, reference, tests/frb01 and the decisive workflow must remain byte-identical to this candidate. Any production source or reference change invalidates RB1 scientific release qualification and requires a fresh candidate after governed owner qualification/canonical admission. Any decisive test-harness change also requires a fresh release candidate before rerun.",
