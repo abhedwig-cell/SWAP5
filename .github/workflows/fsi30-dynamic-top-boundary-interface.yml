@@ -1,0 +1,20 @@
+name: F-SI30 dynamic top-boundary solver-interface gate
+
+on:
+  push:
+    branches:
+      - work/f-si30-dynamic-top-boundary-solver-interface
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  abi-adapter-compile:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run F-SI30 ABI/adapter compile gate
+        run: bash tests/fsi/run_fsi30_abi_adapter_compile_gate.sh
