@@ -7,6 +7,7 @@ on:
       - work/f-mr39-restricted-soil-temperature-runtime-composition
     paths:
       - integration/f-mr/materialize_fmr39.py
+      - .github/workflows/fmr39-restricted-soil-temperature-runtime.yml
 
 permissions:
   contents: write
