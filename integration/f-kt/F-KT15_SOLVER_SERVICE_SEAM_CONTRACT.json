@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-KT15",
+  "artifact": "SOLVER_SERVICE_SEAM_CONTRACT",
+  "branch": "work/f-kt15-production-soil-water-solver-service-transaction-composition",
+  "source_head": "9a609a12af83b4a4611658ed6e6d1871a38e21e5",
+  "qualification": false,
+  "formal_status": "ANALYZED_STATE_COMPLETE_RESTRICTED_SEAM_READY_FOR_IMPLEMENTATION",
+  "design_gate": {
+    "question": "Can SoilWater(2) delegate only the admitted soil-water solve to reference_richards_legacy_solver_t while preserving SoilWater(3), retry/rollback semantics and continuation state?",
+    "answer": "YES_WITH_RESTRICTED_FAIL_CLOSED_COMPOSITION"
+  },
+  "source_evidence": {
+    "legacy_solve_site": "src/legacy/b1_10_port/soilwater.f90: SoilWater task=2",
+    "legacy_postsolve_site": "src/legacy/b1_10_port/soilwater.f90: SoilWater task=3",
+    "legacy_solver": "src/legacy/b1_10_port/headcalc.f90: HeadCalc",
+    "typed_contract": "src/solver/mod_soil_water_solver_contract.f90: soil_water_solve_request_t/soil_water_solve_result_t",
+    "typed_binding": "src/adapter/mod_reference_richards_legacy_binding.f90: reference_richards_legacy_solver_t"
+  },
+  "required_solver_to_legacy_postimage": {
+    "physical": [
+      "h <- result.candidate_state.pressure_head",
+      "theta <- result.candidate_state.water_content",
+      "pond <- result.candidate_state.ponding_depth",
+      "gwl <- result.candidate_state.groundwater_level",
+      "qtop <- result.top_flux",
+      "qbot <- result.bottom_flux"
+    ],
+    "control": [
+      "SW_SOLVE_RETRY_ADVISED maps to existing fldecdt/retry flow; SoilWater(3) must not execute for the rejected solve",
+      "accepted nonlinear/backtracking diagnostics may update legacy iteration statistics without becoming committed physical state",
+      "solver/interface sensitivity remains result metadata and must not be stored in legacy physical state"
+    ]
+  },
+  "explicitly_not_required_from_solver_result": [
+    "k",
+    "kmean",
+    "dimoca",
+    "watstor intermediates",
+    "solver Jacobian/factorization/scratch"
+  ],
+  "reason_not_required": "Existing SoilWater(3) recomputes hydraulic conductivities at t+1, groundwater level, profile storage and compartment/boundary flux bookkeeping after the accepted SoilWater(2) solve.",
+  "restricted_typed_route": {
+    "basis": "validate_legacy_request() in mod_reference_richards_legacy_binding",
+    "currently_admitted": [
+      "macropore_active = false",
+      "conductivity_implicit_mode = 0",
+      "legacy fldtmin = false",
+      "bottom_mode in {7,-2,5,2}",
+      "explicit top-flux provider present",
+      "constitutive provider present",
+      "source/sink provider present",
+      "source/sink provider restricted to its already-qualified inactive-root-extraction scope"
+    ],
+    "rule": "F-KT15 must not broaden these scientific/solver admission predicates. Unsupported production states retain the existing legacy HeadCalc route and publish no typed sensitivity."
+  },
+  "transaction_rules": [
+    "Call SoilWaterStateVar(1) exactly once before either solve route.",
+    "A typed retry result must enter the existing legacy timestep-reduction/rollback path and cannot publish sensitivity.",
+    "Only an accepted typed solve may make its candidate physical postimage visible to SoilWater(3).",
+    "SoilWater(3) remains the sole existing owner of post-solve K/Kmean/GWL/storage/flux bookkeeping in this workunit.",
+    "No second nonlinear trajectory is permitted for interface sensitivity.",
+    "No solver scratch becomes committed column state.",
+    "No MODFLOW sign conversion is introduced."
+  ],
+  "open_implementation_checks": [
+    "Materialize the already-qualified B1.10 constitutive, fixed-flux top-boundary and source/sink providers from current in-memory state without changing physics.",
+    "Define an explicit production route-selection predicate so unsupported cases use the unchanged direct HeadCalc route.",
+    "Carry an accepted typed interface sensitivity out of the physical interval to the existing F-KT14 trial_outcome_t bridge without stale values across retries.",
+    "Prove baseline identity and hard mass-balance identity in the admitted profile.",
+    "Prove unsupported cases are byte/route-equivalent to the unchanged legacy path.",
+    "Prove O0/O2 identity and exact-head CI before qualification."
+  ],
+  "state": {
+    "realized": true,
+    "persisted": true,
+    "implemented": false,
+    "tested": false,
+    "qualified": false
+  },
+  "decision": "RESTRICTED_STATE_COMPLETE_SEAM_CONTRACT_PERSISTED_IMPLEMENTATION_OPEN_FAIL_CLOSED"
+}
