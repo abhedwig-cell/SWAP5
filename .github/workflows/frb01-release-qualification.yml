@@ -1,0 +1,44 @@
+name: F-RB01 restricted production baseline v1 release qualification
+
+on:
+  push:
+    branches:
+      - release/f-rb01-restricted-production-baseline-v1
+    paths:
+      - 'release/f-rb01/RB1_RELEASE_CANDIDATE.json'
+
+permissions:
+  contents: read
+
+jobs:
+  decisive-release-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compiler identity
+        run: |
+          set -euo pipefail
+          gfortran --version
+          python3 --version
+
+      - name: Decisive F-RB01 release qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tests/frb01/run_frb01_release_qualification_v2.sh | tee _frb01_release_stdout.txt
+          grep -Fq 'FRB01_DECISION=QUALIFIED_SWAP5_RESTRICTED_PRODUCTION_BASELINE_V1_READY_FOR_RELEASE_AUTHORITY' _frb01_release_stdout.txt
+
+      - name: Preserve release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frb01-release-evidence-${{ github.sha }}
+          path: |
+            _frb01_release_stdout.txt
+            _frb01_release_evidence/
+          if-no-files-found: warn
+          retention-days: 30
