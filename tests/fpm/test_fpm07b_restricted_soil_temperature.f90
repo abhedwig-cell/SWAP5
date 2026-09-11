@@ -59,7 +59,6 @@ contains
     hs%water_content = 0.25_real64
     he%water_content = 0.25_real64
 
-    num%require_energy_closure = .true.
     num%energy_abs_tolerance_j_cm2 = 1.0e-9_real64
   end subroutine setup
 
