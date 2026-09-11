@@ -174,7 +174,10 @@ contains
   subroutine require(condition, code)
     logical, intent(in) :: condition
     integer, intent(in) :: code
-    if (.not. condition) error stop code
+    if (.not. condition) then
+      write(*,'(A,I0)') 'FPM06F_REQUIRE_FAIL=', code
+      error stop 1
+    end if
   end subroutine require
 
   subroutine require_close(actual, expected, code)
