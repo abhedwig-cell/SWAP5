@@ -3,6 +3,7 @@ module mod_fmr_surface_evaporation_runtime_materialization
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t
+  use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_surface_evaporation_capacity_contract, only: surface_evaporation_capacity_provider_t, &
        surface_evaporation_capacity_result_t, SURFACE_EVAP_CAPACITY_AVAILABLE
   use mod_restricted_surface_evaporation, only: surface_evaporation_demand_t, &
@@ -11,7 +12,7 @@ module mod_fmr_surface_evaporation_runtime_materialization
   use mod_reference_et_demand_process, only: reference_et_demand_result_t
   use mod_fmr_reference_et_demand_binding, only: fmr_reference_et_binding_diagnostics_t, &
        FMR_REFERENCE_ET_BINDING_OK
-  use mod_fmr_process_hydraulic_view_binding, only: fmr_detach_committed_soil_water_state
+  use mod_fmr_process_hydraulic_view_binding, only: fmr_build_committed_process_hydraulic_view
   implicit none
   private
 
@@ -51,6 +52,7 @@ contains
     type(surface_evaporation_result_t), intent(out) :: result
     type(fmr_surface_evaporation_runtime_diagnostics_t), intent(out) :: diagnostics
 
+    type(process_hydraulic_view_t) :: view
     type(soil_water_physical_state_t) :: base_state
     type(surface_evaporation_capacity_result_t) :: capacity
     type(surface_evaporation_demand_t) :: demand
@@ -67,24 +69,21 @@ contains
     end if
     diagnostics%demand_accepted = .true.
 
-    ! F-PE11 retains the committed-state clone boundary but transfers ownership
-    ! of that detached clone's profile arrays instead of copying the full profile
-    ! through an owning hydraulic view and then copying it back into base_state.
-    call fmr_detach_committed_soil_water_state(committed, base_state, ok)
+    call fmr_build_committed_process_hydraulic_view(committed, view, ok)
     if (.not. ok) then
       diagnostics%status = FMR_SURFACE_EVAP_RUNTIME_COMMITTED_VIEW_REJECTED
       diagnostics%route = 'committed-view-rejected'
       return
     end if
     diagnostics%committed_view_built = .true.
-    diagnostics%base_ponding_depth = base_state%ponding_depth
-    if (.not. ieee_is_finite(base_state%ponding_depth)) then
+    diagnostics%base_ponding_depth = view%ponding_depth
+    if (.not. ieee_is_finite(view%ponding_depth)) then
       diagnostics%status = FMR_SURFACE_EVAP_RUNTIME_COMMITTED_VIEW_REJECTED
       diagnostics%route = 'nonfinite-base-ponding'
       return
     end if
 
-    call validate_detached_state(base_state, ok)
+    call detached_state_from_view(view, base_state, ok)
     if (.not. ok) then
       diagnostics%status = FMR_SURFACE_EVAP_RUNTIME_COMMITTED_VIEW_REJECTED
       diagnostics%route = 'hydraulic-view-invalid'
@@ -104,7 +103,7 @@ contains
 
     demand%bare_soil_demand = et_result%potential_soil_evaporation_cm_per_day
     demand%ponded_water_demand = et_result%potential_pond_evaporation_cm_per_day
-    hydraulic%surface_is_ponded = base_state%ponding_depth > FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM
+    hydraulic%surface_is_ponded = view%ponding_depth > FMR_SURFACE_EVAP_PONDING_THRESHOLD_CM
     hydraulic%evaporation_capacity = capacity%evaporation_capacity
     diagnostics%surface_is_ponded = hydraulic%surface_is_ponded
 
@@ -122,20 +121,28 @@ contains
     diagnostics%route = result%route
   end subroutine fmr_materialize_restricted_surface_evaporation
 
-  subroutine validate_detached_state(state, ok)
-    type(soil_water_physical_state_t), intent(in) :: state
+  subroutine detached_state_from_view(view, state, ok)
+    type(process_hydraulic_view_t), intent(inout) :: view
+    type(soil_water_physical_state_t), intent(out) :: state
     logical, intent(out) :: ok
     integer :: n
 
+    state = soil_water_physical_state_t()
     ok = .false.
-    n = state%active_nodes
+    n = view%active_nodes
     if (n <= 0) return
-    if (.not. allocated(state%pressure_head) .or. .not. allocated(state%water_content)) return
-    if (size(state%pressure_head) /= n .or. size(state%water_content) /= n) return
-    if (.not. all(ieee_is_finite(state%pressure_head))) return
-    if (.not. all(ieee_is_finite(state%water_content))) return
-    if (.not. ieee_is_finite(state%groundwater_level)) return
+    if (.not. allocated(view%pressure_head) .or. .not. allocated(view%water_content)) return
+    if (size(view%pressure_head) /= n .or. size(view%water_content) /= n) return
+    if (.not. all(ieee_is_finite(view%pressure_head))) return
+    if (.not. all(ieee_is_finite(view%water_content))) return
+    if (.not. ieee_is_finite(view%groundwater_level)) return
+
+    state%active_nodes = n
+    call move_alloc(view%pressure_head, state%pressure_head)
+    call move_alloc(view%water_content, state%water_content)
+    state%ponding_depth = view%ponding_depth
+    state%groundwater_level = view%groundwater_level
     ok = .true.
-  end subroutine validate_detached_state
+  end subroutine detached_state_from_view
 
 end module mod_fmr_surface_evaporation_runtime_materialization
