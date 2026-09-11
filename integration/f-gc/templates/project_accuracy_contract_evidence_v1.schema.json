@@ -80,6 +80,8 @@
         "locator",
         "governance_status",
         "claim_type",
+        "evidence_basis_kind",
+        "source_digest_sha256",
         "external_to_swap_numerical_behavior"
       ],
       "properties": {
@@ -100,6 +102,20 @@
             "DIRECT_TEMPORAL_HEAD_ERROR_BUDGET"
           ]
         },
+        "evidence_basis_kind": {
+          "enum": [
+            "EXPLICIT_NUMERICAL_PREDICTION_ERROR_ACCEPTANCE_RULE",
+            "EXPLICIT_TEMPORAL_ALLOCATION_RULE",
+            "EXPLICIT_DIRECT_TEMPORAL_ERROR_BUDGET_RULE",
+            "PHYSICAL_IMPACT_THRESHOLD_ONLY",
+            "CALIBRATION_METRIC_ONLY",
+            "MODEL_GENERATED_UNCERTAINTY_ONLY",
+            "MONITORING_TRIGGER_ONLY",
+            "SWAP_NUMERICAL_BEHAVIOR",
+            "MODEL_TIMESTEP_SCHEDULE"
+          ]
+        },
+        "source_digest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
         "external_to_swap_numerical_behavior": {"const": true}
       }
     },
